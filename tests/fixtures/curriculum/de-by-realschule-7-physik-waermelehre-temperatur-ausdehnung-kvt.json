@@ -1,0 +1,268 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-physik-waermelehre-temperatur-ausdehnung",
+  "version": "2026.08.1",
+  "title": "Physik 7: Wärmelehre – Temperatur, Ausdehnung und Aggregatzustände (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 7 (Zweig I): Temperaturbegriff, thermische Ausdehnung (Bimetall), Dichteanomalie des Wassers und Wärmeübertragungsarten.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 7 (Zweig I), Lernbereich Thermisches Verhalten von Körpern"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4P7W0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4P7W0000000000000000A01",
+      "namespace": "physik-waerme",
+      "slug": "temperatur-teilchenbewegung-kelvin-skala",
+      "title": "Temperatur als Teilchenbewegung: Fixpunkte der Celsius- und Kelvin-Skala",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Temperature",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Thermisches Verhalten von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7W0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht mit den Teilchen (Atomen/Molekülen) eines Stoffes am absoluten Nullpunkt der Temperatur bei T = 0 K (-273,15 °C)?",
+          "concept": "Jegliche thermische Eigenbewegung der Teilchen kommt vollständig zum Erliegen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Jegliche thermische Teilchenbewegung kommt zum Stillstand",
+              "Die Teilchen bewegen sich mit maximaler Lichtgeschwindigkeit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7W0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den physikalischen Begriff der Temperatur als mikroskopisches Maß für die mittlere kinetische Energie (Geschwindigkeit) der ungerichteten Teilchenbewegung, vergleiche die Fixpunkte der Celsius-Skala (Schmelz- und Siedepunkt von Wasser bei 0 °C und 100 °C) mit der absoluten Kelvin-Skala (T in K = vartheta in °C + 273,15) und rechne eine Körpertemperatur von 37 °C sowie flüssigen Stickstoff (-196 °C) in Kelvin um.",
+          "concept": "Temperatur = Maß für mittlere kinetische Energie der Teilchen; Celsius: 0 °C (Eisschmelzpunkt), 100 °C (Siedepunkt bei 1013 hPa); Kelvin: 0 K = absoluter Nullpunkt (-273,15 °C); 37 °C = 37 + 273,15 = 310,15 K; -196 °C = -196 + 273,15 = 77,15 K.",
+          "sample_solution": "1. Mikroskopische Deutung der Temperatur: In der Physik ist die Temperatur ein Maß für die durchschnittliche Bewegungsenergie (kinetische Energie) der kleinsten Teilchen (Atome, Moleküle) eines Körpers. Je höher die Temperatur, desto schneller und heftiger schwingen bzw. bewegen sich die Teilchen ungerichtet durcheinander. 2. Celsius- vs. Kelvin-Skala: - Celsius-Skala (°C): Basiert auf zwei Naturfixpunkten von Wasser bei Normaldruck (1013 hPa): 0 °C = Schmelzpunkt von Eis; 100 °C = Siedepunkt von reinem Wasser. Der Abstand ist in 100 gleiche Teile unterteilt. - Kelvin-Skala (K, SI-Basiseinheit): Die absolute Temperaturskala. Sie beginnt beim physikalisch absolut tiefsten Punkt, dem absoluten Nullpunkt bei T = 0 K (-273,15 °C), an dem die thermische Bewegung der Teilchen theoretisch völlig erstarrt. Es gibt keine negativen Kelvin-Temperaturen! - Umrechnung: T(K) = vartheta(°C) + 273,15 bzw. Temperaturdifferenzen sind identisch: ΔT = 1 K = 1 °C. 3. Umrechnungsbeispiele: - Normale Körpertemperatur: T = 37 °C + 273,15 = 310,15 K. - Siedepunkt flüssiger Stickstoff: T = -196 °C + 273,15 = 77,15 K."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7W0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4P7W0000000000000000A02",
+      "namespace": "physik-waerme",
+      "slug": "thermische-ausdehnung-bimetall-technik",
+      "title": "Thermische Ausdehnung von Körpern: Längenausdehnung und Bimetallstreifen",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Teilchenbewegung erklärt die Volumenzunahme bei Temperaturanstieg."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Thermal expansion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Thermisches Verhalten von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7W0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welche Richtung krümmt sich ein Bimetallstreifen (fest miteinander verbundene Schichten aus Zink und Eisen) beim Erhitzen, wenn sich Zink stärker ausdehnt als Eisen?",
+          "concept": "Zur Seite des Metalls mit der geringeren Ausdehnung (hier zum Eisen hin)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Metall mit geringerer Ausdehnung (zum Eisen)",
+              "Zum Metall mit größerer Ausdehnung (zum Zink)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7W0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die thermische Längen- und Volumenausdehnung von Festkörpern und Flüssigkeiten mithilfe des Teilchenmodells (größerer Schwingungsraum bei Erwärmung), beschreibe den Aufbau und die Funktion eines Bimetallstreifens und nenne drei technische Anwendungen im Alltag (Thermostat/Bügeleisen, Brandschalter, Zeigertheomometer) sowie Gegenmaßnahmen im Brücken- und Schienenbau (Dehnungsfugen).",
+          "concept": "Teilchen schwingen bei Erwärmung mit größerer Amplitude -> mittlerer Teilchenabstand wächst -> Körper dehnt sich aus; Bimetall: 2 Metalle mit unterschiedlichem Längenausdehnungskoeffizienten fest vernietet/verschweißt -> krümmt sich beim Erwärmen zur schwächer ausdehnenden Seite -> schaltet Stromkreis; Dehnungsfugen verhindern Verbiegen/Gleisverwerfungen.",
+          "sample_solution": "1. Teilchenmodell der thermischen Ausdehnung: Bei Temperaturerhöhung nimmt die Schwingungsenergie der Gitterbausteine zu. Die Teilchen schwingen mit größerer Amplitude um ihre Ruhelage und stoßen sich weiter voneinander ab. Der mittlere Teilchenabstand vergrößert sich, wodurch das Gesamtholumen und die Länge des Körpers zunehmen (Δl = alpha · l_0 · ΔT). 2. Der Bimetallstreifen: - Aufbau: Zwei Metallstreifen mit deutlich unterschiedlichen thermischen Längenausdehnungskoeffizienten (z. B. Messing/Zink mit großer Ausdehnung und Eisen/Invarstahl mit geringer Ausdehnung) sind untrennbar miteinander flächig verschweißt oder vernietet. - Funktionsweise: Beim Erhitzen dehnt sich das eine Metall stärker aus als das andere. Da die Streifen fest verbunden sind, zwingt die längere Schicht den Verbund in eine Krümmung zur Seite des schwächer ausdehnenden Metalls. Beim Abkühlen erfolgt die Krümmung in die entgegengesetzte Richtung. 3. Technische Anwendungen & bauliche Vorkehrungen: - Bimetall-Thermostat: Schaltet Heizkreise in Bügeleisen, Toastern oder Backöfen beim Erreichen der Solltemperatur automatisch mechanisch ab. - Bimetall-Thermometer: Eine Bimetallspirale dreht einen Zeiger proportional zur Temperatur. - Dehnungsfugen & Rollenlager: Im Brücken-, Rohrleitungs- und Eisenbahnbau müssen Ausgleichsfugen und Dehnungsschlaufen eingebaut werden, da sich z. B. eine 1 km lange Stahlbrücke im Sommer um mehrere Dezimeter ausdehnt. Ohne Fugen käme es zu gewaltigen Spannungen und Gleisverwerfungen."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7W0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4P7W0000000000000000A03",
+      "namespace": "physik-waerme",
+      "slug": "anomalie-des-wassers-oekologische-bedeutung",
+      "title": "Die Dichteanomalie des Wassers und ihre lebensrettende ökologische Bedeutung",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7W0000000000000000A02",
+          "type": "hard",
+          "rationale": "Wasser verhält sich im Temperaturbereich 0-4°C anomal zur normalen thermischen Ausdehnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Water anomaly",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Thermisches Verhalten von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7W0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Bei welcher Temperatur besitzt flüssiges Wasser unter Normaldruck seine maximale Dichte (kleinstes spezifisches Volumen)?",
+          "concept": "Bei exakt +4 °C (Dichte ρ ≈ 1,000 g/cm³)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei +4 °C (Dichtemaximum)",
+              "Bei 0 °C (Gefrierpunkt)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7W0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Dichteanomalie des Wassers im Temperaturintervall zwischen 0 °C und 4 °C (Dichtemaximum bei 4 °C, hexagonales Hohlraumgitter im Eis mit Dichte 0,917 g/cm³) und erkläre die lebenswichtigen ökologischen Konsequenzen für die Überwinterung von Wassertieren in tiefen Seen während strenger Frostperioden.",
+          "concept": "Anomalie: Wasser zieht sich von 0°C bis 4°C zusammen (Volumen sinkt, Dichte steigt auf Maximum); ab 4°C dehnt es sich normal aus; Eis ist leichter als Wasser (Hohlraum-Kristallgitter) und schwimmt oben; Schichtung im Winter: 0°C Eis oben (Isolierschicht), darunter 1°C, 2°C, 3°C und am Grund schwerstes 4°C-Wasser -> See friert von oben nach unten zu, Fische überleben am Grund.",
+          "sample_solution": "1. Die physikalische Dichteanomalie des Wassers: - Normalverhalten aller Stoffe: Werden Flüssigkeiten abgekühlt, rücken die Teilchen näher zusammen; das Volumen nimmt stetig ab, die Dichte steigt bis zum Erstarrungspunkt. - Besonderheit von Wasser: Kühlt man Wasser ab, zieht es sich bis +4 °C zusammen, wo es seine größte Dichte (Dichtemaximum ρ = 1,000 g/cm³) und kleinstes Volumen erreicht. Bei weiterer Abkühlung von +4 °C auf 0 °C dehnt sich Wasser jedoch wieder aus! - Eisbildung (Phasenübergang bei 0 °C): Beim Gefrieren ordnen sich die Wassermoleküle über Wasserstoffbrückenbindungen in einem weitmaschigen, hexagonalen Kristallgitter mit großen Hohlräumen an. Eis hat daher eine deutlich geringere Dichte (ρ ≈ 0,917 g/cm³) als flüssiges Wasser und nimmt ca. 9 % mehr Volumen ein (Sprengwirkung von gefrierendem Wasser in Rohren und Felsspalten). 2. Ökologische Bedeutung für Gewässer im Winter: - Da Eis eine geringere Dichte hat als flüssiges Wasser, schwimmt es an der Wasseroberfläche. - Die Eisschicht und der darauf liegende Schnee wirken als hervorragende Wärmeisolatoren gegen die kalte Winterluft. - Wassertemperaturschichtung im Winter: An der Oberfläche liegt 0 °C kaltes Eis; darunter schichtet sich das Wasser nach der Dichte: 1 °C, 2 °C, 3 °C. Am tiefsten Seegrund sammelt sich das mit +4 °C schwerste Wasser. - Folge: Tiefe Seen (ab ca. 1,5–2 m Tiefe) frieren in unseren Breiten niemals bis zum Grund durch. Fische, Amphibien und Wasserinsekten können am frostfreien 4 °C kalten Seegrund in Kältestarre den Winter überleben."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7W0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4P7W0000000000000000A04",
+      "namespace": "physik-waerme",
+      "slug": "waermeuebertragung-leitung-konvektion-strahlung",
+      "title": "Wärmeübertragungsarten: Wärmeleitung, Konvektion und Wärmestrahlung",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Teilchenbewegung und Temperaturunterschiede treiben den Wärmetransport an."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Heat transfer",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Thermisches Verhalten von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7W0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Art der Wärmeübertragung benötigt als einzige KEINERLEI materielle Teilchen und funktioniert daher auch durch das vollkommene Vakuum des Weltalls (z. B. Sonnenwärme auf der Erde)?",
+          "concept": "Wärmestrahlung (Infrarotstrahlung / elektromagnetische Wellen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wärmestrahlung (funktioniert im Vakuum)",
+              "Wärmeleitung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7W0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die drei Mechanismen des Wärmetransports (Wärmeleitung, Wärmeströmung / Konvektion, Wärmestrahlung) bezüglich des Transportmechanismus und materieller Voraussetzungen und erkläre anhand dieser drei Prinzipien den Aufbau und die Funktionsweise einer Isolierkanne (Thermoskanne).",
+          "concept": "Wärmeleitung: Impulsweitergabe schwingender Teilchen in Festkörpern; Konvektion: Materietransport durch Dichteunterschiede in Fluiden; Strahlung: elektromagnetische Infrarotwellen (ohne Träger); Thermoskanne: Doppelwandiges Glas (schlechter Leiter), Vakuumspalt (stoppt Leitung & Konvektion), Verspiegelung (reflektiert Wärmestrahlung).",
+          "sample_solution": "1. Die drei Arten der Wärmeübertragung im Vergleich: - Wärmeleitung (Konduktion): Wärmeenergie wird von Teilchen zu Teilchen durch direkte Schwingungsübertragung weitergegeben, ohne dass sich die Materie selbst von der Stelle bewegt. Typisch für Festkörper (Metalle wie Kupfer/Aluminium leiten hervorragend; Styropor, Holz und ruhende Luft sind extrem schlechte Wärmeleiter / Isolatoren). - Wärmeströmung (Konvektion): Wärme wird durch den Transport warmer Materie selbst mitgeführt (z. B. warmes Wasser oder aufsteigende Warmluft dehnt sich aus, wird spezifisch leichter und steigt auf; kältere Flüssigkeit sinkt nach). Funktioniert nur in Flüssigkeiten und Gasen. - Wärmestrahlung (Radiation): Jeder Körper sendet temperaturabhängig elektromagnetische Wellen im Infrarotbereich aus. Sie benötigt keinerlei materielle Teilchen und breitet sich mit Lichtgeschwindigkeit auch durch das absolute Vakuum aus (z. B. Strahlung der Sonne zur Erde, Kaminfeuer). 2. Funktionsprinzip der Thermoskanne (Minimierung aller 3 Mechanismen): - Doppelwandiger Glaskolben: Glas und Kunststoff sind schlechte Wärmeleiter (minimiert Wärmeleitung). - Vakuum zwischen den Glaswänden: Da im Vakuum keine Teilchen existieren, werden Wärmeleitung und Konvektion physikalisch vollständig unterbunden. - Verspiegelung der Innenwände: Die reflektierenden Silberschichten werfen die austretende Wärmestrahlung wie ein Spiegel zurück in das Getränk (minimiert Wärmestrahlung)."
+        }
+      ]
+    }
+  ]
+}

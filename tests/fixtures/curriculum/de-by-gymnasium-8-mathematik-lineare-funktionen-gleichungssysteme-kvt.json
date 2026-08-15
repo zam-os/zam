@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-mathematik-lineare-funktionen-gleichungssysteme",
+  "version": "2026.08.1",
+  "title": "Mathematik 8: Lineare Funktionen und Lineare Gleichungssysteme (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 8: Lineare Funktionen (y = mx + t, Steigungsdreieck, Nullstellen, Orthogonalität m1 * m2 = -1) sowie rechnerische (Einsetzungs-, Gleichsetzungs-, Additionsverfahren) und graphische Lösungsverfahren für 2x2 lineare Gleichungssysteme.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 8, Lernbereiche Funktionen und Lineare Gleichungssysteme"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8A0000000000000000A01",
+      "namespace": "gymnasium-mathematik-funktionen",
+      "slug": "lineare-funktionen-steigung-achsenabschnitt-nullstellen-orthogonalitaet",
+      "title": "Lineare Funktionen: Steigung m, y-Achsenabschnitt t, Nullstellen und Orthogonalitätsbedingung",
+      "domain": "schule/mathematik/funktionen",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Linear function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Lineare Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Steigung $m_2$ muss eine Gerade $g_2$ besitzen, damit sie orthogonal (senkrecht) auf der Geraden $g_1: y = 2x - 5$ steht?",
+          "concept": "m2 = -1/2 (Orthogonalitätsbedingung: m1 * m2 = -1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m2 = -1/2",
+              "m2 = 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere lineare Funktionen in der Normalform $f(x) = m \\cdot x + t$: 1. **Bedeutung der Parameter**:   * **Steigung $m$**: $m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}$ ($m > 0$: streng monoton steigend; $m < 0$: fallend; $m = 0$: konstante waagrechte Gerade).   * **$y$-Achsenabschnitt $t$**: Schnittpunkt mit der Ordinate $S_y(0 \\mid t)$, 2. **Nullstelle $x_0$**: Ansatz $f(x) = 0 \\implies m \\cdot x_0 + t = 0 \\implies x_0 = -\\frac{t}{m}$ ($m \\neq 0$), 3. **Lagebeziehungen zweier Geraden**:   * Parallelität: $g_1 \\parallel g_2 \\iff m_1 = m_2$ (bei $t_1 \\neq t_2$ echt parallel, bei $t_1 = t_2$ identisch).   * Orthogonalität (senkrechter Schnitt): $g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}$, 4. Bestimme die Funktionsgleichung der Geraden $g$, die durch $P(3 \\mid 1)$ und $Q(-1 \\mid -7)$ verläuft.",
+          "concept": "Lineare Funktion: f(x) = mx + t; m = Delta y / Delta x; t = y-Achsenabschnitt; Nullstelle x0 = -t/m; Parallel (m1=m2) vs. Orthogonal (m1*m2 = -1); Rechnung: m = (-7 - 1)/(-1 - 3) = -8/-4 = 2; 1 = 2*3 + t -> t = -5 -> g: y = 2x - 5.",
+          "sample_solution": "1. Die Normalform der linearen Funktion $f(x) = m \\cdot x + t$: - **1. Steigung $m$**:   * Beschreibt die Änderungsrate und wird über das **Steigungsdreieck** berechnet:     $$\\mathbf{m = \\frac{\\Delta y}{\\Delta x} = \\frac{y_2 - y_1}{x_2 - x_1}}$$   * $m > 0$: Graph steigt von links unten nach rechts oben (Monotoniewachstum).   * $m < 0$: Graph fällt von links oben nach rechts unten.   * $m = 0$: Parallele zur $x$-Achse ($f(x) = t$). - **2. $y$-Achsenabschnitt $t$**:   * Wert der Funktion an der Stelle $x = 0 \\implies$ Schnittpunkt mit der $y$-Achse ist $\\mathbf{S_y(0 \\mid t)}$. 2. Berechnung der Nullstelle $x_0$: - Die Nullstelle ist die Schnittstelle des Graphen mit der $x$-Achse:   $$f(x_0) = 0 \\iff m \\cdot x_0 + t = 0 \\iff \\mathbf{x_0 = -\\frac{t}{m}} \\quad (m \\neq 0)$$ 3. Relative Lage zweier Geraden in der Ebene: - **Parallelität**: Zwei Geraden sind genau dann parallel, wenn ihre Steigungen übereinstimmen:   $$\\mathbf{g_1 \\parallel g_2 \\iff m_1 = m_2}$$ - **Orthogonalität (Senkrecht)**: Zwei Geraden stehen genau dann senkrecht aufeinander, wenn das Produkt ihrer Steigungen $-1$ ergibt (negative Kehrwerte):   $$\\mathbf{g_1 \\perp g_2 \\iff m_1 \\cdot m_2 = -1 \\iff m_2 = -\\frac{1}{m_1}}$$ 4. Bestimmung der Geradengleichung durch zwei Punkte $P(3 \\mid 1)$ und $Q(-1 \\mid -7)$: - **Schritt 1: Steigung $m$ berechnen**:   $$m = \\frac{y_Q - y_P}{x_Q - x_P} = \\frac{-7 - 1}{-1 - 3} = \\frac{-8}{-4} = \\mathbf{2}$$ - **Schritt 2: $y$-Achsenabschnitt $t$ bestimmen** (Punktprobe mit $P(3 \\mid 1)$):   $$y = m \\cdot x + t \\implies 1 = 2 \\cdot 3 + t \\implies 1 = 6 + t \\implies \\mathbf{t = -5}$$ - **Funktionsgleichung**: $\\mathbf{g: y = 2x - 5}$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8A0000000000000000A02",
+      "namespace": "gymnasium-mathematik-algebra",
+      "slug": "lineare-gleichungssysteme-2x2-loesungsverfahren-loesungsfaelle",
+      "title": "Lineare Gleichungssysteme (2x2): Einsetzungs-, Gleichsetzungs- und Additionsverfahren sowie Lösungsfälle",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8A0000000000000000A01",
+          "type": "hard",
+          "rationale": "LGS mit zwei Variablen entsprechen geometrisch den Schnittpunkten linearer Funktionen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "System of linear equations",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Lineare Gleichungssysteme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Interpretation hat ein lineares 2x2 Gleichungssystem, wenn es genau EINE eindeutige Lösung $(x \\mid y)$ besitzt?",
+          "concept": "Die beiden zugehörigen Geraden schneiden sich in genau einem Schnittpunkt S(x | y)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Geraden schneiden sich in genau einem Schnittpunkt",
+              "Die Geraden sind echt parallel zueinander"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 3 algebraischen Lösungsverfahren für lineare Gleichungssysteme (2x2) und löse das System: 1. **Gleichsetzungsverfahren**: Beide Gleichungen nach derselben Variablen auflösen und gleichsetzen ($T_1(x) = T_2(x)$), 2. **Einsetzungsverfahren**: Eine Gleichung nach einer Variablen isolieren und den Term in die andere Gleichung einsetzen, 3. **Additionsverfahren (Subtraktionsverfahren)**: Multiplikation der Gleichungen mit geeigneten Faktoren, sodass bei gliedweiser Addition/Subtraktion eine Variable eliminiert wird ($c_1 \\cdot \\text{I} + c_2 \\cdot \\text{II}$), 4. Die 3 **Lösungsfälle**: Eindeutige Lösung $L = \\{(x_0 \\mid y_0)\\}$ (schneidende Geraden), Keine Lösung $L = \\emptyset$ (echt parallele Geraden, Widerspruch z. B. $0 = 12$), Unendlich viele Lösungen $L = \\{(x \\mid y) \\mid y = mx+t\\}$ (identische Geraden, wahre Aussage z. B. $0 = 0$), 5. Löse mit dem Additionsverfahren: I: $3x + 2y = 16$, II: $5x - 4y = 8$.",
+          "concept": "2x2 LGS: Gleichsetzungs-, Einsetzungs-, Additionsverfahren; 3 Lösungsfälle (1 Schnittpunkt, echt parallel/leer, identisch/unendlich); Additionsverfahren: 2*I: 6x + 4y = 32; (2*I) + II: 11x = 40 -> x = 40/11 -> y = 28/11 -> L = {(40/11 | 28/11)} bzw. bei 3x+2y=16 & 5x-4y=8: 6x+4y=32 + 5x-4y=8 -> 11x = 40 -> x = 40/11.",
+          "sample_solution": "1. Die 3 algebraischen Lösungsverfahren im Überblick: - **1. Gleichsetzungsverfahren**:   * Beide Gleichungen werden nach derselben Unbekannten aufgelöst (z. B. $y = 2x - 3$ und $y = -x + 6$) $\\implies 2x - 3 = -x + 6$. - **2. Einsetzungsverfahren**:   * Eine Unbekannte wird in einer Gleichung isoliert (z. B. $x = 2y + 1$) und als Term in die andere Gleichung anstelle von $x$ eingesetzt. - **3. Additionsverfahren**:   * Beide Gleichungen werden mit passenden Faktoren multipliziert, sodass die Koeffizienten einer Variablen entgegengesetzt gleich werden (z. B. $+4y$ und $-4y$). Durch gliedweises Addieren beider Gleichungen fällt diese Variable weg. 2. Die drei Lösungsfälle und ihre geometrische Deutung: - **1. Eindeutige Lösung $L = \\{(x_0 \\mid y_0)\\}$**:   * Algebra: Führt auf eindeutige Zahlenwerte für $x$ und $y$.   * Geometrie: Die beiden Geraden besitzen unterschiedliche Steigungen ($m_1 \\neq m_2$) und schneiden sich in genau einem Schnittpunkt $S(x_0 \\mid y_0)$. - **2. Keine Lösung $L = \\emptyset$**:   * Algebra: Führt auf einen mathematischen Widerspruch (z. B. $0 = 7$).   * Geometrie: Die Geraden sind **echt parallel** ($m_1 = m_2$, aber $t_1 \\neq t_2$). - **3. Unendlich viele Lösungen**:   * Algebra: Führt auf eine allgemeingültige wahre Aussage (z. B. $0 = 0$).   * Geometrie: Beide Geradengleichungen beschreiben dieselbe **identische Gerade** ($m_1 = m_2$ und $t_1 = t_2$). 3. Vollständige Lösung des Gleichungssystems mit dem Additionsverfahren: - Gegeben:   $$\\text{I: } 3x + 2y = 16$$   $$\\text{II: } 5x - 4y = 8$$ - **Schritt 1: Gleichung I mit $2$ multiplizieren**, um bei $y$ den Koeffizienten $+4$ zu erhalten:   $$\\text{I}': 6x + 4y = 32$$ - **Schritt 2: $\\text{I}'$ und $\\text{II}$ addieren** (Elimination von $y$):   $$(6x + 4y) + (5x - 4y) = 32 + 8$$   $$11x = 40 \\implies \\mathbf{x = \\frac{40}{11}}$$ - **Schritt 3: $x = \\frac{40}{11}$ in Gleichung I einsetzen**:   $$3 \\cdot \\left(\\frac{40}{11}\\right) + 2y = 16$$   $$\\frac{120}{11} + 2y = \\frac{176}{11}$$   $$2y = \\frac{176 - 120}{11} = \\frac{56}{11} \\implies \\mathbf{y = \\frac{28}{11}}$$ - **Lösungsmenge**: $\\mathbf{L = \\left\\{ \\left( \\frac{40}{11} \\,\\middle|\\, \\frac{28}{11} \\right) \\right\\}}$."
+        }
+      ]
+    }
+  ]
+}

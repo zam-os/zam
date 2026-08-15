@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-mathematik-brueche-dezimalbrueche",
+  "version": "2026.08.1",
+  "title": "Mathematik 6: Bruch- und Dezimalbruchrechnung (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 6: Bruchbegriff, Erweitern/Kürzen, Grundrechenarten mit Brüchen (Kehrwert) und Dezimalbrüche.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/mathematik",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 6, Lernbereich Bruch- und Dezimalbruchrechnung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M6B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M6B0000000000000000A01",
+      "namespace": "mathematik-zahlen",
+      "slug": "bruchbegriff-erweitern-kuerzen-hauptnenner",
+      "title": "Bruchbegriff: Zähler, Nenner, Erweitern, Kürzen und Hauptnenner",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q66055",
+          "target_label": "Fraction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht mit dem mathematischen Wert eines Bruchs, wenn man Zähler und Nenner mit derselben Zahl multipliziert (Erweitern)?",
+          "concept": "Der Wert des Bruchs bleibt exakt unverändert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Wert des Bruchs bleibt unverändert (Erweitern)",
+              "Der Wert des Bruchs vergrößert sich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die Bestandteile eines Bruchs (Zähler = Anzahl der Teile; Bruchstrich = Geteilt-Zeichen; Nenner = Anzahl der gleich großen Teile des Ganzen), unterscheide Erweitern (Multiplikation von Zähler und Nenner mit k) von Kürzen (Division von Zähler und Nenner durch gemeinsamen Teiler) und bringe die Brüche 3/4, 5/6 und 7/12 auf den kleinsten gemeinsamen Hauptnenner (kgV).",
+          "concept": "Zähler = wie viele Teile; Nenner = in wie viele Teile das Ganze zerlegt ist; Erweitern mit k: (a*k)/(b*k); Kürzen durch d: (a:d)/(b:d); kgV(4, 6, 12) = 12 -> 3/4 = 9/12, 5/6 = 10/12, 7/12 = 7/12 -> 7/12 < 3/4 < 5/6.",
+          "sample_solution": "1. Der Bruchbegriff und seine Komponenten: - Bruch a/b: Stellt einen Anteil an einem Ganzen oder das Ergebnis einer Division dar (a/b = a : b).   * Zähler (oben): Zählt, wie viele der gleich großen Teile genommen werden.   * Bruchstrich (Mitte): Entspricht dem mathematischen Divisionszeichen.   * Nenner (unten): Benennt, in wie viele gleich große Teile das Ganze unterteilt wurde (Nenner b darf niemals 0 sein!). 2. Erweitern und Kürzen: - Erweitern: Zähler und Nenner werden mit derselben natürlichen Zahl k multipliziert (a/b = (a·k)/(b·k)). Die Einteilung wird feiner, die Anzahl der Teile wächst proportional – der Gesamtwert des Bruchs bleibt identisch. - Kürzen: Zähler und Nenner werden durch einen gemeinsamen Teiler d geteilt (a/b = (a:d)/(b:d)). Vollständig gekürzt ist ein Bruch, wenn Zähler und Nenner teilerfremd sind (ggT = 1). 3. Hauptnennerbildung (kleinstes gemeinsames Vielfaches): - Gegebene Brüche: 3/4, 5/6 und 7/12. - Vielfachenmengen der Nenner: V(4) = {4, 8, 12, 16...}, V(6) = {6, 12, 18...}, V(12) = {12, 24...} => kgV(4, 6, 12) = 12. - Erweitern auf Hauptnenner 12:   * 3/4 erweitert mit 3 = (3·3)/(4·3) = **9/12**.   * 5/6 erweitert mit 2 = (5·2)/(6·2) = **10/12**.   * 7/12 bleibt **7/12**. - Geordnete Reihenfolge: 7/12 < 9/12 (3/4) < 10/12 (5/6)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M6B0000000000000000A02",
+      "namespace": "mathematik-zahlen",
+      "slug": "addition-subtraktion-ungleichnamiger-brueche",
+      "title": "Addition und Subtraktion ungleichnamiger Brüche und gemischter Zahlen",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Erweitern auf den Hauptnenner ist Voraussetzung für Addition/Subtraktion."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q66055",
+          "target_label": "Fraction arithmetic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Grundregel zur Addition zweier gleichnamiger Brüche a/n + b/n?",
+          "concept": "Man addiert die Zähler und behält den gemeinsamen Nenner unverändert bei: (a + b) / n",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zähler addieren, Nenner beibehalten ((a+b)/n)",
+              "Zähler addieren und Nenner addieren ((a+b)/(n+n))"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere den Algorithmus zur Addition und Subtraktion ungleichnamiger Brüche (1. Hauptnenner bestimmen, 2. Brüche erweitern, 3. Zähler addieren/subtrahieren bei unverändertem Nenner, 4. Ergebnis vollständig kürzen / in gemischte Zahl umwandeln) und berechne: 2 1/3 + 1 3/4 - 5/6.",
+          "concept": "Hauptnenner von 3, 4, 6 ist 12; Umwandlung in unechte Brüche oder Ganze und Brüche getrennt; 2 4/12 + 1 9/12 - 10/12 = 3 + (4 + 9 - 10)/12 = 3 3/12 = 3 1/4 (bzw. 13/4).",
+          "sample_solution": "1. Rechenregeln für Addition und Subtraktion von Brüchen: - Gleichnamige Brüche: Werden addiert (subtrahiert), indem man die Zähler addiert (subtrahiert) und den gemeinsamen Nenner unverändert beibehält: a/c + b/c = (a + b)/c. (Nenner dürfen niemals addiert werden!). - Ungleichnamige Brüche:   * Schritt 1: Kleinsten gemeinsamen Hauptnenner als kgV aller Nenner bestimmen.   * Schritt 2: Alle beteiligten Brüche auf diesen Hauptnenner erweitern.   * Schritt 3: Zähler addieren/subtrahieren.   * Schritt 4: Das Resultat wenn möglich vollständig kürzen und unechte Brüche (Zähler > Nenner) als gemischte Zahl schreiben. 2. Berechnung der Aufgabe: 2 1/3 + 1 3/4 - 5/6 - Hauptnenner von 3, 4 und 6: kgV(3, 4, 6) = 12. - Brüche erweitern:   * 2 1/3 = 2 4/12 (oder 28/12)   * 1 3/4 = 1 9/12 (oder 21/12)   * 5/6 = 10/12 - Zusammenrechnen:   * 2 4/12 + 1 9/12 - 10/12 = (2 + 1) + (4/12 + 9/12 - 10/12) = 3 + (4 + 9 - 10)/12 = 3 + 3/12. - Kürzen: 3/12 gekürzt durch 3 ergibt 1/4. - Endergebnis: **3 1/4** (als unechter Bruch: 13/4)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6B0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M6B0000000000000000A03",
+      "namespace": "mathematik-zahlen",
+      "slug": "multiplikation-division-brueche-kehrwert",
+      "title": "Multiplikation und Division von Brüchen: Zähler mal Zähler, Nenner mal Nenner und Kehrwertregel",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kürzen vor dem Ausmultiplizieren ist essentiell für Bruchrechnungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q66055",
+          "target_label": "Multiplication of fractions",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Bruchrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6B0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie dividiert man einen Bruch durch einen anderen Bruch (z. B. 2/3 : 4/5)?",
+          "concept": "Man multipliziert den ersten Bruch mit dem Kehrwert (Kehrbruch) des zweiten Bruchs: 2/3 · 5/4",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multiplikation mit dem Kehrwert (a/b · d/c)",
+              "Zähler durch Zähler und Nenner durch Nenner teilen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6B0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die Rechengesetze zur Multiplikation (a/b · c/d = (a·c)/(b·d); erst über Kreuz kürzen!) und Division (a/b : c/d = a/b · d/c mit Kehrwert d/c) von Brüchen, erkläre, warum gemischte Zahlen vor der Multiplikation/Division zwingend in unechte Brüche umgewandelt werden müssen, und berechne: (3 1/3) · (6/25) : (4/5).",
+          "concept": "Multiplikation: Zähler * Zähler / Nenner * Nenner; Division: * Kehrwert; Gemischte Zahl 3 1/3 = 10/3; Rechnung: (10/3) * (6/25) * (5/4); Über Kreuz kürzen: 10 und 25 durch 5 -> 2 und 5; 5 und 5 kürzen sich weg; 6 und 3 -> 2 und 1; 2*2 / 4 = 4/4 = 1.",
+          "sample_solution": "1. Regeln für Multiplikation und Division von Brüchen: - Multiplikation: Zwei Brüche werden multipliziert, indem man Zähler mit Zähler und Nenner mit Nenner multipliziert: (a/b) · (c/d) = (a · c) / (b · d). Wichtigste Rechenerleichterung: Vor dem Ausmultiplizieren immer 'über Kreuz' vollständig kürzen! - Kehrwert (Kehrbruch): Vertauschen von Zähler und Nenner (der Kehrwert von c/d ist d/c; das Produkt einer Zahl mit ihrem Kehrwert ist immer 1). - Division: Man dividiert durch einen Bruch, indem man mit seinem Kehrwert multipliziert: (a/b) : (c/d) = (a/b) · (d/c) = (a · d) / (b · c). - Gemischte Zahlen: Müssen vor der Multiplikation oder Division immer zwingend in unechte Brüche umgewandelt werden (z. B. 3 1/3 = (3·3 + 1)/3 = 10/3), da sonst Rechenfehler beim Distributivgesetz entstehen. 2. Berechnung: (3 1/3) · (6/25) : (4/5) - Schritt 1 (Gemischte Zahl & Kehrwert): (10/3) · (6/25) · (5/4). - Schritt 2 (Auf einen gemeinsamen Bruchstrich schreiben und kürzen):   (10 · 6 · 5) / (3 · 25 · 4) - Schritt 3 (Kürzen über Kreuz):   * 6 und 3 kürzen durch 3 -> oben bleibt 2, unten 1.   * 10 und 25 kürzen durch 5 -> oben 2, unten 5.   * Die verbleibende 5 im Zähler kürzt die 5 im Nenner weg -> 1.   * Zähler: 2 · 2 · 1 = 4.   * Nenner: 1 · 1 · 4 = 4. - Endergebnis: 4 / 4 = **1**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6B0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M6B0000000000000000A04",
+      "namespace": "mathematik-zahlen",
+      "slug": "dezimalbrueche-stellenwert-umwandlung-perioden",
+      "title": "Dezimalbrüche: Stellenwerttafel, Umwandlung in Brüche und periodische Dezimalzahlen",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Brüche mit Stufenzahlen (10, 100, 1000) definieren Dezimalbrüche."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q66055",
+          "target_label": "Decimal fraction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Dezimalbrüche",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Dezimalbrüche",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6B0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann ergibt ein vollständig gekürzter Bruch a/b einen ENDLICHEN (abbrechenden) Dezimalbruch?",
+          "concept": "Wenn die Primfaktorzerlegung des Nenners b ausschließlich die Primfaktoren 2 und/oder 5 enthält",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn der Nenner nur Primfaktoren 2 und/oder 5 hat",
+              "Wenn der Zähler ungerade ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6B0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Aufbau der Stellenwerttafel nach dem Komma (Zehntel z = 1/10, Hundertstel h = 1/100, Tausendstel t = 1/1000), beschreibe die Umwandlung von Brüchen in Dezimalbrüche (durch Erweitern auf Zehnerpotenzen oder schriftliche Division Zähler : Nenner) und wandle folgende Zahlen um: a) 3/8 in einen Dezimalbruch, b) 0,35 in einen vollständig gekürzten Bruch, c) 1/3 in die periodische Dezimalbruchschreibweise.",
+          "concept": "Stellenwerte: E, z h t zt; a) 3/8 = (3*125)/(8*125) = 375/1000 = 0,375; b) 0,35 = 35/100 = 7/20 (durch 5 gekürzt); c) 1/3 = 1 : 3 = 0,333... = 0,p3 (Periode 3).",
+          "sample_solution": "1. Die Stellenwerttafel für Dezimalbrüche: - Dezimalbrüche sind eine andere Schreibweise für Brüche mit Zehnerpotenznennern (10, 100, 1000...):   * E (Einer, 1)   * Komma `,`   * z (Zehntel, 1/10 = 0,1)   * h (Hundertstel, 1/100 = 0,01)   * t (Tausendstel, 1/1000 = 0,001)   * zt (Zehntausendstel, 1/10000 = 0,0001). 2. Umwandlungsmethoden: - Methode 1 (Erweitern auf Zehnerpotenz): Funktioniert, wenn der Nenner in seiner Primfaktorzerlegung nur 2 und/oder 5 enthält. - Methode 2 (Schriftliche Division): Zähler wird schriftlich durch den Nenner geteilt (a : b). Treten dabei Reste wiederholt auf, entsteht eine unendliche **periodische Dezimalzahl** (Schreibweise mit Periodenstrich). 3. Umwandlungsbeispiele: - a) 3/8 in Dezimalbruch: 8 = 2·2·2 => Erweitern mit 5·5·5 = 125. 3/8 = (3 · 125) / (8 · 125) = 375 / 1000 = **0,375** (endlicher Dezimalbruch). - b) 0,35 in Bruch: 0,35 = 35/100. Gekürzt durch 5 (Zähler und Nenner teilen): 35:5 / 100:5 = **7/20**. - c) 1/3 in periodischen Dezimalbruch: Schriftliche Division 1 : 3 = 0,3333... (Rest 1 wiederholt sich endlos) = **0,̅3** (gesprochen: 'Null Komma Periode 3')."
+        }
+      ]
+    }
+  ]
+}

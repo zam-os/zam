@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-geographie-europa-raeume-wirtschaft-eu",
+  "version": "2026.08.1",
+  "title": "Geographie 6: Europa – Topographie, Großräume, Klimazonen und die Europäische Union (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geographie 6: Topographischer Überblick Europas (Meere, Gebirge, Hauptstädte), Großräume (Nord-, Süd-, Ost-, Westeuropa), Tourismus im Mittelmeerraum und Institutionen der EU.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/geographie",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geographie 6, Lernbereiche Europa im Überblick und Europäische Räume"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YG6E000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YG6E000000000000000A01",
+      "namespace": "geographie-europa",
+      "slug": "topographie-europas-meere-gebirge-hauptstaedte",
+      "title": "Topographische Gliederung Europas: Meere, Halbinseln, Hochgebirge und europäische Metropolen",
+      "domain": "schule/geographie/europa",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q46",
+          "target_label": "Geography of Europe",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Europa – Ein Kontinent voller Vielfalt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YG6E000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches russische Mittelgebirge bildet nach geographischer Konvention die östliche Grenze zwischen dem europäischen und dem asiatischen Kontinent?",
+          "concept": "Das Uralgebirge (zusammen mit dem Uralfluss)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Uralgebirge (Ural)",
+              "Der Kaukasus"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YG6E000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine systematische topographische Übersicht des europäischen Kontinents: 1. Grenzen (Nordpolarmeer im Norden, Atlantik im Westen, Mittelmeer im Süden, Uralgebirge und Kaspisches Meer im Osten), 2. Die 4 großen Halbinseln (Skandinavische, Iberische, Apenninen- und Balkanhalbinsel), 3. Große europäische Gebirgszüge (Alpen mit Mont Blanc 4810 m, Pyrenäen, Karpaten, Apennin, Skandinavisches Gebirge), 4. Wichtige Meere und Meeresstraßen (Nordsee, Ostsee, Mittelmeer, Schwarzes Meer, Ärmelkanal, Straße von Gibraltar) und nenne 6 europäische Hauptstädte mit ihren Staaten.",
+          "concept": "Topographie Europas: Grenzen im N/W/S/O; 4 Halbinseln; Faltengebirge (Alpen, Pyrenäen, Karpaten); Meere und Meeresstraßen; Hauptstädte (Paris, Madrid, Rom, Berlin, Warschau, Athen).",
+          "sample_solution": "1. Geographische Lage und Grenzen des Kontinents Europa: - **Nordgrenze**: Europäisches Nordmeer und Nordpolarmeer (Arktischer Ozean). - **Westgrenze**: Offener Atlantischer Ozean. - **Südgrenze**: Das Mittelmeer trennt Europa von Afrika (engste Stelle: **Straße von Gibraltar** mit nur 14 km Breite) sowie Bosporus und Dardanellen zum Nahen Osten. - **Ostgrenze**: Das **Uralgebirge**, der Uralfluss, das Kaspische Meer und die Manytsch-Niederung (bzw. der Kaukasus-Hauptkamm) trennen Europa von Asien (Eurasien). 2. Die großen Halbinseln und Inseln Europas: - **Skandinavische Halbinsel (Norden)**: Norwegen, Schweden (geprägt von Fjorden und Fjellen). - **Iberische Halbinsel (Südwesten)**: Spanien, Portugal (durch die Pyrenäen vom Festland getrennt). - **Apenninen-Halbinsel ('Stiefel', Süden)**: Italien. - **Balkanhalbinsel (Südosten)**: Griechenland, Albanien, Staaten des ehem. Jugoslawien, Bulgarien. - **Große Inseln**: Großbritannien, Irland, Island (Vulkaninsel), Sizilien, Sardinien, Korsika, Kreta. 3. Europäische Faltengebirge und Höchster Gipfel: - **Alpen**: Zentrales Hochgebirge Mitteleuropas; höchster Berg der EU/Alpen: **Mont Blanc mit 4.810 m** (Frankreich/Italien). - **Pyrenäen**: Grenzgebirge zwischen Frankreich und Spanien (Pico d'Aneto 3.404 m). - **Karpaten**: Bogenförmiges Gebirge in Ost-/Mitteleuropa (Slowakei, Polen, Ukraine, Rumänien). - **Apennin**: Rückgrat Italiens. - **Kaukasus**: Zwischen Schwarzem und Kaspischem Meer (Elbrus 5.642 m). 4. Europäische Hauptstädte (Beispiele): - Frankreich: *Paris* | Spanien: *Madrid* | Italien: *Rom* | Polen: *Warschau* | Schweden: *Stockholm* | Griechenland: *Athen*."
+        }
+      ]
+    },
+    {
+      "id": "01K4YG6E000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YG6E000000000000000A02",
+      "namespace": "geographie-europa",
+      "slug": "grossraeume-europas-nord-sued-west-osteuropa",
+      "title": "Europäische Großräume: Nordeuropa (Fjorde, Eiszeit), Südeuropa (Mittelmeerklima) und Osteuropa",
+      "domain": "schule/geographie/europa",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YG6E000000000000000A01",
+          "type": "hard",
+          "rationale": "Topographische Kenntnisse sind Voraussetzung für die Raumanalyse Europas."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q46",
+          "target_label": "Regions of Europe",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Europäische Räume im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YG6E000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie entstanden die tief ins norwegische Festland einschneidenden, steilwandigen Meeresbuchten (Fjorde) geomorphologisch?",
+          "concept": "Durch eiszeitliche Talgletscher (Trogtäler), die nach dem Abschmelzen vom ansteigenden Meeresspiegel überflutet wurden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch eiszeitliche Gletschertäler (Trogtäler) nach Meeresanstieg",
+              "Durch tektonische Grabenbrüche"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YG6E000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Charakterisiere die 4 Großräume Europas anhand von Klima, Naturraum und Wirtschaft: 1. **Nordeuropa (Skandinavien & Baltikum)**: Kaltgemäßigtes Klima, glaziale Prägung (Fjorde, Schärenküsten, Moränenseen in Finnland), Taiga/Nadelwald, Holzwirtschaft, Wasserkraft und Eisenerzabbau in Kiruna, 2. **Westeuropa (z. B. UK, Frankreich, Benelux)**: Maritimes, ozeanisches Klima mit milden Wintern und kühlen Sommern durch den Golfstrom/Nordatlantikstrom, dicht besiedelte Industrieregionen, 3. **Südeuropa (Mittelmeerraum)**: Mediterranes Klima mit heißen, trockenen Sommern und milden, feuchten Wintern, Hartlaubvegetation, Oliven-/Zitrusanbau und Massentourismus, 4. **Osteuropa**: Kontinentales Klima mit extremen Temperaturamplituden (sehr heiße Sommer, eisige Winter), fruchtbare Schwarzerdeböden (Getreidekammer) und Steppen.",
+          "concept": "4 Großräume: Nordeuropa (glazial, Nadelwald, Wasserkraft), Westeuropa (maritim/Golfstrom, Industrie), Südeuropa (mediterran, Sommertrockenheit, Tourismus), Osteuropa (kontinental, Schwarzerde, Agrar).",
+          "sample_solution": "1. Die 4 geographischen Großräume Europas im Profil: - **1. Nordeuropa (Fennoskandien & Baltikum)**:   * **Klima**: Kaltgemäßigt bis subpolar; lange, schneereiche Winter, kurze kühle Sommer; Phänomene von Mitternachtssonne und Polarlichtern.   * **Naturraum & Glazialmorphologie**: Vollständig vom eiszeitlichen Inlandeisschild überformt. Entstehung von **Fjorden** (ertrunkene Trogtäler an der Westküste Norwegens), **Schären** (abgerundete Felsinseln) und der finnischen Seenplatte (Grund- und Endmoränenlandschaft).   * **Wirtschaft**: Ausgedehnte boreale Nadelwälder (**Taiga**) ermöglichen bedeutende Holz- und Papierindustrie; CO₂-freie Stromerzeugung durch Wasserkraft; reiche Rohstoffe (Eisenerz in *Kiruna/Schweden*, Erdöl/Erdgas in der norwegischen Nordsee). - **2. Westeuropa (Großbritannien, Irland, Frankreich, Benelux-Staaten)**:   * **Klima**: Ausgeprägt **maritimes (ozeanisches) Klima**; der warme **Nordatlantikstrom (Golfstrom)** sorgt für ganzjährig milde Temperaturen, eisfreie Häfen und hohe ganzjährige Niederschläge.   * **Wirtschaft**: Frühe Industrialisierung, hochmoderne Dienstleistungszentren (Finanzplätze London, Paris), wichtigste Seehäfen Europas (*Rotterdam, Antwerpen*). - **3. Südeuropa (Mittelmeerländer)**:   * **Klima**: **Mittelmeerklima (Mediterranes Klima)** mit subtropischen, sonnenreichen, heißen und extrem trockenen Sommern sowie milden, regenreichen Wintern.   * **Vegetation & Landwirtschaft**: Hartlaubgewächse (Olivenbaum, Korkeiche, Macchia); Bewässerungslandwirtschaft für Zitrusfrüchte, Tomaten, Wein und Oliven.   * **Wirtschaft**: Weltweit größte Zielregion des **Sommertourismus** (Strandurlaub, Kulturstädte wie Rom, Barcelona, Athen). - **4. Osteuropa (Polen, Ukraine, Westrussland bis zum Ural)**:   * **Klima**: Ausgeprägt **kontinentales Klima**; zunehmende Entfernung vom Atlantik führt zu riesigen Jahrestemperaturschwankungen (heiße Sommer, extrem frostige, schneereiche Winter).   * **Naturraum & Wirtschaft**: Unendliche Weiten; fruchtbarste **Schwarzerdeböden** (Tschnosem) in der ukrainischen und südrussischen Steppe bilden die größte Weizen- und Getreidekammer Europas."
+        }
+      ]
+    },
+    {
+      "id": "01K4YG6E000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YG6E000000000000000A03",
+      "namespace": "geographie-tourismus",
+      "slug": "tourismus-mittelmeerraum-chancen-oekologische-probleme",
+      "title": "Wirtschaftsraum Mittelmeer: Massentourismus – Wirtschaftsfaktor vs. ökologische Belastung",
+      "domain": "schule/geographie/tourismus",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YG6E000000000000000A02",
+          "type": "hard",
+          "rationale": "Das mediterrane Klima Südeuropas ist die Grundlage des Sommertourismus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q46",
+          "target_label": "Tourism in Europe",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Europäische Räume im Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YG6E000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche gravierende ökologische Folge entsteht im Mittelmeerraum durch den extremen Trinkwasserverbrauch von Hotelanlagen, Pools und Golfplätzen in den trockenen Sommermonaten?",
+          "concept": "Grundwasserspiegelabsenkung, Austrocknung von Feuchtgebieten und Versalzung der Küstenaquifere",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Grundwasserabsenkung und Versalzung der Brunnen",
+              "Vermehrte Schneefälle"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YG6E000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Massentourismus im Mittelmeerraum (z. B. Balearen/Mallorca, Costa Brava, griechische Inseln, italienische Riviera): 1. Gunstfaktoren (mediterranes Sommerwetter mit Sonnengarantie, Sandstrände, reiches antikes Kulturerbe, gute Erreichbarkeit per Flugzeug/Auto), 2. Wirtschaftliche Chancen (wichtigster Devisenbringer, Schaffung von Arbeitsplätzen in Hotellerie/Gastronomie/Bau, Ausbau der Infrastruktur), 3. Ökologische und soziale Schattenseiten ('Betonburgen' / Zersiedlung der Küsten, Müll- und Abwasserberge, Grundwasserknappheit, Saisonalität mit Winterarbeitslosigkeit, Verdrängung Einheimischer durch Mietpreisexplosion) und entwickle 3 Leitlinien für einen **Sanften Tourismus**.",
+          "concept": "Mittelmeertourismus: Chancen (Wirtschaftskraft, Arbeitsplätze, Wohlstand) vs. Risiken (Wasserknappheit, Landschaftsversiegelung, Abfall, Übertourismus); Sanfter Tourismus: Umweltschutz, regionale Wertschöpfung, Ressourceneffizienz, Ganzjahresangebote.",
+          "sample_solution": "1. Gunstfaktoren des Mittelmeerraums für den Tourismus: - **Klimatische Vorzüge**: Subtropisches Sommerklima mit durchschnittlich 10–12 Sonnenstunden täglich, warmem Meerwasser ($> 24^\\circ\\text{ C}$) und extrem geringem Regenrisiko von Juni bis September. - **Kulturelle Attraktivität**: Antike Bauwerke (Rom, Athen), pittoreske Küstenorte, mediterrane Gastronomie und Kulturvielfalt. - **Verkehrsanbindung**: Günstige Charterflüge und ausgebaute Autobahnnetze verbinden Mitteleuropa in wenigen Stunden mit den Küsten. 2. Wirtschaftliche Chancen und Bedeutung: - **Wirtschaftsmotor**: Tourismus macht in Ländern wie Griechenland, Spanien, Italien, Kroatien und Zypern bis zu **15–25 % des Bruttoinlandsprodukts (BIP)** aus. - **Beschäftigung**: Hunderttausende Arbeitsplätze in Hotels, Restaurants, Freizeiteinrichtungen, Transport und lokalem Kunsthandwerk. 3. Ökologische und soziokulturelle Problemfelder (Überlastung / Overtourism): - **Wasserknappheit**: Ein Tourist verbraucht pro Tag im Schnitt ca. **300–500 Liter Wasser** (durchschnittlicher Einheimischer: ca. 120 l) für Duschen, Hotelpools und Golfplatzbewässerung. Dies führt in ohnehin trockenen Sommern zu sinkenden Grundwasserspiegeln und Versalzung der Trinkwasserbrunnen durch nachdringendes Meerwasser. - **Küstenzersiedelung ('Zubetonierung')**: Endlose Hotelkomplexe und Apartmentblocks zerstören die empfindliche Dünenvegetation und verschandeln Naturlandschaften. - **Müll- und Abwasserkrise**: Kläranlagen und Deponien kleiner Inseln brechen in der Hochsaison unter dem Zehnfachen der Einwohnerzahl zusammen; ungeklärte Abwässer gefährden die Seegraswiesen (*Posidonia*). - **Saisonale Abhängigkeit & Gentrifizierung**: Hohe Arbeitslosigkeit im Winterhalbjahr; Umwandlung von Wohnungen in Ferienunterkünfte treibt Mieten für einheimische Bewohner unbezahlbar in die Höhe. 4. Die 3 Säulen eines 'Sanften / Nachhaltigen Tourismus': - **1. Ökologische Verträglichkeit**: Meerwasserentsalzungsanlagen mit Solarenergie, strikte Baustopps an unberührten Naturstränden, wassersparende Armaturen und Erhalt von Naturschutzgebieten. - **2. Regionale Wertschöpfung**: Förderung kleiner, inhabergeführter Fincas und Hotels (*Agrotourismus*) und Bezug regionaler biologischer Agrarprodukte statt All-Inclusive-Pauschal-Importe. - **3. Saisonentzerrung**: Angebote für Wander-, Rad-, Kultur- und Wellnesstourismus im Frühjahr und Herbst zur ganzjährigen Arbeitsplatzsicherung."
+        }
+      ]
+    },
+    {
+      "id": "01K4YG6E000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YG6E000000000000000A04",
+      "namespace": "geographie-europa",
+      "slug": "europaeische-union-binnenmarkt-vier-freiheiten-euro",
+      "title": "Die Europäische Union: 27 Mitgliedsstaaten, die 4 Grundfreiheiten des Binnenmarkts und der Euro",
+      "domain": "schule/geographie/europa",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YG6E000000000000000A01",
+          "type": "hard",
+          "rationale": "Staaten und Grenzen Europas bilden das Fundament der Europäischen Integration."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q458",
+          "target_label": "European Union",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Zusammenwachsen in der Europäischen Union",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YG6E000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Abkommen ermöglichte den Bürgern der EU das pass- und kontrollfreie Reisen über die nationalen Binnengrenzen hinweg?",
+          "concept": "Das Schengener Abkommen (Schengen-Raum)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Schengener Abkommen (Schengen-Raum)",
+              "Der Vertrag von Versailles"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YG6E000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die politische und ökonomische Architektur der Europäischen Union (EU): 1. Historische Entstehung als Friedensprojekt nach dem Zweiten Weltkrieg (von der Montanunion 1951 / EG zur EU mit heute 27 Mitgliedsstaaten), 2. Die 4 Grundfreiheiten des Europäischen Binnenmarkts: freier **Warenverkehr** (Zollfreiheit), freier **Personenverkehr** (Freizügigkeit beim Wohnen, Arbeiten und Studieren), freier **Dienstleistungsverkehr** und freier **Kapitalverkehr** (Geldanlagen über Grenzen hinweg), 3. Der Euro (€) als gemeinsame Währung der Eurozone, 4. Die Symbole der europäischen Einheit (Europaflagge mit 12 Sternen, Europahymne Beethovens 'Ode an die Freude', Europatag am 9. Mai).",
+          "concept": "EU: Friedens- und Wertegemeinschaft aus 27 Staaten; 4 Freiheiten des Binnenmarkts: Waren, Personen, Dienstleistungen, Kapital; Schengen-Raum (offene Grenzen); Eurozone (Währungsunion); Europäische Symbole.",
+          "sample_solution": "1. Historische Entstehung und Leitidee der Europäischen Union: - **Historischer Hintergrund**: Nach den verheerenden Weltkriegen gründeten 6 Staaten (Deutschland, Frankreich, Italien, Benelux) 1951 die **Montanunion (EGKS)** zur gemeinsamen Kontrolle von Kohle und Stahl (den kriegswichtigen Grundstoffen), damit ein Krieg zwischen europäischen Nachbarn 'materiell unmöglich' wird. - **Entwicklung**: Über die Römischen Verträge (1957 / EWG) und den Vertrag von Maastricht (1992) wuchs die Gemeinschaft zur heutigen **Europäischen Union mit 27 Mitgliedsstaaten** und ca. 450 Millionen Bürgern heran. 2. Die 4 fundamentalen Grundfreiheiten des Europäischen Binnenmarkts: - **1. Freier Warenverkehr**: Sämtliche Zölle, Ein- und Ausfuhrbeschränkungen zwischen den Mitgliedsstaaten sind abgeschafft. Güter können ohne Grenzgebühren gehandelt werden. - **2. Freier Personenverkehr (Freizügigkeit & Schengen)**:   * Jeder EU-Bürger hat das Recht, in jedem beliebigen EU-Land zu reisen, zu studieren, zu wohnen und zu arbeiten (Niederlassungsfreiheit).   * Das **Schengener Abkommen** garantiert den Wegfall von systematischen Personenkontrollen an den Binnengrenzen. - **3. Freier Dienstleistungsverkehr**: Unternehmen und Selbstständige (z. B. Handwerker, Banken, Ärzte, IT-Firmen) dürfen ihre Dienste EU-weit ohne bürokratische Benachteiligung anbieten. - **4. Freier Kapitalverkehr**: Geld und Investitionen können ungehindert über nationale Grenzen hinweg transferiert und in Unternehmen angelegt werden. 3. Die Europäische Währungsunion (Die Eurozone): - Seit 2002 gibt es den **Euro (€)** als physisches Bargeld (heute gemeinsame Währung in 20 EU-Staaten). - **Vorteile**: Kein lästiger Geldwechsel bei Reisen, Wegfall von Wechselkursrisiken und Währungsumtauschgebühren für Unternehmen, absolute Preistransparenz im Binnenmarkt. 4. Die Symbole der europäischen Identität: - **Europaflagge**: 12 goldene Sterne im Kreis auf blauem Grund – Symbol für Vollkommenheit, Einheit und Solidarität der Völker Europas. - **Europahymne**: Die Melodie aus der 9. Sinfonie von Ludwig van Beethoven (*'Ode an die Freude'*). - **Europatag**: 9. Mai (Erinnerung an die Schuman-Erklärung 1950)."
+        }
+      ]
+    }
+  ]
+}

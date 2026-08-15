@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-englisch-grammatik-tenses",
+  "version": "2026.08.1",
+  "title": "Englisch 7: Zeitformen, Vergleiche und Satzstrukturen (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Englisch 7: Present Perfect vs. Past Simple, Past Progressive, Zukunftsformen (will vs. going-to) und Steigerung von Adjektiven/Adverbien.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/englisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Englisch 7, Sprachliche Mittel und Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E7T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E7T0000000000000000A01",
+      "namespace": "englisch-grammatik",
+      "slug": "present-perfect-vs-past-simple-signalwoerter",
+      "title": "Present Perfect vs. Past Simple: Bildung, Verwendung und Signalwörter",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Present perfect",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E7T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zeitform muss im Englischen zwingend gewählt werden, wenn ein Signalwort einen genau abgeschlossenen Zeitpunkt in der Vergangenheit benennt (z. B. 'yesterday', 'in 2018', 'two days ago')?",
+          "concept": "Das Past Simple (einfache Vergangenheit mit -ed bzw. unregelmäßiger 2. Verbform)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Past Simple (Simple Past)",
+              "Present Perfect Simple"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E7T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Present Perfect Simple (have/has + past participle; Bezug/Auswirkung auf Gegenwart oder noch andauernde Zeitspanne; Signalwörter: just, already, yet, ever, never, since, for) und Past Simple (Vergangenheit 2. Form; abgeschlossene Handlung zu bestimmtem Zeitpunkt; Signalwörter: yesterday, last week, in 2020, ago, when...) und setze die Verben in die richtige Zeitform: a) 'I (lose) my keys and I cannot open the door now.' b) 'She (visit) London three years ago.'",
+          "concept": "Present Perfect: have/has + 3. Form (Wirkung auf jetzt); Past Simple: 2. Form (abgeschlossen in Vergangenheit); a) 'have lost' (Resultat jetzt sichtbar: Tür geht nicht auf); b) 'visited' (abgeschlossener Zeitpunkt: three years ago).",
+          "sample_solution": "1. Gegenüberstellung Present Perfect vs. Past Simple: - Present Perfect Simple (have / has + Past Participle / 3. Verbform):   * Verwendung: Für Handlungen, die in der Vergangenheit begonnen haben und bis in die Gegenwart andauern (seit wann / wie lange) ODER Handlungen der Vergangenheit, deren Ergebnis/Auswirkung in der Gegenwart unmittelbar wichtig ist.   * Typische Signalwörter: *just, already, yet, ever, never, so far, recently, since* (konkreter Anfangszeitpunkt: *since Monday*), *for* (Zeitspanne: *for two years*).   * Frage: *Have you ever...? / How long have you lived here?* - Past Simple (Infinitiv + -ed bzw. 2. unregelmäßige Verbform):   * Verwendung: Für Handlungen, Ereignisse oder Zustände, die in der Vergangenheit zu einem festgelegten, abgeschlossenen Zeitpunkt stattgefunden haben und völlig beendet sind (ohne direkten Gegenwartsbezug).   * Typische Signalwörter: *yesterday, last night / last year, two days ago, in 2015, when I was a child, on Sunday*.   * Frage: *When did you buy this?* 2. Korrekte Verbformen im Beispielsatz: - a) 'I **have lost** my keys and I cannot open the door now.' (Erklärung: Das Verlieren geschah in der Vergangenheit, aber die Auswirkung betrifft die unmittelbare Gegenwart: Schlüssel fehlt jetzt -> Present Perfect). - b) 'She **visited** London three years ago.' (Erklärung: Signalwort 'three years ago' markiert einen exakten, abgeschlossenen Zeitpunkt in der Vergangenheit -> Past Simple)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E7T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E7T0000000000000000A02",
+      "namespace": "englisch-grammatik",
+      "slug": "past-progressive-continuous-unterbrochene-handlung",
+      "title": "Past Continuous / Progressive: Bildung, Verlaufsform und unterbrochene Handlungen",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E7T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Past Simple ist der Referenzpunkt für im Ablauf unterbrochene Verlaufsformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Past continuous",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E7T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird das Past Continuous (Past Progressive) im Englischen gebildet?",
+          "concept": "Aus der Vergangenheitsform von be (was / were) + Infinitiv mit -ing (was/were + verb-ing)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "was / were + Verb-ing",
+              "had + past participle"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E7T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Verwendung des Past Continuous (was/were + verb-ing) zur Beschreibung von Handlungen, die zu einem bestimmten Zeitpunkt in der Vergangenheit gerade im Ablauf waren, analysiere das Zusammenspiel mit dem Past Simple bei unterbrochenen Handlungen (Signalwörter: while + Past Progressive vs. when + Past Simple) und übersetze: 'Während Tom schlief, klingelte plötzlich das Telefon.'",
+          "concept": "Past Progressive beschreibt die länger andauernde Hintergrundhandlung (Ablauf); Past Simple beschreibt das neu eintretende, unterbrechende Ereignis; Übersetzung: 'While Tom was sleeping, the phone suddenly rang.' (oder: 'Tom was sleeping when the phone suddenly rang.').",
+          "sample_solution": "1. Bildung und Funktion des Past Continuous (Past Progressive): - Bildung: **was / were + Infinitiv + -ing** (z. B. *I was reading, they were playing*). - Hauptverwendung: Drückt aus, dass eine Handlung zu einem bestimmten Moment in der Vergangenheit gerade im vollen Gange (im Ablauf) war (z. B. *At 8 o'clock yesterday evening, I was doing my homework*). - Gleichzeitige Handlungen: Zwei Handlungen liefen in der Vergangenheit parallel ab (*While my mother was cooking, my father was setting the table*). 2. Zusammenspiel von Past Continuous und Past Simple (Unterbrechung): - Längere Hintergrundhandlung (im Verlauf): Steht im **Past Continuous** (eingeleitet oft durch *while*). - Neu eintretendes, plötzliches Einzelereignis (das die Handlung unterbricht): Steht im **Past Simple** (oft eingeleitet durch *when* oder *suddenly*). 3. Übersetzung des Beispielsatzes: - 'Während Tom schlief (Hintergrund im Verlauf), klingelte plötzlich das Telefon (plötzliche Unterbrechung).' - Englische Übersetzung: **'While Tom was sleeping, the phone suddenly rang.'** (oder alternativ: **'Tom was sleeping when the phone suddenly rang.'**)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E7T0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E7T0000000000000000A03",
+      "namespace": "englisch-grammatik",
+      "slug": "zukunftsformen-will-vs-going-to-future",
+      "title": "Zukunftsformen im Englischen: will-Future vs. going-to-Future",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E7T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Zeitformensystem umfasst neben Vergangenheit auch die Zukunftsaspekte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Future tense",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E7T0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zukunftsform verwendet man im Englischen für bereits gefasste feste Pläne und Absichten für die Zukunft (z. B. 'Ich habe beschlossen, morgen mein Zimmer aufzuräumen')?",
+          "concept": "Das going-to-Future (be going to + infinitive)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "going-to-Future (feste Absicht/Plan)",
+              "will-Future (spontane Entscheidung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E7T0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide das will-Future (will + Infinitiv: 1. spontane Entschlüsse im Moment des Sprechens, 2. allgemeine, nicht beeinflussbare Vorhersagen/Vermutungen mit think, hope, probably, 3. Versprechen) vom going-to-Future (am/is/are going to + Infinitiv: 1. feste Absichten und geplante Vorhaben, 2. unmittelbar bevorstehende Ereignisse mit sichtbaren Vorzeichen in der Gegenwart) und wähle die passende Form für: a) 'Look at those dark black clouds! It (rain).' b) 'The doorbell is ringing. – OK, I (open) the door.'",
+          "concept": "will-Future: Spontanentschluss / Vermutung / Versprechen; going-to-Future: fester Plan / sichtbares Anzeichen; a) 'is going to rain' (sichtbares Anzeichen: schwarze Wolken); b) 'will open' (spontaner Entschluss im Moment des Klingelns).",
+          "sample_solution": "1. Systematischer Vergleich der beiden Zukunftsformen: - will-Future (will + Infinitiv):   * Spontane Entschlüsse im Augenblick des Sprechens (ohne vorherige Planung, z. B. *'I'm cold.' – 'I will close the window'*).   * Vermutungen, Meinungen und Vorhersagen über die Zukunft, die man nicht sicher weiß oder beeinflussen kann (oft mit Signalwörtern: *I think, I hope, I believe, probably, maybe, perhaps*).   * Versprechen, Warnungen und Angebote (*I will always help you*). - going-to-Future (am / is / are + going to + Infinitiv):   * Feste Pläne, Absichten und Vorhaben für die Zukunft, die bereits vor dem Sprechzeitpunkt beschlossen wurden (*I am going to study medicine next year*).   * Logische Schlussfolgerungen / unabwendbare Ereignisse, für die es in der Gegenwart bereits sichtbare, unmissverständliche Anzeichen gibt (*Look at him! He is going to fall off that ladder!*). 2. Einsetzen der richtigen Form: - a) 'Look at those dark black clouds! It **is going to rain**.' (Begründung: Die dunklen Wolken sind ein sichtbares Vorzeichen in der Gegenwart -> going-to-Future). - b) 'The doorbell is ringing. – OK, I **will open** the door.' (Begründung: Spontaner Entschluss, der im Moment des Klingelns gefasst wird -> will-Future)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E7T0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E7T0000000000000000A04",
+      "namespace": "englisch-grammatik",
+      "slug": "steigern-adjektive-adverbien-vergleiche",
+      "title": "Steigerung von Adjektiven und Adverbien: Komparativ, Superlativ und as...as",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E7T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Adjektive und Adverbien sind grundlegende Wortarten und Beschreibungsformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Comparison (grammar)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E7T0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die unregelmäßige Steigerung (Komparativ und Superlativ) des englischen Adjektivs 'good'?",
+          "concept": "good – better – (the) best",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "good – better – the best",
+              "good – gooder – the goodest"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E7T0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die Regeln zur Steigerung englischer Adjektive (1. einsilbige Adjektive mit -er/-est; 2. zweisilbige auf -y mit -ier/-iest; 3. mehrsilbige Adjektive mit more/most), nenne die wichtigsten unregelmäßigen Steigerungsformen (good/better/best, bad/worse/worst, much/many/more/most, little/less/least) und bilde die Vergleichskonstruktionen 'as ... as' (Gleichheit) und '... than' (Ungleichheit) an Beispielen.",
+          "concept": "Einsilbig: short - shorter - shortest; auf -y: happy - happier - happiest; mehrsilbig: interesting - more interesting - most interesting; Unregelmäßig: good/better/best, bad/worse/worst; Gleichheit: as tall as; Ungleichheit: taller than, more expensive than.",
+          "sample_solution": "1. Regelmäßige Steigerung von Adjektiven: - 1. Einsilbige Adjektive: Werden durch Anhängen von **-er** (Komparativ) und **-est** (Superlativ) gesteigert (z. B. *fast – faster – the fastest, small – smaller – the smallest*). Bei kurzem betonten Vokal wird der Endkonsonant verdoppelt (*big – bigger – biggest*). - 2. Zweisilbige Adjektive auf **-y**: Das -y wird zu -i verwandelt + -er/-est (z. B. *happy – happier – the happiest, easy – easier – the easiest*). - 3. Alle übrigen zwei- und mehrsilbigen Adjektive: Werden mit **more** und **most** gesteigert (z. B. *famous – more famous – the most famous, dangerous – more dangerous – the most dangerous*). 2. Wichtige unregelmäßige Steigerungsformen: - *good – better – (the) best* (gut – besser – am besten) - *bad – worse – (the) worst* (schlecht – schlechter – am schlechtesten) - *much / many – more – (the) most* (viel – mehr – am meisten) - *little – less – (the) least* (wenig – weniger – am wenigsten) - *far – farther / further – (the) farthest / furthest* (weit – weiter – am weitesten). 3. Vergleichssätze im Englischen: - Vergleich der Gleichheit (genauso ... wie): **as + Grundform + as** (Beispiel: *Tom is as tall as Peter*). In der Verneinung: *not as ... as* (*Tom is not as old as Peter*). - Vergleich der Ungleichheit (...er als / mehr ... als): **Komparativ + than** (Beispiel: *Berlin is bigger than Munich. A Ferrari is more expensive than a VW*)."
+        }
+      ]
+    }
+  ]
+}

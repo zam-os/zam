@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-mathematik-rationale-zahlen-terme",
+  "version": "2026.08.1",
+  "title": "Mathematik 7: Rationale Zahlen, Rechengesetze und Terme (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 7: Negative Zahlen, Grundrechenarten in Q, Vorzeichenregeln, Rechengesetze und Terme mit Variablen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 7, Lernbereich Rationale Zahlen und Terme"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M7R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M7R0000000000000000A01",
+      "namespace": "mathematik-zahlen",
+      "slug": "rationale-zahlen-betrag-gegensatzzahl",
+      "title": "Rationale Zahlen: Zahlengerade, Betrag und Gegenzahl",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Rational number",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher mathematische Begriff bezeichnet den Abstand einer Zahl auf der Zahlengeraden zum Nullpunkt 0 (immer nicht-negativ)?",
+          "concept": "Der Betrag der Zahl (z. B. |-7| = 7)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Betrag der Zahl (|x|)",
+              "Die Gegenzahl (-x)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die Zahlenmenge der rationalen Zahlen Q (alle Brüche p/q mit p in Z, q in N), unterscheide Betrag |x| von Gegenzahl -x und ordne die Zahlen -3,5; 2/3; -7/2; 0; |-4,2| auf der Zahlengeraden der Größe nach mit dem Kleiner-Zeichen (<).",
+          "concept": "Q = Menge aller Zahlen, die als Bruch ganzer Zahlen darstellbar sind; Betrag = Abstand zum Nullpunkt; Gegenzahl = Spiegelung an 0; -7/2 = -3,5 -> -7/2 = -3,5 < 0 < 2/3 < |-4,2| (= 4,2).",
+          "sample_solution": "1. Definition der rationalen Zahlen Q: Die Menge Q umfasst alle Zahlen, die sich als Bruch p/q zweier ganzer Zahlen (Zähler p aus Z, Nenner q aus N, q != 0) darstellen lassen. Dazu gehören alle positiven und negativen Brüche, endliche und periodische Dezimalbrüche sowie alle ganzen Zahlen. 2. Betrag vs. Gegenzahl: - Betrag |a|: Der geometrische Abstand der Zahl a vom Ursprung 0 auf der Zahlengeraden. Er ist für a != 0 immer positiv (| -5 | = 5, | 5 | = 5, | 0 | = 0). - Gegenzahl -a: Die Zahl, die auf der Zahlengeraden spiegelsymmetrisch zum Nullpunkt liegt (die Gegenzahl von 4 ist -4; die Gegenzahl von -7 ist +7). Es gilt: a + (-a) = 0. 3. Größenvergleich und Ordnung: - Umrechnung: -7/2 = -3,5; |-4,2| = 4,2; 2/3 ≈ 0,67. - Geordnete Ungleichungskette: -7/2 = -3,5 < 0 < 2/3 < |-4,2|."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M7R0000000000000000A02",
+      "namespace": "mathematik-zahlen",
+      "slug": "grundrechenarten-vorzeichenregeln-in-q",
+      "title": "Grundrechenarten in Q: Vorzeichenregeln und Rechengesetze",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Vorzeichen und Beträge sind Basis für die Rechenoperationen in Q."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Arithmetic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Rationale Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Vorzeichen hat das Produkt zweier rationaler Zahlen mit gleichem Vorzeichen (z. B. (-4) · (-6))?",
+          "concept": "Positiv (+)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Positiv (+)",
+              "Negativ (-)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die Vorzeichenregeln für Addition, Subtraktion, Multiplikation und Division rationaler Zahlen, erläutere die Rechengesetze (Kommutativ-, Assoziativ- und Distributivgesetz) und berechne den Wert des Terms: (-12) : (-3) + (-5) · 4 - (-8).",
+          "concept": "Addition: gleiche Vorzeichen -> Beträge addieren, Vorzeichen behalten; ungleiche Vorzeichen -> größeres Vorzeichen, Beträge subtrahieren; Multiplikation/Division: gleiche Vorzeichen (+) / ungleiche (-); Rechnung: (-12):(-3) = 4; (-5)*4 = -20; -(-8) = +8 -> 4 - 20 + 8 = -8.",
+          "sample_solution": "1. Vorzeichenregeln in Q: - Addition: Haben beide Summanden gleiches Vorzeichen, addiert man die Beträge und behält das Vorzeichen. Bei ungleichen Vorzeichen subtrahiert man den kleineren Betrag vom größeren; das Ergebnis erhält das Vorzeichen der Zahl mit dem größeren Betrag. - Subtraktion: Eine rationale Zahl wird subtrahiert, indem man ihre Gegenzahl addiert: a - b = a + (-b) sowie a - (-b) = a + b. - Multiplikation & Division: Haben beide Faktoren/Divisor und Dividend gleiche Vorzeichen, ist das Ergebnis positiv ((+) · (+) = (+), (-) · (-) = (+)). Bei ungleichen Vorzeichen ist das Ergebnis negativ ((+) · (-) = (-), (-) · (+) = (-)). 2. Rechengesetze: - Kommutativgesetz (Vertauschungsgesetz): a + b = b + a und a · b = b · a. - Assoziativgesetz (Verbindungsgesetz): (a + b) + c = a + (b + c) und (a · b) · c = a · (b · c). - Distributivgesetz (Verteilungsgesetz): a · (b + c) = a · b + a · c. 3. Termberechnung (Punkt- vor Strichrechnung): (-12) : (-3) + (-5) · 4 - (-8) = 4 + (-20) + 8 = 4 - 20 + 8 = -16 + 8 = -8."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M7R0000000000000000A03",
+      "namespace": "mathematik-algebra",
+      "slug": "terme-variablen-termwert-einsetzen",
+      "title": "Terme mit Variablen: Termbegriff, Struktur und Termwertberechnung",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7R0000000000000000A02",
+          "type": "hard",
+          "rationale": "Rechenregeln in Q sind Voraussetzung für Termwertberechnungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1125468",
+          "target_label": "Expression (mathematics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Terme mit Variablen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Terme mit Variablen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Art von Term liegt vor, wenn die zuletzt auszuführende Rechenoperation eine Multiplikation ist?",
+          "concept": "Ein Produkt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Produkt",
+              "Eine Summe"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Unterschied zwischen Variable (Platzhalter für Zahlen) und Term (sinnvoller Rechenausdruck), bestimme die Rechenart der Termstruktur von T(x) = 3 · (x - 4) + 7 (Summe oder Produkt?) und berechne den Termwert T(-2) sowie T(5).",
+          "concept": "Variable = Buchstabe als Platzhalter für Zahlen aus Grundmenge G; Term = mathematisch sinnvoller Ausdruck; Struktur: 3*(x-4) + 7 ist eine Summe (letzte Operation ist die Addition von 7); T(-2) = 3*(-2 - 4) + 7 = 3*(-6) + 7 = -18 + 7 = -11; T(5) = 3*(5 - 4) + 7 = 3*1 + 7 = 10.",
+          "sample_solution": "1. Variable vs. Term: - Variable: Ein Buchstabe (z. B. x, y, a), der als Leerstelle bzw. Platzhalter für Elemente einer definierten Grundmenge G (z. B. Q) steht. - Term: Ein mathematisch sinnvoller Rechenausdruck, der Zahlen, Variablen, Rechenzeichen und Klammern enthalten kann (z. B. 2x + 5, aber nicht '3 + * 4'). 2. Termstruktur von T(x) = 3 · (x - 4) + 7: Die Rechenhierarchie verlangt: Erst Klammer (x - 4), dann Multiplikation (· 3), zuletzt die Addition (+ 7). Da die zuletzt ausgeführte Rechenoperation die Addition ist, handelt es sich um eine **Summe** (mit den Summanden 3(x-4) und 7). 3. Termwertberechnung: - Für x = -2: T(-2) = 3 · (-2 - 4) + 7 = 3 · (-6) + 7 = -18 + 7 = -11. - Für x = 5: T(5) = 3 · (5 - 4) + 7 = 3 · 1 + 7 = 3 + 7 = 10."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M7R0000000000000000A04",
+      "namespace": "mathematik-algebra",
+      "slug": "termumformung-zusammenfassen-ausklammern",
+      "title": "Termumformungen: Gleichartige Glieder zusammenfassen und Ausmultiplizieren/Ausklammern",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7R0000000000000000A03",
+          "type": "hard",
+          "rationale": "Terme und Variablenverständnis sind Voraussetzung für Umformungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1125468",
+          "target_label": "Algebraic simplification",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Terme mit Variablen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Terme mit Variablen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche beiden Termglieder sind 'gleichartig' und dürfen durch Addition/Subtraktion ihrer Koeffizienten direkt zusammengefasst werden?",
+          "concept": "5xy und -8xy (gleiche Variablenbasis in gleicher Potenz)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "5xy und -8xy",
+              "5x² und 5x"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vereinfache den Term T(a, b) = 4a - [3b - 2(a - 5b) + 6a] schrittweise durch schrittweises Auflösen der inneren und äußeren Klammern und klammere im Term 15x²y - 25xy² den größtmöglichen gemeinsamen Faktor vollständig aus.",
+          "concept": "T(a,b) = 4a - [3b - 2a + 10b + 6a] = 4a - [4a + 13b] = 4a - 4a - 13b = -13b; Ausklammern: ggT(15,25)=5, gemeinsamer Variablenfaktor xy -> 5xy · (3x - 5y).",
+          "sample_solution": "1. Schrittweises Vereinfachen des Klammerterms: T(a, b) = 4a - [3b - 2(a - 5b) + 6a] - Schritt 1 (Innere runde Klammer auflösen mit Distributivgesetz): -2 · (a - 5b) = -2a + 10b. T(a, b) = 4a - [3b - 2a + 10b + 6a]. - Schritt 2 (In der eckigen Klammer zusammenfassen): (-2a + 6a) + (3b + 10b) = 4a + 13b. T(a, b) = 4a - [4a + 13b]. - Schritt 3 (Äußere Minusklammer auflösen): T(a, b) = 4a - 4a - 13b = -13b. 2. Vollständiges Ausklammern: Term: 15x²y - 25xy² - Zahlenkoeffizienten: ggT(15, 25) = 5. - Variablenanteil: In beiden Gliedern steckt mindestens x¹ und y¹ -> gemeinsamer Faktor 5xy. - Ausklammern: 15x²y - 25xy² = 5xy · (3x - 5y)."
+        }
+      ]
+    }
+  ]
+}

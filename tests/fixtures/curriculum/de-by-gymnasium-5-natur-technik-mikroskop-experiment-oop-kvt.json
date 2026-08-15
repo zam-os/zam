@@ -1,0 +1,258 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-natur-technik-mikroskop-experiment-oop",
+  "version": "2026.08.1",
+  "title": "Natur und Technik 5: NWA und Informatik – Erkenntnisweg, Mikroskopieren und OOP (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern NuT 5: Erkenntnisweg (Hypothese, Kontrollansatz, Protokoll), Lichtmikroskop/Zellaufbau, Objektorientierung (Klasse, Objekt, Attribut, Methode) und Dateisysteme.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Natur und Technik 5, Lernbereich Naturwissenschaftliches Arbeiten und Informatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YT5N000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YT5N000000000000000A01",
+      "namespace": "nut-arbeitsweisen",
+      "slug": "naturwissenschaftlicher-erkenntnisweg-hypothesen-protokoll",
+      "title": "Der naturwissenschaftliche Erkenntnisweg: Phänomen, Hypothesenbildung, kontrolliertes Experiment und Theorie",
+      "domain": "schule/nut/arbeitsweisen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Scientific method",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT5N000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche zentrale Eigenschaft muss ein naturwissenschaftliches Experiment erfüllen, damit seine Ergebnisse wissenschaftlich anerkannt werden können?",
+          "concept": "Es muss unter gleichen Bedingungen wiederholbar (reproduzierbar) sein und einen Kontrollansatz besitzen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wiederholbarkeit (Reproduzierbarkeit)",
+              "Geheime Durchführung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT5N000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den zirkulären Prozess des naturwissenschaftlichen Erkenntniswegs in 5 Stufen (1. Naturbeobachtung & theoriegeleitete Fragestellung, 2. Aufstellen einer falsifizierbaren Hypothese, 3. Planung & Durchführung eines Experiments unter Konstanthaltung aller Störvariablen mit genau 1 unabhängigen Variablen, 4. Messwerterfassung, Protokollierung und kritische Fehleranalyse, 5. Verifikation/Falsifikation der Hypothese) und begründe die Funktion der Nullhypothese bzw. des Kontrollansatzes am Beispiel eines Düngerexperiments.",
+          "concept": "5 Stufen des Erkenntniswegs; Ceteris-Paribus-Prinzip: nur 1 Parameter variieren, alle anderen Faktoren konstant halten; Kontrollansatz ohne Dünger beweist, dass das Mehrwachstum der Testgruppe tatsächlich auf dem Dünger beruht.",
+          "sample_solution": "1. Der zyklische Prozess des naturwissenschaftlichen Erkenntniswegs: - **1. Phänomen & Fragestellung**: Aus systematischer Naturbeobachtung wird eine präzise wissenschaftliche Frage isoliert (z. B. 'Erhöht ein mineralischer Stickstoffdünger die Biomasseproduktion von Tomatenpflanzen?'). - **2. Hypothese**: Formulierung einer logisch begründeten, überprüfbaren und **falsifizierbaren Vermutung** als Kausalbeziehung ('Wenn Tomatenpflanzen mit Stickstoff gedüngt werden, bilden sie mehr Blätter und Früchte als ungedüngte Pflanzen'). - **3. Versuchsplanung & Durchführung**:   * Ein gezielter, künstlich arrangierter und **reproduzierbarer (wiederholbarer)** Versuch.   * **Das Prinzip der isolierten Variablen (Ceteris Paribus)**: Genau ein einziger Faktor (die unabhängige Variable: Düngemenge) wird variiert. Alle übrigen Rahmenbedingungen (Lichtmenge, Temperatur, Feuchtigkeit, Topfgröße, genetische Sorte) müssen bei allen Pflanzen absolut identisch sein! - **4. Datenanalyse & Protokollführung**:   * Messung quantitativer Daten (Wuchshöhe in cm, Fruchtgewicht in g); graphische Darstellung in Diagrammen; kritische Fehlerdiskussion (Messungenauigkeiten). - **5. Schlussfolgerung & Erkenntnisgewinn**:   * **Verifikation**: Die Daten stützen die Hypothese; bei wiederholter Bestätigung kann ein Naturgesetz oder Modell formuliert werden.   * **Falsifikation**: Die Hypothese wird durch experimentelle Messwerte widerlegt; sie muss verworfen oder modifiziert werden. Ein neuer Hypothesen-Zyklus startet. 2. Die fundamentale Rolle des Kontrollansatzes (Beispiel Düngung): - Ohne einen **Kontrollansatz** (Gruppe von Tomatenpflanzen, die unter völlig gleichen Umweltbedingungen, aber komplett **ohne Dünger** wachsen) ließe sich nicht feststellen, ob das beobachtete Wachstum nicht einfach durch Sonnenwärme oder Gießwasser zustande kam. - Erst der direkte Differenzvergleich zwischen Versuchsgruppe (mit Dünger) und Kontrollgruppe (ohne Dünger) liefert den unumstößlichen Beweis für die Kausalität."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT5N000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YT5N000000000000000A02",
+      "namespace": "nut-arbeitsweisen",
+      "slug": "lichtmikroskopie-pflanzliche-vs-tierische-zelle",
+      "title": "Mikroskopie und Zellbiologie: Lichtmikroskop-Bedienung und Zellaufbau (Pflanze vs. Tier)",
+      "domain": "schule/nut/arbeitsweisen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YT5N000000000000000A01",
+          "type": "hard",
+          "rationale": "Mikroskopieren ist die grundlegende experimentelle Beobachtungsmethode der Biologie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Cell biology",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT5N000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 3 zellulären Strukturen findet man typischerweise in einer pflanzlichen Zelle (z. B. Wasserpest/Zwiebelhaut), aber NIEMALS in einer tierischen oder menschlichen Zelle?",
+          "concept": "Zellwand (aus Zellulose), Chloroplasten (mit Blattgrün) und eine große Zentralvakuole (Zellsaftraum)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zellwand, Chloroplasten, Zentralvakuole",
+              "Zellkern, Zellmembran, Cytoplasma"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT5N000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die optischen Bauteile und die Bedienung eines Durchlichtmikroskops (Okular, Tubus, Objektivrevolver, Objektive, Objekttisch, Irisblende, Grob- und Feintrieb; Formel: V_gesamt = V_Okular · V_Objektiv), erkläre die fehlerfreie Herstellung eines Frischpräparats (Objektträger, Wassertropfen, Deckglaseindeckung im 45°-Winkel) und vergleiche den Bau einer pflanzlichen Zelle (Zellwand, Zellmembran, Zellkern mit DNA, Cytoplasma, Chloroplasten, Vakuole) mit einer tierischen Zelle (Mundschleimhaut: nur Zellmembran, Zellkern, Cytoplasma).",
+          "concept": "Mikroskop: V_gesamt = Okular · Objektiv; Frischpräparat: Deckglas blasenfrei absenken; Vergleich: Pflanzliche Zelle besitzt feste Zellwand aus Zellulose, Chloroplasten für Photosynthese und Vakuole für Turgordruck; tierische Zelle ist formflexibel (nur Membran, keine Zellwand/Chloroplasten).",
+          "sample_solution": "1. Optischer Aufbau und Bedienung des Lichtmikroskops: - **Optischer Strahlengang**: Lichtquelle -> Kondensor mit Irisblende -> Präparat -> **Objektiv** (erzeugt reelles, vergrößertes Zwischenbild) -> Tubus -> **Okular** (wirkt wie eine Lupe und vergrößert das Zwischenbild als virtuelles Bild). - **Formel der optischen Vergrößerung**:   $$V_{\\text{Gesamt}} = V_{\\text{Okular}} \\cdot V_{\\text{Objektiv}} \\quad (\\text{z. B. } 10 \\times 40 = 400\\text{-fache Vergrößerung})$$ - **Bedienungsregeln**:   * Immer mit dem **kleinsten Objektiv** (Übersichtsvergrößerung) beginnen.   * Abstandskontrolle: Objekttisch mit dem Grobtrieb unter seitlichem Blickkontakt bis kurz vors Objektiv hochfahren.   * Scharfstellung: Beim Hineinblicken den Tisch mit dem Grobtrieb langsam nach unten bewegen und mit dem **Feintrieb (Mikrometer)** feinjustieren. 2. Herstellung eines blasenfreien Frischpräparats: - Einen Tropfen Wasser auf die Mitte eines sauberen Glas-Objektträgers pipettieren. - Ein hauchdünnes, einschichtiges Zwiebelhäutchen mit der Pinzette faltenfrei einlegen. - Ein Deckglas im **45°-Winkel** an den Wassertropfen ansetzen und mit einer Präpariernadel langsam absenken. Dadurch wird Luft seitlich verdrängt (keine störenden Luftbläschen). 3. Vergleich: Pflanzliche Zelle vs. Tierische Zelle: - **Gemeinsame Grundstrukturen aller eukaryotischen Zellen**:   * **Zellkern (Nukleus)**: Steuerzentrale der Zelle; enthält die Erbinformation (DNA).   * **Zellplasma (Cytoplasma)**: Wässrige Grundsubstanz, in der Stoffwechselprozesse ablaufen.   * **Zellmembran**: Hauchdünne, semipermeable Fettschicht, die den Stoffaustausch kontrolliert. - **Die 3 exklusiven Organellen der Pflanzenzelle**:   * **1. Zellwand**: Feste Außenhülle aus **Zellulose**; verleiht der Pflanzenzelle Stabilität und feste Kastenform (fehlt Tieren völlig).   * **2. Chloroplasten**: Organellen mit **Chlorophyll**; betreiben Photosynthese zur Glukoseproduktion (Tiere ernähren sich heterotroph).   * **3. Zentralvakuole**: Riesiger, flüssigkeitsgefüllter Zellsaftraum; speichert Wasser und Stoffe und erzeugt den inneren Zelldruck (**Turgor**), der krautige Pflanzen aufrecht stehen lässt."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT5N000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YT5N000000000000000A03",
+      "namespace": "informatik-konzepte",
+      "slug": "objektorientierte-modellierung-klasse-objekt-zustand",
+      "title": "Objektorientierte Modellierung: Klasse, Objekt, Attribute, Zustand und Methoden",
+      "domain": "schule/informatik/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Object-oriented programming",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT5N000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man in der objektorientierten Modellierung die Gesamtheit aller aktuellen Attributwerte eines Objekts zu einem bestimmten Zeitpunkt?",
+          "concept": "Den Zustand des Objekts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Zustand des Objekts",
+              "Die Klasse des Objekts"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT5N000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die 4 Kernkonzepte der objektorientierten Modellierung in NuT: 1. Klasse (abstrakter Bauplan mit Attributdeklarationen und Methodensignaturen), 2. Objekt / Instanz (konkreter, benannter Vertreter einer Klasse), 3. Zustand (aktuelle Attributwertbelegung), 4. Methode mit Parametern (Befehle/Operationen, die den Objektzustand verändern) und stelle ein Objekt `spielFigur1 : SPIELFIGUR` mit Attributen (PositionX, PositionY, Lebenspunkte, Name) und Methodenaufrufen (z. B. `gehe(dx, dy)`, `erhalteSchaden(punkte)`) in formaler Punktschreibweise dar.",
+          "concept": "Klasse = Typ/Vorlage; Objekt = konkretes Ding; Zustand = Momentanwerte aller Attribute; Methode = verändernde Operation; Punktschreibweise: objekt.attribut = wert; objekt.methode(parameter).",
+          "sample_solution": "1. Die 4 Säulen der objektorientierten Modellierung (OOM): - **Klasse (Class)**:   * Der allgemeingültige, abstrakte Bauplan oder die Schablone für eine Menge von gleichartigen Objekten.   * Definiert, welche Merkmale (**Attribute**) und welche Aktionen (**Methoden**) alle Exemplare dieser Klasse besitzen (z. B. Klasse `SPIELFIGUR`, `RECHTECK`, `KONTO`). - **Objekt (Instanz / Exemplar)**:   * Ein konkreter, eindeutig identifizierbarer Vertreter einer Klasse mit eigenem Bezeichner (z. B. `held`, `gegner1`).   * Schreibweise: `objektname : KLASSENNAME`. - **Attribut, Attributwert und Objektzustand**:   * **Attribut**: Eine Eigenschaft der Klasse (z. B. `lebenspunkte`, `positionX`, `farbe`).   * **Attributwert**: Der konkrete Datenwert dieser Eigenschaft bei einem bestimmten Objekt (z. B. `lebenspunkte = 100`).   * **Objektzustand**: Die Gesamtheit aller aktuellen Attributwerte eines Objekts zu einem konkreten Zeitpunkt. - **Methode (Operation / Botschaft)**:   * Ein Programmcode-Befehl, der auf ein Objekt angewendet werden kann, um seinen inneren Zustand gezielt zu manipulieren oder Aktionen auszulösen (oft mit Übergabewerten / Parametern). 2. Formale Punktschreibweise am Beispiel: - Objektdeklaration: `held : SPIELFIGUR` - **Initialer Objektzustand**:   * `held.name = 'Arthur'`   * `held.positionX = 10`   * `held.positionY = 25`   * `held.lebenspunkte = 100`   * `held.istSichtbar = wahr` - **Zustandsveränderung durch Methodenaufrufe**:   * `held.gehe(5, 0)` -> Attribut `positionX` ändert sich von 10 auf 15.   * `held.erhalteSchaden(20)` -> Attribut `lebenspunkte` sinkt von 100 auf 80.   * `held.setzeSichtbarkeit(falsch)` -> Attribut `istSichtbar` wird zu `falsch`."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT5N000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YT5N000000000000000A04",
+      "namespace": "informatik-systeme",
+      "slug": "hierarchische-dateisysteme-dateitypen-ordnerbaum",
+      "title": "Hierarchische Dateisysteme: Ordnerhierarchie, absolute/relative Pfadnavigation und Dateitypen",
+      "domain": "schule/informatik/systeme",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YT5N000000000000000A03",
+          "type": "hard",
+          "rationale": "Dateien und Verzeichnisse lassen sich als Objekte mit Attributen (Name, Pfad, Größe) abbilden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "File system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT5N000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Symbol steht in relativen Pfadangaben eines Dateisystems für den unmittelbar übergeordneten Elternordner?",
+          "concept": "'..' (zwei Punkte stehen für den Elternordner, während '.' für den aktuellen Ordner steht)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "'..' (übergeordneter Ordner)",
+              "'/' (Wurzelverzeichnis)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT5N000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den hierarchischen Aufbau eines Dateibaums (Wurzel / Root, Ordner, Unterordner, Dateien als Blätter), unterscheide absolute Pfade (lückenlose Route von der Wurzel `C:\\...` bzw. `/...`) von relativen Pfaden (Navigation ausgehend vom aktuellen Arbeitsverzeichnis mit `.` und `..`), erkläre die Bedeutung von Dateiendungen (.docx, .png, .mp4, .pdf) und konstruiere den absoluten und relativen Pfad zu einer Datei `referat.pdf`, die sich im Unterordner `Gymnasium/NuT/` befindet, wenn das aktuelle Arbeitsverzeichnis `Gymnasium/Mathe/` ist.",
+          "concept": "Hierarchie: Baumstruktur mit Wurzel, Knoten (Ordner) und Blättern (Dateien); Absoluter Pfad: beginnt an Wurzel (z. B. C:\\Gymnasium\\NuT\\referat.pdf); Relativer Pfad aus Gymnasium\\Mathe: ..\\NuT\\referat.pdf; Dateiendung bestimmt Interpretation durch Betriebssystem.",
+          "sample_solution": "1. Struktur eines hierarchischen Dateibaums: - **Wurzelverzeichnis (Root)**: Die oberste Ebene des Dateisystems (unter Windows z. B. `C:\\`, unter Linux/macOS `/`). - **Ordner (Verzeichnisse)**: Innere Knoten des Baums; strukturieren Daten hierarchisch und können beliebig viele Unterordner sowie Dateien enthalten. - **Dateien**: Die Blätter des Baums; enthalten konkrete Bitfolgen (Texte, Bilder, Audio, Programme). 2. Absolute vs. relative Pfadnavigation: - **Absoluter Pfad**:   * Beginnt immer an der Wurzel des Dateisystems.   * Eindeutig, unabhängig davon, in welchem Verzeichnis sich das Programm oder der Benutzer gerade befindet.   * Beispiel: `C:\\Gymnasium\\NuT\\referat.pdf` - **Relativer Pfad**:   * Beschreibt die Wegstrecke ausgehend vom aktuellen Arbeitsordner (**Working Directory**).   * `.` steht für das aktuelle Verzeichnis.   * `..` steht für den direkt übergeordneten Elternordner. 3. Pfadkonstruktion für das gegebene Szenario: - Ziel: Datei `referat.pdf` im Ordner `Gymnasium/NuT/` - Aktueller Standort: `Gymnasium/Mathe/` - **Absoluter Pfad**: **`C:\\Gymnasium\\NuT\\referat.pdf`** (bzw. `/Gymnasium/NuT/referat.pdf`). - **Relativer Pfad**:   * 1. Aus `Mathe/` eine Ebene nach oben in `Gymnasium/` wechseln: `..\\`   * 2. In den Nachbarordner `NuT/` hinabsteigen: `NuT\\`   * 3. Zieldatei ansteuern: `referat.pdf`   * Ergebnis: **`..\\NuT\\referat.pdf`** (bzw. `../NuT/referat.pdf`). 4. Dateiendungen (Dateiformate): - Zeichenfolge hinter dem letzten Punkt eines Dateinamens; signalisiert dem Betriebssystem das Format und die passende Anwendungssoftware (z. B. `.docx` = Textverarbeitung Word, `.png` = Rasterbild mit Alphakanal, `.mp4` = komprimiertes Video, `.pdf` = plattformunabhängiges Layoutdokument)."
+        }
+      ]
+    }
+  ]
+}

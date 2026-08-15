@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-biologie-verdauung-stoffwechsel-blutkreislauf-herz",
+  "version": "2026.08.1",
+  "title": "Biologie 8: Humanbiologie – Verdauung, Stoffwechsel, Herz-Kreislauf-System und Immunsystem (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 8: Nährstoffe (Kohlenhydrate, Fette, Proteine), enzymatische Spaltung (Schlüssel-Schloss-Prinzip, Amylase, Pepsin, Lipase), Verdauungsorgane und Resorption in Darmzotten, Atmung und Gasaustausch in Alveolen sowie Herz-Kreislauf-System (Doppelkreislauf, Systole/Diastole) und spezifisches Immunsystem (Antikörper/Antigene).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/biologie",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Biologie 8, Lernbereiche Stoffwechsel des Menschen, Blutkreislauf und Immunsystem"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8N0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8N0000000000000000A01",
+      "namespace": "gymnasium-biologie-stoffwechsel",
+      "slug": "verdauung-naehrstoffe-enzyme-schluessel-schloss-darmzotten",
+      "title": "Ernährung und Verdauung: Nährstoffbausteine, Enzymwirkung (Schlüssel-Schloss-Prinzip) und Resorption",
+      "domain": "schule/biologie/stoffwechsel",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1004",
+          "target_label": "Digestion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Ernährung, Verdauung und Enzyme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8N0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welche kleinsten resorbierbaren Grundbausteine werden Nahrungsproteine (Eiweiße) im Magen und Dünndarm durch Proteasen (wie Pepsin und Trypsin) zerlegt?",
+          "concept": "In einzelne Aminosäuren (über Peptidfragmente)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Aminosäuren",
+              "In einfache Fettsäuren und Glycerin"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8N0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Weg der Nahrung und die enzymatische Verdauung: 1. **Die 3 Hauptnährstoffgruppen**:   * **Kohlenhydrate**: Vielfachzucker (Stärke) $\\rightarrow$ Spaltung durch **Amylase** $\\rightarrow$ Einfachzucker (**Glucose**).   * **Proteine**: Polypeptidketten $\\rightarrow$ Spaltung durch **Pepsin (Magen, saures Milieu pH 1-2)** und **Trypsin (Dünndarm)** $\\rightarrow$ **Aminosäuren**.   * **Fette**: Triglyceride $\\rightarrow$ Emulgierung durch **Gallensaft** $\\rightarrow$ Spaltung durch **Lipase** $\\rightarrow$ **Glycerin und freie Fettsäuren**, 2. **Biokatalysatoren (Enzyme)**: Substrat- und Wirkungsspezifität nach dem **Schlüssel-Schloss-Prinzip** (Temperatur- und pH-Optimum), 3. **Die Verdauungsstationen**: Mundhöhle (mechanisch + Speichelamylase) $\\rightarrow$ Magen (Magensäure HCl tötet Keime, Denaturierung) $\\rightarrow$ Dünndarm (Bauchspeicheldrüsenenzyme, Gallensaft) $\\rightarrow$ Dickdarm (Wasserrückresorption), 4. **Resorption im Dünndarm**: Prinzip der **Oberflächenvergrößerung** durch Kerckring-Falten, Darmzotten und Mikrovilli ($> 200\\,\\text{m}^2$ Resorptionsfläche in Blut- und Lymphkapillaren).",
+          "concept": "Verdauung: Kohlenhydrate (Amylase -> Glucose), Proteine (Pepsin/Trypsin -> Aminosäuren), Fette (Galle emulgiert, Lipase -> Glycerin/Fettsäuren); Enzyme: Substrat-/Wirkungsspezifität (Schlüssel-Schloss-Prinzip); Resorption: Oberflächenvergrößerung im Dünndarm (Falten, Zotten, Mikrovilli).",
+          "sample_solution": "1. Die drei Grundnährstoffe und ihre enzymatische Spaltung: - **1. Kohlenhydrate (Energielieferanten)**:   * *Polysaccharide (Stärke)* werden durch **Amylasen** (im Speichel und Bauchspeichel) über Maltose in resorbierbare **Monosaccharide (Glucose/Traubenzucker)** zerlegt. - **2. Proteine (Baustoffe)**:   * Lange Aminosäureketten werden im sauren Magen durch **Pepsin** (aktiviert durch Magensalzsäure $\\text{HCl}$) und im Dünndarm durch **Trypsin/Peptidasen** in einzelne **Aminosäuren** gespalten. - **3. Fette / Lipide (Energiespeicher & Membranbausteine)**:   * Durch die **Gallensäuren** (aus der Leber/Gallenblase) werden wasserunlösliche Fetttröpfchen emulgiert (Oberflächenvergrößerung) und anschließend von **Lipasen** in **Glycerin und freie Fettsäuren** gespalten. 2. Wirkungsweise von Enzymen (Biokatalysatoren): - **Schlüssel-Schloss-Prinzip**: Das Substrat passt exakt in das aktive Zentrum des Enzyms. - **Spezifitäten**:   * **Substratspezifität**: Ein Enzym spaltet nur ganz bestimmte Moleküle (z. B. Amylase nur Stärke, keine Fette).   * **Wirkungsspezifität**: Ein Enzym katalysiert nur eine ganz bestimmte chemische Reaktion. - **Abhängigkeiten**: Enzyme besitzen ein charakteristisches Temperatur- und pH-Optimum (z. B. Pepsin bei pH 1,5–2; Amylase bei pH 7). Zu hohe Temperaturen führen zur irreversiblen **Denaturierung** (Zerstörung der Tertiärstruktur). 3. Die Stationen des Verdauungstrakts: - **Mundhöhle**: Mechanische Zerkleinerung, Einspeichelung, Beginn des Stärkeabbaus. - **Magen**: Speicherfunktion, Abtötung von Krankheitserregern durch $\\text{HCl}$, Vorverdauung der Proteine. - **Dünndarm (Duodenum, Jejunum, Ileum)**: Hauptort der enzymatischen Endverdauung und Nährstoffaufnahme. - **Dickdarm (Colon)**: Entzug von Wasser und Mineralstoffen (Eindickung des Darminhalts), Symbiose mit der Darmflora. 4. Das Prinzip der Oberflächenvergrößerung im Dünndarm: - Die Dünndarmschleimhaut ist durch eine 3-fache Faltung extrem vergrößert:   * 1. **Ringfalten (Kerckring-Falten)**: ca. 1 cm hohe Falten.   * 2. **Darmzotten**: Millionen fingerförmiger Ausstülpungen mit dichtem Blut- und Lymphgefäßnetz.   * 3. **Mikrovilli (Bürstensaum)**: Mikroskopische Zellausläufer auf jedem Enterozyten. - **Effekt**: Die Gesamtoberfläche erreicht gigantische **$ca. 200–300\\text{ m}^2$**, was einen hocheffizienten Nährstoffübertritt in den Blutkreislauf ermöglicht."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8N0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8N0000000000000000A02",
+      "namespace": "gymnasium-biologie-stoffwechsel",
+      "slug": "herz-blutkreislauf-gasaustausch-alveolen-immunsystem",
+      "title": "Herz-Kreislauf-System: Doppelter Blutkreislauf, Herzmechanik, Gasaustausch und Immunsystem",
+      "domain": "schule/biologie/stoffwechsel",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8N0000000000000000A01",
+          "type": "hard",
+          "rationale": "Verdaute Nährstoffe und Sauerstoff werden durch das Kreislaufsystem transportiert."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1004",
+          "target_label": "Circulatory system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Atmung, Blutkreislauf und Immunsystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8N0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Herzkammer pumpt das sauerstoffreiche Blut mit hohem Druck über die Aorta in den gesamten Körperkreislauf?",
+          "concept": "Die linke Herzkammer (linker Ventrikel mit besonders dicker Muskelwand)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die linke Herzkammer (linker Ventrikel)",
+              "Die rechte Herzkammer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8N0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den doppelten Blutkreislauf, die Herzfunktion und die Immunabwehr des Menschen: 1. **Der doppelte Blutkreislauf**:   * **Lungenkreislauf (kleiner Kreislauf)**: Rechte Kammer $\\rightarrow$ Lungenarterie (sauerstoffarm!) $\\rightarrow$ Kapillarnetz der Lungenbläschen (Alveolen: Diffusion von $O_2$ ins Blut, $CO_2$ in die Atemluft) $\\rightarrow$ Lungenvene (sauerstoffreich!) $\\rightarrow$ linker Vorhof.   * **Körperkreislauf (großer Kreislauf)**: Linke Kammer $\\rightarrow$ Aorta $\\rightarrow$ Arterien $\\rightarrow$ Kapillaren (Abgabe von $O_2$ und Nährstoffen an Zellen) $\\rightarrow$ Hohlvenen $\\rightarrow$ rechter Vorhof, 2. **Der Herzzyklus**: **Systole** (Kontraktions- und Austreibungsphase) vs. **Diastole** (Erschlaffungs- und Füllungsphase); Funktion von Segel- und Taschenklappen als Rückschlagventile, 3. **Das Immunsystem**:   * **Unspezifische Abwehr**: Haut, Schleimhäute, Phagozyten (Fresszellen).   * **Spezifische Abwehr**: **B-Lymphozyten** (bilden passgenaue Antikörper gegen Antigene, Bildung von Gedächtniszellen) und **T-Lymphozyten** (T-Helfer- und T-Killerzellen).   * **Aktive Immunisierung (Schutzimpfung)** vs. **Passive Immunisierung (Heilimpfung)**.",
+          "concept": "Blutkreislauf: Lungenkreislauf (Gasaustausch Alveolen) vs. Körperkreislauf; Herzzyklus: Systole (Austreibung) vs. Diastole (Füllung); Immunsystem: B-Lymphozyten (Antikörper), T-Killerzellen, Gedächtniszellen; Aktive Impfung (abgeschwächte Antigene) vs. Passive Impfung (fertige Antikörper).",
+          "sample_solution": "1. Der doppelte Blutkreislauf des Menschen: - Das menschliche Herz ist ein muskuläres Hohlorgan, das durch die Herzscheidewand (Septum) in eine rechte und linke Hälfte geteilt ist:   * **1. Lungenkreislauf (Kleiner Kreislauf)**:     - Rechte Herzkammer $\\rightarrow$ Lungenstamm/Lungenarterien (führen **sauerstoffarmes, dunkelrotes Blut**) $\\rightarrow$ Lungenkapillaren um die Lungenbläschen (Alveolen).     - **Gasaustausch**: Entlang des Konzentrationsgefälles diffundiert $O_2$ aus den Alveolen ins Blut (Bindung an das Hämoglobin der Erythrozyten) und $CO_2$ aus dem Blut in die Ausatemluft.     - Sauerstoffreiches Blut fließt über die Lungenvenen zurück in den **linken Vorhof**.   * **2. Körperkreislauf (Großer Kreislauf)**:     - Linke Herzkammer $\\rightarrow$ Hauptschlagader (**Aorta**) $\\rightarrow$ Arterien $\\rightarrow$ Kapillaren aller Organe (Versorgung mit $O_2$, Glucose; Aufnahme von Stoffwechselabfällen) $\\rightarrow$ obere/untere Hohlvene $\\rightarrow$ **rechter Vorhof**. 2. Die Herzmechanik (Der Herzzyklus): - **1. Systole (Anspannungs- und Austreibungsphase)**:   * Die Kammermuskulatur kontrahiert kraftvoll. Die **Segelklappen** (zwischen Vorhöfen und Kammern) schließen sich (1. Herzton). Die **Taschenklappen** öffnen sich und das Blut wird in Aorta und Lungenarterie gepresst. - **2. Diastole (Entspannungs- und Füllungsphase)**:   * Die Kammermuskulatur erschlafft. Die Taschenklappen schlagen zu (2. Herzton), die Segelklappen öffnen sich und saugen sauerstoffreiches bzw. sauerstoffarmes Blut aus den Vorhöfen in die Kammern. 3. Das menschliche Immunsystem: - **Unspezifische Immunabwehr**:   * Äußere Barrieren (Säureschutzmantel, Flimmerepithel, Lysozym in Tränen) und **Makrophagen (Fresszellen)**, die Fremdkörper unspezifisch durch Phagozytose vernichten. - **Spezifische Immunabwehr (Erworben)**:   * **Antigen-Antikörper-Reaktion**: Krankheitserreger tragen spezifische Oberflächenstrukturen (**Antigene**).   * **B-Lymphozyten**: Differenzieren sich zu Plasmazellen, die millionenfach passgenaue **Antikörper (Proteine in Y-Form)** sezernieren, welche Erreger verklumpen (Agglutination).   * **T-Lymphozyten**: Erkennen virusinfizierte Körperzellen und leiten die Apoptose (Zelltod) ein.   * **Gedächtniszellen**: Speichern den 'Bauplan' der Antikörper über Jahrzehnte $\\implies$ bei Zweitinfektion erfolgt eine sofortige, unbemerkt bleibende Immunantwort (**Immunität**). 4. Impfprinzipien: - **Aktive Impfung (Prävention)**: Verabreichung von toten/abgeschwächten Erregern oder mRNA $\\implies$ der Körper bildet selbst Antikörper und langlebige Gedächtniszellen. - **Passive Impfung (Notfalltherapie)**: Verabreichung von fertigen Antikörpern (z. B. nach Tetanus-Verletzung) $\\implies$ sofortiger Schutz, aber keine Gedächtniszellbildung (kurzfristige Wirkung)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,140 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer",
+  "version": "2026.08.1",
+  "title": "BwR 9: Sachanlagen, Abschreibung (AfA) und das Umsatzsteuersystem (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 9 (Wahlpflichtfächergruppe II): Das Umsatzsteuersystem (Vorsteuer VORST als Forderung, Umsatzsteuer UST als Verbindlichkeit, Zahllast/Vorsteuerüberhang), Anlagenkauf und lineare Abschreibung (AfA).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/bwr",
+      "checked": "2026-08-15",
+      "label": "Realschule BwR 9 (Wahlpflichtfächergruppe II), Lernbereiche Umsatzsteuer und Sachanlagen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4W9A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4W9A0000000000000000A01",
+      "namespace": "bwr-umsatzsteuer",
+      "slug": "umsatzsteuersystem-vorsteuer-umsatzsteuer-zahllast",
+      "title": "Das Mehrwertsteuersystem: Vorsteuer (VORST / Forderung) vs. Umsatzsteuer (UST / Verbindlichkeit) und Zahllast",
+      "domain": "schule/bwr/umsatzsteuer",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Value added tax",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Das Umsatzsteuersystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche steuerrechtliche Natur hat das Konto '2600 Vorsteuer' (VORST), auf dem die beim Einkauf bezahlte Umsatzsteuer erfasst wird?",
+          "concept": "Ein aktives Bestandskonto / eine Forderung gegenüber dem Finanzamt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aktives Bestandskonto (Forderung an Finanzamt)",
+              "Passives Bestandskonto (Schuld)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Prinzip der Umsatzsteuer als Allphasen-Netto-Mehrwertsteuer mit Vorsteuerabzug: 1. **Einkauf (Beschaffung)**: Das Unternehmen zahlt den Bruttobetrag (119 %) an den Lieferanten; die enthaltene Steuer ist **2600 Vorsteuer (VORST / 19 %)** $\\rightarrow$ Forderung gegenüber dem Finanzamt, Buchung im **Soll**, 2. **Verkauf (Absatz)**: Das Unternehmen stellt dem Kunden den Bruttobetrag in Rechnung; die vereinnahmte Steuer ist **4800 Umsatzsteuer (UST / 19 %)** $\\rightarrow$ Verbindlichkeit gegenüber dem Finanzamt, Buchung im **Haben**, 3. **Umsatzsteuerabrechnung am Monatsende**: Verrechnung VORST und UST; Saldo UST > VORST = **Zahllast** (an das Finanzamt zu überweisen: *4800 UST an 2600 VORST und 4800 UST an 2800 BK*); Saldo VORST > UST = **Vorsteuerüberhang** (Erstattung durch das Finanzamt) und bilde die Buchungssätze für: a) Kauf von Rohstoffen netto 10.000 € + 19 % USt auf Ziel, b) Verkauf von Fertigerzeugnissen netto 25.000 € + 19 % USt auf Ziel.",
+          "concept": "USt-System: Vorsteuer (Einkauf, Soll, Forderung) vs. Umsatzsteuer (Verkauf, Haben, Verbindlichkeit); Zahllast = UST - VORST; a) '6000 AWR 10.000 € und 2600 VORST 1.900 € an 4400 VLL 11.900 €'; b) '2400 FO 29.750 € an 5000 UEFE 25.000 € und 4800 UST 4.750 €'.",
+          "sample_solution": "1. Das System der Umsatzsteuer und des Vorsteuerabzugs: - Die Umsatzsteuer (USt, Regelsatz **19 %**, ermäßigter Satz **7 %**) ist eine indirekte Steuer, die wirtschaftlich ausschließlich den privaten Endverbraucher belasten soll. - Für Unternehmer ist die Umsatzsteuer ein **durchlaufender Posten** (weder Aufwand noch Ertrag):   * **1. Beim Wareneinkauf (Eingangsrechnung)**:     - Das Unternehmen zahlt dem Lieferanten den Nettopreis plus 19 % Umsatzsteuer.     - Diese gezahlte Steuer heißt **Vorsteuer (`2600 VORST`)**.     - Da das Unternehmen diesen Betrag vom Staat zurückverlangen darf, stellt die Vorsteuer eine **Forderung an das Finanzamt** dar (Aktives Bestandskonto $\\rightarrow$ Buchung immer im **Soll**).   * **2. Beim Warenverkauf (Ausgangsrechnung)**:     - Das Unternehmen berechnet dem Kunden den Nettowert plus 19 % Umsatzsteuer.     - Diese eingenommene Steuer heißt **Umsatzsteuer (`4800 UST`)**.     - Da das Geld dem Staat zusteht und nur treuhänderisch verwahrt wird, stellt es eine **Verbindlichkeit gegenüber dem Finanzamt** dar (Passives Bestandskonto $\\rightarrow$ Buchung immer im **Haben**). 2. Die monatliche Umsatzsteuerzahllast: - Zum Monatsende werden Vorsteuer- und Umsatzsteuerkonto miteinander verrechnet:   $$\\mathbf{\\text{Zahllast} = \\text{Summe Umsatzsteuer (UST)} - \\text{Summe Vorsteuer (VORST)}}$$   * Bei $\\text{UST} > \\text{VORST}$: Der Betrieb muss die Differenz (**Zahllast**) per Banküberweisung an das Finanzamt abführen.   * Bei $\\text{VORST} > \\text{UST}$ (z. B. nach hohen Maschineninvestitionen): Der Betrieb erhält eine Rückerstattung (**Vorsteuerüberhang**). 3. Buchungssätze der Geschäftsfälle: - **a) Kauf von Rohstoffen netto 10.000 € + 19 % USt auf Ziel**:   * Nettowert: $10.000\\text{ €}$ (`6000 AWR`)   * Vorsteuer (19 % von 10.000 €): $1.900\\text{ €}$ (`2600 VORST`)   * Bruttorechnungsbetrag (119 %): $11.900\\text{ €}$ (`4400 VLL`)   * **Buchungssatz**:   $$\\mathbf{\\text{6000 AWR } 10.000\\text{ € } \\quad \\& \\quad \\text{2600 VORST } 1.900\\text{ € } \\quad \\text{an} \\quad \\text{4400 VLL } 11.900\\text{ €}}$$ - **b) Verkauf von Fertigerzeugnissen netto 25.000 € + 19 % USt auf Ziel**:   * Nettowert: $25.000\\text{ €}$ (`5000 UEFE`)   * Umsatzsteuer (19 % von 25.000 €): $4.750\\text{ €}$ (`4800 UST`)   * Bruttoforderung (119 %): $29.750\\text{ €}$ (`2400 FO`)   * **Buchungssatz**:   $$\\mathbf{\\text{2400 FO } 29.750\\text{ € } \\quad \\text{an} \\quad \\text{5000 UEFE } 25.000\\text{ € } \\quad \\& \\quad \\text{4800 UST } 4.750\\text{ €}}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K4W9A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4W9A0000000000000000A02",
+      "namespace": "bwr-sachanlagen",
+      "slug": "anlagenkauf-lineare-abschreibung-afa-restbuchwert",
+      "title": "Sachanlagen und Lineare Abschreibung (AfA): Anschaffungskosten, Nutzungsdauer und Restbuchwert",
+      "domain": "schule/bwr/sachanlagen",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W9A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Anlagenkäufe enthalten Vorsteuer und werden linear abgeschrieben."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Depreciation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Anlagevermögen und Abschreibungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie hoch ist der jährliche lineare Abschreibungsbetrag (AfA) für eine Produktionsmaschine mit Anschaffungskosten von netto 60.000 € und einer betriebsgewöhnlichen Nutzungsdauer von 5 Jahren?",
+          "concept": "12.000 € pro Jahr (60.000 € / 5 Jahre = 12.000 € oder 20 % von 60.000 €)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "12.000 € pro Jahr",
+              "10.000 € pro Jahr"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Wesen und die mathematische Ermittlung der linearen Abschreibung (AfA = Absetzung für Abnutzung): 1. Ursachen für den Wertverlust des Anlagevermögens (technischer Verschleiß, Alterung, technischer Fortschritt), 2. Berechnung des jährlichen Abschreibungsbetrags ($\\text{AfA} = \\frac{\\text{Anschaffungskosten (netto)}}{\\text{Nutzungsdauer } n}$) bzw. des Abschreibungssatzes ($p_{\\text{AfA}}\\% = \\frac{100\\%}{n}$), 3. **Restbuchwert (RBW)** zum 31.12., 4. Buchungssatz der Abschreibung (*`6520 Abschreibungen auf Sachanlagen (ABSA) an Aktivkonto [z. B. 0840 Fuhrpark FP]`*) und erstelle den Abschreibungsplan für einen LKW: Anschaffungskosten netto 80.000 €, Nutzungsdauer 4 Jahre.",
+          "concept": "AfA: Erfassung der Wertminderung von Anlagegütern als Aufwand; lineare AfA = Anschaffungskosten / Nutzungsdauer; Buchung: 6520 ABSA an Sachanlagenkonto; Abschreibungsplan LKW (80.000 € / 4 = 20.000 €/Jahr): Jahr 1: AfA 20.000 €, RBW 60.000 €; Jahr 2: AfA 20.000 €, RBW 40.000 €; Jahr 3: AfA 20.000 €, RBW 20.000 €; Jahr 4: AfA 20.000 €, RBW 0 € (bzw. 1 € Erinnerungswert).",
+          "sample_solution": "1. Betriebswirtschaftliche Grundlagen der Abschreibung (AfA): - Sachanlagegüter (Maschinen, Fuhrpark, Gebäude, Geschäftsausstattung) verlieren durch tägliche Nutzung, Abnutzung, Alterung und technischen Fortschritt kontinuierlich an Wert. - Dieser jährliche Wertverlust wird durch **Abschreibungen (AfA)** planmäßig als betrieblicher Aufwand erfasst. 2. Die mathematische Berechnung der linearen Abschreibung: - **Formeln**:   $$\\text{Jährlicher Abschreibungsbetrag (AfA)} = \\frac{\\text{Anschaffungskosten (Netto)}}{\\text{Betriebsgewöhnliche Nutzungsdauer in Jahren } (n)}$$   $$\\text{Abschreibungssatz in } \\% = \\frac{100 \\%}{n}$$ - **Restbuchwert (RBW)**:   $$\\text{RBW zum 31.12.} = \\text{Buchwert zu Jahresbeginn} - \\text{Jahres-AfA}$$ 3. Der Buchungssatz zum 31.12.: - Die Abschreibung wird auf dem Aufwandskonto `6520 ABSA` (Abschreibungen auf Sachanlagen) im Soll und direkt auf dem betroffenen Sachanlagenkonto im Haben gebucht:   $$\\mathbf{\\text{6520 ABSA [Betrag] \\quad an \\quad Sachanlagenkonto (z. B. 0840 FP) [Betrag]}}$$ 4. Abschreibungsplan für den LKW (80.000 € netto, 4 Jahre Nutzungsdauer $\\rightarrow$ AfA = 20.000 € / Jahr = 25 %): | Nutzungsjahr | Buchwert zu Jahresbeginn | Abschreibung (AfA) | Restbuchwert (RBW zum 31.12.) | |:---:|:---:|:---:|:---:| | **Jahr 1** | 80.000 € | 20.000 € | **60.000 €** | | **Jahr 2** | 60.000 € | 20.000 € | **40.000 €** | | **Jahr 3** | 40.000 € | 20.000 € | **20.000 €** | | **Jahr 4** | 20.000 € | 20.000 € | **0 €** (bzw. 1 € Erinnerungswert) |"
+        }
+      ]
+    }
+  ]
+}

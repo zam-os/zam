@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-englisch-grammatik-grundlagen",
+  "version": "2026.08.1",
+  "title": "Englisch 6: Grundgrammatik – Simple Past, Modalverben und Pronomen (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Englisch 6: Simple Present vs. Present Continuous, Simple Past (unregelmäßige Verben), Modalverben (can/must/needn't) und Possessivpronomen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/englisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Englisch 6, Sprachliche Mittel und Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E6G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E6G0000000000000000A01",
+      "namespace": "englisch-grammatik",
+      "slug": "simple-present-vs-present-continuous-aspekte",
+      "title": "Simple Present versus Present Continuous: Gewohnheiten versus Handlungen im Moment",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Present tense",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E6G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die grundlegende Merkregel für die 3. Person Einzahl (he, she, it) im englischen Simple Present?",
+          "concept": "'He, she, it – das 's' muss mit!' (Anhängen von -s bzw. -es an das Verb)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "He/she/it erhält ein '-s' (das 's' muss mit)",
+              "He/she/it bleibt immer in der Grundform"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E6G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Simple Present (Bildung: Infinitiv / he-she-it + s; Verwendung: regelmäßige Gewohnheiten, Tatsachen, Zeitpläne; Signalwörter: always, usually, often, sometimes, never, every day; Verneinung: don't / doesn't + Infinitiv) mit dem Present Continuous / Progressive (Bildung: am/is/are + Verb-ing; Verwendung: Handlungen, die genau im Augenblick des Sprechens ablaufen; Signalwörter: now, at the moment, Look!, Listen!) und setze ein: a) 'Listen! The birds (sing).' b) 'Emma usually (play) tennis on Fridays.'",
+          "concept": "Simple Present: Gewohnheit / Dauerzustand; Present Continuous: gerade im Moment; a) 'are singing' (Signalwort: Listen!); b) 'plays' (Signalwort: usually + 3. Person Einzahl).",
+          "sample_solution": "1. Simple Present vs. Present Continuous im Vergleich: - Simple Present (Einfache Gegenwart):   * Bildung: Grundform des Verbs (bei *he, she, it* wird ein **-s** bzw. **-es** angehängt: *he plays, she watches*).   * Verneinung & Fragen: Mit Hilfsverb *do / does* -> *don't / doesn't + Infinitiv* (*He doesn't like milk. Do you play football?*).   * Verwendung: Für regelmäßig wiederkehrende Handlungen, Hobbys, Gewohnheiten, feste Naturgesetze und Fahrpläne.   * Signalwörter: *always, usually, often, sometimes, never, every week, on Mondays*. - Present Continuous / Progressive (Verlaufsform der Gegenwart):   * Bildung: **am / is / are + Infinitiv + -ing** (*I am reading, he is playing, they are swimming*).   * Verneinung: *am not / isn't / aren't + Verb-ing*.   * Verwendung: Für Vorgänge und Handlungen, die genau jetzt, im Augenblick des Sprechens, im Verlauf sind und noch andauern.   * Signalwörter: *now, right now, at the moment, Look!, Listen!* 2. Einsetzen in die Beispielsätze: - a) 'Listen! The birds **are singing**.' (Begründung: Signalwort 'Listen!' zeigt an, dass der Vogelgesang gerade in diesem Moment stattfindet -> Present Continuous). - b) 'Emma usually **plays** tennis on Fridays.' (Begründung: Signalwort 'usually' beschreibt eine regelmäßige Gewohnheit; Subjekt 'Emma' ist 3. Person Einzahl -> Simple Present mit -s)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E6G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E6G0000000000000000A02",
+      "namespace": "englisch-grammatik",
+      "slug": "simple-past-regelmaessig-unregelmaessig-did",
+      "title": "Simple Past: Regelmäßige Verben (-ed), unregelmäßige Verben und Verneinung/Fragen mit did",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E6G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Simple Past baut auf dem Verständnis der einfachen Zeitformen auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Past tense",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E6G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird eine Frage oder Verneinung im englischen Simple Past mit dem Hilfsverb 'did' gebildet?",
+          "concept": "did / didn't + Infinitiv des Hauptverbs (Grundform, z. B. 'Did you see...?' / 'I didn't go...')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "did / didn't + Infinitiv (Grundform)",
+              "did + Vergangenheitsform des Verbs"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E6G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Bildung des Simple Past für: 1. Regelmäßige Verben (Infinitiv + -ed, Besonderheiten: *stopped, played, cried*), 2. Häufige unregelmäßige Verben (go -> went, see -> saw, buy -> bought, have -> had, be -> was/were), 3. Verneinte Sätze und Fragen mit *did / didn't + Infinitiv* und übersetze: a) 'Gestern ging ich in die Schule.' b) 'Hast du deine Hausaufgaben gemacht?' c) 'Wir sahen den Film nicht.'",
+          "concept": "Regelmäßig: +ed (Doppelkonsonant bei kurzem Vokal: stop -> stopped; y nach Konsonant wird i: cry -> cried); Unregelmäßig: 2. Spalte der Verbentabelle; Fragen/Verneinung: did / didn't + Grundform; a) 'Yesterday I went to school.' b) 'Did you do your homework?' c) 'We didn't see the film.'",
+          "sample_solution": "1. Bildung und Regeln des Simple Past: - Regelmäßige Verben: Werden durch Anhängen der Endung **-ed** an den Infinitiv gebildet (*walk -> walked, play -> played*).   * Besonderheiten der Rechtschreibung:     - Nach stummem -e nur -d (*live -> lived*).     - Verdopplung des Endkonsonanten nach kurzem, betonten Vokal (*stop -> stopped, plan -> planned*).     - Endung -y nach Konsonant wird zu -ied (*cry -> cried, try -> tried*, aber *play -> played* nach Vokal). - Unregelmäßige Verben (Irregular Verbs): Haben eine eigene Vergangenheitsform (2. Spalte der Liste der unregelmäßigen Verben), die auswendig gelernt werden muss (*go -> went, see -> saw, buy -> bought, have -> had, come -> came, write -> wrote, be -> was/were*). 2. Verneinung und Fragen mit dem Hilfsverb 'did': - In Fragen und verneinten Sätzen steht das Hilfsverb in der Vergangenheit (*did / didn't*); das nachfolgende Hauptverb steht **immer im Infinitiv (Grundform)**! - Regel: **didn't + Infinitiv** (*He didn't went* ist falsch -> richtig: *He didn't go*). - Frage: **Did + Subjekt + Infinitiv?** (*Did you buy the ticket?*). 3. Übersetzungen: - a) 'Gestern ging ich in die Schule.' -> **'Yesterday I went to school.'** (unregelmäßig). - b) 'Hast du deine Hausaufgaben gemacht?' -> **'Did you do your homework?'** (Frage mit did + Infinitiv do). - c) 'Wir sahen den Film nicht.' -> **'We didn't see the film.'** (Verneinung mit didn't + Infinitiv see)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E6G0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E6G0000000000000000A03",
+      "namespace": "englisch-grammatik",
+      "slug": "modalverben-can-must-mustnt-neednt",
+      "title": "Modalverben: can, must, mustn't (Verbot) versus needn't (keine Notwendigkeit)",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E6G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Modalverben modifizieren Aussagen im einfachen Satzgefüge."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English modal auxiliary verb",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E6G0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was drückt das englische Modalverb 'mustn't' im Gegensatz zu 'needn't' aus?",
+          "concept": "Ein striktes Verbot ('Du darfst nicht!')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein striktes Verbot ('Du darfst nicht!')",
+              "Dass etwas nicht nötig ist ('Du brauchst nicht')"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E6G0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den bedeutungsentscheidenden Unterschied zwischen den englischen Modalverben: 1. *must* (Pflicht/Notwendigkeit: müssen), 2. *mustn't* (striktes Verbot: nicht dürfen!), 3. *needn't / don't have to* (keine Pflicht: nicht brauchen/nicht müssen), 4. *can / can't* (Können/Fähigkeit/Erlaubnis) und wähle die passende Form für: a) 'You (mustn't / needn't) touch that wire – it is dangerous!' b) 'Tomorrow is Sunday, so I (mustn't / needn't) get up early.'",
+          "concept": "must = müssen; mustn't = Verbot (darf nicht!); needn't = nicht müssen / nicht brauchen; can = können / dürfen; a) 'mustn't' (Verbot wegen Lebensgefahr); b) 'needn't' (keine Notwendigkeit am Sonntag aufzustehen).",
+          "sample_solution": "1. Bedeutung der englischen Modalverben (Modal Auxiliaries): - *must*: Drückt eine dringende Pflicht oder Notwendigkeit aus ('müssen'). Ersatzform für andere Zeitformen: *have to / had to* (*You must wear a helmet*). - *mustn't* (must not): Drückt ein **striktes Verbot** aus ('nicht dürfen' / 'es ist verboten!'). Häufige Fehlerquelle im Deutschen! (*You mustn't smoke here* = 'Du darfst hier nicht rauchen!'). - *needn't* (need not) bzw. *don't have to*: Drückt aus, dass **keine Notwendigkeit** besteht ('etwas nicht tun müssen / nicht brauchen'). Es ist freigestellt (*You needn't wash the dishes, we have a dishwasher* = 'Du brauchst nicht abzuwaschen'). - *can / can't*: Drückt Fähigkeit ('können'), Möglichkeit oder Erlaubnis ('dürfen') aus. Ersatzform: *be able to / be allowed to*. 2. Lösung der Beispielsätze: - a) 'You **mustn't** touch that wire – it is dangerous!' (Begründung: Es handelt sich um ein striktes Verbot wegen Lebensgefahr -> *mustn't*). - b) 'Tomorrow is Sunday, so I **needn't** (don't have to) get up early.' (Begründung: Am Sonntag besteht keine Pflicht früh aufzustehen, man darf aber ausschlafen -> *needn't*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E6G0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E6G0000000000000000A04",
+      "namespace": "englisch-grammatik",
+      "slug": "pronomen-possessivbegleiter-vs-possessivpronomen",
+      "title": "Pronomen: Objektpronomen, Possessivbegleiter (my/your) und echte Possessivpronomen (mine/yours)",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E6G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Pronomen ersetzen Subjekte und Objekte in englischen Sätzen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English personal pronouns",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E6G0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Wort ist das korrekte eigenständige Possessivpronomen (steht allein ohne nachfolgendes Nomen) für 'meins / meiner' im Englischen (z. B. 'This book is ...')?",
+          "concept": "mine (z. B. 'This book is mine.')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mine (Possessivpronomen)",
+              "my (Possessivbegleiter)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E6G0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine vollständige Übersicht über die Personalpronomen als Subjekt (I, you, he, she, it, we, they), als Objekt (me, you, him, her, it, us, them), die Possessivbegleiter mit Nomen (my, your, his, her, its, our, their) und die selbstständigen Possessivpronomen ohne Nomen (mine, yours, his, hers, its, ours, theirs) und fülle die Lücken aus: a) 'Is that (your / yours) bag?' – 'No, it's (her / hers).' b) 'Give (he / him) the ball, it is (his / his's).'",
+          "concept": "Subjekt: I, you, he...; Objekt: me, you, him...; Begleiter (vor Nomen): my book, your bag, her cat; Pronomen (alleinstehend): mine, yours, hers, ours, theirs; a) your bag / hers; b) him / his.",
+          "sample_solution": "1. Systematische Tabelle der englischen Pronomen: | Person | Subjektpronomen | Objektpronomen | Possessivbegleiter (mit Nomen) | Possessivpronomen (ohne Nomen) | |---|---|---|---|---| | 1. Sg. (ich) | **I** | **me** | **my** car | **mine** (meins) | | 2. Sg. (du) | **you** | **you** | **your** dog | **yours** (deins) | | 3. Sg. m (er) | **he** | **him** | **his** bike | **his** (seins) | | 3. Sg. f (sie) | **she** | **her** | **her** bag | **hers** (ihrs) | | 3. Sg. n (es) | **it** | **it** | **its** food | **its** | | 1. Pl. (wir) | **we** | **us** | **our** house | **ours** (unseres) | | 2. Pl. (ihr) | **you** | **you** | **your** room | **yours** (eures) | | 3. Pl. (sie) | **they** | **them** | **their** books | **theirs** (ihres) | 2. Unterscheidung Begleiter vs. Pronomen: - Possessivbegleiter (*my, your, her...*): Brauchen immer zwingend ein nachfolgendes Nomen (*This is my jacket*). - Possessivpronomen (*mine, yours, hers...*): Ersetzen das Nomen vollständig und stehen eigenständig am Satzende (*The jacket is mine*). 3. Lückenbeispiele: - a) 'Is that **your** bag?' (vor Nomen bag -> Begleiter) – 'No, it's **hers**.' (ohne Nomen -> Pronomen). - b) 'Give **him** the ball' (Objektform nach Verb give), 'it is **his**.' (Possessivpronomen)."
+        }
+      ]
+    }
+  ]
+}

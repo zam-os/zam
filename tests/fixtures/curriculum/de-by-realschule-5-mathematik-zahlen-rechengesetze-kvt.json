@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-mathematik-zahlen-rechengesetze",
+  "version": "2026.08.1",
+  "title": "Mathematik 5: Natürliche und Ganze Zahlen, Rechengesetze und Terme (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 5: Stellenwertsysteme, Runden, Rechengesetze (Kommutativ-, Assoziativ-, Distributivgesetz), Potenzen und Vorrangregeln.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/mathematik",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 5, Lernbereich Natürliche und Ganze Zahlen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M5Z0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M5Z0000000000000000A01",
+      "namespace": "mathematik-arithmetik",
+      "slug": "zehnersystem-stellenwerttafel-runden-ordnung",
+      "title": "Das Zehnersystem: Stellenwerttafel, Große Zahlen, Anordnung am Zahlenstrahl und Runden",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Decimal system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5Z0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Bei welchen Ziffern an der Rundungsstelle wird nach den mathematischen Rundungsregeln ABGERUNDET?",
+          "concept": "Bei den Ziffern 0, 1, 2, 3 und 4 (bei 5, 6, 7, 8, 9 wird aufgerundet)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Bei 0, 1, 2, 3 und 4",
+              "Bei 1, 2, 3, 4 und 5"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5Z0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Prinzip des dekadischen Stellenwertsystems (Basis 10, Ziffern 0–9, Bündelung von 10 Einheiten zur nächsthöheren Stufe: E, Z, H, T, ZT, HT, M, ZM, HM, Mrd), beschreibe die Anordnung natürlicher Zahlen auf dem Zahlenstrahl (Vorgänger, Nachfolger, Ungleichungskette mit < und >) und runde die Zahl 4.738.529: a) auf Tausender (T), b) auf Hunderttausender (HT), c) auf Millionen (M).",
+          "concept": "Stellenwertsystem: Wert einer Ziffer hängt von ihrer Stelle ab (Faktor 10 pro Stufe); Runden: Blick auf die rechts daneben stehende Ziffer (0-4 abrunden, 5-9 aufrunden); a) auf T: 4.739.000 (Hunderter ist 5 -> aufrunden); b) auf HT: 4.700.000 (Zehntausender ist 3 -> abrunden); c) auf M: 5.000.000 (Hunderttausender ist 7 -> aufrunden).",
+          "sample_solution": "1. Das dekadische Stellenwertsystem: - Unser Zahlensystem ist ein Positionssystem zur Basis 10 mit den zehn Ziffern {0, 1, 2, 3, 4, 5, 6, 7, 8, 9}. - Stellenwert: Der tatsächliche Wert einer Ziffer wird durch ihren Platz in der Stellenwerttafel bestimmt. Jede Stelle nach links ist genau zehnmal so viel wert wie die vorherige (Zehnerbündelung):   * E (Einer = 1), Z (Zehner = 10), H (Hunderter = 100)   * T (Tausender = 1.000), ZT (Zehntausender = 10.000), HT (Hunderttausender = 100.000)   * M (Millionen = 1.000.000), ZM (Zehnmillionen), HM (Hundertmillionen), Mrd (Milliarden = 10⁹). 2. Anordnung am Zahlenstrahl: - Die Menge der natürlichen Zahlen N = {1, 2, 3, 4, ...} bzw. N_0 = {0, 1, 2, 3, ...} beginnt bei 0 und setzt sich nach rechts unbegrenzt fort. - Jede Zahl n > 0 hat genau einen Vorgänger (n - 1) und genau einen Nachfolger (n + 1). Von zwei Zahlen ist diejenige kleiner (<), die auf dem Zahlenstrahl weiter links liegt. 3. Rundungsregeln für 4.738.529: - Regel: Man betrachtet die Ziffer unmittelbar rechts neben der Rundungsstelle. Bei 0, 1, 2, 3, 4 wird abgerundet (Rundungsstelle bleibt gleich), bei 5, 6, 7, 8, 9 wird aufgerundet (Rundungsstelle wird um 1 erhöht). Alle nachfolgenden Stellen werden zu Nullen. - a) Rundung auf Tausender (T): Die Rundungsstelle ist 8 (T). Die Ziffer rechts davon ist 5 (H) -> aufrunden: **4.739.000**. - b) Rundung auf Hunderttausender (HT): Die Rundungsstelle ist 7 (HT). Die Ziffer rechts davon ist 3 (ZT) -> abrunden: **4.700.000**. - c) Rundung auf Millionen (M): Die Rundungsstelle ist 4 (M). Die Ziffer rechts davon ist 7 (HT) -> aufrunden: **5.000.000**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5Z0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M5Z0000000000000000A02",
+      "namespace": "mathematik-arithmetik",
+      "slug": "rechengesetze-kommutativ-assoziativ-distributivgesetz",
+      "title": "Rechengesetze: Kommutativ-, Assoziativ- und Distributivgesetz (Ausklammern & Ausmultiplizieren)",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5Z0000000000000000A01",
+          "type": "hard",
+          "rationale": "Sicherer Umgang mit natürlichen Zahlen ist Grundlage für algebraische Rechengesetze."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Distributive property",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5Z0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet das Kommutativgesetz (Vertauschungsgesetz) für die Addition und Multiplikation zweier Zahlen a und b?",
+          "concept": "a + b = b + a und a · b = b · a (Summanden bzw. Faktoren dürfen beliebig vertauscht werden)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a + b = b + a und a · b = b · a",
+              "(a + b) + c = a + (b + c)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5Z0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die drei zentralen Rechengesetze der Mathematik mit Variablen und Worten: 1. Kommutativgesetz (Vertauschungsgesetz: a+b = b+a, a·b = b·a), 2. Assoziativgesetz (Verbindungsgesetz: (a+b)+c = a+(b+c), (a·b)·c = a·(b·c)), 3. Distributivgesetz (Verteilungsgesetz: a·(b+c) = a·b + a·c sowie Ausklammern) und berechne unter geschickter Ausnutzung von Rechenvorteilen: a) 25 · 37 · 4, b) 48 · 17 + 52 · 17.",
+          "concept": "Kommutativ: Reihenfolge beliebig; Assoziativ: Klammern beliebig setzbar bei reiner Addition/Multiplikation; Distributiv: Multiplikation verteilt sich über Addition; a) (25 · 4) · 37 = 100 · 37 = 3.700; b) Ausklammern von 17: (48 + 52) · 17 = 100 · 17 = 1.700.",
+          "sample_solution": "1. Die drei fundamentalen Rechengesetze: - 1. Kommutativgesetz (Vertauschungsgesetz):   * In einer reinen Summe oder einem reinen Produkt darf die Reihenfolge der Operanden beliebig vertauscht werden: **a + b = b + a** und **a · b = b · a** (Gilt NICHT für Subtraktion oder Division!). - 2. Assoziativgesetz (Verbindungsgesetz / Klammergesetz):   * Bei der Addition mehrerer Summanden oder der Multiplikation mehrerer Faktoren ist die Klammerung beliebig: **(a + b) + c = a + (b + c)** und **(a · b) · c = a · (b · c)**. - 3. Distributivgesetz (Verteilungsgesetz):   * Verknüpft Multiplikation mit Addition/Subtraktion:     - Ausmultiplizieren: **a · (b + c) = a · b + a · c**     - Ausklammern (gemeinsamen Faktor vor die Klammer ziehen): **a · b + a · c = a · (b + c)**. 2. Geschicktes Rechnen mit Rechenvorteilen: - a) Term: 25 · 37 · 4   * Nach Kommutativ- und Assoziativgesetz vertauschen und gruppieren: (25 · 4) · 37   * Zwischenrechnung: 100 · 37   * Ergebnis: **3.700** (Kopfrechnen ohne schriftliche Multiplikation). - b) Term: 48 · 17 + 52 · 17   * Der Faktor 17 kommt in beiden Summanden vor -> Ausklammern nach dem Distributivgesetz: (48 + 52) · 17   * Zwischenrechnung: 100 · 17   * Ergebnis: **1.700**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5Z0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M5Z0000000000000000A03",
+      "namespace": "mathematik-arithmetik",
+      "slug": "potenzen-zehnerpotenzen-quadratzahlen",
+      "title": "Potenzen und Quadratzahlen: Basis, Exponent und Rechnen mit Zehnerpotenzen",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5Z0000000000000000A02",
+          "type": "hard",
+          "rationale": "Potenzen sind abkürzende Schreibweisen für fortgesetzte Multiplikationen gleicher Faktoren."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Exponentiation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5Z0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man bei der Potenzschreibweise a^n die Zahl a (die multipliziert wird) und wie die Hochzahl n (die angibt, wie oft der Faktor auftritt)?",
+          "concept": "a ist die Basis (Grundzahl), n ist der Exponent (Hochzahl)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a = Basis, n = Exponent",
+              "a = Exponent, n = Basis"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5Z0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den Begriff der Potenz a^n = a · a · ... · a (n Faktoren), liste die Quadratzahlen von 1² bis 15² auswendig auf, erkläre den Zusammenhang zwischen dem Exponenten einer Zehnerpotenz 10^n und der Anzahl der Nullen (z. B. 10³ = 1.000, 10⁶ = 1.000.000 = 1 Million) und berechne: a) 2⁵, b) 3³ + 4², c) Schreibe 350.000 als Produkt aus Zahl und Zehnerpotenz (wissenschaftliche Schreibweise: 35 · 10⁴ bzw. 3,5 · 10⁵).",
+          "concept": "Potenz a^n = Produkt aus n gleichen Faktoren a; Quadratzahlen 1²=1, 2²=4, 3²=9, 4²=16, 5²=25, 6²=36, 7²=49, 8²=64, 9²=81, 10²=100, 11²=121, 12²=144, 13²=169, 14²=196, 15²=225; Zehnerpotenzen: Exponent = Anzahl Nullen; a) 2⁵ = 32; b) 27 + 16 = 43; c) 35 · 10⁴ = 350.000.",
+          "sample_solution": "1. Definition der Potenz: - Eine Potenz **a^n** (gelesen 'a hoch n') ist eine Kurzschreibweise für ein Produkt aus lauter gleichen Faktoren:   * **a** = Basis (Grundzahl): Die Zahl, die mit sich selbst multipliziert wird.   * **n** = Exponent (Hochzahl): Gibt an, wie oft die Basis als Faktor gesetzt wird.   * Beispiel: 2⁴ = 2 · 2 · 2 · 2 = 16 (Sonderfälle: a¹ = a; a⁰ = 1). 2. Die Quadratzahlen von 1 bis 15 (unverzichtbares Kopfrechenwissen): - 1² = 1, 2² = 4, 3² = 9, 4² = 16, 5² = 25 - 6² = 36, 7² = 49, 8² = 64, 9² = 81, 10² = 100 - 11² = 121, 12² = 144, 13² = 169, 14² = 196, 15² = 225. 3. Zehnerpotenzen: - Bei Potenzen mit der Basis 10 gibt der Exponent genau die Anzahl der Nullen hinter der Eins an:   * 10¹ = 10 (Zehn)   * 10² = 100 (Hundert)   * 10³ = 1.000 (Tausend)   * 10⁶ = 1.000.000 (1 Million)   * 10⁹ = 1.000.000.000 (1 Milliarde). 4. Berechnungen: - a) 2⁵ = 2 · 2 · 2 · 2 · 2 = **32**. - b) 3³ + 4² = (3 · 3 · 3) + (4 · 4) = 27 + 16 = **43**. - c) 350.000 mit Zehnerpotenz: **35 · 10⁴** (oder 3,5 · 10⁵)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5Z0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M5Z0000000000000000A04",
+      "namespace": "mathematik-arithmetik",
+      "slug": "vorrangregeln-klammern-terme-baumdiagramm",
+      "title": "Vorrangregeln: Klammern, Potenz vor Punkt vor Strich (Kla-Po-Pu-Stri) und Termbäume",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5Z0000000000000000A03",
+          "type": "hard",
+          "rationale": "Potenzen und Punkt-/Strichrechnungen müssen hierarchisch strukturiert werden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Order of operations",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit natürlichen Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5Z0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher hierarchischen Reihenfolge müssen mathematische Rechenoperationen nach der Merkregel 'Kla-Po-Pu-Stri' ausgeführt werden?",
+          "concept": "1. Klammern, 2. Potenzen, 3. Punktrechnung (·, :), 4. Strichrechnung (+, -) von links nach rechts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1. Klammern -> 2. Potenzen -> 3. Punkt -> 4. Strich",
+              "1. Strich -> 2. Punkt -> 3. Potenzen -> 4. Klammern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5Z0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Vorrangregeln der Mathematik (Klammern von innen nach außen -> Potenzen -> Punktrechnung vor Strichrechnung -> bei gleicher Rangfolge streng von links nach rechts), bestimme die Art des Gesamtterms (benannt nach der zuletzt auszuführenden Rechenoperation) und berechne schrittweise: a) 100 - 4 · (3 + 2²), b) (64 : 8 + 12) · 5 - 30 : 6.",
+          "concept": "Vorrangregeln: Kla-Po-Pu-Stri; Termart richtet sich nach letzter Operation (Differenz, Produkt etc.); a) Klammer innen: 2²=4 -> 3+4=7; Punkt: 4*7=28; Strich: 100-28 = 72 (Termart: Differenz); b) Klammer: 64:8=8 -> 8+12=20; Punkt: 20*5=100 und 30:6=5; Strich: 100-5 = 95 (Termart: Differenz).",
+          "sample_solution": "1. Die mathematische Vorrang-Hierarchie ('Kla-Po-Pu-Stri'): - 1. **Klammern** (**Kla**): Ausdrücke in runden, eckigen oder geschweiften Klammern haben absolute Priorität und werden immer zuerst berechnet (von innen nach außen). - 2. **Potenzen** (**Po**): Potenzen werden vor allen Grundrechenarten ausgewertet (z. B. 3 · 2³ = 3 · 8 = 24, nicht 6³!). - 3. **Punktrechnung** (**Pu**): Multiplikation (·) und Division (:) binden stärker als Addition und Subtraktion ('Punkt vor Strich'). - 4. **Strichrechnung** (**Stri**): Addition (+) und Subtraktion (-). Bei gleichrangigen Operatoren wird streng von links nach rechts gerechnet. 2. Bestimmung der Termart: - Ein Term wird immer nach der **zuletzt ausgeführten Rechenstufe** benannt:   * Endet der Rechenweg mit +, heißt der Term **Summe**.   * Endet er mit -, heißt er **Differenz**.   * Endet er mit ·, heißt er **Produkt**.   * Endet er mit :, heißt er **Quotient**. 3. Schrittweise Auswertung der Beispielterme: - a) Term: `100 - 4 · (3 + 2²)`   * 1. Schritt (Potenz in Klammer): 2² = 4 -> `100 - 4 · (3 + 4)`   * 2. Schritt (Klammer berechnen): 3 + 4 = 7 -> `100 - 4 · 7`   * 3. Schritt (Punktrechnung vor Strich): 4 · 7 = 28 -> `100 - 28`   * 4. Schritt (Strichrechnung): 100 - 28 = **72** (Termart: **Differenz**). - b) Term: `(64 : 8 + 12) · 5 - 30 : 6`   * 1. Schritt (in der Klammer Punkt vor Strich): 64 : 8 = 8 -> `(8 + 12) · 5 - 30 : 6`   * 2. Schritt (Klammer fertig): 8 + 12 = 20 -> `20 · 5 - 30 : 6`   * 3. Schritt (beide Punktrechnungen ausführen): 20 · 5 = 100 und 30 : 6 = 5 -> `100 - 5`   * 4. Schritt (letzte Subtraktion): 100 - 5 = **95** (Termart: **Differenz**)."
+        }
+      ]
+    }
+  ]
+}

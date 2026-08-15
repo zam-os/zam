@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax",
+  "version": "2026.08.1",
+  "title": "Deutsch 7: Grammatik – Konjunktiv I/II (Indirekte Rede), Aktiv/Passiv und Satzgefüge (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 7: Konjunktiv I (Bildung aus Präsensstamm, Indirekte Rede) und Konjunktiv II (Irrealis, Höflichkeit, Ersatzformen), Aktiv vs. Passiv (Vorgangs- vs. Zustandspassiv) und komplexe Satzgefüge (Infinitiv-/Partizipialgruppen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/deutsch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Deutsch 7, Lernbereiche Sprache und Sprachgebrauch untersuchen – Modi des Verbs und Passiv"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D7G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D7G0000000000000000A01",
+      "namespace": "gymnasium-deutsch-grammatik",
+      "slug": "konjunktiv-1-und-2-indirekte-rede-irrealis-ersatzformen",
+      "title": "Die Modi des Verbs: Konjunktiv I (Indirekte Rede) vs. Konjunktiv II (Irrealis) und Ersatzformen",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Subjunctive",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Konjunktiv und indirekte Rede",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D7G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Modus-Form ist die grammatische Erstwahl zur distanzierten, sachlichen Wiedergabe fremder Äußerungen in der **indirekten Rede**?",
+          "concept": "Der Konjunktiv I (abgeleitet aus dem Präsensstamm: er gehe, sie habe, er sei)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Konjunktiv I",
+              "Der Indikativ Präteritum"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D7G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere Bildung und Einsatz der Konjunktive im Deutschen: 1. **Konjunktiv I**: Bildung aus dem **Präsensstamm** + feste Endungen (*-e, -est, -e, -en, -et, -en*; z. B. *er wisse, sie gehe, er sei*); Funktion: **Indirekte Rede** in Journalismus und Berichten (signalisiert Neutralität und Distanz), 2. **Die Kaskade der Ersatzformen bei Formengleichheit**: Wenn der Konjunktiv I mit dem Indikativ übereinstimmt (z. B. *sie gehen*), weicht man zwingend auf den **Konjunktiv II** aus (*sie gingen*); klingt dieser veraltet oder ebenfalls identisch, weicht man auf die **würde-Umschreibung** aus (*sie würden gehen*), 3. **Konjunktiv II**: Bildung aus dem **Präteritumstamm** + Umlaut (*er käme, sie wüsste, er wäre*); Funktion: **Irrealis** (Wünsche, Träume, nicht-wirkliche Bedingungen: *'Wenn ich reich wäre...'*), Höflichkeit (*'Könnten Sie mir helfen?'*), 4. Setze in die indirekte Rede: *Paul sagt: 'Ich habe keine Zeit, aber meine Freunde kommen morgen.'*",
+          "concept": "Konjunktiv I (Präsensstamm -> Indirekte Rede); Ersatzkaskade: Konjunktiv I -> Konjunktiv II -> würde-Form; Konjunktiv II (Präteritumstamm + Umlaut -> Irrealis/Höflichkeit); Indirekte Rede: Paul sagt, er habe keine Zeit, aber seine Freunde kämen (bzw. würden kommen) morgen.",
+          "sample_solution": "1. Die drei Aussageweisen (Modi) des Verbs: - **Indikativ (Wirklichkeitsform)**: Stellt Handlungen als real und gesichert dar (*'Er liest ein Buch'*). - **Imperativ (Befehlsform)**: Aufforderungen (*'Lies!'*). - **Konjunktiv (Möglichkeitsform)**: Unterteilt in Konjunktiv I und Konjunktiv II. 2. Der Konjunktiv I (Modus der indirekten Rede): - **Bildung**: Präsensstamm (Infinitiv ohne *-n/-en*) $+$ Konjunktiv-Endungen:   * *ich* geh-**e** | *wir* geh-**en**   * *du* geh-**est** | *ihr* geh-**et**   * *er/sie/es* geh-**e** | *sie* geh-**en**.   * *Einzige Sonderform*: Das Hilfsverb *sein* (*ich sei, du seiest, er sei, wir seien, ihr seiet, sie seien*). - **Verwendung**: Vorrangig in der 3. Person Singular (*'Der Minister erklärte, er trete zurück'*). 3. Die Ersatzformenkaskade bei der indirekten Rede: - **Regel**: Eine Form der indirekten Rede darf sich **niemals mit dem Indikativ (der Wirklichkeitsform) decken**, um Missverständnisse auszuschließen:   * **1. Stufe (Erstwahl)**: **Konjunktiv I** (*'Paul sagt, er habe Zeit'*).   * **2. Stufe**: Ist Konjunktiv I formgleich mit dem Indikativ (z. B. Plural: *sie haben*), ersetzt man ihn durch den **Konjunktiv II** (*'Paul sagt, sie hätten Zeit'*).   * **3. Stufe**: Ist auch der Konjunktiv II formgleich oder ungebräuchlich/veraltet (z. B. *sie backten / büken*), greift man zur **Umschreibung mit *würde* + Infinitiv** (*'sie würden backen'*). 4. Der Konjunktiv II (Modus des Nicht-Wirklichen / Irrealis): - **Bildung**: Präteritumstamm mit Umlautung bei starken Verben ($a \\rightarrow ä, o \\rightarrow ö, u \\rightarrow ü$):   * *kam $\\rightarrow$ käme*, *gab $\\rightarrow$ gäbe*, *wusste $\\rightarrow$ wüsste*, *war $\\rightarrow$ wäre*, *hatte $\\rightarrow$ hätte*. - **Funktion**:   * **Irrealis**: Unwirkliche Bedingungen und Wünsche (*'Wenn ich Flügel hätte, flöge ich zu dir'*).   * **Höflichkeitsform**: (*'Dürfte ich Sie kurz unterbrechen?'*). 5. Lösung der Anwendungsaufgabe: - Direkte Rede: *Paul sagt: „Ich habe keine Zeit, aber meine Freunde kommen morgen.“* - Indirekte Rede: **Paul sagt, er habe** [K I] **keine Zeit, aber seine Freunde kämen** [K II als Ersatz für formgleiches K I *kommen*] **am nächsten Tag.** *(bzw.: ...seine Freunde **würden** morgen **kommen**)*."
+        }
+      ]
+    },
+    {
+      "id": "01K4D7G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D7G0000000000000000A02",
+      "namespace": "gymnasium-deutsch-grammatik",
+      "slug": "aktiv-passiv-vorgangspassiv-zustandspassiv-syntax-komma",
+      "title": "Aktiv vs. Passiv (Vorgangspassiv mit 'werden', Zustandspassiv mit 'sein') und Kommasetzung bei Infinitivgruppen",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D7G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Passivformen und komplexe Syntax vertiefen die gymnasiale Grammatik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Passive voice",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Aktiv, Passiv und Satzgefüge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D7G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Passivart liegt im Satz 'Die Tür ist seit zehn Minuten geschlossen.' vor?",
+          "concept": "Das Zustandspassiv (gebildet mit dem Hilfsverb 'sein' + Partizip II; beschreibt das fertige Ergebnis eines vorangegangenen Vorgangs)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zustandspassiv (sein + Partizip II)",
+              "Vorgangspassiv (werden + Partizip II)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D7G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Passivsystem und die Kommasetzung bei Infinitivgruppen: 1. **Aktiv (Tatform)**: Das Subjekt handelt selbst (*'Der Mechaniker repariert das Auto'*), 2. **Vorgangspassiv**: Das Geschehen / der Prozess steht im Fokus, der Handelnde tritt in den Hintergrund (*'Das Auto wird [vom Mechaniker] repariert'* $\\rightarrow$ Bildung: **Form von 'werden' + Partizip II**), 3. **Zustandspassiv**: Das vollendete Resultat / der Zustand nach dem Vorgang steht im Fokus (*'Das Auto ist repariert'* $\\rightarrow$ Bildung: **Form von 'sein' + Partizip II**), 4. **Zeitenfolge beim Passiv**: Präsens (*wird gebaut*), Präteritum (*wurde gebaut*), Perfekt (*ist gebaut worden*), Plusquamperfekt (*war gebaut worden*), Futur I (*wird gebaut werden*), 5. **Kommasetzung bei Infinitivgruppen**: Ein Komma ist verpflichtend bei Einleitung mit *um, ohne, statt, anstatt, außer* (z. B. *'Er ging, um ein Buch zu kaufen.'*) oder bei Bezug auf ein Korrelatwort (*'Er dachte daran, den Brief abzuschicken.'*).",
+          "concept": "Aktiv (Subjekt handelt); Vorgangspassiv (werden + Partizip II, Fokus auf Handlung); Zustandspassiv (sein + Partizip II, Fokus auf Zustand); Zeitenfolge; Kommapflicht bei Infinitivgruppen (um/ohne/statt/außer + zu, Korrelat).",
+          "sample_solution": "1. Die Handlungsrichtungen des Verbs: Genus Verbi: - **1. Aktiv (Tatform)**:   * Betont den **Urheber / Täter** der Handlung: *Wer tut etwas?*   * Beispiel: *« Die Feuerwehr löschte den Brand. »* - **2. Vorgangspassiv (Leideform)**:   * Betont die **Handlung / den Vorgang selbst**; der Verursacher ist unwichtig, unbekannt oder wird bewusst verschwiegen (*Täterabwendung*).   * **Formel**: $\\mathbf{\\text{Form von werden} + \\text{Partizip II}}$   * Transformation: Das Akkusativobjekt des Aktivsatzes wird zum Subjekt des Passivsatzes: *« Der Brand wurde [von der Feuerwehr] gelöscht. »* - **3. Zustandspassiv**:   * Beschreibt nicht die Handlung, sondern den **bereits erreichten Zustand / das fertige Resultat** nach Abschluss der Handlung.   * **Formel**: $\\mathbf{\\text{Form von sein} + \\text{Partizip II}}$   * Beispiel: *« Das Feuer ist gelöscht. »* 2. Das Zeitenprofil des Vorgangspassivs: - **Präsens**: *Das Haus **wird** gebaut.* - **Präteritum**: *Das Haus **wurde** gebaut.* - **Perfekt**: *Das Haus **ist** gebaut **worden**.* *(Beachte: 'worden' statt 'geworden')* - **Plusquamperfekt**: *Das Haus **war** gebaut **worden**.* - **Futur I**: *Das Haus **wird** gebaut **werden**.* 3. Die Kommaregeln bei erweiterten Infinitivgruppen (§ 75): - Infinitivgruppen mit *zu* müssen durch ein Komma abgetrennt werden, wenn:   * **1. Signaleinleitung**: Sie werden eingeleitet mit **um, ohne, statt, anstatt, außer**:     - *« Er trainiert täglich**, um die Meisterschaft zu gewinnen.** »*     - *« Sie ging hinaus**, ohne ein Wort zu sagen.** »*   * **2. Verweiswort (Korrelat)**: Ein Hinweiswort (*es, daran, darauf*) im Hauptsatz kündigt die Infinitivgruppe an:     - *« Er freute sich **darauf**, seine Großeltern wiederzusehen. »*   * **3. Abhängigkeit von einem Nomen**:     - *« Er fasste den **Entschluss**, Medizin zu studieren. »*"
+        }
+      ]
+    }
+  ]
+}

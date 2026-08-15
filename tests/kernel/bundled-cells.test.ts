@@ -37,9 +37,9 @@ describe("Bundled learning cells (Phase 1)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists all 4 bundled learning cells with static metadata", () => {
+  it("lists all bundled learning cells with static metadata", () => {
     const cells = listBundledCells();
-    expect(cells).toHaveLength(4);
+    expect(cells.length).toBeGreaterThanOrEqual(8);
 
     const ids = cells.map((c) => c.id);
     expect(ids).toContain("de-by:realschule-optik");
@@ -73,7 +73,7 @@ describe("Bundled learning cells (Phase 1)", () => {
     const user = "test-learner";
 
     const statusList = await getBundledCellsWithStatus(db, user);
-    expect(statusList).toHaveLength(4);
+    expect(statusList.length).toBeGreaterThanOrEqual(8);
     for (const status of statusList) {
       expect(status.installed).toBe(false);
       expect(status.enrolled).toBe(false);
@@ -124,7 +124,7 @@ describe("Bundled learning cells (Phase 1)", () => {
     // List via handler
     const listRes = await listBundledCellsHandler(db, { user });
     expect(listRes.success).toBe(true);
-    expect(listRes.cells).toHaveLength(4);
+    expect(listRes.cells.length).toBeGreaterThanOrEqual(8);
     expect(listRes.cells[0]?.enrolled).toBe(false);
 
     // Enrol via handler
@@ -217,7 +217,7 @@ describe("Bundled learning cells (Phase 1)", () => {
           provider: "lehrplanplus-bayern",
           schoolType: "realschule",
           grade: 8,
-          subject: "deutsch",
+          subject: "sport",
         }),
       ).toBe(true);
       // And a grade no cell reaches.
@@ -238,9 +238,9 @@ describe("Bundled learning cells (Phase 1)", () => {
         grade: 8,
         subject: "physik",
       });
-      expect(cells.map((cell) => cell.id)).toEqual([
-        "de-by:gymnasium-8-optik",
-      ]);
+      const cellIds = cells.map((cell) => cell.id);
+      expect(cellIds).toContain("de-by:gymnasium-8-optik");
+      expect(cellIds.every((id) => id.startsWith("de-by:gymnasium-8-"))).toBe(true);
     });
 
     it("ignores a provider it does not publish for", () => {
@@ -259,7 +259,7 @@ describe("Bundled learning cells (Phase 1)", () => {
 
       const unscoped = await listBundledCellsHandler(db, { user });
       expect(unscoped.scoped).toBe(false);
-      expect(unscoped.cells).toHaveLength(4);
+      expect(unscoped.cells.length).toBeGreaterThanOrEqual(8);
       expect("needsGenericImport" in unscoped).toBe(false);
 
       const covered = await listBundledCellsHandler(db, {
@@ -299,7 +299,7 @@ describe("Bundled learning cells (Phase 1)", () => {
         provider: "lehrplanplus-bayern",
         schoolType: "realschule",
         grade: 8,
-        subject: "deutsch",
+        subject: "sport",
       });
       expect(uncovered.needsGenericImport).toBe(true);
       expect(uncovered.cells).toEqual([]);

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-informatik-relationale-datenbanken-sql-modellierung",
+  "version": "2026.08.1",
+  "title": "Informatik 8: Relationale Datenbanksysteme (RDBMS) und SQL-Abfragen (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 8: Relationale Datenmodelle (Tabellen, Entitäten, Attribute, Primärschlüssel, Fremdschlüssel, 1:n/m:n-Kardinalitäten), Vermeidung von Redundanzen und Anomalien (Normalisierung) sowie relationale Datenabfragesprache SQL (SELECT, FROM, WHERE, ORDER BY, GROUP BY, Aggregate und JOINs).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/informatik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Informatik 8, Lernbereiche Relationale Datenbanksysteme und Abfragesprachen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8G0000000000000000A01",
+      "namespace": "gymnasium-informatik-datenbanken",
+      "slug": "relationales-datenmodell-primaerschluessel-fremdschluessel-beziehungen",
+      "title": "Das relationale Datenmodell: Entitäten, Attribute, Primär- und Fremdschlüssel sowie 1:n-Beziehungen",
+      "domain": "schule/informatik/datenbanken",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q211149",
+          "target_label": "Relational database",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Relationale Datenstrukturen und Modellierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaft muss ein Primärschlüssel (Primary Key) in einer relationalen Datenbanktabelle zwingend erfüllen?",
+          "concept": "Er muss für jeden Datensatz (Tupel) in der Tabelle eindeutig und niemals NULL sein",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eindeutig und niemals NULL (Unikat)",
+              "Darf in mehreren Zeilen doppelt vorkommen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Aufbau relationaler Datenbanksysteme: 1. **Das relationale Modell**:   * **Relation (Tabelle)**: Besteht aus Spalten (**Attributen** mit festem Datentyp) und Zeilen (**Tupeln / Datensätzen**).   * **Primärschlüssel (PK)**: Minimales Attribut (oder Attributkombination), das jedes Tupel einer Tabelle eineindeutig identifiziert, 2. **Beziehungen & Fremdschlüssel (FK)**:   * Ein **Fremdschlüssel** ist ein Attribut einer Tabelle, das auf den Primärschlüssel einer anderen Tabelle verweist und so eine relationale Verknüpfung herstellt (**Referentielle Integrität**).   * **1:n-Beziehung**: Der Primärschlüssel der 1-Seite wird als Fremdschlüssel in die n-Seite eingefügt (z. B. 1 Klasse hat viele Schüler).   * **m:n-Beziehung**: Kann nicht direkt abgebildet werden $\\rightarrow$ Auflösung über eine **Zwischentabelle (Verknüpfungstabelle)** mit zwei Fremdschlüsseln, 3. **Datenanomalien & Redundanz**: Einfüge-, Änderungs- und Löschanomalien bei unstrukturierten Tabellen.",
+          "concept": "Relationale DB: Tabelle = Relation, Zeile = Tupel, Spalte = Attribut; Primärschlüssel (eindeutig/not null); Fremdschlüssel (Referenz auf PK); 1:n Beziehung (FK auf n-Seite) vs. m:n Beziehung (Auflösung über Zwischentabelle); Referentielle Integrität & Vermeidung von Anomalien.",
+          "sample_solution": "1. Grundelemente des Relationalen Datenmodells (Edgar F. Codd): - **1. Tabelle (Relation)**: Eine zweidimensionale Struktur zur strukturierten Speicherung von gleichartigen Informationsobjekten:   * **Attribute (Spalten)**: Eigenschaften der Objekte (z. B. `Vorname`, `Geburtsdatum`, `Note`) mit einem definierten Datentyp (`VARCHAR`, `INTEGER`, `DATE`, `DECIMAL`).   * **Tupel / Datensatz (Zeile)**: Ein konkretes Einzelobjekt (z. B. ein konkreter Schüler). 2. Schlüsselkonzepte und Referentielle Integrität: - **Primärschlüssel (Primary Key, PK)**:   * Ein oder mehrere Attribute, die jeden Datensatz der Tabelle **unverwechselbar und eindeutig identifizieren**.   * Darf **niemals den Wert `NULL`** (leer) annehmen (*Entity Integrity*). - **Fremdschlüssel (Foreign Key, FK)**:   * Ein Attribut in einer Tabelle, das als Primärschlüssel in einer anderen (oder derselben) Tabelle existiert.   * **Referentielle Integrität**: Ein Fremdschlüsselwert darf nur existieren, wenn es den zugehörigen Primärschlüsseleintrag in der Elterntabelle tatsächlich gibt (keine 'verwaisten' Datensätze). 3. Modellierung von Beziehungen und Kardinalitäten: - **1:1-Beziehung**: Ein Objekt A steht mit genau einem Objekt B in Beziehung (z. B. Schüler $\\leftrightarrow$ Schließfach). - **1:n-Beziehung (Häufigster Typ)**:   * Ein Datensatz der Tabelle A ist mit beliebig vielen Datensätzen der Tabelle B verknüpft, aber jeder Datensatz von B gehört zu genau einem Datensatz von A (z. B. 1 `Klasse` $\\rightarrow$ viele `Schueler`).   * *Realisierung*: Der Primärschlüssel der 1-Seite (`KlasseID`) wird als **Fremdschlüssel in die n-Tabelle (`Schueler`) aufgenommen**. - **m:n-Beziehung**:   * Mehrere Objekte aus A stehen mit mehreren Objekten aus B in Beziehung (z. B. `Schueler` $\\leftrightarrow$ `Wahlkurs`).   * *Realisierung*: Aufteilung in zwei 1:n-Beziehungen durch eine **Zwischentabelle (`Schueler_Kurs`)**, deren zusammengesetzter Primärschlüssel aus den beiden Fremdschlüsseln `SchuelerID` und `KursID` besteht. 4. Datenredundanz und Anomalien: - Schlecht strukturierte Tabellen ohne Aufteilung führen zu **Redundanz** (mehrfaches Speichern derselben Information):   * **Änderungsanomalie**: Daten werden an einer Stelle aktualisiert, an anderer Stelle vergessen $\\implies$ inkonsistenter Datenbestand.   * **Löschanomalie**: Durch Löschen eines Schülers wird versehentlich der gesamte Kurs mitgelöscht.   * **Einfügeanomalie**: Ein neuer Kurs kann nicht angelegt werden, solange noch kein Schüler eingeschrieben ist."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8G0000000000000000A02",
+      "namespace": "gymnasium-informatik-sql",
+      "slug": "sql-abfragesprache-select-where-join-aggregate",
+      "title": "SQL-Datenabfragen: SELECT, FROM, WHERE, ORDER BY, Aggregatfunktionen und INNER JOIN",
+      "domain": "schule/informatik/sql",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8G0000000000000000A01",
+          "type": "hard",
+          "rationale": "SQL-Abfragen setzen Kenntnis von Tabellen, Schlüsseln und Relationen voraus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q47607",
+          "target_label": "SQL",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "SQL-Abfragen und relationale Verknüpfungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welcher SQL-Klausel werden die Ergebniszeilen nach einer Bedingung gefiltert (z. B. `Note < 4` oder `Ort = 'Muenchen'`)?",
+          "concept": "WHERE (gefolgt vom logischen Prädikat/Filter)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "WHERE",
+              "ORDER BY"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Aufbau einer SQL-Abfrage über mehrere verknüpfte Tabellen: 1. **Die Grundstruktur der SELECT-Anweisung**:   * `SELECT`: Projektion (Auswahl der anzuzeigenden Attribute/Spalten; `*` für alle).   * `FROM`: Angabe der Quelltabellen.   * `WHERE`: Selektion (Filterung der Zeilen mit Bedingungen wie `=`, `<>`, `>`, `LIKE`, `AND`, `OR`, `NOT`).   * `ORDER BY`: Sortierung (`ASC` aufsteigend, `DESC` absteigend), 2. **Tabellenverknüpfung mit JOIN**:   * **INNER JOIN**: Verknüpft Zeilen zweier Tabellen anhand der Schlüsselbeziehung: `FROM TabelleA JOIN TabelleB ON TabelleA.PK = TabelleB.FK`, 3. **Aggregatfunktionen & Gruppierung**: `COUNT(*)`, `AVG()`, `SUM()`, `MIN()`, `MAX()` in Kombination mit `GROUP BY` und `HAVING`, 4. Formuliere eine SQL-Abfrage: Ermittle `Name` und `Klassenbezeichnung` aller Schüler der Jahrgangsstufe 8, sortiert nach Nachname aufsteigend aus den Tabellen `Schueler(ID, Name, Vorname, KlasseID)` und `Klasse(ID, Bezeichnung, Stufe)`.",
+          "concept": "SQL: SELECT (Projektion), FROM, WHERE (Selektion), ORDER BY; INNER JOIN über ON PK = FK; Aggregate (COUNT, AVG, SUM, MIN, MAX) + GROUP BY; SQL: SELECT Schueler.Name, Klasse.Bezeichnung FROM Schueler JOIN Klasse ON Schueler.KlasseID = Klasse.ID WHERE Klasse.Stufe = 8 ORDER BY Schueler.Name ASC.",
+          "sample_solution": "1. Grundbauplan einer relationalen SQL-Abfrage (DQL – Data Query Language): - Eine SQL-Abfrage filtert und projiziert Daten deklarativ nach folgendem Standardaufbau:   ```sql   SELECT Spalte1, Spalte2           -- Projektion (Welche Spalten?)   FROM Tabelle1                     -- Datenquelle (Woher?)   WHERE Bedingung                   -- Selektion (Welche Zeilen?)   GROUP BY Spalte                   -- Gruppierung bei Aggregation   HAVING GruppenBedingung           -- Filter auf Gruppen   ORDER BY Spalte ASC/DESC;         -- Sortierung   ``` 2. Tabellenverknüpfung (INNER JOIN): - Um Daten aus verschiedenen normalisierten Tabellen zusammenzuführen, werden die Tabellen über das Schlüsselpaar (**Primärschlüssel = Fremdschlüssel**) gejoint:   ```sql   FROM TabelleA   JOIN TabelleB ON TabelleA.ID = TabelleB.TabelleA_ID   ``` - Es werden nur die Datensätze ausgegeben, bei denen die Verknüpfungsbedingung in beiden Tabellen erfüllt ist. 3. Aggregatfunktionen und Gruppierung: - Zur statistischen Auswertung von Datensätzen:   * `COUNT(*)`: Zählt die Anzahl der Ergebniszeilen.   * `AVG(Spalte)`: Berechnet den arithmetischen Mittelwert.   * `SUM(Spalte)`: Summiert alle Werte.   * `MIN(Spalte)` / `MAX(Spalte)`: Ermittelt den kleinsten/größten Wert.   * In Verbindung mit `GROUP BY Spalte` wird die Auswertung separat für jede Ausprägung der Gruppierungsspalte berechnet (z. B. Notendurchschnitt pro Klasse). 4. Formulierung der gesuchten SQL-Abfrage:   ```sql   SELECT      Schueler.Name,      Klasse.Bezeichnung   FROM Schueler   JOIN Klasse ON Schueler.KlasseID = Klasse.ID   WHERE Klasse.Stufe = 8   ORDER BY Schueler.Name ASC;   ```   * **Erklärung**:   * `JOIN Klasse ON Schueler.KlasseID = Klasse.ID` stellt die Beziehung zwischen Schüler und Klasse her.   * `WHERE Klasse.Stufe = 8` filtert exakt die 8. Jahrgangsstufe heraus.   * `ORDER BY Schueler.Name ASC` liefert das Ergebnis alphabetisch von A bis Z sortiert."
+        }
+      ]
+    }
+  ]
+}

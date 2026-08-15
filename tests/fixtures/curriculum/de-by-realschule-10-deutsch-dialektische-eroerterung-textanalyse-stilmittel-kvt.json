@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel",
+  "version": "2026.08.1",
+  "title": "Deutsch 10: Abschlussprüfung – Dialektische Erörterung, Sachtextanalyse und Stilmittel (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 10 (Abschlussprüfung): Textgebundene und freie dialektische Erörterung (These, Antithese, Synthese, Sanduhr- vs. Ping-Pong-Prinzip), pragmatische Textanalyse und rhetorische Stilmittel.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 10, Lernbereiche Textgebundenes Argumentieren und Texterschließung (Abschlussprüfung)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4DAE0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4DAE0000000000000000A01",
+      "namespace": "deutsch-abschlusspruefung",
+      "slug": "dialektische-eroerterung-these-antithese-synthese-sanduhr",
+      "title": "Die Dialektische Erörterung: Pro- und Kontra-Argumentation, Sanduhr- vs. Reißverschlussprinzip und Synthese",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Dialectic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Texte schreiben – Dialektisches Argumentieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4DAE0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Seite (Gegenseite oder die von einem selbst befürwortete Seite) wird im Hauptteil einer dialektischen Erörterung nach dem klassischen Sanduhr-Prinzip ZUERST behandelt?",
+          "concept": "Zuerst der gegnerische Block (Antithese: vom stärksten zum schwächsten Gegenargument), um danach mit den eigenen Argumenten steigernd zu überzeugen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zuerst der gegnerische Block (Antithese)",
+              "Zuerst die eigene Position (These)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4DAE0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die beiden Hauptverfahren der dialektischen Erörterung in der bayerischen Realschul-Abschlussprüfung: 1. **Das Blockmodell / Sanduhr-Prinzip**: I. Einleitung, II. Hauptteil: Block A (Die Gegenposition, die man nicht vertritt: beginnend mit dem stärksten Gegenargument hin zum schwächsten Gegenargument) $\\rightarrow$ *Wendepunkt / Drehbrücke* $\\rightarrow$ Block B (Die eigene befürwortete Position: beginnend mit dem schwächsten eigenen Argument hin zum **stärksten Hauptargument** direkt vor dem Schluss), 2. **Das Reißverschluss- / Ping-Pong-Prinzip**: Direkte Gegenüberstellung von Pro und Kontra zu einzelnen thematischen Teilaspekten, 3. **Die Synthese im Schlussteil**: Abwägung, Kompromissfindung und persönliches Urteil.",
+          "concept": "Dialektische Erörterung: Sanduhrprinzip (Block A Contra stark->schwach, Drehpunkt, Block B Pro schwach->stark) vs. Reißverschlussmodell (Aspekt für Aspekt Pro vs. Contra); Synthese/Schluss vereint beide Sichtweisen zu ausgewogenem Urteil.",
+          "sample_solution": "1. Wesen der dialektischen (zweigleisigen) Erörterung: - Während eine lineare Erörterung nur eine Sichtweise entfaltet, setzt sich die **dialektische Erörterung** systematisch mit **zwei gegensätzlichen Positionen (These und Antithese)** zu einem kontroversen Thema (*Entscheidungsfrage: 'Sollte ein allgemeines Tempolimit auf Autobahnen eingeführt werden?'*) auseinander. 2. Die beiden Gliederungsmodelle im Vergleich: - **1. Das Sanduhr-Modell (Blockverfahren – Empfohlener Standard)**:   * **Einleitung**: Hinführung mit aktuellem Anlass, Begriffsdefinition, Formulierung der dialektischen Fragestellung.   * **Hauptteil – 1. Block (Die Position, die man ablehnt)**:     - Beginnt mit dem **stärksten Gegenargument**, gefolgt von schwächeren Gegenargumenten (**absteigend**).   * **Der Wendepunkt (Drehbrücke)**: Ein pointierter Überleitungssatz zur eigenen Position (*'Trotz dieser gewichtigen Einwände überwiegen bei genauerer Betrachtung jedoch die Gründe für...'*).   * **Hauptteil – 2. Block (Die eigene befürwortete Position)**:     - Beginnt mit dem schwächsten eigenen Argument und steigert sich zum **stärksten, durchschlagenden Hauptargument (klimaktisch / aufsteigend)** unmittelbar vor dem Schluss.   * *Vorteil*: Klare Struktur; der Leser behält die eigene Argumentation am stärksten im Gedächtnis. - **2. Das Reißverschluss-Modell (Ping-Pong-Verfahren / Aspektorientiert)**:   * Das Thema wird in 3–4 thematische Schwerpunkte unterteilt (z. B. *Umwelt, Wirtschaft, persönliche Freiheit*).   * Bei jedem Schwerpunkt wird direkt das Contra-Argument dem Pro-Argument gegenübergestellt und abgewogen.   * *Vorteil*: Sehr dynamisch und dialektisch geschärft; erfordert jedoch hohe sprachliche Disziplin. 3. Der Schlussteil (Synthese & persönliches Urteil): - Keine bloße Wiederholung der Argumente, sondern eine **Synthese (höhere dialektische Ebene)**. - Abwägen der widerstreitenden Interessen, Entwicklung eines realistischen Kompromisses (*'Ein dynamisches Tempolimit gekoppelt an Verkehrsaufkommen und Wetter'*), begründete eigene Stellungnahme und zukunftsgerichteter Ausblick."
+        }
+      ]
+    },
+    {
+      "id": "01K4DAE0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4DAE0000000000000000A02",
+      "namespace": "deutsch-abschlusspruefung",
+      "slug": "rhetorische-stilmittel-analyse-wirkung-sprachkritik",
+      "title": "Rhetorische Stilmittel in der Textanalyse: Funktion, Wirkung und Analyse pragmatischer Texte",
+      "domain": "schule/deutsch/stilmittel",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4DAE0000000000000000A01",
+          "type": "hard",
+          "rationale": "Stilmittelanalyse dient der Erschließung argumentativer und pragmatischer Sachtexte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Figure of speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte analysieren und interpretieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4DAE0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches rhetorische Stilmittel liegt vor, wenn eine Frage gestellt wird, auf die keine Antwort erwartet wird, weil die Antwort für jeden offensichtlich ist (z. B. 'Wollen wir wirklich unsere Zukunft aufs Spiel setzen?')?",
+          "concept": "Eine rhetorische Frage (verstärkt die Aufmerksamkeit und bindet das Publikum ein)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rhetorische Frage",
+              "Hyperbel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4DAE0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere 6 zentrale rhetorische Stilmittel nach Definition, Textbeispiel und beabsichtigter Wirkung auf den Leser: 1. **Metapher** (bildhafter Vergleich ohne Vergleichswort 'wie', z. B. *'eine Mauer des Schweigens'* -> Veranschaulichung, emotionale Vertiefung), 2. **Alliteration** (gleicher Anlaut benachbarter Wörter, z. B. *'Milch macht müde Männer munter'* -> Einprägsamkeit, Rhythmus), 3. **Anapher** (Wortwiederholung am Satzanfang, z. B. *'Wir fordern... Wir fordern...'* -> Eindringlichkeit, Appell), 4. **Klimax** (dreistufige Steigerung, z. B. *'Ich kam, sah und siegte'* -> Spannungsaufbau), 5. **Antithese** (Gegenüberstellung gegensätzlicher Begriffe, z. B. *'Heiß geliebt und kalt verachtet'* -> Verdeutlichung von Widersprüchen), 6. **Hyperbel** (starke Übertreibung, z. B. *'ein Meer von Tränen'*) und erkläre die 3-Schritte-Regel der Textanalyse: *1. Benennung des Stilmittels mit Textbeleg -> 2. Inhaltliche Bedeutung im Kontext -> 3. Funktion und Wirkung auf den Leser*.",
+          "concept": "Stilmittel (Metapher, Alliteration, Anapher, Klimax, Antithese, Hyperbel) mit Funktion; Dreischritt der Analyse: Zitat -> Bedeutung -> Wirkung.",
+          "sample_solution": "1. Die 6 zentralen rhetorischen Stilmittel im Profil: - **1. Metapher (Bildhafter Sprachgebrauch)**:   * *Definition*: Übertragung eines Begriffs aus einem vertrauten Bedeutungsbereich in einen fremden Bereich ohne das Vergleichswort 'wie'.   * *Beispiel*: *'Rabenvater'*, *'Flut von Informationen'*, *'die Nadel im Heuhaufen'*.   * *Wirkung*: Weckt lebhafte Assoziationen und Bilder im Kopf des Lesers; veranschaulicht komplexe Sachverhalte emotional. - **2. Alliteration (Stabreim)**:   * *Definition*: Mindestens zwei aufeinanderfolgende Wörter beginnen mit demselben Anlaut/Konsonanten.   * *Beispiel*: *'Wintersturm und Wellen'*, *'mit Kind und Kegel'*.   * *Wirkung*: Schafft akustischen Rhythmus, hohe Einprägsamkeit (beliebt in Werbung und Schlagzeilen). - **3. Anapher**:   * *Definition*: Wiederholung desselben Wortes oder derselben Wortgruppe am Anfang aufeinanderfolgender Sätze oder Verse.   * *Beispiel*: *'Das Wasser rauscht', das Wasser schwoll...'*   * *Wirkung*: Verstärkt die Eindringlichkeit, strukturiert die Rede rhythmisch und betont den Kernappell. - **4. Klimax**:   * *Definition*: Stufenweise Steigerung von Wörtern oder Satzteilen (oft dreigliedrig).   * *Beispiel*: *'Er weinte, er schrie, er tobte vor Wut.'*   * *Wirkung*: Erzeugt dynamische Dramatik und Höhepunkte. - **5. Antithese**:   * *Definition*: Pointierte Gegenüberstellung gegensätzlicher Begriffe oder Gedanken.   * *Beispiel*: *'Der Geist ist willig, aber das Fleisch ist schwach.'* / *'Guter Rat ist teuer, schlechter Rat billig.'*   * *Wirkung*: Hebt Gegensätze plastisch hervor, regt zum Nachdenken an. - **6. Hyperbel**:   * *Definition*: Extreme, oft unlogische Übertreibung zur Verdeutlichung.   * *Beispiel*: *'Ich habe dir das schon tausendmal gesagt!'*, *'todmüde'*.   * *Wirkung*: Unterstreicht emotionale Intensität oder erzeugt Ironie. 2. Die verbindliche 3-Schritte-Analyse in Prüfungsaufsätzen: - Ein Stilmittel darf niemals nur isoliert 'aufgespürt' werden; die volle Punktzahl verlangt den **dreiteiligen Funktionsnachweis**:   * **1. Schritt**: Fachbegriff nennen und mit präziser Zeilenangabe **zitieren** (*'In Zeile 14 verwendet der Autor die Metapher „...“'*).   * **2. Schritt**: Wörtliche und übertragene Bedeutung im **Textzusammenhang erklären** (*'Damit meint der Verfasser, dass...'*)   * **3. Schritt**: Die zielgerichtete **Wirkung auf den Leser und die Autorenintention darlegen** (*'Dadurch wird dem Leser drastisch vor Augen geführt, dass... Der Autor will damit bezwecken, dass...'*) ."
+        }
+      ]
+    }
+  ]
+}

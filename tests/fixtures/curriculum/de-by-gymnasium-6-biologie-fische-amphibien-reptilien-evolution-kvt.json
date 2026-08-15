@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-biologie-fische-amphibien-reptilien-evolution",
+  "version": "2026.08.1",
+  "title": "Biologie 6: Wirbeltiere II – Fische, Amphibien, Reptilien und Landgang-Evolution (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 6: Fische (Kiemen/Gegenstrom, Schwimmblase, Seitenlinie), Amphibien (Metamorphose, Hautatmung), Reptilien (Hornschuppen, Amniotenei) und Wirbeltier-Evolution.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Natur und Technik 6 (Biologie), Lernbereich Wirbeltiere in ihren Lebensräumen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YB6F000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YB6F000000000000000A01",
+      "namespace": "biologie-zoologie",
+      "slug": "fische-anatomie-kiemenatmung-gegenstrom-schwimmblase",
+      "title": "Klasse der Fische: Kiemenatmung mit Gegenstromprinzip, Schwimmblase und Seitenlinienorgan",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Fish anatomy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6F000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum fließen in den Kiemenlamellen der Knochenfische das Atemwasser und das Blut in entgegengesetzter Richtung aneinander vorbei (Gegenstromprinzip)?",
+          "concept": "Weil dadurch über die gesamte Berührungslänge ein kontinuierliches Sauerstoff-Konzentrationsgefälle aufrechterhalten wird (bis zu 85 % Sauerstoffausbeute)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für maximale Sauerstoffausbeute durch konstantes Konzentrationsgefälle (Gegenstrom)",
+              "Um den Fisch schneller schwimmen zu lassen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6F000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die anatomischen Anpassungen der Knochenfische an das Leben im Wasser: 1. Kiemenatmung (Kiemenbögen, Kiemenblättchen, Kiemendeckel als Saug-Druck-Pumpe, Gegenstromprinzip mit > 80 % Sauerstoffextraktion), 2. Die Schwimmblase als hydrostatisches Schwebeorgan nach dem Archimedischen Prinzip (Gasaustausch über Blutgefäße/Gaskompass zum Steigen, Sinken und Schweben ohne Muskelkraft), 3. Das Seitenlinienorgan als Ferntastsinn (drucksensitive Sinneshaare in gallertgefüllten Kanälen zur Registrierung von Druckwellen und Strömungen) und 4. Äußere Befruchtung (Laichabgabe ins freie Wasser).",
+          "concept": "Fischanatomie: Kiemen mit Gegenstromprinzip (maximaler Sauerstofftransfer); Schwimmblase regelt Dichte = Schweben im Wasser; Seitenlinie detektiert Strömungen/Feinde; Laich ohne Schale ins Wasser (äußere Befruchtung).",
+          "sample_solution": "1. Die Kiemenatmung und das Gegenstromprinzip: - **Atemmechanik**: Das Maul öffnet sich, der Kiemenraum schließt sich $\\rightarrow$ Wasser strömt ein. Das Maul schließt sich, der Kiemendeckel öffnet sich $\\rightarrow$ Wasser wird an den Kiemenblättchen vorbeigepresst. - **Gegenstromprinzip**: In den hauchdünnen Kiemenlamellen fließt das venöse Blut genau **entgegengesetzt** zur Strömungsrichtung des Wassers.   * Dadurch trifft das sauerstoffärmste Blut auf das schon teilweise verbrauchte Wasser, und das sauerstoffreichste Blut auf das frischeste Wasser.   * Über die gesamte Diffusionsstrecke bleibt ein **permanentes Konzentrationsgefälle** erhalten. Der Fisch entzieht dem Wasser über **80 % des gelösten Sauerstoffs** (im Gleichstrom wären maximal 50 % möglich). 2. Die Schwimmblase als hydrostatisches Organ: - Dünnwandiger, luftgefüllter Sack im oberen Rumpf. - **Funktion nach Archimedes**: Passt die mittlere Dichte des Fischkörpers exakt an die Dichte des umgebenden Wassers an ($\\rho_{\\text{Fisch}} = \\rho_{\\text{Wasser}}$). - Durch kontrollierte Gasabgabe aus dem Blut (Gaskolben/Blutkapillaren) in die Schwimmblase vergrößert sich das Volumen $\\rightarrow$ Dichte sinkt $\\rightarrow$ Fisch steigt auf; durch Gasaufnahme ins Blut sinkt das Volumen $\\rightarrow$ Fisch sinkt ab. Ermöglicht kraftloses **Schweben in jeder Wassertiefe**. 3. Das Seitenlinienorgan (Der 'Ferntastsinn'): - Verläuft als feine Schuppenreihe beidseitig von den Kiemen bis zur Schwanzflosse. - Besteht aus einem mit Schleim gefüllten Kanal, der über Poren mit dem Wasser verbunden ist. - Darin befinden sich **Neuromasten (Sinneszellen mit feinen Sinneshaaren)** in einer Gallertkuppe. - Registriert selbst minimalste Druckwellen, Wasserwirbel von Beutetieren, Hindernissen oder Räubern im trüben Wasser und koordiniert synchrone Schwarmbewegungen. 4. Fortpflanzung (Laichen): - Das Weibchen (Rogner) legt tausende weiche Eier (**Laich**) schutzlos im Wasser ab; das Männchen (Milchner) gibt seine Spermienflüssigkeit (**Milch**) darüber ab (**äußere Befruchtung**)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6F000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YB6F000000000000000A02",
+      "namespace": "biologie-zoologie",
+      "slug": "amphibien-doppelleben-metamorphose-hautatmung",
+      "title": "Klasse der Amphibien (Lurche): Doppelleben, Metamorphose vom Laich zum Frosch und Hautatmung",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6F000000000000000A01",
+          "type": "hard",
+          "rationale": "Amphibienlarven (Kaulquappen) besitzen wie Fische Kiemen und Ruderschwanz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Amphibian",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6F000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Gliedmaßen wachsen bei der Kaulquappe während der Metamorphose als erste sichtbare Beine heran?",
+          "concept": "Zuerst wachsen die Hinterbeine, erst später brechen die Vorderbeine durch",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zuerst die Hinterbeine",
+              "Zuerst die Vorderbeine"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6F000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das 'Doppelleben' der Amphibien (altgriech. *amphi-bios* = beidseitiges Leben im Wasser und an Land): 1. Die lückenlose Metamorphose des Grasfrosches in 6 Phasen (Laichballen im Wasser -> Schlupf der Kaulquappe mit Außenkiemen -> Innenkiemen und pflanzenfressender Spiraldarm -> Entwicklung der Hinterbeine -> Durchbruch der Vorderbeine und Lungenbildung -> Rückbildung des Ruderschwanzes und Wechsel zur Fleischfresser-Nahrung beim adulten Landfrosch), 2. Atmung des erwachsenen Frosches (einfache sackförmige Lunge kombiniert mit obligatorischer **feuchter Hautatmung** durch Schleimdrüsen), 3. Wechselwarmheit / Poikilothermie und Winterstarre im Schlamm.",
+          "concept": "Amphibien = Übergangsform Wasser/Land; Metamorphose: Kaulquappe (Wasser, Kiemen, Algenfresser mit langem Darm, Flossensaum) -> Frosch (Land, Lunge + Hautatmung, Fleischfresser, 4 Sprungbeine, kein Schwanz); Wechselwarm: Körpertemperatur folgt Umwelt, Winterstarre.",
+          "sample_solution": "1. Das Phänomen des Doppellebens (Amphibia): - Amphibien stellen das evolutionäre Bindeglied zwischen Wassertieren (Fischen) und echten Landwirbeltieren dar. - Sie leben als Erwachsene meist an Land, sind zur Fortpflanzung und Larvalentwicklung jedoch zwingend auf **offene Gewässer** angewiesen. 2. Die vollständige Metamorphose des Froschlurchs (Grasfrosch): - **1. Laichablage**: Im Frühjahr legt das Weibchen Hunderte weicher Eier in Gallertballen ins seichte Wasser; äußere Befruchtung durch das klammernde Männchen (**Amplexus**). - **2. Kaulquappe mit Außenkiemen**: Nach dem Schlüpfen atmet die Larve über zarte, büschelige Außenkiemen und ernährt sich herbivor von Algenaufwuchs mit Raspellippen. - **3. Kaulquappe mit Innenkiemen**: Die Kiemen werden von einer Hautfalte überwachsen; der Darm ist extrem lang und schneckenförmig aufgerollt (Pflanzenfresserdarm). - **4. Extremitätenbildung**: Zuerst wachsen kräftige **Hinterbeine** heran, danach brechen die Vorderbeine hervor. - **5. Organumbau**: Die Kiemen bilden sich zurück, einfache **Lungen** entstehen; der Frosch kommt zum Luftholen an die Wasseroberfläche. Der Magen-Darm-Trakt baut sich zu einem kurzen Fleischfresserdarm um. - **6. Schwanzrückbildung & Landgang**: Der Ruderschwanz wird enzymatisch komplett resorbiert (als Energiereserve genutzt); der fertige Jungfrosch verlässt das Wasser. 3. Atmung und Wechselwarmheit: - **Hautatmung**: Da die einfachen Sacklungen wenig Gasaustauschfläche bieten, atmet der adulte Frosch zu über 50 % über seine **dünne, nackte, gefäßreiche Haut**. Schleimdrüsen halten die Haut feucht, da Sauerstoff nur in Flüssigkeit gelöst diffundieren kann. - **Wechselwarmheit (Poikilothermie)**: Körpertemperatur entspricht der Umgebung. Bei Kälte unter 4 °C fallen Frösche am Grund von Teichen in eine regungslose **Winterstarre** (Herzschlag und Stoffwechsel fast auf Null reduziert)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6F000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YB6F000000000000000A03",
+      "namespace": "biologie-zoologie",
+      "slug": "reptilien-kriechtiere-hornschuppenhaut-amniotenei",
+      "title": "Klasse der Reptilien (Kriechtiere): Hornschuppenhaut, Amniotenei und echte Unabhängigkeit vom Wasser",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6F000000000000000A02",
+          "type": "hard",
+          "rationale": "Reptilien lösten die Abhängigkeit vom Wasser, die Amphibien noch fesselte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Reptile",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6F000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche entscheidende evolutive Erfindung ermöglichte den Reptilien (z. B. Eidechsen, Schlangen) die Fortpflanzung an Land völlig unabhängig von Gewässern?",
+          "concept": "Das Amniotenei mit pergamentartiger/kalkiger Schale und Fruchtwasserhülle (Amnion)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Amniotenei (pergamentartige Schale)",
+              "Das Ablegen von Gallertlaich im Sand"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6F000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 4 anatomischen Schlüsselerfindungen, mit denen die Reptilien (Kriechtiere) als erste Wirbeltiere das Festland vollständig und dauerhaft eroberten: 1. Trockene Hornschuppenhaut aus Keratin (wasserdichter Verdunstungsschutz; Häutung bei Wachstum), 2. Leistungsfähige gekammerte Faltlunge (keine Hautatmung mehr nötig), 3. Innere Befruchtung im weiblichen Körper, 4. Das Amniotenei mit schützender Pergamentschale und extraembryonalen Hüllen (Amnion mit Fruchtwasser als 'Mini-Aquarium', Allantois als Harnsack, Dottersack) und vergleiche Blindschleiche (beinlose Echse mit Augenlidern) und Ringelnatter (Schlange mit Schuppenbrille).",
+          "concept": "Reptilien: Echte Landwirbeltiere; Hornschuppenhaut verhindert Austrocknung (macht Häutung nötig); gekammerte Lunge; innere Befruchtung; Amniotenei schützt Embryo im eigenen Flüssigkeitsraum; Blindschleiche vs. Schlange.",
+          "sample_solution": "1. Die 4 revolutionären Anpassungen der Reptilien an das Landleben: - **1. Die Hornschuppenhaut (Keratinpanzer)**:   * Trockene Haut ohne Schleimdrüsen, bedeckt von harten Hornschuppen oder Hornplatten aus **Keratin**.   * Verhindert die Verdunstung von Körperwasser selbst in heißesten Wüsten.   * Da Horn nicht mitwächst, müssen sich Reptilien regelmäßig **häuten** (Schlangen streifen das *Natternhemd* an einem Stück ab; Eidechsen häuten sich in Fetzen). - **2. Gefaltete und gekammerte Lunge**:   * Da über die dicke Hornhaut kein Gasaustausch möglich ist, besitzen Reptilien stark gefaltete Lungen mit hoher Oberfläche, belüftet durch die **Brustkorbbewegung (Rippenatmung)**. - **3. Innere Befruchtung**:   * Die Spermien werden direkt im Körper des Weibchens auf die Eizelle übertragen. Keine Notwendigkeit für Wasseransammlungen bei der Paarung. - **4. Das Amniotenei (Das 'tragbare Mini-Aquarium')**:   * Umgeben von einer elastischen, **pergamentartigen oder kalkigen Schale**, die Sauerstoff durchlässt, aber Austrocknung stoppt.   * Im Inneren schwimmt der Embryo in der **Amnionhöhle** geschützt in Fruchtwasser.   * Ein **Dottersack** versorgt ihn mit Nährstoffen, die **Allantois** speichert Harnsäure und dient der Atmung. Schlüpfendes Jungtier ist sofort voll entwickelt (keine Larve, keine Metamorphose!). 2. Vergleich: Blindschleiche vs. Ringelnatter: - **Blindschleiche (*Anguis fragilis*)**: Ist **keine Schlange**, sondern eine **beinlose Echse**. Merkmale: Besitzt **bewegliche Augenlider** (kann blinzeln), Gehöröffnungen und kann bei Gefahr ihren Schwanz an Sollbruchstellen abwerfen (**Autotomie**). - **Ringelnatter (*Natrix natrix*)**: Echte Schlange. Merkmale: **Verwachsene, durchsichtige Schuppenbrille** über dem Auge (kann nicht blinzeln), keine Gehöröffnung, dehnbarer Kieferapparat zum Verschlingen ganzer Beutetiere (z. B. Frösche); zwei typische halbmondförmige gelbe Flecken am Hinterkopf."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6F000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YB6F000000000000000A04",
+      "namespace": "biologie-evolution",
+      "slug": "wirbeltierklassen-evolution-vergleich-landgang",
+      "title": "Wirbeltier-Evolution: Die 5 Klassen im Systematischen Vergleich und der historische Landgang",
+      "domain": "schule/biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6F000000000000000A01",
+          "type": "hard",
+          "rationale": "Die 5 Wirbeltierklassen bilden die evolutionäre Stammbaumreihe."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Vertebrate evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6F000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches berühmte fossile Brückentier (Mosaikform) beweist mit Merkmalen von Reptilien (Zähne, langer Wirbelschwanz, Krallen) und Merkmalen von Vögeln (echte Schwungfedern, Gabelbein) den evolutiven Übergang von Reptilien zu Vögeln?",
+          "concept": "Der Urvogel Archaeopteryx (gefunden in den Solnhofener Plattenkalken in Bayern)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Archaeopteryx (Urvogel)",
+              "Ichthyostega"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6F000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine vergleichende Synopse aller 5 Wirbeltierklassen (Fische, Amphibien, Reptilien, Vögel, Säugetiere) anhand von 5 biologischen Kriterien: 1. Körperbedeckung, 2. Atmungsorgane, 3. Thermoregulation (wechselwarm vs. gleichwarm), 4. Fortpflanzung & Ei-Typ, 5. Herz-Kreislaufsystem und erkläre die evolutionären Schritte des historischen Landgangs der Wirbeltiere vom Quastenflosser über Ur-Amphibien (*Ichthyostega*) bis zu den Amnioten.",
+          "concept": "Vergleichstabelle der 5 Klassen; Progression des Landgangs: 1. Fische (Kiemen, Schuppen, wechselwarm, Wasser-Laich), 2. Amphibien (Metamorphose, Lunge+Haut, Wasser-Laich), 3. Reptilien (Amniotenei, Hornschuppen, Landei), 4. Vögel (Federn, gleichwarm, Kalkei, Luftsäcke), 5. Säugetiere (Haare, gleichwarm, Plazenta+Säugen); Brückentiere wie Quastenflosser und Archaeopteryx.",
+          "sample_solution": "1. Synoptische Vergleichstabelle der 5 Wirbeltierklassen: | Klasse | 1. Körperbedeckung | 2. Atmungsorgane | 3. Thermoregulation | 4. Fortpflanzung & Ei | 5. Kreislaufsystem | |---|---|---|---|---|---| | **Fische** | Schleimige Knochenschuppen | Kiemen (Gegenstrom) | Wechselwarm (poikilotherm) | Äußere Befruchtung, schalenloser Laich im Wasser | 1 einfacher Kreislauf (1 Vorhof, 1 Hauptkammer) | | **Amphibien** | Nackte, feuchte Drüsenhaut | Larve: Kiemen; Adult: einfache Lunge + Hautatmung | Wechselwarm | Äußere Befruchtung, Gallertlaich, Metamorphose | 2 getrennte Vorhöfe, 1 ungeteilte Hauptkammer (Mischblut) | | **Reptilien** | Trockene Hornschuppenhaut (Keratin) | Gekammerte Lunge (Rippenatmung) | Wechselwarm | Innere Befruchtung, **Amniotenei** mit Pergamentschale | 2 Vorhöfe, Hauptkammer mit unvollständiger Scheidewand | | **Vögel** | Federkleid (Kontur-/Daunenfedern) | Lunge mit 5 Luftsackpaaren | **Gleichwarm** (homoiotherm, ca. $41^\\circ\\text{ C}$) | Innere Befruchtung, hartschaliges **Kalkei**, Brutpflege | Vollständig getrennte 4 Herzkammern (rechter Aortenbogen) | | **Säugetiere** | Haarkleid / Fell (Woll-/Grannenhaare) | Lunge mit Zwerchfellatmung | **Gleichwarm** (ca. $37^\\circ\\text{ C}$) | **Lebendgeburt (Plazenta)**, Säugen der Jungen mit Milch | Vollständig getrennte 4 Herzkammern (linker Aortenbogen) | 2. Die Meilensteine des Landgangs der Wirbeltiere: - **1. Fleischflosser / Quastenflosser (*Tiktaalik*)**: Kräftige, muskulöse Flossen mit Knochenanordnung ähnlich Oberarm/Unterarm; rudimentäre Lungen zur Überbrückung sauerstoffarmer Tümpel. - **2. Erste Landwirbeltiere (*Ichthyostega*, Devon vor ca. 365 Mio. Jahren)**: 4 kräftige Beine mit Zehen; Rumpf kann vom Boden gestemmt werden; noch Kiemenreste und Flossensaum am Schwanz (Mosaikform). - **3. Das Amniotenei (Karbon vor ca. 310 Mio. Jahren)**: Emanzipation vom Fortpflanzungsmedium Wasser durch das schalen- und fruchtwassergeschützte Landei der Ur-Reptilien. - **4. Differenzierung**: Aus den frühen Amnioten spalten sich die Vorfahren der heutigen Reptilien, der Vögel (über theropode Dinosaurier wie *Archaeopteryx*) und der Säugetiere (*Synapsiden / säugetierähnliche Reptilien*) ab."
+        }
+      ]
+    }
+  ]
+}

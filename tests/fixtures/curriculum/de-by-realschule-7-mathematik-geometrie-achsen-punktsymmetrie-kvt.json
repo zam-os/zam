@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-mathematik-geometrie-achsen-punktsymmetrie",
+  "version": "2026.08.1",
+  "title": "Mathematik 7: Geometrische Abbildungen, Symmetrie und Winkel (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 7: Achsenspiegelung, Punktspiegelung, Mittelsenkrechte, Winkel an geschnittenen Parallelen und Dreieckswinkelsumme.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 7, Lernbereich Geometrische Abbildungen und Winkel"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M7S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M7S0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "achsenspiegelung-mittelsenkrechte-winkelhalbierende",
+      "title": "Achsenspiegelung: Abbildungseigenschaften, Mittelsenkrechte und Winkelhalbierende",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Reflection (mathematics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche grundlegende Abbildungseigenschaft ändert sich bei einer Achsenspiegelung im Gegensatz zur Drehung oder Verschiebung?",
+          "concept": "Der Umlaufsinn (Orientierungssinn) der Figur kehrt sich um (Gegensinnigkeit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Umlaufsinn kehrt sich um (Gegensinnigkeit)",
+              "Die Streckenlängen verändern sich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die vier Haupteigenschaften der Achsenspiegelung (Geradentreue, Längentreue, Winkeltreue, Umkehrung des Umlaufsinns / Gegensinnigkeit), definiere die Mittelsenkrechte m_[AB] als geometrischen Ort aller Punkte und beschreibe die Zirkel-und-Lineal-Konstruktion der Winkelhalbierenden w_alpha.",
+          "concept": "Eigenschaften: Längentreu, winkeltreu, geradentreu, gegensinnig; Mittelsenkrechte = Menge aller Punkte mit gleichem Abstand zu A und B (|PA| = |PB|); Winkelhalbierende = Zirkelschlag um Scheitel S mit beliebigem Radius -> zwei Schnittpunkte auf Schenkeln -> Zirkelschlag mit gleichem Radius um Schnittpunkte -> Schnittpunkt mit S verbinden.",
+          "sample_solution": "1. Eigenschaften der Achsenspiegelung S_a: - Geradentreue: Das Bild einer Geraden ist wieder eine Gerade. - Längentreue: Jede Bildstrecke ist exakt genauso lang wie die Ausgangsstrecke (|A'B'| = |AB|). - Winkeltreue: Jeder Bildwinkel hat dieselbe Weite wie der Ausgangswinkel (alpha' = alpha). - Gegensinnigkeit (Orientierungsumkehr): Der Umlaufsinn einer Figur kehrt sich um (ein Dreieck mit mathematisch positivem Umlaufsinn gegen den Uhrzeigersinn wird im Spiegelbild zu einem Dreieck mit Umlaufsinn im Uhrzeigersinn). - Fixpunkte: Alle Punkte auf der Spiegelachse a sind Fixpunkte (P = P'). 2. Mittelsenkrechte m_[AB]: - Geometrischer Ort (Punktmenge): Die Mittelsenkrechte zu einer Strecke [AB] ist die Menge aller Punkte der Ebene, die von den beiden Endpunkten A und B den gleichen Abstand haben: m_[AB] = {P | |PA| = |PB|}. Sie steht senkrecht auf [AB] und halbiert diese im Mittelpunkt M. 3. Konstruktion der Winkelhalbierenden w_alpha mit Zirkel und Lineal: - Um den Scheitelpunkt S einen Kreisbogen mit beliebigem Radius r schlagen; dieser schneidet die beiden Schenkel in den Punkten P_1 und P_2. - Um P_1 und P_2 jeweils einen Kreisbogen mit gleichem Radius schlagen, sodass sich die Bögen im Winkelinneren in einem Punkt Q schneiden. - Der Strahl von S durch Q ist die Winkelhalbierende w_alpha (Ort aller Punkte mit gleichem senkrechten Abstand zu beiden Schenkeln)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M7S0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "punktspiegelung-drehung-180-grad",
+      "title": "Punktspiegelung: Eigenschaften, Drehung um 180° und Parallelogramme",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Achsenspiegelung bildet die Grundlage geometrischer Kongruenzabbildungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Point reflection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Einer Drehung um welchen Drehwinkel entspricht eine Punktspiegelung an einem Zentrum Z geometrisch?",
+          "concept": "Einer Drehung um genau 180°",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drehung um 180°",
+              "Drehung um 90°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Abbildungsvorschrift der Punktspiegelung Z_Z (Drehung um 180°), begründe, warum jede Bildgerade parallel zur Ausgangsgeraden verläuft (Parallelentreue) und beweise, dass jedes Parallelogramm punktsymmetrisch bezüglich des Schnittpunkts seiner Diagonalen ist.",
+          "concept": "Vorschrift: Bildpunkt P' liegt auf Gerade ZP mit |ZP'| = |ZP|; Eigenschaften: Längentreu, winkeltreu, geradentreu, gleichsinnig (Umlaufsinn bleibt erhalten!), Bildgerade g' || g; Parallelogramm: Punktsymmetrie an Diagonalschnittpunkt M tauscht A mit C und B mit D -> Gegenseiten parallel und gleich lang.",
+          "sample_solution": "1. Abbildungsvorschrift der Punktspiegelung Z_Z: - Jedem Punkt P wird ein Bildpunkt P' so zugeordnet, dass das Symmetriezentrum Z der Mittelpunkt der Verbindungsstrecke [PP'] ist: P, Z und P' liegen auf einer Geraden und es gilt |ZP| = |ZP'|. - Eine Punktspiegelung an Z ist identisch mit einer Drehung um das Zentrum Z mit dem Drehwinkel alpha = 180°. 2. Eigenschaften: - Kongruenzabbildung: Längentreu, winkeltreu, kreistreu. - Gleichsinnigkeit: Im Gegensatz zur Achsenspiegelung bleibt der Umlaufsinn der Figur erhalten. - Parallelentreue: Jede Bildgerade g' ist echt parallel zur Urgeraden g (g' || g), es sei denn, die Gerade verläuft durch das Zentrum Z (dann ist sie eine Fixgerade). 3. Punktsymmetrie des Parallelogramms: Im Parallelogramm ABCD halbieren die Diagonalen [AC] und [BD] einander in ihrem Schnittpunkt M. Spiegelt man das Parallelogramm am Zentrum M: - Punkt A wird auf Punkt C abgebildet (da M Mittelpunkt von [AC]). - Punkt B wird auf Punkt D abgebildet (da M Mittelpunkt von [BD]). - Folglich wird die Seite [AB] auf die Gegenseite [CD] abgebildet. Daraus folgt unmittelbar, dass Gegenseiten im Parallelogramm parallel und gleich lang sein müssen (|AB| = |CD|, |BC| = |AD|)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7S0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M7S0000000000000000A03",
+      "namespace": "mathematik-geometrie",
+      "slug": "winkelbeziehungen-scheitel-stufen-wechselwinkel",
+      "title": "Winkelbeziehungen an geschnittenen Geraden: Scheitel-, Neben-, Stufen- und Wechselwinkel",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7S0000000000000000A02",
+          "type": "hard",
+          "rationale": "Punktspiegelung und Parallelität begründen Stufen- und Wechselwinkel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Transversal (geometry)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7S0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zu welcher Winkelsumme ergänzen sich zwei Nebenwinkel an einer Geradengeradenkreuzung?",
+          "concept": "Zu genau 180° (alpha + beta = 180°, gestreckter Winkel)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "180° (Nebenwinkel)",
+              "90° (Komplementärwinkel)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7S0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere und skizziere die vier Winkelpaare an geschnittenen Parallelen: Scheitelwinkel (gleich groß), Nebenwinkel (ergänzen sich zu 180°), Stufenwinkel / F-Winkel (gleich groß an Parallelen) und Wechselwinkel / Z-Winkel (gleich groß an Parallelen) und bestimme alle 8 Teilwinkel an einer Doppelkreuzung mit g || h, wenn ein Winkel alpha_1 = 65° beträgt.",
+          "concept": "Scheitelwinkel: gegenüber am Scheitel, gleich groß; Nebenwinkel: an gleicher Gerade, Summe 180°; Stufenwinkel (F-Lage): an gleicher Position der Schnittpunkte bei Parallelen, gleich groß; Wechselwinkel (Z-Lage): entgegengesetzte Seite bei Parallelen, gleich groß; Teilwinkel: alpha1=alpha3=alpha5=alpha7 = 65°; beta1=beta2=beta3=beta4 = 180° - 65° = 115°.",
+          "sample_solution": "1. Winkelpaare an Geradenkreuzungen: - Scheitelwinkel: Liegen sich an einer Geradenkreuzung punktsymmetrisch gegenüber. Sie sind immer gleich groß (alpha = alpha'). - Nebenwinkel: Liegen nebeneinander an einer geraden Linie und teilen einen Schenkel. Sie ergänzen sich immer zu 180° (alpha + beta = 180°). 2. Winkelpaare an Parallelenkreuzungen (g || h geschnitten von Gerade s): - Stufenwinkel (F-Winkel): Liegen an den beiden Kreuzungspunkten auf derselben Seite der Schnittgeraden in gleicher relativer Lage (bilden ein 'F'). Bei parallelen Geraden sind Stufenwinkel gleich groß. - Wechselwinkel (Z-Winkel): Liegen auf entgegengesetzten Seiten der Schnittgeraden zwischen oder außerhalb der Parallelen (bilden ein 'Z'). Bei parallelen Geraden sind Wechselwinkel gleich groß (entstehen durch Punktspiegelung am Mittelpunkt der Schnittstrecke). 3. Berechnung aller 8 Winkel für alpha_1 = 65°: - Kreuzung 1: alpha_1 = 65°; Scheitelwinkel alpha_3 = 65°; Nebenwinkel beta_1 = 180° - 65° = 115°; Scheitelwinkel zu beta_1: beta_2 = 115°. - Kreuzung 2 (an der Parallelen): Stufenwinkel alpha_5 = alpha_1 = 65°; Scheitelwinkel alpha_7 = 65°; Stufenwinkel beta_3 = beta_1 = 115°; Scheitelwinkel beta_4 = 115°."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7S0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M7S0000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "dreieckswinkelsumme-aussenwinkelsatz",
+      "title": "Winkelsumme im Dreieck und Viereck sowie der Außenwinkelsatz",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7S0000000000000000A03",
+          "type": "hard",
+          "rationale": "Wechselwinkel an Parallelen beweisen den Dreieckswinkelsummensatz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Sum of angles of a triangle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7S0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie groß ist die Summe der Innenwinkel alpha + beta + gamma in JEDEM ebenen Dreieck?",
+          "concept": "Exakt 180°",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "180°",
+              "360°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7S0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beweise den Innenwinkelsummensatz im Dreieck (alpha + beta + gamma = 180°) mithilfe einer Parallelen zur Grundseite durch den Eckpunkt C (unter Verwendung von Wechselwinkeln), formuliere den Außenwinkelsatz (alpha' = beta + gamma) und berechne die Innenwinkel eines Dreiecks, wenn beta doppelt so groß wie alpha ist und gamma = 60° beträgt.",
+          "concept": "Beweis: Parallele zu AB durch C -> Z-Winkel zu alpha und beta am Scheitel C -> alpha + gamma + beta = 180° (gestreckter Winkel); Außenwinkel: alpha' = 180° - alpha = beta + gamma; Rechnung: alpha + 2*alpha + 60° = 180° <=> 3*alpha = 120° <=> alpha = 40°, beta = 80°, gamma = 60°.",
+          "sample_solution": "1. Beweis des Innenwinkelsummensatzes im Dreieck: - Gegeben ist ein beliebiges Dreieck ABC mit Innenwinkeln alpha, beta, gamma. - Konstruktion: Man zeichnet durch die Spitze C eine Hilfsgerade h, die parallel zur Grundseite AB verläuft (h || AB). - Winkelbetrachtung an C: Die Gerade h teilt den gestreckten 180°-Winkel am Punkt C in drei Teilwinkel: den Innenwinkel gamma in der Mitte sowie links und rechts zwei Wechselwinkel (Z-Winkel). Da h || AB, ist der linke Wechselwinkel gleich alpha und der rechte Wechselwinkel gleich beta. - Schlussfolgerung: alpha + gamma + beta = 180°. 2. Der Außenwinkelsatz: Ein Außenwinkel eines Dreiecks ist immer genauso groß wie die Summe der beiden nicht anliegenden Innenwinkel: alpha' = beta + gamma (denn alpha' + alpha = 180° und (beta + gamma) + alpha = 180°). 3. Beispielberechnung: - Gegeben: beta = 2 · alpha; gamma = 60°. - Ansatz: alpha + beta + gamma = 180° <=> alpha + 2 · alpha + 60° = 180° <=> 3 · alpha = 120°  |: 3 <=> alpha = 40°. - Winkel: alpha = 40°, beta = 80°, gamma = 60°."
+        }
+      ]
+    }
+  ]
+}

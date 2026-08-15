@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-mathematik-geometrie-groessen-flaechen",
+  "version": "2026.08.1",
+  "title": "Mathematik 5: Geometrische Grundbegriffe, Größen und Rechtecksflächen (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 5: Punkte, Geraden, Orthogonalität, Koordinatensystem, Winkelarten, Größenumrechnung, Umfang und Flächeninhalt von Rechteck und Quadrat.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/mathematik",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 5, Lernbereiche Geometrie und Größen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M5G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M5G0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "geometrische-grundbegriffe-lagebeziehungen-koordinatensystem",
+      "title": "Geometrische Grundformen: Punkt, Gerade, Strecke, Orthogonalität und das 2D-Koordinatensystem",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Euclidean geometry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man eine gerade Linie, die zwei definierte Endpunkte A und B besitzt und eine messbare endliche Länge hat?",
+          "concept": "Eine Strecke [AB]",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Strecke [AB]",
+              "Eine Gerade AB"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Gerade g (unendlich in beide Richtungen), Halbgerade / Strahl [AB (Startpunkt A, unendlich in Richtung B) und Strecke [AB] (Länge |AB| mit zwei Endpunkten), beschreibe die Lagebeziehungen 'parallel' (g || h) und 'senkrecht / orthogonal' (g ⊥ h mit 90°-Winkel) und erkläre den Aufbau eines rechtwinkligen 2D-Koordinatensystems (Rechtsachse x-Achse, Hochachse y-Achse, Koordinatenursprung O(0|0), Punkteintragung P(x|y)).",
+          "concept": "Gerade: unbegrenzt; Halbgerade: 1 Endpunkt; Strecke: 2 Endpunkte; Parallel: überall gleicher Abstand; Orthogonal: rechter Winkel (90°); Koordinatensystem: Rechtsachse (x) zuerst, Hochachse (y) danach: P(x|y).",
+          "sample_solution": "1. Grundformen der ebenen Geometrie: - **Gerade g**: Hat weder Anfangs- noch Endpunkt; verläuft in beide Richtungen unendlich weit. - **Halbgerade (Strahl) [AB**: Geht von einem festen Anfangspunkt A aus und verläuft in Richtung des Punktes B unendlich weiter. - **Strecke [AB]**: Die kürzeste Verbindung zwischen den zwei Endpunkten A und B; ihre endliche Länge wird mit **|AB|** bezeichnet (z. B. |AB| = 6 cm). 2. Lagebeziehungen von Geraden in der Ebene: - **Echt parallel (g || h)**: Haben in der Ebene keinen gemeinsamen Schnittpunkt und besitzen überall den gleichen senkrechten Abstand d. - **Sich schneidend (g ∩ h = {S})**: Treffen sich in genau einem gemeinsamen Schnittpunkt S. - **Senkrecht / Orthogonal (g ⊥ h)**: Schneiden sich unter einem exakten rechten Winkel von **90°** (Konstruktion mit der Nulllinie und Mittellinie des Geodreiecks). 3. Das zweidimensionale kartesische Koordinatensystem: - Zwei aufeinander senkrecht stehende Zahlengeraden (Koordinatenachsen):   * Die waagrechte **Rechtsachse (x-Achse / Abszisse)**.   * Die senkrechte **Hochachse (y-Achse / Ordinate)**.   * Der Schnittpunkt beider Achsen ist der **Koordinatenursprung O(0|0)**. - Punktnotation: Ein Punkt P wird immer mit seinem Koordinatenpaar **P(x | y)** angegeben (Merkregel: *'Zuerst ins Haus hineingehen [x nach rechts], dann mit dem Aufzug nach oben fahren [y nach oben]'*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M5G0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "winkelarten-winkelmessung-geodreieck",
+      "title": "Winkellehre: Winkelarten (spitz, recht, stumpf, gestreckt, überstumpf, Vollwinkel) und Messung mit dem Geodreieck",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Winkel entstehen durch zwei Halbgeraden (Schenkel) mit gemeinsamem Scheitelpunkt."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Angle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Winkelart liegt vor, wenn das Winkelmaß alpha genau zwischen 90° und 180° liegt (90° < alpha < 180°)?",
+          "concept": "Ein stumpfer Winkel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein stumpfer Winkel (90° < alpha < 180°)",
+              "Ein spitzer Winkel (0° < alpha < 90°)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Klassifiziere alle 6 Winkelarten nach ihrer Gradzahl (Nullwinkel 0°, spitzer Winkel 0° < alpha < 90°, rechter Winkel alpha = 90°, stumpfer Winkel 90° < alpha < 180°, gestreckter Winkel alpha = 180°, überstumpfer Winkel 180° < alpha < 360°, Vollwinkel alpha = 360°) und beschreibe die fehlerfreie Winkelmessung und -zeichnung mit dem Geodreieck (Nullpunkt an den Scheitelpunkt S anlegen, Grundkante exakt an den ersten Schenkel, Drehsinn gegen den Uhrzeigersinn / mathematisch positiver Drehsinn beachten).",
+          "concept": "Winkelarten: spitz (<90°), recht (=90°), stumpf (90°-180°), gestreckt (=180°), überstumpf (180°-360°), Vollwinkel (=360°); Messung mit Geodreieck: Scheitelpunkt auf Nullpunkt, Schenkel auf Grundkante, Winkelbogen gegen den Uhrzeigersinn ablesen (gelbe vs. transparente Winkelskala).",
+          "sample_solution": "1. Systematische Einteilung der Winkelarten: - **Nullwinkel**: alpha = 0° (beide Schenkel fallen aufeinander). - **Spitzer Winkel**: 0° < alpha < 90° (enger als ein rechter Winkel). - **Rechter Winkel**: alpha = **90°** (symbolisiert durch einen Punkt im Winkelbogen). - **Stumpfer Winkel**: 90° < alpha < 180° (weiter als ein rechter Winkel, aber kleiner als eine Gerade). - **Gestreckter Winkel**: alpha = **180°** (beide Schenkel bilden zusammen eine durchgehende Gerade). - **Überstumpfer Winkel**: 180° < alpha < 360° (größer als eine halbe Drehung). - **Vollwinkel**: alpha = **360°** (eine vollständige Kreisumdrehung). 2. Vorgehensweise beim Messen und Zeichnen mit dem Geodreieck: - 1. Den Nullpunkt (0 cm) der Geodreieck-Grundkante exakt auf den **Scheitelpunkt S** des Winkels legen. - 2. Die lange Zeichenkante des Geodreiecks bündig entlang des ersten Schenkels ausrichten. - 3. Den zweiten Schenkel im **mathematisch positiven Drehsinn** (gegen den Uhrzeigersinn) anvisieren. - 4. Die richtige Skala wählen: Man liest immer auf dem Skalenbogen ab, der beim ersten Schenkel bei 0° bzw. 10° beginnt (nicht bei 170°). - Bei überstumpfen Winkeln (> 180°): Geodreieck umdrehen, den gestreckten 180°-Anteil abziehen oder den kleineren Gegenwinkel messen und von 360° subtrahieren."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5G0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M5G0000000000000000A03",
+      "namespace": "mathematik-groessen",
+      "slug": "groessen-einheiten-laengen-massen-zeit-umrechnung",
+      "title": "Größen und Einheiten: Längen (mm bis km), Massen (mg bis t) und Zeitmaße",
+      "domain": "schule/mathematik/groessen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Geometrische Grundlagen und Streckenmessung sind Basis der Größenlehre."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Unit of measurement",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Größen und Messen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Größen und Messen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5G0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Millimeter (mm) sind genau 1 Meter (m)?",
+          "concept": "1000 mm (1 m = 10 dm = 100 cm = 1000 mm)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1000 mm (1 m = 1000 mm)",
+              "100 mm"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5G0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Stelle die Umrechnungsketten für Längenmaße (1 km = 1000 m, 1 m = 10 dm, 1 dm = 10 cm, 1 cm = 10 mm), Massen (1 t = 1000 kg, 1 kg = 1000 g, 1 g = 1000 mg) und Zeitmaße (1 d = 24 h, 1 h = 60 min, 1 min = 60 s) dar und rechne um: a) 3 km 45 m in m, b) 4,05 kg in g, c) 2 h 15 min in s.",
+          "concept": "Längen: Stufenzahl 10 (außer km -> m: 1000); Massen: Stufenzahl 1000; Zeit: Stufenzahl 60 (außer d -> h: 24); a) 3000 m + 45 m = 3.045 m; b) 4,05 · 1000 g = 4.050 g; c) 2 h = 120 min + 15 min = 135 min · 60 = 8.100 s.",
+          "sample_solution": "1. Die Umrechnungsketten der physikalischen Größen: - **Längenmaße**:   * 1 km = 1.000 m   * 1 m = 10 dm = 100 cm = 1.000 mm   * 1 dm = 10 cm   * 1 cm = 10 mm (Stufenzahl 10, bei km 1.000). - **Massenmaße (Gewichte)** (einheitliche Stufenzahl 1.000):   * 1 Tonne (t) = 1.000 Kilogramm (kg)   * 1 Kilogramm (kg) = 1.000 Gramm (g)   * 1 Gramm (g) = 1.000 Milligramm (mg). - **Zeitmaße** (Achtung: kein Zehnersystem, sondern Sechzigersystem!):   * 1 Tag (d) = 24 Stunden (h)   * 1 Stunde (h) = 60 Minuten (min) = 3.600 Sekunden (s)   * 1 Minute (min) = 60 Sekunden (s). 2. Umrechnungsaufgaben: - a) 3 km 45 m in m:   * 3 km = 3 · 1.000 m = 3.000 m.   * 3.000 m + 45 m = **3.045 m**. - b) 4,05 kg in g:   * 4,05 · 1.000 g = **4.050 g** (Komma um 3 Stellen nach rechts verschieben). - c) 2 h 15 min in s:   * In Minuten umrechnen: 2 · 60 min + 15 min = 120 min + 15 min = 135 min.   * In Sekunden umrechnen: 135 · 60 s = **8.100 s** (bzw. 2 · 3600 s + 15 · 60 s = 7200 s + 900 s = 8100 s)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M5G0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M5G0000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "rechteck-quadrat-umfang-flaecheninhalt-einheiten",
+      "title": "Rechteck und Quadrat: Umfang (U), Flächeninhalt (A) und Flächenmaße (mm² bis km², Ar und Hektar)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M5G0000000000000000A03",
+          "type": "hard",
+          "rationale": "Längenmaße und Multiplikation sind Voraussetzungen für Flächenberechnungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Größen und Messen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Größen und Messen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M5G0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Stufenzahl (Umrechnungszahl) gilt zwischen den metrischen Flächeneinheiten (mm², cm², dm², m², a, ha, km²)?",
+          "concept": "Genau 100 (da 10 · 10 = 100, z. B. 1 m² = 100 dm² = 10.000 cm²)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "100 (Faktor 100 pro Stufe)",
+              "10 (Faktor 10 pro Stufe)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M5G0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Umfang U (Gesamtlänge des Randes / Zaunlänge in Längeneinheiten m) von Flächeninhalt A (Größe der überdeckten Fläche in Quadrateinheiten m²), leite die Formeln für Rechteck (U = 2·a + 2·b = 2·(a+b), A = a·b) und Quadrat (U = 4·a, A = a²) her, stelle die Kette der Flächenmaße mit Ar (1 a = 100 m²) und Hektar (1 ha = 100 a = 10.000 m²) dar und berechne Umfang und Fläche eines Fußballfeldes mit a = 105 m und b = 68 m.",
+          "concept": "Umfang: U_Rechteck = 2*(a+b), U_Quadrat = 4*a; Flächeninhalt: A_Rechteck = a*b, A_Quadrat = a²; Flächenstufenzahl 100; Fußballfeld: U = 2*(105m + 68m) = 2*173m = 346 m; A = 105 m * 68 m = 7.140 m² = 71,40 a.",
+          "sample_solution": "1. Umfang vs. Flächeninhalt: - **Umfang U** (1-dimensional): Die Gesamtlänge der äußeren Begrenzungslinie (z. B. 'Wie viel Meter Zaun brauche ich um das Grundstück?'). Gemessen in Längeneinheiten (mm, cm, m, km).   * Rechteck: **U = 2 · a + 2 · b = 2 · (a + b)**   * Quadrat (alle 4 Seiten gleich a): **U = 4 · a**. - **Flächeninhalt A** (2-dimensional): Gibt an, wie viele Einheitsquadrate (z. B. 1 m²) in die Figur passen (z. B. 'Wie viele Quadratmeter Rollrasen muss ich verlegen?').   * Rechteck: **A = Länge · Breite = a · b**   * Quadrat: **A = a · a = a²**. 2. Flächenmaße und Umrechnungszahl 100: - Da ein Quadrat von 1 m Seitenlänge aus 10 dm · 10 dm = 100 Quadratdezimetern besteht, ist die Stufenzahl bei Flächen immer **100**:   * 1 km² = 100 Hektar (ha) = 1.000.000 m²   * 1 Hektar (ha) = 100 Ar (a) = 10.000 m²   * 1 Ar (a) = 100 Quadratmeter (m²)   * 1 m² = 100 dm² = 10.000 cm² = 1.000.000 mm². 3. Berechnung Fußballfeld (a = 105 m, b = 68 m): - Umfang: U = 2 · (105 m + 68 m) = 2 · 173 m = **346 m**. - Flächeninhalt: A = 105 m · 68 m = **7.140 m²** (entspricht 71,40 a bzw. ca. 0,714 ha)."
+        }
+      ]
+    }
+  ]
+}

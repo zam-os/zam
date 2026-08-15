@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-biologie-pflanzen-bluetenbau-samen",
+  "version": "2026.08.1",
+  "title": "Biologie 5: Samenpflanzen – Organe, Blütenbau, Bestäubung und Samenverbreitung (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 5: Grundorgane (Wurzel, Spross, Laubblatt), Zwitterblüte, Bestäubungsbiologie (Insekten vs. Wind), Befruchtung/Pollenschlauch und Samenökologie.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Natur und Technik 5 (Biologie), Lernbereich Samenpflanzen als Lebewesen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YB5P000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YB5P000000000000000A01",
+      "namespace": "biologie-botanik",
+      "slug": "samenpflanzen-grundorgane-wurzel-spross-blatt",
+      "title": "Die Grundorgane der Samenpflanze: Wurzelhaare, Leitbündel (Xylem/Phloem) und Blatt-Transpiration",
+      "domain": "schule/biologie/botanik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Plant morphology",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb3",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB5P000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem Teil des Leitbündels in der Sprossachse wird Wasser mit gelösten Mineralsalzen von der Wurzel aufwärts in die Blätter transportiert?",
+          "concept": "Im Holzteil (Xylem), während der Bastteil (Phloem) Zuckerlösungen transportiert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Holzteil (Xylem)",
+              "Im Bastteil (Phloem)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB5P000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Arbeitsteilung der 3 vegetativen Grundorgane einer Samenpflanze: 1. Wurzel (Oberflächenvergrößerung durch Wurzelhaare, Wasser- und Mineralstoffaufnahme durch Osmose, Verankerung, Rüben als Speicherorgane), 2. Sprossachse (Mechanische Stütze zum Licht, Leitbündel: Xylem für Wasserstrom, Phloem für Assimilatetransport), 3. Laubblatt (Photosynthese mit Chlorophyll zur Bildung von Glukose und Sauerstoff, Spaltöffnungen / Stomata zur Steuerung des Gasaustausches und Transpirationssogs).",
+          "concept": "Wurzel: Wurzelhaare saugen Wasser/Minerale, Verankerung, Speicher; Sprossachse: Stabilität + 2 Transportwege in Leitbündeln (Xylem aufwärts, Phloem abwärts); Laubblatt: Photosynthese (Lichtenergie -> chemische Energie/Zucker), Stomata regeln Verdunstungssog.",
+          "sample_solution": "1. Die 3 vegetativen Grundorgane der Samenpflanze und ihre Spezialfunktionen: - **1. Die Wurzel**:   * **Verankerung**: Hält die Pflanze mechanisch im Erdreich fest (Tiefwurzler mit Pfahlwurzel vs. Flachwurzler mit Büschelwurzeln).   * **Wasser- und Mineralstoffaufnahme**: Die Wurzelspitze besitzt eine dichte Zone aus mikroskopisch feinen **Wurzelhaaren** (einzellige Ausstülpungen der Rhizodermis). Sie vergrößern die Kontaktfläche zum Bodenwasser exponentiell und nehmen Wasser und gelöste Ionen (Nitrat, Phosphat, Kalium) aktiv auf.   * **Speicherfunktion**: Speicherung von Reservestoffen (Stärke, Zucker) in verdickten Speicherwurzeln (z. B. Mohrrübe, Radieschen, Zuckerrübe). - **2. Die Sprossachse (Stängel bzw. verholzter Stamm)**:   * **Trage- und Ausrichtungsfunktion**: Hebt Blätter und Blüten empor und richtet sie optimal zum einfallenden Sonnenlicht aus.   * **Leitbündelsystem (Zwei-Wege-Transport)**:     - **Holzteil (Xylem)**: Besteht aus abgestorbenen, verholzten Röhrenzellen (Tracheen/Tracheiden). Transportiert Wasser und Nährsalze von den Wurzeln **aufwärts** in die Krone.     - **Bastteil (Phloem)**: Besteht aus lebenden Siebröhren. Transportiert die bei der Photosynthese in den Blättern erzeugten Zuckerlösungen (Assimilate) **abwärts** zu Früchten, Speicherorganen und Wurzeln. - **3. Das Laubblatt**:   * **Photosynthese (Autotrophe Ernährung)**: In den Chloroplasten des Blattgewebes wandelt Blattgrün (**Chlorophyll**) mit Sonnenenergie Wasser ($H_2O$) und Kohlenstoffdioxid ($CO_2$) in Traubenzucker (Glukose, gespeichert als Stärke) und molekularen Sauerstoff ($O_2$) um:     $$6\\,CO_2 + 6\\,H_2O + \\text{Licht} \\longrightarrow C_6H_{12}O_6 + 6\\,O_2$$   * **Transpiration und Stomata**: Auf der Blattunterseite regulieren bohnenförmige Schließzellen die **Spaltöffnungen (Stomata)**. Bei geöffneten Poren verdunstet Wasser, wodurch der lebensnotwendige Unterdruck (**Transpirationssog**) entsteht, der das Wasser aus dem Boden bis in die Blattspitzen saugt."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB5P000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YB5P000000000000000A02",
+      "namespace": "biologie-botanik",
+      "slug": "bluetenbau-zwitterbluete-stempel-staubbeutel",
+      "title": "Aufbau der Zwitterblüte: Kelch-, Kron-, Staub- und Fruchtblätter (Stempel)",
+      "domain": "schule/biologie/botanik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB5P000000000000000A01",
+          "type": "hard",
+          "rationale": "Blüten sind die generativen Fortpflanzungsorgane an der Sprossachse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Flower",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb3",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB5P000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Organe einer vollständigen Zwitterblüte bilden die männlichen Keimzellen (Pollenkörner / Blütenstaub)?",
+          "concept": "Die Staubblätter (bestehend aus Staubfaden und Staubbeutel mit Pollensäcken)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Staubblätter (Staubfaden + Staubbeutel)",
+              "Der Stempel (Narbe + Griffel + Fruchtknoten)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB5P000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die 4 Blattkreise einer vollständigen Zwitterblüte von außen nach innen (1. Kelchblätter / Kelch als Knospenschutz, 2. Kronblätter / Krone als Schau- und Anlockapparat mit Nektarien, 3. Staubblätter mit Staubfaden und 4 Pollensäcken im Staubbeutel, 4. Stempel mit klebriger Narbe, Griffel und Fruchtknoten mit Samenanlagen) und erstelle ein schematisches Blütendiagramm für eine typische Kreuzblütler- oder Rosengewächs-Blüte.",
+          "concept": "4 Blattkreise: Kelch (Sepalen), Krone (Petalen), Staubblätter (Androeceum), Fruchtblätter/Stempel (Gynoeceum); Zwitterblüte trägt beide Geschlechtsorgane in einer Blüte; Fruchtknoten enthält Samenanlage mit Eizelle.",
+          "sample_solution": "1. Die 4 konzentrischen Blattorgane der Zwitterblüte: - **1. Kreis: Kelchblätter (Sepalen / Calyx)**:   * Meist feste, grüne Blätter ganz außen an der Blütenbasis.   * Funktion: Bilden in der Knospenphase eine dichte Hülle zum Schutz der empfindlichen inneren Blütenorgane vor Kälte, Nässe und Schädlingen. - **2. Kreis: Kronblätter (Petalen / Corolla)**:   * Groß, leuchtend gefärbt und oft duftend; an der Basis befinden sich **Nektardrüsen (Nektarien)**, die zuckerhaltigen Saft absondern.   * Funktion: Optischer Schauapparat und Landeplattform für Bestäuberinsekten. - **3. Kreis: Staubblätter (Stamina / Männlicher Blütenbereich)**:   * Bestehen aus dem schlanken **Staubfaden (Filament)** und dem verdickten **Staubbeutel (Anthere)** an der Spitze.   * Der Staubbeutel enthält 4 Pollensäcke; bei Reife platzen diese auf und entlassen Millionen gelber **Pollenkörner (Blütenstaub)**. - **4. Kreis: Fruchtblätter / Stempel (Pistill / Weiblicher Blütenbereich)**:   * **Narbe (Stigma)**: Der oberste, klebrig-feuchte oder gefiederte Pol zur Pollenaufnahme.   * **Griffel (Stylus)**: Röhrenförmiger Verbindungsteil, der die Narbe in Bestäuberhöhe hält.   * **Fruchtknoten (Ovar)**: Verdickte Basis; enthält geschützt eine oder mehrere **Samenanlagen**, in denen jeweils eine **Eizelle** (weibliche Gamete) auf die Befruchtung wartet. 2. Blütendiagramm-Merkmale: - Grundriss der Blüte: Kelchblätter (nach außen spitz gezeichnet), Kronblätter (nach außen rund), Staubblätter (Querschnitt mit 2 Theken/4 Pollensäcken), Fruchtknoten (Zentrum mit Samenanlagen)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB5P000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YB5P000000000000000A03",
+      "namespace": "biologie-botanik",
+      "slug": "bestaeubungsbiologie-insekten-vs-wind-pollenschlauch",
+      "title": "Bestäubungsbiologie und Befruchtung: Insekten- vs. Windblütigkeit und der Pollenschlauch",
+      "domain": "schule/biologie/botanik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB5P000000000000000A02",
+          "type": "hard",
+          "rationale": "Staubblätter und Narbe sind die Organe von Bestäubung und Befruchtung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Pollination",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb3",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB5P000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie gelangt der männliche Zellkern des Pollenkorns nach der Bestäubung von der klebrigen Narbe zur Eizelle tief im Fruchtknoten?",
+          "concept": "Über das Auskeimen eines langen Pollenschlauchs durch das Griffelgewebe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Auskeimen eines Pollenschlauchs",
+              "Durch Einsickern mit Regenwasser"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB5P000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die evolutiven Anpassungen von Insektenblütigen Pflanzen (große farbige Kronblätter, Duft, Nektar, klebrig strukturierter Pollen) mit Windblütigen Pflanzen (unscheinbare Blüten ohne Krone, hängende Kätzchen, Millionen winziger trockener Flugpollen, fedrige Fangnarben, Blüte vor Laubaustrieb) und beschreibe den Befruchtungsvorgang bei Samenpflanzen (Pollenschlauchwachstum durch den Griffel, Eindringen durch die Mikropyle in die Samenanlage, Verschmelzung des männlichen Kerns mit dem Eizellkern zur Zygote).",
+          "concept": "Bestäubung: Insektenblütig (Optik, Duft, Nektar, Klebrigkeit) vs. Windblütig (Kätzchen, Vorfrühling, riesige Mengen leichter Pollen, federige Narben); Befruchtung: Pollenkorn keimt -> Pollenschlauch wächst chemo-gesteuert durch Griffel -> Kernverschmelzung in Samenanlage.",
+          "sample_solution": "1. Evolutive Anpassungen der Bestäubungstypen im Vergleich: - **Insektenblütigkeit (Entomophilie)** (z. B. Kirsche, Apfel, Raps, Salbei):   * **Blütenpracht**: Große, auffällig gefärbte Kronblätter mit Saftmalen (UV-Muster für Insektenaugen) und intensivem Blütenduft.   * **Belohnung**: Nektardrüsen an der Blütenbasis produzieren zuckerreichen Nektar.   * **Pollen**: Große, klebrige, mit Widerhaken und Leimschichten versehene Pollenkörner, die am Pelz von Bienen und Hummeln haften bleiben. - **Windblütigkeit (Anemophilie)** (z. B. Hasel, Birke, Eiche, Roggen/Gräser):   * **Blütenbau**: Sehr klein, unscheinbar grünlich-braun; Kronblätter und Nektardrüsen fehlen völlig (keine Energieverschwendung für Schauapparat).   * **Blütezeit**: Häufig im **Vorfrühling VOR dem Laubaustrieb**, damit Blätter den Windstrom nicht behindern; oft in windbeweglichen hängenden Kätzchen angeordnet.   * **Pollen & Narben**: Gigantische Massen an winzigem, glattem, trockenem Flugpollen; weit aus der Blüte herausragende, buschig **gefiederte Fangnarben** zum Kämmen des Luftstroms. 2. Der Befruchtungsprozess bei Blütenpflanzen: - **1. Keimung auf der Narbe**: Nach der Bestäubung nimmt das passende Pollenkorn Narbensekret auf und treibt einen **Pollenschlauch** aus. - **2. Wachstum durch den Griffel**: Der Pollenschlauch wächst chemisch gesteuert durch das zelluläre Gewebe des Griffels nach unten in den Fruchtknoten. - **3. Kernverschmelzung (Befruchtung)**: Der Pollenschlauch dringt durch die Keimpforte (**Mikropyle**) in die Samenanlage ein. Der männliche generative Zellkern verschmilzt mit dem weiblichen Eizellkern zur **diploiden Zygote**. Aus der Zygote entwickelt sich der Embryo des neuen Samens."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB5P000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YB5P000000000000000A04",
+      "namespace": "biologie-botanik",
+      "slug": "samen-fruchtbildung-keimungsbedingungen-ausbreitung",
+      "title": "Samen- und Fruchtbildung: Samenbau, Keimungsfaktoren (Wasser, Wärme, Sauerstoff) und Ausbreitung",
+      "domain": "schule/biologie/botanik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB5P000000000000000A03",
+          "type": "hard",
+          "rationale": "Erst die Befruchtung stößt die Samen- und Fruchtentwicklung an."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Germination",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "natur_und_technik",
+          "topic_code": "lb3",
+          "topic_title": "Samenpflanzen als Lebewesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB5P000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 3 Umweltfaktoren sind für die Keimung eines Samens im Erdreich unverzichtbar (Keimungsbedingungen)?",
+          "concept": "Wasser (zum Quellen), Wärme (für Enzymaktivität) und Sauerstoff (zur Zellatmung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasser, Wärme und Sauerstoff",
+              "Licht, Dünger und Erde"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB5P000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Bau eines Samens (feste Samenschale / Testa, Keimling / Embryo mit Keimwurzel, Keimstängel und Keimblättern, stärkehaltiges Nährgewebe / Endosperm), erkläre die 3 Schritte der Keimung (1. Quellung durch Wasseraufnahme, 2. Enzymatische Nährstoffmobilisierung und Zellatmung mit Sauerstoff, 3. Durchbrechen der Keimwurzel und Entfaltung der Keimblätter) und analysiere die 4 Mechanismen der Fruchtausbreitung (Wind-, Tier-, Wasser- und Selbstausbreitung).",
+          "concept": "Samenaufbau: Samenschale (Schutz), Embryo (Anlage der Pflanze), Nährgewebe (Energiereserve); Keimung: Quellung -> Enzymaktivierung mit Wärme/Sauerstoff -> Keimwurzel wächst nach unten (Geotropismus), Keimstängel nach oben; Ausbreitungsstrategien: Wind (Schirmchen/Flügel), Tier (Kletten, Verzehr, Versteck), Wasser (Schwimmgewebe), Schleudern (Spannungsriss).",
+          "sample_solution": "1. Anatomischer Aufbau eines reifen Samens (z. B. Gartenbohne): - **Samenschale (Testa)**: Feste, wasser- und luftundurchlässige Schutzhülle; bewahrt den ruhenden Keimling vor Austrocknung, Frost und mikrobiellem Befall. - **Keimling (Embryo)**: Die Miniaturpflanze in Keimruhe (Dormanz):   * **Keimwurzel (Radicula)**: Wächst als erstes Organ aus dem Samen nach unten.   * **Keimstängel (Hypokotyl)**: Schiebt die Keimblätter empor.   * **Keimblätter (Kotyledonen)**: 1 oder 2 Blätter; dienen bei der Bohne direkt als dicker Nährstoffspeicher. - **Nährgewebe (Endosperm)**: Vorrat an Stärke, Proteinen und Ölen zur Ernährung des Keimlings, bis dieser eigene grüne Blätter zur Photosynthese ausbildet. 2. Die Physiologie des Keimvorgangs: - **Voraussetzungen (Keimungsfaktoren)**: **Wasser** (löst Quellung aus), **Wärme** (aktiviert Stoffwechselenzyme bei optimaler Temperatur ca. 15–25 °C) und **Sauerstoff** (für die Zellatmung zur Energiegewinnung). Licht ist bei den meisten Samen nicht nötig (Dunkelkeimer, z. B. Bohne; Ausnahme: Lichtkeimer wie Kresse). - **Ablauf**:   * 1. **Quellungsphase**: Der Samen nimmt Wasser auf, quillt stark auf und sprengt die harte Samenschale.   * 2. **Mobilisierung**: Enzyme spalten unlösliche Stärke in lösliche Glukose; Zellatmung liefert Energie für Zellteilungen.   * 3. **Wachstum**: Die Keimwurzel bricht hervor, verankert sich im Boden und bildet Wurzelhaare; der Keimstängel richtet sich auf, entfaltet die Keimblätter und die ersten Primärblätter ergrünen für die eigenständige Photosynthese. 3. Die 4 Ausbreitungsmechanismen von Früchten und Samen: - **1. Windausbreitung (Anemochorie)**: Schirmflieger (Löwenzahn), Schraubenflieger (Ahorn-Propeller), Streufrüchte (Mohn). - **2. Tierausbreitung (Zoochorie)**: Klettfrüchte (Klette), Verdauungsausbreitung nach Beerenverzehr durch Vögel (Kirsche, Mistel), Versteckhorten durch Eichhörnchen/Eichelhäher (Eichel, Haselnuss). - **3. Wasserausbreitung (Hydrochorie)**: Schwimmfähige, lufthaltige Früchte (Kokosnuss, Erle). - **4. Selbstausbreitung (Autochorie)**: Schleudermechanismen durch Turgorspannung (Springkraut)."
+        }
+      ]
+    }
+  ]
+}

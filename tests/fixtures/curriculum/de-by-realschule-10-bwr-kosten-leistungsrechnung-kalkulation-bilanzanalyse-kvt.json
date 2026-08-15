@@ -1,0 +1,140 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse",
+  "version": "2026.08.1",
+  "title": "BwR 10: Abschlussprüfung – KLR, Zuschlagskalkulation, Deckungsbeitrag und Kennzahlen (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 10 (Abschlussprüfung Zweig II): Kosten- und Leistungsrechnung (KLR), Vollkosten-Zuschlagskalkulation (Vor-/Nachkalkulation), Deckungsbeitragsrechnung (Gewinnschwelle / Break-Even-Point) und Bilanzkennzahlen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/bwr",
+      "checked": "2026-08-15",
+      "label": "Realschule BwR 10 (Wahlpflichtfächergruppe II), Lernbereiche Kosten- und Leistungsrechnung und Jahresabschlussanalyse (Abschlussprüfung)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4WAK0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4WAK0000000000000000A01",
+      "namespace": "bwr-klr",
+      "slug": "zuschlagskalkulation-vollkostenrechnung-selbstkosten-kalkulationsschema",
+      "title": "Die Vollkostenrechnung: Zuschlagskalkulation (FM, MGK, FL, FGK, VwGK, VtGK) bis zum Bruttoverkaufspreis",
+      "domain": "schule/bwr/klr",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Cost accounting",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Kosten- und Leistungsrechnung – Zuschlagskalkulation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4WAK0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnen sich die 'Herstellkosten der Erzeugung' (HK d. E.) im klassischen 11-stufigen bayerischen BwR-Kalkulationsschema?",
+          "concept": "Herstellkosten = Fertigungsmaterial (FM) + Materialgemeinkosten (MGK) + Fertigungslöhne (FL) + Fertigungsgemeinkosten (FGK)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Materialkosten (FM+MGK) + Fertigungskosten (FL+FGK)",
+              "Selbstkosten + Gewinnzuschlag"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4WAK0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Führe das vollständige bayerische Vorwärtskalkulationsschema (von Fertigungsmaterial bis Bruttoverkaufspreis) lückenlos vor und berechne den Barverkaufspreis (BVP) bei folgenden Werten: Fertigungsmaterial (FM) = 200,00 €, Materialgemeinkostenzuschlag (MGKZ) = 10 %, Fertigungslöhne (FL) = 300,00 €, Fertigungsgemeinkostenzuschlag (FGKZ) = 150 %, Verwaltungsgemeinkostenzuschlag (VwGKZ) = 15 %, Vertriebsgemeinkostenzuschlag (VtGKZ) = 10 %, Gewinnzuschlag = 20 %.",
+          "concept": "Kalkulationsschema: FM (200 €) + MGK 10% (20 €) = MK (220 €); FL (300 €) + FGK 150% (450 €) = FK (750 €); Herstellkosten HK = MK + FK = 970 €; VwGK 15% (145,50 €) + VtGK 10% (97,00 €); Selbstkosten SK = 970 + 145,50 + 97 = 1.212,50 €; Gewinn 20% von SK = 242,50 €; Barverkaufspreis BVP = 1.212,50 + 242,50 = 1.455,00 €.",
+          "sample_solution": "1. Das 11-stufige bayerische Vorwärtskalkulationsschema: 1. Fertigungsmaterial (**FM**) 2. $+$ Materialgemeinkosten (**MGK**) [$= \\text{FM} \\cdot \\text{MGKZ}\\%$] $= \\mathbf{\\text{Materialkosten (MK)}}$ 3. Fertigungslöhne (**FL**) 4. $+$ Fertigungsgemeinkosten (**FGK**) [$= \\text{FL} \\cdot \\text{FGKZ}\\%$] $= \\mathbf{\\text{Fertigungskosten (FK)}}$ 5. $= \\mathbf{\\text{Herstellkosten (HK)}}$ [$= \\text{MK} + \\text{FK}$] 6. $+$ Verwaltungsgemeinkosten (**VwGK**) [$= \\text{HK} \\cdot \\text{VwGKZ}\\%$] 7. $+$ Vertriebsgemeinkosten (**VtGK**) [$= \\text{HK} \\cdot \\text{VtGKZ}\\%$] 8. $= \\mathbf{\\text{Selbstkosten (SK)}}$ [$= \\text{HK} + \\text{VwGK} + \\text{VtGK}$] 9. $+$ Gewinn [$= \\text{SK} \\cdot \\text{Gewinn}\\%$] 10. $= \\mathbf{\\text{Barverkaufspreis (BVP)}}$ 11. $+$ Kundenskonto (im Hundert) $= \\mathbf{\\text{Zielverkaufspreis (ZVP)}}$ $+$ Kundenrabatt (im Hundert) $= \\mathbf{\\text{Listenverkaufspreis (LVP nettopreis)}} + 19\\%\\text{ USt} = \\mathbf{\\text{Bruttoverkaufspreis}}$. 2. Durchrechnung des Beispiels: - 1. Fertigungsmaterial (**FM**): $200,00\\text{ €}$ - 2. $+$ MGK ($10\\% \\text{ von } 200\\text{ €}$): $+ 20,00\\text{ €}$   * $\\rightarrow$ **Materialkosten (MK)**: $220,00\\text{ €}$ - 3. Fertigungslöhne (**FL**): $300,00\\text{ €}$ - 4. $+$ FGK ($150\\% \\text{ von } 300\\text{ €}$): $+ 450,00\\text{ €}$   * $\\rightarrow$ **Fertigungskosten (FK)**: $750,00\\text{ €}$ - 5. $= \\mathbf{\\text{Herstellkosten (HK)}} = 220,00\\text{ €} + 750,00\\text{ €} = \\mathbf{970,00\\text{ €}}$ - 6. $+$ VwGK ($15\\% \\text{ von } 970\\text{ €}$): $+ 145,50\\text{ €}$ - 7. $+$ VtGK ($10\\% \\text{ von } 970\\text{ €}$): $+ 97,00\\text{ €}$ - 8. $= \\mathbf{\\text{Selbstkosten (SK)}} = 970,00 + 145,50 + 97,00 = \\mathbf{1.212,50\\text{ €}}$ - 9. $+$ Gewinn ($20\\% \\text{ von } 1.212,50\\text{ €}$): $+ 242,50\\text{ €}$ - 10. $= \\mathbf{\\text{Barverkaufspreis (BVP)}} = 1.212,50\\text{ €} + 242,50\\text{ €} = \\mathbf{1.455,00\\text{ €}}$."
+        }
+      ]
+    },
+    {
+      "id": "01K4WAK0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4WAK0000000000000000A02",
+      "namespace": "bwr-klr",
+      "slug": "deckungsbeitragsrechnung-break-even-point-gewinnschwelle",
+      "title": "Teilkostenrechnung: Deckungsbeitrag (db / DB), Break-Even-Point (Gewinnschwelle) und Zusatzaufträge",
+      "domain": "schule/bwr/klr",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4WAK0000000000000000A01",
+          "type": "hard",
+          "rationale": "Teilkostenrechnung baut auf dem Kostenbegriff der KLR auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Contribution margin",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Kosten- und Leistungsrechnung – Deckungsbeitrag",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4WAK0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet sich der Stückdeckungsbeitrag $db$ eines Produkts aus Verkaufspreis $p$ und variablen Stückkosten $k_v$?",
+          "concept": "$db = p - k_v$ (Stückpreis minus variable Stückkosten)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "db = p - kv",
+              "db = p + kv"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4WAK0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Instrument der Deckungsbeitragsrechnung (Teilkostenrechnung): 1. Trennung in **variable Kosten $K_v$** (beschäftigungsabhängig: Material, Fertigungsakkord) und **fixe Kosten $K_f$** (beschäftigungsunabhängig: Miete, Gehälter, zeitabhängige AfA), 2. **Stückdeckungsbeitrag ($db = p - k_v$)** und **Gesamtdeckungsbeitrag ($DB = E - K_v = x \\cdot db$)**, 3. Die **Gewinnschwelle / Break-Even-Point (BEP)**: $x_{\\text{BEP}} = \\frac{K_f}{db}$ (ab dieser Produktionsmenge ist der Gewinn $G = 0$, darüber entsteht Reingewinn $G = DB - K_f$), 4. Entscheidungskriterium für **Zusatzaufträge bei freien Kapazitäten**: Ein Zusatzauftrag lohnt sich, solange der angebotene Sonderpreis $p_{\\text{Sonder}} > k_v$ ist ($db > 0$). Berechne für $K_f = 60.000\\text{ €}$, $k_v = 40\\text{ €}$, $p = 70\\text{ €}$ die Gewinnschwelle $x_{\\text{BEP}}$ und den Betriebsgewinn bei Verkauf von 3.000 Stück.",
+          "concept": "Deckungsbeitragsrechnung: db = p - kv; Break-Even-Point: x = Kf / db; Zusatzaufträge lohnen sich bei p > kv; Berechnung: db = 70 - 40 = 30 €; x_BEP = 60.000 / 30 = 2.000 Stück; Gewinn bei 3.000 Stück: G = 3.000 * 30 € - 60.000 € = 90.000 € - 60.000 € = 30.000 €.",
+          "sample_solution": "1. Grundbegriffe der Deckungsbeitragsrechnung: - **1. Kostenauflösung**:   * **Variable Kosten ($K_v$)**: Verändern sich proportional mit der produzierten Stückzahl $x$ (z. B. Rohstoffe, Fremdbauteile). $k_v$ sind die variablen Kosten pro Stück.   * **Fixe Kosten ($K_f$)**: Fallen unabhängig von der Produktionsmenge in konstanter Höhe an (z. B. Miete der Fabrikhalle, Festgehälter, Versicherungen). - **2. Der Deckungsbeitrag**:   * **Stückdeckungsbeitrag**:   $$\\mathbf{db = p - k_v}$$     (Der Beitrag, den ein einzelnes verkauftes Stück zur Deckung der fixen Kosten leistet).   * **Gesamtdeckungsbeitrag**:   $$\\mathbf{DB = x \\cdot db = E - K_v}$$   * **Betriebserfolg / Gewinn ($G$)**:   $$\\mathbf{G = DB - K_f = (x \\cdot db) - K_f}$$ 2. Die Gewinnschwelle (Break-Even-Point): - Der **Break-Even-Point ($x_{\\text{BEP}}$)** ist diejenige Absatzmenge, bei der die Erlöse exakt die Gesamtkosten decken ($G = 0 \\implies DB = K_f$):   $$\\mathbf{x_{\\text{BEP}} = \\frac{K_f}{db} = \\frac{K_f}{p - k_v}}$$ 3. Annahme von Zusatzaufträgen bei Unterbeschäftigung: - Hat ein Betrieb freie Maschinenkapazitäten, darf ein Zusatzauftrag auch **unter den regulären Selbstkosten** angenommen werden, solange der gebotene Preis über den variablen Stückkosten liegt ($p_{\\text{Zusatz}} > k_v \\implies db > 0$). Jeder positive Deckungsbeitrag erhöht den Gesamterfolg des Unternehmens! 4. Lösung der Berechnungsaufgabe: - **Gegeben**: $K_f = 60.000\\text{ €}$, $k_v = 40,00\\text{ €}$, $p = 70,00\\text{ €}$. - **1. Stückdeckungsbeitrag**:   $$db = 70,00\\text{ €} - 40,00\\text{ €} = \\mathbf{30,00\\text{ € pro Stück}}$$ - **2. Gewinnschwelle (Break-Even-Point)**:   $$x_{\\text{BEP}} = \\frac{60.000\\text{ €}}{30,00\\text{ €/Stück}} = \\mathbf{2.000\\text{ Stück}}$$   *(Ab dem 2.001. Stück erwirtschaftet der Betrieb echten Gewinn!)* - **3. Betriebsgewinn bei $x = 3.000\\text{ Stück}$**:   $$G = (3.000 \\cdot 30,00\\text{ €}) - 60.000\\text{ €} = 90.000\\text{ €} - 60.000\\text{ €} = \\mathbf{30.000,00\\text{ €}}$$."
+        }
+      ]
+    }
+  ]
+}

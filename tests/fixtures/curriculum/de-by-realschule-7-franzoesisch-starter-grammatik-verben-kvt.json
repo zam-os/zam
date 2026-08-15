@@ -1,0 +1,140 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-franzoesisch-starter-grammatik-verben",
+  "version": "2026.08.1",
+  "title": "Französisch 7 IIIa: Grundlagen – Verben auf -er, être/avoir, Artikel und Satzbau (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Französisch 7 (Wahlpflichtfächergruppe IIIa): Unregelmäßige Hilfsverben être & avoir, regelmäßige Verben auf -er (parler, habiter), Artikel (un/une/des, le/la/les), Verneinung ne...pas und Fragen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:10:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/franzoesisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Französisch 7 (Wahlpflichtfächergruppe IIIa), Lernbereiche Sprachliche Mittel und Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4F7G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4F7G0000000000000000A01",
+      "namespace": "franzoesisch-grammatik",
+      "slug": "verben-etre-avoir-konjugation-praesens",
+      "title": "Die unregelmäßigen Grundverben: Konjugation von 'être' (sein) und 'avoir' (haben) im Présent",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "French grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Fertigkeiten und sprachliche Mittel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F7G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die 3. Person Plural von 'avoir' (haben) im Présent ('sie haben')?",
+          "concept": "ils / elles ont (im Unterschied zu 'ils sont' von être)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ils / elles ont",
+              "ils / elles sont"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F7G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Konjugiere die beiden fundamentalen unregelmäßigen französischen Hilfsverben **être** (sein) und **avoir** (haben) vollständig in allen 6 Personen des Présent, erkläre die phonetische Bindung (Liaison: *vous‿êtes, ils‿ont*) und übersetze folgende Sätze ins Französische: a) 'Wir sind in Paris.' b) 'Habt ihr ein Haustier?' c) 'Sie (weiblich Plural) haben Hunger.'",
+          "concept": "être: je suis, tu es, il/elle/on est, nous sommes, vous êtes, ils/elles sont; avoir: j'ai, tu as, il/elle/on a, nous avons, vous avez, ils/elles ont; Liaison bei Vokalen; a) 'Nous sommes à Paris.' b) 'Vous avez un animal?' c) 'Elles ont faim.'",
+          "sample_solution": "1. Vollständige Konjugation von 'être' und 'avoir' im Présent: - **1. Das Verb être (sein)**:   * *je suis* (ich bin)   * *tu es* (du bist)   * *il / elle / on est* (er / sie / man ist)   * *nous sommes* (wir sind)   * *vous êtes* [Aussprache mit Liaison: *vu-z-ɛt*] (ihr seid / Sie sind)   * *ils / elles sont* (sie sind). - **2. Das Verb avoir (haben)**:   * *j'ai* [Elision vor Vokal] (ich habe)   * *tu as* (du hast)   * *il / elle / on a* (er / sie / man hat)   * *nous avons* [Liaison: *nu-z-avɔ̃*] (wir haben)   * *vous avez* [Liaison: *vu-z-ave*] (ihr habt / Sie haben)   * *ils / elles ont* [Liaison mit weichem z: *il-z-ɔ̃* – Verwechslungsgefahr mit *ils sont*!] (sie haben). 2. Übersetzungen: - a) 'Wir sind in Paris.' $\\rightarrow$ **« Nous sommes à Paris. »** - b) 'Habt ihr ein Haustier?' $\\rightarrow$ **« Vous avez un animal (domestique) ? »** - c) 'Sie (weiblich Plural) haben Hunger.' $\\rightarrow$ **« Elles ont faim. »**"
+        }
+      ]
+    },
+    {
+      "id": "01K4F7G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4F7G0000000000000000A02",
+      "namespace": "franzoesisch-grammatik",
+      "slug": "regelmaessige-verben-er-verneinung-ne-pas-fragen",
+      "title": "Regelmäßige Verben auf -er, Verneinung mit 'ne ... pas' und Fragebildung",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F7G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Grundlegende Satzstrukturen und Pronomen bauen auf den Hilfsverben auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "French verbs",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Kommunikative Fertigkeiten und sprachliche Mittel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F7G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird im Französischen die Verneinungsklammer 'ne ... pas' um das konjugierte Verb gesetzt (z. B. 'Ich spreche kein Französisch')?",
+          "concept": "ne + konjugiertes Verb + pas (z. B. 'Je ne parle pas français')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Je ne parle pas français",
+              "Je parle pas ne français"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F7G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das System der 1. regelmäßigen Verbgruppe auf **-er** (z. B. *parler, habiter, écouter, aimer*): 1. Die 6 Personalendungen im Présent (-e, -es, -e, -ons, -ez, -ent; wobei -e, -es, -e, -ent alle stumm gesprochen werden!), 2. Die **Verneinungsklammer** *ne ... pas* (bzw. *n' ... pas* vor Vokal/stummem h), 3. Drei Arten der Fragebildung (Intonationsfrage durch Heben der Stimme, Frage mit *est-ce que*, Frage mit Fragewörtern wie *où, quand, pourquoi, comment*) und konjugiere und verneine das Verb *habiter* (wohnen).",
+          "concept": "Verben auf -er: Stamm + -e, -es, -e, -ons, -ez, -ent; Verneinung: n'habite pas; 3 Frageformen: Intonation, est-ce que, Fragewörter.",
+          "sample_solution": "1. Die regelmäßige Konjugation der Verben auf -er im Présent: - Bei allen Verben auf **-er** (über 90 % der französischen Verben) wird die Infinitivendung *-er* abgetrennt und durch die festen Personalendungen ersetzt:   * *je parl**e*** [-e ist stumm]   * *tu parl**es*** [-es ist stumm]   * *il / elle / on parl**e*** [-e ist stumm]   * *nous parl**ons*** [-ons gesprochen als Nasal *õ*]   * *vous parl**ez*** [-ez gesprochen als geschlossenes *e*]   * *ils / elles parl**ent*** [-ent ist **völlig stumm**! Klingt exakt wie *parle*!]. 2. Die Verneinung mit 'ne ... pas': - Die beiden Verneinungswörter **klammern das finite Verb ein**:   $$\\mathbf{\\text{Subjekt} + \\mathbf{ne} + \\text{konjugiertes Verb} + \\mathbf{pas}}$$   * Vor Vokal oder stummem 'h' wird *ne* zu **n'** apostrophiert: *'Je **n\\'**aime **pas** les épinards.'* 3. Konjugation und Verneinung von 'habiter' (wohnen): - *J'habite* $\\rightarrow$ *Je n'habite pas* (Ich wohne nicht) - *Tu habites* $\\rightarrow$ *Tu n'habites pas* - *Il/Elle/On habite* $\\rightarrow$ *Il n'habite pas* - *Nous habitons* $\\rightarrow$ *Nous n'habitons pas* - *Vous habitez* $\\rightarrow$ *Vous n'habitez pas* - *Ils/Elles habitent* $\\rightarrow$ *Ils n'habitent pas*. 4. Die 3 Formen der Fragebildung: - **1. Intonationsfrage (Umgangssprache)**: Wortstellung bleibt wie im Aussagesatz, Tonfall steigt am Satzende: *« Tu viens à la fête ? »* - **2. Frage mit 'Est-ce que' (Standardsprache)**: *Est-ce que* wird einfach vor den Satz gestellt: *« Est-ce que tu viens à la fête ? »* - **3. Ergänzungsfrage mit Fragewort**:   * *Où habites-tu ?* / *Où est-ce que tu habites ?* (Wo?)   * *Pourquoi pleures-tu ?* (Warum?)   * *Comment t'appelles-tu ?* (Wie?)"
+        }
+      ]
+    }
+  ]
+}

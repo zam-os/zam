@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz",
+  "version": "2026.08.1",
+  "title": "Mathematik 7: Symmetrie, Winkel an Parallelen, Dreieckskonstruktionen und Kongruenzsätze (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 7: Achsen- und Punktsymmetrie, Stufen- und Wechselwinkel an Parallelen, Winkelsumme im Dreieck (180°), Kongruenzsätze (SSS, SWS, WSW, SsW) und besondere Punkte im Dreieck (Umkreis, Inkreis, Schwerpunkt, Höhenschnittpunkt).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 7, Lernbereiche Geometrische Grundbegriffe, Symmetrie und Dreiecke"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M7W0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M7W0000000000000000A01",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "symmetrie-achsenspiegelung-punktspiegelung-ortslinien",
+      "title": "Achsen- und Punktsymmetrie: Mittelsenkrechte, Winkelhalbierende und Abbildungseigenschaften",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Symmetry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Symmetrie und elementare geometrische Konstruktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7W0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Ortslinie beschreibt die Menge aller Punkte der Ebene, die von zwei gegebenen Punkten $A$ und $B$ den gleichen Abstand haben ($d(P, A) = d(P, B)$)?",
+          "concept": "Die Mittelsenkrechte $m_{[AB]}$ der Strecke $[AB]$",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Mittelsenkrechte der Strecke [AB]",
+              "Die Winkelhalbierende"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7W0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Achsenspiegelung und Punktspiegelung sowie ihre elementaren Ortslinien: 1. **Achsenspiegelung an der Geraden $a$**: Die Verbindungsstrecke $[PP']$ wird von der Spiegelachse $a$ rechtwinklig halbiert ($a \\perp [PP']$ und $d(P, a) = d(P', a)$); Eigenschaften: Längentreu, Winkeltreu, Kreistreu, Geradentreu, aber **Orientierungssinn kehrt sich um (Gegensinnigkeit)**, 2. **Punktspiegelung am Zentrum $Z$**: Das Zentrum $Z$ ist der Mittelpunkt der Strecke $[PP']$; entspricht einer Drehung um $180^\\circ$; Eigenschaften: Längen-, winkel- und **gleichsinnig orientierungstreu**, 3. Die beiden zentralen **Ortslinien**: **Mittelsenkrechte $m_{[AB]}$** (Punkte mit gleichem Abstand zu zwei Punkten) und **Winkelhalbierende $w_\\alpha$** (Punkte mit gleichem Abstand zu zwei sich schneidenden Geraden/Schenkeln).",
+          "concept": "Achsenspiegelung (Achse halbiert [PP'] orthogonal, gegensinnig); Punktspiegelung (Z halbiert [PP'], Drehung um 180°, gleichsinnig); Mittelsenkrechte (Abstand zu zwei Punkten gleich); Winkelhalbierende (Abstand zu zwei Geraden gleich).",
+          "sample_solution": "1. Achsenspiegelung (Geradenspiegelung $S_a$): - **Konstruktionsvorschrift**: Zu jedem Punkt $P$ ist der Bildpunkt $P'$ so definiert, dass die Spiegelachse $a$ die Strecke $[PP']$ **orthogonal halbiert**. Punkte auf der Achse sind **Fixpunkte** ($A = A'$). - **Abbildungseigenschaften**:   * Längentreu: $|\\overline{AB}| = |\\overline{A'B'}|$   * Winkeltreu: $\\sphericalangle ABC = \\sphericalangle A'B'C'$   * Geradentreu und Kreistreu   * **Orientierungsumkehrend (Gegensinnig)**: Ein gegen den Uhrzeigersinn orientiertes Dreieck $ABC$ wird zu einem im Uhrzeigersinn orientierten Bilddreieck $A'B'C'$ (Spiegelbildcharakter). 2. Punktspiegelung (Zentrische Spiegelung $S_Z$): - **Konstruktionsvorschrift**: Der Bildpunkt $P'$ liegt auf dem Strahl $[PZ$ so, dass das Zentrum $Z$ die Strecke $[PP']$ genau halbiert ($|\\overline{PZ}| = |\\overline{ZP'}|$). - **Eigenschaften**: Entspricht mathematisch einer Drehung um den Winkel $\\alpha = 180^\\circ$ um das Drehzentrum $Z$. Sie ist **gleichsinnig orientierungstreu** und jede Gerade ist zu ihrer Bildgeraden parallel ($g \\parallel g'$). 3. Die fundamentalen Ortslinien der Geometrie: - **1. Mittelsenkrechte $m_{[AB]}$**:   * *Ortsliniendefinition*: $\\{P \\mid d(P, A) = d(P, B)\\}$. Die Menge aller Punkte, die von $A$ und $B$ denselben Abstand haben.   * *Konstruktion*: Zwei Kreise mit gleichem Radius $r > \\frac{1}{2}|\\overline{AB}|$ um $A$ und $B$; die Gerade durch die Schnittpunkte ist $m_{[AB]}$. - **2. Winkelhalbierende $w_\\alpha$**:   * *Ortsliniendefinition*: $\\{P \\mid d(P, g) = d(P, h)\\}$. Die Menge aller Punkte im Winkelraum, die von den beiden Schenkelgeraden $g$ und $h$ den gleichen orthogonalen Abstand haben."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7W0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M7W0000000000000000A02",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "winkel-parallelen-stufen-wechselwinkel-winkelsumme-dreieck",
+      "title": "Winkel an Parallelen (Stufen- und Wechselwinkel) und Winkelsumme im Dreieck (180°)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Winkelsätze an Parallelen begründen die Dreieckswinkelsumme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Sum of angles of a triangle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Winkelbeziehungen und Dreiecksgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7W0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie groß ist die Summe der drei Innenwinkel $\\alpha + \\beta + \\gamma$ in JEDEM beliebigen ebenen Dreieck der euklidischen Geometrie?",
+          "concept": "Exakt 180° (entspricht einem gestreckten Winkel)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Exakt 180°",
+              "Exakt 360°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7W0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre und beweise die Winkelbeziehungen an geschnittenen Geraden und die Innenwinkelsumme: 1. **Winkel an sich schneidenden Geraden**: **Scheitelwinkel** sind gleich groß ($\\alpha = \\alpha'$), **Nebenwinkel** ergänzen sich zu $180^\\circ$ ($\\alpha + \\beta = 180^\\circ$), 2. **Winkel an Parallelen mit einer schneidenden Geraden $g$**: **Stufenwinkel (F-Winkel)** sind gleich groß ($\\alpha = \\alpha_1$), **Wechselwinkel (Z-Winkel)** sind gleich groß ($\\alpha = \\alpha_2$), 3. **Der mathematische Beweis der Dreieckswinkelsumme**: Konstruktion einer Parallelen zur Grundseite $AB$ durch den Eckpunkt $C$ und Nutzung von Wechselwinkeln $\\rightarrow$ $\\alpha + \\beta + \\gamma = 180^\\circ$, 4. Formel für die Innenwinkelsumme eines beliebigen konvexen **$n$-Ecks**: $S_n = (n - 2) \\cdot 180^\\circ$.",
+          "concept": "Scheitelwinkel gleich; Nebenwinkel 180°; Stufenwinkel (F) & Wechselwinkel (Z) an Parallelen gleich; Beweis Dreieckswinkelsumme über Parallele durch C (Wechselwinkel ergeben gestreckten Winkel 180°); n-Eck Summe = (n-2) * 180°.",
+          "sample_solution": "1. Winkelpaare an Geradenkreuzungen: - **Scheitelwinkel**: Liegen sich an einem Schnittpunkt zweier Geraden gegenüber $\\implies$ sind immer **exakt gleich groß** ($\\alpha = \\alpha'$). - **Nebenwinkel**: Liegen nebeneinander an einer Geraden $\\implies$ ergänzen sich immer zu einem gestreckten Winkel: $\\mathbf{\\alpha + \\beta = 180^\\circ}$. 2. Winkel an Parallelen ($g_1 \\parallel g_2$ geschnitten von Gerade $s$): - **Stufenwinkel (F-Lage)**: Liegen auf derselben Seite der Schnittgeraden in derselben Relativlage zu den Parallelen $\\implies$ **gleich groß**: $\\mathbf{\\alpha = \\alpha_{\\text{Stufe}}}$. - **Wechselwinkel (Z-Lage)**: Liegen auf entgegengesetzten Seiten der Schnittgeraden und zwischen den Parallelen $\\implies$ **gleich groß**: $\\mathbf{\\alpha = \\alpha_{\\text{Wechsel}}}$. - **Nachbarwinkel (E-Lage)**: Ergänzen sich zu $180^\\circ$ ($\\alpha + \\delta = 180^\\circ$). 3. Geometrischer Beweis der Innenwinkelsumme im Dreieck: - Gegeben sei ein beliebiges Dreieck $ABC$ mit Innenwinkeln $\\alpha, \\beta, \\gamma$. - **Konstruktionsschritt**: Wir zeichnen eine Hilfsgerade $h$ durch den oberen Eckpunkt $C$, die **parallel zur Basis $AB$** verläuft ($h \\parallel AB$). - **Winkelbetrachtung am Punkt $C$**:   * Der Winkel zur Linken ist der Wechselwinkel zu $\\alpha$ an den Parallelen $\\implies$ Größe ist $\\alpha$.   * Der Winkel in der Mitte ist der Innenwinkel $\\gamma$.   * Der Winkel zur Rechten ist der Wechselwinkel zu $\\beta$ an den Parallelen $\\implies$ Größe ist $\\beta$. - Da alle drei Winkel zusammen auf der Geraden $h$ einen gestreckten Winkel bilden, gilt zwingend:   $$\\mathbf{\\alpha + \\beta + \\gamma = 180^\\circ} \\quad \\blacksquare$$ 4. Verallgemeinerung auf das konvexe $n$-Eck: - Jedes $n$-Eck kann von einem Eckpunkt aus in genau $(n - 2)$ Dreiecke zerlegt werden. - Daher beträgt die Summe aller Innenwinkel eines $n$-Ecks:   $$\\mathbf{S_n = (n - 2) \\cdot 180^\\circ}$$   *(Z. B. Viereck: $(4-2)\\cdot 180^\\circ = 360^\\circ$; Fünfeck: $(5-2)\\cdot 180^\\circ = 540^\\circ$)*."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7W0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M7W0000000000000000A03",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "kongruenzsaetze-dreiecke-sss-sws-wsw-ssw-konstruktion",
+      "title": "Kongruenzsätze für Dreiecke: SSS, SWS, WSW, SsW und eindeutige Dreieckskonstruktionen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7W0000000000000000A02",
+          "type": "hard",
+          "rationale": "Dreieckskonstruktionen erfordern Winkel- und Längenverständnis."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Congruence (geometry)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Kongruenz und Dreieckskonstruktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7W0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Unter welcher Bedingung ist ein Dreieck nach dem Kongruenzsatz 'SsW' (zwei Seiten und ein Gegenwinkel) EINDEUTIG konstruierbar und kongruent?",
+          "concept": "Wenn der gegebene Winkel der LÄNGEREN der beiden gegebenen Seiten gegenüberliegt (großes S = längere Seite)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Winkel liegt der längeren Seite gegenüber (SsW)",
+              "Winkel liegt der kürzeren Seite gegenüber"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7W0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere und systematisiere die 4 Kongruenzsätze für Dreiecke im Gymnasium: 1. **SSS (Seite-Seite-Seite)**: Zwei Dreiecke sind kongruent (deckungsgleich $\\Delta ABC \\cong \\Delta A'B'C'$), wenn sie in allen 3 Seitenlängen übereinstimmen (Dreiecksungleichung $a + b > c$ vorausgesetzt), 2. **SWS (Seite-Winkel-Seite)**: Übereinstimmung in 2 Seiten und dem von ihnen **eingeschlossenen** Winkel, 3. **WSW / SWW (Winkel-Seite-Winkel)**: Übereinstimmung in einer Seite und 2 Winkeln, 4. **SsW (Seite-Seite-Winkel)**: Übereinstimmung in 2 Seiten und dem Gegenwinkel der **längeren Seite**, 5. Warum ist 'WWW' (drei gleiche Winkel) **kein** Kongruenzsatz?",
+          "concept": "4 Kongruenzsätze: SSS, SWS, WSW, SsW (Winkel gegenüber größerer Seite); WWW begründet nur Ähnlichkeit (gleiche Form, aber beliebig skalierte Größe), keine Kongruenz.",
+          "sample_solution": "1. Begriff der geometrischen Kongruenz (Deckungsgleichheit): - Zwei Dreiecke heißen **kongruent** (Symbol: $\\cong$), wenn sie durch eine Folge von Kongruenzabbildungen (Verschiebung, Drehung, Spiegelung) exakt zur Deckung gebracht werden können (alle entsprechenden Seiten und Winkel sind gleich groß). 2. Die 4 grundlegenden Kongruenzsätze: - **1. Satz SSS (Seite-Seite-Seite)**:   * Stimmen zwei Dreiecke in den Längen aller drei Seiten $a, b, c$ überein, so sind sie kongruent.   * *Existenzbedingung*: Die **Dreiecksungleichung** muss erfüllt sein ($a + b > c, a + c > b, b + c > a$; die Summe zweier Seiten muss stets echt größer als die dritte sein). - **2. Satz SWS (Seite-Winkel-Seite)**:   * Stimmen zwei Dreiecke in zwei Seiten und dem **von diesen beiden Seiten eingeschlossenen Winkel** überein (z. B. $b, c$ und $\\alpha$), so sind sie kongruent. - **3. Satz WSW bzw. Sww (Winkel-Seite-Winkel)**:   * Stimmen zwei Dreiecke in einer Seitenlänge und zwei Winkeln überein (da der 3. Winkel über $180^\\circ - (\\alpha+\\beta)$ feststeht), so sind sie kongruent. - **4. Satz SsW (Seite-Seite-Winkel)**:   * Stimmen zwei Dreiecke in zwei Seiten und dem Gegenwinkel der **längeren Seite** überein ($a > b$ und $\\alpha$), so sind sie kongruent.   * *Wichtig*: Läge der Winkel der kürzeren Seite gegenüber ($sSW$), gäbe es zwei verschiedene Dreiecke (keine Eindeutigkeit!). 3. Warum WWW kein Kongruenzsatz ist: - Drei gegebene Winkel $\\alpha, \\beta, \\gamma$ mit $\\alpha+\\beta+\\gamma=180^\\circ$ legen zwar die Form und Seitenverhältnisse des Dreiecks fest, **nicht aber dessen absolute Größe**. - Dreiecke mit identischen Winkeln sind **nur ähnlich (zentrische Streckung)**, aber **nicht kongruent** (z. B. ein gleichseitiges Dreieck mit $a=1\\text{ cm}$ und eines mit $a=10\\text{ m}$)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7W0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M7W0000000000000000A04",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "besondere-punkte-dreieck-umkreis-inkreis-schwerpunkt-hoehenschnittpunkt",
+      "title": "Besondere Punkte im Dreieck: Umkreismittelpunkt, Inkreismittelpunkt, Schwerpunkt und Höhenschnittpunkt",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7W0000000000000000A03",
+          "type": "hard",
+          "rationale": "Besondere Linien und Punkte vollenden die Dreieckslehre der 7. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Triangle center",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Besondere Punkte und Linien im Dreieck",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7W0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem Verhältnis teilt der physikalische Schwerpunkt $S$ eines Dreiecks jede der drei Seitenhalbierenden (vom Eckpunkt zur gegenüberliegenden Seite gemessen)?",
+          "concept": "Im festen Teilungsverhältnis 2 : 1 (zwei Teile vom Eckpunkt zum Schwerpunkt, ein Teil vom Schwerpunkt zum Seitenmittelpunkt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Verhältnis 2 : 1 (Ecke zu Seite)",
+              "Im Verhältnis 1 : 1 (genau in der Mitte)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7W0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die vier klassischen besonderen Punkte im Dreieck und ihre Linien: 1. **Umkreismittelpunkt $U$**: Schnittpunkt der 3 **Mittelsenkrechten** ($m_a, m_b, m_c$); hat zu allen 3 Ecken den gleichen Abstand ($r_u = |UA| = |UB| = |UC|$; liegt bei rechtwinkligen Dreiecken genau in der Mitte der Hypotenuse [Thaleskreis] und bei stumpfwinkligen außerhalb), 2. **Inkreismittelpunkt $I$**: Schnittpunkt der 3 **Winkelhalbierenden** ($w_\\alpha, w_\\beta, w_\\gamma$); berührt alle 3 Dreiecksseiten von innen ($r_i = d(I, a) = d(I, b) = d(I, c)$), 3. **Schwerpunkt $S$**: Schnittpunkt der 3 **Seitenhalbierenden** ($s_a, s_b, s_c$); physikalischer Massenmittelpunkt mit Teilungsverhältnis 2:1, 4. **Höhenschnittpunkt $H$**: Schnittpunkt der 3 **Höhengeraden** ($h_a, h_b, h_c$ mit $h_a \\perp a$); liegt bei stumpfwinkligen Dreiecken außerhalb, 5. Die **Eulersche Gerade**: $U, S, H$ liegen auf einer gemeinsamen Geraden.",
+          "concept": "4 Besondere Punkte: U (Mittelsenkrechte, Umkreis), I (Winkelhalbierende, Inkreis), S (Seitenhalbierende, Schwerpunkt 2:1), H (Höhen); Eulersche Gerade verbindet U, S, H mit HS : SU = 2 : 1.",
+          "sample_solution": "1. Die vier klassischen merkwürdigen Punkte des Dreiecks: - **1. Der Umkreismittelpunkt $U$ (Schnittpunkt der Mittelsenkrechten $m_a \\cap m_b \\cap m_c$)**:   * *Eigenschaft*: Da jeder Punkt auf $m_c$ gleichen Abstand zu $A$ und $B$ hat und auf $m_a$ gleichen Abstand zu $B$ und $C$, ist der Abstand von $U$ zu allen drei Ecken identisch:   $$\\mathbf{r_u = |\\overline{UA}| = |\\overline{UB}| = |\\overline{UC}|}$$   * *Lage*: Bei spitzwinkligen Dreiecken im Inneren; bei rechtwinkligen Dreiecken **exakt im Mittelpunkt der Hypotenuse** (Satz des Thales); bei stumpfwinkligen Dreiecken **außerhalb** des Dreiecks. - **2. Der Inkreismittelpunkt $I$ (Schnittpunkt der Winkelhalbierenden $w_\\alpha \\cap w_\\beta \\cap w_\\gamma$)**:   * *Eigenschaft*: Hat zu allen drei Begrenzungsgeraden $a, b, c$ denselben orthogonalen Abstand $r_i$. Der Inkreis berührt alle drei Seiten von innen als Tangenten.   * *Lage*: Liegt **immer im Inneren** des Dreiecks. - **3. Der Schwerpunkt $S$ (Schnittpunkt der Seitenhalbierenden $s_a \\cap s_b \\cap s_c$)**:   * *Definition*: Eine Seitenhalbierende verbindet einen Eckpunkt mit dem Mittelpunkt der gegenüberliegenden Seite (z. B. $A$ mit $M_a$).   * *Teilungssatz*: Der Schwerpunkt $S$ teilt jede Seitenhalbierende im Verhältnis **$2 : 1$** (der längere Abschnitt liegt stets an der Dreiecksecke):   $$\\mathbf{|\\overline{AS}| : |\\overline{SM_a}| = 2 : 1}$$   * *Physik*: Stützt man das homogene Dreieck im Schwerpunkt $S$, befindet es sich im perfekten Drehmoment-Gleichgewicht. - **4. Der Höhenschnittpunkt $H$ (Schnittpunkt der Höhen $h_a \\cap h_b \\cap h_c$)**:   * *Definition*: Eine Höhe ist das vom Eckpunkt auf die gegenüberliegende Seite (bzw. deren Trägergerade) gefällte Lot.   * *Lage*: Bei spitzwinkligen Dreiecken innen, beim rechtwinkligen Dreieck **im Scheitel des rechten Winkels**, beim stumpfwinkligen Dreieck außerhalb. 2. Die Eulersche Gerade: - In jedem nicht-gleichseitigen Dreieck liegen die drei Punkte **Umkreismittelpunkt $U$**, **Schwerpunkt $S$** und **Höhenschnittpunkt $H$** auf einer einzigen gemeinsamen Geraden (**Eulersche Gerade**), wobei $S$ die Strecke $[UH]$ im Verhältnis $|\\overline{HS}| : |\\overline{SU}| = 2 : 1$ teilt."
+        }
+      ]
+    }
+  ]
+}

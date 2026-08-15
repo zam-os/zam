@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung",
+  "version": "2026.08.1",
+  "title": "Französisch 7: Grammatik – Passé composé (Accord), Relativsätze (qui/que/où) und Verneinungen (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 7 (2. Fremdsprache F2): Passé composé mit avoir und être (Accord du participe passé), Relativsätze mit qui, que (qu') und où, komplexe Verneinungen (ne... rien, ne... jamais, ne... personne) und Teilungsartikel.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/franzoesisch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Französisch 7 (F2), Lernbereiche Sprachliche Mittel – Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4F7Y0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4F7Y0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-grammatik",
+      "slug": "passe-compose-avoir-etre-accord-participe",
+      "title": "Das Passé composé: Hilfsverben 'avoir' vs. 'être' und die Regeln des Accord du participe passé",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Passé composé",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Zeitformen der Vergangenheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F7Y0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Endung erhält das Participe passé im Passé composé bei Verben, die mit 'être' gebildet werden, wenn das Subjekt weiblich Plural ist (z. B. 'Elles sont arriv...!')?",
+          "concept": "-ées (Angleichung an weiblich Plural: +e für feminin, +s für Plural)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "-ées (Accord an weiblich Plural)",
+              "-é (Grundform)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F7Y0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Grammatikregeln des französischen Passé composé: 1. **Bildung mit 'avoir'**: Form von *avoir* im Présent + *participe passé* (-er -> -é [*aimé*], -ir -> -i [*choisi*], -re -> -u [*vendu*]); im Regelfall **keine Angleichung** an das Subjekt (*'Marie a chanté'*), 2. **Bildung mit 'être'**: Bei Verben der Orts- und Zustandsveränderung (*aller, venir, arriver, partir, entrer, sortir, monter, descendre, rester, tomber, naître, mourir*) sowie bei allen reflexiven Verben, 3. **L'accord du participe passé**: Bei *être* richtet sich das Partizip zwingend nach Geschlecht und Zahl des Subjekts (+e, +s, +es) und übersetze: a) 'Gestern sind meine Schwestern in Paris angekommen.' b) 'Wir (männlich Plural) haben eine Pizza gegessen.'",
+          "concept": "Passé composé: avoir (Standard ohne Accord) vs. être (Bewegungsverben/reflexiv mit zwingendem Accord an das Subjekt: +e, +s, +es); a) 'Hier, mes sœurs sont arrivées à Paris.' b) 'Nous avons mangé une pizza.'",
+          "sample_solution": "1. Grundbauplan des Passé composé: - Das Passé composé ist die wichtigste Zeitform zur Schilderung abgeschlossener Handlungen in der Vergangenheit:   $$\\mathbf{\\text{Hilfsverb (avoir oder être im Présent)} + \\text{Participe passé}}$$ 2. Die beiden Hilfsverb-Gruppen: - **1. Bildung mit 'avoir' (Der Normalfall für über 90 % der Verben)**:   * Verben auf **-er** $\\rightarrow$ **-é** (*parler $\\rightarrow$ parlé*).   * Verben auf **-ir** $\\rightarrow$ **-i** (*finir $\\rightarrow$ fini, dormir $\\rightarrow$ dormi*).   * Unregelmäßige Verben $\\rightarrow$ oft **-u** (*boire $\\rightarrow$ bu, lire $\\rightarrow$ lu, voir $\\rightarrow$ vu, vouloir $\\rightarrow$ voulu, pouvoir $\\rightarrow$ pu*), **-is** (*prendre $\\rightarrow$ pris, mettre $\\rightarrow$ mis*) oder **-it** (*écrire $\\rightarrow$ écrit, faire $\\rightarrow$ fait*).   * **Keine Subjektangleichung**: *« Paul a dansé. »* / *« Sarah a dansé. »* - **2. Bildung mit 'être' (Verben des 'Maison d'être' & Reflexive Verben)**:   * Feste Gruppe von Verben der Fortbewegung und Lebensstadien:     - *aller / venir* (gehen / kommen)     - *arriver / partir* (ankommen / abfahren)     - *entrer / sortir* (hineingehen / hinausgehen)     - *monter / descendre* (hinaufsteigen / hinabsteigen)     - *tomber / rester / retourner* (fallen / bleiben / zurückkehren)     - *naître / mourir* (geboren werden / sterben). 3. Die zwingende Partizipangleichung (L'accord du participe passé): - Bei Bildung mit **être** wird das Partizip wie ein Adjektiv in Genus und Numerus **an das Subjekt angeglichen**:   * Männlich Singular: Grundform (*Il est allé*)   * Weiblich Singular: **+ e** (*Elle est allé**e***)   * Männlich / gemischt Plural: **+ s** (*Ils sont allé**s***)   * Weiblich Plural: **+ es** (*Elles sont allé**es***). 4. Übersetzungen: - a) 'Gestern sind meine Schwestern in Paris angekommen.' $\\rightarrow$ **« Hier, mes sœurs sont arrivées à Paris. »** (Subjekt *mes sœurs* ist feminin Plural $\\rightarrow$ Hilfsverb *être* mit Accord **-ées**). - b) 'Wir haben eine Pizza gegessen.' $\\rightarrow$ **« Nous avons mangé eine pizza. »** (Hilfsverb *avoir* $\\rightarrow$ unverändertes Partizip *mangé*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4F7Y0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4F7Y0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-grammatik",
+      "slug": "relativpronomen-verneinungen-teilungsartikel",
+      "title": "Relativpronomen (qui, que, où), Verneinungen (ne... rien/jamais/personne) und Teilungsartikel",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F7Y0000000000000000A01",
+          "type": "hard",
+          "rationale": "Satzbau und Verneinungsstrukturen bauen auf dem Grundwortschatz auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "French grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Satzgefüge und Verneinungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F7Y0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die französische Verneinung für 'nie / niemals' (z. B. 'Ich reise nie allein.')?",
+          "concept": "ne ... jamais (z. B. 'Je ne voyage jamais seul.')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ne ... jamais",
+              "ne ... rien"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F7Y0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere drei zentrale Grammatikkapitel des 7. Schuljahres Französisch: 1. **Relativpronomen**:   * **qui** (Subjekt für Personen & Dinge $\\rightarrow$ danach folgt sofort das finite Verb: *'C'est l'homme qui parle'*).   * **que / qu'** (Direktes Objekt $\\rightarrow$ danach folgt ein neues Subjekt: *'C'est le livre que je lis'*).   * **où** (Orts- und Zeitangabe: *'la maison où j'habite'*), 2. **Erweiterte Verneinungen**: *ne ... pas* (nicht), *ne ... plus* (nicht mehr), *ne ... jamais* (nie), *ne ... rien* (nichts), *ne ... personne* (niemand; steht im Passé composé hinter dem Partizip!), 3. **Teilungsartikel (Articles partitifs)**: *du, de la, de l', des* für unbestimmte Mengen nicht zählbarer Substanzen (*'boire de l'eau, manger du pain'*) vs. einfaches **de** nach festen Mengenangaben (*'un kilo de sucre, beaucoup d'amis'*).",
+          "concept": "Relativpronomen (qui + Verb, que + Subjekt, où = Ort/Zeit); Verneinungen (ne... plus, ne... jamais, ne... rien, ne... personne); Teilungsartikel (du, de la, des) vs. einfaches de nach Mengen (beaucoup de, un kilo de).",
+          "sample_solution": "1. Die französischen Relativpronomen: - **1. qui (Subjektfunktion: wer / der / die / das)**:   * Ersetzt Personen und Sachen als Subjekt.   * **Signal**: Direkt nach *qui* folgt **immer ein Verb** (*« la fille qui chante »*). Wird niemals apostrophiert. - **2. que / qu' (Objektfunktion: den / die / das)**:   * Ersetzt ein direktes Objekt (Akkusativ).   * **Signal**: Nach *que* folgt **immer ein neues Subjekt** (*« la chanson que j'aime »*). Vor Vokal zwingend zu **qu'** verkürzt. - **3. où (wo / an dem / in dem)**:   * Bezieht sich auf Orte oder Zeitpunkte (*« le village où nous habitons », « le jour où il est né »*). 2. Die Familie der französischen Verneinungen (Klammer um das Verb): - Die Verneinungspartikel umschließen im Präsens das konjugierte Verb:   * **ne ... plus** (nicht mehr): *« Je n'ai plus d'argent. »*   * **ne ... jamais** (nie / niemals): *« Il ne regarde jamais la télé. »*   * **ne ... rien** (nichts): *« Nous ne comprenons rien. »*   * **ne ... personne** (niemand): *« Je ne connais personne ici. »* - *Besonderheit im Passé composé*: *ne... pas/plus/jamais/rien* umschließen das Hilfsverb (*« Je n'ai rien vu »*), während *personne* hinter dem Partizip steht (*« Je n'ai vu personne »*). 3. Der Teilungsartikel (Article partitif) vs. Mengenangaben: - **Teilungsartikel** (drückt einen unbestimmten Teil eines nicht zählbaren Ganzen aus):   * Männlich: **du** (*du fromage, du café*)   * Weiblich: **de la** (*de la salade, de la musique*)   * Vor Vokal/stummem h: **de l'** (*de l'eau, de l'huile*)   * Plural: **des** (*des pâtes, des fruits*). - **Regel des reinen 'de' nach Mengenangaben**:   * Steht vor dem Nomen eine konkrete Mengenbezeichnung (*un kilo, un litre, un paquet, un verre*) oder ein Mengenadverb (*beaucoup, peu, trop, assez*), steht **nur das unveränderliche 'de / d''**:     - *« un kilo **de** pommes »*     - *« beaucoup **d'**amis »*."
+        }
+      ]
+    }
+  ]
+}

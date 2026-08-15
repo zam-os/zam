@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-geschichte-urgeschichte-aegypten-griechenland",
+  "version": "2026.08.1",
+  "title": "Geschichte 6: Von der Urgeschichte zur Antike – Neolithische Revolution, Ägypten und Attische Demokratie (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 6: Altsteinzeit vs. Neolithische Revolution (Sesshaftwerdung), Frühe Hochkultur Ägypten (Nil, Pharao, Gesellschaft) und Antikes Griechenland (Polis, Attische Demokratie).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/geschichte",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geschichte 6, Lernbereiche Wurzeln unserer Identität: Urgeschichte, Ägypten und Griechenland"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YH6A000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YH6A000000000000000A01",
+      "namespace": "geschichte-urgeschichte",
+      "slug": "altsteinzeit-vs-jungsteinzeit-neolithische-revolution",
+      "title": "Ur- und Frühgeschichte: Jäger und Sammler (Altsteinzeit) vs. Neolithische Revolution (Jungsteinzeit)",
+      "domain": "schule/geschichte/urgeschichte",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q309",
+          "target_label": "Neolithic Revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Früheste Kulturen und Urgeschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6A000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was versteht man in der Geschichtswissenschaft unter dem Epochenbegriff der 'Neolithischen Revolution' (Übergang zur Jungsteinzeit vor ca. 10.000 v. Chr.)?",
+          "concept": "Den tiefgreifenden Wandel vom nomadischen Jäger- und Sammlerdasein zur Sesshaftwerdung mit Ackerbau, Viehzucht und Vorratshaltung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sesshaftwerdung, Ackerbau und Viehzucht (Neolithikum)",
+              "Die Erfindung der Dampfmaschine"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6A000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Lebensweise der Menschen in der Altsteinzeit (Paläolithikum: Nomaden, Jäger von Großwild wie Mammut/Rentier und Sammler, Faustkeile aus Feuerstein, Höhlenmalereien in Lascaux/Altamira, Höhlen/Zeltlager) mit der Jungsteinzeit (Neolithikum ab ca. 10.000 v. Chr. im 'Fruchtbaren Halbmond': Sesshaftigkeit in festen Langhäusern, planmäßiger Anbau von Getreide wie Emmer/Einkorn, Domestikation von Schaf, Ziege, Rind, geschliffene Steinbeile, Tonkeramik zur Vorratshaltung, Webtechnik) und analysiere die gesellschaftlichen Folgen (Bevölkerungswachstum, Arbeitsteilung, Entstehung von Privateigentum).",
+          "concept": "Altsteinzeit: aneignende Wirtschaftsweise (Jäger/Sammler, nomadisch, Feuersteinwerkzeuge); Jungsteinzeit / Neolithische Revolution: produzierende Wirtschaftsweise (Ackerbau, Viehzucht, feste Siedlungen, Keramik, Vorratshaltung); Folgen: Bevölkerungsexplosion, Spezialisierung/Arbeitsteilung, Hierarchien.",
+          "sample_solution": "1. Struktureller Epochenvergleich: Altsteinzeit vs. Jungsteinzeit: - **1. Altsteinzeit (Paläolithikum, bis ca. 10.000 v. Chr.)**:   * **Wirtschaftsweise**: *Aneignende Wirtschaft* – Leben von dem, was die Natur bot (Jagd auf eiszeitliches Großwild wie Mammuts, Rentiere, Wildpferde; Sammeln von Beeren, Wurzeln, Nüssen).   * **Lebensform**: **Nomadismus** (kleine Sippen/Horden folgten den Tierwanderungen; temporäre Lagerzelte aus Mammutknochen und Fellen, Schutz in Felshöhlen).   * **Technologie**: Geschlagener **Feuerstein (Silex / 'Stahl der Steinzeit')** für Faustkeile, Speerspitzen, Schaber, Nadeln aus Knochen; Beherrschung des Feuers.   * **Kultur & Religion**: Höhlenmalereien (*Lascaux, Chauvet*), Fruchtbarkeitsstatuetten (*Venus von Willendorf*), Bestattungsrituale mit Grabbeigaben. - **2. Jungsteinzeit (Neolithikum, ab ca. 10.000 v. Chr. im Nahen Osten / 'Fruchtbarer Halbmond')**:   * **Wirtschaftsweise**: *Produzierende Wirtschaft* – Gezielte Zucht und Aussaat von Wildgräsern zu Kulturgetreide (**Ackerbau** mit Einkorn, Emmer, Gerste) und Zähmung wilder Tierarten zu Haustieren (**Viehzucht** mit Schaf, Ziege, Schwein, Rind für Fleisch, Milch, Wolle, Zugkraft).   * **Lebensform**: **Sesshaftigkeit** (Errichtung dauerhafter, solider Pfostenschlitz- und Lehm-Holz-Langhäuser in dörflichen Dorfgemeinschaften).   * **Technologie**: **Geschliffene und polierte Steinbeile** (zum Roden von Wäldern), gebrannte **Tonkeramik** (wasserdichte Gefäße zum Kochen und zur langmonatigen **Vorratshaltung**), Spinnen und Weben von Leinen/Wolle. 2. Die revolutionären gesellschaftlichen Konsequenzen: - **Demographischer Boom**: Gesicherte Vorräte senkten die Säuglingssterblichkeit $\\rightarrow$ exponentielles Bevölkerungswachstum. - **Arbeitsteilung & Spezialisierung**: Da nicht mehr jeder Einzelne für die Nahrungsbeschaffung jagen musste, entstanden spezialisierte Berufe (Töpfer, Weber, Werkzeugmacher, Händler). - **Entstehung sozialer Hierarchien**: Vorratshaltung und Landbesitz führten zu **Privateigentum**, ungleicher Wohlstandsverteilung, Schutzbedürfnis (Befestigungen) und Führungseliten (Häuptlinge, Priester)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6A000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YH6A000000000000000A02",
+      "namespace": "geschichte-antike",
+      "slug": "aegypten-fruehe-hochkultur-nil-pharao-pyramiden",
+      "title": "Frühe Hochkultur Ägypten: Nilflut und Bewässerung, Gottkönigtum des Pharao und Gesellschaftspyramide",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6A000000000000000A01",
+          "type": "hard",
+          "rationale": "Ackerbau und Vorratshaltung sind die materielle Grundlage früher Hochkulturen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Ancient Egypt",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Frühe Hochkulturen: Ägypten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6A000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bezeichnete der antike griechische Historiker Herodot Ägypten als ein 'Geschenk des Nils' (*Aegyptus Nili donum*)?",
+          "concept": "Weil die alljährliche Nilüberschwemmung fruchtbaren Mineralschlamm ablagerte, der inmitten der Wüste reiche Ernten ermöglichte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Fruchtbarer Nilschlamm ermöglichte Oasen-Ackerbau",
+              "Der Nil führte flüssiges Gold"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6A000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die 5 Kriterien einer Hochkultur am Beispiel des Alten Ägypten: 1. Organisierte Bewässerungswirtschaft am Nil (Kanäle, Schöpfwerke / Schaduf, Dämme, Nilschwellenmessung), 2. Sakrales Gottkönigtum (Pharao als irdischer Sohn des Sonnengottes Re und Garant der Ma'at / Weltordnung), 3. Hierarchische Gesellschaftspyramide (Pharao -> Wesir/Priester -> Schreiber/Beamte -> Handwerker/Kaufleute -> Bauern/Fellachen -> Sklaven), 4. Schriftkultur und Wissenschaft (Hieroglyphen auf Papyrus, Geometrie zur Landvermessung nach der Flut, 365-Tage-Sonnenkalender, Astronomie), 5. Monumentale Monumentalarchitektur und Totenkult (Mumifizierung zur Erhaltung des Ka/Ba, Felsengräber und Pyramiden von Gizeh).",
+          "concept": "Hochkultur Ägypten: Nilflut erfordert zentrale Organisation; Pharao = oberster Herrscher, Priester und Feldherr; Gesellschaftspyramide mit Schreibern als Machtträger; Hieroglyphen entziffert durch Stein von Rosette; Totenkult mit Mumifizierung für das Weiterleben im Jenseits.",
+          "sample_solution": "1. Die 5 Wesensmerkmale der Hochkultur am Beispiel Ägyptens: - **1. Geplante Gemeinschaftsarbeit & Bewässerungswirtschaft**:   * Der Nil trat jährlich verlässlich von Juli bis Oktober über die Ufer und hinterließ fruchtbaren schwarzen Nährschlamm (**Kemet = 'Schwarzes Land'**).   * Zur Verteilung des Wassers in die Wüstenränder mussten Deiche, Kanäle, Rückhaltebecken und Hebewerke (**Schaduf**) errichtet werden.   * Dies erforderte eine straffe, **zentral gelenkte Verwaltung** mit Nilstandsmessern (Nilometern). - **2. Das theokratische Herrschaftssystem (Der Pharao)**:   * Der **Pharao** herrschte absolut als weltlicher Alleinherrscher, oberster Richter, oberster Feldherr und oberster Hohepriester.   * Er galt als **lebender Gott auf Erden** (Sohn des Sonnengottes Re bzw. Reinkarnation von Horus). Seine Hauptaufgabe war die Wahrung der **Ma'at** (Göttliche Weltordnung von Wahrheit, Gerechtigkeit und kosmischem Gleichgewicht). - **3. Die ägyptische Gesellschaftspyramide**:   * **Spitze**: Der göttliche *Pharao*.   * **Oberschicht**: *Wesir* (oberster Premierminister), *Priester* (Verwalter der riesigen Tempelgüter), Generäle und Gouverneure (Nomarchen).   * **Verwaltungselite**: Die **Schreiber (Beamte)** – beherrschten die schwierige Schrift, trieben Steuern ein und maßen Felder neu ein.   * **Mittelschicht**: Händler, spezialisierte Handwerker, Bildhauer, Goldschmiede.   * **Breite Basis**: **Bauern (Fellachen)** – leisteten schwere Feldarbeit und mussten in der Flutzeit Frondienst beim Bau von Pyramiden und Tempeln leisten. Ganz unten: Kriegsgefangene (Sklaven). - **4. Schriftkultur und Wissenschaften**:   * **Hieroglyphen**: Heilige Bilderschrift mit über 700 Laut- und Sinnzeichen, geschrieben auf **Papyrusrollen** mit Binsenhalmen.   * **Mathematik & Geometrie**: Notwendig zur exakten Neuvermessung der Ackerparzellen nach jedem Hochwasser.   * **Astronomie & Kalender**: Entwicklung des hochpräzisen **365-Tage-Sonnenkalenders** (12 Monate à 30 Tage + 5 Zusatztage), berechnet nach dem Frühaufgang des Hundssterns *Sirius*. - **5. Jenseitsglaube, Monumentalbau und Mumifizierung**:   * Glaube an ein Weiterleben der Seele (*Ka* und *Ba*) im Jenseits nach dem Totengericht des Osiris. Voraussetzung: Die unversehrte Erhaltung des physischen Körpers durch aufwendige **Mumifizierung** (Balsamierung mit Natronsalz und Harzen).   * Monumentale Grabmäler: Von den Mastabas über die Stufenpyramide des Djoser bis zu den **Monumentalpyramiden von Gizeh** (Cheops, Chephren, Mykerinos) als steinerne Himmelsleitern der Gottkönige."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6A000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YH6A000000000000000A03",
+      "namespace": "geschichte-antike",
+      "slug": "antikes-griechenland-polis-sparta-vs-athen",
+      "title": "Die Welt der griechischen Poleis: Kolonisation, Religion, Sparta (Oligarchie) vs. Athen",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6A000000000000000A02",
+          "type": "hard",
+          "rationale": "Griechische Poleis entwickelten neue Verfassungsformen im Mittelmeerraum."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Ancient Greece",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6A000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nannten die antiken Griechen ihre selbstverwalteten, unabhängigen Stadtstaaten, die aus einer befestigten Stadt (mit Akropolis und Agora) und dem umliegenden Umland bestanden?",
+          "concept": "Polis (Mehrzahl: Poleis)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Polis (Stadtstaat)",
+              "Provinz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6A000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die verbindenden Elemente aller Griechen trotz politischer Zerrissenheit in hunderte unabhängige Poleis (Götterhimmel auf dem Olymp mit Zeus, Epen Homers Ilias & Odyssee, Heiligtümer wie das Orakel von Delphi, Panhellenische Olympische Spiele ab 776 v. Chr.) und stelle die beiden rivalisierenden Staatsmodelle gegenüber: 1. Sparta (Militärische Oligarchie, Erziehung im Heerlager / Agoge, Kaste der Spartiaten herrscht über unterdrückte Heloten), 2. Athen (Seemacht, Handel auf der Agora, Kultur und Philosophie).",
+          "concept": "Gemeinsame Identität (Hellas): Sprache, Götter, Homer, Olympische Spiele (Ekecheiria/Gottesfrieden), Orakel von Delphi; Sparta: straffer Kriegerstaat, Oligarchie, Helotenunterdrückung vs. Athen: offene Handels- und Seemacht, Bürgerbeteiligung.",
+          "sample_solution": "1. Das griechische Nationalgefühl (Gemeinsamkeit trotz Zersplitterung): - Griechenland war kein Einheitsstaat, sondern bestand aus Hunderten von autonomen Kleinstaaten (**Poleis**, z. B. Athen, Sparta, Korinth, Theben). - **Die 4 Klammern der panhellenischen Identität**:   * **1. Gemeinsame Sprache und Schrift**: Griechisches Alphabet mit Vokalen.   * **2. Die Epen Homers**: *Ilias* und *Odyssee* bildeten das gemeinsame Wertefundament von Heldenmut (*Arete*).   * **3. Religion und Götterpantheon**: Glaube an die 12 olympischen Götter (*Zeus, Hera, Poseidon, Athene, Apollon*); zentrale Orakelstätten wie das **Orakel von Delphi** (Gott Apollon spricht durch die Seherin Pythia).   * **4. Die Olympischen Spiele (ab 776 v. Chr.)**: Alle 4 Jahre zu Ehren von Zeus in Olympia ausgetragen; während der Spiele galt ein strikter **heiliger Waffenstillstand (Ekecheiria)** für alle griechischen Stämme. 2. Die beiden gegensätzlichen Poleis-Modelle im Vergleich: - **1. Sparta (Der autoritäre Krieger- und Kasernenstaat)**:   * **Verfassung**: **Oligarchie** (Herrschaft der Wenigen): 2 Könige (Doppelkönigtum für Kriegsführung), Ältestenrat (*Gerousia*) und 5 Aufseher (*Ephoren*).   * **Gesellschaft**: Freie Vollbürger (**Spartiaten**, reine Kriegerkaste) lebten von der Fronarbeit der rechtlosen, versklavten Urbevölkerung (**Heloten**), die durch Terror und *Krypteia* in Schach gehalten wurden. Halbfreie *Periöken* betrieben Handel.   * **Erziehung (Agoge)**: Knaben wurden mit 7 Jahren den Familien entzogen und in staatlichen Kasernen zu eiserner Härte, Schmerzunempfindlichkeit, Gehorsam und Kampfkraft gedrillt. - **2. Athen (Die weltoffene Handels-, Kultur- und Seemacht)**:   * Gelegen in Attika; prosperierender Hafen Piräus, Zentrum für Philosophie, Theater (Tragödie/Komödie), Architektur (*Parthenon auf der Akropolis*) und maritime Handelsbeziehungen im gesamten Mittelmeerraum."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6A000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YH6A000000000000000A04",
+      "namespace": "geschichte-antike",
+      "slug": "attische-demokratie-solon-kleisthenes-perikles-institutionen",
+      "title": "Die Attische Demokratie: Von Solons Reformen bis Perikles, Volksversammlung und Scherbengericht",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6A000000000000000A03",
+          "type": "hard",
+          "rationale": "Die attische Polis ist der historische Entstehungsort der Demokratie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Athenian democracy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Die griechische Antike",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6A000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man das antike athenische Verfahren, bei dem Bürger auf Tonscherben (Ostrakon) den Namen eines Politikers einritzten, um drohende Tyrannenherrscher für 10 Jahre zu verbannen?",
+          "concept": "Das Scherbengericht (Ostrakismos)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Scherbengericht (Ostrakismos)",
+              "Die Blutrache"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6A000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Verfolge die historische Entstehung der Attischen Demokratie in 4 Schritten (1. Adelsherrschaft und Drakonische Gesetze, 2. Solon 594 v. Chr.: Schuldentilgung, Verbot der Schuldknechtschaft und Timokratie / 4 Vermögensklassen, 3. Kleisthenes 508 v. Chr.: Phylenreform zur Durchmischung von Adel und Volk, Rat der 500, Ostrakismos, 4. Perikles um 450 v. Chr.: Taggelder / Diäten für Amtsträger zur Ermöglichung der Teilnahme armer Bürger), analysiere die Institutionen der direkten Demokratie (Ekklesia / Volksversammlung auf der Pnyx, Rat der 500 / Bule, Volksgericht / Heliaia, 10 Strategen) und diskutiere kritisch ihre Grenzen (Ausschluss von Frauen, Metöken/Fremden und Sklaven).",
+          "concept": "Evolution zur Demokratie: Solon (Timokratie, Ende Schuldknechtschaft) -> Kleisthenes (Phylen, Isonomie, Losverfahren, Scherbengericht) -> Perikles (Diäten); Direkte Demokratie (Volksversammlung entscheidet Gesetze/Krieg); Ausschlusskriterien: nur freie männliche athenische Vollbürger ab 18/20 Jahren wahlberechtigt (ca. 15-20 % der Gesamtbevölkerung).",
+          "sample_solution": "1. Der vierstufige Weg zur Attischen Demokratie: - **1. Krise der Adelsherrschaft (7. Jh. v. Chr.)**: Verarmte Kleinbauern gerieten bei adligen Großgrundbesitzern in Schuldknechtschaft und Sklaverei; soziale Unruhen. - **2. Solons Reformen (594 v. Chr.)**:   * Aufhebung aller Schulden (**Seisachtheia = 'Abschüttelung der Lasten'**) und Verbot, die eigene Person als Pfand zu setzen.   * **Timokratie (Vermögensklassen)**: Bürger wurden nach ihrem Ernteertrag in 4 Klassen eingeteilt. Politische Rechte und militärische Pflichten richteten sich nach dem Vermögen, nicht mehr nach adliger Geburt. - **3. Kleisthenes' Phylenreform (508/507 v. Chr.)**:   * Einteilung Attikas in 10 künstliche **Phylen**, die jeweils Gebiete aus Küste, Binnenland und Stadt vereinten. Dadurch wurde die Vorherrschaft adliger Adelsclans gebrochen.   * Schaffung des **Rates der 500 (Bule)** und des **Scherbengerichts (Ostrakismos)** zum Schutz vor Tyrannenherrschaft. - **4. Radikale Demokratie unter Perikles (ab 462 v. Chr.)**:   * Einführung von **Taggeldern (Diäten)** für Richter und Ratsmitglieder, sodass auch arme Bürger (z. B. Ruderer der Flotte / Theten) politische Ämter wahrnehmen konnten, ohne ihren Lebensunterhalt zu gefährden. 2. Die Verfassungsinstitutionen der Attischen Demokratie: - **Volksversammlung (Ekklesia)**: Oberstes Beschlussorgan aller männlichen Bürger auf dem Pnyx-Hügel (ca. 40-mal pro Jahr); entschied mit Handzeichen über Gesetze, Bündnisse, Krieg und Frieden. - **Rat der 500 (Bule)**: Durch das **Losverfahren** jährlich neu bestimmt; bereitete die Anträge für die Volksversammlung vor und führte die laufende Regierungsarbeit. - **Volksgerichte (Heliaia)**: 6.000 ausgeloste Geschworene sprachen Recht in allen Zivil- und Strafprozessen. - **10 Strategen (Militärische Befehlshaber)**: Wurden wegen nötiger Fachkompetenz nicht gelost, sondern jährlich von der Volksversammlung direkt **gewählt**. 3. Kritische Würdigung und historische Grenzen: - Die attische Demokratie war eine **direkte Demokratie** mit weitreichender Mitbestimmung, aber **keine allgemeine Demokratie im modernen Sinne**:   * **Ausgeschlossen**: **Frauen** besaßen keinerlei politische Rechte; **Metöken** (ortsansässige Fremde ohne Bürgerrecht) und **Sklaven** (die das wirtschaftliche Fundament der Polis erwirtschafteten) waren völlig rechtlos.   * Nur ca. **15–20 % der Gesamtbevölkerung** besaßen das athenische Bürgerrecht."
+        }
+      ]
+    }
+  ]
+}

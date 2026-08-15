@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-chemie-stoffe-reaktionen-atommodelle-rutherford",
+  "version": "2026.08.1",
+  "title": "Chemie 8: Stoffe, Chemische Reaktionen (Energetik) und Atommodelle (Dalton & Rutherford) (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 8 (NTG-Zweig): Reinstoffe vs. Gemische, Trennverfahren, Chemische Reaktion als Stoff- und Energieumwandlung (exotherm/endotherm, Aktivierungsenergie, Massenerhaltung nach Lavoisier) sowie Entwicklung des Atommodells von Demokrit über Dalton bis zum Rutherford-Streuversuch (Kern-Hülle-Modell, Protonen, Neutronen, Elektronen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/chemie",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Chemie 8 (NTG), Lernbereiche Stoffe und Reaktionen, Bau der Atome"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8E0000000000000000A01",
+      "namespace": "gymnasium-chemie-reaktionen",
+      "slug": "chemische-reaktion-energetik-exotherm-endotherm-massenerhaltung",
+      "title": "Die chemische Reaktion: Stoff- und Energieumwandlung, Enthalpie (exotherm vs. endotherm) und Massenerhaltung",
+      "domain": "schule/chemie/reaktionen",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11107",
+          "target_label": "Chemical reaction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und chemische Reaktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man eine chemische Reaktion, bei der kontinuierlich Energie (Wärme/Licht) an die Umgebung abgegeben wird und die Reaktionsenthalpie negativ ist ($\\Delta H < 0$)?",
+          "concept": "Exotherme Reaktion (Gegenteil: Endotherme Reaktion, die ständig Energie aufnimmt: Delta H > 0)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Exotherme Reaktion (Delta H < 0)",
+              "Endotherme Reaktion (Delta H > 0)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Kennzeichen einer chemischen Reaktion und ihre energetische Betrachtung: 1. **Kennzeichen einer chemischen Reaktion**:   * **Stoffumwandlung**: Aus Ausgangsstoffen (Edukten) entstehen neue Produkte mit völlig anderen chemischen und physikalischen Eigenschaften (Umgruppierung von Teilchen / Knüpfen neuer Bindungen).   * **Energieumwandlung**: Jede Reaktion ist mit einem Energieumsatz verbunden (Reaktionswärme/Enthalpie $\\Delta H$), 2. **Gesetz von der Erhaltung der Masse (Lavoisier 1789)**: In einem geschlossenen System ist die Gesamtmasse der Edukte exakt gleich der Gesamtmasse der Produkte, 3. **Energiediagramme & Aktivierungsenergie $E_A$**:   * **Aktivierungsenergie $E_A$**: Die Mindestenergie, die zugeführt werden muss, um die Reaktion in Gang zu setzen (Teilchen in reaktionsfähigen Übergangszustand versetzen).   * **Katalysator**: Senkt die Aktivierungsenergie $E_A$, beschleunigt die Reaktion und geht unverändert aus ihr hervor.   * **Exotherm**: $E_{\\text{Edukte}} > E_{\\text{Produkte}} \\implies \\Delta H < 0$.   * **Endotherm**: $E_{\\text{Edukte}} < E_{\\text{Produkte}} \\implies \\Delta H > 0$.",
+          "concept": "Chemische Reaktion: Stoffumwandlung + Energieumwandlung; Massenerhaltung nach Lavoisier; Energiediagramm: Aktivierungsenergie EA, Katalysator (senkt EA), Exotherm (Delta H < 0) vs. Endotherm (Delta H > 0).",
+          "sample_solution": "1. Grundlegende Merkmale einer chemischen Reaktion: - **1. Stoffumwandlung**:   * Im Gegensatz zu einem rein physikalischen Vorgang (z. B. Schmelzen von Eis, Zerkleinern) werden bei einer chemischen Reaktion bestehende Bindungen aufgebrochen und Atome neu verknüpft $\\implies$ Aus den **Edukten (Ausgangsstoffen)** entstehen **Produkte** mit grundlegend neuen Stoffeigenschaften (Farbe, Dichte, Schmelzpunkt, Reaktivität). - **2. Energieumwandlung**:   * Jede chemische Reaktion besitzt eine **Reaktionsenergie (Reaktionsenthalpie $\\Delta H$)**, da in den Bindungen chemische Energie gespeichert ist. 2. Das Gesetz von der Erhaltung der Masse (Antoine de Lavoisier): - Bei allen chemischen Vorgängen in einem geschlossenen System gilt:   $$\\mathbf{\\sum m(\\text{Edukte}) = \\sum m(\\text{Produkte})}$$ - *Mikroskopische Begründung*: Atome werden weder neu geschaffen noch zerstört, sondern lediglich neu angeordnet. 3. Energetischer Verlauf & Energiediagramme: - **Aktivierungsenergie $E_A$**:   * Damit eine Reaktion starten kann, müssen Teilchen mit ausreichender kinetischer Energie zusammenstoßen $\\implies$ $E_A$ ist der 'Energieberg', der überwunden werden muss (z. B. Entzünden eines Streichholzes). - **Wirkungsweise eines Katalysators**:   * Ein Katalysator bietet einen alternativen Reaktionsweg mit **deutlich geringerer Aktivierungsenergie $E_A$**, wodurch die Reaktion bereits bei viel niedrigeren Temperaturen abläuft. Er liegt am Ende chemisch unverändert vor. - **Exotherme Reaktionen ($\\mathbf{\\Delta H < 0}$)**:   * Die Energie der Edukte ist höher als die Energie der Produkte. Beim Knüpfen der neuen Bindungen wird mehr Energie frei als zum Spalten der alten Bindungen benötigt wurde $\\implies$ Wärme/Licht wird an die Umgebung abgegeben (z. B. Knallgasreaktion $2\\text{H}_2 + \\text{O}_2 \\rightarrow 2\\text{H}_2\\text{O}$, Verbrennung von Holz). - **Endotherme Reaktionen ($\\mathbf{\\Delta H > 0}$)**:   * Die Energie der Produkte ist höher als die der Edukte $\\implies$ Es muss kontinuierlich thermische oder elektrische Energie aus der Umgebung zugeführt werden (z. B. Photosynthese, Elektrolyse von Wasser)."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8E0000000000000000A02",
+      "namespace": "gymnasium-chemie-atome",
+      "slug": "atommodelle-dalton-rutherford-streuversuch-kern-huelle",
+      "title": "Historische Atommodelle: Daltons Kugelmodell, der Rutherford-Streuversuch und das Kern-Hülle-Modell",
+      "domain": "schule/chemie/atome",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Massenerhaltung und chemische Verbindungen werden durch den Atombau begründet."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11107",
+          "target_label": "Rutherford model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Bau der Atome – Von Dalton zu Rutherford",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche bahnbrechende Erkenntnis über den Aufbau des Atoms leitete Ernest Rutherford 1911 aus seinem berühmten Goldfolien-Streuversuch mit Alphateilchen ab?",
+          "concept": "Das Atom besteht fast vollständig aus leerem Raum: einem winzigen, extrem dichten, positiv geladenen Kern und einer riesigen, massearmen Elektronenhülle",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Winziger, schwerer, positiv geladener Kern + riesige, leere Hülle",
+              "Homogene, gleichmäßig mit Masse gefüllte Kugel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Entwicklung der Atommodelle und analysiere das Kern-Hülle-Modell: 1. **Daltons Kugelmodell (1803)**: Atome als unteilbare, massive, kugelförmige Teilchen; Atome eines Elements sind identisch in Masse und Größe; Reaktionen sind Neuanordnungen von Kugeln, 2. **Der Rutherford-Streuversuch (1911)**:   * Versuchsaufbau: Beschuss einer hauchdünnen Goldfolie mit positiv geladenen Heliumkernen ($\\alpha$-Teilchen).   * Beobachtung: Über $99{,}9\\%$ der $\\alpha$-Teilchen durchdringen die Folie geradlinig; nur ganz wenige ($1$ von $8000$) werden stark abgelenkt oder zurückgeworfen.   * Schlussfolgerung: Das Atom ist kein massiver Körper, 3. **Das Kern-Hülle-Modell**:   * **Atomkern**: Winzig ($ca. 10^{-15}\\,\\text{m}$), enthält nahezu $99{,}95\\%$ der gesamten Atommasse; besteht aus positiv geladenen **Protonen ($p^+$)** und neutralen **Neutronen ($n$)** (*Nukleonen*).   * **Atomhülle**: Riesig im Vergleich ($ca. 10^{-10}\\,\\text{m}$, Größenverhältnis $1 : 100.000$ wie Stecknadelkopf zu Fußballstadion); enthält die negativ geladenen **Elektronen ($e^-$)**, 4. **Isotope**: Atome desselben Elements mit gleicher Protonenzahl ($Z$), aber unterschiedlicher Neutronenzahl ($A = Z + N$).",
+          "concept": "Atommodelle: Dalton (starre Kugeln) -> Rutherford Streuversuch (Goldfolie, alpha-Teilchen, Kern-Hülle-Modell); Atomkern (winzig, fast 100% Masse, Protonen + Neutronen) vs. Atomhülle (Elektronen, leerer Raum); Isotope (gleiche Ordnungszahl, unterschiedliche Masse/Neutronen).",
+          "sample_solution": "1. John Daltons Kugelmodell (1803): - **Grundpostulate**:   * Alle Materie besteht aus kleinsten, unzerstörbaren, massiven Kugelteilchen (**Atome**).   * Alle Atome desselben chemischen Elements sind in Masse, Volumen und chemischem Verhalten identisch.   * Chemische Reaktionen sind Neugruppierungen dieser unteilbaren Kugeln in festen Zahlenverhältnissen (**Gesetz der konstanten Proportionen**). 2. Der Rutherford-Streuversuch (1911) – Die Entdeckung des Atomkerns: - **Experiment**: Beschuss einer ca. 1000 Atome dünnen Goldfolie mit schnellen, zweifach positiv geladenen $\\alpha$-Teilchen ($^4\\text{He}^{2+}$). - **Beobachtungen**:   * Die überwiegende Mehrheit der $\\alpha$-Teilchen passierte die Goldfolie völlig ungehindert ohne jede Richtungsänderung.   * Einige wenige Teilchen wurden in spitzen Winkeln abgelenkt.   * Ein winziger Bruchteil ($ca. 1 : 8000$) wurde im stumpfen Winkel reflektiert (zurückgestreut). - **Rutherfords revolutionäre Schlussfolgerung**:   * Ein Atom kann keine homogene Massekugel sein (Widerlegung des Thomsons Rosinenkuchenmodells), sondern besteht zu über $99{,}9999999999\\%$ aus **völlig leerem Raum**. 3. Das Rutherford-Kern-Hülle-Modell: - **1. Der Atomkern**:   * Durchmesser: ca. $10^{-15}\\text{ m} = 1\\text{ fm}$ (Femtometer).   * Enthält praktisch die **gesamte Masse des Atoms ($> 99{,}95\\%$)** und ist positiv geladen.   * Bausteine (**Nukleonen**):     - **Protonen ($p^+$)**: Ladung $+1e$, Masse $\\approx 1{,}007\\text{ u}$.     - **Neutronen ($n$)**: Ladung $0$, Masse $\\approx 1{,}008\\text{ u}$ (stabilisieren den Kern gegen die Coulomb-Abstoßung der Protonen durch die starke Kernkraft). - **2. Die Atomhülle**:   * Durchmesser: ca. $10^{-10}\\text{ m} = 0{,}1\\text{ nm}$ (Ångström-Bereich).   * Enthält die negativ geladenen **Elektronen ($e^-$)** (Masse $\\approx \\frac{1}{1836}\\text{ u}$, Ladung $-1e$).   * *Größenvergleich*: Wäre der Atomkern so groß wie eine Kirsche ($1\\text{ cm}$) im Zentrum eines Fußballstadions, so befände sich das erste Hüllenelektron erst auf den obersten Zuschauerrängen in $1\\text{ km}$ Entfernung. - **Elektroneutralität**: Im ungeladenen Atom gilt: $\\mathbf{\\text{Anzahl Protonen } Z = \\text{Anzahl Elektronen}}$. 4. Isotope: - **Isotope** sind Atome desselben chemischen Elements (identische **Kernladungszahl / Ordnungszahl $Z$** $\\implies$ gleiche Anzahl von Protonen und Elektronen und damit identisches chemisches Verhalten), die sich in ihrer **Neutronenzahl $N$** und damit in ihrer **Massenzahl $A = Z + N$** unterscheiden (z. B. Kohlenstoff-12 $^{12}_6\\text{C}$ mit $6n$ vs. Kohlenstoff-14 $^{14}_6\\text{C}$ mit $8n$)."
+        }
+      ]
+    }
+  ]
+}

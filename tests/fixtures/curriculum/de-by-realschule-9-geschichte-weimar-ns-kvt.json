@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-geschichte-weimar-ns",
+  "version": "2026.08.1",
+  "title": "Weimarer Republik und Nationalsozialismus (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geschichte 9: Entstehung und Krise der Weimarer Republik, Zerschlagung der Demokratie, NS-Ideologie, Zweiter Weltkrieg und Holocaust.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geschichte",
+      "checked": "2026-08-15",
+      "label": "Realschule Geschichte 9, Lernbereiche Weimarer Republik und Nationalsozialismus"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G9H0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G9H0000000000000000A01",
+      "namespace": "geschichte-weimar",
+      "slug": "weimarer-republik-verfassung-krisen",
+      "title": "Die Weimarer Republik: Erste deutsche Demokratie, Verfassung und Krisen",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "narrative",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q41304",
+          "target_label": "Weimar Republic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Die Weimarer Republik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Die Weimarer Republik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9H0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher weltwirtschaftliche Einschnitt im Oktober 1929 ('Schwarzer Freitag' an der Wall Street) leitete das Ende der Stabilitätsphase der Weimarer Republik und Massenarbeitslosigkeit ein?",
+          "concept": "Die Weltwirtschaftskrise (Börsencrash 1929)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Weltwirtschaftskrise (New Yorker Börsencrash)",
+              "Die Einführung der Rentenmark"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9H0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die wesentlichen Belastungsfaktoren der Weimarer Republik: Versailler Vertrag und Dolchstoßlegende, Hyperinflation 1923, Verfassungsschwächen (Artikel 48 Notverordnungen, Präsidialkabinette) und die Weltwirtschaftskrise 1929.",
+          "concept": "Versailler Vertrag + Dolchstoßlegende als antidemokratische Hetze; 1923 Ruhrkampf & Inflation; Art. 48 schwächt Parlament; 1929 Massenelend führt zu Radikalisierung (KPD, NSDAP)",
+          "sample_solution": "Belastungsfaktoren der Weimarer Republik: 1. Geburtsmakel: Der Versailler Vertrag (Gebietsabtretungen, Reparationen, Alleinschuld) und die antidemokratische 'Dolchstoßlegende' der Rechten schwächten das Vertrauen in die junge Republik. 2. Krisenjahr 1923: Ruhrbesetzung, Hyperinflation (Geldentwertung) und Putschversuche (Hitler-Ludendorff-Putsch). 3. Verfassungsstrukturelle Schwächen: Die starke Machtstellung des Reichspräsidenten (Artikel 48: Notverordnungsrecht mit Parlamentsumgehung, Artikel 25: Reichstagsauflösung) und das Fehlen einer 5%-Sperrklausel (Zersplitterung). 4. Weltwirtschaftskrise 1929: Abzug US-amerikanischer Kredite, Bankenzusammenbrüche, über 6 Millionen Arbeitslose und der Übergang zu autoritären Präsidialkabinetten (Brüning, Papen, Schleicher) führten zur Massenradikalisierung der Wählerschaft zugunsten der NSDAP."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9H0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G9H0000000000000000A02",
+      "namespace": "geschichte-ns",
+      "slug": "zerschlagung-demokratie-machtergreifung-1933",
+      "title": "1933: Ernennung Hitlers, Reichstagsbrand und Zerschlagung des Rechtsstaats",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "narrative",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9H0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Krise der Weimarer Republik ist die Ursache für den Machtantritt der Nationalsozialisten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q153073",
+          "target_label": "Machtergreifung",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9H0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem historischen Datum ernannte Reichspräsident Paul von Hindenburg Adolf Hitler zum Reichskanzler?",
+          "concept": "30. Januar 1933",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "30. Januar 1933",
+              "9. November 1938"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9H0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Zeige auf, wie die Nationalsozialisten 1933 in wenigen Monaten den demokratischen Rechtsstaat zerschlugen: Reichstagsbrandverordnung (Februar 1933), Ermächtigungsgesetz (März 1933) und Gleichschaltung von Ländern, Parteien und Gewerkschaften.",
+          "concept": "Reichstagsbrandverordnung setzt Grundrechte außer Kraft; Ermächtigungsgesetz entmachtet Parlament; Gleichschaltung verbietet Parteien & Gewerkschaften, Einparteienstaat",
+          "sample_solution": "Die etappenweise Zerschlagung der Demokratie 1933: 1. Ernennung Hitlers (30.01.1933) durch Hindenburg. 2. Reichstagsbrandverordnung (28.02.1933): Nach dem Brand des Reichstagsgebäudes wurden wesentliche Grundrechte (Freiheit der Person, Presse-, Versammlungsfreiheit) dauerhaft außer Kraft gesetzt; Legalisierung von Schutzhaft und Verfolgung politischer Gegner (KPD/SPD). 3. Ermächtigungsgesetz (24.03.1933): Unter Drohkulisse der SA verabschiedet; übertrug die Gesetzgebungsgewalt vollständig an die Regierung Hitler – Ausschaltung des Parlaments und Ende der Gewaltenteilung. 4. Gleichschaltung (Frühjahr/Sommer 1933): Auflösung der Landesparlamente, Verbot bzw. Selbstauflösung aller anderen Parteien (Juli 1933: Gesetz gegen die Neubildung von Parteien), Zerschlagung der freien Gewerkschaften und Errichtung der totalitären Einparteiendiktatur."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9H0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G9H0000000000000000A03",
+      "namespace": "geschichte-ns",
+      "slug": "ns-ideologie-rassenlehre-fuehrerprinzip",
+      "title": "NS-Ideologie: Rassenlehre, Antisemitismus, Lebensraum und Führerprinzip",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "narrative",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9H0000000000000000A02",
+          "type": "hard",
+          "rationale": "Die Diktatur etablierte die Ideologie als Staatsdoktrin."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7310",
+          "target_label": "Nazism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9H0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche antijüdischen Gesetze von 1935 entzogen den deutschen Juden die staatsbürgerlichen Gleichheitsrechte und verboten Eheschließungen zwischen Juden und Nichtjuden?",
+          "concept": "Die Nürnberger Gesetze (Reichsbürgergesetz und Blutschutzgesetz)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Nürnberger Gesetze von 1935",
+              "Das Ermächtigungsgesetz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9H0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere die Kernbausteine der nationalsozialistischen Weltanschauung: 1. Rassenlehre & Sozialdarwinismus, 2. Radikaler Antisemitismus, 3. 'Lebensraum'-Ideologie im Osten, 4. Führerprinzip und 'Volksgemeinschaft'.",
+          "concept": "Pseudowissenschaftlicher Rassismus (Arier vs. Minderwertige); Antisemitismus als Feindbild; Lebensraum im Osten durch Krieg; Führerprinzip (Autorität von oben, Gehorsam von unten)",
+          "sample_solution": "Kernbestandteile der NS-Ideologie: 1. Rassenlehre & Sozialdarwinismus: Pseudowissenschaftliche Einteilung der Menschheit in 'höherwertige' ('arische Herrenrasse') und 'minderwertige Rassen' sowie die Übertragung des biologischen Prinzips 'Kampf ums Dasein' auf Völker. 2. Radikaler Antisemitismus: Juden wurden rassistisch als 'Hauptfeind' und Schädling der Volksgemeinschaft definiert, was zur systematischen Entrechtung, Vertreibung und Vernichtung führte. 3. Lebensraumideologie: Rechtfertigung eines imperialistischen Eroberungs- und Vernichtungskrieges im östlichen Europa zur Germanisierung und Ausbeutung. 4. Führerprinzip: Totale Ablehnung der Demokratie; uneingeschränkte Befehlsgewalt des 'Führers' von oben nach unten bei absolutem Gehorsam. 5. 'Volksgemeinschaft': Scheinbare Aufhebung von Standesunterschieden bei gleichzeitiger rücksichtsloser Ausgrenzung aller Andersdenkenden und rassistisch Verfolgten."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9H0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G9H0000000000000000A04",
+      "namespace": "geschichte-ns",
+      "slug": "zweiter-weltkrieg-holocaust-widerstand",
+      "title": "Der Zweite Weltkrieg, die Shoah (Holocaust) und Widerstand",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "narrative",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9H0000000000000000A03",
+          "type": "hard",
+          "rationale": "Die NS-Ideologie und Lebensraumpolitik führte direkt zum Weltkrieg und Holocaust."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q362",
+          "target_label": "World War II",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9H0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem kriegerischen Ereignis am 1. September 1939 begann der Zweite Weltkrieg in Europa?",
+          "concept": "Mit dem deutschen Überfall auf Polen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem deutschen Überfall auf Polen",
+              "Mit dem Angriff auf Pearl Harbor"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9H0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Dimension des nationalsozialistischen Vernichtungskrieges im Osten und des Holocausts (Wannsee-Konferenz 1942, Vernichtungslager) und nenne Beispiele für den deutschen Widerstand (z. B. Weiße Rose, Stauffenberg 20. Juli 1944).",
+          "concept": "Vernichtungskrieg gegen Zivilbevölkerung; bürokratisch organisierter Völkermord an 6 Mio. europäischen Juden; Widerstandsbewegungen: Weiße Rose (Scholl), 20. Juli 1944 (Stauffenberg), Kreisauer Kreis",
+          "sample_solution": "1. Zweiter Weltkrieg & Vernichtungskrieg: Beginn 1.9.1939 mit Überfall auf Polen; ab 1941 rassistischer Vernichtungskrieg gegen die Sowjetunion ('Generalplan Ost', Massenerschießungen durch Einsatzgruppen). 2. Der Holocaust / Die Shoah: Systematische, staatlich-industriell organisierte Ermordung von ca. 6 Millionen europäischen Juden sowie Sinti, Roma und weiteren Verfolgten. Koordinierung auf der Wannsee-Konferenz (Januar 1942, 'Endlösung'), Deportationen und Ermordung in Vernichtungslagern (z. B. Auschwitz-Birkenau, Treblinka). 3. Widerstand: Trotz Lebensgefahr gab es mutigen Widerstand aus verschiedenen Teilen der Gesellschaft: studentischer Widerstand ('Die Weiße Rose' um Hans und Sophie Scholl), militärischer Widerstand (Attentat vom 20. Juli 1944 um Claus Schenk Graf von Stauffenberg), bürgerlich-intellektuell ('Kreisauer Kreis') und kirchlich (z. B. Clemens August Graf von Galen)."
+        }
+      ]
+    }
+  ]
+}

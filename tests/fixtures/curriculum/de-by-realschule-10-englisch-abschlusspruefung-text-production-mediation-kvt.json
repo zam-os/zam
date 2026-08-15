@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-englisch-abschlusspruefung-text-production-mediation",
+  "version": "2026.08.1",
+  "title": "Englisch 10: Abschlussprüfung – Text Production, Mediation und Participle Clauses (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Englisch 10 (Abschlussprüfung): Schriftliche Textproduktion (Comment/Essay), Sprachmittlung (Mediation Deutsch-Englisch) und stilistische Verdichtung durch Participle Clauses.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/englisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Englisch 10, Lernbereiche Text- und Medienkompetenz und Sprachmittlung (Abschlussprüfung)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4EAM0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4EAM0000000000000000A01",
+      "namespace": "englisch-abschlusspruefung",
+      "slug": "text-production-comment-essay-linking-words",
+      "title": "Schriftliche Textproduktion: Der Comment / Opinion Essay (Structure, Linking Words, Conclusion)",
+      "domain": "schule/englisch/textproduction",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Essay writing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Schreiben – Text Production",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4EAM0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche verbindliche Grundstruktur muss ein englischer Comment (Opinion Essay) in der Realschul-Abschlussprüfung aufweisen?",
+          "concept": "Three-part structure: Introduction (hook & question), Body paragraphs (arguments with topic sentences & evidence), Conclusion (summary & final thought)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Introduction, Body paragraphs, Conclusion",
+              "Summary, Dialogue, Notes"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4EAM0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Kriterien für einen erfolgreichen englischen 'Comment' (Abschlussprüfungsformat): 1. **Introduction**: Aktueller Einstieg, Vermeidung von Phrasen wie *'I want to write about...'*, prägnante Problemstellung, 2. **Body Paragraphs**: Jeder Absatz beginnt mit einem **Topic Sentence (Hauptgedanke)**, gefolgt von Begründung und Beispielen; Verbindung durch **Linking Words** (*Furthermore, in addition, on the one hand / on the other hand, nevertheless, consequently*), 3. **Conclusion**: Abrundung ohne neue Argumente, Zusammenfassung der Hauptpunkte und begründetes Fazit (*In conclusion, all things considered*), 4. **Register**: Gehobener, formaler Schreibstil (keine Kurzformen wie *don't, can't*!).",
+          "concept": "Comment: Introduction (Hook) -> Body Paragraphs (Topic Sentences + Linking Words + Evidence) -> Conclusion; Formal register without short forms (do not, cannot).",
+          "sample_solution": "1. Die 3-teilige Architektur des englischen Comment (Opinion Essay): - **1. Introduction (Einleitung)**:   * **Catchy Hook**: Start mit einer provokanten Frage, einem aktuellen Phänomen oder einer Statistik (*'Nowadays, social media plays a crucial role in teenagers' daily lives...'*).   * **Problem Definition**: Formulierung der Kernfrage.   * **Stilregel**: Vermeidung von unbeholfenen Floskeln wie *'Now I write about...'* oder *'I think this topic is interesting'*. - **2. Body Paragraphs (Hauptteil)**:   * Gliederung in 2–3 inhaltlich klar getrennte Absätze (Paragraphs).   * **Der Topic Sentence (Thesensatz)**: Der allererste Satz jedes Absatzes benennt unmissverständlich das Argument dieses Absatzes (*'First and foremost, wearing school uniforms reduces social inequality among students.'*).   * **Elaboration & Evidence**: Ausführung mit Belegen, Statistiken oder plausiblen Alltagsbeispielen.   * **Linking Words (Konnektoren für formalen Sprachfluss)**:     - *Aufzählung / Ergänzung*: *Firstly, secondly, furthermore, moreover, in addition to this...*     - *Gegensatz / Kontrast*: *However, on the one hand ... on the other hand, whereas, in contrast to...*     - *Folge / Begründung*: *Consequently, as a result, therefore, owing to...* - **3. Conclusion (Schluss)**:   * Leitet das Fazit mit festen Signalausdrücken ein: *'To sum up, Taking everything into consideration, In conclusion...'*.   * Fasst die Kernaussagen kurz und prägnant zusammen, **ohne** völlig neue Argumente einzuführen.   * Endet mit einer ausgewogenen persönlichen Beurteilung oder einem zukunftsgerichteten Ausblick. 2. Formal Register (Sprachliche Prüfungsregeln): - In formalen Prüfungsaufsätzen sind **Kurzformen streng verboten** (*do not* statt *don't*, *cannot* statt *can't*, *they are* statt *they're*). - Abwechslungsreicher Wortschatz und Vermeidung von Wiederholungen (*essential, crucial, beneficial* statt ständig *good/important*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4EAM0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4EAM0000000000000000A02",
+      "namespace": "englisch-abschlusspruefung",
+      "slug": "mediation-sprachmittlung-adressatengerecht-sinngemaess",
+      "title": "Mediation (Sprachmittlung): Sinngemäße Übertragung Deutsch <-> Englisch und Adressatenbezug",
+      "domain": "schule/englisch/mediation",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4EAM0000000000000000A01",
+          "type": "hard",
+          "rationale": "Mediation erfordert präzisen formalen Ausdruck und Textstruktur."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Intercultural mediation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Sprachmittlung – Mediation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4EAM0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist das wichtigste Grundprinzip einer gelungenen Mediation (Sprachmittlung) im Gegensatz zu einer wörtlichen Übersetzung (Translation)?",
+          "concept": "Die sinngemäße, selektive Übertragung der geforderten Kerninformationen an einen konkreten Adressaten in eigenständigen Worten (keine 1:1-Wortübersetzung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sinngemäße und adressatengerechte Übertragung",
+              "Wörtliche 1:1-Wortübersetzung jedes Satzes"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4EAM0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die verbindlichen Regeln für das Prüfungsformat 'Mediation' (Sprachmittlung): 1. **Aufgabenanalyse**: Wer ist der Adressat (Freund, Austauschschüler, Hotelier, Tourist)?, Welches Textformat ist gefordert (E-Mail, Blogpost, Flyer, Infotext)?, Welche konkreten Informationen werden gesucht?, 2. **Selektives Lesen**: Nur die für den Arbeitsauftrag relevanten Fakten aus dem Ausgangstext filtern; irrelevante Details weglassen, 3. **Sinngemäße Formulierung**: Niemals Wort für Wort übersetzen; deutsche Redewendungen und spezifische Begriffe verständlich umschreiben (*Paraphrasing*), 4. **Textsortenkonventionen**: Passende Anrede und Grußformel bei E-Mails (*'Dear Tom, ... Best wishes'*).",
+          "concept": "Mediation: 1. Adressat & Textsorte bestimmen; 2. Relevante Fakten filtern (selektiv); 3. Sinngemäß in eigenem Englisch umschreiben (keine Wort-für-Wort-Übersetzung); 4. Formatkonventionen (z. B. E-Mail-Rahmen).",
+          "sample_solution": "1. Wesen und Abgrenzung der Mediation: - Mediation ist **keine wörtliche Übersetzung (Translation)**, sondern eine **kommunikative Brückenfunktion**: Ein deutschsprachiger Text soll für einen englischsprachigen Kommunikationspartner so zusammengefasst werden, dass dieser alle benötigten Informationen mühelos versteht. 2. Die 4 Schritte zur perfekten Prüfungs-Mediation: - **1. Situations- und Adressatenanalyse**:   * *Wer schreibt an wen?* (z. B. Schüler an englischen Austauschschüler $\\rightarrow$ informeller Ton; oder E-Mail an einen englischen Reiseveranstalter $\\rightarrow$ formeller Ton).   * *Welche Textsorte ist vorgegeben?* (E-Mail, Notiz, Handzettel, FAQ, Social-Media-Post). - **2. Selektive Informationsentnahme (Filterung)**:   * Den deutschen Ausgangstext gezielt nach den in der Aufgabenstellung verlangten Leitfragen durchsuchen.   * Ausschmückungen, redundante Beispiele und nicht gefragte Passagen konsequent **weglassen**. - **3. Eigenständige Formulierung & Umschreibung (Paraphrasing)**:   * Niemals deutsche Satzstrukturen 1:1 ins Englische spiegeln (*'Denglish'* vermeiden).   * Kulturelle Besonderheiten erklären (z. B. *'Realschule'* $\\rightarrow$ *'a type of secondary school in Germany focusing on practical and vocational education'*). - **4. Formale Vollständigkeit**:   * Bei E-Mails/Briefen: Stets Betreffzeile (*Subject:*), passende Anrede (*'Dear Michael,'* bzw. *'Dear Mr Smith,'*), Einleitungssatz (*'I am writing to tell you about...'*) und Grußformel (*'Best regards,'*)."
+        }
+      ]
+    }
+  ]
+}

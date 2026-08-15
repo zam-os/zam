@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-deutsch-erzaehlen-maerchen-fabeln",
+  "version": "2026.08.1",
+  "title": "Deutsch 5: Literarische Texte und Erzählen – Märchen, Fabeln und Erlebniserzählung (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 5: Gattungsmerkmale von Volksmärchen und Fabeln (Lehre/Moral), Spannungsaufbau in Erzähltexten und wörtliche Rede.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/deutsch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Deutsch 5, Lernbereiche Texte schreiben, Leseverstehen und literarische Gattungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YD5E000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YD5E000000000000000A01",
+      "namespace": "deutsch-texte",
+      "slug": "gattung-maerchen-merkmale-formeln-gebr-grimm",
+      "title": "Die literarische Gattung Märchen: Volksmärchen (Brüder Grimm), Merkmale, Typen und Symbolzahlen",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Fairy tale",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Lesen und Literatur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5E000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche typischen magischen Symbolzahlen tauchen in traditionellen Volksmärchen (z. B. bei den Brüdern Grimm) als Prüfungen oder Gestalten immer wieder auf?",
+          "concept": "Die Zahlen 3 (drei Wünsche, drei Prüfungen, drei Brüder), 7 (sieben Geißlein, sieben Zwerge, sieben Raben) und 12/13",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zahlen 3, 7 und 12/13",
+              "Die Zahlen 2, 4 und 8"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5E000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die 6 charakteristischen Gattungsmerkmale von Volksmärchen: 1. Zeit- und Ortlosigkeit ('Es war einmal... / in einem fernen Königreich'), 2. Schwarz-Weiß-Zeichnung der Figuren (gut vs. böse, arm vs. reich, schön vs. hässlich), 3. Magische Elemente und Zauberwesen (Feen, Hexen, Riesen, sprechende Tiere, verwunschene Gegenstände), 4. Magische Zahlen und Dreigliedrigkeit (3 Prüfungen/Brüder, 7 Berge/Zwerge), 5. Feste Einleitungs- und Schlussformeln ('... und wenn sie nicht gestorben sind, dann leben sie noch heute'), 6. Gerechter Ausgang (Belohnung der Tugendhaften, Bestrafung des Bösen) und unterscheide Volksmärchen (mündlich überliefert, Autorenkollektiv, z. B. Grimm) von Kunstmärchen (einzelner namentlicher Autor, z. B. H. C. Andersen).",
+          "concept": "Märchenmerkmale: 1. Unbestimmte Zeit/Ort, 2. Polarer Figurenkontrast (Gut/Böse), 3. Zauberwelt/Fabelwesen, 4. Symbolzahlen (3, 7), 5. Formelhafte Sprache, 6. Happy End mit moralischer Gerechtigkeit; Volksmärchen vs. Kunstmärchen.",
+          "sample_solution": "1. Die 6 Wesensmerkmale des traditionellen Volksmärchens: - **1. Zeit- und Ortslosigkeit (Unbestimmtheit)**:   * Handlung ist an keine reale Epoche oder Geographie gebunden (*'Es war einmal vor langer Zeit...', 'In einem fernen Land hinter den Bergen...'*). - **2. Schwarz-Weiß-Malerei (Polarität der Charaktere)**:   * Figuren sind typisiert und holzschnittartig gezeichnet: extrem gut vs. abgrundtief böse (arme, fleißige Stieftochter vs. stolze, grausame Stiefmutter; kluger jüngster Müllerssohn vs. habgieriger König).   * Keine Zwischentöne oder psychologische Entwicklung. - **3. Übernatürliche Wesen und Magie**:   * Zauberwesen (Feen, Hexen, Elfen, Zwerge, Riesen), magische Verwandlungen (Prinz in Frosch), sprechende Tiere und Zaubergegenstände (Tischlein-deck-dich, Siebenmeilenstiefel). - **4. Magische Symbolzahlen und Dreigliedrigkeit**:   * Häufige Zahlen: **3** (drei Brüder, drei Rätsel, drei Wünsche, 3-malige Steigerung), **7** (sieben Zwerge, sieben Geißlein), **12/13** (Dornröschen). - **5. Feste Spruchformeln**:   * Stereotype Anfangsformeln (*'Es war einmal...'*) und Schlussformeln (*'Und wenn sie nicht gestorben sind, dann leben sie noch heute'*). - **6. Erlösung und moralischer Sieg (Happy End)**:   * Am Ende siegt ausnahmslos das Gute, Schlaue, Demütige und Arme. Das Böse wird streng und gerecht bestraft; Belohnung durch Heirat und Königreich. 2. Unterscheidung Volksmärchen vs. Kunstmärchen: - **Volksmärchen**: Mündlich über Jahrhunderte im Volk überliefert; kein namentlicher Einzelschöpfer; von Sammlern wie den **Brüdern Jacob und Wilhelm Grimm** (*Kinder- und Hausmärchen*, 1812) zusammengetragen und stilistisch vereinheitlicht. - **Kunstmärchen**: Bewusste literarische Schöpfung eines einzelnen bekannten Autors (z. B. Hans Christian Andersen: *Die kleine Meerjungfrau*; Wilhelm Hauff: *Das kalte Herz*); oft melancholischer, psychologisch tiefgründiger und nicht zwingend mit gutem Ausgang."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5E000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YD5E000000000000000A02",
+      "namespace": "deutsch-texte",
+      "slug": "gattung-fabel-aufbau-tiercharaktere-moral",
+      "title": "Die literarische Gattung Fabel: Fabeltiere, 3-Phasen-Aufbau, Konflikt und Lehre (Moral)",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5E000000000000000A01",
+          "type": "hard",
+          "rationale": "Märchen und Fabeln sind die beiden zentralen epischen Kurzformen der Unterstufe."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Fable",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Lesen und Literatur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5E000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche menschliche Charaktereigenschaft verkörpert der Fuchs (Reineke) in der klassischen Fabeltradition (z. B. nach Äsop oder Lessing)?",
+          "concept": "Schlauheit, Hinterlist, Heuchelei und Schmeichelei",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schlauheit und Hinterlist (Fuchs)",
+              "Stumpfe Dummheit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5E000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den klassischen 3-teiligen Aufbau einer Fabel (1. Ausgangssituation / Exposition: Begegnung zweier ungleicher Tiere, 2. Konflikt und Zuspitzung: Dialog mit Rede und Gegenrede / Täuschung, 3. Lösung / Katastrophe und die belehrende Moral / Epimythion bzw. Promythion) und ordne typische Fabeltiere ihren allegorischen menschlichen Eigenschaften zu: Fuchs (schlau/listig), Rabe (eitel/leichtgläubig), Löwe (stark/herrschsüchtig), Wolf (gierig/gewalttätig), Esel (störrisch/dumm), Lamm (schwach/unschuldig).",
+          "concept": "Fabelaufbau: 1. Ausgangslage -> 2. Streitgespräch/Aktion -> 3. Überwältigung/Ergebnis + Lehre (Moral); Vermenschlichte Tiere (Anthropomorphismus) dienen als Spiegel menschlicher Schwächen zur Kritik ohne Zensurgefahr.",
+          "sample_solution": "1. Der dreigliedrige dramatische Aufbau der Fabel: - **1. Ausgangssituation (Exposition)**:   * Kurze Einführung der beiden gegensätzlichen Akteure (meist zwei Tiere mit ungleicher Macht- oder Klugheitsverteilung) an einem neutralen Ort (z. B. *Rabe sitzt mit Käsestück auf dem Baum, Fuchs kommt vorbei*). - **2. Konflikt und Handlung (Aktion und Dialog)**:   * Zuspitzung durch ein Streitgespräch (**Rede und Gegenrede**) oder eine Täuschungshandlung (z. B. *Fuchs schmeichelt dem Raben wegen seiner angeblich wunderschönen Gesangsstimme*). - **3. Lösung / Pointe und die Moral (Lehre)**:   * Das Ergebnis des Konflikts: Der Klügere/Stärkere triumphiert über den Eitlen/Schwächeren (*Rabe öffnet den Schnabel zum Singen, Käse fällt herab, Fuchs schnappt ihn sich*).   * **Die Moral (Lehre / Epimythion)**: Ausdrückliche oder implizite Lebensweisheit, die menschliche Schwächen, Eitelkeiten und Machtmissbrauch anprangert (*'Traue niemals den Schmeicheleien eines Heuchlers!'*). 2. Typische Fabeltiere und ihre allegorischen Charaktereigenschaften: - **Fuchs (Reineke)**: Schlau, listig, berechnend, schmeichlerisch, hinterhältig. - **Rabe (Krakeeler)**: Eitel, leichtgläubig, unvorsichtig, geschwätzig. - **Löwe (Nobel)**: Mächtig, stolz, herrschsüchtig, königlich, aber auch willkürlich. - **Wolf (Isegrim)**: Gierig, skrupellos, gewalttätig, unersättlich. - **Lamm**: Schwach, unschuldig, wehrlos, hilfsbedürftig. - **Esel**: Träge, störrisch, einfältig, dumm. 3. Funktion der Fabel (Kritik durch die Tiergestalt): - Durch die Übertragung auf Tiere (**Anthropomorphismus**) konnte der Fabeldichter (z. B. Äsop in der Antike, La Fontaine im Absolutismus, Lessing in der Aufklärung) die Missstände von Herrschern, Adeligen und Gesellschaft kritisieren, ohne direkt wegen Hochverrats verfolgt zu werden."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5E000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YD5E000000000000000A03",
+      "namespace": "deutsch-texte",
+      "slug": "erlebniserzaehlung-klimax-zeitdehnung-erzaehlperspektive",
+      "title": "Erzähltechnik: Spannungsbogen, Höhepunktgestaltung (Klimax), Zeitdehnung und Perspektive",
+      "domain": "schule/deutsch/texte",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5E000000000000000A01",
+          "type": "hard",
+          "rationale": "Erzählmuster aus Märchen und Erzählungen bilden die Grundlage eigener Erzähltexte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Narrative structure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte verfassen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5E000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches erzähltechnische Mittel beschreibt den Moment am Höhepunkt einer Erzählung, bei dem eine nur wenige Sekunden dauernde Szene extrem ausführlich über mehrere Sätze hinweg geschildert wird?",
+          "concept": "Die Zeitdehnung (Erzählzeit ist deutlich länger als die erzählte Zeit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zeitdehnung (Slow-Motion-Effekt)",
+              "Der Zeitsprung / die Zeitraffung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5E000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den gezielten Einsatz erzählerischer Gestaltungsmittel in einer gymnasialen Erlebniserzählung: 1. Einleitung (W-Fragen: Wer, Wo, Wann, Was; Andeutung des Konflikts), 2. Steigende Handlung (Hindernisse, Sinneswahrnehmungen hören/sehen/fühlen, Gedanken- und Gefühlsbericht mit Pulsbeschleunigung), 3. Höhepunkt / Klimax (Zeitdehnung, Verknappung der Sätze zu Ellipsen, wörtliche Ausrufe), 4. Schluss (Lösung, Erleichterung, Reflexion) und unterscheide die Ich-Erzählperspektive (unmittelbare Nähe, emotionale Identifikation) von der Er/Sie-Erzählperspektive (distanzierterer Überblick).",
+          "concept": "Gestaltungsmittel: Einleitung mit W-Fragen, Hauptteil mit Hindernissen und innerem Monolog, Höhepunkt mit Zeitdehnung und Satzverkürzung; Präteritum als Grundtempus; Ich- vs. Er-Form.",
+          "sample_solution": "1. Professionelle Erzähltechniken für Hochspannung: - **1. Einleitung (Exposition)**:   * Beantwortung der 4 W-Fragen (*Wer, Wo, Wann, Was*) in lebendiger Sprache.   * Erzeugung einer Grundstimmung (Atmosphäre) und Einbau einer leisen Vorahnung (*Vorausdeutung*), ohne die Pointe zu verraten. - **2. Steigende Handlung (Spannungsaufbau)**:   * Schrittweise Verstrickung in ein Problem oder eine Gefahr.   * **Einsatz aller 5 Sinne**: Visuelle Details (*flackerndes Licht*), Geräusche (*knarrende Dielen, dumpfes Grollen*), Tast- und Körperempfindungen (*eiskalter Schweiß, rasender Herzschlag*).   * **Innerer Monolog**: Direkter Einblick in Zweifel, Ängste und Hoffnungen der Hauptfigur. - **3. Der Höhepunkt (Klimax & Zeitdehnung)**:   * Der dramatischste Wendepunkt. Hier wird die **Erzählzeit künstlich gedehnt** (was in Wirklichkeit 2 Sekunden dauert, wird über 10 Zeilen in Zeitlupe zerlegt: Muskelspannung, Blicke, Schocksekunde).   * **Rhythmische Satzverkürzung**: Kurze, atemlose Hauptsätze und Ausrufe beschleunigen den Lesepuls (*'Ein Schrei. Ich stolperte. Die Hand griff ins Leere.'*). - **4. Der Ausklang (Lösung und Rückschau)**:   * Abfallen der Anspannung; humorvolle oder nachdenkliche Auflösung der Situation; gefühlsmäßiger Abschluss. 2. Die Erzählperspektiven im Vergleich: - **Ich-Erzähler**: Erzählt aus der Innenperspektive ('Ich sah...', 'Mein Herz pochte...'). Schafft maximale emotionale Nähe, unmittelbare Empathie und Spannung, da der Leser nur weiß, was die Ich-Figur im selben Moment wahrnimmt. - **Er-/Sie-Erzähler (Personale/Auktoriale Erzählform)**: Schildert das Geschehen aus der Außenansicht; ermöglicht Szenenwechsel und distanziertere Charakterbeschreibungen."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5E000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YD5E000000000000000A04",
+      "namespace": "deutsch-zeichensetzung",
+      "slug": "woertliche-rede-begleitsatz-satzzeichen-regeln",
+      "title": "Wörtliche Rede: Redebegleitsatz vorne, hinten, eingeschoben und präzise Zeichensetzung",
+      "domain": "schule/deutsch/zeichensetzung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5E000000000000000A03",
+          "type": "hard",
+          "rationale": "Wörtliche Rede belebt Erzählungen durch authentische Dialoge."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Direct speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte verfassen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5E000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was passiert mit dem Punkt eines Aussagesatzes in der wörtlichen Rede, wenn der Redebegleitsatz NACHGESTELLT ist (z. B. „Ich komme gleich ... “, rief Ben)?",
+          "concept": "Der Schlusspunkt entfällt ersatzlos; stattdessen trennt ein Komma nach den Anführungszeichen den Begleitsatz ab",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Punkt entfällt vor dem Komma („... gleich“, rief...)",
+              "Der Punkt bleibt vor dem Komma erhalten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5E000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Stelle die 3 Stellungen des Redebegleitsatzes mit ihren exakten Satzzeichenregeln dar: 1. Vorangestellt (`Begleitsatz: „Rede [./!/?]“`), 2. Nachgestellt (`„Rede [!/?]“, Begleitsatz.` bzw. Aussagesatz ohne Punkt `„Rede“, Begleitsatz.`), 3. Eingeschoben (`„Erster Teil,“, Begleitsatz, „zweiter Teil [./!/?]“`) und setze die Zeichen in folgendem Text fehlerfrei: a) Felix fragte Wo hast du den Schlüssel gefunden b) Wenn du willst antwortete Laura können wir morgen zusammen suchen c) Pass gut darauf auf rief er.",
+          "concept": "1. Vorne: Doppelpunkt + Anführungszeichen unten/oben + Satzzeichen drinnen; 2. Hinten: Anführungszeichen + Komma + Begleitsatz klein (Aussagesatz ohne Punkt); 3. Eingeschoben: Komma vor und nach Begleitsatz; a) Felix fragte: „Wo hast du den Schlüssel gefunden?“; b) „Wenn du willst“, antwortete Laura, „können wir morgen zusammen suchen.“; c) „Pass gut darauf auf!“, rief er.",
+          "sample_solution": "1. Die Regeln der Zeichensetzung bei wörtlicher Rede: - **1. Vorangestellter Begleitsatz**:   * Schema: **Begleitsatz : „Wörtliche Rede [ . / ! / ? ] “**   * Nach dem Begleitsatz steht ein **Doppelpunkt**. Die Rede beginnt mit Anführungszeichen unten **„** und großem Anfangsbuchstaben. Das Satzzeichen (. ! ?) steht **im Inneren vor** den schließenden Anführungszeichen oben **“**. - **2. Nachgestellter Begleitsatz**:   * Schema: **„Wörtliche Rede [ ! / ? ] “ , Begleitsatz .**   * **Wichtigste Regel**: Bei einem Aussagesatz fällt der Schlusspunkt der Rede komplett weg! Nach dem Anführungszeichen oben folgt ein **Komma**, und der Begleitsatz wird kleingeschrieben. Ausrufe- und Fragezeichen bleiben jedoch immer erhalten!   * Aussagesatz: *„Das Spiel beginnt gleich“**,** sagte Jonas.* (kein Punkt vor dem Komma!).   * Fragesatz: *„Wann beginnt das Spiel?“**,** fragte Jonas.* - **3. Eingeschobener Begleitsatz**:   * Schema: **„Erster Teil der Rede , “ , Begleitsatz , „ zweiter Teil der Rede [ . / ! / ? ] “**   * Der Begleitsatz wird beidseitig von Kommas eingeschlossen. Geht der Satz der wörtlichen Rede nach dem Einschub weiter, wird nach dem zweiten Anführungszeichen unten **„** kleingeschrieben. 2. Auflösung der Übungssätze: - a) **Felix fragte: „Wo hast du den Schlüssel gefunden?“** - b) **„Wenn du willst“, antwortete Laura, „können wir morgen zusammen suchen.“** - c) **„Pass gut darauf auf!“, rief er.** (Ausrufezeichen bleibt vor den Anführungszeichen oben stehen, danach Komma)."
+        }
+      ]
+    }
+  ]
+}

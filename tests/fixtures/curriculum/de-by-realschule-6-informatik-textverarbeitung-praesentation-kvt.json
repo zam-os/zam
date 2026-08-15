@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-informatik-textverarbeitung-praesentation",
+  "version": "2026.08.1",
+  "title": "Informatik 6: Standardsoftware – Textverarbeitung, Präsentation und Tabellen (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Informationstechnologie 6: Dokumentenstruktur, Zeichen-/Absatzformatierung, Grafikumbruch, Präsentationsfolien und Tabellenkalkulation.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/informationstechnologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Informationstechnologie 6, Lernbereich Text- und Multimediadokumente"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4A6T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4A6T0000000000000000A01",
+      "namespace": "informatik-anwendung",
+      "slug": "textverarbeitung-zeichen-absatz-formatierung",
+      "title": "Strukturierte Textverarbeitung: Zeichen- versus Absatzformatierung und Formatvorlagen",
+      "domain": "schule/informatik/anwendung",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Word processor",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Textverarbeitung und Dokumentgestaltung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Textverarbeitung und Dokumentgestaltung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A6T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches der folgenden Formatattribute ist ein reines ABSATZFORMAT (wirkt auf den gesamten Absatz bis zur Eingabetaste Enter)?",
+          "concept": "Der Zeilenabstand (bzw. Ausrichtung: linksbündig, zentriert, Blocksatz, Einzüge)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zeilenabstand und die Ausrichtung (Blocksatz)",
+              "Die Schriftfarbe und Schriftart (fett/kursiv)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A6T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Zeichenformatierung (Attribute einzelner Buchstaben: Schriftart/Font, Schriftgröße in pt, Schriftschnitt: fett/kursiv/unterstrichen, Schriftfarbe) von Absatzformatierung (Attribute des ganzen Textblocks: Ausrichtung linksbündig/rechtsbündig/zentriert/Blocksatz, Zeilenabstand, Vor-/Nachabstand, Erstzeileneinzug, Aufzählungszeichen/Nummerierung) und erkläre die Vorteile der Verwendung von standardisierten Formatvorlagen (Überschrift 1, 2, Fließtext) in großen Dokumenten.",
+          "concept": "Zeichenformat: gilt ab Markierung einzelner Buchstaben; Absatzformat: gilt für Absatz zwischen zwei Enter-Tasten (¶-Steuerzeichen); Formatvorlagen: zentrales Ändern von Layouts im gesamten Dokument mit 1 Klick, automatisches Erstellen von Inhaltsverzeichnissen.",
+          "sample_solution": "1. Zeichenformatierung vs. Absatzformatierung in der Textverarbeitung: - Zeichenformatierung:   * Bezieht sich auf einzelne Buchstaben, Wörter oder Zeichenbereiche innerhalb eines Textes.   * Typische Attribute: Schriftart (z. B. Arial, Calibri, Times New Roman), Schriftgröße (in Punkten pt), Schriftschnitt / Schriftschnittattribute (Standard, **fett**, *kursiv*, <u>unterstrichen</u>), Schriftfarbe, Hervorhebungsfarbe, Hoch-/Tiefstellung. - Absatzformatierung:   * Bezieht sich immer auf den gesamten Absatz (Textblock zwischen zwei Absatzendemarken ¶ / Enter-Tasten).   * Typische Attribute: Ausrichtung (linksbündig, rechtsbündig, zentriert, **Blocksatz** mit Silbentrennung), Zeilenabstand (z. B. 1,0-zeilig, 1,5-zeilig), Absatzabstände (Abstand vor und nach dem Absatz), Einzüge (linker/rechter Randeinzug, Erstzeileneinzug), Aufzählungen (Bullets) und Nummerierungen, Rahmenlinien und Hintergrundschattierungen. 2. Bedeutung von Formatvorlagen (Styles): - Eine Formatvorlage fasst ein Bündel aus Zeichen- und Absatzformaten unter einem Namen zusammen (z. B. 'Überschrift 1', 'Standard-Fließtext', 'Zitat'). - Vorteile in der Praxis:   * Konsistentes, einheitliches Layout im gesamten Dokument.   * Effiziente globale Änderungen: Ändert man die Schriftart einer Formatvorlage, passen sich alle 50 Überschriften im Dokument automatisch mit einem Klick an.   * Automatische Dokumentstruktur: Formatvorlagen ermöglichen das automatische Generieren eines dynamischen Inhaltsverzeichnisses und eine barrierefreie Navigation im Dokumentenbaum."
+        }
+      ]
+    },
+    {
+      "id": "01K4A6T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4A6T0000000000000000A02",
+      "namespace": "informatik-anwendung",
+      "slug": "grafiken-medien-textumfluss-positionierung",
+      "title": "Grafikeinbindung und Textumfluss: Passend, Quadratisch, Vor und Hinter dem Text",
+      "domain": "schule/informatik/anwendung",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A6T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Textabsätze bilden den Rahmen für eingebettete Grafikobjekte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Desktop publishing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Textverarbeitung und Dokumentgestaltung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Textverarbeitung und Dokumentgestaltung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A6T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Textumfluss-Einstellung (Zeilenumbruch) muss für ein Bild gewählt werden, damit der Fließtext das Bild sauber in Form eines Rechtecks umfließt?",
+          "concept": "Quadratisch (bzw. Passend/Eng)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Quadratisch (Text umfließt den Bildrahmen)",
+              "Mit Text in Zeile (Bild wie ein einzelner Riesenbuchstabe)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A6T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die verschiedenen Textumbruch-Arten für Grafiken in Textdokumenten: 1. 'Mit Text in Zeile' (Bild verhält sich wie ein einzelnes Zeichen im Textfluss), 2. 'Quadratisch / Rechteckig' (Fließtext umfließt die Bildbox), 3. 'Passend / Dicht' (Text folgt den transparenten Konturen der Grafik), 4. 'Oben und Unten' (kein seitlicher Textfluss), 5. 'Hinter dem Text' (Wasserzeichen) vs. 'Vor dem Text' (verdeckt Fließtext) und erkläre das proportionale Skalieren über die Eckanfasser mit gedrückter Shift-/Umschalttaste.",
+          "concept": "Mit Text in Zeile: Inline-Element; Quadratisch: Rechteckiger Abstand um Bild; Passend: Konturumbruch bei PNG mit Transparenz; Oben/Unten: unterbricht Zeilen; Hinter Text: Hintergrundbild; Eckanfasser: Seitenverhältnis (Aspect Ratio) bleibt erhalten, verhindert Verzerrung/Stauchung.",
+          "sample_solution": "1. Textumbruch-Arten (Text Wrapping) bei Grafikeinbettung: - 'Mit Text in Zeile' (In line with text): Die Grafik wird wie ein einzelnes großes Schriftzeichen in die aktuelle Textzeile eingefügt. Sie wandert mit dem Text mit, zerreißt jedoch den Zeilenabstand der Zeile. - 'Quadratisch' (Square): Der Text fließt links, rechts oder beidseitig um den rechteckigen Rahmen der Grafik herum. Standard für Zeitungslayouts und Zeitungsspalten. - 'Passend / Eng' (Tight): Bei freigestellten Bildern mit transparentem Hintergrund (z. B. PNG-Dateien) folgt der Fließtext direkt den geschwungenen Außenkonturen des abgebildeten Objekts. - 'Oben und Unten' (Top and Bottom): Der Text stoppt über dem Bild und setzt erst unterhalb der Grafik wieder ein; links und rechts bleibt der Raum frei. - 'Hinter den Text' (Behind text): Das Bild liegt auf einer tieferen Ebene und wird vom Text überschrieben (geeignet für dezente Firmenlogos, Wasserzeichen oder Urkundenhintergründe). - 'Vor den Text' (In front of text): Das Bild schwimmt frei auf oberster Ebene und verdeckt den darunterliegenden Text (gut für frei platzierbare Stempel oder Notizzettel). 2. Bildskalierung ohne Verzerrung (Proportionalität): - Um ein unschönes Verzerren, Stauchen oder Strecken eines Fotos zu vermeiden, darf das Bild niemals an den Seiten- oder Mittenanfassern gezogen werden. - Man zieht immer an einem der **vier Eckanfasser**, wodurch Höhe und Breite im festen mathematischen Seitenverhältnis (Aspect Ratio) proportional skaliert werden."
+        }
+      ]
+    },
+    {
+      "id": "01K4A6T0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4A6T0000000000000000A03",
+      "namespace": "informatik-anwendung",
+      "slug": "praesentationsprogramme-foliengestaltung-kiss-prinzip",
+      "title": "Präsentationssoftware: Folienaufbau, Masterfolie und das didaktische KISS-Prinzip",
+      "domain": "schule/informatik/anwendung",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A6T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Formatierungsregeln von Text und Bild gelten auch für Präsentationsfolien."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Presentation software",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Präsentationsdokumente",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Präsentationsdokumente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A6T0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wofür steht die Gestaltungsregel des KISS-Prinzips bei der Erstellung von Präsentationsfolien?",
+          "concept": "'Keep It Simple and Smart' (Halte es einfach, übersichtlich und auf das Wesentliche beschränkt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "'Keep It Simple and Smart' (einfach und übersichtlich)",
+              "'Keep Intensive Sound and Shows' (viele Toneffekte)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A6T0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die fünf Grundregeln für gelungene Präsentationsfolien (1. KISS-Prinzip & Stichpunkte statt ganzer Sätze, 2. 7x7-Regel: maximal 7 Zeilen mit je 7 Wörtern, 3. Ausreichende Schriftgröße >= 24 pt und starker Farbkontrast hell/dunkel, 4. Aussagekräftige Bilder/Diagramme statt Textwüsten, 5. Sparsamer, gezielter Einsatz von Animationen) und erkläre die Funktion der Folienmaster-Ebene (Folienmaster / Slide Master).",
+          "concept": "Regeln: Stichworte statt Vorlese-Text, max 7 Zeilen, lesbare Schriftgröße >=24pt, Farbkontrast (dunkle Schrift auf hellem Grund), sinnvolle Grafiken, dezente Animationen (nur zur Strukturierung); Folienmaster: zentrale Steuerung von Hintergrund, Schriften, Logo und Fußzeilen (Datum/Seitenzahl) für alle Folien.",
+          "sample_solution": "1. Die fünf goldenen Gestaltungsregeln für Präsentationsfolien: - 1. KISS-Prinzip (*Keep It Simple and Smart*): Die Folie ist kein Vorlesemanuskript für den Vortragenden, sondern eine visuelle Orientierungshilfe für das Publikum. Keine ausformulierten Fließtext-Absätze, sondern prägnante Schlüsselbegriffe und Stichpunkte. - 2. Die 7x7-Faustregel: Maximal 7 Zeilen/Spiegelstriche pro Folie und maximal ca. 7 Wörter pro Zeile, um die Zuhörer kognitiv nicht zu überfordern. - 3. Lesbarkeit und Farbkontrast: Schriftgrößen für Folientitel mind. 32–40 pt, für Aufzählungspunkte mind. 24–28 pt. Hoher Kontrast (z. B. dunkle Schrift auf weißem/hellgrauem Hintergrund). Schnörkellose serifenlose Schriften (Arial, Calibri, Open Sans). - 4. Visuelle Verstärkung: Hochwertige, thematisch passende Grafiken, Fotos oder Diagramme unterstützen das Verständnis um ein Vielfaches besser als reiner Text ('Ein Bild sagt mehr als 1000 Worte'). - 5. Dezente Animationen: Folienübergänge und Textanimationen nur gezielt einsetzen, um Inhalte nacheinander passend zum Vortrag einzublenden; Verzicht auf verspielte, zeitraubende Sound- und Dreheffekte. 2. Die Funktion des Folienmasters (Slide Master): - Der Folienmaster ist die übergeordnete Schablone einer Präsentation. - Alle Elemente, die auf dem Master platziert werden (z. B. Schul- oder Firmenlogo, Hintergrunddesign, feste Schriftarten für Titel und Textkörper, Fußzeile mit Foliennummer und Datum), werden automatisch auf jede neu erstellte Folie der Präsentation vererbt. - Änderungen am Folienmaster aktualisieren das Design des gesamten Vortrags zentral mit einem einzigen Arbeitsschritt."
+        }
+      ]
+    },
+    {
+      "id": "01K4A6T0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4A6T0000000000000000A04",
+      "namespace": "informatik-anwendung",
+      "slug": "tabellenkalkulation-zellen-formeln-funktionen",
+      "title": "Tabellenkalkulation: Tabellengitter, Zellbezüge und Standardfunktionen (SUMME, MITTELWERT)",
+      "domain": "schule/informatik/anwendung",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A6T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Tabellenstruktur und Datentypen sind Grundlagen der Softwareanwendung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Spreadsheet",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb3",
+          "topic_title": "Tabellenkalkulationssysteme",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb3",
+          "topic_title": "Tabellenkalkulationssysteme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A6T0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem Zeichen muss jede Formel oder Funktionsberechnung in einer Tabellenkalkulation (z. B. Excel, Calc) zwingend beginnen?",
+          "concept": "Mit dem Gleichheitszeichen '=' (z. B. =A1+B1 oder =SUMME(A1:A10))",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Gleichheitszeichen '='",
+              "Mit einem Doppelpunkt ':'"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A6T0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Struktur eines Tabellenblatts (Spalten mit Buchstaben A, B, C...; Zeilen mit Zahlen 1, 2, 3...; Zellen als Schnittpunkt mit Zelladresse wie C4), unterscheide die Datentypen Text, Zahl und Formel und schreibe die korrekten Tabellenfunktionen für: a) Die Summe aller Werte im Zellbereich von B2 bis B12, b) Den Notendurchschnitt (Mittelwert) der Zellen D2 bis D25, c) Den kleinsten Wert (Minimum) im Bereich F5 bis F50.",
+          "concept": "Zelladresse = Spaltenbuchstabe + Zeilennummer; Datentypen: Text (linksbündig), Zahl/Datum/Währung (rechtsbündig), Formel (beginnt mit =); a) =SUMME(B2:B12); b) =MITTELWERT(D2:D25); c) =MIN(F5:F50). Doppelpunkt ':' bezeichnet einen zusammenhängenden Zellbereich von ... bis.",
+          "sample_solution": "1. Struktur eines Tabellenkalkulationsblatts: - Spalten (vertikal): Werden von links nach rechts mit Großbuchstaben beschriftet (A, B, C, ..., Z, AA, AB...). - Zeilen (horizontal): Werden von oben nach unten mit fortlaufenden Zahlen nummeriert (1, 2, 3, ...). - Zelle: Der Schnittpunkt einer Zeile mit einer Spalte. Jede Zelle besitzt eine eindeutige **Zelladresse** (Zellkoordinate), bestehend aus Spaltenbuchstabe und Zeilennummer (z. B. `B4` = Spalte B, Zeile 4). 2. Datentypen in Tabellenzellen: - Text (Zeichenkette): Wird standardmäßig linksbündig ausgerichtet; dient als Beschriftung, Kopfzeile oder Kategorie. - Zahl / Wert: Reelle Zahlen, Währungsbeträge (€), Prozentangaben oder Datumsangaben; werden standardmäßig rechtsbündig formatiert und können mathematisch berechnet werden. - Formel: Beginnt immer zwingend mit dem Gleichheitszeichen `=`. Enthält Rechenoperatoren (`+`, `-`, `*`, `/`) oder eingebaute Funktionen mit Zellbezügen. 3. Standardfunktionen mit Bereichsoperator `:` (Doppelpunkt steht für 'von ... bis'): - a) Summe des Bereichs B2 bis B12: **`=SUMME(B2:B12)`** (addiert alle Werte von B2 bis B12). - b) Notendurchschnitt von D2 bis D25: **`=MITTELWERT(D2:D25)`** (berechnet das arithmetische Mittel). - c) Kleinster Wert von F5 bis F50: **`=MIN(F5:F50)`** (sucht den Minimalwert; größter Wert wäre `=MAX(F5:F50)`)."
+        }
+      ]
+    }
+  ]
+}

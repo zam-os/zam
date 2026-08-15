@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-wirtschaft-recht-markt-geld-verbraucherschutz",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 8: Markt, Preisbildung, Geld, Währung und Verbraucherrechte (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Wirtschaft und Recht 8: Der erweiterte Wirtschaftskreislauf, Marktmechanismus (Angebot, Nachfrage, Gleichgewichtspreis, Preiselastizität), Funktionen und Wertstabilität des Geldes (Inflation, Deflation, EZB), Rechtsfähigkeit vs. Geschäftsfähigkeit sowie Verbraucherschutz (Kaufvertrag, Sachmängelhaftung und Widerrufsrecht bei Online-Käufen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/wirtschaft-und-recht",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Wirtschaft und Recht 8, Lernbereiche Der Markt als Koordinationsinstrument, Geld und Währung, Rechtliche Rahmenbedingungen des Wirtschaftens"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8S0000000000000000A01",
+      "namespace": "gymnasium-wirtschaft-markt",
+      "slug": "wirtschaftskreislauf-markt-preisbildung-gleichgewicht",
+      "title": "Der Marktmechanismus: Erweiterter Wirtschaftskreislauf, Angebot, Nachfrage und Gleichgewichtspreis",
+      "domain": "schule/wirtschaft/markt",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Market economy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb1",
+          "topic_title": "Markt und Preisbildung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was passiert auf einem vollkommenen Markt mit dem Marktpreis, wenn bei unverändertem Angebot die Nachfrage der Konsumenten plötzlich stark ansteigt (Nachfrageüberhang)?",
+          "concept": "Der Marktpreis steigt (bis sich ein neues Marktgleichgewicht bei höherem Preis einpendelt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Marktpreis steigt",
+              "Der Marktpreis sinkt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Marktmechanismus und den erweiterten Wirtschaftskreislauf: 1. **Der erweiterte Wirtschaftskreislauf**: Interaktion der 5 Sektoren (**Private Haushalte, Unternehmen, Staat, Kreditinstitute/Banken, Ausland**) über Güter- und Geldströme (Faktoreinkommen, Konsumausgaben, Steuern, Subventionen, Ersparnisse, Kredite, Import/Export), 2. **Das Marktmodell (Preis-Mengen-Diagramm)**:   * **Nachfragekurve**: Fällt von links oben nach rechts unten (sinkender Preis $\\rightarrow$ steigende Nachfragemenge).   * **Angebotskurve**: Steigt von links unten nach rechts oben (höherer Preis $\\rightarrow$ rentable Ausweitung des Angebots).   * **Gleichgewichtspreis $p^*$ & Gleichgewichtsmenge $q^*$**: Schnittpunkt von Angebots- und Nachfragekurve (Markträumung: Angebot = Nachfrage), 3. **Marktungleichgewichte**:   * **Angebotsüberhang** ($p > p^*$): Produzenten senken Preise, um Lager zu leeren.   * **Nachfrageüberhang** ($p < p^*$): Konsumenten konkurrieren, Preis steigt, 4. **Preisfunktionen**: Ausgleichsfunktion, Signalfunktion (Knappheitsanzeiger), Lenkungs-/Allokationsfunktion und Erziehungsfunktion.",
+          "concept": "Wirtschaftskreislauf (5 Sektoren: Haushalte, Unternehmen, Staat, Banken, Ausland); Marktmodell: Nachfragekurve (fallend), Angebotskurve (steigend), Gleichgewichtspreis p* (Angebot = Nachfrage); Preisfunktionen (Signal, Ausgleich, Lenkung, Erziehung).",
+          "sample_solution": "1. Der erweiterte Wirtschaftskreislauf (Die 5 Sektoren): - **1. Private Haushalte**: Stellen Produktionsfaktoren (Arbeit, Kapital, Boden) bereit; erhalten Faktoreinkommen (Löhne, Zinsen, Mieten); tätigen Konsumausgaben und Ersparnisse. - **2. Unternehmen**: Kaufen Produktionsfaktoren; produzieren Konsum- und Investitionsgüter; zahlen Steuern und Gehälter. - **3. Staat**: Zieht Steuern und Abgaben ein; zahlt Löhne an Staatsbedienstete und Transferleistungen (Kindergeld, Bürgergeld, Subventionen); stellt öffentliche Infrastruktur bereit. - **4. Banken / Vermögensveränderung**: Sammeln Ersparnisse ein und transformieren sie in Kredite für Investitionen. - **5. Ausland**: Importiert inländische Güter (Exporteinnahmen) und exportiert Güter ins Inland. 2. Das Marktmodell im Preis-Mengen-Diagramm: - **Die Nachfragekurve (Konsumentenperspektive)**:   * Gesetz der Nachfrage: Je niedriger der Preis eines Gutes, desto größer ist die nachgefragte Menge (fallender Kurvenverlauf). - **Die Angebotskurve (Produzentenperspektive)**:   * Gesetz des Angebots: Je höher der Preis, desto rentabler ist die Produktion und desto mehr Güter werden am Markt angeboten (steigender Kurvenverlauf). - **Der Gleichgewichtspreis ($p^*$) und die Gleichgewichtsmenge ($q^*$)**:   * Der Schnittpunkt beider Kurven markiert das **Marktgleichgewicht**. Hier deckt sich die angebotene mit der nachgefragten Menge (**Markträumung**; keine Überschüsse oder Mangel). 3. Marktungleichgewichte und Anpassungsmechanismen: - **1. Angebotsüberhang (Käufermarkt)**: Liegt der aktuelle Preis über dem Gleichgewichtspreis ($p > p^*$), wird mehr angeboten als nachgefragt $\\implies$ Lager füllen sich $\\implies$ Anbieter unterbieten sich im Preis $\\implies$ Preis sinkt auf $p^*$. - **2. Nachfrageüberhang (Verkäufermarkt)**: Liegt der Preis unter $p^*$, übersteigt die Nachfrage das Angebot $\\implies$ Verknappung $\\implies$ Konsumenten sind bereit, mehr zu zahlen $\\implies$ Preis steigt auf $p^*$. 4. Die 4 zentralen Funktionen des Preises in der Marktwirtschaft: - **1. Signalfunktion / Informationsfunktion**: Zeigt die Knappheit eines Gutes an (hoher Preis = knappes Gut). - **2. Ausgleichsfunktion (Markträumung)**: Bringt Angebot und Nachfrage zur Deckung. - **3. Lenkungsfunktion (Allokation)**: Lenkt knappe Produktionsfaktoren (Kapital, Arbeitskräfte) in diejenigen Wirtschaftszweige, in denen die größte Nachfrage und Rentabilität besteht. - **4. Erziehungsfunktion / Sanktionsfunktion**: Zwingt Produzenten zu kostengünstiger, innovativer Produktion und Konsumenten zum sparsamen Umgang mit knappen Ressourcen."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8S0000000000000000A02",
+      "namespace": "gymnasium-recht-verbraucher",
+      "slug": "geld-inflation-geschaeftsfaehigkeit-kaufvertrag-verbraucherschutz",
+      "title": "Geld und Recht: Inflation, Geschäftsfähigkeit (§§ 104 ff. BGB), Kaufvertrag und Verbraucherrechte",
+      "domain": "schule/recht/verbraucherschutz",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Rechtliche Rahmenbedingungen und Geldwert sichern die Funktion der Marktwirtschaft."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Consumer protection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb2",
+          "topic_title": "Geldordnung und rechtliche Grundlagen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen rechtlichen Status haben Kaufverträge, die von beschränkt geschäftsfähigen Minderjährigen (7 bis unter 18 Jahre) ohne vorherige Einwilligung der Eltern und ohne Taschengeldparagraf (§ 110 BGB) geschlossen werden?",
+          "concept": "Schwebend unwirksam (Wirksamkeit hängt von der nachträglichen Genehmigung der gesetzlichen Vertreter ab)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schwebend unwirksam (§ 108 BGB)",
+              "Von Anfang an voll wirksam"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Geldwertstabilität, Rechtsfähigkeit, Geschäftsfähigkeit und Verbraucherrechte: 1. **Geld & Währung**:   * **Funktionen des Geldes**: Tausch- und Zahlungsmittel, Recheneinheit/Wertmaßstab, Wertaufbewahrungsmittel.   * **Inflation vs. Deflation**: Anstieg des allgemeinen Preisniveaus $\\rightarrow$ Kaufkraftverlust des Geldes; Hauptziel des Eurosystems / der EZB: Preisstabilität (Inflationsrate von ca. $2\\%$ auf mittlere Sicht), 2. **Rechtsfähigkeit vs. Geschäftsfähigkeit (§§ BGB)**:   * **Rechtsfähigkeit (§ 1 BGB)**: Fähigkeit, Träger von Rechten und Pflichten zu sein (beginnt mit Vollendung der Geburt).   * **Geschäftsunfähigkeit (§ 104 BGB)**: Kinder unter 7 Jahren $\\rightarrow$ Willenserklärungen sind nichtig (§ 105 BGB).   * **Beschränkte Geschäftsfähigkeit (§ 106 BGB)**: Minderjährige von 7 bis 17 Jahren $\\rightarrow$ schwebend unwirksam bis zur Genehmigung (§ 108 BGB); Ausnahme: **Taschengeldparagraf (§ 110 BGB)** und lediglich rechtlicher Vorteil (§ 107 BGB).   * **Volle Geschäftsfähigkeit (§ 2 BGB)**: Ab vollendetem 18. Lebensjahr, 3. **Kaufvertrag & Verbraucherrechte**:   * Zustandekommen durch zwei übereinstimmende Willenserklärungen (**Antrag und Annahme**).   * **Gesetzliche Sachmängelhaftung (Gewährleistung 2 Jahre)**: Nacherfüllung (Reparatur oder Neulieferung) vor Rücktritt/Minderung.   * **Widerrufsrecht bei Fernabsatzverträgen (§ 312g BGB)**: 14-tägiges grundloses Rückgaberecht bei Online- und Haustürkäufen.",
+          "concept": "Geld: Funktionen & Inflation (Kaufkraftverlust, EZB 2%); Rechtsfähigkeit (ab Geburt) vs. Geschäftsfähigkeit: unter 7 (geschäftsunfähig/nichtig), 7-17 (beschränkt/schwebend unwirksam, §110 Taschengeld), ab 18 (voll); Kaufvertrag (Antrag+Annahme); Verbraucherschutz: 2 Jahre Sachmängelhaftung (Nacherfüllung vorrangig) & 14 Tage Widerruf bei Online-Kauf.",
+          "sample_solution": "1. Geld, Geldwert und die Europäische Zentralbank (EZB): - **Die drei ökonomischen Funktionen des Geldes**:   * 1. **Tausch- und Zahlungsmittelfunktion**: Überwindet die Ineffizienz des direkten Ware-gegen-Ware-Tausches.   * 2. **Recheneinheit / Wertmaßstab**: Ermöglicht den direkten Preisvergleich unterschiedlichster Güter.   * 3. **Wertaufbewahrungsmittel**: Erlaubt es, Kaufkraft für die Zukunft zu sparen (Gefahr durch Geldentwertung). - **Inflation (Geldentwertung)**:   * Dauerhafter Anstieg des allgemeinen Preisniveaus $\\implies$ für 1 Euro erhält man weniger Güter (**Kaufkraftverlust**).   * **Geldpolitik der EZB**: Vorrangiges Ziel ist die **Preisstabilität** im Euroraum (Zielmarke: **2 % Inflationsrate** auf mittlere Sicht über Leitzinssteuerung und Offenmarktgeschäfte). 2. Rechtsfähigkeit vs. Geschäftsfähigkeit im Bürgerlichen Gesetzbuch (BGB): - **1. Rechtsfähigkeit (§ 1 BGB)**:   * Die Fähigkeit, Träger von Rechten und Pflichten zu sein. Beginnt mit der **Vollendung der Geburt** und endet mit dem Hirntod (gilt ausnahmslos für jeden Menschen). - **2. Die drei Stufen der Geschäftsfähigkeit (Fähigkeit, rechtswirksame Willenserklärungen abzugeben)**:   * **A. Geschäftsunfähigkeit (§ 104 Nr. 1 BGB: 0 bis unter 7 Jahre)**:     - Willenserklärungen sind **nichtig** (§ 105 BGB). Gesetzliche Vertreter (Eltern) handeln stellvertretend.   * **B. Beschränkte Geschäftsfähigkeit (§ 106 BGB: 7 bis unter 18 Jahre)**:     - Verträge sind zunächst **schwebend unwirksam** (§ 108 BGB) und bedürfen der Zustimmung der Eltern.     - *Ausnahme 1 (§ 107 BGB)*: Lediglich rechtlich vorteilhafte Geschäfte (z. B. reine Schenkung).     - *Ausnahme 2 (§ 110 BGB – Taschengeldparagraf)*: Der Vertrag gilt als von Anfang an wirksam, wenn der Minderjährige die vertragsmäßige Leistung mit Mitteln bewirkt, die ihm zu diesem Zweck oder zur freien Verfügung überlassen worden sind (nur Barzahlung, keine Ratenkredite!).   * **C. Volle Geschäftsfähigkeit (ab 18 Jahren)**:     - Uneingeschränkte Rechtswirksamkeit aller abgegebenen Willenserklärungen. 3. Kaufvertrag und moderne Verbraucherrechte: - **Zustandekommen des Kaufvertrags (§ 433 BGB)**:   * Entsteht durch zwei übereinstimmende Willenserklärungen: **Antrag (Angebot)** und **Annahme**. - **Gesetzliche Sachmängelhaftung (Gewährleistung § 437 BGB)**:   * Gilt 24 Monate ab Übergabe.   * **Stufe 1 (Vorrangig)**: Recht auf **Nacherfüllung** (Wahlrecht des Käufers zwischen Nachbesserung/Reparatur oder Neulieferung).   * **Stufe 2 (Nachrangig nach Fristsetzung)**: Rücktritt vom Kaufvertrag (Geld zurück) oder Minderung des Kaufpreises sowie Schadensersatz. - **Widerrufsrecht bei Fernabsatzverträgen (§§ 312g, 355 BGB)**:   * Bei Verträgen im Online-Handel (Internet, Telefon) hat der Verbraucher ein gesetzliches **14-tägiges Widerrufsrecht** ohne Angabe von Gründen (Schutz vor Fehlkäufen, da Ware vorab nicht begutachtet werden konnte)."
+        }
+      ]
+    }
+  ]
+}

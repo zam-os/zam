@@ -1,0 +1,302 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien",
+  "version": "2026.08.1",
+  "title": "Natur und Technik 5: Naturwissenschaftliches Arbeiten und Informatik (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern NuT 5: Erkenntnisweg (Hypothese/Experiment), Mikroskopieren/Frischpräparat, Objektorientierung (Attribute/Methoden) und Dateisystem.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Realschule Natur und Technik 5, Lernbereich Naturwissenschaftliches Arbeiten und Informatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4T5N0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4T5N0000000000000000A01",
+      "namespace": "nut-arbeitsweisen",
+      "slug": "naturwissenschaftlicher-erkenntnisweg-experiment-kontrollansatz",
+      "title": "Der naturwissenschaftliche Erkenntnisweg: Fragestellung, Hypothese, Experiment und Kontrollansatz",
+      "domain": "schule/nut/arbeitsweisen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Scientific method",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T5N0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man eine wissenschaftlich begründete Vermutung über den Ausgang eines Experiments, die anschließend experimentell überprüft wird?",
+          "concept": "Eine Hypothese",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Hypothese",
+              "Ein Gesetz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T5N0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Skizziere die 5 Stufen des naturwissenschaftlichen Erkenntniswegs (1. Naturbeobachtung & präzise Fragestellung, 2. Aufstellen einer überprüfbaren Hypothese, 3. Planung und Durchführung eines reproduzierbaren Experiments mit exakter Protokollführung, 4. Deutung & Abgleich der Ergebnisse mit der Hypothese, 5. Formulierung einer Gesetzmäßigkeit bzw. Falsifikation/Korrektur) und begründe die zwingende Notwendigkeit eines 'Kontrollansatzes' (Blindprobe / Nullprobe, bei dem genau ein einziger Umweltfaktor verändert wird).",
+          "concept": "5 Stufen: 1. Phänomen beobachten -> 2. Frage & Hypothese formulieren -> 3. Experiment durchführen & protokollieren -> 4. Ergebnis auswerten -> 5. Hypothese bestätigen oder verwerfen; Kontrollansatz: Variantenvergleich mit genau 1 veränderten Parameter (z. B. Pflanze mit Licht vs. Pflanze im Dunkeln bei gleicher Temperatur und Wasser) beweist die Ursache-Wirkungs-Beziehung.",
+          "sample_solution": "1. Der 5-stufige naturwissenschaftliche Erkenntnisweg: - **1. Phänomen & Fragestellung**: Aus einer genauen Naturbeobachtung entsteht eine gezielte wissenschaftliche Frage (z. B. 'Brauchen Kressesamen zum Keimen Licht?'). - **2. Hypothese**: Formulierung einer begründeten, logischen Vermutung als Wenn-Dann-Aussage (z. B. 'Wenn Kressesamen dunkel gehalten werden, keimen sie nicht'). - **3. Experiment & Protokoll**: Ein gezielter, künstlich herbeigeführter und beliebig oft **wiederholbarer (reproduzierbarer)** Versuch unter kontrollierten Bedingungen. Protokollierung von Material, Versuchsaufbau, Durchführung und genauen Beobachtungen (Messwerte, Skizzen). - **4. Auswertung & Deutung**: Analyse der Daten. Vergleich der Beobachtungen mit der aufgestellten Hypothese. - **5. Schlussfolgerung & Erkenntnis**:   * *Hypothese bestätigt (Verifikation)*: Die Vermutung gilt als gestützt (z. B. 'Kresse ist ein Lichtkeimer').   * *Hypothese widerlegt (Falsifikation)*: Die Vermutung muss verworfen oder korrigiert werden; ein neuer Erkenntniskreislauf beginnt. 2. Die fundamentale Bedeutung des Kontrollansatzes (Ceteris-Paribus-Prinzip): - Ein Experiment ist wissenschaftlich nur dann aussagekräftig, wenn es neben dem eigentlichen Versuchsansatz immer einen **Kontrollansatz (Vergleichsansatz)** gibt. - **Regel der einen Variablen**: Alle Versuchsbedingungen (Temperatur, Feuchtigkeit, Boden, Gefäß, Sauerstoffgehalt) müssen bei beiden Ansätzen absolut identisch sein – **bis auf genau den einen Faktor**, der untersucht werden soll (z. B. Licht vs. Dunkelheit). - Nur so ist zweifelsfrei bewiesen, dass der beobachtete Unterschied tatsächlich ausschließlich auf diesen einen Faktor zurückzuführen ist und nicht auf Zufall oder andere Störgrößen."
+        }
+      ]
+    },
+    {
+      "id": "01K4T5N0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4T5N0000000000000000A02",
+      "namespace": "nut-arbeitsweisen",
+      "slug": "lichtmikroskop-aufbau-frischpraeparat-vergroesserung",
+      "title": "Das Lichtmikroskop: Optischer Strahlengang, Bauteile, Vergrößerungsberechnung und Frischpräparat",
+      "domain": "schule/nut/arbeitsweisen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T5N0000000000000000A01",
+          "type": "hard",
+          "rationale": "Mikroskopieren ist eine zentrale experimentelle Arbeitsweise."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Optical microscope",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Naturwissenschaftliches Arbeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T5N0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man die optische Gesamtvergrößerung eines Lichtmikroskops?",
+          "concept": "Gesamtvergrößerung = Okularvergrößerung · Objektivvergrößerung (z. B. 10x · 40x = 400x)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Okularvergrößerung · Objektivvergrößerung",
+              "Okularvergrößerung + Objektivvergrößerung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T5N0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Benenne die Hauptbestandteile eines Lichtmikroskops (Okular, Tubus, Objektivrevolver mit Objektiven, Objekttisch mit Präparateklemmen, Kondensor/Blende, Lichtquelle, Grob- und Feintrieb), erkläre die schrittweise Herstellung eines blasenfreien Frischpräparats (z. B. Küchenzwiebelhaut auf Objektträger, Wassertropfen, Deckglas im 45°-Winkel mit Präpariernadel absenken) und beschreibe die Vorgehensweise beim Scharfstellen (immer mit dem kleinsten Objektiv beginnen, Objekttisch mit Grobtrieb von unten nach oben herandrehen, dann unter Blickkontakt mit Feintrieb scharfstellen).",
+          "concept": "Bauteile: Okular (Augenlinse), Objektiv (Präparatlinse), Grobtrieb (Grobhöhe), Feintrieb (Feinschärfe); Frischpräparat: Zwiebelhäutchen in Wassertropfen auf Objektträger, Deckglas schräg aufsetzen gegen Luftblasen; Scharfstellen: kleinstes Objektiv (Übersicht), Abstand kontrollieren, Feintrieb nachstellen.",
+          "sample_solution": "1. Bauteile des Lichtmikroskops und ihre Funktion: - **Okular**: Linse am oberen Ende des Tubus, in die man mit dem Auge hineinblickt (z. B. 10-fache Vorvergrößerung). - **Tubus**: Verbindungsrohr zwischen Okular und Objektiven; schirmt störendes Streulicht ab. - **Objektivrevolver**: Drehkranz mit mehreren **Objektiven** unterschiedlicher Brennweite (z. B. 4x Übersicht, 10x mittel, 40x stark). - **Objekttisch mit Objektklammern**: Plattform mit Lichtdurchlass zur Aufnahme des Objektträgers. - **Kondensor und Irisblende**: Bündelt und reguliert den Lichteinfall der Lichtquelle/Lampe von unten durch das Präparat (Durchlichtmikroskopie). - **Grobtrieb**: Grobe Höhenverstellung des Objekttisches zur schnellen Annäherung. - **Feintrieb (Mikrometertrieb)**: Präzise Feinfokussierung für gestochen scharfe Details. - Formel Gesamtvergrößerung: **V_Gesamt = V_Okular · V_Objektiv** (z. B. 10 · 40 = 400-fache Vergrößerung). 2. Herstellung eines Frischpräparats (z. B. Zwiebelschuppen-Epidermis): - 1. Einen sauberen Glas-**Objektträger** bereitlegen und mit einer Pipette einen kleinen Tropfen Wasser in die Mitte geben. - 2. Mit einer Pinzette ein hauchdünnes, einschichtiges Stückchen der Zwiebelhaut abziehen und faltenfrei in den Wassertropfen legen. - 3. Ein dünnes **Deckglas** mit einer Kante in einem **45°-Winkel** an den Wassertropfen ansetzen. - 4. Das Deckglas mit einer Präpariernadel langsam und vorsichtig absenken. Dadurch wird das Wasser zur Seite verdrängt und das Entstehen störender runder **Luftblasen** zuverlässig vermieden. 3. Vorgehensweise beim Mikroskopieren: - Immer mit der **kleinsten Objektivvergrößerung** beginnen (größtes Sehfeld). - Den Objekttisch von der Seite beobachtend mit dem Grobtrieb vorsichtig nach oben fahren, bis das Objektiv kurz vor dem Deckglas steht (verhindert das Zerstören des Präparats). - Beim Blick durch das Okular den Objekttisch mit dem Grobtrieb langsam nach unten bewegen, bis das Bild sichtbar wird, und anschließend mit dem Feintrieb exakt scharfstellen."
+        }
+      ]
+    },
+    {
+      "id": "01K4T5N0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4T5N0000000000000000A03",
+      "namespace": "informatik-konzepte",
+      "slug": "objektorientierung-objekt-klasse-attribut-methode",
+      "title": "Grundlagen der Objektorientierung in NuT: Objekt, Attribut, Attributwert und Methode",
+      "domain": "schule/informatik/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Object-oriented programming",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T5N0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man in der Objektorientierung eine Eigenschaft eines Objekts (z. B. 'Farbe' oder 'Radius') und wie den konkreten Zustand dieser Eigenschaft (z. B. 'rot' oder '5 cm')?",
+          "concept": "Attribut (Eigenschaft) und Attributwert (konkreter Wert)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Attribut und Attributwert",
+              "Methode und Parameter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T5N0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die 4 Grundbausteine des objektorientierten Modells in NuT: 1. Objekt (konkretes Ding mit Name/Identifikator), 2. Klasse (Bauplan/Schablone für gleichartige Objekte), 3. Attribute und Attributwerte (Zustand des Objekts), 4. Methoden (Operationen/Aktionen, die den Zustand eines Objekts verändern) und stelle das Grafikobjekt 'meinKreis' der Klasse 'KREIS' im Punkt-Notationsschema dar (mit Attributen Radius, Füllfarbe, Mittelpunkt und Methoden Verschieben, Umfärben).",
+          "concept": "Objekt: Exemplar einer Klasse; Klasse: Vorlage; Attribute: Eigenschaften; Attributwerte: Momentanzustand; Methode: Aktion (z. B. meinKreis.SetzeFarbe('blau')); Punktschreibweise: objekt.attribut = wert bzw. objekt.methode(parameter).",
+          "sample_solution": "1. Die 4 Grundbegriffe der objektorientierten Modellierung: - **Klasse (Class)**: Der übergeordnete Bauplan oder die Schablone. Beschreibt, welche Eigenschaften (Attribute) und Verhaltensweisen (Methoden) alle gleichartigen Objekte dieser Art besitzen (z. B. Klasse `KREIS`, `AUTO`, `SCHÜLER`). - **Objekt (Exemplar / Instanz)**: Ein konkreter, eindeutig benannter Vertreter einer Klasse (z. B. `meinKreis`, `k1`, `sportwagen1`). - **Attribute (Attributes) und Attributwerte (Values)**:   * *Attribut*: Ein bestimmtes Merkmal oder eine Eigenschaft der Klasse (z. B. `radius`, `fuellfarbe`, `mittelpunktX`, `mittelpunktY`).   * *Attributwert*: Die konkrete Ausprägung dieses Merkmals bei einem bestimmten Objekt zu einem bestimmten Zeitpunkt (z. B. `radius = 4 cm`, `fuellfarbe = rot`). - **Methoden (Methods)**: Aktionen, Befehle oder Operationen, die auf das Objekt angewendet werden können, um seinen inneren Zustand (seine Attributwerte) aktiv zu verändern (z. B. `verschieben(dx, dy)`, `setzeFarbe(neueFarbe)`). 2. Punkt-Notation und Objektkarten-Darstellung am Beispiel: - Objektname und Klassenzugehörigkeit: `meinKreis : KREIS` - Attribute und Werte (Objektzustand):   * `meinKreis.radius = 5 cm`   * `meinKreis.fuellfarbe = rot`   * `meinKreis.randbreite = 2 pt`   * `meinKreis.mittelpunkt = (10 | 15)` - Methodenaufruf zur Zustandsänderung:   * `meinKreis.setzeFarbe(blau)` -> Attribut `fuellfarbe` ändert sich von `rot` zu `blau`.   * `meinKreis.verschieben(5, -3)` -> Koordinaten des Mittelpunkts werden aktualisiert."
+        }
+      ]
+    },
+    {
+      "id": "01K4T5N0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4T5N0000000000000000A04",
+      "namespace": "informatik-systeme",
+      "slug": "hierarchisches-dateisystem-pfade-dateiendungen",
+      "title": "Das hierarchische Dateisystem: Verzeichnisbaum, absolute/relative Pfade und Dateitypen",
+      "domain": "schule/informatik/systeme",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T5N0000000000000000A03",
+          "type": "hard",
+          "rationale": "Dateien und Ordner lassen sich als Objekte mit Attributen (Name, Größe, Typ) modellieren."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "File system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb5",
+          "topic_title": "Information und ihre Darstellung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T5N0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Woran erkennt das Betriebssystem eines Computers, um welchen Dateityp es sich bei einer Datei handelt und mit welchem Anwendungsprogramm sie geöffnet werden muss?",
+          "concept": "An der Dateinamenserweiterung (Dateiendung nach dem Punkt, z. B. .docx, .png, .mp3, .pdf)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "An der Dateiendung (z. B. .docx, .png, .mp3)",
+              "An der Dateigröße in Kilobyte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T5N0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Aufbau eines hierarchischen Dateibaums (Wurzelverzeichnis / Root, Ordner/Verzeichnisse, Unterordner, Dateien als Blätter), unterscheide absolute Pfadangaben (vollständige Wegbeschreibung ab dem Wurzelverzeichnis) von relativen Pfadangaben (Wegbeschreibung ausgehend vom aktuellen Arbeitsordner) und ordne die 4 Standard-Dateitypen ihren Endungen zu: Textdokument (.docx / .odt), Bilddatei (.jpg / .png), Audiodatei (.mp3 / .wav) und Videodatei (.mp4).",
+          "concept": "Dateibaum: hierarchische Baumstruktur (Verzeichnisse enthalten Unterverzeichnisse und Dateien); Absoluter Pfad: beginnt an der Wurzel (z. B. C:\\Schule\\NuT\\Referat.docx); Relativer Pfad: startet im aktuellen Ordner (z. B. ..\\Bilder\\Foto.png); Dateiendungen steuern das Standardprogramm.",
+          "sample_solution": "1. Struktur eines hierarchischen Dateisystems: - **Baumstruktur (Verzeichnisbaum)**:   * **Wurzelverzeichnis (Root / Laufwerk)**: Die oberste Ebene des Datenträgers (z. B. `C:\\` unter Windows oder `/` unter Unix/macOS).   * **Ordner (Verzeichnisse / Directories)**: Dienen als Behälter zur thematischen Strukturierung von Daten. Können beliebig viele weitere **Unterordner (Subdirectories)** und Dateien enthalten.   * **Dateien**: Die eigentlichen Datenspeicher ('Blätter' des Baums); können selbst keine weiteren Ordner enthalten. 2. Absolute vs. relative Pfadangaben: - **Absoluter Pfad (Vollständige Wegbeschreibung)**:   * Beginnt immer ganz oben am Wurzelverzeichnis und listet alle Zwischenordner bis zur Zieldatei auf.   * Beispiel: `C:\\Schule\\Klasse_5\\NuT\\Mikroskop_Protokoll.docx`   * Eindeutig, unabhängig davon, in welchem Verzeichnis man sich gerade befindet. - **Relativer Pfad (Ausgehend vom aktuellen Standort)**:   * Beschreibt den Weg zur Datei relativ zum aktuellen Arbeitsverzeichnis.   * `.` steht für das aktuelle Verzeichnis, `..` für den übergeordneten Elternordner.   * Beispiel (aus Ordner `NuT` in den Nachbarordner `Bilder` wechseln): `..\\Bilder\\Zwiebelzelle.png`. 3. Dateiendungen (Dateitypen) und Programme: - Die **Dateiendung** (die letzten Zeichen nach dem Punkt im Dateinamen) bestimmt das Datenformat und das zugehörige Standardprogramm:   * **Text- und Präsentationsdokumente**: `.docx`, `.odt`, `.txt`, `.pdf`, `.pptx`   * **Raster- und Vektorgrafiken**: `.png`, `.jpg` / `.jpeg`, `.svg`, `.gif`   * **Audiodateien (Klang/Musik)**: `.mp3`, `.wav`, `.aac`   * **Videodateien (Bewegtbild mit Ton)**: `.mp4`, `.mov`, `.mkv`."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen",
+  "version": "2026.08.1",
+  "title": "Biologie 6: Säugetiere – Raubtiere, Huftiere und Gebisstypen (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 6: Raubtiere (Hund vs. Katze), Huftiere (Pferd vs. Rind/Wiederkäuer), Gebisstypen und Säugetiermerkmale.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 6, Lernbereich Säugetiere in ihren Lebensräumen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B6S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B6S0000000000000000A01",
+      "namespace": "biologie-zoologie",
+      "slug": "raubtiere-hund-vs-katze-hetz-vs-schleichjaeger",
+      "title": "Raubtiere im Vergleich: Hund (Hetzjäger/Zehengänger) vs. Katze (Schleichjäger/Krallen)",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Carnivora",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Jagdstrategie kennzeichnet die Hauskatze im Gegensatz zum ausdauernd rennenden Hetzjäger Hund (Wolf)?",
+          "concept": "Die Katze ist ein anschleichender Lauer- und Schleichjäger mit Sprung auf die Beute",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schleich- und Lauerjäger mit Beutesprung",
+              "Ausdauernder Hetzjäger im Rudel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Hund (Wolfsfamilie) und Hauskatze systematisch anhand ihrer Jagdweise (Hetzjäger im Rudel vs. Einzel-Schleichjäger), ihrer Pfoten/Krallen (nicht einziehbare Krallen als Spikes beim Laufen vs. einziehbare Schärfkrallen), ihres Skeletts/Körpers und ihrer Sinnesorgane (Nasentier/Geruchssinn mit Makrosmat vs. Sehtier mit Dämmerungssehen/Tapetum lucidum und Vibrissen/Tasthaaren).",
+          "concept": "Hund: Hetzjäger, Rudeljäger, Zehengänger mit stumpfen nicht rückziehbaren Krallen, tiefer Brustkorb für Ausdauer, Makrosmat (hochsensibler Geruchssinn); Katze: Schleichjäger, Einzelgänger, Zehengänger mit rückziehbaren scharfen Krallen, flexibler Wirbelsäule, Gehör/Sehsinn dominant (Tapetum lucidum reflektiert Restlicht, Spaltpupille, Tasthaare).",
+          "sample_solution": "1. Hund vs. Katze im biologischen Vergleich: - Jagdstrategie:   * Hund (Wolfsabstammung): Typischer **Hetzjäger**. Jagt kooperativ im Rudel, treibt Beutetiere über weite Strecken bis zur Erschöpfung und greift im Team an.   * Katze: Typischer **Schleich- und Lauerjäger**. Pirscht sich geräuschlos als Einzelgängerin bis auf wenige Meter an die Beute heran, fixiert sie und überwältigt sie mit einem blitzschnellen Beutesprung und Tötungsbiss. - Gliedmaßen und Krallen:   * Hund: Zehengänger mit derben Ballen. Seine Krallen sind stumpf und **nicht einziehbar**; sie dienen wie Spikes beim Sprinten für optimalen Bodenhalt.   * Katze: Zehengängerin mit weichen Trittpolstern (lautloses Anschleichen). Ihre sichelförmigen Krallen sind in Ruhe in Hauttaschen **eingezogen** und werden nur beim Zupacken oder Klettern durch Sehnenzug ausgefahren (bleiben rasiermesserscharf). - Sinnesleistungen:   * Hund (Nasentier): Überragender Geruchssinn (über 200 Millionen Riechsinneszellen, feuchte Nase zur Richtungsortung); Gehör nimmt Ultraschalltöne wahr.   * Katze (Augen- und Tasttier): Hervorragendes Dämmerungssehen dank lichtverstärkender Schicht hinter der Netzhaut (*Tapetum lucidum*, 'Katzenaugen leuchten im Dunkeln'); bewegliche Schnurrhaare (Vibrissen) an Maul und Beinen zur räumlichen Orientierung bei völliger Dunkelheit; drehbare Ohrmuscheln."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B6S0000000000000000A02",
+      "namespace": "biologie-zoologie",
+      "slug": "huftiere-zehenspitzengaenger-rind-wiederkaeuer",
+      "title": "Huftiere: Zehenspitzengänger, Unpaarhufer (Pferd) und Wiederkäuermagen des Rindes",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Gliedmaßenanpassungen von Säugetieren bilden das Vergleichsgerüst."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Ungulate",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Auf wie vielen Zehen pro Fuß fußt ein Pferd (Unpaarhufer) als extremer Zehenspitzengänger?",
+          "concept": "Auf genau einer einzigen Zehe (der 3. Mittelzehe mit kräftigem Hufschuh)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Auf 1 Zehe (Einhufer / 3. Zehe)",
+              "Auf 2 Zehen (Paarhufer)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Unpaarhufer (Pferd: 1 Zehe) von Paarhufern (Rind, Schwein, Schaf, Reh: 2 Hauptzehen mit Afterklauen) als Zehenspitzengänger und beschreibe den Weg der Pflanzennahrung durch die vier Magenabschnitte des Rindes (Pansen mit Symbiose-Bakterien, Netzmagen, Hochwürgen/Wiederkäuen, Blättermagen zur Wasserresorption, Labmagen als eigentlicher Drüsenmagen).",
+          "concept": "Zehenspitzengänger: Gliedmaßen stark verlängert für Fluchtgeschwindigkeit, Hufe aus Horn; Pferd = Unpaarhufer (1 Hufzehe); Rind = Paarhufer (2 Klauenzehen); 4 Magenabschnitte: 1. Pansen (Gärkammer mit Mikroorganismen spaltet Zellulose), 2. Netzmagen (formt Futterbissen), -> Hochwürgen und gründliches Zerkauen in Ruhe, 3. Blättermagen (entzieht Wasser), 4. Labmagen (Magensaft mit Salzsäure & Enzymen verdaut Eiweiße und Mikroorganismen).",
+          "sample_solution": "1. Unpaarhufer vs. Paarhufer (Zehenspitzengänger): - Fluchtanpassung: Um hohe Fluchtgeschwindigkeiten im offenen Grasland zu erreichen, sind die Beine von Huftieren extrem verlängert. Sie laufen nur noch auf den äußersten Zehenspitzen, die von dicken Hornkapseln (Hufen/Klauen) geschützt sind. - Unpaarhufer (z. B. Pferd, Esel, Zebra, Nashorn): Das Körpergewicht ruht auf der unpaaren 3. Mittelzehe (Einhufer). - Paarhufer (z. B. Rind, Schaf, Ziege, Hirsch, Schwein): Laufen auf den zwei voll entwickelten Zehen 3 und 4 (gespaltene Klauen); Zehen 2 und 5 sind zu kleinen 'Afterklauen' verkümmert. 2. Das viergliedrige Magensystem des Hausrindes (Wiederkäuer): Pflanzliche Zellwände (Zellulose) können von Säugetierenzymen alleine nicht aufgeschlossen werden. Das Rind nutzt daher vier spezialisierte Magenabteile: - 1. Pansen (größte Gärkammer, bis 200 l): Milliarden symbiotischer Bakterien und Wimperntierchen fermentieren das grob geschluckte Gras und spalten Zellulose enzymatisch auf. - 2. Netzmagen: Formt den vorverdauten Nahrungsbrei zu kleinen Ballen (Bissen), die über die Speiseröhre portionsweise zurück ins Maul befördert werden (**Wiederkäuen**: gründliches Zermahlen mit den Backenzähnen in sicherer Liegephase). - 3. Blättermagen: Der fein zerkaute Speisebrei wird durch blattartige Schleimhautfalten gepresst; Wasser und Nährsalze werden resorbiert (Eindickung). - 4. Labmagen (der 'echte' Drüsenmagen): Produziert sauren Magensaft mit Salzsäure und Pepsin. Verdaut die Nährstoffe und insbesondere die mitabgestorbenen Mikroorganismen als hochwertige Eiweißquelle für das Rind."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6S0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B6S0000000000000000A03",
+      "namespace": "biologie-zoologie",
+      "slug": "gebisstypen-fleischfresser-pflanzenfresser-allesfresser",
+      "title": "Gebisstypen der Säugetiere: Fleischfresser-, Pflanzenfresser- und Allesfressergebiss",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Gebissformen spiegeln die Ernährungsweise von Fleisch- und Pflanzenfressern wider."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Dentition",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6S0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche spezialisierten Zähne im Raubtiergebiss (z. B. bei Katze und Hund) greifen wie die Klingen einer Schere ineinander, um Fleischbrocken und Sehnen zu zerschneiden?",
+          "concept": "Die Reißzähne (letzter oberer Prämolar und erster unterer Molar)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Reißzähne (Scherengebiss)",
+              "Die Mahlzähne mit Schmelzleisten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6S0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die drei Gebisstypen der Säugetiere anhand von Zahnformel und Funktion: 1. Fleischfressergebiss (Raubtiere: dolchartige Fangzähne, Reißzähne als Schere, Scharniergelenk im Kiefer), 2. Pflanzenfressergebiss (Rind/Pferd: Schmelzleistenzähne zum Zermahlen, zahnlose Lücke / Hornplatte im Oberkiefer, Mahlbewegung im Kiefergelenk), 3. Allesfressergebiss (Wildschwein/Mensch: Höckerzähne, Mahl- und Schneidfähigkeit).",
+          "concept": "Fleischfresser (Karnivoren): spitze Schneidezähne, mächtige Fang-/Eckzähne zum Festhalten/Töten, spitze Reißzähne, reines Auf- und Zu-Scharniergelenk; Pflanzenfresser (Herbivoren): Schneidezähne rupfen Gras gegen Hornplatte (Rind hat oben keine Schneidezähne), breite Backenzähne mit harten Schmelzleisten wirken als Reibeisen, seitlich bewegliches Mahlgelenk; Allesfresser (Omnivoren): flache Höckerzähne können pflanzliche und tierische Nahrung quetschen und zerkleinern.",
+          "sample_solution": "1. Die drei Säugetiergebisstypen im Vergleich: - Fleischfressergebiss (Karnivoren, z. B. Katze, Hund, Fuchs):   * Fangzähne (Canini): Stark vergrößert, dolchartig gekrümmt zum Festhalten, Ersticken oder Durchtrennen der Wirbelsäule der Beute.   * Reißzähne: Große, scharfkantige Backenzähne (P4 oben und M1 unten), die wie eine Schere aneinander vorbeigleiten, um Fleischstücke und Knochen abzubeißen.   * Kiefergelenk: Reines **Scharniergelenk**; erlaubt nur kraftvolles Auf- und Zubeißen, keine Seitwärtsbewegungen. - Pflanzenfressergebiss (Herbivoren, z. B. Rind, Pferd, Reh, Hase):   * Schneidezähne: Meißelförmig zum Abbeißen von Gras. Beim Rind fehlen Schneidezähne im Oberkiefer völlig; Gras wird mit der Zunge gegen eine feste Gaumen-Hornplatte gerupft.   * Zahnfreie Lücke (Diastema): Breiter Zwischenraum zwischen Schneide- und Backenzähnen zur Futterverlagerung mit der Zunge.   * Backenzähne (Schmelzleistenzähne): Breite Kauflächen mit harten Schmelzleisten, die als unebene Reibeisen wirken, um zähe Pflanzenfasern zu zermahlen.   * Kiefergelenk: Flaches Gelenk; ermöglicht kreisende Mahlbewegungen von links nach rechts. - Allesfressergebiss (Omnivoren, z. B. Wildschwein, Braunbär, Mensch):   * Backenzähne (Höckerzähne): Haben abgerundete Höcker, die sowohl faserige Pflanzenteile als auch weiches Fleisch und Früchte zerquetschen können.   * Universelle Kieferbewegungen (Schneiden, Quetschen, Mahlen)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6S0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B6S0000000000000000A04",
+      "namespace": "biologie-zoologie",
+      "slug": "saeugetier-merkmale-behaarung-plazenta-brutpflege",
+      "title": "Grundbauplan der Säugetiere: Fell/Haarkleid, Plazentaentwicklung, Säugen und intensive Brutpflege",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Raub- und Huftiere teilen den gemeinsamen Säugetier-Grundbauplan."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Mammal",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Säugetiere in ihren Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6S0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Über welches Organ werden die Embryonen höherer Säugetiere im Mutterleib (Gebärmutter) mit Nährstoffen und Sauerstoff aus dem mütterlichen Blut versorgt?",
+          "concept": "Über die Plazenta (Mutterkuchen) und die Nabelschnur",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Über die Plazenta (Mutterkuchen)",
+              "Über den Dottersack im Ei"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6S0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Fasse die fünf wesentlichen Klassenmerkmale der Säugetiere zusammen: 1. Behaarung (Fell mit Woll- und Deckhaaren zur Wärmedämmung), 2. Gleichwarm (Homoiothermie ca. 36–38 °C), 3. Lebendgebärend (Viviparie mit Plazenta und Fruchthülle), 4. Säugen der Nachkommen mit Muttermilch aus Milchdrüsen, 5. Hochdifferenziertes Gehirn und intensive Brutpflege (Nestflüchter vs. Nesthocker).",
+          "concept": "1. Haare/Fell aus Keratin, 2. Homoiotherm (konstante Kerntemperatur), 3. Lebendgebärend: Fötus wächst in Gebärmutter (Uterus), Stoffaustausch über Plazenta, 4. Namensgebend: Milchdrüsen der Mutter erzeugen nahrhafte Muttermilch mit Fett, Eiweiß, Vitaminen und Abwehrstoffen, 5. Brutpflege: Nesthocker (Hund/Katze blind und hilflos) vs. Nestflüchter (Fohlen/Kalb sofort lauffähig).",
+          "sample_solution": "1. Die fünf Kernmerkmale der Säugetiere (Mammalia): - 1. Körperbehaarung (Fell): Schützt vor Wärmeverlust und Nässe (Wollhaare zur Wärmedämmung, Deckhaare zur Wasserabweisung). Selbst wasserlebende Säuger (Wale, Delfine) besitzen Haaranlagen oder isolierende Blubber-Fettschichten. - 2. Gleichwarm (Homoiothermie): Unabhängig von der Außentemperatur wird durch hohen Stoffwechsel eine konstante Körpertemperatur (meist 36–38 °C) aufrechterhalten; erlaubt Aktivität im Winter. - 3. Lebendgebärend (Viviparie): Die Befruchtung erfolgt immer im Mutterleib. Der Fötus wächst geschützt im Uterus (Gebärmutter) heran und wird über die **Plazenta** (Mutterkuchen) und die Nabelschnur mit Sauerstoff und Nährstoffen versorgt (keine Schaleneier, Ausnahme: eierlegende Kloakentiere wie Schnabeltier). - 4. Säugen der Nachkommen (Namensgebung): Nach der Geburt ernährt das Muttertier die Jungtiere mit Muttermilch aus spezialisierten **Milchdrüsen** (Gesäuge/Euter). Muttermilch liefert optimal abgestimmte Nährstoffe, Fett, Antikörper und Flüssigkeit. - 5. Hochentwickeltes Nervensystem und Brutpflege:   * Großhirnrinde ermöglicht komplexes Lern- und Sozialverhalten.   * **Nesthocker** (z. B. Katze, Hund, Mensch): Werden nackt, blind und unselbstständig geboren; bedürfen wochenlanger Nestwärme und Fütterung.   * **Nestflüchter** (z. B. Fohlen, Kalb, Rehkitze): Kommen voll behaart und mit offenen Sinnesorganen zur Welt; können bereits nach wenigen Minuten aufstehen und der Mutterherde folgen."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-physik-induktion-wechselstrom",
+  "version": "2026.08.1",
+  "title": "Physik 10: Elektromagnetische Induktion und Wechselstrom (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 10 (Abschlussprüfung): Elektromagnetische Induktion, Lenzsche Regel, Generator und Transformator.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 10, Lernbereich Elektromagnetismus und Induktion"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4J0P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4J0P0000000000000000A01",
+      "namespace": "physik-elektrik",
+      "slug": "elektromagnetische-induktion-lorentz",
+      "title": "Elektromagnetische Induktion: Induktionsgesetz und Lorentzkraft",
+      "domain": "schule/physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q98877",
+          "target_label": "Electromagnetic induction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4J0P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Unter welcher Bedingung wird an den Enden einer Spule eine elektrische Induktionsspannung erzeugt?",
+          "concept": "Nur solange sich das von der Spule umfasste Magnetfeld zeitlich ändert (Bewegung oder Stromänderung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Solange sich das Magnetfeld in der Spule zeitlich ändert",
+              "Auch bei einem völlig konstanten, ruhenden Magnetfeld"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4J0P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Phänomen der elektromagnetischen Induktion anhand der Lorentzkraft auf freie Leitungselektronen in einem bewegten Leiterstab im homogenen Magnetfeld und nenne drei Möglichkeiten, wie die Höhe der Induktionsspannung in einer Spule vergrößert werden kann.",
+          "concept": "Bewegter Leiter im Magnetfeld -> Lorentzkraft F_L = q * v * B trennt Elektronen -> elektrische Spannung U_ind; Vergrößerung: 1. höhere Windungszahl N, 2. schnelleres Bewegen (ΔB/Δt), 3. stärkeres Magnetfeld (B) / Eisenkern",
+          "sample_solution": "1. Mikroskopische Erklärung (Lorentzkraft): Wird ein metallischer Leiterstab mit der Geschwindigkeit v senkrecht zu den Feldlinien eines Magnetfelds (Flussdichte B) bewegt, erfahren die frei beweglichen Leitungselektronen (Ladung -e) eine magnetische Lorentzkraft F_L = e · v · B (Drei-Finger-Regel der linken Hand). Durch diese Kraft werden Elektronen zu einem Ende des Stabs verschoben, wodurch eine Ladungstrennung und damit eine messbare Induktionsspannung U_ind entsteht. 2. Möglichkeiten zur Erhöhung der Induktionsspannung in einer Spule: - Vergrößerung der Windungszahl N der Spule (U_ind ist direkt proportional zu N). - Erhöhung der Geschwindigkeit der Magnetfeldänderung Δt -> schnelleres Ein-/Ausführen des Magneten (steileres ΔB/Δt). - Verwendung eines stärkeren Permanentmagneten bzw. Einbringen eines Weicheisenkerns zur Bündelung des magnetischen Flusses."
+        }
+      ]
+    },
+    {
+      "id": "01K4J0P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4J0P0000000000000000A02",
+      "namespace": "physik-elektrik",
+      "slug": "lenzsche-regel-wirbelstroeme",
+      "title": "Die Lenzsche Regel: Energieerhaltung und Wirbelstrombremse",
+      "domain": "schule/physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4J0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Induktionsgesetz ist Voraussetzung für die Lenzsche Richtungsaussage."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q176251",
+          "target_label": "Lenz's law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4J0P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was besagt die Lenzsche Regel über die Richtung eines induzierten Stromes?",
+          "concept": "Der Induktionsstrom ist stets so gerichtet, dass er seiner Entstehungsursache entgegenwirkt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er wirkt stets seiner Entstehungsursache entgegen",
+              "Er verstärkt stets seine Entstehungsursache lawinenartig"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4J0P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Begründe, warum die Lenzsche Regel eine direkte Konsequenz des Energieerhaltungssatzes ist (Gedankenexperiment: Was geschähe bei Verstärkung der Ursache?) und erkläre die Funktionsweise der berührungslosen Wirbelstrombremse bei Zügen oder Freifalltürmen.",
+          "concept": "Energieerhaltung: Wäre der Strom gleichgerichtet, würde er die Bewegung beschleunigen -> Perpetuum mobile; Wirbelstrombremse: Metallplatte durchquert Magnetfeld -> induzierte kreisförmige Wirbelströme erzeugen Gegenmagnetfeld -> abbremsende Lorentzkraft, kinetische Energie wird in Wärme umgewandelt",
+          "sample_solution": "1. Begründung aus dem Energieerhaltungssatz: Würde der Induktionsstrom seine Ursache nicht hemmen, sondern verstärken, so würde ein angenäherter Magnet von der Spule angezogen und von selbst weiter beschleunigt werden. Dadurch entstünde ohne Energiezufuhr aus dem Nichts kinetische und elektrische Energie – ein Perpetuum mobile erster Art, was dem Energieerhaltungssatz widerspricht. Folglich muss der Induktionsstrom der Bewegung immer mechanische Gegenarbeit entgegensetzen. 2. Wirbelstrombremse: Bewegt sich eine massive Aluminium- oder Kupferscheibe durch ein starkes Magnetfeld, werden im Metall großflächige, geschlossene Kreisströme (Wirbelströme) induziert. Nach der Lenzschen Regel erzeugen diese Wirbelströme ein eigenes Magnetfeld, das dem äußeren Feld entgegengerichtet ist. Die resultierende Lorentzkraft bremst die Scheibe verschleißfrei und absolut ruckfrei ab; die Bewegungsenergie wird durch den Ohmschen Widerstand des Metalls vollständig in Wärme umgewandelt."
+        }
+      ]
+    },
+    {
+      "id": "01K4J0P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4J0P0000000000000000A03",
+      "namespace": "physik-elektrik",
+      "slug": "generator-wechselspannung-effektivwert",
+      "title": "Der Generator: Wechselspannungserzeugung und Effektivwerte",
+      "domain": "schule/physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4J0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Induktionsgesetz ist Basis für den rotierenden Generator."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q131269",
+          "target_label": "Alternator",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4J0P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Spitzenwert (Scheitelspannung U_0) hat die sinusförmige 230-V-Netzwechselspannung im europäischen Stromnetz (U_eff = 230 V)?",
+          "concept": "U_0 = U_eff · sqrt(2) ≈ 230 V · 1,414 ≈ 325 Volt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ca. 325 Volt",
+              "exakt 230 Volt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4J0P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Entstehung einer sinusförmigen Wechselspannung beim Rotieren einer Leiterschleife im homogenen Magnetfeld (Innenpol- vs. Außenpolgenerator), definiere Periodendauer T und Frequenz f (50 Hz) und erkläre die physikalische Bedeutung des Effektivwerts U_eff = U_0 / sqrt(2).",
+          "concept": "Rotation ändert wirksamen magnetischen Fluss harmonisch -> sinusförmige Spannung; f = 1/T = 50 Hz; Effektivwert = diejenige Gleichspannung, die am gleichen Ohmschen Widerstand dieselbe thermische Leistung erbringt",
+          "sample_solution": "1. Entstehung der Sinusspannung: Rotiert eine Leiterschleife mit konstanter Winkelgeschwindigkeit im homogenen Magnetfeld, ändert sich die vom Magnetfeld senkrecht durchsetzte Schleifenfläche harmonisch nach einer Sinus-/Kosinusfunktion. Nach dem Induktionsgesetz entsteht eine sinusförmige Wechselspannung u(t) = U_0 · sin(2π · f · t). In modernen Kraftwerken wird statt der Spule meist das Magnetfeld (Rotor) im Inneren feststehender Statorspulen gedreht (Innenpolmaschine). 2. Kenngrößen: - Frequenz: f = 50 Hz (50 volle Schwingungen pro Sekunde), Periodendauer T = 1/f = 0,02 s (20 ms). 3. Effektivwert: Der Effektivwert U_eff einer Wechselspannung gibt den Wert einer zeitlich konstanten Gleichspannung an, die an einem Ohmschen Verbraucher (z. B. Heizwiderstand) in der gleichen Zeit exakt dieselbe elektrische Energie in Wärme umsetzt: U_eff = U_0 / sqrt(2) (für 230 V Netzspannung beträgt die Scheitelspannung U_0 = 230 V · 1,414 ≈ 325 V)."
+        }
+      ]
+    },
+    {
+      "id": "01K4J0P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4J0P0000000000000000A04",
+      "namespace": "physik-elektrik",
+      "slug": "transformator-uebersetzungsverhaeltnis-fernuebertragung",
+      "title": "Der Transformator: Spannungs-, Stromübersetzung und Hochspannungsnetz",
+      "domain": "schule/physik/elektrizitaet",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4J0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Gegenseitige Induktion über das Wechselfeld ist das Prinzip des Transformators."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11073",
+          "target_label": "Transformer",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Induktion und Wechselstrom",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4J0P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verhalten sich die Sekundärspannung U_2 und Primärspannung U_1 beim unbelasteten Transformator zu den jeweiligen Windungszahlen N_2 und N_1?",
+          "concept": "Direkt proportional: U_2 / U_1 = N_2 / N_1",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "U_2 / U_1 = N_2 / N_1",
+              "U_2 / U_1 = N_1 / N_2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4J0P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Aufbau und Wirkungsweise des Transformators (Primärspule, gemeinsamer geschlossener Eisenkern, Sekundärspule), leite für den verlustfreien Trafo die Stromübersetzung I_1 / I_2 = N_2 / N_1 aus P_1 = P_2 her und begründe, warum elektrische Energie über weite Strecken mit Hochspannung (bis zu 380 kV) übertragen wird.",
+          "concept": "Wechselstrom in Primärspule erzeugt magnetischen Wechselfluss im Eisenkern -> induziert Wechselspannung in Sekundärspule; P_1 = P_2 <=> U_1*I_1 = U_2*I_2 -> Strom umgekehrt proportional zu Windungen; Leitungsverlust P_V = I²*R: Verzehnfachung der Spannung senkt Strom um Faktor 10 und Leitungsverlust um Faktor 100",
+          "sample_solution": "1. Aufbau und Funktionsweise: Ein Transformator besteht aus zwei galvanisch getrennten Spulen (Primär- und Sekundärspule), die über einen gemeinsamen, geblechten Weicheisenkern magnetisch gekoppelt sind. Der anliegende Primär-Wechselstrom erzeugt ein ständiges magnetisches Wechselfeld im Eisenkern, das in der Sekundärspule eine Wechselspannung gleicher Frequenz induziert. 2. Übersetzungsverhältnisse beim idealen Trafo: - Spannung: U_2 / U_1 = N_2 / N_1 - Leistungserhaltung (P_1 = P_2): U_1 · I_1 = U_2 · I_2 => I_1 / I_2 = U_2 / U_1 = N_2 / N_1 (hochtransformierte Spannung bedeutet entsprechend geringere Stromstärke). 3. Energieübertragung im Hochspannungsnetz: Der thermische Leitungsverlust in den Stromtrassen beträgt P_Verlust = I² · R_Leitung. Um diese Verluste über hunderte Kilometer minimal zu halten, wird die Spannung am Kraftwerk auf bis zu 380 kV (380.000 V) hochtransformiert. Dadurch sinkt die Stromstärke I um ein Vielfaches und der Leistungsverlust sinkt quadratisch (z. B. 100-fache Spannung = 10.000-fach geringere Leitungsverluste)."
+        }
+      ]
+    }
+  ]
+}

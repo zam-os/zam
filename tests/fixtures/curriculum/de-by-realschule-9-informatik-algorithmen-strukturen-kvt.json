@@ -1,0 +1,262 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-informatik-algorithmen-strukturen",
+  "version": "2026.08.1",
+  "title": "Algorithmen, Kontrollstrukturen und Datennetze (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Informatik 9: Algorithmenbegriff, Struktogramme, Verzweigungen, Schleifen und Grundlagen von Rechnernetzen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/informatik",
+      "checked": "2026-08-15",
+      "label": "Realschule Informatik 9 (I), Lernbereich Algorithmen und Rechnernetze"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4A9S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4A9S0000000000000000A01",
+      "namespace": "informatik-algorithmen",
+      "slug": "algorithmenbegriff-eigenschaften-darstellung",
+      "title": "Algorithmenbegriff, Eigenschaften und Struktogramme",
+      "domain": "schule/informatik/algorithmen",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8366",
+          "target_label": "Algorithm",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A9S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaft eines Algorithmus besagt, dass jeder Einzelschritt präzise und unmissverständlich formuliert sein muss?",
+          "concept": "Eindeutigkeit (Präzision)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eindeutigkeit / Determiniertheit",
+              "Endlosigkeit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A9S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den Begriff Algorithmus, nenne die vier zentralen Eigenschaften (Eindeutigkeit, Ausführbarkeit, Endlichkeit/Finitheit, Allgemeingültigkeit) und erkläre die Darstellung in einem Nassi-Shneiderman-Struktogramm.",
+          "concept": "Algorithmus = schrittweise Handlungsvorschrift zur Lösung einer Problemklasse; Eigenschaften: eindeutig, ausführbar, endlich (terminierend), allgemeingültig; Struktogramm = genormte grafische Entwurfsmethode",
+          "sample_solution": "Ein Algorithmus ist eine eindeutige, schrittweise Handlungsvorschrift zur Lösung einer Klasse von Problemen. Eigenschaften: 1. Eindeutigkeit: Jeder Handlungsschritt ist unmissverständlich definiert. 2. Ausführbarkeit: Jeder Schritt ist für den Ausführenden (Rechner) verständlich und machbar. 3. Endlichkeit (Finitheit/Terminierung): Der Algorithmus liefert nach endlich vielen Schritten ein Ergebnis. 4. Allgemeingültigkeit: Er löst nicht nur einen Einzelfall, sondern alle Instanzen einer Problemklasse. In einem Nassi-Shneiderman-Struktogramm werden die Kontrollstrukturen (Sequenz, Verzweigung, Schleife) als verschachtelte rechteckige Blöcke normiert und übersichtlich dargestellt."
+        }
+      ]
+    },
+    {
+      "id": "01K4A9S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4A9S0000000000000000A02",
+      "namespace": "informatik-algorithmen",
+      "slug": "kontrollstrukturen-verzweigung-schleifen",
+      "title": "Kontrollstrukturen: Verzweigungen und Schleifen",
+      "domain": "schule/informatik/algorithmen",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A9S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Algorithmenbegriff ist Voraussetzung für Kontrollstrukturen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q275124",
+          "target_label": "Control flow",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A9S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wird der Schleifenkörper einer kopfgesteuerten Schleife (WHILE-Schleife) ausgeführt, wenn die Schleifenbedingung bereits zu Beginn FALSE (falsch) ist?",
+          "concept": "Nein, 0-mal (die Bedingung wird vor dem ersten Durchlauf geprüft)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, die Schleife wird kein einziges Mal durchlaufen",
+              "Ja, sie wird mindestens einmal ausgeführt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A9S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide die drei Kontrollstrukturen: 1. Sequenz (lineare Folge), 2. Bedingte Verzweigung (IF-THEN-ELSE) und 3. Schleifen (Zählschleife FOR vs. kopfgesteuerte WHILE vs. fußgesteuerte DO-WHILE).",
+          "concept": "Sequenz = lineare Abarbeitung; Verzweigung = Pfadentscheidung anhand boolescher Bedingung; FOR = feste Wiederholungsanzahl; WHILE = Prüfung vor Durchlauf (0..n); DO-WHILE = Prüfung nach Durchlauf (1..n)",
+          "sample_solution": "1. Sequenz: Hintereinander auszuführende Anweisungen ohne Bedingungen oder Sprünge. 2. Bedingte Verzweigung (IF-THEN-ELSE): Trifft anhand einer booleschen Bedingung (wahr/falsch) eine Fallunterscheidung zwischen zwei alternativen Anweisungsblöcken. 3. Wiederholungsstrukturen (Schleifen): a) Zählschleife (FOR): Wird mit einer festgelegten Anzahl von Durchläufen ausgeführt. b) Kopfgesteuerte Schleife (WHILE): Prüft die Bedingung vor jedem Durchlauf; ist sie von Anfang an falsch, wird der Rumpf 0-mal ausgeführt. c) Fußgesteuerte Schleife (DO-WHILE): Prüft die Bedingung erst am Ende, sodass der Rumpf mindestens einmal durchlaufen wird."
+        }
+      ]
+    },
+    {
+      "id": "01K4A9S0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4A9S0000000000000000A03",
+      "namespace": "informatik-algorithmen",
+      "slug": "variablen-datentypen-wertzuweisung",
+      "title": "Variablen, Datentypen und Wertzuweisungen",
+      "domain": "schule/informatik/algorithmen",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A9S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Algorithmen verarbeiten Werte über Variablen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1072430",
+          "target_label": "Variable (computer science)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A9S0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Datentyp speichert Wahrheitswerte, die nur die Werte TRUE (wahr) oder FALSE (falsch) annehmen können?",
+          "concept": "Boolean (Boolescher Datentyp)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Boolean",
+              "Integer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A9S0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Konzept einer Variablen als benannten Speicherplatz, unterscheide die vier Standarddatentypen (Integer, Float/Real, String, Boolean) und beschreibe den Unterschied zwischen einer Wertzuweisung (z. B. x = x + 1) und einer mathematischen Gleichung.",
+          "concept": "Variable = Bezeichner + Datentyp + Speicheradresse + Wert; Integer (Ganzzahl), Float (Kommazahl), String (Text), Boolean (Wahrheitswert); Zuweisung wertet rechte Seite aus und überschreibt linken Speicher",
+          "sample_solution": "Eine Variable ist ein benannter Speicherplatz im Arbeitsspeicher, der einen Wert eines bestimmten Datentyps aufnehmen und während der Programmlaufzeit verändern kann. Standarddatentypen: 1. Integer (Ganzzahlen, z. B. -5, 42), 2. Float/Real (Fließkommazahlen, z. B. 3.1415), 3. String (Zeichenketten/Text, z. B. 'Hallo'), 4. Boolean (Wahrheitswerte: true/false). Unterschied Zuweisung vs. Gleichung: In der Mathematik ist 'x = x + 1' ein unlösbarer Widerspruch. In der Informatik bedeutet die Wertzuweisung 'x = x + 1': Lese den aktuellen Wert von x, addiere 1 und schreibe das neue Ergebnis wieder in die Speicherstelle x (Inkrementierung)."
+        }
+      ]
+    },
+    {
+      "id": "01K4A9S0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4A9S0000000000000000A04",
+      "namespace": "informatik-netze",
+      "slug": "rechnernetze-client-server-ip-dns",
+      "title": "Rechnernetze: Client-Server-Prinzip, IP-Adressen und DNS",
+      "domain": "schule/informatik/netze",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1301371",
+          "target_label": "Client–server model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "informatik",
+          "topic_code": "lb3",
+          "topic_title": "Rechnernetze und Internet",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A9S0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Netzwerkdienst übernimmt die automatische Übersetzung von menschenlesbaren Domänennamen (z. B. 'www.schule.bayern.de') in maschinenlesbare IP-Adressen?",
+          "concept": "DNS (Domain Name System)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "DNS (Domain Name System)",
+              "DHCP (Dynamic Host Configuration Protocol)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A9S0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe das Client-Server-Modell bei einem Webseitenaufruf (Browser als Client, Webserver, Request/Response), erkläre die Rolle der IP-Adresse und des Domain Name Systems (DNS) sowie die Funktion des Übertragungsprotokolls TCP/IP und HTTPS.",
+          "concept": "Client sendet Request -> Server antwortet mit Response; DNS löst Domain in IP auf; IP adressiert Geräte; TCP garantiert fehlerfreie Übertragung; HTTPS verschlüsselt Kommunikation",
+          "sample_solution": "1. Client-Server-Modell: Der Client (z. B. Webbrowser) fordert eine Ressource an (Request), der Server (leistungsfähiger Host) verarbeitet die Anfrage und liefert die gewünschten Daten zurück (Response, z. B. HTML-Dokument). 2. DNS & IP: Jedes Gerät im Internet besitzt eine eindeutige IP-Adresse (z. B. IPv4/IPv6). Das DNS (Domain Name System) fungiert wie ein globales Telefonbuch und übersetzt die Domain 'beispiel.de' in die zugehörige IP-Adresse des Servers. 3. Protokolle: IP übernimmt die Paketadressierung und das Routing; TCP sorgt für die zuverlässige, fehlerfreie Paketreihenfolge und Quittierung; HTTPS verschlüsselt die übertragenen Nutzdaten per TLS zum Schutz vor Abhören und Manipulation."
+        }
+      ]
+    }
+  ]
+}

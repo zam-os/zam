@@ -1,0 +1,268 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-chemie-atombau-pse",
+  "version": "2026.08.1",
+  "title": "Atombau und Periodensystem (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 9: Kern-Hülle-Modell, Rutherford-Streuversuch, Elementarteilchen, Bohrsches Schalenmodell und Periodensystem der Elemente.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 9 (I), Lernbereich 2 Atombau und Periodensystem"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4C9A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4C9A0000000000000000A01",
+      "namespace": "chemie-atombau",
+      "slug": "rutherford-kern-huelle-modell",
+      "title": "Rutherford-Streuversuch und Kern-Hülle-Modell",
+      "domain": "schule/chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q164104",
+          "target_label": "Rutherford model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Atombau und Periodensystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wo befindet sich laut dem Kern-Hülle-Modell nach Rutherford nahezu die gesamte Masse eines Atoms?",
+          "concept": "Im winzigen, positiv geladenen Atomkern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im winzigen, positiv geladenen Atomkern",
+              "Gleichmäßig über die gesamte Atomhülle verteilt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Rutherfordschen Streuversuch mit Alpha-Teilchen an einer Goldfolie und leite die zwei zentralen Schlussfolgerungen für den Atombau ab.",
+          "concept": "Fast alle Alpha-Teilchen durchdringen Folie ungehindert -> Atom ist größtenteils leerer Raum; wenige Teilchen stark abgelenkt -> winziger, massereicher, positiv geladener Kern",
+          "sample_solution": "Beim Rutherford-Streuversuch wurden positiv geladene Alpha-Teilchen auf eine hauchdünne Goldfolie geschossen. Beobachtung: Fast alle Teilchen passierten die Folie geradlinig ohne Ablenkung; nur sehr wenige (ca. 1 von 8000) wurden stark abgelenkt oder zurückgeworfen. Schlussfolgerungen: 1. Das Atom besteht fast vollständig aus leerem Raum (der Atomhülle mit den massearmen Elektronen). 2. Im Zentrum befindet sich ein extrem winziger, aber massereicher und positiv geladener Atomkern (Durchmesser-Verhältnis Kern zu Hülle ca. 1 : 10.000 bis 1 : 100.000)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4C9A0000000000000000A02",
+      "namespace": "chemie-atombau",
+      "slug": "elementarteilchen-ordnungszahl-masse",
+      "title": "Elementarteilchen: Protonen, Neutronen, Elektronen und Isotope",
+      "domain": "schule/chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Kern-Hülle-Modell ist Voraussetzung für die Zuordnung der Elementarteilchen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q2348",
+          "target_label": "Proton",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Atombau und Periodensystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Elementarteilchen bestimmen die Ordnungszahl (Kernladungszahl) und damit die chemische Identität eines Elements?",
+          "concept": "Die Anzahl der Protonen im Kern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Protonen im Kern",
+              "Die Anzahl der Neutronen im Kern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Charakterisiere Proton, Neutron und Elektron hinsichtlich Ladung, relativer Masse und Aufenthaltsort im Atom und definiere den Begriff Isotop.",
+          "concept": "Proton (p+, +1, 1u, Kern), Neutron (n, 0, 1u, Kern), Elektron (e-, -1, ~1/2000u, Hülle); Isotope = gleiche Protonenzahl, verschiedene Neutronenzahl",
+          "sample_solution": "1. Proton (p+): Ladung +1, relative Masse ≈ 1 u, im Atomkern. 2. Neutron (n): ungeladen (Ladung 0), relative Masse ≈ 1 u, im Atomkern. 3. Elektron (e-): Ladung -1, relative Masse ≈ 1/1836 u (vernachlässigbar), in der Atomhülle. In einem elektrisch neutralen Atom gilt: Anzahl Protonen = Anzahl Elektronen = Ordnungszahl Z. Die Massenzahl A = Protonen + Neutronen (N = A - Z). Isotope sind Atome desselben chemischen Elements (gleiche Protonenzahl/Ordnungszahl), die sich in ihrer Neutronenanzahl (und damit Massenzahl) unterscheiden (z. B. C-12 und C-14)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9A0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4C9A0000000000000000A03",
+      "namespace": "chemie-atombau",
+      "slug": "bohrsches-schalenmodell-elektronenkonfiguration",
+      "title": "Bohrsches Schalenmodell und Valenzelektronen",
+      "domain": "schule/chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9A0000000000000000A02",
+          "type": "hard",
+          "rationale": "Elektronen in der Hülle sind Voraussetzung für das Schalenmodell."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q262529",
+          "target_label": "Bohr model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Atombau und Periodensystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9A0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Elektronen kann die innerste Elektronenschale (K-Schale, n = 1) maximal aufnehmen?",
+          "concept": "Maximal 2 Elektronen (nach Formel 2n² = 2*1² = 2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Maximal 2 Elektronen",
+              "Maximal 8 Elektronen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9A0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Schalenmodell nach Bohr, gib die Formel für die maximale Elektronenbesetzung einer Schale n an und definiere die Bedeutung der Valenzelektronen.",
+          "concept": "Elektronen kreisen auf diskreten Schalen K, L, M... mit max. 2n² Elektronen; Valenzelektronen auf äußerster Schale bestimmen chemische Reaktionsfähigkeit",
+          "sample_solution": "Im Bohrschen Schalenmodell bewegen sich die Elektronen auf konzentrischen Schalen (K, L, M, N...) mit diskreten Energieniveaus um den Atomkern. Die maximale Elektronenzahl einer Schale mit Hauptquantenzahl n beträgt Z_max = 2*n² (K-Schale: 2, L-Schale: 8, M-Schale: 18). Die Elektronen auf der äußersten besetzten Schale heißen Valenzelektronen (maximal 8 bei Hauptgruppenelementen). Sie bestimmen das chemische Bindungsverhalten und die Reaktivität des Atoms."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9A0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4C9A0000000000000000A04",
+      "namespace": "chemie-atombau",
+      "slug": "periodensystem-hauptgruppen-oktettregel",
+      "title": "Periodensystem: Hauptgruppen, Perioden und Oktettregel",
+      "domain": "schule/chemie/atombau",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9A0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Schalenmodell und Valenzelektronen bilden die Systematik des PSE."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10693",
+          "target_label": "Periodic table",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Atombau und Periodensystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9A0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gibt die Hauptgruppennummer (I bis VIII) im Periodensystem der Elemente für Hauptgruppenelemente direkt an?",
+          "concept": "Die Anzahl der Valenzelektronen (Außenelektronen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl der Valenzelektronen",
+              "Die Anzahl der Elektronenschalen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9A0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Zusammenhang zwischen dem Aufbau des Periodensystems (Perioden und Hauptgruppen) und der Elektronenkonfiguration und formuliere die Oktettregel (Edelgaskonfiguration).",
+          "concept": "Periodennummer = Anzahl besetzter Schalen; Hauptgruppennummer = Anzahl Außenelektronen; Oktettregel = Atome streben nach 8 Außenelektronen (stabil)",
+          "sample_solution": "Im Periodensystem der Elemente (PSE) gibt: 1. Die Periodennummer (waagerechte Zeile 1 bis 7) die Anzahl der besetzten Elektronenschalen an. 2. Die Hauptgruppennummer (senkrechte Spalte I bis VIII) die Anzahl der Valenzelektronen (Außenelektronen) an (Elemente einer Hauptgruppe zeigen daher ähnliche chemische Eigenschaften, z. B. Alkalimetalle I, Halogene VII, Edelgase VIII). Die Oktettregel besagt, dass Atome durch Aufnahme, Abgabe oder Teilen von Elektronen die energetisch besonders stabile Elektronenkonfiguration der Edelgase mit 8 Außenelektronen (bzw. 2 bei Helium) anstreben."
+        }
+      ]
+    }
+  ]
+}

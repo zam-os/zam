@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung",
+  "version": "2026.08.1",
+  "title": "Geschichte 10: Der Kalte Krieg – Deutsche Teilung, Berliner Mauer (1961) und Wiedervereinigung (1990) (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geschichte 10 (Abschlussprüfung): Ost-West-Konflikt (Kalter Krieg, Blockbildung, Wettrüsten), Deutsche Teilung (1949, Mauerbau 13. August 1961), Friedliche Revolution 1989 und Deutsche Einheit (3. Oktober 1990).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/geschichte",
+      "checked": "2026-08-15",
+      "label": "Realschule Geschichte 10, Lernbereiche Die Welt nach 1945: Blockkonfrontation und Deutsche Frage (Abschlussprüfung)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4HAK0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4HAK0000000000000000A01",
+      "namespace": "geschichte-kalter-krieg",
+      "slug": "kalter-krieg-blockbildung-truman-doktrin-krisen",
+      "title": "Der Kalte Krieg: Bipolare Weltordnung (USA vs. UdSSR), Truman-Doktrin, NATO vs. Warschauer Pakt und Kubakrise (1962)",
+      "domain": "schule/geschichte/zeitgeschichte",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "Cold War",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Blockkonfrontation und Kalter Krieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4HAK0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher existenziellen Krise des Jahres 1962 stand die Welt nach der Stationierung sowjetischer Nuklearraketen auf Kuba am Rande eines atomaren Weltkriegs?",
+          "concept": "Die Kubakrise (Oktober 1962, beigelegt durch Kennedy und Chruschtschow)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Kubakrise (Oktober 1962)",
+              "Die Suezkrise"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4HAK0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Kalten Krieg als globale Systemkonfrontation: 1. Ideologischer Gegensatz (Westen: Demokratie, Menschenrechte, Marktwirtschaft, Kapitalismus vs. Osten: Marxistisch-leninistische Diktatur, Planwirtschaft, Vorherrschaft der KPdSU), 2. Die **Truman-Doktrin 1947 (Eindämmungspolitik / Containment)** und der **Marshallplan (ERP)** zum wirtschaftlichen Wiederaufbau Westeuropas, 3. Militärische Blockbildung: **NATO 1949** vs. **Warschauer Pakt 1955**, 4. Das nukleare 'Gleichgewicht des Schreckens' (MAD – Mutual Assured Destruction) und Stellvertreterkriege (Korea-Krieg 1950–1953, Vietnamkrieg 1964–1975).",
+          "concept": "Kalter Krieg: ideologische Bipolarität USA vs. UdSSR; Truman-Doktrin & Marshallplan; Bündnisse NATO vs. Warschauer Pakt; Nukleare Abschreckung (MAD); Brennpunkte: Korea, Kuba 1962, Vietnam.",
+          "sample_solution": "1. Der ideologische und ökonomische Systemantagonismus: - Nach dem Sieg der Anti-Hitler-Koalition 1945 zerbrach das Zweckbündnis; die Welt spaltete sich in zwei hochgerüstete Machtblöcke (**Bipolare Welt**):   * **Westblock (Führungsmacht USA)**: Pluralistische parlamentarische Demokratie, Rechtsstaatlichkeit, individuelle Grundrechte, freie Marktwirtschaft, Privateigentum an Produktionsmitteln.   * **Ostblock (Führungsmacht UdSSR)**: Totalitäre Einparteiendiktatur der Kommunistischen Partei, Unterdrückung von Opposition und Meinungsfreiheit, sozialistische Zentralverwaltungswirtschaft (Planwirtschaft) mit staatlichem Volkseigentum. 2. Die Doktrinen der Blockkonfrontation: - **Truman-Doktrin (1947)**: US-Präsident Harry S. Truman erklärte, den weltweiten Vormarsch des Kommunismus militärisch und wirtschaftlich einzudämmen (**Containment-Politik**). - **Marshallplan (European Recovery Program, ERP)**: Gigantisches US-Milliarden-Hilfsprogramm für westeuropäische Staaten zur wirtschaftlichen Stabilisierung gegen den Kommunismus. - **Zwei-Lager-Theorie (Shdanow-Doktrin)**: Sowjetische Gegenposition; Einteilung der Welt in ein 'imperialistisches' und ein 'antifaschistisches, demokratisches' Lager. 3. Die militärische Blockbildung: - **1949: Gründung der NATO** (Nordatlantisches Verteidigungsbündnis) mit Beistandspflicht nach Art. 5. - **1955: Gründung des Warschauer Paktes** (Militärbündnis der Ostblockstaaten unter sowjetischem Oberbefehl). 4. Das 'Gleichgewicht des Schreckens' und Krisen: - **Nukleare Pattsituation (MAD – Mutual Assured Destruction)**: Das gigantische Atomwaffenarsenal garantierte bei einem Erstschlag die totale Vernichtung beider Seiten; ein direkter heißer Krieg zwischen USA und UdSSR wurde dadurch verhindert. - **Eskalationshöhepunkt: Die Kubakrise (Oktober 1962)**: Die Stationierung sowjetischer Mittelstreckenraketen auf Kuba führte zur US-Seeblockade; durch diplomatisches Einlenken von John F. Kennedy und Nikita Chruschtschow (Raketenabzug gegen US-Garantie und Geheimabzug aus der Türkei) wurde ein Atomkrieg in letzter Sekunde abgewendet. - **Stellvertreterkriege**: Der Konflikt entlud sich blutig in der Dritten Welt (*Koreakrieg 1950–1953, Vietnamkrieg 1964–1975, sowjetischer Afghanistankrieg 1979–1989*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4HAK0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4HAK0000000000000000A02",
+      "namespace": "geschichte-deutschland",
+      "slug": "deutsche-teilung-mauerbau-1961-friedliche-revolution-1989-einheit-1990",
+      "title": "Deutschland nach 1945: Von der doppelten Staatsgründung 1949 über den Mauerbau 1961 zur Einheit 1990",
+      "domain": "schule/geschichte/zeitgeschichte",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4HAK0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die deutsche Teilung war der zentrale Brennpunkt des Kalten Krieges."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "German reunification",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Deutschland nach 1945 und Wiedervereinigung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4HAK0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem historischen Datum fiel die Berliner Mauer infolge der Friedlichen Revolution in der DDR?",
+          "concept": "Am 9. November 1989",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "9. November 1989",
+              "3. Oktober 1990"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4HAK0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Rekonstruiere die Geschichte des geteilten Deutschland von 1945 bis 1990 in 4 Schlüsselphasen: 1. **Doppelte Staatsgründung 1949** (Währungsreform 1948, Berliner Luftbrücke -> 23. Mai 1949: Verkündung des Grundgesetzes der **BRD**; 7. Oktober 1949: Gründung der **DDR**), 2. **Der Bau der Berliner Mauer (13. August 1961)** (Stoppen der Massenflucht von über 2,7 Mio. Bürgern über West-Berlin; Errichtung der hermetisch abgeriegelten innerdeutschen Grenze mit Todesstreifen und Schießbefehl), 3. **Die Friedliche Revolution 1989** (Gorbatschows Reformen *Glasnost & Perestroika*, Massenflucht über Ungarn, Montagsdemonstrationen in Leipzig: *'Wir sind das Volk!'*, Fall der Mauer am 9. November 1989), 4. **Der Weg zur Einheit 1990** (Wirtschafts-, Währungs- und Sozialunion 1. Juli 1990, **Zwei-plus-Vier-Vertrag** zur vollen Souveränität Deutschlands, Beitritt der 5 neuen Bundesländer am **3. Oktober 1990**).",
+          "concept": "Deutschland 1945-1990: 1. 1949 Gründung BRD (Grundgesetz) und DDR; 2. 13. August 1961 Mauerbau; 3. Friedliche Revolution 1989 (Leipzig, 9. Nov. Mauerfall); 4. 1990 Zwei-plus-Vier-Vertrag & Einheit am 3. Oktober 1990 (Tag der Deutschen Einheit).",
+          "sample_solution": "1. Der vierstufige historische Weg von der Teilung zur Einheit: - **1. Phase: Von den 4 Besatzungszonen zur doppelten Staatsgründung (1945–1949)**:   * Nach der Potsdamer Konferenz 1945 wurde Deutschland in 4 Zonen und Berlin in 4 Sektoren geteilt.   * 1948: Währungsreform in den Westzonen (D-Mark) $\\rightarrow$ sowjetische **Berlin-Blockade** (durch die legendäre **Luftbrücke der 'Rosinenbomber'** überwunden).   * **23. Mai 1949**: Inkrafttreten des **Grundgesetzes** und Gründung der **Bundesrepublik Deutschland (BRD)** mit Hauptstadt Bonn (Konrad Adenauer als 1. Bundeskanzler).   * **7. Oktober 1949**: Gründung der **Deutschen Demokratischen Republik (DDR)** als sozialistischer Vasallenstaat der Sowjetunion unter Führung der SED. - **2. Phase: Zementierung der Teilung & Der Mauerbau (13. August 1961)**:   * 17. Juni 1953: Volksaufstand in der DDR gegen Normerhöhung wird durch sowjetische Panzer blutig niedergeschlagen.   * Bis 1961 flohen über **2,7 Millionen Menschen** (v. a. gut ausgebildete Fachkräfte) über das offene Schlupfloch West-Berlin in die BRD.   * **13. August 1961**: SED-Chef Walter Ulbricht (*'Niemand hat die Absicht, eine Mauer zu errichten'*) lässt West-Berlin mit Panzersperren, Minenfeldern und einer **155 km langen Betonmauer** abriegeln. An der innerdeutschen Grenze galt ein unmenschlicher **Schießbefehl** auf Flüchtlinge. - **3. Phase: Die Friedliche Revolution (1989)**:   * Michail Gorbatschow leitete ab 1985 in der UdSSR **Glasnost (Offenheit)** und **Perestroika (Umbau)** ein und entzog den DDR-Machthabern die sowjetische Militärgarantie.   * Im Sommer 1989 öffnete Ungarn den 'Eisernen Vorhang'; Tausende DDR-Bürger flohen über Prag und Budapest.   * Bürgerrechtsgruppen und Kirchen organisierten **Montagsdemonstrationen in Leipzig** (*'Wir sind das Volk!'*, *'Keine Gewalt!'*).   * **9. November 1989**: Nach einer Pressekonferenz von Günter Schabowski stürmten Hunderttausende die Grenzübergänge $\\rightarrow$ **Fall der Berliner Mauer**. - **4. Phase: Die Wiedervereinigung (1990)**:   * Erste freie Volkskammerwahl der DDR (März 1990) bringt klares Votum für die rasche Einheit.   * 1. Juli 1990: Einführung der D-Mark in der DDR (**Währungs-, Wirtschafts- und Sozialunion**).   * **Zwei-plus-Vier-Vertrag (12. September 1990)**: Die beiden deutschen Staaten und die 4 Siegermächte (USA, UdSSR, Großbritannien, Frankreich) regeln die völkerrechtlichen Bedingungen und schenken dem vereinten Deutschland die **volle Souveränität**.   * **3. Oktober 1990**: Beitritt der 5 neuen Länder (Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt, Thüringen) zum Geltungsbereich des Grundgesetzes $\\rightarrow$ **Tag der Deutschen Einheit**."
+        }
+      ]
+    }
+  ]
+}

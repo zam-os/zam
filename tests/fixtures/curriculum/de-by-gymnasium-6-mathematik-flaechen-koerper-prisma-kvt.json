@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-mathematik-flaechen-koerper-prisma",
+  "version": "2026.08.1",
+  "title": "Mathematik 6: Geometrie – Flächeninhalte (Dreieck, Parallelogramm, Trapez), Kreisdiagramme und Prismen (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 6: Flächeninhalt von Dreieck, Parallelogramm und Trapez, Kreisdiagramme (Winkelberechnung) und Prismen (Netz, Oberfläche, Volumen V = G·h).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 6, Lernbereiche Flächeninhalte und Raumgeometrie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YM6F000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YM6F000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "flaecheninhalt-parallelogramm-dreieck-herleitung",
+      "title": "Flächeninhalt ebener Figuren: Parallelogramm (A = g·h) und beliebiges Dreieck (A = 1/2·g·h)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Triangle area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalte von ebenen Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM6F000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man den Flächeninhalt A eines Parallelogramms mit Grundlinie g und zugehöriger senkrechter Höhe h_g?",
+          "concept": "A = g · h_g",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = g · h_g",
+              "A = 1/2 · g · h_g"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM6F000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Leite die Flächeninhaltsformel des Parallelogramms A = g·h durch Zerlegungsgleichheit zu einem Rechteck her, leite daraus die Dreiecksformel A = 1/2 · g · h her (jedes Dreieck verdoppelt sich zu einem Parallelogramm mit gleicher Grundlinie und Höhe) und berechne den Flächeninhalt eines Dreiecks mit Grundseite c = 8,4 cm und zugehöriger Höhe h_c = 5,5 cm.",
+          "concept": "Parallelogramm: rechtwinkliges Dreieck abschneiden und an anderer Seite anfügen -> Rechteck g · h; Dreieck: 2 kongruente Dreiecke bilden Parallelogramm -> A = 1/2 · g · h; Berechnung: A = 1/2 · 8,4 cm · 5,5 cm = 4,2 · 5,5 = 23,1 cm².",
+          "sample_solution": "1. Herleitung der Flächenformel für das Parallelogramm: - **Prinzip der Zerlegungsgleichheit**: Ein Parallelogramm mit Grundseite $g$ und senkrechter Höhe $h$ wird entlang der Höhe zerschnitten. - Das abgeschnittene rechtwinklige Dreieck wird auf der gegenüberliegenden Seite wieder angesetzt. - Es entsteht ein flächengleiches **Rechteck** mit den Seitenlängen $g$ und $h$. - Formel: **$A_{\\text{Parallelogramm}} = g \\cdot h$** (bzw. $a \\cdot h_a = b \\cdot h_b$). 2. Herleitung der Flächenformel für das allgemeine Dreieck: - **Prinzip der Ergänzungsgleichheit**: Man nimmt ein beliebiges Dreieck ABC mit Grundseite $g$ und Höhe $h$. - Ein zweites, exakt deckungsgleiches (kongruentes) Dreieck wird um $180^\\circ$ gedreht an die Seite angefügt. - Beide Dreiecke zusammen bilden genau ein Parallelogramm mit Grundlinie $g$ und Höhe $h$. - Der Flächeninhalt des einzelnen Dreiecks ist somit exakt die Hälfte des Parallelogramms:   $$A_{\\text{Dreieck}} = \\frac{1}{2} \\cdot g \\cdot h = \\frac{g \\cdot h}{2}$$ 3. Beispielberechnung: - Gegeben: $c = 8,4\\text{ cm}, h_c = 5,5\\text{ cm}$. - Rechnung: $A = \\frac{1}{2} \\cdot 8,4\\text{ cm} \\cdot 5,5\\text{ cm} = 4,2\\text{ cm} \\cdot 5,5\\text{ cm} = \\mathbf{23,1\\text{ cm}^2}$."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM6F000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YM6F000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "flaecheninhalt-trapez-mittelparallele-zerlegung",
+      "title": "Flächeninhalt des Trapezes: Formel A = ((a + c) / 2) · h und Mittelparallele m",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM6F000000000000000A01",
+          "type": "hard",
+          "rationale": "Parallelogramm- und Dreiecksflächen sind die Grundlage der Trapezherleitung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Trapezoid area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalte von ebenen Figuren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM6F000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Flächeninhaltsformel für ein Trapez mit den parallelen Seiten a und c sowie der Höhe h?",
+          "concept": "A = ((a + c) / 2) · h bzw. A = m · h mit Mittelparallele m = (a + c) / 2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = ((a + c) / 2) · h",
+              "A = (a + c) · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM6F000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Leite die Flächenformel des Trapezes A = ((a + c) / 2) · h her (indem zwei punktsymmetrisch aneinandergelegte kongruente Trapeze ein Parallelogramm mit Grundlinie (a + c) und Höhe h bilden), definiere die Mittelparallele m = (a + c) / 2 und berechne den Flächeninhalt eines Trapezes mit den parallelen Seiten a = 12 cm, c = 8 cm und der Höhe h = 4,5 cm.",
+          "concept": "Herleitung: 2 Trapeze bilden Parallelogramm der Fläche (a+c)·h -> 1 Trapez hat Fläche ((a+c)/2)·h; Mittelparallele m = (12+8)/2 = 10 cm; A = 10 cm · 4,5 cm = 45 cm².",
+          "sample_solution": "1. Geometrische Definition und Herleitung des Trapezes: - **Definition Trapez**: Ein ebenes Viereck mit mindestens **zwei zueinander parallelen Seiten** (Grundseiten $a$ und $c$). Der senkrechte Abstand zwischen ihnen ist die Höhe $h$. - **Herleitung durch Verdopplung**:   * Fügt man an ein Trapez mit den parallelen Seiten $a$ und $c$ ein zweites kongruentes Trapez um $180^\\circ$ gedreht an, entsteht ein großes Parallelogramm.   * Die Grundseite dieses Parallelogramms hat die Länge $g = a + c$, die Höhe ist $h$.   * Flächeninhalt des Parallelogramms: $A_{\\text{Parallelogramm}} = (a + c) \\cdot h$.   * Das einzelne Trapez ist genau die Hälfte:     $$A_{\\text{Trapez}} = \\frac{a + c}{2} \\cdot h = \\frac{1}{2} \\cdot (a + c) \\cdot h$$ 2. Die Mittelparallele (Mittellinie $m$): - Die Verbindungsstrecke der Mittelpunkte der beiden nicht-parallelen Schenkel heißt **Mittelparallele $m$**. - Ihre Länge ist das arithmetische Mittel der beiden Grundseiten: $m = \\frac{a + c}{2}$. - Kompakte Formel: **$A_{\\text{Trapez}} = m \\cdot h$**. 3. Beispielberechnung ($a = 12\\text{ cm}, c = 8\\text{ cm}, h = 4,5\\text{ cm}$): - $m = \\frac{12\\text{ cm} + 8\\text{ cm}}{2} = \\frac{20\\text{ cm}}{2} = 10\\text{ cm}$. - $A = 10\\text{ cm} \\cdot 4,5\\text{ cm} = \\mathbf{45\\text{ cm}^2}$."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM6F000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YM6F000000000000000A03",
+      "namespace": "mathematik-stochastik",
+      "slug": "kreisdiagramme-mittelpunktswinkel-relative-haeufigkeit",
+      "title": "Kreisdiagramme und Daten: Relative Häufigkeiten und Berechnung des Mittelpunktswinkels alpha = p% · 360°",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM6F000000000000000A01",
+          "type": "hard",
+          "rationale": "Winkelmessung und Bruchrechnung/Prozente sind Grundlagen für Kreisdiagramme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Pie chart",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Prozentrechnung und relative Häufigkeiten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM6F000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viel Grad misst der Mittelpunktswinkel alpha im Kreisdiagramm für einen Anteil von genau 25 % (1/4 des Vollkreises)?",
+          "concept": "alpha = 0,25 · 360° = 90° (ein rechter Winkel)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "alpha = 90°",
+              "alpha = 45°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM6F000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die mathematische Konstruktion eines Kreisdiagramms zur Visualisierung relativer Häufigkeiten: Vollkreis entspricht 100 % bzw. 360°, Formel für den Mittelpunktswinkel alpha = (Anteil / Gesamt) · 360° = p% · 360° und berechne die Mittelpunktswinkel für das Wahlergebnis einer Klassensprecherwahl mit 30 abgegebenen Stimmen: Kandidat A erhält 15 Stimmen, Kandidat B erhält 9 Stimmen und Kandidat C erhält 6 Stimmen.",
+          "concept": "Mittelpunktswinkel alpha = (Stimmen/Gesamt) · 360°; A: 15/30 = 50 % -> alpha_A = 180°; B: 9/30 = 3/10 = 30 % -> alpha_B = 108°; C: 6/30 = 1/5 = 20 % -> alpha_C = 72°; Summe = 180° + 108° + 72° = 360°.",
+          "sample_solution": "1. Mathematische Grundlagen des Kreisdiagramms: - **Vollkreis = 100 %**: Der gesamte Kreis mit seinem Vollwinkel von **$360^\\circ$** repräsentiert die Grundgesamtheit ($100\\,\\%$). - **Mittelpunktswinkel $\\alpha$**: Jeder Sektor (Kreisausschnitt) erhält einen Winkel am Kreismittelpunkt, der proportional zur relativen Häufigkeit bzw. zum Prozentsatz ist:   $$\\alpha = \\frac{\\text{absolute Häufigkeit}}{\\text{Gesamtzahl}} \\cdot 360^\\circ = p\\,\\% \\cdot 360^\\circ$$ - **Kontrollprobe**: Die Summe aller Mittelpunktswinkel muss exakt $360^\\circ$ ergeben. 2. Berechnung der Klassensprecherwahl (Gesamtzahl $N = 30$ Stimmen): - **Kandidat A (15 Stimmen)**:   * Relativer Anteil: $\\frac{15}{30} = \\frac{1}{2} = 50\\,\\%$.   * Mittelpunktswinkel: $\\alpha_A = \\frac{1}{2} \\cdot 360^\\circ = \\mathbf{180^\\circ}$ (Halbkreis). - **Kandidat B (9 Stimmen)**:   * Relativer Anteil: $\\frac{9}{30} = \\frac{3}{10} = 30\\,\\%$.   * Mittelpunktswinkel: $\\alpha_B = \\frac{3}{10} \\cdot 360^\\circ = 3 \\cdot 36^\\circ = \\mathbf{108^\\circ}$. - **Kandidat C (6 Stimmen)**:   * Relativer Anteil: $\\frac{6}{30} = \\frac{1}{5} = 20\\,\\%$.   * Mittelpunktswinkel: $\\alpha_C = \\frac{1}{5} \\cdot 360^\\circ = \\mathbf{72^\\circ}$. - **Probe**: $180^\\circ + 108^\\circ + 72^\\circ = 360^\\circ$ (100 %)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM6F000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YM6F000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "prisma-grundflaeche-mantel-oberflaeche-volumen",
+      "title": "Raumgeometrie des Prismas: Schrägbild, Körpernetz, Mantelfläche, Oberfläche und Volumen V = G·h",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM6F000000000000000A01",
+          "type": "hard",
+          "rationale": "Flächeninhalte von Dreiecken und Vielecken bilden die Grundflächen von Prismen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Prism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Rauminhalt und Körper",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM6F000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die allgemeine Volumenformel für jedes geradlinige Prisma mit Grundfläche G und Körperhöhe h?",
+          "concept": "V = G · h (Grundfläche mal Körperhöhe)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = G · h",
+              "V = 1/3 · G · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM6F000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere das geometrische Prisma (parallele und deckungsgleiche Grund- und Deckfläche G, Mantelfläche M aus Rechtecken mit M = U_G · h), formuliere die Formeln für den gesamten Oberflächeninhalt A_O = 2·G + M und das Volumen V = G·h und berechne Oberfläche und Rauminhalt eines dreiseitigen Prismas (Grundfläche ist ein rechtwinkliges Dreieck mit Katheten a = 6 cm, b = 8 cm und Hypotenuse c = 10 cm, Körperhöhe h_k = 15 cm).",
+          "concept": "Prisma: G = 1/2 · a · b = 1/2 · 6 · 8 = 24 cm²; Umfang Grundfläche U_G = 6 + 8 + 10 = 24 cm; Mantelfläche M = U_G · h_k = 24 · 15 = 360 cm²; Oberflächeninhalt A_O = 2·24 + 360 = 408 cm²; Volumen V = G · h_k = 24 · 15 = 360 cm³.",
+          "sample_solution": "1. Definition und mathematische Eigenschaften des geraden Prismas: - **Körpereigenschaften**:   * **Grundfläche $G$ und Deckfläche $D$**: Zwei zueinander parallele, deckungsgleiche (kongruente) Vielecke (Dreieck, Viereck, Sechseck etc.).   * **Mantelfläche $M$**: Besteht aus Rechtecken, die die Seitenkanten senkrecht verbinden.   * **Körperhöhe $h_k$**: Der senkrechte Abstand zwischen Grund- und Deckfläche. 2. Formeln zur Oberflächen- und Volumenberechnung: - **Mantelfläche $M$**: Wenn man das Netz aufrollt, bildet der Mantel ein einziges großes Rechteck mit der Breite $U_G$ (Umfang der Grundfläche) und der Höhe $h_k$:   $$M = U_G \\cdot h_k = (a + b + c + \\dots) \\cdot h_k$$ - **Oberflächeninhalt $A_O$**:   $$A_O = 2 \\cdot G + M = 2 \\cdot G + U_G \\cdot h_k$$ - **Volumen (Rauminhalt $V$)**:   $$V = G \\cdot h_k$$ 3. Berechnung des dreiseitigen Prismas: - **Grundfläche $G$ (rechtwinkliges Dreieck mit $a = 6\\text{ cm}, b = 8\\text{ cm}$)**:   $G = \\frac{1}{2} \\cdot 6\\text{ cm} \\cdot 8\\text{ cm} = \\mathbf{24\\text{ cm}^2}$. - **Umfang der Grundfläche $U_G$**:   $U_G = 6\\text{ cm} + 8\\text{ cm} + 10\\text{ cm} = \\mathbf{24\\text{ cm}}$. - **Mantelfläche $M$ ($h_k = 15\\text{ cm}$)**:   $M = 24\\text{ cm} \\cdot 15\\text{ cm} = \\mathbf{360\\text{ cm}^2}$. - **Gesamter Oberflächeninhalt $A_O$**:   $A_O = 2 \\cdot 24\\text{ cm}^2 + 360\\text{ cm}^2 = 48 + 360 = \\mathbf{408\\text{ cm}^2}$. - **Volumen $V$**:   $V = 24\\text{ cm}^2 \\cdot 15\\text{ cm} = \\mathbf{360\\text{ cm}^3}$."
+        }
+      ]
+    }
+  ]
+}

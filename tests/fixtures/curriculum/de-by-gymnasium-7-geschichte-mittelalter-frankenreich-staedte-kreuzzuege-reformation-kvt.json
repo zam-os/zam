@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation",
+  "version": "2026.08.1",
+  "title": "Geschichte 7: Mittelalter bis Frühe Neuzeit – Frankenreich, Investiturstreit, Städte, Kreuzzüge und Reformation (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 7: Das Frankenreich und Lehnswesen (Karl der Große 800), Kaiser vs. Papst (Investiturstreit, Canossa 1077), Leben in der mittelalterlichen Stadt (Zünfte, Patriziat), Kreuzzüge und Kulturkontakte sowie Wende zur Neuzeit (Buchdruck, Martin Luther 1517).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/geschichte",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geschichte 7, Lernbereiche Mittelalter und Wende zur Neuzeit"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4H7M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4H7M0000000000000000A01",
+      "namespace": "gymnasium-geschichte-mittelalter",
+      "slug": "frankenreich-karl-der-grosse-lehnswesen-investiturstreit",
+      "title": "Mittelalterliche Herrschaftsordnung: Karl der Große (800), Lehnswesen und der Investiturstreit (Canossa 1077)",
+      "domain": "schule/geschichte/mittelalter",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Middle Ages",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Das europäische Mittelalter – Herrschaft und Glaube",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H7M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem historischen Weihnachtstag wurde der Frankenkönig Karl der Große in Rom von Papst Leo III. zum ersten weströmischen Kaiser des Mittelalters gekrönt?",
+          "concept": "Am 25. Dezember 800 (Erneuerung des westlichen Kaisertums)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "25. Dezember 800",
+              "25. Dezember 1077"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H7M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Herrschaftsstrukturen des europäischen Mittelalters: 1. **Das Frankenreich & Karl der Große**: Kaiserkrönung 800 in Rom, Karolingische Renaissance (Bildungsreform, Minuskel-Schrift), Reichsgrafschaftenverfassung mit Königsboten (*missi dominici*), 2. **Das Lehnswesen (Feudalismus)**: Persönliches Treueverhältnis auf Gegenseitigkeit (Lehnsherr gewährt **Schutz und Lehen [Land/Ämter]**; Vasall leistet **Rat und Tat [Kriegsdienst/consilium et auxilium]**; Entstehung der Lehns-Pyramide: König $\\rightarrow$ Kronvasallen/Herzöge $\\rightarrow$ Untervasallen/Ritter), 3. **Grundherrschaft**: Herrschaft über Grund und Boden; unfreie Bauern (Hörige) leisten Frondienste und Abgaben im Gegenzug für Schutz, 4. **Der Investiturstreit (1075–1122)**: Konflikt um die Einsetzung von Bischöfen (Kaiser Heinrich IV. vs. Papst Gregor VII. [*Dictatus Papae*]; **Gang nach Canossa 1077**; Kompromiss im **Wormser Konkordat 1122**: Trennung in geistliche Weihe *Spiritualia* durch die Kirche und weltliche Belehnung *Temporalia* durch den König).",
+          "concept": "Mittelalterliche Herrschaft: Karl der Große 800 (Kaisertum); Lehnswesen (Treueid, Schutz vs. Kriegsdienst); Grundherrschaft (Frondienst/Hörigkeit); Investiturstreit (Canossa 1077, Wormser Konkordat 1122: Trennung Spiritualia/Temporalia).",
+          "sample_solution": "1. Karl der Große und die Wiederbegründung des westlichen Kaisertums: - **Kaiserkrönung am 25. Dezember 800**: Papst Leo III. krönte Karl den Großen in Rom zum Kaiser $\\rightarrow$ Erneuerung des antiken römischen Kaisertums im christlichen Westen (*Translatio Imperii*). - **Reichsverwaltung**: Da es keine feste Hauptstadt gab, regierte Karl als **Reisekönig (Pfalzenwesen)**, gestützt auf Grafen und entsandte Inspektoren (**Königsboten / missi dominici**). - **Karolingische Bildungsreform**: Förderung von Klosterschulen, Einführung der lateinischen Einheitsschrift (**Karolingische Minuskel** als Vorläufer unserer Kleinbuchstaben). 2. Das Lehnswesen (Feudalsystem) und die Grundherrschaft: - **Das Lehnswesen (Herrschaft über den Adel)**:   * Ein hierarchisches System gegenseitiger Treue und Pflichten:     - **Lehnsherr**: Verleiht Land, Burgen oder Ämter (**Lehen / Feudum**) und garantiert militärischen Schutz.     - **Vasall**: Schwört den **Lehnseid (Huldigung)** und verpflichtet sich zu *Auxilium et Consilium* (**Rat und militärische Hilfe / Ritterdienst**).   * *Lehnspyramide*: König $\\rightarrow$ Kronvasallen (Herzöge, Bischöfe) $\\rightarrow$ After-/Untervasallen (Ritter). - **Die Grundherrschaft (Herrschaft über die bäuerliche Bevölkerung)**:   * Der Grundherr (Adeliger oder Kloster) besaß den Boden; die Bauern waren an die Scholle gebunden (**Leibeigenschaft / Hörigkeit**).   * Pflicht zur Abgabe von Naturalien (Zehnt) und Erbringung harter Hand- und Spanndienste (**Frondienste**). 3. Der Investiturstreit (Das Ringen um geistliche und weltliche Vorherrschaft): - **Kernfrage**: Wer darf Bischöfe und Äbte in ihr Amt einsetzen (**Investitur mit Ring und Stab**)? Der weltliche König (**Reichskirchensystem**) oder allein der Papst? - **Eskalation 1075–1077**:   * Papst Gregor VII. formulierte im *Dictatus Papae* den päpstlichen Universalanspruch über alle weltlichen Herrscher.   * König Heinrich IV. erklärte den Papst für abgesetzt $\\rightarrow$ Gregor VII. verhängte den **Kirchenbann (Exkommunikation)** über Heinrich.   * **Gang nach Canossa (Januar 1077)**: Heinrich IV. musste im Büßergewand vor der Burg Canossa drei Tage lang knien, um vom Papst losgesprochen zu werden. - **Lösung im Wormser Konkordat (1122)**:   * Trennung der Amtsbereiche:     - **Spiritualia (Geistliche Weihe)**: Durch die Kirche mit Ring und Hirtenstab.     - **Temporalia (Weltliche Lehen & Herrschaft)**: Durch den König mit dem Zepter."
+        }
+      ]
+    },
+    {
+      "id": "01K4H7M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4H7M0000000000000000A02",
+      "namespace": "gymnasium-geschichte-neuzeit",
+      "slug": "mittelalterliche-stadt-kreuzzuege-renaissance-reformation-luther",
+      "title": "Stadtkultur, Kreuzzüge und die Wende zur Neuzeit: Buchdruck, Renaissance und Reformation (Luther 1517)",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4H7M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Wende zur Neuzeit löst das mittelalterliche Weltbild ab."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Protestant Reformation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Wende zur Neuzeit – Stadt, Entdeckungen und Reformation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H7M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche bahnbrechende Erfindung von Johannes Gutenberg um das Jahr 1450 ermöglichte die explosionsartige Verbreitung der reformatorischen Ideen Martin Luthers?",
+          "concept": "Der Buchdruck mit beweglichen Metall-Lettern (Buchdruckrevolution)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Buchdruck mit beweglichen Metalllettern",
+              "Die Dampfmaschine"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H7M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Übergang vom Hochmittelalter zur Frühen Neuzeit in 4 Dimensionen: 1. **Die mittelalterliche Stadt**: Rechtsgrundsatz *'Stadtluft macht frei (nach Jahr und Tag)'*; Herrschaft der Patrizier; Organisation der Handwerker in strengen **Zünften** (Produktionskontrolle, Preisdiktat, sozialer Schutz), 2. **Kreuzzüge & Kulturtransfer**: Beginn 1095 durch Papst Urban II. zur Rückeroberung Jerusalems $\\rightarrow$ trotz militärischer Grausamkeit massiver wissenschaftlicher Transfer aus der hochentwickelten islamischen Welt (Medizin, Mathematik, arabische Ziffern, Optik, antike Philosophie), 3. **Renaissance & Humanismus**: Wiedergeburt der Antike (*Ad fontes*); der Mensch und die Diesseitigkeit rücken ins Zentrum des Denkens (Universalgenie Leonardo da Vinci), 4. **Die Reformation (Martin Luther 1517)**:   * Kritik am **Ablasshandel** (*'Sobald das Geld im Kasten klingt...'*).   * **31. Oktober 1517: 95 Thesen zu Wittenberg**.   * Die **4 reformatorischen 'Soli'**: *Sola Fide* (allein durch den Glauben), *Sola Gratia* (allein aus Gnade), *Sola Scriptura* (allein die Bibel), *Solus Christus* (allein Christus als Mittler) $\\rightarrow$ Kirchenspaltung, Bibelübersetzung ins Deutsche und Bauernkriege 1525.",
+          "concept": "Wende zur Neuzeit: 1. Stadtkultur ('Stadtluft macht frei', Zünfte, Hanse); 2. Kreuzzüge & Kulturtransfer aus Orient; 3. Renaissance/Humanismus; 4. Reformation 1517 (Luther, 95 Thesen, Buchdruck, 4 Soli, Kirchenspaltung).",
+          "sample_solution": "1. Die mittelalterliche Stadt und ihre Bürger: - **Rechtlicher Sonderstatus**: Städte erhielten vom König oder Landesherrn **Stadtrechte** (Marktrecht, Münzrecht, Gerichtsbarkeit). Nach dem Grundsatz *„Stadtluft macht frei nach Jahr und Tag“* wurde ein geflohener höriger Bauer nach einem Jahr und einem Tag in der Stadt ein freier Bürger. - **Sozialstruktur & Zunftwesen**:   * Das **Patriziat** (wohlhabende Fernhandelskaufleute) beherrschte den Stadtrat.   * Handwerker schlossen sich in **Zünften** zusammen: Diese regelten Meisterprüfungen, fixierten Preise und Rohstoffmengen, verhinderten Konkurrenz und sicherten Witwen und Waisen ab. 2. Die Kreuzzüge und der interkulturelle Wissenstransfer: - 1095 rief Papst Urban II. zum 1. Kreuzzug auf (*„Gott will es!“*), um Jerusalem von den Muslimen zu erobern. - **Historische Langzeitfolge**:   * Obwohl die christlichen Kreuzfahrerstaaten scheiterten, brachten Händler und Gelehrte bahnbrechende Errungenschaften des Orients nach Europa: **arabische Ziffern, Algebra, Optik, moderne Medizin, Seide, Gewürze und die wiederentdeckten Schriften von Aristoteles**. 3. Renaissance und Humanismus (Wiedergeburt der Antike): - Im 15. Jahrhundert (ausgehend von Norditalien / Florenz) vollzog sich ein epochaler Wandel im Menschenbild:   * **Humanismus**: Nicht mehr die gottgegebene Standesordnung, sondern der gebildete, vernunftbegabte, schöpferische Mensch (*Universalgenie wie Leonardo da Vinci*) steht im Mittelpunkt.   * **Naturbeobachtung**: Beginn moderner Naturwissenschaften und Entdeckungsreisen. 4. Die Reformation und Martin Luther (1517): - **Anlass**: Der korrupte **Ablasshandel** der Kirche (Tetzel: *„Wenn das Geld im Kasten klingt, die Seele in den Himmel springt“*). - **31. Oktober 1517**: Martin Luther schlägt seine **95 Thesen** an die Schlosskirche zu Wittenberg. - **Die theologische Kernbotschaft der Reformation (Die 4 Soli)**:   * **Sola Scriptura**: Allein die Heilige Schrift (die Bibel) ist die Quelle des Glaubens, nicht Papst oder Konzilien.   * **Sola Fide**: Allein durch den inneren Glauben wird der Mensch vor Gott gerechtfertigt.   * **Sola Gratia**: Die Erlösung ist ein unverdientes Gnadengeschenk Gottes.   * **Solus Christus**: Nur Christus ist Mittler zwischen Gott und Mensch. - **Historische Wirkung**:   * Dank Gutenbergs **Buchdruck** verbreiteten sich Luthers Schriften und seine geniale **deutsche Bibelübersetzung (Wartburg 1521/22)** rasend schnell.   * Die Verweigerung des Widerrufs auf dem **Reichstag zu Worms 1521** (*„Hier stehe ich, ich kann nicht anders“*) besiegelte die **Spaltung der Westkirche in Katholiken und Protestanten (Konfessionalisierung)**."
+        }
+      ]
+    }
+  ]
+}

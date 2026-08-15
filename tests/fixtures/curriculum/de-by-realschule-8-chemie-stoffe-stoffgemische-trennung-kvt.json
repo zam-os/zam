@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-chemie-stoffe-stoffgemische-trennung",
+  "version": "2026.08.1",
+  "title": "Chemie 8: Stoffe, Gemische, Aggregatzustände und Trennverfahren (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 8 (Anfangsunterricht): Reinstoffe vs. Gemische, Dichte und Stoffeigenschaften, Trennmethoden und Teilchenmodell.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/chemie",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 8, Lernbereich Stoffe und ihre Eigenschaften"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4C8S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4C8S0000000000000000A01",
+      "namespace": "chemie-grundlagen",
+      "slug": "reinstoffe-stoffgemische-homogen-heterogen",
+      "title": "Reinstoffe und Stoffgemische: Heterogene und homogene Systeme",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q16521",
+          "target_label": "Chemical substance",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie bezeichnet man ein heterogenes Gemisch aus fein verteilten Feststoffpartikeln in einer Flüssigkeit (z. B. Schlammwasser, Lehmwasser)?",
+          "concept": "Suspension",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Suspension",
+              "Emulsion"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine vollständige Systematik der Stoffe (Reinstoffe: Elemente vs. Verbindungen; Gemische: homogen vs. heterogen) und ordne folgende Beispiele präzise ein: Messing, Milch, Meerwasser, Granit, reines destilliertes Wasser, Rauch.",
+          "concept": "Reinstoffe: Verbindung (Reines Wasser H2O), Element (z.B. Gold); Homogene Gemische: Messing (Legierung), Meerwasser (Lösung); Heterogene Gemische: Milch (Emulsion), Granit (Gemenge), Rauch (Aerosol/Feststoff in Gas)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4C8S0000000000000000A02",
+      "namespace": "chemie-grundlagen",
+      "slug": "stoffeigenschaften-dichte-schmelz-siedepunkt",
+      "title": "Stoffeigenschaften zur Stoffidentifikation: Dichte ρ = m / V, Schmelz- und Siedepunkt",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Reinstoffe besitzen charakteristische, messbare Stoffeigenschaften."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q16521",
+          "target_label": "Physical property",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ist die physikalische Stoffkonstante Dichte ρ mathematisch definiert?",
+          "concept": "ρ = Masse / Volumen (ρ = m / V in g/cm³ oder kg/m³)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ρ = m / V (Masse geteilt durch Volumen)",
+              "ρ = V / m (Volumen geteilt durch Masse)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere, warum man Stoffe anhand spezifischer Stoffeigenschaften (Dichte, Schmelztemperatur T_s, Siedetemperatur T_s, elektrische Leitfähigkeit, Härte, Löslichkeit) und nicht anhand von Mengeneigenschaften (Masse, Volumen) identifiziert, und berechne die Dichte eines metallischen Probekörpers mit der Masse m = 135 g und dem durch Wasserverdrängung gemessenen Volumen V = 50 cm³ (Identifiziere das Metall).",
+          "concept": "Spezifische Eigenschaften sind stoffcharakteristisch (intensiv) und mengenunabhängig; Mengeneigenschaften (extensiv) ändern sich mit der Stoffportion; Dichte: rho = 135 g / 50 cm³ = 2,70 g/cm³ -> Aluminium."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8S0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4C8S0000000000000000A03",
+      "namespace": "chemie-grundlagen",
+      "slug": "trennverfahren-filtration-destillation-chromatographie",
+      "title": "Trennverfahren für Stoffgemische: Filtration, Destillation und Chromatographie",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8S0000000000000000A02",
+          "type": "hard",
+          "rationale": "Unterschiedliche Stoffeigenschaften sind die Grundlage aller Trennverfahren."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q16521",
+          "target_label": "Separation process",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8S0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Auf welchem Unterschied welcher physikalischen Stoffeigenschaft beruht das Trennverfahren der Destillation (z. B. Trennung von Ethanol und Wasser)?",
+          "concept": "Unterschiedliche Siedetemperaturen der Komponenten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Unterschiedliche Siedetemperaturen",
+              "Unterschiedliche magnetische Anziehung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8S0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ordne den Trennverfahren Filtration, Dekantieren, Destillation, Chromatographie und Zentrifugieren jeweils die ausgenutzte Stoffeigenschaft zu und entwirf einen mehrstufigen Laborplan zur vollständigen Trennung eines Dreistoffgemischs aus Sand, Kochsalz und Wasser.",
+          "concept": "Filtration (Partikelgröße), Dekantieren/Zentrifugieren (Dichte), Destillation (Siedepunkt), Chromatographie (Löslichkeit & Adsorption); Trennplan: 1. Filtration trennt festen Sand als Rückstand ab; 2. Destillation / Eindampfen des Filtrats trennt Wasser (Dampf/Kondensat) und festes Kochsalz."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8S0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4C8S0000000000000000A04",
+      "namespace": "chemie-grundlagen",
+      "slug": "aggregatzustaende-teilchenmodell-diffusion",
+      "title": "Teilchenmodell, Aggregatzustandswechsel und Diffusion",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Teilchenmodell erklärt das Verhalten von Stoffen auf mikroskopischer Ebene."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q16521",
+          "target_label": "State of matter",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Stoffe und ihre Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8S0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man den direkten Phasenübergang eines Stoffes vom festen in den gasförmigen Aggregatzustand ohne flüssige Zwischenphase (z. B. Trockeneis, Iod)?",
+          "concept": "Sublimation (Gegenrichtung: Resublimation)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sublimation",
+              "Kondensation"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8S0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die drei Aggregatzustände (fest, flüssig, gasförmig) anhand der Anordnung, der Abstände und der thermischen Eigenbewegung der Teilchen, benenne alle Phasenübergänge (Schmelzen, Erstarren, Verdampfen, Kondensieren, Sublimieren, Resublimieren) und erkläre das Phänomen der Diffusion (Brownsche Molekularbewegung).",
+          "concept": "Fest: Gitter, feste Plätze, minimale Abstände; Flüssig: verschiebbar, geringe Abstände; Gasförmig: völlig frei, große Abstände, hohe Geschwindigkeit; Diffusion: selbsttätige Durchmischung durch ungerichtete thermische Eigenbewegung."
+        }
+      ]
+    }
+  ]
+}

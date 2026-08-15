@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-deutsch-texte-inhaltsangabe-ballade-interpretation",
+  "version": "2026.08.1",
+  "title": "Deutsch 7: Texte – Inhaltsangabe, Balladenanalyse (Erlkönig/Bürgschaft) und Charakteristik (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 7: Die sachliche Inhaltsangabe (TATT-Basissatz, Präsens, Sinnabschnitte), Ballade als Gattungstrias (Epik, Lyrik, Dramatik), Balladeninterpretation (Reim, Metrum, Spannungsbogen) und Figurencharakteristik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.le.hrplanplus.bayern.de/fachlehrplan/gymnasium/7/deutsch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Deutsch 7, Lernbereiche Texte schreiben (Inhaltsangabe) und Texte erschließen (Balladen)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D7T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D7T0000000000000000A01",
+      "namespace": "gymnasium-deutsch-texte",
+      "slug": "inhaltsangabe-tatt-schema-praesens-sinnabschnitte",
+      "title": "Die sachliche Inhaltsangabe: Einleitungssatz (TATT), Präsens und strukturierte Sinnabschnitte",
+      "domain": "schule/deutsch/texte",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Summary",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte schreiben – Inhaltsangabe",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D7T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 4 Bestandteile müssen im Basissatz (Einleitungssatz) einer Inhaltsangabe nach dem klassischen 'TATT-Schema' zwingend genannt werden?",
+          "concept": "Titel, Autor, Textsorte und Thema/Kernaussage des Textes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Titel, Autor, Textsorte, Thema (TATT)",
+              "Ort, Zeit, Personen, eigene Meinung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D7T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die verbindlichen Kriterien für das Verfassen einer Inhaltsangabe im Gymnasium: 1. **Der Basissatz / Einleitung (TATT-Schema)**: Textsorte, Autor, Titel, Erscheinungsjahr/Kontext und prägnante Zusammenfassung des Kernthemas in 1–2 Sätzen, 2. **Der Hauptteil (Sinnabschnitte)**: Chronologische Wiedergabe des Handlungsgerüsts gegliedert nach inhaltlichen Sinneinheiten; Verknüpfung durch abwechslungsreiche Konnektoren (*Zunächst, daraufhin, im weiteren Verlauf, schließlich*), 3. **Sprachliche und formale Gestaltungsregeln**:   * **Tempus**: Streng im **Präsens** (Gegenwart; Vorzeitigkeit im **Perfekt**!).   * **Stil**: Sachlich, neutral, nüchtern; **keine wörtliche Rede** (Umwandlung in indirekte Rede!),   * **Objektivität**: Keine persönliche Wertung, keine Spannungseffekte, keine Vorgriffe.",
+          "concept": "Inhaltsangabe: TATT-Basissatz (Titel, Autor, Textsorte, Thema); Hauptteil nach Sinnabschnitten; Tempus: Präsens (Vorzeitigkeit Perfekt); Sprachstil: sachlich, neutral, keine direkte Rede, keine eigene Meinung.",
+          "sample_solution": "1. Der Aufbau einer gymnasialen Inhaltsangabe: - **1. Einleitung (Der Basissatz nach dem TATT-Schema)**:   * Nennt im allerersten Satz die 4 bibliographischen und thematischen Eckdaten:     - **T**itel des Werkes     - **A**utor / Verfasser     - **T**extsorte (z. B. Kurzgeschichte, Kalendergeschichte, Auszug aus einem Jugendroman, Novelle)     - **T**hema (präzise Benennung des zentralen Konflikts/Geschehens in eigenen Worten).   * *Muster*: *« In der 1908 erschienenen Kurzgeschichte „Das Fenstertheater“ von Ilse Aichinger geht es um eine einsame alte Frau, die das pantomimische Verhalten ihres Nachbarn missversteht. »* - **2. Hauptteil (Wiedergabe nach Sinnabschnitten)**:   * Der Text wird in 3–5 logische Handlungsphasen (Exposition, Konfliktentwicklung, Höhe-/Wendepunkt, Auflösung/Schluss) unterteilt.   * Beschränkung auf die **wesentlichen Kausalzusammenhänge**; irrelevante Details, Ausschmückungen und Nebenhandlungen werden weggelassen. 2. Die verbindlichen sprachlichen Kriterien: - **1. Zeitform (Tempus)**:   * Das Grundtempus ist **ausnahmslos das Präsens** (*'Er öffnet die Tür und bemerkt...'*).   * Für vorzeitige Ereignisse gilt das **Perfekt** (*'Nachdem er den Brief gelesen hat, verlässt er das Zimmer'*). Präteritum oder Plusquamperfekt sind schwere Tempusfehler! - **2. Distanzierte, sachliche Sprache**:   * Keine Metaphern, keine reißerischen Ausdrücke (*'plötzlich passierte das Unglaubliche'* ist verboten). - **3. Verbot der direkten Rede**:   * Dialoge müssen zwingend gerafft und in **indirekte Rede (im Konjunktiv)** oder in Substantivierungen umgewandelt werden (*'Er bittet ihn um Hilfe'* statt *'Er rief: „Hilf mir!“'*). - **4. Strikte Trennung von Text und Wertung**:   * Eigene Interpretationen, Urteile oder Spekulationen haben in der Inhaltsangabe keinen Platz."
+        }
+      ]
+    },
+    {
+      "id": "01K4D7T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D7T0000000000000000A02",
+      "namespace": "gymnasium-deutsch-texte",
+      "slug": "ballade-gattungstrias-erlkoenig-buergschaft-analyse",
+      "title": "Die Ballade als Gattungstrias: Epik, Lyrik, Dramatik und exemplarische Analyse (Goethe, Schiller, Fontane)",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D7T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Balladenanalyse baut auf der Erschließung von Handlungsstrukturen auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Ballad",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte erschließen – Die Ballade",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D7T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bezeichnete Johann Wolfgang von Goethe die Ballade berühmt als das 'Ur-Ei der Dichtung'?",
+          "concept": "Weil die Ballade alle drei literarischen Grundgattungen (Epik = erzählende Handlung, Lyrik = Strophen/Reim, Dramatik = Dialoge/Spannung) in sich vereint",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil sie Epik, Lyrik und Dramatik vereint (Gattungstrias)",
+              "Weil sie das älteste Märchen ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D7T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Genre der Ballade und den Ablauf einer Balladeninterpretation: 1. **Das gattungstypische 'Drei-in-Eins' (Gattungstrias)**:   * **Episches Element**: Ein Erzähler berichtet eine fortlaufende, oft dramatisch-unheimliche oder heroische Geschichte (Handlungsstrang).   * **Lyrisches Element**: Gegliedert in Strophen und Verse; Verwendung von Reimen (Paarreim *aabb*, Kreuzreim *abab*, umarmender Reim *abba*), Metrum (Jambus, Trochäus, Daktylus, Anapäst) und lautmalerischer Sprache.   * **Dramatisches Element**: Wörtliche Rede / dynamische Dialoge zwischen Figuren, sprunghafte Szenenwechsel, starker Spannungsaufbau hin zum dramatischen Höhepunkt / Katastrophe, 2. **Balladenarten**: Geister-/Naturmagische Ballade (z. B. Goethes *'Erlkönig'*), Ideenballade (z. B. Schillers *'Die Bürgschaft'* – Treue/Freundschaft besiegt Tyrannei), Helden-/Technikballade (z. B. Fontanes *'John Maynard'*), 3. **Methodischer Dreischritt der Analyse**: *1. Formale Merkmale (Strophen, Reim, Rhythmus) $\\rightarrow$ 2. Sprachliche Gestaltung (Stilmittel wie Alliterationen, Anaphern, Personifikationen) $\\rightarrow$ 3. Deutung und Wirkung auf den Leser*.",
+          "concept": "Ballade als Gattungstrias: Epik (erzählte Geschichte), Lyrik (Strophe/Reim/Metrum), Dramatik (Dialoge/Höhepunkt); Balladentypen (magisch, ideell, historisch); Dreischritt: Form -> Sprache/Stil -> Deutung/Wirkung.",
+          "sample_solution": "1. Die Ballade als Gattungstrias (Gattungs-Synthese): - **1. Das epische Element (Das Erzählgedicht)**:   * Eine Ballade erzählt eine in sich geschlossene, spannende Geschichte mit handelnden Personen, Ort, Zeit und Konflikt. Ein Erzähler führt durch das Geschehen. - **2. Das lyrische Element (Die Gedichtform)**:   * Der Text ist in **Strophen und Verse** gegliedert.   * Er besitzt ein festes **Reimschema** (z. B. Paarreim *aabb*, Kreuzreim *abab*, Schweifreim *aabccb*) und ein regelmäßiges **Metrum / Versmaß** (Jambus $\\cup -$, Trochäus $- \\cup$, Daktylus $- \\cup \\cup$).   * Klangfiguren wie Alliterationen, Assonanzen und lautmalerische Wörter erzeugen eine musikalische Stimmung. - **3. Das dramatische Element (Die szenische Zuspitzung)**:   * Hoher Anteil an **wörtlicher Rede und direkten Streitgesprächen** (Dialoge zwischen den Figuren).   * Schnelle, filmische Perspektiv- und Szenenwechsel; zielgerichteter Spannungsaufbau (Spannungsbogen) mit steilem Klimax und oft tragischem oder erlösendem Ausgang. 2. Die drei klassischen Balladengruppen: - **1. Magische / naturmythische Ballade** (z. B. J. W. v. Goethe, *„Erlkönig“*): Unheimliche Mächte der Natur fordern den Menschen heraus; das Rationale scheitert an der Urangst. - **2. Historische & Ideenballade** (z. B. Friedrich Schiller, *„Die Bürgschaft“* / *„Der Handschuh“*): Hohe moralische Ideale der Weimarer Klassik wie unbedingte Treue, Humanität und Mut triumphieren über Willkür und Grausamkeit. - **3. Realistische Ereignis- und Technikballade** (z. B. Theodor Fontane, *„John Maynard“* / *„Die Brück’ am Tay“*): Das Verhältnis von Mensch, moderner Technik und Naturgewalten. 3. Systematischer Interpretationsaufbau: - **Einleitung**: Autor, Titel, Textart, Entstehungszeit, Kernthema. - **Hauptteil 1 (Inhalt & Aufbau)**: Strophenweiser Verlauf, Spannungskurve und Wendepunkte. - **Hauptteil 2 (Form & Sprache)**: Versmaß, Reimschema, rhetorische Mittel (Metaphern, Personifikationen) und deren konkrete Funktion für die Atmosphäre. - **Schluss**: Kernaussage, Moral und zeitlose Gültigkeit der Ballade."
+        }
+      ]
+    }
+  ]
+}

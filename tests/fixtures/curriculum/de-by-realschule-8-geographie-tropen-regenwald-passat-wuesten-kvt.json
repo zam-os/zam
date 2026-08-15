@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-geographie-tropen-regenwald-passat-wuesten",
+  "version": "2026.08.1",
+  "title": "Geographie 8: Die Tropen – Tropischer Regenwald, Passatzirkulation und Wendekreiswüsten (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geographie 8: Tropischer Regenwald (Stockwerkbau, Tageszeitenklima, Nährstoffkreislauf), globale Passatzirkulation (ITC, Zenitstand), Savannenzonen und Wüstenbildung (Desertifikation).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/geographie",
+      "checked": "2026-08-15",
+      "label": "Realschule Geographie 8, Lernbereich Die Tropen – Ein faszinierender Lebensraum"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G8T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G8T0000000000000000A01",
+      "namespace": "geographie-tropen",
+      "slug": "tropischer-regenwald-stockwerkbau-tageszeitenklima-naehrstoffe",
+      "title": "Der Tropische Regenwald: Stockwerkbau, Tageszeitenklima und kurzgeschlossener Nährstoffkreislauf",
+      "domain": "schule/geographie/tropen",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1994",
+          "target_label": "Tropical rainforest",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Die Tropen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wo befinden sich im tropischen Regenwald über 80 % der gesamten Nährstoffe des Ökosystems?",
+          "concept": "In der lebenden Biomasse (Bäume, Blätter, Wurzelgeflecht) und nicht im ausgelaugten, nährstoffarmen Boden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der lebenden Pflanzensubstanz (Biomasse)",
+              "Tief im mineralreichen Erdboden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Ökosystem des tropischen Regenwalds: 1. **Tageszeitenklima** (Temperaturunterschiede zwischen Tag und Nacht sind mit ca. 8–10 °C größer als zwischen den Jahreszeiten; ganzjährig ca. 25–28 °C; tägliche Zenitalregen am Nachmittag durch starke Konvektion), 2. **Stockwerkbau (Stratifikation)**: Urwaldriesen (Emergenten bis 60 m), Kronendach (zusammenhängend bei 30–40 m), Mittlere Baumschicht, Strauchschicht, Kraut-/Moosschicht am dämmrigen Waldboden mit Brettwurzeln und Epiphyten/Aufsitzerpflanzen, 3. Der **kurzgeschlossene Nährstoffkreislauf** (rasche Zersetzung von Falllaub durch Mykorrhiza-Pilze und sofortige Wiederaufnahme über Flachwurzeln), 4. Ursachen und ökologische Folgen der **Brandrodung** (Tropischer Boden lateritisiert, verkrustet und wird nach 2–3 Jahren unfruchtbar).",
+          "concept": "Tropischer Regenwald: Tageszeitenklima (keine thermischen Jahreszeiten); 5 Stockwerke mit Urwaldriesen; kurzgeschlossener Nährstoffkreislauf über Mykorrhiza; Brandrodung zerstört die oberflächennahe Biomasse -> Bodendegradation/Lateritisierung.",
+          "sample_solution": "1. Das Tageszeitenklima der immerfeuchten Tropen: - Es gibt **keine thermischen Jahreszeiten**; die monatlichen Durchschnittstemperaturen schwanken ganzjährig nur um $\\pm 1–2^\\circ\\text{ C}$ (konstant bei $25–28^\\circ\\text{ C}$). - Die Temperaturschwankung zwischen Tag und Nacht (ca. $8–10^\\circ\\text{ C}$) ist deutlich größer als die zwischen den Monaten (*'Der Tag ist der Winter der Tropen'*). - **Typischer Tagesablauf**: Klarer Morgen $\\rightarrow$ intensive Sonneneinstrahlung $\\rightarrow$ starke Verdunstung (Evapotranspiration) $\\rightarrow$ Bildung mächtiger Cumulonimbus-Wolken (Konvektion) $\\rightarrow$ heftige **konvektive Zenitalgewitter/Starkregen** am frühen Nachmittag $\\rightarrow$ abendliche Aufheiterung. 2. Der Stockwerkbau (Schichtenprofil): - **1. Schicht der Urwaldriesen (Emergenten, bis 60 m)**: Einzelne gigantische Baumkronen überragen das Kronendach. - **2. Geschlossenes Kronendach (30–40 m)**: Dichte, grüne Kuppel; Lebensraum für 80 % aller Tierarten (Affen, Vögel, Insekten); fängt 90 % des Sonnenlichts ab. - **3. Mittlere Baum- und Strauchschicht (10–20 m)**: Dünne Stämme, Lianen, Kletterpflanzen und **Epiphyten (Aufsitzerpflanzen wie Orchideen und Bromelien)**, die ohne Bodenkontakt auf Ästen leben. - **4. Boden- und Krautschicht (0–5 m)**: Nur 1–2 % des Lichts erreichen den Waldboden; dämmrig und feucht; Bäume bilden breite **Brettwurzeln** zur Verankerung und Nährstoffaufnahme in den obersten Zentimetern. 3. Der kurzgeschlossene Nährstoffkreislauf: - Tropische Böden (**Ferralsole / Lateritböden**) sind durch jahrtausendelange intensive Regenfälle extrem tiefgründig **ausgewaschen, sauer und nährstoffarm**. - Fast alle Nährstoffe ($> 80 \\%$) sind in der **lebenden Biomasse** (Holz, Blätter) gebunden. - Abgefallene Blätter werden bei tropischer Hitze und Feuchtigkeit durch Mikroorganismen und **Mykorrhiza-Pilze** in wenigen Tagen zersetzt und von den **oberflächennahen Wurzeln sofort wieder aufgesaugt** (kurzgeschlossener Kreislauf). 4. Folgen von Brandrodung und Abholzung: - Durch Abholzen und Verbrennen wird der Nährstoffspeicher in Asche verwandelt. Diese wird nach 2–3 Ernten durch Starkregen komplett weggeschwemmt. - Der ungeschützte Boden **verkrustet unter Tropensonne unumkehrbar (Lateritisierung)** $\\rightarrow$ dauerhafte Wüstenbildung und Verlust der weltweiten Artenvielfalt."
+        }
+      ]
+    },
+    {
+      "id": "01K4G8T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G8T0000000000000000A02",
+      "namespace": "geographie-tropen",
+      "slug": "passatzirkulation-hadley-zelle-itc-wendekreiswuesten",
+      "title": "Atmosphärische Zirkulation der Tropen: Passatkreislauf (ITC, Hadley-Zelle) und Wendekreiswüsten",
+      "domain": "schule/geographie/tropen",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G8T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Passatzirkulation erklärt die zonale Verteilung von Regenwald, Savannen und Wüsten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1994",
+          "target_label": "Hadley cell",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Die Tropen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum sind die Gebiete an den geographischen Wendekreisen (ca. 23,5° N und S, z. B. Sahara, Atacama, Australische Wüste) extrem trocken und bilden Wendekreiswüsten?",
+          "concept": "Wegen der großräumigen dynamischen Absinkbewegung der Luftmassen (subtropischer Hochdruckgürtel), die sich beim Absinken erwärmen und Wolken auflösen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Absinkende Luftmassen erwärmen sich und lösen Wolken auf",
+              "Dort scheint die Sonne nie"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das globale Strömungssystem der Passatzirkulation (Hadley-Zelle) schrittweise: 1. **Zenitalstand der Sonne am Äquator**: Maximale Einstrahlung erwärmt die Luft $\\rightarrow$ Luft dehnt sich aus, wird spezifisch leichter und steigt auf $\\rightarrow$ **Äquatoriale Tiefdruckrinne (ITC / Innertropische Konvergenzzone)** mit starken Niederschlägen, 2. **Höhenantitrades**: Abströmung der Höhenluft nach Norden und Süden in Richtung der Wendekreise, 3. **Subtropischer Hochdruckgürtel (ca. 23,5°–30° N/S)**: Die abgekühlte Höhenluft sinkt großräumig ab, erwärmt sich adiabatisch, die relative Luftfeuchtigkeit sinkt drastisch $\\rightarrow$ **wolkenloser Himmel, Trockenheit und Entstehung von Wendekreiswüsten (Sahara)**, 4. **Bodennahe Passatwinde**: Rückströmung der Luftmassen zum Äquator (durch die Corioliskraft abgelenkt als **Nordost-Passat** auf der Nordhalbkugel und **Südost-Passat** auf der Südhalbkugel).",
+          "concept": "Passatzirkulation / Hadley-Zelle: 1. Einstrahlung Äquator -> Aufstieg -> Tiefdruckrinne ITC (Zenitalregen); 2. Polwärtiges Abströmen in der Höhe; 3. Absinken bei 23,5° -> Subtropischer Hochdruck -> Wolkenauflösung / Wüsten; 4. Rückströmung zum Äquator als Nordost-/Südostpassat (Corioliskraft).",
+          "sample_solution": "1. Der 4-Phasen-Kreislauf der Passatzirkulation (Hadley-Zelle): - **1. Phase (Äquator / ITC)**:   * Am Äquator steht die Sonne im Zenit ($90^\\circ$-Einstrahlungswinkel); der Boden und bodennahe Luftschichten werden maximal aufgeheizt.   * Die erwärmte Luft dehnt sich aus, verliert an Dichte und steigt vertikal nach oben auf (**Konvektion**).   * Am Boden entsteht ein permanenter thermischer Tiefdruckgürtel: die **Innertropische Konvergenzzone (ITC)**.   * Beim Aufsteigen kühlt sich die Luft feuchtadiabatisch ab (um ca. $0,6^\\circ\\text{ C} / 100\\text{ m}$), Wasserdampf kondensiert $\\rightarrow$ tägliche schwere **Zenitalniederschläge**. - **2. Phase (Höhenausgleichsströmung)**:   * An der Tropopause (in ca. 15–18 km Höhe) strömen die aufgestiegenen Luftmassen polwärts nach Norden und Süden ab (**Höhenantitrades / Antipassate**). - **3. Phase (Subtropischer Hochdruckgürtel & Wendekreiswüsten)**:   * Im Bereich der **Wendekreise (ca. $23,5^\\circ–30^\\circ$ nördlicher und südlicher Breite)** sinken die mittlerweile stark abgekühlten, schweren Luftmassen großflächig wieder zum Boden ab (**Subsidenz**).   * Beim Absinken wird die Luft komprimiert und erwärmt sich trockenadiabatisch ($1^\\circ\\text{ C} / 100\\text{ m}$).   * Durch die Erwärmung sinkt die relative Luftfeuchtigkeit weit unter den Taupunkt; vorhandene Wolken lösen sich vollständig auf.   * Folge: Dauerhafte Hochdruckgebiete (**Subtropenhoch**), extreme Sonneneinstrahlung, absoluter Regenmangel $\\rightarrow$ **Entstehung der großen Wendekreiswüsten der Erde (Sahara, Arabische Wüste, Namib, Große Sandwüste Australiens)**. - **4. Phase (Bodennahe Passatwinde & Corioliskraft)**:   * Um das Druckgefälle zwischen dem subtropischen Hochdruckgürtel und der äquatorialen Tiefdruckrinne auszugleichen, strömt die Luft bodennah zum Äquator zurück.   * Durch die Erdrotation (**Corioliskraft**) werden diese Winde abgelenkt:     - Auf der Nordhalbkugel nach rechts $\\rightarrow$ als beständiger **Nordost-Passat**.     - Auf der Südhalbkugel nach links $\\rightarrow$ als beständiger **Südost-Passat**.   * In der ITC treffen beide Passate aufeinander (konvergieren) und der Kreislauf schließt sich."
+        }
+      ]
+    }
+  ]
+}

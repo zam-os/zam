@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-geschichte-aufklaerung-revolution-kaiserreich",
+  "version": "2026.08.1",
+  "title": "Geschichte 8: Aufklärung, Französische Revolution, Industrialisierung und Deutsches Kaiserreich (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geschichte 8: Zeitalter der Aufklärung, Französische Revolution 1789, Industrielle Revolution & Soziale Frage, Reichsgründung 1871 und Imperialismus.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/geschichte",
+      "checked": "2026-08-15",
+      "label": "Realschule Geschichte 8, Lernbereiche Neuzeit, Revolutionen und Kaiserreich"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G8R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G8R0000000000000000A01",
+      "namespace": "geschichte-neuzeit",
+      "slug": "aufklaerung-gewaltenteilung-menschenrechte",
+      "title": "Die Aufklärung: Vernunft, Volkssouveränität und Gewaltenteilung",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12539",
+          "target_label": "Age of Enlightenment",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Europa im Zeitalter der Aufklärung und Revolutionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Europa im Zeitalter der Aufklärung und Revolutionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Aufklärungsphilosoph formulierte das bis heute geltende Prinzip der dreigeteilten staatlichen Gewaltenteilung (Exekutive, Legislative, Judikative)?",
+          "concept": "Charles de Montesquieu (1748)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Charles de Montesquieu",
+              "König Ludwig XIV."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Kants Definition der Aufklärung ('Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit', 'Sapere aude!'), erläutere die Kernideen der Aufklärer (Vernunft als Maßstab, angeborene Menschenrechte, Volkssouveränität nach Rousseau) und stelle Montesquieus Gewaltenteilung als Schutz vor Tyrannei dar.",
+          "concept": "Kant: Mut, sich seines eigenen Verstandes ohne Leitung anderer zu bedienen; Vernunftkritik an Absolutismus und Kirche; Angeborene unveräußerliche Menschenrechte; Rousseau: Volkssouveränität (Macht geht vom Volk aus); Montesquieu: Trennung in Legislative (Parlament), Exekutive (Regierung) und Judikative (unabhängige Richter) zur gegenseitigen Kontrolle (Checks and Balances)."
+        }
+      ]
+    },
+    {
+      "id": "01K4G8R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G8R0000000000000000A02",
+      "namespace": "geschichte-neuzeit",
+      "slug": "franzoesische-revolution-1789-menschenrechte",
+      "title": "Die Französische Revolution 1789: Sturm auf die Bastille, Menschenrechte und Phasen",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G8R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Ideen der Aufklärung waren die geistige Triebfeder der Französischen Revolution."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q6534",
+          "target_label": "French Revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Europa im Zeitalter der Aufklärung und Revolutionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Europa im Zeitalter der Aufklärung und Revolutionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem weltberühmten Ereignis am 14. Juli 1789 begann der gewaltsame Ausbruch der Französischen Revolution in Paris?",
+          "concept": "Der Sturm auf die Bastille (Staatsgefängnis als Symbol des Absolutismus)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Sturm auf die Bastille",
+              "Die Hinrichtung von König Ludwig XVI."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Ursachen der Französischen Revolution 1789 (Krise des Ständestaates, Staatsbankrott, Hungersnöte), beschreibe die drei Phasen der Revolution (1. Bürgerliche Phase & Verfassung 1789-1791; 2. Jakobinerherrschaft / Terreur 1792-1794; 3. Direktorium & Aufstieg Napoleons) und nenne die Parole 'Freiheit, Gleichheit, Brüderlichkeit'.",
+          "concept": "Ursachen: 1. & 2. Stand (Klerus & Adel, 2% der Bevölkerung) steuerfrei mit Privilegien; 3. Stand (Bauern & Bürgertum, 98%) trug Steuerlast ohne politische Mitsprache; Phasen: 1. Generalstände, Ballhausschwur, Erklärung der Menschenrechte 1789, konstitutionelle Monarchie 1791; 2. Radikalisierung, Republik, Hinrichtung Ludwig XVI., Schreckensherrschaft Robespierres (Guillotine); 3. Bürgerliches Direktorium bis Staatsstreich Napoleons 1799; Parole: Liberté, Égalité, Fraternité."
+        }
+      ]
+    },
+    {
+      "id": "01K4G8R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G8R0000000000000000A03",
+      "namespace": "geschichte-neuzeit",
+      "slug": "industrielle-revolution-soziale-frage-marx",
+      "title": "Die Industrielle Revolution und die Soziale Frage: Fabrikarbeit, Urbanisierung und Lösungsansätze",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G8R0000000000000000A02",
+          "type": "hard",
+          "rationale": "Der bürgerliche Umbruch schuf die gesellschaftlichen Rahmenbedingungen der Industrialisierung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q2269",
+          "target_label": "Industrial Revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Industrialisierung und gesellschaftlicher Wandel",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Industrialisierung und gesellschaftlicher Wandel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche bahnbrechende Erfindung von James Watt (1769) trieb den Beginn der Industriellen Revolution in England entscheidend an?",
+          "concept": "Die verbesserte Dampfmaschine",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die verbesserte Dampfmaschine",
+              "Der Verbrennungsmotor"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Merkmale der Industriellen Revolution (Dampfkraft, Kohle/Stahl, Eisenbahnnetz, Massenproduktion in Fabriken), charakterisiere das Phänomen der 'Sozialen Frage' (Verelendung / Pauperismus, 14-Stunden-Arbeitstag, Kinderarbeit, Mietskasernen) und vergleiche die Lösungsansätze von Karl Marx (Sozialismus/Klassenkampf) und Otto von Bismarck (Staatliche Sozialgesetzgebung 1883-1889).",
+          "concept": "Industrialisierung: England Vorreiter (Kohle, Textil, Dampfmaschine, Eisenbahn); Soziale Frage: Pauperismus, Schutzlosigkeit des Proletariats gegenüber Bourgeoisie; Marx: Abschaffung Privateigentum an Produktionsmitteln, Revolution; Bismarck: Einführung Kranken-, Unfall-, Alters- und Invalidenversicherung zur Schwächung der Sozialdemokratie ('Zuckerbrot und Peitsche')."
+        }
+      ]
+    },
+    {
+      "id": "01K4G8R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G8R0000000000000000A04",
+      "namespace": "geschichte-neuzeit",
+      "slug": "deutsches-kaiserreich-1871-imperialismus",
+      "title": "Das Deutsche Kaiserreich 1871 und Imperialismus: Reichsgründung und Großmachtpolitik",
+      "domain": "schule/geschichte/neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G8R0000000000000000A03",
+          "type": "hard",
+          "rationale": "Industrielle Stärke und Industrialisierung waren Basis des Imperialismus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1206012",
+          "target_label": "German Empire",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Das Deutsche Kaiserreich und der Imperialismus",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Das Deutsche Kaiserreich und der Imperialismus",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G8R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem historischen Ort und in welchem Jahr wurde das Deutsche Kaiserreich durch die Proklamation von König Wilhelm I. zum deutschen Kaiser gegründet?",
+          "concept": "Spiegelsaal von Schloss Versailles im Januar 1871 (Reichsgründung 'von oben')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Spiegelsaal von Versailles 1871",
+              "In der Frankfurter Paulskirche 1848"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G8R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere die Besonderheit der Reichsgründung 1871 als 'Reichsgründung von oben' durch Otto von Bismarck (nach den drei Einigungskriegen 1864, 1866, 1870/71), analysiere den autoritären Charakter der Reichsverfassung (starker Kaiser und Reichskanzler, Machtlosigkeit des Reichstags) und erkläre das Phänomen des Imperialismus (Kolonialwettlauf, 'Platz an der Sonne', Wettrüsten) als Wegbereiter des 1. Weltkriegs.",
+          "concept": "Gründung von oben: Fürsten und Militär riefen Kaiserreich aus (nicht das Volk wie 1848); Verfassung: Kaiser ernennt Kanzler, Heer und Außenpolitik unterstehen Kaiser, Reichstag budgetiert, aber kann Regierung nicht abwählen; Imperialismus (1880-1914): europäische Mächte teilen Afrika & Asien auf; Wilhelm II. fordert Flottenrüstung und 'Platz an der Sonne' -> Isolation Deutschlands, Bündnissysteme (Entente) -> Pulverfass 1914."
+        }
+      ]
+    }
+  ]
+}

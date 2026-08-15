@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-biologie-evolution-abstammung",
+  "version": "2026.08.1",
+  "title": "Biologie 10: Evolution, Abstammung und Hominisation (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 10: Synthetische Evolutionstheorie, Selektionsfaktoren, Homologie vs. Analogie, Fossilien und Stammesgeschichte des Menschen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 10, Lernbereich Evolution und Vielfalt des Lebens"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E0B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E0B0000000000000000A01",
+      "namespace": "biologie-evolution",
+      "slug": "evolutionstheorien-darwin-selektion",
+      "title": "Evolutionstheorien: Lamarck vs. Darwin und Synthetische Evolutionstheorie",
+      "domain": "schule/biologie/evolution",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1063",
+          "target_label": "Evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E0B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher fundamentale Selektionsmechanismus bildet nach Charles Darwin die treibende Kraft der evolutionären Anpassung?",
+          "concept": "Natürliche Selektion (Survival of the fittest: Besser an die Umwelt angepasste Individuen haben höhere Fortpflanzungschancen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Natürliche Selektion (unterschiedlicher Fortpflanzungserfolg)",
+              "Vererbung aktiv erworbener Körpereigenschaften"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E0B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Evolutionstheorien von Jean-Baptiste de Lamarck (Vervollkommnungstrieb, Gebrauch/Nichtgebrauch von Organen, Vererbung erworbener Eigenschaften) und Charles Darwin (Überproduktion von Nachkommen, genetische Variabilität, struggle for life, natürliche Auslese) am klassischen Beispiel der Halslänge von Giraffen.",
+          "concept": "Lamarck: Giraffen strecken Hals nach Blättern -> Hals verlängert sich im Leben -> vererben längeren Hals (widerlegt); Darwin: zufällige Variabilität (manche Hälse länger) -> bei Nahrungsmangel haben langhalsige höhere Überlebens-/Fortpflanzungschance (Fitness) -> Genhäufigkeit steigt über Generationen",
+          "sample_solution": "1. Lamarcks Theorie: Geht von einem inneren Vervollkommnungstrieb aus. Giraffen strecken ihren Hals ständig nach hohen Blättern. Durch intensiven Gebrauch verlängert sich der Hals während der individuellen Lebenszeit (Modifikation). Diese im Leben erworbenen Eigenschaften werden an die Nachkommen vererbt (heute genetisch widerlegt). 2. Darwins Evolutionstheorie: - Überproduktion: Giraffen erzeugen mehr Nachkommen, als überleben können. - Variabilität: Durch zufällige genetische Variation (Mutation und Rekombination) besitzen die Individuen einer Population von Geburt an unterschiedlich lange Hälse. - Kampf ums Dasein (Struggle for life): Bei Nahrungsknappheit erreichen Giraffen mit zufällig etwas längeren Hälsen mehr Futter in den Baumkronen. - Natürliche Selektion (Survival of the fittest): Die besser angepassten Tiere überleben häufiger und zeugen mehr Nachkommen (höhere evolutionäre Fitness). Über viele Generationen hinweg verschiebt sich der Genpool zugunsten der Langhalsigkeit."
+        }
+      ]
+    },
+    {
+      "id": "01K4E0B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E0B0000000000000000A02",
+      "namespace": "biologie-evolution",
+      "slug": "homologie-analogie-homologiekriterien",
+      "title": "Evolutionsbelege: Homologie (Divergenz) vs. Analogie (Konvergenz)",
+      "domain": "schule/biologie/evolution",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E0B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Evolutionsmechanismen sind Voraussetzung für die Interpretation von Verwandtschaft."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192934",
+          "target_label": "Homology (biology)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E0B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche anatomische Beziehung liegt vor, wenn Organe den gleichen grundlegenden Bauplan und gemeinsamen evolutionären Ursprung aufweisen (z. B. Menscharm, Vogelflügel, Walflosse), sich aber an verschiedene Funktionen angepasst haben?",
+          "concept": "Homologie (divergente Entwicklung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Homologie (gemeinsamer Bauplan / Verwandtschaft)",
+              "Analogie (bloße Funktionsähnlichkeit / Konvergenz)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E0B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere die drei klassischen Homologiekriterien (Kriterium der Lage, Kriterium der spezifischen Qualität/Struktur, Kriterium der Stetigkeit/Übergangsformen) und grenze Homologie (Divergenz) klar von Analogie (Konvergenz, z. B. Grabbeine von Maulwurf und Maulwurfsgrille oder Stromlinienform von Hai und Delphin) ab.",
+          "concept": "3 Kriterien: 1. Lage (gleiche Anordnung im Gefügesystem), 2. Spezifische Qualität (gleicher Feinbau/Material), 3. Stetigkeit (fossile/embryologische Zwischenformen); Homologie belegt echte Stammesverwandtschaft (Divergenz); Analogie belegt ähnlichen Selektionsdruck ohne nahe Verwandtschaft (Konvergenz)",
+          "sample_solution": "1. Die drei Homologiekriterien: - Kriterium der Lage: Organe sind homolog, wenn sie in einem vergleichbaren Gesamtgefügesystem die gleiche relative Lage einnehmen (z. B. Vorderextremitäten der Wirbeltiere: Oberarm, Unterarm mit Elle/Speiche, Handwurzel, Mittelhand, Finger). - Kriterium der spezifischen Qualität: Organe sind homolog, wenn sie in zahlreichen komplexen Sondermerkmalen und Feinstrukturen übereinstimmen, auch bei unterschiedlicher Lage (z. B. Haifischschuppe und Menschenzahn aus Schmelz und Dentin). - Kriterium der Stetigkeit: Organe sind homolog, wenn sie sich durch fossile oder embryonale Zwischenformen lückenlos miteinander verbinden lassen (z. B. Gehörknöchelchen der Säuger aus primären Kiefergelenksknochen der Reptilien). 2. Homologie vs. Analogie: - Homologe Organe beweisen gemeinsame Abstammung und nahe Verwandtschaft; ihre unterschiedliche Gestalt entstand durch funktionelle Anpassung an verschiedene Lebensräume (Divergenz). - Analoge Organe besitzen keinen gemeinsamen Grundbauplan, sondern ähneln sich rein funktionell und äußerlich, weil sie durch gleichen Selektionsdruck unabhängig voneinander entstanden sind (Konvergenz, z. B. Grabschaufeln von Maulwurf [Säugetier] und Maulwurfsgrille [Insekt])."
+        }
+      ]
+    },
+    {
+      "id": "01K4E0B0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E0B0000000000000000A03",
+      "namespace": "biologie-evolution",
+      "slug": "fossilien-brueckentiere-archaeopteryx",
+      "title": "Fossilien und Brückentiere: Mosaikformen am Beispiel Archaeopteryx",
+      "domain": "schule/biologie/evolution",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E0B0000000000000000A02",
+          "type": "hard",
+          "rationale": "Homologie und Stetigkeit sind Voraussetzung für die Einordnung von Brückenformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q184285",
+          "target_label": "Transitional fossil",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E0B0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zwischen welchen beiden großen Wirbeltierklassen bildet der im Solnhofener Plattenkalk gefundene Urvogel Archaeopteryx ein berühmtes Brückentier (Mosaikform)?",
+          "concept": "Reptilien (Kriechtiere / theropode Dinosaurier) und Vögel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Reptilien und Vögel",
+              "Amphibien und Säugetiere"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E0B0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ordne die Merkmale des Urvogels Archaeopteryx tabellarisch den Reptilienmerkmalen (Zähne im Kiefer, lange Schwanzwirbelsäule, Krallen an den Vorderflügeln, kein Brustbeinkamm) und den Vogelmerkmalen (Asymmetrische Schwungfedern, Gabelbein, hohle Knochen, Vogelbecken) zu und begründe seinen Stellenwert als Beleg für die Makroevolution.",
+          "concept": "Reptilienmerkmale: Zähne, Krallen an Fingern, lange Schwanzwirbelsäule, flaches Brustbein; Vogelmerkmale: Federn (Schwung-/Steuerfedern), Gabelbein (Furcula), Vogelfuß (3 Zehen vor, 1 zurück); Belegt Übergang von Dinosauriern zu Vögeln",
+          "sample_solution": "1. Mosaikmerkmale von Archaeopteryx lithographica: - Reptilienmerkmale: a) Echte Zähne in Ober- und Unterkiefer, b) Lange Schwanzwirbelsäule aus vielen Einzelfwirbeln, c) Drei frei bewegliche Finger mit Krallen an den Flügeln, d) Fehlen eines großen Brustbeinkamms (kein Ansatz für massive Flugmuskulatur). - Vogelmerkmale: a) Ausgeprägtes Federkleid mit asymmetrischen Kontur- und Schwungfedern (Flugfähigkeit), b) Verwachsene Schlüsselbeine zum Gabelbein (Furcula), c) Vogelfuß mit nach hinten gerichteter erster Zehe (Greiffuß), d) Leichtbauweise der Knochen. 2. Evolutionäre Bedeutung: Brückentiere (Mosaikformen / Übergangsfossilien) widerlegen die Hypothese der Artkonstanz. Archaeopteryx beweist durch die mosaikartige Kombination von Merkmalen zweier Tierklassen zweifelsfrei den phylogenetischen Übergang von theropoden Raubsauriern zu den echten Vögeln im oberen Jura."
+        }
+      ]
+    },
+    {
+      "id": "01K4E0B0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E0B0000000000000000A04",
+      "namespace": "biologie-evolution",
+      "slug": "hominidenevolution-stammbaum-des-menschen",
+      "title": "Stammesgeschichte des Menschen: Hominisation und Gattung Homo",
+      "domain": "schule/biologie/evolution",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E0B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Selektion und Evolutionstheorie sind Grundlage der Hominisation."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q159495",
+          "target_label": "Human evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E0B0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche anatomische Veränderung war der primäre Schritt in der frühen Stammesgeschichte der Hominini (Vormenschen wie Australopithecus vor ca. 4 Mio. Jahren), noch vor der starken Vergrößerung des Gehirnvolumens?",
+          "concept": "Der aufrechte, zweibeinige Gang (Bipedie)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der aufrechte, gewohnheitsmäßige Gang auf zwei Beinen (Bipedie)",
+              "Die explosionsartige Zunahme des Gehirnvolumens"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E0B0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Skizziere die wesentlichen Stationen des Homininen-Stammbaums (Australopithecus afarensis 'Lucy', Homo habilis/erectus, Homo neanderthalensis, Homo sapiens) und nenne vier anatomische Anpassungen des menschlichen Skeletts an den aufrechten Gang (Wirbelsäulenform, Beckenform, Fußgewölbe, Lage des Hinterhauptslochs).",
+          "concept": "Stammbaum: Australopithecus (Bipedie, kleines Gehirn ca. 450 cm³) -> H. habilis (erste Steinwerkzeuge) -> H. erectus (Feuernutzung, Auswanderung aus Afrika, ca. 900 cm³) -> H. neanderthalensis & H. sapiens (ca. 1400 cm³, Sprache, Kultur); Anatomie: doppelt-s-förmige Wirbelsäule, breites Schüsselbecken, federndes Fußgewölbe, zentrales Foramen magnum",
+          "sample_solution": "1. Stationen der Hominisation: - Australopithecus afarensis (vor ca. 3,8–3,0 Mio. Jahren, z. B. 'Lucy'): Aufrechter Gang, noch affenähnliches Gehirnvolumen (ca. 400–500 cm³). - Homo habilis / rudolfensis (vor ca. 2,5–1,5 Mio. Jahren): Erste systematische Herstellung einfacher Steinwerkzeuge (Oldowan-Kultur), Gehirn ca. 650 cm³. - Homo erectus (vor ca. 1,9 Mio.–100.000 Jahren): Erste weltweite Auswanderung aus Afrika nach Asien und Europa, Nutzung des Feuers, Faustkeile (Acheuléen), Gehirn ca. 850–1100 cm³. - Homo neanderthalensis (vor ca. 200.000–30.000 Jahren): Anpassung an Kaltzeiten in Europa, Bestattungsrituale, Gehirn ca. 1400–1600 cm³. - Homo sapiens (ab ca. 300.000 Jahren): Entstehung in Afrika ('Out-of-Africa'-Modell), hochentwickelte symbolische Sprache, Höhlenkunst und Kultur. 2. Skelettanpassungen an die Bipedie: a) Doppelt S-förmig geschwungene Wirbelsäule (federt Stöße beim Gehen ab), b) Breites, schüsselförmiges Becken (trägt die inneren Eingeweide), c) Standfuß mit Längs- und Querwölbung ohne opponierbare Großzehe (elastisches Abrollen), d) Zentral an der Schädelbasis liegendes Hinterhauptsloch (Foramen magnum, balanciert den Kopf kraftsparend auf der Wirbelsäule)."
+        }
+      ]
+    }
+  ]
+}

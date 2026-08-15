@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-latein-ablativus-absolutus-konjunktive-consecutio",
+  "version": "2026.08.1",
+  "title": "Latein 8: Grammatik – Ablativus Absolutus (Abl. abs.), Konjunktive und Consecutio Temporum (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Latein 8 (L1/L2): Der Ablativus Absolutus (Abl. abs. mit PPP, PPA und nominaler Abl. abs., 5 Übersetzungsmöglichkeiten), Konjunktive aller Tempora (Präsens, Imperfekt, Perfekt, Plusquamperfekt), Konjunktive im Hauptsatz (Optativ, Hortativ, Iussiv, Deliberativ, Potentialis, Irrealis) sowie die Zeitenfolge im Nebensatz (Consecutio Temporum mit ut, ne, cum).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/latein",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Latein 8 (L1/L2), Lernbereiche Sprachliche Mittel – Syntax und Formenlehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8K0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8K0000000000000000A01",
+      "namespace": "gymnasium-latein-syntax",
+      "slug": "ablativus-absolutus-ppp-ppa-nominal-uebersetzungsmoeglichkeiten",
+      "title": "Der Ablativus Absolutus (Abl. abs.): Partizipialkonstruktionen im Ablativ und die 5 Übersetzungsmethoden",
+      "domain": "schule/latein/syntax",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Ablative absolute",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Syntax – Der Ablativus Absolutus",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8K0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Zeitverhältnis drückt ein Ablativus Absolutus mit einem Partizip Perfekt Passiv (PPP, z. B. 'urbe capta') zum übergeordneten Hauptsatz aus?",
+          "concept": "Vorzeitigkeit (nachdem die Stadt eingenommen worden war)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorzeitigkeit (nachdem...)",
+              "Gleichzeitigkeit (während...)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8K0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Aufbau des Ablativus Absolutus (Abl. abs.) und übersetze: 1. **Struktur des Abl. abs.**:   * Besteht aus einem **Bezugswort im Ablativ (Subjekt)** und einem **Partizip im Ablativ (Prädikat)** (*'abgelöst'* von der grammatischen Satzstruktur des Hauptsatzes).   * **Mit PPP (Vorzeitigkeit / passivisch)**: *'Caesare duce necato'* (nachdem der Anführer Caesar getötet worden war).   * **Mit PPA (Gleichzeitigkeit / aktivisch)**: *'sole oriente'* (während die Sonne aufging).   * **Nominaler Abl. abs. (ohne Partizip)**: Zwei Nomina/Pronomen im Ablativ (*'Cicerone consule'* = unter dem Konsulat Ciceros / als Cicero Konsul war; *'Caesare auctore'* = auf Veranlassung Caesars), 2. **Die 5 Übersetzungsmöglichkeiten**:   * 1. **Unterordnung als Adverbialsatz** (temporal: *nachdem/während*, kausal: *weil/da*, konzessiv: *obwohl*, konditional: *wenn/falls*).   * 2. **Substantivierung (Präpositionalausdruck)**: *nach der Einnahme der Stadt*.   * 3. **Beiordnung (zwei Hauptsätze mit 'und (danach)')**.   * 4. **Wörtliche Übersetzung** (selten/stilistisch schwach).   * 5. **Relativsatz** (nur bei sachlichem Bezug), 3. Übersetze ins Deutsche: *'Hostibus victis milites Romani castra posuerunt.'*",
+          "concept": "Ablativus Absolutus: Nomen im Ablativ + Partizip im Ablativ; PPP = Vorzeitigkeit, PPA = Gleichzeitigkeit, nominaler Abl. abs.; 5 Übersetzungsmethoden (Adverbialsatz, Präpositionalgefüge, Beiordnung); Übersetzung: 'Nachdem die Feinde besiegt worden waren, schlugen die römischen Soldaten das Lager auf.' / 'Nach dem Sieg über die Feinde...'",
+          "sample_solution": "1. Wesen und Bildung des Ablativus Absolutus (Abl. abs.): - Der Ablativus Absolutus ist eine **losgelöste Partizipialkonstruktion** im Ablativ, die eine adverbiale Bestimmung des gesamten Satzes darstellt:   * **Subjektsnomen im Ablativ**: Der Träger der Handlung.   * **Partizip im Ablativ**: Das Prädikat der Konstruktion. - **Die Zeitverhältnisse**:   * **1. Abl. abs. mit PPP (Partizip Perfekt Passiv)** $\\implies$ **Vorzeitigkeit**:     - *« urbe deleta »* $\\rightarrow$ *« nachdem die Stadt zerstört worden war »*.   * **2. Abl. abs. mit PPA (Partizip Präsens Aktiv)** $\\implies$ **Gleichzeitigkeit**:     - *« magistro dicente »* $\\rightarrow$ *« während der Lehrer sprach »*.   * **3. Nominaler Abl. abs. (ohne Partizip, da Latein kein PPA von 'esse' besitzt)**:     - Besteht aus zwei Substantiven oder Substantiv + Adjektiv im Ablativ:       * *« Hannibale vivo »* $\\rightarrow$ *« zu Lebzeiten Hannibals / solange Hannibal lebte »*.       * *« Caesare duce »* $\\rightarrow$ *« unter der Führung Caesars »*. 2. Die 5 Übersetzungsmethoden des Abl. abs. ins Deutsche: - **1. Adverbialsatz (Konjunktionalsatz)**:   * Temporal (*nachdem, während, als*), kausal (*weil, da*), konzessiv (*obwohl*), konditional (*wenn, falls*). - **2. Präpositionalausdruck (Substantivierung – eleganter deutscher Stil)**:   * *« nach der Zerstörung der Stadt »*, *« während der Rede des Lehrers »*. - **3. Beiordnung (Parataxe mit 'und danach / und deshalb')**:   * *« Die Stadt wurde zerstört und danach zogen die Feinde ab. »* - **4. Partizipialgruppe** (im Deutschen oft unidiomatisch). - **5. Sinnentsprechender Relativsatz**. 3. Übersetzung des Beispielsatzes: - Lateinischer Text: *« Hostibus victis milites Romani castra posuerunt. »* - **Analyse**: *Hostibus victis* ist ein Abl. abs. mit PPP (*hostis, -is m.* = Feind; *vincere, vinco, vici, victum* = siegen/besiegen $\\implies$ vorzeitig). - **Mögliche korrekte Übersetzungen**:   * **Adverbialsatz (temporal)**: *« Nachdem die Feinde besiegt worden waren, schlugen die römischen Soldaten das Lager auf. »*   * **Substantivierung (Präpositional)**: *« Nach dem Sieg über die Feinde schlugen die römischen Soldaten das Lager auf. »*   * **Beiordnung**: *« Die Feinde wurden besiegt und die römischen Soldaten schlugen ihr Lager auf. »*"
+        }
+      ]
+    },
+    {
+      "id": "01K8G8K0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8K0000000000000000A02",
+      "namespace": "gymnasium-latein-syntax",
+      "slug": "konjunktive-hauptsatz-nebesatz-consecutio-temporum",
+      "title": "Konjunktive (Hauptsatzfunktionen: Optativ, Iussiv, Irrealis) und Consecutio Temporum",
+      "domain": "schule/latein/syntax",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8K0000000000000000A01",
+          "type": "hard",
+          "rationale": "Satzgefüge und Konjunktivregeln vollenden die Grammatik der 8. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Consecutio temporum",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "latein",
+          "topic_code": "lb2",
+          "topic_title": "Konjunktive und Zeitenfolge (Consecutio Temporum)",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8K0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Funktion im Hauptsatz drückt ein Konjunktiv Präsens in der 1. Person Plural aus (z. B. 'Gaudeamus!' = 'Lasst uns freuen!')?",
+          "concept": "Hortativ (Aufforderung an die 1. Person Plural: 'Lasst uns...')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hortativ (Aufforderung: 'Lasst uns...')",
+              "Irrealis der Vergangenheit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8K0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die Konjunktivfunktionen im Hauptsatz und die lateinische Zeitenfolge (Consecutio Temporum): 1. **Konjunktive im Hauptsatz**:   * **Hortativ** (1. Pl. Konj. Präs.): Aufforderung (*'Eamus!'* = Lasst uns gehen!).   * **Iussiv** (3. Sg./Pl. Konj. Präs.): Befehl an 3. Person (*'Taceat!'* = Er soll schweigen!).   * **Optativ** (Wunsch mit *utinam / ne*): Erfüllbar (Konj. Präs.) vs. Unerfüllbar (Konj. Impf./Plusquamperfekt).   * **Irrealis**: Irrealis der Gegenwart (Konj. Imperfekt: *'Si hoc scirem, gauderem'* = Wenn ich dies wüsste, würde ich mich freuen); Irrealis der Vergangenheit (Konj. Plusquamperfekt: *'Si venisses, te vidissem'* = Wenn du gekommen wärst, hätte ich dich gesehen), 2. **Consecutio Temporum (Zeitenfolge im konjunktivischen Nebensatz)**:   * Übergeordnetes Tempus **Haupttempus (Präsens, Futur)**:     - Gleichzeitigkeit: **Konjunktiv Präsens** (*'Scio, quid facias'* = Ich weiß, was du tust).     - Vorzeitigkeit: **Konjunktiv Perfekt** (*'Scio, quid feceris'* = Ich weiß, was du getan hast).   * Übergeordnetes Tempus **Nebentempus (Imperfekt, Perfekt, Plusquamperfekt)**:     - Gleichzeitigkeit: **Konjunktiv Imperfekt** (*'Sciebam, quid faceres'* = Ich wusste, was du tatest).     - Vorzeitigkeit: **Konjunktiv Plusquamperfekt** (*'Sciebam, quid fecisses'* = Ich wusste, was du getan hattest).",
+          "concept": "Konjunktive: Hauptsatz (Hortativ, Iussiv, Optativ, Irrealis Gegenw./Verg.); Consecutio Temporum: Hauptzeit -> Konj. Präs. (Gleichz.) / Konj. Perf. (Vorz.); Nebenzeit -> Konj. Impf. (Gleichz.) / Konj. Plusq. (Vorz.).",
+          "sample_solution": "1. Die Funktionen des Konjunktivs im Hauptsatz: - **1. Hortativ (Ermahnung / Aufforderung an 1. Plural)**:   * Konjunktiv Präsens 1. Plural: *« Gaudeamus! »* $\\rightarrow$ *« Lasst uns freuen! »*. - **2. Iussiv (Gebot / Befehl an 3. Person)**:   * Konjunktiv Präsens 3. Person: *« Audiatur et altera pars! »* $\\rightarrow$ *« Man höre / es soll gehört werden auch die andere Seite! »*. - **3. Optativ (Wunschsatz, oft mit 'utinam' eingeleitet)**:   * Erfüllbar in Gegenwart: Konj. Präsens (*« Utinam veniat! »* $\\rightarrow$ *« Hoffentlich kommt er! »*).   * Unerfüllbar in Gegenwart: Konj. Imperfekt (*« Utinam viveret! »* $\\rightarrow$ *« Wenn er doch noch lebte! »*).   * Unerfüllbar in Vergangenheit: Konj. Plusquamperfekt (*« Utinam venisset! »* $\\rightarrow$ *« Wäre er doch nur gekommen! »*). - **4. Irrealis (Bedingungsgefüge der Unwirklichkeit)**:   * **Irrealis der Gegenwart**: Konjunktiv Imperfekt (*« Si taceres, philosophus maneres. »* $\\rightarrow$ *« Wenn du schwiegest, bliebest du ein Philosoph. »*).   * **Irrealis der Vergangenheit**: Konjunktiv Plusquamperfekt (*« Si hoc dixisses, erravissem. »* $\\rightarrow$ *« Wenn du dies gesagt hättest, hätte ich mich geirrt. »*). 2. Die Consecutio Temporum (Lateinische Zeitenfolge in Nebensätzen mit ut, ne, cum, indirekten Fragen): - Das Tempus des konjunktivischen Nebensatzes richtet sich streng nach der Zeitstufe des Hauptsatzes und dem logischen Zeitverhältnis: | Übergeordnetes Prädikat | Gleichzeitigkeit | Vorzeitigkeit | | :--- | :--- | :--- | | **Hauptzeiten** (Präsens, Futur I/II, Perfekt mit Gegenwartsbezug) | **Konjunktiv Präsens** (*« Rogo, quid facias »* = Ich frage, was du machst) | **Konjunktiv Perfekt** (*« Rogo, quid feceris »* = Ich frage, was du getan hast) | | **Nebenzeiten / historische Zeiten** (Imperfekt, historisches Perfekt, Plusquamperfekt) | **Konjunktiv Imperfekt** (*« Rogabam, quid faceres »* = Ich fragte, was du machtest) | **Konjunktiv Plusquamperfekt** (*« Rogabam, quid fecisses »* = Ich fragte, was du getan hattest) |"
+        }
+      ]
+    }
+  ]
+}

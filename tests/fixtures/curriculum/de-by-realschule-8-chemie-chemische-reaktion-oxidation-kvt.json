@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-chemie-chemische-reaktion-oxidation",
+  "version": "2026.08.1",
+  "title": "Chemie 8: Chemische Reaktion, Energetik, Oxidation und Massenerhaltung (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 8: Merkmale chemischer Reaktionen, exotherm vs. endotherm, Oxidation, Massenerhaltung nach Lavoisier und Reaktionsgleichungen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/chemie",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 8, Lernbereich Die chemische Reaktion"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4C8R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4C8R0000000000000000A01",
+      "namespace": "chemie-reaktionen",
+      "slug": "merkmale-chemische-reaktion-stoffumwandlung",
+      "title": "Merkmale der chemischen Reaktion: Stoffumwandlung und Bindungsumbau",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q36534",
+          "target_label": "Chemical reaction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was unterscheidet eine chemische Reaktion grundlegend von einem rein physikalischen Vorgang?",
+          "concept": "Bei einer chemischen Reaktion entstehen neue Stoffe mit völlig neuen Eigenschaften (Stoff- und Teilchenumwandlung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entstehung neuer Stoffe mit neuen Eigenschaften (Stoffumwandlung)",
+              "Ausschließlich eine Änderung des Aggregatzustands oder der Form"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei Hauptkriterien einer chemischen Reaktion (Stoffumwandlung, Energieumsatz, Umgruppierung von Teilchen / Bindungsbruch und Bindungsneubildung) und beurteile die Vorgänge 'Schmelzen von Wachs' vs. 'Verbrennen einer Kerze' hinsichtlich dieser Kriterien.",
+          "concept": "1. Stoffumwandlung (Edukte -> Produkte); 2. Energieumsatz (exotherm/endotherm); 3. Teilchenumgruppierung; Schmelzen von Wachs = physikalisch (nur Phasenwechsel, Wachsmoleküle bleiben intakt); Verbrennen = chemisch (Wachs + O2 -> CO2 + H2O, neue Stoffe, exotherm)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4C8R0000000000000000A02",
+      "namespace": "chemie-reaktionen",
+      "slug": "energieumsatz-exotherm-endotherm-katalysator",
+      "title": "Energetik chemischer Reaktionen: Exotherm, endotherm, Aktivierungsenergie und Katalysator",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Konzept der chemischen Reaktion ist Basis für Energiediagramme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q36534",
+          "target_label": "Exothermic reaction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Wirkung hat der Zusatz eines Katalysators auf eine chemische Reaktion?",
+          "concept": "Er senkt die Aktivierungsenergie E_A und beschleunigt die Reaktion, ohne selbst verbraucht zu werden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er senkt die Aktivierungsenergie E_A und beschleunigt die Reaktion",
+              "Er erhöht die freiwerdende Reaktionswärme ΔH"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Zeichne und beschreibe das Energiediagramm einer exothermen Reaktion im Vergleich zu einer endothermen Reaktion (Ebene der Edukte, Übergangszustand, Aktivierungsenergie E_A, Reaktionsenthalpie ΔH, Produkte) und erkläre die Rolle eines Katalysators im Diagramm.",
+          "concept": "Exotherm: Edukte energiereicher als Produkte (ΔH < 0, Energieabgabe an Umwelt); Endotherm: Produkte energiereicher als Edukte (ΔH > 0, ständige Energiezufuhr); Katalysator: alternativer Reaktionsweg mit niedrigerer Aktivierungsenergie E_A, ΔH bleibt exakt gleich."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4C8R0000000000000000A03",
+      "namespace": "chemie-reaktionen",
+      "slug": "oxidation-verbrennung-feuerloeschen",
+      "title": "Oxidation, Verbrennung und Grundlagen des Brandschutzes / Feuerlöschens",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8R0000000000000000A02",
+          "type": "hard",
+          "rationale": "Die Energetik chemischer Reaktionen erklärt Verbrennungsvorgänge."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q36534",
+          "target_label": "Combustion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche drei Bedingungen müssen im 'Verbrennungsdreieck' gleichzeitig erfüllt sein, damit ein Feuer brennen kann?",
+          "concept": "Brennbarer Stoff, Sauerstoff (Oxidationsmittel) und Zündtemperatur (Wärme)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Brennbarer Stoff, Sauerstoff und Zündtemperatur",
+              "Brennbarer Stoff, Kohlenstoffdioxid und Wasser"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die Oxidation im historischen Sinn (Reaktion eines Stoffes mit Sauerstoff zu einem Oxid), beschreibe das Verbrennungsdreieck und leite daraus die drei physikalisch-chemischen Löschprinzipien der Feuerwehr ab (Erstickungseffekt, Kühleffekt, Entzug des Brennstoffs).",
+          "concept": "Oxidation: chemische Verbindung eines Elements mit Sauerstoff unter Entstehung von Metalloxiden (z. B. MgO, Fe2O3) oder Nichtmetalloxiden (z. B. CO2, SO2); Löschprinzipien: 1. Sauerstoffentzug (Ersticken, z. B. CO2-Löscher, Löschdecke); 2. Abkühlen unter Zündtemperatur (Kühlen, z. B. Wasser); 3. Brennstoffentzug (Abtrennen der Zufuhr)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C8R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4C8R0000000000000000A04",
+      "namespace": "chemie-reaktionen",
+      "slug": "massenerhaltung-lavoisier-reaktionsgleichungen",
+      "title": "Gesetz von der Erhaltung der Masse (Lavoisier) und Ausgleichen von Reaktionsgleichungen",
+      "domain": "schule/chemie/allgemeine-chemie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C8R0000000000000000A03",
+          "type": "hard",
+          "rationale": "Oxidation und Stoffumwandlung bilden den Kontext für quantitative Reaktionsgleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q36534",
+          "target_label": "Conservation of mass",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Die chemische Reaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C8R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was besagt das Gesetz von der Erhaltung der Masse nach Antoine Lavoisier bei chemischen Reaktionen in einem geschlossenen System?",
+          "concept": "Die Gesamtmasse der Ausgangsstoffe (Edukte) ist exakt gleich der Gesamtmasse der Endstoffe (Produkte): m(Edukte) = m(Produkte)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m(Edukte) = m(Produkte) (Gesamtmasse bleibt konstant)",
+              "Die Gesamtmasse nimmt bei Verbrennungen immer ab"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C8R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Begründe das Massenerhaltungsgesetz auf der Teilchenebene (Atome werden weder erzeugt noch vernichtet, sondern nur umgruppiert), erkläre das scheinbare Paradoxon der Massenzunahme beim Verbrennen von Eisenwolle und gleiche folgende unvollständige Reaktionsgleichungen mit stöchiometrischen Koeffizienten aus: a) Al + O_2 -> Al_2O_3, b) Fe + O_2 -> Fe_3O_4.",
+          "concept": "Massenerhaltung: Atomart und Atomzahl vor und nach der Reaktion identisch; Eisenwolle nimmt an Masse zu, weil gasförmiger Luftsauerstoff fest ins Eisengitter eingebunden wird (m_Eisenoxid = m_Eisen + m_Sauerstoff); Ausgeglichen: a) 4 Al + 3 O2 -> 2 Al2O3; b) 3 Fe + 2 O2 -> Fe3O4."
+        }
+      ]
+    }
+  ]
+}

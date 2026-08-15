@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-chemie-saeuren-basen-neutralisation",
+  "version": "2026.08.1",
+  "title": "Chemie 10: Säure-Base-Reaktionen, pH-Wert und Neutralisation (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 10: Brönsted-Theorie, Autoprotolyse des Wassers, logarithmische pH-Wert-Skala, Neutralisation und Titration.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 10, Lernbereich Protonenübertragungsreaktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4S0C0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4S0C0000000000000000A01",
+      "namespace": "chemie-saeure-base",
+      "slug": "broensted-theorie-protonendonator-akzeptor",
+      "title": "Säure-Base-Theorie nach Brönsted: Protonenübertragung und Ampholyte",
+      "domain": "schule/chemie/allgemein",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11158",
+          "target_label": "Brønsted–Lowry acid–base theory",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S0C0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird eine Säure nach der Brönstedschen Definition charakterisiert?",
+          "concept": "Als Protonendonator (Teilchen, das ein Proton H+ abgibt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Protonendonator (gibt H+ ab)",
+              "Als Protonenakzeptor (nimmt H+ auf)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S0C0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere Säuren und Basen nach Johannes Nicolaus Brönsted, erkläre den Begriff Ampholyt (amphoteres Teilchen) am Beispiel des Wassermoleküls und bestimme die korrespondierenden (konjugierten) Säure-Base-Paare in der Reaktion von gasförmigem Chlorwasserstoff (HCl) mit Wasser.",
+          "concept": "Säure = Protonendonator, Base = Protonenakzeptor; Ampholyt = kann sowohl als Säure als auch als Base reagieren (H2O); HCl + H2O -> Cl- + H3O+ (Paare: HCl/Cl- und H3O+/H2O)",
+          "sample_solution": "1. Brönsted-Definition: - Säure: Ein Teilchen (Molekül oder Ion), das ein Proton (H⁺) an einen Reaktionspartner abgeben kann (Protonendonator). - Base: Ein Teilchen mit mindestens einem freien Elektronenpaar, das ein Proton (H⁺) aufnehmen kann (Protonenakzeptor). - Protolyse: Eine chemische Reaktion mit Übergang eines Protons von der Säure auf die Base. 2. Ampholyt (z. B. H₂O): Wasser kann je nach Reaktionspartner als Base reagieren (Aufnahme von H⁺ zu H₃O⁺, z. B. mit HCl) oder als Säure (Abgabe von H⁺ zu OH⁻, z. B. mit NH₃). 3. Korrespondierende Säure-Base-Paare bei HCl + H₂O -> Cl⁻ + H₃O⁺: - Paar 1: HCl (Säure 1) und Cl⁻ (korrespondierende Base 1). - Paar 2: H₂O (Base 2) und H₃O⁺ (korrespondierende Säure 2 / Oxonium-Ion)."
+        }
+      ]
+    },
+    {
+      "id": "01K4S0C0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4S0C0000000000000000A02",
+      "namespace": "chemie-saeure-base",
+      "slug": "ph-wert-skala-autoprotolyse-wasser",
+      "title": "Der pH-Wert: Autoprotolyse des Wassers, Ionenprodukt und pH-Skala (0-14)",
+      "domain": "schule/chemie/allgemein",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S0C0000000000000000A01",
+          "type": "hard",
+          "rationale": "Brönsted-Protonenübertragung ist Voraussetzung für Oxonium- und Hydroxidionen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q40936",
+          "target_label": "pH",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S0C0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Um welchen Faktor ändert sich die Konzentration der Oxonium-Ionen c(H3O+), wenn der pH-Wert einer sauren Lösung von pH 3 auf pH 5 ansteigt (Verdünnung)?",
+          "concept": "Sie sinkt um den Faktor 100 (10^2, da der pH-Wert eine dekadisch logarithmische Skala ist)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faktor 100 (10^2-fache Abnahme)",
+              "Faktor 2 (doppelte Abnahme)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S0C0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Autoprotolyse des reinen Wassers, formuliere das Ionenprodukt K_w = c(H3O+) · c(OH-) = 10^-14 mol^2/l^2 bei 25 °C, definiere die mathematische Formel des pH-Wertes (pH = -lg c(H3O+)) und begründe, warum eine neutrale Lösung exakt den pH-Wert 7 aufweist.",
+          "concept": "Autoprotolyse: 2 H2O <=> H3O+ + OH-; K_w = 10^-14; pH = -lg(c(H3O+)); neutral: c(H3O+) = c(OH-) = 10^-7 mol/l -> pH = -lg(10^-7) = 7",
+          "sample_solution": "1. Autoprotolyse des Wassers: Auch in reinstem destilliertem Wasser findet in sehr geringem Umfang eine Eigenübertragung von Protonen zwischen den Wassermolekülen statt: H₂O + H₂O <=> H₃O⁺ + OH⁻. 2. Ionenprodukt des Wassers: Bei 25 °C ist das Produkt der Ionenkonzentrationen immer konstant: K_w = c(H₃O⁺) · c(OH⁻) = 1,0 · 10⁻¹⁴ mol²/l². 3. pH-Wert-Definition: Der pH-Wert ist der negative dekadische Logarithmus der Oxoniumionen-Konzentration: pH = -lg[c(H₃O⁺) / (mol/l)]. 4. Neutralpunkt pH 7: In neutralem Wasser liegen Oxonium- und Hydroxidionen in exakt gleicher Konzentration vor: c(H₃O⁺) = c(OH⁻) = sqrt(10⁻¹⁴) = 10⁻⁷ mol/l. Daher gilt für neutrale Lösungen: pH = -lg(10⁻⁷) = 7 (sauer: pH < 7; basisch/alkalisch: pH > 7)."
+        }
+      ]
+    },
+    {
+      "id": "01K4S0C0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4S0C0000000000000000A03",
+      "namespace": "chemie-saeure-base",
+      "slug": "neutralisation-salzbildung-indikator",
+      "title": "Neutralisation und Salzbildung: Protonenausgleich und Indikatoren",
+      "domain": "schule/chemie/allgemein",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S0C0000000000000000A02",
+          "type": "hard",
+          "rationale": "pH-Wert und Säure-Base-Gleichgewichte sind Voraussetzung für die Neutralisation."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q214503",
+          "target_label": "Neutralization (chemistry)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S0C0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Ionenreaktion stellt das chemische Wesen jeder Neutralisation in wässriger Lösung dar?",
+          "concept": "H3O+ + OH- -> 2 H2O (Bildung von neutralem Wasser)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "H3O+ + OH- -> 2 H2O",
+              "Na+ + Cl- -> NaCl (Feststoff)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S0C0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die vollständige Stoff- und Ionenreaktionsgleichung für die Neutralisation von Salzsäure mit Natronlauge sowie von Schwefelsäure mit Kalilauge und erkläre den Farbumschlag des Säure-Base-Indikators Bromthymolblau am Äquivalenzpunkt.",
+          "concept": "HCl + NaOH -> NaCl + H2O (H3O+ + Cl- + Na+ + OH- -> Na+ + Cl- + 2 H2O); H2SO4 + 2 KOH -> K2SO4 + 2 H2O; Bromthymolblau: gelb im Sauren (pH < 6), grün am Neutralpunkt (pH 7), blau im Basischen (pH > 7,6)",
+          "sample_solution": "1. Neutralisationsreaktionen: - Salzsäure + Natronlauge: HCl (aq) + NaOH (aq) -> NaCl (aq) + H₂O (l); Netto-Ionengleichung: H₃O⁺ + OH⁻ -> 2 H₂O (die Ionen Na⁺ und Cl⁻ bleiben als gelöstes Kochsalz hydratisiert im Wasser). - Schwefelsäure + Kalilauge (zweiprotonig): H₂SO₄ + 2 KOH -> K₂SO₄ + 2 H₂O (bildet Kaliumsulfat). 2. Säure-Base-Indikator Bromthymolblau: Indikatoren sind schwache organische Säuren/Basen, deren protonierte und deprotonierte Form unterschiedliche Lichtwellenlängen absorbieren: Im sauren Milieu (pH < 6,0) ist die Lösung gelb, im neutralen Übergangsbereich um pH 7,0 grün, und im alkalischen Bereich (pH > 7,6) intensiv blau. Der Umschlag nach Grün zeigt das Erreichen des Äquivalenzpunktes an."
+        }
+      ]
+    },
+    {
+      "id": "01K4S0C0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4S0C0000000000000000A04",
+      "namespace": "chemie-saeure-base",
+      "slug": "titration-quantitative-konzentration",
+      "title": "Quantitative Titration: Maßanalyse und Konzentrationsberechnung c = n / V",
+      "domain": "schule/chemie/analytisch",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S0C0000000000000000A03",
+          "type": "hard",
+          "rationale": "Neutralisationsreaktion ist die chemische Grundlage jeder Titration."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q176040",
+          "target_label": "Titration",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Säuren und Basen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S0C0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche fundamentale Stoffmengenbeziehung gilt am Äquivalenzpunkt bei der Titration einer einprotonigen Säure (HCl) mit einer einwertigen Base (NaOH)?",
+          "concept": "n(Säure) = n(Base) <=> c_S · V_S = c_B · V_B",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "c_S · V_S = c_B · V_B",
+              "c_S / V_S = c_B / V_B"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S0C0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Versuchsaufbau einer Säure-Base-Titration (Bürette mit Maßlösung, Erlenmeyerkolben mit Probelösung und Indikator, Magnetrührer) und berechne die Stoffmengenkonzentration c(HCl) einer Salzsäureprobe, wenn zur Neutralisation von V_S = 20,0 ml Salzsäure genau V_B = 15,0 ml Natronlauge der Konzentration c(NaOH) = 0,10 mol/l verbraucht wurden.",
+          "concept": "Versuchsaufbau: Bürette, Erlenmeyerkolben, Rührfisch, Farbindikator; Rechnung: n(HCl) = n(NaOH) = c_B * V_B = 0,10 mol/l * 0,015 l = 0,0015 mol; c(HCl) = n / V_S = 0,0015 mol / 0,020 l = 0,075 mol/l",
+          "sample_solution": "1. Versuchsaufbau und Durchführung: In einem Erlenmeyerkolben wird ein genau abgemessenes Volumen der Probelösung (z. B. 20 ml Salzsäure) mit einer Vollpipette vorgelegt und mit wenigen Tropfen Indikator (z. B. Bromthymolblau) versetzt. Aus einer kalibrierten Bürette wird unter ständigem Rühren tropfenweise Maßlösung bekannter Konzentration (z. B. 0,10 mol/l NaOH) zugegeben, bis der Indikator exakt umschlägt (Äquivalenzpunkt). An der Bürettenskala wird das verbrauchte Volumen V_B abgelesen. 2. Quantitative Konzentrationsberechnung: - Am Äquivalenzpunkt gilt: n(HCl) = n(NaOH) <=> c(HCl) · V(HCl) = c(NaOH) · V(NaOH). - Stoffmengenkonzentration der Salzsäure: c(HCl) = (c(NaOH) · V(NaOH)) / V(HCl) = (0,10 mol/l · 15,0 ml) / 20,0 ml = 1,5 / 20,0 mol/l = 0,075 mol/l."
+        }
+      ]
+    }
+  ]
+}

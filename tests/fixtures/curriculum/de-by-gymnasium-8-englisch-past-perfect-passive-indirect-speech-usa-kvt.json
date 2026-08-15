@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-englisch-past-perfect-passive-indirect-speech-usa",
+  "version": "2026.08.1",
+  "title": "Englisch 8: Advanced Grammar (Past Perfect, Passive, Indirect Speech) und USA-Landeskunde (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 8 (E1/E2): Past Perfect (had + 3rd form für Vorvergangenheit), Passive Voice über alle Zeiten (be + past participle), Indirect Speech mit Zeitverschiebung (Backshift of Tenses) und Pronomenanpassung sowie Cultural Studies USA (Geschichte, Bürgerrechtsbewegung, Geographie und Diversität).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/englisch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Englisch 8, Lernbereiche Sprachliche Mittel – Grammatik, Interkulturelle Kompetenzen (USA)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8J0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8J0000000000000000A01",
+      "namespace": "gymnasium-englisch-grammar",
+      "slug": "past-perfect-passive-voice-indirect-speech-backshift",
+      "title": "Englische Grammatik 8: Past Perfect, Passive Voice und Indirect Speech (Backshift of Tenses)",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Past Perfect, Passiv und Indirekte Rede",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8J0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird der Satz in die indirekte Rede gesetzt, wenn das Einleitungswort in der Vergangenheit steht: Peter said: 'I bought a new car yesterday.'?",
+          "concept": "Peter said that he had bought a new car the day before. (Simple Past -> Past Perfect, yesterday -> the day before)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Peter said that he had bought a new car the day before.",
+              "Peter said that he bought a new car yesterday."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8J0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere drei zentrale Grammatikkapitel des 8. Schuljahres Gymnasium Englisch: 1. **Past Perfect Simple (Vorvergangenheit)**:   * Bildung: **had + past participle** (3. Verbform).   * Verwendung: Drückt eine Handlung aus, die zeitlich **vor** einem anderen vergangenen Ereignis (Simple Past) stattfand (*'When I arrived at the cinema, the movie had already started'*), 2. **Passive Voice (Passiv)**:   * Bildung: **Form von 'to be' in der jeweiligen Zeitform + past participle** (*Active: 'Shakespeare wrote Hamlet' $\\rightarrow$ Passive: 'Hamlet was written by Shakespeare'*).   * Objekt des Aktivsatzes wird zum Subjekt des Passivsatzes; der Handelnde wird mit *by-agent* angehängt (oder weggelassen, wenn unbekannt/unwichtig), 3. **Indirect Speech (Indirekte Rede)**:   * Steht das einleitende Verb in der Vergangenheit (*he said, she explained*), erfolgt der **Backshift of Tenses**:     - Simple Present $\\rightarrow$ Simple Past     - Present Continuous $\\rightarrow$ Past Continuous     - Simple Past / Present Perfect $\\rightarrow$ **Past Perfect**     - will $\\rightarrow$ **would**, can $\\rightarrow$ **could**.   * Anpassung von Pronomen und Orts-/Zeitangaben (*here $\\rightarrow$ there, now $\\rightarrow$ then, today $\\rightarrow$ that day, tomorrow $\\rightarrow$ the next day*).",
+          "concept": "Englische Grammatik 8: Past Perfect (had + 3rd form); Passiv (be + past participle in allen Zeiten); Indirekte Rede (Backshift of Tenses bei Vergangenheits-Einleitung, Pronomen- und Zeitangaben-Verschiebung).",
+          "sample_solution": "1. Past Perfect Simple (Vorvergangenheit): - **Bildung**: $\\mathbf{\\text{had} + \\text{Past Participle (3. Verbform / -ed)}}$. - **Funktion**: Beschreibt ein Ereignis, das vor einem anderen Zeitpunkt in der Vergangenheit abgeschlossen war:   * *Beispiel*: *« After we **had finished** our homework, we went to the skatepark. »* (Erst Hausaufgaben fertig [Past Perfect], dann zum Park gegangen [Simple Past]). 2. The Passive Voice (Leideform): - **Bildung**: $\\mathbf{\\text{to be (im Tempus des Aktivsatzes)} + \\text{Past Participle}}$:   * **Simple Present**: *« Letters **are delivered** every morning. »*   * **Simple Past**: *« The Empire State Building **was built** in 1931. »*   * **Present Perfect**: *« A new bridge **has been opened**. »*   * **Will-Future**: *« The concert **will be cancelled**. »*   * **Modals**: *« The homework **must be done** today. »* - **Besonderheit (Personal Passive)**: Im Englischen kann auch das indirekte Objekt (Dativobjekt) zum Subjekt des Passivsatzes werden (*« They gave him an award » $\\rightarrow$ « **He was given** an award »*). 3. Reported Speech (Indirekte Rede mit Backshift of Tenses): - Steht das Einleitungswort im Simple Past (*he said, they told me*), werden alle Zeitformen um eine Stufe in die Vergangenheit verschoben (**Backshift**): | Direkte Rede (Direct Speech) | Indirekte Rede (Reported Speech) | | :--- | :--- | | Simple Present (*'I live in Boston'*) | **Simple Past** (*he lived in Boston*) | | Present Continuous (*'I am playing'*) | **Past Continuous** (*he was playing*) | | Simple Past (*'I saw a bear'*) | **Past Perfect** (*he had seen a bear*) | | Present Perfect (*'I have lost it'*) | **Past Perfect** (*he had lost it*) | | will / can | **would / could** | - **Verschiebung von Zeit- und Ortsadverbien**:   * *now $\\rightarrow$ then*   * *today $\\rightarrow$ that day*   * *yesterday $\\rightarrow$ the day before / the previous day*   * *tomorrow $\\rightarrow$ the next / following day*   * *here $\\rightarrow$ there*   * *this $\\rightarrow$ that*."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8J0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8J0000000000000000A02",
+      "namespace": "gymnasium-englisch-landeskunde",
+      "slug": "usa-history-civil-rights-geography-diversity",
+      "title": "Cultural Studies: The USA – History (Independence, Civil War), Civil Rights Movement and Diversity",
+      "domain": "schule/englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8J0000000000000000A01",
+          "type": "hard",
+          "rationale": "Landeskundliche Textkompetenz nutzt die fortgeschrittene Grammatik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "United States",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Landeskunde – The United States of America",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8J0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which historic civil rights leader delivered the famous 'I Have a Dream' speech during the March on Washington in 1963?",
+          "concept": "Dr. Martin Luther King Jr. (leader of the non-violent American Civil Rights Movement)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dr. Martin Luther King Jr.",
+              "Abraham Lincoln"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8J0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the key historical and cultural milestones of the United States of America in 4 dimensions: 1. **Founding & Independence**: The Pilgrim Fathers (Mayflower 1620), Boston Tea Party (1773), **Declaration of Independence on July 4, 1776** (Thomas Jefferson: *'All men are created equal'*), Constitution (1787) & Bill of Rights, 2. **Civil War (1861–1865) & Abolition of Slavery**: Abraham Lincoln, conflict between Northern Union states and Southern Confederacy, Emancipation Proclamation (1863), 3. **The Civil Rights Movement (1950s–1960s)**: Rosa Parks (Montgomery Bus Boycott 1955), **Dr. Martin Luther King Jr.** (principles of non-violence, 'I Have a Dream' 1963), Civil Rights Act of 1964 ending legal segregation (Jim Crow laws), 4. **Modern American Society & Geography**: 50 states, East Coast (NYC, Washington D.C.) vs. West Coast (California, Silicon Valley), Midwest and South; concepts of the **'Melting Pot' vs. 'Salad Bowl'** of cultures.",
+          "concept": "USA Cultural Studies: Independence 1776; Civil War & Lincoln 1861-65; Civil Rights Movement (MLK, Rosa Parks, Civil Rights Act 1964); Modern USA: Geography (50 states) & Diversity ('Melting Pot' vs. 'Salad Bowl').",
+          "sample_solution": "1. Early American History and Independence: - **Colonial Era**: In 1620, the *Pilgrim Fathers* sailed on the *Mayflower* to Plymouth, Massachusetts, seeking religious freedom. - **American Revolution (1775–1783)**: Growing protests against British taxation without representation in parliament (*« No taxation without representation »*, Boston Tea Party 1773). - **July 4, 1776**: Adoption of the **Declaration of Independence**, written by Thomas Jefferson, establishing the United States based on unalienable rights: *life, liberty, and the pursuit of happiness*. 2. The American Civil War (1861–1865): - **Causes**: Deep economic and ideological division between the industrialized Northern states (Union) and the agrarian Southern states (Confederacy), which relied entirely on slave labor on cotton and tobacco plantations. - **President Abraham Lincoln**: Preserved the Union and abolished slavery through the **Emancipation Proclamation (1863)** and the 13th Amendment to the Constitution. 3. The Civil Rights Movement (1950s & 1960s): - **The Struggle against Segregation**: Even after the abolition of slavery, *Jim Crow laws* in the South enforced strict racial segregation in schools, public transport, and restaurants. - **Key Figures and Turning Points**:   * **Rosa Parks (1955)**: Refused to give up her seat to a white passenger on a bus in Montgomery, Alabama, sparking the 381-day Montgomery Bus Boycott.   * **Dr. Martin Luther King Jr.**: Championed non-violent resistance and mass marches. In August 1963, he delivered his historic *« I Have a Dream »* speech in front of the Lincoln Memorial in Washington, D.C.   * **Civil Rights Act (1964) & Voting Rights Act (1965)**: Outlawed discrimination based on race, color, religion, sex, or national origin. 4. Geography and Cultural Diversity: - **Geography**: 50 federal states spanning four time zones, from metropolitan hubs (New York, Los Angeles, Chicago) to vast natural landscapes (Grand Canyon, Great Plains, Rocky Mountains). - **Cultural Models**:   * **'Melting Pot'**: Traditional view that immigrants from all over the world blend together into one single homogeneous American identity.   * **'Salad Bowl' / 'Mosaic'**: Modern concept emphasizing that different cultures and ethnic groups maintain their unique heritage and languages while living together harmoniously as American citizens."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck",
+  "version": "2026.08.1",
+  "title": "Physik 7 NTG: Mechanik – Kräfte, Masse vs. Gewichtskraft, Dichte und Druck (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 7 (Naturwissenschaftlich-technologisches Gymnasium): Kraftbegriff und Hookesches Gesetz, Masse vs. Gewichtskraft (Ortsfaktor g), Dichte von Festkörpern und Fluiden sowie hydrostatischer und Kolbendruck.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/physik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Physik 7 (NTG), Lernbereiche Kraft und Masse, Dichte und Druck"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4P7M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4P7M0000000000000000A01",
+      "namespace": "gymnasium-physik-mechanik",
+      "slug": "kraftbegriff-vektor-hookesches-gesetz-federkonstante",
+      "title": "Der Kraftbegriff: Wirkungen, Vektordarstellung und das Hookesche Gesetz (F = D · Δs)",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Force",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Mechanik – Kräfte und Verformung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Maßeinheit besitzt die physikalische Kraft $F$ im internationalen Einheitensystem (SI)?",
+          "concept": "Newton [N] (1 N ist die Kraft, die einer Masse von 1 kg die Beschleunigung 1 m/s² erteilt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Newton [N]",
+              "Kilogramm [kg]"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den physikalischen Kraftbegriff und das Hookesche Gesetz: 1. **Kraftwirkungen**: Eine Kraft erkennt man an ihren Wirkungen: **Verformung** eines Körpers (elastisch vs. plastisch) oder **Änderung des Bewegungszustandes** (Beschleunigen, Bremsen, Richtungsänderung), 2. **Kräfte als gerichtete Größen (Vektoren)**: Eine Kraft $\\vec{F}$ ist eindeutig festgelegt durch **Angriffspunkt, Richtung (Wirkungslinie)** und **Betrag (Länge des Pfeils)**, 3. **Das Hookesche Gesetz**: Bei elastischer Verformung ist die rücktreibende Federkraft $F$ direkt proportional zur Auslenkung/Verlängerung $\\Delta s$:   $$F = D \\cdot \\Delta s$$   (mit Federhärte / Richtgröße $D = \\frac{F}{\\Delta s}$ in $\\text{N/m}$ bzw. $\\text{N/cm}$), 4. Berechne: Eine Schraubenfeder wird durch eine Kraft von $F_1 = 4\\text{ N}$ um $\\Delta s_1 = 8\\text{ cm}$ gedehnt. Wie weit dehnt sie sich bei $F_2 = 10\\text{ N}$?",
+          "concept": "Kräfte wirken verformend oder beschleunigend; Vektor (Angriffspunkt, Richtung, Betrag); Hookesches Gesetz F = D * delta_s mit Federkonstante D; Rechnung: D = 4 N / 8 cm = 0,5 N/cm -> delta_s2 = 10 N / (0,5 N/cm) = 20 cm.",
+          "sample_solution": "1. Der physikalische Kraftbegriff: - Kräfte sind Ursache für Veränderungen und können nicht direkt 'gesehen', sondern nur an ihren **zwei charakteristischen Wirkungen** erkannt und gemessen werden:   * **1. Statische Wirkung (Verformung)**:     - *Elastisch*: Körper nimmt nach Entlastung seine Ursprungsform wieder ein (z. B. Feder, Trampolin).     - *Plastisch*: Dauerhafte Formänderung (z. B. Knete, verbeultes Blech).   * **2. Dynamische Wirkung (Bewegungsänderung)**:     - Änderung des Betrags der Geschwindigkeit (Anfahren, Bremsen) oder Änderung der Bewegungsrichtung (Kurvenfahrt). 2. Kräfte als Vektoren (Gerichtete Größen $\\vec{F}$): - Ein Kraftpfeil wird im Maßstab (z. B. $1\\text{ cm} \\mathrel{\\widehat{=}} 10\\text{ N}$) gezeichnet und erfordert 3 Angaben:   * **1. Angriffspunkt** (wo die Kraft ansetzt).   * **2. Richtung / Wirkungslinie** (Pfeilspitze).   * **3. Betrag der Kraft** (Länge des Pfeils). 3. Das Hookesche Gesetz: - Für elastische Schraubenfedern gilt: Die Dehnung $\\Delta s$ ist **direkt proportional** zur wirkenden Zugkraft $F$ ($F \\sim \\Delta s$):   $$\\mathbf{F = D \\cdot \\Delta s} \\iff \\mathbf{D = \\frac{F}{\\Delta s}}$$   * $D$ ist die **Federkonstante (Federhärte)** in $\\left[\\frac{\\text{N}}{\\text{m}}\\right]$ oder $\\left[\\frac{\\text{N}}{\\text{cm}}\\right]$. 4. Lösung der Rechenaufgabe: - **1. Federkonstante ermitteln**:   $$D = \\frac{F_1}{\\Delta s_1} = \\frac{4\\text{ N}}{8\\text{ cm}} = 0,5\\text{ N/cm}$$ - **2. Dehnung bei $F_2 = 10\\text{ N}$**:   $$\\Delta s_2 = \\frac{F_2}{D} = \\frac{10\\text{ N}}{0,5\\text{ N/cm}} = \\mathbf{20\\text{ cm}}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4P7M0000000000000000A02",
+      "namespace": "gymnasium-physik-mechanik",
+      "slug": "masse-gewichtskraft-dichte-druck-fluide",
+      "title": "Masse vs. Gewichtskraft (Fg = m · g), Dichte (ρ = m/V) und Druck in Fluiden (p = F/A)",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Druck und Gravitationskraft bauen auf dem Kraftbegriff auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Pressure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Masse, Gewichtskraft, Dichte und Druck",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ein Astronaut hat auf der Erde eine Masse von $80\\text{ kg}$. Wie groß ist seine Masse auf dem Mond (wo die Schwerkraft nur ein Sechstel beträgt)?",
+          "concept": "Exakt 80 kg, da die Masse eine ortsunabhängige Stoffeigenschaft ist (nur die Gewichtskraft sinkt auf dem Mond auf ca. 130 N)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Exakt 80 kg (Masse bleibt überall konstant)",
+              "Nur ca. 13,3 kg"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Differenziere die fundamentalen Größen der Mechanik: 1. **Masse $m$ vs. Gewichtskraft $F_G$**: Masse ist eine universelle Körpereigenschaft (Trägheit und Materiemenge, Einheit $\\text{kg}$); Gewichtskraft $F_G = m \\cdot g$ ist ortsabhängig (Erde: $g \\approx 9,81\\text{ N/kg}$, Mond: $g_{\\text{Mond}} \\approx 1,62\\text{ N/kg}$), 2. **Dichte $\\rho$**: Stoffspezifische Masse pro Volumeneinheit: $\\rho = \\frac{m}{V}$ (Wasser: $\\rho = 1,0\\text{ g/cm}^3 = 1000\\text{ kg/m}^3$), 3. **Druck $p$**: Senkrecht auf eine Fläche $A$ wirkende Kraft: $p = \\frac{F}{A}$ (Einheit Pascal $[\\text{Pa}] = [\\text{N/m}^2]$, $1\\text{ bar} = 100.000\\text{ Pa} = 1000\\text{ hPa}$), 4. Hydrostatischer Schweredruck in Flüssigkeiten: $p(h) = \\rho \\cdot g \\cdot h$ (nimmt linear mit der Eintauchtiefe zu).",
+          "concept": "Masse (ortsungebunden, kg) vs. Gewichtskraft (Fg = m * g, N); Dichte rho = m / V; Druck p = F / A in Pascal (N/m²); Schweredruck p = rho * g * h.",
+          "sample_solution": "1. Der fundamentale Unterschied: Masse vs. Gewichtskraft: - **Masse $m$ (Skalar, Einheit $[\\text{kg}]$)**:   * Maß für die Trägheit und die Menge an Materie eines Körpers.   * **Ortsunabhängige Invariante**: Bleibt auf der Erde, auf dem Mond und im schwerelosen Weltall absolut identisch. - **Gewichtskraft $F_G$ (Vektor, Einheit $[\\text{N}]$)**:   * Die Kraft, mit der ein Himmelskörper eine Masse gravitativ anzieht:   $$\\mathbf{F_G = m \\cdot g}$$   * **Ortsabhängig**: Hängt vom lokalen **Ortsfaktor (Schwerebeschleunigung $g$)** ab:     - Erde (Mitteleuropa): $g_{\\text{Erde}} \\approx 9,81\\text{ N/kg}$ (eine Masse von $100\\text{ g}$ wiegt ca. $1\\text{ N}$).     - Mond: $g_{\\text{Mond}} \\approx 1,62\\text{ N/kg} \\approx \\frac{1}{6} g_{\\text{Erde}}$.     - Jupiter: $g_{\\text{Jupiter}} \\approx 24,8\\text{ N/kg}$. 2. Die Dichte $\\rho$ (Stoffspezifische Größe): - Gibt an, wie viel Masse in einem bestimmten Volumen $V$ gepackt ist:   $$\\mathbf{\\rho = \\frac{m}{V}} \\qquad \\left[\\frac{\\text{g}}{\\text{cm}^3}\\right] \\text{ bzw. } \\left[\\frac{\\text{kg}}{\\text{m}^3}\\right]$$   * Umrechnung: $1\\text{ g/cm}^3 = 1000\\text{ kg/m}^3$.   * *Beispiele*: Gold $19,3\\text{ g/cm}^3$, Eisen $7,87\\text{ g/cm}^3$, Aluminium $2,7\\text{ g/cm}^3$, Wasser $1,00\\text{ g/cm}^3$, Luft $\\approx 1,2\\text{ kg/m}^3$.   * *Auftriebsprinzip*: Ein Körper schwimmt in einer Flüssigkeit, wenn seine mittlere Dichte kleiner als die Dichte der Flüssigkeit ist ($\\rho_{\\text{Körper}} < \\rho_{\\text{Flüssigkeit}}$). 3. Der physikalische Druck $p$: - Definiert als Quotient aus der senkrecht wirkenden Kraft $F$ und der Fläche $A$:   $$\\mathbf{p = \\frac{F}{A}} \\qquad \\left[\\text{Pa} = \\frac{\\text{N}}{\\text{m}^2}\\right]$$   * $1\\text{ hPa} = 100\\text{ Pa}$, $1\\text{ bar} = 100.000\\text{ Pa} = 10^5\\text{ N/m}^2$. - **Hydrostatischer Schweredruck in Flüssigkeiten**:   $$\\mathbf{p_{\\text{hydr}} = \\rho \\cdot g \\cdot h}$$   *(In Wasser steigt der Druck alle 10 Meter Tiefe um rund $1\\text{ bar}$ an).* "
+        }
+      ]
+    }
+  ]
+}

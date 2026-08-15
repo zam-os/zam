@@ -1,0 +1,313 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-mathematik-lineare-gleichungssysteme",
+  "version": "2026.08.1",
+  "title": "Systeme linearer Gleichungen (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9 (Zweig I & Zweig II/III): Lineare Gleichungen mit zwei Variablen, Gleichsetzungs-, Einsetzungs- und Additionsverfahren sowie Lösungsfälle.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (I), Lernbereich 6 Systeme linearer Gleichungen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (II/III), Lernbereich 6 Systeme linearer Gleichungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4S9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4S9M0000000000000000A01",
+      "namespace": "mathematik-algebra",
+      "slug": "lineare-gleichung-zwei-variablen",
+      "title": "Lineare Gleichung mit zwei Variablen und Geradengraph",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q48281",
+          "target_label": "Linear equation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Form besitzt die Lösungsmenge einer linearen Gleichung ax + by = c im zweidimensionalen Koordinatensystem (mit b ≠ 0)?",
+          "concept": "Eine Gerade",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Gerade",
+              "Eine Parabel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bringe die lineare Gleichung 2x - 4y = 8 in die explizite Geradengleichungsform y = mx + t und gib Steigung m und y-Achsenabschnitt t an.",
+          "concept": "y = 0.5x - 2 mit m = 0.5 und t = -2",
+          "sample_solution": "Umstellen nach y: 2x - 8 = 4y <=> y = (2/4)x - (8/4) <=> y = 0,5x - 2. Die Steigung ist m = 0,5 und der y-Achsenabschnitt ist t = -2."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4S9M0000000000000000A02",
+      "namespace": "mathematik-algebra",
+      "slug": "gleichsetzungs-einsetzungsverfahren",
+      "title": "Gleichsetzungs- und Einsetzungsverfahren für lineare Gleichungssysteme",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Lineare Gleichungen mit zwei Variablen sind Voraussetzung für Lösungsverfahren linearer Gleichungssysteme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11204",
+          "target_label": "System of linear equations",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Variable lässt sich im Gleichungssystem (I) y = 3x - 1 und (II) y = -2x + 9 am schnellsten durch Gleichsetzen eliminieren?",
+          "concept": "y (da beide Gleichungen bereits nach y aufgelöst sind)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Variable y (3x - 1 = -2x + 9)",
+              "Die Variable x"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse das lineare Gleichungssystem (I) x + 2y = 11 und (II) y = 2x - 2 mit dem Einsetzungsverfahren.",
+          "concept": "x = 3, y = 4 -> L = {(3 | 4)}",
+          "sample_solution": "(II) in (I) einsetzen: x + 2*(2x - 2) = 11 <=> x + 4x - 4 = 11 <=> 5x = 15 <=> x = 3. x in (II) einsetzen: y = 2*3 - 2 = 4. Lösungsmenge: L = {(3 | 4)}."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4S9M0000000000000000A03",
+      "namespace": "mathematik-algebra",
+      "slug": "additionsverfahren-elimination",
+      "title": "Additionsverfahren zur Variablenelimination",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S9M0000000000000000A02",
+          "type": "hard",
+          "rationale": "Das Verständnis der Variablenelimination ist Voraussetzung für das Additionsverfahren."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q2567",
+          "target_label": "Gaussian elimination",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie müssen die Koeffizienten einer Variablen in beiden Gleichungen beschaffen sein, damit sie sich bei direkter Addition der Gleichungen aufheben?",
+          "concept": "Gegenzahlen (entgegengesetzte Vorzeichen, gleicher Betrag, z. B. +3 und -3)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Entgegengesetzte Vorzeichen bei gleichem Betrag (z. B. +3 und -3)",
+              "Exakt identische Koeffizienten mit gleichem Vorzeichen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse das lineare Gleichungssystem (I) 3x + 4y = 18 und (II) 2x - 4y = -8 mit dem Additionsverfahren.",
+          "concept": "Addition eliminiert y: 5x = 10 -> x = 2, y = 3 -> L = {(2 | 3)}",
+          "sample_solution": "Gleichungen addieren (I) + (II): (3x + 2x) + (4y - 4y) = 18 + (-8) <=> 5x = 10 <=> x = 2. x in (I) einsetzen: 3*2 + 4y = 18 <=> 6 + 4y = 18 <=> 4y = 12 <=> y = 3. Lösungsmenge: L = {(2 | 3)}."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4S9M0000000000000000A04",
+      "namespace": "mathematik-algebra",
+      "slug": "loesungsfaelle-linearer-gleichungssysteme",
+      "title": "Lösungsfälle linearer Gleichungssysteme und geometrische Deutung",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S9M0000000000000000A02",
+          "type": "hard",
+          "rationale": "Lösungsverfahren sind Voraussetzung für die Klassifikation der Lösungsfälle."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11204",
+          "target_label": "System of linear equations",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Systeme linearer Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Lösungen besitzt ein lineares Gleichungssystem, wenn sich die beiden zugehörigen Geraden im Koordinatensystem als echt parallel (ohne Schnittpunkt) erweisen?",
+          "concept": "Keine Lösung (L = ∅)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keine Lösung (L = ∅)",
+              "Unendlich viele Lösungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei möglichen Lösungsfälle eines Systems aus zwei linearen Gleichungen mit zwei Variablen und interpretiere sie geometrisch.",
+          "concept": "1 Lösung (Schnittpunkt), 0 Lösungen (echt parallel), unendlich viele (identische Geraden)",
+          "sample_solution": "1. Genau eine Lösung (L = {(x|y)}): Die Geraden schneiden sich in genau einem Schnittpunkt S (verschiedene Steigungen). 2. Keine Lösung (L = ∅): Die Geraden sind echt parallel zueinander (gleiche Steigung m, verschiedene Achsenabschnitte t; algebraisch führt dies auf einen Widerspruch wie 0 = 5). 3. Unendlich viele Lösungen: Die Geraden sind identisch (gleiche Steigung und gleicher Achsenabschnitt; algebraisch entsteht eine allgemeingültige Aussage wie 0 = 0)."
+        }
+      ]
+    }
+  ]
+}

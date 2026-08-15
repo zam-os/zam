@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-physik-kernphysik-strahlung",
+  "version": "2026.08.1",
+  "title": "Physik 10: Atom- und Kernphysik, Radioaktivität und Strahlenschutz (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 10 (Abschlussprüfung): Radioaktive Strahlungsarten (Alpha, Beta, Gamma), Zerfallsgesetz, Kernspaltung und biologischer Strahlenschutz.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 10 (I), Lernbereich Atom- und Kernphysik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4N0P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4N0P0000000000000000A01",
+      "namespace": "physik-kernphysik",
+      "slug": "radioaktive-strahlung-alpha-beta-gamma",
+      "title": "Radioaktive Strahlung: Alpha-, Beta- und Gammastrahlung im Vergleich",
+      "domain": "schule/physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11448",
+          "target_label": "Radioactive decay",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4N0P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen Teilchen besteht Alphastrahlung (α-Strahlung) und wodurch lässt sie sich bereits vollständig abschirmen?",
+          "concept": "Helium-4-Atomkerne (2 Protonen, 2 Neutronen); wird bereits durch ein Blatt Papier oder wenige Zentimeter Luft gestoppt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Heliumkerne (durch ein Blatt Papier abschirmbar)",
+              "Schnelle Elektronen (benötigt Bleiabschirmung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4N0P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Alpha-, Beta-Minus- und Gammastrahlung hinsichtlich ihrer physikalischen Natur (Teilchenart/Welle), elektrischen Ladung, ihres Verhaltens im Magnetfeld (Lorentzkraft), ihrer Reichweite in Luft und des erforderlichen Abschirmmaterials.",
+          "concept": "Alpha: He-2+ Kern (+2e), stark abgelenkt, ca. 5 cm Luft / Blatt Papier; Beta-minus: Elektron (-1e), entgegengesetzt stark abgelenkt, ca. einige Meter Luft / Alublech; Gamma: hochenergetische elektromagnetische Welle (0), keine Ablenkung, viele Meter / dicker Bleiblock",
+          "sample_solution": "1. Alphastrahlung (α): Besteht aus 2-fach positiv geladenen Helium-4-Kernen (2p, 2n; Ladung +2e). Im Magnetfeld wird sie aufgrund ihrer Ladung zur negativen Seite abgelenkt. Reichweite in Luft nur wenige Zentimeter (hohes Ionisationsvermögen); Abschirmung: ein einfaches Blatt Papier oder die oberste Hornhautschicht. 2. Betastrahlung (β⁻): Besteht aus sehr schnellen Elektronen (Ladung -1e), die beim Zerfall eines Neutrons in ein Proton entstehen. Im Magnetfeld wird sie stark in Gegenrichtung zu Alpha abgelenkt. Reichweite in Luft einige Meter; Abschirmung: wenige Millimeter Aluminium- oder Plexiglasblech. 3. Gammastrahlung (γ): Hochenergetische, kurzwellige elektromagnetische Wellen (Photonen; keine Masse, Ladung 0). Wird im elektrischen und magnetischen Feld gar nicht abgelenkt. Durchdringt Materie sehr leicht; Abschirmung: dicke Bleiplatten oder meterdicker Schwerbeton."
+        }
+      ]
+    },
+    {
+      "id": "01K4N0P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4N0P0000000000000000A02",
+      "namespace": "physik-kernphysik",
+      "slug": "zerfallsgesetz-halbwertszeit-c14",
+      "title": "Das Zerfallsgesetz: Halbwertszeit und Radiokarbonmethode (C-14)",
+      "domain": "schule/physik/kernphysik",
+      "reduction": "formal",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4N0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Strahlungsbegriff ist Voraussetzung für die Zerfallskinetik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11409",
+          "target_label": "Radioactive decay law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4N0P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die physikalische Formel des Zerfallsgesetzes für die Anzahl noch vorhandener radioaktiver Atomkerne N(t) in Abhängigkeit von der Halbwertszeit T_1/2?",
+          "concept": "N(t) = N_0 · (1/2)^(t / T_1/2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "N(t) = N_0 · (1/2)^(t / T_1/2)",
+              "N(t) = N_0 · (1 - t / T_1/2)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4N0P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Prinzip der Radiokarbonmethode (C-14-Datierung) zur Altersbestimmung organischer Funde: Bildung von C-14 in der Atmosphäre, Aufnahme durch Fotosynthese/Nahrung, Stopp der Aufnahme beim Tod und Berechnung des Alters einer Holzprobe mit einer gemessenen Restaktivität von 25% bei T_1/2 = 5730 Jahren.",
+          "concept": "Kosmische Strahlung erzeugt C-14 -> lebende Organismen halten C-14/C-12 Verhältnis konstant -> nach dem Tod zerfällt C-14 mit T_1/2 = 5730 a; Rest 25% = (1/2)^2 -> 2 Halbwertszeiten = 2 * 5730 a = 11.460 Jahre alt",
+          "sample_solution": "1. Entstehung und Gleichgewicht: In der oberen Erdatmosphäre erzeugt kosmische Strahlung aus Stickstoff das radioaktive Kohlenstoffisotop C-14 (Beta-Strahler, T_1/2 = 5730 Jahre). Über CO₂ nehmen Pflanzen und Tiere während ihrer Lebensdauer C-14 auf; das Verhältnis von C-14 zu stabilem C-12 im Organismus ist konstant. 2. Zerfall nach dem Tod: Mit dem Absterben des Organismus endet der Stoffwechsel und die Zufuhr von C-14. Die vorhandenen C-14-Kerne zerfallen kontinuierlich nach dem Zerfallsgesetz. 3. Berechnung für 25% Restaktivität: N(t)/N_0 = 0,25 = (1/2)^2. Dies entspricht genau n = 2 Halbwertszeiten: t = 2 · T_1/2 = 2 · 5730 Jahre = 11.460 Jahre."
+        }
+      ]
+    },
+    {
+      "id": "01K4N0P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4N0P0000000000000000A03",
+      "namespace": "physik-kernphysik",
+      "slug": "kernspaltung-kettenreaktion-kernkraftwerk",
+      "title": "Kernspaltung: Massendefekt, Kettenreaktion und Kernkraftwerk",
+      "domain": "schule/physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4N0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kenntnis von Neutronen und Kernumwandlung ist Voraussetzung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11429",
+          "target_label": "Nuclear fission",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4N0P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Funktion haben die neutronenabsorbierenden Steuerstäbe (aus Bor oder Cadmium) im Reaktorkern eines Kernkraftwerks?",
+          "concept": "Sie regulieren oder stoppen die Kettenreaktion durch Einfangen überzähliger Spaltneutronen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Regelung und Abschaltung der Kettenreaktion durch Neutronenabsorption",
+              "Abkühlung der Brennelemente als Kühlmittel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4N0P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Spaltprozess von Uran-235 durch ein thermisches Neutron, erkläre die Entstehung einer unkontrollierten vs. kontrollierten Kettenreaktion und erläutere die Rolle von Moderator (Wasser/Graphit) und Steuerstäben im Kernreaktor.",
+          "concept": "U-235 + n_th -> U-236* -> Spaltfragmente (z.B. Ba-144, Kr-89) + 2-3 schnelle Neutronen + Energie (Massendefekt E=mc²); Moderator bremst schnelle Neutronen zu thermischen ab; Steuerstäbe absorbieren Neutronen (k = 1 für stationären Betrieb)",
+          "sample_solution": "1. Kernspaltung: Ein langsames (thermisches) Neutron trifft auf einen Uran-235-Kern. Durch Neutroneneinfang entsteht kurzzeitig ein instabiler U-236-Zwischenkern, der in zwei leichtere Spaltfragmente (z. B. Barium und Krypton) sowie 2 bis 3 freie, hochenergetische Neutronen zerplatzt. Durch den Massendefekt (die Masse der Spaltprodukte ist geringer als die der Ausgangskerne) wird nach Einsteins Formel E = Δm · c² gewaltige kinetische und thermische Energie frei. 2. Kettenreaktion & Reaktorsteuerung: - Kettenreaktion: Die freigesetzten Neutronen können weitere U-235-Kerne spalten. In einer Atombombe läuft dies lawinenartig unkontrolliert ab. - Moderator (z. B. leichtes oder schweres Wasser): Bremst die schnellen Neutronen durch elastische Stöße ab, da nur langsame thermische Neutronen von U-235 effizient eingefangen werden. - Steuerstäbe (Bor/Cadmium): Fangen überschüssige Neutronen weg, sodass im Leistungsbetrieb genau ein Spaltneutron pro Spaltung eine Folgespaltung auslöst (Multiplikationsfaktor k = 1, kontrollierte Kettenreaktion)."
+        }
+      ]
+    },
+    {
+      "id": "01K4N0P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4N0P0000000000000000A04",
+      "namespace": "physik-kernphysik",
+      "slug": "strahlenwirkung-dosimetrie-strahlenschutz",
+      "title": "Strahlenbiologie und Strahlenschutz: Dosimetrie und 5-A-Regeln",
+      "domain": "schule/physik/kernphysik",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4N0P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Strahlungsarten sind Voraussetzung für die biologische Dosisbewertung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q193132",
+          "target_label": "Radiation protection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Atom- und Kernphysik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4N0P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Maßeinheit wird die biologisch gewichtete Äquivalentdosis im Strahlenschutz angegeben?",
+          "concept": "Sievert (Sv) bzw. Millisievert (mSv)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sievert (Sv)",
+              "Becquerel (Bq)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4N0P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide die physikalischen Dosisgrößen Energiedosis D (in Gray) und Äquivalentdosis H (in Sievert mit biologischem Qualitätsfaktor q) und formuliere die vier zentralen Grundregeln des Strahlenschutzes (Abstand halten, Aufenthaltsdauer minimieren, Abschirmung nutzen, Aufnahme in den Körper/Inkorporation vermeiden).",
+          "concept": "Energiedosis D = E/m (Gray = J/kg); Äquivalentdosis H = D * q (Sievert); 4-A-Regeln: 1. Abstand (Dosis sinkt mit 1/r²), 2. Aufenthaltsdauer (kurz), 3. Abschirmung (Blei/Beton), 4. Aufnahme vermeiden (kein Essen/Staubmasken)",
+          "sample_solution": "1. Dosimetrische Größen: - Energiedosis D: Absorbierte Strahlungsenergie bezogen auf die Masse des bestrahlten Körpers: D = ΔE / Δm (Einheit: 1 Gray = 1 Gy = 1 J/kg). - Äquivalentdosis H: Berücksichtigt die biologische Schädlichkeit der Strahlungsart durch den Qualitätsfaktor q (z. B. q = 1 für Gamma/Beta, q = 20 für Alpha): H = D · q (Einheit: 1 Sievert = 1 Sv = 1 J/kg). 2. Die 4-A-Regeln des Strahlenschutzes: a) Abstand halten: Die Dosisleistung nimmt nach dem Abstandsgesetz quadratisch mit der Entfernung ab (1/r²). b) Aufenthaltsdauer verringern: Je kürzer die Expositionszeit im Strahlungsfeld, desto geringer die Gesamtdosis. c) Abschirmung anwenden: Geeignete Materialien (Blei, Beton, Plexiglas) zwischen Quelle und Körper bringen. d) Aufnahme (Inkorporation) vermeiden: Kontamination durch Einatmen oder Verschlucken radioaktiver Stäube verhindern (Schutzkleidung, Masken, Essverbot im Labor)."
+        }
+      ]
+    }
+  ]
+}

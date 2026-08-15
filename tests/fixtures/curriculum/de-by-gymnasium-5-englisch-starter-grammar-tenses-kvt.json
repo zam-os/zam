@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-englisch-starter-grammar-tenses",
+  "version": "2026.08.1",
+  "title": "Englisch 5: Starter Grammar – To Be, Have Got, Simple Present und Present Continuous (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 5: Verben 'to be' und 'have got', Simple Present (he/she/it -s, do/does), Present Progressive/Continuous und Modalverben/Imperativ.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/englisch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Englisch 5, Lernbereiche Sprachliche Mittel, Grammatik und Zeitformen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YE5S000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YE5S000000000000000A01",
+      "namespace": "englisch-grammatik",
+      "slug": "verb-to-be-have-got-pronomen-kurzformen",
+      "title": "Grundverben: Formen von 'to be', 'have got', Personal-/Possessivpronomen und Short Answers",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YE5S000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die korrekte bejahende Kurzantwort (Short Answer) auf die Frage 'Have you got a new computer?'?",
+          "concept": "'Yes, I have.' (In der Kurzantwort darf niemals das Wort 'got' stehen und keine Kurzform verwendet werden)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Yes, I have.",
+              "Yes, I have got."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YE5S000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Konjugiere 'to be' (am, is, are; 'm, 's, 're; isn't, aren't) und 'have got' / 'has got' (haven't got, hasn't got), stelle die Tabelle der Personalpronomen (Subjekt: I, you, he, she, it, we, they; Objekt: me, you, him, her, it, us, them) den Possessivbegleitern (my, your, his, her, its, our, their) gegenüber und übersetze: a) 'Seine Schwester hat keinen Hund.' b) 'Sind sie in der Schule?' – 'Nein, sind sie nicht.'",
+          "concept": "to be: am/is/are; have/has got (Besitz); Personalpronomen Subjekt vs. Objekt; Possessivbegleiter: his/her/its; a) 'His sister hasn't got a dog.' b) 'Are they at school?' – 'No, they aren't.'",
+          "sample_solution": "1. Grundverben 'to be' und 'have got': - **Verb 'to be' (sein)**:   * Aussagen: *I am (I'm), you are (you're), he/she/it is (he's/she's/it's), we are (we're), they are (they're)*.   * Verneinung: *I'm not, you aren't, he/she/it isn't, we aren't, they aren't*.   * Fragen & Short Answers: *'Is she your sister?'* $\\rightarrow$ *'Yes, she is.'* / *'No, she isn't.'* - **Verb 'have got' / 'has got' (haben/besitzen)**:   * Aussagen: *I/you/we/they have got ('ve got)*; *he/she/it has got ('s got)*.   * Verneinung: *haven't got* / *hasn't got*.   * Fragen & Short Answers: *'Has Tom got a bike?'* $\\rightarrow$ *'Yes, he has.'* (ohne 'got'!). 2. Pronomen und Possessivbegleiter im Überblick: | Personalpronomen (Subjekt) | Personalpronomen (Objekt) | Possessivbegleiter (my/your...) | |---|---|---| | **I** (ich) | **me** (mich/mir) | **my** (mein) | | **you** (du) | **you** (dich/dir) | **your** (dein) | | **he** (er) | **him** (ihn/ihm) | **his** (sein) | | **she** (sie) | **her** (sie/ihr) | **her** (ihr) | | **it** (es) | **it** (es/ihm) | **its** (sein/ihr) | | **we** (wir) | **us** (uns) | **our** (unser) | | **they** (sie Pl.) | **them** (sie/ihnen) | **their** (ihr Pl.) | 3. Übersetzungen: - a) 'Seine Schwester hat keinen Hund.' $\\rightarrow$ **'His sister hasn't got a dog.'** (oder: *'His sister has not got a dog.'*). - b) 'Sind sie in der Schule?' – 'Nein, sind sie nicht.' $\\rightarrow$ **'Are they at school?' – 'No, they aren't.'**"
+        }
+      ]
+    },
+    {
+      "id": "01K4YE5S000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YE5S000000000000000A02",
+      "namespace": "englisch-grammatik",
+      "slug": "simple-present-he-she-it-s-do-does-signalwoerter",
+      "title": "Simple Present: Regelmäßige Handlungen, 'he/she/it -s', Verneinung und Fragen mit do/does",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YE5S000000000000000A01",
+          "type": "hard",
+          "rationale": "Personalpronomen und Grundverben sind Voraussetzung für die englische Zeitformenlehre."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Simple present",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YE5S000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Hilfsverb muss verwendet werden, um im Simple Present einen Fragesatz in der 3. Person Einzahl (he, she, it) zu bilden (z. B. '... he play tennis?')?",
+          "concept": "Does (z. B. 'Does he play tennis?' – das -s wandert vom Vollverb zum Hilfsverb)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Does (Does he play...?)",
+              "Do (Do he play...?)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YE5S000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Verwendung, Signalwörter und Bildung des Simple Present: 1. Verwendung (regelmäßige Gewohnheiten, Hobbys, allgemeingültige Fakten), 2. Signalwörter der Häufigkeit (*always, often, usually, sometimes, seldom, never, every day*), 3. Regel der 3. Person (*'He, she, it – das 's' muss mit!'*: *he plays, she watches, it flies*), 4. Verneinung mit *don't / doesn't + Infinitiv* und Fragen mit *Do / Does + Subjekt + Infinitiv* und übersetze: a) 'Sarah liest jeden Abend ein Buch.' b) 'Spielen deine Freunde Fußball?' – 'Ja, tun sie.'",
+          "concept": "Simple Present: Fakten und Gewohnheiten; Signalwörter: always, usually, often, never; 3. Person Sg: +s/es (he works, she watches); Verneinung: don't / doesn't + Infinitiv (das s geht zu doesn't!); Frage: Do / Does; a) 'Sarah reads a book every evening.' b) 'Do your friends play football?' – 'Yes, they do.'",
+          "sample_solution": "1. Verwendung und Signalwörter des Simple Present: - **Verwendung**: Für regelmäßige Gewohnheiten, tägliche Routinen, Hobbys und allgemeine Naturgesetze/Tatsachen. - **Typische Signalwörter (Adverbs of Frequency)**: *always (immer), usually (normalerweise), often (oft), sometimes (manchmal), never (nie), every day / every week (jeden Tag)*. 2. Bildungsregeln des Simple Present: - **Aussagesatz**:   * Grundform des Verbs für I, you, we, they (*I play, we live*).   * **3. Person Singular (he, she, it)**: Es wird zwingend ein **-s** an das Verb angehängt (*'He, she, it – das 's' muss mit!'*):     - Standard: *he works, she reads, it rains*.     - Nach Zischlaut (-sh, -ch, -s, -x, -o): **-es** (*she watches, he goes, he washes*).     - Nach Konsonant + y: **-ies** (*she flies, he carries*, aber *he plays*). - **Verneinung (Negative Sentences)**:   * I / you / we / they $\\rightarrow$ **don't + Infinitiv** (*We don't like milk*).   * he / she / it $\\rightarrow$ **doesn't + Infinitiv** (Das 's' wandert zum Hilfsverb *does*, das Vollverb bleibt im reinen Infinitiv! *He doesn't eat meat*). - **Fragesätze und Kurzantworten**:   * **Do** + I/you/we/they + Infinitiv? (*'Do you like pizza?'* $\\rightarrow$ *'Yes, I do.'* / *'No, I don't.'*)   * **Does** + he/she/it + Infinitiv? (*'Does Peter speak English?'* $\\rightarrow$ *'Yes, he does.'* / *'No, he doesn't.'*). 3. Übersetzungen: - a) 'Sarah liest jeden Abend ein Buch.' $\\rightarrow$ **'Sarah reads a book every evening.'** (3. Person -s bei *reads*). - b) 'Spielen deine Freunde Fußball?' – 'Ja, tun sie.' $\\rightarrow$ **'Do your friends play football?' – 'Yes, they do.'**"
+        }
+      ]
+    },
+    {
+      "id": "01K4YE5S000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YE5S000000000000000A03",
+      "namespace": "englisch-grammatik",
+      "slug": "present-continuous-progressive-verlaufsform-kontrast",
+      "title": "Present Continuous (Progressive): Bildung (be + -ing), Signalwörter und Kontrast zum Simple Present",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YE5S000000000000000A02",
+          "type": "hard",
+          "rationale": "Simple Present bildet den Kontrastpol zur Verlaufsform Present Continuous."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Present continuous",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YE5S000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen zwei Komponenten wird die englische Verlaufsform Present Continuous (Progressive) gebildet?",
+          "concept": "Aus einer Form von 'to be' (am/is/are) + Vollverb mit der Endung '-ing'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Form von 'to be' (am/is/are) + Verb-ing",
+              "Hilfsverb 'do/does' + Verb-ing"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YE5S000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Bildung, Rechtschreibregeln und Signalwörter des Present Continuous: 1. Bildung (*am/is/are + verb-ing*), 2. Rechtschreibregeln beim Anhängen von -ing (stummes -e entfällt: *make -> making*; Konsonantenverdopplung nach kurzem Vokal: *sit -> sitting, run -> running, swim -> swimming*; ie wird zu y: *lie -> lying*), 3. Signalwörter (*now, at the moment, Look!, Listen!*), 4. Direkter Gegenüberstellungsvergleich von Simple Present (Gewohnheit) vs. Present Continuous (Handlung im Moment des Sprechens) und setze die richtige Zeitform ein: a) 'Listen! Someone (sing) in the bathroom.' b) 'Tom usually (walk) to school, but today he (ride) his bike.'",
+          "concept": "Present Continuous: be (am/is/are) + verb-ing; Signalwörter: now, at the moment, Look!, Listen!; Rechtschreibung: sitting, making; Kontrast: Simple = Gewohnheit (usually), Progressive = im Moment (now/today); a) 'Listen! Someone is singing in the bathroom.' b) 'Tom usually walks to school, but today he is riding his bike.'",
+          "sample_solution": "1. Bildung und Funktion des Present Continuous (Progressive): - **Funktion**: Beschreibt Handlungen, die **genau im Augenblick des Sprechens** ablaufen und noch nicht abgeschlossen sind. - **Bildungsformel**:   $$\\mathbf{\\text{Form von 'to be' (am / is / are) + Infinitiv mit Endung -ing}}$$ - **Signalwörter**: *now (jetzt), at the moment (im Moment), Look! (Schau!), Listen! (Hör mal!), right now*. 2. Orthographische Regeln beim Anhängen von '-ing': - **Stummes Endungs-e fällt weg**: *make $\\rightarrow$ making, write $\\rightarrow$ writing, dance $\\rightarrow$ dancing*. - **Konsonantenverdopplung nach kurzem, betontem Vokal**: *sit $\\rightarrow$ si**tt**ing, run $\\rightarrow$ ru**nn**ing, swim $\\rightarrow$ swi**mm**ing, stop $\\rightarrow$ sto**pp**ing*. - **Endung -ie verwandelt sich in -y**: *lie $\\rightarrow$ lying, die $\\rightarrow$ dying*. 3. Signalwort-Kontrast: Simple Present vs. Present Continuous: - **Simple Present**: *'I always eat cereal for breakfast.'* (Regelmäßige Gewohnheit $\\rightarrow$ Simple Present). - **Present Continuous**: *'Look! I am eating pancakes right now.'* (Momentane Handlung $\\rightarrow$ Continuous). 4. Einsetzen in die Beispielsätze: - a) *'Listen! Someone **is singing** in the bathroom.'* (Signalwort *Listen!* fordert Present Continuous; *someone* ist 3. Person Sg. $\\rightarrow$ *is singing*). - b) *'Tom usually **walks** to school, but today he **is riding** his bike.'* (*usually* = Gewohnheit $\\rightarrow$ Simple Present mit 3. Person -s *walks*; *today / temporäre Ausnahme* $\\rightarrow$ Present Continuous *is riding*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YE5S000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YE5S000000000000000A04",
+      "namespace": "englisch-grammatik",
+      "slug": "modalverben-can-must-imperativ-satzstellung-s-v-o",
+      "title": "Modalverben, Imperativ und Satzstellung: can/must, Verneinung und die S-V-O-Regel",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YE5S000000000000000A01",
+          "type": "hard",
+          "rationale": "Grundlegende Satzstrukturen und Pronomen sind Basis der Satzstellung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English modal auxiliary verb",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YE5S000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche feste Satzstellung gilt im englischen Hauptsatz verbindlich für Subjekt (S), Verb (V) und Objekt (O)?",
+          "concept": "S-V-O: Subject - Verb - Object (z. B. 'Peter [S] plays [V] football [O]')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "S-V-O (Subject - Verb - Object)",
+              "O-V-S (Object - Verb - Subject)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YE5S000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die grammatischen Regeln für Modalverben und Satzbau im Englischen: 1. Modalverben *can / can't* (Können/Fähigkeit) und *must / mustn't* (Müssen vs. striktes Verbot 'nicht dürfen'!) – kein 's' in der 3. Person und direkter Anschluss des reinen Infinitivs ohne 'to', 2. Imperativ (Aufforderung: reiner Infinitiv; Verbot: *Don't + Infinitiv*), 3. Feste englische Satzstellung: Subjekt - Verb - Objekt (S-V-O) sowie Ort vor Zeit am Satzende ('place before time') und übersetze: a) 'Du darfst hier nicht schwimmen.' b) 'Wir spielen jeden Samstag im Park Fußball.'",
+          "concept": "Modalverben: can/must ohne 3. Person -s, mit reinem Infinitiv; mustn't = 'nicht dürfen' (Verbot, nicht 'nicht müssen'); Satzbau: S-V-O, Ort vor Zeit; a) 'You mustn't swim here.' b) 'We play football in the park every Saturday.'",
+          "sample_solution": "1. Modalverben (Modal Auxiliaries): *can* und *must*: - **Besondere Eigenschaften von Modalverben**:   * Sie haben **kein -s in der 3. Person Singular** (*he can*, *she must* – niemals *he cans!*).   * Es folgt immer der **reine Infinitiv ohne 'to'** (*I can swim*, *you must go*).   * Sie bilden Fragen und Verneinungen selbst, ohne Hilfsverb *do* (*Can you help me?*). - **Bedeutungen**:   * **can / cannot (can't)**: Fähigkeit, Möglichkeit oder Erlaubnis (*'I can speak French'*).   * **must**: Notwendigkeit / Pflicht (*'You must do your homework'*).   * **Achtung Bedeutungsfalle bei mustn't**: *'You **mustn't** do that'* bedeutet im Englischen ein **striktes Verbot: 'Du darfst das nicht tun!'** (und nicht 'du musst nicht'). 2. Der englische Satzbau (Word Order): - **Die Grundregel: S-V-O (Subject - Verb - Object)**:   * Im Englischen steht das Subjekt fest vor dem Prädikat/Verb und das Objekt dahinter (*'My brother [S] bought [V] an ice cream [O]'*). - **Adverbiale Angaben am Satzende: Ort vor Zeit (Place before Time)**:   * Angaben des Ortes und der Zeit stehen am Satzende, und zwar immer **Ort vor Zeit** (*'... in the garden [Place] yesterday [Time]'*). 3. Übersetzungen: - a) 'Du darfst hier nicht schwimmen.' (Verbot) $\\rightarrow$ **'You mustn't swim here.'** (oder: *'You cannot swim here.'*). - b) 'Wir spielen jeden Samstag im Park Fußball.' (S-V-O + Ort vor Zeit) $\\rightarrow$ **'We [S] play [V] football [O] in the park [Place] every Saturday [Time].'**"
+        }
+      ]
+    }
+  ]
+}

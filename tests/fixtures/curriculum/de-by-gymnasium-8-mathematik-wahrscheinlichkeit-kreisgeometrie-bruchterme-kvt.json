@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-mathematik-wahrscheinlichkeit-kreisgeometrie-bruchterme",
+  "version": "2026.08.1",
+  "title": "Mathematik 8: Wahrscheinlichkeitsrechnung, Kreisgeometrie und Bruchterme (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 8: Laplace-Wahrscheinlichkeit, zweistufige Zufallsexperimente (Pfadregeln im Baumdiagramm), Kreisberechnung (Umfang U = 2*pi*r, Fläche A = pi*r^2, Kreissektor) sowie Definition und Vereinfachung von Bruchtermen und Bruchgleichungen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 8, Lernbereiche Stochastik, Kreisgeometrie und Bruchterme"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8B0000000000000000A01",
+      "namespace": "gymnasium-mathematik-stochastik",
+      "slug": "laplace-wahrscheinlichkeit-baumdiagramm-pfadregeln",
+      "title": "Stochastik: Laplace-Wahrscheinlichkeit, mehrstufige Zufallsexperimente und Pfadregeln im Baumdiagramm",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Probability",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Stochastik – Mehrstufige Zufallsexperimente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die 1. Pfadregel (Pfadmultiplikationsregel) zur Berechnung der Wahrscheinlichkeit eines bestimmten Pfades im Baumdiagramm?",
+          "concept": "Die Wahrscheinlichkeit eines Pfades ist gleich dem Produkt der Wahrscheinlichkeiten längs dieses Pfades",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Produkt der Wahrscheinlichkeiten entlang des Pfades",
+              "Summe der Wahrscheinlichkeiten entlang des Pfades"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die Wahrscheinlichkeitsrechnung für zweistufige Zufallsexperimente: 1. **Laplace-Formel**: $P(E) = \\frac{|E|}{Space(\\Omega)} = \\frac{\\text{Anzahl der günstigen Ergebnisse}}{\\text{Anzahl der möglichen Ergebnisse}}$, 2. **Baumdiagramme & Pfadregeln**:   * **1. Pfadregel (Produktregel)**: Die Wahrscheinlichkeit eines Ergebnisses (Elementarereignisses) entspricht dem Produkt der Wahrscheinlichkeiten entlang des Pfades.   * **2. Pfadregel (Summenregel)**: Die Wahrscheinlichkeit eines zusammengesetzten Ereignisses $E$ ist die Summe der Wahrscheinlichkeiten aller Pfade, die zu $E$ gehören. 3. **Ziehen mit vs. ohne Zurücklegen**: Konstante vs. sich reduzierende Wahrscheinlichkeiten in der 2. Stufe. 4. In einer Urne liegen 4 rote und 6 blaue Kugeln. Es werden nacheinander 2 Kugeln **ohne Zurücklegen** gezogen. Berechne die Wahrscheinlichkeit für das Ereignis $E$: 'Mindestens eine Kugel ist rot' unter Nutzung des Gegenereignisses $\\overline{E}$.",
+          "concept": "Stochastik: Laplace P(E) = günstig/möglich; 1. Pfadregel (Produkt entlang Pfad); 2. Pfadregel (Summe günstiger Pfade); Gegenereignis P(E) = 1 - P(E_quer); Urne ohne Zurücklegen: P(zwei blaue) = 6/10 * 5/9 = 30/90 = 1/3 -> P(mind. 1 rot) = 1 - 1/3 = 2/3.",
+          "sample_solution": "1. Grundlagen der klassischen Wahrscheinlichkeitsrechnung: - **Ergebnismenge $\\Omega$**: Die Menge aller möglichen Ausgänge eines Zufallsexperiments. - **Laplace-Wahrscheinlichkeit**: Sind alle Elementarereignisse gleich wahrscheinlich (z. B. fairer Würfel, Münzwurf), so gilt:   $$\\mathbf{P(E) = \\frac{|E|}{|\\Omega|} = \\frac{\\text{Anzahl der für } E \\text{ günstigen Ergebnisse}}{\\text{Gesamtzahl aller möglichen Ergebnisse}}}$$ 2. Die beiden fundamentalen Pfadregeln im Baumdiagramm: - **1. Pfadregel (Pfadmultiplikationsregel)**:   * Die Wahrscheinlichkeit eines einzelnen Ergebnispfades berechnet sich als **Produkt der Wahrscheinlichkeiten** entlang der einzelnen Kanten dieses Pfades:     $$P(\\text{Pfad } (A, B)) = P(A) \\cdot P_A(B)$$ - **2. Pfadregel (Pfadadditionsregel)**:   * Setzt sich ein Ereignis $E$ aus mehreren Pfaden zusammen, so ist seine Wahrscheinlichkeit die **Summe der Wahrscheinlichkeiten aller dieser Pfade**:     $$P(E) = \\sum_{\\text{Pfade in } E} P(\\text{Pfad})$$ 3. Die Regel des Gegenereignisses: - Für jedes Ereignis $E$ und sein Gegenereignis $\\overline{E}$ ('nicht $E$') gilt:   $$\\mathbf{P(E) = 1 - P(\\overline{E})}$$ 4. Beispielrechnung: Urne mit 4 roten und 6 blauen Kugeln ($N = 10$), 2 Züge ohne Zurücklegen: - **Gesucht**: $P(E)$ für $E = \\text{'Mindestens eine Kugel ist rot'}$. - **Gegenereignis**: $\\overline{E} = \\text{'Keine Kugel ist rot (also beide Kugeln blau)'} = (b, b)$. - **Berechnung von $P(\\overline{E})$ nach der 1. Pfadregel**:   * 1. Zug blau: $P(b_1) = \\frac{6}{10}$.   * 2. Zug blau (nur noch 5 blaue von 9 Kugeln): $P(b_2 \\mid b_1) = \\frac{5}{9}$.   * $$P(\\overline{E}) = \\frac{6}{10} \\cdot \\frac{5}{9} = \\frac{30}{90} = \\mathbf{\\frac{1}{3}}$$ - **Wahrscheinlichkeit von $E$**:   $$\\mathbf{P(E) = 1 - P(\\overline{E}) = 1 - \\frac{1}{3} = \\frac{2}{3} \\approx 66{,}67\\%}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8B0000000000000000A02",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "kreisberechnung-umfang-flaeche-kreissektor-bruchterme",
+      "title": "Kreisgeometrie (Umfang U, Flächeninhalt A, Kreissektor) und Bruchterme mit Definitionsmenge",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Algebraische Bruchterme und Geometrie vertiefen die gymnasiale 8. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Circle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kreisgeometrie und Bruchterme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die exakte mathematische Formel für den Flächeninhalt $A$ eines Kreises mit dem Radius $r$?",
+          "concept": "A = pi * r^2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = pi * r^2",
+              "A = 2 * pi * r"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Kreisberechnungen und Bruchterme im Gymnasium 8: 1. **Der Kreis**:   * **Umfang**: $U = 2\\pi r = \\pi d$.   * **Flächeninhalt**: $A = \\pi r^2 = \\frac{1}{4}\\pi d^2$.   * **Kreissektor (Mittelpunktswinkel $\\alpha$)**: Bogenlänge $b = 2\\pi r \\cdot \\frac{\\alpha}{360^\\circ}$, Sektorfläche $A_{\\text{Sektor}} = \\pi r^2 \\cdot \\frac{\\alpha}{360^\\circ} = \\frac{1}{2} b \\cdot r$, 2. **Bruchterme und Definitionsmenge $D$**:   * Ein Bruchterm enthält eine Variable im Nenner: Der Nenner darf **niemals Null** werden $\\implies D = \\mathbb{Q} \\setminus \\{x \\mid \\text{Nenner}(x) = 0\\}$.   * **Kürzen**: Nur aus Produkten kürzen (*'Aus Differenzen und Summen kürzen nur die Dummen'*). 3. Vereinfache den Bruchterm und bestimme $D$: $T(x) = \\frac{2x^2 - 8}{x^2 - 4x + 4}$.",
+          "concept": "Kreis: U = 2*pi*r, A = pi*r^2, Kreissektor (alpha/360°); Bruchterme: Definitionsmenge D (Nenner != 0), Faktorisieren (binomische Formeln) vor dem Kürzen; Rechnung: 2(x^2 - 4)/(x-2)^2 = 2(x-2)(x+2)/(x-2)^2 = 2(x+2)/(x-2) mit D = Q \\ {2}.",
+          "sample_solution": "1. Formeln der Kreisgeometrie: - **1. Kreisumfang $U$**:   $$\\mathbf{U = 2\\pi r = \\pi d}$$ - **2. Kreisfläche $A$**:   $$\\mathbf{A = \\pi r^2 = \\frac{\\pi}{4} d^2}$$ - **3. Kreisteile (Sektor mit Mittelpunktswinkel $\\alpha$)**:   * **Kreisbogenlänge $b_\\alpha$**: $b_\\alpha = 2\\pi r \\cdot \\frac{\\alpha}{360^\\circ} = \\pi r \\cdot \\frac{\\alpha}{180^\\circ}$.   * **Sektorflächeninhalt $A_{\\text{Sektor}}$**: $A_{\\text{Sektor}} = \\pi r^2 \\cdot \\frac{\\alpha}{360^\\circ} = \\frac{1}{2} \\cdot b_\\alpha \\cdot r$. 2. Bruchterme und algebraische Regeln: - **Definition**: Ein algebraischer Ausdruck $\\frac{Z(x)}{N(x)}$ heißt **Bruchterm**, wenn im Nenner $N(x)$ die Variable $x$ auftritt. - **Definitionsmenge $D$**:   * Da die Division durch $0$ mathematisch nicht definiert ist, müssen alle Nullstellen des Nenners ausgeschlossen werden:     $$\\mathbf{D = \\mathbb{Q} \\setminus \\{x \\mid N(x) = 0\\}}$$ - **Kürzungsregel**:   * Zähler und Nenner müssen zuerst durch **Ausklammern** und Anwendung der **Binomischen Formeln** vollständig faktorisiert (in Faktoren zerlegt) werden. 3. Durchrechnung des Beispiels: - **Gegebener Bruchterm**:   $$T(x) = \\frac{2x^2 - 8}{x^2 - 4x + 4}$$ - **Schritt 1: Definitionsmenge $D$ bestimmen**:   * Nenner $= x^2 - 4x + 4 = (x - 2)^2$ (2. binomische Formel).   * Nullstelle: $(x - 2)^2 = 0 \\iff x = 2$.   * $$\\mathbf{D = \\mathbb{Q} \\setminus \\{2\\}}$$ - **Schritt 2: Zähler faktorisieren**:   * $2x^2 - 8 = 2(x^2 - 4) = 2(x - 2)(x + 2)$ (3. binomische Formel). - **Schritt 3: Kürzen mit dem gemeinsamen Faktor $(x - 2)$**:   $$T(x) = \\frac{2(x - 2)(x + 2)}{(x - 2)^2} = \\mathbf{\\frac{2(x + 2)}{x - 2} = \\frac{2x + 4}{x - 2}} \\quad \\text{für } x \\in D$$."
+        }
+      ]
+    }
+  ]
+}

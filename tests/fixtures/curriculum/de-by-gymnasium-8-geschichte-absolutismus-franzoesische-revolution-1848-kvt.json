@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-geschichte-absolutismus-franzoesische-revolution-1848",
+  "version": "2026.08.1",
+  "title": "Geschichte 8: Absolutismus, Aufklärung, Französische Revolution (1789) und Revolution von 1848/49 (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 8: Der französische Absolutismus unter Ludwig XIV. (Ständegesellschaft, Merkantilismus nach Colbert), die Aufklärung (Locke, Montesquieu, Rousseau, Kant), Ursachen und Phasen der Französischen Revolution (1789, Menschenrechte, Schreckensherrschaft der Jakobiner, Napoleon und Code Civil) sowie Restauration (Wiener Kongress 1815), Vormärz und die deutsche Revolution von 1848/49 in der Frankfurter Paulskirche.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/geschichte",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geschichte 8, Lernbereiche Absolutismus und Aufklärung, Das Zeitalter der bürgerlichen Revolutionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8R0000000000000000A01",
+      "namespace": "gymnasium-geschichte-aufklaerung",
+      "slug": "absolutismus-ludwig-xiv-merkantilismus-aufklaerung-gewaltenteilung",
+      "title": "Absolutismus und Aufklärung: Ludwig XIV. (Versailles, Merkantilismus) und Montesquieus Gewaltenteilung",
+      "domain": "schule/geschichte/aufklaerung",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Age of Enlightenment",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Absolutismus und Aufklärung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches grundlegende staatsphilosophische Prinzip forderte der französische Aufklärer Montesquieu zur Verhinderung von Tyrannei und Machtmissbrauch?",
+          "concept": "Die dreigliedrige Gewaltenteilung (Trennung in Legislative, Exekutive und Judikative)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gewaltenteilung (Legislative, Exekutive, Judikative)",
+              "Die uneingeschränkte Herrschaft des Monarchen von Gottes Gnaden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Absolutismus in Frankreich und die Ideen der Aufklärung im Vergleich: 1. **Der französische Absolutismus unter Ludwig XIV. ('L'État, c'est moi')**:   * **5 Säulen der absolutistischen Macht**: Stehendes Heer, zentralisierter Beamtenapparat, Hofleben in Schloss Versailles (Entmachtung des Adels), Staatskirche (Katholizismus, Aufhebung des Edikts von Nantes) und **Merkantilismus** (Wirtschaftssystem nach Jean-Baptiste Colbert: Förderung von Manufakturen, billiger Rohstoffimport, teurer Export von Fertigwaren, Schutzzölle).   * **Die Ständegesellschaft**: 1. Stand (Geistlichkeit/Klerus, $0{,}5\\%$, steuerfrei), 2. Stand (Adel, $1{,}5\\%$, steuerfrei), 3. Stand (Bürger und Bauern, $98\\%$, trug gesamte Steuerlast ohne politische Mitsprache), 2. **Das Zeitalter der Aufklärung**:   * *Immanuel Kant (1784)*: *'Aufklärung ist der Ausgang des Menschen aus seiner selbstverschuldeten Unmündigkeit. Sapere aude!'*   * *John Locke*: Unveräußerliche Menschenrechte (Freiheit, Leben, Eigentum).   * *Montesquieu*: **Gewaltenteilung** (Gesetzgebung / Legislative, Gesetzesausführung / Exekutive, Rechtssprechung / Judikative).   * *Jean-Jacques Rousseau*: **Volkssouveränität** (Herrschaft durch den Gemeinwillen *Volonté générale*).",
+          "concept": "Absolutismus (Ludwig XIV., Versailles, 5 Säulen, Merkantilismus nach Colbert, ungerechte Ständeordnung) vs. Aufklärung (Kant: Sapere aude!, Locke: Menschenrechte, Montesquieu: Gewaltenteilung, Rousseau: Volkssouveränität).",
+          "sample_solution": "1. Der höfische Absolutismus unter Ludwig XIV. (Der 'Sonnenkönig'): - **Herrschaftsverständnis**: Herrscher 'von Gottes Gnaden' (*Gottesgnadentum*), losgelöst von allen weltlichen Gesetzen (*legibus absolutus*): *« L'État, c'est moi »* (Der Staat bin ich). - **Die 5 Säulen der absolutistischen Herrschaft**:   * **1. Das Stehende Heer**: Erste permanente Berufsarmee Europas (über 400.000 Mann), jederzeit einsatzbereit zur Durchsetzung von Machtansprüchen im In- und Ausland.   * **2. Der Berufsbeamtenapparat**: Vom König abhängige Intendanten übernahmen die Steuereintreibung und Justiz in den Provinzen.   * **3. Das Hofleben in Versailles**: Das prunkvolle Barockschloss diente als goldener Käfig: Adelige wurden durch Kostümpflicht und Hofämter finanziell ruiniert und politisch entmachtet.   * **4. Die Staatskirche**: Ein einheitlicher katholischer Staatsglaube; 1685 widerrief Ludwig XIV. das Edikt von Nantes $\\implies$ Verfolgung und Flucht Hunderttausender Hugenotten.   * **5. Der Merkantilismus (Finanzminister Colbert)**:     - Staatlich gelenkte Wirtschaftspolitik zur Füllung der königlichen Kassen:       * Massiver Export teurer französischer Luxus- und Fertigwaren (Seide, Parfüm, Spiegel aus Manufakturen).       * Hohe Schutzzölle auf ausländische Fertigprodukte.       * Billiger Import unverarbeiteter Rohstoffe aus Überseekolonien. 2. Die feudale Ständepyramide: - **1. Stand (Klerus)**: ca. 0,5 % der Bevölkerung; privilegierter Großgrundbesitz, vollständige Steuerfreiheit. - **2. Stand (Adel)**: ca. 1,5 %; exklusiver Zugang zu Offiziers- und Staatsämtern, Steuerfreiheit. - **3. Stand (Bürger & Bauern)**: ca. **98 % der Bevölkerung**; trug durch drückende Abgaben (Zehnt, Frondienste, Kopfsteuer, Salzsteuer) den gesamten Staatsetat, besaß jedoch keinerlei politische Mitbestimmungsrechte. 3. Die europäische Aufklärung (Das neue Denken): - **Grundimpuls**: Der Verstand (die Vernunft / *Ratio*) und die empirische Wissenschaft werden zum obersten Maßstab erhoben:   * **Immanuel Kant**: *« Habe Mut, dich deines eigenen Verstandes zu bedienen! » (Sapere aude!)*.   * **John Locke**: Begründete das Naturrecht: Jeder Mensch besitzt von Geburt an unveräußerliche Grundrechte (**Leben, Freiheit, Eigentum**).   * **Montesquieu (*Vom Geist der Gesetze*, 1748)**: Um Diktatur zu verhindern, muss die Staatsgewalt strikt in drei voneinander unabhängige Organe getrennt und gegenseitig kontrolliert werden (**Gewaltenteilung: Legislative, Exekutive, Judikative**).   * **Jean-Jacques Rousseau**: Alle Staatsgewalt geht vom Volke aus (**Volkssouveränität**)."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8R0000000000000000A02",
+      "namespace": "gymnasium-geschichte-revolutionen",
+      "slug": "franzoesische-revolution-1789-jakobiner-revolution-1848-paulskirche",
+      "title": "Die Französische Revolution (1789, Menschenrechte, Jakobiner) und die Deutsche Revolution 1848/49",
+      "domain": "schule/geschichte/revolutionen",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Revolutionen von 1789 und 1848 setzen die Ideen der Aufklärung in die politische Praxis um."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "French Revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Bürgerliche Revolutionen und Nationalstaatsbildung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches historische Ereignis am 14. Juli 1789 gilt als symbolischer Beginn der Französischen Revolution und wird bis heute als französischer Nationalfeiertag begangen?",
+          "concept": "Der Sturm auf die Bastille (königliche Festung und Gefängnis in Paris)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Sturm auf die Bastille",
+              "Der Ballhausschwur"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Ablauf der Französischen Revolution und der Deutschen Revolution von 1848/49: 1. **Die drei Phasen der Französischen Revolution (1789–1799)**:   * **1. Phase (1789–1791)**: Einberufung der Generalstände, Ballhausschwur, **Sturm auf die Bastille (14. Juli 1789)**, Erklärung der Menschen- und Bürgerrechte (*Liberté, Égalité, Fraternité*), Verfassung von 1791 (Konstitutionelle Monarchie).   * **2. Phase (1792–1794)**: Hinrichtung Ludwigs XVI. (1793), Ausrufung der Republik, **Schreckensherrschaft der Jakobiner unter Robespierre** (Terror als Regierungsmittel, Guillotine) bis zum Sturz der Jakobiner.   * **3. Phase (1795–1799)**: Direktorium, Staatsstreich von **Napoleon Bonaparte 1799** (später Code Civil / bürgerliches Gesetzbuch 1804), 2. **Restauration und Vormärz in Deutschland**: **Wiener Kongress 1815** (Metternich: Restauration, Legitimität, Solidarität, Gründung des Deutschen Bundes), Wartburgfest 1817, Karlsbader Beschlüsse 1819 (Zensur, Verfolgung von 'Demagogen'), Hambacher Fest 1832, 3. **Die Revolution von 1848/49**:   * **Märzrevolution 1848**: Barrikadenkämpfe in Berlin und Wien $\\rightarrow$ Fürsten geben nach.   * **Frankfurter Nationalversammlung (Paulskirche Mai 1848)**: Erstes frei gewähltes deutsches Parlament; Erarbeitung eines richtungsweisenden **Grundrechtekatalogs** und der Reichsverfassung 1849 (Konstitutionelle Monarchie mit Kaiser).   * **Scheitern der Revolution**: Preußenkönig Friedrich Wilhelm IV. verweigert die 'Kaiserkrone aus der Gosse' $\\rightarrow$ Fürsten schlagen Revolution militärisch nieder; langfristige Wirkung: Fundament für deutsche Demokratie und Grundrechte.",
+          "concept": "1789 (1. Konstitutionell/Bastille/Menschenrechte, 2. Jakobiner-Terror, 3. Napoleon); Restauration (Wiener Kongress 1815, Metternich, Vormärz, Hambacher Fest); Revolution 1848/49 (Paulskirche, Grundrechtekatalog, Scheitern an Kaiserkronen-Ablehnung).",
+          "sample_solution": "1. Die drei Phasen der Französischen Revolution (1789–1799): - **1. Phase (1789–1791: Bürgerliche Freiheitsbewegung)**:   * *Anlass*: Staatsbankrott Frankreichs $\\implies$ Einberufung der Generalstände (Mai 1789).   * *20. Juni 1789*: **Ballhausschwur** (3. Stand erklärt sich zur Nationalversammlung).   * *14. Juli 1789*: **Sturm auf die Bastille** (Beginn des Volksaufstands in Paris).   * *26. August 1789*: **Erklärung der Menschen- und Bürgerrechte** (*« Freiheit, Gleichheit, Brüderlichkeit »*).   * *Verfassung 1791*: Umwandlung Frankreichs in eine **konstitutionelle Monarchie** mit Zensuswahlrecht. - **2. Phase (1792–1794: Radikalisierung und Terrorherrschaft)**:   * Beginn der Koalitionskriege europäischer Monarchen gegen Frankreich.   * 1792: Sturm auf die Tuilerien, Absetzung des Königs und **Ausrufung der 1. Republik**.   * 21. Januar 1793: **Hinrichtung von König Ludwig XVI.** per Guillotine.   * **Jakobinerdiktatur (*La Terreur* unter Maximilien de Robespierre)**: Einrichtung des Wohlfahrtsausschusses; systematische Hinrichtung von über 40.000 vermeintlichen Revolutionsgegnern bis zu Robespierres eigener Verhaftung und Hinrichtung im Juli 1794. - **3. Phase (1795–1799: Direktorialzeit und Aufstieg Napoleons)**:   * Herrschaft des gemäßigten Großbürgertums (Direktorium).   * 1799: Staatsstreich von General **Napoleon Bonaparte** $\\rightarrow$ Krönung zum Kaiser 1804 und Einführung des modernen **Code Civil** (Gleichheit vor dem Gesetz, Zivilehe). 2. Restauration und Vormärz in Deutschland (1815–1848): - **Wiener Kongress (1815)**: Unter Führung des österreichischen Staatskanzlers Fürst von Metternich:   * **Restauration**: Wiederherstellung der vorrevolutionären absolutistischen Fürstenherrschaft.   * Gründung des **Deutschen Bundes** (loser Staatenbund aus 39 Einzelstaaten statt geeinter Nationalstaat). - **Bürgerliche Gegenbewegung (Vormärz)**:   * Ruf nach **« Einheit und Freiheit »**: Wartburgfest (1817) und **Hambacher Fest (1832)** (erste Massendemonstration für Demokratie mit den Farben Schwarz-Rot-Gold).   * **Karlsbader Beschlüsse (1819)**: Verbot von Burschenschaften, Zensur der Presse und Bespitzelung an Universitäten. 3. Die Deutsche Revolution 1848/49: - **März 1848 (Märzrevolution)**: Ausgehend von Frankreich brechen in Wien und Berlin Volksaufstände und Barrikadenkämpfe aus $\\implies$ Die Fürsten müssen nachgeben und Märzministerien ernennen. - **Die Frankfurter Nationalversammlung (Paulskirche, 18. Mai 1848)**:   * Erstes gesamtdeutsches frei gewähltes Parlament (*« Professorenparlament »*).   * **Doppelaufgabe**: Schaffung eines **Nationalstaates** (Streit um *kleindeutsche Lösung* ohne Österreich vs. *großdeutsche Lösung*) und Ausarbeitung einer **Verfassung**.   * **Historische Meisterleistung**: Der **Grundrechtekatalog vom Dezember 1848** (Meinungsfreiheit, Pressefreiheit, Gleichheit vor dem Gesetz, Unverletzlichkeit der Wohnung – Vorbild für das Grundgesetz von 1949). - **Das Scheitern der Revolution (1849)**:   * König Friedrich Wilhelm IV. von Preußen verweigert die ihm angebotene deutsche Erbkaiserkrone (*« Ludergeruch der Revolution »*).   * Preußische Truppen schlagen die Reichsverfassungskampagne blutig nieder.   * **Fazit**: Die Revolution scheiterte kurzfristig am preußisch-österreichischen Militarismus, legte aber das unverrückbare Fundament für den modernen deutschen Verfassungsstaat."
+        }
+      ]
+    }
+  ]
+}

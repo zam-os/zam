@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-deutsch-wortarten-satzglieder-rechtschreibung",
+  "version": "2026.08.1",
+  "title": "Deutsch 6: Grammatik, Satzglieder und Rechtschreibstrategien (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 6: Die 5 Wortarten, Verbzeitformen, Satzglieder (Objekte/Adverbialen), s-Schreibung und Zeichensetzung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 6, Lernbereich Sprachgebrauch und Sprache untersuchen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D6W0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D6W0000000000000000A01",
+      "namespace": "deutsch-grammatik",
+      "slug": "wortarten-nomen-verb-adjektiv-pronomen-partikeln",
+      "title": "Die fünf Wortarten im Deutschen: Flektierbare (Nomen, Verben, Adjektive, Pronomen) und unflektierbare Wörter",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Part of speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprache untersuchen – Wortarten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprache untersuchen – Wortarten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D6W0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zu welcher übergeordneten Gruppe gehören Nomen, Verben, Adjektive, Artikel und Pronomen, da sie ihre grammatische Form (durch Deklination oder Konjugation) verändern können?",
+          "concept": "Zu den flektierbaren (veränderbaren) Wortarten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Flektierbare (veränderbare) Wortarten",
+              "Unflektierbare Wortarten (Partikeln)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D6W0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gliedere das deutsche Wortartensystem in die 5 Hauptwortarten (1. Nomen/Substantiv nach Genus, Numerus, Kasus; 2. Verb nach Person, Numerus, Tempus, Modus; 3. Adjektiv mit Steigerung/Komparierung; 4. Pronomen/Artikel als Begleiter/Stellvertreter; 5. Unflektierbare Partikeln: Präpositionen mit festem Fall, Konjunktionen, Adverbien, Interjektionen) und bestimme alle Wortarten im Satz: 'Der schnelle Läufer rannte gestern wegen des Regens mutig über die nasse Wiese.'",
+          "concept": "Wortartenanalyse: 'Der' (bestimmter Artikel), 'schnelle' (Adjektiv), 'Läufer' (Nomen), 'rannte' (Verb, Präteritum), 'gestern' (Temporaladverb), 'wegen' (Präposition mit Genitiv), 'des' (bestimmter Artikel), 'Regens' (Nomen), 'mutig' (Adjektiv/adverbial gebraucht), 'über' (Präposition mit Akkusativ), 'die' (bestimmter Artikel), 'nasse' (Adjektiv), 'Wiese' (Nomen).",
+          "sample_solution": "1. Das 5-Wortarten-Schema der deutschen Grammatik: - A. Flektierbare (beugbare/veränderbare) Wortarten:   * 1. Nomen (Substantiv): Bezeichnet Lebewesen, Gegenstände, Gefühle, Begriffe. Besitzt festes grammatisches Geschlecht (**Genus**: Maskulinum, Femininum, Neutrum) und wird dekliniert nach Zahl (**Numerus**: Singular/Plural) und 4 Fällen (**Kasus**: Nominativ, Genitiv, Dativ, Akkusativ).   * 2. Verb (Zeitwort): Drückt Handlungen, Vorgänge oder Zustände aus. Wird **konjugiert** nach Person (1., 2., 3.), Numerus, Tempus (6 Zeitformen), Modus (Indikativ, Konjunktiv, Imperativ) und Genus Verbi (Aktiv/Passiv).   * 3. Adjektiv (Eigenschaftswort): Beschreibt Eigenschaften; dekliniert und steigerbar (**Komparierbarkeit**: Positiv, Komparativ, Superlativ: *schnell, schneller, am schnellsten*).   * 4. Artikel und Pronomen (Fürwörter): Begleiten oder vertreten ein Nomen (Personal-, Possessiv-, Demonstrativ-, Relativ-, Reflexiv-, Indefinit- und Interrogativpronomen). - B. Unflektierbare (unveränderbare) Wortarten (Partikeln im weiten Sinn):   * 5. Präpositionen (Verhältniswörter: fordern festen Fall, z. B. *wegen* + Genitiv, *mit* + Dativ, *durch* + Akkusativ), Konjunktionen (Bindewörter: *weil, dass, und, oder*), Adverbien (Umstandswörter des Ortes, der Zeit, der Art und Weise: *hier, gestern, gern*) und Interjektionen (Ausrufewörter: *Aua!, Oh!*). 2. Wortartenbestimmung im Beispielsatz: - *Der* (bestimmter Artikel) - *schnelle* (Adjektiv) - *Läufer* (Nomen) - *rannte* (Verb, finites Präteritum) - *gestern* (Temporaladverb) - *wegen* (Präposition mit Genitiv) - *des* (bestimmter Artikel) - *Regens* (Nomen) - *mutig* (Adjektiv, adverbial verwendet) - *über* (Präposition mit Akkusativ) - *die* (bestimmter Artikel) - *nasse* (Adjektiv) - *Wiese* (Nomen)."
+        }
+      ]
+    },
+    {
+      "id": "01K4D6W0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D6W0000000000000000A02",
+      "namespace": "deutsch-grammatik",
+      "slug": "sechs-zeitformen-praesens-bis-plusquamperfekt",
+      "title": "Die sechs Zeitformen des Verbs: Präsens, Präteritum, Perfekt, Plusquamperfekt, Futur I und Futur II",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D6W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Verben und Konjugation bilden die Basis der Tempusformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Grammatical tense",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprache untersuchen – Wortarten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Sprache untersuchen – Wortarten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D6W0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zeitform (Tempus) drückt die Vorvergangenheit aus und wird mit den Hilfsverben 'hatte / war' + Partizip II gebildet (z. B. 'nachdem er gegessen hatte')?",
+          "concept": "Das Plusquamperfekt (vollendete Vergangenheit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Plusquamperfekt (hatte/war + Partizip II)",
+              "Das Perfekt (habe/bin + Partizip II)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D6W0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Konjugiere das Verb 'lesen' (3. Person Einzahl: er/sie/es) durch alle 6 deutschen Zeitformen: 1. Präsens (Gegenwart), 2. Präteritum (Vergangenheit/Schriftform), 3. Perfekt (vollendete Gegenwart/mündlich), 4. Plusquamperfekt (Vorvergangenheit), 5. Futur I (Zukunft) und 6. Futur II (vollendete Zukunft) und erkläre die Vorzeitigkeit in Satzgefügen mit 'nachdem' (z. B. Nachdem er das Buch gelesen hatte [PQP], ging er schlafen [Präteritum]).",
+          "concept": "1. Präsens: er liest; 2. Präteritum: er las; 3. Perfekt: er hat gelesen; 4. Plusquamperfekt: er hatte gelesen; 5. Futur I: er wird lesen; 6. Futur II: er wird gelesen haben. Vorzeitigkeit: Im Präteritum-Bericht muss das zeitlich davor liegende Ereignis im Plusquamperfekt stehen.",
+          "sample_solution": "1. Die 6 Zeitformen (Tempora) des Verbs 'lesen' in der 3. Person Singular: - 1. **Präsens** (Gegenwart): *er liest* (einteilige Form, Stammvokalwechsel). - 2. **Präteritum** (Imperfekt / 1. Vergangenheit): *er las* (einteilige Form, Standardzeit für schriftliche Erzählungen und Berichte). - 3. **Perfekt** (vollendete Gegenwart / 2. Vergangenheit): *er hat gelesen* (Hilfsverb *haben/sein* im Präsens + Partizip II; typisch für mündliche Rede). - 4. **Plusquamperfekt** (Vorvergangenheit / 3. Vergangenheit): *er hatte gelesen* (Hilfsverb *hatte/war* im Präteritum + Partizip II). - 5. **Futur I** (Zukunft): *er wird lesen* (Hilfsverb *werden* im Präsens + Infinitiv). - 6. **Futur II** (vollendete Zukunft): *er wird gelesen haben* (Hilfsverb *werden* im Präsens + Partizip II + *haben/sein*). 2. Die Vorzeitigkeit in Satzgefügen (z. B. mit der Konjunktion 'nachdem'): - Wenn zwei Handlungen in der Vergangenheit nicht gleichzeitig, sondern nacheinander stattfanden, verlangt die deutsche Grammatik die logische **Vorzeitigkeit**: - Die Haupthandlung steht im **Präteritum** (*ging er schlafen*). - Die zeitlich vorher abgeschlossene Handlung im Nebensatz MUSS zwingend im **Plusquamperfekt** stehen: *'Nachdem er das spannende Buch zu Ende gelesen hatte, ging er schlafen.'*"
+        }
+      ]
+    },
+    {
+      "id": "01K4D6W0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4D6W0000000000000000A03",
+      "namespace": "deutsch-grammatik",
+      "slug": "satzglieder-umstellprobe-subjekt-praedikat-objekte-adverbialen",
+      "title": "Satzglieder ermitteln: Umstellprobe, Subjekt, Prädikat, Dativ-/Akkusativobjekt und Adverbialbestimmungen",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D6W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Wortarten erfüllen funktionale Rollen als Satzglieder im Satz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Grammatical relation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Satzstrukturen und Satzglieder",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Satzstrukturen und Satzglieder",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D6W0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welcher grammatischen Probe (Verschiebeprobe) ermittelt man zuverlässig, welche Wörter gemeinsam ein untrennbares Satzglied bilden?",
+          "concept": "Mit der Umstellprobe (Permutationsprobe): Wörter, die sich nur gemeinsam im Satz umstellen lassen, bilden ein Satzglied",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit der Umstellprobe (Verschiebeprobe)",
+              "Mit der Ersatzprobe"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D6W0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Methoden der Satzgliedanalyse (Umstellprobe, Ersatzprobe, Spitzenstellung vor dem Prädikat), definiere die Kernsatzglieder mit ihren Fragewörtern (Subjekt: Wer oder was?; Prädikat / Prädikatsklammer: Was tut das Subjekt?; Dativobjekt: Wem?; Akkusativobjekt: Wen oder was?; Genitivobjekt: Wessen?) sowie die 4 adverbialen Bestimmungen (Ort: Wo/Wohin?; Zeit: Wann/Wie lange?; Art und Weise: Wie?; Grund: Warum/Weshalb?) und bestimme alle Satzglieder des Satzes: 'Gestern schenkte die Schülerin ihrem Bruder wegen seines Geburtstags freudig ein Buch.'",
+          "concept": "Satzgliedbestimmung: 1. Prädikat: 'schenkte' (Kern des Satzes); 2. Subjekt: 'die Schülerin' (Wer schenkte?); 3. Dativobjekt: 'ihrem Bruder' (Wem schenkte sie?); 4. Akkusativobjekt: 'ein Buch' (Wen oder was schenkte sie?); 5. Temporaladverbiale: 'Gestern' (Wann?); 6. Kausaladverbiale: 'wegen seines Geburtstags' (Warum?); 7. Modaladverbiale: 'freudig' (Wie?).",
+          "sample_solution": "1. Verfahren zur Satzgliedbestimmung: - Satzglieder sind die Bausteine eines Satzes. Sie können aus einem einzelnen Wort oder einer ganzen Wortgruppe bestehen. - **Umstellprobe (Verschiebeprobe)**: Alles, was sich bei einer sinnvollen Umstellung des Satzes nur gemeinsam an den Satzanfang (vor das finite Verb / an Position 1) verschieben lässt, bildet genau EIN Satzglied. 2. Die Satzglieder und ihre Fragen: - **Prädikat (Satzaussage)**: Verbale Einheit, bestimmt den Satzbau ('Was tut das Subjekt? / Was geschieht?'). Bei mehrteiligen Verben bildet es eine Prädikatsklammer. - **Subjekt (Satzgegenstand)**: Steht immer im Nominativ ('Wer oder was?'). - **Objekte (Ergänzungen)**:   * Genitivobjekt: 'Wessen?'   * Dativobjekt: 'Wem?'   * Akkusativobjekt: 'Wen oder was?' - **Adverbiale Bestimmungen (Umstandsbestimmungen)**:   * Lokaladverbiale (Ort/Richtung): 'Wo?, Wohin?, Woher?'   * Temporaladverbiale (Zeit/Dauer): 'Wann?, Wie lange?, Seit wann?'   * Modaladverbiale (Art und Weise/Mittel): 'Wie?, Womit?, Auf welche Weise?'   * Kausaladverbiale (Grund/Ursache): 'Warum?, Weshalb?, Aus welchem Grund?' 3. Satzgliedzerlegung des Beispielsatzes: - `[Gestern]` = **Adverbiale Bestimmung der Zeit (Temporaladverbiale)** (Frage: Wann?) - `[schenkte]` = **Prädikat** - `[die Schülerin]` = **Subjekt** (Frage: Wer oder was schenkte?) - `[ihrem Bruder]` = **Dativobjekt (Objekt im 4. Fall / Dativ)** (Frage: Wem schenkte sie?) - `[wegen seines Geburtstags]` = **Adverbiale Bestimmung des Grundes (Kausaladverbiale)** (Frage: Warum?) - `[freudig]` = **Adverbiale Bestimmung der Art und Weise (Modaladverbiale)** (Frage: Wie?) - `[ein Buch]` = **Akkusativobjekt** (Frage: Wen oder was schenkte sie?)."
+        }
+      ]
+    },
+    {
+      "id": "01K4D6W0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4D6W0000000000000000A04",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "rechtschreibstrategien-s-laut-nominalisierung-kommasetzung",
+      "title": "Rechtschreib- und Zeichensetzungsstrategien: s-Schreibung (das vs. dass), Nominalisierung und Kommasetzung",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D6W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Wortartenkenntnis (Artikel vs. Konjunktion) ist Voraussetzung für die das/dass-Unterscheidung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "German orthography",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Rechtschreibung und Zeichensetzung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Rechtschreibung und Zeichensetzung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D6W0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Ersatzprobe entscheidet sicher, dass 'das' mit einfachem 's' geschrieben werden MUSS?",
+          "concept": "Wenn man 'das' sinnvoll durch 'dieses', 'jenes' oder 'welches' ersetzen kann (Artikel oder Relativpronomen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn 'das' durch 'dieses/jenes/welches' ersetzt werden kann",
+              "Wenn ein Komma davor steht"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D6W0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die drei wichtigsten Rechtschreib- und Kommaregeln der 6. Klasse: 1. Die s-Laut-Regeln (weiches s, scharfes ss nach kurzem Stammvokal wie *Fluss, Schloss*, ß nach langem Vokal oder Diphthong wie *Straße, Fuß, fleißig*), 2. Die das/dass-Regel mit Ersatzprobe (dieses/jenes/welches = das; unterordnende Konjunktion = dass), 3. Großschreibung durch Nominalisierung (Signale: Artikel, Präpositionen wie *beim Lesen*, Pronomen wie *mein Hoffen*, unbestimmte Mengenangaben wie *viel Schönes, nichts Neues*) und setze die Kommas und das/dass richtig: 'Ich hoffe (das/dass) du (das/dass) Buch (das/dass) ich dir geliehen habe bald liest.'",
+          "concept": "1. s/ss/ß nach Vokallänge; 2. das (Artikel/Pronomen, ersetzbar durch dieses/jenes/welches) vs. dass (Konjunktion); 3. Nominalisierung von Verben/Adjektiven mit Signalen; Satz: 'Ich hoffe, dass du das Buch, das ich dir geliehen habe, bald liest.' (Kommas trennen die eingeschobenen Nebensätze; 1. dass = Konjunktion, 2. das = Artikel vor Buch, 3. das = Relativpronomen / welches).",
+          "sample_solution": "1. Die drei zentralen Rechtschreib- und Zeichensetzungsstrategien: - 1. Die Regeln der s-Schreibung:   * Weiches, stimmhaftes s (wie in *Sonne, reisen, Gras*).   * Scharfes s nach kurzem Vokal -> Doppel-s **ss** (*Fluss, Schloss, Wasser, Kuss, Fass*).   * Scharfes s nach langem Vokal oder Doppellaut (Diphthong eu, au, ei) -> **ß** (*Straße, groß, Fuß, heiß, fleißig, draußen*). - 2. Die 'das' oder 'dass'-Entscheidung (Ersatzprobe):   * **das** (mit einfachem s): Wenn es ein bestimmter Artikel (*das Kind*), ein Demonstrativpronomen (*Das gefällt mir*) oder ein Relativpronomen (*das Buch, das...*) ist. **Probe**: Lässt sich das Wort durch *'dieses'*, *'jenes'* oder *'welches'* ersetzen, schreibt man immer **das**!   * **dass** (mit Doppel-s): Eine unterordnende Konjunktion (Bindewort), die einen Nebensatz einleitet. Lässt sich niemals durch dieses/jenes/welches ersetzen (*Ich weiß, dass du kommst*). - 3. Großschreibung durch Nominalisierung (Substantivierung):   * Verben und Adjektive werden großgeschrieben, wenn sie wie Nomen gebraucht werden.   * Signalwörter erkennen: Vorangehender Artikel (*das Lesen, das Schöne*), verschmolzene Präposition (*beim Schwimmen = bei dem Schwimmen, zum Lachen*), Possessivpronomen (*mein Wünschen*) oder unbestimmte Zahlwörter/Mengenangaben (*etwas Gutes, viel Neues, alles Liebe*). 2. Auflösung des Übungssatzes: - Satz: **'Ich hoffe, dass du das Buch, das ich dir geliehen habe, bald liest.'** - Analyse & Begründung:   * Komma 1 nach 'hoffe' leitet den dass-Objektsatz ein.   * 'dass' = Konjunktion (nicht durch dieses/welches ersetzbar).   * 'das' vor 'Buch' = bestimmter Artikel.   * Komma 2 nach 'Buch' leitet den Relativsatz ein.   * 'das' nach dem Komma = Relativpronomen (ersetzbar durch: *welches ich dir geliehen habe*).   * Komma 3 nach 'habe' schließt den eingeschobenen Relativsatz ab."
+        }
+      ]
+    }
+  ]
+}
