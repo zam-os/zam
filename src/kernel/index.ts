@@ -188,6 +188,18 @@ export {
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
 export type {
+  AssessPreconditionInput,
+  AssessPreconditionResult,
+  PreconditionCandidate,
+} from "./library/precondition-assessment.js";
+export {
+  assessPrecondition,
+  getPreconditionCandidates,
+  liftPreconditionBury,
+  PRECONDITION_BURIED_REASON,
+  PRECONDITION_BURIED_UNTIL,
+} from "./library/precondition-assessment.js";
+export type {
   PublishRevisionInput,
   PublishRevisionResult,
   RevisionChanges,

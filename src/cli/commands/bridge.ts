@@ -155,6 +155,7 @@ import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
+  assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
   createAssignmentHandler as handleCreateAssignment,
@@ -162,6 +163,7 @@ import {
   enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
+  getPreconditionsHandler as handleGetPreconditions,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
@@ -7696,6 +7698,53 @@ bridgeCommand
       try {
         const result = await handleEnrolBundledCell(db, {
           cellId,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge preconditions-get / precondition-assess ──────────────────────
+
+bridgeCommand
+  .command("preconditions-get")
+  .description(
+    "Get foundational precondition atoms and assessment status (JSON)",
+  )
+  .option("--cell <cellId>", "Filter to prerequisites of a specific cell")
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleGetPreconditions(db, {
+          cellId: opts.cell,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("precondition-assess <atomId> <decision>")
+  .description(
+    "Record self-assessment decision for a precondition atom ('known' | 'learn') (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (atomId, decision, opts) => {
+    await withDb(async (db) => {
+      try {
+        if (decision !== "known" && decision !== "learn") {
+          throw new Error("decision must be 'known' or 'learn'");
+        }
+        const result = await handleAssessPrecondition(db, {
+          atomId,
+          decision,
           user: opts.user,
         });
         jsonOut(result);

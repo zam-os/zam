@@ -32,11 +32,13 @@ import type { EvaluatorRoute } from "../../vscode-extension/companion-evaluator.
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
+  assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
   endSession as handleEndSession,
   enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
+  getPreconditionsHandler as handleGetPreconditions,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
@@ -119,6 +121,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "agent-list",
   "bundled-cells-list",
   "bundled-cell-enrol",
+  "preconditions-get",
+  "precondition-assess",
 ]);
 
 /**
@@ -903,6 +907,65 @@ export function createMcpServer(db: Database): McpServer {
       const userId = await getUserId(params.user);
       return await handleEnrolBundledCell(db, {
         cellId: params.cellId,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10d. zam_preconditions_get
+  server.registerTool(
+    "zam_preconditions_get",
+    {
+      description:
+        "Get foundational precondition prerequisite atoms for a learning cell and their self-assessment status",
+      inputSchema: {
+        cellId: z
+          .string()
+          .optional()
+          .describe(
+            "Cell ID to check preconditions for (e.g. 'de-by:realschule-optik')",
+          ),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleGetPreconditions(db, {
+        cellId: params.cellId,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10e. zam_precondition_assess
+  server.registerTool(
+    "zam_precondition_assess",
+    {
+      description:
+        "Record a learner's self-assessment decision ('known' or 'learn') for a foundational prerequisite atom. 'known' buries the card without touching FSRS parameters.",
+      inputSchema: {
+        atomId: z.string().describe("ID of the precondition atom"),
+        decision: z
+          .enum(["known", "learn"])
+          .describe(
+            "'known' to bury as self-assessed, or 'learn' to schedule for practice",
+          ),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleAssessPrecondition(db, {
+        atomId: params.atomId,
+        decision: params.decision,
         user: userId,
       });
     }),

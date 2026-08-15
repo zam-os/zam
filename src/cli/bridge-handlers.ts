@@ -17,6 +17,7 @@ import type {
 import {
   addPrerequisite,
   analyzeObservation,
+  assessPrecondition,
   assignTokenToContext,
   buildReviewQueue,
   clearTokenMaintenance,
@@ -37,6 +38,7 @@ import {
   getDisplayTitle,
   getDueCards,
   getInstallChannel,
+  getPreconditionCandidates,
   getPrerequisites,
   getRevisionImpact,
   getSessionSummary,
@@ -1667,5 +1669,48 @@ export async function enrolBundledCellHandler(
   }
   const userId = await resolveHandlerUser(db, params.user);
   const result = await enrolBundledCell(db, userId, params.cellId.trim());
+  return result;
+}
+
+// 18. Precondition Self-Assessment (Entry Problem, Phase 3)
+export interface GetPreconditionsParams {
+  cellId?: string;
+  user?: string;
+}
+
+export async function getPreconditionsHandler(
+  db: Database,
+  params: GetPreconditionsParams = {},
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+  const candidates = await getPreconditionCandidates(db, userId, params.cellId);
+  return {
+    success: true as const,
+    candidates,
+  };
+}
+
+export interface AssessPreconditionParams {
+  atomId: string;
+  decision: "known" | "learn";
+  user?: string;
+}
+
+export async function assessPreconditionHandler(
+  db: Database,
+  params: AssessPreconditionParams,
+) {
+  if (!params.atomId?.trim()) {
+    throw new Error("atomId is required");
+  }
+  if (params.decision !== "known" && params.decision !== "learn") {
+    throw new Error("decision must be 'known' or 'learn'");
+  }
+  const userId = await resolveHandlerUser(db, params.user);
+  const result = await assessPrecondition(db, {
+    userId,
+    atomId: params.atomId.trim(),
+    decision: params.decision,
+  });
   return result;
 }
