@@ -23,11 +23,13 @@ import {
   createAssignment,
   createToken,
   decideUpdate,
+  enrolBundledCell,
   ensureCard,
   executeReviewAction,
   exportSnapshot,
   generateConceptFreeCue,
   generatePrompt,
+  getBundledCellsWithStatus,
   getCard,
   getCardById,
   getCardDeletionImpact,
@@ -1632,4 +1634,38 @@ export async function listAssignmentsHandler(
     return { success: true as const, assignments };
   }
   throw new Error("assigneeId or assignerId must be provided");
+}
+
+// 17. Bundled learning cells (Central learning path onboarding)
+export interface ListBundledCellsParams {
+  user?: string;
+}
+
+export async function listBundledCellsHandler(
+  db: Database,
+  params: ListBundledCellsParams = {},
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+  const cells = await getBundledCellsWithStatus(db, userId);
+  return {
+    success: true as const,
+    cells,
+  };
+}
+
+export interface EnrolBundledCellParams {
+  cellId: string;
+  user?: string;
+}
+
+export async function enrolBundledCellHandler(
+  db: Database,
+  params: EnrolBundledCellParams,
+) {
+  if (!params.cellId?.trim()) {
+    throw new Error("cellId is required");
+  }
+  const userId = await resolveHandlerUser(db, params.user);
+  const result = await enrolBundledCell(db, userId, params.cellId.trim());
+  return result;
 }

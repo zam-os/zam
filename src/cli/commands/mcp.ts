@@ -34,11 +34,13 @@ import {
   analyzeMonitor as handleAnalyzeMonitor,
   checkDue as handleCheckDue,
   endSession as handleEndSession,
+  enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
+  listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
   reviewAction as handleReviewAction,
   startSession as handleStartSession,
@@ -115,6 +117,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "model-remove",
   "model-reprobe",
   "agent-list",
+  "bundled-cells-list",
+  "bundled-cell-enrol",
 ]);
 
 /**
@@ -856,6 +860,50 @@ export function createMcpServer(db: Database): McpServer {
         token: params.token,
         requires: params.requires,
         blockUser: params.blockUser,
+      });
+    }),
+  );
+
+  // 10b. zam_bundled_cells_list
+  server.registerTool(
+    "zam_bundled_cells_list",
+    {
+      description:
+        "List bundled learning cells available for onboarding and their installation/enrolment status",
+      inputSchema: {
+        user: z.string().optional().describe("User ID to check enrolment for"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleListBundledCells(db, { user: userId });
+    }),
+  );
+
+  // 10c. zam_bundled_cell_enrol
+  server.registerTool(
+    "zam_bundled_cell_enrol",
+    {
+      description:
+        "Install and enrol in a bundled learning cell (e.g. 'de-by:realschule-optik')",
+      inputSchema: {
+        cellId: z.string().describe("ID of the bundled cell to enrol in"),
+        user: z.string().optional().describe("User ID to enrol"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleEnrolBundledCell(db, {
+        cellId: params.cellId,
+        user: userId,
       });
     }),
   );

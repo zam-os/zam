@@ -160,6 +160,22 @@ export {
 export type { BonusCandidate, BonusOptions } from "./library/bonus.js";
 export { bonusCandidates, heldAtomIds } from "./library/bonus.js";
 export type {
+  BundledCellEnrolResult,
+  BundledCellInfo,
+  BundledCellStatus,
+} from "./library/bundled-cells.js";
+export {
+  BUNDLED_CELLS,
+  BUNDLED_TILES,
+  enrolBundledCell,
+  getBundledCell,
+  getBundledCellEnrolment,
+  getBundledCellsWithStatus,
+  getBundledCellTile,
+  isBundledCellInstalled,
+  listBundledCells,
+} from "./library/bundled-cells.js";
+export type {
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,

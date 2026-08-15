@@ -159,12 +159,14 @@ import {
   checkDue as handleCheckDue,
   createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
+  enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   listAssignmentsHandler as handleListAssignments,
+  listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
   reviewAction as handleReviewAction,
   revisionPreview as handleRevisionPreview,
@@ -7665,5 +7667,40 @@ bridgeCommand
         pulled: result.pulled === true,
         status: result.status,
       });
+    });
+  });
+
+// ── zam bridge bundled-cells-list / bundled-cell-enrol ──────────────────────
+
+bridgeCommand
+  .command("bundled-cells-list")
+  .description("List bundled learning cells and enrolment status (JSON)")
+  .option("--user <userId>", "User ID to check status for")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleListBundledCells(db, { user: opts.user });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("bundled-cell-enrol <cellId>")
+  .description("Install and enrol in a bundled learning cell (JSON)")
+  .option("--user <userId>", "User ID to enrol")
+  .action(async (cellId, opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleEnrolBundledCell(db, {
+          cellId,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
     });
   });
