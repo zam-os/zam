@@ -7766,12 +7766,14 @@ bridgeCommand
     "List prioritized candidates that can be pulled forward into the queue (JSON)",
   )
   .option("--limit <count>", "Maximum number of candidates", parseInt)
+  .option("--no-include-future-due", "Exclude future-due review cards")
   .option("--user <userId>", "User ID to inspect")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const result = await handleGetPullForwardCandidates(db, {
           limit: opts.limit,
+          includeFutureDue: opts.includeFutureDue,
           user: opts.user,
         });
         jsonOut(result);
@@ -7783,9 +7785,7 @@ bridgeCommand
 
 bridgeCommand
   .command("pull-forward-execute")
-  .description(
-    "Pull forward specified cards into the review queue (JSON input via stdin or --cards)",
-  )
+  .description("Pull forward specified cards into the review queue (--cards)")
   .option("--cards <cardIds...>", "List of card IDs to pull forward")
   .option("--user <userId>", "User ID")
   .action(async (opts) => {

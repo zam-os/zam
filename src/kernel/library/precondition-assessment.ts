@@ -5,19 +5,19 @@
  * of a learning cell (ADR 2026-08-14, arbitration 2026-08-14):
  *
  * - When a learner states they already know a foundational prerequisite ("Kann ich schon"):
- *   The representative card for that atom is buried (`buried_until = '2099-12-31T23:59:59Z'`,
- *   `buried_reason = 'precondition'`).
- *   FSRS parameters (`stability`, `difficulty`, `reps`, `state`) are NEVER modified.
- *   Because `reps = 0`, the atom is strictly NOT held in `heldAtomIds`, keeping mastery
- *   evidence honest and derived only from observed retrieval.
+ *   Every live card for that atom is buried (`buried_until = PRECONDITION_BURIED_UNTIL`,
+ *   `buried_reason = 'precondition'`). FSRS fields are never modified, so `heldAtomIds`
+ *   still refuses the atom until a real retrieval.
  *
  * - When a learner chooses to learn the prerequisite ("Bitte mitlernen"):
- *   Any precondition bury is lifted (`buried_until = NULL`, `buried_reason = NULL`),
- *   allowing the card to enter the review queue normally.
+ *   Any precondition bury on those cards is lifted, so they can enter the queue.
+ *
+ * A card that exists after enrolment is not a decision. `unassessed` is `reps = 0`
+ * and no precondition bury — enrolment must not look like "chose to learn".
  */
 
 import type { Database } from "../db/types.js";
-import { ensureCard, updateCard } from "../models/card.js";
+import { ensureCard } from "../models/card.js";
 import { getBundledCell } from "./bundled-cells.js";
 
 export const PRECONDITION_BURIED_UNTIL = "2099-12-31T23:59:59.000Z";
@@ -70,7 +70,6 @@ interface CardStateRow {
   reps: number;
   buried_until: string | null;
   buried_reason: string | null;
-  state: string;
 }
 
 /**
@@ -89,8 +88,12 @@ export async function getPreconditionCandidates(
   let atomIds: string[] = [];
   if (cellId) {
     const cell = getBundledCell(cellId);
-    if (cell) {
-      atomIds = cell.inScopeAtomIds;
+    if (!cell) {
+      throw new Error(`Bundled cell not found: ${cellId}`);
+    }
+    atomIds = cell.inScopeAtomIds;
+    if (atomIds.length === 0) {
+      return [];
     }
   }
 
@@ -121,7 +124,6 @@ export async function getPreconditionCandidates(
   const candidates: PreconditionCandidate[] = [];
 
   for (const row of rows) {
-    // Representative token is lowest ID token for this atom
     const tokenRow = (await db
       .prepare(
         `SELECT id, atom_id, slug, title
@@ -134,22 +136,29 @@ export async function getPreconditionCandidates(
 
     if (!tokenRow) continue;
 
-    const cardRow = (await db
+    const cardRows = (await db
       .prepare(
-        `SELECT id, token_id, reps, buried_until, buried_reason, state
-           FROM cards
-          WHERE token_id = ? AND user_id = ?`,
+        `SELECT c.id, c.token_id, c.reps, c.buried_until, c.buried_reason
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+          WHERE t.atom_id = ?
+            AND c.user_id = ?
+            AND c.detached_at IS NULL
+          ORDER BY c.id ASC`,
       )
-      .get(tokenRow.id, userId)) as CardStateRow | undefined;
+      .all(row.atom_id, userId)) as CardStateRow[];
+
+    const representativeCard =
+      cardRows.find((card) => card.token_id === tokenRow.id) ?? cardRows[0];
 
     let assessmentState: "unassessed" | "buried_known" | "learning" =
       "unassessed";
-    if (cardRow) {
-      if (cardRow.buried_reason === PRECONDITION_BURIED_REASON) {
-        assessmentState = "buried_known";
-      } else {
-        assessmentState = "learning";
-      }
+    if (
+      cardRows.some((card) => card.buried_reason === PRECONDITION_BURIED_REASON)
+    ) {
+      assessmentState = "buried_known";
+    } else if (cardRows.some((card) => card.reps > 0)) {
+      assessmentState = "learning";
     }
 
     candidates.push({
@@ -157,11 +166,11 @@ export async function getPreconditionCandidates(
       title: row.title,
       slug: row.slug,
       assessmentState,
-      cardId: cardRow?.id,
+      cardId: representativeCard?.id,
       tokenId: tokenRow.id,
-      buriedUntil: cardRow?.buried_until,
-      buriedReason: cardRow?.buried_reason,
-      reps: cardRow?.reps ?? 0,
+      buriedUntil: representativeCard?.buried_until,
+      buriedReason: representativeCard?.buried_reason,
+      reps: representativeCard?.reps ?? 0,
     });
   }
 
@@ -183,54 +192,60 @@ export async function assessPrecondition(
     throw new Error("atomId is required to assess precondition");
   }
 
-  // Find representative token
-  const tokenRow = (await db
+  const tokenRows = (await db
     .prepare(
       `SELECT id FROM tokens
         WHERE atom_id = ?
-        ORDER BY id ASC
-        LIMIT 1`,
+        ORDER BY id ASC`,
     )
-    .get(atomId)) as { id: string } | undefined;
+    .all(atomId)) as Array<{ id: string }>;
 
-  if (!tokenRow) {
+  if (tokenRows.length === 0) {
     throw new Error(`No token found for atom: ${atomId}`);
   }
 
-  // Ensure card exists
-  const card = await ensureCard(db, tokenRow.id, userId);
+  const cards = [];
+  for (const tokenRow of tokenRows) {
+    cards.push(await ensureCard(db, tokenRow.id, userId));
+  }
+  const representative = cards[0]!;
 
   if (decision === "known") {
-    // Bury card with precondition reason — do NOT touch FSRS fields or reps
-    await updateCard(db, card.id, {
-      buried_until: PRECONDITION_BURIED_UNTIL,
-      buried_reason: PRECONDITION_BURIED_REASON,
-    });
+    const placeholders = tokenRows.map(() => "?").join(",");
+    await db
+      .prepare(
+        `UPDATE cards
+            SET buried_until = ?,
+                buried_reason = ?
+          WHERE user_id = ?
+            AND token_id IN (${placeholders})
+            AND detached_at IS NULL`,
+      )
+      .run(
+        PRECONDITION_BURIED_UNTIL,
+        PRECONDITION_BURIED_REASON,
+        userId,
+        ...tokenRows.map((row) => row.id),
+      );
 
     return {
       success: true,
       atomId,
       decision: "known",
-      cardId: card.id,
+      cardId: representative.id,
       buried: true,
       buriedReason: PRECONDITION_BURIED_REASON,
     };
   }
 
   if (decision === "learn") {
-    // If card was buried with precondition reason, lift the bury
-    if (card.buried_reason === PRECONDITION_BURIED_REASON) {
-      await updateCard(db, card.id, {
-        buried_until: null,
-        buried_reason: null,
-      });
-    }
+    await liftPreconditionBury(db, userId, atomId);
 
     return {
       success: true,
       atomId,
       decision: "learn",
-      cardId: card.id,
+      cardId: representative.id,
       buried: false,
       buriedReason: null,
     };

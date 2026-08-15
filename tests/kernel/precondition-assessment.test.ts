@@ -53,7 +53,13 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     const atom001 = preconds.find((p) => p.atomId === "01K3X9A7R4B8C1D2E3F4G5A001");
     expect(atom001).toBeDefined();
     expect(atom001?.title).toBe("Lichtstrahl und Einfallslot");
-    expect(atom001?.assessmentState).toBe("learning");
+    expect(atom001?.assessmentState).toBe("unassessed");
+  });
+
+  it("rejects an unknown cellId instead of listing every prerequisite", async () => {
+    await expect(
+      getPreconditionCandidates(db, "test-learner", "de-by:does-not-exist"),
+    ).rejects.toThrow("Bundled cell not found: de-by:does-not-exist");
   });
 
   it("handles 'known' decision by burying card without modifying FSRS state", async () => {
@@ -91,10 +97,24 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     const held = await heldAtomIds(db, user);
     expect(held.has(atomId)).toBe(false);
 
-    // 4. Invariant: Buried card does not enter the active review queue
+    // 4. Invariant: every live card for the atom is buried, not just the
+    // representative. Realschule Optik materialises two items per atom.
+    const atomCards = (await db
+      .prepare(
+        `SELECT c.id, c.buried_reason
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+          WHERE c.user_id = ? AND t.atom_id = ? AND c.detached_at IS NULL`,
+      )
+      .all(user, atomId)) as Array<{ id: string; buried_reason: string | null }>;
+    expect(atomCards.length).toBe(2);
+    expect(
+      atomCards.every((card) => card.buried_reason === PRECONDITION_BURIED_REASON),
+    ).toBe(true);
+
     const queue = await buildReviewQueue(db, { userId: user });
-    const inQueue = queue.items.some((i) => i.cardId === result.cardId);
-    expect(inQueue).toBe(false);
+    const buriedIds = new Set(atomCards.map((card) => card.id));
+    expect(queue.items.some((item) => buriedIds.has(item.cardId))).toBe(false);
 
     // 5. Candidate status reports 'buried_known'
     const preconds = await getPreconditionCandidates(
@@ -139,14 +159,15 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     expect(card.buried_until).toBeNull();
     expect(card.buried_reason).toBeNull();
 
-    // Candidate status reports 'learning'
+    // "learn" lifts the bury; reps are still 0, so the atom stays unassessed
+    // until a real retrieval. Enrolment or a learn click is not mastery.
     const preconds = await getPreconditionCandidates(
       db,
       user,
       "de-by:realschule-optik",
     );
     const atomCandidate = preconds.find((p) => p.atomId === atomId);
-    expect(atomCandidate?.assessmentState).toBe("learning");
+    expect(atomCandidate?.assessmentState).toBe("unassessed");
   });
 
   it("supports liftPreconditionBury directly", async () => {

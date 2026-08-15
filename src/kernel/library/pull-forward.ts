@@ -70,10 +70,12 @@ export async function getPullForwardCandidates(
 
   const now = new Date().toISOString();
   const limit = options.limit ?? 20;
+  const includeFutureDue = options.includeFutureDue ?? true;
 
-  // Retrieve cards that are not blocked, but currently not in the active due queue:
+  // Not currently in the active due queue, or leftover new cards past maxNew:
   // 1. Buried with precondition reason
-  // 2. Future due (due_at > now and not currently due)
+  // 2. Leftover new cards that enrolment already materialised
+  // 3. Future-due reviews, when includeFutureDue is on
   const rows = (await db
     .prepare(
       `SELECT c.id AS card_id,
@@ -92,13 +94,20 @@ export async function getPullForwardCandidates(
     LEFT JOIN learning_atoms a ON a.id = t.atom_id
         WHERE c.user_id = ?
           AND c.blocked = 0
+          AND c.detached_at IS NULL
           AND (
             c.buried_reason = ?
-            OR (c.buried_until IS NULL AND c.due_at > ?)
+            OR (c.state = 'new' AND c.buried_until IS NULL)
+            OR (? = 1 AND c.buried_until IS NULL AND c.due_at > ?)
           )
         ORDER BY c.due_at ASC`,
     )
-    .all(userId, PRECONDITION_BURIED_REASON, now)) as RawCandidateRow[];
+    .all(
+      userId,
+      PRECONDITION_BURIED_REASON,
+      includeFutureDue ? 1 : 0,
+      now,
+    )) as RawCandidateRow[];
 
   // Compute dependency / leverage scores (atoms that gate other atoms have higher priority)
   const prereqCounts = (await db
@@ -187,10 +196,12 @@ export async function pullForwardCards(
           id: string;
           buried_reason: string | null;
           due_at: string;
+          detached_at: string | null;
+          state: string;
         }
       | undefined;
 
-    if (!card) continue;
+    if (!card || card.detached_at) continue;
 
     const updates: string[] = [];
     const values: (string | null)[] = [];

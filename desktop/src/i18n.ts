@@ -563,6 +563,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "Rutas de aprendizaje",
     btn_enrol_cell: "Activar ruta de aprendizaje",
     lbl_cell_enrolled: "Activo",
+    lbl_cell_atom_count: "{count} átomos",
     toast_cell_enrolled: "¡Ruta '{title}' activada ({cards} tarjetas creadas)!",
     toast_cell_already_enrolled: "La ruta '{title}' ya está activa.",
     btn_import_curriculum: "Importar currículo",
@@ -1425,6 +1426,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "Parcours d'apprentissage",
     btn_enrol_cell: "Activer le parcours",
     lbl_cell_enrolled: "Actif",
+    lbl_cell_atom_count: "{count} atomes",
     toast_cell_enrolled:
       "Parcours '{title}' activé ({cards} cartes créées) !",
     toast_cell_already_enrolled: "Le parcours '{title}' est déjà actif.",
@@ -2290,6 +2292,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "Trilhas de aprendizagem",
     btn_enrol_cell: "Ativar trilha",
     lbl_cell_enrolled: "Ativo",
+    lbl_cell_atom_count: "{count} átomos",
     toast_cell_enrolled: "Trilha '{title}' ativada ({cards} cartas criadas)!",
     toast_cell_already_enrolled: "A trilha '{title}' já está ativa.",
     btn_import_curriculum: "Importar currículo",
@@ -3079,6 +3082,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "学习路径",
     btn_enrol_cell: "激活学习路径",
     lbl_cell_enrolled: "已激活",
+    lbl_cell_atom_count: "{count} 个知识点",
     toast_cell_enrolled: "学习路径 '{title}' 已激活（创建了 {cards} 张卡片）！",
     toast_cell_already_enrolled: "学习路径 '{title}' 已经处于激活状态。",
     btn_import_curriculum: "导入课程大纲",
@@ -3897,6 +3901,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "学習パス",
     btn_enrol_cell: "学習パスを有効化",
     lbl_cell_enrolled: "有効",
+    lbl_cell_atom_count: "{count} 個のアトム",
     toast_cell_enrolled:
       "学習パス '{title}' が有効化されました（{cards}枚のカードを作成）！",
     toast_cell_already_enrolled:
@@ -5012,6 +5017,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "Learning Paths",
     btn_enrol_cell: "Activate Learning Path",
     lbl_cell_enrolled: "Active",
+    lbl_cell_atom_count: "{count} atoms",
     toast_cell_enrolled: "Learning path '{title}' activated ({cards} cards created)!",
     toast_cell_already_enrolled: "Learning path '{title}' is already active.",
     btn_import_curriculum: "Import Curriculum",
@@ -6343,6 +6349,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_bundled_cells: "Lernpfade",
     btn_enrol_cell: "Lernpfad aktivieren",
     lbl_cell_enrolled: "Aktiv",
+    lbl_cell_atom_count: "{count} Atome",
     toast_cell_enrolled:
       "Lernpfad '{title}' aktiviert ({cards} Karten erstellt)!",
     toast_cell_already_enrolled: "Lernpfad '{title}' ist bereits aktiv.",

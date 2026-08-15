@@ -992,6 +992,10 @@ export function createMcpServer(db: Database): McpServer {
           .positive()
           .optional()
           .describe("Maximum number of candidates to return"),
+        includeFutureDue: z
+          .boolean()
+          .optional()
+          .describe("Include future-due review cards (default true)"),
         user: z.string().optional().describe("User ID"),
       },
       annotations: {
@@ -1003,6 +1007,7 @@ export function createMcpServer(db: Database): McpServer {
       const userId = await getUserId(params.user);
       return await handleGetPullForwardCandidates(db, {
         limit: params.limit,
+        includeFutureDue: params.includeFutureDue,
         user: userId,
       });
     }),

@@ -142,4 +142,42 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
     expect(execRes.success).toBe(true);
     expect(execRes.pulledCount).toBe(1);
   });
+
+  it("excludes detached cards and honors includeFutureDue", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+    const futureDue = new Date(Date.now() + 10 * 86400000).toISOString();
+    const firstCard = (await db
+      .prepare("SELECT id FROM cards WHERE user_id = ? LIMIT 1")
+      .get(user)) as { id: string };
+
+    await db
+      .prepare(
+        "UPDATE cards SET state = 'review', reps = 1, due_at = ? WHERE id = ?",
+      )
+      .run(futureDue, firstCard.id);
+
+    const withFuture = await getPullForwardCandidates(db, user, {
+      includeFutureDue: true,
+    });
+    expect(withFuture.some((c) => c.cardId === firstCard.id)).toBe(true);
+
+    const withoutFuture = await getPullForwardCandidates(db, user, {
+      includeFutureDue: false,
+    });
+    expect(withoutFuture.some((c) => c.cardId === firstCard.id)).toBe(false);
+
+    await db
+      .prepare("UPDATE cards SET detached_at = ? WHERE id = ?")
+      .run(new Date().toISOString(), firstCard.id);
+
+    const afterDetach = await getPullForwardCandidates(db, user, {
+      includeFutureDue: true,
+    });
+    expect(afterDetach.some((c) => c.cardId === firstCard.id)).toBe(false);
+
+    const pullDetached = await pullForwardCards(db, user, [firstCard.id]);
+    expect(pullDetached.pulledCount).toBe(0);
+  });
 });

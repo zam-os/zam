@@ -2319,6 +2319,7 @@ interface BundledCellItem {
   description: string;
   publisher: string;
   atomCount: number;
+  inScopeAtomIds: string[];
   installed: boolean;
   enrolled: boolean;
   cardCount: number;
@@ -2400,7 +2401,8 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     const countEl = document.createElement("span");
     countEl.style.fontSize = "0.74rem";
     countEl.style.color = "var(--muted)";
-    countEl.textContent = `${cell.atomCount} Atome`;
+    const inScopeCount = cell.inScopeAtomIds?.length ?? cell.atomCount;
+    countEl.textContent = tf("lbl_cell_atom_count", { count: inScopeCount });
 
     const actionBtn = document.createElement("button");
     actionBtn.type = "button";

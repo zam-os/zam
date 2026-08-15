@@ -1261,18 +1261,19 @@ export async function getBundledCellEnrolment(
   const placeholders = cell.inScopeAtomIds.map(() => "?").join(",");
   const row = (await db
     .prepare(
-      `SELECT COUNT(DISTINCT c.id) AS n
+      `SELECT COUNT(DISTINCT c.id) AS n,
+              COUNT(DISTINCT t.atom_id) AS covered
          FROM cards c
          JOIN tokens t ON t.id = c.token_id
         WHERE c.user_id = ?
           AND t.atom_id IN (${placeholders})
           AND c.detached_at IS NULL`,
     )
-    .get(userId, ...cell.inScopeAtomIds)) as { n: number };
+    .get(userId, ...cell.inScopeAtomIds)) as { n: number; covered: number };
 
   return {
     installed,
-    enrolled: row.n > 0,
+    enrolled: row.covered === cell.inScopeAtomIds.length,
     cardCount: row.n,
   };
 }

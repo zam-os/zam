@@ -1723,6 +1723,7 @@ export async function assessPreconditionHandler(
 // 19. Pull Forward on Empty Queue (Phase 4)
 export interface GetPullForwardCandidatesParams {
   limit?: number;
+  includeFutureDue?: boolean;
   user?: string;
 }
 
@@ -1733,6 +1734,7 @@ export async function getPullForwardCandidatesHandler(
   const userId = await resolveHandlerUser(db, params.user);
   const candidates = await getPullForwardCandidates(db, userId, {
     limit: params.limit,
+    includeFutureDue: params.includeFutureDue,
   });
   return {
     success: true as const,

@@ -139,5 +139,35 @@ describe("Bundled learning cells (Phase 1)", () => {
     expect(rsCell?.enrolled).toBe(true);
     expect(rsCell?.cardCount).toBe(6);
   });
+
+  it("does not mark overlapping cells enrolled after a partial shared-atom enrol", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+    const statuses = await getBundledCellsWithStatus(db, user);
+    const rs = statuses.find((cell) => cell.id === "de-by:realschule-optik");
+    const gym = statuses.find((cell) => cell.id === "de-by:gymnasium-8-optik");
+    const ext = statuses.find(
+      (cell) => cell.id === "de-by:realschule-optik-erweiterung",
+    );
+    const bos = statuses.find((cell) => cell.id === "de-by:bos-10-optik");
+
+    expect(rs?.enrolled).toBe(true);
+    expect(gym?.enrolled).toBe(false);
+    expect(ext?.enrolled).toBe(false);
+    expect(bos?.enrolled).toBe(false);
+    expect(gym?.cardCount).toBeGreaterThan(0);
+
+    const gymEnrol = await enrolBundledCell(db, user, "de-by:gymnasium-8-optik");
+    expect(gymEnrol.alreadyEnrolled).toBe(false);
+    expect(gymEnrol.cardsCreated).toBeGreaterThan(0);
+
+    const gymAfter = await getBundledCellEnrolment(
+      db,
+      user,
+      "de-by:gymnasium-8-optik",
+    );
+    expect(gymAfter.enrolled).toBe(true);
+  });
 });
 
