@@ -1,0 +1,290 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-englisch-grammatik-syntax",
+  "version": "2026.08.1",
+  "title": "English 9: Advanced Grammar and Syntax (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Englisch 9: Conditional Sentences (Types I-III), Passive Voice, Reported Speech with Backshift und Relative Clauses.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/englisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Englisch 9, Lernbereich Sprachliche Mittel (Grammatik & Syntax)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E9G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E9G0000000000000000A01",
+      "namespace": "englisch-grammatik",
+      "slug": "conditional-sentences-type-1-2-3",
+      "title": "Conditional Sentences: Types I, II, and III (Bedingungssätze)",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1124446",
+          "target_label": "Conditional sentence",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which verb form correctly completes the Type III conditional sentence: 'If she had studied harder, she ___ the exam'?",
+          "concept": "would have passed (Conditional Perfect)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "would have passed",
+              "would pass"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Explain the rules and differences of all three Conditional Clause types (Type I real present/future, Type II unreal present, Type III unreal past) and provide one example sentence for each.",
+          "concept": "Type I: if + Simple Present, will + infinitive (real possibility); Type II: if + Simple Past, would + infinitive (hypothetical/unreal now); Type III: if + Past Perfect (had + 3rd form), would have + past participle (impossible past)",
+          "sample_solution": "1. Type I (Real condition in present/future): 'If it rains tomorrow, we will stay at home.' (Pattern: if-clause in Simple Present, main clause with will-future + infinitive). 2. Type II (Unreal/hypothetical condition in present): 'If I had a million dollars, I would travel around the world.' (Pattern: if-clause in Simple Past, main clause with would + infinitive). 3. Type III (Impossible condition in the past): 'If we had left earlier, we would not have missed the train.' (Pattern: if-clause in Past Perfect [had + past participle], main clause with would have + past participle)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E9G0000000000000000A02",
+      "namespace": "englisch-grammatik",
+      "slug": "passive-voice-tenses-agent-by",
+      "title": "The Passive Voice: Formation across Tenses and the by-Agent",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1194697",
+          "target_label": "Passive voice",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What is the correct passive transformation of: 'Shakespeare wrote Romeo and Juliet'?",
+          "concept": "'Romeo and Juliet was written by Shakespeare'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Romeo and Juliet was written by Shakespeare",
+              "Romeo and Juliet is written by Shakespeare"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Explain how the Passive Voice is formed in English (form of 'to be' + past participle/3rd form) and transform the sentence 'The engineers are building a new bridge' into: a) Present Continuous Passive, b) Simple Past Passive, and c) Present Perfect Passive.",
+          "concept": "Form of 'be' + 3rd form (past participle); a) A new bridge is being built, b) A new bridge was built, c) A new bridge has been built",
+          "sample_solution": "General rule for Passive Voice: Subject becomes object, and the verb is constructed with the appropriate tense of 'to be' + past participle (3rd form of main verb). Transformations of 'The engineers build/are building a new bridge': a) Present Continuous Passive: 'A new bridge is being built by the engineers.' b) Simple Past Passive: 'A new bridge was built by the engineers.' c) Present Perfect Passive: 'A new bridge has been built by the engineers.' Note: The 'by-agent' is only included when the person/entity performing the action is significant."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9G0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E9G0000000000000000A03",
+      "namespace": "englisch-grammatik",
+      "slug": "reported-speech-backshift-tenses",
+      "title": "Reported Speech: Backshift of Tenses, Pronouns, and Time Phrases",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1056391",
+          "target_label": "Indirect speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9G0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "How does 'I have lost my key' shift in reported speech introduced by a past tense verb: 'Tom said that he ___ his key'?",
+          "concept": "had lost (Present Perfect shifts to Past Perfect)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "had lost",
+              "has lost"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9G0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Explain the rules of Backshift in Reported Speech when the introductory clause is in the past (said/told). Detail the shift for tenses, pronouns, and time/place expressions (today, yesterday, tomorrow, here).",
+          "concept": "Tense shift: Simple Present -> Simple Past, Simple Past/Present Perfect -> Past Perfect, will -> would, can -> could; Pronouns adapt to speaker; today -> that day, yesterday -> the day before, tomorrow -> the next day, here -> there",
+          "sample_solution": "When reporting direct speech introduced in the past (e.g. 'She said that...'): 1. Backshift of Tenses: Simple Present -> Simple Past ('am/is' -> 'was'); Simple Past / Present Perfect -> Past Perfect ('went' / 'have gone' -> 'had gone'); will -> would; can -> could. 2. Pronoun adjustments: 'I' -> 'he/she', 'my' -> 'his/her', 'we' -> 'they'. 3. Time and place adjustments: 'today' -> 'that day', 'yesterday' -> 'the day before / the previous day', 'tomorrow' -> 'the following day / the next day', 'now' -> 'then', 'here' -> 'there', 'this' -> 'that'."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9G0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E9G0000000000000000A04",
+      "namespace": "englisch-grammatik",
+      "slug": "relative-clauses-defining-non-defining",
+      "title": "Relative Clauses: Defining vs. Non-Defining and Contact Clauses",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1124446",
+          "target_label": "Relative clause",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb_grammar",
+          "topic_title": "Grammatische Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9G0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Can the relative pronoun 'that' be used in non-defining relative clauses (extra information set in commas)?",
+          "concept": "No, non-defining clauses must use 'which' (for things) or 'who' (for persons), never 'that'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "No, only 'who' or 'which' is allowed with commas",
+              "Yes, 'that' can always be used"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9G0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Contrast defining (identifying) and non-defining (extra information) relative clauses regarding meaning, punctuation (commas), pronoun choices ('who', 'which', 'that', 'whose'), and explain when a contact clause (omission of the relative pronoun) is permissible.",
+          "concept": "Defining: essential information, no commas, 'that' allowed, pronoun can be dropped if object (contact clause); Non-defining: non-essential bonus information, separated by commas, no 'that', pronoun can never be omitted",
+          "sample_solution": "1. Defining Relative Clauses (Bestimmende Relativsätze): Contain essential information to identify the person or thing. No commas are used. Relative pronouns: 'who' (people), 'which'/'that' (things), 'whose' (possession). Contact clause: If the relative pronoun is the object of the clause, it can be completely omitted (e.g. 'The book (which/that) I read yesterday was great'). 2. Non-Defining Relative Clauses (Nicht-bestimmende Relativsätze): Give additional, non-essential information and are always enclosed in commas. Pronouns: only 'who' or 'which' (never 'that'). The relative pronoun can NEVER be dropped, even when it is an object (e.g. 'London, which is the capital of the UK, attracts millions of tourists')."
+        }
+      ]
+    }
+  ]
+}

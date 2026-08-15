@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-biologie-wirbeltiere-oekologie",
+  "version": "2026.08.1",
+  "title": "Biologie 7: Wirbeltierklassen, Angepasstheit und Ökosysteme (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 7: Die fünf Wirbeltierklassen, Temperaturregulation, Lebensraumanpassungen, Nahrungsnetze und Ökosystem Wald/Gewässer.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 7, Lernbereich Vielfalt der Wirbeltiere und Ökologie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B7W0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B7W0000000000000000A01",
+      "namespace": "biologie-zoologie",
+      "slug": "wirbeltierklassen-fuenf-stamm-merkmale",
+      "title": "Die fünf Wirbeltierklassen im Vergleich: Hautbedeckung, Atmung, Fortpflanzung und Herz",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Vertebrate",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere und Lebensräume",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7W0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche beiden Wirbeltierklassen sind im Gegensatz zu Fischen, Amphibien und Reptilien gleichwarm (homoiotherm) und halten ihre Körperkerntemperatur konstant?",
+          "concept": "Vögel und Säugetiere",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vögel und Säugetiere (gleichwarm)",
+              "Reptilien und Amphibien"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7W0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine vergleichende Übersicht über die fünf Wirbeltierklassen (Fische, Lurche/Amphibien, Kriechtiere/Reptilien, Vögel, Säugetiere) anhand von fünf biologischen Kriterien: Körperbedeckung, Atmungsorgane, Fortpflanzung/Entwicklung (Eier/lebendgebärend), Herz-Kreislauf-Bau und Temperaturregulation (wechselwarm vs. gleichwarm).",
+          "concept": "Fische: Schuppen/Schleim, Kiemen, Laich im Wasser, 1 Vorhof/1 Kammer (einfacher Kreislauf), wechselwarm; Amphibien: feuchte Nackthaut/Schleim, Kiemen/Lungen/Haut, Metamorphose aus Laich, 2 Vorhöfe/1 Kammer, wechselwarm; Reptilien: Hornschuppen, Lunge, beschalte Eier an Land, 2 Vorhöfe/1 unvollständig geteilte Kammer, wechselwarm; Vögel: Federn, Lunge mit Luftsäcken, Kalkschaleneier, 4 Herzhöhlen getrennt, gleichwarm; Säuger: Haarkleid/Fell, Lunge, lebendgebärend/Milchdrüsen, 4 Herzhöhlen getrennt, gleichwarm.",
+          "sample_solution": "1. Die fünf Wirbeltierklassen im systematischen Vergleich: - Fische:   * Haut: Knochenschuppen mit Schleimschicht (wasserabweisend, stromlinienförmig).   * Atmung: Kiemen mit Kiemendeckeln.   * Fortpflanzung: Äußere Befruchtung im Wasser (Laich ohne Schale).   * Herz: Zweiteilig (1 Vorhof, 1 Kammer, einfacher Kreislauf mit Kiemenkapillaren).   * Temperatur: Wechselwarm (poikilotherm). - Amphibien (Lurche, z. B. Frösche, Salamander):   * Haut: Dünne, feuchte Drüsenhaut ohne Schuppen (Hautatmung).   * Atmung: Larven über Kiemen; adulte Tiere über einfache Lungen und Haut.   * Fortpflanzung: Laichablage im Wasser; Metamorphose von Kaulquappe zum Landtier.   * Herz: Dreiteilig (2 Vorhöfe, 1 ungeteilte Kammer mit Mischblut).   * Temperatur: Wechselwarm. - Reptilien (Kriechtiere, z. B. Eidechsen, Schlangen, Schildkröten):   * Haut: Trockene Hornschuppen/Hornschilder (Verdunstungsschutz).   * Atmung: Gefaltete Lungen.   * Fortpflanzung: Innere Befruchtung; Ablage pergamentartiger Eier an Land (unabhängig vom Wasser).   * Herz: 2 Vorhöfe, 1 Kammer mit unvollständiger Scheidewand (bei Krokodilen fast geschlossen).   * Temperatur: Wechselwarm. - Vögel:   * Haut: Federkleid (Daunen zur Wärmedämmung, Schwungfedern zum Fliegen).   * Atmung: Hochleistungs-Röhrenlungen mit Luftsäcken.   * Fortpflanzung: Hartschalige Kalk-Eier, Brutpflege.   * Herz: Vollständig getrenntes 4-teiliges Herz (2 Vorhöfe, 2 Kammern, kein Mischblut).   * Temperatur: Gleichwarm (homoiotherm, ca. 40–42 °C). - Säugetiere:   * Haut: Haare/Fell, Talg- und Schweißdrüsen.   * Atmung: Alveolarlungen mit Zwerchfell.   * Fortpflanzung: Innere Befruchtung, lebendgebärend (Viviparie), Säugen der Jungtiere mit Muttermilch aus Milchdrüsen, intensive Brutpflege.   * Herz: 4 Herzhöhlen vollständig getrennt (doppelter Kreislauf).   * Temperatur: Gleichwarm (ca. 36–38 °C)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B7W0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B7W0000000000000000A02",
+      "namespace": "biologie-zoologie",
+      "slug": "angepasstheiten-lebensraum-vogel-fisch",
+      "title": "Morphologische Angepasstheiten an den Lebensraum: Vogelflug und Schwimmfähigkeit der Fische",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B7W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Klassenmerkmale bilden die Grundlage für morphologische Spezialisierungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Adaptation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere und Lebensräume",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7W0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Organ ermöglicht es echten Knochenfischen, ohne Muskelanstrengung in einer bestimmten Wassertiefe zu schweben?",
+          "concept": "Die Schwimmblase (hydrostatisches Schwebeorgan durch Gasregulierung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Schwimmblase",
+              "Das Seitenlinienorgan"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7W0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die anatomischen und physiologischen Anpassungen des Vogelkörpers an das Fliegen (Leichtbauweise: pneumatisierte Röhrenknochen, zahnloser Hornschnabel; Muskel- und Antriebsapparat: Brustbeinkamm mit kräftigen Flugmuskeln; Atmung: Luftsacksystem; aerodynamische Tragflächen/Federn) und stelle diese den Anpassungen der Fische an das Wasserleben gegenüber (Stromlinienform, Flossen als Steuer/Antrieb, Seitenlinienorgan, Schwimmblase).",
+          "concept": "Vogel: pneumatisierte Hohlknochen (Gewichtsreduktion), Hornschnabel statt schwerer Zähne, Brustbeinkamm (Ansatz großer Flugmuskeln), Luftsäcke (stetiger Luftstrom in Lunge), Federn erzeugen aerodynamischen Auftrieb; Fisch: stromlinienförmiger Spindelkörper (minimaler Wasserwiderstand), Flossen, Seitenlinienorgan (Ferntastsinn für Druckwellen), Schwimmblase (Dichteausgleich nach Archimedes).",
+          "sample_solution": "1. Anpassungen des Vogels an den Luftraum (Leichtbau und Kraft): - Leichtbauweise: Pneumatisierte (luftgefüllte, von feinen Knochenbälkchen versteifte) Röhrenknochen; Verwachsung von Wirbelsäule und Becken (Stabilität); Wegfall schwerer Zähne und Kieferknochen zugunsten eines leichten Hornschnabels; Kloake statt schwerer Harnblase. - Flugmotorik: Stark vergrößerter Brustbeinkamm (Crista sterni) als Ansatzfläche für die gewaltigen Flugmuskeln (Musculus pectoralis major/minor für Abschlag und Aufschlag). - Atmung: Röhrenlungen mit fünf Paar elastischen Luftsäcken; gewährleistet auch beim Ausatmen eine kontinuierliche, sauerstoffreiche Frischluftversorgung (Gegenstromprinzip). - Tragflächen: Asymmetrisch geformte Schwungfedern mit Haken- und Bogenstrahlen bilden eine aerodynamische Wölbung zur Erzeugung von dynamischem Auftrieb. 2. Anpassungen der Fische an das Wasserleben: - Körperform: Spindelförmiger, seitlich abgeflachter Stromlinienkörper minimiert den Strömungswiderstand des zähflüssigen Wassers. - Flossensystem: Schwanzflosse als Hauptantrieb; Brust- und Bauchflossen als Tiefen- und Seitensteuer; Rücken- und Afterflosse zur Stabilisierung gegen Kentern. - Schwimmblase: Hydrostatisches Organ. Durch Gasaustausch mit dem Blut wird das Gasvolumen so eingestellt, dass die mittlere Dichte des Fisches exakt der Dichte des umgebenden Wassers entspricht (Schweben im Gleichgewicht nach dem Archimedischen Prinzip). - Seitenlinienorgan: 'Ferntastsinn' aus mit Sinneszellen besetzten Kanälen zur Registrierung feinster Druckwellen und Strömungsänderungen von Beutetieren oder Feinden."
+        }
+      ]
+    },
+    {
+      "id": "01K4B7W0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B7W0000000000000000A03",
+      "namespace": "biologie-oekologie",
+      "slug": "oekosystem-biotop-biozoenose-umweltfaktoren",
+      "title": "Das Ökosystem: Biotop, Biozönose, abiotische und biotische Umweltfaktoren",
+      "domain": "schule/biologie/oekologie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B7W0000000000000000A01",
+          "type": "hard",
+          "rationale": "Artenkenntnis der Organismen ist Voraussetzung für die ökologische Systembetrachtung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Ecosystem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ökologie von Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ökologie von Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7W0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen beiden Komponenten setzt sich ein vollständiges Ökosystem nach der biologischen Definition zusammen?",
+          "concept": "Aus dem unbelebten Lebensraum (Biotop) und der darin lebenden Lebensgemeinschaft aller Organismen (Biozönose): Ökosystem = Biotop + Biozönose",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Biotop (Lebensraum) + Biozönose (Lebensgemeinschaft)",
+              "Ausschließlich Pflanzen und Tiere"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7W0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere Ökosystem, Biotop und Biozönose, unterscheide abiotische (unbelebte) Umweltfaktoren (Licht, Temperatur, Wasser/Feuchtigkeit, Boden-pH, Wind) von biotischen (belebten) Faktoren (Konkurrenz, Räuber-Beute, Parasitismus, Symbiose) und erläutere diese Zusammenhänge am Beispiel des Ökosystems Mischwald.",
+          "concept": "Ökosystem = Biotop + Biozönose; Abiotisch = physikalisch-chemische Umweltgrößen (Lichteinfall im Kronendach, Bodenfeuchte, Jahresmitteltemperatur); Biotisch = Wechselbeziehungen zwischen Lebewesen (interspezifische Konkurrenz um Nistplätze, Symbiose Mykorrhiza-Pilz/Baumwurzel, Räuber Habicht vs. Beute Maus).",
+          "sample_solution": "1. Grundbegriffe der Ökologie: - Ökosystem: Eine funktionelle Einheit aus einem abgegrenzten Lebensraum und allen darin vorkommenden Lebewesen. Formel: **Ökosystem = Biotop + Biozönose**. - Biotop: Der unbelebte, physikalisch-chemisch charakterisierte Lebensraum (z. B. Waldboden, Gewässergrund, Felswand). - Biozönose: Die gesamte Lebensgemeinschaft aller Pflanzen (Flora), Tiere (Fauna), Pilze und Mikroorganismen, die in einem Biotop gemeinsam vorkommen und in Wechselwirkung stehen. 2. Umweltfaktoren im Ökosystem Wald: - Abiotische Umweltfaktoren (unbelebte Einflüsse):   * Licht: Bestimmt das vertikale Stockwerkmodell des Waldes (Moosschicht, Krautschicht, Strauchschicht, Kronenschicht); Frühblüher nutzen das Licht vor dem Laubaustrieb.   * Temperatur & Frost: Begrenzen die Vegetationsperiode; fordern Anpassungen wie Laubabwurf im Herbst.   * Wasser & Bodenbeschaffenheit: Verfügbarkeit von Mineralstoffen und Grundwasser im Waldboden. - Biotische Umweltfaktoren (Einflüsse durch andere Lebewesen):   * Räuber-Beute-Beziehung: z. B. Waldkauz jagt Waldmäuse; reguliert wechselseitig die Populationsdichten.   * Konkurrenz (innerartlich um Reviere/Paarungspartner; zwischenartlich um Licht und Nährstoffe zwischen Buche und Eiche).   * Symbiose (Nutzen für beide Partner): Mykorrhiza-Pilze liefern den Baumwurzeln Wasser und Mineralien und erhalten im Gegenzug Fotosynthese-Glukose.   * Parasitismus: z. B. Holzbock (Zecke) saugt Blut an Rehen; Borkenkäfer schädigt Fichtenbast."
+        }
+      ]
+    },
+    {
+      "id": "01K4B7W0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B7W0000000000000000A04",
+      "namespace": "biologie-oekologie",
+      "slug": "nahrungskette-trophiestufen-stoffkreislauf-energiefluss",
+      "title": "Nahrungsbeziehungen: Produzenten, Konsumenten, Destruenten und Energiepyramide",
+      "domain": "schule/biologie/oekologie",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B7W0000000000000000A03",
+          "type": "hard",
+          "rationale": "Ökosysteme und Biozönosen sind die Bühne für trophische Stoffkreisläufe."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Food web",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ökologie von Lebensräumen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ökologie von Lebensräumen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7W0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Organismengruppe (z. B. Regenwürmer, Pilze, Bodenbakterien) baut abgestorbene organische Substanz zu anorganischen Mineralstoffen ab und schließt so den Stoffkreislauf?",
+          "concept": "Die Destruenten (Zersetzer)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Destruenten (Zersetzer)",
+              "Die Produzenten (Erzeuger)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7W0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die drei trophischen Grundstufen in einem Ökosystem: Produzenten (autotroph), Konsumenten (heterotroph: Pflanzenfresser 1. Ordnung, Fleischfresser 2./3. Ordnung, Spitzenräuber) und Destruenten (Mineralisierer), vergleiche den geschlossenen Stoffkreislauf (Kohlenstoff, Stickstoff, Mineralien) mit dem offenen unidirektionalen Energiefluss (10-%-Regel der Energiepyramide / Wärmeverlust) und zeichne eine 4-gliedrige Nahrungskette im See.",
+          "concept": "Produzenten: erzeugen Biomasse aus Sonnenlicht; Konsumenten 1. Ordnung: Herbivoren; Konsumenten 2./3. Ordnung: Karnivoren; Destruenten: zersetzen Kadaver/Laub zu CO2 und Mineralsalzen -> geschlossener Kreislauf; Energiefluss: ca. 90% Energieverlust pro Stufe durch Zellatmung/Wärme (nur ~10% Biomasseübertrag) -> keine Kreisbewegung, ständige Sonnenenergiezufuhr nötig; See-Kette: Kieselalgen (Produzent) -> Wasserfloh (Konsument 1) -> Rotauge (Konsument 2) -> Hecht (Spitzenprädator).",
+          "sample_solution": "1. Die drei Trophieebenen (Ernährungsstufen): - Produzenten (Erzeuger, autotroph): Grüne Pflanzen, Algen und Phytoplankton; wandeln anorganische Stoffe (CO_2, H_2O, Mineralsalze) mittels Sonnenlicht über Fotosynthese in energiereiche organische Biomasse (Glukose, Stärke, Proteine) um. - Konsumenten (Verbraucher, heterotroph): Müssen andere Lebewesen fressen.   * Primärkonsumenten (1. Ordnung): Pflanzenfresser (Herbivoren, z. B. Raupe, Reh, Wasserfloh).   * Sekundärkonsumenten (2. Ordnung): Fleischfresser (Karnivoren, z. B. Singvogel, Friedfisch), die Pflanzenfresser erbeuten.   * Tertiärkonsumenten / Endkonsumenten: Spitzenräuber (Top-Prädatoren, z. B. Habicht, Hecht, Wolf). - Destruenten (Zersetzer & Mineralisierer): Regenwürmer, Asseln, Pilze und Bakterien; bauen Ausscheidungen (Kot), Falllaub und Tierleichen schrittweise ab und mineralisieren sie wieder zu anorganischen Nährsalzen (Nitrat, Phosphat) und CO_2. 2. Stoffkreislauf vs. Energiefluss: - Geschlossener Stoffkreislauf: Die chemischen Elemente (Kohlenstoff, Stickstoff, Wasserstoff, Sauerstoff) zirkulieren in einem ewigen Kreis zwischen Produzenten, Konsumenten und Destruenten; kein Atom geht verloren. - Offener unidirektionaler Energiefluss (10-%-Regel): Energie zirkuliert nicht im Kreis! Von einer Trophieebene zur nächsten werden im Schnitt nur ca. 10 % der Energie in Form von Biomasse weitergegeben. Etwa 90 % der Energie gehen auf jeder Stufe durch Zellatmung, Bewegung, Baustoffwechsel und als ungenutzte Abwärme an die Umgebung verloren. Ein Ökosystem benötigt daher eine ununterbrochene Energiezufuhr von außen durch das Sonnenlicht. 3. Nahrungskette im See: Phytoplankton / Algen (Produzent) -> Wasserfloh (Daphnie, Primärkonsument) -> Rotauge / Friedfisch (Sekundärkonsument) -> Hecht (Tertiärkonsument / Endräuber)."
+        }
+      ]
+    }
+  ]
+}

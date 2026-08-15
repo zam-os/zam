@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-deutsch-rechtschreibung-laute-woertliche-rede",
+  "version": "2026.08.1",
+  "title": "Deutsch 5: Rechtschreibung – Laute, Dehnung/Schärfung und Wörtliche Rede (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 5: Kurze/lange Vokale (Dehnungs-h, Doppelkonsonanten), Auslautverhärtung/Verlängerungsprobe und wörtliche Rede.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 5, Lernbereiche Richtig schreiben und Zeichensetzung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D5R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D5R0000000000000000A01",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "vokallaenge-dehnung-stummes-h-doppelvokal-ie",
+      "title": "Dehnung langer Vokale: Stummes Dehnungs-h, langes i als 'ie' und Doppelvokale",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "German orthography",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 4 Konsonanten (Merkwort: 'L-M-N-R') stehen im Deutschen typischerweise direkt HINTER einem stummen Dehnungs-h?",
+          "concept": "l, m, n und r (z. B. Kohle, Rahm, Zahn, Ohr)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "l, m, n und r",
+              "p, t, k und s"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Kennzeichnung langer Vokale in der deutschen Rechtschreibung: 1. Normalfall (langer Vokal ohne besonderes Kennzeichen: *Mut, rot, Name*), 2. Das stumme Dehnungs-h (steht nur vor l, m, n, r: *Fahrrad, Stuhl, Wohnen, Rahm, Ehre*), 3. Das lange i als 'ie' (*Wiese, Liebe, fliegen*) bzw. seltenes Dehnungs-h bei 'ieh' (*sieht, flieht*), 4. Doppelvokale aa, ee, oo (*Haar, Beere, Moos, Boot* - niemals uu/ii!) und erkläre silbentrennendes h (*sehen -> se-hen, gehen -> ge-hen*).",
+          "concept": "Langer Vokal: normal ohne Dehnungszeichen; Dehnungs-h nur vor l/m/n/r; ie = Standard für langes i; Doppelvokale aa/ee/oo; Silbentrennendes h trennt zwei Vokale bei Silbenzerlegung.",
+          "sample_solution": "1. Strategien zur Schreibung langer Vokale im Deutschen: - **1. Der Normalfall (einfacher Vokalbuchstabe)**:   * In den meisten deutschen Wörtern wird ein lang gesprochener Vokal einfach mit einem einzigen Buchstaben geschrieben: *Mut, rot, gut, Blume, Hase, Leben*. - **2. Das stumme Dehnungs-h**:   * Steht nach einem langen Vokal und **ausschließlich vor den vier Konsonanten l, m, n oder r** (Merkregel: *'Nach l, m, n und r steht das Dehnungs-h gar nicht schwer'*: *Stuhl, Zahl, Rahm, lahm, Zahn, ohne, Ohr, fahren*).   * Steht niemals vor anderen Konsonanten wie b, d, g, t, s (*Mut, Not, rot* ohne h!). - **3. Die Schreibung des langen i-Lauts**:   * **Standardfall**: Fast jedes lang gesprochene 'i' wird als **ie** geschrieben (*Liebe, Wiese, Dieb, Spiegel, fliegen*).   * **Ausnahmen mit Dehnungs-h (ieh)**: Nur in wenigen Verbstämmen und Pronomen (*sieht, flieht, geschieht, ihr, ihm, ihnen*).   * **Fremdwörter / Ausnahmen mit einfachem i**: *Tiger, Bibel, Maschine, Kino, Liter*. - **4. Doppelvokale (aa, ee, oo)**:   * Manche Wörter verdoppeln zur Dehnung den Vokal: *Haar, Paar, Saal; Beere, Meer, Schnee; Boot, Moos, Zoo*.   * Wichtig: Die Buchstaben 'u' und 'i' werden im Deutschen niemals verdoppelt (kein 'uu' oder 'ii')! - **5. Das silbentrennende h**:   * Steht zwischen zwei Vokalen und wird beim deutlichen Silbensprechen hörbar gemacht (*se-hen, ge-hen, Schu-he, Kü-he*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D5R0000000000000000A02",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "vokallaenge-schaerfung-doppelkonsonanten-ck-tz",
+      "title": "Schärfung kurzer Vokale: Doppelkonsonanten, ck statt kk und tz statt zz",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Unterscheidung von kurzen und langen Vokalen steuert die Schärfung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "German orthography",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was wird im Deutschen nach einem kurzen, betonten Vokal anstelle von doppeltem 'kk' bzw. doppeltem 'zz' geschrieben?",
+          "concept": "'ck' statt kk (z. B. Sack, backen) und 'tz' statt zz (z. B. Katze, Blitz)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "'ck' und 'tz'",
+              "'ch' und 'ts'"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Schärfungsregel (Vokallängenprobe: Hören, ob der Stammvokal kurz oder lang gesprochen wird; auf einen kurzen betonten Vokal folgen mindestens zwei Konsonanten), die Verdopplung gleicher Konsonanten (Doppel-m, Doppel-t, Doppel-l, Doppel-p, Doppel-f wie in *schwimmen, retten, bellen, stoppen, hoffen*) sowie die Sonderfälle ck/tz und die Ausnahmeregel: Warum steht nach Konsonanten l, m, n, r (oder Diphthongen) niemals ck oder tz (Merkspruch: *'Nach l, n, r, das merk dir ja, steht nie ein ck und nie ein tz'* -> *Wolke, Bank, Park, tanzen, Hecke, Katze*)?",
+          "concept": "Schärfung: kurzer betonter Vokal -> Konsonantenverdopplung (Doppelkonsonant trennt zwei Silben: schwim-men); Besonderheiten: ck ersetzt kk, tz ersetzt zz; Nach l/n/r steht nur einfaches k oder z (Bank, Herz, Holz).",
+          "sample_solution": "1. Die Schärfungsregel der deutschen Orthographie: - **Vokallängenprobe**: Durch deutliches, langsames Vorsprechen ermitteln, ob der betonte Stammvokal **lang** (*Ofen, Schal, beten*) oder **kurz** (*offen, Schall, betten*) klingt. - **Regel**: Folgt auf einen **kurzen, betonten Vokal** nur ein einziger Konsonantenlaut, wird dieser Buchstabe verdoppelt (**Doppelkonsonant**), um die Kürze des Vokals sichtbar zu machen (*Kamm, rennen, teller, Wasser, Schiff*). 2. Die Sonderfälle der Verdopplung: - **ck statt kk**: Im deutschen Kernwortschatz gibt es kein doppeltes 'kk'. Der k-Laut nach kurzem Vokal wird immer als **ck** geschrieben (*Sack, Ecke, blicken, Zucker*). - **tz statt zz**: Der z-Laut nach kurzem Vokal wird als **tz** geschrieben (*Katze, Blitz, spitzen, Platz*). 3. Die 'l-n-r-Regel' (Keine Dopplung nach bereits vorhandenem Konsonanten): - Steht hinter dem Vokal bereits ein Mitlaut (insbesondere l, n, r) oder ein Doppellaut (au, eu, ei), sind bereits zwei Konsonanten da -> es folgt **nur einfaches k oder einfaches z**:   * Merkspruch: *'Nach l, n, r, das merk dir ja, steht nie ein ck und nie ein tz!'*   * Beispiele mit k: *Wolke, Nelke, Melken* (nach l); *Bank, trinken, danken* (nach n); *Park, stark, Birke* (nach r); *Streik, Pauke* (nach Zwielaut).   * Beispiele mit z: *Holz, Pilz, Walze* (nach l); *Gans, Ranzen, Pflanze* (nach n); *Herz, Kerze, Schmerz* (nach r); *Heizung, Reiz* (nach Zwielaut)."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4D5R0000000000000000A03",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "auslautverhaertung-verlaengerungsprobe-b-d-g",
+      "title": "Auslautverhärtung: b/p, d/t, g/k und die Verlängerungs- und Ableitungsprobe",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5R0000000000000000A02",
+          "type": "hard",
+          "rationale": "Silbenschwingen und Wortstammprinzip sind Werkzeuge der Verlängerungsprobe."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Final-obstruent devoicing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Rechtschreibstrategien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welcher Rechtschreibstrategie findet man sicher heraus, ob ein Nomen wie 'Hund' am Ende mit weichem 'd' oder hartem 't' geschrieben wird?",
+          "concept": "Mit der Verlängerungsprobe (Pluralbildung: 'die Hun-de' -> 'd' ist deutlich hörbar)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verlängerungsprobe (Mehrzahl bilden: Hun-de)",
+              "Silben klatschen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Phänomen der phonetischen Auslautverhärtung im Deutschen (weiche Konsonanten b, d, g klingen am Wortende oder Silbenende stimmlos wie p, t, k) und demonstriere die Verlängerungsprobe (Weiterschwingen) für alle drei Wortarten: 1. Nomen (Plural bilden: *der Dieb -> die Die-be [b], das Rad -> die Rä-der [d], der Berg -> die Ber-ge [g]*), 2. Verben (Infinitiv/Wir-Form bilden: *er treibt -> trei-ben [b], er fand -> fin-den [d], er log -> lü-gen [g]*), 3. Adjektive (Steigern oder vor Nomen setzen: *gelb -> gel-be Blüte [b], rund -> run-der Ball [d], klug -> klü-ger [g]*).",
+          "concept": "Auslautverhärtung: b/d/g klingen am Wortende wie p/t/k; Stammprinzip (Morphemkonstanz) fordert gleiche Schreibung; Verlängerungsprobe macht den weichen Laut wieder hörbar (Nomen: Plural, Verben: Infinitiv, Adjektive: verlängern/steigern).",
+          "sample_solution": "1. Das Phänomen der Auslautverhärtung: - Im Deutschen werden die weichen, stimmhaften Konsonanten **b, d, g** am Ende eines Wortes oder vor anderen harten Lauten automatisch **stimmlos (hart) wie p, t, k gesprochen** (z. B. klingt *Hund* wie *Hunt*, *Korb* wie *Korp*, *Krug* wie *Kruk*). - Nach dem **Stammprinzip (Morphemkonstanz)** bleibt der Wortstamm in allen verwandten Formen jedoch immer gleich geschrieben! 2. Die Verlängerungsprobe (Weiterschwingen) für die 3 Wortarten: - **1. Bei Nomen (Substantiven)**:   * Strategie: Die Mehrzahl (**Plural**) bilden oder in einen anderen Fall setzen.   * *der Die[b/p]?* -> Probe: *die Die-**b**e* -> Schreibung: **Dieb** mit **b**.   * *das Ra[d/t]?* -> Probe: *die Rä-**d**er* -> Schreibung: **Rad** mit **d**.   * *der Ber[g/k]?* -> Probe: *die Ber-**g**e* -> Schreibung: **Berg** mit **g**. - **2. Bei Verben (Zeitwörtern)**:   * Strategie: Die Grundform (**Infinitiv**) oder die *Wir-Form* im Präsens bilden.   * *er schrei[b/p]t?* -> Probe: *schrei-**b**en* -> Schreibung: **schreibt** mit **b**.   * *er stan[d/t]?* -> Probe: *ste-**h**en / stan-**d**en* -> Schreibung: **stand** mit **d**.   * *er flie[g/k]t?* -> Probe: *flie-**g**en* -> Schreibung: **fliegt** mit **g**. - **3. Bei Adjektiven (Eigenschaftswörtern)**:   * Strategie: Das Adjektiv vor ein Nomen setzen (Attribut) oder **steigern (Komparativ)**.   * *gel[b/p]?* -> Probe: *das gel-**b**e Auto* -> Schreibung: **gelb** mit **b**.   * *klan[g/k]los?* -> Probe: *der Klang / die Klän-**g**e* -> Schreibung: **Klang** mit **g**.   * *bun[d/t]?* -> Probe: *ein bun-**t**es Bild* -> Schreibung: **bunt** mit **t**."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4D5R0000000000000000A04",
+      "namespace": "deutsch-zeichensetzung",
+      "slug": "woertliche-rede-redebegleitsatz-anfuehrungszeichen",
+      "title": "Wörtliche Rede und Zeichensetzung: Redebegleitsatz vorne, hinten und eingeschoben",
+      "domain": "schule/deutsch/zeichensetzung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Wörtliche Rede belebt Erzähltexte und fordert präzise Zeichensetzung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Direct speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Zeichensetzung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Richtig schreiben – Zeichensetzung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Satzzeichen steht direkt nach einem vorangestellten Redebegleitsatz vor dem öffnenden Anführungszeichen unten (z. B. Tim rief ... „Komm schnell!“)?",
+          "concept": "Ein Doppelpunkt ( : )",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Doppelpunkt ( : )",
+              "Ein Komma ( , )"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 3 Varianten der wörtlichen Rede und ihre exakten Zeichensetzungsregeln: 1. Vorangestellter Begleitsatz (Begleitsatz : „Wörtliche Rede . / ! / ? “), 2. Nachgestellter Begleitsatz („Wörtliche Rede ! / ? “ , Begleitsatz . [Achtung: Aussagesatz verliert seinen Schlusspunkt!]), 3. Eingeschobener Begleitsatz („Erster Teil der Rede , “ Begleitsatz , „ zweiter Teil der Rede . / ! / ? “) und setze die Zeichen im folgenden Dialog fehlerfrei: a) Lukas fragte Hast du meine Tasche gesehen b) Ich glaube flüsterte Mia sie liegt noch im Klassenzimmer.",
+          "concept": "1. Vorne: Begleitsatz: „Rede Satzzeichen.“; 2. Hinten: „Rede ?/!/ohne Punkt“, Begleitsatz.; 3. Eingeschoben: „Teil 1,“, Begleitsatz, „Teil 2.“; a) Lukas fragte: „Hast du meine Tasche gesehen?“; b) „Ich glaube“, flüsterte Mia, „sie liegt noch im Klassenzimmer.“",
+          "sample_solution": "1. Die 3 Varianten der wörtlichen Rede und ihre Zeichensetzungsregeln: - **1. Vorangestellter Redebegleitsatz**:   * Schema: **Begleitsatz : „Wörtliche Rede [ . / ! / ? ] “**   * Regeln: Nach dem Begleitsatz steht ein **Doppelpunkt**. Die Rede beginnt mit Anführungszeichen unten **„** und großem Anfangsbuchstaben. Das Satzzeichen (. ! ?) steht **vor** dem schließenden Anführungszeichen oben **“**.   * Beispiel: *Der Lehrer rief: „Öffnet bitte das Buch!“* - **2. Nachgestellter Redebegleitsatz**:   * Schema: **„Wörtliche Rede [ ! / ? ] “ , Begleitsatz .**   * **Wichtige Sonderregel**: Bei einem Aussagesatz fällt der Schlusspunkt der wörtlichen Rede ersatzlos weg! Stattdessen trennt ein **Komma** nach dem schließenden Anführungszeichen den klein beginnenden Begleitsatz ab.   * Ausrufe- und Fragezeichen bleiben jedoch immer erhalten!   * Beispiele:     - Aussagesatz: *„Ich habe meine Hausaufgaben fertig“**,** sagte Paul.* (kein Punkt nach fertig!)     - Fragesatz: *„Kommst du heute mit zum Sport?“**,** fragte Lea.* - **3. Eingeschobener (unterbrechender) Redebegleitsatz**:   * Schema: **„Erster Teil der Rede , “ , Begleitsatz , „ zweiter Teil der Rede [ . / ! / ? ] “**   * Der Begleitsatz wird beidseitig durch Kommas eingeschlossen. Geht der Satz der wörtlichen Rede nach dem Einschub weiter, wird nach dem zweiten Anführungszeichen unten **„** kleingeschrieben.   * Beispiel: *„Morgen“, erklärte die Trainerin, „haben wir trainingsfrei.“* 2. Korrekte Auflösung der Beispielsätze: - a) **Lukas fragte: „Hast du meine Tasche gesehen?“** (vorangestellter Begleitsatz + Doppelpunkt + Fragezeichen vor Anführungszeichen oben). - b) **„Ich glaube“, flüsterte Mia, „sie liegt noch im Klassenzimmer.“** (eingeschobener Begleitsatz zwischen Kommas, Fortsetzung kleingeschrieben)."
+        }
+      ]
+    }
+  ]
+}

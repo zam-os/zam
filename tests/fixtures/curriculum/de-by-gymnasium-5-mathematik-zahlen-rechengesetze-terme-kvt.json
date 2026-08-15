@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-mathematik-zahlen-rechengesetze-terme",
+  "version": "2026.08.1",
+  "title": "Mathematik 5: Ganze Zahlen, Rechengesetze, Terme und Kombinatorik (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 5: Zahlenbereiche (N, Z), Zahlengerade/Betrag, Rechengesetze (Kommutativ-, Assoziativ-, Distributivgesetz), Potenzen, Vorrangregeln und Kombinatorik/Zählprinzip.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 5, Lernbereiche Natürliche und Ganze Zahlen, Terme"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YM5Z000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YM5Z000000000000000A01",
+      "namespace": "mathematik-arithmetik",
+      "slug": "ganze-zahlen-zahlengerade-betrag-anordnung",
+      "title": "Die Menge der Ganzen Zahlen Z: Vorzeichen, Betrag und Anordnung auf der Zahlengeraden",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Integer",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche und ganze Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5Z000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was versteht man unter dem Betrag |a| einer ganzen Zahl a auf der Zahlengeraden?",
+          "concept": "Den vorzeichenlosen Abstand der Zahl a zur Nullstelle 0 (z. B. |-7| = 7 und |+7| = 7)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Abstand der Zahl zur Null (|a| >= 0)",
+              "Die Zahl mit umgekehrtem Vorzeichen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5Z000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Erweiterung des Zahlenbereichs von den natürlichen Zahlen N = {1, 2, 3, ...} über N_0 zur Menge der ganzen Zahlen Z = {..., -3, -2, -1, 0, 1, 2, 3, ...}, definiere Gegenzahl (-a) und Betrag (|a|), beschreibe die Anordnung auf der Zahlengeraden (von links nach rechts aufsteigend) und berechne: a) |-15| - |+9|, b) Ordne die Zahlen mit <: -12, 5, -3, 0, -18, 7.",
+          "concept": "Zahlenbereiche: N subset N_0 subset Z; Gegenzahl: Punktspiegelung an 0; Betrag: nicht-negativer Abstand; Anordnung: kleinere Zahl liegt weiter links; a) 15 - 9 = 6; b) -18 < -12 < -3 < 0 < 5 < 7.",
+          "sample_solution": "1. Zahlenbereiche und Menge der ganzen Zahlen Z: - **Natürliche Zahlen N**: N = {1, 2, 3, 4, ...} und N_0 = {0, 1, 2, 3, 4, ...}. - **Ganze Zahlen Z**: Z = {..., -3, -2, -1, 0, 1, 2, 3, ...}. Sie umfasst alle positiven natürlichen Zahlen, die Null sowie alle **negativen ganzen Zahlen** (Zahlen mit negativem Vorzeichen '-'). - **Gegenzahl**: Zu jeder Zahl a gibt es genau eine Gegenzahl -a, die durch Spiegelung am Nullpunkt 0 entsteht (z. B. Gegenzahl von +8 ist -8, Gegenzahl von -5 ist +5). 2. Der Betrag einer Zahl (|a|): - Der **Betrag |a|** gibt den reinen geometrischen Abstand der Zahl a von der Null auf der Zahlengeraden an. Da Abstände niemals negativ sein können, gilt immer:   * Für positive Zahlen und Null: |a| = a (z. B. |+6| = 6, |0| = 0).   * Für negative Zahlen: |-a| = a (z. B. |-9| = 9). 3. Anordnung auf der Zahlengeraden: - Auf der Zahlengeraden gilt: Von zwei Zahlen ist diejenige **kleiner (<)**, die weiter **links** liegt. - Jede negative Zahl ist kleiner als 0 und kleiner als jede positive Zahl. Bei zwei negativen Zahlen ist diejenige mit dem größeren Betrag die kleinere (z. B. -18 < -12, da -18 weiter links liegt). 4. Berechnungen: - a) Term: |-15| - |+9| = 15 - 9 = **6**. - b) Geordnete Ungleichungskette: **-18 < -12 < -3 < 0 < 5 < 7**."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5Z000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YM5Z000000000000000A02",
+      "namespace": "mathematik-arithmetik",
+      "slug": "rechnen-in-ganzen-zahlen-rechengesetze",
+      "title": "Rechnen in Z: Vorzeichenregeln, Grundrechenarten und Rechengesetze (Kommutativ, Assoziativ, Distributiv)",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5Z000000000000000A01",
+          "type": "hard",
+          "rationale": "Sicherer Umgang mit Vorzeichen und Beträgen ist Voraussetzung für Grundrechenarten in Z."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Distributive property",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit ganzen Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5Z000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Vorzeichen ergibt das Produkt zweier ganzer Zahlen mit ungleichen Vorzeichen (z. B. (+a) · (-b))?",
+          "concept": "Ein negatives Vorzeichen: Plus mal Minus ergibt Minus (+ · - = - und - · + = -)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Negatives Vorzeichen (-)",
+              "Positives Vorzeichen (+)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5Z000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die Vorzeichenregeln für Addition, Subtraktion, Multiplikation und Division ganzer Zahlen, wende die Rechengesetze (Kommutativ-, Assoziativ- und Distributivgesetz: a·(b+c) = a·b + a·c) vorteilhaft an und berechne: a) (-4) · (+17) · (-25), b) (-38) · 45 + (-38) · 55.",
+          "concept": "Vorzeichenregeln: Multiplikation/Division: gleiche Vorzeichen ergeben +, ungleiche ergeben -; Subtraktion: Addition der Gegenzahl; a) Kommutativgesetz: [(-4) · (-25)] · (+17) = (+100) · (+17) = 1.700; b) Distributivgesetz (Ausklammern): (-38) · (45 + 55) = (-38) · 100 = -3.800.",
+          "sample_solution": "1. Vorzeichenregeln beim Rechnen in Z: - **Addition**:   * Gleiche Vorzeichen: Beträge addieren, gemeinsames Vorzeichen beibehalten (z. B. (-3) + (-5) = -8).   * Ungleiche Vorzeichen: Kleineren Betrag vom größeren subtrahieren, Vorzeichen der Zahl mit größerem Betrag setzen (z. B. (+9) + (-4) = +5; (-12) + (+5) = -7). - **Subtraktion**:   * Eine ganze Zahl subtrahieren heißt, ihre **Gegenzahl zu addieren**: a - b = a + (-b) (z. B. (-8) - (-5) = (-8) + (+5) = -3). - **Multiplikation und Division**:   * Gleiche Vorzeichen ergeben **Plus (+)**: (+ · + = +) und (- · - = +) (z. B. (-6) · (-7) = +42).   * Ungleiche Vorzeichen ergeben **Minus (-)**: (+ · - = -) und (- · + = -) (z. B. (+36) : (-4) = -9). 2. Algebraische Rechengesetze in Z: - **Kommutativgesetz**: a + b = b + a und a · b = b · a. - **Assoziativgesetz**: (a + b) + c = a + (b + c) und (a · b) · c = a · (b · c). - **Distributivgesetz**: a · (b + c) = a · b + a · c sowie Ausklammern: a · b + a · c = a · (b + c). 3. Beispielberechnungen mit Rechenvorteilen: - a) Term: `(-4) · (+17) · (-25)`   * Nach Kommutativ- und Assoziativgesetz Faktoren geschickt umordnen: `[(-4) · (-25)] · (+17)`   * Wegen (- · - = +) ist (-4) · (-25) = +100.   * Rechnung: `100 · 17 = 1.700`. - b) Term: `(-38) · 45 + (-38) · 55`   * Ausklammern des gemeinsamen Faktors (-38) nach dem Distributivgesetz: `(-38) · (45 + 55)`   * Zwischenrechnung: `(-38) · 100`   * Ergebnis: **-3.800**."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5Z000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YM5Z000000000000000A03",
+      "namespace": "mathematik-arithmetik",
+      "slug": "potenzen-zehnerpotenzen-potenzgesetze-grundlagen",
+      "title": "Potenzen und Zehnerpotenzen: Basis, Exponent, Zehnerpotenz-Schreibweise und Vorrang",
+      "domain": "schule/mathematik/arithmetik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5Z000000000000000A02",
+          "type": "hard",
+          "rationale": "Multiplikation ganzer Zahlen ist Basis der Potenzrechnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Exponentiation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rechnen mit ganzen Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5Z000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Wert hat die Potenz (-3)² im Vergleich zu -3²?",
+          "concept": "(-3)² = (-3) · (-3) = +9, während -3² = -(3 · 3) = -9 (Klammer bindet das Vorzeichen an die Basis)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "(-3)² = +9 und -3² = -9",
+              "Beide Ausdrücke ergeben +9"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5Z000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Potenzdefinition a^n = a · a · ... · a (n Faktoren), unterscheide (-a)^n bei geradem n (Ergebnis positiv) und ungeradem n (Ergebnis negativ), stelle das Rechnen mit großen Zahlen in wissenschaftlicher Zehnerpotenzschreibweise dar (z. B. Erdradius ca. 6,37 · 10⁶ m) und berechne: a) (-2)⁵, b) (-10)⁴ - (-5)³, c) 4 · 10⁶ + 2,5 · 10⁵.",
+          "concept": "Potenz a^n; Vorzeichen: negative Basis hoch gerade = positiv, hoch ungerade = negativ; Zehnerpotenzen: 10^n hat n Nullen; a) (-2)⁵ = -32; b) (+10.000) - (-125) = 10.000 + 125 = 10.125; c) 4.000.000 + 250.000 = 4.250.000.",
+          "sample_solution": "1. Definition und Vorzeichenregeln bei Potenzen: - **Potenz**: $a^n$ (a = Basis, n = Exponent $\\in \\mathbb{N}$). Bedeutet: n-malige Multiplikation der Basis a mit sich selbst. - **Vorzeichenregeln bei negativer Basis (-a)**:   * Ist der Exponent **gerade** (2, 4, 6, ...), heben sich die Minuszeichen paarweise auf -> **Ergebnis ist positiv**: $(-2)^4 = (-2) \\cdot (-2) \\cdot (-2) \\cdot (-2) = +16$.   * Ist der Exponent **ungerade** (1, 3, 5, ...), bleibt ein Minuszeichen übrig -> **Ergebnis ist negativ**: $(-2)^5 = -32$.   * **Wichtige Klammerregel**: $(-a)^2 \\neq -a^2$, denn $-3^2 = -(3 \\cdot 3) = -9$, aber $(-3)^2 = (-3) \\cdot (-3) = +9$. 2. Zehnerpotenzschreibweise großer Zahlen: - Jede Zehnerpotenz $10^n$ steht für eine 1 mit genau n Nullen ($10^3 = 1.000, 10^6 = 1.000.000 = 1\\text{ Mio.}, 10^9 = 1\\text{ Mrd.}$). - Wissenschaftliche Notation: Eine Zahl zwischen 1 und 10 multipliziert mit einer Zehnerpotenz (z. B. Distanz Erde-Sonne ca. $1,496 \\cdot 10^8\\text{ km} = 149.600.000\\text{ km}$). 3. Berechnungen: - a) $(-2)^5 = -32$ (ungerader Exponent 5). - b) Term: $(-10)^4 - (-5)^3$   * $(-10)^4 = +10.000$ (gerader Exponent).   * $(-5)^3 = (-5) \\cdot (-5) \\cdot (-5) = -125$ (ungerader Exponent).   * Rechnung: $10.000 - (-125) = 10.000 + 125 = \\mathbf{10.125}$. - c) $4 \\cdot 10^6 + 2,5 \\cdot 10^5 = 4.000.000 + 250.000 = \\mathbf{4.250.000}$ (bzw. $4,25 \\cdot 10^6$)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5Z000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YM5Z000000000000000A04",
+      "namespace": "mathematik-stochastik",
+      "slug": "zaehlprinzip-baumdiagramm-kombinatorik",
+      "title": "Kombinatorik und Zählprinzip: Mehrstufige Entscheidungen, Baumdiagramme und Fakultät",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5Z000000000000000A02",
+          "type": "hard",
+          "rationale": "Multiplikationsgesetz und Termstrukturen sind Grundlage des Zählprinzips."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Combinatorics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Natürliche und ganze Zahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5Z000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele verschiedene Outfits lassen sich aus 4 Hosen, 5 T-Shirts und 3 Paar Schuhen nach dem grundlegenden Zählprinzip kombinieren?",
+          "concept": "4 · 5 · 3 = 60 verschiedene Outfits (Produktregel der Kombinatorik)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "60 Kombinationen (4 · 5 · 3)",
+              "12 Kombinationen (4 + 5 + 3)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5Z000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das fundamentale Zählprinzip (Produktregel bei mehrstufigen Zufallsauswahlen: n_1 · n_2 · ... · n_k Möglichkeiten) und die grafische Darstellung im Baumdiagramm (Pfade vom Startknoten zu den Endblättern), unterscheide Auswahlen mit Zurücklegen/Wiederholung (z. B. PIN-Codes) von Anordnungen ohne Wiederholung (Permutationen / Fakultät n! = n · (n-1) · ... · 1) und berechne: a) Wie viele 4-stellige Zahlenschlösser (Ziffern 0–9) gibt es? b) Auf wie viele verschiedene Arten können sich 5 Schüler in einer Reihe nebeneinander aufstellen?",
+          "concept": "Zählprinzip: Multiplikation der Pfadverzweigungen; Baumdiagramm: jeder Pfad = 1 Ergebnis; Mit Wiederholung: n^k (z. B. 10⁴ = 10.000 PINs); Ohne Wiederholung / Permutation: 5! = 5 · 4 · 3 · 2 · 1 = 120 Reihenfolgen.",
+          "sample_solution": "1. Das fundamentale Zählprinzip (Produktregel): - Lässt sich ein mehrstufiger Vorgang in k aufeinanderfolgende Einzelschritte zerlegen und gibt es im 1. Schritt $n_1$ Möglichkeiten, im 2. Schritt $n_2$ Möglichkeiten bis zum k-ten Schritt mit $n_k$ Möglichkeiten, so beträgt die **Gesamtzahl aller Kombinationsmöglichkeiten**:   $$\\text{Gesamtzahl} = n_1 \\cdot n_2 \\cdot n_3 \\cdot \\dots \\cdot n_k$$ 2. Grafische Darstellung im Baumdiagramm: - Ein **Baumdiagramm** veranschaulicht mehrstufige Auswahlprozesse von der Wurzel aus:   * Jede Verzweigung steht für eine Entscheidungsmöglichkeit auf der jeweiligen Stufe.   * Jeder vollständige Pfad von der Wurzel bis zu einer Blattspitze stellt genau eine konkrete Gesamtkombination dar.   * Die Anzahl der Blattspitzen entspricht exakt dem Produkt der Verzweigungszahlen. 3. Typen kombinatorischer Aufgaben: - **Auswahl mit Wiederholung (Ziehen mit Zurücklegen)**:   * Auf jeder Stufe steht dieselbe Anzahl an Optionen zur Verfügung: $n \\cdot n \\cdot \\dots \\cdot n = n^k$.   * *Beispiel 4-stelliges Zahlenschloss (Ziffern 0–9 = 10 Optionen pro Rad)*:     Rechnung: $10 \\cdot 10 \\cdot 10 \\cdot 10 = 10^4 = \\mathbf{10.000\\text{ verschiedene Codes}}$ (von 0000 bis 9999). - **Anordnung ohne Wiederholung (Permutationen aller Elemente)**:   * Bei der Reihenfolge von n unterscheidbaren Objekten verringert sich die Auswahl auf jeder Stufe um 1 (**Fakultät $n!$**):     $$n! = n \\cdot (n-1) \\cdot (n-2) \\cdot \\dots \\cdot 2 \\cdot 1$$   * *Beispiel 5 Schüler in einer Reihe*:     1. Platz: 5 Schüler zur Auswahl, 2. Platz: 4 Schüler, 3. Platz: 3 Schüler, 4. Platz: 2 Schüler, 5. Platz: 1 Schüler.     Rechnung: $5! = 5 \\cdot 4 \\cdot 3 \\cdot 2 \\cdot 1 = 20 \\cdot 6 = \\mathbf{120\\text{ verschiedene Aufstellungen}}$."
+        }
+      ]
+    }
+  ]
+}

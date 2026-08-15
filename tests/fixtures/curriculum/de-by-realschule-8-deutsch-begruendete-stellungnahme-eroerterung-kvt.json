@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung",
+  "version": "2026.08.1",
+  "title": "Deutsch 8: Argumentieren – Begründete Stellungnahme, Lineare Erörterung und 3B-Schema (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 8: Begründete Stellungnahme und lineare Erörterung (These, Argumente nach dem 3B-Schema: Behauptung, Begründung, Beispiel/Beleg), steigernder Aufbau und Textargumentation.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 8, Lernbereich Texte schreiben – Argumentieren"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D8E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D8E0000000000000000A01",
+      "namespace": "deutsch-argumentation",
+      "slug": "argumentationsaufbau-3b-schema-behauptung-begruendung-beispiel",
+      "title": "Der Argumentationsbaustein: Das 3B-Schema (Behauptung, Begründung, Beispiel/Beleg)",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Argument",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Texte schreiben – Argumentieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D8E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen 3 aufeinander aufbauenden Komponenten besteht ein vollwertiges Argument nach dem klassischen 3B-Schema?",
+          "concept": "Behauptung (These/Aussage), Begründung (Warum-Erklärung mit weil/da), Beispiel/Beleg (konkreter Nachweis/Statistik)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Behauptung, Begründung, Beispiel (3B-Schema)",
+              "Einleitung, Hauptteil, Schluss"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D8E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 3 Elemente des vollwertigen Arguments: 1. **Behauptung (These/Kernaussage)**: Was wird behauptet?, 2. **Begründung (Kausale Kette)**: Warum ist diese Behauptung wahr? (Verbindung durch Konjunktionen wie *denn, da, weil, aufgrund*), 3. **Beispiel / Beleg (Evidenz)**: Konkreter Nachweis aus eigener Erfahrung, wissenschaftlichen Studien oder Statistiken und konstruiere ein vollständiges, überzeugendes 3B-Argument zum Thema: *'Einführung von Wasserspendern an Schulen'*.",
+          "concept": "3B-Schema: Behauptung (Kernaussage) + Begründung (kausale Erklärung) + Beispiel (konkreter Beleg); Beispiel-Argumentation: Behauptung: Wasserspender fördern die Gesundheit -> Begründung: weil ausreichendes Wassertrinken Konzentration steigert und zuckerhaltige Getränke ersetzt -> Beispiel: An unserer Nachbarschule sank der Konsum von Softdrinks um 40%, nachdem zwei Spender in der Aula installiert wurden.",
+          "sample_solution": "1. Die 3 Säulen eines überzeugenden Arguments (3B-Schema): - **1. Behauptung (These / Statement)**:   * Formuliert den eigentlichen Gedanken bzw. die Kernforderung klar und unmissverständlich in einem prägnanten Satz.   * *Leitfrage*: **Was behaupte ich?** - **2. Begründung (Kausale Argumentation)**:   * Liefert die logische und nachvollziehbare Erklärung für die Richtigkeit der Behauptung. Stützt sich auf Ursache-Wirkungs-Zusammenhänge, biologische, psychologische oder gesellschaftliche Gesetzmäßigkeiten.   * *Leitfrage*: **Warum ist das so? Aus welchem Grund?**   * Typische Überleitungen: *denn, weil, da, dies liegt daran, dass...* - **3. Beispiel / Beleg (Konkrete Veranschaulichung)**:   * Untermauert die Begründung durch eine überprüfbare Tatsache, eine statistische Erhebung, Expertenmeinung oder ein anschauliches Erlebnis aus der Praxis.   * *Leitfrage*: **Wo lässt sich das konkret beobachten? Welcher Beweis stützt dies?**   * Typische Überleitungen: *Beispielsweise, wie man am Fall von ... sehen kann, ein Beleg hierfür ist...* 2. Ausformuliertes Muster-Argument (*'Wasserspender an Schulen'*): - **Behauptung**: Die Installation kostenloser Trinkwasserspender an Schulen fördert aktiv die Gesundheit und Konzentrationsfähigkeit der Schülerinnen und Schüler. - **Begründung**: Denn das Gehirn benötigt für eine optimale kognitive Leistungsfähigkeit eine kontinuierliche Flüssigkeitszufuhr, und ein leicht zugängliches Wasserangebot verhindert, dass Jugendliche aus Bequemlichkeit zu zuckerreichen Limonaden oder Energy-Drinks greifen, die zu Übergewicht und Leistungstiefs führen. - **Beispiel**: Dies belegt eine Studie der Universität Bonn an Realschulen, bei der durch die Aufstellung von leitungsgebundenen Wasserspendern der Konsum gezuckerter Erfrischungsgetränke im Schulumfeld um über 35 % zurückging und Schüler nachweislich seltener über Kopfschmerzen klagten."
+        }
+      ]
+    },
+    {
+      "id": "01K4D8E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D8E0000000000000000A02",
+      "namespace": "deutsch-argumentation",
+      "slug": "lineare-eroerterung-aufbau-einleitung-steigernder-hauptteil",
+      "title": "Die Lineare Erörterung: Gliederung, Einleitungsanlass, steigernde Argumentationskette und Fazit",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D8E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das 3B-Schema ist der Grundbaustein für lineare Erörterungsaufsätze."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Essay",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Texte schreiben – Argumentieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D8E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Reihenfolge sollten die Argumente im Hauptteil einer linearen Erörterung angeordnet werden, um die größte Überzeugungskraft beim Leser zu erzielen?",
+          "concept": "Vom schwächsten zum stärksten Argument (steigernder / klimaktischer Aufbau)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vom schwächsten zum stärksten Argument (steigernd)",
+              "Vom stärksten zum schwächsten Argument"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D8E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den methodischen Aufbau einer linearen Erörterung in 3 Stufen: 1. **Einleitung (Hinführung & Thema)**: Aktueller Aufhänger (Zeitungsartikel, persönliches Erlebnis, Umfrage), Erläuterung des Themas und Formulierung der zentralen Leitfrage (ohne vorweggenommene Meinung!), 2. **Hauptteil (Steigernde Argumentenkette)**: 3 bis 4 vollwertige Argumente (3B-Schema), angeordnet nach dem **Sanduhr- bzw. Steigerungsprinzip** (vom schwächsten Argument über mittelstarke Argumente hin zum überzeugendsten **Hauptargument / 'Paukenschlag'** am Schluss), logische Überleitungen (Konjunktionen wie *darüber hinaus, ein weiterer gewichtiger Aspekt, von noch größerer Bedeutung ist*), 3. **Schluss (Synthese & Ausblick)**: Zusammenfassung der Hauptgedanken, persönliches begründetes Fazit und zukunftsorientierter Ausblick oder Kompromissvorschlag.",
+          "concept": "Lineare Erörterung: 1. Einleitung (Aufhänger + Themafrage); 2. Hauptteil (steigernde Argumente schwach -> stark mit 3B-Schema); 3. Schluss (Fazit, eigene Meinung, Ausblick).",
+          "sample_solution": "1. Der dreigliedrige Aufbau einer linearen Erörterung: - **1. Einleitung (Aktivierung des Lesers & Fragestellung)**:   * **Aktueller Aufhänger**: Einstieg durch ein konkretes tagesaktuelles Ereignis, eine persönliche Beobachtung, ein Zitat, eine Statistik oder eine gesellschaftliche Kontroverse.   * **Themeneinführung**: Kurze begriffliche Klärung des Streitgegenstands.   * **Themafrage / Überleitung**: Präzise Formulierung der Erörterungsfrage (*'Im Folgenden soll dargelegt werden, warum...' / 'Welche Gründe sprechen dafür, dass...'*). In der Einleitung wird die eigene Position noch **nicht** verraten! - **2. Hauptteil (Steigernde Argumentation)**:   * Bei einer **linearen Erörterung** wird eine einzige Stoßrichtung (nur Pro oder nur Kontra) zielgerichtet begründet.   * **Das Steigerungsprinzip (Klimax)**:     - 1. Argument: Ein plausibles, aber *schwächeres Argument* zum Einstieg.     - 2. Argument: Ein *gewichtigeres, fundierteres Argument*.     - 3. Argument: Das **stärkste, überzeugendste Hauptargument (Dreh- und Angelpunkt)** direkt vor dem Schluss, damit es dem Leser am intensivsten im Gedächtnis bleibt.   * **Abwechslungsreiche Konnektoren**: *Zu Beginn sei erwähnt..., Ein weiterer nicht zu vernachlässigender Aspekt ist..., Von noch entscheidenderer Tragweite ist jedoch..., Nicht zuletzt spricht vor allem dafür...* - **3. Schluss (Abrundung & Zukunftsoptionen)**:   * **Raffung der Kernargumente**: Kurzes, zusammenfassendes Fazit ohne Wiederholung von Beispielen.   * **Persönliche Stellungnahme**: Begründete eigene Meinung des Autors.   * **Ausblick / Lösungsvorschlag**: Ein konstruktiver Blick in die Zukunft, ein realisierbarer Kompromiss oder ein weiterführender Gedanke (*'Wenn alle Beteiligten an einem Strang ziehen, könnte...'*) zur stimmigen Abrundung des Aufsatzes."
+        }
+      ]
+    }
+  ]
+}

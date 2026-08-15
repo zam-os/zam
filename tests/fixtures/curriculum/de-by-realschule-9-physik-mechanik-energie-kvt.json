@@ -1,0 +1,396 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-physik-mechanik-energie",
+  "version": "2026.08.1",
+  "title": "Mechanik und Energie (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik (Zweig II/III Klasse 9 und Zweig I): Kräfte, Hookesches Gesetz, Newtons Gesetze, mechanische Arbeit, Energieformen, Energieerhaltung, Leistung und Wirkungsgrad.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 9 (II/III), Lernbereich 1 Mechanik und Energie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M9P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A01",
+      "namespace": "physik-mechanik",
+      "slug": "kraftbegriff-hooke",
+      "title": "Kraftbegriff und Hookesches Gesetz",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Force",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verhält sich die Dehnung s einer Schraubenfeder zur wirkenden Zugkraft F im elastischen Bereich?",
+          "concept": "Direkt proportional (F ~ s)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Direkt proportional (doppelte Kraft = doppelte Dehnung)",
+              "Umgekehrt proportional (doppelte Kraft = halbe Dehnung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die drei Bestimmungsstücke einer Kraft als Vektor und formuliere das Hookesche Gesetz.",
+          "concept": "Betrag, Richtung, Angriffspunkt; F = D * s",
+          "sample_solution": "Eine Kraft F wird durch ihren Betrag (in Newton N), ihre Richtung und ihren Angriffspunkt bestimmt. Das Hookesche Gesetz beschreibt die elastische Verformung: F = D * s, wobei D die Federkonstante (in N/m oder N/cm) und s die Auslenkung ist."
+        }
+      ]
+    },
+    {
+      "id": "01K4M9P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A02",
+      "namespace": "physik-mechanik",
+      "slug": "newtonsche-axiome-traegheit",
+      "title": "Newtonsche Gesetze und Trägheitsprinzip",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M9P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Kraftbegriff ist Voraussetzung für die Newtonschen Axiome."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q38000",
+          "target_label": "Newton's laws of motion",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was besagt das Wechselwirkungsprinzip (actio = reactio) über die Richtungen von Kraft und Gegenkraft?",
+          "concept": "Gleich groß, aber entgegengesetzt gerichtet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind entgegengesetzt gerichtet und wirken auf verschiedene Körper",
+              "Sie sind gleichgerichtet und heben sich auf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere Newtons 1. Axiom (Trägheitssatz) und Newtons 2. Axiom (Grundgleichung der Mechanik).",
+          "concept": "Trägheitssatz und F = m * a",
+          "sample_solution": "1. Trägheitsgesetz: Ein Körper verharrt im Zustand der Ruhe oder der geradlinig gleichförmigen Bewegung, solange keine resultierende äußere Kraft auf ihn wirkt. 2. Grundgleichung der Mechanik: Wirkt eine resultierende Kraft F auf einen Körper der Masse m, so wird er mit der Beschleunigung a beschleunigt: F = m * a (1 N = 1 kg * m/s²)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M9P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A03",
+      "namespace": "physik-mechanik",
+      "slug": "mechanische-arbeit",
+      "title": "Mechanische Arbeit und Arbeitsformen",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M9P0000000000000000A02",
+          "type": "hard",
+          "rationale": "Kräfte und Newtons Gesetze sind Voraussetzung für die Arbeitsdefinition."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q42213",
+          "target_label": "Work (physics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wird physikalische Arbeit verrichtet, wenn die wirkende Kraft genau senkrecht zur Bewegungsrichtung steht?",
+          "concept": "Nein, W = 0 wenn Kraft und Weg senkrecht sind",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, Arbeit wird nur verrichtet, wenn eine Kraftkomponente längs des Weges wirkt",
+              "Ja, es wird maximale Arbeit verrichtet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere mechanische Arbeit W bei wegparalleler Kraft und gib die Formel für die Hubarbeit W_hub an.",
+          "concept": "W = F * s in Joule (J); W_hub = m * g * h",
+          "sample_solution": "Mechanische Arbeit wird verrichtet, wenn ein Körper durch eine Kraft F über eine Wegstrecke s bewegt wird: W = F * s. Ihre Einheit ist das Joule (1 J = 1 N * m). Die Hubarbeit beim senkrechten Heben eines Körpers der Masse m um die Höhe h beträgt W_hub = F_G * h = m * g * h."
+        }
+      ]
+    },
+    {
+      "id": "01K4M9P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A04",
+      "namespace": "physik-mechanik",
+      "slug": "mechanische-energieformen",
+      "title": "Potenzielle und kinetische Energie",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Mechanische Arbeit ist die Voraussetzung für die Definition von Energieformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11379",
+          "target_label": "Kinetic energy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ändert sich die kinetische Energie (Bewegungsenergie) eines Fahrzeugs, wenn seine Geschwindigkeit v verdoppelt wird?",
+          "concept": "E_kin vervierfacht sich wegen quadratischer Abhängigkeit (v²)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie vervierfacht sich (E_kin ~ v²)",
+              "Sie verdoppelt sich lediglich (E_kin ~ v)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Formeln für potenzielle Lageenergie E_pot und kinetische Energie E_kin eines Körpers der Masse m an.",
+          "concept": "E_pot = m * g * h und E_kin = 0.5 * m * v²",
+          "sample_solution": "Die potenzielle Lageenergie in der Höhe h beträgt E_pot = m * g * h (mit Erdbeschleunigung g ≈ 9,81 m/s²). Die kinetische Bewegungsenergie bei Geschwindigkeit v beträgt E_kin = 1/2 * m * v². Beide Energieformen besitzen die Einheit Joule (J)."
+        }
+      ]
+    },
+    {
+      "id": "01K4M9P0000000000000000A05",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A05",
+      "namespace": "physik-mechanik",
+      "slug": "energieerhaltung-mechanik",
+      "title": "Energieerhaltungssatz der Mechanik",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M9P0000000000000000A04",
+          "type": "hard",
+          "rationale": "Kenntnis der Energieformen ist Voraussetzung für den Energieerhaltungssatz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11382",
+          "target_label": "Conservation of energy",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J09",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Kann in einem abgeschlossenen physikalischen System ohne Reibung Energie vernichtet oder neu erzeugt werden?",
+          "concept": "Nein, Energie bleibt stets erhalten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, Energie bleibt stets erhalten und wird nur umgewandelt",
+              "Ja, bei Bewegung entsteht neue Energie"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J10",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere den Energieerhaltungssatz der Mechanik und beschreibe die Energieumwandlung beim freien Fall aus der Höhe h.",
+          "concept": "E_ges = E_pot + E_kin = const",
+          "sample_solution": "In einem abgeschlossenen, reibungsfreien System ist die Summe aus potenzieller und kinetischer Energie konstant: E_ges = E_pot + E_kin = const. Beim freien Fall aus der Höhe h (aus der Ruhe) wird die anfängliche Lageenergie E_pot = m * g * h kontinuierlich in kinetische Energie E_kin = 1/2 * m * v² umgewandelt, bis beim Aufprall die gesamte Energie als E_kin vorliegt (v = √(2 * g * h))."
+        }
+      ]
+    },
+    {
+      "id": "01K4M9P0000000000000000A06",
+      "atom_uri": "urn:zam:atom:01K4M9P0000000000000000A06",
+      "namespace": "physik-mechanik",
+      "slug": "mechanische-leistung-wirkungsgrad",
+      "title": "Mechanische Leistung und Wirkungsgrad",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Mechanische Arbeit ist Voraussetzung für die Leistung und den Wirkungsgrad."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25342",
+          "target_label": "Power (physics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik und Energie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M9P0000000000000000J11",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Kann der Wirkungsgrad η einer realen Maschine mit Reibungsverlusten größer als 1 (bzw. 100 %) sein?",
+          "concept": "Nein, η < 1 wegen Reibungsverlusten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, wegen Reibungsverlusten ist immer η < 1",
+              "Ja, durch Übersetzung kann η > 1 erreicht werden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M9P0000000000000000J12",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ist die mechanische Leistung P definiert und wie berechnet sich der Wirkungsgrad η?",
+          "concept": "P = W / t in Watt (W); η = E_nutz / E_zu",
+          "sample_solution": "Die mechanische Leistung P gibt an, wie viel Arbeit W in einer bestimmten Zeitspanne t verrichtet wird: P = W / t (Einheit: Watt, 1 W = 1 J/s). Der Wirkungsgrad η ist das Verhältnis von nutzbarer Energie (oder Leistung) zu zugeführter Energie: η = E_nutz / E_zu = P_nutz / P_zu. Da stets Energie entwertet wird, gilt für reale Maschinen stets η < 1 (bzw. < 100 %)."
+        }
+      ]
+    }
+  ]
+}

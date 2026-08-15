@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-geschichte-mittelalter-fruehe-neuzeit",
+  "version": "2026.08.1",
+  "title": "Geschichte 7: Mittelalterliche Lebenswelten, Stadt und Wende zur Neuzeit (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geschichte 7: Lehnswesen/Ständegesellschaft, mittelalterliche Stadt (Zünfte/Handel), HRR/Kaisertum und Wende zur Neuzeit (Buchdruck/Reformation).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/geschichte",
+      "checked": "2026-08-15",
+      "label": "Realschule Geschichte 7, Lernbereiche Mittelalter und Frühe Neuzeit"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G7M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G7M0000000000000000A01",
+      "namespace": "geschichte-mittelalter",
+      "slug": "lehnswesen-grundherrschaft-staendegesellschaft",
+      "title": "Das mittelalterliche Herrschafts- und Sozialgefüge: Lehnswesen, Grundherrschaft und Dreiständelehre",
+      "domain": "schule/geschichte/mittelalter",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Feudalism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Mittelalterliche Lebenswelten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Mittelalterliche Lebenswelten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Stand umfasste im mittelalterlichen Ständemodell über 90 % der Gesamtbevölkerung und trug durch Frondienste und Abgaben die materielle Last der Gesellschaft?",
+          "concept": "Der 3. Stand der Bauern (Nährstand)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der 3. Stand der Bauern (Nährstand)",
+              "Der 2. Stand des Adels (Wehrstand)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Lehnswesen (Lehnsherr und Vasall: Lehnseid, Treuepflicht, Schutz vs. Heeresfolge und Rat), unterscheide das politische Lehnswesen von der wirtschaftlichen Grundherrschaft (Grundherr, unfreie Hörige/Leibeigene, Frondienste und Naturalabgaben wie der Zehnte) und skizziere die von Gott gewollte Drei-Stände-Ordnung (Klerus = Lehrstand; Adel = Wehrstand; Bauern = Nährstand).",
+          "concept": "Lehnswesen: politsches System der Adeligen (König verleiht Kronvasallen Land/Ämter gegen Treue & Kriegsdienst); Grundherrschaft: agrarische Wirtschaftsform (Grundherr besitzt Boden, Bauern bewirtschaften ihn gegen Schutz, leisten Frondienst und Abgaben wie Zehnten); Drei Stände: 1. Klerus (betet), 2. Adel (schützt), 3. Bauern (ernährt alle, keine politischen Rechte, gottgegebene Ordnung ohne soziale Mobilität).",
+          "sample_solution": "1. Das Lehnswesen (Politisches Herrschaftssystem): - Gegenseitiges Treue- und Schutzverhältnis innerhalb des Adels: Der Lehnsherr (z. B. der König als oberster Lehnsherr) vergibt Land (Feudum/Lehen) und Ämter an Kronvasallen (Herzöge, Grafen, Bischöfe). - Pflichten des Lehnsherrn: Schutz und Schirm des Vasallen, Überlassung von Nutzungsrechten. - Pflichten des Vasallen: Treueid, Heeresfolge (militärische Unterstützung im Kriegsfall) sowie Rat und Hilfe (Consilium et Auxilium) am Hofe. Die Kronvasallen gaben Teile weiter an Untervasallen (Afterlehnswesen/Lehnspyramide). 2. Die Grundherrschaft (Wirtschafts- und Sozialordnung auf dem Land): - Der Grundherr (Adeliger, Kloster, Bischof) ist Eigentümer von Grund und Boden. Er teilt das Land auf in den Fronhof (Eigenbewirtschaftung durch den Grundherrn) und die Hufen (an Bauern zur Bewirtschaftung vergebenes Land). - Abhängigkeit der Bauern: Die Masse der Bauern lebte in Unfreiheit (Leibeigenschaft oder Hörigkeit). - Pflichten der Bauern: Leistung von schweren Frondiensten (unbezahlte Arbeitsleistung auf den Feldern des Grundherrn) und Abgabe von Ernteanteilen (Naturalabgaben, z. B. Getreide, Vieh, sowie der 'Zehnte' an die Kirche). - Gegenleistung des Grundherrn: Militärischer Schutz vor Räubern und Feinden sowie Rechtsprechung (Hofgericht). 3. Die mittelalterliche Drei-Stände-Lehre: - Die Gesellschaft galt als von Gott unveränderbar in drei funktionale Stände eingeteilt:   * 1. Stand: Klerus (Geistliche, Priester, Mönche) – 'Oratores' (Lehrstand, Betende, Seelenheil).   * 2. Stand: Adel (Könige, Fürsten, Ritter) – 'Bellatores' (Wehrstand, Kämpfende, Schutz).   * 3. Stand: Bauern und Handwerker (über 90 % des Volkes) – 'Laboratores' (Nährstand, Arbeitende, materielle Versorgung). - Charakteristik: Strikte Abgrenzung durch Geburt; kaum soziale Aufstiegsmöglichkeiten; Privilegien (Steuerfreiheit) für die oberen beiden Stände."
+        }
+      ]
+    },
+    {
+      "id": "01K4G7M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G7M0000000000000000A02",
+      "namespace": "geschichte-mittelalter",
+      "slug": "mittelalterliche-stadt-buerger-zuenfte-handel",
+      "title": "Die mittelalterliche Stadt: Bürgerfreiheit, Marktrecht, Zünfte und Patriziat",
+      "domain": "schule/geschichte/mittelalter",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G7M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Stadtfreiheit entwickelte sich als Gegenmodell zur feudalen Grundherrschaft."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Medieval town",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Mittelalterliche Lebenswelten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Mittelalterliche Lebenswelten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bedeutete der berühmte mittelalterliche Rechtsgrundsatz 'Stadtluft macht frei (nach Jahr und Tag)' für geflohene leibeigene Bauern?",
+          "concept": "Wer ein Jahr und einen Tag unentdeckt in der Stadt lebte, wurde von der Leibeigenschaft seines Grundherrn frei",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Freiheit von Leibeigenschaft nach einem Jahr und einem Tag",
+              "Befreiung von allen städtischen Steuern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Entstehung und Privilegien der mittelalterlichen Städte (Stadtrechte: Marktrecht, Münzrecht, Gerichtsbarkeit, Stadtmauer), analysiere die ständische Sozialstruktur der Stadtbevölkerung (Patrizier, Zunfthandwerker, Gesellen/Mägde, Unehrliche Berufe/Juden) und beschreibe die Rolle der Handwerkerzünfte (Zunftzwang, Qualitätskontrolle, Preisregulierung, soziale Fürsorge und Wehrpflicht).",
+          "concept": "Stadtrechte: Privilegien vom Stadtherrn (Markt, Zoll, Münze, Rechtsprechung, Befestigung); Sozialstruktur: Patrizier (Großkaufleute regieren im Rat), Bürger mit Bürgerrecht (Meister mit Hausbesitz), Unterschicht (Gesellen, Tagelöhner, Dienstboten), Ausgegrenzte (Henker, Abdecker, Juden im Ghetto); Zünfte: Zusammenschlüsse eines Handwerkszweigs mit Zunftzwang, Festlegung von Preisen, Löhnen und Warenqualität, Witwenversorgung, Verteidigung eines Mauerabschnitts.",
+          "sample_solution": "1. Entstehung und Privilegien der Städte (Stadtrecht): - Im Hochmittelalter (ab ca. 1100) gründeten Könige und Fürsten planmäßig Städte an Handelskreuzungen oder Flüssen. - Stadtrechtsurkunde (Privilegien): Verleihung des Marktrechts (Handelsmonopol), Münzrechts (eigene Währung), Zollrechts und der eigenen niederen/hohen Gerichtsbarkeit (Stadtrat statt Grundherr). - Stadtmauer: Schützte vor Überfällen und markierte den städtischen Rechtsraum ('Stadtluft macht frei nach Jahr und Tag'). 2. Soziale Schichtung der Stadtbevölkerung: - Patrizier: Wohlhabende Fernhändler und adelige Familien; besetzten exklusiv die Sitze im Stadtrat und stellten die Bürgermeister. - Zunftbürger (Mittelschicht): Handwerksmeister und Händler mit eigenem Haus und Bürgerrecht; durften Waffen tragen und Steuern zahlen. - Stadtarmut & Lohnarbeiter (über 50 % ohne Bürgerrecht): Gesellen, Lehrlinge, Mägde, Tagelöhner und Knechte; politisch völlig rechtlos. - Randgruppen / Ausgegrenzte: 'Unehrliche Berufe' (Henker, Totengräber, Bader) sowie jüdische Gemeinden (unterstanden dem kaiserlichen Schutzgeld/Kammerknechtschaft, durften kein Land besitzen und wurden in Ghettos abgedrängt). 3. Das Zunftwesen der Handwerker: - Zunftzwang: Jeder Handwerker musste Mitglied der Zunft seines Gewerbes sein (Schuster, Bäcker, Schmiede). Freie Konkurrenz war verboten. - Aufgaben:   * Wirtschaftsordnung: Festlegung verbindlicher Rohstoffpreise, Verkaufspreise, Arbeitszeiten und Meisterzahlen zur Verhinderung von Überproduktion und Verarmung.   * Qualitätskontrolle: Strenge Prüfung der gefertigten Waren ('Zunftmeister').   * Soziale Fürsorge: Unterstützung von erkrankten Meistern, Witwen und Waisen aus der Zunftkasse.   * Stadtverteidigung: Jede Zunft war für die Bewachung und Verteidigung eines bestimmten Stadtmauerabschnitts (Zunftturm) zuständig."
+        }
+      ]
+    },
+    {
+      "id": "01K4G7M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G7M0000000000000000A03",
+      "namespace": "geschichte-mittelalter",
+      "slug": "kaisertum-kurfuersten-goldene-bulle-1356",
+      "title": "Das Heilige Römische Reich: Kaisertum, Kurfürsten und die Goldene Bulle von 1356",
+      "domain": "schule/geschichte/mittelalter",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G7M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Kaisertum ist die Spitze der mittelalterlichen Lehnspyramide."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Golden Bull of 1356",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Herrschaft im mittelalterlichen Reich",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Herrschaft im mittelalterlichen Reich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Kurfürsten (geistliche und weltliche Reichsfürsten) hatten nach der Goldenen Bulle von 1356 das exklusive Recht, den römisch-deutschen König zu wählen?",
+          "concept": "Genau 7 Kurfürsten (3 geistliche Erzbischöfe und 4 weltliche Fürsten)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "7 Kurfürsten (3 geistliche, 4 weltliche)",
+              "12 Kurfürsten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Charakter des Heiligen Römischen Reiches Deutscher Nation als Wahlmonarchie (keine Erbmonarchie), benenne die 7 Kurfürsten nach der Goldenen Bulle von 1356 (Erzbischöfe von Mainz, Köln, Trier; König von Böhmen, Pfalzgraf bei Rhein, Herzog von Sachsen, Markgraf von Brandenburg) und erläutere, wie die Goldene Bulle Doppelwahlen und den päpstlichen Einfluss auf die Königswahl endgültig ausschaltete.",
+          "concept": "Wahlmonarchie statt Erbfolge; Goldene Bulle 1356 von Kaiser Karl IV.: Reichsgesetz zur Königswahl; 7 Kurfürsten: 3 geistliche (Mainz, Köln, Trier) + 4 weltliche (Böhmen, Pfalz, Sachsen, Brandenburg); Mehrheitswahlrecht (Mehrheit entscheidet, kein Einstimmigkeitszwang), Wahlort Frankfurt, Krönungsort Aachen; Ausschluss des päpstlichen Approbationsanspruchs (Papstkrönung für Königstitel nicht mehr nötig).",
+          "sample_solution": "1. Struktur des Heiligen Römischen Reiches als Wahlmonarchie: - Im Gegensatz zu westeuropäischen Nationalstaaten wie Frankreich oder England (Erbmonarchien mit zentraler Hauptstadt) war das Heilige Römische Reich ein loser Verband von Hunderten geistlichen und weltlichen Territorien (Flickenteppich). - Der Herrscher wurde nicht durch automatische Thronfolge, sondern durch eine förmliche Wahl durch die mächtigsten Reichsfürsten bestimmt. 2. Die Goldene Bulle von 1356 (Reichsgrundgesetz von Kaiser Karl IV.): - Festlegung des Wahlkollegiums auf exakt **7 Kurfürsten**:   * 3 geistliche Kurfürsten: Erzbischof von Mainz (Reichserzkanzler für Deutschland), Erzbischof von Köln (für Italien), Erzbischof von Trier (für Burgund).   * 4 weltliche Kurfürsten: König von Böhmen (Erzmundschenk), Pfalzgraf bei Rhein (Erztruchsess), Herzog von Sachsen (Erzmarschall), Markgraf von Brandenburg (Erzkämmerer). - Feste Abläufe: Wahlort Frankfurt am Main, Krönung mit den Reichskleinodien (Reichskrone, Reichsapfel, Zepter) im Aachener Dom. 3. Historische Bedeutung der Goldenen Bulle: - Einführung des Mehrheitsprinzips: Die einfache Mehrheit der 7 Stimmen genügte (verhinderte künftige blutige Doppelwahlen und Thronkriege). - Unteilbarkeit der Kurlande: Kurfürstentümer durften nicht geteilt werden (Primogenitur / Erstgeburtsrecht). - Entmachtung des Papstes: Das Gesetz legte fest, dass der gewählte König unmittelbar die volle Herrschaftsgewalt im Reich besitzt, ohne dass es einer päpstlichen Bestätigung (Approbation) bedurfte."
+        }
+      ]
+    },
+    {
+      "id": "01K4G7M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G7M0000000000000000A04",
+      "namespace": "geschichte-fruehe-neuzeit",
+      "slug": "wende-zur-neuzeit-buchdruck-renaissance-reformation",
+      "title": "Die Wende zur Neuzeit: Humanismus/Renaissance, Buchdruck (Gutenberg) und Reformation (1517)",
+      "domain": "schule/geschichte/fruehe-neuzeit",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G7M0000000000000000A02",
+          "type": "hard",
+          "rationale": "Städtischer Buchhandel und Bildung trugen die Medienrevolution der Frühen Neuzeit."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12554",
+          "target_label": "Protestant Reformation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Umbruch zur Neuzeit",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Umbruch zur Neuzeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Womit leitete der Mönch Martin Luther im Jahr 1517 in Wittenberg die Reformation der Kirche ein?",
+          "concept": "Mit dem Anschlag der 95 Thesen gegen den kirchlichen Ablasshandel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit den 95 Thesen gegen den Ablasshandel (1517)",
+              "Mit der Erfindung des Buchdrucks"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Faktoren des Epochenumbruchs um 1500: 1. Neues Menschen- und Weltbild (Renaissance & Humanismus: der Mensch im Mittelpunkt, heliozentrisches Weltbild), 2. Die Medienrevolution des Buchdrucks mit beweglichen Metall-Lettern (Johannes Gutenberg ca. 1450: Massenvervielfältigung von Wissen), 3. Martin Luthers reformatorische Grunderkenntnisse ('Sola fide', 'Sola scriptura', 'Sola gratia') und die gesellschaftlich-politischen Folgen der Glaubensspaltung (Reichstag zu Worms 1521, Bauernkriege 1525, Augsburger Religionsfrieden 1555).",
+          "concept": "Renaissance/Humanismus: Wiedergeburt der Antike, empirische Naturforschung, Mensch als Individuum; Gutenberg: Buchdruck mit beweglichen Bleilettern und Druckerpresse revolutioniert Informationsverbreitung; Luther 1517: 95 Thesen gegen Ablass (Sündenvergebung gegen Geld für Petersdom); 4 Soli: Glaube allein, Bibel allein, Gnade allein, Christus allein; Folgen: Bibelübersetzung ins Deutsche schuf einheitliche Hochsprache, Spaltung in katholisches und evangelisches Lager, Augsburger Religionsfrieden 1555 ('Cuius regio, eius religio').",
+          "sample_solution": "1. Die Säulen des Epochenumbruchs um 1500 (Wende vom Mittelalter zur Frühen Neuzeit): - Renaissance & Humanismus: Abkehr vom mittelalterlichen, rein jenseitsbezogenen Weltbild. Wiederentdeckung der antiken Philosophie, Kunst und Wissenschaft. Der Mensch als eigenverantwortliches, schöpferisches Individuum rückt ins Zentrum (Humanismus). Heliozentrisches Weltbild (Kopernikus/Galilei). - Geografische Entdeckungen: 1492 Entdeckung Amerikas durch Christoph Kolumbus; Seeweg nach Indien (Vasco da Gama 1498); Beginn der globalen europäischen Expansion. 2. Die Medienrevolution des Johannes Gutenberg (um 1450): - Gutenberg erfand den Buchdruck mit wiederverwendbaren, beweglichen Metall-Lettern (Handgießinstrument, Druckerpresse, Druckerschwärze auf Ölbasis). - Wirkung: Bücher mussten nicht mehr monatelang von Hand abgeschrieben werden. Flugschriften, wissenschaftliche Schriften und Traktate konnten rasend schnell, billig und in tausendfachen Auflagen im ganzen Reich verbreitet werden – das Internet der Frühen Neuzeit. 3. Die Reformation durch Martin Luther (ab 1517): - Anlass: Kritik am Missbrauch des kirchlichen Ablasshandels ('Sobald das Geld im Kasten klingt, die Seele in den Himmel springt') zur Finanzierung des Petersdoms in Rom. Am 31. Oktober 1517 Veröffentlichung der 95 Thesen in Wittenberg. - Theologische Kernaussagen (Die Soli-Prinzipien):   * *Sola scriptura* (Allein die Heilige Schrift ist maßgeblich, nicht Papstdekrete oder Konzilien).   * *Sola fide* (Der Mensch wird allein durch den inneren Glauben gerettet, nicht durch käufliche 'gute Werke' oder Ablassbriefe).   * *Sola gratia* (Erlösung geschieht allein durch die unverdiente Gnade Gottes). - Historische & politische Folgen:   * Luther übersetzte auf der Wartburg das Neue Testament aus dem Griechischen ins Deutsche und schuf damit das Fundament der neuzeitlichen deutschen Einheitssprache.   * Reichstag zu Worms 1521: Luther weigert sich vor Kaiser Karl V. zu widerrufen ('Hier stehe ich, ich kann nicht anders'). Verhängung der Reichsacht (Wormser Edikt).   * Spaltung der Christenheit: Konfessionelle Spaltung führte zu Bauernkriegen (1525) und Religionskriegen, die erst im **Augsburger Religionsfrieden 1555** mit dem Grundsatz *'Cuius regio, eius religio'* (Wer das Land regiert, bestimmt die Religion seiner Untertanen) vorläufig beigelegt wurden."
+        }
+      ]
+    }
+  ]
+}

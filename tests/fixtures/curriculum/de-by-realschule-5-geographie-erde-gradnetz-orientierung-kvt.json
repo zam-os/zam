@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-geographie-erde-gradnetz-orientierung",
+  "version": "2026.08.1",
+  "title": "Geographie 5: Planet Erde – Gradnetz, Orientierung, Jahreszeiten und Landwirtschaft (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geographie 5: Globus, Gradnetz (Breiten-/Längengrade), Kartenmaßstab, Erdrotation/-revolution (Tag/Nacht, Jahreszeiten) und bayerische Landwirtschaft.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/geographie",
+      "checked": "2026-08-15",
+      "label": "Realschule Geographie 5, Lernbereiche Orientierung auf der Erde und Raum Bayern"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G5E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G5E0000000000000000A01",
+      "namespace": "geographie-kartographie",
+      "slug": "gradnetz-der-erde-aequator-breiten-und-laengengrade",
+      "title": "Das Gradnetz der Erde: Äquator, Nullmeridian, Breitenkreise und Längenhalbkreise",
+      "domain": "schule/geographie/kartographie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Geographic coordinate system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G5E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher besondere Breitenkreis teilt die Erdkugel genau in der Mitte in eine Nordhalbkugel und eine Südhalbkugel und hat das Breitenmaß 0°?",
+          "concept": "Der Äquator (Umfang ca. 40.075 km)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Äquator (0° Breite)",
+              "Der Nullmeridian (0° Länge)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G5E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Aufbau des weltweiten Gradnetzes der Erde: 1. Breitenkreise (parallel zueinander, unterschiedlich lang, vom Äquator 0° bis zu den Polen bei 90° Nord und 90° Süd), 2. Längenhalbkreise / Meridiane (verbinden Nord- und Südpol, alle gleich lang, vom Nullmeridian in Greenwich/London 0° bis 180° Ost und 180° West) und erkläre die exakte Angabe geographischer Koordinaten zur weltweiten Standortbestimmung (z. B. München: ca. 48° Nord, 11,5° Ost).",
+          "concept": "Breitenkreise: parallel, 0° Äquator bis 90° N/S (Breite = Latitude); Längenhalbkreise (Meridiane): schneiden sich an Polen, 0° Greenwich bis 180° W/O (Länge = Longitude); Koordinatenangabe: [Grad N/S | Grad O/W].",
+          "sample_solution": "1. Das Gradnetz der Erde als globales Koordinatensystem: - **Breitenkreise (Parallelkreise / Geographische Breite)**:   * Verlaufen parallel zum Äquator in Ost-West-Richtung um den Globus. Sie schneiden sich niemals.   * Der **Äquator (0° Breite)** ist der mit ca. 40.075 km Umfang längste Breitenkreis; zu den Polen hin werden die Kreise immer kleiner.   * Zählung: Vom Äquator 0° aus nach Norden bis zum **Nordpol (90° N)** und nach Süden bis zum **Südpol (90° S)**.   * Wichtige Wendekreise: Nördlicher Wendekreis (23,5° N) und Südlicher Wendekreis (23,5° S); Polarkreise bei 66,5° N und S. - **Längenhalbkreise (Meridiane / Geographische Länge)**:   * Verlaufen in Nord-Süd-Richtung und verbinden den Nordpol direkt mit dem Südpol. Alle Meridiane sind exakt gleich lang (ca. 20.000 km) und laufen an den Polen spitz zusammen.   * Der international festgelegte **Nullmeridian (0° Länge)** verläuft durch die historische Sternwarte in Greenwich bei London.   * Zählung: Vom Nullmeridian 0° aus bis zu 180° nach Osten (**östliche Länge / E**) und 180° nach Westen (**westliche Länge / W**). Der 180°-Meridian im Pazifik bildet im Wesentlichen die Datumsgrenze. 2. Punktbestimmung mit geographischen Koordinaten: - Jeder Ort auf der Erde lässt sich durch den Schnittpunkt von genau einem Breiten- und einem Längengrad eindeutig auf den Meter genau bestimmen. - Konvention: Immer **zuerst die geographische Breite** (Nord oder Süd), dann die **geographische Länge** (Ost oder West). - Beispiel: München liegt auf ca. **48° Nord, 11,5° Ost**."
+        }
+      ]
+    },
+    {
+      "id": "01K4G5E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G5E0000000000000000A02",
+      "namespace": "geographie-kartographie",
+      "slug": "kartenkunde-massstab-hoehenlinien-legende-kompass",
+      "title": "Kartenkunde: Kartenmaßstab, Höhenlinien, Legende und Orientierung mit dem Kompass",
+      "domain": "schule/geographie/kartographie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G5E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Gradnetz und Kartennetze bilden die Grundlage jeder topographischen Karte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Topographic map",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G5E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Meter bzw. Kilometer in der Wirklichkeit entspricht eine gemessene Strecke von 1 cm auf einer topographischen Wanderkarte mit dem Maßstab 1 : 50.000?",
+          "concept": "Genau 500 Meter (50.000 cm = 500 m = 0,5 km)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "500 m (0,5 km)",
+              "5.000 m (5 km)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G5E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 4 zentralen Sprachelemente einer Landkarte: 1. Maßstab (Verkleinerungsverhältnis: 1 cm auf Karte = x cm in Wirklichkeit), 2. Kartenzeichen und Legende (Signaturerklärung für Straßen, Gewässer, Siedlungen, Wald), 3. Höhenlinien / Isohypsen (braune Linien gleicher Höhe über dem Meeresspiegel; je enger beieinander, desto steiler der Berghang), 4. Himmelsrichtungen (Norden ist auf genordeten Karten immer oben) und berechne die reale Luftlinien-Distanz zwischen zwei Orten, die auf einer Karte im Maßstab 1 : 25.000 genau 8 cm voneinander entfernt sind.",
+          "concept": "Maßstab: Streckenberechnung (8 cm · 25.000 = 200.000 cm = 2.000 m = 2 km); Höhenlinien: Abstand zeigt Steilheit an; Norden oben (Nie Ohne Seife Waschen: N, O, S, W); Legende = Schlüssel zur Karte.",
+          "sample_solution": "1. Die vier Grundelemente einer topographischen Karte: - **1. Der Maßstab (Maßstabszahl)**:   * Gibt an, wie stark die Wirklichkeit auf der Karte verkleinert abgebildet ist: `Kartenstrecke : Wirklichkeitsstrecke`.   * Beispiel `1 : 25.000`: 1 cm auf dem Papier entspricht 25.000 cm (= 250 m) im realen Gelände.   * Faustregel: Je größer die Maßstabszahl (z. B. 1 : 1.000.000), desto kleiner der Abbildungsmaßstab und desto größer der gezeigte Weltausschnitt (Übersichtskarte). - **2. Höhenlinien (Isohypsen) und Geländeprofile**:   * Geschlossene braune Linien, die alle Punkte gleicher Meereshöhe (Höhe über Normalnull NN) miteinander verbinden.   * **Steilheitsregel**: Liegen die Höhenlinien auf der Karte extrem eng beieinander, steigt das Gelände sehr steil an (Steilwand/Fels). Liegen sie weit auseinander, ist das Gelände flach oder sanft ansteigend. - **3. Kartenzeichen und Legende**:   * Kartensymbole und Farben (z. B. blau = Gewässer, grün = Wald, rot/gelb = Straßen, schwarz = Gebäude/Eisenbahn) werden im Erklärungskasten (**Legende**) aufgeschlüsselt. - **4. Orientierung und Kompass**:   * Karten sind standardmäßig genordet (Norden = oben, Osten = rechts, Süden = unten, Westen = links; Merkspruch: *'Nie Ohne Seife Waschen'*).   * Die Magnetnadel eines Kompasses richtet sich am Erdmagnetfeld immer exakt nach Norden aus. 2. Entfernungsberechnung: - Gemessene Kartenstrecke: 8 cm. - Maßstab: 1 : 25.000. - Rechnung: 8 cm · 25.000 = 200.000 cm. - Umrechnung in Meter: 200.000 cm : 100 = 2.000 m. - Umrechnung in Kilometer: 2.000 m : 1.000 = **2 km** reale Entfernung."
+        }
+      ]
+    },
+    {
+      "id": "01K4G5E0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G5E0000000000000000A03",
+      "namespace": "geographie-astronomie",
+      "slug": "erdrotation-erdrevolution-entstehung-jahreszeiten",
+      "title": "Erdbewegungen im Sonnensystem: Erdrotation (Tag/Nacht) und Erdrevolution (Jahreszeiten)",
+      "domain": "schule/geographie/astronomie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G5E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Erdachse und Breitenkreise (Wendekreise/Polarkreise) definieren die Sonneneinstrahlung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Earth's orbit",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Orientierung auf der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G5E0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Um wie viel Grad ist die Erdachse gegenüber der Senkrechten zur Erdbahnebene (Ekliptik) dauerhaft geneigt?",
+          "concept": "Um ca. 23,5° (Schiefstellung der Erdachse)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um 23,5° (Neigung der Erdachse)",
+              "Um 45°"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G5E0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide die beiden fundamentalen Erdbewegungen: 1. Erdrotation (Drehung der Erde um die eigene Achse von West nach Ost in 24 Stunden -> Entstehung von Tag und Nacht sowie scheinbarer Sonnenlauf von Ost nach West), 2. Erdrevolution (Umlauf der Erde um die Sonne auf einer elliptischen Bahn in 365 1/4 Tagen = 1 Jahr) und erkläre die Entstehung der 4 Jahreszeiten durch das Zusammenspiel aus Erdumlauf und konstanter Neigung der Erdachse um 23,5° (Sommersonnenwende 21. Juni: Nordhalbkugel zur Sonne geneigt, steiler Einstrahlungswinkel, lange Tage; Wintersonnenwende 21. Dezember: Nordhalbkugel von der Sonne abgewandt, flacher Einstrahlungswinkel, kurze Tage).",
+          "concept": "Erdrotation: 24h um eigene Achse -> Tag/Nacht; Erdrevolution: 365,25 Tage um die Sonne; Jahreszeiten entstehen NICHT durch Sonnenentfernung, sondern durch 23,5° Achsenneigung: Sommer = steiler Einstrahlungswinkel (hohe Energie/Fläche + lange Tage), Winter = flacher Winkel (wenig Energie/Fläche + kurze Tage); Äquinoktien (21. März / 23. September) = Tag-und-Nacht-Gleiche.",
+          "sample_solution": "1. Die beiden Erdbewegungen im Vergleich: - **1. Erdrotation (Eigenrotation)**:   * Die Erde dreht sich innerhalb von **24 Stunden (1 Tag)** einmal von West nach Ost um ihre eigene gedachte Achse.   * Folge: Entstehung des Wechsels von **Tag und Nacht** (die der Sonne zugewandte Seite hat Tag, die abgewandte Nacht) sowie die scheinbare Himmelswanderung der Gestirne (Sonne 'geht im Osten auf und im Westen unter'). - **2. Erdrevolution (Umlauf um die Sonne)**:   * Die Erde wandert auf einer fast kreisrunden Bahn innerhalb von **365 Tagen und 6 Stunden (1 Jahr)** einmal komplett um die Sonne (die 6 Stunden Überhang werden alle 4 Jahre durch einen Schalttag am 29. Februar ausgeglichen). 2. Die Entstehung der 4 Jahreszeiten (Frühling, Sommer, Herbst, Winter): - Ursache: **Die Neigung der Erdachse um ca. 23,5°**, die im Raum stets parallel zu sich selbst ausgerichtet bleibt. - Die Jahreszeiten entstehen **nicht** durch eine unterschiedliche Entfernung zur Sonne, sondern durch den veränderten **Einstrahlungswinkel des Sonnenlichts** und die unterschiedliche Tageslänge:   * **Sommer auf der Nordhalbkugel (Sonnenwende am 21. Juni)**:     - Die Nordhalbkugel ist der Sonne zugeneigt; die Sonne steht am Nördlichen Wendekreis (23,5° N) mittags im Zenit (senkrecht / 90°).     - Die Sonnenstrahlen treffen steil auf den Boden -> enorme Erwärmung pro Quadratmeter. Tage sind lang (bis 16–17 h Helligkeit). An den Polargebieten scheint die Mitternachtssonne (Polartag).   * **Winter auf der Nordhalbkugel (Sonnenwende am 21. Dezember)**:     - Die Nordhalbkugel ist von der Sonne abgewandt. Die Sonne steht über dem Südlichen Wendekreis im Zenit.     - Die Strahlen treffen in Bayern extrem flach auf den Boden -> geringe Wärmewirkung, da sich die Energie auf eine große Fläche verteilt. Kurze Tage, lange Nächte (Polarnacht am Nordpol).   * **Frühling (21. März) und Herbst (23. September)**:     - Sonne steht senkrecht über dem Äquator. Beide Halbkugeln werden gleichmäßig beleuchtet (**Tag-und-Nacht-Gleiche / Äquinoktium**: Tag und Nacht dauern überall exakt 12 Stunden)."
+        }
+      ]
+    },
+    {
+      "id": "01K4G5E0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G5E0000000000000000A04",
+      "namespace": "geographie-bayern",
+      "slug": "landwirtschaft-in-bayern-ackerbau-gruenland-sonderkulturen",
+      "title": "Landwirtschaft in Bayern: Ackerbau (Gäuplatten), Grünlandwirtschaft (Allgäu) und Sonderkulturen",
+      "domain": "schule/geographie/bayern",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G5E0000000000000000A02",
+          "type": "hard",
+          "rationale": "Topographie und Höhenlagen bestimmen die landwirtschaftlichen Gunsträume Bayerns."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Agriculture in Bavaria",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Ländliche Räume in Bayern",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Ländliche Räume in Bayern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G5E0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche weltbekannte bayerische Region ist das größte zusammenhängende Hopfenanbaugebiet der Welt (Sonderkultur für die Bierbrauerei)?",
+          "concept": "Die Hallertau (Holledau) in Ober- und Niederbayern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hallertau (Hopfenanbau)",
+              "Das Allgäu"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G5E0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die drei landwirtschaftlichen Hauptnutzungsformen in Bayern in Abhängigkeit von Boden und Klima: 1. Ackerbau (Fruchtbare Lössböden im Gäuboden bei Straubing, Ochsenfurter Gau: Weizen, Gerste, Zuckerrüben, Mais), 2. Grünland- und Milchviehwirtschaft (Niederschlagsreiche, kühle Voralpen und Allgäu: saftige Wiesen, Milch- und Käseproduktion), 3. Sonderkulturen (Hopfen in der Hallertau, Weinbau am Fränkischen Main / Bocksbeutel, Spargel im Schrobenhausener Land) und diskutiere den 'Strukturwandel in der Landwirtschaft' (Wachsen oder Weichen: Rückgang der Höfe, Spezialisierung, Automatisierung wie Melkroboter, Bio-Landbau / Direktvermarktung).",
+          "concept": "Ackerbau: Lössböden (Gäuboden/Unterfranken) für Getreide/Zuckerrübe; Grünland: Allgäu/Voralpen mit viel Regen für Milchvieh/Käse; Sonderkulturen: Hopfen (Hallertau), Wein (Franken), Spargel (Schrobenhausen); Strukturwandel: immer weniger Höfe bewirtschaften immer größere Flächen mit Hightech, Ausbau ökologische Landwirtschaft.",
+          "sample_solution": "1. Die agrarischen Gunsträume und Nutzungsformen in Bayern: - **1. Intensiver Ackerbau**:   * Standorte: Wärme- und bodenbegünstigte Tieflagen mit fruchtbaren eiszeitlichen Lösslehmböden (z. B. **Dungau / Gäuboden** um Straubing als 'Kornkammer Bayerns', Ochsenfurter Gau in Unterfranken).   * Anbaufrüchte: Weizen, Braugerste, Zuckerrüben, Körnermais und Raps. - **2. Grünland- und Milchwirtschaft**:   * Standorte: Das regenreiche **Allgäu** und das bayerische Alpenvorland (hohe Niederschläge > 1.200 mm/Jahr und kühles Bergklima eignen sich kaum für Ackerbau, aber optimal für sattes Graswachstum).   * Nutzung: Dauergrünland, Weidehaltung von Fleckvieh und Allgäuer Braunvieh zur Erzeugung von Qualitätsmilch, Butter und Hartkäse (Emmentaler/Bergkäse). - **3. Spezialisierte Sonderkulturen**:   * **Hopfen**: Die *Hallertau (Holledau)* ist das größte zusammenhängende Hopfenanbaugebiet der Erde ('Grünes Gold' für die Bierwürze).   * **Weinbau**: Entlang des Mains in Unterfranken (sonnige Muschelkalk-Steillagen, traditioneller *Bocksbeutel*).   * **Spargel**: Sandige Böden im *Schrobenhausener Land* und *Abensberg*. 2. Der Strukturwandel in der bayerischen Landwirtschaft: - Phänomen *'Wachsen oder Weichen'*: In den letzten Jahrzehnten sank die Zahl bäuerlicher Familienbetriebe drastisch, während die durchschnittliche Betriebsgröße stetig zunahm. - Technisierung: Moderner Einsatz von GPS-gesteuerten Traktoren, automatischen Fütterungsanlagen und **Melkrobotern**. - Neue Zukunftspfade: Zunahme von zertifiziertem ökologischem Landbau (Bio-Höfe), Direktvermarktung im Hofladen, 'Urlaub auf dem Bauernhof' (Agrotourismus) und Energieerzeugung durch Biogasanlagen und Photovoltaik auf Stall dächern."
+        }
+      ]
+    }
+  ]
+}

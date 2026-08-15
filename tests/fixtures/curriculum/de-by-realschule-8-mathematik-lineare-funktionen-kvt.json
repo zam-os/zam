@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-mathematik-lineare-funktionen",
+  "version": "2026.08.1",
+  "title": "Mathematik 8: Lineare Funktionen und Geradengleichungen (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 8: Lineare Funktionen f(x) = mx + t, Steigungsdreieck, Nullstellen, Parallelität und Orthogonalität von Geraden.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 8, Lernbereich Funktionen (Lineare Zusammenhänge)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M8F0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M8F0000000000000000A01",
+      "namespace": "mathematik-funktionen",
+      "slug": "lineare-funktion-steigung-achsenabschnitt",
+      "title": "Lineare Funktion: Funktionsgleichung f(x) = mx + t und Steigungsdreieck",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192938",
+          "target_label": "Linear function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8F0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gibt der Parameter m in der allgemeinen Geradengleichung y = m · x + t an?",
+          "concept": "Die Steigung der Geraden (m = Δy / Δx)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Steigung der Geraden (m = Δy / Δx)",
+              "Den Schnittpunkt mit der x-Achse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8F0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die geometrische Bedeutung der Parameter m (Steigung) und t (y-Achsenabschnitt) in f(x) = mx + t, zeichne die Gerade g mit y = -0,5x + 3 mithilfe eines Steigungsdreiecks und bestimme ihre Nullstelle x_0.",
+          "concept": "t = 3 -> Schnittpunkt Sy(0 | 3); m = -0,5 = -1/2 -> 2 Schritte nach rechts, 1 Schritt nach unten; Nullstelle: 0 = -0,5x + 3 <=> 0,5x = 3 <=> x_0 = 6"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8F0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M8F0000000000000000A02",
+      "namespace": "mathematik-funktionen",
+      "slug": "geradengleichung-zwei-punkte-punktsteigung",
+      "title": "Geradengleichung aufstellen: Zwei-Punkte-Formel und Punkt-Steigungs-Form",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8F0000000000000000A01",
+          "type": "hard",
+          "rationale": "Steigungsbegriff ist Voraussetzung für Geradengleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192938",
+          "target_label": "Linear equation in two variables",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8F0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man die Steigung m einer Geraden durch die Punkte P(x_1 | y_1) und Q(x_2 | y_2)?",
+          "concept": "m = (y_2 - y_1) / (x_2 - x_1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m = (y_2 - y_1) / (x_2 - x_1)",
+              "m = (x_2 - x_1) / (y_2 - y_1)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8F0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ermittle die Funktionsgleichung der Geraden g, die durch die beiden Punkte A(2 | -1) und B(6 | 7) verläuft, und überprüfe rechnerisch durch eine Punktprobe, ob der Punkt P(10 | 15) auf der Geraden g liegt.",
+          "concept": "m = (7 - (-1))/(6 - 2) = 8/4 = 2; y = 2x + t -> -1 = 2*2 + t -> t = -5 -> g: y = 2x - 5; Probe P(10|15): 2*10 - 5 = 15 -> 15 = 15 w.A. -> P liegt auf g"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8F0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M8F0000000000000000A03",
+      "namespace": "mathematik-funktionen",
+      "slug": "lagebeziehungen-geraden-parallel-orthogonal",
+      "title": "Lagebeziehungen zweier Geraden: Schnittpunkt, Parallelität und Orthogonalität",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8F0000000000000000A02",
+          "type": "hard",
+          "rationale": "Geradengleichungen sind Voraussetzung für Schnitt- und Lageuntersuchungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192938",
+          "target_label": "Parallel and perpendicular lines",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8F0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche mathematische Beziehung muss für die Steigungen m_1 und m_2 zweier zueinander orthogonaler (senkrechter) Geraden gelten?",
+          "concept": "m_1 · m_2 = -1 bzw. m_2 = -1 / m_1 (negativer Kehrwert)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "m_1 · m_2 = -1",
+              "m_1 = m_2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8F0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gegeben ist die Gerade g_1: y = 3x - 4. Bestimme die Gleichung der dazu parallelen Geraden g_2 durch P(1 | 5), die Gleichung der dazu senkrechten Geraden h durch den Ursprung O(0 | 0) und berechne den Schnittpunkt S von g_1 mit der Geraden g_3: y = -x + 8.",
+          "concept": "Parallel g2: m=3, 5 = 3*1 + t -> t=2 -> y = 3x + 2; Senkrecht h: m_h = -1/3, t=0 -> y = -1/3 x; Schnittpunkt: 3x - 4 = -x + 8 <=> 4x = 12 <=> x = 3 -> y = 5 -> S(3 | 5)"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8F0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M8F0000000000000000A04",
+      "namespace": "mathematik-funktionen",
+      "slug": "direkte-indirekte-proportionalitaet-hyperbel",
+      "title": "Proportionale und antiproportionale Funktionen: Ursprungsgerade und Hyperbel",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8F0000000000000000A01",
+          "type": "hard",
+          "rationale": "Funktionsbegriff und Steigung sind Basis für Proportionalität."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q192938",
+          "target_label": "Proportionality (mathematics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8F0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Form besitzt der Graph einer antiproportionalen (indirekt proportionalen) Zuordnung y = k / x im 1. Quadranten?",
+          "concept": "Ein Hyperbelast",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Hyperbelast",
+              "Eine Ursprungsgerade"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8F0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche direkte Proportionalität (y = k · x, quotientengleich: y/x = k, Ursprungsgerade) und indirekte Proportionalität (y = k / x, produktgleich: x · y = k, Hyperbel) anhand ihrer mathematischen Gesetzmäßigkeiten und gib je ein reales Anwendungsbeispiel aus dem Alltag an.",
+          "concept": "Direkt: verdoppelt sich x, verdoppelt sich y (Quotient y/x konstant, z.B. getankte Benzinmenge und Preis); Indirekt: verdoppelt sich x, halbiert sich y (Produkt x*y konstant, z.B. Anzahl Arbeiter und benötigte Bauzeit)"
+        }
+      ]
+    }
+  ]
+}

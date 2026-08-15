@@ -1,0 +1,313 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-mathematik-quadratische-funktionen",
+  "version": "2026.08.1",
+  "title": "Quadratische Funktionen und Gleichungen (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9 (Zweig I & Zweig II/III): Normalparabel, Scheitelpunktform, quadratische Ergänzung, Mitternachtsformel, Diskriminante und Linearfaktorzerlegung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (I), Lernbereich 7 Quadratische Funktionen und quadratische Gleichungen"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (II/III), Lernbereich 5 Lineare und quadratische Funktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4Q9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4Q9M0000000000000000A01",
+      "namespace": "mathematik-funktionen",
+      "slug": "normalparabel-scheitelpunktform",
+      "title": "Normalparabel und Scheitelpunktform",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q193630",
+          "target_label": "Quadratic function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Lineare und quadratische Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4Q9M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Koordinaten hat der Scheitelpunkt S der Parabel mit der Gleichung f(x) = (x - 3)² + 5?",
+          "concept": "S(d|e) mit d = 3, e = 5 -> S(3|5)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "S(3 | 5)",
+              "S(-3 | 5)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4Q9M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Einfluss der Parameter a, d und e in der Scheitelpunktform f(x) = a * (x - d)² + e auf Form und Lage des Graphen.",
+          "concept": "a steuert Streckung/Öffnung, d verschiebt horizontal, e vertikal",
+          "sample_solution": "Der Scheitelpunkt liegt bei S(d | e). Der Parameter d verschiebt die Parabel entlang der x-Achse (nach rechts bei d > 0), e entlang der y-Achse (nach oben bei e > 0). Der Formfaktor a bestimmt die Öffnung (a > 0 nach oben, a < 0 nach unten) sowie die Form (|a| > 1 gestreckt/schmaler, |a| < 1 gestaucht/breiter)."
+        }
+      ]
+    },
+    {
+      "id": "01K4Q9M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4Q9M0000000000000000A02",
+      "namespace": "mathematik-funktionen",
+      "slug": "quadratische-ergaenzung-scheitelpunkt",
+      "title": "Quadratische Ergänzung zur Scheitelpunktbestimmung",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4Q9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Scheitelpunktform ist das Ziel der quadratischen Ergänzung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q843817",
+          "target_label": "Completing the square",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Lineare und quadratische Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4Q9M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welcher quadratischen Ergänzung wird der Term x² + 6x zu einem vollständigen Binom (x + 3)²?",
+          "concept": "+ 3² = + 9 (die Hälfte des linearen Koeffizienten quadriert)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "+ 9 (also + (6/2)²)",
+              "+ 36 (also + 6²)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4Q9M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Schritte der quadratischen Ergänzung am Beispiel f(x) = x² - 8x + 10 zur Bestimmung des Scheitelpunkts.",
+          "concept": "Halbieren (-4), quadrieren (+16 - 16), Binom bilden -> S(4|-6)",
+          "sample_solution": "1. Linearen Koeffizienten halbieren: -8 / 2 = -4. 2. Quadrieren und quadratisch ergänzen: x² - 8x + 4² - 4² + 10. 3. Binom zusammenfassen: (x - 4)² - 16 + 10 = (x - 4)² - 6. Der Scheitelpunkt lautet somit S(4 | -6)."
+        }
+      ]
+    },
+    {
+      "id": "01K4Q9M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4Q9M0000000000000000A03",
+      "namespace": "mathematik-algebra",
+      "slug": "quadratische-gleichungen-mitternachtsformel",
+      "title": "Quadratische Gleichungen und Mitternachtsformel",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4Q9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kenntnis der Koeffizienten a, b, c einer Parabel ist Voraussetzung für die Lösungsformel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q179883",
+          "target_label": "Quadratic equation",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Lineare und quadratische Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4Q9M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele reelle Lösungen besitzt eine quadratische Gleichung ax² + bx + c = 0, wenn die Diskriminante D = b² - 4ac negativ ist (D < 0)?",
+          "concept": "0 reelle Lösungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Keine (0 reelle Lösungen)",
+              "Genau zwei reelle Lösungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4Q9M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Mitternachtsformel zur Lösung von ax² + bx + c = 0 und wie entscheidet die Diskriminante D über die Lösungsanzahl?",
+          "concept": "x_1,2 = (-b +- √(b² - 4ac)) / (2a); D > 0 (2 Lsg), D = 0 (1 Lsg), D < 0 (0 Lsg)",
+          "sample_solution": "Die Lösungsformel lautet: x_1,2 = (-b ± √(b² - 4ac)) / (2a). Die Diskriminante D = b² - 4ac bestimmt die Lösungsmenge: Ist D > 0, gibt es zwei verschiedene reelle Lösungen; ist D = 0, gibt es genau eine doppelte Lösung (Scheitelpunkt berührt x-Achse); ist D < 0, gibt es keine reelle Lösung."
+        }
+      ]
+    },
+    {
+      "id": "01K4Q9M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4Q9M0000000000000000A04",
+      "namespace": "mathematik-algebra",
+      "slug": "nullstellen-und-linearfaktoren",
+      "title": "Nullstellen und Linearfaktorzerlegung",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4Q9M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Berechnen von Nullstellen über quadratische Gleichungen ist Voraussetzung für die Linearfaktorzerlegung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q2914389",
+          "target_label": "Factorization of polynomials",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb7",
+          "topic_title": "Quadratische Funktionen und quadratische Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Lineare und quadratische Funktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4Q9M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Nullstellen besitzt die Funktion f(x) = (x - 2) * (x + 5)?",
+          "concept": "x_1 = 2 und x_2 = -5 (Satz vom Nullprodukt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x_1 = 2 und x_2 = -5",
+              "x_1 = -2 und x_2 = 5"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4Q9M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere den Satz vom Nullprodukt und gib die Linearfaktorform einer quadratischen Funktion mit den Nullstellen x_1 und x_2 und dem Streckungsfaktor a an.",
+          "concept": "Produkt ist null, wenn mind. ein Faktor null ist: f(x) = a * (x - x_1) * (x - x_2)",
+          "sample_solution": "Satz vom Nullprodukt: Ein Produkt zweier Faktoren ist genau dann null, wenn mindestens einer der Faktoren null ist (u * v = 0 <=> u = 0 oder v = 0). Eine quadratische Funktion mit den reellen Nullstellen x_1 und x_2 lässt sich als f(x) = a * (x - x_1) * (x - x_2) schreiben."
+        }
+      ]
+    }
+  ]
+}

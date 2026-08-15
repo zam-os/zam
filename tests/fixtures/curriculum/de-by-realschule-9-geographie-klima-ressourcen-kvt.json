@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-geographie-klima-ressourcen",
+  "version": "2026.08.1",
+  "title": "Geographie: Klima, Ökosysteme und Ressourcen (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geographie 9: Globale atmosphärische Zirkulation, Tropischer Regenwald, Desertifikation und nachhaltige Ressourcennutzung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/geographie",
+      "checked": "2026-08-15",
+      "label": "Realschule Geographie 9, Lernbereiche Globale Klimazonen und Ressourcen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G9R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G9R0000000000000000A01",
+      "namespace": "geographie-klima",
+      "slug": "atmosphaerische-zirkulation-itc-passate",
+      "title": "Atmosphärische Zirkulation: ITC, Passatkreislauf und Tropen",
+      "domain": "schule/geographie/physisch",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q2615451",
+          "target_label": "Atmospheric circulation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Tiefdruckrinne bildet sich durch die maximale Sonneneinstrahlung und aufsteigende Warmluft im Bereich des Äquators?",
+          "concept": "Die Innertropische Konvergenzzone (ITC / ITCZ)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Innertropische Konvergenzzone (ITC)",
+              "Der Subtropische Hochdruckgürtel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Mechanismus der Passatzirkulation (Hadley-Zelle): Entstehung der äquatorialen Tiefdruckrinne (ITC), Konvektionsregen, Absinken im subtropischen Hochdruckgürtel und Rückströmung der Passatwinde mit Corioliskraft.",
+          "concept": "Zenitstand der Sonne erwärmt Luft am Äquator -> Aufstieg (Konvektion, Zenitalregen) -> Tiefdruck (ITC) -> Polwärts strömende Höhenwinde kühlen ab -> Absinken bei ca. 30° N/S (Subtropenhoch, Wolkenauflösung/Trockenheit) -> Rückströmung zum Äquator als Nordost-/Südost-Passat (durch Corioliskraft abgelenkt)",
+          "sample_solution": "Der Passatkreislauf (Hadley-Zelle): 1. Am Äquator erwärmt die steil einstrahlende Sonne die Luftmasse stark. Die warme Luft dehnt sich aus, steigt auf (Konvektion) und kühlt in der Höhe ab, was zu täglichen schweren Zenitalregen führt. Am Boden entsteht die äquatoriale Tiefdruckrinne (ITC). 2. In der oberen Troposphäre fließt die Luft nach Norden und Süden ab, kühlt weiter ab, wird dichter und sinkt im Bereich der Wendekreise (ca. 25-30° N/S) großräumig ab. Durch die Erwärmung beim Absinken lösen sich Wolken auf (Subtropischer Hochdruckgürtel, Wüstenzone). 3. Vom Subtropenhoch fließt die bodennahe Luft zurück zum Äquator (Druckausgleich). Durch die Corioliskraft wird diese Strömung auf der Nordhalbkugel nach rechts (Nordostpassat) und auf der Südhalbkugel nach links (Südostpassat) abgelenkt."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G9R0000000000000000A02",
+      "namespace": "geographie-oekosysteme",
+      "slug": "tropischer-regenwald-naehrstoffkreislauf-gefaehrdung",
+      "title": "Der Tropische Regenwald: Stockwerkbau, Nährstoffkreislauf und Gefährdung",
+      "domain": "schule/geographie/physisch",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Tageszeitenklima der Tropen ist die Basis für das Ökosystem Regenwald."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q199403",
+          "target_label": "Tropical rainforest",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wo ist im Ökosystem des tropischen Regenwaldes der überwiegende Teil aller Nährstoffe gespeichert?",
+          "concept": "In der lebenden Biomasse (Pflanzen und dichter Wurzelfilz), nicht im nährstoffarmen Boden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In der lebenden Biomasse und im oberflächennahen Wurzelfilz",
+              "Tief im humusreichen Mineralboden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den kurzgeschlossenen Nährstoffkreislauf des tropischen Regenwaldes, beschreibe den Stockwerkbau der Vegetation und begründe, warum Brandrodung für Rinderweiden oder Sojaanbau zu rascher Bodenunfruchtbarkeit führt.",
+          "concept": "Stockwerkbau (Urwaldriesen, Kronenschicht, Strauch-, Krautschicht); kurzgeschlossener Kreislauf: Destruenten zersetzen Laub sofort, Mykorrhiza/Wurzeln nehmen Nährstoffe direkt auf; Boden (Ferralsol) ist ausgewaschen und nährstoffarm; Brandrodung zerstört Nährstoffspeicher Biomasse -> nach 2-3 Jahren Auswaschung & Verkrustung (Laterit)",
+          "sample_solution": "1. Stockwerkbau: Bis zu 60 m hohe Übersteher (Urwaldriesen), geschlossenes Kronendach (30-40 m), mittlere Baum- und Strauchschicht sowie dunkle Krautschicht am Boden. 2. Kurzgeschlossener Nährstoffkreislauf: Tropische Böden (Ferralsole) sind uralt, tiefgründig verwittert und extrem nährstoffarm. Abgestorbenes organisches Material wird durch feucht-warme Bedingungen von Destruenten blitzschnell zersetzt und über ein dichtes Geflecht oberflächennaher Pilzwurzeln (Mykorrhiza) sofort wieder von den Pflanzen aufgenommen. Die Nährstoffe zirkulieren fast ausschließlich in der lebenden Biomasse. 3. Folgen von Brandrodung: Bei großflächiger Abholzung und Brandrodung wird der Nährstoffspeicher der Biomasse vernichtet. Durch die starken Tropenregen werden die wenigen in der Asche verbleibenden Mineralstoffe in wenigen Jahren ausgewaschen. Der schutzlose Boden erodiert, verkrustet hart (Lateritisierung) und wird für die Landwirtschaft unbrauchbar."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G9R0000000000000000A03",
+      "namespace": "geographie-oekosysteme",
+      "slug": "aride-zonen-desertifikation-bewaesserung",
+      "title": "Aride Zonen: Desertifikation, Übernutzung und Bodenversalzung",
+      "domain": "schule/geographie/physisch",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Lage der Subtropenhochs erklärt die Verbreitung arider Zonen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183481",
+          "target_label": "Desertification",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Klima und Vegetationszonen der Erde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie bezeichnet man die vom Menschen verursachte Ausbreitung wüstenartiger Bedingungen in Trockengebieten durch Überweidung, Abholzung und falsche Bewässerung?",
+          "concept": "Desertifikation (Wüstenbildung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Desertifikation",
+              "Eutrophierung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Ursachen und den Prozess der anthropogenen Desertifikation in der Sahelzone und erkläre den Zusammenhang zwischen unsachgemäßer Oberflächenbewässerung, hoher Verdunstung und Bodenversalzung.",
+          "concept": "Ursachen Sahel: Bevölkerungswachstum -> Überweidung, Abholzung von Brennholz, Verkürzung der Brachezeiten -> Verlust der Pflanzendecke -> Winderosion & Bodendegradation; Bewässerung: Oberflächenbewässerung bei hoher Verdunstung hebt Grundwasserspiegel -> kapillarer Aufstieg löst Mineralien -> Wasser verdunstet an Oberfläche -> weiße Salzkruste vergiftet Pflanzen",
+          "sample_solution": "1. Desertifikation in der Sahelzone: Das Zusammenspiel aus natürlichen Klimaschwankungen (Dürren) und menschlichem Nutzungsdruck führt zur Wüstenbildung: Überweidung zerstört die Grasnarbe, Abholzung für Feuerholz beseitigt Windschutz, und Übernutzung von Ackerflächen verhindert Bodenregeneration. Der schutzlose Oberboden wird durch Winderosion abgetragen, der Boden verkarstet irreversibel. 2. Prozess der Bodenversalzung: Bei traditioneller Oberflächenbewässerung (Flutbewässerung) in ariden Regionen versickert zu viel Wasser, der Grundwasserspiegel steigt an. Wegen der extremen Hitze und hohen Verdunstung steigt das salzhaltige Grundwasser durch Kapillarkräfte an die Erdoberfläche auf. Das Wasser verdunstet, während die gelösten Mineralsalze zurückbleiben und eine giftige weiße Kruste bilden, die das Pflanzenwachstum vollends zum Erliegen bringt (Abhilfe: wassersparende Tröpfchenbewässerung)."
+        }
+      ]
+    },
+    {
+      "id": "01K4G9R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G9R0000000000000000A04",
+      "namespace": "geographie-ressourcen",
+      "slug": "globaler-wandel-ressourcen-nachhaltigkeit",
+      "title": "Globaler Wandel: Ressourcenverbrauch, Treibhauseffekt und Nachhaltigkeit",
+      "domain": "schule/geographie/anthropogen",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G9R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Atmosphärisches Verständnis ist Voraussetzung für Klimawandelfolgen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12503",
+          "target_label": "Global warming",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Ressourcen und Globalisierung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Ressourcen und Globalisierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G9R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Maß beziffert die biologisch produktive Fläche der Erde, die notwendig ist, um die Ressourcen für den Lebensstil eines Menschen bereitzustellen und dessen Abfälle aufzunehmen?",
+          "concept": "Der ökologische Fußabdruck (Ecological Footprint)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der ökologische Fußabdruck",
+              "Das Bruttoinlandsprodukt (BIP)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G9R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den anthropogenen Treibhauseffekt (Verbrennung fossiler Energieträger, Erhöhung von CO₂ und Methan, Absorption von langwelliger Wärmestrahlung) und formuliere das Prinzip der Nachhaltigkeit nach dem Drei-Säulen-Modell (Ökologie, Ökonomie, Soziales).",
+          "concept": "Anthropogener Treibhauseffekt: Kurzwellige Sonnenstrahlung dringt ein -> Erdoberfläche erwärmt sich -> sendet langwellige Infrarotstrahlung aus -> Treibhausgase absorbieren & emittieren Gegenstrahlung -> globale Erwärmung; 3-Säulen-Modell: Gleichrangigkeit von ökologischem Schutz, wirtschaftlicher Leistungsfähigkeit und sozialer Gerechtigkeit für künftige Generationen",
+          "sample_solution": "1. Anthropogener Treibhauseffekt: Sonnenstrahlen treffen als kurzwellige Strahlung auf die Erde und erwärmen die Erdoberfläche. Diese strahlt Energie als langwellige Wärmestrahlung (Infrarot) zurück. Treibhausgase (CO₂, CH₄, N₂O), die durch Industrie, Verkehr, Brandrodung und Massentierhaltung in die Atmosphäre gelangen, absorbieren diese Wärmestrahlung und strahlen sie teilweise zur Erde zurück (Gegenstrahlung), was zu globalem Temperaturanstieg und extremen Wetterereignissen führt. 2. Nachhaltigkeit (Drei-Säulen-Modell): Nachhaltige Entwicklung bedeutet, die Bedürfnisse der heutigen Generation so zu befriedigen, dass die Lebensgrundlagen künftiger Generationen nicht gefährdet werden. Dies erfordert den gleichzeitigen Einklang von: a) Ökologie (Schonung von Ressourcen, Artenschutz, CO₂-Reduktion), b) Ökonomie (dauerhaft tragfähiges Wirtschaften) und c) Soziales (soziale Gerechtigkeit, faire Arbeitsbedingungen weltweit)."
+        }
+      ]
+    }
+  ]
+}

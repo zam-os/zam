@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-biologie-voegel-fische-amphibien-reptilien",
+  "version": "2026.08.1",
+  "title": "Biologie 6: Vögel, Fische, Amphibien und Reptilien (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 6: Vogelei-Bau/Flugarten, Kiemenatmung der Fische, Metamorphose der Amphibien und Kriechtiere.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 6, Lernbereich Vielfalt der Wirbeltiere"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B6V0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B6V0000000000000000A01",
+      "namespace": "biologie-zoologie",
+      "slug": "vogelei-aufbau-hagelschnuere-keimscheibe",
+      "title": "Das Vogelei: Kalkschale, Eiklar, Dotter, Hagelschnüre und Keimscheibe",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Bird egg",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6V0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche spiralförmig gedrehten Eiweißschnüre halten den Dotter mit der empfindlichen Keimscheibe im Zentrum des Vogeleis elastisch in der Schwebe?",
+          "concept": "Die Hagelschnüre (Chalazen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hagelschnüre (Chalazen)",
+              "Die Schalenhäute"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6V0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den mikroskopischen und anatomischen Bau eines Vogeleis (poröse Kalkschale für Gasaustausch, äußere und innere Schalenhaut mit Luftkammer am stumpfen Pol, Eiklar/Eiweiß als Wasserspeicher und Stoßdämpfer, Dotter mit Dottermembran als Nährstoffreserve, Keimscheibe und Hagelschnüre) und erkläre die Bedeutung des regelmäßigen Eier-Wendedrehens durch die brütenden Elterntiere.",
+          "concept": "Kalkschale: Stabilität + mikroskopische Poren für Sauerstoff/CO2-Austausch; Schalenhäute bilden Luftkammer (erster Atemzug des Kükens); Eiklar: Wasser, Eiweiß, Schutz vor Austrocknung/Stoß; Dotter: fett- und energiereich für Embryowachstum; Keimscheibe: befruchtete Eizelle oben auf Dotter; Hagelschnüre: halten Dotter mittig und drehen Keimscheibe immer nach oben zur wärmenden Brutfleck-Haut der Eltern; Wenden verhindert Festkleben der Embryonalhüllen an der Schale.",
+          "sample_solution": "1. Anatomischer Aufbau des Vogeleis: - Poröse Kalkschale: Besteht aus Calciumcarbonat (CaCO_3); verleiht dem Ei mechanische Stabilität und Festigkeit, besitzt jedoch ca. 10.000 mikroskopische Poren, die den lebensnotwendigen Gasaustausch (Sauerstoffaufnahme, CO_2- und Wasserdampfabgabe) für den wachsenden Embryo ermöglichen. - Äußere und innere Schalenhaut: Liegen der Schale innen an. Am stumpfen Eipol weichen sie auseinander und bilden die **Luftkammer** (aus ihr nimmt das Küken kurz vor dem Schlüpfen seinen ersten Atemzug). - Eiklar (Eiweiß): Besteht zu 90 % aus Wasser und 10 % Proteinen; dient als Stoßdämpfer gegen Erschütterungen, Schutz vor Bakterien (Lysozym) und als Wasserspeicher. - Dotter (Eigelb): Umhüllt von der elastischen Dottermembran; enthält hochkonzentrierte Fette, Eiweiße und Vitamine als Nährstoffvorrat für die gesamte Entwicklungszeit. - Keimscheibe: Die eigentliche befruchtete Keimzelle; liegt als kleiner weißer Fleck oben auf dem Dotter; hieraus entwickelt sich der Embryo. - Hagelschnüre (Chalazen): Zwei gedrehte Eiweißstränge an den Eipolen; halten die Dotterkugel im Zentrum des Eiklars in der Schwebe und sorgen durch Gewichtsverlagerung dafür, dass die Keimscheibe stets nach oben zur wärmenden Bauchhaut des Bruttieres ausgerichtet bleibt. 2. Bedeutung des Eierwendens beim Brüten: - Vögel drehen die Eier mehrmals täglich im Nest mit dem Schnabel um. - Dies verhindert zuverlässig, dass die zarten embryonalen Blutgefäße und Hüllen an der inneren Schalenhaut festwachsen und abreißen."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6V0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B6V0000000000000000A02",
+      "namespace": "biologie-zoologie",
+      "slug": "fische-kiemenatmung-gegenstromprinzip",
+      "title": "Kiemenatmung der Fische: Kiemenbögen, Kiemenblättchen und das hocheffiziente Gegenstromprinzip",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6V0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kiemen sind die Atmungsorgane der Wassertiere."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Gill",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6V0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welche Richtung strömt das Blut in den Kiemenkapillaren im Verhältnis zum vorbeifließenden Atemwasser?",
+          "concept": "In entgegengesetzter Richtung (Gegenstromprinzip zur maximalen Sauerstoffdiffusion)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In entgegengesetzter Richtung (Gegenstromprinzip)",
+              "In gleicher Richtung (Gleichstromprinzip)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6V0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Bau des Fisch-Atmungsapparats (Kiemendeckel, Kiemenbögen mit Kiemenreusendornen als Schwebstofffilter und stark durchbluteten Kiemenblättchen), beschreibe den Atemmechanismus (Maul öffnen / Kiemendeckel geschlossen -> Maul schließen / Kiemendeckel heben und Wasser herausdrücken) und begründe physikalisch-biologisch den gewaltigen Wirkungsgrad des Gegenstromprinzips gegenüber dem Gleichstromprinzip.",
+          "concept": "Wasser strömt durch Maul ein, über Kiemenblättchen und durch Kiemenspalten aus; Gegenstrom: Blut und Wasser fließen entgegengesetzt -> über die gesamte Kiemenlänge bleibt ein stetiges Sauerstoff-Konzentrationsgefälle (Diffusionsgradient) erhalten -> bis zu 85% Sauerstoffausbeute (bei Gleichstrom maximal 50% Ausgleich).",
+          "sample_solution": "1. Aufbau des Atmungsapparates beim Knochenfisch: - Kiemendeckel (Operculum): Schützen die zarten Kiemen und wirken als Saug- und Druckpumpe. - Kiemenbögen (4 knöcherne Bögen auf jeder Seite):   * Vorderseite (Kiemenreuse): Borstige Kiemendornen filtern Schwebstoffe und Futterreste aus dem Atemwasser, um ein Verstopfen der Kiemen zu verhindern.   * Rückseite (Kiemenblättchen): Tausende hauchdünne, blutrote Kiemenlamellen mit extrem vergrößerter Gesamtoberfläche und dünnsten Membranen. 2. Die Atembewegung: - Phase 1 (Einströmen): Fisch öffnet das Maul, senkt den Mundboden; Kiemendeckel schließen sich -> Unterdruck saugt frisches Wasser ins Maul. - Phase 2 (Auspressen): Fisch schließt das Maul, hebt den Mundboden; Kiemendeckel öffnen sich -> Wasser wird unter Druck über die Kiemenblättchen nach außen gepresst. 3. Das Gegenstromprinzip (Wirkungsgrad bis über 80 %): - Wasser und Blut in den feinen Haargefäßen (Kapillaren) der Kiemenlamellen fließen in **exakt entgegengesetzter Richtung** aneinander vorbei. - Wirkungsweise: Sauerstoffarmes Blut trifft zuerst auf sauerstoffarmes, fast verbrauchtes Wasser (dennoch reicht das Gefälle zur Sauerstoffaufnahme). Auf seinem weiteren Weg trifft das Blut auf immer sauerstoffreicheres Frischwasser. - Vorteil: Über die gesamte Länge der Kiemenkapillare bleibt ein stetiges Konzentrationsgefälle (Diffusionsgradient) aufrechterhalten. Der Fisch kann so über 80–85 % des im Wasser gelösten Sauerstoffs entziehen (im Gleichstrom wäre bei 50 % Gleichgewicht schlagartig Schluss)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6V0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B6V0000000000000000A03",
+      "namespace": "biologie-zoologie",
+      "slug": "amphibien-metamorphose-frosch-entwicklung",
+      "title": "Amphibien (Lurche): Frosch-Metamorphose vom Wasser- zum Landleben",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6V0000000000000000A02",
+          "type": "hard",
+          "rationale": "Kiemen- und Lungenatmung bilden die physiologischen Stadien der Metamorphose."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Amphibian metamorphosis",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6V0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Gliedmaßen wachsen bei der Kaulquappe während der Metamorphose als ERSTES nach außen sichtbar heraus?",
+          "concept": "Die Hinterbeine",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hinterbeine",
+              "Die Vorderbeine"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6V0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die vollständige Metamorphose (Gestaltwandlung) des Grasfrosches von der Eiablage im Laichgewässer bis zum fertigen Landtier in 5 Schritten: 1. Geleelaich / äußere Befruchtung, 2. Schlüpfen der Kaulquappe (Außenkiemen, Flossensaum, Hornschnabel/Pflanzenfresser), 3. Innenkiemen, 4. Gliedmaßenbildung (zuerst Hinterbeine, dann Vorderbeine), 5. Rückbildung des Ruderschwanzes, Umstellung auf Lungen-/Hautatmung und fleischfressende Ernährung (Schleuderzunge).",
+          "concept": "1. Laichballen mit Gallerthülle im Flachwasser; 2. Kaulquappe schlüpft mit äußeren Büschelkiemen, Ruderschwanz, Saugnapf; 3. Kiemen wandern nach innen unter Kiemendeckelfalte; 4. Hinterbeine sprießen, Vorderbeine brechen durch Kiemenspalte; 5. Schwanz wird zellulär resorbiert (Baustoffreserve), Lungen und Hornhaut entwickeln sich, Darm verkürzt sich von Pflanzen- auf Insektenfresser, Mund wird zum breiten Fangmaul.",
+          "sample_solution": "1. Der Ablauf der Frosch-Metamorphose: - 1. Paarung und Laichablage: Im Frühjahr legen Froschweibchen im Flachwasser Laichballen ab; das Männchen befruchtet die Eier äußerlich im Wasser. Die Gallerthülle quillt auf, bindet Sonnenwärme (Brennglaswirkung) und schützt vor Fressfeinden und Austrocknung. - 2. Schlupf der Larve (Kaulquappe): Nach wenigen Tagen schlüpft die fischähnliche Larve. Sie besitzt einen Flossensaum am Ruderschwanz, haftet zunächst mit einem Saugnapf an Wasserpflanzen und atmet über zarte, gefächerte **Außenkiemen**. Mit Hornkiefern weidet sie Algenbeläge ab (Pflanzenfresser, langer spiralförmiger Darm). - 3. Innenkiemen: Eine Hautfalte überwächst die Kiemen; das Wasser strömt fortan durch ein Kiemenloch (Spiraculum) aus. - 4. Extremitätenentwicklung: Als erstes wachsen die kräftigen **Hinterbeine** heraus (später Sprungbeine mit Schwimmhäuten). Erst danach brechen die **Vorderbeine** durch die Kiemenhaut durch. - 5. Vollendung der Gestaltwandlung zum Landtier:   * Der Ruderschwanz wird durch körpereigene Enzyme vollständig abgebaut und resorbiert (dient als Energiereserve).   * Die Kiemen bilden sich zurück; einfache Lungen und die feuchte, schleimige Hautatmung übernehmen die Sauerstoffversorgung.   * Der Mund weitet sich zu einem großen Raubmaul mit klebriger **Schleuderzunge**; der Darm verkürzt sich drastisch für fleischliche Beute (Insekten, Würmer).   * Der fertige Jungfrosch verlässt das Wasser ('Froschregen')."
+        }
+      ]
+    },
+    {
+      "id": "01K4B6V0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B6V0000000000000000A04",
+      "namespace": "biologie-zoologie",
+      "slug": "reptilien-kriechtiere-echsen-schlangen-trockengebiete",
+      "title": "Reptilien (Kriechtiere): Hornschuppenhaut, beschalte Eier und Unabhängigkeit vom Wasser",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B6V0000000000000000A03",
+          "type": "hard",
+          "rationale": "Reptilien lösten sich evolutiv durch beschalte Eier und Hornhaut vom Wasserzwang der Amphibien."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Reptile",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Vögel, Fische, Amphibien und Reptilien",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B6V0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum müssen sich Eidechsen und Schlangen im Laufe ihres Lebens in regelmäßigen Abständen häuten (Natternhemd abstreifen)?",
+          "concept": "Weil die tote Hornschuppenschicht nicht mitwächst und bei Körperwachstum zu eng wird",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil die feste Hornhaut nicht mitwächst (Häutung)",
+              "Weil die Haut im Winter erfriert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B6V0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die evolutionären Anpassungen der Reptilien (Zauneidechse, Blindschleiche, Ringelnatter, Kreuzotter) an ein dauerhaftes Leben auf trockenem Land: 1. Trockene Hornschuppenhaut als Verdunstungsschutz und Notwendigkeit der Häutung, 2. Innere Befruchtung und pergamentartig beschalte Eier (Amnioten-Ei: Dottervorrat, Schutzhüllen), 3. Fortbewegung (Spreizgang der Echsen vs. Schlängeln der Schlangen) und 4. Wechselwarmes Verhalten (Sonnentanken/Thermoregulation).",
+          "concept": "1. Hornschuppenhaut: wasserundurchlässig (keine Hautatmung!), schützt vor Austrocknung in Hitze, wächst nicht mit -> Häutung; 2. Innere Befruchtung: unabhängig vom Wasser; beschalte Eier werden in warmen Sand vergraben (kein Larvenstadium im Wasser); 3. Spreizgang: Beine seitlich am Rumpf (Kriechbewegung); Schlangen nutzen Bauchschuppen und Rippenmuskeln; 4. Wechselwarm: passt Körperwärme durch Sonnenbaden an (Betriebstemperatur für Jagd).",
+          "sample_solution": "1. Trockene Hornschuppenhaut und Häutung: - Im Gegensatz zur durchlässigen Amphibienhaut ist die Reptillienhaut trocken, drüsenlos und von einer dicken Hornschicht aus Keratinschuppen bedeckt. - Sie verhindert selbst in glühender Wüstenhitze jede Wasserverdunstung über den Körper. - Da die tote Hornschicht nicht dehnbar ist und nicht mitwächst, muss sie bei heranwachsenden Tieren regelmäßig abgestreift werden (**Häutung**: Schlangen streifen das 'Natternhemd' im Ganzen ab, Eidechsen in Fetzen). 2. Fortpflanzung unabhängig vom Wasser (Das Amnioten-Ei): - Innere Befruchtung im Mutterleib (kein Wasser als Übertragungsmedium nötig). - Die Weibchen legen pergamentartig-weiche, elastisch beschalte Eier in warme Sand- oder Erdlöcher, wo die Sonne das Ausbrüten übernimmt. - Das Ei enthält einen großen Dottervorrat und Flüssigkeitshüllen (Amnion); aus dem Ei schlüpft direkt ein voll entwickelter, atmungsfähiger Miniatur-Reptiliennachkomme (keine Metamorphose, kein Wasserlarvenstadium). 3. Fortbewegung und Skelett: - Eidechsen besitzen den ursprünglichen **Spreizgang** (Beine setzen seitlich am Körper an, Rumpf schlängelt sich über den Boden). - Schlangen haben ihre Gliedmaßen im Laufe der Evolution vollständig zurückgebildet und bewegen sich durch wellenförmiges Schlängeln unter Einsatz kräftiger Rumpfmuskeln und griffiger Bauchschuppen vorwärts. 4. Temperaturregulation (Wechselwarm / Poikilotherm): - Reptilien erzeugen keine nennenswerte eigene Körperwärme. Am frühen Morgen sonnen sie sich auf Steinen ('Sonnentanken'), um ihre Muskulatur auf eine Aktivitätstemperatur von 30–35 °C aufzuheizen. Bei Kälte im Herbst fallen sie in eine starre Winterruhe/Kältestarre."
+        }
+      ]
+    }
+  ]
+}

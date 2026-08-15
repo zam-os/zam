@@ -1,0 +1,294 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-mathematik-terme-gleichungen",
+  "version": "2026.08.1",
+  "title": "Mathematik 8: Terme, binomische Formeln und lineare Gleichungen (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 8: Termumformungen, binomische Formeln, lineare Gleichungen und Bruchtherme.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 8, Lernbereich Terme und Gleichungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M8T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M8T0000000000000000A01",
+      "namespace": "mathematik-algebra",
+      "slug": "binomische-formeln-ausmultiplizieren-faktorisieren",
+      "title": "Binomische Formeln: Ausmultiplizieren und Faktorisieren",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q863920",
+          "target_label": "Binomial theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die 2. Binomische Formel für den Term (a - b)²?",
+          "concept": "(a - b)² = a² - 2ab + b²",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a² - 2ab + b²",
+              "a² - b²"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere alle drei Binomischen Formeln (1. Plus-Formel, 2. Minus-Formel, 3. Plus-Minus-Formel), berechne durch Ausmultiplizieren den Term (3x - 4y)² und faktorisiere den Term 25a² - 49b².",
+          "concept": "1. (a+b)² = a² + 2ab + b²; 2. (a-b)² = a² - 2ab + b²; 3. (a+b)(a-b) = a² - b²; (3x - 4y)² = 9x² - 24xy + 16y²; 25a² - 49b² = (5a + 7b)(5a - 7b)"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M8T0000000000000000A02",
+      "namespace": "mathematik-algebra",
+      "slug": "lineare-gleichungen-aequivalenzumformung",
+      "title": "Lineare Gleichungen: Äquivalenzumformungen und Klammerauflösung",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Klammern und Termgesetze sind Voraussetzung für Gleichungsumformungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1125468",
+          "target_label": "Linear equation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Rechenoperation stellt KEINE Äquivalenzumformung dar, weil sie die Lösungsmenge einer Gleichung verändern kann?",
+          "concept": "Die Multiplikation oder Division mit der Zahl 0",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multiplikation oder Division beider Seiten mit 0",
+              "Addition oder Subtraktion derselben Zahl auf beiden Seiten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse die lineare Gleichung 3(2x - 5) - 4(x + 2) = 2x - 23 schrittweise über der Grundmenge G = Q, gib die Lösungsmenge an und führe die Probe durch.",
+          "concept": "6x - 15 - 4x - 8 = 2x - 23 <=> 2x - 23 = 2x - 23 <=> 0 = 0 -> allgemeingültig, L = Q"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8T0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M8T0000000000000000A03",
+      "namespace": "mathematik-algebra",
+      "slug": "bruchterme-bruchgleichungen-definitionsmenge",
+      "title": "Bruchterme und Bruchgleichungen: Definitionsmenge und Hauptnenner",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8T0000000000000000A02",
+          "type": "hard",
+          "rationale": "Lineare Gleichungen sind Voraussetzung für Bruchgleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1125468",
+          "target_label": "Algebraic fraction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8T0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zahlen müssen aus der Definitionsmenge des Bruchterms T(x) = (x + 3) / (2x - 8) über der Grundmenge Q ausgeschlossen werden?",
+          "concept": "Die Zahl x = 4 (da 2*4 - 8 = 0, Division durch 0 verboten), D = Q \\ {4}",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "D = Q \\ {4}",
+              "D = Q \\ {-3}"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8T0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Bestimme für die Bruchgleichung 6 / (x - 2) = 4 / (x + 1) die Definitionsmenge D, löse die Gleichung durch Multiplikation mit dem Hauptnenner HN = (x - 2)(x + 1) und gib die Lösungsmenge an.",
+          "concept": "D = Q \\ {-1, 2}; 6(x + 1) = 4(x - 2) <=> 6x + 6 = 4x - 8 <=> 2x = -14 <=> x = -7; x=-7 in D -> L = {-7}"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8T0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M8T0000000000000000A04",
+      "namespace": "mathematik-algebra",
+      "slug": "lineare-ungleichungen-vorzeichenumkehr",
+      "title": "Lineare Ungleichungen: Relationszeichen und Inversionsregel",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8T0000000000000000A02",
+          "type": "hard",
+          "rationale": "Gleichungsumformungen sind Basis für Ungleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1125468",
+          "target_label": "Linear inequality",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Terme und Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8T0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht mit dem Ungleichheitszeichen (<, >, <=, >=), wenn man beide Seiten einer Ungleichung mit einer negativen Zahl multipliziert oder dividiert?",
+          "concept": "Das Relationszeichen kehrt sich um (Inversionsgesetz: aus < wird >, aus >= wird <=)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Relationszeichen kehrt sich um (< wird zu >)",
+              "Das Relationszeichen bleibt unverändert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8T0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse die lineare Ungleichung 5 - 3x >= 17 über G = Q, begründe den Vorzeichenwechsel des Ungleichheitszeichens und notiere die Lösungsmenge in Intervall- und Mengenschreibweise.",
+          "concept": "5 - 3x >= 17 |-5 <=> -3x >= 12 |:(-3) [Inversion!] <=> x <= -4; L = {x in Q | x <= -4} = ]-unendlich; -4]"
+        }
+      ]
+    }
+  ]
+}

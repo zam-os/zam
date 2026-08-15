@@ -1,0 +1,294 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-mathematik-ebene-geometrie-vierecke",
+  "version": "2026.08.1",
+  "title": "Mathematik 8: Ebene Geometrie, Vierecke und Strahlensätze (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 8: Besondere Vierecke, Flächeninhalte ebener Vielecke, 1. und 2. Strahlensatz und zentrische Streckung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 8, Lernbereich Geometrie in der Ebene"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M8G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M8G0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "vierecke-systematik-eigenschaften",
+      "title": "Systematik der Vierecke: Parallelogramm, Raute, Drachen und Trapez",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q36829",
+          "target_label": "Quadrilateral",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Viereck besitzt vier gleich lange Seiten und punktsymmetrische Diagonalen, die sich senkrecht halbieren?",
+          "concept": "Die Raute (Rhombus)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Raute (Rhombus)",
+              "Das allgemeine Trapez"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Ordne die besonderen Vierecke (Quadrat, Rechteck, Raute, Parallelogramm, gleichschenkliges Trapez, Drachenviereck) in eine hierarchische 'Haus der Vierecke'-Systematik ein und beschreibe die Symmetrie- und Diagonaleigenschaften von Raute und Rechteck im Vergleich.",
+          "concept": "Hierarchie: Viereck -> Trapez (1 Paar parallele Seiten) -> Parallelogramm (2 Paare) -> Rechteck (4 rechte Winkel) / Raute (4 gleiche Seiten) -> Quadrat (beides); Rechteck: punktsymmetrisch, gleich lange Diagonalen; Raute: achsen- & punktsymmetrisch, senkrechte Diagonalen"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M8G0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "flaechenberechnung-dreieck-parallelogramm-trapez",
+      "title": "Flächenberechnung: Dreiecke, Parallelogramme und Trapeze",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Viereckseigenschaften sind Basis für die Flächenformeln."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11500",
+          "target_label": "Area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Flächeninhaltsformel für ein Trapez mit den parallelen Grundseiten a und c sowie der Höhe h?",
+          "concept": "A = ((a + c) / 2) · h (Mittelparallele m mal Höhe h)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = ((a + c) / 2) · h",
+              "A = (a · c) / (2 · h)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Berechne den Flächeninhalt eines Trapezes mit a = 9 cm, c = 5 cm und h = 6 cm, leite die Flächenformel des Trapezes durch Zerlegung oder Verdopplung zu einem Parallelogramm her und berechne die Fläche eines Drachenvierecks mit den Diagonalen e = 8 cm und f = 5 cm.",
+          "concept": "Trapez: A = ((9+5)/2)*6 = 7*6 = 42 cm²; Verdopplung: 2 Trapeze ergeben Parallelogramm mit Grundlinie (a+c) und Höhe h -> A_Trapez = 0.5*(a+c)*h; Drache: A = 0.5 * e * f = 0.5 * 8 * 5 = 20 cm²"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8G0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M8G0000000000000000A03",
+      "namespace": "mathematik-geometrie",
+      "slug": "strahlensaetze-v-figur-x-figur",
+      "title": "Die Strahlensätze: V- und X-Figur bei parallelen Geraden",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8G0000000000000000A02",
+          "type": "hard",
+          "rationale": "Streckenverhältnisse und Dreiecke sind Voraussetzung für die Strahlensätze."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q105374",
+          "target_label": "Intercept theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8G0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Strecken werden beim 1. Strahlensatz ins Verhältnis gesetzt?",
+          "concept": "Ausschließlich Streckenabschnitte auf den beiden Strahlen (z. B. |SA| / |SA'| = |SB| / |SB'|)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Streckenabschnitte auf den beiden Strahlen",
+              "Ausschließlich die Parallelenabschnitte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8G0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere den 1. und 2. Strahlensatz für zwei von Parallelen geschnittene Geraden mit Scheitelpunkt S und berechne die unzugängliche Breite eines Flusses (Parallelenabschnitt a), wenn |SA| = 12 m, |SA'| = 30 m und die Hilfsstrecke a' = 20 m beträgt.",
+          "concept": "1. Strahlensatz: |SA|/|SA'| = |SB|/|SB'| (nur Strahlen); 2. Strahlensatz: |AB|/|A'B'| = |SA|/|SA'| (Parallelen zu Strahlen ab Scheitel S); Rechnung: a / 20 = 12 / 30 <=> a = 20 * (12/30) = 20 * 0,4 = 8 m"
+        }
+      ]
+    },
+    {
+      "id": "01K4M8G0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M8G0000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "zentrische-streckung-aehnlichkeit-flaechenfaktor",
+      "title": "Zentrische Streckung: Streckungsfaktor k und Ähnlichkeit k²",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M8G0000000000000000A03",
+          "type": "hard",
+          "rationale": "Strahlensätze bilden die geometrische Grundlage der zentrischen Streckung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q105374",
+          "target_label": "Homothety",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M8G0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Um welchen Faktor ändert sich der Flächeninhalt einer geometrischen Figur, wenn alle ihre Seitenlängen durch eine zentrische Streckung mit dem Streckungsfaktor k = 3 verdreifacht werden?",
+          "concept": "Um den Faktor k² = 3² = 9 (Fläche verneunfacht sich)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faktor k² = 9 (verneunfacht sich)",
+              "Faktor k = 3 (verdreifacht sich)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M8G0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die Eigenschaften einer zentrischen Streckung mit Streckzentrum Z und Streckfaktor k (Streckentreue, Winkeltreue, Parallelentreue, Orientierungssinn), unterscheide die Fälle k > 1, 0 < k < 1 und k < 0 (Punktspiegelung) und berechne den Flächeninhalt eines Bilddreiecks A'B'C' mit k = -2,5, wenn das Ausgangsdreieck ABC einen Flächeninhalt von 16 cm² besitzt.",
+          "concept": "Eigenschaften: Bildstrecke |Z P'| = |k| * |Z P|; Geradentreue, Winkeltreue, Parallelentreue; k > 1 Vergrößerung, 0 < k < 1 Verkleinerung, k < 0 Drehung um 180°; Flächenfaktor A' = k² * A = (-2,5)² * 16 = 6,25 * 16 = 100 cm²"
+        }
+      ]
+    }
+  ]
+}

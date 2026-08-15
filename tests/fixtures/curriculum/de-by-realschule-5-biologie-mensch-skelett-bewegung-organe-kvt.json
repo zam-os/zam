@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-biologie-mensch-skelett-bewegung-organe",
+  "version": "2026.08.1",
+  "title": "Biologie 5: Der menschliche Körper – Skelett, Muskeln und Sexualbiologie (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 5: Knochenaufbau, Gelenktypen, Antagonistenprinzip der Muskeln (Beuger/Strecker), Pubertät und Fortpflanzung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Realschule Natur und Technik 5 (Biologie), Lernbereich Körperbau und Entwicklung des Menschen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B5M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B5M0000000000000000A01",
+      "namespace": "biologie-humanbiologie",
+      "slug": "menschliches-skelett-knochenbau-doppel-s-wirbelsaeule",
+      "title": "Das menschliche Skelett: Schädel, Doppel-S-Form der Wirbelsäule und Knochenaufbau",
+      "domain": "schule/biologie/humanbiologie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Human skeleton",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Körperbau und Bewegung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Körperbau und Bewegung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B5M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche charakteristische Form besitzt die menschliche Wirbelsäule in der Seitenansicht, um Erschütterungen beim aufrechten Gang wie eine elastische Feder abzufedern?",
+          "concept": "Die doppelte S-Form (doppel-S-förmig geschwungen mit Bandscheiben als Stoßdämpfer)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Doppelte S-Form (Doppel-S-Krümmung)",
+              "Schnurgerade Säulenform"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B5M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gliedere das menschliche Skelett in seine Hauptabschnitte (Schädel mit Gehirn- und Gesichtsschädel, Rumpfskelett mit Wirbelsäule und Brustkorb aus 12 Rippenpaaren/Brustbein zum Schutz von Herz und Lunge, Gliedmaßenskelett mit Schulter-/Beckengürtel und Armen/Beinen), beschreibe den Feinbau eines Röhrenknochens (Knochenhaut mit Nerven/Blutgefäßen, feste Knochenrinde / Kompakta, Schwammgewebe / Spongiosa mit Leichtbau-Knochenbälkchen und Knochenmark) und erkläre die biologische Funktion der elastischen Bandscheiben zwischen den Wirbelkörpern.",
+          "concept": "Skelett: ca. 206 Knochen; Röhrenknochen: Knochenhaut (Periost), feste Rinde, Spongiosa (Leichtbauweise nach Zug-/Drucklinien), Markhöhle mit Knochenmark; Doppel-S-Form + Knorpel-Bandscheiben wirken als hydraulische Stoßdämpfer für Schädel/Gehirn beim Gehen/Springen.",
+          "sample_solution": "1. Abschnitte des menschlichen Skeletts (ca. 206 Knochen): - **Schädelskelett**: Schützt das empfindliche Gehirn (Gehirnschädel) und beherbergt die Sinnesorgane (Gesichtsschädel mit Augenhöhlen und Kiefern). - **Rumpfskelett**:   * **Wirbelsäule**: Die zentrale Achse des Körpers. Besteht aus 33–34 Wirbeln (7 Hals-, 12 Brust-, 5 Lendenwirbel, Kreuzbein und Steißbein). In der Seitenansicht bildet sie eine **doppelte S-Form**.   * **Bandscheiben**: Elastische Knorpelscheiben zwischen den Wirbelkörpern, die wie Stoßdämpfer Erschütterungen beim Laufen und Springen abfangen und der Wirbelsäule Beweglichkeit verleihen.   * **Brustkorb (Thorax)**: 12 Rippenpaare und das Brustbein; schützt Herz und Lunge und ermöglicht Atembewegungen. - **Gliedmaßenskelett**:   * Obere Gliedmaßen: Schultergürtel (Schlüsselbein, Schulterblatt), Oberarm, Unterarm (Elle und Speiche), Handknochen.   * Untere Gliedmaßen: Beckengürtel (stabile Verankerung), Oberschenkelknochen (längster Knochen), Kniescheibe, Unterschenkel (Schien- und Wadenbein), Fußknochen mit Fußgewölbe. 2. Aufbau eines Röhrenknochens (Leichtbauprinzip): - **Knochenhaut (Periost)**: Reich an Blutgefäßen (Nährstoffversorgung) und Nerven (Schmerzempfinden); dient dem Dickenwachstum und der Heilung nach Brüchen. - **Kompakte Knochenrinde (Kompakta)**: Dichte, extrem feste Außenschicht aus Kalksalzen (Druckfestigkeit) und Kollagenfasern (Biegefestigkeit). - **Schwammgewebe (Spongiosa)**: Im Knocheninneren angeordnetes Gitterwerk aus feinen Knochenbälkchen, die exakt entlang der statischen Belastungslinien verlaufen (maximale Stabilität bei minimalem Eigengewicht). - **Knochenmark**: Rotes Knochenmark in den Knochenenden bildet rote Blutkörperchen; gelbes Fettmark in der Markhöhle des Schafts."
+        }
+      ]
+    },
+    {
+      "id": "01K4B5M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B5M0000000000000000A02",
+      "namespace": "biologie-humanbiologie",
+      "slug": "gelenktypen-muskeln-antagonistenprinzip-beuger-strecker",
+      "title": "Gelenke und Muskeln: Gelenktypen, Gelenkaufbau und das Antagonistenprinzip (Gegenspieler)",
+      "domain": "schule/biologie/humanbiologie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B5M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Knochen bilden die Hebel, die über Gelenke durch Muskeln bewegt werden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Joint",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Körperbau und Bewegung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Körperbau und Bewegung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B5M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Muskel arbeitet als direkter Gegenspieler (Antagonist/Strecker) zum zweiköpfigen Armbeuger (Bizeps) am menschlichen Oberarm?",
+          "concept": "Der dreiköpfige Armstrecker (Trizeps)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Armstrecker (Trizeps)",
+              "Der Deltamuskel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B5M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den anatomischen Bau eines echten Gelenks (Gelenkkopf, Gelenkpfanne mit schützender Knorpelschicht, Gelenkkapsel mit Synovia/Gelenkschmiere zur Reibungsminderung und Bänder zur Stabilisierung), unterscheide die 4 Gelenktypen mit Beispielen (Kugelgelenk: Schulter/Hüfte; Scharniergelenk: Ellenbogen/Knie/Finger; Sattelgelenk: Daumengrundgelenk; Dreh-/Zapfengelenk: Kopfgelenk Atlas/Axis) und erkläre das Antagonistenprinzip der Skelettmuskeln (Muskeln können sich nur aktiv zusammenziehen/kontrahieren, nicht selbst aktiv strecken).",
+          "concept": "Gelenkbau: Kopf, Pfanne, Knorpelüberzug, Kapsel mit Gelenkschmiere (Synovia); 4 Typen: Kugel (3 Bewegungsachsen), Scharnier (1 Achse), Sattel (2 Achsen), Dreh/Zapfen (Rotation); Antagonistenprinzip: Muskel zieht aktiv -> Gegenspieler wird passiv gedehnt (z. B. Bizeps beugt Unterarm, Trizeps streckt ihn wieder).",
+          "sample_solution": "1. Anatomischer Aufbau eines echten Gelenks: - **Gelenkkopf und Gelenkpfanne**: Die passgenau geformten Enden der beteiligten Knochen. - **Gelenkknorpel**: Eine spiegelglatte, elastische Knorpelschicht überzieht Kopf und Pfanne; verhindert direkten Knochenabrieb und dämpft Stöße. - **Gelenkkapsel und Gelenkspalt**: Schließt das Gelenk luftdicht nach außen ab. Die Innenhaut produziert zähflüssige **Gelenkschmiere (Synovia)**, die den Knorpel ernährt und die Reibung auf ein Minimum reduziert. - **Gelenkbänder (Ligamente)**: Straffe Bindegewebsstränge, die die Knochen fest zusammenhalten und den Bewegungsumfang führen. 2. Die vier Gelenktypen des Menschen: - **Kugelgelenk** (größte Bewegungsfreiheit in alle 3 Raumrichtungen): Gelenkkopf sitzt in einer tiefen Pfanne (z. B. Schultergelenk, Hüftgelenk). - **Scharniergelenk** (Bewegung nur in einer Ebene: Beugen und Strecken): z. B. Ellenbogengelenk, Kniegelenk, Fingerzwischengelenke. - **Sattelgelenk** (Bewegung in zwei Achsen: vor/zurück, links/rechts): z. B. Daumengrundgelenk (ermöglicht das Gegenüberstellen des Daumens zu den Fingern / Greifen). - **Drehgelenk / Zapfengelenk** (Rotationsbewegung um eine Achse): z. B. erstes und zweites Halswirbelgelenk (Atlas und Axis für Kopfschütteln) sowie Speiche-Elle-Gelenk (Drehen der Handfläche). 3. Das Antagonistenprinzip der Muskeln: - Ein Skelettmuskel besteht aus Muskelfaserbündeln, die sich bei Nervenimpulsen **nur aktiv zusammenziehen (kontrahieren)** und verkürzen können. Ein Muskel kann sich niemals aktiv selbst wieder auseinanderdrücken! - Für jede gezielte Bewegung benötigt der Körper daher immer ein Paar aus zwei gegensätzlich arbeitenden Muskeln (**Gegenspielerprinzip / Antagonisten**):   * **Beuger (z. B. Bizeps)**: Zieht sich zusammen -> Unterarm wird gebeugt; der Strecker (Trizeps) wird dabei passiv gedehnt.   * **Strecker (z. B. Trizeps)**: Zieht sich zusammen -> Unterarm wird gestreckt; der Bizeps wird dabei passiv wieder in die Länge gezogen."
+        }
+      ]
+    },
+    {
+      "id": "01K4B5M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B5M0000000000000000A03",
+      "namespace": "biologie-humanbiologie",
+      "slug": "pubertaet-geschlechtsorgane-menstruationszyklus",
+      "title": "Sexualbiologie des Menschen: Pubertät, Geschlechtsmerkmale und der weibliche Zyklus",
+      "domain": "schule/biologie/humanbiologie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B5M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Körperwachstum und hormonelle Reifung sind Grundlagen der Pubertät."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Puberty",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Sexualität und Entwicklung des Menschen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Sexualität und Entwicklung des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B5M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Um welchen Tag eines durchschnittlichen 28-tägigen Menstruationszyklus findet der Eisprung (Ovulation) im Eierstock statt?",
+          "concept": "Etwa um den 14. Tag (Zyklusmitte)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Um den 14. Tag (Zyklusmitte)",
+              "Am 1. Tag (Beginn der Regelblutung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B5M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide primäre Geschlechtsmerkmale (von Geburt an vorhanden: Hoden, Penis bzw. Eierstöcke, Eileiter, Gebärmutter, Scheide) von sekundären Geschlechtsmerkmalen (bilden sich in der Pubertät durch Sexualhormone Testosteron/Östrogen: Bartwuchs, Stimmbruch, Brustentwicklung, Schambehaarung) und beschreibe die Phasen des ca. 28-tägigen weiblichen Menstruationszyklus (1. Menstruation/Regelblutung Tag 1–5, 2. Aufbauphase der Gebärmutterschleimhaut, 3. Eisprung um Tag 14, 4. Vorbereitung auf Einnistung, 5. Abstoßung bei Ausbleiben der Befruchtung).",
+          "concept": "Primär: ab Geburt vorhanden (Fortpflanzungsorgane); Sekundär: Pubertätsentwicklung durch Hormone; Zyklus (ca. 28 Tage): Tag 1-5 Monatsblutung stößt alte Schleimhaut ab; Eibläschen (Follikel) reift heran; Tag 14 Eisprung (Eizelle wandert in Eileiter); Schleimhaut dickt ein; ohne Befruchtung sinkt Hormonspiegel -> neue Regelblutung.",
+          "sample_solution": "1. Primäre vs. sekundäre Geschlechtsmerkmale: - **Primäre Geschlechtsmerkmale**: Sind bereits bei der Geburt voll angelegt und dienen direkt der Fortpflanzung:   * Männlich: Penis, Hodensack, Hoden (Samenbildung), Nebenhoden, Samenleiter.   * Weiblich: Vulva (Schamlippen, Klitoris), Vagina (Scheide), Gebärmutter (Uterus), Eileiter, Eierstöcke (Eizellreifung). - **Sekundäre Geschlechtsmerkmale**: Entwickeln sich während der Pubertät (ca. 10.–16. Lebensjahr), ausgelöst durch die vermehrte Ausschüttung der Geschlechtshormone (**Testosteron** bei Jungen, **Östrogen / Progesteron** bei Mädchen):   * Bei Jungen: Stimmbruch (Kehlkopfwachstum), Bart- und Körperbehaarung, Muskelzuwachs, Breiterwerden der Schultern, Samenergüsse (Pollution).   * Bei Mädchen: Brustwachstum, Runderwerden der Hüften/Beckenverbreiterung, Scham- und Achselbehaarung, Einsetzen der ersten Monatsblutung (Menarche). 2. Der weibliche Menstruationszyklus (durchschnittlich 28 Tage): - **Phase 1: Regelblutung / Menstruation (Tag 1 bis ca. 5)**: Wurde die Eizelle des Vormonats nicht befruchtet, stirbt sie ab. Die oberste, gut durchblutete Schicht der Gebärmutterschleimhaut wird mit etwas Blut und Schleim abgestoßen. Tag 1 der Blutung markiert den Beginn eines neuen Zyklus. - **Phase 2: Follikel- und Aufbauphase (Tag 6 bis 13)**: Im Eierstock reift in einem Eibläschen (Follikel) eine neue Eizelle heran. Gesteuert durch Östrogene baut sich in der Gebärmutter eine neue, nähstoffreiche Schleimhaut auf. - **Phase 3: Eisprung / Ovulation (um Tag 14)**: Das reife Follikel platzt; die Eizelle wird vom trichterförmigen Ende des Eileiters aufgefangen und wandert Richtung Gebärmutter. - **Phase 4: Vorbereitung auf Einnistung (Tag 15 bis 28)**: Der verbliebene Follikelrest wird zum Gelbkörper und schüttet Progesteron aus; die Schleimhaut wird optimal für eine Einnistung durchblutet. Bleibt die Befruchtung durch ein Spermium aus, bildet sich der Gelbkörper zurück, der Hormonspiegel fällt ab und der Zyklus beginnt mit Tag 1 von vorn."
+        }
+      ]
+    },
+    {
+      "id": "01K4B5M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B5M0000000000000000A04",
+      "namespace": "biologie-humanbiologie",
+      "slug": "befruchtung-schwangerschaft-geburt-beim-menschen",
+      "title": "Fortpflanzung und Entwicklung: Von der Befruchtung im Eileiter zur Geburt",
+      "domain": "schule/biologie/humanbiologie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B5M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Eisprung und Geschlechtsorgane sind Voraussetzungen für die Zeugung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Human fertilization",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Sexualität und Entwicklung des Menschen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Sexualität und Entwicklung des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B5M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem Ort im weiblichen Körper findet die biologische Befruchtung (Verschmelzung von Ei- und Samenzelle) im Normalfall statt?",
+          "concept": "Im oberen Drittel des Eileiters",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im Eileiter",
+              "In der Gebärmutter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B5M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Entstehung neuen menschlichen Lebens in 4 Schritten: 1. Befruchtung (Verschmelzen des Zellkerns eines Spermiums mit dem Eizellkern im Eileiter zur Zygote), 2. Zellteilungen und Einnistung in die Gebärmutterschleimhaut (Tag 5–7), 3. Schwangerschaft (ca. 40 Wochen / 9 Monate: Versorgung über Plazenta und Nabelschnur mit Sauerstoff/Nährstoffen, Schutz im Fruchtwasser), 4. Geburt (Eröffnungswehen, Platzen der Fruchtblase, Austreibungswehen, Durchtrennung der Nabelschnur und Nachgeburt der Plazenta).",
+          "concept": "1. Befruchtung: Spermium dringt in Eizelle im Eileiter ein -> Zygote (Erbanlagen vereinigt); 2. Furchungsteilung auf dem Weg zur Gebärmutter, Einnistung als Blastozyste; 3. Embryo/Fötus wächst in Fruchtblase, Stoffaustausch ohne Blutmischung über Plazenta/Nabelschnur; 4. Geburt nach ca. 40 Wochen durch Wehen der Gebärmuttermuskulatur.",
+          "sample_solution": "1. Die 4 Schritte der menschlichen Fortpflanzung und Entwicklung: - **1. Befruchtung (Konzeption)**:   * Beim Geschlechtsverkehr gelangen Millionen Spermien in die Scheide und schwimmen durch die Gebärmutter in die Eileiter.   * Trifft ein Spermium im oberen Eileiter auf eine befruchtungsfähige Eizelle, durchdringt es die Eihülle. Die Hülle wird sofort für alle weiteren Spermien undurchdringlich.   * Die Zellkerne von Ei- und Samenzelle verschmelzen miteinander zur **Zygote** (befruchtete Eizelle mit vollständigem doppeltem Chromosomensatz). - **2. Furchungsteilung und Einnistung**:   * Während die Zygote über Flimmerhaare im Eileiter zur Gebärmutter transportiert wird, teilt sie sich fortlaufend in 2, 4, 8, 16 Zellen.   * Nach ca. 5–7 Tagen nistet sich der mikroskopisch kleine Zellhaufen (Blastozyste) fest in die weiche Gebärmutterschleimhaut ein (**Nidation**). - **3. Schwangerschaft (ca. 40 Wochen / 9 Monate)**:   * Aus embryonalem und mütterlichem Gewebe bildet sich die **Plazenta** (Mutterkuchen). Über die **Nabelschnur** wird das Ungeborene mit Nährstoffen und Sauerstoff aus dem mütterlichen Blut versorgt und Schadstoffe abtransportiert (ohne dass sich mütterliches und kindliches Blut direkt vermischen).   * Das Kind schwimmt geschützt vor Stößen, Druck und Temperaturschwankungen in der mit **Fruchtwasser** gefüllten Fruchtblase.   * Ab der 9. Woche (alle Organe sind im Grundsatz angelegt) spricht man vom **Fötus (Fetus)**. - **4. Die Geburt**:   * Nach rund 40 Wochen leiten Hormone rhythmische Kontraktionen der Gebärmuttermuskulatur (**Wehen**) ein.   * **Eröffnungsphase**: Der Muttermund öffnet sich auf ca. 10 cm Weite; die Fruchtblase platzt ('Blasensprung').   * **Austreibungsphase**: Starke Presswehen schieben das Baby mit dem Kopf voran durch den Geburtskanal nach außen.   * Nach der Geburt wird die Nabelschnur schmerzfrei durchtrennt; das Neugeborene entfaltet seine Lungen mit dem ersten Schrei. Kurze Zeit später wird die Plazenta als **Nachgeburt** ausgestoßen."
+        }
+      ]
+    }
+  ]
+}

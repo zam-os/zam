@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-informatik-objektorientierung-vektorgrafik",
+  "version": "2026.08.1",
+  "title": "Informatik 8: Objektorientierte Modellierung und Vektorgrafik (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Informatik 8: Objekte, Attribute, Attributwerte, Methoden, Klassen/Klassendiagramme und Vektorgrafik vs. Rastergrafik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/informationstechnologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Informationstechnologie 8, Lernbereich Objektorientierte Modellierung und Grafik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4A8V0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4A8V0000000000000000A01",
+      "namespace": "informatik-modellierung",
+      "slug": "objekte-attribute-attributwerte-zustand",
+      "title": "Objekte und Zustand: Attribute, Attributwerte und Punktschreibweise",
+      "domain": "schule/informatik/modellierung",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Object (computer science)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Objektorientierte Modellierung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Objektorientierte Modellierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A8V0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird in der Informatik die Gesamtheit aller aktuellen Attributwerte eines Objekts zu einem bestimmten Zeitpunkt bezeichnet?",
+          "concept": "Zustand des Objekts",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zustand des Objekts",
+              "Klassenrumpf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A8V0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Grundbegriffe der objektorientierten Modellierung: Objekt (konkreter Gegenstand/Instanz mit Identität), Attribut (Eigenschaftsmerkmal), Attributwert (konkrete Ausprägung), Zustand und Punktschreibweise (objektName.attributName = wert) an einem konkreten Grafikbeispiel (z. B. kreis1: KREIS mit radius = 5 cm, fuellfarbe = rot, x_pos = 10).",
+          "concept": "Objekt = abgrenzbare Einheit mit Identität, Zustand und Verhalten; Attribute = typische Merkmale; Zustand = Belegung aller Attribute zu einem Zeitpunkt; Punktschreibweise: kreis1.radius = 5 cm, kreis1.fuellfarbe = rot, kreis1.x_pos = 10."
+        }
+      ]
+    },
+    {
+      "id": "01K4A8V0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4A8V0000000000000000A02",
+      "namespace": "informatik-modellierung",
+      "slug": "klassen-methoden-klassendiagramm-uml",
+      "title": "Klassen, Methoden und UML-Klassendiagramme: Bauplan und Verhaltensmuster",
+      "domain": "schule/informatik/modellierung",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A8V0000000000000000A01",
+          "type": "hard",
+          "rationale": "Objekte und Attribute sind Basis für den Klassenbegriff."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Class (computer science)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Objektorientierte Modellierung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb1",
+          "topic_title": "Objektorientierte Modellierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A8V0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was beschreibt eine Methode im objektorientierten Paradigma?",
+          "concept": "Eine Operation / Aktion, die das Verhalten eines Objekts festlegt und dessen Zustand verändern kann",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Operation, die das Verhalten festlegt und den Zustand ändert",
+              "Den statischen Speicherort des Objekts im RAM"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A8V0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den Begriff Klasse als 'Bauplan' (Schablone) für gleichartige Objekte, erläutere Methodenaufrufe mit Parametern (z. B. kreis1.verschieben(dx = 10, dy = -5)) und skizziere den dreiteiligen Aufbau eines UML-Klassendiagramms (Klassenname, Attribute mit Datentypen, Methoden mit Rückgabetypen).",
+          "concept": "Klasse = Bauplan/Generalisierung für beliebig viele Instanzen (Objekte); Methodenaufruf: kreis1.methode(parameter); UML: 1. Kasten oben (Klassenname groß), 2. Kasten mitte (Attribute: name : Typ), 3. Kasten unten (Methoden: name(param : Typ) : Rueckgabetyp)."
+        }
+      ]
+    },
+    {
+      "id": "01K4A8V0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4A8V0000000000000000A03",
+      "namespace": "informatik-grafik",
+      "slug": "vektorgrafik-vs-rastergrafik-skalierbarkeit",
+      "title": "Vektorgrafik vs. Rastergrafik: Geometrische Primitiven, Pixelmatrix und Skalierbarkeit",
+      "domain": "schule/informatik/systeme",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A8V0000000000000000A01",
+          "type": "hard",
+          "rationale": "Objektorientierte Grafikelemente bilden die Grundlage von Vektorgrafiken."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q170133",
+          "target_label": "Vector graphics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Grafik und Bildbearbeitung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Grafik und Bildbearbeitung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A8V0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher entscheidende Vorteil zeichnet Vektorgrafiken (z. B. SVG) gegenüber pixelbasierten Rastergrafiken (z. B. JPG, PNG) beim Vergrößern aus?",
+          "concept": "Verlustfreie, stufenlose Skalierbarkeit ohne Treppeneffekte (Pixelierung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verlustfreie, stufenlose Skalierbarkeit ohne Pixelierung",
+              "Bessere fotorealistische Detailtreue bei Porträts"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A8V0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Vektorgrafiken (SVG, EPS) und Rastergrafiken (BMP, PNG, JPEG) systematisch hinsichtlich ihrer internen Speicherform (mathematische Beschreibung von Objekten vs. 2D-Pixelmatrix mit Farbwerten), Dateigröße, Skalierbarkeit und typischen Einsatzbereichen (Logos/Pläne vs. Digitalfotografie).",
+          "concept": "Vektor: mathematische Formeln (Linien, Kurven, Polygone, SVG), auflösungsunabhängig, beliebig zoombar, klein bei geometrischen Formen -> Logos, Schriften, CAD; Raster: Pixelgitter (Breite x Höhe x Farbtiefe in Bit, PNG/JPG), auflösungsabhängig, verpixelt beim Zoomen, große Datenmengen -> Digitalfotos, komplexe Farbverläufe."
+        }
+      ]
+    },
+    {
+      "id": "01K4A8V0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4A8V0000000000000000A04",
+      "namespace": "informatik-grafik",
+      "slug": "farbmodelle-rgb-cmyk-farbtiefe-speicherbedarf",
+      "title": "Farbmodelle und Farbtiefe: Additive (RGB) vs. subtraktive (CMYK) Farbmischung und Bitbelegung",
+      "domain": "schule/informatik/systeme",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4A8V0000000000000000A03",
+          "type": "hard",
+          "rationale": "Pixelgrafiken erfordern Kenntnisse über Farbmodelle und Bitbelegung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q170133",
+          "target_label": "Color model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Grafik und Bildbearbeitung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "informationstechnologie",
+          "topic_code": "lb2",
+          "topic_title": "Grafik und Bildbearbeitung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4A8V0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Farbe entsteht bei der additiven Farbmischung (RGB-Modell) durch die maximale Überlagerung aller drei Grundfarben Rot, Grün und Blau (255, 255, 255)?",
+          "concept": "Weiß",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weiß",
+              "Schwarz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4A8V0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide das additive Farbmodell (RGB: Bildschirme, Lichtfarben) vom subtraktiven Farbmodell (CMYK: Vierfarbdruck, Körperfarben) und berechne den unkomprimierten Speicherbedarf eines True-Color-Bildes (24 Bit = 3 Byte Farbtiefe) mit einer Auflösung von 4000 × 3000 Pixeln in Megabyte (MB).",
+          "concept": "RGB: Lichtmischung (R+G+B = Weiß, ohne Licht = Schwarz); CMYK: Cyan, Magenta, Yellow, Key/Schwarz (Körperfarben, absorbieren Licht, C+M+Y = Schmutzbraun/Schwarz); Speicherbedarf = 4000 * 3000 Pixel * 3 Byte = 36.000.000 Byte ≈ 36 MB (bzw. 34,33 MiB)."
+        }
+      ]
+    }
+  ]
+}

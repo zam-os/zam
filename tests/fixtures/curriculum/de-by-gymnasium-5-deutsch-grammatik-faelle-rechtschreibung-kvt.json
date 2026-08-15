@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-deutsch-grammatik-faelle-rechtschreibung",
+  "version": "2026.08.1",
+  "title": "Deutsch 5: Grammatik und Rechtschreibstrategien – Wortarten, 4 Fälle, Satzglieder und Lautung (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 5: Wortarten (Nomen/Deklination, Verben, Adjektive/Steigerung, Pronomen), Satzglieder (Umstellprobe), Dehnung/Schärfung und Auslautverhärtung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/deutsch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Deutsch 5, Lernbereiche Sprache untersuchen und Richtig schreiben"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YD5G000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YD5G000000000000000A01",
+      "namespace": "deutsch-grammatik",
+      "slug": "wortarten-deklination-vier-faelle-pronomen",
+      "title": "Wortartenlehre: Nomen (4 Fälle: Nominativ, Genitiv, Dativ, Akkusativ), Pronomen und Adjektivsteigerung",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Grammatical case",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5G000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem Fragewort erfragt man im Deutschen den 2. Fall (Genitiv) eines Nomens?",
+          "concept": "Mit dem Fragewort 'Wessen?' (z. B. 'Wessen Buch ist das? - Des Lehrers.')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wessen? (Genitiv)",
+              "Wem? (Dativ)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5G000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere das deutsche Deklinationssystem nach Genus, Numerus und den 4 Kasus (1. Nominativ: Wer/was?, 2. Genitiv: Wessen?, 3. Dativ: Wem?, 4. Akkusativ: Wen/was?), dekliniere die Nominalgruppe 'dieser kluge Schüler' im Singular und Plural und bestimme alle Fälle und Pronomen im Satz: 'Wegen des starken Regens gab mir meine Mutter ihren Regenschirm.'",
+          "concept": "Deklination: 1. Nominativ: dieser kluge Schüler / diese klugen Schüler; 2. Genitiv: dieses klugen Schülers / dieser klugen Schüler; 3. Dativ: diesem klugen Schüler / diesen klugen Schülern; 4. Akkusativ: diesen klugen Schüler / diese klugen Schüler; Satzanalyse: 'des starken Regens' (Genitiv nach wegen), 'mir' (Personalpronomen, Dativ), 'meine Mutter' (Possessivpronomen + Nomen, Nominativ/Subjekt), 'ihren Regenschirm' (Possessivpronomen + Nomen, Akkusativobjekt).",
+          "sample_solution": "1. Das 4-Fälle-System (Kasuslehre) der deutschen Grammatik: - **Genus (Geschlecht)**: Maskulinum (*der*), Femininum (*die*), Neutrum (*das*). - **Numerus (Zahl)**: Singular (Einzahl) und Plural (Mehrzahl). - **Die 4 Fälle und ihre Kontrollfragen**:   * **1. Fall (Nominativ)**: *Wer oder was?* (Subjekt)   * **2. Fall (Genitiv)**: *Wessen?* (Besitz/Herkunft/Attribut)   * **3. Fall (Dativ)**: *Wem?* (Empfängerobjekt)   * **4. Fall (Akkusativ)**: *Wen oder was?* (Zielobjekt). 2. Vollständige Deklination von 'dieser kluge Schüler': - **Singular**:   * Nom.: **dieser kluge Schüler**   * Gen.: **dieses klugen Schülers**   * Dat.: **diesem klugen Schüler**   * Akk.: **diesen klugen Schüler** - **Plural**:   * Nom.: **diese klugen Schüler**   * Gen.: **dieser klugen Schüler**   * Dat.: **diesen klugen Schülern**   * Akk.: **diese klugen Schüler**. 3. Grammatische Fall- und Pronomenanalyse im Beispielsatz: - *'Wegen **des starken Regens** gab **mir** **meine Mutter** **ihren Regenschirm**.'*   * `des starken Regens`: **Genitiv (2. Fall)** (gefordert durch die Präposition *wegen*).   * `mir`: **Personalpronomen** in der Dativform (**3. Fall / Dativ**).   * `meine`: **Possessivpronomen** (besitzanzeigend), zusammen mit `Mutter` im **Nominativ (1. Fall / Subjekt)**.   * `ihren`: **Possessivpronomen**, zusammen mit `Regenschirm` im **Akkusativ (4. Fall / Akkusativobjekt)**."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5G000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YD5G000000000000000A02",
+      "namespace": "deutsch-grammatik",
+      "slug": "satzglieder-umstellprobe-subjekt-praedikat-objekte",
+      "title": "Satzgliedanalyse: Umstellprobe, Prädikat, Subjekt, Dativ-/Akkusativobjekt und Adverbialen",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5G000000000000000A01",
+          "type": "hard",
+          "rationale": "Die 4 Fälle des Nomens sind Voraussetzung für die Bestimmung der Objekte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Grammatical relation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5G000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Satzglied bildet das strukturelle Zentrum jedes deutschen Satzes und bestimmt, welche Objekte gefordert werden?",
+          "concept": "Das Prädikat (die finite und infinite verbale Einheit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Prädikat (Satzaussage)",
+              "Das Subjekt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5G000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Methode der Umstellprobe (Verschiebeprobe) zur Ermittlung von Satzgliedern, definiere die Kernsatzglieder mit Fragewörtern (Subjekt: Wer/was?, Prädikat: Was tut das Subjekt?, Dativobjekt: Wem?, Akkusativobjekt: Wen/was?) sowie die 4 Adverbialbestimmungen (Lokal: Wo/Wohin?, Temporal: Wann/Wie lange?, Modal: Wie/Auf welche Weise?, Kausal: Warum/Weshalb?) und zerlege den Satz: 'Gestern Abend schenkte der Großvater seinem Enkel im Wohnzimmer heimlich eine Taschenlampe.'",
+          "concept": "Umstellprobe ermittelt Satzglieder; Zerlegung: [Gestern Abend] = Temporaladverbiale (Wann?), [schenkte] = Prädikat, [der Großvater] = Subjekt (Wer?), [seinem Enkel] = Dativobjekt (Wem?), [im Wohnzimmer] = Lokaladverbiale (Wo?), [heimlich] = Modaladverbiale (Wie?), [eine Taschenlampe] = Akkusativobjekt (Wen/was?).",
+          "sample_solution": "1. Das Verfahren der Satzgliedanalyse: - **Umstellprobe (Permutationsprobe)**:   * Satzglieder sind Wörter oder Wortgruppen, die im Satz eng zusammengehören.   * Nur Einheiten, die sich bei einer sinnvollen Umstellung des Satzes **geschlossen als Block an die 1. Position (vor das finite Verb)** verschieben lassen, bilden genau EIN Satzglied. 2. Die Satzglieder und ihre Bestimmungsfragen: - **Prädikat**: Das finite Verb (bei mehrteiligen Verben: Prädikatsklammer). - **Subjekt (Satzgegenstand)**: Steht im Nominativ (*'Wer oder was?'*). - **Objekte (Ergänzungen)**:   * **Dativobjekt (3. Fall)**: *'Wem?'*   * **Akkusativobjekt (4. Fall)**: *'Wen oder was?'* - **Adverbiale Bestimmungen (Umstandsbestimmungen)**:   * **Lokaladverbiale (des Ortes)**: *Wo?, Wohin?, Woher?*   * **Temporaladverbiale (der Zeit)**: *Wann?, Wie lange?, Bis wann?*   * **Modaladverbiale (der Art und Weise)**: *Wie?, Auf welche Art?, Womit?*   * **Kausaladverbiale (des Grundes)**: *Warum?, Weshalb?, Aus welchem Grund?* 3. Lückenlose Satzgliedzerlegung des Beispielsatzes: - `[Gestern Abend]` = **Temporaladverbiale (Adverbiale Bestimmung der Zeit)** (Wann?) - `[schenkte]` = **Prädikat** - `[der Großvater]` = **Subjekt** (Wer oder was schenkte?) - `[seinem Enkel]` = **Dativobjekt** (Wem schenkte er etwas?) - `[im Wohnzimmer]` = **Lokaladverbiale (Adverbiale Bestimmung des Ortes)** (Wo?) - `[heimlich]` = **Modaladverbiale (Adverbiale Bestimmung der Art und Weise)** (Wie?) - `[eine Taschenlampe]` = **Akkusativobjekt** (Wen oder was schenkte er?)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5G000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YD5G000000000000000A03",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "vokallaenge-dehnung-schaerfung-doppelkonsonanten",
+      "title": "Rechtschreibstrategien: Vokallänge, Dehnungs-h, ie, Doppelkonsonanten und ck/tz",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5G000000000000000A01",
+          "type": "hard",
+          "rationale": "Laut- und Wortbildung sind Grundlagen der Rechtschreibstrategien."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "German orthography",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Richtig schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5G000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Vor welchen Konsonanten darf ein stummes Dehnungs-h nach einem langen Vokal im Deutschen ausschließlich stehen?",
+          "concept": "Nur vor den 4 Konsonanten l, m, n und r (Merkwort: L-M-N-R, z. B. Kohle, Rahm, Zahn, Ohr)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur vor l, m, n und r",
+              "Vor allen Konsonanten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5G000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Prinzip der Vokallängendiagnose im Deutschen und leite die Regeln für Dehnung und Schärfung her: 1. Dehnung (stummer Dehnungslaut mit h nur vor l/m/n/r; langes i als 'ie'; Doppelvokale aa, ee, oo), 2. Schärfung (kurzer betonter Vokal verlangt mindestens 2 Konsonanten -> Doppelkonsonant wie *rennen, schwimmen, hoffen*), 3. Schärfungsbesonderheiten (ck statt kk, tz statt zz), 4. Ausnahmeregel nach l, n, r (*'Nach l, n, r, das merk dir ja, steht nie ein ck und nie ein tz'* -> *Wolke, Bank, Park, Holz, Pflanze, Herz*).",
+          "concept": "Vokallänge entscheidet: Lang -> Dehnungs-h (vor l/m/n/r), ie, Doppelvokale; Kurz -> Schärfung mit Doppelkonsonant, ck statt kk, tz statt zz; nach l/n/r steht nur einfaches k/z.",
+          "sample_solution": "1. Das System der Vokallänge in der deutschen Orthographie: - **Vokallängenprobe**: Durch langsames Schwingen der betonten Silbe ermitteln, ob der Stammvokal **lang** (*Ofen, Saal, Biene*) oder **kurz** (*offen, Stall, Birne*) gesprochen wird. 2. Die Regeln der Vokaldehnung (lange Vokale): - **Normalfall**: Einfacher Buchstabe (*Mut, rot, Not, Hase*). - **Stummes Dehnungs-h**: Steht **ausschließlich vor den 4 Konsonanten l, m, n oder r** (*Stuhl, Zahl, Rahm, Zahm, Zahn, Lohn, Ohr, Rohr*). - **Langer i-Laut**: Wird im Normalfall immer als **ie** geschrieben (*Liebe, Lied, fliegen, Knie*). Seltenes *ieh* (*zieht, flieht, sieht*). - **Doppelvokale (aa, ee, oo)**: Zur visuellen Dehnung (*Haar, Meer, Boot*; die Buchstaben u und i werden im Deutschen niemals verdoppelt). 3. Die Regeln der Vokalschärfung (kurze Vokale): - Auf einen **kurzen, betonten Vokal** folgen in der Stammform mindestens zwei Konsonantenbuchstaben. - Folgt im Wort nur ein einzelner Mitlaut, wird dieser verdoppelt (**Doppelkonsonant**): *Bett, schwimmen, rennen, teller, hoffen, Lippe*. - **Sonderregel ck**: Ein k-Laut nach kurzem Vokal wird immer als **ck** geschrieben (*Sack, Decke, Zucker*). - **Sonderregel tz**: Ein z-Laut nach kurzem Vokal wird als **tz** geschrieben (*Katze, Blitz, schützen*). 4. Die l-n-r-Regel (Kein ck/tz nach bereits vorhandenem Konsonanten): - Nach den Konsonanten l, n, r (oder Doppellauten au, ei, eu) sind bereits zwei Konsonanten vorhanden $\\rightarrow$ es folgt nur einfaches **k** oder **z**:   * Merkspruch: *'Nach l, n, r, das merk dir ja, steht nie ein ck und nie ein tz!'*   * Beispiele mit k: *Wolke, Melken* (l), *Bank, danken* (n), *Park, stark* (r), *Streik, Pauke* (Diphthong).   * Beispiele mit z: *Holz, Pilz* (l), *Gans, Pflanze* (n), *Herz, Schmerz* (r), *Heizung, Geiz* (Diphthong)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YD5G000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YD5G000000000000000A04",
+      "namespace": "deutsch-rechtschreibung",
+      "slug": "auslautverhaertung-verlaengerung-grossschreibung-signale",
+      "title": "Rechtschreibstrategien: Auslautverhärtung (b/d/g), Verlängerungsprobe und Großschreibung",
+      "domain": "schule/deutsch/rechtschreibung",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YD5G000000000000000A03",
+          "type": "hard",
+          "rationale": "Morphemkonstanz und Stammprinzip steuern die Auslautverhärtung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Final-obstruent devoicing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "deutsch",
+          "topic_code": "lb4",
+          "topic_title": "Richtig schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YD5G000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum wird das Wort 'Korb' am Ende mit weichem 'b' geschrieben, obwohl man beim Sprechen ein hartes 'p' hört?",
+          "concept": "Wegen des Stammprinzips: In der verlängerten Pluralform 'die Kör-be' hört man das weiche 'b' deutlich",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wegen der Verlängerungsprobe (die Kör-be -> b)",
+              "Weil b immer am Wortende steht"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YD5G000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Phänomen der phonetischen Auslautverhärtung (b/p, d/t, g/k), beschreibe die Verlängerungsprobe für Nomen (Plural), Verben (Infinitiv) und Adjektive (Steigerung/Attribut) und formuliere die Signale für die Großschreibung von Nomen und Nominalisie rungen (Artikel, versteckte Artikel in Präpositionen wie *beim = bei dem*, Possessivpronomen, Mengenangaben wie *viel, nichts, alles*).",
+          "concept": "Auslautverhärtung: Weiche Konsonanten b/d/g klingen am Silbenende hart wie p/t/k; Morphemkonstanz: Wortstamm bleibt gleich; Verlängerungsprobe macht den weichen Laut hörbar; Großschreibung von Nominalisierungen durch Begleitersignale.",
+          "sample_solution": "1. Das Phänomen der Auslautverhärtung und das Stammprinzip: - Im Deutschen werden stimmhafte (weiche) Verschlusslaute **b, d, g** am Wort- oder Silbenende phonetisch automatisch stimmlos (hart) wie **p, t, k** ausgesprochen (*Hund* klingt wie *Hunt*, *Korb* wie *Korp*, *Berg* wie *Berk*). - Nach dem **Morphem- bzw. Stammprinzip** wird der Wortstamm jedoch in allen verwandten Formen einheitlich geschrieben. 2. Die Verlängerungsprobe (Weiterschwingen): - **Bei Nomen (Pluralprobe)**:   * *der Die[b/p]?* $\\rightarrow$ *die Die-**b**e* $\\rightarrow$ Schreibung mit **b**.   * *das Bil[d/t]?* $\\rightarrow$ *die Bil-**d**er* $\\rightarrow$ Schreibung mit **d**.   * *der Ber[g/k]?* $\\rightarrow$ *die Ber-**g**e* $\\rightarrow$ Schreibung mit **g**. - **Bei Verben (Infinitivprobe)**:   * *er schrei[b/p]t?* $\\rightarrow$ *schrei-**b**en* $\\rightarrow$ **schreibt** mit **b**.   * *sie fin[d/t]et?* $\\rightarrow$ *fin-**d**en* $\\rightarrow$ **findet** mit **d**.   * *er flie[g/k]t?* $\\rightarrow$ *flie-**g**en* $\\rightarrow$ **fliegt** mit **g**. - **Bei Adjektiven (Steigerungs- oder Attributprobe)**:   * *klan[g/k]voll?* $\\rightarrow$ *der Klang, die Klän-**g**e* $\\rightarrow$ mit **g**.   * *gel[b/p]?* $\\rightarrow$ *die gel-**b**e Sonne* $\\rightarrow$ mit **b**.   * *run[d/t]?* $\\rightarrow$ *run-**d**er Ball* $\\rightarrow$ mit **d**. 3. Signalwörter für die Großschreibung (Nominalisierung): - Wörter anderer Wortarten (Verben, Adjektive) werden großgeschrieben, wenn sie grammatisch wie Nomen gebraucht werden. - **Typische Signalwörter erkennen**:   * Vorangehender bestimmter/unbestimmter Artikel: *das Lesen, ein Schönes*.   * Verschmolzene Präposition (Präposition + Artikel): *beim Schwimmen (= bei dem Schwimmen), zum Lachen, ans Singen*.   * Possessiv- oder Demonstrativpronomen: *mein Hoffen, dieses Schöne*.   * Unbestimmte Mengenwörter / Zahlwörter: *etwas Gutes, viel Neues, nichts Schlechtes, alles Liebe*."
+        }
+      ]
+    }
+  ]
+}

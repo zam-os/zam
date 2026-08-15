@@ -1,0 +1,294 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-physik-mechanik-kraft-bewegung",
+  "version": "2026.08.1",
+  "title": "Physik 8: Mechanik – Kräfte, Hebelgesetz und einfache Maschinen (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 8: Kraftbegriff, Gewichtskraft, Kräftezerlegung, Hebelgesetz, Drehmoment, Rollen und Goldene Regel der Mechanik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 8, Lernbereich Mechanik (Kräfte und einfache Maschinen)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4P8M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4P8M0000000000000000A01",
+      "namespace": "physik-mechanik",
+      "slug": "kraftbegriff-gewichtskraft-masse-feder",
+      "title": "Kraftbegriff, Hookesches Gesetz und Gewichtskraft F_G = m · g",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Force",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die SI-Einheit der Kraft F und welche physikalische Größe bleibt im Gegensatz zur Gewichtskraft auf Erde und Mond unverändert?",
+          "concept": "Einheit Newton [N]; die Masse m [kg] ist ortsunabhängig konstant",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Einheit Newton (N); die Masse m bleibt ortsunabhängig konstant",
+              "Einheit Kilogramm (kg); die Gewichtskraft bleibt konstant"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Unterschied zwischen träger Masse m und ortsabhängiger Gewichtskraft F_G = m · g (mit g_Erde ≈ 9,81 N/kg vs. g_Mond ≈ 1,62 N/kg), formuliere das Hookesche Gesetz für Schraubenfedern (F = D · s) und berechne die Dehnung s einer Feder mit Federkonstante D = 50 N/m bei Anhängen eines Körpers der Masse m = 200 g.",
+          "concept": "Masse = Trägheit & Stoffmenge (in kg, ortsunabhängig); Gewichtskraft F_G = m*g (in N, abhängig vom Schwerefeld g); Hooke: F = D*s <=> s = F/D; F_G = 0,2 kg * 9,81 N/kg = 1,962 N -> s = 1,962 N / 50 N/m = 0,03924 m ≈ 3,92 cm"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4P8M0000000000000000A02",
+      "namespace": "physik-mechanik",
+      "slug": "vektorielle-kraefte-addition-zerlegung",
+      "title": "Kräfteaddition und Kräftezerlegung: Kräfteparallelogramm und Hangabtriebskraft",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Kraftbegriff ist Voraussetzung für vektorielle Kraftzerlegungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Parallelogram of force",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welche beiden senkrecht aufeinander stehenden Kraftkomponenten wird die Gewichtskraft F_G eines Körpers auf einer schiefen Ebene zerlegt?",
+          "concept": "Hangabtriebskraft F_H (parallel zur Ebene) und Normalkraft F_N (senkrecht zur Ebene)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hangabtriebskraft F_H und Normalkraft F_N",
+              "Reibungskraft F_R und Auftriebskraft F_A"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere die vektorielle Natur einer Kraft (Angriffspunkt, Betrag, Richtung), konstruiere die resultierende Gesamtkraft F_res zweier am selben Punkt unter 90° angreifender Kräfte F_1 = 30 N und F_2 = 40 N und berechne rechnerisch F_res sowie die Hangabtriebskraft F_H eines Wagens (m = 50 kg) auf einer Rampe mit Neigungswinkel alpha = 30°.",
+          "concept": "Kräfte als Vektoren; Resultierende bei 90°: F_res = sqrt(30² + 40²) = sqrt(900 + 1600) = 50 N; Hangabtriebskraft: F_H = F_G * sin(alpha) = 50 kg * 9,81 N/kg * sin(30°) = 490,5 N * 0,5 = 245,25 N"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4P8M0000000000000000A03",
+      "namespace": "physik-mechanik",
+      "slug": "hebelgesetz-drehmoment-gleichgewicht",
+      "title": "Das Hebelgesetz und Drehmoment: Kraft mal Kraftarm = Last mal Lastarm",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kräfte sind Voraussetzung für die Drehmomentberechnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q178553",
+          "target_label": "Lever",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Bedingung muss für das Drehmomentengleichgewicht an einem zweiseitigen Hebel erfüllt sein?",
+          "concept": "Die Summe der linksdrehenden Drehmomente ist gleich der Summe der rechtsdrehenden Drehmomente (F_1 · a_1 = F_2 · a_2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "F_1 · a_1 = F_2 · a_2 (Drehmomentengleichgewicht)",
+              "F_1 + a_1 = F_2 + a_2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den Begriff des Drehmoments M = F · a (mit Einheit N·m), unterscheide einseitige Hebel (z. B. Schubkarre, Flaschenöffner) von zweiseitigen Hebeln (z. B. Wippe, Schere, Brecheisen) und berechne die erforderliche Handkraft F_1, um mit einer Brechstange (Gesamtlänge 1,50 m, Drehpunkt 10 cm von der Last entfernt) einen Stein mit Gewichtskraft F_2 = 2800 N anzuheben.",
+          "concept": "Drehmoment M = F * a [Nm]; Zweiseitig: Drehpunkt zwischen Kräften; Einseitig: Kräfte auf derselben Seite; Brechstange: Lastarm a2 = 0,10 m, Kraftarm a1 = 1,50 - 0,10 = 1,40 m; F1 * 1,40 m = 2800 N * 0,10 m <=> F1 = 280 / 1,4 = 200 N"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4P8M0000000000000000A04",
+      "namespace": "physik-mechanik",
+      "slug": "einfache-maschinen-rollen-goldene-regel",
+      "title": "Einfache Maschinen: Feste Rolle, lose Rolle, Flaschenzug und Goldene Regel",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Hebelgesetz begründet die Kraftübertragung bei Rollen und einfachen Maschinen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q178553",
+          "target_label": "Pulley",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kräfte und einfache Maschinen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die fundamentale 'Goldene Regel der Mechanik' nach Galileo Galilei?",
+          "concept": "Was man an Kraft spart, muss man an Weg zusetzen (die mechanische Arbeit W = F · s bleibt konstant)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Was man an Kraft spart, muss man an Weg zusetzen (W = F · s = konstant)",
+              "Mit einfachen Maschinen kann man mechanische Arbeit einsparen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Wirkungsweise einer festen Rolle (Kraftumlenkung) mit einer losen Rolle (Krafthalbierung), erkläre die Funktion eines Flaschenzugs mit n tragenden Seilstücken (F_Z = F_L / n; s_Z = n · s_L) und berechne die Zugkraft F_Z sowie die Seillänge s_Z beim Anheben einer Last von 1200 N um eine Höhe von h = 3 m mit einem Flaschenzug aus 4 tragenden Seilen.",
+          "concept": "Feste Rolle: F_Zug = F_Last, lenkt Richtung um; Lose Rolle: F_Zug = F_Last / 2, Seilweg verdoppelt sich; Flaschenzug n=4: F_Z = 1200 N / 4 = 300 N; Seilweg s_Z = 4 * 3 m = 12 m; Arbeit W = 300 N * 12 m = 3600 J (erhalten)"
+        }
+      ]
+    }
+  ]
+}

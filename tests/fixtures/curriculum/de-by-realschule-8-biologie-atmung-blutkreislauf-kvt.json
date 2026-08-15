@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-biologie-atmung-blutkreislauf",
+  "version": "2026.08.1",
+  "title": "Biologie 8: Atmung, Blutkreislauf und Immunsystem (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 8: Bau der Lunge, Gasaustausch, Blutbestandteile, Bau und Funktion des Herzens, doppelter Kreislauf und Immunisierung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 8, Lernbereich Stoffwechsel und Immunsystem des Menschen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B8A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B8A0000000000000000A01",
+      "namespace": "biologie-anatomie",
+      "slug": "atmungsorgane-gasaustausch-alveolen-diffusion",
+      "title": "Atmungsorgane und Gasaustausch: Bau der Lunge, Alveolen und Ventilation",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7886",
+          "target_label": "Respiratory system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchen mikroskopisch kleinen Strukturen der Lunge findet der Gasaustausch (Aufnahme von O_2 und Abgabe von CO_2) ins Blut statt?",
+          "concept": "Lungenbläschen (Alveolen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lungenbläschen (Alveolen)",
+              "Luftröhre (Trachea)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Atemweg der Luft (Nase, Rachen, Kehlkopf, Luftröhre, Bronchien, Bronchiolen, Alveolen), vergleiche Brust- und Bauchatmung (Zwerchfell- und Zwischenrippenmuskeln) und erkläre den physikalischen Mechanismus des Gasaustauschs an der Alveolenmembran durch Diffusion entlang des Partialdruckgefälles.",
+          "concept": "Atemweg: Nase erwärmt/filtert -> Trachea -> Bronchialbaum -> Alveolen; Einatmung: Zwerchfell senkt sich / Rippen heben sich -> Brustraum vergrößert -> Unterdruck saugt Luft an; Gasaustausch: O2 diffundiert von hoher Konzentration in Alveole ins sauerstoffarme Blut; CO2 diffundiert aus Blut in Alveole."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B8A0000000000000000A02",
+      "namespace": "biologie-anatomie",
+      "slug": "blut-bestandteile-erythrozyten-leukozyten-plasma",
+      "title": "Das Blut: Feste Bestandteile, Blutplasma und physiologische Transportfunktionen",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Sauerstofftransport verbindet Lungenfunktion und Blutbestandteile."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7886",
+          "target_label": "Blood",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Blutzellen enthalten den roten Blutfarbstoff Hämoglobin und transportieren Sauerstoff im Körper?",
+          "concept": "Rote Blutkörperchen (Erythrozyten)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rote Blutkörperchen (Erythrozyten)",
+              "Weiße Blutkörperchen (Leukozyten)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erstelle eine Übersicht über die Zusammensetzung des Blutes (ca. 55 % Blutplasma, ca. 45 % Blutzellen), charakterisiere Erythrozyten, Leukozyten und Thrombozyten hinsichtlich Bau und Funktion und beschreibe die drei Schritte der Blutstillung und Blutgerinnung (Vasokonstriktion, Thrombozytenpfropf, Fibrinfadengerüst).",
+          "concept": "Plasma (55%): Wasser, Proteine, Nährstoffe, Hormone; Erythrozyten: kernlos, biconcav, Hämoglobin -> O2-Transport; Leukozyten: mit Kern -> Immunabwehr; Thrombozyten: Zellbruchstücke -> Blutgerinnung; Gerinnungskaskade: Fibrinogen wird zu Fibrinnetz."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8A0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B8A0000000000000000A03",
+      "namespace": "biologie-anatomie",
+      "slug": "herz-bau-doppelter-blutkreislauf",
+      "title": "Das Herz-Kreislauf-System: Bau des Herzens und doppelter Blutkreislauf",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8A0000000000000000A02",
+          "type": "hard",
+          "rationale": "Blutbestandteile und Gastransport sind Basis für das Kreislaufmodell."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7886",
+          "target_label": "Circulatory system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8A0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welcher Herzkammer wird das sauerstoffreiche Blut über die Hauptschlagader (Aorta) mit hohem Druck in den großen Körperkreislauf gepumpt?",
+          "concept": "Linke Herzkammer (linker Ventrikel)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Linke Herzkammer (linker Ventrikel)",
+              "Rechte Herzkammer (rechter Ventrikel)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8A0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Zeichne und beschreibe den Weg eines roten Blutkörperchens durch den doppelten Blutkreislauf (Körperkreislauf und Lungenkreislauf), benenne alle vier Herzhöhlen und Klappenarten (Segel- und Taschenklappen) und begründe, warum die Muskulatur der linken Herzkammer deutlich dicker ist als die der rechten.",
+          "concept": "Rechter Vorhof -> Segelklappe -> rechte Kammer -> Taschenklappe -> Lungenarterie (sauerstoffarm) -> Lunge (O2-Aufnahme) -> Lungenvene -> linker Vorhof -> linke Kammer -> Aorta -> Körpergewebe; Linke Kammer dicker, weil sie gegen den hohen Widerstand des gesamten Körperkreislaufs pumpen muss."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8A0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B8A0000000000000000A04",
+      "namespace": "biologie-anatomie",
+      "slug": "immunsystem-antigen-antikoerper-impfung",
+      "title": "Das Immunsystem: Antigen-Antikörper-Reaktion, aktive und passive Immunisierung",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8A0000000000000000A02",
+          "type": "hard",
+          "rationale": "Leukozyten und Proteine bilden die zelluläre und humorale Basis des Immunsystems."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7886",
+          "target_label": "Immunity (medical)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Atmung und Blutkreislauf",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8A0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was wird dem Körper bei einer aktiven Immunisierung (Schutzimpfung, z. B. gegen Masern oder Tetanus) verabreicht?",
+          "concept": "Abgeschwächte oder abgetötete Krankheitserreger bzw. deren Antigene zur Bildung eigener Gedächtniszellen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Abgeschwächte/abgetötete Erreger oder Antigene (zur Bildung eigener Gedächtniszellen)",
+              "Fertige Antikörper für sofortigen kurzfristigen Schutz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8A0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Schlüssel-Schloss-Prinzip der Antigen-Antikörper-Reaktion, unterscheide die unspezifische (Fresszellen / Makrophagen) von der spezifischen Immunabwehr (B- und T-Lymphozyten, Plasmazellen, Antikörper) und stelle die Vor- und Nachteile der aktiven vs. passiven Immunisierung (Heilimpfung) in einer Übersicht gegenüber.",
+          "concept": "Antigene = Fremdoberflächenstrukturen; Antikörper = Y-förmige Proteine der B-Plasmazellen, passen exakt (Schlüssel-Schloss) -> Verklumpung (Agglutination); Aktiv: abgeschwächte Antigene -> Körper bildet selbst Antikörper & Gedächtniszellen -> langsamer Aufbau, jahrelanger Dauerschutz; Passiv: fertige Antikörper -> sofortige Hilfe bei akuter Infektion, baut sich nach wenigen Wochen ab, keine Gedächtniszellen."
+        }
+      ]
+    }
+  ]
+}

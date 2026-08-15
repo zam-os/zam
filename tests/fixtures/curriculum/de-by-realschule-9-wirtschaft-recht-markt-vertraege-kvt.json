@@ -1,0 +1,262 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-wirtschaft-recht-markt-vertraege",
+  "version": "2026.08.1",
+  "title": "Recht, Verträge und Marktmechanismus (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Wirtschaft und Recht 9: Geschäftsfähigkeit, Zustandekommen von Kaufverträgen, Marktgleichgewicht und Wirtschaftskreislauf.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/wirtschaft-und-recht",
+      "checked": "2026-08-15",
+      "label": "Realschule Wirtschaft und Recht 9 (II/III), Lernbereich Rechtliches Handeln und Markt"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4W9R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4W9R0000000000000000A01",
+      "namespace": "wirtschaft-recht",
+      "slug": "geschaeftsfaehigkeit-altersstufen-bgb",
+      "title": "Rechtsfähigkeit und Geschäftsfähigkeit nach BGB",
+      "domain": "schule/wirtschaft/recht",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1194200",
+          "target_label": "Capacity (law)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Rechtliches Handeln des Verbrauchers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Stufe der Geschäftsfähigkeit befindet sich ein 15-jähriger Jugendlicher nach deutschem Zivilrecht (§ 106 BGB)?",
+          "concept": "Beschränkte Geschäftsfähigkeit (7 bis einschließlich 17 Jahre)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beschränkte Geschäftsfähigkeit (7 bis 17 Jahre)",
+              "Geschäftsunfähigkeit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die drei Stufen der Geschäftsfähigkeit (geschäftsunfähig 0-6 J., beschränkt geschäftsfähig 7-17 J., voll geschäftsfähig ab 18 J.) und erläutere die Ausnahme des 'Taschengeldparagrafen' (§ 110 BGB).",
+          "concept": "1. Geschäftsunfähig (0-6 J.): Willenserklärungen nichtig; 2. Beschränkt geschäftsfähig (7-17 J.): schwebend unwirksam ohne Zustimmung der Eltern; Ausnahme § 110 BGB Taschengeld; 3. Voll geschäftsfähig (ab 18 J.)",
+          "sample_solution": "Die drei Stufen der Geschäftsfähigkeit nach BGB: 1. Geschäftsunfähigkeit (0 bis 6 Jahre, § 104 BGB): Willenserklärungen sind von vornherein nichtig (§ 105 BGB); Handeln erfolgt ausschließlich über die gesetzlichen Vertreter (Eltern). 2. Beschränkte Geschäftsfähigkeit (7 bis einschließlich 17 Jahre, § 106 BGB): Verträge, die nicht lediglich rechtlich vorteilhaft sind, sind ohne vorherige Einwilligung der Eltern zunächst 'schwebend unwirksam' und werden erst durch Genehmigung wirksam. Ausnahme § 110 BGB ('Taschengeldparagraph'): Ein Vertrag gilt von Anfang an als wirksam, wenn der Minderjährige die Leistung mit Mitteln bewirkt, die ihm zu diesem Zweck oder zur freien Verfügung überlassen wurden (z. B. Barkauf eines Buchs). 3. Volle Geschäftsfähigkeit (ab Vollendung des 18. Lebensjahres, § 2 BGB): Uneingeschränkte Rechtswirksamkeit aller abgegebenen Willenserklärungen."
+        }
+      ]
+    },
+    {
+      "id": "01K4W9R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4W9R0000000000000000A02",
+      "namespace": "wirtschaft-recht",
+      "slug": "zustandekommen-kaufvertrag-antrag-annahme",
+      "title": "Zustandekommen von Verträgen: Antrag und Annahme (§ 433 BGB)",
+      "domain": "schule/wirtschaft/recht",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W9R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Geschäftsfähigkeit ist Voraussetzung für wirksame Willenserklärungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q93288",
+          "target_label": "Contract",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Rechtliches Handeln des Verbrauchers",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ist das Ausstellen einer Ware im Schaufenster oder im Supermarktregal bereits ein rechtsverbindlicher Antrag (Angebot) des Händlers?",
+          "concept": "Nein, es ist lediglich eine rechtlich unverbindliche Aufforderung zur Abgabe eines Angebots (invitatio ad offerendum)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, nur eine Aufforderung zur Angebotsabgabe (invitatio ad offerendum)",
+              "Ja, der Händler ist rechtlich sofort gebunden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Zustandekommen eines Kaufvertrags durch zwei übereinstimmende Willenserklärungen (Antrag/Angebot und Annahme) und nenne die Hauptpflichten von Käufer und Verkäufer nach § 433 BGB.",
+          "concept": "Vertragsschluss = Angebot + Annahme; Pflichten Verkäufer: Übergabe mangelfreier Ware & Eigentumsverschaffung; Pflichten Käufer: Kaufpreiszahlung & Abnahme der Ware",
+          "sample_solution": "1. Vertragsschluss: Ein Kaufvertrag kommt durch zwei inhaltlich übereinstimmende Willenserklärungen zustande: den Antrag (Angebot) und die rechtzeitige Annahme. Eine Warenauslage im Regal oder Prospektwerbung ist noch kein Angebot, sondern eine 'invitatio ad offerendum' (Aufforderung an den Kunden, an der Kasse ein Kaufangebot abzugeben). 2. Pflichten nach § 433 BGB: a) Pflichten des Verkäufers (§ 433 Abs. 1 BGB): Übergabe der Kaufsache frei von Sach- und Rechtsmängeln sowie Verschaffung des Eigentums an den Käufer. b) Pflichten des Käufers (§ 433 Abs. 2 BGB): Zahlung des vereinbarten Kaufpreises und Abnahme der gekauften Sache."
+        }
+      ]
+    },
+    {
+      "id": "01K4W9R0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4W9R0000000000000000A03",
+      "namespace": "wirtschaft-markt",
+      "slug": "markt-preisbildung-angebot-nachfrage-gleichgewicht",
+      "title": "Markt und Preisbildung: Angebot, Nachfrage und Gleichgewichtspreis",
+      "domain": "schule/wirtschaft/markt",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q161962",
+          "target_label": "Supply and demand",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb2",
+          "topic_title": "Markt und Preisbildung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9R0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht auf einem vollkommenen Markt mit dem Marktpreis, wenn das Angebot an Gütern bei unveränderter Nachfrage stark steigt (Angebotsüberhang)?",
+          "concept": "Der Preis sinkt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Preis sinkt",
+              "Der Preis steigt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9R0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Skizziere das Preis-Mengen-Diagramm mit fallender Nachfrage- und steigender Angebotskurve, definiere den Gleichgewichtspreis und erkläre die Folgen eines Angebots- bzw. Nachfrageüberhangs.",
+          "concept": "Schnittpunkt von Angebots- und Nachfragekurve = Marktgleichgewicht (Gleichgewichtspreis & -menge); p > p_Gleichgewicht -> Angebotsüberhang -> Preisdruck nach unten; p < p_Gleichgewicht -> Nachfrageüberhang -> Preisdruck nach oben",
+          "sample_solution": "1. Marktmodell im Preis-Mengen-Diagramm: - Nachfragekurve (fallend): Bei hohem Preis ist die nachgefragte Menge gering, bei sinkendem Preis steigt sie. - Angebotskurve (steigend): Bei hohem Preis bieten Hersteller mehr Ware an, bei niedrigem Preis weniger. 2. Gleichgewichtspreis und Gleichgewichtsmenge: Der Schnittpunkt beider Kurven bildet das Marktgleichgewicht, bei dem angebotene und nachgefragte Menge genau übereinstimmen (Markträumung). 3. Marktungleichgewichte: a) Liegt der Marktpreis über dem Gleichgewichtspreis, entsteht ein Angebotsüberhang (Verkäuferüberhang) -> Verkäufer senken Preise im Konkurrenzkampf. b) Liegt der Preis unter dem Gleichgewichtspreis, entsteht ein Nachfrageüberhang (Güterknappheit) -> Käufer sind bereit, höhere Preise zu zahlen, der Preis steigt zum Gleichgewicht zurück."
+        }
+      ]
+    },
+    {
+      "id": "01K4W9R0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4W9R0000000000000000A04",
+      "namespace": "wirtschaft-kreislauf",
+      "slug": "erweiterter-wirtschaftskreislauf-sektoren",
+      "title": "Der erweiterte Wirtschaftskreislauf: Sektoren und Güter-/Geldströme",
+      "domain": "schule/wirtschaft/volkswirtschaft",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W9R0000000000000000A03",
+          "type": "hard",
+          "rationale": "Märkte und Transaktionen bilden die Grundlage für volkswirtschaftliche Kreislaufströme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q645474",
+          "target_label": "Circular flow of income",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb3",
+          "topic_title": "Grundzüge der Volkswirtschaft",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W9R0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Sektor im Wirtschaftskreislauf vermittelt zwischen den Sparern (Ersparnisse) und den Investoren (Kredite)?",
+          "concept": "Der Bankensektor / Vermögensänderungssektor",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Banken / Finanzsektor",
+              "Der Staat"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W9R0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den erweiterten Wirtschaftskreislauf mit seinen fünf Sektoren (Private Haushalte, Unternehmen, Staat, Banken, Ausland) und erläutere die gegenläufigen Geld- und Güterströme zwischen Haushalten und Unternehmen.",
+          "concept": "5 Sektoren: Haushalte (Konsum/Arbeitskraft), Unternehmen (Produktion/Einkommen), Staat (Steuern/Transfers), Banken (Sparen/Kredit), Ausland (Export/Import); Realer Güterstrom läuft Geldstrom exakt entgegen",
+          "sample_solution": "Der erweiterte Wirtschaftskreislauf verbindet fünf Sektoren: 1. Private Haushalte: Stellen Produktionsfaktoren (Arbeit, Boden, Kapital) bereit und konsumieren Konsumgüter. 2. Unternehmen: Produzieren Sachgüter und Dienstleistungen und zahlen Einkommen (Löhne, Zinsen, Gewinne) an Haushalte. (Gegenläufigkeit: Güterstrom Haushalte -> Unternehmen: Arbeitskraft; Unternehmen -> Haushalte: Konsumgüter. Geldstrom Unternehmen -> Haushalte: Einkommen; Haushalte -> Unternehmen: Konsumausgaben). 3. Staat: Zieht Steuern und Abgaben ein und leistet staatliche Transferzahlungen (Kindergeld, Subventionen), öffentliche Aufträge und Infrastruktur. 4. Banken/Vermögensänderung: Sammeln Ersparnisse der Haushalte und vergeben Kredite für Unternehmensinvestitionen. 5. Ausland: Exportiert Güter (Geldzufluss aus Ausland) und importiert Güter (Geldabfluss ins Ausland)."
+        }
+      ]
+    }
+  ]
+}

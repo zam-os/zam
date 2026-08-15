@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-deutsch-erzaehlen-wortarten-faelle",
+  "version": "2026.08.1",
+  "title": "Deutsch 5: Erzähltexte, die 4 Fälle des Nomens und Wortarten (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 5: Erzählaufbau (Spannungskurve), Nomen-Deklination (4 Fälle), Pronomen und Adjektivsteigerung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 5, Lernbereiche Texte verfassen und Sprache untersuchen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D5E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D5E0000000000000000A01",
+      "namespace": "deutsch-texte",
+      "slug": "erlebniserzaehlung-spannungskurve-hoehepunkt",
+      "title": "Erzählen nach Erlebnissen: Einleitung (W-Fragen), Spannungsaufbau und Höhepunkt",
+      "domain": "schule/deutsch/texte",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Narrative",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Texte verfassen – Erzählen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Texte verfassen – Erzählen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 4 zentralen W-Fragen müssen in der Einleitung einer Erlebniserzählung kurz und anschaulich beantwortet werden?",
+          "concept": "Wer?, Wann?, Wo? und Was geschieht zu Beginn? (Personen, Ort, Zeit, Ausgangssituation)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wer, Wann, Wo und Was",
+              "Warum, Wozu, Womit und Wie viel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den klassischen 3-teiligen Aufbau einer spannenden Erlebniserzählung: 1. Einleitung (W-Fragen: Wer, Wo, Wann, Was; Stimmung erzeugen), 2. Hauptteil mit dynamischer Spannungskurve (steigende Handlung, Sinneswahrnehmungen hören/sehen/fühlen, Gedanken und Gefühle, wörtliche Rede, Zeitdehnung am packenden Höhepunkt/Pointe), 3. Schluss (Lösung des Konflikts, Beruhigung der Situation, knappe Schlussfolgerung/Gefühlszustand) und nenne sprachliche Spannungsmittel (treffende Verben, anschauliche Adjektive, Satzlängenverkürzung am Höhepunkt).",
+          "concept": "Erzählaufbau: Einleitung führt ein (Wer, Wo, Wann); Hauptteil steigert Spannung mit Zwischenereignissen hin zum Höhepunkt (Klimax, Zeitdehnung, kurze Sätze, Gedankenbericht, Dialoge); Schluss rundet ab (Erleichterung, Lehre); Erzählzeit ist das Präteritum.",
+          "sample_solution": "1. Der dreigliedrige Aufbau einer Erlebniserzählung: - **1. Die Einleitung (Exposition)**:   * Beantwortet knapp und stimmungsvoll die 4 W-Fragen: **Wer** handelt? (Hauptfiguren), **Wann** spielt die Handlung? (Zeit/Jahreszeit), **Wo** findet das Ereignis statt? (Ort), **Was** ist die Ausgangslage?   * Weckt die Neugier des Lesers, verrät aber noch nichts von der eigentlichen Pointe oder dem Hauptproblem. - **2. Der Hauptteil (Spannungssteigerung zum Höhepunkt)**:   * **Steigende Handlung**: Ein unerwartetes Ereignis oder ein Konflikt tritt ein. Die Spannung steigt stufenweise an.   * **Sprachliche Gestaltungsmittel für Hochspannung**:     - Treffende, dynamische Verben (*schleichen, donnern, erstummen*) statt langweiligem *gehen/sagen*.     - Anschauliche Adjektive (*eiskalt, totenstill, grell*).     - Einbau von inneren Gedanken, Zweifeln und Gefühlen (Herzklopfen, feuchte Hände).     - Wörtliche Rede für Lebendigkeit.   * **Der Höhepunkt (Klimax)**: Der packendste, gefährlichste oder lustigste Moment der Geschichte. Hier wird die Zeit gedehnt (Slow-Motion-Darstellung jedes Sekundenbruchteils) und die Sätze werden oft kurz und atemlos. - **3. Der Schluss (Abklingende Handlung und Ausklang)**:   * Zeigt die Lösung des Konflikts oder die Rettung aus der Gefahr.   * Beschreibt die Gefühle der Erleichterung, Erschöpfung oder die Lehre aus dem Geschehen. 2. Formale Erzählregeln: - Standard-Erzählzeit ist immer das **Präteritum (1. Vergangenheit)**. - Gleichzeitige oder vorangegangene Ereignisse stehen im **Plusquamperfekt**. - Roter Faden: Logische, lückenlose Chronologie der Ereignisse."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D5E0000000000000000A02",
+      "namespace": "deutsch-grammatik",
+      "slug": "vier-faelle-des-nomens-deklination-ersatzprobe",
+      "title": "Die vier Fälle des Nomens: Nominativ, Genitiv, Dativ und Akkusativ (Fragewörter & Ersatzprobe)",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Satzverständnis und Nomen-Rollen bilden die Basis der Deklination."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Grammatical case",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem Kontroll-Fragewort erfragt man im Deutschen den 3. Fall (Dativ)?",
+          "concept": "Mit dem Fragewort 'Wem?'",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wem? (Dativ)",
+              "Wen oder was? (Akkusativ)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Stelle die 4 Fälle (Kasus) des Nomens mit ihren lateinischen und deutschen Namen sowie ihren Fragewörtern systematisch dar (1. Fall: Nominativ – Wer oder was?, 2. Fall: Genitiv – Wessen?, 3. Fall: Dativ – Wem?, 4. Fall: Akkusativ – Wen oder was?) und dekliniere das Nomen 'der treue Hund' im Singular und Plural durch alle 4 Fälle.",
+          "concept": "1. Nominativ (Wer/was?): der treue Hund / die treuen Hunde; 2. Genitiv (Wessen?): des treuen Hundes / der treuen Hunde; 3. Dativ (Wem?): dem treuen Hund / den treuen Hunden; 4. Akkusativ (Wen/was?): den treuen Hund / die treuen Hunde.",
+          "sample_solution": "1. Die vier grammatischen Fälle (Kasus) im Deutschen: | Fall | Lateinischer Name | Deutscher Name | Fragewort / Frageprobe | Funktion im Satz | |---|---|---|---|---| | **1. Fall** | **Nominativ** | Wer-Fall | **Wer oder was?** | Subjekt des Satzes / Satzgegenstand | | **2. Fall** | **Genitiv** | Wessen-Fall | **Wessen?** | Besitzanzeigendes Attribut / Genitivobjekt | | **3. Fall** | **Dativ** | Wem-Fall | **Wem?** | Dativobjekt / Empfänger einer Handlung | | **4. Fall** | **Akkusativ** | Wen-Fall | **Wen oder was?** | Akkusativobjekt / Ziel einer Handlung | 2. Vollständige Deklination der Nominalgruppe 'der treue Hund': - **Singular (Einzahl)**:   * 1. Fall (Nominativ): **der treue Hund** *(Wer oder was bewacht das Haus? - Der treue Hund.)*   * 2. Fall (Genitiv): **des treuen Hundes** *(Wessen Napf ist voll? - Des treuen Hundes.)*   * 3. Fall (Dativ): **dem treuen Hund** *(Wem gibt sie ein Leckerli? - Dem treuen Hund.)*   * 4. Fall (Akkusativ): **den treuen Hund** *(Wen oder was streichelt das Kind? - Den treuen Hund.)* - **Plural (Mehrzahl)**:   * 1. Fall (Nominativ): **die treuen Hunde**   * 2. Fall (Genitiv): **der treuen Hunde**   * 3. Fall (Dativ): **den treuen Hunden**   * 4. Fall (Akkusativ): **die treuen Hunde**."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5E0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4D5E0000000000000000A03",
+      "namespace": "deutsch-grammatik",
+      "slug": "pronomen-arten-personal-possessiv-demonstrativ",
+      "title": "Pronomen (Fürwörter): Personal-, Possessiv-, Demonstrativ- und Relativpronomen",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5E0000000000000000A02",
+          "type": "hard",
+          "rationale": "Pronomen vertreten Nomen und passen sich deren Fall, Zahl und Geschlecht an."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Pronoun",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5E0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zu welcher Pronomen-Gruppe gehören Wörter wie 'mein, dein, sein, ihr, unser, euer', die ein Besitz- oder Zugehörigkeitsverhältnis anzeigen?",
+          "concept": "Zu den Possessivpronomen (besitzanzeigende Fürwörter)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Possessivpronomen (besitzanzeigend)",
+              "Personalpronomen (persönlich)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5E0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide die 5 häufigsten Pronomen-Arten der 5. Klasse mit Beispielen und Funktionen: 1. Personalpronomen (persönliche Fürwörter: ich, du, er, sie, es, wir, ihr, sie / mir, dir, ihm, uns, euch, ihnen), 2. Possessivpronomen (besitzanzeigend: mein, dein, sein, unser...), 3. Demonstrativpronomen (hinweisend: dieser, jener, der, die, das), 4. Reflexivpronomen (rückbezüglich: mich, dich, sich, uns, euch), 5. Relativpronomen (bezügliche Fürwörter leiten Nebensätze ein: der, die, das, welcher...) und bestimme die Pronomen im Satz: 'Er gab mir sein altes Fahrrad, das ich gerne fahre.'",
+          "concept": "Personal: er (Subjekt), mir (Dativobjekt), ich (Subjekt); Possessiv: sein (begleitet Fahrrad); Relativ: das (bezieht sich auf Fahrrad); Pronomen vermeiden Wortwiederholungen.",
+          "sample_solution": "1. Die 5 wichtigen Pronomen-Arten: - **1. Personalpronomen (Persönliches Fürwort)**:   * Steht stellvertretend für Personen oder bereits erwähnte Nomen: *ich, du, er, sie, es, wir, ihr, sie*.   * Wird im Fall gebeugt: Dativ (*mir, dir, ihm, ihr, uns, euch, ihnen*), Akkusativ (*mich, dich, ihn, sie, es, uns, euch, sie*). - **2. Possessivpronomen (Besitzanzeigendes Fürwort)**:   * Drückt Besitz, Eigentum oder enge Zugehörigkeit aus: *mein, dein, sein, ihr, unser, euer, ihr*. - **3. Demonstrativpronomen (Hinweisendes Fürwort)**:   * Hebt eine Person oder Sache besonders nachdrücklich hervor: *dieser, diese, dieses; jener, jene, jenes; der, die, das* (betont). - **4. Reflexivpronomen (Rückbezügliches Fürwort)**:   * Bezieht sich auf das handelnde Subjekt des Satzes zurück: *ich freue **mich**, du wäschst **dich**, er kämmt **sich**, wir treffen **uns**.* - **5. Relativpronomen (Bezügliches Fürwort)**:   * Leitet einen Relativsatz ein und bezieht sich auf ein vorangehendes Bezugswort: *der, die, das; welcher, welche, welches*. 2. Bestimmung der Pronomen im Beispielsatz: - *'**Er** gab **mir** **sein** altes Fahrrad, **das** **ich** gerne fahre.'*   * `Er` = **Personalpronomen** (3. Person Sg. Maskulinum, Nominativ).   * `mir` = **Personalpronomen** (1. Person Sg., Dativ).   * `sein` = **Possessivpronomen** (besitzanzeigend vor Fahrrad, Akkusativ).   * `das` = **Relativpronomen** (bezieht sich auf das Nomen *Fahrrad*, leitet Relativsatz ein).   * `ich` = **Personalpronomen** (1. Person Sg., Nominativ)."
+        }
+      ]
+    },
+    {
+      "id": "01K4D5E0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4D5E0000000000000000A04",
+      "namespace": "deutsch-grammatik",
+      "slug": "adjektive-steigerung-komparativ-superlativ-vergleich",
+      "title": "Adjektive: Merkmale, Steigerungsstufen (Positiv, Komparativ, Superlativ) und Vergleichspartikeln",
+      "domain": "schule/deutsch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D5E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Adjektive beschreiben Nomen und Ereignisse in Erzählungen anschaulich."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q188",
+          "target_label": "Comparison (grammar)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Sprache untersuchen – Grammatik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D5E0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Vergleichspartikel muss im Deutschen bei einer Ungleichheit mit dem Komparativ (Höherstufe) zwingend verwendet werden (z. B. 'Lukas ist schneller ... Tim')?",
+          "concept": "'als' (bei Ungleichheit / Komparativ: schneller ALS; 'wie' steht bei Gleichheit / Positiv: so schnell WIE)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "'als' (schneller als...)",
+              "'wie' (schneller wie...)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D5E0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die drei Steigerungsstufen der Adjektive (1. Positiv / Grundstufe: z. B. *schnell*, Vergleich mit *so ... wie*; 2. Komparativ / Höherstufe: Endung *-er*, Umlautbildung *a->ä, o->ö, u->ü*, Vergleich mit *... als*; 3. Superlativ / Höchststufe: Endung *-(e)sten* mit *am* oder bestimmtem Artikel), steigere die unregelmäßigen Adjektive *gut, viel, gern, hoch, nah* und korrigiere den typischen Sprachfehler: 'Er rennt viel schneller wie ich.'",
+          "concept": "Positiv (so...wie), Komparativ (+er, ...als), Superlativ (am...sten); Unregelmäßig: gut-besser-am besten; viel-mehr-am meisten; gern-lieber-am liebsten; hoch-höher-am höchsten; nah-näher-am nächsten. Korrektur: 'Er rennt viel schneller ALS ich.'",
+          "sample_solution": "1. Die drei Steigerungsstufen (Komparierbarkeit) der Adjektive: - **1. Positiv (Grundstufe)**:   * Beschreibt die Eigenschaft im Normalzustand: *groß, schnell, schön*.   * **Vergleich bei Gleichheit**: Verlangt die Konjunktion **'wie'** (Formel: *so + Positiv + wie* -> *'Anna ist genauso alt wie Lukas'*). - **2. Komparativ (Höherstufe / Mehrstufe)**:   * Bildung: An den Wortstamm wird die Endung **-er** angehängt; Stammvokale wandeln sich oft in Umlaute um (*groß -> größer, alt -> älter, jung -> jünger*).   * **Vergleich bei Ungleichheit**: Verlangt zwingend die Konjunktion **'als'** (Formel: *Komparativ + als* -> *'Lukas ist größer als Anna'*). - **3. Superlativ (Höchststufe)**:   * Bildung: Endung **-sten** bzw. **-esten** (bei Endungen auf -d, -t, -s, -z) in Verbindung mit *'am'* oder Artikel: *am größten, am ältesten, der schnellste Läufer*. 2. Häufige unregelmäßige Steigerungsformen (Auswendigwissen): - *gut -> besser -> am besten* - *viel -> mehr -> am meisten* - *gern -> lieber -> am liebsten* - *hoch -> höher -> am höchsten* (Wegfall des 'c') - *nah -> näher -> am nächsten* ('h' wird zu 'ch'). 3. Fehlerkorrektur: - Falsch: *'Er rennt viel schneller wie ich.'* - Richtig: **'Er rennt viel schneller als ich.'** (Begründung: *schneller* ist ein Komparativ; bei Ungleichheit fordert die deutsche Standardsprache immer *als*!)."
+        }
+      ]
+    }
+  ]
+}

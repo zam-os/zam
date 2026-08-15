@@ -1,0 +1,160 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 10: Abschlussprüfung – Strafrecht, Arbeitsrecht und Soziale Sicherung (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Wirtschaft und Recht 10 (Abschlussprüfung Zweig II/III): Strafrecht vs. Zivilrecht (Strafmündigkeit / JGG, Erziehungsgedanke), Arbeitsrecht (Arbeitsvertrag, Kündigungsschutz) und das 5-Säulen-Sozialversicherungssystem.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/wirtschaft_und_recht",
+      "checked": "2026-08-15",
+      "label": "Realschule Wirtschaft und Recht 10 (Wahlpflichtfächergruppe II/III), Lernbereiche Recht und Sozialstaat (Abschlussprüfung)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4WAS0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4WAS0000000000000000A01",
+      "namespace": "wirtschaft-recht-strafrecht",
+      "slug": "strafrecht-vs-zivilrecht-strafmuendigkeit-jgg-erziehungsgedanke",
+      "title": "Strafrecht und Rechtsordnung: Strafmündigkeitsstufen (JGG / StGB), Erziehungsgedanke und Zivilrecht",
+      "domain": "schule/wirtschaft_recht/recht",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Criminal law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Recht – Strafrecht und Schutz der Rechtsgüter",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Recht – Strafrecht und Schutz der Rechtsgüter",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4WAS0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ab welchem vollendeten Lebensjahr ist eine Person in Deutschland strafmündig und kann nach dem Jugendgerichtsgesetz (JGG) vor dem Jugendrichter angeklagt werden?",
+          "concept": "Ab dem 14. Geburtstag (Vollendung des 14. Lebensjahres; unter 14 = schuldunfähige Kinder)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ab 14 Jahren (Jugendlicher nach JGG)",
+              "Erst ab 18 Jahren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4WAS0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Strafrecht und Zivilrecht und systematisiere die Stufen der strafrechtlichen Verantwortlichkeit: 1. **Unterschied Zivilrecht vs. Strafrecht** (Zivilrecht/BGB: Bürger gegen Bürger [Schadensersatz, Vertragserfüllung]; Strafrecht/StGB: Staat gegen Bürger [Schutz von Rechtsgütern wie Leben, Freiheit, Eigentum; Verhängung von Sanktionen durch Staatsanwaltschaft und Gericht]), 2. **Die 4 Altersstufen der Strafmündigkeit**:   * **Kinder (0 bis unter 14 Jahre)**: Völlig schuldunfähig; keine Bestrafung (nur Jugendamt/Familienrecht).   * **Jugendliche (14 bis unter 18 Jahre)**: Bedingt strafmündig (Einsichtsfähigkeit wird geprüft); zwingende Anwendung des **Jugendgerichtsgesetzes (JGG)** mit absolutem Vorrang des **Erziehungsgedankens** (Erziehungsmaßregeln, Zuchtmittel [Sozialstunden, Jugendarrest], Jugendstrafe als *Ultima Ratio*).   * **Heranwachsende (18 bis unter 21 Jahre)**: Voll strafmündig; Richter entscheidet nach Reifegrad über JGG oder Erwachsenenstrafrecht.   * **Erwachsene (ab 21 Jahre)**: Strikte Anwendung des allgemeinen Strafgesetzbuchs (StGB: Geldstrafe oder Freiheitsstrafe).",
+          "concept": "Zivilrecht (Bürger vs. Bürger) vs. Strafrecht (Staat vs. Täter); Altersstufen: unter 14 schuldunfähig; 14-17 JGG mit Erziehungsgedanke; 18-20 Heranwachsende (JGG/StGB nach Reife); ab 21 StGB.",
+          "sample_solution": "1. Fundamentaler Rechtsvergleich: Zivilrecht vs. Strafrecht: - **1. Zivilrecht (Privatrecht / BGB)**:   * **Beteiligte**: Gleichgestellte Privatpersonen oder Unternehmen untereinander (*Bürger vs. Bürger*).   * **Ziel**: Ausgleich von Interessen, Schadensersatz, Durchsetzung vertraglicher Ansprüche (*'Wer will was von wem woraus?'*).   * **Initiative**: Der Kläger muss selbst klagen (Zivilprozess). - **2. Strafrecht (Öffentliches Recht / StGB)**:   * **Beteiligte**: Der Staat vertreten durch die **Staatsanwaltschaft** gegen den mutmaßlichen Täter (*Staat vs. Bürger*).   * **Ziel**: Schutz elementarer Rechtsgüter (Leben, körperliche Unversehrtheit, Freiheit, Eigentum), Sühne, Abschreckung (Generalprävention) und Resozialisierung.   * **Initiative**: Der Staat ermittelt von Amts wegen (*Offizialprinzip*). 2. Die 4 Altersstufen der Strafmündigkeit in Deutschland: - **1. Kinder (unter 14 Jahre, § 19 StGB)**:   * **Völlige Schuldunfähigkeit**: Ein Kind kann rechtlich keine Straftat begehen und nicht vor Gericht gestellt werden.   * Maßnahmen: Nur Erziehungsberatung, Auflagen des Jugendamts oder familienrichterliche Schutzmaßnahmen. - **2. Jugendliche (14 bis unter 18 Jahre, § 3 JGG)**:   * **Bedingte Strafmündigkeit**: Es wird geprüft, ob der Jugendliche nach seiner geistigen und sittlichen Reife das Unrecht der Tat einsehen und danach handeln konnte.   * **Der Erziehungsgedanke**: Ziel ist nicht Vergeltung, sondern Erziehung und Verhinderung künftiger Taten.   * **Sanktionenkatalog des JGG**:     - *Erziehungsmaßregeln*: Weisungen (z. B. Täter-Opfer-Ausgleich, Arbeitsstunden im Altenheim, Verkehrsunterricht).     - *Zuchtmittel*: Verwarnung, Bußgeld, Freizeitarrest / Jugendarrest (bis zu 4 Wochen).     - *Jugendstrafe (Freiheitsentzug in der JVA)*: Nur bei schädlichen Neigungen oder schwerster Schuld für mindestens 6 Monate bis maximal 5 bzw. 10 Jahre als allerletztes Mittel (*Ultima Ratio*). - **3. Heranwachsende (18 bis unter 21 Jahre, § 105 JGG)**:   * Voll geschäfts- und deliktsfähig. Das Jugendgericht prüft, ob der Täter zur Tatzeit noch einem Jugendlichen gleichstand (Reifeverzögerung) oder eine typische Jugendverfehlung vorlag $\\rightarrow$ Entscheidung zwischen mildem **JGG** oder hartem **Erwachsenenstrafrecht**. - **4. Erwachsene (ab 21 Jahre)**:   * Ausnahmslose Anwendung des **allgemeinen Strafrechts (StGB)** mit Geldstrafen (in Tagessätzen) oder Freiheitsstrafen bis hin zu lebenslanger Haft."
+        }
+      ]
+    },
+    {
+      "id": "01K4WAS0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4WAS0000000000000000A02",
+      "namespace": "wirtschaft-recht-arbeitsrecht",
+      "slug": "arbeitsrecht-kuendigungsschutz-sozialversicherungen",
+      "title": "Arbeitsrecht und Soziale Sicherung: Kündigungsschutzgesetz und die 5 Säulen der Sozialversicherung",
+      "domain": "schule/wirtschaft_recht/arbeitsrecht",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4WAS0000000000000000A01",
+          "type": "hard",
+          "rationale": "Arbeits- und Sozialrecht sind zentrale Bestandteile des Wirtschaftsunterrichts der 10. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Labor law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb2",
+          "topic_title": "Arbeitsbeziehungen und Soziale Sicherung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "III",
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb2",
+          "topic_title": "Arbeitsbeziehungen und Soziale Sicherung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4WAS0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche der 5 deutschen gesetzlichen Sozialversicherungen wird zu 100 % allein vom Arbeitgeber bezahlt (ohne Arbeitnehmerbeitrag)?",
+          "concept": "Die gesetzliche Unfallversicherung (über die Berufsgenossenschaften)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gesetzliche Unfallversicherung (Berufsgenossenschaft)",
+              "Gesetzliche Krankenversicherung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4WAS0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Grundprinzipien des deutschen Arbeits- und Sozialrechts: 1. **Kündigungsschutzgesetz (KSchG)**: Voraussetzungen (Betrieb > 10 Mitarbeiter, Arbeitsverhältnis > 6 Monate), die 3 sozial gerechtfertigten Kündigungsgründe (personenbedingt, verhaltensbedingt mit vorheriger Abmahnung, betriebsbedingt mit Sozialauswahl), ordentliche vs. außerordentliche / fristlose Kündigung (§ 626 BGB bei wichtigem Grund), 2. **Die 5 Säulen der gesetzlichen Sozialversicherung**:   * Krankenversicherung (GKV)   * Rentenversicherung (GRV / Generationenvertrag)   * Arbeitslosenversicherung (BA)   * Pflegeversicherung (GPV)   * Unfallversicherung (DGUV / Berufsgenossenschaften) und erläutere das **Solidaritätsprinzip** und das **Paritätsprinzip**.",
+          "concept": "Arbeitsrecht: KSchG (personen-, verhaltens-, betriebsbedingt; fristlos bei wichtigem Grund); 5 Säulen: Kranken-, Renten-, Arbeitslosen-, Pflege-, Unfallversicherung; Solidaritätsprinzip (Beitrag nach Einkommen, Leistung nach Bedarf) und Parität (50% AN / 50% AG, außer Unfallversicherung 100% AG).",
+          "sample_solution": "1. Das Kündigungsschutzrecht in Deutschland: - **1. Anwendungsbereich des Kündigungsschutzgesetzes (KSchG)**:   * Gilt für Betriebe mit in der Regel **mehr als 10 Vollzeit-Arbeitnehmern** nach einer Wartezeit von mindestens **6 Monaten (Probezeit)**. - **2. Die 3 sozial gerechtfertigten Kündigungsgründe (§ 1 KSchG)**:   * **1. Personenbedingte Kündigung**: Der Arbeitnehmer *kann* aus Gründen in seiner Person die Leistung nicht mehr erbringen (z. B. dauerhafte schwere Krankheit, Verlust des Führerscheins bei Berufskraftfahrer).   * **2. Verhaltensbedingte Kündigung**: Der Arbeitnehmer *will* seine vertraglichen Pflichten schuldhaft nicht erfüllen (z. B. wiederholtes Zuspätkommen, Arbeitsverweigerung, Beleidigung). Voraussetzung: Mindestens eine vorherige einschlägige **Abmahnung**!   * **3. Betriebsbedingte Kündigung**: Dringende betriebliche Erfordernisse (z. B. Schließung einer Abteilung, Umsatzrückgang). Pflicht zur **Sozialauswahl** anhand von 4 Kriterien: *Lebensalter, Betriebszugehörigkeit, Unterhaltspflichten (Kinder), Schwerbehinderung*. - **3. Außerordentliche (fristlose) Kündigung (§ 626 BGB)**:   * Beendet das Arbeitsverhältnis ohne Einhaltung einer Kündigungsfrist bei **schwerwiegendem Grund** (z. B. Diebstahl am Arbeitsplatz, schwere Körperverletzung, Spionage); muss binnen **2 Wochen** nach Bekanntwerden ausgesprochen werden. 2. Die 5 Säulen der gesetzlichen Sozialversicherung: 1. **Gesetzliche Krankenversicherung (GKV)**: Träger sind Krankenkassen (AOK, TK, BKK); leistet bei Krankheit, Arztbesuchen, Krankenhaus und Mutterschaft. 2. **Gesetzliche Rentenversicherung (GRV)**: Träger Deutsche Rentenversicherung; sichert Altersruhestand und Erwerbsminderung nach dem **Generationenvertrag (Umlageverfahren)**. 3. **Gesetzliche Arbeitslosenversicherung**: Träger Bundesagentur für Arbeit; zahlt Arbeitslosengeld I (ALG I) und finanziert Weiterbildungsmaßnahmen. 4. **Gesetzliche Pflegeversicherung (GPV)**: 1995 eingeführt; sichert Pflegebedürftigkeit nach 5 Pflegegraden ab. 5. **Gesetzliche Unfallversicherung**: Träger sind die **Berufsgenossenschaften (BG)**; leistet bei Arbeitsunfällen, Berufskrankheiten und Wegeunfällen (Schule/Arbeitsweg). 3. Die tragenden Grundprinzipien: - **Paritätsprinzip**: Die Beiträge zur Kranken-, Renten-, Arbeitslosen- und Pflegeversicherung werden **zu gleichen Teilen (je 50 % Arbeitnehmer und 50 % Arbeitgeber)** paritätisch finanziert. *Einzige Ausnahme*: Die **Unfallversicherung zahlt der Arbeitgeber zu 100 % allein!** - **Solidaritätsprinzip**: Die Beiträge richten sich nach dem prozentualen Einkommen der Versicherten (*Leistungsfähigkeit*), während die medizinischen Leistungen im Krankheitsfall für jeden Patienten exakt gleich nach Bedarf erbracht werden."
+        }
+      ]
+    }
+  ]
+}

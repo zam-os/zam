@@ -1,0 +1,382 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-biologie-genetik-vererbung",
+  "version": "2026.08.1",
+  "title": "Genetik und Vererbung (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 9: Chromosomen, Karyogramm, DNA-Doppelhelix, Replikation, Mitose vs. Meiose, Mendelsche Regeln und Stammbaumanalyse.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 9, Lernbereich Genetik und Vererbungslehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B9G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B9G0000000000000000A01",
+      "namespace": "biologie-genetik",
+      "slug": "chromosomen-karyogramm-gonosomen",
+      "title": "Zellkern, Chromosomen und Karyogramm des Menschen",
+      "domain": "schule/biologie/genetik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37748",
+          "target_label": "Chromosome",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Chromosomen enthält der diploide Chromosomensatz (2n) einer normalen menschlichen Körperzelle?",
+          "concept": "46 Chromosomen (23 Paare: 44 Autosomen + 2 Gonosomen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "46 Chromosomen (23 Paare)",
+              "23 Chromosomen insgesamt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den Aufbau eines Metaphase-Chromosoms (Chromatiden, Centromer), erkläre den Unterschied zwischen Autosomen und Gonosomen und beschreibe die Geschlechtschromosomen-Kombination von Mann und Frau.",
+          "concept": "2 identische Schwesterchromatiden am Centromer; 22 Autosomenpaare + 1 Gonosomenpaar; Frau XX, Mann XY",
+          "sample_solution": "Ein verdoppeltes Metaphase-Chromosom besteht aus zwei genetisch identischen Schwesterchromatiden, die an der Einschnürungsstelle (Centromer) zusammengehalten werden. In menschlichen Körperzellen liegen 46 Chromosomen paarweise vor (diploid, 2n): 22 Paare sind Autosomen (Körperchromosomen, homologe Paare 1 bis 22) und 1 Paar sind Gonosomen (Geschlechtschromosomen). Bei der Frau liegen zwei homologe X-Chromosomen vor (46,XX), beim Mann ein X- und ein kleineres Y-Chromosom (46,XY). In einem Karyogramm werden die Chromosomen nach Größe, Bandenmuster und Centromerlage paarweise geordnet."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B9G0000000000000000A02",
+      "namespace": "biologie-genetik",
+      "slug": "dna-struktur-doppelhelix-basenpaarung",
+      "title": "DNA-Struktur: Doppelhelix und komplementäre Basenpaarung",
+      "domain": "schule/biologie/genetik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Chromosomen als Träger der Erbinformation sind Voraussetzung für die molekulare DNA-Struktur."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7430",
+          "target_label": "DNA",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche organische Base paart in der DNA komplementär mit Guanin (G)?",
+          "concept": "Cytosin (C) über 3 Wasserstoffbrücken",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cytosin (C)",
+              "Adenin (A)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die chemische Grundstruktur der DNA (Desoxyribonukleinsäure) nach dem Watson-Crick-Modell: Bausteine eines Nukleotids, Aufbau des Strangs und komplementäre Basenpaarung.",
+          "concept": "Nukleotid = Phosphatrest + Desoxyribose (Zucker) + organische Base (A, T, G, C); antiparallele Stränge; A-T (2 H-Brücken), G-C (3 H-Brücken)",
+          "sample_solution": "Die DNA ist eine rechtsgängige Doppelhelix aus zwei antiparallelen Einzelsträngen. Die Monomere sind Nukleotide, bestehend aus: 1. einem Phosphatrest, 2. dem Zucker Desoxyribose und 3. einer von vier stickstoffhaltigen Basen: Adenin (A), Thymin (T), Guanin (G) oder Cytosin (C). Das Rückgrat der Stränge bildet eine kovalente Phosphat-Desoxyribose-Kette. Die beiden Stränge werden im Inneren durch komplementäre Wasserstoffbrückenbindungen zwischen den Basenpaaren zusammengehalten: Adenin paart immer mit Thymin (2 H-Brücken, A=T), Guanin immer mit Cytosin (3 H-Brücken, G≡C)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9G0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B9G0000000000000000A03",
+      "namespace": "biologie-genetik",
+      "slug": "mitose-vs-meiose-zellteilung",
+      "title": "Zellteilung: Mitose (Körperzellen) vs. Meiose (Keimzellen)",
+      "domain": "schule/biologie/genetik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Chromosomensätze sind Voraussetzung für die Teilungsmechanismen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q14763",
+          "target_label": "Mitosis",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9G0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Ploidiegrad besitzen die Tochterzellen nach einer vollständigen Meiose (Reifeteilung) zur Bildung von Eizellen oder Spermien?",
+          "concept": "Haploid (1n = 23 Chromosomen beim Menschen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haploider Chromosomensatz (1n)",
+              "Diploider Chromosomensatz (2n)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9G0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Mitose und Meiose tabellarisch hinsichtlich biologischer Funktion, Ort im Körper, Anzahl der Kernteilungen und Ploidiegrad sowie genetischer Identität der Tochterzellen.",
+          "concept": "Mitose: Wachstum/Regeneration, 1 Teilung, 2 identische diploide (2n) Zellen; Meiose: Keimzellbildung, 2 Teilungen, 4 genetisch verschiedene haploide (1n) Zellen",
+          "sample_solution": "1. Mitose: Dient dem Wachstum, Zellerneuerung und Wundheilung; findet in allen wachsenden Körperzellen statt; umfasst 1 Kernteilung (Pro-, Meta-, Ana-, Telophase); Ergebnis: 2 genetisch identische Tochterzellen mit diploidem Chromosomensatz (2n). 2. Meiose (Reifeteilung): Dient der geschlechtlichen Fortpflanzung (Bildung von Gameten/Keimzellen: Eizellen und Spermien); findet in den Keimdrüsen (Hoden/Eierstöcke) statt; umfasst 2 aufeinanderfolgende Teilungen (Meiose I: Reduktionsteilung mit Crossing-over und Trennung homologer Chromosomen; Meiose II: Äquationsteilung); Ergebnis: 4 genetisch unterschiedliche Keimzellen mit einfachem/haploidem Chromosomensatz (1n = 23 Chromosomen)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9G0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B9G0000000000000000A04",
+      "namespace": "biologie-genetik",
+      "slug": "mendelsche-regeln-vererbungsgrundlagen",
+      "title": "Mendelsche Regeln: Uniformität, Spaltung und Unabhängigkeit",
+      "domain": "schule/biologie/genetik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9G0000000000000000A03",
+          "type": "hard",
+          "rationale": "Meiose und Alleltrennung sind die zellbiologische Grundlage der Mendelschen Regeln."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q185363",
+          "target_label": "Mendelian inheritance",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9G0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem phänotypischen Zahlenverhältnis spalten die Nachkommen der F2-Generation bei einem dominant-rezessiven monohybriden Erbgang auf?",
+          "concept": "3 : 1 (3 dominant : 1 rezessiv)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3 : 1 (drei Teile dominant, ein Teil rezessiv)",
+              "1 : 1"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9G0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die drei Mendelschen Regeln (Uniformitätsregel, Spaltungsregel, Unabhängigkeitsregel) und unterscheide die Fachbegriffe Genotyp, Phänotyp, homozygot und heterozygot.",
+          "concept": "1. Uniformitätsregel (F1 phäno-/genotypisch gleich); 2. Spaltungsregel (F2 spaltet 3:1 phänotypisch, 1:2:1 genotypisch); 3. Unabhängigkeitsregel (Merkmale frei kombinierbar bei 9:3:3:1 in F2)",
+          "sample_solution": "Begriffe: Genotyp = genetische Ausstattung (Allel-Kombination, z. B. AA, Aa, aa); Phänotyp = äußeres Erscheinungsbild; homozygot = reinerbig (AA oder aa); heterozygot = mischerbig (Aa). 1. Mendelsche Regel (Uniformitätsregel): Kreuzt man zwei reinerbige Individuen einer Art, die sich in einem Merkmal unterscheiden (AA x aa), so sind alle Nachkommen der F1-Generation phänotypisch und genotypisch gleich (uniform, alle Aa). 2. Mendelsche Regel (Spaltungsregel): Kreuzt man die Individuen der F1-Generation untereinander (Aa x Aa), so spalten die Nachkommen der F2-Generation in einem festen Zahlenverhältnis auf (dominant-rezessiv: Phänotyp 3 : 1, Genotyp 1 AA : 2 Aa : 1 aa). 3. Mendelsche Regel (Unabhängigkeitsregel): Bei Kreuzung von Individuen, die sich in zwei Merkmalen unterscheiden (dihybrid, auf verschiedenen Chromosomen), werden die Allele unabhängig voneinander vererbt und in der F2 neu kombiniert (phänotypisches Verhältnis 9 : 3 : 3 : 1)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9G0000000000000000A05",
+      "atom_uri": "urn:zam:atom:01K4B9G0000000000000000A05",
+      "namespace": "biologie-genetik",
+      "slug": "stammbaumanalyse-humangenetik-erbkrankheiten",
+      "title": "Stammbaumanalyse und Humangenetik: Erbgänge",
+      "domain": "schule/biologie/genetik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9G0000000000000000A04",
+          "type": "hard",
+          "rationale": "Mendelsche Vererbungsregeln sind Voraussetzung für die Stammbaumanalyse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1056557",
+          "target_label": "Pedigree chart",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Genetik und Vererbung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9G0000000000000000J09",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Können zwei gesunde Eltern bei einem autosomal-rezessiven Erbgang (z. B. Mukoviszidose) ein erkranktes Kind bekommen, wenn beide Träger des veränderten Allels (heterozygot Aa) sind?",
+          "concept": "Ja, mit einer Wahrscheinlichkeit von 25% (Genotyp aa)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, mit 25% Wahrscheinlichkeit (Genotyp aa)",
+              "Nein, das ist genetisch unmöglich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9G0000000000000000J10",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Erkennungsmerkmale eines autosomal-rezessiven, eines autosomal-dominanten und eines X-chromosomal-rezessiven Erbgangs in einem Stammbaum.",
+          "concept": "Autosomal-rezessiv: Generationen übersprungen, gesunde Eltern können kranke Kinder haben; autosomal-dominant: in jeder Generation Betroffene, kranke Eltern können gesunde Kinder haben; X-rezessiv: überwiegend Männer betroffen",
+          "sample_solution": "1. Autosomal-rezessiv: Das Merkmal tritt nicht in jeder Generation auf (Generationensprung). Zwei phänotypisch gesunde Eltern (Konduktoren Aa) können betroffene Kinder (aa) haben. Beide Geschlechter sind gleich häufig betroffen. 2. Autosomal-dominant: Das Merkmal tritt in nahezu jeder Generation auf. Jedes betroffene Kind hat mindestens einen betroffenen Elternteil (z. B. Chorea Huntington). Zwei betroffene Eltern (Aa x Aa) können gesunde Kinder (aa) bekommen. 3. X-chromosomal (gonosomal) rezessiv: Fast ausschließlich Männer sind betroffen (hemizygot X_a Y, da sie nur ein X-Chromosom besitzen, z. B. Rot-Grün-Sehschwäche oder Bluterkrankheit). Frauen sind meist gesunde Überträgerinnen (Konduktorinnen X_A X_a)."
+        }
+      ]
+    }
+  ]
+}

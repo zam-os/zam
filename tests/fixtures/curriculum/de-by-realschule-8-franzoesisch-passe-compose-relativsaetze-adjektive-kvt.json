@@ -1,0 +1,140 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive",
+  "version": "2026.08.1",
+  "title": "Französisch 8 IIIa: Grammatik – Passé composé (avoir/être), Relativpronomen und Adjektivstellung (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Französisch 8 (Wahlpflichtfächergruppe IIIa): Passé composé mit avoir und être (Accord des Partizips), Relativsätze (qui, que, où), Adjektivstellung und Adjektivsteigerung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/franzoesisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Französisch 8 (Wahlpflichtfächergruppe IIIa), Lernbereiche Sprachliche Mittel und Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4F8P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4F8P0000000000000000A01",
+      "namespace": "franzoesisch-grammatik",
+      "slug": "passe-compose-avoir-vs-etre-partizip-accord",
+      "title": "Das Passé composé: Bildung mit 'avoir' vs. 'être' (Verben der Bewegung) und Partizipangleichung (Accord)",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Passé composé",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Zeitformen der Vergangenheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F8P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Hilfsverb (*avoir* oder *être*) verlangen französische Verben der Ortsveränderung / Bewegungsverben (wie *aller, venir, partir, arriver, entrer, sortir*) im Passé composé?",
+          "concept": "Das Hilfsverb être (mit Angleichung / Accord des Partizips an das Subjekt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Hilfsverb être (mit Partizipangleichung)",
+              "Das Hilfsverb avoir"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F8P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Bildungsregeln des Passé composé im Französischen: 1. Bildung mit **avoir** (Form von *avoir* im Présent + *participe passé*: -er -> -é [*parlé*], -ir -> -i [*fini*], -re/unregelmäßig -> -u [*voulu, lu, vu*]; keine Angleichung an das Subjekt!), 2. Bildung mit **être** (ca. 15 Verben der Bewegung/Zustandsänderung wie *aller, venir, partir, arriver, monter, descendre, rester, tomber, naître, mourir* sowie alle reflexiven Verben), 3. Die **Partizipangleichung (l'accord du participe passé)** bei *être* in Genus und Numerus an das Subjekt (+e weiblich, +s männlich Plural, +es weiblich Plural) und übersetze: a) 'Gestern habe ich einen Film gesehen.' b) 'Sie (weiblich Plural) sind nach Paris gefahren.'",
+          "concept": "Passé composé: avoir/être + participe passé; avoir = Standard ohne Accord; être = Bewegungsverben mit Accord an Subjekt (+e/+s/+es); a) 'Hier, j'ai vu un film.' b) 'Elles sont allées à Paris.'",
+          "sample_solution": "1. Das System des Passé composé (Die zusammengesetzte Vergangenheit): - **1. Bildung mit dem Hilfsverb 'avoir' (Der Standardfall für 95 % aller Verben)**:   * **Formel**:   $$\\mathbf{\\text{Form von avoir im Présent} + \\text{Participe passé}}$$   * **Bildung des Participe passé**:     - Regelmäßige Verben auf **-er** $\\rightarrow$ Endung **-é** (*parler $\\rightarrow$ parlé, aimer $\\rightarrow$ aimé*).     - Verben auf **-ir** $\\rightarrow$ Endung **-i** (*finir $\\rightarrow$ fini, choisir $\\rightarrow$ choisi*).     - Unregelmäßige Verben $\\rightarrow$ oft **-u** (*voir $\\rightarrow$ vu, lire $\\rightarrow$ lu, attendre $\\rightarrow$ attendu, avoir $\\rightarrow$ eu, être $\\rightarrow$ été, faire $\\rightarrow$ fait*).   * **Keine Angleichung**: Bei *avoir* richtet sich das Partizip im Normalfall **nicht** nach dem Subjekt (*'Elle a mangé'*). - **2. Bildung mit dem Hilfsverb 'être' (Bewegungsverben & reflexive Verben)**:   * **Die Verben des 'Maison d'être' (Orts- und Zustandsveränderung)**:     *aller* (gehen/fahren), *venir* (kommen), *arriver* (ankommen), *partir* (abfahren), *entrer* (eintreten), *sortir* (hinausgehen), *monter* (hinaufsteigen), *descendre* (hinabsteigen), *tomber* (fallen), *rester* (bleiben), *retourner* (zurückkehren), *naître* (geboren werden), *mourir* (sterben). - **3. Die Pflicht zur Partizipangleichung (L'accord du participe passé)**:   * Bei Bildung mit *être* wird das Partizip wie ein Adjektiv **zwingend an das Geschlecht (Genus) und die Zahl (Numerus) des Subjekts angeglichen**:     - Männlich Singular: Grundform (*Il est allé*)     - Weiblich Singular: **+ e** (*Elle est allé**e***)     - Männlich / gemischt Plural: **+ s** (*Ils sont allé**s***)     - Weiblich Plural: **+ es** (*Elles sont allé**es***). 2. Übersetzungen: - a) 'Gestern habe ich einen Film gesehen.' $\\rightarrow$ **« Hier, j'ai vu un film. »** (Bildung mit *avoir*). - b) 'Sie (weiblich Plural) sind nach Paris gefahren.' $\\rightarrow$ **« Elles sont allées à Paris. »** (Bildung mit *être* $\\rightarrow$ Endung *-ées*). "
+        }
+      ]
+    },
+    {
+      "id": "01K4F8P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4F8P0000000000000000A02",
+      "namespace": "franzoesisch-grammatik",
+      "slug": "relativsaetze-qui-que-ou-adjektive-stellung",
+      "title": "Relativsätze (qui, que, où) und Adjektivsyntax (Stellung vor/nach Nomen, Steigerung)",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F8P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Satzgefüge erweitern die französische Grammatik der 8. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Relative pronoun",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "IIIa",
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachliche Mittel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F8P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Relativpronomen muss eingesetzt werden, wenn es im Relativsatz die Funktion des **Subjekts** übernimmt (gefolgt direkt von einem Verb, z. B. 'C'est le garçon ... parle français')?",
+          "concept": "qui (qui + Verb = Subjekt; que + Subjekt + Verb = Objekt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "qui (Subjektfunktion)",
+              "que (Objektfunktion)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F8P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Unterscheidung der französischen Relativpronomen **qui, que (qu')** und **où** sowie die Regeln der Adjektivstellung: 1. **qui** (steht als Subjekt für Personen und Sachen $\\rightarrow$ nach *qui* folgt sofort das finite Verb), 2. **que / qu'** (steht als direktes Akkusativobjekt $\\rightarrow$ nach *que* folgt ein neues Subjekt), 3. **où** (steht für Orts- und Zeitangaben: 'wo / an dem'), 4. **Adjektivstellung**: Fast alle Adjektive (Farben, Nationalitäten, Formen) stehen **hinter** dem Nomen (*une voiture rouge*); nur kurze, häufige Adjektive stehen **vor** dem Nomen (*grand, petit, bon, mauvais, beau, jeune, nouveau*) und übersetze: a) 'Das ist die Stadt, in der ich wohne.' b) 'Der Hund, der im Garten bellt, ist sehr klein.'",
+          "concept": "qui (Subjekt + Verb), que (Objekt + Subjekt + Verb), où (Ort/Zeit); Adjektivstellung: Farben/Formen nachgestellt, BANGS-Adjektive (beau, grand, petit, bon) vorangestellt; a) 'C'est la ville où j'habite.' b) 'Le chien qui aboie dans le jardin est très petit.'",
+          "sample_solution": "1. Die französischen Relativpronomen im Überblick: - **1. qui (der, die, das / welche)**:   * Wirkt im Relativsatz als **Subjekt**.   * **Unfehlbares Erkennungsmerkmal**: Direkt nach *qui* folgt **immer ein Verb**! (*qui habite, qui mange*). Wird vor Vokal **niemals** apostrophiert. - **2. que / qu' (den, die, das / welche)**:   * Wirkt im Relativsatz als **direktes Objekt (Akkusativobjekt)**.   * **Erkennungsmerkmal**: Nach *que* folgt **immer ein neues Subjekt** (*que j'aime, que tu vois*). Wird vor Vokal zu **qu'** apostrophiert (*qu'il achète*). - **3. où (wo / in dem / an dem)**:   * Bezieht sich auf einen **Ort** (*la ville où...*) oder einen **Zeitpunkt** (*le jour où...*). 2. Die Regeln der Adjektivstellung: - **Grundregel (Nachgestellt)**: Im Französischen stehen die allermeisten Adjektive **hinter dem Nomen** (besonders Farben, Herkunft, geometrische Formen: *un pantalon noir, une table ronde, un livre français*). - **Ausnahme (Vorangestellt)**: Eine feste Gruppe kurzer, sehr gebräuchlicher Adjektive steht **vor dem Nomen**:   * *grand* (groß), *petit* (klein)   * *bon* (gut), *mauvais* (schlecht)   * *beau/bel/belle* (schön), *joli* (hübsch)   * *jeune* (jung), *vieux* (alt)   * *nouveau* (neu). 3. Übersetzungen: - a) 'Das ist die Stadt, in der ich wohne.' $\\rightarrow$ **« C'est la ville où j'habite. »** (Ortsbezug mit *où*). - b) 'Der Hund, der im Garten bellt, ist sehr klein.' $\\rightarrow$ **« Le chien qui aboie dans le jardin est très petit. »** (*qui* als Subjekt vor dem Verb *aboie*; *petit* als vorangestelltes Adjektiv oder Prädikativum)."
+        }
+      ]
+    }
+  ]
+}

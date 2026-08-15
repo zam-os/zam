@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-physik-elektrik-grundlagen",
+  "version": "2026.08.1",
+  "title": "Physik 8: Grundlagen der Elektrizitätslehre und Stromkreise (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 8: Stromkreis, Wirkungen des Stroms, Stromstärke I, Spannung U, Messgeräte und Grundwiderstand.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 8, Lernbereich Grundlagen der Elektrizitätslehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4P8E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4P8E0000000000000000A01",
+      "namespace": "physik-elektrik",
+      "slug": "elektrischer-stromkreis-leiter-nichtleiter",
+      "title": "Elektrischer Stromkreis: Komponenten, geschlossener Kreis, Leiter und Isolatoren",
+      "domain": "schule/physik/elektrik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Electrical circuit",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Teilchen sind in metallischen Leitern (z. B. Kupfer, Aluminium) für den gerichteten Ladungstransport verantwortlich?",
+          "concept": "Frei bewegliche Leitungselektronen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Frei bewegliche Leitungselektronen",
+              "Fest verankerte Atomkerne (Protonen)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die notwendigen Bestandteile eines geschlossenen elektrischen Stromkreises (Quelle, Verbraucher, Hin- und Rückleiter, Schalter), erkläre den Unterschied zwischen Leitern (Metalle, Graphit, Salzlösungen) und Isolatoren (Kunststoffe, Glas, Luft) auf atomarer Ebene und unterscheide die physikalische Elektronenflussrichtung von der historischen/technischen Stromrichtung.",
+          "concept": "Stromkreis: Quelle liefert Ladungstrennung/Spannung, Leiter transportieren, Verbraucher wandelt Energie; Leiter: freie Elektronen/Ionen vs. Isolatoren: fest gebundene Elektronen; Technische Stromrichtung: Plus nach Minus; Physikalische Richtung: Minus nach Plus"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4P8E0000000000000000A02",
+      "namespace": "physik-elektrik",
+      "slug": "wirkungen-des-stroms-magnet-waerme-chemie",
+      "title": "Wirkungen des elektrischen Stroms: Wärme-, Licht-, Magnet- und chemische Wirkung",
+      "domain": "schule/physik/elektrik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Ein geschlossener Stromkreis ist Voraussetzung für die Stromwirkungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Effects of electric current",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Wirkung des elektrischen Stroms tritt ausnahmslos bei JEDEM stromdurchflossenen Leiter auf?",
+          "concept": "Die magnetische Wirkung (Magnetfeld um den Leiter herum)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die magnetische Wirkung",
+              "Die chemische Wirkung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne und erläutere die vier fundamentalen Wirkungen des elektrischen Stroms (Wärmewirkung, Lichtwirkung, magnetische Wirkung, chemische Wirkung) und ordne jeder Wirkung je ein technisches Alltagsgerät sowie das physikalische Prinzip zu.",
+          "concept": "Wärme: Zusammenstöße der Elektronen mit Atomrümpfen (Föhn, Toaster, Schmelzsicherung); Licht: Glühwendel / Halbleiter-Rekombination (LED, Glühlampe); Magnetismus: Oersted-Effekt / Spule (Elektromagnet, Relais, E-Motor); Chemie: Elektrolyse / galvanische Zersetzung (Akkuladen, Eloxieren)"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8E0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4P8E0000000000000000A03",
+      "namespace": "physik-elektrik",
+      "slug": "stromstaerke-spannung-messgeraete-schaltung",
+      "title": "Stromstärke I, elektrische Spannung U und korrekte Messgeräteverschaltung",
+      "domain": "schule/physik/elektrik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8E0000000000000000A02",
+          "type": "hard",
+          "rationale": "Stromkreis und Ladungsfluss sind Basis für Stromstärke und Spannung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Electric current and voltage",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8E0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird ein Strommessgerät (Amperemeter) und wie ein Spannungsmessgerät (Voltmeter) im Stromkreis angeschlossen?",
+          "concept": "Amperemeter in Reihe (in Serie) geschaltet; Voltmeter parallel zum Verbraucher",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Amperemeter in Reihe; Voltmeter parallel geschaltet",
+              "Amperemeter parallel; Voltmeter in Reihe geschaltet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8E0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die elektrische Stromstärke I = Q / t (Einheit Ampere [A]) und die elektrische Spannung U (Antrieb des Stroms / Potenzialdifferenz, Einheit Volt [V]), begründe anhand der Innenwiderstände, warum ein Amperemeter niederohmig und ein Voltmeter hochohmig sein muss, und erkläre die Gefahren eines Kurzschlusses.",
+          "concept": "I = Ladungsmenge pro Zeit (1 A = 1 C/s); U = Maß für die Energie/Antrieb pro Ladung (1 V = 1 J/C); Amperemeter niederohmig, damit Stromkreis nicht gedrosselt wird; Voltmeter hochohmig, damit fast kein Strom abzweigt; Kurzschluss: R -> 0 => I extrem hoch -> Brandgefahr"
+        }
+      ]
+    },
+    {
+      "id": "01K4P8E0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4P8E0000000000000000A04",
+      "namespace": "physik-elektrik",
+      "slug": "elektrischer-widerstand-kennlinie-ohm",
+      "title": "Elektrischer Widerstand R = U / I und Ohmsches Gesetz als Kennlinie",
+      "domain": "schule/physik/elektrik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P8E0000000000000000A03",
+          "type": "hard",
+          "rationale": "Spannung und Stromstärke sind die Definitionsgrößen des Widerstands."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Ohm's law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Grundlagen der Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P8E0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Kennlinie im U-I-Diagramm kennzeichnet einen ohmschen Widerstand (konstanter Widerstand bei gleichbleibender Temperatur)?",
+          "concept": "Eine Ursprungsgerade (Proportionalität zwischen Spannung U und Stromstärke I: U ~ I)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine Ursprungsgerade (U ~ I)",
+              "Eine nach unten gekrümmte Parabel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P8E0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere das Ohmsche Gesetz R = U / I (Einheit Ohm [Ω]), berechne den Widerstand eines Verbrauchers, an dem bei U = 230 V ein Strom von I = 4,6 A gemessen wird, und erkläre, warum eine Glühlampe mit Wolframwendel kein idealer ohmscher Widerstand ist (Kaltleiter-Verhalten).",
+          "concept": "R = U / I = 230 V / 4,6 A = 50 Ohm; Kaltleiter (PTC): Bei höherer Spannung steigt Strom -> Glühfaden erhitzt sich -> Gitterbausteine schwingen stärker -> Behinderung der Elektronen wächst -> R wird größer (nichtlineare Kennlinie)."
+        }
+      ]
+    }
+  ]
+}

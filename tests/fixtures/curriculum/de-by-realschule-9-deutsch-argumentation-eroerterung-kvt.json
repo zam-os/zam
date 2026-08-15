@@ -1,0 +1,296 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-deutsch-argumentation-eroerterung",
+  "version": "2026.08.1",
+  "title": "Deutsch: Argumentation, Erörterung und Textanalyse (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Deutsch 9: Argumentationsaufbau (3-B-Schema), dialektische Erörterung, rhetorische Stilmittel und Quellenkritik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/deutsch",
+      "checked": "2026-08-15",
+      "label": "Realschule Deutsch 9, Lernbereich Texte schreiben (Argumentieren & Erörtern)"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4D9T0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4D9T0000000000000000A01",
+      "namespace": "deutsch-argumentation",
+      "slug": "argumentationsstruktur-3b-schema",
+      "title": "Argumentationsstruktur: Behauptung, Begründung und Beleg (3-B-Schema)",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q186150",
+          "target_label": "Argumentation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D9T0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Baustein eines vollständigen Arguments untermauert die logische Begründung durch ein konkretes Beispiel, eine Statistik oder ein Zitat?",
+          "concept": "Der Beleg / das Beispiel (3. Stufe)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Beleg / das Beispiel",
+              "Die These (Behauptung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D9T0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erläutere den dreigliedrigen Aufbau eines überzeugenden Arguments (3-B-Schema: Behauptung/These, Begründung/Warum-Frage, Beleg/Beispiel/Beweis) und formuliere ein vollständiges Argument zur Frage, ob Smartphones im Unterricht als Lernmedium genutzt werden sollten.",
+          "concept": "1. Behauptung (These); 2. Begründung (kausale logische Herleitung); 3. Beleg (empirischer Nachweis/konkretes Beispiel/Studie)",
+          "sample_solution": "1. Aufbau des 3-B-Schemas: a) Behauptung (These): Kernaussage oder Standpunkt. b) Begründung (Argument): Erklärt das 'Warum' mit logischen Kausalzusammenhängen (weil, da, denn). c) Beleg / Beispiel: Veranschaulicht und beweist die Begründung durch Fakten, Studien, Statistiken oder lebensnahe Erfahrungen. 2. Beispiel-Argument (Smartphone als Lernmedium): [Behauptung] Smartphones sollten gezielt im Fachunterricht eingesetzt werden. [Begründung] Denn durch mobile Endgeräte können Schülerinnen und Schüler eigenverantwortlich recherchieren und digitale Medienkompetenz unmittelbar an realen Problemstellungen erlernen. [Beleg] Eine aktuelle Studie des Instituts für Schulpädagogik zeigte beispielsweise, dass Klassen mit regelmäßigem Smartphone-Recherche-Einsatz bei komplexen naturwissenschaftlichen Aufgaben um 25% schnellere und fundiertere Ergebnisse erzielten."
+        }
+      ]
+    },
+    {
+      "id": "01K4D9T0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4D9T0000000000000000A02",
+      "namespace": "deutsch-argumentation",
+      "slug": "dialektische-eroerterung-aufbau-gliederung",
+      "title": "Die dialektische Erörterung: Sanduhr- und Ping-Pong-Prinzip",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4D9T0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das 3-B-Schema ist Voraussetzung für die Gesamterörterung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q186150",
+          "target_label": "Essay",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte schreiben",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Texte schreiben",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D9T0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Nach welchem Steigerungsprinzip werden Argumente im Hauptteil einer dialektischen Erörterung nach dem Sanduhr-Modell angeordnet?",
+          "concept": "Gegenposition: vom stärksten zum schwächsten Argument; Eigene Position: vom schwächsten zum stärksten (wirkungsvollsten) Argument",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenseite absteigend (stark -> schwach), eigene Seite aufsteigend (schwach -> stark)",
+              "Alle Argumente rein chronologisch oder zufällig"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D9T0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die vollständige Struktur einer dialektischen Erörterung: Einleitung (Aufhänger, Themafrage), Hauptteil nach dem Sanduhr-Prinzip (These, Gegenthese, Antithese, Steigerungslogik, Synthese) und Schluss (persönliches Fazit, Ausblick).",
+          "concept": "Einleitung: aktueller Anlass/Zitat + Überleitung zur Themafrage; Hauptteil Sanduhr: Block 1 Gegenposition (absteigend), Drehpunkt, Block 2 eigene Position (aufsteigend mit schlagendem Hauptargument am Ende); Schluss: Synthese, begründete eigene Meinung, Kompromissvorschlag & Zukunftsausblick",
+          "sample_solution": "Gliederung einer dialektischen Erörterung: 1. Einleitung: Hinführung zum Thema (aktuelles Ereignis, Zitat, Statistik), Erklärung des Problemgehalts und Formulierung der Themafrage. 2. Hauptteil (Sanduhr-Prinzip): a) Block I (Gegenposition zu meiner Meinung): Erörterung der Argumente der Gegenseite in absteigender Reihenfolge (vom stärksten zum schwächsten Argument). b) Wendepunkt / Überleitung (Drehpunkt): Abwägende Brücke zur eigenen Sichtweise. c) Block II (Eigene Position): Erörterung der Argumente meiner Sicht in aufsteigender Steigerung (vom schwächsten zum überzeugendsten stärksten Hauptargument am Schluss). 3. Schluss (Synthese & Ausblick): Zusammenfassung der Hauptgedanken, abwägendes persönliches Urteil, eventueller Kompromissvorschlag und ein perspektivischer Ausblick in die Zukunft."
+        }
+      ]
+    },
+    {
+      "id": "01K4D9T0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4D9T0000000000000000A03",
+      "namespace": "deutsch-textanalyse",
+      "slug": "rhetorische-stilmittel-wirkung",
+      "title": "Rhetorische Stilmittel und ihre funktionale Textwirkung",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183061",
+          "target_label": "Figure of speech",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Lesen – mit Texten und Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Lesen – mit Texten und Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D9T0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Stilmittel liegt vor, wenn aufeinanderfolgende Wörter mit demselben Anlaut/Konsonanten beginnen (z. B. 'Milch macht müde Männer munter')?",
+          "concept": "Alliteration (Stabreim)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alliteration",
+              "Anapher"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D9T0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere und nenne je ein typisches Beispiel sowie die beabsichtigte Leserwirkung für die folgenden fünf rhetorischen Stilmittel: 1. Metapher, 2. Anapher, 3. Hyperbel, 4. Rhetorische Frage und 5. Personifikation.",
+          "concept": "Metapher (bildhafter Vergleich ohne wie); Anapher (Wortwiederholung am Satzanfang); Hyperbel (starke Übertreibung); Rhetorische Frage (Scheinfrage mit klarer Antwort); Personifikation (Vermenschlichung von Abstraktem)",
+          "sample_solution": "1. Metapher: Bildhafter Ausdruck mit Bedeutungsübertragung ohne Vergleichswort 'wie' (z. B. 'Wüstenschiff' für Kamel; 'Rabenmutter'). Wirkung: Veranschaulichung, emotionale Verstärkung. 2. Anapher: Wiederholung desselben Wortes an Satz- oder Versanfängen (z. B. 'Wir wollen Gerechtigkeit. Wir wollen Freiheit.'). Wirkung: Eindringlichkeit, Rhythmisierung. 3. Hyperbel: Starke, bewusste Übertreibung (z. B. 'Ich habe das schon eine Million Mal gesagt'; 'todmüde'). Wirkung: Dramatisierung, Zuspitzung. 4. Rhetorische Frage: Scheinfrage, auf die keine Antwort erwartet wird, weil sie vorausgesetzt wird (z. B. 'Wer möchte nicht in Frieden leben?'). Wirkung: Einbeziehung des Lesers, Verstärkung der Zustimmung. 5. Personifikation: Vermenschlichung von Gegenständen oder Naturphänomenen (z. B. 'Die Sonne lacht'; 'Die Zeit rennt'). Wirkung: Lebendigkeit, bildhafte Nähe."
+        }
+      ]
+    },
+    {
+      "id": "01K4D9T0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4D9T0000000000000000A04",
+      "namespace": "deutsch-medien",
+      "slug": "zitiertechnik-quellenkritik-faktencheck",
+      "title": "Wissenschaftliches Arbeiten: Zitiertechnik, Quellenkritik und Faktenprüfung",
+      "domain": "schule/deutsch/medien",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q112216",
+          "target_label": "Source criticism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Lesen – mit Texten und Medien umgehen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "deutsch",
+          "topic_code": "lb3",
+          "topic_title": "Lesen – mit Texten und Medien umgehen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4D9T0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie muss ein wörtliches (direktes) Zitat in einem Fließtext korrekt gekennzeichnet werden?",
+          "concept": "In Anführungszeichen mit exakter Quellen- und Zeilen-/Seitenangabe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "In Anführungszeichen mit genauer Quellen- und Zeilenangabe",
+              "Ohne Anführungszeichen als eigener Gedanke"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4D9T0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide das wörtliche Zitat vom sinngemäßen Zitat (Paraphrase) und erläutere vier Kriterien zur kritischen Prüfung von Online-Quellen (Autor/Expertise, Aktualität, Objektivität/Interessen und Überprüfbarkeit durch Primärbelege).",
+          "concept": "Wörtliches Zitat = buchstabengetreue Übernahme in Anführungszeichen; Sinngemäßes Zitat = Paraphrase mit 'vgl.'; Quellenkritik: 1. Urheber/Impressum, 2. Datum/Aktualität, 3. Sachlichkeit vs. Meinungsmanipulation/Werbung, 4. Verifizierbare Primärquellen",
+          "sample_solution": "1. Zitierformen: a) Wörtliches (direktes) Zitat: Exakte, buchstabengetreue Übernahme fremder Textpassagen in Anführungszeichen; Auslassungen werden mit [...] gekennzeichnet (Quellenangabe z. B. Müller 2024, S. 45). b) Sinngemäßes (indirektes) Zitat / Paraphrase: Wiedergabe fremder Gedanken in eigenen Worten ohne Anführungszeichen, eingeleitet durch Konjunktiv oder Quellenverweis mit 'vgl.' (vergleiche). 2. Kriterien der Quellenkritik im Internet (Faktencheck): a) Urheberschaft: Wer hat den Text verfasst? Gibt es ein vollständiges Impressum und ist der Autor eine anerkannte Fachperson/Institution? b) Aktualität: Wann wurde der Text publiziert oder zuletzt aktualisiert? c) Objektivität & Intention: Handelt es sich um neutrale Berichterstattung oder um getarnte Werbung, politische Desinformation (Fake News) oder emotionale Meinungsmache? d) Verifizierbarkeit: Werden Primärquellen, Studien und nachprüfbare Statistiken verlinkt?"
+        }
+      ]
+    }
+  ]
+}

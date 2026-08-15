@@ -1,0 +1,387 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
+  "version": "2026.08.1",
+  "title": "Satzgruppe des Pythagoras und Trigonometrie (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9 (Zweig I & Zweig II/III): Satz des Pythagoras, Höhensatz, Kathetensätze, Sinus, Kosinus, Tangens und trigonometrischer Pythagoras.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (I), Lernbereich 3 Rechtwinklige Dreiecke"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (II/III), Lernbereich 3 Rechtwinklige Dreiecke"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4T9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "satz-des-pythagoras",
+      "title": "Satz des Pythagoras",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Pythagorean theorem",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Dreiecksseite liegt im rechtwinkligen Dreieck stets dem 90°-Winkel gegenüber und ist die längste Seite?",
+          "concept": "Hypotenuse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hypotenuse",
+              "Die Ankathete"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T9M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere den Satz des Pythagoras für ein rechtwinkliges Dreieck mit Katheten a, b und Hypotenuse c und gib seine geometrische Flächenbedeutung an.",
+          "concept": "a² + b² = c² (Kathetenquadrate = Hypotenusenquadrat)",
+          "sample_solution": "In jedem rechtwinkligen Dreieck ist die Summe der Flächeninhalte der beiden Kathetenquadrate gleich dem Flächeninhalt des Hypotenusenquadrats: a² + b² = c². Gilt umgekehrt in einem Dreieck a² + b² = c², so ist das Dreieck rechtwinklig mit dem rechten Winkel gegenüber von c."
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "kathetensatz-hoehensatz",
+      "title": "Höhensatz und Kathetensätze von Euklid",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Satz des Pythagoras ist die Grundlage für die Beweise der Satzgruppe von Euklid."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1641870",
+          "target_label": "Geometric mean theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet der Höhensatz im rechtwinkligen Dreieck bei Höhe h auf die Hypotenuse mit den Abschnitten p und q?",
+          "concept": "h² = p * q",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "h² = p * q",
+              "h = p + q"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T9M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die beiden Kathetensätze von Euklid für die Katheten a und b bei Hypotenusenabschnitten p und q (mit c = p + q).",
+          "concept": "a² = c * p und b² = c * q",
+          "sample_solution": "In einem rechtwinkligen Dreieck ist das Quadrat über einer Kathete flächengleich zum Rechteck aus der Hypotenuse c und dem anliegenden Hypotenusenabschnitt: a² = c * p und b² = c * q (wobei p der zu a gehörende und q der zu b gehörende Abschnitt auf c ist)."
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A03",
+      "namespace": "mathematik-trigonometrie",
+      "slug": "trigonometrie-sinus-kosinus",
+      "title": "Sinus und Kosinus am rechtwinkligen Dreieck",
+      "domain": "schule/mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Begriffe Kathete und Hypotenuse aus dem rechtwinkligen Dreieck sind Voraussetzung für Winkelfunktionen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q152415",
+          "target_label": "Sine",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Seitenverhältnis definiert den Sinus eines spitzen Winkels α im rechtwinkligen Dreieck?",
+          "concept": "sin(α) = Gegenkathete / Hypotenuse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete geteilt durch Hypotenuse",
+              "Ankathete geteilt durch Hypotenuse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T9M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere Sinus (sin α) und Kosinus (cos α) am rechtwinkligen Dreieck und erkläre, warum für spitze Winkel 0 < sin α < 1 gilt.",
+          "concept": "sin(α) = GK/H, cos(α) = AK/H; Katheten sind kürzer als die Hypotenuse",
+          "sample_solution": "Im rechtwinkligen Dreieck ist sin(α) = Gegenkathete / Hypotenuse und cos(α) = Ankathete / Hypotenuse. Da im rechtwinkligen Dreieck jede Kathete stets kürzer als die Hypotenuse ist und Längen positiv sind, gilt für jeden spitzen Winkel 0° < α < 90° stets 0 < sin(α) < 1 und 0 < cos(α) < 1."
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A04",
+      "namespace": "mathematik-trigonometrie",
+      "slug": "trigonometrie-tangens",
+      "title": "Tangens am rechtwinkligen Dreieck",
+      "domain": "schule/mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Sinus und Kosinus sind Voraussetzung für die Definition und das Verständnis des Tangens."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1163459",
+          "target_label": "Trigonometric functions",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Definition des Tangens über die beiden Katheten im rechtwinkligen Dreieck?",
+          "concept": "tan(α) = Gegenkathete / Ankathete",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete geteilt durch Ankathete",
+              "Ankathete geteilt durch Gegenkathete"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T9M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie hängen Tangens, Sinus und Kosinus zusammen und wie interpretiert man den Tangens als Steigung einer Geraden?",
+          "concept": "tan(α) = sin(α) / cos(α) = Gegenkathete / Ankathete = Steigung",
+          "sample_solution": "Es gilt tan(α) = sin(α) / cos(α) = Gegenkathete / Ankathete. In einem Steigungsdreieck einer Geraden mit dem Neigungswinkel α gegen die positive x-Achse entspricht die Gegenkathete dem Höhenunterschied Δy und die Ankathete der horizontalen Distanz Δx, weshalb die Steigung m = tan(α) ist."
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000A05",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A05",
+      "namespace": "mathematik-trigonometrie",
+      "slug": "trigonometrischer-pythagoras-spezialwerte",
+      "title": "Trigonometrischer Pythagoras und spezielle Winkelwerte",
+      "domain": "schule/mathematik/trigonometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Sinus und Kosinus sind Voraussetzung für die Identität sin²(α) + cos²(α) = 1."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1056557",
+          "target_label": "Pythagorean trigonometric identity",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000J09",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen exakten Wert ergibt der Ausdruck sin²(α) + cos²(α) für jeden beliebigen Winkel α?",
+          "concept": "1 (Trigonometrischer Pythagoras)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1",
+              "0"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T9M0000000000000000J10",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die exakten Werte von sin(30°), cos(60°) und tan(45°) und begründe den trigonometrischen Pythagoras.",
+          "concept": "sin(30°) = 0,5, cos(60°) = 0,5, tan(45°) = 1; (a/c)² + (b/c)² = 1",
+          "sample_solution": "Es gilt: sin(30°) = 1/2 = 0,5; cos(60°) = 1/2 = 0,5; tan(45°) = 1. Begründung des trigonometrischen Pythagoras: sin²(α) + cos²(α) = (a/c)² + (b/c)² = (a² + b²) / c². Nach dem Satz des Pythagoras ist a² + b² = c², folglich c² / c² = 1."
+        }
+      ]
+    }
+  ]
+}

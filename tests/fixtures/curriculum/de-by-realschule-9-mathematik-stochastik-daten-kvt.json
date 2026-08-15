@@ -1,0 +1,302 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-mathematik-stochastik-daten",
+  "version": "2026.08.1",
+  "title": "Mathematik: Stochastik, Wahrscheinlichkeit und Daten (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9: Mehrstufige Zufallsexperimente, Baumdiagramme, Pfadregeln, Vierfeldertafeln und Boxplots.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (I), Lernbereich Daten und Zufall"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4S9P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4S9P0000000000000000A01",
+      "namespace": "mathematik-stochastik",
+      "slug": "baumdiagramme-pfadregeln-zufall",
+      "title": "Mehrstufige Zufallsexperimente: Baumdiagramme und Pfadregeln",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q176790",
+          "target_label": "Tree diagram (probability theory)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man nach der 1. Pfadregel (Pfadmultiplikationsregel) die Wahrscheinlichkeit eines Ergebnispfades in einem Baumdiagramm?",
+          "concept": "Durch Multiplikation der Wahrscheinlichkeiten entlang der einzelnen Äste des Pfades",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durch Multiplikation aller Astwahrscheinlichkeiten des Pfades",
+              "Durch Addition aller Astwahrscheinlichkeiten des Pfades"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die beiden Pfadregeln für Baumdiagramme (1. Pfadmultiplikationsregel für einzelne Pfade, 2. Pfadadditionsregel für zusammengesetzte Ereignisse) und berechne die Wahrscheinlichkeit, aus einer Urne mit 3 roten und 2 blauen Kugeln beim Ziehen von 2 Kugeln ohne Zurücklegen genau eine rote Kugel zu ziehen.",
+          "concept": "1. Pfadregel: P(Pfad) = Produkt der Teilwahrscheinlichkeiten; 2. Pfadregel: P(Ereignis) = Summe der Pfadwahrscheinlichkeiten; Urne: P(RB) + P(BR) = (3/5 * 2/4) + (2/5 * 3/4) = 6/20 + 6/20 = 12/20 = 60%",
+          "sample_solution": "1. Pfadregeln: - 1. Pfadregel (Multiplikationssatz): Die Wahrscheinlichkeit eines Elementarergebnisses (Pfades) ist gleich dem Produkt der Wahrscheinlichkeiten entlang dieses Pfades: P(A ∩ B) = P(A) · P(B|A). - 2. Pfadregel (Additionssatz): Die Wahrscheinlichkeit eines Ereignisses, das aus mehreren disjunkten Pfaden besteht, ist gleich der Summe der einzelnen Pfadwahrscheinlichkeiten. 2. Beispielrechnung (Urne mit 3 roten, 2 blauen Kugeln; 2 Ziehungen ohne Zurücklegen): Pfade für 'genau 1 rote Kugel': (Rot, Blau) oder (Blau, Rot). - P(Rot, Blau) = (3/5) · (2/4) = 6/20 = 3/10. - P(Blau, Rot) = (2/5) · (3/4) = 6/20 = 3/10. - Gesamt: P('genau 1 rote') = 6/20 + 6/20 = 12/20 = 3/5 = 60% (0,60)."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4S9P0000000000000000A02",
+      "namespace": "mathematik-stochastik",
+      "slug": "vierfeldertafel-bedingte-wahrscheinlichkeit",
+      "title": "Vierfeldertafel und bedingte Wahrscheinlichkeit",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S9P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Mehrstufige Wahrscheinlichkeiten sind Voraussetzung für die Vierfeldertafel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1056557",
+          "target_label": "Contingency table",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gibt der Wert im Feld ganz unten rechts einer Vierfeldertafel mit absoluten Häufigkeiten immer an?",
+          "concept": "Die Gesamtzahl aller befragten bzw. untersuchten Merkmalsträger (Gesamthäufigkeit n)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Gesamtzahl aller Merkmalsträger (Stichprobengröße n)",
+              "Immer 0"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Aufbau einer Vierfeldertafel (Schnittmengen A ∩ B und Randsummen) und definiere die Formel für die bedingte Wahrscheinlichkeit P_B(A) bzw. P(A|B) ('Wahrscheinlichkeit von A unter der Bedingung B').",
+          "concept": "Vierfeldertafel enthält Schnittmengen P(A ∩ B), P(A ∩ !B), P(!A ∩ B), P(!A ∩ !B) und Zeilen-/Spaltensummen; bedingte Wahrscheinlichkeit P(A|B) = P(A ∩ B) / P(B)",
+          "sample_solution": "1. Aufbau einer Vierfeldertafel: Sie stellt zwei dichotome Merkmale A/nicht-A und B/nicht-B gegenüber. Die 4 inneren Felder enthalten die gemeinsamen Häufigkeiten bzw. Wahrscheinlichkeiten der Schnittmengen P(A ∩ B), P(A ∩ B̄), P(Ā ∩ B) und P(Ā ∩ B̄). Die Ränder der Tabelle (Randhäufigkeiten) ergeben durch Addition der Zeilen und Spalten die Gesamtwahrscheinlichkeiten P(A), P(Ā), P(B), P(B̄) sowie die Gesamtsumme 1 (bzw. 100% / n). 2. Bedingte Wahrscheinlichkeit: P(A|B) = P_B(A) ist die Wahrscheinlichkeit, dass Ereignis A eintritt, unter der Voraussetzung, dass Ereignis B bereits sicher eingetreten ist. Formel nach Bayes: P(A|B) = P(A ∩ B) / P(B)."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4S9P0000000000000000A03",
+      "namespace": "mathematik-stochastik",
+      "slug": "statistische-kenngroessen-median-quartile",
+      "title": "Statistische Lage- und Streumaße: Mittelwert, Median und Quartile",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q185363",
+          "target_label": "Median",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche statistische Kenngröße teilt eine geordnete Rangliste von Messwerten exakt in zwei gleich große Hälften (50% der Werte kleiner oder gleich, 50% größer oder gleich)?",
+          "concept": "Der Median (Zentralwert q₂)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Median (Zentralwert)",
+              "Das arithmetische Mittel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide das arithmetische Mittel (Durchschnitt) vom Median (Zentralwert) insbesondere bei Ausreißern und bestimme für die geordnete Urliste {2, 3, 5, 7, 8, 9, 15} das Minimum, das untere Quartil q₁, den Median q₂, das obere Quartil q₃ und das Maximum.",
+          "concept": "Mittelwert = Summe / n (anfällig für Ausreißer); Median = zentraler Wert (robust gegen Ausreißer); Liste n=7: Min = 2, q1 = 3, q2/Median = 7, q3 = 9, Max = 15",
+          "sample_solution": "1. Unterschied Mittelwert vs. Median: - Arithmetisches Mittel: Summe aller Werte geteilt durch die Anzahl n. Es reagiert sehr empfindlich auf extreme Ausreißer. - Median (Zentralwert): Der Wert, der in einer sortierten Rangliste genau in der Mitte liegt. Er ist robust gegenüber extremen Ausreißern. 2. Bestimmung der 5-Punkte-Zusammenfassung für {2, 3, 5, 7, 8, 9, 15} (n = 7 ungerade): - Minimum: x_min = 2 - Unteres Quartil q₁ (Median der unteren Hälfte {2, 3, 5}): q₁ = 3 (25%-Marke) - Median q₂ (mittlerer Wert bei n=7): q₂ = 7 (50%-Marke) - Oberes Quartil q₃ (Median der oberen Hälfte {8, 9, 15}): q₃ = 9 (75%-Marke) - Maximum: x_max = 15 - Spannweite: R = 15 - 2 = 13; Interquartilsabstand: IQR = 9 - 3 = 6."
+        }
+      ]
+    },
+    {
+      "id": "01K4S9P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4S9P0000000000000000A04",
+      "namespace": "mathematik-stochastik",
+      "slug": "boxplot-datenverteilung-spannweite",
+      "title": "Der Boxplot (Kastengrafik): Visualisierung von Datenverteilungen",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4S9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Quartile und Median bilden die fünf Kennwerte des Boxplots."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q895650",
+          "target_label": "Box plot",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb8",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb6",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4S9P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viel Prozent aller Datenwerte liegen im Boxplot exakt innerhalb des Kastens (von q₁ bis q₃)?",
+          "concept": "50% aller Messwerte (die mittleren zwei Quartile)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "50% der Messwerte",
+              "25% der Messwerte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4S9P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Aufbau und die Interpretation eines Boxplots anhand seiner fünf charakteristischen Punkte (Minimum, q₁, Median q₂, q₃, Maximum), definiere die 'Antennen' (Whisker) und den Interquartilsabstand (IQR) und erkläre, wie Schiefe einer Verteilung an einem Boxplot erkannt wird.",
+          "concept": "5 Punkte: Min, q1, Median, q3, Max; Kasten = mittleren 50% (IQR = q3 - q1); Whisker/Antennen bis Min/Max; Rechtsschiefe (linksgipflig) = rechter Kasten/Whisker länger als linker",
+          "sample_solution": "1. Aufbau des Boxplots (Kastendiagramm): - Kasten (Box): Reicht vom unteren Quartil q₁ bis zum oberen Quartil q₃ und enthält exakt die mittleren 50% aller Daten. Seine Breite entspricht dem Interquartilsabstand (IQR = q₃ - q₁). - Medianlinie: Ein vertikaler Strich im Kasten markiert den Median q₂ (50%-Schwelle). - Antennen (Whisker): Linien, die vom Kasten bis zum Minimum und Maximum reichen. 2. Interpretation & Schiefe: Ein Boxplot visualisiert auf einen Blick Lage, Streuung und Symmetrie: - Symmetrische Verteilung: Median liegt mittig im Kasten, linke und rechte Antenne sind gleich lang. - Rechtsschiefe (linksgipflige) Verteilung: Median liegt links im Kasten, die rechte Boxhälfte und die rechte Antenne sind deutlich länger (Daten streuen nach oben)."
+        }
+      ]
+    }
+  ]
+}

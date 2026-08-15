@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-chemie-organik-kohlenwasserstoffe",
+  "version": "2026.08.1",
+  "title": "Chemie 10: Organische Chemie und Kohlenwasserstoffe (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 10: Alkane, homologe Reihe, IUPAC-Nomenklatur, Isomerie, Alkohole und Carbonsäuren.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/chemie",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 10, Lernbereich Kohlenwasserstoffe und funktionelle Gruppen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4H0C0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4H0C0000000000000000A01",
+      "namespace": "chemie-organik",
+      "slug": "alkane-homologe-reihe-nomenklatur",
+      "title": "Alkane: Homologe Reihe, Summenformel C_n H_2n+2 und IUPAC-Nomenklatur",
+      "domain": "schule/chemie/organisch",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q41581",
+          "target_label": "Alkane",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Kohlenwasserstoffe",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Kohlenwasserstoffe",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H0C0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die allgemeine Summenformel der unverzweigten Alkane (gesättigte Kohlenwasserstoffe)?",
+          "concept": "C_n H_2n+2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "C_n H_2n+2",
+              "C_n H_2n"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H0C0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die ersten sechs Glieder der homologen Reihe der Alkane (Methan bis Hexan) mit Summen- und Halbstrukturformel und formuliere die Reaktionsgleichung für die vollständige Verbrennung von Propan (C3H8) zu Kohlendioxid und Wasser.",
+          "concept": "Methan (CH4), Ethan (C2H6), Propan (C3H8), Butan (C4H10), Pentan (C5H12), Hexan (C6H14); Verbrennung: C3H8 + 5 O2 -> 3 CO2 + 4 H2O",
+          "sample_solution": "1. Die ersten sechs Alkane: - Methan: CH₄ - Ethan: C₂H₆ (CH₃-CH₃) - Propan: C₃H₈ (CH₃-CH₂-CH₃) - Butan: C₄H₁₀ (CH₃-CH₂-CH₂-CH₃) - Pentan: C₅H₁₂ (CH₃-(CH₂)₃-CH₃) - Hexan: C₆H₁₄ (CH₃-(CH₂)₄-CH₃) Jedes Folgeglied unterscheidet sich um eine -CH₂- Gruppe (homologe Reihe). 2. Verbrennungsgleichung für Propan: C₃H₈ + 5 O₂ -> 3 CO₂ + 4 H₂O + Wärme (exotherme Reaktion)."
+        }
+      ]
+    },
+    {
+      "id": "01K4H0C0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4H0C0000000000000000A02",
+      "namespace": "chemie-organik",
+      "slug": "strukturisomerie-van-der-waals-siedepunkte",
+      "title": "Strukturisomerie und zwischenmolekulare Van-der-Waals-Kräfte",
+      "domain": "schule/chemie/organisch",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4H0C0000000000000000A01",
+          "type": "hard",
+          "rationale": "Alkane und Summenformeln sind Voraussetzung für Isomerie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q181512",
+          "target_label": "Isomer",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Kohlenwasserstoffe",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Kohlenwasserstoffe",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H0C0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie bezeichnet man Moleküle mit identischer Summenformel, aber unterschiedlicher Verknüpfung der Atome (unterschiedlicher Strukturformel)?",
+          "concept": "Konstitutionsisomere (Strukturisomere)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Konstitutionsisomere (Strukturisomere)",
+              "Allotrope"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H0C0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Zeichne und benenne die beiden Strukturisomere von Butan (C4H10: n-Butan vs. 2-Methylpropan/Isobutan) und begründe, warum n-Butan (Siedepunkt -0,5 °C) einen höheren Siedepunkt besitzt als das verzweigte 2-Methylpropan (-11,7 °C).",
+          "concept": "n-Butan = unverzweigte Kette, große Moleküloberfläche, stärkere Van-der-Waals-Kräfte -> höherer Siedepunkt; 2-Methylpropan = kugelig verzweigt, kleinere Kontaktfläche, schwächere Van-der-Waals-Kräfte -> tieferer Siedepunkt",
+          "sample_solution": "1. Isomere von Butan (C₄H₁₀): - n-Butan: CH₃-CH₂-CH₂-CH₃ (lineare, unverzweigte Kohlenstoffkette). - 2-Methylpropan (Isobutan): CH₃-CH(CH₃)-CH₃ (verzweigte Kette mit zentralem tertiärem C-Atom). 2. Erklärung der Siedepunkte über Van-der-Waals-Kräfte: Zwischen den unpolaren Alkanmolekülen wirken temporäre Dipol-Dipol-Kräfte (Van-der-Waals-Kräfte). Das langgestreckte n-Butan besitzt eine deutlich größere Moleküloberfläche als das kugelförmig kompakte 2-Methylpropan. Daher können sich benachbarte n-Butan-Moleküle enger aneinanderlagern, was zu stärkeren zwischenmolekularen Anziehungskräften führt. Zum Überwinden dieser Kräfte im flüssigen Zustand ist mehr thermische Energie erforderlich -> n-Butan siedet bei -0,5 °C, Isobutan bereits bei -11,7 °C."
+        }
+      ]
+    },
+    {
+      "id": "01K4H0C0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4H0C0000000000000000A03",
+      "namespace": "chemie-organik",
+      "slug": "alkohole-hydroxylgruppe-wasserstoffbruecken",
+      "title": "Alkohole: Funktionelle Hydroxylgruppe (-OH) und Wasserlöslichkeit",
+      "domain": "schule/chemie/organisch",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4H0C0000000000000000A01",
+          "type": "hard",
+          "rationale": "Alkanketten bilden das Grundgerüst der Alkanole."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q156",
+          "target_label": "Alcohol",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Sauerstoffhaltige Derivate",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Sauerstoffhaltige Derivate",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H0C0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche funktionelle Gruppe ist charakteristisch für die Stoffklasse der Alkohole (Alkanole)?",
+          "concept": "Die Hydroxylgruppe (-OH)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Hydroxylgruppe (-OH)",
+              "Die Carboxylgruppe (-COOH)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H0C0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre, warum Ethanol (C2H5OH, Siedepunkt 78 °C) bei Raumtemperatur flüssig ist, während das massegleiche Ethan (C2H6, Siedepunkt -89 °C) gasförmig ist, und erläutere die Löslichkeit kurzkettiger (Methanol, Ethanol) vs. langkettiger Alkohole (Octanol) in Wasser und Benzin.",
+          "concept": "Ethanol bildet starke Wasserstoffbrückenbindungen über die polare -OH Gruppe -> hoher Siedepunkt; Kurzkettige Alkohole: polare -OH überwiegt -> wasserlöslich (hydrophil); Langkettige Alkohole: unpolarer Alkylrest überwiegt -> lipophil, schlecht wasserlöslich",
+          "sample_solution": "1. Siedepunkt-Unterschied: Ethanol besitzt eine stark polare Hydroxylgruppe (-OH), über die benachbarte Moleküle starke Wasserstoffbrückenbindungen ausbilden können. Ethan dagegen ist rein unpolar und wird nur durch schwache Van-der-Waals-Kräfte zusammengehalten. Die Wasserstoffbrücken in Ethanol erfordern viel mehr thermische Energie zum Aufbrechen, weshalb Ethanol erst bei 78 °C siedet. 2. Löslichkeit (Hydrophilie vs. Lipophilie): - Kurzkettige Alkohole (Methanol, Ethanol, Propanol): Der Einfluss der polaren, wasserstoffbrückenbildenden -OH-Gruppe überwiegt den kurzen Alkylrest. Sie sind unbegrenzt mit dem polaren Wasser mischbar (hydrophil). - Langkettige Alkohole (z. B. 1-Octanol): Der lange unpolare Kohlenwasserstoffrest dominiert das Molekül. Sie lösen sich kaum noch in Wasser, dafür aber hervorragend in unpolaren Lösungsmitteln wie Benzin oder Heptan (lipophil/hydrophob)."
+        }
+      ]
+    },
+    {
+      "id": "01K4H0C0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4H0C0000000000000000A04",
+      "namespace": "chemie-organik",
+      "slug": "carbonsaeuren-carboxylgruppe-veresterung",
+      "title": "Carbonsäuren und Ester: Carboxylgruppe (-COOH) und Veresterung",
+      "domain": "schule/chemie/organisch",
+      "reduction": "classical",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4H0C0000000000000000A03",
+          "type": "hard",
+          "rationale": "Alkohole und Hydroxylgruppen sind Reaktionspartner bei der Veresterung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1007",
+          "target_label": "Carboxylic acid",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Sauerstoffhaltige Derivate",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Sauerstoffhaltige Derivate",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4H0C0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Produkte entstehen bei der säurekatalysierten Veresterung einer Carbonsäure mit einem Alkohol?",
+          "concept": "Ein Carbonsäureester und Wasser (Kondensationsreaktion)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Carbonsäureester und Wasser",
+              "Ein Alkan und Kohlendioxid"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4H0C0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den sauren Charakter der Carboxylgruppe (-COOH) am Beispiel von Ethansäure (Essigsäure) in wässriger Lösung (Protolyse zu Acetat-Anion und Oxonium-Ion) und formuliere die Reaktionsgleichung für die Synthese von Essigsäureethylester (Ethylethanoat) aus Essigsäure und Ethanol.",
+          "concept": "Protolyse: CH3COOH + H2O <=> CH3COO- + H3O+ (Mesomeriestabilisierung des Acetations); Veresterung: CH3COOH + C2H5OH <=(H+)=> CH3COOC2H5 + H2O (Gleichgewichtsreaktion/Kondensation)",
+          "sample_solution": "1. Saurer Charakter der Carboxylgruppe: In wässriger Lösung spaltet die Essigsäure (CH₃COOH) das Proton der OH-Gruppe leicht ab: CH₃COOH + H₂O <=> CH₃COO⁻ + H₃O⁺. Das entstehende Acetat-Anion (CH₃COO⁻) ist besonders stabil, weil die negative Ladung über die beiden elektronegativen Sauerstoffatome mesomer gleichmäßig delokalisiert (verteilt) wird. 2. Veresterungsgleichung: Essigsäure + Ethanol <=(Säurekatalysator H₂SO₄)=> Essigsäureethylester + Wasser: CH₃COOH + C₂H₅OH <=> CH₃-COO-CH₂-CH₃ + H₂O. Dies ist eine typische Kondensationsreaktion (Zusammenlagerung unter Abspaltung eines kleinen Moleküls H₂O), die zu angenehm fruchtig riechenden Estern führt."
+        }
+      ]
+    }
+  ]
+}

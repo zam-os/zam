@@ -1,0 +1,461 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-physik-elektrik",
+  "version": "2026.08.1",
+  "title": "Elektrizitätslehre (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 9 (Zweig I & Zweig II/III): Elektrische Ladung, Stromstärke, Spannung, Widerstand, Ohmsches Gesetz, Schaltungen, Leistung und Energie.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 9 (I), Lernbereich 3 Elektrizitätslehre"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 9 (II/III), Lernbereich 3 Elektrizitätslehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E9P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A01",
+      "namespace": "physik-elektrik",
+      "slug": "ladungsbegriff-stromfluss",
+      "title": "Elektrische Ladung und Stromstärke",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1111",
+          "target_label": "Electric current",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was transportiert in metallischen Leitern vor allem die elektrische Ladung?",
+          "concept": "Elektronen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Frei bewegliche Elektronen",
+              "Ortsfeste Atomkerne (Protonen)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie ist die elektrische Stromstärke I definiert und in welcher Einheit wird sie gemessen?",
+          "concept": "Stromstärke I = Q / t in Ampere (A)",
+          "sample_solution": "Die Stromstärke I gibt an, wie viel elektrische Ladung Q pro Zeitspanne t durch den Querschnitt eines Leiters fließt: I = Q / t. Ihre Einheit ist das Ampere (1 A = 1 C/s)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A02",
+      "namespace": "physik-elektrik",
+      "slug": "elektrische-spannung-potenzial",
+      "title": "Elektrische Spannung und Potenzialdifferenz",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E9P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Elektrische Ladung und Stromstärke sind Voraussetzung für die Spannungsdefinition."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25269",
+          "target_label": "Voltage",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird ein Spannungsmessgerät (Voltmeter) im Stromkreis angeschlossen?",
+          "concept": "Parallel zum Bauteil",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Parallel zum Bauteil",
+              "In Reihe (in den Leitungszweig)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die physikalische Bedeutung der elektrischen Spannung U und gib ihre Einheit an.",
+          "concept": "Spannung als Antrieb des Stroms (U = W / Q in Volt V)",
+          "sample_solution": "Die elektrische Spannung U ist die Potenzialdifferenz zwischen zwei Punkten und gibt an, wie viel Energie bzw. Arbeit W pro Ladung Q verrichtet werden kann (U = W / Q). Sie ist der Antrieb für den elektrischen Stromfluss. Die Einheit ist das Volt (1 V = 1 J/C)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A03",
+      "namespace": "physik-elektrik",
+      "slug": "ohmsches-gesetz-widerstand",
+      "title": "Elektrischer Widerstand und Ohmsches Gesetz",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E9P0000000000000000A02",
+          "type": "hard",
+          "rationale": "Das Verständnis von Spannung und Stromstärke ist Voraussetzung für das Ohmsche Gesetz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25291",
+          "target_label": "Ohm's law",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verändert sich die Stromstärke I an einem ohmschen Widerstand, wenn die Spannung U verdoppelt wird?",
+          "concept": "Stromstärke verdoppelt sich (Proportionalität U ~ I)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Stromstärke verdoppelt sich ebenfalls",
+              "Die Stromstärke halbiert sich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die mathematische Formel des Ohmschen Gesetzes und welche Einheit hat der elektrische Widerstand R?",
+          "concept": "R = U / I, Einheit Ohm (Ω = V / A)",
+          "sample_solution": "Das Ohmsche Gesetz lautet R = U / I (bzw. U = R * I). Bei konstanter Temperatur ist der Quotient aus Spannung und Stromstärke konstant. Der Widerstand wird in Ohm (Ω) gemessen, wobei 1 Ω = 1 V / A ist."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A04",
+      "namespace": "physik-elektrik",
+      "slug": "reihenschaltung-widerstaende",
+      "title": "Reihenschaltung von Widerständen",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Ohmsche Gesetz ist Voraussetzung für die Gesetze der Reihenschaltung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1313437",
+          "target_label": "Series circuits",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Gilt in einer unverzweigten Reihenschaltung an allen Bauteilen dieselbe Stromstärke?",
+          "concept": "Ja, I_ges = I_1 = I_2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, die Stromstärke ist überall gleich groß (I_ges = I_1 = I_2)",
+              "Nein, die Stromstärke teilt sich auf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnen sich der Gesamtwiderstand R_ges und die Gesamtspannung U_ges in einer Reihenschaltung von R_1 und R_2?",
+          "concept": "R_ges = R_1 + R_2 und U_ges = U_1 + U_2",
+          "sample_solution": "In einer Reihenschaltung addieren sich die Einzelwiderstände zum Gesamtwiderstand: R_ges = R_1 + R_2. Ebenso addieren sich die Teilspannungen zur Gesamtspannung: U_ges = U_1 + U_2. Die Spannungen teilen sich proportional zu den Widerständen auf (U_1 / U_2 = R_1 / R_2)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9P0000000000000000A05",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A05",
+      "namespace": "physik-elektrik",
+      "slug": "parallelschaltung-widerstaende",
+      "title": "Parallelschaltung von Widerständen",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Ohmsche Gesetz ist Voraussetzung für die Gesetze der Parallelschaltung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1313438",
+          "target_label": "Parallel circuits",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J09",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ist der Gesamtwiderstand einer Parallelschaltung zweier Widerstände stets kleiner als der kleinste Einzelwiderstand?",
+          "concept": "Ja, R_ges ist kleiner als der kleinste Einzelwiderstand",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, R_ges ist immer kleiner als der kleinste Einzelwiderstand",
+              "Nein, R_ges ist immer die Summe der Widerstände"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J10",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Knotenregel für die Ströme und wie berechnet sich der Gesamtwiderstand R_ges bei einer Parallelschaltung von R_1 und R_2?",
+          "concept": "I_ges = I_1 + I_2, 1/R_ges = 1/R_1 + 1/R_2, U_ges = U_1 = U_2",
+          "sample_solution": "An jedem Zweig liegt dieselbe Spannung an: U_ges = U_1 = U_2. Nach der Knotenregel teilt sich der Gesamtstrom auf: I_ges = I_1 + I_2. Für den Gesamtwiderstand gilt die Kehrwertsumme: 1 / R_ges = 1 / R_1 + 1 / R_2 (bzw. R_ges = (R_1 * R_2) / (R_1 + R_2))."
+        }
+      ]
+    },
+    {
+      "id": "01K4E9P0000000000000000A06",
+      "atom_uri": "urn:zam:atom:01K4E9P0000000000000000A06",
+      "namespace": "physik-elektrik",
+      "slug": "elektrische-leistung-arbeit",
+      "title": "Elektrische Leistung und elektrische Energie",
+      "domain": "schule/physik/elektrik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Das Ohmsche Gesetz und die Definition von U und I sind Voraussetzung für P und W_el."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q27137",
+          "target_label": "Electric power",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Elektrizitätslehre",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E9P0000000000000000J11",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche physikalische Einheit gibt die elektrische Leistung an?",
+          "concept": "Watt (W)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Watt (W = V * A)",
+              "Kilowattstunde (kWh)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E9P0000000000000000J12",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnen sich elektrische Leistung P und elektrische Energie W_el aus Spannung U, Stromstärke I und Zeit t?",
+          "concept": "P = U * I und W_el = P * t = U * I * t",
+          "sample_solution": "Die elektrische Leistung ist P = U * I (in Watt bzw. J/s). Die umgesetzte elektrische Energie (Arbeit) berechnet sich durch Multiplikation mit der Zeitdauer t: W_el = P * t = U * I * t (in Joule oder kWh, mit 1 kWh = 3,6 MJ)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-deutsch-eroerterung-drama-novelle-textanalyse",
+  "version": "2026.08.1",
+  "title": "Deutsch 8: Erörterung (linear & dialektisch), Dramenanalyse und Epik (Novelle/Kurzgeschichte) (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 8: Argumentation und Erörterung (Behauptung, Begründung, Beispiel, Sanduhr- vs. Ping-Pong-Prinzip), Dramenanalyse (Pyramidenbau nach Gustav Freytag: Exposition, Steigerung, Klimax, Peripetie, Retardierung, Katastrophe/Lösung) sowie Analyse epischer Kleinformen (Novelle mit 'unerhörter Begebenheit', Dingsymbol, Kurzgeschichte).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/deutsch",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Deutsch 8, Lernbereiche Texte schreiben – Erörterung, Texte analysieren und interpretieren"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8H0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8H0000000000000000A01",
+      "namespace": "gymnasium-deutsch-argumentation",
+      "slug": "eroerterung-linear-dialektisch-argumentationskette-sanduhr-pingpong",
+      "title": "Die Erörterung: Lineare vs. dialektische Erörterung, Argumentationsaufbau (3B) und Gliederungsmodelle",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Argumentation theory",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Argumentieren und Erörtern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8H0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen drei obligatorischen Stufen besteht ein vollständiges, überzeugendes Argument nach dem 3B-Schema?",
+          "concept": "Behauptung (These) -> Begründung (Warum?) -> Beispiel / Beleg (Konkreter Nachweis)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Behauptung -> Begründung -> Beispiel (3B-Schema)",
+              "Einleitung -> Hauptteil -> Schluss"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8H0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Aufbau, Typen und Gliederungsstrukturen der schriftlichen Erörterung im Gymnasium: 1. **Erörterungstypen**:   * **Lineare Erörterung**: Sachverhalt ist unstrittig; Frage nach Ursachen, Folgen oder Maßnahmen (*'Warum ist...? Wie kann...?'*); einsträngige Argumentation.   * **Dialektische (kontroverse) Erörterung**: Entscheidungsfrage mit Pro und Contra (*'Sollte...? Ist es sinnvoll...?'*); Gegenüberstellung gegensätzlicher Standpunkte, 2. **Der 3-schrittige Argumentaufbau (3B)**:   * **Behauptung (These)**: Kernaussage aufstellen.   * **Begründung (Argument)**: Logische Begründungskette (*weil, da, denn*).   * **Beispiel / Beleg**: Konkreter Realitätsbezug, Studie oder Beleg zur Veranschaulichung, 3. **Gliederungsmodelle der dialektischen Erörterung**:   * **Sanduhr-Prinzip (Blockprinzip)**: Block 1: Gegenseite (vom stärksten zum schwächsten Gegenargument) $\\rightarrow$ Wendepunkt $\\rightarrow$ Block 2: Eigene Seite (vom schwächsten zum stärksten Argument für maximalen Nachhall).   * **Ping-Pong-Prinzip (Reißverschlussverfahren)**: Direkter Wechsel von Pro und Contra zu einzelnen Themenaspekten, 4. **Synthese & Schluss**: Abwägendes Fazit, eigene fundierte Stellungnahme und Ausblick.",
+          "concept": "Erörterung: Linear (Warum/Wie) vs. Dialektisch (Pro/Contra); 3B-Schema: Behauptung -> Begründung -> Beispiel; Gliederung: Sanduhr-Prinzip (stark->schwach Kontra, Wendepunkt, schwach->stark Pro) vs. Ping-Pong; Synthese/Fazit im Schluss.",
+          "sample_solution": "1. Typologie der Erörterung: - **1. Lineare Erörterung (Ergänzungsfrage / Ursachenanalyse)**:   * Thema verlangt keine Entscheidung zwischen zwei Standpunkten, sondern fragt nach Gründen, Auswirkungen oder Lösungswegen (*« Warum greifen immer mehr Jugendliche zu Energy-Drinks? »*).   * Argumente werden hierarchisch von weniger wichtig bis zum schlagkräftigsten Hauptgrund aneinandergereiht (**Steigernde Gliederung**). - **2. Dialektische Erörterung (Entscheidungsfrage / Kontroverse)**:   * Thema verlangt ein klares Abwägen von Für und Wider (*« Sollte an bayerischen Gymnasien eine Schuluniform eingeführt werden? »*). 2. Das 3B-Schema des wirkungsvollen Arguments: - **1. Behauptung (These)**: Was wird ausgesagt? Formulierung eines klaren Standpunkts (*« Ein generelles Smartphone-Verbot im Unterricht fördert die Konzentration der Schüler. »*). - **2. Begründung (Argument)**: Warum ist das so? Kausale Herleitung (*« Denn ständige Benachrichtigungen und optische Reize lenken die Aufmerksamkeit vom Unterrichtsgeschehen ab und unterbrechen den Lernprozess. »*). - **3. Beispiel / Beleg**: Konkreter Nachweis aus Forschung oder Alltag (*« Eine Studie der Universität Passau belegt, dass Schüler in smartphone-freien Klassenräumen um bis zu 20 % bessere Testergebnisse erzielten. »*). 3. Gliederungsmodelle des Hauptteils bei dialektischer Erörterung: - **Das Sanduhr-Prinzip (Klassisches Blockmodell – vom Schulpraktiker empfohlen)**:   * *Einleitung*: Hinführung zum Thema (aktueller Anlass, Statistik, Zitat), Formulierung der Problemfrage.   * *Hauptteil Block 1 (Die Gegenposition, die man NICHT vertritt)*:     - Stärkstes Gegenargument $\\rightarrow$ mittleres Gegenargument $\\rightarrow$ schwächstes Gegenargument.   * *Dreh- und Angelpunkt (Syntheseüberleitung)*.   * *Hauptteil Block 2 (Die eigene Position, die man befürwortet)*:     - Schwächstes eigenes Argument $\\rightarrow$ mittleres eigenes Argument $\\rightarrow$ **stärkstes eigenes Hauptargument** (bleibt dem Leser im Gedächtnis). - **Das Ping-Pong-Prinzip (Reißverschlussmodell)**:   * Zu jedem Teilaspekt (z. B. Kosten, Gesundheit, Gemeinschaft) werden Pro und Kontra direkt gegenübergestellt. 4. Der Schluss (Synthese und Ausblick): - Zusammenfassende Gesamtabwägung (ohne neue Argumente einzuführen), Begründung des eigenen Standpunkts (**Synthese**) und Öffnung der Perspektive (**Ausblick / Zukunftsvision / Appell**)."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8H0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8H0000000000000000A02",
+      "namespace": "gymnasium-deutsch-literatur",
+      "slug": "drama-freytag-pyramide-novelle-kurzgeschichte-textanalyse",
+      "title": "Dramenanalyse (Freytag-Pyramide) und epische Kurzformen (Novelle mit Dingsymbol & Kurzgeschichte)",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8H0000000000000000A01",
+          "type": "hard",
+          "rationale": "Literarische Textanalysen verbinden Argumentation mit Form- und Inhaltsanalyse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Dramatic structure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Dramatische und epische Texte erschließen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8H0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches zentrale Gattungsmerkmal definierte Johann Wolfgang von Goethe für die literarische Gattung der 'Novelle'?",
+          "concept": "Eine 'sich ereignete, unerhörte Begebenheit' (straffe Handlungsführung um einen realen/ungewöhnlichen Wendepunkt, oft mit Dingsymbol)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine 'unerhörte Begebenheit' mit Dingsymbol",
+              "Eine frei erfundene Zaubergeschichte mit Fabelwesen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8H0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Aufbau des klassischen Dramas und die Merkmale epische Kleinformen: 1. **Das klassische 5-Akt-Drama (Pyramide nach Gustav Freytag)**:   * **1. Akt: Exposition** (Einführung in Zeit, Ort, Personen und Grundkonflikt) mit *erregendem Moment* (Anstoß der Handlung).   * **2. Akt: Steigende Handlung** (Verschärfung des Konflikts, Verflechtung der Interessen).   * **3. Akt: Höhepunkt (Klimax) & Peripetie** (Wendepunkt des Schicksals).   * **4. Akt: Fallende Handlung** (mit *retardierendem Moment* = verzögernde Scheinrettung vor dem Ende).   * **5. Akt: Katastrophe (Tragödie)** oder **Lösung (Komödie)**, 2. **Figurenrede im Drama**: Dialog (Gespräch), Monolog (Selbstgespräch / Offenlegung von Gefühlen), Beiseitesprechen (*Aparte*), 3. **Die Novelle**: Mittlere Länge, straffer zielgerichteter Handlungsstrang, 'unerhörte Begebenheit', **Dingsymbol** (konkreter Gegenstand mit leitmotivischer Bedeutung für das Schicksal, z. B. Falke bei Boccaccio, Judenbuche bei Droste-Hülshoff), 4. **Die Kurzgeschichte**: Unvermittelter Einstieg (*In medias res*), offener Schluss, alltägliche Protagonisten, Wendepunkt im Alltag, lakonische Sprache.",
+          "concept": "Drama (Freytag): 1. Exposition/erregendes Moment, 2. Steigende Handlung, 3. Höhepunkt/Peripetie, 4. Fallende Handlung/retardierendes Moment, 5. Katastrophe/Lösung; Novelle: unerhörte Begebenheit, Dingsymbol; Kurzgeschichte: unvermittelter Einstieg, offenes Ende, Alltagssprache.",
+          "sample_solution": "1. Der klassische tektonische Dramenaufbau nach Gustav Freytag (Das 5-Akt-Schema): - **1. Akt: Exposition**:   * Stellt Ort, Zeit, zentrale Figuren und das gesellschaftliche Milieu vor. Am Ende des 1. Aktes setzt das **erregende Moment** den Konflikt unumkehrbar in Bewegung. - **2. Akt: Steigende Handlung (Kompilation)**:   * Zuspitzung des Konflikts zwischen Protagonist und Antagonist; Intrigen und Verwicklungen nehmen zu. - **3. Akt: Höhepunkt (Klimax) und Wendepunkt (Peripetie)**:   * Das dramatische Geschehen erreicht seinen emotionalen und inhaltlichen Gipfel. Umschlagen des Schicksals des Helden (vom Glück ins Unglück oder umgekehrt). - **4. Akt: Fallende Handlung**:   * Die Handlung strebt unweigerlich dem Ende zu. Typisch ist das **retardierende Moment**: Ein Hoffnungsschimmer oder eine scheinbare Rettung verzögert kurzzeitig die Entscheidung, um die Spannung maximal zu steigern. - **5. Akt: Katastrophe oder Lösung**:   * In der **Tragödie**: Der unvermeidliche Untergang/Tod des Helden (**Katastrophe** $\\rightarrow$ *Katharsis* [Reinigung der Affekte beim Zuschauer]).   * In der **Komödie**: Versöhnung, Heirat oder Klärung aller Missverständnisse. 2. Formen der dramatischen Rede: - **Dialog**: Wechselrede zwischen zwei oder mehr Figuren zur Fortführung der Handlung. - **Monolog**: Einzelrede einer Figur (Reflexion über innere Konflikte, moralische Zweifel, Pläne). - **Teichoskopie (Mauerschau)** & **Botenbericht**: Vermittlung von Ereignissen, die auf der Bühne nicht darstellbar sind (z. B. Schlachten). 3. Gattungsmerkmale der Novelle (Goethe / Heyse): - *Definition nach Goethe*: Eine *« sich ereignete unerhörte Begebenheit »*. - Straff geführte Handlung ohne Nebenstränge, fokussiert auf einen krisenhaften Schicksalsumschwung. - **Das Dingsymbol (Falkentheorie nach Paul Heyse)**:   * Ein konkreter Gegenstand oder ein Tier, das leitmotivisch immer wiederkehrt und das Schicksal der Figuren symbolisiert (z. B. die Buche in Droste-Hülshoffs *Die Judenbuche*). 4. Merkmale der modernen Kurzgeschichte (Short Story): - **Unvermittelter Beginn (*In medias res*)**: Keine Exposition, der Leser wird direkt in die Handlung geworfen. - **Alltägliche Charaktere**: Durchschnittsmenschen in einer existenziellen Lebenskrise. - **Einheit von Ort und Zeit**: Kurzer, pointierter Zeitausschnitt. - **Offener Schluss**: Kein gelöstes Ende; der Leser muss die Lehre und Konsequenzen selbst deuten."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent",
+  "version": "2026.08.1",
+  "title": "Mathematik 7: Rationale Zahlen, Äquivalenzumformungen und Prozentrechnung (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 7: Zahlenbereichserweiterung auf rationale Zahlen (Q), Rechengesetze und Vorzeichenregeln, Lösen linearer Gleichungen durch Äquivalenzumformungen sowie Grundlagen der Prozent- und Zinsrechnung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 7, Lernbereiche Rationale Zahlen, Terme und Gleichungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M7Z0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M7Z0000000000000000A01",
+      "namespace": "gymnasium-mathematik-zahlen",
+      "slug": "rationale-zahlen-ordnung-rechengesetze-distributivgesetz",
+      "title": "Rationale Zahlen (Q): Ordnung, Betrag, Rechenregeln und Distributivgesetz",
+      "domain": "schule/mathematik/zahlen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Rational number",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Rationale Zahlen und Termumformungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7Z0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Ergebnis liefert die Multiplikation zweier negativer rationaler Zahlen: $(-0,4) \\cdot (-15)$?",
+          "concept": "Exakt +6 (Minus mal Minus ergibt Plus: 0,4 * 15 = 6)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "+6",
+              "-6"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7Z0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Struktur der rationalen Zahlen $\\mathbb{Q}$ und wende die Rechengesetze an: 1. **Menge der rationalen Zahlen**: $\\mathbb{Q} = \\left\\{\\frac{p}{q} \\,\\middle|\\, p \\in \\mathbb{Z}, q \\in \\mathbb{N}\\setminus\\{0\\}\\right\\}$; umfasst alle positiven/negativen Brüche und endlichen bzw. periodischen Dezimalbrüche, 2. **Vorzeichen- und Rechenregeln**: Addition gegensätzlicher Vorzeichen, Subtraktion als Addition der Gegenzahl ($a - b = a + (-b)$), Multiplikation/Division ($+\\cdot +=+$, $-\\cdot -=+$, $+\\cdot -=-$), 3. **Rechengesetze in $\\mathbb{Q}$**: **Kommutativgesetz**, **Assoziativgesetz**, **Distributivgesetz** ($a \\cdot (b + c) = a \\cdot b + a \\cdot c$), 4. Berechne vorteilhaft durch Ausklammern: $\\left(-\\frac{3}{7}\\right) \\cdot 18{,}5 + \\left(-\\frac{3}{7}\\right) \\cdot 2{,}5$.",
+          "concept": "Rationale Zahlen Q; Betrag; Vorzeichenregeln; Rechengesetze (Kommutativ-, Assoziativ-, Distributivgesetz: Ausmultiplizieren & Ausklammern); Ausklammern: (-3/7)*(18,5 + 2,5) = (-3/7)*21 = -9.",
+          "sample_solution": "1. Begriff und Struktur der rationalen Zahlen $\\mathbb{Q}$: - Eine Zahl heißt **rational**, wenn sie sich als Quotient zweier ganzer Zahlen mit Nenner ungleich Null darstellen lässt:   $$\\mathbb{Q} = \\left\\{\\frac{a}{b} \\;\\middle|\\; a \\in \\mathbb{Z},\\, b \\in \\mathbb{Z}\\setminus\\{0\\}\\right\\}$$ - Jede rationale Zahl besitzt eine Darstellung als **endlicher Dezimalbruch** (z. B. $\\frac{3}{4} = 0{,}75$) oder als **unendlicher periodischer Dezimalbruch** (z. B. $\\frac{1}{3} = 0{,}\\overline{3}$). 2. Rechenregeln und Vorzeichenarithmetik: - **Gegenzahl und Betrag**: Zu $x$ ist $-x$ die Gegenzahl; $|x|$ ist der Abstand vom Nullpunkt auf der Zahlengeraden. - **Subtraktion**: Jede Subtraktion wird als Addition der Gegenzahl ausgeführt: $a - b = a + (-b)$. - **Multiplikation / Division**:   * Gleiche Vorzeichen ergeben ein **positives** Vorzeichen ($+ \\cdot + = +$, $- \\cdot - = +$).   * Verschiedene Vorzeichen ergeben ein **negatives** Vorzeichen ($+ \\cdot - = -$, $- \\cdot + = -$). 3. Grundgesetze der Arithmetik in $\\mathbb{Q}$: - **Kommutativgesetz**: $a + b = b + a$ und $a \\cdot b = b \\cdot a$ - **Assoziativgesetz**: $(a + b) + c = a + (b + c)$ und $(a \\cdot b) \\cdot c = a \\cdot (b \\cdot c)$ - **Distributivgesetz (Verbindungsgesetz von Strich- und Punktrechnung)**:   $$\\mathbf{a \\cdot (b + c) = a \\cdot b + a \\cdot c}$$ 4. Vorteilhaftes Rechnen durch Ausklammern (Faktorisieren): - Gegeben: $\\left(-\\frac{3}{7}\\right) \\cdot 18{,}5 + \\left(-\\frac{3}{7}\\right) \\cdot 2{,}5$ - **Ausklammern des gemeinsamen Faktors $\\left(-\\frac{3}{7}\\right)$**:   $$= \\left(-\\frac{3}{7}\\right) \\cdot (18{,}5 + 2{,}5)$$   $$= \\left(-\\frac{3}{7}\\right) \\cdot 21$$   $$= -\\frac{3 \\cdot 21}{7} = -3 \\cdot 3 = \\mathbf{-9}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K4M7Z0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M7Z0000000000000000A02",
+      "namespace": "gymnasium-mathematik-algebra",
+      "slug": "terme-aequivalenzumformungen-lineare-gleichungen-prozentrechnung",
+      "title": "Terme, Äquivalenzumformungen linearer Gleichungen und Prozentrechnung (Grundwert, Prozentsatz, Prozentwert)",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M7Z0000000000000000A01",
+          "type": "hard",
+          "rationale": "Gleichungen und Prozentrechnung nutzen die Arithmetik rationaler Zahlen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Linear equation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Lineare Gleichungen und Prozentrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M7Z0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Löse die lineare Gleichung $5x - 8 = 2x + 13$ für $x \\in \\mathbb{Q}$.",
+          "concept": "x = 7 (3x = 21 -> x = 7)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 7",
+              "x = 5"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M7Z0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre systematisch Äquivalenzumformungen von Gleichungen und die Prozentrechnung: 1. **Äquivalenzumformungen (Symbol $\\Leftrightarrow$)**: Umformungen, die die Lösungsmen $L$ einer Gleichung nicht verändern:   * Beidseitige Addition/Subtraktion desselben Terms ($T_1 = T_2 \\Leftrightarrow T_1 + T_3 = T_2 + T_3$).   * Beidseitige Multiplikation/Division mit einer Zahl $c \\neq 0$. 2. **Lösen linearer Gleichungen mit Klammern**: Terme vereinfachen (Klammern auflösen) $\\rightarrow$ $x$-Terme auf eine Seite, absolute Zahlen auf die andere $\\rightarrow$ durch Koeffizienten vor $x$ teilen $\\rightarrow$ Lösungsmenge $L = \\{x\\}$ angeben. 3. **Die Prozentrechnung**: Formel $W = G \\cdot p\\%$ ($W = \\text{Prozentwert}$, $G = \\text{Grundwert}$, $p\\% = \\frac{p}{100} = \\text{Prozentsatz}$); Prozentsatzveränderungen (Vermehrter Grundwert $G^+ = G \\cdot (1 + p\\%)$ vs. Verminderter Grundwert $G^- = G \\cdot (1 - p\\%)$). 4. Löse die Gleichung: $3 \\cdot (2x - 4) - (x + 2) = 4 \\cdot (x - 1) + 6$.",
+          "concept": "Gleichungen lösen (Klammern auflösen, Terme ordnen, Äquivalenzumformung); Prozentrechnung: W = G * p%, vermehrter/verminderter Grundwert mit Wachstumsfaktor; Lösung Gleichung: 6x - 12 - x - 2 = 4x - 4 + 6 -> 5x - 14 = 4x + 2 -> x = 16, L = {16}.",
+          "sample_solution": "1. Grundregeln der Äquivalenzumformung: - Eine Äquivalenzumformung verändert die Gültigkeit einer Gleichung und deren **Lösungsmenge $L$** nicht:   * **Erlaubt**: Beidseitige Addition/Subtraktion beliebiger Terme; beidseitige Multiplikation/Division mit Zahlen $c \\neq 0$.   * **Nicht äquivalent**: Multiplikation mit Null oder Multiplikation mit Termen, die Null werden können (führt zu Scheinlösungen). 2. Schrittweiser Algorithmus zum Lösen linearer Gleichungen: - **1. Schritt**: Terme auf beiden Seiten separat vereinfachen (Klammern nach Vorzeichenregeln und Distributivgesetz ausmultiplizieren, gleichartige Terme zusammenfassen). - **2. Schritt**: Alle Terme mit der Variablen $x$ auf eine Seite und alle reinen Zahlen auf die Gegenseite bringen (durch Addition/Subtraktion). - **3. Schritt**: Durch den Koeffizienten vor $x$ dividieren. - **4. Schritt**: Lösungsmenge $L = \\{x\\}$ notieren und optional Probe durchführen. 3. Die Prozentrechnung als proportionale Zuordnung: - Die Grundgleichung verbindet die drei Größen:   $$\\mathbf{W = G \\cdot p\\%} \\iff \\mathbf{W = G \\cdot \\frac{p}{100}}$$   * **Grundwert $G$**: Das Ganze ($100\\%$).   * **Prozentwert $W$**: Der absolute Anteil.   * **Prozentsatz $p\\%$**: Der relative Anteil. - **Prozentuale Zunahme / Abnahme**:   * Erhöhung um $p\\%$: Neuer Wert $= G \\cdot (1 + p\\%)$ (Wachstumsfaktor $q = 1 + \\frac{p}{100}$).   * Reduzierung um $p\\%$: Neuer Wert $= G \\cdot (1 - p\\%)$ (Abnahmefaktor $q = 1 - \\frac{p}{100}$). 4. Vollständige Rechnung zur Beispielaufgabe:   $$3 \\cdot (2x - 4) - (x + 2) = 4 \\cdot (x - 1) + 6$$   $$6x - 12 - x - 2 = 4x - 4 + 6 \\quad \\text{(Klammern auflösen)}$$   $$5x - 14 = 4x + 2 \\quad \\text{(Zusammenfassen)}$$   $$5x - 4x = 2 + 14 \\quad | -4x \\; | +14$$   $$\\mathbf{x = 16} \\implies \\mathbf{L = \\{16\\}}.$$   * *Probe*: Links: $3\\cdot(32-4) - (16+2) = 3\\cdot 28 - 18 = 84 - 18 = 66$. Rechts: $4\\cdot 15 + 6 = 60 + 6 = 66$. (Wahre Aussage)."
+        }
+      ]
+    }
+  ]
+}

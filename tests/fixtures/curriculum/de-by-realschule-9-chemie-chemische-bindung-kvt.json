@@ -1,0 +1,268 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-chemie-chemische-bindung",
+  "version": "2026.08.1",
+  "title": "Chemische Bindungen und Stoffeigenschaften (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Chemie 9: Ionenbindung und Salze, Elektronenpaarbindung und Moleküle, Metallbindung und zwischenmolekulare Kräfte.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/chemie/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Chemie 9 (I), Lernbereich 3 Chemische Bindungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4C9B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4C9B0000000000000000A01",
+      "namespace": "chemie-bindung",
+      "slug": "ionenbindung-salze-ionengitter",
+      "title": "Ionenbindung, Salze und Ionengitter",
+      "domain": "schule/chemie/bindung",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q62644",
+          "target_label": "Ionic bonding",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Chemische Bindungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Leitet ein fester Kochsalzkristall (Natriumchlorid) bei Raumtemperatur elektrischen Strom?",
+          "concept": "Nein, da Ionen im Kristallgitter fest fixiert und nicht frei beweglich sind",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, erst als Schmelze oder in wässriger Lösung leiten Salze Strom",
+              "Ja, feste Salzkristalle leiten Strom sehr gut"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Entstehung einer Ionenbindung am Beispiel von Natriumchlorid (NaCl), beschreibe den Aufbau des Ionengitters und begründe die typischen Eigenschaften von Salzen (hohe Schmelztemperatur, Sprödigkeit).",
+          "concept": "Elektronenübertragung (Na -> Na+ + e-, Cl + e- -> Cl-); elektrostatische Anziehung im 3D-Gitter; Sprödigkeit durch Verschiebung gleichnamiger Ladungen (Abstoßung)",
+          "sample_solution": "1. Entstehung: Natrium (1 Valenzelektron) gibt ein Elektron ab und wird zum einfach positiv geladenen Kation (Na+). Chlor (7 Valenzelektronen) nimmt dieses Elektron auf und wird zum einfach negativ geladenen Anion (Cl-). Beide Ionen erreichen Edelgaskonfiguration. 2. Ionengitter: Die Ionen ordnen sich durch ungerichtete elektrostatische Coulomb-Kräfte in einem regelmäßigen 3D-Kristallgitter an. 3. Eigenschaften: Hohe Schmelz- und Siedepunkte wegen starker Gitterenergie; Sprödigkeit, weil bei mechanischer Krafteinwirkung Gitterebenen verschoben werden, sodass gleichnamig geladene Ionen nebeneinander zu liegen kommen und sich schlagartig abstoßen."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4C9B0000000000000000A02",
+      "namespace": "chemie-bindung",
+      "slug": "elektronenpaarbindung-molekuele-lewis",
+      "title": "Elektronenpaarbindung, Moleküle und Lewis-Formeln",
+      "domain": "schule/chemie/bindung",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Verständnis der Valenzelektronen und Oktettregel ist Voraussetzung für die kovalente Bindung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q127948",
+          "target_label": "Covalent bond",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Chemische Bindungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele gemeinsame bindende Elektronenpaare verbinden die beiden Stickstoffatome im Stickstoffmolekül (N₂)?",
+          "concept": "3 bindende Elektronenpaare (Dreifachbindung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Drei bindende Elektronenpaare (Dreifachbindung)",
+              "Zwei bindende Elektronenpaare (Doppelbindung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Prinzip der Elektronenpaarbindung (kovalente Bindung / Atombindung) zwischen Nichtmetallatomen und erstelle die Lewis-Schreibweise für Wasser (H₂O) und Methan (CH₄).",
+          "concept": "Gemeinsame Nutzung von Elektronenpaaren zum Erreichen des Oktetts; H2O hat 2 bindende und 2 freie Paare; CH4 hat 4 bindende Paare",
+          "sample_solution": "Bei der Elektronenpaarbindung teilen sich Nichtmetallatome Valenzelektronen so, dass gemeinsame (bindende) Elektronenpaare entstehen, die von beiden Atomkernen angezogen werden, sodass beide Atome Edelgaskonfiguration erreichen. In der Lewis-Schreibweise wird ein Elektronenpaar als Strich symbolisiert: Für H₂O: Das zentrale Sauerstoffatom besitzt 2 bindende Elektronenpaare zu den beiden H-Atomen und 2 freie (nicht-bindende) Elektronenpaare (gewinkelte Struktur). Für CH₄: Das Kohlenstoffatom bildet 4 Einfachbindungen zu vier H-Atomen (tetraedrische Struktur)."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9B0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4C9B0000000000000000A03",
+      "namespace": "chemie-bindung",
+      "slug": "polare-atombindung-dipol-wasser",
+      "title": "Polare Elektronenpaarbindung, Elektronegativität und Dipolmoleküle",
+      "domain": "schule/chemie/bindung",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9B0000000000000000A02",
+          "type": "hard",
+          "rationale": "Kovalente Bindung ist Voraussetzung für die Polaritätsbetrachtung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q176249",
+          "target_label": "Electronegativity",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Chemische Bindungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9B0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ist das Wassermolekül (H₂O) aufgrund seiner gewinkelten Geometrie und der hohen Elektronegativität des Sauerstoffs ein permanenter elektrischer Dipol?",
+          "concept": "Ja, permanenter Dipol mit Partialladungen (δ- am O, δ+ an den H-Atomen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, Wasser ist ein permanenter Dipol",
+              "Nein, Wasser ist unpolar"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9B0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den Begriff der Elektronegativität (EN), erkläre den Übergang von unpolarer zu polarer Atombindung und Ionenbindung anhand der Elektronegativitätsdifferenz ΔEN und begründe, warum Wasser ein Dipol ist.",
+          "concept": "EN = Maß für Fähigkeit, Bindungselektronen anzuziehen; ΔEN < 0.4 unpolar, 0.4-1.7 polar, > 1.7 ionisch; H2O: gewinkelt + EN(O)=3.4 > EN(H)=2.2 -> Schwerpunkte fallen nicht zusammen",
+          "sample_solution": "Die Elektronegativität (EN nach Pauling) ist ein relatives Maß für die Fähigkeit eines gebundenen Atoms, das gemeinsame bindende Elektronenpaar an sich zu ziehen. Klassifikation nach ΔEN: 1. ΔEN ≈ 0 bis 0,4: unpolare Atombindung (Elektronen symmetrisch verteilt, z. B. H₂, CH₄). 2. ΔEN ≈ 0,4 bis 1,7: polare Atombindung (Bindungselektronen zum elektronegativeren Partner verschoben -> Teilladungen/Partialladungen δ+ und δ-). 3. ΔEN > 1,7: Ionenbindung (vollständiger Elektronenübergang). Wasser ist ein Dipol, weil: a) Die O-H-Bindungen stark polar sind (EN(O) = 3,4, EN(H) = 2,2 -> ΔEN = 1,2) und b) das Molekül gewinkelt ist (ca. 104,5°), sodass der Schwerpunkt der negativen und positiven Teilladungen räumlich getrennt ist."
+        }
+      ]
+    },
+    {
+      "id": "01K4C9B0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4C9B0000000000000000A04",
+      "namespace": "chemie-bindung",
+      "slug": "metallbindung-zwischenmolekulare-kraefte",
+      "title": "Metallbindung und zwischenmolekulare Kräfte",
+      "domain": "schule/chemie/bindung",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4C9B0000000000000000A03",
+          "type": "hard",
+          "rationale": "Dipole und Bindungsarten sind Voraussetzung für zwischenmolekulare Kräfte."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q191954",
+          "target_label": "Metallic bonding",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Chemische Bindungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4C9B0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche zwischenmolekulare Wechselwirkung ist die stärkste und erklärt den außergewöhnlich hohen Siedepunkt von flüssigem Wasser?",
+          "concept": "Wasserstoffbrückenbindungen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wasserstoffbrückenbindungen (H-Brücken)",
+              "Van-der-Waals-Kräfte"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4C9B0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Metallbindung anhand des Elektronengasmodells (Metallkationen und frei bewegliche Elektronen) und ordne die drei zwischenmolekularen Kräfte (Van-der-Waals, Dipol-Dipol, Wasserstoffbrücken) nach ihrer Stärke.",
+          "concept": "Metallbindung: Positiv geladene Atomrümpfe/Kationen in Gitter von delokalisiertem Elektronengas umgeben; ZMK-Stärke: Van-der-Waals < Dipol-Dipol < Wasserstoffbrücken",
+          "sample_solution": "1. Metallbindung: Metallatome geben ihre Valenzelektronen leicht ab. Die positiv geladenen Metallkationen (Atomrümpfe) bilden ein dicht gepacktes Kristallgitter, das von frei beweglichen, delokalisierten Elektronen ('Elektronengas') zusammengehalten wird. Dies erklärt die hohe elektrische Leitfähigkeit, Wärmeleitfähigkeit, Metallglanz und die Verformbarkeit (Duktilität). 2. Zwischenmolekulare Kräfte (Kräfte zwischen abgeschlossenen Molekülen): a) Van-der-Waals-Kräfte (schwächste ZMK): temporäre/induzierte Dipole in unpolaren Molekülen. b) Dipol-Dipol-Kräfte (mittlere Stärke): elektrostatische Anziehung zwischen permanenten Dipolen. c) Wasserstoffbrückenbindungen (stärkste ZMK): Anziehung zwischen stark positiv polarisiertem H-Atom (an F, O, N gebunden) und freiem Elektronenpaar eines benachbarten F-, O-, N-Atoms."
+        }
+      ]
+    }
+  ]
+}

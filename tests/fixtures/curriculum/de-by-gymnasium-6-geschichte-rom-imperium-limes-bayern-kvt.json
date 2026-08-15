@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-geschichte-rom-imperium-limes-bayern",
+  "version": "2026.08.1",
+  "title": "Geschichte 6: Das Römische Reich – Republik, Prinzipat unter Augustus und Römer in Bayern (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 6: Römische Republik (Ständekämpfe, Verfassungsprinzipien, Senat/Konsuln), Übergang zum Kaiserreich (Caesar, Augustus, Pax Romana) und Romanisierung Bayerns (Limes, Kastelle, Städte).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/geschichte",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geschichte 6, Lernbereich Das Römische Reich von der Republik zum Weltreich"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YH6R000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YH6R000000000000000A01",
+      "namespace": "geschichte-antike",
+      "slug": "roemische-republik-verfassung-staendekaempfe-aemterlaufbahn",
+      "title": "Die Römische Republik: Ständekämpfe (Patrizier vs. Plebejer), Cursus Honorum und Verfassungsgrundsätze",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Roman Republic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Reich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6R000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem mächtigen Einspruchsrecht (lateinisch für 'Ich verbiete!') konnten die römischen Volkstribune jede Senatsentscheidung zum Schutz der Plebejer sofort stoppen?",
+          "concept": "Mit dem Veto-Recht (Veto)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Mit dem Veto-Recht (Veto)",
+              "Mit dem Diktaturbefehl"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6R000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Verfassung der Römischen Republik: 1. Die Ständekämpfe zwischen adeligen Patriziern und bürgerlichen Plebejern (Auszug auf den Heiligen Berg / Secessio plebis, Zwölftafelgesetze 450 v. Chr., Einsetzung unantastbarer Volkstribune mit Veto-Recht), 2. Die 3 fundamentalen Verfassungsprinzipien zur Verhinderung einer Alleinherrschaft (Kollegialität: mind. 2 Amtsinhaber, Annuität: Amtszeit auf exakt 1 Jahr begrenzt, Verbot der Ämterhäufung / Iteration), 3. Den klassischen Ämterlaufbahn (Cursus Honorum: Quästor -> Ädil -> Prätor -> Konsul) und die Machtstellung des Senats.",
+          "concept": "Ständekämpfe: Plebejer erzwingen Gleichberechtigung, Zwölftafelgesetz, Volkstribunat mit Veto; Verfassungsprinzipien: Kollegialität, Annuität, Cursus Honorum; 2 Konsuln an der Spitze, Senat aus ehemaligen Magistraten als faktisches Machtzentrum.",
+          "sample_solution": "1. Die Ständekämpfe (Patrizier vs. Plebejer, 5.–3. Jh. v. Chr.): - **Ausgangslage**: Nach Vertreibung der etruskischen Könige (509 v. Chr.) rissen die adligen Großgrundbesitzer (**Patrizier**) alle politischen und religiösen Ämter an sich. Die Mehrheit des Volkes (**Plebejer** – Bauern, Händler, Handwerker) trug die Hauptlast im Kriegsheer, war aber politisch rechtlos und von Schuldknechtschaft bedroht. - **Mittel der Plebejer (Secessio plebis)**: Kollektiver Streik und Auszug aus der Stadt Rom auf den 'Heiligen Berg' (*Mons Sacer*) mitten im Kriegszustand. - **Erreichte Errungenschaften**:   * **Volkstribune (Tribuni plebis)**: Eigene plebejische Schutzbeamte; ihre Person war heilig und unverletzlich (**sakrosankt**). Sie besaßen das **Veto-Recht** (*'Ich verbiete!'*), mit dem sie jeden Beschluss der Magistrate und des Senats per Einspruch sofort blockieren konnten.   * **Zwölftafelgesetze (ca. 450 v. Chr.)**: Erste schriftliche Fixierung des römischen Rechts auf 12 Bronzetafeln auf dem Forum Romanum (Schutz vor Willkürjustiz).   * **Volksversammlungen (Concilium plebis)**: Plebiszite erhielten volle Gesetzeskraft für das gesamte Volk. 2. Die 3 eisernen Prinzipien der republikanischen Ämterführung (Magistrate): - **1. Annuität**: Jedes Amt durfte strikt für **maximal 1 Jahr** ausgeübt werden; danach musste der Amtsinhaber Rechenschaft ablegen. - **2. Kollegialität**: Jedes Amt war mit mindestens **zwei gleichberechtigten Amtskollegen** besetzt, die sich gegenseitig kontrollieren und überstimmen konnten. - **3. Verbot der Ämterhäufung & Wiederwahlverbot (Iterationsverbot)**: Man durfte nicht mehrere Ämter gleichzeitig bekleiden. 3. Der Cursus Honorum (Die römische Ämterlaufbahn): - **1. Quästor**: Verwaltung der Staatskasse und Finanzen (Mindestalter 30 Jahre). - **2. Ädil**: Aufsicht über Straßen, Märkte, Getreideversorgung und Durchführung der Gladiatorenspiele. - **3. Prätor**: Rechtsprechung und Vertretung der Konsuln; militärische Führung von Legionen. - **4. Konsul (Höchstes Amt)**: 2 Konsuln leiteten den Staat, beriefen Senat und Volksversammlung ein und führten die Hauptarmeen im Krieg. - **Sonderamt Diktator**: Nur in existenzieller Notzeit ernannt; unumschränkte Vollmacht für maximal 6 Monate. - **Der Senat (Senatus)**: Versammlung von ca. 300 ehemaligen Magistraten auf Lebenszeit; kontrollierte Außenpolitik, Staatsfinanzen und Provinzen und war das tatsächliche politische Machtzentrum Roms."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6R000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YH6R000000000000000A02",
+      "namespace": "geschichte-antike",
+      "slug": "untergang-republik-caesar-augustus-prinzipat",
+      "title": "Vom Bürgerkrieg zum Prinzipat: Gaius Julius Caesar, Augustus und die Pax Romana",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6R000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Krise der republikanischen Institutionen führte zur Alleinherrschaft."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Principate",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Reich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6R000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Ehrentitel (lateinisch für 'der Erhabene') verlieh der Senat im Jahr 27 v. Chr. Caesars Großneffen und Adoptivsohn Octavian, womit das römische Kaiserreich begründet wurde?",
+          "concept": "Augustus (Imperator Caesar Augustus)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Augustus (der Erhabene)",
+              "Alexander"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6R000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Untergang der Römischen Republik und die Begründung des Kaiserreichs: 1. Ursachen der Krise (Verarmung der Bauernsoldaten durch endlose Eroberungskriege, Entstehung privater Heeresklientelen, die Generälen wie Marius und Sulla folgten, Sklavenaufstände unter Spartacus), 2. Gaius Julius Caesar (Eroberung Galliens 58–51 v. Chr., Überschreitung des Rubikon 'Alea iacta est', Ernennung zum Diktator auf Lebenszeit / Dictator perpetuo, Ermordung an den Iden des März 44 v. Chr.), 3. Das Prinzipat des Augustus ab 27 v. Chr. (Geschickte Fassade: 'Wiederherstellung der Republik' / Res publica restituta bei faktischer Bündelung aller Schlüsselgewalten: Volkstribunizische Gewalt, Prokonsularisches Imperium, Pontifex Maximus) und 4. Die Pax Romana / Pax Augusta.",
+          "concept": "Krise der Republik: Agrarkrise, Berufsheere mit Treue zu Feldherrn statt Senat; Caesar: Diktator auf Lebenszeit -> Ermordung 44 v. Chr.; Augustus begründet Prinzipat (Erster Bürger / Princeps), bündelt alle Ämter unter republikanischer Scheinhülle; Pax Romana sichert inneren Frieden und Wohlstand.",
+          "sample_solution": "1. Die Krisenursachen der späten Republik (1. Jh. v. Chr.): - **Agrar- und Sozialkrise**: Römische Bauern waren als Wehrpflichtige jahrelang in fernen Kriegen gebunden; ihre Höfe verfielen. Adlige kauften Land auf und bewirtschafteten riesige Latifundien mit billigen Sklaven. Folge: Massenhafte Verarmung und Abwanderung nach Rom als arbeitsloses **Proletariat**. - **Militärkrise (Heeresreform des Marius)**: Das Milizheer wurde in ein **Berufsheer** umgewandelt. Soldaten erhielten Sold und Veteranenversorgung (Land) nicht mehr vom Staat, sondern vom jeweiligen Feldherrn. Die Legionäre wurden zur Privatarmee machthungriger Generäle (**Klientelwesen**). Bürgerkriege zwischen Feldherren (Marius vs. Sulla, Pompeius vs. Caesar) zerrütteten das Reich. 2. Gaius Julius Caesar und das Ende der Republik: - Eroberte 58–51 v. Chr. ganz Gallien und gewann unbegrenzte Treue seiner Legionen. - 49 v. Chr.: Überschritt mit seiner Legion die Grenzflusslinie **Rubikon** (*'Alea iacta est' – Die Würfel sind gefallen*) und marschierte auf Rom; besiegte Pompeius im Bürgerkrieg. - Ließ sich 44 v. Chr. zum **Diktator auf Lebenszeit (*Dictator perpetuo*)** ernennen. - **Iden des März (15. März 44 v. Chr.)**: Eine Gruppe republikanischer Senatoren um Brutus und Cassius ermordete Caesar mit 23 Dolchstichen im Theater des Pompeius, um die Republik zu retten – stürzte Rom jedoch nur in den nächsten verheerenden Bürgerkrieg. 3. Die Begründung des Prinzipats durch Augustus (27 v. Chr.): - Caesars Adoptivsohn **Octavian** besiegte seine Rivalen Antonius und Kleopatra in der Seeschlacht von Actium (31 v. Chr.). - **Das Prinzipat als geniale Herrschaftskonstruktion**:   * Augustus vermied den verhassten Königstitel (*Rex*) oder die Diktatur.   * Offizielle Propaganda: **Res publica restituta** ('Wiederherstellung der Republik') – die alten Institutionen (Senat, Konsuln, Volksversammlung) blieben formal bestehen.   * **Faktische Alleinherrschaft**: Augustus vereinte auf Lebenszeit alle entscheidenden Schlüsselvollmachten in seiner Person:     - **Tribunicia potestas**: Recht zur Gesetzesinitiative, Vetorecht, Sakrosanktheit.     - **Imperium proconsulare maius**: Oberbefehl über alle Legionen in den Grenzprovinzen.     - **Pontifex Maximus**: Oberster Priester aller Staatskulte.     - Titel: **Princeps (Erster unter Gleichen)** $\\rightarrow$ Epochenname **Prinzipat**. 4. Die Pax Romana (Pax Augusta): - Nach 100 Jahren Bürgerkrieg brachte Augustus dem Römischen Weltreich eine über 200 Jahre währende Ära von **innerem Frieden, Rechtssicherheit, wirtschaftlicher Blüte und monumentaler Bautätigkeit** (*'Ich fand ein Rom aus Ziegeln vor und hinterlasse eine Stadt aus Marmor'*)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6R000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YH6R000000000000000A03",
+      "namespace": "geschichte-bayern",
+      "slug": "roemer-in-bayern-raetien-noricum-limes-kastelle",
+      "title": "Die Römer in Bayern: Die Provinzen Raetien und Noricum, der Obergermanisch-Raetische Limes und Siedlungen",
+      "domain": "schule/geschichte/bayern",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6R000000000000000A02",
+          "type": "hard",
+          "rationale": "Kaiser Augustus ordnete die Alpenfeldzüge an, die Bayern ins Römische Reich eingliederten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Raetia",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Reich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6R000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie hieß das 179 n. Chr. unter Kaiser Marc Aurel gegründete römische Legionslager an der Mündung des Regen in die Donau, aus dem die heutige bayerische Stadt Regensburg hervorging?",
+          "concept": "Castra Regina (Lager am Regen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Castra Regina (Regensburg)",
+              "Augusta Vindelicum (Augsburg)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6R000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die römische Herrschaft und Kultur im heutigen Bayern: 1. Die augusteischen Alpenfeldzüge 15 v. Chr. durch Drusus und Tiberius zur Sicherung der Nordgrenze und Errichtung der Provinzen **Raetia** (Hauptstadt *Augusta Vindelicum / Augsburg*) und **Noricum**, 2. Der **Obergermanisch-Raetische Limes** (550 km langer befestigter Grenzwall mit Palisaden, Wachtürmen, Erdwällen, Mauern und Kastellen wie Weißenburg/Biriciana und Künzing zur Grenzkontrolle und Zollabwicklung gegenüber unbesetztem Germanien), 3. Römische Legionslager (z. B. *Castra Regina / Regensburg* mit der Porta Praetoria), 4. Romanisierung und Infrastruktur (gepflasterte Römerstraßen wie die *Via Claudia Augusta*, römische Gutshöfe / *Villae Rusticae*, Thermen mit Hypokausten-Fußbodenheizung und Latrinen).",
+          "concept": "Römisches Bayern: Alpenfeldzug 15 v. Chr. unter Augustus; Provinzen Raetien (Augsburg) und Noricum; Grenzsicherung durch Limes und Donau-Nassgrenze; Castra Regina (Regensburg); Romanisierung: Straßen (Via Claudia Augusta), Gutshöfe (Villa Rustica), Aquädukte, Thermen, Zivilisationseinfluss auf Kelten/Germanen.",
+          "sample_solution": "1. Die Eroberung und Provinzialisierung Bayerns: - **Alpenfeldzug (15 v. Chr.)**: Die Stiefsöhne des Augustus, **Drusus und Tiberius**, unterwarfen die keltischen Stämme ( u. a. Räter, Vindeliker) nördlich der Alpen und schoben die Reichsgrenze bis an die Donau vor. - **Die römischen Provinzen auf bayerischem Boden**:   * **Raetia (Raetien)**: Umfasste das heutige Schwaben, Oberbayern und Teile Frankens. Erste Hauptstadt war Kempten (*Cambodunum*), später die prachtvolle Provinzhauptstadt **Augsburg (*Augusta Vindelicum*)**.   * **Noricum**: Umfasste das östliche Bayern jenseits des Inn (z. B. Passau /*Batavis*) und Teile Österreichs. 2. Der Obergermanisch-Raetische Limes (UNESCO-Welterbe): - Ein **550 km langes Grenzsicherungssystem** zwischen Rhein und Donau, das das Römische Reich gegen die unbesetzten germanischen Stämme abschirmte. - **Entwicklung**: Von einem Schneisenweg mit hölzernen Wachtürmen über Holzpalisaden bis hin zu einer massiven **Steinmauer** (der 'Teufelsmauer' in Raetien) mit über 900 Wachtürmen und 120 Kastellen (z. B. Kastell *Biriciana* in Weißenburg). - **Funktion**: Keine uneinnehmbare Festung, sondern ein wirksames Frühwarnsystem, eine militärische Grenzkontrolllinie und eine regulierte Zoll- und Handelsgrenze. 3. Militärische Zentren: Castra Regina (Regensburg): - 179 n. Chr. ließ Kaiser Marc Aurel das massive Legionslager **Castra Regina** errichten, um das Hauptquartier der *Legio III Italica* mit ca. 6.000 Elite-Legionären an der Donau zu stationieren. Reste der monumentalen **Porta Praetoria** (Nordtor) stehen noch heute im Regensburger Stadtzentrum. 4. Romanisierung der Lebensweise in Bayern: - **Straßennetz**: Bau allwettertauglicher gepflasterter Reichsstraßen mit Meilensteinen, v. a. die **Via Claudia Augusta** (von Norditalien über die Alpen nach Augsburg und zur Donau) für Truppenbewegungen und Fernhandel. - **Landwirtschaft**: Einführung moderner Agrarmethoden auf römischen Gutshöfen (**Villae Rusticae**) zur Versorgung der Städte und Garnisonen; Einführung von Obstsorten (Äpfel, Kirschen), Weinbau und Gemüse. - **Städtische Badekultur**: Städte verfügten über Trinkwasserleitungen (Aquädukte), Fußbodenheizungen (**Hypokausten-Heizung**) in öffentlichen Thermen, gepflasterte Plätze und lateinische Rechtssicherheit."
+        }
+      ]
+    },
+    {
+      "id": "01K4YH6R000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YH6R000000000000000A04",
+      "namespace": "geschichte-antike",
+      "slug": "spaetantike-christentum-voelkerwanderung-untergang-roms",
+      "title": "Spätantike: Konstantinische Wende (Christentum), Völkerwanderung und Untergang Westroms (476 n. Chr.)",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YH6R000000000000000A02",
+          "type": "hard",
+          "rationale": "Das Prinzipat des Augustus mündete über die Reichskrise in die Spätantike."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11768",
+          "target_label": "Fall of the Western Roman Empire",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Reich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YH6R000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem Jahr endete das Weströmische Reich, als der germanische Heerführer Odoaker den letzten weströmischen Kaiser Romulus Augustulus absetzte?",
+          "concept": "476 n. Chr. (traditionelle Epochengrenze zwischen Antike und Mittelalter)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "476 n. Chr.",
+              "800 n. Chr."
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YH6R000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Transformation der Spätantike und den Untergang des Römischen Reiches: 1. Von der Christenverfolgung zur Staatsreligion (Mailänder Vereinbarung 313 n. Chr. unter Konstantin dem Großen, Erhebung des Christentums zur alleinigen Staatsreligion 380/391 n. Chr. unter Theodosius), 2. Reichsteilung von 395 n. Chr. (Weströmisches Reich mit Rom/Ravenna vs. Oströmisches/Byzantinisches Reich mit Konstantinopel), 3. Völkerwanderung (Hunnensturm 375 n. Chr. löst Kettenreaktion germanischer Wanderbewegungen aus: Westgoten plündern Rom 410, Vandalen 455), 4. Absetzung des Romulus Augustulus 476 n. Chr. und das Fortleben des römischen Erbes in Sprache (Latein / romanische Sprachen), Recht (Corpus Iuris) und Städtebau.",
+          "concept": "Spätantike: Konstantinische Wende (Christentum wird Staatsreligion); Reichsteilung 395; Völkerwanderung ab 375 durch Hunnen; 476 Absetzung des letzten weströmischen Kaisers; Fortwirken: Römisches Recht, lateinische Schriftsprache, christliche Kirche, Städtenamen.",
+          "sample_solution": "1. Der Aufstieg des Christentums zur Staatsreligion: - Aus einer verfolgten jüdischen Sekte in Judäa entwickelte sich das Christentum durch Nächstenliebe und Heilsversprechen zur Massenreligion im gesamten Imperium (trotz Verfolgungen unter Nero und Diokletian). - **Konstantinische Wende (313 n. Chr.)**: Kaiser Konstantin gewährte im **Toleranzedikt von Mailand** volle Religionsfreiheit; Konstantin ließ sich auf dem Sterbebett taufen. - **Staatsreligion (380/391 n. Chr.)**: Kaiser Theodosius I. erhob das Christentum zur **alleinigen verbindlichen Staatsreligion** und verbot heidnische Kulte und die antiken Olympischen Spiele. 2. Die Reichsteilung von 395 n. Chr.: - Nach dem Tod Kaiser Theodosius' I. wurde das Riesenreich endgültig administrativ geteilt:   * **Weströmisches Reich** (Hauptstädte Mailand/Ravenna, Residenz Rom; politisch instabil, wirtschaftlich verarmt).   * **Oströmisches / Byzantinisches Reich** (Hauptstadt **Konstantinopel / Byzanz**; wohlhabend, militärisch stark; überdauerte bis 1453). 3. Die Epoche der Völkerwanderung (ab 375 n. Chr.): - **Auslöser (Hunnensturm 375)**: Das asiatische Reitervolk der Hunnen überrannte die Ostgoten und löste eine gigantische **Kettenreaktion von Flucht- und Wanderbewegungen germanischer Völkerschaften** nach Westen und Süden in römisches Reichsgebiet aus. - Germanische Föderaten bildeten eigene Königreiche innerhalb des Imperiums (Westgoten in Spanien, Vandalen in Nordafrika, Franken in Gallien, Angelsachsen in Britannien). - **Schockwellen**: 410 n. Chr. eroberten und plünderten die Westgoten unter Alarich Rom; 455 n. Chr. plünderten die Vandalen Rom. 4. Das Ende Westroms und das Fortleben des römischen Erbes: - **476 n. Chr.**: Der germanische Offizier **Odoaker** setzte den letzten weströmischen Kindkaiser **Romulus Augustulus** ab und sandte die kaiserlichen Insignien nach Konstantinopel. Dies markiert das traditionelle **Ende der Antike und den Beginn des europäischen Frühmittelalters**. - **Das unvergängliche römische Kulturerbe**:   * **Recht**: Das Römische Privatrecht bildet das Fundament unseres heutigen BGB und des europäischen Rechtsstaats.   * **Sprache**: Latein blieb bis ins 19. Jahrhundert die universelle Gelehrtensprache Europas und ist die Mutter aller romanischen Sprachen (Italienisch, Französisch, Spanisch, Portugiesisch, Rumänisch).   * **Infrastruktur & Städte**: Hunderte mitteleuropäische Metropolen gehen direkt auf römische Gründungen zurück (Köln, Trier, Mainz, Augsburg, Regensburg, Wien, London, Paris)."
+        }
+      ]
+    }
+  ]
+}

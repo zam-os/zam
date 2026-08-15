@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-5-englisch-grundlagen-to-be-have-got",
+  "version": "2026.08.1",
+  "title": "Englisch 5: Starter-Grammatik – to be, have got, Plural und Imperativ (Realschule 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Englisch 5: Formen von 'to be', Verneinung/Fragen, 'have/has got', unregelmäßige Plurale, Artikel (a/an) und Aufforderungssätze.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:55:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/5/englisch",
+      "checked": "2026-08-15",
+      "label": "Realschule Englisch 5, Lernbereiche Sprachliche Mittel und Grammatik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4E5B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4E5B0000000000000000A01",
+      "namespace": "englisch-grammatik",
+      "slug": "verb-to-be-personalpronomen-kurzformen-fragen",
+      "title": "Das Verb 'to be' (sein): Lang- und Kurzformen, Verneinung mit 'not' und Entscheidungsfragen",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English auxiliary verb",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E5B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die korrekte verneinte Kurzform von 'is not' im Englischen (z. B. 'He ... at home')?",
+          "concept": "isn't (bzw. he's not)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "isn't",
+              "aren't"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E5B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Konjugiere das englische Verb 'to be' durch alle Personen im Präsens: Langformen (I am, you are, he/she/it is, we are, you are, they are), Kurzformen (I'm, you're, he's/she's/it's, we're, they're), Verneinungen (I'm not, isn't, aren't) sowie Entscheidungsfragen und Kurzantworten (z. B. 'Are you ready?' – 'Yes, I am.' / 'No, I'm not.') und übersetze: a) 'Sie sind nicht im Garten.' b) 'Ist Peter dein Freund?' – 'Ja, ist er.'",
+          "concept": "to be: am/is/are; Verneinung mit not; Inversion bei Fragen: Verb vor Subjekt (Are you...? / Is he...?); Kurzantworten: Yes, I am / No, he isn't; a) 'They aren't (are not) in the garden.' b) 'Is Peter your friend?' – 'Yes, he is.'",
+          "sample_solution": "1. Vollständige Konjugation von 'to be' im Present Tense: | Person | Langform positiv | Kurzform positiv | Langform verneint | Kurzform verneint | |---|---|---|---|---| | **I** | I am | I'm | I am not | I'm not | | **you** | you are | you're | you are not | you aren't (you're not) | | **he / she / it** | he is | he's / she's / it's | he is not | he isn't (he's not) | | **we** | we are | we're | we are not | we aren't (we're not) | | **you (Pl.)** | you are | you're | you are not | you aren't (you're not) | | **they** | they are | they're | they are not | they aren't (they're not) | 2. Fragen und Kurzantworten (Short Answers): - **Fragebildung durch Inversion** (Satzstellung: Verb 'to be' vertauscht den Platz mit dem Subjekt):   * Aussage: *You are happy.* -> Frage: **Are you happy?**   * Aussage: *She is from London.* -> Frage: **Is she from London?** - **Kurzantworten (Short Answers)**:   * Im Englischen antwortet man nicht mit bloßem 'Yes' oder 'No', sondern wiederholt das Pronomen und das Hilfsverb.   * In bejahenden Kurzantworten dürfen **keine Kurzformen** verwendet werden (*'Yes, I am'* – nicht *Yes, I'm!*).   * Beispiele: *'Is he twelve?'* -> *'Yes, he is.'* / *'No, he isn't.'* 3. Übersetzungen: - a) 'Sie sind nicht im Garten.' -> **'They aren't in the garden.'** (oder: *'They are not in the garden.'*). - b) 'Ist Peter dein Freund?' – 'Ja, ist er.' -> **'Is Peter your friend?' – 'Yes, he is.'**"
+        }
+      ]
+    },
+    {
+      "id": "01K4E5B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4E5B0000000000000000A02",
+      "namespace": "englisch-grammatik",
+      "slug": "have-got-has-got-besitz-fragen-kurzantworten",
+      "title": "Besitzverhältnisse ausdrücken: have got, has got (3. Person Sg.), haven't/hasn't got und Fragen",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E5B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Personalpronomen und Kurzformen sind Basis für have/has got."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English verb have",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E5B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Form von 'have got' (haben/besitzen) muss bei der 3. Person Einzahl (he, she, it) verwendet werden?",
+          "concept": "has got (bzw. Kurzform 's got / verneint hasn't got)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "has got (he/she/it has got)",
+              "have got"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E5B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Verwendung und Formen von 'have got' / 'has got' (Aussagen: *I've got, he's got*; Verneinung: *haven't got, hasn't got*; Fragen: *Have you got a dog? / Has she got a brother?*; Kurzantworten: *Yes, I have. / No, she hasn't.* – ohne 'got' in der Kurzantwort!) und übersetze: a) 'Wir haben ein neues Haus.' b) 'Hat Tom ein Haustier?' – 'Nein, hat er nicht.'",
+          "concept": "have got für I/you/we/they; has got für he/she/it (das 's' muss mit); Fragen: Have/Has vor Subjekt, got danach; Kurzantwort: Yes, I have / No, he hasn't (ohne 'got'!); a) 'We've got (We have got) a new house.' b) 'Has Tom got a pet?' – 'No, he hasn't.'",
+          "sample_solution": "1. Verwendung von 'have got' / 'has got' (Besitz / Eigenschaften): - **Aussagesätze**:   * I / you / we / they -> **have got** (Kurzform: **'ve got**: *I've got a blue bike, they've got three cats*).   * he / she / it -> **has got** (Kurzform: **'s got**: *He's got a sister, she's got green eyes*). - **Verneinte Sätze**:   * I / you / we / they -> **haven't got** (have not got: *We haven't got time*).   * he / she / it -> **hasn't got** (has not got: *Tom hasn't got a smartphone*). - **Fragesätze**:   * Das Hilfsverb *Have / Has* rückt an den Satzanfang vor das Subjekt; *got* bleibt hinter dem Subjekt stehen:     - **Have + Subjekt + got ...?** (*Have you got a pen?*)     - **Has + Subjekt + got ...?** (*Has she got a dog?*) - **Kurzantworten (Short Answers)**:   * In Kurzantworten steht **niemals das Wort 'got'**!   * Positiv: *Yes, I / you / we / they **have**.* | *Yes, he / she / it **has**.*   * Negativ: *No, I / you / we / they **haven't**.* | *No, he / she / it **hasn't**.* 2. Übersetzungen: - a) 'Wir haben ein neues Haus.' -> **'We've got a new house.'** (oder: *'We have got a new house.'*). - b) 'Hat Tom ein Haustier?' – 'Nein, hat er nicht.' -> **'Has Tom got a pet?' – 'No, he hasn't.'**"
+        }
+      ]
+    },
+    {
+      "id": "01K4E5B0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4E5B0000000000000000A03",
+      "namespace": "englisch-grammatik",
+      "slug": "nomen-pluralbildung-unregelmaessige-plurale-artikel",
+      "title": "Nomen und Artikel: Regelmäßiger Plural (-s, -es), unregelmäßige Pluralformen und Artikel (a/an)",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E5B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Nomen und Mengenangaben gehören zu den ersten Wortschatzbausteinen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "English plural",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E5B0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann wird im Englischen der unbestimmte Artikel 'an' statt 'a' verwendet (z. B. '... apple' vs. '... book')?",
+          "concept": "Vor Wörtern, die mit einem gesprochenen Vokallaut (a, e, i, o, u) beginnen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vor gesprochenen Vokallauten (an apple, an hour)",
+              "Vor Wörtern im Plural"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E5B0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Pluralregeln im Englischen: 1. Regelmäßiger Plural (+s: *dog -> dogs*), 2. Plural auf -es nach Zischlauten s, sh, ch, x (*bus -> buses, box -> boxes, watch -> watches*), 3. Endung -y nach Konsonant wird zu -ies (*city -> cities*, aber *boy -> boys* nach Vokal), 4. Wichtige unregelmäßige Plurale (*man -> men, woman -> women, child -> children, foot -> feet, tooth -> teeth, mouse -> mice, sheep -> sheep*) und setze die Artikel *a* oder *an* ein: a) '... elephant', b) '... umbrella', c) '... uniform' (gesprochen: /ju:/).",
+          "concept": "Plural: +s; nach Zischlaut +es; Konsonant+y -> -ies; Unregelmäßig: man/men, woman/women, child/children, foot/feet, mouse/mice; a vs. an richtet sich nach dem gesprochenen Laut (an elephant, an umbrella, aber A uniform wegen Konsonantenlaut /j/).",
+          "sample_solution": "1. Pluralbildung der englischen Nomen: - **1. Der Standardfall (+s)**:   * Fast alle Nomen bilden den Plural einfach durch Anhängen eines **-s**: *book -> books, cat -> cats, table -> tables*. - **2. Pluralendung -es nach Zischlauten**:   * Nach Wörtern auf *-s, -ss, -sh, -ch, -x* wird **-es** angehängt, damit die Endung aussprechbar ist: *bus -> buses, glass -> glasses, wish -> wishes, watch -> watches, box -> boxes*. - **3. Nomen auf -y**:   * Nach Konsonant + y: Das y verwandelt sich in **-ies**: *baby -> babies, city -> cities, story -> stories*.   * Nach Vokal + y: Bleibt das y unverändert mit einfachem -s: *boy -> boys, day -> days, monkey -> monkeys*. - **4. Wichtige unregelmäßige Pluralformen (Irregular Plurals)**:   * *child -> **children*** (Kind -> Kinder)   * *man -> **men*** (Mann -> Männer)   * *woman -> **women*** [gesprochen: 'wimin'] (Frau -> Frauen)   * *foot -> **feet*** (Fuß -> Füße)   * *tooth -> **teeth*** (Zahn -> Zähne)   * *mouse -> **mice*** (Maus -> Mäuse)   * *person -> **people*** (Person -> Leute)   * *sheep -> **sheep*** (Schaf -> Schafe: unverändert!). 2. Die unbestimmten Artikel 'a' und 'an': - **a**: Steht vor Wörtern, die mit einem gesprochenen **Konsonantenlaut** beginnen (*a dog, a car, a table*). - **an**: Steht vor Wörtern, die mit einem gesprochenen **Vokallaut** (a, e, i, o, u) beginnen, um den Sprachfluss zu erleichtern (*an orange, an ice cream*). - Einsetzen in die Beispiele:   * a) **an** elephant (Vokallaut /e/).   * b) **an** umbrella (Vokallaut /a/).   * c) **a** uniform (Achtung Aussprachefalle: 'uniform' beginnt mit dem gesprochenen Halbkonsonanten-Laut /j/ wie in *yellow* -> deshalb **a uniform**)."
+        }
+      ]
+    },
+    {
+      "id": "01K4E5B0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4E5B0000000000000000A04",
+      "namespace": "englisch-grammatik",
+      "slug": "imperativ-aufforderungen-verbote-dont-lets",
+      "title": "Der Imperativ: Befehle, freundliche Bitten, Verbote mit 'Don't' und Vorschläge mit 'Let's'",
+      "domain": "schule/englisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4E5B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Verben im Infinitiv bilden die Basis für Aufforderungssätze."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Imperative mood",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "I",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 5,
+          "track": "II_III",
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik und Sprachstrukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4E5B0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird ein verneinter Befehl bzw. ein Verbot im englischen Imperativ eingeleitet (z. B. '... run in the corridor!')?",
+          "concept": "Mit 'Don't' + Infinitiv (z. B. 'Don't run!')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Don't + Infinitiv (Don't run!)",
+              "Not + Infinitiv (Not run!)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4E5B0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Bildung des englischen Imperativs (Aufforderungsform): 1. Positiver Befehl / Aufforderung (reiner Infinitiv ohne Subjekt: *Open your book! Listen carefully!*), 2. Höflichkeitsform mit 'please' am Satzanfang oder Satzende, 3. Verneinte Aufforderung / Verbot (*Don't + Infinitiv: Don't touch that! Don't be late!*), 4. Gemeinsame Aufforderung / Vorschlag für 'wir' (*Let's + Infinitiv: Let's play football! Let's go home!*) und übersetze: a) 'Mach bitte das Fenster auf!' b) 'Lauf nicht über die Straße!' c) 'Lasst uns eine Pizza essen!'",
+          "concept": "Imperativ: Grundform an Satzanfang (ohne Subjekt/Endung); Höflichkeit mit please; Verbot: Don't + Grundform; Wir-Vorschlag: Let's + Grundform; a) 'Open the window, please!' (oder 'Please open...'); b) 'Don't run across the street!'; c) 'Let's eat a pizza!'.",
+          "sample_solution": "1. Regeln für Aufforderungssätze (Imperative) im Englischen: - **1. Positiver Befehl / Aufforderung**:   * Wird denkbar einfach durch die **reine Grundform des Verbs (Infinitiv)** gebildet.   * Das Subjekt (*you*) fällt komplett weg. Es gibt im Englischen keinen Unterschied zwischen Einzahl (Du) und Mehrzahl (Ihr)!   * Beispiele: *Look at the board! Come here! Stand up!* - **2. Höfliche Bitten mit 'please'**:   * Durch Hinzufügen von **'please'** am Satzanfang oder am Satzende (durch ein Komma abgetrennt) wird der Befehl zur freundlichen Bitte:     - *'Please sit down.'* oder *'Sit down, please.'* - **3. Verneinter Befehl / Verbot (Negative Imperative)**:   * Beginnt immer zwingend mit **'Don't'** (Do not) + **Infinitiv**:   * Beispiele: *Don't talk! Don't worry! Don't be silly!* (Achtung: *'Not talk'* ist falsch!). - **4. Aufforderungen an eine Gruppe inklusive Sprecher ('wir')**:   * Werden mit **'Let's'** (Kurzform von *Let us*) + **Infinitiv** gebildet (Bedeutung: 'Lasst uns... / Wollen wir...'):   * Beispiele: *Let's start! Let's listen to music! Let's not argue!* 2. Übersetzungen der Beispielsätze: - a) 'Mach bitte das Fenster auf!' -> **'Open the window, please!'** (oder: *'Please open the window.'*). - b) 'Lauf nicht über die Straße!' -> **'Don't run across the street!'**. - c) 'Lasst uns eine Pizza essen!' -> **'Let's eat a pizza!'**."
+        }
+      ]
+    }
+  ]
+}

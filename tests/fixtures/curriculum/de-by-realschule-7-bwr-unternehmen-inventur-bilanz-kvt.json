@@ -1,0 +1,204 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-bwr-unternehmen-inventur-bilanz",
+  "version": "2026.08.1",
+  "title": "BwR 7: Wirtschaften, Inventur, Bilanz und Bilanzveränderungen (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern BwR 7: Grundbegriffe (Bedürfnisse, Güter, Minimal-/Maximalprinzip), Inventur und Inventar, Bilanzstruktur (Aktiva/Passiva) und die 4 Bilanzveränderungen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:10:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/bwr",
+      "checked": "2026-08-15",
+      "label": "Realschule BwR 7 (Wahlpflichtfächergruppe II), Lernbereiche Wirtschaftliches Handeln und Bilanz"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4W7B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4W7B0000000000000000A01",
+      "namespace": "bwr-grundlagen",
+      "slug": "oekonomisches-prinzip-beduerfnisse-gueterarten",
+      "title": "Grundlagen des Wirtschaftens: Bedürfnisarten, Güterklassifikation und das Ökonomische Prinzip",
+      "domain": "schule/bwr/grundlagen",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Economic principle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb1",
+          "topic_title": "Grundlagen des Wirtschaftens",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W7B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Nach welchem Ausprägung des Ökonomischen Prinzips handelt ein Betrieb, der ein vorgegebenes Produktionsziel (z. B. 1.000 Fahrräder) mit möglichst geringem Mitteleinsatz (Kosten) erreichen will?",
+          "concept": "Nach dem Minimalprinzip (gegebenes Ziel mit minimalem Aufwand erreichen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach dem Minimalprinzip",
+              "Nach dem Maximalprinzip"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W7B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Grundproblem der Wirtschaftswissenschaften (Knappheit der Güter bei unbegrenzten menschlichen Bedürfnissen), gliedere Bedürfnisse nach Dringlichkeit (Existenz-, Kultur- und Luxusbedürfnisse), systematisiere Güterarten (freie Güter vs. wirtschaftliche / knappe Güter; Konsum- vs. Produktionsgüter; Gebrauchs- vs. Verbrauchsgüter) und grenze das **Minimalprinzip** (festes Ziel -> minimaler Mitteleinsatz) vom **Maximalprinzip** (feste Mittel -> maximaler Erfolg) anhand konkreter betrieblicher und privater Alltagsbeispiele ab.",
+          "concept": "Wirtschaftslehre: Knappheit erfordert ökonomisches Handeln; Dringlichkeit: Existenz (Nahrung), Kultur (Bildung), Luxus (Jacht); Güter: freie (Sonne/Luft) vs. knappe Güter (Preis); Minimalprinzip: Ziel fest, Aufwand minimieren; Maximalprinzip: Mittel fest, Ertrag maximieren.",
+          "sample_solution": "1. Das ökonomische Grundproblem (Knappheit): - Menschliche Bedürfnisse sind unbegrenzt, während die zu ihrer Befriedigung verfügbaren Ressourcen und Güter **knapp** sind. - **Wirtschaften** bedeutet das planvolle Entscheiden über den zielgerichteten Einsatz knapper Mittel. 2. Klassifikation der menschlichen Bedürfnisse & Güter: - **Bedürfnisdringlichkeit**:   * **Existenzbedürfnisse (Primärbedürfnisse)**: Lebensnotwendig für das physische Überleben (Nahrung, Trinkwasser, Kleidung, einfaches Dach über dem Kopf).   * **Kulturbedürfnisse (Sekundärbedürfnisse)**: Entstehen durch gesellschaftliches Leben und Zivilisation (Schulbildung, Theater, Sportverein, Bücher).   * **Luxusbedürfnisse (Tertiärbedürfnisse)**: Gehobene Wünsche, die besonderen Wohlstand voraussetzen (Luxusurlaub, Luxusauto, Schmuck). - **Güterarten**:   * **Freie Güter**: Unbegrenzt vorhanden, kostenfrei (Sonnenlicht, Meerwasser).   * **Wirtschaftliche (knappe) Güter**: Müssen unter Kostenaufwand produziert werden, haben einen Marktpreis.     - **Konsumgüter**: Dienen der unmittelbaren Bedürfnisbefriedigung privater Endverbraucher (Gebrauchsgut: *Fahrrad*; Verbrauchsgut: *Apfel*).     - **Produktionsgüter (Investitionsgüter)**: Dienen Betrieben zur Herstellung anderer Güter (Gebrauchsgut: *Fabrikmaschine*; Verbrauchsgut: *Rohöl, Schrauben*). 3. Das Ökonomische Prinzip (Wirtschaftlichkeitsprinzip): - **1. Das Minimalprinzip (Sparsamkeitsprinzip)**:   * **Vorgabe (fix)**: Ein genau definiertes Ziel / Ergebnis.   * **Handlungsvorschrift**: Dieses Ziel soll mit dem **geringstmöglichen (minimalen) Aufwand / Mitteleinsatz** erreicht werden.   * *Beispiel Betrieb*: 500 Motoren mit minimalen Material- und Energiekosten montieren.   * *Beispiel Schüler*: Mit möglichst wenig Lernstunden die Note 2 in der Schulaufgabe erzielen. - **2. Das Maximalprinzip (Ergiebigkeitsprinzip)**:   * **Vorgabe (fix)**: Fest gegebene, begrenzte Mittel / Ressourcen.   * **Handlungsvorschrift**: Mit diesen festen Mitteln soll der **größtmögliche (maximale) Ertrag / Nutzen** erwirtschaftet werden.   * *Beispiel Betrieb*: Mit einem festen Werbebudget von 20.000 € die maximale Anzahl an Neukunden gewinnen.   * *Beispiel Schüler*: Mit 30 Liter Tankfüllung die maximal mögliche Fahrstrecke zurücklegen."
+        }
+      ]
+    },
+    {
+      "id": "01K4W7B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4W7B0000000000000000A02",
+      "namespace": "bwr-bilanz",
+      "slug": "inventur-inventar-bilanzaufbau-aktiva-passiva",
+      "title": "Vom Inventar zur Bilanz: Inventurverfahren, Bilanzstruktur (Aktiva/Passiva) und Bilanzgleichung",
+      "domain": "schule/bwr/bilanz",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W7B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Betriebsvermögen und Schulden bilden die Grundlagen des Rechnungswesens."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Balance sheet",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Erfassung von Vermögen und Schulden – Die Bilanz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W7B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die fundamentale Bilanzgleichung zur Ermittlung des Eigenkapitals (Reinvermögens) eines Unternehmens?",
+          "concept": "Eigenkapital (Reinvermögen) = Vermögen (Aktiva) - Schulden (Fremdkapital)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eigenkapital = Gesamtvermögen - Schulden",
+              "Eigenkapital = Schulden - Vermögen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W7B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Weg von der Inventur zur Eröffnungsbilanz: 1. **Inventur** (tatsächliche Bestandsaufnahme aller Vermögenswerte und Schulden zum Bilanzstichtag durch Zählen, Messen, Wiegen [körperliche Inventur] und Buchwerte [Buchinventur]), 2. **Inventar** (ausführliches staffelförmiges Verzeichnis: A. Vermögen gegliedert nach Liquidität [Anlagevermögen AV, Umlaufvermögen UV], B. Schulden gegliedert nach Fälligkeit [Langfristige/Kurzfristige Schulden], C. Ermittlung des Reinvermögens / Eigenkapitals), 3. **Bilanz** (stark verdichtetes T-Konto: linke Seite **Aktiva / Mittelverwendung / Investition**, rechte Seite **Passiva / Mittelherkunft / Finanzierung**; Bilanzsumme Aktiva = Bilanzsumme Passiva) und erstelle eine Bilanz aus folgenden Werten: Grundstücke 200.000 €, Maschinen 80.000 €, Bankguthaben 40.000 €, Kasse 5.000 €, Darlehensschulden 120.000 €, Verbindlichkeiten aus L.L. 30.000 €.",
+          "concept": "1. Inventur = Messen/Zählen; 2. Inventar = detaillierte Staffelform; 3. Bilanz = verdichtete T-Konto-Form (Aktiva = AV + UV, Passiva = EK + FK); Bilanzsumme: Aktiva = 200.000 + 80.000 + 40.000 + 5.000 = 325.000 €; Schulden (FK) = 120.000 + 30.000 = 150.000 €; Eigenkapital (EK) = 325.000 - 150.000 = 175.000 €; Bilanzsumme = 325.000 €.",
+          "sample_solution": "1. Vom Zählen zur Bilanz: Der dreistufige Prozess: - **1. Die Inventur**:   * Gesetzlich vorgeschriebene Bestandsaufnahme aller Vermögensteile und Schulden zum Bilanzstichtag (meist 31. Dezember).   * **Körperliche Inventur**: Physisches Zählen, Wiegen, Messen von Vorräten, Maschinen, Kassenbeständen.   * **Buchinventur**: Erfassung nicht-körperlicher Werte anhand von Belegen (Bankauszüge, Forderungen, Darlehensverträge). - **2. Das Inventar**:   * Detailliertes, oft viele Seiten langes Bestandsverzeichnis in Staffelform mit Mengenangaben und Einzelpreisen.   * **Gliederung des Vermögens**: Nach steigender **Flüssigkeit (Liquidität)**:     - **Anlagevermögen (AV)**: Dient dem Betrieb dauerhaft (Grundstücke, Gebäude, Maschinen, Fuhrpark, Geschäftsausstattung).     - **Umlaufvermögen (UV)**: Verändert sich durch den Geschäftsbetrieb ständig (Rohstoffe, Fertigerzeugnisse, Forderungen aus L.L., Bank, Kasse).   * **Gliederung der Schulden (Fremdkapital)**: Nach steigender **Fälligkeit** (Langfristige Bankdarlehen, kurzfristige Verbindlichkeiten aus Lieferungen und Leistungen / VLL).   * **Reinvermögen (Eigenkapital)**: $$\\text{Eigenkapital} = \\text{Summe Vermögen} - \\text{Summe Schulden}$$ - **3. Die Bilanz (lat. *bi-lanx* = Doppelwaage)**:   * Stark zusammengefasste, übersichtliche Gegenüberstellung in **T-Konto-Form** (ohne Mengenangaben):   * **Aktiva (Linke Seite)**: **Mittelverwendung (Vermögen)** – *Worin ist das Kapital angelegt?* (AV + UV).   * **Passiva (Rechte Seite)**: **Mittelherkunft (Kapital)** – *Wer hat das Kapital bereitgestellt?* (Eigenkapital + Fremdkapital).   * **Bilanzgleichung**: **Summe Aktiva = Summe Passiva (Bilanzsumme)**. 2. Bilanzaufstellung des Beispiels: | Aktiva | Bilanz zum 31.12. | Passiva | |---|---|---| | **I. Anlagevermögen** | | **I. Eigenkapital** | | 1. Grundstücke und Bauten: 200.000 € | | Eigenkapital: **175.000 €** | | 2. Maschinen (MA): 80.000 € | | | | **II. Umlaufvermögen** | | **II. Fremdkapital (Schulden)** | | 1. Bankguthaben (BK): 40.000 € | | 1. Langfr. Darlehensschulden: 120.000 € | | 2. Kassenbestand (KA): 5.000 € | | 2. Verbindlichkeiten a. L.L. (VLL): 30.000 € | | **Bilanzsumme: 325.000 €** | | **Bilanzsumme: 325.000 €** |"
+        }
+      ]
+    },
+    {
+      "id": "01K4W7B0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4W7B0000000000000000A03",
+      "namespace": "bwr-bilanz",
+      "slug": "die-vier-bilanzveraenderungen-aktivtausch-passivtausch-mehrung-minderung",
+      "title": "Die 4 Bilanzveränderungen: Aktivtausch, Passivtausch, Aktiv-Passiv-Mehrung und Aktiv-Passiv-Minderung",
+      "domain": "schule/bwr/bilanz",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W7B0000000000000000A02",
+          "type": "hard",
+          "rationale": "Die Bilanzstruktur ist Voraussetzung für die Analyse der 4 Bilanzveränderungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Accounting transaction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "II",
+          "subject": "bwr",
+          "topic_code": "lb2",
+          "topic_title": "Erfassung von Vermögen und Schulden – Die Bilanz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W7B0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche der 4 Bilanzveränderungen liegt vor, wenn ein Betrieb einen neuen Lieferwagen (Fuhrpark) im Wert von 35.000 € durch sofortige Banküberweisung kauft?",
+          "concept": "Ein Aktivtausch (Fuhrpark nimmt zu, Bank nimmt ab; die Bilanzsumme bleibt unverändert)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aktivtausch (Bilanzsumme bleibt gleich)",
+              "Aktiv-Passiv-Mehrung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W7B0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere und vergleiche die 4 Grundtypen der Bilanzveränderung: 1. **Aktivtausch** (+Aktivposten / -Aktivposten; Bilanzsumme bleibt konstant), 2. **Passivtausch** (+Passivposten / -Passivposten; Bilanzsumme bleibt konstant), 3. **Aktiv-Passiv-Mehrung / Bilanzverlängerung** (+Aktivposten / +Passivposten; Bilanzsumme steigt), 4. **Aktiv-Passiv-Minderung / Bilanzverkürzung** (-Aktivposten / -Passivposten; Bilanzsumme sinkt) und ordne folgende 4 Geschäftsfälle eindeutig zu: a) Kauf von Rohstoffen auf Ziel (Rechnung) 10.000 €, b) Barabhebung vom Bankkonto zur Kasse 1.500 €, c) Begleichung einer Lieferantenverbindlichkeit durch Banküberweisung 6.000 €, d) Umwandlung einer kurzfristigen Lieferantenschuld in ein langfristiges Bankdarlehen 25.000 €.",
+          "concept": "4 Bilanzveränderungen: a) Aktiv-Passiv-Mehrung (Rohstoffe + / VLL + -> Bilanzsumme +10.000 €); b) Aktivtausch (Kasse + / Bank - -> Bilanzsumme unverändert); c) Aktiv-Passiv-Minderung (VLL - / Bank - -> Bilanzsumme -6.000 €); d) Passivtausch (Darlehen + / VLL - -> Bilanzsumme unverändert).",
+          "sample_solution": "1. Systematik der 4 Bilanzveränderungen: - **1. Aktivtausch (Umschichtung im Vermögen)**:   * Ein Aktivposten nimmt zu (+), ein anderer Aktivposten nimmt um denselben Betrag ab (-).   * Die **Bilanzsumme bleibt unverändert**. - **2. Passivtausch (Umschichtung im Kapital)**:   * Ein Passivposten nimmt zu (+), ein anderer Passivposten nimmt um denselben Betrag ab (-).   * Die **Bilanzsumme bleibt unverändert**. - **3. Aktiv-Passiv-Mehrung (Bilanzverlängerung)**:   * Ein Aktivposten nimmt zu (+) und gleichzeitig nimmt ein Passivposten um denselben Betrag zu (+).   * Die **Bilanzsumme steigt** um den Betrag des Geschäftsfalls. - **4. Aktiv-Passiv-Minderung (Bilanzverkürzung)**:   * Ein Aktivposten nimmt ab (-) und gleichzeitig nimmt ein Passivposten um denselben Betrag ab (-).   * Die **Bilanzsumme sinkt** um den Betrag des Geschäftsfalls. 2. Zuordnung und Analyse der 4 Geschäftsfälle: - **a) Kauf von Rohstoffen auf Ziel (Rechnung) 10.000 €**:   * `Rohstoffe` (Aktivkonto UV) **+10.000 €**   * `Verbindlichkeiten a. L.L.` (Passivkonto Fremdkapital) **+10.000 €**   * **Typ**: **Aktiv-Passiv-Mehrung (Bilanzverlängerung)**; Bilanzsumme erhöht sich um 10.000 €. - **b) Barabhebung vom Bankkonto zur Kasse 1.500 €**:   * `Kasse` (Aktivkonto UV) **+1.500 €**   * `Bank` (Aktivkonto UV) **-1.500 €**   * **Typ**: **Aktivtausch**; Bilanzsumme bleibt exakt gleich. - **c) Begleichung einer Lieferantenverbindlichkeit durch Banküberweisung 6.000 €**:   * `Verbindlichkeiten a. L.L.` (Passivkonto Fremdkapital) **-6.000 €**   * `Bank` (Aktivkonto UV) **-6.000 €**   * **Typ**: **Aktiv-Passiv-Minderung (Bilanzverkürzung)**; Bilanzsumme verringert sich um 6.000 €. - **d) Umwandlung einer Lieferantenschuld in ein langfristiges Bankdarlehen 25.000 €**:   * `Darlehensschulden` (Passivkonto Fremdkapital) **+25.000 €**   * `Verbindlichkeiten a. L.L.` (Passivkonto Fremdkapital) **-25.000 €**   * **Typ**: **Passivtausch**; Bilanzsumme bleibt exakt gleich."
+        }
+      ]
+    }
+  ]
+}

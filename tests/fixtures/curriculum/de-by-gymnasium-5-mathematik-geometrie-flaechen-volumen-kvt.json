@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-5-mathematik-geometrie-flaechen-volumen",
+  "version": "2026.08.1",
+  "title": "Mathematik 5: Geometrie – Grundformen, Achsensymmetrie, Flächen und Quader (Gymnasium 5 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 5: Lagebeziehungen (parallel, senkrecht), Achsensymmetrie/Mittelsenkrechte, Flächeninhalt Rechteck/Quadrat/Dreieck und Quadervolumen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/5/mathematik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Mathematik 5, Lernbereiche Geometrie in Ebene und Raum, Größen und Messen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YM5G000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YM5G000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "geometrische-grundgebilde-orthogonal-parallel-koordinaten",
+      "title": "Geometrische Grundformen: Punkt, Gerade, Strecke, Orthogonalität und das 2D-Koordinatensystem",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Euclidean geometry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene und im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5G000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die mathematische Schreibweise für die Aussage, dass die Gerade g senkrecht (orthogonal) auf der Geraden h steht?",
+          "concept": "g ⊥ h (mit 90°-Schnittwinkel)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "g ⊥ h (g steht senkrecht auf h)",
+              "g || h (g ist parallel zu h)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5G000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere Punkt P, Gerade g, Halbgerade [AB und Strecke [AB] mit ihrer Streckenlänge |AB|, erkläre die gegenseitigen Lagebeziehungen zweier Geraden in der Ebene (parallel g || h, senkrecht g ⊥ h, sich schneidend mit Schnittpunkt S) und beschreibe den Aufbau eines 2D-Koordinatensystems mit 4 Quadranten bei Erweiterung auf die ganzen Zahlen Z.",
+          "concept": "Grundgebilde: Punkt, Gerade (unendlich), Strahl (1 Endpunkt), Strecke (2 Endpunkte); Lagebeziehungen in Ebene: identisch, echt parallel (gleicher Abstand d), Schnittpunkt S (orthogonal bei 90°); 4 Quadranten im kartesischen Koordinatensystem: I (+|+), II (-|+), III (-|-), IV (+|-).",
+          "sample_solution": "1. Grundgebilde der Geometrie: - **Punkt P**: Nulldimensionales geometrisches Grundelement; besitzt keine Ausdehnung, sondern nur eine exakte Position. - **Gerade g = AB**: Eindimensionales, beidseitig unbegrenztes Gebilde ohne Endpunkte. Durch zwei Punkte A und B ist genau eine Gerade eindeutig festgelegt. - **Halbgerade (Strahl) [AB**: Geht von einem festen Anfangspunkt A aus und verläuft in Richtung von B unbegrenzt weiter. - **Strecke [AB]**: Die gerade, kürzeste Verbindung zwischen zwei festen Endpunkten A und B; ihre endliche Länge wird mit **|AB|** bezeichnet (z. B. |AB| = 5 cm). 2. Lagebeziehungen von Geraden in der Ebene: - **Parallelität (g || h)**: Die Geraden haben überall den gleichen senkrechten Abstand d und keinen gemeinsamen Schnittpunkt. - **Schnitt (g ∩ h = {S})**: Die Geraden schneiden sich in genau einem Punkt S. - **Orthogonalität (g ⊥ h)**: Ein Spezialfall des Schnitts unter einem exakten rechten Winkel von **90°**. 3. Das kartesische 2D-Koordinatensystem mit 4 Quadranten: - Zwei aufeinander senkrecht stehende Zahlengeraden (x-Achse waagrecht, y-Achse senkrecht) schneiden sich im Koordinatenursprung O(0|0). - Durch die ganzen Zahlen Z wird die Zeichenebene in **4 Quadranten** unterteilt:   * **I. Quadrant** (oben rechts): x > 0, y > 0 (z. B. P(3 | 4))   * **II. Quadrant** (oben links): x < 0, y > 0 (z. B. Q(-3 | 4))   * **III. Quadrant** (unten links): x < 0, y < 0 (z. B. R(-3 | -4))   * **IV. Quadrant** (unten rechts): x > 0, y < 0 (z. B. S(3 | -4))."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5G000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YM5G000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "achsensymmetrie-spiegelung-mittelsenkrechte-winkelhalbierende",
+      "title": "Achsensymmetrie: Eigenschaften der Achsenspiegelung, Mittelsenkrechte und Winkelhalbierende",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5G000000000000000A01",
+          "type": "hard",
+          "rationale": "Orthogonalität und Strecken bilden die geometrische Basis von Achsenspiegelungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Reflection symmetry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Geometrie in der Ebene und im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5G000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Gerade steht senkrecht auf einer Strecke [AB] und halbiert diese exakt in der Mitte?",
+          "concept": "Die Mittelsenkrechte m_[AB]",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Mittelsenkrechte m_[AB]",
+              "Die Winkelhalbierende w"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5G000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die 5 fundamentalen Eigenschaften einer Achsenspiegelung an der Spiegelachse s: 1. Längentreue (|A'B'| = |AB|), 2. Winkeltreue (alpha' = alpha), 3. Geradentreue, 4. Umkehrung des Umlaufsinns (aus mathematisch positivem Drehsinn gegen den Uhrzeigersinn wird Uhrzeigersinn), 5. Fixpunkte (jeder Punkt auf der Achse ist sein eigener Bildpunkt P=P') und beschreibe die Zirkel- und Lineal-Konstruktion der Mittelsenkrechten einer Strecke [AB].",
+          "concept": "Eigenschaften: Kongruenzabbildung (längentreu, winkeltreu, geradentreu, flächentreu), kehrt Umlaufsinn um; Spiegelachse ist Mittelsenkrechte der Verbindungsstrecke [PP']; Mittelsenkrechte-Konstruktion: Kreisbögen mit Radius r > 1/2 |AB| um A und B schlagen -> Schnittpunkte der Kreisbögen verbinden.",
+          "sample_solution": "1. Die 5 Gesetzmäßigkeiten der Achsenspiegelung (Geradenspiegelung an Achse s): - **1. Längentreue**: Die Länge jeder gespiegelten Bildstrecke ist exakt gleich der Originalstrecke: $|A'B'| = |AB|$. - **2. Winkeltreue**: Jeder Winkel behält bei der Spiegelung sein genaues Gradmaß: $\\alpha' = \\alpha$. - **3. Geradentreue**: Das Bild einer Geraden ist wieder eine Gerade; parallele Geraden bleiben parallel. - **4. Umkehrung des Umlaufsinns**: Die Achsenspiegelung ist eine **indirekte Kongruenzabbildung**. Ein Dreieck ABC mit Umlaufrichtung gegen den Uhrzeigersinn wird zu einem Dreieck A'B'C' mit Umlaufrichtung im Uhrzeigersinn. - **5. Achseneigenschaft & Fixpunkte**:   * Die Verbindungsstrecke jedes Punktes mit seinem Bildpunkt $[PP']$ steht senkrecht auf der Spiegelachse $s$ ($PP' \\perp s$) und wird von ihr exakt halbiert.   * Alle Punkte, die direkt auf der Spiegelachse liegen, sind **Fixpunkte** ($F = F'$); die Spiegelachse selbst ist eine **Fixpunktgerade**. 2. Zirkelkonstruktion der Mittelsenkrechten $m_{[AB]}$ einer Strecke $[AB]$: - 1. Den Zirkel in Endpunkt A einstechen und einen Kreisbogen schlagen, dessen Radius $r$ deutlich größer als die halbe Streckenlänge ist ($r > \\frac{1}{2} |AB|$). - 2. Mit **demselben unveränderten Zirkelradius** $r$ in Punkt B einstechen und den ersten Kreisbogen schneiden. - 3. Es entstehen zwei Schnittpunkte $S_1$ und $S_2$ (einer oberhalb, einer unterhalb der Strecke). - 4. Die Gerade durch $S_1$ und $S_2$ mit dem Lineal zeichnen: Dies ist die exakte **Mittelsenkrechte $m_{[AB]}$** (sie steht im 90°-Winkel auf [AB] und halbiert sie im Mittelpunkt M)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5G000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YM5G000000000000000A03",
+      "namespace": "mathematik-geometrie",
+      "slug": "flaecheninhalt-rechteck-quadrat-rechtwinkliges-dreieck",
+      "title": "Flächeninhalte und Einheiten: Rechteck, Quadrat, rechtwinkliges Dreieck und Flächeneinheiten (mm² bis km², a, ha)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5G000000000000000A01",
+          "type": "hard",
+          "rationale": "Rechteckseiten und Orthogonalität sind die Basis von Flächenberechnungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt und Rauminhalt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5G000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man den Flächeninhalt A eines rechtwinkligen Dreiecks mit den beiden zueinander senkrechten Katheten a und b?",
+          "concept": "A = 1/2 · a · b (da jedes rechtwinklige Dreieck exakt die Hälfte des umschreibenden Rechtecks a · b ist)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = 1/2 · a · b",
+              "A = a · b"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5G000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Leite die Flächeninhaltsformeln für Quadrat (A = a²), Rechteck (A = a·b) und rechtwinkliges Dreieck (A = 1/2 · a·b) her, stelle die Kette der Flächenmaße mit der Umrechnungszahl 100 dar (mm², cm², dm², m², a, ha, km²) und berechne: Ein rechteckiges Baugrundstück hat die Länge a = 40 m und die Breite b = 25 m. Bestimme den Flächeninhalt in m² und in Ar (a) sowie den Umfang U.",
+          "concept": "Herleitung: Einheitsquadrate zählen; Dreieck = halbes Rechteck; Flächen-Stufenzahl 100; Grundstück: A = 40 m · 25 m = 1.000 m² = 10 a; Umfang: U = 2 · (40 m + 25 m) = 2 · 65 m = 130 m.",
+          "sample_solution": "1. Herleitung der Flächeninhaltsformeln: - **Flächeninhalt A**: Gibt an, wie viele Einheitsquadrate (z. B. $1\\text{ cm}^2$ oder $1\\text{ m}^2$) eine ebene Figur lückenlos auslegen. - **Rechteck**: In einer Reihe liegen a Einheitsquadrate. Davon gibt es b Reihen übereinander -> **$A = a \\cdot b$** (Umfang: $U = 2a + 2b = 2(a+b)$). - **Quadrat (alle Seiten gleich a)**: **$A = a \\cdot a = a^2$** (Umfang: $U = 4a$). - **Rechtwinkliges Dreieck**: Die Diagonale eines Rechtecks mit den Seiten a und b teilt dieses in genau zwei deckungsgleiche rechtwinklige Dreiecke -> **$A = \\frac{1}{2} \\cdot a \\cdot b$**. 2. Flächenmaße und Umrechnungszahl 100: - Da $1\\text{ m} = 10\\text{ dm}$ ist, gilt für die Fläche $1\\text{ m}^2 = 10\\text{ dm} \\cdot 10\\text{ dm} = 100\\text{ dm}^2$. Die Stufenzahl bei Flächenmaßen ist immer **100**:   * $1\\text{ km}^2 = 100\\text{ ha} = 1.000.000\\text{ m}^2$   * $1\\text{ Hektar (ha)} = 100\\text{ Ar (a)} = 10.000\\text{ m}^2$   * $1\\text{ Ar (a)} = 100\\text{ m}^2$   * $1\\text{ m}^2 = 100\\text{ dm}^2 = 10.000\\text{ cm}^2 = 1.000.000\\text{ mm}^2$. 3. Berechnung Baugrundstück ($a = 40\\text{ m}, b = 25\\text{ m}$): - Flächeninhalt: $A = 40\\text{ m} \\cdot 25\\text{ m} = \\mathbf{1.000\\text{ m}^2}$. - In Ar umrechnen ($1\\text{ a} = 100\\text{ m}^2$): $1.000\\text{ m}^2 : 100 = \\mathbf{10\\text{ a}}$. - Umfang (Zaunlänge): $U = 2 \\cdot (40\\text{ m} + 25\\text{ m}) = 2 \\cdot 65\\text{ m} = \\mathbf{130\\text{ m}}$."
+        }
+      ]
+    },
+    {
+      "id": "01K4YM5G000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YM5G000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "quader-wuerfel-schraegbild-netz-volumen-oberflaeche",
+      "title": "Körperlehre: Schrägbild, Körpernetz, Oberfläche und Volumen von Quader und Würfel",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 10.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YM5G000000000000000A03",
+          "type": "hard",
+          "rationale": "Rechteckflächen bilden die Begrenzungsflächen und Grundfläche von Quadern."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Cuboid",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 5,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Flächeninhalt und Rauminhalt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YM5G000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Unter welchem Verzerrungswinkel alpha und mit welchem Verkürzungsfaktor q werden nach hinten verlaufende Kanten beim Schrägbild eines Quaders auf Karopapier gezeichnet?",
+          "concept": "alpha = 45° (Diagonale durch Kästchen) und Verkürzungsfaktor q = 1/2 (halbe Originallänge)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "alpha = 45°, Verkürzung q = 1/2",
+              "alpha = 90°, Verkürzung q = 1"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YM5G000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Regeln für Schrägbild und Körpernetz eines Quaders (Vorderfläche original, Tiefenkanten unter 45° halbiert, verdeckte Kanten gestrichelt; Netz aus 6 paarweise kongruenten Rechtecken), leite die Formeln für Oberflächeninhalt A_O = 2·(ab + bc + ac) und Rauminhalt V = a·b·c her, stelle die Raummaße dar (1 m³ = 1000 dm³ = 1000 Liter) und berechne Oberfläche und Volumen eines quaderförmigen Kartons mit a = 6 dm, b = 4 dm und c = 5 dm.",
+          "concept": "Schrägbildregeln: Front unverzerrt, 45° Neigung, q = 0,5, verdeckt gestrichelt; Oberflächeninhalt A_O = 2*(ab + bc + ac); Volumen V = a*b*c; Raummaße Stufenzahl 1000; Karton: A_O = 2*(24 + 20 + 30) = 2*74 = 148 dm²; V = 6 · 4 · 5 = 120 dm³ = 120 Liter.",
+          "sample_solution": "1. Konstruktion des Schrägbildes (Kavalierperspektive): - **Frontansicht**: Die Vorderfläche wird unverzerrt in wahrer Größe und mit echten Winkeln gezeichnet. - **Tiefenlinien**: Alle nach hinten verlaufenden Kanten werden im Neigungswinkel von **$\\alpha = 45^\\circ$** gezeichnet. - **Verkürzungsfaktor $q = \\frac{1}{2}$**: Die Tiefenkanten werden auf genau die **Hälfte ihrer realen Länge** verkürzt gezeichnet. - **Verdeckte Kanten**: Kanten im Körperinneren, die von Flächen verdeckt werden, werden gestrichelt gezeichnet. 2. Körpermaße des Quaders: - **Körpernetz & Oberflächeninhalt $A_O$**:   * Die Hülle eines Quaders besteht aus 6 rechteckigen Begrenzungsflächen, die paarweise deckungsgleich sind (Boden/Deckel $2ab$, Front/Rückseite $2ac$, linke/rechte Seite $2bc$):     $$A_O = 2 \\cdot (a \\cdot b + b \\cdot c + a \\cdot c)$$   * Würfel: $A_O = 6 \\cdot a^2$. - **Rauminhalt (Volumen $V$)**:   * Das Volumen gibt an, wie viele Einheitswürfel (z. B. $1\\text{ dm}^3$) in den Körper passen: Grundfläche $G = a \\cdot b$ multipliziert mit der Höhe $h = c$:     $$V = a \\cdot b \\cdot c$$   * Würfel: $V = a^3$. - **Raummaße (Stufenzahl 1.000)**:   * $1\\text{ m}^3 = 1.000\\text{ dm}^3 = 1.000\\text{ Liter (l)} = 1.000.000\\text{ cm}^3$. 3. Berechnung Karton ($a = 6\\text{ dm}, b = 4\\text{ dm}, c = 5\\text{ dm}$): - **Oberflächeninhalt**:   $A_O = 2 \\cdot (6 \\cdot 4 + 4 \\cdot 5 + 6 \\cdot 5)\\text{ dm}^2 = 2 \\cdot (24 + 20 + 30)\\text{ dm}^2 = 2 \\cdot 74\\text{ dm}^2 = \\mathbf{148\\text{ dm}^2}$. - **Volumen**:   $V = 6\\text{ dm} \\cdot 4\\text{ dm} \\cdot 5\\text{ dm} = 24 \\cdot 5\\text{ dm}^3 = \\mathbf{120\\text{ dm}^3 = 120\\text{ Liter}}$.\n"
+        }
+      ]
+    }
+  ]
+}

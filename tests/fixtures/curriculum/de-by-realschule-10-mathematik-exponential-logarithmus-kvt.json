@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-10-mathematik-exponential-logarithmus",
+  "version": "2026.08.1",
+  "title": "Mathematik 10: Exponentialfunktionen und Logarithmen (Realschule 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 10 (Abschlussprüfung): Exponentialfunktionen, Asymptoten, Logarithmengesetze und Exponentialgleichungen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/10/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 10, Lernbereich Exponentialfunktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4X0M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4X0M0000000000000000A01",
+      "namespace": "mathematik-analysis",
+      "slug": "exponentialfunktionen-asymptote-wachstum",
+      "title": "Exponentialfunktionen: Funktionsgleichung, Graph und Asymptote",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 15.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q169689",
+          "target_label": "Exponential function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4X0M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Gleichung der waagrechten Asymptote der Exponentialfunktion f(x) = 2 · 3^x - 4?",
+          "concept": "y = -4 (waagrechte Gerade)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "y = -4",
+              "x = -4"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4X0M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die allgemeine Exponentialfunktion f(x) = a · b^x + c (mit b > 0, b != 1): Erkläre die Bedeutung der Parameter a (Streckfaktor/Anfangswert), b (Wachstumsfaktor: b > 1 Wachstum, 0 < b < 1 Zerfall) und c (vertikale Verschiebung/waagrechte Asymptote y = c) und bestimme den Schnittpunkt des Graphen mit der y-Achse.",
+          "concept": "f(0) = a * b^0 + c = a + c -> Schnittpunkt Sy(0 | a + c); b > 1 exponentielles Wachstum, 0 < b < 1 exponentieller Zerfall; Asymptote y = c",
+          "sample_solution": "1. Parameteranalyse von f(x) = a · b^x + c: - b (Basis / Wachstumsfaktor): Für b > 1 steigt der Graph streng monoton (exponentielles Wachstum). Für 0 < b < 1 fällt der Graph streng monoton (exponentieller Zerfall). - a (Streck-/Stauchfaktor): Streckt den Graphen vertikal bei |a| > 1 und spiegelt ihn an der Asymptote für a < 0. - c (Verschiebung in y-Richtung): Verschiebt den Graphen parallel zur y-Achse; die Gerade y = c bildet die waagrechte Asymptote, der sich die Funktion für x -> -unendlich (bei b > 1) bzw. x -> +unendlich (bei 0 < b < 1) unbegrenzt annähert. 2. Schnittpunkt mit der y-Achse: Durch Einsetzen von x = 0 erhält man f(0) = a · b^0 + c = a · 1 + c = a + c. Der y-Achsenschnittpunkt lautet somit exakt S_y(0 | a + c)."
+        }
+      ]
+    },
+    {
+      "id": "01K4X0M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4X0M0000000000000000A02",
+      "namespace": "mathematik-analysis",
+      "slug": "logarithmus-rechengesetze-basiswechsel",
+      "title": "Der Logarithmus: Definition, Logarithmengesetze und Basiswechsel",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4X0M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Exponentialfunktionen bilden die Umkehrbasis für den Logarithmus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11197",
+          "target_label": "Logarithm",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4X0M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen exakten Wert hat der dekadische Logarithmus log_10(1000) bzw. log_2(32)?",
+          "concept": "log_10(1000) = 3 (da 10^3 = 1000) und log_2(32) = 5 (da 2^5 = 32)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "3 bzw. 5",
+              "100 bzw. 16"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4X0M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Formuliere die drei fundamentalen Logarithmengesetze für Produkte, Quotienten und Potenzen (log(u · v), log(u / v), log(u^r)) und gib die Formel für den Basiswechsel log_b(a) = log_10(a) / log_10(b) an.",
+          "concept": "1. log_b(u*v) = log_b(u) + log_b(v); 2. log_b(u/v) = log_b(u) - log_b(v); 3. log_b(u^r) = r * log_b(u); Basiswechsel: log_b(a) = ln(a)/ln(b) = lg(a)/lg(b)",
+          "sample_solution": "1. Definition: Der Logarithmus x = log_b(y) ist derjenige Exponent, mit dem man die Basis b potenzieren muss, um den Numerus y zu erhalten: b^x = y. 2. Die drei Logarithmengesetze: - Produktregel: log_b(u · v) = log_b(u) + log_b(v) - Quotientenregel: log_b(u / v) = log_b(u) - log_b(v) - Potenzregel: log_b(u^r) = r · log_b(u) 3. Basiswechselsatz (Umrechnung für den Taschenrechner): log_b(a) = lg(a) / lg(b) = ln(a) / ln(b)."
+        }
+      ]
+    },
+    {
+      "id": "01K4X0M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4X0M0000000000000000A03",
+      "namespace": "mathematik-analysis",
+      "slug": "exponentialgleichungen-loesen",
+      "title": "Exponentialgleichungen: Lösungsverfahren durch Logarithmieren",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4X0M0000000000000000A02",
+          "type": "hard",
+          "rationale": "Logarithmengesetze sind das Werkzeug zum Lösen von Exponentialgleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11197",
+          "target_label": "Exponential equation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4X0M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die exakte Lösung der Exponentialgleichung 5^x = 125 bzw. 3^x = 20?",
+          "concept": "x = 3 (da 5^3 = 125) bzw. x = log_3(20) = lg(20)/lg(3) ≈ 2,727",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "x = 3 bzw. x = lg(20)/lg(3)",
+              "x = 25 bzw. x = 20/3"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4X0M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse die Exponentialgleichung 4 · 2^(3x - 1) - 12 = 20 schrittweise nach x auf unter Verwendung der Logarithmengesetze und runde das Endergebnis auf zwei Nachkommastellen.",
+          "concept": "4 * 2^(3x-1) = 32 -> 2^(3x-1) = 8 = 2^3 -> 3x - 1 = 3 -> 3x = 4 -> x = 4/3 ≈ 1,33",
+          "sample_solution": "1. Term isolieren: 4 · 2^(3x - 1) - 12 = 20  |+ 12 <=> 4 · 2^(3x - 1) = 32  |: 4 <=> 2^(3x - 1) = 8. 2. Exponentenvergleich oder Logarithmieren: Da 8 = 2^3 ist, folgt durch Exponentenvergleich direkt: 3x - 1 = 3  |+ 1 <=> 3x = 4  |: 3 <=> x = 4/3 ≈ 1,33. Alternativ mit Logarithmus: lg(2^(3x - 1)) = lg(8) <=> (3x - 1) · lg(2) = lg(8) <=> 3x - 1 = lg(8)/lg(2) = 3 <=> x = 4/3."
+        }
+      ]
+    },
+    {
+      "id": "01K4X0M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4X0M0000000000000000A04",
+      "namespace": "mathematik-analysis",
+      "slug": "wachstumsprozesse-halbwertszeit-verdopplung",
+      "title": "Reale Wachstumsmodelle: Halbwertszeit, Verdopplungszeit und Zinseszins",
+      "domain": "schule/mathematik/anwendung",
+      "reduction": "formal",
+      "typical_age_min": 15.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4X0M0000000000000000A03",
+          "type": "hard",
+          "rationale": "Lösen von Exponentialgleichungen ist Voraussetzung für Halbwertszeitberechnungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11409",
+          "target_label": "Half-life",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 10,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4X0M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ein radioaktiver Stoff hat eine Halbwertszeit von T_1/2 = 8 Tagen. Welcher Bruchteil der Ausgangsmenge N_0 ist nach 24 Tagen (3 Halbwertszeiten) noch vorhanden?",
+          "concept": "N(24) = N_0 * (1/2)^3 = 1/8 = 12,5% von N_0",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1/8 (12,5%)",
+              "1/6 (16,7%)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4X0M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Eine Bakterienkultur zählt zu Beginn 500 Exemplare und vermehrt sich stündlich um 15% (b = 1,15). Stelle die Funktionsgleichung N(t) auf, berechne den Bestand nach 10 Stunden und bestimme die Verdopplungszeit T_V der Bakterienkultur durch Logarithmieren.",
+          "concept": "N(t) = 500 * 1,15^t; N(10) = 500 * 1,15^10 ≈ 2023 Bakterien; Verdopplung: 1,15^t = 2 -> t = lg(2)/lg(1,15) ≈ 4,96 Stunden",
+          "sample_solution": "1. Modellgleichung: N(t) = N_0 · (1 + p)^t = 500 · 1,15^t (wobei t die Zeit in Stunden ist). 2. Bestand nach t = 10 Stunden: N(10) = 500 · 1,15^10 = 500 · 4,04556 ≈ 2023 Bakterien. 3. Berechnung der Verdopplungszeit T_V: Ansatz: N(T_V) = 2 · N_0 <=> 500 · 1,15^(T_V) = 1000  |: 500 <=> 1,15^(T_V) = 2. Logarithmieren beider Seiten: lg(1,15^(T_V)) = lg(2) <=> T_V · lg(1,15) = lg(2) <=> T_V = lg(2) / lg(1,15) ≈ 0,30103 / 0,06070 ≈ 4,96 Stunden (ca. 4 Stunden und 58 Minuten)."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-latein-aci-partizipialkonstruktionen-deklinationen",
+  "version": "2026.08.1",
+  "title": "Latein 7: Satzlehre – AcI (Accusativus cum Infinitivo), Participium Coniunctum (PC) und Deklinationen (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Latein 7 (L1/L2): Der AcI (Subjektsakkusativ, Infinitiv als Prädikat, Zeitverhältnisse gleichzeitig/vorzeitig), Participium Coniunctum (PC mit PPP und PPA) und Substantivdeklinationen (3., u- und e-Deklination sowie Pronomina is/ea/id).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/latein",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Latein 7 (L1/L2), Lernbereiche Sprachkompetenz – Satzlehre und Formenlehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4T7A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4T7A0000000000000000A01",
+      "namespace": "gymnasium-latein-syntax",
+      "slug": "aci-accusativus-cum-infinitivo-zeitverhaeltnisse-kopfverben",
+      "title": "Der AcI (Accusativus cum Infinitivo): Kopfverben, Subjektsakkusativ und relative Zeitenfolge",
+      "domain": "schule/latein/syntax",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Accusative and infinitive",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Satzlehre – Der AcI",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T7A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird der Subjektsakkusativ eines lateinischen AcI im deutschen Übersetzungssatz ('dass'-Satz) wiedergegeben?",
+          "concept": "Als Subjekt im Nominativ (z. B. 'Video Marcum venire' -> 'Ich sehe, dass Markus [Subjekt] kommt')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Als Subjekt im Nominativ im 'dass'-Satz",
+              "Als Akkusativobjekt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T7A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Struktur und die Übersetzung des lateinischen AcI (Accusativus cum Infinitivo): 1. **Auslösende Verben (Kopfverben / Verba sentiendi et declarandi)**: Verben des Sagens (*dicere, narrare*), Wahrnehmens (*videre, audire, sentire*), Wissens/Glaubens (*scire, credere, putare*) und des Fühlens (*gaudere*), 2. **Die 3 Übersetzungsschritte**:   * 1. Einleitendes Kopfverb übersetzen und ein deutsches **'dass'** anhängen.   * 2. Den lateinischen **Akkusativ als deutsches Subjekt (im Nominativ)** übersetzen.   * 3. Den lateinischen **Infinitiv als finites Prädikat** übersetzen, 3. **Die relativen Zeitverhältnisse**:   * **Infinitiv Präsens (z. B. *laudare*) = Gleichzeitigkeit**: Das Geschehen des AcI findet zur selben Zeit statt wie das Kopfverb (*'Audio amicum cantare'* = Ich höre, dass der Freund singt; *'Audiebam amicum cantare'* = Ich hörte, dass der Freund sang).   * **Infinitiv Perfekt (z. B. *laudavisse*) = Vorzeitigkeit**: Das Geschehen fand VOR dem Kopfverb statt (*'Scio amicum venisse'* = Ich weiß, dass der Freund gekommen ist; *'Sciebam amicum venisse'* = Ich wusste, dass der Freund gekommen war).",
+          "concept": "AcI: Kopfverben (Sagen/Sehen/Wissen) + Subjektsakkusativ + Infinitiv -> Übersetzung als 'dass'-Satz (Akkusativ wird Subjekt, Infinitiv wird Prädikat); Zeitverhältnis: Inf. Präsens = Gleichzeitigkeit, Inf. Perfekt = Vorzeitigkeit.",
+          "sample_solution": "1. Wesen und Auslöser des AcI: - Der **Accusativus cum Infinitivo (AcI)** ist die wichtigste satzwertige Konstruktion des Lateinischen. Er steht als Objekt- oder Subjektsatz nach übergeordneten Verben:   * **Verba dicendi (Verben des Sagens)**: *dicere* (sagen), *negare* (behaupten, dass nicht), *respondere* (antworten).   * **Verba sentiendi (Verben der Wahrnehmung)**: *videre* (sehen), *audire* (hören), *sentire* (fühlen/bemerken).   * **Verba cogitandi / sciendi (Verben des Denkens und Wissens)**: *scire* (wissen), *nescire* (nicht wissen), *putare / credere* (glauben/meinen).   * **Verba affectus (Gefühlsverben)**: *gaudere* (sich freuen), *dolere* (schmerzen/bedauern).   * **Unpersönliche Ausdrücke**: *constat* (es steht fest), *oportet* (es gehört sich), *necesse est* (es ist notwendig). 2. Die mechanische Übersetzungsregel ('dass-Satz'): - **1. Signalwort**: Nach dem übergeordneten Verb im Deutschen die Konjunktion **„dass“** setzen. - **2. Subjektsakkusativ $\\rightarrow$ Nominativsubjekt**: Der lateinische Akkusativ wird im deutschen Nebensatz zum handelnden **Subjekt** (*Marcum $\\rightarrow$ Markus*). - **3. Infinitiv $\\rightarrow$ Prädikat**: Der lateinische Infinitiv wird in ein gebeugtes (finites) **Prädikat** verwandelt. 3. Die relativen Zeitverhältnisse im AcI: - Die Zeitstufe des AcI ist **relativ** zum übergeordneten Prädikat: - **1. Infinitiv Präsens (Gleichzeitigkeit)**:   * Hauptsatz Präsens: *« Scio te venire. »* $\\rightarrow$ *„Ich weiß, dass du kommst.“* [Präsens]   * Hauptsatz Vergangenheit: *« Sciebam te venire. »* $\\rightarrow$ *„Ich wusste, dass du kamst.“* [Präteritum] - **2. Infinitiv Perfekt (Vorzeitigkeit)**:   * Hauptsatz Präsens: *« Scio te venisse. »* $\\rightarrow$ *„Ich weiß, dass du gekommen bist.“* [Perfekt]   * Hauptsatz Vergangenheit: *« Sciebam te venisse. »* $\\rightarrow$ *„Ich wusste, dass du gekommen warst.“* [Plusquamperfekt]."
+        }
+      ]
+    },
+    {
+      "id": "01K4T7A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4T7A0000000000000000A02",
+      "namespace": "gymnasium-latein-syntax",
+      "slug": "participium-coniunctum-pc-ppp-ppa-kng-uebersetzung",
+      "title": "Das Participium Coniunctum (PC): KNG-Kongruenz, PPP vs. PPA und Übersetzungsmethoden",
+      "domain": "schule/latein/syntax",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T7A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Partizipialkonstruktionen erweitern die lateinische Satzlehre."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Latin participles",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Satzlehre – Participium Coniunctum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T7A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche zeitliche und diathese-bezogene Bedeutung hat das lateinische PPP (Partizip Perfekt Passiv, z. B. 'vocatus, -a, -um')?",
+          "concept": "Vorzeitig und Passiv ('ein gerufener / nachdem er gerufen worden war')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vorzeitig und Passiv",
+              "Gleichzeitig und Aktiv"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4T7A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Participium Coniunctum (PC) im Lateinischen: 1. **Die beiden Partizipien**:   * **PPP (Partizip Perfekt Passiv)**: Bildung auf *-tus, -ta, -tum* (a-/o-Deklination); Bedeutung: **Vorzeitigkeit & Passiv** (*captus* = gefangen worden seiend).   * **PPA (Partizip Präsens Aktiv)**: Bildung auf *-ns, -ntis* (3. Deklination); Bedeutung: **Gleichzeitigkeit & Aktiv** (*clamans* = rufend / während er ruft), 2. **KNG-Kongruenz**: Das Partizip stimmt mit einem Bezugswort im Satz in **K**asus, **N**umerus und **G**enus überein und bildet eine logische Sinneinheit (Klammer), 3. **Die 4 Übersetzungsmethoden des PC**:   * 1. Wörtlich als Partizip (*'Der von den Feinden gefangene Soldat...'*).   * 2. Relativsatz (*'Der Soldat, der von den Feinden gefangen worden war...'*).   * 3. **Adverbialsatz (Sinnrichtungen)**: temporal (*nachdem / während*), kausal (*weil / da*), konzessiv (*obwohl*), modal (*indem*).   * 4. Beiordnung / Substantivierung (*'Der Soldat wurde gefangen und...'*).",
+          "concept": "PC: Partizip (PPP vorzeitig-passiv; PPA gleichzeitig-aktiv) in KNG-Kongruenz mit Bezugswort; 4 Übersetzungsvarianten: wörtlich, Relativsatz, Adverbialsatz (nachdem/weil/obwohl), Beiordnung.",
+          "sample_solution": "1. Die beiden lateinischen Partizipien im Vergleich: - **1. PPP (Participium Perfecti Passivi)**:   * *Bildung*: 4. Stammform auf **-us, -a, -um** (dekliniert wie *bonus, -a, -um* nach der a-/o-Deklination, z. B. *monitus, laudatus, missus, victus*).   * *Bedeutung*: **Vorzeitig und Passiv** (*'einer, der gewarnt worden ist'*). - **2. PPA (Participium Praesentis Activi)**:   * *Bildung*: Präsensstamm $+$ **-ns (Gen. -ntis)** (dekliniert nach der 3. Deklination, z. B. *vocans, vocantis; currens, currentis*).   * *Bedeutung*: **Gleichzeitig und Aktiv** (*'einer, der gerade ruft/läuft'*). 2. Das Wesen des Participium Coniunctum (PC): - Ein Partizip ist mit einem Nomen oder Pronomen im Satz grammatisch nach der **KNG-Regel (gleicher Kasus, Numerus, Genus)** fest verbunden (**coniunctum** = verbunden). - Partizip und Bezugswort bilden die Eckpfeiler einer gedanklichen Partizipialklammer. 3. Die 4 Übersetzungsmöglichkeiten am Beispielsatz: *« Hostes urbem [a militibus defensam] expugnaverunt. »* (Bezugswort: *urbem* [Akk. Sg. f.], Partizip: *defensam* [PPP, Akk. Sg. f.]): - **1. Wörtliche Übersetzung (Attribut)**:   * *„Die Feinde eroberten die [von den Soldaten verteidigte] Stadt.“* - **2. Unterordnung als Relativsatz**:   * *„Die Feinde eroberten die Stadt, [die von den Soldaten verteidigt worden war].“* - **3. Unterordnung als Adverbialsatz (Konjunktionalsatz – Häufigste Wahl!)**:   * *Konzessiv (obwohl)*: *„Die Feinde eroberten die Stadt, **obwohl** sie von den Soldaten verteidigt worden war.“*   * *Temporal (nachdem)*: *„...**nachdem** sie von den Soldaten verteidigt worden war.“*   * *Kausal (weil)*: *„...**weil** sie verteidigt wurde.“* - **4. Beiordnung zweier Hauptsätze**:   * *„Die Stadt war von den Soldaten verteidigt worden, **aber/und doch** eroberten die Feinde sie.“*"
+        }
+      ]
+    }
+  ]
+}

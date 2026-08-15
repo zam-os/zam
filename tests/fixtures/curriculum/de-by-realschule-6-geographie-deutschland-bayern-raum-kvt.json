@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-geographie-deutschland-bayern-raum",
+  "version": "2026.08.1",
+  "title": "Geographie 6: Deutschland und Bayern – Naturräume, Küsten und Metropolen (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geographie 6: Großlandschaften Deutschlands, Geographie Bayerns (Bezirke/Flüsse), Küstenformen (Watt/Gezeiten) und Metropolregionen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/geographie",
+      "checked": "2026-08-15",
+      "label": "Realschule Geographie 6, Lernbereiche Deutschland und Bayern"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G6D0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G6D0000000000000000A01",
+      "namespace": "geographie-deutschland",
+      "slug": "grosslandschaften-deutschlands-vier-stufen",
+      "title": "Die vier Großlandschaften Deutschlands: Von der Küste bis zu den Alpen",
+      "domain": "schule/geographie/deutschland",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Geography of Germany",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Deutschland – Räume und Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Deutschland – Räume und Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6D0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche deutsche Großlandschaft erstreckt sich als flache Tiefebene von den Küsten der Nord- und Ostsee bis an die Mittelgebirge?",
+          "concept": "Das Norddeutsche Tiefland",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Norddeutsche Tiefland",
+              "Das Alpenvorland"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6D0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gliedere die Bundesrepublik Deutschland von Nord nach Süd in ihre vier naturräumlichen Großlandschaften: 1. Norddeutsches Tiefland (Küstenzone, Geest, Börden, eiszeitliche Urstromtäler/Moränen), 2. Mittelgebirgsland (z. B. Harz, Rheinisches Schiefergebirge, Thüringer Wald, Erzgebirge, Schwarzwald, Bayerischer Wald), 3. Alpenvorland (Hügelland zwischen Donau und Alpen, Schotterebenen, Moränenwall-Seen wie Starnberger See/Chiemsee), 4. Die Alpen (Bayerische Alpen mit Zugspitze 2962 m).",
+          "concept": "1. Norddeutsches Tiefland: flach bis sanft wellig (<200m), fruchtbare Lössbörden (Magdeburger Börde); 2. Mittelgebirge: 500-1500m hohe bewaldete Härtlingszüge, tiefe Flusstäler (Rhein, Mosel); 3. Alpenvorland: 300-800m, würmeiszeitliche Zungenbecken-Seen und Schotterfluren (Münchner Schotterebene); 4. Alpen: Hochgebirge mit steilen Felswänden und höchstem Punkt Deutschlands (Zugspitze).",
+          "sample_solution": "1. Die vier Großlandschaften Deutschlands von Nord nach Süd: - 1. Norddeutsches Tiefland:   * Erstreckt sich von den Küsten der Nord- und Ostsee bis zum Fuß der Mittelgebirge. Höhen meist unter 100–150 m über NN.   * Geprägt durch die Eiszeiten: Küstenstreifen (Marschland), sandige Geestrücken, seenreiche Jungmoränenlandschaften (Mecklenburg) und im Süden fruchtbare Löss-Ablagerungen (Lössbörden wie Hildesheimer und Magdeburger Börde mit erstklassigen Weizenböden). - 2. Deutsches Mittelgebirgsland:   * Ein Mosaik aus bewaldeten Gebirgszügen, Hochebenen und tief eingeschnittenen Flusstälern (z. B. Mittelrheintal, Elbsandsteingebirge).   * Bekannte Mittelgebirge: Harz (Brocken 1141 m), Rheinisches Schiefergebirge (Taunus, Eifel, Hunsrück), Thüringer Wald, Erzgebirge, Schwarzwald (Feldberg 1493 m), Schwäbische und Fränkische Alb sowie der Bayerische Wald (Großer Arber 1456 m). - 3. Alpenvorland (Süddeutsches Schichtstufen- und Moränenland):   * Reicht von der Donau im Norden bis zum Steilanstieg der Alpen im Süden (Höhenlage von ca. 350 m an der Donau bis 800 m am Alpenrand).   * Entstanden durch mächtige Schotterablagerungen der Alpengletscher (z. B. Münchner Schotterebene) und eiszeitliche Zungenbecken, die heute die großen bayerischen Voralpenseen bilden (Ammersee, Starnberger See, Chiemsee). - 4. Die deutschen Alpen (Bayerische Kalkalpen):   * Schmaler Hochgebirgsstreifen ganz im Süden Bayerns (Allgäuer, Berchtesgadener und Wettersteinalpen).   * Höchster Berg Deutschlands: Die **Zugspitze mit 2962 m über NN**."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6D0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G6D0000000000000000A02",
+      "namespace": "geographie-bayern",
+      "slug": "bayern-geographie-regierungsbezirke-fluesse-berge",
+      "title": "Geographie Bayerns: Die 7 Regierungsbezirke, Hauptflüsse und Landeshauptstadt München",
+      "domain": "schule/geographie/bayern",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6D0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Alpenvorland und die süddeutschen Mittelgebirge bilden das bayerische Staatsgebiet."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Bavaria",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Der Freistaat Bayern",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Der Freistaat Bayern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6D0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Regierungsbezirke bilden die administrative Landesstruktur des Freistaates Bayern?",
+          "concept": "Genau 7 Regierungsbezirke (Oberbayern, Niederbayern, Oberpfalz, Oberfranken, Mittelfranken, Unterfranken, Schwaben)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "7 Regierungsbezirke",
+              "16 Regierungsbezirke"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6D0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Nenne die 7 bayerischen Regierungsbezirke mit ihren jeweiligen Regierungshauptstädten (Oberbayern – München, Niederbayern – Landshut, Oberpfalz – Regensburg, Oberfranken – Bayreuth, Mittelfranken – Ansbach, Unterfranken – Würzburg, Schwaben – Augsburg) und zeichne das Netz der wichtigsten Flusssysteme Bayerns nach: die Donau als Hauptstrom mit ihren südlichen Nebenflüssen (Iller, Lech, Isar, Inn) und nördlichen Zuflüssen (Wörnitz, Altmühl, Naab, Regen) sowie das Main-System in Franken.",
+          "concept": "7 Bezirke + Hauptstädte: Oberbayern (München - auch Landeshauptstadt), Niederbayern (Landshut), Oberpfalz (Regensburg), Oberfranken (Bayreuth), Mittelfranken (Ansbach; größte Stadt Nürnberg), Unterfranken (Würzburg), Schwaben (Augsburg); Flüsse: Donau fließt von West nach Ost (mündet ins Schwarze Meer), 'Iller, Lech, Isar, Inn fließen rechts zur Donau hin'; Main fließt von Ost nach West in den Rhein (Nordsee).",
+          "sample_solution": "1. Die 7 Regierungsbezirke des Freistaates Bayern und ihre Regierungssitze: - 1. **Oberbayern**: Regierungssitz **München** (zugleich Landeshauptstadt des Freistaates und größte Metropole mit ca. 1,6 Mio. Einwohnern). - 2. **Niederbayern**: Regierungssitz **Landshut** (weitere Städte: Passau, Straubing). - 3. **Oberpfalz**: Regierungssitz **Regensburg** (historische Reichsstadt an der Donau). - 4. **Oberfranken**: Regierungssitz **Bayreuth** (weitere Städte: Bamberg, Coburg, Hof). - 5. **Mittelfranken**: Regierungssitz **Ansbach** (wirtschaftliches Zentrum und größte Stadt: Nürnberg). - 6. **Unterfranken**: Regierungssitz **Würzburg** (weitere Städte: Aschaffenburg, Schweinfurt). - 7. **Schwaben**: Regierungssitz **Augsburg** (drittgrößte Stadt Bayerns). 2. Die Hauptflusssysteme in Bayern: - Die Donau (zweitlängster Strom Europas): Fließt von Westen (Ulm/Neu-Ulm) quer durch Bayern über Donauwörth, Ingolstadt, Regensburg, Straubing und Passau nach Osten Richtung Schwarzes Meer.   * Südliche (alpin geprägte, wasserreiche) rechte Nebenflüsse (Merkspruch: *'Iller, Lech, Isar, Inn fließen rechts zur Donau hin'*).   * Nördliche linke Zuflüsse aus den Mittelgebirgen: Wörnitz, Altmühl (Main-Donau-Kanal), Naab und Regen. - Das Main-System in Franken: Der Rote und Weiße Main vereinigen sich und fließen über Bamberg, Würzburg und Aschaffenburg nach Westen, wo der Main bei Mainz in den Rhein (Einzugsgebiet Nordsee) mündet. Die Europäische Hauptwasserscheide verläuft mitten durch Bayern zwischen Donau und Rhein/Main."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6D0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G6D0000000000000000A03",
+      "namespace": "geographie-deutschland",
+      "slug": "kuestenformen-nordsee-ostsee-wattenmeer-gezeiten",
+      "title": "Küstengeographie: Nordsee (Wattenmeer, Gezeiten Ebbe/Flut) versus Ostsee (Bodden, Förden)",
+      "domain": "schule/geographie/deutschland",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6D0000000000000000A01",
+          "type": "hard",
+          "rationale": "Küstenzonen bilden den nördlichen Abschluss des Norddeutschen Tieflands."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Wadden Sea",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Deutschland – Räume und Strukturen",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Deutschland – Räume und Strukturen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6D0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Durch welches physikalische Zusammenspiel entstehen die Gezeiten (Ebbe und Flut) an den Küsten der Weltmeere?",
+          "concept": "Durch die Gravitations-Anziehungskräfte von Mond und Sonne in Verbindung mit der Erdrotation (Zentrifugalkraft)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gravitationskräfte von Mond und Sonne + Fliehkraft",
+              "Starke Meereswinde und Stürme"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6D0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die deutsche Nordseeküste (Randmeer des Atlantiks, starker Tidenhub von 2–4 m, Gezeitenwechsel alle 6 Stunden 12 Minuten: Ebbe -> Niedrigwasser -> Flut -> Hochwasser, Wattenmeer mit Prielen und Halligen, Deichbau/Küstenschutz) mit der Ostseeküste (Binnenmeer, kaum Tidenhub < 20 cm, Förden-, Bodden- und Ausgleichsküste mit Sandhaken, Nehrungen und Kreidefelsen wie auf Rügen).",
+          "concept": "Nordsee: Tidenhub 2-4m, UNESCO-Weltnaturerbe Wattenmeer (trockenfallender Meeresboden), Priele leiten Wasser ab, Sturmflutgefahr erfordert Deiche und Sperrwerke; Ostsee: fast tidefrei (schmale Meerenge zum Atlantik), eiszeitliche Küstentypen: Fördenküste (Kiel/Flensburg: schmale Meeresarme), Boddenküste (flache Lagunen hinter Nehrungen/Sandhaken in Vorpommern), Steilküste (Kreidekliff Rügen).",
+          "sample_solution": "1. Die Nordseeküste (Gezeiten- und Wattenküste): - Meerestyp: Offenes Randmeer des Atlantiks mit starkem Tidenhub (Höhenunterschied zwischen Hoch- und Niedrigwasser: ca. 2 bis über 4 Meter). - Gezeiten (Tide): Ein Gezeitenzyklus dauert ca. 12 Stunden und 25 Minuten (Ebbe: ca. 6 Stunden ablaufendes Wasser bis zum Niedrigwasser; Flut: ca. 6 Stunden auflaufendes Wasser bis zum Hochwasser). Entsteht durch die Massenanziehung des Mondes (und der Sonne) und die Fliehkraft der Erde-Mond-Drehung. - Das Wattenmeer (UNESCO-Weltnaturerbe): Der zweimal täglich trockenfallende Meeresstreifen zwischen Festland und den Ost-/Nordfriesischen Inseln. Durchzogen von tiefen Wasseradern (**Priele**). Außendeichs liegen ungeschützte Marschinseln (**Halligen**), auf denen Häuser auf künstlichen Erdhügeln (**Warften**) stehen. - Küstenschutz: Hohe Deiche, Schöpfwerke und Sturmflut-Sperrwerke schützen das flache Marschland vor verheerenden Sturmfluten. 2. Die Ostseeküste (Ausgleichs- und Flachküste): - Meerestyp: Nahezu geschlossenes Neben-/Binnenmeer; durch die engen dänischen Meerengen kaum Gezeiteneinfluss (Tidenhub < 15–20 cm). - Küstenformen (geprägt durch die letzte Eiszeit und Meeresströmungen):   * Fördenküste (Schleswig-Holstein, z. B. Kieler Förde): Schmale, tief ins Land reichende Meeresbuchten, die von Gletscherschmelzwässern eingetieft wurden.   * Bodden- und Ausgleichsküste (Mecklenburg-Vorpommern): Durch Sandverdriftung schnüren Sandhaken und Nehrungen Buchten vom offenen Meer ab; es entstehen seichte Lagunengewässer (**Bodden**).   * Steilküsten: Wind und Wellen brechen Kliffe ab (z. B. die berühmten weißen Kreidefelsen auf Rügen), der Sand wird an Flachküsten als Strand wieder abgelagert."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6D0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G6D0000000000000000A04",
+      "namespace": "geographie-deutschland",
+      "slug": "metropolregionen-verdichtung-vs-laendlicher-raum",
+      "title": "Raumstrukturen: Verdichtungsräume (Metropolregionen wie München) vs. Ländlicher Raum",
+      "domain": "schule/geographie/deutschland",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6D0000000000000000A02",
+          "type": "hard",
+          "rationale": "Bezirke und Städte Bayerns bilden die Grundlage der Raumstruktur."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q183",
+          "target_label": "Metropolitan regions in Germany",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Raum in Deutschland",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geographie",
+          "topic_code": "lb3",
+          "topic_title": "Mensch und Raum in Deutschland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6D0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man die tägliche Pendelbewegung von Erwerbstätigen aus dem ländlichen Umland in die Kernstadt zur Arbeitsstätte und abends zurück?",
+          "concept": "Pendlerstrom / Berufspendeln (Einpendler / Auspendler)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Pendlerstrom (Berufspendeln)",
+              "Binnenwanderung (dauerhafter Umzug)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6D0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Ballungsräume / Metropolregionen (z. B. Metropolregion München oder Nürnberg-Fürth-Erlangen: hohe Bevölkerungsdichte, exzellente Infrastruktur/Universitäten, starke Wirtschaft/High-Tech, aber hohe Mieten, Flächenfraß und Stau) mit strukturschwachen ländlichen Räumen (hohe Lebensqualität, günstige Mieten, Naturerholung, aber Abwanderung junger Menschen, Schließung von Schulen/Läden und mangelnder ÖPNV/Mobilfunk) und erläutere das verfassungsrechtliche Ziel 'Gleichwertige Lebensverhältnisse in allen Landesteilen'.",
+          "concept": "Metropolregionen: Wirtschaftsmotoren, Arbeitsplatzmagneten, Verkehrsknotenpunkte, Zersiedlung/Suburbanisierung im Umland ('Speckgürtel'); Ländlicher Raum: Überalterung, 'Dorfladensterben', weite Wege; Gleichwertige Lebensverhältnisse (Art. 72 GG / Bay. Verfassung): Landesentwicklungsprogramm fördert Breitbandausbau, Behördenverlagerungen und Dorferneuerung.",
+          "sample_solution": "1. Merkmale von Ballungsräumen / Metropolregionen (z. B. München, Nürnberg): - Chancen & Stärken: Enorme Wirtschaftskraft, internationale Konzerne (Automobil, IT, Luftfahrt, Finanzen), erstklassige Universitäten, Forschungszentren und vielfältiges Kulturangebot (Museen, Theater). Anziehungspunkt für qualifizierte Fachkräfte aus aller Welt. - Probleme & Herausforderungen: Extrem angespannter Wohnungsmarkt mit explodierenden Miet- und Immobilienpreisen; Überlastung der Verkehrswege (Stau, volle S-Bahnen); fortschreitende Suburbanisierung (Abwanderung ins Umland / 'Speckgürtel') mit hohem Flächenverbrauch für Siedlung und Gewerbe; Zunahme des täglichen Pendlerverkehrs. 2. Merkmale von ländlichen Räumen: - Stärken: Hoher Wohn- und Freizeitwert, intakte Natur, starke dörfliche Gemeinschaft und Vereinsleben, bezahlbarer Wohnraum. - Herausforderungen in peripheren Gebieten: Demografischer Wandel (Überalterung durch Abwanderung junger Menschen); Rückgang der Infrastruktur ('Sterben' von Bäckereien, Dorfgasthäusern, Bankfilialen und Arztpraxen); lückenhafter öffentlicher Personennahverkehr (hohe Pkw-Abhängigkeit) und schleppender Ausbau schneller Glasfaser-/Mobilfunknetze. 3. Das staatliche Ziel der 'Gleichwertigen Lebensverhältnisse': - Im Grundgesetz (Art. 72 GG) und der Bayerischen Verfassung verankertes Staatsziel: Jeder Bürger soll überall – ob in der Großstadt oder im abgelegenen Bergdorf – faire Lebenschancen und eine verlässliche Grundversorgung (Schulen, Ärzte, Internet, Wasser, Mobilität) haben. - Maßnahmen der Landesplanung: Behördenverlagerungen aus München in ländliche Regionen (z. B. Ministerien nach Nürnberg, Landesamt für Digitales nach Weiden), staatliche Förderprogramme für Dorferneuerung und massiver Ausbau der Gigabit-Infrastruktur."
+        }
+      ]
+    }
+  ]
+}

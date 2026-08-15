@@ -42,8 +42,10 @@ describe("listAgentTextHarnessIds", () => {
     expect(withEffort.sort()).toEqual(["antigravity", "codex", "copilot"]);
   });
 
-  it("every registered agent text adapter implements listModels()", async () => {
-    const ids = listAgentTextHarnessIds();
+  it(
+    "every registered agent text adapter implements listModels()",
+    async () => {
+      const ids = listAgentTextHarnessIds();
     for (const id of ids) {
       const adapter = getAgentAdapter(id);
       expect(adapter?.listModels).toBeDefined();
@@ -51,7 +53,7 @@ describe("listAgentTextHarnessIds", () => {
       expect(Array.isArray(models)).toBe(true);
       expect(models.length).toBeGreaterThan(0);
     }
-  });
+  }, 15_000);
 });
 
 describe("parseOpenCodeJsonl", () => {

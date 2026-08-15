@@ -1,0 +1,264 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug",
+  "version": "2026.08.1",
+  "title": "Biologie 6: Wirbeltiere I – Säugetiere und Vögel (Gleichwarm, Gebiss, Flugbiologie) (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 6: Säugetierbiologie (Haare, Milchdrüsen, Gebissformen, Fußkonstruktionen), Vogelbiologie (Federbau, pneumatisierte Knochen, Brustbeinkamm) und Aerodynamik des Vogelflugs.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Natur und Technik 6 (Biologie), Lernbereich Wirbeltiere in ihren Lebensräumen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YB6S000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YB6S000000000000000A01",
+      "namespace": "biologie-zoologie",
+      "slug": "saeugetiere-klasse-merkmale-thermoregulation-lebendgeburt",
+      "title": "Klasse der Säugetiere: Gleichwarmheit (Endothermie), Haarkleid, Milchdrüsen und Differenzierung",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Mammal",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6S000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 3 anatomisch-physiologischen Schlüsselmerkmale definieren eindeutig die Wirbeltierklasse der Säugetiere (Mammalia)?",
+          "concept": "Gleichwarmheit (konstante Körpertemperatur), Haarkleid (Fell) und das Säugen der lebend geborenen Nachkommen mit Muttermilch aus Milchdrüsen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gleichwarm, Fell, Milchdrüsen (Säugen)",
+              "Wechselwarm, Schuppen, Kiemen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6S000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die evolutiven Erfolgsmerkmale der Säugetiere: 1. Gleichwarmheit / Endothermie (konstante Kerntemperatur von ca. 36–39 °C unabhängig von der Außentemperatur durch hohe Stoffwechselrate und isolierendes Fell aus Woll- und Grannenharen), 2. Lungenatmung mit Zwerchfell als Hauptatemmuskel, 3. Heterodontes Gebiss (Schneide-, Eck-, Vorbacken- und Backenzähne), 4. Fortpflanzung (echte Lebendgeburt mit Plazenta; intensive Brutpflege und Säugen der Jungen) und vergleiche die 3 Fortbewegungs-Fußkonstruktionen: Sohlengänger (Mensch/Bär), Zehengänger (Hund/Katze) und Zehenspitzengänger / Huftiere (Pferd/Reh).",
+          "concept": "Säugermerkmale: Endothermie + Fell, Zwerchfellatmung, heterodontes Gebiss, Plazenta + Säugen; Fußtypen: Sohlengänger (ganzer Fuß, stabil), Zehengänger (schnell, leise), Zehenspitzengänger (Huf, maximale Hebelwirkung für Flucht/Geschwindigkeit).",
+          "sample_solution": "1. Die evolutiven Schlüsselmerkmale der Säugetiere (Mammalia): - **1. Gleichwarmheit (Endothermie / Homoiothermie)**:   * Säugetiere halten ihre innere Körpertemperatur (ca. $36-39^\\circ\\text{ C}$) bei Kälte und Hitze konstant.   * Ermöglicht ganzjährige Aktivität, Jagd in der Nacht und Besiedlung polarer Regionen.   * Erfordert einen **hohen Nahrungs- und Sauerstoffumsatz** sowie wirksame Wärmeisolation (**Haarkleid** aus dichter Wollhaarschicht und schützenden Grannenhaaren, Unterhautfettgewebe). - **2. Zwerchfell und Lungenatmung**:   * Ein muskulöses **Zwerchfell** trennt Brust- und Bauchhöhle und ermöglicht neben der Rippenatmung die hochleistungsfähige Bauchatmung. - **3. Heterodontes Gebiss (Differenziertes Gebiss)**:   * Zähne sind nicht gleichförmig wie bei Reptilien, sondern in funktionelle Zahntypen unterteilt: Schneidezähne ($I$), Eck-/Fangzähne ($C$), vordere Backenzähne ($P$) und Mahlzähne ($M$).   * Einmaliger Zahnwechsel (Milchgebiss $\\rightarrow$ Dauergebiss). - **4. Viviparie (Lebendgeburt) und Säugen**:   * Embryonale Entwicklung geschützt im Mutterleib (Plazentatiere).   * Nach der Geburt werden die Jungen über spezialisierte **Milchdrüsen** mit energiereicher Muttermilch ernährt, kombiniert mit intensiver elterlicher Fürsorge (**Brutpflege** und soziales Lernen). 2. Die 3 Fußkonstruktionen bei Säugetieren im Vergleich: - **Sohlengänger (Plantigrad)**:   * Tritt mit der gesamten Fußsohle (Fußwurzel, Mittelfuß, Zehen) auf (z. B. *Mensch, Bär, Igel*).   * Vorteil: Höchste Standsicherheit und Tragfähigkeit; Nachteil: Geringere Maximalgeschwindigkeit. - **Zehengänger (Digitigrad)**:   * Tritt nur mit den Zehengliedern auf; Mittelfuß und Ferse sind vom Boden abgehoben (z. B. *Hund, Wolf, Katze*).   * Vorteil: Schnellerer, federnder und leiser Antritt (ideale Anpassung für Hetz- und Lauerjäger). - **Zehenspitzengänger / Huftiere (Unguligrad)**:   * Tritt nur noch mit den äußersten Zehenspitzen auf; Zehen sind durch dicke Hornschuhe (**Hufe bzw. Klauen**) geschützt (z. B. *Pferd mit 1 Zehe, Rind/Reh mit 2 Paarhufer-Zehen*).   * Vorteil: Maximale Beinverlängerung und elastische Hebelwirkung für extrem hohe Dauerlauf- und Fluchtgeschwindigkeiten in offenen Steppen."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6S000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YB6S000000000000000A02",
+      "namespace": "biologie-zoologie",
+      "slug": "gebissanpassungen-fleischfresser-pflanzenfresser-nagetiere",
+      "title": "Ernährungsbiologie: Raubtiergebiss (Reißzähne), Pflanzenfressergebiss (Kunde/Schmelzleisten) und Nagetiere",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6S000000000000000A01",
+          "type": "hard",
+          "rationale": "Das heterodonte Säugetiergebiss ist die morphologische Basis der Ernährungsanpassungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Dentition",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6S000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zähne bilden beim Fleischfressergebiss der Raubtiere (z. B. Wolf, Katze) die scherenartig ineinandergreifenden 'Reißzähne' zum Durchtrennen von Fleisch und Knochen?",
+          "concept": "Der letzte vordere Backenzahn im Oberkiefer (P4) und der erste Mahlzahn im Unterkiefer (M1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P4 im Oberkiefer + M1 im Unterkiefer (Reißzähne)",
+              "Die beiden oberen Schneidezähne"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6S000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die 3 hochspezialisierten Gebiss- und Schädelformen der Säugetiere: 1. Raubtiergebiss / Fleischfresser (dolchartige Eckzähne/Fangzähne zum Töten, scherenartige Reißzähne, Scharnier-Kiefergelenk ohne Mahlbewegung), 2. Pflanzenfressergebiss / Wiederkäuer (fehlende obere Schneidezähne mit harter Hornplatte, zahnfreie Lücke / Diastema, Schmelzleistenzähne zum Mahlen, flaches Mahl-Kiefergelenk für seitliche Kaubewegungen), 3. Nagetiergebiss (wurzellose, meißelförmige Nagezähne mit harter Schmelzvorderseite, die sich durch Abnutzung selbst schärfen) und stelle den Bezug zum Verdauungstrakt her (kurzer Fleischfresserdarm vs. riesiger Gärkammer-Darm der Pflanzenfresser mit Pansen/Blinddarm).",
+          "concept": "Raubtiere: Fangzähne + Reißzahnschere, Scharniergelenk, kurzer Darm (Fleisch leicht verdaulich); Pflanzenfresser: Hornplatte, Diastema, Schmelzleisten, mahlendes Gelenk, langer Gärdarm/Pansen für Zellulose; Nagetiere: lebenslang nachwachsende Nagezähne (Selbstschärfeprinzip).",
+          "sample_solution": "1. Die 3 spezialisierten Gebisstypen im Vergleich: - **1. Raubtiergebiss (Karnivoren, z. B. Wolf, Löwe, Katze)**:   * **Fangzähne (Canini)**: Riesig, dolchartig gekrümmt; dienen dem Packen, Festhalten und Ersticken/Töten der Beute.   * **Reißzähne**: Der 4. Prämolar oben und der 1. Molar unten bilden eine messerscharfe Knochenschere, die Fleischbrocken und Sehnen abtrennt.   * **Kiefergelenk**: Reines **Scharniergelenk**; erlaubt nur Auf- und Abbeißen mit extremer Beißkraft, aber keine Seitwärtsbewegungen. - **2. Pflanzenfressergebiss (Herbivoren, z. B. Rind, Schaf, Pferd)**:   * **Schneidezähne & Hornplatte**: Rinder besitzen im Oberkiefer keine Schneidezähne, sondern eine zähe Hornplatte, gegen die die unteren Schneidezähne Grasbüschel rupfen.   * **Zahnfreie Lücke (Diastema)**: Trennt Schneidebereich von den Backenzähnen; dient dem Umschichten des Grasbatzens mit der Zunge.   * **Mahlzähne (Schmelzleistenzähne)**: Breite Kauflächen mit abwechselnden Schichten aus hartem Zahnschmelz und weicherem Zement/Dentin. Durch ungleiche Abnutzung entstehen dauerhaft scharfe **Reibeleisten** zum Zermahlen von zellulosereichem Gras.   * **Kiefergelenk**: Flaches Gelenk; erlaubt kreisende, seitliche Mahlbewegungen. - **3. Nagetiergebiss (Rodentia, z. B. Biber, Maus, Eichhörnchen)**:   * **Nagezähne**: 2 obere und 2 untere meißelförmige Schneidezähne ohne Zahnwurzel; wachsen **lebenslang kontinuierlich nach**.   * **Bionischer Selbstschärfeeffekt**: Die Vorderseite besteht aus extrem hartem Zahnschmelz, die Rückseite aus weicherem Dentin. Beim Nagen nutzt sich das Dentin schneller ab $\\rightarrow$ die Kante bleibt immer rasiermesserscharf. 2. Korrelation mit dem Verdauungstrakt: - **Fleischfresser**: Fleisch ist hochkonzentriert und leicht verdaulich $\\rightarrow$ sehr **kurzer, einfacher Darm** (ca. 3–5-fache Körperlänge). - **Pflanzenfresser**: Zellulose der pflanzlichen Zellwände kann von Säugetieren nicht enzymatisch gespalten werden $\\rightarrow$ gigantischer **Verdauungsapparat mit mikrobiellen Gärkammern** (Wiederkäuermagen mit 4 Kammern: Pansen, Netzmagen, Blättermagen, Labmagen; oder riesiger Gär-Blinddarm beim Pferd) und Darmlängen vom **20- bis 30-Fachen der Körperlänge**."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6S000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YB6S000000000000000A03",
+      "namespace": "biologie-zoologie",
+      "slug": "vogelbiologie-skelett-leichtbau-federn-brustbeinkamm",
+      "title": "Klasse der Vögel: Bionischer Skelettleichtbau, Luftsäcke, Brustbeinkamm und Federarchitektur",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6S000000000000000A01",
+          "type": "hard",
+          "rationale": "Vögel teilen mit Säugetieren die Gleichwarmheit, besitzen aber Fluganpassungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Bird anatomy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6S000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie nennt man die mit feinen Hakenstrahlen (Mikro-Klettverschluss) vernetzten Horngebilde, die die geschlossene, luftundurchlässige Fahne einer Vogelfeder bilden?",
+          "concept": "Hakenstrahlen und Bogenstrahlen (verzahnen die Federäste zu einer geschlossenen Fläche)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haken- und Bogenstrahlen (Klett-Prinzip)",
+              "Daunenhaare"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6S000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die bionischen Leichtbauanpassungen des Vogelkörpers an das Fliegen: 1. Skelett (pneumatisierte, luftgefüllte Röhrenknochen mit inneren Verstrebungsbälkchen, zahnloser Hornschnabel, Verschmelzung zur starren Wirbelsäule/Synsacrum, großer Brustbeinkamm / Crista sterni als Ansatz für die mächtigen Flugmuskeln), 2. Federaufbau (Spule, Schaft, Federäste mit Haken- und Bogenstrahlen zur selbstreparierenden Flügelfläche; Daunenfedern zur Wärmeisolation), 3. Atmungssystem mit 5 Paaren von Luftsäcken und Durchströmungslunge (dauerhafter unidirektionaler Sauerstoffstrom bei Ein- und Ausatmung).",
+          "concept": "Fluganpassungen: Pneumatisierte Knochen (extrem leicht/stabil), zahnloser Schnabel, Brustbeinkamm für Flugmuskeln (großer Brustmuskel zieht Flügel runter); Feder: Spule, Schaft, Äste mit Kletthaken; Lunge: Luftsacksystem liefert Sauerstoff sowohl beim Ein- als auch beim Ausatmen.",
+          "sample_solution": "1. Der bionische Leichtbau des Vogelskeletts: - **Pneumatisierte Knochen**: Die großen Röhrenknochen sind innen hohl und mit Luftsäcken verbunden. Feine Knochenstreben (**Fachwerkbauweise**) garantieren höchste Bruchfestigkeit bei minimalem Gewicht. - **Gewichtsreduktion am Kopf**: Schwere Zähne und Kiefermuskeln fehlen völlig; stattdessen besitzt der Vogel einen leichten, hohlen **Hornschnabel**. Der Magen (Muskelmagen mit Gastrolithen/Mahlsteinen) übernimmt die Zerkleinerung im Körperschwerpunkt. - **Starrheit des Rumpfes**: Brust- und Lendenwirbel sowie Beckenknochen sind zum **Synsacrum** verschmolzen, um dem Flügelschlag ein stabiles Widerlager zu bieten. - **Brustbeinkamm (Carina / Crista sterni)**: Ein hoher knöcherner Kiel am Brustbein; dient als gigantische Ansatzfläche für den **großen Brustmuskel** (*M. pectoralis major*, macht bis zu 20 % des gesamten Körpergewichts aus und zieht den Flügel kraftvoll nach unten). 2. Der Feinbau der Vogelfeder: - **Aufbau einer Konturfeder**:   * **Spule (Calamus)**: Hohler, runder Kiel, der in der Federfollikel der Haut steckt.   * **Schaft (Rhachis)**: Trägt beidseitig die elastische **Federfahne**.   * **Federäste (Radii)**: Zweigen vom Schaft ab. An ihnen sitzen **Bogenstrahlen** und **Hakenstrahlen**.   * **Selbstschließender Mikro-Klettverschluss**: Die Hakenstrahlen greifen formschlüssig in die Bogenstrahlen des Nachbarastes. Reißt die Fahne im Flug auf, glättet der Vogel sie mit dem Schnabel wieder lückenlos luftdicht. - **Daunenfedern (Pflaumfedern)**: Besitzen keine Hakenstrahlen; schließen ein ruhendes Luftpolster ein und sorgen für eine unübertroffene Wärmeisolation. 3. Das Hochleistungs-Atmungssystem mit Luftsäcken: - Vögel besitzen neben der eigentlichen Lunge **vordere und hintere Luftsäcke**. - Sie wirken wie Blasebälge: Durch ein Klappensystem strömt sauerstoffreiche Frischluft **sowohl beim Einatmen als auch beim Ausatmen in einer Richtung (unidirektional)** durch die parabronchialen Röhren der Lunge. Ermöglicht Nonstop-Flüge über das Himalaya-Gebirge in 8.000 m Höhe."
+        }
+      ]
+    },
+    {
+      "id": "01K4YB6S000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YB6S000000000000000A04",
+      "namespace": "biologie-zoologie",
+      "slug": "flugarten-auftrieb-vogelei-nesthocker-nestfluechter",
+      "title": "Aerodynamik und Fortpflanzung: Flugarten (Gleit-, Segel-, Ruderflug), Vogelei und Bruttypen",
+      "domain": "schule/biologie/zoologie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YB6S000000000000000A03",
+          "type": "hard",
+          "rationale": "Flügelarchitektur und Federn ermöglichen die aerodynamischen Flugformen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10811",
+          "target_label": "Bird flight",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb1",
+          "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YB6S000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Flugart nutzen Greifvögel und Störche, um in aufsteigenden warmen Luftströmen (Thermik) ohne jeden Flügelschlag kreisend an Höhe zu gewinnen?",
+          "concept": "Den Segelflug (Thermiksegeln)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Den Segelflug (Thermiksegeln)",
+              "Den Ruderflug (Schlagflug)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YB6S000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Entstehung des dynamischen Auftriebs am gewölbten Vogelflügel nach dem Bernoulli-Prinzip (höhere Strömungsgeschwindigkeit an der gewölbten Oberseite -> Unterdruck saugt den Flügel nach oben), vergleiche die 4 Flugarten (Ruderflug/Schlagflug, Gleitflug, Segelflug, Rüttelflug beim Turmfalken), beschreibe den Aufbau des Vogeleis mit Kalkschale (Schale mit Poren, Schalenhäute, Luftkammer, Eiklar, Dotterkugel mit Keimscheibe, Hagelschnüre / Chalazen zur Zentrierung) und grenze Nesthocker (nackt, blind, hilflos, z. B. Amsel) von Nestflüchtern (voll befiedert, sehend, sofort mobil, z. B. Ente, Huhn) ab.",
+          "concept": "Auftrieb: Wölbung erzeugt schnelleren Luftstrom oben -> Unterdruck; 4 Flugarten: Ruderflug (aktiver Antrieb), Gleitflug (Höhenverlust), Segelflug (Thermikaufstieg), Rüttelflug (Stand in der Luft); Vogelei: Kalkschale, Luftkammer, Dotter mit Keimscheibe, Hagelschnüre; Nesthocker vs. Nestflüchter.",
+          "sample_solution": "1. Aerodynamik des Vogelflügels (Tragflächenprofil): - Die Oberseite des Flügels ist **nach oben gewölbt**, die Unterseite nahezu flach. - Die anströmende Luft muss über der gewölbten Oberseite einen längeren Weg zurücklegen und strömt daher **schneller** als an der Unterseite. - Nach dem **Bernoulli-Gesetz** erzeugt die schnellere Luftströmung an der Oberseite einen messbaren **statischen Unterdruck (Sog)**, während an der Unterseite ein Überdruck entsteht. Der Flügel wird nach oben 'gesaugt' (**dynamischer Auftrieb**). 2. Die 4 Flugarten im Vergleich: - **1. Ruderflug (Schlagflug)**: Aktiver, energieintensiver Flügelschlag erzeugt Vortrieb und Auftrieb gleichzeitig (Standardflug der meisten Vögel). - **2. Gleitflug**: Abwärtsgleiten mit ausgebreiteten, unbewegten Flügeln unter kontinuierlichem Höhenverlust (Umwandlung von potenzieller in kinetische Energie). - **3. Segelflug**: Ausnutzung natürlicher Aufwinde (**Thermik** über erwärmten Feldern oder Hangaufwinde an Bergen), um ohne Muskelarbeit kreisend an Höhe zu gewinnen (z. B. *Bussard, Storch, Albatros*). - **4. Rüttelflug (Schwirrflug)**: Schnelles Flügelschlagen bei starkem Gegenwind, um wie festgenagelt an einem Punkt in der Luft über Beute zu verharren (z. B. *Turmfalke*). 3. Aufbau des hartschaligen Vogeleis: - **Kalkschale**: Stabile Schutzhülle aus Calciumcarbonat; durchzogen von tausenden mikroskopischen Poren für den Gasaustausch ($O_2$-Aufnahme, $CO_2$-Abgabe). - **Luftkammer**: Am stumpfen Pol; liefert dem Küken vor dem Schlüpfen den ersten Atemzug. - **Eiklar (Eiweiß)**: Wasser- und Proteinspeicher; schützt vor Stößen und Austrocknung. - **Dotterkugel mit Keimscheibe**: Der eigentliche Nährstoffvorrat (Fette, Proteine); auf dem Dotter liegt die befruchtete **Keimscheibe**, aus der sich der Embryo entwickelt. - **Hagelschnüre (Chalazen)**: Zwei verdrillte Eiweißkordeln, die die Dotterkugel so im Zentrum aufhängen, dass die leichtere Keimscheibe beim Drehen des Eies immer nach oben zur wärmenden Brutfleck-Haut der Eltern zeigt. 4. Fortpflanzungstypen: Nesthocker vs. Nestflüchter: - **Nesthocker** (z. B. *Singvögel wie Amsel, Meise; Greifvögel*): Schlüpfen nackt, blind und taub; können Körpertemperatur nicht halten; verbleiben wochenlang im Nest und müssen intensiv von den Eltern gefüttert werden. - **Nestflüchter** (z. B. *Stockente, Huhn, Schwan*): Schlüpfen mit dichtem Daunenkleid und offenen Augen; sind sofort geh- und schwimmfähig und suchen nach wenigen Stunden selbstständig Nahrung unter Führung der Mutter."
+        }
+      ]
+    }
+  ]
+}

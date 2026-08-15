@@ -1,0 +1,268 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-7-physik-mechanik-bewegung-geschwindigkeit",
+  "version": "2026.08.1",
+  "title": "Physik 7: Mechanik – Bewegung und Geschwindigkeit (Realschule 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 7 (Zweig I): Bezugssysteme, gleichförmige geradlinige Bewegung, v = s / t, s-t- und v-t-Diagramme und Einheitenumrechnung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/7/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 7 (Zweig I), Lernbereich Bewegungen von Körpern"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4P7V0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4P7V0000000000000000A01",
+      "namespace": "physik-mechanik",
+      "slug": "bewegung-bezugssystem-trajektorie",
+      "title": "Bewegungsbegriff: Bezugssystem, Bahnkurve und Relativität der Ruhe",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Motion (physics)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Bewegungen von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7V0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum kann man in der Physik von einer 'Ruhe' oder 'Bewegung' eines Körpers nur in Bezug auf ein bestimmtes Bezugssystem sprechen?",
+          "concept": "Weil ein Körper bezüglich des einen Systems (z. B. Zugabteil) in Ruhe ist, bezüglich eines anderen Systems (z. B. Bahngleis) jedoch in schneller Bewegung (Relativität der Bewegung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Bewegung immer vom gewählten Bezugssystem abhängt (Relativität)",
+              "Weil es im Universum einen absolut ruhenden Mittelpunkt gibt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7V0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den physikalischen Begriff der Bewegung (Ortsveränderung im Laufe der Zeit bezüglich eines Bezugssystems), unterscheide Translationsbewegung (Fortbewegung) von Rotationsbewegung (Drehung um eine Achse) und beschreibe die Bahnlinie (Trajektorie) eines Ventils an einem rollenden Fahrradreifen für a) den Fahrradfahrer und b) einen am Straßenrand stehenden Beobachter (Zykloide).",
+          "concept": "Bewegung = zeitabhängige Ortsveränderung; Translation = alle Punkte des Körpers bewegen sich auf parallelen Bahnen; Rotation = Punkte bewegen sich auf konzentrischen Kreisbahnen um eine Achse; Ventil aus Sicht des Fahrers: Kreisbahn um die Radachse; Ventil aus Sicht des Straßenbeobachters: Zykloidenbahn (Bogenlinie mit periodischen Spitzen).",
+          "sample_solution": "1. Definition der Bewegung in der Physik: Ein Körper befindet sich in Bewegung, wenn er im Laufe der Zeit seinen Ort gegenüber einem gewählten Bezugskörper (Bezugssystem) ändert. Es gibt keine absolute Ruhe im Raum, sondern jede Bewegung ist relativ zum Bezugssystem (z. B. ruht ein im fahrenden Zug sitzender Passagier bezüglich des Zugabteils, bewegt sich aber mit 160 km/h bezüglich des Schienennetzes). 2. Grundformen der Bewegung: - Translation (Fortbewegung): Alle Massepunkte des starren Körpers bewegen sich auf zueinander kongruenten, parallelen Bahnen (z. B. ein fahrender Schlitten). - Rotation (Drehbewegung): Alle Punkte des Körpers bewegen sich auf kreisförmigen Bahnen um eine gemeinsame feste oder mitbewegte Drehachse (z. B. ein Karussell, die rotierende Erde). 3. Bahnlinie (Trajektorie) eines Fahrradventils: - a) Bezugssystem Fahrradrahmen / Fahrer: Für den Fahrer bewegt sich das Ventil auf einer einfachen **Kreisbahn** um die Radachse. - b) Bezugssystem Straße / Fußgänger: Für den stehenden Beobachter überlagern sich die Vorwärtsbewegung des Rades (Translation) und das Abrollen des Reifens (Rotation). Die resultierende Bahnlinie ist eine geschwungene Bogenkurve mit periodischen Berührpunkten am Boden, eine sogenannte **Zykloide** (Rollkurve)."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7V0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4P7V0000000000000000A02",
+      "namespace": "physik-mechanik",
+      "slug": "geschwindigkeit-formel-einheitenumrechnung",
+      "title": "Geschwindigkeit v = s / t und Einheitenumrechnung (m/s in km/h mit Faktor 3,6)",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7V0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Konzept von Weg und Zeit bildet die Basis der Geschwindigkeitsdefinition."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Speed",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Bewegungen von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7V0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem Umrechnungsfaktor rechnet man eine Geschwindigkeit von der SI-Einheit Meter pro Sekunde (m/s) in Kilometer pro Stunde (km/h) um?",
+          "concept": "Multiplikation mit dem Faktor 3,6 (1 m/s = 3,6 km/h)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Multiplikation mit 3,6 (· 3,6)",
+              "Division durch 3,6 (: 3,6)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7V0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere die physikalische Größe Geschwindigkeit v = s / t (Einheit m/s), leite den Umrechnungsfaktor 3,6 aus 1 km = 1000 m und 1 h = 3600 s her und berechne: a) die Geschwindigkeit eines Sprinters in km/h, der 100 m in t = 10,0 s läuft, b) den Bremsweg in Metern, den ein Pkw bei v = 108 km/h während 1 Sekunde Reaktionszeit (ungebremster Reaktionsweg) zurücklegt.",
+          "concept": "v = s/t [m/s]; 1 km/h = 1000 m / 3600 s = 1/3,6 m/s <=> 1 m/s = 3,6 km/h; a) v = 100 m / 10 s = 10 m/s = 10 * 3,6 = 36 km/h; b) v = 108 km/h / 3,6 = 30 m/s -> s = v * t = 30 m/s * 1 s = 30 m.",
+          "sample_solution": "1. Definition der Geschwindigkeit v: Die Geschwindigkeit gibt an, welcher Weg s in welcher Zeitspanne t zurückgelegt wird: v = s / t (bzw. v = Δs / Δt). SI-Einheit: Meter pro Sekunde [m/s]. Im Alltag gebräuchlich: Kilometer pro Stunde [km/h]. 2. Herleitung des Umrechnungsfaktors 3,6: 1 km/h = (1000 m) / (3600 s) = (1 / 3,6) m/s. Umgekehrt gilt daher: 1 m/s = 3,6 km/h. - Regel: Von m/s nach km/h multipliziert man mit 3,6; von km/h nach m/s dividiert man durch 3,6. 3. Berechnungen: - a) Sprinter: v = s / t = 100 m / 10,0 s = 10 m/s. In km/h: v = 10 · 3,6 km/h = 36 km/h. - b) Reaktionsweg bei 108 km/h: Geschwindigkeit in SI-Einheit: v = 108 km/h / 3,6 = 30 m/s. Reaktionsweg in 1 s: s = v · t = 30 m/s · 1 s = 30 m."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7V0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4P7V0000000000000000A03",
+      "namespace": "physik-mechanik",
+      "slug": "gleichfoermige-bewegung-diagramme-s-t-v-t",
+      "title": "Gleichförmige geradlinige Bewegung: s-t-Diagramm (Steigung) und v-t-Diagramm (Fläche)",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7V0000000000000000A02",
+          "type": "hard",
+          "rationale": "Geschwindigkeitsberechnung ist Voraussetzung für Bewegungsdiagramme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Uniform motion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Bewegungen von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7V0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Bedeutung hat die Steigung des Graphen in einem Weg-Zeit-Diagramm (s-t-Diagramm)?",
+          "concept": "Die Steigung des s-t-Graphen entspricht der Geschwindigkeit v (v = Δs / Δt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Geschwindigkeit v",
+              "Die Beschleunigung a"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7V0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Charakterisiere die gleichförmige geradlinige Bewegung (konstante Geschwindigkeit, Proportionalität s ~ t, s(t) = v · t), beschreibe das Aussehen des Graphen im s-t-Diagramm (Ursprungsgerade) und im v-t-Diagramm (waagrechte Parallele zur Zeitachse) und erkläre, wie man den zurückgelegten Weg s aus der Fläche unter dem Graphen im v-t-Diagramm ermittelt.",
+          "concept": "Gleichförmig: v = konstant, Richtung unverändert; s-t-Diagramm: Gerade durch Ursprung, Steigung = v; v-t-Diagramm: horizontale Gerade bei v, Fläche unter Graph A = v * t = Weg s; Je steiler die Gerade im s-t-Diagramm, desto größer v.",
+          "sample_solution": "1. Merkmale der gleichförmigen geradlinigen Bewegung: - Ein Körper bewegt sich auf einer geradlinigen Bahn mit betragsmäßig und richtungsmäßig konstanter Geschwindigkeit v = konstant (keine Beschleunigung, a = 0). - In gleichen Zeitabschnitten Δt werden immer gleiche Wegstrecken Δs zurückgelegt (Quotientengleichheit: s/t = konstant). - Weg-Zeit-Gesetz: s(t) = v · t (bei Start bei s_0 = 0). 2. Diagramme der Bewegung: - s-t-Diagramm (Weg-Zeit-Diagramm): Der Graph ist eine Ursprungsgerade. Die Steigung m = Δs / Δt der Geraden entspricht exakt der Geschwindigkeit v des Körpers. Je steiler die Gerade ansteigt, desto schneller ist die Bewegung. Eine waagrechte Linie bedeutet Stillstand (Ruhe, v = 0). - v-t-Diagramm (Geschwindigkeit-Zeit-Diagramm): Der Graph ist eine waagrechte Gerade parallel zur t-Achse auf der Höhe des konstanten Geschwindigkeitswerts v. 3. Flächensatz im v-t-Diagramm: Die Fläche des Rechtecks zwischen dem Funktionsgraphen und der Zeitachse im Zeitintervall von 0 bis t entspricht geometrisch dem Produkt aus Höhe (v) und Breite (t): A = v · t. Nach dem Weg-Zeit-Gesetz ist dieses Produkt exakt gleich dem zurückgelegten Weg s: Fläche im v-t-Diagramm = Wegstrecke s."
+        }
+      ]
+    },
+    {
+      "id": "01K4P7V0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4P7V0000000000000000A04",
+      "namespace": "physik-mechanik",
+      "slug": "durchschnitts-vs-momentangeschwindigkeit-beschleunigung",
+      "title": "Durchschnittsgeschwindigkeit vs. Momentangeschwindigkeit und Beschleunigung (qualitativ)",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4P7V0000000000000000A03",
+          "type": "hard",
+          "rationale": "Gleichförmige Bewegung ist der Referenzfall für ungleichförmige Bewegungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11402",
+          "target_label": "Acceleration",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 7,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Bewegungen von Körpern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4P7V0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Geschwindigkeit zeigt der Tachometer in einem fahrenden Auto zu jedem Zeitpunkt an?",
+          "concept": "Die Momentangeschwindigkeit (Augenblicksgeschwindigkeit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Momentangeschwindigkeit",
+              "Die Durchschnittsgeschwindigkeit der gesamten Fahrt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4P7V0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Momentangeschwindigkeit (Geschwindigkeit zu einem infinitesimal kurzen Zeitpunkt t_0) von der Durchschnittsgeschwindigkeit v_quer = s_gesamt / t_gesamt und berechne die Durchschnittsgeschwindigkeit einer Zugfahrt, bei der die ersten 120 km in 1 Stunde und die folgenden 80 km in 30 Minuten zurückgelegt werden.",
+          "concept": "Momentangeschwindigkeit: Tachowert in einem Augenblick; Durchschnittsgeschwindigkeit: Gesamtweg geteilt durch Gesamtzeit (v_quer = s_ges / t_ges); Rechnung: s_ges = 120 + 80 = 200 km; t_ges = 1,0 h + 0,5 h = 1,5 h; v_quer = 200 km / 1,5 h = 133,33 km/h.",
+          "sample_solution": "1. Momentangeschwindigkeit vs. Durchschnittsgeschwindigkeit: - Momentangeschwindigkeit (Augenblicksgeschwindigkeit v(t)): Die Geschwindigkeit eines Körpers zu einem ganz bestimmten Zeitpunkt t. Sie wird technisch z. B. durch Tachometer, Lichtschranken oder Radarmessungen erfasst. Im gekrümmten s-t-Diagramm entspricht sie der Steigung der Tangente im betreffenden Punkt. - Durchschnittsgeschwindigkeit (mittlere Geschwindigkeit v_quer): Der Quotient aus dem gesamten zurückgelegten Weg s_gesamt und der dafür benötigten Gesamtfahrzeit t_gesamt: v_quer = s_gesamt / t_gesamt. Sie ignoriert alle zwischenzeitlichen Geschwindigkeitsänderungen, Staus, Ampelstopps und Pausen. 2. Berechnung der durchschnittlichen Zuggeschwindigkeit: - Gesamtweg: s_ges = 120 km + 80 km = 200 km. - Gesamtzeit: t_ges = 1 h + 0,5 h (30 min) = 1,5 h. - Durchschnittsgeschwindigkeit: v_quer = s_ges / t_ges = 200 km / 1,5 h = 133,33 km/h."
+        }
+      ]
+    }
+  ]
+}

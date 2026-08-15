@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-physik-waermelehre-thermodynamik-energieumwandlung",
+  "version": "2026.08.1",
+  "title": "Physik 8: Wärmelehre – Temperatur, Thermische Energie, Spezifische Wärmekapazität und Aggregatzustände (Gymnasium 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 8: Brownsche Teilchenbewegung, absolute Temperatur (Kelvin/Celsius), Wärmeenergie (Q = c * m * Delta T), Aggregatzustandsänderungen (Schmelz- und Verdampfungswärme, Siedediagramm) sowie Wärmetransportarten und der 1. Hauptsatz der Thermodynamik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:35:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/8/physik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Physik 8, Lernbereich Aufbau der Materie und Wärmelehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G8D0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G8D0000000000000000A01",
+      "namespace": "gymnasium-physik-thermodynamik",
+      "slug": "temperatur-kelvin-waermeenergie-spezifische-waermekapazitaet",
+      "title": "Thermodynamik: Temperatur T (Kelvin), Wärmeenergie Q = c * m * Delta T und Wärmetransport",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11379",
+          "target_label": "Thermodynamics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Wärmelehre – Temperatur und Wärme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8D0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher absolute Nullpunkt in der Kelvin-Skala ($0\\text{ K}$) entspricht dem Zustand völliger thermischer Teilchenruhe in Grad Celsius?",
+          "concept": "-273,15 °C (Umrechnung: T(K) = vartheta(°C) + 273,15)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "-273,15 °C",
+              "-100 °C"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8D0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Temperatur, innere Energie und Wärmeübertragung: 1. **Teilchenmodell & Temperatur**: Die Temperatur $T$ ist ein statistisches Maß für die mittlere kinetische Energie der ungerichteten Teilchenbewegung (Brownsche Molekularbewegung); Absoluter Nullpunkt $0\\,\\text{K} = -273{,}15^\\circ\\text{C}$, 2. **Grundgleichung der Wärmelehre**:   $$Q = c \\cdot m \\cdot \\Delta T$$   ($Q = \\text{Wärmemenge in J}$, $c = \\text{spezifische Wärmekapazität in } \\frac{\\text{kJ}}{\\text{kg}\\cdot\\text{K}}$, $m = \\text{Masse in kg}$, $\\Delta T = \\text{Temperaturänderung}$), 3. **Die 3 Arten des Wärmetransports**:   * **Wärmeleitung** (direkter Impulsübertrag von Teilchen zu Teilchen in Festkörpern, z. B. Metalle).   * **Wärmeströmung (Konvektion)** (Mitführung thermischer Energie durch strömende Flüssigkeiten/Gase, z. B. Heizkörper).   * **Wärmestrahlung** (Elektromagnetische Infrarotwellen, breitet sich auch im Vakuum mit Lichtgeschwindigkeit aus, z. B. Sonne), 4. Berechne die benötigte Energie $Q$, um $2\\,\\text{kg}$ Wasser ($c_W = 4{,}19\\,\\frac{\\text{kJ}}{\\text{kg}\\cdot\\text{K}}$) von $20^\\circ\\text{C}$ auf $100^\\circ\\text{C}$ zu erhitzen.",
+          "concept": "Wärmelehre: T in Kelvin; Grundgleichung Q = c * m * Delta T; 3 Wärmetransportarten (Wärmeleitung, Konvektion, Wärmestrahlung); Rechnung: Q = 4,19 kJ/(kg*K) * 2 kg * 80 K = 670,4 kJ.",
+          "sample_solution": "1. Teilchenmodell, innere Energie und Temperaturbegriff: - **Mikroskopische Deutung**: Alle Stoffe bestehen aus kleinsten Teilchen (Atomen/Molekülen), die sich in ständiger ungerichteter Zitter- und Translationsbewegung befinden (**Brownsche Bewegung**). - **Temperatur $T$**:   * Ist ein Maß für die **mittlere kinetische Energie** dieser Teilchenbewegung.   * **Kelvin-Skala ($T$)**: Die physikalische thermodynamische Temperaturskala mit dem absoluten Nullpunkt $0\\text{ K} = -273{,}15^\\circ\\text{C}$:     $$\\mathbf{T\\,(\\text{in K}) = \\vartheta\\,(\\text{in }^\\circ\\text{C}) + 273{,}15}$$   * Bei Temperaturdifferenzen gilt: $\\mathbf{\\Delta T = \\Delta \\vartheta}$ ($1\\text{ K}$ Differenz $= 1^\\circ\\text{C}$ Differenz). 2. Die Grundgleichung der Wärmelehre: - Zur Erwärmung eines Körpers der Masse $m$ um $\\Delta T$ ist die thermische Energie $Q$ erforderlich:   $$\\mathbf{Q = c \\cdot m \\cdot \\Delta T}$$   * $c$: **Spezifische Wärmekapazität** (stoffspezifische Konstante, die angibt, wie viel Joule nötig sind, um $1\\text{ kg}$ des Stoffes um $1\\text{ K}$ zu erwärmen). Wasser besitzt mit $c_{\\text{Wasser}} \\approx 4{,}19\\,\\frac{\\text{kJ}}{\\text{kg}\\cdot\\text{K}}$ eine der höchsten Wärmekapazitäten in der Natur (hervorragender Wärmespeicher / Klimapuffer). 3. Die drei Mechanismen der Wärmeübertragung: - **1. Wärmeleitung (Konduktion)**:   * Energieübertragung durch Stöße benachbarter Teilchen und freie Elektronen **ohne Materietransport** (besonders stark in Metallen, gering in Holz/Gasen). - **2. Wärmeströmung (Konvektion)**:   * Erwärmtes Fluid dehnt sich aus, wird spezifisch leichter ($\\,\\rho$ sinkt) und steigt nach oben $\\implies$ **Wärmetransport durch strömende Materie** (z. B. Golfstrom, Aufwind, Heizung). - **3. Wärmestrahlung (Radiation)**:   * Energieabstrahlung in Form **elektromagnetischer Infrarotwellen**; benötigt kein Trägermedium und durchdringt das Vakuum (z. B. Sonnenstrahlung zur Erde). 4. Berechnung der Beispielfrage: - Gegeben: $m = 2\\,\\text{kg}$, $c = 4{,}19\\,\\frac{\\text{kJ}}{\\text{kg}\\cdot\\text{K}}$, $\\Delta T = 100^\\circ\\text{C} - 20^\\circ\\text{C} = 80\\,\\text{K}$. - **Rechnung**:   $$Q = c \\cdot m \\cdot \\Delta T = 4{,}19\\,\\frac{\\text{kJ}}{\\text{kg}\\cdot\\text{K}} \\cdot 2\\,\\text{kg} \\cdot 80\\,\\text{K} = \\mathbf{670{,}4\\,\\text{kJ}}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G8D0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G8D0000000000000000A02",
+      "namespace": "gymnasium-physik-thermodynamik",
+      "slug": "aggregatzustaende-schmelzwaerme-verdampfungswaerme-1-hauptsatz",
+      "title": "Phasenübergänge (Schmelz- & Verdampfungswärme), Siedeplateau und der 1. Hauptsatz der Thermodynamik",
+      "domain": "schule/physik/thermodynamik",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G8D0000000000000000A01",
+          "type": "hard",
+          "rationale": "Phasenübergänge bauen auf der Wärmemengen- und Temperaturberechnung auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11379",
+          "target_label": "Phase transition",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Aggregatzustände und Energieerhaltung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G8D0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bleibt die Temperatur von reinem Wasser während des gesamten Siede- und Verdampfungsvorgangs bei konstant $100^\\circ\\text{C}$ (Plateau im Temperatur-Zeit-Diagramm)?",
+          "concept": "Weil die gesamte zugeführte Wärmeenergie als latente Verdampfungswärme zum Aufbrechen der بینmolekularen Bindungen (Wasserstoffbrücken) genutzt wird",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zugeführte Wärme bricht Bindungen auf (latente Wärme)",
+              "Das Wasser kann keine Wärme mehr aufnehmen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G8D0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Thermodynamik der Phasenübergänge und den 1. Hauptsatz: 1. **Die 3 klassischen Aggregatzustände**: fest (Gitterstruktur, formstabil), flüssig (nahgeordnet, verschiebbar), gasförmig (völlige Unordnung, füllt Raum aus), 2. **Phasenübergänge & latente Wärme**:   * Schmelzen / Erstarren: $Q_S = q_s \\cdot m$ ($q_s = \\text{spezifische Schmelzwärme}$).   * Sieden / Kondensieren: $Q_V = q_v \\cdot m$ ($q_v = \\text{spezifische Verdampfungswärme}$).   * Sublimieren vs. Resublimieren (direkter Übergang fest $\\leftrightarrow$ gasförmig), 3. **Das Temperatur-Zeit-Diagramm (Erwärmungskurve)**: Schmelz- und Siedeplateaus mit konstanter Temperatur während des Phasenwechsels, 4. **Der 1. Hauptsatz der Thermodynamik**: Die Änderung der inneren Energie $\\Delta U$ eines Systems ist die Summe aus zugeführter Wärme $Q$ und verrichteter mechanischer Arbeit $W$:   $$\\mathbf{\\Delta U = Q + W}$$ (Energieerhaltungssatz der gesamten Physik).",
+          "concept": "Phasenübergänge: fest <-> flüssig <-> gasförmig; latente Wärme: Q_s = q_s * m, Q_v = q_v * m; Siedeplateau; 1. Hauptsatz der Thermodynamik: Delta U = Q + W (Innere Energie = Wärme + Arbeit).",
+          "sample_solution": "1. Die drei Aggregatzustände im mikroskopischen Teilchenmodell: - **Fest**: Teilchen sind an festen Gitterplätzen gebunden, schwingen um Ruhelagen; feste Form und festes Volumen. - **Flüssig**: Teilchen berühren sich, sind aber gegeneinander frei verschiebbar; unbestimmte Form, festes Volumen. - **Gasförmig**: Teilchen bewegen sich völlig frei mit hoher Geschwindigkeit und großen Abständen im Raum; keine feste Form, kein festes Volumen. 2. Phasenübergänge und latente Wärme: - Die Übergänge zwischen den Zuständen:   * Fest $\\rightarrow$ Flüssig: **Schmelzen** (Rückweg: **Erstarren / Gefrieren**).   * Flüssig $\\rightarrow$ Gasförmig: **Verdampfen / Sieden** (Rückweg: **Kondensieren**).   * Fest $\\rightarrow$ Gasförmig: **Sublimieren** (Rückweg: **Resublimieren**, z. B. Entstehung von Raureif). - **Latente Wärme (Verborgene Wärme)**:   * Während des Phasenübergangs steigt die Temperatur des Stoffes trotz ständiger Wärmezufuhr **nicht an** (Temperaturplateau).   * Die zugeführte Energie wird vollständig benötigt, um die zwischenmolekularen Bindungskräfte aufzubrechen:     * **Schmelzwärme**: $\\mathbf{Q_S = q_s \\cdot m}$     * **Verdampfungswärme**: $\\mathbf{Q_V = q_v \\cdot m}$   * Beim Erstarren oder Kondensieren wird exakt dieselbe Wärmemenge wieder an die Umgebung abgegeben (Kristallisations-/Kondensationswärme). 3. Das Temperatur-Zeit-Diagramm (Erwärmungskurve von Eis): - **Phase 1**: Erwärmung des Eises von $-20^\\circ\\text{C}$ auf $0^\\circ\\text{C}$ ($Q = c_{\\text{Eis}} \\cdot m \\cdot \\Delta T$). - **Phase 2 (Schmelzplateau bei $0^\\circ\\text{C}$)**: Eis schmilzt zu Wasser ($Q_S = q_s \\cdot m$, $T = 0^\\circ\\text{C}$ konstant). - **Phase 3**: Erwärmung des flüssigen Wassers von $0^\\circ\\text{C}$ auf $100^\\circ\\text{C}$ ($Q = c_{\\text{Wasser}} \\cdot m \\cdot \\Delta T$). - **Phase 4 (Siedeplateau bei $100^\\circ\\text{C}$)**: Wasser verdampft zu Wasserdampf ($Q_V = q_v \\cdot m$, $T = 100^\\circ\\text{C}$ konstant). - **Phase 5**: Weitererwärmung des überhitzten Wasserdampfes ($> 100^\\circ\\text{C}$). 4. Der 1. Hauptsatz der Thermodynamik: - Die **innere Energie $U$** eines thermodynamischen Systems kann durch Zufuhr von Wärme $Q$ oder durch mechanische Arbeit $W$ am System erhöht werden:   $$\\mathbf{\\Delta U = Q + W}$$ - **Folgerung**: Ein 'Perpetuum mobile 1. Art' (eine Maschine, die aus dem Nichts Arbeit verrichtet) ist physikalisch unmöglich."
+        }
+      ]
+    }
+  ]
+}

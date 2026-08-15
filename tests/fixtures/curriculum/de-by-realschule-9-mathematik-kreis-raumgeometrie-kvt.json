@@ -1,0 +1,357 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-mathematik-kreis-raumgeometrie",
+  "version": "2026.08.1",
+  "title": "Kreis und Raumgeometrie (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9: Kreisumfang, Kreisfläche, Kreissektor, Zylinder, Pyramide, Kegel und Kugel.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (I), Lernbereiche 4 & 5 Kreis und Raumgeometrie"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 9 (II/III), Lernbereich 4 Kreis"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4K9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4K9M0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "kreisumfang-kreisflaeche-pi",
+      "title": "Kreisumfang, Kreisfläche und Kreiszahl Pi",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q167",
+          "target_label": "Pi",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kreis",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kreis",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4K9M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verändert sich der Flächeninhalt A eines Kreises, wenn sein Radius r verdoppelt wird?",
+          "concept": "Er vervierfacht sich wegen quadratischer Abhängigkeit (r²)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Flächeninhalt vervierfacht sich (A ~ r²)",
+              "Der Flächeninhalt verdoppelt sich lediglich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4K9M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Formeln für den Umfang u und den Flächeninhalt A eines Kreises mit Radius r (und Durchmesser d = 2r) an und erkläre die Bedeutung der Kreiszahl π.",
+          "concept": "u = 2πr = πd und A = πr²",
+          "sample_solution": "Der Kreisumfang beträgt u = 2 * π * r = π * d. Der Flächeninhalt beträgt A = π * r² = 1/4 * π * d². Die Kreiszahl π (Pi ≈ 3,14159...) ist das konstante Verhältnis des Kreisumfangs zu seinem Durchmesser (π = u / d) und ist eine irrationale, transzendente Zahl."
+        }
+      ]
+    },
+    {
+      "id": "01K4K9M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4K9M0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "kreissektor-kreisbogen",
+      "title": "Kreissektor und Kreisbogen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4K9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Umfang und Fläche des Vollkreises sind Voraussetzung für die Sektorberechnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q211437",
+          "target_label": "Circular sector",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kreis",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kreis",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4K9M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen Bruchteil des gesamten Kreisumfangs bildet ein Kreisbogen mit Mittelpunktswinkel α = 90°?",
+          "concept": "1/4 (da 90° / 360° = 1/4)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Viertel (1/4)",
+              "Ein Halb (1/2)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4K9M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Formeln für die Bogenlänge b und den Sektorflächeninhalt A_Sektor bei Mittelpunktswinkel α und Radius r an.",
+          "concept": "b = 2πr * (α/360°) und A_Sektor = πr² * (α/360°) = 0.5 * b * r",
+          "sample_solution": "Die Bogenlänge ist b = 2 * π * r * (α / 360°). Die Sektorfläche ist A_Sektor = π * r² * (α / 360°). Es gilt auch der direkte Zusammenhang A_Sektor = 1/2 * b * r (analog zur Dreiecksfläche mit Grundlinie b und Höhe r)."
+        }
+      ]
+    },
+    {
+      "id": "01K4K9M0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4K9M0000000000000000A03",
+      "namespace": "mathematik-geometrie",
+      "slug": "zylinder-oberflaeche-volumen",
+      "title": "Zylinder: Oberflächeninhalt und Volumen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4K9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Kreisfläche ist die Grundfläche des Zylinders."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8933",
+          "target_label": "Cylinder",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4K9M0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche geometrische Figur entsteht beim Abrollen der Mantelfläche eines geraden Kreiszylinders?",
+          "concept": "Ein Rechteck mit den Seiten 2πr und h",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein Rechteck (mit Seitenlängen 2πr und h)",
+              "Ein Kreissektor"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4K9M0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Formeln für Mantelfläche M, Oberfläche O und Volumen V eines geraden Kreiszylinders mit Radius r und Körperhöhe h an.",
+          "concept": "V = πr²h, M = 2πrh, O = 2πr² + 2πrh",
+          "sample_solution": "Für den geraden Kreiszylinder gilt: Grundfläche G = π * r², Mantelfläche M = 2 * π * r * h, Oberfläche O = 2 * G + M = 2 * π * r² + 2 * π * r * h = 2 * π * r * (r + h), Volumen V = G * h = π * r² * h."
+        }
+      ]
+    },
+    {
+      "id": "01K4K9M0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4K9M0000000000000000A04",
+      "namespace": "mathematik-geometrie",
+      "slug": "pyramide-kegel-spitzkoerper",
+      "title": "Pyramide und Kegel: Spitzkörper und Mantellinien",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4K9M0000000000000000A02",
+          "type": "hard",
+          "rationale": "Kreissektor und Kreisumfang sind Voraussetzung für die Kegelmantelfläche."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12507",
+          "target_label": "Cone",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4K9M0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Faktor unterscheidet das Volumen eines Spitzkörpers (Kegel/Pyramide) vom Volumen des Säulenkörpers (Zylinder/Prisma) mit gleicher Grundfläche und Höhe?",
+          "concept": "1/3",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faktor 1/3 (V = 1/3 * G * h)",
+              "Faktor 1/2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4K9M0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie berechnen sich Mantellinie s, Mantelfläche M und Volumen V eines geraden Kreiskegels mit Radius r und Höhe h?",
+          "concept": "s = √(r² + h²), M = πrs, V = 1/3 πr²h",
+          "sample_solution": "Nach dem Satz des Pythagoras gilt für die Mantellinie s = √(r² + h²). Die Mantelfläche ist ein Kreissektor mit Radius s und Bogenlänge 2πr: M = π * r * s. Das Volumen beträgt V = 1/3 * π * r² * h."
+        }
+      ]
+    },
+    {
+      "id": "01K4K9M0000000000000000A05",
+      "atom_uri": "urn:zam:atom:01K4K9M0000000000000000A05",
+      "namespace": "mathematik-geometrie",
+      "slug": "kugel-oberflaeche-volumen",
+      "title": "Kugel: Oberflächeninhalt und Volumen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4K9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kreisfläche und Radiusbegriff sind Voraussetzung für die Kugelgeometrie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12507",
+          "target_label": "Sphere",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb5",
+          "topic_title": "Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4K9M0000000000000000J09",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ändert sich das Volumen V einer Kugel, wenn ihr Radius r verdoppelt wird?",
+          "concept": "Es verachtfacht sich wegen kubischer Abhängigkeit (r³ = 2³ = 8)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Volumen verachtfacht sich (V ~ r³)",
+              "Das Volumen vervierfacht sich lediglich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4K9M0000000000000000J10",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gib die Formeln für den Oberflächeninhalt O und das Volumen V einer Kugel mit Radius r an.",
+          "concept": "O = 4πr² und V = 4/3 πr³",
+          "sample_solution": "Der Oberflächeninhalt einer Kugel beträgt genau das Vierfache ihres Großkreisflächeninhalts: O = 4 * π * r² = π * d². Das Volumen beträgt V = 4/3 * π * r³ = 1/6 * π * d³."
+        }
+      ]
+    }
+  ]
+}

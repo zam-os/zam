@@ -1,0 +1,258 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-wirtschaft-recht-konsum-geld-jugend",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 8: Jugendliche im Wirtschaftsleben, Konsum, Geld und Recht (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Wirtschaft und Recht 8: Bedürfnisse und Güterarten, Jugendliche als Konsumenten, Geld und Zahlungsverkehr sowie Rechtsfähigkeit vs. Geschäftsfähigkeit.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/wirtschaft-und-recht",
+      "checked": "2026-08-15",
+      "label": "Realschule Wirtschaft und Recht 8, Lernbereiche Konsum, Geld und rechtliche Grundlagen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4W8K0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4W8K0000000000000000A01",
+      "namespace": "wirtschaft-recht",
+      "slug": "beduerfnisse-gueterarten-oekonomisches-prinzip",
+      "title": "Bedürfnisse, Güterarten und das Ökonomische Prinzip (Minimal-/Maximalprinzip)",
+      "domain": "schule/wirtschaft/volkswirtschaft",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Economic good",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb1",
+          "topic_title": "Der Jugendliche als Konsument",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W8K0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Ausprägung des ökonomischen Prinzips verfolgt das Ziel, ein vorgegebenes festes Ergebnis mit möglichst geringem Mitteleinsatz (Aufwand) zu erreichen?",
+          "concept": "Das Minimalprinzip (Sparprinzip)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Minimalprinzip",
+              "Das Maximalprinzip"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W8K0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Entwicklung von Mangelempfinden über das Bedürfnis zum wirtschaftlichen Bedarf (kaufkraftgedecktes Bedürfnis) und zur Nachfrage am Markt, systematisiere die Güterarten (freie Güter vs. Wirtschaftsgüter: materielle Sachgüter vs. immaterielle Dienstleistungen/Rechte, Konsumgüter vs. Produktionsgüter) und vergleiche Minimalprinzip und Maximalprinzip mit je einem Alltagsbeispiel.",
+          "concept": "Kette: Bedürfnis (subjektiver Mangel) -> Bedarf (mit Geldmitteln gedecktes Bedürfnis) -> Nachfrage (tatsächlicher Kauf am Markt); Freie Güter (Sonne, Luft, unbegrenzt, kostenlos) vs. Wirtschaftsgüter (knapp, kosten Geld); Minimalprinzip: Ziel fest, Mittel minimal (z. B. mit möglichst wenig Benzin von München nach Nürnberg fahren); Maximalprinzip: Mittel fest, Ziel maximal (z. B. mit 50 € Tankbudget so weit wie möglich fahren)."
+        }
+      ]
+    },
+    {
+      "id": "01K4W8K0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4W8K0000000000000000A02",
+      "namespace": "wirtschaft-recht",
+      "slug": "geld-funktionen-zahlungsverkehr-girokonto",
+      "title": "Geld und Zahlungsverkehr: Geldfunktionen, Girokonto, Bar- und Buchgeld",
+      "domain": "schule/wirtschaft/betriebswirtschaft",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W8K0000000000000000A01",
+          "type": "hard",
+          "rationale": "Bedürfnisse und Gütertausch erfordern das Tauschmittel Geld."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1368",
+          "target_label": "Money",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb2",
+          "topic_title": "Geld und Zahlungsverkehr",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W8K0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche drei grundlegenden Funktionen erfüllt Geld in einer arbeitsteiligen Volkswirtschaft?",
+          "concept": "Tauschmittel / Zahlungsmittel, Recheneinheit / Wertmaßstab und Wertaufbewahrungsmittel",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Tauschmittel, Wertmaßstab und Wertaufbewahrungsmittel",
+              "Ausschließlich das Bezahlen von staatlichen Steuern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W8K0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die drei Funktionen des Geldes, unterscheide Bargeld (Münzen, Banknoten) von Buchgeld/Giralgeld (Guthaben auf dem Girokonto) und vergleiche die unbaren Zahlungsarten: Überweisung, Dauerauftrag, SEPA-Lastschriftmandat und Kartenzahlung (Debitkarte vs. Kreditkarte).",
+          "concept": "Geldfunktionen: 1. Tausch-/Zahlungsmittel (überwindet Naturaltausch); 2. Recheneinheit/Wertmaßstab (Preise vergleichbar machen); 3. Wertaufbewahrung (Sparen); Bar vs. Buchgeld: Buchgeld existiert nur als Kontoguthaben; Überweisung = Zahler stößt Zahlung aktiv an; Dauerauftrag = regelmäßige feste Beträge (z. B. Miete); Lastschrift = Empfänger bucht ab (z. B. Handyrechnung); Debitkarte = sofortige Kontobelastung; Kreditkarte = monatliche Sammelabrechnung."
+        }
+      ]
+    },
+    {
+      "id": "01K4W8K0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4W8K0000000000000000A03",
+      "namespace": "wirtschaft-recht",
+      "slug": "rechtsfaehigkeit-geschaeftsfaehigkeit-stufen",
+      "title": "Rechtsfähigkeit und Geschäftsfähigkeit: Die drei Stufen des BGB",
+      "domain": "schule/recht/zivilrecht",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Capacity (law)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb3",
+          "topic_title": "Rechtliche Grundlagen des Handelns",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W8K0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Stufe der Geschäftsfähigkeit befindet sich ein 14-jähriger Realschüler nach dem deutschen Bürgerlichen Gesetzbuch (BGB)?",
+          "concept": "Beschränkte Geschäftsfähigkeit (vom vollendeten 7. bis zum vollendeten 18. Lebensjahr, §§ 106 ff. BGB)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beschränkte Geschäftsfähigkeit (7 bis 17 Jahre)",
+              "Geschäftsunfähigkeit (unter 7 Jahre)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W8K0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide Rechtsfähigkeit (Träger von Rechten und Pflichten ab Geburt, § 1 BGB) von Geschäftsfähigkeit (Fähigkeit, rechtswirksame Willenserklärungen abzugeben), stelle die 3 Stufen der Geschäftsfähigkeit (geschäftsunfähig, beschränkt geschäftsfähig, voll geschäftsfähig) mit Altersgrenzen und Rechtsfolgen dar und beurteile die Wirksamkeit eines Kaufvertrags eines 6-jährigen Kindes über ein Spielzeugauto.",
+          "concept": "Rechtsfähigkeit: alle Menschen ab Vollendung der Geburt bis zum Tod; Geschäftsfähigkeit: 1. Geschäftsunfähig (0-6 Jahre, § 104 BGB): Willenserklärungen sind nichtig (§ 105 BGB); 2. Beschränkt geschäftsfähig (7-17 Jahre, § 106 BGB): schwebend unwirksam bis zur Genehmigung der Eltern; 3. Voll geschäftsfähig (ab 18 Jahre): uneingeschränkt wirksam; Fall 6-jähriges Kind: Kaufvertrag ist nach § 105 Abs. 1 BGB von Anfang an nichtig."
+        }
+      ]
+    },
+    {
+      "id": "01K4W8K0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4W8K0000000000000000A04",
+      "namespace": "wirtschaft-recht",
+      "slug": "taschengeldparagraph-konsumfallen-verschuldung",
+      "title": "Der Taschengeldparagraph (§ 110 BGB), Konsumfallen und Schuldenprävention",
+      "domain": "schule/recht/verbraucherschutz",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4W8K0000000000000000A03",
+          "type": "hard",
+          "rationale": "Die beschränkte Geschäftsfähigkeit ist die gesetzliche Voraussetzung für § 110 BGB."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Consumer protection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb3",
+          "topic_title": "Rechtliche Grundlagen des Handelns",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4W8K0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche wesentliche Bedingung muss nach dem 'Taschengeldparagraphen' (§ 110 BGB) erfüllt sein, damit ein Kaufvertrag eines 15-Jährigen ohne ausdrückliche Genehmigung der Eltern sofort wirksam wird?",
+          "concept": "Die vertragliche Leistung muss mit Mitteln bewirkt (vollständig bezahlt) werden, die dem Minderjährigen zu diesem Zweck oder zur freien Verfügung überlassen worden sind",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vollständige Bezahlung mit Mitteln zur freien Verfügung (§ 110 BGB)",
+              "Der Vertrag darf auf Ratenzahlung mit monatlicher Abbuchung lauten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4W8K0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Taschengeldparagraphen (§ 110 BGB: Sofortige Barzahlung, keine Ratenkaufverträge, keine Abonnements/Handyverträge), identifiziere typische 'Konsumfallen' und Ursachen der Jugendverschuldung (In-App-Käufe, 'Buy Now Pay Later', Gruppenzwang, Markenwahn) und entwickle drei konkrete Strategien zur persönlichen Schuldenprävention (Haushaltsbuch, Budgetierung, Kündigungsfristen prüfen).",
+          "concept": "Taschengeldparagraph: gilt nur, wenn Leistung vollständig bewirkt wird (keine Ratenkäufe, keine Dauerschuldverhältnisse wie Handyverträge); Schuldenfallen: BNPL (Klarna), Glücksspielelemente in Videospielen (Lootboxen), Abo-Fallen, unkontrollierte Kartenzahlung; Prävention: 1. Führen eines Haushaltsbuchs/Finanz-Apps; 2. 24-Stunden-Bedenkzeit vor Spontankäufen; 3. Überblick über feste Fixkosten und monatliches Sparziel."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-biologie-sinnesorgane-auge-ohr-nervensystem-skelett",
+  "version": "2026.08.1",
+  "title": "Biologie 7: Humanbiologie – Sinnesorgane (Auge & Ohr), Nervensystem und Bewegungsapparat (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 7: Bau und Funktion des menschlichen Skeletts (Gegenspielerprinzip), Bau und Akkommodation des Auges (Stäbchen/Zapfen, Fehlsichtigkeiten), Bau des Ohrs und Schallweiterleitung sowie Reiz-Reaktions-Kette und Reflexbogen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/biologie",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Biologie 7, Lernbereiche Der menschliche Körper – Sinnesorgane, Nervensystem und Bewegung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B7S0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B7S0000000000000000A01",
+      "namespace": "gymnasium-biologie-sinne",
+      "slug": "auge-bau-funktion-akkommodation-photorezeptoren",
+      "title": "Das menschliche Auge: Bau (Hornhaut, Linse, Netzhaut), Akkommodation und Photorezeptoren (Stäbchen vs. Zapfen)",
+      "domain": "schule/biologie/sinne",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1004",
+          "target_label": "Human eye",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Sinnesorgane – Das Auge",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7S0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Sinneszellen auf der menschlichen Netzhaut (Retina) sind für das scharfe Farbsehen am Tag verantwortlich und konzentrieren sich im 'Gelben Fleck' (Fovea centralis)?",
+          "concept": "Die Zapfen (Photorezeptoren für Rot, Grün und Blau; Stäbchen dienen dem Hell-Dunkel-Sehen bei Dämmerung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Zapfen (Farbsehen)",
+              "Die Stäbchen (Dämmerungssehen)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7S0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Bau und die Funktionsweise des menschlichen Auges: 1. **Optischer Apparat**: Hornhaut (Cornea), vordere Augenkammer, Pupille/Iris (Adaptation = Helligkeitsanpassung), elastische Augenlinse, Glaskörper $\\rightarrow$ erzeugt ein verkleinertes, umgekehrtes, reelles Bild auf der Netzhaut, 2. **Akkommodation (Scharfstellung)**:   * *Ferneinstellung*: Ziliarmuskel erschlafft $\\rightarrow$ Zonulafasern spannen sich $\\rightarrow$ Linse wird flach gezogen (geringe Brechkraft).   * *Naheinstellung*: Ziliarmuskel spannt sich an $\\rightarrow$ Zonulafasern erschlaffen $\\rightarrow$ Linse wölbt sich elastisch kugelig (hohe Brechkraft), 3. **Netzhaut (Retina)**: **Zapfen** (ca. 6 Mio., 3 Typen für Farbsehen im Gelben Fleck) vs. **Stäbchen** (ca. 120 Mio., extrem lichtempfindlich für Schwarz-Weiß-Dämmerungssehen); **Blinder Fleck** (Austrittsstelle des Sehnervs ohne Sinneszellen), 4. **Fehlsichtigkeiten**: Kurzsichtigkeit (Augapfel zu lang $\\rightarrow$ Zerstreuungslinse / Konkavlinse nötig) vs. Weitsichtigkeit (Augapfel zu kurz $\\rightarrow$ Sammellinse / Konvexlinse nötig).",
+          "concept": "Auge: Hornhaut, Iris (Adaptation), Linse (Akkommodation über Ziliarmuskel/Zonulafasern); Netzhaut: Zapfen (Farbe/Gelber Fleck), Stäbchen (Hell-Dunkel), Blinder Fleck (Sehnerv); Kurzsichtigkeit (Konkavlinse) vs. Weitsichtigkeit (Konvexlinse).",
+          "sample_solution": "1. Der Aufbau des dioptrischen Apparates des Auges: - Das Auge funktioniert wie eine hochmoderne biologische Kamera mit einer Gesamtbrechkraft von ca. **60 Dioptrien**:   * **Lederhaut & Hornhaut (Cornea)**: Äußere Schutzhülle; die durchsichtige Hornhaut erbringt mit ca. 43 dpt den größten Teil der Lichtbrechung.   * **Iris (Regenbogenhaut) & Pupille**: Funktioniert als **Lichtblende**. Durch Pupillenreflex (Pupillenerweiterung im Dunkeln / Verengung im Hellen) erfolgt die **Adaptation** an veränderte Lichtstärken.   * **Augenlinse**: Elastische Bikonvexlinse zur Feinjustierung der Bildschärfe.   * **Glaskörper**: Gallertartige Füllung, die den Augapfel stabilisiert. 2. Die Akkommodation (Dynamische Scharfstellung): - Gesteuert durch das Zusammenspiel von **Ziliarmuskel** und **Zonulafasern**:   * **1. Fernakkommodation (ab ca. 6 m)**:     - Ziliarmuskel ist **entspannt (erschlafft)** $\\rightarrow$ Durchmesser des Muskelrings wird größer $\\rightarrow$ Zonulafasern sind **straff gespannt** $\\rightarrow$ Linse wird **flach gezogen** (geringe Wölbung, geringe Brechkraft).   * **2. Nahakkommodation**:     - Ziliarmuskel **kontrahiert (spannt sich an)** $\\rightarrow$ Muskelring verengt sich $\\rightarrow$ Zonulafasern **erschlaffen** $\\rightarrow$ die Linse **wölbt sich durch Eigenelastizität stark kugelig** (hohe Brechkraft). 3. Die Photorezeptoren der Netzhaut (Retina): - **1. Zapfen (ca. 6 Millionen)**:   * Spezialisiert auf das **Farbsehen** und hohe Sehschärfe bei Tageslicht (*photopisches Sehen*).   * Drei Rezeptortypen: Rot-, Grün- und Blau-Zapfen.   * Höchste Dichte im **Gelben Fleck (Fovea centralis)**, dem Ort des schärfsten Sehens. - **2. Stäbchen (ca. 120 Millionen)**:   * Extrem lichtempfindlich für das **Hell-Dunkel- und Dämmerungssehen** (*skotopisches Sehen*); können keine Farben unterscheiden. - **3. Der Blinde Fleck**:   * Die Austrittsstelle des Sehnervs zur Weiterleitung der Signale ans Gehirn; besitzt keinerlei Sinneszellen. 4. Korrektur von Fehlsichtigkeiten: - **Kurzsichtigkeit (Myopie)**: Augapfel ist zu lang (oder Brechkraft zu stark); Brennpunkt liegt *vor* der Netzhaut $\\implies$ Korrektur durch **Zerstreuungslinse (Konkavlinse mit Minus-Dioptrien)**. - **Weitsichtigkeit (Hyperopie)**: Augapfel ist zu kurz; Brennpunkt liegt *hinter* der Netzhaut $\\implies$ Korrektur durch **Sammellinse (Konvexlinse mit Plus-Dioptrien)**."
+        }
+      ]
+    },
+    {
+      "id": "01K4B7S0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B7S0000000000000000A02",
+      "namespace": "gymnasium-biologie-sinne",
+      "slug": "ohr-schallleitung-hoerschnecke-nervensystem-reflexe",
+      "title": "Das menschliche Ohr (Schallweiterleitung, Cochlea), Nervensystem und der monosynaptische Reflexbogen",
+      "domain": "schule/biologie/sinne",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B7S0000000000000000A01",
+          "type": "hard",
+          "rationale": "Reiz-Reaktions-Ketten verbinden Sinnesorgane mit dem Nervensystem."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1004",
+          "target_label": "Human ear",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Sinnesorgane und Nervensystem",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B7S0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Reihenfolge übertragen die drei Gehörknöchelchen im luftgefüllten Mittelohr die mechanischen Schallschwingungen vom Trommelfell zum ovalen Fenster der Hörschnecke?",
+          "concept": "Hammer -> Amboss -> Steigbügel (verstärken den Schalldruck um das ca. 20-fache)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Hammer -> Amboss -> Steigbügel",
+              "Steigbügel -> Hammer -> Amboss"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B7S0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Hörvorgang, das Gleichgewichtsorgan und den Ablauf eines unwillkürlichen Reflexes: 1. **Schallübertragung im Ohr**:   * **Außenohr**: Ohrmuschel (Schalltrichter) $\\rightarrow$ äußerer Gehörgang $\\rightarrow$ Versetzen des **Trommelfells** in Schwingung.   * **Mittelohr**: Hebelwirkung der Gehörknöchelchen (**Hammer $\\rightarrow$ Amboss $\\rightarrow$ Steigbügel**) $\\rightarrow$ Druckverstärkung am **Ovalen Fenster** (Druckausgleich über die *Eustachische Röhre / Ohrtrompete* zum Rachen).   * **Innenohr**: Flüssigkeitswelle in der **Hörschnecke (Cochlea)** $\\rightarrow$ Abscherung der Haarsinneszellen im *Corti-Organ* $\\rightarrow$ Umwandlung in elektrische Nervenimpulse $\\rightarrow$ Hörnerv $\\rightarrow$ Gehirn, 2. **Gleichgewichtsorgan**: 3 Bogengänge (Drehbeschleunigung) und 2 Vorhofsäckchen mit Otolithen (Lage und Linearbeschleunigung), 3. **Der Reflexbogen (am Beispiel des Kniesehnenreflexes)**: Reiz (Schlag auf Patellasehne) $\\rightarrow$ Muskelspindel (Rezeptor) $\\rightarrow$ sensorische Nervenfaser $\\rightarrow$ **Rückenmark (direkte Umschaltung ohne Gehirnbeteiligung)** $\\rightarrow$ motorische Nervenfaser $\\rightarrow$ Oberschenkelmuskel (Effektor) $\\rightarrow$ ruckartige Streckung des Unterschenkels.",
+          "concept": "Hörvorgang: Trommelfell -> Gehörknöchelchen (Hammer, Amboss, Steigbügel) -> Ovales Fenster -> Cochlea mit Haarzellen; Gleichgewicht (Bogengänge/Otolithen); Reflexbogen: Rezeptor -> sensorischer Nerv -> Rückenmark -> motorischer Nerv -> Effektor (Schutzfunktion ohne Gehirn).",
+          "sample_solution": "1. Der Weg des Schalls durch die drei Abschnitte des Ohrs: - **1. Außenohr**:   * Die Ohrmuschel fängt Schallwellen (Luftdruckschwankungen) trichterförmig auf und leitet sie durch den äußeren Gehörgang auf das dünne, elastische **Trommelfell**, das in mechanische Schwingung versetzt wird. - **2. Mittelohr (Schallverstärkung)**:   * Das luftgefüllte Mittelohr enthält die drei kleinsten Knochen des menschlichen Körpers: **Hammer**, **Amboss** und **Steigbügel**.   * Durch die mechanische Hebelwirkung der Knöchelchenkette und den Flächenunterschied vom großen Trommelfell zum winzigen **Ovalen Fenster** wird der Schalldruck um das **ca. 20-fache verstärkt**.   * Die **Ohrtrompete (Eustachische Röhre)** verbindet das Mittelohr mit dem Rachenraum und ermöglicht den Druckausgleich beim Schlucken. - **3. Innenohr (Reizumwandlung / Transduktion)**:   * Die Fußplatte des Steigbügels versetzt die Flüssigkeit (Perilymphe/Endolymphe) in der schneckenförmig gewundenen **Cochlea (Hörschnecke)** in Schwingung (Wanderwelle).   * Auf der Basilarmembran sitzen im **Corti-Organ** mikroskopische **Haarsinneszellen**: Die Schwingung biegt die Sinneshärchen ab, wodurch Ionenkanäle geöffnet und elektrische Impulse erzeugt werden.   * Hohe Töne werden an der Schneckenbasis, tiefe Töne an der Schneckenspitze wahrgenommen (*Tonotopie*). 2. Das Gleichgewichtsorgan (Vestibularapparat): - Liegt ebenfalls im Innenohr und besteht aus:   * **Drei Bogengängen**: Stehen rechtwinklig zueinander im Raum und registrieren **Drehbewegungen** des Kopfes.   * **Zwei Vorhofsäckchen (Utriculus und Sacculus)**: Enthalten Kalkkristalle (Otolithen) und messen die **Schwerkraft und lineare Beschleunigung** (z. B. im Aufzug oder Auto). 3. Der monosynaptische Reflexbogen: - Ein **Reflex** ist eine unwillkürliche, extrem schnelle und immer gleich ablaufende automatische Reaktion auf einen Reiz zum Schutz des Körpers:   * **1. Reiz**: Ein leichter Schlag auf die Sehne unterhalb der Kniescheibe dehnt den Oberschenkelstrecker.   * **2. Rezeptor**: Die **Muskelspindel** registriert die plötzliche Dehnung.   * **3. Afferente (sensorische) Nervenfaser**: Leitet das Signal mit hoher Geschwindigkeit ins **Rückenmark**.   * **4. Schaltstelle (Synapse im Rückenmark)**: Direkte synaptische Umschaltung auf das motorische Neuron **ohne vorherige Verarbeitung im Gehirn**.   * **5. Efferente (motorische) Nervenfaser**: Sendet den Kontraktionsbefehl zum Muskel.   * **6. Effektor (Erfolgsorgan)**: Der Oberschenkelmuskel zieht sich zusammen $\\rightarrow$ der Unterschenkel schnellt nach vorne."
+        }
+      ]
+    }
+  ]
+}

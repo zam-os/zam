@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik",
+  "version": "2026.08.1",
+  "title": "Geographie 7: Europa – Naturräume, Plattentektonik (Vulkanismus/Erdbeben), Klima und Europäische Union (Gymnasium 7 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geographie 7: Großlandschaften Europas, Plattentektonik und Naturgefahren im Mittelmeerraum und Island, maritimes vs. kontinentales Klima (Golfstrom/Westwindzone) sowie Wirtschaft und europäische Integration (EU).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:25:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/7/geographie",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Geographie 7, Lernbereich Europa – Vielfalt und Einheit"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G7P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G7P0000000000000000A01",
+      "namespace": "gymnasium-geographie-europa",
+      "slug": "plattentektonik-vulkanismus-erdbeben-mittelmeerraum-island",
+      "title": "Geodynamik Europas: Plattentektonik, Subduktion im Mittelmeerraum (Vesuv, Ätna) und Spreading in Island",
+      "domain": "schule/geographie/geodynamik",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10742",
+          "target_label": "Plate tectonics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Europa – Naturgeographische Bausteine und Dynamik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher plattentektonische Prozess verursacht die Häufung von Erdbeben und aktiven Schichtvulkanen (z. B. Vesuv, Ätna, Stromboli) in Süditalien und Griechenland?",
+          "concept": "Die Subduktion der Afrikanischen Platte, die unter die Eurasische Platte taucht und aufgeschmolzen wird",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Subduktion der Afrikanischen unter die Eurasische Platte",
+              "Auseinanderdriften der Platten (Spreading)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die endogenen Kräfte und tektonischen Prozesse in Europa: 1. **Die Theorie der Plattentektonik**: Die Erdkruste (Lithosphäre) besteht aus starren Platten, die auf der zähflüssigen Asthenosphäre durch Konvektionsströme driften, 2. **Konvergierende Plattengrenzen (Kollision & Subduktion) im Mittelmeerraum**: Die Afrikanische Platte schiebt sich nach Norden unter die Eurasische Platte $\\rightarrow$ Faltung der Alpen, Aufschmelzen von Krustengestein zu zähflüssigem Magma $\\rightarrow$ **explosiver Schichtvulkanismus (Vesuv, Santorin, Ätna)** und schwere Erdbeben, 3. **Divergierende Plattengrenzen (Spreading / Ozeanbodenspreizung) in Island**: Die Nordamerikanische und Eurasische Platte driften auf dem **Mittelatlantischen Rücken** auseinander (ca. 2 cm/Jahr) $\\rightarrow$ dünnflüssiges Basaltmagma quillt auf $\\rightarrow$ **Schildvulkane, Spalteneruptionen und Geysire**.",
+          "concept": "Plattentektonik Europa: 1. Subduktion Afrika unter Eurasien -> Faltung Alpen, Schichtvulkane (Vesuv, Ätna), Erdbeben; 2. Divergenz Island (Mittelatlantischer Rücken) -> Schildvulkane, Spalteneruptionen, Geysire.",
+          "sample_solution": "1. Grundmodell der Plattentektonik in Europa: - Die feste Gesteinskruste (Lithosphäre) schwimmt auf dem heißen, verformbaren oberen Erdmantel (Asthenosphäre). Durch gewaltige thermische **Konvektionsströme** bewegen sich die Kontinental- und Ozeanplatten mit wenigen Zentimetern pro Jahr. 2. Der Mittelmeerraum (Konvergierende Plattengrenze & Subduktionszone): - **Tektonischer Vorgang**: Die **Afrikanische Platte** driftet nach Norden und kollidiert mit der **Eurasischen Kontinentalplatte**. - **Folgen**:   * **Gebirgsbildung (Orogenese)**: Anhebung und Faltung der großen europäischen Faltengebirge (**Alpen, Pyrenäen, Apennin, Karpaten**).   * **Subduktion**: Der ozeanische Teil der afrikanischen Lithosphäre taucht unter den südeuropäischen Kontinentalrand in die Tiefe ab und wird bei über $1000^\\circ\\text{ C}$ aufgeschmolzen.   * **Explosiver Vulkanismus**: Das wasser- und gasreiche, zähflüssige Magma steigt auf und führt zu verheerenden explosiven Ausbrüchen von **Schichtvulkanen (Stratovulkanen wie Vesuv, Vulcano, Stromboli, Ätna)**.   * **Erdbebengefahr**: Durch das Verhaken der Platten bauen sich enorme Spannungen auf, die sich in schweren Erdbeben entladen (z. B. in Mittelitalien, Griechenland, Türkei). 3. Island (Divergierende Plattengrenze / Hotspot): - **Tektonischer Vorgang**: Island liegt direkt auf dem **Mittelatlantischen Rücken**, wo die **Nordamerikanische Platte** und die **Eurasische Platte** um ca. $2\\text{ cm}$ pro Jahr **auseinanderdriften (Seafloor Spreading)**. Zusätzlich liegt darunter ein heißer Mantelplume (**Hotspot**). - **Folgen**:   * Im Dehnungsriss steigt dünnflüssiges, heißes Basaltmagma aus dem Erdmantel empor.   * Typisch sind **effusive (ruhige) Spalteneruptionen**, riesige Lavafelder und flach geneigte **Schildvulkane**.   * Reichhaltige **Geothermie**: Nutzung von Heißwasser zur Strom- und Wärmeerzeugung; spektakuläre Geysire und Fumarolen."
+        }
+      ]
+    },
+    {
+      "id": "01K4G7P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G7P0000000000000000A02",
+      "namespace": "gymnasium-geographie-europa",
+      "slug": "klima-golfstrom-maritim-kontinental-europaeische-union",
+      "title": "Europas Klima (Golfstrom, Westwindzone, Kontinentalität) und der EU-Binnenmarkt",
+      "domain": "schule/geographie/europa",
+      "reduction": "formal",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G7P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Klima und Wirtschaft bilden die humangeographische Dimension Europas."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q10742",
+          "target_label": "Climate of Europe",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 7,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Europa – Klima und Europäische Integration",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G7P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Meeresströmung fungiert als 'Warmwasserheizung' West- und Nordwesteuropas und sorgt für eisfreie Häfen bis nach Nordnorwegen?",
+          "concept": "Der Nordatlantikstrom (die Fortsetzung des warmen Golfstroms)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Nordatlantikstrom (Golfstrom)",
+              "Der Labradorstrom"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G7P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die klimatischen Differenzierungen Europas und die Grundpfeiler der Europäischen Union: 1. **Die 3 Klimabestimmenden Faktoren Europas**:   * **Geographische Breite**: Mäßige Temperaturen durch Lage in der gemischten/gemäßigten Zone.   * **Golfstrom / Nordatlantikstrom**: Transportiert warmes Äquatorwasser nach Nordeuropa $\\rightarrow$ bis zu $10^\\circ\\text{ C}$ mildere Winter als auf gleicher Breite in Nordamerika/Sibirien.   * **Westwindzone**: Feuchte Atlantikluftmassen bringen ganzjährige Niederschläge, 2. **Der Übergang vom Maritimen zum Kontinentalen Klima**:   * *Maritimes / Ozeanisches Klima (Westeuropa/Irland)*: Geringe Jahrestemperaturschwankung (kühle Sommer, milde frostfreie Winter), hohe ganzjährige Niederschläge.   * *Kontinentales Klima (Osteuropa/Polen/Russland)*: Hohe Jahrestemperaturamplitude (heiße Sommer, extrem frostig-kalte Winter), Niederschlagsmaximum im Sommer, 3. **Die Europäische Union (EU) & der Binnenmarkt**: Die **4 Grundfreiheiten** (freier Waren-, Personen-, Dienstleistungs- und Kapitalverkehr) und Abbau von Disparitäten.",
+          "concept": "Europa-Klima: Golfstrom (milde Winter), Westwindzone; Wandel von maritim (geringe Amplitude, mild/feucht) zu kontinental (hohe Amplitude, eisig/sommerheiß); EU: 4 Grundfreiheiten im Binnenmarkt.",
+          "sample_solution": "1. Die klimatischen Steuerungsfaktoren Europas: - **1. Lage in der Westwindzone**:   * Europa liegt im Einflussbereich der planetarischen Westwinddrift, die feucht-milde Luftmassen vom Atlantischen Ozean ungehindert über den flachen mitteleuropäischen Raum transportiert. - **2. Der Wärmetransport durch den Nordatlantikstrom (Golfstrom)**:   * Wirkt als globale Fernheizung: Westeuropäische Küstenregionen (z. B. Großbritannien, Norwegen) weisen im Winter um bis zu **$5–10^\\circ\\text{ C}$ höhere Durchschnittstemperaturen** auf als Gebiete auf gleicher geographischer Breite in Kanada oder Ostasien. 2. Der West-Ost-Klimawandel (Maritim vs. Kontinental): - Je weiter man sich vom Atlantik nach Osten ins Innere des eurasischen Kontinents bewegt, desto stärker verliert das Meer seine puffernde Wirkung: | Merkmal | Maritimes / Seeklima (z. B. Dublin, Brest) | Übergangsklima (z. B. München, Berlin) | Kontinentalklima (z. B. Warschau, Moskau) | | :--- | :--- | :--- | :--- | | **Sommer** | Mäßig warm ($16–18^\\circ\\text{ C}$) | Angenehm warm ($18–20^\\circ\\text{ C}$) | Heiß ($> 22^\\circ\\text{ C}$) | | **Winter** | Sehr mild ($> 4^\\circ\\text{ C}$, selten Schnee) | Kalt (um $0^\\circ\\text{ C}$) | Sehr kalt, eisig ($< -5^\\circ\\text{ C}$) | | **Temperaturamplitude** | **Gering** ($< 15^\\circ\\text{ C}$) | Mittel ($ca. 18–20^\\circ\\text{ C}$) | **Extrem hoch** ($> 25–30^\\circ\\text{ C}$) | | **Niederschläge** | Ganzjährig hoch, Maximum Herbst/Winter | Ausgewogen | Geringer, Maximum im Sommer | 3. Die Europäische Union und der europäische Binnenmarkt: - **Der EU-Binnenmarkt** garantiert die **vier fundamentalen Grundfreiheiten**:   * **1. Freier Warenverkehr**: Keine Zölle oder Importbeschränkungen zwischen den 27 Mitgliedsstaaten.   * **2. Freier Personenverkehr (Schengener Abkommen)**: EU-Bürger dürfen in jedem EU-Land ohne Grenzkontrollen reisen, wohnen, studieren und arbeiten.   * **3. Freier Dienstleistungsverkehr**: Unternehmen können grenzüberschreitend Aufträge ausführen.   * **4. Freier Kapitalverkehr**: Ungehinderte Investitionen und Überweisungen in ganz Europa (gestärkt durch den **Euro** als Gemeinschaftswährung)."
+        }
+      ]
+    }
+  ]
+}

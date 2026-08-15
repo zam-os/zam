@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-mathematik-flaechen-raum-volumen",
+  "version": "2026.08.1",
+  "title": "Mathematik 6: Geometrie – Flächeninhalte, Quader und Rauminhalt (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 6: Flächeninhalt von Dreieck und Parallelogramm, Schrägbilder, Quadernetz, Oberfläche und Volumenberechnung.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/mathematik",
+      "checked": "2026-08-15",
+      "label": "Realschule Mathematik 6, Lernbereich Flächen- und Raumgeometrie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4M6F0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4M6F0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "flaecheninhalt-dreieck-parallelogramm-formeln",
+      "title": "Flächeninhalt von Parallelogramm und Dreieck: Grundseite und zugehörige Höhe",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Area",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6F0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die allgemeine Formel zur Berechnung des Flächeninhalts A eines Dreiecks mit Grundseite g und zugehöriger Höhe h?",
+          "concept": "A = 1/2 · g · h (Grundseite mal Höhe geteilt durch 2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "A = 1/2 · g · h",
+              "A = g · h"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6F0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Leite die Flächeninhaltsformel des Parallelogramms (A = g · h) durch flächengleiches Zerlegen und Zusammensetzen in ein Rechteck her, begründe daraus die Dreiecksformel (A = 1/2 · g · h, da jedes Dreieck die Hälfte eines flächengleichen Parallelogramms ist) und berechne die Fläche eines Dreiecks mit c = 8 cm und h_c = 4,5 cm.",
+          "concept": "Herleitung: Dreiecksabschnitt am Parallelogramm abschneiden und an Gegenseite anfügen -> Rechteck mit Länge g und Breite h -> A = g*h; Jedes Dreieck lässt sich mit einem kongruenten Dreieck zu Parallelogramm zusammensetzen -> A_Dreieck = 1/2 * g * h; A = 1/2 * 8 cm * 4,5 cm = 18 cm².",
+          "sample_solution": "1. Herleitung der Flächenformel für das Parallelogramm (A = g · h): - Ein Parallelogramm mit Grundseite g und Höhe h (senkrechter Abstand zwischen den parallelen Grundlinien) lässt sich durch Fällen der Höhe in ein rechtwinkliges Dreieck und ein Trapez zerlegen. - Verschiebt man das abgeschnittene Dreieck an die gegenüberliegende Seite, entsteht ein flächengleiches Rechteck mit der Länge g und der Breite h. - Da die Fläche des Rechtecks A = Länge · Breite ist, gilt für das Parallelogramm exakt: **A_Parallelogramm = g · h**. 2. Herleitung der Flächenformel für das Dreieck (A = 1/2 · g · h): - Doppelt man ein beliebiges Dreieck ABC und dreht das zweite, kongruente Dreieck um 180° an eine Seite an, entsteht immer ein Parallelogramm mit derselben Grundseite g und derselben Höhe h. - Da das Parallelogramm aus genau zwei deckungsgleichen Dreiecken besteht, ist der Flächeninhalt eines einzelnen Dreiecks genau die Hälfte des Parallelogramms: **A_Dreieck = 1/2 · g · h = (g · h) / 2**. 3. Beispielberechnung: - Gegeben: Grundseite c = 8 cm, zugehörige Höhe h_c = 4,5 cm. - Rechnung: A = 1/2 · 8 cm · 4,5 cm = 4 cm · 4,5 cm = **18 cm²**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6F0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4M6F0000000000000000A02",
+      "namespace": "mathematik-geometrie",
+      "slug": "quader-wuerfel-netz-oberflaeche-formel",
+      "title": "Körperlehre: Schrägbild, Körpernetz und Oberflächeninhalt von Quader und Würfel",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6F0000000000000000A01",
+          "type": "hard",
+          "rationale": "Rechteckflächen sind die 6 Begrenzungsflächen eines Quaders."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Cuboid",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6F0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Begrenzungsflächen, Ecken und Kanten besitzt ein Quader (bzw. Würfel)?",
+          "concept": "6 Begrenzungsflächen, 8 Ecken und 12 Kanten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6 Flächen, 8 Ecken, 12 Kanten",
+              "8 Flächen, 6 Ecken, 12 Kanten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6F0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe die Konventionen zum Zeichnen eines Schrägbilds (Vorderfläche in Originalgröße, nach hinten verlaufende Kanten im Winkel von alpha = 45° und auf die halbe Länge q = 1/2 verkürzt, verdeckte Kanten gestrichelt), leite die Formel für die Gesamtoberfläche eines Quaders A_O = 2 · (a·b + b·c + a·c) her und berechne die Oberfläche eines Quaders mit a = 5 cm, b = 4 cm und c = 3 cm.",
+          "concept": "Schrägbild: alpha = 45°, Verkürzungsfaktor q = 0,5, verdeckte Kanten gestrichelt; Quaderoberfläche: besteht aus 3 Paaren deckungsgleicher Rechtecke (Boden/Deckel a*b, Vorder-/Rückseite a*c, Seiten b*c) -> A_O = 2*(ab + bc + ac); A_O = 2*(5*4 + 4*3 + 5*3) = 2*(20 + 12 + 15) = 2 * 47 = 94 cm².",
+          "sample_solution": "1. Konstruktionsregeln für Schrägbilder: - Frontfläche (Vorderansicht): Wird unverzerrt in wahrer Größe und mit echten Winkeln gezeichnet. - Nach hinten verlaufende Tiefenkanten: Werden schräg unter einem Neigungswinkel von **alpha = 45°** (meist Kästchendiagonale) gezeichnet. - Verkürzung (Verzerrungsfaktor q): Die nach hinten verlaufenden Kanten werden auf genau die **Hälfte ihrer tatsächlichen Länge** verkürzt gezeichnet (q = 1/2 = 0,5). - Sichtbarkeit: Im Körperinneren liegende, verdeckte Kanten werden gestrichelt gezeichnet. 2. Oberflächeninhalt des Quaders: - Die Begrenzungswand eines Quaders besteht aus insgesamt 6 Rechtecken, die paarweise deckungsgleich (kongruent) gegenüberliegen:   * Grund- und Deckfläche: 2 · (a · b)   * Vorder- und Rückseite: 2 · (a · c)   * Linke und rechte Seitenfläche: 2 · (b · c) - Formel Quader: **A_O = 2 · (a·b + b·c + a·c)**. - Formel Würfel (alle Kanten a gleich): A_O = 6 · a². 3. Berechnung: - Quadermaße: a = 5 cm, b = 4 cm, c = 3 cm. - A_O = 2 · (5·4 + 4·3 + 5·3) cm² = 2 · (20 + 12 + 15) cm² = 2 · 47 cm² = **94 cm²**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6F0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4M6F0000000000000000A03",
+      "namespace": "mathematik-geometrie",
+      "slug": "volumen-quader-wuerfel-einheitenumrechnung",
+      "title": "Rauminhalt (Volumen): V = a · b · c und Raummaßeinheiten (Liter, dm³, cm³)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6F0000000000000000A02",
+          "type": "hard",
+          "rationale": "Körpermaße von Quader und Würfel bilden die Basis der Volumenrechnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Volume",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Flächeninhalt und Raumgeometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6F0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Kubikzentimeter (cm³) passen exakt in einen Liter (1 l = 1 dm³)?",
+          "concept": "Genau 1000 cm³ (Umrechnungszahl bei Raummaßen ist 1000 = 10³)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1000 cm³ (1 Liter = 1 dm³ = 1000 cm³)",
+              "100 cm³"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6F0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Leite die Volumenformel für den Quader V = a · b · c (Grundfläche G = a · b mal Höhe h = c) durch das Auslegen mit Einheitswürfeln her, stelle die Kette der Raummaße mit der Umrechnungszahl 1000 dar (1 m³ = 1000 dm³ = 1000 l = 1.000.000 cm³ = 1.000.000.000 mm³) und berechne das Fassungsvermögen eines quaderförmigen Aquariums mit Länge 60 cm, Breite 30 cm und Höhe 40 cm in Litern.",
+          "concept": "Einheitswürfel: a Würfel pro Reihe * b Reihen = a*b in Grundschicht, mal c Schichten -> V = a*b*c; Raummaße Faktor 1000; V_Aquarium = 60 cm * 30 cm * 40 cm = 72.000 cm³ = 72 dm³ = 72 Liter (oder 6 dm * 3 dm * 4 dm = 72 dm³ = 72 l).",
+          "sample_solution": "1. Herleitung der Volumenformel V = a · b · c: - Das Volumen (Rauminhalt) eines Körpers gibt an, wie viele Einheitswürfel (z. B. 1 cm³) in den Körper hineinpassen. - Auf den Boden des Quaders passen in einer Reihe a Einheitswürfel. Davon gibt es b Reihen nebeneinander. Die Grundschicht enthält also G = a · b Würfel. - In die Höhe des Quaders lassen sich c solche Schichten übereinanderstapeln. - Gesamtwürfelanzahl = Grundfläche · Höhe: **V_Quader = a · b · c = G · h** (bzw. für Würfel: V = a³). 2. Raummaße und Umrechnungszahl 1000: - Da in einen 1 dm langen Würfel in Länge, Breite und Höhe jeweils 10 cm-Würfel passen, gilt 10 · 10 · 10 = 1000. Die Stufenzahl bei Raummaßen ist immer **1000**:   * 1 m³ = 1.000 dm³   * 1 dm³ = 1 Liter (l) = 1.000 cm³ = 1.000 Milliliter (ml)   * 1 cm³ = 1.000 mm³. 3. Berechnung Aquarium: - Maße in Dezimeter umrechnen: a = 60 cm = 6 dm; b = 30 cm = 3 dm; c = 40 cm = 4 dm. - Volumen: V = 6 dm · 3 dm · 4 dm = 18 · 4 dm³ = **72 dm³**. - Da 1 dm³ = 1 Liter entspricht, fasst das Aquarium genau **72 Liter Wasser**."
+        }
+      ]
+    },
+    {
+      "id": "01K4M6F0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4M6F0000000000000000A04",
+      "namespace": "mathematik-stochastik",
+      "slug": "relative-haeufigkeit-laplace-wahrscheinlichkeit-wuerfel",
+      "title": "Daten und Zufall: Relative Häufigkeit, empirisches Gesetz und Laplace-Wahrscheinlichkeit",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4M6F0000000000000000A01",
+          "type": "hard",
+          "rationale": "Geometrisches Vorwissen ist Grundlage für statistische Wahrscheinlichkeiten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1244890",
+          "target_label": "Probability",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Daten und Zufall",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4M6F0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man die relative Häufigkeit h(E) eines Ereignisses bei einer statistischen Versuchsreihe mit n Durchführungen?",
+          "concept": "h(E) = absolute Häufigkeit H(E) / Gesamtzahl der Versuche n",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "h(E) = absolute Häufigkeit H(E) / Gesamtzahl n",
+              "h(E) = absolute Häufigkeit H(E) · Gesamtzahl n"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4M6F0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Unterscheide absolute Häufigkeit H(E) von relativer Häufigkeit h(E) = H(E)/n (Wert zwischen 0 und 1 bzw. 0 % und 100 %), formuliere die Laplace-Wahrscheinlichkeitsformel P(E) = |E| / |Omega| (günstige Ergebnisse geteilt durch alle gleichmöglichen Ergebnisse) und berechne die Wahrscheinlichkeit, mit einem fairen 6-seitigen Spielwürfel: a) eine Primzahl (2, 3, 5), b) eine Zahl größer als 4 zu werfen.",
+          "concept": "Absolut H = Zählwert; Relativ h = H/n; Laplace: P(E) = Anzahl günstige / Anzahl mögliche; Würfel |Omega| = 6; a) E_Prim = {2, 3, 5} -> |E| = 3 -> P = 3/6 = 1/2 = 50 %; b) E_>4 = {5, 6} -> |E| = 2 -> P = 2/6 = 1/3 ≈ 33,3 %.",
+          "sample_solution": "1. Absolute vs. relative Häufigkeit: - Absolute Häufigkeit H(E): Die reine Anzahl, wie oft ein bestimmtes Ergebnis bei einer Stichprobe oder einem Zufallsexperiment gezählt wurde (ganze Zahl >= 0). - Relative Häufigkeit h(E): Der Anteil der Treffer an der Gesamtzahl n aller Versuche: **h(E) = H(E) / n**. Sie liegt immer im Intervall 0 <= h(E) <= 1 (bzw. 0 % bis 100 %). - Gesetz der großen Zahlen (Empirisches Gesetz): Bei sehr vielen Versuchswiederholungen (großes n) stabilisieren sich die relativen Häufigkeiten um einen festen theoretischen Wert, die Wahrscheinlichkeit P(E). 2. Die Laplace-Wahrscheinlichkeitsformel: - Gilt für alle Zufallsexperimente mit endlich vielen Ergebnissen, die alle exakt die gleiche Chance (Symmetrie) haben (Laplace-Experiment, z. B. fairer Würfel, Münzwurf, Glücksrad mit gleichen Sektoren). - Formel: **P(E) = (Anzahl der für E günstigen Ergebnisse) / (Gesamtzahl aller möglichen Ergebnisse |Omega|)**. 3. Berechnungen am fairen 6-seitigen Würfel (|Omega| = {1, 2, 3, 4, 5, 6} => |Omega| = 6): - a) Ereignis 'Primzahl gewürfelt': Günstige Ergebnisse E_1 = {2, 3, 5} (Achtung: 1 ist keine Primzahl!). Anzahl günstiger Fälle |E_1| = 3. Wahrscheinlichkeit: P(E_1) = 3 / 6 = **1/2 = 50 % = 0,5**. - b) Ereignis 'Zahl größer als 4': Günstige Ergebnisse E_2 = {5, 6}. Anzahl |E_2| = 2. Wahrscheinlichkeit: P(E_2) = 2 / 6 = **1/3 ≈ 33,3 %**."
+        }
+      ]
+    }
+  ]
+}

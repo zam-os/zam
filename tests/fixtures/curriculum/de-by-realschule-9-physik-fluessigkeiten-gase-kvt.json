@@ -1,0 +1,268 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-physik-fluessigkeiten-gase",
+  "version": "2026.08.1",
+  "title": "Mechanik von Flüssigkeiten und Gasen (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Physik 9: Druckbegriff, Kolbendruck, Schweredruck, Hydrostatisches Paradoxon, Auftriebskraft und Archimedisches Prinzip.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik/wpfg1",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 9 (I), Lernbereich 1 Mechanik von Flüssigkeiten und Gasen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4F9P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4F9P0000000000000000A01",
+      "namespace": "physik-mechanik",
+      "slug": "druckbegriff-kolbendruck-hydraulik",
+      "title": "Druckbegriff, Kolbendruck und hydraulische Hebebühne",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q39552",
+          "target_label": "Pressure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F9P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die SI-Einheit des Drucks p (abgeleitet aus Kraft geteilt durch Fläche)?",
+          "concept": "Pascal (1 Pa = 1 N/m²)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Pascal (1 Pa = 1 N/m²)",
+              "Newtonmeter (1 Nm)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F9P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Definiere den physikalischen Druck p und leite das Kraftübersetzungsverhältnis an einer hydraulischen Presse mit den Kolbenflächen A_1 und A_2 her.",
+          "concept": "p = F / A; da p_1 = p_2 gilt F_1 / A_1 = F_2 / A_2 -> F_2 = F_1 * (A_2 / A_1)",
+          "sample_solution": "Der Druck p gibt an, mit welcher senkrechten Kraft F auf eine Fläche A gewirkt wird: p = F / A (Einheit: 1 Pa = 1 N/m², 1 bar = 100.000 Pa = 100 kPa). In einer geschlossenen Flüssigkeit breitet sich der Druck gleichmäßig in alle Richtungen aus (p_1 = p_2). Daraus folgt für die hydraulische Presse: F_1 / A_1 = F_2 / A_2 <=> F_2 = F_1 * (A_2 / A_1)."
+        }
+      ]
+    },
+    {
+      "id": "01K4F9P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4F9P0000000000000000A02",
+      "namespace": "physik-mechanik",
+      "slug": "schweredruck-hydrostatisches-paradoxon",
+      "title": "Schweredruck und hydrostatisches Paradoxon",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F9P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Druckbegriff p = F/A ist Voraussetzung für den Schweredruck."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1056557",
+          "target_label": "Fluid statics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F9P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Hängt der Schweredruck am Boden eines mit Wasser gefüllten Gefäßes von der Form des Gefäßes oder nur von der Füllhöhe h und Dichte ab?",
+          "concept": "Nur von Füllhöhe h und Dichte (Hydrostatisches Paradoxon)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur von der Füllhöhe h und Dichte ρ (unabhängig von der Gefäßform)",
+              "Stark von der Gefäßform und Gesamtflüssigkeitsmenge"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F9P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Wie lautet die Formel für den Schweredruck p_h in der Tiefe h einer Flüssigkeit der Dichte ρ und erkläre das hydrostatische Paradoxon.",
+          "concept": "p_h = ρ * g * h; Druck hängt nur von h ab, nicht von der Gefäßform",
+          "sample_solution": "Der Schweredruck einer Flüssigkeitssäule der Höhe h beträgt p_h = ρ * g * h (mit Flüssigkeitsdichte ρ und Erdbeschleunigung g ≈ 9,81 m/s²). Das hydrostatische Paradoxon besagt, dass der Bodendruck bei gleicher Eintauchtiefe und gleicher Flüssigkeit immer identisch ist, unabhängig davon, ob das Gefäß nach oben hin schmaler, breiter oder zylindrisch verläuft."
+        }
+      ]
+    },
+    {
+      "id": "01K4F9P0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4F9P0000000000000000A03",
+      "namespace": "physik-mechanik",
+      "slug": "auftriebskraft-archimedisches-prinzip",
+      "title": "Auftriebskraft und Archimedisches Prinzip",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F9P0000000000000000A02",
+          "type": "hard",
+          "rationale": "Der Schweredruckunterschied zwischen Unter- und Oberseite erzeugt den Auftrieb."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q181404",
+          "target_label": "Archimedes' principle",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F9P0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Entspricht die statische Auftriebskraft F_A genau der Gewichtskraft des vom Körper verdrängten Fluidvolumens?",
+          "concept": "Ja, Archimedisches Prinzip: F_A = F_G,verdrängt = ρ_Fl * V_K * g",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ja, genau der Gewichtskraft des verdrängten Fluids",
+              "Nein, der Gewichtskraft des eingetauchten Körpers"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F9P0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre das Archimedische Prinzip und begründe das Entstehen der Auftriebskraft F_A über die Druckdifferenz zwischen Unter- und Oberseite eines eingetauchten Quaders.",
+          "concept": "Druck unten ist größer als oben (Δp = ρ*g*h) -> F_A = Δp * A = ρ * g * V",
+          "sample_solution": "Das Archimedische Prinzip besagt: Ein in eine Flüssigkeit eingetauchter Körper erfährt eine nach oben gerichtete Auftriebskraft F_A, die gleich der Gewichtskraft der verdrängten Flüssigkeit ist: F_A = ρ_Fl * V_K * g. Begründung: Da der Schweredruck mit der Tiefe zunimmt, ist der Druck an der Unterseite des Quaders (Tiefe h_unten) größer als an der Oberseite (Tiefe h_oben). Die Druckdifferenz Δp = ρ_Fl * g * Δh mal Quadergrundfläche A ergibt die nach oben wirkende Auftriebskraft F_A = Δp * A = ρ_Fl * g * V_K."
+        }
+      ]
+    },
+    {
+      "id": "01K4F9P0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4F9P0000000000000000A04",
+      "namespace": "physik-mechanik",
+      "slug": "schwimmen-schweben-sinken-dichte",
+      "title": "Schwimmen, Schweben und Sinken: Dichtebedingungen",
+      "domain": "schule/physik/mechanik",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4F9P0000000000000000A03",
+          "type": "hard",
+          "rationale": "Die Auftriebskraft ist Voraussetzung für die Schwimm- und Schwebebedingungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q181404",
+          "target_label": "Buoyancy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Mechanik von Flüssigkeiten und Gasen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4F9P0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Bedingung für die mittlere Dichte des Körpers ρ_K im Vergleich zur Flüssigkeitsdichte ρ_Fl führt zum stabilen Schwimmen?",
+          "concept": "ρ_K < ρ_Fl (Körper taucht nur teilweise ein)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "ρ_K < ρ_Fl (Körperdichte ist geringer als Flüssigkeitsdichte)",
+              "ρ_K > ρ_Fl"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4F9P0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Stelle die Kräfteverhältnisse (F_G vs. F_A) und Dichteverhältnisse für die vier Fälle Sinken, Steigen, Schweben und Schwimmen gegenüber.",
+          "concept": "Sinken: F_G > F_A (ρ_K > ρ_Fl); Schweben: F_G = F_A (ρ_K = ρ_Fl); Steigen: F_G < F_A (ρ_K < ρ_Fl); Schwimmen: F_G = F_A,eingetaucht",
+          "sample_solution": "1. Sinken: F_G > F_A <=> ρ_K > ρ_Fl (Körper sinkt zu Boden). 2. Steigen: F_G < F_A <=> ρ_K < ρ_Fl (Körper steigt zur Oberfläche auf). 3. Schweben: F_G = F_A <=> ρ_K = ρ_Fl (Körper verharrt voll eingetaucht im Gleichgewicht auf beliebiger Tiefe). 4. Schwimmen: F_G = F_A,eingetaucht (Körper taucht so weit ein, dass die Auftriebskraft des eingetauchten Volumens V_eingetaucht exakt gleich der Gesamtschwerkraft ist: V_eingetaucht / V_K = ρ_K / ρ_Fl)."
+        }
+      ]
+    }
+  ]
+}

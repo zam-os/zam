@@ -1,0 +1,304 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-8-biologie-ernaehrung-verdauung",
+  "version": "2026.08.1",
+  "title": "Biologie 8: Ernährung, Verdauungsorgane und Enzymatik (Realschule 8 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 8: Grundnährstoffe, Verdauungstrakt, Enzymspaltung (Amylase, Pepsin, Lipase), Dünndarmresorption und Energiebilanz.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:40:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/8/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 8, Lernbereich Ernährung und Verdauung des Menschen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B8V0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B8V0000000000000000A01",
+      "namespace": "biologie-ernaehrung",
+      "slug": "grundnaehrstoffe-bausteine-nachweisreaktionen",
+      "title": "Grundnährstoffe: Kohlenhydrate, Fette, Proteine und Nachweisreaktionen",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11083",
+          "target_label": "Nutrient",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8V0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem Reagenz lässt sich Stärke (Polysaccharid) durch eine charakteristische intensive Blauschwarzfärbung nachweisen?",
+          "concept": "Lugolsche Lösung (Iod-Kaliumiodid-Lösung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lugolsche Lösung (Iod-Kaliumiodid-Lösung)",
+              "Biuret-Reagenz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8V0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Charakterisiere die drei Grundnährstoffe (Kohlenhydrate, Proteine/Eiweiße, Lipide/Fette) bezüglich ihrer molekularen Bausteine, physiologischen Hauptfunktionen (Betriebsstoff vs. Baustoff) und beschreibe die schulischen Labornachweise für Stärke, einfache Zucker (Fehling-Probe) und Proteine (Biuret- oder Xanthoproteinreaktion).",
+          "concept": "Kohlenhydrate: Monosaccharide (Glukose) -> Betriebsstoff (Stärkenachweis: Lugol blau-schwarz; Einfachzucker: Fehling rot-brauner Niederschlag); Proteine: Aminosäuren -> Baustoff für Muskeln/Enzyme (Biuret: violett; Xanthoprotein: gelb mit HNO3); Fette: Glycerin + 3 Fettsäuren -> Energiespeicher/Isolation (Fettfleckprobe transparent)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8V0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B8V0000000000000000A02",
+      "namespace": "biologie-ernaehrung",
+      "slug": "verdauungstrakt-organe-mechanische-zerkleinerung",
+      "title": "Der Verdauungstrakt: Organstationen von der Mundhöhle bis zum Dickdarm",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8V0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Nährstoffarten begründen die Stationen ihrer Zerlegung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11083",
+          "target_label": "Gastrointestinal tract",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8V0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Hauptaufgabe erfüllt der Dickdarm im menschlichen Verdauungssystem?",
+          "concept": "Rückresorption von Wasser und Mineralstoffen sowie Eindickung des unverdaulichen Speisebreis",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Rückresorption von Wasser und Eindickung des Speisebreis",
+              "Hauptabbau von Kohlenhydraten und Proteinen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8V0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Verfolge den Weg des Speisebreis durch die Stationen des Verdauungstrakts (Mundhöhle, Speiseröhre mit Peristaltik, Magen, Zwölffingerdarm/Dünndarm, Dickdarm, Enddarm) und erläutere die jeweilige mechanische und chemische Funktion der einzelnen Organabschnitte.",
+          "concept": "Mund: Zerkleinern, Speichel gleitfähig, Ptyalin/Amylase spaltet Stärke; Speiseröhre: wellenförmige Peristaltik; Magen: Salzsäure (pH 1-2) tötet Keime/denaturiert Proteine, Pepsin spaltet Proteine, Magenschleim schützt Wand; Zwölffingerdarm: Galle emulgiert Fette, Bauchspeichel neutralisiert und liefert Enzyme; Dünndarm: Hauptspaltung & Resorption; Dickdarm: Wasserentzug; Enddarm: Ausscheidung."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8V0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B8V0000000000000000A03",
+      "namespace": "biologie-ernaehrung",
+      "slug": "enzymatische-verdauung-amylase-pepsin-lipase",
+      "title": "Enzymatische Spaltung: Wirk- und Substratspezifität von Amylasen, Pepsin und Lipasen",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8V0000000000000000A02",
+          "type": "hard",
+          "rationale": "Die Organabschnitte stellen das Milieu für die spezifischen Verdauungsenzyme bereit."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11083",
+          "target_label": "Enzyme",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8V0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welchem pH-Optimum arbeitet das Protein-Spaltungsenzym Pepsin im Magen am effektivsten?",
+          "concept": "Im stark sauren Bereich bei pH 1 bis 2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Im stark sauren Milieu (pH 1 - 2)",
+              "Im leicht basischen Milieu (pH 8)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8V0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die Grundprinzipien von Enzymen als Biokatalysatoren (Substratspezifität, Wirkungsspezifität, Schlüssel-Schloss-Prinzip, pH- und Temperaturoptimum, irreversible thermische Denaturierung) und stelle die enzymatische Spaltung der drei Hauptnährstoffe (Enzyme, Bildungsort, Wirkort, Spaltprodukte) tabellarisch zusammen.",
+          "concept": "Enzyme: Biokatalysatoren, senken Aktivierungsenergie, unverändert nach Reaktion; Substratspezifisch (nur bestimmtes Substrat bindet im aktiven Zentrum) und wirkungsspezifisch (katalysiert nur eine Reaktion); Amylase (Speichel/Pankreas -> Mund/Dünndarm -> Stärke zu Maltose/Glukose); Pepsin/Trypsin (Magen/Pankreas -> Magen/Dünndarm -> Proteine zu Peptiden/Aminosäuren); Lipase (Pankreas -> Dünndarm -> Fette zu Glycerin & Fettsäuren)."
+        }
+      ]
+    },
+    {
+      "id": "01K4B8V0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B8V0000000000000000A04",
+      "namespace": "biologie-ernaehrung",
+      "slug": "oberflaechenvergroesserung-darmzotten-energiebilanz",
+      "title": "Oberflächenvergrößerung im Dünndarm (Darmzotten) und Energiebilanz",
+      "domain": "schule/biologie/physiologie",
+      "reduction": "formal",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B8V0000000000000000A03",
+          "type": "hard",
+          "rationale": "Die enzymatischen Spaltprodukte werden über die Darmzotten resorbiert."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11083",
+          "target_label": "Intestinal villus",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 8,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Ernährung und Verdauung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B8V0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Durch welches biologische Konstruktionsprinzip erreicht der menschliche Dünndarm eine gigantische Resorptionsfläche von ca. 200 m² auf nur ca. 4 bis 5 Metern Länge?",
+          "concept": "Dreistufige Oberflächenvergrößerung (Kerckring-Falten, Darmzotten und Mikrovilli-Bürstensaum)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Falten, Darmzotten und Mikrovilli (Oberflächenvergrößerung)",
+              "Ausschließlich durch extreme Dehnung der Darmwand"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B8V0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe das biologische Prinzip der Oberflächenvergrößerung am Beispiel des Dünndarms (Falten, Zotten mit Blutkapillaren und zentralem Lymphgefäß, Mikrovilli), erkläre den Unterschied zwischen Grundumsatz und Leistungsumsatz beim menschlichen Energiebedarf und berechne den Tagesgesamtenergiebedarf eines Jugendlichen mit Grundumsatz 6500 kJ und Leistungsumsatz 3500 kJ.",
+          "concept": "Oberflächenvergrößerung: Kerckring-Falten (Faktor 3) -> Zotten (Faktor 10) -> Mikrovilli (Faktor 20) -> Gesamtvergrößerung um das 600-fache (200 m²); Resorption: Glukose/Aminosäuren in Blutkapillaren (Pfortader zur Leber), Fette in Lymphgefäß; Grundumsatz: Energiebedarf in völliger Ruhe bei 20°C nüchtern; Leistungsumsatz: zusätzliche Muskel- & Denkaktivität; Gesamtumsatz = 6500 + 3500 = 10.000 kJ (ca. 2390 kcal)."
+        }
+      ]
+    }
+  ]
+}

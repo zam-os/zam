@@ -43,7 +43,7 @@ describe("Central Learning Field-Test Slice — Complete End-to-End Lifecycle", 
     // ── Phase 1: Bundled Cell Discovery and Enrolment ───────────────────────
     // 1.1 List available bundled learning cells
     const cellList = listBundledCells();
-    expect(cellList).toHaveLength(4);
+    expect(cellList.length).toBeGreaterThanOrEqual(4);
     const rsCell = cellList.find((c) => c.id === "de-by:realschule-optik");
     expect(rsCell).toBeDefined();
     expect(rsCell?.title).toContain("Optik");

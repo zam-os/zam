@@ -1,0 +1,258 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte",
+  "version": "2026.08.1",
+  "title": "Natur und Technik 6: Informatik – Vektor- vs. Rastergrafik, Textverarbeitung und Präsentationen (Gymnasium 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern NuT/IT 6: Vektorgrafik vs. Rastergrafik (Pixelmatrix, Skalierbarkeit, RGB/CMYK), objektorientierte Textdokumente (Abschnitt, Absatz, Zeichen) und Präsentationshierarchien.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T23:05:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/6/natur_und_technik",
+      "checked": "2026-08-15",
+      "label": "Gymnasium Natur und Technik 6 (Schwerpunkt Informatik), Lernbereich Informationsdarstellung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4YT6J000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4YT6J000000000000000A01",
+      "namespace": "informatik-grafik",
+      "slug": "vektorgrafik-vs-rastergrafik-pixel-skalierbarkeit",
+      "title": "Digitale Grafik: Rastergrafik (Pixelmatrix, Farbtiefe) vs. Vektorgrafik (geometrische Primitiven, Skalierbarkeit)",
+      "domain": "schule/informatik/medien",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Vector graphics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Informationsdarstellung mit Grafikdokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT6J000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum kann eine Vektorgrafik (z. B. SVG) beliebig stark vergrößert werden, ohne dass Treppeneffekte (Pixelbrei / Unschärfe) sichtbar werden?",
+          "concept": "Weil Vektorgrafiken aus mathematischen Formeln und Vektoren (Objekten) bestehen, die bei jeder Skalierung exakt neu berechnet werden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verlustfreie Skalierung durch mathematische Vektoren",
+              "Enthält unendlich viele Pixel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT6J000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Rastergrafiken (Bitmap/Pixelgrafik: 2D-Raster aus Pixeln, Bildauflösung in dpi/ppi, Farbtiefe in Bit, Dateiformate .png, .jpg, .bmp) mit Vektorgrafiken (Objekte wie Rechteck, Kreis, Linie mit Attributen wie Füllfarbe, Strichstärke, Koordinaten; Dateiformate .svg, .ai), analysiere die Vor- und Nachteile beider Systeme (Fotorealismus vs. verlustfreie Skalierbarkeit und kleine Dateigröße bei Logos/Schriften) und berechne den unkomprimierten Speicherbedarf eines Farbfotos mit 1.000 × 2.000 Pixeln bei 24 Bit TrueColor-Farbtiefe (in Megabyte).",
+          "concept": "Pixelgrafik: Raster fester Pixel, treppig bei Vergrößerung, ideal für Fotos; Vektorgrafik: Geometrieobjekte, beliebig skalierbar, ideal für Logos/Diagramme; Speicher: 1000 · 2000 · 3 Byte = 6.000.000 Byte = 6 MB.",
+          "sample_solution": "1. Fundamentaler Systemvergleich: Rastergrafik vs. Vektorgrafik: - **1. Rastergrafik (Pixelgrafik / Bitmap)**:   * **Aufbau**: Ein regelmäßiges, schachbrettartiges 2D-Gitter (**Raster**) aus einzelnen Bildpunkten (**Pixeln**). Jeder Pixel besitzt eine feste Farbwert-Kombination.   * **Kenngrößen**: Bildauflösung (Breite $\\times$ Höhe in Pixeln, Pixeldichte in *dpi/ppi*), Farbtiefe (z. B. 24 Bit True Color = 16,7 Mio. Farben).   * **Skalierung**: Beim starken Vergrößern treten störende **Treppeneffekte (Pixelation)** und Unschärfen auf.   * **Einsatzbereich**: Natürliche, detailreiche Fotografien und Gemälde mit kontinuierlichen Farbverläufen (.jpg, .png, .gif). - **2. Vektorgrafik (Objektgrafik)**:   * **Aufbau**: Die Grafik wird nicht als Pixelmatrix gespeichert, sondern als Sammlung mathematisch beschriebener **geometrischer Objekte** (Linien, Polygone, Bézier-Kurven, Kreise, Rechtecke).   * **Attribute**: Jedes Objekt besitzt Eigenschaften wie Anfangs-/Endkoordinaten, Füllfarbe, Randlinienbreite, Transparenz.   * **Skalierung**: **Völlig verlustfrei und stufenlos auflösungsunabhängig**; bei jeder Zoomstufe wird die Geometrie von der Grafikkarte mit gestochen scharfen Kanten neu berechnet.   * **Einsatzbereich**: Schriften (Fonts), Logos, Icons, technische Zeichnungen, Schaltpläne, Diagramme (.svg, .ai, .eps). 2. Speicherbedarfsberechnung: - Gegeben: Bildgröße $1.000 \\times 2.000\\text{ Pixel}$, Farbtiefe $24\\text{ Bit} = 3\\text{ Byte}$ pro Pixel. - Gesamtzahl der Pixel: $1.000 \\cdot 2.000 = 2.000.000\\text{ Pixel}$ (2 Megapixel). - Unkomprimierter Speicherbedarf in Byte:   $$\\text{Speicher} = 2.000.000 \\cdot 3\\text{ Byte} = 6.000.000\\text{ Byte}$$ - In Megabyte umrechnen ($1\\text{ MB} = 1.000.000\\text{ Byte}$ im Dezimalsystem bzw. $\\approx 5,72\\text{ MiB}$):   $$\\mathbf{6\\text{ MB}}$$ (Megabyte)."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT6J000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4YT6J000000000000000A02",
+      "namespace": "informatik-grafik",
+      "slug": "farbmodelle-rgb-cmyk-farbtiefe-kanaele",
+      "title": "Farbmodelle und Farbmischung: Additives RGB-Modell (Licht) vs. Subtraktives CMYK-Modell (Druck)",
+      "domain": "schule/informatik/medien",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YT6J000000000000000A01",
+          "type": "hard",
+          "rationale": "Farbtiefe und Farbkanäle definieren die Pixelattribute in digitalen Grafiken."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Color model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb2",
+          "topic_title": "Informationsdarstellung mit Grafikdokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT6J000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Farbe entsteht im additiven RGB-Farbmodell (Lichtfarben), wenn die 3 Grundfarben Rot, Grün und Blau mit maximaler Intensität (255, 255, 255) überlagert werden?",
+          "concept": "Reines Weiß (Lichtüberlagerung ergibt Weiß, während Abwesenheit 0,0,0 Schwarz ergibt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weiß (RGB 255, 255, 255)",
+              "Schwarz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT6J000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre die beiden fundamentalen Farbmodelle der digitalen Informatik: 1. Additives RGB-Modell (Rot, Grün, Blau; selbstleuchtende Bildschirme/Monitore; Wertebereich 0–255 pro Kanal = 8 Bit pro Kanal = 24 Bit TrueColor mit 256³ = 16.777.216 Farben; R+G=Gelb, R+B=Magenta, G+B=Cyan, R+G+B=Weiß), 2. Subtraktives CMYK-Modell (Cyan, Magenta, Yellow, Key/Schwarz; Vierfarbdruck auf weißem Papier; Pigmente absorbieren/filtern Lichtwellenlängen weg; C+M+Y=Dunkelbraun, mit K für echtes Tiefschwarz).",
+          "concept": "RGB: Additive Farbmischung für Monitore (Lichtquellen senden Photonen aus -> Überlagerung ergibt Weiß); CMYK: Subtraktive Farbmischung für Druck (Pigmente schlucken Lichtanteile -> Überlagerung filtert Licht weg -> Schwarz).",
+          "sample_solution": "1. Das additive RGB-Farbmodell (Lichtfarben / Bildschirme): - **Prinzip**: **Additive Farbmischung** (Hinzufügen von Licht). - **Einsatzbereich**: Alle selbstleuchtenden Displays (Smartphone-Bildschirme, Computermonitore, TV-Geräte, Beamer). - **Grundfarben**: **Rot ($R$), Grün ($G$), Blau ($B$)**. - **Kanalwerte**: Jeder der 3 Farbkanäle wird mit **8 Bit (1 Byte)** codiert, was ganzzahligen Helligkeitsstufen von **0 (kein Licht) bis 255 (maximale Strahlkraft)** entspricht.   * Gesamtfarbtiefe: $3 \\times 8\\text{ Bit} = 24\\text{ Bit True Color}$ ($256 \\cdot 256 \\cdot 256 = \\mathbf{16.777.216\\text{ darstellbare Farbnuancen}}$). - **Mischungsgesetze**:   * Schwarz (kein Licht): $(0, 0, 0)$   * Rot + Grün = **Gelb**: $(255, 255, 0)$   * Rot + Blau = **Magenta**: $(255, 0, 255)$   * Grün + Blau = **Cyan**: $(0, 255, 255)$   * Alle 3 Kanäle maximal = **Weiß**: $(255, 255, 255)$. 2. Das subtraktive CMYK-Farbmodell (Körperfarben / Druck): - **Prinzip**: **Subtraktive Farbmischung** (Lichtabsorption / Wegfiltern von Spektralanteilen). - **Einsatzbereich**: Tintenstrahldrucker, Laserdrucker, Offset-Druckverfahren auf weißem Papier. - **Grundfarben (Vierfarbdruck)**:   * **C**yan (Blaugrün)   * **M**agenta (Purpurrot)   * **Y**ellow (Gelb)   * **K**ey (Schwarz / Kontrastplatte). - **Funktionsweise**: Weißes Tageslicht trifft auf das Papier. Die aufgedruckten Pigmentschichten wirken als optische Farbfilter und **subtrahieren (schlucken)** bestimmte Wellenlängen, sodass nur das reflektierte Restlicht ins menschliche Auge gelangt.   * Übereinanderdruck von C + M + Y ergibt in der Praxis nur ein schmutziges Dunkelgrau-Braun; deshalb wird als 4. Druckfarbe reines Pigmentschwarz (**K**) für tiefschwarze Kontraste und Schriften hinzugefügt."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT6J000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4YT6J000000000000000A03",
+      "namespace": "informatik-texte",
+      "slug": "objektorientierte-textdokumente-zeichen-absatz-abschnitt",
+      "title": "Strukturierte Textverarbeitung: Hierarchie Dokument – Abschnitt – Absatz – Zeichen und Attribute",
+      "domain": "schule/informatik/medien",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Document structure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb3",
+          "topic_title": "Informationsdarstellung mit Textdokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT6J000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Zu welcher Objektebene in der Textverarbeitung gehört das Attribut 'Zeilenabstand' (z. B. 1,5-zeilig) bzw. 'Ausrichtung' (z. B. Blocksatz)?",
+          "concept": "Zur Klasse Absatz (Paragraph), da diese Eigenschaften immer für den gesamten Absatz gelten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zur Klasse Absatz (Paragraph)",
+              "Zur Klasse Zeichen (Character)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT6J000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Modelliere den hierarchischen Objektbaum eines Textdokuments in 4 Schichten (Dokument -> Abschnitt -> Absatz -> Zeichen) und ordne typische Formatierungsattribute den Klassen eindeutig zu: 1. Klasse Dokument (Titel, Dateiname, Autor), 2. Klasse Abschnitt (Seitenformat A4, Seitenränder, Kopf-/Fußzeile, Spaltenanzahl), 3. Klasse Absatz (Ausrichtung linksbündig/zentriert/rechtsbündig/Blocksatz, Zeilenabstand, Einzüge links/rechts/Erstzeile, Absatzabstand vor/nach), 4. Klasse Zeichen (Schriftart / Font, Schriftgröße in pt, Schriftschnitt fett/kursiv/unterstrichen, Schriftfarbe).",
+          "concept": "Dokument-Klassenhierarchie: Dokument (Metadaten) -> Abschnitt (Seitenlayout/Ränder) -> Absatz (Ausrichtung/Zeilenabstand) -> Zeichen (Schriftart/Größe/Farbe).",
+          "sample_solution": "1. Die 4-stufige Hierarchie objektorientierter Textdokumente: - **1. Ebene: Klasse DOKUMENT (Das Gesamtdokument)**:   * Oberste Instanz; umfasst das gesamte File.   * **Attribute**: Dateiname (`'Referat_Vögel.docx'`), Dateigröße, Erstellungsdatum, Autor, Dokumenttitel. - **2. Ebene: Klasse ABSCHNITT (Section / Seitenlayout)**:   * Ein Dokument besteht aus einem oder mehreren Abschnitten (z. B. Deckblatt vs. mehrspaltiger Haupttext).   * **Attribute**: Papierformat (`A4`, `Letter`), Seitenausrichtung (`Hochformat`, `Querformat`), Seitenränder (`oben: 2,5 cm, links: 3 cm`), Spaltenanzahl (`1-spaltig`, `2-spaltig`), Kopfzeile, Fußzeile mit automatischer Seitennummerierung. - **3. Ebene: Klasse ABSATZ (Paragraph)**:   * Ein Abschnitt besteht aus einer Folge von Absätzen, die durch ein Absatzende-Steuerzeichen (Enter-Taste $\\P$) abgeschlossen werden.   * **Attribute**:     - **Ausrichtung**: `linksbündig`, `zentriert`, `rechtsbündig`, `Blocksatz` (mit automatischer Silbentrennung).     - **Zeilenabstand**: `1-zeilig`, `1,5-zeilig`, `2-zeilig`.     - **Einzüge**: `Erstzeileneinzug`, `Linker Einzug`, `Rechter Einzug`.     - **Absatzabstände**: `Abstand vor dem Absatz`, `Abstand nach dem Absatz` (zur sauberen optischen Gliederung ohne leere Leerzeilen!). - **4. Ebene: Klasse ZEICHEN (Character)**:   * Die elementaren Bausteine eines Absatzes (Buchstaben, Ziffern, Satzzeichen, Leerzeichen).   * **Attribute**: Schriftart / Font (`Arial`, `Times New Roman`), Schriftgröße in Punkt (`12 pt`), Schriftschnitt (`Standard`, **fett**, *kursiv*, <u>unterstrichen</u>), Schriftfarbe (`Schwarz`, `Dunkelblau`), Zeichenabstand."
+        }
+      ]
+    },
+    {
+      "id": "01K4YT6J000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4YT6J000000000000000A04",
+      "namespace": "informatik-praesentation",
+      "slug": "praesentationsdokumente-masterfolie-folienhierarchie",
+      "title": "Präsentationssoftware: Folienhierarchie, Masterfolie, Animationseffekte und Medienintegration",
+      "domain": "schule/informatik/medien",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4YT6J000000000000000A03",
+          "type": "hard",
+          "rationale": "Text- und Grafikobjekte sind die Inhaltselemente von Präsentationsfolien."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q21198",
+          "target_label": "Presentation software",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 6,
+          "subject": "natur_und_technik",
+          "topic_code": "lb4",
+          "topic_title": "Informationsdarstellung mit Präsentationsdokumenten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4YT6J000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches zentrale Werkzeug in Präsentationsprogrammen stellt sicher, dass Design, Schriftarten, Logo und Foliennummerierung auf allen Folien einer Präsentation einheitlich gestaltet sind?",
+          "concept": "Die Masterfolie (Folienmaster / Slide Master)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Masterfolie (Folienmaster)",
+              "Der Animationsbereich"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4YT6J000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Modelliere die Objektstruktur einer digitalen Präsentation (Präsentationsdokument -> Folienmaster -> Einzelfolie -> Platzhalter / Content-Objekte wie Textfeld, Bild, Diagramm, Audio/Video), unterscheide Folienübergänge (Transitions zwischen 2 Folien) von Objektanimationen (Eingangs-, Betonungs- und Ausgangsanimationen einzelner Elemente) und formuliere 4 didaktische Gestaltungsregeln für gelungene Schülerpräsentationen (6x6-Regel: max. 6 Zeilen mit max. 6 Wörtern, hoher Farbkontrast Schrift/Hintergrund, sparsamer Medieneinsatz, lesbare Schriftgröße >= 24 pt).",
+          "concept": "Präsentationshierarchie: Präsentation -> Master (zentrales Design) -> Folien -> Container/Objekte; Folienübergang (Szenenwechsel) vs. Animation (Objektbewegung); 4 Gestaltungsregeln (6x6-Regel, Kontrast, Lesbarkeit, Reduktion).",
+          "sample_solution": "1. Die objektorientierte Struktur einer Präsentation: - **Klasse PRÄSENTATION**: Das Gesamtdokument (.pptx, .odp); verwaltet die Folienabfolge und Einstellungen zur Bildschirmpräsentation. - **Klasse FOLIENMASTER (Master Slide)**:   * Die zentrale Vorlage; speichert globale Layout-Vorgaben: Hintergrundfarbe/Grafik, Schrifttypen, Platzhalter-Positionen, Logos, Datum und Seitennummer.   * Änderungen am Master wirken sich automatisch und konsistent auf alle zugehörigen Folien aus. - **Klasse FOLIE (Slide)**:   * Einzelseite der Präsentation; besitzt Attribute wie Folientitel, Foliennummer, Layout-Typ (Titelblatt, 2-Spalten-Vergleich, Diagrammfolie). - **Klasse INHALTSELEMENTE (Objekte auf der Folie)**:   * Polymorphe Container: Textfelder, Vektorgrafiken, Fotos, Diagramme, Tabellen, eingebettete Videos. 2. Übergänge vs. Animationen: - **Folienübergang (Slide Transition)**: Der visuelle und akustische Wechseleffekt beim Umschalten von einer Folie zur nächsten (z. B. *Überblenden, Schieben*). - **Objektanimation**: Gesteuerte dynamische Effekte für ein einzelnes Objekt auf der Folie (z. B. stichpunktweises Einblenden beim Mausklick: *Eingangseffekt, Hervorhebung, Ausgangseffekt*). 3. Die 4 Goldenen Gestaltungsregeln: - **1. Die 6x6-Regel (Informationsreduktion)**: Maximal 6 Textzeilen pro Folie und maximal 6 Wörter pro Zeile; keine ausformulierten Fließtexte, sondern prägnante Stichworte. - **2. Hoher Kontrast & ruhiger Hintergrund**: Dunkle Schrift auf hellem Grund oder umgekehrt; keine unruhigen Muster. - **3. Lesbare Mindestschriftgröße**: Titel mindestens **32–40 pt**, Inhaltstext mindestens **24 pt**, damit die Folie auch aus der letzten Reihe des Klassenzimmers mühelos lesbar ist. - **4. Gezielter, sparsamer Medieneinsatz**: Animationen nur einsetzen, um didaktische Zusammenhänge schrittweise aufzubauen; keine ablenkenden 'Knalleffekte'."
+        }
+      ]
+    }
+  ]
+}

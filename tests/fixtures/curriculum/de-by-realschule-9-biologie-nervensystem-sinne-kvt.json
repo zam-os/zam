@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-9-biologie-nervensystem-sinne",
+  "version": "2026.08.1",
+  "title": "Nervensystem, Neuron und Signalübertragung (Realschule 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Biologie 9: Aufbau der Nervenzelle, Reiz-Reaktions-Kette, Synaptische Übertragung und Gliederung des Nervensystems.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T21:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/biologie",
+      "checked": "2026-08-15",
+      "label": "Realschule Biologie 9, Lernbereich Nervensystem und Informationsverarbeitung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4B9N0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4B9N0000000000000000A01",
+      "namespace": "biologie-neuro",
+      "slug": "nervenzelle-neuron-axon-myelin",
+      "title": "Bau und Funktion des Neurons (Nervenzelle)",
+      "domain": "schule/biologie/neuro",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q43087",
+          "target_label": "Neuron",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9N0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zellfortsätze eines Neurons nehmen elektrische Erregungen von benachbarten Sinneszellen oder Nervenzellen auf und leiten sie zum Zellkörper weiter?",
+          "concept": "Dendriten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Dendriten",
+              "Axone (Neuriten)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9N0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Beschreibe den anatomischen Bau eines Neurons (Dendriten, Soma/Zellkörper, Axonhügel, Axon/Neurit, Myelinscheide/Schwann-Zellen, Ranvier-Schnürringe, Endknöpfchen) und erkläre die saltatorische Erregungsleitung.",
+          "concept": "Dendriten empfangen Reize -> Soma -> Axonhügel erzeugt AP -> Axon mit Myelinhülle leitet sprunghaft (saltatorisch) von Schnürring zu Schnürring -> Endknöpfchen",
+          "sample_solution": "Ein Neuron gliedert sich in: 1. Dendriten (stark verzweigte Fortsätze zur Signalaufnahme), 2. Soma (Zellkörper mit Zellkern und Organellen), 3. Axonhügel (Verrechnungsort, Entstehung des Aktionspotenzials), 4. Axon/Neurit (langer Fortsatz zur Signalweiterleitung), umgeben von isolierenden Myelinscheiden (Schwannsche Zellen) mit unbedeckten Ranvier-Schnürringen, 5. Synaptische Endknöpfchen (Signalübertragung). Die saltatorische Erregungsleitung: Das elektrische Aktionspotenzial 'springt' von einem Schnürring zum nächsten, was die Leitungsgeschwindigkeit drastisch erhöht (bis zu 120 m/s) und Energie spart."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9N0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4B9N0000000000000000A02",
+      "namespace": "biologie-neuro",
+      "slug": "reiz-reaktions-kette-reflexbogen",
+      "title": "Reiz-Reaktions-Kette und Reflexbogen",
+      "domain": "schule/biologie/neuro",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9N0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Bau von Nervenzellen ist Voraussetzung für die funktionelle Verschaltung im Reflexbogen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q185363",
+          "target_label": "Reflex arc",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9N0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wird ein unbedingter Eigenreflex (z. B. der Kniesehnenreflex oder das Zurückziehen der Hand von einer heißen Herdplatte) primär im Gehirn oder direkt im Rückenmark verschaltet?",
+          "concept": "Im Rückenmark (ermöglicht extrem schnelle, unwillkürliche Schutzreaktion)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Direkt im Rückenmark (ohne vorherige Hirnbeteiligung)",
+              "Ausschließlich in der Großhirnrinde"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9N0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Skizziere die vollständige Reiz-Reaktions-Kette (Reiz -> Rezeptor -> afferenter Nerv -> ZNS -> efferenter Nerv -> Effektor -> Reaktion) und erkläre den biologischen Vorteil von Reflexen.",
+          "concept": "Reiz -> Sinnesorgan (Rezeptor) -> sensorische/afferente Nervenbahn -> ZNS (Rückenmark/Gehirn) -> motorische/efferente Nervenbahn -> Erfolgsorgan (Effektor/Muskel) -> Reaktion",
+          "sample_solution": "Die Reiz-Reaktions-Kette: 1. Reiz (Umwelt- oder Körpersignal, z. B. Hitze, Schall). 2. Rezeptor/Sinnesorgan (Umwandlung in elektrische Signale). 3. Sensorischer/afferenter Nerv (Weiterleitung zum ZNS). 4. Zentralnervensystem ZNS (Verarbeitung im Rückenmark/Gehirn). 5. Motorischer/efferenter Nerv (Weiterleitung des Reaktionsbefehls). 6. Effektor/Erfolgsorgan (Muskel oder Drüse). 7. Reaktion (z. B. Muskelkontraktion). Biologischer Vorteil von Reflexen: Sie laufen unwillkürlich, stereotyp und extrem schnell über das Rückenmark ab, da der zeitraubende Weg über die Großhirnrinde umgangen wird. Dies dient als essenzieller Schutz vor schweren Verletzungen."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9N0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4B9N0000000000000000A03",
+      "namespace": "biologie-neuro",
+      "slug": "synapse-chemische-signaluebertragung",
+      "title": "Synapse: Chemische Signalübertragung und Neurotransmitter",
+      "domain": "schule/biologie/neuro",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9N0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Endknöpfchen des Neurons bildet die präsynaptische Membran der Synapse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q187258",
+          "target_label": "Synapse",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9N0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie wird das elektrische Signal (Aktionspotenzial) im synaptischen Spalt zwischen zwei Neuronen übertragen?",
+          "concept": "Chemisch über Botenstoffe (Neurotransmitter wie z. B. Acetylcholin)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Chemisch durch Ausschüttung von Neurotransmittern",
+              "Rein elektrisch durch Funkenüberschlag"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9N0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre Schritt für Schritt den Ablauf der Signalübertragung an einer chemischen Synapse: Ankunft des Aktionspotenzials, Calciumeinstrom, Vesikelverschmelzung, Diffusion, Rezeptorbindung, Ionenkanäle und enzymatischer Abbau.",
+          "concept": "AP öffnet Ca2+-Kanäle -> Vesikel verschmelzen mit präsynaptischer Membran -> Transmitter diffundieren durch Spalt -> binden an Rezeptoren der postsynaptischen Membran -> Na+-Einstrom -> Depolarisation -> Enzymatische Spaltung/Recycling",
+          "sample_solution": "Ablauf an der chemischen Synapse: 1. Ein Aktionspotenzial erreicht das präsynaptische Endknöpfchen. 2. Spannungsgesteuerte Ca²⁺-Kanäle öffnen sich, Calciumionen strömen ein. 3. Synaptische Vesikel (mit Neurotransmittern wie Acetylcholin gefüllt) wandern zur präsynaptischen Membran und verschmelzen mit ihr (Exozytose). 4. Die Transmitter diffundieren durch den schmalen synaptischen Spalt (ca. 20 nm). 5. Transmitter binden nach dem Schlüssel-Schloss-Prinzip an spezifische Rezeptoren liganden-gesteuerter Ionenkanäle der postsynaptischen Membran. 6. Ionenkanäle öffnen sich, Na⁺-Ionen strömen ein und erzeugen eine Depolarisation (erregendes postsynaptisches Potenzial, EPSP). 7. Transmitter werden durch Enzyme (z. B. Acetylcholinesterase) im Spalt gespalten und in das Endknöpfchen zur Wiederverwertung aufgenommen, um eine Dauererregung zu verhindern."
+        }
+      ]
+    },
+    {
+      "id": "01K4B9N0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4B9N0000000000000000A04",
+      "namespace": "biologie-neuro",
+      "slug": "vegetatives-nervensystem-sympathikus-parasympathikus",
+      "title": "Gliederung des Nervensystems und Vegetativum (Sympathikus / Parasympathikus)",
+      "domain": "schule/biologie/neuro",
+      "reduction": "classical",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4B9N0000000000000000A02",
+          "type": "hard",
+          "rationale": "Reizverarbeitung und Nervenbahnen sind Voraussetzung für die Gliederung des Nervensystems."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q168397",
+          "target_label": "Autonomic nervous system",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Nervensystem und Sinne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4B9N0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Teil des vegetativen Nervensystems bereitet den Körper auf Flucht, Kampf und hohe körperliche Leistung vor ('Fight or Flight')?",
+          "concept": "Der Sympathikus (erhöht Herzfrequenz, Blutdruck, erweitert Bronchien)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Sympathikus (Leistungssteigerung / Stress)",
+              "Der Parasympathikus (Erholung / Verdauung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4B9N0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Gliedere das menschliche Nervensystem anatomisch (ZNS vs. PNS) und funktionell (somatisch vs. vegetativ/autonom) und stelle die gegensätzliche Wirkung von Sympathikus und Parasympathikus auf Herz, Atmung und Verdauung dar.",
+          "concept": "Anatomisch: ZNS (Gehirn, Rückenmark) vs. PNS (periphere Nerven); funktionell: somatisch (willkürlich) vs. vegetativ (unwillkürlich: Sympathikus = Fight/Flight, Parasympathikus = Rest/Digest)",
+          "sample_solution": "1. Anatomische Gliederung: a) Zentralnervensystem (ZNS): Gehirn und Rückenmark (Zentrale Verrechnung). b) Peripheres Nervensystem (PNS): Alle Nerven außerhalb des ZNS (Hirnnerven, Spinalnerven). 2. Funktionelle Gliederung: a) Somatisches (willkürliches) Nervensystem: Steuerung der Skelettmuskulatur und bewusste Sinneswahrnehmungen. b) Vegetatives / Autonomes (unwillkürliches) Nervensystem: Steuerung der inneren Organe und Lebensfunktionen. Gegenspieler (Antagonisten): - Sympathikus ('Fight or Flight'): Steigert Herzfrequenz, Blutdruck und erweitert Bronchien; hemmt Magen-Darm-Tätigkeit und Verdauung. - Parasympathikus ('Rest and Digest'): Senkt Herzfrequenz und Blutdruck; fördert Verdauung, Speichelfluss und Regenerationsprozesse."
+        }
+      ]
+    }
+  ]
+}

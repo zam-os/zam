@@ -1,0 +1,308 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:realschule-6-geschichte-urgeschichte-antike",
+  "version": "2026.08.1",
+  "title": "Geschichte 6: Steinzeit, Ägypten, Griechische Polis und Römisches Reich (Realschule 6 Bayern)",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Geschichte 6: Neolithische Revolution, Hochkultur Ägypten, Attische Demokratie, Römische Republik und Kaisertum/Limes.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-15T22:50:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/6/geschichte",
+      "checked": "2026-08-15",
+      "label": "Realschule Geschichte 6, Lernbereiche Urgeschichte und Antike"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K4G6A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4G6A0000000000000000A01",
+      "namespace": "geschichte-urgeschichte",
+      "slug": "altsteinzeit-vs-jungsteinzeit-neolithische-revolution",
+      "title": "Von Jägern und Sammlern zu Ackerbauern: Die Neolithische Revolution",
+      "domain": "schule/geschichte/urgeschichte",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11756",
+          "target_label": "Neolithic Revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Ur- und Frühgeschichte",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Ur- und Frühgeschichte",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche fundamentale Wende in der menschlichen Lebensweise bezeichnet der Begriff 'Neolithische Revolution' am Übergang von der Alt- zur Jungsteinzeit?",
+          "concept": "Den Übergang von der nomadischen Lebensweise als Jäger und Sammler zur Sesshaftigkeit mit Ackerbau und Viehzucht",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sesshaftigkeit mit Ackerbau und Viehzucht",
+              "Die Entdeckung des Feuers"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Lebensweise der Menschen in der Altsteinzeit (Paläolithikum: Nomaden, Jäger & Sammler, Zelte/Höhlen, Faustkeil/Speer, Höhlenmalerei) mit der Jungsteinzeit (Neolithikum: Neolithische Revolution, Sesshaftigkeit in festen Holzhäusern, Getreideanbau/Pflug, Domestizierung von Haustieren wie Rind/Schaf/Hund, Vorratshaltung in gebrannter Keramik/Tongefäßen, geschliffene Steinbeile und Webtechnik).",
+          "concept": "Altsteinzeit: Jäger/Sammler ziehen Wildherden nach, temporäre Lager, Holz/Knochen/Feuersteinwerkzeuge (Faustkeil); Jungsteinzeit (Neolithikum ab ca. 10.000 v. Chr.): Erwärmung nach Eiszeit ermöglicht Pflanzenanbau (Weizen, Gerste), Rodung, feste Dorfsiedlungen (Langhäuser), Haustierhaltung liefert Milch/Fleisch/Wolle, Töpferei (Vorratsschutz vor Nagern), Webstuhl, Spezialisierung und Arbeitsteilung.",
+          "sample_solution": "1. Die Altsteinzeit (Paläolithikum bis ca. 10.000 v. Chr.): - Lebensweise: Nicht sesshaft (Nomaden). Kleine Sippen und Gruppen (20–30 Menschen) zogen den wandernden Wildtieren (Mammut, Rentier, Wildpferd) hinterher. - Ernährung: Jagd auf Großwild (Männer) und Sammeln von Beeren, Nüssen, Wurzeln und Früchten (Frauen/Kinder) = reine aneignende Wirtschaftsweise ('Jäger und Sammler'). - Behausung & Kleidung: Naturhöhlen, Felsüberhänge oder transportable Zelte aus Mammutknochen und Tierfellen. Fellkleidung mit Knochennadeln genäht. - Werkzeuge: Geschlagene Feuersteinklingen, Faustkeile, Speerschleudern, Harpunen; Beherrschung des Feuers (Wärme, Schutz, Garen). Höhlenkunst (z. B. Lascaux). 2. Die Jungsteinzeit und die Neolithische Revolution (ab ca. 10.000 v. Chr.): - Neolithische Revolution (fundamentaler Umbruch der Menschheitsgeschichte): Erstmals produzieren Menschen ihre Nahrung selbst = produzierende Wirtschaftsweise. - Ackerbau & Sesshaftigkeit: Gezielte Aussaat und Ernte von Getreide (Emmer, Einkorn, Gerste). Bau dauerhafter, stabiler Holzhäuser (Pfostenbauten, Langhäuser) und Entstehung der ersten festen Bauerndörfer. - Haustierhaltung (Domestikation): Zähmung und Zucht von Wolf (Hund), Wildrind, Schaf, Ziege und Schwein für Fleisch, Milch, Wolle, Leder und als Zugtiere. - Neue Technologien & Kulturtechniken:   * Keramik / Töpferei: Brennen von Tongefäßen zur wasserdichten Vorratshaltung von Getreide gegen Mäusefraß und Feuchtigkeit.   * Werkzeugbau: Geschliffene und polierte Steinbeile zum effektiven Fällen von Bäumen (Rodung).   * Textiltechnik: Erfindung des Spinnrads und Webstuhls zur Herstellung von Leinen- und Wollkleidung.   * Gesellschaft: Vorräte führten zu Bevölkerungswachstum, Arbeitsteilung, Handel und ersten gesellschaftlichen Hierarchien."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K4G6A0000000000000000A02",
+      "namespace": "geschichte-antike",
+      "slug": "aegypten-hochkultur-nil-pharao-hieroglyphen",
+      "title": "Frühe Hochkultur Ägypten: Der Nil als Lebensader, Gottkönigtum (Pharao) und Hieroglyphen",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Sesshafter Ackerbau ist Voraussetzung für die Entstehung von Hochkulturen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11756",
+          "target_label": "Ancient Egypt",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Frühe Hochkulturen – Ägypten",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Frühe Hochkulturen – Ägypten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum bezeichnete der antike griechische Geschichtsschreiber Herodot das Land Ägypten als 'Geschenk des Nils'?",
+          "concept": "Weil die jährliche Nilschwemme fruchtbaren schwarzen Schlamm ablagerte und so mitten in der Wüste reiche Ernten ermöglichte",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wegen des fruchtbaren Nilschlamms der jährlichen Überschwemmung",
+              "Weil der Nil ins Mittelmeer mündet"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die sechs Merkmale einer 'frühen Hochkultur' am Beispiel des Alten Ägypten: 1. Nilüberschwemmung und organisierte Bewässerungswirtschaft (Dammbau, Kanäle, Schaduf-Schöpfhebel), 2. Schriftkultur (Hieroglyphen auf Papyrus für Vorratsverwaltung und Steuern), 3. Gesellschaftspyramide (Pharao als irdischer Gott / Sohn des Re, Wesir/Beamte/Schreiber, Priester, Handwerker, Bauern/Sklaven), 4. Totenkult und Religion (Mumifizierung, Jenseitsglaube, Totengericht des Osiris, Pyramiden als Königsgräber), 5. Wissenschaft (Kalender, Geometrie/Feldvermessung), 6. Feste Städte und Verwaltung.",
+          "concept": "1. Nil: Nilschwemme (Juli-Oktober) düngt Felder mit fruchtbarem Mineralschlamm; Koordination des Kanal- und Deichbaus erforderte straffen Staat; 2. Schrift: Hieroglyphen (Bild- und Lautzeichen) machten Steuereintreibung und Vorratshaltung messbar; 3. Gesellschaft: Pharao an Spitze mit absolutem Machtanspruch als Horus auf Erden, Schreiber genossen hohes Ansehen; 4. Totenkult: Balsamierung sichert Weiterleben der Seele (Ka/Ba) im Jenseits; Pyramiden (z. B. Gizeh/Cheops) als monumentale Himmelsleitern; 5. Wissenschaft: 365-Tage-Nilkalender, Dreiecksberechnung zur Wiederherstellung von Feldgrenzen nach der Flut.",
+          "sample_solution": "1. Merkmale der Hochkultur am Beispiel des Alten Ägypten: - 1. Geplante Bewässerungswirtschaft ('Geschenk des Nils'): Durch Monsunregen in Äthiopien schwoll der Nil jeden Sommer an und überflutete die Uferfelder von Juli bis Oktober. Er hinterließ eine extrem fruchtbare Schicht aus mineralreichem schwarzem Schlamm ('Kemet' = das schwarze Land). Zur Regulierung baute man Deiche, Kanalsysteme, Rückhaltebecken und Schöpfhebel (Schaduf). Dies erforderte eine zentrale, straffe staatliche Organisation und Planung. - 2. Entwicklung der Schrift (Hieroglyphen): Bild- und Lautschrift mit über 700 Zeichen. Wurde von Schreibern mit Tinte auf Papyrusrollen oder in Stein gemeißelt. Unverzichtbar für die Erfassung von Ernteerträgen, Steuerabgaben, Gesetzen und Truppenstärken. - 3. Die Gesellschaftspyramide:   * Spitze: Der Pharao (uneingeschränkter Herrscher und lebender Gottkönig).   * Oberschicht: Wesir (oberster Minister), Hohepriester (Kultverwaltung) und Schreiber/Beamte.   * Mittelschicht: Kaufleute, Baumeister, Kunsthandwerker und Soldaten.   * Basis (über 80 %): Bauern (leisteten Feldarbeit und Frondienst beim Pyramidenbau) und Kriegsgefangene/Sklaven. - 4. Religion und Totenkult: Polytheismus (viele Tiergötter: Sonnengott Re, Totengott Anubis, Herrscher des Jenseits Osiris). Der Glaube an ein ewiges Weiterleben im Jenseits erforderte die Konservierung des Körpers (**Mumifizierung** und Einbalsamierung) sowie Grabbeigaben. Monumentale Grabmäler (Pyramiden von Gizeh, Felsengräber im Tal der Könige) sollten die Unsterblichkeit des Pharaos sichern. - 5. Wissenschaften: Entwicklung des ersten Sonnenkalenders mit 365 Tagen (orientiert am Aufgang des Sirius und der Nilflut); Astronomie, Medizin/Chirurgie und Geometrie (Feldvermessung nach jedem Nilhochwasser)."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6A0000000000000000A03",
+      "atom_uri": "urn:zam:atom:01K4G6A0000000000000000A03",
+      "namespace": "geschichte-antike",
+      "slug": "antikes-griechenland-polis-attische-demokratie",
+      "title": "Das antike Griechenland: Die Polis Athen und die Wiege der Demokratie",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6A0000000000000000A02",
+          "type": "hard",
+          "rationale": "Griechische Stadtstaaten entwickelten partizipative Verfassungen als Alternative zur Monarchie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11756",
+          "target_label": "Athenian democracy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Antikes Griechenland",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb3",
+          "topic_title": "Antikes Griechenland",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6A0000000000000000J05",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wer war in der Attischen Demokratie der Antike zur Mitbestimmung in der Volksversammlung (Ekklesia) wahlberechtigt?",
+          "concept": "Ausschließlich freie, volljährige männliche Bürger Athens (ab 18/20 Jahren mit athenischen Eltern)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur freie männliche Bürger Athens",
+              "Alle Einwohner inkl. Frauen, Metöken und Sklaven"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6A0000000000000000J06",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Begriff der griechischen Polis (unabhängiger Stadtstaat mit Akropolis und Agora, z. B. Athen vs. Sparta), beschreibe die Institutionen der Attischen Demokratie (Volksversammlung/Ekklesia als oberstes Organ, Rat der 500/Bule per Losverfahren, Archonten, Strategen wie Perikles und Scherbengericht/Ostrakismos zum Schutz vor Tyrannen) und diskutiere die Grenzen der antiken Demokratie im Vergleich zu modernen Demokratien (Ausschluss von Frauen, Metöken/Fremden und Sklaven; direkte statt repräsentative Demokratie).",
+          "concept": "Polis = Stadtstaat mit eigenem Umland; Organe: Volksversammlung beschließt Gesetze und Krieg/Frieden, Rat der 500 bereitet vor (Losverfahren gegen Korruption), Strategen gewählt (Militär), Scherbengericht verbannt mächtige Gefährder für 10 Jahre; Grenzen: nur ca. 15-20% der Bevölkerung durften abstimmen (keine Frauen, keine Sklaven, keine Fremden); Direktdemokratie: Bürger stimmen selbst auf der Pnyx ab (keine Parteien/Parlamente).",
+          "sample_solution": "1. Die griechische Polis und das Gemeinschaftsgefühl: - Polis: Ein autonomer, kleinräumiger Stadtstaat (z. B. Athen, Sparta, Korinth, Theben), bestehend aus einer befestigten Stadt (mit Burgberg Akropolis und Marktplatz Agora) und dem umliegenden Agrarland. - Trotz politischer Zerrissenheit einte die Griechen die gemeinsame Sprache, Mythologie/Götterwelt (Olymp) und panhellenische Feste wie die Olympischen Spiele (ab 776 v. Chr.). 2. Die Institutionen der Attischen Demokratie (Herrschaft des Volkes: Demos + Kratein): - Volksversammlung (Ekklesia auf der Pnyx): Das oberste Beschlussorgan. Alle stimmberechtigten Bürger trafen sich regelmäßig; Redefreiheit (Isegoria); Beschluss von Gesetzen, Steuern, Bündnissen und Krieg/Frieden per Handzeichen. - Rat der 500 (Bule): Bereitete die Anträge der Volksversammlung vor. Seine Mitglieder wurden aus den Phylen **ausgelost**, um Ämterkauf und Bevorzugung von Reichen zu verhindern. - Strategen (10 Feldherren): Wurden wegen militärischer Fachkenntnis jährlich gewählt (z. B. Perikles; Wiederwahl möglich). - Scherbengericht (Ostrakismos): Einmal jährlich konnte die Volksversammlung auf Tonscherben über Politiker abstimmen, die nach der Alleinherrschaft (Tyrannis) strebten. Wer die meisten Stimmen erhielt, wurde für 10 Jahre ohne Vermögensverlust aus Athen verbannt. 3. Vergleich und Grenzen zur modernen Demokratie: - Direkte vs. repräsentative Demokratie: In Athen stimmten die Bürger direkt selbst auf dem Hügel ab; in modernen Demokratien wählen Bürger Repräsentanten (Abgeordnete ins Parlament). - Gravierende Ausschlüsse in Athen: Wahlberechtigt waren ausschließlich freie, männliche Athener Bürger über 18/20 Jahre (ca. 30.000 von 200.000–300.000 Einwohnern = ca. 10–15 %). Frauen, Metöken (dauerhaft ansässige Fremde ohne Bürgerrecht) und die gewaltige Zahl rechtloser Sklaven, deren Zwangsarbeit den Bürgern erst die Freizeit für Politik ermöglichte, besaßen keinerlei politische Mitspracherechte."
+        }
+      ]
+    },
+    {
+      "id": "01K4G6A0000000000000000A04",
+      "atom_uri": "urn:zam:atom:01K4G6A0000000000000000A04",
+      "namespace": "geschichte-antike",
+      "slug": "roemisches-reich-republik-kaisertum-limes",
+      "title": "Das Römische Reich: Von der Republik (Senat) zum Kaisertum (Augustus) und der Limes in Bayern",
+      "domain": "schule/geschichte/antike",
+      "reduction": "formal",
+      "typical_age_min": 11.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K4G6A0000000000000000A03",
+          "type": "hard",
+          "rationale": "Antike Staatsformen in Griechenland und Rom stehen in direktem Bezug."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11756",
+          "target_label": "Roman Empire",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "I",
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Weltreich",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 6,
+          "track": "II_III",
+          "subject": "geschichte",
+          "topic_code": "lb4",
+          "topic_title": "Das Römische Weltreich",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4G6A0000000000000000J07",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wer begründete nach den blutigen Bürgerkriegen als erster römischer Kaiser (Prinzipat, 27 v. Chr.) eine lange Friedensepoche (Pax Romana)?",
+          "concept": "Kaiser Augustus (Gaius Octavius)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kaiser Augustus (27 v. Chr.)",
+              "Julius Caesar"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K4G6A0000000000000000J08",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Skizziere die Verfassung der Römischen Republik (Prinzipien: Kollegialität/mindestens zwei Amtsinhaber, Annuität/Amtsdauer genau 1 Jahr; Ämterlaufbahn Cursus Honorum: Quästor, Ädil, Prätor, Konsuln; Senat als mächtiger Ältestenrat der Patrizier; Volkstribune mit Veto-Recht zum Schutz der Plebejer), analysiere den Übergang zum Prinzipat unter Augustus (Pax Augusta) und beschreibe die römische Herrschaft und Grenzsicherung am Obergermanisch-Raetischen Limes im heutigen Bayern (Kastelle wie Castra Regina/Regensburg, Augusta Vindelicum/Augsburg, Aquädukte, Thermen und Romanisierung).",
+          "concept": "Republik: Annuität (1 Jahr) + Kollegialität (2 Konsuln) verhindern Alleinherrschaft; Ständekämpfe führten zu Volkstribunen mit Veto; Senat lenkt Außenpolitik und Finanzen; Krise der Republik: Bürgerkriege, Caesar ernennt sich zum Diktator auf Lebenszeit (44 v. Chr. ermordet); Augustus vereint alle Vollmachten als 'Princeps' (Erster Bürger), begründet Pax Romana; Limes: 550 km langer Grenzwall mit Wachtürmen und Kastellen trennte römische Provinzen Raetia/Noricum von freien Germanen; Römer brachten Steinbauten, Straßen, Fußbodenheizung (Hypokausten), Schrift und Wein nach Bayern.",
+          "sample_solution": "1. Die Römische Republik (*Res Publica*): - Grundprinzipien gegen Tyrannei:   * Kollegialität: Jedes Amt wurde von mindestens zwei gleichberechtigten Amtsinhabern besetzt, die sich gegenseitig kontrollieren konnten.   * Annuität: Jedes Amt wurde für genau ein einziges Jahr gewählt; eine direkte Wiederwahl war verboten.   * Verbot von Diktatur im Frieden (nur im äußersten Notfall für max. 6 Monate). - Verfassungsorgane & Ämterlaufbahn (*Cursus Honorum*):   * 2 Konsuln: Staatsoberhäupter und militärische Oberbefehlshaber.   * Prätoren (Rechtsprechung), Ädile (Markt- und Festaufsicht), Quästoren (Finanzkasse).   * Senat: Versammlung der ehemaligen Amtsträger (Patrizier); lenkte Außenpolitik, Finanzen und Gesetzesbeschlüsse de facto unangefochten.   * Volkstribune (*Tribuni Plebis*): Nach den Ständekämpfen eingerichtet; besaßen das unantastbare **Veto-Recht** ('Ich verbiete!') gegen Senatsbeschlüsse zum Schutz der einfachen Plebejer. 2. Die Krise der Republik und das Kaisertum (Prinzipat): - Große Eroberungen machten das Reich unregierbar; Heeresführer führten Bürgerkriege. - Julius Caesar riss die Macht an sich (Diktator auf Lebenszeit) und wurde 44 v. Chr. an den Iden des März von Senatoren ermordet. - Sein Großneffe und Adoptivsohn **Octavian (Augustus)** siegte in den Bürgerkriegen, stellte formal die Republik wieder her, vereinte aber alle entscheidenden Machtbefugnisse (Konsul, Tribun, Oberbefehl über alle Legionen, Pontifex Maximus) in seiner Hand (**Prinzipat ab 27 v. Chr.**). Er begründete eine 200-jährige Friedenszeit (*Pax Romana*). 3. Die Römer in Bayern und der Limes: - Der **Obergermanisch-Raetische Limes**: Ein 550 km langes befestigtes Grenzkontrollsystem aus Palisaden, Wällen, Gräben, steinernen Wachtürmen und Militärlagern (Kastellen) trennte die römische Provinz *Raetia* von den germanischen Stämmen. - Römische Städte in Bayern:   * *Castra Regina* (Legionslager Regensburg)   * *Augusta Vindelicum* (Provinzhauptstadt Augsburg)   * *Batavis* (Passau), *Cambodunum* (Kempten). - Romanisierung: Die Römer brachten ein hochentwickeltes Straßennetz, Ziegel- und Steinarchitektur, Fußbodenheizungen (Hypokausten), Badehäuser (Thermen), das lateinische Schriftsystem, Münzgeld, Obst- und Weinbau nach Bayern."
+        }
+      ]
+    }
+  ]
+}
