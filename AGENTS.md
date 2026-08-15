@@ -52,6 +52,14 @@ open a terminal.
 - **No new dependencies** (npm or native) without explicit approval from
   Thomas. `package.json` changes are a red flag in review.
 - **IDs are ULIDs** (`ulid()`), never UUIDs or numeric ids.
+- **Knowledge-base compatibility is rebuildable during the pilot** (ADR
+  2026-08-14 Decisions 8–9). Bundled, unreleased fixture ids may change when
+  the central model arrives. Preserve personal review evidence, use an explicit
+  mapping, and never transfer mastery across an uncertain match. Question,
+  slug, or embedding similarity may propose a mapping but cannot decide it.
+  Canonical ids become stable only when they cross the public release contract.
+  In a tile, that explicit mapping is `replaces` on a practice item — the only
+  thing that moves a learner's card and review history to a new item id.
 - **Schema changes** go in BOTH `src/kernel/db/schema.ts` and an idempotent
   numbered migration (M-series) in `runMigrations`
   (`src/kernel/db/connection.ts`).

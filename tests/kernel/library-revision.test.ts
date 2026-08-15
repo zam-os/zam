@@ -211,6 +211,42 @@ describe("publishTokenRevision", () => {
     expect((await versions(cardId)).learned).toBe(2);
   });
 
+  /**
+   * ADR 2026-08-14 Decision 9: which wording earned a rating has to survive,
+   * because a rebuild of the knowledge base classifies items by what the
+   * learner actually answered. The card row holds only the current version, so
+   * the log has to carry it per event.
+   */
+  it("records which content version each rating was earned on", async () => {
+    const token = await makeToken("versioned-token");
+    const cardId = await learnedCard(token.id, "alice");
+
+    await evaluateRating(db, {
+      cardId,
+      tokenId: token.id,
+      userId: "alice",
+      rating: 3,
+    });
+    await publishTokenRevision(db, {
+      tokenId: token.id,
+      materiality: "material",
+    });
+    await evaluateRating(db, {
+      cardId,
+      tokenId: token.id,
+      userId: "alice",
+      rating: 3,
+    });
+
+    const logged = (await db
+      .prepare(
+        `SELECT content_version FROM review_logs
+          WHERE card_id = ? ORDER BY reviewed_at, id`,
+      )
+      .all(cardId)) as Array<{ content_version: number | null }>;
+    expect(logged.map((row) => row.content_version)).toEqual([1, 2]);
+  });
+
   it("does not pull an already re-tested card forward on a later publish", async () => {
     // Regression: without syncing on review, every publish would re-test
     // everyone forever, including people who had just answered.

@@ -52,7 +52,7 @@
     "observer:prepare": "node scripts/prepare-observer-sidecar.mjs",
     "pg:up": "node scripts/pg-dev.mjs up",
     "pg:down": "node scripts/pg-dev.mjs down",
-    "pg:test": "POSTGRES_URL=$(node scripts/pg-dev.mjs url) vitest run tests/kernel/postgres-rls.test.ts tests/kernel/provider-contract.test.ts tests/kernel/postgres-provider.test.ts"
+    "pg:test": "POSTGRES_URL=$(node scripts/pg-dev.mjs url) vitest run tests/kernel/postgres-rls.test.ts tests/kernel/provider-contract.test.ts tests/kernel/postgres-provider.test.ts tests/kernel/postgres-provision.test.ts"
   },
   "repository": {
     "type": "git",

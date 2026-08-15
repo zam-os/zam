@@ -41,6 +41,10 @@ export interface RevisionChanges {
   domain?: string;
   bloomLevel?: number;
   sourceLink?: string | null;
+  /** PracticeItem substance (ADR 2026-08-14): language, tier, fast check. */
+  language?: string | null;
+  tier?: string | null;
+  fastCheck?: string | null;
 }
 
 export interface PublishRevisionInput {
@@ -72,6 +76,9 @@ const CHANGE_COLUMNS: Array<[keyof RevisionChanges, string]> = [
   ["domain", "domain"],
   ["bloomLevel", "bloom_level"],
   ["sourceLink", "source_link"],
+  ["language", "language"],
+  ["tier", "tier"],
+  ["fastCheck", "fast_check"],
 ];
 
 /**

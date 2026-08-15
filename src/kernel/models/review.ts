@@ -21,6 +21,8 @@ export interface ReviewLog {
   reviewed_at: string;
   scheduled_at: string;
   session_id: string | null;
+  /** Token `content_version` at answer time; NULL for rows predating M027. */
+  content_version: number | null;
 }
 
 export interface CreateReviewInput {
@@ -61,10 +63,16 @@ export async function logReview(
   const id = ulid();
   const now = new Date().toISOString();
 
+  // Which wording earned the rating (ADR 2026-08-14 Decision 9) — the token's
+  // version at answer time, not the card's, which moves on afterwards.
+  const asked = (await db
+    .prepare("SELECT content_version FROM tokens WHERE id = ?")
+    .get(input.token_id)) as { content_version: number } | undefined;
+
   await db
     .prepare(
-      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       id,
@@ -76,6 +84,7 @@ export async function logReview(
       now,
       input.scheduled_at,
       input.session_id ?? null,
+      asked?.content_version ?? null,
     );
 
   return (await db

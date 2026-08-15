@@ -25,6 +25,107 @@ async function columnsOf(db: Database, table: string): Promise<string[]> {
   return rows.map((row) => row.name);
 }
 
+const ATOM_BINDING_UNIQUE_INDEX = `CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
+   ON atom_curriculum_bindings(
+     atom_id, provider, topic_code, COALESCE(grade, -1), track)`;
+
+interface AtomBindingRow {
+  atom_id: string;
+  provider: string;
+  school_type: string;
+  grade: number | null;
+  track: string;
+  subject: string;
+  topic_code: string;
+  topic_title: string | null;
+  exam_relevant: number;
+}
+
+/**
+ * Collapse the duplicate curriculum bindings M023 allowed to accumulate.
+ *
+ * Only runs when the unique index refuses to build. Duplicates that agree in
+ * every column are reduced to one row by deleting the group and re-inserting a
+ * row that actually existed — never a column-wise `MAX()` composite, which can
+ * synthesise a record no release ever published. Duplicates that disagree are
+ * a curation conflict this migration cannot arbitrate without release
+ * provenance, so it fails loudly instead of guessing.
+ */
+async function collapseDuplicateAtomBindings(db: Database): Promise<void> {
+  const rows = (await db
+    .prepare(
+      `SELECT atom_id, provider, school_type, grade, track, subject,
+              topic_code, topic_title, exam_relevant
+         FROM atom_curriculum_bindings`,
+    )
+    .all()) as AtomBindingRow[];
+
+  const groups = new Map<string, AtomBindingRow[]>();
+  for (const row of rows) {
+    const key = [
+      row.atom_id,
+      row.provider,
+      row.topic_code,
+      row.grade ?? -1,
+      row.track,
+    ].join("\u0000");
+    const group = groups.get(key);
+    if (group) group.push(row);
+    else groups.set(key, [row]);
+  }
+
+  for (const group of groups.values()) {
+    if (group.length < 2) continue;
+    const [first] = group;
+    const conflicting = group.some(
+      (row) =>
+        row.school_type !== first.school_type ||
+        row.subject !== first.subject ||
+        row.topic_title !== first.topic_title ||
+        row.exam_relevant !== first.exam_relevant,
+    );
+    if (conflicting) {
+      throw new Error(
+        `M024: conflicting duplicate curriculum bindings for ${first.atom_id} ` +
+          `(${first.provider} ${first.topic_code}). Resolve them by hand — ` +
+          `this migration will not merge disagreeing rows into a record that ` +
+          `was never published.`,
+      );
+    }
+    await db
+      .prepare(
+        `DELETE FROM atom_curriculum_bindings
+          WHERE atom_id = ? AND provider = ? AND topic_code = ?
+            AND track = ? AND COALESCE(grade, -1) = ?`,
+      )
+      .run(
+        first.atom_id,
+        first.provider,
+        first.topic_code,
+        first.track,
+        first.grade ?? -1,
+      );
+    await db
+      .prepare(
+        `INSERT INTO atom_curriculum_bindings
+           (atom_id, provider, school_type, grade, track, subject,
+            topic_code, topic_title, exam_relevant)
+         VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        first.atom_id,
+        first.provider,
+        first.school_type,
+        first.grade,
+        first.track,
+        first.subject,
+        first.topic_code,
+        first.topic_title,
+        first.exam_relevant,
+      );
+  }
+}
+
 /**
  * Run incremental schema migrations. Every migration is idempotent — safe to
  * run on every open, on a fresh file and on a decade-old library alike.
@@ -327,6 +428,183 @@ export async function runMigrations(db: Database): Promise<void> {
     `CREATE INDEX IF NOT EXISTS idx_cards_user_buried
        ON cards(user_id, buried_until)`,
   );
+
+  // M023: published learning atoms (ADR 2026-08-14). Practice items stay
+  // on tokens; atom_id is a nullable pointer, not a second FSRS key.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS learning_atoms (
+      id              TEXT PRIMARY KEY,
+      title           TEXT NOT NULL,
+      domain          TEXT NOT NULL DEFAULT '',
+      reduction       TEXT NOT NULL DEFAULT '',
+      typical_age_min REAL,
+      created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_alignments (
+      atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      target_uri      TEXT NOT NULL,
+      target_label    TEXT,
+      alignment_type  TEXT NOT NULL,
+      provenance      TEXT,
+      PRIMARY KEY (atom_id, target_uri)
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_curriculum_bindings (
+      atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      provider        TEXT NOT NULL,
+      school_type     TEXT NOT NULL DEFAULT '',
+      grade           INTEGER,
+      track           TEXT NOT NULL DEFAULT '',
+      subject         TEXT NOT NULL DEFAULT '',
+      topic_code      TEXT NOT NULL,
+      topic_title     TEXT,
+      exam_relevant   INTEGER NOT NULL DEFAULT 0,
+      PRIMARY KEY (atom_id, provider, topic_code, grade, track)
+    );
+  `);
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_prerequisites (
+      atom_id     TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      requires_id TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      kind        TEXT NOT NULL DEFAULT 'hard' CHECK (kind IN ('hard', 'soft')),
+      rationale   TEXT,
+      PRIMARY KEY (atom_id, requires_id)
+    );
+  `);
+  if (tokenCols.length > 0 && !tokenCols.includes("atom_id")) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN atom_id TEXT`);
+  }
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id)`,
+  );
+  await db.exec(
+    `CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
+       ON atom_curriculum_bindings(provider, topic_code)`,
+  );
+
+  // M024: make a curriculum binding without a grade idempotent. M023 put the
+  // nullable `grade` into the primary key, and NULL never equals NULL — so
+  // `ON CONFLICT` never fired and every re-install appended another copy of the
+  // same binding. The operative constraint becomes a unique index over
+  // COALESCE(grade, -1); the column stays nullable, because "names no grade" is
+  // a real statement about a Lernbereich, not a sentinel.
+  //
+  // The legacy composite primary key is deliberately left in place on migrated
+  // databases. It constrains a strict subset of what the index constrains, so
+  // it is redundant rather than wrong — and keeping it avoids a table rebuild,
+  // which could not be made both crash-resumable and provider-neutral here.
+  // Fresh databases get the table without it (see schema.ts).
+  //
+  // Creating the index is the whole migration on the common path. It only fails
+  // when a database already accumulated the duplicates M023 permitted, and that
+  // failure is the signal to collapse them and retry. Both steps are repeatable
+  // on their own, so an abort at any point leaves the next run able to finish.
+  try {
+    await db.exec(ATOM_BINDING_UNIQUE_INDEX);
+  } catch {
+    await collapseDuplicateAtomBindings(db);
+    await db.exec(ATOM_BINDING_UNIQUE_INDEX);
+  }
+
+  // M026: opaque published atom identity (ADR 2026-08-14 Decision 8).
+  //
+  // M023 minted `atom:zam:<namespace>:<slug>` and called it opaque. It was not:
+  // a subject partition sat in the primary key, so moving an atom under a
+  // better taxonomy would have been an identity migration across every
+  // published tile — the pattern ADR 2026-07-04 already rejected one level
+  // down for tokens. Row identity is a ULID, the published identity the opaque
+  // `atom_uri`, and namespace/slug are the mutable address.
+  //
+  // There is deliberately **no rewrite of legacy ids**. M023 never left this
+  // feature branch — no tag contains `learning_atoms`, and neither does `main`
+  // — so no database outside a one-day branch checkout can hold the old form.
+  // The rewrite that used to live here minted a fresh `ulid()` per row, which
+  // gave the same atom a different identity on every machine that ran it and
+  // then wedged the next install against the fixtures' fixed ids. Pilot
+  // projections are rebuilt, not migrated (ADR 2026-08-14 Decision 9): a
+  // checkout from that window deletes its `~/.zam/zam.db` and reinstalls.
+  const atomCols = await columnsOf(db, "learning_atoms");
+  if (atomCols.length > 0) {
+    if (!atomCols.includes("atom_uri")) {
+      await db.exec(`ALTER TABLE learning_atoms ADD COLUMN atom_uri TEXT`);
+    }
+    if (!atomCols.includes("namespace")) {
+      await db.exec(
+        `ALTER TABLE learning_atoms ADD COLUMN namespace TEXT NOT NULL DEFAULT ''`,
+      );
+    }
+    if (!atomCols.includes("slug")) {
+      await db.exec(
+        `ALTER TABLE learning_atoms ADD COLUMN slug TEXT NOT NULL DEFAULT ''`,
+      );
+    }
+  }
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS atom_uri_aliases (
+      alias      TEXT PRIMARY KEY,
+      atom_id    TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+      noted_at   TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(
+    `CREATE UNIQUE INDEX IF NOT EXISTS ux_learning_atom_uri
+       ON learning_atoms(atom_uri)`,
+  );
+
+  // M025: PracticeItem substance (ADR 2026-08-14, owner decision 2026-08-14).
+  // Tiles already carried language, interaction tier and the structured fast
+  // check; the installer accepted and dropped all three, so a published item
+  // could not be read back as it was published. They are substance, not
+  // presentation: changing one is a material revision.
+  if (tokenCols.length > 0) {
+    if (!tokenCols.includes("language")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN language TEXT`);
+    }
+    if (!tokenCols.includes("tier")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN tier TEXT`);
+    }
+    if (!tokenCols.includes("fast_check")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN fast_check TEXT`);
+    }
+  }
+
+  // M027: record which content_version a review was actually answered against
+  // (ADR 2026-08-14 Decision 9).
+  //
+  // The log kept the rating and the timestamp but not the wording. Personal
+  // learning evidence is the part of a learner's state that must survive a
+  // rebuild of the knowledge base, and a rating whose question is unknown
+  // cannot be classified as "same item" or "materially revised" later.
+  // `cards.learned_content_version` holds only the current value, so it cannot
+  // answer the question for a review that happened three revisions ago.
+  //
+  // NULL means "written before this column existed", not version 1 — the
+  // distinction matters, because guessing 1 would fabricate evidence.
+  const reviewLogCols = await columnsOf(db, "review_logs");
+  if (reviewLogCols.length > 0 && !reviewLogCols.includes("content_version")) {
+    await db.exec(`ALTER TABLE review_logs ADD COLUMN content_version INTEGER`);
+  }
+
+  // M028: declared practice-item replacements (ADR 2026-08-14 Decision 9).
+  //
+  // A mapping from an old item id to its successor is an editorial statement
+  // with a human author. Nothing derives it: question equality, slug similarity
+  // and embedding proximity may propose a mapping, but none may decide one.
+  // The tile that ships the successor carries the declaration; this table is
+  // where it is kept, so the evidence survives the tile.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS practice_item_replacements (
+      old_item_id  TEXT NOT NULL,
+      new_item_id  TEXT NOT NULL,
+      declared_by  TEXT NOT NULL,
+      noted_at     TEXT NOT NULL DEFAULT (datetime('now')),
+      PRIMARY KEY (old_item_id, new_item_id)
+    );
+  `);
 }
 
 /**

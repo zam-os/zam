@@ -1,0 +1,337 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-8-optik",
+  "version": "2026.08.1",
+  "title": "Optik (Gymnasium Bayern 8)",
+  "description": "Überlappende Zelle zu Realschule-Optik. Wiederverwendet qualitative Brechung und Totalreflexion; ergänzt Reflexionsgesetz, Sammellinse und technische TIR-Anwendungen. Geerdet an LehrplanPLUS Lernbereich 215729.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-14T20:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/215729",
+      "checked": "2026-08-14",
+      "label": "Gymnasium Physik 8, Lernbereich 2 Optik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A001",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A001",
+      "namespace": "optik",
+      "slug": "strahlengang-lot",
+      "title": "Lichtstrahl und Einfallslot",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 12.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q165939",
+          "target_label": "Reflection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H001",
+          "language": "de",
+          "bloom_level": 1,
+          "tier": "tier1_fast",
+          "question": "Wie steht das Einfallslot zur Grenzfläche zweier Medien?",
+          "concept": "Das Einfallslot steht genau senkrecht (im 90-Grad-Winkel) auf der Grenzfläche am Auftreffpunkt des Lichtstrahls.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Senkrecht (90°)",
+              "Parallel (0°)"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A002",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A002",
+      "namespace": "optik",
+      "slug": "brechung-qualitativ",
+      "title": "Lichtbrechung an Grenzflächen (qualitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 12.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A001",
+          "type": "hard",
+          "rationale": "Ohne Lot ist die Richtung der Brechung nicht definierbar."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q208391",
+          "target_label": "Snell's law",
+          "alignment_type": "skos:closeMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H003",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A003",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A003",
+      "namespace": "optik",
+      "slug": "totalreflexion-grenzwinkel",
+      "title": "Totalreflexion und Grenzwinkel",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
+          "type": "hard",
+          "rationale": "Totalreflexion setzt die Richtungsregel der Brechung voraus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q234943",
+          "target_label": "Total internal reflection",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H005",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Kann Totalreflexion auftreten, wenn Licht von Luft in Glas übergeht?",
+          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein (nur dichter zu dünner)",
+              "Ja (immer)"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A005",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A005",
+      "namespace": "optik",
+      "slug": "reflexionsgesetz",
+      "title": "Reflexionsgesetz",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 12.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A001",
+          "type": "hard",
+          "rationale": "Einfalls- und Reflexionswinkel werden zum Lot gemessen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q165939",
+          "target_label": "Reflection",
+          "alignment_type": "skos:closeMatch",
+          "provenance": "manual_curation_v1 checked 2026-08-14"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H008",
+          "language": "de",
+          "bloom_level": 1,
+          "tier": "tier1_fast",
+          "question": "Wie hängen Einfallswinkel und Reflexionswinkel beim Spiegeln zusammen?",
+          "concept": "Sie sind gleich groß. Beide werden zwischen Strahl und Einfallslot gemessen.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sie sind gleich groß",
+              "Der Reflexionswinkel ist immer doppelt so groß"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H009",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier2_synthesis",
+          "question": "Warum erscheint das Spiegelbild hinter der Spiegelfläche, obwohl kein Licht dorthin gelangt?",
+          "concept": "Das Auge verlängert die reflektierten Strahlen geradlinig hinter den Spiegel. Dort schneiden sich die Verlängerungen im virtuellen Bild."
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A006",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A006",
+      "namespace": "optik",
+      "slug": "sammellinse-abbildung",
+      "title": "Abbildung durch eine Sammellinse",
+      "domain": "schule/physik/optik",
+      "reduction": "geometric",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
+          "type": "hard",
+          "rationale": "Eine Linse bricht Licht an zwei Grenzflächen."
+        }
+      ],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00A",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Wann entsteht hinter einer Sammellinse ein reelles Bild?",
+          "concept": "Wenn der Gegenstand außerhalb der Brennweite steht, schneiden sich die gebrochenen Strahlen hinter der Linse in einem reellen Bild.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenstand außerhalb der Brennweite",
+              "Gegenstand zwischen Linse und Brennpunkt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00B",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier2_synthesis",
+          "question": "Unterscheide reelles und virtuelles Bild an der Sammellinse anhand des Strahlengangs.",
+          "concept": "Ein reelles Bild entsteht, wo sich gebrochene Strahlen wirklich schneiden (auffangbar). Ein virtuelles Bild entsteht, wenn sich nur die rückwärtigen Verlängerungen schneiden (Lupe: Gegenstand innerhalb der Brennweite)."
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A007",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A007",
+      "namespace": "optik",
+      "slug": "totalreflexion-anwendungen",
+      "title": "Technische Anwendungen der Totalreflexion",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 13.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A003",
+          "type": "hard",
+          "rationale": "Ohne Grenzwinkel ist die Lichtleitung im Lichtleiter nicht erklärbar."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q234943",
+          "target_label": "Total internal reflection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1 checked 2026-08-14"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 8,
+          "subject": "physik",
+          "topic_code": "215729",
+          "topic_title": "Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00C",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier2_synthesis",
+          "question": "Warum bleibt Licht in einem Glasfaserkabel auch in Krümmungen weitgehend im Kern?",
+          "concept": "Der Kern ist optisch dichter als der Mantel. Trifft das Licht flach genug auf die Grenzfläche, liegt der Winkel über dem Grenzwinkel: Totalreflexion, deshalb Nachrichtentechnik und Endoskopie."
+        }
+      ]
+    }
+  ]
+}

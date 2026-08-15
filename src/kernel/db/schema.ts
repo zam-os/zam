@@ -55,7 +55,17 @@ CREATE TABLE IF NOT EXISTS tokens (
   published_by       TEXT,
   published_at       TEXT,
   -- Editorial state (ADR 2026-07-04 Phase 3: 'draft' | 'in_review' | 'published' | 'deprecated').
-  editorial_state    TEXT NOT NULL DEFAULT 'published'
+  editorial_state    TEXT NOT NULL DEFAULT 'published',
+  -- Published learning atom this practice item realises (ADR 2026-08-14).
+  atom_id            TEXT,
+  -- PracticeItem substance (ADR 2026-08-14, owner decision): the language it is
+  -- asked in, the interaction tier, and the structured fast-check payload.
+  -- Substance, not presentation — changing one is a material revision, because
+  -- a learner who mastered a German binary check has not mastered an English
+  -- free recall of the same objective.
+  language           TEXT,
+  tier               TEXT,
+  fast_check         TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -176,7 +186,14 @@ CREATE TABLE IF NOT EXISTS review_logs (
   response_time_ms INTEGER,
   reviewed_at     TEXT NOT NULL DEFAULT (datetime('now')),
   scheduled_at    TEXT NOT NULL,
-  session_id      TEXT REFERENCES sessions(id)
+  session_id      TEXT REFERENCES sessions(id),
+  -- Which content_version of the token this rating was actually earned on
+  -- (ADR 2026-08-14 Decision 9). Observed learning evidence is the durable
+  -- half of a learner's state; a rating whose wording is unknown cannot be
+  -- classified later as the same item or a materially revised one. NULL means
+  -- the row predates this column -- not version 1, because assuming 1 would
+  -- invent evidence.
+  content_version INTEGER
 );
 
 -- Steps within a session: who did what
@@ -272,6 +289,81 @@ CREATE TABLE IF NOT EXISTS token_contexts (
   PRIMARY KEY (token_id, context_id)
 );
 
+-- Published learning atoms and their n:m facets (ADR 2026-08-14).
+CREATE TABLE IF NOT EXISTS learning_atoms (
+  -- Row identity is a ULID like everything else (AGENTS.md). The published
+  -- identity is atom_uri, opaque by construction; namespace and slug are the
+  -- readable address and may change without breaking a single reference
+  -- (ADR 2026-08-14, Decision 8).
+  id              TEXT PRIMARY KEY,
+  atom_uri        TEXT UNIQUE,
+  namespace       TEXT NOT NULL DEFAULT '',
+  slug            TEXT NOT NULL DEFAULT '',
+  title           TEXT NOT NULL,
+  domain          TEXT NOT NULL DEFAULT '',
+  reduction       TEXT NOT NULL DEFAULT '',
+  typical_age_min REAL,
+  created_at      TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at      TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Every address an atom was ever published under. A renamed namespace or a
+-- merged atom stays resolvable instead of becoming a dangling reference.
+CREATE TABLE IF NOT EXISTS atom_uri_aliases (
+  alias      TEXT PRIMARY KEY,
+  atom_id    TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  noted_at   TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+CREATE TABLE IF NOT EXISTS atom_alignments (
+  atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  target_uri      TEXT NOT NULL,
+  target_label    TEXT,
+  alignment_type  TEXT NOT NULL,
+  provenance      TEXT,
+  PRIMARY KEY (atom_id, target_uri)
+);
+
+CREATE TABLE IF NOT EXISTS atom_curriculum_bindings (
+  atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  provider        TEXT NOT NULL,
+  school_type     TEXT NOT NULL DEFAULT '',
+  grade           INTEGER,
+  track           TEXT NOT NULL DEFAULT '',
+  subject         TEXT NOT NULL DEFAULT '',
+  topic_code      TEXT NOT NULL,
+  topic_title     TEXT,
+  exam_relevant   INTEGER NOT NULL DEFAULT 0
+);
+
+
+CREATE TABLE IF NOT EXISTS atom_prerequisites (
+  atom_id     TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  requires_id TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+  kind        TEXT NOT NULL DEFAULT 'hard' CHECK (kind IN ('hard', 'soft')),
+  rationale   TEXT,
+  PRIMARY KEY (atom_id, requires_id)
+);
+
+-- Declared succession between practice items (ADR 2026-08-14 Decision 9).
+--
+-- A mapping from a retired item to its successor is an editorial statement by
+-- a named publisher, never a derivation: question equality, slug similarity
+-- and embedding proximity may propose one, none may decide one. The tile that
+-- ships the successor carries the declaration; this table outlives the tile,
+-- so the evidence is still here when the central model arrives.
+--
+-- Deliberately no foreign key on either side: the old item may already be gone
+-- and the new one may not be installed yet, and losing the statement in either
+-- case is exactly the loss this table exists to prevent.
+CREATE TABLE IF NOT EXISTS practice_item_replacements (
+  old_item_id  TEXT NOT NULL,
+  new_item_id  TEXT NOT NULL,
+  declared_by  TEXT NOT NULL,
+  noted_at     TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (old_item_id, new_item_id)
+);
+
 `;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
@@ -291,6 +383,17 @@ CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
+CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);
+CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
+  ON atom_curriculum_bindings(provider, topic_code);
+-- Uniqueness over COALESCE(grade, -1) rather than a composite key: grade is
+-- nullable ("this Lernbereich names no year"), and NULL never equals NULL, so a
+-- composite PRIMARY KEY let the same binding re-insert on every install. M024
+-- repairs databases that already accumulated those duplicates, which is why
+-- this lives with the indexes — it must run after that migration, not before.
+CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
+  ON atom_curriculum_bindings(
+    atom_id, provider, topic_code, COALESCE(grade, -1), track);
 `;
 
 /**

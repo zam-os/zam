@@ -159,6 +159,7 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
         "maintenance_at",
         "content_version",
         "editorial_state",
+        "atom_id",
       ]),
     );
     stub.close();
@@ -255,5 +256,168 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
       "idx_token_media_asset",
     );
     stub.close();
+  });
+});
+
+/**
+ * M024 — the migration that repairs M023's nullable-grade key.
+ *
+ * The Codex hardening review rejected the first version for querying
+ * `sqlite_master` on a path shared with the PostgreSQL provider and for a
+ * four-step table rebuild that could not be resumed after a crash. What
+ * replaced it is a unique index over `COALESCE(grade, -1)` plus a repair that
+ * only runs when the index refuses to build, so these tests cover the three
+ * database states it can meet and the conflict it must not paper over.
+ */
+describe("M024 curriculum binding uniqueness", () => {
+  async function openFresh(): Promise<Database> {
+    return openDatabase({
+      dbPath: join(tempDir(), "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  }
+
+  /** Recreate the M023 table shape: nullable grade inside the primary key. */
+  async function downgradeToM023(db: Database): Promise<void> {
+    await db.exec("DROP INDEX IF EXISTS ux_atom_binding");
+    await db.exec("DROP TABLE IF EXISTS atom_curriculum_bindings");
+    await db.exec(`
+      CREATE TABLE atom_curriculum_bindings (
+        atom_id         TEXT NOT NULL REFERENCES learning_atoms(id) ON DELETE CASCADE,
+        provider        TEXT NOT NULL,
+        school_type     TEXT NOT NULL DEFAULT '',
+        grade           INTEGER,
+        track           TEXT NOT NULL DEFAULT '',
+        subject         TEXT NOT NULL DEFAULT '',
+        topic_code      TEXT NOT NULL,
+        topic_title     TEXT,
+        exam_relevant   INTEGER NOT NULL DEFAULT 0,
+        PRIMARY KEY (atom_id, provider, topic_code, grade, track)
+      );
+    `);
+  }
+
+  async function seedAtom(db: Database): Promise<void> {
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run("01K3X9A7R4B8C1D2E3F4G5B001", "Test");
+  }
+
+  async function insertBinding(db: Database, title: string): Promise<void> {
+    await db
+      .prepare(
+        `INSERT INTO atom_curriculum_bindings
+           (atom_id, provider, school_type, grade, track, subject,
+            topic_code, topic_title, exam_relevant)
+         VALUES (?, 'lp', 'realschule', NULL, '', 'physik', 'T1', ?, 0)`,
+      )
+      .run("01K3X9A7R4B8C1D2E3F4G5B001", title);
+  }
+
+  async function bindingCount(db: Database): Promise<number> {
+    const row = (await db
+      .prepare("SELECT COUNT(*) AS n FROM atom_curriculum_bindings")
+      .get()) as { n: number };
+    return row.n;
+  }
+
+  it("leaves a fresh database alone and is repeatable", async () => {
+    const db = await openFresh();
+    await applySchemaAndMigrations(db);
+    await applySchemaAndMigrations(db);
+    const indexes = (await db.pragma(
+      "index_list(atom_curriculum_bindings)",
+    )) as Array<{ name: string }>;
+    expect(indexes.map((index) => index.name)).toContain("ux_atom_binding");
+    await db.close();
+  });
+
+  it("collapses the duplicates an M023 database accumulated", async () => {
+    const db = await openFresh();
+    await downgradeToM023(db);
+    await seedAtom(db);
+    // The bug: NULL never equals NULL, so the old key permitted all three.
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Optik");
+    expect(await bindingCount(db)).toBe(3);
+
+    await applySchemaAndMigrations(db);
+
+    expect(await bindingCount(db)).toBe(1);
+    const surviving = (await db
+      .prepare("SELECT topic_title FROM atom_curriculum_bindings")
+      .get()) as { topic_title: string };
+    expect(surviving.topic_title).toBe("Optik");
+
+    // Repeatable, and the repaired database now rejects a fourth copy.
+    await applySchemaAndMigrations(db);
+    expect(await bindingCount(db)).toBe(1);
+    await expect(insertBinding(db, "Optik")).rejects.toThrow();
+    await db.close();
+  });
+
+  it("refuses to merge duplicates that disagree", async () => {
+    const db = await openFresh();
+    await downgradeToM023(db);
+    await seedAtom(db);
+    await insertBinding(db, "Optik");
+    await insertBinding(db, "Etwas anderes");
+
+    // A column-wise MAX() would have invented a row no release published.
+    await expect(applySchemaAndMigrations(db)).rejects.toThrow(
+      /conflicting duplicate curriculum bindings/,
+    );
+    expect(await bindingCount(db)).toBe(2);
+    await db.close();
+  });
+});
+
+/**
+ * M027 — the wording a rating was earned on.
+ *
+ * Personal learning evidence is the durable half of a learner's state when the
+ * knowledge base is rebuilt (ADR 2026-08-14 Decision 9). A rating whose
+ * question is unknown cannot be classified later as the same item or a
+ * materially revised one, and `cards.learned_content_version` only ever holds
+ * the current value.
+ */
+describe("M027 review content version", () => {
+  it("adds the column without inventing a version for existing rows", async () => {
+    const db = await openDatabase({
+      dbPath: join(tempDir(), "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    // A log row as it looked before the column existed.
+    await db
+      .prepare(
+        `INSERT INTO tokens (id, slug, concept) VALUES ('01K3X9A7R4B8C1D2E3F4G5C001', 'probe', 'c')`,
+      )
+      .run();
+    await db
+      .prepare(
+        `INSERT INTO cards (id, token_id, user_id, due_at)
+         VALUES ('01K3X9A7R4B8C1D2E3F4G5C002', '01K3X9A7R4B8C1D2E3F4G5C001', 'u', '2026-08-01T00:00:00.000Z')`,
+      )
+      .run();
+    await db
+      .prepare(
+        `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, scheduled_at)
+         VALUES ('01K3X9A7R4B8C1D2E3F4G5C003', '01K3X9A7R4B8C1D2E3F4G5C002',
+                 '01K3X9A7R4B8C1D2E3F4G5C001', 'u', 3, '2026-08-01T00:00:00.000Z')`,
+      )
+      .run();
+
+    await applySchemaAndMigrations(db);
+
+    const row = (await db
+      .prepare("SELECT content_version FROM review_logs WHERE id = ?")
+      .get("01K3X9A7R4B8C1D2E3F4G5C003")) as { content_version: number | null };
+    // NULL means "unknown", not version 1 — guessing would fabricate evidence.
+    expect(row.content_version).toBeNull();
+    await db.close();
   });
 });

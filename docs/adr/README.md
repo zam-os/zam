@@ -8,7 +8,7 @@ Naming: `YYYY-MM-DD-kebab-title.md`, using the **decision date**. If two decisio
 land on the same day, disambiguate with a chronological letter suffix
 (`YYYY-MM-DDa-…`, `YYYY-MM-DDb-…`). The filename date is canonical and never
 changes; git history records edits.
-Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`) → (`Deprecated` | `Superseded by a later ADR`).
+Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`) → (`Deprecated` | `Superseded by a later ADR`).
 
 | Date | Title | Status |
 |------|-------|--------|
@@ -35,6 +35,7 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-06-30](2026-06-30-learning-content-studio.md) | Learning Content Studio | Implemented |
 | [2026-07-02](2026-07-02-lehrplanplus-import-wizard.md) | LehrplanPLUS Curriculum Import Wizard | Partially implemented |
 | [2026-07-03](2026-07-03-rag-semantic-token-search.md) | RAG / Semantic Token Search on a Self-Hosted, No-License-Cost Store | Partially implemented |
+| [2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) | Hierarchical Domain Ontology and Composite Token Identity | Draft |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
 | [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted — Phase E scope and ordering amended by 2026-07-26b |
@@ -73,3 +74,5 @@ Status: `Proposed` → `Accepted` → `Implemented` (or `Partially implemented`)
 | [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) | Free Offline Learning and Anki Interoperability | Accepted |
 | [2026-08-09b](2026-08-09b-agent-plugin-package.md) | Portable Agent Plugin Package | Implemented |
 | [2026-08-09c](2026-08-09c-on-device-ai-preference.md) | On-Device AI Across Capabilities: One Preference, Honest Tiers | Accepted |
+| [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) | Five-Object Learning Model and Reactive Scheduling | Accepted — finalised for field-test architecture |
+| [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Accepted — staged pilot and publication boundaries |

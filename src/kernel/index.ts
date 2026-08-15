@@ -157,6 +157,20 @@ export {
   commitTextImport,
   previewTextImport,
 } from "./import/text-import.js";
+export type { BonusCandidate, BonusOptions } from "./library/bonus.js";
+export { bonusCandidates, heldAtomIds } from "./library/bonus.js";
+export type {
+  InstallKvtResult,
+  KvtAtom,
+  KvtPracticeItem,
+  KvtTile,
+  MaterialiseKvtResult,
+} from "./library/kvt-attach.js";
+export {
+  ATOM_ID_PATTERN,
+  installKvtTile,
+  materialiseKvtCards,
+} from "./library/kvt-attach.js";
 export type {
   PublishRevisionInput,
   PublishRevisionResult,

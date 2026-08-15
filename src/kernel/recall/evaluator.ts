@@ -129,12 +129,18 @@ export async function evaluateRatingWithinTransaction(
     )
     .run(input.cardId);
 
-  // Log the review (immutable)
+  // Log the review (immutable), including which wording earned the rating.
+  // The card row only ever holds the current version, so without this the
+  // question a past rating was given for is unrecoverable (ADR 2026-08-14
+  // Decision 9).
   const reviewLogId = input.reviewLogId ?? ulid();
+  const asked = (await db
+    .prepare("SELECT content_version FROM tokens WHERE id = ?")
+    .get(input.tokenId)) as { content_version: number } | undefined;
   await db
     .prepare(
-      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       reviewLogId,
@@ -146,6 +152,7 @@ export async function evaluateRatingWithinTransaction(
       now.toISOString(),
       card.due_at,
       input.sessionId ?? null,
+      asked?.content_version ?? null,
     );
 
   const siblingBurial = await burySiblingCards(db, {

@@ -1,0 +1,220 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:bos-10-optik",
+  "version": "2026.08.1",
+  "title": "Grundlagen der Optik (BOS Bayern Vorklasse)",
+  "description": "Quantitative Nachbarzelle. Wiederverwendet qualitative Brechung, Totalreflexion und das Snellius-Formel-Atom; ergänzt das Messen von Brechungsindex und Grenzwinkel. Geerdet an LehrplanPLUS Lernbereich 119285. Kein Wikidata-Anker für die Messkompetenz — es gibt kein belastbares Q.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-14T20:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/119285",
+      "checked": "2026-08-14",
+      "label": "BOS Physik Vorklasse, Lernbereich 5 Grundlagen der Optik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A002",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A002",
+      "namespace": "optik",
+      "slug": "brechung-qualitativ",
+      "title": "Lichtbrechung an Grenzflächen (qualitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 12.5,
+      "prerequisites": [],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "berufsoberschule",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "119285",
+          "topic_title": "Grundlagen der Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H003",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "In welche Richtung knickt ein Lichtstrahl beim Übergang von Luft in Wasser?",
+          "concept": "Zum Einfallslot hin, da Wasser optisch dichter ist als Luft.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Zum Lot hin",
+              "Vom Lot weg"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A003",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A003",
+      "namespace": "optik",
+      "slug": "totalreflexion-grenzwinkel",
+      "title": "Totalreflexion und Grenzwinkel",
+      "domain": "schule/physik/optik",
+      "reduction": "qualitative",
+      "typical_age_min": 13.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
+          "type": "hard",
+          "rationale": "Grenzwinkel setzt Brechung voraus."
+        }
+      ],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "berufsoberschule",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "119285",
+          "topic_title": "Grundlagen der Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H005",
+          "language": "de",
+          "bloom_level": 2,
+          "tier": "tier1_fast",
+          "question": "Kann Totalreflexion auftreten, wenn Licht von Luft in Glas übergeht?",
+          "concept": "Nein. Totalreflexion ist nur beim Übergang vom optisch dichteren ins optisch dünnere Medium möglich (z. B. Glas in Luft).",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein (nur dichter zu dünner)",
+              "Ja (immer)"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A004",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A004",
+      "namespace": "optik",
+      "slug": "brechungsgesetz-snellius-formel",
+      "title": "Snelliussches Brechungsgesetz (quantitativ)",
+      "domain": "schule/physik/optik",
+      "reduction": "formal_formula",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A002",
+          "type": "hard",
+          "rationale": "Die Formel beschreibt die qualitative Richtungsregel quantitativ."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q208391",
+          "target_label": "Snell's law",
+          "alignment_type": "skos:exactMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "berufsoberschule",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "119285",
+          "topic_title": "Grundlagen der Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H007",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier1_fast",
+          "question": "Wie lautet die Formel des Snelliusschen Brechungsgesetzes?",
+          "concept": "n1 * sin(alpha) = n2 * sin(beta)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "n1 * sin(α) = n2 * sin(β)",
+              "n1 * cos(α) = n2 * cos(β)"
+            ],
+            "correct_index": 0
+          }
+        }
+      ]
+    },
+    {
+      "id": "01K3X9A7R4B8C1D2E3F4G5A009",
+      "atom_uri": "urn:zam:atom:01K3X9A7R4B8C1D2E3F4G5A009",
+      "namespace": "optik",
+      "slug": "brechungsindex-bestimmen",
+      "title": "Brechungsindex und Grenzwinkel messen",
+      "domain": "schule/physik/optik",
+      "reduction": "formula",
+      "typical_age_min": 16.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A004",
+          "type": "hard",
+          "rationale": "n wird aus gemessenen Winkeln über das Brechungsgesetz berechnet."
+        },
+        {
+          "atom_id": "01K3X9A7R4B8C1D2E3F4G5A003",
+          "type": "hard",
+          "rationale": "Der Grenzwinkel ist die Messgröße für den Übergang zur Totalreflexion."
+        }
+      ],
+      "alignments": [],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "berufsoberschule",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "119285",
+          "topic_title": "Grundlagen der Optik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00E",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier1_fast",
+          "question": "Ein Lichtstrahl kommt aus Luft (n≈1) und wird in Glas mit 30° zum Lot gebrochen, Einfallswinkel 50°. Welche Beziehung liefert n(Glas)?",
+          "concept": "n_glas = sin(50°)/sin(30°) nach n1 sin α = n2 sin β mit n_luft ≈ 1.",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "sin(50°)/sin(30°)",
+              "sin(30°)/sin(50°)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K3X9A7R4B8C1D2E3F4G5H00F",
+          "language": "de",
+          "bloom_level": 3,
+          "tier": "tier2_synthesis",
+          "question": "Wie bestimmst du aus einem gemessenen Grenzwinkel den Brechungsindex von Glas gegen Luft?",
+          "concept": "Am Grenzwinkel ist β = 90°, also sin β = 1. Aus n_glas sin θ_g = n_luft · 1 folgt n_glas = 1/sin(θ_g) für den Übergang Glas→Luft."
+        }
+      ]
+    }
+  ]
+}

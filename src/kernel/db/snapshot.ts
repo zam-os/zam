@@ -31,7 +31,17 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  * classification against the actual schema.
  */
 export const SNAPSHOT_TABLES = [
+  "learning_atoms",
+  // Former published addresses. Not derivable: once an atom is re-filed or
+  // merged, only this table still knows what the old identity pointed at.
+  "atom_uri_aliases",
+  "atom_alignments",
+  "atom_curriculum_bindings",
+  "atom_prerequisites",
   "tokens",
+  // Declared item succession. Not derivable by construction: the whole point
+  // of Decision 9 is that no similarity heuristic may reconstruct it.
+  "practice_item_replacements",
   "imported_card_bindings",
   "media_assets",
   "token_media",
