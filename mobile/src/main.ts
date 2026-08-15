@@ -34,6 +34,16 @@ import {
   type TokenMedia,
 } from "../../src/kernel/models/media.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
+import { bonusCandidates, enrolBonusAtom } from "../../src/kernel/library/bonus.js";
+import { getBundledCellsWithStatus } from "../../src/kernel/library/bundled-cells.js";
+import {
+  assessPrecondition,
+  getPreconditionCandidates,
+} from "../../src/kernel/library/precondition-assessment.js";
+import {
+  getPullForwardCandidates,
+  pullForwardCards,
+} from "../../src/kernel/library/pull-forward.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
@@ -131,6 +141,13 @@ import {
   type MobileReviewSummary,
 } from "./review-session.js";
 import {
+  type BonusOffer,
+  bonusBecause,
+  keepGoingCardIds,
+  matchUnassessedPrecondition,
+  type PreconditionOffer,
+} from "./study-offers.js";
+import {
   completeFirstRun,
   type LocalSetup,
   prepareLocalLibrary,
@@ -218,6 +235,9 @@ async function refreshStorageRow(): Promise<void> {
   }
 }
 const reviewSession = new MobileReviewSession(db, localStorage);
+let preconditionCache: PreconditionOffer[] = [];
+let bonusIgnoredThisSession = false;
+let pendingSessionSummary: MobileReviewSummary | null = null;
 
 function element<T extends HTMLElement>(id: string): T {
   const node = document.getElementById(id);
@@ -239,6 +259,15 @@ const statusLine = element<HTMLParagraphElement>("status");
 const summary = element<HTMLElement>("summary");
 const queueList = element<HTMLOListElement>("queue");
 const startReviewButton = element<HTMLButtonElement>("start-review");
+const queueOffer = element<HTMLElement>("queue-offer");
+const queueOfferTitle = element<HTMLElement>("queue-offer-title");
+const queueOfferBody = element<HTMLElement>("queue-offer-body");
+const queueOfferActions = element<HTMLElement>("queue-offer-actions");
+const reviewOffer = element<HTMLElement>("review-offer");
+const reviewOfferTitle = element<HTMLElement>("review-offer-title");
+const reviewOfferBody = element<HTMLElement>("review-offer-body");
+const reviewOfferActions = element<HTMLElement>("review-offer-actions");
+const reviewCard = element<HTMLElement>("review-card");
 const openImportButton = element<HTMLButtonElement>("open-import");
 const statsSummary = element<HTMLParagraphElement>("stats-summary");
 const statsRows = element<HTMLElement>("stats-rows");
@@ -1749,22 +1778,394 @@ async function hintWhenOnlyCompactVoice(locale: VoiceLocale): Promise<void> {
   }
 }
 
+async function loadPreconditionCache(userId: string): Promise<void> {
+  try {
+    preconditionCache = await getPreconditionCandidates(db, userId);
+  } catch (err) {
+    console.warn("Failed to load precondition candidates:", err);
+    preconditionCache = [];
+  }
+}
+
+async function enrolledInScopeAtomIds(userId: string): Promise<string[]> {
+  const cells = await getBundledCellsWithStatus(db, userId);
+  return [
+    ...new Set(
+      cells
+        .filter((cell) => cell.enrolled)
+        .flatMap((cell) => cell.inScopeAtomIds),
+    ),
+  ];
+}
+
+function fillOfferActions(
+  container: HTMLElement,
+  actions: Array<{ label: string; primary?: boolean; onClick: () => void }>,
+): void {
+  container.replaceChildren();
+  for (const action of actions) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = action.primary ? "btn primary" : "btn";
+    button.textContent = action.label;
+    button.addEventListener("click", action.onClick);
+    container.appendChild(button);
+  }
+}
+
+function hideReviewOffer(): void {
+  reviewOffer.hidden = true;
+  reviewCard.hidden = false;
+}
+
+function showReviewOffer(spec: {
+  title: string;
+  body: string;
+  actions: Array<{ label: string; primary?: boolean; onClick: () => void }>;
+}): void {
+  showReview();
+  reviewQuestion.textContent = "";
+  reviewOfferTitle.textContent = spec.title;
+  reviewOfferBody.textContent = spec.body;
+  fillOfferActions(reviewOfferActions, spec.actions);
+  reviewCard.hidden = true;
+  reviewOffer.hidden = false;
+}
+
+function hideQueueOffer(): void {
+  queueOffer.hidden = true;
+  queueOfferActions.replaceChildren();
+}
+
+function showQueueOffer(spec: {
+  title: string;
+  body: string;
+  actions: Array<{ label: string; primary?: boolean; onClick: () => void }>;
+}): void {
+  queueOfferTitle.textContent = spec.title;
+  queueOfferBody.textContent = spec.body;
+  fillOfferActions(queueOfferActions, spec.actions);
+  queueOffer.hidden = false;
+}
+
+function showPreconditionOffer(precondition: PreconditionOffer): void {
+  showReviewOffer({
+    title: t("precondition_title"),
+    body: tf("precondition_body", { title: precondition.title }),
+    actions: [
+      {
+        label: t("precondition_known"),
+        onClick: () => {
+          void decidePrecondition(precondition.atomId, "known");
+        },
+      },
+      {
+        label: t("precondition_learn"),
+        primary: true,
+        onClick: () => {
+          void decidePrecondition(precondition.atomId, "learn");
+        },
+      },
+    ],
+  });
+}
+
+async function decidePrecondition(
+  atomId: string,
+  decision: "known" | "learn",
+): Promise<void> {
+  if (!currentUserId) return;
+  try {
+    await assessPrecondition(db, {
+      userId: currentUserId,
+      atomId,
+      decision,
+    });
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+    return;
+  }
+  reviewSession.markAtomAssessed(atomId);
+  preconditionCache = [];
+  if (decision === "learn") {
+    hideReviewOffer();
+    renderCurrentReview();
+    return;
+  }
+  const summary = await reviewSession.dropAtom(atomId);
+  if (summary) {
+    await offerAfterQueueFromReview(summary);
+    return;
+  }
+  renderCurrentReview();
+}
+
+async function offerAfterQueueFromReview(
+  summary: MobileReviewSummary,
+): Promise<void> {
+  pendingSessionSummary = summary;
+  if (!currentUserId) {
+    renderSessionSummary(summary);
+    return;
+  }
+  try {
+    const candidates = await getPullForwardCandidates(db, currentUserId, {
+      limit: 5,
+    });
+    const cardIds = keepGoingCardIds(candidates);
+    if (cardIds.length > 0) {
+      showReviewOffer({
+        title: t("keep_going_title"),
+        body: t("keep_going_body"),
+        actions: [
+          {
+            label: t("session_done_today"),
+            onClick: () => {
+              void offerBonusThenSummary(summary);
+            },
+          },
+          {
+            label: t("keep_going_yes"),
+            primary: true,
+            onClick: () => {
+              void acceptKeepGoingFromReview(cardIds, summary);
+            },
+          },
+        ],
+      });
+      return;
+    }
+    await offerBonusThenSummary(summary);
+  } catch (error) {
+    console.warn("Failed to load keep-going candidates:", error);
+    await offerBonusThenSummary(summary);
+  }
+}
+
+async function acceptKeepGoingFromReview(
+  cardIds: string[],
+  summary: MobileReviewSummary,
+): Promise<void> {
+  if (!currentUserId) return;
+  try {
+    await pullForwardCards(db, currentUserId, cardIds);
+    const started = await reviewSession.start(currentUserId);
+    if (!started) {
+      renderSessionSummary(summary);
+      return;
+    }
+    bonusIgnoredThisSession = false;
+    await loadPreconditionCache(currentUserId);
+    hideReviewOffer();
+    renderCurrentReview();
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+  }
+}
+
+async function offerBonusThenSummary(
+  summary: MobileReviewSummary,
+): Promise<void> {
+  if (!currentUserId || bonusIgnoredThisSession) {
+    renderSessionSummary(summary);
+    return;
+  }
+  const bonus = await loadBonusOffer(currentUserId);
+  if (!bonus) {
+    renderSessionSummary(summary);
+    return;
+  }
+  showReviewOffer({
+    title: t("bonus_title"),
+    body: tf("bonus_body", {
+      title: bonus.title,
+      because: bonusBecause(bonus.restsOnTitles),
+      unlocks: bonus.unlockCount,
+    }),
+    actions: [
+      {
+        label: t("bonus_skip"),
+        onClick: () => {
+          bonusIgnoredThisSession = true;
+          renderSessionSummary(summary);
+        },
+      },
+      {
+        label: t("bonus_accept"),
+        primary: true,
+        onClick: () => {
+          void acceptBonusThenSummary(bonus.atomId, summary);
+        },
+      },
+    ],
+  });
+}
+
+async function acceptBonusThenSummary(
+  atomId: string,
+  summary: MobileReviewSummary,
+): Promise<void> {
+  if (!currentUserId) {
+    renderSessionSummary(summary);
+    return;
+  }
+  try {
+    await enrolBonusAtom(db, currentUserId, atomId);
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+    return;
+  }
+  bonusIgnoredThisSession = true;
+  renderSessionSummary(summary);
+}
+
+async function loadBonusOffer(userId: string): Promise<BonusOffer | null> {
+  try {
+    const inScopeAtomIds = await enrolledInScopeAtomIds(userId);
+    const candidates = await bonusCandidates(db, userId, {
+      inScopeAtomIds,
+      limit: 1,
+    });
+    return candidates[0] ?? null;
+  } catch (error) {
+    console.warn("Failed to load bonus candidates:", error);
+    return null;
+  }
+}
+
+async function renderDashboardOffers(userId: string): Promise<void> {
+  hideQueueOffer();
+  try {
+    const candidates = await getPullForwardCandidates(db, userId, { limit: 5 });
+    const cardIds = keepGoingCardIds(candidates);
+    if (cardIds.length > 0) {
+      showQueueOffer({
+        title: t("keep_going_title"),
+        body: t("keep_going_body"),
+        actions: [
+          {
+            label: t("session_done_today"),
+            onClick: () => {
+              void renderDashboardBonus(userId);
+            },
+          },
+          {
+            label: t("keep_going_yes"),
+            primary: true,
+            onClick: () => {
+              void acceptKeepGoingFromDashboard(userId, cardIds);
+            },
+          },
+        ],
+      });
+      return;
+    }
+    await renderDashboardBonus(userId);
+  } catch (error) {
+    console.warn("Failed to load keep-going candidates:", error);
+    await renderDashboardBonus(userId);
+  }
+}
+
+async function renderDashboardBonus(userId: string): Promise<void> {
+  if (bonusIgnoredThisSession) {
+    hideQueueOffer();
+    return;
+  }
+  const bonus = await loadBonusOffer(userId);
+  if (!bonus) {
+    hideQueueOffer();
+    return;
+  }
+  showQueueOffer({
+    title: t("bonus_title"),
+    body: tf("bonus_body", {
+      title: bonus.title,
+      because: bonusBecause(bonus.restsOnTitles),
+      unlocks: bonus.unlockCount,
+    }),
+    actions: [
+      {
+        label: t("bonus_skip"),
+        onClick: () => {
+          bonusIgnoredThisSession = true;
+          hideQueueOffer();
+        },
+      },
+      {
+        label: t("bonus_accept"),
+        primary: true,
+        onClick: () => {
+          void acceptBonusFromDashboard(userId, bonus.atomId);
+        },
+      },
+    ],
+  });
+}
+
+async function acceptKeepGoingFromDashboard(
+  userId: string,
+  cardIds: string[],
+): Promise<void> {
+  try {
+    await pullForwardCards(db, userId, cardIds);
+    hideQueueOffer();
+    const started = await reviewSession.start(userId);
+    if (!started) {
+      await refresh(userId);
+      return;
+    }
+    await loadPreconditionCache(userId);
+    renderCurrentReview();
+  } catch (error) {
+    setStatus(errorMessage(error), true);
+  }
+}
+
+async function acceptBonusFromDashboard(
+  userId: string,
+  atomId: string,
+): Promise<void> {
+  try {
+    await enrolBonusAtom(db, userId, atomId);
+    bonusIgnoredThisSession = true;
+    hideQueueOffer();
+    await refresh(userId);
+  } catch (error) {
+    setStatus(errorMessage(error), true);
+  }
+}
+
 function renderCurrentReview(message = ""): void {
   const item = reviewSession.currentItem;
   const prompt = reviewSession.currentPrompt;
   if (!item || !prompt) return;
 
-  showReview();
   const progress = reviewSession.progress;
   reviewProgress.textContent = tf("review_progress", {
     current: progress.current,
     total: progress.total,
   });
-  // A bar as well as the count: "3 of 12" is precise, but how much is left is
-  // read faster from a length than from arithmetic.
   reviewProgressFill.style.width = `${
     progress.total > 0 ? ((progress.current - 1) / progress.total) * 100 : 0
   }%`;
+
+  if (
+    item.atomId &&
+    !reviewSession.isAtomAssessed(item.atomId)
+  ) {
+    const precondition = matchUnassessedPrecondition(
+      item.atomId,
+      preconditionCache,
+    );
+    if (precondition) {
+      showPreconditionOffer(precondition);
+      return;
+    }
+  }
+
+  hideReviewOffer();
+  showReview();
   // The title is free text, and for imported cards it is often the first
   // sentence of the answer — so before the reveal the meta line names only the
   // domain. A prompt that prints the answer underneath itself is not recall.
@@ -1997,7 +2398,7 @@ disarmCardDelete = armDestructive(
       // queue, and the session is one card shorter than it started.
       const summary = await reviewSession.dropCurrent();
       if (summary) {
-        renderSessionSummary(summary);
+        await offerAfterQueueFromReview(summary);
         await refresh(currentUserId);
       } else {
         renderCurrentReview(t("card_deleted"));
@@ -2009,6 +2410,8 @@ disarmCardDelete = armDestructive(
 );
 
 function renderSessionSummary(result: MobileReviewSummary): void {
+  pendingSessionSummary = null;
+  hideReviewOffer();
   sessionSummaryText.textContent = tf("summary_text", {
     completion: t(result.stopped ? "session_ended" : "session_done"),
     done: result.completedCount,
@@ -2033,6 +2436,7 @@ async function refresh(userId: string): Promise<void> {
     queueList.replaceChildren();
     startReviewButton.disabled = true;
     nav.setDueBadge(0);
+    hideQueueOffer();
     await updateReminderDue(0);
     return;
   }
@@ -2046,8 +2450,10 @@ async function refresh(userId: string): Promise<void> {
     startReviewButton.disabled = true;
     nav.setDueBadge(0);
     await updateReminderDue(0);
+    await renderDashboardOffers(userId);
     return;
   }
+  hideQueueOffer();
   renderQueue(queue);
   await updateReminderDue(queue.reviewCount + queue.relearnCount);
 }
@@ -2055,9 +2461,10 @@ async function refresh(userId: string): Promise<void> {
 async function restoreReviewSession(userId: string): Promise<void> {
   const restored = await reviewSession.restore(userId);
   if (restored.kind === "active") {
+    await loadPreconditionCache(userId);
     renderCurrentReview(t("session_resumed"));
   } else if (restored.kind === "completed") {
-    renderSessionSummary(restored.summary);
+    await offerAfterQueueFromReview(restored.summary);
   } else {
     showDashboard();
   }
@@ -2403,7 +2810,7 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
     const result = await reviewSession.rate(rating);
     clearEvaluationUi();
     if (result.summary) {
-      renderSessionSummary(result.summary);
+      await offerAfterQueueFromReview(result.summary);
       return false;
     }
     const blocking = result.blockedPrerequisites.length
@@ -2437,6 +2844,8 @@ startReviewButton.addEventListener("click", async () => {
       await refresh(currentUserId);
       return;
     }
+    bonusIgnoredThisSession = false;
+    await loadPreconditionCache(currentUserId);
     renderCurrentReview();
   } catch (error) {
     setStatus(tf("session_start_failed", { error: errorMessage(error) }), true);
@@ -2515,6 +2924,14 @@ stopReviewButton.addEventListener("click", async () => {
   stopReviewButton.disabled = true;
   try {
     await pauseVoiceMode();
+    if (!reviewSession.active) {
+      if (pendingSessionSummary) {
+        renderSessionSummary(pendingSessionSummary);
+      } else {
+        showDashboard();
+      }
+      return;
+    }
     renderSessionSummary(await reviewSession.finish());
   } catch (error) {
     setReviewStatus(

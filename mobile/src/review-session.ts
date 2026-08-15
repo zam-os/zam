@@ -34,6 +34,7 @@ interface ReviewSessionSnapshot {
   draftAnswer: string;
   revealed: boolean;
   cardStartedAt: number;
+  assessedAtomIds?: string[];
 }
 
 export interface MobileReviewProgress {
@@ -153,6 +154,19 @@ export class MobileReviewSession {
     return this.snapshot?.revealed ?? false;
   }
 
+  isAtomAssessed(atomId: string | null | undefined): boolean {
+    if (!atomId || !this.snapshot) return false;
+    return (this.snapshot.assessedAtomIds ?? []).includes(atomId);
+  }
+
+  markAtomAssessed(atomId: string): void {
+    if (!this.snapshot) return;
+    const seen = new Set(this.snapshot.assessedAtomIds ?? []);
+    seen.add(atomId);
+    this.snapshot.assessedAtomIds = [...seen];
+    this.persist();
+  }
+
   async start(userId: string): Promise<boolean> {
     const queue = await buildReviewQueue(this.db, { userId });
     if (queue.items.length === 0) return false;
@@ -171,6 +185,7 @@ export class MobileReviewSession {
       draftAnswer: "",
       revealed: false,
       cardStartedAt: this.now(),
+      assessedAtomIds: [],
     };
     this.persist();
     return true;
@@ -304,6 +319,26 @@ export class MobileReviewSession {
     const snapshot = this.snapshot;
     if (!snapshot || !this.currentItem) return null;
     snapshot.items.splice(snapshot.currentIndex, 1);
+    snapshot.draftAnswer = "";
+    snapshot.revealed = false;
+    snapshot.cardStartedAt = this.now();
+    if (!this.currentItem) return await this.finish();
+    this.persist();
+    return null;
+  }
+
+  /**
+   * Remove the current and remaining cards of one atom (self-assessment
+   * "I already know this"). Earlier rated cards stay in the snapshot so the
+   * session total stays honest.
+   */
+  async dropAtom(atomId: string): Promise<MobileReviewSummary | null> {
+    const snapshot = this.snapshot;
+    if (!snapshot || !atomId) return null;
+    snapshot.items = snapshot.items.filter(
+      (item, index) =>
+        index < snapshot.currentIndex || item.atomId !== atomId,
+    );
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();

@@ -252,4 +252,44 @@ describe("mobile review session", () => {
       }).not.toThrow();
     });
   });
+
+  it("drops remaining cards of an assessed atom and remembers the decision", async () => {
+    const known = await createToken(db, {
+      slug: "a-known",
+      concept: "Known foundation",
+      domain: "optik",
+      bloom_level: 1,
+      atom_id: "atom-known",
+    });
+    const sibling = await createToken(db, {
+      slug: "b-known-sibling",
+      concept: "Same atom, other item",
+      domain: "optik",
+      bloom_level: 2,
+      atom_id: "atom-known",
+    });
+    const other = await createToken(db, {
+      slug: "z-other-atom",
+      concept: "Different atom",
+      domain: "optik",
+      bloom_level: 1,
+      atom_id: "atom-other",
+    });
+    await ensureCard(db, known.id, "student-9");
+    await ensureCard(db, sibling.id, "student-9");
+    await ensureCard(db, other.id, "student-9");
+
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage, () => 1_000);
+    expect(await session.start("student-9")).toBe(true);
+    expect(session.isAtomAssessed("atom-known")).toBe(false);
+    session.markAtomAssessed("atom-known");
+    expect(session.isAtomAssessed("atom-known")).toBe(true);
+
+    const summary = await session.dropAtom("atom-known");
+    expect(summary).toBeNull();
+    expect(session.currentItem?.atomId).toBe("atom-other");
+    expect(session.currentItem?.tokenId).toBe(other.id);
+  });
 });
+
