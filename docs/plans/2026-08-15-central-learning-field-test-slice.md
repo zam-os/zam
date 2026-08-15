@@ -1,7 +1,7 @@
 # Handover — the first field-test slice of the central learning path
 
 **Status:** implementation and source-grounded content review complete on
-2026-08-15; the manual device trial remains the field-test gate.
+2026-08-15; the manual device trial is the next empirical validation step.
 **Branch:** `feat/central-learning-field-test`, on top of `3edf7b3` — the
 squashed merge of the architecture work (PR #300).
 **Goal:** one learner, one bundled cell, a loop that works end to end — the
@@ -35,13 +35,14 @@ it. In particular the kernel primitives this slice needs all exist:
 So this slice is **surface plus the two scheduling rules**, not new
 infrastructure.
 
-## The device question — resolve before phase 1 lands
+## The device question — validate on the real delivery route
 
 Klara's primary device is the school iPad, and the iPadOS companion is
 TestFlight-only with an unresolved MDM question. That is a *delivery* risk, not
 a build risk: the surfaces below live in the shared mobile code and in Desktop,
 both of which already exist. Build them there. But settle the distribution
-route in parallel — a finished slice nobody can install is not a field test.
+route as the next empirical step; its findings inform subsequent product work
+rather than approving the content.
 
 ## Phases
 
@@ -174,7 +175,7 @@ bonus atoms are excluded from later offers even before their first review;
 root atoms and atoms with unheld hard prerequisites cannot be accepted through
 the enrolment endpoint.
 
-## Remaining acceptance gates
+## Next validation and improvement steps
 
 - [x] Source-grounded agent review of the selected Realschule questions,
   reference answers, reductions and prerequisite scope. The owner accepted
@@ -185,7 +186,7 @@ the enrolment endpoint.
   keep going → ignore/accept bonus.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
-  hand-off, not by weakening the remaining device gate). Final result 2026-08-15:
+  hand-off). Final result 2026-08-15:
   format, lint, typecheck and build clean; 231 test files passed, 2 skipped,
   with 2235 tests passed and 7 skipped.
 

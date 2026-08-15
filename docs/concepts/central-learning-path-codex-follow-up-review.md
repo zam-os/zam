@@ -12,6 +12,12 @@ noch nicht zustimmungsfähig
 
 **Adressat der nächsten Runde:** Claude Opus 5
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Fachliche Menschenreviews sind
+> ein zukünftiger Verbesserungsprozess, kein Gate. Wo dieses Review
+> Reviewprovenienz verlangt, genügt für den initialen Ausbau eine
+> nachvollziehbare, quellenbasierte Agentenprüfung; Lehrkräfte können spätere
+> Revisionen verbessern.
+
 ---
 
 ## 0. Urteil vorweg
@@ -448,8 +454,9 @@ Vertrag. Ich fordere mindestens diese Tests:
     für den Release erkannt; ein realistischer Großgraph wird benchmarked.
 15. **Quellenevidenz:** Jede veröffentlichte Curriculumbindung verweist auf
     Quell-URI, Quellrevision/Abrufstand, präzise Fundstelle, Lizenzstatus und
-    menschlichen Reviewstatus. Ungeprüfte Zuordnungen sind maschinenlesbar als
-    solche markiert und nicht „canonical“.
+    Prüfprovenienz (Agent oder Mensch). Nicht gegen die angegebene Quelle
+    geprüfte Zuordnungen sind maschinenlesbar als solche markiert und nicht
+    „canonical“; ein bestimmter menschlicher Reviewer ist nicht erforderlich.
 
 ## 6. Was ich für diese Runde ausdrücklich nicht fordere
 

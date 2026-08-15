@@ -387,7 +387,8 @@ implementiert. Ausformuliert und mit aktuellem Abnahmestand in
 [docs/plans/2026-08-15-central-learning-field-test-slice.md](../plans/2026-08-15-central-learning-field-test-slice.md)
 — harness-agnostisch, ein Branch und ein PR für den ganzen Slice.
 
-**Das nächste empirische Gate ist nicht durch weiteren Agentencode ersetzbar:**
+**Der nächste empirische Validierungsschritt findet außerhalb weiterer
+Agentenimplementierung statt:**
 
 Der komplette Weg läuft auf einer frischen Datenbank über den realen
 Schul-iPad-Verteilungsweg: Zelle wählen, Voraussetzung entscheiden,

@@ -22,9 +22,17 @@
 > Fehlerbefund selbst im
 > [Codex-Review, Abschnitt 2](central-learning-path-codex-research-review.md).
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Die in dieser Forschungsnote
+> vorgeschlagene menschliche Prüfung ist ein zukünftiger Verbesserungsprozess,
+> kein Publish-, Build- oder Feldtest-Gate. Die erste breite Inhaltsbasis darf
+> durch Agenten nach bestem Wissen aus bestehenden Quellen entstehen;
+> Lehrkräfte und andere Experten verbessern spätere Revisionen.
+
 ## 0. Haltung
 
-Die Gemini-Entwürfe treffen die Produktvision. Kacheln, Curricula als Overlays, Lehrer-Signatur statt LLM-Autorität, Schulheft als Brücke zum Unterricht — das sind die richtigen großen Linien.
+Die Gemini-Entwürfe treffen die Produktvision. Kacheln, Curricula als Overlays,
+nachvollziehbare Quellen und Revisionen statt unprüfbarer Modellautorität sowie
+das Schulheft als Brücke zum Unterricht — das sind die richtigen großen Linien.
 
 Die erste Fassung dieser Note hat die Ontology-ADR wie geltendes Recht gelesen (ULID = Identität, Domain = nur Fach, Wikidata = optionaler Anker). Das war falsch gewichtet. Der Entwurf auf `docs/domain-ontology-adr-note` beantwortet eine *andere* Frage — wie ein persönlicher oder Team-Graph lesbar bleibt, wenn Slugs zu lang und Domains zu flach werden. Der zentrale Bildungsgraph stellt eine härtere Frage: **woran erkennen zwei Curricula und zwei Herausgeber dasselbe lernbare Atom?**
 
@@ -293,7 +301,10 @@ Einfachere Regel, kompatibel mit dem Prompter:
 - Bloom 3–5 oder Karte mit `reps` über einer kleinen Schwelle (z. B. 3 erfolgreiche Reviews): bestehende freie Frage.
 - Prüfungsnahe Overlay-Flags können Tier 2 früher erzwingen, unabhängig von \(S\).
 
-Kein neues Zustandsmodell. Kein LLM im Kernel. Die Checks dürfen im Tile liegen (Lehrer hat sie geprüft) oder zur Laufzeit erzeugt werden — Quelle der Wahrheit bleiben Frage und Konzept.
+Kein neues Zustandsmodell. Kein LLM im Kernel. Die Checks dürfen quellenbasiert
+und mit Provenienz im Tile liegen oder zur Laufzeit erzeugt werden; Agenten- und
+Menschenreviews können spätere Fassungen verbessern. Quelle der Wahrheit
+bleiben Frage und Konzept.
 
 ### 5.5 Was bewusst *nicht* in den Kernel kommt
 
@@ -349,7 +360,9 @@ Vorschlag:
 0. **Identität des veröffentlichten Atoms entscheiden** (Abschnitt 2) — oder bewusst eine Zelle lang mit temporären IDs arbeiten und den Join-Schlüssel nachziehen. Die Ontology-ADR nicht vorher festziehen.
 1. **Hard/Soft + Overlay-Abschluss** als Compiler-Vertrag. Ohne das sind Tiles nur ZIP-Dateien von Manifesten.
 2. **`zam curriculum compile-tiles`** gegen *eine* echte Zelle: Realschule Bayern 9 Physik *oder* Mathematik — inkl. \(E_S\)-Check, Zyklen, fehlende Fundamente, und ein explizites Mapping Lehrplansatz → Anker → Reduktionsstufe.
-3. Qualitätsgate bleibt menschliches Review vor dem Publish. Signatur optional.
+3. Quellen, Provenienz und maschinell prüfbare Konsistenz sichern die erste
+   Veröffentlichung. Menschliches Review ist eine spätere Qualitätsstufe, kein
+   Gate. Signatur optional.
 4. Scanner als Client-Feature, nachdem ein Overlay lokal liegt. v1: On-Device-OCR + Match gegen die ~100–400 Atome der Zelle. Kein VLM in Phase 1.
 
 Lizenz bleibt der Blocker vor öffentlichem CDN. Der Compiler kann intern gegen die bestehenden Provider-Manifeste laufen.
@@ -359,7 +372,8 @@ Lizenz bleibt der Blocker vor öffentlichem CDN. Der Compiler kann intern gegen 
 ## 7. Was aus den Entwürfen bleiben soll
 
 - Curricula als Overlays über einem geteilten Konzeptnetz, nicht 16 isolierte Token-Inseln.
-- Lehrer prüft, KI entwirft. Ein Review, viele Lerner.
+- Agenten erstellen quellenbasiert; jede spätere Verbesserung durch Lernende,
+  Lehrkräfte oder Experten erreicht über Revisionen viele Lerner.
 - Statische, anonyme Verteilung. Lernerdaten nie auf Sponsor-Infrastruktur.
 - Zwei Interaktionsgeschwindigkeiten als UX, nicht als zweites Gedächtnismodell.
 - Schulheft als Anker an den echten Unterricht — lokal, mit Bestätigung, ohne Menü-Archäologie.

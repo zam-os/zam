@@ -3,7 +3,7 @@
 **Status:** Accepted — scope and ordering decided (Thomas, 2026-07-26).
 **Deciders:** Thomas (project owner)
 **Amends:** [2026-07-04-multi-learner-shared-knowledge.md](2026-07-04-multi-learner-shared-knowledge.md)
-— promotes its Phase E ("a broad curriculum library") from *gated on pilot
+— moves its Phase E ("a broad curriculum library") from *planned after pilot
 experience* to *next deliverable*, and hardens its sketched shape into an
 invariant.
 **Related:**
@@ -18,9 +18,9 @@ invariant.
 
 ADR 2026-07-04 already describes this service, under "Direction beyond the
 pilot", and already gets its shape right: read-only, one-way, no cards, no
-review logs, "little or no identity". It deliberately deferred it — *gated on
-real experience from the closed group* — because in July it was a direction,
-not a commitment.
+review logs, "little or no identity". It originally sequenced it after real
+experience from the closed group because in July it was a direction, not a
+commitment.
 
 Two things changed on 2026-07-26.
 

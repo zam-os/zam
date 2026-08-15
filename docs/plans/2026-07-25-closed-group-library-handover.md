@@ -14,7 +14,7 @@ depends on which agent does the work.
 | | State |
 |---|---|
 | ADR 2026-07-04 | **Accepted**, merged (#104). 15 decisions, all owner-answered |
-| ADR 2026-07-25 "Review Once, Serve Many" | Accepted; the *product principle* this ADR implements. Cross-linked both ways |
+| ADR 2026-07-25 "Create Once, Improve Continuously, Serve Many" | Accepted; the *product principle* this ADR implements. Cross-linked both ways; its 2026-08-15 clarification makes this a future improvement process, not a teacher-approval prerequisite. |
 | Phase B — content versioning | **Done**, [PR #227](https://github.com/zam-os/zam/pull/227) green on all five checks, **not merged** |
 | Everything else | Not started |
 
@@ -102,8 +102,12 @@ pre-M015 upgrade path). Full suite 1565 passing.
       assigner may withdraw an assignment but **never** delete another person's
       cards or review history.
 
-Phase E (a broad curriculum library) is explicitly gated on real experience
-from the closed group. Do not start it.
+**Superseded sequencing note:** Phase E is no longer gated on closed-group
+experience. ADR 2026-07-26b promoted the broad curriculum library to an
+independent deliverable, and the owner clarified on 2026-08-15 that the
+Bayern-first content build may proceed with source-grounded agent work. The
+closed-group workflow remains useful future process experience, not a
+prerequisite.
 
 ## Constraints that are not obvious from the code
 
@@ -125,9 +129,9 @@ from the closed group. Do not start it.
   opt-in.
 - **The kernel stays single-learner**: no RLS, no auth, no HTTP in
   `src/kernel/`. Multi-learner semantics live in the CLI/sync layer.
-- **New i18n strings**: en/de only, then allowlist in
-  `tests/desktop/i18n-completeness.test.ts`. Do not machine-fill the other five
-  packs — they await native review.
+- **New i18n strings** may be translated by agents to the best of their
+  knowledge across the supported locales. Native-speaker feedback can improve
+  later revisions; it is not a delivery gate.
 
 ## Blocked on humans, not on code
 

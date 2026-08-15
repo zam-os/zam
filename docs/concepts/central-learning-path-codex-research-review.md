@@ -13,12 +13,21 @@ Ontologie-Mapping und Entitäts-Disambiguierung
 **Mitgeprüft:** Identität, didaktische Reduktion, Overlay-Abschluss, FSRS-Grenze,
 Kachelverteilung, Provenienz und Lizenzgrenze
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Die in diesem Review geforderte
+> menschliche Bestätigung ist als möglicher späterer Curation-Prozess zu lesen,
+> nicht als Gate für Aufbau, Feldtest oder erste Veröffentlichung. Initiale
+> Inhalte dürfen Agenten nach bestem Wissen aus bestehenden Quellen erstellen.
+> Maschinelle Quellenauflösung, explizite Provenienz und sichere
+> Versionssemantik bleiben technische Anforderungen; Lehrkräfte verbessern
+> spätere Revisionen, wenn ihr Feedback verfügbar wird.
+
 ---
 
 ## 0. Ergebnis vorweg
 
-Die Produktvision trägt: kuratierte Lerninhalte einmal prüfen, Curricula als
-Overlays über geteilten Lernzielen modellieren, unveränderliche öffentliche
+Die Produktvision trägt: Lerninhalte einmal quellenbasiert erstellen und danach
+gemeinsam verbessern, Curricula als Overlays über geteilten Lernzielen
+modellieren, unveränderliche öffentliche
 Artefakte anonym verteilen und Lernzustand ausschließlich beim Lerner halten.
 Auch Groks Korrekturen — kein Alters-Gate, keine FSRS-Stabilitätspropagierung,
 keine Klassenkonten im Content-CDN, kein globales transitives Pruning — gehen
@@ -42,9 +51,9 @@ Fünf Punkte sind vor einem ADR-Entscheid blockierend:
    Domain-Grenzen noch einen atomaren, rollback-sicheren Release-Snapshot.
    Einzelne Hash-URLs und eine Ed25519-Signatur lösen das nicht vollständig.
 5. Die Beispiele wurden nicht gegen ihre behaupteten Primärquellen geprüft:
-   drei Wikidata-IDs und das zentrale Lehrplanbeispiel sind falsch. Solange
-   solche Fehler den menschlichen Review passieren, ist die geplante
-   Curation-Pipeline noch kein belastbares Qualitätsgate.
+   drei Wikidata-IDs und das zentrale Lehrplanbeispiel sind falsch. Eine
+   Curation-Pipeline braucht deshalb belastbare Quellenauflösung und darf sich
+   weder auf Modellvertrauen noch auf die bloße Existenz eines Reviews stützen.
 
 Meine Empfehlung ist daher keine Verwerfung der Vision, sondern ein engerer
 nächster Schnitt: **opaque, namespaced Atom-ID + typisierte Alignments +
@@ -74,7 +83,7 @@ Entscheidungen und der Ist-Code herangezogen:
 - [Human-friendly Titles und Domain-Pfade](../adr/2026-07-04-human-friendly-titles-and-prefixed-domains.md)
 - [Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)
 - [Closed-Group Library](../adr/2026-07-04-multi-learner-shared-knowledge.md)
-- [Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
+- [Create Once, Improve Continuously, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
 - [Central Curriculum Content Service](../adr/2026-07-26b-central-curriculum-content-service.md)
 - Kernel-Schema, Prerequisite-Blocker und FSRS-6-Implementierung
 
@@ -108,11 +117,12 @@ Totalreflexions-Anker dagegen die Erklärung technischer Anwendungen verlangt
 Beide Ziele wären nach `Q234943 + qualitative` identisch, obwohl sie nicht
 gegenseitig substituierbar sind.
 
-**Erforderliches Gate für jeden `wd:`-Anker:** Der Compiler löst die Q-ID gegen
-einen versionierten Wikidata-Snapshot oder die offizielle API auf, normalisiert
-Redirects, speichert Label, Beschreibung und geprüfte Revision und verlangt
-eine kuratorische Typ-/Scope-Bestätigung. Eine syntaktisch gültige Q-ID ist
-keine semantische Validierung.
+**Erforderliche Validierung für jeden `wd:`-Anker:** Der Compiler löst die Q-ID
+gegen einen versionierten Wikidata-Snapshot oder die offizielle API auf,
+normalisiert Redirects, speichert Label, Beschreibung und geprüfte Revision und
+verlangt eine explizite, nachvollziehbare Typ-/Scope-Entscheidung durch den
+Publishing-Prozess. Diese kann im ersten Ausbau durch überprüfende Agenten
+erfolgen. Eine syntaktisch gültige Q-ID ist keine semantische Validierung.
 
 ---
 
@@ -365,7 +375,7 @@ Zu messen sind getrennt:
 | Profil | Macro-F1 und Confusion Matrix für Handlung/Repräsentation |
 | Atom-Alignment | Macro-F1 je Relation; vor allem Precision von `exact` |
 | Ende-zu-Ende | Anteil vollständig korrekter Zerlegungen und Alignments; Risk-Coverage-Kurve bei Abstention |
-| Human Review | Zeit pro Item, Korrekturquote, Inter-Annotator-Agreement |
+| Curation (Agent/Mensch) | Zeit pro Item, Korrekturquote, Übereinstimmung zwischen Prüfenden |
 
 BM25, Dense Retrieval und Hybrid-Retrieval werden mit **demselben**
 Kandidatenkorpus verglichen; ein Cross-Encoder kommt erst als zweite Stufe.
@@ -375,11 +385,14 @@ Precision@1 verschleiert sonst, ob das System das falsche Q wählte, eine
 Kompetenz nicht zerlegte oder zwei nahe Lernziele fälschlich als exakt
 zusammenführte.
 
-Für automatisch vorgeschlagene `exact`-Joins ist ein vorab festgelegtes,
-extrem precision-orientiertes Gate nötig; Publish bleibt auch oberhalb des
-Gates menschlich bestätigt. Der Schaden eines verpassten Joins ist eine
-doppelte Karte. Der Schaden eines falschen Joins ist still übertragener,
-falscher Lernzustand. Diese Fehler sind nicht symmetrisch.
+Für automatisch vorgeschlagene `exact`-Joins ist künftig eine vorab
+festgelegte, extrem precision-orientierte Policy mit expliziter
+Publisher-Entscheidung nötig. Das beschreibt den sicheren Prozess für spätere
+automatisierte oder fremde Joins, blockiert aber weder die Bayern-first-Basis
+noch den heutigen Feldtest. Der Schaden eines verpassten Joins ist eine
+doppelte Karte. Der Schaden eines falschen Joins wäre still übertragener,
+falscher Lernzustand; deshalb überträgt eine unsichere Zuordnung keine
+Beherrschung. Diese Fehler sind nicht symmetrisch.
 
 ---
 
@@ -538,10 +551,11 @@ Publisher-/Key-Trust-Store, Rollen, Rotation/Widerruf und die Frage, welchen
 Publishern ein Gerät standardmäßig vertraut. `verified_by` als freier String
 reicht nicht.
 
-### 4.6 Curation muss für Lehrkräfte Studio-first bleiben
+### 4.6 Wenn Lehrkräfte kuratieren, muss der Prozess Studio-first bleiben
 
-Git als unveränderliche Review-Historie und Studio als material/cosmetic-
-Release-Gate passen zu den bestehenden ADRs. Die Benutzerreise darf daraus
+Git als unveränderliche Review-Historie und Studio als Oberfläche für die
+material/cosmetic-Klassifikation passen zu den bestehenden ADRs. Wenn Menschen
+am Prozess teilnehmen, darf die Benutzerreise daraus
 aber nicht „Lehrkraft bedient Git und Ed25519“ machen. Studio kann Branch,
 Diff, Reviewanfrage, Identitätskandidaten und Publish im Hintergrund
 orchestrieren. Eine klare Aktion pro Schritt bleibt auch für Curatoren ein
@@ -596,7 +610,8 @@ blockt unbekannte oder inkompatible Lizenzen statt sie als bloße
 
 - Die zentrale Bibliothek ist Content-Infrastruktur, kein Lerner-Backend.
 - Curricula sind Overlays, nicht Kopien des Weltgraphen.
-- Curation ist „AI proposes, human disposes“.
+- Curation startet quellenbasiert mit Agenten und verbessert sich durch
+  Agenten-, Lernenden- und späteres Expertenfeedback.
 - Statische Artefakte sind die plausible Antwort auf anonyme, globale
   Verteilung.
 - Scanner und lokaler Unterrichtsanker sind starke Produktideen.
@@ -639,7 +654,8 @@ blockt unbekannte oder inkompatible Lizenzen statt sie als bloße
 - Curriculum-Overlays als eigene n:m-Schicht;
 - ULID als lokale Zeilen-/FK-Identität;
 - lokale Domain-/Slug-Adresse getrennt von öffentlichem Join;
-- menschliches Publish-Gate und material/cosmetic-Versionierung;
+- nachvollziehbares, versioniertes Publishing mit
+  material/cosmetic-Klassifikation;
 - FSRS nur aus beobachteten Reviews;
 - Soft-Kanten blocken nie;
 - Alter als Overlay-Hinweis, nicht als Freigabe-Gate;

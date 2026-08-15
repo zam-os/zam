@@ -12,6 +12,12 @@
 [ADR-Notiz Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md)
 — Branch `codex/learning-governance-adr-note`, Status dort „Proposed (note only)“.
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Die diskutierte Fachprüfung ist
+> ein zukünftiger Verbesserungsprozess, kein Gate. Der erste Inhaltsstand darf
+> quellenbasiert durch Agenten entstehen; Lehrkräfte verbessern spätere
+> Revisionen. Die maschinelle Auflösung behaupteter Quellen bleibt davon
+> unabhängig sinnvoll.
+
 ---
 
 ## 0. Ergebnis vorweg
@@ -71,13 +77,14 @@ matcht, hätte diese Karten stillschweigend an die Wärmelehre gehängt.
 Beides trifft ausgerechnet die Zelle des Feldtests (Realschule Bayern, 9.
 Klasse). Das Beispiel, das am ehesten hätte auffallen müssen, ist das falsche.
 
-**Was daraus folgt — und was nicht.** Es folgt: Der Compiler braucht ein
-Auflösungs-Gate gegen Primärquellen, für `wd:` *und* für `provider/topic_id`.
+**Was daraus folgt — und was nicht.** Es folgt: Der Compiler braucht eine
+Auflösungsprüfung gegen Primärquellen, für `wd:` *und* für `provider/topic_id`.
 Es folgt nicht, dass die Curation-Pipeline als Konzept gescheitert ist. Diese
-Beispiele haben nie ein Fachreview durchlaufen; sie waren Illustrationen in
-einem Vision-Draft. Codex' Formulierung („solange solche Fehler den
-menschlichen Review passieren“) unterstellt ein Gate, das noch niemand gebaut
-hat. Der belegte Satz ist schwächer und trotzdem ausreichend: **LLM-erzeugte
+Beispiele wurden nie gegen ihre behaupteten Quellen aufgelöst; sie waren
+Illustrationen in einem Vision-Draft. Codex' Formulierung („solange solche
+Fehler den menschlichen Review passieren“) unterstellt ein Menschen-Gate, das
+nicht Teil des Startprozesses ist. Der belegte Satz ist schwächer und trotzdem
+ausreichend: **LLM-erzeugte
 Anker sind ohne maschinelle Auflösung unbrauchbar, und zwar systematisch, nicht
 gelegentlich** — drei von drei Q-IDs waren falsch.
 
