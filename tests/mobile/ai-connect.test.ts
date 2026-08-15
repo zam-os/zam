@@ -91,7 +91,21 @@ describe("verifyKey", () => {
   });
 });
 
-describe("connectCloudModel", () => {
+/**
+ * Every case here opens a real library file, which provisions the whole schema
+ * and every migration one statement at a time through the mobile IPC stub —
+ * the same cost `tests/kernel/provision.test.ts` already had to make room for
+ * (#297). Locally that is milliseconds; on the `windows-arm64` runner each of
+ * these takes 3.6–6.1 s against the 5 s default, so the file fails there
+ * roughly every other run, on a different case each time. That signature is a
+ * timeout race, not a defect: the same commits pass on the other five targets
+ * and on a re-run.
+ *
+ * The number protects the slowest supported runner, not the code. Connecting a
+ * model that genuinely hung would blow past this too. Measure before raising
+ * it again.
+ */
+describe("connectCloudModel", { timeout: 30_000 }, () => {
   it("registers the descriptor's model for text, image, embeddings and STT", async () => {
     const db = await library();
     const result = await connectCloudModel(db, "sk-or-key", {
