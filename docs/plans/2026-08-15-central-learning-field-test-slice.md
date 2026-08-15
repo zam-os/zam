@@ -201,6 +201,14 @@ guarantees the property.
   no generic curriculum import, and personal paste/photo import is not a
   curriculum path. The offer never blocks the manual route — a cell can cover
   a position without covering everything a learner wants.
+- [ ] **Curriculum import on mobile**, for the day a phone or tablet is used on
+  its own rather than beside a desktop (owner note 2026-08-15). Today a mobile
+  learner can select a bundled cell but cannot reach a curriculum position no
+  cell covers yet, because the wizard exists only in Desktop. The precedence
+  rule is already the right shape for it: whatever mobile grows, it asks
+  `bundled-cells-list` with the learner's position first and only falls back
+  when the answer says no cell covers it. Ordering matters more than urgency —
+  the more cells exist, the smaller this gap gets on its own.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
   hand-off). Final result 2026-08-15 after the review pass:
