@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-08-09T08:19:11.698Z
+timestamp: 2026-08-15T10:51:34.868Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -143,7 +143,40 @@ await executeReviewAction(db, {
 });
 ```
 
+# Central learning-path queue behavior
+
+Published practice items may belong to a language-neutral learning atom and
+carry a presentation tier. The field-test rule is named `tier1-first`: a new
+`tier2_synthesis` card stays out while the same atom still has an unseen
+`tier1_fast` card. A valid `binary_choice` `fast_check` is normalized by
+the queue and rendered as a one-tap choice; malformed optional metadata falls
+back to the ordinary question instead of breaking the queue.
+
+A learner may self-assess only an atom that is a **hard**
+precondition of one of that learner's live, published cards. Globally installed
+content is not enough. Choosing “already know this” buries every live,
+unretrieved card for that atom with reason `precondition`. It changes no FSRS
+field and writes no review log. The pilot horizon is 21 days plus four days per
+other active deferred atom. Active replays are idempotent; an expired claim
+cannot be extended, and any real retrieval evidence prevents self-assessment.
+When the date arrives, the unchanged new card is eligible for genuine recall.
+
+“Keep going” is also explicit. New cards beyond the normal `maxNew` limit
+receive a session-local admission budget; their stored due date is not
+rewritten. A selected future review can be moved to now. Pulling an active
+precondition clears its burial date and writes the FSRS-neutral reason
+`precondition_ready`; this preserves the explicit choice across restarts,
+prevents a second assessment prompt, and is cleared by the genuine review.
+Expired deferrals, detached or unpublished content, and unrelated buried cards
+are not pull-forward candidates. Native Desktop tracks both total and new-card
+limits across repeated bridge reads; Mobile and MCP Recall take bounded queue
+snapshots with the same workload and tier rules.
+
 # Citations
+- [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
+- [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
+- Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/mobile/review-session.test.ts`
+- Code: `src/kernel/library/precondition-assessment.ts`, `src/kernel/library/pull-forward.ts`, `src/kernel/scheduler/queue.ts`, `src/cli/bridge-handlers.ts`, `desktop/src/panel/recall.ts`, `desktop/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/main.ts`
 
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
 - [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)

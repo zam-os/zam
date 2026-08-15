@@ -1,18 +1,20 @@
 # Zentraler Lernpfad: Stand und Übergabe an die nächste Runde
 
-**Status:** Finalisierte Architekturentscheidung vor dem Feldtest-Bau
+**Status:** Feldtest-Slice und quellenbasierte Inhaltsprüfung abgeschlossen;
+Gerätetest offen
 
-**Letzte Runde:** Beide zentralen ADRs finalisiert. Neue Owner-Entscheidung:
-Jeder Lernstand darf seine Kompatibilität zur gemeinsamen zentralen
-Wissensbasis neu aufbauen und auf deren späteres Datenmodell migrieren.
+**Letzte Runde:** Der begrenzte Feldtest-Slice wurde nach Reviews von Gemini,
+Grok, Claude und Codex implementiert und gehärtet. Die Owner-Entscheidung zur
+neu aufbaubaren Wissensbasis-Kompatibilität bleibt unverändert.
 
-**Richtung:** Die Architektur ist geschlossen. Als Nächstes: zwei bekannte
-Spike-Abweichungen bereinigen und den begrenzten Feldtest bauen — siehe
-Abschnitte 0 und 8.
+**Richtung:** Keine weitere Architektur- oder Implementierungsrunde vor dem
+Feldtest. Als Nächstes folgt der vollständige Lauf auf dem tatsächlichen
+Schul-iPad; parallel kann die inhaltliche Abdeckung der bayerischen Lehrpläne
+ausgebaut werden — siehe Abschnitt 8.
 
-**Datum:** 2026-08-14
+**Datum:** 2026-08-15
 
-**Branch:** `feat/central-learning-knowledge-base`
+**Branch:** `feat/central-learning-field-test`
 
 **Zweck:** Einstiegspunkt. Wer neu dazukommt, liest dieses Dokument zuerst und
 weiß danach, was entschieden ist, was verworfen wurde, was offen ist und woran
@@ -32,6 +34,13 @@ Die abschließende Owner-Entscheidung präzisiert, was dabei stabil sein muss:
 > **Alle Lernstände können die Kompatibilität zur gemeinsamen zentralen
 > Wissensbasis neu aufbauen und sich auf ein neues Datenmodell umstellen, sobald
 > es verfügbar wird.**
+
+Am 2026-08-15 legte der Owner außerdem den anfänglichen Qualitätsmaßstab für
+Lerninhalte fest: Agenten arbeiten sie nach bestem Wissen aus bestehenden,
+nachvollziehbaren Quellen aus. Lehrkräfte können sie später verbessern, sind
+aber kein Freigabe-Gate. Priorität hat eine hohe Abdeckung der bayerischen
+Lehrpläne; ähnliche Lehrpläne anderer Länder und schulische Mitschriften werden
+danach möglichst auf dieselben Wissensatome gemappt.
 
 Damit ist nicht die Pilotprojektion dauerhaft, sondern die **beobachtete
 Lernevidenz**: Review-Ereignisse, daraus entstandener Kartenstatus und
@@ -169,34 +178,32 @@ zurückkehren):
 - Punkte, Streaks, Fortschrittsbalken gegen ein Ziel.
 - FSRS-5 — der Kernel ist FSRS-6.
 
-## 6. Offene Arbeit — sortiert nach dem Auslöser
+## 6. Umsetzung und offene Arbeit — sortiert nach dem Auslöser
 
 Nach Abschnitt 0 ist die nützliche Frage nicht „wie dringend?“, sondern „was
 steht wem im Weg?“.
 
-### I. Blockiert einen Feldtest — hier liegt die Arbeit
+### I. Für den Feldtest-Slice umgesetzt
 
-Die Sicherheitsgrenze ist entschieden: Installation schreibt keine fremden
-Karten, FSRS wird nie ohne Abruf geschrieben, und eine unsichere
-Wissensbasis-Zuordnung überträgt keine Beherrschung. Vor der Oberfläche steht
-nur der kleine Codeabgleich aus Abschnitt 8, kein neuer Architekturvertrag.
+Die Sicherheitsgrenze ist entschieden und umgesetzt: Installation schreibt
+keine fremden Karten, FSRS wird nie ohne Abruf geschrieben, und eine unsichere
+Wissensbasis-Zuordnung überträgt keine Beherrschung.
 
-1. **Vorbedingungs-Selbsteinschätzung.** Entschieden, nicht gebaut. Ohne sie
-   gibt es die Terminierung über `buried_until` nur auf dem Papier.
-2. **Vorziehen bei leerer Queue.** Entschieden, nicht gebaut.
-3. **Bonus-Oberfläche.** Die Ableitung steht (`bonusCandidates`); es gibt keinen
-   Ort, an dem ein Lerner ein Angebot sieht, annimmt oder ignoriert.
-4. **Ein Weg, eine gebündelte Zelle auszuwählen.** `installKvtTile` ist eine
-   Kernel-Funktion ohne Studio-Pfad. Für den Feldtest genügt eine klar begrenzte
-   Auswahl commit-kontrollierter Repo-Fixtures — kein beliebiger Dateiimport,
-   kein CDN, kein Manifest und keine Signatur.
-5. **Kuratorisches Gate für den Inhalt selbst.** Die Optik-Zelle ist geerdet,
-   aber ungeprüft im Sinne eines Fachreviews. Das ist die einzige Sorte Fehler,
-   die eine Lernerin wirklich trifft.
-6. **Tier-Interaktion tatsächlich benutzen.** `tier` und `fast_check` werden
-   gespeichert, aber noch nicht gerendert; `materialiseKvtCards` materialisiert
-   derzeit Tier 1 und Tier 2 gemeinsam. Der Feldtest braucht mindestens eine
-   explizite, messbare Pilotregel für Darstellung und Progression.
+1. **Vorbedingungs-Selbsteinschätzung.** Mit endlicher, gestaffelter Frist auf
+   allen drei Lernoberflächen gebaut.
+2. **Vorziehen bei leerer Queue.** Als ausdrückliche, sitzungslokale Wahl
+   gebaut.
+3. **Bonus-Oberfläche.** Angebote können in Desktop, MCP Recall und Mobile
+   angenommen oder ignoriert werden, ohne die fällige Arbeit zu verändern.
+4. **Gebündelte Zelle auswählen.** Vier commit-kontrollierte Repo-Fixtures sind
+   in Desktop, MCP Studio und Mobile auswählbar; beliebiger Import bleibt aus.
+5. **Quellenbasierte Inhaltsprüfung.** Die Optik-Zelle wurde durch mehrere
+   Agenten gegen die benannten Primärquellen geprüft und auf ihren belegten
+   Scope begrenzt. Das erfüllt den anfänglichen Qualitätsmaßstab; Lehrkräfte
+   können später über Inhaltsrevisionen verbessern.
+6. **Tier-Interaktion.** `tier` und `fast_check` werden auf allen
+   Lernoberflächen benutzt; die Pilotregel `tier1-first` ist ausführbar und
+   getestet.
 
 ### II. Blockiert die öffentliche Verteilung — nicht den Feldtest
 
@@ -300,11 +307,13 @@ ein benutzbares Produkt. Sie weiter zu diskutieren erzeugt keine Antwort.
   Widersprüchliche Duplikate scheitern laut, statt zu einer nie
   veröffentlichten Zeile verschmolzen zu werden.
 
-**Testlage:** 2183 Tests grün, 7 übersprungen — plus **46 gegen echtes
-PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt `POSTGRES_URL`
-ohnehin). Verifiziert ist damit, dass `applySchemaAndMigrations` auf PostgreSQL
-durchläuft, dass der Ausdrucks-Unique-Index dort trägt und dass eine grade-lose
-Bindung auch dort idempotent bleibt.
+**Testlage (2026-08-15):** **2235 Tests grün, 7 übersprungen** in 231
+bestandenen Testdateien (2 übersprungen); zusätzlich bestehen **46 Tests gegen
+echtes PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt
+`POSTGRES_URL` ohnehin). Verifiziert ist damit, dass
+`applySchemaAndMigrations` auf PostgreSQL durchläuft, dass der
+Ausdrucks-Unique-Index dort trägt und dass eine grade-lose Bindung auch dort
+idempotent bleibt.
 
 Von Codex' 15 Abnahmetests sind erfüllt: **1** (jetzt alle 24 Permutationen),
 **2**, **3**, **4**, **10**, **11**, **13**, gescopte Materialisierung, der
@@ -322,13 +331,39 @@ noch nachzuziehen.
 `heldAtomIds` und `bonusCandidates` beantworten Codex' R2 ausführbar —
 `held` = Repräsentant mit `reps ≥ 1` und unblockiert (dasselbe Prädikat wie
 `unblockReady`), Rangfolge nach `unlockCount` vor `reachabilityCount`. Rein
-ableitend, schreibt nichts. Eine Oberfläche gibt es nicht.
+ableitend, schreibt nichts. Desktop, MCP Recall und Mobile bieten den ersten
+Kandidaten freiwillig an; erst die Zustimmung materialisiert Karten. Ein
+angenommenes Atom verschwindet sofort aus späteren Angeboten, auch solange
+seine Karten noch `new` sind.
 
 **Vier geerdete Zellen** liegen als Fixtures vor: Realschule Zweig I 7,
 Realschule Zweig II/III 8, Gymnasium 8, BOS. Sie überlappen auf denselben
-Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
+Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool. Die
+ausgewählte Realschul-Zelle nennt seit 2026-08-15 beide offiziellen
+LehrplanPLUS-Quellen (Lernbereiche 65643 und 65854). Ihr installierter, aber
+nicht eingeschriebener Snellius-Bonus ist separat am BOS-Lernbereich 119285
+geerdet; die frühere Gymnasium-11-Bindung war falsch und ist entfernt.
 
-## 8. Was als Nächstes gebaut wird
+**Feldtest-Slice (2026-08-15):**
+
+- Bundled-Cell-Auswahl in nativer Desktop-App, MCP Studio und Mobile Library;
+  Installieren und Einschreiben bleiben getrennte Kerneloperationen.
+- Selbsteinschätzung nur für harte Voraussetzungen. Sie setzt ausschließlich
+  eine endliche, gestaffelte Burial-Frist; ein Replay verlängert keine
+  abgelaufene Behauptung und überschreibt keine echte Abrufevidenz.
+- „Weiterlernen“ gibt neue Karten mit einem sitzungslokalen `maxNew`-Budget
+  frei. Es fälscht keine Fälligkeit; nur zukünftige Reviews und aktive
+  Voraussetzung-Deferrals werden tatsächlich vorgezogen. Letztere behalten
+  bis zum echten Abruf einen FSRS-neutralen `precondition_ready`-Marker, damit
+  ein Neustart nicht erneut dieselbe Selbsteinschätzung fragt.
+- Benannte Pilotregel `tier1-first`; `fast_check` wird als strukturierte
+  Ein-Tipp-Auswahl gerendert. MCP Recall verwendet dieselben Workload- und
+  Tierregeln wie die nativen Lerneroberflächen.
+- Bonus akzeptieren/ignorieren ist auf allen Lerneroberflächen verfügbar;
+  Wurzelatome, unvorbereitete Atome und bereits angenommene Atome sind keine
+  gültigen Angebote.
+
+## 8. Was als Nächstes geschieht
 
 **Die Architektur ist finalisiert.** Keine weitere Modellrunde steht vor dem
 Feldtest. Der Angleich des Spikes an die beschlossenen ADRs ist **erledigt**
@@ -346,12 +381,26 @@ Feldtest. Der Angleich des Spikes an die beschlossenen ADRs ist **erledigt**
 Dazu die zwei vom Owner freigegebenen „jetzt billig, später unmöglich“-Punkte:
 `replaces` als deklarierte Item-Nachfolge und `review_logs.content_version`.
 
-**Dann: der Feldtest-Slice.** Selbsteinschätzung, leere Queue,
-Tier-Interaktion, Bonus-Oberfläche, Auswahl einer gebündelten Zelle und
-Fachreview der Optik-Zelle. Nichts davon braucht ein CDN, ein Manifest oder
-eine Signatur. Ausformuliert und in Phasen zerlegt in
+**Der Feldtest-Slice ist gebaut.** Selbsteinschätzung, leere Queue,
+Tier-Interaktion, Bonus-Oberfläche und Auswahl einer gebündelten Zelle sind
+implementiert. Ausformuliert und mit aktuellem Abnahmestand in
 [docs/plans/2026-08-15-central-learning-field-test-slice.md](../plans/2026-08-15-central-learning-field-test-slice.md)
 — harness-agnostisch, ein Branch und ein PR für den ganzen Slice.
+
+**Der nächste empirische Validierungsschritt findet außerhalb weiterer
+Agentenimplementierung statt:**
+
+Der komplette Weg läuft auf einer frischen Datenbank über den realen
+Schul-iPad-Verteilungsweg: Zelle wählen, Voraussetzung entscheiden,
+Schnellcheck und Vertiefung bearbeiten, freiwillig weiterlernen und Bonus
+ignorieren/akzeptieren. Dabei werden Formulierungen und Friktion beobachtet.
+
+Die Inhaltsarbeit wird parallel Bayern-first fortgesetzt: bestehende
+LehrplanPLUS-Inhalte breit durch gemeinsame Atome und Übungsitems abdecken.
+Andere Länder, Schulformen und schulische Mitschriften erhalten bevorzugt neue
+Curriculum-Bindings auf diese Wissensbasis. Lehrkräfte können Fehler oder
+didaktische Schwächen später als normale Inhaltsrevisionen verbessern; ihre
+Freigabe ist für den ersten Feldtest nicht erforderlich.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
@@ -388,7 +437,9 @@ Voraus. Erst etwas, das jemand benutzen kann — dann entscheidet Lernerfeedback
   **Accepted als Stufenentscheidung:** verbindliche Pilotregeln und klare
   Auslöser für Alignment-Schema, Reduktionsvokabular, Repräsentant sowie
   Release-/Trust-Vertrag. Enthält weiterführende Forschungsaufgaben, aber
-  keinen offenen Feldtest-Blocker.
+  keinen offenen Architekturblocker. Quellenbasierte Agentenprüfung ist der
+  anfängliche Inhaltsstandard; menschliches Fachfeedback verbessert spätere
+  Revisionen.
 - [2026-07-04 Hierarchical Domain Ontology](../adr/2026-07-04-hierarchical-domain-ontology-and-token-identity.md) —
   **Draft**, beantwortet die *lokale* Adresse.
 - [Learning Governance](https://github.com/zam-os/zam/blob/codex/learning-governance-adr-note/docs/adr/2026-07-05-learning-governance.md) —

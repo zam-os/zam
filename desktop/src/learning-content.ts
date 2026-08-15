@@ -698,6 +698,7 @@ export async function loadStudioData(): Promise<void> {
       ? currentVal
       : "all";
 
+    await loadBundledCells();
     refreshCardsList();
     updateUIForSelection();
   } catch (err) {
@@ -2308,3 +2309,150 @@ async function analyzeImportSource(): Promise<void> {
     btnImportSourceAnalyze.disabled = false;
   }
 }
+
+// ── Bundled Learning Cells UI ────────────────────────────────────────────────
+
+interface BundledCellItem {
+  id: string;
+  title: string;
+  gradeLabel: string;
+  description: string;
+  publisher: string;
+  atomCount: number;
+  inScopeAtomIds: string[];
+  installed: boolean;
+  enrolled: boolean;
+  cardCount: number;
+}
+
+let bundledCellsListEl: HTMLElement | null = null;
+
+export async function loadBundledCells(): Promise<void> {
+  if (!bundledCellsListEl) {
+    bundledCellsListEl = document.getElementById("bundled-cells-list");
+  }
+  if (!bundledCellsListEl) return;
+
+  try {
+    const res = await runBridge<{ success: boolean; cells: BundledCellItem[] }>(
+      "bundled-cells-list",
+      [],
+    );
+    const cells = res?.cells ?? [];
+    renderBundledCells(cells);
+  } catch (err) {
+    console.error("Failed to load bundled cells", err);
+  }
+}
+
+function renderBundledCells(cells: BundledCellItem[]): void {
+  if (!bundledCellsListEl) return;
+  bundledCellsListEl.replaceChildren();
+
+  const titleEl = document.getElementById("lbl-bundled-cells-title");
+  if (titleEl) titleEl.textContent = t("lbl_bundled_cells_title");
+  const descEl = document.getElementById("lbl-bundled-cells-desc");
+  if (descEl) descEl.textContent = t("lbl_bundled_cells_desc");
+
+  for (const cell of cells) {
+    const cardEl = document.createElement("div");
+    cardEl.className = "zam-card";
+    cardEl.style.padding = "10px 12px";
+    cardEl.style.border = "1px solid var(--border)";
+    cardEl.style.borderRadius = "8px";
+    cardEl.style.background = "var(--bg)";
+    cardEl.style.display = "flex";
+    cardEl.style.flexDirection = "column";
+    cardEl.style.gap = "6px";
+
+    const header = document.createElement("div");
+    header.style.display = "flex";
+    header.style.justifyContent = "space-between";
+    header.style.alignItems = "center";
+    header.style.gap = "8px";
+
+    const title = document.createElement("div");
+    title.style.fontWeight = "600";
+    title.style.fontSize = "0.88rem";
+    title.textContent = cell.title;
+
+    const badge = document.createElement("span");
+    badge.className = "card-status-badge";
+    badge.style.fontSize = "0.72rem";
+    badge.style.padding = "1px 6px";
+    badge.style.borderRadius = "4px";
+    badge.style.background = "var(--hover)";
+    badge.style.color = "var(--accent)";
+    badge.textContent = cell.gradeLabel;
+
+    header.append(title, badge);
+
+    const desc = document.createElement("div");
+    desc.style.fontSize = "0.78rem";
+    desc.style.color = "var(--muted)";
+    desc.textContent = cell.description;
+
+    const footer = document.createElement("div");
+    footer.style.display = "flex";
+    footer.style.justifyContent = "space-between";
+    footer.style.alignItems = "center";
+    footer.style.marginTop = "4px";
+
+    const countEl = document.createElement("span");
+    countEl.style.fontSize = "0.74rem";
+    countEl.style.color = "var(--muted)";
+    const inScopeCount = cell.inScopeAtomIds?.length ?? cell.atomCount;
+    countEl.textContent = tf("lbl_cell_atom_count", { count: inScopeCount });
+
+    const actionBtn = document.createElement("button");
+    actionBtn.type = "button";
+    actionBtn.className = cell.enrolled
+      ? "btn secondary-btn btn-xs"
+      : "btn primary-btn btn-xs";
+    actionBtn.textContent = cell.enrolled
+      ? t("lbl_cell_enrolled")
+      : t("btn_enrol_cell");
+
+    actionBtn.addEventListener("click", async () => {
+      if (cell.enrolled) {
+        alert(
+          tf("toast_cell_already_enrolled", { title: cell.title }),
+        );
+        return;
+      }
+      actionBtn.disabled = true;
+      actionBtn.textContent = "...";
+      try {
+        const enrolRes = await runBridge<{
+          success: boolean;
+          cardsCreated: number;
+          cardsReused: number;
+          alreadyEnrolled: boolean;
+        }>("bundled-cell-enrol", [cell.id]);
+
+        if (enrolRes?.alreadyEnrolled) {
+          alert(tf("toast_cell_already_enrolled", { title: cell.title }));
+        } else {
+          alert(
+            tf("toast_cell_enrolled", {
+              title: cell.title,
+              cards: enrolRes?.cardsCreated ?? 0,
+            }),
+          );
+        }
+        await loadStudioData();
+      } catch (err) {
+        alert(
+          `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+        );
+      } finally {
+        actionBtn.disabled = false;
+      }
+    });
+
+    footer.append(countEl, actionBtn);
+    cardEl.append(header, desc, footer);
+    bundledCellsListEl.appendChild(cardEl);
+  }
+}
+

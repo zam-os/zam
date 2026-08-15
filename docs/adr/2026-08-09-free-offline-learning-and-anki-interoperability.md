@@ -73,7 +73,8 @@ The product sequence for this zero-cost learning path is:
 
 This sequence does not delay the curated curriculum service already accepted
 by ADR 2026-07-26b. The fifth item is the broader Anki-like discovery and
-sharing surface, not the existing reviewed curriculum pipeline.
+sharing surface, not the existing source-grounded, versioned curriculum
+pipeline.
 
 The Android standalone phase is implemented through the same node-free mobile
 startup path as iPadOS: an unpaired launch opens `zam-local.db`, provisions it

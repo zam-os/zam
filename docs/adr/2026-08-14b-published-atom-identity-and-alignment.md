@@ -230,9 +230,29 @@ classification needs. The rest waits for the migration itself.
 
 Content correctness reaches the learner immediately. No anchor ships in the
 pilot without resolution against its primary source, and the selected cell
-needs a subject-matter review. A cell with a known missing prerequisite must be
-narrowed or labelled; the absence cannot be hidden behind the future release
-contract.
+needs a source-grounded content review. For the initial build, careful agent
+review against existing sources is the accepted quality threshold. A teacher
+may improve questions, answers and didactic reductions later; named teacher
+sign-off is not a publication or field-test gate. A cell with a known missing
+prerequisite must still be narrowed or labelled; the absence cannot be hidden
+behind the future release contract.
+
+As of 2026-08-15 the selected Realschule fixture resolves its two official
+LehrplanPLUS anchors (learning areas 65643 and 65854). Its enrolment scope
+excludes the quantitative formula/measurement path. The one installed but not
+enrolled Snellius bonus atom is separately grounded in the BOS Vorklasse
+learning area 119285; an earlier Gymnasium-11 binding was false and was removed.
+This closes the source and scope checks; it does **not** substitute automated
+assertions for source review. Multi-agent review against the recorded primary
+sources completes the pilot check; later expert feedback uses the normal
+content-revision path.
+
+Coverage proceeds Bayern-first. The shared atom and practice-item base should
+cover the Bavarian curricula broadly before equivalent curricula elsewhere are
+added as mappings to the same knowledge. School-specific notes may likewise be
+mapped onto existing atoms, creating new knowledge only where the substance is
+actually different. This is a direction for content expansion, not a claim
+that the current bounded Optik slice already covers all Bavarian curricula.
 
 ### Required implementation follow-up — **done 2026-08-15**
 

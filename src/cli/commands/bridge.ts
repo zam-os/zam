@@ -155,17 +155,25 @@ import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
   analyzeMonitor as handleAnalyzeMonitor,
+  assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
   createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
+  enrolBonusAtomHandler as handleEnrolBonusAtom,
+  enrolBundledCellHandler as handleEnrolBundledCell,
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
+  getPreconditionsHandler as handleGetPreconditions,
+  getPullForwardCandidatesHandler as handleGetPullForwardCandidates,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   listAssignmentsHandler as handleListAssignments,
+  listBonusCandidatesHandler as handleListBonusCandidates,
+  listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
+  pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
   revisionPreview as handleRevisionPreview,
   sessionOpen as handleSessionOpen,
@@ -1016,6 +1024,7 @@ bridgeCommand
   .command("get-review")
   .description("Get next review card with prompt (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
+  .option("--max-new <n>", "Session-local new-card budget")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
   .option(
     "--no-dynamic-question",
@@ -1032,6 +1041,7 @@ bridgeCommand
         const userId = await resolveUser(opts, db, { json: true });
         const result = await handleGetReview(db, {
           user: userId,
+          maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
@@ -1053,6 +1063,11 @@ bridgeCommand
   .option("--domain <domain>", "Filter cards by domain prefix")
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .option("--include-questions", "Include question content in response")
+  .option(
+    "--respect-workload",
+    "Apply learner workload limits and tier ordering",
+  )
+  .option("--max-new <n>", "Session-local new-card budget")
   .option("--no-resolve", "Skip resolving the token's source_link into context")
   .option(
     "--no-dynamic-question",
@@ -1067,6 +1082,8 @@ bridgeCommand
           domain: opts.domain,
           knowledgeContext: opts.knowledgeContext,
           includeQuestions: opts.includeQuestions,
+          respectWorkload: opts.respectWorkload === true,
+          maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
         });
@@ -7665,5 +7682,203 @@ bridgeCommand
         pulled: result.pulled === true,
         status: result.status,
       });
+    });
+  });
+
+// ── zam bridge bundled-cells-list / bundled-cell-enrol ──────────────────────
+
+bridgeCommand
+  .command("bundled-cells-list")
+  .description("List bundled learning cells and enrolment status (JSON)")
+  .option("--user <userId>", "User ID to check status for")
+  .option(
+    "--provider <providerId>",
+    "Curriculum provider — with a scope, answers whether a cell covers it",
+  )
+  .option("--school-type <schoolType>", "Curriculum school type")
+  .option("--grade <grade>", "Curriculum grade")
+  .option("--track <track>", "Curriculum track/Zweig")
+  .option("--subject <subject>", "Curriculum subject")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const grade =
+          opts.grade === undefined
+            ? undefined
+            : Number.parseInt(opts.grade, 10);
+        if (grade !== undefined && !Number.isInteger(grade)) {
+          jsonError(`--grade must be a whole number, got ${opts.grade}`);
+          return;
+        }
+        const result = await handleListBundledCells(db, {
+          user: opts.user,
+          provider: opts.provider,
+          schoolType: opts.schoolType,
+          grade,
+          track: opts.track,
+          subject: opts.subject,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("bundled-cell-enrol <cellId>")
+  .description("Install and enrol in a bundled learning cell (JSON)")
+  .option("--user <userId>", "User ID to enrol")
+  .action(async (cellId, opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleEnrolBundledCell(db, {
+          cellId,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge preconditions-get / precondition-assess ──────────────────────
+
+bridgeCommand
+  .command("preconditions-get")
+  .description(
+    "Get foundational precondition atoms and assessment status (JSON)",
+  )
+  .option("--cell <cellId>", "Filter to prerequisites of a specific cell")
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleGetPreconditions(db, {
+          cellId: opts.cell,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("precondition-assess <atomId> <decision>")
+  .description(
+    "Record self-assessment decision for a precondition atom ('known' | 'learn') (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (atomId, decision, opts) => {
+    await withDb(async (db) => {
+      try {
+        if (decision !== "known" && decision !== "learn") {
+          throw new Error("decision must be 'known' or 'learn'");
+        }
+        const result = await handleAssessPrecondition(db, {
+          atomId,
+          decision,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge pull-forward-candidates / pull-forward-execute ───────────────
+
+bridgeCommand
+  .command("pull-forward-candidates")
+  .description(
+    "List prioritized candidates that can be pulled forward into the queue (JSON)",
+  )
+  .option("--limit <count>", "Maximum number of candidates", parseInt)
+  .option("--no-include-future-due", "Exclude future-due review cards")
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleGetPullForwardCandidates(db, {
+          limit: opts.limit,
+          includeFutureDue: opts.includeFutureDue,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("pull-forward-execute")
+  .description("Pull forward specified cards into the review queue (--cards)")
+  .option("--cards <cardIds...>", "List of card IDs to pull forward")
+  .option("--user <userId>", "User ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const cardIds: string[] = opts.cards ?? [];
+        const result = await handlePullForwardCards(db, {
+          cardIds,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge bonus-candidates-list / bonus-atom-enrol ─────────────────────
+
+bridgeCommand
+  .command("bonus-candidates-list")
+  .description(
+    "List bonus learning candidate atoms sitting at the edge of current mastery (JSON)",
+  )
+  .option(
+    "--cell <cellId>",
+    "Curriculum cell ID (to exclude its in-scope atoms)",
+  )
+  .option("--limit <count>", "Maximum candidates to return", parseInt)
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleListBonusCandidates(db, {
+          cellId: opts.cell,
+          limit: opts.limit,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("bonus-atom-enrol <atomId>")
+  .description(
+    "Accept and enrol in a bonus atom by creating practice cards (JSON)",
+  )
+  .option("--user <userId>", "User ID")
+  .action(async (atomId, opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleEnrolBonusAtom(db, {
+          atomId,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
     });
   });

@@ -50,6 +50,41 @@ describe("mobile review session", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
+  it("accepts an explicit keep-going new-card budget and preserves fast checks", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-fast-check",
+      concept: "The normal is perpendicular.",
+      domain: "optik",
+      bloom_level: 1,
+      question: "How does the normal meet the surface?",
+      tier: "tier1_fast",
+      fast_check: JSON.stringify({
+        type: "binary_choice",
+        options: ["Perpendicular", "Parallel"],
+        correct_index: 0,
+      }),
+    });
+    await ensureCard(db, token.id, "student-9");
+
+    const closed = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await closed.start("student-9", { maxNew: 0 })).toBe(false);
+
+    const open = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await open.start("student-9", { maxNew: 1 })).toBe(true);
+    expect(open.progress).toEqual({ current: 1, total: 1 });
+    // Options are permuted per card so the correct answer is not always the
+    // first button; what has to hold is that the index still names the right
+    // text. Asserting the stored order here made this test pass only when the
+    // permutation happened to be the identity.
+    const fastCheck = open.currentItem?.fastCheck;
+    expect(fastCheck?.type).toBe("binary_choice");
+    expect(fastCheck?.options.slice().sort()).toEqual([
+      "Parallel",
+      "Perpendicular",
+    ]);
+    expect(fastCheck?.options[fastCheck.correctIndex]).toBe("Perpendicular");
+  });
+
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {
     const prerequisite = await createToken(db, {
       slug: "prerequisite",
@@ -251,5 +286,44 @@ describe("mobile review session", () => {
         idle.applyCardEdit({ question: "ignored" });
       }).not.toThrow();
     });
+  });
+
+  it("drops remaining cards of an assessed atom and remembers the decision", async () => {
+    const known = await createToken(db, {
+      slug: "a-known",
+      concept: "Known foundation",
+      domain: "optik",
+      bloom_level: 1,
+      atom_id: "atom-known",
+    });
+    const sibling = await createToken(db, {
+      slug: "b-known-sibling",
+      concept: "Same atom, other item",
+      domain: "optik",
+      bloom_level: 2,
+      atom_id: "atom-known",
+    });
+    const other = await createToken(db, {
+      slug: "z-other-atom",
+      concept: "Different atom",
+      domain: "optik",
+      bloom_level: 1,
+      atom_id: "atom-other",
+    });
+    await ensureCard(db, known.id, "student-9");
+    await ensureCard(db, sibling.id, "student-9");
+    await ensureCard(db, other.id, "student-9");
+
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage, () => 1_000);
+    expect(await session.start("student-9")).toBe(true);
+    expect(session.isAtomAssessed("atom-known")).toBe(false);
+    session.markAtomAssessed("atom-known");
+    expect(session.isAtomAssessed("atom-known")).toBe(true);
+
+    const summary = await session.dropAtom("atom-known");
+    expect(summary).toBeNull();
+    expect(session.currentItem?.atomId).toBe("atom-other");
+    expect(session.currentItem?.tokenId).toBe(other.id);
   });
 });

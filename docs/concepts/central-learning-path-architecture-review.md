@@ -7,6 +7,12 @@
 **Mitgelesen:** [central-learning-path-research.md](central-learning-path-research.md), laufender Kernel, Content-Service-ADRs  
 **Ausarbeitungen, auf die hier nur verwiesen wird:** [central-learning-path-identity.md](central-learning-path-identity.md) (Frage 0), [central-learning-path-refinement.md](central-learning-path-refinement.md) (Reduktion, Overlay-Abschluss, FSRS)
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Aussagen dieses Reviews über
+> Lehrkräfte oder Menschen als Qualitäts-/Publish-Gate sind superseded. Sie
+> beschreiben einen möglichen späteren Verbesserungsprozess. Der Startstandard
+> ist quellenbasierte Ausarbeitung nach bestem Agentenwissen mit nachvollziehbarer
+> Provenienz; Lehrkräfte können spätere Revisionen verbessern.
+
 Dieses Dokument ist kein zweiter Architektur-Entwurf. Es ist die Meinung zu den Themen, die der Draft setzt: was trägt, was schief sitzt, was ich weglassen oder verschieben würde.
 
 ---
@@ -24,7 +30,11 @@ Dieses Dokument ist kein zweiter Architektur-Entwurf. Es ist die Meinung zu den 
 
 ## Gesamteindruck
 
-Der Draft trifft die Produktgestalt. Eine offene, versionsgeführte Wissensbasis, Curricula als Overlays, statische Kacheln, Lehrer als Qualitätsgate, Lernen vollständig auf dem Gerät — das ist die richtige Architektur für ZAM, und sie beantwortet die offene Hosting-Frage aus ADR 2026-07-26b besser als ein Datenbank-Endpoint.
+Der Draft trifft die Produktgestalt. Eine offene, versionsgeführte Wissensbasis,
+Curricula als Overlays, statische Kacheln, nachvollziehbare und fortlaufend
+verbesserbare Curation sowie Lernen vollständig auf dem Gerät — das ist die
+richtige Architektur für ZAM, und sie beantwortet die offene Hosting-Frage aus
+ADR 2026-07-26b besser als ein Datenbank-Endpoint.
 
 Was ihn als Bauplan noch unsicher macht: Er packt zu viel in den Knoten (Alter, Lehrplan, Interaktionen, Medien, Identität), stellt eine Klassen-Schicht neben ein anonymes CDN, und vermischt Gedächtnismodell mit Kompetenzmodell. Die Vision ist größer als der erste lieferbare Schnitt. Das ist erlaubt — solange der Phasenplan das nicht verschleiert.
 
@@ -118,7 +128,13 @@ ULID als `id` ist in Ordnung als Zeile. Prerequisites, die auf Slugs zeigen (`"t
 
 **Gefällt mir als UX.** Für Schüler ist Tippen auf „zum Lot hin“ die richtige erste Geste. Die Taucher-Aufgabe ist eine echte Prüfungsfrage, keine Umformulierung der Definition. Cognitive Load: Extraneous Load runter, Retrieval häufig — das ist richtig gedacht.
 
-**Verbessern.** Im Schema werden die Checks zur zweiten Wahrheitsquelle neben `question` / `concept`. Dann driftet die Formulierung, und der Kernel-Prompter (Bloom 1–5) konkurriert mit einem eingebetteten Mini-LMS. Tier 1/2 sind *Darstellungen* desselben Atoms. Sie dürfen im Tile mitreisen, wenn eine Lehrkraft sie geprüft hat. Review muss ohne sie funktionieren. Freigabe über `S > 21 Tage` würde ich nicht bauen; das ist ein zweiter Scheduler.
+**Verbessern.** Im Schema werden die Checks zur zweiten Wahrheitsquelle neben
+`question` / `concept`. Dann driftet die Formulierung, und der Kernel-Prompter
+(Bloom 1–5) konkurriert mit einem eingebetteten Mini-LMS. Tier 1/2 sind
+*Darstellungen* desselben Atoms. Sie dürfen quellenbasiert und mit Provenienz im
+Tile mitreisen; Agenten- oder Menschenreviews können sie später verbessern.
+Review muss ohne sie funktionieren. Freigabe über `S > 21 Tage` würde ich nicht
+bauen; das ist ein zweiter Scheduler.
 
 Die Tier-2-Frage im Beispiel prüft Totalreflexion, nicht Snellius. Das ist kein Schönheitsfehler: sie hängt ein zweites Atom in die Prüfung. Entweder gehört sie an `wd:Q234943/…`, oder sie ist bewusst ein Transfer über zwei Knoten — dann darf sie nicht im Snellius-Token wohnen, als wäre sie seine Synthese.
 
@@ -150,7 +166,12 @@ Die Google-Maps-Kachelmetapher verführt zu räumlicher Nachbarschaft. Wissensna
 
 ## 6. Curation-Pipeline
 
-**Gefällt mir die Haltung.** „AI generiert Entwürfe — Lehrkräfte prüfen — Millionen profitieren“ ist dasselbe Prinzip wie ADR 2026-07-25, und es ist das einzige, das Schulmaterial tragen kann. Git für den Text, CI vor dem Tile, Signatur auf dem Artefakt: vernünftige Mechanik.
+**Gefällt mir die Haltung.** „Einmal quellenbasiert erstellen — fortlaufend
+verbessern — Millionen profitieren“ ist das präzisierte Prinzip aus ADR
+2026-07-25. Agenten können die erste Version erstellen; spätere Rückmeldungen
+von Lernenden, Lehrkräften oder anderen Experten werden einmal eingearbeitet und
+allen bereitgestellt. Git für den Text, CI vor dem Tile und Provenienz am
+Artefakt sind dafür vernünftige Mechanik.
 
 **Verbessern.** Der Draft legt Review *und* Release in Studio plus PR, als wäre das neu. ZAM hat die Trennung schon: Git beantwortet „ist der Text richtig?“, das Studio beantwortet „was geschieht mit den Karten?“. Merging darf niemandes Queue erreichen. Das fehlt im Diagramm zwischen „Freigegeben“ und „Build“.
 
@@ -237,7 +258,8 @@ Was ich behalten würde, auch wenn der Rest umgeschrieben wird:
 
 1. Statische, anonyme Kacheln als Hosting-Form.
 2. Curricula als Overlays über geteilten Atomen.
-3. Lehrer prüft, KI entwirft.
+3. Agenten erstellen quellenbasiert; Lernende, Lehrkräfte und Experten können
+   spätere Revisionen verbessern.
 4. Hard- und Soft-Kanten.
 5. Lernen und Scans nur auf dem Gerät.
 6. Schulheft als *lokaler* Anker an den Unterricht.

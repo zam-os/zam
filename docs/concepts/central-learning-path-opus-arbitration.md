@@ -24,6 +24,12 @@ durch Tests abgesichert (Abschnitt 4).
 > Repräsentant, Tier-Invariante und den Release-Vertrag — mit externer Evidenz
 > aus CASE 1.1 und LRMI und vier benannten Forschungsaufgaben.
 
+> **Spätere Owner-Klarstellung (2026-08-15):** Die hier erwähnte menschliche
+> Curation war als zukünftiger Verbesserungsprozess gemeint, nicht als Gate für
+> erste Inhalte oder den Feldtest. Quellenbasierte Agentenprüfung mit
+> nachvollziehbarer Provenienz genügt zunächst; Lehrkräfte können spätere
+> Revisionen verbessern.
+
 ---
 
 ## 0. Ergebnis vorweg
@@ -311,8 +317,9 @@ später falsch wird.
 
 **Test 15 (Quellenevidenz)** halte ich für den wertvollsten der Liste — er ist
 die Lehre aus den falschen Q-IDs in Maschinenform. Er ist aber ein
-*Publish-Gate für Inhalte*, kein Kernel-Persistenzvertrag. Er gehört in die
-Curation-Pipeline und sollte nicht den Kernel-Merge blockieren.
+*Publishing-Check für Quellenbezüge*, kein Kernel-Persistenzvertrag und kein
+menschliches Freigabe-Gate. Er gehört in die Curation-Pipeline und sollte nicht
+den Kernel-Merge blockieren.
 
 ---
 
@@ -326,7 +333,8 @@ Atom-ID, wenn das Lernziel substituierbar ist“) ist eine **redaktionelle
 Regel ohne technische Absicherung** — `attachKvtTile` prüft Substituierbarkeit
 nicht und kann es nicht. Bindet ein Tile-Autor zwei nicht austauschbare Ziele an
 eine ID, entsteht genau die falsche Gleichheit, die PAID vorgeworfen wurde. Der
-Schutz ist menschliches Review, nicht das ID-Schema. Der ADR sollte das sagen,
+Schutz ist eine explizite, quellenbasierte Curation-Entscheidung mit Provenienz
+(zunächst auch durch Agenten), nicht das ID-Schema. Der ADR sollte das sagen,
 statt eine Garantie zu behaupten — es ist dasselbe Überversprechen-Muster wie
 „100 % DSGVO“.
 
@@ -457,8 +465,8 @@ Nur an drei Stellen, alle Gewichtung statt Substanz:
    ist: ein abgesicherter Spike mit ehrlichem Etikett.
 2. **Der Benchmark in Test 14 ist verfrüht** und widerspricht seiner eigenen
    Zurückstellung von Skalenfragen.
-3. **Test 15 blockiert den falschen Gegenstand.** Er ist wichtig, aber ein
-   Curation-Gate, kein Kernel-Vertrag.
+3. **Test 15 blockiert den falschen Gegenstand.** Er ist wichtig, aber Teil des
+   zukünftigen Curation-Prozesses, kein Kernel-Vertrag und kein Menschen-Gate.
 
 In der Sache selbst: kein Widerspruch. Die Blocker sind real, und der Befund,
 der mich am meisten überzeugt hat, ist der, den man am leichtesten übersieht —

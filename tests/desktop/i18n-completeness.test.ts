@@ -277,6 +277,34 @@ const REQUIRED_KEYS = [
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "boot_fix_db",
+  // Central learning path field-test surface (cell selection, precondition
+  // self-assessment, keep-going, bonus offer). English and German are the
+  // reference pair; the other packs fall back until native review. These
+  // strings were machine-filled into es/fr/pt/zh/ja on the first pass and
+  // removed again — a learner-facing offer that has to be read exactly right
+  // ("not homework, just an offer") is the wrong place for a machine draft.
+  "lbl_bundled_cells_title",
+  "lbl_bundled_cells_desc",
+  "btn_bundled_cells",
+  "btn_enrol_cell",
+  "lbl_cell_atom_count",
+  "lbl_cell_enrolled",
+  "lbl_precondition_title",
+  "lbl_precondition_body",
+  "btn_precondition_known",
+  "btn_precondition_learn",
+  "lbl_keep_going_title",
+  "lbl_keep_going_body",
+  "btn_keep_going",
+  "btn_session_done",
+  "lbl_bonus_title",
+  "lbl_bonus_body",
+  "btn_bonus_accept",
+  "btn_bonus_skip",
+  // Cell precedence offer inside the curriculum wizard (ADR 2026-08-14
+  // Decision 10). Same reason: en/de are the reference pair.
+  "wizard_cell_offer_title",
+  "wizard_cell_offer_body",
   // Foundry Local setup ships English/German in this change; the remaining
   // locale packs deliberately fall back to English until native review.
   "foundry_local_title",

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-08-09T10:51:00Z
+timestamp: 2026-08-15T08:54:42.759Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -116,7 +116,35 @@ before the same atomic import runs. The token records `vision:<model>`
 provenance. Image import is online-only and unavailable when cloud vision
 is not configured.
 
+# Central learning-field commands
+
+The JSON bridge exposes the commit-controlled field-test path without a file or
+network import:
+
+- `bundled-cells-list` reports the four cells and per-learner
+  installed/enrolled status; `bundled-cell-enrol <cellId>` performs the
+  explicit install-then-enrol workflow idempotently.
+- `preconditions-get` and `precondition-assess <atomId> <known|learn>`
+  expose finite hard-precondition deferral.
+- `pull-forward-candidates` and `pull-forward-execute` implement the
+  learner-chosen keep-going step.
+- `bonus-candidates-list` and `bonus-atom-enrol` derive and accept a
+  prepared out-of-scope atom; accepting creates cards but no rating or score.
+
+`get-review --max-new <n>` lets a repeated-card surface carry its remaining
+session admission budget instead of resetting `maxNew` on every call.
+`get-reviews --respect-workload [--max-new <n>]` returns a bounded snapshot
+using the same workload and `tier1-first` rules as the kernel. Review results
+include `atomId`, `tier`, and a normalized `fastCheck` when present.
+Structured checks retain the stored editorial question and bypass dynamic
+question generation. Every command still writes stdout only through the
+bridge's JSON helpers.
+
 # Citations
+- [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
+- [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

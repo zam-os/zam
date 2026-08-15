@@ -20,6 +20,14 @@ export function describeDatabaseContract(
 
     beforeEach(async () => {
       ctx = await open();
+      // Drop first. On a file-backed SQLite this is a no-op, but the
+      // PostgreSQL run shares one database across runs: a suite that aborted
+      // mid-test left `items` behind and every later run failed on "relation
+      // already exists" — a red suite that says nothing about the code.
+      await ctx.db.exec(
+        `DROP TABLE IF EXISTS audit;
+         DROP TABLE IF EXISTS items;`,
+      );
       await ctx.db.exec(
         `CREATE TABLE items (
            id INTEGER PRIMARY KEY AUTOINCREMENT,

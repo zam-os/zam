@@ -25,7 +25,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 ## data-model
 
 - [Prerequisite Graph and Blocking](prerequisite-blocking.md) — Tokens form a directed prerequisite graph; blocking and unblocking of dependent cards is separate from FSRS math and coordinated atomically by the review-action kernel API.
-- [Token and Card Model](token-card-model.md) — A token is a shared atomic knowledge concept; a card is one user's FSRS and participation state for it — scheduling requires both a card and eligible published content.
+- [Token and Card Model](token-card-model.md) — ZAM separates learning objectives, alignments, curriculum bindings, shared practice items, and each learner's personal FSRS card state.
 
 ## protocol
 

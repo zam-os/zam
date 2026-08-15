@@ -19,7 +19,14 @@ export interface ReviewQueueOptions {
   buryNewSiblings?: boolean;
   buryReviewSiblings?: boolean;
   now?: Date;
+  domain?: string;
   knowledgeContext?: string;
+}
+
+export interface ReviewFastCheck {
+  type: "binary_choice";
+  options: string[];
+  correctIndex: number;
 }
 
 export interface ReviewQueueItem {
@@ -41,7 +48,21 @@ export interface ReviewQueueItem {
   contentChanged?: boolean;
   publishedBy?: string | null;
   publishedAt?: string | null;
+  atomId: string | null;
+  tier: string | null;
+  fastCheck: ReviewFastCheck | null;
 }
+
+/**
+ * Pilot rule `tier1-first` (field-test): a new Tier-2 item stays out of the
+ * queue while a new Tier-1 item of the same atom is still unreviewed.
+ *
+ * Enforced in the new-card SQL below, deliberately in one place. It first
+ * existed as a filter over the fetched batch, which agreed with the rule only
+ * as long as both items fell inside the same `LIMIT` window — a Tier-1 card
+ * pushed past the window would have admitted its Tier-2 sibling.
+ */
+export const TIER1_FIRST_RULE = "tier1-first";
 
 export interface ReviewQueue {
   items: ReviewQueueItem[];
@@ -74,6 +95,9 @@ interface CardRow {
   sibling_group: string | null;
   question_media_count: number | bigint;
   answer_media_count: number | bigint;
+  atom_id: string | null;
+  tier: string | null;
+  fast_check: string | null;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -136,7 +160,10 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
          (SELECT COUNT(*) FROM token_media tm
-           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
+         t.atom_id AS atom_id,
+         t.tier AS tier,
+         t.fast_check AS fast_check
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -150,6 +177,11 @@ export async function buildReviewQueue(
          AND c.detached_at IS NULL`;
 
   const dueParams: unknown[] = [options.userId, nowISO, nowISO];
+
+  if (options.domain) {
+    dueSql += " AND t.domain = ?";
+    dueParams.push(options.domain);
+  }
 
   if (options.knowledgeContext) {
     dueSql += ` AND EXISTS (
@@ -188,7 +220,10 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
          (SELECT COUNT(*) FROM token_media tm
-           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
+         t.atom_id AS atom_id,
+         t.tier AS tier,
+         t.fast_check AS fast_check
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -198,9 +233,32 @@ export async function buildReviewQueue(
          AND t.deprecated_at IS NULL
          AND t.maintenance_at IS NULL
          AND t.editorial_state = 'published'
-         AND c.detached_at IS NULL`;
+         AND c.detached_at IS NULL
+         AND NOT (
+           t.tier = 'tier2_synthesis'
+           AND t.atom_id IS NOT NULL
+           AND EXISTS (
+             SELECT 1
+               FROM cards tier1_card
+               JOIN tokens tier1_token ON tier1_token.id = tier1_card.token_id
+              WHERE tier1_card.user_id = c.user_id
+                AND tier1_token.atom_id = t.atom_id
+                AND tier1_token.tier = 'tier1_fast'
+                AND tier1_card.state = 'new'
+                AND tier1_card.blocked = 0
+                AND tier1_card.detached_at IS NULL
+                AND tier1_token.deprecated_at IS NULL
+                AND tier1_token.maintenance_at IS NULL
+                AND tier1_token.editorial_state = 'published'
+           )
+         )`;
 
   const newParams: unknown[] = [options.userId, nowISO];
+
+  if (options.domain) {
+    newSql += " AND t.domain = ?";
+    newParams.push(options.domain);
+  }
 
   if (options.knowledgeContext) {
     newSql += ` AND EXISTS (
@@ -303,6 +361,120 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     contentChanged,
     publishedBy: row.published_by ?? null,
     publishedAt: row.published_at ?? row.updated_at ?? null,
+    atomId: row.atom_id,
+    tier: row.tier,
+    fastCheck: presentFastCheck(
+      parseReviewFastCheck(row.fast_check),
+      `${row.token_id}:${row.due_at}`,
+    ),
+  };
+}
+
+/** 32-bit FNV-1a. Small, stable, and not a security primitive. */
+function seedHash(seed: string): number {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < seed.length; index++) {
+    hash ^= seed.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash >>> 0;
+}
+
+/**
+ * Order the options a learner sees, and move `correctIndex` with them.
+ *
+ * Every fast check currently authored puts the correct answer first. Rendered
+ * in stored order that is not a retrieval task: after two cards the learner
+ * has learned the button position, taps it without reading, and the rating
+ * that follows is evidence of nothing — worse than a missing check, because
+ * FSRS then schedules on it.
+ *
+ * Fixing the content alone would not hold; the next author defaults to index 0
+ * again. So the presentation permutes, and no surface can forget to.
+ *
+ * The permutation is **derived, not random**: the kernel performs no random
+ * operations, and a re-render inside one presentation must not move a button
+ * under a learner's finger. Seeding on the card's due date means the order is
+ * fixed while the card is being answered and differs the next time it comes
+ * round, so the position cannot be memorised either.
+ */
+export function presentFastCheck(
+  fastCheck: ReviewFastCheck | null,
+  seed: string,
+): ReviewFastCheck | null {
+  if (!fastCheck) return null;
+  const order = fastCheck.options.map((option, index) => ({ option, index }));
+  let hash = seedHash(seed);
+  for (let index = order.length - 1; index > 0; index--) {
+    // Draw from the high bits. Practice-item ids differ only in their last
+    // characters, and the low bit of an FNV hash barely moves with them: taking
+    // `hash % 2` put six of seven Optik cards in the same position, which is
+    // the tell this function exists to remove.
+    hash = Math.imul(hash ^ (hash >>> 15), 0x2c1b3c6d) >>> 0;
+    hash ^= hash >>> 13;
+    const target = (hash >>> 16) % (index + 1);
+    const swap = order[index]!;
+    order[index] = order[target]!;
+    order[target] = swap;
+  }
+  return {
+    type: fastCheck.type,
+    options: order.map((entry) => entry.option),
+    correctIndex: order.findIndex(
+      (entry) => entry.index === fastCheck.correctIndex,
+    ),
+  };
+}
+
+/**
+ * Parse the persisted, editorial fast-check payload into the review contract.
+ *
+ * Malformed optional metadata must never make the whole queue unavailable.
+ * Installation validation can report bad content separately; a learner still
+ * gets the ordinary question/answer card as the graceful fallback.
+ */
+export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
+  if (raw === null || raw === undefined) return null;
+  let value: unknown = raw;
+  if (typeof raw === "string") {
+    try {
+      value = JSON.parse(raw);
+    } catch {
+      return null;
+    }
+  }
+  if (!value || typeof value !== "object") return null;
+  const candidate = value as {
+    type?: unknown;
+    options?: unknown;
+    correct_index?: unknown;
+    correctIndex?: unknown;
+  };
+  if (candidate.type !== "binary_choice" || !Array.isArray(candidate.options)) {
+    return null;
+  }
+  const options = candidate.options;
+  if (
+    options.length < 2 ||
+    !options.every(
+      (option): option is string =>
+        typeof option === "string" && option.trim().length > 0,
+    )
+  ) {
+    return null;
+  }
+  const correctIndex = candidate.correct_index ?? candidate.correctIndex;
+  if (
+    !Number.isInteger(correctIndex) ||
+    (correctIndex as number) < 0 ||
+    (correctIndex as number) >= options.length
+  ) {
+    return null;
+  }
+  return {
+    type: "binary_choice",
+    options: [...options],
+    correctIndex: correctIndex as number,
   };
 }
 

@@ -42,7 +42,13 @@ afterEach(() => {
   while (cleanups.length > 0) (cleanups.pop() as () => void)();
 });
 
-describe("completeFirstRun", () => {
+/**
+ * Provisions a real library file through the mobile IPC stub, so it carries
+ * the same slow-runner cost as `connectCloudModel` and
+ * `applySchemaAndMigrations` (#297) — it timed out on `windows-arm64` in the
+ * same run. The number protects the runner, not the code.
+ */
+describe("completeFirstRun", { timeout: 30_000 }, () => {
   it("turns an empty database into one the learner can review from", async () => {
     const db = open();
     // What launch actually does on a brand-new install: the file exists but

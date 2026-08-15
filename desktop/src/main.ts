@@ -105,6 +105,19 @@ import {
   removeConfirmCommand,
   removePreviewCommand,
 } from "./study-card-actions.js";
+import {
+  type BonusOffer,
+  type PreconditionOffer,
+  bonusBecause,
+  bonusCandidatesCommand,
+  bonusEnrolCommand,
+  keepGoingCardIds,
+  matchUnassessedPrecondition,
+  preconditionAssessCommand,
+  preconditionsListCommand,
+  pullForwardCandidatesCommand,
+  pullForwardExecuteCommand,
+} from "./study-offers.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
 // learning-content.ts and curriculum-wizard.ts now import these directly
@@ -344,11 +357,18 @@ interface BridgeCard {
   concept: string;
   domain: string;
   bloomLevel: number;
-  state: number;
+  state: string;
   dueAt: string;
   sourceLink?: string;
   context?: string;
   media?: BridgeMedia[];
+  atomId?: string | null;
+  tier?: string | null;
+  fastCheck?: {
+    type: "binary_choice";
+    options: string[];
+    correctIndex: number;
+  } | null;
 }
 
 interface BridgeMedia {
@@ -400,6 +420,13 @@ let evaluationRequestId = 0;
 let revealInProgress = false;
 let reviewActionInProgress = false;
 let cardLoadInProgress = false;
+let pendingReviewPayload: ReviewPayload | null = null;
+let preconditionCache: PreconditionOffer[] | null = null;
+const assessedAtomsThisSession = new Set<string>();
+let bonusIgnoredThisSession = false;
+let sessionNewRemaining = 0;
+let sessionExtraNewRemaining = 0;
+let sessionCardsRemaining = 0;
 
 const SAFE_REVIEW_MEDIA_TYPES = new Set([
   "image/png",
@@ -5731,6 +5758,10 @@ function clearDashboardError(): void {
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
+  if (sessionCardsRemaining <= 0) {
+    void finishStudySession();
+    return;
+  }
   const requestId = ++questionRequestId;
   cardLoadInProgress = true;
   activeCard = null;
@@ -5743,6 +5774,9 @@ async function loadNextCard(
     finishAiWait();
     finishQuestionWait();
 
+    hideStudyOffer();
+    document.getElementById("study-active-card")?.classList.remove("hidden");
+
     // Reset study screen elements
     document.getElementById("revealed-box")!.classList.add("hidden");
     document.getElementById("npu-loading")!.classList.add("hidden");
@@ -5754,6 +5788,7 @@ async function loadNextCard(
     const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
     textarea.value = "";
     textarea.disabled = true;
+    resetFastCheckAnswer();
 
     setModelAttributionBadge("question-model-badge", null);
 
@@ -5774,10 +5809,14 @@ async function loadNextCard(
     // interleaved) — the device default never filters reviews.
     // Studio renders the card, so it is the surface that asks for the media
     // bytes; agents reading the same command keep a text-only payload.
-    const reviewArgs =
-      options.dynamicQuestion === false
-        ? ["--no-dynamic-question", "--media"]
-        : ["--media"];
+    const reviewArgs = [
+      "--media",
+      "--max-new",
+      sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+    ];
+    if (options.dynamicQuestion === false) {
+      reviewArgs.unshift("--no-dynamic-question");
+    }
     if (isLlmEnabled && options.dynamicQuestion !== false) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
@@ -5786,47 +5825,19 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      void finishStudySession();
+      await offerEmptyQueueChoices(requestId);
       return;
     }
 
-    activeCard = payload.card;
-    activePromptQuestion = payload.prompt.question;
-    resolvedContextContent = payload.resolvedContext?.content || null;
+    const precondition = await unassessedPreconditionFor(payload.card.atomId);
+    if (requestId !== questionRequestId) return;
+    if (precondition) {
+      pendingReviewPayload = payload;
+      showPreconditionOffer(precondition);
+      return;
+    }
 
-    cardsReviewedThisSession++;
-
-    // Set progress string
-    const totalSessionCards = Math.max(
-      sessionStartedDue,
-      sessionRatingTally.done + 1,
-      cardsReviewedThisSession,
-    );
-    document.getElementById("card-progress")!.textContent =
-      `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
-
-    // Set domain badge
-    const domainBadge = document.getElementById("domain-badge")!;
-    domainBadge.textContent = activeCard.domain || "general";
-
-    // Set Bloom taxonomy badge
-    const bloomBadge = document.getElementById("bloom-badge")!;
-    const bloomVal = activeCard.bloomLevel || 1;
-    bloomBadge.textContent = BLOOM_LEVEL_NAMES[currentLocale]?.[bloomVal] || BLOOM_LEVEL_NAMES["en"]?.[bloomVal] || `Level ${bloomVal}`;
-    bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
-
-    const translationLoading = document.getElementById("translation-loading")!;
-    translationLoading.classList.add("hidden");
-
-    // Set question text and model attribution
-    questionText.textContent = activePromptQuestion;
-    renderReviewMedia("question-media", activeCard.media, "question");
-    setModelAttributionBadge(
-      "question-model-badge",
-      questionAttributionLabel(payload.questionSource, payload.questionModel),
-    );
-    textarea.disabled = false;
-    textarea.focus();
+    presentFetchedCard(payload);
   } catch (err) {
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
@@ -5857,7 +5868,7 @@ async function submitAndReveal() {
   let evaluationSuccessful = false;
 
   // Run LLM evaluation if enabled and user wrote an answer
-  if (isLlmEnabled && userAnswer.length > 0) {
+  if (isLlmEnabled && userAnswer.length > 0 && !activeCard.fastCheck) {
     document.getElementById("npu-loading")!.classList.remove("hidden");
     isWaitingForAi = true;
 
@@ -6844,6 +6855,340 @@ async function jumpToFullEditor(): Promise<void> {
   }
 }
 
+// ── FIELD-TEST OFFERS (precondition / keep-going / bonus) ──────────────
+function bridgeCall(call: { cmd: string; args: string[] }): [string, string[]] {
+  return [call.cmd, call.args];
+}
+
+async function unassessedPreconditionFor(
+  atomId: string | null | undefined,
+): Promise<PreconditionOffer | null> {
+  if (!atomId || assessedAtomsThisSession.has(atomId)) return null;
+  if (!preconditionCache) {
+    try {
+      const listed = await runBridge<{ candidates?: PreconditionOffer[] }>(
+        ...bridgeCall(preconditionsListCommand()),
+      );
+      preconditionCache = listed.candidates ?? [];
+    } catch (err) {
+      console.warn("Failed to load precondition candidates:", err);
+      preconditionCache = [];
+    }
+  }
+  return matchUnassessedPrecondition(atomId, preconditionCache);
+}
+
+function hideStudyOffer(): void {
+  document.getElementById("study-offer")?.classList.add("hidden");
+}
+
+function showStudyOffer(spec: {
+  title: string;
+  body: string;
+  actions: Array<{
+    label: string;
+    primary?: boolean;
+    onClick: () => void;
+  }>;
+}): void {
+  const offer = document.getElementById("study-offer");
+  const titleEl = document.getElementById("study-offer-title");
+  const bodyEl = document.getElementById("study-offer-body");
+  const actionsEl = document.getElementById("study-offer-actions");
+  if (!offer || !titleEl || !bodyEl || !actionsEl) return;
+
+  document.getElementById("study-active-card")?.classList.add("hidden");
+  document.getElementById("session-summary")?.classList.add("hidden");
+  titleEl.textContent = spec.title;
+  bodyEl.textContent = spec.body;
+  actionsEl.replaceChildren();
+  for (const action of spec.actions) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = action.primary
+      ? "btn primary-btn btn-large"
+      : "btn secondary-btn btn-large";
+    btn.textContent = action.label;
+    btn.addEventListener("click", action.onClick);
+    actionsEl.appendChild(btn);
+  }
+  offer.classList.remove("hidden");
+}
+
+function presentFetchedCard(payload: ReviewPayload): void {
+  if (!payload.card || !payload.prompt) return;
+  hideStudyOffer();
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  document.getElementById("study-footer")?.classList.remove("hidden");
+
+  pendingReviewPayload = null;
+  activeCard = payload.card;
+  activePromptQuestion = payload.prompt.question;
+  resolvedContextContent = payload.resolvedContext?.content || null;
+  cardsReviewedThisSession++;
+  sessionCardsRemaining = Math.max(0, sessionCardsRemaining - 1);
+  if (activeCard.state === "new") {
+    if (sessionNewRemaining > 0) sessionNewRemaining -= 1;
+    else if (sessionExtraNewRemaining > 0) sessionExtraNewRemaining -= 1;
+  }
+
+  const totalSessionCards = Math.max(
+    sessionStartedDue,
+    sessionRatingTally.done + 1,
+    cardsReviewedThisSession,
+  );
+  document.getElementById("card-progress")!.textContent =
+    `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
+
+  const domainBadge = document.getElementById("domain-badge")!;
+  domainBadge.textContent = activeCard.domain || "general";
+
+  const tierBadge = document.getElementById("tier-badge")!;
+  tierBadge.hidden = !activeCard.tier;
+  tierBadge.textContent =
+    activeCard.tier === "tier1_fast"
+      ? t("lbl_tier_fast")
+      : activeCard.tier === "tier2_synthesis"
+        ? t("lbl_tier_synthesis")
+        : activeCard.tier || "";
+
+  const bloomBadge = document.getElementById("bloom-badge")!;
+  const bloomVal = activeCard.bloomLevel || 1;
+  bloomBadge.textContent =
+    BLOOM_LEVEL_NAMES[currentLocale]?.[bloomVal] ||
+    BLOOM_LEVEL_NAMES["en"]?.[bloomVal] ||
+    `Level ${bloomVal}`;
+  bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
+
+  document.getElementById("translation-loading")?.classList.add("hidden");
+  document.getElementById("question-text")!.textContent = activePromptQuestion;
+  renderReviewMedia("question-media", activeCard.media, "question");
+  setModelAttributionBadge(
+    "question-model-badge",
+    questionAttributionLabel(payload.questionSource, payload.questionModel),
+  );
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement;
+  textarea.disabled = false;
+  renderFastCheckAnswer(activeCard.fastCheck ?? null);
+  if (!activeCard.fastCheck) textarea.focus();
+}
+
+function resetFastCheckAnswer(): void {
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement | null;
+  const options = document.getElementById("fast-check-options");
+  const reveal = document.getElementById("btn-reveal-answer");
+  if (textarea) textarea.hidden = false;
+  if (reveal) reveal.hidden = false;
+  if (options) {
+    options.replaceChildren();
+    options.hidden = true;
+  }
+  const tier = document.getElementById("tier-badge");
+  if (tier) tier.hidden = true;
+}
+
+function renderFastCheckAnswer(
+  fastCheck: BridgeCard["fastCheck"],
+): void {
+  if (!fastCheck) return;
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement;
+  const options = document.getElementById("fast-check-options")!;
+  const reveal = document.getElementById("btn-reveal-answer")!;
+  textarea.hidden = true;
+  reveal.hidden = true;
+  options.hidden = false;
+  options.replaceChildren();
+  for (const [index, label] of fastCheck.options.entries()) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn secondary-btn btn-large";
+    button.textContent = label;
+    button.dataset.fastCheckIndex = String(index);
+    button.addEventListener("click", () => {
+      if (revealInProgress) return;
+      textarea.value = label;
+      for (const option of options.querySelectorAll<HTMLButtonElement>(
+        "button",
+      )) {
+        option.disabled = true;
+      }
+      void submitAndReveal();
+    });
+    options.appendChild(button);
+  }
+}
+
+function showPreconditionOffer(precondition: PreconditionOffer): void {
+  document.getElementById("question-text")!.textContent = "";
+  renderReviewMedia("question-media", [], "question");
+  showStudyOffer({
+    title: t("lbl_precondition_title"),
+    body: tf("lbl_precondition_body", { title: precondition.title }),
+    actions: [
+      {
+        label: t("btn_precondition_known"),
+        onClick: () => {
+          void decidePrecondition(precondition.atomId, "known");
+        },
+      },
+      {
+        label: t("btn_precondition_learn"),
+        primary: true,
+        onClick: () => {
+          void decidePrecondition(precondition.atomId, "learn");
+        },
+      },
+    ],
+  });
+}
+
+async function decidePrecondition(
+  atomId: string,
+  decision: "known" | "learn",
+): Promise<void> {
+  try {
+    await runBridge(...bridgeCall(preconditionAssessCommand(atomId, decision)));
+  } catch (err) {
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  preconditionCache = null;
+  assessedAtomsThisSession.add(atomId);
+  if (decision === "learn" && pendingReviewPayload) {
+    presentFetchedCard(pendingReviewPayload);
+    return;
+  }
+  pendingReviewPayload = null;
+  await loadNextCard();
+}
+
+async function offerEmptyQueueChoices(requestId: number): Promise<void> {
+  try {
+    const listed = await runBridge<{
+      candidates?: Array<{
+        cardId: string;
+        reason: "precondition_buried" | "future_due" | "new_in_scope";
+      }>;
+    }>(...bridgeCall(pullForwardCandidatesCommand()));
+    if (requestId !== questionRequestId) return;
+    const selectedCandidates = (listed.candidates ?? []).slice(0, 5);
+    const cardIds = keepGoingCardIds(selectedCandidates);
+    const extraNew = selectedCandidates.filter(
+      (candidate) => candidate.reason === "new_in_scope",
+    ).length;
+    if (cardIds.length > 0) {
+      showStudyOffer({
+        title: t("lbl_keep_going_title"),
+        body: t("lbl_keep_going_body"),
+        actions: [
+          {
+            label: t("btn_session_done"),
+            onClick: () => {
+              void offerBonusOrFinish(requestId);
+            },
+          },
+          {
+            label: t("btn_keep_going"),
+            primary: true,
+            onClick: () => {
+              void acceptKeepGoing(cardIds, extraNew);
+            },
+          },
+        ],
+      });
+      return;
+    }
+    await offerBonusOrFinish(requestId);
+  } catch (err) {
+    console.warn("Failed to load keep-going candidates:", err);
+    await offerBonusOrFinish(requestId);
+  }
+}
+
+async function acceptKeepGoing(
+  cardIds: string[],
+  extraNew: number,
+): Promise<void> {
+  try {
+    await runBridge(...bridgeCall(pullForwardExecuteCommand(cardIds)));
+  } catch (err) {
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  sessionExtraNewRemaining += extraNew;
+  hideStudyOffer();
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  await loadNextCard();
+}
+
+async function offerBonusOrFinish(requestId: number): Promise<void> {
+  if (bonusIgnoredThisSession) {
+    void finishStudySession();
+    return;
+  }
+  try {
+    const listed = await runBridge<{ candidates?: BonusOffer[] }>(
+      ...bridgeCall(bonusCandidatesCommand()),
+    );
+    if (requestId !== questionRequestId) return;
+    const bonus = listed.candidates?.[0];
+    if (!bonus) {
+      void finishStudySession();
+      return;
+    }
+    showStudyOffer({
+      title: t("lbl_bonus_title"),
+      body: tf("lbl_bonus_body", {
+        title: bonus.title,
+        because: bonusBecause(bonus.restsOnTitles ?? []),
+        unlocks: bonus.unlockCount,
+      }),
+      actions: [
+        {
+          label: t("btn_bonus_skip"),
+          onClick: () => {
+            bonusIgnoredThisSession = true;
+            void finishStudySession();
+          },
+        },
+        {
+          label: t("btn_bonus_accept"),
+          primary: true,
+          onClick: () => {
+            void acceptBonus(bonus.atomId);
+          },
+        },
+      ],
+    });
+  } catch (err) {
+    console.warn("Failed to load bonus candidates:", err);
+    void finishStudySession();
+  }
+}
+
+async function acceptBonus(atomId: string): Promise<void> {
+  try {
+    await runBridge(...bridgeCall(bonusEnrolCommand(atomId)));
+  } catch (err) {
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  bonusIgnoredThisSession = true;
+  void finishStudySession();
+}
+
 // ── SESSION COMPLETION / SUMMARY ─────────────────────────────────────────
 function resetSessionTally(): void {
   sessionRatingTally.done = 0;
@@ -6853,10 +7198,30 @@ function resetSessionTally(): void {
   sessionSummaryVisible = false;
 }
 
+async function configureSessionWorkload(): Promise<void> {
+  try {
+    const result = await runBridge<{ settings: StudyWorkloadSettings }>(
+      "study-workload-get",
+    );
+    sessionNewRemaining = result.settings.maxNew;
+    sessionCardsRemaining = result.settings.maxReviews;
+  } catch (error) {
+    console.warn("Failed to load study workload for session:", error);
+    sessionNewRemaining = STUDY_PRESET_VALUES.balanced.maxNew;
+    sessionCardsRemaining = STUDY_PRESET_VALUES.balanced.maxReviews;
+  }
+  sessionExtraNewRemaining = 0;
+}
+
 function prepareStudyViewForSession(): void {
+  hideStudyOffer();
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-footer")?.classList.remove("hidden");
+  pendingReviewPayload = null;
+  preconditionCache = null;
+  assessedAtomsThisSession.clear();
+  bonusIgnoredThisSession = false;
   resetSessionTally();
 }
 
@@ -6914,6 +7279,8 @@ async function finishStudySession(): Promise<void> {
   closeInlineEditor();
   if (isStudyConfirmOpen()) hideStudyConfirm();
   resetDiscussionUi();
+  hideStudyOffer();
+  pendingReviewPayload = null;
   activeCard = null;
   updateReviewControlState();
 
@@ -7047,9 +7414,10 @@ window.addEventListener("DOMContentLoaded", () => {
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
     void (async () => {
       prepareStudyViewForSession();
+      await configureSessionWorkload();
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
-      loadNextCard();
+      await loadNextCard();
     })();
   });
 

@@ -16,6 +16,7 @@ import {
 import {
   commitTextImport,
   createToken,
+  enrolBundledCell,
   ensureCard,
   getCard,
   getPrerequisites,
@@ -110,6 +111,70 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.cards[0].bloomVerb).toBe("Remember");
     expect(res2.cards[1].question).toBe("Explain 2.");
     expect(res2.cards[1].bloomVerb).toBe("Understand");
+  });
+
+  it("applies session admission, tier ordering, and structured fast checks on learner surfaces", async () => {
+    await enrolBundledCell(db, "thomas", "de-by:realschule-optik");
+
+    const closed = await getReview(db, {
+      user: "thomas",
+      maxNew: 0,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(closed.hasReview).toBe(false);
+
+    const next = await getReview(db, {
+      user: "thomas",
+      maxNew: 1,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(next.card?.tier).toBe("tier1_fast");
+    // The position is deliberately not asserted: every authored fast check
+    // stores the correct answer first, and shipping it there would let the
+    // learner tap by position instead of recalling. What must hold is that the
+    // index still points at the correct *text*.
+    const shown = next.card?.fastCheck;
+    expect(shown?.type).toBe("binary_choice");
+    expect(shown?.options).toHaveLength(2);
+    const stored = (await db
+      .prepare("SELECT fast_check FROM tokens WHERE id = ?")
+      .get(next.card?.tokenId)) as { fast_check: string };
+    const raw = JSON.parse(stored.fast_check) as {
+      options: string[];
+      correct_index: number;
+    };
+    expect(shown?.options?.slice().sort()).toEqual(raw.options.slice().sort());
+    expect(shown?.options?.[shown.correctIndex]).toBe(
+      raw.options[raw.correct_index],
+    );
+
+    const workloadBatch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+      respectWorkload: true,
+      maxNew: 20,
+    });
+    expect(workloadBatch.cards).toHaveLength(3);
+    expect(
+      workloadBatch.cards.every((card) => card.tier === "tier1_fast"),
+    ).toBe(true);
+    expect(
+      workloadBatch.cards.every(
+        (card) => card.fastCheck?.type === "binary_choice",
+      ),
+    ).toBe(true);
+
+    const unboundedBatch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(unboundedBatch.cards).toHaveLength(6);
   });
 
   it("getReview inlines media bytes only for a rendering surface", async () => {

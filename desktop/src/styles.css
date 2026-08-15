@@ -2095,6 +2095,14 @@ textarea::placeholder {
   font-weight: 600;
 }
 
+.study-offer-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 /* Util Helpers */
 .loading-pulse {
   animation: dotsPulseAnimation 1.2s infinite alternate ease-in-out;
@@ -3022,6 +3030,32 @@ textarea::placeholder {
   border-radius: 4px;
   padding: 8px 10px;
   margin-bottom: 12px;
+}
+
+/* The reviewed cell, offered above the generic topic list. */
+.wizard-cell-offer {
+  border: 1px solid var(--clr-accent-purple);
+  border-radius: 6px;
+  padding: 12px;
+  margin-bottom: 14px;
+}
+
+.wizard-cell-offer-title {
+  font-weight: 600;
+  margin: 0 0 6px;
+}
+
+.wizard-cell-offer-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  padding-top: 8px;
+}
+
+.wizard-cell-offer-detail {
+  font-size: 0.8rem;
+  color: var(--clr-text-secondary);
 }
 
 .wizard-step-body {

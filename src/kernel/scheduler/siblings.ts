@@ -57,7 +57,12 @@ export async function burySiblingCards(
           AND (
             (state = 'new' AND ? = 1) OR
             (state = 'review' AND ? = 1)
-          )`,
+          )
+          -- A day-long sibling bury must not overwrite a precondition claim:
+          -- doing so would shorten a three-week deferral to tomorrow and lose
+          -- the record that the learner claimed the atom at all. Narrow today
+          -- (KVT items carry no Anki binding), but the invariant is the point.
+          AND (buried_reason IS NULL OR buried_reason = 'sibling')`,
     )
     .run(
       until,

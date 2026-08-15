@@ -181,8 +181,8 @@ adjustments:
    standard ontology for general knowledge), richer graph filtering — big
    enough for **its own ADR**; explicitly out of scope here. Decision 4's
    `/` separator is forward-compatible with it. (Note: *shared curated
-   learning content* — teacher review once, serve many — is a separate
-   product decision, not this ontology question; see
+   learning content* — create once, improve continuously, serve many — is a
+   separate product decision, not this ontology question; see
    [2026-07-25-shared-curated-learning-content.md](2026-07-25-shared-curated-learning-content.md).)
 2. **Doctor interaction model & task plumbing** (interactive flow, `--fix`,
    dry-run default, task discovery) — to be fixed in the implementation

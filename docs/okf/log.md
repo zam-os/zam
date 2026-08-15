@@ -1,5 +1,14 @@
 # Log
 
+## 2026-08-15
+
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-08-09
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

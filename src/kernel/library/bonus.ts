@@ -13,6 +13,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { ensureCard } from "../models/card.js";
 
 export interface BonusCandidate {
   atomId: string;
@@ -23,6 +24,8 @@ export interface BonusCandidate {
   reachabilityCount: number;
   /** The atoms already held that make this one offerable — the "because". */
   restsOn: string[];
+  /** Titles for `restsOn`, same order, for the learner-facing sentence. */
+  restsOnTitles: string[];
 }
 
 export interface BonusOptions {
@@ -80,9 +83,16 @@ export async function heldAtomIds(
           AND t.atom_id IS NOT NULL
           AND c.reps >= 1
           AND c.blocked = 0
+          AND c.detached_at IS NULL
+          AND t.deprecated_at IS NULL
+          AND t.maintenance_at IS NULL
+          AND t.editorial_state = 'published'
           AND t.id = (
             SELECT id FROM tokens r
              WHERE r.atom_id = t.atom_id
+               AND r.deprecated_at IS NULL
+               AND r.maintenance_at IS NULL
+               AND r.editorial_state = 'published'
              ORDER BY r.id LIMIT 1
           )`,
     )
@@ -205,6 +215,23 @@ export async function bonusCandidates(
   const held = await heldAtomIds(db, userId);
   const inScope = new Set(options.inScopeAtomIds);
   const edges = await hardEdges(db);
+  if (
+    options.limit !== undefined &&
+    (!Number.isInteger(options.limit) || options.limit < 1)
+  ) {
+    throw new Error("bonus candidate limit must be a positive integer");
+  }
+
+  const enrolledRows = (await db
+    .prepare(
+      `SELECT DISTINCT t.atom_id AS atom_id
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+        WHERE c.user_id = ?
+          AND t.atom_id IS NOT NULL`,
+    )
+    .all(userId)) as Array<{ atom_id: string }>;
+  const enrolled = new Set(enrolledRows.map((row) => row.atom_id));
 
   const requirements = new Map<string, string[]>();
   for (const edge of edges) {
@@ -217,24 +244,40 @@ export async function bonusCandidates(
   const reach = reachabilityCounts(edges);
 
   const atoms = (await db
-    .prepare("SELECT id, title FROM learning_atoms ORDER BY id")
+    .prepare(
+      `SELECT a.id, a.title
+         FROM learning_atoms a
+        WHERE EXISTS (
+          SELECT 1 FROM tokens t
+           WHERE t.atom_id = a.id
+             AND t.deprecated_at IS NULL
+             AND t.maintenance_at IS NULL
+             AND t.editorial_state = 'published'
+        )
+        ORDER BY a.id`,
+    )
     .all()) as Array<{ id: string; title: string }>;
+  const titleById = new Map(atoms.map((atom) => [atom.id, atom.title]));
 
   const candidates: BonusCandidate[] = [];
   for (const atom of atoms) {
-    if (held.has(atom.id) || inScope.has(atom.id)) continue;
+    if (held.has(atom.id) || enrolled.has(atom.id) || inScope.has(atom.id)) {
+      continue;
+    }
     const needs = requirements.get(atom.id) ?? [];
     // An atom with no prerequisites has nothing to rest on; offering it is not
     // an edge-of-the-known suggestion, so it is left to explicit search.
     if (needs.length === 0) continue;
     if (!needs.every((id) => held.has(id))) continue;
 
+    const restsOn = [...needs].sort();
     candidates.push({
       atomId: atom.id,
       title: atom.title,
       unlockCount: unlocks.get(atom.id) ?? 0,
       reachabilityCount: reach.get(atom.id) ?? 0,
-      restsOn: [...needs].sort(),
+      restsOn,
+      restsOnTitles: restsOn.map((id) => titleById.get(id) ?? id),
     });
   }
 
@@ -246,4 +289,99 @@ export async function bonusCandidates(
   );
 
   return options.limit ? candidates.slice(0, options.limit) : candidates;
+}
+
+export interface EnrolBonusResult {
+  success: boolean;
+  atomId: string;
+  cardsCreated: number;
+  cardIds: string[];
+}
+
+/**
+ * Enrol a learner in a bonus atom by creating cards for its practice items.
+ *
+ * Eligibility is re-checked here rather than trusted from the caller. The one
+ * safety property the bonus surface has is that an offer stands on foundations
+ * the learner demonstrably holds; a stale list, a replayed request or a UI bug
+ * would otherwise drop them into an atom they cannot do, which is the dead end
+ * {@link bonusCandidates} exists to avoid. Only hard edges gate — the same rule
+ * as the derivation.
+ */
+export async function enrolBonusAtom(
+  db: Database,
+  userId: string,
+  atomId: string,
+): Promise<EnrolBonusResult> {
+  if (!userId.trim()) {
+    throw new Error("userId is required to enrol in bonus atom");
+  }
+  if (!atomId.trim()) {
+    throw new Error("atomId is required to enrol in bonus atom");
+  }
+
+  return db.transaction(async (tx) => {
+    const needs = (await tx
+      .prepare(
+        `SELECT requires_id FROM atom_prerequisites
+          WHERE atom_id = ? AND kind = 'hard' ORDER BY requires_id`,
+      )
+      .all(atomId)) as Array<{ requires_id: string }>;
+    if (needs.length === 0) {
+      throw new Error(
+        `Atom ${atomId} is not offerable as a bonus: it rests on no hard prerequisite`,
+      );
+    }
+
+    const held = await heldAtomIds(tx, userId);
+    const missing = needs
+      .map((row) => row.requires_id)
+      .filter((id) => !held.has(id));
+    if (missing.length > 0) {
+      throw new Error(
+        `Atom ${atomId} is not offerable to ${userId}: ` +
+          `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} not ` +
+          `held yet. A bonus never opens a door the learner cannot walk through.`,
+      );
+    }
+
+    const tokens = (await tx
+      .prepare(
+        `SELECT id FROM tokens
+          WHERE atom_id = ?
+            AND deprecated_at IS NULL
+            AND maintenance_at IS NULL
+            AND editorial_state = 'published'
+          ORDER BY id ASC`,
+      )
+      .all(atomId)) as Array<{ id: string }>;
+
+    if (tokens.length === 0) {
+      throw new Error(`No tokens found for atom: ${atomId}`);
+    }
+
+    let cardsCreated = 0;
+    const cardIds: string[] = [];
+
+    for (const token of tokens) {
+      const existing = (await tx
+        .prepare("SELECT id FROM cards WHERE token_id = ? AND user_id = ?")
+        .get(token.id, userId)) as { id: string } | undefined;
+
+      if (!existing) {
+        const card = await ensureCard(tx, token.id, userId);
+        cardsCreated++;
+        cardIds.push(card.id);
+      } else {
+        cardIds.push(existing.id);
+      }
+    }
+
+    return {
+      success: true,
+      atomId,
+      cardsCreated,
+      cardIds,
+    };
+  });
 }

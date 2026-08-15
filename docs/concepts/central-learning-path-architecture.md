@@ -7,9 +7,16 @@
 - [ADR 2026-08-14: Five-Object Learning Model and Reactive Scheduling](../adr/2026-08-14-central-learning-atoms-and-identity.md) — **Accepted und für den Feldtest finalisiert.** Persönliche Lernevidenz bleibt dauerhaft; die Kompatibilitätsprojektion zur späteren zentralen Wissensbasis ist neu aufbaubar.
 - [ADR 2026-08-14b: Published Atom Identity and Alignment Semantics](../adr/2026-08-14b-published-atom-identity-and-alignment.md) — **Accepted als Stufenentscheidung.** Gebündelte Repo-Fixtures sind Pilotdaten; öffentliche Identität, Trust und Provenienz werden erst an der ausdrücklich benannten Publikationsgrenze verbindlich. Bei Widerspruch haben die ADRs Vorrang vor den Spike-Formen weiter unten.
 - [ADR 2026-07-26b: Central Curriculum Content Service: Content Only, Pulled Forward](../adr/2026-07-26b-central-curriculum-content-service.md)
-- [ADR 2026-07-25: Shared Curated Learning Content — Review Once, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
+- [ADR 2026-07-25: Shared Curated Learning Content — Create Once, Improve Continuously, Serve Many](../adr/2026-07-25-shared-curated-learning-content.md)
 - [ADR 2026-07-04: Closed-Group Learning Library: Curation, Privacy and Deployment](../adr/2026-07-04-multi-learner-shared-knowledge.md)
 - [ADR 2026-07-02: LehrplanPLUS Curriculum Import Wizard](../adr/2026-07-02-lehrplanplus-import-wizard.md)
+
+> **Owner-Klarstellung vom 2026-08-15:** Die weiter unten entworfene
+> Curation-Pipeline beschreibt den zukünftigen Verbesserungsprozess, kein
+> menschliches Freigabe-Gate. Für den Aufbau genügen zunächst quellenbasierte,
+> nach bestem Wissen durch Agenten ausgearbeitete Inhalte. Lehrkräfte können
+> spätere Revisionen verbessern. Die Abdeckung wächst Bayern-first; andere
+> Lehrpläne und Schulmitschriften werden möglichst auf dieselben Atome gemappt.
 
 ---
 
@@ -53,7 +60,7 @@ Die Architektur erzwingt eine strikte physische und logische Trennung der Datenk
 │ • Lehrplan-Taxonomien (LehrplanPLUS Bayern, KMK, etc. mit Prüfungsrelevanz-Flags)        │
 │ • Übungsitems / Practice Items (Tier 1 Fast Checks, Tier 2 Synthese-Fragen)              │
 │ • Multimodale Ressourcen (YouTube Timestamps, PhET, GeoGebra, Audio, Bilder)             │
-│ • Lehrer-/Experten-Signaturen & Revisionsgeschichte (Git-basiert)                        │
+│ • Quellen-/Provenienznachweise, optionale Expertenattestierung, Revisionsgeschichte      │
 └────────────────────────────────────────────┬─────────────────────────────────────────────┘
                                              │ Statischer Kachel-Download (HTTP GET)
                                              ▼

@@ -1,6 +1,6 @@
-# Shared Curated Learning Content — Review Once, Serve Many
+# Shared Curated Learning Content — Create Once, Improve Continuously, Serve Many
 
-**Status:** Accepted
+**Status:** Accepted; process intent clarified 2026-08-15
 **Date:** 2026-07-25
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -21,6 +21,14 @@
 content versioning, privacy and deployment — it supplies the "central
 library schema" this ADR lists as a non-goal)
 
+> **Owner clarification (2026-08-15):** The curation sequence below describes
+> how shared content can improve over time. It is not a teacher-approval gate
+> for building, field-testing or publishing initial content. Source-grounded
+> agents may create the first useful version to the best of their knowledge;
+> teachers and other experts can improve later revisions. Coverage of Bavarian
+> curricula comes first, while other curricula and school notes should map to
+> the same knowledge wherever their substance matches.
+
 ---
 
 ## Context
@@ -28,18 +36,18 @@ library schema" this ADR lists as a non-goal)
 Learning content — atomic cards grounded in a curriculum or a trusted source —
 is **expensive to get right** and **cheap to reuse**.
 
-A good card needs:
+A good card benefits from:
 
 - grounding in an official or trusted source (e.g. LehrplanPLUS, a textbook);
 - atomicity (one recallable unit);
 - a fair Bloom level and domain;
 - wording a learner can actually answer from memory;
-- human judgment about what *must* be remembered vs. looked up.
+- editorial judgment about what *must* be remembered vs. looked up.
 
-Teachers (or other domain experts) are uniquely good at that last step. Paying
-for their time **once**, then shipping the result to every learner, is far more
-efficient than asking every device to regenerate the same material with a large
-model on every import.
+Teachers and other domain experts can contribute particularly valuable
+classroom and didactic judgment. When that expertise becomes available, its
+improvements should be made **once** and then shared with every learner. Its
+absence does not prevent a source-grounded agent-produced first version.
 
 There is a second, practical cost: **time**. Device-side generation of learning
 cards (curriculum text → many atomic proposals via local, cloud, or agent
@@ -67,7 +75,7 @@ of learners should share.
 This ADR is **not** the deferred hierarchical-domain / ontology decision
 (titles ADR Open Question 1). That question is about *how tokens are named and
 grouped in the graph*. This ADR is about *how shared learning material is
-produced, quality-gated, and amortized*.
+produced, improved, and amortized*.
 
 Ontology and curation may meet later (a shared library still needs stable
 identity and domains), but they solve different problems:
@@ -90,20 +98,23 @@ is treated as **shared infrastructure**, not as disposable LLM output on each
 device. A central (or workspace-published) **Lehrplan / content library** is the
 intended long-term source of truth for that material.
 
-### 2. Quality cost is paid once; value is shared forever
+### 2. Improvement cost is paid once; value is shared forever
 
 The preferred pipeline for curriculum cards is:
 
-1. **Author or generate** a draft (human, AI-assisted, or hybrid).
-2. **Teacher / expert review** — improve wording, prune fluff, fix Bloom level,
-   confirm grounding in the official source.
-3. **Publish once** into a shared library (or team/school workspace).
-4. **Every learner** receives the reviewed tokens and only creates **personal
+1. **Author or generate** a source-grounded draft (agent, human, or hybrid).
+2. **Check what can be checked now** — source resolution, scope, internal
+   consistency and multi-agent review.
+3. **Publish the current best version** into a shared library (or team/school
+   workspace).
+4. **Improve continuously** when learners, teachers or other experts report
+   errors or better formulations; publish those changes as explicit revisions.
+5. **Every learner** reuses the shared tokens and creates only **personal
    cards** (FSRS state) against them.
 
-Step 2 is the expensive step for **quality**. Steps 1–3 together are the
-expensive steps for **latency and compute**. Neither must be re-run for every
-learner.
+The work in steps 1–4 is shared rather than repeated on every device. This is a
+target process for scaling quality, not a requirement that every item pass a
+specific human role before learners may use it.
 
 ### 3. Device-side AI remains for personal work, not for canonical curricula
 
@@ -123,13 +134,14 @@ This restates the kernel model with product emphasis:
 - **Token** = shared concept (question, concept text, domain, source link, …).
 - **Card** = per-user scheduling state.
 
-A teacher-reviewed token appears in many queues only because many cards point
-at it — not because the content was duplicated per learner.
+A shared token appears in many queues only because many cards point at it — not
+because the content was duplicated per learner. Its provenance and revision
+history show how it was produced and improved.
 
 ### 5. Import wizards stay grounded; they should prefer the library when it exists
 
 LehrplanPLUS-style wizards remain valid to **discover** topics and attach
-`source_link`s. When a shared library already holds reviewed cards for a
+`source_link`s. When a shared library already holds source-grounded cards for a
 topic, ZAM should prefer **subscribing / cloning cards** over regenerating
 proposals — both for quality and so import completes in **seconds, not
 minutes**. Exact APIs and UX for that library are out of scope for this ADR;
@@ -137,8 +149,8 @@ the principle is binding for future design.
 
 ### 6. Generation cost is amortized at publish time, not at learn time
 
-If AI assists drafting, that run happens on the **publisher** side (teacher
-tooling, editorial pipeline, or a one-time batch job), not on the critical
+If AI assists drafting, that run happens on the **publisher** side (agent batch,
+teacher tooling, editorial pipeline, or a one-time job), not on the critical
 path of every learner's "Import curriculum" click. Learner import of covered
 topics is library attach + card creation, not LLM generation.
 
@@ -148,7 +160,8 @@ topics is library attach + card creation, not LLM generation.
 
 ### Positive
 
-- Teacher effort scales: one review cycle benefits every class and year.
+- Any later teacher or expert effort scales: one improvement benefits every
+  class and year.
 - Content quality rises without every learner needing a strong LLM or expert
   judgment.
 - **Import latency drops**: covered topics attach from the library instead of
@@ -159,15 +172,17 @@ topics is library attach + card creation, not LLM generation.
 
 ### Negative / trade-offs
 
-- Requires publishing, review, and distribution infrastructure that does not
-  fully exist yet (central Lehrplan DB / school workspace content packs).
+- A mature library benefits from publishing, review, and distribution
+  infrastructure that does not fully exist yet (central Lehrplan DB / school
+  workspace content packs); this does not block bundled or otherwise controlled
+  first versions.
 - Until that library is populated, device-side import remains the practical
   path — field tests will still generate drafts locally **and still wait on
   generation** for uncovered topics.
 - Editorial process (who may publish, versioning, conflict) needs a later ADR
   once the library surface is designed.
-- Risk of over-centralization: personal and experimental content must remain
-  easy without a review gate.
+- Risk of over-centralization: personal, experimental and early shared content
+  must remain easy without mandatory expert approval.
 
 ### Explicit non-goals (for now)
 
@@ -183,8 +198,9 @@ topics is library attach + card creation, not LLM generation.
 - **Always generate on device with the strongest available model.** Burns
   quota, produces uneven quality, re-pays the same cost for every learner, and
   keeps import **slow**. Rejected as the *default* for shared curricula.
-- **No human review — trust LLM output.** Too unreliable for school-facing
-  material; contradicts the product goal of trustworthy active recall.
+- **Publish raw, ungrounded model output.** Too unreliable for school-facing
+  material. Rejected in favour of named sources, automated checks, multi-agent
+  scrutiny and explicit revisions. This does not imply mandatory human review.
 - **Fold this into the ontology ADR.** Confuses graph structure with content
   economics; keeps both decisions hard to ship. Separated deliberately.
 - **Only OKF-style repo imports.** OKF serves *repo* knowledge for ZAM
@@ -197,5 +213,6 @@ topics is library attach + card creation, not LLM generation.
 
 | Date | State | Note |
 |------|-------|------|
-| 2026-07-25 | Accepted | Product principle: learning content is curated shared value; teacher review once, serve many. Distinct from deferred domain ontology. |
+| 2026-07-25 | Accepted | Product principle: learning content is curated shared value; improvement effort is shared rather than repeated per learner. Distinct from deferred domain ontology. |
 | 2026-07-25 | Accepted (amended) | Co-equal motivation: central library removes multi-minute device-side generation from learner import — quality *and* speed. |
+| 2026-08-15 | Accepted (clarified) | Source-grounded agents may publish the initial version. Teacher/expert input is a later improvement process, not a build, field-test or publication gate. Coverage proceeds Bayern-first; other curricula and school notes map to shared knowledge where possible. |

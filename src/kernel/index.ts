@@ -157,8 +157,35 @@ export {
   commitTextImport,
   previewTextImport,
 } from "./import/text-import.js";
-export type { BonusCandidate, BonusOptions } from "./library/bonus.js";
-export { bonusCandidates, heldAtomIds } from "./library/bonus.js";
+export type {
+  BonusCandidate,
+  BonusOptions,
+  EnrolBonusResult,
+} from "./library/bonus.js";
+export {
+  bonusCandidates,
+  enrolBonusAtom,
+  heldAtomIds,
+} from "./library/bonus.js";
+export type {
+  BundledCellEnrolResult,
+  BundledCellInfo,
+  BundledCellStatus,
+  CurriculumScope,
+} from "./library/bundled-cells.js";
+export {
+  BUNDLED_CELLS,
+  BUNDLED_TILES,
+  enrolBundledCell,
+  findBundledCellsForScope,
+  getBundledCell,
+  getBundledCellEnrolment,
+  getBundledCellsWithStatus,
+  getBundledCellTile,
+  isBundledCellInstalled,
+  listBundledCells,
+  needsGenericCurriculumImport,
+} from "./library/bundled-cells.js";
 export type {
   InstallKvtResult,
   KvtAtom,
@@ -171,6 +198,30 @@ export {
   installKvtTile,
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
+export type {
+  AssessPreconditionInput,
+  AssessPreconditionResult,
+  PreconditionCandidate,
+} from "./library/precondition-assessment.js";
+export {
+  assessPrecondition,
+  getPreconditionCandidates,
+  liftPreconditionBury,
+  PRECONDITION_BURIED_REASON,
+  PRECONDITION_HORIZON_DAYS,
+  PRECONDITION_READY_REASON,
+  PRECONDITION_STAGGER_DAYS,
+  preconditionBuriedUntil,
+} from "./library/precondition-assessment.js";
+export type {
+  PullForwardCandidate,
+  PullForwardOptions,
+  PullForwardResult,
+} from "./library/pull-forward.js";
+export {
+  getPullForwardCandidates,
+  pullForwardCards,
+} from "./library/pull-forward.js";
 export type {
   PublishRevisionInput,
   PublishRevisionResult,
@@ -547,11 +598,17 @@ export type {
 export { createFSRS } from "./scheduler/fsrs.js";
 export { interleave } from "./scheduler/interleaver.js";
 export type {
+  ReviewFastCheck,
   ReviewQueue,
   ReviewQueueItem,
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
-export { buildReviewQueue } from "./scheduler/queue.js";
+export {
+  buildReviewQueue,
+  parseReviewFastCheck,
+  presentFastCheck,
+  TIER1_FIRST_RULE,
+} from "./scheduler/queue.js";
 export type { BurySiblingResult } from "./scheduler/siblings.js";
 export {
   burySiblingCards,

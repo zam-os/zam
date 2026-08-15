@@ -297,6 +297,12 @@
               </button>
             </div>
 
+            <div id="queue-offer" class="card stack" hidden>
+              <p id="queue-offer-title" class="t-headline"></p>
+              <p id="queue-offer-body" class="t-secondary"></p>
+              <div id="queue-offer-actions" class="stack"></div>
+            </div>
+
             <p class="group-title" style="margin-top: var(--gap-5)"
                data-i18n="up_next">Als Nächstes</p>
             <ul id="queue" class="queue"></ul>
@@ -321,6 +327,12 @@
                  but finding and fixing what you already have is the thing a
                  learner does far more often. -->
             <div id="library-browse" class="stack">
+              <div class="card stack">
+                <p class="group-title" data-i18n="learning_paths_heading">Kuratierte Lernpfade</p>
+                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle einen Lernpfad und starte ohne Import.</p>
+                <div id="bundled-cells-list" class="stack"></div>
+                <p id="bundled-cells-status" class="status" aria-live="polite"></p>
+              </div>
               <input
                 id="library-search"
                 type="text"
@@ -976,6 +988,13 @@
           </div>
           <p id="review-progress" class="t-footnote"></p>
 
+          <div id="review-offer" class="card stack" hidden>
+            <h2 id="review-offer-title" class="t-headline"></h2>
+            <p id="review-offer-body" class="t-secondary"></p>
+            <div id="review-offer-actions" class="stack"></div>
+          </div>
+
+          <div id="review-card" class="stack">
           <!-- Fixing a card is a review-time job: a wrong-language or
                nonsense question is almost always noticed while answering it,
                and sending the learner to the Library tab to fix it means
@@ -1046,7 +1065,7 @@
             </button>
           </div>
 
-          <label class="field">
+          <label id="review-answer-field" class="field">
             <span data-i18n="your_answer">Deine Antwort</span>
             <textarea
               id="review-answer"
@@ -1054,6 +1073,7 @@
               data-i18n-placeholder="answer_ph"
             ></textarea>
           </label>
+          <div id="review-fast-check-options" class="stack" hidden></div>
           <button id="reveal-answer" class="btn primary" type="button" data-i18n="reveal_answer">
             Antwort aufdecken
           </button>
@@ -1091,6 +1111,7 @@
           </div>
 
           <p id="review-status" class="status" aria-live="polite"></p>
+          </div>
           <hr class="divider" />
           <button id="stop-review" class="btn plain" type="button" data-i18n="stop_session">
             Sitzung beenden

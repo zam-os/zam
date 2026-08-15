@@ -1,12 +1,28 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "de-by:realschule-optik",
-  "version": "2026.08.1",
+  "version": "2026.08.2",
   "title": "Optik und Lichtbrechung (Realschule Bayern)",
-  "description": "Geerdetes Referenz-KVT-Paket für Realschule Bayern Physik (Zweig I Klasse 7 und Zweig II/III Klasse 8)",
+  "description": "Geerdetes Referenz-KVT-Paket für Realschule Bayern Physik (Zweig I Klasse 7 und Zweig II/III Klasse 8) mit einem nicht eingeschriebenen, optionalen BOS-Bonusatom",
   "publisher": "ZAM Curriculum Working Group",
-  "published_at": "2026-08-14T18:00:00Z",
-  "signature": "ed25519:test_reference_signature_mock",
+  "published_at": "2026-08-15T10:45:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65643",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 7 (I), Lernbereich 2 Optik"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/65854",
+      "checked": "2026-08-15",
+      "label": "Realschule Physik 8 (II/III), Lernbereich 2 Optik"
+    },
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/lernbereich/119285",
+      "checked": "2026-08-15",
+      "label": "BOS Physik Vorklasse, Lernbereich 5 Grundlagen der Optik — optionales Snellius-Bonusatom"
+    }
+  ],
   "atoms": [
     {
       "id": "01K3X9A7R4B8C1D2E3F4G5A001",
@@ -33,8 +49,8 @@
           "grade": 7,
           "track": "I",
           "subject": "physik",
-          "topic_code": "PH7-LB2",
-          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "topic_code": "65643",
+          "topic_title": "Optik",
           "exam_relevant": true
         },
         {
@@ -43,8 +59,8 @@
           "grade": 8,
           "track": "II_III",
           "subject": "physik",
-          "topic_code": "PH8-LB2",
-          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "topic_code": "65854",
+          "topic_title": "Optik",
           "exam_relevant": true
         }
       ],
@@ -113,8 +129,8 @@
           "grade": 7,
           "track": "I",
           "subject": "physik",
-          "topic_code": "PH7-LB2",
-          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "topic_code": "65643",
+          "topic_title": "Optik",
           "exam_relevant": true
         },
         {
@@ -123,8 +139,8 @@
           "grade": 8,
           "track": "II_III",
           "subject": "physik",
-          "topic_code": "PH8-LB2",
-          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "topic_code": "65854",
+          "topic_title": "Optik",
           "exam_relevant": true
         }
       ],
@@ -186,8 +202,8 @@
           "grade": 7,
           "track": "I",
           "subject": "physik",
-          "topic_code": "PH7-LB2",
-          "topic_title": "Ausbreitung und Brechung des Lichts",
+          "topic_code": "65643",
+          "topic_title": "Optik",
           "exam_relevant": true
         },
         {
@@ -196,8 +212,8 @@
           "grade": 8,
           "track": "II_III",
           "subject": "physik",
-          "topic_code": "PH8-LB2",
-          "topic_title": "Licht und Schatten, Reflexion und Brechung",
+          "topic_code": "65854",
+          "topic_title": "Optik",
           "exam_relevant": true
         }
       ],
@@ -255,11 +271,11 @@
       "curricula": [
         {
           "provider": "lehrplanplus-bayern",
-          "school_type": "gymnasium",
-          "grade": 11,
+          "school_type": "berufsoberschule",
+          "grade": 10,
           "subject": "physik",
-          "topic_code": "PH11-LB1",
-          "topic_title": "Wellenoptik",
+          "topic_code": "119285",
+          "topic_title": "Grundlagen der Optik",
           "exam_relevant": true
         }
       ],

@@ -39,20 +39,26 @@ everything below follows from it.
 
 ### Relationship to ADR 2026-07-25
 
-[2026-07-25 "Review Once, Serve Many"](2026-07-25-shared-curated-learning-content.md)
+[2026-07-25 "Create Once, Improve Continuously, Serve Many"](2026-07-25-shared-curated-learning-content.md)
 establishes the **product principle**: curated learning content is a
-first-class shared asset, the expensive review step is paid once, tokens are
-shared while cards stay personal, and generation cost is amortised at publish
-time. It explicitly lists *"defining the schema of the central Lehrplan
-database"* among its non-goals.
+first-class shared asset, each improvement is paid once, tokens are shared
+while cards stay personal, and generation cost is amortised at publish time.
+It explicitly lists *"defining the schema of the central Lehrplan database"*
+among its non-goals.
 
 **This ADR supplies exactly that missing half** for one concrete setting — a
-closed group such as a company. Where 2026-07-25 says content should be
-reviewed once and served to many, this one specifies *how*: the editorial
-states and who may move between them, what a published version is, what happens
-to learners when content changes, where the data lives, who may read it, and
-how a member is identified. Read 2026-07-25 for **why**, this one for **how**;
-neither overrides the other.
+closed group such as a company. Where 2026-07-25 says content should be created
+once, improved continuously and served to many, this one specifies *how*: the
+editorial states and who may move between them, what a published version is,
+what happens to learners when content changes, where the data lives, who may
+read it, and how a member is identified. Read 2026-07-25 for **why**, this one
+for **how**; neither overrides the other.
+
+**Scope clarification (2026-08-15):** This workflow describes the mature
+closed-group publishing process. It is not a prerequisite for source-grounded
+agent content, the bounded curriculum field test, or the first Bayern-first
+library build. Reviewers may be agents or humans. Teachers are a valuable later
+improvement channel, not a mandatory approval role.
 
 ### What "quality" actually means here
 
@@ -131,7 +137,7 @@ that carry an editorial state and a content version. Learners consume
 another learner's cards or review logs — in Deployment A because that data
 never leaves the machine, in Deployment B because RLS forbids it (Decision 6).
 
-### 2. An editorial workflow, because that is what quality control is
+### 2. A future editorial workflow for controlled shared releases
 
 ```
 draft ──► in-review ──► published ──► deprecated
@@ -142,18 +148,20 @@ draft ──► in-review ──► published ──► deprecated
 - **Anyone in the group may author a draft or propose a change** to an existing
   token. Learning surfaces friction better than curating does: the person who
   just failed a badly worded card is the best-placed to report it.
-- **Only curators publish.** Publishing is the quality gate and the only way
-  content reaches other learners' queues.
+- **Only the publisher/curator role promotes a version** once this shared
+  workflow exists. That is an authorization and distribution boundary, not a
+  requirement for teacher or expert approval.
 - **Deprecated, never deleted.** `review_logs` reference tokens; retiring a
   token stops scheduling new reviews and hides it from search, but history
   stays intact.
-- Provenance is recorded — author, reviewer, timestamp — so a learner can see
-  who stands behind a card. This is the same discipline OKF articles already
-  follow (ADR 2026-07-17); an OKF article is the natural `source_link` target
-  for a curated token.
+- Provenance is recorded — authoring agent or human, any reviewers, timestamp
+  and sources — so a learner can see how a card was produced. This is the same
+  discipline OKF articles already follow (ADR 2026-07-17); an OKF article is
+  the natural `source_link` target for a curated token.
 
-**Where the loop runs (project owner, 2026-07-25): content in git, release in
-the Studio.** Authoring and peer review happen as they already do for OKF —
+**Where the mature loop runs (project owner, 2026-07-25; scope clarified
+2026-08-15): content in git, release in the Studio.** Authoring and review can
+happen as they already do for OKF —
 articles and token drafts in a repository, reviewed through pull requests,
 where diffs, history and reviewer identity are solved problems and no new UI is
 needed. What the Studio owns is the **release step**: a curator sees what a
@@ -161,10 +169,11 @@ merge would change for learners, classifies each change (Decision 3), and
 publishes. Merging a pull request therefore does not by itself reach anybody's
 queue — publishing does.
 
-The split follows the two different questions being asked. "Is this text
-correct?" is a review question git answers well. "What should happen to the
-people who already learned the old version?" is a scheduling question only ZAM
-can answer, and it needs the curator in front of ZAM.
+The split follows the two different questions being asked. "What evidence and
+review produced this text?" is a versioning question git answers well. "What
+should happen to the people who already learned the old version?" is a
+scheduling question only ZAM can answer, and it needs the curator in front of
+ZAM.
 
 **Corollary: concurrent curation needs no design of its own** (project owner,
 2026-07-25). Two curators editing the same token is a **merge conflict**,
@@ -226,9 +235,10 @@ curator to classify the change; ZAM never guesses materiality from a text diff
 and never picks the safe-looking option on the curator's behalf. Defaulting to
 cosmetic would let a real correction slip through and leave learners
 confidently wrong; defaulting to material would reset cards for typo fixes
-until people stopped trusting the library. The small friction per publish *is*
-the quality gate — it is the moment a curator has to think about the people who
-already learned it.
+until people stopped trusting the library. The small friction per publish is a
+**scheduling-safety step** in the future workflow: it makes the publisher think
+about people who already learned the prior version. It is not a subject-matter
+approval gate.
 
 ### 4. Roles
 
@@ -794,22 +804,25 @@ remains is one engineering note rather than a decision:
   runbook for granting Entra groups access.
 - **Phase D — assignments** (Decision 10). Aggregates are not part of the
   plan (Decision 11).
-- **Phase E — a broad curriculum library**, gated on real experience from the
-  closed group: read-only content, no learning state, little identity. See
+- **Phase E — a broad curriculum library**, informed by real experience from
+  the closed group: read-only content, no learning state, little identity. See
   "Direction beyond the pilot" below for the constraint it puts on Phase B.
 
 ## Direction beyond the pilot: a content source is not a workspace
 
 Once the closed group has produced real experience, the natural next step is a
 much broader library — a **Bayern-Lehrplan database**, say (project owner,
-2026-07-25). Not built here, and deliberately gated on that experience, but
-recorded because it constrains what Phase B may assume.
+2026-07-25). Not built here and originally sequenced after that experience, but
+recorded because it constrains what Phase B may assume. The later owner
+clarification permits a Bayern-first source-grounded library to grow in
+parallel rather than wait for this closed-group process.
 
 Its shape is different from Deployment B in one decisive way: **the learning
 data really stays with the learner.** A curriculum library is a *source of good
-content* — so that an agent grounds itself in reviewed material instead of
-inventing a curriculum on every device — and nothing more. It holds no cards,
-no review logs, no sessions, and needs no notion of who is learning from it.
+content* — so that an agent grounds itself in versioned source material instead
+of inventing a curriculum on every device — and nothing more. It holds no
+cards, no review logs, no sessions, and needs no notion of who is learning from
+it.
 
 | | Deployment B (company) | Curriculum library (future) |
 |---|---|---|
