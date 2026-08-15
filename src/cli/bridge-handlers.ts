@@ -65,6 +65,7 @@ import {
   pairCommands,
   parseReviewFastCheck,
   prepareSessionSynthesis,
+  presentFastCheck,
   publishTokenRevision,
   pullForwardCards,
   readMonitorLog,
@@ -388,8 +389,16 @@ export async function getReviewsBatch(
         continue;
       }
 
+      // The queue path already permuted the options; the getDueCards fallback
+      // has not, so it goes through the same presentation with the same seed.
+      // A raw fast check here would ship the correct answer in first position,
+      // which every authored item currently is.
       const fastCheck =
-        card.fastCheck ?? parseReviewFastCheck(token.fast_check);
+        card.fastCheck ??
+        presentFastCheck(
+          parseReviewFastCheck(token.fast_check),
+          `${card.tokenId}:${card.dueAt}`,
+        );
       let resolvedQuestion = token.question;
       if (
         isLlmEnabled &&

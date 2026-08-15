@@ -72,11 +72,17 @@ describe("mobile review session", () => {
     const open = new MobileReviewSession(db, new MemoryStorage(), () => 1);
     expect(await open.start("student-9", { maxNew: 1 })).toBe(true);
     expect(open.progress).toEqual({ current: 1, total: 1 });
-    expect(open.currentItem?.fastCheck).toEqual({
-      type: "binary_choice",
-      options: ["Perpendicular", "Parallel"],
-      correctIndex: 0,
-    });
+    // Options are permuted per card so the correct answer is not always the
+    // first button; what has to hold is that the index still names the right
+    // text. Asserting the stored order here made this test pass only when the
+    // permutation happened to be the identity.
+    const fastCheck = open.currentItem?.fastCheck;
+    expect(fastCheck?.type).toBe("binary_choice");
+    expect(fastCheck?.options.slice().sort()).toEqual([
+      "Parallel",
+      "Perpendicular",
+    ]);
+    expect(fastCheck?.options[fastCheck.correctIndex]).toBe("Perpendicular");
   });
 
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {

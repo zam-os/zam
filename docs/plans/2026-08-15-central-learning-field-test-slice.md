@@ -175,6 +175,15 @@ bonus atoms are excluded from later offers even before their first review;
 root atoms and atoms with unheld hard prerequisites cannot be accepted through
 the enrolment endpoint.
 
+**One-tap checks are permuted before they are shown.** All eighteen authored
+fast checks store the correct answer first; rendered in stored order they were
+a position, not a retrieval task — and the rating that followed would have
+been fabricated evidence FSRS then scheduled on. The permutation happens once,
+in the queue, so no surface can forget it, and it is derived from the card
+rather than random so a re-render never moves a button under a learner's
+finger. Content may keep storing the answer first; the presentation is what
+guarantees the property.
+
 ## Next validation and improvement steps
 
 - [x] Source-grounded agent review of the selected Realschule questions,
@@ -186,9 +195,10 @@ the enrolment endpoint.
   keep going → ignore/accept bonus.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
-  hand-off). Final result 2026-08-15:
-  format, lint, typecheck and build clean; 231 test files passed, 2 skipped,
-  with 2235 tests passed and 7 skipped.
+  hand-off). Final result 2026-08-15 after the review pass:
+  format, lint and typecheck clean in kernel, Desktop and Mobile; 231 test
+  files passed, 2 skipped, with 2238 tests passed and 7 skipped, plus 46
+  against PostgreSQL 17.
 
 ## Standing constraints for whoever picks this up
 

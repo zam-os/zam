@@ -56,6 +56,11 @@ export interface ReviewQueueItem {
 /**
  * Pilot rule `tier1-first` (field-test): a new Tier-2 item stays out of the
  * queue while a new Tier-1 item of the same atom is still unreviewed.
+ *
+ * Enforced in the new-card SQL below, deliberately in one place. It first
+ * existed as a filter over the fetched batch, which agreed with the rule only
+ * as long as both items fell inside the same `LIMIT` window — a Tier-1 card
+ * pushed past the window would have admitted its Tier-2 sibling.
  */
 export const TIER1_FIRST_RULE = "tier1-first";
 
@@ -271,9 +276,7 @@ export async function buildReviewQueue(
   newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC LIMIT ?`;
   newParams.push(maxNew * 10 + 50);
 
-  const newRows = applyTier1First(
-    (await db.prepare(newSql).all(...newParams)) as CardRow[],
-  );
+  const newRows = (await db.prepare(newSql).all(...newParams)) as CardRow[];
 
   // ── Step 3: Sort overdue cards by urgency (most overdue first) ─────────
   const nowMs = now.getTime();
@@ -360,7 +363,66 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     publishedAt: row.published_at ?? row.updated_at ?? null,
     atomId: row.atom_id,
     tier: row.tier,
-    fastCheck: parseReviewFastCheck(row.fast_check),
+    fastCheck: presentFastCheck(
+      parseReviewFastCheck(row.fast_check),
+      `${row.token_id}:${row.due_at}`,
+    ),
+  };
+}
+
+/** 32-bit FNV-1a. Small, stable, and not a security primitive. */
+function seedHash(seed: string): number {
+  let hash = 0x811c9dc5;
+  for (let index = 0; index < seed.length; index++) {
+    hash ^= seed.charCodeAt(index);
+    hash = Math.imul(hash, 0x01000193) >>> 0;
+  }
+  return hash >>> 0;
+}
+
+/**
+ * Order the options a learner sees, and move `correctIndex` with them.
+ *
+ * Every fast check currently authored puts the correct answer first. Rendered
+ * in stored order that is not a retrieval task: after two cards the learner
+ * has learned the button position, taps it without reading, and the rating
+ * that follows is evidence of nothing — worse than a missing check, because
+ * FSRS then schedules on it.
+ *
+ * Fixing the content alone would not hold; the next author defaults to index 0
+ * again. So the presentation permutes, and no surface can forget to.
+ *
+ * The permutation is **derived, not random**: the kernel performs no random
+ * operations, and a re-render inside one presentation must not move a button
+ * under a learner's finger. Seeding on the card's due date means the order is
+ * fixed while the card is being answered and differs the next time it comes
+ * round, so the position cannot be memorised either.
+ */
+export function presentFastCheck(
+  fastCheck: ReviewFastCheck | null,
+  seed: string,
+): ReviewFastCheck | null {
+  if (!fastCheck) return null;
+  const order = fastCheck.options.map((option, index) => ({ option, index }));
+  let hash = seedHash(seed);
+  for (let index = order.length - 1; index > 0; index--) {
+    // Draw from the high bits. Practice-item ids differ only in their last
+    // characters, and the low bit of an FNV hash barely moves with them: taking
+    // `hash % 2` put six of seven Optik cards in the same position, which is
+    // the tell this function exists to remove.
+    hash = Math.imul(hash ^ (hash >>> 15), 0x2c1b3c6d) >>> 0;
+    hash ^= hash >>> 13;
+    const target = (hash >>> 16) % (index + 1);
+    const swap = order[index]!;
+    order[index] = order[target]!;
+    order[target] = swap;
+  }
+  return {
+    type: fastCheck.type,
+    options: order.map((entry) => entry.option),
+    correctIndex: order.findIndex(
+      (entry) => entry.index === fastCheck.correctIndex,
+    ),
   };
 }
 
@@ -414,18 +476,6 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
     options: [...options],
     correctIndex: correctIndex as number,
   };
-}
-
-function applyTier1First(newRows: CardRow[]): CardRow[] {
-  const newTier1Atoms = new Set(
-    newRows
-      .filter((row) => row.tier === "tier1_fast" && row.atom_id)
-      .map((row) => row.atom_id as string),
-  );
-  return newRows.filter((row) => {
-    if (row.tier !== "tier2_synthesis" || !row.atom_id) return true;
-    return !newTier1Atoms.has(row.atom_id);
-  });
 }
 
 function applyWorkloadLimits(

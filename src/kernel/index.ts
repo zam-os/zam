@@ -603,6 +603,7 @@ export type {
 export {
   buildReviewQueue,
   parseReviewFastCheck,
+  presentFastCheck,
   TIER1_FIRST_RULE,
 } from "./scheduler/queue.js";
 export type { BurySiblingResult } from "./scheduler/siblings.js";

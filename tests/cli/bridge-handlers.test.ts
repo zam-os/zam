@@ -131,10 +131,24 @@ describe("bridge-handlers unit tests", () => {
       noDynamicQuestion: true,
     });
     expect(next.card?.tier).toBe("tier1_fast");
-    expect(next.card?.fastCheck).toMatchObject({
-      type: "binary_choice",
-      correctIndex: 0,
-    });
+    // The position is deliberately not asserted: every authored fast check
+    // stores the correct answer first, and shipping it there would let the
+    // learner tap by position instead of recalling. What must hold is that the
+    // index still points at the correct *text*.
+    const shown = next.card?.fastCheck;
+    expect(shown?.type).toBe("binary_choice");
+    expect(shown?.options).toHaveLength(2);
+    const stored = (await db
+      .prepare("SELECT fast_check FROM tokens WHERE id = ?")
+      .get(next.card?.tokenId)) as { fast_check: string };
+    const raw = JSON.parse(stored.fast_check) as {
+      options: string[];
+      correct_index: number;
+    };
+    expect(shown?.options?.slice().sort()).toEqual(raw.options.slice().sort());
+    expect(shown?.options?.[shown.correctIndex]).toBe(
+      raw.options[raw.correct_index],
+    );
 
     const workloadBatch = await getReviewsBatch(db, {
       user: "thomas",

@@ -16,6 +16,7 @@ import {
   heldAtomIds,
   installKvtTile,
   openDatabase,
+  presentFastCheck,
   TIER1_FIRST_RULE,
 } from "../../src/kernel/index.js";
 
@@ -279,5 +280,79 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
 
     const queue = await buildReviewQueue(db, { userId: user, maxNew: 20 });
     expect(queue.items.some((item) => item.cardId === tier2.id)).toBe(true);
+  });
+
+  /**
+   * Every fast check authored so far puts the correct answer at index 0. Shown
+   * in stored order that is not retrieval practice — the learner reads the
+   * position, not the physics, and the rating that follows is evidence of
+   * nothing while FSRS schedules on it anyway.
+   */
+  describe("fast-check presentation", () => {
+    it("does not hand the answer to whoever taps first", () => {
+      // Asserted over many seeds rather than over one queue: three cards drawn
+      // from a binary permutation land on the same side often enough that the
+      // queue-level version of this test failed one run in four.
+      const stored = {
+        type: "binary_choice" as const,
+        options: ["richtig", "falsch"],
+        correctIndex: 0,
+      };
+      let first = 0;
+      const draws = 400;
+      for (let index = 0; index < draws; index++) {
+        const shown = presentFastCheck(
+          stored,
+          `01K3X9A7R4B8C1D2E3F4G5H0${index}:2026-08-15T11:00:00.000Z`,
+        );
+        expect(shown?.options.slice().sort()).toEqual(
+          stored.options.slice().sort(),
+        );
+        // The correct option is still the correct text, wherever it now sits.
+        expect(shown?.options[shown.correctIndex]).toBe("richtig");
+        if (shown?.correctIndex === 0) first += 1;
+      }
+      // Roughly a coin flip, not a habit the learner can tap blind.
+      expect(first).toBeGreaterThan(draws * 0.35);
+      expect(first).toBeLessThan(draws * 0.65);
+    });
+
+    it("keeps one card's options still while it is being answered", async () => {
+      const user = "fast-check-learner";
+      await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+      const first = await buildReviewQueue(db, { userId: user, maxNew: 50 });
+      const second = await buildReviewQueue(db, { userId: user, maxNew: 50 });
+
+      // A re-render must not move a button under the learner's finger, so the
+      // permutation is derived from the card rather than drawn at random.
+      for (const item of first.items) {
+        const twin = second.items.find((other) => other.cardId === item.cardId);
+        expect(twin?.fastCheck).toEqual(item.fastCheck);
+      }
+    });
+
+    it("preserves the answer text through the permutation", async () => {
+      const user = "fast-check-learner";
+      await enrolBundledCell(db, user, "de-by:realschule-optik");
+      const queue = await buildReviewQueue(db, { userId: user, maxNew: 50 });
+
+      for (const item of queue.items) {
+        if (!item.fastCheck) continue;
+        const stored = (await db
+          .prepare("SELECT fast_check FROM tokens WHERE id = ?")
+          .get(item.tokenId)) as { fast_check: string };
+        const raw = JSON.parse(stored.fast_check) as {
+          options: string[];
+          correct_index: number;
+        };
+        expect(item.fastCheck.options.slice().sort()).toEqual(
+          raw.options.slice().sort(),
+        );
+        expect(item.fastCheck.options[item.fastCheck.correctIndex]).toBe(
+          raw.options[raw.correct_index],
+        );
+      }
+    });
   });
 });
