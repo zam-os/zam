@@ -18,7 +18,8 @@ import {
   liftPreconditionBury,
   openDatabase,
   PRECONDITION_BURIED_REASON,
-  PRECONDITION_BURIED_UNTIL,
+  PRECONDITION_HORIZON_DAYS,
+  PRECONDITION_STAGGER_DAYS,
 } from "../../src/kernel/index.js";
 
 describe("Precondition Self-Assessment (Phase 3)", () => {
@@ -85,8 +86,13 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
       .prepare("SELECT * FROM cards WHERE id = ?")
       .get(result.cardId)) as any;
 
-    expect(card.buried_until).toBe(PRECONDITION_BURIED_UNTIL);
+    // A deferral, not an opt-out: the claim is checked on a real date.
+    expect(card.buried_until).toBe(result.buriedUntil);
     expect(card.buried_reason).toBe(PRECONDITION_BURIED_REASON);
+    const waitDays =
+      (Date.parse(card.buried_until) - Date.now()) / 86_400_000;
+    expect(waitDays).toBeGreaterThan(PRECONDITION_HORIZON_DAYS - 1);
+    expect(waitDays).toBeLessThan(PRECONDITION_HORIZON_DAYS + 1);
     // Invariant: FSRS parameters are untouched!
     expect(card.stability).toBe(0);
     expect(card.difficulty).toBe(0.5);
@@ -124,6 +130,63 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     );
     const atomCandidate = preconds.find((p) => p.atomId === atomId);
     expect(atomCandidate?.assessmentState).toBe("buried_known");
+  });
+
+  /**
+   * The owner's rule: cards are created and "even at maximum self-assessment
+   * they get asked eventually". A deferral that never ends is an opt-out, and
+   * an opt-out removes the only thing that makes an unverified claim safe.
+   */
+  it("asks the claim eventually — the deferral has an end", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    const atomId = "01K3X9A7R4B8C1D2E3F4G5A001";
+
+    const result = await assessPrecondition(db, {
+      userId: user,
+      atomId,
+      decision: "known",
+    });
+
+    const dayBefore = new Date(
+      Date.parse(result.buriedUntil as string) - 86_400_000,
+    );
+    const dayAfter = new Date(
+      Date.parse(result.buriedUntil as string) + 86_400_000,
+    );
+
+    const before = await buildReviewQueue(db, { userId: user, now: dayBefore });
+    expect(before.items.some((item) => item.atomId === atomId)).toBe(false);
+
+    const after = await buildReviewQueue(db, { userId: user, now: dayAfter });
+    expect(after.items.some((item) => item.atomId === atomId)).toBe(true);
+  });
+
+  it("staggers deferrals so they do not all return on the same day", async () => {
+    const user = "test-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    await enrolBundledCell(db, user, "de-by:gymnasium-8-optik");
+
+    const preconds = await getPreconditionCandidates(db, user);
+    expect(preconds.length).toBeGreaterThanOrEqual(2);
+
+    const dates: number[] = [];
+    for (const candidate of preconds.slice(0, 3)) {
+      const result = await assessPrecondition(db, {
+        userId: user,
+        atomId: candidate.atomId,
+        decision: "known",
+      });
+      dates.push(Date.parse(result.buriedUntil as string));
+    }
+
+    // Strictly increasing, by roughly the stagger, so four declined
+    // preconditions come back as a trickle rather than as one pile.
+    for (let i = 1; i < dates.length; i++) {
+      const gapDays = (dates[i]! - dates[i - 1]!) / 86_400_000;
+      expect(gapDays).toBeGreaterThan(PRECONDITION_STAGGER_DAYS - 1);
+      expect(gapDays).toBeLessThan(PRECONDITION_STAGGER_DAYS + 1);
+    }
   });
 
   it("handles 'learn' decision and lifts precondition bury", async () => {

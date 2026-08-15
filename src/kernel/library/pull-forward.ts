@@ -5,11 +5,15 @@
  * When a learner's due queue is empty, ZAM provides a voluntary "Pull-Forward"
  * mechanism. The queue is soft:
  *
- * 1. Precondition cards buried by self-assessment (`buried_reason = 'precondition'`)
- *    can be pulled forward voluntarily into active practice.
- * 2. Future-due or new curriculum items can be pulled forward in topological
- *    prerequisite order (foundations first) without corrupting FSRS state.
- * 3. Pulling forward unburies the card (`buried_until = NULL`, `buried_reason = NULL`)
+ * 1. New curriculum items the daily limit held back come first — that is what
+ *    "keep going" is asking for.
+ * 2. Future-due reviews follow. Answering one early is not a corruption: FSRS
+ *    derives elapsed time from `last_review_at`, never from `due_at`, so an
+ *    early answer is scored on the real interval it was given.
+ * 3. Preconditions the learner declined come last. They said they already have
+ *    those, and the deferral expires on its own date; offering them first
+ *    would answer "keep going" with the very thing they set aside.
+ * 4. Pulling forward unburies the card (`buried_until = NULL`, `buried_reason = NULL`)
  *    and/or sets `due_at = now`, making it immediately accessible.
  */
 
@@ -125,15 +129,23 @@ export async function getPullForwardCandidates(
   }
 
   const candidates: PullForwardCandidate[] = rows.map((r) => {
-    let reason: "precondition_buried" | "future_due" | "new_in_scope" =
-      "future_due";
-    let baseScore = 10;
+    let reason: "precondition_buried" | "future_due" | "new_in_scope";
+    let baseScore: number;
 
     if (r.buried_reason === PRECONDITION_BURIED_REASON) {
+      // Offered, but last. The learner just said they already have this;
+      // handing it back first would answer "keep going" with the very thing
+      // they declined, and the deferral ends on its own date anyway. Someone
+      // who wants to check the claim early can still pick it.
       reason = "precondition_buried";
-      baseScore = 50; // Precondition foundations come first
+      baseScore = 10;
     } else if (r.state === "new") {
+      // What "keep going" is actually for: curriculum the learner has not
+      // reached yet, past the daily limit.
       reason = "new_in_scope";
+      baseScore = 50;
+    } else {
+      reason = "future_due";
       baseScore = 30;
     }
 

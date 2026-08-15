@@ -205,7 +205,9 @@ export {
   getPreconditionCandidates,
   liftPreconditionBury,
   PRECONDITION_BURIED_REASON,
-  PRECONDITION_BURIED_UNTIL,
+  PRECONDITION_HORIZON_DAYS,
+  PRECONDITION_STAGGER_DAYS,
+  preconditionBuriedUntil,
 } from "./library/precondition-assessment.js";
 export type {
   PullForwardCandidate,

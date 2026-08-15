@@ -263,6 +263,13 @@ export interface EnrolBonusResult {
 
 /**
  * Enrol a learner in a bonus atom by creating cards for its practice items.
+ *
+ * Eligibility is re-checked here rather than trusted from the caller. The one
+ * safety property the bonus surface has is that an offer stands on foundations
+ * the learner demonstrably holds; a stale list, a replayed request or a UI bug
+ * would otherwise drop them into an atom they cannot do, which is the dead end
+ * {@link bonusCandidates} exists to avoid. Only hard edges gate — the same rule
+ * as the derivation.
  */
 export async function enrolBonusAtom(
   db: Database,
@@ -274,6 +281,24 @@ export async function enrolBonusAtom(
   }
   if (!atomId.trim()) {
     throw new Error("atomId is required to enrol in bonus atom");
+  }
+
+  const needs = (await db
+    .prepare(
+      `SELECT requires_id FROM atom_prerequisites
+        WHERE atom_id = ? AND kind = 'hard' ORDER BY requires_id`,
+    )
+    .all(atomId)) as Array<{ requires_id: string }>;
+  const held = await heldAtomIds(db, userId);
+  const missing = needs
+    .map((row) => row.requires_id)
+    .filter((id) => !held.has(id));
+  if (missing.length > 0) {
+    throw new Error(
+      `Atom ${atomId} is not offerable to ${userId}: ` +
+        `${missing.join(", ")} ${missing.length === 1 ? "is" : "are"} not ` +
+        `held yet. A bonus never opens a door the learner cannot walk through.`,
+    );
   }
 
   const tokens = (await db

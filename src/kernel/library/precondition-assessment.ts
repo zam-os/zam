@@ -5,9 +5,10 @@
  * of a learning cell (ADR 2026-08-14, arbitration 2026-08-14):
  *
  * - When a learner states they already know a foundational prerequisite ("Kann ich schon"):
- *   Every live card for that atom is buried (`buried_until = PRECONDITION_BURIED_UNTIL`,
- *   `buried_reason = 'precondition'`). FSRS fields are never modified, so `heldAtomIds`
- *   still refuses the atom until a real retrieval.
+ *   Every live card for that atom is buried until a finite date
+ *   ({@link preconditionBuriedUntil}) with `buried_reason = 'precondition'`. FSRS
+ *   fields are never modified, so `heldAtomIds` still refuses the atom until a
+ *   real retrieval — and the claim is checked once the deferral runs out.
  *
  * - When a learner chooses to learn the prerequisite ("Bitte mitlernen"):
  *   Any precondition bury on those cards is lifted, so they can enter the queue.
@@ -20,8 +21,48 @@ import type { Database } from "../db/types.js";
 import { ensureCard } from "../models/card.js";
 import { getBundledCell } from "./bundled-cells.js";
 
-export const PRECONDITION_BURIED_UNTIL = "2099-12-31T23:59:59.000Z";
 export const PRECONDITION_BURIED_REASON = "precondition";
+
+/**
+ * How long a self-assessed precondition waits before it is asked for real.
+ *
+ * **This horizon is the whole mechanism.** The owner's rule is that a card is
+ * deferred, not removed — "even at maximum self-assessment it gets asked
+ * eventually". Without a finite horizon the feature is not a deferral but an
+ * opt-out, and the safety argument for allowing self-assessment at all
+ * disappears: what makes an unverified claim acceptable is that it is verified
+ * later, cheaply, once it no longer blocks anything.
+ *
+ * Three weeks is a pilot value, not a finding. It is long enough that four
+ * declined preconditions do not delay today's work, short enough that a wrong
+ * claim surfaces inside one field-test cycle rather than after it. Change it
+ * when learner feedback says so — that is what it is here for.
+ */
+export const PRECONDITION_HORIZON_DAYS = 21;
+
+/**
+ * Extra days per precondition the learner already deferred.
+ *
+ * Burying every declined precondition to the same day only moves the pile-up
+ * the feature exists to prevent: four preconditions declined on Monday would
+ * all come back on the same Monday three weeks later. Each further deferral
+ * lands a few days after the previous one, so they return as a trickle.
+ */
+export const PRECONDITION_STAGGER_DAYS = 4;
+
+/**
+ * When a newly declined precondition should come back, given how many the
+ * learner has already deferred. Deterministic — no randomness in scheduling.
+ */
+export function preconditionBuriedUntil(
+  existingDeferrals: number,
+  now: Date = new Date(),
+): string {
+  const days =
+    PRECONDITION_HORIZON_DAYS +
+    Math.max(0, existingDeferrals) * PRECONDITION_STAGGER_DAYS;
+  return new Date(now.getTime() + days * 86_400_000).toISOString();
+}
 
 export interface PreconditionCandidate {
   atomId: string;
@@ -48,6 +89,8 @@ export interface AssessPreconditionResult {
   decision: "known" | "learn";
   cardId: string;
   buried: boolean;
+  /** When the claim gets checked. Never null for a `known` decision. */
+  buriedUntil: string | null;
   buriedReason: string | null;
 }
 
@@ -211,6 +254,22 @@ export async function assessPrecondition(
   const representative = cards[0]!;
 
   if (decision === "known") {
+    // Count the atoms already deferred, not the cards: an atom with three
+    // practice items is one claim, and counting rows would push its own
+    // successors weeks away.
+    const deferred = (await db
+      .prepare(
+        `SELECT COUNT(DISTINCT t.atom_id) AS n
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+          WHERE c.user_id = ?
+            AND c.buried_reason = ?
+            AND t.atom_id IS NOT NULL
+            AND t.atom_id <> ?`,
+      )
+      .get(userId, PRECONDITION_BURIED_REASON, atomId)) as { n: number };
+
+    const buriedUntil = preconditionBuriedUntil(deferred.n);
     const placeholders = tokenRows.map(() => "?").join(",");
     await db
       .prepare(
@@ -222,7 +281,7 @@ export async function assessPrecondition(
             AND detached_at IS NULL`,
       )
       .run(
-        PRECONDITION_BURIED_UNTIL,
+        buriedUntil,
         PRECONDITION_BURIED_REASON,
         userId,
         ...tokenRows.map((row) => row.id),
@@ -234,6 +293,7 @@ export async function assessPrecondition(
       decision: "known",
       cardId: representative.id,
       buried: true,
+      buriedUntil,
       buriedReason: PRECONDITION_BURIED_REASON,
     };
   }
@@ -247,6 +307,7 @@ export async function assessPrecondition(
       decision: "learn",
       cardId: representative.id,
       buried: false,
+      buriedUntil: null,
       buriedReason: null,
     };
   }

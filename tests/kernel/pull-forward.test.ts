@@ -33,7 +33,7 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("lists buried precondition cards with high priority for pull-forward", async () => {
+  it("offers a declined precondition, but never ahead of unseen curriculum", async () => {
     const user = "test-learner";
     await enrolBundledCell(db, user, "de-by:realschule-optik");
 
@@ -52,7 +52,16 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
     expect(atom001Candidate).toBeDefined();
     expect(atom001Candidate?.reason).toBe("precondition_buried");
     expect(atom001Candidate?.buriedReason).toBe(PRECONDITION_BURIED_REASON);
-    expect(atom001Candidate?.priorityScore).toBeGreaterThanOrEqual(50);
+
+    // "Keep going" must not answer with the thing the learner just set aside.
+    const newCards = candidates.filter((c) => c.reason === "new_in_scope");
+    expect(newCards.length).toBeGreaterThan(0);
+    for (const fresh of newCards) {
+      expect(fresh.priorityScore).toBeGreaterThan(
+        atom001Candidate?.priorityScore ?? 0,
+      );
+    }
+    expect(candidates[0]?.reason).toBe("new_in_scope");
   });
 
   it("pulls forward buried precondition cards so they immediately appear in review queue", async () => {

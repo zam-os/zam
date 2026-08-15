@@ -6,7 +6,6 @@
   "description": "Geerdetes Referenz-KVT-Paket für Realschule Bayern Physik (Zweig I Klasse 7 und Zweig II/III Klasse 8)",
   "publisher": "ZAM Curriculum Working Group",
   "published_at": "2026-08-14T18:00:00Z",
-  "signature": "ed25519:test_reference_signature_mock",
   "atoms": [
     {
       "id": "01K3X9A7R4B8C1D2E3F4G5A001",

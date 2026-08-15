@@ -35,6 +35,21 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
+  /** Mark an atom as genuinely retrieved, the only way an atom becomes held. */
+  async function holdAtom(
+    database: Database,
+    userId: string,
+    atomId: string,
+  ): Promise<void> {
+    await database
+      .prepare(
+        `UPDATE cards SET reps = 1, state = 'review', stability = 5
+          WHERE user_id = ?
+            AND token_id IN (SELECT id FROM tokens WHERE atom_id = ?)`,
+      )
+      .run(userId, atomId);
+  }
+
   it("surfaces bonus candidates dynamically as prerequisite atoms are mastered", async () => {
     const user = "bonus-explorer";
 
@@ -119,6 +134,10 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     await enrolBundledCell(db, user, "de-by:realschule-optik");
     await installKvtTile(db, getBundledCellTile("de-by:gymnasium-8-optik")!);
 
+    // Reflexionsgesetz rests on Strahlengang/Lot, so that foundation has to be
+    // genuinely retrieved first — an offer only exists once it is held.
+    await holdAtom(db, user, "01K3X9A7R4B8C1D2E3F4G5A001");
+
     // Accept bonus atom 005 (Reflexionsgesetz)
     const atom005Id = "01K3X9A7R4B8C1D2E3F4G5A005";
     const result = await enrolBonusAtom(db, user, atom005Id);
@@ -137,6 +156,26 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     // Re-enrolling is idempotent
     const secondResult = await enrolBonusAtom(db, user, atom005Id);
     expect(secondResult.cardsCreated).toBe(0);
+  });
+
+  /**
+   * The surface derives the offers, but the enrolment must not trust it. A
+   * stale list or a replayed request would otherwise drop the learner into an
+   * atom whose foundations they do not hold — the dead end the derivation
+   * exists to avoid, arriving through the back door.
+   */
+  it("refuses a bonus atom whose foundations are not held", async () => {
+    const user = "impatient-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+    await installKvtTile(db, getBundledCellTile("de-by:gymnasium-8-optik")!);
+
+    // Nothing retrieved yet: enrolment alone is not mastery.
+    await expect(
+      enrolBonusAtom(db, user, "01K3X9A7R4B8C1D2E3F4G5A005"),
+    ).rejects.toThrow(/not offerable/);
+
+    const held = await heldAtomIds(db, user);
+    expect(held.size).toBe(0);
   });
 
   it("works seamlessly through bridge handlers", async () => {

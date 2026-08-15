@@ -27,29 +27,130 @@ describe("Subject-matter & didactical review of Optik cells (Phase 2)", () => {
     "de-by:bos-10-optik": "de-by-bos-10-optik-kvt.json",
   };
 
-  it("ensures static BUNDLED_TILES match the JSON fixtures exactly in substance", () => {
+  /**
+   * The bundled tile in `src/` is what a learner installs; the JSON fixture is
+   * what a curator edits. Two copies of learner-facing content is a standing
+   * hazard, and the first version of this guard was too shallow to catch it —
+   * it compared ids, titles and counts, so a copy that had silently dropped
+   * `sources` and a reference answer passed.
+   *
+   * The guard is now exact over everything the installer consumes. Anything a
+   * curator changes in the fixture and does not mirror into `bundled-cells.ts`
+   * fails here, loudly, instead of shipping the older wording to a learner.
+   */
+  it("keeps every bundled tile byte-identical to its fixture, field by field", () => {
+    /** Only what `KvtTile` models: the rest is curator documentation. */
+    const substance = (tile: KvtTile) => ({
+      tile_id: tile.tile_id,
+      version: tile.version,
+      title: tile.title,
+      publisher: tile.publisher,
+      atoms: [...tile.atoms]
+        .sort((a, b) => a.id.localeCompare(b.id))
+        .map((atom) => ({
+          id: atom.id,
+          atom_uri: atom.atom_uri,
+          namespace: atom.namespace,
+          slug: atom.slug,
+          title: atom.title,
+          domain: atom.domain,
+          reduction: atom.reduction,
+          typical_age_min: atom.typical_age_min,
+          prerequisites: [...(atom.prerequisites ?? [])].sort((a, b) =>
+            a.atom_id.localeCompare(b.atom_id),
+          ),
+          alignments: [...(atom.alignments ?? [])].sort((a, b) =>
+            a.target_uri.localeCompare(b.target_uri),
+          ),
+          curricula: [...(atom.curricula ?? [])].sort((a, b) =>
+            `${a.provider}${a.topic_code}`.localeCompare(
+              `${b.provider}${b.topic_code}`,
+            ),
+          ),
+          practice_items: [...atom.practice_items]
+            .sort((a, b) => a.id.localeCompare(b.id))
+            .map((item) => ({
+              id: item.id,
+              slug: item.slug,
+              language: item.language,
+              bloom_level: item.bloom_level,
+              tier: item.tier,
+              fast_check: item.fast_check,
+              question: item.question,
+              concept: item.concept,
+              materiality: item.materiality,
+              replaces: item.replaces,
+            })),
+        })),
+    });
+
     for (const [cellId, fixtureFile] of Object.entries(fixtureMap)) {
       const tileFromCode = BUNDLED_TILES[cellId];
       const tileFromFile = loadFixture(fixtureFile);
+      expect(tileFromCode, `no bundled tile for ${cellId}`).toBeDefined();
+      expect(substance(tileFromCode as KvtTile)).toEqual(
+        substance(tileFromFile),
+      );
+    }
+  });
 
-      expect(tileFromCode).toBeDefined();
-      expect(tileFromFile).toBeDefined();
-      expect(tileFromCode?.tile_id).toBe(tileFromFile.tile_id);
-      expect(tileFromCode?.version).toBe(tileFromFile.version);
-      expect(tileFromCode?.atoms.length).toBe(tileFromFile.atoms.length);
+  /**
+   * Grounding evidence lives in the fixture, not in the installed tile: the
+   * KVT type models no `sources` block, so nothing carries it into the
+   * database yet. Until it does, the repository is where "no anchor without
+   * resolution against its primary source" is checkable — so the block has to
+   * stay there and stay dated.
+   */
+  /**
+   * Open Phase 2 item, recorded here rather than in a comment nobody reads.
+   * `de-by:realschule-optik` is the cell the field-test plan names first, and
+   * it is the one cell with no primary source. A source cannot be inferred
+   * from a sibling tile or a topic code — that is what "no anchor without
+   * resolution against its primary source" forbids — so it stays listed until
+   * somebody resolves it against LehrplanPLUS and writes down the date.
+   */
+  const CELLS_AWAITING_PRIMARY_SOURCE = ["de-by-realschule-optik-kvt.json"];
 
-      // Verify all atom IDs and practice item counts match
-      for (let i = 0; i < tileFromFile.atoms.length; i++) {
-        const fileAtom = tileFromFile.atoms[i]!;
-        const codeAtom = tileFromCode?.atoms.find((a) => a.id === fileAtom.id);
-        expect(codeAtom).toBeDefined();
-        expect(codeAtom?.title).toBe(fileAtom.title);
-        expect(codeAtom?.slug).toBe(fileAtom.slug);
-        expect(codeAtom?.practice_items.length).toBe(
-          fileAtom.practice_items.length,
-        );
+  it("keeps a dated primary source on every grounded bundled cell", () => {
+    for (const fixtureFile of Object.values(fixtureMap)) {
+      const raw = JSON.parse(
+        readFileSync(resolve(FIXTURES_DIR, fixtureFile), "utf-8"),
+      ) as {
+        sources?: Array<{ uri: string; checked: string; label?: string }>;
+        published_at?: string;
+        signature?: string;
+      };
+      expect(
+        raw.published_at,
+        `${fixtureFile} has no published_at`,
+      ).toBeTruthy();
+
+      // Nothing is signed yet — signing is a publication gate (ADR
+      // 2026-08-14b). A placeholder signature in shipped content is worse
+      // than none: it is the field a later reader would trust.
+      expect(raw.signature, `${fixtureFile} carries a mock signature`).toBe(
+        undefined,
+      );
+
+      if (CELLS_AWAITING_PRIMARY_SOURCE.includes(fixtureFile)) continue;
+      expect(
+        raw.sources?.length,
+        `${fixtureFile} has no sources`,
+      ).toBeGreaterThan(0);
+      for (const source of raw.sources ?? []) {
+        expect(source.uri).toMatch(/^https?:\/\//);
+        expect(source.checked).toMatch(/^\d{4}-\d{2}-\d{2}$/);
       }
     }
+  });
+
+  it("does not let the ungrounded-cell list grow", () => {
+    // One known gap, named above. A second entry means somebody added a cell
+    // without resolving its source, and that is the error class that reaches
+    // the learner directly.
+    expect(CELLS_AWAITING_PRIMARY_SOURCE).toEqual([
+      "de-by-realschule-optik-kvt.json",
+    ]);
   });
 
   it("verifies Physics correctness of all refraction, reflection and TIR concepts", () => {
