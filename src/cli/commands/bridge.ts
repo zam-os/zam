@@ -164,12 +164,14 @@ import {
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getPreconditionsHandler as handleGetPreconditions,
+  getPullForwardCandidatesHandler as handleGetPullForwardCandidates,
   getReview as handleGetReview,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   listAssignmentsHandler as handleListAssignments,
   listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
+  pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
   revisionPreview as handleRevisionPreview,
   sessionOpen as handleSessionOpen,
@@ -7745,6 +7747,51 @@ bridgeCommand
         const result = await handleAssessPrecondition(db, {
           atomId,
           decision,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+// ── zam bridge pull-forward-candidates / pull-forward-execute ───────────────
+
+bridgeCommand
+  .command("pull-forward-candidates")
+  .description(
+    "List prioritized candidates that can be pulled forward into the queue (JSON)",
+  )
+  .option("--limit <count>", "Maximum number of candidates", parseInt)
+  .option("--user <userId>", "User ID to inspect")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await handleGetPullForwardCandidates(db, {
+          limit: opts.limit,
+          user: opts.user,
+        });
+        jsonOut(result);
+      } catch (err: unknown) {
+        jsonError((err as Error).message || String(err));
+      }
+    });
+  });
+
+bridgeCommand
+  .command("pull-forward-execute")
+  .description(
+    "Pull forward specified cards into the review queue (JSON input via stdin or --cards)",
+  )
+  .option("--cards <cardIds...>", "List of card IDs to pull forward")
+  .option("--user <userId>", "User ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const cardIds: string[] = opts.cards ?? [];
+        const result = await handlePullForwardCards(db, {
+          cardIds,
           user: opts.user,
         });
         jsonOut(result);

@@ -200,6 +200,15 @@ export {
   PRECONDITION_BURIED_UNTIL,
 } from "./library/precondition-assessment.js";
 export type {
+  PullForwardCandidate,
+  PullForwardOptions,
+  PullForwardResult,
+} from "./library/pull-forward.js";
+export {
+  getPullForwardCandidates,
+  pullForwardCards,
+} from "./library/pull-forward.js";
+export type {
   PublishRevisionInput,
   PublishRevisionResult,
   RevisionChanges,

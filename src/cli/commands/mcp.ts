@@ -39,11 +39,13 @@ import {
   findTokens as handleFindTokens,
   getMonitor as handleGetMonitor,
   getPreconditionsHandler as handleGetPreconditions,
+  getPullForwardCandidatesHandler as handleGetPullForwardCandidates,
   getReviewsBatch as handleGetReviewsBatch,
   importOkfTokens as handleImportOkfTokens,
   linkPrereq as handleLinkPrereq,
   listBundledCellsHandler as handleListBundledCells,
   publishRevision as handlePublishRevision,
+  pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
@@ -123,6 +125,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "bundled-cell-enrol",
   "preconditions-get",
   "precondition-assess",
+  "pull-forward-candidates",
+  "pull-forward-execute",
 ]);
 
 /**
@@ -966,6 +970,61 @@ export function createMcpServer(db: Database): McpServer {
       return await handleAssessPrecondition(db, {
         atomId: params.atomId,
         decision: params.decision,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10f. zam_pull_forward_candidates
+  server.registerTool(
+    "zam_pull_forward_candidates",
+    {
+      description:
+        "List prioritized cards that can be pulled forward into the active review queue when queue is empty or low",
+      inputSchema: {
+        limit: z
+          .number()
+          .int()
+          .positive()
+          .optional()
+          .describe("Maximum number of candidates to return"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleGetPullForwardCandidates(db, {
+        limit: params.limit,
+        user: userId,
+      });
+    }),
+  );
+
+  // 10g. zam_pull_forward_execute
+  server.registerTool(
+    "zam_pull_forward_execute",
+    {
+      description:
+        "Execute pull forward for specified cards, unburying precondition cards and making them immediately available",
+      inputSchema: {
+        cardIds: z
+          .array(z.string())
+          .describe("Array of card IDs to pull forward"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handlePullForwardCards(db, {
+        cardIds: params.cardIds,
         user: userId,
       });
     }),

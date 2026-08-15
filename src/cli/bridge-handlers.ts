@@ -40,6 +40,7 @@ import {
   getInstallChannel,
   getPreconditionCandidates,
   getPrerequisites,
+  getPullForwardCandidates,
   getRevisionImpact,
   getSessionSummary,
   getSetting,
@@ -61,6 +62,7 @@ import {
   pairCommands,
   prepareSessionSynthesis,
   publishTokenRevision,
+  pullForwardCards,
   readMonitorLog,
   removePrerequisite,
   resetCardsForToken,
@@ -1713,4 +1715,44 @@ export async function assessPreconditionHandler(
     decision: params.decision,
   });
   return result;
+}
+
+// 19. Pull Forward on Empty Queue (Phase 4)
+export interface GetPullForwardCandidatesParams {
+  limit?: number;
+  user?: string;
+}
+
+export async function getPullForwardCandidatesHandler(
+  db: Database,
+  params: GetPullForwardCandidatesParams = {},
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+  const candidates = await getPullForwardCandidates(db, userId, {
+    limit: params.limit,
+  });
+  return {
+    success: true as const,
+    candidates,
+  };
+}
+
+export interface PullForwardCardsParams {
+  cardIds: string[];
+  user?: string;
+}
+
+export async function pullForwardCardsHandler(
+  db: Database,
+  params: PullForwardCardsParams,
+) {
+  if (!Array.isArray(params.cardIds) || params.cardIds.length === 0) {
+    throw new Error("cardIds array is required and must not be empty");
+  }
+  const userId = await resolveHandlerUser(db, params.user);
+  const result = await pullForwardCards(db, userId, params.cardIds);
+  return {
+    success: true as const,
+    ...result,
+  };
 }
