@@ -73,6 +73,12 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
   Canonical ids become stable only when they cross the public release contract.
   In a tile, that explicit mapping is `replaces` on a practice item — the only
   thing that moves a learner's card and review history to a new item id.
+- **The cell has precedence over generic import** (ADR 2026-08-14 Decision 10).
+  Where a cell covers a learner's curriculum position, import goes through it;
+  the manifest-driven curriculum importer is the fallback for positions no cell
+  reaches yet. An import surface asks `needsGenericCurriculumImport(scope)`
+  before offering the wizard. A cell carries resolved sources, prerequisites
+  and reviewed items; a generic import carries none of that.
 - **Blocking is separate from rating**: `evaluateRating()` updates FSRS state; callers decide whether to invoke blocking after a rating of `1`.
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.

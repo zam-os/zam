@@ -257,6 +257,40 @@ corpus is four fixtures and unrecoverable afterwards:
   indistinguishable from one given yesterday. `NULL` means unknown, not
   version 1 — assuming 1 would invent evidence.
 
+### 10. The cell has precedence over generic import
+
+**Decided 2026-08-15.** Where a cell covers a learner's curriculum position,
+import goes through that cell. The generic curriculum importer stays, but as
+the **fallback for positions no cell reaches yet**. More cells will be
+authored, so that remainder shrinks by design.
+
+The reason is what the two paths carry. A cell brings resolved primary
+sources, prerequisite edges, an explicit in-scope set and reviewed practice
+items with their tier and fast check. A generic import brings extracted topic
+text and nothing else — no prerequisites to block on, no grounding to check,
+no reviewed wording. Offering both as equals would let the weaker path win by
+being the one the learner happened to find first.
+
+This also settles a vocabulary conflict rather than papering over it. Under
+provider `lehrplanplus-bayern`, cells record the official learning-area id as
+`topic_code` (`65643`), because it is resolvable — it is the last segment of
+the source URL, and the content guard checks that every binding's code appears
+in the tile's sources. The manifest-driven importer uses its own `lb2` form,
+keyed by `schoolType|grade|subject`; the numeric ids are not in that manifest,
+so the two cannot simply be mapped. Precedence means the codes rarely meet,
+and when they do the cell's is the one that resolves.
+
+Made checkable rather than left as an intention:
+`findBundledCellsForScope(scope)` returns the cells covering a position, best
+match first, and `needsGenericCurriculumImport(scope)` is what an import
+surface asks before offering the wizard. Both read the bundled tiles only — no
+database, no enrolment, no side effect.
+
+What this does **not** change: installing a cell still enrols nobody
+(Decision 3), and the publication gates in
+[2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) still
+apply. Precedence orders two ingestion paths; it does not widen either.
+
 ## Delivery matrix
 
 "Decided" and "built" are not the same claim, and the first version of this ADR
@@ -267,6 +301,7 @@ conflated them.
 | Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
 | Opaque canonical identity | yes | pilot projection only; the M026 rewrite was removed, not replaced | fixtures only | no |
 | Rebuildable knowledge-base compatibility | yes | partly — declared succession (`replaces`) and per-review `content_version` are built; the migration contract itself is not | yes, for both built parts | no |
+| Cell precedence over generic import | yes | lookup built (`findBundledCellsForScope`); import surfaces still have to consult it | yes, for the lookup | no |
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |

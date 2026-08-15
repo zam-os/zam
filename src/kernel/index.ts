@@ -171,17 +171,20 @@ export type {
   BundledCellEnrolResult,
   BundledCellInfo,
   BundledCellStatus,
+  CurriculumScope,
 } from "./library/bundled-cells.js";
 export {
   BUNDLED_CELLS,
   BUNDLED_TILES,
   enrolBundledCell,
+  findBundledCellsForScope,
   getBundledCell,
   getBundledCellEnrolment,
   getBundledCellsWithStatus,
   getBundledCellTile,
   isBundledCellInstalled,
   listBundledCells,
+  needsGenericCurriculumImport,
 } from "./library/bundled-cells.js";
 export type {
   InstallKvtResult,

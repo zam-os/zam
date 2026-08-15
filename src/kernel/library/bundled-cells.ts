@@ -1221,6 +1221,108 @@ export function getBundledCell(cellId: string): BundledCellInfo | undefined {
   return BUNDLED_CELLS.find((cell) => cell.id === cellId);
 }
 
+/** A curriculum position a learner (or an import surface) is standing on. */
+export interface CurriculumScope {
+  provider: string;
+  schoolType?: string;
+  grade?: number;
+  track?: string;
+  subject?: string;
+}
+
+/**
+ * Cells that cover a curriculum position, best match first.
+ *
+ * **The cell has precedence** (owner decision 2026-08-15). Import goes through
+ * a cell whenever one exists for the learner's position; the generic curriculum
+ * importer is the fallback for positions no cell covers yet. As cells are
+ * added, the fallback shrinks — which is the point, because a cell carries
+ * resolved sources, prerequisites and reviewed practice items, and a generic
+ * import carries none of that.
+ *
+ * This is the function an import surface asks *before* offering the wizard, so
+ * precedence is a check rather than a habit. It reads the bundled tiles only:
+ * no database, no enrolment, no side effect.
+ *
+ * Ranking is by how specifically a binding matches — a cell naming the
+ * learner's exact track beats one that names only the grade — then by cell id
+ * so the order is stable.
+ */
+export function findBundledCellsForScope(
+  scope: CurriculumScope,
+): BundledCellInfo[] {
+  const matches: Array<{ cell: BundledCellInfo; specificity: number }> = [];
+
+  for (const cell of BUNDLED_CELLS) {
+    const tile = BUNDLED_TILES[cell.id];
+    if (!tile) continue;
+
+    let best = -1;
+    for (const atom of tile.atoms) {
+      for (const binding of atom.curricula ?? []) {
+        if (binding.provider !== scope.provider) continue;
+        if (
+          scope.schoolType !== undefined &&
+          binding.school_type !== undefined &&
+          binding.school_type !== scope.schoolType
+        ) {
+          continue;
+        }
+        if (
+          scope.grade !== undefined &&
+          binding.grade !== undefined &&
+          binding.grade !== scope.grade
+        ) {
+          continue;
+        }
+        if (
+          scope.subject !== undefined &&
+          binding.subject !== undefined &&
+          binding.subject !== "" &&
+          binding.subject !== scope.subject
+        ) {
+          continue;
+        }
+        // A track is a narrowing, not a requirement: a binding that names no
+        // track applies to every track of its grade.
+        if (
+          scope.track !== undefined &&
+          binding.track !== undefined &&
+          binding.track !== "" &&
+          binding.track !== scope.track
+        ) {
+          continue;
+        }
+
+        const specificity =
+          (binding.school_type ? 1 : 0) +
+          (binding.grade !== undefined ? 1 : 0) +
+          (binding.subject ? 1 : 0) +
+          (binding.track ? 1 : 0);
+        if (specificity > best) best = specificity;
+      }
+    }
+
+    if (best >= 0) matches.push({ cell, specificity: best });
+  }
+
+  return matches
+    .sort(
+      (a, b) =>
+        b.specificity - a.specificity || a.cell.id.localeCompare(b.cell.id),
+    )
+    .map((entry) => entry.cell);
+}
+
+/**
+ * Whether the generic curriculum importer is still the right tool here.
+ *
+ * `false` means a cell covers this position and should be offered instead.
+ */
+export function needsGenericCurriculumImport(scope: CurriculumScope): boolean {
+  return findBundledCellsForScope(scope).length === 0;
+}
+
 /** Get the raw KVT tile definition for a bundled cell. */
 export function getBundledCellTile(cellId: string): KvtTile | undefined {
   return BUNDLED_TILES[cellId];

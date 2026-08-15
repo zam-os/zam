@@ -193,6 +193,11 @@ guarantees the property.
 - [ ] The complete flow is run on a fresh database on the actual school-iPad
   delivery route: select cell → assess prerequisite → Tier-1/Tier-2 review →
   keep going → ignore/accept bonus.
+- [ ] **Import surfaces consult the cell first** (ADR 2026-08-14 Decision 10,
+  decided 2026-08-15). The lookup exists —
+  `findBundledCellsForScope` / `needsGenericCurriculumImport` — but Desktop and
+  Mobile still offer the curriculum wizard without asking it. Until they do,
+  precedence is a rule the code knows and the UI does not.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
   hand-off). Final result 2026-08-15 after the review pass:

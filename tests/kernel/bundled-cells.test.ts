@@ -10,12 +10,14 @@ import {
   buildReviewQueue,
   type Database,
   enrolBundledCell,
+  findBundledCellsForScope,
   getBundledCell,
   getBundledCellEnrolment,
   getBundledCellsWithStatus,
   getBundledCellTile,
   isBundledCellInstalled,
   listBundledCells,
+  needsGenericCurriculumImport,
   openDatabase,
 } from "../../src/kernel/index.js";
 
@@ -180,5 +182,71 @@ describe("Bundled learning cells (Phase 1)", () => {
     expect(
       await isBundledCellInstalled(db, "de-by:realschule-optik"),
     ).toBe(false);
+  });
+  /**
+   * Owner decision 2026-08-15: the cell has precedence. Import goes through a
+   * cell wherever one exists; the generic curriculum importer is what covers
+   * the positions no cell reaches yet, and that remainder shrinks as cells are
+   * added.
+   */
+  describe("cell precedence over generic import", () => {
+    it("finds the cell that covers a learner's curriculum position", () => {
+      const cells = findBundledCellsForScope({
+        provider: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: 8,
+        track: "II_III",
+        subject: "physik",
+      });
+      expect(cells.map((cell) => cell.id)).toContain("de-by:realschule-optik");
+      expect(
+        needsGenericCurriculumImport({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          grade: 8,
+          track: "II_III",
+          subject: "physik",
+        }),
+      ).toBe(false);
+    });
+
+    it("keeps the generic importer for a position no cell covers", () => {
+      // Same provider and school type, a subject no cell touches.
+      expect(
+        needsGenericCurriculumImport({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          grade: 8,
+          subject: "deutsch",
+        }),
+      ).toBe(true);
+      // And a grade no cell reaches.
+      expect(
+        needsGenericCurriculumImport({
+          provider: "lehrplanplus-bayern",
+          schoolType: "realschule",
+          grade: 5,
+          subject: "physik",
+        }),
+      ).toBe(true);
+    });
+
+    it("does not offer another school type's cell", () => {
+      const cells = findBundledCellsForScope({
+        provider: "lehrplanplus-bayern",
+        schoolType: "gymnasium",
+        grade: 8,
+        subject: "physik",
+      });
+      expect(cells.map((cell) => cell.id)).toEqual([
+        "de-by:gymnasium-8-optik",
+      ]);
+    });
+
+    it("ignores a provider it does not publish for", () => {
+      expect(
+        findBundledCellsForScope({ provider: "kernlehrplan-nrw", grade: 8 }),
+      ).toEqual([]);
+    });
   });
 });
