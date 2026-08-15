@@ -1,7 +1,8 @@
 # Handover — the first field-test slice of the central learning path
 
 **Status:** not started. The architecture round is closed; this is the build.
-**Branch:** `feat/central-learning-knowledge-base`, on top of `7626a85`.
+**Branch:** `feat/central-learning-field-test`, on top of `3edf7b3` — the
+squashed merge of the architecture work (PR #300).
 **Goal:** one learner, one bundled cell, a loop that works end to end — the
 thing that produces the feedback everything after this depends on.
 
