@@ -349,7 +349,9 @@ Dazu die zwei vom Owner freigegebenen „jetzt billig, später unmöglich“-Pun
 **Dann: der Feldtest-Slice.** Selbsteinschätzung, leere Queue,
 Tier-Interaktion, Bonus-Oberfläche, Auswahl einer gebündelten Zelle und
 Fachreview der Optik-Zelle. Nichts davon braucht ein CDN, ein Manifest oder
-eine Signatur.
+eine Signatur. Ausformuliert und in Phasen zerlegt in
+[docs/plans/2026-08-15-central-learning-field-test-slice.md](../plans/2026-08-15-central-learning-field-test-slice.md)
+— harness-agnostisch, ein Branch und ein PR für den ganzen Slice.
 
 **Was nicht ansteht:** Scanner, weltweites CDN, Signatur-Infrastruktur,
 Tier-1-Objekte im Kernschema, ein drittes Editorfenster im Studio, endgültiges
