@@ -30,10 +30,14 @@
  *   release contract (per-row provenance and ownership), not another rule here.
  *   Only a differing *slug* for an already-installed item is rejected outright,
  *   because a published address must not change silently.
- * - **Published practice-item ids are frozen.** Re-minting an id for an address
- *   that already exists is refused: cards and review logs hang on the item id,
- *   so a fresh id for the same question would orphan a learner's history. Atom
- *   ids may still move — nothing personal points at them.
+ * - **Item succession is declared, never guessed.** Cards and review logs hang
+ *   on the practice-item id, so a successor that arrives under a fresh id would
+ *   orphan a learner's history. The publisher says so with `replaces`, and only
+ *   then is the history moved (ADR 2026-08-14 Decision 9). Nothing here infers
+ *   succession from wording: an earlier version of this module refused a
+ *   republished question text, which was both too loose — any rewording slipped
+ *   past it — and too tight, because a Tier 1 fast check and a Tier 2 item may
+ *   legitimately ask the same thing.
  */
 
 import type { Database } from "../db/types.js";
@@ -52,6 +56,13 @@ import { publishTokenRevisionInTransaction } from "./revision.js";
  * published identity is the opaque `atom_uri` (ADR 2026-08-14, Decision 8).
  */
 export const ATOM_ID_PATTERN = /^[0-9A-HJKMNP-TV-Z]{26}$/;
+
+/**
+ * A published practice-item id is a ULID too, and for a harder reason than the
+ * atom's: cards and review logs reference it, so a malformed or hand-written id
+ * is a learner's history hanging on a typo.
+ */
+export const ITEM_ID_PATTERN = ATOM_ID_PATTERN;
 
 const ALIGNMENT_TYPES = new Set([
   "skos:exactMatch",
@@ -104,6 +115,22 @@ export interface KvtPracticeItem {
    * silently under a learner's existing stability.
    */
   materiality?: "cosmetic" | "material";
+  /**
+   * Item ids this one supersedes — the publisher's explicit statement that the
+   * learning state of the old item belongs to this one (ADR 2026-08-14
+   * Decision 9).
+   *
+   * This is the *only* thing that moves a card and its review history to a new
+   * id. Similarity of question, slug or embedding may propose a mapping to a
+   * human; none may decide one. Declaring a replacement is therefore an
+   * editorial act, recorded with the tile that made it.
+   *
+   * Use it for the "same practice item under a new id" case only. A split, a
+   * merge or a genuinely uncertain match must not be declared here: those
+   * preserve the old history but transfer no mastery, so the new item is asked
+   * for real.
+   */
+  replaces?: string[];
 }
 
 export interface KvtAtom {
@@ -145,6 +172,8 @@ export interface InstallKvtResult {
   alignments: number;
   atomPrereqs: number;
   tokenPrereqs: number;
+  /** Superseded items whose card and review history moved to a successor. */
+  itemsSuperseded: number;
 }
 
 export interface MaterialiseKvtResult {
@@ -170,6 +199,86 @@ function assertAtomId(id: string): void {
         `Subject and slug belong in namespace/slug, not in the identity.`,
     );
   }
+}
+
+function assertItemId(id: string, what: string): void {
+  if (!ITEM_ID_PATTERN.test(id)) {
+    throw new Error(
+      `Invalid ${what}: ${id} — expected a ULID. Cards and review logs ` +
+        `reference this id, so it is the one string that must not be improvised.`,
+    );
+  }
+}
+
+/**
+ * Move a learner's history from a superseded item to its declared successor.
+ *
+ * Runs only on a publisher's `replaces` declaration, and only after the new
+ * token exists — `cards.token_id` has a foreign key. The old token is
+ * **deprecated, never deleted**: every other table that references a token
+ * cascades on delete, so removing the row would take session steps, syntheses
+ * and source links with it. Decision 9 keeps audit history in every branch.
+ *
+ * The one case this refuses is a learner holding a card on both ids. That is a
+ * merge, and a merge transfers no mastery automatically: two retrieval
+ * histories cannot become one without deciding which one counts, and nothing
+ * here has grounds to decide it.
+ */
+async function applyDeclaredReplacements(
+  tx: Database,
+  tile: KvtTile,
+  item: KvtPracticeItem,
+): Promise<number> {
+  let moved = 0;
+  for (const oldId of item.replaces ?? []) {
+    assertItemId(oldId, "replaced practice-item id");
+    if (oldId === item.id) {
+      throw new Error(`Practice item ${item.id} declares itself as replaced`);
+    }
+
+    await tx
+      .prepare(
+        `INSERT INTO practice_item_replacements
+           (old_item_id, new_item_id, declared_by) VALUES (?, ?, ?)
+         ON CONFLICT(old_item_id, new_item_id) DO UPDATE SET
+           declared_by = excluded.declared_by`,
+      )
+      .run(oldId, item.id, tile.publisher ?? tile.tile_id);
+
+    const superseded = await getTokenById(tx, oldId);
+    if (!superseded) continue;
+
+    const collision = (await tx
+      .prepare(
+        `SELECT old.user_id AS user_id
+           FROM cards old
+           JOIN cards fresh ON fresh.user_id = old.user_id
+          WHERE old.token_id = ? AND fresh.token_id = ?
+          LIMIT 1`,
+      )
+      .get(oldId, item.id)) as { user_id: string } | undefined;
+    if (collision) {
+      throw new Error(
+        `Cannot move ${oldId} to ${item.id}: ${collision.user_id} holds a ` +
+          `card on both. That is a merge, and mastery is never merged ` +
+          `automatically — resolve it explicitly and re-test.`,
+      );
+    }
+
+    for (const table of ["cards", "review_logs"] as const) {
+      await tx
+        .prepare(`UPDATE ${table} SET token_id = ? WHERE token_id = ?`)
+        .run(item.id, oldId);
+    }
+    await tx
+      .prepare(
+        `UPDATE tokens SET deprecated_at = COALESCE(deprecated_at, datetime('now'))
+          WHERE id = ?`,
+      )
+      .run(oldId);
+    moved += 1;
+  }
+  return moved;
 }
 
 /**
@@ -328,6 +437,7 @@ export async function installKvtTile(
     let alignments = 0;
     let atomPrereqs = 0;
     let tokenPrereqs = 0;
+    let itemsSuperseded = 0;
 
     for (const atom of tile.atoms) {
       await tx
@@ -421,28 +531,10 @@ export async function installKvtTile(
       const projected = await projectedBinding(tx, atom.id);
 
       for (const item of atom.practice_items) {
+        assertItemId(item.id, "practice-item id");
         const existing = await getTokenById(tx, item.id);
         if (!existing) {
-          // A published practice-item ULID is frozen (ADR 2026-08-14
-          // Decision 8). A re-mint orphans the learner's card, because cards
-          // and review_logs hang on the item id.
-          //
-          // Detection is by content, not by address: a derived slug carries the
-          // id's tail, so a re-minted item lands on a *different* address and an
-          // address check would never see it. Same atom and same question under
-          // a different id is a re-mint with near-certainty.
           const slug = slugForItem(atom, item);
-          const twin = (await tx
-            .prepare("SELECT id FROM tokens WHERE atom_id = ? AND question = ?")
-            .get(atom.id, item.question)) as { id: string } | undefined;
-          if (twin) {
-            throw new Error(
-              `Practice item ${item.id} republishes the question already ` +
-                `published as ${twin.id}. A published item id is never ` +
-                `re-minted — reuse ${twin.id}, or the learner's card and ` +
-                `review history are orphaned.`,
-            );
-          }
           const holder = (await tx
             .prepare("SELECT id FROM tokens WHERE slug = ?")
             .get(slug)) as { id: string } | undefined;
@@ -469,6 +561,7 @@ export async function installKvtTile(
             fast_check: fastCheckOf(item),
           });
           tokensCreated += 1;
+          itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
           continue;
         }
 
@@ -536,6 +629,7 @@ export async function installKvtTile(
             projected?.topic_code ?? existing.topic_id,
             item.id,
           );
+        itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
       }
     }
 
@@ -605,6 +699,7 @@ export async function installKvtTile(
       alignments,
       atomPrereqs,
       tokenPrereqs,
+      itemsSuperseded,
     };
   });
 }

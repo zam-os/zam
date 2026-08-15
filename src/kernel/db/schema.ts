@@ -186,7 +186,14 @@ CREATE TABLE IF NOT EXISTS review_logs (
   response_time_ms INTEGER,
   reviewed_at     TEXT NOT NULL DEFAULT (datetime('now')),
   scheduled_at    TEXT NOT NULL,
-  session_id      TEXT REFERENCES sessions(id)
+  session_id      TEXT REFERENCES sessions(id),
+  -- Which content_version of the token this rating was actually earned on
+  -- (ADR 2026-08-14 Decision 9). Observed learning evidence is the durable
+  -- half of a learner's state; a rating whose wording is unknown cannot be
+  -- classified later as the same item or a materially revised one. NULL means
+  -- the row predates this column -- not version 1, because assuming 1 would
+  -- invent evidence.
+  content_version INTEGER
 );
 
 -- Steps within a session: who did what
@@ -336,6 +343,25 @@ CREATE TABLE IF NOT EXISTS atom_prerequisites (
   kind        TEXT NOT NULL DEFAULT 'hard' CHECK (kind IN ('hard', 'soft')),
   rationale   TEXT,
   PRIMARY KEY (atom_id, requires_id)
+);
+
+-- Declared succession between practice items (ADR 2026-08-14 Decision 9).
+--
+-- A mapping from a retired item to its successor is an editorial statement by
+-- a named publisher, never a derivation: question equality, slug similarity
+-- and embedding proximity may propose one, none may decide one. The tile that
+-- ships the successor carries the declaration; this table outlives the tile,
+-- so the evidence is still here when the central model arrives.
+--
+-- Deliberately no foreign key on either side: the old item may already be gone
+-- and the new one may not be installed yet, and losing the statement in either
+-- case is exactly the loss this table exists to prevent.
+CREATE TABLE IF NOT EXISTS practice_item_replacements (
+  old_item_id  TEXT NOT NULL,
+  new_item_id  TEXT NOT NULL,
+  declared_by  TEXT NOT NULL,
+  noted_at     TEXT NOT NULL DEFAULT (datetime('now')),
+  PRIMARY KEY (old_item_id, new_item_id)
 );
 
 `;

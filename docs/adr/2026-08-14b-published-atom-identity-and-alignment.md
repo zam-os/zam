@@ -58,13 +58,17 @@ stable. Before that boundary, repository-fixture IDs are provisional and every
 learning state may rebuild its compatibility to the new central model.
 
 This supersedes the claim that M026 already solved migration. Its random ULID
-rewrite is not a canonical mapping and is not required to preserve an
-unreleased intermediate schema. The pilot should rebuild that projection; any
-retained migration must be deterministic, explicit and atomic.
+rewrite was removed on 2026-08-15 once the release history was checked: no tag
+and not `main` contains `learning_atoms`, so no released database can hold the
+legacy form and there was nothing to migrate. The pilot rebuilds that
+projection.
 
-Practice-item continuity follows the same boundary. The current same-question
-check may catch an accidental duplicate, but text equality cannot establish
-identity. A future release/migration manifest supplies the mapping. Its safety
+Practice-item continuity follows the same boundary, and the same-question check
+went with it — text equality cannot establish identity, and Decision 7 had
+already made language and tier substance, so two items may legitimately ask the
+same thing. Succession is now **declared** by the publisher (`replaces`) and
+recorded in `practice_item_replacements`; a full release/migration manifest
+supersedes that field later without invalidating what it recorded. The safety
 semantics are Decision 9 in
 [2026-08-14](2026-08-14-central-learning-atoms-and-identity.md).
 
@@ -188,12 +192,19 @@ test. The accepted stages are:
 | Alignment | Existing entity links mean `about`; no automated equality, deduplication or state transfer | first automated matcher, deduplication pass or external consumer |
 | Reduction | Descriptive free text only; it drives no behaviour | second publisher or first grouped query |
 | Representative item | Lowest item id, explicitly a deterministic placeholder | first case where that choice changes learner-facing semantics |
-| Trust/provenance | Only bundled, commit-controlled fixtures | arbitrary file/network import, second publisher or content leaving the repository |
+| Trust/provenance | Only bundled, commit-controlled fixtures | arbitrary file/network import, second publisher, or an identifier reaching a party who can join against it |
 | Cross-package references | Pilot cells may only claim the prerequisite closure they actually encode | first field-test cell that requires a cross-package edge to be pedagogically honest |
 
 The field-test UI may therefore use `installKvtTile` for bundled repository
 fixtures. It must not expose the spike as a general import mechanism or imply
 that its identifiers are already the shared public catalog.
+
+**Where the boundary actually runs.** Not geography — a bundled tile on a
+field-test device has left the repository in every literal sense, and that is
+allowed. The trigger is whether an identifier reaches someone who can *join*
+against it: a second publisher, an external consumer, a public package. Inside
+the pilot we hold both ends of the migration, so a rebuild costs us a rebuild.
+Outside it, a rebuild costs somebody else their data.
 
 ### Compatibility safety
 
@@ -210,6 +221,11 @@ is the semantic rule:
 This makes the deferral safe without pretending that today's identifiers are
 permanent.
 
+Two of those four are now executable rather than written down (2026-08-15): a
+declared `replaces` moves card and history, a card held on both ids is refused
+as a merge, and `review_logs.content_version` keeps the evidence a later
+classification needs. The rest waits for the migration itself.
+
 ### Not deferred
 
 Content correctness reaches the learner immediately. No anchor ships in the
@@ -218,16 +234,19 @@ needs a subject-matter review. A cell with a known missing prerequisite must be
 narrowed or labelled; the absence cannot be hidden behind the future release
 contract.
 
-### Required implementation follow-up
+### Required implementation follow-up — **done 2026-08-15**
 
-The ADR is final; two pieces of spike code now lag behind it and belong at the
-front of the build work:
+The two pieces of spike code that lagged behind this ADR were brought in line
+before the build phase, together with the two additions the owner approved as
+"cheap now, impossible later":
 
-1. Remove M026's random legacy-ID rewrite, or replace it only if an explicit,
-   deterministic and atomic mapping for intermediate branch databases is truly
-   needed.
-2. Remove or relabel the same-question check as duplicate-content lint. It is
-   not a published-item identity guarantee.
+1. ~~Remove M026's random legacy-ID rewrite.~~ Removed outright. The release
+   history settled the question: `learning_atoms` exists in no tag and not on
+   `main`, so there was never anything to migrate.
+2. ~~Remove or relabel the same-question check.~~ Removed, and replaced by the
+   publisher's `replaces` declaration, which is what Decision 9 actually needs.
+3. `review_logs.content_version` (M027) — the wording a rating was earned on.
+4. Practice-item ids are validated as ULIDs on install.
 
 The release/trust ADR remains mandatory at its trigger. That future work does
 not reopen the decisions above.

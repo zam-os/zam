@@ -71,6 +71,8 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
   mapping, and never transfer mastery across an uncertain match. Question,
   slug, or embedding similarity may propose a mapping but cannot decide it.
   Canonical ids become stable only when they cross the public release contract.
+  In a tile, that explicit mapping is `replaces` on a practice item — the only
+  thing that moves a learner's card and review history to a new item id.
 - **Blocking is separate from rating**: `evaluateRating()` updates FSRS state; callers decide whether to invoke blocking after a rating of `1`.
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.

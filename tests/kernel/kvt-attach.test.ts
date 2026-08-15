@@ -449,17 +449,139 @@ describe("installKvtTile", () => {
     );
   });
 
-  // ADR 2026-08-14 Decision 8: the frozen practice-item id, enforced rather
-  // than only written down. A re-mint would orphan the learner's card.
-  it("refuses to re-mint a published practice item id", async () => {
-    await installKvtTile(db, loadTile());
-
+  it("refuses a practice-item id that is not a ULID", async () => {
     const tile = loadTile();
-    const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
-    // Same question, same address — but a freshly minted id.
-    atom!.practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5D001";
+    tile.atoms[0].practice_items[0].id = "optik-lot-schnellcheck";
+    await expect(installKvtTile(db, tile)).rejects.toThrow(/expected a ULID/);
+  });
 
-    await expect(installKvtTile(db, tile)).rejects.toThrow(/never re-minted/);
+  /**
+   * ADR 2026-08-14 Decision 9. An item id that changes without a declaration
+   * used to be refused by comparing question text; that check was both too
+   * loose (any rewording slipped past) and too tight (a Tier 1 and a Tier 2
+   * item may ask the same thing). Succession is now stated, not inferred.
+   */
+  describe("declared item succession", () => {
+    /** A learner with real history on the item that is about to be replaced. */
+    async function learnerWithHistory(tokenId: string): Promise<string> {
+      await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+      const card = await getCard(db, tokenId, "learner-a");
+      await db
+        .prepare("UPDATE cards SET reps = 6, stability = 30 WHERE id = ?")
+        .run(card!.id);
+      await db
+        .prepare(
+          `INSERT INTO review_logs
+             (id, card_id, token_id, user_id, rating, reviewed_at, scheduled_at)
+           VALUES ('01K3X9A7R4B8C1D2E3F4G5R001', ?, ?, 'learner-a', 3,
+                   '2026-08-01T10:00:00.000Z', '2026-08-01T09:00:00.000Z')`,
+        )
+        .run(card!.id, tokenId);
+      return card!.id;
+    }
+
+    /** Re-mint the given item under a new id, declaring what it supersedes. */
+    function tileWithSuccessor(oldId: string, newId: string): KvtTile {
+      const tile = loadTile();
+      for (const atom of tile.atoms) {
+        const item = atom.practice_items.find((i) => i.id === oldId);
+        if (!item) continue;
+        item.id = newId;
+        item.slug = `${atom.slug}-successor`;
+        item.replaces = [oldId];
+      }
+      return tile;
+    }
+
+    it("orphans nobody: an undeclared new id leaves the old card alone", async () => {
+      await installKvtTile(db, loadTile());
+      const oldId = "01K3X9A7R4B8C1D2E3F4G5H003";
+      const cardId = await learnerWithHistory(oldId);
+
+      // No `replaces`: the tile simply publishes another item.
+      const tile = loadTile();
+      const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
+      atom!.practice_items[0].id = "01K3X9A7R4B8C1D2E3F4G5D001";
+      atom!.practice_items[0].slug = "optik-brechung-zweitfassung";
+      await installKvtTile(db, tile);
+
+      // The learner keeps the card they earned; nothing was moved silently.
+      const kept = await getCard(db, oldId, "learner-a");
+      expect(kept?.id).toBe(cardId);
+      expect(kept?.reps).toBe(6);
+    });
+
+    it("moves card and review history to a declared successor", async () => {
+      await installKvtTile(db, loadTile());
+      const oldId = "01K3X9A7R4B8C1D2E3F4G5H003";
+      const newId = "01K3X9A7R4B8C1D2E3F4G5D002";
+      const cardId = await learnerWithHistory(oldId);
+
+      const result = await installKvtTile(db, tileWithSuccessor(oldId, newId));
+      expect(result.itemsSuperseded).toBe(1);
+
+      // Same card row, same FSRS state — now answering for the new item.
+      const moved = await getCard(db, newId, "learner-a");
+      expect(moved?.id).toBe(cardId);
+      expect(moved?.reps).toBe(6);
+      expect(moved?.stability).toBe(30);
+      expect(await getCard(db, oldId, "learner-a")).toBeFalsy();
+
+      const log = (await db
+        .prepare("SELECT token_id FROM review_logs WHERE id = ?")
+        .get("01K3X9A7R4B8C1D2E3F4G5R001")) as { token_id: string };
+      expect(log.token_id).toBe(newId);
+
+      // The superseded item is retired, never deleted: every other table that
+      // references a token cascades on delete.
+      const old = await getTokenById(db, oldId);
+      expect(old?.deprecated_at).toBeTruthy();
+    });
+
+    it("keeps the declaration even when the old item was never installed", async () => {
+      const tile = loadTile();
+      tile.atoms[0].practice_items[0].replaces = [
+        "01K3X9A7R4B8C1D2E3F4G5D003",
+      ];
+      const result = await installKvtTile(db, tile);
+      // Nothing to move, but the statement is evidence for a later rebuild.
+      expect(result.itemsSuperseded).toBe(0);
+      const row = (await db
+        .prepare(
+          `SELECT new_item_id, declared_by FROM practice_item_replacements
+            WHERE old_item_id = ?`,
+        )
+        .get("01K3X9A7R4B8C1D2E3F4G5D003")) as {
+        new_item_id: string;
+        declared_by: string;
+      };
+      expect(row.new_item_id).toBe(tile.atoms[0].practice_items[0].id);
+      expect(row.declared_by).toBeTruthy();
+    });
+
+    it("refuses a merge: two histories cannot silently become one", async () => {
+      await installKvtTile(db, loadTile());
+      await materialiseKvtCards(db, "learner-a", REALSCHULE_CELL);
+
+      // Declare one existing item as the successor of another existing one —
+      // the learner holds a card on both.
+      const tile = loadTile();
+      const target = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
+      target!.practice_items[0].replaces = ["01K3X9A7R4B8C1D2E3F4G5H001"];
+
+      await expect(installKvtTile(db, tile)).rejects.toThrow(
+        /mastery is never merged/,
+      );
+    });
+
+    it("refuses to declare itself as replaced", async () => {
+      const tile = loadTile();
+      const item = tile.atoms[0].practice_items[0];
+      item.replaces = [item.id];
+      await expect(installKvtTile(db, tile)).rejects.toThrow(
+        /declares itself as replaced/,
+      );
+    });
   });
 
   it("keeps the learner's card when a release reuses the item id", async () => {

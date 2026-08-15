@@ -192,12 +192,16 @@ already rejected one level down for tokens. CASE 1.1 makes the same split:
 opaque UUID identifiers, a resolvable URI beside them, and subject coverage as
 its own `subject`/`subjectURI` attributes.
 
-M026's current random rewrite is **not** the accepted migration design. The
-same legacy atom must never acquire unrelated identities on two devices. Since
-the legacy atom schema never left this feature branch, the preferred pilot
-transition is to rebuild the compatibility projection. If an intermediate
-database must be retained, it needs an explicit deterministic mapping and an
-atomic migration.
+M026's random rewrite was **removed** rather than made deterministic
+(2026-08-15). Checked before deciding: `learning_atoms` first appears in commit
+`056fa1b` of 2026-08-14, no tag contains it and neither does `main`, so no
+released database can hold the legacy form. The rewrite therefore had an
+audience of zero while doing real harm — it minted a fresh `ulid()` per row, so
+the same atom acquired unrelated identities on every machine that ran it, and
+the resulting id then collided with the fixtures' fixed ids on the next
+install. A checkout from that one-day window rebuilds its projection: delete
+the database and reinstall. That is the pilot rule of Decision 9, applied to
+the first case that needed it.
 
 ### 9. Learning-state compatibility is rebuildable
 
@@ -227,12 +231,31 @@ physical data model. It must classify every item mapping explicitly:
 | withdrawn item | retain audit history and remove it from active learning |
 
 Question equality, slug similarity or embedding proximity may propose a
-mapping; none may silently decide it. In particular, the current
-`installKvtTile` check for the same question under a new id is a temporary
-duplicate-content guard, **not** enforcement of identity continuity. The final
-model may keep a stable local learning-state handle beside a canonical item URI
-or may migrate references transactionally; this ADR fixes the safety semantics,
-not that storage choice.
+mapping; none may silently decide it. The final model may keep a stable local
+learning-state handle beside a canonical item URI or may migrate references
+transactionally; this ADR fixes the safety semantics, not that storage choice.
+
+**Two consequences were built on 2026-08-15**, because both are cheap while the
+corpus is four fixtures and unrecoverable afterwards:
+
+- **The declaration has a home.** A tile states succession with `replaces` on a
+  practice item, and only that declaration moves a card and its review history
+  to a new id. It is recorded in `practice_item_replacements`, which outlives
+  the tile that made it. A learner holding a card on both ids is a *merge*: the
+  install refuses it, because two retrieval histories cannot become one without
+  deciding which counts. The superseded item is deprecated, never deleted —
+  every other table referencing a token cascades on delete.
+
+  The question-text check that stood here before was removed. It could not do
+  this job: any rewording slipped past it, and Decision 7 had already made
+  `language`, `tier` and `fast_check` substance, so two items may legitimately
+  ask the same thing.
+- **The evidence is sufficient to classify.** `review_logs.content_version`
+  records the wording a rating was actually earned on (M027). Without it the
+  first row of the table above cannot be checked after the fact: the card holds
+  only the current version, so a rating from three revisions ago was
+  indistinguishable from one given yesterday. `NULL` means unknown, not
+  version 1 — assuming 1 would invent evidence.
 
 ## Delivery matrix
 
@@ -242,8 +265,8 @@ conflated them.
 | Decision | Decided | Built | Covered by tests | Empirically validated |
 |---|---|---|---|---|
 | Five object kinds | yes | yes — `PracticeItem` substance persisted (M025) | yes, round-trip | no |
-| Opaque canonical identity | yes | pilot projection only; M026 rewrite is not accepted | fixtures only | no |
-| Rebuildable knowledge-base compatibility | yes | **no** — migration contract and mapping do not exist yet | no | no |
+| Opaque canonical identity | yes | pilot projection only; the M026 rewrite was removed, not replaced | fixtures only | no |
+| Rebuildable knowledge-base compatibility | yes | partly — declared succession (`replaces`) and per-review `content_version` are built; the migration contract itself is not | yes, for both built parts | no |
 | Install ≠ enrolment | yes | yes | yes | no |
 | No admission gate | yes | yes (never existed) | n/a | no |
 | Demand-driven materialisation | yes | yes | yes | no |

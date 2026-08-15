@@ -375,81 +375,49 @@ describe("M024 curriculum binding uniqueness", () => {
 });
 
 /**
- * M026 — opaque published atom identity.
+ * M027 — the wording a rating was earned on.
  *
- * M023 minted `atom:zam:<namespace>:<slug>` and called it opaque. It was not: a
- * subject partition sat in the primary key, so re-filing an atom under a better
- * taxonomy would have been an identity migration across every published tile.
- * The migration rewrites those rows to ULIDs, keeps the old string as an alias
- * so nothing that stored it dangles, and moves namespace/slug to attributes.
+ * Personal learning evidence is the durable half of a learner's state when the
+ * knowledge base is rebuilt (ADR 2026-08-14 Decision 9). A rating whose
+ * question is unknown cannot be classified later as the same item or a
+ * materially revised one, and `cards.learned_content_version` only ever holds
+ * the current value.
  */
-describe("M026 opaque atom identity", () => {
-  it("rewrites a legacy atom id and keeps it resolvable", async () => {
+describe("M027 review content version", () => {
+  it("adds the column without inventing a version for existing rows", async () => {
     const db = await openDatabase({
       dbPath: join(tempDir(), "zam-test.db"),
       initialize: true,
       useConfiguredCloud: false,
     });
-    try {
-      const legacy = "atom:zam:optik:brechung-qualitativ";
-      await db
-        .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
-        .run(legacy, "Lichtbrechung");
-      await db
-        .prepare(
-          `INSERT INTO atom_curriculum_bindings
-             (atom_id, provider, topic_code) VALUES (?, 'lp', 'PH7-LB2')`,
-        )
-        .run(legacy);
-      await db
-        .prepare(
-          `INSERT INTO tokens (id, slug, concept, atom_id)
-           VALUES ('01K3X9A7R4B8C1D2E3F4G5C001', 'probe', 'c', ?)`,
-        )
-        .run(legacy);
 
-      await applySchemaAndMigrations(db);
+    // A log row as it looked before the column existed.
+    await db
+      .prepare(
+        `INSERT INTO tokens (id, slug, concept) VALUES ('01K3X9A7R4B8C1D2E3F4G5C001', 'probe', 'c')`,
+      )
+      .run();
+    await db
+      .prepare(
+        `INSERT INTO cards (id, token_id, user_id, due_at)
+         VALUES ('01K3X9A7R4B8C1D2E3F4G5C002', '01K3X9A7R4B8C1D2E3F4G5C001', 'u', '2026-08-01T00:00:00.000Z')`,
+      )
+      .run();
+    await db
+      .prepare(
+        `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, scheduled_at)
+         VALUES ('01K3X9A7R4B8C1D2E3F4G5C003', '01K3X9A7R4B8C1D2E3F4G5C002',
+                 '01K3X9A7R4B8C1D2E3F4G5C001', 'u', 3, '2026-08-01T00:00:00.000Z')`,
+      )
+      .run();
 
-      const atom = (await db
-        .prepare(
-          "SELECT id, atom_uri, namespace, slug FROM learning_atoms WHERE title = ?",
-        )
-        .get("Lichtbrechung")) as {
-        id: string;
-        atom_uri: string;
-        namespace: string;
-        slug: string;
-      };
-      expect(atom.id).toMatch(/^[0-9A-HJKMNP-TV-Z]{26}$/);
-      expect(atom.atom_uri).toBe(`urn:zam:atom:${atom.id}`);
-      expect(atom.namespace).toBe("optik");
-      expect(atom.slug).toBe("brechung-qualitativ");
+    await applySchemaAndMigrations(db);
 
-      // The old address still resolves, and children moved with the row.
-      const alias = (await db
-        .prepare("SELECT atom_id FROM atom_uri_aliases WHERE alias = ?")
-        .get(legacy)) as { atom_id: string };
-      expect(alias.atom_id).toBe(atom.id);
-
-      const binding = (await db
-        .prepare("SELECT atom_id FROM atom_curriculum_bindings")
-        .get()) as { atom_id: string };
-      expect(binding.atom_id).toBe(atom.id);
-
-      const token = (await db
-        .prepare("SELECT atom_id FROM tokens WHERE slug = 'probe'")
-        .get()) as { atom_id: string };
-      expect(token.atom_id).toBe(atom.id);
-
-      // Repeatable: a second run finds nothing legacy left to do.
-      await applySchemaAndMigrations(db);
-      const count = (await db
-        .prepare("SELECT COUNT(*) AS n FROM learning_atoms")
-        .get()) as { n: number };
-      expect(count.n).toBe(1);
-      await db.close();
-    } finally {
-      // tempDir cleanup is handled by the shared afterEach.
-    }
+    const row = (await db
+      .prepare("SELECT content_version FROM review_logs WHERE id = ?")
+      .get("01K3X9A7R4B8C1D2E3F4G5C003")) as { content_version: number | null };
+    // NULL means "unknown", not version 1 — guessing would fabricate evidence.
+    expect(row.content_version).toBeNull();
+    await db.close();
   });
 });

@@ -39,6 +39,9 @@ export const SNAPSHOT_TABLES = [
   "atom_curriculum_bindings",
   "atom_prerequisites",
   "tokens",
+  // Declared item succession. Not derivable by construction: the whole point
+  // of Decision 9 is that no similarity heuristic may reconstruct it.
+  "practice_item_replacements",
   "imported_card_bindings",
   "media_assets",
   "token_media",

@@ -1765,10 +1765,15 @@ function renderCurrentReview(message = ""): void {
   reviewProgressFill.style.width = `${
     progress.total > 0 ? ((progress.current - 1) / progress.total) * 100 : 0
   }%`;
-  reviewMeta.textContent = tf("review_meta", {
-    title: item.title,
-    domain: item.domain || t("no_domain"),
-  });
+  // The title is free text, and for imported cards it is often the first
+  // sentence of the answer — so before the reveal the meta line names only the
+  // domain. A prompt that prints the answer underneath itself is not recall.
+  reviewMeta.textContent = reviewSession.revealed
+    ? tf("review_meta", {
+        title: item.title,
+        domain: item.domain || t("no_domain"),
+      })
+    : item.domain || t("no_domain");
   reviewQuestion.textContent = prompt.question;
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;

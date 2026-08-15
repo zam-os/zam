@@ -282,20 +282,25 @@ ein benutzbares Produkt. Sie weiter zu diskutieren erzeugt keine Antwort.
 - `language`, `tier`, `fast_check` sind persistiert (M025); ein Roundtrip-Test
   sichert, dass ein Tile ohne Verlust installiert und wieder ausgelesen wird.
 - Die Pilotprojektion verwendet opake Atom-ULIDs und getrennte
-  `namespace`/`slug`-Adressen. **Bekannte Abweichung:** M026 schreibt Legacy-IDs
-  derzeit auf zufällige, gerätespezifische ULIDs um. Das ist nach Decision 9
-  kein akzeptierter Kompatibilitätsvertrag und wird entfernt oder nur mit einer
-  expliziten deterministischen Mapping-Tabelle behalten.
-- Der Installer lehnt derzeit „gleiches Atom + exakt gleiche Frage unter neuer
-  ID“ ab. Das ist höchstens Duplicate-Lint: Schon eine minimale Umformulierung
-  umgeht es, während zwei legitime gleiche Prompts kollidieren können. Es darf
-  nicht als Identity-Freeze beschrieben werden.
+  `namespace`/`slug`-Adressen. M026s zufällige Legacy-Umschreibung ist
+  **entfernt** (2026-08-15) — nicht deterministisch gemacht: `learning_atoms`
+  steckt in keinem Tag und nicht auf `main`, es gab also nie etwas zu
+  migrieren.
+- Die Fragetext-Sperre ist **entfernt**. An ihrer Stelle steht die Deklaration
+  des Herausgebers: `replaces` an einem Übungsitem ist das Einzige, was Karte
+  und Review-Historie auf eine neue ID bewegt; festgehalten wird sie in
+  `practice_item_replacements`. Hält ein Lerner auf beiden IDs eine Karte, ist
+  das ein Merge und wird abgelehnt. Das abgelöste Item wird deprecated, nie
+  gelöscht.
+- `review_logs.content_version` (M027) hält fest, gegen welchen Wortlaut eine
+  Bewertung erarbeitet wurde. `NULL` heißt unbekannt, nicht Version 1.
+- Übungsitem-IDs werden beim Installieren als ULIDs validiert.
 - M024 stellt die Eindeutigkeit der Bindings über `COALESCE(grade, -1)` her —
   **providerneutral** (kein `sqlite_master` mehr) und ohne Tabellen-Rebuild.
   Widersprüchliche Duplikate scheitern laut, statt zu einer nie
   veröffentlichten Zeile verschmolzen zu werden.
 
-**Testlage:** 2177 Tests grün, 7 übersprungen — plus **46 gegen echtes
+**Testlage:** 2183 Tests grün, 7 übersprungen — plus **46 gegen echtes
 PostgreSQL 17** (`npm run pg:up && npm run pg:test`; CI setzt `POSTGRES_URL`
 ohnehin). Verifiziert ist damit, dass `applySchemaAndMigrations` auf PostgreSQL
 durchläuft, dass der Ausdrucks-Unique-Index dort trägt und dass eine grade-lose
@@ -326,19 +331,20 @@ Atomen — das ist der Wiederverwendungsbeweis und zugleich der Bonus-Pool.
 ## 8. Was als Nächstes gebaut wird
 
 **Die Architektur ist finalisiert.** Keine weitere Modellrunde steht vor dem
-Feldtest. Der erste Bau-Commit gleicht nur den Spike an die beschlossenen ADRs
-an:
+Feldtest. Der Angleich des Spikes an die beschlossenen ADRs ist **erledigt**
+(2026-08-15):
 
-1. M026s zufällige Legacy-Umschreibung entfernen. Da M023 diesen Feature-Branch
-   nie verlassen hat, ist ein Neuaufbau der Pilotprojektion der Default. Nur bei
-   echtem Bedarf bekommt ein Zwischenstand eine explizite, atomare Mapping-
-   Migration.
-2. Die Fragetext-basierte Remint-Sperre entfernen oder als unverbindliches
-   Duplicate-Lint benennen; PracticeItem-IDs als ULIDs validieren.
-3. Modulkommentar und Fehlermeldungen auf die erlaubte Pilotquelle und die
-   spätere Publikationsgrenze korrigieren.
-4. Das echte NUL-Byte im M024-Gruppenschlüssel durch eine textuelle Escape-
-   Sequenz ersetzen, damit `provision.ts` wieder als Quelltext diffbar ist.
+1. ~~M026s zufällige Legacy-Umschreibung entfernen.~~ Ersatzlos entfernt. Die
+   Release-Historie hat die Frage entschieden: `learning_atoms` erscheint erst
+   in `056fa1b` vom 2026-08-14, in keinem Tag und nicht auf `main`.
+2. ~~Die Fragetext-basierte Remint-Sperre entfernen; PracticeItem-IDs als ULIDs
+   validieren.~~ Beides erledigt — an die Stelle der Sperre tritt `replaces`.
+3. ~~Modulkommentar und Fehlermeldungen korrigieren.~~ Erledigt.
+4. ~~Das NUL-Byte im M024-Gruppenschlüssel ersetzen.~~ Erledigt: `provision.ts`
+   ist wieder Text und wird von `rg`/`grep` wieder gefunden.
+
+Dazu die zwei vom Owner freigegebenen „jetzt billig, später unmöglich“-Punkte:
+`replaces` als deklarierte Item-Nachfolge und `review_logs.content_version`.
 
 **Dann: der Feldtest-Slice.** Selbsteinschätzung, leere Queue,
 Tier-Interaktion, Bonus-Oberfläche, Auswahl einer gebündelten Zelle und
