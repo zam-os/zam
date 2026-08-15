@@ -117,6 +117,8 @@ describe("bonus candidates", () => {
       (c) => c.atomId === OPTIK.snelliusFormel,
     );
     expect(formula?.restsOn).toEqual([OPTIK.brechungQualitativ]);
+    expect(formula?.restsOnTitles.length).toBe(1);
+    expect(formula?.restsOnTitles[0]).toBeTruthy();
   });
 
   it("ranks by what an atom unlocks for this learner", async () => {

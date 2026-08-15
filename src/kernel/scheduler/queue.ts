@@ -41,7 +41,15 @@ export interface ReviewQueueItem {
   contentChanged?: boolean;
   publishedBy?: string | null;
   publishedAt?: string | null;
+  atomId: string | null;
+  tier: string | null;
 }
+
+/**
+ * Pilot rule `tier1-first` (field-test): a new Tier-2 item stays out of the
+ * queue while a new Tier-1 item of the same atom is still unreviewed.
+ */
+export const TIER1_FIRST_RULE = "tier1-first";
 
 export interface ReviewQueue {
   items: ReviewQueueItem[];
@@ -74,6 +82,8 @@ interface CardRow {
   sibling_group: string | null;
   question_media_count: number | bigint;
   answer_media_count: number | bigint;
+  atom_id: string | null;
+  tier: string | null;
 }
 
 // ── Functions ────────────────────────────────────────────────────────────────
@@ -136,7 +146,9 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
          (SELECT COUNT(*) FROM token_media tm
-           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
+         t.atom_id AS atom_id,
+         t.tier AS tier
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -188,7 +200,9 @@ export async function buildReviewQueue(
          (SELECT COUNT(*) FROM token_media tm
            WHERE tm.token_id = t.id AND tm.side = 'question') AS question_media_count,
          (SELECT COUNT(*) FROM token_media tm
-           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count
+           WHERE tm.token_id = t.id AND tm.side = 'answer') AS answer_media_count,
+         t.atom_id AS atom_id,
+         t.tier AS tier
        FROM cards c
        JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?
@@ -218,7 +232,9 @@ export async function buildReviewQueue(
   newSql += ` ORDER BY t.bloom_level ASC, t.slug ASC LIMIT ?`;
   newParams.push(maxNew * 10 + 50);
 
-  const newRows = (await db.prepare(newSql).all(...newParams)) as CardRow[];
+  const newRows = applyTier1First(
+    (await db.prepare(newSql).all(...newParams)) as CardRow[],
+  );
 
   // ── Step 3: Sort overdue cards by urgency (most overdue first) ─────────
   const nowMs = now.getTime();
@@ -303,7 +319,21 @@ function rowToItem(row: CardRow): ReviewQueueItem {
     contentChanged,
     publishedBy: row.published_by ?? null,
     publishedAt: row.published_at ?? row.updated_at ?? null,
+    atomId: row.atom_id,
+    tier: row.tier,
   };
+}
+
+function applyTier1First(newRows: CardRow[]): CardRow[] {
+  const newTier1Atoms = new Set(
+    newRows
+      .filter((row) => row.tier === "tier1_fast" && row.atom_id)
+      .map((row) => row.atom_id as string),
+  );
+  return newRows.filter((row) => {
+    if (row.tier !== "tier2_synthesis" || !row.atom_id) return true;
+    return !newTier1Atoms.has(row.atom_id);
+  });
 }
 
 function applyWorkloadLimits(

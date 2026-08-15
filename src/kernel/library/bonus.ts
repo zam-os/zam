@@ -24,6 +24,8 @@ export interface BonusCandidate {
   reachabilityCount: number;
   /** The atoms already held that make this one offerable — the "because". */
   restsOn: string[];
+  /** Titles for `restsOn`, same order, for the learner-facing sentence. */
+  restsOnTitles: string[];
 }
 
 export interface BonusOptions {
@@ -220,6 +222,7 @@ export async function bonusCandidates(
   const atoms = (await db
     .prepare("SELECT id, title FROM learning_atoms ORDER BY id")
     .all()) as Array<{ id: string; title: string }>;
+  const titleById = new Map(atoms.map((atom) => [atom.id, atom.title]));
 
   const candidates: BonusCandidate[] = [];
   for (const atom of atoms) {
@@ -230,12 +233,14 @@ export async function bonusCandidates(
     if (needs.length === 0) continue;
     if (!needs.every((id) => held.has(id))) continue;
 
+    const restsOn = [...needs].sort();
     candidates.push({
       atomId: atom.id,
       title: atom.title,
       unlockCount: unlocks.get(atom.id) ?? 0,
       reachabilityCount: reach.get(atom.id) ?? 0,
-      restsOn: [...needs].sort(),
+      restsOn,
+      restsOnTitles: restsOn.map((id) => titleById.get(id) ?? id),
     });
   }
 

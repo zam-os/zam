@@ -334,6 +334,7 @@ export async function getReviewsBatch(
           bloomLevel: card.bloom_level,
           state: card.state,
           dueAt: card.due_at,
+          atomId: null,
         });
         continue;
       }
@@ -392,6 +393,7 @@ export async function getReviewsBatch(
         question: finalQuestion,
         sourceLink: token.source_link ?? null,
         resolvedContext,
+        atomId: token.atom_id ?? null,
       });
     } else {
       cards.push({
@@ -403,6 +405,7 @@ export async function getReviewsBatch(
         bloomLevel: card.bloom_level,
         state: card.state,
         dueAt: card.due_at,
+        atomId: null,
       });
     }
   }
@@ -1782,6 +1785,15 @@ export async function listBonusCandidatesHandler(
     if (cell) {
       inScopeAtomIds = cell.inScopeAtomIds;
     }
+  } else if (inScopeAtomIds.length === 0) {
+    const enrolled = await getBundledCellsWithStatus(db, userId);
+    inScopeAtomIds = [
+      ...new Set(
+        enrolled
+          .filter((cell) => cell.enrolled)
+          .flatMap((cell) => cell.inScopeAtomIds),
+      ),
+    ];
   }
 
   const candidates = await bonusCandidates(db, userId, {

@@ -16,6 +16,7 @@ import {
   heldAtomIds,
   installKvtTile,
   openDatabase,
+  TIER1_FIRST_RULE,
 } from "../../src/kernel/index.js";
 
 describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
@@ -175,5 +176,20 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
     });
     expect(enrolRes.success).toBe(true);
     expect(enrolRes.cardsCreated).toBeGreaterThanOrEqual(1);
+  });
+
+  it("applies the named tier1-first rule: new Tier 2 stays out while Tier 1 is new", async () => {
+    expect(TIER1_FIRST_RULE).toBe("tier1-first");
+    const user = "tier-pilot";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+    const queue = await buildReviewQueue(db, { userId: user, maxNew: 20 });
+    const newItems = queue.items.filter((item) => item.state === "new");
+    expect(newItems.length).toBeGreaterThan(0);
+    expect(newItems.every((item) => item.tier !== "tier2_synthesis")).toBe(
+      true,
+    );
+    expect(newItems.some((item) => item.tier === "tier1_fast")).toBe(true);
+    expect(newItems.every((item) => item.atomId)).toBe(true);
   });
 });

@@ -28,6 +28,13 @@
 import { App } from "@modelcontextprotocol/ext-apps";
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import {
+  type BonusOffer,
+  bonusBecause,
+  keepGoingCardIds,
+  matchUnassessedPrecondition,
+  type PreconditionOffer,
+} from "../study-offers.js";
+import {
   type CompanionContextBarState,
   type ContextBarHandle,
   clearConnectionNotice as clearConnectionNoticeShared,
@@ -89,6 +96,7 @@ interface ReviewCard {
   contentChanged?: boolean;
   publishedBy?: string | null;
   publishedAt?: string | null;
+  atomId?: string | null;
 }
 
 interface SubmitEvaluation {
@@ -131,6 +139,9 @@ let started = false;
 let finished = false;
 let cards: ReviewCard[] = [];
 let index = 0;
+let preconditionCache: PreconditionOffer[] = [];
+const assessedAtoms = new Set<string>();
+let bonusIgnoredThisSession = false;
 /** When the current card was shown (Date.now()); sent as responseTimeMs with the rating (ADR 2026-08-01 Decision 5). */
 let cardStartedAt = 0;
 
@@ -163,7 +174,7 @@ function hasUnsavedRecallState(): boolean {
   const answer = contentEl?.querySelector<HTMLTextAreaElement>(
     ".recall-answer:not(:disabled)",
   );
-  return Boolean(answer && answer.value.trim());
+  return Boolean(answer?.value.trim());
 }
 
 /**
@@ -248,7 +259,212 @@ function renderMessage(emoji: string, title: string, sub: string): void {
 }
 
 function renderEmpty(): void {
-  renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
+  void offerAfterQueue("empty");
+}
+
+function recallUserArgs(
+  extra: Record<string, unknown> = {},
+): Record<string, unknown> {
+  return currentUser ? { ...extra, user: currentUser } : extra;
+}
+
+function renderChoiceOffer(
+  title: string,
+  body: string,
+  actions: Array<{ label: string; primary?: boolean; onClick: () => void }>,
+): void {
+  if (!contentEl) return;
+  clearContent();
+  const box = document.createElement("div");
+  box.className = "zam-card recall-empty";
+  const titleEl = document.createElement("div");
+  titleEl.className = "recall-empty-title";
+  titleEl.textContent = title;
+  const subEl = document.createElement("div");
+  subEl.className = "recall-empty-sub";
+  subEl.textContent = body;
+  const row = document.createElement("div");
+  row.className = "study-offer-actions";
+  for (const action of actions) {
+    const btn = document.createElement("button");
+    btn.type = "button";
+    btn.className = action.primary ? "btn primary-btn" : "btn secondary-btn";
+    btn.textContent = action.label;
+    btn.addEventListener("click", action.onClick);
+    row.appendChild(btn);
+  }
+  box.append(titleEl, subEl, row);
+  contentEl.appendChild(box);
+}
+
+async function loadPreconditionCache(): Promise<void> {
+  try {
+    const data = (await callTool(
+      "zam_preconditions_get",
+      recallUserArgs(),
+    )) as { candidates?: PreconditionOffer[] };
+    preconditionCache = data.candidates ?? [];
+  } catch {
+    preconditionCache = [];
+  }
+}
+
+function skipAtomInBatch(atomId: string): void {
+  assessedAtoms.add(atomId);
+  cards = cards.filter(
+    (card, cardIndex) => cardIndex <= index || card.atomId !== atomId,
+  );
+}
+
+async function decideRecallPrecondition(
+  atomId: string,
+  decision: "known" | "learn",
+): Promise<void> {
+  try {
+    await callTool(
+      "zam_precondition_assess",
+      recallUserArgs({ atomId, decision }),
+    );
+  } catch (error) {
+    renderError(errorMessage(error));
+    return;
+  }
+  assessedAtoms.add(atomId);
+  if (decision === "known") {
+    skipAtomInBatch(atomId);
+    advance();
+    return;
+  }
+  renderCard();
+}
+
+async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
+  if (finished) return;
+  try {
+    const pull = (await callTool(
+      "zam_pull_forward_candidates",
+      recallUserArgs({ limit: 5 }),
+    )) as {
+      candidates?: Array<{
+        cardId: string;
+        reason: "precondition_buried" | "future_due" | "new_in_scope";
+      }>;
+    };
+    const cardIds = keepGoingCardIds(pull.candidates ?? []);
+    if (cardIds.length > 0) {
+      renderChoiceOffer(t("lbl_keep_going_title"), t("lbl_keep_going_body"), [
+        {
+          label: t("btn_session_done"),
+          onClick: () => {
+            void offerRecallBonusOrFinish(mode);
+          },
+        },
+        {
+          label: t("btn_keep_going"),
+          primary: true,
+          onClick: () => {
+            void acceptRecallKeepGoing(cardIds);
+          },
+        },
+      ]);
+      return;
+    }
+    await offerRecallBonusOrFinish(mode);
+  } catch {
+    await offerRecallBonusOrFinish(mode);
+  }
+}
+
+async function acceptRecallKeepGoing(cardIds: string[]): Promise<void> {
+  try {
+    await callTool("zam_pull_forward_execute", recallUserArgs({ cardIds }));
+    started = false;
+    finished = false;
+    void loadReviews();
+  } catch (error) {
+    renderError(errorMessage(error));
+  }
+}
+
+async function offerRecallBonusOrFinish(mode: "empty" | "done"): Promise<void> {
+  if (bonusIgnoredThisSession) {
+    if (mode === "empty") {
+      renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
+    } else {
+      finishSession();
+    }
+    return;
+  }
+  try {
+    const listed = (await callTool(
+      "zam_bonus_candidates_list",
+      recallUserArgs({ limit: 1 }),
+    )) as { candidates?: BonusOffer[] };
+    const bonus = listed.candidates?.[0];
+    if (!bonus) {
+      if (mode === "empty") {
+        renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
+      } else {
+        finishSession();
+      }
+      return;
+    }
+    renderChoiceOffer(
+      t("lbl_bonus_title"),
+      tf("lbl_bonus_body", {
+        title: bonus.title,
+        because: bonusBecause(bonus.restsOnTitles ?? []),
+        unlocks: bonus.unlockCount,
+      }),
+      [
+        {
+          label: t("btn_bonus_skip"),
+          onClick: () => {
+            bonusIgnoredThisSession = true;
+            if (mode === "empty") {
+              renderMessage(
+                "🎉",
+                t("lbl_recall_empty_title"),
+                t("lbl_caught_up"),
+              );
+            } else {
+              finishSession();
+            }
+          },
+        },
+        {
+          label: t("btn_bonus_accept"),
+          primary: true,
+          onClick: () => {
+            void acceptRecallBonus(bonus.atomId, mode);
+          },
+        },
+      ],
+    );
+  } catch {
+    if (mode === "empty") {
+      renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
+    } else {
+      finishSession();
+    }
+  }
+}
+
+async function acceptRecallBonus(
+  atomId: string,
+  mode: "empty" | "done",
+): Promise<void> {
+  try {
+    await callTool("zam_bonus_atom_enrol", recallUserArgs({ atomId }));
+    bonusIgnoredThisSession = true;
+    if (mode === "empty") {
+      renderMessage("🎉", t("lbl_recall_empty_title"), t("lbl_caught_up"));
+    } else {
+      finishSession();
+    }
+  } catch (error) {
+    renderError(errorMessage(error));
+  }
 }
 
 function renderError(message: string): void {
@@ -303,8 +519,7 @@ function advance(): void {
   if (finished) return;
   index += 1;
   if (index >= cards.length) {
-    finished = true;
-    renderSummary();
+    void offerAfterQueue("done");
   } else {
     renderCard();
   }
@@ -390,6 +605,38 @@ async function sampleViaHost(
 function renderCard(): void {
   if (!contentEl) return;
   const card = cards[index];
+  if (!card) {
+    void offerAfterQueue("done");
+    return;
+  }
+  if (card.atomId && !assessedAtoms.has(card.atomId)) {
+    const precondition = matchUnassessedPrecondition(
+      card.atomId,
+      preconditionCache,
+    );
+    if (precondition) {
+      renderChoiceOffer(
+        t("lbl_precondition_title"),
+        tf("lbl_precondition_body", { title: precondition.title }),
+        [
+          {
+            label: t("btn_precondition_known"),
+            onClick: () => {
+              void decideRecallPrecondition(precondition.atomId, "known");
+            },
+          },
+          {
+            label: t("btn_precondition_learn"),
+            primary: true,
+            onClick: () => {
+              void decideRecallPrecondition(precondition.atomId, "learn");
+            },
+          },
+        ],
+      );
+      return;
+    }
+  }
   cardStartedAt = Date.now();
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
@@ -514,7 +761,9 @@ function renderCard(): void {
     result.textContent = tf("recall_next_due", { due });
     root.appendChild(result);
     if (res.blocked) {
-      showNotice(tf("recall_blocked_notice", { slug: res.blocked.blockedSlug }));
+      showNotice(
+        tf("recall_blocked_notice", { slug: res.blocked.blockedSlug }),
+      );
     }
   }
 
@@ -856,6 +1105,7 @@ async function loadReviews(): Promise<void> {
     };
     cards = data.cards ?? [];
     index = 0;
+    await loadPreconditionCache();
     if (cards.length === 0) {
       renderEmpty();
     } else {
@@ -898,6 +1148,9 @@ app.ontoolresult = (params) => {
     finished = false;
     cards = [];
     index = 0;
+    preconditionCache = [];
+    assessedAtoms.clear();
+    bonusIgnoredThisSession = false;
     tally.done = 0;
     tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
   }

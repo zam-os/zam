@@ -596,7 +596,7 @@ export type {
   ReviewQueueItem,
   ReviewQueueOptions,
 } from "./scheduler/queue.js";
-export { buildReviewQueue } from "./scheduler/queue.js";
+export { buildReviewQueue, TIER1_FIRST_RULE } from "./scheduler/queue.js";
 export type { BurySiblingResult } from "./scheduler/siblings.js";
 export {
   burySiblingCards,

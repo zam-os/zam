@@ -63,6 +63,17 @@ describe("study-view card-management wiring", () => {
     );
   });
 
+  it("hosts the field-test offer panel beside the session summary", () => {
+    expect(html).toContain('id="study-offer"');
+    expect(html).toContain('id="study-offer-title"');
+    expect(html).toContain('id="study-offer-body"');
+    expect(html).toContain('id="study-offer-actions"');
+    expect(main).toContain("showPreconditionOffer");
+    expect(main).toContain("offerEmptyQueueChoices");
+    expect(main).toContain("offerBonusOrFinish");
+    expect(main).toContain("offerEmptyQueueChoices(requestId)");
+  });
+
   it("skips the switchView studio reload on the full-editor jump", () => {
     expect(main).toContain(
       'switchView("learning-content-view", { skipStudioLoad: true })',

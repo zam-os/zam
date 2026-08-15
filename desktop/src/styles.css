@@ -2095,6 +2095,14 @@ textarea::placeholder {
   font-weight: 600;
 }
 
+.study-offer-actions {
+  display: flex;
+  gap: 10px;
+  justify-content: center;
+  flex-wrap: wrap;
+  margin-top: 8px;
+}
+
 /* Util Helpers */
 .loading-pulse {
   animation: dotsPulseAnimation 1.2s infinite alternate ease-in-out;
