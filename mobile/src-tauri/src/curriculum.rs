@@ -34,7 +34,9 @@ pub async fn curriculum_source_request(
 
     let mut response = client
         .get(url)
-        .header(USER_AGENT, "ZAM-Mobile/0.33 curriculum source reader")
+        // No version here on purpose: this crate's version is deliberately not
+        // bumped per release, so a version in the UA would silently go stale.
+        .header(USER_AGENT, "ZAM-Mobile curriculum source reader")
         .send()
         .await
         .map_err(|e| format!("curriculum source request failed: {e}"))?;
