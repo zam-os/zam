@@ -50,7 +50,10 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
 
     for (const cellId of RS6_CELL_IDS) {
       const cell = cells.find((c) => c.id === cellId);
-      expect(cell, `Cell ${cellId} should be present in bundled cells`).toBeDefined();
+      expect(
+        cell,
+        `Cell ${cellId} should be present in bundled cells`,
+      ).toBeDefined();
       expect(cell?.gradeLabel).toContain("Realschule");
       expect(cell?.atomCount).toBeGreaterThanOrEqual(2);
       expect(cell?.inScopeAtomIds.length).toBe(cell?.atomCount);
@@ -93,7 +96,8 @@ describe("Realschule Bayern 6 Curriculum Cells (Einführungs- und Orientierungss
 
   it("installs and enrols cleanly into Deutsch 6 Berichte und Vorgangsbeschreibung", async () => {
     const userId = "01K4TESTUSER000000000000004";
-    const cellId = "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung";
+    const cellId =
+      "de-by:realschule-6-deutsch-texte-bericht-vorgangsbeschreibung";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);

@@ -252,7 +252,14 @@ describe("symbiosis mode presets", () => {
         INSERT INTO tokens (id, slug, title, concept, domain, symbiosis_mode)
         VALUES (?, ?, ?, ?, ?, ?)
       `)
-        .run(id, slug, `Concept for ${slug}`, `Concept for ${slug}`, domain, mode);
+        .run(
+          id,
+          slug,
+          `Concept for ${slug}`,
+          `Concept for ${slug}`,
+          domain,
+          mode,
+        );
     }
 
     async function seedCard(

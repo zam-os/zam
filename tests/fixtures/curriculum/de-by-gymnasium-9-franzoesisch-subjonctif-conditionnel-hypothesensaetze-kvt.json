@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-franzoesisch-subjonctif-conditionnel-hypothesensaetze",
+  "version": "2026.08.1",
+  "title": "Französisch 9: Le Subjonctif Présent, Conditionnel Présent/Passé und Si-Sätze (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 9 (F2/F3): Der Subjonctif Présent (Bildung aus dem Stamm der 3. Person Plural + Endungen -e, -es, -e, -ions, -iez, -ent, unregelmäßige Stämme, Auslöser: Wille/Notwendigkeit il faut que/vouloir, Gefühle avoir peur que/être content que, Zweifel und Wertungen), Conditionnel Présent und Conditionnel Passé sowie die drei Typen der französischen Hypothesensätze (Si-Sätze Typ I, II, III).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/franzoesisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Französisch 9, Lernbereich Sprachliche Mittel – Modi und Hypothetischer Satzbau"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9M0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-subjonctif",
+      "slug": "subjonctif-present-bildung-ausloeser-unregelmaessige-verben",
+      "title": "Le Subjonctif Présent: Bildung, Auslöser (Wille, Gefühl, Notwendigkeit) und unregelmäßige Formen",
+      "domain": "schule/franzoesisch/subjonctif",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "French grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Le Subjonctif Présent",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9M0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Ausdruck verlangt im Französischen zwingend den Modus 'Subjonctif' im folgenden Nebensatz mit que?",
+          "concept": "'Il faut que...' (Ausdruck der Notwendigkeit / Verpflichtung verlangt Subjonctif)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Il faut que... (Notwendigkeit)",
+              "Je pense que... (Gewissheit/Meinung im Bejahten)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9M0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere den Subjonctif Présent nach Bildung, Auslösern und unregelmäßigen Sonderformen: 1. **Regelmäßige Bildung**:   * Stamm der 3. Person Plural Präsens (ils/elles) + Endungen: **-e, -es, -e, -ions, -iez, -ent** (z. B. *ils partent* $\\implies$ *que je parte, que tu partes, qu'il parte, que nous partions, que vous partiez, qu'ils partent*), 2. **Die 4 großen Auslösergruppen (Déclencheurs du Subjonctif)**:   * **Wille, Wunsch, Verbot**: *vouloir que, désirer que, refuser que, interdire que*.   * **Notwendigkeit & Pflicht**: *il faut que, il est nécessaire que, il est important que*.   * **Gefühle & Emotionen**: *avoir peur que, craindre que, être content/triste/fier que, regretter que*.   * **Zweifel & Verneinte Meinungsverben**: *douter que, ne pas croire que, ne pas penser que*, 3. **Unregelmäßige Verben**: *être* (sois, sois, soit, soyons, soyez, soient), *avoir* (aie, aies, ait, ayons, ayez, aient), *faire* (fasse...), *aller* (aille, ailles, aille, allions, alliez, aillent), *pouvoir* (puisse...), *savoir* (sache...).",
+          "concept": "Subjonctif Présent: Bildung aus 3. Pl. Stamm + -e, -es, -e, -ions, -iez, -ent; Auslöser: Wille (vouloir que), Notwendigkeit (il faut que), Gefühl (avoir peur que), Zweifel (douter que); Wichtige Ausnahmen (être, avoir, faire, aller, pouvoir, savoir).",
+          "sample_solution": "1. Regelmäßige Bildung des Subjonctif Présent: - **Bildungsregel**:   * Man nimmt den Stamm der **3. Person Plural Präsens (ils-Form)** und hängt die spezifischen Subjonctif-Endungen an:     $$\\mathbf{-e, \\quad -es, \\quad -e, \\quad -ions, \\quad -iez, \\quad -ent}$$   * *Beispiel choisir (ils choisiss-ent)*:     - *que je choisisse, que tu choisisses, qu'il choisisse, que nous choisissions, que vous choisissiez, qu'ils choisissent*. 2. Die Auslöser (Wann muss der Subjonctif stehen?): - Der Subjonctif steht in Nebensätzen mit **que**, wenn das Subjekt des Hauptsatzes und des Nebensatzes verschieden sind und der Hauptsatz Subjektivität ausdrückt:   * **1. Wille / Verlangen / Aufforderung**:     - *« Je veux que tu **viennes** à l'heure. »* (vouloir, souhaiter, exiger, interdire).   * **2. Notwendigkeit / Unpersönliche Wertung**:     - *« Il faut que nous **fassions** nos devoirs. »* (il est important que, il est temps que).   * **3. Emotionen & Empfindungen**:     - *« Je suis ravi que vous **soyez** là. »* (avoir peur que, être triste/heureux que, regretter que).   * **4. Zweifel & Negation**:     - *« Je doute qu'il **puisse** réussir. »* (douter que; verneinte Verben des Denkens: *« Je ne pense pas qu'il **ait** raison »*). 3. Die unverzichtbaren unregelmäßigen Verben im Subjonctif: - **être**: *que je sois, que tu sois, qu'il soit, que nous soyons, que vous soyez, qu'ils soient*. - **avoir**: *que j'aie, que tu aies, qu'il ait, que nous ayons, que vous ayez, qu'ils aient*. - **faire**: *que je fasse, fasses, fasse, fassions, fassiez, fassent*. - **aller**: *que j'aille, tu ailles, il aille, nous allions, vous alliez, ils aillent*. - **pouvoir**: *que je puisse, puisses, puisse, puissions, puissiez, puissent*. - **savoir**: *que je sache, saches, sache, sachions, sachiez, sachent*."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9M0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9M0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-conditionnel",
+      "slug": "conditionnel-si-saetze-hypothesen-typ1-typ2-typ3",
+      "title": "Le Conditionnel & Les Phrases Hypothétiques: Die drei Typen der Si-Sätze (Bedingungssätze)",
+      "domain": "schule/franzoesisch/hypothesen",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Moduslehre vertieft die Unterscheidung zwischen Subjonctif und Conditionnel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Conditional mood",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Grammatik – Conditionnel und Si-Sätze",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9M0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Zeitform folgt im französischen Si-Satz Typ II (Irrealis der Gegenwart) direkt auf die Konjunktion 'si'?",
+          "concept": "Das Imparfait (Struktur: si + Imparfait -> Conditionnel Présent)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Imparfait (si + Imparfait -> Conditionnel Présent)",
+              "Conditionnel Présent"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9M0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Conditionnel und die drei Typen der französischen Si-Sätze: 1. **Bildung des Conditionnel**:   * **Conditionnel Présent**: Futur-Stamm (Infinitivstamm) + Imparfait-Endungen (-ais, -ais, -ait, -ions, -iez, -aient).   * **Conditionnel Passé**: Hilfsverb *avoir / être* im Conditionnel Présent + Participe Passé (*j'aurais fait, je serais venu*), 2. **Die 3 Typen der Si-Sätze (Goldene Regel: Niemals Conditionnel oder Futur direkt nach 'si'! / 'Si n'aime pas les -rais')**:   * **Typ I (Reale Bedingung / Erfüllbar)**:     $$\\mathbf{\\text{Si } + \\text{Présent} \\implies \\text{Futur simple / Présent / Impératif}}$$     *(Si j'ai le temps, je viendrai te voir.)*   * **Typ II (Irrealis der Gegenwart / Potentielle Bedingung)**:     $$\\mathbf{\\text{Si } + \\text{Imparfait} \\implies \\text{Conditionnel Présent}}$$     *(Si j'avais beaucoup d'argent, j'achèterais une grande maison.)*   * **Typ III (Irrealis der Vergangenheit / Nicht mehr erfüllbar)**:     $$\\mathbf{\\text{Si } + \\text{Plus-que-parfait} \\implies \\text{Conditionnel Passé}}$$     *(Si tu m'avais prévenu, je serais venu t'aider.)*.",
+          "concept": "Conditionnel: Présent (Futur-Stamm + Imparfait-Endungen), Passé (aurais/serais + Participe); 3 Si-Satz-Typen: I (si + Présent -> Futur), II (si + Imparfait -> Conditionnel Présent), III (si + PQP -> Conditionnel Passé); Merkregel: kein Conditionnel direkt nach 'si'.",
+          "sample_solution": "1. Bildung der Conditionnel-Zeiten: - **1. Conditionnel Présent**:   * **Bildung**: Stamm des *Futur simple* (Infinitiv) + Endungen des *Imparfait* ($-ais, -ais, -ait, -ions, -iez, -aient$):     - *parler*: je parler-ais, tu parler-ais, il parler-ait, nous parler-ions, vous parler-iez, ils parler-aient.     - *être*: je serais; *avoir*: j'aurais; *faire*: je ferais; *aller*: j'irais. - **2. Conditionnel Passé**:   * **Bildung**: Hilfsverb *avoir* oder *être* im Conditionnel Présent + *Participe Passé*:     - *« J'aurais aimé voyager en France. »*     - *« Elle serait partie plus tôt. »* 2. Die drei Typen der französischen Si-Sätze (Phrases Hypothétiques): | Typ | Bedeutung | Si-Satz (Bedingung) | Hauptsatz (Folge) | Beispiel | | :--- | :--- | :--- | :--- | :--- | | **Typ I** | **Real / Erfüllbar** in Gegenwart/Zukunft | **Présent** | **Futur simple** (oder Présent/Impératif) | *« Si le temps **est** beau demain, nous **irons** à la plage. »* | | **Typ II** | **Irreal in der Gegenwart** (Gedankenspiel) | **Imparfait** | **Conditionnel Présent** | *« Si j'**avais** des ailes, je **volerais** vers toi. »* | | **Typ III** | **Irreal in der Vergangenheit** (Zu spät/Verpasst) | **Plus-que-parfait** | **Conditionnel Passé** | *« Si tu **avais révisé**, tu **aurais réussi** ton examen. »* | 3. Wichtigste gymnasiale Fehlervermeidung: - **« Les 'si' n'aiment pas les '-rais' ! »**:   * Im französischen Nebensatz steht nach **si niemals das Futur oder das Conditionnel** (während im Deutschen *'Wenn ich Zeit haben würde'* umgangssprachlich vorkommt, ist im Französischen *'Si j'aurais'* ein gravierender Grammatikfehler)."
+        }
+      ]
+    }
+  ]
+}

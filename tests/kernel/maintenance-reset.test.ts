@@ -180,9 +180,7 @@ describe("resetCardsForToken (ADR 2026-07-18)", () => {
     await ensureCard(db, token.id, USER);
     const card = await getCard(db, token.id, USER);
     if (!card) throw new Error("card missing");
-    await db
-      .prepare("UPDATE cards SET blocked = 1 WHERE id = ?")
-      .run(card.id);
+    await db.prepare("UPDATE cards SET blocked = 1 WHERE id = ?").run(card.id);
 
     await resetCardsForToken(db, token.id);
     const after = await getCard(db, token.id, USER);

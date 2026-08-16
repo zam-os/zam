@@ -124,9 +124,9 @@ describe("publishTokenRevision", () => {
     // can read several milliseconds behind SQLite's, which made a Date.now()
     // comparison fail whenever the write landed just past a second boundary.
     const card = await getCard(db, token.id, "alice");
-    const dbNow = (await db
-      .prepare("SELECT datetime('now') AS now")
-      .get()) as { now: string };
+    const dbNow = (await db.prepare("SELECT datetime('now') AS now").get()) as {
+      now: string;
+    };
     expect(card!.due_at <= dbNow.now).toBe(true);
     expect(await isAwaitingRetest(db, cardId)).toBe(true);
   });
@@ -255,7 +255,10 @@ describe("publishTokenRevision", () => {
     const token = await makeToken("repeat-token");
     const cardId = await learnedCard(token.id, "alice");
 
-    await publishTokenRevision(db, { tokenId: token.id, materiality: "material" });
+    await publishTokenRevision(db, {
+      tokenId: token.id,
+      materiality: "material",
+    });
     await evaluateRating(db, {
       cardId,
       tokenId: token.id,
@@ -280,7 +283,10 @@ describe("publishTokenRevision", () => {
     const bobCard = await learnedCard(token.id, "bob");
 
     // Bob answers after the first material change; Alice does not.
-    await publishTokenRevision(db, { tokenId: token.id, materiality: "material" });
+    await publishTokenRevision(db, {
+      tokenId: token.id,
+      materiality: "material",
+    });
     await evaluateRating(db, {
       cardId: bobCard,
       tokenId: token.id,
@@ -358,7 +364,9 @@ describe("publishTokenRevision", () => {
 
     // Emulate the pre-M015 shape.
     await legacyDb.exec("ALTER TABLE tokens DROP COLUMN content_version");
-    await legacyDb.exec("ALTER TABLE cards DROP COLUMN learned_content_version");
+    await legacyDb.exec(
+      "ALTER TABLE cards DROP COLUMN learned_content_version",
+    );
     await legacyDb.close();
 
     legacyDb = await openDatabase({
@@ -468,7 +476,9 @@ describe("publishTokenRevision", () => {
       await ensureCard(db, token.id, "alice");
 
       let queue = await buildReviewQueue(db, { userId: "alice" });
-      expect(queue.items.map((i) => i.slug)).not.toContain("publish-transition");
+      expect(queue.items.map((i) => i.slug)).not.toContain(
+        "publish-transition",
+      );
 
       await publishTokenRevision(db, {
         tokenId: token.id,

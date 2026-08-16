@@ -49,7 +49,10 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
 
     for (const cellId of GYM5_CELL_IDS) {
       const cell = cells.find((c) => c.id === cellId);
-      expect(cell, `Cell ${cellId} should be present in bundled cells`).toBeDefined();
+      expect(
+        cell,
+        `Cell ${cellId} should be present in bundled cells`,
+      ).toBeDefined();
       expect(cell?.gradeLabel).toContain("Gymnasium");
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
@@ -105,7 +108,10 @@ describe("Gymnasium Bayern 5 Curriculum Cells (Unterstufe / G9)", () => {
       .all()) as Array<{ id: string; title: string; slug: string }>;
     expect(nutAtoms.length).toBeGreaterThanOrEqual(4);
     expect(
-      nutAtoms.some((a) => a.slug === "objektorientierte-modellierung-klasse-objekt-zustand"),
+      nutAtoms.some(
+        (a) =>
+          a.slug === "objektorientierte-modellierung-klasse-objekt-zustand",
+      ),
     ).toBe(true);
   });
 

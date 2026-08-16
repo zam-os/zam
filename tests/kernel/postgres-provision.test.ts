@@ -28,7 +28,9 @@ const describeWithPostgres = POSTGRES_URL ? describe : describe.skip;
 
 /** A schema-isolated database, so a failed run cannot poison the next one. */
 async function freshSchema(name: string): Promise<Database> {
-  const admin = openPostgresDatabase({ connectionString: POSTGRES_URL as string });
+  const admin = openPostgresDatabase({
+    connectionString: POSTGRES_URL as string,
+  });
   await admin.exec(`DROP SCHEMA IF EXISTS ${name} CASCADE`);
   await admin.exec(`CREATE SCHEMA ${name}`);
   await admin.close();

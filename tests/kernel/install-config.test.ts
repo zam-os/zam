@@ -682,7 +682,9 @@ describe("cross-process config writes", () => {
     const exited = new Promise<void>((resolve, reject) => {
       child.on("error", reject);
       child.on("exit", (code) =>
-        code === 0 ? resolve() : reject(new Error(`holder exited with ${code}`)),
+        code === 0
+          ? resolve()
+          : reject(new Error(`holder exited with ${code}`)),
       );
     });
 
@@ -805,7 +807,9 @@ describe("cross-process config writes", () => {
     const exited = new Promise<void>((resolve, reject) => {
       child.on("error", reject);
       child.on("exit", (code) =>
-        code === 0 ? resolve() : reject(new Error(`waiter exited with ${code}`)),
+        code === 0
+          ? resolve()
+          : reject(new Error(`waiter exited with ${code}`)),
       );
     });
     while (!existsSync(`${path}.waiting`)) {
@@ -827,12 +831,18 @@ describe("cross-process config writes", () => {
     await new Promise((resolve) => setTimeout(resolve, 150));
     // Commit the holder's write where the directory is about to reappear, so
     // it is already on disk the moment the path becomes usable again.
-    saveInstallConfig({ companion: { collapsed: { "slow-holder": true } } },
+    saveInstallConfig(
+      { companion: { collapsed: { "slow-holder": true } } },
       join(asideDir, basename(path)),
     );
     // A waiter that already gave up has recreated the directory for its
     // unsynchronized write; drop it so the real one can come back.
-    rmSync(dir, { recursive: true, force: true, maxRetries: 10, retryDelay: 20 });
+    rmSync(dir, {
+      recursive: true,
+      force: true,
+      maxRetries: 10,
+      retryDelay: 20,
+    });
     renameWithRetry(asideDir, dir);
     await exited;
 

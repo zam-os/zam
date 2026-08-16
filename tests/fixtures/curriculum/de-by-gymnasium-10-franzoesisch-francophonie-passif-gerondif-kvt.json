@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-franzoesisch-francophonie-passif-gerondif",
+  "version": "2026.08.1",
+  "title": "Französisch 10: La Francophonie (Québec, Maghreb, Westafrika), Le Passif und Le Gérondif (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 10 (F2/F3): Landeskunde und Kultur der Frankophonie (Québec/Kanada: sprachliche Identität und Anglizismen, Maghreb: postkoloniale Geschichte, Migration, Zweisprachigkeit, Westafrika/Senegal: Léopold Sédar Senghor und Négritude) sowie fortgeschrittene Grammatik (Das Passiv / Le Passif mit être + Participe Passé und Agens 'par/de', Das Gérondif mit en + Participe Présent für Gleichzeitigkeit/Art und Weise/Bedingung sowie zusammengesetzte Relativpronomen lequel, laquelle, auxquels, desquelles).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/franzoesisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Französisch 10, Lernbereiche Interkulturelle Kompetenz – La Francophonie, Sprachliche Mittel – Passif und Gérondif"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAD0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAD0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-grammatik",
+      "slug": "passif-gerondif-pronoms-relatifs-composes",
+      "title": "Französische Grammatik: Le Passif, Le Gérondif (en + -ant) und Pronoms relatifs composés",
+      "domain": "schule/franzoesisch/grammatik",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "French grammar",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Grammatik – Passiv, Gérondif und zusammengesetzte Relativpronomen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAD0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Funktion erfüllt das französische Gérondif (gebildet mit 'en' + Participe Présent, z. B. 'en lisant') primär im Satz?",
+          "concept": "Es drückt Gleichzeitigkeit (während), Art und Weise (indem/durch) oder eine Bedingung (wenn) einer Handlung aus, bezogen auf das Subjekt des Hauptsatzes",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ausdruck von Gleichzeitigkeit / Art und Weise (indem / während)",
+              "Ausdruck von reiner Vorzeitigkeit der Vergangenheit"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAD0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Le Passif, Le Gérondif und die zusammengesetzten Relativpronomen im Französischen: 1. **Das Passiv (Le Passif)**:   * **Bildung**: Form von *être* in der entsprechenden Zeitform + *Participe Passé* (angleichung in Genus und Numerus an das neue Subjekt!).   * **Urheber (Agens)**: Eingeleitet durch die Präposition **par** (*« Le pont a été construit par les ouvriers. »*) bzw. **de** bei Verben des Gefühls/Zustands (*« Il est aimé de tous. »*).   * **Vermeidung des Passivs**: Im Französischen oft durch Aktivsätze mit dem unpersönlichen Pronomen **on** oder reflexiven Konstruktionen (*se faire, se voir*) ersetzt (*« On a ouvert la porte »* statt *« La porte a été ouverte »*), 2. **Das Gérondif (en + -ant)**:   * **Bildung**: Präposition **en** + Stamm der 1. Person Plural Präsens (nous) + Endung **-ant** (*nous regardons $\\implies$ en regardant*; Ausnahmen: *en étant, en ayant, en sachant*).   * **Bedingung**: Subjekt des Gérondif muss zwingend identisch mit dem Subjekt des Hauptsatzes sein.   * **Bedeutungen**:     - Gleichzeitigkeit (*« Il écoute de la musique en faisant ses devoirs. »* = während er Hausaufgaben macht).     - Art und Weise / Instrument (*« On apprend une langue en parlant. »* = indem man spricht).     - Bedingung / Kausalität (*« En partant tôt, tu arriveras à l'heure. »* = wenn du früh aufbrichst), 3. **Zusammengesetzte Relativpronomen (Pronoms relatifs composés)**:   * Nach Präpositionen für Sachen/Gegenstände: *lequel, laquelle, lesquels, lesquelles*.   * Verschmelzung mit *à* (*auquel, à laquelle, auxquels, auxquelles*) und *de* (*duquel, de laquelle, desquels, desquelles*).",
+          "concept": "Französische Grammatik 10: Le Passif (être + Participe, par/de, Vermeidung mit 'on'); Le Gérondif (en + -ant für Gleichzeitigkeit/indem/wenn bei Subjektidentität); Zusammengesetzte Relativpronomen (lequel, auquel, duquel).",
+          "sample_solution": "1. Das Passiv im Französischen (La voix passive): - **Bildungsregel**:   $$\\mathbf{\\text{Subjekt} + \\text{être (im Zeitmodus)} + \\text{Participe Passé (angeglichen)} + \\text{par / de } + \\text{Agens}}$$   * *Présent*: *« La maison **est vendue** par le propriétaire. »*   * *Passé composé*: *« La maison **a été vendue** par le propriétaire. »*   * *Futur simple*: *« La maison **sera vendue** par le propriétaire. »* - **Besonderheiten beim Agens**:   * Die meisten Verben verlangen **par** (*« Le voleur a été arrêté **par** la police. »*).   * Verben des Gefühls, der Wertung oder des Zustands verlangen **de** (*« Elle est respectée **de** tous ses collègues. »*, *« La montagne est couverte **de** neige. »*). - **Passiversatzformen**:   * Das Französische bevorzugt das Aktiv:     - Verwendung von **on**: *« On a réparé ma voiture. »* (statt: *« Ma voiture a été réparée. »*).     - **Reflexivkonstruktion**: *« Ce livre **se vend** très bien. »* (Dieses Buch verkauft sich sehr gut). 2. Das Gérondif (Le gérondif): - **Bildung**:   * Präposition **en** + Stamm der *nous*-Form im Präsens + **-ant**:     - *nous finissons $\\implies$ **en finissant***; *nous buvons $\\implies$ **en buvant***.     - *Unregelmäßige Formen*: *en étant* (être), *en ayant* (avoir), *en sachant* (savoir). - **Syntaxregel**:   * Das Gérondif bezieht sich **immer und ausschließlich auf das Subjekt des Hauptsatzes**! - **Semantische Funktionen**:   1. **Temporal (Gleichzeitigkeit)**: *« Elle téléphone **en conduisant**. »* (Sie telefoniert, während sie Auto fährt).   2. **Modal (Art und Weise / Instrumental)**: *« Il s'est enrichi **en travaillant** dur. »* (Er wurde reich, indem er hart arbeitete).   3. **Konditional (Bedingung)**: *« **En révisant** régulièrement, vous réussirez. »* (Wenn Sie regelmäßig wiederholen, werden Sie Erfolg haben). 3. Pronoms relatifs composés (lequel, auquel, duquel): - Ersetzen Nomen nach Präpositionen (*avec, pour, sur, sans, dans, à côté de*): | | Maskulin Sg. | Feminin Sg. | Maskulin Pl. | Feminin Pl. | | :--- | :--- | :--- | :--- | :--- | | **Grundform** | lequel | laquelle | lesquels | lesquelles | | **mit à** | auquel | à laquelle | auxquels | auxquelles | | **mit de** | duquel | de laquelle | desquels | desquelles | - *Beispiel*: *« C'est le projet **pour lequel** nous travaillons jour et nuit. »* (Das ist das Projekt, für das wir arbeiten)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAD0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAD0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-francophonie",
+      "slug": "la-francophonie-quebec-maghreb-senegal-diversite",
+      "title": "La Francophonie: Québec, Maghreb und Westafrika (Kultur, Zweisprachigkeit, Identität)",
+      "domain": "schule/franzoesisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAD0000000000000000A01",
+          "type": "hard",
+          "rationale": "Landeskundliche Textarbeit erfordert sichere Syntax und Modusbeherrschung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Francophonie",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Landeskunde – La Francophonie et le monde francophone",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAD0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher kanadischen Provinz ist Französisch die alleinige offizielle Amtssprache (Charte de la langue française / Loi 101)?",
+          "concept": "Im Québec (Hauptstadt Québec, größte Stadt Montréal)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Québec (alleinige Amtssprache)",
+              "Ontario"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAD0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Begriff der 'Francophonie' und die kulturellen Räume des frankophonen Raums: 1. **Die Organisation Internationale de la Francophonie (OIF)**:   * Weltweite Gemeinschaft von über 300 Millionen Französischsprechenden in 88 Mitgliedsstaaten.   * Ziele: Förderung der französischen Sprache und kulturellen Vielfalt, Demokratie, Bildung und wirtschaftliche Zusammenarbeit, 2. **Québec (Kanada)**:   * Französisch als Identitätsanker im angelsächsisch geprägten Nordamerika (*« Je me souviens »*).   * Gesetzlicher Schutz durch die *Charta der französischen Sprache (Loi 101)*; Ablehnung von Anglizismen (z. B. *courriel* statt E-Mail, *magasiner* statt shoppen, *fin de semaine* statt Weekend), 3. **Der Maghreb (Marokko, Algerien, Tunesien)**:   * Postkoloniales Erbe: Französisch ist keine offizielle Amtssprache (Arabisch/Tamazight sind offiziell), aber dominante Verkehrs-, Bildungs- und Wirtschaftssprache (*langue privilégiée*).   * Zweisprachigkeit, literarische Identitätssuche zwischen Orient und Okzident (Frankophone Maghreb-Literatur: Tahar Ben Jelloun, Assia Djebar), 4. **Frankophones Westafrika (z. B. Senegal)**:   * Französisch als offizielle Staatssprache und verbindende *Lingua franca* zwischen verschiedenen ethnischen Sprachen (z. B. Wolof).   * **Négritude-Bewegung (Léopold Sédar Senghor, Aimé Césaire)**: Literarisch-philosophische Bewegung zur Wiederentdeckung und selbstbewussten Würdigung afrikanischer Kultur, Werte und Würde gegen koloniale Entfremdung.",
+          "concept": "Francophonie: OIF (300 Mio. Sprecher); Québec (Loi 101, Sprachidentität, Anti-Anglizismen); Maghreb (Marokko/Algerien/Tunesien, postkoloniale Zweisprachigkeit, Literatur); Westafrika/Senegal (Senghor, Négritude, Lingua franca).",
+          "sample_solution": "1. Begriff und Dimension der Francophonie: - **Definition**: Die Gesamtheit aller Menschen und Länder, die die französische Sprache im Alltag, im Bildungswesen oder als Amtssprache nutzen (**über 320 Millionen Sprecher auf 5 Kontinenten**). - **Organisation internationale de la Francophonie (OIF)**:   * Gegründet 1970; umfasst 88 Staaten und Regierungen.   * *Mission*: Schutz der Sprachenvielfalt gegen globale Monokultur, Förderung von Menschenrechten und Bildungszugang. 2. Québec – Französische Enklave in Nordamerika: - **Historischer Hintergrund**: Besiedlung als *Nouvelle-France* im 17. Jahrhundert; nach dem Siebenjährigen Krieg 1763 an Großbritannien abgetreten. - **Sprachschutz und Identität**:   * Leitspruch: *« Je me souviens »* (Ich erinnere mich an meine Wurzeln).   * **Loi 101 (Charte de la langue française, 1977)**: Macht Französisch zur alleinigen Amts-, Schul- und Geschäftssprache in der Provinz Québec.   * **Sprachliche Eigenheiten (Québécismes)**: Radikale Vermeidung englischer Lehnwörter:     - *le courriel* (E-Mail), *le traversier* (Fähre), *le stationnement* (Parkplatz), *le char* (Auto), *la fin de semaine* (Wochenende). 3. Der Maghreb (Nordafrika: Marokko, Algerien, Tunesien): - **Sprachstatus**:   * Amtssprachen sind Hocharabisch und Tamazight (Berbersprachen).   * **Französisch als Sprache des Prestiges und der Moderne**: Dominiert an Universitäten (Medizin, Naturwissenschaften, Ingenieurwesen), in der Wirtschaft, im Bankensektor und in den Massenmedien. - **Frankophone Literatur**: Schriftsteller wie **Tahar Ben Jelloun** oder **Assia Djebar** nutzen das Französische als literarisches Ausdrucksmittel, um über Identitätszerrissenheit, Frauenrechte und postkoloniale Wunden zu schreiben. 4. Frankophones Subsahara-Afrika (Beispiel Senegal): - **Funktion des Französischen**:   * In einem Land mit über 20 verschiedenen Stammessprachen (Mehrheit spricht Wolof) fungiert Französisch als neutrale, staatsbürgerliche **Amtssprache und verbindende Lingua franca**. - **Die Négritude-Bewegung**:   * Begründet in den 1930er-Jahren von **Léopold Sédar Senghor** (späterer erster Präsident Senegals und Mitglied der *Académie française*) und **Aimé Césaire** (Martinique).   * Ziel: Stolze Rückbesinnung auf die Werte, Ästhetik und Humanität afrikanischer Kultur als emanzipatorische Antwort auf die koloniale Doktrin der *Assimilation*."
+        }
+      ]
+    }
+  ]
+}

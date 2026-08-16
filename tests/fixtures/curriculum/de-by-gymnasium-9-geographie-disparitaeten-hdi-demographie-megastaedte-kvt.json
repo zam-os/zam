@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-geographie-disparitaeten-hdi-demographie-megastaedte",
+  "version": "2026.08.1",
+  "title": "Geographie 9: Globale Disparitäten (HDI, BIP, Gini), Modell des demographischen Übergangs und Megastädte (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geographie 9: Messung und Ursachen globaler sozioökonomischer Disparitäten (BIP/BNE pro Kopf, Human Development Index HDI mit Lebenserwartung, Bildung und Einkommen, Gini-Index, endogene vs. exogene Entwicklungstheorien, Schwellenländer), Weltbevölkerungsentwicklung (Modell des demographischen Übergangs in 5 Phasen, Alterspyramiden) sowie rasanter Urbanisierungsprozess (Megacities, Push- und Pull-Faktoren der Land-Stadt-Wanderung, Marginalisierung, Slums und Segregation).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/geographie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geographie 9, Lernbereiche Globale Disparitäten und Weltbevölkerung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9P0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9P0000000000000000A01",
+      "namespace": "gymnasium-geographie-disparitaeten",
+      "slug": "globale-disparitaeten-hdi-gini-entwicklungstheorien",
+      "title": "Globale Disparitäten: Entwicklungsindikatoren (HDI, BIP, Gini-Koeffizient) und Entwicklungstheorien",
+      "domain": "schule/geographie/disparitaeten",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Human Development Index",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Globale Disparitäten und Entwicklungszusammenarbeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9P0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchen drei gleichwertigen Dimensionen setzt sich der Human Development Index (HDI) der Vereinten Nationen (UNDP) zusammen?",
+          "concept": "Lebenserwartung bei Geburt (Gesundheit), Bildungsgrad (Dauer des Schulbesuchs) und Bruttonationaleinkommen pro Kopf (Kaufkraft)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lebenserwartung, Bildung und Pro-Kopf-Einkommen (BNE)",
+              "Reine Militärausgaben und Goldreserven"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9P0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Indikatoren globaler Disparitäten und Erklärungsansätze für Unterentwicklung: 1. **Quantitative vs. qualitative Entwicklungsindikatoren**:   * **BIP / BNE pro Kopf (Kaufkraftbereinigt KKB)**: Rein ökonomisch; blendet Einkommensverteilung und informellen Sektor aus.   * **HDI (Human Development Index, Skala 0 bis 1)**: Geometrisches Mittel aus Lebenserwartung (Gesundheit), Bildungsindex (Schulbesuchsdauer) und Lebensstandard (BNE pro Kopf).   * **Gini-Koeffizient (0 bis 1)**: Maß für die Ungleichverteilung von Einkommen/Vermögen ($0 = \\text{absolute Gleichverteilung}$, $1 = \\text{eine Person besitzt alles}$), 2. **Klassifikation**: Industrieländer ($HDI \\ge 0{,}80$), Schwellenländer / Newly Industrializing Countries (NICs, rasanter Strukturwandel vom primären zum sekundären Sektor), Entwicklungsländer (LDCs – Least Developed Countries), 3. **Erklärungsansätze für Entwicklungsunterschiede**:   * **Endogene Theorien (Modernisierungstheorie)**: Ursachen liegen im Land selbst (Korruption, schlechte Regierungsführung/Bad Governance, Mangel an Kapital/Infrastruktur, ungünstige naturgeographische Bedingungen).   * **Exogene Theorien (Dependenztheorie)**: Ursachen liegen in historischen und weltwirtschaftlichen Abhängigkeiten (Kolonialismus, Ausbeutung von Rohstoffen, ungleiche Handelsbedingungen / Terms of Trade).",
+          "concept": "Disparitäten: HDI (Gesundheit, Bildung, BNE); Gini-Koeffizient (Ungleichheit); Schwellenländer (NICs, BRICS); Endogene Theorien (Modernisierung, Institutionen) vs. Exogene Theorien (Dependenz, Kolonialismus, Terms of Trade).",
+          "sample_solution": "1. Entwicklungsindikatoren im Vergleich: - **1. Bruttoinlandsprodukt (BIP) und Bruttonationaleinkommen (BNE) pro Kopf**:   * Misst die gesamte wirtschaftliche Wertschöpfung geteilt durch die Einwohnerzahl.   * *Kritik*: Rein monetäre Kennziffer; verschleiert extreme soziale Ungleichheiten im Land und erfasst weder ökologische Schäden noch die Subsistenzwirtschaft (Schattenwirtschaft). - **2. Der Human Development Index (HDI, UNDP)**:   * Ein mehrdimensionaler Wohlstandsindikator auf einer Skala von **0,000 bis 1,000**:     1. **Gesundheitsindex**: Lebenserwartung bei der Geburt.     2. **Bildungsindex**: Durchschnittliche und voraussichtliche Schulbesuchsdauer in Jahren.     3. **Lebensstandardindex**: BNE pro Kopf in US-Dollar nach Kaufkraftparität (KKP).   * *Klassifikation*: Sehr hoher Entwicklungsstand ($HDI \\ge 0{,}800$), hoher ($0{,}700 - 0{,}799$), mittlerer ($0{,}550 - 0{,}699$) und geringer Entwicklungsstand ($HDI < 0{,}550$). - **3. Der Gini-Koeffizient (Lorenzkurve)**:   * Statistische Messung der Ungleichverteilung von Einkommen:     * **0**: Vollkommene Gleichheit (jeder Bürger verdient exakt gleich viel).     * **1**: Absolute Ungleichheit (ein einziger Bürger verfügt über das gesamte Volkseinkommen). 2. Typologie der Staaten: - **Industrieländer**: Hoher Dienstleistungsanteil (tertiärer Sektor), hohe F&E-Investitionen, stabile Institutionen. - **Schwellenländer (Newly Industrialized Countries / BRICS)**: Hohes Wirtschaftswachstum, massive Industrialisierung, aber verbleibende gesellschaftliche Disparitäten. - **Entwicklungsländer (LDCs - Least Developed Countries)**: Hoher Anteil im primären Sektor (Landwirtschaft), Analphabetismus, hohe Kindersterblichkeit. 3. Erklärungsansätze (Entwicklungstheorien): - **1. Endogene Ansätze (Modernisierungstheorien)**:   * Gehen davon aus, dass traditionelle Wertvorstellungen, Misswirtschaft (*Bad Governance*), Korruption und naturräumliche Nachteile (Trockenheit, Tropenkrankheiten) die Entwicklung hemmen.   * *Lösung*: Technologietransfer, Demokratisierung, Kapitalinvestitionen nach westlichem Vorbild. - **2. Exogene Ansätze (Dependenztheorien)**:   * Begründen die Unterentwicklung durch historische koloniale Ausbeutung und fortdauernde weltwirtschaftliche Benachteiligung (*Neokolonialismus*).   * Verschlechterung der **Terms of Trade** (Realaustauschverhältnis): Export billiger agrarischer/mineralischer Rohstoffe gegen Import teurer industrieller Fertigwaren führt zu struktureller Verarmung."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9P0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9P0000000000000000A02",
+      "namespace": "gymnasium-geographie-demographie",
+      "slug": "demographischer-uebergang-bevoelkerung-migration-megastaedte",
+      "title": "Demographie & Urbanisierung: Modell des demographischen Übergangs, Push/Pull-Migration und Megacities",
+      "domain": "schule/geographie/demographie",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9P0000000000000000A01",
+          "type": "hard",
+          "rationale": "Demographische Prozesse hängen eng mit sozioökonomischen Entwicklungsstufen zusammen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Demographic transition",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Demographie und weltweite Verstädterung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9P0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welcher Phase des Modells des demographischen Übergangs öffnet sich die 'demographische Schere' maximal (höchstes Bevölkerungswachstum durch rapide sinkende Sterberate bei noch hoher Geburtenrate)?",
+          "concept": "In Phase 2 / Phase 3 (früh- bis mitteltransformative Phase / Übergangsphase)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Phase 2 / 3 (Übergangsphase / Demographische Schere)",
+              "Phase 5 (Posttransformative Phase mit Schrumpfung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9P0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Modell des demographischen Übergangs und das Phänomen der weltweiten Metropolisierung: 1. **Das 5-Phasen-Modell des demographischen Übergangs**:   * **Phase 1 (Prätransformativ)**: Hohe Geburten- und Sterberate; kaum Wachstum; Pyramidenform.   * **Phase 2 (Frühtransformativ)**: Sterberate sinkt drastisch (Hygiene, Medizin); Geburtenrate bleibt hoch $\\implies$ Bevölkerungsexplosion (demographische Schere öffnet sich).   * **Phase 3 (Mitteltransformativ)**: Geburtenrate beginnt zu sinken (Familienplanung, Frauenbildung); Schere schließt sich langsam.   * **Phase 4 (Spättransformativ)**: Niedrige Geburten- und Sterberate; Bienenstockform.   * **Phase 5 (Posttransformativ)**: Geburtenrate sinkt unter Sterberate $\\implies$ Schrumpfung und Überalterung (Urnenform), 2. **Migration (Push- und Pull-Faktoren)**:   * **Push-Faktoren (Abstoßung vom Land)**: Dürren, Landknappheit, Arbeitslosigkeit, fehlende Schulen/Kliniken.   * **Pull-Faktoren (Anziehungskraft der Großstadt)**: Hoffnung auf Arbeit, Bildungschancen, medizinische Versorgung, Konsumangebote, 3. **Megastädte & Herausforderungen der Metropolisierung**:   * Definition: Stadt mit über $10$ Millionen Einwohnern (z. B. Tokio, Delhi, Shanghai, São Paulo).   * Probleme: Entstehung riesiger informeller Siedlungen (Slums, Favelas), mangelnde Ver- und Entsorgung (Trinkwasser, Abwasser, Müll), Verkehrskollaps, Luftverschmutzung und räumliche Segregation (Gated Communities neben Elendsvierteln).",
+          "concept": "Demographischer Übergang: 5 Phasen (Prä-, Früh-, Mittel-, Spät-, Posttransformativ); Alterspyramiden; Push- & Pull-Faktoren der Landflucht; Megastädte (>10 Mio. Einw.) mit Slumbildung, Marginalisierung und Segregation.",
+          "sample_solution": "1. Das 5-Phasen-Modell des demographischen Übergangs: - Beschreibt den idealtypischen historischen Wandel von hohen zu niedrigen Geburten- und Sterbeziffern im Zuge der gesellschaftlichen Modernisierung:   * **Phase 1: Prätransformative Phase (Vorbereitung)**:     - Hohe Geburten- und Sterberate (durch Seuchen, Hungersnöte, fehlende Medizin) $\\implies$ Geringes Bevölkerungswachstum (Dreiecksform).   * **Phase 2: Frühtransformativ (Einleitung)**:     - Sterberate sinkt steil ab (verbesserte Hygiene, Trinkwasseraufbereitung, Penicillin); Geburtenrate bleibt konstant hoch $\\implies$ **Öffnung der 'demographischen Schere' $\\implies$ extremes Bevölkerungswachstum**.   * **Phase 3: Mitteltransformativ (Umschwung)**:     - Geburtenrate beginnt spürbar zu sinken (Bildung von Frauen, Urbanisierung, Wegfall von Kindern als Altersvorsorge) $\\implies$ Maximaler Zuwachs flacht ab.   * **Phase 4: Spättransformativ (Einlenken)**:     - Sterbe- und Geburtenrate pendeln sich auf niedrigem Niveau ein $\\implies$ Stagnierendes Wachstum (Glocken-/Bienenstockform).   * **Phase 5: Posttransformativ (Abschluss)**:     - Geburtenrate fällt dauerhaft unter das Reproduktionsniveau von 2,1 Kindern pro Frau $\\implies$ **Bevölkerungsschrumpfung und demographische Alterung** (Urnenform, z. B. Deutschland, Japan). 2. Push- und Pull-Modell der Land-Stadt-Migration (Landflucht): - **Push-Faktoren (ländlicher Raum)**:   * Fehlende Erwerbsmöglichkeiten durch Mechanisierung der Großgrundbesitze, Dürren, Ernteausfälle, mangelnde ärztliche Infrastruktur und Schulen. - **Pull-Faktoren (städtischer Raum)**:   * Illusion von Wohlstand, Zugang zum Bildungswesen, Aufstiegsmöglichkeiten, bessere Strom- und Wasserversorgung. 3. Megastädte und Metropolisierung: - **Definition Megacity**: Agglomerationsraum mit mehr als **10 Millionen Einwohnern** (z. B. Tokio mit ca. 37 Mio., Delhi, Dhaka, Mumbai, Kairo, Lagos). - **Strukturelle Folgeprobleme in Schwellen- und Entwicklungsländern**:   * **Marginalisierung und Slumbildung**: Bis zu 50 % der Bevölkerung leben in informellen, illegalen Siedlungen (Slums, Favelas, Gecekondus) ohne Rechtssicherheit.   * **Infrastrukturkollaps**: Mangel an Kanalisation, akute Trinkwasserknappheit, permanente Smogbelastung und unkontrollierte Müllverbrennung.   * **Sozialräumliche Segregation**: Scharfe räumliche Trennung von wohlhabenden Schichten in bewachten Wohnanlagen (*Gated Communities*) und verarmten Massenvierteln."
+        }
+      ]
+    }
+  ]
+}

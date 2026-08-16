@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-deutsch-expressionismus-episches-theater-brecht",
+  "version": "2026.08.1",
+  "title": "Deutsch 10: Expressionismus (Lyrik) und Episches Theater nach Bertolt Brecht (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 10: Der literarische Expressionismus (1910–1925: Großstadtlyrik, Ich-Zerfall, Anonymität, Apokalypse, Weltende-Motive, Tabubruch, Reihungsstil, Farbsymbolik bei Georg Heym, Georg Trakl, Jakob van Hoddis, Ernst Stadler) sowie das Epische Theater nach Bertolt Brecht (Verfremdungseffekt V-Effekt, Illusionsbrechung, Songs, Spruchbänder, historisierender Gestus, episches vs. aristotelisch-dramatisches Theater, Lehrstück und politische Mündigkeit des Zuschauers).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/deutsch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Deutsch 10, Lernbereiche Literaturgeschichte – Expressionismus und Episches Theater"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAA0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAA0000000000000000A01",
+      "namespace": "gymnasium-deutsch-expressionismus",
+      "slug": "expressionismus-lyrik-grossstadt-apokalypse-reihungsstil",
+      "title": "Der Expressionismus (1910–1925): Großstadtmotiv, Ich-Zerfall, Apokalypse und Reihungsstil",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Expressionism (literature)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Literaturgeschichte – Der Expressionismus",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAA0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches formale Stilmittel ist typisch für expressionistische Gedichte (wie Jakob van Hoddis' 'Weltende'), bei dem unzusammenhängende Sinneseindrücke unvermittelt Zeile für Zeile aneinandergereiht werden?",
+          "concept": "Der Reihungsstil (Simultanität disparater Bilder zur Darstellung der Reizüberflutung in der modernen Großstadt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Reihungsstil (Simultanstil)",
+              "Der Blankvers"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAA0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Epochenprofil des literarischen Expressionismus (1910–1925): 1. **Historischer Kontext**:   * Beschleunigung durch Industrialisierung und Verstädterung (Berlin als Moloch), Entfremdung, Vorahnung und Trauma des Ersten Weltkriegs, autoritäre wilhelminische Gesellschaft, 2. **Zentrale Motive & Themen**:   * **Großstadt als Dämon / Moloch**: Reizüberflutung, Einsamkeit in der Masse, Entmenschlichung (z. B. Georg Heym: *Der Gott der Stadt*).   * **Ich-Dissoziation & Identitätsverlust**: Zerfall des bürgerlichen Subjekts, Wahnsinn, Entfremdung.   * **Apokalypse & Weltende**: Untergangsvisionen als radikaler Bruch mit der erstarrten bürgerlichen Welt (z. B. Jakob van Hoddis: *Weltende* 1911 als Auftakt).   * **Der 'Neue Mensch'**: Sehnsucht nach geistiger Erneuerung und revolutionärem Neuanfang, 3. **Sprachliche und formale Innovationen**:   * **Reihungsstil**: Schnittechnik, Montage disparater Einzeleindrücke (Parallele zum Stummfilm).   * **Wortzertrümmerung & Dynamik**: Verknappung, Telegrammstil, Neologismen, kühne Metaphern und Chiffren.   * **Farbsymbolik**: Bedeutungsaufgeladene Farbmetaphorik (Trakls *Schwarz, Blau, Herbstfarben*; Else Lasker-Schüler).   * **Formspannung**: Häufige Verwendung strenger traditioneller Formen (wie dem Sonett) bei gleichzeitigem radikalem inhaltlichem Tabubruch.",
+          "concept": "Expressionismus (1910-1925): Großstadt als Moloch (Heym); Ich-Zerfall & Entfremdung; Apokalypse & Weltende (Hoddis); Neuer Mensch; Formale Mittel: Reihungsstil, Farbmetaphorik, Neologismen, Sonett als Formkorsett für das Chaos.",
+          "sample_solution": "1. Historischer und gesellschaftlicher Entstehungskontext: - **Epochenzeitraum**: ca. 1910 bis 1925 (Frühexpressionismus bis Nachkriegszeit). - **Lebensgefühl**: Junge Künstler und Dichter reagierten mit existenzieller Erschütterung auf die rasanten Umbrüche der Moderne:   * Explosives Wachstum der Metropolen (Urbanisierung), Mechanisierung der Arbeitswelt, Technisierung und Anonymisierung.   * Starre Autoritätsstrukturen des wilhelminischen Kaiserreichs (Konflikt zwischen bürgerlichen Vätern und rebellierenden Söhnen).   * Vorahnung einer drohenden Menschheitskatastrophe, die sich 1914 im industriellen Massensterben des Ersten Weltkriegs entlud. 2. Die dominierenden Leitmotive des Expressionismus: - **1. Die Großstadt als Moloch und Dämon**:   * Die Stadt ist kein Ort des Fortschritts, sondern eine unheimliche, verschlingende Maschinerie, in der das Individuum in der anonymen Masse vereinsamt (Georg Heym: *« Auf einem Häuserblocke sitzt er breit. Die Winde lagern schwarz um seine Stirn... »*). - **2. Ich-Dissoziation und Identitätsverlust**:   * Das Gefühl der Ohnmacht und Zerrissenheit; der Zerfall des stabilen Ichs in flüchtige Sinnesfragmente bis hin zu psychischen Krisen und Wahnsinn (Gottfried Benn: *Morgue* – schonungslose Ästhetik des Hässlichen und Morbiden). - **3. Apokalypse und Weltuntergang**:   * Zerstörungsvisionen kündigen den Zusammenbruch der morschen alten Gesellschaftsordnung an (Jakob van Hoddis: *« Dem Bürger fliegt vom spitzen Kopf der Hut, in allen Lüften hallt es wie Geschrei... »*). - **4. Das Pathos des 'Neuen Menschen'**:   * Nach der Zerstörung des Alten soll der geläuterte, verbrüderte Mensch voller Humanität erstehen (*O-Mensch-Dramatik*). 3. Ästhetische und formale Ausdrucksmittel: - **1. Der Reihungsstil (Simultanstil)**:   * Unverbundene Aneinanderreihung von Bildfetzen ohne logisch-kausale Verknüpfung; spiegelt die Reizüberflutung des modernen Großstadtlebens wider. - **2. Farbmetaphorik und Farbsymbolik**:   * Farben dienen nicht der realistischen Abbildung, sondern dem seelischen Ausdruck: Blau (Geistigkeit, Sehnsucht), Rot (Gewalt, Feuer), Schwarz/Braun (Verwesung, Tod), Gelb (Gift, Neid). - **3. Spannungsverhältnis zwischen Form und Inhalt**:   * Expressionisten wählten für ihre chaotischen, verstörenden Inhalte paradoxerweise oft extrem strenge Formen wie das **Sonett** (14 Zeilen, festes Versmaß), um das bedrohliche Chaos der Moderne in ein eisernes formales Korsett zu zwingen."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAA0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAA0000000000000000A02",
+      "namespace": "gymnasium-deutsch-brecht",
+      "slug": "episches-theater-brecht-verfremdungseffekt-aristoteles",
+      "title": "Episches Theater nach Bertolt Brecht: Verfremdungseffekt (V-Effekt) und Dramentheorie",
+      "domain": "schule/deutsch/theater",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAA0000000000000000A01",
+          "type": "hard",
+          "rationale": "Brechts Theaterkonzeption überwindet die traditionelle Dramenästhetik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Epic theatre",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Dramenanalyse – Episches Theater",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAA0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist das primäre Ziel des von Bertolt Brecht entwickelten 'Verfremdungseffekts' (V-Effekt) im epischen Theater?",
+          "concept": "Die emotionale Einfühlung (Katharsis) zu verhindern und den Zuschauer zu kritischer, rationaler Distanz und politischem Handeln anzuregen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verhinderung von Einfühlung zur Förderung kritischer Urteilskraft",
+              "Maximierung von Mitleid und Furcht zur Seelenreinigung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAA0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche das Epische Theater nach Bertolt Brecht mit dem klassischen Aristotelischen Theater: 1. **Das Aristotelische (klassische/dramatische) Theater**:   * **Ziel**: Katharsis (Reinigung der Seele von Jammer/Mitleid [*Eleos*] und Schrecken/Furcht [*Phobos*]).   * **Mittel**: Perfekte Bühnenillusion, geschlossene Handlung (drei Einheiten: Ort, Zeit, Handlung), emotionale Identifikation / Einfühlung des Zuschauers mit den Helden.   * **Zuschauer**: Passiver Konsument, wird in die Handlung hineingezogen (*'Das Schicksal ist unausweichlich'*), 2. **Das Epische (nicht-aristotelische) Theater nach Brecht**:   * **Ziel**: Aufklärung, Emanzipation und gesellschaftliche Veränderung (*'Die Welt ist veränderbar!'*).   * **Mittel**: Illusionsbrechung, offene Szenenfolge (Episierung), Erzählerkommentare, historisierender Gestus.   * **Zuschauer**: Kritisch beobachtender Partner, soll Entscheidungen reflektieren und politische Erkenntnisse in eigenes Handeln umsetzen, 3. **Zentrale Instrumente des Verfremdungseffekts (V-Effekt)**:   * **Songs & Musik**: Unterbrechen die Handlung; Schauspieler tritt aus seiner Rolle heraus und kommentiert sie direkt an das Publikum gerichtet.   * **Schrifttafeln / Projektionen**: Verraten den Ausgang der Szene vorab (Spannung auf das *Wie* und *Warum*, nicht auf das *Was*).   * **Sichtbare Bühnentechnik**: Scheinwerfer und Umbauten bleiben für das Publikum voll sichtbar (Anti-Illusionismus).   * **Schauspielstil (Zeigestus)**: Der Darsteller verschmilzt nicht mit der Figur, sondern zeigt sie distanziert vor (*'Er spielte den Mörder, ohne selbst zu morden'*).",
+          "concept": "Episches Theater Brecht vs. Aristoteles: Katharsis & Einfühlung vs. Erkenntnis & Distanz; Verfremdungseffekt (V-Effekt: Songs, Schrifttafeln, sichtbare Technik, Gestus des Zeigens); Ziel: politisch mündiger, handelnder Zuschauer.",
+          "sample_solution": "1. Der fundamentale Paradigmenwechsel der Dramentheorie: | Kriterium | Aristotelisches / Klassisches Theater | Episches Theater (Bertolt Brecht) | | :--- | :--- | :--- | | **Dramenform** | **Geschlossene Form**: Kausale Szenenkette nach 5 Akten | **Offene Form**: Reihung eigenständiger Einzelszenen (Episierung) | | **Zuschauerrolle** | **Emotionale Einfühlung**: Mitleiden mit der Figur | **Kritische Distanz**: Rationales Urteilen über gesellschaftliche Zustände | | **Wirkungsziel** | **Katharsis**: Seelische Erschütterung und Läuterung | **Gesellschaftliche Veränderung**: Politischer Impuls zur Handlung | | **Menschenbild** | Der Mensch als unveränderliches, schicksalhaftes Wesen | Der Mensch ist Produkt seiner gesellschaftlichen Verhältnisse und **veränderbar** | 2. Die Theorie des Verfremdungseffekts (V-Effekt): - **Definition (Brecht, Kleines Organon für das Theater, 1948)**:   * *« Einen Vorgang oder einen Charakter verfremden heißt zunächst einfach, dem Vorgang oder dem Charakter das Selbstverständliche, Einleuchtende zu nehmen und über ihn Staunen und Neugierde zu erzeugen. »* - **Ziel**: Gewohnte gesellschaftliche Missstände (wie Krieg, Ausbeutung, Armut) werden so unvertraut dargestellt, dass der Zuschauer erkennt: *Das ist nicht naturgegeben, das kann und muss vom Menschen politisch geändert werden!* 3. Die theatralen Mittel des V-Effekts in der Praxis: - **1. Unterbrechende Songs**:   * Musiknummern (z. B. von Kurt Weill oder Paul Dessau) reißen das Publikum abrupt aus der Spielhandlung. Das Licht wechselt, die Figur tritt an die Rampe und singt ein gesellschaftskritisches Lied (*z. B. Mackie Messer, Mutter-Courage-Lied*). - **2. Projektionen und Texttafeln**:   * Vor jeder Szene wird auf einer Leinwand zusammengefasst, was geschehen wird. Da das *« Was »* bekannt ist, richtet sich das Interesse voll auf das *« Wie »* (soziologische Kausalität). - **3. Sichtbare Theatermaschinerie (Anti-Illusionismus)**:   * Scheinwerfer, Kulissenwechsel und Souffleuse werden nicht im Verborgenen gehalten, sondern offen gezeigt $\\implies$ Das Theater bekennt sich ehrlich dazu, ein künstliches Labor zu sein. - **4. Epischer Gestus und Schauspieltechnik**:   * Der Schauspieler identifiziert sich nicht mit seiner Rolle (keine Stanislawski-Methode), sondern demonstriert die Figur aus einer kritischen Distanz (*Zeigestus*)."
+        }
+      ]
+    }
+  ]
+}

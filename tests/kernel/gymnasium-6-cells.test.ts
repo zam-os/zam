@@ -49,7 +49,10 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
 
     for (const cellId of GYM6_CELL_IDS) {
       const cell = cells.find((c) => c.id === cellId);
-      expect(cell, `Cell ${cellId} should be present in bundled cells`).toBeDefined();
+      expect(
+        cell,
+        `Cell ${cellId} should be present in bundled cells`,
+      ).toBeDefined();
       expect(cell?.gradeLabel).toContain("Gymnasium");
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
@@ -73,7 +76,8 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
 
   it("installs and enrols cleanly into Mathematik 6 Brüche und Prozentrechnung", async () => {
     const userId = "01K4TESTUSERGYM60000000001";
-    const cellId = "de-by:gymnasium-6-mathematik-brueche-dezimalbrueche-prozent";
+    const cellId =
+      "de-by:gymnasium-6-mathematik-brueche-dezimalbrueche-prozent";
 
     expect(await isBundledCellInstalled(db, cellId)).toBe(false);
 
@@ -105,13 +109,16 @@ describe("Gymnasium Bayern 6 Curriculum Cells (Unterstufe / Orientierungsstufe)"
       .all()) as Array<{ id: string; title: string; slug: string }>;
     expect(histAtoms.length).toBeGreaterThanOrEqual(4);
     expect(
-      histAtoms.some((a) => a.slug === "roemer-in-bayern-raetien-noricum-limes-kastelle"),
+      histAtoms.some(
+        (a) => a.slug === "roemer-in-bayern-raetien-noricum-limes-kastelle",
+      ),
     ).toBe(true);
   });
 
   it("installs and enrols cleanly into NuT 6 Vektorgrafik und Dokumentenstrukturen", async () => {
     const userId = "01K4TESTUSERGYM60000000003";
-    const cellId = "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte";
+    const cellId =
+      "de-by:gymnasium-6-natur-technik-informatik-vektorgrafik-texte";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);

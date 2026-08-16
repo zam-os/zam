@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-physik-atomphysik-bohrsches-atommodell-linien-spektren-kernspaltung",
+  "version": "2026.08.1",
+  "title": "Physik 12: Atom- und Kernphysik – Bohrsches Atommodell, Linienspektren, Massendefekt und Kernspaltung / Kernfusion (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 12 (Oberstufe Q12): Das Bohrsche Atommodell (Niels Bohr 1913: Postulate der strahlungsfreien Bahnen und der Quantenbedingung des Drehimpulses L = n * h_bar, Energieniveaus des Wasserstoffatoms E_n = -13.6 eV / n^2, Rydberg-Formel für Spektrallinien: Lyman-, Balmer-, Paschen-Serie, Der Franck-Hertz-Versuch als Beleg diskreter atomarer Energieniveaus mit inelastischen Elektronenstößen bei Quecksilber), Kernphysik und Kernenergetik (Kernbausteine Protonen und Neutronen, Starke Kernkraft / Nukleon-Nukleon-Wechselwirkung, Massendefekt Delta m = Z * m_p + N * m_n - m_Kern, Einsteins Masse-Energie-Äquivalenz E = Delta m * c^2, Bindungsenergie pro Nukleon E_B / A und Maximum beim Eisen-56) sowie Kernreaktionen (Kernspaltung von Uran-235 durch thermische Neutronen, Kettenreaktion und Moderator im Kernkraftwerk vs. Kernfusion von Deuterium und Tritium in Sternen / Fusionsreaktoren).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/physik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Physik 12, Lernbereich Atom- und Kernphysik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC4000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC4000000000000000A01",
+      "namespace": "gymnasium-physik-bohr-modell",
+      "slug": "bohrsches-atommodell-linienspektren-franck-hertz-versuch",
+      "title": "Atomphysik: Bohrsches Atommodell, Rydberg-Formel und Franck-Hertz-Versuch",
+      "domain": "schule/physik/atomphysik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Bohr model",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Atomphysik – Bohrsches Atommodell und Spektren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC4000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was beweist der Franck-Hertz-Versuch (1914 mit Quecksilberdampf) durch periodische Stromabfälle im Abstand von jeweils 4,9 V?",
+          "concept": "Dass Atome Energie nur in ganz bestimmten, diskreten Quanten (Energieniveaus) über inelastische Stöße mit Elektronen aufnehmen können",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Diskrete, gequantelte Energieniveaus in der Atomhülle",
+              "Kontinuierliche Energieaufnahme klassischer Körper"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC4000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Bohrsche Atommodell und Spektrallinien des Wasserstoffs: 1. **Bohrs Postulate (1913)**:   * **1. Bahnen-Postulat**: Elektronen kreisen strahlungsfrei auf bestimmten stationären Bahnen.   * **2. Quantenbedingung**: Der Bahndrehimpuls ist ein ganzzahliges Vielfaches von $\\hbar$: $L = m_e \\cdot v \\cdot r = n \\cdot \\frac{h}{2\\pi} = n \\cdot \\hbar$ ($n \\in \\{1, 2, 3, \\dots\\}$).   * **3. Frequenz-Bedingung**: Beim Übergang zwischen zwei Niveaus $E_m$ und $E_n$ wird ein Photon emittiert/absorbiert: $\\Delta E = E_m - E_n = h \\cdot f$, 2. **Energieniveaus des Wasserstoffs**:   * $E_n = -\\frac{13{,}6\\,\\text{eV}}{n^2}$ (Grundzustand $E_1 = -13{,}6\\,\\text{eV}$, Ionisationsgrenze $E_\\infty = 0\\,\\text{eV}$), 3. **Spektralserien (Rydberg-Formel)**:   * $\\frac{1}{\\lambda} = R_H \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)$ mit $R_H \\approx 1{,}097 \\cdot 10^7\\,\\text{m}^{-1}$.   * **Lyman-Serie** ($n=1$, UV-Bereich), **Balmer-Serie** ($n=2$, sichtbares Licht), **Paschen-Serie** ($n=3$, Infrarot).",
+          "concept": "Bohrsches Atommodell: 3 Bohr-Postulate (strahlungsfreie Bahnen, Drehimpulsquantisierung L = n*hbar, Frequenzbedingung Delta E = h*f); H-Atom Energien E_n = -13,6 eV / n^2; Spektralserien (Lyman n=1 UV, Balmer n=2 sichtbar, Paschen n=3 IR); Franck-Hertz-Versuch (inelastische Stöße).",
+          "sample_solution": "1. Die Bohrschen Postulate (Niels Bohr, 1913): - **Das klassische Dilemma**: Nach der Maxwellschen Elektrodynamik müsste ein kreisendes (beschleunigtes) Elektron kontinuierlich elektromagnetische Wellen abstrahlen, in Sekundenbruchteilen in den Kern stürzen und ein kontinuierliches Lichtspektrum aussenden $\\implies$ Atome wären instabil. - **Bohrs revolutionäre Postulate**:   1. **Stationäre Zustände**: Das Elektron bewegt sich auf diskreten Kreisbahnen, ohne elektromagnetische Strahlung zu emittieren.   2. **Drehimpulsquantisierung**: Erlaubt sind nur Bahnen, auf denen der Drehimpuls $L$ ein ganzzahliges Vielfaches des reduzierten Planckschen Wirkungsquantums ist:      $$\\mathbf{L = m_e \\cdot v_n \\cdot r_n = n \\cdot \\hbar = n \\cdot \\frac{h}{2\\pi}} \\quad (n = 1, 2, 3, \\dots)$$      *(De-Broglie-Deutung: Auf der $n$-ten Bahn passt exakt das $n$-fache der De-Broglie-Wellenlänge als stehende Welle auf den Kreisumfang: $2\\pi r_n = n \\cdot \\lambda$)*.   3. **Strahlungsübergänge**: Strahlung wird nur beim Quantensprung von einem höheren Niveau $E_m$ auf ein niedrigeres Niveau $E_n$ als einzelnes Photon emittiert:      $$\\mathbf{h \\cdot f = E_m - E_n \\iff \\lambda = \\frac{h \\cdot c}{E_m - E_n}}$$ 2. Das Termschema des Wasserstoffatoms: - Aus dem Kräftegleichgewicht zwischen Coulomb-Kraft und Zentripetalkraft ($F_C = F_Z$) sowie der Quantenbedingung folgt die Energieformel:   $$\\mathbf{E_n = -\\frac{m_e \\cdot e^4}{8 \\cdot \\varepsilon_0^2 \\cdot h^2} \\cdot \\frac{1}{n^2} = -\\frac{13{,}6\\,\\text{eV}}{n^2}}$$   * **Grundzustand ($n = 1$)**: $E_1 = -13{,}6\\,\\text{eV}$ (stabilster Zustand).   * **1. Angeregter Zustand ($n = 2$)**: $E_2 = -\\frac{13{,}6}{4} = -3{,}4\\,\\text{eV}$.   * **Ionisationsgrenze ($n \\to \\infty$)**: $E_\\infty = 0\\,\\text{eV}$ (Elektron ist frei vom Kern). 3. Die Spektralserien und die Rydberg-Gleichung: - Wellenlängen emittierter Spektrallinien:   $$\\mathbf{\\frac{1}{\\lambda} = R_\\infty \\cdot \\left( \\frac{1}{n^2} - \\frac{1}{m^2} \\right)} \\quad (m > n; \\; R_\\infty \\approx 1{,}09737 \\cdot 10^7\\,\\text{m}^{-1})$$ - **Die Serien im Überblick**:   * **Lyman-Serie ($n = 1$)**: Übergänge von $m \\ge 2 \\rightarrow 1$ $\\implies$ Hochenergetische **Ultraviolett-Strahlung (UV)**.   * **Balmer-Serie ($n = 2$)**: Übergänge von $m \\ge 3 \\rightarrow 2$ $\\implies$ **Sichtbares Licht** ($H_\\alpha = 656\\,\\text{nm}$ rot, $H_\\beta = 486\\,\\text{nm}$ blaugrün, $H_\\gamma = 434\\,\\text{nm}$ blauviolett).   * **Paschen-Serie ($n = 3$)**: Übergänge auf $n = 3$ $\\implies$ **Infrarot-Strahlung (IR)**."
+        }
+      ]
+    },
+    {
+      "id": "01K8GC4000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC4000000000000000A02",
+      "namespace": "gymnasium-physik-massendefekt-kernenergie",
+      "slug": "massendefekt-bindungsenergie-kernspaltung-kernfusion",
+      "title": "Kernenergetik: Massendefekt ($\\Delta m$), Bindungsenergie pro Nukleon, Kernspaltung und Kernfusion",
+      "domain": "schule/physik/kernphysik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC4000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Kernbindung erklärt die Stabilität und Energieumwandlung in Atomkernen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Nuclear binding energy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Kernphysik – Massendefekt und Kernenergie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC4000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum ist die Masse eines gebundenen Atomkerns stets geringer als die Summe der Ruhemassen seiner freien Protonen und Neutronen (Massendefekt $\\Delta m$)?",
+          "concept": "Weil beim Zusammenfügen der Nukleonen die Kernbindungsenergie nach Einsteins Äquivalenzformel E = Delta m * c^2 in Form von Gammastrahlung freigesetzt wird",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Kernbindungsenergie nach E = Delta m * c^2 abgestrahlt wurde",
+              "Weil Protonen im Kern zerfallen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC4000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Massendefekt, die Bindungsenergie pro Nukleon und vergleiche Kernspaltung mit Kernfusion: 1. **Der Massendefekt $\\Delta m$**:   * Für einen Kern $^{A}_{Z}X$ mit $Z$ Protonen und $N = A - Z$ Neutronen:     $$\\mathbf{\\Delta m = Z \\cdot m_p + (A - Z) \\cdot m_n - m_{\\text{Kern}} > 0}$$   * **Kernbindungsenergie**: $\\mathbf{E_B = \\Delta m \\cdot c^2}$ ($1\\,\\text{u} \\approx 931{,}49\\,\\text{MeV}$), 2. **Kurve der Bindungsenergie pro Nukleon $\\frac{E_B}{A}$**:   * Steigt steil von $^1H$ bis zum Maximum bei **Eisen-56 ($^{56}_{26}\\text{Fe}$)** mit ca. $8{,}8\\,\\text{MeV/Nukleon}$ an und sinkt bei schweren Kernen wie Uran-238 langsam auf ca. $7{,}6\\,\\text{MeV/Nukleon}$ ab.   * **Folge**: Energiefreisetzung ist möglich durch:     - **Kernfusion**: Verschmelzung extrem leichter Kerne ($^2H + ^3H \\rightarrow ^4He + n + 17{,}6\\,\\text{MeV}$).     - **Kernspaltung**: Spaltung schwerer Kerne ($^{235}U + n \\rightarrow ^{144}Ba + ^{89}Kr + 3n + 200\\,\\text{MeV}$), 3. **Die Kettenreaktion der Kernspaltung**:   * Spaltung durch thermische Neutronen setzt 2 bis 3 schnelle Neutronen frei.   * Multiplikationsfaktor $k$: Unterkritisch ($k < 1$), Kritisch ($k = 1$, kontrollierter Leistungsbetrieb im Reaktor mit Steuerstäben/Bor), Überkritisch ($k > 1$, exponentielles Anwachsen / Atombombe).",
+          "concept": "Kernphysik 12: Massendefekt Delta m = Summe(m_Nukleonen) - m_Kern; Bindungsenergie E_B = Delta m * c^2; Kurve E_B/A mit Maximum bei Eisen-56; Kernfusion (Verschmelzung leichter Kerne) vs. Kernspaltung (Uran-235, Kettenreaktion, Multiplikationsfaktor k).",
+          "sample_solution": "1. Der Massendefekt und Einsteins Masse-Energie-Äquivalenz: - **Phänomen**: Ein gebundener Atomkern wie Helium-4 ($^4_2\\text{He}$) ist um ca. $0{,}8\\%$ leichter als zwei freie Protonen und zwei freie Neutronen zusammen. - **Mathematische Formulierung**:   $$\\mathbf{\\Delta m = Z \\cdot m_p + N \\cdot m_n - m_{\\text{Kern}}}$$ - **Bindungsenergie nach Albert Einstein ($E = m \\cdot c^2$)**:   * Beim Zusammenschluss der Nukleonen durch die starke Kernkraft wird Energie freigesetzt. Genau diese Energie fehlt dem gebundenen System als Masse (**Massendefekt**):     $$\\mathbf{E_B = \\Delta m \\cdot c^2}$$   * *(Umgekehrt muss genau dieser Energiebetrag $E_B$ aufgewendet werden, um den Kern wieder vollständig in seine einzelnen freien Nukleonen zu zerlegen)*. 2. Die Bindungsenergie-Kurve pro Nukleon $\\frac{E_B}{A}$: - Trägt man die mittlere Bindungsenergie pro Nukleon $\\frac{E_B}{A}$ gegen die Massenzahl $A$ auf, erhält man die fundamentale Kurve der Kernphysik: ```mermaid graph LR   A[Leichte Kerne: H, D, T] -->|Kernfusion: Energiegewinn| B[Maximum: Eisen-56 8.8 MeV/Nukleon]   C[Schwere Kerne: U-235, Pu-239] -->|Kernspaltung: Energiegewinn| B ``` - **Schlussfolgerungen**:   * **1. Kernfusion**: Verschmilzt man sehr leichte Kerne ($^2_1\text{H} + ^3_1\text{H} \rightarrow ^4_2\text{He} + ^1_0\text{n}$), wandert man auf der steilen Flanke nach oben $\\implies$ enorm hohe Energiefreisetzung (**$17{,}6\\,\\text{MeV}$ pro Fusionsakt** bzw. das Vierfache pro Kilogramm gegenüber der Kernspaltung; Energiequelle der Sonne).   * **2. Kernspaltung**: Spaltet man schwere Kerne ($^{235}\\text{U}$), zerfallen sie in mittelschwere Spaltprodukte mit höherer Bindungsenergie pro Nukleon $\\implies$ Freisetzung von ca. **$200\\,\\text{MeV}$ pro Spaltung**. 3. Die kontrollierte Kettenreaktion der Kernspaltung: - **Spaltungsreaktion von Uran-235**:   $$\\mathbf{^{235}_{92}\\text{U} + ^1_0\\text{n}_{\\text{therm}} \\longrightarrow ^{236}_{92}\\text{U}^* \\longrightarrow ^{144}_{56}\\text{Ba} + ^{89}_{36}\\text{Kr} + 3\\,^1_0\\text{n}_{\\text{schnell}} + 200\\,\\text{MeV}}$$ - **Reaktorphysik und Multiplikationsfaktor $k$**:   * **Moderator (Wasser, Graphit)**: Bremst die schnellen Neutronen ($2\\,\\text{MeV}$) auf thermische Geschwindigkeiten ($0{,}025\\,\\text{eV}$) ab, da nur langsame Neutronen von $^{235}\\text{U}$ mit hoher Wahrscheinlichkeit eingefangen werden.   * **Neutronenmultiplikationsfaktor $k$**:     - $k < 1$ (*Unterkritisch*): Kettenreaktion stirbt ab (Abschaltung).     - $\\mathbf{k = 1}$ (*Kritisch*): Konstante Neutronenzahl $\\implies$ **stabiler stationärer Betrieb** eines Kernkraftwerks (geregelt durch neutronenabsorbierende Steuerstäbe aus Cadmium oder Bor).     - $k > 1$ (*Überkritisch*): Lawinenartige exponentielle Vermehrung der Spaltungen $\\implies$ unkontrollierte Leistungsexplosion."
+        }
+      ]
+    }
+  ]
+}

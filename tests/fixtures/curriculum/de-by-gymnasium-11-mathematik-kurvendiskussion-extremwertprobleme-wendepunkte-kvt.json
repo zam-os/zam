@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-mathematik-kurvendiskussion-extremwertprobleme-wendepunkte",
+  "version": "2026.08.1",
+  "title": "Mathematik 11: Differentialrechnung – Vollständige Kurvendiskussion, Extremwertprobleme und Krümmungsverhalten (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 11 (Oberstufe): Vollständige Kurvendiskussion ganzrationaler Funktionen (Definitions- und Wertebereich, Symmetrie, Achsenschnittpunkte/Nullstellen, Globalverhalten x -> +-inf, Monotonieverhalten und Extremstellen mit f'(x)=0 und VZW bzw. 2. Ableitung f''(x)<0 Maximum / f''(x)>0 Minimum, Krümmungsverhalten mit f''(x)=0 und Wendepunkten/Terrassenpunkten, Tangenten- und Normalengleichungen) sowie angewandte Extremwertprobleme mit Nebenbedingungen und Zielfunktion.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 11, Lernbereich Differentialrechnung und Kurvendiskussion"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB0000000000000000A01",
+      "namespace": "gymnasium-mathematik-kurvendiskussion",
+      "slug": "kurvendiskussion-monotonie-extremstellen-kruemmung-wendepunkte",
+      "title": "Kurvendiskussion: Monotonie, Extremstellen, Krümmungsverhalten und Wendepunkte",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Curve sketching",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Differentialrechnung und Kurvendiskussion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche hinreichende Bedingung garantiert die Existenz eines relativen Hochpunkts (lokales Maximum) an einer Stelle $x_0$ mit waagrechter Tangente $f'(x_0) = 0$?",
+          "concept": "f''(x_0) < 0 (Rechtskrümmung der Kurve im Extrempunkt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f''(x_0) < 0 (Graph ist rechtsgekrümmt -> Maximum)",
+              "f''(x_0) > 0"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Führe eine vollständige mathematische Kurvendiskussion für die ganzrationale Funktion $f(x) = x^3 - 3x^2 + 4$ durch: 1. **Ableitungen**: Bestimme $f'(x)$, $f''(x)$ und $f'''(x)$, 2. **Achsenschnittpunkte & Nullstellen**:   * Schnittpunkt mit der $y$-Achse: $S_y(0|f(0))$.   * Nullstellen: Bestimme die Nullstellen von $f(x)$ (Tipp: $x_1 = -1$ durch Erraten und Polynomdivision/Linearfaktorzerlegung), 3. **Extrempunkte & Monotonie**:   * Notwendige Bedingung: $f'(x) = 0$.   * Hinreichende Bedingung: $f''(x_E) \\neq 0$ (Klassifikation in Tiefpunkt / Hochpunkt mit Koordinaten), 4. **Wendepunkte & Krümmungsverhalten**:   * Notwendige Bedingung: $f''(x) = 0$.   * Hinreichende Bedingung: $f'''(x_W) \\neq 0$ (Bestimmung des Wendepunkts $W$).",
+          "concept": "Kurvendiskussion: Ableitungen f', f'', f'''; Nullstellen (x=-1, x=2 doppelt); Extrempunkte: f'=0 -> x=0 (HP(0|4) da f''=-6<0), x=2 (TP(2|0) da f''=6>0); Wendepunkt: f''=0 -> x=1 (WP(1|2) da f'''=6!=0).",
+          "sample_solution": "1. Bestimmung der Ableitungsfunktionen: - **Ausgangsfunktion**: $f(x) = x^3 - 3x^2 + 4$ - **1. Ableitung**: $\\mathbf{f'(x) = 3x^2 - 6x}$ - **2. Ableitung**: $\\mathbf{f''(x) = 6x - 6}$ - **3. Ableitung**: $\\mathbf{f'''(x) = 6}$ 2. Schnittpunkte mit den Koordinatenachsen: - **$y$-Achsenschnittpunkt**: $f(0) = 0 - 0 + 4 = 4 \\implies \\mathbf{S_y(0 \\mid 4)}$ - **Nullstellen ($f(x) = 0$)**:   * Erraten einer ganzzahligen Nullstelle aus den Teilern von $4$: $f(-1) = (-1)^3 - 3(-1)^2 + 4 = -1 - 3 + 4 = 0 \\implies \\mathbf{x_1 = -1}$.   * **Polynomdivision**: $(x^3 - 3x^2 + 4) : (x + 1) = x^2 - 4x + 4 = (x - 2)^2$.   * Weitere Nullstellen: $(x - 2)^2 = 0 \\implies \\mathbf{x_{2/3} = 2}$ (doppelte Nullstelle / Berührpunkt!).   * **Nullstellen**: $N_1(-1 \\mid 0)$ und $N_2(2 \\mid 0)$. 3. Extrempunkte und Monotonie: - **Notwendige Bedingung**: $f'(x) = 0$   $$3x^2 - 6x = 0 \\iff 3x(x - 2) = 0 \\implies \\mathbf{x_{E1} = 0}, \\quad \\mathbf{x_{E2} = 2}$$ - **Hinreichende Bedingung ($f''(x)$)**:   * **Für $x_{E1} = 0$**:     $$f''(0) = 6(0) - 6 = -6 < 0 \\implies \\mathbf{\\text{relatives Maximum (Hochpunkt)}}$$     $$y = f(0) = 4 \\implies \\mathbf{HP(0 \\mid 4)}$$   * **Für $x_{E2} = 2$**:     $$f''(2) = 6(2) - 6 = +6 > 0 \\implies \\mathbf{\\text{relatives Minimum (Tiefpunkt)}}$$     $$y = f(2) = 2^3 - 3(2)^2 + 4 = 8 - 12 + 4 = 0 \\implies \\mathbf{TP(2 \\mid 0)}$$ 4. Wendepunkte und Krümmungsverhalten: - **Notwendige Bedingung**: $f''(x) = 0$   $$6x - 6 = 0 \\implies 6x = 6 \\implies \\mathbf{x_W = 1}$$ - **Hinreichende Bedingung**:   $$f'''(1) = 6 \\neq 0 \\implies \\mathbf{\\text{echter Wendepunkt mit Krümmungswechsel}}$$ - **$y$-Koordinate des Wendepunkts**:   $$f(1) = 1^3 - 3(1)^2 + 4 = 1 - 3 + 4 = 2 \\implies \\mathbf{W(1 \\mid 2)}$$ - **Krümmung**: Für $x < 1$ ist $f''(x) < 0$ (rechtsgekrümmt/konkav); für $x > 1$ ist $f''(x) > 0$ (linksgekrümmt/konvex)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GB0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB0000000000000000A02",
+      "namespace": "gymnasium-mathematik-extremwertprobleme",
+      "slug": "extremwertprobleme-nebenbedingungen-zielfunktion-optimierung",
+      "title": "Extremwertprobleme mit Nebenbedingungen: Zielfunktion, Definitionsbereich und Randextrema",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB0000000000000000A01",
+          "type": "hard",
+          "rationale": "Optimierungsprobleme nutzen die Differentialrechnung zur Extremwertbestimmung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Optimization problem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Extremwertprobleme mit Nebenbedingungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was ist der entscheidende mathematische Schritt bei einem Extremwertproblem, um die Zielfunktion $Z(x, y)$ mit zwei Variablen in eine ableitbare Funktion $Z(x)$ mit nur einer Variablen umzuwandeln?",
+          "concept": "Das Auflösen der Nebenbedingung nach einer Variablen und das Einsetzen dieses Terms in die Hauptbedingung / Zielfunktion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nebenbedingung nach einer Variablen auflösen und in die Zielfunktion einsetzen",
+              "Beide Variablen einfach gleich Null setzen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse ein klassisches geometrisches Optimierungsproblem: Ein Landwirt möchte mit einem $U = 40\\,\\text{m}$ langen Zaun ein rechteckiges Weidegrundstück an einer geraden Flussmauer einzäunen. Die Seite an der Flussmauer benötigt keinen Zaun. 1. **Hauptbedingung (Zielfunktion)**: Formuliere den Flächeninhalt $A(a, b)$ des Rechtecks, 2. **Nebenbedingung**: Stelle die Gleichung für die gegebene Zaunlänge auf, 3. **Zielfunktion in einer Variablen $A(a)$**: Drücke die Fläche nur in Abhängigkeit von der senkrecht zur Mauer stehenden Seitenlänge $a$ aus und bestimme den ökonomisch sinnvollen Definitionsbereich $\\mathbb{D}_A$, 4. **Extremwertbestimmung & Randwertvergleich**: Berechne die optimalen Seitenlängen $a$ und $b$ sowie den maximalen Flächeninhalt $A_{\\text{max}}$.",
+          "concept": "Extremwertproblem: Hauptbedingung A = a*b; Nebenbedingung 2a + b = 40 -> b = 40 - 2a; Zielfunktion A(a) = a*(40 - 2a) = 40a - 2a^2; Ableitung A'(a) = 40 - 4a = 0 -> a = 10 m; b = 20 m; A_max = 200 m^2; Randwerte A(0)=A(20)=0.",
+          "sample_solution": "1. Systematischer 4-Schritte-Lösungsplan für Extremwertprobleme: - **1. Schritt: Hauptbedingung (Was soll maximal werden?)**:   * Der Flächeninhalt des rechteckigen Geheges mit den Seitenlängen $a$ (Breite senkrecht zur Mauer) und $b$ (Länge parallel zur Mauer):     $$\\mathbf{A(a, b) = a \\cdot b} \\longrightarrow \\text{maximal!}$$ - **2. Schritt: Nebenbedingung (Welche Restriktion liegt vor?)**:   * Da die Flussmauer keinen Zaun benötigt, besteht die Zaunlänge aus zwei Breiten $a$ und einer Länge $b$:     $$\\mathbf{2a + b = 40\\,\\text{m}} \\implies \\mathbf{b = 40 - 2a}$$ - **3. Schritt: Zielfunktion $A(a)$ in einer Variablen**:   * Einsetzen der Nebenbedingung in die Hauptbedingung:     $$\\mathbf{A(a) = a \\cdot (40 - 2a) = 40a - 2a^2}$$   * **Definitionsbereich**: Seitenlängen müssen positiv sein $\\implies a > 0$ und $b = 40 - 2a > 0 \\implies a < 20$:     $$\\mathbf{\\mathbb{D}_A = [0; 20]}$$ 2. Extremwertbestimmung mittels Differentialrechnung: - **1. Ableitung bilden und Null setzen**:   $$A'(a) = 40 - 4a$$   $$A'(a) = 0 \\iff 40 - 4a = 0 \\implies 4a = 40 \\implies \\mathbf{a = 10\\,\\text{m}}$$ - **2. Ableitung zur Überprüfung auf Maximum**:   $$A''(a) = -4 < 0 \\quad \\forall a \\implies \\mathbf{\\text{globales Maximum}}$$ 3. Seitenlängen, Maximalfläche und Randwertvergleich: - **Optimale Abmessungen**:   * **Breite**: $\\mathbf{a = 10\\,\\text{m}}$   * **Länge**: $b = 40 - 2(10) = \\mathbf{20\\,\\text{m}}$ - **Maximaler Flächeninhalt**:   $$A_{\\text{max}} = A(10) = 10\\,\\text{m} \\cdot 20\\,\\text{m} = \\mathbf{200\\,\\text{m}^2}$$ - **Randwertvergleich (Randextrema)**:   * $A(0) = 0\\,\\text{m}^2$, $A(20) = 0\\,\\text{m}^2$.   * Das innere Maximum $A(10) = 200\\,\\text{m}^2$ ist somit das absolute globale Maximum."
+        }
+      ]
+    }
+  ]
+}

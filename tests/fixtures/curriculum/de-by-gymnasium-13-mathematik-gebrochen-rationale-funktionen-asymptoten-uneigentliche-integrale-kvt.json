@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale",
+  "version": "2026.08.1",
+  "title": "Mathematik 13: Analysis – Gebrochen-rationale Funktionen, Asymptoten, Kurvenscharen und Uneigentliche Integrale (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 13 (Oberstufe Q13 / Abitur): Gebrochen-rationale Funktionen f(x) = Z(x)/N(x) (Definitionsbereich D_f = R \\ {x | N(x) = 0}, Polstellen mit und ohne Vorzeichenwechsel, Hebbare Definitionslücken durch Polynomdivision / Linearfaktorenkürzung, Asymptotisches Grenzverhalten x -> +-unendlich: Waagrechte Asymptote bei Grad(Z) <= Grad(N), Schräge/Schiefe Asymptote y = mx + t bei Grad(Z) = Grad(N)+1 via Polynomdivision, Asymptotische Kurven), Kurvenscharen und Ortskurven (Funktionenscharen f_k(x) mit Formparameter k, Fallunterscheidungen, Gemeinsame Schnittpunkte aller Scharkurven, Bestimmung von Ortskurven extremer Punkte durch Elimination des Parameters k) sowie Uneigentliche Integrale (Grenzwerte von Integralen bei unbeschränkten Integrationsintervallen [a, unendlich[ und bei unbeschränkten Integranden an Definitionsrändern, Konvergenz vs. Divergenz, Flächen- und Rotationsvolumenberechnung im Unendlichen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 13, Lernbereich Analysis – Vertiefung gebrochen-rationaler Funktionen und Integrale"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD0000000000000000A01",
+      "namespace": "gymnasium-mathematik-gebrochen-rational",
+      "slug": "gebrochen-rationale-funktionen-polstellen-schiefe-asymptoten",
+      "title": "Gebrochen-rationale Funktionen: Polstellen, hebbare Lücken und schiefe Asymptoten",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Rational function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Gebrochen-rationale Funktionen und Asymptoten",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann besitzt eine gebrochen-rationale Funktion f(x) = Z(x)/N(x) für x -> +-unendlich eine schiefe/schräge Asymptote y = m*x + t (mit m != 0)?",
+          "concept": "Genau dann, wenn der Zählergrad um genau 1 größer ist als der Nennergrad (Grad(Z) = Grad(N) + 1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn der Zählergrad genau um 1 größer ist als der Nennergrad",
+              "Wenn der Nennergrad größer als der Zählergrad ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere gebrochen-rationale Funktionen und führe eine vollständige Asymptotenbestimmung durch: 1. **Klassifikation der Definitionslücken bei $f(x) = \\frac{Z(x)}{N(x)}$**:   * **Hebbare Definitionslücke bei $x_0$**: Wenn $x_0$ Nullstelle von Zähler und Nenner mit gleicher oder höherer Vielfachheit im Zähler ist $\\implies$ der Faktor $(x - x_0)$ lässt sich vollständig herauskürzen; der Grenzwert $\\lim_{x \\to x_0} f(x) = y_0$ existiert.   * **Polstelle (senkrechte Asymptote) bei $x_0$**: Wenn nach dem Kürzen eine Nennernullstelle verbleibt $\\implies \\lim_{x \\to x_0} f(x) = \\pm \\infty$ (mit VZW bei ungerader Polstellen-Ordnung, ohne VZW bei gerader Ordnung), 2. **Grenzverhalten im Unendlichen**:   * $\\operatorname{Grad}(Z) < \\operatorname{Grad}(N) \\implies$ waagrechte Asymptote $y = 0$.   * $\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) \\implies$ waagrechte Asymptote $y = \\frac{a_n}{b_n}$.   * $\\operatorname{Grad}(Z) = \\operatorname{Grad}(N) + 1 \\implies$ **schiefe Asymptote** $y = m x + t$ durch Polynomdivision $f(x) = m x + t + \\frac{R(x)}{N(x)}$, 3. **Konkrete Aufgabe**:   * Gegeben ist die Funktion $f(x) = \\frac{2x^3 - 4x^2 - 2x + 4}{x^2 - 1}$.   * a) Bestimme die maximale Definitionsmenge $D_f$.   * b) Untersuche alle Definitionslücken auf hebbare Lücken bzw. Polstellen.   * c) Bestimme die Gleichung der schiefen Asymptote $y = m x + t$.",
+          "concept": "Gebrochen-rationale Funktionen 13: D_f = R \\ {-1, 1}; Faktorisierung Zähler 2(x-1)(x+1)(x-2) -> hebbare Lücken bei x = 1 und x = -1; gekürzte Funktion f(x) = 2x - 4 (Gerade mit zwei Löchern); schiefe Asymptote y = 2x - 4.",
+          "sample_solution": "1. Theorie gebrochen-rationaler Funktionen: - Eine gebrochen-rationale Funktion $f(x) = \\frac{Z(x)}{N(x)}$ ist überall dort definiert, wo $N(x) \\neq 0$. - **Verhalten an den Lücken**:   * Lässt sich der Linearfaktor $(x - x_0)$ durch Kürzen restlos aus dem Nenner entfernen, liegt eine **hebbare Lücke** vor. Der Graph hat dort ein punktförmiges 'Loch' bei $(x_0 \\mid y_0)$.   * Bleibt $(x - x_0)^k$ im Nenner stehen, ist $x_0$ eine **Polstelle $k$-ter Ordnung** mit senkrechter Asymptote $x = x_0$. 2. Vollständige Bearbeitung der Aufgabe: - **a) Definitionsbereich $D_f$**:   * Nennernullstellen: $x^2 - 1 = 0 \\implies x_1 = 1, \\; x_2 = -1$.   * $$\\mathbf{D_f = \\mathbb{R} \\setminus \\{-1; 1\\}}$$ - **b) Untersuchung der Definitionslücken**:   * Wir faktorisieren Zähler und Nenner:     - Nenner: $N(x) = (x - 1)(x + 1)$.     - Zähler: $Z(x) = 2x^3 - 4x^2 - 2x + 4 = 2x^2(x - 2) - 2(x - 2) = 2(x^2 - 1)(x - 2) = 2(x - 1)(x + 1)(x - 2)$.   * **Kürzen für alle $x \\in D_f$**:     $$f(x) = \\frac{2(x - 1)(x + 1)(x - 2)}{(x - 1)(x + 1)} = \\mathbf{2x - 4}$$   * **Ergebnis**: Sowohl $x = 1$ als auch $x = -1$ sind **hebbare Definitionslücken** (keine Polstellen!).     - Lücke 1: $\\lim_{x \\to 1} f(x) = 2(1) - 4 = -2 \\implies \\mathbf{L_1(1 \\mid -2)}$.     - Lücke 2: $\\lim_{x \\to -1} f(x) = 2(-1) - 4 = -6 \\implies \\mathbf{L_2(-1 \\mid -6)}$. - **c) Asymptote für $x \\to \\pm \\infty$**:   * Da die gekürzte Funktion exakt mit der linearen Geradengleichung $y = 2x - 4$ übereinstimmt, ist die schiefe Asymptote identisch mit der Geraden:     $$\\mathbf{y = 2x - 4}$$   *(Der Graph von $f$ ist eine Gerade mit Steigung $m = 2$ und $y$-Achsenabschnitt $t = -4$, die an den Stellen $x = 1$ und $x = -1$ zwei punktförmige Löcher besitzt)*."
+        }
+      ]
+    },
+    {
+      "id": "01K8GD0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD0000000000000000A02",
+      "namespace": "gymnasium-mathematik-uneigentliche-integrale",
+      "slug": "kurvenscharen-ortskurven-uneigentliche-integrale-konvergenz",
+      "title": "Kurvenscharen (Ortskurven) und Uneigentliche Integrale (Flächen im Unendlichen)",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD0000000000000000A01",
+          "type": "hard",
+          "rationale": "Uneigentliche Integrale bauen auf Grenzwertbetrachtungen und Asymptoten auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Improper integral",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Kurvenscharen, Ortskurven und uneigentliche Integrale",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Für welche reellen Exponenten p konvergiert das uneigentliche Integral \\int_{1}^{\\infty} \\frac{1}{x^p} \\, dx gegen einen endlichen Flächeninhalt?",
+          "concept": "Für alle p > 1 (für p <= 1 divergiert das Integral gegen unendlich)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für alle p > 1",
+              "Für alle p < 1"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Kurvenscharen, Ortskurven und berechne uneigentliche Integrale: 1. **Bestimmung von Ortskurven für Scharen $f_k(x)$**:   * Bestimme die Koordinaten des charakteristischen Punktes in Abhängigkeit von $k$: $x = x(k)$ und $y = y(k)$.   * Löse die Gleichung $x = x(k)$ nach dem Parameter $k$ auf: $k = g(x)$.   * Setze $k = g(x)$ in die $y$-Gleichung ein $\\implies \\mathbf{y = y(g(x))}$ (**Gleichung der Ortskurve**), 2. **Definition des Uneigentlichen Integrals**:   * **1. Art (unbeschränkte Grenze)**: $\\int_{a}^{\\infty} f(x)\\,dx = \\lim_{u \\to \\infty} \\int_{a}^{u} f(x)\\,dx$.   * **2. Art (unbeschränkter Integrand bei $x_0$)**: $\\int_{x_0}^{b} f(x)\\,dx = \\lim_{u \\to x_0^+} \\int_{u}^{b} f(x)\\,dx$.   * Wenn der Grenzwert existiert und endlich ist, nennt man das Integral **konvergent**, andernfalls **divergent**, 3. **Berechnungsaufgabe**:   * Gegeben ist die Funktion $f(x) = x \\cdot e^{-2x}$ für $x \\ge 0$.   * a) Bestimme das unbestimmte Integral $\\int x \\cdot e^{-2x}\\,dx$ mittels partieller Integration.   * b) Berechne den Flächeninhalt $A = \\int_{0}^{\\infty} x \\cdot e^{-2x}\\,dx$, den der Graph von $f$ mit der positiven $x$-Achse vollständig einschließt.",
+          "concept": "Ortskurven & Uneigentliche Integrale 13: Partielle Integration int x*e^(-2x) dx = -1/2 x e^(-2x) - 1/4 e^(-2x); Grenzübertragung u -> inf liefert A = 0 - (-1/4) = 1/4 FE.",
+          "sample_solution": "1. Ortskurven von Extrempunkten einer Schar: - Das Verfahren zur Parameterelimination:   1. Extrempunkt $E_k(x_k \\mid y_k)$ bestimmen (über $f'_k(x) = 0$).   2. $x$-Koordinate nach dem Scharparameter $k$ freistellen.   3. Den Ausdruck für $k$ in die $y$-Koordinate einsetzen $\\implies$ Reine Beziehung $y = h(x)$, auf der alle Extrempunkte sämtlicher Kurven der Schar liegen. 2. Berechnung des uneigentlichen Integrals: - **Schritt 1: Partielle Integration von $\\int x \\cdot e^{-2x}\\,dx$**:   * Formel: $\\int u(x) \\cdot v'(x)\\,dx = u(x) \\cdot v(x) - \\int u'(x) \\cdot v(x)\\,dx$.   * Wähle: $u(x) = x \\implies u'(x) = 1$.   * Wähle: $v'(x) = e^{-2x} \\implies v(x) = -\\frac{1}{2} e^{-2x}$.   * Einsetzen:     $$\\int x \\cdot e^{-2x}\\,dx = -\\frac{1}{2} x \\cdot e^{-2x} - \\int 1 \\cdot \\left(-\\frac{1}{2} e^{-2x}\\right) dx$$     $$= -\\frac{1}{2} x \\cdot e^{-2x} + \\frac{1}{2} \\int e^{-2x}\\,dx$$     $$= -\\frac{1}{2} x \\cdot e^{-2x} - \\frac{1}{4} e^{-2x} + C = \\mathbf{-e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) + C}$$ - **Schritt 2: Bestimmtes Integral mit oberer variabler Grenze $u > 0$**:   $$I(u) = \\int_{0}^{u} x \\cdot e^{-2x}\\,dx = \\left[ -e^{-2x} \\left( \\frac{1}{2}x + \\frac{1}{4} \\right) \\right]_0^u$$   $$I(u) = \\left( -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) \\right) - \\left( -e^{0} \\left( 0 + \\frac{1}{4} \\right) \\right)$$   $$I(u) = -e^{-2u} \\left( \\frac{1}{2}u + \\frac{1}{4} \\right) + \\frac{1}{4}$$ - **Schritt 3: Grenzwert für $u \\to \\infty$**:   * Da die Exponentialfunktion $e^{2u}$ für $u \\to \\infty$ jedes Polynom dominiert, gilt nach de L'Hospital:     $$\\lim_{u \\to \\infty} \\frac{\\frac{1}{2}u + \\frac{1}{4}}{e^{2u}} = \\lim_{u \\to \\infty} \\frac{\\frac{1}{2}}{2e^{2u}} = 0$$   * Folglich:     $$\\mathbf{A = \\lim_{u \\to \\infty} I(u) = 0 + \\frac{1}{4} = \\mathbf{\\frac{1}{4}\\,\\text{Flächeneinheiten (FE)}}}$$   * Das uneigentliche Integral **konvergiert** gegen den exakten Wert $0{,}25$ FE."
+        }
+      ]
+    }
+  ]
+}

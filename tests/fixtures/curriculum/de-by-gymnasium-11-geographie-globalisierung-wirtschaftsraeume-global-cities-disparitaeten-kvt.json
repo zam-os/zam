@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-geographie-globalisierung-wirtschaftsraeume-global-cities-disparitaeten",
+  "version": "2026.08.1",
+  "title": "Geographie 11: Globalisierung, Weltwirtschaftsräume, Global Cities und Globale Disparitäten (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geographie 11 (Oberstufe): Triebkräfte und Dimensionen der Globalisierung (Wirtschaft, Politik, Kultur, Umwelt; Containerisierung, Informations- und Kommunikationstechnologien, Deregulierung der Finanzmärkte, Freihandelsabkommen WTO/EU/USMCA), Globale Wertschöpfungsketten und Standortfaktoren (Transnationale Konzerne TNK/MNE, Outsourcing, Offshoring, Nearshoring, Footloose Industries), Das Konzept der Global Cities (Steuerungszentralen der Weltwirtschaft nach Saskia Sassen: New York, London, Tokio; Finanzcluster, wissensintensive Unternehmensdienstleistungen APS), Raumwirksame Prozesse (Zentrum-Peripherie-Modell, Fragmentierende Entwicklung nach Fred Scholz: Global Player, Global Orte vs. Neue Peripherien) sowie Entwicklungsstrategien und Fair Trade.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/geographie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geographie 11, Lernbereich Globalisierung und Weltwirtschaftsräume"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBJ0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBJ0000000000000000A01",
+      "namespace": "gymnasium-geographie-globalisierung",
+      "slug": "globalisierung-triebkraefte-wertschoepfungsketten-standortfaktoren",
+      "title": "Globalisierung: Triebkräfte, globale Wertschöpfungsketten und Standortverlagerung (Offshoring)",
+      "domain": "schule/geographie/wirtschaftsgeographie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Globalization",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Globalisierung und internationale Arbeitsteilung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBJ0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche logistische Schlüsseltechnologie der 1960er-Jahre (Standardisierung durch Malcolm McLean) senkte die maritimen Transportkosten um über 90 % und begründete die moderne weltweite Just-in-Time-Produktion?",
+          "concept": "Die Containerisierung (standardisierter ISO-Überseecontainer TEU)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Containerisierung (standardisierter ISO-Container)",
+              "Der Bau von Holzsegelschiffen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBJ0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Triebkräfte, Prozesse und räumliche Auswirkungen der Globalisierung: 1. **Die 4 Haupttriebkräfte der Globalisierung**:   * **Technologischer Fortschritt**: Containerisierung im Seeverkehr, Luftfracht, Glasfaser/Satelliteninternet $\\implies$ *Time-Space-Compression* (Raum-Zeit-Kompression nach David Harvey).   * **Politische Weichenstellungen**: Abbau von Zöllen/Handelshemmnissen (GATT/WTO), Gründung von Freihandelszonen (EU-Binnenmarkt, NAFTA/USMCA, RCEP).   * **Ökonomische Liberalisierung**: Deregulierung internationaler Finanzmärkte, Kapitalverkehrsfreiheit.   * **Expansion Transnationaler Konzerne (TNK/MNE)**: Suche nach Skaleneffekten (*Economies of Scale*), 2. **Globale Wertschöpfungsketten & Standortverlagerung**:   * **Internationale Arbeitsteilung**: Zerlegung des Produktionsprozesses in weltweit verteilte Einzelschritte nach komparativen Kostenvorteilen:     - F&E / Design / Marketing $\\rightarrow$ Industriestaaten / Triade (hohes Bildungsniveau, Cluster).     - Vorfertigung / Bauteile $\\rightarrow$ spezialisierte Schwellenländer.     - Endmontage $\\rightarrow$ Niedriglohnländer (Sonderwirtschaftszonen SEZ).   * **Outsourcing vs. Offshoring**:     - *Outsourcing*: Auslagerung von Aufgaben an externe Drittunternehmen.     - *Offshoring*: Verlagerung von Unternehmensaktivitäten ins Ausland (innerhalb oder außerhalb des Konzerns).   * *Aktueller Gegentrend*: **Nearshoring / Reshoring** zur Erhöhung der Lieferkettensicherheit (*Resilienz*) nach geopolitischen Krisen.",
+          "concept": "Globalisierung 11: 4 Triebkräfte (Transport/Container, IKT, Freihandel WTO, Finanzderegulierung); Raum-Zeit-Kompression; Globale Wertschöpfungsketten (Zerlegung, komparative Vorteile); Outsourcing vs. Offshoring; Nearshoring & Resilienz.",
+          "sample_solution": "1. Definition und Dimensionen der Globalisierung: - **Definition**: Der dynamische Prozess der weltweiten Verflechtung und Intensivierung von Wirtschaftsbeziehungen, Handelsströmen, Informationsflüssen, politischen Institutionen und kulturellen Austauschprozessen. - **Die vier fundamentalen Triebkräfte**:   1. **Technologie & Transport (Raum-Zeit-Kompression)**:      - Standardisierter ISO-Container (ab 1956) senkte die Umschlagzeiten in Häfen von Wochen auf Stunden und die Frachtkosten auf einen Bruchteil des Warenwertes.      - Breitbandinternet und Digitalisierung ermöglichen weltweite Echtzeitkommunikation und die Vernetzung von Finanzplätzen (*24/7 Global Financial Trading*).   2. **Politische Deregulierung**:      - Weltweiter Zollabbau durch das Allgemeine Zoll- und Handelsabkommen (GATT) und die **Welthandelsorganisation (WTO)** sowie regionale Wirtschaftsbündnisse (EU, USMCA, ASEAN).   3. **Ökonomische Liberalisierung**:      - Fall des Eisernen Vorhangs (1989/90) und die wirtschaftliche Öffnung Chinas (unter Deng Xiaoping) integrierten über 2 Milliarden zusätzliche Menschen in den globalen Arbeits- und Absatzmarkt.   4. **Strategien Transnationaler Konzerne (TNK / Global Player)**:      - Optimierung globaler Wertschöpfungsketten zur Ausnutzung länderspezifischer Kostenvorteile (*Global Sourcing*). 2. Globale Wertschöpfungsketten und Standortentscheidungen: - **Die Fragmentierung der Produktion (Beispiel Smartphone / Automobil)**:   * **1. Forschung, Entwicklung & Design**: In den Metropolregionen der Industrieländer (z. B. Silicon Valley, München) $\\implies$ Standortfaktoren: Spitzenuniversitäten, hochqualifizierte Fachkräfte, Innovationsnetzwerke (*Cluster*).   * **2. Hochtechnologie-Komponenten**: Produktion von Halbleitern, Kamerasensoren, Displays in spezialisierten Zentren (z. B. Taiwan [TSMC], Südkorea, Japan).   * **3. Rohstoffgewinnung**: Abbau von Lithium, Kobalt, Seltenen Erden in Afrika (DR Kongo), Südamerika (Lithiumdreieck) und China $\\implies$ oft unter prekären ökologischen und sozialen Bedingungen.   * **4. Arbeitsintensive Endmontage**: In Sonderwirtschaftszonen (z. B. Shenzhen, Vietnam, Indien) durch Auftragsfertiger (z. B. Foxconn) $\\implies$ Standortfaktoren: extrem niedrige Lohnkosten, fehlende Gewerkschaften, Steuervorteile. 3. Begriffsabgrenzung: Outsourcing, Offshoring und Nearshoring: - **Outsourcing**: Auslagerung von bisher intern erbrachten Unternehmensfunktionen an ein **externes Dienstleistungsunternehmen** (z. B. Kantine, IT-Support, Buchhaltung). - **Offshoring**: Geographische Verlagerung von Betriebsstätten in ein **geographisch weit entferntes Land** (z. B. Softwareentwicklung nach Indien), um Kosten zu senken. - **Nearshoring / Reshoring (moderner Trend)**: Rückverlagerung von Produktionsschritten in geographisch nahe Nachbarländer (z. B. von China nach Polen, Tschechien oder Mexiko) zur Vermeidung von Lieferkettenabbrüchen und Reduzierung geopolitischer Risiken."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBJ0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBJ0000000000000000A02",
+      "namespace": "gymnasium-geographie-global-cities",
+      "slug": "global-cities-saskia-sassen-fragmentierende-entwicklung-scholz",
+      "title": "Global Cities (Saskia Sassen) & Fragmentierende Entwicklung (Fred Scholz)",
+      "domain": "schule/geographie/stadtgeographie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBJ0000000000000000A01",
+          "type": "hard",
+          "rationale": "Global Cities und Fragmentierung sind räumliche Manifestationen der Globalisierung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Global city",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Global Cities und fragmentierende Entwicklung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBJ0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was zeichnet eine 'Global City' (nach der Soziologin Saskia Sassen) im Kern aus?",
+          "concept": "Sie fungiert als strategisches Steuerungs-, Kontroll- und Finanzzentrum der globalisierten Weltwirtschaft mit einer dichten Konzentration hochrangiger wissensintensiver Unternehmensdienstleister (APS: Banken, Wirtschaftsprüfer, Kanzleien, Consulting)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Strategische Steuerungszentrale und Cluster von Unternehmensdienstleistern (APS)",
+              "Reine Einwohnerzahl von über 10 Millionen Menschen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBJ0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Konzept der Global Cities (Saskia Sassen) und das Modell der 'Fragmentierenden Entwicklung' (Fred Scholz): 1. **Das Global-City-Konzept (Saskia Sassen, 1991)**:   * *Definition*: Metropolen, die als Knotenpunkte und **Kommandozentralen der Weltwirtschaft** fungieren (klassische Triade: New York, London, Tokio; erweitert um Singapur, Paris, Hongkong).   * **Advanced Producer Services (APS)**: Enge räumliche Ballung spezialisierter wissensintensiver Dienstleistungen (Investmentbanken, internationale Wirtschaftskanzleien, Strategieberatung, Wirtschaftsprüfung, Werbeagenturen).   * **Soziale und räumliche Polarisation**: Starkes Auseinanderdriften zwischen hochbezahlter Finanzelite (*Gentrifizierung*) und schlecht bezahltem Dienstleistungsprekariat (Reinigung, Gastronomie, Kuriere), 2. **Das Modell der Fragmentierenden Entwicklung (Fred Scholz, 2000)**:   * **These**: Die Globalisierung führt nicht zu einer flächendeckenden Entwicklung von Nationalstaaten, sondern zur **räumlichen und sozialen Aufspaltung (Fragmentierung)** in integrierte und ausgeschlossene Inseln:     - **1. Global agierende Orte / Global Players**: Wenige hochentwickelte Wirtschaftsinseln (Global Cities, Hightech-Parks, Sonderwirtschaftszonen, Tourismus-Enklaven), die eng untereinander vernetzt sind.     - **2. Globalisierte Orte**: Zulieferregionen, verlängerte Werkbänke und Rohstofffördergebiete, die funktional an die globalen Orte gebunden, aber hochgradig krisenanfällig und austauschbar sind.     - **3. Die Neue Peripherie (Das 'Rest-Afrika' / ländliche Räume)**: Die riesige Mehrheit der Weltbevölkerung, die für den globalen Kapitalismus weder als Produzenten noch als kaufkräftige Konsumenten relevant ist und **vollständig abgekoppelt** wird (Marginalisierung, Slums, Subsistenzwirtschaft).",
+          "concept": "Raumentwicklung 11: Global Cities (Saskia Sassen: Steuerungszentralen, APS-Cluster, soziale Polarisation); Modell der fragmentierenden Entwicklung (Fred Scholz: Global agierende Orte vs. Globalisierte Orte vs. Abgekoppelte Neue Peripherie).",
+          "sample_solution": "1. Das Konzept der Global Cities nach Saskia Sassen (1991): - **Funktioneller Ansatz**: Eine Stadt ist keine Global City wegen ihrer schieren Bevölkerungsgröße (Abgrenzung zur *Megacity*), sondern wegen ihrer **strategischen Steuerungs- und Kontrollfunktion im globalen Wirtschaftssystem**. - **Die Rolle der 'Advanced Producer Services' (APS)**:   * Transnationale Konzerne lagern hochkomplexe juristische, steuerliche und finanzielle Aufgaben an spezialisierte Dienstleistungscluster aus:     - Investmentbanking (Wall Street, London City), internationale Großkanzleien, Top-Managementberatungen (McKinsey, BCG), Wirtschaftsprüfungsgesellschaften (*Big Four*).   * *Face-to-Face-Kontakte*: Trotz digitaler Vernetzung erfordern vertrauliche Milliardenabschlüsse und informelle Wissensströme die physische Nähe der Entscheidungsträger auf engstem Raum. - **Sozio-ökonomische Schattenseiten**:   * **Soziale Polarisierung**: Global Cities ziehen eine ultra-vermögende globale Elite an $\\implies$ explodierende Immobilienpreise, Verdrängung der angestammten Mittelschicht (**Gentrifizierung**).   * Entstehung eines riesigen, prekären Niedriglohnsektors (Lieferdienste, Reinigungspersonal, Gastronomie, Sicherheit), der die Infrastruktur für die Elite aufrechterhält. 2. Das Modell der Fragmentierenden Entwicklung nach Fred Scholz (2000): - **Kritik an traditionellen Entwicklungstheorien**:   * Scholz widerlegt die Annahme, dass globaler Freihandel automatisch zu einer Angleichung von Industrie- und Entwicklungsländern führe. Globalisierung integriert nicht Länder, sondern **isoliert einzelne Fragmente**: ```mermaid graph TD   A[Globalisierung] --> B[1. Global agierende Orte: Steuerungszentren & Innovationsinseln]   A --> C[2. Globalisierte Orte: Ausbeutungs- & Zulieferfragmente]   A --> D[3. Neue Peripherie: Abgekoppelte Resträume]   B <-->|Starke globale Vernetzung| B   C -.->|Einseitige Abhängigkeit| B   D -.-x|Vollständige Marginalisierung| B ``` 3. Die drei Fragmente im Detail: - **1. Global agierende Orte (Global Player)**:   * Kommandozentralen der Weltwirtschaft (Global Cities), Hightech-Cluster (Silicon Valley), globale Finanzplätze (Frankfurt, Zürich, Singapur) und moderne Seehafen-Hubs (Rotterdam, Shanghai). Hier konzentrieren sich Kapital, Macht und Innovation. - **2. Globalisierte Orte (Die abhängigen Anhängsel)**:   * Regionen, die dem Weltmarkt als billige Fertigungsstätten oder Rohstofflieferanten dienen: Sonderwirtschaftszonen (z. B. Maquiladoras an der US-mexikanischen Grenze), Bergbauminen in Sambia, Textilfabriken in Bangladesch, Plantagen in Mittelamerika.   * *Merkmal*: Sie haben keine eigene Steuerungsfunktion; bei Lohnsteigerungen zieht das globale Kapital sofort ins nächste Billiglohnland weiter (*Footloose Industries*). - **3. Die Neue Peripherie (Die 'Verlierer der Globalisierung')**:   * Umfasst ländliche Regionen in Subsahara-Afrika, entlegene Provinzen Lateinamerikas und Asiens sowie die ausufernden **Slums (Informelle Siedlungen)** der Megastädte.   * *Merkmal*: Diese Gebiete sind für die globalen Märkte bedeutungslos. Die Menschen leben in informeller Subsistenzwirtschaft ohne Zugang zu moderner Infrastruktur, Bildung oder Gesundheitsversorgung."
+        }
+      ]
+    }
+  ]
+}

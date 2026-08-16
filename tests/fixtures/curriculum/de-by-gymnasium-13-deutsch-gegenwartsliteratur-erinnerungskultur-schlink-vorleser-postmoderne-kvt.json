@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-deutsch-gegenwartsliteratur-erinnerungskultur-schlink-vorleser-postmoderne",
+  "version": "2026.08.1",
+  "title": "Deutsch 13: Literatur der Gegenwart – Erinnerungskultur, Bernhard Schlink (Der Vorleser) und Postmoderne (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 13 (Oberstufe Q13 / Abitur): Literatur nach 1989 und Erinnerungskultur (Die Vergangenheitsbewältigung der zweiten und dritten Generation nach dem Nationalsozialismus, Täter-Opfer-Dichotomie, Schuld und Scham, Das Konzept des 'kulturellen Gedächtnisses' nach Jan und Aleida Assmann: Kommunikatives vs. Kulturelles Gedächtnis, Medien des Erinnerns), Bernhard Schlink: *Der Vorleser* (1995: Die Liebesbeziehung zwischen dem 15-jährigen Michael Berg und der 36-jährigen Hanna Schmitz; Der KZ-Prozess in den 1960er-Jahren; Hannas Analphabetismus als schambehaftetes Lebensgeheimnis und moralische Schuldverstrickung als KZ-Aufseherin; Michaels moralisches Dilemma zwischen Liebe, Loyalität und Verurteilung; Lesen als Emanzipation im Gefängnis und Hannas Suizid vor der Entlassung), Postmoderne Erzählformen (Daniel Kehlmann: *Die Vermessung der Welt* – Spiel mit Fiktion und Historizität, Ironie, Intertextualität, Pastiche, Dekonstruktion von Meistererzählungen) sowie Gegenwartstheater (Postdramatisches Theater nach Hans-Thies Lehmann: Auflösung der dramatischen Handlung, Chorisches Sprechen, Performance und Medienreflexion).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/deutsch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Deutsch 13, Lernbereich Gegenwartsliteratur und Erinnerungskultur"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD9000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD9000000000000000A01",
+      "namespace": "gymnasium-deutsch-erinnerungskultur-schlink",
+      "slug": "bernhard-schlink-der-vorleser-erinnerungskultur-schuld",
+      "title": "Bernhard Schlink: 'Der Vorleser' (1995), Erinnerungskultur und Schuldverstrickung",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "The Reader",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Gegenwartsliteratur – Bernhard Schlink und Erinnerungskultur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD9000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches existenzielle Geheimnis hütet Hanna Schmitz in Bernhard Schlinks Roman 'Der Vorleser', für dessen Geheimhaltung sie im KZ-Prozess sogar lebenslange Haft auf sich nimmt?",
+          "concept": "Ihren totalen Analphabetismus (ihre Unfähigkeit zu lesen und zu schreiben)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ihren Analphabetismus (Unfähigkeit zu lesen und zu schreiben)",
+              "Einen versteckten Goldschatz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD9000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Bernhard Schlinks Roman 'Der Vorleser' (1995) im Kontext der deutschen Erinnerungskultur: 1. **Dreiteiliger Romanaufbau**:   * *Teil 1 (Liebesgeschichte Ende 1950er)*: Intime Beziehung zwischen dem 15-jährigen Schüler Michael Berg und der 36-jährigen Straßenbahnschaffnerin Hanna Schmitz; Ritual des Vorlesens vor dem Liebesakt; Hannas plötzliches Verschwinden.   * *Teil 2 (Der KZ-Prozess Ende 1960er)*: Michael als Jurastudent erlebt Hanna auf der Anklagebank (Aufseherin bei der Bombennacht in der brennenden Kirche). Hanna übernimmt aus Scham über ihren Analphabetismus die Hauptschuld am Bericht $\\implies$ lebenslange Haft. Michaels ethische Zerreißprobe: Schweigen oder Eingreifen?   * *Teil 3 (Gefängnisjahre & Nachleben)*: Michael bespricht Tonkassetten mit Weltliteratur; Hanna lernt im Gefängnis lesen und schreiben; Suizid Hannas am Tag vor ihrer Entlassung; Michaels Vermächtnis, 2. **Das generationelle Schuld- und Schamproblem der 68er-Generation**:   * Die 'zweite Generation' will die Verbrechen der Elterngeneration aufdecken und verurteilen, ist aber emotional und liebend an diese Tätergeneration gebunden (*« Wir liebten unsere Eltern, und wir verachteten sie »*).   * Hannas Analphabetismus als Metapher für **moralischen und geistigen Analphabetismus** (mangelnde Urteilskraft, unreflektiertes Pflichterfüllen im NS-System), 3. **Erinnerungskultur nach Jan und Aleida Assmann**:   * **Kommunikatives Gedächtnis** (Alltagsüberlieferung über ca. 80–100 Jahre / 3 Generationen, stirbt mit den Zeitzeugen) $\\rightarrow$ Übergang in das institutionalisierte **Kulturelle Gedächtnis** (Literatur, Denkmäler, Archive).",
+          "concept": "Schlink 'Der Vorleser' 13: 3 Teile; Analphabetismus als Scham/Triebfeder; moralisches Dilemma der 68er-Generation (Verurteilung vs. Liebe zur Tätergeneration); Gedächtnistheorie nach Jan/Aleida Assmann (kommunikatives vs. kulturelles Gedächtnis).",
+          "sample_solution": "1. Der Aufbau und die Kernhandlung von Bernhard Schlinks 'Der Vorleser' (1995): - **Teil 1: Die adoleszente Initiation**:   * Der an Gelbsucht erkrankte Michael Berg verliebt sich in die viel ältere Hanna Schmitz. Vor jedem intimen Zusammensein etabliert Hanna ein festes Ritual: Michael muss ihr aus Klassikern (Goethes *Iphigenie*, Homers *Odyssee*, Keller) vorlesen. Eines Tages verschwindet Hanna spurlos. - **Teil 2: Die Konfrontation im Gerichtssaal**:   * Jahre später beobachtet Michael als Jurastudent die Frankfurter Auschwitz-Prozesse. Hanna ist angeklagt: Als KZ-Aufseherin ließ sie während eines Bombenangriffs hunderte jüdische Frauen in einer brennenden Kirche qualvoll verbrennen, statt die Türen aufzuschließen.   * Als ein Gutachten über den schriftlichen Einsatzbericht gefordert wird, gesteht Hanna wahrheitswidrig die alleinige Autorschaft, nur um nicht als Analphabetin enttarnt zu werden $\\implies$ Urteil: Lebenslängliche Haft. - **Teil 3: Reifung, Distanz und Sühne**:   * Michael schickt ihr jahrelang besprochene Kassetten ins Gefängnis. Hanna lernt anhand der Kassetten eigenständig lesen und schreiben. Kurz vor der Begnadigung nimmt sie sich das Leben. 2. Die ethischen und psychologischen Hauptmotive: - **1. Das Dilemma der zweiten Generation (Verstehen vs. Verurteilen)**:   * Michael verkörpert die deutsche Nachkriegsgeneration der 68er. Er steht vor einer unlösbaren moralischen Zerrissenheit:     $$\\mathbf{\\text{Liebe zu einem geliebten Menschen} \\longleftrightarrow \\text{Abscheu vor den monströsen Taten desselben Menschen}}$$   * *« Ich wollte Hannas Verbrechen zugleich verstehen und verurteilen. Aber es war dafür zu furchtbar [...] Wenn ich nicht verstand, konnte ich nicht verurteilen; wenn ich verurteilte, konnte ich nicht verstehen. »* - **2. Der Analphabetismus als universelle Metapher**:   * Hannas Buchstabenschwäche steht sinnbildlich für ihre **moralische Blindheit** und Unmündigkeit (im Kantischen Sinne). Sie funktionierte als bürokratisches Rädchen im NS-Mordapparat, ohne je selbstständig über Recht und Unrecht nachzudenken (*Banalität des Bösen nach Hannah Arendt*). 3. Erinnerungskultur: Das Konzept von Jan und Aleida Assmann: - **Das Kommunikative Gedächtnis**:   * Basiert auf mündlichen Erzählungen im generationellen Austausch (Familie, Zeitzeugen). Reicht maximal 3 bis 4 Generationen (ca. 80–100 Jahre) zurück. Mit dem heutigen Sterben der letzten Holocaust-Überlebenden bricht diese Phase unwiderruflich weg. - **Das Kulturelle Gedächtnis**:   * Fixierung in stabilen Symbolen, Riten, Gedenkstätten, Geschichtsbüchern und **literarischen Meisterwerken wie *Der Vorleser***. Literatur fungiert als unentbehrliches Medium, um historische Schuld nicht abstrakt verblassen zu lassen, sondern für nachfolgende Generationen emotional und moralisch erfahrbar zu halten."
+        }
+      ]
+    },
+    {
+      "id": "01K8GD9000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD9000000000000000A02",
+      "namespace": "gymnasium-deutsch-postmoderne",
+      "slug": "postmoderne-erzaehlformen-kehlmann-vermessung-der-welt-theater",
+      "title": "Postmoderne & Gegenwartstheater: Daniel Kehlmann (Die Vermessung der Welt) und Postdramatik",
+      "domain": "schule/deutsch/epik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD9000000000000000A01",
+          "type": "hard",
+          "rationale": "Postmoderne Erzählungen und Theaterformen definieren die Ästhetik der Gegenwartsliteratur."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "Postmodern literature",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Postmoderne Erzählformen und Gegenwartstheater",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD9000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches stilistische Kennzeichen verwendet Daniel Kehlmann in seinem Erfolgsroman 'Die Vermessung der Welt' (2005) konsequent für fast die gesamte wörtliche Rede der Protagonisten Humboldt und Gauß?",
+          "concept": "Die durchgehende indirekte Rede im Konjunktiv I (zur Erzeugung feiner ironischer Distanz)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Durchgehende indirekte Rede im Konjunktiv I",
+              "Reime im Hexameter"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD9000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Daniel Kehlmanns 'Die Vermessung der Welt' und die Merkmale des Postdramatischen Theaters: 1. **Daniel Kehlmann – *Die Vermessung der Welt* (2005)**:   * **Die antipodische Doppelbiographie**:     - **Alexander von Humboldt**: Der empirische Weltreisende; quält sich durch den südamerikanischen Dschungel, vermisst jeden Berg und vermisst dabei das emotionale Leben.     - **Carl Friedrich Gauß**: Das mathematische Genie im Lehnstuhl; verlässt Göttingen kaum, berechnet die Welt im Kopf, leidet unter der Begrenztheit der Mitmenschen.   * **Postmoderne Poetik**:     - **Entmystifizierung von Genies**: Bruch mit dem klassischen Geniekult der Weimarer Klassik (Gauß im Bordell, Humboldt zählt Läuse).     - **Konsequenter Konjunktiv I / Indirekte Rede**: Erzeugt eine humorvolle, distanzierte Brechung des Geschehens.     - **Spiel mit Fiktion und Realität**: Historische Fakten werden frei montiert und parodiert, 2. **Das Postdramatische Theater (nach Hans-Thies Lehmann, 1999)**:   * Abkehr vom klassischen Aristotelischen Drama (keine geschlossene Handlung, keine festen Figuren mit psychologischer Motivation, kein Spannungsbogen mit Katharsis).   * **Merkmale**:     - **Textfläche & Chor**: Sprache als rhythmisches Klangmaterial (z. B. Elfriede Jelinek).     - **Performativität**: Die Aufführung als einmaliges, körperliches Live-Ereignis; Einbeziehung des Publikums.     - **Multimedialität**: Einsatz von Live-Kameras, Videoinstallationen und Mikrofonen auf der Bühne.",
+          "concept": "Postmoderne 13: Kehlmann 'Die Vermessung der Welt' (Doppelbiographie Humboldt vs. Gauß, Konjunktiv I, Entmystifizierung des Geniekults); Postdramatisches Theater nach Hans-Thies Lehmann (Auflösung von Figur/Handlung, Textflächen, Performativität).",
+          "sample_solution": "1. Daniel Kehlmann: *Die Vermessung der Welt* (2005) als postmoderner Bestseller: - **Das komplementäre Gegensatzpaar der Aufklärung**:   * **1. Alexander von Humboldt (Der Empiriker)**:     - Reist rastlos um die halbe Welt (Orinoko, Chimborazo), sammelt hunderttausende Pflanzen, misst Temperatur, Erdmagnetismus und Luftdruck mit barometrischen Instrumenten. Verkörpert die **praktische, preußisch-disziplinierte Naturforschung**.   * **2. Carl Friedrich Gauß (Der theoretische Geist)**:     - Ein Misanthrop und Einzelgänger, der Reisen hasst. Er beweist fundamentale Sätze der Zahlentheorie (*Disquisitiones Arithmeticae*), erfindet die Normalverteilung und die nichteuklidische Geometrie rein am Schreibtisch. - **Postmoderne Erzählstrategien**:   * **1. Entzauberung des Geniekults**: Kehlmann zeigt die Heroen des deutschen Geisteslebens in ihrer ganzen menschlichen Lächerlichkeit, Schrulligkeit und Beziehungsunfähigkeit.   * **2. Die Ästhetik des Konjunktivs**: Indem Kehlmann fast alle Dialoge in die **indirekte Rede (Konjunktiv I)** setzt (*« Er sagte, er habe noch nie einen solchen Narren gesehen »*), etabliert er einen unverkennbaren, feinsinnigen Tonfall ironischer Heiterkeit.   * **3. Pastiche und Intertextualität**: Spielerische Zitate und Verweise auf Kant, Goethe und die deutsche Romantik, ohne deren Pathos zu teilen. 2. Das Postdramatische Theater (Hans-Thies Lehmann, 1999): - **Das Ende des traditionellen Dramas**:   * Seit den 1990er-Jahren emanzipiert sich das Theater von der Herrschaft des literarischen Textes (**'Theater ohne Textbuch'**). - **Die konstitutiven Strukturmerkmale**:   * **1. Auflösung der dramatischen Handlung**: Kein klassischer 5-Akt-Aufbau (Exposition $\\to$ Höhepunkt $\\to$ Katastrophe); stattdessen Collagen, Bildwelten und Assoziationsketten.   * **2. Auflösung der psychologischen Figur**: Schauspieler verkörpern keine 'Rollen' mehr, in die sie sich einfühlen; stattdessen sprechen sie als Performer kollektive **Textflächen** (wie bei Elfriede Jelinek oder René Pollesch).   * **3. Präsenz und Performativität**: Der Theaterraum wird zum realen Erfahrungsraum, in dem die Trennung von Bühne und Zuschauerraum aufgehoben wird (z. B. Rimini Protokoll).   * **4. Multimediale Polyphonie**: Gleichzeitigkeit von Video-Projektionen, Sounddesign und Live-Aktionen dekonstruiert den linearen Wahrnehmungsfluss."
+        }
+      ]
+    }
+  ]
+}

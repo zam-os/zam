@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-franzoesisch-existentialisme-absurde-camus-sartre",
+  "version": "2026.08.1",
+  "title": "Französisch 11: Littérature et Philosophie – L'Existentialisme (Sartre), L'Absurde (Camus: L'Étranger) et le Théâtre de l'absurde (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 11 (Oberstufe F1/F2): Die französische Literatur- und Philosophiegeschichte des 20. Jahrhunderts (L'Existentialisme nach Jean-Paul Sartre: 'L'existence précède l'essence', Condamné à être libre, Angoisse, Engagement und Mauvaise foi; Albert Camus und die Philosophie des Absurden: Le Mythe de Sisyphe [Il faut imaginer Sisyphe heureux], Romananalyse *L'Étranger* [1942: Meursault, Gleichgültigkeit, Mord am Strand von Algier, Todestrafe, Revolte], Das Théâtre de l'absurde bei Eugène Ionesco [*La Cantatrice chauve*, *Rhinocéros*] und Samuel Beckett [*En attendant Godot*]: Sprachzerfall, Sinnlosigkeit, Kritik am Konformismus und Totalitarismus).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/franzoesisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Französisch 11, Lernbereich Literatur und Gesellschaft – Existentialisme et Absurde"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBF0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBF0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-existentialisme",
+      "slug": "existentialisme-sartre-camus-letranger-absurde",
+      "title": "L'Existentialisme et L'Absurde: Sartre ('L'existence précède l'essence') et Camus ('L'Étranger')",
+      "domain": "schule/franzoesisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Existentialism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "Littérature – Existentialisme et Absurde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBF0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Quel principe fondamental résume la philosophie existentialiste de Jean-Paul Sartre dans sa conférence 'L'existentialisme est un humanisme' (1946)?",
+          "concept": "L'existence précède l'essence (Der Mensch existiert zuerst, begegnet sich in der Welt und definiert erst durch sein Handeln sein Wesen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "L'existence précède l'essence (Das Dasein geht dem Wesen voraus)",
+              "L'essence précède l'existence"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBF0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den französischen Existentialismus von Jean-Paul Sartre und die Philosophie des Absurden in Albert Camus' Roman 'L'Étranger': 1. **Der Existentialismus nach Jean-Paul Sartre**:   * *« L'existence précède l'essence »*: Der Mensch ist nicht durch eine göttliche Vorbestimmung oder feste menschliche Natur definiert, sondern muss sich durch seine freien Taten selbst entwerfen (*projet*).   * *« L'homme est condamné à être libre »* (Der Mensch ist zur Freiheit verurteilt): Vollständige, unausweichliche Eigenverantwortung für das eigene Leben; Flucht in Konventionen ist Feigheit (*mauvaise foi* / Unaufrichtigkeit).   * *L'engagement*: Politisches und gesellschaftliches Engagement als Konsequenz der Freiheit, 2. **Albert Camus und das Absurde**:   * **Das Absurde**: Die schmerzhafte Konfrontation zwischen dem menschlichen Verlangen nach Sinn und der gleichgültigen, stummen Sinnlosigkeit des Universums.   * **Reaktion**: Weder physischer Selbstmord noch religiöser 'philosophischer Selbstmord', sondern **Revolte**, Bewusstheit und Leidenschaft (Sisyphe: *« Il faut imaginer Sisyphe heureux »*), 3. **Textanalyse: Albert Camus – *L'Étranger* (1942)**:   * **Hauptfigur Meursault**: Ein Büroangestellter in Algier, der sich gesellschaftlichen Heucheleien und Gefühlskonventionen verweigert (*« Aujourd'hui, maman est morte. Ou peut-être hier, je ne sais pas. »*).   * **Der Mord am Strand**: Sinnlose Tötung eines Arabers unter der blendenden Sonne Algiers (*« à cause du soleil »*).   * **Der Prozess & das Todesurteil**: Die bürgerliche Justiz verurteilt Meursault nicht primär für die Tat, sondern weil er bei der Beerdigung seiner Mutter keine Tränen vergoss und sich weigert, Heuchelei vorzutäuschen.",
+          "concept": "Französische Literatur 11: Sartre Existentialismus ('L'existence précède l'essence', 'Condamné à être libre', mauvaise foi); Camus Philosophie des Absurden (Revolte, Mythe de Sisyphe); Analyse von 'L'Étranger' (Meursault, Absurdität des Daseins, Heuchelei der Justiz).",
+          "sample_solution": "1. L'Existentialisme athée de Jean-Paul Sartre (1905–1980): - **1. « L'existence précède l'essence »**:   * Im Gegensatz zu einem Gegenstand (z. B. einem Papiermesser, dessen Konzept [Essenz] im Kopf des Handwerkers existiert, bevor es hergestellt wird) existiert der Mensch zuerst. Er tritt in die Welt ein und **definiert sein Wesen erst nachträglich durch seine freien Handlungen und Entscheidungen**. - **2. « L'homme est condamné à être libre »**:   * Da es keinen Gott gibt, der den Menschen Richtlinien vorgibt, ist der Mensch absolut frei – und trägt die erdrückende **Verantwortung (angoisse)** für sich und die Menschheit. - **3. La mauvaise foi (Die Unaufrichtigkeit)**:   * Die feige Ausrede, man habe aus Zwang, Tradition oder Pflicht gehandelt (z. B. der Kellner, der nur seine 'Rolle spielt'), um sich vor der eigenen Freiheit zu drücken. - **4. L'engagement**:   * Freiheit bedeutet die Pflicht zur aktiven Einmischung in politische und soziale Kämpfe. 2. La Philosophie de l'Absurde d'Albert Camus (1913–1960): - **Définition de l'Absurde**:   * Das Absurde ist keine Eigenschaft der Welt an sich, sondern entsteht aus der **Spannung zwischen dem menschlichen Sinnbedürfnis und dem irrationalen Schweigen der Welt**. - **Le Mythe de Sisyphe (1942)**:   * Sisyphos rollt einen Felsblock ewig auf einen Berggipfel, von wo er immer wieder herabrollt.   * Camus verneint den Selbstmord: Wahre Größe liegt darin, die Absurdität klar zu erkennen und trotzdem mit stolzer **Revolte** weiterzuleben:     $$\\mathbf{« \\text{Il faut imaginer Sisyphe heureux.} »}$$ 3. Analyse du roman « L'Étranger » (Albert Camus, 1942): - **La structure et le style**:   * Geschrieben in der 1. Person im *Passé composé* in einer nüchternen, lakonischen, parataktischen Sprache (**l'écriture blanche**), die Meursaults distanzierte Wahrnehmung spiegelt. - **Le caractère de Meursault**:   * Meursault lebt rein im gegenwärtigen Sinneseindruck (Sonne, Meer, Essen, Erotik). Er ist unfähig zur Heuchelei und lehnt gesellschaftliche Gefühlsklischees radikal ab (*« J'ai dit que cela m'était égal »*). - **Le meurtre et le procès**:   * Der Mord am Strand geschieht nicht aus Bosheit, sondern in einer Trance aus unerträglicher Hitze und Lichtreflexen (*« C'est à cause du soleil »*).   * Im Gerichtsprozess wird Meursault zur Guillotine verurteilt – nicht wegen des Mordes, sondern weil er ein **'Fremder' in der menschlichen Gesellschaft** ist, der die Spielregeln der Heuchelei verweigert (er weint nicht am Grab der Mutter und bereut vor dem Priester nichts). Am Vorabend seiner Hinrichtung versöhnt er sich mit der *« zärtlichen Gleichgültigkeit der Welt »*."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBF0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBF0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-theatre-absurde",
+      "slug": "theatre-de-labsurde-ionesco-rhinoceros-beckett-godot",
+      "title": "Le Théâtre de l'absurde: Eugène Ionesco (Rhinocéros) und Samuel Beckett (En attendant Godot)",
+      "domain": "schule/franzoesisch/theater",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBF0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das absurde Theater dramatisiert die existentialistische Philosophie des Absurden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Theatre of the Absurd",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Théâtre – Le Théâtre de l'absurde",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBF0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wofür steht die Verwandlung der Bürger in gewalttätige Nashörner in Eugène Ionescos absurdem Drama 'Rhinocéros' (1959) als zeitlose politische Metapher?",
+          "concept": "Für den Konformismus, die seelische Ansteckung und die Verführungskraft totalitärer Massenideologien (Faschismus, Nationalsozialismus, Totalitarismus)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Für die Ansteckung durch totalitäre Ideologien und Konformismus",
+              "Für eine reale biologische Tiermutation"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBF0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Ästhetik und Intention des 'Théâtre de l'absurde' anhand von Beckett und Ionesco: 1. **Merkmale des Absurden Theaters (1950er-Jahre)**:   * Radikaler Bruch mit dem traditionellen dramatischen Theater (keine lineare Handlung, keine psychologische Charakterentwicklung, kein erkennbarer Raum/Zeit-Bezug).   * **Sprachkrise**: Sprache verliert ihre Kommunikationsfunktion und wird zu entleerten Phrasen, Klischees und Sprachspielereien degradiert (*La Cantatrice chauve*), 2. **Samuel Beckett – *En attendant Godot* (1952)**:   * **Handlung**: Zwei Landstreicher (Wladimir und Estragon) warten an einer einsamen Landstraße neben einem kahlen Baum auf eine mysteriöse Gestalt namens 'Godot', die niemals erscheint.   * **Struktur**: Zirkuläre Form (2. Akt wiederholt den 1. Akt mit minimalen Variationen).   * **Deutung**: Existenzielle Metapher für das menschliche Dasein: Warten auf Erlösung oder Sinn in einer sinnentleerten Welt; Zeitvertreib durch alberne Spiele (*« Rien à faire »*), 3. **Eugène Ionesco – *Rhinocéros* (1959)**:   * **Inhalt**: In einer Kleinstadt verwandeln sich die Bewohner einer nach dem anderen in graue, trampelnde Nashörner (*la rhinocérite*). Sogar die Gebildeten finden rationale Rechtfertigungen für die Verwandlung.   * **Figur des Bérenger**: Der unvollkommene, zweifelnde Antiheld widersteht als Einziger der Massenhysterie und verteidigt seine menschliche Würde (*« Je ne capitule pas! »*).",
+          "concept": "Théâtre de l'absurde: Beckett 'En attendant Godot' (Sinnentleerung, Warten auf Godot, zirkuläre Struktur); Ionesco 'Rhinocéros' (Rhinocérite als Metapher für Totalitarismus/Konformismus, Bérenger als Humanist).",
+          "sample_solution": "1. Die Ästhetik des Absurden Theaters: - **Historischer Hintergrund**: Nach dem Grauen des Zweiten Weltkriegs und des Holocausts erschien den Pariser Dramatikern (Samuel Beckett, Eugène Ionesco, Arthur Adamov) das traditionelle bürgerliche Theater als unglaubwürdig. - **Dramaturgische Revolution**:   * **Auflösung der Handlung**: Nichts geschieht, niemand kommt, niemand geht (*Anti-Pièce*).   * **Zerfall der Sprache**: Sprache dient nicht mehr dem Dialog, sondern entlarvt sich als inhaltslose Floskelparade, Missverständnis und automatisierter Unsinn.   * **Clowneske Figuren**: Antihelden, Landstreicher und Marionetten statt erhabener tragischer Helden. 2. Samuel Beckett: *En attendant Godot* (1952): - **Konstellation**:   * **Wladimir (Didi)**: Der eher geistige, denkende Landstreicher.   * **Estragon (Gogo)**: Der körperliche, leidende Landstreicher (schmerzende Stiefel).   * **Pozzo und Lucky**: Herr und Sklave an einem Strick – brutale Parodie menschlicher Machtverhältnisse. - **Die existenzielle Tragikomödie des Wartens**:   * Godot (oft als Chiffre für Gott, Erlösung, Sinn oder Utopie interpretiert) lässt jeden Abend durch einen Botenjungen ausrichten, dass er heute nicht komme, aber gewiss morgen.   * Die beiden Protagonisten können weder gehen noch handeln; sie füllen die leere Lebenszeit mit belanglosen Wortgefechten:     $$\\mathbf{« \\text{Estragon: Allons-nous-en. / Wladimir: On ne peut pas. / Estragon: Pourquoi? / Wladimir: On attend Godot.} »}$$ 3. Eugène Ionesco: *Rhinocéros* (1959): - **Die Parabel der *Rhinocérite***:   * Die epidemische Metamorphose der Einwohner einer französischen Provinzstadt in aggressive Nashörner symbolisiert die **Verführungskraft und Ansteckung durch totalitäre Ideologien** (Faschismus, Nationalsozialismus, Stalinismus).   * Die Bürger passen sich freiwillig dem Herdentrieb an, um nicht aus der Masse hervorzustechen. Sogar Intellektuelle (wie der Logiker oder Dudard) liefern spitzfindige philosophische Begründungen, warum das 'Nashorntum' natürlich und fortschrittlich sei. - **Bérengers heroischer Humanismus**:   * Bérenger, ein einfacher, trinkfreudiger Büroangestellter mit vielen Schwächen, erkennt das Unmenschliche der Massenbewegung.   * Als allerletzter Mensch auf Erden verweigert er die Anpassung und setzt ein unsterbliches Zeichen für individuelle Würde und geistigen Widerstand:     $$\\mathbf{« \\text{Je suis le dernier homme, je le resterai jusqu'au bout! Je ne capitule pas!} »}$$"
+        }
+      ]
+    }
+  ]
+}

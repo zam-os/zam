@@ -52,7 +52,9 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     );
     expect(preconds.length).toBeGreaterThanOrEqual(1);
 
-    const atom001 = preconds.find((p) => p.atomId === "01K3X9A7R4B8C1D2E3F4G5A001");
+    const atom001 = preconds.find(
+      (p) => p.atomId === "01K3X9A7R4B8C1D2E3F4G5A001",
+    );
     expect(atom001).toBeDefined();
     expect(atom001?.title).toBe("Lichtstrahl und Einfallslot");
     expect(atom001?.assessmentState).toBe("unassessed");
@@ -114,8 +116,7 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
     // A deferral, not an opt-out: the claim is checked on a real date.
     expect(card.buried_until).toBe(result.buriedUntil);
     expect(card.buried_reason).toBe(PRECONDITION_BURIED_REASON);
-    const waitDays =
-      (Date.parse(card.buried_until) - Date.now()) / 86_400_000;
+    const waitDays = (Date.parse(card.buried_until) - Date.now()) / 86_400_000;
     expect(waitDays).toBeGreaterThan(PRECONDITION_HORIZON_DAYS - 1);
     expect(waitDays).toBeLessThan(PRECONDITION_HORIZON_DAYS + 1);
     // Invariant: FSRS parameters are untouched!
@@ -137,10 +138,15 @@ describe("Precondition Self-Assessment (Phase 3)", () => {
            JOIN tokens t ON t.id = c.token_id
           WHERE c.user_id = ? AND t.atom_id = ? AND c.detached_at IS NULL`,
       )
-      .all(user, atomId)) as Array<{ id: string; buried_reason: string | null }>;
+      .all(user, atomId)) as Array<{
+      id: string;
+      buried_reason: string | null;
+    }>;
     expect(atomCards.length).toBe(2);
     expect(
-      atomCards.every((card) => card.buried_reason === PRECONDITION_BURIED_REASON),
+      atomCards.every(
+        (card) => card.buried_reason === PRECONDITION_BURIED_REASON,
+      ),
     ).toBe(true);
 
     const queue = await buildReviewQueue(db, { userId: user });

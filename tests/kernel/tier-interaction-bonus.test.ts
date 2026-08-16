@@ -89,7 +89,9 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
       .get(token001.id, user)) as { id: string };
 
     await db
-      .prepare("UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?")
+      .prepare(
+        "UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?",
+      )
       .run(card001.id);
 
     held = await heldAtomIds(db, user);
@@ -118,7 +120,9 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
       .get(token002.id, user)) as { id: string };
 
     await db
-      .prepare("UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?")
+      .prepare(
+        "UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?",
+      )
       .run(card002.id);
 
     // Now Atom 006 (Sammellinse) and Atom 008 (Dispersion) also become offerable!
@@ -165,9 +169,9 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
         "01K3X9A7R4B8C1D2E3F4G5A003",
       ],
     });
-    expect(afterAcceptance.some((candidate) => candidate.atomId === atom005Id)).toBe(
-      false,
-    );
+    expect(
+      afterAcceptance.some((candidate) => candidate.atomId === atom005Id),
+    ).toBe(false);
   });
 
   it("refuses a root atom that has no foundation to justify a bonus offer", async () => {
@@ -216,7 +220,9 @@ describe("Tier Interaction & Bonus Offer Surface (Phase 5)", () => {
       .get(token001.id, user)) as { id: string };
 
     await db
-      .prepare("UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?")
+      .prepare(
+        "UPDATE cards SET reps = 1, state = 'review', stability = 5 WHERE id = ?",
+      )
       .run(card001.id);
 
     // Query bonus candidates via bridge handler

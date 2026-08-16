@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-geographie-stadtentwicklung-charta-von-athen-suburbanisierung-nachhaltige-stadt",
+  "version": "2026.08.1",
+  "title": "Geographie 12: Stadtgeographie – Stadtentwicklungsmodelle, Charta von Athen, Suburbanisierung und Nachhaltige Stadtentwicklung (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geographie 12 (Oberstufe Q12): Stadtstrukturen und Stadtmodelle (Klassische nordamerikanische Stadtstrukturmodelle: Ringmodell von Burgess, Sektorenmodell von Hoyt, Mehr-Kerne-Modell von Harris und Ullman, Lateinamerikanische und Orientalische Stadtstruktur), Leitbilder des Städtebaus (Historische Entwicklung: Industriestadt des 19. Jahrhunderts, Gartenstadtmodell von Ebenezer Howard, Die Charta von Athen 1933 mit radikaler Funktionstrennung von Wohnen, Arbeiten, Erholen und Verkehr; Autogerechte Stadt der Nachkriegszeit), Stadtentwicklungsphasen (Urbanisierung, Suburbanisierung von Bevölkerung und Gewerbe, Desurbanisierung, Reurbanisierung), Räumliche und soziale Segregation (Gentrifizierung in Altbauvierteln, Gated Communities, Marginalisierung) sowie Moderne Leitbilder (Die 'Kompakte Stadt der kurzen Wege', Nutzungsmischung, Resilienz gegen Starkregen und Hitzeinseln / Schwammstadt-Konzept [Sponge City], Smart Cities und Neue Leipzig-Charta).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/geographie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geographie 12, Lernbereich Stadtgeographie und nachhaltige Siedlungsentwicklung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCG0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCG0000000000000000A01",
+      "namespace": "gymnasium-geographie-stadtmodelle",
+      "slug": "stadtstrukturmodelle-charta-von-athen-funktionstrennung",
+      "title": "Stadtstrukturen: Nordamerikanische Stadtmodelle und Städtebau-Leitbilder (Charta von Athen)",
+      "domain": "schule/geographie/stadtgeographie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Urban structure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "geographie",
+          "topic_code": "lb1",
+          "topic_title": "Stadtmodelle und historische Leitbilder",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCG0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches städtebauliche Kernprinzip forderte die 'Charta von Athen' (1933 unter Führung von Le Corbusier), das den Wiederaufbau europäischer Städte nach 1945 maßgeblich prägte?",
+          "concept": "Die strikte räumliche Funktionstrennung der vier Daseinsgrundfunktionen Wohnen, Arbeiten, Erholen und Verkehr (autogerechte Stadt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Strikte Funktionstrennung von Wohnen, Arbeiten, Erholen und Verkehr",
+              "Historische kleinteilige Nutzungsmischung in Altstädten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCG0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere klassische Stadtstrukturmodelle und historische Städtebau-Leitbilder: 1. **Die klassischen nordamerikanischen Stadtmodelle der Chicagoer Schule**:   * **1. Ringmodell (Burgess, 1925)**: Konzentrische Zonen um das *Central Business District* (CBD) $\\rightarrow$ Übergangszone (Slums/Ghettos) $\\rightarrow$ Arbeiterwohnzone $\\rightarrow$ Mittelschicht $\\rightarrow$ Pendlerzone (*Commuter Zone*).   * **2. Sektorenmodell (Hoyt, 1939)**: Ausrichtung entlang radialer Verkehrswege (Industrie und hochwertige Wohnviertel wachsen sektoral nach außen).   * **3. Mehr-Kerne-Modell (Harris & Ullman, 1945)**: Polyzentrische Stadtstruktur durch Bildung von Subzentren (*Edge Cities*, Gewerbeparks, Einkaufszentren), 2. **Wichtige historische Leitbilder des Städtebaus**:   * **Gartenstadtmodell (Ebenezer Howard, 1898)**: Entlastung der übervölkerten Industriestadt durch kreisförmig angelegte, von Grüngürteln umgebene Kleinstädte mit eigener Wirtschaft und sozialer Durchmischung.   * **Die 'Charta von Athen' (1933) & Die autogerechte Stadt**:     - Radikale Entmischung: Industrie, Gewerbe, Wohnsiedlungen und Freizeitanlagen werden räumlich voneinander isoliert.     - Primat des Automobils $\\implies$ Bau breiter Schneisen, Hochstraßen und Großwohnsiedlungen (*Schlafstädte*).   * **Kritik & Fehlentwicklung**: Verödung der Innenstädte nach Geschäftsschluss, explodierendes Pendler- und Verkehrsaufkommen, Zersiedelung der Landschaft (*Urban Sprawl*).",
+          "concept": "Stadtgeographie 12: Chicagoer Schule (Burgess Ringmodell, Hoyt Sektorenmodell, Harris/Ullman Mehr-Kerne-Modell); Städtebauleitbilder: Gartenstadtmodell Howard vs. Charta von Athen (Funktionstrennung, autogerechte Stadt, Schlafstädte, Kritik).",
+          "sample_solution": "1. Die drei klassischen Stadtstrukturmodelle der Chicagoer Schule: - **1. Das Ringmodell (Ernest Burgess, 1925)**:   * Entstand aus der soziologischen Analyse Chicagos. Die Stadt wächst konzentrisch von innen nach außen:     1. *Zone I (Loop / CBD)*: Kommerzielles Herz, Finanzen, Einzelhandel, höchste Bodenpreise.     2. *Zone II (Übergangszone)*: Frühere Wohnbauten weichen Industrie und Gewerbe; Verfall, Zuzug von Migranten, Slums.     3. *Zone III (Arbeiterviertel)*: Zweite Generation von Zuwanderern mit festem Einkommen.     4. *Zone IV (Bürgerliche Wohnzone)*: Gehobene Einfamilienhäuser der Mittelschicht.     5. *Zone V (Pendlerzone)*: Wohlhabende Villenvororte im Umland. - **2. Das Sektorenmodell (Homer Hoyt, 1939)**:   * Widerlegt das rein konzentrische Wachsen: Stadtwachstum orientiert sich an **radialen Verkehrsachsen (Eisenbahn, Ausfallstraßen)**.   * Schwerindustrie und Güterbahnhöfe ziehen sich entlang von Flüssen/Gleisen nach außen; das Villenviertel wächst als keilförmiger Sektor auf der landschaftlich reizvollen, windabgewandten Seite der Stadt. - **3. Das Mehr-Kerne-Modell (Chauncy Harris & Edward Ullman, 1945)**:   * Großstädte besitzen kein einzelnes dominantes Zentrum mehr, sondern wachsen polyzentrisch um **mehrere funktionale Spezialkerne** (Industrieparks, Universitätsgelände, Großflughäfen, *Edge Cities* an Autobahnkreuzen). 2. Historische Städtebauleitbilder im 20. Jahrhundert: - **1. Das Gartenstadtmodell (Ebenezer Howard, 1898)**:   * Synthese aus Stadt (hohe Löhne, Kultur) und Land (gesunde Luft, Natur). Eine autarke Stadt mit max. $30.000$ Einwohnern, konzentrisch angelegt mit zentralem Park und breitem landwirtschaftlichem Grüngürtel. - **2. Die Moderne und die 'Charta von Athen' (CIAM / Le Corbusier, 1933)**:   * Antwort auf die unhygienischen, düsteren Mietskasernen der Industrialisierung.   * **Leitmotiv**: *« Licht, Luft, Sonne »* durch die radikale **Funktionstrennung** der vier Daseinsgrundfunktionen:     1. *Wohnen* (in aufgelockerten Hochhausscheiben im Grünen).     2. *Arbeiten* (in separaten Gewerbe- und Industriegebieten).     3. *Erholen* (in großzügigen Stadtparks).     4. *Verkehr* (vierspurige Schneisen für die **autogerechte Stadt**). - **Die katastrophalen Spätfolgen**:   * Entstehung monotoner Trabantenstädte (**Schlafstädte** wie München-Neuperlach oder Märkisches Viertel Berlin) ohne soziale Wärme und Urbanität.   * Zwang zur massenhaften Automobilnutzung $\\implies$ Verkehrskollaps, Lärm, Feinstaub und Zerstörung historischer Stadtkerne."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCG0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCG0000000000000000A02",
+      "namespace": "gymnasium-geographie-nachhaltige-stadt",
+      "slug": "stadtentwicklungsphasen-gentrifizierung-nachhaltige-stadt-schwammstadt",
+      "title": "Stadtprozesse & Zukunft: Phasenzyklus, Gentrifizierung und das Schwammstadt-Konzept",
+      "domain": "schule/geographie/nachhaltigkeit",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCG0000000000000000A01",
+          "type": "hard",
+          "rationale": "Nachhaltige Stadtentwicklung ist die planerische Antwort auf historische Stadtmodelle und Suburbanisierung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1074",
+          "target_label": "Sustainable city",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "geographie",
+          "topic_code": "lb2",
+          "topic_title": "Stadtentwicklungsphasen, Gentrifizierung und Schwammstadt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCG0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 4 Phasen durchläuft der klassische Stadtentwicklungszyklus nach van den Berg in europäischen und nordamerikanischen Ballungsräumen?",
+          "concept": "1. Urbanisierung -> 2. Suburbanisierung -> 3. Desurbanisierung -> 4. Reurbanisierung",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1. Urbanisierung -> 2. Suburbanisierung -> 3. Desurbanisierung -> 4. Reurbanisierung",
+              "1. Zersiedelung -> 2. Kahlschlag -> 3. Stillstand -> 4. Verfall"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCG0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Gentrifizierungsprozess und moderne Leitbilder der nachhaltigen Stadtentwicklung: 1. **Der Phasenverlauf der Gentrifizierung (nach Dangschat / Friedrichs)**:   * *Invasionsphase I der Pioniere*: Studenten, Künstler, alternative Milieus ziehen in sanierungsbedürftige Altbauviertel (niedrige Mieten, Freiräume).   * *Invasionsphase II der Pioniere*: Etablierung von Kneipen, Galerien, Szeneinfrastruktur $\\implies$ Viertel wird attraktiv.   * *Invasionsphase I der Gentrifier*: Gutverdienende Akademiker und Yuppies ziehen zu; erste Luxussanierungen und Eigentumsumwandlungen.   * *Invasionsphase II der Gentrifier*: Investoren, massive Mietsteigerungen $\\implies$ **Verdrängung** der alteingesessenen Bevölkerung und Pioniere in Randlagen, 2. **Das Leitbild der 'Kompakten Stadt / Stadt der kurzen Wege' (Neue Leipzig-Charta)**:   * Hohe Dichte, **Nutzungsmischung** (Wohnen, Arbeiten, Einkaufen, Kultur auf engstem Raum), Priorisierung von ÖPNV, Fahrrad- und Fußgängerverkehr (*15-Minuten-Stadt*), 3. **Die klimaresiliente Stadt (Das Schwammstadt-Konzept / Sponge City)**:   * Ziel: Abkehr von schneller Kanalabführung von Regenwasser zur Minderung von **urbanen Hitzeinseln (Urban Heat Islands)** und **Sturzfluten bei Starkregen**.   * Maßnahmen: Dach- und Fassadenbegrünung, Entsiegelung von Plätzen, Rückhaltebecken, Versickerungsmulden und urbane Feuchtgebiete.",
+          "concept": "Stadtentwicklung 12: Gentrifizierung (Phasen: Pioniere -> Gentrifier -> Verdrängung); 15-Minuten-Stadt / Kompakte Stadt; Schwammstadt-Konzept (Entsiegelung, Regenwasserretention, Minderung von Hitzeinseln).",
+          "sample_solution": "1. Der Stadtentwicklungszyklus nach Leo van den Berg: - **1. Urbanisierung**: Zuzug aus dem ländlichen Raum in die Kernstadt (Industrialisierung). - **2. Suburbanisierung**: Abwanderung von Familien und Gewerbe aus der überlasteten Kernstadt ins Umland (*Speckgürtel*). - **3. Desurbanisierung**: Bevölkerungsverlust des gesamten Ballungsraums (Deindustrialisierung). - **4. Reurbanisierung**: Renaissance der Kernstädte durch Sanierung, Kulturangebote und junge Hochqualifizierte. 2. Das Phasenmodell der Gentrifizierung: ```mermaid graph LR   A[1. Altbauviertel: Niedrige Mieten, sozial schwach] --> B[2. Zuzug Pioniere: Künstler, Studenten, Szene]   B --> C[3. Zuzug Gentrifier: Gutverdiener, Sanierungen]   C --> D[4. Dominanz Gentrifier: Luxus, Verdrängung der Urbevölkerung] ``` - **Soziale Folgen**: Segregation, Verlust von bezahlbarem Wohnraum, Zerstörung historischer Kiezstrukturen (Beispiele: Berlin-Prenzlauer Berg, München-Glockenbachviertel). 3. Moderne Leitbilder: Die zukunftsfähige, nachhaltige Stadt: - **1. Das Konzept der '15-Minuten-Stadt' (Stadt der kurzen Wege)**:   * Alle essenziellen Daseinsgrundfunktionen (Wohnung, Arbeitsplatz, Lebensmittelversorgung, Arzt, Schule, Freizeit) müssen innerhalb von 15 Minuten zu Fuß oder mit dem Fahrrad erreichbar sein $\\implies$ radikale Reduktion des motorisierten Individualverkehrs (MIV). - **2. Das Schwammstadt-Konzept (*Sponge City*) gegen Klimawandelfolgen**:   * *Das Problem*: Versiegelte Asphalt- und Betonflächen verhindern die Versickerung $\\implies$ Kanäle laufen bei Starkregen über (*Sturzfluten*); tagsüber heizen sich Flächen extrem auf (**Urbane Hitzeinseln / bis zu $8-10^\\circ\\text{C}$ wärmer als das Umland**).   * *Das Prinzip der Schwammstadt*: Die Stadt saugt Regenwasser wie ein Schwamm auf, speichert es dezentral und gibt es durch Verdunstung zur natürlichen Kühlung wieder an die Umgebung ab.   * *Konkrete bauliche Maßnahmen*:     - **Flächendeckende Entsiegelung**: Einsatz von Pflasterrasen und wasserdurchlässigen Belägen.     - **Dach- und Fassadenbegrünung**: Wirkt als natürlicher Dämmstoff und Verdunstungskühler.     - **Retentionsmulden und Versickerungsbecken**: Zwischenspeicherung von Niederschlägen in Parks und tiefergelegten Sportplätzen bei Extremwetterereignissen."
+        }
+      ]
+    }
+  ]
+}

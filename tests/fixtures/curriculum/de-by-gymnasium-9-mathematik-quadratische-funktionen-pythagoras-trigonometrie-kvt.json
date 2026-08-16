@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-mathematik-quadratische-funktionen-pythagoras-trigonometrie",
+  "version": "2026.08.1",
+  "title": "Mathematik 9: Quadratische Funktionen, Gleichungen, Pythagoras und Trigonometrie (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 9: Quadratische Funktionen (Scheitelpunktform y = a(x-d)^2 + e, Normalform, Parabeltransformationen), Quadratische Gleichungen (Mitternachtsformel, Diskriminante D, Satz von Vieta), Satzgruppe des Pythagoras (Katheten- und Höhensatz) sowie Trigonometrie am rechtwinkligen Dreieck (sin, cos, tan und trigonometrischer Pythagoras).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 9, Lernbereiche Quadratische Funktionen und Gleichungen, Geometrie und Trigonometrie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9A0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9A0000000000000000A01",
+      "namespace": "gymnasium-mathematik-funktionen",
+      "slug": "quadratische-funktionen-scheitelpunkt-mitternachtsformel-diskriminante",
+      "title": "Quadratische Funktionen und Gleichungen: Scheitelpunktform, Lösungsformel und Diskriminante",
+      "domain": "schule/mathematik/funktionen",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q165939",
+          "target_label": "Quadratic function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Quadratische Funktionen und Gleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9A0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele reelle Lösungen besitzt eine quadratische Gleichung $ax^2 + bx + c = 0$, wenn ihre Diskriminante $D = b^2 - 4ac < 0$ ist?",
+          "concept": "Genau 0 reelle Lösungen (die Lösungsmenge ist leer: L = {})",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "0 reelle Lösungen (L = {})",
+              "2 reelle Lösungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9A0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere quadratische Funktionen und Gleichungen: 1. **Darstellungsformen der Parabel**:   * **Scheitelpunktform**: $f(x) = a(x - d)^2 + e \\implies$ Scheitelpunkt $S(d \\mid e)$.   * **Allgemeine Form (Normalform)**: $f(x) = ax^2 + bx + c$ ($c = y$-Achsenabschnitt).   * **Linearfaktorform (faktorisierte Form)**: $f(x) = a(x - x_1)(x - x_2)$ bei Nullstellen $x_1, x_2$, 2. **Bedeutung des Formfaktors $a$**:   * $a > 0$: nach oben geöffnet (Tiefpunkt); $a < 0$: nach unten geöffnet (Hochpunkt).   * $|a| > 1$: gestreckt / schmaler als Normalparabel; $|a| < 1$: gestaucht / breiter, 3. **Die Mitternachtsformel (Große Lösungsformel)**:   $$x_{1,2} = \\frac{-b \\pm \\sqrt{b^2 - 4ac}}{2a}$$   * **Diskriminante $D = b^2 - 4ac$**: $D > 0 \\implies 2$ Nullstellen; $D = 0 \\implies 1$ doppelte Nullstelle (Scheitelpunkt auf $x$-Achse); $D < 0 \\implies 0$ Nullstellen, 4. Bestimme Scheitelpunkt und Nullstellen der Parabel $p: f(x) = 2x^2 - 8x + 6$.",
+          "concept": "Quadratische Funktionen: Scheitelpunktform f(x) = a(x-d)^2 + e -> S(d|e); Formfaktor a; Mitternachtsformel x_1,2 = (-b +- sqrt(D))/(2a); Diskriminante D = b^2 - 4ac (3 Fälle); Umrechnung: 2(x^2 - 4x + 3) = 2((x-2)^2 - 1) = 2(x-2)^2 - 2 -> S(2|-2); Nullstellen x1 = 1, x2 = 3.",
+          "sample_solution": "1. Darstellungsformen quadratischer Funktionen: - **1. Scheitelpunktform**:   $$\\mathbf{f(x) = a(x - d)^2 + e \\implies \\text{Scheitel } S(d \\mid e)}$$   * $d$: Verschiebung in $x$-Richtung (nach rechts für $d > 0$, nach links für $d < 0$).   * $e$: Verschiebung in $y$-Richtung nach oben/unten. - **2. Allgemeine Form**:   $$\\mathbf{f(x) = ax^2 + bx + c}$$   * $c = f(0)$: Schnittpunkt mit der $y$-Achse $S_y(0 \\mid c)$. - **3. Faktorisierte Form (Linearfaktorzerlegung)**:   $$\\mathbf{f(x) = a(x - x_1)(x - x_2)}$$ 2. Der Formfaktor $a$: - Öffnungsrichtung: $a > 0$ nach oben, $a < 0$ nach unten. - Streckung/Stauchung: $|a| > 1$ schmaler (gestreckt), $|a| < 1$ breiter (gestaucht), $a = 1$ Normalparabel. 3. Die Mitternachtsformel und Diskriminante $D$: - Für $ax^2 + bx + c = 0$ gilt:   $$\\mathbf{x_{1,2} = \\frac{-b \\pm \\sqrt{D}}{2a}} \\quad \\text{mit} \\quad \\mathbf{D = b^2 - 4ac}$$   * $\\mathbf{D > 0}$: Zwei reelle Lösungen (zwei Schnittpunkte mit der $x$-Achse).   * $\\mathbf{D = 0}$: Genau eine Lösung ($x_0 = -\\frac{b}{2a}$, Parabel berührt die $x$-Achse).   * $\\mathbf{D < 0}$: Keine reelle Lösung ($L = \\emptyset$, Parabel verläuft echt ober- bzw. unterhalb der $x$-Achse). 4. Durchrechnung des Beispiels $p: f(x) = 2x^2 - 8x + 6$: - **Schritt 1: Scheitelpunkt durch quadratische Ergänzung**:   $$f(x) = 2[x^2 - 4x + 3] = 2[(x - 2)^2 - 4 + 3] = 2[(x - 2)^2 - 1] = \\mathbf{2(x - 2)^2 - 2}$$   $$\\implies \\mathbf{S(2 \\mid -2)}$$ - **Schritt 2: Nullstellen mit der Mitternachtsformel** ($a=2, b=-8, c=6$):   $$D = (-8)^2 - 4 \\cdot 2 \\cdot 6 = 64 - 48 = 16 > 0$$   $$x_{1,2} = \\frac{-(-8) \\pm \\sqrt{16}}{2 \\cdot 2} = \\frac{8 \\pm 4}{4}$$   $$\\mathbf{x_1 = \\frac{8 - 4}{4} = 1}, \\quad \\mathbf{x_2 = \\frac{8 + 4}{4} = 3}$$   * **Nullstellen**: $N_1(1 \\mid 0)$ und $N_2(3 \\mid 0)$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9A0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9A0000000000000000A02",
+      "namespace": "gymnasium-mathematik-geometrie",
+      "slug": "satzgruppe-des-pythagoras-trigonometrie-sinus-kosinus-tangens",
+      "title": "Satzgruppe des Pythagoras (Katheten-, Höhensatz) und Trigonometrie am rechtwinkligen Dreieck",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9A0000000000000000A01",
+          "type": "hard",
+          "rationale": "Trigonometrie und Pythagoras nutzen quadratische Gleichungen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Pythagorean theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Satzgruppe des Pythagoras und Trigonometrie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9A0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ist der Sinus eines spitzen Winkels $\\alpha$ in einem rechtwinkligen Dreieck definiert?",
+          "concept": "sin(alpha) = Gegenkathete / Hypotenuse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Gegenkathete / Hypotenuse",
+              "Ankathete / Hypotenuse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9A0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die Satzgruppe des Pythagoras und die Trigonometrie am rechtwinkligen Dreieck: 1. **Die Satzgruppe des Pythagoras** (rechtwinkliges Dreieck $\\triangle ABC$ mit Hypotenuse $c$, Katheten $a, b$, Höhe $h$ und Hypotenusenabschnitten $p, q$):   * **Satz des Pythagoras**: $a^2 + b^2 = c^2$.   * **Höhensatz des Euklid**: $h^2 = p \\cdot q$.   * **Kathetensatz des Euklid**: $a^2 = c \\cdot p$ und $b^2 = c \\cdot q$, 2. **Trigonometrische Verhältnisse**:   * $\\sin \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Hypotenuse}}$.   * $\\cos \\alpha = \\frac{\\text{Ankathete von } \\alpha}{\\text{Hypotenuse}}$.   * $\\tan \\alpha = \\frac{\\text{Gegenkathete von } \\alpha}{\\text{Ankathete von } \\alpha} = \\frac{\\sin \\alpha}{\\cos \\alpha}$, 3. **Trigonometrischer Pythagoras**: $\\sin^2 \\alpha + \\cos^2 \\alpha = 1$, 4. Ein rechtwinkliges Dreieck hat die Hypotenuse $c = 10\\,\\text{cm}$ und einen Winkel $\\alpha = 30^\\circ$. Berechne exakt die Katheten $a$ und $b$ sowie die Fläche $A$ (nutze $\\sin 30^\\circ = 0{,}5$ und $\\cos 30^\\circ = \\frac{\\sqrt{3}}{2}$).",
+          "concept": "Satzgruppe: Pythagoras a^2+b^2=c^2, Höhensatz h^2=p*q, Kathetensatz a^2=c*p; Trigonometrie: sin=G/H, cos=A/H, tan=G/A, sin^2+cos^2=1; Rechnung: a = 10 * sin(30°) = 5 cm; b = 10 * cos(30°) = 5*sqrt(3) cm; A = 1/2 * 5 * 5*sqrt(3) = 12,5*sqrt(3) cm^2.",
+          "sample_solution": "1. Die Satzgruppe des Pythagoras (am Dreieck mit $\\gamma = 90^\\circ$): - **1. Satz des Pythagoras**:   $$\\mathbf{a^2 + b^2 = c^2}$$   * Die Summe der Flächeninhalte der Kathetenquadrate ist gleich dem Flächeninhalt des Hypotenusenquadrats. - **2. Höhensatz des Euklid**:   $$\\mathbf{h^2 = p \\cdot q}$$   * Das Quadrat über der Höhe $h$ ist flächengleich zum Rechteck aus den beiden Hypotenusenabschnitten $p$ und $q$. - **3. Kathetensätze des Euklid**:   $$\\mathbf{a^2 = c \\cdot p} \\quad \\text{und} \\quad \\mathbf{b^2 = c \\cdot q}$$   * Jedes Kathetenquadrat ist flächengleich zum Rechteck aus der Gesamthypotenuse $c$ und dem anliegenden Hypotenusenabschnitt. 2. Trigonometrische Funktionen am rechtwinkligen Dreieck: - **Sinus**: $\\mathbf{\\sin(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Hypotenuse}} = \\frac{a}{c}}$ - **Kosinus**: $\\mathbf{\\cos(\\alpha) = \\frac{\\text{Ankathete}}{\\text{Hypotenuse}} = \\frac{b}{c}}$ - **Tangens**: $\\mathbf{\\tan(\\alpha) = \\frac{\\text{Gegenkathete}}{\\text{Ankathete}} = \\frac{a}{b} = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)}}$ - **Fundamentale Identität (Trigonometrischer Pythagoras)**:   $$\\sin^2(\\alpha) + \\cos^2(\\alpha) = \\left(\\frac{a}{c}\\right)^2 + \\left(\\frac{b}{c}\\right)^2 = \\frac{a^2 + b^2}{c^2} = \\frac{c^2}{c^2} = \\mathbf{1}$$ 3. Durchrechnung des Beispiels ($c = 10\\,\\text{cm}, \\alpha = 30^\\circ$): - **Gegenkathete $a$**:   $$a = c \\cdot \\sin(30^\\circ) = 10\\,\\text{cm} \\cdot 0{,}5 = \\mathbf{5\\,\\text{cm}}$$ - **Ankathete $b$**:   $$b = c \\cdot \\cos(30^\\circ) = 10\\,\\text{cm} \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{5\\sqrt{3}\\,\\text{cm}} \\approx 8{,}66\\,\\text{cm}$$ - **Flächeninhalt $A$**:   $$A = \\frac{1}{2} \\cdot a \\cdot b = \\frac{1}{2} \\cdot 5 \\cdot 5\\sqrt{3} = \\mathbf{12{,}5\\sqrt{3}\\,\\text{cm}^2} \\approx 21{,}65\\,\\text{cm}^2$$."
+        }
+      ]
+    }
+  ]
+}

@@ -156,7 +156,10 @@ describe("getReviewActivity", () => {
     // only include the current month, a 1-bucket day window only today.
     await logEvent("2025-07-15 12:00:00", 1_000);
     await logEvent("2025-08-10 12:00:00", 3_000);
-    await logEvent(new Date().toISOString().slice(0, 19).replace("T", " "), 500);
+    await logEvent(
+      new Date().toISOString().slice(0, 19).replace("T", " "),
+      500,
+    );
 
     const oneMonth = await getReviewActivity(db, userId, {
       period: "month",
@@ -178,9 +181,7 @@ describe("getReviewActivity", () => {
       window: 2,
     });
     expect(twoWeeks.buckets.length).toBeLessThanOrEqual(2);
-    expect(
-      twoWeeks.buckets.reduce((s, b) => s + b.reviewedCards, 0),
-    ).toBe(1);
+    expect(twoWeeks.buckets.reduce((s, b) => s + b.reviewedCards, 0)).toBe(1);
   });
 
   it("filters by a UTC date bound and scopes to the user", async () => {

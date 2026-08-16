@@ -79,7 +79,8 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
 
   it("installs and enrols cleanly into BwR 8 Erfolgskonten und Werkstoffe", async () => {
     const user = "learner-rs8-bwr";
-    const cellId = "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte";
+    const cellId =
+      "de-by:realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
@@ -91,7 +92,8 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
 
   it("installs and enrols cleanly into Deutsch 8 Begründete Stellungnahme", async () => {
     const user = "learner-rs8-deu";
-    const cellId = "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung";
+    const cellId =
+      "de-by:realschule-8-deutsch-begruendete-stellungnahme-eroerterung";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
@@ -100,7 +102,8 @@ describe("Realschule Bayern 8 Curriculum Cells (Grundlagenstufe)", () => {
 
   it("installs and enrols cleanly into Englisch 8 Conditional 3 und Reported Speech", async () => {
     const user = "learner-rs8-eng";
-    const cellId = "de-by:realschule-8-englisch-grammar-conditional-reported-speech";
+    const cellId =
+      "de-by:realschule-8-englisch-grammar-conditional-reported-speech";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);

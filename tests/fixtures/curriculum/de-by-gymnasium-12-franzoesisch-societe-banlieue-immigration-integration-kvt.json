@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-franzoesisch-societe-banlieue-immigration-integration",
+  "version": "2026.08.1",
+  "title": "Französisch 12: La France contemporaine – Les Banlieues (La Haine), L'Immigration et le Modèle républicain (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 12 (Oberstufe F1/F2 Q12): Die moderne französische Gesellschaft (La France plurielle: Geschichte der Immigration aus dem Maghreb und Subsahara-Afrika nach den Trente Glorieuses), Die Krise der Vorstädte / Les Banlieues (Großwohnsiedlungen HLM, Jugendarbeitslosigkeit, soziale Exklusion, Ghettoisierung, Sprachvarietät Verlan, Das Phänomen der émeutes / Vorstadtunruhen), Filmanalyse: *La Haine* von Mathieu Kassovitz (1995: Die drei Protagonisten Vinz [jüdisch], Saïd [arabisch], Hubert [schwarz], Leitmotiv: 'L'important, c'est pas la chute, c'est l'atterrissage', Schwarzweiß-Ästhetik, Polizeigewalt vs. Vorstadtjugendliche) sowie Das französische Integrationsmodell (Das Prinzip der Laïcité / Trennung von Staat und Religion nach dem Gesetz von 1905, Republikanischer Universalismus vs. angelsächsischer Multikulturalismus / Communautarisme).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/franzoesisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Französisch 12, Lernbereich Gesellschaft und Film – Banlieues et Intégration"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCD0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCD0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-banlieue",
+      "slug": "les-banlieues-la-haine-kassovitz-fracture-sociale",
+      "title": "Les Banlieues: Malaise social, film 'La Haine' (Kassovitz) et la jeunesse des cités",
+      "domain": "schule/franzoesisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Banlieue",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "La France contemporaine – Les Banlieues et le cinéma",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCD0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Quel est le leitmotiv philosophique central qui ouvre et conclut le film culte 'La Haine' (1995) de Mathieu Kassovitz sur la dérive des banlieues?",
+          "concept": "« C'est l'histoire d'un homme qui tombe d'un immeuble de cinquante étages... L'important, c'est pas la chute, c'est l'atterrissage. » (Metapher für eine Gesellschaft im freien Fall auf die Katastrophe zu)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "« L'important, c'est pas la chute, c'est l'atterrissage. »",
+              "« Liberté, égalité, fraternité pour tous. »"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCD0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das gesellschaftliche Phänomen der französischen 'Banlieues' und die Filmanalyse von Mathieu Kassovitz' 'La Haine' (1995): 1. **Historische Entstehung der Banlieues**:   * Nach dem Zweiten Weltkrieg (*Les Trente Glorieuses* 1945–1975): Bau riesiger Hochhaussiedlungen (**HLM = Habitation à Loyer Modéré**) am Stadtrand für Arbeiterfamilien und Einwanderer aus den ehemaligen Kolonien (Maghreb, Westafrika).   * Nach der Deindustrialisierung: Abzug der französischen Mittelschicht $\\implies$ Entstehung sozialer Brennpunkte (**cités**), hohe Jugendarbeitslosigkeit ($> 40\\%$), mangelhafte Infrastruktur, Stigmatisierung und Perspektivlosigkeit, 2. **Filmanalyse: Mathieu Kassovitz – *La Haine* (1995)**:   * **Das Trio der Protagonisten als Mikrokosmos der Vorstadt**:     - **Vinz (jüdisch)**: Hitzköpfig, aggressiv, von Rachephantasien und Travis Bickle (*Taxi Driver*) besessen, findet eine verlorene Dienstpistole der Polizei.     - **Saïd (arabisch)**: Vermittler, humorvoll, Quatschkopf, versucht Konflikte zu entschärfen.     - **Hubert (schwarz/afro-französisch)**: Boxtalent, reflektiert, besonnen, will der Kriminalität der Cité entkommen (*« La haine attire la haine »*).   * **Filmische Ästhetik**: Schwarzweiß-Fotografie (Entdramatisierung von Farben, Betonung der Trostlosigkeit), Ticken der Uhr als Zeitbombe, Pariser Zentrum vs. Vorstadt-Tristesse.   * **Das tragische Ende**: Der versehentliche Tod von Vinz durch eine Polizeiwaffe $\\implies$ Hubert richtet die Waffe auf den Polizisten $\\implies$ Schlussbild: Schuss im Off.",
+          "concept": "Banlieues & La Haine 12: HLM und soziale Exklusion; Trio Vinz (Wut), Saïd (Humor/Vermittler), Hubert (Reflexion: 'La haine attire la haine'); Schwarzweiß-Ästhetik; Leitmotiv 'L'important n'est pas la chute...'; Eskalation der Gewalt.",
+          "sample_solution": "1. La réalité socio-économique des banlieues françaises: - **Origine historique**:   * Pendant les *Trente Glorieuses* (1945–1975), la France fait appel à une main-d'œuvre immigrée pour reconstruire le pays. On bâtit des **grands ensembles (HLM - Habitations à Loyer Modéré)** en périphérie des métropoles. - **La fracture sociale (Le 'Malaise des banlieues')**:   * Avec la crise industrielle, les classes moyennes quittent ces quartiers. Les banlieues deviennent des **ghettos urbains** caractérisés par:     - Un chômage des jeunes dépassant souvent $40\\%$.     - L'échec scolaire, le trafic de drogue et le manque d'infrastructures culturelles et sportives.     - Le sentiment d'abandon de la part de l'État et des discriminations à l'embauche dues au code postal ou au nom de famille (*délit de faciès*).   * **Le langage identitaire**: Développement du **Verlan** (inversion des syllabes: *cité $\\rightarrow$ téci, femme $\\rightarrow$ meuf, arabe $\\rightarrow$ beur, fou $\\rightarrow$ ouf*) et de la culture Hip-Hop comme moyens d'expression et de résistance culturelle. 2. Analyse cinématographique de « La Haine » (Mathieu Kassovitz, 1995): - **La structure narrative (24 heures chrono)**:   * Le film suit trois jeunes amis de la cité des Muguets à Chanteloup-les-Vignes au lendemain d'une nuit d'émeutes provoquée par la bavure policière ayant plongé leur ami Abdel dans le coma. - **La triade représentative de la France multiculturelle (*Black-Blanc-Beur*)**:   * **1. Vinz (Blanc / Juif)**: Rempli de rage destructrice, il veut venger Abdel en tuant un policier pour se faire respecter (*« Si Abdel y passe, je saigne un keuf »*).   * **2. Saïd (Beur / Arabe)**: Le médiateur comique et bavard qui maintient la cohésion du groupe.   * **3. Hubert (Black / Boxeur)**: La voix de la sagesse et de la maturité. Il a conscience du cercle vicieux de la violence:     $$\\mathbf{« \\text{La haine attire la haine.} »}$$ - **Les choix esthétiques et thématiques**:   * **Le Noir et Blanc**: Élimine le spectaculaire des couleurs pour souligner la monotonie du béton et l'atmosphère oppressante.   * **Le fossé spatial**: Lors de leur virée nocturne à Paris intra-muros, les trois jeunes sont traités comme des intrus indésirables par les vigiles et les policiers en civil (scène de torture policière). - **La métaphore du vol en chute libre**:   * Le monologue final résume l'impasse d'une République incapable d'intégrer sa jeunesse marginalisée:     $$\\mathbf{« \\text{C'est l'histoire d'une société qui tombe et qui au fur et à mesure de sa chute se répète sans cesse pour se rassurer: jusqu'ici tout va bien, jusqu'ici tout va bien, jusqu'ici tout va bien... Mais l'important, c'est pas la chute, c'est l'atterrissage.} »}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GCD0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCD0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-laicite",
+      "slug": "modele-republicain-laicite-universalisme-communautarisme",
+      "title": "Le Modèle républicain: Laïcité (Loi de 1905), Universalisme vs. Communautarisme",
+      "domain": "schule/franzoesisch/politique",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCD0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das republikanische Modell definiert den rechtlichen Rahmen der Integration."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Laïcité",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Laïcité et intégration citoyenne",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCD0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Quel principe juridique fondamental institué par la loi de 1905 garantit en France la stricte neutralité religieuse de l'État et de l'école publique tout en protégeant la liberté de conscience?",
+          "concept": "Le principe de la Laïcité (Séparation stricte des Églises et de l'État)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "La Laïcité (Séparation des Églises et de l'État de 1905)",
+              "Le concordat universel"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCD0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das französische Integrationsmodell im Spannungsfeld von Laïcité und Multikulturalismus: 1. **Das Fundament der Laïcité (Gesetz vom 9. Dezember 1905)**:   * **Prinzipien**: Gewissensfreiheit (*Liberté de conscience*), Gleichbehandlung aller Religionen, strikte weltanschauliche Neutralität des Staates, der Justiz und des öffentlichen Bildungswesens (*L'école républicaine*).   * **Gesetz von 2004**: Verbot auffälliger religiöser Symbole (Kopftuch, großes Kreuz, Kippa) an öffentlichen Schulen, 2. **Republikanischer Universalismus vs. Angelsächsischer Multikulturalismus**:   * **Französisches Assimilations-/Integrationsmodell**: Der Staat erkennt nur den einzelnen **Staatsbürger (*citoyen*)** an, keine ethnischen, rassischen oder religiösen Gruppen (keine offiziellen ethnischen Statistiken erlaubt).   * **Kritik am 'Communautarisme'**: Angst vor einer Zersplitterung der Nation in abgeschottete Parallelgesellschaften, 3. **Herausforderungen im 21. Jahrhundert**:   * Balance zwischen dem Schutz der Laïzität und der Vermeidung von Islamophobie / Diskriminierung von Minderheiten.",
+          "concept": "Laïcité 12: Gesetz von 1905; Schulgesetz 2004; Republikanischer Universalismus (Bürger im Zentrum, keine ethnischen Statistiken) vs. angelsächsischer Multikulturalismus / Communautarisme; Herausforderungen in einer pluralen Gesellschaft.",
+          "sample_solution": "1. Le principe constitutionnel de la Laïcité (Loi du 9 décembre 1905): - **Définition**: La laïcité est le pilier républicain français assurant la séparation institutionnelle entre la sphère publique politique et les convictions religieuses privées. - **Les trois principes directeurs**:   1. **La liberté de conscience**: L'État garantit à chaque citoyen le droit de croire en une religion ou de n'en avoir aucune (athéisme, agnosticisme).   2. **La neutralité absolue de l'État**: La République ne reconnaît, ne salarie ni ne subventionne aucun culte. Les agents de la fonction publique (enseignants, magistrats, policiers) ont une obligation de stricte neutralité.   3. **L'égalité de tous les citoyens** devant la loi, sans distinction de religion ou d'origine. - **La loi de 2004 sur les signes religieux à l'école**:   * Interdit le port de signes ou tenues par lesquels les élèves manifestent ostensiblement une appartenance religieuse dans les écoles, collèges et lycées publics (voile islamique, kippa, grandes croix chrétiennes, turbans sikhs) pour préserver l'école comme espace neutre d'émancipation rationnelle. 2. L'Universalisme républicain vs. Le Communautarisme anglo-saxon: | Critère | Modèle républicain universaliste (France) | Modèle multiculturel / communautaire (USA / UK) | | :--- | :--- | :--- | | **Conception du citoyen** | Le citoyen est un individu abstrait et égal en droit, directement lié à la République | L'individu est reconnu à travers son appartenance à une communauté ethnique ou religieuse | | **Rôle de l'État** | Intégration / assimilation dans une culture civique commune | Reconnaissance officielle de la coexistence des minorités (*Mosaic*) | | **Statistiques ethniques** | **Strictement interdites** par la Constitution (*« La République est une et indivisible »*) | Encouragées pour la discrimination positive (*Affirmative Action*) | | **Vision des identités** | Les particularismes religieux et culturels relèvent strictement de la **sphère privée** | Les particularismes s'affichent fièrement dans l'espace public | 3. Les débats contemporains: - Les partisans du modèle républicain défendent la laïcité comme rempart contre le **fondamentalisme religieux et le repli identitaire (le séparatisme)**. - Les critiques pointent le risque que la laïcité ne soit instrumentalisée pour exclure ou stigmatiser certaines minorités musulmanes et masquer les échecs réels de l'ascenseur social et de la lutte contre les discriminations économiques."
+        }
+      ]
+    }
+  ]
+}

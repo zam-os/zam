@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-geschichte-weimarer-republik-nationalsozialismus-shoah-totalitarismus",
+  "version": "2026.08.1",
+  "title": "Geschichte 12: Die Weimarer Republik (1918–1933), Der Nationalsozialismus und die Shoah (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 12 (Oberstufe Q12): Die Weimarer Republik (Novemberrevolution 1918: Scheidemann vs. Liebknecht, Ebert-Groener-Pakt, Weimarer Reichsverfassung mit starkem Reichspräsidenten als 'Ersatzkaiser' nach Art. 48 Notverordnungen und Art. 25 Auflösungsrecht; Belastungsfaktoren: Versailler Vertrag 'Diktatfrieden', Dolchstoßlegende, Politischer Mord, Hyperinflation und Krisenjahr 1923; Die 'Goldenen Zwanziger': Stresemanns Außenpolitik, Verträge von Locarno, Aufnahme in den Völkerbund 1926; Die Weltwirtschaftskrise 1929 und der Zerfall der Republik über Präsidialkabinette Brüning, Papen, Schleicher), Der Nationalsozialismus (1933–1945: 'Machtergreifung' 30. Januar 1933, Reichstagsbrandverordnung, Ermächtigungsgesetz 24. März 1933, Gleichschaltung von Staat, Justiz, Gewerkschaften und Parteien; NS-Ideologie: Rassenlehre, Sozialdarwinismus, Antisemitismus, 'Volksgemeinschaft', Führerprinzip, Lebensraumideologie im Osten), Die Verfolgung und Vernichtung der europäischen Juden (Nürnberger Gesetze 1935, Novemberpogrome 1938, Wannsee-Konferenz 1942: 'Endlösung der Judenfrage', Industrieller Massenmord in Vernichtungslagern wie Auschwitz-Birkenau als beispielloser Zivilisationsbruch / Shoah) sowie Zweiter Weltkrieg und Widerstand (Weiße Rose, Stauffenberg 20. Juli 1944).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/geschichte",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geschichte 12, Lernbereiche Weimarer Republik und Nationalsozialismus"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCH0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCH0000000000000000A01",
+      "namespace": "gymnasium-geschichte-weimar",
+      "slug": "weimarer-republik-verfassung-krisen-praesidialkabinette",
+      "title": "Die Weimarer Republik (1918–1933): Verfassungsstruktur, Dauerkrisen und Untergang",
+      "domain": "schule/geschichte/weimarer-republik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "Weimar Republic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Die Weimarer Republik – Demokratie in der Bewährung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCH0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Über welche verfassungsrechtliche Notverordnungsklausel (Artikel der Weimarer Reichsverfassung) konnte der Reichspräsident Grundrechte außer Kraft setzen und ohne parlamentarische Mehrheit am Reichstag vorbei regieren?",
+          "concept": "Artikel 48 WRV (Notverordnungsrecht des Reichspräsidenten / Notverordnungsdiktatur)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Artikel 48 WRV (Notverordnungsrecht)",
+              "Artikel 1 GG"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCH0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Belastungsfaktoren, Verfassungsschwächen und den Untergang der Weimarer Republik: 1. **Die Geburtsschäden der ersten deutschen Demokratie (1918/19)**:   * **Dolchstoßlegende**: Propagandalüge der Obersten Heeresleitung (Hindenburg/Ludendorff), das unbesiegte deutsche Heer sei von hinten durch Heimat-Demokraten und Sozialisten 'erdolcht' worden.   * **Versailler Vertrag**: Zuweisung der alleinigen Kriegsschuld (Art. 231), Gebietsabtretungen, Reparationen $\\implies$ schwere Hypothek ('Diktatfrieden').   * **Fehlende Elitentransformation**: Justiz, Verwaltung, Polizei und Reichswehr blieben in den Händen antidemokratischer, kaisertreuer Monarchisten (*'Republik ohne Republikaner'*), 2. **Strukturelle Verfassungsmängel (WRV)**:   * Übermacht des Reichspräsidenten als **'Ersatzkaiser'**: Oberbefehlshaber der Reichswehr, Ernennung des Kanzlers (Art. 53), Notverordnungsrecht (Art. 48), Parlamentsauflösung (Art. 25).   * Fehlende Sperrklausel (keine 5%-Hürde) $\\implies$ Zersplitterung des Reichstags in über 15 Parteien $\\implies$ Koalitionsunfähigkeit, 3. **Der Zerfall der Republik ab 1929**:   * **Weltwirtschaftskrise (Schwarzer Donnerstag Oktober 1929)**: Zusammenbruch der US-Kredite, Massenarbeitslosigkeit (über 6 Millionen Arbeitslose 1932).   * Bruch der Großen Koalition unter Hermann Müller (März 1930) $\\implies$ Beginn der **Präsidialkabinette** (Brüning, Papen, Schleicher), die nur noch vom Vertrauen Hindenburgs abhingen $\\implies$ Zerstörung der Demokratie vor der Machtübergabe an Hitler am 30. Januar 1933.",
+          "concept": "Weimar 12: Belastungsfaktoren (Dolchstoßlegende, Versailler Vertrag, Republik ohne Republikaner); Verfassungsschwächen (Ersatzkaiser Art. 48/25, fehlende Sperrklausel); Weltwirtschaftskrise 1929 und Zerfall über Präsidialkabinette.",
+          "sample_solution": "1. Die strukturellen Belastungsfaktoren der Weimarer Republik: - **1. Psychologische Hypothek (Dolchstoßlegende & Versailler Vertrag)**:   * Die OHL (Hindenburg und Ludendorff) stahl sich 1918 aus der Verantwortung für die militärische Niederlage und streute die toxische Propagandalüge der **Dolchstoßlegende** (das an der Front 'im Felde unbesiegte' Heer sei von Revolutionären und Demokraten in der Heimat hinterrücks erdolcht worden).   * Die Unterzeichnung des **Versailler Vertrages** (Territoriale Verluste, Entmilitarisierung, Reparationen, Art. 231 Kriegsschuldartikel) stigmatisierte die demokratischen Parteien der 'Weimarer Koalition' als 'Erfüllungspolitiker' und 'Novemberverbrecher'. - **2. Der obrigkeitsstaatliche Staatsapparat (*Republik ohne Republikaner*)**:   * Richter urteilten 'auf dem rechten Auge blind' (Hitler erhielt nach dem Putschversuch 1923 eine Farce von Festungshaft, während linke Räterepublikaner hingerichtet wurden). 2. Konstruktionsfehler der Weimarer Reichsverfassung (WRV 1919): ```mermaid graph TD   P[Reichspräsident: 'Ersatzkaiser' auf 7 Jahre direkt gewählt] -->|Art. 48: Notverordnungsdiktatur| N[Notverordnungen ersetzen Gesetze]   P -->|Art. 25: Auflösung des Reichstags| T[Reichstag: Ohne 5%-Hürde zersplittert]   P -->|Art. 53: Kanzlerernennung| K[Reichskanzler: Abhängig vom Präsidenten] ``` - Die fatale Kombination aus **Art. 48 (Notverordnungen)**, **Art. 25 (Parlamentsauflösung)** und **Art. 53 (Ernennungsrecht)** schuf ein exekutives Instrumentarium, mit dem der Reichspräsident die parlamentarische Demokratie vollständig aushebeln konnte. 3. Der Untergang der Republik in der Weltwirtschaftskrise (1929–1933): - **Oktober 1929**: Börsencrash an der Wall Street (*Black Thursday*) $\\implies$ US-Banken ziehen kurzfristige Kredite aus Deutschland ab $\\implies$ Welle von Banken- und Firmenpleiten. - **Soziale Katastrophe**: Bis 1932 stieg die Zahl der registrierten Arbeitslosen auf über **6 Millionen** (jeder dritte Erwerbsfähige); Verelendung und Radikalisierung der Wählerschaft. - **Die Ära der Präsidialregierungen (März 1930 bis Januar 1933)**:   * Nach dem Scheitern der letzten parlamentarischen Mehrheitsregierung (Kabinett Müller) regierte Heinrich Brüning als erster Präsidialkanzler mittels Notverordnungen des greisen Reichspräsidenten Paul von Hindenburg.   * Brünings brutale **Deflationspolitik** (Kürzung von Sozialleistungen, Renten und Löhnen zur Haushaltskonsolidierung) verschärfte die Wirtschaftskrise katastrophal $\\implies$ Die radikalen antidemokratischen Flügelparteien (**NSDAP und KPD**) gewannen bei den Wahlen 1932 die absolute 'negative' Mehrheit im Reichstag.   * Durch fatale Intrigen konservativer Eliten um Franz von Papen wurde Hindenburg schließlich überzeugt, Adolf Hitler am **30. Januar 1933** zum Reichskanzler zu ernennen ('Machtübertragung' / 'Einrahmungskonzept' scheiterte grandios)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCH0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCH0000000000000000A02",
+      "namespace": "gymnasium-geschichte-ns-shoah",
+      "slug": "nationalsozialismus-ideologie-gleichschaltung-shoah",
+      "title": "Der Nationalsozialismus (1933–1945): NS-Ideologie, Gleichschaltung und die Shoah",
+      "domain": "schule/geschichte/nationalsozialismus",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCH0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Nationalsozialismus baute auf dem Scheitern der Weimarer Republik auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "The Holocaust",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus, Zweiter Weltkrieg und Shoah",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCH0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Durch welches Gesetz vom 24. März 1933 entmachtete der Reichstag sich selbst und übertrug die gesamte Gesetzgebungsgewalt ohne parlamentarische Kontrolle direkt auf Adolf Hitlers Reichsregierung?",
+          "concept": "Das 'Ermächtigungsgesetz' (Gesetz zur Behebung der Not von Volk und Reich)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Ermächtigungsgesetz vom 24. März 1933",
+              "Die Reichstagsbrandverordnung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCH0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die NS-Ideologie, die Schritte zur Errichtung der Diktatur 1933/34 und die Shoah als Zivilisationsbruch: 1. **Die Kernpfeiler der nationalsozialistischen Ideologie**:   * **1. Rassenlehre & Radikaler Antisemitismus**: Pseudobiologischer Rassismus (Überlegenheit der 'arischen Rasse'; Juden als biologischer 'Erzfeind' und Gegenrasse).   * **2. Sozialdarwinismus**: 'Recht des Stärkeren' im ewigen Kampf der Völker; Vernichtung von 'lebensunwertem Leben' (Euthanasie / Aktion T4).   * **3. Lebensraum-Ideologie**: Eroberung und rücksichtslose Germanisierung von 'Lebensraum im Osten' (Generalplan Ost).   * **4. Führerprinzip & Volksgemeinschaft**: Bedingungsloser Kadavergehorsam von oben nach unten (*'Du bist nichts, dein Volk ist alles'*), 2. **Die Etablierung der totalitären Herrschaft 1933/34 ('Gleichschaltung')**:   * *Reichstagsbrandverordnung (28. Feb 1933)*: Dauerhafte Außerkraftsetzung aller Bürger- und Grundrechte.   * *Ermächtigungsgesetz (24. März 1933)*: Übertragung der Legislative auf Hitler (unter Ausschluss der KPD und Einschüchterung der SPD).   * *Gleichschaltung*: Auflösung der Länderparlamente, Verbot der Gewerkschaften (Mai 1933), Verbot aller Parteien außer der NSDAP (Juli 1933).   * *Röhm-Putsch (Juni 1934)*: Ausschaltung der SA-Führung und parteiinterner Konkurrenten.   * *Tod Hindenburgs (August 1934)*: Vereinigung der Ämter von Reichspräsident und Reichskanzler in Hitlers Person; Vereidigung der Wehrmacht auf Hitlers Namen, 3. **Die Shoah (Holocaust) als Zivilisationsbruch**:   * **Eskalationsstufen**:     - *1933–1935*: Boykott jüdischer Geschäfte, Nürnberger Gesetze 1935 (Reichsbürgergesetz, Blutschutzgesetz).     - *1938*: Novemberpogrome (organisierter Staatsterror, Zerstörung von Synagogen, Deportation in KZs).     - *1941*: Beginn des rassenideologischen Vernichtungskriegs gegen die UdSSR (Einsatzgruppen erschießen über 1,5 Mio. Juden).     - *Januar 1942*: **Wannsee-Konferenz** (Organisatorische Koordination der bürokratisch-industriellen Vernichtung der 11 Mio. europäischen Juden).   * **Die Vernichtungslager**: Auschwitz-Birkenau, Treblinka, Sobibor, Belzec, Chelmno, Majdanek $\\implies$ Ermordung von über 6 Millionen europäischen Jüdinnen und Juden sowie hunderttausenden Sinti und Roma.",
+          "concept": "NS-Diktatur 12: Ideologie (Rassenlehre, Antisemitismus, Lebensraum Osten, Führerprinzip); Gleichschaltung 1933/34 (Reichstagsbrandverordnung, Ermächtigungsgesetz, Gewerkschaftsverbot, Röhm-Morde); Shoah als Zivilisationsbruch (Nürnberger Gesetze 1935, Pogrome 1938, Wannsee-Konferenz 1942, Vernichtungslager Auschwitz).",
+          "sample_solution": "1. Die nationalsozialistische Weltanschauung (Ideologie): - Die NS-Ideologie war ein fanatisches, pseudowissenschaftliches Gedankengebäude, basierend auf:   * **1. Rassenantisemitismus & Biologismus**: Juden wurden nicht als Religionsgemeinschaft, sondern als 'zersetzende Rasse' und biologischer Feind definiert, der vernichtet werden müsse.   * **2. Lebensraum im Osten**: Der rassistische Vernichtungskrieg zielte auf die Unterjochung, Versklavung und Vernichtung der slawischen Bevölkerung zur Gewinnung von Siedlungsraum für das 'arische Herrenvolk' (*Generalplan Ost*).   * **3. Führerprinzip**: Hitlers Wille war oberstes Gesetz (*Führerbefehl*); Ablehnung jeglicher Gewaltenteilung und Demokratie.   * **4. Volksgemeinschaft**: Schuf ein trügerisches Gefühl der Gleichheit für 'arische Volksgenossen' durch radikale Ausgrenzung und Terror gegen Andersdenkende, Kranke, Homosexuelle, Zeugen Jehovas, Sinti, Roma und Juden. 2. Die Errichtung der Diktatur (1933–1934): - In weniger als 18 Monaten demontierten die Nationalsozialisten den Rechtsstaat vollständig:   * **28. Februar 1933 (Reichstagsbrandverordnung)**: Nach dem Brand des Reichstagsgebäudes wurden Grundrechte wie Meinungs-, Versammlungs- und Pressefreiheit dauerhaft außer Kraft gesetzt $\\implies$ Legalisierung des SA-Terrors und Errichtung der ersten Konzentrationslager (Dachau März 1933).   * **24. März 1933 (Ermächtigungsgesetz)**: Nur die SPD unter Otto Wels stimmte trotz brutaler SA-Bedrohung mutig mit 'Nein'. Das Gesetz entmachtete das Parlament vollends.   * **Gleichschaltung von Staat und Gesellschaft**:     - 2. Mai 1933: Stürmung der Gewerkschaftshäuser $\\implies$ Zwangsvereinigung in der *Deutschen Arbeitsfront (DAF)*.     - 14. Juli 1933: *Gesetz gegen die Neubildung von Parteien* $\\implies$ Errichtung des Einparteienstaates.   * **August 1934**: Nach Hindenburgs Tod ernannte sich Hitler zum *« Führer und Reichskanzler »*. Die Reichswehr leistete den persönlichen Fahneneid auf Adolf Hitler. 3. Die Shoah (Der Holocaust) – Der Zivilisationsbruch: - **Die Stufen der systematischen Entrechtung und Vernichtung**:   * **1. Stufe (1933–1938) – Gesetzliche Entrechtung und gesellschaftliche Isolation**:     - *Nürnberger Gesetze (1935)*: Aberkennung staatsbürgerlicher Rechte (*Reichsbürgergesetz*) und Verbot von Eheschließungen zwischen Juden und Nichtjuden (*Blutschutzgesetz*).   * **2. Stufe (1938–1941) – Offener Terror, Enteignung und Ghettoisierung**:     - *Novemberpogrome (9./10. November 1938)*: Von Goebbels inszenierter reichsweiter Terror. Über 1400 Synagogen zerstört, tausende Geschäfte verwüstet, hunderte Morde und Deportation von $30.000$ jüdischen Männern in KZs.     - Zwangsumsiedlung in abgeriegelte, todbringende Ghettos im besetzten Polen (z. B. Warschau, Lodz).   * **3. Stufe (1941–1945) – Der organisierte industrielle Massenmord**:     - Mit dem Überfall auf die Sowjetunion (Juni 1941) ermordeten die *Einsatzgruppen der Sicherheitspolizei* über 1,5 Millionen Menschen durch Massenerschießungen (z. B. Schlucht von Babi Jar).     - **Wannsee-Konferenz (20. Januar 1942)**: Unter Vorsitz von Reinhard Heydrich koordinierte die NS-Bürokratie und Ministerien die logistische Durchführung der **'Endlösung der europäischen Judenfrage'**.     - Errichtung von industriellen **Vernichtungslagern** mit Gaskammern und Krematorien im besetzten Polen (**Auschwitz-Birkenau, Treblinka, Belzec, Sobibor, Chelmno, Majdanek**). - **Historische Einordnung (Zivilisationsbruch)**:   * Die Shoah (hebräisch für *Katastrophe/völlige Zerstörung*) ist ein historisch beispielloser Zivilisationsbruch (Dan Diner): Der bürokratisch geplante, arbeitsteilig und industriell exekutierte Versuch eines modernen Staates, eine gesamte Bevölkerungsgruppe vom Säugling bis zum Greis weltweit und aus rein ideologischem Wahn restlos zu vernichten."
+        }
+      ]
+    }
+  ]
+}

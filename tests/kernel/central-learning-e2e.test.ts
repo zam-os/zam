@@ -110,12 +110,16 @@ describe("Central Learning Field-Test Slice — Complete End-to-End Lifecycle", 
     // Learner wants to voluntarily practice the buried precondition
     const pullCandidates = await getPullForwardCandidates(db, learnerId);
     expect(pullCandidates.length).toBeGreaterThanOrEqual(1);
-    const buriedCand = pullCandidates.find((c) => c.cardId === assessKnown.cardId);
+    const buriedCand = pullCandidates.find(
+      (c) => c.cardId === assessKnown.cardId,
+    );
     expect(buriedCand).toBeDefined();
     expect(buriedCand?.reason).toBe("precondition_buried");
 
     // Execute pull-forward
-    const pullExec = await pullForwardCards(db, learnerId, [assessKnown.cardId]);
+    const pullExec = await pullForwardCards(db, learnerId, [
+      assessKnown.cardId,
+    ]);
     expect(pullExec.pulledCount).toBe(1);
 
     // Card is immediately unburied and enters active review queue
@@ -139,10 +143,16 @@ describe("Central Learning Field-Test Slice — Complete End-to-End Lifecycle", 
 
     // Bonus atom 005 (Reflexionsgesetz, requiring 001) surfaces!
     const bonuses = await bonusCandidates(db, learnerId, {
-      inScopeAtomIds: ["01K3X9A7R4B8C1D2E3F4G5A001", "01K3X9A7R4B8C1D2E3F4G5A002", "01K3X9A7R4B8C1D2E3F4G5A003"],
+      inScopeAtomIds: [
+        "01K3X9A7R4B8C1D2E3F4G5A001",
+        "01K3X9A7R4B8C1D2E3F4G5A002",
+        "01K3X9A7R4B8C1D2E3F4G5A003",
+      ],
     });
     expect(bonuses.length).toBeGreaterThanOrEqual(1);
-    const reflBonus = bonuses.find((b) => b.atomId === "01K3X9A7R4B8C1D2E3F4G5A005");
+    const reflBonus = bonuses.find(
+      (b) => b.atomId === "01K3X9A7R4B8C1D2E3F4G5A005",
+    );
     expect(reflBonus).toBeDefined();
     expect(reflBonus?.title).toBe("Reflexionsgesetz");
 

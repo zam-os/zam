@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-englisch-postcolonialism-british-empire-nigeria-adichie",
+  "version": "2026.08.1",
+  "title": "Englisch 13: Postcolonial Perspectives – The British Empire, Decolonisation, Nigeria and Global Englishes (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 13 (Oberstufe Q13 / Abitur): The Rise and Fall of the British Empire (Imperial ideology: 'The White Man's Burden' by Rudyard Kipling, 'Rule Britannia', Trade monopolies / East India Company, Scramble for Africa, Indirect Rule by Lord Lugard), Decolonisation and its Legacies (The Partition of India 1947, The Commonwealth of Nations, Windrush Generation 1948 and multicultural Britain), Postcolonial Literature and Nigeria (Chinua Achebe: *Things Fall Apart* – pre-colonial Igbo society, European cultural disruption; Chimamanda Ngozi Adichie: *Half of a Yellow Sun* – Biafran War 1967–70, *Americanah* – race, hair, cultural hybridity in the US/UK vs. Nigeria; Adichie's TED Talk 'The Danger of a Single Story') sowie Global Englishes and World Englishes (Braj Kachru's Three Concentric Circles of English: Inner Circle, Outer Circle, Expanding Circle; English as a Global Lingua Franca, Linguistic Imperialism vs. Cultural Enrichment).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/englisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Englisch 13, Lernbereich Postcolonial Literature and Global Englishes"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GDA0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GDA0000000000000000A01",
+      "namespace": "gymnasium-englisch-postcolonial-empire",
+      "slug": "british-empire-decolonisation-adichie-single-story",
+      "title": "The British Empire & Decolonisation: Imperial Legacy, Nigeria and Adichie's 'Single Story'",
+      "domain": "schule/englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Postcolonialism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "The British Empire, Decolonisation and Postcolonial Voices",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDA0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What is the central warning articulated by Nigerian author Chimamanda Ngozi Adichie in her world-famous TED Talk 'The Danger of a Single Story' (2009)?",
+          "concept": "Reducing people, cultures, or entire continents (like Africa) to a one-dimensional, stereotyped narrative robs them of their dignity and complex humanity",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Reducing complex cultures to a single stereotype robs them of dignity",
+              "That people should only read one book per year"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDA0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the history of the British Empire, decolonisation, and Chimamanda Ngozi Adichie's postcolonial critique: 1. **The British Empire: Rise and Imperial Ideology**:   * At its peak covering a quarter of the globe's landmass and population (*'The empire on which the sun never sets'*).   * **Justification**: Paternalistic civilising mission (*'The White Man's Burden'* by Rudyard Kipling, 1899) – asserting moral obligation to 'civilise' indigenous peoples.   * **Colonial Governance in Nigeria**: *Indirect Rule* (Lord Lugard) dividing ethnic groups (Hausa-Fulani, Yoruba, Igbo) into an artificial nation-state, 2. **Decolonisation & Aftermath**:   * Post-WWII retreat: India's independence & tragic **Partition (1947)** creating Pakistan; Nigerian independence (1960) leading to the brutal **Biafran Civil War (1967–70)**.   * **The Windrush Generation (1948)**: Caribbean and South Asian migration to rebuild war-torn Britain $\\implies$ transition to modern multi-ethnic Britain, 3. **Chimamanda Ngozi Adichie's Literary Voice**:   * *Half of a Yellow Sun* (2006): Depicts the Biafran struggle and Western journalistic indifference.   * *Americanah* (2013): Explores race, identity, and the immigrant experience in the US vs. Nigeria (the politics of black women's natural hair as a site of colonial beauty standards).   * *The Danger of a Single Story* (2009): The role of power (*nkali*) in deciding how stories are told and by whom.",
+          "concept": "Postcolonialism 13: British Empire ideology ('White Man's Burden', Indirect Rule); Decolonisation (Partition of India 1947, Windrush Generation 1948); Adichie (Nigeria, 'Half of a Yellow Sun', 'Americanah', 'The Danger of a Single Story').",
+          "sample_solution": "1. The Rise, Ideology and Legacy of the British Empire: - **The Imperial Enterprise**:   * Spanning the Americas, Africa, India, Australasia, and Asia, Britain established a global hegemony based on maritime supremacy, military conquest, and commercial exploitation (East India Company). - **The Paternalistic Rhetoric**:   * The empire justified colonial domination through eurocentric cultural supremacy and the **civilising mission** (*« The White Man's Burden »*). Indigenous traditions, religions, and governance systems were demeaned as 'primitive' or 'savage'. - **Artificial Borders and Colonial Policy (Nigeria as a Case Study)**:   * In Africa (Scramble for Africa, Berlin Conference 1884), colonial powers drew arbitrary borders cutting across ancient ethnic and linguistic boundaries.   * In Nigeria, Britain combined over 250 distinct ethnic groups (the Muslim Hausa-Fulani in the north, the Christian/animist Yoruba in the south-west, and the Igbo in the south-east) under the policy of **Indirect Rule**. This 'divide-and-rule' strategy sowed the seeds of post-independence ethnic conflict and the devastating **Biafran Civil War (1967–1970)**. 2. Decolonisation and the Making of Multicultural Britain: - Post-1945 economic exhaustion forced Britain to dismantle its formal empire:   * **1947**: Partition of British India into India and Pakistan, sparking massive communal violence and displacement of 15 million people.   * **1948**: Arrival of the *HMT Empire Windrush* carrying passengers from Jamaica and Trinidad, marking the dawn of modern multicultural Britain, accompanied by racial tensions and discriminatory immigration legislation. 3. Chimamanda Ngozi Adichie: Reclaiming the African Narrative: - **The Concept of 'Nkali' (Power in Igbo)**:   * In her celebrated lecture *The Danger of a Single Story (2009)*, Adichie illustrates how Western media and classic literature frequently depict Africa solely through the lens of catastrophe (war, poverty, AIDS, wildlife).   * *« Show a people as one thing, as only one thing, over and over again, and that is what they become. »* - **Literary Works**:   * **1. *Half of a Yellow Sun* (2006)**: Recounts the personal and political trauma of the Biafran War, unmasking the complicity of British diplomacy and Western corporate oil interests.   * **2. *Americanah* (2013)**: Follows Ifemelu, a young Nigerian woman in the United States, offering an acute sociological dissection of race. In Nigeria, Ifemelu is simply Igbo/Nigerian; in America, she suddenly becomes 'Black' and must navigate subtle institutional racism, microaggressions, and the pressure to relax her natural hair to conform to white corporate aesthetic norms."
+        }
+      ]
+    },
+    {
+      "id": "01K8GDA0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GDA0000000000000000A02",
+      "namespace": "gymnasium-englisch-global-englishes",
+      "slug": "global-englishes-kachru-circles-lingua-franca-identity",
+      "title": "Global Englishes: Kachru's Three Circles, Lingua Franca and Linguistic Imperialism",
+      "domain": "schule/englisch/sprachwissenschaft",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GDA0000000000000000A01",
+          "type": "hard",
+          "rationale": "Global Englishes are the direct linguistic consequence of British colonialism and American globalization."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "World Englishes",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Global Englishes and Linguistic Diversity",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDA0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which concentric circle in Braj Kachru's model of World Englishes represents countries where English serves as an official second language (ESL) inherited from British colonial rule (e.g. India, Nigeria, Kenya)?",
+          "concept": "The Outer Circle (as opposed to the Inner Circle of native speakers and the Expanding Circle of foreign language learners)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The Outer Circle (ESL countries like India and Nigeria)",
+              "The Inner Circle (UK, USA)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDA0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the sociolinguistic model of Global Englishes and the debate over linguistic imperialism: 1. **Braj Kachru's Three Concentric Circles of English (1985)**:   * **1. The Inner Circle (Norm-providing)**: Native English-speaking countries (UK, USA, Canada, Australia, New Zealand; $\\approx 400$ million speakers).   * **2. The Outer Circle (Norm-developing)**: Former British colonies where English is an institutionalised second language in government, law, education, and media (India, Nigeria, Singapore, Ghana; $\\approx 400$ million speakers).   * **3. The Expanding Circle (Norm-dependent)**: Countries where English is learned as a foreign language (EFL) for global communication (Germany, China, Japan, Brazil; $> 1$ billion speakers), 2. **English as a Global Lingua Franca (ELF)**:   * Today, the vast majority of international English conversations occur **between non-native speakers** without any native speaker present.   * Focus shifts from mimicking native British/American accents (RP or General American) to pragmatic, mutual intelligibility, 3. **The Controversy: Linguistic Imperialism vs. Empowerment**:   * *Robert Phillipson (Linguistic Imperialism)*: English dominance threatens indigenous languages, accelerates language extinction, and perpetuates Western economic and cultural neo-colonialism.   * *David Crystal / Counter-perspective*: English is no longer owned by Britain or America; it has become an egalitarian global utility and tool for international cooperation, scientific dissemination, and socio-economic empowerment.",
+          "concept": "Global Englishes 13: Kachru's Three Circles (Inner, Outer, Expanding); English as a Lingua Franca (ELF); Linguistic Imperialism (Phillipson) vs. Global Empowerment (Crystal); Decentering of native-speaker ownership.",
+          "sample_solution": "1. Braj Kachru's Three Concentric Circles of English (1985): - **Model Structure**: ```mermaid graph TD   subgraph Kachru's Circles     IC[Inner Circle: UK, USA, AUS / Norm-providing]     OC[Outer Circle: India, Nigeria, SG / Norm-developing]     EC[Expanding Circle: Germany, China, Japan / Norm-dependent]     IC --> OC     OC --> EC   end ``` - **1. Inner Circle**: Native speakers (ENL / English as a Native Language); historically established the grammatical and phonetic standards. - **2. Outer Circle**: Former colonies (ESL / English as a Second Language); developed distinct, vibrant, institutionalised national varieties (e.g. *Hinglish* in India, *Nigerian Pidgin English*). - **3. Expanding Circle**: Global learners (EFL / English as a Foreign Language); English is utilised strictly as a vehicle for international commerce, academia, diplomacy, and tourism. 2. English as a Global Lingua Franca (ELF): - **Decoupling from Native Speakers**:   * With over **1.5 billion speakers worldwide**, non-native speakers outnumber native speakers by roughly **3 to 1**.   * English no longer 'belongs' to the UK or the USA. In ELF contexts, communication prioritises functional intelligibility, accommodation, and intercultural competence over rigid compliance with Received Pronunciation (RP) or idiom-heavy Anglo-American vernacular. 3. The Socio-Political Debate: Threat or Empowerment? - **The Critical Perspective (Linguistic Imperialism - Robert Phillipson)**:   * Global English functions as an instrument of cultural hegemony and neo-colonial exploitation.   * The prestige of English sidelines indigenous languages, accelerating the extinction of endangered languages and creating educational inequality (favouring elites with English fluency). - **The Pragmatic / Emancipatory Perspective (David Crystal)**:   * English serves as a neutral, universal bridge language facilitating cross-border scientific collaboration, international human rights advocacy, and global democratic dialogue.   * Postcolonial writers (such as Chinua Achebe, Salman Rushdie, and Arundhati Roy) have successfully 'decolonised' English, bending and enriching the language to express their unique cultural realities (*« English is the language of my world, even if it is not the only language in it »*)."
+        }
+      ]
+    }
+  ]
+}

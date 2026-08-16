@@ -86,12 +86,16 @@ describe("detachCardForUser", () => {
     await learnedCard(token.id, "alice");
 
     expect(await getDueCards(db, "alice")).toHaveLength(1);
-    expect((await buildReviewQueue(db, { userId: "alice" })).items).toHaveLength(1);
+    expect(
+      (await buildReviewQueue(db, { userId: "alice" })).items,
+    ).toHaveLength(1);
 
     await detachCardForUser(db, token.id, "alice");
 
     expect(await getDueCards(db, "alice")).toHaveLength(0);
-    expect((await buildReviewQueue(db, { userId: "alice" })).items).toHaveLength(0);
+    expect(
+      (await buildReviewQueue(db, { userId: "alice" })).items,
+    ).toHaveLength(0);
   });
 
   it("resumes where it left off when picked back up", async () => {
@@ -145,12 +149,12 @@ describe("detachCardForUser", () => {
         assigneeId: "alice",
       });
 
-      await expect(
-        detachCardForUser(db, token.id, "alice"),
-      ).rejects.toThrow(/active assignment/i);
-      await expect(
-        deleteCardForUser(db, token.id, "alice"),
-      ).rejects.toThrow(/active assignment/i);
+      await expect(detachCardForUser(db, token.id, "alice")).rejects.toThrow(
+        /active assignment/i,
+      );
+      await expect(deleteCardForUser(db, token.id, "alice")).rejects.toThrow(
+        /active assignment/i,
+      );
     });
 
     it("allows it once withdrawn, with the history intact", async () => {

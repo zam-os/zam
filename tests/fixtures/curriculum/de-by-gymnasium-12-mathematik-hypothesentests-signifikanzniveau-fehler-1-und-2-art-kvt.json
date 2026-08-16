@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art",
+  "version": "2026.08.1",
+  "title": "Mathematik 12: Beurteilende Statistik – Ein- und zweiseitige Hypothesentests, Signifikanzniveau und Fehler 1. & 2. Art (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 12 (Oberstufe Q12): Beurteilende Statistik / Testen von Hypothesen (Nullhypothese H_0: p <= p_0 bzw. p >= p_0 bzw. p = p_0 vs. Gegenhypothese / Alternativhypothese H_1), Testgröße X als binomialverteilte Zufallsvariable B(n; p), Signifikanzniveau alpha (meist 5 % oder 1 %), Entscheidungsregel und Bestimmung des Annahme- und Ablehnungsbereichs (kritische Werte k), Linksseitiger vs. Rechtsseitiger vs. Zweiseitiger Signifikanztest, Fehler 1. Art / alpha-Fehler (H_0 ist wahr, wird aber irrtümlich abgelehnt: P(X in A_bar | p_0) <= alpha) und Fehler 2. Art / beta-Fehler (H_0 ist falsch / H_1 mit p_1 ist wahr, H_0 wird aber irrtümlich beibehalten: P(X in A | p_1)).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 12, Lernbereich Stochastik – Beurteilende Statistik und Hypothesentests"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC2000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC2000000000000000A01",
+      "namespace": "gymnasium-mathematik-hypothesentest",
+      "slug": "hypothesentest-nullhypothese-signifikanzniveau-ablehnungsbereich",
+      "title": "Hypothesentests: Null- & Gegenhypothese, Signifikanzniveau alpha und Entscheidungsregel",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Statistical hypothesis testing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Stochastik – Einseitige Hypothesentests",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC2000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Ein Hersteller behauptet, dass mindestens 90 % seiner Akkus fehlerfrei sind ($H_0: p \\ge 0{,}90$). Ein Verbrauchermagazin vermutet eine schlechtere Qualität ($H_1: p < 0{,}90$). Welcher Testtyp liegt vor und wo liegt der Ablehnungsbereich der Nullhypothese?",
+          "concept": "Ein linksseitiger Hypothesentest; der Ablehnungsbereich liegt links bei kleinen Trefferzahlen: A_bar = {0, 1, ..., k}",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Linksseitiger Hypothesentest (Ablehnung bei kleinen Werten {0, ..., k})",
+              "Rechtsseitiger Hypothesentest"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC2000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Strukturiere die Durchführung eines rechtsseitigen Hypothesentests: 1. **Aufstellen der Hypothesen**:   * $H_0: p \\le p_0$ (Status quo / Behauptung, die widerlegt werden soll).   * $H_1: p > p_0$ (Forschungsvermutung), 2. **Festlegung von Testgröße und Signifikanzniveau**:   * Stichprobenumfang $n$, Testgröße $X \\sim B(n; p_0)$.   * Signifikanzniveau $\\alpha$ (z. B. $\\alpha = 0{,}05$), 3. **Bestimmung der Entscheidungsregel**:   * Ablehnungsbereich $\\bar{A} = \\{k+1, \\dots, n\\}$.   * Bedingung: $P_{p_0}(X \\in \\bar{A}) = P_{p_0}(X \\ge k+1) = 1 - P_{p_0}(X \\le k) \\le \\alpha \\iff P_{p_0}(X \\le k) \\ge 1 - \\alpha$, 4. **Entscheidung & Interpretation**:   * Fällt das Stichprobenergebnis $x \\in \\bar{A}$, wird $H_0$ zugunsten von $H_1$ **verworfen**; fällt $x \\in A$, wird $H_0$ **nicht verworfen**.",
+          "concept": "Hypothesentest: H0 vs. H1; Festlegung Testgröße X ~ B(n,p); Signifikanzniveau alpha; Ermittlung des kritischen Werts k über kumulierte Binomialverteilung; Entscheidungsregel.",
+          "sample_solution": "1. Grundschema eines statistischen Hypothesentests: - **Ziel**: Überprüfung einer wissenschaftlichen oder ökonomischen Vermutung über einen unbekannten Parameter $p$ einer Grundgesamtheit anhand einer Zufallsstichprobe vom Umfang $n$. 2. Systematischer Ablauf (4-Schritte-Plan): - **Schritt 1: Hypothesenpaar formulieren**:   * Die zu belegende Neuerung kommt stets in die Alternativhypothese $H_1$.   * **Rechtsseitiger Test**: $H_0: p \\le p_0$ gegen $H_1: p > p_0$.   * **Linksseitiger Test**: $H_0: p \\ge p_0$ gegen $H_1: p < p_0$.   * **Zweiseitiger Test**: $H_0: p = p_0$ gegen $H_1: p \\neq p_0$. - **Schritt 2: Testgröße und Verteilung**:   * Testgröße $X$: Anzahl der Erfolge in der Stichprobe.   * Unter Annahme der Nullhypothese gilt: $\\mathbf{X \\sim B(n; p_0)}$. - **Schritt 3: Bestimmung des Ablehnungsbereichs $\\bar{A}$ bei Signifikanzniveau $\\alpha$**:   * **Rechtsseitig**: $\\bar{A} = \\{k+1, \\dots, n\\}$ mit:     $$P_{p_0}(X \\ge k+1) \\le \\alpha \\iff P_{p_0}(X \\le k) \\ge 1 - \\alpha$$     *(Man sucht das kleinste $k$ in der Summentabelle der Binomialverteilung)*.   * **Linksseitig**: $\\bar{A} = \\{0, \\dots, k\\}$ mit:     $$P_{p_0}(X \\le k) \\le \\alpha$$     *(Man sucht das größte $k$, für das der kumulierte Wert noch $\\le \\alpha$ ist)*. - **Schritt 4: Stichprobenbefund und Testentscheidung**:   * Liegt das reale Testergebnis $x_{\\text{emp}}$ im Ablehnungsbereich $\\bar{A}$, so wird $H_0$ auf dem Signifikanzniveau $\\alpha$ **abgelehnt** (das Ergebnis ist *statistisch signifikant*). Liegt es im Annahmebereich $A$, so reicht die Evidenz nicht aus $\\implies H_0$ wird **beibehalten**."
+        }
+      ]
+    },
+    {
+      "id": "01K8GC2000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC2000000000000000A02",
+      "namespace": "gymnasium-mathematik-fehlerarten",
+      "slug": "fehler-1-art-alpha-fehler-2-art-beta-irrtumswahrscheinlichkeit",
+      "title": "Fehlerarten beim Testen: Fehler 1. Art ($\\alpha$-Fehler) und Fehler 2. Art ($\\beta$-Fehler)",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC2000000000000000A01",
+          "type": "hard",
+          "rationale": "Fehlerarten quantifizieren Fehlentscheidungen auf Basis der Entscheidungsregel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Type I and type II errors",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Stochastik – Fehler 1. und 2. Art",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC2000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was versteht man in der Testtheorie unter einem 'Fehler 1. Art' ($\\alpha$-Fehler)?",
+          "concept": "Die Nullhypothese H_0 ist in Wirklichkeit wahr, wird aber aufgrund des Stichprobenergebnisses irrtümlich abgelehnt",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "H_0 ist wahr, wird aber irrtümlich abgelehnt (alpha-Fehler)",
+              "H_0 ist falsch, wird aber fälschlicherweise beibehalten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC2000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere und berechne die beiden Fehlerarten bei einem Hypothesentest: 1. **Vierfeldertafel der Testentscheidungen**: | Reale Realität | Entscheidung: $H_0$ beibehalten ($x \\in A$) | Entscheidung: $H_0$ ablehnen ($x \\in \\bar{A}$) | | :--- | :--- | :--- | | **$H_0$ ist wahr** | Richtige Entscheidung ($1 - \\alpha$) | **Fehler 1. Art ($\\alpha$-Fehler)** | | **$H_0$ ist falsch ($H_1$ wahr)** | **Fehler 2. Art ($\\beta$-Fehler)** | Richtige Entscheidung / Power ($1 - \\beta$) | 2. **Definition und Berechnung**:   * **Fehler 1. Art ($\\alpha$-Risiko)**: Wahrscheinlichkeit, dass die Testgröße $X$ in den Ablehnungsbereich $\\bar{A}$ fällt, obwohl $p_0$ zutrifft:     $$\\mathbf{P(\\text{Fehler 1. Art}) = P_{p_0}(X \\in \\bar{A}) \\le \\alpha}$$   * **Fehler 2. Art ($\\beta$-Risiko)**: Wahrscheinlichkeit, dass die Testgröße $X$ im Annahmebereich $A$ landet, obwohl in Wirklichkeit ein alternativer Parameterwert $p_1$ vorliegt:     $$\\mathbf{P(\\text{Fehler 2. Art}) = P_{p_1}(X \\in A)}$$ 3. **Zielkonflikt**:   * Durch Absenkung von $\\alpha$ vergrößert sich zwangsläufig der Annahmebereich $A \\implies \\beta$ steigt. Die einzige Möglichkeit, **beide Fehler gleichzeitig zu senken**, besteht in der **Erhöhung des Stichprobenumfangs $n$**.",
+          "concept": "Fehlerarten: Fehler 1. Art (H0 wahr, aber verworfen: P_p0(X in A_bar) <= alpha); Fehler 2. Art (H1 mit p1 wahr, aber H0 beibehalten: P_p1(X in A)); Trade-off zwischen alpha und beta; Reduktion beider Fehler nur durch größeres n möglich.",
+          "sample_solution": "1. Die beiden fundamentalen Fehlentscheidungen der Testtheorie: - Bei jedem statistischen Hypothesentest existieren zwei mögliche Fehlerquellen: - **1. Fehler 1. Art ($\\alpha$-Fehler / False Positive)**:   * *Definition*: Die Nullhypothese $H_0$ trifft in Wirklichkeit zu, wird jedoch durch eine statistische Laune der Stichprobe irrtümlich **verworfen** ($x \\in \\bar{A}$).   * *Kontrolle*: Die Wahrscheinlichkeit für einen Fehler 1. Art wird durch das vorgegebene **Signifikanzniveau $\\alpha$ nach oben beschränkt**:     $$\\mathbf{P_{p_0}(X \\in \\bar{A}) \\le \\alpha}$$ - **2. Fehler 2. Art ($\\beta$-Fehler / False Negative)**:   * *Definition*: Die Nullhypothese $H_0$ ist in Wirklichkeit falsch (die Alternative $H_1$ mit dem echten Parameter $p_1$ trifft zu), aber das Stichprobenergebnis fällt in den Annahmebereich $A$ $\\implies H_0$ wird **fälschlicherweise beibehalten**.   * *Berechnung*: Setzt die Kenntnis eines konkreten Gegenwerts $p_1$ voraus:     $$\\mathbf{\\beta = P_{p_1}(X \\in A)}$$ 2. Das Zusammenspiel und der mathematische Trade-Off: - Es existiert ein prinzipieller Zielkonflikt zwischen $\\alpha$ und $\\beta$:   * Wählt man ein sehr strenges Signifikanzniveau (z. B. $\\alpha = 0{,}001$), um $H_0$ fast nie fälschlich abzuweisen, schrumpft der Ablehnungsbereich $\\bar{A}$ und der Annahmebereich $A$ wird riesig.   * Dadurch steigt die Wahrscheinlichkeit drastisch an, dass eine echte Veränderung $p_1$ übersehen wird $\\implies \\mathbf{\\beta \\text{ explodiert}}$. - **Die einzige mathematische Lösung**:   * Um sowohl das $\\alpha$-Risiko als auch das $\\beta$-Risiko gleichzeitig zu minimieren, muss der **Stichprobenumfang $n$ signifikant vergrößert** werden (Gesetz der großen Zahlen / Varianzreduktion)."
+        }
+      ]
+    }
+  ]
+}

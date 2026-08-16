@@ -53,7 +53,9 @@ if (process.env.POSTGRES_URL) {
     return {
       db,
       async cleanup() {
-        await db.exec("DROP TABLE IF EXISTS items; DROP TABLE IF EXISTS audit;");
+        await db.exec(
+          "DROP TABLE IF EXISTS items; DROP TABLE IF EXISTS audit;",
+        );
         await db.close();
       },
     };

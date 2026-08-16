@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-chemie-kunststoffe-polymerisation-polykondensation-duroplaste",
+  "version": "2026.08.1",
+  "title": "Chemie 11: Kunststoffe & Synthetische Makromoleküle – Polymerisation, Polykondensation, Polyaddition und Werkstoffe (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 11 (Oberstufe): Synthetische Polymere und Kunststoffe (Synthesereaktionen: Radikalische Polymerisation von Ethen/Propen/Styrol zu Polyethylen PE, Polypropylen PP, Polystyrol PS, Polyvinylchlorid PVC; Polykondensation zu Polyestern wie PET und Polyamiden wie Nylon-6,6 unter Abspaltung von H2O/HCl; Polyaddition zu Polyurethanen PUR durch Protonenwanderung ohne Spaltprodukt), Struktur-Eigenschafts-Beziehungen (Thermoplaste: lineare/verzweigte Ketten mit Van-der-Waals/H-Brücken, schmelzbar; Duroplaste: engmaschig kovalent vernetzt, unschmelzbar/zersetzen sich; Elastomere: weitmaschig vernetzt, gummielastisch) sowie Umweltaspekte (Mikroplastik, thermisches, werkstoffliches und rohstoffliches Recycling).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 11, Lernbereich Synthetische Makromoleküle und Werkstoffe"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB9000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB9000000000000000A01",
+      "namespace": "gymnasium-chemie-polymerisation",
+      "slug": "polymerisation-polykondensation-polyaddition-reaktionstypen",
+      "title": "Synthesereaktionen: Radikalische Polymerisation, Polykondensation (PET/Nylon) und Polyaddition (PUR)",
+      "domain": "schule/chemie/polymerchemie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Polymerization",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Synthesereaktionen für Kunststoffe",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB9000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Merkmal unterscheidet eine Polykondensation (z. B. Herstellung von PET oder Nylon) fundamental von einer Kettenpolymerisation (z. B. Polyethylen)?",
+          "concept": "Bei der Polykondensation werden Monomere mit mindestens zwei funktionellen Gruppen unter kontinuierlicher Abspaltung eines niedermolekularen Nebenprodukts (meist Wasser H2O oder HCl) stufenweise verknüpft",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kontinuierliche Abspaltung eines niedermolekularen Nebenprodukts (z. B. H2O)",
+              "Reaktion verläuft ohne jegliche funktionelle Gruppen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB9000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die drei fundamentalen Reaktionstypen zur Kunststoffherstellung: 1. **Kettenpolymerisation (Radikalische Polymerisation)**:   * **Monomere**: Ungesättigte Verbindungen mit $C=C$-Doppelbindung (z. B. Ethen, Propen, Styrol, Vinylchlorid).   * **Mechanismus**:     - *Start*: Radikalbildner (z. B. Dibenzoylperoxid) zerfällt thermisch in Starterradikale $R^\\bullet$, die die Doppelbindung angreifen.     - *Wachstum*: Radikalkette lagert in Sekundenbruchteilen hunderte Monomere an: $R-(CH_2-CHX)_n^\\bullet$.     - *Abbruch*: Rekombination zweier Makroradikale oder Disproportionierung.   * **Produkt**: Keine Nebenprodukte ($n \\cdot M \\rightarrow -[M]_n-$), 2. **Polykondensation (Stufenwachstum)**:   * **Monomere**: Mindestens bifunktionelle Monomere (z. B. Dicarbonsäuren + Diole / Diamine).   * **Produkte**: Makromolekül unter ständiger Abspaltung von niedermolekularen Molekülen (Wasser $\\text{H}_2\\text{O}$ oder $HCl$):     - *Polyester (z. B. PET)*: Terephthalsäure + Ethan-1,2-diol $\\rightarrow$ Polyethylenterephthalat + $\\text{H}_2\\text{O}$.     - *Polyamide (z. B. Nylon-6,6)*: Adipinsäure + Hexan-1,6-diamin $\\rightarrow$ Polyamid-6,6 + $\\text{H}_2\\text{O}$, 3. **Polyaddition**:   * **Monomere**: Diisocyanate ($O=C=N-R-N=C=O$) + Diole ($HO-R'-OH$).   * **Mechanismus**: Intramolekulare Protonenübertragung der $-OH$-Gruppe auf das Stickstoffatom der Isocyanatgruppe $\\implies$ Bildung von **Urethangruppen ($-NH-CO-O-$)** ohne Abspaltung von Nebenprodukten (z. B. Polyurethane PUR für Schaumstoffe/Matratzen).",
+          "concept": "Kunststoffsynthese: Radikalische Polymerisation (C=C-Monomere, Start/Wachstum/Abbruch, keine Nebenprodukte); Polykondensation (bifunktionelle Monomere, Stufenreaktion mit H2O-Abspaltung: PET, Nylon); Polyaddition (Diisocyanate + Diole -> Polyurethane, Protonenübertragung ohne Nebenprodukt).",
+          "sample_solution": "1. Die drei Syntheserouten zu Makromolekülen im Vergleich: | Synthesetyp | Monomere & Reaktionsprinzip | Nebenprodukt | Wichtige Vertreter | | :--- | :--- | :--- | :--- | | **Polymerisation** | Ungesättigte Monomere mit $C=C$-Doppelbindungen; Kettenreaktion (Start, Wachstum, Abbruch) | **Kein Nebenprodukt** ($100\\%$ Atomeffizienz) | Polyethylen (PE), Polypropylen (PP), Polystyrol (PS), Polyvinylchlorid (PVC), PTFE (Teflon) | | **Polykondensation** | Mindestens bifunktionelle Monomere ($-COOH$, $-OH$, $-NH_2$); Stufenwachstumsreaktion | **Ja** (Abspaltung von $\\text{H}_2\\text{O}$ oder $\\text{HCl}$) | Polyethylenterephthalat (PET), Polyamide (Nylon, Perlon), Polycarbonate (PC) | | **Polyaddition** | Reaktive bifunktionelle Monomere (z. B. Isocyanate $-N=C=O$ + Diole $-OH$); Stufenreaktion durch $H^+$-Wanderung | **Kein Nebenprodukt** | Polyurethane (PUR), Epoxidharze (EP) | 2. Detailanalyse der Reaktionsmechanismen: - **1. Radikalische Polymerisation von Ethen zu Polyethylen**:   * *Startreaktion (Initiation)*: Peroxid zerfällt homolytisch: $R-O-O-R \\xrightarrow{\\Delta T} 2\\,R-O^\\bullet$. Das Radikal greift Ethen an:     $$R-O^\\bullet + \\text{CH}_2=\\text{CH}_2 \\rightarrow R-O-\\text{CH}_2-\\text{CH}_2^\\bullet$$   * *Kettenwachstum (Propagation)*: Fortlaufende rasche Addition weiterer Ethen-Moleküle:     $$R-O-(\\text{CH}_2-\\text{CH}_2)_n^\\bullet + \\text{CH}_2=\\text{CH}_2 \\rightarrow R-O-(\\text{CH}_2-\\text{CH}_2)_{n+1}^\\bullet$$   * *Kettenabbruch (Termination)*: Zwei wachsende Polymerketten stoßen zusammen und rekombinieren. - **2. Polykondensation am Beispiel Nylon-6,6 (Polyamid-6,6)**:   * Verknüpfung der Dicarbonsäure Hexandisäure (Adipinsäure) mit dem Diamin Hexan-1,6-diamin über **Amidbindungen**:     $$n\\,\\text{HOOC}-(\\text{CH}_2)_4-\\text{COOH} + n\\,\\text{H}_2\\text{N}-(\\text{CH}_2)_6-\\text{NH}_2 \\rightarrow \\mathbf{-[\\text{CO}-(\\text{CH}_2)_4-\\text{CO}-\\text{NH}-(\\text{CH}_2)_6-\\text{NH}]_n-} + (2n-1)\\,\\mathbf{\\text{H}_2\\text{O}}$$ - **3. Polyaddition zu Polyurethan (PUR)**:   * Reaktion von Diisocyanaten mit Diolen: Das acide Proton der Hydroxygruppe wandert zum Stickstoff, während der Sauerstoff an das Carbonylkohlenstoffatom bindet:     $$n\\,\\text{O}=\\text{C}=\\text{N}-\\text{R}-\\text{N}=\\text{C}=\\text{O} + n\\,\\text{HO}-\\text{R}'-\\text{OH} \\rightarrow \\mathbf{-[\\text{CO}-\\text{NH}-\\text{R}-\\text{NH}-\\text{CO}-\\text{O}-\\text{R}'-\\text{O}]_n-}}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GB9000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB9000000000000000A02",
+      "namespace": "gymnasium-chemie-werkstoffe",
+      "slug": "struktur-eigenschaften-thermoplaste-duroplaste-elastomere-recycling",
+      "title": "Werkstoffklassen: Thermoplaste, Duroplaste, Elastomere und Kunststoff-Recycling",
+      "domain": "schule/chemie/werkstoffe",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB9000000000000000A01",
+          "type": "hard",
+          "rationale": "Werkstoffeigenschaften resultieren aus dem molekularen Vernetzungsgrad."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Plastic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Werkstoffklassen der Kunststoffe und Recycling",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB9000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Werkstoffklasse von Kunststoffen lässt sich durch Erwärmen wiederholt verflüssigen, thermoplastisch verformen und vollständig werkstofflich recyceln?",
+          "concept": "Thermoplaste (bestehen aus unvernetzten, linearen oder verzweigten Polymerketten, die nur durch zwischenmolekulare Kräfte wie Van-der-Waals-Kräfte zusammengehalten werden)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Thermoplaste (wiederholt schmelz- und formbar)",
+              "Duroplaste"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB9000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Struktur-Eigenschafts-Beziehungen der drei großen Kunststoffklassen und Recyclingstrategien: 1. **Die drei Kunststoffklassen im Vergleich**:   * **1. Thermoplaste**:     - *Molekulare Struktur*: Lineare oder wenig verzweigte Makromoleküle, zusammengehalten durch reversible **zwischenmolekulare Kräfte** (Van-der-Waals-Kräfte, Dipol-Kräfte, Wasserstoffbrücken).     - *Thermisches Verhalten*: Bei Erwärmung lösen sich die zwischenmolekularen Kräfte $\\implies$ erweicht, schmilzt reversibel, verformbar (z. B. PE, PP, PET, PVC).   * **2. Duroplaste (Duromere)**:     - *Molekulare Struktur*: Durch **kovalente Atombindungen dreidimensional engmaschig vernetzte** Riesenmoleküle.     - *Thermisches Verhalten*: Bleiben bei Erwärmung hart und formstabil bis zur thermischen Zersetzung (Verkohlung); nicht schmelzbar, unlöslich (z. B. Bakelit, Melaminharze, Epoxidharzkleber).   * **3. Elastomere**:     - *Molekulare Struktur*: Durch kovalente Bindungen **weitmaschig vernetzte** Makromoleküle (z. B. vulkanisierter Kautschuk mit Schwefelbrücken).     - *Mechanisches Verhalten*: Gummielastisch (unter Zugbelastung entknäueln sich die Ketten; nach Entlastung federn sie durch Entropie-Elastizität in die Knäuelform zurück); nicht schmelzbar, 2. **Recyclingverfahren für Kunststoffe**:   * **Werkstoffliches Recycling (Mechanisch)**: Sortenreine Zerkleinerung, Aufschmelzen und Regranulierung von Thermoplasten (z. B. PET-Flaschenkreislauf).   * **Rohstoffliches Recycling (Chemisch)**: Pyrolyse oder Solvolyse / Hydrolyse zur Rückgewinnung von Monomeren oder Synthesegas.   * **Thermisches Recycling (Energetische Verwertung)**: Verbrennung in Müllverbrennungsanlagen / Zementwerken zur Strom- und Wärmeerzeugung (Nutzung des hohen Heizwerts).",
+          "concept": "Werkstoffchemie: Thermoplaste (linear/verzweigt, zwischenmolekulare Kräfte, schmelzbar); Duroplaste (engmaschig kovalent vernetzt, unschmelzbar/Zersetzung); Elastomere (weitmaschig vernetzt, gummielastisch); 3 Recyclingwege: Werkstofflich, Rohstofflich, Thermisch.",
+          "sample_solution": "1. Struktur-Eigenschafts-Beziehungen der Kunststoffklassen: ```mermaid graph TD   A[Synthetische Makromoleküle] --> B[1. Thermoplaste: Lineare Ketten mit Van-der-Waals-Kräften]   A --> C[2. Duroplaste: Engmaschige kovalente 3D-Vernetzung]   A --> D[3. Elastomere: Weitmaschige kovalente Vernetzung]   B --> B1[Schmelzbar, plastisch verformbar, lösbar in Lösungsmitteln]   C --> C1[Hart, spröde, unschmelzbar, unlöslich, zersetzt sich bei Hitze]   D --> D1[Gummielastisch, formstabil bei Raumtemperatur, nicht schmelzbar] ``` 2. Die drei Werkstoffklassen im Detail: - **1. Thermoplaste (Plastomere)**:   * *Beispiele*: Polyethylen (PE-HD für Rohre, PE-LD für Folien), Polypropylen (PP), PET (Getränkeflaschen).   * *Ursache des Verhaltens*: Da die Polymerstränge nicht durch kovalente Bindungen verknüpft sind, überwindet thermische Schwingungsenergie die zwischenmolekularen Anziehungskräfte $\\implies$ Ketten gleiten aneinander vorbei $\\implies$ beliebig oft schmelz- und spritzgießbar. - **2. Duroplaste (Duromere)**:   * *Beispiele*: Steckdosenabdeckungen (Bakelit), Topfgriffe, Leiterplatten (Epoxidharz), Küchenarbeitsplatten (Resopal).   * *Ursache*: Das gesamte Werkstück ist praktisch ein einziges gigantisches kovalentes Riesenmolekül. Erwärmung kann keine Ketten verschieben, sondern führt bei hohen Temperaturen direkt zum kovalenten Bindungsbruch (Zersetzung und Verkohlung). - **3. Elastomere**:   * *Beispiele*: Autoreifen, Dichtungsringe, Einweckgummis (vulkanisierter Natur- oder Synthesekautschuk).   * *Entropie-Elastizität*: In Ruhe liegen die Polymerketten statistisch verknäult vor (hohe Entropie). Bei Zugspannung werden sie gestreckt (niedrige Entropie). Nach dem Loslassen zieht die Entropiezunahme die Moleküle schlagartig in den Knäuelzustand zurück. 3. Recycling und Kreislaufwirtschaft: - **1. Werkstoffliches Recycling (Mechanisch)**:   * Funktioniert nur bei **Thermoplasten**. Kunststoffabfälle werden nach Polymerarten sortiert (z. B. durch Nahinfrarot-Spektroskopie NIR), geschreddert, gewaschen, aufgeschmolzen und zu neuem Granulat verarbeitet (z. B. *Bottle-to-Bottle-Recycling* bei PET). - **2. Rohstoffliches Recycling (Chemisches Recycling)**:   * Chemische Spaltung der Polymere in ihre Ausgangsmonomere (z. B. Glykolyse von PET) oder thermochemische Umwandlung (Pyrolyse bei $> 500^\\circ\\text{C}$ unter Sauerstoffausschluss) zu Pyrolyseöl und Synthesegas. Ermöglicht das Recycling stark verschmutzter Mischkunststoffe. - **3. Thermische Verwertung (Energetisches Recycling)**:   * Kunststoffe besitzen wegen ihrer Kohlenwasserstoffstruktur einen Heizwert, der dem von Heizöl oder Steinkohle entspricht. Verbrennung in Müllheizkraftwerken zur Fernwärme- und Stromerzeugung ersetzt Primärenergieträger."
+        }
+      ]
+    }
+  ]
+}

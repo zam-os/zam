@@ -85,7 +85,8 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
 
   it("installs and enrols cleanly into BwR 9 Umsatzsteuer und AfA", async () => {
     const user = "learner-rs9-bwr";
-    const cellId = "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer";
+    const cellId =
+      "de-by:realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
@@ -98,7 +99,8 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
 
   it("installs and enrols cleanly into Französisch 9 Imparfait und Objektpronomen", async () => {
     const user = "learner-rs9-fra";
-    const cellId = "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
+    const cellId =
+      "de-by:realschule-9-franzoesisch-imparfait-futur-objektpronomen";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);

@@ -8,11 +8,15 @@ import {
 describe("PostgreSQL provider helpers", () => {
   it("translates ? placeholders to $1, $2, ... outside string literals", () => {
     expect(
-      translatePlaceholders("SELECT * FROM tokens WHERE slug = ? AND domain = ?"),
+      translatePlaceholders(
+        "SELECT * FROM tokens WHERE slug = ? AND domain = ?",
+      ),
     ).toBe("SELECT * FROM tokens WHERE slug = $1 AND domain = $2");
 
     expect(
-      translatePlaceholders("SELECT 'is this ? a question' AS text, ? AS param"),
+      translatePlaceholders(
+        "SELECT 'is this ? a question' AS text, ? AS param",
+      ),
     ).toBe("SELECT 'is this ? a question' AS text, $1 AS param");
   });
 

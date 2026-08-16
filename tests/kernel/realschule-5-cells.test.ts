@@ -49,7 +49,10 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
 
     for (const cellId of RS5_CELL_IDS) {
       const cell = cells.find((c) => c.id === cellId);
-      expect(cell, `Cell ${cellId} should be present in bundled cells`).toBeDefined();
+      expect(
+        cell,
+        `Cell ${cellId} should be present in bundled cells`,
+      ).toBeDefined();
       expect(cell?.gradeLabel).toContain("Realschule");
       expect(cell?.atomCount).toBe(4);
       expect(cell?.inScopeAtomIds.length).toBe(4);
@@ -92,7 +95,8 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
 
   it("installs and enrols cleanly into NuT 5 Naturwissenschaftliches Arbeiten und Informatik", async () => {
     const userId = "01K4TESTUSER000000000000002";
-    const cellId = "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien";
+    const cellId =
+      "de-by:realschule-5-natur-technik-mikroskop-experiment-dateien";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
@@ -105,13 +109,18 @@ describe("Realschule Bayern 5 Curriculum Cells (Eingangsstufe)", () => {
       .all()) as Array<{ id: string; title: string; slug: string }>;
     expect(nutAtoms.length).toBeGreaterThanOrEqual(4);
     expect(
-      nutAtoms.some((a) => a.slug === "naturwissenschaftlicher-erkenntnisweg-experiment-kontrollansatz"),
+      nutAtoms.some(
+        (a) =>
+          a.slug ===
+          "naturwissenschaftlicher-erkenntnisweg-experiment-kontrollansatz",
+      ),
     ).toBe(true);
   });
 
   it("installs and enrols cleanly into Deutsch 5 Rechtschreibung und Wörtliche Rede", async () => {
     const userId = "01K4TESTUSER000000000000003";
-    const cellId = "de-by:realschule-5-deutsch-rechtschreibung-laute-woertliche-rede";
+    const cellId =
+      "de-by:realschule-5-deutsch-rechtschreibung-laute-woertliche-rede";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);

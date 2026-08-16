@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-mathematik-ganzrationale-funktionen-ableitung-differentialrechnung",
+  "version": "2026.08.1",
+  "title": "Mathematik 10: Ganzrationale Funktionen (Polynome) und Einstieg in die Differentialrechnung (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 10: Polynomfunktionen f(x) = a_n*x^n + ... + a_0 (Grad n, Globalverhalten x -> +-inf, Symmetrie zum Ursprung/zur y-Achse, Nullstellen und Vielfachheiten), Sekantensteigung (Differenzenquotient Delta y / Delta x), Tangentensteigung und Ableitung als Grenzwert (Differentialquotient f'(x_0) = lim h->0 (f(x_0+h)-f(x_0))/h) sowie elementare Ableitungsregeln (Potenzregel (x^n)' = n*x^(n-1), Faktorregel, Summenregel).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 10, Lernbereich Ganzrationale Funktionen und Ableitungsbegriff"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA2000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA2000000000000000A01",
+      "namespace": "gymnasium-mathematik-polynome",
+      "slug": "ganzrationale-funktionen-globalverhalten-symmetrie-nullstellen",
+      "title": "Ganzrationale Funktionen: Globalverhalten (Grenzwert), Symmetrie und Nullstellenvielfachheit",
+      "domain": "schule/mathematik/funktionen",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Polynomial",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ganzrationale Funktionen – Eigenschaften und Graphen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA2000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche algebraische Symmetriebedingung erfüllt der Graph einer Funktion $f(x)$, wenn er punktsymmetrisch zum Koordinatenursprung $(0|0)$ ist?",
+          "concept": "f(-x) = -f(x) für alle x im Definitionsbereich (nur ungerade Exponenten bei Polynomen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f(-x) = -f(x) (Punktsymmetrie zum Ursprung)",
+              "f(-x) = f(x) (Achsensymmetrie zur y-Achse)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA2000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere ganzrationale Funktionen (Polynome) systematisch: 1. **Allgemeine Form & Grad**:   $$\\mathbf{f(x) = a_n x^n + a_{n-1} x^{n-1} + \\dots + a_1 x + a_0} \\quad (a_n \\neq 0, n \\in \\mathbb{N}_0)$$   * Leitkoeffizient $a_n$ und Grad $n$ bestimmen das **Globalverhalten für $x \\rightarrow \\pm \\infty$** (dominanter Summand $a_n x^n$), 2. **Symmetriekriterien**:   * **Achsensymmetrie zur $y$-Achse**: $f(-x) = f(x) \\iff$ Polynom enthält **ausschließlich gerade Exponenten** von $x$ (inkl. $a_0 = a_0 x^0$).   * **Punktsymmetrie zum Ursprung $(0|0)$**: $f(-x) = -f(x) \\iff$ Polynom enthält **ausschließlich ungerade Exponenten** von $x$, 3. **Nullstellen und ihre Vielfachheit**:   * Zerlegung in Linearfaktoren: $f(x) = a_n (x - x_1)^{k_1} (x - x_2)^{k_2} \\dots$   * **Einfache Nullstelle ($k = 1$)**: Graph schneidet die $x$-Achse geradlinig.   * **Doppelte/gerade Nullstelle ($k = 2, 4$)**: Graph berührt die $x$-Achse ohne Vorzeichenwechsel (Extrempunkt).   * **Dreifache/ungerade Nullstelle ($k = 3, 5$)**: Graph schneidet mit Sattelpunkt (Terrassenpunkt) und Vorzeichenwechsel.",
+          "concept": "Ganzrationale Funktionen: Grad n und Leitkoeffizient bestimmen Globalverhalten; Symmetrie (gerade Exponenten -> achsensymmetrisch f(-x)=f(x); ungerade Exponenten -> punktsymmetrisch f(-x)=-f(x)); Nullstellenvielfachheit k (k=1 Schnitt, k=2 Berührung/Extremum, k=3 Sattelpunkt).",
+          "sample_solution": "1. Struktur ganzrationaler Funktionen (Polynomfunktionen): - **Funktionsterm**:   $$\\mathbf{f(x) = a_n x^n + a_{n-1} x^{n-1} + \\dots + a_1 x + a_0} \\quad (n \\in \\mathbb{N}_0, a_n \\neq 0)$$ - **Globalverhalten (Verhalten im Unendlichen)**:   * Für $|x| \\rightarrow \\infty$ bestimmt allein der Summand mit der höchsten Potenz $\\mathbf{a_n x^n}$ das Grenzverhalten:     * **$n$ gerade, $a_n > 0$**: $\\lim_{x \\rightarrow \\pm\\infty} f(x) = +\\infty$ (*von II nach I*).     * **$n$ gerade, $a_n < 0$**: $\\lim_{x \\rightarrow \\pm\\infty} f(x) = -\\infty$ (*von III nach IV*).     * **$n$ ungerade, $a_n > 0$**: $\\lim_{x \\rightarrow -\\infty} f(x) = -\\infty, \\lim_{x \\rightarrow +\\infty} f(x) = +\\infty$ (*von III nach I*).     * **$n$ ungerade, $a_n < 0$**: $\\lim_{x \\rightarrow -\\infty} f(x) = +\\infty, \\lim_{x \\rightarrow +\\infty} f(x) = -\\infty$ (*von II nach IV*). 2. Symmetrieeigenschaften: - **1. Achsensymmetrie zur $y$-Achse**:   $$\\mathbf{f(-x) = f(x)} \\quad \\forall x \\in \\mathbb{D}_f$$   * Bei Polynomen: Tritt genau dann auf, wenn **nur gerade Potenzen** von $x$ vorkommen (z. B. $f(x) = 2x^4 - 5x^2 + 7$). - **2. Punktsymmetrie zum Koordinatenursprung**:   $$\\mathbf{f(-x) = -f(x)} \\quad \\forall x \\in \\mathbb{D}_f$$   * Bei Polynomen: Tritt genau dann auf, wenn **nur ungerade Potenzen** von $x$ vorkommen und kein absolutes Glied existiert ($a_0 = 0$, z. B. $f(x) = x^5 - 4x^3 + 2x$). 3. Nullstellen und geometrische Vielfachheit: - Ist $x_0$ eine Nullstelle der Vielfachheit $k$ ($f(x) = (x - x_0)^k \\cdot g(x)$ mit $g(x_0) \\neq 0$):   * **$k = 1$ (einfache Nullstelle)**: Der Graph schneidet die $x$-Achse mit von Null verschiedener Steigung (Vorzeichenwechsel von $-$ nach $+$ oder $+$ nach $-$).   * **$k = 2$ (doppelte Nullstelle)**: Der Graph **berührt** die $x$-Achse im Scheitelpunkt einer Parabel ohne Vorzeichenwechsel (lokales Minimum oder Maximum).   * **$k = 3$ (dreifache Nullstelle)**: Der Graph besitzt einen **Terrassenpunkt (Sattelpunkt)** auf der $x$-Achse (horizontale Tangente mit Vorzeichenwechsel)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GA2000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA2000000000000000A02",
+      "namespace": "gymnasium-mathematik-differentialrechnung",
+      "slug": "ableitung-differenzenquotient-differentialquotient-ableitungsregeln",
+      "title": "Differentialrechnung: Differenzenquotient, Ableitung als Tangentensteigung und Ableitungsregeln",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA2000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Ableitung wird an ganzrationalen Funktionen eingeführt."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Derivative",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Einstieg in die Differentialrechnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA2000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die 1. Ableitung der Potenzfunktion $f(x) = x^n$ nach der elementaren Potenzregel der Differentialrechnung?",
+          "concept": "f'(x) = n * x^(n-1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = n * x^(n-1)",
+              "f'(x) = x^(n+1) / (n+1)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA2000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Grenzübergang von der Sekantensteigung zur Ableitung und die elementaren Ableitungsregeln: 1. **Mittlere Änderungsrate (Differenzenquotient / Sekantensteigung)**:   * In einem Intervall $[x_0; x_0 + h]$:     $$\\mathbf{m_{\\text{Sekante}} = \\frac{\\Delta y}{\\Delta x} = \\frac{f(x_0 + h) - f(x_0)}{h}}$$ 2. **Lokale Änderungsrate (Differentialquotient / Ableitung / Tangentensteigung)**:   * Grenzwert des Differenzenquotienten für $h \\rightarrow 0$:     $$\\mathbf{f'(x_0) = \\lim_{h \\rightarrow 0} \\frac{f(x_0 + h) - f(x_0)}{h}}$$   * Geometrische Bedeutung: Steigung der Tangente an den Graphen von $f$ an der Stelle $x_0$, 3. **Die elementaren Ableitungsregeln**:   * **Potenzregel**: $(x^n)' = n \\cdot x^{n-1}$ (für alle $n \\in \\mathbb{R}$).   * **Konstantenregel**: $(c)' = 0$.   * **Faktorregel**: $(c \\cdot f(x))' = c \\cdot f'(x)$.   * **Summenregel**: $(f(x) + g(x))' = f'(x) + g'(x)$, 4. Bestimme die 1. Ableitung der Funktion $f(x) = 4x^3 - 5x^2 + 7x - 9$ und berechne die Tangentensteigung an der Stelle $x_0 = 2$.",
+          "concept": "Differentialrechnung: Differenzenquotient Delta y / Delta x; Differentialquotient f'(x0) = lim h->0 (f(x0+h)-f(x0))/h (Tangentensteigung); Potenzregel (x^n)' = n*x^(n-1); Faktor- & Summenregel; Rechnung: f'(x) = 12x^2 - 10x + 7; f'(2) = 12*4 - 20 + 7 = 48 - 20 + 7 = 35.",
+          "sample_solution": "1. Der Begriff der Ableitung (Gottfried Wilhelm Leibniz & Isaac Newton): - **1. Mittlere Änderungsrate (Differenzenquotient)**:   * Steigung der Sekante durch die Punkte $P(x_0 \\mid f(x_0))$ und $Q(x_0 + h \\mid f(x_0 + h))$:     $$\\mathbf{m_{\\text{Sekante}} = \\frac{\\Delta y}{\\Delta x} = \\frac{f(x_0 + h) - f(x_0)}{h}}$$   * *Beispiel Physik*: Durchschnittsgeschwindigkeit $\\bar{v} = \\frac{\\Delta s}{\\Delta t}$. - **2. Lokale (momentane) Änderungsrate (Differentialquotient)**:   * Lässt man den Abstand $h$ gegen 0 streben ($h \\rightarrow 0$), rückt der Punkt $Q$ unendlich nah an $P$ heran. Die Sekante geht in die **Tangente** über:     $$\\mathbf{f'(x_0) = \\lim_{h \\rightarrow 0} \\frac{f(x_0 + h) - f(x_0)}{h}}$$   * *Geometrisch*: $\\mathbf{f'(x_0) = m_{\\text{Tangente}} = \\tan(\\alpha)}$ (Steigung des Funktionsgraphen im Punkt $x_0$).   * *Physikalisch*: Momentangeschwindigkeit $v(t) = s'(t) = \\dot{s}(t)$. 2. Die fundamentalen Ableitungsregeln für Polynome: - **1. Potenzregel**:   $$\\mathbf{(x^n)' = n \\cdot x^{n-1}} \\quad (\\text{z. B. } (x^3)' = 3x^2, \\; (x)' = 1, \\; (x^{-1})' = -x^{-2}, \\; (\\sqrt{x})' = \\frac{1}{2\\sqrt{x}})$$ - **2. Konstantenregel**:   $$\\mathbf{(c)' = 0} \\quad (c \\in \\mathbb{R})$$ - **3. Faktorregel**:   $$\\mathbf{(c \\cdot f(x))' = c \\cdot f'(x)}$$ - **4. Summenregel**:   $$\\mathbf{(f(x) + g(x))' = f'(x) + g'(x)}$$ 3. Durchrechnung des Beispiels ($f(x) = 4x^3 - 5x^2 + 7x - 9$ an der Stelle $x_0 = 2$): - **Schritt 1: Bestimmung der 1. Ableitungsfunktion $f'(x)$**:   $$f'(x) = 4 \\cdot (3x^2) - 5 \\cdot (2x) + 7 \\cdot (1) - 0 = \\mathbf{12x^2 - 10x + 7}$$ - **Schritt 2: Einsetzen der Stelle $x_0 = 2$**:   $$f'(2) = 12 \\cdot (2)^2 - 10 \\cdot (2) + 7 = 12 \\cdot 4 - 20 + 7 = 48 - 20 + 7 = \\mathbf{35}$$ - **Interpretation**: An der Stelle $x_0 = 2$ steigt der Graph mit einer Tangentensteigung von $m = 35$ (Steigungswinkel $\\alpha = \\arctan(35) \\approx 88{,}36^\\circ$)."
+        }
+      ]
+    }
+  ]
+}

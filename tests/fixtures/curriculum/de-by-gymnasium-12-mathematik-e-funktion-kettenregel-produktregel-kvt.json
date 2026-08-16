@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel",
+  "version": "2026.08.1",
+  "title": "Mathematik 12: Analysis – Natürliche Exponentialfunktion, Logarithmusfunktion, Ketten- und Produktregel (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 12 (Oberstufe Q12): Die natürliche Exponentialfunktion f(x) = e^x (Eulersche Zahl e ca. 2.71828, charakteristische Eigenschaft (e^x)' = e^x, Monotonie, Grenzwerte im Unendlichen) und die natürliche Logarithmusfunktion f(x) = ln(x) als Umkehrfunktion (Ableitung (ln x)' = 1/x, Logarithmengesetze), Fortgeschrittene Differentiationsregeln (Produktregel (u * v)' = u' * v + u * v', Quotientenregel (u / v)' = (u' * v - u * v') / v^2, Kettenregel (f(g(x)))' = f'(g(x)) * g'(x) mit innerer und äußerer Ableitung), Kurvendiskussion von Exponentialfunktionen (Extrema, Wendepunkte, Asymptoten, Verhalten an Definitionsrändern) sowie Integralrechnung mit e-Funktionen (Stammfunktion von e^(a*x+b), lineare Substitution und uneigentliche Integrale bis ins Unendliche).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 12, Lernbereich Analysis – Exponential- und Logarithmusfunktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC0000000000000000A01",
+      "namespace": "gymnasium-mathematik-e-funktion",
+      "slug": "e-funktion-ln-funktion-kettenregel-produktregel",
+      "title": "Analysis 12: Natürliche Exponential- & Logarithmusfunktion, Ketten- und Produktregel",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Exponential function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Analysis – Exponentialfunktionen und Ableitungsregeln",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die 1. Ableitung der Funktion $f(x) = (2x - 3) \\cdot e^{-x}$ nach Produkt- und Kettenregel?",
+          "concept": "f'(x) = 2 * e^(-x) + (2x - 3) * (-e^(-x)) = e^(-x) * (2 - 2x + 3) = (5 - 2x) * e^(-x)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "f'(x) = (5 - 2x) * e^(-x)",
+              "f'(x) = 2 * e^(-x)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Untersuche die Funktion $f(x) = (x^2 - 4) \\cdot e^{-x}$ auf ihrem maximalen Definitionsbereich $\\mathbb{D} = \\mathbb{R}$: 1. Bestimme alle **Nullstellen** von $f(x)$, 2. Berechne die **1. und 2. Ableitung** $f'(x)$ und $f''(x)$ unter Ausklammern von $e^{-x}$, 3. Ermittle alle **lokalen Extrempunkte** (Hoch-/Tiefpunkte mit $x$- und $y$-Koordinaten sowie Nachweis über $f''$), 4. Untersuche das **Grenzverhalten** für $x \\to +\\infty$ und $x \\to -\\infty$.",
+          "concept": "Kurvendiskussion e-Funktion: Nullstellen x1=2, x2=-2; f'(x) = (-x^2 + 2x + 4)*e^(-x); f''(x) = (x^2 - 4x + 2)*e^(-x); Extremstellen x = 1 +- sqrt(5); Grenzwerte: lim x->+oo f(x) = 0 (Dominanz der e-Funktion), lim x->-oo f(x) = +oo.",
+          "sample_solution": "1. Nullstellen von $f(x)$: - Ansatz: $f(x) = 0 \\iff (x^2 - 4) \\cdot e^{-x} = 0$. - Da $e^{-x} > 0$ für alle $x \\in \\mathbb{R}$, kann nur der Klammerausdruck Null werden:   $$x^2 - 4 = 0 \\implies x^2 = 4 \\implies \\mathbf{x_1 = 2, \\quad x_2 = -2}$$ - Die Schnittpunkte mit der $x$-Achse lauten $N_1(2|0)$ und $N_2(-2|0)$. 2. Ableitungen mit Produkt- und Kettenregel: - Für $f(x) = u(x) \\cdot v(x)$ mit $u(x) = x^2 - 4 \\implies u'(x) = 2x$ und $v(x) = e^{-x} \\implies v'(x) = -e^{-x}$: - **1. Ableitung $f'(x)$**:   $$\\begin{aligned}     f'(x) &= u'(x) \\cdot v(x) + u(x) \\cdot v'(x) \\\\           &= 2x \\cdot e^{-x} + (x^2 - 4) \\cdot (-e^{-x}) \\\\           &= e^{-x} \\cdot \\left[ 2x - (x^2 - 4) \\right] = \\mathbf{(-x^2 + 2x + 4) \\cdot e^{-x}}   \\end{aligned}$$ - **2. Ableitung $f''(x)$**:   * Mit $u_1(x) = -x^2 + 2x + 4 \\implies u_1'(x) = -2x + 2$ und $v_1(x) = e^{-x} \\implies v_1'(x) = -e^{-x}$:   $$\\begin{aligned}     f''(x) &= (-2x + 2) \\cdot e^{-x} + (-x^2 + 2x + 4) \\cdot (-e^{-x}) \\\\           &= e^{-x} \\cdot \\left[ -2x + 2 + x^2 - 2x - 4 \\right] = \\mathbf{(x^2 - 4x - 2) \\cdot e^{-x}}   \\end{aligned}$$ 3. Lokale Extrempunkte: - Notwendige Bedingung: $f'(x) = 0 \\iff -x^2 + 2x + 4 = 0 \\iff x^2 - 2x - 4 = 0$. - Mit Mitternachtsformel:   $$\\mathbf{x_{1,2} = \\frac{2 \\pm \\sqrt{4 - 4(1)(-4)}}{2} = \\frac{2 \\pm \\sqrt{20}}{2} = 1 \\pm \\sqrt{5}} \\quad (x_1 \\approx 3{,}236; \\; x_2 \\approx -1{,}236)$$ - Hinreichende Bedingung über $f''(x)$:   * Für $x_1 = 1 + \\sqrt{5}$:     $$f''(1+\\sqrt{5}) = ((1+\\sqrt{5})^2 - 4(1+\\sqrt{5}) - 2) \\cdot e^{-(1+\\sqrt{5})} = (6 + 2\\sqrt{5} - 4 - 4\\sqrt{5} - 2) \\cdot e^{-(1+\\sqrt{5})} = -2\\sqrt{5} \\cdot e^{-(1+\\sqrt{5})} < 0$$     $\\implies$ **Lokales Maximum (Hochpunkt)** bei $x_1 = 1 + \\sqrt{5}$.   * Für $x_2 = 1 - \\sqrt{5}$:     $$f''(1-\\sqrt{5}) = +2\\sqrt{5} \\cdot e^{-(1-\\sqrt{5})} > 0 \\implies \\mathbf{\\text{Lokales Minimum (Tiefpunkt)}} \\text{ bei } x_2 = 1 - \\sqrt{5}.$$ 4. Grenzverhalten an den Rändern: - **Für $x \\to +\\infty$**:   $$\\lim_{x \\to +\\infty} (x^2 - 4) \\cdot e^{-x} = \\lim_{x \\to +\\infty} \\frac{x^2 - 4}{e^x} = \\mathbf{0}$$   *(Die e-Funktion wächst im Nenner asymptotisch viel schneller als jedes Polynom $\\implies$ Die $x$-Achse $y = 0$ ist waagrechte Asymptote für $x \\to +\\infty$)*. - **Für $x \\to -\\infty$**:   $$\\lim_{x \\to -\\infty} (x^2 - 4) \\cdot e^{-x} = (+\\infty) \\cdot (+\\infty) = \\mathbf{+\\infty}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GC0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC0000000000000000A02",
+      "namespace": "gymnasium-mathematik-rotationskoerper",
+      "slug": "uneigentliche-integrale-rotationskoerper-volumen",
+      "title": "Integralrechnung 12: Uneigentliche Integrale und Rotationskörper um die x-Achse",
+      "domain": "schule/mathematik/integralrechnung",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC0000000000000000A01",
+          "type": "hard",
+          "rationale": "Rotationsvolumina und uneigentliche Integrale basieren auf e-Funktionen und Stammfunktionsregeln."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Solid of revolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Analysis – Uneigentliche Integrale und Rotationskörper",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die exakte Integralformel zur Berechnung des Volumens $V_x$ eines Rotationskörpers, der durch Rotation des Graphen einer stetigen Funktion $f(x)$ im Intervall $[a; b]$ um die $x$-Achse entsteht?",
+          "concept": "V_x = pi * Integral von a bis b über [f(x)]^2 dx",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V_x = pi * Integral von a bis b über [f(x)]^2 dx",
+              "V_x = 2 * pi * Integral von a bis b über f(x) dx"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere uneigentliche Integrale und Rotationskörper: 1. **Das uneigentliche Integral ins Unendliche**:   * Definiert als Grenzwert einer Integralfunktion:     $$\\mathbf{\\int_a^\\infty f(x)\\,\\mathrm{d}x = \\lim_{z \\to \\infty} \\int_a^z f(x)\\,\\mathrm{d}x}$$   * Existiert der endliche Grenzwert, so **konvergiert** das uneigentliche Integral; andernfalls divergiert es, 2. **Der Rotationskörper um die $x$-Achse**:   * Rotation der Kreisquerschnittsflächen mit Radius $r = f(x) \\implies A(x) = \\pi \\cdot [f(x)]^2$:     $$\\mathbf{V_x = \\pi \\int_a^b [f(x)]^2\\,\\mathrm{d}x}$$ 3. **Konkrete Durchrechnung**:   * Gegeben ist $f(x) = 2 \\cdot e^{-0{,}5 x}$ über dem unbeschränkten Intervall $[0; +\\infty[$.   * a) Berechne die vom Graphen und den Koordinatenachsen vollständig eingeschlossene unendliche Fläche $A = \\int_0^\\infty f(x)\\,\\mathrm{d}x$.   * b) Berechne das Volumen $V_x$ des unendlich langen Rotationskörpers, der bei Rotation dieser Fläche um die $x$-Achse entsteht.",
+          "concept": "Uneigentliche Integrale: Grenzwert lim z->oo Integral_a^z f(x) dx; Rotationsvolumen V_x = pi * Integral [f(x)]^2 dx; Rechnung: a) Fläche A = lim z->oo [-4*e^(-0,5x)]_0^z = 4 FE; b) Volumen V = pi * Integral_0^oo 4*e^(-x) dx = 4*pi VE.",
+          "sample_solution": "1. Uneigentliche Integrale und Konvergenz: - Ein Integral heißt uneigentlich, wenn mindestens eine Integrationsgrenze unendlich ist ($\\pm\\infty$) oder der Integrand an einer Stelle im Intervall eine Polstelle/Definitionslücke besitzt. - **Berechnung über Limesbildung**:   $$\\mathbf{\\int_0^\\infty f(x)\\,\\mathrm{d}x = \\lim_{z \\to \\infty} \\left[ F(x) \\right]_0^z = \\lim_{z \\to \\infty} (F(z) - F(0))}$$ 2. Berechnung der Fläche für $f(x) = 2 \\cdot e^{-0{,}5 x}$: - Stammfunktion: $F(x) = \\int 2 \\cdot e^{-0{,}5 x}\\,\\mathrm{d}x = 2 \\cdot \\frac{1}{-0{,}5} e^{-0{,}5 x} = \\mathbf{-4 \\cdot e^{-0{,}5 x}}$. - Flächenberechnung:   $$\\begin{aligned}     A &= \\int_0^\\infty 2\\cdot e^{-0{,}5 x}\\,\\mathrm{d}x = \\lim_{z \\to \\infty} \\left[ -4 e^{-0{,}5 x} \\right]_0^z \\\\       &= \\lim_{z \\to \\infty} \\left( -4 e^{-0{,}5 z} - (-4 e^0) \\right) \\\\       &= \\lim_{z \\to \\infty} \\left( -\\frac{4}{e^{0{,}5 z}} + 4 \\right) = 0 + 4 = \\mathbf{4\\,\\text{Flächeneinheiten (FE)}}   \\end{aligned}$$ 3. Berechnung des Rotationsvolumens $V_x$: - Für die Rotation um die $x$-Achse quadrieren wir die Funktion:   $$[f(x)]^2 = (2 \\cdot e^{-0{,}5 x})^2 = 4 \\cdot (e^{-0{,}5 x})^2 = \\mathbf{4 \\cdot e^{-x}}$$ - Berechnung des uneigentlichen Rotationsvolumens:   $$\\begin{aligned}     V_x &= \\pi \\int_0^\\infty [f(x)]^2\\,\\mathrm{d}x = \\pi \\lim_{z \\to \\infty} \\int_0^z 4 e^{-x}\\,\\mathrm{d}x \\\\         &= 4\\pi \\lim_{z \\to \\infty} \\left[ -e^{-x} \\right]_0^z \\\\         &= 4\\pi \\lim_{z \\to \\infty} \\left( -e^{-z} - (-e^0) \\right) \\\\         &= 4\\pi \\lim_{z \\to \\infty} \\left( -\\frac{1}{e^z} + 1 \\right) = 4\\pi \\cdot (0 + 1) = \\mathbf{4\\pi \\approx 12{,}566\\,\\text{Volumeneinheiten (VE)}}   \\end{aligned}$$"
+        }
+      ]
+    }
+  ]
+}

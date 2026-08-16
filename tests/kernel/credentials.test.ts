@@ -252,9 +252,7 @@ describe("vault references", () => {
 
   it("accessor before resolveCredentials returns literals and warns once", async () => {
     const path = tempCredsPath();
-    registerSecretBackend(
-      stubBackend("bw", async () => "from-vault"),
-    );
+    registerSecretBackend(stubBackend("bw", async () => "from-vault"));
 
     writeFileSync(
       path,
@@ -271,10 +269,12 @@ describe("vault references", () => {
     );
 
     const stderr: string[] = [];
-    const spy = vi.spyOn(process.stderr, "write").mockImplementation((chunk) => {
-      stderr.push(String(chunk));
-      return true;
-    });
+    const spy = vi
+      .spyOn(process.stderr, "write")
+      .mockImplementation((chunk) => {
+        stderr.push(String(chunk));
+        return true;
+      });
 
     // Before resolve: ref → null, literal → works, one warning.
     expect(getTursoCredentials(path)).toBeNull();
@@ -284,9 +284,7 @@ describe("vault references", () => {
 
     const warnings = stderr.join("");
     expect(warnings).toMatch(/before resolveCredentials/i);
-    expect(
-      warnings.split("before resolveCredentials").length - 1,
-    ).toBe(1);
+    expect(warnings.split("before resolveCredentials").length - 1).toBe(1);
 
     await resolveCredentials(path);
     expect(getTursoCredentials(path)?.token).toBe("from-vault");
@@ -301,10 +299,12 @@ describe("vault references", () => {
       path,
     );
     const stderr: string[] = [];
-    const spy = vi.spyOn(process.stderr, "write").mockImplementation((chunk) => {
-      stderr.push(String(chunk));
-      return true;
-    });
+    const spy = vi
+      .spyOn(process.stderr, "write")
+      .mockImplementation((chunk) => {
+        stderr.push(String(chunk));
+        return true;
+      });
     await resolveCredentials(path);
     spy.mockRestore();
 

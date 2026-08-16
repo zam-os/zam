@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble",
+  "version": "2026.08.1",
+  "title": "Physik 13: Astrophysik & Kosmologie – Strahlung, HRD, Sternentwicklung und Hubble-Expansion (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 13 (Oberstufe Biophysik/Astrophysik Q13 / Abitur): Grundlagen astrophysikischer Beobachtung (Elektromagnetisches Spektrum, Astronomische Entfernungsbestimmung: Trigonometrische Parallaxe p in Bogensekunden mit r = 1/p Parsec, Standardkerzen / Cepheiden über Perioden-Leuchtkraft-Beziehung von Henrietta Leavitt, Supernovae Typ Ia; Strahlungsgesetze: Plancksches Strahlungsgesetz, Wiensches Verschiebungsgesetz lambda_max * T = 2,898 * 10^-3 m*K, Stefan-Boltzmann-Gesetz P = sigma * A * T^4, Spektralklassen O-B-A-F-G-K-M nach Harvard-Klassifikation), Das Hertzsprung-Russell-Diagramm (HRD) und Sternentwicklung (Hauptreihe mit Wasserstoffbrennen [Proton-Proton-Kette / CNO-Zyklus], Rote Riesen mit Heliumbrennen / Drei-Alpha-Prozess, Endstadien: Weißer Zwerg mit Chandrasekhar-Grenze 1,44 M_Sonne vs. Neutronenstern / Pulsar mit Tolman-Oppenheimer-Volkoff-Grenze vs. Schwarzes Loch mit Schwarzschild-Radius r_s = 2GM/c^2) sowie Kosmologie und Dynamik des Universums (Kosmologische Rotverschiebung z = Delta lambda / lambda_0, Hubble-Lemaître-Gesetz v = H_0 * r mit Hubble-Konstante H_0, Kosmische Hintergrundstrahlung CMB bei 2,725 K, Urknall-Modell, Dunkle Materie und Dunkle Energie).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Physik 13, Lernbereich Astrophysik und Kosmologie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD3000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD3000000000000000A01",
+      "namespace": "gymnasium-physik-astrophysik-hrd",
+      "slug": "strahlungsgesetze-hertzsprung-russell-diagramm-sternentwicklung",
+      "title": "Astrophysik: Strahlungsgesetze (Wien, Stefan-Boltzmann), HRD und Sternentwicklung",
+      "domain": "schule/physik/astrophysik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Hertzsprung–Russell diagram",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Astrophysik – Sternstrahlung und Hertzsprung-Russell-Diagramm",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD3000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche beiden physikalischen Hauptgrößen werden im Hertzsprung-Russell-Diagramm (HRD) gegeneinander aufgetragen, um Sternpopulationen und Entwicklungsphasen zu klassifizieren?",
+          "concept": "Leuchtkraft L (bzw. absolute Helligkeit M) auf der y-Achse gegen die effektive Oberflächentemperatur T (bzw. Spektralklasse O-B-A-F-G-K-M mit nach links steigender Temperatur) auf der x-Achse",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Leuchtkraft (y-Achse) gegen Oberflächentemperatur (x-Achse, nach links steigend)",
+              "Sternmasse gegen Entfernung von der Erde"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD3000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die thermischen Strahlungsgesetze, das HRD und die Lebenszyklen von Sternen: 1. **Strahlungsgesetze schwarzer Körper**:   * **Wiensches Verschiebungsgesetz**: $\\lambda_{\\text{max}} \\cdot T = b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}$ (Höhere Temperatur $\\implies$ Maximum verschiebt sich ins kurzwellige Blaue/UV).   * **Stefan-Boltzmann-Gesetz**: $P = \\sigma \\cdot A \\cdot T^4 = \\sigma \\cdot (4\\pi R^2) \\cdot T^4$ (mit $\\sigma \\approx 5{,}67 \\cdot 10^{-8}\\,\\frac{\\text{W}}{\\text{m}^2\\text{K}^4}$), 2. **Das Hertzsprung-Russell-Diagramm (HRD)**:   * **Hauptreihe**: $90\\,\\%$ aller Sterne; hydrostatisches Gleichgewicht (Gravitationsdruck = Strahlungsdruck) durch **Wasserstoffbrennen** im Kern.   * **Rote Riesen / Überriesen (oben rechts)**: Hohe Leuchtkraft bei kühler Oberfläche $\\implies$ enormer Radius $R$; Heliumbrennen (Drei-Alpha-Prozess).   * **Weiße Zwerge (unten links)**: Geringe Leuchtkraft bei extrem heißer Oberfläche $\\implies$ extrem kleiner Radius ($R \\approx R_{\\text{Erde}}$), 3. **Endstadien der Sternentwicklung in Abhängigkeit von der Masse**:   * $M < 8\\,M_\\odot$ (z. B. Sonne): Roter Riese $\\rightarrow$ Planetarischer Nebel $\\rightarrow$ **Weißer Zwerg** (stabilisiert durch entarteten Elektronendruck, **Chandrasekhar-Grenze $M \\le 1{,}44\\,M_\\odot$**).   * $8\\,M_\\odot < M < 25\\,M_\\odot$: Supernova Typ II $\\rightarrow$ **Neutronenstern** (stabilisiert durch entarteten Neutronendruck).   * $M > 25\\,M_\\odot$: Gravitationskollaps $\\rightarrow$ **Schwarzes Loch** (Singularität, Ereignishorizont mit Schwarzschild-Radius $r_s = \\frac{2GM}{c^2}$).",
+          "concept": "Astrophysik 12: Wien-Gesetz lambda_max*T = b; Stefan-Boltzmann P = sigma*4pi*R^2*T^4; HRD (Hauptreihe, Riesen, Weiße Zwerge); Endstadien (Weißer Zwerg / Chandrasekhar 1,44 M_Sonne, Neutronenstern, Schwarzes Loch / Schwarzschild-Radius).",
+          "sample_solution": "1. Physikalische Grundlagen der Sternstrahlung: - **1. Wiensches Verschiebungsgesetz (1893)**:   * Ermöglicht die berührungslose Bestimmung der **Oberflächentemperatur** eines Sterns aus dem Maximum seines kontinuierlichen Spektrums:     $$\\mathbf{T = \\frac{b}{\\lambda_{\\text{max}}}} \\quad \\text{mit } b = 2{,}898 \\cdot 10^{-3}\\,\\text{m}\\cdot\\text{K}$$   * *(Bsp.: Sonne mit $\\lambda_{\\text{max}} \\approx 500\\,\\text{nm}$ (grün-gelb) $\\implies T \\approx 5800\\,\\text{K}$)*. - **2. Stefan-Boltzmann-Gesetz (1879)**:   * Die von einer Kugeloberfläche ($A = 4\\pi R^2$) abgestrahlte Gesamtleistung (**Leuchtkraft $L$**) skaliert mit der 4. Potenz der Temperatur:     $$\\mathbf{L = 4\\pi R^2 \\cdot \\sigma \\cdot T^4}$$   * Kennt man Leuchtkraft $L$ und Temperatur $T$, lässt sich der Sternradius $R$ exakt berechnen. 2. Das Hertzsprung-Russell-Diagramm (HRD, 1910): ```mermaid graph TD   subgraph HRD     TopRight[Rote Riesen & Überriesen: Kalt aber riesig]     Main[Hauptreihe: H-Fusion im Kern, Sonne G2V]     BottomLeft[Weiße Zwerge: Heiß aber erdgroß]   end ``` - **Merkhilfe Spektralklassen**: *« Oh Be A Fine Girl/Guy, Kiss Me »* (Klassen O, B, A, F, G, K, M von $T > 30.000\\,\\text{K}$ [blau] bis $T < 3.500\\,\\text{K}$ [rot]). 3. Sternentwicklung und Endstadien: - **Hydrostatisches Gleichgewicht auf der Hauptreihe**:   * Ein stabiler Stern befindet sich im exakten Gleichgewicht: Der nach innen gerichtete **Gravitationsdruck** wird durch den nach außen drängenden **Strahlungs- und Gasdruck** der Kernfusionsreaktionen (Proton-Proton-Kette) kompensiert. - **Die Endstadien nach Erschöpfung des Brennstoffs**:   * **1. Sonnenähnliche Sterne ($M < 8\\,M_\\odot$)**:     - Nach Wasserstoff- und Heliumbrennen wird die Hülle als *Planetarischer Nebel* abgestoßen.     - Der Kern kühlt als **Weißer Zwerg** aus (Dichte $\\approx 10^6\\,\\text{g/cm}^3$). Die **Chandrasekhar-Grenze ($1{,}44\\,M_\\odot$)** ist die maximale Masse, die der Fermi-Druck entarteter Elektronen vor dem Einsturz bewahren kann.   * **2. Massereiche Sterne ($8\\,M_\\odot < M < 25\\,M_\\odot$)**:     - Schalenbrennen bis zum Eisen-Kern ($^{56}\\text{Fe}$). Eisen besitzt die höchste Bindungsenergie pro Nukleon $\\implies$ Kernfusion stoppt abrupt $\\implies$ Kernkollaps in Millisekunden $\\implies$ **Supernova Typ II**.     - Zurück bleibt ein **Neutronenstern** (Radius ca. $10-15\\,\\text{km}$, Dichte $\\approx 10^{14}\\,\\text{g/cm}^3$), der als rotierender **Pulsar** Radiopulse aussendet.   * **3. Extrem massereiche Sterne ($M > 25\\,M_\\odot$)**:     - Keine Kraft kann der Gravitation widerstehen $\\implies$ Kollaps zur Raumzeit-Singularität (**Schwarzes Loch**).     - Der **Schwarzschild-Radius** definiert den Ereignishorizont, ab dem selbst Licht nicht mehr entkommen kann:       $$\\mathbf{r_s = \\frac{2\\,G\\,M}{c^2}}$$       *(Für unsere Sonne wäre $r_s \\approx 3\\,\\text{km}$, für die Erde $r_s \\approx 9\\,\\text{mm}$)*."
+        }
+      ]
+    },
+    {
+      "id": "01K8GD3000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD3000000000000000A02",
+      "namespace": "gymnasium-physik-kosmologie",
+      "slug": "kosmologische-rotverschiebung-hubble-lemaitre-urknall",
+      "title": "Kosmologie: Hubble-Lemaître-Gesetz, Kosmologische Rotverschiebung und Urknallmodell",
+      "domain": "schule/physik/kosmologie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD3000000000000000A01",
+          "type": "hard",
+          "rationale": "Kosmische Entfernungen und Galaxienflucht bauen auf Sternspektren und Standardkerzen auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Hubble's law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Kosmologie und Expansion des Universums",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD3000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die fundamentale Gleichung des Hubble-Lemaître-Gesetzes, die den linearen Zusammenhang zwischen der Fluchtgeschwindigkeit v entfernter Galaxien und ihrer Entfernung r beschreibt?",
+          "concept": "v = H_0 * r (mit H_0 als Hubble-Konstante)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "v = H_0 \\cdot r",
+              "v = \\frac{H_0}{r^2}"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD3000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Hubble-Lemaître-Gesetz, die kosmologische Rotverschiebung und die drei experimentellen Säulen des Urknallmodells: 1. **Die Kosmologische Rotverschiebung**:   * Spektrallinien entfernter Galaxien sind zu längeren (roteren) Wellenlängen verschoben: $\\mathbf{z = \\frac{\\Delta \\lambda}{\\lambda_0} = \\frac{\\lambda_{\\text{beob}} - \\lambda_0}{\\lambda_0}}$.   * Für $v \\ll c$ gilt näherungsweise: $z \\approx \\frac{v}{c}$.   * *Wichtige physikalische Unterscheidung*: Dies ist kein Doppler-Effekt durch Bewegung von Körpern durch den Raum, sondern eine **Dehnung der Lichtwellen während ihrer Reise durch den sich ausdehnenden Raum selbst**! 2. **Das Hubble-Lemaître-Gesetz (1927/1929)**:   * $\\mathbf{v = H_0 \\cdot r}$ (mit $H_0 \\approx 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}}$).   * **Hubble-Zeit (Weltalter)**: Unter Annahme konstanter Expansion ergibt der Kehrwert der Hubble-Konstante das Alter des Universums:     $$\\mathbf{t_{\\text{Hubble}} = \\frac{1}{H_0} \\approx 13{,}8 \\cdot 10^9\\,\\text{Jahre}}$$, 3. **Die drei Hauptbeweise für das Urknallmodell (Big Bang)**:   * **1. Expansion des Raumes**: Nachgewiesen durch Galaxienflucht nach Hubble.   * **2. Die Kosmische Mikrowellen-Hintergrundstrahlung (CMB)**: Entdeckt 1964 von Penzias & Wilson; isotrope Schwarzkörperstrahlung mit $T = 2{,}725\\,\\text{K}$ als 'Nachglimmen' des Urknalls (Entkopplung von Strahlung und Materie ca. $380.000$ Jahre nach dem Urknall).   * **3. Primordiale Nukleosynthese**: Häufigkeitsverteilung der leichten Elemente im Kosmos (ca. $75\\,\\%$ Wasserstoff, $25\\,\\%$ Helium-4, Spuren von Deuterium und Lithium-7).",
+          "concept": "Kosmologie 13: Rotverschiebung z = Delta lambda / lambda_0; Hubble-Gesetz v = H_0 * r; Hubble-Zeit t_H = 1/H_0 approx 13,8 Mrd. Jahre; Urknall-Beweise (Raumexpansion, Kosmischer Mikrowellenhintergrund CMB bei 2,7 K, primordiale Elementhäufigkeit 75% H / 25% He).",
+          "sample_solution": "1. Das Hubble-Lemaître-Gesetz und die Raumexpansion: - **Historischer Durchbruch**:   * Georges Lemaître (1927) und Edwin Hubble (1929) entdeckten anhand von Cepheiden in fernen Nebeln (wie Andromeda), dass sich fast alle Galaxien von uns wegbewegen – und zwar umso schneller, je weiter sie entfernt sind:     $$\\mathbf{v = H_0 \\cdot r}$$   *(mit $H_0 \\approx 70\\,\\frac{\\text{km/s}}{\\text{Mpc}}$; $1\\,\\text{Mpc} = 10^6\\,\\text{pc} \\approx 3{,}26 \\cdot 10^6\\,\\text{Lichtjahre} \\approx 3{,}086 \\cdot 10^{22}\\,\\text{m}$)*. - **Kosmologisches Prinzip**:   * Das Universum ist auf großen Skalen homogen (überall dieselbe Dichte) und isotrop (in alle Richtungen gleich). Es gibt kein physikalisches 'Zentrum' der Expansion; von jedem beliebigen Beobachtungspunkt aus fliehen alle anderen Galaxien nach demselben Gesetz. 2. Abschätzung des Alters des Universums (Die Hubble-Zeit): - Wenn sich zwei Galaxien im Abstand $r$ mit konstanter Geschwindigkeit $v = H_0 \\cdot r$ voneinander entfernt haben, benötigten sie dafür die Zeit:   $$t = \\frac{r}{v} = \\frac{r}{H_0 \\cdot r} = \\mathbf{\\frac{1}{H_0}}$$ - Einheitenumrechnung:   $$H_0 = 70\\,\\frac{\\text{km}}{\\text{s}\\cdot\\text{Mpc}} = \\frac{70 \\cdot 10^3\\,\\text{m/s}}{3{,}086 \\cdot 10^{22}\\,\\text{m}} \\approx 2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}$$   $$t_{\\text{Hubble}} = \\frac{1}{2{,}268 \\cdot 10^{-18}\\,\\text{s}^{-1}} \\approx 4{,}41 \\cdot 10^{17}\\,\\text{s} = \\mathbf{\\frac{4{,}41 \\cdot 10^{17}}{365{,}25 \\cdot 86400}\\,\\text{a} \\approx 13{,}98 \\cdot 10^9\\,\\text{Jahre}}$$   *(Exakte Satellitenmessungen [Planck-Mission] liefern unter Berücksichtigung von Dunkler Energie und Dunkler Materie ein Weltalter von **$13{,}787 \\pm 0{,}020$ Milliarden Jahren**)*. 3. Die drei experimentellen Säulen des Urknallmodells: - **1. Galaxienflucht und kosmologische Rotverschiebung**:   * Bestätigt die dynamische Expansion der Raumzeit. - **2. Der kosmische Mikrowellenhintergrund (CMB, Cosmic Microwave Background)**:   * Ca. $380.000$ Jahre nach dem Urknall kühlte das expandierende Plasma auf $T \\approx 3000\\,\\text{K}$ ab $\\implies$ Protonen fingen Elektronen ein (Rekombination) $\\implies$ Das Universum wurde schlagartig transparent für Photonen.   * Durch die seitherige Raumausdehnung um den Faktor $\\approx 1100$ wurde diese Strahlung bis heute in den Mikrowellenbereich gedehnt und entspricht exakt einem perfekten Planck-Schwarzkörperspektrum mit **$T = 2{,}725\\,\\text{K}$**. - **3. Primordiale Häufigkeit der leichten Elemente**:   * In den ersten 3 Minuten nach dem Urknall fusionierten Protonen und Neutronen zu leichten Kernen. Die theoretische Vorhersage des Standardmodells (**$75\\,\\%$ Wasserstoff, $24-25\\,\\%$ Helium-4, $0{,}01\\,\\%$ Deuterium**) stimmt exakt mit spektroskopischen Messungen in unberührten interstellaren Gaswolken überein."
+        }
+      ]
+    }
+  ]
+}

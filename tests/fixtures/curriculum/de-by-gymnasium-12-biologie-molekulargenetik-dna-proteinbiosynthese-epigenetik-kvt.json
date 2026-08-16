@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-biologie-molekulargenetik-dna-proteinbiosynthese-epigenetik",
+  "version": "2026.08.1",
+  "title": "Biologie 12: Molekulargenetik – DNA-Replikation, Proteinbiosynthese, Genregulation (Operon) und Epigenetik (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 12 (Oberstufe Q12): Aufbau und Replikation der DNA (Doppelhelix-Modell nach Watson und Crick, antiparallele Stränge 5'->3' und 3'->5', komplementäre Basenpaarung A=T [2 H-Brücken] und G#C [3 H-Brücken], Semikonservativer Replikationsmechanismus nach Meselson und Stahl, Replikationsgabel mit Helikase, Primase, DNA-Polymerase III, Leitstrang vs. Folgestrang mit diskontinuierlichen Okazaki-Fragmenten und DNA-Ligase), Die Proteinbiosynthese (Transkription durch RNA-Polymerase, Promotor, Terminator, RNA-Prozessierung bei Eukaryoten: 5'-Cap, Poly-A-Schwanz, alternatives Spleißen von Introns und Exons im Spleißosom; Der genetische Code: Triplett-Code, universell, degeneriert/redundant, kommafrei, nicht-überlappend; Translation an Ribosomen mit tRNA und Aminoacyl-tRNA-Synthetasen: Initiation, Elongation [A-, P-, E-Stelle], Termination), Genregulation bei Prokaryoten (Operon-Modell nach Jacob und Monod: lac-Operon mit Substratinduktion vs. trp-Operon mit Endproduktrepression) sowie Epigenetik bei Eukaryoten (DNA-Methylierung von CpG-Inseln zur Genstilllegung, Histon-Acetylierung und -Methylierung, Chromatin-Remodeling: Heterochromatin vs. Euchromatin).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 12, Lernbereich Molekulargenetik und Genregulation"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCE0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCE0000000000000000A01",
+      "namespace": "gymnasium-biologie-dna-replikation",
+      "slug": "dna-struktur-semikonservative-replikation-okazaki-fragmente",
+      "title": "DNA-Molekül: Doppelhelix-Struktur und semikonservative Replikation (Replikationsgabel)",
+      "domain": "schule/biologie/molekulargenetik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "DNA replication",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Molekulargenetik – DNA-Struktur und Replikation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCE0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum kann die DNA-Polymerase III den neuen DNA-Strang während der Replikation ausschließlich in 5'->3'-Richtung kontinuierlich synthetisieren?",
+          "concept": "Weil die DNA-Polymerase neue Nukleotide nur an die freie 3'-OH-Gruppe des vorherigen Desoxyribose-Zuckers kovalent anknüpfen kann (und niemals an ein 5'-Ende)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Nukleotide nur an die freie 3'-OH-Gruppe angehängt werden können",
+              "Weil die Helikase rückwärts läuft"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCE0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den molekularen Aufbau der DNA und den Ablauf der semikonservativen Replikation: 1. **DNA-Doppelhelix (James Watson & Francis Crick, 1953)**:   * Zwei **antiparallele Stränge** (ein Strang $5' \\to 3'$, der Gegenstrang $3' \\to 5'$).   * **Rückgrat**: Abwechselnd Desoxyribose und Phosphatreste über Phosphodiesterbindungen.   * **Komplementäre Basenpaarung**: Adenin paart mit Thymin ($A = T$, **2 Wasserstoffbrücken**); Guanin paart mit Cytosin ($G \\equiv C$, **3 Wasserstoffbrücken** $\\implies$ thermisch stabiler), 2. **Der Replikationsvorgang an der Replikationsgabel**:   * **1. Helikase**: Entwindet die Doppelhelix und spaltet die Wasserstoffbrücken.   * **2. Primase**: Setzt kurze RNA-Primer als Startmoleküle.   * **3. Leitstrang (kontinuierliche Synthese)**: DNA-Polymerase III wandert der wandernden Helikase hinterher und synthetisiert kontinuierlich in $5' \\to 3'$-Richtung.   * **4. Folgestrang (diskontinuierliche Synthese)**: Da der Matrizenstrang $5' \\to 3'$ verläuft, muss die Polymerase von der Gabel weg synthetisieren $\\implies$ Entstehung kurzer **Okazaki-Fragmente** (100–2000 Nukleotide).   * **5. Fertigstellung**: DNA-Polymerase I ersetzt die RNA-Primer durch DNA-Nukleotide; die **DNA-Ligase** verknüpft die Fragmente kovalent.",
+          "concept": "Molekularbiologie 12: DNA-Struktur (antiparallel 5'->3', A=T 2 H-Brücken, G#C 3 H-Brücken); Replikationsgabel: Helikase, Primase, Leitstrang kontinuierlich vs. Folgestrang diskontinuierlich (Okazaki-Fragmente, Ligase).",
+          "sample_solution": "1. Molekularer Aufbau der DNA (Desoxyribonukleinsäure): - **Struktur**: Rechtsgängige Doppelhelix aus zwei komplementären, antiparallelen Polynukleotidsträngen:   * **Antiparallelität**: Ein Strang verläuft von $5'$ (freier Phosphatrest am C5-Atom der Desoxyribose) nach $3'$ (freie $-OH$-Gruppe am C3-Atom). Der Gegenstrang verläuft spiegelbildlich von $3'$ nach $5'$. - **Basenpaarungsregeln (Chargaff-Regeln)**:   $$\\mathbf{A = T} \\quad (2\\,\\text{Wasserstoffbrücken}) \\qquad \\mathbf{G \\equiv C} \\quad (3\\,\\text{Wasserstoffbrücken})$$ 2. Der Ablauf der semikonservativen Replikation (S-Phase des Zellzyklus): - **Meselson-Stahl-Experiment (1958)**: Nachweis mit schweren $^{15}N$-Isotopen $\\implies$ Jeder neu entstandene Doppelstrang besteht aus genau einem alten Mutterstrang und einem neu synthetisierten Tochterstrang. - **Die Enzymkaskade an der Replikationsgabel**: ```mermaid graph TD   A[Doppelstrang-DNA] -->|1. Topoisomerase & Helikase| B[Entwindung & Trennung der Stränge]   B -->|2. RNA-Primase| C[Setzen von RNA-Primern an 3'-Enden]   C -->|3. DNA-Polymerase III| D1[Leitstrang: Kontinuierlich 5'->3']   C -->|3. DNA-Polymerase III| D2[Folgestrang: Diskontinuierliche Okazaki-Fragmente]   D2 -->|4. DNA-Polymerase I & Ligase| E[Primer-Entfernung & Verknüpfung der Fragmente] ``` 3. Leitstrang vs. Folgestrang im Detail: - **Leitstrang (*Leading Strand*)**:   * Der Matrizenstrang verläuft in $3' \\to 5'$-Richtung. Die DNA-Polymerase III folgt direkt der Öffnungsrichtung der Helikase und synthetisiert den neuen Strang **unterbrechungsfrei in $5' \\to 3'$-Richtung**. - **Folgestrang (*Lagging Strand*)**:   * Der Matrizenstrang verläuft in $5' \\to 3'$-Richtung. Da die Polymerase biochemisch ausschließlich am freien 3'-Ende anbauen kann, muss sie in entgegengesetzter Richtung (von der Replikationsgabel weg) arbeiten.   * Die Primase muss fortlaufend neue RNA-Primer setzen. Die Polymerase synthetisiert abschnittsweise ca. 1000–2000 Basen lange Teilstücke (**Okazaki-Fragmente**).   * Die **DNA-Ligase** schließt anschließend unter ATP-Verbrauch die Phosphodiester-Lücken zwischen den Fragmenten zu einem durchgehenden Strang."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCE0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCE0000000000000000A02",
+      "namespace": "gymnasium-biologie-proteinbiosynthese",
+      "slug": "proteinbiosynthese-transkription-translation-epigenetik",
+      "title": "Proteinbiosynthese (Transkription, Spleißen, Translation) und Epigenetik",
+      "domain": "schule/biologie/molekulargenetik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCE0000000000000000A01",
+          "type": "hard",
+          "rationale": "Proteinbiosynthese setzt Kenntnisse über Basenpaarung und DNA-Struktur voraus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Protein biosynthesis",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Proteinbiosynthese und Epigenetik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCE0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher molekulare Reifungsschritt der eukaryotischen Prä-mRNA im Zellkern ermöglicht es, aus einem einzigen Gen viele verschiedene funktionelle Proteine herzustellen?",
+          "concept": "Das alternative Spleißen (differenziertes Herausschneiden von Introns und alternativen Exons durch das Spleißosom)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das alternative Spleißen (Herausschneiden von Introns/Exons)",
+              "Die DNA-Replikation"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCE0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den zweistufigen Ablauf der Proteinbiosynthese und die epigenetische Genregulation: 1. **1. Stufe: Transkription & Eukaryotische RNA-Prozessierung (im Zellkern)**:   * **Transkription**: RNA-Polymerase bindet an Promotor (TATA-Box), liest den **codogenen Strang ($3' \\to 5'$)** ab und synthetisiert komplementäre **mRNA in $5' \\to 3'$-Richtung** (Uracil statt Thymin).   * **RNA-Reifung (Prä-mRNA $\\to$ reife mRNA)**:     - **5'-Cap-Struktur**: Schützt vor enzymatischem Abbau und dient als Ribosomen-Erkennungssignal.     - **Poly-A-Schwanz am 3'-Ende**: Stabilisierung.     - **Spleißen (Splicing)**: Spleißosom schneidet nicht-codierende **Introns** heraus und verknüpft codierende **Exons** (**Alternatives Spleißen** $\\implies$ Proteinvielfalt), 2. **2. Stufe: Translation (am Ribosom im Zytoplasma)**:   * **Der genetische Code**: Triplett-Code (Codons auf der mRNA), universell (fast alle Lebewesen), degeneriert/redundant (mehrere Codons für dieselbe Aminosäure), kommafrei, nicht-überlappend. Startcodon: $\\mathbf{AUG}$ (Methionin); Stoppcodons: $\\mathbf{UAA, UAG, UGA}$.   * **Ablauf an den 3 Ribosomen-Stellen**:     - **A-Stelle (Aminoacyl-Stelle)**: Bindung der beladenen tRNA mit passendem Anticodon.     - **P-Stelle (Peptidyl-Stelle)**: Bildung der kovalenten Peptidbindung; wachsende Polypeptidkette wird übertragen.     - **E-Stelle (Exit-Stelle)**: Entladene tRNA verlässt das Ribosom, 3. **Epigenetische Genregulation bei Eukaryoten**:   * Modifikationen der Chromatinstruktur **ohne Änderung der DNA-Basensequenz**:     - **DNA-Methylierung**: Anheften von Methylgruppen ($-CH_3$) an Cytosin-Basen (CpG-Inseln) $\\implies$ dauerhaftes **Abschalten (Silencing)** von Genen.     - **Histon-Acetylierung**: Lockert das Chromatin (Euchromatin) $\\implies$ Transkriptionsfaktoren können binden $\\implies$ Genexpression aktiviert.",
+          "concept": "Proteinbiosynthese 12: Transkription; Eukaryotische Prozessierung (5'-Cap, Poly-A, alternatives Spleißen Introns/Exons); Genetischer Code (AUG Start, Stoppcodons); Translation (A-, P-, E-Stelle); Epigenetik (DNA-Methylierung zur Genstilllegung, Histonmodifikation).",
+          "sample_solution": "1. Die Transkription und RNA-Prozessierung: - **1. Transkription (Umschreiben von DNA in RNA)**:   * **Initiation**: Die RNA-Polymerase bindet an die Promotorregion vor dem Gen.   * **Elongation**: Entwindung der DNA; die Polymerase liest ausschließlich den **codogenen Strang (Matrizenstrang, $3' \\to 5'$)** ab und knüpft komplementäre RNA-Nukleotide in $5' \\to 3'$-Richtung an (Adenin paart mit **Uracil**).   * **Termination**: Erreichen der Terminatorsequenz $\\implies$ Freisetzung der primären **Prä-mRNA**. - **2. Posttranskriptionale Modifikation (RNA-Prozessierung bei Eukaryoten)**:   * **1. Capping**: Anfügen einer 7-Methylguanosin-Kappe am $5'$-Ende zum Schutz vor Nukleasen.   * **2. Polyadenylierung**: Anhängen eines Poly-A-Schwanzes (ca. 100–200 Adeninreste) am $3'$-Ende.   * **3. Spleißen (Splicing)**: Das Spleißosom entfernt die nicht-codierenden Sequenzen (**Introns**) und fügt die informationsragenden Abschnitte (**Exons**) zusammen.   * **Alternatives Spleißen**: Durch variables Kombinieren verschiedener Exons kann ein einziges menschliches Gen für Dutzende unterschiedliche Proteine codieren (*Ein-Gen-viele-Polypeptide-Konzept*). 2. Die Translation (Übersetzung der mRNA in Aminosäuresequenz): - **Der genetische Code**:   * 64 Codons (Triplets aus 3 Basen) codieren für 20 Aminosäuren:     - **Startcodon**: $\\mathbf{5'-AUG-3'}$ (codiert für Methionin).     - **Stoppcodons**: $\\mathbf{UAA, UAG, UGA}$ (keine passende tRNA $\\implies$ Release-Faktor beendet Synthese). - **Die drei Funktionsstellen des Ribosoms**:   1. **A-Stelle (Aminoacyl)**: Die neu ankommende tRNA dockt mit ihrem komplementären **Anticodon** an das mRNA-Codon an.   2. **P-Stelle (Polypeptid)**: Das Enzym Peptidyltransferase knüpft die Aminosäure der A-Stelle kovalent über eine Peptidbindung an die bestehende Peptidkette. Das Ribosom wandert um genau 1 Basentriplett weiter (*Translokation*).   3. **E-Stelle (Exit)**: Die entladene tRNA wird ausgestoßen und im Zytoplasma durch Aminoacyl-tRNA-Synthetasen neu beladen. 3. Epigenetische Genregulation (Die zweite Informationsebene): - Epigenetische Schalter steuern, welche Gene abgelesen werden, ohne den genetischen Code (A, T, G, C) zu verändern:   * **1. DNA-Methylierung**:     - Enzyme (DNA-Methyltransferasen) hängen Methylgruppen an Cytosin-Basen in CpG-reichen Promotorgebieten.     - *Folge*: Transkriptionsfaktoren werden sterisch blockiert $\\implies$ **Dauerhaftes Abschalten des Gens (Gen-Silencing)** (z. B. Inaktivierung des zweiten X-Chromosoms bei weiblichen Säugern / Barr-Körperchen).   * **2. Histon-Modifikation (Histon-Acetylierung)**:     - Acetylgruppen ($-COCH_3$) neutralisieren die positive Ladung der basischen Histonproteine $\\implies$ Das negativ geladene DNA-Rückgrat lockert sich (**Euchromatin**) $\\implies$ **Aktivierung der Transkription**."
+        }
+      ]
+    }
+  ]
+}

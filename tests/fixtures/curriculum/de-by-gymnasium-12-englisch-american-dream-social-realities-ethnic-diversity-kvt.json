@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-englisch-american-dream-social-realities-ethnic-diversity",
+  "version": "2026.08.1",
+  "title": "Englisch 12: The American Dream – Historical Roots, Social Realities, Ethnic Diversity and Modern Divides (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 12 (Oberstufe Q12): The Concept of the American Dream (Historical foundations: Declaration of Independence 1776 'Life, Liberty and the pursuit of Happiness', Pilgrim Fathers / Puritanism 'City upon a Hill' by John Winthrop, Manifest Destiny and Frontier Spirit, Individualism, Self-Reliance, 'From rags to riches' / Horatio Alger myth), Literary Critiques of the Dream (F. Scott Fitzgerald: *The Great Gatsby* – corruption of idealism into shallow materialism, the green light as unattainable longing, social stratification; Arthur Miller: *Death of a Salesman* – Willy Loman's tragic delusion of popularity and success), Ethnic Diversity and the Struggle for Civil Rights (Slavery, Jim Crow laws, Martin Luther King Jr. 'I Have a Dream' / non-violent resistance vs. Malcolm X, Melting Pot vs. Salad Bowl / Mosaic, Black Lives Matter, Hispanic immigration and the border debate) sowie Contemporary Social and Political Divides in 21st-Century America (Gun culture, Healthcare debates, Polarization).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/englisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Englisch 12, Lernbereich The USA – American Dream and Diversity"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCB0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCB0000000000000000A01",
+      "namespace": "gymnasium-englisch-american-dream",
+      "slug": "the-american-dream-history-ideals-literary-critiques-gatsby",
+      "title": "The American Dream: Historical Roots, Core Ideals and Literary Critiques (The Great Gatsby)",
+      "domain": "schule/englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "American Dream",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "The American Dream and Literary Critiques",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCB0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which foundational 1776 document proclaimed that 'all men are created equal' endowed with unalienable rights including 'Life, Liberty and the pursuit of Happiness'?",
+          "concept": "The United States Declaration of Independence (drafted by Thomas Jefferson, adopted July 4, 1776)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The United States Declaration of Independence (1776)",
+              "The Gettysburg Address"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCB0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the historical evolution of the American Dream and its literary critique in F. Scott Fitzgerald's *The Great Gatsby* (1925): 1. **Key Historical Pillars of the American Dream**:   * **Puritan Heritage (1620/1630)**: The vision of a 'City upon a Hill' (John Winthrop) – a morally pure society serving as a shining beacon to the world.   * **Declaration of Independence (1776)**: Unalienable rights (Life, Liberty, Pursuit of Happiness).   * **Frontier Spirit & Manifest Destiny (19th century)**: Westward expansion, self-reliance, optimism in overcoming physical and social boundaries.   * **Economic Promise**: The Horatio Alger myth of rising 'from rags to riches' through hard work, thrift, and determination, 2. **Fitzgerald's Critique in *The Great Gatsby* (The Roaring Twenties)**:   * **Jay Gatsby as Archetype**: A self-made man who invents a glamorous persona to win back Daisy Buchanan.   * **The Green Light at the end of Daisy's dock**: Symbol of Gatsby's romantic, incorruptible dream, which becomes unattainable because it is anchored in the past (*'Can't repeat the past? Why of course you can!'*).   * **Old Money vs. New Money (East Egg vs. West Egg)**: West Egg (ostentatious, newly rich like Gatsby) vs. East Egg (aristocratic, careless elite like Tom and Daisy Buchanan who smash up things and retreat into their vast wealth).   * **The Valley of Ashes & The Eyes of Dr. T. J. Eckleburg**: Bleak industrial wasteland symbolising the moral decay and spiritual emptiness beneath the glittering capitalist surface.",
+          "concept": "American Dream 12: Historical pillars (Declaration of Independence, Puritan City upon a Hill, Frontier, Rags to Riches); Fitzgerald 'The Great Gatsby' (Roaring Twenties, Green Light, East Egg vs. West Egg, Valley of Ashes as moral decay).",
+          "sample_solution": "1. The Evolution of the American Dream: - **Definition (coined by James Truslow Adams in 1931)**:   * *« That dream of a land in which life should be better and richer and fuller for everyone, with opportunity for each according to ability or achievement. »* - **The Four Historical Foundations**:   1. **Religious/Moral Foundation**: The Puritan settlers (Pilgrim Fathers 1620) viewed America as a Promised Land and a *« City upon a Hill »* (John Winthrop).   2. **Political Foundation**: Thomas Jefferson's *Declaration of Independence (1776)* established the egalitarian creed that all individuals possess inalienable natural rights to *« Life, Liberty and the pursuit of Happiness »*.   3. **Geographical Foundation**: The *Frontier Spirit* – the rugged individualism and perseverance forged during the continuous westward expansion across the wilderness.   4. **Socio-Economic Myth**: The conviction of **social upward mobility** (*« From rags to riches »*), asserting that anyone, regardless of humble birth or social background, can achieve wealth through sheer grit and merit (**Meritocracy**). 2. Literary Deconstruction in F. Scott Fitzgerald's *The Great Gatsby* (1925): - **The Jazz Age / Roaring Twenties**:   * Post-WWI economic boom, prohibition, organised crime, and unrestrained consumerism that corrupted the spiritual idealism of the Dream into pure, hollow materialism. - **Core Symbols and Characters**:   * **Jay Gatsby (James Gatz)**: The quintessential self-made man who fabricates a fictitious aristocratic past. His genuine tragic flaw is his romantic idealism – believing money can buy the purest love and erase time (*« Can't repeat the past? Why of course you can! »*).   * **The Green Light**: Located at the end of Daisy's dock across the bay. Symbolises Gatsby's yearning, unquenchable hope, and the elusive nature of the American Dream itself.   * **East Egg vs. West Egg**: Exposes the myth of a classless society. Gatsby (West Egg, *nouveau riche*) is fundamentally rejected by the established, cruel, 'old-money' aristocracy (Tom and Daisy Buchanan in East Egg). As narrator Nick Carraway reflects: *« They were careless people, Tom and Daisy – they smashed up things and creatures and then retreated back into their money... »*   * **The Valley of Ashes**: A desolate dumping ground between Long Island and New York City, overlooked by the faded billboard eyes of Dr. T. J. Eckleburg (a brooding symbol of God staring at spiritual wasteland and capitalist exploitation)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCB0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCB0000000000000000A02",
+      "namespace": "gymnasium-englisch-civil-rights",
+      "slug": "ethnic-diversity-civil-rights-movement-modern-divides",
+      "title": "Ethnic Diversity: Civil Rights Movement (MLK vs. Malcolm X) and Contemporary Divides",
+      "domain": "schule/englisch/gesellschaft",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCB0000000000000000A01",
+          "type": "hard",
+          "rationale": "Civil Rights struggles directly challenge and redefine the American Dream."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Civil rights movement",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Ethnic Diversity and Civil Rights in the USA",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCB0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which cultural metaphor for American multicultural society describes distinct ethnic groups coexisting while retaining their unique cultural traditions and identities (as opposed to complete assimilation)?",
+          "concept": "Salad Bowl / Cultural Mosaic (as opposed to the traditional 'Melting Pot' model of full cultural assimilation)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Salad Bowl / Cultural Mosaic",
+              "Melting Pot (complete assimilation)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCB0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the African American struggle for civil rights and contemporary social fractures in the US: 1. **The Civil Rights Movement (1950s/60s)**:   * Background: Reconstruction, Jim Crow laws ('Separate but Equal' / segregation), Rosa Parks (Montgomery Bus Boycott 1955).   * **Martin Luther King Jr.**: Christian non-violent civil disobedience (Boycotts, Marches; March on Washington 1963: *'I Have a Dream'* rooted in the promise of the American Constitution).   * **Malcolm X / Black Panther Party**: Black Nationalism, self-defence, critique of integration (*'By any means necessary'*).   * **Legislative Milestones**: Civil Rights Act (1964) and Voting Rights Act (1965), 2. **Metaphors of Integration**:   * **Melting Pot**: Immigrants blend into a homogeneous Anglo-American monoculture.   * **Salad Bowl / Mosaic**: Distinct ethnic heritages (African Americans, Hispanics/Latinos, Asian Americans, Native Americans) retain their cultural distinctiveness while forming a cohesive whole, 3. **Contemporary Divides in 21st-Century America**:   * **Racial Justice**: Disproportionate police brutality, mass incarceration, the *Black Lives Matter* (BLM) movement.   * **Political & Cultural Polarization**: Red states vs. Blue states, Second Amendment (gun rights vs. gun control), immigration debates at the southern border.",
+          "concept": "Civil Rights 12: Jim Crow & Segregation; Martin Luther King Jr. (non-violence, 'I Have a Dream') vs. Malcolm X; Melting Pot vs. Salad Bowl; Contemporary divides (Black Lives Matter, gun culture, political polarisation).",
+          "sample_solution": "1. The African American Struggle for Equality: - **From Slavery to Jim Crow**:   * Although the 13th, 14th, and 15th Amendments abolished slavery and granted citizenship after the Civil War (1865), Southern states enforced **Jim Crow laws** institutionalising racial segregation (*« Separate but equal »* doctrine affirmed in *Plessy v. Ferguson*, 1896). - **The Civil Rights Movement (1954–1968)**:   * *1954*: *Brown v. Board of Education* declared school segregation unconstitutional.   * *1955*: Rosa Parks sparked the **Montgomery Bus Boycott**. - **Two Diverging Philosophical Paths**:   * **1. Martin Luther King Jr. (Non-Violent Resistance)**:     - Inspired by Christian ethics and Mahatma Gandhi, MLK championed peaceful protests, sit-ins, and boycotts.     - *March on Washington (1963)*: His iconic *« I Have a Dream »* speech called upon America to live up to the true meaning of its founding creed (*« that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character »*).   * **2. Malcolm X and Black Power**:     - Advocated Black Nationalism, economic self-reliance, and armed self-defence against white supremacist violence (*« By any means necessary »*), rejecting gradualist integration as naive. - **Landmark Achievements**:   * **Civil Rights Act of 1964** (outlawed discrimination based on race, colour, religion, or national origin) and **Voting Rights Act of 1965** (banned racial voter suppression like literacy tests). 2. Models of American Cultural Identity: - **The Melting Pot**:   * Early 20th-century concept: Immigrants from across the globe shed their native languages and customs, fusing into a single, unified American identity. - **The Salad Bowl / Cultural Mosaic**:   * Modern pluralistic model: Immigrants maintain their distinct cultural traditions, languages, and ethnic pride, enriching the broader democratic fabric like ingredients in a vibrant salad. 3. 21st-Century Fractures in the USA: - **Systemic Racism and Criminal Justice**:   * African Americans face disproportionately higher rates of incarceration and police violence, sparking the global **Black Lives Matter (BLM)** movement. - **Demographic Shifts**:   * The rapid growth of the **Hispanic / Latino population** (the largest ethnic minority) has transformed the cultural, linguistic, and electoral landscape, intensifying national debates over border security and immigration reform. - **Hyper-Polarisation**:   * Deep cultural and political cleavages dividing conservative rural *Red States* and liberal metropolitan *Blue States* on core issues such as Second Amendment gun rights, healthcare access, and the role of federal government."
+        }
+      ]
+    }
+  ]
+}

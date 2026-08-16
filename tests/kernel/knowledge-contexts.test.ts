@@ -89,9 +89,9 @@ describe("Knowledge Contexts (Phase 1)", () => {
     });
 
     it("throws if name is empty or already exists", async () => {
-      await expect(
-        createKnowledgeContext(db, { name: "" }),
-      ).rejects.toThrow("Context name cannot be empty");
+      await expect(createKnowledgeContext(db, { name: "" })).rejects.toThrow(
+        "Context name cannot be empty",
+      );
 
       await createKnowledgeContext(db, { name: "school" });
 
@@ -186,7 +186,10 @@ describe("Knowledge Contexts (Phase 1)", () => {
       const t1 = await createToken(db, { slug: "work-t1", concept: "C1" });
       const t2 = await createToken(db, { slug: "school-t2", concept: "C2" });
       const t3 = await createToken(db, { slug: "both-t3", concept: "C3" });
-      const tUnassigned = await createToken(db, { slug: "unassigned", concept: "C4" });
+      const tUnassigned = await createToken(db, {
+        slug: "unassigned",
+        concept: "C4",
+      });
 
       await assignTokenToContext(db, t1.id, work.id);
       await assignTokenToContext(db, t2.id, school.id);
@@ -199,11 +202,17 @@ describe("Knowledge Contexts (Phase 1)", () => {
 
       // Filtered by 'work'
       const workTokens = await listTokens(db, { knowledgeContext: "work" });
-      expect(workTokens.map((t) => t.slug).sort()).toEqual(["both-t3", "work-t1"]);
+      expect(workTokens.map((t) => t.slug).sort()).toEqual([
+        "both-t3",
+        "work-t1",
+      ]);
 
       // Filtered by 'school'
       const schoolTokens = await listTokens(db, { knowledgeContext: "school" });
-      expect(schoolTokens.map((t) => t.slug).sort()).toEqual(["both-t3", "school-t2"]);
+      expect(schoolTokens.map((t) => t.slug).sort()).toEqual([
+        "both-t3",
+        "school-t2",
+      ]);
 
       // Unassigned behaves correctly
       expect(workTokens.some((t) => t.id === tUnassigned.id)).toBe(false);
@@ -229,15 +238,24 @@ describe("Knowledge Contexts (Phase 1)", () => {
       // Unscoped review queue should contain both cards
       const unscopedQueue = await buildReviewQueue(db, { userId });
       expect(unscopedQueue.items).toHaveLength(2);
-      expect(unscopedQueue.items.map((i) => i.slug).sort()).toEqual(["school-t2", "work-t1"]);
+      expect(unscopedQueue.items.map((i) => i.slug).sort()).toEqual([
+        "school-t2",
+        "work-t1",
+      ]);
 
       // Scoped to 'work'
-      const workQueue = await buildReviewQueue(db, { userId, knowledgeContext: "work" });
+      const workQueue = await buildReviewQueue(db, {
+        userId,
+        knowledgeContext: "work",
+      });
       expect(workQueue.items).toHaveLength(1);
       expect(workQueue.items[0].slug).toBe("work-t1");
 
       // Scoped to 'school'
-      const schoolQueue = await buildReviewQueue(db, { userId, knowledgeContext: "school" });
+      const schoolQueue = await buildReviewQueue(db, {
+        userId,
+        knowledgeContext: "school",
+      });
       expect(schoolQueue.items).toHaveLength(1);
       expect(schoolQueue.items[0].slug).toBe("school-t2");
 

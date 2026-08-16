@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-biologie-gentechnik-crispr-cas-pcr-stammzellen-bioethik",
+  "version": "2026.08.1",
+  "title": "Biologie 12: Gentechnik & Bioethik – PCR, Gelelektrophorese, CRISPR-Cas9, Stammzellen und Ethik (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 12 (Oberstufe Q12): Molekularbiologische Werkzeuge und Methoden (Restriktionsendonukleasen / 'Molekulare Scheren' mit palindromischen Erkennungssequenzen und Sticky/Blunt Ends, DNA-Ligase, Vektoren / Plasmide mit Selektionsmarkern wie Antibiotikaresistenzen AmpR/TetR und Blau-Weiß-Selektion), Die Polymerase-Kettenreaktion (PCR nach Kary Mullis: 3-Phasen-Thermozklus mit Denaturierung 95 °C, Primer-Hybridisierung / Annealing 55 °C, Elongation 72 °C mit hitzestabiler Taq-Polymerase), Agarose-Gelelektrophorese und genetischer Fingerabdruck (STR-Marker / Short Tandem Repeats), Modernes Genome Editing mit CRISPR-Cas9 (Emmanuelle Charpentier und Jennifer Doudna, Nobelpreis 2020: sgRNA / guide-RNA, PAM-Motiv, Cas9-Endonuklease, gezielte Doppelstrangbrüche und zelleigene Reparaturmechanismen NHEJ vs. HDR) sowie Stammzellforschung und Bioethik (Totipotente vs. Pluripotente vs. Multipotente Stammzellen, induzierte pluripotente Stammzellen iPS nach Shinya Yamanaka, Somatischer Gentransfer vs. Keimbahntherapie, Ethische Urteilsmodelle).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 12, Lernbereich Gentechnik, Biomedizin und Bioethik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCF0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCF0000000000000000A01",
+      "namespace": "gymnasium-biologie-gentechnik-methoden",
+      "slug": "gentechnische-methoden-pcr-gelelektrophorese-plasmide",
+      "title": "Gentechnische Methoden: Restriktionsenzyme, Rekombinante Plasmide, PCR und Gelelektrophorese",
+      "domain": "schule/biologie/gentechnik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Polymerase chain reaction",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Gentechnik – Werkzeuge und molekulare Methoden",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCF0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 3 Temperaturschritte durchläuft ein Zyklus der Polymerase-Kettenreaktion (PCR) zur exponentiellen DNA-Vervielfältigung im Thermocycler?",
+          "concept": "1. Denaturierung (ca. 95 °C -> Stränge trennen), 2. Annealing / Primer-Anlagerung (ca. 50-60 °C), 3. Elongation / Synthese (ca. 72 °C mit Taq-Polymerase)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "1. Denaturierung (95 °C) -> 2. Annealing (55 °C) -> 3. Elongation (72 °C)",
+              "1. Kühlung (-20 °C) -> 2. Kochen (100 °C) -> 3. Zentrifugation"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCF0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere gentechnische Standardverfahren (Klonierung in Plasmide, PCR und Gelelektrophorese): 1. **Herstellung rekombinanter DNA (Gentransfer)**:   * **Restriktionsenzyme (z. B. EcoRI)**: Erkennen spezifische palindromische Sequenzen ($5'-GAATTC-3'$) und schneiden versetzt unter Bildung klebriger Enden (**Sticky Ends**).   * **Einbau in Vektoren (Plasmide)**: Fremd-Gen und bakterielles Plasmid werden mit demselben Enzym geschnitten $\\implies$ komplementäre Sticky Ends lagern sich an $\\implies$ **DNA-Ligase** verknüpft kovalent das Zucker-Phosphat-Rückgrat.   * **Selektion**: Über Resistenzgene gegen Antibiotika (z. B. Ampicillin-Resistenz), 2. **Die Polymerase-Kettenreaktion (PCR nach Kary Mullis, 1983)**:   * Exponentielle Vervielfältigung eines Zielabschnitts in $n$ Zyklen ($N = N_0 \\cdot 2^n$):     - *1. Denaturierung ($95^\\circ\\text{C}$)*: Thermische Trennung der H-Brücken in Einzelstränge.     - *2. Primer-Hybridisierung ($50-60^\\circ\\text{C}$)*: Spezifische DNA-Primer binden an die $3'$-Enden der Zielsequenz.     - *3. Elongation ($72^\\circ\\text{C}$)*: Die hitzestabile **Taq-Polymerase** (aus *Thermus aquaticus*) synthetisiert den komplementären DNA-Strang, 3. **Agarose-Gelelektrophorese**:   * Trennung negativ geladener DNA-Fragmente im elektrischen Feld nach ihrer **Größe / Basenpaarlänge** (kleine Fragmente wandern im Molekularsieb des Gels schneller zur Anode [$+$]).",
+          "concept": "Gentechnik 12: Klonierung (Restriktionsenzyme EcoRI, Sticky Ends, Plasmide, Ligase, Selektion); PCR (3 Phasen: 95°C Denaturierung, 55°C Annealing, 72°C Taq-Elongation); Gelelektrophorese (Ladung/Größentrennung zur Anode).",
+          "sample_solution": "1. Rekombinante DNA-Technologie (Klonierung): - **Werkzeuge**:   * **1. Restriktionsendonukleasen (Molekulare Scheren)**:     - Bakterielle Enzyme, die doppelsträngige DNA an hochspezifischen palindromischen Erkennungssequenzen spalten (z. B. $EcoRI$: schneidet zwischen G und A in $5'-G^{\\downarrow}AATTC-3'$).     - Es entstehen überstehende, einzelsträngige Enden (**Sticky Ends**), die sich mit beliebigen anderen, mit demselben Enzym geschnittenen DNA-Fragmenten spontan über Wasserstoffbrücken paaren können.   * **2. Vektoren (Gen-Fähren)**:     - Meist zirkuläre bakterielle **Plasmide** mit *Origin of Replication (ori)*, Schnittstellen und **Selektionsmarkern** (z. B. Ampicillin-Resistenzgen $Amp^R$).   * **3. DNA-Ligase**:     - Verknüpft die DNA-Fragmente kovalent durch Ausbildung stabiler Phosphodiesterbindungen. 2. Die Polymerase-Kettenreaktion (PCR, Kary Mullis 1983): - **Reaktionsansatz**: Ziel-DNA, zwei spezifische DNA-Primer (Flankierung des Zielgens), Desoxyribonukleotid-Triphosphate (dNTPs: dATP, dCTP, dGTP, dTTP) und **Taq-Polymerase** (aus dem extremophilen Heißwasser-Bakterium *Thermus aquaticus*, hitzestabil bis über $95^\\circ\\text{C}$). - **Der 3-Phasen-Zyklus (ca. 30–35 Wiederholungen im Thermocycler)**:   1. **Denaturierung ($95^\\circ\\text{C}$, ca. 30 s)**: Thermische Trennung des DNA-Doppelstrangs in zwei Einzelstränge (Lösen der Wasserstoffbrücken).   2. **Annealing / Hybridisierung ($50-60^\\circ\\text{C}$, ca. 30 s)**: Die spezifischen Primer lagern sich komplementär an die $3'$-Enden der Zielstränge an.   3. **Elongation / Synthese ($72^\\circ\\text{C}$, ca. 1 min pro 1000 bp)**: Optimum der Taq-Polymerase; Synthese komplementärer Tochterstränge in $5' \\to 3'$-Richtung. - **Ergebnis**: Nach $30$ Zyklen entsteht aus einem einzigen DNA-Molekül mehr als $1$ Milliarde exakte Kopien ($2^{30} \\approx 10^9$). 3. Agarose-Gelelektrophorese & Genetischer Fingerabdruck: - **Prinzip der Auftrennung**:   * Da das Phosphat-Rückgrat der DNA negativ geladen ist, wandern DNA-Fragmente in einer Pufferlösung im elektrischen Feld zur positiv geladenen **Anode ($+$)**.   * Das Agarose-Gel wirkt als physikalisches **Molekularsieb**: Kürzere DNA-Fragmente wandern durch die Gelporen deutlich schneller und weiter als lange, unhandliche Fragmente. - **Genetischer Fingerabdruck (Forensik / Vaterschaftstest)**:   * Analyse von **STR-Loci (Short Tandem Repeats)** im nicht-codierenden Bereich des Genoms. Die Anzahl der Wiederholungen ist hochgradig individuell und wird nach PCR-Vervielfältigung als charakteristisches Bandenmuster im Gel sichtbar."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCF0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCF0000000000000000A02",
+      "namespace": "gymnasium-biologie-crispr-bioethik",
+      "slug": "crispr-cas9-genome-editing-stammzellen-bioethik",
+      "title": "Genome Editing (CRISPR-Cas9), Stammzellen und Bioethische Urteilsbildung",
+      "domain": "schule/biologie/biomedizin",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCF0000000000000000A01",
+          "type": "hard",
+          "rationale": "CRISPR-Cas9 ist die moderne Weiterentwicklung klassischer Restriktions- und Klonierungsmethoden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "CRISPR gene editing",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Genome Editing, Stammzellforschung und Bioethik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCF0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie findet die Genschere CRISPR-Cas9 (nach Emmanuelle Charpentier & Jennifer Doudna) mit extrem hoher Präzision ihre Zielsequenz im gesamten menschlichen Genom?",
+          "concept": "Über eine künstlich herstellbare guide-RNA (sgRNA / Einzelstrang-RNA), die über 20 komplementäre Basenpaare exakt an die Ziel-DNA-Sequenz bindet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Über eine komplementäre guide-RNA (sgRNA) und ein PAM-Motiv",
+              "Durch Zufallskontakt ohne Erkennungssequenz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCF0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das CRISPR-Cas9-System, Stammzelltechnologien und bioethische Konflikte: 1. **Das CRISPR-Cas9-System (Genschere, Nobelpreis 2020)**:   * **Herkunft**: Bakterielles adaptives Immunsystem zur Abwehr von Bakteriophagen.   * **Komponenten**:     - **sgRNA (single guide RNA)**: Ca. 20 Nukleotide lange Erkennungssequenz, die komplementär zur Ziel-DNA synthetisiert wird.     - **Cas9-Endonuklease**: Schneidet die DNA an der Zielstelle exakt 3 Basenpaare vor dem **PAM-Motiv** ($5'-NGG-3'$).   * **Reparatur**:     - *NHEJ (Non-Homologous End Joining)*: Fehleranfällige Verknüpfung $\\implies$ Insertionen/Deletionen $\\implies$ **Gene Knockout (Gen-Ausschaltung)**.     - *HDR (Homology-Directed Repair)*: Einbau einer mitgelieferten DNA-Matrize $\\implies$ **Präzise Genkorrektur / Gen-Insertion**, 2. **Stammzellen & Reprogrammierung**:   * **Totipotent (Zygote bis 8-Zell-Stadium)**: Kann vollständigen Organismus inklusive Plazenta bilden.   * **Pluripotent (Embryonale Stammzellen ES)**: Kann alle Zelltypen der 3 Keimblätter bilden, aber keinen Organismus.   * **Induzierte pluripotente Stammzellen (iPS-Zellen nach Shinya Yamanaka, 2006)**: Reprogrammierung adulter Körperzellen durch 4 Transkriptionsfaktoren (Oct4, Sox2, Klf4, c-Myc) $\\implies$ ethische Alternative zu ES-Zellen, 3. **Bioethik & Gentherapie**:   * **Somatische Gentherapie**: Behandlung von Körperzellen eines kranken Individuums (z. B. Sichelzellanämie); Änderungen werden **nicht** vererbt $\\implies$ ethisch weitgehend akzeptiert.   * **Keimbahneingriffe (Embryonen / Keimzellen)**: Genetische Veränderungen werden an alle zukünftigen Generationen **dauerhaft vererbt** $\\implies$ enormes Risiko von Off-Target-Mutationen, Missbrauch (*Designer-Babys*), Verstoß gegen den Embryonenschutz in Deutschland.",
+          "concept": "Biomedizin & Bioethik 12: CRISPR-Cas9 (sgRNA, Cas9, PAM-Motiv, NHEJ Knockout vs. HDR Reparatur); Stammzellen (totipotent vs. pluripotent vs. multipotent, iPS-Zellen); Somatische Gentherapie vs. Keimbahneingriff (ethische Dilemmata, Embryonenschutzgesetz).",
+          "sample_solution": "1. Das CRISPR-Cas9-System als revolutionäres Werkzeug des Genome Editing: - **Natürlicher Ursprung**: CRISPR (*Clustered Regularly Interspaced Short Palindromic Repeats*) dient Bakterien als molekulares Gedächtnis zur Zerstörung viraler Phagen-DNA. - **Der molekulare Mechanismus**:   1. **Zielerkennung**: Die synthetische **guide-RNA (sgRNA)** bindet nach den Watson-Crick-Regeln exakt an die 20 Basen lange Zielsequenz im Genom.   2. **PAM-Prüfung**: Die Cas9-Nuklease bindet an das benachbarte **PAM-Motiv** (*Protospacer Adjacent Motif*, Sequenz $5'-NGG-3'$).   3. **Doppelstrangbruch**: Cas9 schneidet beide DNA-Stränge punktgenau durch. - **Zelluläre Reparaturpfade zur Genmodifikation**:   * **1. Gene Knockout (NHEJ)**: Die Zelle klebt den Bruch fehlerhaft zusammen $\\implies$ Leserasterschub $\\implies$ defektes Protein $\\implies$ **Gezielte Stillegung schädlicher Gene**.   * **2. Gene Knock-in (HDR)**: Gibt man eine synthetische Reparatur-DNA mit, baut die Zelle die fehlerfreie Wunschsequenz homolog ein $\\implies$ **Heilung erblicher Gendefekte** (z. B. Mukoviszidose). 2. Stammzellbiologie: - **Hierarchie der Potenz**:   * **Totipotent (Omnipotent)**: Zygote und Blastomeren bis zum 8-Zell-Stadium können zu einem eigenständigen Menschen heranwachsen.   * **Pluripotent**: Embryonale Stammzellen der inneren Zellmasse (Blastozyste) können in alle ca. 200 Gewebetypen des menschlichen Körpers differenzieren (Herz, Nerven, Leber), aber keine Plazenta bilden.   * **Multipotent**: Adulte Stammzellen (z. B. blutbildende Stammzellen im Knochenmark) erneuern spezifische Gewebe. - **Induzierte pluripotente Stammzellen (iPS-Zellen)**:   * Entdeckung von Shinya Yamanaka (2006): Durch Einschleusen von vier 'Yamanaka-Faktoren' (Transkriptionsfaktoren Oct3/4, Sox2, Klf4, c-Myc) können ausdifferenzierte Hautzellen eines erwachsenen Patienten in einen embryonalen pluripotenten Zustand zurückprogrammiert werden $\\implies$ **Keine Zerstörung menschlicher Embryonen erforderlich und keine Immunabstoßung**. 3. Bioethische Urteilsbildung: Somatische Gentherapie vs. Keimbahntherapie: | Kriterium | Somatische Gentherapie | Keimbahntherapie (Keimzellen / Embryonen) | | :--- | :--- | :--- | | **Zielzellen** | Differenzierte Körperzellen (z. B. T-Zellen, Knochenmark, Netzhaut) | Eizellen, Spermien oder frühe Embryonen | | **Vererbbarkeit** | **Nicht vererbbar** (auf den Patienten beschränkt) | **Vollständig und irreversibel vererbbar** an alle künftigen Nachkommen | | **Medizinischer Nutzen** | Heilung schwerster monogener Krankheiten (z. B. Sichelzellkrankheit, spinale Muskelatrophie) | Prävention von Erbkrankheiten vor der Einnistung | | **Ethische Risiken** | Risiken von *Off-Target-Effekten* beim Patienten, hohe Kosten | Unvorhersehbare Mutationen für zukünftige Generationen, Eugenik, *Designer-Babys*, Aufhebung des Verbots nach dem **Embryonenschutzgesetz (ESchG)** |"
+        }
+      ]
+    }
+  ]
+}

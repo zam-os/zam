@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-physik-relativitaetstheorie-zeitdilatation-laengenkontraktion-e-mc2",
+  "version": "2026.08.1",
+  "title": "Physik 13: Spezielle Relativitätstheorie – Postulate, Zeitdilatation, Längenkontraktion und Masse-Energie-Äquivalenz (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 13 (Oberstufe Q13 / Abitur): Grundlagen der Speziellen Relativitätstheorie (Albert Einstein 1905: Das Relativitätsprinzip für alle Inertialsysteme, Die universelle Konstanz der Vakuumlichtgeschwindigkeit c = 299792458 m/s unabhängig vom Bewegungszustand der Quelle [Michelson-Morley-Experiment], Relativität der Gleichzeitigkeit), Kinematische Effekte bei relativistischen Geschwindigkeiten (Der Lorentz-Faktor gamma = 1/sqrt(1 - v^2/c^2) >= 1, Zeitdilatation Delta t = gamma * Delta t_0 [Lichtuhr-Gedankenexperiment, Nachweis über atmosphärische Myonen-Zerfälle], Längenkontraktion L = L_0 / gamma in Bewegungsrichtung, Zwillingsparadoxon und Minkowski-Raumzeit-Diagramme), Relativistische Dynamik (Relativistischer Impuls p = gamma * m_0 * v, Geschwindigkeitsadditionstheorem) sowie Die Masse-Energie-Äquivalenz (E_0 = m_0 * c^2 Ruheenergie, Gesamtenergie E = gamma * m_0 * c^2 = E_kin + E_0, relativistische Energie-Impuls-Beziehung E^2 = (p*c)^2 + (m_0*c^2)^2, Massendefekt und Energieumwandlung bei Kernfusion und Paarbildung/Annihilation).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/physik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Physik 13, Lernbereich Spezielle Relativitätstheorie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD4000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD4000000000000000A01",
+      "namespace": "gymnasium-physik-spezielle-relativitaet",
+      "slug": "einstein-postulate-zeitdilatation-laengenkontraktion-myonen",
+      "title": "Spezielle Relativitätstheorie: Postulate, Zeitdilatation, Längenkontraktion und Myonenexperiment",
+      "domain": "schule/physik/relativitaetstheorie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Special relativity",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Spezielle Relativitätstheorie – Kinematik und Raumzeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD4000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verändert sich die im Laborsystem gemessene Zeitdauer \\Delta t eines bewegten Vorgangs im Vergleich zur im Ruhesystem gemessenen Eigenzeit \\Delta t_0 bei einer Geschwindigkeit v > 0?",
+          "concept": "Sie ist verlangsamt / gedehnt: \\Delta t = \\gamma \\cdot \\Delta t_0 = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} > \\Delta t_0 (Zeitdilatation: 'Bewegte Uhren gehen langsamer')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "\\Delta t = \\gamma \\cdot \\Delta t_0 > \\Delta t_0 (Zeitdilatation / Dehnung)",
+              "\\Delta t = \\frac{\\Delta t_0}{\\gamma} < \\Delta t_0 (Verkürzung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD4000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Grundlagen der Speziellen Relativitätstheorie und das atmosphärische Myonenexperiment: 1. **Die zwei Postulate von Albert Einstein (1905)**:   * **1. Relativitätsprinzip**: Die Naturgesetze haben in allen Inertialsystemen dieselbe mathematische Form. Es gibt keinen ausgezeichneten absoluten Äther-Ruhezustand.   * **2. Konstanz der Lichtgeschwindigkeit**: Die Vakuumlichtgeschwindigkeit $c \\approx 3 \\cdot 10^8\\,\\text{m/s}$ ist in allen Inertialsystemen exakt gleich groß – völlig unabhängig von der Bewegung von Quelle und Empfänger, 2. **Der Lorentz-Faktor & Kinematische Konsequenzen**:   * Lorentz-Faktor: $\\mathbf{\\gamma = \\frac{1}{\\sqrt{1 - \\frac{v^2}{c^2}}} \\ge 1}$.   * **Zeitdilatation**: $\\mathbf{\\Delta t = \\gamma \\cdot \\Delta t_0}$ (Eigenzeit $\\Delta t_0$: Uhr ruht am selben Ort).   * **Längenkontraktion**: $\\mathbf{L = \\frac{L_0}{\\gamma} = L_0 \\cdot \\sqrt{1 - \\frac{v^2}{c^2}}}$ (Eigenlänge $L_0$: Maßstab ruht relativ zum Beobachter; Kontraktion tritt nur in Bewegungsrichtung auf), 3. **Das Myonen-Experiment (Frisch & Smith, 1963)**:   * Myonen entstehen in $h = 10\\,\\text{km}$ Höhe durch kosmische Strahlung und bewegen sich mit $v = 0{,}998\\,c$ zur Erdoberfläche.   * Ihre Eigenlebensdauer im Ruhezustand beträgt nur $\\Delta t_0 = 2{,}2\\,\\mu\\text{s}$.   * a) Zeige klassisch (ohne SRT), wie weit Myonen fliegen könnten ($s = v \\cdot \\Delta t_0$).   * b) Erkläre quantitativ, warum Myonen dennoch die Erdoberfläche erreichen – sowohl aus der Sicht eines irdischen Beobachters (Zeitdilatation) als auch aus der Sicht des mitbewegten Myons (Längenkontraktion).",
+          "concept": "SRT 13: Postulate (Relativitätsprinzip, Lichtgeschwindigkeit c invariant); Lorentzfaktor gamma = 1/sqrt(1 - v^2/c^2); Zeitdilatation Delta t = gamma*Delta t_0; Längenkontraktion L = L_0/gamma; Myonen: klassisch s = 0,998*3e8 * 2,2e-6 = 658 m << 10 km; relativistisch gamma = 1/sqrt(1 - 0,998^2) approx 15,8; Erde: Delta t = 15,8*2,2 us = 34,8 us -> s = 10,4 km; Myon: h' = 10 km / 15,8 = 633 m.",
+          "sample_solution": "1. Die Postulate der Speziellen Relativitätstheorie (Albert Einstein, 1905): - **1. Relativitätsprinzip**: Alle Inertialsysteme (unbeschleunigte Bezugssysteme) sind physikalisch absolut gleichwertig. - **2. Invarianz der Lichtgeschwindigkeit**: Licht breitet sich im Vakuum in jedem Inertialsystem geradlinig mit der universellen Naturkonstante $\\mathbf{c = 299.792.458\\,\\text{m/s}}$ aus (**Michelson-Morley-Nullresultat**, 1887). - **Konsequenz**: Raum und Zeit sind keine absoluten, starren Hintergründe (wie bei Newton), sondern dynamisch miteinander zur **vierdimensionalen Raumzeit** verknüpft. Die Gleichzeitigkeit zweier räumlich getrennter Ereignisse ist relativ! 2. Herleitung der Zeitdilatation über die Lichtuhr: - In einer ruhenden Lichtuhr der Höhe $d$ läuft ein Lichtpuls auf und ab: $\\Delta t_0 = \\frac{2d}{c}$. - Bewegt sich die Uhr mit Geschwindigkeit $v$ quer zur Lichtrichtung, legt das Licht eine diagonale Zickzack-Strecke zurück. Nach dem Satz des Pythagoras gilt:   $$\\left(c \\cdot \\frac{\\Delta t}{2}\\right)^2 = d^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2 = \\left(c \\cdot \\frac{\\Delta t_0}{2}\\right)^2 + \\left(v \\cdot \\frac{\\Delta t}{2}\\right)^2$$   $$\\Delta t^2 (c^2 - v^2) = c^2 \\cdot \\Delta t_0^2 \\implies \\mathbf{\\Delta t = \\frac{\\Delta t_0}{\\sqrt{1 - \\frac{v^2}{c^2}}} = \\gamma \\cdot \\Delta t_0}$$ 3. Quantitative Analyse des Myonen-Experiments: - **Gegeben**: $h = 10\\,\\text{km} = 10.000\\,\\text{m}$, $v = 0{,}998\\,c$, $\\Delta t_0 = 2{,}2\\,\\mu\\text{s} = 2{,}2 \\cdot 10^{-6}\\,\\text{s}$. - **a) Klassische Newtonsche Rechnung**:   $$s_{\\text{klassisch}} = v \\cdot \\Delta t_0 = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (2{,}2 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{658{,}7\\,\\text{m}}$$   *Nach klassischer Physik könnten Myonen maximal ca. $660\\,\\text{m}$ zurücklegen und müssten längst zerfallen sein, bevor sie die Erdoberfläche erreichen.* - **b) Relativistische Auflösung**:   * **Berechnung des Lorentz-Faktors $\\gamma$**:     $$\\gamma = \\frac{1}{\\sqrt{1 - 0{,}998^2}} = \\frac{1}{\\sqrt{1 - 0{,}996004}} = \\frac{1}{\\sqrt{0{,}003996}} \\approx \\mathbf{15{,}81}$$   * **Sicht 1: Erdbeobachter (Zeitdilatation)**:     - Für den ruhenden Forscher auf der Erde vergeht die Zeit im bewegten Myon viel langsamer. Die Lebensdauer ist um den Faktor $\\gamma \\approx 15{,}81$ verlängert:       $$\\Delta t = \\gamma \\cdot \\Delta t_0 = 15{,}81 \\cdot 2{,}2\\,\\mu\\text{s} \\approx \\mathbf{34{,}78\\,\\mu\\text{s}}$$     - Rechnerische Reichweite im Erdsystem:       $$s = v \\cdot \\Delta t = (0{,}998 \\cdot 3 \\cdot 10^8\\,\\text{m/s}) \\cdot (34{,}78 \\cdot 10^{-6}\\,\\text{s}) \\approx \\mathbf{10{,}41\\,\\text{km}} > 10\\,\\text{km}$$     - Die Myonen erreichen die Erdoberfläche problemlos!   * **Sicht 2: Mitbewegtes Myon (Längenkontraktion)**:     - Im Ruhesystem des Myons vergeht die normale Eigenzeit $\\Delta t_0 = 2{,}2\\,\\mu\\text{s}$.     - Aus Sicht des Myons rast die Erde mit $0{,}998\\,c$ auf es zu. Die Atmosphärenschicht von $10\\,\\text{km}$ erscheint durch **Längenkontraktion** drastisch verkürzt:       $$h' = \\frac{h}{\\gamma} = \\frac{10.000\\,\\text{m}}{15{,}81} \\approx \\mathbf{632{,}5\\,\\text{m}}$$     - Da $632{,}5\\,\\text{m} < 658{,}7\\,\\text{m}$, erreicht die Erdoberfläche das Myon innerhalb seiner natürlichen Lebenszeit von $2{,}2\\,\\mu\\text{s}$.   *(Beide Bezugssysteme stimmen im physikalischen Messergebnis exakt überein – ein triumphaler experimenteller Beweis der SRT!)*"
+        }
+      ]
+    },
+    {
+      "id": "01K8GD4000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD4000000000000000A02",
+      "namespace": "gymnasium-physik-masse-energie",
+      "slug": "masse-energie-aequivalenz-relativistischer-impuls-ruheenergie",
+      "title": "Relativistische Dynamik: Relativistischer Impuls, Ruheenergie und Äquivalenz E = m*c^2",
+      "domain": "schule/physik/relativitaetstheorie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD4000000000000000A01",
+          "type": "hard",
+          "rationale": "Relativistische Dynamik und Energie bauen auf dem Lorentz-Faktor gamma auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q413",
+          "target_label": "Mass–energy equivalence",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "physik",
+          "topic_code": "lb2",
+          "topic_title": "Relativistische Dynamik und Masse-Energie-Äquivalenz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD4000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die berühmte Einsteinsche Masse-Energie-Äquivalenz für die Ruheenergie E_0 eines Körpers mit unveränderlicher Ruhemasse m_0?",
+          "concept": "E_0 = m_0 \\cdot c^2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "E_0 = m_0 \\cdot c^2",
+              "E_0 = \\frac{1}{2} m_0 \\cdot v^2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD4000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den relativistischen Impuls, die kinetische Energie und die Energie-Impuls-Beziehung: 1. **Relativistischer Impuls**:   * $\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}$.   * Für $v \\to c$ divergiert der Impuls gegen Unendlich $\\implies$ Ein massebehafteter Körper ($m_0 > 0$) kann niemals die Lichtgeschwindigkeit $c$ erreichen, da unendlich viel Energie und Beschleunigungsarbeit nötig wäre, 2. **Relativistische Energieformen**:   * **Ruheenergie**: $E_0 = m_0 \\cdot c^2$.   * **Gesamtenergie**: $E = \\gamma \\cdot m_0 \\cdot c^2$.   * **Kinetische Energie**: $\\mathbf{E_{\\text{kin}} = E - E_0 = (\\gamma - 1) \\cdot m_0 \\cdot c^2}$.   * *(Grenzfall für $v \\ll c$: Taylorentwicklung $\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} \\implies E_{\\text{kin}} \\approx \\frac{1}{2} m_0 v^2$)*, 3. **Die relativistische Energie-Impuls-Beziehung**:   * Universelle Verknüpfung: $\\mathbf{E^2 = (p \\cdot c)^2 + (m_0 \\cdot c^2)^2}$.   * Für masselose Teilchen wie **Photonen** ($m_0 = 0$): $E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h}{\\lambda}}$ (De-Broglie-Impuls).",
+          "concept": "Relativistische Dynamik 13: Relativistischer Impuls p = gamma*m_0*v; Gesamtenergie E = gamma*m_0*c^2; Kinetische Energie E_kin = (gamma - 1)*m_0*c^2; Energie-Impuls-Beziehung E^2 = (pc)^2 + (m_0 c^2)^2; Photonenimpuls p = h/lambda.",
+          "sample_solution": "1. Der relativistische Impuls und das kosmische Tempolimit: - **Definition**:   * Um den Impulserhaltungssatz in allen Inertialsystemen zu wahren, muss der Impuls relativistisch formuliert werden:     $$\\mathbf{\\vec{p} = \\gamma \\cdot m_0 \\cdot \\vec{v} = \\frac{m_0 \\cdot \\vec{v}}{\\sqrt{1 - \\frac{v^2}{c^2}}}}$$ - **Warum $c$ die unüberwindbare Geschwindigkeitsgrenze ist**:   * Nähert sich die Geschwindigkeit $v$ der Lichtgeschwindigkeit $c$ ($v \\to c$), strebt der Lorentz-Faktor $\\gamma \\to \\infty$.   * Der Impuls und die Trägheit des Körpers wachsen über alle Grenzen; eine weitere Beschleunigung erfordert unendlich viel Arbeit $\\implies$ Kein Körper mit Ruhemasse $m_0 > 0$ kann $c$ erreichen oder überschreiten! 2. Relativistische Kinetische Energie: - Die mechanische Arbeit zur Beschleunigung eines Körpers aus der Ruhe auf Geschwindigkeit $v$ ergibt:   $$E_{\\text{kin}} = \\int_{0}^{s} F\\,ds = \\int_{0}^{t} \\frac{dp}{dt} v\\,dt = \\mathbf{(\\gamma - 1) \\cdot m_0 \\cdot c^2}$$ - **Gesamtenergie $E$**:   $$\\mathbf{E = E_{\\text{kin}} + E_0 = \\gamma \\cdot m_0 \\cdot c^2}$$ - **Klassischer Grenzfall (Korrespondenzprinzip)**:   * Für $v \\ll c$ entwickeln wir $\\gamma = (1 - \\frac{v^2}{c^2})^{-1/2}$ in eine Taylor-Reihe:     $$\\gamma \\approx 1 + \\frac{1}{2}\\frac{v^2}{c^2} + \\frac{3}{8}\\frac{v^4}{c^4} + \\dots$$   * Einsetzen in $E_{\\text{kin}}$:     $$E_{\\text{kin}} \\approx \\left(1 + \\frac{1}{2}\\frac{v^2}{c^2} - 1\\right) m_0 c^2 = \\mathbf{\\frac{1}{2} m_0 v^2}$$ 3. Die Energie-Impuls-Beziehung: - Durch algebraische Verknüpfung von $E = \\gamma m_0 c^2$ und $p = \\gamma m_0 v$ eliminiert man die Geschwindigkeit $v$ und erhält die universelle **Einstein-Gleichung**:   $$\\mathbf{E^2 = p^2 c^2 + m_0^2 c^4}$$ - **Photonen und masselose Quanten**:   * Für ein Photon gilt $m_0 = 0$. Daraus folgt unmittelbar:     $$E = p \\cdot c \\implies \\mathbf{p = \\frac{E}{c} = \\frac{h \\cdot f}{c} = \\frac{h}{\\lambda}}$$   * Obwohl Photonen keine Masse besitzen, tragen sie messbaren Impuls und üben **Strahlungsdruck** aus (Nutzung bei Sonnensegeln im Weltraum)."
+        }
+      ]
+    }
+  ]
+}

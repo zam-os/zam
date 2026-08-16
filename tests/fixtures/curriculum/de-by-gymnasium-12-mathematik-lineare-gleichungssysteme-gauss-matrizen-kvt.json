@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen",
+  "version": "2026.08.1",
+  "title": "Mathematik 12: Lineare Gleichungssysteme (Gauß-Verfahren) und Übergangsmatrizen / Stochastische Prozesse (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 12 (Oberstufe Q12): Lineare Gleichungssysteme (LGS mit m Zeilen und n Unbekannten, Gauß-Algorithmus / Gaußsches Eliminationsverfahren, Zeilenstufenform, Lösbarkeitskriterien nach Rouché-Capelli: Eindeutige Lösung, keine Lösung bei Widerspruchszeile 0 = c, unendlich viele Lösungen mit freien Parametern), Matrizenrechnung (Matrix-Vektor-Multiplikation, Matrix-Multiplikation Falksches Schema, Inverse Matrix) sowie Stochastische Matrizen und Übergangsprozesse (Übergangsdiagramme, Übergangsmatrix M mit Spaltensumme 1, Zustandsvektoren v_n = M^n * v_0, stationäre Grenzverteilung / Fixvektor M * v_stat = v_stat).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 12, Lernbereich Lineare Algebra und stochastische Prozesse"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC1000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC1000000000000000A01",
+      "namespace": "gymnasium-mathematik-gauss-lgs",
+      "slug": "lineare-gleichungssysteme-gauss-algorithmus-loesbarkeit",
+      "title": "Lineare Gleichungssysteme: Gauß-Algorithmus, Zeilenstufenform und Lösbarkeitsanalyse",
+      "domain": "schule/mathematik/lineare-algebra",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Gaussian elimination",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Lineare Algebra – Lineare Gleichungssysteme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC1000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Aussage über die Lösungsmenge eines linearen Gleichungssystems (LGS) trifft zu, wenn die Zeilenstufenform des Gauß-Verfahrens eine Zeile der Form $(0\\;0\\;0\\;|\\;7)$ enthält?",
+          "concept": "Das LGS ist unlösbar (Lösungsmenge ist die leere Menge L = emptyset, da die Gleichung 0 = 7 einen mathematischen Widerspruch darstellt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das LGS besitzt keine Lösung (L = leer)",
+              "Das LGS besitzt genau 7 Lösungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC1000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Löse das folgende lineare Gleichungssystem (LGS) systematisch mit dem Gaußschen Eliminationsverfahren: $$\\begin{aligned}   (I)   & \\quad x_1 + 2x_2 - x_3 = 3 \\\\   (II)  & \\quad 2x_1 + 5x_2 + x_3 = 11 \\\\   (III) & \\quad -x_1 - x_2 + 4x_3 = 4 \\end{aligned}$$ 1. Stelle die **erweiterte Koeffizientenmatrix $(A|b)$** auf, 2. Führe elementare Zeilenumformungen zur **oberen Dreiecksform (Zeilenstufenform)** durch, 3. Bestimme die eindeutige Lösungsmenge $\\mathbb{L}$ durch Rückwärtseinsetzen.",
+          "concept": "Gauß-Algorithmus: Matrix (A|b); Zeilenumformungen: II - 2*I -> (0, 1, 3 | 5), III + I -> (0, 1, 3 | 7) -> Widerspruch bzw. lösbare Matrix mit x3=1, x2=2, x1=1.",
+          "sample_solution": "1. Erweiterte Koeffizientenmatrix $(A|b)$: $$\\left( \\begin{array}{ccc|c} 1 & 2 & -1 & 3 \\\\ 2 & 5 & 1 & 11 \\\\ -1 & -1 & 4 & 4 \\end{array} \\right)$$ 2. Gauß-Elimination zur Zeilenstufenform: - **Schritt 1: Nullen in der 1. Spalte erzeugen**:   * $II' = II - 2 \\cdot I$:     $$(2 - 2\\cdot 1 \\quad 5 - 2\\cdot 2 \\quad 1 - 2\\cdot(-1) \\mid 11 - 2\\cdot 3) \\implies (0 \\quad 1 \\quad 3 \\mid 5)$$   * $III' = III + I$:     $$(-1 + 1 \\quad -1 + 2 \\quad 4 + (-1) \\mid 4 + 3) \\implies (0 \\quad 1 \\quad 3 \\mid 7)$$ - **Schritt 2: Matrix nach Schritt 1**:   $$\\left( \\begin{array}{ccc|c} 1 & 2 & -1 & 3 \\\\ 0 & 1 & 3 & 5 \\\\ 0 & 1 & 3 & 7 \\end{array} \\right)$$ - **Schritt 3: Null in der 2. Spalte der 3. Zeile erzeugen**:   * $III'' = III' - II'$:     $$(0 - 0 \\quad 1 - 1 \\quad 3 - 3 \\mid 7 - 5) \\implies \\mathbf{(0 \\quad 0 \\quad 0 \\mid 2)}$$ 3. Interpretation und Lösungsmenge: - Die 3. Zeile entspricht der Gleichung:   $$0 \\cdot x_1 + 0 \\cdot x_2 + 0 \\cdot x_3 = 2 \\iff \\mathbf{0 = 2}$$ - Dies ist eine falsche Aussage (Widerspruch).   $$\\mathbf{\\mathbb{L} = \\emptyset \\quad (\\text{Das Gleichungssystem ist unlösbar})}$$ - *(Hätte die letzte Zeile $(0\\;0\\;0\\mid 0)$ gelautet, gäbe es unendlich viele Lösungen mit Parameter $x_3 = t$; wäre die Diagonale ungleich Null, gäbe es eine eindeutige Lösung)*."
+        }
+      ]
+    },
+    {
+      "id": "01K8GC1000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC1000000000000000A02",
+      "namespace": "gymnasium-mathematik-uebergangsmatrizen",
+      "slug": "uebergangsmatrizen-stochastische-prozesse-fixvektor",
+      "title": "Übergangsmatrizen: Stochastische Prozesse, Potenzen $M^n$ und stationäre Grenzverteilung (Fixvektor)",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC1000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Berechnung von Fixvektoren erfordert das Lösen homogener linearer Gleichungssysteme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q12483",
+          "target_label": "Markov chain",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Matrizen und stochastische Prozesse",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC1000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaft muss eine quadratische Matrix $M$ zwingend aufweisen, um eine stochastische Übergangsmatrix darzustellen?",
+          "concept": "Alle Einträge m_ij müssen Wahrscheinlichkeiten sein (0 <= m_ij <= 1) und die Summe der Einträge jeder Spalte (bzw. Zeile je nach Vektorkonvention) muss exakt 1 betragen (Spaltensummen = 1)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Alle Einträge in [0; 1] und jede Spaltensumme beträgt exakt 1",
+              "Die Determinante muss 0 sein"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC1000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere stochastische Übergangsprozesse und berechne die stationäre Grenzverteilung (Fixvektor): 1. **Stochastische Übergangsmatrix $M$**:   * Beschreibt Zustandswechsel zwischen Zuständen $Z_1, Z_2, \\dots, Z_k$.   * **Zustand nach $n$ Schritten**: $\\mathbf{\\vec{v}_n = M^n \\cdot \\vec{v}_0}$. 2. **Der Fixvektor / Stationäre Zustand $\\vec{v}_{\\text{stat}}$**:   * Ein Zustandsvektor, der sich bei Multiplikation mit $M$ nicht mehr verändert:     $$\\mathbf{M \\cdot \\vec{v}_{\\text{stat}} = \\vec{v}_{\\text{stat}} \\iff (M - E) \\cdot \\vec{v}_{\\text{stat}} = \\vec{0}}$$   * Zusammen mit der Normierungsbedingung $\\sum v_i = 1$ bzw. $100\\%$, 3. **Konkrete Berechnung**:   * Gegeben ist die Übergangsmatrix zweier Smartphone-Hersteller A und B:     $$M = \\begin{pmatrix} 0{,}8 & 0{,}3 \\\\ 0{,}2 & 0{,}7 \\end{pmatrix}$$   * Berechne den langfristigen stationären Marktanteil $\\vec{v}_{\\text{stat}} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}$ von A und B.",
+          "concept": "Stochastische Prozesse: Übergangsmatrix M; Fixvektor M*v = v; LGS (M - E)*v = 0 mit x + y = 1; Rechnung: 0,8x + 0,3y = x -> -0,2x + 0,3y = 0 -> 2x = 3y; mit x + y = 1 -> x = 0,6 (60% für A), y = 0,4 (40% für B).",
+          "sample_solution": "1. Modellierung stochastischer Prozesse mit Übergangsmatrizen: - **Übergangsmatrix $M$**:   $$M = \\begin{pmatrix} 0{,}8 & 0{,}3 \\\\ 0{,}2 & 0{,}7 \\end{pmatrix}$$   * Interpretation: $80\\%$ der Kunden von A bleiben bei A, $20\\%$ wechseln zu B. $30\\%$ der Kunden von B wechseln zu A, $70\\%$ bleiben bei B.   * *Spaltensummen*: $0{,}8 + 0{,}2 = 1$ und $0{,}3 + 0{,}7 = 1$. 2. Bestimmung des Fixvektors $\\vec{v}_{\\text{stat}} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}$: - **Fixvektorgleichung**:   $$\\begin{pmatrix} 0{,}8 & 0{,}3 \\\\ 0{,}2 & 0{,}7 \\end{pmatrix} \\begin{pmatrix} x \\\\ y \\end{pmatrix} = \\begin{pmatrix} x \\\\ y \\end{pmatrix}$$ - Dies liefert das lineare Gleichungssystem:   $$\\begin{aligned}     (I)  & \\quad 0{,}8x + 0{,}3y = x \\implies -0{,}2x + 0{,}3y = 0 \\implies 2x = 3y \\\\     (II) & \\quad 0{,}2x + 0{,}7y = y \\implies 0{,}2x - 0{,}3y = 0 \\quad (\\text{äquivalent zu I})   \\end{aligned}$$ - **Normierungsbedingung (Gesamtwahrscheinlichkeit $100\\%$)**:   $$(III) \\quad x + y = 1 \\implies y = 1 - x$$ 3. Auflösung: - Einsetzen von $y = 1 - x$ in $2x = 3y$:   $$2x = 3(1 - x) = 3 - 3x \\implies 5x = 3 \\implies \\mathbf{x = \\frac{3}{5} = 0{,}6} \\quad (60\\%)$$ - Damit ergibt sich für $y$:   $$\\mathbf{y = 1 - 0{,}6 = 0{,}4} \\quad (40\\%)$$ 4. Ergebnis & Interpretation: - Der stationäre Fixvektor lautet:   $$\\mathbf{\\vec{v}_{\\text{stat}} = \\begin{pmatrix} 0{,}6 \\\\ 0{,}4 \\end{pmatrix}}$$ - **Bedeutung**: Unabhängig von den anfänglichen Marktanteilen $\\vec{v}_0$ stabilisieren sich die Marktanteile langfristig bei **$60\\%$ für Hersteller A und $40\\%$ für Hersteller B**."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-informatik-oop-klassen-vererbung-algorithmen",
+  "version": "2026.08.1",
+  "title": "Informatik 9: Objektorientierte Programmierung (OOP), Klassen, Vererbung und Such-/Sortieralgorithmen (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 9 (NTG): Objektorientierte Modellierung und Programmierung in einer textuellen Sprache (Klassen, Objekte, Attribute, Methoden, Konstruktor, Geheimnisprinzip/Kapselung, Vererbung mit 'ist-ein'-Beziehung und Polymorphie) sowie algorithmische Grundstrukturen (lineare und binäre Suche, BubbleSort, Laufzeitkomplexität O(n) vs O(log n)).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/informatik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Informatik 9, Lernbereiche Objektorientierte Programmierung und Algorithmen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9G0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9G0000000000000000A01",
+      "namespace": "gymnasium-informatik-oop",
+      "slug": "objektorientierung-klasse-objekt-kapselung-vererbung",
+      "title": "Objektorientierte Modellierung: Klassen, Instanziierung, Kapselung (private/public) und Vererbung",
+      "domain": "schule/informatik/oop",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Object-oriented programming",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Objektorientierte Programmierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9G0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was beschreibt in der objektorientierten Programmierung das Prinzip der Datenkapselung (Information Hiding)?",
+          "concept": "Attribute eines Objekts werden als private deklariert und vor direktem externem Zugriff geschützt; Zugriff erfolgt kontrolliert über Getter- und Setter-Methoden",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Verbergen interner Attribute vor direktem Zugriff (Kapselung)",
+              "Kopieren des gesamten Quellcodes in eine Unterklasse"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9G0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die Säulen der objektorientierten Programmierung (OOP): 1. **Klasse vs. Objekt (Instanz)**:   * **Klasse**: Abstrakter Bauplan / Schablone mit Attributen (Zustandsvariablen) und Methoden (Verhalten/Operationen).   * **Objekt**: Konkrete Ausprägung (Instanz) einer Klasse zur Laufzeit im Speicher mit eigenem Zustand.   * **Konstruktor**: Spezielle Methode zur Initialisierung eines neu erzeugten Objekts, 2. **Datenkapselung (Information Hiding)**:   * Sichtbarkeiten: `private` (nur innerhalb der Klasse sichtbar), `public` (öffentliche Schnittstelle), `protected`.   * Zugriffsschutz über Getter- (`gibName()`) und Setter-Methoden (`setzeAlter()`) mit Validierungslogik, 3. **Vererbung (Generalisierung / Spezialisierung)**:   * Eine Unterklasse (Subklasse) erbt alle Attribute und Methoden der Oberklasse (Superklasse) (**'ist-ein'-Beziehung**, z. B. `Hund ist-ein Tier`).   * **Überschreiben von Methoden (Polymorphie)**: Eine Unterklasse kann eine geerbte Methode mit eigenem spezifischem Verhalten neu implementieren.",
+          "concept": "OOP: Klasse (Bauplan) vs. Objekt (Instanz); Konstruktor; Kapselung (private Attribute, public Getter/Setter); Vererbung ('ist-ein' Relation, Generalisierung/Spezialisierung, Überschreiben von Methoden / Polymorphie).",
+          "sample_solution": "1. Die Kernkonzepte der Objektorientierung (OOP): - **1. Klasse**:   * Ein statischer **Bauplan / Schablone** für Objekte desselben Typs.   * Definiert die **Attribute** (Eigenschaften/Zustandsdaten, z. B. `farbe`, `radius`, `kontostand`) und die **Methoden** (Funktionen/Verhalten, z. B. `faehrt()`, `berechneFlaeche()`, `ueberweise()`). - **2. Objekt (Instanz)**:   * Ein konkretes, zur Laufzeit im Arbeitsspeicher erzeugtes Einzelexemplar einer Klasse.   * Ein Objekt besitzt zu jedem Zeitpunkt einen definierten **Zustand** (aktuelle Werte der Attribute) und eine eindeutige Identität. - **3. Konstruktor**:   * Eine spezielle Initialisierungsmethode (in Java: gleicher Name wie Klasse; in Python: `__init__`), die beim Erzeugen eines Objekts mit dem `new`-Operator automatisch aufgerufen wird. 2. Das Prinzip der Datenkapselung (Information Hiding): - **Ziel**: Schutz des inneren Zustands eines Objekts vor unkontrollierten, fehlerhaften Zugriffen von außen. - **Sichtbarkeitsmodifikatoren**:   * `private` (Minuszeichen im UML-Klassendiagramm: `-`): Attribut ist **nur für Methoden der eigenen Klasse** direkt zugänglich.   * `public` (Pluszeichen im UML-Diagramm: `+`): Methode/Attribut gehört zur öffentlichen Schnittstelle und kann von überall aufgerufen werden. - **Getter- und Setter-Methoden**:   * Kontrollierter Lese- und Schreibzugriff (z. B. verhindert `setzeAlter(int a)` im Setter negative Altersangaben). 3. Vererbung und Polymorphie: - **Vererbung (Inheritance)**:   * Mechanismus zur Wiederverwendung und hierarchischen Strukturierung von Code.   * Die Unterklasse (Kindklasse) erbt alle sichtbaren Attribute und Methoden der Oberklasse (Elternklasse) und erweitert oder spezialisiert diese (**« ist-ein »-Beziehung**, z. B. `PKW` ist ein `Fahrzeug`). - **Methodenüberschreiben (Polymorphie / Vielgestaltigkeit)**:   * Eine Unterklasse kann eine von der Oberklasse geerbte Methode überschreiben (z. B. macht die Methode `gibLaut()` in der Oberklasse `Tier` ein allgemeines Geräusch, während die abgeleitete Klasse `Hund` die Methode mit *« Wuff »* und `Katze` mit *« Miau »* überschreibt)."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9G0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9G0000000000000000A02",
+      "namespace": "gymnasium-informatik-algorithmen",
+      "slug": "algorithmen-lineare-binaere-suche-bubblesort-laufzeit",
+      "title": "Algorithmen: Lineare vs. binäre Suche, Sortierverfahren (BubbleSort) und Komplexität",
+      "domain": "schule/informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9G0000000000000000A01",
+          "type": "hard",
+          "rationale": "Algorithmen werden objektorientiert auf Datenfeldern implementiert."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Algorithm",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Algorithmen – Suchen und Sortieren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9G0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche zwingende Voraussetzung muss ein Datenfeld (Array / Liste) erfüllen, damit der hocheffiziente Algorithmus der binären Suche (Intervallhalbierung) angewendet werden kann?",
+          "concept": "Die Elemente im Datenfeld müssen vollständig sortiert vorliegen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Datenfeld muss sortiert sein",
+              "Das Datenfeld darf maximal 100 Elemente enthalten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9G0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche Such- und Sortieralgorithmen hinsichtlich Funktionsweise und Effizienz: 1. **Suchverfahren**:   * **Lineare Suche**: Vergleicht sequentiell jedes Element von Index $0$ bis $n-1$; funktioniert auf unsortierten Listen; Aufwand im Worst-Case: $n$ Vergleiche ($O(n)$).   * **Binäre Suche (Intervallhalbierung / Teile und Herrsche)**: Vergleicht Suchschlüssel mit dem mittleren Element eines **sortierten** Feldes; halbiert den Suchraum in jedem Schritt; Aufwand im Worst-Case: $\\approx \\log_2(n)$ Vergleiche ($O(\\log n)$), 2. **BubbleSort (Sortieren durch Aufsteigen)**:   * Vergleicht wiederholt benachbarte Elemente ($A[i]$ mit $A[i+1]$) und vertauscht sie, falls sie in falscher Reihenfolge stehen.   * Nach jedem Durchlauf 'blubbert' das jeweils größte Element an seine finale Endposition.   * Aufwand: $\\frac{n(n-1)}{2}$ Vergleiche $\\implies O(n^2)$ (quadratische Laufzeit), 3. Wie viele Vergleiche benötigt die binäre Suche im Worst-Case bei einer sortierten Liste von $1.000.000$ Elementen im Vergleich zur linearen Suche?",
+          "concept": "Algorithmen: Lineare Suche O(n) unsortiert; Binäre Suche O(log2 n) auf sortiertem Array; BubbleSort O(n^2) durch Nachbartausch; Vergleich: Linear 1.000.000 Schritte vs. Binär nur ceil(log2(1.000.000)) = 20 Schritte!",
+          "sample_solution": "1. Vergleich der Suchalgorithmen: - **1. Lineare Suche (Sequentielle Suche)**:   * Durchläuft ein Array von links nach rechts Element für Element:     ```java     for (int i = 0; i < n; i++) {       if (array[i] == gesucht) return i;     }     ```   * *Vorteil*: Funktioniert auch auf völlig unsortierten Daten.   * *Laufzeitkomplexität*: Im Worst Case (Element steht ganz hinten oder fehlt) sind **$n$ Vergleiche** nötig ($O(n)$ – linearer Aufwand). - **2. Binäre Suche (Intervallhalbierung / Divide and Conquer)**:   * **Bedingung**: Das Array muss **zwingend sortiert** sein.   * *Ablauf*: Man vergleicht das gesuchte Element mit der Mitte des aktuellen Suchintervalls:     - Ist das Element kleiner, sucht man in der linken Hälfte weiter ($rechts = mitte - 1$).     - Ist das Element größer, sucht man in der rechten Hälfte weiter ($links = mitte + 1$).   * *Laufzeitkomplexität*: In jedem Schritt wird der Suchraum exakt halbiert $\\implies$ **$O(\\log_2 n)$** (logarithmischer Aufwand). 2. Der BubbleSort-Algorithmus: - **Funktionsweise**:   * Das Array wird in mehreren Durchläufen durchwandert. In jedem Durchlauf werden zwei benachbarte Elemente verglichen und bei falscher Sortierung vertauscht.   * Dadurch steigen die größeren Elemente wie Luftblasen im Wasser Schritt für Schritt nach oben auf. - **Laufzeit & Komplexität**:   * Bei $n$ Elementen sind im 1. Durchlauf $n-1$ Vergleiche nötig, im 2. Durchlauf $n-2$ usw.:     $$\\text{Vergleiche} = (n-1) + (n-2) + \\dots + 1 = \\frac{n(n-1)}{2} = \\frac{n^2 - n}{2} \\implies \\mathbf{O(n^2)}$$   * Ineffizient für große Datenmengen (quadratischer Aufwand). 3. Effizienzvergleich an einer Liste mit $n = 1.000.000$ Einträgen: - **Lineare Suche**: Worst Case $= \\mathbf{1.000.000\\text{ Vergleiche}}$. - **Binäre Suche**: Worst Case $= \\lceil \\log_2(1.000.000) \\rceil = \\mathbf{20\\text{ Vergleiche}}$ ($2^{20} = 1.048.576$).   * Die binäre Suche findet den gesuchten Datensatz in nur 20 Schritten statt einer Million Vergleiche $\\implies$ **Faktor 50.000 schneller**!"
+        }
+      ]
+    }
+  ]
+}

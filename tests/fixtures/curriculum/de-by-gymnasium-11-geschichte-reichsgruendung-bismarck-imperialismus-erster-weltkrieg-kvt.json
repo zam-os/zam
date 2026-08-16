@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-geschichte-reichsgruendung-bismarck-imperialismus-erster-weltkrieg",
+  "version": "2026.08.1",
+  "title": "Geschichte 11: Das lange 19. Jahrhundert – Reichsgründung 1871, Bismarcks Außenpolitik, Imperialismus und Erster Weltkrieg (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 11 (Oberstufe): Die Deutsche Reichsgründung 1871 ('Reichsgründung von oben' im Spiegelsaal von Versailles, Otto von Bismarck, 'Blut und Eisen', preußische Hegemonie, Verfassung des Kaiserreichs mit starker Exekutive und Scheinparlamentarismus), Bismarcks Bündnissystem nach 1871 (Saturiertheit des Deutschen Reiches, Isolation Frankreichs, Dreikaiserabkommen, Zweibund/Dreibund, Rückversicherungsvertrag 1887), Das Zeitalter des Hochimperialismus (1880–1914: 'Wettlauf um Afrika' / Kongo-Konferenz 1884/85, Sozialdarwinismus, Sendungsbewusstsein, Wilhelminischer Kurswechsel unter Wilhelm II.: 'Platz an der Sonne', Flottenbauplan von Tirpitz, Entente Cordiale 1904 / Triple Entente 1907) sowie Der Erste Weltkrieg (1914–1918: Ursachenbündel, Julikrise 1914 und 'Blankoscheck', Schlieffen-Plan, Stellungskrieg/Materialschlachten an der Westfront wie Verdun, Der moderne totale Krieg, Epochenjahr 1917 mit US-Kriegseintritt und Oktoberrevolution in Russland, Zusammenbruch der Mittelmächte und Novemberrevolution 1918).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/geschichte",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geschichte 11, Lernbereiche Kaiserreich, Imperialismus und Erster Weltkrieg"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBK0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBK0000000000000000A01",
+      "namespace": "gymnasium-geschichte-reichsgruendung",
+      "slug": "reichsgruendung-1871-verfassung-bismarck-buendnissystem",
+      "title": "Das Deutsche Kaiserreich 1871: Reichsgründung von oben, Verfassung und Bismarcks Bündnissystem",
+      "domain": "schule/geschichte/kaiserreich",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "German Empire",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Das Deutsche Kaiserreich – Innen- und Außenpolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBK0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches außenpolitische Grundprinzip verfolgte Reichskanzler Otto von Bismarck nach der Reichsgründung 1871, um die europäischen Großmächte über die neue deutsche Macht im Zentrum Europas zu beruhigen?",
+          "concept": "Die Erklärung des Deutschen Reiches als territorial 'saturiert' (gesättigt, ohne weitere Gebietsansprüche) und die diplomatische Isolation Frankreichs zur Vermeidung eines Zweifrontenkriegs",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Erklärung der 'Saturiertheit' und Isolation Frankreichs",
+              "Aggressiver weltweiter Kolonialerwerb und Flottenaufrüstung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBK0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Reichsgründung 1871, die Verfassungsordnung und Bismarcks Bündnisdiplomatie: 1. **Die Reichsgründung 1871 ('Revolution von oben')**:   * Vorgeschichte: Die drei Einigungskriege (1864 Deutsch-Dänischer Krieg, 1866 Deutscher Krieg gegen Österreich $\\implies$ kleindeutsche Lösung, 1870/71 Deutsch-Französischer Krieg).   * **18. Januar 1871**: Kaiserproklamation Wilhelms I. im Spiegelsaal von Schloss Versailles $\\implies$ Demütigung Frankreichs, Annexion von Elsass-Lothringen, 2. **Die Reichsverfassung von 1871 (Konstitutionelle Monarchie)**:   * **Machtzentrum**: Der Deutsche Kaiser (zugleich König von Preußen) und der von ihm allein abhängige **Reichskanzler** (Bismarck). Der Kanzler ist dem Parlament **nicht** verantwortlich.   * **Bundesrat**: Vertretung der Fürstenstaaten (Preußen besitzt ein Veto-Sperrminoritätsrecht).   * **Reichstag**: Allgemeines, gleiches Männerwahlrecht; beschließt Gesetze und Haushalt, hat aber kein Recht zur Regierungsbildung (*Scheinkonstitutionalismus*), 3. **Bismarcks ausgeklügeltes Bündnissystem (1871–1890)**:   * **Ziel**: Verhinderung einer feindlichen Koalition gegen Deutschland, insbesondere Verhinderung eines **Zweifrontenkriegs** (Frankreich im Westen + Russland im Osten).   * **Vertragsnetz**:     - *Zweibund (1879)* mit Österreich-Ungarn $\\rightarrow$ *Dreibund (1882)* mit Italien.     - *Dreikaiserbündnis (1881)* zwischen Deutschland, Österreich-Ungarn und Russland.     - *Rückversicherungsvertrag (1887)*: Geheimer Neutralitätsvertrag mit Russland bei einem französischen Angriff auf Deutschland bzw. einem österreichischen Angriff auf Russland.",
+          "concept": "Kaiserreich 11: Reichsgründung 1871 (3 Einigungskriege, kleindeutsche Lösung, Versailles); Verfassung 1871 (Kaiser & Kanzler Exekutive, Preußen-Hegemonie, Reichstag ohne Regierungsbildung); Bismarcks Bündnissystem (Saturiertheit, Isolation Frankreichs, Zweibund/Dreibund, Rückversicherungsvertrag 1887 zur Verhinderung des Zweifrontenkriegs).",
+          "sample_solution": "1. Der Weg zur kleindeutschen Reichsgründung (1871): - **Die drei Einigungskriege unter Führung Otto von Bismarcks**:   1. *1864 (Deutsch-Dänischer Krieg)*: Preußen und Österreich erobern Schleswig und Holstein.   2. *1866 (Deutscher Krieg)*: Preußen besiegt Österreich bei Königgrätz $\\implies$ Auflösung des Deutschen Bundes und Gründung des **Norddeutschen Bundes** unter preußischer Führung (**Kleindeutsche Lösung** ohne Österreich).   3. *1870/71 (Deutsch-Französischer Krieg)*: Durch die *Emser Depesche* provozierte Bismarck Napoleon III. zur Kriegserklärung. Die süddeutschen Staaten schlossen sich der nationalen Verteidigung an. - **Kaiserproklamation am 18. Januar 1871**:   * Im Spiegelsaal von Versailles krönten die deutschen Fürsten den preußischen König Wilhelm I. zum Deutschen Kaiser. Die Annexion von Elsass-Lothringen begründete eine dauerhafte deutsch-französische **'Erbfeindschaft'**. 2. Das Verfassungsgefüge des Kaiserreichs von 1871: ```mermaid graph TD   K[Deutscher Kaiser = König von Preußen] -->|Ernennt/Entlässt allein| R[Reichskanzler: Bismarck]   K -->|Oberbefehl| H[Militär & Heer]   B[Bundesrat: Vertretung der 25 Fürsten / Preußen-Veto] <-->|Gesetzgebung & Budget| T[Reichstag: Direktes Männerwahlrecht]   R -->|Vorsitz| B ``` - **Charakter**: Ein **Militär- und Obrigkeitsstaat** mit modernem demokratischem Wahlrecht für den Reichstag, aber fehlender parlamentarischer Regierungsverantwortung (*Der Kanzler regiert gegen die Parlamentsmehrheit*). 3. Das diplomatische Meisterwerk: Bismarcks Bündnissystem: - **Die geostrategische Ausgangslage**: Das neu entstandene Deutsche Reich war die stärkste Militär- und Industriemacht auf dem europäischen Kontinent (*Halbhegemoniale Stellung*). - **Bismarcks Leitmaximen**:   * **1. Das Reich ist 'saturiert'**: Deutschland strebt keine weiteren territorialen Eroberungen in Europa an.   * **2. Isolation Frankreichs**: Verhinderung einer Revanche für 1870/71.   * **3. Vermeidung eines Zweifrontenkriegs**: Bindung Russlands an Berlin, um ein Bündnis zwischen Paris und Sankt Petersburg unmöglich zu machen (*« Le cauchemar des coalitions » – Der Albtraum der Koalitionen*). - **Die wichtigsten Bündnisse**:   * **Zweibund (1879)**: Defensivbündnis mit Österreich-Ungarn gegen Russland.   * **Dreibund (1882)**: Erweiterung des Zweibunds um Italien.   * **Dreikaiserabkommen (1881)**: Neutralitätsabkommen zwischen Deutschland, Österreich und Russland.   * **Geheimer Rückversicherungsvertrag (1887)**: Deutschland und Russland sichern sich gegenseitige Neutralität im Verteidigungsfall zu. Bismarck verhinderte damit meisterhaft das Zusammengehen von Frankreich und Russland."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBK0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBK0000000000000000A02",
+      "namespace": "gymnasium-geschichte-erster-weltkrieg",
+      "slug": "hochimperialismus-wilhelm-ii-julikrise-erster-weltkrieg-1917",
+      "title": "Imperialismus & Erster Weltkrieg: Neuer Kurs Wilhelms II., Julikrise 1914 und das Epochenjahr 1917",
+      "domain": "schule/geschichte/erster-weltkrieg",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBK0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Erste Weltkrieg entstand aus dem Scheitern der Bündnissysteme nach 1890."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "World War I",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Imperialismus, Erster Weltkrieg und Epochenjahr 1917",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBK0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Durch welche zwei weltgeschichtlichen Schlüsselereignisse gilt das Jahr 1917 mitten im Ersten Weltkrieg als das fundamentale 'Epochenjahr des 20. Jahrhunderts'?",
+          "concept": "Durch den Kriegseintritt der USA (April 1917 / Woodrow Wilson) und die russische Oktoberrevolution der Bolschewiki unter Lenin (November 1917 / Entstehung der Sowjetunion)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "US-Kriegseintritt und russische Oktoberrevolution (Lenin)",
+              "Die Schlacht von Verdun und Skagerrak"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBK0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Imperialismus, die Entfesselung des Ersten Weltkriegs und das Epochenjahr 1917: 1. **Das Zeitalter des Imperialismus (1880–1914)**:   * **Motive**: Rohstoffsicherung, Absatzmärkte, strategische Flottenstützpunkte, nationales Prestigedenken, rassistischer **Sozialdarwinismus** ('Recht des Stärkeren') und christliches Sendungsbewusstsein.   * *Wettlauf um Afrika* (Kongo-Konferenz 1884/85 in Berlin).   * **Der 'Neue Kurs' Wilhelms II. (nach Bismarcks Entlassung 1890)**: Forderung nach einem *'Platz an der Sonne'*, Nicht-Verlängerung des Rückversicherungsvertrags mit Russland, gigantische Flottenaufrüstung (Tirpitz-Plan) $\\implies$ Entfremdung von Großbritannien $\\implies$ **Einkreisung Deutschlands**: Bildung der **Triple Entente** (Großbritannien, Frankreich, Russland 1907), 2. **Der Kriegsausbruch und die Julikrise 1914**:   * **Attentat von Sarajevo (28. Juni 1914)**: Ermordung des österreichischen Thronfolgers Franz Ferdinand durch serbische Nationalisten.   * **Deutscher 'Blankoscheck' (5./6. Juli)**: Kaiser Wilhelm II. und Reichskanzler Bethmann Hollweg sichern Wien bedingungslose Bündnistreue zu.   * Automatismus der Bündnisse und Mobilmachungspläne: Schlieffen-Plan scheitert an der Marne $\\implies$ Erstarren im **Stellungskrieg und Materialschlachten** (Giftgas, Maschinengewehre, Panzer, Trommelfeuer vor Verdun 1916), 3. **Das Epochenjahr 1917**:   * **1. Kriegseintritt der USA (April 1917)**: Reaktion auf den uneingeschränkten deutschen U-Boot-Krieg. Präsident Woodrow Wilson begründet die Intervention mit dem Kreuzzug für Demokratie (*'To make the world safe for democracy'* / 14-Punkte-Programm).   * **2. Russische Revolution (Februar/Oktober 1917)**: Sturz des Zaren, Machtergreifung der Bolschewiki unter Lenin $\\implies$ Sonderfrieden von Brest-Litowsk (März 1918) $\\implies$ Beginn des Systemkonflikts zwischen liberalem Kapitalismus und Kommunismus.",
+          "concept": "Erster Weltkrieg 11: Imperialismus (Sozialdarwinismus, Platz an der Sonne, Flottenbau Tirpitz, Entente 1907); Julikrise 1914 (Sarajevo, Blankoscheck, Schlieffen-Plan, Stellungskrieg/Verdun); Epochenjahr 1917 (US-Kriegseintritt Wilson 14 Punkte + Oktoberrevolution Lenin Brest-Litowsk).",
+          "sample_solution": "1. Der Imperialismus und der wilhelminische Kurswechsel: - **Triebkräfte des Hochimperialismus (1880–1914)**:   * Wirtschaftliche Expansion (Rohstoffe für die 2. Industrielle Revolution, Absatzmärkte).   * Nationalismus und pseudowissenschaftlicher **Sozialdarwinismus** (Übertragung von Darwins 'Survival of the fittest' auf Völker und 'Rassen'). - **Der 'Neue Kurs' Kaiser Wilhelms II. (ab 1890)**:   * Bismarck wurde 1890 entlassen; Wilhelm II. betrieb eine sprunghafte, großmäulige **Weltpolitik** (*« Wir verlangen auch unseren Platz an der Sonne »* – Bernhard von Bülow).   * **Schwere diplomatische Fehler**:     1. Nicht-Verlängerung des Rückversicherungsvertrags mit Russland $\\implies$ Russland schloss 1894 das **Militärbündnis mit Frankreich** (Bismarcks Albtraum wurde Realität).     2. Massiver **Schlachtflottenbau (Tirpitz-Plan)** bedrohte die maritime Vormachtstellung Großbritanniens $\\implies$ Großbritannien verständigte sich mit Frankreich (**Entente Cordiale 1904**) und Russland (**Triple Entente 1907**). Deutschland war isoliert und nur noch an den maroden Vielvölkerstaat Österreich-Ungarn gekettet (*Nibelungentreue*). 2. Die Julikrise 1914 und der Erste Weltkrieg: - **Ursachenbündel**: Imperialistische Rivalitäten, Wettrüsten, Nationalismus, Balkankrisen (*Pulverfass Balkan*). - **Eskalation im Juli 1914**:   * **28. Juni 1914**: Attentat von Sarajevo auf Erzherzog Franz Ferdinand.   * **5./6. Juli 1914**: Deutschland stellt Österreich-Ungarn den fatalen **'Blankoscheck'** aus (vorbehaltlose militärische Rückendeckung bei einem Angriff auf Serbien).   * Österreich erklärt Serbien den Krieg $\\implies$ russische Generalmobilmachung $\\implies$ deutsches Ultimatum $\\implies$ Kriegserklärungen. - **Der Schlieffen-Plan und der moderne industrielle Krieg**:   * Der deutsche Plan sah vor, Frankreich durch Verletzung der belgischen Neutralität in einem Blitzkrieg binnen 6 Wochen niederzuwerfen, um sich danach gegen Russland zu wenden.   * Der Plan scheiterte an der Marne (September 1914) $\\implies$ Der Krieg erstarrte an der Westfront in einem mörderischen **Stellungskrieg (Grabenkrieg)** mit Materialschlachten (Verdun 1916: über 300.000 Tote für wenige Quadratkilometer Schlamm), Giftgaseinsatz und industriellem Massenmord. 3. Das globale Epochenjahr 1917: - Das Jahr 1917 markiert den Beginn des 'kurzen 20. Jahrhunderts' (Eric Hobsbawm):   * **1. Der Kriegseintritt der USA (6. April 1917)**:     - Nachdem die deutsche Oberste Heeresleitung (OHL unter Hindenburg und Ludendorff) den **uneingeschränkten U-Boot-Krieg** wiederaufgenommen hatte, traten die USA an der Seite der Entente in den Krieg ein.     - Präsident **Woodrow Wilson** proklamierte die **14 Punkte** (Selbstbestimmungsrecht der Völker, Völkerbund, Freiheit der Meere) $\\implies$ Die USA stiegen zur globalen Hegemonialmacht auf.   * **2. Die Russische Revolution 1917**:     - Im März 1917 dankte Zar Nikolaus II. ab (**Februarrevolution**). Im November 1917 ergriffen die radikalen Bolschewiki unter **Wladimir I. Lenin** die Macht (**Oktoberrevolution**).     - Russland schloss im März 1918 den **Sonderfrieden von Brest-Litowsk** und schied aus dem Krieg aus.   * **Fazit**: 1917 begründete den weltweiten ideologischen Systemkonflikt zwischen westlich-liberaler Marktdemokratie (USA) und sowjetischem Staatskommunismus (UdSSR), der das gesamte 20. Jahrhundert bis 1990 prägen sollte."
+        }
+      ]
+    }
+  ]
+}

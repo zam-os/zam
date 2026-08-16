@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-wirtschaft-recht-bgb-vertragsrecht-unternehmen",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 10: Bürgerliches Recht (BGB), Vertragslehre, Unternehmensformen und Finanzierung (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Wirtschaft und Recht 10 (WSG/NTG): Grundlagen des Privatrechts im Bürgerlichen Gesetzbuch (BGB: Rechtsfähigkeit vs. Geschäftsfähigkeit §§ 104-110 BGB, Taschengeldparagraph, Willenserklärungen, Zustandekommen von Kaufverträgen durch Antrag und Annahme, Nichtigkeit vs. Anfechtbarkeit wegen Irrtums/Täuschung, Leistungsstörungen: Sachmängelgewährleistung §§ 437 ff. BGB mit Nacherfüllung, Rücktritt, Minderung, Schadensersatz) sowie Betriebswirtschaftliche Grundlagen (Rechtsformen von Unternehmen: Einzelunternehmen, Personengesellschaften OHG/KG, Kapitalgesellschaften GmbH/AG mit Organen Vorstand/Aufsichtsrat/Hauptversammlung, Haftungsrisiken, Außen- vs. Innenfinanzierung, Eigen- vs. Fremdkapital).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/wirtschaft-und-recht",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Wirtschaft und Recht 10, Lernbereiche Zivilrechtliche Grundlagen und Betriebswirtschaftliche Entscheidungen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAH0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAH0000000000000000A01",
+      "namespace": "gymnasium-wirtschaft-recht-bgb",
+      "slug": "bgb-geschaeftsfaehigkeit-kaufvertrag-leistungsstoerungen",
+      "title": "Bürgerliches Recht (BGB): Geschäftsfähigkeit, Willenserklärungen, Kaufvertrag und Gewährleistung",
+      "domain": "schule/wirtschaft-recht/zivilrecht",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "German Civil Code",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Zivilrechtliche Grundlagen – BGB und Vertragsrecht",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAH0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Rechtszustand gilt nach § 108 BGB für einen Kaufvertrag über ein 500-Euro-Smartphone, den ein 15-jähriger Jugendlicher ohne vorherige Zustimmung seiner Eltern und ohne sofortige Barzahlung aus seinem Taschengeld abschließt?",
+          "concept": "Der Vertrag ist schwebend unwirksam (Wirksamkeit hängt von der nachträglichen Genehmigung der gesetzlichen Vertreter ab)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Schwebend unwirksam (benötigt Genehmigung der Eltern)",
+              "Von Anfang an voll wirksam"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAH0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Grundlagen des BGB-Vertragsrechts und die Rechte des Käufers bei Sachmängeln: 1. **Stufen der Geschäftsfähigkeit (§§ 104 ff. BGB)**:   * **Geschäftsunfähig (0–6 Jahre)**: Willenserklärungen sind **nichtig** (§ 105 BGB).   * **Beschränkt geschäftsfähig (7–17 Jahre)**: Verträge sind wirksam bei lediglich rechtlichem Vorteil oder mit Einwilligung der Eltern. Sonst: **schwebend unwirksam** bis zur Genehmigung (§ 108 BGB). Ausnahme: **Taschengeldparagraph (§ 110 BGB)** (vollständige Erfüllung mit Mitteln, die zur freien Verfügung überlassen wurden).   * **Voll geschäftsfähig (ab 18 Jahren)**: Uneingeschränkt gültige Rechtsgeschäfte, 2. **Zustandekommen eines Vertrags (§§ 145 ff. BGB)**:   * Durch zwei übereinstimmende Willenserklärungen: **Antrag (Angebot)** und **Annahme**.   * **Trennungs- und Abstraktionsprinzip**: Strikte juristische Unterscheidung zwischen dem schuldrechtlichen Verpflichtungsgeschäft (Kaufvertrag § 433 BGB) und dem dinglichen Verfügungsgeschäft (Übereignung von Geld und Ware nach § 929 BGB), 3. **Rechte des Käufers bei Mangelhaftigkeit der Kaufsache (§§ 437 ff. BGB)**:   * **Vorrangige Nacherfüllung (§ 439 BGB)**: Käufer hat das Wahlrecht zwischen Nachbesserung (Reparatur) oder Nachlieferung einer mangelfreien Sache.   * **Nachrangige Rechte** (nach Fristsetzung oder Fehlschlagen der Nacherfüllung):     - **Rücktritt vom Kaufvertrag (§§ 440, 323 BGB)** (Rückabwicklung Zug um Zug).     - **Minderung des Kaufpreises (§ 441 BGB)**.     - **Schadensersatz statt der Leistung (§§ 280, 281 BGB)**.",
+          "concept": "BGB: Geschäftsfähigkeit (0-6 nichtig, 7-17 beschränkt/schwebend unwirksam/§110 Taschengeld, ab 18 voll); Zustandekommen durch Antrag & Annahme; Abstraktionsprinzip; Mängelrechte § 437 (Vorrang der Nacherfüllung; nachrangig Rücktritt, Minderung, Schadensersatz).",
+          "sample_solution": "1. Rechts- und Geschäftsfähigkeit nach dem BGB: - **Rechtsfähigkeit (§ 1 BGB)**: Beginnt mit der Vollendung der Geburt und endet mit dem Tod (Fähigkeit, Träger von Rechten und Pflichten zu sein). - **Die drei Stufen der Geschäftsfähigkeit**:   * **1. Geschäftsunfähigkeit (§ 104 BGB, Alter 0 bis 6 Jahre sowie bei dauerhafter Geistesstörung)**:     - Willenserklärungen sind absolut **nichtig (§ 105 BGB)**. Handeln ausschließlich durch gesetzliche Vertreter (Eltern/Vormund).     - *Ausnahme Botengang*: Darf als bloßer 'Bote' eine fremde Willenserklärung überbringen (z. B. Semmeln kaufen für die Eltern).   * **2. Beschränkte Geschäftsfähigkeit (§ 106 BGB, Alter 7 bis 17 Jahre)**:     - Willenserklärungen sind wirksam, wenn sie dem Minderjährigen **lediglich einen rechtlichen Vorteil** bringen (z. B. reine Schenkung ohne Gegenleistung).     - Verträge mit rechtlichen Verpflichtungen (z. B. Kaufverträge) sind ohne vorherige Einwilligung (*Einwilligung = vorherige Zustimmung*) der Eltern **schwebend unwirksam (§ 108 BGB)**. Werden sie von den Eltern genehmigt, sind sie rückwirkend voll wirksam; verweigern die Eltern die Genehmigung, sind sie endgültig nichtig.     - **Der Taschengeldparagraph (§ 110 BGB)**: Ein Vertrag gilt auch ohne ausdrückliche Genehmigung als von Anfang an wirksam, wenn der Minderjährige die vertragsmäßige Leistung **vollständig mit Mitteln bewirkt (bar bezahlt)**, die ihm zu diesem Zweck oder zur freien Verfügung überlassen worden sind (*kein Ratenkauf!*).   * **3. Volle Geschäftsfähigkeit (§ 2 BGB, ab Vollendung des 18. Lebensjahres)**:     - Volle Rechtswirksamkeit aller abgegebenen Willenserklärungen. 2. Vertragsschluss und das Abstraktionsprinzip: - **Vertragsschluss**: Kommt durch zwei korrespondierende Willenserklärungen zustande: **Antrag (Angebot)** und **Annahme**. - **Das deutsche Trennungs- und Abstraktionsprinzip**:   * Beim alltäglichen Kauf einer Sache werden rechtlich **drei voneinander unabhängige Rechtsgeschäfte** vollzogen:     1. Das *Verpflichtungsgeschäft*: Der Kaufvertrag (§ 433 BGB) begründet Pflichten (Übergabe der Ware vs. Kaufpreiszahlung).     2. Das *1. Verfügungsgeschäft*: Übereignung der Ware (§ 929 BGB – Einigung und Übergabe).     3. Das *2. Verfügungsgeschäft*: Übereignung des Geldes (§ 929 BGB).   * Die Gültigkeit der Eigentumsübertragung bleibt selbst dann bestehen, wenn der Kaufvertrag nachträglich angefochten wird (Schutz des Rechtsverkehrs). 3. Gewährleistungsrechte bei Sachmängeln (§§ 434, 437 BGB): - Weist eine gekaufte Sache bei Gefahrübergang einen Mangel auf (z. B. Display defekt), greift das gesetzliche Gewährleistungssystem: ```mermaid graph TD   A[Sachmangel bei Übergabe festgestellt] --> B[1. Stufe: Vorrang der Nacherfüllung § 439]   B --> C{Wahlrecht des Käufers: Reparatur oder Neulieferung}   C --> D{Erfolglos / Frist abgelaufen / 2 Reparaturversuche gescheitert?}   D -- Ja --> E[2. Stufe: Nachrangige Rechte § 437]   E --> F[Rücktritt § 323: Geld zurück gegen Ware]   E --> G[Minderung § 441: Kaufpreis herabsetzen]   E --> H[Schadensersatz § 280 / 281: bei Verschulden] ``` - **Beweislastumkehr beim Verbrauchsgüterkauf (§ 477 BGB)**:   * Zeigt sich ein Mangel innerhalb der ersten 12 Monate nach dem Kauf, wird gesetzlich vermutet, dass die Sache bereits beim Kauf mangelhaft war."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAH0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAH0000000000000000A02",
+      "namespace": "gymnasium-wirtschaft-recht-unternehmen",
+      "slug": "unternehmensformen-gmbh-ag-finanzierung-eigenkapital",
+      "title": "Betriebswirtschaft: Rechtsformen (Einzelunternehmen, OHG, KG, GmbH, AG) und Finanzierungsarten",
+      "domain": "schule/wirtschaft-recht/bwl",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAH0000000000000000A01",
+          "type": "hard",
+          "rationale": "Unternehmensrecht beruht auf juristischer Personen- und Vertragslehre."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Legal forms of business entities",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb2",
+          "topic_title": "Betriebswirtschaft – Unternehmensformen und Finanzierung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAH0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Haftungsbeschränkung kennzeichnet die Gesellschafter einer Gesellschaft mit beschränkter Haftung (GmbH)?",
+          "concept": "Sie haften ausschließlich mit ihrer eingezahlten Stammeinlage / dem Gesellschaftsvermögen (keine persönliche Haftung mit dem Privatvermögen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Haftung beschränkt auf das Gesellschaftsvermögen (kein Privatvermögen)",
+              "Unbeschränkte Haftung mit dem gesamten Privatvermögen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAH0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Rechtsformen von Unternehmen und unternehmerische Finanzierungswege: 1. **Rechtsformen von Unternehmen im Vergleich**:   * **Einzelunternehmen**: 1 Inhaber, volle Leitungsbefugnis, unbeschränkte persönliche Haftung mit Privatvermögen, kein Mindestkapital.   * **Personengesellschaften (OHG / KG)**:     - **OHG (Offene Handelsgesellschaft)**: Alle Gesellschafter leiten und haften unmittelbar, unbeschränkt und solidarisch mit Privatvermögen.     - **KG (Kommanditgesellschaft)**: *Komplementär* haftet unbeschränkt mit Privatvermögen und führt die Geschäfte; *Kommanditist* haftet nur beschränkt bis zur Höhe seiner Einlage (reiner Kapitalgeber, Kontrollrechte).   * **Kapitalgesellschaften (GmbH / AG)**: Juristische Personen mit eigener Rechtspersönlichkeit; Haftung beschränkt auf das Gesellschaftsvermögen:     - **GmbH**: Mindeststammkapital 25.000 €; Organe: Geschäftsführer, Gesellschafterversammlung.     - **AG (Aktiengesellschaft)**: Mindestgrundkapital 50.000 €; Stückaktien/Nennwertaktien; Drei-Organ-Struktur: **Vorstand** (Leitung), **Aufsichtsrat** (Kontrolle), **Hauptversammlung** (Aktionäre / Beschlussorgan), 2. **Finanzierungsarten von Unternehmen**:   * **Nach der Herkunft des Kapitals**:     - **Außenfinanzierung**: Kapital fließt von außen zu (Kreditaufnahme [Fremdkapital], Ausgabe neuer Aktien / Beteiligungsfinanzierung [Eigenkapital]).     - **Innenfinanzierung**: Kapital wird im Unternehmen erwirtschaftet (Selbstfinanzierung aus einbehaltenen Gewinnen/Thesaurierung, Finanzierung aus Abschreibungen).   * **Nach der Rechtsstellung der Kapitalgeber**:     - **Eigenkapital** (hohe Krisenfestigkeit, keine Zins-/Tilgungspflicht, Mitspracherechte) vs. **Fremdkapital** (feste Zins- und Rückzahlungspflicht, zeitlich befristet, keine Mitspracherechte).",
+          "concept": "Betriebswirtschaft: Rechtsformen (Einzelunternehmen, OHG, KG mit Komplementär/Kommanditist, GmbH mit 25.000€, AG mit 50.000€ und 3 Organen Vorstand/Aufsichtsrat/HV); Finanzierung: Innen- vs. Außenfinanzierung, Eigen- vs. Fremdkapital.",
+          "sample_solution": "1. Rechtsformen von Unternehmen: Kriterien und Profil: | Rechtsform | Typ | Mindestkapital | Haftung | Leitung & Geschäftsführung | | :--- | :--- | :--- | :--- | :--- | | **Einzelunternehmen** | Einzelperson | Kein Mindestkapital | Unbeschränkt persönlich mit dem gesamten Privatvermögen | Der Inhaber allein | | **OHG (Offene Handelsgesellschaft)** | Personengesellschaft | Kein Mindestkapital | **Unbeschränkt, primär, solidarisch** alle Gesellschafter mit Privatvermögen | Alle Gesellschafter (Einzelvertretung) | | **KG (Kommanditgesellschaft)** | Personengesellschaft | Kein Mindestkapital | **Komplementär**: unbeschränkt mit Privatvermögen. **Kommanditist**: nur bis zur Einlage | Komplementär führt; Kommanditist hat Kontrollrecht | | **GmbH** | Kapitalgesellschaft (jur. Person) | 25.000 € (mind. 12.500 € bei Gründung) | Beschränkt auf das **Gesellschaftsvermögen** (kein Privatvermögen) | Geschäftsführer (bestellt durch Gesellschafter) | | **AG (Aktiengesellschaft)** | Kapitalgesellschaft (jur. Person) | 50.000 € Grundkapital | Beschränkt auf das **Aktiengesellschaftsvermögen** | Vorstand (kontrolliert durch Aufsichtsrat) | 2. Die Organstruktur der Aktiengesellschaft (AG): - **1. Vorstand (Leitungsorgan)**:   * Führt die Geschäfte eigenverantwortlich und vertritt die AG gerichtlich und außergerichtlich. - **2. Aufsichtsrat (Kontrollorgan)**:   * Bestellt, überwacht und entlässt den Vorstand; prüft den Jahresabschluss; Mitbestimmung der Arbeitnehmervertreter. - **3. Hauptversammlung (Beschlussorgan der Aktionäre)**:   * Trifft fundamentale Entscheidungen (Beschluss über Gewinnverwendung/Dividende, Entlastung von Vorstand und Aufsichtsrat, Kapitalerhöhungen, Satzungsänderungen; 1 Aktie = 1 Stimmrecht). 3. Systematik der Unternehmensfinanzierung: ```mermaid graph TD   A[Unternehmensfinanzierung] --> B[Nach Herkunft des Kapitals]   B --> C[Außenfinanzierung: Geld kommt von extern]   C --> C1[Beteiligungsfinanzierung: Neue Gesellschafter / Aktienemission = Eigenkapital]   C --> C2[Kreditfinanzierung: Bankdarlehen / Anleihen = Fremdkapital]   B --> D[Innenfinanzierung: Selbst erwirtschaftet]   D --> D1[Selbstfinanzierung: Einbehaltene Gewinne / Thesaurierung]   D --> D2[Finanzierung aus Abschreibungsgegenwerten] ``` - **Eigenkapital vs. Fremdkapital**:   * **Eigenkapital**: Gehört den Eigentümern/Aktionären; steht unbefristet zur Verfügung; keine festen Zinszahlungen nötig (Dividende nur bei Gewinn); stärkt die Bonität und Kreditwürdigkeit (Rating).   * **Fremdkapital**: Schulden bei Gläubigern/Banken; zeitlich befristet; feste, gewinnunabhängige Zins- und Tilgungspflichten (*Liquiditätsrisiko bei Umsatzeinbrüchen*); Gläubiger haben jedoch keinerlei Mitspracherechte im Unternehmen."
+        }
+      ]
+    }
+  ]
+}

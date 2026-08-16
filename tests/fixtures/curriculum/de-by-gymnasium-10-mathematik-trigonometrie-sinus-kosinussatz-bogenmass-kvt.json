@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass",
+  "version": "2026.08.1",
+  "title": "Mathematik 10: Trigonometrie im beliebigen Dreieck (Sinussatz, Kosinussatz) und Bogenmaß am Einheitskreis (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 10: Trigonometrische Berechnungen an allgemeinen Dreiecken (Sinussatz a/sin alpha = b/sin beta = c/sin gamma, Kosinussatz a^2 = b^2 + c^2 - 2bc*cos alpha, Dreiecksflächeninhalt A = 1/2*a*b*sin gamma), Erweiterung der Winkelfunktionen auf beliebige Winkel am Einheitskreis sowie Definition des Bogenmaßes (x = alpha * pi / 180°).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 10, Lernbereich Trigonometrie an beliebigen Dreiecken und Bogenmaß"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA0000000000000000A01",
+      "namespace": "gymnasium-mathematik-trigonometrie",
+      "slug": "sinussatz-kosinussatz-allgemeines-dreieck-dreiecksflaeche",
+      "title": "Trigonometrie: Sinussatz, Kosinussatz und trigonometrische Dreiecksflächenformel",
+      "domain": "schule/mathematik/trigonometrie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Law of cosines",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Trigonometrie an beliebigen Dreiecken",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Formel beschreibt den Kosinussatz zur Berechnung der Seite $a$ im allgemeinen Dreieck $\\triangle ABC$ bei gegebenen Seiten $b, c$ und eingeschlossenem Winkel $\\alpha$?",
+          "concept": "a^2 = b^2 + c^2 - 2*b*c*cos(alpha)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "a^2 = b^2 + c^2 - 2bc * cos(alpha)",
+              "a^2 = b^2 + c^2 + 2bc * cos(alpha)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Sinussatz, Kosinussatz und die trigonometrische Flächenberechnung im allgemeinen Dreieck: 1. **Der Sinussatz**:   * In jedem Dreieck verhalten sich die Seiten wie die Sinuswerte ihrer Gegenwinkel:     $$\\mathbf{\\frac{a}{\\sin \\alpha} = \\frac{b}{\\sin \\beta} = \\frac{c}{\\sin \\gamma} = 2R} \\quad (R = \\text{Umkreisradius})}$$   * Anwendung: Gegeben sind zwei Winkel und eine Seite (WSW/SWW) oder zwei Seiten und der der größeren Seite gegenüberliegende Winkel (Ssw), 2. **Der Kosinussatz (Verallgemeinerung des Satzes von Pythagoras)**:   * $a^2 = b^2 + c^2 - 2bc \\cos \\alpha$, $b^2 = a^2 + c^2 - 2ac \\cos \\beta$, $c^2 = a^2 + b^2 - 2ab \\cos \\gamma$.   * Für $\\gamma = 90^\\circ$ gilt $\\cos 90^\\circ = 0 \\implies c^2 = a^2 + b^2$ (Pythagoras als Spezialfall).   * Anwendung: Gegeben sind drei Seiten (SSS $\\implies \\cos \\alpha = \\frac{b^2 + c^2 - a^2}{2bc}$) oder zwei Seiten und der eingeschlossene Winkel (SWS), 3. **Trigonometrische Flächenformel**: $A = \\frac{1}{2} a b \\sin \\gamma = \\frac{1}{2} b c \\sin \\alpha = \\frac{1}{2} a c \\sin \\beta$, 4. Ein Dreieck hat die Seiten $b = 6\\,\\text{cm}$, $c = 10\\,\\text{cm}$ und den eingeschlossenen Winkel $\\alpha = 60^\\circ$. Berechne die dritte Seite $a$ und die Fläche $A$ (nutze $\\cos 60^\\circ = 0{,}5$ und $\\sin 60^\\circ = \\frac{\\sqrt{3}}{2}$).",
+          "concept": "Trigonometrie im allgemeinen Dreieck: Sinussatz a/sin alpha = b/sin beta = c/sin gamma; Kosinussatz a^2 = b^2 + c^2 - 2bc*cos alpha; Fläche A = 1/2*b*c*sin alpha; Rechnung: a^2 = 36 + 100 - 2*6*10*0,5 = 136 - 60 = 76 -> a = sqrt(76) = 2*sqrt(19) approx 8,72 cm; A = 1/2 * 6 * 10 * sqrt(3)/2 = 15*sqrt(3) approx 25,98 cm^2.",
+          "sample_solution": "1. Trigonometrische Sätze am allgemeinen Dreieck: - **1. Der Sinussatz**:   $$\\mathbf{\\frac{a}{\\sin(\\alpha)} = \\frac{b}{\\sin(\\beta)} = \\frac{c}{\\sin(\\gamma)} = 2R}$$   * **Einsatzbereiche**:     - Kongruenzsatz **WSW / SWW**: Ein Winkel und eine Seite sind bekannt $\\implies$ dritte Seite direkt ermittelbar.     - Kongruenzsatz **Ssw**: Zwei Seiten und der der längeren Seite gegenüberliegende Winkel sind bekannt. - **2. Der Kosinussatz**:   $$\\mathbf{a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)}$$   $$\\mathbf{b^2 = a^2 + c^2 - 2ac \\cdot \\cos(\\beta)}$$   $$\\mathbf{c^2 = a^2 + b^2 - 2ab \\cdot \\cos(\\gamma)}$$   * **Einsatzbereiche**:     - Kongruenzsatz **SWS**: Zwei Seiten und der eingeschlossene Winkel gegeben.     - Kongruenzsatz **SSS**: Alle drei Seiten gegeben $\\implies$ Winkelberechnung: $\\cos(\\alpha) = \\frac{b^2 + c^2 - a^2}{2bc}$. - **3. Trigonometrischer Flächeninhalt**:   $$\\mathbf{A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot a \\cdot c \\cdot \\sin(\\beta) = \\frac{1}{2} \\cdot a \\cdot b \\cdot \\sin(\\gamma)}$$ 2. Durchrechnung des Beispiels ($b = 6\\,\\text{cm}, c = 10\\,\\text{cm}, \\alpha = 60^\\circ$): - **Schritt 1: Seite $a$ über Kosinussatz**:   $$a^2 = b^2 + c^2 - 2bc \\cdot \\cos(\\alpha)$$   $$a^2 = 6^2 + 10^2 - 2 \\cdot 6 \\cdot 10 \\cdot \\cos(60^\\circ) = 36 + 100 - 120 \\cdot 0{,}5 = 136 - 60 = 76$$   $$\\mathbf{a = \\sqrt{76} = 2\\sqrt{19}\\,\\text{cm}} \\approx 8{,}72\\,\\text{cm}$$ - **Schritt 2: Flächeninhalt $A$**:   $$A = \\frac{1}{2} \\cdot b \\cdot c \\cdot \\sin(\\alpha) = \\frac{1}{2} \\cdot 6 \\cdot 10 \\cdot \\sin(60^\\circ) = 30 \\cdot \\frac{\\sqrt{3}}{2} = \\mathbf{15\\sqrt{3}\\,\\text{cm}^2} \\approx 25{,}98\\,\\text{cm}^2$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8GA0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA0000000000000000A02",
+      "namespace": "gymnasium-mathematik-einheitskreis",
+      "slug": "einheitskreis-bogenmass-periodizitaet-sinusfunktion",
+      "title": "Trigonometrische Funktionen: Einheitskreis, Bogenmaß x und Periodizität",
+      "domain": "schule/mathematik/funktionen",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA0000000000000000A01",
+          "type": "hard",
+          "rationale": "Das Bogenmaß erweitert die Winkeltrigonometrie auf reelle Funktionen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Unit circle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb1",
+          "topic_title": "Der Einheitskreis und die reelle Sinusfunktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viel Radiant ($rad$) im Bogenmaß entspricht einem vollen Winkel von $360^\\circ$ am Einheitskreis?",
+          "concept": "2 * pi (ca. 6,283 rad; 180° entspricht pi rad, 90° entspricht pi/2 rad)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "2 * pi (Kreisumfang des Einheitskreises)",
+              "pi / 2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Erkläre den Übergang von geometrischen Winkeln zu reellen Winkelfunktionen am Einheitskreis: 1. **Der Einheitskreis ($r = 1$)**:   * Ein Zeiger vom Ursprung $(0|0)$ schließt mit der positiven $x$-Achse den Winkel $\\alpha$ ein.   * Die Koordinaten des Kreis-Endpunktes definieren die Winkelfunktionen: $\\mathbf{P(\\cos \\alpha \\mid \\sin \\alpha)}$.   * Vorzeichen in den 4 Quadranten: Sinus positiv in Q1/Q2, negativ in Q3/Q4; Kosinus positiv in Q1/Q4, negativ in Q2/Q3, 2. **Das Bogenmaß ($x$ in Radiant / rad)**:   * Entspricht der Bogenlänge $b$ auf dem Einheitskreis:     $$\\mathbf{x = \\frac{\\alpha}{180^\\circ} \\cdot \\pi} \\iff \\mathbf{\\alpha = \\frac{x}{\\pi} \\cdot 180^\\circ}$$   * Standardwerte: $0^\\circ = 0$, $30^\\circ = \\frac{\\pi}{6}$, $45^\\circ = \\frac{\\pi}{4}$, $60^\\circ = \\frac{\\pi}{3}$, $90^\\circ = \\frac{\\pi}{2}$, $180^\\circ = \\pi$, $270^\\circ = \\frac{3\\pi}{2}$, $360^\\circ = 2\\pi$, 3. **Die allgemeine Sinusfunktion $f(x) = a \\cdot \\sin(b(x - c)) + d$**:   * $|a|$: Amplitude (Ausschlag).   * $b$: Frequenzfaktor $\\implies$ Periode $p = \\frac{2\\pi}{|b|}$.   * $c$: Phasenverschiebung in $x$-Richtung.   * $d$: Vertikale Verschiebung (Ruhelage).",
+          "concept": "Einheitskreis P(cos alpha | sin alpha); Bogenmaß x = alpha*pi/180°; Periodizität p = 2*pi; Allgemeine Sinusfunktion f(x) = a*sin(b(x-c)) + d mit Amplitude a, Periode p = 2pi/b, Phase c, Ruhelage d.",
+          "sample_solution": "1. Der Einheitskreis als Fundament reeller Winkelfunktionen: - Der Einheitskreis ist ein Kreis im kartesischen Koordinatensystem mit dem Mittelpunkt $M(0 \\mid 0)$ und dem Radius $r = 1$ ($x^2 + y^2 = 1$). - Für jeden beliebigen Drehwinkel $\\alpha \\in \\mathbb{R}$ (auch über $360^\\circ$ und negativ) sind Sinus und Kosinus als Koordinaten des Zeigerendpunktes $P$ definiert:   $$\\mathbf{x_P = \\cos(\\alpha)}, \\quad \\mathbf{y_P = \\sin(\\alpha)}, \\quad \\mathbf{\\tan(\\alpha) = \\frac{\\sin(\\alpha)}{\\cos(\\alpha)} = \\frac{y_P}{x_P}}$$ - **Vorzeichenregeln**:   * **Quadrant I ($0^\\circ - 90^\\circ$)**: $\\sin > 0, \\cos > 0$.   * **Quadrant II ($90^\\circ - 180^\\circ$)**: $\\sin > 0, \\cos < 0$.   * **Quadrant III ($180^\\circ - 270^\\circ$)**: $\\sin < 0, \\cos < 0$.   * **Quadrant IV ($270^\\circ - 360^\\circ$)**: $\\sin < 0, \\cos > 0$. 2. Das Bogenmaß (Radiant): - Misst den Winkel als die Länge des Kreisbogens $b$ auf dem Einheitskreis:   $$\\mathbf{x = \\alpha \\cdot \\frac{\\pi}{180^\\circ}} \\quad \\iff \\quad \\mathbf{\\alpha = x \\cdot \\frac{180^\\circ}{\\pi}}$$   * **Wichtige Referenzwinkel**:     $$\\begin{array}{c|c|c|c|c|c|c|c}     \\alpha & 0^\\circ & 30^\\circ & 45^\\circ & 60^\\circ & 90^\\circ & 180^\\circ & 360^\\circ \\\\ \\hline     x & 0 & \\frac{\\pi}{6} & \\frac{\\pi}{4} & \\frac{\\pi}{3} & \\frac{\\pi}{2} & \\pi & 2\\pi     \\end{array}$$ 3. Die allgemeine Sinusfunktion $f(x) = a \\cdot \\sin(b(x - c)) + d$: - **1. Amplitude $|a|$**: Maximaler Ausschlag der Schwingung um die Ruhelage. - **2. Periode $p$ über den Parameter $b$**:   $$\\mathbf{p = \\frac{2\\pi}{b}}$$ - **3. Phasenverschiebung $c$**: Verschiebung nach rechts ($c > 0$) bzw. links ($c < 0$). - **4. Ruhelage $d$**: Vertikale Verschiebung der Schwingungsachse."
+        }
+      ]
+    }
+  ]
+}

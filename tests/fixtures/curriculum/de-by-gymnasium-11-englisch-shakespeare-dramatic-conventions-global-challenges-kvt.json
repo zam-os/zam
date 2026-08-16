@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-englisch-shakespeare-dramatic-conventions-global-challenges",
+  "version": "2026.08.1",
+  "title": "Englisch 11: Shakespeare & Dramatic Conventions and Global Challenges / Postcolonial Literature (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 11 (Oberstufe E1/E2): Shakespearean Drama and Elizabethan Theatre (Tragic Hero, Hubris, Hamartia/Fatal Flaw, Soliloquy vs. Monologue, Aside, Dramatic Irony, Blank Verse / Iambic Pentameter, Foreshadowing, Imagery & Motifs in *Macbeth* and *Hamlet*) sowie Global Challenges and Postcolonial Voices (The British Empire and its Legacy, Commonwealth of Nations, Postcolonial literature: Chinua Achebe, Chimamanda Ngozi Adichie, Globalisation, Migration, Hybridity and Cultural Identity in a globalised 21st-century world).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/englisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Englisch 11, Lernbereiche Shakespeare and Drama, Global Challenges and Postcolonialism"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBD0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBD0000000000000000A01",
+      "namespace": "gymnasium-englisch-shakespeare",
+      "slug": "shakespearean-drama-macbeth-hamlet-dramatic-conventions",
+      "title": "Shakespearean Drama: Elizabethan Theatre, Dramatic Conventions and Tragedy Analysis (Macbeth)",
+      "domain": "schule/englisch/drama",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "William Shakespeare",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Shakespeare and Elizabethan Drama",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBD0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which dramatic device in Shakespearean drama refers to a speech delivered by a character alone on stage, revealing their innermost thoughts, moral conflicts, and secret intentions directly to the audience?",
+          "concept": "Soliloquy (Selbstgespräch einer einsamen Figur auf der Bühne, z. B. Macbeths 'Is this a dagger which I see before me' oder Hamlets 'To be or not to be')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Soliloquy (Monolog einer allein auf der Bühne stehenden Figur)",
+              "Dialogue"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBD0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the key dramatic conventions of Shakespearean tragedy and Elizabethan theatre using *Macbeth*: 1. **The Elizabethan World Picture & The Globe Theatre**:   * **The Great Chain of Being**: Divine hierarchy (God $\\rightarrow$ Angels $\\rightarrow$ King $\\rightarrow$ Nobles $\\rightarrow$ Peasants $\\rightarrow$ Animals). Regicide (killing the king) is a cosmic sin that throws nature into violent turmoil (*'Fair is foul, and foul is fair'*).   * The Globe Theatre: Thrust stage, open-air, natural daylight, groundlings, no elaborate scenery $\\implies$ relying on spoken imagery (*word-scenery*), 2. **Key Dramatic Conventions & Terms**:   * **Blank Verse**: Unrhymed **iambic pentameter** (ten syllables, unstressed/stressed: $\\smile — \\smile — \\smile — \\smile — \\smile —$) used for noble characters; prose used for lower-class characters (e.g. the Porter) or madness.   * **Dramatic Irony**: The audience knows crucial facts of which the characters are unaware (e.g. King Duncan praising Macbeth's castle as pleasant while the Macbeths plot his murder).   * **Soliloquy vs. Aside**: Soliloquy (alone on stage) vs. Aside (brief remark to the audience while other characters are present but cannot hear).   * **The Tragic Hero & Hamartia**: High noble status, tragic flaw (**Hamartia** = *vaulting ambition* in Macbeth), leading through free moral choice to catastrophic downfall and catharsis, 3. Analyse the metaphorical significance of blood (*'Will all great Neptune's ocean wash this blood clean from my hand?'*) and light/darkness imagery in *Macbeth*.",
+          "concept": "Shakespeare 11: Elizabethan World Picture (Chain of Being); Globe Theatre; Dramatic Conventions: Blank Verse (iambic pentameter), Dramatic Irony, Soliloquy, Aside; Tragic Hero & Hamartia (Macbeth's vaulting ambition); Blood & Darkness imagery.",
+          "sample_solution": "1. The Elizabethan Context and Theatre: - **The Great Chain of Being**:   * Elizabethan and Jacobean worldview considered the universe a divine, orderly hierarchy created by God:     $$\\text{God} \\longrightarrow \\text{Angels} \\longrightarrow \\text{King (Divine Right of Kings)} \\longrightarrow \\text{Nobles} \\longrightarrow \\text{Commoners} \\longrightarrow \\text{Nature}$$   * In *Macbeth* (written ca. 1606 for King James I), Macbeth's murder of rightful King Duncan disrupts the cosmic order. Consequently, nature rebels (horses eat each other, day turns to night). - **The Globe Theatre**:   * Open-air amphitheatre on the South Bank of the Thames in London.   * No electric lights or elaborate stage sets $\\implies$ Shakespeare used **verbal scene painting** (*« The air nimbly and sweetly recommends itself... »*) and symbolic props. 2. Classical Dramatic Conventions in Shakespeare's Tragedies: - **1. Verse and Meter**:   * **Blank Verse**: Unrhymed lines in **iambic pentameter** (five metric feet with an unstressed followed by a stressed syllable: $\\smile — \\mid \\smile — \\mid \\smile — \\mid \\smile — \\mid \\smile —$):     * *« To-morrow, and to-morrow, and to-morrow... »*   * **Rhyming Couplets**: Often conclude a scene to signal an exit or mark significant thematic insights (*« Away, and mock the time with fairest show: / False face must hide what the false heart doth know. »*).   * **Prose**: Used for comedic relief (the drunken Porter in Act 2) or to illustrate moral degradation and mental madness (Lady Macbeth's sleepwalking scene in Act 5). - **2. Theatrical Devices**:   * **Soliloquy**: A character delivers an extended monologue alone on stage, granting the audience privileged, intimate access to their psychological doubts, guilt, and moral deliberations (*e.g. Macbeth's dagger soliloquy: « Is this a dagger which I see before me...? »*).   * **Dramatic Irony**: Tension created when the audience possesses knowledge unknown to characters on stage (e.g. Duncan warmly greeting his *« noble hostess »* Lady Macbeth, unaware she has prepared his execution). - **3. The Tragic Hero & Hamartia**:   * Macbeth starts as a brave, loyal general (*« Brave Macbeth – well he deserves that name »*).   * **Hamartia (Tragic Flaw)**: His **vaulting ambition** (*« I have no spur / To prick the sides of my intent, but only / Vaulting ambition, which o'erleaps itself »*), manipulated by the Weird Sisters' prophecies and Lady Macbeth's ruthless goading, drives him down a spiral of tyranny and bloody murder, ending in his inevitable demise. 3. Imagery and Symbolism in *Macbeth*: - **Blood**: Evolves from a symbol of honour on the battlefield into an indelible physical and psychological marker of inescapable guilt (*« Will all great Neptune's ocean wash this blood / Clean from my hand? No... »* / Lady Macbeth: *« Out, damned spot! out, I say! »*). - **Light and Darkness**: Darkness represents moral corruption and cover for evil deeds (*« Stars, hide your fires; / Let not light see my black and deep desires »*); light represents innocence and divine truth."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBD0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBD0000000000000000A02",
+      "namespace": "gymnasium-englisch-postcolonial",
+      "slug": "postcolonial-voices-british-empire-globalisation-identity",
+      "title": "Postcolonial Voices: The British Empire, Migration, Hybridity and Global Challenges",
+      "domain": "schule/englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBD0000000000000000A01",
+          "type": "hard",
+          "rationale": "Literary analysis skills are transferred from drama to modern postcolonial prose."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Postcolonial literature",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Global Challenges and Postcolonialism",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBD0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "What is the central postcolonial literary concept introduced by Homi K. Bhabha describing the dynamic blending and cross-fertilisation of different cultural identities in migration societies?",
+          "concept": "Cultural Hybridity / The Third Space (the emergence of new, mixed cultural identities that challenge rigid binary concepts of 'us' vs. 'them')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Cultural Hybridity (The Third Space)",
+              "Strict Assimilation"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBD0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the history of the British Empire and central concepts of modern postcolonial literature: 1. **The British Empire & Decolonisation**:   * *'The Empire on which the sun never set'*: Imperial expansion, colonial exploitation, Eurocentric civilising mission (*'The White Man's Burden'* – Rudyard Kipling).   * Decolonisation post-WWII: Indian Independence (1947: Gandhi's non-violence, Partition into India and Pakistan), Wind of Change in Africa (1950s/60s).   * The **Commonwealth of Nations**: Voluntary association of 56 independent member states promoting democracy and economic ties, 2. **Postcolonial Literary Perspectives**:   * **Writing Back to the Centre**: Challenging colonial stereotypes in European literature (e.g. Chinua Achebe's *Things Fall Apart* [1958] reclaiming Nigerian Igbo history vs. Joseph Conrad's *Heart of Darkness*).   * **Chimamanda Ngozi Adichie ('The Danger of a Single Story')**: Critique of reducing complex cultures to one-dimensional Western clichés of poverty or conflict, 3. **Migration and Modern Multicultural Identity in the UK**:   * **The Windrush Generation (1948)**: Caribbean immigrants invited to rebuild post-war Britain; experiences of racism, institutional discrimination, and cultural contributions.   * **Diaspora & Identity**: The feeling of displacement (*'unhomeliness'*), negotiating between ancestral heritage and British citizenship in contemporary multicultural cities (e.g. Zadie Smith: *White Teeth*).",
+          "concept": "Postcolonial Studies 11: British Empire & Decolonisation (India 1947, Commonwealth); 'Writing Back' (Chinua Achebe Things Fall Apart); Adichie (Danger of a Single Story); Migration to the UK (Windrush Generation 1948, Hybridity, Diaspora, Zadie Smith).",
+          "sample_solution": "1. The British Empire and Its Historical Aftermath: - **Colonial Era**: At its peak in the 1920s, the British Empire spanned nearly a quarter of the globe's land surface and population (*« The Empire on which the sun never set »*). - **Ideological Justification**:   * Cloaked in the racist notion of the *« White Man's Burden »* (civilising the 'primitive' natives) while systematically extracting raw materials and establishing global trade dominance. - **Decolonisation**:   * Accelerated rapidly following the devastation of World War II:     - **1947**: Independence of India and traumatic **Partition** into India and Pakistan.     - **1950s–1960s**: The *« Wind of Change »* swept through Africa (Ghana, Nigeria, Kenya gaining independence). - **The Commonwealth of Nations**:   * A voluntary intergovernmental association of 56 sovereign member nations (mostly former British territories), committed to democracy, human rights, and sustainable development. 2. Postcolonial Literature and Theory: - **1. 'Writing Back to the Centre' (Salman Rushdie / Bill Ashcroft)**:   * Postcolonial authors reclaim their indigenous histories, languages, and cultural dignity, dismantling Eurocentric representations in traditional English canons.   * **Chinua Achebe – *Things Fall Apart* (1958)**:     - Depicts the complex social fabric, oral traditions, and religious customs of the Igbo people in pre-colonial Nigeria before the destructive arrival of British missionaries and colonial administrators. - **2. Chimamanda Ngozi Adichie – *The Danger of a Single Story* (2009)**:   * Warns that viewing a continent (such as Africa) through a single narrative of catastrophe, poverty, or helplessness creates stereotypes that rob people of their full humanity and agency. 3. Migration, Hybridity and the Multicultural UK: - **The Windrush Generation (1948)**:   * The arrival of the *HMT Empire Windrush* carrying hundreds of Caribbean citizens invited by the British government to help reconstruct post-war infrastructure and the newly founded NHS. Despite facing overt hostility, they irrevocably transformed British culture, music, and food. - **Key Concepts of Diaspora**:   * **Cultural Hybridity (Homi Bhabha)**: Rejection of static, essentialist ideas of cultural purity. Identity in globalised societies is forged in a fluid *'Third Space'* where different traditions merge to create new forms of belonging.   * **Multicultural Britain Today**: Exemplified by contemporary authors like **Zadie Smith (*White Teeth*)** or **Hanif Kureishi**, exploring the humorous and painful negotiations of identity, generational clashes, and racism experienced by second- and third-generation immigrants in cosmopolitan London."
+        }
+      ]
+    }
+  ]
+}

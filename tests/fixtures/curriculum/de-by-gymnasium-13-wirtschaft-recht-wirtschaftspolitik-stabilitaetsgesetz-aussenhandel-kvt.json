@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-wirtschaft-recht-wirtschaftspolitik-stabilitaetsgesetz-aussenhandel",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 13: Wirtschaftspolitik & Global Governance – Stabilitätsgesetz, Außenhandelstheorien und Weltwirtschaftsordnung (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Wirtschaft und Recht 13 (Oberstufe WSG/NTG Q13 / Abitur): Gesamtwirtschaftliche Instabilitäten und das Stabilitätsgesetz von 1967 (Das 'Magische Viereck' des § 1 StabG: 1. Angemessenes und stetiges Wirtschaftswachstum [reales BIP], 2. Hoher Beschäftigungsstand [Arbeitslosenquote], 3. Preisniveaustabilität [HVPI-Inflationsrate ca. 2 %], 4. Außenwirtschaftliches Gleichgewicht [Leistungsbilanz]; Erweiterung zum 'Magischen Sechseck' um Umweltschutz und gerechte Einkommensverteilung; Zielbeziehungen: Zielharmonien vs. Zielkonflikte wie Philipps-Kurve zwischen Inflation und Arbeitslosigkeit), Wirtschaftspolitische Konzeptionen (Nachfrageorientierte Wirtschaftspolitik / Keynesianismus: Fiskalismus, Deficit Spending, Antizyklische Finanzpolitik nach John Maynard Keynes vs. Angebotsorientierte Wirtschaftspolitik / Monetarismus nach Milton Friedman: Say'sches Theorem, Deregulierung, Steuersenkungen, Geldmengensteuerung), Außenhandelstheorien und Global Governance (Absolute Kostenvorteile nach Adam Smith vs. Komparative Kostenvorteile nach David Ricardo; Freihandel vs. Protektionismus [Zölle, Quoten, nichttarifäre Handelshemmnisse]; Internationale Organisationen der Weltwirtschaft: Welthandelsorganisation WTO mit Meistbegünstigungs- und Inländerbehandlungsprinzip, Internationaler Währungsfonds IWF, Weltbank) sowie Die europäische Währungsunion und der Stabilitäts- und Wachstumspakt (Maastricht-Kriterien: Haushaltsdefizit max. 3 % des BIP, Gesamtverschuldung max. 60 % des BIP).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/wirtschaft-und-recht",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Wirtschaft und Recht 13, Lernbereich Wirtschaftspolitik und Weltwirtschaft"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GDH0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GDH0000000000000000A01",
+      "namespace": "gymnasium-wirtschaft-recht-stabilitaet",
+      "slug": "stabilitaetsgesetz-magisches-viereck-keynes-monetarismus",
+      "title": "Wirtschaftspolitik: Das Magische Viereck (StabG 1967), Keynesianismus vs. Monetarismus",
+      "domain": "schule/wirtschaft-recht/wirtschaftspolitik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Economic policy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb1",
+          "topic_title": "Wirtschaftspolitik – Ziele und Konzeptionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDH0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche 4 gesamtwirtschaftlichen Ziele verankert § 1 des deutschen Stabilitäts- und Wachstumsgesetzes (StabG von 1967) im sogenannten 'Magischen Viereck'?",
+          "concept": "1. Preisniveaustabilität, 2. Hoher Beschäftigungsstand, 3. Außenwirtschaftliches Gleichgewicht, 4. Stetiges und angemessenes Wirtschaftswachstum",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Preisniveaustabilität, Hohe Beschäftigung, Außenwirtschaftl. Gleichgewicht, Wirtschaftswachstum",
+              "Börsenhöchststände, Steuersenkungen, Goldreserven, Exportverbote"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDH0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Magische Viereck des Stabilitätsgesetzes und vergleiche die beiden großen Wirtschaftstheorien (Keynesianismus vs. Angebotsorientierung): 1. **Das Magische Viereck (§ 1 StabG 1967)**:   * **Warum 'magisch'?**: Weil nicht alle 4 Ziele gleichzeitig in vollem Umfang erreicht werden können (Zielkonflikte!).   * **Indikatoren**:     - 1. *Preisniveaustabilität*: Inflationsrate $\\approx 2\\,\\%$ (HVPI).     - 2. *Hoher Beschäftigungsstand*: Arbeitslosenquote $< 3\\,\\%$ (Vollbeschäftigung).     - 3. *Außenwirtschaftliches Gleichgewicht*: Außenbeitragsquote / Leistungsbilanzsaldo ca. $\\pm 1-2\\,\\%$ des BIP.     - 4. *Angemessenes Wirtschaftswachstum*: Reales BIP-Wachstum ca. $+2\\text{ bis } +3\\,\\%$.   * **Zielkonflikte**: z. B. traditionelle **Phillips-Kurve** (Wirtschaftsboom $\\implies$ Arbeitslosigkeit sinkt, aber Inflationsdruck steigt), 2. **Der Theorievergleich**:   * **1. Nachfrageorientierte Wirtschaftspolitik (Keynesianismus / John Maynard Keynes)**:     - *Diagnose*: Krisen entstehen durch unzureichende gesamtwirtschaftliche Nachfrage.     - *Strategie*: **Antizyklische Finanzpolitik**: Im Abschwung schuldenfinanzierte Staatsausgaben (**Deficit Spending** / Infrastrukturinvestitionen) zur Ankurbelung des Multiplikatoreffekts; im Boom Schuldenabbau (*Surplus Saving*).     - *Kritik*: Zeitliche Verzögerungen (*Time Lags*), Staatsverschuldung wird politisch im Boom nie abgebaut (*Crowding-out*), Inflationsgefahr.   * **2. Angebotsorientierte Wirtschaftspolitik (Monetarismus / Milton Friedman)**:     - *Diagnose*: Krisen entstehen durch staatliche Überregulierung, hohe Steuern und unflexible Märkte (Say'sches Theorem: *« Jedes Angebot schafft sich seine Nachfrage »*).     - *Strategie*: Stärkung der Unternehmensrentabilität: Deregulierung, Flexibilisierung des Arbeitsmarktes, Senkung der Unternehmenssteuern, Begrenzung der Geldmenge durch die Zentralbank.     - *Kritik*: Vernachlässigung der sozialen Gerechtigkeit, Gefahr von Lohn-Dumping, ungesicherte Investitionsbereitschaft.",
+          "concept": "Wirtschaftspolitik 13: Magisches Viereck (Preise, Beschäftigung, Außenwirtschaft, Wachstum, Zielkonflikte / Phillips-Kurve); Nachfrageorientierung / Keynes (antizyklisch, Deficit Spending) vs. Angebotsorientierung / Friedman (Say'sches Theorem, Deregulierung, Steuersenkung).",
+          "sample_solution": "1. Das Magische Viereck (§ 1 StabG 1967): - **Die vier gleichrangigen Hauptziele**:   $$\\mathbf{\\text{Preisniveaustabilität}} \\quad \\longleftrightarrow \\quad \\mathbf{\\text{Hoher Beschäftigungsstand}}$$   $$\\mathbf{\\text{Außenwirtschaftliches Gleichgewicht}} \\quad \\longleftrightarrow \\quad \\mathbf{\\text{Angemessenes Wirtschaftswachstum}}$$ - **Warum 'magisch'?**:   * Die Gleichzeitigkeit aller vier Zielzustände ist aufgrund systemischer **Zielkonflikte** praktisch kaum erreichbar:     - *Konflikt Wachstum vs. Preisstabilität (Phillips-Kurve)*: Eine anspringende Konjunktur treibt die Nachfrage nach Gütern und Arbeitskräften $\\implies$ Löhne und Preise steigen $\\implies$ Inflation.     - *Konflikt Wachstum vs. Außenwirtschaft*: Ein extrem exportgetriebenes Wachstum führt zu gigantischen Leistungsbilanzüberschüssen (z. B. Deutschland mit über $7\\,\\%$ des BIP), was andere Staaten in die Verschuldung zwingt und Währungskonflikte erzeugt. 2. Die beiden fundamentalen wirtschaftspolitischen Konzeptionen: | Kriterium | Nachfrageorientierung (Keynesianismus) | Angebotsorientierung (Monetarismus) | | :--- | :--- | :--- | | **Hauptvertreter** | John Maynard Keynes (1936) | Milton Friedman, Arthur Laffer | | **Hauptursache von Krisen** | Mangelnde gesamtwirtschaftliche Nachfrage (Konsum- und Investitionsschwäche) | Unzureichende Rentabilität der Unternehmen durch Überregulierung und hohe Steuern | | **Rolle des Staates** | **Aktiver Krisenmanager**: Staat muss im Konjunkturtief als Nachfrager einspringen | **Schiedsrichter (Ordnungspolitik)**: Staat soll sich aus dem Markt heraushalten | | **Wichtigste Instrumente** | **Antizyklische Fiskalpolitik**: In der Rezession kreditfinanzierte Staatsausgaben (**Deficit Spending**) in Bildung/Straßen $\\implies$ Multiplikator- und Akzeleratoreffekt | **Verbesserung der Angebotsbedingungen**: Senkung von Gewinnsteuern, Abbau von Bürokratie, Lohnzurückhaltung, flexible Arbeitszeiten | | **Geldpolitik** | Untergeordnete Rolle (akkommodierend) | **Streng potentialorientierte Geldmengensteuerung** zur Verhinderung von Inflation | | **Typische Risiken** | - **Time Lags** (Wirkung verpufft oder trifft falschen Zeitpunkt) <br>- **Strukturverkrustung & Schuldenberge** (Politiker sparen im Aufschwung nicht) | - **Zunahme sozialer Ungleichheit** <br>- **Investitionsfalle** (Steuersenkungen werden gehortet statt investiert) |"
+        }
+      ]
+    },
+    {
+      "id": "01K8GDH0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GDH0000000000000000A02",
+      "namespace": "gymnasium-wirtschaft-recht-aussenhandel",
+      "slug": "aussenhandelstheorien-ricardo-freihandel-protektionismus-wto",
+      "title": "Weltwirtschaft: Außenhandelstheorie (David Ricardo), Freihandel vs. Protektionismus und WTO",
+      "domain": "schule/wirtschaft-recht/aussenwirtschaft",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GDH0000000000000000A01",
+          "type": "hard",
+          "rationale": "Außenwirtschaft und Weltwirtschaftsordnung bauen auf volkswirtschaftlichen Gleichgewichtsmodellen auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Comparative advantage",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "wirtschaft_und_recht",
+          "topic_code": "lb2",
+          "topic_title": "Außenhandelstheorie und Welthandelsordnung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDH0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was besagt das Theorem der komparativen Kostenvorteile von David Ricardo (1817) über den internationalen Handel?",
+          "concept": "Dass sich internationaler Handel für zwei Länder selbst dann lohnt, wenn ein Land alle Güter absolut billiger herstellen kann, sofern sich jedes Land auf das Gut mit den geringeren Opportunitätskosten spezialisiert",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Handel lohnt sich bei Spezialisierung auf geringere relative Opportunitätskosten",
+              "Handel lohnt sich nur für das absolut produktivere Land"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDH0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Außenhandelstheorien, protektionistische Instrumente und die Prinzipien der Welthandelsorganisation (WTO): 1. **Das Theorem der komparativen Kostenvorteile (David Ricardo, 1817)**:   * **Beispiel (England & Portugal produzieren Tuch und Wein)**:     - Portugal braucht für 1 Einheit Wein 80 Arbeitsstunden, für 1 Einheit Tuch 90 Stunden (absolut überlegen bei beiden!).     - England braucht für 1 Einheit Wein 120 Stunden, für 1 Einheit Tuch 100 Stunden.   * **Opportunitätskosten**: In England 'kostet' 1 Einheit Tuch nur $100/120 = 0{,}83$ Einheiten Wein; in Portugal $90/80 = 1{,}125$ Einheiten Wein.   * **Ergebnis**: England hat komparativen Vorteil bei Tuch, Portugal bei Wein $\\implies$ Spezialisierung und freier Handel steigert den Gesamt-Wohlstand **beider** Länder! 2. **Freihandel vs. Protektionismus**:   * **Freihandelsargumente**: Größere Güterauswahl, Skaleneffekte / Massenproduktion (*Economies of Scale*), niedrige Verbraucherpreise, Innovationsdruck.   * **Protektionistische Instrumente**: Zölle (Schutzzölle), Importquoten, Subventionen, Nichttarifäre Handelshemmnisse (bürokratische Normen).   * **Argumente für Protektionismus**: Schutz junger Schlüsselindustrien (*Erziehungszoll-Argument* nach Friedrich List), Sicherung heimischer Arbeitsplätze, Vermeidung kritischer Abhängigkeiten (Ernährung, Halbleiter), 3. **Die Welthandelsorganisation (WTO, Genf 1995)**:   * **Kernelemente des GATT/GATS**:     - **1. Meistbegünstigungsprinzip (*Most-Favoured-Nation*)**: Einem Handelspartner gewährte Zollvorteile gelten automatisch für alle WTO-Mitglieder.     - **2. Inländerbehandlungsprinzip (*National Treatment*)**: Importierte Waren dürfen steuerlich und rechtlich nicht schlechter gestellt werden als inländische Produkte.     - **3. Streitschlichtungsmechanismus (*Dispute Settlement Body*)**: Schlichtung von Handelsstreitigkeiten.",
+          "concept": "Außenhandel 13: Absolute vs. komparative Kostenvorteile nach Ricardo (Opportunitätskosten); Freihandel vs. Protektionismus (Zölle, Quoten, Erziehungszoll nach List); WTO-Prinzipien (Meistbegünstigung, Inländerbehandlung, Streitschlichtung).",
+          "sample_solution": "1. Das Theorem der komparativen Kostenvorteile (David Ricardo, 1817): - **Der revolutionäre Kerngedanke**:   * Adam Smith zeigte 1776, dass Handel bei **absoluten Kostenvorteilen** vorteilhaft ist.   * Ricardo bewies genial: Selbst wenn ein Entwicklungsland bei *jedem einzelnen Gut* unproduktiver ist als ein Hochtechnologieland, profitieren **beide Länder**, wenn sie sich auf die Güter spezialisieren, bei denen ihr relativer Effizienznachteil am geringsten ist (**geringste Opportunitätskosten**). - **Rechnerischer Beweis**: | Gut | England (Arbeitszeit) | Portugal (Arbeitszeit) | | :--- | :--- | :--- | | **1 Fass Wein** | 120 h | **80 h** (absolut produktiver) | | **1 Ballen Tuch** | 100 h | **90 h** (absolut produktiver) | - **Opportunitätskosten**:   * England opfert für 1 Ballen Tuch nur $\\frac{100}{120} = \\mathbf{0{,}83\\,\\text{Fässer Wein}}$.   * Portugal opfert für 1 Ballen Tuch $\\frac{90}{80} = \\mathbf{1{,}125\\,\\text{Fässer Wein}}$.   * *Folgerung*: England exportiert Tuch, Portugal exportiert Wein $\\implies$ Die weltweite Gesamtproduktion beider Güter steigt; beide Völker können durch Tausch mehr konsumieren als in Autarkie. 2. Der wirtschaftspolitische Konflikt: Freihandel vs. Protektionismus: - **Vorteile des multilateralen Freihandels**:   * Internationale Arbeitsteilung nach Effizienzkriterien.   * **Verbraucherwohlfahrt**: Niedrigere Preise, höhere Produktqualität und Vielfalt.   * **Skalenerträge**: Globale Märkte ermöglichen rentable Großserienfertigung (z. B. Mikrochips, Flugzeugbau). - **Instrumente des Protektionismus**:   * **Tarifär**: Zölle (Wertzölle, Schutzzölle, Anti-Dumping-Zölle).   * **Nicht-tarifär**: Importquoten, Devisenbeschränkungen, diskriminierende Produktstandards und Zertifizierungshürden. - **Legitime Schutzargumente**:   * **Erziehungszoll (Friedrich List)**: Temporärer Schutz einer aufstrebenden Industrie (*Infant Industry*) bis zur internationalen Wettbewerbsfähigkeit.   * **Strategische Autonomie**: Schutz lebenswichtiger Sektoren (Medizin, Energie, Verteidigung, Halbleiter) vor geopolitischer Erpressbarkeit. 3. Die Prinzipien der Welthandelsorganisation (WTO): - **Die drei Pfeiler des Welthandelssystems**:   1. **Meistbegünstigung (Art. I GATT)**: Handelsvorteile (Zollsenkungen), die einem Staat gewährt werden, müssen unverzüglich und bedingungslos allen anderen 164 WTO-Mitgliedern gewährt werden.   2. **Inländerbehandlung (Art. III GATT)**: Nach Passieren der Zollgrenze dürfen ausländische Waren nicht höher besteuert oder strenger reguliert werden als einheimische Produkte.   3. **Transparenz und Verlässlichkeit**: Verbot von mengenmäßigen Importverboten; Zölle werden in Stufen völkerrechtlich gebunden (*Konsolidierung*)."
+        }
+      ]
+    }
+  ]
+}
