@@ -1,14 +1,15 @@
 ---
 type: architecture
 title: Standalone Mobile Libraries
-description: ZAM Mobile starts from a device-local library on Android and iOS; pairing and a server database are optional multi-device upgrades.
+description: ZAM Mobile runs a standalone library and the same cell-first curriculum discovery flow on Android and iOS; pairing and a server database remain optional multi-device upgrades.
 tags:
   - mobile
   - android
   - ios
   - offline
+  - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-08-15T08:54:42.759Z
+timestamp: 2026-08-16T07:15:57Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -41,12 +42,37 @@ same TypeScript kernel and node-free provisioning path on both mobile
 platforms, so scheduling, migrations, snapshots, and token/card behavior do not
 fork into Android or iOS implementations.
 
+# Curriculum discovery and cell precedence
+
+Mobile navigates the same provider registry and manifests as Desktop: country
+or region, school type, grade, subject, optional track, then topic. A completed
+position is resolved against bundled-cell curriculum scopes before any generic
+import is offered. When one or more reviewed cells cover the position, those
+cells are the only curriculum offer. Only a position with no covering cell
+falls back to its provider's topic list. This implements the cell-precedence
+rule at the surface instead of asking a learner to understand the distinction.
+
+The ordinary Library screen shows active learning paths and one guided
+curriculum action; it does not render the whole bundled catalog. Cell status is
+computed with bulk queries over the relevant atoms, practice items, and cards,
+and provider-specific track aliases are normalized when a manifest and a
+published tile use different stable spellings.
+
+Reviewed bundled cells install and enrol without a model or network connection.
+A generic curriculum topic is stricter: its official source must have verified
+content, the native shell performs a bounded HTTPS text fetch on both Android
+and iOS, and a connected cloud text endpoint produces grounded card drafts.
+Every draft carries the official `source_link`, provider, and stable topic id,
+and must pass through the editable multi-draft confirmation UI before it
+becomes a token and personal card. HTTP and model selection stay outside the
+kernel.
+
 # Bundled learning paths and field-test review
 
-The Mobile Library lists the same four commit-controlled bundled learning cells
-as Desktop. One learner action installs the tile and then enrols the current
-user, but the kernel operations remain separate: installation writes shared
-atoms, bindings, edges, and practice items with zero cards; enrolment
+The Mobile Library uses the same commit-controlled bundled learning-cell
+catalog as Desktop. One learner action installs the tile and then enrols the
+current user, but the kernel operations remain separate: installation writes
+shared atoms, bindings, edges, and practice items with zero cards; enrolment
 materializes only the cell's scoped personal cards. Status checks require every
 atom **and** every practice-item id, so overlapping cells cannot produce a
 false installed badge.
@@ -64,8 +90,8 @@ kernel contract.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
-- Tests: `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`
-- Code: `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/review-session.ts`, `src/kernel/library/bundled-cells.ts`
+- Tests: `tests/mobile/curriculum.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`
+- Code: `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/curriculum.ts`, `mobile/src/import.ts`, `mobile/src-tauri/src/curriculum.rs`, `mobile/src-tauri/src/vision.rs`, `src/cli/curriculum/registry.ts`, `src/cli/curriculum/content-readiness.ts`, `src/kernel/library/bundled-cells.ts`
 
 - [ADR 2026-08-08 — ZAM on iPadOS Is a Standalone App, Not a Companion](../adr/2026-08-08-ios-standalone-app.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)

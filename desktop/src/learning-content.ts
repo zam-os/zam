@@ -556,6 +556,7 @@ export function initLearningContentStudio(): void {
   ) as HTMLButtonElement;
 
   // Event Listeners
+  wireBundledCellsOpen();
   searchInput.addEventListener("input", () => refreshCardsList());
   contextFilter.addEventListener("change", () => {
     void loadStudioData();
@@ -2326,12 +2327,26 @@ interface BundledCellItem {
 }
 
 let bundledCellsListEl: HTMLElement | null = null;
+let bundledCellsOpenWired = false;
+
+function wireBundledCellsOpen(): void {
+  const openButton = document.getElementById(
+    "btn-bundled-cells-open-curriculum",
+  );
+  if (!openButton || bundledCellsOpenWired) return;
+  openButton.textContent = t("btn_curriculum_wizard");
+  openButton.addEventListener("click", () => {
+    document.getElementById("btn-content-curriculum-wizard")?.click();
+  });
+  bundledCellsOpenWired = true;
+}
 
 export async function loadBundledCells(): Promise<void> {
   if (!bundledCellsListEl) {
     bundledCellsListEl = document.getElementById("bundled-cells-list");
   }
   if (!bundledCellsListEl) return;
+  wireBundledCellsOpen();
 
   try {
     const res = await runBridge<{ success: boolean; cells: BundledCellItem[] }>(
@@ -2354,7 +2369,16 @@ function renderBundledCells(cells: BundledCellItem[]): void {
   const descEl = document.getElementById("lbl-bundled-cells-desc");
   if (descEl) descEl.textContent = t("lbl_bundled_cells_desc");
 
-  for (const cell of cells) {
+  const activeCells = cells.filter((cell) => cell.enrolled);
+  if (activeCells.length === 0) {
+    const empty = document.createElement("p");
+    empty.className = "bundled-cells-empty";
+    empty.textContent = t("lbl_bundled_cells_active_empty");
+    bundledCellsListEl.appendChild(empty);
+    return;
+  }
+
+  for (const cell of activeCells) {
     const cardEl = document.createElement("div");
     cardEl.className = "zam-card";
     cardEl.style.padding = "10px 12px";
@@ -2404,55 +2428,16 @@ function renderBundledCells(cells: BundledCellItem[]): void {
     const inScopeCount = cell.inScopeAtomIds?.length ?? cell.atomCount;
     countEl.textContent = tf("lbl_cell_atom_count", { count: inScopeCount });
 
-    const actionBtn = document.createElement("button");
-    actionBtn.type = "button";
-    actionBtn.className = cell.enrolled
-      ? "btn secondary-btn btn-xs"
-      : "btn primary-btn btn-xs";
-    actionBtn.textContent = cell.enrolled
-      ? t("lbl_cell_enrolled")
-      : t("btn_enrol_cell");
+    // This list shows active paths only; enrolling happens in the curriculum
+    // wizard, which is the surface that knows which cells cover a position.
+    const stateBtn = document.createElement("button");
+    stateBtn.type = "button";
+    stateBtn.className = "btn secondary-btn btn-xs";
+    stateBtn.textContent = t("lbl_cell_enrolled");
+    stateBtn.disabled = true;
 
-    actionBtn.addEventListener("click", async () => {
-      if (cell.enrolled) {
-        alert(
-          tf("toast_cell_already_enrolled", { title: cell.title }),
-        );
-        return;
-      }
-      actionBtn.disabled = true;
-      actionBtn.textContent = "...";
-      try {
-        const enrolRes = await runBridge<{
-          success: boolean;
-          cardsCreated: number;
-          cardsReused: number;
-          alreadyEnrolled: boolean;
-        }>("bundled-cell-enrol", [cell.id]);
-
-        if (enrolRes?.alreadyEnrolled) {
-          alert(tf("toast_cell_already_enrolled", { title: cell.title }));
-        } else {
-          alert(
-            tf("toast_cell_enrolled", {
-              title: cell.title,
-              cards: enrolRes?.cardsCreated ?? 0,
-            }),
-          );
-        }
-        await loadStudioData();
-      } catch (err) {
-        alert(
-          `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
-        );
-      } finally {
-        actionBtn.disabled = false;
-      }
-    });
-
-    footer.append(countEl, actionBtn);
+    footer.append(countEl, stateBtn);
     cardEl.append(header, desc, footer);
     bundledCellsListEl.appendChild(cardEl);
   }
 }
-

@@ -328,8 +328,17 @@
                  learner does far more often. -->
             <div id="library-browse" class="stack">
               <div class="card stack">
-                <p class="group-title" data-i18n="learning_paths_heading">Kuratierte Lernpfade</p>
-                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle einen Lernpfad und starte ohne Import.</p>
+                <p class="group-title" data-i18n="learning_paths_heading">Lehrplan & Lernpfade</p>
+                <p class="t-secondary" data-i18n="learning_paths_desc">Wähle Schulart, Klasse und Fach. ZAM zeigt zuerst passende geprüfte Lernpfade.</p>
+                <button
+                  id="open-curriculum"
+                  class="btn primary"
+                  type="button"
+                  data-i18n="curriculum_choose"
+                >
+                  Lehrplan auswählen
+                </button>
+                <p class="group-title" data-i18n="learning_paths_active">Aktive Lernpfade</p>
                 <div id="bundled-cells-list" class="stack"></div>
                 <p id="bundled-cells-status" class="status" aria-live="polite"></p>
               </div>
@@ -403,6 +412,37 @@
                 Karte löschen
               </button>
               <p id="detail-status" class="status" aria-live="polite"></p>
+            </div>
+
+            <!-- One mobile-native catalog walk. It uses the same provider
+                 taxonomy and cell-precedence contract as Desktop; the body is
+                 rebuilt for the current step so 228 cells never become one
+                 scrolling wall. -->
+            <div id="library-curriculum" class="stack" hidden>
+              <button
+                id="curriculum-back"
+                class="btn plain curriculum-back"
+                type="button"
+                data-i18n="setup_back"
+              >
+                Zurück
+              </button>
+              <div class="card stack">
+                <nav id="curriculum-breadcrumb" class="chip-row" aria-label="Auswahl"></nav>
+                <h2 id="curriculum-step-title" class="t-title">Lehrplan auswählen</h2>
+                <p id="curriculum-step-hint" class="t-secondary"></p>
+                <div id="curriculum-options" class="stack"></div>
+                <button
+                  id="curriculum-model-settings"
+                  class="btn"
+                  type="button"
+                  hidden
+                  data-i18n="curriculum_open_ai_settings"
+                >
+                  KI in den Einstellungen verbinden
+                </button>
+                <p id="curriculum-status" class="status" aria-live="polite"></p>
+              </div>
             </div>
 
             <p class="t-secondary" id="import-desc-text" hidden data-i18n="import_desc">

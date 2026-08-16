@@ -256,7 +256,9 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
 
       const listTokensResFinal = runCliJson(["bridge", "list-tokens", "--knowledge-context", "private"]);
       expect(listTokensResFinal.tokens).toHaveLength(0);
-    });
+      // Twelve CLI subprocess spawns: the 5 s default times this out on the
+      // slow windows-arm64 runner, which is the repo's flakiest CI job.
+    }, 15_000);
 
     it("composes domain prefix filter and knowledge context filter correctly", () => {
       runCli(["kc", "create", "--name", "science-ctx", "--label", "Science Context", "--language", "en"]);

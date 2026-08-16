@@ -103,10 +103,8 @@ describe("index.html / TypeScript element contract", () => {
   it("gives every direct child of the tab bar an equal share", () => {
     const html = read("mobile/index.html");
     const css = read("mobile/src/ui/components.css");
-    const bar = html.slice(
-      html.indexOf('<nav class="tabbar"'),
-      html.indexOf("</nav>"),
-    );
+    const barStart = html.indexOf('<nav class="tabbar"');
+    const bar = html.slice(barStart, html.indexOf("</nav>", barStart));
     // Direct children only: the markup indents them one level deeper than the
     // <nav>, and anything inside a wrapper deeper still.
     const children = [...bar.matchAll(/^ {8}<\w+ class="([a-z-]+)"/gm)].map(

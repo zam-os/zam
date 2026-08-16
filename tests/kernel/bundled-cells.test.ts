@@ -200,6 +200,37 @@ describe("Bundled learning cells (Phase 1)", () => {
       false,
     );
   });
+
+  // The bulk status query replaced one round trip per cell so a 228-cell
+  // library stays usable on mobile. It has to answer exactly what the
+  // per-cell path answers, including for a scoped subset.
+  it("gives a requested subset the same status as the per-cell query", async () => {
+    const user = "subset-learner";
+    await enrolBundledCell(db, user, "de-by:realschule-optik");
+
+    const ids = [
+      "de-by:realschule-optik",
+      "de-by:gymnasium-8-optik",
+      "de-by:bos-10-optik",
+    ];
+    const subset = await getBundledCellsWithStatus(
+      db,
+      user,
+      ids.map((id) => getBundledCell(id)!),
+    );
+
+    expect(subset.map((cell) => cell.id)).toEqual(ids);
+    for (const cell of subset) {
+      const perCell = await getBundledCellEnrolment(db, user, cell.id);
+      expect({
+        installed: cell.installed,
+        enrolled: cell.enrolled,
+        cardCount: cell.cardCount,
+      }).toEqual(perCell);
+    }
+
+    expect(await getBundledCellsWithStatus(db, user, [])).toEqual([]);
+  });
   /**
    * Owner decision 2026-08-15: the cell has precedence. Import goes through a
    * cell wherever one exists; the generic curriculum importer is what covers

@@ -2841,6 +2841,37 @@ textarea::placeholder {
   color: var(--clr-text-muted);
 }
 
+.bundled-cells-section {
+  width: 100%;
+  margin-top: 20px;
+  padding-top: 16px;
+  border-top: 1px solid var(--border);
+  text-align: left;
+}
+
+.bundled-cells-section h4 {
+  margin: 0 0 4px;
+  font-size: 0.95rem;
+  font-weight: 600;
+}
+
+.bundled-cells-section > p {
+  margin: 0 0 12px;
+  font-size: 0.8rem;
+}
+
+.bundled-cells-list {
+  display: flex;
+  flex-direction: column;
+  gap: 10px;
+  margin-top: 12px;
+}
+
+.bundled-cells-empty {
+  margin: 0;
+  font-size: 0.78rem;
+}
+
 /* Modal Dialog System */
 .modal-overlay {
   position: fixed;

@@ -31,8 +31,5 @@ libsql = "0.9"
 [target.'cfg(any(target_os = "android", target_os = "ios"))'.dependencies]
 hyper-rustls = { version = "0.25", default-features = false, features = ["http1", "ring", "tls12", "webpki-tokio"] }
 tauri-plugin-barcode-scanner = "2"
-
-# Android-only: the APK update channel and the AICore on-device evaluator.
-[target.'cfg(target_os = "android")'.dependencies]
 reqwest = { version = "0.12", default-features = false, features = ["rustls-tls", "json"] }
 url = "2"

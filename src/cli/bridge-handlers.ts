@@ -1732,13 +1732,13 @@ export async function listBundledCellsHandler(
   params: ListBundledCellsParams = {},
 ) {
   const userId = await resolveHandlerUser(db, params.user);
-  const cells = await getBundledCellsWithStatus(db, userId);
 
   // Without a scope this is the plain catalogue. With one it answers the
   // precedence question of ADR 2026-08-14 Decision 10: an import surface asks
   // before offering the generic wizard, and gets both the covering cells and
   // the verdict, so it cannot read the empty list as "no opinion".
   if (!params.provider) {
+    const cells = await getBundledCellsWithStatus(db, userId);
     return { success: true as const, cells, scoped: false as const };
   }
 
@@ -1750,14 +1750,14 @@ export async function listBundledCellsHandler(
     subject: params.subject,
   };
   const covering = findBundledCellsForScope(scope);
-  const byId = new Map(cells.map((cell) => [cell.id, cell]));
+  const cells = await getBundledCellsWithStatus(db, userId, covering);
 
   return {
     success: true as const,
     scoped: true as const,
     scope,
     needsGenericImport: needsGenericCurriculumImport(scope),
-    cells: covering.map((cell) => byId.get(cell.id) ?? { ...cell }),
+    cells,
   };
 }
 

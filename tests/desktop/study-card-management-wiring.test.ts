@@ -78,6 +78,7 @@ describe("study-view card-management wiring", () => {
     for (const id of [
       "bundled-cells-container",
       "bundled-cells-list",
+      "btn-bundled-cells-open-curriculum",
       "tier-badge",
       "fast-check-options",
     ]) {
@@ -89,7 +90,14 @@ describe("study-view card-management wiring", () => {
 
     const studio = desktopFile("src/learning-content.ts");
     expect(studio).toContain('"bundled-cells-list"');
-    expect(studio).toContain('"bundled-cell-enrol"');
+    expect(studio).toContain("cells.filter((cell) => cell.enrolled)");
+    expect(studio).toContain("wireBundledCellsOpen();");
+    // Enrolling belongs to the curriculum wizard (ADR 2026-08-14 Decision 10);
+    // the studio list only shows what is already active.
+    expect(studio).not.toContain('"bundled-cell-enrol"');
+    expect(desktopFile("src/curriculum-wizard.ts")).toContain(
+      '"bundled-cell-enrol"',
+    );
   });
 
   it("skips the switchView studio reload on the full-editor jump", () => {
