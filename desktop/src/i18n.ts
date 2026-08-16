@@ -511,6 +511,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_no_context_default: "Sin contexto predeterminado",
     lbl_no_context_assignment: "Sin asignación de contexto",
     lbl_empty_content: "No se encontraron tarjetas. ¡Crea tu primera tarjeta!",
+    lbl_bundled_cells_active_empty:
+      "Todavía no hay ninguna ruta de aprendizaje activa.",
     lbl_empty_content_btn: "Crear primera tarjeta",
     lbl_question: "Pregunta",
     lbl_answer: "Respuesta / Concepto",
@@ -1369,6 +1371,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_no_context_default: "Aucun contexte par défaut",
     lbl_no_context_assignment: "Aucune affectation de contexte",
     lbl_empty_content: "Aucune carte trouvée. Créez votre première carte !",
+    lbl_bundled_cells_active_empty:
+      "Aucun parcours d’apprentissage n’est encore actif.",
     lbl_empty_content_btn: "Créer la première carte",
     lbl_question: "Question",
     lbl_answer: "Réponse / Concept",
@@ -2229,6 +2233,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_no_context_default: "Sem contexto padrão",
     lbl_no_context_assignment: "Sem atribuição de contexto",
     lbl_empty_content: "Nenhuma carta encontrada. Crie sua primeira carta !",
+    lbl_bundled_cells_active_empty:
+      "Ainda não há nenhum percurso de aprendizagem ativo.",
     lbl_empty_content_btn: "Crie a primeira carta",
     lbl_question: "Pergunta",
     lbl_answer: "Resposta / Concepto",
@@ -3014,6 +3020,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_no_context_default: "无默认上下文",
     lbl_no_context_assignment: "不分配上下文",
     lbl_empty_content: "未找到学习卡片。创建你的第一张卡片！",
+    lbl_bundled_cells_active_empty: "尚未启用任何学习路径。",
     lbl_empty_content_btn: "创建第一张卡片",
     lbl_question: "问题",
     lbl_answer: "答案 / 概念",
@@ -3828,6 +3835,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_no_context_assignment: "コンテキストを割り当てない",
     lbl_empty_content:
       "学習カードが見つかりません。最初のカードを作成しましょう！",
+    lbl_bundled_cells_active_empty: "有効な学習パスはまだありません。",
     lbl_empty_content_btn: "最初のカードを作成",
     lbl_question: "質問",
     lbl_answer: "回答 / 概念",
@@ -5001,9 +5009,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_author: "Author / Curator (optional)",
     lbl_release_published_toast:
       "Token revision v{version} published ({materiality})",
-    lbl_bundled_cells_title: "Curated Learning Paths",
+    lbl_bundled_cells_title: "Curriculum & active learning paths",
     lbl_bundled_cells_desc:
-      "Choose a curated learning cell to get started right away:",
+      "Choose school type, grade and subject in the curriculum wizard. Active paths stay visible here.",
+    lbl_bundled_cells_active_empty: "No learning path is active yet.",
     btn_bundled_cells: "Learning Paths",
     btn_enrol_cell: "Activate Learning Path",
     lbl_cell_enrolled: "Active",
@@ -6353,9 +6362,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_release_author: "Autor / Kurator (optional)",
     lbl_release_published_toast:
       "Token-Revision v{version} veröffentlicht ({materiality})",
-    lbl_bundled_cells_title: "Lernpfade (Zentraler Bildungsstandard)",
+    lbl_bundled_cells_title: "Lehrplan & aktive Lernpfade",
     lbl_bundled_cells_desc:
-      "Wähle eine der kuratierten Lerneinheiten für den direkten Start:",
+      "Wähle Schulart, Klasse und Fach im Lehrplan-Assistenten. Aktive Lernpfade bleiben hier sichtbar.",
+    lbl_bundled_cells_active_empty: "Noch kein Lernpfad aktiv.",
     btn_bundled_cells: "Lernpfade",
     btn_enrol_cell: "Lernpfad aktivieren",
     lbl_cell_enrolled: "Aktiv",

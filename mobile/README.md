@@ -19,6 +19,10 @@ not as the entrance.
 - **Review**: typed or spoken, full-screen, with FSRS scheduling.
 - **Library**: search (full text always, by meaning when an AI model is
   connected), edit, pause, delete.
+- **Curriculum & learning paths**: choose state, school type, grade, subject
+  and track. Reviewed bundled cells take precedence and work offline; where no
+  cell covers the position, a verified official topic can be turned into
+  editable card drafts with the connected text model.
 - **AI**: one field, one button. An OpenRouter key covers answer feedback,
   photo import *and* embeddings — the provider serves all three from the same
   key.
@@ -27,7 +31,7 @@ not as the entrance.
 - **Statistics**, daily reminders, de/en.
 
 Not on the device: the OKF reader, the Observer, agent connect, workspaces,
-the knowledge graph and the LehrplanPLUS wizard. Those stay desktop.
+and the knowledge graph. Those stay desktop.
 
 ## Layout
 
@@ -44,6 +48,11 @@ the knowledge graph and the LehrplanPLUS wizard. Those stay desktop.
   server database (`upgrade.ts`).
 - `src/ai/` — cloud model connect and embeddings.
 - `src/library.ts` — the learner's own cards: search, edit, pause, delete.
+- `src/curriculum.ts` — browser-safe catalog navigation, cell-first position
+  resolution and the grounded generic-import fallback shared by iOS and
+  Android.
+- `src-tauri/src/curriculum.rs` — bounded native HTTPS source fetch for
+  official curriculum pages on both mobile platforms.
 - `src-tauri/src/db.rs` — libsql connection. Opens a device-local file by
   default, or an online-only remote when credentials are given; `db_describe`
   tells the WebView which, because the two are not interchangeable to a

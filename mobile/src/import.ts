@@ -19,7 +19,11 @@ import {
 
 export const MAX_MOBILE_IMPORT_BYTES = 256_000;
 
-export type MobileImportOrigin = "bridge-json" | "quick-capture" | "image-vl";
+export type MobileImportOrigin =
+  | "bridge-json"
+  | "quick-capture"
+  | "image-vl"
+  | "curriculum";
 
 export interface MobileTokenDraft extends AddTokenRequest {
   origin: MobileImportOrigin;
@@ -27,6 +31,8 @@ export interface MobileTokenDraft extends AddTokenRequest {
   question?: string | null;
   /** Curriculum / import provenance (e.g. `vision:gpt-4o`). */
   provider?: string | null;
+  /** Stable provider-owned topic id for curriculum re-imports. */
+  topicId?: string | null;
 }
 
 export interface MobileImportResult {
@@ -99,6 +105,11 @@ export function normalizeBridgeDraft(
   }
 
   const provider = optionalString(value.provider, "provider");
+  const topicId = optionalString(
+    value.topicId ?? value.topic_id,
+    "topicId",
+    true,
+  );
 
   return {
     origin,
@@ -117,11 +128,14 @@ export function normalizeBridgeDraft(
       "knowledgeContexts",
     ),
     ...(provider ? { provider } : {}),
+    ...(topicId ? { topicId } : {}),
   };
 }
 
 function isLlmOrigin(origin: MobileImportOrigin): boolean {
-  return origin === "bridge-json" || origin === "image-vl";
+  return (
+    origin === "bridge-json" || origin === "image-vl" || origin === "curriculum"
+  );
 }
 
 function exactWebUrl(text: string): string | null {
@@ -218,6 +232,7 @@ export async function confirmMobileImport(
       question_source:
         normalized.question && isLlmOrigin(draft.origin) ? "llm" : "manual",
       provider: normalized.provider ?? null,
+      topic_id: normalized.topicId ?? null,
     });
 
     for (const context of contexts) {

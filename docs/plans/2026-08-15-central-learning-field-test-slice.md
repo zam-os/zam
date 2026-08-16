@@ -194,27 +194,29 @@ guarantees the property.
   delivery route: select cell → assess prerequisite → Tier-1/Tier-2 review →
   keep going → ignore/accept bonus.
 - [x] **Import surfaces consult the cell first** (ADR 2026-08-14 Decision 10,
-  decided and wired 2026-08-15). The Desktop curriculum wizard asks
-  `bundled-cells-list` with the learner's position when it reaches the topic
-  step and offers the covering cell above its own topic list. It is the only
-  surface that needed it: Mobile, the MCP Studio panel and the MCP tools have
-  no generic curriculum import, and personal paste/photo import is not a
-  curriculum path. The offer never blocks the manual route — a cell can cover
-  a position without covering everything a learner wants.
-- [ ] **Curriculum import on mobile**, for the day a phone or tablet is used on
-  its own rather than beside a desktop (owner note 2026-08-15). Today a mobile
-  learner can select a bundled cell but cannot reach a curriculum position no
-  cell covers yet, because the wizard exists only in Desktop. The precedence
-  rule is already the right shape for it: whatever mobile grows, it asks
-  `bundled-cells-list` with the learner's position first and only falls back
-  when the answer says no cell covers it. Ordering matters more than urgency —
-  the more cells exist, the smaller this gap gets on its own.
+  decided and wired 2026-08-15, extended to Mobile 2026-08-16). Desktop and
+  Mobile resolve the learner's curriculum position before offering a generic
+  import. A covering cell is the only offer for that position; paste/photo
+  import remains a separate personal-content path.
+- [x] **Curriculum import on mobile** (implemented 2026-08-16). Android and
+  iPadOS now walk the shared provider taxonomy from region through topic,
+  resolve reviewed cells first, and expose the grounded generic import only
+  where no cell covers the position. Official HTML and text sources are read
+  through a bounded native HTTPS command on both platforms; generated cards
+  retain provider, topic and source provenance and always pass through the
+  editable multi-draft confirmation UI. The 228-cell default wall was replaced
+  by active paths plus the guided chooser, and the responsive flow was checked
+  at phone, iPad and desktop widths.
 - [x] `npm run format`, lint, typecheck, full test and build verification are
   required immediately before hand-off (record the final result in the branch
   hand-off). Final result 2026-08-15 after the review pass:
   format, lint and typecheck clean in kernel, Desktop and Mobile; 231 test
   files passed, 2 skipped, with 2238 tests passed and 7 skipped, plus 46
-  against PostgreSQL 17.
+  against PostgreSQL 17. Re-verified after the cross-device curriculum phase
+  on 2026-08-16: root format, lint, typecheck and build clean; Desktop and
+  Mobile production builds clean; 249 test files passed, 2 skipped, with 2323
+  tests passed and 7 skipped; Rust checks passed for the host, iOS simulator
+  and Android aarch64 targets.
 
 ## Standing constraints for whoever picks this up
 

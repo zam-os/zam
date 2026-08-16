@@ -1,5 +1,9 @@
 # Log
 
+## 2026-08-16
+
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+
 ## 2026-08-15
 
 - **Update** — [Token and Card Model](token-card-model.md)

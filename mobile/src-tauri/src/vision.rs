@@ -1,4 +1,4 @@
-//! Native cloud vision HTTP — bypasses WebView CORS for image import.
+//! Native cloud HTTP — bypasses WebView CORS for image and text generation.
 //!
 //! The WebView builds the request body (chat-completions multimodal JSON) and
 //! passes url/headers/body here. We return the raw response body text so the
@@ -7,7 +7,7 @@
 
 use std::collections::HashMap;
 
-#[cfg(target_os = "android")]
+#[cfg(mobile)]
 #[tauri::command]
 pub async fn vision_request(
     url: String,
@@ -87,7 +87,7 @@ pub async fn vision_request(
     Ok(text)
 }
 
-#[cfg(not(target_os = "android"))]
+#[cfg(not(mobile))]
 #[tauri::command]
 pub async fn vision_request(
     _url: String,
@@ -95,5 +95,5 @@ pub async fn vision_request(
     _headers: Option<HashMap<String, String>>,
     _timeout_ms: Option<u64>,
 ) -> Result<String, String> {
-    Err("vision_request is only available on Android in this build".to_string())
+    Err("vision_request is only available in mobile builds".to_string())
 }

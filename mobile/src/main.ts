@@ -23,6 +23,7 @@ import {
   OPENROUTER_PROVIDER,
   OPENROUTER_RECOMMENDED_MODELS,
 } from "../../src/cli/llm/cloud-providers.js";
+import type { TopicNode } from "../../src/cli/curriculum/types.js";
 import {
   AI_TIER_PREFERENCES,
   type AiCapability,
@@ -34,7 +35,10 @@ import {
   type TokenMedia,
 } from "../../src/kernel/models/media.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
-import { bonusCandidates, enrolBonusAtom } from "../../src/kernel/library/bonus.js";
+import {
+  bonusCandidates,
+  enrolBonusAtom,
+} from "../../src/kernel/library/bonus.js";
 import {
   type BundledCellStatus,
   enrolBundledCell,
@@ -92,6 +96,7 @@ import {
   translateCard,
 } from "./ai/translate.js";
 import {
+  generateViaHttp,
   evaluateMobileAnswer,
   evaluationSpeech,
   type MobileEvaluationResult,
@@ -99,6 +104,18 @@ import {
   type OnDeviceLlmGenerateResult,
   type OnDeviceLlmStatus,
 } from "./evaluate.js";
+import {
+  applyMobileCurriculumChoice,
+  initialMobileCurriculumState,
+  type MobileCurriculumOption,
+  type MobileCurriculumState,
+  type MobileCurriculumStep,
+  type MobileCurriculumView,
+  nextMobileCurriculumView,
+  NoMobileCurriculumModelError,
+  previewMobileCurriculumTopic,
+  resolveMobileCurriculumPosition,
+} from "./curriculum.js";
 import {
   applyStaticTranslations,
   cardWord,
@@ -177,7 +194,10 @@ import {
   resolveMobileVisionEndpoint,
   visionImportUnavailableReason,
 } from "./vision-config.js";
-import { decomposeImageViaVision } from "./vl-import.js";
+import {
+  decomposeImageViaVision,
+  extractChatCompletionsContent,
+} from "./vl-import.js";
 import {
   buildMobileAvailability,
   cloudSpeechAvailability,
@@ -311,6 +331,17 @@ const bundledCellsList = element<HTMLElement>("bundled-cells-list");
 const bundledCellsStatus = element<HTMLParagraphElement>(
   "bundled-cells-status",
 );
+const openCurriculumButton = element<HTMLButtonElement>("open-curriculum");
+const libraryCurriculum = element<HTMLElement>("library-curriculum");
+const curriculumBackButton = element<HTMLButtonElement>("curriculum-back");
+const curriculumBreadcrumb = element<HTMLElement>("curriculum-breadcrumb");
+const curriculumStepTitle = element<HTMLElement>("curriculum-step-title");
+const curriculumStepHint = element<HTMLElement>("curriculum-step-hint");
+const curriculumOptions = element<HTMLElement>("curriculum-options");
+const curriculumModelSettings = element<HTMLButtonElement>(
+  "curriculum-model-settings",
+);
+const curriculumStatus = element<HTMLParagraphElement>("curriculum-status");
 const libraryAddButton = element<HTMLButtonElement>("library-add");
 const libraryBackButton = element<HTMLButtonElement>("library-back");
 const detailTitle = element<HTMLInputElement>("detail-title");
@@ -1162,6 +1193,11 @@ function updateMultiDraftChrome(): void {
 }
 
 function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
+  // `showImport` triggers the library tab listener, which resets its child
+  // view to browse. Select the add view afterwards so curriculum/photo batch
+  // previews stay visible instead of flashing and disappearing.
+  showImport();
+  showLibraryMode("add");
   currentImportDraft = draft;
   importSlug.value = draft.slug;
   importTitle.value = draft.title ?? "";
@@ -1183,18 +1219,22 @@ function renderImportDraft(draft: MobileTokenDraft, message?: string): void {
           ? "import_bridge_checked"
           : draft.origin === "image-vl"
             ? "import_bridge_checked"
-            : "import_quick_prepared",
+            : draft.origin === "curriculum"
+              ? "curriculum_preview_ready"
+              : "import_quick_prepared",
       ),
   );
-  showImport();
   importConcept.focus();
 }
 
-function startMultiDraftImport(drafts: MobileTokenDraft[]): void {
+function startMultiDraftImport(
+  drafts: MobileTokenDraft[],
+  message?: string,
+): void {
   multiDraftController = createMultiDraftController(drafts);
   const first = multiDraftController.current();
   if (!first) return;
-  renderImportDraft(first);
+  renderImportDraft(first, message);
 }
 
 function prepareImportText(text: string, message?: string): void {
@@ -1205,6 +1245,7 @@ function prepareImportText(text: string, message?: string): void {
     currentImportDraft = null;
     importDraftForm.hidden = true;
     showImport();
+    showLibraryMode("add");
     setImportStatus(errorMessage(error), true);
     importInput.focus();
   }
@@ -1228,6 +1269,7 @@ function draftFromForm(): MobileTokenDraft {
       (importSymbiosisMode.value as MobileTokenDraft["symbiosisMode"]) ||
       undefined,
     provider: currentImportDraft.provider ?? undefined,
+    topicId: currentImportDraft.topicId ?? undefined,
   };
 }
 
@@ -2174,10 +2216,7 @@ function renderCurrentReview(message = ""): void {
     progress.total > 0 ? ((progress.current - 1) / progress.total) * 100 : 0
   }%`;
 
-  if (
-    item.atomId &&
-    !reviewSession.isAtomAssessed(item.atomId)
-  ) {
+  if (item.atomId && !reviewSession.isAtomAssessed(item.atomId)) {
     const precondition = matchUnassessedPrecondition(
       item.atomId,
       preconditionCache,
@@ -3074,17 +3113,334 @@ let librarySearchTimer: number | undefined;
 /** Total cards, so the result count can say "8 of 240". */
 let libraryTotal = 0;
 
-type LibraryMode = "browse" | "detail" | "add";
+interface CurriculumTrailEntry {
+  step: MobileCurriculumStep;
+  option: MobileCurriculumOption;
+}
+
+let curriculumState: MobileCurriculumState = initialMobileCurriculumState();
+let curriculumTrail: CurriculumTrailEntry[] = [];
+let curriculumView: MobileCurriculumView | null =
+  nextMobileCurriculumView(curriculumState);
+let curriculumRenderRevision = 0;
+
+type LibraryMode = "browse" | "detail" | "add" | "curriculum";
 
 function showLibraryMode(mode: LibraryMode): void {
   libraryBrowse.hidden = mode !== "browse";
   libraryDetail.hidden = mode !== "detail";
+  libraryCurriculum.hidden = mode !== "curriculum";
   importDescText.hidden = mode !== "add";
   importEntry.hidden = mode !== "add";
   if (mode !== "add") importDraftForm.hidden = true;
   // An armed delete belongs to the card that armed it; leaving the detail
   // view must not leave it primed for whichever card is opened next.
   disarmLibraryDelete?.();
+}
+
+function setCurriculumStatus(text: string, isError = false): void {
+  curriculumStatus.textContent = text;
+  curriculumStatus.classList.toggle("error", isError);
+}
+
+function rebuildCurriculumSelection(): void {
+  curriculumState = initialMobileCurriculumState();
+  let after: MobileCurriculumStep | undefined;
+  for (const entry of curriculumTrail) {
+    curriculumState = applyMobileCurriculumChoice(
+      curriculumState,
+      entry.step,
+      entry.option,
+    );
+    after = entry.step;
+  }
+  curriculumView = nextMobileCurriculumView(curriculumState, after);
+}
+
+function renderCurriculumBreadcrumb(): void {
+  curriculumBreadcrumb.replaceChildren();
+  curriculumTrail.forEach((entry, index) => {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "chip curriculum-crumb";
+    button.textContent = entry.option.label;
+    button.addEventListener("click", () => {
+      curriculumTrail = curriculumTrail.slice(0, index);
+      rebuildCurriculumSelection();
+      void renderCurriculumView();
+    });
+    curriculumBreadcrumb.appendChild(button);
+  });
+  curriculumBreadcrumb.hidden = curriculumTrail.length === 0;
+}
+
+function curriculumRow(
+  titleText: string,
+  detailText: string | undefined,
+): { button: HTMLButtonElement; text: HTMLElement } {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "row";
+
+  const text = document.createElement("span");
+  text.className = "row-text";
+  const title = document.createElement("span");
+  title.textContent = titleText;
+  text.appendChild(title);
+  if (detailText) {
+    const detail = document.createElement("span");
+    detail.className = "t-footnote";
+    detail.textContent = detailText;
+    text.appendChild(detail);
+  }
+
+  const chevron = document.createElementNS("http://www.w3.org/2000/svg", "svg");
+  chevron.setAttribute("class", "row-chevron");
+  chevron.setAttribute("viewBox", "0 0 8 14");
+  chevron.setAttribute("aria-hidden", "true");
+  const path = document.createElementNS("http://www.w3.org/2000/svg", "path");
+  path.setAttribute("d", "M1 1l6 6-6 6");
+  chevron.appendChild(path);
+  button.append(text, chevron);
+  return { button, text };
+}
+
+async function enrolCurriculumCell(
+  cell: BundledCellStatus,
+  action: HTMLButtonElement,
+): Promise<void> {
+  if (!currentUserId || cell.enrolled) return;
+  action.disabled = true;
+  setCurriculumStatus("…");
+  try {
+    const result = await enrolBundledCell(db, currentUserId, cell.id);
+    setCurriculumStatus(
+      tf("learning_path_enrolled", {
+        title: cell.title,
+        n: result.cardsCreated,
+      }),
+    );
+    await Promise.all([refreshBundledCells(), refresh(currentUserId)]);
+    await renderCurriculumView();
+  } catch (error) {
+    setCurriculumStatus(
+      tf("library_failed", { error: errorMessage(error) }),
+      true,
+    );
+    action.disabled = false;
+  }
+}
+
+function renderCurriculumCells(cells: BundledCellStatus[]): void {
+  const heading = document.createElement("p");
+  heading.className = "group-title";
+  heading.textContent = t("curriculum_cells_first_title");
+  const body = document.createElement("p");
+  body.className = "t-secondary";
+  body.textContent = t("curriculum_cells_first_body");
+  curriculumOptions.append(heading, body);
+
+  for (const cell of cells) {
+    const card = document.createElement("section");
+    card.className = "curriculum-cell-offer stack";
+    const title = document.createElement("h3");
+    title.className = "t-headline";
+    title.textContent = cell.title;
+    const meta = document.createElement("p");
+    meta.className = "t-footnote";
+    meta.textContent = `${cell.gradeLabel} · ${tf("learning_path_atoms", {
+      n: cell.inScopeAtomIds.length,
+    })}`;
+    const description = document.createElement("p");
+    description.className = "t-secondary";
+    description.textContent = cell.description;
+    const action = document.createElement("button");
+    action.type = "button";
+    action.className = cell.enrolled ? "btn" : "btn primary";
+    action.disabled = cell.enrolled;
+    action.textContent = cell.enrolled
+      ? t("learning_path_active")
+      : t("learning_path_enrol");
+    action.addEventListener("click", () => {
+      void enrolCurriculumCell(cell, action);
+    });
+    card.append(title, meta, description, action);
+    curriculumOptions.appendChild(card);
+  }
+}
+
+async function previewCurriculumTopic(
+  topic: TopicNode,
+  button: HTMLButtonElement,
+): Promise<void> {
+  if (!currentUserId || !curriculumState.providerId) return;
+  button.disabled = true;
+  curriculumModelSettings.hidden = true;
+  setCurriculumStatus(t("curriculum_generating"));
+  try {
+    const subject = curriculumTrail.find((entry) => entry.step === "subject")
+      ?.option.label;
+    const grade = curriculumTrail.find((entry) => entry.step === "grade")
+      ?.option.label;
+    const drafts = await previewMobileCurriculumTopic(db, {
+      providerId: curriculumState.providerId,
+      topic,
+      category: [subject, grade].filter(Boolean).join(" · "),
+      locale: learnerLocale || getLocale(),
+      ports: {
+        fetchSource: (url) =>
+          invoke<string>("curriculum_source_request", {
+            url,
+            timeoutMs: 20_000,
+          }),
+        generateText: (endpoint, prompt) =>
+          generateViaHttp(
+            endpoint,
+            prompt,
+            async (url, init) => {
+              const response = await invoke<string>("vision_request", {
+                url,
+                headers: Object.fromEntries(
+                  new Headers(init.headers).entries(),
+                ),
+                body: String(init.body ?? ""),
+                timeoutMs: 180_000,
+              });
+              return extractChatCompletionsContent(response);
+            },
+            12_000,
+          ),
+      },
+    });
+    resetImport();
+    startMultiDraftImport(drafts, t("curriculum_preview_ready"));
+  } catch (error) {
+    const noModel = error instanceof NoMobileCurriculumModelError;
+    curriculumModelSettings.hidden = !noModel;
+    setCurriculumStatus(
+      noModel
+        ? t("curriculum_no_model")
+        : tf("curriculum_failed", { error: errorMessage(error) }),
+      true,
+    );
+    button.disabled = false;
+  }
+}
+
+async function renderCurriculumPosition(revision: number): Promise<void> {
+  if (!currentUserId) return;
+  setCurriculumStatus(t("curriculum_loading"));
+  try {
+    const position = await resolveMobileCurriculumPosition(
+      db,
+      currentUserId,
+      curriculumState,
+    );
+    if (revision !== curriculumRenderRevision) return;
+    curriculumOptions.replaceChildren();
+    setCurriculumStatus("");
+
+    if (!position.needsGenericImport) {
+      renderCurriculumCells(position.cells);
+      return;
+    }
+
+    const heading = document.createElement("p");
+    heading.className = "group-title";
+    heading.textContent = t("curriculum_fallback_title");
+    const body = document.createElement("p");
+    body.className = "t-secondary";
+    body.textContent = t("curriculum_fallback_body");
+    curriculumOptions.append(heading, body);
+
+    const list = document.createElement("div");
+    list.className = "list";
+    let available = 0;
+    for (const topic of position.topics) {
+      const detail = [
+        topic.description,
+        topic.hours
+          ? tf("curriculum_hours", { hours: topic.hours })
+          : undefined,
+        topic.contentStatus === "verified"
+          ? undefined
+          : t("curriculum_topic_unavailable"),
+      ]
+        .filter(Boolean)
+        .join(" · ");
+      const { button } = curriculumRow(topic.label, detail || undefined);
+      const verified = topic.contentStatus === "verified";
+      button.disabled = !verified;
+      if (verified) {
+        available += 1;
+        button.addEventListener("click", () => {
+          void previewCurriculumTopic(topic, button);
+        });
+      }
+      list.appendChild(button);
+    }
+    curriculumOptions.appendChild(list);
+    if (available === 0) setCurriculumStatus(t("curriculum_no_topics"));
+  } catch (error) {
+    if (revision !== curriculumRenderRevision) return;
+    curriculumOptions.replaceChildren();
+    setCurriculumStatus(
+      tf("curriculum_failed", { error: errorMessage(error) }),
+      true,
+    );
+  }
+}
+
+async function renderCurriculumView(): Promise<void> {
+  const revision = ++curriculumRenderRevision;
+  const screen = libraryCurriculum.closest<HTMLElement>(".screen");
+  if (screen) screen.scrollTop = 0;
+  renderCurriculumBreadcrumb();
+  curriculumOptions.replaceChildren();
+  curriculumModelSettings.hidden = true;
+  setCurriculumStatus("");
+
+  if (!curriculumView) {
+    curriculumStepTitle.textContent = t("curriculum_choose");
+    curriculumStepHint.textContent = t("curriculum_no_topics");
+    return;
+  }
+  curriculumStepTitle.textContent = t(`curriculum_step_${curriculumView.step}`);
+  curriculumStepHint.textContent = t("curriculum_step_hint");
+
+  if (curriculumView.step === "topic") {
+    await renderCurriculumPosition(revision);
+    return;
+  }
+
+  const list = document.createElement("div");
+  list.className = "list";
+  for (const option of curriculumView.options) {
+    const { button } = curriculumRow(option.label, option.description);
+    button.addEventListener("click", () => {
+      if (!curriculumView) return;
+      const step = curriculumView.step;
+      curriculumState = applyMobileCurriculumChoice(
+        curriculumState,
+        step,
+        option,
+      );
+      curriculumTrail.push({ step, option });
+      curriculumView = nextMobileCurriculumView(curriculumState, step);
+      void renderCurriculumView();
+    });
+    list.appendChild(button);
+  }
+  curriculumOptions.appendChild(list);
+}
+
+function openMobileCurriculum(): void {
+  curriculumState = initialMobileCurriculumState();
+  curriculumTrail = [];
+  curriculumView = nextMobileCurriculumView(curriculumState);
+  showImport();
+  showLibraryMode("curriculum");
+  void renderCurriculumView();
 }
 
 function renderLibrary(entries: LibraryEntry[]): void {
@@ -3135,7 +3491,11 @@ function renderLibrary(entries: LibraryEntry[]): void {
 
 function renderBundledCells(cells: BundledCellStatus[]): void {
   bundledCellsList.replaceChildren();
-  for (const cell of cells) {
+  const activeCells = cells.filter((cell) => cell.enrolled);
+  bundledCellsStatus.classList.remove("error");
+  bundledCellsStatus.textContent =
+    activeCells.length === 0 ? t("learning_paths_none_active") : "";
+  for (const cell of activeCells) {
     const card = document.createElement("div");
     card.className = "card stack";
 
@@ -3243,6 +3603,21 @@ librarySearch.addEventListener("input", () => {
   window.clearTimeout(librarySearchTimer);
   librarySearchTimer = window.setTimeout(() => void refreshLibrary(), 250);
 });
+
+openCurriculumButton.addEventListener("click", openMobileCurriculum);
+
+curriculumBackButton.addEventListener("click", () => {
+  if (curriculumTrail.length === 0) {
+    showLibraryMode("browse");
+    void refreshLibrary();
+    return;
+  }
+  curriculumTrail.pop();
+  rebuildCurriculumSelection();
+  void renderCurriculumView();
+});
+
+curriculumModelSettings.addEventListener("click", showSettings);
 
 libraryAddButton.addEventListener("click", () => {
   resetImport();

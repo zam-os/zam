@@ -702,6 +702,32 @@ import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 };
 // --- end bundled-tile-imports ---
 
+export interface CurriculumScope {
+  provider: string;
+  schoolType?: string;
+  grade?: number;
+  track?: string;
+  subject?: string;
+}
+
+function canonicalCurriculumTrack(
+  provider: string,
+  schoolType: string | undefined,
+  track: string,
+): string {
+  const compact = track
+    .trim()
+    .toLowerCase()
+    .replace(/[_\s/]+/g, "-");
+  if (provider === "lehrplanplus-bayern" && schoolType === "realschule") {
+    if (compact === "i" || compact === "wpfg1") return "wpfg1";
+    if (compact === "ii-iii" || compact === "ii-3" || compact === "wpfg2-3") {
+      return "wpfg2-3";
+    }
+  }
+  return compact;
+}
+
 export interface BundledCellInfo {
   id: string;
   title: string;
@@ -711,6 +737,8 @@ export interface BundledCellInfo {
   publishedAt: string;
   atomCount: number;
   inScopeAtomIds: string[];
+  /** Curriculum positions this cell covers, used by every discovery surface. */
+  curriculumScopes: CurriculumScope[];
 }
 
 export interface BundledCellStatus extends BundledCellInfo {
@@ -1202,6 +1230,37 @@ function formatGradeLabel(tile: BundledTile): string {
   return "Bayern";
 }
 
+function curriculumScopesForTile(tile: BundledTile): CurriculumScope[] {
+  const scopes = new Map<string, CurriculumScope>();
+  for (const atom of tile.atoms) {
+    for (const binding of atom.curricula ?? []) {
+      const scope: CurriculumScope = {
+        provider: binding.provider,
+        ...(binding.school_type ? { schoolType: binding.school_type } : {}),
+        ...(binding.grade !== undefined ? { grade: binding.grade } : {}),
+        ...(binding.track ? { track: binding.track } : {}),
+        ...(binding.subject ? { subject: binding.subject } : {}),
+      };
+      const key = [
+        scope.provider,
+        scope.schoolType ?? "",
+        scope.grade ?? "",
+        scope.track ?? "",
+        scope.subject ?? "",
+      ].join("\u0000");
+      scopes.set(key, scope);
+    }
+  }
+  return [...scopes.values()].sort(
+    (a, b) =>
+      a.provider.localeCompare(b.provider) ||
+      (a.schoolType ?? "").localeCompare(b.schoolType ?? "") ||
+      (a.grade ?? 0) - (b.grade ?? 0) ||
+      (a.subject ?? "").localeCompare(b.subject ?? "") ||
+      (a.track ?? "").localeCompare(b.track ?? ""),
+  );
+}
+
 const PILOT_OVERRIDES: Record<string, Partial<BundledCellInfo>> = {
   "de-by:realschule-optik": {
     title: "Optik und Lichtbrechung (Realschule 8)",
@@ -1278,6 +1337,7 @@ export const BUNDLED_CELLS: BundledCellInfo[] = Object.values(
       override?.publishedAt || tile.published_at || new Date().toISOString(),
     atomCount: override?.atomCount ?? tile.atoms.length,
     inScopeAtomIds: override?.inScopeAtomIds || tile.atoms.map((a) => a.id),
+    curriculumScopes: curriculumScopesForTile(tile),
   };
 });
 
@@ -1305,6 +1365,7 @@ export function listBundledCells(): (BundledCellInfo & {
         override?.publishedAt || t.published_at || new Date().toISOString(),
       atomCount: override?.atomCount ?? t.atoms.length,
       inScopeAtomIds: override?.inScopeAtomIds || t.atoms.map((a) => a.id),
+      curriculumScopes: curriculumScopesForTile(t),
       atoms: t.atoms,
     };
   });
@@ -1330,14 +1391,6 @@ export function findBundledCellByPrefix(prefix: string) {
     sources: tile.sources,
     atoms: tile.atoms,
   };
-}
-
-export interface CurriculumScope {
-  provider: string;
-  schoolType?: string;
-  grade?: number;
-  track?: string;
-  subject?: string;
 }
 
 /**
@@ -1386,7 +1439,16 @@ export function findBundledCellsForScope(
           scope.track !== undefined &&
           binding.track !== undefined &&
           binding.track !== "" &&
-          binding.track !== scope.track
+          canonicalCurriculumTrack(
+            binding.provider,
+            binding.school_type ?? scope.schoolType,
+            binding.track,
+          ) !==
+            canonicalCurriculumTrack(
+              scope.provider,
+              scope.schoolType ?? binding.school_type,
+              scope.track,
+            )
         ) {
           continue;
         }
@@ -1489,22 +1551,106 @@ export async function getBundledCellEnrolment(
 }
 
 /** Retrieve all bundled cells with their live installation and enrolment status. */
+const STATUS_QUERY_CHUNK_SIZE = 400;
+
+function chunks<T>(values: T[]): T[][] {
+  const result: T[][] = [];
+  for (let i = 0; i < values.length; i += STATUS_QUERY_CHUNK_SIZE) {
+    result.push(values.slice(i, i + STATUS_QUERY_CHUNK_SIZE));
+  }
+  return result;
+}
+
+async function existingIds(
+  db: Database,
+  table: "learning_atoms" | "tokens",
+  ids: string[],
+): Promise<Set<string>> {
+  const existing = new Set<string>();
+  for (const batch of chunks(ids)) {
+    const placeholders = batch.map(() => "?").join(",");
+    const rows = (await db
+      .prepare(`SELECT id FROM ${table} WHERE id IN (${placeholders})`)
+      .all(...batch)) as Array<{ id: string }>;
+    for (const row of rows) existing.add(row.id);
+  }
+  return existing;
+}
+
+/**
+ * Retrieve bundled cells with live status in a handful of bulk queries.
+ *
+ * Mobile used to make two or three Tauri IPC round trips for every cell. That
+ * was tolerable for the four pilot cells and unusable for the 228-cell library.
+ * Keeping the aggregation in the kernel gives Desktop, MCP and both mobile
+ * platforms the same scalable answer.
+ */
 export async function getBundledCellsWithStatus(
   db: Database,
   userId: string,
+  requestedCells: readonly BundledCellInfo[] = BUNDLED_CELLS,
 ): Promise<BundledCellStatus[]> {
-  const cells = BUNDLED_CELLS;
-  const statuses: BundledCellStatus[] = [];
-  for (const cell of cells) {
-    const enrolment = await getBundledCellEnrolment(db, userId, cell.id);
-    statuses.push({
-      ...cell,
-      installed: enrolment.installed,
-      enrolled: enrolment.enrolled,
-      cardCount: enrolment.cardCount,
-    });
+  if (requestedCells.length === 0) return [];
+
+  const tileAtoms = new Map<string, string[]>();
+  const tileItems = new Map<string, string[]>();
+  const allAtomIds = new Set<string>();
+  const allItemIds = new Set<string>();
+
+  for (const cell of requestedCells) {
+    const tile = BUNDLED_TILES[cell.id];
+    const atomIds = tile?.atoms.map((atom) => atom.id) ?? [];
+    const itemIds =
+      tile?.atoms.flatMap((atom) =>
+        atom.practice_items.map((item) => item.id),
+      ) ?? [];
+    tileAtoms.set(cell.id, atomIds);
+    tileItems.set(cell.id, itemIds);
+    for (const id of atomIds) allAtomIds.add(id);
+    for (const id of itemIds) allItemIds.add(id);
   }
-  return statuses;
+
+  const atomIds = [...allAtomIds];
+  const [installedAtoms, installedItems] = await Promise.all([
+    existingIds(db, "learning_atoms", atomIds),
+    existingIds(db, "tokens", [...allItemIds]),
+  ]);
+
+  const cardIdsByAtom = new Map<string, Set<string>>();
+  for (const batch of chunks(atomIds)) {
+    const placeholders = batch.map(() => "?").join(",");
+    const rows = (await db
+      .prepare(
+        `SELECT c.id, t.atom_id
+           FROM cards c
+           JOIN tokens t ON t.id = c.token_id
+          WHERE c.user_id = ?
+            AND c.detached_at IS NULL
+            AND t.atom_id IN (${placeholders})`,
+      )
+      .all(userId, ...batch)) as Array<{ id: string; atom_id: string }>;
+    for (const row of rows) {
+      const ids = cardIdsByAtom.get(row.atom_id) ?? new Set<string>();
+      ids.add(row.id);
+      cardIdsByAtom.set(row.atom_id, ids);
+    }
+  }
+
+  return requestedCells.map((cell) => {
+    const installed =
+      (tileAtoms.get(cell.id) ?? []).every((id) => installedAtoms.has(id)) &&
+      (tileItems.get(cell.id) ?? []).every((id) => installedItems.has(id));
+    const enrolled =
+      cell.inScopeAtomIds.length > 0 &&
+      cell.inScopeAtomIds.every(
+        (atomId) => (cardIdsByAtom.get(atomId)?.size ?? 0) > 0,
+      );
+    const cardCount = cell.inScopeAtomIds.reduce(
+      (count, atomId) => count + (cardIdsByAtom.get(atomId)?.size ?? 0),
+      0,
+    );
+    return { ...cell, installed, enrolled, cardCount };
+  });
 }
 
 /**

@@ -186,6 +186,12 @@ label.row:active {
   background: var(--bg-grouped-row-active);
 }
 
+button.row:disabled {
+  cursor: default;
+  color: var(--label-secondary);
+  opacity: 0.72;
+}
+
 .row-text {
   flex: 1;
   min-width: 0;
@@ -397,6 +403,34 @@ textarea:focus {
   background: var(--fill-quaternary);
   font-size: 0.84em;
   color: var(--label-secondary);
+}
+
+.chip-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: var(--gap-2);
+}
+
+button.chip {
+  border: 0;
+  font: inherit;
+  cursor: pointer;
+}
+
+.curriculum-cell-offer {
+  padding: var(--gap-4);
+  border: 1.5px solid color-mix(in srgb, var(--accent) 36%, var(--separator));
+  border-radius: var(--radius-row);
+  background: color-mix(in srgb, var(--accent) 5%, var(--bg-elevated));
+}
+
+.curriculum-cell-offer > * {
+  margin-top: 0;
+  margin-bottom: 0;
+}
+
+.curriculum-back {
+  align-self: flex-start;
 }
 
 .chip.connection::before {
