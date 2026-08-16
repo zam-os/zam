@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { listBundledCells } from "../../src/kernel/library/bundled-cells.js";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  type Database,
+  enrolBundledCell,
+  listBundledCells,
+  openDatabase,
+} from "../../src/kernel/index.js";
 
 describe("Gymnasium Klasse 9 Bayern LehrplanPLUS Cells", () => {
   const gym9Cells = [
@@ -51,5 +59,32 @@ describe("Gymnasium Klasse 9 Bayern LehrplanPLUS Cells", () => {
         expect(tier2.sample_solution.length).toBeGreaterThan(50);
       }
     }
+  });
+
+  describe("enrolment", () => {
+    let tempDir: string;
+    let db: Database;
+
+    beforeEach(async () => {
+      tempDir = mkdtempSync(join(tmpdir(), "zam-gym9-test-"));
+      db = await openDatabase({ dbPath: join(tempDir, "test.db") });
+    });
+
+    afterEach(async () => {
+      await db.close();
+      rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    it("installs and enrols a Klasse 9 Mathematik cell", async () => {
+      const cellId =
+        "de-by:gymnasium-9-mathematik-quadratische-funktionen-pythagoras-trigonometrie";
+      const res = await enrolBundledCell(
+        db,
+        "01K4TESTUSERGYM90000000001",
+        cellId,
+      );
+      expect(res.success).toBe(true);
+      expect(res.cardsCreated).toBeGreaterThan(0);
+    });
   });
 });

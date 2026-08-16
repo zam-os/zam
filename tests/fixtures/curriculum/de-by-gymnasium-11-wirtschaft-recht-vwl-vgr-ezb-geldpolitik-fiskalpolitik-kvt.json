@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 11,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb1",
           "topic_title": "Volkswirtschaftliche Gesamtrechnung und Wohlstandsmessung",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 11,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb2",
           "topic_title": "Geldpolitik der EZB und Wirtschaftspolitik",
           "exam_relevant": true

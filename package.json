@@ -45,6 +45,7 @@
     "format": "biome format --write src/",
     "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
     "curriculum:topic-coverage": "tsx scripts/curriculum-topic-coverage-smoke.ts",
+    "curriculum:sync-bundled-cells": "node scripts/update-bundled-cells-imports.mjs",
     "mobile:check": "cargo check --manifest-path mobile/src-tauri/Cargo.toml",
     "observer:check": "cargo check --manifest-path observer/Cargo.toml",
     "observer:test": "cargo test --manifest-path observer/Cargo.toml",

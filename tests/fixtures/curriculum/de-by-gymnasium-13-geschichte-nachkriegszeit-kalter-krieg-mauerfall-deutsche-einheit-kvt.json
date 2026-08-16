@@ -89,7 +89,7 @@
       ],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q56039",
           "target_label": "German reunification",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"
@@ -112,13 +112,13 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welcher völkerrechtliche Vertrag zwischen den beiden deutschen Staaten und den vier Siegermächten des Zweiten Weltkriegs stellte 1990 die volle Souveränität des vereinten Deutschlands her?",
-          "concept": "Der Zwei-plus-Vier-Vertrag (Vertrag über die abschließende Regelung in Bezug auf Deutschland)",
+          "question": "Auf welcher grundgesetzlichen Grundlage traten die fünf neuen Länder am 3. Oktober 1990 der Bundesrepublik bei – und welcher Vertrag regelte zugleich die äußere Souveränität?",
+          "concept": "Beitritt nach Art. 23 GG (nicht Art. 146); äußere Aspekte im Zwei-plus-Vier-Vertrag vom 12. September 1990",
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Der Zwei-plus-Vier-Vertrag vom 12. September 1990",
-              "Der Versailler Vertrag"
+              "Art. 23 GG plus Zwei-plus-Vier-Vertrag (12. September 1990)",
+              "Art. 146 GG plus Grundlagenvertrag"
             ],
             "correct_index": 0
           }

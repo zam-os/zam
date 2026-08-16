@@ -26,7 +26,7 @@
       "prerequisites": [],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q43287",
           "target_label": "German Empire",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"
@@ -89,7 +89,7 @@
       ],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q361",
           "target_label": "World War I",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"

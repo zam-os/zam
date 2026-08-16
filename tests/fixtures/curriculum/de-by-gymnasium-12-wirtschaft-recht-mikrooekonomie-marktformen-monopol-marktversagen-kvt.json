@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 12,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb1",
           "topic_title": "Mikroökonomie – Marktformen und Preisbildung",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 12,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb1",
           "topic_title": "Marktversagen und staatliche Ordnungspolitik",
           "exam_relevant": true

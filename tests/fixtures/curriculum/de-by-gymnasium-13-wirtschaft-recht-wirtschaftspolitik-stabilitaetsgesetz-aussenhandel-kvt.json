@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 13,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb1",
           "topic_title": "Wirtschaftspolitik – Ziele und Konzeptionen",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 13,
-          "subject": "wirtschaft_und_recht",
+          "subject": "wirtschaft-und-recht",
           "topic_code": "lb2",
           "topic_title": "Außenhandelstheorie und Welthandelsordnung",
           "exam_relevant": true

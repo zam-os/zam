@@ -26,7 +26,7 @@
       "prerequisites": [],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q41304",
           "target_label": "Weimar Republic",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"
@@ -49,13 +49,13 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Über welche verfassungsrechtliche Notverordnungsklausel (Artikel der Weimarer Reichsverfassung) konnte der Reichspräsident Grundrechte außer Kraft setzen und ohne parlamentarische Mehrheit am Reichstag vorbei regieren?",
-          "concept": "Artikel 48 WRV (Notverordnungsrecht des Reichspräsidenten / Notverordnungsdiktatur)",
+          "question": "Welche Kombination aus WRV-Artikeln bildete das 'Ersatzkaiser'-Instrumentarium der Präsidialkabinette: Notverordnungen, Reichstagsauflösung und Kanzlerernennung ohne parlamentarische Mehrheit?",
+          "concept": "Art. 48 (Notverordnung), Art. 25 (Auflösung des Reichstags) und Art. 53 (Ernennung des Reichskanzlers)",
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Artikel 48 WRV (Notverordnungsrecht)",
-              "Artikel 1 GG"
+              "Art. 48, 25 und 53 WRV (Notverordnung, Auflösung, Ernennung)",
+              "Nur Artikel 1 WRV (Volkssouveränität)"
             ],
             "correct_index": 0
           }
@@ -89,7 +89,7 @@
       ],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q2763",
           "target_label": "The Holocaust",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"
@@ -112,13 +112,13 @@
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Durch welches Gesetz vom 24. März 1933 entmachtete der Reichstag sich selbst und übertrug die gesamte Gesetzgebungsgewalt ohne parlamentarische Kontrolle direkt auf Adolf Hitlers Reichsregierung?",
-          "concept": "Das 'Ermächtigungsgesetz' (Gesetz zur Behebung der Not von Volk und Reich)",
+          "question": "Warum brauchte das Ermächtigungsgesetz vom 24. März 1933 eine Zweidrittelmehrheit, und welche Fraktion stimmte als einzige im Saal dagegen?",
+          "concept": "Es änderte die Verfassung (Art. 76 WRV). Nur die SPD unter Otto Wels stimmte dagegen; KPD-Abgeordnete waren bereits verhaftet oder ausgeschlossen.",
           "fast_check": {
             "type": "binary_choice",
             "options": [
-              "Das Ermächtigungsgesetz vom 24. März 1933",
-              "Die Reichstagsbrandverordnung"
+              "Verfassungsänderung nach Art. 76 WRV; nur die SPD stimmte dagegen",
+              "Einfache Mehrheit genügte; das Zentrum stimmte als einzige Fraktion dagegen"
             ],
             "correct_index": 0
           }

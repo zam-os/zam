@@ -4,6 +4,11 @@ import path from "node:path";
 const FIXTURES_DIR = path.resolve("tests/fixtures/curriculum");
 const TARGET_FILE = path.resolve("src/kernel/library/bundled-cells.ts");
 
+const IMPORT_BEGIN = "// --- begin bundled-tile-imports ---";
+const IMPORT_END = "// --- end bundled-tile-imports ---";
+const MAP_BEGIN = "// --- begin bundled-tile-map ---";
+const MAP_END = "// --- end bundled-tile-map ---";
+
 const files = fs
   .readdirSync(FIXTURES_DIR)
   .filter((f) => f.endsWith("-kvt.json"))
@@ -21,74 +26,41 @@ const importStatements = files
 const tileEntries = files
   .map(
     (_, idx) =>
-      `  [( tile${idx + 1}Raw as unknown as BundledTile).tile_id]: tile${idx + 1}Raw as unknown as BundledTile,`,
+      `  [(tile${idx + 1}Raw as unknown as BundledTile).tile_id]: tile${idx + 1}Raw as unknown as BundledTile,`,
   )
   .join("\n");
 
 const currentContent = fs.readFileSync(TARGET_FILE, "utf-8");
 
-// Find where formatGradeLabel starts
-const formatGradeLabelIndex = currentContent.indexOf(
-  "function formatGradeLabel(",
-);
-if (formatGradeLabelIndex === -1) {
-  throw new Error(
-    "Could not find function formatGradeLabel in bundled-cells.ts",
+function replaceMarkedSection(source, begin, end, inner) {
+  const start = source.indexOf(begin);
+  const stop = source.indexOf(end);
+  if (start === -1 || stop === -1 || stop < start) {
+    throw new Error(
+      `Missing markers ${begin} / ${end} in bundled-cells.ts. ` +
+        `Do not regenerate this file by slicing at formatGradeLabel.`,
+    );
+  }
+  return (
+    source.slice(0, start) +
+    `${begin}\n${inner}\n${end}` +
+    source.slice(stop + end.length)
   );
 }
 
-const restOfFile = currentContent.slice(formatGradeLabelIndex);
+const withImports = replaceMarkedSection(
+  currentContent,
+  IMPORT_BEGIN,
+  IMPORT_END,
+  `// --- Fixture Imports (${files.length} tiles) ---\n${importStatements}`,
+);
 
-const newContent = `// Auto-generated bundled cells library
-// Generated on: ${new Date().toISOString()}
+const nextContent = replaceMarkedSection(
+  withImports,
+  MAP_BEGIN,
+  MAP_END,
+  `export const BUNDLED_TILES: Record<string, BundledTile> = {\n${tileEntries}\n};`,
+);
 
-import type { Database } from "../db/types.js";
-import {
-  installKvtTile,
-  type KvtTile,
-  materialiseKvtCards,
-} from "./kvt-attach.js";
-
-export interface BundledTile extends KvtTile {
-  description?: string;
-  published_at?: string;
-  sources?: Array<{ uri: string; label?: string; checked?: string }>;
-}
-
-// --- Fixture Imports (${files.length} tiles) ---
-${importStatements}
-
-export interface BundledCellInfo {
-  id: string;
-  title: string;
-  gradeLabel: string;
-  description: string;
-  publisher: string;
-  publishedAt: string;
-  atomCount: number;
-  inScopeAtomIds: string[];
-}
-
-export interface BundledCellStatus extends BundledCellInfo {
-  installed: boolean;
-  enrolled: boolean;
-  cardCount: number;
-}
-
-export interface BundledCellEnrolResult {
-  success: boolean;
-  cellId: string;
-  installed: boolean;
-  cardsCreated: number;
-  cardsReused: number;
-  alreadyEnrolled: boolean;
-}
-
-export const BUNDLED_TILES: Record<string, BundledTile> = {
-${tileEntries}
-};
-
-${restOfFile}`;
-
-fs.writeFileSync(TARGET_FILE, newContent, "utf-8");
-console.log(`Successfully updated ${TARGET_FILE} with ${files.length} tiles.`);
+fs.writeFileSync(TARGET_FILE, nextContent, "utf-8");
+console.log(`Updated ${TARGET_FILE} with ${files.length} tiles.`);

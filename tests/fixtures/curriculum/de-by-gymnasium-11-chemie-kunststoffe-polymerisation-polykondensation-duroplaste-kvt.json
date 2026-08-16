@@ -15,8 +15,8 @@
   ],
   "atoms": [
     {
-      "id": "01K8GB9000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K8GB9000000000000000A01",
+      "id": "01K8GB90000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB90000000000000000A01",
       "namespace": "gymnasium-chemie-polymerisation",
       "slug": "polymerisation-polykondensation-polyaddition-reaktionstypen",
       "title": "Synthesereaktionen: Radikalische Polymerisation, Polykondensation (PET/Nylon) und Polyaddition (PUR)",
@@ -45,7 +45,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GB9000000000000000J01",
+          "id": "01K8GB90000000000000000J01",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -61,7 +61,7 @@
           }
         },
         {
-          "id": "01K8GB9000000000000000J02",
+          "id": "01K8GB90000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
@@ -72,8 +72,8 @@
       ]
     },
     {
-      "id": "01K8GB9000000000000000A02",
-      "atom_uri": "urn:zam:atom:01K8GB9000000000000000A02",
+      "id": "01K8GB90000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB90000000000000000A02",
       "namespace": "gymnasium-chemie-werkstoffe",
       "slug": "struktur-eigenschaften-thermoplaste-duroplaste-elastomere-recycling",
       "title": "Werkstoffklassen: Thermoplaste, Duroplaste, Elastomere und Kunststoff-Recycling",
@@ -82,7 +82,7 @@
       "typical_age_min": 16.5,
       "prerequisites": [
         {
-          "atom_id": "01K8GB9000000000000000A01",
+          "atom_id": "01K8GB90000000000000000A01",
           "type": "hard",
           "rationale": "Werkstoffeigenschaften resultieren aus dem molekularen Vernetzungsgrad."
         }
@@ -108,7 +108,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GB9000000000000000J03",
+          "id": "01K8GB90000000000000000J03",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "01K8GB9000000000000000J04",
+          "id": "01K8GB90000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,

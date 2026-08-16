@@ -14,6 +14,7 @@ export interface BundledTile extends KvtTile {
   sources?: Array<{ uri: string; label?: string; checked?: string }>;
 }
 
+// --- begin bundled-tile-imports ---
 // --- Fixture Imports (228 tiles) ---
 import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
   type: "json",
@@ -699,6 +700,7 @@ import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-opti
 import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
   type: "json",
 };
+// --- end bundled-tile-imports ---
 
 export interface BundledCellInfo {
   id: string;
@@ -726,6 +728,7 @@ export interface BundledCellEnrolResult {
   alreadyEnrolled: boolean;
 }
 
+// --- begin bundled-tile-map ---
 export const BUNDLED_TILES: Record<string, BundledTile> = {
   [(tile1Raw as unknown as BundledTile).tile_id]:
     tile1Raw as unknown as BundledTile,
@@ -1184,6 +1187,7 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
   [(tile228Raw as unknown as BundledTile).tile_id]:
     tile228Raw as unknown as BundledTile,
 };
+// --- end bundled-tile-map ---
 
 function formatGradeLabel(tile: BundledTile): string {
   const firstCurriculum = tile.atoms[0]?.curricula?.[0];

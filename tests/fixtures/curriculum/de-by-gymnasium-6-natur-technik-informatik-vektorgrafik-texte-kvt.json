@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb2",
           "topic_title": "Informationsdarstellung mit Grafikdokumenten",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb2",
           "topic_title": "Informationsdarstellung mit Grafikdokumenten",
           "exam_relevant": true
@@ -157,7 +157,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb3",
           "topic_title": "Informationsdarstellung mit Textdokumenten",
           "exam_relevant": true
@@ -220,7 +220,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb4",
           "topic_title": "Informationsdarstellung mit Präsentationsdokumenten",
           "exam_relevant": true

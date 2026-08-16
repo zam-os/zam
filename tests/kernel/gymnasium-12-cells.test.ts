@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { listBundledCells } from "../../src/kernel/library/bundled-cells.js";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  type Database,
+  enrolBundledCell,
+  listBundledCells,
+  openDatabase,
+} from "../../src/kernel/index.js";
 
 describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
   const gym12Cells = [
@@ -83,5 +91,32 @@ describe("Gymnasium Klasse 12 Bayern LehrplanPLUS Cells", () => {
 
     expect(atomIds.size).toBe(38);
     expect(itemIds.size).toBe(76);
+  });
+
+  describe("enrolment", () => {
+    let tempDir: string;
+    let db: Database;
+
+    beforeEach(async () => {
+      tempDir = mkdtempSync(join(tmpdir(), "zam-gym12-test-"));
+      db = await openDatabase({ dbPath: join(tempDir, "test.db") });
+    });
+
+    afterEach(async () => {
+      await db.close();
+      rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    it("installs and enrols a Klasse 12 STEM cell that previously had 25-character ids", async () => {
+      const cellId =
+        "de-by:gymnasium-12-mathematik-e-funktion-kettenregel-produktregel";
+      const res = await enrolBundledCell(
+        db,
+        "01K4TESTUSERGYM1200000001",
+        cellId,
+      );
+      expect(res.success).toBe(true);
+      expect(res.cardsCreated).toBeGreaterThan(0);
+    });
   });
 });

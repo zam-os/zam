@@ -15,8 +15,8 @@
   ],
   "atoms": [
     {
-      "id": "01K8GC9000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K8GC9000000000000000A01",
+      "id": "01K8GC90000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC90000000000000000A01",
       "namespace": "gymnasium-informatik-rsa",
       "slug": "asymmetrische-kryptographie-rsa-verfahren-einwegfunktion",
       "title": "Asymmetrische Kryptographie: Das RSA-Verfahren und mathematische Einwegfunktionen",
@@ -45,7 +45,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GC9000000000000000J01",
+          "id": "01K8GC90000000000000000J01",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -61,7 +61,7 @@
           }
         },
         {
-          "id": "01K8GC9000000000000000J02",
+          "id": "01K8GC90000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
@@ -72,8 +72,8 @@
       ]
     },
     {
-      "id": "01K8GC9000000000000000A02",
-      "atom_uri": "urn:zam:atom:01K8GC9000000000000000A02",
+      "id": "01K8GC90000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC90000000000000000A02",
       "namespace": "gymnasium-informatik-signaturen-hash",
       "slug": "hashfunktionen-sha-digitale-signatur-zertifikate-pki",
       "title": "Digitale Signaturen, Kryptographische Hashfunktionen (SHA) und PKI-Zertifikate",
@@ -82,7 +82,7 @@
       "typical_age_min": 17.5,
       "prerequisites": [
         {
-          "atom_id": "01K8GC9000000000000000A01",
+          "atom_id": "01K8GC90000000000000000A01",
           "type": "hard",
           "rationale": "Digitale Signaturen sind die mathematische Umkehrung des asymmetrischen RSA-Prinzips."
         }
@@ -108,7 +108,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GC9000000000000000J03",
+          "id": "01K8GC90000000000000000J03",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "01K8GC9000000000000000J04",
+          "id": "01K8GC90000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,

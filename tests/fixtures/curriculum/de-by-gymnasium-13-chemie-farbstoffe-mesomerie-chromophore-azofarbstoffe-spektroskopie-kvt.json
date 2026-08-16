@@ -15,8 +15,8 @@
   ],
   "atoms": [
     {
-      "id": "01K8GD5000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K8GD5000000000000000A01",
+      "id": "01K8GD50000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD50000000000000000A01",
       "namespace": "gymnasium-chemie-farbstoffe-homo-lumo",
       "slug": "farbigkeit-konjugierte-pi-systeme-homo-lumo-bathochrom",
       "title": "Grundlagen der Farbigkeit: Konjugierte Pi-Systeme, HOMO-LUMO-Übergänge und Mesomerie",
@@ -45,7 +45,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GD5000000000000000J01",
+          "id": "01K8GD50000000000000000J01",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -61,7 +61,7 @@
           }
         },
         {
-          "id": "01K8GD5000000000000000J02",
+          "id": "01K8GD50000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
@@ -72,8 +72,8 @@
       ]
     },
     {
-      "id": "01K8GD5000000000000000A02",
-      "atom_uri": "urn:zam:atom:01K8GD5000000000000000A02",
+      "id": "01K8GD50000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD50000000000000000A02",
       "namespace": "gymnasium-chemie-azofarbstoffe-synthese",
       "slug": "azofarbstoffe-diazotierung-azo-kupplung-fluoreszenz",
       "title": "Azo-Farbstoffe: Diazotierung, Azo-Kupplung und Photolumineszenz (Fluoreszenz)",
@@ -82,7 +82,7 @@
       "typical_age_min": 18.0,
       "prerequisites": [
         {
-          "atom_id": "01K8GD5000000000000000A01",
+          "atom_id": "01K8GD50000000000000000A01",
           "type": "hard",
           "rationale": "Azo-Farbstoffe sind die wichtigste großtechnische Anwendung konjugierter Farbstoffsysteme."
         }
@@ -108,7 +108,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GD5000000000000000J03",
+          "id": "01K8GD50000000000000000J03",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "01K8GD5000000000000000J04",
+          "id": "01K8GD50000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,

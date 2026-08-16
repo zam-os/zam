@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 5,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb4",
           "topic_title": "Naturwissenschaftliches Arbeiten",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 5,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb4",
           "topic_title": "Naturwissenschaftliches Arbeiten",
           "exam_relevant": true
@@ -157,7 +157,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 5,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb5",
           "topic_title": "Information und ihre Darstellung",
           "exam_relevant": true
@@ -220,7 +220,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 5,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb5",
           "topic_title": "Information und ihre Darstellung",
           "exam_relevant": true

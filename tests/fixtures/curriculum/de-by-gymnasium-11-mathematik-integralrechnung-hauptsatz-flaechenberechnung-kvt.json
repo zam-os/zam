@@ -15,8 +15,8 @@
   ],
   "atoms": [
     {
-      "id": "01K8GB1000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K8GB1000000000000000A01",
+      "id": "01K8GB10000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB10000000000000000A01",
       "namespace": "gymnasium-mathematik-hauptsatz-integral",
       "slug": "stammfunktion-hauptsatz-differential-integralrechnung",
       "title": "Stammfunktionen & Der Hauptsatz der Differential- und Integralrechnung (HDI)",
@@ -45,7 +45,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GB1000000000000000J01",
+          "id": "01K8GB10000000000000000J01",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -61,7 +61,7 @@
           }
         },
         {
-          "id": "01K8GB1000000000000000J02",
+          "id": "01K8GB10000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
@@ -72,8 +72,8 @@
       ]
     },
     {
-      "id": "01K8GB1000000000000000A02",
-      "atom_uri": "urn:zam:atom:01K8GB1000000000000000A02",
+      "id": "01K8GB10000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB10000000000000000A02",
       "namespace": "gymnasium-mathematik-flaechenintegral",
       "slug": "flaechenberechnung-nullstellenzerlegung-flaeche-zwischen-graphen",
       "title": "Geometrische Flächenberechnung: Nullstellenzerlegung und Fläche zwischen zwei Graphen",
@@ -82,7 +82,7 @@
       "typical_age_min": 16.5,
       "prerequisites": [
         {
-          "atom_id": "01K8GB1000000000000000A01",
+          "atom_id": "01K8GB10000000000000000A01",
           "type": "hard",
           "rationale": "Flächenberechnungen beruhen auf dem Hauptsatz der Integralrechnung."
         }
@@ -108,7 +108,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GB1000000000000000J03",
+          "id": "01K8GB10000000000000000J03",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "01K8GB1000000000000000J04",
+          "id": "01K8GB10000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,

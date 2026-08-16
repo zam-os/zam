@@ -15,8 +15,8 @@
   ],
   "atoms": [
     {
-      "id": "01K8GC2000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K8GC2000000000000000A01",
+      "id": "01K8GC20000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC20000000000000000A01",
       "namespace": "gymnasium-mathematik-hypothesentest",
       "slug": "hypothesentest-nullhypothese-signifikanzniveau-ablehnungsbereich",
       "title": "Hypothesentests: Null- & Gegenhypothese, Signifikanzniveau alpha und Entscheidungsregel",
@@ -45,7 +45,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GC2000000000000000J01",
+          "id": "01K8GC20000000000000000J01",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -61,7 +61,7 @@
           }
         },
         {
-          "id": "01K8GC2000000000000000J02",
+          "id": "01K8GC20000000000000000J02",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
@@ -72,8 +72,8 @@
       ]
     },
     {
-      "id": "01K8GC2000000000000000A02",
-      "atom_uri": "urn:zam:atom:01K8GC2000000000000000A02",
+      "id": "01K8GC20000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC20000000000000000A02",
       "namespace": "gymnasium-mathematik-fehlerarten",
       "slug": "fehler-1-art-alpha-fehler-2-art-beta-irrtumswahrscheinlichkeit",
       "title": "Fehlerarten beim Testen: Fehler 1. Art ($\\alpha$-Fehler) und Fehler 2. Art ($\\beta$-Fehler)",
@@ -82,7 +82,7 @@
       "typical_age_min": 17.5,
       "prerequisites": [
         {
-          "atom_id": "01K8GC2000000000000000A01",
+          "atom_id": "01K8GC20000000000000000A01",
           "type": "hard",
           "rationale": "Fehlerarten quantifizieren Fehlentscheidungen auf Basis der Entscheidungsregel."
         }
@@ -108,7 +108,7 @@
       ],
       "practice_items": [
         {
-          "id": "01K8GC2000000000000000J03",
+          "id": "01K8GC20000000000000000J03",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
@@ -124,7 +124,7 @@
           }
         },
         {
-          "id": "01K8GC2000000000000000J04",
+          "id": "01K8GC20000000000000000J04",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,

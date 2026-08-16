@@ -1,31 +1,42 @@
-# ZAM 0.33.0 — The Full Bavarian Gymnasium Curriculum (G9 LehrplanPLUS Grades 5–13)
+# ZAM 0.33.0 — Gymnasium Bayern G9, Klassen 5–13
 
-This release delivers the complete, end-to-end curriculum for the 9-year Bavarian Gymnasium (**G9 LehrplanPLUS, Klassen 5 bis 13**), covering all secondary levels through the Abitur. Learners now have access to a rich, coherent graph of 138 curated curriculum cells with over 280 learning atoms and 560+ practice items across STEM, humanities, languages, social sciences, and economics.
+This release adds the remaining Gymnasium Bayern cells through Abitur so the
+bundled library now covers **Klassen 5–13** with **138 cells**, **280+ atoms**
+and **560+ practice items** in the subjects ZAM currently authors (STEM,
+languages, history, geography, and Wirtschaft und Recht). That is not every
+official LehrplanPLUS subject: Kunst, Musik, Sport, Religion/Ethik and
+track-specific electives are still absent.
 
-## Complete 9-Year Gymnasium Bayern Coverage (Grades 5 to 13)
+## Coverage (grades 5 to 13)
 
-Every grade from entry (Unterstufe) to graduation (Oberstufe / Abitur) is fully authored, grounded in the official Bavarian LehrplanPLUS standards, and bundled natively into ZAM:
+Counts match the bundled registry. Blurbs are taken from the cell titles.
 
-- **Klasse 5 (9 Cells)**: Natürliche & ganze Zahlen, Geometrie (Achsensymmetrie, Flächen), Wirbeltiere & Säugetiere, Grammatik Deutsch & Englisch, Antikes Ägypten & Griechenland, Physische Geographie.
-- **Klasse 6 (9 Cells)**: Bruch- & Dezimalrechnung, Wirbellose (Insekten), Blütenpflanzen, Römische Republik & Kaiserreich, Orientierung Europa & Klimazonen, Grammatik Deutsch, Englisch, Latein & Französisch.
-- **Klasse 7 (13 Cells)**: Rationale Zahlen, Kongruenz & Dreiecksgeometrie, Mechanik (Kräfte, Druck), Optik, Stoffe & Teilchenmodell, OOP & Hypertext, Mittelalter bis Reformation, Europa-Geographie, Grammatik DE/EN/LA/FR.
-- **Klasse 8 (16 Cells)**: Lineare Funktionen & Gleichungssysteme, Mechanik & Wärmelehre, Periodensystem & Chemische Bindung, Relationale Datenbanken & SQL, Herz-Kreislauf & Stoffwechsel, Absolutismus bis 1848, Markt & Verbraucherschutz.
-- **Klasse 9 (15 Cells)**: Quadratische Funktionen & Trigonometrie, Newton-Axiome & Elektrizitätslehre, Redoxreaktionen & Stöchiometrie/Säure-Base, OOP-Vererbung, Molekulargenetik & Mendel, Weimarer Republik & NS-Diktatur, Arbeitsrecht & VWL.
-- **Klasse 10 (18 Cells)**: Exponentialfunktionen & Kreisgeometrie, Kernphysik & Radioaktivität, Organische Chemie (Alkane, Alkohole, Ester), Rekursion & Bäume, Immunbiologie & Ökologie, Zweiter Weltkrieg & Shoah, BGB-Vertragsrecht.
-- **Klasse 11 (21 Cells)**: Analysis (Ableitungsregeln, Extremwertprobleme), Integralrechnung, Vektorgeometrie, Binomialverteilung, E-Feld & Induktion, Kunststoffe, Proteine & Kohlenhydrate, Neuro- & Stoffwechselphysiologie, Datenbank-Normalisierung & Sortieralgorithmen, Romantik & Klassik, Shakespeare, Existenzialismus, VGR & Geldpolitik.
-- **Klasse 12 (19 Cells)**: e-Funktion, Ketten-/Produktregel, LGS & Gauß-Algorithmus, Hypothesentests, Quantenphysik & Atomphysik, Chemisches Gleichgewicht & Elektrochemie, Rechnernetze (OSI/TCP-IP) & Kryptographie (RSA/Diffie-Hellman), Moderne Literatur (Kafka, Mann), American Dream, Cicero & Seneca, Französische Gegenwartsgesellschaft, Gentechnik (CRISPR/Cas), Nachhaltige Stadtentwicklung, Mikroökonomie.
-- **Klasse 13 (18 Cells)**: Gebrochen-rationale Funktionen & uneigentliche Integrale, HNF & Kugelgeometrie, Stetige Zufallsgrößen & Normalverteilung, Astrophysik (HRD, Hubble) & Spezielle Relativitätstheorie ($E=mc^2$), Farbstoffe & Komplexchemie (Ligandenfeld, Chelate, Hämoglobin), Formale Sprachen (Chomsky, Automaten) & Berechenbarkeit (Turing, Halteproblem, P vs. NP), Gegenwartsliteratur & Erinnerungskultur, Postcolonial Perspectives, Ovid (*Metamorphosen* & Hexameter-Metrik), La Francophonie (Maghreb, Québec, Ben Jelloun), Synthetische Evolution & Hominisation, Verhaltensökologie (Hamilton-Regel) & Biodiversitätskrise, Kippelemente des Klimasystems & Ressourcenkonflikte, Nachkriegszeit, Kalter Krieg & Deutsche Einheit, Stabilitätsgesetz & Außenhandelstheorie (Ricardo, WTO).
+- **Klasse 5 (9 cells)**: Ganze Zahlen und Terme; Geometrie (Achsensymmetrie, Flächen, Quader); Mensch (Skelett, Pubertät); Samenpflanzen; NuT (Erkenntnisweg, Mikroskop, OOP); Märchen/Fabeln und Grammatik; Englisch Starter Grammar; Planet Erde / Bayern.
+- **Klasse 6 (9 cells)**: Brüche, Dezimalzahlen, Prozent; Flächen und Prismen; Säugetiere und Vögel; Fische, Amphibien, Reptilien; Römisches Reich; Urgeschichte bis Attische Demokratie; Europa und EU; Englisch Past/Present Perfect; NuT Informatik (Vektor/Raster).
+- **Klasse 7 (13 cells)**: Rationale Zahlen; Kongruenz und Dreiecke; Mechanik (Kräfte, Druck); Optik; Humanbiologie (Auge, Ohr, Nervensystem); OOP und Hypertext; Mittelalter bis Reformation; Europa-Geographie; Grammatik DE/EN/LA/FR.
+- **Klasse 8 (16 cells)**: Lineare Funktionen und Gleichungssysteme; Wahrscheinlichkeit und Kreisgeometrie; Mechanik und Wärmelehre; Optik; Stoffe/Atommodelle und PSE/Bindung; Relationale Datenbanken und SQL; Herz-Kreislauf und Stoffwechsel; Absolutismus bis 1848; Markt und Verbraucherschutz.
+- **Klasse 9 (15 cells)**: Quadratische Funktionen und Trigonometrie; Raumgeometrie und bedingte Wahrscheinlichkeit; Newton-Axiome und Elektrizitätslehre; Redox und Stöchiometrie/Säure-Base; OOP-Vererbung; Molekulargenetik und Mendel; Weimarer Republik und NS-Diktatur; Arbeitsrecht und VWL.
+- **Klasse 10 (18 cells)**: Exponential- und Logarithmusfunktionen; Einstieg Differentialrechnung; Vektoren und Skalarprodukt; Trigonometrie (Sinus-/Kosinussatz); Wellen, Kernphysik, Gravitation; Organische Chemie; Rekursion und Bäume; Evolution; Nachkriegsdeutschland; BGB-Vertragsrecht.
+- **Klasse 11 (21 cells)**: Kurvendiskussion und Extremwerte; Integralrechnung; Ebenen und Abstände; Binomialverteilung; E-Feld, Magnetfeld, Induktion; Kohlenhydrate, Proteine, Kunststoffe; Neuro- und Stoffwechselphysiologie; Datenbank-Normalisierung und Dijkstra; Romantik; Shakespeare; Existenzialismus; VGR und Geldpolitik.
+- **Klasse 12 (19 cells)**: e-Funktion, Ketten-/Produktregel; Gauß und Matrizen; Hypothesentests; Quanten- und Atomphysik; Chemisches Gleichgewicht und Elektrochemie; Rechnernetze und Kryptographie; Kafka/Mann; American Dream; Cicero und Seneca; Gentechnik; Stadtgeographie; Mikroökonomie.
+- **Klasse 13 (18 cells)**: Gebrochen-rationale Funktionen und uneigentliche Integrale; HNF und Kugelgeometrie; Normalverteilung; Astrophysik und spezielle Relativität; Farbstoffe und Komplexchemie; Formale Sprachen und Berechenbarkeit; Gegenwartsliteratur; Postcolonial Perspectives; Ovid; Francophonie; Synthetische Evolution und Verhaltensökologie; Kippelemente und Ressourcen; Nachkriegszeit und Deutsche Einheit; Stabilitätsgesetz und Außenhandel.
 
-## Strict Pedagogical Standards
+## Practice format
 
-1. **Crisp Ontological Isolation**: Every Learning Atom represents an unambiguous, standalone concept, avoiding multi-concept entanglements.
-2. **Two-Tier Practice System**:
-   - **Tier 1 (Fast Recall)**: `binary_choice` fast checks with automatic client-side option shuffling for swift working memory verification.
-   - **Tier 2 (Deep Synthesis)**: In-depth synthesis items with rigorous, step-by-step sample solutions featuring mathematical proofs, LaTeX equations, chemical mechanisms, code snippets, and Mermaid process flowcharts.
-3. **Collision-Free Crockford Base32 Identification**: All atom and item IDs follow strict Crockford Base32 syntax and are verified globally unique across the whole repository.
+1. **Two-tier items.** Tier 1 is a `binary_choice` fast check. Tier 2 is a
+   longer synthesis prompt. Sample solutions live on the fixture JSON for
+   authors; they are not yet persisted as learner-facing kernel fields.
+2. **Atom identity.** Published atom and item ids are 26-character Crockford
+   ULIDs. The integrity suite uses the same `ATOM_ID_PATTERN` as `installKvtTile`.
+3. **Curriculum bindings.** Subject slugs match LehrplanPLUS Bayern
+   (`wirtschaft-und-recht`, `nt_gym`, …) so cell precedence can find the tile.
 
-## Upgrades & Compatibility
+## Upgrades & compatibility
 
-- Updated bundled curriculum registry (`src/kernel/library/bundled-cells.ts`) with 228 total tiles.
-- Comprehensive test coverage with per-grade validation suites and a master integrity auditor (`tests/kernel/gymnasium-bayern-integrity.test.ts`).
-- Fully backwards-compatible with all existing user cards, personal review states, and FSRS schedules.
+- Bundled curriculum registry (`src/kernel/library/bundled-cells.ts`) now holds
+  228 tiles.
+- Per-grade suites enrol at least one cell; `tests/kernel/gymnasium-bayern-integrity.test.ts`
+  checks ids, subject slugs and scope lookup.
+- Existing user cards, review logs and FSRS schedules are unchanged. New cells
+  do not declare `replaces`; spiral revisits (e.g. Weimar in 9 and 12) are
+  separate items.

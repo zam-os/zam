@@ -1,5 +1,13 @@
-import { describe, expect, it } from "vitest";
-import { listBundledCells } from "../../src/kernel/library/bundled-cells.js";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  type Database,
+  enrolBundledCell,
+  listBundledCells,
+  openDatabase,
+} from "../../src/kernel/index.js";
 
 describe("Gymnasium Klasse 10 Bayern LehrplanPLUS Cells", () => {
   const gym10Cells = [
@@ -54,5 +62,32 @@ describe("Gymnasium Klasse 10 Bayern LehrplanPLUS Cells", () => {
         expect(tier2.sample_solution.length).toBeGreaterThan(50);
       }
     }
+  });
+
+  describe("enrolment", () => {
+    let tempDir: string;
+    let db: Database;
+
+    beforeEach(async () => {
+      tempDir = mkdtempSync(join(tmpdir(), "zam-gym10-test-"));
+      db = await openDatabase({ dbPath: join(tempDir, "test.db") });
+    });
+
+    afterEach(async () => {
+      await db.close();
+      rmSync(tempDir, { recursive: true, force: true });
+    });
+
+    it("installs and enrols a Klasse 10 STEM cell that previously had 25-character ids", async () => {
+      const cellId =
+        "de-by:gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass";
+      const res = await enrolBundledCell(
+        db,
+        "01K4TESTUSERGYM1000000001",
+        cellId,
+      );
+      expect(res.success).toBe(true);
+      expect(res.cardsCreated).toBeGreaterThan(0);
+    });
   });
 });

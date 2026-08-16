@@ -50,7 +50,7 @@
           "tier": "tier1_fast",
           "bloom_level": 1,
           "question": "An welchem historischen Datum begann das SED-Regime der DDR unter Walter Ulbricht mit der Errichtung der Berliner Mauer zur Abriegelung der Sektorengrenze nach West-Berlin?",
-          "concept": "13. August 1961 ('Aktion Rose' / Bau der Berliner Mauer)",
+          "concept": "13. August 1961 (Bau der Berliner Mauer)",
           "fast_check": {
             "type": "binary_choice",
             "options": [
@@ -89,7 +89,7 @@
       ],
       "alignments": [
         {
-          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_uri": "http://www.wikidata.org/entity/Q56039",
           "target_label": "German reunification",
           "alignment_type": "skos:broadMatch",
           "provenance": "manual_curation_v1"
