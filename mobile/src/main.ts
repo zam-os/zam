@@ -3513,34 +3513,13 @@ function renderBundledCells(cells: BundledCellStatus[]): void {
     description.className = "t-secondary";
     description.textContent = cell.description;
 
+    // Active paths only; activating one happens in the curriculum chooser,
+    // which is the surface that knows which cells cover a learner position.
     const action = document.createElement("button");
     action.type = "button";
-    action.className = cell.enrolled ? "btn" : "btn primary";
-    action.disabled = cell.enrolled;
-    action.textContent = cell.enrolled
-      ? t("learning_path_active")
-      : t("learning_path_enrol");
-    action.addEventListener("click", async () => {
-      if (!currentUserId || cell.enrolled) return;
-      action.disabled = true;
-      bundledCellsStatus.textContent = "…";
-      bundledCellsStatus.classList.remove("error");
-      try {
-        const result = await enrolBundledCell(db, currentUserId, cell.id);
-        bundledCellsStatus.textContent = tf("learning_path_enrolled", {
-          title: cell.title,
-          n: result.cardsCreated,
-        });
-        await refreshBundledCells();
-        await refresh(currentUserId);
-      } catch (error) {
-        bundledCellsStatus.textContent = tf("library_failed", {
-          error: errorMessage(error),
-        });
-        bundledCellsStatus.classList.add("error");
-        action.disabled = false;
-      }
-    });
+    action.className = "btn";
+    action.disabled = true;
+    action.textContent = t("learning_path_active");
 
     card.append(title, grade, description, action);
     bundledCellsList.appendChild(card);

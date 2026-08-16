@@ -1599,15 +1599,20 @@ export async function getBundledCellsWithStatus(
 
   for (const cell of requestedCells) {
     const tile = BUNDLED_TILES[cell.id];
-    const atomIds = tile?.atoms.map((atom) => atom.id) ?? [];
-    const itemIds =
-      tile?.atoms.flatMap((atom) =>
-        atom.practice_items.map((item) => item.id),
-      ) ?? [];
+    // No tile means nothing to install, which is never "installed" — the
+    // per-cell path returns false here, and an empty `.every()` would not.
+    if (!tile) continue;
+    const atomIds = tile.atoms.map((atom) => atom.id);
+    const itemIds = tile.atoms.flatMap((atom) =>
+      atom.practice_items.map((item) => item.id),
+    );
     tileAtoms.set(cell.id, atomIds);
     tileItems.set(cell.id, itemIds);
     for (const id of atomIds) allAtomIds.add(id);
     for (const id of itemIds) allItemIds.add(id);
+    // An override may scope a cell to a subset of its tile, but the two must
+    // never drift apart: an id we do not query for reads back as "no cards".
+    for (const id of cell.inScopeAtomIds) allAtomIds.add(id);
   }
 
   const atomIds = [...allAtomIds];
@@ -1638,7 +1643,8 @@ export async function getBundledCellsWithStatus(
 
   return requestedCells.map((cell) => {
     const installed =
-      (tileAtoms.get(cell.id) ?? []).every((id) => installedAtoms.has(id)) &&
+      (tileAtoms.get(cell.id)?.every((id) => installedAtoms.has(id)) ??
+        false) &&
       (tileItems.get(cell.id) ?? []).every((id) => installedItems.has(id));
     const enrolled =
       cell.inScopeAtomIds.length > 0 &&
