@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-chemie-stoechiometrie-saeuren-basen-protolyse",
+  "version": "2026.08.1",
+  "title": "Chemie 9: Stöchiometrie, Säure-Base-Theorie nach Brønsted und pH-Wert (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 9 (NTG/SG/WSG): Quantitative Stöchiometrie (Stoffmenge n = m / M, Avogadro-Konstante N_A, molares Gasvolumen V_m = 22,4 l/mol, Stoffmengenkonzentration c = n / V), Säure-Base-Theorie nach Johannes Brønsted (Protonendonatoren, Protonenakzeptoren, konjugierte Säure-Base-Paare, Ampholyte), Autoprotolyse des Wassers, pH-Wert-Skala (pH = -lg[H3O+]) sowie Neutralisation und quantitative Säure-Base-Titration.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 9, Lernbereiche Quantitative Aspekte und Säure-Base-Reaktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9E0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9E0000000000000000A01",
+      "namespace": "gymnasium-chemie-stoechiometrie",
+      "slug": "stoechiometrie-stoffmenge-molare-masse-avogadro-konzentration",
+      "title": "Stöchiometrie: Stoffmenge n (Mol), Molare Masse M, Avogadro-Konstante N_A und Konzentration c",
+      "domain": "schule/chemie/stoechiometrie",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1024",
+          "target_label": "Stoichiometry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Quantitative Aspekte chemischer Reaktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9E0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie viele Teilchen (Atome, Moleküle oder Formeleinheiten) enthält exakt $1\\,\\text{mol}$ eines Reinstoffes (Avogadro-Konstante $N_A$)?",
+          "concept": "N_A ca. 6,022 * 10^23 Teilchen / mol",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6,022 * 10^23 Teilchen / mol",
+              "6,022 * 10^12 Teilchen / mol"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9E0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Grundgleichungen der chemischen Stöchiometrie: 1. **Stoffmenge $n$ & Molare Masse $M$**:   $$n = \\frac{m}{M} \\iff m = n \\cdot M$$   ($n = \\text{Stoffmenge in mol}$, $m = \\text{Masse in g}$, $M = \\text{molare Masse in } \\frac{\\text{g}}{\\text{mol}}$, aus PSE als Summe der relativen Atommassen), 2. **Teilchenanzahl $N$ & Avogadro-Konstante $N_A$**: $N = n \\cdot N_A$ ($N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}$), 3. **Molares Gasvolumen $V_m$**: Bei Normbedingungen ($T = 0^\\circ\\text{C}, p = 1013\\,\\text{hPa}$) nimmt $1\\,\\text{mol}$ jedes idealen Gases das Volumen $V_m = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}}$ ein ($V = n \\cdot V_m$), 4. **Stoffmengenkonzentration $c$**: $c = \\frac{n}{V}$ (in $\\frac{\\text{mol}}{\\text{l}}$), 5. Berechne die Stoffmenge $n$ und die Anzahl der Moleküle $N$ in $36\\,\\text{g}$ reinem Wasser $H_2O$ ($M(H) = 1\\,\\frac{\\text{g}}{\\text{mol}}$, $M(O) = 16\\,\\frac{\\text{g}}{\\text{mol}}$).",
+          "concept": "Stöchiometrie: n = m/M; N = n*N_A; V_m = 22,4 l/mol bei STP; Konzentration c = n/V; Rechnung: M(H2O) = 2*1 + 16 = 18 g/mol; n = 36 g / (18 g/mol) = 2 mol; N = 2 * 6,022*10^23 = 1,2044 * 10^24 Moleküle.",
+          "sample_solution": "1. Grundgrößen und Gleichungen der chemischen Stöchiometrie: - **1. Stoffmenge $n$ (Einheit: Mol [mol])**:   * Die Basiseinheit zur Zählung chemischer Teilchenportionen:     $$\\mathbf{n = \\frac{m}{M}} \\quad \\iff \\quad \\mathbf{m = n \\cdot M}$$   * $m$: Masse der Stoffportion in Gramm [g].   * $M$: **Molare Masse** in $\\frac{\\text{g}}{\\text{mol}}$ (Zahlenwert entspricht exakt der relativen Molekülmasse $u$ aus dem PSE). - **2. Avogadro-Konstante $N_A$**:   * Die Anzahl der Atome in exakt 12 g des Kohlenstoffisotops $^{12}\\text{C}$:     $$\\mathbf{N_A \\approx 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1}} \\implies \\mathbf{N = n \\cdot N_A}$$ - **3. Molares Gasvolumen $V_m$ (Satz von Avogadro)**:   * Gleiche Volumina aller Gase enthalten bei gleichem Druck und gleicher Temperatur dieselbe Anzahl von Teilchen:     $$\\mathbf{V = n \\cdot V_m} \\quad (V_{m,\\text{Norm}} = 22{,}4\\,\\frac{\\text{l}}{\\text{mol}} \\text{ bei } 0^\\circ\\text{C}, 1013\\text{ hPa})$$ - **4. Stoffmengenkonzentration $c$ einer Lösung**:   $$\\mathbf{c = \\frac{n}{V} = \\frac{m}{M \\cdot V}} \\quad (\\text{Einheit: } 1\\,\\frac{\\text{mol}}{\\text{l}} = 1\\,\\text{M} \\text{ [molar]})$$ 2. Durchrechnung des Beispiels ($m(\\text{H}_2\\text{O}) = 36\\,\\text{g}$): - **Schritt 1: Molare Masse $M(\\text{H}_2\\text{O})$**:   $$M(\\text{H}_2\\text{O}) = 2 \\cdot M(\\text{H}) + 1 \\cdot M(\\text{O}) = 2 \\cdot 1{,}0\\,\\frac{\\text{g}}{\\text{mol}} + 16{,}0\\,\\frac{\\text{g}}{\\text{mol}} = \\mathbf{18{,}0\\,\\frac{\\text{g}}{\\text{mol}}}$$ - **Schritt 2: Stoffmenge $n$**:   $$n(\\text{H}_2\\text{O}) = \\frac{m}{M} = \\frac{36\\,\\text{g}}{18\\,\\frac{\\text{g}}{\\text{mol}}} = \\mathbf{2{,}0\\,\\text{mol}}$$ - **Schritt 3: Absolute Teilchenanzahl $N$**:   $$N = n \\cdot N_A = 2{,}0\\,\\text{mol} \\cdot 6{,}022 \\cdot 10^{23}\\,\\text{mol}^{-1} = \\mathbf{1{,}2044 \\cdot 10^{24}\\,\\text{Wassermoleküle}}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9E0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9E0000000000000000A02",
+      "namespace": "gymnasium-chemie-saeuren",
+      "slug": "saeure-base-broensted-protolyse-ph-wert-neutralisation-titration",
+      "title": "Säure-Base-Reaktionen nach Brønsted, Autoprotolyse, pH-Wert und Neutralisationstitration",
+      "domain": "schule/chemie/saeuren",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9E0000000000000000A01",
+          "type": "hard",
+          "rationale": "Titration und Konzentrationsberechnungen beruhen auf der Stöchiometrie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1024",
+          "target_label": "Brønsted-Lowry acid-base theory",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Säure-Base-Reaktionen und pH-Wert",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9E0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie ist eine Säure nach der modernen Säure-Base-Definition von Johannes Brønsted charakterisiert?",
+          "concept": "Als Protonendonator (Teilchen, das Protonen H+ abgeben kann; eine Base ist ein Protonenakzeptor)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Protonendonator (gibt H+ ab)",
+              "Elektronendonator"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9E0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Brønsted-Theorie, den pH-Wert und die Neutralisation: 1. **Brønsted-Definition (Protolysereaktion)**:   * **Säure**: Protonendonator ($HA \\rightarrow H^+ + A^-$).   * **Base**: Protonenakzeptor ($B + H^+ \\rightarrow HB^+$).   * **Konjugiertes (korrespondierendes) Säure-Base-Paar**: Unterscheidet sich exakt um ein Proton $H^+$ (z. B. $HCl / Cl^-$, $H_3O^+ / H_2O$).   * **Ampholyt (Amphotere Stoffe)**: Kann je nach Reaktionspartner sowohl als Säure als auch als Base reagieren (z. B. Wasser $H_2O$, Hydrogencarbonat $HCO_3^-$), 2. **Autoprotolyse des Wassers & Ionenprodukt**:   $$2\\,H_2O \\rightleftharpoons H_3O^+ + OH^- \\implies K_W = [H_3O^+] \\cdot [OH^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2} \\text{ (bei } 25^\\circ\\text{C)}$$ 3. **Der pH-Wert**: $\\mathbf{\\text{pH} = -\\lg[H_3O^+]}$ und $\\text{pOH} = -\\lg[OH^-] \\implies \\mathbf{\\text{pH} + \\text{pOH} = 14}$ (Sauer: $\\text{pH} < 7$, Neutral: $\\text{pH} = 7$, Basisch: $\\text{pH} > 7$), 4. **Neutralisation & Titration**: $H_3O^+ + OH^- \\rightarrow 2\\,H_2O$. Bei der Titration gilt am Äquivalenzpunkt: $c_A \\cdot V_A = c_B \\cdot V_B$.",
+          "concept": "Brønsted: Säure = Protonendonator, Base = Protonenakzeptor; Ampholyte (z. B. H2O); Autoprotolyse K_w = [H3O+]*[OH-] = 10^-14; pH = -lg[H3O+]; pH + pOH = 14; Neutralisation H3O+ + OH- -> 2 H2O; Titration c_A * V_A = c_B * V_B.",
+          "sample_solution": "1. Die Säure-Base-Theorie nach Johannes Nicolaus Brønsted (1923): - **Protolysereaktion**: Eine chemische Reaktion mit Übertragung von Wasserstoffkernen (Protonen $H^+$):   * **Säure (Protonendonator)**: Teilchen, das ein $H^+$ abgeben kann.   * **Base (Protonenakzeptor)**: Teilchen mit mindestens einem freien Elektronenpaar, das ein $H^+$ aufnehmen kann. - **Korrespondierende (konjugierte) Säure-Base-Paare**:   * Jede Säure wird nach Protonenabgabe zu ihrer korrespondierenden Base:     $$\\underbrace{\\text{HCl}}_{\\text{Säure 1}} + \\underbrace{\\text{H}_2\\text{O}}_{\\text{Base 2}} \\rightleftharpoons \\underbrace{\\text{H}_3\\text{O}^+}_{\\text{Säure 2}} + \\underbrace{\\text{Cl}^-}_{\\text{Base 1}}$$ - **Ampholyte (amphotere Verbindungen)**:   * Teilchen, die je nach Reaktionspartner als Säure oder Base wirken können (z. B. **Wasser**: Gegenüber $HCl$ wirkt es als Base, gegenüber Ammoniak $NH_3$ als Säure). 2. Autoprotolyse des Wassers und das Ionenprodukt $K_W$: - Auch reinstes Wasser leitet elektrischen Strom in winzigem Maße durch Eigendissoziation:   $$2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-$$ - **Ionenprodukt des Wassers** (bei $25^\\circ\\text{C}$):   $$\\mathbf{K_W = [\\text{H}_3\\text{O}^+] \\cdot [\\text{OH}^-] = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2}}$$   * In reinem Wasser gilt: $[\\text{H}_3\\text{O}^+] = [\\text{OH}^-] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}}$. 3. Der pH-Wert (potentia Hydrogenii): - Der negative dekadische Logarithmus der Oxoniumionen-Konzentration $[\\text{H}_3\\text{O}^+]$:   $$\\mathbf{\\text{pH} = -\\lg[\\text{H}_3\\text{O}^+]} \\quad \\text{und} \\quad \\mathbf{\\text{pOH} = -\\lg[\\text{OH}^-]}$$   $$\\mathbf{\\text{pH} + \\text{pOH} = 14}$$   * **Sauer**: $[\\text{H}_3\\text{O}^+] > 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} < 7}$.   * **Neutral**: $[\\text{H}_3\\text{O}^+] = 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} = 7}$.   * **Alkalisch / Basisch**: $[\\text{H}_3\\text{O}^+] < 10^{-7}\\,\\frac{\\text{mol}}{\\text{l}} \\implies \\mathbf{\\text{pH} > 7}$. 4. Neutralisation und Säure-Base-Titration: - **Reaktionsgleichung der Neutralisation**:   $$\\text{H}_3\\text{O}^+ + \\text{OH}^- \\rightarrow 2\\,\\text{H}_2\\text{O} \\quad (\\Delta H < 0, \\text{ stark exotherm})$$ - **Quantitative Titration am Äquivalenzpunkt (Farbumschlag des Indikators)**:   * Es gilt: $\\mathbf{n(\\text{Säure}) = n(\\text{Base})} \\implies \\mathbf{c_{\\text{Säure}} \\cdot V_{\\text{Säure}} = c_{\\text{Base}} \\cdot V_{\\text{Base}}}$.   * Ermöglicht die hochpräzise Bestimmung unbekannter Säure- oder Basenkonzentrationen im Schullabor."
+        }
+      ]
+    }
+  ]
+}

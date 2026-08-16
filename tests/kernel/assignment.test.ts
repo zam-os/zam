@@ -165,6 +165,8 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
 
     await expect(
       withdrawAssignment(db, assignment.id, "unauthorized_user"),
-    ).rejects.toThrow("Permission denied: only assigner lead_alice may withdraw this assignment.");
+    ).rejects.toThrow(
+      "Permission denied: only assigner lead_alice may withdraw this assignment.",
+    );
   });
 });

@@ -140,9 +140,7 @@ describe("Automated content guards for the Optik field-test cells", () => {
       const anchoredText = (raw.sources ?? [])
         .map((source) => `${source.uri} ${source.label ?? ""}`)
         .join("\n");
-      for (const binding of raw.atoms.flatMap(
-        (atom) => atom.curricula ?? [],
-      )) {
+      for (const binding of raw.atoms.flatMap((atom) => atom.curricula ?? [])) {
         expect(binding.provider).toBe("lehrplanplus-bayern");
         expect(
           anchoredText,

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-biologie-evolutionsbiologie-synthetische-theorie-artbildung-hominisation",
+  "version": "2026.08.1",
+  "title": "Biologie 13: Evolutionsbiologie – Synthetische Evolutionstheorie, Artbildungsmechanismen und Hominisation (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 13 (Oberstufe Q13 / Abitur): Grundlagen der Synthetischen Evolutionstheorie (Verknüpfung von Charles Darwins Selektionstheorie mit Genetik und Populationsökologie, Evolutionsfaktoren: Mutation, Rekombination, Selektion [gerichtete, stabilisierende und disruptive Selektion], Gendrift [Flaschenhalseffekt und Gründereffekt] und Genfluss; Das Hardy-Weinberg-Gesetz p^2 + 2pq + q^2 = 1 im idealen Genpool), Artbegriff und Artbildungsmechanismen (Biologischer Artbegriff nach Ernst Mayr; Allopatrische Artbildung durch geographische Separation und reproduktive Isolation [Präzygotische Barrieren: ethologisch, zeitlich, mechanisch, gametisch vs. Postzygotische Barrieren: Hybridsterilität/Hybridinfertilität]; Sympatrische Artbildung durch Polyploidisierung oder sexuelle Selektion; Adaptive Radiation am Beispiel der Darwinfinken auf Galapagos oder Buntbarschen), Belege für die Evolution (Homologie mit den 3 Homologiekriterien [Lage, spezifische Qualität, Kontinuität] und Divergenz vs. Analogie, Konvergenz und Rudimente/Atavismen; Molekularbiologische Stammbaumanalyse über DNA-Hybridisierung, Sequenzvergleiche und Aminosäure-Homologien von Cytochrom c) sowie Die Hominisation / Evolution des Menschen (Aufrechter zweibeiniger Gang, Schädelfassungsvermögen, Out-of-Africa-Theorie vs. Multiregionales Modell, Fossilreihe: Australopithecus afarensis [Lucy], Homo habilis, Homo erectus, Homo neanderthalensis und Homo sapiens mit genetischen Neandertaler-Introgressionen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 13, Lernbereich Evolutionsbiologie und Hominisation"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GDD0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GDD0000000000000000A01",
+      "namespace": "gymnasium-biologie-synthetische-evolution",
+      "slug": "synthetische-evolutionstheorie-evolutionsfaktoren-artbildung",
+      "title": "Synthetische Evolutionstheorie: Evolutionsfaktoren, Selektionstypen und Artbildung",
+      "domain": "schule/biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Synthetische Evolutionstheorie und Artbildung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDD0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Selektionsform spaltet eine Population auf und begünstigt Individuen mit extremen Phänotypen an beiden Enden der Merkmalsverteilung gegenüber dem Mittelwert?",
+          "concept": "Die disruptive / spaltende Selektion",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Disruptive (spaltende) Selektion",
+              "Stabilisierende Selektion"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDD0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Synthetische Evolutionstheorie, die drei Selektionsformen und den Prozess der allopatrischen Artbildung: 1. **Die 5 zentralen Evolutionsfaktoren**:   * **1. Mutation & 2. Rekombination**: Erzeugen neue genetische Variabilität im Genpool.   * **3. Selektion**: Richtet die Evolution durch differenziellen Fortpflanzungserfolg (*Fitness*) aus.   * **4. Gendrift**: Zufallsbedingte Verschiebung von Allelfrequenzen (Flaschenhals-Effekt nach Katastrophen, Gründer-Effekt auf Inseln).   * **5. Isolation**: Verhindert Genfluss zwischen Teilpopulationen, 2. **Die drei Selektionstypen**:   * **Stabilisierende Selektion**: Selektionsdruck von beiden Seiten $\\implies$ durchschnittliche Phänotypen werden begünstigt (z. B. Geburtsgewicht bei Menschen).   * **Gerichtete (transformierende) Selektion**: Selektionsdruck von einer Seite $\\implies$ Verschiebung des Mittelwerts in eine Richtung (z. B. Industriemelanismus beim Birkenspanner, Antibiotikaresistenzen).   * **Disruptive (spaltende) Selektion**: Selektionsdruck auf den Mittelwert $\\implies$ zwei extreme Phänotypen haben Selektionsvorteil (z. B. Schnabelgrößen bei Prachtfinken für weiche vs. harte Samen), 3. **Der Ablauf der Allopatrischen Artbildung**:   * Phase 1: **Geographische Separation** (Klimawandel, Eiszeit, Gebirgsbildung teilt Ausgangspopulation).   * Phase 2: Unabhängige Entwicklung beider Teilpopulationen durch unterschiedliche Mutationen, Gendrift und spezifische Selektionsdrücke.   * Phase 3: Entstehung **reproduktiver Isolationsmechanismen** (Präzygotisch: Balzgesänge, Paarungszeiten; Postzygotisch: Hybridsterilität).   * Phase 4: Bei erneutem Aufeinandertreffen (*sekundärer Sympatrie*) ist keine fruchtbare Fortpflanzung mehr möglich $\\implies$ **Zwei getrennte Arten entstanden!**",
+          "concept": "Evolution 13: 5 Evolutionsfaktoren (Mutation, Rekombination, Selektion, Gendrift, Isolation); 3 Selektionstypen (stabilisierend, gerichtet, disruptiv); Allopatrische Artbildung (Separation -> Divergenz -> reproduktive Isolation).",
+          "sample_solution": "1. Das Fundament der Synthetischen Evolutionstheorie: - **Synthese**: Verbindet Charles Darwins Konzept der natürlichen Selektion mit den Erkenntnissen der modernen Genetik, Molekularbiologie, Ökologie und Populationsbiologie (Theodosius Dobzhansky, Ernst Mayr). - **Definition von Evolution**: Evolution ist die **zeitliche Veränderung der Allelhäufigkeiten (Genfrequenzen)** im Genpool einer Population. 2. Die drei grundlegenden Selektionstypen: ```mermaid graph TD   subgraph Selektionstypen     S1[Stabilisierend: Mittelwert gestärkt, Extreme sterben]     S2[Gerichtet: Verschiebung in eine Extremrichtung]     S3[Disruptiv: Mittelwert benachteiligt, 2 Gipfel entstehen]   end ``` - **1. Stabilisierende Selektion**: Wirkt in konstanten Umweltbedingungen; eliminiert extreme Mutanten (z. B. Flügelspannweite bei Vögeln bei Sturm). - **2. Gerichtete Selektion**: Wirkt bei sich verändernden Umweltbedingungen; begünstigt einen einseitigen Extremwert (z. B. Giraffenhals, Zunahme der Resistenzen bei Bakterien). - **3. Disruptive Selektion**: Spaltet eine Population in zwei morphologische Spezialisierungen auf und bildet die Vorstufe zur sympatrischen Artbildung. 3. Phasen der Allopatrischen Artbildung (Ernst Mayr): - **Schritt 1: Geographische Isolation (Separation)**:   * Eine ursprüngliche Großpopulation wird durch ein geographisches Hindernis (Flussverlagerung, Gebirgsauffaltung, Meeresspiegelschwankung, Eiszeit-Gletscher) in zwei getrennte Genpools $A$ und $B$ zerrissen. - **Schritt 2: Genetische Divergenz**:   * In beiden isolierten Populationen treten zufällig unterschiedliche **Mutationen** auf.   * Durch unterschiedliche biotische und abiotische Umweltfaktoren wirken andere **Selektionsdrücke**.   * In kleinen Randpopulationen verändert der **Gründereffekt (Gendrift)** die Allelfrequenzen dramatisch. - **Schritt 3: Etablierung reproduktiver Isolation**:   * Es bilden sich Fortpflanzungsbarrieren heraus:     - *Präzygotisch*: Unterschiedliche Balzrituale (*ethologische Isolation*), abweichende Paarungszeiten (*zeitliche Isolation*), inkompatible Geschlechtsorgane (*mechanische Isolation*).     - *Postzygotisch*: Embryonen sterben ab oder gebildete Bastarde sind steril (*Maultier / Maulesel*). - **Schritt 4: Sekundärer Kontakt**:   * Hebt sich die geographische Barriere auf, können die Individuen beider Populationen keine fruchtbaren Nachkommen mehr miteinander zeugen $\\implies$ Aus einer Ausgangsart sind **zwei biologisch vollwertige Arten** entstanden."
+        }
+      ]
+    },
+    {
+      "id": "01K8GDD0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GDD0000000000000000A02",
+      "namespace": "gymnasium-biologie-hominisation",
+      "slug": "hominisation-stammesgeschichte-mensch-out-of-africa",
+      "title": "Hominisation: Stammesgeschichte des Menschen, Werkzeuggebrauch und Out-of-Africa-Hypothese",
+      "domain": "schule/biologie/anthropologie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GDD0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Evolution des Menschen folgt den Gesetzmäßigkeiten der Synthetischen Evolutionstheorie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Human evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Hominisation und Evolution des Menschen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDD0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches anatomische Schlüsselmerkmal entwickelte sich in der Evolution der Frühmenschen (Hominini in Ostafrika) zeitlich lange vor der dramatischen Vergrößerung des Gehirnvolumens?",
+          "concept": "Der aufrechte, gewohnheitsmäßige zweibeinige Gang (Bipedie)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der aufrechte zweibeinige Gang (Bipedie)",
+              "Die Beherrschung des Feuers"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDD0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die anatomischen Anpassungen, die Fossilreihe der Hominisation und die Out-of-Africa-Theorie: 1. **Anatomische Anpassungen an den aufrechten Gang (Bipedie)**:   * **Wirbelsäule**: Doppelt-S-förmig gekrümmt (Dämpfung von Stößen beim Laufen).   * **Schädel**: Hinterhauptsloch (*Foramen magnum*) wandert zentral unter die Schädelbasis (Kopf balanciert kraftsparend auf der Wirbelsäule).   * **Becken**: Breit, schüsselförmig zur Aufnahme der Eingeweidelast.   * **Fuß**: Standfuß mit Längs- und Querwölbung, nicht-abspreizbare Großzehe (Verlust des Greiffußes).   * **Hand**: Freisetzung der Hände zur Feinmotorik mit voll opponierbarem Daumen, 2. **Fossilchronologie der Gattungen *Australopithecus* und *Homo***:   * **Australopithecus afarensis ('Lucy', ca. 3,5 Mio. Jahre)**: Kleines Gehirn ($400-500\\,\\text{cm}^3$), aber bereits voll aufrechter Gang (Laetoli-Fußspuren).   * **Homo habilis / Homo rudolfensis (ca. 2,4–1,5 Mio. Jahre)**: Erstes gezieltes Herstellen von Geröllwerkzeugen (*Oldowan-Kultur*), Gehirn ca. $600-750\\,\\text{cm}^3$.   * **Homo erectus (ca. 1,9 Mio. – 100.000 Jahre)**: Faustkeile (*Acheuléen*), Nutzung des Feuers, erste Auswanderungswelle aus Afrika nach Asien und Europa, Gehirn ca. $900-1100\\,\\text{cm}^3$.   * **Homo neanderthalensis (ca. 300.000–30.000 Jahre)**: Robuster Körperbau, Angepasstheit an Kaltzeiten, Begräbniskult, Gehirn ca. $1400-1600\\,\\text{cm}^3$ (größer als *H. sapiens*!).   * **Homo sapiens (ab ca. 300.000 Jahren)**: Entstehung in Afrika (Jebel Irhoud), hohe Stirn, Kinnvorsprung, Kunst (Höhlenmalereien), komplexe Sprache, 3. **Die 'Out-of-Africa-Theorie' & Paläogenetik (Svante Pääbo, Nobelpreis 2022)**:   * Moderner Mensch entstand vor ca. $300.000$ Jahren in Afrika und besiedelte vor ca. $60.000$ Jahren die Welt.   * Nachweis genomischer Introgression: Alle heutigen Nicht-Afrikaner tragen ca. **$1-2\\,\\%$ Neandertaler-DNA** in ihrem Genom!",
+          "concept": "Hominisation 13: Anatomie Bipedie (Doppel-S-Wirbelsäule, zentrales Hinterhauptsloch, Standfuß); Fossilreihe (Australopithecus Lucy, H. habilis, H. erectus, H. neanderthalensis, H. sapiens); Out-of-Africa & Svante Pääbo Neandertaler-DNA-Introgression (1-2%).",
+          "sample_solution": "1. Anatomische Umkonstruktion des menschlichen Körpers für die Bipedie: - **Die evolutionäre Triebfeder**:   * Klimatische Austrocknung Ostafrikas (Rift Valley) $\\implies$ Rückgang dichter Regenwälder, Ausbreitung offener Baumsavannen $\\implies$ Selektionsvorteil für Rundumblick über hohes Savannengras, Thermoregulation (geringere Sonneneinstrahlungsfläche) und energieeffizientes Ausdauerlaufen. - **Anatomische Schlüsselmerkmale im Vergleich zum Schimpansen**: | Merkmal | Menschenaffe (Schimpanse) | Moderner Mensch (*Homo sapiens*) | | :--- | :--- | :--- | | **Wirbelsäule** | Einfach gebogen (C-förmig) | **Doppelt-S-förmig** (Stoßdämpferfunktion beim Gehen und Springen) | | **Hinterhauptsloch** | Weit hinten am Schädel | **Zentral unter der Schädelbasis** (Kopf balanciert senkrecht) | | **Becken** | Lang, schmal | **Breit, schaufel-/schüsselförmig** (stützt die Eingeweide) | | **Oberschenkel** | Parallel, O-Bein-Stellung | **Schräg nach innen gestellt (X-Bein-Tendenz)** (Schwerpunkt über den Füßen) | | **Fuß** | Greiffuß mit opponierbarem Großzeh | **Gewölbter Stand- und Federfuß** mit anliegendem Großzeh | | **Hand** | Hakengriff zum Klettern | **Präzisionsgriff** mit opponierbarem Daumen zur Werkzeugherstellung | 2. Die Chronologie der Hominini-Fossilien: ```mermaid graph TD   A[Australopithecus afarensis: 3.5 Mio J. / 450 cm³ / Bipedie] --> B[Homo habilis: 2.0 Mio J. / 650 cm³ / Erste Steinwerkzeuge]   B --> C[Homo erectus: 1.8 Mio J. / 1000 cm³ / Feuer, Faustkeil, Out-of-Africa I]   C --> D1[Homo neanderthalensis: 300.000 J. / 1500 cm³ / Europa]   C --> D2[Homo sapiens: 300.000 J. / 1400 cm³ / Afrika, Kultur, Out-of-Africa II]   D1 -.->|Genfluss 1-2%| D2 ``` 3. Die Out-of-Africa-Theorie und die Entdeckungen von Svante Pääbo (Nobelpreis 2022): - **Das Out-of-Africa-Modell (Arche-Noah-Hypothese)**:   * Gestützt durch die mitochondriale DNA-Urmutter (*Mitochondriale Eva* $\\approx 150.000$ Jahre) und Y-Chromosom-Stammbäume.   * Der anatomisch moderne *Homo sapiens* entstand monophyletisch vor ca. $300.000$ Jahren in Afrika und verdrängte in einer zweiten Welle vor ca. $60.000$ Jahren alle archaischen Urmenschenformen in Eurasien. - **Die paläogenetische Revolution**:   * Durch Entschlüsselung fossiler DNA (*aDNA*) wies Svante Pääbo nach, dass sich *Homo sapiens* im Nahen Osten und Europa fruchtbar mit dem Neandertaler kreuzte.   * Heutige Menschen europäischer und asiatischer Abstammung tragen **$1\\text{ bis } 2\\,\\%$ Neandertaler-Gene** (Gene für Immunsystem und Keratinbildung in der Haut), während indigene Völker in Ozeanien (Melanesien) zusätzlich bis zu **$4-6\\,\\%$ Denisova-DNA** besitzen."
+        }
+      ]
+    }
+  ]
+}

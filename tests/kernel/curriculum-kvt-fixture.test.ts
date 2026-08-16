@@ -208,7 +208,9 @@ describe("embedded practice items are identical across tiles", () => {
       for (const atom of tile.atoms) {
         for (const item of atom.practice_items) {
           const body = JSON.stringify(
-            Object.fromEntries(SUBSTANCE.map((key) => [key, item[key] ?? null])),
+            Object.fromEntries(
+              SUBSTANCE.map((key) => [key, item[key] ?? null]),
+            ),
           );
           const first = seen.get(item.id as string);
           if (first) {

@@ -37,7 +37,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb1",
           "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
           "exam_relevant": true
@@ -100,7 +100,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb1",
           "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
           "exam_relevant": true
@@ -163,7 +163,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb1",
           "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
           "exam_relevant": true
@@ -226,7 +226,7 @@
           "provider": "lehrplanplus-bayern",
           "school_type": "gymnasium",
           "grade": 6,
-          "subject": "natur_und_technik",
+          "subject": "nt_gym",
           "topic_code": "lb1",
           "topic_title": "Wirbeltiere – Vielfalt und Lebensräume",
           "exam_relevant": true

@@ -74,7 +74,8 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
 
   it("installs and enrols cleanly into BwR 10 KLR und Deckungsbeitrag", async () => {
     const user = "learner-rs10-bwr";
-    const cellId = "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse";
+    const cellId =
+      "de-by:realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
@@ -87,7 +88,8 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
 
   it("installs and enrols cleanly into Deutsch 10 Dialektische Erörterung", async () => {
     const user = "learner-rs10-deu";
-    const cellId = "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel";
+    const cellId =
+      "de-by:realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);
@@ -96,7 +98,8 @@ describe("Realschule Bayern 10 Curriculum Cells (Abschlussprüfung)", () => {
 
   it("installs and enrols cleanly into Geschichte 10 Kalter Krieg und deutsche Einheit", async () => {
     const user = "learner-rs10-ges";
-    const cellId = "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung";
+    const cellId =
+      "de-by:realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung";
 
     const result = await enrolBundledCell(db, user, cellId);
     expect(result.success).toBe(true);

@@ -50,8 +50,10 @@ describe("System Profiling & Tool Detections", () => {
           {
             platform: "win32" as const,
             arch: "arm64",
-            processorName: "Snapdragon(R) X - X126100 - Qualcomm(R) Oryon(TM) CPU",
-            acceleratorNames: "Snapdragon(R) X - X126100 - Qualcomm(R) Hexagon(TM) NPU",
+            processorName:
+              "Snapdragon(R) X - X126100 - Qualcomm(R) Oryon(TM) CPU",
+            acceleratorNames:
+              "Snapdragon(R) X - X126100 - Qualcomm(R) Hexagon(TM) NPU",
           },
           "snapdragon-x",
         ],
@@ -65,7 +67,11 @@ describe("System Profiling & Tool Detections", () => {
           "ryzen-ai",
         ],
         [
-          { platform: "darwin" as const, arch: "arm64", processorName: "Apple M4" },
+          {
+            platform: "darwin" as const,
+            arch: "arm64",
+            processorName: "Apple M4",
+          },
           "apple-silicon",
         ],
         [

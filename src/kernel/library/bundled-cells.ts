@@ -1,5 +1,5 @@
 // Auto-generated bundled cells library
-// Generated on: 2026-08-15T21:37:55.881Z
+// Generated on: 2026-08-16T05:39:43.013Z
 
 import type { Database } from "../db/types.js";
 import {
@@ -14,15 +14,709 @@ export interface BundledTile extends KvtTile {
   sources?: Array<{ uri: string; label?: string; checked?: string }>;
 }
 
+// --- begin bundled-tile-imports ---
+// --- Fixture Imports (228 tiles) ---
+import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
+  type: "json",
+};
+import tile78Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-biologie-mensch-skelett-sexualbiologie-kvt.json" with {
+  type: "json",
+};
+import tile79Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-biologie-pflanzen-bluetenbau-samen-kvt.json" with {
+  type: "json",
+};
+import tile80Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-erzaehlen-maerchen-fabeln-kvt.json" with {
+  type: "json",
+};
+import tile81Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-grammatik-faelle-rechtschreibung-kvt.json" with {
+  type: "json",
+};
+import tile82Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-englisch-starter-grammar-tenses-kvt.json" with {
+  type: "json",
+};
+import tile83Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-geographie-erde-gradnetz-orientierung-kvt.json" with {
+  type: "json",
+};
+import tile84Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-mathematik-geometrie-flaechen-volumen-kvt.json" with {
+  type: "json",
+};
+import tile85Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-mathematik-zahlen-rechengesetze-terme-kvt.json" with {
+  type: "json",
+};
+import tile86Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-natur-technik-mikroskop-experiment-oop-kvt.json" with {
+  type: "json",
+};
+import tile87Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biologie-fische-amphibien-reptilien-evolution-kvt.json" with {
+  type: "json",
+};
+import tile88Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug-kvt.json" with {
+  type: "json",
+};
+import tile89Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-englisch-past-tenses-present-perfect-adjectives-kvt.json" with {
+  type: "json",
+};
+import tile90Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geographie-europa-raeume-wirtschaft-eu-kvt.json" with {
+  type: "json",
+};
+import tile91Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-rom-imperium-limes-bayern-kvt.json" with {
+  type: "json",
+};
+import tile92Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-urgeschichte-aegypten-griechenland-kvt.json" with {
+  type: "json",
+};
+import tile93Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-mathematik-brueche-dezimalbrueche-prozent-kvt.json" with {
+  type: "json",
+};
+import tile94Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-mathematik-flaechen-koerper-prisma-kvt.json" with {
+  type: "json",
+};
+import tile95Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-natur-technik-informatik-vektorgrafik-texte-kvt.json" with {
+  type: "json",
+};
+import tile96Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-biologie-sinnesorgane-auge-ohr-nervensystem-skelett-kvt.json" with {
+  type: "json",
+};
+import tile97Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax-kvt.json" with {
+  type: "json",
+};
+import tile98Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-deutsch-texte-inhaltsangabe-ballade-interpretation-kvt.json" with {
+  type: "json",
+};
+import tile99Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-englisch-grammar-present-perfect-modals-conditionals-kvt.json" with {
+  type: "json",
+};
+import tile100Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung-kvt.json" with {
+  type: "json",
+};
+import tile101Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik-kvt.json" with {
+  type: "json",
+};
+import tile102Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation-kvt.json" with {
+  type: "json",
+};
+import tile103Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-informatik-objektorientierung-hypertext-datenstrukturen-kvt.json" with {
+  type: "json",
+};
+import tile104Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-latein-aci-partizipialkonstruktionen-deklinationen-kvt.json" with {
+  type: "json",
+};
+import tile105Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent-kvt.json" with {
+  type: "json",
+};
+import tile106Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz-kvt.json" with {
+  type: "json",
+};
+import tile107Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck-kvt.json" with {
+  type: "json",
+};
+import tile108Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen-kvt.json" with {
+  type: "json",
+};
+import tile109Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-biologie-verdauung-stoffwechsel-blutkreislauf-herz-kvt.json" with {
+  type: "json",
+};
+import tile110Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-chemie-pse-ionenbindung-elektronenpaarbindung-kvt.json" with {
+  type: "json",
+};
+import tile111Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-chemie-stoffe-reaktionen-atommodelle-rutherford-kvt.json" with {
+  type: "json",
+};
+import tile112Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-deutsch-eroerterung-drama-novelle-textanalyse-kvt.json" with {
+  type: "json",
+};
+import tile113Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-englisch-past-perfect-passive-indirect-speech-usa-kvt.json" with {
+  type: "json",
+};
+import tile114Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-franzoesisch-imparfait-passe-compose-objektpronomen-kvt.json" with {
+  type: "json",
+};
+import tile115Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-geographie-tropen-passatzirkulation-wuesten-kvt.json" with {
+  type: "json",
+};
+import tile116Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-geschichte-absolutismus-franzoesische-revolution-1848-kvt.json" with {
+  type: "json",
+};
+import tile117Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-informatik-relationale-datenbanken-sql-modellierung-kvt.json" with {
+  type: "json",
+};
+import tile118Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-latein-ablativus-absolutus-konjunktive-consecutio-kvt.json" with {
+  type: "json",
+};
+import tile119Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-mathematik-lineare-funktionen-gleichungssysteme-kvt.json" with {
+  type: "json",
+};
+import tile120Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-mathematik-wahrscheinlichkeit-kreisgeometrie-bruchterme-kvt.json" with {
+  type: "json",
+};
+import tile121Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-optik-kvt.json" with {
+  type: "json",
+};
+import tile122Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-physik-mechanik-energie-arbeit-leistung-maschinen-kvt.json" with {
+  type: "json",
+};
+import tile123Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-physik-waermelehre-thermodynamik-energieumwandlung-kvt.json" with {
+  type: "json",
+};
+import tile124Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-wirtschaft-recht-markt-geld-verbraucherschutz-kvt.json" with {
+  type: "json",
+};
+import tile125Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-biologie-molekulargenetik-mendel-proteinbiosynthese-kvt.json" with {
+  type: "json",
+};
+import tile126Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-chemie-redoxreaktionen-oxidationszahlen-elektrochemie-kvt.json" with {
+  type: "json",
+};
+import tile127Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-chemie-stoechiometrie-saeuren-basen-protolyse-kvt.json" with {
+  type: "json",
+};
+import tile128Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-deutsch-eroerterung-literatur-weimarer-klassik-kvt.json" with {
+  type: "json",
+};
+import tile129Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-englisch-participles-gerund-british-empire-commonwealth-kvt.json" with {
+  type: "json",
+};
+import tile130Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-franzoesisch-subjonctif-conditionnel-hypothesensaetze-kvt.json" with {
+  type: "json",
+};
+import tile131Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-geographie-disparitaeten-hdi-demographie-megastaedte-kvt.json" with {
+  type: "json",
+};
+import tile132Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-geschichte-weimarer-republik-nationalsozialismus-shoah-kvt.json" with {
+  type: "json",
+};
+import tile133Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-informatik-oop-klassen-vererbung-algorithmen-kvt.json" with {
+  type: "json",
+};
+import tile134Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-latein-gerundium-gerundivum-caesar-originallektuere-kvt.json" with {
+  type: "json",
+};
+import tile135Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-mathematik-quadratische-funktionen-pythagoras-trigonometrie-kvt.json" with {
+  type: "json",
+};
+import tile136Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-mathematik-raumgeometrie-koerper-bedingte-wahrscheinlichkeit-kvt.json" with {
+  type: "json",
+};
+import tile137Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-physik-elektrizitaetslehre-schaltungen-energie-leistung-kvt.json" with {
+  type: "json",
+};
+import tile138Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-physik-mechanik-kinematik-dynamik-newton-axiome-kvt.json" with {
+  type: "json",
+};
+import tile139Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-9-wirtschaft-recht-arbeitsrecht-soziale-marktwirtschaft-konjunktur-kvt.json" with {
+  type: "json",
+};
+import tile2Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-biologie-evolutionstheorie-belege-humanevolution-kvt.json" with {
+  type: "json",
+};
+import tile3Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-chemie-organik-alkane-alkene-aromaten-kvt.json" with {
+  type: "json",
+};
+import tile4Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-chemie-sauerstoffgruppen-alkohole-aldehyde-carbonsaeuren-ester-kvt.json" with {
+  type: "json",
+};
+import tile5Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-deutsch-expressionismus-episches-theater-brecht-kvt.json" with {
+  type: "json",
+};
+import tile6Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-englisch-rhetorik-stil-usa-21st-century-kvt.json" with {
+  type: "json",
+};
+import tile7Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-franzoesisch-francophonie-passif-gerondif-kvt.json" with {
+  type: "json",
+};
+import tile8Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-geographie-geooekozonen-klimawandel-kippelemente-kvt.json" with {
+  type: "json",
+};
+import tile9Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-geschichte-nachkriegsdeutschland-kalter-krieg-deutsche-einheit-kvt.json" with {
+  type: "json",
+};
+import tile10Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-informatik-rekursion-dynamische-datenstrukturen-baeume-kvt.json" with {
+  type: "json",
+};
+import tile11Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-latein-philosophie-seneca-ovid-metamorphosen-kvt.json" with {
+  type: "json",
+};
+import tile12Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-mathematik-analytische-geometrie-vektoren-skalarprodukt-kvt.json" with {
+  type: "json",
+};
+import tile13Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-mathematik-exponential-logarithmus-wachstum-kvt.json" with {
+  type: "json",
+};
+import tile14Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-mathematik-ganzrationale-funktionen-ableitung-differentialrechnung-kvt.json" with {
+  type: "json",
+};
+import tile15Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass-kvt.json" with {
+  type: "json",
+};
+import tile16Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-physik-kernphysik-radioaktivitaet-zerfallsgesetz-kvt.json" with {
+  type: "json",
+};
+import tile17Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze-kvt.json" with {
+  type: "json",
+};
+import tile18Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-physik-wellenlehre-akustik-doppler-effekt-kvt.json" with {
+  type: "json",
+};
+import tile19Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-10-wirtschaft-recht-bgb-vertragsrecht-unternehmen-kvt.json" with {
+  type: "json",
+};
+import tile20Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-biologie-neurobiologie-aktionspotential-synapsen-signaltransduktion-kvt.json" with {
+  type: "json",
+};
+import tile21Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp-kvt.json" with {
+  type: "json",
+};
+import tile22Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-chemie-aminosaeuren-proteine-peptidbindung-enzyme-kvt.json" with {
+  type: "json",
+};
+import tile23Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-chemie-kunststoffe-polymerisation-polykondensation-duroplaste-kvt.json" with {
+  type: "json",
+};
+import tile24Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-chemie-naturstoffe-kohlenhydrate-glukose-staerke-kvt.json" with {
+  type: "json",
+};
+import tile25Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-deutsch-romantik-sehnsucht-schauerromantik-realismus-kvt.json" with {
+  type: "json",
+};
+import tile26Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-englisch-shakespeare-dramatic-conventions-global-challenges-kvt.json" with {
+  type: "json",
+};
+import tile27Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-franzoesisch-existentialisme-absurde-camus-sartre-kvt.json" with {
+  type: "json",
+};
+import tile28Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-geographie-globalisierung-wirtschaftsraeume-global-cities-disparitaeten-kvt.json" with {
+  type: "json",
+};
+import tile29Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-geschichte-reichsgruendung-bismarck-imperialismus-erster-weltkrieg-kvt.json" with {
+  type: "json",
+};
+import tile30Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-informatik-datenbanken-normalisierung-sql-joins-acid-kvt.json" with {
+  type: "json",
+};
+import tile31Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-informatik-sortieralgorithmen-komplexitaet-graphen-dijkstra-kvt.json" with {
+  type: "json",
+};
+import tile32Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-latein-geschichtsschreibung-sallust-tacitus-brevitas-kvt.json" with {
+  type: "json",
+};
+import tile33Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-mathematik-analytische-geometrie-ebenen-abstaende-kvt.json" with {
+  type: "json",
+};
+import tile34Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-mathematik-integralrechnung-hauptsatz-flaechenberechnung-kvt.json" with {
+  type: "json",
+};
+import tile35Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-mathematik-kurvendiskussion-extremwertprobleme-wendepunkte-kvt.json" with {
+  type: "json",
+};
+import tile36Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-mathematik-stochastik-bernoulli-binomialverteilung-kvt.json" with {
+  type: "json",
+};
+import tile37Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-physik-elektrisches-feld-kondensator-millikan-kvt.json" with {
+  type: "json",
+};
+import tile38Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-physik-induktion-schwingkreis-wechselstrom-kvt.json" with {
+  type: "json",
+};
+import tile39Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-physik-magnetfeld-lorentz-massenspektrometer-zyklotron-kvt.json" with {
+  type: "json",
+};
+import tile40Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-11-wirtschaft-recht-vwl-vgr-ezb-geldpolitik-fiskalpolitik-kvt.json" with {
+  type: "json",
+};
+import tile41Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-biologie-gentechnik-crispr-cas-pcr-stammzellen-bioethik-kvt.json" with {
+  type: "json",
+};
+import tile42Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-biologie-molekulargenetik-dna-proteinbiosynthese-epigenetik-kvt.json" with {
+  type: "json",
+};
+import tile43Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-chemie-chemisches-gleichgewicht-massenwirkungsgesetz-le-chatelier-kvt.json" with {
+  type: "json",
+};
+import tile44Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-chemie-elektrochemie-galvanische-zelle-nernst-gleichung-elektrolyse-kvt.json" with {
+  type: "json",
+};
+import tile45Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-chemie-saeure-base-gleichgewichte-ph-wert-titration-puffer-kvt.json" with {
+  type: "json",
+};
+import tile46Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-deutsch-literatur-der-moderne-kafka-verwandlung-thomas-mann-kvt.json" with {
+  type: "json",
+};
+import tile47Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-englisch-american-dream-social-realities-ethnic-diversity-kvt.json" with {
+  type: "json",
+};
+import tile48Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-franzoesisch-societe-banlieue-immigration-integration-kvt.json" with {
+  type: "json",
+};
+import tile49Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-geographie-stadtentwicklung-charta-von-athen-suburbanisierung-nachhaltige-stadt-kvt.json" with {
+  type: "json",
+};
+import tile50Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-geschichte-weimarer-republik-nationalsozialismus-shoah-totalitarismus-kvt.json" with {
+  type: "json",
+};
+import tile51Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-informatik-kryptographie-rsa-diffie-hellman-digitale-signatur-kvt.json" with {
+  type: "json",
+};
+import tile52Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-informatik-rechnernetze-osi-modell-tcp-ip-routing-dns-kvt.json" with {
+  type: "json",
+};
+import tile53Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-latein-philosophie-cicero-de-officiis-seneca-stoische-ethik-kvt.json" with {
+  type: "json",
+};
+import tile54Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-mathematik-e-funktion-kettenregel-produktregel-kvt.json" with {
+  type: "json",
+};
+import tile55Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-mathematik-hypothesentests-signifikanzniveau-fehler-1-und-2-art-kvt.json" with {
+  type: "json",
+};
+import tile56Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-mathematik-lineare-gleichungssysteme-gauss-matrizen-kvt.json" with {
+  type: "json",
+};
+import tile57Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-physik-atomphysik-bohrsches-atommodell-linien-spektren-kernspaltung-kvt.json" with {
+  type: "json",
+};
+import tile58Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-physik-quantenphysik-lichtelektrischer-effekt-de-broglie-heisenberg-kvt.json" with {
+  type: "json",
+};
+import tile59Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-12-wirtschaft-recht-mikrooekonomie-marktformen-monopol-marktversagen-kvt.json" with {
+  type: "json",
+};
+import tile60Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-biologie-evolutionsbiologie-synthetische-theorie-artbildung-hominisation-kvt.json" with {
+  type: "json",
+};
+import tile61Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-biologie-verhaltensbiologie-oekologie-altruismus-biodiversitaet-kvt.json" with {
+  type: "json",
+};
+import tile62Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-chemie-farbstoffe-mesomerie-chromophore-azofarbstoffe-spektroskopie-kvt.json" with {
+  type: "json",
+};
+import tile63Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-chemie-komplexchemie-ligandenfeldtheorie-chelate-haemoglobin-kvt.json" with {
+  type: "json",
+};
+import tile64Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-deutsch-gegenwartsliteratur-erinnerungskultur-schlink-vorleser-postmoderne-kvt.json" with {
+  type: "json",
+};
+import tile65Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-englisch-postcolonialism-british-empire-nigeria-adichie-kvt.json" with {
+  type: "json",
+};
+import tile66Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-franzoesisch-francophonie-maghreb-quebec-ben-jelloun-kvt.json" with {
+  type: "json",
+};
+import tile67Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-geographie-klimawandel-kippelemente-ipcc-ressourcen-kvt.json" with {
+  type: "json",
+};
+import tile68Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-geschichte-nachkriegszeit-kalter-krieg-mauerfall-deutsche-einheit-kvt.json" with {
+  type: "json",
+};
+import tile69Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-informatik-berechenbarkeit-turingmaschine-halteproblem-p-np-kvt.json" with {
+  type: "json",
+};
+import tile70Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-informatik-formale-sprachen-automaten-chomsky-hierarchie-kvt.json" with {
+  type: "json",
+};
+import tile71Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-latein-dichtung-ovid-metamorphosen-daedalus-apollo-kvt.json" with {
+  type: "json",
+};
+import tile72Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-mathematik-gebrochen-rationale-funktionen-asymptoten-uneigentliche-integrale-kvt.json" with {
+  type: "json",
+};
+import tile73Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel-kvt.json" with {
+  type: "json",
+};
+import tile74Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln-kvt.json" with {
+  type: "json",
+};
+import tile75Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-physik-astrophysik-hrd-sternentwicklung-kosmologie-hubble-kvt.json" with {
+  type: "json",
+};
+import tile76Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-physik-relativitaetstheorie-zeitdilatation-laengenkontraktion-e-mc2-kvt.json" with {
+  type: "json",
+};
+import tile77Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-13-wirtschaft-recht-wirtschaftspolitik-stabilitaetsgesetz-aussenhandel-kvt.json" with {
+  type: "json",
+};
+import tile152Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-biologie-mensch-skelett-bewegung-organe-kvt.json" with {
+  type: "json",
+};
+import tile153Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-biologie-pflanzen-bluetenbau-samen-kvt.json" with {
+  type: "json",
+};
+import tile154Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-deutsch-erzaehlen-wortarten-faelle-kvt.json" with {
+  type: "json",
+};
+import tile155Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-deutsch-rechtschreibung-laute-woertliche-rede-kvt.json" with {
+  type: "json",
+};
+import tile156Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-englisch-grundlagen-to-be-have-got-kvt.json" with {
+  type: "json",
+};
+import tile157Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-geographie-erde-gradnetz-orientierung-kvt.json" with {
+  type: "json",
+};
+import tile158Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-mathematik-geometrie-groessen-flaechen-kvt.json" with {
+  type: "json",
+};
+import tile159Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-mathematik-zahlen-rechengesetze-kvt.json" with {
+  type: "json",
+};
+import tile160Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-natur-technik-mikroskop-experiment-dateien-kvt.json" with {
+  type: "json",
+};
+import tile161Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen-kvt.json" with {
+  type: "json",
+};
+import tile162Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-biologie-voegel-fische-amphibien-reptilien-kvt.json" with {
+  type: "json",
+};
+import tile163Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-deutsch-texte-bericht-vorgangsbeschreibung-kvt.json" with {
+  type: "json",
+};
+import tile164Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-deutsch-wortarten-satzglieder-rechtschreibung-kvt.json" with {
+  type: "json",
+};
+import tile165Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json" with {
+  type: "json",
+};
+import tile166Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geographie-deutschland-bayern-raum-kvt.json" with {
+  type: "json",
+};
+import tile167Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geschichte-urgeschichte-antike-kvt.json" with {
+  type: "json",
+};
+import tile168Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-informatik-textverarbeitung-praesentation-kvt.json" with {
+  type: "json",
+};
+import tile169Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-mathematik-brueche-dezimalbrueche-kvt.json" with {
+  type: "json",
+};
+import tile170Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-mathematik-flaechen-raum-volumen-kvt.json" with {
+  type: "json",
+};
+import tile171Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-biologie-pflanzen-fotosynthese-kvt.json" with {
+  type: "json",
+};
+import tile172Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-biologie-wirbeltiere-oekologie-kvt.json" with {
+  type: "json",
+};
+import tile173Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung-kvt.json" with {
+  type: "json",
+};
+import tile174Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-bwr-unternehmen-inventur-bilanz-kvt.json" with {
+  type: "json",
+};
+import tile175Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-deutsch-inhaltsangabe-sachtexte-literatur-kvt.json" with {
+  type: "json",
+};
+import tile176Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung-kvt.json" with {
+  type: "json",
+};
+import tile177Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-englisch-grammatik-tenses-kvt.json" with {
+  type: "json",
+};
+import tile178Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-franzoesisch-starter-grammatik-verben-kvt.json" with {
+  type: "json",
+};
+import tile179Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-geographie-europa-raum-wirtschaft-kvt.json" with {
+  type: "json",
+};
+import tile180Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-geschichte-mittelalter-fruehe-neuzeit-kvt.json" with {
+  type: "json",
+};
+import tile181Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-informatik-informationsdarstellung-dateisystem-kvt.json" with {
+  type: "json",
+};
+import tile182Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-geometrie-achsen-punktsymmetrie-kvt.json" with {
+  type: "json",
+};
+import tile183Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-kongruenz-dreiecke-vektoren-kvt.json" with {
+  type: "json",
+};
+import tile184Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-prozent-zinsrechnung-kvt.json" with {
+  type: "json",
+};
+import tile185Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-rationale-zahlen-terme-kvt.json" with {
+  type: "json",
+};
+import tile186Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-physik-mechanik-bewegung-geschwindigkeit-kvt.json" with {
+  type: "json",
+};
+import tile187Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-physik-waermelehre-temperatur-ausdehnung-kvt.json" with {
+  type: "json",
+};
+import tile188Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-biologie-atmung-blutkreislauf-kvt.json" with {
+  type: "json",
+};
+import tile189Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-biologie-ernaehrung-verdauung-kvt.json" with {
+  type: "json",
+};
+import tile190Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte-kvt.json" with {
+  type: "json",
+};
+import tile191Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-chemie-chemische-reaktion-oxidation-kvt.json" with {
+  type: "json",
+};
+import tile192Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-chemie-stoffe-stoffgemische-trennung-kvt.json" with {
+  type: "json",
+};
+import tile193Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json" with {
+  type: "json",
+};
+import tile194Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-englisch-grammar-conditional-reported-speech-kvt.json" with {
+  type: "json",
+};
+import tile195Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json" with {
+  type: "json",
+};
+import tile196Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-geographie-tropen-regenwald-passat-wuesten-kvt.json" with {
+  type: "json",
+};
+import tile197Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json" with {
+  type: "json",
+};
+import tile198Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-informatik-objektorientierung-vektorgrafik-kvt.json" with {
+  type: "json",
+};
+import tile199Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-ebene-geometrie-vierecke-kvt.json" with {
+  type: "json",
+};
+import tile200Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-lineare-funktionen-kvt.json" with {
+  type: "json",
+};
+import tile201Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-terme-gleichungen-kvt.json" with {
+  type: "json",
+};
+import tile202Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-physik-elektrik-grundlagen-kvt.json" with {
+  type: "json",
+};
+import tile203Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-physik-mechanik-kraft-bewegung-kvt.json" with {
+  type: "json",
+};
+import tile204Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wirtschaft-recht-konsum-geld-jugend-kvt.json" with {
+  type: "json",
+};
+import tile205Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-genetik-vererbung-kvt.json" with {
+  type: "json",
+};
+import tile206Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-nervensystem-sinne-kvt.json" with {
+  type: "json",
+};
+import tile207Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer-kvt.json" with {
+  type: "json",
+};
+import tile208Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-chemie-atombau-pse-kvt.json" with {
+  type: "json",
+};
+import tile209Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-chemie-chemische-bindung-kvt.json" with {
+  type: "json",
+};
+import tile210Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-deutsch-argumentation-eroerterung-kvt.json" with {
+  type: "json",
+};
+import tile211Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-englisch-grammatik-syntax-kvt.json" with {
+  type: "json",
+};
+import tile212Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
+  type: "json",
+};
+import tile213Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-geographie-klima-ressourcen-kvt.json" with {
+  type: "json",
+};
+import tile214Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-geschichte-weimar-ns-kvt.json" with {
+  type: "json",
+};
+import tile215Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json" with {
+  type: "json",
+};
+import tile216Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
+  type: "json",
+};
+import tile217Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-kreis-raumgeometrie-kvt.json" with {
+  type: "json",
+};
+import tile218Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-lineare-gleichungssysteme-kvt.json" with {
+  type: "json",
+};
+import tile219Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-pythagoras-trigonometrie-kvt.json" with {
+  type: "json",
+};
+import tile220Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-quadratische-funktionen-kvt.json" with {
+  type: "json",
+};
+import tile221Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-stochastik-daten-kvt.json" with {
+  type: "json",
+};
+import tile222Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-elektrik-kvt.json" with {
+  type: "json",
+};
+import tile223Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-fluessigkeiten-gase-kvt.json" with {
+  type: "json",
+};
+import tile224Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-mechanik-energie-kvt.json" with {
+  type: "json",
+};
+import tile225Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-waermelehre-kvt.json" with {
+  type: "json",
+};
+import tile226Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
+  type: "json",
+};
+import tile140Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-biologie-evolution-abstammung-kvt.json" with {
+  type: "json",
+};
+import tile141Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
+  type: "json",
+};
+import tile142Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-organik-kohlenwasserstoffe-kvt.json" with {
+  type: "json",
+};
+import tile143Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-saeuren-basen-neutralisation-kvt.json" with {
+  type: "json",
+};
+import tile144Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel-kvt.json" with {
+  type: "json",
+};
+import tile145Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json" with {
+  type: "json",
+};
+import tile146Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json" with {
+  type: "json",
+};
+import tile147Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-ebene-vektorgeometrie-kvt.json" with {
+  type: "json",
+};
+import tile148Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-exponential-logarithmus-kvt.json" with {
+  type: "json",
+};
+import tile149Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-physik-induktion-wechselstrom-kvt.json" with {
+  type: "json",
+};
+import tile150Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-physik-kernphysik-strahlung-kvt.json" with {
+  type: "json",
+};
+import tile151Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat-kvt.json" with {
+  type: "json",
+};
+import tile227Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-erweiterung-kvt.json" with {
+  type: "json",
+};
+import tile228Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
+  type: "json",
+};
+// --- end bundled-tile-imports ---
+
 export interface BundledCellInfo {
   id: string;
   title: string;
   gradeLabel: string;
   description: string;
   publisher: string;
-  publishedAt?: string;
+  publishedAt: string;
   atomCount: number;
   inScopeAtomIds: string[];
+}
+
+export interface BundledCellStatus extends BundledCellInfo {
+  installed: boolean;
+  enrolled: boolean;
+  cardCount: number;
 }
 
 export interface BundledCellEnrolResult {
@@ -34,426 +728,7 @@ export interface BundledCellEnrolResult {
   alreadyEnrolled: boolean;
 }
 
-export interface BundledCellStatus extends BundledCellInfo {
-  installed: boolean;
-  enrolled: boolean;
-  cardCount: number;
-}
-
-// ── Bundled Tile Fixtures ───────────────────────────────────────────────────
-
-import tile1Raw from "../../../tests/fixtures/curriculum/de-by-bos-10-optik-kvt.json" with {
-  type: "json",
-};
-import tile2Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-biologie-mensch-skelett-sexualbiologie-kvt.json" with {
-  type: "json",
-};
-import tile3Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-biologie-pflanzen-bluetenbau-samen-kvt.json" with {
-  type: "json",
-};
-import tile4Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-erzaehlen-maerchen-fabeln-kvt.json" with {
-  type: "json",
-};
-import tile5Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-deutsch-grammatik-faelle-rechtschreibung-kvt.json" with {
-  type: "json",
-};
-import tile6Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-englisch-starter-grammar-tenses-kvt.json" with {
-  type: "json",
-};
-import tile7Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-geographie-erde-gradnetz-orientierung-kvt.json" with {
-  type: "json",
-};
-import tile8Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-mathematik-geometrie-flaechen-volumen-kvt.json" with {
-  type: "json",
-};
-import tile9Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-mathematik-zahlen-rechengesetze-terme-kvt.json" with {
-  type: "json",
-};
-import tile10Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-5-natur-technik-mikroskop-experiment-oop-kvt.json" with {
-  type: "json",
-};
-import tile11Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biologie-fische-amphibien-reptilien-evolution-kvt.json" with {
-  type: "json",
-};
-import tile12Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-biologie-saeugetiere-voegel-leichtbau-flug-kvt.json" with {
-  type: "json",
-};
-import tile13Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-englisch-past-tenses-present-perfect-adjectives-kvt.json" with {
-  type: "json",
-};
-import tile14Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geographie-europa-raeume-wirtschaft-eu-kvt.json" with {
-  type: "json",
-};
-import tile15Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-rom-imperium-limes-bayern-kvt.json" with {
-  type: "json",
-};
-import tile16Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-geschichte-urgeschichte-aegypten-griechenland-kvt.json" with {
-  type: "json",
-};
-import tile17Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-mathematik-brueche-dezimalbrueche-prozent-kvt.json" with {
-  type: "json",
-};
-import tile18Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-mathematik-flaechen-koerper-prisma-kvt.json" with {
-  type: "json",
-};
-import tile19Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-6-natur-technik-informatik-vektorgrafik-texte-kvt.json" with {
-  type: "json",
-};
-import tile20Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-biologie-sinnesorgane-auge-ohr-nervensystem-skelett-kvt.json" with {
-  type: "json",
-};
-import tile21Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-deutsch-konjunktiv-indirekte-rede-passiv-syntax-kvt.json" with {
-  type: "json",
-};
-import tile22Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-deutsch-texte-inhaltsangabe-ballade-interpretation-kvt.json" with {
-  type: "json",
-};
-import tile23Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-englisch-grammar-present-perfect-modals-conditionals-kvt.json" with {
-  type: "json",
-};
-import tile24Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-franzoesisch-passe-compose-relativsaetze-verneinung-kvt.json" with {
-  type: "json",
-};
-import tile25Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-geographie-europa-naturraeume-klima-plattentektonik-kvt.json" with {
-  type: "json",
-};
-import tile26Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-geschichte-mittelalter-frankenreich-staedte-kreuzzuege-reformation-kvt.json" with {
-  type: "json",
-};
-import tile27Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-informatik-objektorientierung-hypertext-datenstrukturen-kvt.json" with {
-  type: "json",
-};
-import tile28Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-latein-aci-partizipialkonstruktionen-deklinationen-kvt.json" with {
-  type: "json",
-};
-import tile29Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-mathematik-rationale-zahlen-gleichungen-prozent-kvt.json" with {
-  type: "json",
-};
-import tile30Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz-kvt.json" with {
-  type: "json",
-};
-import tile31Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-physik-mechanik-kraefte-masse-dichte-druck-kvt.json" with {
-  type: "json",
-};
-import tile32Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen-kvt.json" with {
-  type: "json",
-};
-import tile33Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-biologie-verdauung-stoffwechsel-blutkreislauf-herz-kvt.json" with {
-  type: "json",
-};
-import tile34Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-chemie-pse-ionenbindung-elektronenpaarbindung-kvt.json" with {
-  type: "json",
-};
-import tile35Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-chemie-stoffe-reaktionen-atommodelle-rutherford-kvt.json" with {
-  type: "json",
-};
-import tile36Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-deutsch-eroerterung-drama-novelle-textanalyse-kvt.json" with {
-  type: "json",
-};
-import tile37Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-englisch-past-perfect-passive-indirect-speech-usa-kvt.json" with {
-  type: "json",
-};
-import tile38Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-franzoesisch-imparfait-passe-compose-objektpronomen-kvt.json" with {
-  type: "json",
-};
-import tile39Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-geographie-tropen-passatzirkulation-wuesten-kvt.json" with {
-  type: "json",
-};
-import tile40Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-geschichte-absolutismus-franzoesische-revolution-1848-kvt.json" with {
-  type: "json",
-};
-import tile41Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-informatik-relationale-datenbanken-sql-modellierung-kvt.json" with {
-  type: "json",
-};
-import tile42Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-latein-ablativus-absolutus-konjunktive-consecutio-kvt.json" with {
-  type: "json",
-};
-import tile43Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-mathematik-lineare-funktionen-gleichungssysteme-kvt.json" with {
-  type: "json",
-};
-import tile44Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-mathematik-wahrscheinlichkeit-kreisgeometrie-bruchterme-kvt.json" with {
-  type: "json",
-};
-import tile45Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-optik-kvt.json" with {
-  type: "json",
-};
-import tile46Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-physik-mechanik-energie-arbeit-leistung-maschinen-kvt.json" with {
-  type: "json",
-};
-import tile47Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-physik-waermelehre-thermodynamik-energieumwandlung-kvt.json" with {
-  type: "json",
-};
-import tile48Raw from "../../../tests/fixtures/curriculum/de-by-gymnasium-8-wirtschaft-recht-markt-geld-verbraucherschutz-kvt.json" with {
-  type: "json",
-};
-import tile61Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-biologie-mensch-skelett-bewegung-organe-kvt.json" with {
-  type: "json",
-};
-import tile62Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-biologie-pflanzen-bluetenbau-samen-kvt.json" with {
-  type: "json",
-};
-import tile63Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-deutsch-erzaehlen-wortarten-faelle-kvt.json" with {
-  type: "json",
-};
-import tile64Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-deutsch-rechtschreibung-laute-woertliche-rede-kvt.json" with {
-  type: "json",
-};
-import tile65Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-englisch-grundlagen-to-be-have-got-kvt.json" with {
-  type: "json",
-};
-import tile66Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-geographie-erde-gradnetz-orientierung-kvt.json" with {
-  type: "json",
-};
-import tile67Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-mathematik-geometrie-groessen-flaechen-kvt.json" with {
-  type: "json",
-};
-import tile68Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-mathematik-zahlen-rechengesetze-kvt.json" with {
-  type: "json",
-};
-import tile69Raw from "../../../tests/fixtures/curriculum/de-by-realschule-5-natur-technik-mikroskop-experiment-dateien-kvt.json" with {
-  type: "json",
-};
-import tile70Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-biologie-saeugetiere-wirbeltiere-hunde-katzen-kvt.json" with {
-  type: "json",
-};
-import tile71Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-biologie-voegel-fische-amphibien-reptilien-kvt.json" with {
-  type: "json",
-};
-import tile72Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-deutsch-texte-bericht-vorgangsbeschreibung-kvt.json" with {
-  type: "json",
-};
-import tile73Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-deutsch-wortarten-satzglieder-rechtschreibung-kvt.json" with {
-  type: "json",
-};
-import tile74Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-englisch-grammatik-grundlagen-kvt.json" with {
-  type: "json",
-};
-import tile75Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geographie-deutschland-bayern-raum-kvt.json" with {
-  type: "json",
-};
-import tile76Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-geschichte-urgeschichte-antike-kvt.json" with {
-  type: "json",
-};
-import tile77Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-informatik-textverarbeitung-praesentation-kvt.json" with {
-  type: "json",
-};
-import tile78Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-mathematik-brueche-dezimalbrueche-kvt.json" with {
-  type: "json",
-};
-import tile79Raw from "../../../tests/fixtures/curriculum/de-by-realschule-6-mathematik-flaechen-raum-volumen-kvt.json" with {
-  type: "json",
-};
-import tile80Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-biologie-pflanzen-fotosynthese-kvt.json" with {
-  type: "json",
-};
-import tile81Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-biologie-wirbeltiere-oekologie-kvt.json" with {
-  type: "json",
-};
-import tile82Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-bwr-bestandskonten-buchungssatz-eroeffnung-kvt.json" with {
-  type: "json",
-};
-import tile83Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-bwr-unternehmen-inventur-bilanz-kvt.json" with {
-  type: "json",
-};
-import tile84Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-deutsch-inhaltsangabe-sachtexte-literatur-kvt.json" with {
-  type: "json",
-};
-import tile85Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung-kvt.json" with {
-  type: "json",
-};
-import tile86Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-englisch-grammatik-tenses-kvt.json" with {
-  type: "json",
-};
-import tile87Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-franzoesisch-starter-grammatik-verben-kvt.json" with {
-  type: "json",
-};
-import tile88Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-geographie-europa-raum-wirtschaft-kvt.json" with {
-  type: "json",
-};
-import tile89Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-geschichte-mittelalter-fruehe-neuzeit-kvt.json" with {
-  type: "json",
-};
-import tile90Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-informatik-informationsdarstellung-dateisystem-kvt.json" with {
-  type: "json",
-};
-import tile91Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-geometrie-achsen-punktsymmetrie-kvt.json" with {
-  type: "json",
-};
-import tile92Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-kongruenz-dreiecke-vektoren-kvt.json" with {
-  type: "json",
-};
-import tile93Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-prozent-zinsrechnung-kvt.json" with {
-  type: "json",
-};
-import tile94Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-mathematik-rationale-zahlen-terme-kvt.json" with {
-  type: "json",
-};
-import tile95Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-physik-mechanik-bewegung-geschwindigkeit-kvt.json" with {
-  type: "json",
-};
-import tile96Raw from "../../../tests/fixtures/curriculum/de-by-realschule-7-physik-waermelehre-temperatur-ausdehnung-kvt.json" with {
-  type: "json",
-};
-import tile97Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-biologie-atmung-blutkreislauf-kvt.json" with {
-  type: "json",
-};
-import tile98Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-biologie-ernaehrung-verdauung-kvt.json" with {
-  type: "json",
-};
-import tile99Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-bwr-erfolgskonten-guv-werkstoffe-rabatte-kvt.json" with {
-  type: "json",
-};
-import tile100Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-chemie-chemische-reaktion-oxidation-kvt.json" with {
-  type: "json",
-};
-import tile101Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-chemie-stoffe-stoffgemische-trennung-kvt.json" with {
-  type: "json",
-};
-import tile102Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-deutsch-begruendete-stellungnahme-eroerterung-kvt.json" with {
-  type: "json",
-};
-import tile103Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-englisch-grammar-conditional-reported-speech-kvt.json" with {
-  type: "json",
-};
-import tile104Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-franzoesisch-passe-compose-relativsaetze-adjektive-kvt.json" with {
-  type: "json",
-};
-import tile105Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-geographie-tropen-regenwald-passat-wuesten-kvt.json" with {
-  type: "json",
-};
-import tile106Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-geschichte-aufklaerung-revolution-kaiserreich-kvt.json" with {
-  type: "json",
-};
-import tile107Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-informatik-objektorientierung-vektorgrafik-kvt.json" with {
-  type: "json",
-};
-import tile108Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-ebene-geometrie-vierecke-kvt.json" with {
-  type: "json",
-};
-import tile109Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-lineare-funktionen-kvt.json" with {
-  type: "json",
-};
-import tile110Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-mathematik-terme-gleichungen-kvt.json" with {
-  type: "json",
-};
-import tile111Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-physik-elektrik-grundlagen-kvt.json" with {
-  type: "json",
-};
-import tile112Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-physik-mechanik-kraft-bewegung-kvt.json" with {
-  type: "json",
-};
-import tile113Raw from "../../../tests/fixtures/curriculum/de-by-realschule-8-wirtschaft-recht-konsum-geld-jugend-kvt.json" with {
-  type: "json",
-};
-import tile114Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-genetik-vererbung-kvt.json" with {
-  type: "json",
-};
-import tile115Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-biologie-nervensystem-sinne-kvt.json" with {
-  type: "json",
-};
-import tile116Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-bwr-anlagenkauf-abschreibung-umsatzsteuer-kvt.json" with {
-  type: "json",
-};
-import tile117Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-chemie-atombau-pse-kvt.json" with {
-  type: "json",
-};
-import tile118Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-chemie-chemische-bindung-kvt.json" with {
-  type: "json",
-};
-import tile119Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-deutsch-argumentation-eroerterung-kvt.json" with {
-  type: "json",
-};
-import tile120Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-englisch-grammatik-syntax-kvt.json" with {
-  type: "json",
-};
-import tile121Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-franzoesisch-imparfait-futur-objektpronomen-kvt.json" with {
-  type: "json",
-};
-import tile122Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-geographie-klima-ressourcen-kvt.json" with {
-  type: "json",
-};
-import tile123Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-geschichte-weimar-ns-kvt.json" with {
-  type: "json",
-};
-import tile124Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-algorithmen-strukturen-kvt.json" with {
-  type: "json",
-};
-import tile125Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-informatik-datenbanken-sql-kvt.json" with {
-  type: "json",
-};
-import tile126Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-kreis-raumgeometrie-kvt.json" with {
-  type: "json",
-};
-import tile127Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-lineare-gleichungssysteme-kvt.json" with {
-  type: "json",
-};
-import tile128Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-pythagoras-trigonometrie-kvt.json" with {
-  type: "json",
-};
-import tile129Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-quadratische-funktionen-kvt.json" with {
-  type: "json",
-};
-import tile130Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-mathematik-stochastik-daten-kvt.json" with {
-  type: "json",
-};
-import tile131Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-elektrik-kvt.json" with {
-  type: "json",
-};
-import tile132Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-fluessigkeiten-gase-kvt.json" with {
-  type: "json",
-};
-import tile133Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-mechanik-energie-kvt.json" with {
-  type: "json",
-};
-import tile134Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-physik-waermelehre-kvt.json" with {
-  type: "json",
-};
-import tile135Raw from "../../../tests/fixtures/curriculum/de-by-realschule-9-wirtschaft-recht-markt-vertraege-kvt.json" with {
-  type: "json",
-};
-import tile49Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-biologie-evolution-abstammung-kvt.json" with {
-  type: "json",
-};
-import tile50Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-bwr-kosten-leistungsrechnung-kalkulation-bilanzanalyse-kvt.json" with {
-  type: "json",
-};
-import tile51Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-organik-kohlenwasserstoffe-kvt.json" with {
-  type: "json",
-};
-import tile52Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-chemie-saeuren-basen-neutralisation-kvt.json" with {
-  type: "json",
-};
-import tile53Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-deutsch-dialektische-eroerterung-textanalyse-stilmittel-kvt.json" with {
-  type: "json",
-};
-import tile54Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-englisch-abschlusspruefung-text-production-mediation-kvt.json" with {
-  type: "json",
-};
-import tile55Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-geschichte-kalter-krieg-teilung-wiedervereinigung-kvt.json" with {
-  type: "json",
-};
-import tile56Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-ebene-vektorgeometrie-kvt.json" with {
-  type: "json",
-};
-import tile57Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-mathematik-exponential-logarithmus-kvt.json" with {
-  type: "json",
-};
-import tile58Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-physik-induktion-wechselstrom-kvt.json" with {
-  type: "json",
-};
-import tile59Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-physik-kernphysik-strahlung-kvt.json" with {
-  type: "json",
-};
-import tile60Raw from "../../../tests/fixtures/curriculum/de-by-realschule-10-wirtschaft-recht-strafrecht-arbeitsrecht-sozialstaat-kvt.json" with {
-  type: "json",
-};
-import tile136Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-erweiterung-kvt.json" with {
-  type: "json",
-};
-import tile137Raw from "../../../tests/fixtures/curriculum/de-by-realschule-optik-kvt.json" with {
-  type: "json",
-};
-
+// --- begin bundled-tile-map ---
 export const BUNDLED_TILES: Record<string, BundledTile> = {
   [(tile1Raw as unknown as BundledTile).tile_id]:
     tile1Raw as unknown as BundledTile,
@@ -729,7 +1004,190 @@ export const BUNDLED_TILES: Record<string, BundledTile> = {
     tile136Raw as unknown as BundledTile,
   [(tile137Raw as unknown as BundledTile).tile_id]:
     tile137Raw as unknown as BundledTile,
+  [(tile138Raw as unknown as BundledTile).tile_id]:
+    tile138Raw as unknown as BundledTile,
+  [(tile139Raw as unknown as BundledTile).tile_id]:
+    tile139Raw as unknown as BundledTile,
+  [(tile140Raw as unknown as BundledTile).tile_id]:
+    tile140Raw as unknown as BundledTile,
+  [(tile141Raw as unknown as BundledTile).tile_id]:
+    tile141Raw as unknown as BundledTile,
+  [(tile142Raw as unknown as BundledTile).tile_id]:
+    tile142Raw as unknown as BundledTile,
+  [(tile143Raw as unknown as BundledTile).tile_id]:
+    tile143Raw as unknown as BundledTile,
+  [(tile144Raw as unknown as BundledTile).tile_id]:
+    tile144Raw as unknown as BundledTile,
+  [(tile145Raw as unknown as BundledTile).tile_id]:
+    tile145Raw as unknown as BundledTile,
+  [(tile146Raw as unknown as BundledTile).tile_id]:
+    tile146Raw as unknown as BundledTile,
+  [(tile147Raw as unknown as BundledTile).tile_id]:
+    tile147Raw as unknown as BundledTile,
+  [(tile148Raw as unknown as BundledTile).tile_id]:
+    tile148Raw as unknown as BundledTile,
+  [(tile149Raw as unknown as BundledTile).tile_id]:
+    tile149Raw as unknown as BundledTile,
+  [(tile150Raw as unknown as BundledTile).tile_id]:
+    tile150Raw as unknown as BundledTile,
+  [(tile151Raw as unknown as BundledTile).tile_id]:
+    tile151Raw as unknown as BundledTile,
+  [(tile152Raw as unknown as BundledTile).tile_id]:
+    tile152Raw as unknown as BundledTile,
+  [(tile153Raw as unknown as BundledTile).tile_id]:
+    tile153Raw as unknown as BundledTile,
+  [(tile154Raw as unknown as BundledTile).tile_id]:
+    tile154Raw as unknown as BundledTile,
+  [(tile155Raw as unknown as BundledTile).tile_id]:
+    tile155Raw as unknown as BundledTile,
+  [(tile156Raw as unknown as BundledTile).tile_id]:
+    tile156Raw as unknown as BundledTile,
+  [(tile157Raw as unknown as BundledTile).tile_id]:
+    tile157Raw as unknown as BundledTile,
+  [(tile158Raw as unknown as BundledTile).tile_id]:
+    tile158Raw as unknown as BundledTile,
+  [(tile159Raw as unknown as BundledTile).tile_id]:
+    tile159Raw as unknown as BundledTile,
+  [(tile160Raw as unknown as BundledTile).tile_id]:
+    tile160Raw as unknown as BundledTile,
+  [(tile161Raw as unknown as BundledTile).tile_id]:
+    tile161Raw as unknown as BundledTile,
+  [(tile162Raw as unknown as BundledTile).tile_id]:
+    tile162Raw as unknown as BundledTile,
+  [(tile163Raw as unknown as BundledTile).tile_id]:
+    tile163Raw as unknown as BundledTile,
+  [(tile164Raw as unknown as BundledTile).tile_id]:
+    tile164Raw as unknown as BundledTile,
+  [(tile165Raw as unknown as BundledTile).tile_id]:
+    tile165Raw as unknown as BundledTile,
+  [(tile166Raw as unknown as BundledTile).tile_id]:
+    tile166Raw as unknown as BundledTile,
+  [(tile167Raw as unknown as BundledTile).tile_id]:
+    tile167Raw as unknown as BundledTile,
+  [(tile168Raw as unknown as BundledTile).tile_id]:
+    tile168Raw as unknown as BundledTile,
+  [(tile169Raw as unknown as BundledTile).tile_id]:
+    tile169Raw as unknown as BundledTile,
+  [(tile170Raw as unknown as BundledTile).tile_id]:
+    tile170Raw as unknown as BundledTile,
+  [(tile171Raw as unknown as BundledTile).tile_id]:
+    tile171Raw as unknown as BundledTile,
+  [(tile172Raw as unknown as BundledTile).tile_id]:
+    tile172Raw as unknown as BundledTile,
+  [(tile173Raw as unknown as BundledTile).tile_id]:
+    tile173Raw as unknown as BundledTile,
+  [(tile174Raw as unknown as BundledTile).tile_id]:
+    tile174Raw as unknown as BundledTile,
+  [(tile175Raw as unknown as BundledTile).tile_id]:
+    tile175Raw as unknown as BundledTile,
+  [(tile176Raw as unknown as BundledTile).tile_id]:
+    tile176Raw as unknown as BundledTile,
+  [(tile177Raw as unknown as BundledTile).tile_id]:
+    tile177Raw as unknown as BundledTile,
+  [(tile178Raw as unknown as BundledTile).tile_id]:
+    tile178Raw as unknown as BundledTile,
+  [(tile179Raw as unknown as BundledTile).tile_id]:
+    tile179Raw as unknown as BundledTile,
+  [(tile180Raw as unknown as BundledTile).tile_id]:
+    tile180Raw as unknown as BundledTile,
+  [(tile181Raw as unknown as BundledTile).tile_id]:
+    tile181Raw as unknown as BundledTile,
+  [(tile182Raw as unknown as BundledTile).tile_id]:
+    tile182Raw as unknown as BundledTile,
+  [(tile183Raw as unknown as BundledTile).tile_id]:
+    tile183Raw as unknown as BundledTile,
+  [(tile184Raw as unknown as BundledTile).tile_id]:
+    tile184Raw as unknown as BundledTile,
+  [(tile185Raw as unknown as BundledTile).tile_id]:
+    tile185Raw as unknown as BundledTile,
+  [(tile186Raw as unknown as BundledTile).tile_id]:
+    tile186Raw as unknown as BundledTile,
+  [(tile187Raw as unknown as BundledTile).tile_id]:
+    tile187Raw as unknown as BundledTile,
+  [(tile188Raw as unknown as BundledTile).tile_id]:
+    tile188Raw as unknown as BundledTile,
+  [(tile189Raw as unknown as BundledTile).tile_id]:
+    tile189Raw as unknown as BundledTile,
+  [(tile190Raw as unknown as BundledTile).tile_id]:
+    tile190Raw as unknown as BundledTile,
+  [(tile191Raw as unknown as BundledTile).tile_id]:
+    tile191Raw as unknown as BundledTile,
+  [(tile192Raw as unknown as BundledTile).tile_id]:
+    tile192Raw as unknown as BundledTile,
+  [(tile193Raw as unknown as BundledTile).tile_id]:
+    tile193Raw as unknown as BundledTile,
+  [(tile194Raw as unknown as BundledTile).tile_id]:
+    tile194Raw as unknown as BundledTile,
+  [(tile195Raw as unknown as BundledTile).tile_id]:
+    tile195Raw as unknown as BundledTile,
+  [(tile196Raw as unknown as BundledTile).tile_id]:
+    tile196Raw as unknown as BundledTile,
+  [(tile197Raw as unknown as BundledTile).tile_id]:
+    tile197Raw as unknown as BundledTile,
+  [(tile198Raw as unknown as BundledTile).tile_id]:
+    tile198Raw as unknown as BundledTile,
+  [(tile199Raw as unknown as BundledTile).tile_id]:
+    tile199Raw as unknown as BundledTile,
+  [(tile200Raw as unknown as BundledTile).tile_id]:
+    tile200Raw as unknown as BundledTile,
+  [(tile201Raw as unknown as BundledTile).tile_id]:
+    tile201Raw as unknown as BundledTile,
+  [(tile202Raw as unknown as BundledTile).tile_id]:
+    tile202Raw as unknown as BundledTile,
+  [(tile203Raw as unknown as BundledTile).tile_id]:
+    tile203Raw as unknown as BundledTile,
+  [(tile204Raw as unknown as BundledTile).tile_id]:
+    tile204Raw as unknown as BundledTile,
+  [(tile205Raw as unknown as BundledTile).tile_id]:
+    tile205Raw as unknown as BundledTile,
+  [(tile206Raw as unknown as BundledTile).tile_id]:
+    tile206Raw as unknown as BundledTile,
+  [(tile207Raw as unknown as BundledTile).tile_id]:
+    tile207Raw as unknown as BundledTile,
+  [(tile208Raw as unknown as BundledTile).tile_id]:
+    tile208Raw as unknown as BundledTile,
+  [(tile209Raw as unknown as BundledTile).tile_id]:
+    tile209Raw as unknown as BundledTile,
+  [(tile210Raw as unknown as BundledTile).tile_id]:
+    tile210Raw as unknown as BundledTile,
+  [(tile211Raw as unknown as BundledTile).tile_id]:
+    tile211Raw as unknown as BundledTile,
+  [(tile212Raw as unknown as BundledTile).tile_id]:
+    tile212Raw as unknown as BundledTile,
+  [(tile213Raw as unknown as BundledTile).tile_id]:
+    tile213Raw as unknown as BundledTile,
+  [(tile214Raw as unknown as BundledTile).tile_id]:
+    tile214Raw as unknown as BundledTile,
+  [(tile215Raw as unknown as BundledTile).tile_id]:
+    tile215Raw as unknown as BundledTile,
+  [(tile216Raw as unknown as BundledTile).tile_id]:
+    tile216Raw as unknown as BundledTile,
+  [(tile217Raw as unknown as BundledTile).tile_id]:
+    tile217Raw as unknown as BundledTile,
+  [(tile218Raw as unknown as BundledTile).tile_id]:
+    tile218Raw as unknown as BundledTile,
+  [(tile219Raw as unknown as BundledTile).tile_id]:
+    tile219Raw as unknown as BundledTile,
+  [(tile220Raw as unknown as BundledTile).tile_id]:
+    tile220Raw as unknown as BundledTile,
+  [(tile221Raw as unknown as BundledTile).tile_id]:
+    tile221Raw as unknown as BundledTile,
+  [(tile222Raw as unknown as BundledTile).tile_id]:
+    tile222Raw as unknown as BundledTile,
+  [(tile223Raw as unknown as BundledTile).tile_id]:
+    tile223Raw as unknown as BundledTile,
+  [(tile224Raw as unknown as BundledTile).tile_id]:
+    tile224Raw as unknown as BundledTile,
+  [(tile225Raw as unknown as BundledTile).tile_id]:
+    tile225Raw as unknown as BundledTile,
+  [(tile226Raw as unknown as BundledTile).tile_id]:
+    tile226Raw as unknown as BundledTile,
+  [(tile227Raw as unknown as BundledTile).tile_id]:
+    tile227Raw as unknown as BundledTile,
+  [(tile228Raw as unknown as BundledTile).tile_id]:
+    tile228Raw as unknown as BundledTile,
 };
+// --- end bundled-tile-map ---
 
 function formatGradeLabel(tile: BundledTile): string {
   const firstCurriculum = tile.atoms[0]?.curricula?.[0];
@@ -843,7 +1301,8 @@ export function listBundledCells(): (BundledCellInfo & {
       description: override?.description || t.description || "",
       publisher:
         override?.publisher || t.publisher || "ZAM Curriculum Working Group",
-      publishedAt: override?.publishedAt || t.published_at,
+      publishedAt:
+        override?.publishedAt || t.published_at || new Date().toISOString(),
       atomCount: override?.atomCount ?? t.atoms.length,
       inScopeAtomIds: override?.inScopeAtomIds || t.atoms.map((a) => a.id),
       atoms: t.atoms,

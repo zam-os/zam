@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-biologie-stoffwechselphysiologie-fotosynthese-zellatmung-atp",
+  "version": "2026.08.1",
+  "title": "Biologie 11: Stoffwechselphysiologie – Fotosynthese (Z-Schema, Calvin-Zyklus) und Zellatmung (Glykolyse, Citratzyklus, Atmungskette) (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 11 (Oberstufe): Energetik und universelle Energiewährung ATP/ADP + P_i, Die oxygenen Fotosyntheseprozesse in Chloroplasten (Lichtreaktion in Thylakoidmembran: Fotosystem II P680 und Fotosystem I P700, Photolyse des Wassers 2 H2O -> O2 + 4 H+ + 4 e-, Elektronentransportkette / Z-Schema, chemiosmotische ATP-Synthase über Protonengradienten Delta pH, NADPH/H+-Bildung; Dunkelreaktion / lichtunabhängige Reaktion im Stroma: Calvin-Zyklus mit RuBisCO, Fixierung von CO2 an Ribulose-1,5-bisphosphat, Reduktionsphase zu GAP / Glucose) sowie die aerobe Zellatmung in Mitochondrien (Glykolyse im Zytoplasma, oxidative Decarboxylierung, Citratzyklus in der mitochondrialen Matrix, oxidative Phosphorylierung an der inneren Mitochondrienmembran mit Komplexen I-IV und ATP-Ausbeute ca. 30-32 ATP pro Glucose, anaerobe Gärungen).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 11, Lernbereich Stoffwechselphysiologie – Fotosynthese und Zellatmung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBH0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBH0000000000000000A01",
+      "namespace": "gymnasium-biologie-fotosynthese",
+      "slug": "fotosynthese-lichtreaktion-z-schema-calvin-zyklus",
+      "title": "Fotosynthese: Lichtreaktion (Z-Schema, Photolyse, ATP-Synthase) und Calvin-Zyklus (RuBisCO)",
+      "domain": "schule/biologie/stoffwechsel",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Photosynthesis",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Fotosynthese – Licht- und Dunkelreaktion",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBH0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus welchem Molekül stammt der bei der pflanzlichen Fotosynthese an die Erdatmosphäre freigesetzte molekulare Sauerstoff ($O_2$)?",
+          "concept": "Aus dem Wasser (H2O) durch die lichtgetriebene Photolyse des Wassers am Mangan-Komplex des Fotosystems II (und nicht aus dem Kohlendioxid)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Aus dem Wasser (H2O durch Photolyse am Fotosystem II)",
+              "Aus dem aufgenommenen Kohlendioxid (CO2)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBH0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die biochemischen Reaktionen der Fotosynthese im Chloroplasten: 1. **Bruttogleichung der oxygenen Fotosynthese**:   $$\\mathbf{6\\,\\text{CO}_2 + 12\\,\\text{H}_2\\text{O} \\xrightarrow{h\\nu, \\text{Chlorophyll}} \\text{C}_6\\text{H}_{12}\\text{O}_6 + 6\\,\\text{O}_2 + 6\\,\\text{H}_2\\text{O}}$$ 2. **Die Lichtreaktion (Thylakoidmembran)**:   * **Fotosystem II ($P_{680}$)**: Absorption von Lichtenergie $\\implies$ Anregung von Elektronen $\\implies$ **Photolyse des Wassers**:     $$2\\,\\text{H}_2\\text{O} \\rightarrow \\text{O}_2 + 4\\,\\text{H}^+ + 4\\,e^-$$   * **Elektronentransportkette (Z-Schema)**: Plastochinon $\\rightarrow$ Cytochrom-$b_6f$-Komplex (pumpt $H^+$ in das Thylakoidlumen) $\\rightarrow$ Plastocyanin $\\rightarrow$ **Fotosystem I ($P_{700}$)** $\\rightarrow$ Ferredoxin $\\rightarrow$ $\\text{NADP}^+$-Reduktase:     $$\\text{NADP}^+ + 2\\,e^- + 2\\,\\text{H}^+ \\rightarrow \\mathbf{\\text{NADPH} + \\text{H}^+}$$   * **Photophosphorylierung (Peter Mitchells Chemiosmose)**: Protonengradient (hohe $H^+$-Konzentration im Lumen) treibt die rotorartige **ATP-Synthase** im Stroma an $\\implies \\mathbf{\\text{ADP} + \\text{P}_i \\rightarrow \\text{ATP}}$, 3. **Die Dunkelreaktion / Calvin-Zyklus (im Stroma)**:   * **1. Phase ($\\text{CO}_2$-Fixierung)**: Enzym **RuBisCO** fixiert $\\text{CO}_2$ an Ribulose-1,5-bisphosphat ($C_5$) $\\implies$ zerfällt in $2 \\times$ 3-Phosphoglycerat ($C_3$).   * **2. Phase (Reduktion)**: Verbrauch von $\\text{ATP}$ und $\\text{NADPH/H}^+$ $\\implies$ Bildung von Glycerinaldehyd-3-phosphat (GAP / Triosephosphat) $\\rightarrow$ Synthese von **Glucose**.   * **3. Phase (Regeneration)**: Rückbildung von Ribulose-1,5-bisphosphat unter erneutem $\\text{ATP}$-Verbrauch.",
+          "concept": "Fotosynthese: Bruttogleichung; Lichtreaktion (Fotosystem II P680 mit Photolyse von H2O -> O2, Z-Schema, Fotosystem I P700, NADPH-Bildung, ATP-Synthase über Protonengradienten); Calvin-Zyklus (RuBisCO, CO2-Fixierung an C5, Reduktion mit ATP/NADPH zu Glucose, Regeneration).",
+          "sample_solution": "1. Gesamtreaktion und energetische Bedeutung der Fotosynthese: - **Bruttogleichung**:   $$\\mathbf{6\\,\\text{CO}_2 + 12\\,\\text{H}_2\\text{O} \\xrightarrow{\\text{Licht, Chlorophyll}} \\text{C}_6\\text{H}_{12}\\text{O}_6 + 6\\,\\text{O}_2 + 6\\,\\text{H}_2\\text{O}} \\quad (\\Delta G^\\circ = +2870\\,\\text{kJ/mol})$$ - **Funktion**: Photoautotrophe Umwandlung von energiearmer anorganischer Strahlungsenergie in chemisch gebundene Energie organischer Kohlenhydrate. 2. Die primären photochemischen Reaktionen (Lichtreaktion): - **Ort**: In der **Thylakoidmembran** der Chloroplasten. - **1. Fotosystem II ($P_{680}$)**:   * Lichtabsorption regt das Reaktionszentrum $P_{680}$ an. Das abgegebene Elektron wird durch Elektronen aus der **Photolyse des Wassers** (Wasserspaltung am Sauerstoff-Entwicklungskomplex mit $Mn_4CaO_5$-Cluster) ersetzt:     $$\\mathbf{2\\,\\text{H}_2\\text{O} \\xrightarrow{h\\nu} \\text{O}_2 \\uparrow + 4\\,\\text{H}^+_{\\text{Lumen}} + 4\\,e^-}$$ - **2. Elektronentransportkette (Das Z-Schema)**:   * Elektronen fließen bergab über *Plastochinon*, den *Cytochrom-$b_6f$-Komplex* (der aktiv zusätzliche Protonen $H^+$ aus dem Stroma ins Thylakoidlumen pumpt) und *Plastocyanin* zum **Fotosystem I ($P_{700}$)**.   * Nach erneuter Lichtanregung fließen die Elektronen über *Ferredoxin* zur $\\text{NADP}^+$-Reduktase:     $$\\mathbf{\\text{NADP}^+ + 2\\,e^- + 2\\,\\text{H}^+_{\\text{Stroma}} \\rightarrow \\text{NADPH} + \\text{H}^+}$$ - **3. Chemiosmotische ATP-Synthese**:   * Die Protonenakkumulation erzeugt einen steilen elektrochemischen Gradienten (Lumen $pH \\approx 5$, Stroma $pH \\approx 8 \\implies \\Delta pH = 3$).   * Der Rückstrom der Protonen durch den Kanal der **ATP-Synthase** ins Stroma treibt die rotierende Synthese von ATP aus ADP und Phosphat an (**Photophosphorylierung**). 3. Die sekundären biochemischen Reaktionen (Calvin-Benson-Zyklus): - **Ort**: Im **Stroma** der Chloroplasten (lichtunabhängig, benötigt jedoch die Produkte ATP und NADPH der Lichtreaktion): - **1. $\\text{CO}_2$-Fixierung**:   * Das Schlüsselenzym **RuBisCO** (Ribulose-1,5-bisphosphat-Carboxylase/-Oxygenase) bindet $6\\,\\text{CO}_2$ an sechs $C_5$-Körper (Ribulose-1,5-bisphosphat) $\\implies$ Entstehung von 12 Molekülen 3-Phosphoglycerat ($C_3$). - **2. Reduktionsphase**:   * Unter Verbrauch von **$12\\,\\text{ATP}$** und **$12\\,\\text{NADPH} + \\text{H}^+$** wird 3-Phosphoglycerat zu 12 Molekülen **Glycerinaldehyd-3-phosphat (GAP)** reduziert.   * 2 Moleküle GAP ($2 \\times C_3$) werden aus dem Zyklus ausgeschleust und zur Biosynthese von **1 Molekül Glucose ($C_6H_{12}O_6$)** bzw. Stärke genutzt. - **3. Regenerationsphase**:   * Die verbliebenen 10 Moleküle GAP ($10 \\times C_3 = 30\\,\\text{C}$) werden unter Verbrauch von **$6\\,\\text{ATP}$** zu sechs Molekülen des Ausgangszuckers Ribulose-1,5-bisphosphat ($6 \\times C_5 = 30\\,\\text{C}$) regeneriert."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBH0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBH0000000000000000A02",
+      "namespace": "gymnasium-biologie-zellatmung",
+      "slug": "zellatmung-glykolyse-citratzyklus-atmungskette-atp",
+      "title": "Zellatmung: Glykolyse, Citratzyklus, Atmungskette (Oxidative Phosphorylierung) und ATP-Bilanz",
+      "domain": "schule/biologie/stoffwechsel",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBH0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Zellatmung ist das heterotrophe Gegenstück zur autotrophen Fotosynthese."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Cellular respiration",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Zellatmung und Energiebereitstellung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBH0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was dient am Ende der mitochondrialen Atmungskette (Komplex IV / Cytochrom-c-Oxidase) als finaler Elektronenakzeptor?",
+          "concept": "Molekularer Sauerstoff (O2), der zusammen mit Elektronen und Protonen zu Wasser (H2O) reduziert wird (Knallgasreaktion in kontrollierten Stufen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Molekularer Sauerstoff (O2, wird zu H2O reduziert)",
+              "Kohlendioxid (CO2)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBH0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die 4 Teilschritte der aeroben Zellatmung und die Gesamt-ATP-Bilanz: 1. **Gesamtgleichung der aeroben Dissimilation**:   $$\\mathbf{\\text{C}_6\\text{H}_{12}\\text{O}_6 + 6\\,\\text{O}_2 + 6\\,\\text{H}_2\\text{O} \\longrightarrow 6\\,\\text{CO}_2 + 12\\,\\text{H}_2\\text{O} + \\text{Energie (ca. 30–32 ATP)}}$$ 2. **Die 4 Teilschritte im Detail**:   * **1. Glykolyse (Zytoplasma)**: Spaltung von $1\\,\\text{Glucose } (C_6)$ in $2\\,\\text{Pyruvat } (C_3)$. Ausbeute: **$+2\\,\\text{ATP}$** (Substratkettenphosphorylierung) und **$+2\\,\\text{NADH/H}^+$**.   * **2. Oxidative Decarboxylierung (Mitochondrienmatrix)**: $2\\,\\text{Pyruvat} \\rightarrow 2\\,\\text{Acetyl-CoA } (C_2) + 2\\,\\text{CO}_2 + 2\\,\\text{NADH/H}^+$.   * **3. Citratzyklus / Krebs-Zyklus (Matrix)**: Acetyl-CoA ($C_2$) wird an Oxalacetat ($C_4$) zu Citrat ($C_6$) gebunden. Vollständige Oxidation unter Abspaltung von $4\\,\\text{CO}_2$. Ausbeute pro Glucose ($2\\,\\text{Umdrehungen}$): **$+2\\,\\text{GTP/ATP}$**, **$+6\\,\\text{NADH/H}^+$**, **$+2\\,\\text{FADH}_2$**.   * **4. Atmungskette / Endoxidation (Innere Mitochondrienmembran)**: Die Elektronencarrier $\\text{NADH/H}^+$ und $\\text{FADH}_2$ übertragen Elektronen über Enzymkomplexe (I, II, III, IV) auf $\\text{O}_2 \\implies \\mathbf{\\text{H}_2\\text{O}}$. Der aufgebaute Protonengradient im Intermembranraum treibt die **ATP-Synthase** an (ca. $2{,}5\\,\\text{ATP pro NADH/H}^+$, ca. $1{,}5\\,\\text{ATP pro FADH}_2$), 3. **Vergleich mit anaerober Gärung (Milchsäure- und alkoholische Gärung)**:   * Ohne Sauerstoff stoppt die Atmungskette. Pyruvat dient als Elektronenakzeptor zur Reoxidation von $\\text{NADH/H}^+$ zu $\\text{NAD}^+$ $\\implies$ minimale Ausbeute von nur **$2\\,\\text{ATP}$** pro Glucose.",
+          "concept": "Zellatmung 11: 4 Teilschritte (Glykolyse im Zytoplasma -> 2 ATP + 2 NADH; Oxidative Decarboxylierung -> 2 CO2 + 2 NADH; Citratzyklus -> 4 CO2 + 2 ATP + 6 NADH + 2 FADH2; Atmungskette mit O2 als Endakzeptor -> H2O + ATP-Synthase); Gesamtausbeute ca. 30-32 ATP; Gärungen zur NAD+-Regeneration.",
+          "sample_solution": "1. Der Prozess der aeroben Zellatmung: - **Zweck**: Dissimilation energiereicher Glucose zur Bereitstellung universeller biochemischer Energie in Form von **Adenosintriphosphat (ATP)**. - **Gesamtübersicht der 4 Teilschritte**: ```mermaid graph TD   A[Glucose C6] -->|1. Glykolyse im Zytoplasma| B[2 Pyruvat C3 + 2 ATP + 2 NADH]   B -->|2. Oxidative Decarboxylierung in Matrix| C[2 Acetyl-CoA C2 + 2 CO2 + 2 NADH]   C -->|3. Citratzyklus in Matrix| D[4 CO2 + 2 ATP + 6 NADH + 2 FADH2]   D -->|4. Atmungskette an innerer Membran| E[O2 + H+ -> H2O und ca. 26-28 ATP] ``` 2. Die 4 Teilschritte im biochemischen Detail: - **1. Glykolyse (Ort: Zytoplasma, anaerob)**:   * Glucose ($C_6$) wird durch 2 ATP phosphoryliert und in zwei Moleküle Triosephosphat (GAP) gespalten.   * Oxidation und Phosphatübertragung liefern: $\\mathbf{2\\,\\text{Pyruvat} + 2\\,\\text{ATP} + 2\\,\\text{NADH} + 2\\,\\text{H}^+}$. - **2. Oxidative Decarboxylierung (Ort: Mitochondrienmatrix)**:   * Pyruvat wird durch den Pyruvat-Dehydrogenase-Komplex decarboxyliert ($\\text{CO}_2$-Abspaltung) und oxidiert:     $$2\\,\\text{Pyruvat} + 2\\,\\text{CoA-SH} + 2\\,\\text{NAD}^+ \\longrightarrow \\mathbf{2\\,\\text{Acetyl-CoA} + 2\\,\\text{CO}_2 + 2\\,\\text{NADH} + 2\\,\\text{H}^+}$$ - **3. Der Citratzyklus (Krebs-Zyklus / Tricarbonsäurezyklus, Ort: Matrix)**:   * Acetyl-CoA ($C_2$) kondensiert mit Oxalacetat ($C_4$) zu Citrat ($C_6$).   * In zwei Decarboxylierungsschritten werden $2\\,\\text{CO}_2$ pro Acetylrest freigesetzt.   * **Bilanz für 2 Acetyl-CoA (1 Glucose)**:     $$\\mathbf{4\\,\\text{CO}_2 + 2\\,\\text{ATP (über GTP)} + 6\\,\\text{NADH} + 6\\,\\text{H}^+ + 2\\,\\text{FADH}_2}$$ - **4. Atmungskette und oxidative Phosphorylierung (Ort: Innere Mitochondrienmembran)**:   * Insgesamt $10\\,\\text{NADH} + \\text{H}^+$ und $2\\,\\text{FADH}_2$ geben ihre hochenergetischen Elektronen an die Multienzymkomplexe I, II, III und IV ab.   * Beim Elektronentransport auf molekularen Sauerstoff ($\text{O}_2$) pumpen die Komplexe I, III und IV Protonen aus der Matrix in den **Intermembranraum**.   * **Endakzeptor**: $\\mathbf{\\frac{1}{2}\\text{O}_2 + 2\\,e^- + 2\\,\\text{H}^+ \\rightarrow \\text{H}_2\\text{O}}$ (Metabolisches Wasser).   * **ATP-Synthese**: Der Protonenrückstrom durch die **$\text{F}_0\text{F}_1$-ATP-Synthase** phosphoryliert ADP zu ATP (ca. $2{,}5\\,\\text{ATP pro NADH}$ und $1{,}5\\,\\text{ATP pro FADH}_2$). 3. Gesamt-ATP-Bilanz und Gärungen: - **Gesamtausbeute pro Molekül Glucose**:   $$\\mathbf{2\\text{ (Glykolyse)} + 2\\text{ (Citratzyklus)} + 26-28\\text{ (Atmungskette)} = \\mathbf{30\\text{ bis } 32\\,\\text{ATP}}}$$ - **Anaerobe Bedingungen (Gärung)**:   * Fehlt $\\text{O}_2$, staut sich die Atmungskette $\\implies \\text{NADH} + \\text{H}^+$ kann nicht reoxidiert werden $\\implies$ Citratzyklus stoppt.   * **Milchsäuregärung / Alkoholische Gärung**: Reduktion von Pyruvat zu Lactat (Milchsäure) bzw. Ethanol regeneriert $\\text{NAD}^+$, damit wenigstens die Glykolyse mit ihrer geringen Ausbeute von **$2\\,\\text{ATP pro Glucose}$** weiterlaufen kann."
+        }
+      ]
+    }
+  ]
+}

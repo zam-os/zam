@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-deutsch-romantik-sehnsucht-schauerromantik-realismus",
+  "version": "2026.08.1",
+  "title": "Deutsch 11: Epochenumbruch – Die Romantik (1795–1835), Schauerromantik und Poetischer Realismus (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 11 (Oberstufe): Die literarische Romantik (Frühromantik / Jenaer Kreis: Progressive Universalpoesie, romantische Ironie nach Friedrich Schlegel; Hoch- und Spätromantik / Heidelberger und Berliner Kreis: Joseph von Eichendorff, Novalis, Clemens Brentano), Zentrale Motive (Sehnsucht, Wanderlust, Die Blaue Blume als Symbol der Transzendenz, Nacht- und Naturerleben, Traum und Unterbewusstsein, Philisterkritik), Die Nachtseite der Romantik / Schauerromantik (E.T.A. Hoffmann: Der Sandmann, Doppelgängermotiv, Automatenmenschen, Wahnsinn und Entfremdung) sowie der Übergang zum Bürgerlichen / Poetischen Realismus (Theodor Fontane: Effi Briest, Theodor Storm: Der Schimmelreiter, Verklärung der Wirklichkeit, Gesellschaftskritik).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/deutsch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Deutsch 11, Lernbereich Literaturgeschichte – Romantik und Realismus"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBC0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBC0000000000000000A01",
+      "namespace": "gymnasium-deutsch-romantik",
+      "slug": "romantik-universalpoesie-sehnsucht-blaue-blume-eichendorff",
+      "title": "Die Romantik (1795–1835): Progressive Universalpoesie, Sehnsucht und Naturmystik bei Eichendorff",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "Romanticism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Literaturgeschichte – Die Romantik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBC0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches zentrale Dingsymbol der Romantik (geprägt von Novalis in 'Heinrich von Ofterdingen') verkörpert die unstillbare metaphysische Sehnsucht nach Liebe, Natur und Unendlichkeit?",
+          "concept": "Die Blaue Blume (Symbol für die Verschmelzung von Traum, Poesie, Sehnsucht und Transzendenz)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Blaue Blume (Symbol für unendliche Sehnsucht)",
+              "Der goldene Topf"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBC0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Epoche der Romantik (1795–1835) in ihren geistesgeschichtlichen Dimensionen: 1. **Historisch-philosophischer Kontext**:   * Gegenbewegung zur rationalistischen Aufklärung und zur strengen Formstrenge der Weimarer Klassik sowie Enttäuschung über den Terror der Französischen Revolution und die beginnende Industrialisierung.   * **Romantisierung der Welt (Novalis)**: *'Indem ich dem Gemeinen einen hohen Sinn, dem Gewöhnlichen ein geheimnisvolles Ansehen, dem Bekannten die Würde des Unbekannten gebe, so romantisiere ich es'*, 2. **Poetologisches Konzept der Frühromantik**:   * **Progressive Universalpoesie (Friedrich Schlegel, Athenäums-Fragment 116)**: Die Dichtung soll alle Gattungen (Lyrik, Prosa, Philosophie, Kritik, Naturwissenschaft) verschmelzen, ist ewig im Werden und nie vollendet.   * **Romantische Ironie**: Der Dichter demonstriert seine souveräne Freiheit über das Werk durch bewusste Illusionsbrüche, 3. **Die Leitmotive der Hoch- und Spätromantik (Joseph von Eichendorff)**:   * **Sehnsucht & Fernweh**: Flucht aus der Enge des bürgerlichen Alltags (*Taugenichts* vs. spießbürgerlicher *Philister*).   * **Nacht & Naturmystik**: Die Nacht als Raum des Übersinnlichen, der Seelenöffnung und religiösen Geborgenheit (z. B. Eichendorff: *Mondnacht*).   * **Wandermotiv & Volksliedton**: Schlichte, volksliedhafte Strophenform mit tiefer musikalischer Sprachmelodie.",
+          "concept": "Romantik (1795-1835): Gegenentwurf zur Aufklärung/Klassik; Novalis (Romantisierung); Friedrich Schlegel (Progressive Universalpoesie, Romantische Ironie); Leitmotive (Blaue Blume, Sehnsucht/Fernweh, Philisterkritik, Nacht- und Naturmystik, Eichendorff Mondnacht).",
+          "sample_solution": "1. Geistesgeschichtlicher Ursprung und Epochenverständnis: - **Epochenzeitraum**: ca. 1795 bis 1835 (Einteilung in Frühromantik [Jena], Hochromantik [Heidelberg] und Spätromantik [Berlin/Nürnberg]). - **Das romantische Lebensgefühl als Gegenentwurf**:   * Die Romantiker empfanden die Aufklärung mit ihrem einseitigen Rationalismus, Nützlichkeitsdenken und der aufkommenden Industrialisierung als 'Entzauberung der Welt'.   * Als Antwort setzten sie auf **Gefühl, Fantasie, Mythos, Traum, Religion und das Unterbewusstsein**. - **Novalis' Programm der Romantisierung**:   * *« Die Welt muss romantisiert werden. So findet man den ursprünglichen Sinn wieder. [...] Indem ich dem Gemeinen einen hohen Sinn, dem Gewöhnlichen ein geheimnisvolles Ansehn, dem Bekannten die Würde des Unbekannten, dem Endlichen einen unendlichen Schein gebe, so romantisiere ich es. »* 2. Die Literaturtheorie der Frühromantik: - **1. Progressive Universalpoesie (Friedrich Schlegel)**:   * Literatur soll keine starren Gattungsgrenzen mehr kennen, sondern Poesie, Prosa, Philosophie, Religion und Alltag zu einem organischen Gesamtkunstwerk vereinen. Sie ist *progressiv* (fortschreitend), weil sie niemals abgeschlossen sein kann, sondern sich im ständigen Werden befindet. - **2. Die Romantische Ironie**:   * Das Bewusstsein des Autors über die Künstlichkeit des eigenen Werks. Der Schöpfer steht über seinem Werk und kann die poetische Illusion jederzeit spielerisch aufbrechen. 3. Die Leitmotive der Hoch- und Spätromantik: - **1. Die Blaue Blume**:   * Zentrales Leit- und Sehnsuchtssymbol (aus Novalis' Romanfragment *Heinrich von Ofterdingen*); vereint das Streben nach unendlicher Erkenntnis, Liebe, Naturverbundenheit und Transzendenz. - **2. Philisterkritik und das Wandermotiv**:   * Scharfer Gegensatz zwischen dem phantasielosen, materiell fixierten Spießbürger (**Philister**) und dem freiheitsliebenden, vagabundierenden Poeten (Joseph von Eichendorff: *Aus dem Leben eines Taugenichts*). - **3. Nacht- und Naturmystik bei Eichendorff**:   * Die Natur ist beseelt und spricht zum empfindsamen Geist. Die Nacht ist kein Ort des Schreckens, sondern eröffnet den Zugang zum Transzendenten:     * *« Es war, als hätt der Himmel / Die Erde still geküsst, / Dass sie im Blütenschimmer / Von ihm nun träumen müsst... / Und meine Seele spannte / Weit ihre Flügel aus, / Flog durch die stillen Lande, / Als flöge sie nach Haus. »* (*Mondnacht*)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBC0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBC0000000000000000A02",
+      "namespace": "gymnasium-deutsch-schauerromantik",
+      "slug": "schauerromantik-hoffmann-sandmann-realismus-fontane",
+      "title": "Schauerromantik & Realismus: E.T.A. Hoffmann (Der Sandmann) und Fontane (Effi Briest)",
+      "domain": "schule/deutsch/literaturgeschichte",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBC0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Schwarze Romantik und der Realismus sind dialektische Fortführungen der Romantik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "Dark Romanticism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Schauerromantik und Bürgerlicher Realismus",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBC0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches zentrale Leitmotiv und psychologische Phänomen thematisiert E.T.A. Hoffmann in seiner Schauernovelle 'Der Sandmann' (1816) durch Nathanaels fatale Verliebtheit in die Holzpuppe Olimpia?",
+          "concept": "Die narzisstische Selbstspiegelung, den Realitätsverlust (Projektion) und das Unheimliche durch die Täuschung zwischen Mensch und Automat / Maschine",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Unheimliche und den Realitätsverlust (Mensch vs. Automat)",
+              "Die vollkommene Harmonie bürgerlicher Ehe"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBC0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die 'Schwarze Romantik' am Beispiel von E.T.A. Hoffmann und den Übergang zum Bürgerlichen/Poetischen Realismus: 1. **Die Schwarze Romantik / Schauerromantik (E.T.A. Hoffmann)**:   * Fokus auf die **Nachtseiten der menschlichen Psyche**: Wahnsinn, Triebhaftigkeit, Besessenheit, Doppelgängermotiv, Dämonie, Automatenmenschen und das *Unheimliche* (Sigmund Freud).   * **Textanalyse 'Der Sandmann' (1816)**:     - *Konflikt der Welten*: Nathanael (traumatisierter Romantiker, gefangen in kindlichen Ängsten vor dem Augenausreißer Coppelius/Coppola) vs. Clara (aufgeklärter, nüchtern-rationaler Gegenpol).     - *Augenmotiv*: Das Auge als Spiegel der Seele vs. mechanische Sehhilfen (Perspektiv des Coppola), die Nathanaels Wahn befeuern $\\implies$ tödlicher Sprung vom Rathausturm, 2. **Der Bürgerliche / Poetische Realismus (1848–1890)**:   * **Abgrenzung**: Weder romantische Weltflucht noch naturalistische Elendsschilderung, sondern **künstlerische Verklärung und poetische Formung der gesellschaftlichen Wirklichkeit** (Theodor Fontane, Theodor Storm, Gottfried Keller).   * **Theodor Fontane: *Effi Briest* (1895)**:     - Gesellschaftsroman: Kritik an den erstarrten preußischen Adelskonventionen und dem Ehrenkodex (Duell zwischen Instetten und Crampas).     - Das Einzelschicksal der jungen Effi, die an der rigiden gesellschaftlichen Moraldoktrin zerbricht (*'Das ist ein zu weites Feld'*).",
+          "concept": "Schwarze Romantik: Hoffmann 'Der Sandmann' (Nathanael vs. Clara, Augenmotiv, Olimpia als Automat, Unheimliches); Bürgerlicher Realismus (1848-1890): Fontane 'Effi Briest' (Poetische Verklärung, Kritik an preußischen Adels- und Ehrenkonventionen).",
+          "sample_solution": "1. Die 'Schwarze Romantik' (Dunkle Romantik / Schauerliteratur): - **Thematische Neuausrichtung**: Während die Frühromantik nach lichter Harmonie und Transzendenz strebte, erforscht die Spätromantik (v. a. E.T.A. Hoffmann, Ludwig Tieck, Edgar Allan Poe) die **Abgründe des menschlichen Geistes**:   * Schlafwandeln, Wahnvorstellungen, seelische Spaltungen (**Doppelgängermotiv**), unheimliche Mächte und der Einbruch des Dämonischen in den bürgerlichen Alltag. 2. Meisterwerk der Schauerromantik: E.T.A. Hoffmann – *Der Sandmann* (1816): - **Die Figurenkonstellation als Epochenkonflikt**:   * **Nathanael (Romantiker)**: Hochsensibel, egozentrisch, traumatisiert durch den frühen Tod des Vaters; projiziert seine inneren Dämonen auf den Advokaten Coppelius und den Wetterglashändler Coppola.   * **Clara (Aufklärung)**: Besitzt einen heiteren, unbefangenen, scharfen Verstand; deutet Nathanaels Ängste psychologisch zutreffend als rein subjektive Phantome seines eigenen Inneren (*« Es gibt keine bösen Geister, außer denen, die wir selbst in unserer Brust nähren »*). - **Das Augenmotiv und die Automatenpuppe Olimpia**:   * Das Auge gilt traditionell als 'Spiegel der Seele'. Coppola verkauft Nathanael ein Fernrohr (*Perspektiv*), durch das er die leblose Holzpuppe Olimpia des Professors Spalanzani beobachtet.   * Da Olimpia nur mechanisch *« Ach, ach! »* seufzt, dient sie Nathanael als perfekte narzisstische Projektionsfläche, da sie seiner poetischen Schwärmerei niemals widerspricht.   * Als Nathanael entdeckt, dass Olimpia eine seelenlose Maschine mit herausgerissenen Glasaugen ist, verfällt er endgültig dem Wahnsinn (*« Sköne Oke, sköne Oke! »*) und stürzt sich vom Turm. 3. Der Übergang zum Bürgerlichen/Poetischen Realismus (1848–1890): - **Epochenprinzip nach Theodor Fontane**:   * Realismus ist die **künstlerische Wiedergabe des wirklichen Lebens**: Nicht bloße naturalistische Dokumentation von Armut und Schmutz, sondern die Läuterung und poetische Verdichtung des Wesentlichen (*« Er verklärt die Wirklichkeit »*). - **Gesellschaftskritik in Fontanes *Effi Briest* (1895)**:   * **Konflikt zwischen Natur und Gesellschaft**: Die 17-jährige, lebensfrohe Effi wird mit dem 20 Jahre älteren, karrierefixierten Baron von Innstetten verheiratet. Aus Einsamkeit lässt sie sich auf eine Affäre mit Major Crampas ein.   * **Kritik am preußischen Ehrenkodex**: Als Innstetten Jahre später die Liebesbriefe findet, empfindet er keinen persönlichen Hass mehr, tötet Crampas aber dennoch im Duell und verstößt Effi – rein aus Gehorsam gegenüber dem gesellschaftlichen *Götzen der Konvention*. Effi stirbt vereinsamt und gebrochen.   * *Fontanes Leitmotiv*: Das Verharren in inhumanen gesellschaftlichen Schablonen führt zur Zerstörung individuellen Lebensglücks."
+        }
+      ]
+    }
+  ]
+}

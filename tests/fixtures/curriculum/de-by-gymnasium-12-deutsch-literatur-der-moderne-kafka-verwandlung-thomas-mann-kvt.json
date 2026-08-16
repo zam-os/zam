@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-deutsch-literatur-der-moderne-kafka-verwandlung-thomas-mann",
+  "version": "2026.08.1",
+  "title": "Deutsch 12: Literatur der Moderne – Franz Kafka (Die Verwandlung), Das Kafkaeske, Thomas Mann und Hermann Hesse (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 12 (Oberstufe Q12): Die Epoche der literarischen Moderne (1890–1933: Krisenerfahrung der Moderne, Relativismus, Psychoanalyse nach Sigmund Freud, Sprachkrise / Hofmannsthals Chandos-Brief, Expressionismus, Avantgarde, Dadaismus), Franz Kafka: Erzählanalyse *Die Verwandlung* (1915: Gregor Samsas Erwachen als ungeheures Ungeziefer, Personale Erzählperspektive, Entfremdung von Arbeit und Familie, Der Vater-Sohn-Konflikt / Brief an den Vater, Das 'Kafkaeske' als existenzielle Ausweglosigkeit und absurde Schuldgefühle vor einer unnahbaren Autorität, Tod und Katharsis der Familie) sowie Großepik der Moderne (Thomas Mann: *Buddenbrooks* – Verfall einer Kaufmannsfamilie, Bürger vs. Künstler-Dilemma; Hermann Hesse: *Der Steppenwolf* – Zerrissenheit zwischen bürgerlicher Ordnung und triebhafter Wolfsnatur / Magisches Theater).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/deutsch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Deutsch 12, Lernbereich Literaturgeschichte – Moderne und Franz Kafka"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCA0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCA0000000000000000A01",
+      "namespace": "gymnasium-deutsch-kafka",
+      "slug": "franz-kafka-die-verwandlung-kafkaesk-entfremdung",
+      "title": "Franz Kafka: 'Die Verwandlung' (1915), Das Kafkaeske und existentielle Entfremdung",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "Franz Kafka",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Literatur der Moderne – Franz Kafka",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCA0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bezeichnet der literaturwissenschaftliche Begriff 'kafkaesk' im engeren Sinne?",
+          "concept": "Eine unheimliche, absurde, beklemmende Situation, in der ein Individuum einer anonymen, unergründlichen und übermächtigen bürokratischen oder familiären Macht hilflos und mit diffuser Schuld ausgeliefert ist",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Eine unheimlich-absurde, ausweglose Situation vor anonymer Macht",
+              "Eine heitere, harmonische Naturbeschreibung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCA0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Franz Kafkas Erzählung 'Die Verwandlung' (1915) und ihre Deutungsebenen: 1. **Der berühmte Einstiegssatz & Erzählhaltung**:   * *« Als Gregor Samsa eines Morgens aus unruhigen Träumen erwachte, fand er sich in seinem Bett zu einem ungeheuren Ungeziefer verwandelt. »*   * **Personale Erzählsituation**: Die phantastisch-monströse Verwandlung wird nicht hinterfragt oder dramatisiert, sondern in einem nüchternen, bürokratisch-präzisen Protokollton geschildert (Kafkas *Sachlichkeit*). Gregors erste Sorge gilt nicht seinem Körper, sondern dem verpassten Zug zur Arbeit! 2. **Zentrale Deutungsebenen der Verwandlung**:   * **1. Soziologisch / Marxistisch (Entfremdung der Arbeit)**: Gregor ist als Handelsreisender ein ausgebeutetes Rädchen im kapitalistischen System. Die Verwandlung ist der unbewusste körperliche Streik gegen die unmenschliche Tretmühle.   * **2. Psychoanalytisch (Freud / Vater-Sohn-Konflikt)**: Gregors Minderwertigkeitsgefühle gegenüber dem übermächtigen, strafenden Vater (*Brief an den Vater*). Der Vater bewirft ihn mit Äpfeln $\\implies$ der faulende Apfel im Rücken als Chiffre tödlicher seelischer Verwundung.   * **3. Existenzphilosophisch**: Verlust der menschlichen Identität und Sprache; vollkommene Isolation im eigenen Zimmer, 3. **Das Ende und die Erlösung der Familie**:   * Schwester Grete verstößt ihn (*« Wir müssen versuchen, es loszuwerden »*). Nach Gregors stillem Hungertod bricht die Familie auf zu einem Ausflug ins Grüne $\\implies$ zynische Lebensbejahung der Familie auf Kosten des geopferten Außenseiters.",
+          "concept": "Kafka 12: 'Die Verwandlung' (1915); nüchterner Protokollstil; Deutungsdimensionen (Entfremdung der Arbeit, Vater-Sohn-Konflikt / Psychoanalyse, Apfelwurf, existenzielle Isolation); Tod Gregors und bürgerliche Weiterführung der Familie.",
+          "sample_solution": "1. Textaufbau und Erzähltechnik von Franz Kafkas *Die Verwandlung* (1915): - **Der paradoxe Einstieg**:   * Kafka verzichtet auf jede Exposition oder Erklärung der Metamorphose. Das Ungeheuerliche wird als vollendete, alltägliche Tatsache hingestellt. - **Nüchterne Protokollsprache**:   * Die Diskrepanz zwischen dem monströsen Geschehen (Käfergestalt) und Gregors kleinbürgerlichen Alltagssorgen (Fahrplan, Chef, Schulden der Eltern) erzeugt die für Kafka typische, verstörende Beklemmung (**das Kafkaeske**). 2. Die drei großen Deutungsdimensionen des Werks: - **1. Gesellschaftlich-ökonomische Dimension (Kritik an der kapitalistischen Arbeitswelt)**:   * Gregor fungiert als alleiniger Ernährer der Familie und schuftet als Handelsreisender, um die Schulden seines Vaters beim Chef abzubezahlen. Er besitzt kein Eigenleben; sein Wert bemisst sich rein nach seiner ökonomischen Nützlichkeit.   * Die Verwandlung in ein 'Ungeziefer' (etymologisch von *Ungeziefer* = Tier, das nicht zum Opfer taugt / nutzlos ist) ist die somatische Rebellion seines Körpers gegen die totale Selbstausbeutung. - **2. Biographisch-psychoanalytische Dimension (Der Vater-Sohn-Konflikt)**:   * Spiegelung von Kafkas eigener erdrückender Beziehung zu seinem dominanten Vater Hermann Kafka (*Brief an den Vater*, 1919).   * Als Gregor seine Rolle als Versorger verliert, erstarkt der zuvor kranke Vater, zieht eine glänzende Bankdiener-Uniform an und übernimmt wieder die tyrannische Führung.   * **Der Apfelwurf (Kapitel 2)**: Der Vater bombardiert den flüchtenden Käfer mit Äpfeln. Ein Apfel bleibt tief im Fleisch des Rückens stecken, entzündet sich und führt zu Gregors schleichendem Verfall – Symbol für die tödliche Verwundung durch die väterliche Aggression. - **3. Existenzielle Dimension (Sprachverlust und Isolation)**:   * Gregor verliert rasch die menschliche Sprache (seine Stimme wird zu einem tierischen Piepsen) $\\implies$ Zusammenbruch jeder Kommunikation.   * Trotz seines tierischen Körpers behält Gregor menschliches Fühlen: Als seine Schwester Grete Geige spielt, fühlt er sich von der Musik zutiefst berührt (*« War er ein Tier, da ihn Musik so ergriff? »*). 3. Das Ende der Novelle: - Schwester Grete, die ihn anfangs versorgte, fordert seine Beseitigung: *« Weg muss es! »* - Gregor stirbt in der Nacht in stiller Ergebung und Liebe zu seiner Familie. - **Der zynische Schluss**: Die Familie Samsa atmet erleichtert auf, wirft Gregors Leiche über die Bedienerin in den Müll und fährt mit der Straßenbahn ins Grüne. Die Eltern bemerken, wie hübsch und blühend ihre Tochter geworden ist, und beschließen, einen wohlhabenden Mann für sie zu suchen $\\implies$ der bürgerliche Kreislauf der Funktionalisierung beginnt von Neuem."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCA0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCA0000000000000000A02",
+      "namespace": "gymnasium-deutsch-jahrhundertwende",
+      "slug": "thomas-mann-buddenbrooks-hesse-steppenwolf-moderne",
+      "title": "Großepik der Moderne: Thomas Mann (Buddenbrooks) und Hermann Hesse (Der Steppenwolf)",
+      "domain": "schule/deutsch/epik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCA0000000000000000A01",
+          "type": "hard",
+          "rationale": "Kafka, Thomas Mann und Hesse repräsentieren die zentralen Strömungen der literarischen Moderne."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q37068",
+          "target_label": "Thomas Mann",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Großepik der Moderne – Thomas Mann und Hermann Hesse",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCA0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher fundamentale geistesgeschichtliche Zusammenhang prägt den vier Generationen umfassenden Untergang der Lübecker Patrizierfamilie in Thomas Manns Roman 'Buddenbrooks' (1901)?",
+          "concept": "Der Verfall der vitalen kaufmännischen Tatkraft geht Hand in Hand mit einer Zunahme von künstlerischer Sensibilität, Musikbegeisterung und seelischer Verfeinerung (Dekadenztheorem nach Schopenhauer und Nietzsche)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kaufmännischer Niedergang bei gleichzeitiger seelisch-künstlerischer Verfeinerung",
+              "Ein reiner Bankrott durch einen Schiffsuntergang"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCA0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Thomas Manns 'Buddenbrooks' und Hermann Hesses 'Der Steppenwolf' als Meisterwerke moderner Krisenerfahrung: 1. **Thomas Mann – *Buddenbrooks: Verfall einer Familie* (1901, Nobelpreis 1929)**:   * **Das 4-Generationen-Schema**:     - 1. Generation (Johann d. Ä.): Robuste, heitere Vitalität der Aufklärung.     - 2. Generation (Konsul Johann d. J.): Religiös verbrämte Pflichtauffassung.     - 3. Generation (Thomas Buddenbrook): Nervöse Zerrissenheit zwischen kaufmännischer Repräsentationsfassade und melancholischem Lebensüberdruss (Lektüre von Arthur Schopenhauers *Die Welt als Wille und Vorstellung*).     - 4. Generation (Hanno Buddenbrook): Vollständige Lebensunfähigkeit, kränklich, hochbegabter Musiker (Wagner-Begeisterung); stirbt als Kind an Typhus $\\implies$ Erlöschen der Dynastie.   * **Leitmotivtechnik**: Musikalische Wiederkehr charakteristischer sprachlicher Formeln (Homersche Epitheta) zur Figurencharakterisierung, 2. **Hermann Hesse – *Der Steppenwolf* (1927)**:   * **Der Identitätskonflikt des Harry Haller**: Schmerzhafte Spaltung zwischen bürgerlichem Intellektuellem (Geist, Goethe, Mozart) und triebhaft-einsamem Raubtier (*Steppenwolf*).   * **Der 'Traktat vom Steppenwolf'**: Dekonstruktion der Einheitsseele – der Mensch besteht nicht aus zwei Seelen, sondern aus tausenden Seelenfragmenten.   * **Das 'Magische Theater' (Nur für Verrückte / Eintritt kostet den Verstand)**: Kathartische Selbsterfahrung durch Rausch, Jazz, Erotik (Hermine) und Humor (Mozart lacht über Hallers Pathos) $\\implies$ Erlösung durch das Lachen über sich selbst.",
+          "concept": "Moderne Epik 12: Thomas Mann 'Buddenbrooks' (4 Generationen, Dekadenz, Leitmotivtechnik, Bürger vs. Künstler); Hermann Hesse 'Der Steppenwolf' (Harry Haller, Zerrissenheit, Magisches Theater, Humor als Erlösung).",
+          "sample_solution": "1. Thomas Mann: *Buddenbrooks – Verfall einer Familie* (1901): - **Das Dekadenz-Paradoxon**:   * Thomas Mann schildert über vier Generationen den Aufstieg und Untergang eines Lübecker Getreidehandelshauses.   * **Zentraler Konflikt**: Der biologische und wirtschaftliche Niedergang verläuft dialektisch parallel zu einer Verfeinerung des Geistes und der Kunst:     $$\\text{Vitale Gesundheit / Geschäftssinn} \\longleftrightarrow \\text{Krankheit / Ästhetizismus / Musik}$$ - **Die Generationenabfolge**:   1. *Ur-Großvater Johann*: Vital, pragmatisch, fest im Diesseits verankert.   2. *Großvater Johann*: Verbindet Geschäft mit protestantischer Frömmigkeit.   3. *Senator Thomas Buddenbrook*: Trägt die Maske des erfolgreichen Patriziers krampfhaft zur Schau, während sein innerer Lebenswille zerbricht (*« Ich habe geglaubt, es sei oft so, dass die äußeren, sichtbaren Zeichen des Glücks und Erfolges erst erscheinen, wenn in Wahrheit alles schon bergab geht »*).   4. *Hanno*: Zart, überempfindlich, lebt nur für die Klänge Richard Wagners am Klavier. Mit seinem Tod an Typhus erlischt die Firma unwiderruflich. - **Stilmittel**: Thomas Mann adaptiert Wagners musikalische **Leitmotivtechnik** für die Prosa (wiederkehrende Gesten, Zitate und Farbassoziationen). 2. Hermann Hesse: *Der Steppenwolf* (1927): - **Die Epochenkrise der Zwischenkriegszeit**:   * Der 50-jährige Protagonist **Harry Haller** leidet an der Kulturkrise der 1920er-Jahre, an Militarismus, Technikwahn und dem seichten Amüsement der bürgerlichen Gesellschaft. - **Die seelische Zerrissenheit**:   * Haller glaubt, zwei Seelen in seiner Brust zu tragen: Den feinsinnigen Gelehrten (der Goethe und Bach liebt) und den wilden, blutrünstigen, menschenscheuen *Steppenwolf*. - **Die Dekonstruktion der Persönlichkeit im 'Traktat vom Steppenwolf'**:   * Der Traktat enthüllt, dass die Vorstellung von einem zweigeteilten 'Ich' eine naive Vereinfachung ist: Die menschliche Seele ist ein schillerndes Mosaik aus unzähligen Trieben, Begabungen und Facetten. - **Das 'Magische Theater'**:   * Durch die Bekanntschaft mit der Kurtisane Hermine und dem Saxophonisten Pablo öffnet sich Haller dem sinnlichen Leben. Im surrealen *Magischen Theater* durchlebt er seine verdrängten Seelenräume (Pazifismus vs. Kriegslust, Erotik, Zähmung des Wolfs).   * **Die Botschaft (Mozart als Übervater)**: Das Leben ist ein kosmisches Spiel. Wahre Meisterschaft liegt nicht in tragischem Weltschmerz, sondern im **befreienden göttlichen Humor** (*« Sie sollen das Lachen lernen, Harry! »*)."
+        }
+      ]
+    }
+  ]
+}

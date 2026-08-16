@@ -412,9 +412,15 @@ describe("deterministic text import", () => {
       return prepare(sql);
     };
     const progress: number[] = [];
-    const result = await commitTextImport(db, "alice", input, preview.planHash, {
-      onProgress: (event) => progress.push(event.done),
-    });
+    const result = await commitTextImport(
+      db,
+      "alice",
+      input,
+      preview.planHash,
+      {
+        onProgress: (event) => progress.push(event.done),
+      },
+    );
     db.prepare = prepare;
 
     expect(result.cardsCreated).toBe(cards.length);

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-physik-kreisbewegung-gravitation-kepler-gesetze",
+  "version": "2026.08.1",
+  "title": "Physik 10: Kreisbewegung, Gravitationsgesetz und Keplersche Planetengesetze (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 10: Gleichförmige Kreisbewegung (Umlaufzeit T, Frequenz f, Winkelgeschwindigkeit omega = 2*pi / T, Bahngeschwindigkeit v = omega * r, Zentripetalbeschleunigung a_Z = v^2 / r = omega^2 * r, Zentripetalkraft F_Z = m * v^2 / r), Newtonsches Gravitationsgesetz (F_G = G * m1 * m2 / r^2, Gravitationskonstante G) sowie die drei Keplerschen Gesetze der Planetenbewegung (1. Ellipsenbahnen, 2. Flächensatz, 3. T1^2 / T2^2 = a1^3 / a2^3) und Satellitenbahnen (1. kosmische Geschwindigkeit, geostationärer Orbit).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/physik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Physik 10, Lernbereich Kreisbewegungen und Himmelsmechanik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA60000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA60000000000000000A01",
+      "namespace": "gymnasium-physik-kreisbewegung",
+      "slug": "gleichfoermige-kreisbewegung-winkelgeschwindigkeit-zentripetalkraft",
+      "title": "Kreisbewegung: Winkelgeschwindigkeit omega, Zentripetalbeschleunigung und Zentripetalkraft F_Z",
+      "domain": "schule/physik/mechanik",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Circular motion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Gleichförmige Kreisbewegungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA60000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "In welche Richtung wirkt die Zentripetalkraft $F_Z$, die einen Körper auf einer kreisförmigen Bahn hält?",
+          "concept": "Stets radial zum Kreismittelpunkt hin (senkrecht zum tangentialen Geschwindigkeitsvektor)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Radial zum Kreismittelpunkt hin (nach innen)",
+              "Tangential in Fahrtrichtung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA60000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Kinematik und Dynamik der gleichförmigen Kreisbewegung: 1. **Kinematische Grundgrößen**:   * **Umlaufdauer $T$ & Drehfrequenz $f$**: $f = \\frac{1}{T}$ (in $\\text{Hz} = \\text{s}^{-1}$).   * **Winkelgeschwindigkeit $\\omega$**: $\\omega = \\frac{\\Delta \\varphi}{\\Delta t} = \\frac{2\\pi}{T} = 2\\pi f$ (in $\\frac{\\text{rad}}{\\text{s}}$).   * **Bahngeschwindigkeit $v$**: $v = \\frac{2\\pi r}{T} = \\omega \\cdot r$ (stets tangential zur Kreisbahn gerichtet), 2. **Zentripetalbeschleunigung $a_Z$**:   * Obwohl der Betrag $|v|$ konstant ist, ändert sich permanent die Geschwindigkeitsrichtung $\\implies$ Radialbeschleunigung zum Mittelpunkt:     $$\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}$$ 3. **Zentripetalkraft $F_Z$**:   * Die nach Newton ($F = m \\cdot a$) erforderliche Kraft, die den Körper auf der Kreisbahn hält:     $$\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}$$   * *Beispiele*: Gravitation bei Planeten, Lorentzkraft bei Elektronen im Magnetfeld, Reibungskraft bei Autokurven, 4. Ein Auto ($m = 1200\\,\\text{kg}$) durchfährt eine Kurve mit dem Radius $r = 50\\,\\text{m}$ mit der Geschwindigkeit $v = 20\\,\\frac{\\text{m}}{\\text{s}}$ ($72\\,\\frac{\\text{km}}{\\text{h}}$). Berechne die erforderliche Zentripetalkraft $F_Z$.",
+          "concept": "Kreisbewegung: omega = 2*pi/T; v = omega * r; a_Z = v^2/r; F_Z = m * v^2 / r; Rechnung: F_Z = 1200 kg * (400 m^2/s^2) / 50 m = 1200 * 8 = 9600 N = 9,6 kN.",
+          "sample_solution": "1. Kinematik der Kreisbewegung: - **1. Winkelgeschwindigkeit $\\omega$**:   * Gibt den überstrichenen Drehwinkel $\\Delta \\varphi$ (im Bogenmaß) pro Zeitintervall $\\Delta t$ an:     $$\\mathbf{\\omega = \\frac{2\\pi}{T} = 2\\pi f} \\quad (\\text{Einheit: } \\text{s}^{-1} = \\frac{\\text{rad}}{\\text{s}})$$ - **2. Bahngeschwindigkeit $v$**:   * Die Translationsgeschwindigkeit eines Punktes im Abstand $r$ von der Drehachse:     $$\\mathbf{v = \\omega \\cdot r = \\frac{2\\pi r}{T}}$$   * Der Geschwindigkeitsvektor $\\vec{v}$ steht zu jedem Zeitpunkt **tangential zur Kreisbahn**. 2. Dynamik: Zentripetalbeschleunigung und Zentripetalkraft: - **Zentripetalbeschleunigung $\\vec{a}_Z$**:   * Bei einer gleichförmigen Kreisbewegung ist der Geschwindigkeitsbetrag konstant, aber der Vektor $\\vec{v}$ ändert fortwährend seine Richtung $\\implies$ permanente Beschleunigung **senkrecht zur Bewegungsrichtung zum Kreismittelpunkt hin**:     $$\\mathbf{a_Z = \\frac{v^2}{r} = \\omega^2 \\cdot r}$$ - **Zentripetalkraft $\\vec{F}_Z$**:   * Nach dem 2. Newtonschen Axiom (Grundgesetz der Dynamik) ist zur Erzeugung dieser Beschleunigung eine nach innen gerichtete Kraft zwingend erforderlich:     $$\\mathbf{F_Z = m \\cdot a_Z = m \\cdot \\frac{v^2}{r} = m \\cdot \\omega^2 \\cdot r}$$   * *Physikalischer Träger der Kraft*: Die Zentripetalkraft ist keine neue fundamentale Kraftart, sondern wird von realen Kräften bereitgestellt (z. B. Haftreibung der Reifen auf dem Asphalt, Seilkraft beim Kettenkarussell, Gravitation bei Satelliten).   * *Trägheitskraft (Zentrifugalkraft)*: Schein- oder Fliehkraft, die nur im mitrotierenden Bezugssystem auftritt ($F_{\\text{Zentrifugal}} = -F_Z$). 3. Durchrechnung des Beispiels ($m = 1200\\,\\text{kg}, r = 50\\,\\text{m}, v = 20\\,\\frac{\\text{m}}{\\text{s}}$): - **Zentripetalkraft $F_Z$**:   $$F_Z = m \\cdot \\frac{v^2}{r} = 1200\\,\\text{kg} \\cdot \\frac{(20\\,\\frac{\\text{m}}{\\text{s}})^2}{50\\,\\text{m}} = 1200 \\cdot \\frac{400}{50}\\,\\text{N} = 1200 \\cdot 8\\,\\text{N} = \\mathbf{9600\\,\\text{N} = 9{,}6\\,\\text{kN}}$$ - **Ergebnis**: Die Haftreibung zwischen Autoreifen und Straße muss eine Querkraft von mindestens $9{,}6\\,\\text{kN}$ übertragen können, damit das Fahrzeug nicht aus der Kurve rutscht."
+        }
+      ]
+    },
+    {
+      "id": "01K8GA60000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA60000000000000000A02",
+      "namespace": "gymnasium-physik-gravitation",
+      "slug": "gravitationsgesetz-kepler-gesetze-satellitenbahnen",
+      "title": "Gravitation & Himmelsmechanik: Newtonsches Gravitationsgesetz, Keplersche Gesetze und Satelliten",
+      "domain": "schule/physik/astronomie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA60000000000000000A01",
+          "type": "hard",
+          "rationale": "Planeten- und Satellitenbahnen beruhen auf der Zentripetalkraft durch Gravitation."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Newton's law of universal gravitation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "physik",
+          "topic_code": "lb3",
+          "topic_title": "Gravitationsgesetz und Keplersche Gesetze",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA60000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet das 3. Keplersche Gesetz über das Verhältnis der Umlaufzeiten $T_1, T_2$ zweier Planeten zu den großen Halbachsen $a_1, a_2$ ihrer Bahnellipsen?",
+          "concept": "T_1^2 / T_2^2 = a_1^3 / a_2^3 (Die Quadrate der Umlaufzeiten verhalten sich wie die Kuben der großen Halbachsen: T^2 / a^3 = konstant)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "T_1^2 / T_2^2 = a_1^3 / a_2^3 (T^2 / a^3 = const)",
+              "T_1 / T_2 = a_1 / a_2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA60000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Newtonsche Gravitationsgesetz und die Keplerschen Planetengesetze: 1. **Das Gravitationsgesetz (Isaac Newton, 1687)**:   $$\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}} \\quad (G \\approx 6{,}674 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2})$$   * Universelle Massenanziehung; $F_G \\sim \\frac{1}{r^2}$.   * Erdbeschleunigung an der Erdoberfläche ($r = R_E, M = M_E$): $g = G \\frac{M_E}{R_E^2} \\approx 9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}$, 2. **Die drei Keplerschen Gesetze (Johannes Kepler, 1609/1619)**:   * **1. Gesetz (Ellipsensatz)**: Die Planeten bewegen sich auf Ellipsenbahnen, in deren einem gemeinsamen Brennpunkt die Sonne steht.   * **2. Gesetz (Flächensatz)**: Der Leitstrahl Sonne-Planet überstreicht in gleichen Zeiten gleiche Flächen ($A_1 = A_2 \\implies$ schnellste Bewegung im Perihel [Sonnennähe], langsamste im Aphel [Sonnenferne] infolge Drehimpulserhaltung).   * **3. Gesetz (Harmonisches Gesetz)**: Die Quadrate der Umlaufzeiten zweier Planeten verhalten sich wie die dritten Potenzen (Kuben) ihrer großen Halbachsen:     $$\\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3} \\iff \\frac{T^2}{a^3} = \\text{konstant}}$$ 3. **Kreisbahn eines Satelliten (1. kosmische Geschwindigkeit)**:   * Gleichsetzen von Gravitationskraft und Zentripetalkraft: $F_G = F_Z \\implies G \\frac{M \\cdot m}{r^2} = m \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M}{r}}}$ (bodennah: $v_1 \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}}$).",
+          "concept": "Gravitation: F_G = G * m1*m2/r^2; Fallbeschleunigung g = G*M/R^2; 3 Keplersche Gesetze (1. Ellipsen, 2. Flächensatz dA/dt = const, 3. T^2/a^3 = const); Satellitengeschwindigkeit v = sqrt(G*M/r).",
+          "sample_solution": "1. Das universelle Gravitationsgesetz (Sir Isaac Newton): - **Gravitationskraft**: Jede Masse zieht jede andere Masse im Universum mit einer Kraft an, die proportional zum Produkt beider Massen und umgekehrt proportional zum Quadrat ihres Abstands $r$ ist:   $$\\mathbf{F_G = G \\cdot \\frac{m_1 \\cdot m_2}{r^2}}$$   * **Gravitationskonstante**: $\\mathbf{G = 6{,}6743 \\cdot 10^{-11}\\,\\frac{\\text{N}\\cdot\\text{m}^2}{\\text{kg}^2}}$ (experimentell gemessen von Henry Cavendish). - **Zusammenhang mit der Erdbeschleunigung $g$**:   $$F_G = m \\cdot g \\implies g = G \\cdot \\frac{M_E}{R_E^2} \\approx 6{,}674 \\cdot 10^{-11} \\cdot \\frac{5{,}97 \\cdot 10^{24}\\text{ kg}}{(6{,}371 \\cdot 10^6\\text{ m})^2} = \\mathbf{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2}}$$ 2. Die drei Gesetze der Planetenbewegung (Johannes Kepler): - **1. Keplersches Gesetz (Ellipsensatz)**:   * Die Umlaufbahnen aller Planeten sind **Ellipsen**, in deren einem Brennpunkt $F_1$ die Sonne steht (der zweite Brennpunkt $F_2$ ist leer). - **2. Keplersches Gesetz (Flächensatz)**:   * Ein von der Sonne zum Planeten gezogener Fahrstrahl überstreicht in gleichen Zeitintervallen gleiche Flächeninhalte:     $$\\mathbf{\\frac{\\mathrm{d}A}{\\mathrm{d}t} = \\text{konstant}}$$   * *Konsequenz*: In Sonnennähe (**Perihel**) bewegt sich der Planet am schnellsten; in Sonnenferne (**Aphel**) am langsamsten (Folge der **Drehimpulserhaltung** $\\vec{L} = \\vec{r} \\times m\\vec{v} = \\text{konstant}$). - **3. Keplersches Gesetz (Drittes Gesetz)**:   * Für alle Planeten eines Zentralkörpers ist das Verhältnis aus dem Quadrat der Umlaufzeit $T$ und der dritten Potenz der großen Halbachse $a$ konstant:     $$\\mathbf{\\frac{T^2}{a^3} = \\frac{4\\pi^2}{G \\cdot M_{\\text{Sonne}}} = \\text{konstant}} \\iff \\mathbf{\\frac{T_1^2}{T_2^2} = \\frac{a_1^3}{a_2^3}}$$ 3. Satellitenbahnen und kosmische Geschwindigkeiten: - **Bahngeschwindigkeit eines Satelliten auf einer Kreisbahn mit Radius $r$**:   * Die Gravitationskraft dient exakt als Zentripetalkraft:     $$F_G = F_Z \\implies G \\cdot \\frac{M_E \\cdot m}{r^2} = m \\cdot \\frac{v^2}{r} \\implies \\mathbf{v = \\sqrt{\\frac{G \\cdot M_E}{r}}}$$ - **1. Kosmische Geschwindigkeit (Kreisbahngeschwindigkeit an Erdoberfläche $r = R_E$)**:   $$\\mathbf{v_1 = \\sqrt{g \\cdot R_E} = \\sqrt{9{,}81\\,\\frac{\\text{m}}{\\text{s}^2} \\cdot 6{,}371 \\cdot 10^6\\,\\text{m}} \\approx 7{,}9\\,\\frac{\\text{km}}{\\text{s}} = 28.440\\,\\frac{\\text{km}}{\\text{h}}}$$ - **Geostationäre Bahn**:   * Umlaufzeit exakt $T = 24\\,\\text{h} = 86.400\\,\\text{s} \\implies$ Bahnradius $r_{\\text{geo}} \\approx 42.164\\,\\text{km}$ (Höhe ca. $35.786\\,\\text{km}$ über dem Äquator)."
+        }
+      ]
+    }
+  ]
+}

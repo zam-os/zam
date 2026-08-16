@@ -91,10 +91,16 @@ describe("foundation suggestions", () => {
   it("excludes the target token and deprecated tokens", async () => {
     const queryVec = [1, 0, 0, 0];
 
-    const target = await makeToken({ slug: "target", concept: "Target Concept" });
-    await setEmbedding(target, makeUnitVector(0.60));
+    const target = await makeToken({
+      slug: "target",
+      concept: "Target Concept",
+    });
+    await setEmbedding(target, makeUnitVector(0.6));
 
-    const active = await makeToken({ slug: "active", concept: "Active Concept" });
+    const active = await makeToken({
+      slug: "active",
+      concept: "Active Concept",
+    });
     await setEmbedding(active, makeUnitVector(0.61));
 
     const deprecated = await makeToken({
@@ -116,14 +122,20 @@ describe("foundation suggestions", () => {
   it("sets the alreadyPrerequisite flag correctly", async () => {
     const queryVec = [1, 0, 0, 0];
 
-    const target = await makeToken({ slug: "target", concept: "Target Concept" });
-    const prereq = await makeToken({ slug: "prereq", concept: "Prerequisite Concept" });
+    const target = await makeToken({
+      slug: "target",
+      concept: "Target Concept",
+    });
+    const prereq = await makeToken({
+      slug: "prereq",
+      concept: "Prerequisite Concept",
+    });
     const nonPrereq = await makeToken({
       slug: "non-prereq",
       concept: "Non-Prerequisite Concept",
     });
 
-    await setEmbedding(prereq, makeUnitVector(0.60));
+    await setEmbedding(prereq, makeUnitVector(0.6));
     await setEmbedding(nonPrereq, makeUnitVector(0.61));
 
     await addPrerequisite(db, target.id, prereq.id);
@@ -145,9 +157,12 @@ describe("foundation suggestions", () => {
     const queryVec = [1, 0, 0, 0];
 
     const target = await makeToken({ slug: "target", concept: "Target" });
-    const dependent = await makeToken({ slug: "dependent", concept: "Dependent" });
+    const dependent = await makeToken({
+      slug: "dependent",
+      concept: "Dependent",
+    });
 
-    await setEmbedding(dependent, makeUnitVector(0.60));
+    await setEmbedding(dependent, makeUnitVector(0.6));
 
     // dependent requires target
     await addPrerequisite(db, dependent.id, target.id);
@@ -183,7 +198,7 @@ describe("foundation suggestions", () => {
       bloom_level: 3,
     });
 
-    await setEmbedding(level1, makeUnitVector(0.60));
+    await setEmbedding(level1, makeUnitVector(0.6));
     await setEmbedding(level2, makeUnitVector(0.61));
     await setEmbedding(level3, makeUnitVector(0.62));
 
@@ -210,9 +225,9 @@ describe("foundation suggestions", () => {
     const c = await makeToken({ slug: "c", concept: "Concept C" });
 
     // Same similarity
-    await setEmbedding(a, makeUnitVector(0.60));
-    await setEmbedding(b, makeUnitVector(0.60));
-    await setEmbedding(c, makeUnitVector(0.60));
+    await setEmbedding(a, makeUnitVector(0.6));
+    await setEmbedding(b, makeUnitVector(0.6));
+    await setEmbedding(c, makeUnitVector(0.6));
 
     const suggestions = await suggestFoundations(db, {
       queryEmbedding: queryVec,
@@ -225,8 +240,12 @@ describe("foundation suggestions", () => {
 
   it("handles empty targetId gracefully with all flags false", async () => {
     const queryVec = [1, 0, 0, 0];
-    const a = await makeToken({ slug: "a", concept: "Concept A", bloom_level: 3 });
-    await setEmbedding(a, makeUnitVector(0.60));
+    const a = await makeToken({
+      slug: "a",
+      concept: "Concept A",
+      bloom_level: 3,
+    });
+    await setEmbedding(a, makeUnitVector(0.6));
 
     const suggestions = await suggestFoundations(db, {
       queryEmbedding: queryVec,
@@ -265,9 +284,9 @@ describe("foundation suggestions", () => {
     const t40 = await makeToken({ slug: "t40", concept: "T40" });
     const t55 = await makeToken({ slug: "t55", concept: "T55" });
     const t80 = await makeToken({ slug: "t80", concept: "T80" });
-    await setEmbedding(t40, makeUnitVector(0.40));
+    await setEmbedding(t40, makeUnitVector(0.4));
     await setEmbedding(t55, makeUnitVector(0.55));
-    await setEmbedding(t80, makeUnitVector(0.80));
+    await setEmbedding(t80, makeUnitVector(0.8));
     const suggestions = await suggestFoundations(db, {
       queryEmbedding: queryVec,
       model: MODEL,

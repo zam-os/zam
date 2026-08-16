@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-deutsch-eroerterung-literatur-weimarer-klassik",
+  "version": "2026.08.1",
+  "title": "Deutsch 9: Dialektische Erörterung, Argumentationstypen und Literatur der Weimarer Klassik (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Deutsch 9: Textgebundene und freie dialektische Erörterung (Gliederung, Argumenttypen: Fakten-, Autoritäts-, normatives, analogisierendes Argument, Entkräftung von Gegenargumenten), Literaturgeschichte der Weimarer Klassik (1786–1805: Goethe, Schiller, Viergestirn, Menschenbild: Humanität, Kalokagathia, sittliche Läuterung, Antikenrezeption) sowie Analyse klassischer Dramenauszüge und Gedankenlyrik.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/deutsch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Deutsch 9, Lernbereiche Argumentieren und Erörtern, Literaturgeschichte"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9H0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9H0000000000000000A01",
+      "namespace": "gymnasium-deutsch-argumentation",
+      "slug": "dialektische-eroerterung-argumenttypen-entkraeftung",
+      "title": "Dialektische Erörterung: Argumenttypen (Fakten-, Autoritäts-, normativ) und Entkräftungstechniken",
+      "domain": "schule/deutsch/argumentation",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Argumentation",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "deutsch",
+          "topic_code": "lb1",
+          "topic_title": "Argumentieren und Erörtern",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9H0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Argumenttyp stützt eine These durch Berufung auf anerkannte Experten, wissenschaftliche Institute oder renommierte Persönlichkeiten (z. B. 'Wie das Max-Planck-Institut nachwies...')?",
+          "concept": "Das Autoritätsargument (Argumentum ad verecundiam)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Autoritätsargument",
+              "Normatives Argument"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9H0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Argumentationstypen, Entkräftungsstrategien und den dialektischen Aufsatzaufbau: 1. **Die 4 seriösen Argumenttypen**:   * **Faktenargument**: Beruft sich auf unstrittige, empirisch nachprüfbare Tatsachen, Zahlen oder Statistiken.   * **Autoritätsargument**: Zieht Urteile anerkannter wissenschaftlicher Fachleute oder Institutionen heran.   * **Normatives Argument**: Stützt sich auf allgemein anerkannte ethische Werte, Normen oder Grundrechte (z. B. Menschenwürde, Gerechtigkeit).   * **Analogisierendes Argument**: Zieht einen vergleichenden Parallelfall aus einem anderen Lebensbereich heran, 2. **Scheinargumente (Fehlschlüsse)**: Argumentum ad hominem (persönlicher Angriff), Argumentum ad populum (Berufung auf Massengefühle), Zirkelschluss (Tautologie), 3. **Strategie der Entkräftung**: Ein gegnerisches Argument aufgreifen (*'Zwar wird oft eingewandt...'*), die Prämisse oder Verhältnismäßigkeit widerlegen (*'doch verkennt dieser Einwand...'*), und mit einem stärkeren eigenen Argument überbieten, 4. **Gliederung der dialektischen Erörterung**: Einleitung (Themenhinführung, Basissatz, Problemfrage) $\\rightarrow$ Hauptteil (Gegenseite vom stärksten zum schwächsten Argument $\\rightarrow$ Drehpunkt $\\rightarrow$ Eigene Seite vom schwächsten zum stärksten Hauptargument) $\\rightarrow$ Schluss (Synthese, begründetes Urteil, Zukunftsausblick).",
+          "concept": "Erörterung: 4 Argumenttypen (Fakten-, Autoritäts-, normatives, analogisierendes Argument); Scheinargumente; Entkräftungstechniken; Dialektischer Sanduhr-Aufbau; Synthese und begründetes Werturteil im Schluss.",
+          "sample_solution": "1. Die 4 wissenschaftlich fundierten Argumenttypen: - **1. Faktenargument**:   * Beruht auf verifizierbaren Tatsachen, statistischen Daten oder naturwissenschaftlichen Gesetzen (*« Laut Statistischem Bundesamt ist der Ausstoß von Treibhausgasen im Vorjahr um 4 % gesunken. »*). - **2. Autoritätsargument**:   * Zieht das Urteil einer anerkannten Koryphäe, eines Nobelpreisträgers oder eines wissenschaftlichen Gremiums heran (*« Wie der Deutsche Ethikrat in seiner Stellungnahme betont... »*). - **3. Normatives Argument**:   * Basiert auf allgemein akzeptierten moralischen Grundwerten, Verfassungsgrundsätzen oder gesellschaftlichen Wertmaßstäben (*« Das Recht auf körperliche Unversehrtheit und freie Entfaltung der Persönlichkeit gebietet es, dass... »*). - **4. Analogisierendes Argument**:   * Überträgt eine funktionierende Lösung aus einem vergleichbaren Bereich auf die aktuelle Fragestellung (*« So wie die Einführung des Sicherheitsgurts im Auto die Unfalltote drastisch senkte, so wird auch... »*). 2. Typische Scheinargumente und rhetorische Manipulation: - **Argumentum ad hominem**: Statt das Sachargument zu widerlegen, wird die Person des Gegners diffamiert. - **Argumentum ad populum**: Appell an Vorurteile oder diffuse Ängste der Mehrheit (*« Das gesunde Volksempfinden weiß doch... »*). - **Zirkelschluss (Petitio principii)**: Die Behauptung wird mit sich selbst in anderen Worten begründet. 3. Technik der dialektischen Gegenargument-Entkräftung: - Ein überzeugender gymnasialer Text ignoriert Gegenstimmen nicht, sondern demontiert sie aktiv in 3 Schritten:   * **1. Einräumung (Konzession)**: *« Es ist zwar verständlich, dass Kritiker die hohen Anschaffungskosten von Tablets im Unterricht anführen, ... »*   * **2. Relativierung / Widerlegung**: *« ... allerdings amortisieren sich diese Investitionen bereits nach zwei Schuljahren durch den vollständigen Wegfall teurer Papierschulbücher und Kopierkosten. »*   * **3. Eigene Verstärkung (Pointe)**: *« Zudem erwerben die Schüler unverzichtbare digitale Schlüsselkompetenzen für ihre spätere Berufswelt. »* 4. Aufbau des dialektischen Hauptteils: - **Block 1 (Die Kontra-Seite)**: Starkes Kontra $\\rightarrow$ Mittleres Kontra $\\rightarrow$ Schwaches Kontra. - **Drehpunkt (Syntheseüberleitung)**: Formulierung des Perspektivwechsels. - **Block 2 (Die Pro-Seite)**: Schwaches Pro $\\rightarrow$ Mittleres Pro $\\rightarrow$ **Schlagkräftigstes Pro-Hauptargument** am Ende des Hauptteils."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9H0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9H0000000000000000A02",
+      "namespace": "gymnasium-deutsch-literatur",
+      "slug": "weimarer-klassik-goethe-schiller-humanitaetsideal-kalokagathia",
+      "title": "Die Weimarer Klassik (1786–1805): Goethe, Schiller, das Humanitätsideal und Formstrenge",
+      "domain": "schule/deutsch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9H0000000000000000A01",
+          "type": "hard",
+          "rationale": "Textanalysen der Klassik erfordern differenzierte Argumentations- und Stilmittelkompetenz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q25379",
+          "target_label": "Weimar Classicism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "deutsch",
+          "topic_code": "lb2",
+          "topic_title": "Literaturgeschichte – Die Weimarer Klassik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9H0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welchem historischen Ereignis setzt die Epoche der Weimarer Klassik 1786 symbolisch ein?",
+          "concept": "Goethes Italienische Reise (1786–1788) zur Wiederentdeckung der antiken Harmonie und Maßstäbe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Goethes Italienische Reise (1786)",
+              "Schillers Veröffentlichung der Räuber"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9H0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Epochenprofil der Weimarer Klassik (1786–1805): 1. **Historischer Rahmen & Weimarer Viergestirn**:   * Epochenzeitraum: Von Goethes Italienreise (1786) bis zu Schillers Tod (1805).   * Vertreter: Johann Wolfgang von Goethe, Friedrich Schiller, Johann Gottfried Herder, Christoph Martin Wieland, 2. **Das klassische Menschen- und Kunstideal**:   * **Antikenrezeption**: Orientierung an der griechischen Antike nach Johann Joachim Winckelmann (*'Edle Einfalt, stille Größe'*).   * **Humanitätsideal**: Der harmonisch gebildete Mensch, der Verstand (Rationalität) und Gefühl (Sinnlichkeit), Pflicht und Neigung in vollkommenen Einklang bringt (**Kalokagathia / die 'schöne Seele'**).   * **Erziehung des Menschen durch die Kunst**: Ästhetische Erziehung (Schiller: *Über die ästhetische Erziehung des Menschen*) als friedlicher Gegenentwurf zum Terror der Französischen Revolution, 3. **Sprachliche und formale Merkmale**:   * Höchste Formstrenge, Blankvers (reimloser fünfhebiger Jambus), metrische Ausgewogenheit, erhabener, pathetischer Stil (z. B. Goethes *Iphigenie auf Tauris*, Schillers *Wilhelm Tell*, *Maria Stuart*).",
+          "concept": "Weimarer Klassik (1786-1805): Goethe & Schiller; Antikenbezug (Winckelmann: edle Einfalt, stille Größe); Humanitätsideal & schöne Seele (Einklang von Pflicht und Neigung); ästhetische Erziehung gegen revolutionären Terror; Formstrenge (Blankvers).",
+          "sample_solution": "1. Historischer Kontext und Epocheneinordnung der Weimarer Klassik: - **Zeitspanne**: 1786 (Goethes heimliche Abreise nach Italien) bis 1805 (Tod Friedrich Schillers). - **Zentrum Weimar**: Am Hof von Herzog Carl August versammelten sich die vier Geistesgrößen: **Goethe, Schiller, Herder und Wieland**. - **Historischer Hintergrund**: Die Schreckensherrschaft (*Terreur*) der Jakobiner nach der Französischen Revolution von 1789 erschütterte das Vertrauen in eine gewaltsame politische Umwälzung $\\implies$ Die Klassiker suchten die Verbesserung der Gesellschaft nicht durch Revolution, sondern durch die **innere sittliche Veredelung des Individuums**. 2. Das klassische Kunst- und Menschenideal: - **1. Antikenrezeption (Johann Joachim Winckelmann)**:   * Leitformel: *« Edle Einfalt und stille Größe »*. Die Kunst der griechischen Antike galt als unübertreffliches Muster für Harmonie, Maß, Gesetzmäßigkeit und zeitlose Schönheit. - **2. Das Humanitätsideal**:   * Der Mensch soll sich zur allseitig harmonischen Persönlichkeit entwickeln.   * **Einklang von Pflicht und Neigung**: Überwindung des inneren Konflikts zwischen triebhafter Sinnlichkeit und sittlicher Vernunft $\\implies$ Das Ideal der **« schönen Seele » (Kalokagathia)**.   * *Goethes Iphigenie*: *« Alle menschlichen Gebrechen sühnet reine Menschlichkeit. »* (Wahrhaftigkeit besiegt Barbarei ohne Gewalt). - **3. Schillers ästhetische Erziehung**:   * In seinen Briefen *« Über die ästhetische Erziehung des Menschen »* (1795) fordert Schiller: *« Der Mensch ist nur da ganz Mensch, wo er spielt. »* Der **Spieltrieb** verbindet Formtrieb (Geist) und Stofftrieb (Materie) durch Kunstgenuss. 3. Formale Gestaltung und Gattungen: - **Formstrenge**: Symmetrischer Aufbau, geschlossene Dramenform (5 Akte nach Pyramidenbau), überindividuelle Typisierung der Figuren. - **Der Blankvers**: Reimloser fünfhebiger Jambus mit weiblicher oder männlicher Kadenz:   * *Beispiel*: *« Heraus in eure Schatten, rege Wipfel... »*   * Verleiht der Sprache Erhabenheit, Rhythmus und feierliche Würde. - **Zentrale Werke**:   * Dramen: Goethe (*Iphigenie auf Tauris, Torquato Tasso*), Schiller (*Don Karlos, Wallenstein, Maria Stuart, Wilhelm Tell*).   * Balladenjahr 1797: Goethes *Zauberlehrling*, Schillers *Bürgschaft, Glocke, Taucher*."
+        }
+      ]
+    }
+  ]
+}

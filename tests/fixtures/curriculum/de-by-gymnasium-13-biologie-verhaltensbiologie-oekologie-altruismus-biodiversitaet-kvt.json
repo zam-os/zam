@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-biologie-verhaltensbiologie-oekologie-altruismus-biodiversitaet",
+  "version": "2026.08.1",
+  "title": "Biologie 13: Verhaltensökologie & Artenschutz – Altruismus (Hamilton-Regel), Paarungssysteme und Biodiversitätskrise (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 13 (Oberstufe Q13 / Abitur): Verhaltensökologie und Soziobiologie (Kosten-Nutzen-Analysen von Verhalten, Optimale Nahrungssuche / Optimal Foraging Theory, Revierverhalten und Aggression), Evolution von Kooperation und Altruismus (Das Paradoxon des selbstlosen Verhaltens, Gesamtfitness / Inclusive Fitness = direkte Fitness + indirekte Fitness, Verwandtenselektion / Kin Selection, Die Hamilton-Regel r * B > C mit Verwandtschaftsgrad r, Nutzen B und Kosten C; Reziproker Altruismus nach Robert Trivers / Tit-for-Tat-Strategie; Eusozialität bei Hautflüglern [Ameisen, Bienen] und Haplodiploidie), Paarungssysteme und Sexuelle Selektion (Intersexuelle Selektion [Female Choice / Good-Genes-Hypothese, Handicap-Prinzip nach Zahavi] vs. Intrasexuelle Selektion [Male-Male Competition, Kommentkämpfe, Spermienkonkurrenz]; Monogamie, Polygynie, Polyandrie) sowie Biodiversität, Ökosystemdienstleistungen und Artenschutz (Die globale Biodiversitätskrise / 6. Massenaussterben, Gefährdungsursachen [Habitatfragmentierung, invasive Neobiota, Pestizide, Übernutzung, Klimawandel], Mindestüberlebensfähige Populationsgröße MVP, Biotopvernetzung, Renaturierung von Mooren und In-situ vs. Ex-situ Artenschutz).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 13, Lernbereich Verhaltensbiologie, Ökologie und Naturschutz"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GDE0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GDE0000000000000000A01",
+      "namespace": "gymnasium-biologie-verhaltensbiologie",
+      "slug": "verhaltensoekologie-altruismus-hamilton-regel-sexuelle-selektion",
+      "title": "Verhaltensökologie: Gesamtfitness, Altruismus (Hamilton-Regel) und Sexuelle Selektion",
+      "domain": "schule/biologie/verhaltensbiologie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Kin selection",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Verhaltensökologie und Soziobiologie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDE0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Unter welcher mathematischen Bedingung der Hamilton-Regel (r * B > C) evolviert scheinbar selbstloses altruistisches Helferverhalten bei Tieren durch Verwandtenselektion?",
+          "concept": "Wenn das Produkt aus dem genetischen Verwandtschaftsgrad r und dem Fortpflanzungsnutzen für den Empfänger B größer ist als die Kosten für den Helfer C (r * B > C)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "r \\cdot B > C (Hamilton-Regel)",
+              "B + C < r"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDE0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Konzept der Gesamtfitness, die Hamilton-Regel und Mechanismen der sexuellen Selektion: 1. **Gesamtfitness (*Inclusive Fitness* nach William D. Hamilton, 1964)**:   * $\\mathbf{\\text{Gesamtfitness} = \\text{Direkte Fitness} + \\text{Indirekte Fitness}}$.     - *Direkte Fitness*: Eigene Nachkommenanzahl.     - *Indirekte Fitness*: Fortpflanzungserfolg von Verwandten, gesteigert durch eigene Hilfeleistung, gewichtet mit dem Verwandtschaftsgrad $r$.   * **Verwandtschaftskoeffizient $r$**: Eltern-Kind ($r = 0{,}5$), Vollgeschwister ($r = 0{,}5$), Halbgeschwister / Onkel-Neffe ($r = 0{,}25$), Cousins ($r = 0{,}125$).   * **Die Hamilton-Regel**: $\\mathbf{r \\cdot B > C}$ ($B$: Nutzen für Empfänger, $C$: Kosten für Geber in Nachkommen).   * *(J.B.S. Haldane: « Ich würde mein Leben opfern für zwei Brüder oder acht Cousins! »)*, 2. **Eusozialität & Haplodiploidie bei Honigbienen**:   * Weibliche Arbeiterinnen sind diploid ($2n$), Drohnen haploid ($n$).   * Vollschwestern teilen $100\\,\\%$ der väterlichen Gene und $50\\,\\%$ der mütterlichen Gene $\\implies \\mathbf{r = 0{,}75}$.   * Schwestern sind enger miteinander verwandt ($r = 0{,}75$) als mit eigenen Töchtern ($r = 0{,}5$) $\\implies$ Aufzucht von Schwestern maximiert die Weitergabe der eigenen Gene, 3. **Sexuelle Selektion (Charles Darwin & Amotz Zahavi)**:   * **Intersexuelle Selektion (Female Choice)**: Weibchen wählen Männchen nach Prachtmerkmalen (Pfauenrad).   * **Handicap-Prinzip (Zahavi)**: Auffällige Ornamente behindern beim Fliegen und kosten Energie $\\implies$ Wer trotz dieses Handicaps überlebt, beweist echte genetische Vitalität (**Good-Genes-Hypothese**).",
+          "concept": "Verhaltensbiologie 13: Gesamtfitness = direkte + indirekte Fitness; Hamilton-Regel r*B > C; Haplodiploidie bei Bienen (r=0,75 unter Schwestern); Sexuelle Selektion (Female Choice, Handicap-Prinzip Zahavi, Good-Genes).",
+          "sample_solution": "1. Das biologische Paradoxon des Altruismus und die Verwandtenselektion: - **Das Problem**: Warum helfen Murmeltiere durch Warnrufe dem Rudel, obwohl sie sich selbst dem Räuber exponieren? Warum opfern sich Arbeiterinnen bei Insekten ohne eigene Nachkommen auf? - **Die Lösung: Die Theorie der Gesamtfitness (William D. Hamilton, 1964)**:   * Die natürliche Selektion optimiert nicht das Überleben des Einzelindividuums, sondern die **Kopienhäufigkeit der eigenen Gene** im Genpool der Folgegeneration (**'Das egoistische Gen' nach Richard Dawkins**).   * **Gesamtfitness (*Inclusive Fitness*)**:     $$\\mathbf{\\text{Gesamtfitness} = \\text{Direkte Fitness (eigene Kinder)} + \\text{Indirekte Fitness (Kinder von Verwandten)}}$$ 2. Die Hamilton-Regel und Verwandtschaftsgrade: - Ein altruistisches Gen breitet sich in der Population aus, wenn gilt:   $$\\mathbf{r \\cdot B > C}$$   *(mit $r$: Verwandtschaftskoeffizient; $B$: Nutzen / zusätzliche Nachkommen des Empfängers; $C$: Kosten / entgangene eigene Nachkommen des Helfers)*. - **Verwandtschaftsgrade bei diploiden Arten**:   * Vollgeschwister: $r = 0{,}5$ (jeder Elternteil gibt $50\\,\\%$).   * Nichten/Neffen: $r = 0{,}25$.   * Cousins 1. Grades: $r = 0{,}125$. 3. Das Extrembeispiel der Eusozialität durch Haplodiploidie: - Bei staatenbildenden Hautflüglern (Ameisen, Bienen, Wespen):   * Drohnen entstehen aus unbefruchteten Eiern (haploid, $n$) $\\implies$ geben $100\\,\\%$ ihrer Gene identisch weiter.   * Königinnen sind diploid ($2n$) $\\implies$ geben $50\\,\\%$ weiter.   * **Berechnung des Verwandtschaftsgrads zweier Vollschwestern**:     $$r = \\frac{1}{2} \\cdot 1{,}0 \\; (\\text{Vateranteil}) + \\frac{1}{2} \\cdot 0{,}5 \\; (\\text{Mutteranteil}) = 0{,}5 + 0{,}25 = \\mathbf{0{,}75}$$   * Eine Arbeiterin teilt mit ihren Schwestern **$75\\,\\%$ ihrer Gene**, mit einem eigenen Nachkommen aber nur **$50\\,\\%$**. Es ist für ihr Genom evolutionär vorteilhafter, Schwestern großzuziehen als eigene Eier zu legen! 4. Sexuelle Selektion und das Handicap-Prinzip: - **Intrasexuelle Selektion (Konkurrenzkämpfe)**:   * Männchen kämpfen untereinander um Paarungszugänge (Hirschgeweih, Körpergröße). - **Intersexuelle Selektion (Partnerwahl / Female Choice)**:   * Weibchen investieren biologisch mehr Ressourcen (große Eizellen, Schwangerschaft, Brutpflege) $\\implies$ Wählerische Selektion des fittesten Partners. - **Das Handicap-Prinzip (Amotz Zahavi, 1975)**:   * Übertriebene Prachtmerkmale (z. B. die $1{,}5\\,\\text{m}$ lange Schleppe des Pfaus) sind biologisch hinderlich und energieaufwändig (**Handicap**).   * Gerade weil das Merkmal so teuer ist, kann es nicht gefälscht werden (*Honest Signal / Ehrliches Signal*): Es beweist dem Weibchen zweifelsfrei, dass das Männchen über ein exzellentes Immunsystem und überragende Vitalitätsgene verfügt (**Good-Genes-Hypothese**)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GDE0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GDE0000000000000000A02",
+      "namespace": "gymnasium-biologie-biodiversitaet",
+      "slug": "biodiversitaetskrise-oekosystemdienstleistungen-artenschutz-renaturierung",
+      "title": "Biodiversitätskrise: Gefährdungsfaktoren, Ökosystemdienstleistungen und Renaturierung",
+      "domain": "schule/biologie/oekologie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GDE0000000000000000A01",
+          "type": "hard",
+          "rationale": "Artenschutz und Populationsbiologie setzen verhaltensökologische und populationsgenetische Modelle voraus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Biodiversity",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Biodiversität und Artenschutz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDE0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Auf welchen drei fundamentalen biologischen Ebenen wird Biodiversität (biologische Vielfalt) nach der UN-Biodiversitätskonvention (CBD) definiert?",
+          "concept": "1. Genetische Vielfalt (Variabilität innerhalb einer Art), 2. Artenvielfalt (Artenreichtum in einem Ökosystem), 3. Ökosystemvielfalt (Vielfalt der Lebensräume und Biotope)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Genetische Vielfalt, Artenvielfalt und Ökosystemvielfalt",
+              "Pflanzen, Tiere und Mineralien"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDE0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Ursachen des globalen Artensterbens, Ökosystemdienstleistungen und moderne Naturschutzstrategien: 1. **Die drei Ebenen der Biodiversität**:   * **Genetische Vielfalt**: Basis für Anpassungsfähigkeit an Umweltveränderungen und Krankheiten.   * **Artenvielfalt**: Anzahl und Häufigkeitsverteilung der Taxa.   * **Ökosystemvielfalt**: Vielfalt an Habitaten und ökologischen Interaktionen, 2. **Die fünf Haupttreiber des globalen Massenaussterbens (IPBES-Bericht)**:   * **1. Zerstörung und Fragmentierung von Lebensräumen**: Entwaldung, Zersiedelung, Monokulturen.   * **2. Direkte Übernutzung**: Überfischung der Meere, Wilderei.   * **3. Anthropogener Klimawandel**: Verschiebung von Klimazonen, Korallenbleiche.   * **4. Umweltverschmutzung**: Pestizideintrag (Insektensterben / Krefelder Studie: $> 75\\,\\%$ Rückgang der Fluginsekten-Biomasse), Plastik, Eutrophierung von Gewässern durch Überdüngung.   * **5. Invasive Neobiota**: Verdrängung einheimischer Arten und Krankheitsübertragung, 3. **Ökosystemdienstleistungen & Naturschutzkonzepte**:   * **Dienstleistungen**: Bestäubung von Nutzpflanzen, Trinkwasserfilterung, CO2-Sequestrierung in Mooren, Erosionsschutz.   * **In-situ- vs. Ex-situ-Artenschutz**: Schutz im natürlichen Biotop (Nationalparks, Biosphärenreservate) vs. außerhalb (Zoos, Samenbanken wie Svalbard Global Seed Vault).   * **Biotopvernetzung & Renaturierung**: Trittsteinbiotope, Wildbrücken zur Überwindung der genetischen Verarmung durch Isolation; Wiedervernässung von Hochmooren.",
+          "concept": "Biodiversität 13: 3 Ebenen (genetisch, Arten, Ökosysteme); 5 IPBES-Treiber des Artensterbens (Habitatverlust, Übernutzung, Klima, Verschmutzung/Insektensterben, Neobiota); Naturschutz (Ökosystemdienstleistungen, In-situ vs. Ex-situ, Biotopverbund, Moor-Wiedervernässung).",
+          "sample_solution": "1. Die drei Säulen der Biodiversität (CBD Rio 1992): - **1. Genetische Diversität**: Die genetische Variabilität innerhalb von Populationen. Hohe Heterozygotie schützt vor Inzuchtdepression und ermöglicht evolutionäre Anpassungen an Krankheitserreger und Klimaerwärmung. - **2. Artendiversität**: Die Gesamtheit der Arten auf der Erde (ca. $1{,}8$ Mio. wissenschaftlich beschrieben, geschätzt $8-10$ Mio.). - **3. Diversität der Ökosysteme**: Die Vielfalt der Biome, Lebensgemeinschaften und Stoffkreisläufe. 2. Die fünf Treiber des 6. Massenaussterbens (IPBES-Weltbiodiversitätsrat): - Die gegenwärtige Aussterberate liegt um den **Faktor 100 bis 1000 über der natürlichen Hintergrundrate**:   1. **Habitatverlust und Fragmentierung**: Rodung von Regenwäldern für Palmöl/Soja; Zerschneidung von Biotopen durch Autobahnen $\\implies$ Inselpopulationen unterhalb der *Minimum Viable Population Size (MVP)*.   2. **Übernutzung**: Überfischung von $34\\,\\%$ der marinen Fischbestände; Raubbau an Tropenhölzern.   3. **Klimawandel**: Viele Arten können sich nicht schnell genug polwärts ausbreiten.   4. **Verschmutzung**: Massiver Insektizid- und Herbizideinsatz (Neonicotinoide) führte in Deutschland in 27 Jahren zu einem Rückgang von über **$75\\,\\%$ der Fluginsektenmasse** (*Krefelder Studie 2017*).   5. **Invasive gebietsfremde Arten (Neobiota)**: z. B. der Chytridpilz (*Batrachochytrium dendrobatidis*), der weltweit Amphibienpopulationen dezimiert. 3. Ökosystemdienstleistungen (Der Wert der Natur): - **1. Versorgend**: Nahrungsmittel, Trinkwasser, medizinische Wirkstoffe aus Heilpflanzen. - **2. Regulierend**: Bestäubung von $75\\,\\%$ aller Nutzpflanzen durch Insekten (Wert weltweit $> 200$ Mrd. Euro); Kohlenstoffspeicherung (Moore binden $30\\,\\%$ des terrestrischen Bodenkohlenstoffs auf nur $3\\,\\%$ der Landfläche). - **3. Kulturell**: Erholung, Ästhetik, Bildung. 4. Moderne Naturschutz- und Renaturierungsstrategien: - **Biotopverbundsysteme**:   * Anlage von Hecken, Gehölzinseln (**Trittsteinbiotope**) und **Grünbrücken** über Straßen, um den genetischen Austausch isolierter Populationen sicherzustellen (*Metapopulations-Dynamik*). - **Moorschutz & Renaturierung**:   * **Wiedervernässung degradierter Moore**: Stoppt den mikrobiellen Torfabbau und verhindert gigantische $\\text{CO}_2$- und Lachgas-Freisetzungen; schafft Lebensraum für spezialisierte Arten (Sonnentau, Hochmoor-Mosaikjungfer)."
+        }
+      ]
+    }
+  ]
+}

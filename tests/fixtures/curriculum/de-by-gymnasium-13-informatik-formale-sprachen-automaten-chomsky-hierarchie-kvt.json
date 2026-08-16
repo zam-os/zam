@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-informatik-formale-sprachen-automaten-chomsky-hierarchie",
+  "version": "2026.08.1",
+  "title": "Informatik 13: Theoretische Informatik – Formale Sprachen, Chomsky-Hierarchie, Endliche Automaten (DEA/NEA) und Grammatiken (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 13 (Oberstufe Q13 / Abitur): Grundlagen Formaler Sprachen und Grammatiken (Alphabet Sigma, Wörter Sigma*, Sprachen L subseteq Sigma*, Formale Grammatik G = (V, Sigma, P, S) mit Variablen, Terminalen, Produktionsregeln und Startsymbol), Die Chomsky-Hierarchie nach Noam Chomsky (Typ-0: Rekursiv aufzählbare Sprachen / Turingmaschinen; Typ-1: Kontextsensitive Sprachen / linear beschränkte Automaten; Typ-2: Kontextfreie Sprachen / Kellerautomaten PDA und Backus-Naur-Form BNF; Typ-3: Reguläre Sprachen / Endliche Automaten), Endliche Automaten (Deterministischer Endlicher Automat DEA: 5-Tupel M = (Z, Sigma, delta, z_0, F), Zustandsübergangsgraphen, Zustandstabellen, Wortakzeptanz und erkannte Sprache L(M); Nichtdeterministischer Endlicher Automat NEA und Potenzmengenkonstruktion nach Rabin-Scott zur Äquivalenz), Reguläre Ausdrücke und Reguläre Sprachen (Kleenesche Hülle, Konkatenation, Vereinigung, Äquivalenzsatz von Kleene) sowie Grenzen regulärer Sprachen (Das Pumping-Lemma für reguläre Sprachen und Beweis der Nicht-Regularität der Klammer- bzw. Gleichzahlsprache L = {a^n b^n | n >= 1}).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/informatik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Informatik 13, Lernbereich Theoretische Informatik – Formale Sprachen und Automaten"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD70000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD70000000000000000A01",
+      "namespace": "gymnasium-informatik-chomsky-grammatiken",
+      "slug": "formale-sprachen-grammatiken-chomsky-hierarchie",
+      "title": "Formale Sprachen: Grammatiken G = (V, Sigma, P, S) und die 4 Chomsky-Sprachklassen",
+      "domain": "schule/informatik/theoretische-informatik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Chomsky hierarchy",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Formale Sprachen und Chomsky-Hierarchie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD70000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Automatentyp akzeptiert exakt die Sprachklasse der kontextfreien Sprachen (Typ-2 der Chomsky-Hierarchie), wie sie z. B. für die Syntax von Programmiersprachen und verschachtelte Klammerausdrücke verwendet wird?",
+          "concept": "Der Kellerautomat (Pushdown Automaton / PDA mit LIFO-Stapelspeicher)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kellerautomat (Pushdown Automaton / PDA)",
+              "Deterministischer Endlicher Automat (ohne Speicher)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD70000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Formale Grammatiken und die Chomsky-Hierarchie: 1. **Definition einer formalen Grammatik**:   * $G = (V, \\Sigma, P, S)$:     - $V$: Nichtterminale / Variablen.     - $\\Sigma$: Terminalsymbole (Alphabet, $V \\cap \\Sigma = \\emptyset$).     - $P$: Endliche Menge von Produktionsregeln $\\alpha \\to \\beta$.     - $S \\in V$: Startsymbol.   * Die von $G$ erzeugte Sprache: $\\mathbf{L(G) = \\{w \\in \\Sigma^* \\mid S \\Rightarrow^* w\\}}$, 2. **Die 4 Stufen der Chomsky-Hierarchie (Noam Chomsky, 1956)**:   * **Typ 0 (Allgemeine / Phrasenstruktur-Grammatiken)**: Keine Einschränkungen für $P$ $\\implies$ Akzeptiert von **Turingmaschinen**.   * **Typ 1 (Kontextsensitive Grammatiken)**: $|\\alpha| \\le |\\beta|$ (Regeln der Form $\\gamma_1 A \\gamma_2 \\to \\gamma_1 \\beta \\gamma_2$) $\\implies$ **Linear beschränkte Automaten (LBA)**.   * **Typ 2 (Kontextfreie Grammatiken)**: Linke Regelseite besteht aus genau einer Variablen ($A \\to \\beta$ mit $A \\in V$) $\\implies$ **Kellerautomaten (PDA)** (z. B. BNF in Compilern).   * **Typ 3 (Reguläre Grammatiken)**: Regeln nur der Form $A \\to a B$ oder $A \\to a$ (rechtslinear) bzw. $A \\to B a$ oder $A \\to a$ (linkslinear) $\\implies$ **Endliche Automaten (DEA/NEA)** / Reguläre Ausdrücke, 3. **Hierarchiebeziehung**:   $$\\mathbf{\\mathcal{L}_3 \\subsetneq \\mathcal{L}_2 \\subsetneq \\mathcal{L}_1 \\subsetneq \\mathcal{L}_0}$$   *(Die Sprache $L = \\{a^n b^n \\mid n \\ge 1\\}$ ist Typ 2, aber nachweislich nicht Typ 3)*.",
+          "concept": "Formale Sprachen 13: Grammatik G = (V, Sigma, P, S); 4 Chomsky-Klassen: Typ 0 (Turingmaschine), Typ 1 (kontextsensitiv / LBA), Typ 2 (kontextfrei / PDA), Typ 3 (regulär / DEA); strikte Inklusionskette L3 subset L2 subset L1 subset L0.",
+          "sample_solution": "1. Mathematische Definition Formaler Grammatiken: - Ein 4-Tupel $\\mathbf{G = (V, \\Sigma, P, S)}$ formalisiert die Syntax einer Sprache:   * **Variable (Nichtterminale $V$)**: Platzhalter, die schrittweise ersetzt werden (z. B. $\\{S, A, B\\}$).   * **Terminale (Alphabet $\\Sigma$)**: Die eigentlichen Zeichen der finalen Wörter (z. B. $\\{a, b, 0, 1\\}$).   * **Produktionsregeln $P$**: Ersetzungsregeln der Form $\\alpha \\to \\beta$.   * **Ableitung ($S \\Rightarrow^* w$)**: Sukzessive Anwendung der Regeln ausgehend vom Startsymbol $S$, bis keine Variablen mehr im Wort enthalten sind. 2. Die vier Stufen der Chomsky-Hierarchie: | Stufe | Sprachklasse | Form der Regeln $\\alpha \\to \\beta$ | Äquivalentes Maschinenmodell | Typisches Anwendungsbeispiel | | :--- | :--- | :--- | :--- | :--- | | **Typ 3** | **Reguläre Sprachen** | $A \\to a B$ oder $A \\to a$ (rechtslinear) | **Endlicher Automat (DEA/NEA)** | Lexikalische Analyse / Regex (Scanner, Bezeichner, Zahlenformate) | | **Typ 2** | **Kontextfreie Sprachen** | $A \\to \\beta$ ($A \\in V, \\beta \\in (V \\cup \\Sigma)^*$) | **Nichtdeterministischer Kellerautomat (PDA)** | Syntax von Programmiersprachen (Parser, Klammerstrukturen) | | **Typ 1** | **Kontextsensitive Sprachen** | $\\alpha_1 A \\alpha_2 \\to \\alpha_1 \\beta \\alpha_2$ ($|\\alpha| \\le |\\beta|$) | **Linear beschränkter Automat (LBA)** | Natürliche Sprachen, Typ-Überprüfung | | **Typ 0** | **Rekursiv aufzählbare Sprachen** | Beliebige Regeln $\\alpha \\to \\beta$ (mit $\\alpha \\neq \\varepsilon$) | **Turingmaschine (TM)** | Universelle Algorithmen / Unbeschränkte Berechenbarkeit | 3. Warum $L = \\{a^n b^n \\mid n \\ge 1\\}$ Typ 2, aber nicht Typ 3 ist: - **Typ-2-Grammatik für $L$**:   * $V = \\{S\\}, \\Sigma = \\{a, b\\}$.   * Regeln: $S \\to a S b \\mid a b$.   * Ableitungsbeispiel für $a^3 b^3$: $S \\Rightarrow aSb \\Rightarrow aaSbb \\Rightarrow aaabbb$. - **Warum kein endlicher Automat $L$ erkennen kann**:   * Ein endlicher Automat besitzt nur eine feste, endliche Anzahl an Zuständen $|Z| = k$.   * Um beliebig viele $a$'s zu zählen und mit der exakt gleichen Anzahl an $b$'s abzugleichen ($n > k$), müsste sich der Automat den Zähler $n$ merken können.   * Da ein DEA keinen externen Speicher besitzt, scheitert er (**Pumping-Lemma für reguläre Sprachen**).   * Ein Kellerautomat (Typ 2) speichert die $a$'s hingegen einfach auf seinem unbegrenzten **LIFO-Stack** und poppt bei jedem gelesenen $b$ ein $a$ herunter."
+        }
+      ]
+    },
+    {
+      "id": "01K8GD70000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD70000000000000000A02",
+      "namespace": "gymnasium-informatik-endliche-automaten",
+      "slug": "deterministische-endliche-automaten-dea-nea-pumping-lemma",
+      "title": "Endliche Automaten: DEA-Modell, NEA-Potenzmengenkonstruktion und das Pumping-Lemma",
+      "domain": "schule/informatik/theoretische-informatik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD70000000000000000A01",
+          "type": "hard",
+          "rationale": "Endliche Automaten sind das operative Maschinenmodell der regulären Typ-3-Sprachen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Deterministic finite automaton",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Endliche Automaten und Grenzen der Berechenbarkeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD70000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus wie vielen formalen Komponenten besteht die mathematische Definition eines Deterministischen Endlichen Automaten (DEA) als 5-Tupel M = (Z, Sigma, delta, z_0, F)?",
+          "concept": "Aus 5 Komponenten: Zustandsmenge Z, Eingabealphabet Sigma, Übergangsfunktion delta: Z x Sigma -> Z, Startzustand z_0 und Endzustandsmenge F subseteq Z",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "5 Komponenten: (Z, Sigma, delta, z_0, F)",
+              "3 Komponenten: (CPU, RAM, Harddrive)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD70000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Deterministischen Endlichen Automaten (DEA), die Potenzmengenkonstruktion und das Pumping-Lemma: 1. **Formale Definition eines DEA**:   * $M = (Z, \\Sigma, \\delta, z_0, F)$ mit:     - $Z$: Endliche Menge von Zuständen.     - $\\Sigma$: Endliches Eingabealphabet.     - $\\delta: Z \\times \\Sigma \\to Z$: Deterministische Übergangsfunktion (jedes Paar aus Zustand und Zeichen führt zu genau einem Folgezustand).     - $z_0 \\in Z$: Startzustand.     - $F \\subseteq Z$: Menge der akzeptierenden Endzustände.   * Wortakzeptanz: Ein Wort $w = a_1 a_2 \\dots a_n$ wird akzeptiert, wenn die erweiterte Übergangsfunktion $\\delta^*(z_0, w) \\in F$ liefert, 2. **NEA und Potenzmengenkonstruktion (Rabin-Scott, Turing-Award 1976)**:   * Bei einem NEA kann $\\delta(z, a)$ eine Menge von Folgezuständen oder $\\varepsilon$-Übergänge enthalten.   * Jeder NEA mit $n$ Zuständen kann äquivalent in einen DEA mit maximal $2^n$ Zuständen (Potenzmenge $\\mathcal{P}(Z)$) transformiert werden $\\implies \\mathbf{\\mathcal{L}(\\text{NEA}) = \\mathcal{L}(\\text{DEA}) = \\text{Reguläre Sprachen}}$, 3. **Das Pumping-Lemma (Schleifensatz) für reguläre Sprachen**:   * Wenn $L$ regulär ist, existiert eine Pumping-Zahl $p \\ge 1$, sodass jedes Wort $w \\in L$ mit $|w| \\ge p$ zerlegt werden kann in $w = x y z$ mit:     - 1. $|y| \\ge 1$ (der aufpumpbare Teil ist nichtleer).     - 2. $|x y| \\le p$.     - 3. $\\mathbf{x y^i z \\in L}$ für alle $i \\in \\mathbb{N}_0$.   * Widerspruchsbeweis: Wenn für ein Wort $w$ das Aufpumpen für ein $i$ aus der Sprache herausführt ($x y^i z \\notin L$), kann die Sprache **nicht regulär** sein!",
+          "concept": "Automaten 13: DEA 5-Tupel (Z, Sigma, delta, z_0, F); NEA Potenzmengenkonstruktion (äquivalente Sprachmächtigkeit L(NEA) = L(DEA)); Pumping-Lemma (w = xyz, |y|>=1, |xy|<=p, xy^i z in L) zum Beweis der Nicht-Regularität.",
+          "sample_solution": "1. Der Deterministische Endliche Automat (DEA / DFA): - **Das 5-Tupel**:   $$\\mathbf{M = (Z, \\Sigma, \\delta, z_0, F)}$$ - **Beispiel eines Paritätsprüfers**:   * Akzeptiert alle Binärwörter mit gerader Anzahl an Einsen:     - $Z = \\{z_{\\text{gerade}}, z_{\\text{ungerade}}\\}$.     - $\\Sigma = \\{0, 1\\}$.     - $z_0 = z_{\\text{gerade}}$.     - $F = \\{z_{\\text{gerade}}\\}$.     - Übergänge: $\\delta(z_{\\text{gerade}}, 0) = z_{\\text{gerade}}$, $\\delta(z_{\\text{gerade}}, 1) = z_{\\text{ungerade}}$, $\\delta(z_{\\text{ungerade}}, 0) = z_{\\text{ungerade}}$, $\\delta(z_{\\text{ungerade}}, 1) = z_{\\text{gerade}}$. 2. Äquivalenz von NEA und DEA (Potenzmengenkonstruktion): - Ein Nichtdeterministischer Endlicher Automat (NEA) erlaubt Verzweigungen und $\\varepsilon$-Spontansprünge. - **Der Algorithmus von Michael Rabin und Dana Scott**:   * Man konstruiert einen DEA, dessen Zustände Mengen von Zuständen des ursprünglichen NEA sind (Elemente der Potenzmenge $\\mathcal{P}(Z)$).   * Hat der NEA $n$ Zustände, besitzt der transformierte DEA im Worst-Case $2^n$ Zustände.   * **Fundamentales Theorem**: Nichtdeterminismus verleiht endlichen Automaten **keine zusätzliche Sprachmächtigkeit**! NEA und DEA akzeptieren exakt dieselbe Sprachklasse (die regulären Sprachen $\\mathcal{L}_3$). 3. Beweis mit dem Pumping-Lemma: $L = \\{a^n b^n \\mid n \\ge 1\\}$ ist nicht regulär: - **Annahme zum Widerspruch**: Sei $L$ eine reguläre Sprache. - Dann existiert nach dem Pumping-Lemma eine Pumping-Zahl $p$. - **Wahl des Testwortes**: Wir wählen das Wort $w = a^p b^p \\in L$. Die Länge ist $|w| = 2p \\ge p$. - **Zerlegung $w = x y z$**:   * Nach Bedingung (2) muss $|x y| \\le p$ gelten $\\implies$ Die Teilsequenz $x y$ besteht ausschließlich aus Buchstaben $a$.   * Da $|y| \\ge 1$, muss $y = a^k$ mit $1 \\le k \\le p$ gelten.   * Die Zerlegung lautet also: $x = a^{p-k-m}, \\; y = a^k, \\; z = a^m b^p$ (wobei $p-k-m + k + m = p$). - **Das Aufpumpen für $i = 2$ ($w' = x y^2 z$)**:   * Wir pumpen $y$ auf:     $$w' = x y^2 z = a^{p-k-m} \\cdot (a^k)^2 \\cdot a^m b^p = a^{p+k} b^p$$   * Da $k \\ge 1$, ist die Anzahl der $a$'s nun $p + k > p$, während die Anzahl der $b$'s unverändert $p$ beträgt.   * Da die Anzahl von $a$'s und $b$'s ungleich ist, gilt:     $$\\mathbf{w' = a^{p+k} b^p \\notin L}$$ - **Schlussfolgerung**:   * Dies widerspricht der Pumping-Lemma-Bedingung $x y^i z \\in L$ für alle $i$.   * Die Annahme ist falsch $\\implies \\mathbf{L = \\{a^n b^n \\mid n \\ge 1\\} \\text{ ist NICHT regulär}}$!"
+        }
+      ]
+    }
+  ]
+}

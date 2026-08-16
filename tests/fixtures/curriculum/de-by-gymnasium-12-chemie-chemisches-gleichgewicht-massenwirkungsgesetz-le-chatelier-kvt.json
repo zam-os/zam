@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-chemie-chemisches-gleichgewicht-massenwirkungsgesetz-le-chatelier",
+  "version": "2026.08.1",
+  "title": "Chemie 12: Chemisches Gleichgewicht, Massenwirkungsgesetz (MWG) und Prinzip von Le Chatelier (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 12 (Oberstufe Q12): Das dynamische chemische Gleichgewicht (Reversible Reaktionen, Gleichheit von Hin- und Rückreaktionsgeschwindigkeit v_hin = v_rueck, makroskopische Konstanz der Konzentrationen, mikroskopische Dynamik), Das Massenwirkungsgesetz nach Guldberg und Waage (Herleitung aus dem Reaktionsansatz, Gleichgewichtskonstante K_c und K_p, Reaktionsquotient Q vs. K_c, thermodynamischer Zusammenhang mit der freien Reaktionsenthalpie Delta G_0 = -R * T * ln K), Das Prinzip des kleinsten Zwanges / Prinzip von Le Chatelier und Braun (Störung des Gleichgewichts durch Konzentrationsänderungen, Druckänderungen bei Gasreaktionen und Temperaturänderungen bei exothermen vs. endothermen Reaktionen, Rolle von Katalysatoren: beschleunigen Gleichgewichtseinstellung, ändern aber K_c nicht) sowie Industrielle Großsynthesen (Ammoniaksynthese nach Haber-Bosch, Kontaktoxidation von Schwefeltrioxid).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 12, Lernbereich Physikalische Chemie – Chemisches Gleichgewicht"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC50000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC50000000000000000A01",
+      "namespace": "gymnasium-chemie-gleichgewicht",
+      "slug": "dynamisches-gleichgewicht-massenwirkungsgesetz-konstante-kc",
+      "title": "Chemisches Gleichgewicht: Dynamischer Gleichgewichtszustand und Massenwirkungsgesetz (MWG)",
+      "domain": "schule/chemie/physikalische-chemie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Chemical equilibrium",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Chemisches Gleichgewicht und Massenwirkungsgesetz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC50000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was charakterisiert ein homogenes chemisches System im dynamischen Gleichgewichtszustand auf molekularer und makroskopischer Ebene?",
+          "concept": "Die Geschwindigkeiten von Hin- und Rückreaktion sind exakt gleich groß (v_hin = v_rueck), sodass sich die Konzentrationen der Edukte und Produkte makroskopisch zeitlich nicht mehr verändern",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "v_hin = v_rueck (gleiche Reaktionsgeschwindigkeiten, konstante Konzentrationen)",
+              "Die Reaktion ist vollständig zum Stillstand gekommen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC50000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Massenwirkungsgesetz (MWG) und die Gleichgewichtskonstante $K_c$: 1. **Herleitung für eine allgemeine Reaktion**:   $$a\\,\\text{A} + b\\,\\text{B} \\rightleftharpoons c\\,\\text{C} + d\\,\\text{D}$$   * Hinreaktionsgeschwindigkeit: $v_{\\text{hin}} = k_{\\text{hin}} \\cdot [\\text{A}]^a \\cdot [\\text{B}]^b$.   * Rückreaktionsgeschwindigkeit: $v_{\\text{rueck}} = k_{\\text{rueck}} \\cdot [\\text{C}]^c \\cdot [\\text{D}]^d$.   * Im Gleichgewicht gilt $v_{\\text{hin}} = v_{\\text{rueck}}$:     $$\\mathbf{K_c = \\frac{k_{\\text{hin}}}{k_{\\text{rueck}}} = \\frac{[\\text{C}]^c \\cdot [\\text{D}]^d}{[\\text{A}]^a \\cdot [\\text{B}]^b}}$$ 2. **Bedeutung des Zahlenwerts von $K_c$**:   * $K_c \\gg 1$: Das Gleichgewicht liegt weitgehend auf der **Produktseite** (hohe Ausbeute).   * $K_c \\ll 1$: Das Gleichgewicht liegt fast vollständig auf der **Eduktseite** (geringer Umsatz).   * $K_c \\approx 1$: Edukte und Produkte liegen in vergleichbaren Konzentrationen vor, 3. **Thermodynamischer Zusammenhang**:   * Freie Standard-Reaktionsenthalpie: $\\mathbf{\\Delta G^\\circ = -R \\cdot T \\cdot \\ln(K_c)}$.",
+          "concept": "Chemisches Gleichgewicht 12: v_hin = v_rueck; Massenwirkungsgesetz K_c = ([C]^c * [D]^d) / ([A]^a * [B]^b); Interpretation von K_c >> 1 vs. K_c << 1; Thermodynamik Delta G_0 = -R * T * ln(K_c).",
+          "sample_solution": "1. Das Wesen des dynamischen chemischen Gleichgewichts: - Bei einer umkehrbaren (reversiblen) chemischen Reaktion in einem geschlossenen System stoppt die Reaktion im Gleichgewichtszustand keineswegs. - **Dynamik**: Die Hinreaktion und die Rückreaktion laufen permanent mit exakt **derselben Geschwindigkeit** ab:   $$\\mathbf{v_{\\text{hin}} = v_{\\text{rueck}}}$$ - Makroskopisch bleiben alle Stoffmengen, Konzentrationen, Partialdrücke, Farben und Temperaturen zeitlich absolut konstant. 2. Das Massenwirkungsgesetz nach Guldberg und Waage (1864): - Für eine homogene Reaktion $a\\,\\text{A} + b\\,\\text{B} \\rightleftharpoons c\\,\\text{C} + d\\,\\text{D}$ lautet der mathematische Ausdruck des MWG:   $$\\mathbf{K_c = \\frac{[\\text{C}]^c \\cdot [\\text{D}]^d}{[\\text{A}]^a \\cdot [\\text{B}]^b}}$$ - **Regeln**:   * Im **Zähler** stehen stets die Gleichgewichtskonzentrationen der **Produkte (Reaktionsprodukte)**.   * Im **Nenner** stehen die Konzentrationen der **Ausgangsstoffe (Edukte)**.   * Die stöchiometrischen Faktoren der Reaktionsgleichung gehen als **Exponenten** ein.   * Feste Stoffe (Reinstoffe wie $C_{(s)}$ oder ungelöstes Salz) sowie das Lösungsmittel Wasser bei verdünnten Lösungen besitzen eine konstante Aktivität von $1$ und werden nicht in den MWG-Bruch geschrieben. 3. Interpretation und Thermodynamik: - **Aussagekraft von $K_c$**:   * $\\mathbf{K_c > 10^3}$: Sehr stark exergonische Reaktion; Produkte dominieren das System.   * $\\mathbf{K_c < 10^{-3}}$: Stark endergonisch; Edukte reagieren kaum miteinander. - **Verknüpfung mit der Gibbs-Freien-Enthalpie $\\Delta G^\\circ$**:   $$\\mathbf{\\Delta G^\\circ = -R \\cdot T \\cdot \\ln(K_c)}$$   *(mit universeller Gaskonstante $R = 8{,}314\\,\\frac{\\text{J}}{\\text{mol}\\cdot\\text{K}}$ und absoluter Temperatur $T$ in Kelvin)*. Ein negatives $\\Delta G^\\circ < 0$ entspricht direkt einem $K_c > 1$."
+        }
+      ]
+    },
+    {
+      "id": "01K8GC50000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC50000000000000000A02",
+      "namespace": "gymnasium-chemie-le-chatelier",
+      "slug": "prinzip-von-le-chatelier-haber-bosch-verfahren",
+      "title": "Prinzip von Le Chatelier: Zwangsprinzip, Temperatur-/Druckeinfluss und Haber-Bosch-Synthese",
+      "domain": "schule/chemie/reaktionskinetik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC50000000000000000A01",
+          "type": "hard",
+          "rationale": "Gleichgewichtsverschiebungen setzen das Verständnis des Massenwirkungsgesetzes voraus."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Le Chatelier's principle",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Prinzip von Le Chatelier und technische Synthesen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC50000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verschiebt sich die Gleichgewichtslage einer exothermen chemischen Reaktion ($\\Delta H < 0$), wenn die Temperatur des Reaktionssystems erhöht wird?",
+          "concept": "Das Gleichgewicht weicht der Wärmezufuhr aus und verschiebt sich nach links zur Seite der Edukte (endotherme Rückreaktion wird begünstigt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nach links zur endothermen Eduktseite",
+              "Nach rechts zur Produktseite"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC50000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Prinzip von Le Chatelier am Paradebeispiel der technischen Ammoniaksynthese (Haber-Bosch-Verfahren): 1. **Reaktionsgleichung & Thermodynamik**:   $$\\mathbf{\\text{N}_{2\\,(g)} + 3\\,\\text{H}_{2\\,(g)} \\rightleftharpoons 2\\,\\text{NH}_{3\\,(g)}} \\quad (\\Delta H = -92{,}4\\,\\text{kJ/mol}, \\text{ exotherm})$$ 2. **Analyse der drei äußeren Zwänge nach Le Chatelier**:   * **1. Einfluss des Drucks ($p$)**:     - Links: 4 mol Gas $\\rightarrow$ Rechts: 2 mol Gas.     - Druckerhöhung weicht dem Zwang aus durch Verringerung der Teilchenzahl $\\implies$ **Verschiebung nach rechts zur Produktseite** (hohe Drücke $p \\approx 150-250\\,\\text{bar}$ begünstigen Ausbeute).   * **2. Einfluss der Temperatur ($T$)**:     - Reaktion ist exotherm ($\\Delta H < 0$).     - Temperaturerhöhung begünstigt die wärmeverbrauchende Rückreaktion $\\implies$ Tiefe Temperaturen begünstigen thermodynamisch die Ausbeute.   * **3. Reaktionskinetischer Kompromiss**:     - Bei niedrigen Temperaturen ist die Reaktionsgeschwindigkeit $v$ viel zu langsam $\\implies$ **Kompromisstemperatur** $T \\approx 400-500^\\circ\\text{C}$ zusammen mit einem **Eisenoxid-Katalysator ($\\alpha$-Fe mit Promotoren)**, 3. **Rolle des Katalysators**:   * Senkt die Aktivierungsenergie $E_A$ und beschleunigt Hin- und Rückreaktion gleichermaßen $\\implies$ **Verändert die Gleichgewichtskonstante $K_c$ NICHT**, sondern führt nur zur rascheren Einstellung des Gleichgewichts.",
+          "concept": "Prinzip von Le Chatelier 12: Äußere Zwänge (Konzentration, Druck, Temperatur); Haber-Bosch-Ammoniaksynthese (4 mol Gas -> 2 mol Gas exotherm, Hochdruck begünstigt NH3, Kinetik-Thermodynamik-Kompromiss bei 450°C und 200 bar mit Fe-Katalysator); Katalysator ändert K_c nicht.",
+          "sample_solution": "1. Das Prinzip des kleinsten Zwanges (Henri Le Chatelier & Ferdinand Braun, 1884): - *« Übt man auf ein im chemischen Gleichgewicht befindliches System einen Zwang aus (durch Änderung von Konzentration, Druck oder Temperatur), so weicht das System diesem Zwang so aus, dass die Wirkung des Zwanges verringert wird. »* 2. Systematische Analyse der Störgrößen: - **1. Konzentrationsänderung**:   * Zugabe von Edukten oder kontinuierliches Entfernen von Produkten verschiebt das Gleichgewicht nach **rechts**. - **2. Druckänderung (nur bei Gasreaktionen mit Volumendifferenz $\\Delta n_{\\text{Gas}} \\neq 0$)**:   * Druckerhöhung verschiebt das Gleichgewicht auf die Seite mit der **geringeren Molzahl an Gasteilchen**. - **3. Temperaturänderung**:   * Temperaturerhöhung (Wärmezufuhr) begünstigt die **endotherme Teilreaktion**.   * Temperaturabsenkung (Wärmeentzug) begünstigt die **exotherme Teilreaktion**.   *(Wichtig: Die Temperatur ist der einzige Parameter, der den Zahlenwert der Gleichgewichtskonstante $K_c$ tatsächlich ändert!)* 3. Die Ammoniaksynthese nach Haber-Bosch (Fritz Haber & Carl Bosch, 1910): - **Reaktion**:   $$\\mathbf{\\text{N}_{2\\,(g)} + 3\\,\\text{H}_{2\\,(g)} \\rightleftharpoons 2\\,\\text{NH}_{3\\,(g)}} \\quad (\\Delta H^{\\circ} = -92{,}4\\,\\text{kJ/mol})$$ - **Optimierungsstrategie für großtechnische Anlagen**:   * **Druckwahl**: Da aus 4 Gasvolumina ($1\\,\\text{N}_2 + 3\\,\\text{H}_2$) nur 2 Gasvolumina ($2\\,\\text{NH}_3$) entstehen, arbeitet man bei Höchstdrücken von **$150\\text{ bis } 250\\,\\text{bar}$**, um das Gleichgewicht massiv auf die Seite von Ammoniak zu drängen.   * **Temperaturwahl (Das Optimum)**:     - *Thermodynamik*: Erfordert möglichst tiefe Temperaturen (exotherme Reaktion).     - *Kinetik*: Bei $25^\\circ\\text{C}$ ist die Dreifachbindung des Stickstoffmoleküls ($N \\equiv N$, Bindungsenergie $945\\,\\text{kJ/mol}$) kinetisch inert; die Reaktion würde Jahrhunderte dauern.     - *Lösung*: Wahl einer **Kompromisstemperatur von ca. $400-500^\\circ\\text{C}$** unter Einsatz eines **Eisen-Mischkatalysators (Magnetit $\\text{Fe}_3\\text{O}_4$ dotiert mit $\\text{K}_2\\text{O}, \\text{Al}_2\\text{O}_3, \\text{CaO}$)**.   * **Kreislaufführung**: Das gebildete $\\text{NH}_3$ wird durch Abkühlung verflüssigt und abgetrennt, während unverbrauchtes $\\text{N}_2$ und $\\text{H}_2$ wieder in den Reaktor zurückgeführt werden $\\implies$ Ausbeute nähert sich $100\\%$."
+        }
+      ]
+    }
+  ]
+}

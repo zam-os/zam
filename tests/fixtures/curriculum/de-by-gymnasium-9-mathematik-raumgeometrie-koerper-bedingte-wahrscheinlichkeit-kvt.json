@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-mathematik-raumgeometrie-koerper-bedingte-wahrscheinlichkeit",
+  "version": "2026.08.1",
+  "title": "Mathematik 9: Raumgeometrie (Pyramide, Kegel, Kugel) und Bedingte Wahrscheinlichkeit (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 9: Stereometrie und Raumgeometrie (Prisma, Zylinder, Pyramide V = 1/3*G*h, Kreiskegel, Kugel V = 4/3*pi*r^3, O = 4*pi*r^2, Cavalieri-Prinzip) sowie Stochastik (Bedingte Wahrscheinlichkeit P_A(B) = P(A geschnitten B) / P(A), Vierfeldertafel und stochastische Unabhängigkeit).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 9, Lernbereiche Raumgeometrie und Stochastik"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9B0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9B0000000000000000A01",
+      "namespace": "gymnasium-mathematik-raumgeometrie",
+      "slug": "raumgeometrie-pyramide-kegel-kugel-cavalieri",
+      "title": "Raumgeometrie: Volumen- & Oberflächenberechnung von Pyramide, Kegel und Kugel",
+      "domain": "schule/mathematik/raumgeometrie",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Stereometry",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Raumgeometrie – Körperberechnungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9B0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die exakte mathematische Formel für das Volumen $V$ einer Kugel mit dem Radius $r$?",
+          "concept": "V = 4/3 * pi * r^3 (Oberfläche: O = 4 * pi * r^2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "V = 4/3 * pi * r^3",
+              "V = 4 * pi * r^2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9B0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere die Raumgeometrie spitzer und runder Körper: 1. **Spitzkörper (Pyramide und Kegel)**:   * **Pyramide**: $V = \\frac{1}{3} G \\cdot h$, Oberfläche $O = G + M$ (Summe der Dreiecksflächen).   * **Kreiskegel (Radius $r$, Höhe $h$, Mantellinie $s = \\sqrt{r^2 + h^2}$)**: $V = \\frac{1}{3} \\pi r^2 h$, Mantelfläche $M = \\pi r s$, Gesamtoberfläche $O = \\pi r^2 + \\pi r s$, 2. **Die Kugel**:   * Volumen: $V = \\frac{4}{3}\\pi r^3$.   * Oberfläche: $O = 4\\pi r^2$, 3. **Prinzip von Cavalieri**: Haben zwei Körper dieselbe Höhe und sind ihre Schnittflächen in jeder parallelen Schnittebene flächengleich, so besitzen beide Körper dasselbe Volumen, 4. Berechne das Volumen $V$ und die Mantelfläche $M$ eines geraden Kreiskegels mit Radius $r = 6\\,\\text{cm}$ und Höhe $h = 8\\,\\text{cm}$.",
+          "concept": "Stereometrie: Pyramide V = 1/3*G*h; Kegel V = 1/3*pi*r^2*h, M = pi*r*s mit s = sqrt(r^2+h^2); Kugel V = 4/3*pi*r^3, O = 4*pi*r^2; Cavalieri-Prinzip; Rechnung: s = sqrt(36+64) = 10 cm; V = 1/3 * pi * 36 * 8 = 96*pi cm^3 approx 301,59 cm^3; M = pi * 6 * 10 = 60*pi cm^2 approx 188,50 cm^2.",
+          "sample_solution": "1. Formelsammlung der Raumkörper (Stereometrie): - **1. Pyramide**:   $$\\mathbf{V = \\frac{1}{3} \\cdot G \\cdot h}, \\quad \\mathbf{O = G + M}$$   *(mit Grundfläche $G$ und Mantelfläche $M = \\sum A_{\\triangle}$)*. - **2. Kreiskegel**:   * Mantellinie über Pythagoras: $\\mathbf{s = \\sqrt{r^2 + h^2}}$.   * Volumen: $\\mathbf{V = \\frac{1}{3} \\pi r^2 h}$.   * Mantelfläche: $\\mathbf{M = \\pi \\cdot r \\cdot s}$.   * Gesamtoberfläche: $\\mathbf{O = G + M = \\pi r^2 + \\pi r s = \\pi r (r + s)}$. - **3. Kugel**:   * Volumen: $\\mathbf{V = \\frac{4}{3} \\pi r^3}$.   * Oberfläche: $\\mathbf{O = 4 \\pi r^2}$. 2. Das Prinzip von Cavalieri (Bonaventura Cavalieri): - Liegen zwei Körper auf derselben Grundebene und haben sie die gleiche Höhe $h$, und sind ihre Schnittflächen parallel zur Grundebene in jeder beliebigen Höhe flächengleich ($A_1(z) = A_2(z)$), so gilt:   $$\\mathbf{V_1 = V_2}$$   *(Begründet, warum schiefe Prismen/Zylinder/Pyramiden exakt dasselbe Volumen haben wie gerade Körper derselben Höhe)*. 3. Durchrechnung des Beispiels ($r = 6\\,\\text{cm}, h = 8\\,\\text{cm}$): - **Schritt 1: Mantellinie $s$ berechnen**:   $$s = \\sqrt{r^2 + h^2} = \\sqrt{6^2 + 8^2} = \\sqrt{36 + 64} = \\sqrt{100} = \\mathbf{10\\,\\text{cm}}$$ - **Schritt 2: Volumen $V$**:   $$V = \\frac{1}{3} \\pi r^2 h = \\frac{1}{3} \\pi \\cdot 6^2 \\cdot 8 = \\frac{1}{3} \\pi \\cdot 36 \\cdot 8 = \\mathbf{96\\pi\\,\\text{cm}^3} \\approx 301{,}59\\,\\text{cm}^3$$ - **Schritt 3: Mantelfläche $M$**:   $$M = \\pi \\cdot r \\cdot s = \\pi \\cdot 6 \\cdot 10 = \\mathbf{60\\pi\\,\\text{cm}^2} \\approx 188{,}50\\,\\text{cm}^2$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9B0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9B0000000000000000A02",
+      "namespace": "gymnasium-mathematik-stochastik",
+      "slug": "bedingte-wahrscheinlichkeit-vierfeldertafel-stochastische-unabhaengigkeit",
+      "title": "Stochastik: Bedingte Wahrscheinlichkeit P_A(B), Vierfeldertafel und Stochastische Unabhängigkeit",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9B0000000000000000A01",
+          "type": "hard",
+          "rationale": "Stochastische Modellierung vertieft die gymnasiale 9. Klasse."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Conditional probability",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Bedingte Wahrscheinlichkeit und Unabhängigkeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9B0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann heißen zwei stochastische Ereignisse $A$ und $B$ im mathematischen Sinne stochastisch unabhängig?",
+          "concept": "Wenn das Eintreffen von A die Wahrscheinlichkeit von B nicht beeinflusst: P(A geschnitten B) = P(A) * P(B) bzw. P_A(B) = P(B)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(A geschnitten B) = P(A) * P(B)",
+              "P(A geschnitten B) = 0"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9B0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere bedingte Wahrscheinlichkeiten, Vierfeldertafeln und stochastische Unabhängigkeit: 1. **Bedingte Wahrscheinlichkeit**:   * Definition: Die Wahrscheinlichkeit, dass $B$ eintritt, unter der Voraussetzung, dass $A$ bereits eingetreten ist ($P(A) > 0$):     $$\\mathbf{P_A(B) = P(B \\mid A) = \\frac{P(A \\cap B)}{P(A)}}$$ 2. **Die Vierfeldertafel**: Systematische Darstellung der Schnittmengen $P(A \\cap B), P(A \\cap \\overline{B}), P(\\overline{A} \\cap B), P(\\overline{A} \\cap \\overline{B})$ und der Randwahrscheinlichkeiten $P(A), P(\\overline{A}), P(B), P(\\overline{B})$, 3. **Stochastische Unabhängigkeit**: $A$ und $B$ sind stochastisch unabhängig $\\iff P(A \\cap B) = P(A) \\cdot P(B) \\iff P_A(B) = P(B)$, 4. In einer Schule treiben $60\\%$ der Schüler Sport ($S$), $40\\%$ spielen ein Musikinstrument ($M$) und $24\\%$ tun beides ($S \\cap M$). Prüfe rechnerisch, ob Sporttreiben und Musizieren stochastisch unabhängig sind.",
+          "concept": "Bedingte Wahrscheinlichkeit: P_A(B) = P(A geschnitten B) / P(A); Vierfeldertafel; Stochastische Unabhängigkeit: P(A geschnitten B) = P(A) * P(B); Rechnung: P(S)*P(M) = 0,60 * 0,40 = 0,24 = P(S geschnitten M) -> Ereignisse sind stochastisch unabhängig!",
+          "sample_solution": "1. Das Konzept der bedingten Wahrscheinlichkeit: - Beschreibt die Neubewertung der Wahrscheinlichkeit eines Ereignisses $B$, wenn bekannt ist, dass die Vorbedingung $A$ bereits eingetreten ist:   $$\\mathbf{P_A(B) = \\frac{P(A \\cap B)}{P(A)}} \\quad (\\text{für } P(A) > 0)$$   * Äquivalente Multiplikationsregel: $P(A \\cap B) = P(A) \\cdot P_A(B)$. 2. Die Vierfeldertafel (Wahrscheinlichkeiten): | | $B$ | $\\overline{B}$ | Summe (Rand) | | :--- | :--- | :--- | :--- | | **$A$** | $P(A \\cap B)$ | $P(A \\cap \\overline{B})$ | **$P(A)$** | | **$\\overline{A}$** | $P(\\overline{A} \\cap B)$ | $P(\\overline{A} \\cap \\overline{B})$ | **$P(\\overline{A})$** | | **Summe** | **$P(B)$** | **$P(\\overline{B})$** | **$1{,}00$ ($100\\%$)** | 3. Definition der stochastischen Unabhängigkeit: - Zwei Ereignisse $A$ und $B$ heißen **stochastisch unabhängig**, wenn das Eintreten von $A$ keinerlei Information über das Eintreten von $B$ liefert:   $$\\mathbf{P(A \\cap B) = P(A) \\cdot P(B)} \\iff \\mathbf{P_A(B) = P(B)}$$   *(Achtung: Nicht zu verwechseln mit 'unvereinbar' $A \\cap B = \\emptyset$! Unvereinbare Ereignisse mit $P > 0$ sind niemals unabhängig)*. 4. Berechnung der Beispielfrage: - Gegeben:   * $P(S) = 0{,}60$ (Sportler)   * $P(M) = 0{,}40$ (Musiker)   * $P(S \\cap M) = 0{,}24$ (beides) - **Prüfung auf Unabhängigkeit**:   $$P(S) \\cdot P(M) = 0{,}60 \\cdot 0{,}40 = \\mathbf{0{,}24}$$ - **Vergleich**:   $$P(S \\cap M) = 0{,}24 = P(S) \\cdot P(M)$$ - **Ergebnis**: Das Produkt der Einzelwahrscheinlichkeiten stimmt exakt mit der Schnittmengenwahrscheinlichkeit überein $\\implies$ Die beiden Hobbys **Sporttreiben und Musizieren sind stochastisch unabhängig**."
+        }
+      ]
+    }
+  ]
+}

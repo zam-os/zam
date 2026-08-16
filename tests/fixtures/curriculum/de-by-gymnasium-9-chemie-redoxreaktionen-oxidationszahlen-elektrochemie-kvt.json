@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-chemie-redoxreaktionen-oxidationszahlen-elektrochemie",
+  "version": "2026.08.1",
+  "title": "Chemie 9: Redoxreaktionen, Oxidationszahlen, Spannungsreihe und Galvanische Elemente (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 9 (NTG/SG/WSG): Die Redoxreaktion als Elektronenübergang (Oxidation = Elektronenabgabe, Reduktion = Elektronenaufnahme, Oxidationsmittel vs. Reduktionsmittel), Regeln zur Bestimmung von Oxidationszahlen, Aufstellen von Redox-Teilgleichungen, Redoxreihe der Metalle sowie Aufbau und Funktion galvanischer Elemente (Daniell-Element, Batterie) und Elektrolyse.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 9, Lernbereich Redoxreaktionen und Elektrochemie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9F0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9F0000000000000000A01",
+      "namespace": "gymnasium-chemie-redox",
+      "slug": "redoxreaktion-elektronenuebergang-oxidationszahlen-teilgleichungen",
+      "title": "Redoxreaktionen: Elektronenübertragung, Oxidationszahlen und Aufstellen von Redoxgleichungen",
+      "domain": "schule/chemie/redox",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1024",
+          "target_label": "Redox",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Redoxreaktionen und Oxidationszahlen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9F0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was geschieht mit der Oxidationszahl (OZ) eines Atoms während eines Oxidationsvorgangs (Elektronenabgabe)?",
+          "concept": "Die Oxidationszahl steigt (wird positiver, z. B. von 0 auf +2)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Oxidationszahl steigt (wird positiver)",
+              "Die Oxidationszahl sinkt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9F0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere das Konzept der Redoxreaktionen und die Bestimmung von Oxidationszahlen: 1. **Erweiterter Redoxbegriff**:   * **Oxidation**: Abgabe von Elektronen ($e^-$); Erhöhung der Oxidationszahl (OZ).   * **Reduktion**: Aufnahme von Elektronen ($e^-$); Erniedrigung der Oxidationszahl.   * **Reduktionsmittel**: Gibt Elektronen ab und wird selbst oxidiert.   * **Oxidationsmittel**: Nimmt Elektronen auf und wird selbst reduziert, 2. **Die 6 Regeln für Oxidationszahlen (formale Ladungen)**:   * 1. Reine Elemente (Atome, $H_2, O_2, Fe, S_8$): $\\text{OZ} = 0$.   * 2. Einatomige Ionen ($Na^+, Cl^-, Fe^{3+}$): $\\text{OZ} = \\text{Ionenladung}$.   * 3. Fluor in Verbindungen: stets $\\text{OZ} = -\\text{I}$.   * 4. Sauerstoff in fast allen Verbindungen: stets $\\text{OZ} = -\\text{II}$ (Ausnahme Peroxide: $-\\text{I}$).   * 5. Wasserstoff mit Nichtmetallen: stets $\\text{OZ} = +\\text{I}$.   * 6. Summe aller OZ in einem neutralen Molekül ist $0$; in einem mehratomigen Ion gleich der Ionenladung (z. B. $SO_4^{2-}: S = +\\text{VI}$), 3. **Schrittweises Aufstellen von Redox-Gleichungen**: Oxidations-Teilgleichung $\\rightarrow$ Reduktions-Teilgleichung $\\rightarrow$ Elektronenbilanz (KGV) $\\rightarrow$ Ladungsausgleich ($H_3O^+$ im Sauren / $OH^-$ im Basischen) $\\rightarrow$ Stoffausgleich mit $H_2O$.",
+          "concept": "Redox: Oxidation = Elektronenabgabe (OZ steigt); Reduktion = Elektronenaufnahme (OZ sinkt); 6 OZ-Regeln (Elemente 0, F = -I, O = -II, H = +I, Summe = Gesamtladung); Redox-Gleichungen über Teilreaktionen, KGV und Ladungsausgleich.",
+          "sample_solution": "1. Der moderne elektrochemische Redoxbegriff: - Eine **Redoxreaktion** ist eine chemische Reaktion mit gekoppelter **Elektronenübertragung (Elektronendonator-Akzeptor-Reaktion)**:   * **Oxidation**: Abgabe von Elektronen $\\implies$ Erhöhung der Oxidationszahl:     $$\\text{Zn} \\rightarrow \\text{Zn}^{2+} + 2e^-$$   * **Reduktion**: Aufnahme von Elektronen $\\implies$ Erniedrigung der Oxidationszahl:     $$\\text{Cu}^{2+} + 2e^- \\rightarrow \\text{Cu}$$   * **Reduktionsmittel (z. B. Zink)**: Wirkt reduzierend, wird selbst oxidiert.   * **Oxidationsmittel (z. B. Kupferionen)**: Wirkt oxidierend, wird selbst reduziert. 2. Die fundamentalen Regeln zur Bestimmung von Oxidationszahlen (OZ): - **Regel 1**: Reine chemische Elemente besitzen stets die **$\\text{OZ} = 0$** (z. B. $\\text{Fe}^0, \\text{H}_2^0, \\text{O}_2^0, \\text{P}_4^0$). - **Regel 2**: Bei einfachen, einatomigen Ionen entspricht die OZ der **Ionenladung** (z. B. $\\text{Na}^{+\\text{I}}, \\text{Ca}^{+\\text{II}}, \\text{Cl}^{-\\text{I}}, \\text{Al}^{+\\text{III}}$). - **Regel 3**: **Fluor** hat als elektronegativstes Element in all seinen Verbindungen stets die **$\\text{OZ} = -\\text{I}$**. - **Regel 4**: **Sauerstoff** hat in praktisch allen Verbindungen die **$\\text{OZ} = -\\text{II}$** (Ausnahmen: Peroxide wie $\\text{H}_2\\text{O}_2$ mit $-\\text{I}$, $\\text{OF}_2$ mit $+\\text{II}$). - **Regel 5**: **Wasserstoff** hat in Verbindungen mit Nichtmetallen stets die **$\\text{OZ} = +\\text{I}$** (in Metallhydriden wie $\\text{NaH}$ $-\\text{I}$). - **Regel 6 (Summenregel)**: Die algebraische Summe aller Oxidationszahlen muss in einem ungeladenen Molekül **Null** ergeben; in einem mehratomigen Ion ist sie gleich der **Ionenladung**:   * *Beispiel Permanganat-Ion ($\\text{MnO}_4^-$)*: $x + 4 \\cdot (-2) = -1 \\implies x - 8 = -1 \\implies \\mathbf{\\text{Mn} = +\\text{VII}}$. 3. Systematik zum Aufstellen komplexer Redoxgleichungen: - **Schritt 1**: Ermittlung aller Oxidationszahlen und Identifikation von Oxidation und Reduktion. - **Schritt 2**: Formulierung der getrennten **Oxidations- und Reduktions-Teilgleichungen** mit Elektronen. - **Schritt 3**: **Elektronenausgleich**: Multiplikation beider Teilgleichungen mit Faktoren zum kleinsten gemeinsamen Vielfachen (kgV), damit alle abgegebenen Elektronen vollständig aufgenommen werden. - **Schritt 4**: **Ladungs- und Stoffbilanz**: Ausgleich von Ladungsdifferenzen durch $\\text{H}_3\\text{O}^+$ (im sauren Milieu) bzw. $\\text{OH}^-$ (im alkalischen Milieu) und anschließender Ausgleich von Wasserstoff/Sauerstoff mit $\\text{H}_2\\text{O}$."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9F0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9F0000000000000000A02",
+      "namespace": "gymnasium-chemie-elektrochemie",
+      "slug": "galvanisches-element-daniell-element-spannungsreihe-elektrolyse",
+      "title": "Elektrochemie: Spannungsreihe der Metalle, Galvanische Zellen (Daniell-Element) und Elektrolyse",
+      "domain": "schule/chemie/elektrochemie",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9F0000000000000000A01",
+          "type": "hard",
+          "rationale": "Galvanische Elemente beruhen auf räumlich getrennten Redox-Teilreaktionen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1024",
+          "target_label": "Galvanic cell",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "chemie",
+          "topic_code": "lb3",
+          "topic_title": "Elektrochemie – Galvanische Elemente und Elektrolyse",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9F0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Elektrode fungiert in einem galvanischen Element (wie dem Daniell-Element) als Minuspol (Anode), an dem die Oxidation (Elektronenabgabe des unedleren Metalls) stattfindet?",
+          "concept": "Die Anode / der Minuspol (z. B. der Zinkstab beim Daniell-Element)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anode (Minuspol beim Galvanischen Element)",
+              "Die Kathode (Pluspol beim Galvanischen Element)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9F0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die elektrochemische Spannungsreihe, das Galvanische Element und die Elektrolyse: 1. **Die Redoxreihe (Spannungsreihe) der Metalle**:   * Reihung nach dem Bestreben zur Elektronenabgabe: unedle Metalle ($K, Na, Mg, Al, Zn, Fe$) geben leicht Elektronen ab (starke Reduktionsmittel, negatives Standardpotenzial $E^0$) $\\rightarrow$ edle Metalle ($Cu, Ag, Au, Pt$) halten Elektronen fest, 2. **Das Galvanische Element (Daniell-Element)**:   * Räumliche Trennung von Oxidation und Reduktion zur direkten Gewinnung elektrischer Energie.   * **Anode (Minuspol)**: Zinkstab in $ZnSO_4$-Lösung $\\implies \\text{Oxidation: } Zn \\rightarrow Zn^{2+} + 2e^-$.   * **Kathode (Pluspol)**: Kupferstab in $CuSO_4$-Lösung $\\implies \\text{Reduktion: } Cu^{2+} + 2e^- \\rightarrow Cu$.   * **Salzbrücke / Diaphragma**: Ermöglicht Ionenwanderung zum Ladungsausgleich (Schließen des Stromkreises), ohne dass sich die Lösungen vermischen, 3. **Die Elektrolyse (Umkehrung des galvanischen Prozesses)**:   * Durch Anlegen einer externen Gleichspannung wird eine thermodynamisch erzwungene, endergonische Redoxreaktion herbeigeführt (z. B. Chloralkali-Elektrolyse, Wasserelektrolyse: $2\\,H_2O \\rightarrow 2\\,H_2 + O_2$).",
+          "concept": "Elektrochemie: Spannungsreihe (unedel -> edel); Daniell-Element: Anode (-) = Zn-Oxidation, Kathode (+) = Cu-Reduktion, Salzbrücke für Ionenleitung; Elektrolyse = erzwungene Umkehrung durch Fremdstrom (z. B. Wasserstoffgewinnung).",
+          "sample_solution": "1. Die elektrochemische Spannungsreihe der Metalle: - Metalle werden nach ihrer **Lösungsdruck- und Oxidationsneigung** (Standardelektrodenpotenzial $E^0$ bezogen auf die Standard-Wasserstoffelektrode $E^0(\\text{H}_2/2\\text{H}^+) = 0{,}00\\text{ V}$) geordnet:   * **Unedle Metalle ($E^0 < 0\\text{ V}$, z. B. $\\text{Li, K, Na, Mg, Al, Zn, Fe}$)**:     - Geben sehr leicht Elektronen ab $\\implies$ lösen sich unter Wasserstoffentwicklung in Säuren auf $\\implies$ starke Reduktionsmittel.   * **Edle Metalle ($E^0 > 0\\text{ V}$, z. B. $\\text{Cu, Ag, Au, Pt}$)**:     - Hohe Elektronenaffinität $\\implies$ beständig gegen Säuren $\\implies$ Ionen wirken als starke Oxidationsmittel. 2. Das Daniell-Element (Klassisches Galvanisches Element): - **Funktionsprinzip**: Umwandlung von freiwillig ablaufender chemischer Reaktionsenergie in **elektrischen Strom**:   * **1. Anode / Minuspol (Ort der Oxidation)**:     - Ein Zinkstab taucht in eine Zinksulfatlösung ($\\text{ZnSO}_4$). Da Zink unedler ist ($E^0 = -0{,}76\\text{ V}$), gehen Zinkatome als Kationen in Lösung und hinterlassen Elektronen auf der Elektrode (**Minuspol**):       $$\\mathbf{\\text{Anode (-): } \\text{Zn} \\rightarrow \\text{Zn}^{2+} + 2e^-}$$   * **2. Kathode / Pluspol (Ort der Reduktion)**:     - Ein Kupferstab taucht in eine Kupfersulfatlösung ($\\text{CuSO}_4$, $E^0 = +0{,}34\\text{ V}$). Kupferionen nehmen die über den äußeren Leiterdraht herüberfließenden Elektronen auf und scheiden sich als elementares Kupfer ab:       $$\\mathbf{\\text{Kathode (+): } \\text{Cu}^{2+} + 2e^- \\rightarrow \\text{Cu}}$$   * **3. Die Salzbrücke (Stromschlüssel)**:     - Enthält ein inertes Elektrolytgel (z. B. $\\text{KNO}_3$): $\\text{K}^+$-Ionen wandern zur Kathode und $\\text{NO}_3^-$-Ionen zur Anode, um den Aufbau von Raumladungen zu verhindern und den Stromkreis ionisch zu schließen.   * **Zellspannung (EMK – Elektromotorische Kraft)**:     $$\\mathbf{\\Delta E^0 = E^0(\\text{Kathode}) - E^0(\\text{Anode}) = +0{,}34\\text{ V} - (-0{,}76\\text{ V}) = \\mathbf{1{,}10\\text{ V}}}$$ 3. Die Elektrolyse: - **Prinzip**: Die **Umkehrung des galvanischen Elements** durch Zufuhr von elektrischer Energie aus einer externen Gleichspannungsquelle:   * Die angelegte Spannung erzwingt eine chemisch nicht freiwillige Redoxreaktion.   * *Beispiel Wasserelektrolyse (Hoffmannscher Zersetzungsapparat)*:     - **Anode (+)**: $6\\,\\text{H}_2\\text{O} \\rightarrow \\text{O}_2 + 4\\,\\text{H}_3\\text{O}^+ + 4e^-$     - **Kathode (-)**: $4\\,\\text{H}_3\\text{O}^+ + 4e^- \\rightarrow 2\\,\\text{H}_2 + 4\\,\\text{H}_2\\text{O}$     - **Gesamtbilanz**: $\\mathbf{2\\,\\text{H}_2\\text{O} \\xrightarrow{\\text{Strom}} 2\\,\\text{H}_2 + \\text{O}_2}$ (Volumenverhältnis Wasserstoff zu Sauerstoff exakt $2 : 1$)."
+        }
+      ]
+    }
+  ]
+}

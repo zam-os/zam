@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-geschichte-weimarer-republik-nationalsozialismus-shoah",
+  "version": "2026.08.1",
+  "title": "Geschichte 9: Weimarer Republik, NS-Herrschaftssystem, Holocaust/Shoah und Zweiter Weltkrieg (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 9: Die Weimarer Republik (Novemberrevolution 1918, Verfassung 1919 mit Notverordnungsartikel 48, Krisenjahr 1923: Hyperinflation und Hitlerputsch, Goldene Zwanziger, Weltwirtschaftskrise 1929 und Präsidialkabinette Brüning/Papen), das nationalsozialistische Herrschaftssystem (NS-Ideologie: Rassenlehre, Antisemitismus, Führerprinzip, Volksgemeinschaft, Lebensraum im Osten; Machtergreifung 1933: Reichstagsbrandverordnung, Ermächtigungsgesetz, Gleichschaltung), der Völkermord an den europäischen Juden (Shoah/Holocaust, Nürnberger Gesetze 1935, Novemberpogrome 1938, Wannseekonferenz 1942, Vernichtungslager), Zweiter Weltkrieg (Überfall auf Polen 1939, Vernichtungskrieg im Osten, Totaler Krieg) sowie Widerstand (Weiße Rose, 20. Juli 1944) und Zusammenbruch 1945.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/geschichte",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geschichte 9, Lernbereiche Die Weimarer Republik und Der Nationalsozialismus"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9R0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9R0000000000000000A01",
+      "namespace": "gymnasium-geschichte-weimar",
+      "slug": "weimarer-republik-verfassung-krisenjahre-scheitern-praesidialkabinette",
+      "title": "Die Weimarer Republik: Entstehung, Verfassungsstruktur (Art. 48), Krisen und Scheitern",
+      "domain": "schule/geschichte/weimar",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q41304",
+          "target_label": "Weimar Republic",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Die Weimarer Republik – Erste deutsche Demokratie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9R0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher berüchtigte Artikel der Weimarer Reichsverfassung von 1919 ermöglichte es dem Reichspräsidenten, mit Notverordnungen am Reichstag vorbei zu regieren und Grundrechte außer Kraft zu setzen?",
+          "concept": "Artikel 48 (Notverordnungsrecht des Reichspräsidenten / 'Ersatzkaiser')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Artikel 48 (Notverordnungsrecht)",
+              "Artikel 1 (Unantastbarkeit der Würde)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9R0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Entstehung, Belastungsfaktoren und Scheitern der ersten deutschen Demokratie (Weimarer Republik): 1. **Gründungsphase (1918/1919)**:   * Novemberrevolution 1918, Ausrufung der Republik (Philipp Scheidemann SPD vs. Karl Liebknecht USPD), Abdankung Kaiser Wilhelms II., Rat der Volksbeauftragten (Friedrich Ebert).   * Weimarer Reichsverfassung (WRV 1919): Erste parlamentarische Demokratie, allgemeines Frauenwahlrecht, Grundrechtekatalog; aber strukturelle Konstruktionsfehler: starke Stellung des Reichspräsidenten (**'Ersatzkaiser' mit Art. 48 Notverordnungen und Art. 25 Parlamentsauflösung**), fehlende Sperrklausel (Zersplitterung), 2. **Hypotheken und Krisenjahr 1923**:   * Versailler Vertrag (Schandvertrag-Propaganda, Alleinschuldthese, Reparationen).   * Dolchstoßlegende (Rechtsextreme Hetze gegen Demokraten).   * 1923: Ruhrbesetzung durch Frankreich, Hyperinflation, Hitler-Ludendorff-Putsch in München am 8./9. November 1923, 3. **Die Goldenen Zwanziger (1924–1929)**: Währungsreform (Rentenmark), Verträge von Locarno, Aufnahme in den Völkerbund (Gustav Stresemann), 4. **Weltwirtschaftskrise (1929) und das Ende**:   * *Schwarzer Freitag* an der Wall Street (Oktober 1929) $\\rightarrow$ Abzug US-amerikanischer Kredite $\\rightarrow$ Massenarbeitslosigkeit (über 6 Millionen) $\\rightarrow$ Bruch der Großen Koalition unter Hermann Müller (1930) $\\rightarrow$ Übergang zu autoritären **Präsidialkabinetten (Brüning, Papen, Schleicher)** $\\rightarrow$ Radikalisierung an den Rändern (KPD und NSDAP).",
+          "concept": "Weimarer Republik: Novemberrevolution 1918; WRV 1919 mit Schwachstellen (Art. 48, Art. 25); Hypotheken (Versailles, Dolchstoßlegende); Krisenjahr 1923 (Ruhrkampf, Hyperinflation, Hitlerputsch); Stresemann-Ära; Weltwirtschaftskrise 1929 und Präsidialkabinette.",
+          "sample_solution": "1. Die Entstehung der Weimarer Republik und ihre Verfassungsordnung: - **Novemberrevolution 1918**: Nach dem militärischen Zusammenbruch des Kaiserreichs rief **Philipp Scheidemann (SPD)** am 9. November 1918 die parlamentarische Republik aus; Reichskanzler Friedrich Ebert übernahm die Regierungsgeschäfte. - **Stärken der Weimarer Reichsverfassung (1919)**:   * Erste vollwertige Demokratie auf deutschem Boden mit universellem Wahlrecht (erstmals auch für Frauen) und verfassungsrechtlich verbrieften Grundrechten. - **Strukturelle Verfassungsschwächen**:   * **Übermacht des Reichspräsidenten ('Ersatzkaiser')**:     - Konnte den Reichstag auflösen (**Art. 25**), den Reichskanzler ohne Parlamentsabstimmung ernennen (**Art. 53**) und Grundrechte per Notverordnung suspendieren (**Art. 48**).   * **Reines Verhältniswahlrecht ohne Sperrklausel (keine 5%-Hürde)**: Führte zur massiven Parteizersplitterung im Reichstag und erschwerte stabile Koalitionen.   * **Keine wehrhafte Demokratie**: Verfassungsschutz gegen verfassungsfeindliche Parteien (wie NSDAP und KPD) fehlte. 2. Die schweren Hypotheken und das Krisenjahr 1923: - **Versailler Vertrag**: Zwangsfrieden mit Gebietsabtretungen, Entmilitarisierung und immensen Reparationszahlungen; von der nationalistischen Rechten als « Schanddiktat » diffamiert. - **Dolchstoßlegende (Hindenburg/Ludendorff)**: Die verlogene Propagandalüge, das deutsche Heer sei 'im Felde unbesiegt' geblieben und von der Heimatfront (Sozialdemokraten und Juden) hinterrücks erdolcht worden. - **Das Krisenjahr 1923**:   * **Ruhrkampf**: Besetzung des Ruhrgebiets durch französische und belgische Truppen wegen Reparationsrückständen.   * **Hyperinflation**: Völlige Entwertung der Papiermark; Enteignung der bürgerlichen Mittelschicht.   * **Hitler-Ludendorff-Putsch**: Gescheiterter Versuch der NSDAP am 8./9. November 1923 in München, die Reichsregierung gewaltsam zu stürzen (Hitler nutzte den anschließenden Prozess für Reichspropaganda). 3. Die Phase der relativen Stabilisierung (1924–1929): - Währungsreform mit Einführung der Rentenmark; Dawes-Plan (US-Kredite). - **Außenpolitik Gustav Stresemanns**: Aussöhnung mit Frankreich (Verträge von Locarno 1925), Eintritt des Deutschen Reiches in den Völkerbund 1926 (Friedensnobelpreis). 4. Weltwirtschaftskrise und Zerstörung der Demokratie: - **Oktober 1929 (Börsencrash an der Wall Street)**: Schlagartiger Abzug der kurzfristigen US-Kredite stürzte Deutschland in eine katastrophale Banken- und Wirtschaftskrise mit über **6 Millionen Arbeitslosen**. - **Bruch der letzten parlamentarischen Mehrheitsregierung (Kabinett Hermann Müller, März 1930)**. - **Die Präsidialkabinette (Brüning, von Papen, von Schleicher)**:   * Regieren ohne Mehrheit im Parlament allein über Notverordnungen von Reichspräsident Paul von Hindenburg (**Art. 48**).   * Verarmung, Notverordnungen und Straßenkämpfe der SA führten zum rasanten Wahlerfolg der extremistischen NSDAP zur stärksten Reichstagsfraktion."
+        }
+      ]
+    },
+    {
+      "id": "01K8G9R0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9R0000000000000000A02",
+      "namespace": "gymnasium-geschichte-ns",
+      "slug": "nationalsozialismus-ideologie-gleichschaltung-shoah-zweiter-weltkrieg",
+      "title": "Nationalsozialismus: Ideologie, Machtergreifung 1933, Shoah/Holocaust und Zweiter Weltkrieg",
+      "domain": "schule/geschichte/nationalsozialismus",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9R0000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Aufstieg des NS-Regimes basiert auf der Zerrüttung der Weimarer Republik."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7318",
+          "target_label": "Nazi Germany",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Nationalsozialismus und Zweiter Weltkrieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9R0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Gesetz vom 24. März 1933 schaltete das deutsche Parlament de facto aus und übertrug der Hitler-Regierung die gesetzgebende Gewalt ohne Mitwirkung des Reichstags?",
+          "concept": "Das Ermächtigungsgesetz ('Gesetz zur Behebung der Not von Volk und Reich') vom 24. März 1933 (Abstimmung am 23. März)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Das Ermächtigungsgesetz (24. März 1933)",
+              "Das Grundgesetz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9R0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Ideologie, Herrschaftsetablierung, Völkermord (Shoah) und Widerstand im Nationalsozialismus: 1. **Die Kernelemente der NS-Ideologie**:   * **Rassenlehre & Sozialdarwinismus**: Pseudowissenschaftliche Einteilung der Menschheit; Postulierung einer 'arischen Herrenrasse'; Einstufung von Juden, Slawen, Sinti und Roma als 'minderwertig'.   * **Antisemitismus**: Radikaler, rassistischer Judenhass als weltanschauliches Feindbild.   * **Führerprinzip**: Absolute Unterordnung unter den 'Führer' ('Führer befiehl, wir folgen!').   * **Volksgemeinschaft**: Scheinbare Überwindung von Standes- und Klassenunterschieden bei gleichzeitiger rücksichtsloser Ausgrenzung und Vernichtung aller 'Gemeinschaftsfremden'.   * **Lebensraumideologie**: Kriegerische Eroberung von 'Lebensraum im Osten' unter Versklavung der slawischen Bevölkerung, 2. **Machtergreifung und Gleichschaltung (1933/34)**:   * 30. Januar 1933: Ernennung Hitlers zum Reichskanzler durch Hindenburg.   * 28. Februar 1933: **Reichstagsbrandverordnung** (Außerkraftsetzung aller Grundrechte).   * 24. März 1933: **Ermächtigungsgesetz** (verabschiedet am 23. März; Selbstentmachtung des Parlaments gegen die Stimmen der SPD unter Otto Wels).   * Gleichschaltung der Länder, Zerschlagung der Gewerkschaften, Verbot aller Parteien (Einparteienstaat), 3. **Die Shoah (Holocaust) – Der geplante industrielle Massenmord**:   * 1935: **Nürnberger Gesetze** (Reichsbürgergesetz, Blutschutzgesetz: Entrechtung).   * 9./10. November 1938: **Novemberpogrome** (Zerstörung von Synagogen und jüdischen Geschäften).   * 20. Januar 1942: **Wannseekonferenz** (Organisation der bürokratischen 'Endlösung der Judenfrage').   * Vernichtungslager (Auschwitz-Birkenau, Treblinka, Sobibor, Belzec): Ermordung von über 6 Millionen europäischen Jüdinnen und Juden sowie Hunderttausenden Sinti, Roma, Homosexuellen und politisch Verfolgten, 4. **Zweiter Weltkrieg & Widerstand**: Überfall auf Polen (1. September 1939), Vernichtungskrieg; Widerstandsgruppen (Weiße Rose um Hans und Sophie Scholl, Militärischer Widerstand um Claus Schenk Graf von Stauffenberg 20. Juli 1944); Bedingungslose Kapitulation am 8. Mai 1945.",
+          "concept": "Nationalsozialismus: Ideologie (Rassenlehre, Antisemitismus, Führerprinzip, Lebensraum); Machtergreifung 1933 (Reichstagsbrandverordnung, Ermächtigungsgesetz, Gleichschaltung); Shoah/Holocaust (Nürnberger Gesetze 1935, Pogrom 1938, Wannsee 1942, Auschwitz); Weltkrieg & Widerstand (Weiße Rose, 20. Juli 1944).",
+          "sample_solution": "1. Die ideologischen Säulen des Nationalsozialismus: - **1. Rassenlehre und Sozialdarwinismus**:   * Pseudowissenschaftliche Übertragung des biologischen 'Kampfs ums Dasein' auf menschliche Rassen. Behauptung einer Überlegenheit der 'nordisch-arischen Rasse'. - **2. Rassenantisemitismus**:   * Im Gegensatz zum mittelalterlichen religiösen Antijudaismus definierte der NS Juden als biologisch unveränderliche 'Gegenrasse' und machten sie zum universellen Sündenbock für Kriegsniederlage, Kapitalismus und Bolschewismus. - **3. Das Führerprinzip**:   * Ablehnung von Demokratie, Parlamentarismus und Gewaltenteilung. Der Wille des 'Führers' ist oberstes Gesetz (*« Führerworte haben Gesetzeskraft »*). - **4. Volksgemeinschaft und Lebensraum im Osten**:   * Nach innen: Gleichschaltung und scheinbare Gleichheit aller 'Arier' unter radikaler Ausgrenzung von Andersdenkenden, Kranken (Euthanasie-Morde 'Aktion T4') und Minderheiten.   * Nach außen: Geplante militärische Eroberung und Germanisierung Osteuropas (*Lebensraumideologie*). 2. Die Errichtung der Diktatur (1933/1934): - **30. Januar 1933**: Reichspräsident von Hindenburg ernennt Adolf Hitler zum Reichskanzler. - **28. Februar 1933 (Reichstagsbrandverordnung)**:   * Unmittelbare Reaktion auf den Reichstagsbrand: Dauerhafte Außerkraftsetzung der verfassungsmäßigen Grundrechte (Meinungs-, Presse-, Versammlungsfreiheit, Briefgeheimnis); Legitimierung von Schutzhaft für politische Gegner ohne Gerichtsurteil. - **24. März 1933 (Ermächtigungsgesetz)**:   * Entmachtung des Parlaments (Abstimmung am 23. März, Ausfertigung am 24. März): Gesetze können ohne Zustimmung des Reichstags durch die Regierung beschlossen werden (mutige Gegenrede von Otto Wels, SPD; KPD-Abgeordnete waren bereits verhaftet). - **Gleichschaltung**: Auflösung der Bundesstaaten, Verbot der freien Gewerkschaften (2. Mai 1933), Verbot aller Parteien außer der NSDAP (Juli 1933), Terror durch Gestapo, SS und Errichtung früher Konzentrationslager (Dachau 1933). 3. Die Shoah / Der Holocaust: - **1. Phase der Entrechtung (1933–1938)**:   * Boykott jüdischer Geschäfte, Berufsverbote.   * **Nürnberger Gesetze (1935)**: Entzug der staatsbürgerlichen Rechte (*Reichsbürgergesetz*) und Verbot von Eheschließungen zwischen Juden und Nichtjuden (*Blutschutzgesetz*). - **2. Phase der offenen Gewalt (1938–1941)**:   * **Novemberpogrome (9./10. November 1938)**: Von der NSDAP organisierte Zerstörung hunderter Synagogen, Plünderung jüdischer Geschäfte, Ermordung von über 1.000 Menschen und Verschleppung von 30.000 Juden in Konzentrationslager; Zwang zur Emigration und Kennzeichnungspflicht mit dem gelben 'Judenstern'. - **3. Phase des industriellen Massenmords (1941–1945)**:   * **Wannseekonferenz (20. Januar 1942)**: Unter Vorsitz von Reinhard Heydrich organisierte die SS- und Ministerialbürokratie die systematische Deportation und fabrikmäßige Ermordung der gesamten europäischen Judenheit (*'Endlösung der Judenfrage'*).   * In den Vernichtungslagern im besetzten Polen (Auschwitz-Birkenau, Treblinka, Majdanek, Sobibor) wurden über **6 Millionen jüdische Menschen** sowie Hunderttausende Sinti und Roma systematisch mit dem Giftgas Zyklon B ermordet. 4. Zweiter Weltkrieg und Widerstand: - **1. September 1939**: Deutscher Überfall auf Polen entfesselt den Zweiten Weltkrieg. Rassenideologischer Vernichtungskrieg gegen die Sowjetunion. - **Widerstand im totalitären Staat**:   * **Die Weiße Rose (München 1942/43)**: Flugblattaktionen der Geschwister Hans und Sophie Scholl sowie Prof. Kurt Huber gegen das NS-Verbrecherregime (Hinrichtung durch das Fallbeil).   * **Das Attentat vom 20. Juli 1944**: Militärischer Umsturzversuch (*Unternehmen Walküre*) um Claus Schenk Graf von Stauffenberg. - **8. Mai 1945**: Bedingungslose Kapitulation der deutschen Wehrmacht $\\implies$ Ende des NS-Regimes und Befreiung von der nationalsozialistischen Gewaltherrschaft."
+        }
+      ]
+    }
+  ]
+}

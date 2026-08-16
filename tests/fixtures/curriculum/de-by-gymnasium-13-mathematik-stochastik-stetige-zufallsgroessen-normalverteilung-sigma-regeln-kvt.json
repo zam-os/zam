@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-mathematik-stochastik-stetige-zufallsgroessen-normalverteilung-sigma-regeln",
+  "version": "2026.08.1",
+  "title": "Mathematik 13: Stochastik – Stetige Zufallsgrößen, Dichtefunktionen, Normalverteilung und Sigma-Regeln (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 13 (Oberstufe Q13 / Abitur): Stetige Zufallsgrößen und Wahrscheinlichkeitsdichten (Axiome einer Wahrscheinlichkeitsdichtefunktion f(x) >= 0 und Gesamtintegral von -unendlich bis +unendlich f(x) dx = 1, Wahrscheinlichkeit als Flächeninhalt P(a <= X <= b) = int_a^b f(x) dx, P(X = x_0) = 0 für Einzelpunkte, Verteilungsfunktion F(x) = P(X <= x) = int_-unendlich^x f(t) dt, Erwartungswert E(X) = int x*f(x) dx, Varianz Var(X) = int (x - mu)^2*f(x) dx), Die Gaußsche Normalverteilung N(mu, sigma^2) (Gaußsche Glockenkurve phi_mu,sigma(x) = 1/(sigma*sqrt(2*pi)) * exp(-1/2 * ((x-mu)/sigma)^2), Wendepunkte bei x = mu +- sigma, Standard-Normalverteilung N(0, 1) und Standardisierung z = (X - mu)/sigma, Ablesen von Werten aus der Phi-Tabelle), Sigma-Umgebungsregeln (1-Sigma-Intervall [mu - sigma, mu + sigma] approx 68,3 %, 2-Sigma-Intervall approx 95,4 %, 3-Sigma-Intervall approx 99,7 %, Exakte 90%-, 95%- und 99%-Prognoseintervalle) sowie Der Zentrale Grenzwertsatz und die Approximation der Binomialverteilung durch die Normalverteilung (Satz von Moivre-Laplace mit Laplace-Bedingung sigma = sqrt(n*p*(1-p)) > 3 und Stetigkeitskorrektur).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 13, Lernbereich Stochastik – Stetige Zufallsgrößen und Normalverteilung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD20000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD20000000000000000A01",
+      "namespace": "gymnasium-mathematik-dichtefunktionen",
+      "slug": "stetige-zufallsgroessen-dichtefunktion-verteilungsfunktion",
+      "title": "Stetige Zufallsgrößen: Wahrscheinlichkeitsdichten, Verteilungsfunktion und Erwartungswert",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Probability density function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Stetige Zufallsgrößen und Dichtefunktionen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD20000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie groß ist die Wahrscheinlichkeit P(X = x_0), dass eine stetige Zufallsgröße X exakt einen einzelnen reellen Punktwert x_0 annimmt?",
+          "concept": "P(X = x_0) = 0 (weil ein einzelner Punkt die Intervallbreite dx = 0 und damit den Flächeninhalt 0 unter der Dichtekurve besitzt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "P(X = x_0) = 0",
+              "P(X = x_0) = f(x_0)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD20000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere stetige Zufallsgrößen, Dichtefunktionen und Verteilungsfunktionen: 1. **Kriterien für eine Dichtefunktion $f(x)$**:   * Nichtnegativität: $f(x) \\ge 0$ für alle $x \\in \\mathbb{R}$.   * Normierungsbedingung: $\\mathbf{\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1}$, 2. **Zusammenhang zwischen Dichte und Verteilungsfunktion**:   * Verteilungsfunktion: $F(x) = P(X \\le x) = \\int_{-\\infty}^{x} f(t)\\,dt$.   * Fundamentalsatz: $F'(x) = f(x)$ an allen Stetigkeitsstellen.   * Wahrscheinlichkeit für Intervalle: $\\mathbf{P(a \\le X \\le b) = F(b) - F(a) = \\int_{a}^{b} f(x)\\,dx}$, 3. **Konkrete Aufgabe**:   * Eine stetige Zufallsgröße $X$ besitzt die Dichtefunktion $f(x) = \\begin{cases} c \\cdot x^2 & \\text{für } 0 \\le x \\le 3 \\\\ 0 & \\text{sonst} \\end{cases}$.   * a) Bestimme den Parameter $c$, sodass $f$ eine gültige Dichtefunktion ist.   * b) Berechne die Wahrscheinlichkeit $P(1 \\le X \\le 2)$.   * c) Berechne den Erwartungswert $E(X)$.",
+          "concept": "Dichtefunktion 13: int_0^3 c*x^2 dx = [c*x^3/3]_0^3 = 9c = 1 -> c = 1/9; P(1 <= X <= 2) = int_1^2 1/9 x^2 dx = [x^3/27]_1^2 = 8/27 - 1/27 = 7/27; E(X) = int_0^3 x * (1/9 x^2) dx = int_0^3 1/9 x^3 dx = [x^4/36]_0^3 = 81/36 = 9/4 = 2,25.",
+          "sample_solution": "1. Theorie stetiger Zufallsgrößen: - Im Gegensatz zu diskreten Zufallsgrößen (wie Würfelwürfen) können stetige Zufallsgrößen (wie Wartezeiten, Körpergrößen, Messfehler) jeden reellen Wert in einem Intervall annehmen. - Wahrscheinlichkeiten entsprechen **Flächeninhalten** unter dem Graphen der Dichtefunktion $f$. 2. Vollständige Bearbeitung der Aufgabe: - **a) Normierungskonstante $c$ bestimmen**:   * Bedingung: $\\int_{-\\infty}^{\\infty} f(x)\\,dx = 1$.   * $$\\int_{0}^{3} c \\cdot x^2\\,dx = c \\cdot \\left[ \\frac{x^3}{3} \\right]_0^3 = c \\cdot \\left( \\frac{27}{3} - 0 \\right) = 9c$$   * $$9c = 1 \\implies \\mathbf{c = \\frac{1}{9}}$$   * Dichtefunktion: $f(x) = \\frac{1}{9}x^2$ für $x \\in [0; 3]$ (und $0$ sonst). - **b) Wahrscheinlichkeit $P(1 \\le X \\le 2)$**:   * $$P(1 \\le X \\le 2) = \\int_{1}^{2} \\frac{1}{9}x^2\\,dx = \\left[ \\frac{x^3}{27} \\right]_1^2 = \\frac{2^3}{27} - \\frac{1^3}{27} = \\frac{8}{27} - \\frac{1}{27} = \\mathbf{\\frac{7}{27} \\approx 0{,}2593 \\; (25{,}93\\,\\%)}$$ - **c) Erwartungswert $E(X)$**:   * Formel: $E(X) = \\int_{-\\infty}^{\\infty} x \\cdot f(x)\\,dx$.   * $$E(X) = \\int_{0}^{3} x \\cdot \\left(\\frac{1}{9}x^2\\right) dx = \\int_{0}^{3} \\frac{1}{9}x^3\\,dx = \\left[ \\frac{x^4}{36} \\right]_0^3 = \\frac{3^4}{36} - 0 = \\frac{81}{36} = \\mathbf{\\frac{9}{4} = 2{,}25}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GD20000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD20000000000000000A02",
+      "namespace": "gymnasium-mathematik-normalverteilung",
+      "slug": "normalverteilung-standardisierung-sigma-regeln-moivre-laplace",
+      "title": "Gauß-Normalverteilung: Standardisierung (z-Transformation), Sigma-Regeln und Moivre-Laplace",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD20000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Normalverteilung ist der Prototyp einer stetigen Dichtefunktion."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Normal distribution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Normalverteilung, Sigma-Regeln und Approximation",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD20000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die Standardisierungsformel (z-Transformation), um eine normalverteilte Zufallsgröße X ~ N(mu, sigma^2) in eine standardnormalverteilte Zufallsgröße Z ~ N(0, 1) zu transformieren?",
+          "concept": "Z = \\frac{X - \\mu}{\\sigma}",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Z = \\frac{X - \\mu}{\\sigma}",
+              "Z = \\frac{X + \\sigma}{\\mu}"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD20000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Gaußsche Normalverteilung, die Sigma-Regeln und den Satz von Moivre-Laplace: 1. **Eigenschaften der Gaußschen Glockenkurve $\\varphi_{\\mu, \\sigma}(x)$**:   * Maximum (Symmetrieachse) bei $x = \\mu$.   * Wendepunkte exakt bei $x = \\mu - \\sigma$ und $x = \\mu + \\sigma$.   * Dichte: $\\varphi_{\\mu, \\sigma}(x) = \\frac{1}{\\sigma \\sqrt{2\\pi}} e^{-\\frac{1}{2}\\left(\\frac{x - \\mu}{\\sigma}\\right)^2}$, 2. **Die klassischen Sigma-Umgebungsregeln**:   * **$1\\sigma$-Intervall**: $P(\\mu - 1\\sigma \\le X \\le \\mu + 1\\sigma) \\approx \\mathbf{68{,}3\\,\\%}$.   * **$2\\sigma$-Intervall**: $P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx \\mathbf{95{,}4\\,\\%}$.   * **$3\\sigma$-Intervall**: $P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx \\mathbf{99{,}7\\,\\%}$.   * **Exakte Prognoseintervalle**: $90\\,\\% \\implies [\\mu \\pm 1{,}64\\sigma]$, $95\\,\\% \\implies [\\mu \\pm 1{,}96\\sigma]$, $99\\,\\% \\implies [\\mu \\pm 2{,}58\\sigma]$, 3. **Approximation nach Moivre-Laplace**:   * Eine binomialverteilte Zufallsgröße $X \\sim B(n, p)$ mit $\\mu = n \\cdot p$ und $\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}$ kann bei $\\mathbf{\\sigma > 3}$ (Laplace-Bedingung) durch die Normalverteilung approximiert werden:     $$\\mathbf{P(k_1 \\le X \\le k_2) \\approx \\Phi\\left( \\frac{k_2 + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k_1 - 0{,}5 - \\mu}{\\sigma} \\right)}$$   *(mit $+0{,}5$ und $-0{,}5$ als **Stetigkeitskorrektur**)*.",
+          "concept": "Normalverteilung 13: Glockenkurve Symmetrie mu, Wendepunkte mu +- sigma; Sigma-Regeln (68,3%, 95,4%, 99,7%; 95% -> 1,96 sigma); Satz von Moivre-Laplace (sigma > 3, Stetigkeitskorrektur +- 0,5).",
+          "sample_solution": "1. Die Normalverteilung (Carl Friedrich Gauß): - Die Normalverteilung $N(\\mu, \\sigma^2)$ ist das fundamentale Modell der Statistik, da zufällige Abweichungen, die durch Überlagerung vieler kleiner, unabhängiger Einflüsse entstehen, asymptotisch immer normalverteilt sind (**Zentraler Grenzwertsatz**). 2. Die Standardnormalverteilung $\\Phi(z)$ und Symmetriebeziehung: - Jede Normalverteilung lässt sich durch die **z-Transformation** normieren:   $$z = \\frac{x - \\mu}{\\sigma}$$ - Für die kumulierte Verteilungsfunktion $\\Phi(z)$ gilt aufgrund der Punktsymmetrie der Dichte:   $$\\mathbf{\\Phi(-z) = 1 - \\Phi(z)}$$ 3. Die Sigma-Regeln und Prognoseintervalle im Überblick: | Umgebungsradius | Wahrscheinlichkeit $P(\\mu - c\\sigma \\le X \\le \\mu + c\\sigma)$ | Typische Anwendung | | :--- | :--- | :--- | | **$c = 1{,}00$** | **$68{,}27\\,\\%$** | Grobe Streubreite | | **$c = 1{,}64$** | **$90{,}00\\,\\%$** | $90\\,\\%$-Konfidenzintervall | | **$c = 1{,}96$** | **$95{,}00\\,\\%$** | **$95\\,\\%$-Standard-Signifikanzniveau ($5\\,\\%$-Irrtum)** | | **$c = 2{,}00$** | **$95{,}45\\,\\%$** | $2\\sigma$-Faustregel | | **$c = 2{,}58$** | **$99{,}00\\,\\%$** | $99\\,\\%$-Qualitätskontrolle | | **$c = 3{,}00$** | **$99{,}73\\,\\%$** | Fast sichere Grenzen (Six-Sigma-Industriestandard) | 4. Die Approximation nach dem Satz von Moivre-Laplace: - **Warum Stetigkeitskorrektur?**:   * Beim Übergang von einer diskreten Säule (Binomialverteilung mit ganzzahligen Werten $k$) zur stetigen Kurve deckt der Wert $k$ das Intervall $[k - 0{,}5; k + 0{,}5]$ ab.   * Um $P(X = k)$ zu berechnen, integriert man von $k - 0{,}5$ bis $k + 0{,}5$:     $$P(X = k) \\approx \\Phi\\left( \\frac{k + 0{,}5 - \\mu}{\\sigma} \\right) - \\Phi\\left( \\frac{k - 0{,}5 - \\mu}{\\sigma} \\right)$$   * Ohne Stetigkeitskorrektur wäre $P(X = k) = 0$ (Fehler der Punktmasse!)."
+        }
+      ]
+    }
+  ]
+}

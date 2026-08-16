@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-franzoesisch-francophonie-maghreb-quebec-ben-jelloun",
+  "version": "2026.08.1",
+  "title": "Französisch 13: La Francophonie – Le Maghreb, Le Québec, Tahar Ben Jelloun et le Plurilinguisme (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Französisch 13 (Oberstufe F1/F2 Q13 / Abitur): Die frankophone Welt / L'Espace francophone (Organisation internationale de la Francophonie OIF: ca. 320 Millionen Sprecher auf 5 Kontinenten, Geschichte der kolonialen Expansion und der postkolonialen Emanzipation), Frankophone Regionen im Fokus (1. Der Maghreb [Marokko, Algerien, Tunesien]: Diglossie zwischen Arabisch/Berberisch und Französisch als Bildungs- und Verwaltungssprache; 2. Subsahara-Afrika [Senegal mit Léopold Sédar Senghor und das Konzept der Négritude]; 3. Québec in Kanada: Révolution tranquille, Loi 101 zur Verteidigung der französischen Sprache, Frankokanadische Identität im anglophonen Nordamerika), Literarische Stimmen der Frankophonie (Tahar Ben Jelloun: *L'Enfant de sable*, *La Nuit sacrée* – Prix Goncourt 1987, Identitätskrise, Frauenrechte und das Spannungsfeld zwischen orientalischer Tradition und westlicher Moderne) sowie Sprachvarietäten und das Konzept der Interkulturalität (L'interculturalité, das Französische als Brückensprache des globalen Südens).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/franzoesisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Französisch 13, Lernbereich La Francophonie et la diversité culturelle"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GDC0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GDC0000000000000000A01",
+      "namespace": "gymnasium-franzoesisch-espace-francophone",
+      "slug": "la-francophonie-oif-maghreb-quebec-negritude-senghor",
+      "title": "La Francophonie: L'espace mondial (OIF), Le Maghreb, Le Québec et la Négritude (Senghor)",
+      "domain": "schule/franzoesisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Francophonie",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "franzoesisch",
+          "topic_code": "lb1",
+          "topic_title": "La Francophonie et le monde francophone",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDC0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Quel concept littéraire et philosophique émancipateur a été fondé dans les années 1930 par Léopold Sédar Senghor et Aimé Césaire pour affirmer fièrement l'identité et les valeurs culturelles du monde noir face au colonialisme?",
+          "concept": "Le mouvement de la Négritude",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Le mouvement de la Négritude",
+              "Le surréalisme parisien"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDC0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Begriff und die geopolitische Realität der Francophonie: 1. **Definition & Organisation (OIF)**:   * Begriff 1880 geprägt von Onésime Reclus.   * **Organisation internationale de la Francophonie (OIF)**: 88 Mitgliedsstaaten; ca. 320 Millionen Frankophone weltweit (mehr als die Hälfte in Afrika $\\implies$ Afrika als Zukunftsmotor der französischen Sprache), 2. **Drei charakteristische Regionen**:   * **1. Le Maghreb (Marokko, Algerien, Tunesien)**: Kein OIF-Vollmitglied bei Algerien; Französisch als 'Butin de guerre' (Kateb Yacine) – keine Amtssprache, aber dominante Sprache in Wirtschaft, Medizin, Naturwissenschaften und Hochschulen; linguistische Koexistenz mit *Darija* (arabischer Dialekt) und *Tamazight* (Berberisch).   * **2. L'Afrique subsaharienne (z. B. Sénégal)**: Französisch als offizielle Amtssprache und Lingua Franca zwischen Dutzenden ethnischen Idiomen (Wolof etc.); Wiege der **Négritude** (Léopold Sédar Senghor: Verbindung afrikanischer Spiritualität mit französischer Sprache).   * **3. Le Québec (Kanada)**: Einzige mehrheitlich frankophone Provinz Nordamerikas; *Révolution tranquille* der 1960er Jahre; **Loi 101 (Charte de la langue française, 1977)** zum Schutz vor Anglisierung (*« Je me souviens »*), 3. **Vom kolonialen Erbe zur plurikulturellen Partnerschaft**:   * Französisch nicht mehr als Eigentum Frankreichs, sondern als **polyzentrische Weltsprache** des globalen Austauschs.",
+          "concept": "Francophonie 13: OIF; Maghreb (Diglossie Darija/Französisch als Wissenschaftssprache); Subsahara-Afrika & Négritude (Senghor/Césaire); Québec (Loi 101, sprachliche Selbstbehauptung im anglophonen Raum).",
+          "sample_solution": "1. L'Espace francophone dans le monde (L'OIF): - **Origine et chiffres-clés**:   * Le géographe Onésime Reclus forge le terme « Francophonie » en 1880 pour désigner l'ensemble des peuples utilisant le français.   * Aujourd'hui, l'**OIF (Organisation internationale de la Francophonie)** regroupe 88 États et gouvernements. Avec plus de **320 millions de locuteurs**, le français est la 5e langue la plus parlée au monde – et son centre de gravité démographique s'est déplacé vers le continent africain (près de $60\\%$ des francophones). 2. Étude comparée de trois espaces francophones majeurs: - **1. Le Maghreb (Maroc, Algérie, Tunisie)**:   * Bien que l'arabe et le tamazight (berbère) soient les langues officielles, le français conserve un statut privilégié de langue véhiculaire dans l'enseignement supérieur, l'économie et les technologies.   * L'écrivain algérien Kateb Yacine qualifiait la langue française de **« butin de guerre »** : un instrument colonial détourné pour exprimer la révolte et la liberté. - **2. L'Afrique subsaharienne (ex. Le Sénégal)**:   * Le français y assure la cohésion nationale face à la multiplicité des langues ethniques locales.   * **Le mouvement de la Négritude (Léopold Sédar Senghor, Aimé Césaire)** :     - Rejet de l'assimilationnisme colonial et célébration des valeurs humanistes de la culture noire.     - Senghor, premier président du Sénégal et membre de l'Académie française, prônait le métissage culturel : *« Le français, ce sont les grandes orgues qui se prêtent à tous les timbres, à tous les effets. »* - **3. Le Québec (Canada)**:   * Îlot francophone de 8,5 millions d'habitants entouré de 360 millions d'anglophones.   * Après la **Révolution tranquille** des années 1960, le Québec a adopté la **Loi 101 (Charte de la langue française, 1977)**, rendant le français obligatoire dans l'affichage commercial, le monde du travail et l'école publique pour garantir la survie de son identité culturelle face à l'hégémonie de l'anglais. 3. Le nouvel humanisme francophone: - La francophonie moderne n'est plus synonyme de dépendance postcoloniale (*Françafrique*), mais d'un **réseau multipolaire et égalitaire** défendant la diversité linguistique face à la globalisation uniformisante."
+        }
+      ]
+    },
+    {
+      "id": "01K8GDC0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GDC0000000000000000A02",
+      "namespace": "gymnasium-franzoesisch-ben-jelloun",
+      "slug": "tahar-ben-jelloun-enfant-de-sable-identite-interculturalite",
+      "title": "Littérature francophone: Tahar Ben Jelloun (L'Enfant de sable) et l'Interculturalité",
+      "domain": "schule/franzoesisch/literatur",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GDC0000000000000000A01",
+          "type": "hard",
+          "rationale": "Ben Jellouns Werk ist der literarische Höhepunkt der maghrebinischen Francophonie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q150",
+          "target_label": "Tahar Ben Jelloun",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "franzoesisch",
+          "topic_code": "lb2",
+          "topic_title": "Littérature maghrébine – Tahar Ben Jelloun",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GDC0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Quel prestigieux prix littéraire français a été décerné en 1987 à l'écrivain marocain Tahar Ben Jelloun pour son roman 'La Nuit sacrée' (suite de 'L'Enfant de sable')?",
+          "concept": "Le Prix Goncourt (premier auteur maghrébin et arabe à recevoir cette distinction suprême)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Le Prix Goncourt (1987)",
+              "Le Prix Pulitzer"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GDC0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Meisterwerk 'L'Enfant de sable' (1985) von Tahar Ben Jelloun und das Thema der Interkulturalität: 1. **Die narrative Fabel von *L'Enfant de sable***:   * In einer marokkanischen Familie bringt der Vater nach sieben Töchtern eine achte Tochter zur Welt. Aus Angst vor Schande und Enterbung beschließt der Vater, das Neugeborene als Jungen aufzuziehen: **Ahmed**.   * Ahmed wächst mit allen männlichen Privilegien der patriarchalischen Gesellschaft auf, bis die körperliche Pubertät und die Heirat mit seiner cousine Fatima die weibliche Identität unaufhaltsam erzwingen.   * **Erzähltechnik**: Ein traditioneller Geschichtenerzähler (*le conteur*) auf einem Marktplatz in Marrakesch (Jemaa el-Fna) liest aus Ahmeds geheimen Tagebuch vor; verschiedene Zuhörer erfinden widersprüchliche Enden $\\implies$ orientalische Erzähltradition (*Tausendundeine Nacht*) verschmilzt mit postmodernem französischem Roman, 2. **Kritik an patriarchalen Gesellschaftsstrukturen**:   * Entlarvung der künstlichen Konstruktion von Geschlechterrollen (*Gender*) und Tabuisierung des weiblichen Körpers im traditionellen arabisch-islamischen Raum, 3. **Das Konzept der Interkulturalität**:   * Ben Jelloun schreibt auf Französisch über orientalische Lebenswirklichkeiten $\\implies$ Schaffen einer 'Dritten Zone' des Dialogs zwischen Orient und Okzident (*« Le racisme expliqué à ma fille »*).",
+          "concept": "Ben Jelloun 13: 'L'Enfant de sable' (Ahmed als Knabe erzogenes Mädchen, Patriarchatskritik, Marktplatzerzähler in Marrakesch); Verbindung orientalischer Erzähltradition mit französischer Sprache; Interkulturalität und Antirassismus.",
+          "sample_solution": "1. Analyse littéraire de « L'Enfant de sable » (Tahar Ben Jelloun, 1985): - **Le drame de l'identité confisquée**:   * Dans le Maroc traditionnel des années 1940, un père humilié d'avoir engendré sept filles décide que son huitième enfant sera un garçon, quel que soit son sexe biologique.   * L'enfant, une fille, est baptisée **Ahmed**. Élevée dans le mensonge, corsetée dans des bandages pour masquer sa poitrine, elle intériorise la domination masculine et en jouit (*« J'étais le fils, le maître absolu »*).   * Ce n'est qu'à la mort du père qu'Ahmed/Zahra entame une quête douloureuse pour retrouver sa véritable identité féminine (*La Nuit sacrée*, Prix Goncourt 1987). - **L'art du conte oriental et la polyphonie narrative**:   * Le roman s'inspire directement de la tradition orale de la place Jemaa el-Fna à Marrakech.   * L'histoire n'a pas un narrateur unique: le conteur disparaît, des passants interviennent et proposent quatre dénouements alternatifs $\\implies$ Déconstruction de la vérité unique, héritage direct des *Mille et Une Nuits*. 2. La portée critique sociologique: - **Dénonciation du patriarcat et de l'hypocrisie sociale**:   * Ben Jelloun critique sans complaisance la condition des femmes dans la société patriarcale traditionnelle, où la naissance d'une fille est vécue comme une malédiction et où la loi successorale dépossède les femmes au profit des oncles. 3. L'Interculturalité selon Tahar Ben Jelloun: - **La langue française comme espace de liberté**:   * Ben Jelloun utilise le français non pas comme langue d'oppression, mais comme une langue d'émancipation poétique et de subversion des tabous orientaux (la sexualité, le corps, la folie). - **L'engagement citoyen contre l'intolérance**:   * Dans son essai pédagogique mondialement traduit *Le Racisme expliqué à ma fille (1998)*, Ben Jelloun pose les jalons d'un humanisme universel : le racisme naît de la peur de la différence et de l'ignorance. L'interculturalité consiste à voir dans la culture de l'Autre un enrichissement mutuel et non une menace."
+        }
+      ]
+    }
+  ]
+}

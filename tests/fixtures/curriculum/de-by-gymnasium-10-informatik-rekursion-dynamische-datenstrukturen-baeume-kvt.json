@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-informatik-rekursion-dynamische-datenstrukturen-baeume",
+  "version": "2026.08.1",
+  "title": "Informatik 10: Rekursion und Dynamische Datenstrukturen (Liste, Stack, Queue, Binärbaum) (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 10 (NTG): Das funktionale Prinzip der Rekursion (Rekursionsbasis/Abbruchbedingung, Rekursionsschritt, Call-Stack/Aufrufstapel, Fakultät, Fibonacci, Türme von Hanoi), Dynamische Datenstrukturen mit Knoten und Referenzen (Einfach verkettete lineare Liste, Stapel / Stack nach LIFO-Prinzip, Warteschlange / Queue nach FIFO-Prinzip) sowie Binärbäume (Wurzel, Blätter, Teilbäume, geordneter binärer Suchbaum, Traversierungsmethoden: Inorder, Preorder, Postorder).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/informatik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Informatik 10, Lernbereiche Rekursion und Nichtlineare Datenstrukturen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA90000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA90000000000000000A01",
+      "namespace": "gymnasium-informatik-rekursion",
+      "slug": "rekursion-rekursionsbasis-rekursionsschritt-callstack",
+      "title": "Rekursion: Rekursionsbasis, Rekursionsschritt und Aufrufstapel (Call Stack)",
+      "domain": "schule/informatik/algorithmen",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Recursion",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "informatik",
+          "topic_code": "lb1",
+          "topic_title": "Rekursive Algorithmen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA90000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was passiert bei der Ausführung einer rekursiven Methode, wenn die Rekursionsbasis (Abbruchbedingung) fehlerhaft formuliert ist und niemals erreicht werden kann?",
+          "concept": "Ein StackOverflowError / Speicherüberlauf des Aufrufstapels (Call Stack) durch unendlich viele geschachtelte Methodenaufrufe",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "StackOverflowError (Überlauf des Aufrufstapels)",
+              "Das Programm liefert automatisch den Wert 0 zurück"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA90000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Prinzip der Rekursion in der Informatik: 1. **Definition & Komponenten einer rekursiven Methode**:   * Eine Methode heißt **rekursiv**, wenn sie sich während ihrer Ausführung direkt oder indirekt selbst aufruft.   * **1. Rekursionsbasis (Basisfall / Abbruchbedingung)**: Trivialer Fall, der ohne weiteren Selbstaufruf direkt ein Ergebnis liefert (verhindert Endlosschleifen).   * **2. Rekursionsschritt (Rekursionsvorschrift)**: Reduktion des Problems auf eine kleinere, gleichartige Teilinstanz ($n \\rightarrow n-1$), 2. **Der Call-Stack (Aufrufstapel)**:   * Bei jedem Methodenaufruf wird ein neuer Stack-Frame (lokale Variablen, Parameter, Rücksprungadresse) auf dem Stack abgelegt.   * Beim Erreichen der Basis werden die Frames von oben nach unten abgeräumt (**Backtracking / Aufrollen**), 3. **Beispiel Fakultätsfunktion $n!$**:   $$\\text{fak}(n) = \\begin{cases} 1 & \\text{für } n = 0 \\\\ n \\cdot \\text{fak}(n-1) & \\text{für } n > 0 \\end{cases}$$ 4. Vergleiche Rekursion und Iteration (Schleifen) hinsichtlich Lesbarkeit, Speicherverbrauch und Laufzeit.",
+          "concept": "Rekursion: Basisfall (Abbruch) + Rekursionsschritt (Selbstaufruf); Call-Stack (Frames & StackOverflowError); Fakultät n! = n * fak(n-1); Vergleich Rekursion (hohe Eleganz bei Bäumen, aber Speicherbedarf O(n)) vs. Iteration (O(1) Zusatzspeicher).",
+          "sample_solution": "1. Das fundamentale Prinzip der Rekursion: - Ein Problemlösungsverfahren, bei dem eine Aufgabe gelöst wird, indem sie auf **kleinere Instanzen derselben Aufgabe** zurückgeführt wird:   * **1. Rekursionsbasis (Basisfall)**:     - Die Abbruchbedingung. Für den kleinstmöglichen Eingabewert wird das Ergebnis direkt berechnet und zurückgegeben (z. B. $0! = 1$ oder Leere Liste).   * **2. Rekursionsschritt**:     - Der Selbstaufruf der Methode mit veränderten (näher an der Basis liegenden) Parametern, verknüpft mit einer Rechenoperation. 2. Der Aufrufstapel (Call Stack) und Speicherverwaltung: - Jeder Aufruf einer Methode erzeugt im Arbeitsspeicher einen neuen **Stack-Frame**, der Parameter und lokale Variablen speichert. - **Ablauf am Beispiel $\\text{fak}(3)$**:   1. $\\text{fak}(3)$ ruft $3 \\cdot \\text{fak}(2)$ auf $\\implies$ Frame 1 wartet.   2. $\\text{fak}(2)$ ruft $2 \\cdot \\text{fak}(1)$ auf $\\implies$ Frame 2 wartet.   3. $\\text{fak}(1)$ ruft $1 \\cdot \\text{fak}(0)$ auf $\\implies$ Frame 3 wartet.   4. $\\text{fak}(0)$ erreicht die **Basis** $\\implies$ liefert $1$ zurück.   5. Nun werden die wartenden Frames von oben nach unten aufgelöst (*Aufrollen des Stacks*):      - $1 \\cdot 1 = 1 \\implies 2 \\cdot 1 = 2 \\implies 3 \\cdot 2 = \\mathbf{6}$. - **StackOverflowError**: Fehlt die Basis, wächst der Stack unbegrenzt, bis der zugewiesene RAM voll ist $\\implies$ Programmabsturz. 3. Vergleich: Rekursion vs. Iteration: | Kriterium | Rekursion | Iteration (`for`/`while`-Schleife) | | :--- | :--- | :--- | | **Code-Verständnis** | Mathematisch hochgradig elegant, unverzichtbar für hierarchische Strukturen (Bäume, Graphen) | Bei linearen Problemen intuitiv, bei Verzweigungen oft sperrig | | **Zusatzspeicher (RAM)** | $O(n)$ durch $n$ Stack-Frames auf dem Call-Stack | $O(1)$ (konstanter Speicherbedarf für Schleifenzähler) | | **Geschwindigkeit** | Geringer Overhead durch Methodenaufrufe | Maximale Ausführungsgeschwindigkeit |"
+        }
+      ]
+    },
+    {
+      "id": "01K8GA90000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA90000000000000000A02",
+      "namespace": "gymnasium-informatik-datenstrukturen",
+      "slug": "dynamische-datenstrukturen-stapel-schlange-binaerbaum",
+      "title": "Dynamische Datenstrukturen: Stack (LIFO), Queue (FIFO) und Binäre Suchbäume (Traversierung)",
+      "domain": "schule/informatik/datenstrukturen",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA90000000000000000A01",
+          "type": "hard",
+          "rationale": "Baumtraversierungen und dynamische Strukturen werden rekursiv implementiert."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Binary search tree",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Dynamische Datenstrukturen und Bäume",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA90000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Nach welchem Zugriffsprinzip arbeitet die dynamische Datenstruktur 'Stapel' (Stack / Kellerspeicher)?",
+          "concept": "LIFO (Last In, First Out – das zuletzt eingefügte Element wird als erstes wieder entnommen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "LIFO (Last In, First Out)",
+              "FIFO (First In, First Out)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA90000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere dynamische Datenstrukturen und Binärbäume: 1. **Lineare dynamische Datenstrukturen**:   * **Einfach verkettete Liste**: Knoten mit Datenelement (`inhalt`) und Referenz auf Nachfolger (`naechster`). Dynamische Größe, schnelles Einfügen/Löschen ohne Umkopieren ($O(1)$ bei bekannter Position).   * **Stapel (Stack)**: **LIFO-Prinzip** (Last In, First Out). Operationen: `push(elem)` (oben auflegen), `pop()` (oberstes Element entfernen und zurückgeben), `top()`/`peek()`. Einsatz: Rückgängig-Funktion (Undo), Call-Stack.   * **Warteschlange (Queue)**: **FIFO-Prinzip** (First In, First Out). Operationen: `enqueue(elem)` (hinten anstellen), `dequeue()` (vorne entnehmen). Einsatz: Druckwarteschlangen, Pufferspeicher, 2. **Der Binärbaum (Nichtlineare Datenstruktur)**:   * Besteht aus Wurzelknoten (Root), inneren Knoten und Blättern (Knoten ohne Kinder). Jeder Knoten hat maximal 2 Teilbäume (linker und rechter Nachfolger).   * **Geordneter binärer Suchbaum (BST)**: Für jeden Knoten gilt: Alle Werte im linken Teilbaum sind kleiner ($<$) und alle Werte im rechten Teilbaum größer ($>$) als der Knotenwert $\\implies$ Suchen in $O(\\log n)$ bei balanciertem Baum, 3. **Baum-Traversierungen (Rekursiver Durchlauf aller Knoten)**:   * **Inorder (LNR - Links, Node, Rechts)**: Besucht erst linken Teilbaum, dann Wurzel, dann rechten Teilbaum $\\implies$ gibt einen binären Suchbaum exakt **in aufsteigend sortierter Reihenfolge** aus!   * **Preorder (NLR - Node, Links, Rechts)**: Wurzel zuerst $\\implies$ zum Duplizieren/Serialisieren des Baumes.   * **Postorder (LRN - Links, Rechts, Node)**: Wurzel zuletzt $\\implies$ zum Löschen von Bäumen oder Auswerten von Syntaxbäumen (UPN).",
+          "concept": "Datenstrukturen: Liste; Stack (LIFO: push/pop); Queue (FIFO: enqueue/dequeue); Binärer Suchbaum (BST: links kleiner, rechts größer); 3 Traversierungsarten (Inorder LNR liefert sortierte Ausgabe, Preorder NLR, Postorder LRN).",
+          "sample_solution": "1. Lineare dynamische Datenstrukturen: - **1. Verkettete Liste (Linked List)**:   * Knotenobjekte im Speicher, die jeweils Daten und eine **Referenz (Zeiger)** auf das nächste Element halten.   * *Vorteil*: Dynamisches Wachstum zur Laufzeit ohne feste Array-Größenbeschränkung. - **2. Der Stapel (Stack / Keller)**:   * **LIFO-Prinzip (Last-In-First-Out)**: Wie ein Tellerstapel:     * `push(x)`: Legt $x$ oben auf den Stapel.     * `pop()`: Entfernt das oberste Element und liefert es zurück.     * `top()` / `peek()`: Liest das oberste Element, ohne es zu entfernen.   * *Anwendungen*: Browser-Verlauf (*Zurück*-Taste), Klammerprüfung im Compiler, Call-Stack der JVM. - **3. Die Warteschlange (Queue / Puffer)**:   * **FIFO-Prinzip (First-In-First-Out)**: Wie eine Supermarktkasse:     * `enqueue(x)`: Fügt $x$ am Ende der Schlange an.     * `dequeue()`: Entfernt das am längsten wartende Element am Kopf.   * *Anwendungen*: Druckaufträge, Tastaturpuffer, BFS-Breitensuche. 2. Der Binäre Suchbaum (Binary Search Tree - BST): - **Struktur**: Eine hierarchische Baumstruktur, bei der jeder Knoten höchstens zwei Kindknoten besitzt (linker und rechter Zeiger). - **Suchbaum-Bedingung**:   * Für jeden Knoten $K$ mit Schlüssel $k$ gilt:     $$\\mathbf{\\forall x \\in \\text{linker Teilbaum}: x < k \\quad \\text{und} \\quad \\forall y \\in \\text{rechter Teilbaum}: y > k}$$   * **Effizienz**: Bei balancierten Bäumen ermöglicht dies binäre Suche in logarithmischer Zeit $\\mathbf{O(\\log_2 n)}$. 3. Die drei klassischen Traversierungsstrategien: - **1. Inorder (L - N - R: Links $\\rightarrow$ Node $\\rightarrow$ Rechts)**:   * 1. Traversiere linken Teilbaum rekursiv in Inorder.   * 2. Verarbeite den aktuellen Knoten (Wurzel).   * 3. Traversiere rechten Teilbaum rekursiv in Inorder.   * **Eigenschaft**: Gibt die Schlüssel eines binären Suchbaums in **streng aufsteigend sortierter Reihenfolge** aus! - **2. Preorder (N - L - R: Node $\\rightarrow$ Links $\\rightarrow$ Rechts)**:   * Wurzelknoten wird vor seinen Kindern verarbeitet (ideal zur Baumkopie und XML-Hierarchiedarstellung). - **3. Postorder (L - R - N: Links $\\rightarrow$ Rechts $\\rightarrow$ Node)**:   * Kinder werden vor der Wurzel verarbeitet (nötig beim rekursiven Freigeben/Löschen des Speichers von den Blättern zur Wurzel)."
+        }
+      ]
+    }
+  ]
+}

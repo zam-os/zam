@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-biologie-evolutionstheorie-belege-humanevolution",
+  "version": "2026.08.1",
+  "title": "Biologie 10: Evolutionstheorien (Darwin, Synthetische Evolution), Evolutionsbelege und Humanevolution (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Biologie 10: Historische und moderne Evolutionstheorien (Jean-Baptiste de Lamarck: Vererbung erworbener Eigenschaften [widerlegt] vs. Charles Darwin: Überproduktion, Variabilität, natürliche Selektion / Survival of the fittest; Synthetische Evolutionstheorie mit Mutationsdruck, Rekombination, Gendrift und Isolation), Evolutionsbelege (Homologie mit Kriterien der Lage, spezifischen Qualität und Kontinuität / Divergenz vs. Analogie / Konvergenz, Rudimente, Atavismen, molekularbiologische Verwandtschaftsanalysen) sowie Humanevolution (Stammbaum der Hominini: Australopithecus afarensis/Lucy, Homo habilis, Homo erectus, Homo neanderthalensis, Homo sapiens; Out-of-Africa-Theorie).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/biologie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Biologie 10, Lernbereiche Evolutionstheorie, Belege und Humanevolution"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAE0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAE0000000000000000A01",
+      "namespace": "gymnasium-biologie-evolutionstheorie",
+      "slug": "evolutionstheorien-darwin-synthetische-evolution-selektion",
+      "title": "Evolutionstheorien: Darwinismus, Synthetische Evolutionstheorie und Evolutionsfaktoren",
+      "domain": "schule/biologie/evolution",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb1",
+          "topic_title": "Evolutionstheorien und Evolutionsfaktoren",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAE0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was besagt der Begriff der 'natürlichen Selektion' (Natural Selection / Survival of the fittest) nach Charles Darwin?",
+          "concept": "Individuen mit vorteilhaften erblichen Merkmalen haben eine höhere Überlebenschance und pflanzen sich erfolgreicher fort (höhere reproduktive Fitness)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Höherer Fortpflanzungserfolg besser angepasster Individuen (Fitness)",
+              "Aktiver, willentlicher Vervollkommnungstrieb einzelner Lebewesen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAE0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Vergleiche die Evolutionstheorien von Lamarck und Darwin und erläutere die Synthetische Evolutionstheorie: 1. **Lamarckismus (Jean-Baptiste de Lamarck, 1809)**:   * Annahmen: Innerer Drang zur Vervollkommnung; Gebrauch von Organen führt zu deren Stärkung, Nichtgebrauch zur Verkümmerung; **Vererbung erworbener Eigenschaften** an Nachkommen (z. B. Giraffe streckt Hals nach Blättern $\\implies$ Hals wird länger $\\implies$ längerer Hals wird vererbt).   * *Widerlegt*: Modifikationen des Phänotyps verändern die DNA-Sequenz der Keimzellen nicht, 2. **Darwinismus (Charles Darwin, 1859: *On the Origin of Species*)**:   * **Überproduktion von Nachkommen**: Mehr Nachkommen als zur Arterhaltung nötig $\\implies$ *Struggle for life* (Kampf ums Dasein).   * **Variabilität**: Individuen einer Population unterscheiden sich zufällig in ihren erblichen Merkmalen.   * **Natürliche Selektion**: Individuen, die zufällig besser an die herrschenden Umweltbedingungen angepasst sind, überleben eher und haben mehr Nachkommen (**höhere reproduktive Fitness**) $\\implies$ *Survival of the fittest*, 3. **Die Synthetische Evolutionstheorie (Moderne Synthese)**:   * Verknüpft Darwins Selektionstheorie mit Erkenntnissen der Genetik, Molekularbiologie, Populationsbiologie und Ökologie.   * **Die 5 Evolutionsfaktoren** (verändern den Genpool einer Population):     1. **Mutation**: Erzeugt spontan neue Allele (zufällige Rohstoffquelle).     2. **Rekombination**: Meiose & Befruchtung mischen vorhandene Allele neu.     3. **Selektion**: Richtet die Evolution aus (abiotische und biotische Selektionsfaktoren; stabilisierende, gerichtete, disruptive Selektion).     4. **Gendrift**: Zufallsbedingte Veränderung der Allelhäufigkeit (z. B. Flaschenhalseffekt bei Katastrophen, Gründereffekt bei Besiedlung neuer Inseln).     5. **Isolation**: Räumliche (geographische/allopatrische) oder reproduktive Barrieren $\\rightarrow$ Artbildung.",
+          "concept": "Evolution: Lamarck (Gebrauch/Nichtgebrauch, Vererbung Erworbener Eigenschaften, widerlegt) vs. Darwin (Überproduktion, erbliche Variabilität, Selektion/Fitness); Synthetische Theorie mit 5 Faktoren (Mutation, Rekombination, Selektion, Gendrift/Flaschenhals, Isolation/Artbildung).",
+          "sample_solution": "1. Historischer Theorienvergleich: Lamarck vs. Darwin: - **Jean-Baptiste de Lamarck (1809)**:   * *Hypothese*: Jedes Lebewesen hat ein inneres Streben nach Vervollkommnung. Durch intensiven Gebrauch prägen sich Organe stärker aus; bei Nichtgebrauch verkümmern sie. Diese im Laufe des individuellen Lebens **erworbenen Eigenschaften werden direkt an die Nachkommen weitervererbt**.   * *Wissenschaftliche Beurteilung*: **Widerlegt**. Phänotypische Veränderungen (Modifikationen) verändern nicht das Genom der Keimzellen (Spermien/Eizellen) und können daher nicht vererbt werden. - **Charles Darwin (1859)**:   * *Theorie*: Basiert auf drei empirischen Naturbeobachtungen:     1. **Überproduktion**: Alle Arten erzeugen mehr Nachkommen, als die Ressourcen ernähren können.     2. **Variabilität**: Die Nachkommen sind untereinander genetisch nicht identisch, sondern variieren zufällig.     3. **Natürliche Selektion (*Natural Selection*)**: Individuen, die durch zufällige Merkmalskombinationen besser an gegebene Umweltbedingungen angepasst sind, haben eine höhere Überlebensrate und hinterlassen mehr Nachkommen (**reproduktive Fitness**). Über Generationen hinweg führt dies zum evolutionären Wandel der Art. 2. Die Synthetische Evolutionstheorie (Moderne Synthese): - Verbindet Darwin mit Genetik, Molekularbiologie und Populationsökologie. Das Subjekt der Evolution ist nicht das Einzelindividuum, sondern die **Population (ihr Genpool)**. 3. Die 5 fundamentalen Evolutionsfaktoren: - **1. Mutation**:   * Spontane, ungerichtete Veränderungen in der Basensequenz der DNA. Einzige Quelle für **völlig neue Allele**. - **2. Rekombination**:   * Bei der geschlechtlichen Fortpflanzung (Crossing-over in der Meiose I, zufällige Verteilung der Chromosomen und Verschmelzung der Keimzellen) entstehen unzählige neue **Genotyp-Kombinationen**. - **3. Natürliche Selektion**:   * Bewertet die Phänotypen anhand ihres Beitrags zum Genpool der nächsten Generation:     * *Gerichtete Selektion*: Verschiebt den Phänotyp in eine extreme Richtung (z. B. Selektionsvorteil dunkler Birkenspanner bei Industrie-Smog).     * *Stabilisierende Selektion*: Begünstigt den Durchschnitt und eliminiert Extreme (z. B. menschliches Geburtsgewicht).     * *Disruptive Selektion*: Begünstigt beide Extreme gegen den Durchschnitt. - **4. Gendrift**:   * Völlig ungerichtete, stochastische Veränderung der Allelfrequenzen durch Zufallsereignisse:     * **Flaschenhalseffekt**: Drastische Dezimierung einer Population durch Katastrophen (Überschwemmung, Seuche) $\\implies$ Verlust genetischer Vielfalt.     * **Gründereffekt**: Wenige Individuen besiedeln ein neues Areal (z. B. Darwinfinken auf Galapagos). - **5. Isolation und Artbildung**:   * **Allopatrische Artbildung**: Geographische Trennung (Gebirge, Meer) verhindert den Genfluss $\\implies$ getrennte Weiterentwicklung durch Mutationen und Selektion bis zur reproduktiven Isolation (zwei neue Arten entstehen)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAE0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAE0000000000000000A02",
+      "namespace": "gymnasium-biologie-humanevolution",
+      "slug": "homologie-analogie-fossilien-humanevolution-hominini",
+      "title": "Evolutionsbelege & Humanevolution: Homologiekriterien, molekulare Uhren und Hominidenstammbaum",
+      "domain": "schule/biologie/anthropologie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAE0000000000000000A01",
+          "type": "hard",
+          "rationale": "Evolutionsbelege und Hominiden beruhen auf der Synthetischen Evolutionstheorie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q7195",
+          "target_label": "Human evolution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "biologie",
+          "topic_code": "lb2",
+          "topic_title": "Evolutionsbelege und Humanevolution",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAE0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Kriterium belegt eine echte Homologie (stammesgeschichtliche Verwandtschaft durch gemeinsamen Ursprung) zweier Organe?",
+          "concept": "Das Kriterium der Lage (Organe nehmen im vergleichbaren Gesamtbauplan dieselbe relative Lage ein, z. B. Vorderextremitäten der Wirbeltiere)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Kriterium der Lage (gleiche relative Position im Bauplan)",
+              "Reine Ähnlichkeit in der äußeren Funktionserfüllung"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAE0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Evolutionsbelege (Homologie vs. Analogie) und die biologische Humanevolution: 1. **Homologie vs. Analogie**:   * **Homologie (Divergenz)**: Ähnlichkeit von Merkmalen aufgrund gemeinsamer evolutionärer Abstammung. Bauplan ist gleich, Funktion kann stark variieren (z. B. Menschlicher Arm, Vogelflügel, Walflosse, Maulwurfsgrabbein).     - **Die 3 Homologiekriterien (Adolf Remane)**:       1. *Kriterium der Lage* (gleiche Position im Gefügesystem),       2. *Kriterium der spezifischen Qualität* (Übereinstimmung in komplexen Feinstrukturen, z. B. Haifischschuppe und Menschenzahn),       3. *Kriterium der Kontinuität / Stetigkeit* (Verbindung durch fossile oder embryonale Übergangsformen).   * **Analogie (Konvergenz)**: Ähnlichkeit von Merkmalen infolge gleicher Funktion und Anpassung an ähnliche Selektionsdrücke, **ohne** gemeinsamen stammesgeschichtlichen Ursprung (z. B. Flügel von Vogel und Insekt; Stromlinienform von Hai, Delfin und Ichthyosaurus), 2. **Molekularbiologische Verwandtschaftsbelege**:   * Aminosäuresequenzvergleich (z. B. Cytochrom c), DNA-DNA-Hybridisierung, Sequenzierung von Mitochondrialer DNA (mtDNA / 'Molekulare Uhr'), 3. **Phylogenese des Menschen (Stammbaum der Hominini)**:   * **Australopithecus afarensis (vor ca. 3,5 Mio. Jahren, 'Lucy')**: Aufrechter zweibeiniger Gang (Bipedie), Gehirnvolumen noch klein (ca. $400-500\\,\\text{cm}^3$).   * **Homo habilis (vor ca. 2,5 Mio. Jahren)**: Erste systematische Werkzeugherstellung (Oldowan-Kultur), Gehirnvolumen ca. $650\\,\\text{cm}^3$.   * **Homo erectus (vor ca. 1,8 Mio. Jahren)**: Nutzung des Feuers, Acheuléen-Faustkeile, erste Auswanderungswelle aus Afrika nach Asien und Europa.   * **Homo neanderthalensis (vor ca. 200.000–30.000 Jahren)**: Kälteangepasst, Großwildjäger, Bestattungsrituale, Gehirnvolumen bis $1600\\,\\text{cm}^3$.   * **Homo sapiens (vor ca. 300.000 Jahren in Afrika entstanden)**: Symbolische Kunst (Höhlenmalereien), komplexe Sprache. **Out-of-Africa-Hypothese**: Entstehung in Afrika und weltweite Ausbreitung unter Verdrängung/teilweiser Vermischung mit Neandertalern (1–2 % Neandertaler-DNA bei Nicht-Afrikanern).",
+          "concept": "Evolutionsbelege: Homologie (Divergenz, 3 Kriterien: Lage, Qualität, Kontinuität) vs. Analogie (Konvergenz); Molekulare Uhr; Humanevolution: Australopithecus (Bipedie), Homo habilis (Werkzeuge), Homo erectus (Feuer, Out-of-Africa 1), Neandertaler, Homo sapiens (Out-of-Africa 2, Kunst, Sprache).",
+          "sample_solution": "1. Belege für die biologische Evolution: - **1. Homologe Organe (Divergente Entwicklung)**:   * Merkmale verschiedener Tier- oder Pflanzenarten, die auf einen **gemeinsamen evolutionären Vorfahren** zurückgehen. Sie können durch Funktionswandel äußerlich völlig verschieden sein (z. B. menschliche Hand zum Greifen, Vogelflügel zum Fliegen, Maulwurfsbein zum Graben, Walflosse zum Schwimmen – alle folgen exakt demselben Grundbauplan aus Oberarmknochen, Elle, Speiche, Handwurzelknochen und 5 Fingern).   * **Die 3 Homologiekriterien nach Adolf Remane**:     1. **Kriterium der Lage**: Strukturen sind homolog, wenn sie im Gesamtbauplan die gleiche relative Position einnehmen.     2. **Kriterium der spezifischen Qualität**: Strukturen sind homolog, wenn sie in zahlreichen komplexen Sondermerkmalen übereinstimmen, selbst wenn ihre Lage abweicht (z. B. Hairschuppen und Säugetierzähne aus Dentin und Schmelz).     3. **Kriterium der Stetigkeit (Kontinuität)**: Strukturen sind homolog, wenn sie sich durch fossile Zwischenformen oder ontogenetische Entwicklungsstufen lückenlos verbinden lassen (z. B. Entwicklung der Gehörknöchelchen Hammer und Amboss aus primären Kiefergelenkknochen der Reptilien). - **2. Analoge Organe (Konvergente Evolution)**:   * Organe mit gleicher Funktion und äußerlicher Ähnlichkeit, die sich jedoch **völlig unabhängig voneinander** als Anpassung an identische ökologische Nischen entwickelt haben (z. B. Grabbeine von Maulwurf [Säugetierknochen] und Maulwurfsgrille [Chitin-Insektenbein]). - **3. Rudimente und Atavismen**:   * **Rudimente**: Rückgebildete, funktionslos gewordene Reste ehemals wichtiger Organe (z. B. Wurmfortsatz des Blinddarms, Steißbein, Weisheitszähne beim Menschen; Beckenknochenreste bei Walen).   * **Atavismen**: Durch Genmutationen oder Deregulation spontan wieder auftretende ursprüngliche Merkmale (z. B. fellartige Ganzkörperbehaarung, überzählige Brustwarzen). 2. Die Stammesgeschichte des Menschen (Humanevolution): - **1. Vormenschen (*Australopithecinen*, vor 4 bis 2 Mio. Jahren in Ostafrika)**:   * *Australopithecus afarensis* (berühmtes Fossil *Lucy*, Laetoli-Fußspuren): Voll ausgebildeter **aufrechter zweibeiniger Gang (Bipedie)**, Becken schüsselförmig, Wirbelsäule doppelt S-förmig, Gehirnvolumen mit ca. $450\\,\\text{cm}^3$ noch affenähnlich. - **2. Frühmenschen (*Homo habilis* und *Homo rudolfensis*, vor 2,5 bis 1,5 Mio. Jahren)**:   * Gehirnvolumen ca. $650\\,\\text{cm}^3$; erste gezielte Herstellung von Geröllwerkzeugen (*Chopper*). - **3. *Homo erectus* (vor 1,9 Mio. bis 100.000 Jahren)**:   * Gehirnvolumen ca. $1000\\,\\text{cm}^3$; symmetrische Faustkeile; aktive **Beherrschung des Feuers**; wanderte als erste Frühmenschenart aus Afrika nach Asien und Europa aus (*Out-of-Africa I*). - **4. *Homo neanderthalensis* (vor 250.000 bis 30.000 Jahren)**:   * Robuster, muskulöser Körperbau an die europäische Eiszeit angepasst; Gehirnvolumen bis zu $1600\\,\\text{cm}^3$; komplexe Werkzeuge, Sprache, rituelle Totenbestattungen. - **5. *Homo sapiens* (Moderner Mensch, vor ca. 300.000 Jahren in Afrika entstanden)**:   * Ausgeprägtes Kinn, steile Stirn, hochentwickelte symbolische Sprache, Kunst (Höhlenmalereien, Plastiken wie die *Venus vom Hohlefels*).   * **Out-of-Africa-Theorie (Monogenetischer Ursprung)**: Durch mtDNA- und Genomanalysen zweifelsfrei belegt: Alle heute lebenden Menschen stammen von einer kleinen Gründerpopulation ab, die vor ca. 60.000 Jahren Afrika verließ und die Erde besiedelte. Die genetische Beimischung von ca. 1–2 % Neandertaler-DNA bei eurasischen Populationen beweist seltene Kreuzungsereignisse im Nahen Osten."
+        }
+      ]
+    }
+  ]
+}

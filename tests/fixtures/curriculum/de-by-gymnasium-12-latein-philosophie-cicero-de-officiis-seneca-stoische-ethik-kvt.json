@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-latein-philosophie-cicero-de-officiis-seneca-stoische-ethik",
+  "version": "2026.08.1",
+  "title": "Latein 12: Römische Philosophie – Cicero (De re publica, De officiis) und Seneca (Epistulae morales, Stoische Ethik) (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Latein 12 (Oberstufe L1/L2 Q12): Die Rezeption griechischer Philosophie im antiken Rom (Platon, Aristoteles, Epikureismus vs. Stoa), Marcus Tullius Cicero: Staats- und Pflichtenlehre (*De re publica*: Definition des Staates als res publica = res populi, Naturrecht, Mischverfassung aus Monarchie, Aristokratie und Demokratie nach Polybios; *De officiis*: Der scheinbare Konflikt zwischen dem sittlich Guten [Honestum: die 4 Kardinaltugenden Iustitia, Sapientia, Fortitudo, Temperantia] und dem Nützlichen [Utile] – das Unmoralische kann niemals wahrhaft nützlich sein) sowie Lucius Annaeus Seneca: Stoische Philosophie der Kaiserzeit (*Epistulae morales ad Lucilium*: Leben im Einklang mit der Natur [secundum naturam vivere], Die Herrschaft über die Affekte [Apatheia], Die innere Seelenruhe [Tranquillitas animi], Der weise Umgang mit der vergänglichen Lebenszeit [*De brevitate vitae*], Überwindung der Todesfurcht und kosmopolitische Menschenwürde aller, einschließlich der Sklaven).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/latein",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Latein 12, Lernbereich Philosophie – Cicero und Seneca"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCC0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCC0000000000000000A01",
+      "namespace": "gymnasium-latein-cicero-philosophie",
+      "slug": "cicero-de-re-publica-de-officiis-honestum-utile",
+      "title": "Cicero: Staatsphilosophie (Res publica = Res populi) und Pflichtenlehre (Honestum vs. Utile)",
+      "domain": "schule/latein/philosophie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Cicero",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Römische Philosophie – Cicero",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCC0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie löst Cicero in seiner philosophischen Altersschrift 'De officiis' (Über die Pflichten) den scheinbaren Konflikt zwischen dem sittlich Guten (Honestum) und dem vordergründig Nützlichen (Utile)?",
+          "concept": "Es gibt keinen echten Widerspruch: Nur das sittlich Gute (Honestum) ist wahrhaft nützlich; was moralisch verwerflich ist (Turpe), kann niemals nützlich sein",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nur das sittlich Gute (Honestum) ist wahrhaft nützlich",
+              "Der persönliche Nutzen steht stets über der Moral"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCC0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Ciceros Staats- und Moralphilosophie in 'De re publica' und 'De officiis': 1. **Staatsphilosophie (*De re publica*)**:   * **Definition des Staates**: *« Est igitur res publica res populi »* (Der Staat ist die Sache des Volkes).   * **Volksbegriff**: Ein Volk ist kein zufälliger Haufen, sondern eine Vereinigung einer Vielheit, die durch die **Anerkennung eines gemeinsamen Rechts (*iuris consensus*)** und die **Gemeinschaft des Nutzens (*utilitatis communio*)** zusammengehalten wird.   * **Die Mischverfassung**: Stabilität durch Ausbalancierung dreier Gewalten (Konsuln = monarchisches Element, Senat = aristokratisches Element, Volkstribune/Komitien = demokratisches Element), 2. **Die Pflichtenlehre (*De officiis*, 44 v. Chr.)**:   * Geschrieben als Vermächtnis an seinen Sohn Marcus nach Caesars Ermordung.   * **Die vier stoischen Kardinaltugenden (*Honestum*)**:     - 1. *Sapientia / Prudentia* (Weisheit, Erkenntnis der Wahrheit).     - 2. *Iustitia* (Gerechtigkeit, jedem das Seine zuteilen, Schutz des Gemeinwohls).     - 3. *Fortitudo / Magnitudo animi* (Tapferkeit, Seelengröße).     - 4. *Temperantia / Decorum* (Mäßigung, Schicklichkeit, Maßhalten).   * **Konfliktfall *Honestum vs. Utile***: Der scheinbare Nutzen von Unrecht ist eine Täuschung, da Unrecht die menschliche Seele zerstört.",
+          "concept": "Cicero Philosophie 12: De re publica (Res publica = res populi, Rechtskonsens, Mischverfassung); De officiis (4 Kardinaltugenden: Sapientia, Iustitia, Fortitudo, Temperantia; Einheit von Honestum und Utile).",
+          "sample_solution": "1. Ciceros Staatsphilosophie (*De re publica*, 51 v. Chr.): - **Der Begriff der *Res publica***:   * Cicero begründet eine naturrechtliche Staatstheorie: Ein legitimer Staat entsteht nicht durch rohe Gewalt oder bloßen Zufall, sondern entspringt dem angeborenen Sozialtrieb des Menschen:     * *« Est igitur [...] res publica res populi, populus autem non omnis hominum coetus quoquo modo congregatus, sed coetus multitudinis iuris consensu et utilitatis communione sociatus. »*     *(Der Staat ist also die Sache des Volkes; ein Volk aber ist nicht jede irgendwie zusammengewürfelte Menschenmenge, sondern die Vereinigung einer Vielheit, die durch die Übereinstimmung im Recht und die Gemeinsamkeit des Nutzens verbunden ist)*. - **Das Ideal der Mischverfassung (nach Polybios)**:   * Reinformen neigen zur Entartung (Monarchie $\\rightarrow$ Tyrannei; Aristokratie $\\rightarrow$ Oligarchie; Demokratie $\\rightarrow$ Ochlokratie/Pöbelherrschaft).   * **Lösung**: Die ideale römische Verfassung vereint das monarchische Element (Konsuln), das aristokratische Element (Senat) und das demokratische Element (Volksversammlung) in harmonischem Gleichgewicht. 2. Die Pflichtenlehre (*De officiis*, 44 v. Chr.): - **Die vier Kardinaltugenden des *Honestum* (Sittlichkeit)**:   1. **Sapientia (Weisheit / Erkenntnis)**: Das Erforschen und Erkennen der Wahrheit; Abneigung gegen unbegründete Vorurteile.   2. **Iustitia & Beneficentia (Gerechtigkeit & Wohltätigkeit)**: Das Fundament der menschlichen Gemeinschaft: Niemandem schaden (*neminem laedere*), fremdes Eigentum achten, Verträge treu einhalten (*Fides*) und dem Gemeinwohl dienen.   3. **Fortitudo (Tapferkeit & Seelengröße)**: Furchtlosigkeit vor Tod und Schmerz, Verachtung äußerer Güter und standhafte Verteidigung der Freiheit.   4. **Temperantia (Mäßigung & Decorum)**: Selbstbeherrschung, Angemessenheit in Wort und Tat, Achtung vor der Würde der Mitmenschen. 3. Die Auflösung des Scheinkonflikts *Honestum* vs. *Utile* (Buch III): - Ein unmoralisches Handeln (z. B. Betrug beim Verkauf eines mangelhaften Hauses oder Verrat am Vaterland zur persönlichen Bereicherung) mag kurzfristig finanziellen Gewinn bringen, ist aber **niemals wahrhaft nützlich (*utile*)**. - *Begründung*: Das Schlechteste, was einem Menschen widerfahren kann, ist der Verlust seiner moralischen Integrität und seiner Menschlichkeit. Das sittlich Gute und das wahrhaft Nützliche sind untrennbar identisch."
+        }
+      ]
+    },
+    {
+      "id": "01K8GCC0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCC0000000000000000A02",
+      "namespace": "gymnasium-latein-seneca-stoa",
+      "slug": "seneca-epistulae-morales-stoische-ethik-ataraxie-zeit",
+      "title": "Seneca: Stoische Lebenskunst (Epistulae morales), Umgang mit der Zeit und Seelenruhe",
+      "domain": "schule/latein/philosophie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCC0000000000000000A01",
+          "type": "hard",
+          "rationale": "Senecas Stoa ist die kaiserzeitliche Weiterentwicklung der römischen Moralphilosophie."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Seneca the Younger",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "latein",
+          "topic_code": "lb2",
+          "topic_title": "Römische Philosophie – Seneca und die Stoa",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCC0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches Lebensziel steht im Zentrum der stoischen Ethik bei Seneca, um wahres seelisches Glück (Tranquillitas animi) unabhängig von Schicksalsschlägen (Fortuna) zu erlangen?",
+          "concept": "Das Leben im Einklang mit der vernunftbegabten Natur (secundum naturam vivere) und die vollkommene Freiheit von zerstörerischen Leidenschaften und Affekten (Apatheia / Ataraxie)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Leben im Einklang mit der Natur und Herrschaft über Affekte (Apatheia)",
+              "Streben nach maximalem sinnlichem Genuss und Reichtum"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCC0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Senecas stoische Philosophie in den 'Epistulae morales ad Lucilium' und 'De brevitate vitae': 1. **Der stoische Grundgedanke**:   * Der Kosmos ist von einer göttlichen Weltvernunft (**Logos**) durchdrungen.   * **Secundum naturam vivere**: Leben im Einklang mit der eigenen Vernunftnatur. Tugend (*Virtus*) ist das einzige wahre Gut; Laster (*Vitium*) das einzige Übel; alles andere (Reichtum, Gesundheit, Macht, Armut) sind **Adiaphora (gleichgültige Dinge)**, 2. **Der Umgang mit der Lebenszeit (*Epistula 1 & De brevitate vitae*)**:   * *« Vindicare te tibi »* (Fordere dich für dich selbst zurück!).   * Nicht das Leben ist kurz, sondern wir vergeuden den Großteil davon durch Nichtstun, fremde Verpflichtungen und nichtige Begierden (*« Non exiguum temporis habemus, sed multum perdimus »*).   * Der Weise lebt intensiv im gegenwärtigen Augenblick, 3. **Die Humanität und die Sklavenfrage (*Epistula 47*)**:   * Revolutionäre stoische Menschenwürde: *« Servi sunt? Immo homines. Servi sunt? Immo contubernales. Servi sunt? Immo humiles amici. »* (Es sind Sklaven? Nein, Menschen! Hausgenossen! Demütige Freunde!).   * Jeder Mensch ist dem Schicksal (*Fortuna*) gleichermaßen unterworfen; wahre Knechtschaft ist nicht juristischer Sklavenstatus, sondern die seelische Sklaverei unter den eigenen Trieben.",
+          "concept": "Seneca Stoa 12: Epistulae morales; Secundum naturam vivere; Tugend als einziges Gut, Adiaphora; Umgang mit der Zeit (vindicare te tibi, non multum habemus sed perdimus); Epistula 47 (Sklaven als Mitmenschen / stoischer Kosmopolitismus).",
+          "sample_solution": "1. Die Grundlagen der kaiserzeitlichen Stoa bei Seneca (ca. 4 v. Chr. – 65 n. Chr.): - **Der stoische Pantheismus**:   * Die Welt wird von einer allumfassenden göttlichen Vernunft (**Logos / Fatum / Natura**) geordnet und gelenkt. - **Die ethische Werteordnung**:   * **1. Das einzig wahre Gut**: Die Tugend (**Virtus / Honestas**), verstanden als vernunftgemäßes, moralisch vollkommenes Handeln.   * **2. Das einzige echte Übel**: Das Laster (**Vitium / Turpitudo**), verstanden als Verblendung der Vernunft durch ungezügelte Triebe.   * **3. Die Adiaphora (Gleichgültige Dinge)**: Gesundheit, Krankheit, Reichtum, Ruhm oder Tod sind für das sittliche Glück irrelevant. Sie können zwar bevorzugt (*commoda*) oder gemieden werden, berühren aber nicht den Wert der Seele. 2. Die Kunst des Lebens und die Philosophie der Zeit (*Epistulae morales 1*): - **Kritik an der alltäglichen Zeitvergeudung**:   * *« Ita fac, mi Lucili: vindica te tibi, et tempus quod adhuc aut auferebatur aut subripiebatur aut excidebat collige et serva. »* (Tu es so, mein Lucilius: Nimm dich selbst für dich in Anspruch, und die Zeit, die dir bisher entweder geraubt oder stibitzt wurde oder dir entglitt, sammle und bewahre sie!).   * *« Non exiguum temporis habemus, sed multum perdimus. »* (Wir haben nicht wenig Zeit, sondern wir vergeuden viel). - **Die stoische Gelassenheit (*Tranquillitas animi*)**:   * Furcht vor der Zukunft und Reue über die Vergangenheit rauben die Gegenwart. Der stoische Weise (**Sapiens**) lebt souverän im Hier und Jetzt und fürchtet selbst den Tod nicht, da der Tod nur die Rückkehr in den natürlichen Urzustand darstellt. 3. Die stoische Kosmopolitik und Menschenwürde (*Epistula 47*): - **Radikale Humanitätslehre in einer Sklavenhaltergesellschaft**:   * Seneca verurteilt die Grausamkeit und Arroganz der römischen Herren gegenüber ihren Sklaven:     * *« 'Servi sunt.' Immo homines. 'Servi sunt.' Immo contubernales. 'Servi sunt.' Immo humiles amici. 'Servi sunt.' Immo conservi, si cogitaveris tantundem in utrosque licere fortunae. »*     *(« Sie sind Sklaven. » Nein, sie sind Menschen! « Sie sind Sklaven. » Nein, sie sind Hausgenossen! « Sie sind Sklaven. » Nein, sie sind bescheidene Freunde! « Sie sind Sklaven. » Nein, sie sind Mitsklaven, wenn du bedenkst, dass das Schicksal über beide dieselbe Macht hat!)*.   * **Wahre Sklaverei**: Der römische Herrscher, der seinen Lastern, seiner Wut (*De ira*) und seiner Gier erliegt, ist ein weitaus erbärmlicherer Sklave als der Diener, der seine Seele frei hält (*« Ostende, quis non sit: alius libidini servit, alius avaritiae, alius ambitioni »*)."
+        }
+      ]
+    }
+  ]
+}

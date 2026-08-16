@@ -113,9 +113,7 @@ describe("bonus candidates", () => {
     const candidates = await bonusCandidates(db, "learner-a", {
       inScopeAtomIds: REALSCHULE_CELL,
     });
-    const formula = candidates.find(
-      (c) => c.atomId === OPTIK.snelliusFormel,
-    );
+    const formula = candidates.find((c) => c.atomId === OPTIK.snelliusFormel);
     expect(formula?.restsOn).toEqual([OPTIK.brechungQualitativ]);
     expect(formula?.restsOnTitles.length).toBe(1);
     expect(formula?.restsOnTitles[0]).toBeTruthy();
@@ -129,17 +127,13 @@ describe("bonus candidates", () => {
 
     // Snellius unlocks brechungsindex-bestimmen once totalreflexion is held —
     // and it is. A leaf like sammellinse-abbildung unlocks nothing.
-    const formula = candidates.find(
-      (c) => c.atomId === OPTIK.snelliusFormel,
-    );
+    const formula = candidates.find((c) => c.atomId === OPTIK.snelliusFormel);
     const lens = candidates.find(
       (c) => c.atomId === OPTIK.sammellinseAbbildung,
     );
     expect(formula?.unlockCount).toBe(1);
     expect(lens?.unlockCount).toBe(0);
-    expect(candidates[0]?.atomId).toBe(
-      OPTIK.snelliusFormel,
-    );
+    expect(candidates[0]?.atomId).toBe(OPTIK.snelliusFormel);
 
     // Static reachability is the tiebreaker and a different quantity: the
     // formula also reaches brechungsindex-bestimmen transitively.

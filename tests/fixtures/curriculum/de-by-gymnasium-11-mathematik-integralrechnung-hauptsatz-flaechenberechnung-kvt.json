@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-mathematik-integralrechnung-hauptsatz-flaechenberechnung",
+  "version": "2026.08.1",
+  "title": "Mathematik 11: Integralrechnung – Stammfunktionen, Hauptsatz der Differential- und Integralrechnung und Flächenberechnung (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 11: Das bestimmte Integral als orientierter Flächeninhalt (Riemann-Summen / Ober- und Untersummen), Stammfunktion F(x) mit F'(x) = f(x), Integrationsregeln (Potenzregel integral x^n dx = x^(n+1)/(n+1) + C, Faktorregel, Summenregel), Der Hauptsatz der Differential- und Integralrechnung (HDI: integral_a^b f(x)dx = [F(x)]_a^b = F(b) - F(a)), Berechnung von Flächeninhalten mit Nullstellenzerlegung sowie Flächenberechnung zwischen zwei Funktionsgraphen A = integral_a^b |f(x) - g(x)| dx.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 11, Lernbereich Integralrechnung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB10000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB10000000000000000A01",
+      "namespace": "gymnasium-mathematik-hauptsatz-integral",
+      "slug": "stammfunktion-hauptsatz-differential-integralrechnung",
+      "title": "Stammfunktionen & Der Hauptsatz der Differential- und Integralrechnung (HDI)",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Fundamental theorem of calculus",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Integralbegriff und Hauptsatz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB10000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die unbestimmte Stammfunktion $\\int x^n \\,\\mathrm{d}x$ einer Potenzfunktion mit Exponent $n \\neq -1$?",
+          "concept": "F(x) = (1 / (n + 1)) * x^(n + 1) + C",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "F(x) = (1 / (n + 1)) * x^(n + 1) + C",
+              "F(x) = n * x^(n - 1) + C"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB10000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Grundlagen der Integralrechnung und den Hauptsatz: 1. **Definition der Stammfunktion**:   * Eine differenzierbare Funktion $F(x)$ heißt Stammfunktion von $f(x)$ auf einem Intervall $I$, wenn gilt:     $$\\mathbf{F'(x) = f(x)} \\quad \\forall x \\in I$$   * Zwei Stammfunktionen derselben Funktion $f$ unterscheiden sich nur um eine additive Integrationskonstante $C \\in \\mathbb{R}$, 2. **Elementare Integrationsregeln**:   * **Potenzregel**: $\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C$ ($n \\neq -1$).   * **Faktorregel**: $\\int (c \\cdot f(x)) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x$.   * **Summenregel**: $\\int (f(x) + g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x + \\int g(x) \\,\\mathrm{d}x$, 3. **Der Hauptsatz der Differential- und Integralrechnung (HDI)**:   * Verknüpft die Flächenberechnung mit der Umkehrung des Differenzierens:     $$\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = [F(x)]_a^b = F(b) - F(a)}$$ 4. Berechne das bestimmte Integral $\\int_{1}^{3} (3x^2 - 4x + 2) \\,\\mathrm{d}x$ exakt mithilfe einer Stammfunktion.",
+          "concept": "Integralrechnung: Stammfunktion F'(x)=f(x); Potenzregel; Hauptsatz integral_a^b f(x)dx = [F(x)]_a^b = F(b) - F(a); Rechnung: F(x) = x^3 - 2x^2 + 2x; F(3) = 27 - 18 + 6 = 15; F(1) = 1 - 2 + 2 = 1; Integral = 15 - 1 = 14.",
+          "sample_solution": "1. Der Begriff der Stammfunktion und das unbestimmte Integral: - **Definition**: Eine Funktion $F$ ist eine Stammfunktion von $f$, wenn ihre Ableitung exakt mit $f$ übereinstimmt:   $$\\mathbf{F'(x) = f(x)}$$ - **Menge aller Stammfunktionen (Unbestimmtes Integral)**:   $$\\mathbf{\\int f(x) \\,\\mathrm{d}x = F(x) + C} \\quad (C \\in \\mathbb{R} = \\text{Integrationskonstante})$$ 2. Grundlegende Integrationsregeln: - **1. Potenzregel**:   $$\\mathbf{\\int x^n \\,\\mathrm{d}x = \\frac{1}{n+1} x^{n+1} + C} \\quad (n \\in \\mathbb{R} \\setminus \\{-1\\})$$   *(z. B. $\\int x^3 \\,\\mathrm{d}x = \\frac{1}{4}x^4 + C$, $\\int \\sqrt{x} \\,\\mathrm{d}x = \\int x^{1/2} \\,\\mathrm{d}x = \\frac{2}{3}x^{3/2} + C$)* - **2. Faktorregel**:   $$\\mathbf{\\int c \\cdot f(x) \\,\\mathrm{d}x = c \\cdot \\int f(x) \\,\\mathrm{d}x} \\quad (c \\in \\mathbb{R})$$ - **3. Summenregel**:   $$\\mathbf{\\int (f(x) \\pm g(x)) \\,\\mathrm{d}x = \\int f(x) \\,\\mathrm{d}x \\pm \\int g(x) \\,\\mathrm{d}x}$$ 3. Der Hauptsatz der Differential- und Integralrechnung (HDI): - Das **bestimmte Integral** $\\int_a^b f(x)\\,\\mathrm{d}x$ beschreibt den orientierten Flächeninhalt zwischen dem Graphen von $f$ und der $x$-Achse im Intervall $[a; b]$. - **Berechnungsformel nach Newton und Leibniz**:   $$\\mathbf{\\int_a^b f(x) \\,\\mathrm{d}x = \\Big[ F(x) \\Big]_a^b = F(b) - F(a)}$$ 4. Durchrechnung des Beispiels ($\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x$): - **Schritt 1: Bestimmung einer Stammfunktion $F(x)$**:   $$F(x) = 3 \\cdot \\left(\\frac{x^3}{3}\\right) - 4 \\cdot \\left(\\frac{x^2}{2}\\right) + 2x = \\mathbf{x^3 - 2x^2 + 2x}$$ - **Schritt 2: Auswertung an den Integrationsgrenzen $a = 1$ und $b = 3$**:   * Obere Grenze $b = 3$:     $$F(3) = 3^3 - 2(3)^2 + 2(3) = 27 - 18 + 6 = \\mathbf{15}$$   * Untere Grenze $a = 1$:     $$F(1) = 1^3 - 2(1)^2 + 2(1) = 1 - 2 + 2 = \\mathbf{1}$$ - **Schritt 3: Differenz $F(3) - F(1)$**:   $$\\int_1^3 (3x^2 - 4x + 2) \\,\\mathrm{d}x = 15 - 1 = \\mathbf{14}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8GB10000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB10000000000000000A02",
+      "namespace": "gymnasium-mathematik-flaechenintegral",
+      "slug": "flaechenberechnung-nullstellenzerlegung-flaeche-zwischen-graphen",
+      "title": "Geometrische Flächenberechnung: Nullstellenzerlegung und Fläche zwischen zwei Graphen",
+      "domain": "schule/mathematik/analysis",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB10000000000000000A01",
+          "type": "hard",
+          "rationale": "Flächenberechnungen beruhen auf dem Hauptsatz der Integralrechnung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Definite integral",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Flächenberechnung mit Integralen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB10000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum darf man zur Berechnung des geometrischen Flächeninhalts zwischen einem Graphen und der $x$-Achse nicht einfach über Nullstellen hinweg integrieren?",
+          "concept": "Weil Flächen unterhalb der x-Achse ein negatives Vorzeichen im Integral besitzen und sich mit Flächen oberhalb der x-Achse gegenseitig aufheben würden (orientierter Flächeninhalt)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil sich positive und negative Flächenanteile aufheben würden",
+              "Weil das Integral an Nullstellen nicht definiert ist"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB10000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Methodik der geometrischen Flächenberechnung mit Integralen: 1. **Fläche zwischen Funktionsgraph und $x$-Achse (Nullstellenzerlegung)**:   * Schritt 1: Bestimmung aller Nullstellen $x_1, x_2, \\dots$ im Intervall $[a; b]$.   * Schritt 2: Aufteilung des Integrals in Teilintervalle von Nullstelle zu Nullstelle.   * Schritt 3: Summation der **Beträge** der Teilintegrale:     $$\\mathbf{A = |\\int_a^{x_1} f(x)\\,\\mathrm{d}x| + |\\int_{x_1}^b f(x)\\,\\mathrm{d}x|}$$ 2. **Fläche zwischen zwei sich schneidenden Funktionsgraphen $f(x)$ und $g(x)$**:   * Schritt 1: Schnittstellen bestimmen durch Gleichsetzen $f(x) = g(x) \\implies d(x) = f(x) - g(x) = 0$.   * Schritt 2: Integration der Differenzfunktion (*'obere Kurve minus untere Kurve'*):     $$\\mathbf{A = \\int_{x_1}^{x_2} (f(x) - g(x)) \\,\\mathrm{d}x}$$ 3. Berechne den Inhalt der Fläche, die von den Parabeln $f(x) = -x^2 + 4$ und $g(x) = x^2 - 4$ vollständig eingeschlossen wird.",
+          "concept": "Flächenberechnung: Nullstellenzerlegung; Fläche zwischen zwei Graphen A = integral (obere Kurve - untere Kurve) dx; Rechnung: Schnittstellen -x^2 + 4 = x^2 - 4 -> 2x^2 = 8 -> x = +-2; Differenz d(x) = 8 - 2x^2; Stammfunktion D(x) = 8x - 2/3 x^3; D(2) = 16 - 16/3 = 32/3; D(-2) = -32/3; A = 32/3 - (-32/3) = 64/3 approx 21,33 FE.",
+          "sample_solution": "1. Geometrische Fläche vs. Orientierter Integralwert: - **Das Integral $\\int_a^b f(x)\\,\\mathrm{d}x$** wertet Flächenstücke oberhalb der $x$-Achse positiv ($+$) und unterhalb der $x$-Achse negativ ($-$) aus. - **Geometrischer Flächeninhalt $A$**:   * Muss stets positiv sein ($A \\ge 0$). Bei Vorzeichenwechseln (Nullstellen) muss das Intervall an jeder Nullstelle geteilt werden:     $$\\mathbf{A = \\sum_{i} \\left| \\int_{x_i}^{x_{i+1}} f(x)\\,\\mathrm{d}x \\right|}$$ 2. Flächeninhalt zwischen zwei Funktionsgraphen $f$ und $g$: - Liegt im Intervall $[x_1; x_2]$ der Graph von $f$ oberhalb des Graphen von $g$ ($f(x) \\ge g(x)$), so ist der Flächeninhalt die Differenz:   $$\\mathbf{A = \\int_{x_1}^{x_2} \\big( f(x) - g(x) \\big) \\,\\mathrm{d}x}$$ 3. Durchrechnung des Beispiels ($f(x) = -x^2 + 4$ und $g(x) = x^2 - 4$): - **Schritt 1: Schnittstellen berechnen ($f(x) = g(x)$)**:   $$-x^2 + 4 = x^2 - 4 \\implies 2x^2 = 8 \\implies x^2 = 4 \\implies \\mathbf{x_1 = -2}, \\quad \\mathbf{x_2 = +2}$$ - **Schritt 2: Differenzfunktion $d(x) = f(x) - g(x)$**:   * Da $f(0) = 4 > g(0) = -4$, verläuft $f(x)$ oben und $g(x)$ unten:     $$d(x) = (-x^2 + 4) - (x^2 - 4) = \\mathbf{8 - 2x^2}$$ - **Schritt 3: Integration der Differenzfunktion**:   $$A = \\int_{-2}^{2} (8 - 2x^2) \\,\\mathrm{d}x = \\left[ 8x - \\frac{2}{3}x^3 \\right]_{-2}^{2}$$ - **Schritt 4: Auswertung an den Grenzen**:   * Obere Grenze ($x = 2$):     $$8(2) - \\frac{2}{3}(2)^3 = 16 - \\frac{16}{3} = \\frac{48 - 16}{3} = \\mathbf{\\frac{32}{3}}$$   * Untere Grenze ($x = -2$):     $$8(-2) - \\frac{2}{3}(-2)^3 = -16 + \\frac{16}{3} = \\mathbf{-\\frac{32}{3}}$$   * **Gesamter Flächeninhalt**:     $$A = \\frac{32}{3} - \\left( -\\frac{32}{3} \\right) = \\frac{64}{3} = \\mathbf{21\\frac{1}{3}\\,\\text{FE (Flächeneinheiten)} \\approx 21{,}33\\,\\text{FE}}$$."
+        }
+      ]
+    }
+  ]
+}

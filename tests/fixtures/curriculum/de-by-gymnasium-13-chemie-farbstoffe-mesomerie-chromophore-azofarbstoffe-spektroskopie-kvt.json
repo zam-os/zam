@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-chemie-farbstoffe-mesomerie-chromophore-azofarbstoffe-spektroskopie",
+  "version": "2026.08.1",
+  "title": "Chemie 13: Farbstoffe & Spektroskopie – Konjugierte Pi-Systeme, Mesomerie, Azo-Farbstoffe und Fluoreszenz (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 13 (Oberstufe Q13 / Abitur): Chemische Grundlagen der Farbigkeit und Lichtabsorption (Zusammenhang zwischen Wellenlänge lambda, Frequenz f und Anregungsenergie Delta E = h * c / lambda, Komplementärfarben-Farbkreis), Molekulare Ursache von Farbigkeit (Konjugierte Pi-Elektronensysteme mit delokalisierten Elektronen, Grenzorbitale HOMO [Highest Occupied Molecular Orbital] und LUMO [Lowest Unoccupied Molecular Orbital], Verkleinerung der HOMO-LUMO-Bandlücke bei Verlängerung des delokalisierten Systems -> bathochromer Effekt / Rotverschiebung ins sichtbare Spektrum 400–750 nm), Farbstoffklassen und Chromophore (Chromophor-Auxochrom-Modell nach Witt: Chromophore Gruppen mit Mehrfachbindungen [-N=N- Azo, -C=C-, -C=O, -NO2], Auxochrome mit +M-Effekt [-OH, -NH2, -NR2] und Antiauxochrome mit -M-Effekt [-NO2, -COOH, -SO3H], Push-Pull-Effekt), Synthese von Azo-Farbstoffen (Elektrophile aromatische Substitution: 1. Diazotierung eines primären aromatischen Amins [Anilin/Sulfanilsäure] mit Salpetriger Säure HNO2 bei 0–5 °C zum Diazonium-Salz, 2. Azo-Kupplung mit aktivierten Aromaten wie Phenolen oder N,N-Dimethylanilin zum Azofarbstoff wie Methylorange) sowie Lumineszenz (Fluoreszenz: spontane Lichtemission bei Spin-erlaubtem S1 -> S0 Übergang im Jablonski-Diagramm vs. Phosphoreszenz: verzögerte Emission nach Intersystem Crossing über metastabilen Triplettzustand T1 -> S0).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 13, Lernbereich Farbstoffe und Spektroskopie"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD50000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD50000000000000000A01",
+      "namespace": "gymnasium-chemie-farbstoffe-homo-lumo",
+      "slug": "farbigkeit-konjugierte-pi-systeme-homo-lumo-bathochrom",
+      "title": "Grundlagen der Farbigkeit: Konjugierte Pi-Systeme, HOMO-LUMO-Übergänge und Mesomerie",
+      "domain": "schule/chemie/farbstoffe",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Dye",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Farbstoffe – Lichtabsorption und HOMO-LUMO-Modell",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD50000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verändert sich die Energie-Differenz \\Delta E zwischen HOMO und LUMO und die absorbierte Wellenlänge \\lambda, wenn das konjugierte \\pi-Elektronensystem eines Moleküls verlängert wird?",
+          "concept": "Die Energielücke \\Delta E sinkt und die absorbierte Wellenlänge \\lambda verschiebt sich zu größeren Werten in den sichtbaren Bereich (Bathochromer Effekt / Rotverschiebung)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "\\Delta E sinkt und \\lambda verschiebt sich zu größeren Wellenlängen (bathochrom)",
+              "\\Delta E steigt und \\lambda verschiebt sich ins harte UV"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD50000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das quantenchemische Modell der Farbigkeit, die Mesomerie und das Chromophor-Auxochrom-Konzept: 1. **Quantenmechanische Ursache der Farbigkeit**:   * Lichtabsorption erfolgt, wenn die Photonenenergie exakt der Bandlücke zwischen dem höchsten besetzten Molekülorbital (**HOMO**) und dem niedrigsten unbesetzten Molekülorbital (**LUMO**) entspricht:     $$\\mathbf{\\Delta E = E_{\\text{LUMO}} - E_{\\text{HOMO}} = h \\cdot f = \\frac{h \\cdot c}{\\lambda}}$$.   * **Komplementärfarben-Prinzip**: Absorbiert ein Stoff z. B. blaues Licht ($\\approx 450\\,\\text{nm}$), erscheint er dem menschlichen Auge in der Mischfarbe Gelb/Orange, 2. **Das Teilchen-im-Kasten-Modell für delokalisierte $\\pi$-Elektronen**:   * Mit zunehmender Länge $L$ des Kettensystems sinkt der Abstand benachbarter Energieniveaus ($E_n \\sim \\frac{n^2}{L^2}$).   * Folge: $\\Delta E$ sinkt $\\implies \\lambda$ steigt $\\implies$ **Bathochromer Effekt (Rotverschiebung)** $\\implies$ Absorption rückt aus dem unsichtbaren UV ins sichtbare Lichtspektrum ($400-750\\,\\text{nm}$), 3. **Das Wittsche Farbstoffmodell (1876)**:   * **Chromophor (Farbträger)**: System konjugierter Doppelbindungen mit Gruppen wie $-N=N-$ (Azo), $-C=O$ (Carbonyl), $-NO_2$ (Nitro).   * **Auxochrome (Elektronendonatoren / $+M$-Effekt)**: Gruppen mit freien Elektronenpaaren ($-OH, -NH_2, -N(CH_3)_2$), die Elektronendichte ins $\\pi$-System schieben.   * **Antiauxochrome (Elektronenakzeptoren / $-M$-Effekt)**: Gruppen mit elektronenziehender Wirkung ($-NO_2, -SO_3H$).   * **Push-Pull-System**: Kombination aus Auxochrom und Antiauxochrom verstärkt die Delokalisierung und Polarisation extrem $\\implies$ tiefere Farbigkeit.",
+          "concept": "Farbstoffe 13: HOMO-LUMO-Übergang Delta E = h*c/lambda; Komplementärfarbe; Bathochromer Effekt bei Verlängerung des pi-Systems; Farbstofftheorie nach Witt (Chromophor, Auxochrom +M, Antiauxochrom -M, Push-Pull-Effekt).",
+          "sample_solution": "1. Warum erscheinen organische Stoffe farbig? - **Das Absorptions-Prinzip**:   * Weißes Sonnenlicht umfasst alle Wellenlängen des sichtbaren Spektrums von ca. $380\\,\\text{nm}$ (violett) bis $750\\,\\text{nm}$ (rot).   * Trifft ein Photon auf ein Farbstoffmolekül, wird ein $\\pi$-Elektron aus dem Grundzustand (**HOMO** / Highest Occupied Molecular Orbital) in einen angeregten Zustand (**LUMO** / Lowest Unoccupied Molecular Orbital) gehoben:     $$\\mathbf{\\Delta E = \\frac{h \\cdot c}{\\lambda_{\\text{abs}}}}$$ - **Die Komplementärfarbe**:   * Das Auge registriert das reflektierte oder transmittierte Restlicht:     - Absorption von *Blau* ($435-480\\,\\text{nm}$) $\\implies$ Farbeindruck **Gelb/Orange**.     - Absorption von *Grün* ($500-560\\,\\text{nm}$) $\\implies$ Farbeindruck **Rot/Purpur**. 2. Konjugierte $\\pi$-Elektronensysteme und der bathochrome Effekt: - Bei isolierten Doppelbindungen (Ethen) ist die Bandlücke $\\Delta E$ riesig; Absorption liegt im fernen UV ($\\approx 170\\,\\text{nm}$, farblos). - Bei alternierenden Doppel- und Einfachbindungen ($-C=C-C=C-$) überlappen die $p_z$-Orbitale zu einem gemeinsamen, delokalisierten $\\pi$-Elektronenschlauch:   * Nach dem **Teilchen-im-Kasten-Modell** gilt für den Übergang:     $$\\Delta E \\approx \\frac{h^2 \\cdot (N+1)}{8 \\cdot m_e \\cdot L^2}$$   * Je länger das delokalisierte System ($L \\uparrow$), desto kleiner wird $\\Delta E$ und desto größer wird die absorbierte Wellenlänge $\\lambda_{\\text{abs}}$ (**Bathochromer Effekt**).   * Ab ca. 8–11 konjugierten Doppelbindungen (z. B. $\\beta$-Carotin in Karotten mit 11 Doppelbindungen) liegt die Absorption im sichtbaren Blaubereich $\\implies$ intensive orangerote Eigenfarbe! 3. Das Wittsche Farbstoffkonzept und Push-Pull-Systeme: - **1. Chromophor**: Das mesomere Grundgerüst mit ungesättigten funktionellen Gruppen (z. B. die Azogruppe $-N=N-$). - **2. Auxochrome ($+M$-Substituenten)**: Schieben ihre freien Elektronenpaare per Resonanz in das aromatische System hinein (z. B. $-NR_2, -OH, -O^-$). - **3. Antiauxochrome ($-M$-Substituenten)**: Ziehen Elektronen aus dem System ab (z. B. $-NO_2, -C=O$). - **Der Push-Pull-Effekt**:   * Stehen sich Auxochrom (Push) und Antiauxochrom (Pull) an den Enden eines konjugierten Systems gegenüber, stabilisieren sie stark polare mesomere Grenzstrukturen $\\implies$ Die HOMO-LUMO-Lücke schrumpft dramatisch $\\implies$ Intensive Farbigkeit bei hoher Lichtechtheit."
+        }
+      ]
+    },
+    {
+      "id": "01K8GD50000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD50000000000000000A02",
+      "namespace": "gymnasium-chemie-azofarbstoffe-synthese",
+      "slug": "azofarbstoffe-diazotierung-azo-kupplung-fluoreszenz",
+      "title": "Azo-Farbstoffe: Diazotierung, Azo-Kupplung und Photolumineszenz (Fluoreszenz)",
+      "domain": "schule/chemie/farbstoffe",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD50000000000000000A01",
+          "type": "hard",
+          "rationale": "Azo-Farbstoffe sind die wichtigste großtechnische Anwendung konjugierter Farbstoffsysteme."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Azo dye",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Synthese von Azofarbstoffen und Photolumineszenz",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD50000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum muss die Diazotierung eines primären aromatischen Amins zur Herstellung von Azo-Farbstoffen bei niedrigen Temperaturen im Eisbad (0–5 °C) durchgeführt werden?",
+          "concept": "Weil aliphatische und aromatische Diazonium-Kationen bei Raumtemperatur thermisch instabil sind und explosionsartig unter Abspaltung von gasförmigem elementarem Stickstoff (N2) zu Phenolen zerfallen",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Weil Diazonium-Salze thermisch instabil sind und sonst unter N2-Abspaltung zerfallen",
+              "Damit das Lösungsmittel Wasser gefriert"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD50000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den zweistufigen Reaktionsmechanismus der Azofarbstoff-Synthese und das Phänomen der Fluoreszenz: 1. **1. Schritt: Diazotierung (Eisbad $0-5^\\circ\\text{C}$)**:   * Ein primäres aromatisches Amin (z. B. Anilin oder Sulfanilsäure) reagiert in salzsaurer Lösung mit Natriumnitrit ($NaNO_2 + HCl \\rightarrow HNO_2 + NaCl$).   * Das entstehende elektrophile Nitrosonium-Kation ($NO^+$) greift die Aminogruppe an $\\implies$ Wasserabspaltung $\\implies$ Bildung des mesomeriestabilisierten **Diazonium-Kations**:     $$\\mathbf{\\text{Ar}-\\text{NH}_2 + \\text{HNO}_2 + \\text{H}^+ \\longrightarrow \\text{Ar}-\\text{N}^+ \\equiv \\text{N} + 2\\,\\text{H}_2\\text{O}}$$, 2. **2. Schritt: Azo-Kupplung (Elektrophile aromatische Substitution)**:   * Das Diazonium-Kation fungiert als schwaches Elektrophil und greift einen stark aktivierten Aromaten (**Kupplungskomponente**: z. B. Phenolat im schwach alkalischen Milieu oder $N,N$-Dimethylanilin im schwach sauren Milieu) in *para*-Stellung an:     $$\\mathbf{\\text{Ar}-\\text{N}^+ \\equiv \\text{N} + \\text{Ar}'-\\text{OH} \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{Ar}'-\\text{OH} + \\text{H}^+}$$   * Es entsteht die charakteristische **Azogruppe ($-N=N-$)**, die beide aromatischen $\\pi$-Elektronensysteme konjugativ verknüpft, 3. **Photolumineszenz (Jablonski-Diagramm)**:   * **Fluoreszenz**: Nach optischer Anregung ($S_0 \\rightarrow S_1$) erfolgt strahlungslose Relaxation auf das Schwingungsgrundniveau von $S_1$, gefolgt von spontaner Photonenemission ($S_1 \\rightarrow S_0$) innerhalb von Nanosekunden (**Stokes-Verschiebung**: Emissionslicht ist langwelliger / energieärmer als Anregungslicht!).   * **Phosphoreszenz**: *Intersystem Crossing* (Spin-Umkehr in metastabilen Triplett-Zustand $T_1$) $\\implies$ verbotener Übergang $T_1 \\rightarrow S_0$ dauert Millisekunden bis Stunden (Nachleuchten).",
+          "concept": "Azo-Farbstoffe & Lumineszenz 13: Diazotierung bei 0-5°C (primäres Amin + HNO2 -> Diazonium-Salz); Azo-Kupplung (elektrophile aromatische Substitution mit aktivierter Kupplungskomponente); Fluoreszenz (S1 -> S0, Stokes-Shift) vs. Phosphoreszenz (Intersystem Crossing T1 -> S0).",
+          "sample_solution": "1. Der zweistufige Syntheseweg von Azo-Farbstoffen: - **1. Stufe: Die Diazotierung**:   * **Reaktionspartner**: Primäres aromatisches Amin (z. B. Sulfanilsäure) + Salpetrige Säure $\\text{HNO}_2$ (frisch erzeugt aus $\\text{NaNO}_2 + \\text{HCl}$).   * **Mechanismus**: Bildung des reaktiven Nitrosonium-Ions $\\text{NO}^+$, das die Aminogruppe elektrophil angreift. Nach doppelter Protonenübertragung und Wasserabspaltung entsteht das **Benzoldiazonium-Kation**:     $$\\mathbf{[\\text{Ar}-\\text{N}^+ \\equiv \\text{N} \\longleftrightarrow \\text{Ar}-\\text{N}=\\text{N}^+]}$$   * **Bedingung**: Kühlung auf $0\\text{ bis } 5^\\circ\\text{C}$ ist zwingend erforderlich, da das Diazoniumsalz bei $T > 5^\\circ\\text{C}$ unter Stickstoffentwicklung ($\text{N}_2$) zu Phenol hydrolysiert. - **2. Stufe: Die Azo-Kupplung**:   * **Reaktionstyp**: Elektrophile aromatische Substitution ($S_E\\text{Ar}$).   * **Mechanismus**: Das schwach elektrophile Diazonium-Ion greift einen elektronendichten, aktivierten Aromaten (Kupplungskomponente: Phenole oder aromatische Amine) selektiv in *para*-Position an:     $$\\mathbf{\\text{Ar}-\\text{N}_2^+ + \\text{C}_6\\text{H}_5-\\text{N(CH}_3)_2 \\longrightarrow \\text{Ar}-\\text{N}=\\text{N}-\\text{C}_6\\text{H}_4-\\text{N(CH}_3)_2 + \\text{H}^+}$$   * **Bedeutung**: Durch die neu entstandene Azobrücke ($-N=N-$) verschmelzen die $\\pi$-Elektronensysteme beider Benzolringe zu einem riesigen delokalisierten Gesamtsystem $\\implies$ Kräftige Farbigkeit (z. B. Methylorange, Sudanrot). 2. Photophysik: Das Jablonski-Diagramm und Fluoreszenz: ```mermaid graph TD   S0[S_0: Singulett-Grundzustand] -->|Absorption h*f_abs| S1[S_1: Angeregter Singulett-Zustand]   S1 -->|Strahlungslose Relaxation Kasha-Regel| S1_low[S_1 Schwingungsgrundniveau]   S1_low -->|Fluoreszenz h*f_fl spontan| S0   S1_low -->|Intersystem Crossing ISC Spinumkehr| T1[T_1: Metastabiler Triplett-Zustand]   T1 -->|Phosphoreszenz h*f_ph verboten/langsam| S0 ``` - **Stokes-Verschiebung (Stokes Shift)**:   * Da vor der Photonenemission thermische Energie durch Schwingungsrelaxation abgegeben wird, besitzt das emittierte Fluoreszenzphoton weniger Energie als das anregende Photon:     $$\\mathbf{E_{\\text{Emission}} < E_{\\text{Absorption}} \\implies \\lambda_{\\text{Emission}} > \\lambda_{\\text{Absorption}}}$$   * *(Anwendung: Textmarker und optische Aufheller in Waschmitteln absorbieren unsichtbares UV-Licht [$\\approx 365\\,\\text{nm}$] und emittieren leuchtend helles, sichtbares blau/grünes Fluoreszenzlicht [$\\approx 450-520\\,\\text{nm}$])*. - **Unterschied zur Phosphoreszenz**:   * Fluoreszenz ist spin-erlaubt (Singulett $\\to$ Singulett, $\\Delta S = 0$, Dauer $10^{-9}-10^{-7}\\,\\text{s}$).   * Phosphoreszenz erfordert eine Spin-Umkehr ($T_1 \\to S_0$, quantenmechanisch 'verboten', Lebensdauern von Sekunden bis Stunden $\\implies$ typisches 'Nachleuchten' von Notausgangsschildern im Dunkeln)."
+        }
+      ]
+    }
+  ]
+}

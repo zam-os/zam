@@ -98,10 +98,14 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
       await getPullForwardCandidates(db, user, { includeFutureDue: false })
     ).find((item) => item.reason === "new_in_scope")!;
 
-    expect((await buildReviewQueue(db, { userId: user, maxNew: 0 })).items).toHaveLength(0);
+    expect(
+      (await buildReviewQueue(db, { userId: user, maxNew: 0 })).items,
+    ).toHaveLength(0);
     const result = await pullForwardCards(db, user, [candidate.cardId]);
     expect(result).toEqual({ pulledCount: 1, cardIds: [candidate.cardId] });
-    expect((await buildReviewQueue(db, { userId: user, maxNew: 0 })).items).toHaveLength(0);
+    expect(
+      (await buildReviewQueue(db, { userId: user, maxNew: 0 })).items,
+    ).toHaveLength(0);
     expect(
       (await buildReviewQueue(db, { userId: user, maxNew: 1 })).newCount,
     ).toBe(1);
@@ -187,7 +191,9 @@ describe("Pull Forward on Empty Queue (Phase 4)", () => {
       .get(user)) as { id: string };
 
     await db
-      .prepare("UPDATE cards SET state = 'review', reps = 1, due_at = ? WHERE id = ?")
+      .prepare(
+        "UPDATE cards SET state = 'review', reps = 1, due_at = ? WHERE id = ?",
+      )
       .run(futureDue, firstCard.id);
 
     const candidates = await getPullForwardCandidates(db, user);

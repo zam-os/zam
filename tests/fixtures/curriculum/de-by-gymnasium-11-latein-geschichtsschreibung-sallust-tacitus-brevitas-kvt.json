@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-latein-geschichtsschreibung-sallust-tacitus-brevitas",
+  "version": "2026.08.1",
+  "title": "Latein 11: Römische Geschichtsschreibung – Sallust (Catilina), Tacitus (Annales, Germania) und Historiographie (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Latein 11 (Oberstufe L1/L2): Die Römische Historiographie als moralisch-politische Krisenanalyse (Gaius Sallustius Crispus: De coniuratione Catilinae, Dekadenzmodell / Sittenverfall nach der Zerstörung Karthagos 146 v. Chr. [Metus hostilis], Avaritia und Ambitio, Charakterporträt des Catilina, Reden von Caesar und Cato; Publius Cornelius Tacitus: Annales, Historien, Germania, Analyse des Prinzipats / Kaisertums unter Tiberius und Nero, Sine ira et studio, Germanenbild als Zerrspiegel römischer Dekadenz) sowie die stilistischen Merkmale der antiken Geschichtsschreibung (Brevitas / prägnante Kürze, Inconcinnitas / asymmetrische Satzgliederung, Ellipsen, Asyndeta und historische Infinitive).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/latein",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Latein 11, Lernbereich Text- und Kulturkompetenz – Römische Geschichtsschreibung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GBE0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GBE0000000000000000A01",
+      "namespace": "gymnasium-latein-sallust",
+      "slug": "sallust-catilina-dekadenzmodell-stilmittel-brevitas",
+      "title": "Sallust: De coniuratione Catilinae, Sittenverfall der Republik und Stilmittel (Brevitas)",
+      "domain": "schule/latein/historiographie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Sallust",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Römische Historiographie – Sallust",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBE0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welches stilistische Hauptmerkmal kennzeichnet die lateinische Geschichtsschreibung Sallusts im scharfen Gegensatz zu Ciceros wohlgerundeten Satzperioden (Concinnitas)?",
+          "concept": "Die Brevitas (äußerste gedankliche und sprachliche Kürze) und Inconcinnitas (bewusste Asymmetrie und ungleiche Satzstrukturen)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Brevitas (prägnante Kürze) und Inconcinnitas (Asymmetrie)",
+              "Ausführliche, harmonisch-symmetrische Satzperioden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBE0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Sallusts 'De coniuratione Catilinae' als moralische Krisendiagnose der späten Römischen Republik: 1. **Das sallustische Dekadenzmodell (Sittenverfall)**:   * **Wendepunkt 146 v. Chr.**: Mit der Zerstörung Karthagos endete die heilsame Furcht vor dem äußeren Feind (**Metus hostilis**).   * **Die beiden Hauptlaster**:     - **Avaritia (Habsucht / Geldgier)**: Zerstörte Treue (*Fides*) und Rechtschaffenheit (*Probitas*).     - **Ambitio (Ehrgeiz / Machtgier)**: Trieb Politiker zur Heuchelei und Intrigenpolitik $\\implies$ Niedergang der *Res publica*, 2. **Charakteristik des Lucius Sergius Catilina (Kapitel 5)**:   * Dämonisch-faszinierende Gestalt: Hohe Willens- und Körperkraft (*magna vi et animi et corporis*), aber bösartiges und verdorbenes Gemüt (*ingenio malo pravoque*).   * *Alieni appetens, sui profusus* (Gierig nach fremdem Gut, verschwenderisch mit dem eigenen) $\\implies$ Typischer Repräsentant einer verkommenen Senatsaristokratie, 3. **Stilistische Charakteristika Sallusts**:   * **Brevitas & Ellipsen**: Auslassung von Hilfsverben (*esse*).   * **Inconcinnitas**: Abrupte Wechsel von Konstruktionen (z. B. Adjektiv parallel zu Präpositionalgefüge).   * **Historischer Infinitiv & Asyndeton**: Rasche Szenenfolge zur Darstellung dramatischer Dynamik.",
+          "concept": "Sallust Catilina 11: Dekadenzmodell (Zerstörung Karthagos 146 v.Chr., Wegfall Metus hostilis, Avaritia & Ambitio); Charakteristik Catilinas (alieni appetens sui profusus); Sallustianischer Stil (Brevitas, Inconcinnitas, Historischer Infinitiv, Asyndeton).",
+          "sample_solution": "1. Das sallustische Geschichtsbild und Dekadenzmodell: - **Gaius Sallustius Crispus (86–35 v. Chr.)**: Erster bedeutender römischer Monograph. Er deutet historische Ereignisse nicht chronologisch als Annalen, sondern als **moralische Krisensymptome einer verfallenden Republik**. - **Der historische Wendepunkt (146 v. Chr.)**:   * Nach dem Sieg über Karthago fiel der **Metus hostilis (die Furcht vor dem äußeren Feind)** weg, der die Römer zuvor zu Einigkeit, Tugend (*Virtus*) und einfacher Lebensführung gezwungen hatte. - **Die fatalen Laster (*Vitia*)**:   * **1. Avaritia (Habsucht)**: Verdrängte die altrömische *Fides* (Treue und Zuverlässigkeit) und machte alles käuflich.   * **2. Ambitio (Machtstreben / falscher Ehrgeiz)**: Lehrte die Senatoren Heuchelei, Täuschung und den Missbrauch politischer Ämter für persönliche Bereicherung. 2. Das Charakterporträt Catilinas (*Catilina 5*): - Sallust zeichnet Catilina als monumentale, dämonische Gestalt, in der sich der gesamte Verfall des römischen Adels bündelt:   * *« Lucius Catilina, nobili genere natus, fuit magna vi et animi et corporis, sed ingenio malo pravoque. »* (Lucius Catilina, aus vornehmem Geschlecht stammend, besaß große Geistes- und Körperkraft, aber einen schlechten und verdorbenen Charakter).   * *« Alieni appetens, sui profusus, ardens in cupiditatibus; satis eloquentiae, sapientiae parum. »* (Gierig nach fremdem Gut, verschwenderisch mit dem eigenen, glühend in seinen Begierden; genug an Beredsamkeit, an Weisheit zu wenig). 3. Stilistik der sallustischen Historiographie: - Sallust schuf einen revolutionären, archaisch-prägnanten Prosastil als Gegenpol zu Ciceros symmetrischer Redekunst:   * **1. Brevitas (Kürze)**: Gedrängte Ausdrucksweise, Auslassung überflüssiger Bindeglieder und Verben (*Ellipsen*), Verzicht auf Schmuckelemente.   * **2. Inconcinnitas (Asymmetrie)**: Bewusster Bruch formaler Symmetrien (z. B. Verknüpfung eines Partizips mit einem Nebensatz oder eines Adjektivs mit einer adverbialen Bestimmung).   * **3. Historischer Infinitiv & Asyndeton**: Schnelle Aufeinanderfolge unverbundener Infinitive (*« Pars agere, alii fugere, omnia tumultu compleri... »*) zur Erzeugung atemloser, dramatischer Spannung."
+        }
+      ]
+    },
+    {
+      "id": "01K8GBE0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GBE0000000000000000A02",
+      "namespace": "gymnasium-latein-tacitus",
+      "slug": "tacitus-annales-germania-prinzipat-sine-ira-et-studio",
+      "title": "Tacitus: Annales (Prinzipatkritik, Sine ira et studio) und Germania (Kulturanthropologie)",
+      "domain": "schule/latein/kaiserzeit",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GBE0000000000000000A01",
+          "type": "hard",
+          "rationale": "Tacitus führt Sallusts Historiographie in der Kaiserzeit fort."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Tacitus",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "latein",
+          "topic_code": "lb2",
+          "topic_title": "Römische Historiographie – Tacitus",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GBE0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welchen berühmten methodischen Grundsatz formulierte Tacitus im Proömium seiner 'Annales' als Anspruch an eine unvoreingenommene, parteilose Geschichtsschreibung?",
+          "concept": "Sine ira et studio ('Ohne Zorn und Eifer / Parteinahme')",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Sine ira et studio (Ohne Zorn und Parteinahme)",
+              "Alea iacta est"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GBE0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Tacitus' Geschichtsschreibung in den 'Annales' und der ethnographischen Schrift 'Germania': 1. **Tacitus und die Kritik am Prinzipat (*Annales*)**:   * **Prinzipatskrise**: Augustus begründete den Prinzipat als scheinbare Wiederherstellung der Republik (*Res publica restituta*), schuf de facto aber eine Alleinherrschaft.   * Psychologische Herrscherporträts: Die düstere Heuchelei und Tyrannei unter **Tiberius** (*Dissimulatio* = Verstellung) und der grausame Despotismus unter **Nero**.   * **Sine ira et studio**: Anspruch auf objektive, unbestechliche Geschichtsschreibung nach dem Ende der julisch-claudischen und flavischen Dynastie, 2. **Die *Germania* (De origine et situ Germanorum, 98 n. Chr.)**:   * **Genre**: Ethnographische Monographie über Sitten, Geographie und Stämme der Germanen.   * **Das Germanenbild als Kulturkritik**: Germanen als naturwüchsiges, tapferes, kriegerisches Volk von unverdorbener Sittenreinheit (*Keine Mitgift vom Weibe, keine Zinsen, Treue im Ehebett*).   * **Doppelte Funktion**: Einerseits Warnung an Rom vor der ungebändigten militärischen Bedrohung durch die germanischen Stämme; andererseits **Zerrspiegel und moralische Anklage gegen den Luxus, die Dekadenz und die Feigheit der römischen Kaiserzeitgesellschaft**.",
+          "concept": "Tacitus 11: Annales (Prinzipatkritik, Tiberius Dissimulatio, Nero, Sine ira et studio); Germania 98 n.Chr. (Ethnographie, Sittenreinheit der Germanen als Zerrspiegel römischer Dekadenz und Warnung vor germanischer Gefahr).",
+          "sample_solution": "1. Tacitus' Geschichtswerk und Prinzipatsanalyse (*Annales*): - **Publius Cornelius Tacitus (ca. 58–120 n. Chr.)**: Bedeutendster Historiker der römischen Kaiserzeit. Als Senator erlebte er die Willkürherrschaft des Kaisers Domitian und reflektierte die Zerstörung republikanischer Freiheit (**Libertas**) durch den imperialen Prinzipat. - **Das Proömium der *Annales* und der Grundsatz *« Sine ira et studio »***:   * Tacitus verspricht, die Geschichte der römischen Kaiser von Augustus bis Nero *« ohne Zorn und Parteinahme »* (*sine ira et studio*) zu schreiben, da die zeitgenössischen Berichte entweder aus Todesfurcht gefälscht oder aus postumem Hass entstellt worden seien. - **Psychologische Tiefenanalyse des Tiberius**:   * Tiberius wird als Meister der **Dissimulatio (Verstellungskunst)** porträtiert: Nach außen hin heuchelt er Zurückhaltung und Unterwerfung unter den Senat, während er im Geheimen über das Instrument der **Majestätsprozesse (*Crimen maiestatis*)** jede freie Regung im Senat brutal erstickt. 2. Die *Germania* als ethnographischer Spiegel Roms: - **Entstehung**: Veröffentlicht 98 n. Chr. unter Kaiser Trajan, der sich zu dieser Zeit an der Rheingrenze aufhielt. - **Darstellung der Germanen**:   * Tacitus beschreibt die germanischen Stämme als *« rein und keinem anderen Volk ähnlich »* (*nullis aliarum nationum conubiis infectos*): großgewachsen, blaue Augen, rötliches Haar, kälte- und hungerresistent, tapfer im Kampf bis zur Selbstaufgabe.   * **Ethische Sittenreinheit**: Im Gegensatz zum römischen Sittenverfall rühmt Tacitus die Keuschheit der germanischen Ehen (*« Nemo enim illic vitia ridet, nec corrumpere et corrumpi saeculum vocatur »* – Denn dort lacht niemand über Laster, und Verführen und Verführtwerden nennt man nicht Zeitgeist). - **Intention des Werkes**:   * **1. Politische Mahnung**: Tacitus warnt die römische Führung davor, die Germanen zu unterschätzen. Rom habe 210 Jahre gebraucht, um Germanien zu bekämpfen, ohne es je wirklich zu unterwerfen (*« Germanorum libertas acrior est quam regnum Arsacidarum »* – Die Freiheit der Germanen ist gefährlicher als das Königtum der Parther).   * **2. Kulturkritischer Zerrspiegel**: Durch die Idealisierung der germanischen Schlichtheit und Treue hält Tacitus seinen römischen Zeitgenossen deren eigene sittliche Fäulnis, Bestechlichkeit und verweichlichte Dekadenz schonungslos vor Augen."
+        }
+      ]
+    }
+  ]
+}

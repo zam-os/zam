@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-mathematik-analytische-geometrie-ebenen-abstaende",
+  "version": "2026.08.1",
+  "title": "Mathematik 11: Analytische Geometrie im Raum R^3 – Ebenengleichungen, Vektorprodukt und Abstandsberechnung (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 11: Ebenengleichungen im dreidimensionalen Raum (Parameterform E: X = P + r*u + s*v, Kreuzprodukt/Vektorprodukt n = u x v als Normalenvektor, Normalenform E: (X - P) * n = 0, Koordinatenform E: n1*x1 + n2*x2 + n3*x3 = d, Hessesche Normalform HNF), Lagebeziehungen im Raum (Gerade-Ebene: Schnittpunkt, Parallelität, Enthaltensein; Ebene-Ebene: Schnittgerade, Parallelität, Schnittwinkel) sowie quantitative Abstandsberechnungen (Abstand Punkt-Ebene mit HNF d = |(P - A)*n_0|, Abstand Punkt-Gerade, Abstand windschiefer Geraden).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 11, Lernbereich Analytische Geometrie – Ebenen und Abstände"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB20000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB20000000000000000A01",
+      "namespace": "gymnasium-mathematik-ebenen",
+      "slug": "ebenengleichungen-parameterform-normalenform-koordinatenform",
+      "title": "Ebenen im Raum: Parameterform, Kreuzprodukt (Normalenvektor) und Koordinatenform",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Plane (geometry)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Ebenen im Raum und Vektorprodukt",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB20000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie stehen die beiden Richtungsvektoren $\\vec{u}$ und $\\vec{v}$ einer Ebene zum resultierenden Vektor ihres Kreuzprodukts (Vektorprodukts) $\\vec{n} = \\vec{u} \\times \\vec{v}$?",
+          "concept": "Der Normalenvektor n steht orthogonal (senkrecht) auf beiden Richtungsvektoren u und v (und damit senkrecht auf der gesamten Ebene)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Normalenvektor steht senkrecht auf beiden Richtungsvektoren",
+              "Der Normalenvektor verläuft parallel zu beiden Vektoren"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB20000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die drei Darstellungsformen einer Ebene und das Kreuzprodukt im $\\mathbb{R}^3$: 1. **Die drei Darstellungsformen einer Ebene**:   * **1. Parameterform**: $E: \\vec{X} = \\vec{A} + r \\cdot \\vec{u} + s \\cdot \\vec{v}$ ($r, s \\in \\mathbb{R}$, $\\vec{u} \\not\\parallel \\vec{v}$).   * **2. Normalenform**: $E: (\\vec{X} - \\vec{A}) \\circ \\vec{n} = 0$ (mit Normalenvektor $\\vec{n} \\perp E$).   * **3. Koordinatenform (Kartesische Form)**: $E: n_1 x_1 + n_2 x_2 + n_3 x_3 = d$ (mit $d = \\vec{A} \\circ \\vec{n}$), 2. **Das Vektorprodukt (Kreuzprodukt)**:   $$\\mathbf{\\vec{u} \\times \\vec{v} = \\begin{pmatrix} u_1 \\\\ u_2 \\\\ u_3 \\end{pmatrix} \\times \\begin{pmatrix} v_1 \\\\ v_2 \\\\ v_3 \\end{pmatrix} = \\begin{pmatrix} u_2 v_3 - u_3 v_2 \\\\ u_3 v_1 - u_1 v_3 \\\\ u_1 v_2 - u_2 v_1 \\end{pmatrix}}$$   * Geometrische Bedeutung des Betrags: $|\\vec{u} \\times \\vec{v}|$ ist exakt die Fläche des von $\\vec{u}$ und $\\vec{v}$ aufgespannten Parallelogramms, 3. Wandle die Ebene $E: \\vec{X} = \\begin{pmatrix} 1 \\\\ 2 \\\\ 0 \\end{pmatrix} + r \\begin{pmatrix} 1 \\\\ 0 \\\\ 2 \\end{pmatrix} + s \\begin{pmatrix} 0 \\\\ 1 \\\\ -1 \\end{pmatrix}$ in die Koordinatenform um.",
+          "concept": "Ebenen: Parameterform, Normalenform, Koordinatenform; Kreuzprodukt n = u x v; Umwandlung: n = (1,0,2)^T x (0,1,-1)^T = (0 - 2, 0 - (-1), 1 - 0)^T = (-2, 1, 1)^T; d = A * n = 1*(-2) + 2*(1) + 0*(1) = 0 -> E: -2x1 + x2 + x3 = 0 (bzw. 2x1 - x2 - x3 = 0).",
+          "sample_solution": "1. Die drei mathematischen Darstellungsformen einer Ebene: - **1. Parameterform**:   $$\\mathbf{E: \\vec{x} = \\vec{a} + r \\cdot \\vec{u} + s \\cdot \\vec{v}} \\quad (r, s \\in \\mathbb{R})$$   * $\\vec{a}$: Stützvektor; $\\vec{u}, \\vec{v}$: linear unabhängige Spannvektoren. - **2. Normalenform**:   $$\\mathbf{E: (\\vec{x} - \\vec{a}) \\circ \\vec{n} = 0}$$   * $\\vec{n} \\neq \\vec{0}$: Ein Vektor, der **senkrecht auf der Ebene steht** (Normalenvektor). - **3. Koordinatenform (Kartesische Ebenengleichung)**:   $$\\mathbf{E: n_1 x_1 + n_2 x_2 + n_3 x_3 = d} \\quad \\text{mit} \\quad d = \\vec{a} \\circ \\vec{n}$$ 2. Das Kreuzprodukt (Vektorprodukt): - Berechnet aus zwei linear unabhängigen Vektoren $\\vec{u}$ und $\\vec{v}$ einen neuen Vektor $\\vec{n}$, der auf beiden senkrecht steht (Rechte-Hand-Regel):   $$\\mathbf{\\vec{n} = \\begin{pmatrix} u_1 \\\\ u_2 \\\\ u_3 \\end{pmatrix} \\times \\begin{pmatrix} v_1 \\\\ v_2 \\\\ v_3 \\end{pmatrix} = \\begin{pmatrix} u_2 v_3 - u_3 v_2 \\\\ u_3 v_1 - u_1 v_3 \\\\ u_1 v_2 - u_2 v_1 \\end{pmatrix}}$$ - **Flächeninhalt**:   * Fläche des aufgespannten Parallelogramms: $\\mathbf{A_{\\text{Parallelogramm}} = |\\vec{u} \\times \\vec{v}|}$.   * Dreiecksfläche: $\\mathbf{A_{\\text{Dreieck}} = \\frac{1}{2} |\\vec{u} \\times \\vec{v}|}$. 3. Durchrechnung der Ebenenumwandlung: - **Gegeben**: $\\vec{a} = \\begin{pmatrix} 1 \\\\ 2 \\\\ 0 \\end{pmatrix}, \\; \\vec{u} = \\begin{pmatrix} 1 \\\\ 0 \\\\ 2 \\end{pmatrix}, \\; \\vec{v} = \\begin{pmatrix} 0 \\\\ 1 \\\\ -1 \\end{pmatrix}$ - **Schritt 1: Kreuzprodukt zur Bestimmung von $\\vec{n}$**:   $$\\vec{n} = \\begin{pmatrix} 1 \\\\ 0 \\\\ 2 \\end{pmatrix} \\times \\begin{pmatrix} 0 \\\\ 1 \\\\ -1 \\end{pmatrix} = \\begin{pmatrix} 0 \\cdot (-1) - 2 \\cdot 1 \\\\ 2 \\cdot 0 - 1 \\cdot (-1) \\\\ 1 \\cdot 1 - 0 \\cdot 0 \\end{pmatrix} = \\mathbf{\\begin{pmatrix} -2 \\\\ 1 \\\\ 1 \\end{pmatrix}}$$ - **Schritt 2: Bestimmung der Konstanten $d = \\vec{a} \\circ \\vec{n}$**:   $$d = \\begin{pmatrix} 1 \\\\ 2 \\\\ 0 \\end{pmatrix} \\circ \\begin{pmatrix} -2 \\\\ 1 \\\\ 1 \\end{pmatrix} = 1 \\cdot (-2) + 2 \\cdot 1 + 0 \\cdot 1 = -2 + 2 + 0 = \\mathbf{0}$$ - **Schritt 3: Aufstellen der Koordinatenform**:   $$\\mathbf{E: -2x_1 + x_2 + x_3 = 0} \\quad \\text{bzw.} \\quad \\mathbf{E: 2x_1 - x_2 - x_3 = 0}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GB20000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB20000000000000000A02",
+      "namespace": "gymnasium-mathematik-abstaende",
+      "slug": "hessesche-normalform-abstand-punkt-ebene-lagebeziehung",
+      "title": "Hessesche Normalform (HNF): Abstandsberechnung Punkt-Ebene und Lagebeziehungen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB20000000000000000A01",
+          "type": "hard",
+          "rationale": "Die HNF basiert auf dem Normalenvektor der Ebenengleichung."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Hesse normal form",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Hessesche Normalform und Abstandsberechnungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB20000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Eigenschaft besitzt der Normalenvektor $\\vec{n}_0$ in der Hesseschen Normalform (HNF) einer Ebene?",
+          "concept": "Er ist ein normierter Einheitsvektor mit der exakten Länge |n_0| = 1 (n_0 = n / |n|)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Er ist ein Einheitsvektor mit der Länge |n_0| = 1",
+              "Er hat immer ganzzahlige Koordinaten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB20000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Hessesche Normalform und die Abstandsberechnung im $\\mathbb{R}^3$: 1. **Die Hessesche Normalform (HNF nach Otto Hesse)**:   * Aus der Koordinatenform $n_1 x_1 + n_2 x_2 + n_3 x_3 - d = 0$ durch Division durch den Betrag des Normalenvektors $|\\vec{n}| = \\sqrt{n_1^2 + n_2^2 + n_3^2}$:     $$\\mathbf{\\text{HNF}: \\frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{\\sqrt{n_1^2 + n_2^2 + n_3^2}} = 0}$$ 2. **Abstandsformel Punkt-Ebene**:   * Der kürzeste (senkrechte) Abstand eines Punktes $P(p_1|p_2|p_3)$ zu einer Ebene $E$:     $$\\mathbf{d(P; E) = \\left| \\frac{n_1 p_1 + n_2 p_2 + n_3 p_3 - d}{|\\vec{n}|} \\right|}$$ 3. **Lagebeziehung Gerade-Ebene**:   * Gerade $g: \\vec{X} = \\vec{P} + \\lambda \\vec{v}$ in Ebene $E: \\vec{n} \\circ \\vec{X} = d$ einsetzen $\\implies$ Bestimmung des Durchstoßpunkts $S$, 4. Gegeben ist die Ebene $E: 2x_1 - x_2 + 2x_3 = 12$ und der Punkt $P(4 \\mid 1 \\mid 7)$. Berechne den Abstand $d(P; E)$ und bestimme den Lotfußpunkt $L$ auf der Ebene.",
+          "concept": "HNF: d(P; E) = |n1*p1 + n2*p2 + n3*p3 - d| / sqrt(n1^2+n2^2+n3^2); Lotgerade l: X = P + t*n; Rechnung: |n| = sqrt(4+1+4) = sqrt(9) = 3; Einsetzen P(4|1|7): (2*4 - 1 + 2*7 - 12) / 3 = (8 - 1 + 14 - 12) / 3 = 9 / 3 = 3 LE; Lotfußpunkt L: X = (4,1,7)^T - 1 * (2,-1,2)^T = (2, 2, 5)^T.",
+          "sample_solution": "1. Theorie der Hesseschen Normalform (HNF): - **Definition**: Die Normalengleichung einer Ebene, bei der der Normalenvektor auf die **Länge 1 normiert** ist (Einheitsvektor $\\vec{n}_0 = \\frac{\\vec{n}}{|\\vec{n}|}$):   $$\\mathbf{\\frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{|\\vec{n}|} = 0} \\quad \\text{mit} \\quad |\\vec{n}| = \\sqrt{n_1^2 + n_2^2 + n_3^2}$$ 2. Abstandsberechnung Punkt $P$ – Ebene $E$: - Setzt man die Koordinaten des Punktes $P(p_1 \\mid p_2 \\mid p_3)$ in die linke Seite der HNF ein und bildet den Betrag, erhält man unmittelbar den **kürzesten euklidischen Abstand $d$**:   $$\\mathbf{d(P; E) = \\frac{|n_1 p_1 + n_2 p_2 + n_3 p_3 - d|}{\\sqrt{n_1^2 + n_2^2 + n_3^2}}}$$ 3. Bestimmung des Lotfußpunkts $L$: - Man stellt die **Lotgerade** $l$ auf, die durch den Punkt $P$ verläuft und die Richtung des Normalenvektors $\\vec{n}$ besitzt:   $$l: \\vec{x} = \\vec{p} + t \\cdot \\vec{n} \\quad (t \\in \\mathbb{R})$$ - Schneidet man $l$ mit $E$, erhält man den Schnittparameter $t_L$ und den **Lotfußpunkt $L$** auf der Ebene ($|\\vec{PL}| = d$). 4. Durchrechnung des Beispiels ($E: 2x_1 - x_2 + 2x_3 - 12 = 0$, $P(4 \\mid 1 \\mid 7)$): - **Schritt 1: Betrag des Normalenvektors $\\vec{n} = \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix}$**:   $$|\\vec{n}| = \\sqrt{2^2 + (-1)^2 + 2^2} = \\sqrt{4 + 1 + 4} = \\sqrt{9} = \\mathbf{3}$$ - **Schritt 2: Abstandsberechnung $d(P; E)$**:   $$d(P; E) = \\frac{|2(4) - 1(1) + 2(7) - 12|}{3} = \\frac{|8 - 1 + 14 - 12|}{3} = \\frac{|9|}{3} = \\mathbf{3\\,\\text{LE (Längeneinheiten)}}$$ - **Schritt 3: Bestimmung des Lotfußpunkts $L$**:   * Lotgerade: $l: \\vec{x} = \\begin{pmatrix} 4 \\\\ 1 \\\\ 7 \\end{pmatrix} + t \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix}$   * Einsetzen in $E$:     $$2(4 + 2t) - (1 - t) + 2(7 + 2t) = 12$$     $$8 + 4t - 1 + t + 14 + 4t = 12 \\implies 21 + 9t = 12 \\implies 9t = -9 \\implies \\mathbf{t = -1}$$   * Einsetzen von $t = -1$ in $l$:     $$\\vec{l} = \\begin{pmatrix} 4 \\\\ 1 \\\\ 7 \\end{pmatrix} - 1 \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix} = \\begin{pmatrix} 2 \\\\ 2 \\\\ 5 \\end{pmatrix} \\implies \\mathbf{L(2 \\mid 2 \\mid 5)}$$ - **Probe**: $2(2) - 2 + 2(5) = 4 - 2 + 10 = 12$ (wahr!)."
+        }
+      ]
+    }
+  ]
+}

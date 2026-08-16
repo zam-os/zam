@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-informatik-kryptographie-rsa-diffie-hellman-digitale-signatur",
+  "version": "2026.08.1",
+  "title": "Informatik 12: Kryptographie & IT-Sicherheit – Symmetrische vs. Asymmetrische Verschlüsselung (RSA), Diffie-Hellman und Signaturen (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 12 (Oberstufe NTG Q12): Grundlagen der Kryptologie (Schutzziele der Informationssicherheit nach CIA-Triade: Confidentiality / Vertraulichkeit, Integrity / Integrität, Availability / Verfügbarkeit, Authentizität und Verbindlichkeit), Symmetrische Verschlüsselung (One-Time-Pad als informationstheoretisch perfektes Chiffre, AES / Advanced Encryption Standard, Schlüsselaustauschproblem), Asymmetrische Kryptographie und Einwegfunktionen (Das RSA-Verfahren nach Rivest, Shamir, Adleman: Primzahlgenerierung p und q, Modul N = p * q, Eulersche Phi-Funktion phi(N) = (p-1)*(q-1), Öffentlicher Schlüssel (e, N) und privater Schlüssel (d, N) mit e * d = 1 mod phi(N), Diskretes Faktorisierungsproblem), Diffie-Hellman-Schlüsselaustausch (Diskreter Logarithmus) sowie Kryptographische Hashfunktionen (SHA-256: Einweg-Eigenschaft, Kollisionsresistenz, Lawineneffekt), Digitale Signaturen und Public-Key-Infrastruktur (PKI, X.509-Zertifikate, Certificate Authorities CA, Man-in-the-Middle-Angriff).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/informatik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Informatik 12, Lernbereich Kryptographie und Informationssicherheit"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC90000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC90000000000000000A01",
+      "namespace": "gymnasium-informatik-rsa",
+      "slug": "asymmetrische-kryptographie-rsa-verfahren-einwegfunktion",
+      "title": "Asymmetrische Kryptographie: Das RSA-Verfahren und mathematische Einwegfunktionen",
+      "domain": "schule/informatik/kryptographie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "RSA cryptosystem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Kryptographie – Asymmetrische Verschlüsselung und RSA",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC90000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Auf welchem mathematischen Problem basiert die Einwegfunktion und damit die Sicherheit des asymmetrischen RSA-Kryptoverfahrens?",
+          "concept": "Auf der praktischen Unmöglichkeit, das Produkt zweier sehr großer Primzahlen (N = p * q) in vertretbarer Rechenzeit in seine Primfaktoren zu zerlegen (Faktorisierungsproblem)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Faktorisierungsproblem (Zerlegung des RSA-Moduls N in Primzahlen)",
+              "Lösen linearer Gleichungen"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC90000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das asymmetrische RSA-Verfahren (Ron Rivest, Adi Shamir, Leonard Adleman, 1977): 1. **Schlüsselerzeugung (Key Generation)**:   * Wähle zwei große Primzahlen $p$ und $q$ ($p \\neq q$).   * Berechne den **RSA-Modul**: $\\mathbf{N = p \\cdot q}$.   * Berechne die Eulersche Phi-Funktion: $\\mathbf{\\varphi(N) = (p - 1) \\cdot (q - 1)}$.   * Wähle einen **öffentlichen Exponenten** $e$, sodass $1 < e < \\varphi(N)$ und $\\operatorname{ggT}(e, \\varphi(N)) = 1$.   * Berechne den **privaten Schlüssel** $d$ als multiplikatives Inverses von $e$ modulo $\\varphi(N)$ (mit dem erweiterten euklidischen Algorithmus):     $$\\mathbf{e \\cdot d \\equiv 1 \\pmod{\\varphi(N)}}$$   * **Öffentlicher Schlüssel**: $(e, N)$; **Privater Schlüssel**: $(d, N)$, 2. **Verschlüsselung & Entschlüsselung**:   * **Verschlüsselung**: Für Klartext $m < N$: $\\mathbf{c \\equiv m^e \\pmod N}$.   * **Entschlüsselung**: Für Geheimtext $c$: $\\mathbf{m \\equiv c^d \\pmod N}$, 3. **Beispielrechnung mit kleinen Zahlen**:   * Gegeben: $p = 3, q = 11, e = 3$.   * a) Berechne $N, \\varphi(N)$ und den privaten Schlüssel $d$.   * b) Verschlüssele die Nachricht $m = 4$ und entschlüssele das Chiffrat $c$.",
+          "concept": "RSA 12: N = p*q; phi(N) = (p-1)*(q-1); e*d = 1 mod phi(N); Verschlüsselung c = m^e mod N; Entschlüsselung m = c^d mod N; Rechnung: N = 33, phi(N) = 20, e=3 -> d=7 (3*7=21=1 mod 20); c = 4^3 mod 33 = 64 mod 33 = 31; m = 31^7 mod 33 = 4.",
+          "sample_solution": "1. Mathematische Grundlagen des RSA-Kryptosystems: - **Das Prinzip der asymmetrischen Verschlüsselung**:   * Im Gegensatz zu symmetrischen Verfahren (AES) gibt es **zwei verschiedene Schlüssel**:     - **Public Key (Öffentlicher Schlüssel)**: Kann weltweit publiziert werden; dient nur zum Verschlüsseln.     - **Private Key (Geheimer Schlüssel)**: Verbleibt streng geheim beim Empfänger; dient zum Entschlüsseln. - **Der Satz von Euler / Kleiner Fermatscher Satz**:   * Für alle zu $N$ teilerfremden Zahlen $m$ gilt: $m^{\\varphi(N)} \\equiv 1 \\pmod N$.   * Da $e \\cdot d \\equiv 1 \\pmod{\\varphi(N)} \\implies e \\cdot d = k \\cdot \\varphi(N) + 1$, folgt:     $$(m^e)^d = m^{e \\cdot d} = m^{k \\cdot \\varphi(N) + 1} = (m^{\\varphi(N)})^k \\cdot m \\equiv 1^k \\cdot m \\equiv \\mathbf{m \\pmod N}$$ 2. Vollständige Durchrechnung des Beispiels: - **Schritt 1: Parameter berechnen**:   * $p = 3, \\; q = 11$.   * **RSA-Modul**: $\\mathbf{N = 3 \\cdot 11 = 33}$.   * **Eulersche Phi-Funktion**: $\\mathbf{\\varphi(N) = (3 - 1) \\cdot (11 - 1) = 2 \\cdot 10 = 20}$. - **Schritt 2: Privater Schlüssel $d$**:   * Gegeben $e = 3$. Gesucht ist $d$, sodass $3 \\cdot d \\equiv 1 \\pmod{20}$.   * Testen der Vielfachen: $3 \\cdot 7 = 21 = 1 \\cdot 20 + 1 \\implies \\mathbf{d = 7}$.   * **Public Key**: $(e=3, N=33)$; **Private Key**: $(d=7, N=33)$. - **Schritt 3: Verschlüsselung von $m = 4$**:   * $$c = m^e \\pmod N = 4^3 \\pmod{33} = 64 \\pmod{33} = \\mathbf{31}$$ - **Schritt 4: Entschlüsselung von $c = 31$**:   * $$m = c^d \\pmod N = 31^7 \\pmod{33}$$   * Da $31 \\equiv -2 \\pmod{33}$, lässt sich die Potenz modular extrem vereinfachen:     $$(-2)^7 = -128 \\pmod{33} = -128 + 4 \\cdot 33 = -128 + 132 = \\mathbf{4}$$   * Der ursprüngliche Klartext $m = 4$ wurde fehlerfrei rekonstruiert!"
+        }
+      ]
+    },
+    {
+      "id": "01K8GC90000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC90000000000000000A02",
+      "namespace": "gymnasium-informatik-signaturen-hash",
+      "slug": "hashfunktionen-sha-digitale-signatur-zertifikate-pki",
+      "title": "Digitale Signaturen, Kryptographische Hashfunktionen (SHA) und PKI-Zertifikate",
+      "domain": "schule/informatik/sicherheit",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC90000000000000000A01",
+          "type": "hard",
+          "rationale": "Digitale Signaturen sind die mathematische Umkehrung des asymmetrischen RSA-Prinzips."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Digital signature",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Digitale Signaturen und Public-Key-Infrastruktur",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC90000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche beiden Schutzziele der Informationssicherheit gewährleistet eine digitale Signatur bei einem elektronischen Dokument?",
+          "concept": "Authentizität (Nachweis der Urheberschaft des Absenders) und Integrität (Nachweis der Unverfälschtheit der Nachricht)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Authentizität (Urheberschaft) und Integrität (Unverfälschtheit)",
+              "Reine Vertraulichkeit (Geheimhaltung)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC90000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Ablauf einer digitalen Signatur, kryptographische Hashfunktionen und digitale Zertifikate: 1. **Kryptographische Hashfunktionen (z. B. SHA-256)**:   * Bildet eine beliebig lange Nachricht $M$ auf einen Hashwert fester Länge (256 Bit) ab: $h = H(M)$.   * **3 Kernanforderungen**:     - *Einweg-Eigenschaft (Pre-image Resistance)*: Aus $h$ kann $M$ nicht berechnet werden.     - *Kollisionsresistenz (Collision Resistance)*: Es ist praktisch unmöglich, zwei verschiedene Nachrichten $M_1 \\neq M_2$ mit gleichem Hashwert $H(M_1) = H(M_2)$ zu finden.     - *Lawineneffekt (Avalanche Effect)*: Eine winzige 1-Bit-Änderung in der Nachricht verändert im Schnitt $50\\%$ aller Bits im Hashwert, 2. **Der Signatur- und Verifikationsprozess**:   * **Signieren (Sender Alice)**:     1. Alice berechnet den Hashwert der Nachricht: $h = H(M)$.     2. Alice verschlüsselt den Hashwert mit ihrem **eigenen privaten Schlüssel**: $\\mathbf{s = h^{d_A} \\pmod{N_A}}$ (**Digitale Signatur**).     3. Alice sendet die Nachricht $M$ zusammen mit der Signatur $s$ an Bob.   * **Verifizieren (Empfänger Bob)**:     1. Bob entschlüsselt die Signatur mit Alices **öffentlichem Schlüssel**: $h' = s^{e_A} \\pmod{N_A}$.     2. Bob berechnet eigenständig den Hashwert der empfangenen Nachricht: $h = H(M)$.     3. **Prüfung**: Wenn $\\mathbf{h' == h}$, ist die Signatur gültig (Beweis für Authentizität und Unverfälschtheit), 3. **Public-Key-Infrastruktur (PKI) & Man-in-the-Middle-Angriff**:   * Woher weiß Bob, dass der öffentliche Schlüssel wirklich Alice gehört und nicht einem Angreifer Mallory?   * **Lösung**: **Digitale Zertifikate (X.509)**, bei denen eine vertrauenswürdige Zertifizierungsstelle (**Certificate Authority CA**) die Identität und den öffentlichen Schlüssel digital signiert.",
+          "concept": "Digitale Signatur 12: Hashfunktionen (SHA-256, Einweg, Kollisionsresistenz, Lawineneffekt); Signaturablauf (Hash mit privatem Schlüssel verschlüsselt -> mit öffentlichem Schlüssel verifiziert); PKI & CA gegen Man-in-the-Middle-Angriffe.",
+          "sample_solution": "1. Kryptographische Hashfunktionen: - **Funktion**: Ein mathematischer 'digitaler Fingerabdruck' beliebiger Datenmengen. - **Die fundamentalen Sicherheitseigenschaften**:   * **1. Deterministisch**: Gleiche Eingabe liefert immer exakt denselben Hashwert.   * **2. Einwegfunktion (Pre-image Resistance)**: Aus dem Hashwert $h$ lässt sich der Klartext $M$ nur durch Ausprobieren aller Möglichkeiten (*Brute-Force*) erraten.   * **3. Lawineneffekt**: Ändert man in einer 1000-seitigen PDF-Datei nur ein einziges Komma, ändert sich der SHA-256-Hashwert völlig unvorhersehbar und radikal.   * **4. Starke Kollisionsresistenz**: Es ist rechnerisch ausgeschlossen, zwei unterschiedliche Dokumente mit identischem Hashwert zu erzeugen. 2. Der Ablauf der digitalen Signatur: ```mermaid sequenceDiagram   autonumber   actor Alice as Alice (Senderin)   actor Bob as Bob (Empfänger)   Note over Alice: 1. Dokument M -> Hash h = SHA256(M)   Note over Alice: 2. Signatur s = Encrypt(h, PrivateKey_Alice)   Alice->>Bob: Übertragung von [Dokument M + Signatur s]   Note over Bob: 3. Entschlüsseln: h' = Decrypt(s, PublicKey_Alice)   Note over Bob: 4. Eigener Hash: h = SHA256(M)   Note over Bob: 5. Vergleich h' == h -> Gültig! ``` - **Sicherheitsgarantien**:   * **Integrität**: Wurde das Dokument auf dem Transportweg auch nur um 1 Bit manipuliert, stimmt $h$ nicht mehr mit $h'$ überein.   * **Authentizität**: Da nur Alice ihren privaten Schlüssel besitzt, kann die Signatur nur von ihr stammen.   * **Nicht-Abstreitbarkeit (Verbindlichkeit)**: Alice kann die Urheberschaft vor Gericht nicht leugnen. 3. Public-Key-Infrastruktur (PKI) und digitale Zertifikate: - **Die Bedrohung: Der Man-in-the-Middle-Angriff (MitM)**:   * Ein Angreifer (Mallory) schiebt Bob seinen eigenen öffentlichen Schlüssel unter dem Namen 'Alice' unter $\\implies$ Mallory kann Signaturen fälschen. - **Die Lösung: Digitale Zertifikate nach X.509**:   * Eine weltweit anerkannte **Zertifizierungsstelle (Certificate Authority CA)** beglaubigt die Identität des Inhabers und seinen öffentlichen Schlüssel, indem sie das Zertifikat mit ihrem eigenen privaten Wurzelschlüssel (*Root-CA*) signiert.   * Webbrowser enthalten vorinstallierte Root-Zertifikate, wodurch bei HTTPS-Verbindungen die Echtheit von Webseiten (z. B. Online-Banking) kryptographisch garantiert wird."
+        }
+      ]
+    }
+  ]
+}

@@ -80,10 +80,17 @@ describe("Bundled learning cells (Phase 1)", () => {
       expect(status.cardCount).toBe(0);
     }
 
-    const isInstalled = await isBundledCellInstalled(db, "de-by:realschule-optik");
+    const isInstalled = await isBundledCellInstalled(
+      db,
+      "de-by:realschule-optik",
+    );
     expect(isInstalled).toBe(false);
 
-    const enrolment = await getBundledCellEnrolment(db, user, "de-by:realschule-optik");
+    const enrolment = await getBundledCellEnrolment(
+      db,
+      user,
+      "de-by:realschule-optik",
+    );
     expect(enrolment.installed).toBe(false);
     expect(enrolment.enrolled).toBe(false);
     expect(enrolment.cardCount).toBe(0);
@@ -101,7 +108,11 @@ describe("Bundled learning cells (Phase 1)", () => {
     expect(res1.alreadyEnrolled).toBe(false);
 
     // Verify status
-    const status1 = await getBundledCellEnrolment(db, user, "de-by:realschule-optik");
+    const status1 = await getBundledCellEnrolment(
+      db,
+      user,
+      "de-by:realschule-optik",
+    );
     expect(status1.installed).toBe(true);
     expect(status1.enrolled).toBe(true);
     expect(status1.cardCount).toBe(6);
@@ -137,7 +148,9 @@ describe("Bundled learning cells (Phase 1)", () => {
 
     // Re-list via handler reflects enrolment
     const listRes2 = await listBundledCellsHandler(db, { user });
-    const rsCell = listRes2.cells.find((c) => c.id === "de-by:realschule-optik");
+    const rsCell = listRes2.cells.find(
+      (c) => c.id === "de-by:realschule-optik",
+    );
     expect(rsCell?.enrolled).toBe(true);
     expect(rsCell?.cardCount).toBe(6);
   });
@@ -160,7 +173,11 @@ describe("Bundled learning cells (Phase 1)", () => {
     expect(bos?.enrolled).toBe(false);
     expect(gym?.cardCount).toBeGreaterThan(0);
 
-    const gymEnrol = await enrolBundledCell(db, user, "de-by:gymnasium-8-optik");
+    const gymEnrol = await enrolBundledCell(
+      db,
+      user,
+      "de-by:gymnasium-8-optik",
+    );
     expect(gymEnrol.alreadyEnrolled).toBe(false);
     expect(gymEnrol.cardsCreated).toBeGreaterThan(0);
 
@@ -179,9 +196,9 @@ describe("Bundled learning cells (Phase 1)", () => {
     // Together those tiles contain every Realschule atom, but not its unique
     // Tier-2 practice items. Atom-only detection used to produce a false
     // installed badge and made enrolment look like an idempotent no-op.
-    expect(
-      await isBundledCellInstalled(db, "de-by:realschule-optik"),
-    ).toBe(false);
+    expect(await isBundledCellInstalled(db, "de-by:realschule-optik")).toBe(
+      false,
+    );
   });
   /**
    * Owner decision 2026-08-15: the cell has precedence. Import goes through a
@@ -240,7 +257,9 @@ describe("Bundled learning cells (Phase 1)", () => {
       });
       const cellIds = cells.map((cell) => cell.id);
       expect(cellIds).toContain("de-by:gymnasium-8-optik");
-      expect(cellIds.every((id) => id.startsWith("de-by:gymnasium-8-"))).toBe(true);
+      expect(cellIds.every((id) => id.startsWith("de-by:gymnasium-8-"))).toBe(
+        true,
+      );
     });
 
     it("ignores a provider it does not publish for", () => {

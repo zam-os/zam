@@ -57,7 +57,10 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
 
     for (const cellId of RS7_CELL_IDS) {
       const cell = cells.find((c) => c.id === cellId);
-      expect(cell, `Cell ${cellId} should be present in bundled cells`).toBeDefined();
+      expect(
+        cell,
+        `Cell ${cellId} should be present in bundled cells`,
+      ).toBeDefined();
       expect(cell?.gradeLabel).toContain("Realschule");
       expect(cell?.atomCount).toBeGreaterThanOrEqual(2);
       expect(cell?.inScopeAtomIds.length).toBe(cell?.atomCount);
@@ -100,7 +103,8 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
 
   it("installs and enrols cleanly into Deutsch 7 Satzstrukturen und Rechtschreibung", async () => {
     const userId = "01K4TESTUSERDEU70000000001";
-    const cellId = "de-by:realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung";
+    const cellId =
+      "de-by:realschule-7-deutsch-satzstrukturen-adverbialsaetze-kommasetzung";
 
     const res = await enrolBundledCell(db, userId, cellId);
     expect(res.success).toBe(true);
@@ -112,7 +116,12 @@ describe("Realschule Bayern 7 Curriculum Cells (Einführungs- und Fundamentstufe
       )
       .all()) as Array<{ id: string; title: string; slug: string }>;
     expect(deuAtoms.length).toBeGreaterThanOrEqual(3);
-    expect(deuAtoms.some((a) => a.slug === "das-dass-schreibung-ersatzprobe-dieses-jenes-welches")).toBe(true);
+    expect(
+      deuAtoms.some(
+        (a) =>
+          a.slug === "das-dass-schreibung-ersatzprobe-dieses-jenes-welches",
+      ),
+    ).toBe(true);
   });
 
   it("installs and enrols cleanly into Französisch 7 IIIa Starter Grammatik", async () => {

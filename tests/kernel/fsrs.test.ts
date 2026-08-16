@@ -24,9 +24,9 @@ function minutesAsDays(minutes: number): number {
 // Official FSRS-6 defaults. Keep these in the tests so an accidental model
 // generation change cannot masquerade as an innocuous parameter update.
 const W = [
-  0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194, 0.001, 1.8722,
-  0.1666, 0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014, 1.8729, 0.5425,
-  0.0912, 0.0658, 0.1542,
+  0.212, 1.2931, 2.3065, 8.2956, 6.4133, 0.8334, 3.0194, 0.001, 1.8722, 0.1666,
+  0.796, 1.4835, 0.0614, 0.2629, 1.6483, 0.6014, 1.8729, 0.5425, 0.0912, 0.0658,
+  0.1542,
 ];
 
 function reviewCard(overrides: Partial<SchedulingCard> = {}): SchedulingCard {
@@ -96,12 +96,12 @@ describe("FSRS-6 scheduler", () => {
     it("rejects invalid FSRS parameters and step sequences", () => {
       expect(() => createFSRS({ w: W.slice(0, 20) })).toThrow(/21/);
       expect(() => createFSRS({ requestRetention: 1 })).toThrow(/retention/i);
-      expect(() =>
-        createFSRS({ learningStepsMinutes: [10, 1] }),
-      ).toThrow(/ascending/i);
-      expect(() =>
-        createFSRS({ relearningStepsMinutes: [0] }),
-      ).toThrow(/positive/i);
+      expect(() => createFSRS({ learningStepsMinutes: [10, 1] })).toThrow(
+        /ascending/i,
+      );
+      expect(() => createFSRS({ relearningStepsMinutes: [0] })).toThrow(
+        /positive/i,
+      );
     });
 
     it("freezes the resolved parameters and their arrays", () => {
@@ -214,9 +214,7 @@ describe("FSRS-6 scheduler", () => {
         1,
         Math.min(
           36_500,
-          Math.round(
-            (W[3] / factor) * (0.9 ** (-1 / decay) - 1),
-          ),
+          Math.round((W[3] / factor) * (0.9 ** (-1 / decay) - 1)),
         ),
       );
 
@@ -241,8 +239,7 @@ describe("FSRS-6 scheduler", () => {
       const reviewTime = addDays(now, 10);
       const decay = W[20];
       const factor = 0.9 ** (-1 / decay) - 1;
-      const retrievability =
-        (1 + (factor * 10) / card.stability) ** -decay;
+      const retrievability = (1 + (factor * 10) / card.stability) ** -decay;
       const expectedStability =
         card.stability *
         (1 +
@@ -279,8 +276,7 @@ describe("FSRS-6 scheduler", () => {
       const reviewTime = addDays(now, 100);
       const decay = W[20];
       const factor = 0.9 ** (-1 / decay) - 1;
-      const retrievability =
-        (1 + (factor * 100) / card.stability) ** -decay;
+      const retrievability = (1 + (factor * 100) / card.stability) ** -decay;
       const longTerm =
         W[11] *
         card.difficulty ** -W[12] *

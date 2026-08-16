@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-9-physik-elektrizitaetslehre-schaltungen-energie-leistung",
+  "version": "2026.08.1",
+  "title": "Physik 9: Elektrizitätslehre – Elektrisches Feld, Stromkreise, Ohmsches Gesetz, Energie und Leistung (Gymnasium 9 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Physik 9: Das elektrische Feld (Feldlinien, Coulomb-Gesetz), Stromstärke (I = Q / t), elektrische Spannung U und Potenzialbegriff, Widerstand (R = U / I, Ohmsches Gesetz, spezifischer Widerstand), Kirchhoffsche Regeln in Reihen- und Parallelschaltungen sowie elektrische Energie (W = U * I * t) und elektrische Leistung (P = U * I).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:15:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/9/physik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Physik 9, Lernbereich Elektrizitätslehre"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8G9C0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8G9C0000000000000000A01",
+      "namespace": "gymnasium-physik-elektrizitaet",
+      "slug": "elektrisches-feld-coulomb-stromstaerke-spannung-ohmsches-gesetz",
+      "title": "Elektrizitätslehre: Elektrisches Feld, Stromstärke I, Spannung U und Ohmsches Gesetz",
+      "domain": "schule/physik/elektrizitaet",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Ohm's law",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Elektrizitätslehre – Feld, Strom und Spannung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9C0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet die fundamentale physikalische Definition des elektrischen Widerstands $R$ nach dem Ohmschen Gesetz?",
+          "concept": "R = U / I (Widerstand = Spannung / Stromstärke, Einheit: 1 Ohm = 1 V / A)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "R = U / I (1 Ohm = 1 V / A)",
+              "R = U * I"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9C0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das elektrische Feld und die Grundgrößen des Stromkreises: 1. **Das elektrische Feld**:   * Zustand des Raumes um elektrische Ladungen; übt Kräfte auf andere Ladungen aus.   * **Feldlinien**: Zeigen die Richtung der Kraft auf eine positive Probeladung (verlaufen von Plus nach Minus, schneiden sich nie).   * **Coulomb-Gesetz**: $F = \\frac{1}{4\\pi \\varepsilon_0} \\cdot \\frac{|q_1 \\cdot q_2|}{r^2}$, 2. **Elektrische Grundgrößen**:   * **Elektrische Stromstärke $I$**: Ladungsmenge pro Zeit: $I = \\frac{Q}{t}$ (Einheit: $1\\,\\text{A} = 1\\,\\frac{\\text{C}}{\\text{s}}$).   * **Elektrische Spannung $U$**: Potenzialdifferenz bzw. Energie pro Ladung: $U = \\frac{W}{Q}$ (Einheit: $1\\,\\text{V} = 1\\,\\frac{\\text{J}}{\\text{C}}$), 3. **Der elektrische Widerstand & Ohmsches Gesetz**:   * $R = \\frac{U}{I}$ ($U \\sim I$ bei konstanter Temperatur; lineare $U$-$I$-Kennlinie).   * **Drahtwiderstand**: $R = \\rho \\cdot \\frac{l}{A}$ (mit spezifischem Widerstand $\\rho$, Länge $l$ und Querschnittsfläche $A$).",
+          "concept": "Elektrizität: E-Feld (Feldlinien von + nach -, Coulomb F ~ q1*q2/r^2); Stromstärke I = Q/t; Spannung U = W/Q; Ohmsches Gesetz R = U/I; Drahtwiderstand R = rho * l / A.",
+          "sample_solution": "1. Das elektrische Feld und das Coulomb-Gesetz: - **Elektrisches Feld**: Der Raum um ruhende oder bewegte elektrische Ladungen ist durch ein Kraftfeld charakterisiert:   * **Feldlinienmodell (Michael Faraday)**: Feldlinien beginnen an positiven Ladungen (Quellen) und enden an negativen Ladungen (Senken). Die Dichte der Feldlinien ist ein Maß für die Feldstärke $\\vec{E}$. - **Das Coulomb-Gesetz**:   * Die elektrostatische Kraft zwischen zwei punktförmigen Ladungen $q_1$ und $q_2$ im Abstand $r$ im Vakuum:     $$\\mathbf{F = \\frac{1}{4\\pi \\varepsilon_0} \\cdot \\frac{|q_1 \\cdot q_2|}{r^2}}$$ 2. Die fundamentalen elektrischen Größen: - **1. Elektrische Stromstärke $I$**:   * Gibt an, wie viel elektrische Ladung $Q$ pro Zeiteinheit $t$ durch den Querschnitt eines Leiters fließt:     $$\\mathbf{I = \\frac{Q}{t}} \\quad (\\text{Einheit: } 1\\text{ Ampere [A]} = 1\\,\\frac{\\text{Coulomb [C]}}{\\text{Sekunde [s]}})$$ - **2. Elektrische Spannung $U$**:   * Gibt an, wie viel Arbeit/Energie $W$ verrichtet wird, um eine Ladung $Q$ zwischen zwei Punkten im Feld zu verschieben (**Potenzialdifferenz**):     $$\\mathbf{U = \\frac{W}{Q}} \\quad (\\text{Einheit: } 1\\text{ Volt [V]} = 1\\,\\frac{\\text{Joule [J]}}{\\text{Coulomb [C]}})$$ 3. Elektrischer Widerstand und Ohmsches Gesetz: - **Ohmsches Gesetz (Georg Simon Ohm)**:   * Bei vielen metallischen Leitern ist die Stromstärke $I$ bei konstanter Temperatur direkt proportional zur anliegenden Spannung $U$ ($U \\sim I$):     $$\\mathbf{R = \\frac{U}{I} = \\text{konstant}} \\quad (\\text{Einheit: } 1\\,\\Omega = 1\\,\\frac{\\text{V}}{\\text{A}})$$ - **Widerstand eines homogenen Leiters (Drahtwiderstand)**:   * Hängt vom Material (**spezifischer Widerstand $\\rho$** in $\\Omega \\cdot \\frac{\\text{mm}^2}{\\text{m}}$), der Länge $l$ und dem Leitungsquerschnitt $A$ ab:     $$\\mathbf{R = \\rho \\cdot \\frac{l}{A}}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8G9C0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8G9C0000000000000000A02",
+      "namespace": "gymnasium-physik-schaltungen",
+      "slug": "schaltungen-kirchhoff-regeln-elektrische-leistung-energie",
+      "title": "Schaltungsanalyse: Reihen- & Parallelschaltung, Kirchhoffsche Regeln, Elektrische Energie und Leistung",
+      "domain": "schule/physik/schaltungen",
+      "reduction": "formal",
+      "typical_age_min": 14.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8G9C0000000000000000A01",
+          "type": "hard",
+          "rationale": "Schaltungsgesetze bauen auf Ohmschem Gesetz und Potenzialbegriff auf."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11406",
+          "target_label": "Kirchhoff's circuit laws",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 9,
+          "subject": "physik",
+          "topic_code": "lb1",
+          "topic_title": "Schaltungen, Energie und Leistung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8G9C0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie verhalten sich die Teilströme $I_1$ und $I_2$ in einer Parallelschaltung zweier Widerstände zum Gesamtstrom $I_{\\text{ges}}$ (1. Kirchhoffsche Knotenregel)?",
+          "concept": "Die Summe der Teilströme ist gleich dem Gesamtstrom: I_ges = I_1 + I_2",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "I_ges = I_1 + I_2 (Knotenregel)",
+              "I_ges = I_1 = I_2"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8G9C0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematisiere Reihen- und Parallelschaltungen sowie elektrische Energie und Leistung: 1. **Reihenschaltung (Serienschaltung)**:   * Stromstärke überall identisch: $I_{\\text{ges}} = I_1 = I_2$.   * Spannung teilt sich auf: $U_{\\text{ges}} = U_1 + U_2$ (2. Kirchhoffsche Maschenregel).   * Gesamtwiderstand: $R_{\\text{ges}} = R_1 + R_2$, 2. **Parallelschaltung**:   * Spannung an allen Zweigen identisch: $U_{\\text{ges}} = U_1 = U_2$.   * Stromstärke teilt sich auf: $I_{\\text{ges}} = I_1 + I_2$ (1. Kirchhoffsche Knotenregel).   * Kehrwertsumme des Gesamtwiderstands: $\\frac{1}{R_{\\text{ges}}} = \\frac{1}{R_1} + \\frac{1}{R_2} \\implies R_{\\text{ges}} = \\frac{R_1 \\cdot R_2}{R_1 + R_2} < \\min(R_1, R_2)$, 3. **Elektrische Leistung & Energie**:   * Leistung: $P = U \\cdot I = I^2 \\cdot R = \\frac{U^2}{R}$ (in Watt [W]).   * Energie / Arbeit: $W = P \\cdot t = U \\cdot I \\cdot t$ (in Joule [J] oder Kilowattstunden [$1\\,\\text{kWh} = 3{,}6\\,\\text{MJ}$]), 4. Ein Föhn ($230\\,\\text{V}$) nimmt eine Leistung von $P = 1840\\,\\text{W}$ auf. Berechne die Stromstärke $I$, den Innenwiderstand $R$ und die verbrauchte elektrische Energie $W$ bei $15$ Minuten Betrieb.",
+          "concept": "Schaltungen: Reihe (I=const, U_ges=U1+U2, R_ges=R1+R2) vs. Parallel (U=const, I_ges=I1+I2, 1/R_ges = 1/R1+1/R2); Leistung P = U*I, Energie W = P*t; Rechnung: I = 1840/230 = 8 A; R = 230/8 = 28,75 Ohm; W = 1,84 kW * 0,25 h = 0,46 kWh = 1,656 MJ.",
+          "sample_solution": "1. Die beiden Grundschaltungen im direkten Vergleich: | Kenngröße | Reihenschaltung (Hintereinanderschaltung) | Parallelschaltung (Nebeneinanderschaltung) | | :--- | :--- | :--- | | **Stromstärke $I$** | $\\mathbf{I_{\\text{ges}} = I_1 = I_2}$ (überall gleich) | $\\mathbf{I_{\\text{ges}} = I_1 + I_2}$ (Knotenregel: Strom teilt sich auf) | | **Spannung $U$** | $\\mathbf{U_{\\text{ges}} = U_1 + U_2}$ (Maschenregel: Teilspannungen addieren sich) | $\\mathbf{U_{\\text{ges}} = U_1 = U_2}$ (an allen Zweigen identisch) | | **Gesamtwiderstand $R_{\\text{ges}}$** | $\\mathbf{R_{\\text{ges}} = R_1 + R_2}$ (größer als jeder Einzelwiderstand) | $\\mathbf{\\frac{1}{R_{\\text{ges}}} = \\frac{1}{R_1} + \\frac{1}{R_2} \\implies R_{\\text{ges}} = \\frac{R_1 R_2}{R_1 + R_2}}$ (kleiner als der kleinste Einzelwiderstand) | 2. Kirchhoffsche Gesetze (Gustav Kirchhoff): - **1. Knotenpunktregel**: Die Summe aller zufließenden Ströme ist gleich der Summe aller abfließenden Ströme (Ladungserhaltung): $\\sum I = 0$. - **2. Maschenregel**: In jedem geschlossenen Stromkreis (Masche) ist die Summe aller Quellenspannungen gleich der Summe aller Spannungsabfälle: $\\sum U = 0$. 3. Elektrische Leistung und elektrische Energie: - **Elektrische Leistung $P$**:   $$\\mathbf{P = U \\cdot I} = I^2 \\cdot R = \\frac{U^2}{R} \\quad (\\text{in Watt [W]})$$ - **Elektrische Energie (Arbeit) $W$**:   $$\\mathbf{W = P \\cdot t = U \\cdot I \\cdot t} \\quad (\\text{Einheit: } 1\\text{ J} = 1\\text{ Ws}; \\quad 1\\text{ kWh} = 1000\\text{ W} \\cdot 3600\\text{ s} = \\mathbf{3{,}6\\,\\text{MJ}})$$ 4. Berechnung der Beispielfrage ($U = 230\\,\\text{V}, P = 1840\\,\\text{W}, t = 15\\,\\text{min} = 0{,}25\\,\\text{h} = 900\\,\\text{s}$): - **1. Stromstärke $I$**:   $$I = \\frac{P}{U} = \\frac{1840\\,\\text{W}}{230\\,\\text{V}} = \\mathbf{8\\,\\text{A}}$$ - **2. Elektrischer Widerstand $R$**:   $$R = \\frac{U}{I} = \\frac{230\\,\\text{V}}{8\\,\\text{A}} = \\mathbf{28{,}75\\,\\Omega}$$ - **3. Umgesetzte Energie $W$**:   $$W = P \\cdot t = 1{,}84\\,\\text{kW} \\cdot 0{,}25\\,\\text{h} = \\mathbf{0{,}46\\,\\text{kWh}} = 1840\\,\\text{W} \\cdot 900\\,\\text{s} = \\mathbf{1{,}656\\,\\text{MJ}}$$."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-geschichte-nachkriegsdeutschland-kalter-krieg-deutsche-einheit",
+  "version": "2026.08.1",
+  "title": "Geschichte 10: Nachkriegsdeutschland, Kalter Krieg, Ostpolitik und Friedliche Revolution / Deutsche Einheit (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Geschichte 10: Die Nachkriegsordnung (Potsdamer Konferenz 1945: die 4 Ds, Besatzungszonen, Entnazifizierung, Nürnberger Prozesse, Vertreibung), Die Entstehung des Kalten Krieges (Bipolarität USA vs. UdSSR, Truman-Doktrin, Marshallplan, Währungsreform 1948, Berliner Luftbrücke), Die doppelte Staatsgründung 1949 (BRD: Parlamentarischer Rat, Grundgesetz, Konrad Adenauer, Westintegration und Soziale Marktwirtschaft vs. DDR: SED-Diktatur, Planwirtschaft, Volksaufstand 17. Juni 1953, Mauerbau 13. August 1961), Die Neue Ostpolitik unter Willy Brandt ('Wandel durch Annäherung', Moskauer und Warschauer Vertrag, Kniefall, Grundlagenvertrag 1972, KSZE Helsinki 1975) sowie Das Ende des Ost-West-Konflikts (Michail Gorbatschow: Glasnost und Perestroika, Friedliche Revolution in der DDR, Mauerfall 9. November 1989, Zwei-plus-Vier-Vertrag und Deutsche Wiedervereinigung am 3. Oktober 1990).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/geschichte",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Geschichte 10, Lernbereiche Deutschland nach 1945, Kalter Krieg und Deutsche Einheit"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAG0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAG0000000000000000A01",
+      "namespace": "gymnasium-geschichte-kalter-krieg",
+      "slug": "nachkriegsordnung-kalter-krieg-doppelte-staatsgruendung-mauerbau",
+      "title": "Nachkriegszeit & Teilung: Potsdamer Konferenz, Kalter Krieg, BRD/DDR-Gründung 1949 und Mauerbau 1961",
+      "domain": "schule/geschichte/nachkriegszeit",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8683",
+          "target_label": "Cold War",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "geschichte",
+          "topic_code": "lb1",
+          "topic_title": "Deutschland nach 1945 und der Kalte Krieg",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAG0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "An welchem historischen Datum begann das SED-Regime der DDR unter Walter Ulbricht mit der Errichtung der Berliner Mauer zur Abriegelung der Sektorengrenze nach West-Berlin?",
+          "concept": "13. August 1961 (Bau der Berliner Mauer)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "13. August 1961 (Mauerbau)",
+              "17. Juni 1953"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAG0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Nachkriegsordnung, den Kalten Krieg und die deutsche Teilung bis 1961: 1. **Die Nachkriegsordnung (Potsdamer Abkommen, August 1945)**:   * Vier Mächte (USA, UdSSR, Großbritannien, Frankreich) teilen Deutschland und Berlin in vier Besatzungszonen.   * **Die vier Ds**: *Denazifizierung* (Nürnberger Prozesse gegen Hauptkriegsverbrecher), *Demilitarisierung*, *Dezentralisierung* und *Demokratisierung*.   * Westverschiebung Polens (Oder-Neiße-Linie) $\\implies$ Flucht und Vertreibung von über 12 Millionen Deutschen aus den Ostgebieten, 2. **Der Beginn des Kalten Krieges (Bipolarität)**:   * **Truman-Doktrin (1947)**: Containment-Politik (Eindämmung des sowjetischen Kommunismus).   * **Marshallplan (ERP)**: Wirtschaftshilfe zum Wiederaufbau Westeuropas.   * **Währungsreform (Juni 1948)**: Einführung der D-Mark in den Westzonen $\\rightarrow$ Sowjetische **Berlin-Blockade** (Juni 1948 – Mai 1949) $\\rightarrow$ Westalliierte **Luftbrücke ('Rosinenbomber')**, 3. **Die doppelte Staatsgründung (1949)**:   * **Bundesrepublik Deutschland (BRD, 23. Mai 1949)**: Verkündung des Grundgesetzes durch den Parlamentarischen Rat (Konrad Adenauer als 1. Bundeskanzler). Westintegration (Montanunion, NATO-Beitritt 1955), Soziale Marktwirtschaft (Wirtschaftswunder).   * **Deutsche Demokratische Republik (DDR, 7. Oktober 1949)**: Scheinparlamentarische SED-Diktatur unter sowjetischer Kontrolle, Ministerium für Staatssicherheit (Stasi), Kollektivierung der Landwirtschaft (LPG) und Verstaatlichung der Industrie.   * **Volksaufstand am 17. Juni 1953**: Arbeiterproteste gegen Normerhöhungen werden durch sowjetische Panzer blutig niedergeschlagen, 4. **Der Mauerbau am 13. August 1961**:   * Massenflucht von über 2,5 Millionen Menschen (vor allem junge, qualifizierte Fachkräfte) über das offene Berlin drohte die DDR wirtschaftlich kollabieren zu lassen $\\implies$ Vollständige Abriegelung durch die Berliner Mauer ('Antifaschistischer Schutzwall' der SED-Propaganda).",
+          "concept": "Deutsche Teilung: Potsdamer Konferenz 1945 (4 Ds); Kalter Krieg (Truman-Doktrin, Marshallplan, Berlin-Blockade & Luftbrücke 1948/49); Doppelte Staatsgründung 1949 (BRD: Grundgesetz, Adenauer, Westintegration vs. DDR: SED-Herrschaft); 17. Juni 1953; Mauerbau 13. August 1961.",
+          "sample_solution": "1. Die Nachkriegsordnung und die Potsdamer Beschlüsse (1945): - **Besatzungsregime**: Nach der bedingungslosen Kapitulation der Wehrmacht (8. Mai 1945) übernahmen die vier Hauptsiegermächte (USA, UdSSR, Großbritannien, Frankreich) die oberste Regierungsgewalt über das in vier Besatzungszonen und vier Berliner Sektoren geteilte Deutschland (*Alliierter Kontrollrat*). - **Die Prinzipien von Potsdam (Die '4 Ds')**:   1. **Denazifizierung**: Verbot der NSDAP, Säuberung von Ämtern, Durchführung der **Nürnberger Prozesse (1945/46)** gegen führende NS-Hauptkriegsverbrecher wegen Verbrechen gegen den Frieden und die Menschlichkeit.   2. **Demilitarisierung**: Vollständige Entwaffnung und Zerschlagung der deutschen Rüstungsindustrie.   3. **Dezentralisierung**: Auflösung des preußischen Zentralstaates und Stärkung föderaler Strukturen.   4. **Demokratisierung**: Wiederzulassung demokratischer Parteien und freier Gewerkschaften (wurde in den Westzonen pluralistisch, in der Ostzone als Einheitsherrschaft der KPD/SED umgesetzt). - **Grenzverschiebungen**: Zuweisung der deutschen Ostgebiete (Schlesien, Pommern, Ostpreußen) unter polnische bzw. sowjetische Verwaltung $\\implies$ Flucht und Zwangsumsiedlung von über 12 Millionen Menschen. 2. Die Entstehung des Kalten Krieges und die Berlin-Blockade: - **Bipolarität und Blockbildung**: Ideologischer, militärischer und wirtschaftlicher Systemgegensatz zwischen dem westlichen Lager (Demokratie, Kapitalismus, Führungsmacht USA) und dem Ostblock (kommunistische Einparteiendiktatur, Planwirtschaft, Führungsmacht UdSSR). - **Eskalationsschritte 1947–1949**:   * **1947**: **Truman-Doktrin** (US-Beistandsversprechen an alle freien Völker gegen kommunistische Unterwanderung) und **Marshallplan** (European Recovery Program).   * **Juni 1948**: Einführung der **Deutschen Mark (D-Mark)** in den drei Westzonen.   * **Berlin-Blockade (24. Juni 1948 – 12. Mai 1949)**: Stalin sperrte alle Land- und Wasserwege nach West-Berlin ab, um die Westmächte zum Rückzug zu zwingen.   * **Die Berliner Luftbrücke**: US-Militärgouverneur Lucius D. Clay organisierte eine beispiellose Versorgungsflotte (*« Rosinenbomber »*), die West-Berlin fast ein Jahr lang aus der Luft mit Lebensmitteln und Kohle versorgte $\\implies$ Wandel der Westalliierten von Besatzern zu Schutzmächten. 3. Die doppelte Staatsgründung im Jahr 1949: - **Bundesrepublik Deutschland (BRD, Gründung am 23. Mai 1949)**:   * Der **Parlamentarische Rat** unter Vorsitz von **Konrad Adenauer** erarbeitete das **Grundgesetz (GG)** als bewusst provisorische, wehrhafte Verfassung mit unantastbarem Menschenwürde-Artikel (Art. 1 GG) und 5%-Hürde.   * **Außenpolitik Adenauers**: Konsequente **Westintegration** (Montanunion 1951, Pariser Verträge / NATO-Beitritt 1955, Römische Verträge / EWG 1957) bei gleichzeitiger Ablehnung der sowjetischen Stalin-Noten (1952). - **Deutsche Demokratische Republik (DDR, Gründung am 7. Oktober 1949)**:   * Entstand aus der Sowjetischen Besatzungszone (SBZ) durch die Zwangsvereinigung von SPD und KPD zur **SED (Sozialistische Einheitspartei Deutschlands)**.   * Formal existierten Blockparteien, real regierte das SED-Politbüro diktatorisch nach dem Prinzip des 'Demokratischen Zentralismus'.   * **Volksaufstand am 17. Juni 1953**: Aus Protest gegen die Erhöhung der Arbeitsnormen streikten hunderttausende DDR-Bürger und forderten freie Wahlen und den Rücktritt der Regierung. Der Aufstand wurde von sowjetischen Panzern blutig niedergeschlagen (über 50 Todesopfer). 4. Der Bau der Berliner Mauer (13. August 1961): - **Ursache**: Durch die zunehmende Repression und Mangelwirtschaft flohen zwischen 1949 und 1961 über **2,7 Millionen Menschen** aus der DDR in den Westen – vor allem über das offene Schlupfloch Berlin. - **Durchführung**: Entgegen Walter Ulbrichts berühmter Lüge vom 15. Juni 1961 (*« Niemand hat die Absicht, eine Mauer zu errichten! »*) riegelten DDR-Volkspolizei und Nationale Volksarmee in der Nacht zum 13. August 1961 die Sektorengrenze mit Stacheldraht und Betonblöcken ab. - **Folge**: Endgültige Zementierung der deutschen und europäischen Teilung; Entstehung eines mörderischen Grenzregimes mit Schießbefehl, Minenfeldern und Selbstschussanlagen."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAG0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAG0000000000000000A02",
+      "namespace": "gymnasium-geschichte-deutsche-einheit",
+      "slug": "ostpolitik-friedliche-revolution-mauerfall-deutsche-einheit",
+      "title": "Entspannung & Wiedervereinigung: Neue Ostpolitik (Brandt), Friedliche Revolution 1989 und Deutsche Einheit 1990",
+      "domain": "schule/geschichte/wiedervereinigung",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAG0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Wiedervereinigung überwand die Teilung von 1949/1961."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q56039",
+          "target_label": "German reunification",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "geschichte",
+          "topic_code": "lb2",
+          "topic_title": "Ostpolitik, Friedliche Revolution und Deutsche Einheit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAG0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher völkerrechtliche Staatsvertrag zwischen den beiden deutschen Staaten und den vier Siegermächten des Zweiten Weltkriegs (USA, UdSSR, GB, Frankreich) stellte 1990 die volle Souveränität des vereinten Deutschlands wieder her?",
+          "concept": "Der Zwei-plus-Vier-Vertrag (unterzeichnet am 12. September 1990 in Moskau)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Der Zwei-plus-Vier-Vertrag (12. September 1990)",
+              "Der Grundlagenvertrag"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAG0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Weg von der Neuen Ostpolitik über die Friedliche Revolution zur Deutschen Wiedervereinigung: 1. **Die Neue Ostpolitik der sozial-liberalen Koalition (Willy Brandt / Egon Bahr)**:   * Leitformel: *'Wandel durch Annäherung'* (Abkehr von der starren Hallstein-Doktrin).   * **Vertragswerk (1970–1972)**:     - *Moskauer Vertrag* und *Warschauer Vertrag (1970)*: Gewaltverzicht und Anerkennung der bestehenden europäischen Grenzen (Oder-Neiße-Grenze); historischer **Kniefall von Warschau** durch Willy Brandt am Denkmal der Ghetto-Helden als Bitte um Vergebung für die NS-Verbrechen.     - *Grundlagenvertrag (1972)*: Normalisierung der gutnachbarlichen Beziehungen zwischen BRD und DDR (*'Zwei Staaten in Deutschland, die einander nicht Ausland sein können'*); Erleichterungen im Reise- und Postverkehr.   * **KSZE-Schlussakte von Helsinki (1975)**: Verknüpfung von Unverletzlichkeit der Grenzen mit der weltweiten Garantie der **Menschenrechte**, 2. **Der Zusammenbruch des Ostblocks**:   * **Michail Gorbatschow (ab 1985)**: Reformkurs mit **Glasnost** (Offenheit/Transparenz) und **Perestroika** (Umgestaltung); Abkehr von der Breschnew-Doktrin (Recht auf Selbstbestimmung der Ostblockstaaten).   * Öffnung des Eisernen Vorhangs durch Ungarn (Mai/August 1989), Massenfluchten über bundesdeutsche Botschaften in Prag und Warschau, 3. **Die Friedliche Revolution in der DDR (1989)**:   * Montagsdemonstrationen in Leipzig (*'Wir sind das Volk!'*); Entmachtung Erich Honeckers (Oktober 1989).   * **Fall der Berliner Mauer (9. November 1989)**: Nach der legendären Pressekonferenz von Günter Schabowski stürmten Bürger die Grenzübergänge, 4. **Der Weg zur Wiedervereinigung (1990)**:   * Erste freie Volkskammerwahl (März 1990); Währungs-, Wirtschafts- und Sozialunion (1. Juli 1990: Einführung der D-Mark in der DDR).   * **Zwei-plus-Vier-Vertrag (12. September 1990)**: Regelung der äußeren Aspekte; Verzicht auf ABC-Waffen, Anerkennung der polnischen Grenze, Abzug der sowjetischen Truppen, uneingeschränkte Souveränität Deutschlands.   * **3. Oktober 1990**: Beitritt der 5 neuen Bundesländer zum Geltungsbereich des Grundgesetzes nach Art. 23 GG $\\implies$ **Tag der Deutschen Einheit**.",
+          "concept": "Wiedervereinigung: Neue Ostpolitik Brandt/Bahr (Wandel durch Annäherung, Warschau-Kniefall, Grundlagenvertrag 1972); KSZE Helsinki 1975; Gorbatschow (Glasnost & Perestroika); Friedliche Revolution 1989 (Leipzig, Mauerfall 9. Nov.); 2+4-Vertrag & Beitritt am 3. Oktober 1990.",
+          "sample_solution": "1. Die Neue Ostpolitik der Ära Brandt/Scheel (ab 1969): - **Paradigmenwechsel (*« Wandel durch Annäherung »* – Egon Bahr)**:   * Abkehr von der bisherigen Politik der Nicht-Anerkennung (*Hallstein-Doktrin*). Ziel war es, durch Verhandlungen die menschlichen Härten der Teilung für die Bürger abzumildern. - **Die Ostverträge**:   * **Moskauer Vertrag (August 1970)**: Gewaltverzichtserklärung und De-facto-Anerkennung der Nachkriegsgrenzen zwischen der BRD und der UdSSR.   * **Warschauer Vertrag (Dezember 1970)**: Bestätigung der Unverletzlichkeit der Oder-Neiße-Linie.     * *Historischer Höhepunkt*: Der **Kniefall Willy Brandts am 7. Dezember 1970** vor dem Denkmal der Helden des Warschauer Ghettoaufstandes – eine weltberühmte stumme Geste der Demut und Bitte um Vergebung für die deutschen Gräueltaten des Zweiten Weltkriegs (Friedensnobelpreis 1971).   * **Grundlagenvertrag (1972)**: Offizielle Aufnahme diplomatischer Beziehungen zwischen BRD und DDR durch Ständige Vertretungen; ermöglichte den Beitritt beider Staaten zu den Vereinten Nationen (UNO) 1973. - **Die KSZE-Schlussakte von Helsinki (1975)**:   * 35 Staaten garantierten die Unverletzlichkeit der Grenzen im Gegenzug für die Verpflichtung zur Einhaltung elementarer **Bürger- und Menschenrechte** (Korb 3) – dies wurde zum juristischen Hebel für Bürgerrechtsgruppen im gesamten Ostblock. 2. Die Krise des Ostblocks und die Friedliche Revolution: - **Die Reformpolitik Michail Gorbatschows (Generalsekretär ab 1985)**:   * **Glasnost (Offenheit)**: Meinungsfreiheit und öffentliche Kritik.   * **Perestroika (Umgestaltung)**: Modernisierung der maroden sowjetischen Planwirtschaft.   * **Aufgabe der Breschnew-Doktrin**: Die UdSSR verzichtete auf militärische Interventionen in den Bruderstaaten $\\implies$ Ermutigung der Reformkräfte in Polen (Solidarność) und Ungarn. - **Die Dynamik im Herbst 1989 in der DDR**:   * **Massenflucht**: Ungarn baute ab Mai 1989 Grenzzäune zu Österreich ab; Zehntausende DDR-Bürger besetzten bundesdeutsche Botschaften in Prag und Budapest.   * **Die Friedliche Revolution**: Ausgehend von Friedensgebeten in der Leipziger Nikolaikirche wuchsen die **Montagsdemonstrationen** auf hunderte Tausende an (*« Wir sind das Volk! »*). Trotz massiver Polizeipräsenz blieb die Revolution gewaltfrei.   * **9. November 1989 (Mauerfall)**: Nach einer unpräzisen Ankündigung neuer Reiseregelungen durch ZK-Mitglied Günter Schabowski (*« Das tritt nach meiner Kenntnis... ist das sofort, unverzüglich »*) öffneten überforderte Grenzsoldaten an der Bornholmer Straße die Schlagbäume. 3. Die Wiederherstellung der deutschen Einheit (1990): - **1. Innere Vereinigung**:   * Erste und letzte freie Wahl zur DDR-Volkskammer am 18. März 1990 brachte eine überwältigende Mehrheit für eine rasche Wiedervereinigung.   * **1. Juli 1990**: Inkrafttreten der Wirtschafts-, Währungs- und Sozialunion (Einführung der D-Mark in der DDR). - **2. Äußere Aspekte (Zwei-plus-Vier-Vertrag)**:   * Historische Verhandlungen der Außenminister beider deutscher Staaten mit den vier Siegermächten (USA, UdSSR, GB, Frankreich).   * *Kernelemente*:     - Endgültige völkerrechtliche Anerkennung der polnischen Westgrenze an Oder und Neiße.     - Verzicht des vereinten Deutschlands auf atomare, biologische und chemische Waffen.     - Abzug der sowjetischen Westgruppe der Truppen bis 1994.     - Verleihung der **vollen inneren und äußeren Souveränität** an Deutschland. - **3. Staatsakt am 3. Oktober 1990**:   * Die fünf wiederbegründeten Länder Brandenburg, Mecklenburg-Vorpommern, Sachsen, Sachsen-Anhalt und Thüringen sowie das vereinte Berlin traten gemäß **Artikel 23 des Grundgesetzes** der Bundesrepublik Deutschland bei $\\implies$ **Tag der Deutschen Einheit**."
+        }
+      ]
+    }
+  ]
+}

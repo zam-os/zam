@@ -154,27 +154,32 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
         .run(ALICE);
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(1);
-      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(1);
+      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
+        1,
+      );
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
       await asRole(tx, "bob_role");
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
-      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(0);
+      expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
+        0,
+      );
       expect(
         await tx.prepare("SELECT * FROM cards WHERE id = 'card_alice'").get(),
       ).toBeUndefined();
 
       expect(
-        (await tx
-          .prepare("UPDATE cards SET blocked = 1 WHERE id = 'card_alice'")
-          .run()).changes,
+        (
+          await tx
+            .prepare("UPDATE cards SET blocked = 1 WHERE id = 'card_alice'")
+            .run()
+        ).changes,
       ).toBe(0);
       expect(
-        (await tx
-          .prepare("DELETE FROM cards WHERE id = 'card_alice'")
-          .run()).changes,
+        (await tx.prepare("DELETE FROM cards WHERE id = 'card_alice'").run())
+          .changes,
       ).toBe(0);
 
       // Forging a row in Alice's name is the WITH CHECK half, which a

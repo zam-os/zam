@@ -76,7 +76,8 @@ describe("Gymnasium Bayern 7 Curriculum Cells (G9 LehrplanPLUS)", () => {
 
   it("installs and enrols cleanly into Mathematik 7 Symmetrie und Kongruenz", async () => {
     const user = "learner-gym7-mathe";
-    const cellId = "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz";
+    const cellId =
+      "de-by:gymnasium-7-mathematik-symmetrie-winkel-dreiecke-kongruenz";
 
     const res = await enrolBundledCell(db, user, cellId);
     expect(res.success).toBe(true);
@@ -89,7 +90,8 @@ describe("Gymnasium Bayern 7 Curriculum Cells (G9 LehrplanPLUS)", () => {
 
   it("installs and enrols cleanly into Latein 7 AcI und PC", async () => {
     const user = "learner-gym7-latein";
-    const cellId = "de-by:gymnasium-7-latein-aci-partizipialkonstruktionen-deklinationen";
+    const cellId =
+      "de-by:gymnasium-7-latein-aci-partizipialkonstruktionen-deklinationen";
 
     const res = await enrolBundledCell(db, user, cellId);
     expect(res.success).toBe(true);
@@ -102,7 +104,8 @@ describe("Gymnasium Bayern 7 Curriculum Cells (G9 LehrplanPLUS)", () => {
 
   it("installs and enrols cleanly into Physik 7 Optik und Brechung", async () => {
     const user = "learner-gym7-physik";
-    const cellId = "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen";
+    const cellId =
+      "de-by:gymnasium-7-physik-optik-lichtbrechung-totalreflexion-linsen";
 
     const res = await enrolBundledCell(db, user, cellId);
     expect(res.success).toBe(true);

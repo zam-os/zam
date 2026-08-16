@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-wirtschaft-recht-mikrooekonomie-marktformen-monopol-marktversagen",
+  "version": "2026.08.1",
+  "title": "Wirtschaft und Recht 12: Mikroökonomie – Marktformen, Preisbildung (Polypol/Monopol) und Marktversagen (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Wirtschaft und Recht 12 (Oberstufe WSG/NTG Q12): Mikroökonomische Preisbildung im vollkommenen Markt (Prämissen des vollkommenen Marktes: Homogenität der Güter, vollständige Markttransparenz, keine Präferenzen [räumlich, zeitlich, persönlich], unendliche Reaktionsgeschwindigkeit; Angebots- und Nachfragefunktion, Marktgleichgewicht P* und Q*, Konsumentenrente, Produzentenrente und Wohlfahrtsmaximum), Preisbildung bei unvollkommenen Marktformen (Das Angebotsmonopol: Erlösfunktion E(x) = p(x) * x, Grenzerlös E'(x) = Grenzkosten K'(x), Cournotscher Punkt [Menge x_C, Monopolpreis p_C] und Wohlfahrtsverlust / Deadweight Loss; Oligopol: Reaktionsverbundenheit, Preiskriege vs. Kartellabsprachen) sowie Marktversagen und staatliche Ordnungspolitik (Externe Effekte / Umweltverschmutzung: Internalisierung über Pigou-Steuer und Coase-Theorem; Öffentliche Güter: Nicht-Rivalität und Nicht-Ausschließbarkeit mit Trittbrettfahrerproblem / Free-Rider; Asymmetrische Information: Adverse Selektion nach Akerlof / 'Market for Lemons', Moral Hazard; Wettbewerbspolitik des Bundeskartellamts nach dem GWB).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/wirtschaft-und-recht",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Wirtschaft und Recht 12, Lernbereich Mikroökonomie – Markt und Wettbewerb"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GCJ0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GCJ0000000000000000A01",
+      "namespace": "gymnasium-wirtschaft-recht-preisbildung",
+      "slug": "marktformen-vollkommener-markt-monopol-cournotscher-punkt",
+      "title": "Markt & Preisbildung: Vollkommener Markt (Polypol) vs. Monopolpreisbildung (Cournot-Punkt)",
+      "domain": "schule/wirtschaft-recht/mikrooekonomie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Microeconomics",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb1",
+          "topic_title": "Mikroökonomie – Marktformen und Preisbildung",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCJ0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche mathematische Gewinnmaximum-Bedingung bestimmt die gewinnoptimale Produktionsmenge eines Monopolisten ($E'(x) = K'(x)$)?",
+          "concept": "Grenzerlös = Grenzkosten (Marginal Revenue = Marginal Cost)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Grenzerlös = Grenzkosten (E'(x) = K'(x))",
+              "Preis = Gesamtkosten"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCJ0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Preisbildung im vollkommenen Markt vs. im Monopol und berechne den Cournotschen Punkt: 1. **Der vollkommene Markt (Polypol)**:   * **Prämissen**: Vollkommene Homogenität der Güter, vollständige Information/Markttransparenz, keine räumlichen, zeitlichen oder persönlichen Präferenzen, freier Markteintritt.   * Preis $p$ ist für den Einzelanbieter ein gegebener Datumsparameter (**Mengenanpasser / Preisnehmer**).   * Gleichgewichtspreisbildung $S(p) = D(p) \\implies$ **Maximierung der Gesamtwohlfahrt** (Konsumentenrente $+$ Produzentenrente), 2. **Das Monopol & Der Cournotsche Punkt (Antoine-Augustin Cournot)**:   * Der Monopolist setzt Menge und Preis selbst fest (**Preisfixierer**).   * **Preis-Absatz-Funktion**: $p(x) = a - b \\cdot x$.   * **Erlösfunktion**: $E(x) = p(x) \\cdot x = a \\cdot x - b \\cdot x^2 \\implies$ **Grenzerlös**: $E'(x) = a - 2b \\cdot x$ (doppelt so steil wie die PAF!).   * **Gewinnmaximum**: $\\mathbf{E'(x_C) = K'(x_C)}$. Einsetzen von $x_C$ in die PAF liefert den Monopolpreis $p_C \\implies$ **Cournotscher Punkt $C(x_C \\mid p_C)$**, 3. **Konkrete Berechnung**:   * Gegeben: Preis-Absatz-Funktion $p(x) = 100 - 2x$ und Kostenfunktion $K(x) = 20x + 300$.   * a) Bestimme die gewinnmaximale Ausbringungsmenge $x_C$ und den Monopolpreis $p_C$.   * b) Berechne den maximalen Monopolgewinn $G(x_C)$.",
+          "concept": "Mikroökonomie 12: Vollkommener Markt (Polypol, Wohlfahrtsoptimum); Monopol: E(x) = p(x)*x, E'(x) = K'(x) -> Cournotscher Punkt C(x_C | p_C); Rechnung: E(x) = 100x - 2x^2 -> E'(x) = 100 - 4x; K'(x) = 20 -> 100 - 4x = 20 -> x_C = 20 ME; p_C = 100 - 2(20) = 60 GE; G(20) = E(20) - K(20) = 1200 - 700 = 500 GE.",
+          "sample_solution": "1. Vollkommener Markt (Polypol) vs. Monopol: - **Im vollkommenen Markt (Vollständige Konkurrenz)**:   * Unzählige kleine Anbieter und Nachfrager. Der Preis bildet sich im Schnittpunkt von Angebots- und Nachfragekurve ($p^* = K'(x)$).   * Die Gesamtwohlfahrt (Summe aus Konsumentenrente und Produzentenrente) ist maximal. Es gibt keine Übergewinne. - **Im Angebotsmonopol**:   * Ein einzelner Anbieter bedient die gesamte Marktnachfrage. Er kann den Preis über den Grenzkosten ansetzen $\\implies$ Höherer Preis bei künstlich verknappter Menge $\\implies$ **Wohlfahrtsverlust für die Gesellschaft (Deadweight Loss)**. 2. Berechnung des Cournotschen Punktes: - **Gegebene Funktionen**:   * Preis-Absatz-Funktion: $p(x) = 100 - 2x$.   * Kostenfunktion: $K(x) = 20x + 300 \\implies$ **Grenzkosten**: $\\mathbf{K'(x) = 20}$. - **Schritt 1: Erlös- und Grenzerlösfunktion**:   * $$E(x) = p(x) \\cdot x = (100 - 2x) \\cdot x = 100x - 2x^2$$   * **Grenzerlös**: $\\mathbf{E'(x) = 100 - 4x}$. - **Schritt 2: Gewinnmaximum $E'(x) = K'(x)$**:   $$100 - 4x = 20 \\implies 4x = 80 \\implies \\mathbf{x_C = 20\\,\\text{Mengeneinheiten (ME)}}$$ - **Schritt 3: Monopolpreis $p_C$ über die Preis-Absatz-Funktion**:   $$p_C = p(20) = 100 - 2(20) = 100 - 40 = \\mathbf{60\\,\\text{Geldeinheiten (GE)}}$$   $$\\implies \\mathbf{\\text{Cournotscher Punkt: } C(20 \\mid 60)}$$ - **Schritt 4: Maximaler Monopolgewinn**:   * $E(20) = 20 \\cdot 60 = 1200\\,\\text{GE}$.   * $K(20) = 20(20) + 300 = 400 + 300 = 700\\,\\text{GE}$.   * $$\\mathbf{G_{\\text{max}} = E(20) - K(20) = 1200 - 700 = \\mathbf{500\\,\\text{GE}}}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GCJ0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GCJ0000000000000000A02",
+      "namespace": "gymnasium-wirtschaft-recht-marktversagen",
+      "slug": "marktversagen-externe-effekte-oeffentliche-gueter-asymmetrische-information",
+      "title": "Marktversagen & Ordnungspolitik: Externe Effekte, Öffentliche Güter und Asymmetrische Information",
+      "domain": "schule/wirtschaft-recht/ordnungspolitik",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GCJ0000000000000000A01",
+          "type": "hard",
+          "rationale": "Marktversagen begründet staatliche Eingriffe in das Marktgeschehen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q8134",
+          "target_label": "Market failure",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "wirtschaft-und-recht",
+          "topic_code": "lb1",
+          "topic_title": "Marktversagen und staatliche Ordnungspolitik",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GCJ0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche beiden ökonomischen Eigenschaften kennzeichnen ein 'Reines Öffentliches Gut' (z. B. Deichbau, Landesverteidigung, Straßenbeleuchtung)?",
+          "concept": "Nicht-Rivalität im Konsum (der Konsum eines Nutzers schmälert nicht den Nutzen anderer) und Nicht-Ausschließbarkeit (niemand kann vom Konsum ausgeschlossen werden)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nicht-Rivalität im Konsum und Nicht-Ausschließbarkeit",
+              "Hohe Produktionskosten und Patentschutz"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GCJ0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die drei fundamentalen Ursachen von Marktversagen und staatliche Lösungsinstrumente: 1. **Externe Effekte (Externalitäten)**:   * Unkompensierte Auswirkungen wirtschaftlicher Entscheidungen auf unbeteiligte Dritte.   * **Negative externe Effekte (z. B. Umweltverschmutzung / CO2-Emissionen)**: Private Kosten < Soziale Kosten $\\implies$ Markt produziert zu viel zu billig.   * **Lösungsansätze**:     - **Pigou-Steuer**: Staat erhebt Steuer in Höhe des Grenzschadens $\\implies$ **Internalisierung externer Effekte**.     - **Zertifikatehandel (Coase-Theorem)**: Vergabe handelbarer Verschmutzungsrechte (Cap and Trade / EU-ETS), 2. **Öffentliche Güter & Trittbrettfahrerproblem (*Free-Rider*)**:   * Güter mit Nicht-Rivalität und Nicht-Ausschließbarkeit (z. B. Leuchtturm, Grundlagenforschung).   * Private Märkte scheitern, da niemand freiwillig zahlt $\\implies$ Bereitstellung und Finanzierung durch den **Staat über Steuern**, 3. **Asymmetrische Information**:   * Eine Marktseite besitzt Informationsvorsprung.   * **Adverse Selektion (George Akerlof, *The Market for Lemons*)**: Schlechte Qualität verdrängt gute Qualität vom Markt (Gebrauchtwagenmarkt, private Krankenversicherung).   * **Moral Hazard (Moralisches Wagnis)**: Nachlässiges Verhalten nach Vertragsabschluss (z. B. Vollkaskoversicherung).   * **Lösungen**: Garantien, Zertifizierungen, Offenlegungspflichten, Selbstbehalte.",
+          "concept": "Marktversagen 12: Negative externe Effekte (Internalisierung, Pigou-Steuer, Emissionshandel); Öffentliche Güter (Nicht-Rivalität, Nicht-Ausschließbarkeit, Trittbrettfahrer); Asymmetrische Information (Akerlof Lemons, Adverse Selektion, Moral Hazard).",
+          "sample_solution": "1. Was bedeutet 'Marktversagen'? - Marktversagen liegt vor, wenn der freie Preismechanismus über Angebot und Nachfrage nicht zu einer volkswirtschaftlich optimalen (pareto-effizienten) Allokation der knappen Ressourcen führt. 2. Die drei Hauptursachen von Marktversagen: - **1. Externe Effekte (Externalitäten)**:   * **Problem**: Kosten oder Nutzen einer Transaktion fallen bei Dritten an, die nicht am Marktvertrag beteiligt sind.     - *Negativer externer Effekt*: Eine Fabrik emittiert Schadstoffe in Fluss und Luft. Die privaten Grenzkosten ($K_{\\text{priv}}$) liegen unter den tatsächlichen gesellschaftlichen Gesamtkosten ($K_{\\text{soz}} = K_{\\text{priv}} + \\text{Schadenskosten}$). Der Markt produziert **zu viel zu einem zu niedrigen Preis**.   * **Staatliche Internalisierung**:     - **Pigou-Steuer**: Steuerabgabe exakt in Höhe der externen Grenzkosten (z. B. CO2-Steuer / Ökosteuer) $\\implies$ Verursacherprinzip.     - **Emissionsrechtehandel (Cap and Trade)**: Der Staat deckelt die Gesamtemissionsmenge (*Cap*) und verteilt handelbare Zertifikate (*Trade*) $\\implies$ CO2 wird dort eingespart, wo es volkswirtschaftlich am billigsten ist (*Coase-Theorem*). - **2. Öffentliche Güter (Gemeingüter)**:   * **Eigenschaften**: **Nicht-Ausschließbarkeit** (Niemand kann von der Nutzung ausgeschlossen werden) und **Nicht-Rivalität** (Zusätzliche Nutzer verursachen Grenzkosten von $0$).   * **Trittbrettfahrer-Verhalten (*Free-Rider-Problem*)**: Da niemand ausgeschlossen werden kann, hat kein Bürger einen Anreiz, privat dafür zu bezahlen. Ein privater Markt bricht vollständig zusammen $\\implies$ Bereitstellung muss staatlich über Steuergelder organisiert werden (z. B. Landesverteidigung, Katastrophenschutz, Rechtsordnung). - **3. Asymmetrische Information (Informationsasymmetrien)**:   * **Adverse Selektion (Negativauslese / George Akerlof 'The Market for Lemons', 1970)**:     - Ein Gebrauchtwagenkäufer kennt den Zustand des Autos nicht. Da er mit 'Gurken' (*Lemons*) rechnen muss, ist er nur bereit, einen Durchschnittspreis zu zahlen. Zu diesem Preis ziehen Verkäufer hochwertiger Autos ihre Wagen vom Markt zurück $\\implies$ Der Markt kollabiert und übrig bleiben nur noch schlechte Wagen.   * **Moral Hazard (Moralisches Risiko)**:     - Nach Abschluss einer Vollkaskoversicherung fährt der Fahrer riskanter, weil der Schaden von der Versichertengemeinschaft getragen wird.   * **Lösungen**: Staatliche TÜV-Prüfpflichten, gesetzliche Gewährleistung, Offenlegungspflichten bei Finanzprodukten und Selbstbeteiligungen bei Versicherungen."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-mathematik-exponential-logarithmus-wachstum",
+  "version": "2026.08.1",
+  "title": "Mathematik 10: Exponential- und Logarithmusfunktionen, Wachstumsmodelle und Halbwertszeit (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 10: Exponentialfunktionen (f(x) = b * a^x = b * e^(kx), Asymptoten, Monotonie), diskretes und kontinuierliches Wachstum, Verdopplungs- und Halbwertszeit (t_half = ln 2 / k), Logarithmus als Umkehrfunktion (dekadischer Logarithmus lg, natürlicher Logarithmus ln), Logarithmengesetze sowie Lösen von Exponential- und Logarithmusgleichungen.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 10, Lernbereich Exponential- und Logarithmusfunktionen"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA10000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA10000000000000000A01",
+      "namespace": "gymnasium-mathematik-exponential",
+      "slug": "exponentialfunktionen-wachstumsmodelle-verdopplung-halbwertszeit",
+      "title": "Exponentialfunktionen & Wachstumsmodelle: Diskretes/kontinuierliches Wachstum und Halbwertszeit",
+      "domain": "schule/mathematik/funktionen",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Exponential function",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Exponentialfunktionen und Wachstumsmodelle",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA10000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche fundamentale Eigenschaft charakterisiert ein exponentielles Wachstum $B(t) = B_0 \\cdot a^t$ im Vergleich zum linearen Wachstum?",
+          "concept": "Der Bestand vervielfacht sich in gleichen Zeitabschnitten um denselben Faktor a (während lineares Wachstum um dieselbe absolute Differenz wächst)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Vervielfachung um denselben Wachstumsfaktor a in gleichen Zeiten",
+              "Zunahme um denselben festen Summanden d"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA10000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Exponentialfunktionen und Wachstums-/Zerfallsprozesse: 1. **Funktionsgleichung & Graphenverlauf**:   * $f(x) = b \\cdot a^x$ (mit Anfangsbestand $b > 0$ und Basis $a > 0, a \\neq 1$).   * Für $a > 1$: streng monoton wachsend ($x \\rightarrow -\\infty: y \\rightarrow 0$).   * Für $0 < a < 1$: streng monoton fallend ($x \\rightarrow +\\infty: y \\rightarrow 0$).   * Die $x$-Achse ($y = 0$) ist stets waagrechte Asymptote, 2. **Darstellung mit der Eulerschen Zahl $e \\approx 2{,}71828$**:   * $B(t) = B_0 \\cdot e^{k \\cdot t}$ (mit Wachstumskonstante $k = \\ln(a)$), 3. **Verdopplungszeit $T_2$ & Halbwertszeit $T_{1/2}$**:   * Verdopplung ($a > 1$ bzw. $k > 0$): $T_2 = \\frac{\\ln(2)}{k}$.   * Halbwertszeit ($0 < a < 1$ bzw. $k < 0$): $T_{1/2} = \\frac{\\ln(2)}{|k|}$, 4. Eine Bakterienkultur hat zu Beginn $B_0 = 500$ Bakterien und verdoppelt sich alle $3$ Stunden. Bestimme die Funktionsgleichung $B(t)$ und berechne den Bestand nach $9$ Stunden.",
+          "concept": "Exponentialfunktion: f(x) = b * a^x = b * e^(k*t); Asymptote y=0; Verdopplungszeit T_2 = ln(2)/k; Halbwertszeit T_1/2 = ln(2)/|k|; Rechnung: B(t) = 500 * 2^(t/3); nach 9 h: t/3 = 3 Verdopplungen -> B(9) = 500 * 2^3 = 500 * 8 = 4000 Bakterien.",
+          "sample_solution": "1. Mathematische Grundlagen der Exponentialfunktionen: - **Allgemeine Funktionsgleichung**:   $$\\mathbf{f(x) = b \\cdot a^x} \\quad (b > 0, a > 0, a \\neq 1)$$   * $b = f(0)$: **Anfangsbestand** ($y$-Achsenabschnitt $S_y(0 \\mid b)$).   * $a$: **Wachstumsfaktor** pro Zeiteinheit ($a = 1 + p$ bei Zunahme um $p\\%$, $a = 1 - p$ bei Abnahme). - **Verlauf des Graphen**:   * $a > 1$: **Exponentielles Wachstum** (linksgekrümmt, streng monoton steigend, nähert sich für $x \\rightarrow -\\infty$ der Asymptote $y = 0$).   * $0 < a < 1$: **Exponentieller Zerfall** (streng monoton fallend, nähert sich für $x \\rightarrow +\\infty$ der Asymptote $y = 0$). 2. Kontinuierliches Wachstum mit Basis $e$: - Jede Exponentialfunktion lässt sich mit der **Eulerschen Zahl $e \\approx 2{,}71828$** darstellen:   $$\\mathbf{B(t) = B_0 \\cdot e^{k \\cdot t}} \\quad \\text{mit} \\quad \\mathbf{k = \\ln(a)}$$   * $k > 0$: kontinuierliche Wachstumsrate; $k < 0$: kontinuierliche Zerfallsrate. 3. Verdopplungs- und Halbwertszeit: - **Verdopplungszeit $T_2$**:   $$2 B_0 = B_0 \\cdot e^{k \\cdot T_2} \\implies 2 = e^{k \\cdot T_2} \\implies \\mathbf{T_2 = \\frac{\\ln(2)}{k}}$$ - **Halbwertszeit $T_{1/2}$**:   $$\\frac{1}{2} B_0 = B_0 \\cdot e^{k \\cdot T_{1/2}} \\implies \\frac{1}{2} = e^{k \\cdot T_{1/2}} \\implies \\mathbf{T_{1/2} = \\frac{\\ln(2)}{|k|}}$$ 4. Berechnung des Beispiels ($B_0 = 500, T_2 = 3\\,\\text{h}$): - **Schritt 1: Funktionsgleichung**:   $$B(t) = 500 \\cdot 2^{\\frac{t}{3\\,\\text{h}}}$$ - **Schritt 2: Bestand nach $t = 9\\,\\text{h}$**:   $$B(9) = 500 \\cdot 2^{\\frac{9}{3}} = 500 \\cdot 2^3 = 500 \\cdot 8 = \\mathbf{4000\\,\\text{Bakterien}}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8GA10000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA10000000000000000A02",
+      "namespace": "gymnasium-mathematik-logarithmus",
+      "slug": "logarithmus-rechengesetze-umkehrfunktion-exponentialgleichungen",
+      "title": "Der Logarithmus: Rechengesetze, Natürlicher Logarithmus (ln) und Exponentialgleichungen",
+      "domain": "schule/mathematik/algebra",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA10000000000000000A01",
+          "type": "hard",
+          "rationale": "Der Logarithmus ist die exakte algebraische Umkehrfunktion der Exponentialfunktion."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Logarithm",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Logarithmus und Exponentialgleichungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA10000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet das fundamentale Logarithmengesetz zur Vereinfachung einer Potenz im Logarithmus $\\log_a(u^r)$?",
+          "concept": "log_a(u^r) = r * log_a(u) (Exponentenregel: Exponent wird zum multiplikativen Vorfaktor)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "log_a(u^r) = r * log_a(u)",
+              "log_a(u^r) = (log_a u)^r"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA10000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere den Logarithmus, seine Rechengesetze und das Lösen von Exponentialgleichungen: 1. **Definition des Logarithmus (Umkehrfunktion)**:   $$\\mathbf{\\log_a(b) = x \\iff a^x = b} \\quad (a > 0, a \\neq 1, b > 0)$$   * Spezielle Basen: Dekadischer Logarithmus $\\lg(x) = \\log_{10}(x)$; Natürlicher Logarithmus $\\ln(x) = \\log_e(x)$ (Basis $e$).   * Identitäten: $\\ln(e^x) = x$, $e^{\\ln(x)} = x$, $\\ln(1) = 0$, $\\ln(e) = 1$, 2. **Die drei fundamentalen Logarithmengesetze**:   * **1. Produktregel**: $\\log_a(u \\cdot v) = \\log_a(u) + \\log_a(v)$.   * **2. Quotientenregel**: $\\log_a\\left(\\frac{u}{v}\\right) = \\log_a(u) - \\log_a(v)$.   * **3. Potenzregel**: $\\log_a(u^r) = r \\cdot \\log_a(u)$, 3. **Basiswechsel-Formel**: $\\log_a(b) = \\frac{\\ln(b)}{\\ln(a)} = \\frac{\\lg(b)}{\\lg(a)}$, 4. Löse die Exponentialgleichung $3 \\cdot 2^{2x - 1} = 48$ exakt nach $x$ auf.",
+          "concept": "Logarithmus: Umkehrfunktion log_a(b)=x <=> a^x=b; ln(x) zur Basis e; 3 Gesetze: log(u*v) = log u + log v, log(u/v) = log u - log v, log(u^r) = r*log u; Basiswechsel; Rechnung: 2^(2x-1) = 16 = 2^4 -> 2x - 1 = 4 -> 2x = 5 -> x = 2,5.",
+          "sample_solution": "1. Definition und Eigenschaften des Logarithmus: - Der **Logarithmus** $\\log_a(b)$ ist diejenige Hochzahl $x$, mit der man die Basis $a$ potenzieren muss, um das Argument $b$ (den Numerus) zu erhalten:   $$\\mathbf{\\log_a(b) = x \\quad \\iff \\quad a^x = b} \\quad (a \\in \\mathbb{R}^+ \\setminus \\{1\\}, b \\in \\mathbb{R}^+)$$ - **Spezielle Bezeichnungen**:   * $\\mathbf{\\lg(x) = \\log_{10}(x)}$: Zehnerlogarithmus (Briggsscher Logarithmus).   * $\\mathbf{\\ln(x) = \\log_e(x)}$: Natürlicher Logarithmus (Logarithmus naturalis zur Basis $e \\approx 2{,}71828$). 2. Die drei Logarithmengesetze (für $u, v > 0$): - **1. Multiplikationsgesetz (Produktregel)**:   $$\\mathbf{\\log_a(u \\cdot v) = \\log_a(u) + \\log_a(v)}$$ - **2. Divisionsgesetz (Quotientenregel)**:   $$\\mathbf{\\log_a\\left(\\frac{u}{v}\\right) = \\log_a(u) - \\log_a(v)}$$ - **3. Potenzgesetz (Exponentenregel)**:   $$\\mathbf{\\log_a(u^r) = r \\cdot \\log_a(u)}$$ - **Basisumrechnung**:   $$\\mathbf{\\log_a(b) = \\frac{\\ln(b)}{\\ln(a)} = \\frac{\\lg(b)}{\\lg(a)}}$$ 3. Durchrechnung des Beispiels ($3 \\cdot 2^{2x - 1} = 48$): - **Schritt 1: Isolieren des Exponentialausdrucks**:   $$\\frac{3 \\cdot 2^{2x - 1}}{3} = \\frac{48}{3} \\implies 2^{2x - 1} = 16$$ - **Schritt 2: Logarithmieren (oder Basenvergleich da $16 = 2^4$)**:   $$2^{2x - 1} = 2^4 \\implies 2x - 1 = 4$$   *(Alternativ über $\\ln$: $(2x - 1) \\cdot \\ln(2) = \\ln(16) = 4 \\cdot \\ln(2) \\implies 2x - 1 = 4$)* - **Schritt 3: Auflösen nach $x$**:   $$2x = 5 \\implies \\mathbf{x = 2{,}5}$$."
+        }
+      ]
+    }
+  ]
+}

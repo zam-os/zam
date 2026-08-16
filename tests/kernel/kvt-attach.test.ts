@@ -54,7 +54,9 @@ async function snapshot(db: Database): Promise<string> {
 }
 
 async function countRows(db: Database, table: string): Promise<number> {
-  const row = (await db.prepare(`SELECT COUNT(*) AS n FROM ${table}`).get()) as {
+  const row = (await db
+    .prepare(`SELECT COUNT(*) AS n FROM ${table}`)
+    .get()) as {
     n: number;
   };
   return row.n;
@@ -137,7 +139,9 @@ describe("installKvtTile", () => {
         expect(stored.language).toBe(item.language ?? null);
         expect(stored.tier).toBe(item.tier ?? null);
         expect(
-          stored.fast_check === null ? undefined : JSON.parse(stored.fast_check),
+          stored.fast_check === null
+            ? undefined
+            : JSON.parse(stored.fast_check),
         ).toEqual(item.fast_check);
       }
     }
@@ -180,7 +184,11 @@ describe("installKvtTile", () => {
     const gymItem = await db
       .prepare("SELECT id FROM tokens WHERE atom_id = ?")
       .get(BONUS_ONLY_ATOM);
-    const stray = await getCard(db, (gymItem as { id: string }).id, "learner-a");
+    const stray = await getCard(
+      db,
+      (gymItem as { id: string }).id,
+      "learner-a",
+    );
     expect(stray).toBeUndefined();
   });
 
@@ -242,10 +250,9 @@ describe("installKvtTile", () => {
   function permutations<T>(items: T[]): T[][] {
     if (items.length <= 1) return [items];
     return items.flatMap((item, index) =>
-      permutations([
-        ...items.slice(0, index),
-        ...items.slice(index + 1),
-      ]).map((rest) => [item, ...rest]),
+      permutations([...items.slice(0, index), ...items.slice(index + 1)]).map(
+        (rest) => [item, ...rest],
+      ),
     );
   }
 
@@ -351,9 +358,7 @@ describe("installKvtTile", () => {
       .run(card!.id);
 
     const tile = loadTile();
-    const atom = tile.atoms.find(
-      (a) => a.id === OPTIK.brechungQualitativ,
-    );
+    const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
     const item = atom!.practice_items.find((i) => i.id === tokenId);
     item!.concept = "Eine sachlich geänderte Antwort.";
 
@@ -387,9 +392,7 @@ describe("installKvtTile", () => {
       .run(card!.id);
 
     const tile = loadTile();
-    const atom = tile.atoms.find(
-      (a) => a.id === OPTIK.brechungQualitativ,
-    );
+    const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
     const item = atom!.practice_items.find((i) => i.id === tokenId);
     item!.question = `${item!.question} `.replace(/\s+$/, "?");
     item!.materiality = "cosmetic";
@@ -407,9 +410,7 @@ describe("installKvtTile", () => {
   // Codex acceptance test 11.
   it("gives two Tier 1 items of one atom distinct addresses", async () => {
     const tile = loadTile();
-    const atom = tile.atoms.find(
-      (a) => a.id === OPTIK.brechungQualitativ,
-    );
+    const atom = tile.atoms.find((a) => a.id === OPTIK.brechungQualitativ);
     const [first] = atom!.practice_items;
     atom!.practice_items.push({
       ...first,
@@ -535,9 +536,7 @@ describe("installKvtTile", () => {
 
     it("keeps the declaration even when the old item was never installed", async () => {
       const tile = loadTile();
-      tile.atoms[0].practice_items[0].replaces = [
-        "01K3X9A7R4B8C1D2E3F4G5D003",
-      ];
+      tile.atoms[0].practice_items[0].replaces = ["01K3X9A7R4B8C1D2E3F4G5D003"];
       const result = await installKvtTile(db, tile);
       // Nothing to move, but the statement is evidence for a later rebuild.
       expect(result.itemsSuperseded).toBe(0);
@@ -615,10 +614,9 @@ describe("installKvtTile", () => {
         `SELECT kind FROM atom_prerequisites
           WHERE atom_id = ? AND requires_id = ?`,
       )
-      .get(
-        OPTIK.brechungQualitativ,
-        OPTIK.strahlengangLot,
-      )) as { kind: string };
+      .get(OPTIK.brechungQualitativ, OPTIK.strahlengangLot)) as {
+      kind: string;
+    };
     expect(edge.kind).toBe("hard");
   });
 

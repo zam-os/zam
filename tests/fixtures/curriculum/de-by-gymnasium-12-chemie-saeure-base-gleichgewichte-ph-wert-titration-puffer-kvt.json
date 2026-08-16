@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-12-chemie-saeure-base-gleichgewichte-ph-wert-titration-puffer",
+  "version": "2026.08.1",
+  "title": "Chemie 12: Säure-Base-Gleichgewichte, pH-Wert-Berechnungen, Titration und Puffersysteme (Gymnasium 12 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 12 (Oberstufe Q12): Säure-Base-Konzepte nach Brønsted und Lowry (Protonendonatoren und Protonenakzeptoren, korrespondierende / konjugierte Säure-Base-Paare, Ampholyte), Autoprotolyse des Wassers und Ionenprodukt K_w = c(H3O+) * c(OH-) = 10^-14 mol^2/l^2 bei 25 °C (pH + pOH = 14), Säurekonstante K_s / pK_s und Basenkonstante K_b / pK_b, pH-Wert-Berechnungen (Starke Säuren: pH = -log c_0; Schwache Säuren: pH = 1/2 * (pK_s - log c_0)), Säure-Base-Titrationen (Maßanalyse, Titrationskurven starke Säure/starke Base vs. schwache Säure/starke Base mit Äquivalenzpunkt ÄP und Halbäquivalenzpunkt HÄP pH = pK_s, Indikatorauswahl nach Umschlagsbereich) sowie Puffersysteme (Henderson-Hasselbalch-Gleichung pH = pK_s + log(c(A-)/c(HA)), Pufferkapazität und biologische Relevanz des Kohlensäure-Hydrogencarbonat-Puffers im menschlichen Blut).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/12/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 12, Lernbereich Säure-Base-Gleichgewichte und Puffersysteme"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GC60000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GC60000000000000000A01",
+      "namespace": "gymnasium-chemie-ph-wert",
+      "slug": "saeure-base-protolyse-ionenprodukt-des-wassers-ph-berechnung",
+      "title": "Protolyse: Ionenprodukt des Wassers, $pK_s$-Wert und pH-Wert-Berechnungen",
+      "domain": "schule/chemie/analytische-chemie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "PH",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Säure-Base-Protolyse und pH-Berechnungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC60000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet sich der pH-Wert einer schwachen einprotonigen Säure (z. B. Essigsäure mit $pK_s = 4{,}75$) bei der Anfangskonzentration $c_0$ in sehr guter Näherung?",
+          "concept": "pH = 1/2 * (pK_s - log c_0)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "pH = 1/2 * (pK_s - log c_0)",
+              "pH = -log c_0"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC60000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Säure-Base-Gleichgewichte nach Brønsted und leite die Formeln zur pH-Wert-Berechnung her: 1. **Brønsted-Lowry-Konzept & Autoprotolyse des Wassers**:   * Säure = Protonendonator ($HA \\rightarrow H^+ + A^-$); Base = Protonenakzeptor ($B + H^+ \\rightarrow HB^+$).   * Autoprotolyse: $2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-$.   * **Ionenprodukt des Wassers ($25^\\circ\\text{C}$)**:     $$\\mathbf{K_w = c(\\text{H}_3\\text{O}^+) \\cdot c(\\text{OH}^-) = 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2} \\iff \\mathbf{pH + pOH = 14}}$$ 2. **Säurestärke & $pK_s$-Wert**:   * $HA + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + A^- \\implies \\mathbf{K_s = \\frac{c(\\text{H}_3\\text{O}^+) \\cdot c(A^-)}{c(HA)}} \\implies \\mathbf{pK_s = -\\log(K_s)}$.   * Je kleiner der $pK_s$-Wert, desto stärker ist die Säure, 3. **Die fundamentalen Berechnungsformeln für den pH-Wert**:   * **1. Starke Säuren ($pK_s < 1$, z. B. $HCl, HNO_3$)**: Vollständige Protolyse $\\implies \\mathbf{pH = -\\log(c_0)}$.   * **2. Schwache Säuren ($pK_s > 4$, z. B. $CH_3COOH$)**: Nur geringer Protolysegrad ($c(HA) \\approx c_0$ und $c(H_3O^+) = c(A^-)$):     $$K_s = \\frac{c(\\text{H}_3\\text{O}^+)^2}{c_0} \\implies c(\\text{H}_3\\text{O}^+) = \\sqrt{K_s \\cdot c_0} \\implies \\mathbf{pH = \\frac{1}{2}\\left( pK_s - \\log(c_0) \\right)}$$",
+          "concept": "Säure-Base 12: Brønsted-Paare; Autoprotolyse K_w = 10^-14 (pH + pOH = 14); Säurekonstante K_s und pK_s; pH-Berechnung stark (pH = -log c0) vs. schwach (pH = 1/2 * (pKs - log c0)).",
+          "sample_solution": "1. Säure-Base-Theorie nach Johannes Brønsted und Thomas Lowry (1923): - **Definitionen**:   * **Säure**: Ein Molekül oder Ion, das Protonen ($H^+$) abgibt (**Protonendonator**).   * **Base**: Ein Molekül oder Ion, das Protonen aufnimmt (**Protonenakzeptor**).   * **Protolyse**: Reversible Protonenübertragungsreaktion zwischen zwei korrespondierenden Säure-Base-Paaren:     $$\\mathbf{\\text{Säure}_1 + \\text{Base}_2 \\rightleftharpoons \\text{Base}_1 + \\text{Säure}_2}$$ 2. Das Ionenprodukt des Wassers und der pH-Wert: - Auch reinstes destilliertes Wasser leitet minimal den elektrischen Strom durch **Autoprotolyse**:   $$2\\,\\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{OH}^-$$ - Aus dem Massenwirkungsgesetz folgt bei $25^\\circ\\text{C}$ das konstante Ionenprodukt:   $$\\mathbf{K_w = c(\\text{H}_3\\text{O}^+) \\cdot c(\\text{OH}^-) = 1{,}0 \\cdot 10^{-14}\\,\\frac{\\text{mol}^2}{\\text{l}^2}}$$ - **Definition des pH- und pOH-Wertes nach Sørensen (1909)**:   * $\\mathbf{pH = -\\log_{10}\\left( \\frac{c(\\text{H}_3\\text{O}^+)}{\\text{mol/l}} \\right)}$   * $\\mathbf{pOH = -\\log_{10}\\left( \\frac{c(\\text{OH}^-)}{\\text{mol/l}} \\right)}$   * Durch Logarithmieren von $K_w$ gilt in allen wässrigen Lösungen: $\\mathbf{pH + pOH = 14}$. 3. Systematische Herleitung der pH-Berechnungsformeln: - **Fall 1: Starke Säuren ($pK_s \\le 1$, z. B. Salzsäure $HCl$, Salpetersäure $HNO_3$)**:   * Vollständige Dissoziation ($100\\%$): Jedes Säuremolekül gibt sein Proton ab $\\implies c(\\text{H}_3\\text{O}^+) = c_0(\\text{Säure})$.   * $$\\mathbf{pH = -\\log(c_0)}$$   *(Beispiel: $0{,}01\\,\\text{mol/l } HCl \\implies pH = -\\log(10^{-2}) = 2$)*. - **Fall 2: Schwache Säuren ($pK_s > 4$, z. B. Essigsäure mit $pK_s = 4{,}75$)**:   * Protolysegleichgewicht: $\\text{HA} + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_3\\text{O}^+ + \\text{A}^-$.   * **Säurekonstante**:     $$K_s = \\frac{c(\\text{H}_3\\text{O}^+) \\cdot c(\\text{A}^-)}{c(\\text{HA})}$$   * **Vereinfachende Näherungsannahmen**:     1. $c(\\text{H}_3\\text{O}^+) = c(\\text{A}^-)$ (jedes $\\text{H}_3\\text{O}^+$ erzeugt genau ein $\\text{A}^-$).     2. Da nur winzige Bruchteile protolysieren, gilt: $c(\\text{HA}) = c_0 - c(\\text{H}_3\\text{O}^+) \\approx c_0$.   * Einsetzen liefert:     $$K_s = \\frac{c(\\text{H}_3\\text{O}^+)^2}{c_0} \\implies c(\\text{H}_3\\text{O}^+) = \\sqrt{K_s \\cdot c_0}$$   * Durch Logarithmieren ($-\\log$) ergibt sich die **Ostwaldsche Formel für schwache Säuren**:     $$\\mathbf{pH = \\frac{1}{2} \\cdot \\left( pK_s - \\log(c_0) \\right)}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GC60000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GC60000000000000000A02",
+      "namespace": "gymnasium-chemie-titration-puffer",
+      "slug": "titrationskurven-aequivalenzpunkt-puffer-henderson-hasselbalch",
+      "title": "Titrationskurven, Puffer und die Henderson-Hasselbalch-Gleichung",
+      "domain": "schule/chemie/analytische-chemie",
+      "reduction": "formal",
+      "typical_age_min": 17.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GC60000000000000000A01",
+          "type": "hard",
+          "rationale": "Titrationskurven und Pufferberechnungen basieren auf Säure-Base-Gleichgewichten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Buffer solution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 12,
+          "subject": "chemie",
+          "topic_code": "lb2",
+          "topic_title": "Titrationen und Puffersysteme",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GC60000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher pH-Wert stellt sich bei der Titration einer schwachen Säure (z. B. Essigsäure) mit einer starken Base exakt am Halbäquivalenzpunkt (HÄP) ein?",
+          "concept": "pH = pK_s (da am Halbäquivalenzpunkt exakt die Hälfte der Säure in ihre konjugierte Base überführt wurde: c(HA) = c(A-) und der Quotient im Logarithmus 1 ist)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "pH = pK_s (exakte Gleichheit von Säure und konjugierter Base)",
+              "pH = 7,00"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GC60000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Titrationskurven, Äquivalenzpunkte und Puffersysteme: 1. **Titrationskurven im Vergleich**:   * **Starke Säure / Starke Base ($HCl$ mit $NaOH$)**:     - Start: sehr tiefer pH ($pH \\approx 1$).     - Langer flacher Verlauf, extremer pH-Sprung von pH 4 auf pH 10.     - **Äquivalenzpunkt (ÄP)**: Liegt exakt bei **$pH = 7{,}0$** (neutral, da $NaCl$ nicht hydrolysiert).   * **Schwache Säure / Starke Base ($CH_3COOH$ mit $NaOH$)**:     - Start: höherer pH ($pH \\approx 2{,}9$).     - Deutlicher Pufferbereich; **Halbäquivalenzpunkt (HÄP)** bei $\\mathbf{pH = pK_s}$.     - **Äquivalenzpunkt (ÄP)**: Liegt im **Basischen ($pH \\approx 8{,}5-9$)**, da das entstandene Acetat-Anion $CH_3COO^-$ als schwache Base alkalisch reagiert ($CH_3COO^- + H_2O \\rightleftharpoons CH_3COOH + OH^-$), 2. **Puffersysteme & Henderson-Hasselbalch-Gleichung (Puffergleichung)**:   * Ein Puffergemisch aus schwacher Säure ($HA$) und ihrer korrespondierenden Base ($A^-$) hält den pH-Wert bei Zugabe moderater Mengen starker Säuren oder Basen stabil.   * **Herleitung aus dem MWG**:     $$K_s = \\frac{c(\\text{H}_3\\text{O}^+) \\cdot c(A^-)}{c(HA)} \\implies c(\\text{H}_3\\text{O}^+) = K_s \\cdot \\frac{c(HA)}{c(A^-)}$$     $$\\mathbf{pH = pK_s + \\log_{10}\\left( \\frac{c(A^-)}{c(HA)} \\right)}$$ 3. **Biologische Bedeutung**:   * Der **Kohlensäure-Hydrogencarbonat-Puffer im Blut** ($\text{CO}_2 + \text{H}_2\text{O} \\rightleftharpoons \text{H}_2\text{CO}_3 \\rightleftharpoons \text{H}^+ + \text{HCO}_3^-$) puffert das Blut exakt im lebensnotwendigen Bereich von $\\mathbf{pH = 7{,}35 - 7{,}45}$ (Gefahr von Azidose vs. Alkalose).",
+          "concept": "Titration & Puffer 12: Titrationskurven (stark/stark ÄP=7 vs. schwach/stark ÄP>7 basisch mit HÄP pH = pKs); Pufferwirkung; Henderson-Hasselbalch-Gleichung pH = pKs + log(c(A-)/c(HA)); Kohlensäure-Hydrogencarbonat-Blutpuffer (pH 7,35-7,45).",
+          "sample_solution": "1. Analyse von Säure-Base-Titrationskurven: ```mermaid graph LR   A[Titration schwache Säure mit NaOH] --> B[1. Start: pH = 1/2 pKs - log c0]   B --> C[2. Pufferbereich & HÄP: pH = pKs]   C --> D[3. ÄP: pH > 7 alkalisch durch Anionenhydrolyse]   D --> E[4. Überschuss: pH der starken Lauge] ``` - **Unterschiede der Titrationskurven**:   * **Starke Säure ($HCl$)**: Äquivalenzpunkt (ÄP) liegt exakt bei $\\mathbf{pH = 7{,}0}$. Geeignete Indikatoren: Bromthymolblau, Phenolphthalein, Methylrot (gesamter Sprungbereich pH 4–10).   * **Schwache Säure ($CH_3COOH$)**: Am ÄP liegt eine reine Natriumacetat-Lösung vor. Das Acetat-Ion ist eine schwache Brønsted-Base und reagiert mit Wasser alkalisch:     $$\\text{CH}_3\\text{COO}^- + \\text{H}_2\\text{O} \\rightleftharpoons \\text{CH}_3\\text{COOH} + \\text{OH}^-$$     $\\implies$ **Der Äquivalenzpunkt liegt im basischen Bereich bei $pH \\approx 8{,}8$** $\\implies$ Es muss zwingend ein Indikator mit basischem Umschlagsbereich wie **Phenolphthalein** ($pH \\approx 8{,}2-10{,}0$, farblos $\\rightarrow$ pink) verwendet werden. 2. Die Henderson-Hasselbalch-Gleichung (Puffergleichung): - **Zusammensetzung eines Puffers**: Eine Lösung aus vergleichbaren Stoffmengen einer schwachen Säure $HA$ und ihres Salzes (konjugierte Base $A^-$, z. B. Essigsäure/Natriumacetat). - **Wirkungsweise**:   * Zugabe von $H_3O^+$ wird durch die Base abgefangen: $A^- + H_3O^+ \\rightarrow HA + H_2O$.   * Zugabe von $OH^-$ wird durch die Säure neutralisiert: $HA + OH^- \\rightarrow A^- + H_2O$. - **Mathematische Formulierung**:   $$\\mathbf{pH = pK_s + \\log_{10}\\left( \\frac{c(\\text{A}^-)}{c(\\text{HA})} \\right)}$$   * **Optimale Pufferkapazität**: Liegt vor bei einem Konzentrationsverhältnis von $1:1$ ($c(A^-) = c(HA)$). Dann ist $\\log(1) = 0$ und es gilt:     $$\\mathbf{pH = pK_s}$$   * Der wirksame Pufferbereich umfasst das Intervall $[pK_s - 1; \\; pK_s + 1]$. 3. Der Kohlensäure-Hydrogencarbonat-Puffer im Blut: - Im menschlichen Blutplasma muss der pH-Wert extrem präzise bei $\\mathbf{pH = 7{,}40 \\pm 0{,}05}$ gehalten werden. - **Offenes Puffersystem**:   $$\\mathbf{\\text{CO}_{2\\,(g)} \\text{ (Lunge)} \\rightleftharpoons \\text{CO}_{2\\,(aq)} + \\text{H}_2\\text{O} \\rightleftharpoons \\text{H}_2\\text{CO}_3 \\rightleftharpoons \\text{H}^+ + \\text{HCO}_3^- \\text{ (Niere)}}}$$ - **Regulation**:   * Bei Säureüberschuss (körperliche Anstrengung / Milchsäure) reagiert $\\text{H}^+$ mit $\\text{HCO}_3^-$ zu $\\text{CO}_2$, das durch beschleunigte Atmung (**Hyperventilation**) rasch über die Lunge abgeatmet wird.   * Die Nieren regulieren die Hydrogencarbonat-Ausscheidung $\\implies$ lebenswichtiger Schutz vor **Azidose** ($pH < 7{,}35$) und **Alkalose** ($pH > 7{,}45$)."
+        }
+      ]
+    }
+  ]
+}

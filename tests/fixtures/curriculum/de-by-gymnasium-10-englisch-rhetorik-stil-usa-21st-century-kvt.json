@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-englisch-rhetorik-stil-usa-21st-century",
+  "version": "2026.08.1",
+  "title": "Englisch 10: Advanced Text Analysis, Rhetorical Devices and The USA in the 21st Century (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Englisch 10 (E1/E2): Fortgeschrittene rhetorische Stilmittel und Textanalyse (Metapher, Alliteration, Antithesis, Anapher, Hyperbel, rhetorische Frage, Ironie, Analyse politischer Reden/Speeches) sowie Landeskunde und Gesellschaft der USA im 21. Jahrhundert (The American Dream: von der Declaration of Independence bis zu zeitgenössischen Realitäten, Civil Rights Movement: Martin Luther King Jr. vs. Malcolm X, Black Lives Matter, Einwanderungsgesellschaft: Melting Pot vs. Salad Bowl, US-Verfassung und System der Gewaltenteilung / Checks and Balances).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/englisch",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Englisch 10, Lernbereiche Text- und Medienkompetenz – Rhetorik und Politische Rede, Landeskunde USA"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAB0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAB0000000000000000A01",
+      "namespace": "gymnasium-englisch-rhetorik",
+      "slug": "rhetorical-devices-speech-analysis-persuasion",
+      "title": "Rhetorical Devices & Speech Analysis: Stylistic Devices, Persuasion Techniques and Structure",
+      "domain": "schule/englisch/rhetorik",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "Rhetorical device",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb1",
+          "topic_title": "Text- und Medienkompetenz – Rhetorik und Rede-Analyse",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAB0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which rhetorical device is used in Martin Luther King Jr.'s famous speech when he begins successive sentences with the exact words: 'I have a dream...'?",
+          "concept": "Anaphora (the repetition of a word or phrase at the beginning of successive clauses or sentences for emotional emphasis)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Anaphora (Repetition at the beginning of clauses)",
+              "Alliteration"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAB0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Systematise essential rhetorical devices and the methodology of analyzing a political speech in English: 1. **Key Stylistic & Rhetorical Devices**:   * **Anaphora**: Repetition of words at the start of consecutive lines/sentences to create rhythm and underscore core messages.   * **Alliteration**: Repetition of initial consonant sounds (*'Peter Piper picked a peck...'*).   * **Metaphor & Simile**: Implicit comparison without *'like/as'* (*'The curtain of night'*) vs. explicit comparison with *'like/as'* (*'Brave as a lion'*).   * **Antithesis**: Juxtaposition of contrasting ideas in balanced phrases (*'Ask not what your country can do for you — ask what you can do for your country'* - JFK).   * **Rhetorical Question**: A question asked for effect without expecting an answer.   * **Hyperbole**: Deliberate exaggeration for emphasis.   * **Tricolon (Rule of Three)**: A sequence of three parallel words/phrases (*'Life, liberty, and the pursuit of happiness'*), 2. **Aristotle's Modes of Persuasion (The Rhetorical Triangle)**:   * **Ethos**: Appeal to the speaker's credibility, character, and moral authority.   * **Pathos**: Appeal to the audience's emotions, values, fears, and hopes.   * **Logos**: Appeal to logic, reason, hard evidence, and empirical facts, 3. **Structured Speech Analysis Model**: Introduction (Speaker, occasion, date, target audience, core thesis) $\\rightarrow$ Body (Detailed analysis of line of argument, communicative strategies, tone, choice of words, rhetorical devices with specific line references and their intended effect on listeners) $\\rightarrow$ Conclusion (Evaluation of overall effectiveness and historical impact).",
+          "concept": "Speech Analysis: Stylistic devices (Anaphora, Metaphor, Antithesis, Rhetorical Question, Tricolon); Modes of Persuasion (Ethos, Pathos, Logos); 3-part structured analysis model (Intro, Body with device-effect analysis, Conclusion).",
+          "sample_solution": "1. Essential Rhetorical Devices and Their Strategic Function: - **1. Devices of Sound and Rhythm**:   * **Alliteration**: Repetition of identical initial consonant sounds (*« Let us go forth to lead the land we love »* – JFK) $\\implies$ enhances memorability and aesthetic rhythm.   * **Anaphora**: The deliberate repetition of words at the beginning of consecutive clauses (*« I have a dream... I have a dream... »* – MLK) $\\implies$ creates emotional crescendo and reinforces core themes. - **2. Devices of Imagery**:   * **Metaphor**: Direct comparison that attributes characteristics of one concept to another without *like* or *as* (*« A beacon light of hope »*) $\\implies$ creates vivid visual associations.   * **Personification**: Giving human attributes to abstract ideas or non-human objects (*« America's democracy has stood the test of time »*). - **3. Devices of Contrast and Structure**:   * **Antithesis**: Contrasting opposing concepts within parallel grammatical structures (*« We must learn to live together as brothers or perish together as fools »* – MLK) $\\implies$ sharpens polar choices.   * **Tricolon (Rule of Three)**: A series of three parallel items (*« We cannot dedicate, we cannot consecrate, we cannot hallow this ground »* – Lincoln) $\\implies$ creates a sense of completeness and rhetorical power.   * **Rhetorical Question**: Asking a question that requires no answer because the answer is self-evident $\\implies$ actively engages the audience's reasoning. 2. The Rhetorical Triangle (Aristotle's Modes of Persuasion): - **1. Ethos (Credibility)**:   * The speaker builds trustworthiness by highlighting shared values, personal integrity, humility, and expert authority. - **2. Pathos (Emotional Appeal)**:   * Inspires empathy, hope, pride, indignation, or urgency by using evocative language, personal anecdotes, and moral values. - **3. Logos (Logical Argumentation)**:   * Employs clear inductive/deductive reasoning, statistics, historical precedents, and factual evidence to convince through rational intellect. 3. Systematic Speech Analysis Methodology: - **Introduction**: State Speaker, Context/Occasion (e.g. Inaugural Address), Date, Target Audience, Main Thesis/Purpose. - **Body (Line-by-Line Argument & Style)**:   * Never merely list devices! Follow the golden formula:   $$\\mathbf{\\text{Quotation (Line)} \\longrightarrow \\text{Naming of Device} \\longrightarrow \\text{Function & Psychological Effect on the Audience}}$$ - **Conclusion**: Summarise whether the speaker achieved their goal and assess the speech's lasting rhetorical significance."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAB0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAB0000000000000000A02",
+      "namespace": "gymnasium-englisch-usa",
+      "slug": "american-dream-civil-rights-political-system-checks-balances",
+      "title": "The USA in the 21st Century: The American Dream, Civil Rights and Checks & Balances",
+      "domain": "schule/englisch/landeskunde",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAB0000000000000000A01",
+          "type": "hard",
+          "rationale": "Landeskundliche Reden und Essays erfordern rhetorische Analysefähigkeiten."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q1860",
+          "target_label": "American Dream",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "englisch",
+          "topic_code": "lb2",
+          "topic_title": "Landeskunde – The USA in the 21st Century",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAB0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Which foundational 1776 document declared that 'all men are created equal' with unalienable rights to 'Life, Liberty and the pursuit of Happiness'?",
+          "concept": "The Declaration of Independence (authored primarily by Thomas Jefferson, July 4, 1776)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "The Declaration of Independence (1776)",
+              "The Bill of Rights (1791)"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAB0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analyse the key concepts shaping modern US society and politics: 1. **The American Dream – Concept vs. Reality**:   * Core ideals: Equal opportunities for all regardless of birth/origin; *'From rags to riches'* through hard work; individualism and personal liberty; Manifest Destiny and westward expansion.   * Contemporary challenges: Growing income gap, student debt crisis, systemic social inequality, and debates on whether the dream is still attainable, 2. **The Civil Rights Movement & Legacy**:   * Jim Crow laws & segregation in the American South.   * **Martin Luther King Jr.**: Non-violent civil disobedience, Montgomery Bus Boycott (1955), March on Washington (1963), Civil Rights Act (1964), Voting Rights Act (1965).   * Contrast with **Malcolm X** and Black Nationalism; modern movements like *Black Lives Matter*, 3. **The Concept of American Identity**:   * **Melting Pot**: Traditional view that diverse ethnic cultures blend into one uniform American culture.   * **Salad Bowl / Mosaic**: Pluralistic view where distinct cultural and ethnic identities coexist while preserving their unique heritage, 4. **The US Political System (Checks and Balances)**:   * Three branches: **Legislative** (Congress: Senate & House of Representatives), **Executive** (President & Cabinet), **Judicial** (Supreme Court).   * Mutual control mechanisms: Presidential veto, Congressional impeachment & budget approval, Supreme Court judicial review declaring laws unconstitutional.",
+          "concept": "US Studies: American Dream vs. Reality; Civil Rights (MLK non-violence vs. Malcolm X, Civil Rights Act 1964, BLM); Melting Pot vs. Salad Bowl; US Constitution & Checks and Balances across Legislative, Executive, Judicial branches.",
+          "sample_solution": "1. The American Dream: Origins and Contemporary Realities: - **Foundational Philosophy**: Rooted in the **Declaration of Independence (1776)**: *« We hold these truths to be self-evident, that all men are created equal, that they are endowed by their Creator with certain unalienable Rights, that among these are Life, Liberty and the pursuit of Happiness. »* - **Core Pillars**:   * **Meritocracy**: Success is determined solely by individual talent, discipline, and hard work (*« From rags to riches »*).   * **Frontier Spirit & Individualism**: Belief in unlimited opportunities and self-reliance (*Self-Made Man*). - **Modern Dilemma / American Nightmare**:   * Economic mobility has stagnated; persistent wealth disparities, soaring costs of healthcare and higher education, and systemic racial inequality have led many to question the dream's viability in the 21st century. 2. The Civil Rights Struggle and Ongoing Debates: - **Historical Background**: Decades of institutionalised racial segregation and disenfranchisement under southern *Jim Crow* laws. - **Approaches to Liberation**:   * **Martin Luther King Jr. (SCLC)**: Advised non-violent resistance (*Civil Disobedience* inspired by Gandhi), mass peaceful boycotts, and legal integration (*« I have a dream that my four little children will one day live in a nation where they will not be judged by the color of their skin but by the content of their character »*).   * **Malcolm X (Nation of Islam / Black Power)**: Advocated Black self-determination, racial pride, and self-defence *« by any means necessary »*. - **Legislative Milestones**:   * **Civil Rights Act (1964)**: Outlawed racial segregation in public facilities and employment.   * **Voting Rights Act (1965)**: Prohibited discriminatory voting practices (literacy tests). - **Modern Continuation**: Addressing systemic police violence and judicial inequalities through grassroots movements like *Black Lives Matter (BLM)*. 3. Cultural Integration: Melting Pot vs. Salad Bowl: - **Melting Pot Model**: Metaphor from Israel Zangwill's 1908 play; immigrants assimilate completely, shedding their original cultural traits to forge a unified national identity. - **Salad Bowl / Cultural Mosaic Model**: Modern multicultural paradigm; diverse ethnic, cultural, and linguistic groups retain their distinct traditions while enriching the shared national fabric. 4. The Constitutional System of Checks and Balances: - Designed by the Founding Fathers (1787) to prevent tyranny and the concentration of power: ```mermaid graph LR   L[Legislative: Congress] <-->|Veto / Override| E[Executive: President]   E <-->|Nominations / Judicial Review| J[Judicial: Supreme Court]   L <-->|Impeachment / Interpretation| J ```   * **Legislative (Congress)**: Enacts federal laws, controls taxation/budget, ratifies treaties, can override presidential vetoes with a $2/3$ majority, and holds power of impeachment.   * **Executive (President)**: Executes laws, acts as Commander-in-Chief, negotiates foreign treaties, appoints federal judges, and holds veto power over bills.   * **Judicial (Supreme Court)**: Interprets the Constitution and can strike down acts of Congress or presidential executive orders as **unconstitutional** (*Judicial Review*)."
+        }
+      ]
+    }
+  ]
+}

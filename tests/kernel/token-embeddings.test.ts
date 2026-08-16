@@ -301,7 +301,9 @@ describe("token embedding operations", () => {
         tokenId: contentChanged.id,
         embedding: [4, 5, 6],
         model: MODEL,
-        contentHash: computeContentHash(embeddingContentForToken(contentChanged)),
+        contentHash: computeContentHash(
+          embeddingContentForToken(contentChanged),
+        ),
       });
       await updateToken(db, contentChanged.slug, {
         concept: "Edited concept",

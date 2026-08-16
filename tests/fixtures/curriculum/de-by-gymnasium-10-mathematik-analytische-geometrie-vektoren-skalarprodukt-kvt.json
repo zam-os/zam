@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-mathematik-analytische-geometrie-vektoren-skalarprodukt",
+  "version": "2026.08.1",
+  "title": "Mathematik 10: Analytische Geometrie im Raum R^3 – Vektorrechnung, Skalarprodukt und Geraden (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 10: Koordinatensystem im dreidimensionalen Raum R^3 (Punkte P(x1|x2|x3), Ortsvektoren, Verbindungsvektoren), Vektoroperationen (Addition, Skalarmultiplikation, Betrag/Länge eines Vektors |v| = sqrt(v1^2 + v2^2 + v3^2)), das Skalarprodukt (a * b = a1*b1 + a2*b2 + a3*b3 = |a|*|b|*cos phi), Orthogonalitätskriterium (a senkrecht b <=> a * b = 0) sowie die Parameterform der Geradengleichung (X = P + lambda * v).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 10, Lernbereich Analytische Geometrie – Vektoren im Raum"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GA30000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GA30000000000000000A01",
+      "namespace": "gymnasium-mathematik-vektoren",
+      "slug": "vektoren-im-raum-ortsvektor-betrag-skalarprodukt-orthogonalitaet",
+      "title": "Vektorrechnung im R^3: Orts- und Verbindungsvektor, Betrag und Skalarprodukt",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Euclidean vector",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Vektorrechnung im dreidimensionalen Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA30000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wann stehen zwei vom Nullvektor verschiedene Vektoren $\\vec{a}$ und $\\vec{b}$ im dreidimensionalen Raum $\\mathbb{R}^3$ orthogonal (senkrecht) aufeinander?",
+          "concept": "Genau dann, wenn ihr Skalarprodukt Null ist: a * b = a1*b1 + a2*b2 + a3*b3 = 0 (da cos(90°) = 0)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Wenn ihr Skalarprodukt Null ist: a * b = 0",
+              "Wenn ihr Skalarprodukt 1 ergibt"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA30000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Vektoroperationen und das Skalarprodukt im $\\mathbb{R}^3$: 1. **Punkte und Vektoren**:   * Verbindungsvektor von $A(a_1|a_2|a_3)$ nach $B(b_1|b_2|b_3)$: $\\vec{AB} = \\vec{B} - \\vec{A} = \\begin{pmatrix} b_1 - a_1 \\\\ b_2 - a_2 \\\\ b_3 - a_3 \\end{pmatrix}$ ('Spitze minus Schaft').   * **Betrag (Länge)**: $|\\vec{v}| = \\sqrt{v_1^2 + v_2^2 + v_3^2}$, 2. **Das Skalarprodukt (Skalares Produkt zweier Vektoren)**:   $$\\mathbf{\\vec{a} \\circ \\vec{b} = a_1 b_1 + a_2 b_2 + a_3 b_3 = |\\vec{a}| \\cdot |\\vec{b}| \\cdot \\cos(\\varphi)}$$   * **Orthogonalitätskriterium**: $\\vec{a} \\perp \\vec{b} \\iff \\vec{a} \\circ \\vec{b} = 0$.   * **Winkelberechnung**: $\\cos(\\varphi) = \\frac{\\vec{a} \\circ \\vec{b}}{|\\vec{a}| \\cdot |\\vec{b}|}$, 3. **Gegeben sind die Vektoren** $\\vec{a} = \\begin{pmatrix} 2 \\\\ -3 \\\\ 6 \\end{pmatrix}$ und $\\vec{b} = \\begin{pmatrix} 6 \\\\ 4 \\\\ 0 \\end{pmatrix}$. Berechne die Länge $|\\vec{a}|$ und zeige rechnerisch, dass $\\vec{a}$ und $\\vec{b}$ orthogonal zueinander sind.",
+          "concept": "Vektoren im R^3: Verbindungsvektor AB = B - A; Betrag |v| = sqrt(v1^2+v2^2+v3^2); Skalarprodukt a*b = a1*b1 + a2*b2 + a3*b3; Orthogonalität a*b = 0; Rechnung: |a| = sqrt(4 + 9 + 36) = sqrt(49) = 7; a*b = 2*6 + (-3)*4 + 6*0 = 12 - 12 + 0 = 0 -> orthogonal!",
+          "sample_solution": "1. Koordinaten und Vektorgeometrie im Raum $\\mathbb{R}^3$: - **1. Punkte und Verbindungsvektoren**:   * Der Pfeil von Punkt $A(a_1 \\mid a_2 \\mid a_3)$ zu Punkt $B(b_1 \\mid b_2 \\mid b_3)$ berechnet sich nach der Regel **'Spitze minus Fuß'**:     $$\\mathbf{\\vec{AB} = \\begin{pmatrix} b_1 - a_1 \\\\ b_2 - a_2 \\\\ b_3 - a_3 \\end{pmatrix}}$$ - **2. Betrag (Länge eines Vektors)**:   * Euklidische Norm über den doppelten Satz des Pythagoras:     $$\\mathbf{|\\vec{v}| = \\sqrt{v_1^2 + v_2^2 + v_3^2}}$$   * **Einheitsvektor**: $\\vec{v}_0 = \\frac{\\vec{v}}{|\\vec{v}|}$ mit Länge $|\\vec{v}_0| = 1$. 2. Das Skalarprodukt und seine geometrischen Anwendungen: - **Definition**:   $$\\mathbf{\\vec{a} \\circ \\vec{b} = a_1 \\cdot b_1 + a_2 \\cdot b_2 + a_3 \\cdot b_3 = |\\vec{a}| \\cdot |\\vec{b}| \\cdot \\cos(\\varphi)}$$ - **1. Orthogonalitätskriterium**:   * Da $\\cos(90^\\circ) = 0$, gilt für zwei Vektoren $\\vec{a}, \\vec{b} \\neq \\vec{0}$:     $$\\mathbf{\\vec{a} \\perp \\vec{b} \\quad \\iff \\quad \\vec{a} \\circ \\vec{b} = 0}$$ - **2. Schnittwinkel $\\varphi$ zweier Vektoren**:   $$\\mathbf{\\cos(\\varphi) = \\frac{\\vec{a} \\circ \\vec{b}}{|\\vec{a}| \\cdot |\\vec{b}|} \\quad (0^\\circ \\le \\varphi \\le 180^\\circ)$$ 3. Durchrechnung des Beispiels ($\\vec{a} = \\begin{pmatrix} 2 \\\\ -3 \\\\ 6 \\end{pmatrix}, \\vec{b} = \\begin{pmatrix} 6 \\\\ 4 \\\\ 0 \\end{pmatrix}$): - **Schritt 1: Betrag von $\\vec{a}$**:   $$|\\vec{a}| = \\sqrt{2^2 + (-3)^2 + 6^2} = \\sqrt{4 + 9 + 36} = \\sqrt{49} = \\mathbf{7\\,\\text{LE (Längeneinheiten)}}$$ - **Schritt 2: Skalarprodukt $\\vec{a} \\circ \\vec{b}$**:   $$\\vec{a} \\circ \\vec{b} = 2 \\cdot 6 + (-3) \\cdot 4 + 6 \\cdot 0 = 12 - 12 + 0 = \\mathbf{0}$$ - **Schlussfolgerung**:   * Da das Skalarprodukt exakt $0$ ist, stehen die beiden Vektoren $\\vec{a}$ und $\\vec{b}$ **senkrecht (orthogonal) aufeinander** (Winkel $\\varphi = 90^\\circ$)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GA30000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GA30000000000000000A02",
+      "namespace": "gymnasium-mathematik-geraden",
+      "slug": "geradengleichung-parameterform-punktprobe-lagebeziehung",
+      "title": "Geraden im Raum R^3: Parameterform, Punktprobe und gegenseitige Lagebeziehungen",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GA30000000000000000A01",
+          "type": "hard",
+          "rationale": "Geradengleichungen basieren auf Orts- und Richtungsvektoren."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Line (geometry)",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Geraden im Raum und Lagebeziehungen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GA30000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche Lagebeziehung liegt vor, wenn zwei Geraden im Raum weder parallel noch identisch sind und keinen gemeinsamen Schnittpunkt besitzen?",
+          "concept": "Sie sind windschief zueinander (ihre Richtungsvektoren sind nicht kollinear und sie schneiden sich nicht)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Windschief (kein Schnittpunkt, nicht parallel)",
+              "Orthogonal schneidend"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GA30000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Geradengleichungen in Parameterform und die 4 Lagebeziehungen zweier Geraden im $\\mathbb{R}^3$: 1. **Parametergleichung einer Geraden $g$**:   $$\\mathbf{g: \\vec{X} = \\vec{P} + \\lambda \\cdot \\vec{v}} \\quad (\\lambda \\in \\mathbb{R})$$   * $\\vec{P}$: Stützvektor (Ortsvektor eines Punktes auf der Geraden).   * $\\vec{v} \\neq \\vec{0}$: Richtungsvektor.   * $\\lambda$: reeller Parameter, 2. **Punktprobe**: Liegt ein Punkt $Q$ auf $g$? $\\vec{Q} = \\vec{P} + \\lambda \\vec{v} \\implies$ Einsetzen und Prüfen, ob alle drei Koordinatengleichungen denselben Parameter $\\lambda$ liefern, 3. **Die 4 gegenseitigen Lagebeziehungen zweier Geraden $g$ und $h$**:   * **1. Identisch ($g = h$)**: Richtungsvektoren kollinear ($\\vec{v}_g = k \\cdot \\vec{v}_h$) UND Stützpunkt $P_g$ liegt auf $h$.   * **2. Echt parallel ($g \\parallel h$)**: Richtungsvektoren kollinear UND Stützpunkt $P_g$ liegt **nicht** auf $h$.   * **3. Schneidend ($g \\cap h = \\{S\\}$)**: Richtungsvektoren **nicht** kollinear UND Gleichsetzen $g = h$ liefert genau eine eindeutige Lösung $(\\lambda, \\mu)$.   * **4. Windschief**: Richtungsvektoren **nicht** kollinear UND Gleichsetzen $g = h$ führt zu einem Widerspruch (keine Lösung).",
+          "concept": "Geraden im R^3: Parameterform X = P + lambda*v; Punktprobe; 4 Lagebeziehungen: identisch (kollinear + Schnitt), echt parallel (kollinear ohne Schnitt), schneidend (nicht kollinear + Schnittpunkt), windschief (nicht kollinear + kein Schnittpunkt).",
+          "sample_solution": "1. Die Vektorgleichung einer Geraden im $\\mathbb{R}^3$: - **Parameterform (Zwei-Punkte-Form oder Punkt-Richtungs-Form)**:   $$\\mathbf{g: \\vec{x} = \\vec{p} + \\lambda \\cdot \\vec{u}} \\quad (\\lambda \\in \\mathbb{R})$$   * $\\vec{p}$: **Stützvektor** (führt vom Ursprung zum Aufpunkt $P$).   * $\\vec{u}$: **Richtungsvektor** (gibt die Orientierung der Geraden im Raum an).   * $\\lambda$: **Geradenparameter** (für jedes $\\lambda \\in \\mathbb{R}$ erhält man den Ortsvektor eines bestimmten Punktes auf $g$). 2. Die Punktprobe: - Um zu prüfen, ob ein gegebener Punkt $Q(q_1 \\mid q_2 \\mid q_3)$ auf der Geraden $g$ liegt, setzt man $\\vec{q}$ für $\\vec{x}$ ein:   $$\\begin{pmatrix} q_1 \\\\ q_2 \\\\ q_3 \\end{pmatrix} = \\begin{pmatrix} p_1 \\\\ p_2 \\\\ p_3 \\end{pmatrix} + \\lambda \\begin{pmatrix} u_1 \\\\ u_2 \\\\ u_3 \\end{pmatrix}$$   * Entsteht in allen drei Zeilen **derselbe Wert für $\\lambda$**, so liegt $Q$ auf $g$ ($Q \\in g$).   * Widersprechen sich die $\\lambda$-Werte, so liegt $Q$ nicht auf $g$. 3. Systematische Bestimmung der 4 Lagebeziehungen im Raum: ```mermaid graph TD   A[Richtungsvektoren u und v prüfen] --> B{Kollinear? u = k * v}   B -- Ja --> C{Punktprobe: Liegt P auf h?}   C -- Ja --> D[1. Identisch: g = h]   C -- Nein --> E[2. Echt parallel: g || h]   B -- Nein --> F{Gleichsetzen: g = h}   F -- Eindeutige Lösung --> G[3. Schnittpunkt S: g und h schneiden sich]   F -- Keine Lösung / Widerspruch --> H[4. Windschief zueinander] ``` - **1. Identisch**: Unendlich viele gemeinsame Punkte. - **2. Echt parallel**: Kein Schnittpunkt, konstanter Abstand im Raum. - **3. Schnittpunkt**: Genau ein gemeinsamer Punkt $S = g \\cap h$. - **4. Windschief**: Liegen in parallelen Ebenen, haben unterschiedliche Richtungen und treffen sich nie."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-mathematik-geometrie-abstaende-hesse-kugeln-schnittwinkel",
+  "version": "2026.08.1",
+  "title": "Mathematik 13: Analytische Geometrie – Abstandsverfahren (HNF), Schnittwinkel und Kugelgeometrie (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 13 (Oberstufe Q13 / Abitur): Metrische Vektorgeometrie und Abstände (Hessesche Normalenform HNF von Ebenen E: (x - a) * n_0 = 0 mit normiertem Einheitsnormalenvektor n_0 = n/|n|, Punkt-Ebene-Abstand d(P, E) = |(p - a) * n_0|, Abstand zweier windschiefer Geraden g und h über gemeinsamen Normalenvektor n = u_g x u_h, Punkt-Gerade-Abstand über Hilfsebene oder Kreuzprodukt), Schnittwinkel im dreidimensionalen Raum (Winkel zwischen zwei Vektoren, Schnittwinkel zweier Geraden cos(alpha) = |u_1 * u_2| / (|u_1|*|u_2|), Schnittwinkel Gerade-Ebene sin(beta) = |u * n| / (|u|*|n|), Schnittwinkel zweier Ebenen cos(gamma) = |n_1 * n_2| / (|n_1|*|n_2|)) sowie Kugelgeometrie im R^3 (Kugelgleichung (x - m)^2 = r^2, Schnittlage Kugel-Ebene: Passierende Ebene [d > r], Tangentialebene [d = r] mit Berührpunkt B, Schnittkreis [d < r] mit Mittelpunkt M_k und Kreisradius r_k = sqrt(r^2 - d^2), Schnittlage Kugel-Gerade).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 13, Lernbereich Analytische Geometrie – Metrische Probleme und Kugeln"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD10000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD10000000000000000A01",
+      "namespace": "gymnasium-mathematik-hesse-abstaende",
+      "slug": "hesse-normalform-abstand-windschiefe-geraden-schnittwinkel",
+      "title": "Hesse-Normalenform, Abstände im Raum und Schnittwinkel (Gerade, Ebene)",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Hesse normal form",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Metrische Vektorgeometrie – Abstände und Winkel",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD10000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Mit welcher trigonometrischen Funktion berechnet man den Schnittwinkel \\beta zwischen einer Geraden mit Richtungsvektor u und einer Ebene mit Normalenvektor n?",
+          "concept": "\\sin(\\beta) = \\frac{|u \\cdot n|}{|u| \\cdot |n|} (weil der Normalenvektor senkrecht auf der Ebene steht und daher das Komplement 90° - beta erfasst)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "\\sin(\\beta) = \\frac{|u \\cdot n|}{|u| \\cdot |n|}",
+              "\\cos(\\beta) = \\frac{|u \\cdot n|}{|u| \\cdot |n|}"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD10000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere metrische Abstands- und Winkelprobleme im $\\mathbb{R}^3$: 1. **Die Hessesche Normalenform (HNF)**:   * Gegeben Ebene $E: n_1 x_1 + n_2 x_2 + n_3 x_3 - d = 0$.   * Normierung durch Division durch den Betrag $|\\vec{n}| = \\sqrt{n_1^2 + n_2^2 + n_3^2}$:     $$\\mathbf{\\text{HNF: } \\frac{n_1 x_1 + n_2 x_2 + n_3 x_3 - d}{\\sqrt{n_1^2 + n_2^2 + n_3^2}} = 0}$$   * Der Abstand eines beliebigen Punktes $P(p_1, p_2, p_3)$ zur Ebene $E$ ergibt sich durch direktes Einsetzen in die linke Seite der HNF:     $$\\mathbf{d(P, E) = \\left| \\frac{n_1 p_1 + n_2 p_2 + n_3 p_3 - d}{|\\vec{n}|} \\right|}$$, 2. **Abstand zweier windschiefer Geraden $g$ und $h$**:   * $g: \\vec{x} = \\vec{a} + r \\vec{u}_g$, $h: \\vec{x} = \\vec{b} + s \\vec{u}_h$.   * Gemeinsamer Normalenvektor: $\\vec{n}_0 = \\frac{\\vec{u}_g \\times \\vec{u}_h}{|\\vec{u}_g \\times \\vec{u}_h|}$.   * Abstand: $\\mathbf{d(g, h) = |(\\vec{b} - \\vec{a}) \\cdot \\vec{n}_0|}$, 3. **Konkrete Aufgabe**:   * Gegeben Ebene $E: 2x_1 - x_2 + 2x_3 - 9 = 0$ und Punkt $P(5 \\mid 4 \\mid 8)$.   * a) Bestimme den Abstand $d(P, E)$.   * b) Berechne den Lotfußpunkt $F$ des Punktes $P$ auf der Ebene $E$.",
+          "concept": "HNF & Abstände 13: |n| = sqrt(4+1+4) = 3; HNF (2x1 - x2 + 2x3 - 9)/3 = 0; d(P, E) = |2(5) - 4 + 2(8) - 9|/3 = |10 - 4 + 16 - 9|/3 = |13|/3 = 13/3 LE; Lotfußpunkt F = P - d * n_0 = (5, 4, 8) - 13/3 * 1/3(2, -1, 2) = (19/9, 49/9, 46/9).",
+          "sample_solution": "1. Metrische Beziehungen im $\\mathbb{R}^3$: - **Winkelformeln**:   * **Gerade-Gerade**: $\\cos(\\alpha) = \\frac{|\\vec{u}_1 \\cdot \\vec{u}_2|}{|\\vec{u}_1| \\cdot |\\vec{u}_2|}$ ($0^\\circ \\le \\alpha \\le 90^\\circ$).   * **Ebene-Ebene**: $\\cos(\\gamma) = \\frac{|\\vec{n}_1 \\cdot \\vec{n}_2|}{|\\vec{n}_1| \\cdot |\\vec{n}_2|}$.   * **Gerade-Ebene**: $\\sin(\\beta) = \\frac{|\\vec{u} \\cdot \\vec{n}|}{|\\vec{u}| \\cdot |\\vec{n}|}$. 2. Vollständige Berechnung der Aufgabe: - **a) HNF und Abstand des Punktes $P(5 \\mid 4 \\mid 8)$**:   * Ebenengleichung: $2x_1 - x_2 + 2x_3 - 9 = 0$.   * Normalenvektor: $\\vec{n} = \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix}$.   * Betrag: $|\\vec{n}| = \\sqrt{2^2 + (-1)^2 + 2^2} = \\sqrt{4 + 1 + 4} = \\sqrt{9} = \\mathbf{3}$.   * **HNF der Ebene $E$**:     $$\\frac{2x_1 - x_2 + 2x_3 - 9}{3} = 0$$   * **Abstand $d(P, E)$**:     $$d(P, E) = \\left| \\frac{2(5) - (4) + 2(8) - 9}{3} \\right| = \\left| \\frac{10 - 4 + 16 - 9}{3} \\right| = \\left| \\frac{13}{3} \\right| = \\mathbf{\\frac{13}{3}\\,\\text{Längeneinheiten (LE)} \\approx 4{,}33\\,\\text{LE}}$$ - **b) Bestimmung des Lotfußpunktes $F$**:   * Die Lotgerade $\\ell$ geht durch $P$ mit Richtungsvektor $\\vec{n}$:     $$\\ell: \\vec{x} = \\begin{pmatrix} 5 \\\\ 4 \\\\ 8 \\end{pmatrix} + t \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix}$$   * Schneiden von $\\ell$ mit $E$:     $$2(5 + 2t) - (4 - t) + 2(8 + 2t) - 9 = 0$$     $$10 + 4t - 4 + t + 16 + 4t - 9 = 0$$     $$9t + 13 = 0 \\implies \\mathbf{t = -\\frac{13}{9}}$$   * Einsetzen von $t$ in die Geradengleichung:     $$\\vec{f} = \\begin{pmatrix} 5 \\\\ 4 \\\\ 8 \\end{pmatrix} - \\frac{13}{9} \\begin{pmatrix} 2 \\\\ -1 \\\\ 2 \\end{pmatrix} = \\begin{pmatrix} 5 - \\frac{26}{9} \\\\[4pt] 4 + \\frac{13}{9} \\\\[4pt] 8 - \\frac{26}{9} \\end{pmatrix} = \\begin{pmatrix} \\frac{19}{9} \\\\[4pt] \\frac{49}{9} \\\\[4pt] \\frac{46}{9} \\end{pmatrix}$$   * $$\\mathbf{F\\left( \\frac{19}{9} \\;\\middle|\\; \\frac{49}{9} \\;\\middle|\\; \\frac{46}{9} \\right)}$$"
+        }
+      ]
+    },
+    {
+      "id": "01K8GD10000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD10000000000000000A02",
+      "namespace": "gymnasium-mathematik-kugelgeometrie",
+      "slug": "kugelgleichung-schnittlage-kugel-ebene-schnittkreis",
+      "title": "Kugelgeometrie im Raum: Lagebeziehung Kugel-Ebene, Tangentialebenen und Schnittkreise",
+      "domain": "schule/mathematik/analytische-geometrie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD10000000000000000A01",
+          "type": "hard",
+          "rationale": "Kugel-Ebene-Schnittlagen nutzen den HNF-Abstand zwischen Mittelpunkt und Ebene."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11224",
+          "target_label": "Sphere",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "mathematik",
+          "topic_code": "lb2",
+          "topic_title": "Kugelgeometrie und Schnittgebilde im Raum",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD10000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet man den Radius r_k des Schnittkreises, der entsteht, wenn eine Ebene im Abstand d < r eine Kugel mit Mittelpunkt M und Kugelradius r schneidet?",
+          "concept": "r_k = \\sqrt{r^2 - d^2} (nach dem Satz des Pythagoras am rechtwinkligen Dreieck aus Kugelmittelpunkt, Kreismittelpunkt und Kreisrand)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "r_k = \\sqrt{r^2 - d^2}",
+              "r_k = r - d"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD10000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Kugelgleichungen und Schnittbeziehungen zwischen Kugel und Ebene: 1. **Kugelgleichung im $\\mathbb{R}^3$**:   * Vektorielle Form: $(\\vec{x} - \\vec{m})^2 = r^2$.   * Koordinatenform: $(x_1 - m_1)^2 + (x_2 - m_2)^2 + (x_3 - m_3)^2 = r^2$, 2. **Lagebeziehung Kugel $K(M; r)$ und Ebene $E$**:   * Bestimme den Abstand $d = d(M, E)$ des Kugelmittelpunkts $M$ zur Ebene $E$:     - **$d > r$ (Passantenebene)**: Kein Schnittpunkt ($K \\cap E = \\emptyset$).     - **$d = r$ (Tangentialebene)**: Genau ein Berührpunkt $B$ ($K \\cap E = \\{B\\}$).     - **$d < r$ (Sekantenebene / Schnittebene)**: Schnittgebilde ist ein **Kreis** mit:       * Kreismittelpunkt $M_k = $ Lotfußpunkt von $M$ auf $E$.       * Kreisradius $\\mathbf{r_k = \\sqrt{r^2 - d^2}}$, 3. **Konkrete Aufgabe**:   * Gegeben ist die Kugel $K: (x_1 - 1)^2 + (x_2 + 2)^2 + (x_3 - 3)^2 = 25$ und die Ebene $E: 2x_1 - 2x_2 + x_3 - 18 = 0$.   * a) Zeige, dass die Ebene $E$ die Kugel $K$ in einem Kreis schneidet.   * b) Bestimme den Mittelpunkt $M_k$ und den Radius $r_k$ des Schnittkreises.",
+          "concept": "Kugelgeometrie 13: M(1|-2|3), r = 5; d(M, E) = |2(1) - 2(-2) + 3 - 18| / sqrt(4+4+1) = |2 + 4 + 3 - 18|/3 = |-9|/3 = 3 LE; Da d = 3 < r = 5 liegt ein Schnittkreis vor; r_k = sqrt(25 - 9) = sqrt(16) = 4 LE; M_k = M + t*n = (1|-2|3) + 1*(2|-2|1) = (3|-4|4).",
+          "sample_solution": "1. Kugel-Ebene-Theorie: - Eine Kugel $K(M; r)$ ist die Menge aller Punkte im $\\mathbb{R}^3$, die vom Mittelpunkt $M$ den festen Abstand $r$ haben. - Die Schnittfigur einer Kugel mit einer Sekantenebene ist stets ein **Kreis**. Aus dem rechtwinkligen Dreieck mit Hypotenuse $r$ (Kugelradius), Ankathete $d$ (Abstand $M$ zur Ebene) und Gegenkathete $r_k$ (Kreisradius) folgt direkt:   $$r_k^2 + d^2 = r^2 \\implies \\mathbf{r_k = \\sqrt{r^2 - d^2}}$$ 2. Vollständige Berechnung der Aufgabe: - **Parameter der Kugel $K$**:   * Mittelpunkt: $\\mathbf{M(1 \\mid -2 \\mid 3)}$.   * Kugelradius: $\\mathbf{r = \\sqrt{25} = 5}$. - **a) Nachweis der Schnittlage**:   * Ebenengleichung: $2x_1 - 2x_2 + x_3 - 18 = 0$.   * Normalenvektor: $\\vec{n} = \\begin{pmatrix} 2 \\\\ -2 \\\\ 1 \\end{pmatrix} \\implies |\\vec{n}| = \\sqrt{2^2 + (-2)^2 + 1^2} = \\sqrt{9} = \\mathbf{3}$.   * Abstand $d(M, E)$ mittels HNF:     $$d = \\left| \\frac{2(1) - 2(-2) + (3) - 18}{3} \\right| = \\left| \\frac{2 + 4 + 3 - 18}{3} \\right| = \\left| \\frac{-9}{3} \\right| = \\mathbf{3\\,\\text{LE}}$$   * **Vergleich**: Da $\\mathbf{d = 3 < r = 5}$, ist die Ebene $E$ eine **Sekantenebene**; sie schneidet die Kugel in einem Kreis. - **b) Radius und Mittelpunkt des Schnittkreises**:   * **Kreisradius $r_k$**:     $$\\mathbf{r_k = \\sqrt{r^2 - d^2} = \\sqrt{5^2 - 3^2} = \\sqrt{25 - 9} = \\sqrt{16} = \\mathbf{4\\,\\text{LE}}}$$   * **Kreismittelpunkt $M_k$ (Lotfußpunkt)**:     * Lotgerade von $M$ auf $E$:       $$\\vec{x} = \\begin{pmatrix} 1 \\\\ -2 \\\\ 3 \\end{pmatrix} + t \\begin{pmatrix} 2 \\\\ -2 \\\\ 1 \\end{pmatrix}$$     * Einsetzen in die Ebenengleichung:       $$2(1 + 2t) - 2(-2 - 2t) + (3 + t) - 18 = 0$$       $$2 + 4t + 4 + 4t + 3 + t - 18 = 0$$       $$9t - 9 = 0 \\implies \\mathbf{t = 1}$$     * Einsetzen von $t = 1$:       $$\\vec{m}_k = \\begin{pmatrix} 1 \\\\ -2 \\\\ 3 \\end{pmatrix} + 1 \\begin{pmatrix} 2 \\\\ -2 \\\\ 1 \\end{pmatrix} = \\begin{pmatrix} 3 \\\\ -4 \\\\ 4 \\end{pmatrix}$$   * **Ergebnis**: Der Schnittkreis hat den Mittelpunkt $\\mathbf{M_k(3 \\mid -4 \\mid 4)}$ und den Radius $\\mathbf{r_k = 4\\,\\text{LE}}$."
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-13-informatik-berechenbarkeit-turingmaschine-halteproblem-p-np",
+  "version": "2026.08.1",
+  "title": "Informatik 13: Theoretische Informatik – Turingmaschinen, Halteproblem, Berechenbarkeit und Komplexitätsklassen (P vs. NP) (Gymnasium 13 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Informatik 13 (Oberstufe Q13 / Abitur): Das fundamentale Modell der Turingmaschine (Alan Turing 1936: Deterministische Turingmaschine DTM als 7-Tupel M = (Z, Sigma, Gamma, delta, z_0, square, F) mit beidseitig unendlichem Speicherband, Lese-/Schreibkopf und Zustandsübergangsfunktion delta: Z x Gamma -> Z x Gamma x {L, R, N}, Universelle Turingmaschine UTM als theoretischer Prototyp des programmierbaren Universalrechners / Von-Neumann-Architektur), Die Church-Turing-These (Jede intuitiv im weitesten Sinne berechenbare Funktion ist genau durch eine Turingmaschine berechenbar / Äquivalenz zu Lambda-Kalkül von Alonzo Church und Registermaschinen), Grenzen der Berechenbarkeit und Unentscheidbarkeit (Das Halteproblem H: Das Problem zu entscheiden, ob eine beliebige Turingmaschine M bei Eingabe w jemals anhält; Formaler Unentscheidbarkeitsbeweis über Cantorsche Diagonalisierung und Selbstreferenz / Widerspruchsmaschine H_quer; Satz von Rice) sowie Komplexitätstheorie (Die Komplexitätsklassen P [in polynomieller Zeit deterministisch lösbar] und NP [in polynomieller Zeit nichtdeterministisch lösbar / in P verifizierbar], Polynomialzeitreduktion <=_p, NP-Vollständigkeit nach dem Satz von Cook-Levin [SAT-Problem, 3-SAT, Traveling Salesperson TSP, Rucksackproblem] und das berühmteste ungelöste Millennium-Problem 'P = NP?').",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T08:00:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/13/informatik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Informatik 13, Lernbereich Theoretische Informatik – Berechenbarkeit und Komplexität"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GD80000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GD80000000000000000A01",
+      "namespace": "gymnasium-informatik-turingmaschine",
+      "slug": "turingmaschine-church-turing-these-halteproblem-unentscheidbarkeit",
+      "title": "Turingmaschinen: Universelle Berechenbarkeit, Church-Turing-These und das Halteproblem",
+      "domain": "schule/informatik/theoretische-informatik",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "Turing machine",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Turingmaschinen und Unentscheidbarkeit",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD80000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Kann es nach dem mathematischen Unentscheidbarkeitsbeweis von Alan Turing (1936) ein Computerprogramm geben, das für jedes beliebige andere Programm und jede beliebige Eingabe fehlerfrei entscheidet, ob das Programm jemals terminiert (anhält)?",
+          "concept": "Nein, das allgemeine Halteproblem ist prinzipiell algorithmisch unlösbar (unentscheidbar)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Nein, das Halteproblem ist mathematisch unentscheidbar",
+              "Ja, mit genügend schnellen Quantencomputern"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD80000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere das Modell der Turingmaschine, die Church-Turing-These und den Unentscheidbarkeitsbeweis des Halteproblems: 1. **Das Turingmaschinen-Modell (Alan Turing, 1936)**:   * $TM = (Z, \\Sigma, \\Gamma, \\delta, z_0, \\square, F)$ mit:     - Unendliches Speicherband mit diskreten Feldern.     - Lese-/Schreibkopf, der pro Takt ein Zeichen liest, ein Zeichen schreibt, in einen Folgezustand wechselt und sich um ein Feld nach links ($L$), rechts ($R$) bewegt oder verharrt ($N$).   * **Universelle Turingmaschine (UTM)**: Eine TM, die die Gödelnummer (Codierung) einer beliebigen anderen TM $M$ und deren Eingabe $w$ liest und deren Ausführung exakt simuliert (Ur-Modell des programmierbaren Computers!), 2. **Die Church-Turing-These (Alonzo Church & Alan Turing, 1936)**:   * Jede im intuitiven, mathematischen Sinne 'effektiv berechenbare' Funktion ist durch eine deterministische Turingmaschine berechenbar.   * Alle modernen Programmiersprachen (C++, Python, Java), Registermaschinen und Lambda-Kalkül sind **Turing-vollständig** (sie können exakt dieselbe Menge an Problemen lösen wie eine TM), 3. **Der formale Beweis der Unentscheidbarkeit des Halteproblems**:   * **Annahme**: Es existiert ein Entscheidungs-Algorithmus $H(\\langle M \\rangle, w)$, der 'JA' ausgibt, wenn $M(w)$ anhält, und 'NEIN', wenn $M(w)$ in eine Endlosschleife gerät.   * **Konstruktion der Widerspruchsmaschine $D(\\langle M \\rangle)$**:     - $D$ ruft $H(\\langle M \\rangle, \\langle M \\rangle)$ auf (Selbstreferenz).     - Wenn $H$ 'JA' liefert (also $M(\\langle M \\rangle)$ hält an) $\\implies D$ geht absichtlich in eine **Endlosschleife**.     - Wenn $H$ 'NEIN' liefert (also $M(\\langle M \\rangle)$ hält nicht an) $\\implies D$ **hält sofort an**.   * **Der fatale Selbstaufruf $D(\\langle D \\rangle)$**:     - Hält $D(\\langle D \\rangle)$ an?       * Wenn $D$ anhält $\\implies H$ lieferte 'JA' $\\implies D$ geht in die Endlosschleife (Widerspruch!).       * Wenn $D$ nicht anhält $\\implies H$ lieferte 'NEIN' $\\implies D$ hält an (Widerspruch!).   * **Folgerung**: Das hypothetische Programm $H$ kann logisch nicht existieren $\\implies \\mathbf{\\text{Das Halteproblem ist unentscheidbar}}$!",
+          "concept": "Turing & Halteproblem 13: Turingmaschine 7-Tupel; Church-Turing-These (Turing-Vollständigkeit); Diagonaler Widerspruchsbeweis der Unentscheidbarkeit des Halteproblems über Selbstaufruf D(D).",
+          "sample_solution": "1. Das Modell der Turingmaschine (Alan Turing, 1936): - **Struktur**:   * Ein 7-Tupel $\\mathbf{M = (Z, \\Sigma, \\Gamma, \\delta, z_0, \\square, F)}$:     - $Z$: Endliche Menge innerer Zustände.     - $\\Sigma$: Eingabealphabet; $\\Gamma$: Bandalphabet ($\\Sigma \\subsetneq \\Gamma$, enthält das Blank $\\square$).     - $\\delta: Z \\times \\Gamma \\to Z \\times \\Gamma \\times \\{L, R, N\\}$: Übergangsfunktion. - **Die Universelle Turingmaschine (UTM)**:   * Kann als 'Interpreter' jede beliebige TM $M$ simulieren, indem sie die codierte Beschreibung $\\langle M \\rangle$ und die Eingabe $w$ auf ihrem Band liest $\\implies$ Fundament des Von-Neumann-Rechners (Trennung von austauschbarem Programm und Daten). 2. Die Church-Turing-These: - **Aussage**: Die informelle, intuitive Vorstellung davon, was 'prinzipiell algorithmisch berechenbar' ist, deckt sich exakt mit der Klasse der von Turingmaschinen berechenbaren Funktionen. - Keine bisher gefundene Rechenarchitektur (Quantencomputer, neuronale Netze, DNA-Computer) kann Probleme lösen, die für eine Turingmaschine unlösbar sind! 3. Der formale Unentscheidbarkeitsbeweis des Halteproblems: - **Das Halteproblem**: Die Sprache $H = \\{\\langle M, w \\rangle \\mid M \\text{ hält auf Eingabe } w\\}$. - **Beweisschritte (Reductio ad absurdum via Cantorsche Diagonale)**: ```mermaid graph TD   H[Angenommen: Halteprüfer H_M_w existiert] --> D[Konstruiere Maschine D_M]   D -->|H sagt M_M HÄLT| Loop[D geht in ENDLOSSCHLEIFE]   D -->|H sagt M_M HÄLT NICHT| Halt[D HÄLT SOFORT AN]   D --> Q[Was macht D mit sich selbst: D_D ?]   Q -->|Falls D_D hält| W1[Widerspruch: D_D muss in Endlosschleife gehen!]   Q -->|Falls D_D nicht hält| W2[Widerspruch: D_D muss sofort anhalten!] ``` - **Logischer Schluss**:   * Der Zustand $D(\\langle D \\rangle)$ führt in ein unauflösbares Paradoxon (analog zu Epimenides: *« Dieser Satz ist falsch »*).   * Die einzige fehlerhafte Annahme war die Existenz des Algorithmus $H$.   * **Ergebnis**: Es ist **prinzipiell unmöglich**, ein Programm zu schreiben, das alle Programmfehler (wie Endlosschleifen) universell aufspürt!"
+        }
+      ]
+    },
+    {
+      "id": "01K8GD80000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GD80000000000000000A02",
+      "namespace": "gymnasium-informatik-p-np",
+      "slug": "komplexitaetstheorie-p-np-problem-np-vollstaendigkeit-sat",
+      "title": "Komplexitätstheorie: Klassen P und NP, NP-Vollständigkeit (SAT/TSP) und P vs. NP",
+      "domain": "schule/informatik/komplexitaetstheorie",
+      "reduction": "formal",
+      "typical_age_min": 18.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GD80000000000000000A01",
+          "type": "hard",
+          "rationale": "Komplexitätsklassen messen den Rechenzeitbedarf auf Turingmaschinen."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q79872",
+          "target_label": "P versus NP problem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 13,
+          "subject": "informatik",
+          "topic_code": "lb2",
+          "topic_title": "Komplexitätsklassen P und NP",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GD80000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was charakterisiert Entscheidungsprobleme der Komplexitätsklasse NP (Nichtdeterministisch Polynomiell) im Vergleich zur Klasse P?",
+          "concept": "Eine vorgelegte Lösung / ein Zertifikat kann in polynomieller Zeit deterministisch verifiziert (überprüft) werden (während das Finden der Lösung möglicherweise exponentielle Zeit erfordert)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Lösungen können in polynomieller Zeit deterministisch verifiziert werden",
+              "Probleme können überhaupt nicht auf Computern gelöst werden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GD80000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Komplexitätsklassen P, NP, NP-Vollständigkeit und das 'P = NP?'-Problem: 1. **Die Komplexitätsklasse P (Polynomial Time)**:   * Menge aller Entscheidungsprobleme, die von einer deterministischen Turingmaschine in polynomieller Zeit $\\mathcal{O}(n^k)$ gelöst werden können (gilt als **praktisch effizient lösbar**: z. B. Sortieren $\\mathcal{O}(n \\log n)$, Kürzeste Wege / Dijkstra $\\mathcal{O}((V+E)\\log V)$, Primzahltest AKS $\\mathcal{O}(\\log^6 n)$), 2. **Die Komplexitätsklasse NP (Nondeterministic Polynomial Time)**:   * Menge aller Probleme, die von einer nichtdeterministischen Turingmaschine in polynomieller Zeit gelöst werden können.   * Äquivalente Verifizierer-Definition: Für jede 'JA'-Instanz existiert ein Zertifikat (Beweis), dessen Gültigkeit in **polynomieller Zeit deterministisch überprüft werden kann** (z. B. Sudoku lösen ist schwer, aber eine ausgefüllte Lösung prüfen geht in Millisekunden!), 3. **NP-Vollständigkeit & Satz von Cook-Levin (1971)**:   * Ein Problem $L$ heißt **NP-hart**, wenn sich jedes Problem aus NP in polynomieller Zeit darauf reduzieren lässt ($L' \\le_p L$).   * Ein Problem heißt **NP-vollständig (NPC)**, wenn es in NP liegt und NP-hart ist.   * **Satz von Cook-Levin**: Das Erfüllbarkeitsproblem der Aussagenlogik (**SAT / 3-SAT**) ist NP-vollständig!   * Weitere NP-vollständige Probleme: *Traveling Salesperson Problem (TSP)*, *Rucksackproblem (Knapsack)*, *Cliquenproblem*, *Graphenfärbung*, 4. **Das 'P versus NP'-Problem**:   * Offene Jahrhundertfrage: Gilt $\\mathbf{P = NP}$ oder $\\mathbf{P \\neq NP}$?   * Wäre $P = NP$, gäbe es für jedes NP-vollständige Problem (und damit für moderne asymmetrische Kryptosysteme wie RSA/ECC) einen effizienten Polynomialzeitalgorithmus $\\implies$ Zusammenbruch aller heutigen Verschlüsselungen!",
+          "concept": "Komplexität 13: Klasse P (deterministisch polynomiell lösbar); Klasse NP (polynomiell verifizierbar); Satz von Cook-Levin (SAT ist NP-vollständig); NP-harte Probleme (TSP, Knapsack, Clique); P vs. NP Millennium-Problem.",
+          "sample_solution": "1. Die Komplexitätsklassen P und NP: - **Klasse P (Polynomial Time)**:   * Enthält alle Entscheidungsprobleme, für die ein deterministischer Algorithmus mit Laufzeit $T(n) \\in \\mathcal{O}(n^k)$ für ein festes $k \\in \\mathbb{N}$ existiert.   * Bildet die theoretische Grenze dessen, was auf realen Computern **effizient berechenbar** ist. - **Klasse NP (Nondeterministic Polynomial Time)**:   * Enthält Probleme, bei denen man mit 'Erraten' (Nichtdeterminismus) in Polynomialzeit zur Lösung kommt, bzw. bei denen ein Lösungsvorschlag (**Zertifikat**) deterministisch in Polynomialzeit auf Richtigkeit **verifiziert** werden kann.   * Es gilt trivialerweise: $\\mathbf{P \\subseteq NP}$ (denn was effizient gelöst werden kann, kann auch effizient geprüft werden). 2. NP-Vollständigkeit und der Satz von Cook-Levin: - **Polynomialzeitreduktion ($A \\le_p B$)**:   * Ein Problem $A$ lässt sich auf $B$ reduzieren, wenn jede Instanz von $A$ in polynomieller Zeit in eine äquivalente Instanz von $B$ umgewandelt werden kann. Wenn $B \\in P$, dann folgt sofort $A \\in P$. - **NP-Vollständigkeit (Karp-Katalog, 1972)**:   * Ein Problem ist NP-vollständig (**NP-complete**), wenn es zu den schwersten Problemen in NP gehört. Fände man für nur ein einziges NP-vollständiges Problem einen Polynomialzeitalgorithmus, wären **alle** Probleme in NP schlagartig in Polynomialzeit lösbar! - **Prominente Beispiele**:   * **1. SAT (Satisfiability)**: Gibt es für eine aussagenlogische Formel eine Belegung der Variablen mit Wahrheitswerten, sodass die Formel wahr wird? (Stephen Cook 1971).   * **2. Traveling Salesperson Problem (TSP)**: Gibt es eine Rundreise durch $n$ Städte mit Gesamtlänge $\\le K$?   * **3. Rucksackproblem (Knapsack)**: Auswahl von Gegenständen mit maximalem Wert bei beschränktem Gesamtgewicht. 3. Das Millennium-Problem: P vs. NP: ```mermaid graph LR   subgraph Vermutung: P != NP     NP[NP: Verifizierbar in P]     P[P: Lösbar in P]     NPC[NP-vollständig: SAT, TSP]     P --> NP     NPC --> NP   end ``` - **Bedeutung**:   * Fast alle Informatiker und Mathematiker vermuten $\\mathbf{P \\neq NP}$ (Finden einer kreativen Lösung ist fundamental schwerer als das mechanische Nachprüfen).   * Wäre $P = NP$, würde dies bedeuten, dass jeder mathematische Beweis so schnell gefunden werden könnte, wie man ihn lesen kann. Gleichzeitig würde die gesamte globale Internet-Sicherheit (RSA, AES, Blockchain) in sich zusammenbrechen."
+        }
+      ]
+    }
+  ]
+}

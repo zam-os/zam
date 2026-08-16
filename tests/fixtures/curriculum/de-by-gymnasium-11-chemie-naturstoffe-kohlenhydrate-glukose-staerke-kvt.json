@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-chemie-naturstoffe-kohlenhydrate-glukose-staerke",
+  "version": "2026.08.1",
+  "title": "Chemie 11: Naturstoffe & Biochemie – Kohlenhydrate (Glukose, Fruktose, Saccharose, Stärke) (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Chemie 11 (Oberstufe): Biochemie der Kohlenhydrate (Saccharide C_n(H2O)_m), Monosaccharide (D-Glucose als Aldohexose, D-Fructose als Ketohexose; Chiralität und asymmetrische C-Atome C*, Enantiomere, D/L-Nomenklatur nach Emil Fischer), Ringbildung (Intramolekulare Halbacetalbildung, Pyranose vs. Furanose, Haworth-Projektion, alpha- und beta-Anomere am anomeren C1-Atom, Mutarotation), Nachweisreaktionen (Fehling- und Tollens-Probe, Keto-Enol-Tautomerie bei Fructose), Disaccharide (Maltose: alpha-1,4-glykosidische Bindung [reduzierend], Saccharose: alpha-1,beta-2-glykosidische Bindung [nicht-reduzierend], Invertzucker) sowie Polysaccharide (Stärke: Amylose und Amylopektin mit Lugolscher Iodprobe vs. Cellulose mit beta-1,4-Verknüpfung und Wasserstoffbrücken).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/chemie",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Chemie 11, Lernbereich Naturstoffe – Kohlenhydrate"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB70000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB70000000000000000A01",
+      "namespace": "gymnasium-chemie-monosaccharide",
+      "slug": "monosaccharide-glucose-fructose-fischer-haworth-mutarotation",
+      "title": "Monosaccharide: D-Glucose, D-Fructose, Fischer-Projektion, Haworth-Ringschluss und Mutarotation",
+      "domain": "schule/chemie/biochemie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Carbohydrate",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Monosaccharide – Struktur und Stereochemie",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB70000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welche funktionelle Gruppe entsteht bei der intramolekularen Ringbildung von D-Glucose (Halbacetalbildung zwischen C1-Aldehydgruppe und C5-Hydroxygruppe)?",
+          "concept": "Ein cyclisches Halbacetal mit einem neuen asymmetrischen C-Atom (anomeres C1-Atom), das alpha- und beta-D-Glucopyranose bildet",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Ein cyclisches Halbacetal (mit anomerem C1-Atom)",
+              "Ein vollständiger Ester"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB70000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Struktur, Stereochemie und Mutarotation von D-Glucose und D-Fructose: 1. **Fischer-Projektion & D/L-Konfiguration**:   * **D-Glucose ($C_6H_{12}O_6$)**: Aldohexose (Polyhydroxyaldehyd). C-Kette mit 4 asymmetrischen C-Atomen ($C2-C5$). Merkregel: *'Ta-Ta-Ta-Ta'* $\\implies$ OH-Gruppen an C2 (rechts), C3 (links), C4 (rechts), C5 (rechts).   * **D-Konfiguration**: Die OH-Gruppe am **am weitesten von der Carbonylgruppe entfernten Chiralitätszentrum** (C5) steht in der Fischer-Projektion **rechts** (*dexter*).   * **D-Fructose**: Ketohexose (Polyhydroxyketon mit Carbonylgruppe an C2), 2. **Der intramolekulare Ringschluss (Halbacetalbildung)**:   * Die nukleophile $-OH$-Gruppe an C5 greift das elektrophile Carbonyl-C1-Atom an $\\implies$ Bildung eines 6-gliedrigen Rings (**Glucopyranose**).   * Das C1-Atom wird chiral (**anomeres Zentrum**):     - **$\\alpha$-D-Glucopyranose**: Anomere OH-Gruppe am C1 steht in der Haworth-Formel **unten** (*trans* zur $CH_2OH$-Gruppe an C6).     - **$\\beta$-D-Glucopyranose**: Anomere OH-Gruppe am C1 steht **oben** (*cis* zur $CH_2OH$-Gruppe; sterisch begünstigt $\\approx 64\\%$ im Gleichgewicht), 3. **Das Phänomen der Mutarotation**:   * Kontinuierliche Änderung des optischen Drehwinkels einer frisch angesetzten Glucoselösung (von $+112^\\circ$ bei reinem $\\alpha$-Anomer bzw. $+18{,}7^\\circ$ bei reinem $\\beta$-Anomer) bis zum thermodynamischen Gleichgewichtswert von $+52{,}7^\\circ$ über die offenkettige Aldehyd-Zwischenform ($< 0{,}1\\%$).",
+          "concept": "Kohlenhydrate: D-Glucose (Aldohexose) & D-Fructose (Ketohexose); Fischer-Projektion (D/L an C5); Halbacetal-Ringschluss zu Pyranose; Haworth-Projektion (alpha unten, beta oben); Mutarotation als Gleichgewichtseinstellung über die offene Form.",
+          "sample_solution": "1. Struktur und Stereochemie der Monosaccharide: - **Monosaccharide ($C_n(H_2O)_n$)**: Einfachzucker, die sich nicht mehr durch Hydrolyse in kleinere Zuckereinheiten spalten lassen. - **D-Glucose (Traubenzucker, $C_6H_{12}O_6$)**:   * **Stoffklasse**: Aldohexose (enthält eine Aldehydgruppe an C1 und 5 Hydroxygruppen).   * **Chiralitätszentren**: Die Kohlenstoffatome C2, C3, C4 und C5 tragen 4 verschiedene Substituenten ($C^*$). Es existieren $2^4 = 16$ Stereoisomere (8 D- und 8 L-Zucker).   * **Fischer-Projektion von D-Glucose (von C1 nach C6)**:     - C1: $-CHO$ (Aldehydgruppe ganz oben).     - C2: $-OH$ **rechts**     - C3: $-OH$ **links** (*Ta-Ta-Ta-Ta-Regel: Rechts-Links-Rechts-Rechts*)     - C4: $-OH$ **rechts**     - C5: $-OH$ **rechts** (definiert die **D-Reihe**, da am höchsten bezifferten Stereozentrum die OH-Gruppe rechts steht).     - C6: $-CH_2OH$. 2. Der Ringschluss zur Haworth-Projektion: - In wässriger Lösung liegt Glucose zu über $99{,}9\\%$ als cyclisches **Halbacetal (Glucopyranose)** vor. - **Reaktionsmechanismus**:   * Das freie Elektronenpaar des Sauerstoffatoms der $C5-OH$-Gruppe greift das sp2-hybridisierte, polarisierte Carbonylkohlenstoffatom C1 nukleophil an.   * Das Proton wird auf den Carbonylsauerstoff übertragen $\\implies$ Ringschluss zum stabilen sechsgliedrigen Ring (5 C-Atome + 1 O-Atom). - **Das anomere Kohlenstoffatom (C1)**:   * Durch den Ringschluss wird das ehemals achirale C1-Atom zu einem neuen Chiralitätszentrum. Es entstehen zwei Diastereomere (**Anomere**):     * **$\\alpha$-D-Glucopyranose**: Die anomere OH-Gruppe am C1 zeigt in der Haworth-Projektion nach **unten** (Spezifischer Drehwinkel $[\\alpha]_D = +112^\\circ$).     * **$\\beta$-D-Glucopyranose**: Die anomere OH-Gruppe am C1 zeigt nach **oben** in die äquatoriale Position (Spezifischer Drehwinkel $[\\alpha]_D = +18{,}7^\\circ$). 3. Das Phänomen der Mutarotation: - **Beobachtung**: Löst man kristalline reine $\\alpha$-D-Glucose in Wasser, sinkt der optische Drehwinkel im Polarimeter allmählich von $+112^\\circ$ auf konstant **$+52{,}7^\\circ$**. Löst man reine $\\beta$-D-Glucose, steigt er von $+18{,}7^\\circ$ auf denselben Endwert von $+52{,}7^\\circ$. - **Ursache**: Der Halbacetalring öffnet sich in wässriger Lösung reversibel zur offenkettigen Aldehydform ($< 0{,}1\\%$) und schließt sich wieder. Es stellt sich ein thermodynamisches **Gleichgewicht** ein:   $$\\mathbf{\\alpha\\text{-D-Glucose } (ca.\\,36\\%) \\rightleftharpoons \\text{Offenkettige Form } (< 0{,}1\\%) \\rightleftharpoons \\beta\\text{-D-Glucose } (ca.\\,64\\%)}$$   *(Das $\\beta$-Anomer überwiegt, da alle OH-Gruppen die sterisch günstigste, abstoßungsarme äquatoriale Position in der Sesselkonformation einnehmen)*."
+        }
+      ]
+    },
+    {
+      "id": "01K8GB70000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB70000000000000000A02",
+      "namespace": "gymnasium-chemie-di-polysaccharide",
+      "slug": "disaccharide-polysaccharide-glykosidische-bindung-staerke-cellulose",
+      "title": "Di- & Polysaccharide: Glykosidische Bindung, Maltose, Saccharose, Stärke und Cellulose",
+      "domain": "schule/chemie/biochemie",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB70000000000000000A01",
+          "type": "hard",
+          "rationale": "Höhere Saccharide sind Kondensationspolymere von Monosacchariden."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11190",
+          "target_label": "Polysaccharide",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "chemie",
+          "topic_code": "lb1",
+          "topic_title": "Di- und Polysaccharide – Verknüpfungen und Eigenschaften",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB70000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Warum reagiert der Haushaltszucker Saccharose (Rohrzucker) im Gegensatz zu Maltose (Malzzucker) bei der Fehling-Probe negativ (nicht-reduzierender Zucker)?",
+          "concept": "Weil bei Saccharose die anomeren OH-Gruppen beider Monosaccharide (C1 von alpha-Glucose und C2 von beta-Fructose) in einer 1,2-glykosidischen Vollacetalbindung blockiert sind und kein Ring mehr aufklappen kann",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Beide anomeren Zentren sind in einer 1,2-Bindung blockiert",
+              "Saccharose enthält keinen Kohlenstoff"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB70000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Disaccharide, glykosidische Bindung und die Struktur von Stärke vs. Cellulose: 1. **Die glykosidische Bindung (Vollacetalbildung)**:   * Kondensation der anomeren Halbacetal-OH-Gruppe eines Monosaccharids mit einer beliebigen OH-Gruppe eines zweiten Moleküls unter Wasseraustritt ($-H_2O$).   * **Maltose (Malzzucker)**: $\\alpha$-1,4-glykosidische Verknüpfung zweier D-Glucosemoleküle. C1-Zentrum des zweiten Rings ist frei $\\implies$ **reduzierend** (Fehling positiv).   * **Saccharose (Haushaltszucker)**: $\\alpha$-D-Glucopyranosyl-(1$\\rightarrow$2)-$\\beta$-D-fructofuranosid. Beide anomeren Zentren (C1 von Glucose, C2 von Fructose) sind verknüpft $\\implies$ **nicht-reduzierend** (Fehling negativ; nach Säurehydrolyse zu *Invertzucker* positiv), 2. **Polysaccharide im Vergleich: Stärke vs. Cellulose**:   * **Stärke (Pflanzlicher Reservestoff)**: Gemisch aus:     - **Amylose (20–30 %)**: Unverzweigte Helices aus $\\alpha$-1,4-verknüpften Glucosen. **Nachweis**: Polyiodid-Ionen ($I_3^-, I_5^-$ aus Lugolscher Lösung) lagern sich als Einschlusskomplex in den Helix-Hohlraum ein $\\implies$ **intensive tiefblaue Färbung**.     - **Amylopektin (70–80 %)**: Verzweigte Ketten mit zusätzlichen $\\alpha$-1,6-Verzweigungsstellen alle 25 Glucosebausteine.   * **Cellulose (Pflanzlicher Gerüststoff)**: Lineare, gestreckte Ketten aus **$\\beta$-1,4-glykosidisch** verknüpften Glucosemolekülen (jedes zweite Molekül steht 'auf dem Kopf' um $180^\\circ$ gedreht). Zahlreiche intermolekulare **Wasserstoffbrückenbindungen** bilden extrem zugfeste **Mikrofibrillen** (unverdaulich für Menschen mangels $\\beta$-Glucosidase/Cellulase).",
+          "concept": "Di- und Polysaccharide: Glykosidische Bindung; Maltose (alpha-1,4, reduzierend) vs. Saccharose (alpha-1,beta-2, nicht-reduzierend, Invertzucker); Stärke (Amylose alpha-1,4-Helix mit Lugol-Blaufärbung + Amylopektin alpha-1,6) vs. Cellulose (beta-1,4-Fasern mit H-Brücken).",
+          "sample_solution": "1. Die Chemie der Disaccharide: - **Entstehung**: Zwei Monosaccharide verbinden sich unter Austritt von Wasser ($-\\text{H}_2\\text{O}$) über eine **glykosidische Bindung (Vollacetal)**. - **1. Maltose (Malzzucker, $C_{12}H_{22}O_{11}$)**:   * Verknüpfung: $\\mathbf{\\alpha-1,4-glykosidisch}$ zwischen C1 der ersten und C4 der zweiten $\\alpha$-D-Glucose.   * *Reduzierende Eigenschaft*: Da das anomere C1-Atom des rechten Glucose-Rings frei als Halbacetal vorliegt, kann dieser Ring in wässriger Lösung zur Aldehydform aufklappen $\\implies$ **Fehling-Probe und Tollens-Probe verlaufen positiv**. - **2. Saccharose (Kristallzucker / Rohr- und Rübenzucker)**:   * Verknüpfung: $\\mathbf{\\alpha-D-Glucopyranose-(1 \\leftrightarrow 2)-\\beta-D-Fructofuranose}$.   * *Nicht-reduzierende Eigenschaft*: Die Bindung blockiert beide anomeren Zentren (C1 der Glucose und C2 der Fructose) $\\implies$ Kein Ring kann aufklappen $\\implies$ **Fehling-Probe negativ**.   * **Inversion (Invertzucker)**: Durch Säure oder das Enzym Invertase wird Saccharose in freie D-Glucose ($[\\alpha] = +52{,}7^\\circ$) und freie D-Fructose ($[\\alpha] = -92^\\circ$) gespalten. Der Drehwert kehrt sich von rechts ($+66{,}5^\\circ$) nach links ($-19{,}7^\\circ$) um (**Invertzucker**). 2. Struktur und Eigenschaften der Polysaccharide: | Kriterium | Stärke (Amylose / Amylopektin) | Cellulose | | :--- | :--- | :--- | | **Monomer** | $\\alpha$-D-Glucose | $\\beta$-D-Glucose | | **Verknüpfungstyp** | $\\mathbf{\\alpha-1,4}$ (Amylose) sowie $\\mathbf{\\alpha-1,6}$ (Amylopektin Verzweigung) | $\\mathbf{\\beta-1,4-glykosidisch}$ (Nachbarbausteine um $180^\\circ$ zueinander rotiert) | | **Räumliche Gestalt** | Linksgängige **Helix (Schraubenstruktur)** mit Hohlraum | Völlig **gestreckte, lineare Bandstruktur** | | **Übergeordnete Struktur** | Geleeartige Körner (Quellung in heißem Wasser) | Dichte Bündel (**Mikrofibrillen**) durch parallele Wasserstoffbrücken | | **Biologische Funktion** | Wichtigster **pflanzlicher Energiespeicher** (Getreide, Kartoffeln) | **Gerüstsubstanz pflanzlicher Zellwände** (Holz, Baumwolle, Papier) | | **Iod-Nachweis (Lugol)** | **Tiefblaue Farbe** (Iodmoleküle lagern sich in die Amylosehelix ein) | Negativ (keine Helixbildung) | | **Verdaulichkeit Mensch** | Voll verdaulich (Spaltung durch $\\alpha$-Amylase im Speichel/Dünndarm) | **Unverdaulich (Ballaststoff)**, da dem Menschen das Enzym Cellulase fehlt |"
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-10-latein-philosophie-seneca-ovid-metamorphosen",
+  "version": "2026.08.1",
+  "title": "Latein 10: Römische Philosophie (Seneca, Stoa) und Römische Dichtung (Ovid, Metamorphosen) (Gymnasium 10 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Latein 10 (L1/L2): Römische Philosophie am Beispiel von Lucius Annaeus Seneca (Epistulae morales ad Lucilium: Stoische Philosophie, Seelenruhe / Tranquillitas animi, Freiheit des Weisen, Überwindung der Todesfurcht, Leben im Einklang mit der Natur / secundum naturam vivere, Beherrschung der Affekte) sowie Römische Dichtung am Beispiel von Publius Ovidius Naso (Metamorphosen: Mythen von Dädalus und Ikarus, Pyramus und Thisbe, Verwandlungsmotiv, daktylischer Hexameter und metrisches Skandieren).",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:20:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/10/latein",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Latein 10, Lernbereiche Text- und Kulturkompetenz – Römische Philosophie und Dichtung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GAC0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GAC0000000000000000A01",
+      "namespace": "gymnasium-latein-philosophie",
+      "slug": "seneca-stoa-philosophie-tranquillitas-animi-securitas",
+      "title": "Römische Philosophie: Seneca, Stoische Lebenskunst, Seelenruhe (Tranquillitas) und Affektbeherrschung",
+      "domain": "schule/latein/philosophie",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Stoicism",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "latein",
+          "topic_code": "lb1",
+          "topic_title": "Römische Philosophie – Seneca und die Stoa",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAC0000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was bezeichnet in der stoischen Philosophie Senecas das höchste Lebensziel der inneren Unerschütterlichkeit und Freiheit von zerstörerischen Leidenschaften?",
+          "concept": "Die Apatheia / Seelenruhe (Tranquillitas animi / Securitas durch Beherrschung der Affekte)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Seelenruhe und Affektfreiheit (Tranquillitas animi / Apatheia)",
+              "Ungehemmtes Ausleben aller sinnlichen Begierden"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAC0000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die stoische Philosophie Senecas anhand der 'Epistulae morales ad Lucilium': 1. **Das stoische Grundprinzip**:   * *Secundum naturam vivere* (Leben in Übereinstimmung mit der von der göttlichen Vernunft [*Logos*] durchwalteten Natur).   * Das einzig wahre Gut ist die sittliche Tugend (**Virtus**); das einzig wahre Übel ist das Laster (**Vitium**). Alles andere (Reichtum, Gesundheit, Macht, Schönheit, Ruhm) sind **Adiaphora** (sittlich gleichgültige Dinge, teils bevorzugt [*commoda*], teils zurückgewiesen [*incommoda*]), 2. **Das Ideal des stoischen Weisen (*Sapiens*)**:   * **Apatheia**: Freiheit von unvernünftigen Trieben und Affekten (*Ira* [Zorn], *Metus* [Angst], *Dolor* [Schmerz], *Voluptas* [Lust]).   * **Tranquillitas animi & Securitas**: Unerschütterliche innere Gelassenheit und Seelenfrieden angesichts von Schicksalsschlägen (*Fortuna*), 3. **Umgang mit Zeit und Vergänglichkeit (*Epistula 1*)**:   * *Vindicare se sibi* (Sich selbst für sich zurückfordern): Zeit ist das kostbarste Gut; die meisten Menschen verschwenden ihr Leben, statt die Gegenwart bewusst zu nutzen.   * *Cotidie morimur* (Täglich sterben wir): Der Tod ist kein fernes Zukunftsereignis, sondern jeder vergangene Tag gehört bereits dem Tode $\\implies$ Überwindung der Todesfurcht macht den Weisen wahrhaft frei.",
+          "concept": "Stoische Philosophie Seneca: Leben im Einklang mit der Natur (secundum naturam vivere); Tugend (Virtus) als einziges Gut; Adiaphora; Seelenruhe (Tranquillitas animi) durch Apatheia; Umgang mit der Zeit (vindicare se sibi, quotidie morimur).",
+          "sample_solution": "1. Das System der stoischen Philosophie (Lucius Annaeus Seneca, 4 v. Chr. – 65 n. Chr.): - **Kosmologisches Weltbild**: Der Kosmos ist von einer allumfassenden göttlichen Weltvernunft (**Logos**) und Vorsehung (**Providentia**) geordnet und beseelt. - **Ethischer Leitgrundsatz**:   * *« Secundum naturam vivere »* (Ein Leben in vollkommener Übereinstimmung mit der eigenen vernünftigen Natur und der kosmischen Weltordnung führen). - **Wertehierarchie**:   * **1. Das einzig wahre Gut**: Die sittliche Vollkommenheit und Tugendhaftigkeit (**Virtus**).   * **2. Das einzige Übel**: Das sittliche Versagen und Laster (**Vitium**).   * **3. Die sittlich neutralen Dinge (Adiaphora)**:     - Äußere Güter wie Gesundheit, Reichtum, sozialer Status, Schmerz oder Tod berühren den moralischen Kern des Menschen nicht:       * *Preferred (praeposita / commoda)*: Z. B. Gesundheit (vernünftig vorzuziehen, aber nicht heilsentscheidend).       * *Rejected (reiecta / incommoda)*: Z. B. Krankheit, Armut. 2. Die Seelenruhe des stoischen Weisen (Sapiens): - **Beherrschung der Affekte (Apatheia)**:   * Affekte wie Zorn (*ira*), Trauer (*dolor*), Begierde (*cupiditas*) und Angst (*metus*) sind falsche Werturteile der ungebildeten Vernunft.   * Der Weise lässt sich von den Wechselfällen des blinden Schicksals (**Fortuna**) nicht erschüttern.   * Dies begründet die unantastbare **Tranquillitas animi (Seelenruhe)** und **Autarkie (Selbstgenügsamkeit)**. 3. Senecas Lebensphilosophie in den Briefen an Lucilius: - **Umgang mit der Lebenszeit (Epistula 1: *« Vindica te tibi! »*)**:   * Seneca ermahnt seinen Freund Lucilius, die eigene Zeit nicht achtlos verstreichen zu lassen oder anderen Menschen zu schenken. Nicht das Leben ist zu kurz, sondern wir verschwenden zu viel davon (*De brevitate vitae*). - **Überwindung der Todesfurcht**:   * *« Cotidie morimur »* (Jeden Tag sterben wir ein Stück): Jeder Tag, der vergangen ist, liegt bereits im Reich des Todes. Wer gelernt hat, jeden einzelnen Tag als vollendetes Leben zu begreifen, fürchtet das Sterben nicht mehr $\\implies$ Gelassenheit und innere Freiheit gegenüber Despoten (wie Kaiser Nero)."
+        }
+      ]
+    },
+    {
+      "id": "01K8GAC0000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GAC0000000000000000A02",
+      "namespace": "gymnasium-latein-dichtung",
+      "slug": "ovid-metamorphosen-daedalus-ikarus-hexameter-metrik",
+      "title": "Römische Dichtung: Ovid (Metamorphosen), Mythenanalyse und der Daktylische Hexameter",
+      "domain": "schule/latein/metrik",
+      "reduction": "formal",
+      "typical_age_min": 15.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GAC0000000000000000A01",
+          "type": "hard",
+          "rationale": "Dichtungsanalyse erfordert fortgeschrittene Text- und Metrikkompetenz."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q397",
+          "target_label": "Metamorphoses",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 10,
+          "subject": "latein",
+          "topic_code": "lb2",
+          "topic_title": "Römische Dichtung – Ovid, Metamorphosen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GAC0000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Aus wie vielen Versfüßen (Takten) besteht ein regelmäßiger daktylischer Hexameter in der antiken epischen Dichtung (wie in Ovids Metamorphosen)?",
+          "concept": "Aus exakt 6 Versfüßen (Daktylen — ⏑⏑ bzw. Spondeen — —, wobei der 5. Fuß fast immer ein Daktylus und der 6. Fuß katalektisch zweiwertig ist)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "6 Versfüße (Hexameter: 6 Takte)",
+              "4 Versfüße"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GAC0000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Ovids Metamorphosen, das Metrum des daktylischen Hexameters und den Mythos von Dädalus und Ikarus: 1. **Ovids Metamorphosen (Das Epos der Verwandlungen)**:   * Rahmenthema: Vom Ursprung der Welt (Chaos) bis zur Vergöttlichung Caesars (*ab origine mundi ad mea tempora*); ca. 250 Verwandlungsmythen in 15 Büchern.   * Leitmotiv: *Omnia mutantur, nihil interit* (Alles verändert sich, nichts vergeht – pythagoreische Seelenwanderung), 2. **Metrik des Daktylischen Hexameters**:   * Grundschema (6 Versfüße):     $$\\mathbf{— \\,\\underline{\\smile\\smile} \\mid — \\,\\underline{\\smile\\smile} \\mid — \\,\\underline{\\smile\\smile} \\mid — \\,\\underline{\\smile\\smile} \\mid — \\,\\smile\\smile \\mid — \\,\\underline{\\smile}}$$   * **Daktylus**: Eine lange Silbe gefolgt von zwei kurzen Silben ($— \\,\\smile\\smile$).   * **Spondeus**: Eine Länge ersetzt zwei Kürzen ($— \\,—$).   * **Quantitätsregeln**: Naturlängen (Diphthonge, lange Vokale) vs. Positionslängen (Vokal vor zwei oder mehr Konsonanten).   * **Häufigste Zäsur**: *Trithemimeres* (nach 3. Halbfuß), *Penthemimeres* (nach 5. Halbfuß $\\implies$ Haupteinschnitt des Verses), *Hephthemimeres* (nach 7. Halbfuß), 3. **Interpretation des Mythos von Dädalus und Ikarus (Buch VIII)**:   * Dädalus' Erfindungsgabe (*artes ignotas*) zur Flucht aus dem kretischen Labyrinth.   * Warnung an Ikarus vor Maßlosigkeit: Fliege die goldene Mitte (*medio cursu*) – nicht zu tief (Meeresfeuchtigkeit beschwert die Federn), nicht zu hoch (Sonnenhitze schmilzt das Wachs).   * Hybris und Sturz des Ikarus: Der Übermut des Jünglings, Verlassen des Vaters $\\implies$ Absturz ins Meer (*Mare Icarium*) als Symbol für maßlose Grenzüberschreitung.",
+          "concept": "Ovid Metamorphosen: Verwandlungsepos; Daktylischer Hexameter (6 Füße, Daktylen vs. Spondeen, Naturlängen/Positionslängen, Penthemimeres); Mythos Dädalus & Ikarus (Flügelbau, Hybris, Maßlosigkeit vs. goldene Mitte, Sturz).",
+          "sample_solution": "1. Werkcharakter und Konzeption der Metamorphosen (Publius Ovidius Naso, 43 v. Chr. – 17 n. Chr.): - **Gattung**: Ein mythologisches Großepos in 15 Büchern mit über 12.000 Hexameterversen. - **Struktur (*Carmen perpetuum*)**: Ein fortlaufendes, kunstvoll ineinander verflochtenes Erzählgedicht von der Erschaffung der Welt aus dem Chaos bis zur Verwandlung von Iulius Caesar in einen Stern. - **Philosophische Grundidee**:   * *« Omnia mutantur, nihil interit »* (Alles wandelt sich, nichts vergeht): Verwandlung (*Metamorphose*) als ewiges Naturgesetz der Schöpfung. 2. Die Metrik des daktylischen Hexameters: - **Grundstruktur (6 Takte / Versfüße)**:   $$\\mathbf{— \\,\\underline{\\smile\\smile} \\;\\Big|\\; — \\,\\underline{\\smile\\smile} \\;\\Big|\\; — \\,\\underline{\\smile\\smile} \\;\\Big|\\; — \\,\\underline{\\smile\\smile} \\;\\Big|\\; — \\,\\smile\\smile \\;\\Big|\\; — \\,\\underline{\\smile}}$$ - **Regeln der Silbenquantität**:   * **1. Naturlänge (—)**: Diphthonge (*ae, au, oe, eu*) sowie von Natur aus lange Vokale.   * **2. Positionslänge (—)**: Ein kurzer Vokal wird metrisch lang, wenn ihm **zwei oder mehr Konsonanten** (oder Doppelkonsonanten wie $x, z$) folgen (*Positio*).   * **3. Elision (Synaloiphe)**: Endet ein Wort auf Vokal oder $-m$ und beginnt das Folgewort mit Vokal oder $h-$, wird die Endsilbe des ersten Wortes metrisch verschluckt. - **Wichtigste Zäsuren (Sprechpausen im Vers)**:   * **Penthemimeres**: Einschnitt nach der 5. Halbsilbe (Standard-Haupteinschnitt):     * *« Daedalus interea // Creten longumque perosus... »* 3. Textanalyse und Deutung: Der Dädalus-Ikarus-Mythos (Met. VIII, 183–235): - **Motiv des *Homo Faber***:   * Dädalus überwindet durch Verstand und Technik (*« ignotas animum dimittit in artes »*) die Naturgesetze der menschlichen Schwerkraft und baut künstliche Vogelflügel aus Federn und Wachs. - **Die ethische Warnung vor Maßlosigkeit**:   * Dädalus mahnt seinen Sohn zur **stoisch-antiken Mäßigung (Aurea Mediocritas / die goldene Mitte)**: *« Medio ut limite curras, Icare, moneo! »* - **Hybris und Katastrophe**:   * Ikarus wird von der Faszination des Fliegens und jugendlichem Übermut erfasst (*« audaci coepit gaudere volatu »*), verlässt die Flugbahn seines Vaters und steigt der Sonne zu nah empor. Die Hitze schmilzt das Wachs $\\implies$ Ikarus stürzt ins Meer.   * *Pädagogische Botschaft*: Warnung vor Hybris, Selbstüberschätzung und dem Missachten elterlicher und naturgegebener Grenzen."
+        }
+      ]
+    }
+  ]
+}

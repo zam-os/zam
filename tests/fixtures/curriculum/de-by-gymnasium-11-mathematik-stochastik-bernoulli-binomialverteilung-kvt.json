@@ -1,0 +1,138 @@
+{
+  "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
+  "tile_id": "de-by:gymnasium-11-mathematik-stochastik-bernoulli-binomialverteilung",
+  "version": "2026.08.1",
+  "title": "Mathematik 11: Stochastik – Kombinatorik, Bernoulli-Ketten und Binomialverteilung (Gymnasium 11 Bayern)",
+  "description": "Geerdetes KVT-Paket für Gymnasium Bayern Mathematik 11: Kombinatorische Zählprinzipien (Fakultät n!, Variationen und Kombinationen ohne Wiederholung mit Binomialkoeffizient (n über k) = n! / (k! * (n-k)!), Pascalsches Dreieck), Bernoulli-Experimente (zwei komplementäre Ausgänge Treffer/Niete, konstante Trefferwahrscheinlichkeit p), Bernoulli-Ketten der Länge n, Die Binomialverteilung B(n, p, k) mit P(X = k) = (n über k) * p^k * (1-p)^(n-k), Kumulierte Wahrscheinlichkeiten P(X <= k), Erwartungswert mu = n * p, Varianz Var(X) = n * p * (1-p) und Standardabweichung sigma = sqrt(n * p * (1-p)) sowie Sigma-Regeln.",
+  "publisher": "ZAM Curriculum Working Group",
+  "published_at": "2026-08-16T07:30:00Z",
+  "sources": [
+    {
+      "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/gymnasium/11/mathematik",
+      "checked": "2026-08-16",
+      "label": "Gymnasium Mathematik 11, Lernbereich Stochastik – Bernoulli-Ketten und Binomialverteilung"
+    }
+  ],
+  "atoms": [
+    {
+      "id": "01K8GB30000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K8GB30000000000000000A01",
+      "namespace": "gymnasium-mathematik-kombinatorik-bernoulli",
+      "slug": "kombinatorik-binomialkoeffizient-bernoulli-kette",
+      "title": "Kombinatorik & Bernoulli-Kette: Binomialkoeffizient, Pfadwahrscheinlichkeiten und Baumdiagramm",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Bernoulli trial",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Kombinatorik und Bernoulli-Experimente",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB30000000000000000J01",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Was gibt der Binomialkoeffizient $\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}$ in einem $n$-stufigen Bernoulli-Baumdiagramm anschaulich an?",
+          "concept": "Die Anzahl aller Pfade im Baumdiagramm, die genau k Treffer und n - k Nieten enthalten",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "Die Anzahl aller Pfade mit genau k Treffern",
+              "Die Wahrscheinlichkeit eines einzelnen Pfades"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB30000000000000000J02",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere Kombinatorik und Bernoulli-Experimente: 1. **Kombinatorische Grundformeln**:   * **Permutationen** von $n$ verschiedenen Elementen: $P_n = n!$.   * **Kombination ohne Wiederholung (Ziehen ohne Zurücklegen ohne Reihenfolge)**:     $$\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!}} \\quad (0 \\le k \\le n)$$   * Symmetrie: $\\binom{n}{k} = \\binom{n}{n-k}$; Rekursion: $\\binom{n+1}{k+1} = \\binom{n}{k} + \\binom{n}{k+1}$ (Pascalsches Dreieck), 2. **Das Bernoulli-Experiment & die Bernoulli-Kette**:   * **Bernoulli-Experiment**: Zufallsexperiment mit exakt **zwei Ergebnissen**: Treffer ($T$) mit Wahrscheinlichkeit $p$ und Niete ($N$) mit Gegenwahrscheinlichkeit $q = 1 - p$.   * **Bernoulli-Kette der Länge $n$**: $n$-malige unabhängige Wiederholung eines Bernoulli-Experiments unter identischen Bedingungen (konstantes $p$), 3. Berechne den Binomialkoeffizienten $\\binom{6}{2}$ und bestimme die Wahrscheinlichkeit, beim 6-maligen Werfen eines fairen Laplace-Würfels genau zweimal eine Sechs ($p = \\frac{1}{6}$) zu würfeln.",
+          "concept": "Kombinatorik: Binomialkoeffizient n über k; Bernoulli-Kette (unabhängige Wiederholungen, konstantes p); Rechnung: (6 über 2) = (6*5)/(2*1) = 15 Pfade; P(X=2) = 15 * (1/6)^2 * (5/6)^4 = 15 * (1/36) * (625/1296) = 9375 / 46656 approx 0,2009 (ca. 20,09 %).",
+          "sample_solution": "1. Kombinatorische Grundlagen: - **1. Fakultät**:   $$n! = 1 \\cdot 2 \\cdot 3 \\cdot \\dots \\cdot n \\quad (\\text{Def.: } 0! = 1)$$ - **2. Der Binomialkoeffizient ('$n$ über $k$')**:   $$\\mathbf{\\binom{n}{k} = \\frac{n!}{k! \\cdot (n - k)!} = \\frac{n \\cdot (n - 1) \\cdot \\dots \\cdot (n - k + 1)}{k \\cdot (k - 1) \\cdot \\dots \\cdot 1}}$$   * Gibt die Anzahl der Möglichkeiten an, aus $n$ Objekten $k$ Objekte ohne Berücksichtigung der Reihenfolge auszuwählen. 2. Die Bernoulli-Kette: - **Bedingungen für einen Bernoulli-Prozess**:   1. Jede Stufe hat nur zwei Ausgänge: $T$ (Treffer, $P(T) = p$) und $N$ (Niete, $P(N) = q = 1 - p$).   2. Die Trefferwahrscheinlichkeit $p$ bleibt bei allen Durchläufen **konstant** (Unabhängigkeit der Einzelstufen). 3. Durchrechnung des Beispiels ($n = 6, k = 2, p = \\frac{1}{6}$): - **Schritt 1: Berechnung des Binomialkoeffizienten $\\binom{6}{2}$**:   $$\\binom{6}{2} = \\frac{6 \\cdot 5}{2 \\cdot 1} = \\mathbf{15}$$   *(Es gibt im 6-stufigen Baumdiagramm genau 15 verschiedene Pfade mit 2 Sechsen und 4 Nicht-Sechsen)*. - **Schritt 2: Wahrscheinlichkeit eines einzelnen Pfades**:   $$P(\\text{1 Pfad}) = p^k \\cdot (1 - p)^{n - k} = \\left(\\frac{1}{6}\\right)^2 \\cdot \\left(\\frac{5}{6}\\right)^4 = \\frac{1}{36} \\cdot \\frac{625}{1296} = \\frac{625}{46.656}$$ - **Schritt 3: Gesamtwahrscheinlichkeit nach der 1. Pfadregel**:   $$P(X = 2) = \\binom{6}{2} \\cdot p^2 \\cdot q^4 = 15 \\cdot \\frac{625}{46.656} = \\frac{9375}{46.656} \\approx \\mathbf{0{,}2009 = 20{,}09\\%}$$."
+        }
+      ]
+    },
+    {
+      "id": "01K8GB30000000000000000A02",
+      "atom_uri": "urn:zam:atom:01K8GB30000000000000000A02",
+      "namespace": "gymnasium-mathematik-binomialverteilung",
+      "slug": "binomialverteilung-erwartungswert-standardabweichung-sigma-regeln",
+      "title": "Binomialverteilung: Bernoulliformel B(n,p,k), Kenngrößen (mu, sigma) und Sigma-Regeln",
+      "domain": "schule/mathematik/stochastik",
+      "reduction": "formal",
+      "typical_age_min": 16.5,
+      "prerequisites": [
+        {
+          "atom_id": "01K8GB30000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Binomialverteilung ist die Wahrscheinlichkeitsverteilung einer Bernoulli-Kette."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Binomial distribution",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "gymnasium",
+          "grade": 11,
+          "subject": "mathematik",
+          "topic_code": "lb4",
+          "topic_title": "Binomialverteilung und Kenngrößen",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K8GB30000000000000000J03",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie berechnet sich der Erwartungswert $\\mu = E(X)$ einer nach $B(n; p)$ binomialverteilten Zufallsgröße $X$?",
+          "concept": "mu = n * p (Kettenlänge multipliziert mit der Trefferwahrscheinlichkeit)",
+          "fast_check": {
+            "type": "binary_choice",
+            "options": [
+              "mu = n * p",
+              "mu = sqrt(n * p * (1 - p))"
+            ],
+            "correct_index": 0
+          }
+        },
+        {
+          "id": "01K8GB30000000000000000J04",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 2,
+          "question": "Analysiere die Binomialverteilung $B(n; p)$ und ihre statistischen Kenngrößen: 1. **Die Formel von Bernoulli**:   * Die Zufallsgröße $X$ zählt die Anzahl der Treffer:     $$\\mathbf{P(X = k) = B(n; p; k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}} \\quad (k \\in \\{0, 1, \\dots, n\\})$$   * **Kumulierte Wahrscheinlichkeit ('höchstens $k$ Treffer')**:     $$\\mathbf{P(X \\le k) = F(n; p; k) = \\sum_{i=0}^k \\binom{n}{i} \\cdot p^i \\cdot (1 - p)^{n - i}}$$   * 'Mindestens $k$ Treffer': $P(X \\ge k) = 1 - P(X \\le k - 1)$, 2. **Statistische Kenngrößen einer Binomialverteilung**:   * **Erwartungswert $\\mu$**: $\\mu = E(X) = n \\cdot p$.   * **Varianz $\\operatorname{Var}(X)$**: $\\sigma^2 = n \\cdot p \\cdot (1 - p)$.   * **Standardabweichung $\\sigma$**: $\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}$, 3. **Sigma-Regeln (für $\\sigma > 3$, Laplace-Bedingung)**:   * $1\\sigma$-Intervall: $P(\\mu - \\sigma \\le X \\le \\mu + \\sigma) \\approx 68{,}3\\%$.   * $2\\sigma$-Intervall: $P(\\mu - 2\\sigma \\le X \\le \\mu + 2\\sigma) \\approx 95{,}4\\%$.   * $3\\sigma$-Intervall: $P(\\mu - 3\\sigma \\le X \\le \\mu + 3\\sigma) \\approx 99{,}7\\%$, 4. Ein Medikament heilt eine Erkrankung mit Wahrscheinlichkeit $p = 0{,}8$. Es wird an $n = 100$ Patienten getestet. Berechne den Erwartungswert $\\mu$ und die Standardabweichung $\\sigma$.",
+          "concept": "Binomialverteilung: Bernoulliformel B(n,p,k); Erwartungswert mu = n*p; Streuung sigma = sqrt(n*p*(1-p)); Sigma-Regeln (1sigma 68,3%, 2sigma 95,4%, 3sigma 99,7%); Rechnung: mu = 100 * 0,8 = 80 Patienten; sigma = sqrt(100 * 0,8 * 0,2) = sqrt(16) = 4 Patienten.",
+          "sample_solution": "1. Die Binomialverteilung $B(n; p)$: - **Definition**: Eine diskrete Wahrscheinlichkeitsverteilung, die die Anzahl der Erfolge bei $n$ unabhängigen Versuchen mit konstanter Erfolgswahrscheinlichkeit $p$ modelliert:   $$\\mathbf{P(X = k) = \\binom{n}{k} \\cdot p^k \\cdot (1 - p)^{n - k}}$$ 2. Rechnen mit kumulierten Wahrscheinlichkeiten: - **1. 'Höchstens $k$ Treffer'**:   $$\\mathbf{P(X \\le k) = \\sum_{i=0}^k B(n; p; i)}$$ - **2. 'Mindestens $k$ Treffer' (Gegenereignis)**:   $$\\mathbf{P(X \\ge k) = 1 - P(X \\le k - 1)}$$ - **3. 'Zwischen $a$ und $b$ Treffern' ($a \\le X \\le b$)**:   $$\\mathbf{P(a \\le X \\le b) = P(X \\le b) - P(X \\le a - 1)}$$ 3. Die Kenngrößen der Binomialverteilung: - **Erwartungswert $\\mu$**: Der theoretische Mittelwert bei unendlicher Wiederholung:   $$\\mathbf{\\mu = n \\cdot p}$$ - **Varianz $\\operatorname{Var}(X)$ & Standardabweichung $\\sigma$**: Maß für die Streuung der Werte um den Erwartungswert:   $$\\mathbf{\\sigma^2 = n \\cdot p \\cdot (1 - p)} \\implies \\mathbf{\\sigma = \\sqrt{n \\cdot p \\cdot (1 - p)}}$$ 4. Die Sigma-Regeln (für $\\sigma > 3$): - Durch den Satz von Moivre-Laplace nähert sich die Binomialverteilung der Gaußschen Normalverteilung an:   * **$\\mu \\pm 1\\sigma$**: Intervall $[\\mu - \\sigma; \\mu + \\sigma]$ deckt ca. **$68{,}3\\%$** aller Wahrscheinlichkeitsmasse ab.   * **$\\mu \\pm 2\\sigma$**: Intervall $[\\mu - 2\\sigma; \\mu + 2\\sigma]$ deckt ca. **$95{,}4\\%$** ab.   * **$\\mu \\pm 3\\sigma$**: Intervall $[\\mu - 3\\sigma; \\mu + 3\\sigma]$ deckt ca. **$99{,}7\\%$** ab. 5. Durchrechnung des Beispiels ($n = 100, p = 0{,}8$): - **Erwartungswert $\\mu$**:   $$\\mu = 100 \\cdot 0{,}8 = \\mathbf{80\\,\\text{geheilte Patienten}}$$ - **Standardabweichung $\\sigma$**:   $$\\sigma = \\sqrt{100 \\cdot 0{,}8 \\cdot (1 - 0{,}8)} = \\sqrt{100 \\cdot 0{,}8 \\cdot 0{,}2} = \\sqrt{16} = \\mathbf{4\\,\\text{Patienten}}$$ - **Interpretation**: Bei 100 Behandlungen liegt die Anzahl geheilter Patienten mit ca. $95{,}4\\%$ Wahrscheinlichkeit im $2\\sigma$-Intervall $[80 - 2(4); 80 + 2(4)] = [72; 88]$."
+        }
+      ]
+    }
+  ]
+}
