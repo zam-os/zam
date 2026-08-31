@@ -1,15 +1,16 @@
 ---
 type: architecture
 title: Standalone Mobile Libraries
-description: ZAM Mobile runs a standalone library and the same cell-first curriculum discovery flow on Android and iOS; pairing and a server database remain optional multi-device upgrades.
+description: ZAM Mobile runs standalone libraries and shared review and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
 tags:
   - mobile
   - android
   - ios
+  - recall
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-08-16T07:15:57Z
+timestamp: 2026-08-31T19:36:40Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -87,7 +88,25 @@ bonus atom is offered, never scheduled automatically. All of these paths work
 against either the local or server-backed database through the same async
 kernel contract.
 
+After a typed answer is revealed and an AI evaluation succeeds, the same
+review screen opens an ephemeral follow-up discussion on both Android and
+iOS. Every turn resends the stable card frame, the learner's original answer,
+the evaluation feedback, and the complete prior thread through the configured
+`recall` tier. Android follows the learner's device/cloud preference and can
+answer with Gemini Nano; iOS uses a reachable cloud text model because the
+supported iPad and iPhone range has no on-device evaluator.
+
+The discussion has no turn cap, but it never becomes review evidence. Rating
+a card, moving to another card, correcting the card, or ending the session
+discards the thread and invalidates any reply still in flight. Follow-up turns
+never call the scheduler or write FSRS state. If the initial evaluation did
+not succeed, the follow-up control stays hidden and ordinary self-rating
+continues to work without AI.
+
 # Citations
+- [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)
+- Tests: `tests/mobile/discuss.test.ts`, `tests/mobile/discussion-wiring.test.ts`, `tests/desktop/discussion.test.ts`
+- Code: `mobile/src/discuss.ts`, `mobile/src/evaluate.ts`, `mobile/src/main.ts`, `mobile/index.html`, `desktop/src/discussion.ts`
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - Tests: `tests/mobile/curriculum.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`

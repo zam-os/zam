@@ -656,6 +656,65 @@ button.chip {
   color: var(--red);
 }
 
+/* Ephemeral post-reveal coaching. The history is bounded visually, never by
+   turn count: older turns scroll while the rating row stays close at hand. */
+.discussion-turns {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+  max-height: min(34vh, 20em);
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  -webkit-overflow-scrolling: touch;
+}
+
+.discussion-turns:empty {
+  display: none;
+}
+
+.discussion-turn {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-1);
+  max-width: 88%;
+  padding: var(--gap-2) var(--gap-3);
+  border-radius: var(--radius-row);
+}
+
+.discussion-turn.user {
+  align-self: flex-end;
+  background: var(--accent);
+  color: #fff;
+}
+
+.discussion-turn.assistant {
+  align-self: flex-start;
+  background: var(--fill-quaternary);
+}
+
+.discussion-turn.pending {
+  color: var(--label-secondary);
+}
+
+.discussion-role {
+  font-size: 0.72em;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  opacity: 0.72;
+}
+
+.discussion-turn-text {
+  margin: 0;
+  line-height: 1.4;
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+}
+
+#discussion-input {
+  min-height: 5.2em;
+}
+
 /* ── Queue list ────────────────────────────────────────────────────────── */
 
 .queue {

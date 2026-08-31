@@ -1125,6 +1125,36 @@
               <p id="evaluation-meta" class="t-footnote"></p>
             </div>
 
+            <div id="discussion-panel" hidden class="card stack">
+              <p class="group-title" data-i18n="discussion_title">
+                Rückfrage zum Feedback
+              </p>
+              <div
+                id="discussion-turns"
+                class="discussion-turns"
+                aria-live="polite"
+              ></div>
+              <label class="field">
+                <span data-i18n="discussion_label">Deine Rückfrage</span>
+                <textarea
+                  id="discussion-input"
+                  rows="3"
+                  enterkeyhint="send"
+                  data-i18n-placeholder="discussion_placeholder"
+                ></textarea>
+              </label>
+              <button
+                id="discussion-send"
+                class="btn primary"
+                type="button"
+                disabled
+                data-i18n="discussion_send"
+              >
+                Fragen
+              </button>
+              <p id="discussion-status" class="status" aria-live="polite"></p>
+            </div>
+
             <p class="group-title" data-i18n="expected_answer_kicker">Erwartete Antwort</p>
             <div id="expected-answer" class="answer-box"></div>
             <div id="review-answer-media" class="review-media"></div>

@@ -44,6 +44,14 @@ export interface MobileEvaluationResult {
   fallbackReason: string | null;
 }
 
+/** One unstructured reply through the same recall tier used for evaluation. */
+export interface MobileRecallTextResult {
+  text: string;
+  backend: EvaluationBackend;
+  modelLabel: string;
+  fallbackReason: string | null;
+}
+
 /** Raised when `device-only` is set and the device cannot serve the request. */
 export class DeviceOnlyUnavailableError extends Error {
   constructor(detail: string) {
@@ -94,6 +102,19 @@ export interface EvaluateAnswerInput {
    */
   preference?: AiTierPreference;
   ports: EvaluationPorts;
+}
+
+export interface GenerateMobileRecallTextInput {
+  prompt: string;
+  /** Paired recall endpoint; its fallback chain is walked for a cloud target. */
+  endpoint?: ZamPairLlmEndpoint | null;
+  /** False on iOS, whose supported devices have no on-device text evaluator. */
+  onDeviceAvailable?: boolean;
+  /** The learner's recall-tier preference. Defaults to device-first. */
+  preference?: AiTierPreference;
+  ports: EvaluationPorts;
+  maxTokens?: number;
+  retryMaxTokens?: number;
 }
 
 function isLoopbackUrl(url: string): boolean {
@@ -268,11 +289,11 @@ export async function generateViaHttp(
   };
   if (endpoint.apiKey) headers.Authorization = `Bearer ${endpoint.apiKey}`;
 
-  // Evaluation wants a short JSON object, not a multi-page chain of thought.
-  // Reasoning models (MiMo V2.5 especially) otherwise spend the whole output
-  // budget thinking and return `finish_reason: length` with empty content.
-  // `low` is the product default for GPT-5.6 Luna: enough for honest grading,
-  // cheap and fast enough for a review loop. Non-OpenRouter hosts omit the key.
+  // Recall wants a short response, not a multi-page chain of thought. Reasoning
+  // models (MiMo V2.5 especially) otherwise spend the whole output budget
+  // thinking and return `finish_reason: length` with empty content. `low` is
+  // the product default for GPT-5.6 Luna: enough for honest coaching, cheap and
+  // fast enough for a review loop. Non-OpenRouter hosts omit the key.
   const body: Record<string, unknown> = {
     model: endpoint.model,
     messages: [{ role: "user", content: prompt }],
@@ -290,22 +311,32 @@ export async function generateViaHttp(
   });
 }
 
-/**
- * Evaluate a learner answer. Tries on-device Nano first, then optional cloud
- * HTTP. Returns null only for blank answers — callers fall back to self-rate
- * when this throws.
- */
-export async function evaluateMobileAnswer(
-  input: EvaluateAnswerInput,
-): Promise<MobileEvaluationResult | null> {
-  const answer = input.learnerAnswer.trim();
-  if (!answer) return null;
+interface MobileRecallGenerationResult<T> {
+  value: T;
+  backend: EvaluationBackend;
+  modelLabel: string;
+  fallbackReason: string | null;
+}
 
-  const prompt = buildRecallEvaluationPrompt(input.card, answer, input.locale);
+/**
+ * Route one recall prompt through the learner's selected mobile tier.
+ *
+ * `decode` deliberately runs inside each backend attempt. A malformed Nano
+ * evaluation can therefore fall through to the configured cloud model just
+ * like a transport failure; moving JSON parsing outside this loop would turn a
+ * recoverable local response into an unnecessary self-rating.
+ */
+async function generateMobileRecall<T>(
+  input: GenerateMobileRecallTextInput,
+  decode: (text: string) => T,
+): Promise<MobileRecallGenerationResult<T>> {
   const errors: string[] = [];
   const preference = input.preference ?? DEFAULT_AI_TIER_PREFERENCES.recall;
   const platformHasDeviceTier = input.onDeviceAvailable !== false;
   const cloudEndpoints = selectCloudHttpEndpoints(input.endpoint);
+  const maxTokens = input.maxTokens ?? RECALL_EVALUATION_MAX_OUTPUT_TOKENS;
+  const retryMaxTokens =
+    input.retryMaxTokens ?? RECALL_EVALUATION_RETRY_OUTPUT_TOKENS;
 
   // Ask the device before using it, instead of discovering its state by
   // failing. `checkStatus` was wired into the ports and called from nowhere,
@@ -360,9 +391,9 @@ export async function evaluateMobileAnswer(
 
   if (decision.tier === "local") {
     try {
-      const generated = await input.ports.generateOnDevice(prompt);
+      const generated = await input.ports.generateOnDevice(input.prompt);
       return {
-        evaluation: parseRecallEvaluation(generated.text),
+        value: decode(generated.text),
         backend: "on-device",
         modelLabel: "Gemini Nano (on-device)",
         fallbackReason:
@@ -398,20 +429,25 @@ export async function evaluateMobileAnswer(
     try {
       let text: string;
       try {
-        text = await generateViaHttp(cloud, prompt, input.ports.fetchText);
+        text = await generateViaHttp(
+          cloud,
+          input.prompt,
+          input.ports.fetchText,
+          maxTokens,
+        );
       } catch (error) {
         if (!(error instanceof EvaluationTruncatedError)) throw error;
         // One retry with real room. A model that thinks its way past even that
         // is the wrong model for this job, and the error below says so.
         text = await generateViaHttp(
           cloud,
-          prompt,
+          input.prompt,
           input.ports.fetchText,
-          RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+          retryMaxTokens,
         );
       }
       return {
-        evaluation: parseRecallEvaluation(text),
+        value: decode(text),
         backend: "http",
         modelLabel: cloud.label || cloud.model,
         fallbackReason,
@@ -419,7 +455,7 @@ export async function evaluateMobileAnswer(
     } catch (error) {
       const detail =
         error instanceof EvaluationTruncatedError
-          ? `spent its whole output budget before answering, even at ${RECALL_EVALUATION_RETRY_OUTPUT_TOKENS} tokens — a reasoning model may be a poor fit for card evaluation`
+          ? `spent its whole output budget before answering, even at ${retryMaxTokens} tokens — a reasoning model may be a poor fit for card evaluation`
           : error instanceof Error
             ? error.message
             : String(error);
@@ -427,8 +463,6 @@ export async function evaluateMobileAnswer(
     }
   }
   if (cloudEndpoints.length === 0 && input.endpoint) {
-    // Distinguish "your models are unreachable from here" from "nothing was
-    // paired at all" — only the first is something the learner can fix.
     errors.push(
       "no cloud model: the paired models are all local to the desktop and cannot be reached from this device",
     );
@@ -436,6 +470,55 @@ export async function evaluateMobileAnswer(
 
   if (errors.length === 0) throw new NoEvaluationBackendError();
   throw new Error(errors.join("; "));
+}
+
+/** Generate a plain-text coaching reply through the mobile recall tier. */
+export async function generateMobileRecallText(
+  input: GenerateMobileRecallTextInput,
+): Promise<MobileRecallTextResult> {
+  const result = await generateMobileRecall(input, (text) => {
+    const reply = text.trim();
+    if (!reply) throw new Error("recall endpoint returned empty content");
+    return reply;
+  });
+  return {
+    text: result.value,
+    backend: result.backend,
+    modelLabel: result.modelLabel,
+    fallbackReason: result.fallbackReason,
+  };
+}
+
+/**
+ * Evaluate a learner answer. Tries on-device Nano first, then optional cloud
+ * HTTP. Returns null only for blank answers — callers fall back to self-rate
+ * when this throws.
+ */
+export async function evaluateMobileAnswer(
+  input: EvaluateAnswerInput,
+): Promise<MobileEvaluationResult | null> {
+  const answer = input.learnerAnswer.trim();
+  if (!answer) return null;
+
+  const prompt = buildRecallEvaluationPrompt(input.card, answer, input.locale);
+  const result = await generateMobileRecall(
+    {
+      prompt,
+      endpoint: input.endpoint,
+      onDeviceAvailable: input.onDeviceAvailable,
+      preference: input.preference,
+      ports: input.ports,
+      maxTokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+      retryMaxTokens: RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+    },
+    parseRecallEvaluation,
+  );
+  return {
+    evaluation: result.value,
+    backend: result.backend,
+    modelLabel: result.modelLabel,
+    fallbackReason: result.fallbackReason,
+  };
 }
 
 export function ratingLabel(
