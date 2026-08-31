@@ -2,12 +2,11 @@
  * Post-reveal discussion thread state (ADR 2026-07-06b).
  *
  * Framework-free by design (like bridge-transport.ts): no DOM, no Tauri
- * imports — main.ts owns all rendering, and tests/desktop/discussion.test.ts
- * drives this state machine directly. The thread is ephemeral: it opens only
- * after a successful AI evaluation and dies on every exit action (rating
- * check-in, skip, pause/stop, next card). Nothing here ever touches FSRS
- * state; the rating check-in is the only scheduling mutation and lives
- * elsewhere.
+ * imports — Desktop and Mobile own their rendering, while the unit tests drive
+ * this state machine directly. The thread is ephemeral: it opens only after a
+ * successful AI evaluation and dies on every exit action (rating check-in,
+ * skip, pause/stop, next card). Nothing here ever touches FSRS state; the
+ * rating check-in is the only scheduling mutation and lives elsewhere.
  */
 
 export interface DiscussionTurn {

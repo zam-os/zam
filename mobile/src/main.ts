@@ -12,6 +12,15 @@ import {
   scan,
 } from "@tauri-apps/plugin-barcode-scanner";
 import {
+  beginTurn,
+  completeTurn,
+  createDiscussionState,
+  type DiscussionCardContext,
+  failTurn,
+  openDiscussion,
+  resetDiscussion,
+} from "../../desktop/src/discussion.js";
+import {
   parseZamPairPayload,
   serializeZamPairPayload,
   ZAM_PAIR_TYPE,
@@ -19,22 +28,17 @@ import {
   type ZamPairLlmEndpoint,
   type ZamPairPayloadV1,
 } from "../../src/bridge/mobile-pairing.js";
+import type { TopicNode } from "../../src/cli/curriculum/types.js";
 import {
   OPENROUTER_PROVIDER,
   OPENROUTER_RECOMMENDED_MODELS,
 } from "../../src/cli/llm/cloud-providers.js";
-import type { TopicNode } from "../../src/cli/curriculum/types.js";
 import {
   AI_TIER_PREFERENCES,
   type AiCapability,
   type AiPlatform,
   type AiTierPreference,
 } from "../../src/kernel/ai/tier-preference.js";
-import {
-  getTokenMedia,
-  type TokenMedia,
-} from "../../src/kernel/models/media.js";
-import { getSetting } from "../../src/kernel/models/settings.js";
 import {
   bonusCandidates,
   enrolBonusAtom,
@@ -52,6 +56,11 @@ import {
   getPullForwardCandidates,
   pullForwardCards,
 } from "../../src/kernel/library/pull-forward.js";
+import {
+  getTokenMedia,
+  type TokenMedia,
+} from "../../src/kernel/models/media.js";
+import { getSetting } from "../../src/kernel/models/settings.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
@@ -96,26 +105,27 @@ import {
   translateCard,
 } from "./ai/translate.js";
 import {
-  generateViaHttp,
-  evaluateMobileAnswer,
-  evaluationSpeech,
-  type MobileEvaluationResult,
-  NoEvaluationBackendError,
-  type OnDeviceLlmGenerateResult,
-  type OnDeviceLlmStatus,
-} from "./evaluate.js";
-import {
   applyMobileCurriculumChoice,
   initialMobileCurriculumState,
   type MobileCurriculumOption,
   type MobileCurriculumState,
   type MobileCurriculumStep,
   type MobileCurriculumView,
-  nextMobileCurriculumView,
   NoMobileCurriculumModelError,
+  nextMobileCurriculumView,
   previewMobileCurriculumTopic,
   resolveMobileCurriculumPosition,
 } from "./curriculum.js";
+import { discussMobileReview } from "./discuss.js";
+import {
+  evaluateMobileAnswer,
+  evaluationSpeech,
+  generateViaHttp,
+  type MobileEvaluationResult,
+  NoEvaluationBackendError,
+  type OnDeviceLlmGenerateResult,
+  type OnDeviceLlmStatus,
+} from "./evaluate.js";
 import {
   applyStaticTranslations,
   cardWord,
@@ -162,13 +172,6 @@ import {
   type MobileReviewSummary,
 } from "./review-session.js";
 import {
-  type BonusOffer,
-  bonusBecause,
-  keepGoingCardIds,
-  matchUnassessedPrecondition,
-  type PreconditionOffer,
-} from "./study-offers.js";
-import {
   completeFirstRun,
   type LocalSetup,
   prepareLocalLibrary,
@@ -184,6 +187,13 @@ import {
   type StatsPeriod,
   type StatsView,
 } from "./stats.js";
+import {
+  type BonusOffer,
+  bonusBecause,
+  keepGoingCardIds,
+  matchUnassessedPrecondition,
+  type PreconditionOffer,
+} from "./study-offers.js";
 import { SyncError, syncWithRetry } from "./sync.js";
 import { createNav } from "./ui/nav.js";
 import {
@@ -468,6 +478,11 @@ const evaluationPanel = element<HTMLElement>("evaluation-panel");
 const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
 const evaluationFeedback = element<HTMLElement>("evaluation-feedback");
 const evaluationMeta = element<HTMLElement>("evaluation-meta");
+const discussionPanel = element<HTMLElement>("discussion-panel");
+const discussionTurns = element<HTMLElement>("discussion-turns");
+const discussionInput = element<HTMLTextAreaElement>("discussion-input");
+const discussionSendButton = element<HTMLButtonElement>("discussion-send");
+const discussionStatus = element<HTMLParagraphElement>("discussion-status");
 const ratingButtons = Array.from(
   document.querySelectorAll<HTMLButtonElement>("[data-rating]"),
 );
@@ -642,6 +657,7 @@ let multiDraftController: MultiDraftController<MobileTokenDraft> | null = null;
 let takingSharedImport = false;
 let pendingUpdate: MobileUpdateInfo | null = null;
 let currentEvaluation: MobileEvaluationResult | null = null;
+const discussion = createDiscussionState();
 const PENDING_IMPORT_STORAGE_KEY = "zam.mobile-pending-import.v1";
 
 /** Device-local, read on demand so a Settings change applies to the next card. */
@@ -1583,12 +1599,142 @@ function setReviewStatus(text: string, isError = false): void {
   reviewStatus.classList.toggle("error", isError);
 }
 
+function setDiscussionStatus(text: string, isError = false): void {
+  discussionStatus.textContent = text;
+  discussionStatus.classList.toggle("error", isError);
+}
+
+function appendDiscussionTurn(
+  role: "user" | "assistant",
+  content: string,
+  pending = false,
+): void {
+  const turn = document.createElement("div");
+  turn.className = `discussion-turn ${role}${pending ? " pending" : ""}`;
+  const roleLabel = document.createElement("span");
+  roleLabel.className = "discussion-role";
+  roleLabel.textContent = t(
+    role === "user" ? "discussion_learner" : "discussion_zam",
+  );
+  const body = document.createElement("p");
+  body.className = "discussion-turn-text";
+  // Imported card text and model output are always inert in the review UI.
+  body.textContent = content;
+  turn.append(roleLabel, body);
+  discussionTurns.append(turn);
+}
+
+function renderDiscussionTurns(pendingMessage?: string): void {
+  discussionTurns.replaceChildren();
+  for (const turn of discussion.turns) {
+    appendDiscussionTurn(turn.role, turn.content);
+  }
+  if (pendingMessage) {
+    appendDiscussionTurn("user", pendingMessage);
+    appendDiscussionTurn("assistant", "…", true);
+  }
+  discussionTurns.scrollTop = discussionTurns.scrollHeight;
+}
+
+function clearDiscussionUi(): void {
+  resetDiscussion(discussion);
+  discussionPanel.hidden = true;
+  discussionTurns.replaceChildren();
+  discussionInput.value = "";
+  discussionInput.disabled = false;
+  discussionSendButton.disabled = true;
+  setDiscussionStatus("");
+}
+
+function openDiscussionForEvaluation(result: MobileEvaluationResult): void {
+  const item = reviewSession.currentItem;
+  const prompt = reviewSession.currentPrompt;
+  if (!item || !prompt || !reviewSession.revealed) {
+    clearDiscussionUi();
+    return;
+  }
+  const card: DiscussionCardContext = {
+    slug: item.slug,
+    concept: prompt.concept,
+    domain: item.domain,
+    bloomLevel: item.bloomLevel,
+    context: null,
+    question: prompt.question,
+    userAnswer: reviewSession.draftAnswer,
+    sourceContent: null,
+    sourceLink: prompt.sourceLink,
+    feedback: result.evaluation.feedback,
+  };
+  if (!openDiscussion(discussion, card, { evaluationSuccessful: true })) {
+    clearDiscussionUi();
+    return;
+  }
+  discussionPanel.hidden = false;
+  discussionInput.value = "";
+  discussionInput.disabled = false;
+  discussionSendButton.disabled = true;
+  renderDiscussionTurns();
+  setDiscussionStatus("");
+}
+
+async function sendDiscussionTurn(): Promise<void> {
+  await pauseVoiceMode().catch(() => undefined);
+  const message = discussionInput.value.trim();
+  const guard = beginTurn(discussion, message);
+  if (guard === null || !discussion.card) return;
+
+  discussionInput.disabled = true;
+  discussionSendButton.disabled = true;
+  setDiscussionStatus(t("discussion_thinking"));
+  renderDiscussionTurns(message);
+
+  const card = discussion.card;
+  const turns = [...discussion.turns];
+  try {
+    const result = await discussMobileReview({
+      card,
+      turns,
+      message,
+      locale: learnerLocale ?? navigator.language,
+      endpoint: recallEndpoint(),
+      onDeviceAvailable: platformFeatures.onDeviceEvaluation,
+      preference: readAiPreference(storedAiPreferences(), "recall"),
+      ports: evaluationPorts,
+    });
+    if (!completeTurn(discussion, guard, message, result.text)) return;
+    discussionInput.value = "";
+    renderDiscussionTurns();
+    setDiscussionStatus(
+      [
+        tf("evaluation_backend", { model: result.modelLabel }),
+        ...(result.fallbackReason
+          ? [tf("evaluation_fallback", { reason: result.fallbackReason })]
+          : []),
+      ].join(" · "),
+    );
+  } catch (error) {
+    if (!failTurn(discussion, guard)) return;
+    renderDiscussionTurns();
+    setDiscussionStatus(
+      tf("discussion_failed", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    if (guard === discussion.seq && discussion.active) {
+      discussionInput.disabled = false;
+      discussionSendButton.disabled = !discussionInput.value.trim();
+      discussionInput.focus();
+    }
+  }
+}
+
 function clearEvaluationUi(): void {
   currentEvaluation = null;
   evaluationPanel.hidden = true;
   evaluationVerdict.textContent = "";
   evaluationFeedback.textContent = "";
   evaluationMeta.textContent = "";
+  clearDiscussionUi();
   for (const button of ratingButtons) button.classList.remove("suggested");
 }
 
@@ -1666,6 +1812,7 @@ async function runSmartEvaluation(): Promise<MobileEvaluationResult | null> {
     if (isStaleEvaluation(item.cardId)) return null;
     if (result) {
       showEvaluationUi(result);
+      openDiscussionForEvaluation(result);
       setReviewStatus(
         tf("evaluation_suggested", {
           rating: t(ratingI18nKey(result.evaluation.suggestedRating)),
@@ -2469,6 +2616,9 @@ cardEditSaveButton.addEventListener("click", async () => {
     // session has to be told as well — otherwise the very next repaint shows
     // the old wording back again and the save looks like it failed.
     reviewSession.applyCardEdit({ question, concept });
+    // Feedback and an open discussion were grounded in the old wording. Keep
+    // neither attached to a card the learner has just corrected.
+    clearEvaluationUi();
     renderCurrentReview(t("card_edit_saved"));
   } catch (error) {
     setCardEditStatus(errorMessage(error), true);
@@ -2507,6 +2657,7 @@ disarmCardDelete = armDestructive(
 
 function renderSessionSummary(result: MobileReviewSummary): void {
   pendingSessionSummary = null;
+  clearEvaluationUi();
   hideReviewOffer();
   sessionSummaryText.textContent = tf("summary_text", {
     completion: t(result.stopped ? "session_ended" : "session_done"),
@@ -2953,6 +3104,30 @@ reviewAnswer.addEventListener("input", () => {
   if (voiceController.active) void pauseVoiceMode();
   reviewSession.updateDraftAnswer(reviewAnswer.value);
   setReviewStatus("");
+});
+
+discussionInput.addEventListener("input", () => {
+  if (voiceController.active) void pauseVoiceMode();
+  discussionSendButton.disabled =
+    discussion.busy || !discussionInput.value.trim();
+  setDiscussionStatus("");
+});
+
+discussionInput.addEventListener("keydown", (event) => {
+  if (
+    event.key !== "Enter" ||
+    event.shiftKey ||
+    event.isComposing ||
+    discussionSendButton.disabled
+  ) {
+    return;
+  }
+  event.preventDefault();
+  void sendDiscussionTurn();
+});
+
+discussionSendButton.addEventListener("click", () => {
+  void sendDiscussionTurn();
 });
 
 toggleVoiceButton.addEventListener("click", async () => {
