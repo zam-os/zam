@@ -17,7 +17,12 @@
 import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
 import type { Database } from "./types.js";
 
-/** Increment whenever a numbered migration is added. */
+/**
+ * Increment whenever a numbered migration is added — a database stamped with
+ * this version skips the chain entirely, so a migration added without the bump
+ * never runs on any existing library. `tests/kernel/provision.test.ts` guards
+ * the constant against the M-series markers below.
+ */
 export const CURRENT_SCHEMA_VERSION = 29;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
@@ -689,6 +694,10 @@ export async function applySchemaAndMigrations(db: Database): Promise<void> {
  * A newer marker also skips migrations: releases add migrations monotonically,
  * and an older client must never attempt to downgrade a library already opened
  * by a newer one. Missing or invalid markers take the full repairable path.
+ *
+ * The marker is trusted, so this does not re-create schema objects dropped
+ * from an already-stamped database. Repairing one is `applySchemaAndMigrations`
+ * directly, which `openDatabase({ initialize: true })` still reaches.
  */
 export async function ensureSchemaAndMigrations(db: Database): Promise<void> {
   const version = await readSchemaVersion(db);

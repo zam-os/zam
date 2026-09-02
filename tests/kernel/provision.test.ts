@@ -12,7 +12,7 @@
  * is as close to the device as a test can get without one.
  */
 
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
@@ -300,6 +300,37 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
     stub.close();
   });
 
+  /**
+   * The gate at the `openDatabase` level, not just at the function it calls.
+   * The marker is trusted: a database stamped current is not re-provisioned,
+   * which is exactly what makes the everyday open cheap — and also means a
+   * schema object dropped afterwards stays dropped until the marker goes too.
+   */
+  it("trusts a current marker on reopen and repairs an unmarked database", async () => {
+    const dbPath = join(tempDir(), "gate.db");
+    const created = await openDatabase({
+      dbPath,
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    // A table an M-series migration owns, so the repairing open has to run the
+    // chain rather than only `SCHEMA_TABLES`.
+    await created.exec("DROP TABLE session_syntheses");
+    await created.close?.();
+
+    const gated = await openDatabase({ dbPath, useConfiguredCloud: false });
+    expect(Object.keys(await describeSchema(gated))).not.toContain(
+      "session_syntheses",
+    );
+    await gated.exec("DROP TABLE zam_schema_version");
+    await gated.close?.();
+
+    const repaired = await openDatabase({ dbPath, useConfiguredCloud: false });
+    expect(Object.keys(await describeSchema(repaired))).toContain(
+      "session_syntheses",
+    );
+    await repaired.close?.();
+  });
   it("is idempotent — a second run changes nothing", async () => {
     const stub = createTauriInvokeStub(join(tempDir(), "twice.db"));
     const db = createTauriDatabase(stub.invoke);
@@ -629,5 +660,41 @@ describe("M027 review content version", () => {
     // NULL means "unknown", not version 1 — guessing would fabricate evidence.
     expect(row.content_version).toBeNull();
     await db.close();
+  });
+});
+
+/**
+ * The version gate makes `CURRENT_SCHEMA_VERSION` load-bearing: a database
+ * stamped with it skips the whole migration chain. So a migration added
+ * without bumping the constant is not a stale comment — it is a migration that
+ * never runs on any existing library, surfacing months later as "no such
+ * column" on a learner's machine while a fresh install works fine.
+ *
+ * Nothing in the type system can catch that, so this reads the migration
+ * markers back out of the source. It is a tripwire, not a proof: a migration
+ * written without the `// M0NN:` comment convention stays invisible to it.
+ */
+describe("CURRENT_SCHEMA_VERSION", () => {
+  const migrationNumbers = (): number[] => {
+    const source = readFileSync(
+      join(process.cwd(), "src", "kernel", "db", "provision.ts"),
+      "utf-8",
+    );
+    // `M023 minted ...` inside a later migration's prose must not count; only
+    // a marker comment introducing a migration has the colon.
+    return [...source.matchAll(/^ {2}\/\/ M(\d{3}): /gm)].map((match) =>
+      Number(match[1]),
+    );
+  };
+
+  it("equals the number of migrations in the chain", () => {
+    const numbers = migrationNumbers();
+    expect(new Set(numbers).size).toBe(numbers.length);
+    // Contiguous from M001, so the count is also the highest number: adding
+    // M030 without bumping the constant fails here.
+    expect([...numbers].sort((a, b) => a - b)).toEqual(
+      Array.from({ length: numbers.length }, (_, index) => index + 1),
+    );
+    expect(CURRENT_SCHEMA_VERSION).toBe(numbers.length);
   });
 });
