@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
 import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
-import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
+import {
+  applySchemaAndMigrations,
+  CURRENT_SCHEMA_VERSION,
+  ensureSchemaAndMigrations,
+} from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
 
 /**
@@ -57,8 +61,13 @@ describeWithPostgres("PostgreSQL provisioning (needs POSTGRES_URL)", () => {
     const db = await freshSchema("zam_provision_a");
     try {
       await applySchemaAndMigrations(db);
-      // Running it again is the everyday case: provisioning happens on open.
-      await applySchemaAndMigrations(db);
+      // The everyday open now takes the version-gated path.
+      await ensureSchemaAndMigrations(db);
+
+      const schemaVersion = (await db
+        .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+        .get()) as { version: number };
+      expect(schemaVersion.version).toBe(CURRENT_SCHEMA_VERSION);
 
       const tokenColumns = (await db.pragma("table_info(tokens)")) as Array<{
         name: string;

@@ -18,12 +18,13 @@ import {
 
 /**
  * Tables that are deliberately NOT part of snapshots because their content
- * is derived and recomputable (and would bloat the portable SQL text).
+ * is derived/recomputable or describes the target installation rather than
+ * portable learner data.
  * Every other schema table must be listed in SNAPSHOT_TABLES — the guard
  * test below fails when a new table is added without classifying it here
  * or there.
  */
-const DERIVED_TABLES = ["token_embeddings"];
+const DERIVED_TABLES = ["token_embeddings", "zam_schema_version"];
 
 const tempDirs: string[] = [];
 

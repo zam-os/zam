@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-02
+
+- **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
+
 ## 2026-08-31
 
 - **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)

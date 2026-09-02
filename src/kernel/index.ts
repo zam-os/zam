@@ -103,6 +103,8 @@ export { openPostgresDatabase } from "./db/postgres.js";
 // Node through the driver layer. Both entrances lead to the same code.
 export {
   applySchemaAndMigrations,
+  CURRENT_SCHEMA_VERSION,
+  ensureSchemaAndMigrations,
   runMigrations,
 } from "./db/provision.js";
 export type { RemoteDatabaseOptions } from "./db/remote/provider.js";

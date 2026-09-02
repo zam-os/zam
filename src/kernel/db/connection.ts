@@ -6,7 +6,10 @@ import {
   getTursoCredentials,
   tursoVaultAccessPending,
 } from "../credentials.js";
-import { applySchemaAndMigrations, runMigrations } from "./provision.js";
+import {
+  applySchemaAndMigrations,
+  ensureSchemaAndMigrations,
+} from "./provision.js";
 import { openRemoteDatabase } from "./remote/provider.js";
 import { wrapSyncDatabase } from "./sync-adapter.js";
 import type { Database, SyncDatabase } from "./types.js";
@@ -284,10 +287,11 @@ export async function openDatabase(
       url,
       authToken: configuredCloud?.token ?? options.authToken,
     });
-    // Always provision. A fresh Turso/sqld database has no tables;
-    // openDatabase() is used without initialize by withDb/check-due, which
-    // otherwise surfaces "no such table: tokens".
-    await applySchemaAndMigrations(db);
+    // A fresh Turso/sqld database has no tables, while an existing one should
+    // pay only one schema-version read. `initialize` still forces the complete
+    // path for callers that explicitly request it.
+    if (shouldInitialize) await applySchemaAndMigrations(db);
+    else await ensureSchemaAndMigrations(db);
     return db;
   };
 
@@ -397,17 +401,12 @@ export async function openDatabase(
       await db.sync?.();
     }
 
-    // Local brand-new files need the schema; remote empties do too. Every
-    // statement is IF NOT EXISTS, so re-running on a full library is a no-op.
-    // Previously remote opens skipped the schema unless initialize:true, which
-    // left empty cloud DBs broken for the dashboard (no such table: tokens).
-    // An existing local file only needs the migration chain — its tables are
-    // already there and its indexes were created when it was provisioned.
-    if (shouldInitialize || isRemote || isEmbeddedReplica) {
-      await applySchemaAndMigrations(db);
-    } else {
-      await runMigrations(db);
-    }
+    // Brand-new local files and explicit `initialize` calls take the complete
+    // path. Every existing provider uses one version read and provisions only
+    // when its marker is absent or stale; an empty remote therefore still
+    // self-initializes instead of surfacing "no such table: tokens".
+    if (shouldInitialize) await applySchemaAndMigrations(db);
+    else await ensureSchemaAndMigrations(db);
 
     return db;
   };

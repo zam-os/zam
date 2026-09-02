@@ -8,6 +8,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import BetterSqlite3 from "better-sqlite3";
 import { describe, expect, it } from "vitest";
+import {
+  CURRENT_SCHEMA_VERSION,
+  ensureSchemaAndMigrations,
+} from "../../src/kernel/db/provision.js";
 import { toHttpUrl } from "../../src/kernel/db/remote/hrana.js";
 import { openRemoteDatabase } from "../../src/kernel/db/remote/provider.js";
 import { wrapSyncDatabase } from "../../src/kernel/db/sync-adapter.js";
@@ -69,6 +73,24 @@ if (process.env.POSTGRES_URL) {
 }
 
 describe("remote provider transport behavior", () => {
+  it("provisions an unmarked database and then accepts its marker", async () => {
+    const stub = await startHranaStub();
+    const db = openRemoteDatabase({ url: stub.url });
+    try {
+      await ensureSchemaAndMigrations(db);
+      expect(
+        await db
+          .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+          .get(),
+      ).toEqual({ version: CURRENT_SCHEMA_VERSION });
+
+      await ensureSchemaAndMigrations(db);
+    } finally {
+      await db.close();
+      await stub.close();
+    }
+  });
+
   it("authenticates with the configured bearer token", async () => {
     const stub = await startHranaStub({ authToken: "secret" });
     try {

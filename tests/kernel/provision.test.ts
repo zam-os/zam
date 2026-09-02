@@ -17,7 +17,11 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { createTauriDatabase } from "../../mobile/src/provider.js";
-import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
+import {
+  applySchemaAndMigrations,
+  CURRENT_SCHEMA_VERSION,
+  ensureSchemaAndMigrations,
+} from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import {
   createToken,
@@ -60,6 +64,89 @@ async function describeSchema(db: Database): Promise<Record<string, string[]>> {
   return shape;
 }
 
+interface DatabaseCallCounts {
+  prepare: number;
+  run: number;
+  get: number;
+  all: number;
+  exec: number;
+  pragma: number;
+  transaction: number;
+  sync: number;
+  close: number;
+}
+
+/** Observe calls without depending on any concrete database provider. */
+function observeDatabase(inner: Database): {
+  database: Database;
+  calls: DatabaseCallCounts;
+} {
+  const calls: DatabaseCallCounts = {
+    prepare: 0,
+    run: 0,
+    get: 0,
+    all: 0,
+    exec: 0,
+    pragma: 0,
+    transaction: 0,
+    sync: 0,
+    close: 0,
+  };
+
+  const wrap = (target: Database): Database => {
+    let database: Database;
+    database = {
+      prepare(sql: string) {
+        calls.prepare += 1;
+        const statement = target.prepare(sql);
+        return {
+          async run(...params: unknown[]) {
+            calls.run += 1;
+            return statement.run(...params);
+          },
+          async get(...params: unknown[]) {
+            calls.get += 1;
+            return statement.get(...params);
+          },
+          async all(...params: unknown[]) {
+            calls.all += 1;
+            return statement.all(...params);
+          },
+        };
+      },
+      async exec(sql: string) {
+        calls.exec += 1;
+        await target.exec(sql);
+      },
+      async pragma(source: string) {
+        calls.pragma += 1;
+        return target.pragma(source);
+      },
+      transaction<T>(fn: (db: Database) => Promise<T>): Promise<T> {
+        calls.transaction += 1;
+        return target.transaction((tx) =>
+          fn(tx === target ? database : wrap(tx)),
+        );
+      },
+      ...(target.sync
+        ? {
+            async sync() {
+              calls.sync += 1;
+              await target.sync?.();
+            },
+          }
+        : {}),
+      async close() {
+        calls.close += 1;
+        await target.close();
+      },
+    };
+    return database;
+  };
+
+  return { database: wrap(inner), calls };
+}
+
 /**
  * Provisioning runs the whole schema plus every migration through the mobile
  * IPC stub, one statement at a time against a real file. That is milliseconds
@@ -87,6 +174,129 @@ describe("applySchemaAndMigrations", { timeout: 30_000 }, () => {
     expect(await describeSchema(mobile)).toEqual(await describeSchema(desktop));
 
     await desktop.close?.();
+    stub.close();
+  });
+
+  it("uses one prepared read for current and newer schema markers", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "current.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+
+    for (const version of [
+      CURRENT_SCHEMA_VERSION,
+      CURRENT_SCHEMA_VERSION + 1,
+    ]) {
+      await db
+        .prepare(
+          "UPDATE zam_schema_version SET version = ? WHERE singleton = 1",
+        )
+        .run(version);
+      const observed = observeDatabase(db);
+
+      await ensureSchemaAndMigrations(observed.database);
+
+      expect(observed.calls).toEqual({
+        prepare: 1,
+        run: 0,
+        get: 1,
+        all: 0,
+        exec: 0,
+        pragma: 0,
+        transaction: 0,
+        sync: 0,
+        close: 0,
+      });
+    }
+
+    stub.close();
+  });
+
+  it("fully provisions an unmarked database and refreshes a stale marker", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "unmarked.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+    await db.exec("DROP TABLE zam_schema_version");
+
+    await ensureSchemaAndMigrations(db);
+    let marker = (await db
+      .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+      .get()) as { version: number };
+    expect(marker.version).toBe(CURRENT_SCHEMA_VERSION);
+
+    await db
+      .prepare("UPDATE zam_schema_version SET version = ? WHERE singleton = 1")
+      .run(CURRENT_SCHEMA_VERSION - 1);
+    const observed = observeDatabase(db);
+    await ensureSchemaAndMigrations(observed.database);
+    expect(observed.calls.exec).toBeGreaterThan(0);
+    expect(observed.calls.pragma).toBeGreaterThan(0);
+
+    marker = (await db
+      .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+      .get()) as { version: number };
+    expect(marker.version).toBe(CURRENT_SCHEMA_VERSION);
+    stub.close();
+  });
+
+  it("does not stamp the schema when the final index batch fails", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "partial.db"));
+    const db = createTauriDatabase(stub.invoke);
+    const failing: Database = {
+      ...db,
+      async exec(sql: string) {
+        if (
+          sql.includes("idx_tokens_slug") &&
+          sql.includes("idx_review_logs_user")
+        ) {
+          throw new Error("simulated index failure");
+        }
+        await db.exec(sql);
+      },
+    };
+
+    await expect(applySchemaAndMigrations(failing)).rejects.toThrow(
+      "simulated index failure",
+    );
+    expect(
+      await db
+        .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+        .get(),
+    ).toBeUndefined();
+
+    await ensureSchemaAndMigrations(db);
+    const marker = (await db
+      .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
+      .get()) as { version: number };
+    expect(marker.version).toBe(CURRENT_SCHEMA_VERSION);
+    stub.close();
+  });
+
+  it("propagates non-missing-table errors from the version probe", async () => {
+    const stub = createTauriInvokeStub(join(tempDir(), "probe-error.db"));
+    const db = createTauriDatabase(stub.invoke);
+    await applySchemaAndMigrations(db);
+    let execCalls = 0;
+    const failing: Database = {
+      ...db,
+      prepare(sql: string) {
+        if (sql.includes("zam_schema_version")) {
+          const reject = async () => {
+            throw new Error("permission denied for zam_schema_version");
+          };
+          return { run: reject, get: reject, all: reject };
+        }
+        return db.prepare(sql);
+      },
+      async exec(sql: string) {
+        execCalls += 1;
+        await db.exec(sql);
+      },
+    };
+
+    await expect(ensureSchemaAndMigrations(failing)).rejects.toThrow(
+      "permission denied",
+    );
+    expect(execCalls).toBe(0);
     stub.close();
   });
 

@@ -26,9 +26,9 @@ const MANIFEST_PREFIX = "-- zam-snapshot: ";
  * Deletes for a `force` restore walk this list in reverse.
  *
  * Every schema table must appear here unless its content is derived and
- * recomputable (currently only `token_embeddings`, which is re-embedded on
- * demand and would bloat the SQL text). The snapshot test suite guards this
- * classification against the actual schema.
+ * recomputable (`token_embeddings`) or installation metadata
+ * (`zam_schema_version`). The snapshot test suite guards this classification
+ * against the actual schema.
  */
 export const SNAPSHOT_TABLES = [
   "learning_atoms",

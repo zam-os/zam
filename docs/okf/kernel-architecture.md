@@ -7,7 +7,7 @@ tags:
   - cli
   - boundaries
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/kernel-architecture.md"
-timestamp: 2026-08-09T06:56:15Z
+timestamp: 2026-09-02T04:45:25Z
 ---
 
 ZAM has exactly two code layers with a hard boundary between them.
@@ -47,6 +47,13 @@ the native libSQL driver (a remote URL or an embedded replica) or ZAM's
 binding-free HTTP provider. An explicit PostgreSQL provider implements the
 same contract for server deployments.
 
+Schema provisioning is version-gated across providers. After tables,
+migrations, and indexes have all succeeded, the kernel records one singleton
+schema version. An ordinary open reads that marker once and skips provisioning
+when it is current; a missing or older marker runs the complete idempotent
+path. A marker from a newer client is also accepted so an older client never
+attempts to downgrade the library.
+
 All access goes through the async `Database` contract in
 `src/kernel/db/types.ts`; concrete drivers are imported only inside
 `src/kernel/db/`. IDs are ULIDs throughout. Schema changes require both
@@ -61,4 +68,4 @@ Machine-local state (config, selections and credentials) stays under
 - [ADR 2026-07-07 — Resilient Self-Update and Dependency-Failure Isolation](../adr/2026-07-07-resilient-self-update-and-dependency-isolation.md)
 - [ADR 2026-07-23 — Online-Only Server Database and Mobile Gating](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/postgres.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/index.ts`
+- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/postgres.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/index.ts`

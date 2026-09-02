@@ -381,7 +381,11 @@ describe("automatic session synthesis", () => {
 
   it("creates the synthesis audit table when opening an existing database", async () => {
     const dbPath = join(tempDir, "zam-test.db");
+    // Emulate a pre-M006 database. Such a database also predates M029's
+    // version marker; leaving a current marker behind would describe a corrupt
+    // current database rather than a legacy one that needs migrations.
     await db.exec("DROP TABLE session_syntheses");
+    await db.exec("DROP TABLE zam_schema_version");
     await db.close();
 
     db = await openDatabase({
