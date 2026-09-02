@@ -17,7 +17,7 @@
  * idempotent instead, so a run interrupted halfway can simply be repeated.
  */
 
-import { applySchemaAndMigrations } from "../../../src/kernel/db/provision.js";
+import { ensureSchemaAndMigrations } from "../../../src/kernel/db/provision.js";
 import type { Database } from "../../../src/kernel/db/types.js";
 import {
   type PersonaId,
@@ -72,7 +72,7 @@ export interface FirstRunOptions {
 export async function prepareLocalLibrary(
   db: Database,
 ): Promise<LocalSetup | null> {
-  await applySchemaAndMigrations(db);
+  await ensureSchemaAndMigrations(db);
   return readLocalSetup(db);
 }
 
@@ -117,7 +117,7 @@ export async function completeFirstRun(
   db: Database,
   options: FirstRunOptions,
 ): Promise<LocalSetup> {
-  await applySchemaAndMigrations(db);
+  await ensureSchemaAndMigrations(db);
 
   const existing = await getSetting(db, USER_ID_SETTING);
   const userId = existing ?? options.userId?.trim() ?? LOCAL_USER_ID;

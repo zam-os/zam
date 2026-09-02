@@ -17,6 +17,56 @@
 import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
 import type { Database } from "./types.js";
 
+/**
+ * Increment whenever a numbered migration is added — a database stamped with
+ * this version skips the chain entirely, so a migration added without the bump
+ * never runs on any existing library. `tests/kernel/provision.test.ts` guards
+ * the constant against the M-series markers below.
+ */
+export const CURRENT_SCHEMA_VERSION = 29;
+
+const SCHEMA_VERSION_TABLE = "zam_schema_version";
+
+function isMissingSchemaVersionTable(error: unknown): boolean {
+  const code = (error as { code?: unknown } | null)?.code;
+  if (code === "42P01") return true; // PostgreSQL undefined_table
+
+  const message = error instanceof Error ? error.message : String(error);
+  return (
+    message.toLowerCase().includes(SCHEMA_VERSION_TABLE) &&
+    (/no such table/i.test(message) || /does not exist/i.test(message))
+  );
+}
+
+/** Read the marker without turning transport/authentication failures into DDL. */
+async function readSchemaVersion(db: Database): Promise<number | null> {
+  let row: { version?: unknown } | undefined;
+  try {
+    row = (await db
+      .prepare(
+        `SELECT version FROM ${SCHEMA_VERSION_TABLE} WHERE singleton = 1`,
+      )
+      .get()) as { version?: unknown } | undefined;
+  } catch (error) {
+    if (isMissingSchemaVersionTable(error)) return null;
+    throw error;
+  }
+
+  if (row?.version == null) return null;
+  const version = Number(row.version);
+  return Number.isSafeInteger(version) && version >= 0 ? version : null;
+}
+
+async function writeSchemaVersion(db: Database): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO ${SCHEMA_VERSION_TABLE} (singleton, version)
+       VALUES (1, ?)
+       ON CONFLICT(singleton) DO UPDATE SET version = excluded.version`,
+    )
+    .run(CURRENT_SCHEMA_VERSION);
+}
+
 /** Column names of a table, or an empty list when the table does not exist. */
 async function columnsOf(db: Database, table: string): Promise<string[]> {
   const rows = (await db.pragma(`table_info(${table})`)) as Array<{
@@ -128,7 +178,8 @@ async function collapseDuplicateAtomBindings(db: Database): Promise<void> {
 
 /**
  * Run incremental schema migrations. Every migration is idempotent — safe to
- * run on every open, on a fresh file and on a decade-old library alike.
+ * repeat on a fresh file and on a decade-old library alike when the schema
+ * marker says that provisioning is required.
  */
 export async function runMigrations(db: Database): Promise<void> {
   // M001: add execution_context to sessions
@@ -605,12 +656,23 @@ export async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (old_item_id, new_item_id)
     );
   `);
+
+  // M029: provider-neutral schema version marker. The table belongs in both
+  // the current schema and the migration chain, but the row is deliberately
+  // not written here: applySchemaAndMigrations stamps it only after the final
+  // index batch succeeds, so an interrupted provisioning run remains repairable.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS zam_schema_version (
+      singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+      version   INTEGER NOT NULL CHECK (version >= 0)
+    );
+  `);
 }
 
 /**
- * Bring any database up to the current schema. Safe to call unconditionally:
- * every statement is `IF NOT EXISTS` or guarded, so this is the whole setup on
- * an empty database and a no-op on a current one.
+ * Bring any database up to the current schema through the complete provisioning
+ * path. Every statement is `IF NOT EXISTS` or guarded, so this is safe on both
+ * an empty database and a current one.
  *
  * The three-step order is load-bearing. Indexes come **after** the migrations
  * because some of them cover columns a migration adds: `idx_tokens_title`
@@ -623,4 +685,22 @@ export async function applySchemaAndMigrations(db: Database): Promise<void> {
   await db.exec(SCHEMA_TABLES);
   await runMigrations(db);
   await db.exec(SCHEMA_INDEXES);
+  await writeSchemaVersion(db);
+}
+
+/**
+ * Bring a database up to date, using one prepared read on the everyday path.
+ *
+ * A newer marker also skips migrations: releases add migrations monotonically,
+ * and an older client must never attempt to downgrade a library already opened
+ * by a newer one. Missing or invalid markers take the full repairable path.
+ *
+ * The marker is trusted, so this does not re-create schema objects dropped
+ * from an already-stamped database. Repairing one is `applySchemaAndMigrations`
+ * directly, which `openDatabase({ initialize: true })` still reaches.
+ */
+export async function ensureSchemaAndMigrations(db: Database): Promise<void> {
+  const version = await readSchemaVersion(db);
+  if (version !== null && version >= CURRENT_SCHEMA_VERSION) return;
+  await applySchemaAndMigrations(db);
 }

@@ -17,7 +17,7 @@
  * the only copy of a learner's history if a token is later revoked.
  */
 
-import { applySchemaAndMigrations } from "../../../src/kernel/db/provision.js";
+import { ensureSchemaAndMigrations } from "../../../src/kernel/db/provision.js";
 import {
   exportSnapshot,
   importSnapshot,
@@ -104,7 +104,7 @@ export async function upgradeToServerDatabase(
     report("provisioning");
     // A freshly created Turso database has no tables at all, and one made by
     // an older ZAM may predate a migration — both are handled here.
-    await applySchemaAndMigrations(remote);
+    await ensureSchemaAndMigrations(remote);
 
     // Must ask the same question `importSnapshot` asks, which is "does any
     // snapshot table hold a row" — not "are there cards". A server database

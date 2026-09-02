@@ -68,7 +68,8 @@ open a terminal.
   and reviewed items; a generic import carries none of that.
 - **Schema changes** go in BOTH `src/kernel/db/schema.ts` and an idempotent
   numbered migration (M-series) in `runMigrations`
-  (`src/kernel/db/connection.ts`).
+  (`src/kernel/db/provision.ts`), and increment `CURRENT_SCHEMA_VERSION` there
+  so existing libraries do not skip the new migration.
 - **Token vs card**: a token is shared knowledge; a card is per-user FSRS
   state. A concept only appears in a user's queue if a card exists.
 - New kernel API must be re-exported from `src/kernel/index.ts`.

@@ -19,6 +19,14 @@ export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
 
+-- Provider-neutral schema marker. A current database open reads this one row
+-- instead of replaying every idempotent migration over a remote connection.
+-- The row itself is written only after tables, migrations and indexes succeed.
+CREATE TABLE IF NOT EXISTS zam_schema_version (
+  singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
+  version   INTEGER NOT NULL CHECK (version >= 0)
+);
+
 -- Knowledge tokens: atomic concepts/facts with Bloom levels
 CREATE TABLE IF NOT EXISTS tokens (
   id            TEXT PRIMARY KEY,

@@ -65,6 +65,10 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
 - **Kernel vs. CLI boundary**: New learning logic goes in the kernel, not in CLI commands.
 - **Token vs. Card distinction**: `zam token register` creates only a token. `zam bridge add-token` also creates a user card. If a concept should appear in a user's queue, ensure a card is created.
 - **IDs are ULIDs** throughout — use `ulid()`, not UUIDs or numeric IDs.
+- **Schema changes** go in BOTH `src/kernel/db/schema.ts` and an idempotent
+  numbered migration (M-series) in `runMigrations`
+  (`src/kernel/db/provision.ts`), and increment `CURRENT_SCHEMA_VERSION`
+  there — an existing library skips the chain once its marker is current.
 - **Knowledge-base compatibility is rebuildable during the pilot** (ADR
   2026-08-14 Decisions 8–9). Bundled, unreleased fixture ids may change when
   the central model arrives. Preserve personal review evidence, use an explicit
