@@ -5,7 +5,7 @@
 - [x] Phase 2: Hands-Free Voice Controller for Flash Mode (progressive audio guidance, auto-reveal & safe pause)
 - [x] Phase 3: Mobile UI & Review Session (Flashcard experience, In-Session Switcher, Settings)
 - [x] Phase 4: Desktop UI & Settings
-- [ ] Phase 5: Verification & Full Test Suite
+- [x] Phase 5: Verification & Full Test Suite
 
 ## Goal
 
