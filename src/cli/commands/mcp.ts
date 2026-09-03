@@ -9,12 +9,7 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import type {
-  Database,
-  Rating,
-  ReviewActionType,
-  Statement,
-} from "../../kernel/index.js";
+import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import {
   getReviewActivity,
   getSetting,
@@ -61,6 +56,13 @@ import {
 import type { CatalogEntry } from "../okf/bundle.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { executeBridgeCommandJson } from "./bridge.js";
+import {
+  createLazyDatabase,
+  createPersistentDatabaseHost,
+  type DatabaseSource,
+} from "./shared/db.js";
+
+export { createLazyDatabase };
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 let pkgPath = join(__dirname, "..", "..", "package.json");
@@ -243,7 +245,11 @@ async function resolveOpeningCompanionContextSafely(
 /**
  * Creates and configures the McpServer instance with all tools mapped.
  */
-export function createMcpServer(db: Database): McpServer {
+export function createMcpServer(
+  db: Database,
+  options: { bridgeDatabase?: DatabaseSource } = {},
+): McpServer {
+  const bridgeDatabase = options.bridgeDatabase ?? db;
   const server = new McpServer(
     {
       name: "zam",
@@ -1492,7 +1498,9 @@ export function createMcpServer(db: Database): McpServer {
           `Command not allowed for the Studio panel: ${params.cmd}`,
         );
       }
-      return await executeBridgeCommandJson(params.cmd, params.args);
+      return await executeBridgeCommandJson(params.cmd, params.args, {
+        database: bridgeDatabase,
+      });
     }),
   );
 
@@ -2121,72 +2129,14 @@ export function createMcpServer(db: Database): McpServer {
   return server;
 }
 
-export function createLazyDatabase(openFn: () => Promise<Database>): Database {
-  let dbPromise: Promise<Database> | null = null;
-
-  async function getDb(): Promise<Database> {
-    if (!dbPromise) {
-      dbPromise = openFn().catch((err) => {
-        dbPromise = null;
-        throw err;
-      });
-    }
-    return dbPromise;
-  }
-
-  return {
-    prepare(sql: string): Statement {
-      return {
-        async run(...params: unknown[]) {
-          const db = await getDb();
-          return db.prepare(sql).run(...params);
-        },
-        async get(...params: unknown[]) {
-          const db = await getDb();
-          return db.prepare(sql).get(...params);
-        },
-        async all(...params: unknown[]) {
-          const db = await getDb();
-          return db.prepare(sql).all(...params);
-        },
-      };
-    },
-    async exec(sql: string): Promise<void> {
-      const db = await getDb();
-      return db.exec(sql);
-    },
-    async pragma(source: string): Promise<unknown> {
-      const db = await getDb();
-      return db.pragma(source);
-    },
-    async transaction<T>(fn: (db: Database) => Promise<T>): Promise<T> {
-      const db = await getDb();
-      return db.transaction(fn);
-    },
-    async sync(): Promise<void> {
-      const db = await getDb();
-      if (db.sync) {
-        await db.sync();
-      }
-    },
-    async close(): Promise<void> {
-      if (!dbPromise) return;
-      try {
-        const db = await dbPromise;
-        await db.close();
-      } catch {
-        // Silently swallow errors closing a database that failed to open
-      }
-    },
-  };
-}
-
 export async function runMcpServer(): Promise<void> {
   // Rebind console.log to console.error immediately to prevent stdio transport corruption
   console.log = console.error;
 
-  const db = createLazyDatabase(openDatabase);
-  const server = createMcpServer(db);
+  const databaseHost = createPersistentDatabaseHost(openDatabase);
+  const server = createMcpServer(databaseHost.database, {
+    bridgeDatabase: databaseHost,
+  });
 
   let dbClosed = false;
   async function cleanup() {
@@ -2196,7 +2146,7 @@ export async function runMcpServer(): Promise<void> {
       await server.close();
     } catch {}
     try {
-      await db.close();
+      await databaseHost.close();
     } catch {}
     process.exit(0);
   }

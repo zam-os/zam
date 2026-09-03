@@ -14,7 +14,7 @@ new machinery.
 ## Status
 
 - [x] **Phase 1 — version-gated schema provisioning**
-- [ ] **Phase 2 — one database connection per persistent host**
+- [x] **Phase 2 — one database connection per persistent host**
 - [ ] **Phase 3 — fewer remote reads during bootstrap**
 - [ ] **Phase 4 — a narrow VS Code activation graph**
 - [ ] **Phase 5 — lazy optional UI modules**
@@ -97,6 +97,19 @@ Acceptance:
 - Two commands in one host cause one database open and one eventual close.
 - The Studio bridge proxy no longer pays connection/provisioning latency per
   interaction.
+
+Result (2026-09-03): `zam mcp` and the Desktop's persistent `bridge serve`
+process now inject one lazy, process-owned database into bridge command
+execution. Standalone `zam bridge` calls retain their open/close ownership, a
+failed lazy open remains retryable, and stdin close releases the Desktop host's
+handle after its final queued request. The exceptional `server-db-connect`
+setup action retires the old handle so the following dashboard refresh uses
+the newly selected library. In five alternating read-only
+`list-knowledge-contexts` calls against the configured remote Turso library,
+the four warm standalone calls took 86–97 ms (90 ms mean) while warm hosted
+calls took 40–47 ms (43 ms mean), a 52% reduction. Structural tests pin one
+open and one eventual close across concurrent hosted commands; the focused
+Phase 2 suite passed 59 tests.
 
 ## Phase 3 — fewer remote reads during bootstrap
 
