@@ -77,6 +77,7 @@ interface OpenRecallResult {
   user?: string | null;
   domain?: string | null;
   quickMode?: boolean;
+  learningMode?: "flash" | "answer_feedback" | "answer_variation";
   companionContext?: CompanionContextBarState;
 }
 
@@ -140,6 +141,7 @@ const app = new App({ name: "ZAM Recall", version: "0.1.0" });
 let currentUser: string | null = null;
 let focusDomain: string | null = null;
 let quickMode = false;
+let learningMode: "flash" | "answer_feedback" | "answer_variation" = "flash";
 let connected = false;
 let started = false;
 let finished = false;
@@ -193,6 +195,7 @@ function reloadForContext(newState: CompanionContextBarState): void {
   currentUser = newState.user.currentId ?? null;
   companionContext = newState;
   quickMode = deriveQuickMode(newState, quickMode);
+  learningMode = quickMode ? "flash" : "answer_feedback";
   started = false;
   finished = false;
   cards = [];
@@ -710,11 +713,24 @@ function renderCard(): void {
           : card.tier;
     badges.appendChild(tierBadge);
   }
-  const modeBadge = document.createElement("span");
-  modeBadge.className = "recall-badge";
-  modeBadge.textContent = quickMode
-    ? t("recall_badge_quick")
-    : t("recall_badge_smart");
+  const isFlash = learningMode === "flash" || quickMode;
+  const modeBadge = document.createElement("button");
+  modeBadge.type = "button";
+  modeBadge.className = "recall-badge recall-mode-toggle";
+  modeBadge.style.cursor = "pointer";
+  modeBadge.style.border = "none";
+  modeBadge.style.background = "var(--hover)";
+  modeBadge.style.color = "inherit";
+  modeBadge.style.font = "inherit";
+  modeBadge.textContent = isFlash ? "⚡ Flash" : "💬 KI";
+  modeBadge.title = isFlash
+    ? "Flash-Modus aktiv. Klicken für KI-Modus."
+    : "KI-Modus aktiv. Klicken für Flash-Modus.";
+  modeBadge.addEventListener("click", () => {
+    learningMode = isFlash ? "answer_feedback" : "flash";
+    quickMode = learningMode === "flash";
+    renderCard(card);
+  });
   badges.appendChild(modeBadge);
   root.appendChild(badges);
 
@@ -734,11 +750,22 @@ function renderCard(): void {
   const question = document.createElement("div");
   question.className = "recall-question";
   question.textContent = card.question?.trim() ? card.question : card.slug;
+  if (isFlash) {
+    question.style.cursor = "pointer";
+    question.addEventListener("click", () => {
+      if (!committed) {
+        actionBtn.click();
+      }
+    });
+  }
   root.appendChild(question);
 
   const answer = document.createElement("textarea");
   answer.className = "recall-answer";
   answer.placeholder = t("placeholder_recall_answer");
+  if (isFlash) {
+    answer.hidden = true;
+  }
   root.appendChild(answer);
 
   const fastOptions = document.createElement("div");
@@ -1127,7 +1154,7 @@ function renderCard(): void {
     if (committed) return;
     const text = answer.value.trim();
     lockInputs();
-    if (!text) {
+    if (!text || isFlash) {
       showReveal();
       pushContext(card, "revealed");
     } else if (quickMode || card.fastCheck) {
@@ -1200,6 +1227,8 @@ app.ontoolresult = (params) => {
     structured.companionContext,
     structured.quickMode === true,
   );
+  learningMode =
+    structured.learningMode ?? (quickMode ? "flash" : "answer_feedback");
   const contextChanged =
     started && (previousUser !== currentUser || previousDomain !== focusDomain);
   if (contextChanged) {

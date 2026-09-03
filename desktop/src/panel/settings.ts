@@ -219,22 +219,135 @@ async function loadRecallSettings(): Promise<void> {
   renderLoading(recallEl, "Lade Recall-Einstellungen…");
   try {
     const data = (await bridgeCall("get-settings")) as SettingsResult;
-    renderRecallSettings(Boolean(data.recall?.quickMode));
+    const learningMode =
+      (data.recall?.learningMode as
+        | "flash"
+        | "answer_feedback"
+        | "answer_variation") ??
+      (data.recall?.quickMode ? "flash" : "answer_feedback");
+    const voiceRevealTimeoutSec =
+      Number(data.recall?.voiceRevealTimeoutSec) || 20;
+    renderRecallSettings({
+      quickMode: Boolean(data.recall?.quickMode),
+      learningMode,
+      voiceRevealTimeoutSec,
+    });
   } catch (error) {
     clearEl(recallEl);
     renderInlineError(recallEl, errorMessage(error));
   }
 }
 
-function renderRecallSettings(quickMode: boolean): void {
+function renderRecallSettings(data: {
+  quickMode: boolean;
+  learningMode: "flash" | "answer_feedback" | "answer_variation";
+  voiceRevealTimeoutSec: number;
+}): void {
   if (!recallEl) return;
   clearEl(recallEl);
+
+  // Learning mode field
+  const modeGroup = document.createElement("div");
+  modeGroup.className = "settings-group";
+  modeGroup.style.marginBottom = "14px";
+
+  const modeLabel = document.createElement("label");
+  modeLabel.style.display = "block";
+  modeLabel.style.fontWeight = "600";
+  modeLabel.style.fontSize = "0.85rem";
+  modeLabel.style.marginBottom = "6px";
+  modeLabel.textContent = "Lernmodus (Learning mode)";
+
+  const modeSelect = document.createElement("select");
+  modeSelect.id = "settings-learning-mode";
+  modeSelect.className = "settings-select";
+  modeSelect.style.width = "100%";
+  modeSelect.style.padding = "6px 8px";
+  modeSelect.style.borderRadius = "6px";
+  modeSelect.style.border = "1px solid var(--border)";
+  modeSelect.style.background = "var(--field-bg)";
+  modeSelect.style.color = "var(--fg)";
+  modeSelect.style.fontSize = "0.85rem";
+
+  const modes: Array<{
+    value: "flash" | "answer_feedback" | "answer_variation";
+    label: string;
+  }> = [
+    {
+      value: "flash",
+      label: "Flash-Modus (schnell, ohne Tippen — Flashcard)",
+    },
+    {
+      value: "answer_feedback",
+      label: "Antwort-Modus mit intelligentem KI-Feedback",
+    },
+    {
+      value: "answer_variation",
+      label: "Antwort-Modus mit KI-Feedback und Frage-Variation",
+    },
+  ];
+
+  for (const m of modes) {
+    const opt = document.createElement("option");
+    opt.value = m.value;
+    opt.textContent = m.label;
+    if (m.value === data.learningMode) opt.selected = true;
+    modeSelect.appendChild(opt);
+  }
+
+  modeSelect.addEventListener("change", () => {
+    void setRecallSetting("recall.learning_mode", modeSelect.value);
+  });
+
+  const modeHint = document.createElement("div");
+  modeHint.className = "settings-hint";
+  modeHint.style.marginTop = "4px";
+  modeHint.textContent =
+    "Wähle deinen bevorzugten Lernstil. Im Flash-Modus deckst du Antworten direkt auf und bewertest selbst ohne Tippen.";
+
+  modeGroup.append(modeLabel, modeSelect, modeHint);
+
+  // Auto-reveal delay field (Voice mode)
+  const timeoutGroup = document.createElement("div");
+  timeoutGroup.className = "settings-group";
+  timeoutGroup.style.marginBottom = "14px";
+
+  const timeoutLabel = document.createElement("label");
+  timeoutLabel.style.display = "block";
+  timeoutLabel.style.fontWeight = "600";
+  timeoutLabel.style.fontSize = "0.85rem";
+  timeoutLabel.style.marginBottom = "6px";
+  timeoutLabel.textContent =
+    "Wartezeit bis zur automatischen Antwort (Sprachmodus, Sekunden)";
+
+  const timeoutInput = document.createElement("input");
+  timeoutInput.id = "settings-voice-reveal-timeout";
+  timeoutInput.type = "number";
+  timeoutInput.min = "5";
+  timeoutInput.max = "60";
+  timeoutInput.step = "1";
+  timeoutInput.value = String(data.voiceRevealTimeoutSec);
+  timeoutInput.style.width = "80px";
+  timeoutInput.style.padding = "6px 8px";
+  timeoutInput.style.borderRadius = "6px";
+  timeoutInput.style.border = "1px solid var(--border)";
+  timeoutInput.style.background = "var(--field-bg)";
+  timeoutInput.style.color = "var(--fg)";
+  timeoutInput.style.fontSize = "0.85rem";
+
+  timeoutInput.addEventListener("change", () => {
+    const sec = Math.max(5, Math.min(60, Number(timeoutInput.value) || 20));
+    timeoutInput.value = String(sec);
+    void setRecallSetting("recall.voice_reveal_timeout_sec", String(sec));
+  });
+
+  timeoutGroup.append(timeoutLabel, timeoutInput);
 
   const label = document.createElement("label");
   label.className = "settings-checkbox-row";
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.checked = quickMode;
+  checkbox.checked = data.quickMode;
   const text = document.createElement("span");
   text.textContent = "Just show questions and answers for speed";
   label.append(checkbox, text);
@@ -244,28 +357,19 @@ function renderRecallSettings(quickMode: boolean): void {
   hint.textContent =
     "Disabled by default. When off, Recall asks the connected host to check " +
     "your answer and supports follow-up questions.";
-  recallEl.append(label, hint);
 
   checkbox.addEventListener("change", () => {
-    void setRecallQuickMode(checkbox);
+    void setRecallSetting("recall.quick_mode", String(checkbox.checked));
   });
+
+  recallEl.append(modeGroup, timeoutGroup, label, hint);
 }
 
-async function setRecallQuickMode(checkbox: HTMLInputElement): Promise<void> {
-  const requested = checkbox.checked;
-  checkbox.disabled = true;
+async function setRecallSetting(key: string, value: string): Promise<void> {
   try {
-    await bridgeCall("setting-set", [
-      "--key",
-      "recall.quick_mode",
-      "--value",
-      String(requested),
-    ]);
+    await bridgeCall("setting-set", ["--key", key, "--value", value]);
   } catch (error) {
-    checkbox.checked = !requested;
     renderInlineError(recallEl, errorMessage(error));
-  } finally {
-    checkbox.disabled = false;
   }
 }
 

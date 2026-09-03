@@ -18,6 +18,7 @@ import type {
 import {
   getReviewActivity,
   getSetting,
+  isStudyLearningMode,
   openDatabase,
 } from "../../kernel/index.js";
 import {
@@ -1259,9 +1260,20 @@ export function createMcpServer(db: Database): McpServer {
         // connection degrades `quickMode` to its conservative default
         // (false) instead of failing the whole open call.
         let quickMode = false;
+        let learningMode: "flash" | "answer_feedback" | "answer_variation" =
+          "flash";
         let degraded = opening.degraded;
         try {
           quickMode = (await getSetting(db, "recall.quick_mode")) === "true";
+          const rawLearningMode = await getSetting(db, "recall.learning_mode");
+          if (rawLearningMode && isStudyLearningMode(rawLearningMode)) {
+            learningMode = rawLearningMode;
+          } else if (quickMode) {
+            learningMode = "flash";
+          } else {
+            const llmEnabled = (await getSetting(db, "llm.enabled")) === "true";
+            learningMode = llmEnabled ? "answer_feedback" : "flash";
+          }
         } catch (error) {
           degraded = true;
           console.error(
@@ -1276,6 +1288,7 @@ export function createMcpServer(db: Database): McpServer {
           user: userId,
           domain: domain ?? null,
           quickMode,
+          learningMode,
           // Resolved context for first paint (ADR §Decision 3) — the app
           // must never briefly render the wrong learner.
           companionContext,

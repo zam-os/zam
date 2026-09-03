@@ -75,6 +75,7 @@ import {
   getProviderApiKey,
   getReviewActivity,
   getSetting,
+  getStudyLearningSettings,
   getStudyWorkloadSettings,
   getSystemProfile,
   getTokenBySlug,
@@ -86,6 +87,7 @@ import {
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
+  isStudyLearningMode,
   isStudyWorkloadPreset,
   isVoiceEnginePreference,
   listAgentSkills,
@@ -117,6 +119,7 @@ import {
   setOnboardingPersona,
   setProviderApiKey,
   setSetting,
+  setStudyLearningSettings,
   setStudyWorkloadSettings,
   setTursoCredentials,
   slugify,
@@ -3550,7 +3553,10 @@ const UI_WRITABLE_SETTINGS = new Set([
   // start but had no way to reach it short of writing the row by hand.
   "llm.dynamic_questions",
   "llm.vision.enabled",
+  "recall.learning_mode",
   "recall.quick_mode",
+  "recall.voice_reveal_timeout_sec",
+  "recall.voice_rating_timeout_sec",
   "system.locale",
 ]);
 
@@ -4272,6 +4278,12 @@ bridgeCommand
         },
         recall: {
           quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
+          learningMode:
+            (await getSetting(db, "recall.learning_mode")) ??
+            (enabled ? "answer_feedback" : "flash"),
+          voiceRevealTimeoutSec:
+            Number(await getSetting(db, "recall.voice_reveal_timeout_sec")) ||
+            20,
           // Absent means on, matching ensureHighQualityQuestion's `!== "false"`.
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
@@ -4344,6 +4356,64 @@ bridgeCommand
         userId,
         unburied: await unburySiblingCards(db, userId),
       });
+    });
+  });
+
+bridgeCommand
+  .command("study-learning-get")
+  .description(
+    "Get persistent review learning mode settings for a learner (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const { enabled: aiEnabled } = await getLlmConfig(db);
+      jsonOut({
+        success: true,
+        userId,
+        settings: await getStudyLearningSettings(db, userId, {
+          fallbackLearningMode: aiEnabled ? "answer_feedback" : "flash",
+        }),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("study-learning-set")
+  .description(
+    "Save persistent review learning mode settings for a learner (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--mode <name>", "flash | answer_feedback | answer_variation")
+  .option("--reveal-timeout <n>", "Auto-reveal timeout in seconds (5-60)")
+  .option("--rating-timeout <n>", "Voice rating timeout in seconds (5-60)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      if (opts.mode !== undefined && !isStudyLearningMode(opts.mode)) {
+        jsonError("mode must be flash, answer_feedback, or answer_variation");
+      }
+      const voiceRevealTimeoutSec =
+        opts.revealTimeout === undefined
+          ? undefined
+          : Number(opts.revealTimeout);
+      const voiceRatingTimeoutSec =
+        opts.ratingTimeout === undefined
+          ? undefined
+          : Number(opts.ratingTimeout);
+      const { enabled: aiEnabled } = await getLlmConfig(db);
+      const settings = await setStudyLearningSettings(
+        db,
+        userId,
+        {
+          learningMode: opts.mode,
+          voiceRevealTimeoutSec,
+          voiceRatingTimeoutSec,
+        },
+        { fallbackLearningMode: aiEnabled ? "answer_feedback" : "flash" },
+      );
+      jsonOut({ success: true, userId, settings });
     });
   });
 

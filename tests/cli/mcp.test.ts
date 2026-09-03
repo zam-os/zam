@@ -954,7 +954,12 @@ describe("MCP stdio server tests", () => {
         // `dynamicQuestions` joined the block when the desktop gained a control
         // for it; absent storage reads as on. Kept as an exact match so a
         // further addition to the recall block is a deliberate contract change.
-        expect(data.recall).toEqual({ quickMode: true, dynamicQuestions: true });
+        expect(data.recall).toEqual({
+          quickMode: true,
+          dynamicQuestions: true,
+          learningMode: "flash",
+          voiceRevealTimeoutSec: 20,
+        });
       }, 15_000);
 
       it("reads and writes the dynamic-question setting", async () => {
