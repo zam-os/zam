@@ -191,4 +191,62 @@ describe("bridge serve mode JSON-RPC", () => {
       suggestions: [],
     });
   });
+
+  it("serves multiple requests from one host and shuts down on stdin close", async () => {
+    const child = spawn("node", [cliPath, "bridge", "serve"], {
+      cwd: tempCwd,
+      env: {
+        ...process.env,
+        USERPROFILE: tempHome,
+        HOME: tempHome,
+      },
+    });
+
+    let stdout = "";
+    let stderr = "";
+    child.stdout.on("data", (data) => {
+      stdout += data.toString();
+    });
+    child.stderr.on("data", (data) => {
+      stderr += data.toString();
+    });
+
+    child.stdin.write(
+      `${JSON.stringify({ id: 45, cmd: "get-settings", args: [] })}\n`,
+    );
+    child.stdin.end(
+      `${JSON.stringify({ id: 46, cmd: "list-knowledge-contexts", args: [] })}\n`,
+    );
+
+    const exitCode = await new Promise<number | null>((resolve, reject) => {
+      const timeout = setTimeout(() => {
+        child.kill("SIGKILL");
+        reject(new Error("Bridge did not shut down after stdin closed"));
+      }, 5_000);
+      child.once("error", (error) => {
+        clearTimeout(timeout);
+        reject(error);
+      });
+      child.once("exit", (code) => {
+        clearTimeout(timeout);
+        resolve(code);
+      });
+    });
+
+    expect(exitCode).toBe(0);
+    expect(stderr).toBe("");
+    const responses = stdout
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(responses.map((response) => response.id)).toEqual([45, 46]);
+    expect(responses[0].result.recall).toEqual({
+      quickMode: false,
+      dynamicQuestions: true,
+    });
+    expect(responses[1].result).toMatchObject({
+      success: true,
+      contexts: [],
+    });
+  });
 });

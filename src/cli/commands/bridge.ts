@@ -325,6 +325,9 @@ import {
   resolveActivityWindow,
 } from "./shared/activity.js";
 import {
+  createPersistentDatabaseHost,
+  type DatabaseSource,
+  runWithDatabase,
   withDb as sharedWithDb,
   withOptionalDb as sharedWithOptionalDb,
 } from "./shared/db.js";
@@ -7512,15 +7515,20 @@ let bridgeExecutionQueue: Promise<unknown> = Promise.resolve();
  * Run one `zam bridge <cmd> [...args]` subcommand in-process and return its
  * parsed JSON output, or throw a plain Error on failure. This is the same
  * re-parse-through-Commander mechanism `bridge serve` has always used
- * internally; each call opens its own database via the command's own
- * `withDb()` — callers must not assume any particular db handle is threaded
- * through.
+ * internally. A persistent host may inject its process-owned database; without
+ * that option, the command's normal `withDb()` still opens and closes its own
+ * handle exactly like a standalone `zam bridge` invocation.
  */
 export function executeBridgeCommandJson(
   cmd: string,
   args: string[],
+  options: { database?: DatabaseSource } = {},
 ): Promise<unknown> {
-  const run = bridgeExecutionQueue.then(() => runBridgeCommandOnce(cmd, args));
+  const database = options.database;
+  const execute = () => runBridgeCommandOnce(cmd, args);
+  const run = bridgeExecutionQueue.then(() =>
+    database ? runWithDatabase(database, execute) : execute(),
+  );
   // Keep the queue moving regardless of this call's outcome — one caller's
   // rejection must not block, or itself reject, the next caller in line.
   bridgeExecutionQueue = run.then(
@@ -7565,6 +7573,7 @@ bridgeCommand
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
+    let databaseHost = createPersistentDatabaseHost(openDatabase);
 
     const processRequest = async (line: string): Promise<string> => {
       let requestId: string | number | null = null;
@@ -7589,14 +7598,25 @@ bridgeCommand
           });
         }
 
+        const requestDatabaseHost = databaseHost;
         try {
-          const result = await executeBridgeCommandJson(cmd, args);
+          const result = await executeBridgeCommandJson(cmd, args, {
+            database: requestDatabaseHost,
+          });
           return JSON.stringify({ id: requestId, result });
         } catch (err) {
           return JSON.stringify({
             id: requestId,
             error: (err as Error).message || String(err),
           });
+        } finally {
+          // The Desktop setup wizard changes the configured target inside this
+          // process. Retire the old handle after that request so the immediate
+          // status/dashboard refresh opens the newly selected library.
+          if (cmd === "server-db-connect") {
+            databaseHost = createPersistentDatabaseHost(openDatabase);
+            await requestDatabaseHost.close();
+          }
         }
       } catch (err) {
         return JSON.stringify({
@@ -7642,6 +7662,17 @@ bridgeCommand
             // best-effort only
           }
         });
+    });
+
+    // Closing stdin is the Desktop host's orderly shutdown signal. Let the
+    // final queued request finish, then release the one process-owned handle.
+    // A forced cancellation still terminates the process immediately.
+    let databaseClosePromise: Promise<void> | undefined;
+    rl.once("close", () => {
+      databaseClosePromise ??= pending.then(() => databaseHost.close());
+      void databaseClosePromise.catch((error) => {
+        logDiag(`serve database close failed: ${String(error)}`);
+      });
     });
   });
 
