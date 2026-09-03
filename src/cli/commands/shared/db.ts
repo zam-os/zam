@@ -7,7 +7,10 @@
 
 import { AsyncLocalStorage } from "node:async_hooks";
 import type { Database } from "../../../kernel/index.js";
-import { openDatabase } from "../../../kernel/index.js";
+import {
+  isTransientRemoteDatabaseError,
+  openDatabase,
+} from "../../../kernel/index.js";
 
 type ErrorHandler = (message: string) => void;
 
@@ -21,6 +24,16 @@ type ErrorHandler = (message: string) => void;
 export interface PersistentDatabaseHost {
   readonly database: Database;
   getDatabase(): Promise<Database>;
+  /**
+   * Drop the cached handle so the next caller opens a fresh one.
+   *
+   * A standalone command reopened the database every time, so a dropped
+   * network connection healed itself on the next invocation. A host holds one
+   * handle for hours, and the default provider for a Turso URL is the stateful
+   * native driver — without this, one lost connection would poison every later
+   * command until the process restarts.
+   */
+  invalidate(): void;
   close(): Promise<void>;
 }
 
@@ -74,6 +87,18 @@ export function createPersistentDatabaseHost(
       databasePromise = guarded;
     }
     return databasePromise;
+  };
+
+  const invalidate = (): void => {
+    if (closed || !databasePromise) return;
+    const stale = databasePromise;
+    databasePromise = null;
+    // Detached and best-effort: a connection that just died mid-query is
+    // unlikely to close cleanly, and no caller is waiting on that outcome.
+    void stale.then(
+      (database) => database.close().catch(() => {}),
+      () => {},
+    );
   };
 
   const close = (): Promise<void> => {
@@ -132,6 +157,7 @@ export function createPersistentDatabaseHost(
   return {
     database,
     getDatabase,
+    invalidate,
     close,
   };
 }
@@ -139,6 +165,19 @@ export function createPersistentDatabaseHost(
 /** Backward-compatible Database-only view used by existing MCP tests/callers. */
 export function createLazyDatabase(openFn: () => Promise<Database>): Database {
   return createPersistentDatabaseHost(openFn).database;
+}
+
+/**
+ * Retire a host handle after a failure that says nothing about the SQL — a
+ * dropped socket, a 5xx, an unreachable host. Real SQL errors never match, so
+ * a failing query keeps the connection it is failing on.
+ */
+function invalidateOnTransientFailure(
+  source: DatabaseSource,
+  error: unknown,
+): void {
+  if (isPersistentDatabaseHost(source) && isTransientRemoteDatabaseError(error))
+    source.invalidate();
 }
 
 function defaultErrorHandler(message: string): void {
@@ -157,6 +196,7 @@ export async function withDb(
     db = injected ? await resolveDatabase(injected) : await openDatabase();
     await fn(db);
   } catch (err) {
+    if (injected) invalidateOnTransientFailure(injected, err);
     onError((err as Error).message);
   } finally {
     if (!injected) await db?.close();
@@ -183,6 +223,7 @@ export async function withOptionalDb(
   try {
     await fn(db);
   } catch (err) {
+    if (injected) invalidateOnTransientFailure(injected, err);
     onError((err as Error).message);
   } finally {
     if (!injected) await db?.close();

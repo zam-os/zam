@@ -7519,6 +7519,23 @@ let bridgeExecutionQueue: Promise<unknown> = Promise.resolve();
  * that option, the command's normal `withDb()` still opens and closes its own
  * handle exactly like a standalone `zam bridge` invocation.
  */
+/**
+ * True for commands that repoint this process at a different library.
+ *
+ * The Desktop setup wizard changes the configured target from inside the
+ * serve process, so the handle opened against the previous target has to be
+ * retired before the status and dashboard refresh that follow — otherwise the
+ * learner keeps reading and writing the library they just moved away from.
+ *
+ * Kept as a named predicate because it is a plain string comparison guarding
+ * something silent: a second target-changing command, or a rename of this one,
+ * would go unnoticed. `tests/cli/bridge-host-rotation.test.ts` cross-checks
+ * this list against the commands that actually write Turso credentials.
+ */
+export function retiresPersistentDatabaseHost(cmd: string): boolean {
+  return cmd === "server-db-connect";
+}
+
 export function executeBridgeCommandJson(
   cmd: string,
   args: string[],
@@ -7610,10 +7627,7 @@ bridgeCommand
             error: (err as Error).message || String(err),
           });
         } finally {
-          // The Desktop setup wizard changes the configured target inside this
-          // process. Retire the old handle after that request so the immediate
-          // status/dashboard refresh opens the newly selected library.
-          if (cmd === "server-db-connect") {
+          if (retiresPersistentDatabaseHost(cmd)) {
             databaseHost = createPersistentDatabaseHost(openDatabase);
             await requestDatabaseHost.close();
           }

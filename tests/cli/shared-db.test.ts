@@ -5,8 +5,15 @@ const mocks = vi.hoisted(() => ({
   openDatabase: vi.fn<() => Promise<Database>>(),
 }));
 
-vi.mock("../../src/kernel/index.js", () => ({
+// Only `openDatabase` is faked; the transient-error classification is the real
+// one, because which errors retire a host handle is exactly what is under test.
+vi.mock("../../src/kernel/index.js", async () => ({
   openDatabase: mocks.openDatabase,
+  isTransientRemoteDatabaseError: (
+    await vi.importActual<typeof import("../../src/kernel/db/connection.js")>(
+      "../../src/kernel/db/connection.js",
+    )
+  ).isTransientRemoteDatabaseError,
 }));
 
 import {
@@ -150,6 +157,84 @@ describe("shared CLI database lifetime", () => {
 
     await host.close();
     expect(recovered.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("reopens after a dropped connection but keeps the handle on a SQL error", async () => {
+    const first = fakeDatabase("first");
+    const second = fakeDatabase("second");
+    const open = vi
+      .fn<() => Promise<Database>>()
+      .mockResolvedValueOnce(first.database)
+      .mockResolvedValue(second.database);
+    const host = createPersistentDatabaseHost(open);
+    const failures: string[] = [];
+
+    // A real SQL error says something about this query, not the connection.
+    await runWithDatabase(host, () =>
+      withDb(() => {
+        throw new Error("no such column: nope");
+      }, failures.push.bind(failures)),
+    );
+    let reusedDatabase: Database | undefined;
+    await runWithDatabase(host, () =>
+      withDb((database) => {
+        reusedDatabase = database;
+      }, rethrow),
+    );
+    expect(reusedDatabase).toBe(first.database);
+    expect(open).toHaveBeenCalledTimes(1);
+    expect(first.close).not.toHaveBeenCalled();
+
+    // A dropped socket says nothing about the SQL, so the handle is retired.
+    await runWithDatabase(host, () =>
+      withDb(() => {
+        throw new Error('Hrana(Api("status=502 upstream forward failed"))');
+      }, failures.push.bind(failures)),
+    );
+    let freshDatabase: Database | undefined;
+    await runWithDatabase(host, () =>
+      withDb((database) => {
+        freshDatabase = database;
+      }, rethrow),
+    );
+
+    expect(freshDatabase).toBe(second.database);
+    expect(open).toHaveBeenCalledTimes(2);
+    expect(first.close).toHaveBeenCalledTimes(1);
+    expect(failures).toHaveLength(2);
+
+    await host.close();
+    expect(second.close).toHaveBeenCalledTimes(1);
+  });
+
+  it("retires the handle behind withOptionalDb's degraded path too", async () => {
+    const dropped = fakeDatabase("dropped");
+    const reopened = fakeDatabase("reopened");
+    const open = vi
+      .fn<() => Promise<Database>>()
+      .mockResolvedValueOnce(dropped.database)
+      .mockResolvedValue(reopened.database);
+    const host = createPersistentDatabaseHost(open);
+
+    await runWithDatabase(host, () =>
+      withOptionalDb(
+        () => {
+          throw new Error("fetch failed");
+        },
+        () => {},
+      ),
+    );
+
+    let recovered: Database | null | undefined;
+    await runWithDatabase(host, () =>
+      withOptionalDb((database) => {
+        recovered = database;
+      }, rethrow),
+    );
+
+    expect(recovered).toBe(reopened.database);
+    expect(open).toHaveBeenCalledTimes(2);
+    await host.close();
   });
 
   it("does not open a database only to close an unused host", async () => {
