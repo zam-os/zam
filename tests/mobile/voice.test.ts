@@ -6,6 +6,7 @@ import {
   HandsFreeReviewController,
   isVoiceModeUsable,
   type MobileVoiceNative,
+  parseSpokenAction,
   parseSpokenRating,
   planLeavesDevice,
   resolveVoiceEnginePlan,
@@ -179,6 +180,200 @@ describe("Android hands-free voice review", () => {
     expect(spoken.some((text) => text.includes("did not recognize"))).toBe(
       true,
     );
+  });
+
+  it("parses spoken review actions (reveal and stop)", () => {
+    expect(parseSpokenAction("weiter", "de-DE")).toBe("reveal");
+    expect(parseSpokenAction("aufdecken bitte", "de-DE")).toBe("reveal");
+    expect(parseSpokenAction("zeige die antwort", "de-DE")).toBe("reveal");
+    expect(parseSpokenAction("beenden", "de-DE")).toBe("stop");
+    expect(parseSpokenAction("stopp bitte", "de-DE")).toBe("stop");
+
+    expect(parseSpokenAction("next", "en-US")).toBe("reveal");
+    expect(parseSpokenAction("reveal answer", "en-US")).toBe("reveal");
+    expect(parseSpokenAction("stop", "en-US")).toBe("stop");
+    expect(parseSpokenAction("pause session", "en-US")).toBe("stop");
+    expect(parseSpokenAction("something unrelated", "en-US")).toBeNull();
+  });
+
+  it("supports 'einfach' as rating 4 in German", () => {
+    expect(parseSpokenRating("Das war einfach", "de-DE")).toBe(4);
+    expect(parseSpokenRating("einfach", "de-DE")).toBe(4);
+  });
+
+  it("runs flash mode with progressive prompts, tones, and ratings", async () => {
+    const events: string[] = [];
+    const heard = ["weiter", "gut", "aufdecken", "einfach"];
+    const cards: VoiceReviewCard[] = [
+      {
+        question: "Quadrat?",
+        expectedAnswer: "Viereck mit 4 gleichen Seiten.",
+        revealed: false,
+        draftAnswer: "",
+      },
+      {
+        question: "Rechteck?",
+        expectedAnswer: "Viereck mit 4 rechten Winkeln.",
+        revealed: false,
+        draftAnswer: "",
+      },
+    ];
+    let activeCardIndex = 0;
+
+    const port: VoicePort = {
+      async start(locale) {
+        events.push(`start:${locale}`);
+      },
+      async stop() {
+        events.push("stop");
+      },
+      async speak(text) {
+        events.push(`speak:${text}`);
+      },
+      async listen() {
+        events.push("listen");
+        return heard.shift() ?? "";
+      },
+      async playTone(kind) {
+        events.push(`tone:${kind}`);
+      },
+    };
+
+    const ratedRatings: number[] = [];
+    const controller = new HandsFreeReviewController(port, {
+      currentCard: () => cards[activeCardIndex] ?? null,
+      captureAnswer() {},
+      revealAnswer() {
+        if (cards[activeCardIndex]) {
+          cards[activeCardIndex].revealed = true;
+        }
+      },
+      async rate(rating) {
+        ratedRatings.push(rating);
+        activeCardIndex += 1;
+        return activeCardIndex < cards.length;
+      },
+      setStatus(message) {
+        events.push(`status:${message}`);
+      },
+    });
+
+    await controller.start("de-DE", { mode: "flash" });
+
+    expect(ratedRatings).toEqual([3, 4]);
+    // Card 0: question spoken, onboarding prompt spoken, tone reveal played, answer spoken, full rating prompt spoken
+    expect(events).toContain("speak:Quadrat?");
+    expect(
+      events.some((e) => e.includes("Sage weiter, um die Antwort zu hören")),
+    ).toBe(true);
+    expect(events).toContain("tone:reveal");
+    expect(events).toContain("speak:Viereck mit 4 gleichen Seiten.");
+    expect(
+      events.some((e) =>
+        e.includes("Bewerte mit nochmal, schwer, gut oder einfach"),
+      ),
+    ).toBe(true);
+    expect(events).toContain("tone:rate");
+
+    // Card 1: question spoken, NO onboarding prompt spoken, short prompt "Bewertung?" spoken
+    expect(events).toContain("speak:Rechteck?");
+    const onboardingOccurrences = events.filter(
+      (e) =>
+        e.startsWith("speak:") &&
+        e.includes("Sage weiter, um die Antwort zu hören"),
+    );
+    expect(onboardingOccurrences).toHaveLength(1); // only on first card!
+    expect(events).toContain("speak:Bewertung?");
+    expect(events).toContain("speak:Viereck mit 4 rechten Winkeln.");
+  });
+
+  it("handles stop action in flash mode gracefully", async () => {
+    const events: string[] = [];
+    const card: VoiceReviewCard = {
+      question: "Stopptest?",
+      expectedAnswer: "Antwort",
+      revealed: false,
+      draftAnswer: "",
+    };
+
+    const port: VoicePort = {
+      async start() {},
+      async stop() {
+        events.push("stop");
+      },
+      async speak(text) {
+        events.push(`speak:${text}`);
+      },
+      async listen() {
+        return "beenden";
+      },
+    };
+
+    const controller = new HandsFreeReviewController(port, {
+      currentCard: () => card,
+      captureAnswer() {},
+      revealAnswer() {},
+      async rate() {
+        return false;
+      },
+      setStatus(msg) {
+        events.push(`status:${msg}`);
+      },
+    });
+
+    await controller.start("de-DE", { mode: "flash" });
+
+    expect(events).toContain("speak:Sitzung pausiert.");
+    expect(card.revealed).toBe(false);
+  });
+
+  it("auto-reveals answer when revealTimeoutMs is reached without speech", async () => {
+    const events: string[] = [];
+    const card: VoiceReviewCard = {
+      question: "Timeout?",
+      expectedAnswer: "Automatisch aufgedeckt.",
+      revealed: false,
+      draftAnswer: "",
+    };
+
+    let listenCalls = 0;
+    const port: VoicePort = {
+      async start() {},
+      async stop() {},
+      async speak(text) {
+        events.push(`speak:${text}`);
+      },
+      async listen() {
+        listenCalls += 1;
+        // Hanging promise to simulate waiting / silence
+        return new Promise((resolve) => setTimeout(() => resolve(""), 500));
+      },
+    };
+
+    let revealedCalled = false;
+    const controller = new HandsFreeReviewController(port, {
+      currentCard: () => card,
+      captureAnswer() {},
+      revealAnswer() {
+        revealedCalled = true;
+        card.revealed = true;
+      },
+      async rate() {
+        return false;
+      },
+      setStatus() {},
+    });
+
+    // Short timeout of 50ms for test
+    await controller.start("de-DE", {
+      mode: "flash",
+      revealTimeoutMs: 50,
+      ratingTimeoutMs: 50,
+    });
+
+    expect(revealedCalled).toBe(true);
+    expect(events).toContain("speak:Automatisch aufgedeckt.");
+    expect(events).toContain("speak:Sitzung pausiert."); // after rating timeout
   });
 });
 

@@ -22,6 +22,8 @@ import {
 import { isUsableSpeechEndpoint } from "./speech.js";
 
 export type {
+  HandsFreeReviewOptions,
+  SpokenReviewAction,
   VoiceAvailability,
   VoiceCapability,
   VoiceEngineDecision,
@@ -41,6 +43,7 @@ export {
   HandsFreeReviewController,
   isVoiceEnginePreference,
   isVoiceModeUsable,
+  parseSpokenAction,
   parseSpokenRating,
   planLeavesDevice,
   resolveVoiceEnginePlan,

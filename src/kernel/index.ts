@@ -562,6 +562,8 @@ export {
   resolveReviewContext,
 } from "./recall/reference-resolver.js";
 export type {
+  HandsFreeReviewOptions,
+  SpokenReviewAction,
   VoiceAvailability,
   VoiceCapability,
   VoiceEngineDecision,
@@ -583,6 +585,7 @@ export {
   HandsFreeReviewController,
   isVoiceEnginePreference,
   isVoiceModeUsable,
+  parseSpokenAction,
   parseSpokenRating,
   planLeavesDevice,
   resolveVoiceEnginePlan,
