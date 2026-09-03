@@ -251,9 +251,9 @@ export class MobileReviewSession {
     this.persist();
   }
 
-  reveal(): void {
+  reveal(options?: { allowEmpty?: boolean }): void {
     if (!this.snapshot) throw new Error("No active review session");
-    if (!this.snapshot.draftAnswer.trim()) {
+    if (!options?.allowEmpty && !this.snapshot.draftAnswer.trim()) {
       throw new Error("Answer is required before reveal");
     }
     this.snapshot.revealed = true;
@@ -342,8 +342,7 @@ export class MobileReviewSession {
     const snapshot = this.snapshot;
     if (!snapshot || !atomId) return null;
     snapshot.items = snapshot.items.filter(
-      (item, index) =>
-        index < snapshot.currentIndex || item.atomId !== atomId,
+      (item, index) => index < snapshot.currentIndex || item.atomId !== atomId,
     );
     snapshot.draftAnswer = "";
     snapshot.revealed = false;

@@ -83,7 +83,7 @@ describe("study workload and learning settings", () => {
     const saved = await setStudyLearningSettings(db, "dave", {
       learningMode: "answer_variation",
       voiceRevealTimeoutSec: 100, // exceeds max (60) -> falls back to default 20
-      voiceRatingTimeoutSec: 2,   // below min (5) -> falls back to default 20
+      voiceRatingTimeoutSec: 2, // below min (5) -> falls back to default 20
     });
     expect(saved.learningMode).toBe("answer_variation");
     expect(saved.voiceRevealTimeoutSec).toBe(20);
