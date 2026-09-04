@@ -5,11 +5,12 @@ import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   createLazyDatabase,
   createMcpServer,
 } from "../../src/cli/commands/mcp.js";
+import { createPersistentDatabaseHost } from "../../src/cli/commands/shared/db.js";
 import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
@@ -888,10 +889,60 @@ describe("MCP stdio server tests", () => {
       }
     });
 
-    // The tests below actually execute an allowed command through
-    // executeBridgeCommandJson, which — like `bridge serve` today — opens
-    // its own database via the default openDatabase() resolution. That
-    // resolution reads ~/.zam/zam.db and ~/.zam/credentials.json through
+    it("reuses one host database for concurrent bridge commands and closes it once", async () => {
+      const close = vi.fn(async () => {});
+      const trackedDatabase: Database = {
+        prepare: (sql) => db.prepare(sql),
+        exec: (sql) => db.exec(sql),
+        pragma: (source) => db.pragma(source),
+        transaction: (fn) => db.transaction(fn),
+        close,
+      };
+      const open = vi.fn(async () => trackedDatabase);
+      const databaseHost = createPersistentDatabaseHost(open);
+      const hostedServer = createMcpServer(databaseHost.database, {
+        bridgeDatabase: databaseHost,
+      });
+      const [hostedClientTransport, hostedServerTransport] =
+        InMemoryTransport.createLinkedPair();
+      const hostedClient = new Client(
+        { name: "host-lifetime-test", version: "1.0.0" },
+        { capabilities: {} },
+      );
+      await Promise.all([
+        hostedClient.connect(hostedClientTransport),
+        hostedServer.connect(hostedServerTransport),
+      ]);
+
+      try {
+        const [settings, contexts] = await Promise.all([
+          hostedClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: { cmd: "get-settings", args: [] },
+          }),
+          hostedClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: { cmd: "list-knowledge-contexts", args: [] },
+          }),
+        ]);
+
+        expect(settings.isError).toBeUndefined();
+        expect(contexts.isError).toBeUndefined();
+        expect(open).toHaveBeenCalledTimes(1);
+        expect(close).not.toHaveBeenCalled();
+      } finally {
+        await hostedClient.close();
+        await hostedServer.close();
+        await Promise.all([databaseHost.close(), databaseHost.close()]);
+      }
+
+      expect(close).toHaveBeenCalledTimes(1);
+    });
+
+    // The tests below execute allowed commands through a real `zam mcp`
+    // subprocess and therefore cover the production lazy host as well as the
+    // in-process injection above. Default path resolution reads
+    // ~/.zam/zam.db and ~/.zam/credentials.json through
     // module-level constants in src/kernel/db/connection.ts and
     // src/kernel/credentials.ts, computed from os.homedir() the first time
     // those modules load in this process — which already happened via this
@@ -902,7 +953,7 @@ describe("MCP stdio server tests", () => {
     // these tests spawn `zam mcp` as a real child process with HOME/USERPROFILE
     // pointed at a scratch directory, giving it a fresh module graph that
     // resolves those paths safely instead of touching real ZAM data.
-    describe("allowed command execution (isolated subprocess)", () => {
+    describe("allowed command execution (persistent host subprocess)", () => {
       let studioHomeDir: string;
       let studioClient: Client;
 

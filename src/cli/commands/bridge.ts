@@ -328,6 +328,9 @@ import {
   resolveActivityWindow,
 } from "./shared/activity.js";
 import {
+  createPersistentDatabaseHost,
+  type DatabaseSource,
+  runWithDatabase,
   withDb as sharedWithDb,
   withOptionalDb as sharedWithOptionalDb,
 } from "./shared/db.js";
@@ -7610,15 +7613,37 @@ let bridgeExecutionQueue: Promise<unknown> = Promise.resolve();
  * Run one `zam bridge <cmd> [...args]` subcommand in-process and return its
  * parsed JSON output, or throw a plain Error on failure. This is the same
  * re-parse-through-Commander mechanism `bridge serve` has always used
- * internally; each call opens its own database via the command's own
- * `withDb()` — callers must not assume any particular db handle is threaded
- * through.
+ * internally. A persistent host may inject its process-owned database; without
+ * that option, the command's normal `withDb()` still opens and closes its own
+ * handle exactly like a standalone `zam bridge` invocation.
  */
+/**
+ * True for commands that repoint this process at a different library.
+ *
+ * The Desktop setup wizard changes the configured target from inside the
+ * serve process, so the handle opened against the previous target has to be
+ * retired before the status and dashboard refresh that follow — otherwise the
+ * learner keeps reading and writing the library they just moved away from.
+ *
+ * Kept as a named predicate because it is a plain string comparison guarding
+ * something silent: a second target-changing command, or a rename of this one,
+ * would go unnoticed. `tests/cli/bridge-host-rotation.test.ts` cross-checks
+ * this list against the commands that actually write Turso credentials.
+ */
+export function retiresPersistentDatabaseHost(cmd: string): boolean {
+  return cmd === "server-db-connect";
+}
+
 export function executeBridgeCommandJson(
   cmd: string,
   args: string[],
+  options: { database?: DatabaseSource } = {},
 ): Promise<unknown> {
-  const run = bridgeExecutionQueue.then(() => runBridgeCommandOnce(cmd, args));
+  const database = options.database;
+  const execute = () => runBridgeCommandOnce(cmd, args);
+  const run = bridgeExecutionQueue.then(() =>
+    database ? runWithDatabase(database, execute) : execute(),
+  );
   // Keep the queue moving regardless of this call's outcome — one caller's
   // rejection must not block, or itself reject, the next caller in line.
   bridgeExecutionQueue = run.then(
@@ -7663,6 +7688,7 @@ bridgeCommand
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
+    let databaseHost = createPersistentDatabaseHost(openDatabase);
 
     const processRequest = async (line: string): Promise<string> => {
       let requestId: string | number | null = null;
@@ -7687,14 +7713,22 @@ bridgeCommand
           });
         }
 
+        const requestDatabaseHost = databaseHost;
         try {
-          const result = await executeBridgeCommandJson(cmd, args);
+          const result = await executeBridgeCommandJson(cmd, args, {
+            database: requestDatabaseHost,
+          });
           return JSON.stringify({ id: requestId, result });
         } catch (err) {
           return JSON.stringify({
             id: requestId,
             error: (err as Error).message || String(err),
           });
+        } finally {
+          if (retiresPersistentDatabaseHost(cmd)) {
+            databaseHost = createPersistentDatabaseHost(openDatabase);
+            await requestDatabaseHost.close();
+          }
         }
       } catch (err) {
         return JSON.stringify({
@@ -7740,6 +7774,17 @@ bridgeCommand
             // best-effort only
           }
         });
+    });
+
+    // Closing stdin is the Desktop host's orderly shutdown signal. Let the
+    // final queued request finish, then release the one process-owned handle.
+    // A forced cancellation still terminates the process immediately.
+    let databaseClosePromise: Promise<void> | undefined;
+    rl.once("close", () => {
+      databaseClosePromise ??= pending.then(() => databaseHost.close());
+      void databaseClosePromise.catch((error) => {
+        logDiag(`serve database close failed: ${String(error)}`);
+      });
     });
   });
 

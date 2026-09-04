@@ -92,6 +92,7 @@ export type {
 export {
   getDatabaseTargetInfo,
   getDefaultDbPath,
+  isTransientRemoteDatabaseError,
   openDatabase,
   openDatabaseWithSync,
   openReadOnlySqliteDatabase,

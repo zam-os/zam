@@ -31,6 +31,20 @@ The hard contract:
   desktop panels, and the mobile companion's additive import program
   against these shapes; breaking them breaks external callers.
 
+# Connection lifetime
+
+A standalone `zam bridge <command>` invocation still owns one database handle
+and closes it when that command finishes. The Desktop instead keeps
+`zam bridge serve --stdin` alive: this host opens its database lazily on the
+first database-backed request, injects the same handle into every later
+Commander action, and closes it after stdin ends and the final queued request
+finishes. Failed open attempts are forgotten so a later request can retry.\nThe exceptional `server-db-connect` setup command retires the old handle after\nit changes the configured target, ensuring the next status/dashboard request\nopens the newly selected library.
+
+The injection is scoped to one asynchronous command execution. It is not a
+global connection cache, and concurrent in-process callers cannot borrow one
+another's database. This keeps the JSON protocol identical while removing a
+connection and schema-version round trip from each warm Desktop interaction.
+
 Outbound HTTP that the bridge performs on a learner's behalf identifies
 itself with the release-versioned `ZAM-Content-Studio/<version>`
 User-Agent, which every release bumps in step with the package version.
@@ -160,12 +174,12 @@ bridge's JSON helpers.
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
 - [ADR 2026-08-02 — Local Generation Only on Accelerated Hardware](../adr/2026-08-02-foundry-local-and-hardware-classification.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
-- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/cli/import/text-file.ts`, `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`, `src/cli/open-content/service.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/cli/import/text-file.ts`, `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`, `src/cli/open-content/service.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
