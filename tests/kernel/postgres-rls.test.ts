@@ -85,8 +85,8 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     await tx
       .prepare(
         `INSERT INTO learner_principals (zam_user_id, db_role, entra_upn)
-         VALUES (?, 'alice_role', 'alice@docuware.com'),
-                (?, 'bob_role', 'bob@docuware.com')`,
+         VALUES (?, 'alice_role', 'alice@example.org'),
+                (?, 'bob_role', 'bob@example.org')`,
       )
       .run(ALICE, BOB);
 

@@ -94,12 +94,12 @@ describe("VS Code companion protocol", () => {
     expect(
       buildOpeningArguments("okf", {
         user: "thomas",
-        bundle_dir: "C:/src/dw/Cops.AI/docs/okf",
+        bundle_dir: "C:/src/team/Knowledge.Hub/docs/okf",
         view: "graph",
         focus: "ignore-me",
       }),
     ).toEqual({
-      bundle_dir: "C:/src/dw/Cops.AI/docs/okf",
+      bundle_dir: "C:/src/team/Knowledge.Hub/docs/okf",
       view: "graph",
     });
     expect(COMPANION_APPS.okf.toolName).toBe("zam_okf_visualize");
