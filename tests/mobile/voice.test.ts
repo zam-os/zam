@@ -203,7 +203,16 @@ describe("Android hands-free voice review", () => {
 
   it("runs flash mode with progressive prompts, tones, and ratings", async () => {
     const events: string[] = [];
-    const heard = ["weiter", "gut", "aufdecken", "einfach"];
+    const heard = [
+      "weiter",
+      "gut",
+      "aufdecken",
+      "einfach",
+      "weiter",
+      "schwer",
+      "weiter",
+      "nochmal",
+    ];
     const cards: VoiceReviewCard[] = [
       {
         question: "Quadrat?",
@@ -214,6 +223,18 @@ describe("Android hands-free voice review", () => {
       {
         question: "Rechteck?",
         expectedAnswer: "Viereck mit 4 rechten Winkeln.",
+        revealed: false,
+        draftAnswer: "",
+      },
+      {
+        question: "Dreieck?",
+        expectedAnswer: "Viereck mit einer Seite weniger.",
+        revealed: false,
+        draftAnswer: "",
+      },
+      {
+        question: "Kreis?",
+        expectedAnswer: "Runde ebene Figur.",
         revealed: false,
         draftAnswer: "",
       },
@@ -260,7 +281,7 @@ describe("Android hands-free voice review", () => {
 
     await controller.start("de-DE", { mode: "flash" });
 
-    expect(ratedRatings).toEqual([3, 4]);
+    expect(ratedRatings).toEqual([3, 4, 2, 1]);
     // Card 0: question spoken, onboarding prompt spoken, tone reveal played, answer spoken, full rating prompt spoken
     expect(events).toContain("speak:Quadrat?");
     expect(
@@ -275,7 +296,7 @@ describe("Android hands-free voice review", () => {
     ).toBe(true);
     expect(events).toContain("tone:rate");
 
-    // Card 1: question spoken, NO onboarding prompt spoken, short prompt "Bewertung?" spoken
+    // Cards 2–3 use compact spoken guidance; card 4 switches to cues.
     expect(events).toContain("speak:Rechteck?");
     const onboardingOccurrences = events.filter(
       (e) =>
@@ -285,6 +306,10 @@ describe("Android hands-free voice review", () => {
     expect(onboardingOccurrences).toHaveLength(1); // only on first card!
     expect(events).toContain("speak:Bewertung?");
     expect(events).toContain("speak:Viereck mit 4 rechten Winkeln.");
+    expect(
+      events.filter((event) => event === "speak:Sage weiter oder beenden."),
+    ).toHaveLength(2);
+    expect(events.filter((event) => event === "tone:cue")).toHaveLength(2);
   });
 
   it("handles stop action in flash mode gracefully", async () => {
@@ -337,16 +362,33 @@ describe("Android hands-free voice review", () => {
     };
 
     let listenCalls = 0;
+    let activeListeners = 0;
+    let maxActiveListeners = 0;
+    let cancelListen: (() => void) | undefined;
     const port: VoicePort = {
-      async start() {},
-      async stop() {},
+      async start() {
+        events.push("start");
+      },
+      async stop() {
+        events.push("stop");
+        cancelListen?.();
+        cancelListen = undefined;
+      },
       async speak(text) {
         events.push(`speak:${text}`);
       },
       async listen() {
         listenCalls += 1;
-        // Hanging promise to simulate waiting / silence
-        return new Promise((resolve) => setTimeout(() => resolve(""), 500));
+        activeListeners += 1;
+        maxActiveListeners = Math.max(maxActiveListeners, activeListeners);
+        // Hanging recognition that only stop() cancels, matching the native
+        // lifecycle boundary used by the production ports.
+        return new Promise((resolve) => {
+          cancelListen = () => {
+            activeListeners -= 1;
+            resolve("");
+          };
+        });
       },
     };
 
@@ -372,6 +414,8 @@ describe("Android hands-free voice review", () => {
     });
 
     expect(revealedCalled).toBe(true);
+    expect(listenCalls).toBe(2);
+    expect(maxActiveListeners).toBe(1);
     expect(events).toContain("speak:Automatisch aufgedeckt.");
     expect(events).toContain("speak:Sitzung pausiert."); // after rating timeout
   });

@@ -3553,10 +3553,7 @@ const UI_WRITABLE_SETTINGS = new Set([
   // start but had no way to reach it short of writing the row by hand.
   "llm.dynamic_questions",
   "llm.vision.enabled",
-  "recall.learning_mode",
   "recall.quick_mode",
-  "recall.voice_reveal_timeout_sec",
-  "recall.voice_rating_timeout_sec",
   "system.locale",
 ]);
 
@@ -4278,12 +4275,6 @@ bridgeCommand
         },
         recall: {
           quickMode: (await getSetting(db, "recall.quick_mode")) === "true",
-          learningMode:
-            (await getSetting(db, "recall.learning_mode")) ??
-            (enabled ? "answer_feedback" : "flash"),
-          voiceRevealTimeoutSec:
-            Number(await getSetting(db, "recall.voice_reveal_timeout_sec")) ||
-            20,
           // Absent means on, matching ensureHighQualityQuestion's `!== "false"`.
           dynamicQuestions:
             (await getSetting(db, "llm.dynamic_questions")) !== "false",
@@ -4365,15 +4356,27 @@ bridgeCommand
     "Get persistent review learning mode settings for a learner (JSON)",
   )
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--fallback-mode <name>",
+    "Default for an unset learner: flash | answer_feedback",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const { enabled: aiEnabled } = await getLlmConfig(db);
+      if (
+        opts.fallbackMode !== undefined &&
+        opts.fallbackMode !== "flash" &&
+        opts.fallbackMode !== "answer_feedback"
+      ) {
+        jsonError("fallback-mode must be flash or answer_feedback");
+      }
       jsonOut({
         success: true,
         userId,
         settings: await getStudyLearningSettings(db, userId, {
-          fallbackLearningMode: aiEnabled ? "answer_feedback" : "flash",
+          fallbackLearningMode:
+            opts.fallbackMode ?? (aiEnabled ? "answer_feedback" : "flash"),
         }),
       });
     });
@@ -4386,6 +4389,10 @@ bridgeCommand
   )
   .option("--user <id>", "User ID (default: whoami)")
   .option("--mode <name>", "flash | answer_feedback | answer_variation")
+  .option(
+    "--fallback-mode <name>",
+    "Default for an unset learner: flash | answer_feedback",
+  )
   .option("--reveal-timeout <n>", "Auto-reveal timeout in seconds (5-60)")
   .option("--rating-timeout <n>", "Voice rating timeout in seconds (5-60)")
   .action(async (opts) => {
@@ -4393,6 +4400,13 @@ bridgeCommand
       const userId = await resolveUser(opts, db, { json: true });
       if (opts.mode !== undefined && !isStudyLearningMode(opts.mode)) {
         jsonError("mode must be flash, answer_feedback, or answer_variation");
+      }
+      if (
+        opts.fallbackMode !== undefined &&
+        opts.fallbackMode !== "flash" &&
+        opts.fallbackMode !== "answer_feedback"
+      ) {
+        jsonError("fallback-mode must be flash or answer_feedback");
       }
       const voiceRevealTimeoutSec =
         opts.revealTimeout === undefined
@@ -4402,6 +4416,17 @@ bridgeCommand
         opts.ratingTimeout === undefined
           ? undefined
           : Number(opts.ratingTimeout);
+      for (const [label, value] of [
+        ["reveal-timeout", voiceRevealTimeoutSec],
+        ["rating-timeout", voiceRatingTimeoutSec],
+      ] as const) {
+        if (
+          value !== undefined &&
+          (!Number.isInteger(value) || value < 5 || value > 60)
+        ) {
+          jsonError(`${label} must be an integer from 5 to 60`);
+        }
+      }
       const { enabled: aiEnabled } = await getLlmConfig(db);
       const settings = await setStudyLearningSettings(
         db,
@@ -4411,7 +4436,10 @@ bridgeCommand
           voiceRevealTimeoutSec,
           voiceRatingTimeoutSec,
         },
-        { fallbackLearningMode: aiEnabled ? "answer_feedback" : "flash" },
+        {
+          fallbackLearningMode:
+            opts.fallbackMode ?? (aiEnabled ? "answer_feedback" : "flash"),
+        },
       );
       jsonOut({ success: true, userId, settings });
     });

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-08-15T08:54:42.759Z
+timestamp: 2026-09-03T20:56:17.349Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -76,6 +76,22 @@ carries `reviewedCards` and `studyTimeMs`. Study time sums
 series. Ratings logged before response-time measurement existed count as
 worked cards and contribute no time.
 
+# Per-learner learning interaction
+
+`study-learning-get` and `study-learning-set` expose the learner's review
+interaction as JSON: `flash`, `answer_feedback`, or the currently
+scaffolded `answer_variation`, plus independent voice reveal and rating
+timeouts. The object is stored under
+`study.learning.<encoded-user-id>`; the generic `setting-set` allowlist
+cannot write shadow copies of those values. Both timeout flags accept only
+integer seconds from 5 through 60.
+
+A caller may pass `--fallback-mode flash|answer_feedback` when reading or
+partially updating an as-yet-unset learner. This represents current surface
+capability — for example, whether an MCP evaluator is active — and is not
+stored by a read. Once a learner chooses a mode, that explicit value wins over
+later AI connection or evaluator changes.
+
 # Local AI setup commands
 
 `foundry-local-status` / `foundry-local-setup`, `local-vision-status` /
@@ -143,8 +159,9 @@ bridge's JSON helpers.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`
+- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

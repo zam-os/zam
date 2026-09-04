@@ -6,7 +6,10 @@ import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { createLazyDatabase, createMcpServer } from "../../src/cli/commands/mcp.js";
+import {
+  createLazyDatabase,
+  createMcpServer,
+} from "../../src/cli/commands/mcp.js";
 import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
@@ -16,6 +19,7 @@ import {
   getPrerequisites,
   getTokenBySlug,
   openDatabase,
+  setStudyLearningSettings,
 } from "../../src/kernel/index.js";
 
 describe("MCP stdio server tests", () => {
@@ -267,7 +271,14 @@ describe("MCP stdio server tests", () => {
             reviewed_at, scheduled_at, session_id)
          VALUES (?, ?, ?, ?, 4, ?, ?, '2000-01-01 00:00:00', NULL)`,
       )
-      .run("progress-log", card.id, token.id, "thomas", 900, new Date().toISOString());
+      .run(
+        "progress-log",
+        card.id,
+        token.id,
+        "thomas",
+        900,
+        new Date().toISOString(),
+      );
 
     const res = await client.callTool({
       name: "zam_progress_stats",
@@ -450,6 +461,7 @@ describe("MCP stdio server tests", () => {
       user?: string | null;
       domain?: string | null;
       quickMode?: boolean;
+      learningMode?: string;
       companionContext?: { user?: { currentId?: string; source?: string } };
     };
     expect(structured.recall).toBe("zam");
@@ -460,6 +472,7 @@ describe("MCP stdio server tests", () => {
     expect(structured.domain).toBeNull();
     // Smart Recall is the default when the setting is absent.
     expect(structured.quickMode).toBe(false);
+    expect(structured.learningMode).toBe("flash");
     // Resolved context for first paint (ADR §Decision 3) — the app must
     // never briefly render the wrong learner while waiting for a second call.
     expect(structured.companionContext?.user?.currentId).toBe("thomas");
@@ -470,6 +483,9 @@ describe("MCP stdio server tests", () => {
         "INSERT OR REPLACE INTO user_config (key, value) VALUES ('recall.quick_mode', 'true')",
       )
       .run();
+    await setStudyLearningSettings(db, "thomas", {
+      learningMode: "answer_variation",
+    });
 
     const scopedRes = await client.callTool({
       name: "zam_open_recall",
@@ -479,9 +495,13 @@ describe("MCP stdio server tests", () => {
     const scopedStructured = (scopedRes as any).structuredContent as {
       domain?: string | null;
       quickMode?: boolean;
+      learningMode?: string;
     };
     expect(scopedStructured.domain).toBe("rag");
     expect(scopedStructured.quickMode).toBe(true);
+    // An explicit per-learner choice wins over the legacy global quick-mode
+    // seed; changing an evaluator must not overwrite the learning preference.
+    expect(scopedStructured.learningMode).toBe("answer_variation");
   });
 
   it("reuses the persisted Companion learner for a menu-opened Recall instead of the database default", async () => {
@@ -610,9 +630,7 @@ describe("MCP stdio server tests", () => {
     // instead of this id, so this assertion only passes against a real
     // dist/ui/settings-panel.html build (CI builds before running tests).
     expect(content.text).toContain("zam-settings-panel");
-    expect(content.text).toContain(
-      "Just show questions and answers for speed",
-    );
+    expect(content.text).toContain("Show only questions and answers");
   });
 
   it("links zam_open_settings to the settings panel resource", async () => {
@@ -957,7 +975,64 @@ describe("MCP stdio server tests", () => {
         expect(data.recall).toEqual({
           quickMode: true,
           dynamicQuestions: true,
+        });
+      }, 15_000);
+
+      it("keeps learning settings isolated per learner", async () => {
+        const setAlice = await studioClient.callTool({
+          name: "zam_studio_bridge",
+          arguments: {
+            cmd: "study-learning-set",
+            args: [
+              "--user",
+              "alice",
+              "--mode",
+              "answer_feedback",
+              "--reveal-timeout",
+              "15",
+            ],
+          },
+        });
+        expect(setAlice.isError).toBeUndefined();
+
+        const [aliceResult, bobResult, charlieResult] = await Promise.all([
+          studioClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: {
+              cmd: "study-learning-get",
+              args: ["--user", "alice"],
+            },
+          }),
+          studioClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: {
+              cmd: "study-learning-get",
+              args: ["--user", "bob"],
+            },
+          }),
+          studioClient.callTool({
+            name: "zam_studio_bridge",
+            arguments: {
+              cmd: "study-learning-get",
+              args: ["--user", "charlie", "--fallback-mode", "answer_feedback"],
+            },
+          }),
+        ]);
+        expect(aliceResult.isError).toBeUndefined();
+        expect(bobResult.isError).toBeUndefined();
+        expect(charlieResult.isError).toBeUndefined();
+        expect(JSON.parse(aliceResult.content[0].text).settings).toMatchObject({
+          learningMode: "answer_feedback",
+          voiceRevealTimeoutSec: 15,
+        });
+        expect(JSON.parse(bobResult.content[0].text).settings).toMatchObject({
           learningMode: "flash",
+          voiceRevealTimeoutSec: 20,
+        });
+        expect(
+          JSON.parse(charlieResult.content[0].text).settings,
+        ).toMatchObject({
+          learningMode: "answer_feedback",
           voiceRevealTimeoutSec: 20,
         });
       }, 15_000);
@@ -1417,9 +1492,7 @@ describe("MCP stdio server tests", () => {
       const response = await client.listTools();
       const tool = response.tools.find((t) => t.name === "zam_okf_visualize");
       expect(tool).toBeDefined();
-      const meta = tool?._meta as
-        | { ui?: { resourceUri?: string } }
-        | undefined;
+      const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
       expect(meta?.ui?.resourceUri).toBe("ui://zam/okf");
       expect((tool as any).annotations).toEqual({
         openWorldHint: false,

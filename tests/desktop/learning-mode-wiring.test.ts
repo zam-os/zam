@@ -13,29 +13,30 @@ describe("desktop learning mode wiring", () => {
   it("provides learning mode selection and auto-reveal timeout in settings", () => {
     expect(settingsTs).toContain('id = "settings-learning-mode"');
     expect(settingsTs).toContain('id = "settings-voice-reveal-timeout"');
-    expect(settingsTs).toContain("recall.learning_mode");
-    expect(settingsTs).toContain("recall.voice_reveal_timeout_sec");
-    expect(settingsTs).toContain("Just show questions and answers for speed");
+    expect(settingsTs).toContain('bridgeCall("study-learning-get"');
+    expect(settingsTs).toContain('bridgeCall("study-learning-set"');
+    expect(settingsTs).not.toContain("recall.learning_mode");
+    expect(settingsTs).not.toContain("recall.voice_reveal_timeout_sec");
   });
 
   it("provides in-session mode toggle in recall panel", () => {
     expect(recallTs).toContain("recall-mode-toggle");
-    expect(recallTs).toContain("⚡ Flash");
-    expect(recallTs).toContain("💬 KI");
+    expect(recallTs).toContain('t("learning_mode_switch_flash")');
+    expect(recallTs).toContain('t("learning_mode_switch_feedback")');
     expect(recallTs).toContain("answer.hidden = true;");
-    expect(recallTs).toContain("question.style.cursor = \"pointer\"");
+    expect(recallTs).toContain('question.style.cursor = "pointer"');
     expect(recallTs).toContain("if (!text || isFlash)");
   });
 
   it("exposes learningMode in zam_open_recall result", () => {
-    expect(mcpTs).toContain("recall.learning_mode");
+    expect(mcpTs).toContain("getStudyLearningSettings");
     expect(mcpTs).toContain("learningMode,");
   });
 
   it("supports study-learning-get and study-learning-set bridge commands", () => {
     expect(bridgeTs).toContain('.command("study-learning-get")');
     expect(bridgeTs).toContain('.command("study-learning-set")');
-    expect(bridgeTs).toContain('"recall.learning_mode"');
-    expect(bridgeTs).toContain('"recall.voice_reveal_timeout_sec"');
+    expect(bridgeTs).not.toContain('"recall.learning_mode"');
+    expect(bridgeTs).not.toContain('"recall.voice_reveal_timeout_sec"');
   });
 });

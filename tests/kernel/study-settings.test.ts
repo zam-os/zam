@@ -79,15 +79,28 @@ describe("study workload and learning settings", () => {
     expect(reloaded.voiceRatingTimeoutSec).toBe(20);
   });
 
-  it("supports answer_variation mode and clamps invalid timeout ranges", async () => {
+  it("supports answer_variation mode", async () => {
     const saved = await setStudyLearningSettings(db, "dave", {
       learningMode: "answer_variation",
-      voiceRevealTimeoutSec: 100, // exceeds max (60) -> falls back to default 20
-      voiceRatingTimeoutSec: 2, // below min (5) -> falls back to default 20
+      voiceRevealTimeoutSec: 30,
+      voiceRatingTimeoutSec: 45,
     });
     expect(saved.learningMode).toBe("answer_variation");
-    expect(saved.voiceRevealTimeoutSec).toBe(20);
-    expect(saved.voiceRatingTimeoutSec).toBe(20);
+    expect(saved.voiceRevealTimeoutSec).toBe(30);
+    expect(saved.voiceRatingTimeoutSec).toBe(45);
+  });
+
+  it("rejects invalid timeout updates instead of silently replacing them", async () => {
+    await expect(
+      setStudyLearningSettings(db, "dave", {
+        voiceRevealTimeoutSec: 100,
+      }),
+    ).rejects.toThrow("voice reveal timeout must be an integer from 5 to 60");
+    await expect(
+      setStudyLearningSettings(db, "dave", {
+        voiceRatingTimeoutSec: 2,
+      }),
+    ).rejects.toThrow("voice rating timeout must be an integer from 5 to 60");
   });
 
   it("validates isStudyLearningMode helper", () => {

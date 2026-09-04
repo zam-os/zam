@@ -18,7 +18,7 @@ import type {
 import {
   getReviewActivity,
   getSetting,
-  isStudyLearningMode,
+  getStudyLearningSettings,
   openDatabase,
 } from "../../kernel/index.js";
 import {
@@ -117,6 +117,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "update-check",
   "get-settings",
   "setting-set",
+  "study-learning-get",
+  "study-learning-set",
   // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
   // Config only — never runs generation; keys stay out of this surface.
   "model-list",
@@ -1265,19 +1267,21 @@ export function createMcpServer(db: Database): McpServer {
         let degraded = opening.degraded;
         try {
           quickMode = (await getSetting(db, "recall.quick_mode")) === "true";
-          const rawLearningMode = await getSetting(db, "recall.learning_mode");
-          if (rawLearningMode && isStudyLearningMode(rawLearningMode)) {
-            learningMode = rawLearningMode;
-          } else if (quickMode) {
-            learningMode = "flash";
-          } else {
-            const llmEnabled = (await getSetting(db, "llm.enabled")) === "true";
-            learningMode = llmEnabled ? "answer_feedback" : "flash";
+          if (userId) {
+            learningMode = (
+              await getStudyLearningSettings(db, userId, {
+                fallbackLearningMode:
+                  companionContext.activeEvaluatorId &&
+                  companionContext.activeEvaluatorId !== "quick-mode"
+                    ? "answer_feedback"
+                    : "flash",
+              })
+            ).learningMode;
           }
         } catch (error) {
           degraded = true;
           console.error(
-            "[zam mcp] recall.quick_mode read failed, opening with quick mode's conservative default (false):",
+            "[zam mcp] recall learning-settings read failed, opening in flash mode:",
             error instanceof Error ? error.message : error,
           );
         }

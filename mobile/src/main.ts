@@ -70,13 +70,14 @@ import {
   DEFAULT_STUDY_LEARNING_SETTINGS,
   getStudyLearningSettings,
   getStudyWorkloadSettings,
-  setStudyLearningSettings,
-  setStudyWorkloadSettings,
   STUDY_WORKLOAD_PRESETS,
   type StudyLearningMode,
   type StudyLearningSettings,
   type StudyWorkloadPreset,
   type StudyWorkloadSettings,
+  setStudyLearningSettings,
+  setStudyWorkloadSettings,
+  type UpdateStudyLearningInput,
 } from "../../src/kernel/scheduler/study-settings.js";
 import {
   connectCloudModel,
@@ -591,6 +592,7 @@ const reminderStatus = element<HTMLParagraphElement>("reminder-status");
 const localAiRows = element<HTMLElement>("local-ai-rows");
 const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
 const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
+const localAiModels = element<HTMLElement>("local-ai-models");
 const studyLearningMode = element<HTMLSelectElement>("study-learning-mode");
 const studyVoiceRevealTimeout = element<HTMLInputElement>(
   "study-voice-reveal-timeout",
@@ -825,6 +827,11 @@ function playEarcon(kind: "cue" | "reveal" | "rate"): void {
     const gain = ctx.createGain();
     osc.connect(gain);
     gain.connect(ctx.destination);
+    const close = (): void => {
+      void ctx.close().catch(() => undefined);
+    };
+    osc.addEventListener("ended", close, { once: true });
+    window.setTimeout(close, 250);
     const now = ctx.currentTime;
     if (kind === "cue") {
       osc.type = "sine";
@@ -861,6 +868,24 @@ voicePort.playTone = async (kind) => {
 let currentLearningSettings: StudyLearningSettings = {
   ...DEFAULT_STUDY_LEARNING_SETTINGS,
 };
+let learningSettingsEpoch = 0;
+let learningSettingsMutationQueue: Promise<void> = Promise.resolve();
+let learningSettingsMutationsPending = 0;
+
+function updateStudyLearningSettings(
+  userId: string,
+  input: UpdateStudyLearningInput,
+  fallbackLearningMode: StudyLearningMode,
+): Promise<StudyLearningSettings> {
+  const update = learningSettingsMutationQueue.then(() =>
+    setStudyLearningSettings(db, userId, input, { fallbackLearningMode }),
+  );
+  learningSettingsMutationQueue = update.then(
+    () => undefined,
+    () => undefined,
+  );
+  return update;
+}
 
 const voiceController = new HandsFreeReviewController(voicePort, {
   currentCard: () => {
@@ -999,7 +1024,6 @@ function showApp(payload: ZamPairPayloadV1): void {
   resyncButton.hidden = false;
   learner.hidden = false;
   learner.textContent = payload.learner.userId;
-  void refreshStudyLearningSettings();
   nav.showTab("learn");
 }
 
@@ -1194,6 +1218,8 @@ function renderReviewModeSwitcher(mode: StudyLearningMode): void {
   const isFlash = mode === "flash";
   reviewModeFlash.classList.toggle("active", isFlash);
   reviewModeFeedback.classList.toggle("active", !isFlash);
+  reviewModeFlash.setAttribute("aria-pressed", String(isFlash));
+  reviewModeFeedback.setAttribute("aria-pressed", String(!isFlash));
   reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
@@ -1205,16 +1231,40 @@ function renderStudyLearningSettings(settings: StudyLearningSettings): void {
 
 async function refreshStudyLearningSettings(): Promise<void> {
   if (!currentUserId) return;
+  if (learningSettingsMutationsPending > 0) return;
+  const epoch = learningSettingsEpoch;
+  const requestedUserId = currentUserId;
   try {
-    currentLearningSettings = await getStudyLearningSettings(
-      db,
-      currentUserId,
-      {
-        fallbackLearningMode: aiConnected ? "answer_feedback" : "flash",
-      },
-    );
+    await learningSettingsMutationQueue;
+    if (
+      epoch !== learningSettingsEpoch ||
+      learningSettingsMutationsPending > 0 ||
+      requestedUserId !== currentUserId
+    ) {
+      return;
+    }
+    const fallbackLearningMode = await defaultStudyLearningMode();
+    const settings = await getStudyLearningSettings(db, requestedUserId, {
+      fallbackLearningMode,
+    });
+    if (
+      epoch !== learningSettingsEpoch ||
+      learningSettingsMutationsPending > 0 ||
+      requestedUserId !== currentUserId
+    ) {
+      return;
+    }
+    currentLearningSettings = settings;
     renderStudyLearningSettings(currentLearningSettings);
+    if (reviewSession.active) renderCurrentReview();
   } catch (error) {
+    if (
+      epoch !== learningSettingsEpoch ||
+      learningSettingsMutationsPending > 0 ||
+      requestedUserId !== currentUserId
+    ) {
+      return;
+    }
     studyLearningStatus.textContent = tf("study_learning_failed", {
       error: errorMessage(error),
     });
@@ -1223,46 +1273,105 @@ async function refreshStudyLearningSettings(): Promise<void> {
 
 async function saveStudyLearningSettings(): Promise<void> {
   if (!currentUserId) return;
+  const epoch = ++learningSettingsEpoch;
+  const requestedUserId = currentUserId;
+  learningSettingsMutationsPending += 1;
   studyLearningSave.disabled = true;
   studyLearningStatus.textContent = "";
   try {
     const learningMode = studyLearningMode.value as StudyLearningMode;
-    const voiceRevealTimeoutSec =
-      Number.parseInt(studyVoiceRevealTimeout.value, 10) || 20;
-    currentLearningSettings = await setStudyLearningSettings(
-      db,
-      currentUserId,
+    const voiceRevealTimeoutSec = Math.max(
+      5,
+      Math.min(60, Number.parseInt(studyVoiceRevealTimeout.value, 10) || 20),
+    );
+    studyVoiceRevealTimeout.value = String(voiceRevealTimeoutSec);
+    const fallbackLearningMode = await defaultStudyLearningMode();
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
+    const settings = await updateStudyLearningSettings(
+      requestedUserId,
       {
         learningMode,
         voiceRevealTimeoutSec,
       },
-      { fallbackLearningMode: aiConnected ? "answer_feedback" : "flash" },
+      fallbackLearningMode,
     );
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
+    currentLearningSettings = settings;
     renderStudyLearningSettings(currentLearningSettings);
     studyLearningStatus.textContent = t("study_learning_saved");
     if (reviewSession.active) {
       renderCurrentReview();
     }
   } catch (error) {
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
     studyLearningStatus.textContent = tf("study_learning_failed", {
       error: errorMessage(error),
     });
   } finally {
+    learningSettingsMutationsPending -= 1;
     studyLearningSave.disabled = false;
   }
 }
 
 async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
   if (!currentUserId) return;
-  currentLearningSettings.learningMode = mode;
-  renderReviewModeSwitcher(mode);
-  studyLearningMode.value = mode;
-  if (reviewSession.active) {
-    renderCurrentReview();
+  const epoch = ++learningSettingsEpoch;
+  const requestedUserId = currentUserId;
+  learningSettingsMutationsPending += 1;
+  const previous = { ...currentLearningSettings };
+  reviewModeSwitcher.setAttribute("aria-busy", "true");
+  reviewModeFlash.disabled = true;
+  reviewModeFeedback.disabled = true;
+  try {
+    await pauseVoiceMode();
+    const fallbackLearningMode = await defaultStudyLearningMode();
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
+    const settings = await updateStudyLearningSettings(
+      requestedUserId,
+      { learningMode: mode },
+      fallbackLearningMode,
+    );
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
+    currentLearningSettings = settings;
+    renderStudyLearningSettings(currentLearningSettings);
+    if (reviewSession.active) renderCurrentReview();
+  } catch (error) {
+    if (epoch !== learningSettingsEpoch || requestedUserId !== currentUserId) {
+      return;
+    }
+    currentLearningSettings = previous;
+    renderStudyLearningSettings(previous);
+    if (reviewSession.active) renderCurrentReview();
+    setReviewStatus(
+      tf("study_learning_failed", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    learningSettingsMutationsPending -= 1;
+    reviewModeSwitcher.removeAttribute("aria-busy");
+    reviewModeFlash.disabled = false;
+    reviewModeFeedback.disabled = false;
   }
-  void setStudyLearningSettings(db, currentUserId, {
-    learningMode: mode,
-  }).catch(() => undefined);
+}
+
+async function defaultStudyLearningMode(): Promise<StudyLearningMode> {
+  try {
+    return (await resolveMobileCloudChain(db, "text"))
+      ? "answer_feedback"
+      : "flash";
+  } catch {
+    return "flash";
+  }
 }
 
 function renderStudyWorkload(settings: StudyWorkloadSettings): void {
@@ -2543,8 +2652,8 @@ function renderCurrentReview(message = ""): void {
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
-  const fastCheck = item.fastCheck;
   const isFlash = currentLearningSettings.learningMode === "flash";
+  const fastCheck = isFlash ? null : item.fastCheck;
   renderReviewModeSwitcher(currentLearningSettings.learningMode);
   reviewAnswerField.hidden = Boolean(fastCheck) || isFlash;
   revealAnswerButton.hidden = reviewSession.revealed || Boolean(fastCheck);
@@ -2935,6 +3044,7 @@ async function connect(
   }
   currentPairing = payload;
   showApp(payload);
+  await refreshStudyLearningSettings();
   await restoreReviewSession(payload.learner.userId);
   await takeSharedImport();
   openPendingImport();
@@ -3468,8 +3578,8 @@ async function openLocalLibrary(setup: LocalSetup): Promise<void> {
   connection.textContent = t("on_this_device");
   connection.classList.remove("offline");
   await refresh(setup.userId);
+  await refreshStudyLearningSettings();
   await restoreReviewSession(setup.userId);
-  void refreshStudyLearningSettings();
   nav.showTab("learn");
 }
 
@@ -4230,6 +4340,7 @@ endpointSaveButton.addEventListener("click", async () => {
     await refreshEndpoints();
     await refreshAiSection();
     await refreshCloudEndpointsFromDb();
+    await refreshStudyLearningSettings();
     setEndpointsStatus(t("endpoint_saved"));
   } catch (error) {
     setEndpointsStatus(errorMessage(error), true);
@@ -4248,6 +4359,7 @@ disarmEndpointDelete = armDestructive(
     await refreshEndpoints();
     await refreshAiSection();
     await refreshCloudEndpointsFromDb();
+    await refreshStudyLearningSettings();
     setEndpointsStatus(t("endpoint_removed"));
   },
 );
@@ -4350,13 +4462,7 @@ aiConnectButton.addEventListener("click", async () => {
       setAiStatus(
         tf("ai_connected_msg", { min: OPENROUTER_PROVIDER.minTopUpUsd }),
       );
-      if (currentLearningSettings.learningMode === "flash" && currentUserId) {
-        currentLearningSettings.learningMode = "answer_feedback";
-        void setStudyLearningSettings(db, currentUserId, {
-          learningMode: "answer_feedback",
-        }).catch(() => undefined);
-        renderStudyLearningSettings(currentLearningSettings);
-      }
+      await refreshStudyLearningSettings();
       // Cards that existed before the key did are the ones a learner will
       // search for first, so start on them straight away.
       void runEmbeddingPass(true);
@@ -4372,6 +4478,7 @@ aiDisconnectButton.addEventListener("click", async () => {
   await disconnectCloudModel(db);
   await refreshAiSection();
   await refreshCloudEndpointsFromDb();
+  await refreshStudyLearningSettings();
   setAiStatus("");
 });
 

@@ -957,7 +957,7 @@ details > summary {
 }
 
 .review-header-bar .segmented button {
-  min-height: 28px;
+  min-height: var(--tap);
   padding: 0 10px;
   font-size: 0.82em;
 }

@@ -876,6 +876,26 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_check_failed: "La comprobación de la respuesta falló: {message}",
     settings_section_ai: "Modelos de IA",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Cargando ajustes de Recall…",
+    learning_mode_label: "Modo de aprendizaje",
+    learning_mode_flash: "Flash (rápido, sin escribir)",
+    learning_mode_answer_feedback: "Responder con feedback de IA",
+    learning_mode_answer_variation: "Responder con variaciones de preguntas",
+    learning_mode_hint:
+      "En Flash, revela la respuesta directamente y puntúa tu recuerdo sin escribir.",
+    study_voice_timeout:
+      "Segundos hasta revelar automáticamente en modo de voz",
+    study_learning_failed:
+      "No se pudieron guardar los ajustes de aprendizaje: {message}",
+    recall_quick_setting: "Mostrar solo preguntas y respuestas",
+    recall_quick_setting_hint:
+      "Ajuste heredado del evaluador rápido. El selector Agente controla la evaluación de Recall.",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_to_feedback:
+      "Modo Flash activo. Cambiar al modo de respuesta.",
+    learning_mode_switch_to_flash:
+      "Modo de respuesta activo. Cambiar al modo Flash.",
     settings_section_backup: "Copia de seguridad",
     settings_section_update: "Actualización",
   },
@@ -1742,6 +1762,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_check_failed: "Échec de la vérification de la réponse : {message}",
     settings_section_ai: "Modèles d'IA",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Chargement des réglages Recall…",
+    learning_mode_label: "Mode d’apprentissage",
+    learning_mode_flash: "Flash (rapide, sans saisie)",
+    learning_mode_answer_feedback: "Réponse avec feedback IA",
+    learning_mode_answer_variation: "Réponse avec variantes de questions",
+    learning_mode_hint:
+      "En mode Flash, révélez directement la réponse et évaluez votre rappel sans saisir de texte.",
+    study_voice_timeout: "Secondes avant révélation automatique en mode vocal",
+    study_learning_failed:
+      "Impossible d’enregistrer les réglages d’apprentissage : {message}",
+    recall_quick_setting: "Afficher seulement les questions et réponses",
+    recall_quick_setting_hint:
+      "Réglage hérité de l’évaluateur rapide. Le sélecteur Agent contrôle l’évaluation Recall.",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_to_feedback:
+      "Mode Flash actif. Passer au mode réponse.",
+    learning_mode_switch_to_flash: "Mode réponse actif. Passer au mode Flash.",
     settings_section_backup: "Sauvegarde",
     settings_section_update: "Mise à jour",
   },
@@ -2594,6 +2632,25 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_check_failed: "Falha na verificação da resposta: {message}",
     settings_section_ai: "Modelos de IA",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Carregando configurações do Recall…",
+    learning_mode_label: "Modo de aprendizagem",
+    learning_mode_flash: "Flash (rápido, sem digitar)",
+    learning_mode_answer_feedback: "Responder com feedback de IA",
+    learning_mode_answer_variation: "Responder com variações de perguntas",
+    learning_mode_hint:
+      "No modo Flash, revele a resposta diretamente e avalie sua lembrança sem digitar.",
+    study_voice_timeout: "Segundos até revelar automaticamente no modo de voz",
+    study_learning_failed:
+      "Não foi possível salvar as configurações de aprendizagem: {message}",
+    recall_quick_setting: "Mostrar apenas perguntas e respostas",
+    recall_quick_setting_hint:
+      "Configuração herdada do avaliador rápido. O seletor Agente controla a avaliação do Recall.",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_to_feedback:
+      "Modo Flash ativo. Mudar para o modo de resposta.",
+    learning_mode_switch_to_flash:
+      "Modo de resposta ativo. Mudar para o modo Flash.",
     settings_section_backup: "Backup",
     settings_section_update: "Atualização",
   },
@@ -3381,6 +3438,21 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_check_failed: "回答检查失败：{message}",
     settings_section_ai: "AI 模型",
     settings_section_recall: "Recall",
+    settings_recall_loading: "正在加载 Recall 设置…",
+    learning_mode_label: "学习模式",
+    learning_mode_flash: "Flash（快速，无需输入）",
+    learning_mode_answer_feedback: "作答并获取 AI 反馈",
+    learning_mode_answer_variation: "作答并使用变化题目",
+    learning_mode_hint: "Flash 模式可直接显示答案，无需输入即可自评回忆效果。",
+    study_voice_timeout: "语音模式自动显示答案前的秒数",
+    study_learning_failed: "无法保存学习设置：{message}",
+    recall_quick_setting: "仅显示问题和答案",
+    recall_quick_setting_hint:
+      "这是旧版快速评估器设置；Recall 评估由“智能体”选择器控制。",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_to_feedback: "Flash 模式已启用。切换到作答模式。",
+    learning_mode_switch_to_flash: "作答模式已启用。切换到 Flash 模式。",
     settings_section_backup: "备份",
     settings_section_update: "更新",
   },
@@ -4221,6 +4293,24 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_check_failed: "回答の確認に失敗しました：{message}",
     settings_section_ai: "AI モデル",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Recall 設定を読み込み中…",
+    learning_mode_label: "学習モード",
+    learning_mode_flash: "Flash（高速、入力なし）",
+    learning_mode_answer_feedback: "回答して AI フィードバックを受ける",
+    learning_mode_answer_variation: "回答して質問のバリエーションを使う",
+    learning_mode_hint:
+      "Flash モードでは回答を直接表示し、入力せずに思い出せた度合いを自己評価します。",
+    study_voice_timeout: "音声モードで自動表示するまでの秒数",
+    study_learning_failed: "学習設定を保存できませんでした：{message}",
+    recall_quick_setting: "質問と回答だけを表示",
+    recall_quick_setting_hint:
+      "従来の高速評価設定です。Recall の評価はエージェント選択で制御します。",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_to_feedback:
+      "Flash モードが有効です。回答モードに切り替えます。",
+    learning_mode_switch_to_flash:
+      "回答モードが有効です。Flash モードに切り替えます。",
     settings_section_backup: "バックアップ",
     settings_section_update: "アップデート",
   },
@@ -5374,6 +5464,24 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_retest_notice_date: "Content updated on {date}",
     recall_retest_notice_author_date: "Content updated by {author} on {date}",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Loading Recall settings…",
+    learning_mode_label: "Learning mode",
+    learning_mode_flash: "Flash (fast, no typing)",
+    learning_mode_answer_feedback: "Answer with AI feedback",
+    learning_mode_answer_variation: "Answer with question variations",
+    learning_mode_hint:
+      "In Flash mode, reveal the answer directly and rate your recall without typing.",
+    study_voice_timeout: "Seconds before voice mode reveals the answer",
+    study_learning_failed: "Could not save learning settings: {message}",
+    recall_quick_setting: "Show only questions and answers",
+    recall_quick_setting_hint:
+      "Legacy quick-evaluator default. The Agent selector controls Recall evaluation.",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_to_feedback:
+      "Flash mode is active. Switch to answer mode.",
+    learning_mode_switch_to_flash:
+      "Answer mode is active. Switch to Flash mode.",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
     // First-run onboarding (ADR 2026-07-24, Phase 0).
@@ -6737,6 +6845,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_retest_notice_date: "Inhalt geändert am {date}",
     recall_retest_notice_author_date: "Inhalt geändert von {author} am {date}",
     settings_section_recall: "Recall",
+    settings_recall_loading: "Recall-Einstellungen werden geladen…",
+    learning_mode_label: "Lernmodus",
+    learning_mode_flash: "Flash (schnell, ohne Tippen)",
+    learning_mode_answer_feedback: "Antworten mit KI-Feedback",
+    learning_mode_answer_variation: "Antworten mit Fragevariationen",
+    learning_mode_hint:
+      "Im Flash-Modus deckst du die Antwort direkt auf und bewertest deine Erinnerung ohne Tippen.",
+    study_voice_timeout:
+      "Sekunden bis zur automatischen Antwort im Sprachmodus",
+    study_learning_failed:
+      "Lerneinstellungen konnten nicht gespeichert werden: {message}",
+    recall_quick_setting: "Nur Fragen und Antworten anzeigen",
+    recall_quick_setting_hint:
+      "Ältere Vorgabe für den Schnell-Bewerter. Die Agent-Auswahl steuert die Recall-Bewertung.",
+    learning_mode_switch_flash: "⚡ Flash",
+    learning_mode_switch_feedback: "💬 KI",
+    learning_mode_switch_to_feedback:
+      "Flash-Modus ist aktiv. Zum Antwortmodus wechseln.",
+    learning_mode_switch_to_flash:
+      "Antwortmodus ist aktiv. Zum Flash-Modus wechseln.",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
     // First-run onboarding (ADR 2026-07-24, Phase 0).

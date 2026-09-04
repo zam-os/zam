@@ -274,6 +274,25 @@ export async function setStudyLearningSettings(
 ): Promise<StudyLearningSettings> {
   if (!userId.trim())
     throw new Error("Study learning settings require a user ID");
+  if (
+    input.learningMode !== undefined &&
+    !isStudyLearningMode(input.learningMode)
+  ) {
+    throw new Error(`Unsupported study learning mode: ${input.learningMode}`);
+  }
+  for (const [label, value] of [
+    ["voice reveal timeout", input.voiceRevealTimeoutSec],
+    ["voice rating timeout", input.voiceRatingTimeoutSec],
+  ] as const) {
+    if (
+      value !== undefined &&
+      !integerInRange(value, MIN_VOICE_TIMEOUT_SEC, MAX_VOICE_TIMEOUT_SEC)
+    ) {
+      throw new Error(
+        `Study ${label} must be an integer from ${MIN_VOICE_TIMEOUT_SEC} to ${MAX_VOICE_TIMEOUT_SEC} seconds`,
+      );
+    }
+  }
   const current = await getStudyLearningSettings(db, userId, options);
   const candidate = normalizeLearningSettings(
     {

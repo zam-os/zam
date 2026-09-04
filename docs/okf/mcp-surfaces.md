@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-08-15T08:54:42.759Z
+timestamp: 2026-09-03T20:56:44.033Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -128,6 +128,21 @@ Companion extension hosts the same panels in a webview and routes recall
 evaluation through the selected IDE evaluator. Rapid replacement requests are
 serialized and coalesced by recency, so the newest requested panel owns the
 final iframe.
+
+Recall's **learning mode** is separate from its **evaluator route**. The
+learner-specific `flash`, `answer_feedback`, or `answer_variation` choice
+and voice timeouts live in the database; the Agent pill remains the source of
+truth for which evaluator can assess an answer. When no learning choice has
+been saved, an active evaluator yields the answer-and-feedback fallback and
+quick mode yields Flash. That fallback is read-only: changing the Agent pill
+or connecting AI never overwrites an explicit learner choice.
+
+The Recall badge switches Flash/answer interaction in-session and persists it
+through the app-only `zam_studio_bridge`. The Settings panel targets the
+learner shown in its context bar and uses the same
+`study-learning-get`/`study-learning-set` bridge commands. Those commands
+are on the panel's closed allowlist; arbitrary settings and secret-bearing
+configuration remain excluded.
 
 ## Host-owned placement
 
@@ -354,11 +369,19 @@ override. Tier-1 binary checks render as one-tap choices and are compared
 locally rather than sent to a model. Precondition, keep-going, and bonus
 choices use the dedicated tools; none manufactures an FSRS rating.
 
+In Flash mode the answer field stays hidden, tapping the question reveals the
+stored answer, and the learner self-rates directly; no sampling or host message
+is requested. Answer modes keep the typed-answer path and use the active
+evaluator when it is routable, degrading to local comparison where necessary.
+A context-bar learner change reloads the persisted mode before the next queue
+is painted, so one learner's preference cannot bleed into another's session.
+
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
-- Tests: `tests/cli/mcp.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`
-- Code: `src/cli/commands/mcp.ts`, `desktop/src/panel/recall.ts`, `desktop/src/learning-content.ts`
+- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- Tests: `tests/cli/mcp.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`
+- Code: `src/cli/commands/mcp.ts`, `src/kernel/scheduler/study-settings.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `desktop/src/learning-content.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-07-11 — Codex and VS Code Companion Surfaces](../adr/2026-07-11-codex-and-vscode-companion-surfaces.md)

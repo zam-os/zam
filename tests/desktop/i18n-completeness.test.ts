@@ -2,11 +2,11 @@ import { readdirSync, readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import { TRANSLATION_PACKS } from "../../desktop/src/i18n.js";
-import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
 import {
   CONTENT_PATHS,
   ONBOARDING_CHECKLIST_ITEMS,
 } from "../../desktop/src/onboarding.js";
+import { AGENT_OFFERS } from "../../src/cli/agent-offers.js";
 import { PERSONA_DESCRIPTORS } from "../../src/kernel/index.js";
 
 const ISSUE_97_KEYS = [
@@ -246,11 +246,28 @@ const GRAPH_PANEL_KEYS = [
 
 const SETTINGS_PANEL_KEYS = [
   "settings_section_recall",
+  "settings_recall_loading",
+  "learning_mode_label",
+  "learning_mode_flash",
+  "learning_mode_answer_feedback",
+  "learning_mode_answer_variation",
+  "learning_mode_hint",
+  "study_voice_timeout",
+  "recall_quick_setting",
+  "recall_quick_setting_hint",
   "settings_workspace_title",
   "settings_context_title",
   "settings_database",
   "settings_section_backup",
   "settings_section_update",
+] as const;
+
+const LEARNING_MODE_SHARED_KEYS = [
+  "study_learning_failed",
+  "learning_mode_switch_flash",
+  "learning_mode_switch_feedback",
+  "learning_mode_switch_to_feedback",
+  "learning_mode_switch_to_flash",
 ] as const;
 
 const REQUIRED_KEYS = [
@@ -266,6 +283,7 @@ const REQUIRED_KEYS = [
   ...OKF_PANEL_KEYS,
   ...GRAPH_PANEL_KEYS,
   ...SETTINGS_PANEL_KEYS,
+  ...LEARNING_MODE_SHARED_KEYS,
 ];
 
 // Keys used somewhere under desktop/src via t()/tf() that predate this
@@ -662,130 +680,124 @@ function collectUsedKeys(
 }
 
 describe("desktop locale completeness", () => {
-  it.each([
-    "es",
-    "fr",
-    "pt",
-    "zh",
-    "ja",
-  ])("contains the Studio and curriculum-wizard keys in %s", (locale) => {
-    expect(Object.keys(TRANSLATION_PACKS[locale])).toEqual(
-      expect.arrayContaining(REQUIRED_KEYS),
-    );
-  });
+  it.each(["es", "fr", "pt", "zh", "ja"])(
+    "contains the Studio and curriculum-wizard keys in %s",
+    (locale) => {
+      expect(Object.keys(TRANSLATION_PACKS[locale])).toEqual(
+        expect.arrayContaining(REQUIRED_KEYS),
+      );
+    },
+  );
 
-  it.each([
-    "en",
-    "de",
-  ])("contains the Studio and curriculum-wizard keys in reference locale %s", (locale) => {
-    // TRANSLATIONS (en/de reference locales) lives in i18n.ts alongside
-    // TRANSLATION_PACKS as of the MCP-Apps Studio panel refactor (previously
-    // it was inline in main.ts).
-    const i18nSource = readFileSync(
-      join(process.cwd(), "desktop", "src", "i18n.ts"),
-      "utf8",
-    );
-    const start = i18nSource.indexOf(`  ${locale}: {`);
-    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
-    const localeSource = i18nSource.slice(
-      start,
-      i18nSource.indexOf(endMarker, start),
-    );
+  it.each(["en", "de"])(
+    "contains the Studio and curriculum-wizard keys in reference locale %s",
+    (locale) => {
+      // TRANSLATIONS (en/de reference locales) lives in i18n.ts alongside
+      // TRANSLATION_PACKS as of the MCP-Apps Studio panel refactor (previously
+      // it was inline in main.ts).
+      const i18nSource = readFileSync(
+        join(process.cwd(), "desktop", "src", "i18n.ts"),
+        "utf8",
+      );
+      const start = i18nSource.indexOf(`  ${locale}: {`);
+      const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+      const localeSource = i18nSource.slice(
+        start,
+        i18nSource.indexOf(endMarker, start),
+      );
 
-    for (const key of REQUIRED_KEYS) {
-      expect(localeSource).toContain(`    ${key}:`);
-    }
-  });
+      for (const key of REQUIRED_KEYS) {
+        expect(localeSource).toContain(`    ${key}:`);
+      }
+    },
+  );
 
-  it.each([
-    "en",
-    "de",
-  ] as const)("reference locale %s has every t()/tf() key used under desktop/src", (locale) => {
-    const i18nSource = readFileSync(
-      join(process.cwd(), "desktop", "src", "i18n.ts"),
-      "utf8",
-    );
-    const start = i18nSource.indexOf(`  ${locale}: {`);
-    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
-    const localeSource = i18nSource.slice(
-      start,
-      i18nSource.indexOf(endMarker, start),
-    );
+  it.each(["en", "de"] as const)(
+    "reference locale %s has every t()/tf() key used under desktop/src",
+    (locale) => {
+      const i18nSource = readFileSync(
+        join(process.cwd(), "desktop", "src", "i18n.ts"),
+        "utf8",
+      );
+      const start = i18nSource.indexOf(`  ${locale}: {`);
+      const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+      const localeSource = i18nSource.slice(
+        start,
+        i18nSource.indexOf(endMarker, start),
+      );
 
-    const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
-    const missing = [...usedKeys].filter(
-      (key) => !localeSource.includes(`    ${key}:`),
-    );
-    expect(missing).toEqual([]);
-  });
+      const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
+      const missing = [...usedKeys].filter(
+        (key) => !localeSource.includes(`    ${key}:`),
+      );
+      expect(missing).toEqual([]);
+    },
+  );
 
   // The persona step resolves its card copy through descriptor fields
   // (t(persona.labelKey)), which the literal-only scan below cannot see —
   // so the kernel descriptor list is checked against the reference locales
   // explicitly. Step kickers are dynamic too (t(step.titleKey)).
-  it.each([
-    "en",
-    "de",
-  ] as const)("reference locale %s has every persona-descriptor key", (locale) => {
-    const i18nSource = readFileSync(
-      join(process.cwd(), "desktop", "src", "i18n.ts"),
-      "utf8",
-    );
-    const start = i18nSource.indexOf(`  ${locale}: {`);
-    const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
-    const localeSource = i18nSource.slice(
-      start,
-      i18nSource.indexOf(endMarker, start),
-    );
+  it.each(["en", "de"] as const)(
+    "reference locale %s has every persona-descriptor key",
+    (locale) => {
+      const i18nSource = readFileSync(
+        join(process.cwd(), "desktop", "src", "i18n.ts"),
+        "utf8",
+      );
+      const start = i18nSource.indexOf(`  ${locale}: {`);
+      const endMarker = locale === "en" ? "\n  de: {" : "\n  // es, fr";
+      const localeSource = i18nSource.slice(
+        start,
+        i18nSource.indexOf(endMarker, start),
+      );
 
-    const keys = [
-      // Step kickers resolve dynamically via t(step.titleKey).
-      "onboarding_welcome_kicker",
-      "onboarding_persona_kicker",
-      "onboarding_model_kicker",
-      "onboarding_agent_kicker",
-      "onboarding_workspace_kicker",
-      "onboarding_content_kicker",
-      "onboarding_goal_kicker",
-      "onboarding_done_kicker",
-      ...PERSONA_DESCRIPTORS.flatMap((persona) => [
-        persona.labelKey,
-        persona.descriptionKey,
-        persona.contextLabelKey,
-      ]),
-      ...AGENT_OFFERS.flatMap((offer) => [
-        offer.strengthKey,
-        offer.consequenceKey,
-      ]),
-      ...CONTENT_PATHS.flatMap((path) => [
-        path.labelKey,
-        path.bodyKey,
-        path.actionLabelKey,
-      ]),
-      ...ONBOARDING_CHECKLIST_ITEMS.flatMap((item) => [
-        item.titleKey,
-        item.noteKey,
-      ]),
-    ];
-    for (const key of keys) {
-      expect(localeSource).toContain(`    ${key}:`);
-    }
-  });
+      const keys = [
+        // Step kickers resolve dynamically via t(step.titleKey).
+        "onboarding_welcome_kicker",
+        "onboarding_persona_kicker",
+        "onboarding_model_kicker",
+        "onboarding_agent_kicker",
+        "onboarding_workspace_kicker",
+        "onboarding_content_kicker",
+        "onboarding_goal_kicker",
+        "onboarding_done_kicker",
+        ...PERSONA_DESCRIPTORS.flatMap((persona) => [
+          persona.labelKey,
+          persona.descriptionKey,
+          persona.contextLabelKey,
+        ]),
+        ...AGENT_OFFERS.flatMap((offer) => [
+          offer.strengthKey,
+          offer.consequenceKey,
+        ]),
+        ...CONTENT_PATHS.flatMap((path) => [
+          path.labelKey,
+          path.bodyKey,
+          path.actionLabelKey,
+        ]),
+        ...ONBOARDING_CHECKLIST_ITEMS.flatMap((item) => [
+          item.titleKey,
+          item.noteKey,
+        ]),
+      ];
+      for (const key of keys) {
+        expect(localeSource).toContain(`    ${key}:`);
+      }
+    },
+  );
 
-  it.each([
-    "es",
-    "fr",
-    "pt",
-    "zh",
-    "ja",
-  ] as const)("pack %s has every t()/tf() key used under desktop/src, or the fallback is allowlisted", (locale) => {
-    const pack = TRANSLATION_PACKS[locale];
-    const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
-    const missing = [...usedKeys].filter(
-      (key) => !(key in pack) && !PRE_EXISTING_FALLBACK_KEYS.has(key),
-    );
-    expect(missing).toEqual([]);
-  });
+  it.each(["es", "fr", "pt", "zh", "ja"] as const)(
+    "pack %s has every t()/tf() key used under desktop/src, or the fallback is allowlisted",
+    (locale) => {
+      const pack = TRANSLATION_PACKS[locale];
+      const usedKeys = collectUsedKeys(join(process.cwd(), "desktop", "src"));
+      const missing = [...usedKeys].filter(
+        (key) => !(key in pack) && !PRE_EXISTING_FALLBACK_KEYS.has(key),
+      );
+      expect(missing).toEqual([]);
+    },
+  );
 
   it("does not retain the English literals reported in issue #97", () => {
     const studioSource = readFileSync(
@@ -838,7 +850,9 @@ describe("desktop locale completeness", () => {
       join(process.cwd(), "desktop", "src", "main.ts"),
       "utf8",
     );
-    const initializerStart = source.indexOf("function initializeTranslations()");
+    const initializerStart = source.indexOf(
+      "function initializeTranslations()",
+    );
     const initializer = source.slice(
       initializerStart,
       source.indexOf("function isSupportedLocale", initializerStart),

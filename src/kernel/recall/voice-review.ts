@@ -504,6 +504,12 @@ export class HandsFreeReviewController {
           this.adapter.setStatus(copy.flashPromptOnboarding);
           await this.port.speak(copy.flashPromptOnboarding, locale);
           if (!this.isCurrent(generation)) break;
+        } else if (cardIndex === 1 || cardIndex === 2) {
+          this.adapter.setStatus(copy.flashPromptNudge);
+          await this.port.speak(copy.flashPromptNudge, locale);
+          if (!this.isCurrent(generation)) break;
+        } else if (this.port.playTone) {
+          await this.port.playTone("cue").catch(() => undefined);
         }
 
         const questionEndTime = Date.now();
@@ -519,42 +525,34 @@ export class HandsFreeReviewController {
           }
 
           let waitLimit = remaining;
-          if (cardIndex > 0 && cardIndex < 3 && !nudged) {
+          if (cardIndex >= 3 && !nudged) {
             const timeToNudge = nudgeTimeoutMs - elapsed;
             if (timeToNudge > 0) {
               waitLimit = Math.min(remaining, timeToNudge);
             }
           }
+          const waitsUntilReveal = waitLimit === remaining;
 
-          let timerId: ReturnType<typeof setTimeout> | undefined;
-          const timerPromise = new Promise<"timeout">((resolve) => {
-            timerId = setTimeout(() => resolve("timeout"), waitLimit);
-          });
-          const outcome = await Promise.race([
-            this.port.listen(locale),
-            timerPromise,
-          ]);
-          if (timerId !== undefined) clearTimeout(timerId);
-          if (!this.isCurrent(generation)) break;
+          const outcome = await this.listenWithTimeout(
+            generation,
+            locale,
+            waitLimit,
+          );
+          if (outcome.kind === "cancelled") break;
 
-          if (outcome === "timeout") {
+          if (outcome.kind === "timeout") {
             const currentElapsed = Date.now() - questionEndTime;
-            if (currentElapsed >= revealTimeoutMs) {
+            if (waitsUntilReveal || currentElapsed >= revealTimeoutMs) {
               break;
             }
-            if (
-              cardIndex > 0 &&
-              cardIndex < 3 &&
-              !nudged &&
-              currentElapsed >= nudgeTimeoutMs
-            ) {
+            if (cardIndex >= 3 && !nudged && currentElapsed >= nudgeTimeoutMs) {
               nudged = true;
-              await this.port.speak(copy.flashPromptNudge, locale);
+              await this.port.playTone?.("cue").catch(() => undefined);
             }
             continue;
           }
 
-          const transcript = (outcome as string).trim();
+          const transcript = outcome.transcript.trim();
           if (!transcript) continue;
 
           const action = parseSpokenAction(transcript, locale);
@@ -619,21 +617,18 @@ export class HandsFreeReviewController {
             waitLimit = Math.min(remaining, timeToNudge);
           }
         }
+        const waitsUntilPause = waitLimit === remaining;
 
-        let timerId: ReturnType<typeof setTimeout> | undefined;
-        const timerPromise = new Promise<"timeout">((resolve) => {
-          timerId = setTimeout(() => resolve("timeout"), waitLimit);
-        });
-        const outcome = await Promise.race([
-          this.port.listen(locale),
-          timerPromise,
-        ]);
-        if (timerId !== undefined) clearTimeout(timerId);
-        if (!this.isCurrent(generation)) break;
+        const outcome = await this.listenWithTimeout(
+          generation,
+          locale,
+          waitLimit,
+        );
+        if (outcome.kind === "cancelled") break;
 
-        if (outcome === "timeout") {
+        if (outcome.kind === "timeout") {
           const currentElapsed = Date.now() - answerEndTime;
-          if (currentElapsed >= ratingTimeoutMs) {
+          if (waitsUntilPause || currentElapsed >= ratingTimeoutMs) {
             this.adapter.setStatus(copy.sessionPaused);
             await this.port.speak(copy.sessionPaused, locale);
             return;
@@ -644,12 +639,12 @@ export class HandsFreeReviewController {
             currentElapsed >= nudgeTimeoutMs
           ) {
             ratingNudged = true;
-            await this.port.speak(copy.flashListeningRatingShort, locale);
+            await this.port.playTone?.("cue").catch(() => undefined);
           }
           continue;
         }
 
-        const transcript = (outcome as string).trim();
+        const transcript = outcome.transcript.trim();
         if (!transcript) continue;
 
         const action = parseSpokenAction(transcript, locale);
@@ -674,6 +669,45 @@ export class HandsFreeReviewController {
       cardIndex += 1;
       if (!keepGoing) break;
     }
+  }
+
+  /**
+   * Race recognition against a prompt timeout without leaving an old native
+   * recognizer alive when the loop starts the next interval. `stop()` is the
+   * port's cancellation boundary; restarting it also restores the audio
+   * session before a nudge, auto-reveal, or rating prompt is spoken.
+   */
+  private async listenWithTimeout(
+    generation: number,
+    locale: VoiceLocale,
+    timeoutMs: number,
+  ): Promise<
+    | { kind: "transcript"; transcript: string }
+    | { kind: "timeout" }
+    | { kind: "cancelled" }
+  > {
+    let timerId: ReturnType<typeof setTimeout> | undefined;
+    const listening = this.port.listen(locale).then(
+      (transcript) => ({ kind: "transcript" as const, transcript }),
+      (error: unknown) => ({ kind: "error" as const, error }),
+    );
+    const timeout = new Promise<{ kind: "timeout" }>((resolve) => {
+      timerId = setTimeout(() => resolve({ kind: "timeout" }), timeoutMs);
+    });
+    const outcome = await Promise.race([listening, timeout]);
+    if (timerId !== undefined) clearTimeout(timerId);
+    if (!this.isCurrent(generation)) return { kind: "cancelled" };
+    if (outcome.kind === "error") throw outcome.error;
+    if (outcome.kind === "transcript") return outcome;
+
+    await this.port.stop();
+    if (!this.isCurrent(generation)) return { kind: "cancelled" };
+    await this.port.start(locale);
+    if (!this.isCurrent(generation)) {
+      await this.port.stop().catch(() => undefined);
+      return { kind: "cancelled" };
+    }
+    return outcome;
   }
 
   async pause(): Promise<void> {
