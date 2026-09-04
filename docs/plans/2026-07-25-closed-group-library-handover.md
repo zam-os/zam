@@ -140,7 +140,7 @@ prerequisite.
    `zam_prod`). One major version per server, and an in-place upgrade is
    irreversible. If that prototype targets 18, it cannot share a server with
    ZAM. Settle before the server is created.
-2. **The subscription itself** — DocuWare must provide it before Phase C can
+2. **The subscription itself** — the company must provide it before Phase C can
    touch anything real. ZAM's marginal cost is $0 (billing is per server).
 3. **Whether a learner may defer or dispute a re-test** (Phase 1).
 

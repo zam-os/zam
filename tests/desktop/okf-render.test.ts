@@ -415,16 +415,16 @@ describe("stripFrontmatter", () => {
     const source = [
       "---",
       "type: reference",
-      "title: cops Output Contract",
+      "title: acme Output Contract",
       "tags:",
       "  - cli",
       "---",
       "",
-      "# cops Output Contract",
+      "# acme Output Contract",
       "Body text.",
     ].join("\n");
     expect(stripFrontmatter(source)).toBe(
-      "\n# cops Output Contract\nBody text.",
+      "\n# acme Output Contract\nBody text.",
     );
   });
 
