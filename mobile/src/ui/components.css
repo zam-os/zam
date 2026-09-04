@@ -940,3 +940,30 @@ details > summary {
   border: 0;
   margin: var(--gap-2) 0;
 }
+
+/* ── Review in-session mode switcher & Flash mode ────────────────────────── */
+
+.review-header-bar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--gap-3);
+  margin-bottom: var(--gap-2);
+}
+
+.review-header-bar .segmented {
+  width: auto;
+  max-width: 170px;
+}
+
+.review-header-bar .segmented button {
+  min-height: var(--tap);
+  padding: 0 10px;
+  font-size: 0.82em;
+}
+
+.flash-tap-zone {
+  cursor: pointer;
+  -webkit-tap-highlight-color: transparent;
+  user-select: none;
+}

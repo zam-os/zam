@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-08-15T10:51:34.868Z
+timestamp: 2026-09-03T20:57:04.693Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -102,6 +102,13 @@ Mobile settings; CLI and bridge sessions read the same values. Explicit kernel
 queue options remain available for automation. Limits are applied after
 sibling filtering, so a suppressed sibling does not consume a daily slot.
 
+The same settings module stores a separate per-learner interaction object:
+`flash`, `answer_feedback`, or the scaffolded `answer_variation`, plus
+bounded voice reveal and rating timeouts. These preferences change how a
+surface gathers evidence, never the FSRS calculation. A contextual default may
+depend on evaluator availability, but it is not persisted by a read and cannot
+override an explicit learner choice.
+
 # Sibling-aware study
 
 Cards imported from the same Anki note share its stable note GUID as a sibling
@@ -120,12 +127,15 @@ per-learner settings as JSON-only bridge operations.
 # Voice review
 
 Android, iOS, macOS, and Windows use the same kernel review path for hands-free
-sessions. The shared controller speaks the question, captures an answer,
-presents or speaks the expected answer/evaluation, and maps German or English
-rating words to ratings 1–4. The selected rating still enters the shared kernel
-through `executeReviewAction()`, so voice, typing, tap, and click interactions
-all persist the same FSRS-6, burial, and short-step state. See
-[voice-mode.md](voice-mode.md) for speech-engine and platform behavior.
+sessions. In answer modes the shared controller captures an answer before
+presenting or speaking the expected answer/evaluation. In Flash mode it
+captures only reveal/stop/rating commands and never treats silence as evidence:
+a reveal timeout shows the answer, while a rating timeout pauses the session
+without scheduling or logging the card. The selected German or English rating
+still enters the shared kernel through `executeReviewAction()`, so voice,
+typing, tap, and click interactions persist the same FSRS-6, burial, and
+short-step state. See [voice-mode.md](voice-mode.md) for speech-engine and
+platform behavior.
 
 # Example
 
@@ -183,8 +193,9 @@ snapshots with the same workload and tier rules.
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
+- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
 - Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

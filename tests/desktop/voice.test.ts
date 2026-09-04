@@ -34,12 +34,13 @@ const native = (
 describe("desktop voice port", () => {
   it("maps each port call onto its Tauri command", async () => {
     const calls: Array<[string, unknown]> = [];
-    const invoke = (async <T,>(command: string, args?: unknown): Promise<T> => {
+    const invoke = (async <T>(command: string, args?: unknown): Promise<T> => {
       calls.push([command, args]);
       return { transcript: "  Berlin  " } as T;
     }) as TauriInvoke;
 
     const port = createVoicePort(invoke);
+    expect(port.playTone).toBeTypeOf("function");
     await port.start("de-DE");
     await port.speak("Hallo", "de-DE");
     const transcript = await port.listen("de-DE");
@@ -57,7 +58,8 @@ describe("desktop voice port", () => {
   });
 
   it("probes capabilities through voice_capabilities", async () => {
-    const invoke = (async <T,>(): Promise<T> => native(true, true) as T) as TauriInvoke;
+    const invoke = (async <T>(): Promise<T> =>
+      native(true, true) as T) as TauriInvoke;
     await expect(probeNativeCapabilities(invoke, "de-DE")).resolves.toEqual(
       native(true, true),
     );
@@ -69,7 +71,7 @@ describe("desktop voice port", () => {
   // other language than the one being reviewed.
   it("asks about the locale being reviewed", async () => {
     const calls: unknown[] = [];
-    const invoke = (async <T,>(_command: string, args?: unknown): Promise<T> => {
+    const invoke = (async <T>(_command: string, args?: unknown): Promise<T> => {
       calls.push(args);
       return native(true, true) as T;
     }) as TauriInvoke;
@@ -281,8 +283,10 @@ describe("a failing cloud endpoint degrades to the device", () => {
     const degraded: Array<[string, string]> = [];
     const invoke = (async (command: string) => {
       calls.push(command);
-      if (command === "voice_listen") return { transcript: "device transcript" };
-      if (command === "voice_capture") return { path: "/tmp/a.wav", mime: "audio/wav" };
+      if (command === "voice_listen")
+        return { transcript: "device transcript" };
+      if (command === "voice_capture")
+        return { path: "/tmp/a.wav", mime: "audio/wav" };
       return undefined;
     }) as TauriInvoke;
     const port = createTieredVoicePort(

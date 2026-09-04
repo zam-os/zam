@@ -563,6 +563,8 @@ export {
   resolveReviewContext,
 } from "./recall/reference-resolver.js";
 export type {
+  HandsFreeReviewOptions,
+  SpokenReviewAction,
   VoiceAvailability,
   VoiceCapability,
   VoiceEngineDecision,
@@ -584,6 +586,7 @@ export {
   HandsFreeReviewController,
   isVoiceEnginePreference,
   isVoiceModeUsable,
+  parseSpokenAction,
   parseSpokenRating,
   planLeavesDevice,
   resolveVoiceEnginePlan,
@@ -619,15 +622,25 @@ export {
   unburySiblingCards,
 } from "./scheduler/siblings.js";
 export type {
+  StudyLearningMode,
+  StudyLearningSettings,
   StudyWorkloadPreset,
   StudyWorkloadSettings,
+  UpdateStudyLearningInput,
   UpdateStudyWorkloadInput,
 } from "./scheduler/study-settings.js";
 export {
+  DEFAULT_STUDY_LEARNING_SETTINGS,
   DEFAULT_STUDY_WORKLOAD,
+  getStudyLearningSettings,
   getStudyWorkloadSettings,
+  isStudyLearningMode,
   isStudyWorkloadPreset,
+  MAX_VOICE_TIMEOUT_SEC,
+  MIN_VOICE_TIMEOUT_SEC,
+  STUDY_LEARNING_MODES,
   STUDY_WORKLOAD_PRESETS,
+  setStudyLearningSettings,
   setStudyWorkloadSettings,
 } from "./scheduler/study-settings.js";
 // Search

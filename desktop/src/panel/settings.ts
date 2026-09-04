@@ -151,6 +151,18 @@ interface SettingsResult {
   recall?: { quickMode?: boolean };
 }
 
+type StudyLearningMode = "flash" | "answer_feedback" | "answer_variation";
+
+interface StudyLearningResult {
+  success: boolean;
+  userId: string;
+  settings: {
+    learningMode: StudyLearningMode;
+    voiceRevealTimeoutSec: number;
+    voiceRatingTimeoutSec: number;
+  };
+}
+
 const LINK_HEALTH_LABEL: Record<WorkspaceLinkHealth["health"], string> = {
   healthy: "verknüpft",
   "needs-repair": "reparaturbedürftig",
@@ -161,6 +173,9 @@ const app = new App({ name: "ZAM Settings", version: "0.1.0" });
 
 let connected = false;
 let started = false;
+let currentUser: string | null = null;
+let fallbackLearningMode: "flash" | "answer_feedback" = "flash";
+let settingsContextRevision = 0;
 
 const SURFACE = "settings";
 
@@ -174,12 +189,16 @@ function bridgeCall(cmd: string, args: string[] = []): Promise<unknown> {
 }
 
 /**
- * Every settings section reads global (not per-learner) state, so a
- * user/evaluator context change has nothing per-learner to reload here —
- * unlike Recall/Graph. Still refresh every section for consistency instead
- * of silently doing nothing on a context boundary (ADR §Decision 4).
+ * Learning-mode settings belong to the selected learner. A context change
+ * must therefore update the bridge target before any section reloads.
  */
-function reloadForContext(_newState: CompanionContextBarState): void {
+function reloadForContext(newState: CompanionContextBarState): void {
+  settingsContextRevision += 1;
+  currentUser = newState.user.currentId ?? null;
+  fallbackLearningMode =
+    newState.activeEvaluatorId && newState.activeEvaluatorId !== "quick-mode"
+      ? "answer_feedback"
+      : "flash";
   void loadRecallSettings();
   void loadAiModels();
   void loadWorkspaces();
@@ -216,42 +235,178 @@ function errorMessage(error: unknown): string {
 // ── Recall ─────────────────────────────────────────────────────────────────
 
 async function loadRecallSettings(): Promise<void> {
-  renderLoading(recallEl, "Lade Recall-Einstellungen…");
+  renderLoading(recallEl, t("settings_recall_loading"));
+  const revision = settingsContextRevision;
+  const requestedUser = currentUser;
+  const requestedFallback = fallbackLearningMode;
   try {
-    const data = (await bridgeCall("get-settings")) as SettingsResult;
-    renderRecallSettings(Boolean(data.recall?.quickMode));
+    const userArgs = requestedUser ? ["--user", requestedUser] : [];
+    userArgs.push("--fallback-mode", requestedFallback);
+    const [globalData, learningData] = (await Promise.all([
+      bridgeCall("get-settings"),
+      bridgeCall("study-learning-get", userArgs),
+    ])) as [SettingsResult, StudyLearningResult];
+    if (revision !== settingsContextRevision || requestedUser !== currentUser) {
+      return;
+    }
+    renderRecallSettings({
+      quickMode: Boolean(globalData.recall?.quickMode),
+      learningMode: learningData.settings.learningMode,
+      voiceRevealTimeoutSec: learningData.settings.voiceRevealTimeoutSec,
+    });
   } catch (error) {
+    if (revision !== settingsContextRevision || requestedUser !== currentUser) {
+      return;
+    }
     clearEl(recallEl);
     renderInlineError(recallEl, errorMessage(error));
   }
 }
 
-function renderRecallSettings(quickMode: boolean): void {
+function renderRecallSettings(data: {
+  quickMode: boolean;
+  learningMode: StudyLearningMode;
+  voiceRevealTimeoutSec: number;
+}): void {
   if (!recallEl) return;
   clearEl(recallEl);
+
+  // Learning mode field
+  const modeGroup = document.createElement("div");
+  modeGroup.className = "settings-group";
+  modeGroup.style.marginBottom = "14px";
+
+  const modeLabel = document.createElement("label");
+  modeLabel.htmlFor = "settings-learning-mode";
+  modeLabel.style.display = "block";
+  modeLabel.style.fontWeight = "600";
+  modeLabel.style.fontSize = "0.85rem";
+  modeLabel.style.marginBottom = "6px";
+  modeLabel.textContent = t("learning_mode_label");
+
+  const modeSelect = document.createElement("select");
+  modeSelect.id = "settings-learning-mode";
+  modeSelect.className = "settings-select";
+  modeSelect.style.width = "100%";
+  modeSelect.style.padding = "6px 8px";
+  modeSelect.style.borderRadius = "6px";
+  modeSelect.style.border = "1px solid var(--border)";
+  modeSelect.style.background = "var(--field-bg)";
+  modeSelect.style.color = "var(--fg)";
+  modeSelect.style.fontSize = "0.85rem";
+
+  const modes: Array<{
+    value: StudyLearningMode;
+    label: string;
+  }> = [
+    {
+      value: "flash",
+      label: t("learning_mode_flash"),
+    },
+    {
+      value: "answer_feedback",
+      label: t("learning_mode_answer_feedback"),
+    },
+    {
+      value: "answer_variation",
+      label: t("learning_mode_answer_variation"),
+    },
+  ];
+
+  for (const m of modes) {
+    const opt = document.createElement("option");
+    opt.value = m.value;
+    opt.textContent = m.label;
+    if (m.value === data.learningMode) opt.selected = true;
+    modeSelect.appendChild(opt);
+  }
+
+  let persistedMode = data.learningMode;
+  modeSelect.addEventListener("change", () => {
+    const requestedMode = modeSelect.value;
+    void setStudyLearningSetting(["--mode", requestedMode], modeSelect).then(
+      (saved) => {
+        if (saved) persistedMode = requestedMode as StudyLearningMode;
+        else modeSelect.value = persistedMode;
+      },
+    );
+  });
+
+  const modeHint = document.createElement("div");
+  modeHint.className = "settings-hint";
+  modeHint.style.marginTop = "4px";
+  modeHint.textContent = t("learning_mode_hint");
+
+  modeGroup.append(modeLabel, modeSelect, modeHint);
+
+  // Auto-reveal delay field (Voice mode)
+  const timeoutGroup = document.createElement("div");
+  timeoutGroup.className = "settings-group";
+  timeoutGroup.style.marginBottom = "14px";
+
+  const timeoutLabel = document.createElement("label");
+  timeoutLabel.htmlFor = "settings-voice-reveal-timeout";
+  timeoutLabel.style.display = "block";
+  timeoutLabel.style.fontWeight = "600";
+  timeoutLabel.style.fontSize = "0.85rem";
+  timeoutLabel.style.marginBottom = "6px";
+  timeoutLabel.textContent = t("study_voice_timeout");
+
+  const timeoutInput = document.createElement("input");
+  timeoutInput.id = "settings-voice-reveal-timeout";
+  timeoutInput.type = "number";
+  timeoutInput.min = "5";
+  timeoutInput.max = "60";
+  timeoutInput.step = "1";
+  timeoutInput.value = String(data.voiceRevealTimeoutSec);
+  timeoutInput.style.width = "80px";
+  timeoutInput.style.padding = "6px 8px";
+  timeoutInput.style.borderRadius = "6px";
+  timeoutInput.style.border = "1px solid var(--border)";
+  timeoutInput.style.background = "var(--field-bg)";
+  timeoutInput.style.color = "var(--fg)";
+  timeoutInput.style.fontSize = "0.85rem";
+
+  let persistedTimeout = data.voiceRevealTimeoutSec;
+  timeoutInput.addEventListener("change", () => {
+    const sec = Math.max(
+      5,
+      Math.min(60, Math.trunc(Number(timeoutInput.value) || 20)),
+    );
+    timeoutInput.value = String(sec);
+    void setStudyLearningSetting(
+      ["--reveal-timeout", String(sec)],
+      timeoutInput,
+    ).then((saved) => {
+      if (saved) persistedTimeout = sec;
+      else timeoutInput.value = String(persistedTimeout);
+    });
+  });
+
+  timeoutGroup.append(timeoutLabel, timeoutInput);
 
   const label = document.createElement("label");
   label.className = "settings-checkbox-row";
   const checkbox = document.createElement("input");
   checkbox.type = "checkbox";
-  checkbox.checked = quickMode;
+  checkbox.checked = data.quickMode;
   const text = document.createElement("span");
-  text.textContent = "Just show questions and answers for speed";
+  text.textContent = t("recall_quick_setting");
   label.append(checkbox, text);
 
   const hint = document.createElement("div");
   hint.className = "settings-hint";
-  hint.textContent =
-    "Disabled by default. When off, Recall asks the connected host to check " +
-    "your answer and supports follow-up questions.";
-  recallEl.append(label, hint);
+  hint.textContent = t("recall_quick_setting_hint");
 
   checkbox.addEventListener("change", () => {
     void setRecallQuickMode(checkbox);
   });
+
+  recallEl.append(modeGroup, timeoutGroup, label, hint);
 }
 
 async function setRecallQuickMode(checkbox: HTMLInputElement): Promise<void> {
+  const revision = settingsContextRevision;
   const requested = checkbox.checked;
   checkbox.disabled = true;
   try {
@@ -263,9 +418,43 @@ async function setRecallQuickMode(checkbox: HTMLInputElement): Promise<void> {
     ]);
   } catch (error) {
     checkbox.checked = !requested;
-    renderInlineError(recallEl, errorMessage(error));
+    if (revision === settingsContextRevision) {
+      renderInlineError(recallEl, errorMessage(error));
+    }
   } finally {
     checkbox.disabled = false;
+  }
+}
+
+async function setStudyLearningSetting(
+  args: string[],
+  control: HTMLInputElement | HTMLSelectElement,
+): Promise<boolean> {
+  const revision = settingsContextRevision;
+  const requestedUser = currentUser;
+  const requestedFallback = fallbackLearningMode;
+  control.disabled = true;
+  try {
+    const userArgs = requestedUser ? ["--user", requestedUser] : [];
+    await bridgeCall("study-learning-set", [
+      ...userArgs,
+      "--fallback-mode",
+      requestedFallback,
+      ...args,
+    ]);
+    return (
+      revision === settingsContextRevision && requestedUser === currentUser
+    );
+  } catch (error) {
+    if (revision === settingsContextRevision && requestedUser === currentUser) {
+      renderInlineError(
+        recallEl,
+        tf("study_learning_failed", { message: errorMessage(error) }),
+      );
+    }
+    return false;
+  } finally {
+    control.disabled = false;
   }
 }
 
@@ -527,9 +716,7 @@ async function removeAiModel(row: SettingsModelRow): Promise<void> {
  * changed model or effort updates the row in place instead of appending a
  * duplicate that competes for the same fallback order.
  */
-async function showAgentModelForm(
-  existing?: SettingsModelRow,
-): Promise<void> {
+async function showAgentModelForm(existing?: SettingsModelRow): Promise<void> {
   const formHost = document.getElementById("settings-ai-form");
   if (!formHost) return;
   formHost.classList.remove("hidden");
@@ -645,7 +832,10 @@ async function showAgentModelForm(
       return;
     }
     // Thinking models pick their own effort, so the control does not apply.
-    const isThinking = modelInput.value.trim().toLowerCase().includes("thinking");
+    const isThinking = modelInput.value
+      .trim()
+      .toLowerCase()
+      .includes("thinking");
     effortSelect.disabled = isThinking;
     effortSelect.title = isThinking ? t("model_effort_thinking_hint") : "";
   };
@@ -1092,13 +1282,21 @@ function start(): void {
 }
 
 app.ontoolresult = (params) => {
+  const wasStarted = started;
+  settingsContextRevision += 1;
   const structured = (params.structuredContent ?? {}) as OpenSettingsResult;
   panelVersion = structured.version;
   const user = structured.user ?? null;
+  currentUser = user;
   clearConnectionNotice();
 
   const contextState =
     structured.companionContext ?? fallbackContextBarState(SURFACE, user);
+  fallbackLearningMode =
+    contextState.activeEvaluatorId &&
+    contextState.activeEvaluatorId !== "quick-mode"
+      ? "answer_feedback"
+      : "flash";
   contextBar = ensureContextBar(
     contextBar,
     contextBarRoot,
@@ -1112,7 +1310,8 @@ app.ontoolresult = (params) => {
       onError: showConnectionNotice,
     },
   );
-  start();
+  if (wasStarted) void loadRecallSettings();
+  else start();
 };
 
 // Mount the bar immediately — before any tool result — so the title and an

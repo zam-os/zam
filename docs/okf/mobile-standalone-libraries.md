@@ -1,7 +1,7 @@
 ---
 type: architecture
 title: Standalone Mobile Libraries
-description: ZAM Mobile runs standalone libraries and shared review and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
+description: ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
 tags:
   - mobile
   - android
@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-08-31T19:36:40Z
+timestamp: 2026-09-03T20:57:29.306Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -88,9 +88,25 @@ bonus atom is offered, never scheduled automatically. All of these paths work
 against either the local or server-backed database through the same async
 kernel contract.
 
-After a typed answer is revealed and an AI evaluation succeeds, the same
-review screen opens an ephemeral follow-up discussion on both Android and
-iOS. Every turn resends the stable card frame, the learner's original answer,
+Each learner also has a persisted learning interaction and voice timeout
+object. Without a stored choice, a reachable cloud text evaluator defaults to
+`answer_feedback`; otherwise Mobile starts in `flash`. Connecting or
+disconnecting a model recomputes only that fallback and never overwrites an
+explicit preference. Settings offers Flash, answer-and-feedback, and the
+currently scaffolded answer-variation choice. The review header offers an
+immediate Flash/AI switch, pauses active voice capture before saving, and rolls
+the UI back with an error if persistence fails.
+
+Flash hides the keyboard path and Tier-1 choice buttons, lets a tap reveal the
+stored answer, skips evaluation and discussion, and exposes the same four FSRS
+self-ratings. In hands-free Flash review, speech supplies reveal, stop, and
+rating commands rather than a learner answer. Prompts become progressively
+shorter, then earcon-only; reveal timeout auto-reveals, while rating timeout
+pauses without manufacturing a lapse.
+
+After a typed answer in an answer mode is revealed and an AI evaluation
+succeeds, the same review screen opens an ephemeral follow-up discussion on
+both Android and iOS. Every turn resends the stable card frame, the learner's original answer,
 the evaluation feedback, and the complete prior thread through the configured
 `recall` tier. Android follows the learner's device/cloud preference and can
 answer with Gemini Nano; iOS uses a reachable cloud text model because the
@@ -104,9 +120,10 @@ not succeed, the follow-up control stays hidden and ordinary self-rating
 continues to work without AI.
 
 # Citations
+- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
 - [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)
-- Tests: `tests/mobile/discuss.test.ts`, `tests/mobile/discussion-wiring.test.ts`, `tests/desktop/discussion.test.ts`
-- Code: `mobile/src/discuss.ts`, `mobile/src/evaluate.ts`, `mobile/src/main.ts`, `mobile/index.html`, `desktop/src/discussion.ts`
+- Tests: `tests/mobile/discuss.test.ts`, `tests/mobile/discussion-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/mobile/voice.test.ts`, `tests/desktop/discussion.test.ts`
+- Code: `mobile/src/discuss.ts`, `mobile/src/evaluate.ts`, `mobile/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/voice.ts`, `mobile/index.html`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/recall/voice-review.ts`, `desktop/src/discussion.ts`
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - Tests: `tests/mobile/curriculum.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`

@@ -77,7 +77,9 @@ export function unavailableReasonKey(plan: VoiceEnginePlan): string | null {
 }
 
 export function readStoredPreference(value: unknown): VoiceEnginePreference {
-  return isVoiceEnginePreference(value) ? value : DEFAULT_VOICE_ENGINE_PREFERENCE;
+  return isVoiceEnginePreference(value)
+    ? value
+    : DEFAULT_VOICE_ENGINE_PREFERENCE;
 }
 
 /**
@@ -88,6 +90,54 @@ export function readStoredPreference(value: unknown): VoiceEnginePreference {
  * non-`main` desktop module (see tests/desktop/module-boundaries.test.ts).
  */
 export type TauriInvoke = <T>(command: string, args?: unknown) => Promise<T>;
+
+/** Short non-verbal cues used by progressive Flash voice review. */
+function playDesktopEarcon(kind: "cue" | "reveal" | "rate"): void {
+  try {
+    const AudioCtx =
+      globalThis.AudioContext ??
+      (
+        globalThis as typeof globalThis & {
+          webkitAudioContext?: typeof AudioContext;
+        }
+      ).webkitAudioContext;
+    if (!AudioCtx) return;
+    const context = new AudioCtx();
+    const oscillator = context.createOscillator();
+    const gain = context.createGain();
+    oscillator.connect(gain);
+    gain.connect(context.destination);
+    const close = (): void => {
+      void context.close().catch(() => undefined);
+    };
+    oscillator.addEventListener("ended", close, { once: true });
+    globalThis.setTimeout(close, 250);
+    const now = context.currentTime;
+    oscillator.type = "sine";
+    if (kind === "cue") {
+      oscillator.frequency.setValueAtTime(800, now);
+      gain.gain.setValueAtTime(0.08, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.05);
+      oscillator.start(now);
+      oscillator.stop(now + 0.05);
+    } else if (kind === "reveal") {
+      oscillator.frequency.setValueAtTime(520, now);
+      oscillator.frequency.exponentialRampToValueAtTime(680, now + 0.08);
+      gain.gain.setValueAtTime(0.1, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.08);
+      oscillator.start(now);
+      oscillator.stop(now + 0.08);
+    } else {
+      oscillator.frequency.setValueAtTime(880, now);
+      gain.gain.setValueAtTime(0.12, now);
+      gain.gain.exponentialRampToValueAtTime(0.001, now + 0.1);
+      oscillator.start(now);
+      oscillator.stop(now + 0.1);
+    }
+  } catch {
+    // Web Audio is a progressive enhancement; speech review remains usable.
+  }
+}
 
 export function createVoicePort(invoke: TauriInvoke): VoicePort {
   return {
@@ -105,6 +155,9 @@ export function createVoicePort(invoke: TauriInvoke): VoicePort {
         locale,
       });
       return result.transcript;
+    },
+    async playTone(kind): Promise<void> {
+      playDesktopEarcon(kind);
     },
   };
 }
@@ -126,11 +179,7 @@ export function probeNativeCapabilities(
 
 /** What the tiered port needs from the bridge and the page to reach the cloud. */
 export interface CloudSpeechDeps {
-  transcribe(
-    audioFile: string,
-    mime: string,
-    locale: string,
-  ): Promise<string>;
+  transcribe(audioFile: string, mime: string, locale: string): Promise<string>;
   synthesize(
     text: string,
     locale: string,
@@ -181,6 +230,7 @@ export function createTieredVoicePort(
   return {
     start: native.start,
     stop: native.stop,
+    playTone: native.playTone,
     async speak(text: string, locale: VoiceLocale): Promise<void> {
       if (!useCloud("tts")) return native.speak(text, locale);
       try {
@@ -230,10 +280,10 @@ export function createVoiceController(
   });
 }
 
+export type { VoiceEnginePlan, VoiceEnginePreference, VoiceLocale };
 export {
   isVoiceModeUsable,
   planLeavesDevice,
   resolveVoiceEnginePlan,
   resolveVoiceLocale,
 };
-export type { VoiceEnginePlan, VoiceEnginePreference, VoiceLocale };

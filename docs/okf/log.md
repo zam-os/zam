@@ -1,9 +1,17 @@
 # Log
 
-## 2026-09-03
+## 2026-09-04
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+
+## 2026-09-03
+
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
 
 ## 2026-09-02
 

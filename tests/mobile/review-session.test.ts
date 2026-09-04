@@ -326,4 +326,27 @@ describe("mobile review session", () => {
     expect(session.currentItem?.atomId).toBe("atom-other");
     expect(session.currentItem?.tokenId).toBe(other.id);
   });
+
+  it("allows reveal without draft answer when allowEmpty is true", async () => {
+    const token = await createToken(db, {
+      slug: "flash-reveal-test",
+      concept: "Flashcard concept",
+      domain: "chemie",
+      bloom_level: 1,
+      question: "Flash question?",
+    });
+    await ensureCard(db, token.id, "student-flash");
+
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage);
+    expect(await session.start("student-flash")).toBe(true);
+
+    // Default reveal without draft answer throws
+    expect(() => session.reveal()).toThrow("Answer is required before reveal");
+    expect(session.revealed).toBe(false);
+
+    // reveal with allowEmpty: true succeeds
+    session.reveal({ allowEmpty: true });
+    expect(session.revealed).toBe(true);
+  });
 });

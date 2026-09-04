@@ -77,7 +77,14 @@ interface OpenRecallResult {
   user?: string | null;
   domain?: string | null;
   quickMode?: boolean;
+  learningMode?: "flash" | "answer_feedback" | "answer_variation";
   companionContext?: CompanionContextBarState;
+}
+
+interface StudyLearningResult {
+  settings: {
+    learningMode: "flash" | "answer_feedback" | "answer_variation";
+  };
 }
 
 interface ReviewCard {
@@ -140,6 +147,9 @@ const app = new App({ name: "ZAM Recall", version: "0.1.0" });
 let currentUser: string | null = null;
 let focusDomain: string | null = null;
 let quickMode = false;
+let learningMode: "flash" | "answer_feedback" | "answer_variation" = "flash";
+let learningModeChangePending = false;
+let sessionRevision = 0;
 let connected = false;
 let started = false;
 let finished = false;
@@ -190,16 +200,90 @@ function hasUnsavedRecallState(): boolean {
  * rather than continue mid-card with a stale learner, mode, or agent.
  */
 function reloadForContext(newState: CompanionContextBarState): void {
+  const revision = ++sessionRevision;
   currentUser = newState.user.currentId ?? null;
   companionContext = newState;
   quickMode = deriveQuickMode(newState, quickMode);
+  learningMode = quickMode ? "flash" : "answer_feedback";
+  learningModeChangePending = false;
   started = false;
   finished = false;
   cards = [];
   index = 0;
   tally.done = 0;
   tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
-  start();
+  void loadLearningMode()
+    .catch((error) => {
+      if (revision !== sessionRevision) return;
+      showConnectionNotice(
+        tf("study_learning_failed", { message: errorMessage(error) }),
+      );
+    })
+    .finally(() => {
+      if (revision === sessionRevision) start();
+    });
+}
+
+async function loadLearningMode(): Promise<void> {
+  const revision = sessionRevision;
+  const requestedUser = currentUser;
+  const args = currentUser ? ["--user", currentUser] : [];
+  args.push("--fallback-mode", quickMode ? "flash" : "answer_feedback");
+  const result = (await callTool("zam_studio_bridge", {
+    cmd: "study-learning-get",
+    args,
+  })) as StudyLearningResult;
+  if (revision !== sessionRevision || requestedUser !== currentUser) return;
+  learningMode = result.settings.learningMode;
+}
+
+async function changeLearningMode(
+  next: "flash" | "answer_feedback",
+): Promise<void> {
+  if (learningModeChangePending) return;
+  const revision = sessionRevision;
+  const requestedUser = currentUser;
+  const requestedCardId = cards[index]?.cardId;
+  const draft =
+    contentEl?.querySelector<HTMLTextAreaElement>(".recall-answer")?.value ??
+    "";
+  learningModeChangePending = true;
+  contentEl
+    ?.querySelector<HTMLButtonElement>(".recall-mode-toggle")
+    ?.setAttribute("disabled", "");
+  try {
+    const args = requestedUser
+      ? ["--user", requestedUser, "--mode", next]
+      : ["--mode", next];
+    await callTool("zam_studio_bridge", {
+      cmd: "study-learning-set",
+      args,
+    });
+    if (revision !== sessionRevision || requestedUser !== currentUser) return;
+    learningMode = next;
+    if (requestedCardId === cards[index]?.cardId) {
+      renderCard();
+      const answer =
+        contentEl?.querySelector<HTMLTextAreaElement>(".recall-answer");
+      if (answer && draft) {
+        answer.value = draft;
+        answer.dispatchEvent(new Event("input"));
+      }
+    }
+    clearConnectionNotice();
+  } catch (error) {
+    if (revision !== sessionRevision || requestedUser !== currentUser) return;
+    showConnectionNotice(
+      tf("study_learning_failed", { message: errorMessage(error) }),
+    );
+  } finally {
+    if (revision === sessionRevision) {
+      learningModeChangePending = false;
+      contentEl
+        ?.querySelector<HTMLButtonElement>(".recall-mode-toggle")
+        ?.removeAttribute("disabled");
+    }
+  }
 }
 
 function remaining(): number {
@@ -304,15 +388,17 @@ function renderChoiceOffer(
   contentEl.appendChild(box);
 }
 
-async function loadPreconditionCache(): Promise<void> {
+async function loadPreconditionCache(
+  userId: string | null,
+): Promise<PreconditionOffer[]> {
   try {
     const data = (await callTool(
       "zam_preconditions_get",
-      recallUserArgs(),
+      userId ? { user: userId } : {},
     )) as { candidates?: PreconditionOffer[] };
-    preconditionCache = data.candidates ?? [];
+    return data.candidates ?? [];
   } catch {
-    preconditionCache = [];
+    return [];
   }
 }
 
@@ -710,11 +796,25 @@ function renderCard(): void {
           : card.tier;
     badges.appendChild(tierBadge);
   }
-  const modeBadge = document.createElement("span");
-  modeBadge.className = "recall-badge";
-  modeBadge.textContent = quickMode
-    ? t("recall_badge_quick")
-    : t("recall_badge_smart");
+  const isFlash = learningMode === "flash";
+  const modeBadge = document.createElement("button");
+  modeBadge.type = "button";
+  modeBadge.className = "recall-badge recall-mode-toggle";
+  modeBadge.style.cursor = "pointer";
+  modeBadge.style.border = "none";
+  modeBadge.style.background = "var(--hover)";
+  modeBadge.style.color = "inherit";
+  modeBadge.style.font = "inherit";
+  modeBadge.disabled = learningModeChangePending;
+  modeBadge.textContent = isFlash
+    ? t("learning_mode_switch_flash")
+    : t("learning_mode_switch_feedback");
+  modeBadge.title = isFlash
+    ? t("learning_mode_switch_to_feedback")
+    : t("learning_mode_switch_to_flash");
+  modeBadge.addEventListener("click", () => {
+    void changeLearningMode(isFlash ? "answer_feedback" : "flash");
+  });
   badges.appendChild(modeBadge);
   root.appendChild(badges);
 
@@ -734,11 +834,22 @@ function renderCard(): void {
   const question = document.createElement("div");
   question.className = "recall-question";
   question.textContent = card.question?.trim() ? card.question : card.slug;
+  if (isFlash) {
+    question.style.cursor = "pointer";
+    question.addEventListener("click", () => {
+      if (!committed) {
+        actionBtn.click();
+      }
+    });
+  }
   root.appendChild(question);
 
   const answer = document.createElement("textarea");
   answer.className = "recall-answer";
   answer.placeholder = t("placeholder_recall_answer");
+  if (isFlash) {
+    answer.hidden = true;
+  }
   root.appendChild(answer);
 
   const fastOptions = document.createElement("div");
@@ -788,12 +899,14 @@ function renderCard(): void {
     committed = true;
     actionBtn.disabled = true;
     answer.disabled = true;
+    modeBadge.disabled = true;
   }
 
   function unlockInputs(): void {
     committed = false;
     actionBtn.disabled = false;
     answer.disabled = false;
+    modeBadge.disabled = learningModeChangePending;
   }
 
   function showNotice(message: string): void {
@@ -1127,7 +1240,7 @@ function renderCard(): void {
     if (committed) return;
     const text = answer.value.trim();
     lockInputs();
-    if (!text) {
+    if (!text || isFlash) {
       showReveal();
       pushContext(card, "revealed");
     } else if (quickMode || card.fastCheck) {
@@ -1148,6 +1261,9 @@ function renderCard(): void {
 }
 
 async function loadReviews(): Promise<void> {
+  const revision = sessionRevision;
+  const requestedUser = currentUser;
+  const requestedDomain = focusDomain;
   try {
     const args: Record<string, unknown> = {
       includeQuestions: true,
@@ -1156,21 +1272,26 @@ async function loadReviews(): Promise<void> {
     if (nextMaxNewOverride !== undefined) {
       args.maxNew = nextMaxNewOverride;
     }
-    if (currentUser) args.user = currentUser;
-    if (focusDomain) args.domain = focusDomain;
+    if (requestedUser) args.user = requestedUser;
+    if (requestedDomain) args.domain = requestedDomain;
     const data = (await callTool("zam_get_reviews", args)) as {
       cards?: ReviewCard[];
     };
-    cards = data.cards ?? [];
+    if (revision !== sessionRevision) return;
+    const nextCards = data.cards ?? [];
+    const nextPreconditionCache = await loadPreconditionCache(requestedUser);
+    if (revision !== sessionRevision) return;
+    cards = nextCards;
+    preconditionCache = nextPreconditionCache;
     nextMaxNewOverride = undefined;
     index = 0;
-    await loadPreconditionCache();
     if (cards.length === 0) {
       renderEmpty();
     } else {
       renderCard();
     }
   } catch (error) {
+    if (revision !== sessionRevision) return;
     renderError(error instanceof Error ? error.message : String(error));
   }
 }
@@ -1200,9 +1321,13 @@ app.ontoolresult = (params) => {
     structured.companionContext,
     structured.quickMode === true,
   );
+  learningMode =
+    structured.learningMode ?? (quickMode ? "flash" : "answer_feedback");
   const contextChanged =
-    started && (previousUser !== currentUser || previousDomain !== focusDomain);
+    previousUser !== currentUser || previousDomain !== focusDomain;
   if (contextChanged) {
+    sessionRevision += 1;
+    learningModeChangePending = false;
     started = false;
     finished = false;
     cards = [];

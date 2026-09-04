@@ -13,6 +13,7 @@ import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import {
   getReviewActivity,
   getSetting,
+  getStudyLearningSettings,
   openDatabase,
 } from "../../kernel/index.js";
 import {
@@ -118,6 +119,8 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "update-check",
   "get-settings",
   "setting-set",
+  "study-learning-get",
+  "study-learning-set",
   // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
   // Config only — never runs generation; keys stay out of this surface.
   "model-list",
@@ -1265,13 +1268,26 @@ export function createMcpServer(
         // connection degrades `quickMode` to its conservative default
         // (false) instead of failing the whole open call.
         let quickMode = false;
+        let learningMode: "flash" | "answer_feedback" | "answer_variation" =
+          "flash";
         let degraded = opening.degraded;
         try {
           quickMode = (await getSetting(db, "recall.quick_mode")) === "true";
+          if (userId) {
+            learningMode = (
+              await getStudyLearningSettings(db, userId, {
+                fallbackLearningMode:
+                  companionContext.activeEvaluatorId &&
+                  companionContext.activeEvaluatorId !== "quick-mode"
+                    ? "answer_feedback"
+                    : "flash",
+              })
+            ).learningMode;
+          }
         } catch (error) {
           degraded = true;
           console.error(
-            "[zam mcp] recall.quick_mode read failed, opening with quick mode's conservative default (false):",
+            "[zam mcp] recall learning-settings read failed, opening in flash mode:",
             error instanceof Error ? error.message : error,
           );
         }
@@ -1282,6 +1298,7 @@ export function createMcpServer(
           user: userId,
           domain: domain ?? null,
           quickMode,
+          learningMode,
           // Resolved context for first paint (ADR §Decision 3) — the app
           // must never briefly render the wrong learner.
           companionContext,

@@ -599,6 +599,27 @@
               <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
             </header>
 
+            <p class="group-title" data-i18n="learning_mode_heading">Lernmodus</p>
+            <div class="card stack">
+              <p class="t-secondary" data-i18n="learning_mode_desc">
+                Wähle deinen bevorzugten Lernstil. Du kannst den Modus auch direkt während der Abfrage umschalten.
+              </p>
+              <label class="field">
+                <span data-i18n="learning_mode_label">Modus</span>
+                <select id="study-learning-mode">
+                  <option value="flash" data-i18n="learning_mode_flash">Flash-Modus (schnell, ohne Tippen)</option>
+                  <option value="answer_feedback" data-i18n="learning_mode_answer_feedback">Antwort-Modus mit KI-Feedback</option>
+                  <option value="answer_variation" data-i18n="learning_mode_answer_variation">Variations-Modus mit KI-Feedback</option>
+                </select>
+              </label>
+              <label class="field" id="study-voice-timeout-field">
+                <span data-i18n="study_voice_timeout">Wartezeit bis automatische Antwort</span>
+                <input id="study-voice-reveal-timeout" type="number" min="5" max="60" step="1" value="20" />
+              </label>
+              <button id="study-learning-save" class="btn primary" type="button" data-i18n="study_learning_save">Lernmodus speichern</button>
+              <p id="study-learning-status" class="status" aria-live="polite"></p>
+            </div>
+
             <p class="group-title" data-i18n="local_ai_heading">Lokale KI</p>
             <div class="card stack">
               <p class="t-secondary" data-i18n="local_ai_desc">
@@ -1026,7 +1047,17 @@
           <div class="progress-track" aria-hidden="true">
             <div id="review-progress-fill" class="progress-fill" style="width: 0%"></div>
           </div>
-          <p id="review-progress" class="t-footnote"></p>
+          <div class="review-header-bar">
+            <p id="review-progress" class="t-footnote"></p>
+            <div id="review-mode-switcher" class="segmented" role="group" aria-label="Lernmodus">
+              <button id="review-mode-flash" type="button" data-mode="flash" data-i18n="learning_mode_switch_flash">
+                ⚡ Flash
+              </button>
+              <button id="review-mode-feedback" type="button" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
+                💬 KI
+              </button>
+            </div>
+          </div>
 
           <div id="review-offer" class="card stack" hidden>
             <h2 id="review-offer-title" class="t-headline"></h2>

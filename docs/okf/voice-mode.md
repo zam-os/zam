@@ -1,22 +1,25 @@
 ---
 type: architecture
 title: Hands-Free Voice Mode
-description: Voice review runs one shared kernel loop over a device tier of native OS speech and a cloud tier from the capability registry, resolved per capability and per language from a machine-local user preference; companions read the same cloud models from the synced learner database.
+description: Voice review runs one shared kernel controller for answer and flash interactions over device and cloud speech tiers, with per-learner mode and timeout settings plus a machine-local engine preference.
 tags:
   - voice
   - recall
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-08-01T15:30:00Z
+timestamp: 2026-09-03T20:55:58.528Z
 ---
 
-Voice mode reads a due card aloud, listens for the spoken answer, and maps a
-spoken word to an FSRS rating — so a review session works on a walk, during
-housework, or at the gym. It shipped on Android in 0.22.x, reached the
-macOS/Windows desktop in 0.24.0, and the iPad/iPhone companion after that. The
-companions gained the cloud tier in 0.26.0, which is what makes `quality-first`
-selectable on a phone or tablet.
+Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
+so a review session works on a walk, during housework, or at the gym. In answer
+modes it captures the learner's answer for comparison or feedback. In
+`flash` mode speech acts as a remote control: the learner says reveal/next,
+hears the stored answer, and self-rates without sending or storing a spoken
+answer. It shipped on Android in 0.22.x, reached the macOS/Windows desktop in
+0.24.0, and the iPad/iPhone companion after that. The companions gained the
+cloud tier in 0.26.0, which is what makes `quality-first` selectable on a
+phone or tablet.
 
 # One loop, many engines
 
@@ -24,20 +27,51 @@ selectable on a phone or tablet.
 surface. It is platform-free: it never touches a microphone, a speaker, or the
 network, and reaches the outside world only through an injected `VoicePort`.
 
-The loop per card:
+The answer-mode loop per card:
 
-1. Speak the question.
-2. Listen; a blank transcript aborts the session.
-3. Capture the answer and reveal the card. `revealAnswer()` may return a
-   promise and the loop awaits it — the desktop reveal runs an LLM evaluation
-   and repaints, and speaking earlier would read the previous card aloud.
-4. Speak the evaluation if the adapter offers one, else read the expected
-   answer back.
-5. Listen for a rating word and re-prompt until one parses.
+1. Speak the question and listen for the learner's answer.
+2. Capture the answer and reveal the card. `revealAnswer()` may return a
+   promise and the loop awaits it — a surface may evaluate and repaint before
+   speech continues.
+3. Speak the evaluation if the adapter offers one, else compare the captured
+   answer with the expected answer.
+4. Listen for a rating word and re-prompt until one parses.
 
-`parseSpokenRating` matches whole words only, in German and English
-(`nochmal`/`again` → 1 … `leicht`/`easy` → 4). `resolveVoiceLocale` narrows any
-tag to `de-DE` or `en-US`; anything not English becomes German.
+The flash loop never calls `captureAnswer` or `evaluateAnswer`. Card 1
+explains the spoken reveal and stop commands, cards 2–3 use a compact prompt,
+and card 4 onward uses earcon cues so repeated instructions do not dominate the
+walk. Reveal listening is bounded by the learner's configured timeout (20
+seconds by default); expiry reveals the stored answer. Rating listening has
+its own bound and expiry pauses without recording a rating, review log, lapse,
+or other FSRS evidence. At each timed boundary the controller stops and
+restarts the injected port before listening again, so one abandoned native
+recognizer cannot overlap its successor.
+
+`parseSpokenAction` recognizes reveal/next and stop phrases in German and
+English. `parseSpokenRating` matches whole words only
+(`nochmal`/`again` → 1 … `leicht` or `einfach`/`easy` → 4).
+`resolveVoiceLocale` narrows any tag to `de-DE` or `en-US`; anything not
+English becomes German.
+
+# Learning mode and timeouts
+
+The interaction is a **per-learner database setting**, separate from the
+machine-local speech-engine preference below. The kernel stores one validated
+JSON object under `study.learning.<encoded-user-id>` with
+`learningMode`, `voiceRevealTimeoutSec`, and
+`voiceRatingTimeoutSec`. Both timeouts are integers from 5 to 60 seconds.
+An explicit learner choice always wins. With no stored choice, a surface may
+supply an honest contextual fallback: Flash when no evaluator is available,
+answer-and-feedback when one is active. Reading a fallback does not persist it,
+so connecting an evaluator never overwrites a learner who explicitly chose
+Flash.
+
+Mobile exposes all three modes in Settings and a two-way Flash/AI switch during
+review. Switching pauses an active voice controller before saving and
+re-rendering. The MCP Recall and Settings panels read and write the same
+per-learner object through `study-learning-get` and
+`study-learning-set`; the old global `recall.quick_mode` remains only an
+evaluator-selection compatibility seed, not a second learning-mode store.
 
 Each surface supplies its own adapter and port:
 
@@ -143,8 +177,9 @@ neither, and on iOS would additionally be subject to autoplay policy.
 
 The capture heuristics are identical on all three shells — the same −35 dBFS
 floor, the same 8-second onset window, the same 1.2-second trailing silence, the
-same 30-second cap. The learner's preference decides who turns audio into text;
-nothing else about the interaction changes with it. A test pins the three
+same 30-second cap. The machine preference decides who turns audio into text;
+the per-learner learning mode decides whether that text is an answer or only a
+reveal/rating command. A test pins the three
 constants together, because drifting apart would make the two tiers *feel*
 different for no reason a learner could name.
 
@@ -301,9 +336,10 @@ default, which is how the companion behaved before the cloud tier existed.
 # Citations
 
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
+- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
 - [ADR 2026-07-23 — Online-Only Server DB, Mobile Gating, Cloud Config in the DB](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/desktop/voice.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`
-- Code: `src/kernel/recall/voice-review.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/voice.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`
+- Code: `src/kernel/recall/voice-review.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `mobile/src/main.ts`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
