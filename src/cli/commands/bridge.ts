@@ -158,6 +158,7 @@ import {
 import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
+  admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
@@ -1040,6 +1041,10 @@ bridgeCommand
   )
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
+  .option(
     "--media",
     "Inline the card's media as base64 (rendering surfaces only)",
   )
@@ -1054,6 +1059,7 @@ bridgeCommand
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
           includeMedia: opts.media === true,
+          timeZone: opts.timeZone,
         });
         jsonOut(result);
       } catch (err) {
@@ -1081,6 +1087,10 @@ bridgeCommand
     "--no-dynamic-question",
     "Use the stored question without generating a fresh LLM question",
   )
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -1094,8 +1104,37 @@ bridgeCommand
           maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
+          timeZone: opts.timeZone,
         });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("admit-review")
+  .description("Admit a specific card for presentation (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--card-id <id>", "Card ID to present")
+  .option("--session <id>", "Active session to associate the presentation with")
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await handleAdmitReview(db, {
+            user: userId,
+            cardId: opts.cardId,
+            session: opts.session,
+            timeZone: opts.timeZone,
+          }),
+        );
       } catch (err) {
         jsonError((err as Error).message);
       }

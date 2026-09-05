@@ -28,7 +28,8 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | Tool Name | Purpose |
 |---|---|
 | `zam_status` | Retrieve database connection target, active user, stats, and due review queue size. |
-| `zam_get_reviews` | Retrieve a batch of due cards, optionally filtering by domain or context and resolving code context. |
+| `zam_get_reviews` | Retrieve a batch of due cards, optionally filtering by domain or context and resolving code context. A prefetch is not a presentation. |
+| `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
@@ -133,7 +134,7 @@ Pick the lowest level that captures the task honestly — shell for command-line
 Call `zam_status` to fetch connection target, current user, stats, and due review queue size. Show stats as a brief friendly greeting.
 
 For **review/conceptual** sessions, query due reviews without resolving:
-Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it.
+Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it. Immediately before asking a card, call `zam_admit_review` with that `cardId` and the session ID. If it reports another item of the same atom was already presented today, skip to the next card.
 
 For **executable/task** sessions, also query for tokens relevant to the current task to weave them into the session planning:
 Call `zam_find_tokens` (with the task description context). If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
@@ -322,6 +323,7 @@ If the MCP transport is unavailable, execute the corresponding `zam` bridge CLI 
 | Get Status / Stats | `zam bridge check-due --user <id>` |
 | Check Due reviews | `zam bridge check-due --user <id>` |
 | Get Reviews Batch | `zam bridge get-reviews --user <id> --include-questions --no-resolve --no-dynamic-question` |
+| Admit a card for presentation | `zam bridge admit-review --card-id <id> [--session <id>] [--time-zone <iana>]` |
 | Get Single Review | `zam bridge get-review --user <id>` |
 | Start Session | `zam bridge start-session --user <id> --task "<task>"` |
 | Session Open | `zam bridge session-open --user <id> --task "<task>"` |

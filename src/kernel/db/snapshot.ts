@@ -48,6 +48,7 @@ export const SNAPSHOT_TABLES = [
   "assignments",
   "sessions",
   "cards",
+  "card_presentations",
   "prerequisites",
   "session_steps",
   "review_logs",

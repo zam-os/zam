@@ -184,6 +184,24 @@ CREATE TABLE IF NOT EXISTS sessions (
   completed_at  TEXT
 );
 
+-- Confirmed and reserved presentations of a practice item. A queue fetch is
+-- not an exposure; reservation/confirmation happens immediately before display.
+-- Abandoned reservations release the atom sibling slot and are not exposures.
+CREATE TABLE IF NOT EXISTS card_presentations (
+  id            TEXT PRIMARY KEY,
+  user_id       TEXT NOT NULL,
+  card_id       TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+  token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  atom_id       TEXT,
+  session_id    TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+  learning_day  TEXT NOT NULL,
+  time_zone     TEXT NOT NULL,
+  reserved_at   TEXT NOT NULL,
+  presented_at  TEXT,
+  abandoned_at  TEXT,
+  created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Immutable review log: every rating event
 CREATE TABLE IF NOT EXISTS review_logs (
   id              TEXT PRIMARY KEY,
@@ -386,6 +404,10 @@ CREATE INDEX IF NOT EXISTS idx_prereqs_requires ON prerequisites(requires_id);
 CREATE INDEX IF NOT EXISTS idx_cards_user_due ON cards(user_id, blocked, due_at);
 CREATE INDEX IF NOT EXISTS idx_cards_user_buried ON cards(user_id, buried_until);
 CREATE INDEX IF NOT EXISTS idx_cards_token_user ON cards(token_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_card_presentations_day
+  ON card_presentations(user_id, learning_day, atom_id);
+CREATE INDEX IF NOT EXISTS idx_card_presentations_card
+  ON card_presentations(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);

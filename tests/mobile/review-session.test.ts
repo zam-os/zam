@@ -1,6 +1,7 @@
 import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   MOBILE_REVIEW_STORAGE_KEY,
@@ -83,6 +84,50 @@ describe("mobile review session", () => {
       "Perpendicular",
     ]);
     expect(fastCheck?.options[fastCheck.correctIndex]).toBe("Perpendicular");
+  });
+
+  it("skips a prefetched atom sibling after the current card is shown", async () => {
+    const atomId = ulid();
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run(atomId, "P");
+    const p1 = await createToken(db, {
+      slug: "a-p1",
+      concept: "P1",
+      domain: "math",
+      bloom_level: 1,
+      question: "P1?",
+      atom_id: atomId,
+    });
+    const p2 = await createToken(db, {
+      slug: "b-p2",
+      concept: "P2",
+      domain: "math",
+      bloom_level: 1,
+      question: "P2?",
+      atom_id: atomId,
+    });
+    const other = await createToken(db, {
+      slug: "c-other",
+      concept: "Other atom",
+      domain: "math",
+      bloom_level: 1,
+      question: "Other?",
+    });
+    await ensureCard(db, p1.id, "student-9");
+    await ensureCard(db, p2.id, "student-9");
+    await ensureCard(db, other.id, "student-9");
+
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await session.start("student-9")).toBe(true);
+    expect(session.currentItem?.tokenId).toBe(p1.id);
+    expect(session.progress.total).toBe(3);
+
+    session.updateDraftAnswer("ok");
+    session.reveal();
+    const rated = await session.rate(3);
+    expect(rated.summary).toBeUndefined();
+    expect(session.currentItem?.tokenId).toBe(other.id);
   });
 
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {

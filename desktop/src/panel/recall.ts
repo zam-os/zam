@@ -68,6 +68,14 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  return errorMessage(error).includes("already presented today");
+}
+
 let contextBar: ContextBarHandle | undefined;
 let panelVersion: string | undefined;
 
@@ -704,6 +712,10 @@ async function sampleViaHost(
 }
 
 function renderCard(): void {
+  void presentCurrentCard();
+}
+
+async function presentCurrentCard(): Promise<void> {
   if (!contentEl) return;
   const card = cards[index];
   if (!card) {
@@ -738,6 +750,25 @@ function renderCard(): void {
       return;
     }
   }
+  const revision = sessionRevision;
+  try {
+    await callTool(
+      "zam_admit_review",
+      recallUserArgs({
+        cardId: card.cardId,
+        timeZone: learnerTimeZone(),
+      }),
+    );
+  } catch (error) {
+    if (revision !== sessionRevision) return;
+    if (isAtomSiblingOccupied(error)) {
+      advance();
+      return;
+    }
+    renderError(errorMessage(error));
+    return;
+  }
+  if (revision !== sessionRevision || cards[index] !== card) return;
   cardStartedAt = Date.now();
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
@@ -1268,6 +1299,7 @@ async function loadReviews(): Promise<void> {
     const args: Record<string, unknown> = {
       includeQuestions: true,
       respectWorkload: true,
+      timeZone: learnerTimeZone(),
     };
     if (nextMaxNewOverride !== undefined) {
       args.maxNew = nextMaxNewOverride;

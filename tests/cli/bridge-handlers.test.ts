@@ -1,9 +1,11 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addToken,
+  admitReview,
   backupCreate,
   endSession,
   getReview,
@@ -16,6 +18,7 @@ import {
   updateCheck,
 } from "../../src/cli/bridge-handlers.js";
 import {
+  AtomSiblingOccupiedError,
   buildReviewQueue,
   commitTextImport,
   endSession as completeSession,
@@ -115,6 +118,68 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.cards[0].bloomVerb).toBe("Remember");
     expect(res2.cards[1].question).toBe("Explain 2.");
     expect(res2.cards[1].bloomVerb).toBe("Understand");
+  });
+
+  it("does not treat a queue prefetch as a presentation", async () => {
+    const atomId = ulid();
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run(atomId, "P");
+    const p1 = await createToken(db, {
+      slug: "p1-prefetch",
+      concept: "P1",
+      domain: "math",
+      question: "P1?",
+      atom_id: atomId,
+    });
+    const p2 = await createToken(db, {
+      slug: "p2-prefetch",
+      concept: "P2",
+      domain: "math",
+      question: "P2?",
+      atom_id: atomId,
+    });
+    await ensureCard(db, p1.id, "thomas");
+    const p2Card = await ensureCard(db, p2.id, "thomas");
+
+    const batch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+      respectWorkload: true,
+      maxNew: 10,
+    });
+    expect(batch.cards.length).toBeGreaterThanOrEqual(2);
+    expect(
+      (await db
+        .prepare("SELECT COUNT(*) AS n FROM card_presentations")
+        .get()) as { n: number },
+    ).toEqual({ n: 0 });
+
+    await getReview(db, {
+      user: "thomas",
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(
+      (await db
+        .prepare("SELECT COUNT(*) AS n FROM card_presentations")
+        .get()) as { n: number },
+    ).toEqual({ n: 0 });
+
+    await admitReview(db, {
+      user: "thomas",
+      cardId: p2Card.id,
+      timeZone: "UTC",
+    });
+    await expect(
+      admitReview(db, {
+        user: "thomas",
+        cardId: (await getCard(db, p1.id, "thomas"))!.id,
+        timeZone: "UTC",
+      }),
+    ).rejects.toBeInstanceOf(AtomSiblingOccupiedError);
   });
 
   it("applies session admission, tier ordering, and structured fast checks on learner surfaces", async () => {

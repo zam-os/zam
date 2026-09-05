@@ -24,7 +24,11 @@ const APP_CONFIG = {
   recall: {
     title: "ZAM Recall",
     toolName: "zam_open_recall",
-    allowedTools: new Set(["zam_get_reviews", "zam_submit_review"]),
+    allowedTools: new Set([
+      "zam_get_reviews",
+      "zam_admit_review",
+      "zam_submit_review",
+    ]),
   },
   graph: {
     title: "ZAM Learning Graph",

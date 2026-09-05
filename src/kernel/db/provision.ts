@@ -23,7 +23,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 29;
+export const CURRENT_SCHEMA_VERSION = 30;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -666,6 +666,34 @@ export async function runMigrations(db: Database): Promise<void> {
       singleton INTEGER PRIMARY KEY CHECK (singleton = 1),
       version   INTEGER NOT NULL CHECK (version >= 0)
     );
+  `);
+
+  // M030: presentation records for atom sibling separation. A queue fetch is
+  // not an exposure; reservation/confirmation is written immediately before
+  // display. Abandoned reservations are not presentations.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS card_presentations (
+      id            TEXT PRIMARY KEY,
+      user_id       TEXT NOT NULL,
+      card_id       TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+      token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      atom_id       TEXT,
+      session_id    TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+      learning_day  TEXT NOT NULL,
+      time_zone     TEXT NOT NULL,
+      reserved_at   TEXT NOT NULL,
+      presented_at  TEXT,
+      abandoned_at  TEXT,
+      created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_card_presentations_day
+      ON card_presentations(user_id, learning_day, atom_id);
+  `);
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_card_presentations_card
+      ON card_presentations(card_id);
   `);
 }
 

@@ -27,6 +27,7 @@ import {
 import type { EvaluatorRoute } from "../../vscode-extension/companion-evaluator.js";
 import {
   addToken as handleAddToken,
+  admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
@@ -505,6 +506,10 @@ export function createMcpServer(
           .literal(true)
           .optional()
           .describe("Keep review retrieval read-only (always true over MCP)"),
+        timeZone: z
+          .string()
+          .optional()
+          .describe("Learner IANA time zone for the local learning day"),
       },
       annotations: {
         ...externalAnnotations,
@@ -522,6 +527,37 @@ export function createMcpServer(
         maxNew: params.maxNew,
         noResolve: params.noResolve,
         noDynamicQuestion: true,
+        timeZone: params.timeZone,
+      });
+    }),
+  );
+
+  server.registerTool(
+    "zam_admit_review",
+    {
+      description:
+        "Admit a specific card for presentation. A queue prefetch is not an exposure; call this immediately before showing the item. Rejects a different sibling of the same atom already presented today.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+        cardId: z.string().describe("Card ULID to present"),
+        session: z.string().optional().describe("Active session ID"),
+        timeZone: z
+          .string()
+          .optional()
+          .describe("Learner IANA time zone for the local learning day"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleAdmitReview(db, {
+        user: userId,
+        cardId: params.cardId,
+        session: params.session,
+        timeZone: params.timeZone,
       });
     }),
   );

@@ -19,6 +19,8 @@ import type {
   SupportedLocale,
 } from "../../kernel/index.js";
 import {
+  AtomSiblingOccupiedError,
+  admitPresentation,
   buildReviewQueue,
   generatePrompt,
   getSetting,
@@ -69,6 +71,7 @@ export const learnCommand = new Command("learn")
         maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
         maxReviews:
           opts.maxReviews === undefined ? undefined : Number(opts.maxReviews),
+        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
       });
 
       const locale = ((await getSetting(db, "system.locale")) ||
@@ -113,6 +116,17 @@ export const learnCommand = new Command("learn")
       const results: Array<{ slug: string; rating: number }> = [];
 
       for (const [index, item] of queue.items.entries()) {
+        try {
+          await admitPresentation(db, {
+            userId,
+            cardId: item.cardId,
+            confirm: true,
+          });
+        } catch (err) {
+          if (err instanceof AtomSiblingOccupiedError) continue;
+          throw err;
+        }
+
         // Dynamically generate a fresh, living active-recall question if LLM is enabled
         let resolvedQuestion = item.question;
         if (isLlmEnabled) {

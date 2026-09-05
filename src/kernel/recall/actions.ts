@@ -1,4 +1,5 @@
 import type { Database } from "../db/types.js";
+import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import type { DeleteCardResult } from "../models/card.js";
 import { deleteCardForUser, getCardById } from "../models/card.js";
 import { getPrerequisites } from "../models/prerequisite.js";
@@ -126,6 +127,10 @@ export async function executeReviewAction(
         if (prereqs.length > 0) {
           blocked = await cascadeBlock(tx, input.userId, target.token.slug);
         }
+        await cancelMatchingPreconditionDeferrals(tx, {
+          userId: input.userId,
+          tokenId: target.token.id,
+        });
       }
 
       const sessionStep = input.sessionId

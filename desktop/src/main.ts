@@ -6147,6 +6147,15 @@ function clearDashboardError(): void {
 }
 
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("already presented today");
+}
+
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
@@ -6205,6 +6214,8 @@ async function loadNextCard(
       "--media",
       "--max-new",
       sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+      "--time-zone",
+      learnerTimeZone(),
     ];
     const dynamicQuestionAllowed =
       shouldRequestDynamicStudyQuestion(
@@ -6234,7 +6245,7 @@ async function loadNextCard(
       return;
     }
 
-    presentFetchedCard(payload);
+    await presentFetchedCard(payload);
   } catch (err) {
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
@@ -7333,8 +7344,24 @@ function showStudyOffer(spec: {
   offer.classList.remove("hidden");
 }
 
-function presentFetchedCard(payload: ReviewPayload): void {
+async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   if (!payload.card || !payload.prompt) return;
+  try {
+    const args = [
+      "--card-id",
+      payload.card.cardId,
+      "--time-zone",
+      learnerTimeZone(),
+    ];
+    if (zamUiSessionId) args.push("--session", zamUiSessionId);
+    await runBridge("admit-review", args);
+  } catch (err) {
+    if (isAtomSiblingOccupied(err)) {
+      await loadNextCard();
+      return;
+    }
+    throw err;
+  }
   hideStudyOffer();
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-footer")?.classList.remove("hidden");
@@ -7485,7 +7512,7 @@ async function decidePrecondition(
   preconditionCache = null;
   assessedAtomsThisSession.add(atomId);
   if (decision === "learn" && pendingReviewPayload) {
-    presentFetchedCard(pendingReviewPayload);
+    await presentFetchedCard(pendingReviewPayload);
     return;
   }
   pendingReviewPayload = null;

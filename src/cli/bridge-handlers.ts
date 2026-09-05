@@ -16,6 +16,7 @@ import type {
 } from "../kernel/index.js";
 import {
   addPrerequisite,
+  admitPresentation,
   analyzeObservation,
   assessPrecondition,
   assignTokenToContext,
@@ -186,6 +187,7 @@ export async function checkDue(db: Database, params: CheckDueParams) {
 // 2. getReview
 export interface GetReviewParams {
   user?: string;
+  timeZone?: string;
   /** Session-local admission budget. Zero keeps unseen cards out. */
   maxNew?: number;
   noResolve?: boolean;
@@ -207,9 +209,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
     maxReviews: 1,
     maxNew: params.maxNew ?? 1,
     knowledgeContext: params.knowledgeContext || undefined,
+    timeZone: params.timeZone,
   });
+  const item = queue.items[0];
 
-  if (queue.items.length === 0) {
+  if (!item) {
     return {
       userId,
       hasReview: false,
@@ -219,8 +223,6 @@ export async function getReview(db: Database, params: GetReviewParams) {
       queueSize: 0,
     };
   }
-
-  const item = queue.items[0];
   const media = !params.includeMedia
     ? []
     : (await getTokenMedia(db, item.tokenId)).map((entry) => ({
@@ -294,6 +296,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
     userId,
     maxNew: params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
+    timeZone: params.timeZone,
   });
 
   return {
@@ -308,6 +311,26 @@ export async function getReview(db: Database, params: GetReviewParams) {
   };
 }
 
+export interface AdmitReviewParams {
+  user?: string;
+  cardId: string;
+  session?: string;
+  timeZone?: string;
+}
+
+export async function admitReview(db: Database, params: AdmitReviewParams) {
+  const userId = await resolveHandlerUser(db, params.user);
+  if (!params.cardId?.trim()) throw new Error("cardId is required");
+  const admission = await admitPresentation(db, {
+    userId,
+    cardId: params.cardId,
+    sessionId: params.session,
+    timeZone: params.timeZone,
+    confirm: true,
+  });
+  return { success: true as const, ...admission };
+}
+
 // 3. getReviewsBatch
 export interface GetReviewsBatchParams {
   user?: string;
@@ -320,6 +343,7 @@ export interface GetReviewsBatchParams {
   respectWorkload?: boolean;
   /** Optional session-local new-card override when workload rules are used. */
   maxNew?: number;
+  timeZone?: string;
 }
 
 export async function getReviewsBatch(
@@ -334,6 +358,7 @@ export async function getReviewsBatch(
           domain: params.domain,
           knowledgeContext: params.knowledgeContext,
           maxNew: params.maxNew,
+          timeZone: params.timeZone,
         })
       ).items.map((item) => ({
         cardId: item.cardId,

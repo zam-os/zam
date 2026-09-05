@@ -208,7 +208,9 @@ export type {
 } from "./library/precondition-assessment.js";
 export {
   assessPrecondition,
+  cancelMatchingPreconditionDeferrals,
   getPreconditionCandidates,
+  liftActivePreconditionDeferral,
   liftPreconditionBury,
   PRECONDITION_BURIED_REASON,
   PRECONDITION_HORIZON_DAYS,
@@ -617,6 +619,23 @@ export type {
 // Scheduler
 export { createFSRS } from "./scheduler/fsrs.js";
 export { interleave } from "./scheduler/interleaver.js";
+export type {
+  AdmitPresentationInput,
+  PresentationAdmission,
+} from "./scheduler/presentation.js";
+export {
+  AtomSiblingOccupiedError,
+  abandonPresentation,
+  abandonUnconfirmedForSession,
+  admitPresentation,
+  cardAllowedForAtom,
+  hostTimeZone,
+  isValidTimeZone,
+  localLearningDay,
+  occupyingAtomCards,
+  resolvePresentationTimeZone,
+  TIMEZONE_SETTING,
+} from "./scheduler/presentation.js";
 export type {
   ReviewFastCheck,
   ReviewQueue,

@@ -108,9 +108,9 @@ describe("MCP stdio server tests", () => {
     expect(client.getInstructions()).toContain('view: "graph"');
   });
 
-  it("lists all 38 tools with correct annotations", async () => {
+  it("lists all 39 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(38);
+    expect(response.tools).toHaveLength(39);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -119,6 +119,7 @@ describe("MCP stdio server tests", () => {
       "zam_session_start",
       "zam_session_end",
       "zam_get_reviews",
+      "zam_admit_review",
       "zam_submit_review",
       "zam_review_action",
       "zam_add_token",
@@ -185,6 +186,14 @@ describe("MCP stdio server tests", () => {
     expect((reviewsTool as any).annotations).toEqual({
       openWorldHint: true,
       readOnlyHint: true,
+    });
+
+    const admitTool = response.tools.find(
+      (t) => t.name === "zam_admit_review",
+    )!;
+    expect((admitTool as any).annotations).toEqual({
+      openWorldHint: true,
+      destructiveHint: false,
     });
 
     const addTokenTool = response.tools.find(

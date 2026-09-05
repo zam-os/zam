@@ -13,6 +13,10 @@ import {
 } from "../../src/kernel/recall/prompter.js";
 import type { Rating } from "../../src/kernel/scheduler/fsrs.js";
 import {
+  AtomSiblingOccupiedError,
+  admitPresentation,
+} from "../../src/kernel/scheduler/presentation.js";
+import {
   buildReviewQueue,
   type ReviewQueueItem,
 } from "../../src/kernel/scheduler/queue.js";
@@ -174,6 +178,7 @@ export class MobileReviewSession {
     const queue = await buildReviewQueue(this.db, {
       userId,
       maxNew: options.maxNew,
+      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
     });
     if (queue.items.length === 0) return false;
 
@@ -193,6 +198,11 @@ export class MobileReviewSession {
       cardStartedAt: this.now(),
       assessedAtomIds: [],
     };
+    await this.admitCurrent();
+    if (!this.currentItem) {
+      await this.finish();
+      return false;
+    }
     this.persist();
     return true;
   }
@@ -238,6 +248,10 @@ export class MobileReviewSession {
       snapshot.cardStartedAt = this.now();
     }
 
+    if (!this.currentItem) {
+      return { kind: "completed", summary: await this.finish() };
+    }
+    await this.admitCurrent();
     if (!this.currentItem) {
       return { kind: "completed", summary: await this.finish() };
     }
@@ -288,7 +302,12 @@ export class MobileReviewSession {
     if (!this.currentItem) {
       response.summary = await this.finish();
     } else {
-      this.persist();
+      await this.admitCurrent();
+      if (!this.currentItem) {
+        response.summary = await this.finish();
+      } else {
+        this.persist();
+      }
     }
     return response;
   }
@@ -329,6 +348,8 @@ export class MobileReviewSession {
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
     if (!this.currentItem) return await this.finish();
+    await this.admitCurrent();
+    if (!this.currentItem) return await this.finish();
     this.persist();
     return null;
   }
@@ -347,6 +368,8 @@ export class MobileReviewSession {
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
+    if (!this.currentItem) return await this.finish();
+    await this.admitCurrent();
     if (!this.currentItem) return await this.finish();
     this.persist();
     return null;
@@ -380,6 +403,28 @@ export class MobileReviewSession {
     };
     this.clear();
     return result;
+  }
+
+  private async admitCurrent(): Promise<void> {
+    const snapshot = this.snapshot;
+    if (!snapshot) return;
+    while (this.currentItem) {
+      try {
+        await admitPresentation(this.db, {
+          userId: snapshot.userId,
+          cardId: this.currentItem.cardId,
+          sessionId: snapshot.sessionId,
+          confirm: true,
+        });
+        return;
+      } catch (error) {
+        if (!(error instanceof AtomSiblingOccupiedError)) throw error;
+        snapshot.currentIndex += 1;
+        snapshot.draftAnswer = "";
+        snapshot.revealed = false;
+        snapshot.cardStartedAt = this.now();
+      }
+    }
   }
 
   private persist(): void {
