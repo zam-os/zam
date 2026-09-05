@@ -5,7 +5,7 @@
 **Autoren:** ZAM Working Group (Gemini 3.8 Flash, Grok 4.6, Fable 5.1, GPT-6 Astra, Muse Spark 1.3, externe Inputs E, Owner Thomas)  
 **Zweck:** Verbindlicher Qualitätsvertrag für die Generierung und Dekomposition von Lernkarten. Gilt für Schüler-Lernpfade (z. B. Realschule Bayern Klasse 9) und für professionelles Entwicklerwissen (OKF-Import).
 
-Diese Fassung **ist** das Konsensdokument von Runde 3. Offene Dissense aus Runde 2 (O1–O7) sind geschlossen. Implementierung ist ein getrenntes Vorhaben; ohne die Voraussetzungen in §7.3 bleiben mehrere Regeln Papier. Kein Kernel-PR aus diesem Dokument, solange §7.3 nicht abgearbeitet ist.
+Diese Fassung **ist** das Konsensdokument von Runde 3. Offene Dissense aus Runde 2 (O1–O7) sind geschlossen. Implementierung ist ein getrenntes Vorhaben; ein eigener Implementierungsplan priorisiert die Voraussetzungen aus §7.3. Der Merge dieses RFC ändert noch kein Produktverhalten und gibt keinen automatisierten Piloten ohne dessen Voraussetzungen frei.
 
 ---
 
@@ -17,6 +17,7 @@ Diese Fassung **ist** das Konsensdokument von Runde 3. Offene Dissense aus Runde
 | Runde 1 Reviews | Empirie vs. Hypothese; `sample_solution` existiert nicht; kein Hard-Delete; Atom ≠ Item ≠ Card; Hard = Erfolg; Cowan ist keine Listenlänge. |
 | Runde 2 / 2b | Fable korrigiert gegen den Kernel; Owner ergänzt Beobachtung als zweiten Evidenzkanal; Astra schließt O1–O7 mit Ersatzsätzen. |
 | Runde 3 (diese Fassung) | Ein Text, keine parallelen Stimmenblöcke. O1–O7 und §7.1 sind Beschluss. Muse-Spark-Belege (Learning vs. Performance, Covert Retrieval, Negative Suggestion, Forward Testing, Error Management) sind eingearbeitet. |
+| Abschließende Prüfung (Astra) | Beleggrenzen bei Agarwal, Pashler, Kang und Carpenter korrigiert; Rating-Vertrag, Blocking-Beispiel und Pilotbedingungen gegen Quellen und Code präzisiert. O1–O7 bleiben bestehen. |
 
 Herkunft einzelner Inferenzen bleibt in §9 und in den PR-Kommentaren nachvollziehbar. Der Fließtext trägt keine `A2`/`F2`/`E`-Markierungen mehr.
 
@@ -31,9 +32,9 @@ Zwei Ebenen: **gemessene Korpus-Strukturen** und **offene Outcome-Hypothesen**. 
 1. **Herkunft der Aufzählungs-Monolithen.** Der Slug-Fallback in `src/kernel/recall/prompter.ts` (`BLOOM_CUES`) ist nicht der Hauptschuldige: **28 / 1.165 Token (2,4 %)** haben eine leere `question`. Der Schwerpunkt liegt beim **Text- und Anki-Import** (`src/kernel/import/text-import.ts`, ADR 2026-08-09): **480 Token (41 %)**, `question_source = 'template'`, pauschal Bloom 1; 101 der 144 enumerationsartigen Fragen und 128 der 196 Konzepte mit mehr als 40 Wörtern.
 2. **Generische Öffner sind quellenübergreifend.** Fragen mit *„Erkläre…“*, *„Was ist…“*, *„Beschreibe…“* verteilen sich über manuelle, LLM- und Import-Quellen, obwohl System-Prompts bereits davon abraten.
 3. **Die Schere in den KVT-Fixtures** (228 Fixtures, 652 Atome, 639 mit Tier-1/Tier-2-Paar):
-   * **Tier 1 ist 651/651 `binary_choice`.** Items wie J01 nennen die Definition oft schon in der Frage. Starke Cues, die die Antwort verraten, umgehen die Gedächtnissuche und entwerten den Testeffekt (Carpenter 2009). Kompetitive Multiple-Choice *kann* produktiven Abruf auslösen (Little et al. 2012); ein korrektes Auswahlitem ist dennoch nicht dieselbe Evidenz wie freier Abruf. **Schadensvermeidung:** unkorrigiertes MC lehrt falsche Optionen (*Negative Suggestion Effect*; Roediger & Marsh 2005; Butler & Roediger 2008; Kang, McDermott & Roediger 2007). Bei Binary-Choice mit zwei Optionen und verratener Definition schreibt Ratewahrscheinlichkeit trotzdem FSRS-Stabilität. Reveal mit korrekter Lösung ist deshalb Invariante: Desktop und Mobile zeigen ihn heute nach jeder Auswahl; §7.3 hält das als Prüfpunkt für alle Oberflächen fest.
+   * **Tier 1 ist 651/651 `binary_choice`.** Items wie J01 nennen die Definition oft schon in der Frage. Carpenter (2009) fand bei Wortpaaren, dass starke Cues den ersten Abruf erleichterten, während erfolgreich von schwachen Cues abgerufene Antworten später besser behalten wurden. Die Übertragung auf J01 ist eine **ZAM-Inferenz**, kein gemessener Lernverlust dieses Items. Kompetitive Multiple-Choice *kann* produktiven Abruf auslösen (Little et al. 2012); ein korrektes Auswahlitem ist dennoch nicht dieselbe Evidenz wie freier Abruf. **Schadensvermeidung:** unkorrigiertes MC kann falsche Optionen lehren (*Negative Suggestion Effect*; Roediger & Marsh 2005; Butler & Roediger 2008). Auch eine geratene richtige Auswahl kann ein erfolgreiches FSRS-Rating erhalten; der Scheduler erkennt den Rateanteil nicht. Reveal mit korrekter Lösung ist deshalb Invariante: Desktop und Mobile zeigen ihn heute nach jeder Auswahl; §7.3 hält das als Prüfpunkt für alle Oberflächen fest.
    * **Scope-Diskrepanz in Tier 2:** Fragen-Median **71 Wörter** (p90 180), 215-mal zwei oder mehr Aufgabenverben; `concept`-Median **30 Wörter**. Es werden 2–4 Teilleistungen gefordert, bewertet wird gegen einen Bruchteil.
-4. **`sample_solution` existiert nicht im Token-Schema.** Fixtures tragen oft 200–500 Wörter in diesem Feld. Es liegt weder in `src/kernel/db/schema.ts` noch schreibt `installKvtTile` es nach `tokens`. Kernel und LLM-Grader bewerten gegen `concept`.
+4. **`sample_solution` existiert nicht im Token-Schema.** Fixtures tragen oft 200–500 Wörter in diesem Feld. Es liegt weder in `src/kernel/db/schema.ts` noch schreibt `installKvtTile` es nach `tokens`. Der LLM-Grader erhält `concept` als Sollantwort, heute zusätzlich `context` und Source. Der AI-agnostische Kernel bewertet keinen Antwortinhalt, sondern verarbeitet das übergebene Rating.
 5. **Live-Grader und Agenten-Rubrik widersprechen dem Bewertungsvertrag.** `src/cli/llm/client.ts` vergleicht gegen `concept`, **`context` und Source** und definiert 2 als „hard recall / partially correct“; die Agenten-Rubrik `skills/zam/SKILL.md` sagt „2 = partial recall“ und vergibt für einen assistierten Erstlauf im Arbeitskontext eine 3. Der Kernel (`src/kernel/scheduler/fsrs.ts`) behandelt 2, 3 und 4 auf allen Pfaden als Erfolg. Solange Prompt und Rubrik so bleiben, sind die Regeln über Teilpunkte Papier (§7.3).
 
 ### 1.2 Outcome-Hypothesen
@@ -58,7 +59,7 @@ Evidenz  →  ZAM-Inferenz  →  Entscheidung  →  Falsifikation
 
 ### 2.2 Cognitive Load und Transfer-Appropriate Processing
 
-* **Evidenz.** Sweller (1988, 2010): Intrinsic vs. Extraneous Load. Cowan (2001): $4 \pm 1$ Chunks unter Laborbedingungen — **keine** Lizenz für Listenlängen. Morris, Bransford & Franks (1977); Rowland (2014); Butler (2010): der Nutzen einer Übung hängt an der Passung von Übungs- und Zielformat. Kang et al. (2007): wer Produktion prüft, übt mit unkorrigiertem MC das Falsche *und* riskiert, Distraktoren zu lernen.
+* **Evidenz.** Sweller (1988, 2010): Intrinsic vs. Extraneous Load. Cowan (2001): $4 \pm 1$ Chunks unter Laborbedingungen — **keine** Lizenz für Listenlängen. Morris, Bransford & Franks (1977) untersuchen Transfer-Appropriate Processing; Rowland (2014) den Testeffekt und seine Moderatoren; Butler (2010) Transfer durch wiederholtes Testen. Kang et al. (2007) fanden ohne Feedback einen Vorteil von MC gegenüber Kurzantwort-Übung, mit korrektivem Feedback dagegen einen Vorteil der Kurzantwort-Übung auf beiden abschließenden Testformaten. Daraus folgt kein pauschales „MC übt das Falsche“ und kein Gesetz identischer Übungs- und Testformate.
 * **Inferenz.** *„Erkläre X“* ist Extraneous Load. **Format folgt Zielkompetenz**, aber nicht absolut: kompetitive Auswahl kann späteren freien Abruf fördern (Little et al. 2012); sie belegt allein keine Produktionskompetenz.
 * **Entscheidung.** *Regel 2:* konkrete Trigger. Offenes *„Erkläre…“* ohne Achse = Lint. Bloom 4/5: offenes Verb plus benannte Achse. Das PracticeItem-Format richtet sich nach der Zielkompetenz der Zelle (`CurriculumBinding`).
 * **Falsifikation.** Offene Cues liefern gleiche Retention und weniger Abbruch als getriggerte Karten.
@@ -71,7 +72,7 @@ Evidenz  →  ZAM-Inferenz  →  Entscheidung  →  Falsifikation
 
 ### 2.4 Task Design und Entscheidbarkeit
 
-* **Evidenz.** Matuschak (2020): Prompt design is task design. Koriat & Bjork (2005): Foresight. Fischhoff (1975): Hindsight. Pashler, Cepeda, Wixted & Rohrer (2005): Feedback-*Inhalt* zählt vor Latenz; verzögertes Feedback ist für Wortpaare nicht schlechter als sofortiges.
+* **Evidenz.** Matuschak (2020): Prompt design is task design. Koriat & Bjork (2005): Foresight. Fischhoff (1975): Hindsight. Pashler, Cepeda, Wixted & Rohrer (2005): Bei Wortpaaren verbesserte die richtige Lösung nach einer falschen Antwort auch das Behalten nach einer Woche. Der verzögerte Behaltenstest ist kein Beleg für die Gleichwertigkeit sofortigen und verzögerten Feedbacks.
 * **Inferenz.** `concept` ist das alleinige Bestehen-Kriterium. `context` ist Erklärung, nicht Hürde. Heute liest der Grader `context` mit.
 * **Entscheidung.** *Regel 6:* `concept` kanonisch prüfbar (Terminus, Formel, Wert mit Einheit, oder 1–2 Sätze mit einem Prädikat).
 * **Falsifikation.** Streng kanonische `concept`-Texte verschlechtern die Generalisierung in offenen Aufgaben.
@@ -91,15 +92,15 @@ Drei Studienmodi (`src/kernel/scheduler/study-settings.ts`): **Flash**, **`answe
 
 ### 3.1 Flash
 
-Mentaler Abruf, Aufdecken, Selbstbewertung 1–4. **Null Tutor-Turns** vor dem Rating. Covert Retrieval wirkt auch ohne Tippen (Smith, Roediger & Karpicke 2013); Tippen ist Messinstrument, keine Lernbedingung. Reveal-Timeout heute 20 s. Wer Papier und Taschenrechner braucht, ist nicht mehr im Flash. „Erst selbst raten, dann Reveal“ ist unbedenklich (Pashler et al. 2005); der Reveal-*Inhalt* zählt.
+Mentaler Abruf, Aufdecken, Selbstbewertung 1–4. **Null Tutor-Turns** vor dem Rating. Smith, Roediger & Karpicke (2013) fanden in ihren Experimenten vergleichbare Behaltenseffekte für verdeckten und offen geäußerten Abruf; Voraussetzung ist ein tatsächlicher Abrufversuch. Das stützt Flash ohne Eingabepflicht, garantiert aber keine gleichwertige Messbarkeit aller Aufgaben. Die 20 s sind der konfigurierbare Reveal-Timeout des **Voice-Reviews** (`voiceRevealTimeoutSec`), kein allgemeines Flash-Zeitlimit. Wer Papier und Taschenrechner braucht, ist nicht mehr im Flash. Der Reveal zeigt die korrekte Lösung; bewertet wird der eigene Versuch davor (§3.2).
 
 ### 3.2 Bewertungsvertrag (Kernel ist die Quelle der Wahrheit)
 
-Für bereits eingeführte Karten (`fsrs.ts`, `actions.ts`):
+Rating-Semantik und Stabilitätsberechnung sind zu unterscheiden (`fsrs.ts`, `actions.ts`):
 
-* `rating === 1` → Forgetting (`reps = 0`, `lapses + 1`). `cascadeBlock()` bei jedem Rating 1, wenn das Token Prerequisites hat — unabhängig vom Langzeit-/Kurzzeitpfad.
-* `rating === 2, 3, 4` → Erfolg (`reps + 1`, keine Lapse). Hard trägt den Malus `w[15]`. In Lern-/Wiederlernschritten wiederholt Hard den Schritt, Good geht weiter, Easy graduiert. Hard statt Again bei gescheitertem Abruf verlängert das Intervall fälschlich.
-* Neue Karten: `initialStability` / `initialDifficulty`. Auch `applySessionSynthesis` schreibt Reviews; `executeReviewAction` ist nicht der einzige Schreiber.
+* `rating === 1` → Misserfolg (`reps = 0`, `lapses + 1`). Die Review-Orchestrierung ruft `cascadeBlock()` bei Rating 1 mit Prerequisites auf — unabhängig vom Langzeit-/Kurzzeitpfad; `evaluateRating()` allein tut das nicht.
+* `rating === 2, 3, 4` → Erfolg (`reps + 1`, keine Lapse). In konfigurierten Lern-/Wiederlernschritten wiederholt Hard den Schritt, Good geht weiter, Easy graduiert. Hard statt Again bei gescheitertem Abruf verbucht fälschlich einen Erfolg.
+* Neue Karten verwenden `initialStability` / `initialDifficulty`. Bereits eingeführte Karten verwenden bei weniger als einem verstrichenen Tag `shortTermStability`; erst im Langzeitpfad wird zwischen `stabilityAfterForgetting` und `stabilityAfterSuccess` unterschieden und bei Hard der Malus `w[15]` angewendet. Auch `applySessionSynthesis` schreibt Reviews; `executeReviewAction` ist nicht der einzige Schreiber.
 
 #### Bewertungsmatrix
 
@@ -112,11 +113,11 @@ Für bereits eingeführte Karten (`fsrs.ts`, `actions.ts`):
 | „Weiß ich nicht“ / bestätigter leerer Abruf | Auflösen | **1**. Eine Tipp-Aufforderung (Pretesting) ist eine *freiwillige* spätere Tutor-Option, kein Pflichtturn und ändert das Rating nicht. |
 | Passende unassistierte Arbeitsanwendung (O7) | Ersetzt die fällige Abfrage | regulär 2/3/4, keine Automatik auf 4 |
 | Assistierte Ausführung ohne eigenständigen Versuch | Nur Lernevidenz | **kein** FSRS-Rating |
-| Eigenständiger Fehlversuch, danach Hilfe | Fehlversuch buchen, Hilfe getrennt protokollieren | **1** bleibt (Keith & Frese 2008) |
+| Eigenständiger Fehlversuch, danach Hilfe | Fehlversuch buchen, Hilfe getrennt protokollieren | **1** bleibt (O7) |
 
 `answer_feedback` bleibt **one-shot**. Eine spätere, höchstens einmalige Klärfrage vor Reveal darf ausschließlich die Bedeutung der eigenen Eingabe präzisieren, ohne Lösungskandidaten, fehlenden Pflichtaspekt oder Lösungsweg. Nur solche Disambiguierung darf ein False Negative heben. „Einheit ergänzen“ ist Inhaltshilfe, wenn die Einheit Pflichtaspekt ist. Ein neuer Studienmodus wird nicht beschlossen.
 
-Sokratik, Elaboration, Self-Explanation: **Post-Reveal** (ADR 2026-07-06b). Der Mensch bestätigt das Rating. Nie 3/4 nach inhaltlichem Scaffolding.
+Sokratik, Elaboration, Self-Explanation: **Post-Reveal** (ADR 2026-07-06b). Der Mensch bestätigt das Rating für den eigenständigen Versuch vor der Auflösung. Inhaltliche Vervollständigung eines gescheiterten Versuchs macht daraus keinen Erfolg; Feedback nach einem bereits vollständigen korrekten Versuch ändert dessen Rating nicht rückwirkend (§7.1.4, O7).
 
 Feedback auf **Aufgabenebene**, kein Personen-Lob (Kluger & DeNisi 1996; Hattie & Timperley 2007). Der heutige Prompt („Celebrate every honest attempt“) verstößt dagegen. Hyperkorrektion (Butterfield & Metcalfe 2001): Again auf einen selbstsicher falschen Abruf ist ein Lernereignis.
 
@@ -149,7 +150,7 @@ Generischer Lehrplan-Import nur wenn `needsGenericCurriculumImport(scope)` wahr 
 2. **Split** (ADR 2026-08-14 Decision 9) → neue Atome/Items, altes Token `deprecated` oder `maintenance`, History bleibt, **keine Mastery-Übertragung**.
 3. **Zurückgezogen** → Audit behalten, aus der Queue nehmen.
 
-**Feeder statt Big-Bang.** Split nur für Kandidaten mit Signal. Struktur-Lints (Scope-Diskrepanz, Enumerations-Öffner, leere `question`) sind primär. Performanzsignale (Lapses, `difficulty`) nur relativ zu einer **Format-Baseline**: Retrieval-Effort-Items zeigen designbedingt schlechtere Übungsleistung bei besserer Retention (Soderstrom & Bjork 2015). **Savings:** Wiederlernen ist schneller als Erstlernen; Decision 9 bleibt richtig, die Kostenrechnung „Facette = Neulernen“ ist zu pessimistisch. Frisch gesplittete Items im O2-Report separat ausweisen und Vorwissen dokumentieren, nicht nach erwarteter Leichtigkeit streichen.
+**Feeder statt Big-Bang.** Split nur für Kandidaten mit Signal. Struktur-Lints (Scope-Diskrepanz, Enumerations-Öffner, leere `question`) sind primär. Performanzsignale (Lapses, `difficulty`) nur relativ zu einer **Format-Baseline**: Erschwerter Abruf kann mit schlechterer Übungsleistung und besserem späterem Behalten einhergehen; hohe Schwierigkeit allein belegt diesen Nutzen nicht (Soderstrom & Bjork 2015). **Savings:** Bereits gelerntes Material kann schneller wiedererlernt werden; Decision 9 bleibt richtig, die Kostenrechnung „Facette = Neulernen“ ist zu pessimistisch. Frisch gesplittete Items im O2-Report separat ausweisen und Vorwissen dokumentieren, nicht nach erwarteter Leichtigkeit streichen.
 
 ### 4.3 Weltwissen vs. Quell-Anker
 
@@ -169,14 +170,14 @@ Binnenstruktur: gefadete Worked Examples — vollständiges Beispiel mit Self-Ex
 
 **Konsensregeln für den Beobachtungskanal.**
 
-1. Die Weiche ist die Form des Zielkönnens, nicht die Bloom-Stufe. Karten für entscheidbare Kurzantworten (Regel 6) — auch Bloom-3/4-Diskriminationen. Beobachtung für Handlungen im Kontext. Faktenabruf stützt höhere Testleistung, ersetzt höheres Üben aber nicht (Agarwal 2019; Jensen, McDaniel, Woodard & Kummer 2014). Die Katheten-Falle (P3) bleibt deshalb eine Karte.
+1. Die Weiche ist die Form des Zielkönnens, nicht die Bloom-Stufe. Karten für entscheidbare Kurzantworten (Regel 6) — auch Bloom-3/4-Diskriminationen. Beobachtung für Handlungen im Kontext. Bei Agarwal (2019) verbesserten höherstufige und gemischte Quizze die höherstufige Testleistung, reine Faktenquizze dagegen nicht. Jensen, McDaniel, Woodard & Kummer (2014) stützen Übung mit höherem Anspruch. Daraus folgt keine Pflicht, vor höherstufigen Aufgaben erst Faktenkarten abzuarbeiten. Die Katheten-Falle (P3) bleibt wegen ihres entscheidbaren Kurzantwort-Kriteriums eine Karte; die Studien prüfen dieses konkrete Item nicht.
 2. Vorab festlegen, welche beobachtbare Leistung das vollständige Item-Kriterium erfüllt und welche Hilfsmittel zulässig sind. Werkzeuggebrauch kann selbst das Zielkönnen sein. Ein Arbeitsvorgang berechtigt nicht zu Erfolg auf allen thematisch berührten Teilkarten. Keine Doppelbuchung bei späterer Session-Synthese.
 3. Assistierte Nutzerarbeit bleibt `doneBy: "user"`; `doneBy: "agent"` ist für vom Agenten ausgeführte Schritte. `symbiosis_mode` ist Token-Attribut, kein Nachweis über einen konkreten Versuch.
 4. Ein Handlungsziel braucht keine sichtbare Fragekarte, aber für FSRS-Fälligkeit weiterhin einen persönlichen `card`-Datensatz und ein bewertbares Kriterium. Ausschluss aus Flash und eigene Beobachtungsfälligkeit sind Soll, keine heutige Garantie.
-5. Reale Arbeit als untrainierter Pilot-Endpunkt nur mit zuvor festgelegtem Ziel, unabhängiger Aufgabeninstanz, Hilferegel, Zeitabstand und Rubrik; Gelegenheiten *und* Misserfolge erfassen, nicht nur Erfolge. Ein beobachteter Fehlversuch vor Hilfe bleibt Rating 1 (Keith & Frese 2008).
+5. Reale Arbeit als untrainierter Pilot-Endpunkt nur mit zuvor festgelegtem Ziel, unabhängiger Aufgabeninstanz, Hilferegel, Zeitabstand und Rubrik; Gelegenheiten *und* Misserfolge erfassen, nicht nur Erfolge. Ein beobachteter Fehlversuch vor Hilfe bleibt nach O7 Rating 1. Keith & Frese (2008) stützen Lernen durch angeleiteten Umgang mit Fehlern; die konkrete FSRS-Zuordnung ist ein ZAM-Vertrag, kein Studienbefund.
 6. Künstliche Themen ohne Arbeitsberührung: Karten plus `practice_set`. Für die Realschülerin ist die Schulaufgabe die echte Aufgabe; dazwischen trägt das `practice_set`.
 
-Der Kanal existiert im Produkt (`zam monitor`, Observer, Session-Synthese). Der RFC macht daraus eine Regel und begrenzt sie auf unassistierte Handlungen. Der Kernel bleibt AI-agnostisch.
+Der Kanal existiert im Produkt (`zam monitor`, Observer, Session-Synthese). Der RFC begrenzt Erfolgsratings auf nachweislich eigenständige Leistungen am Item-Kriterium; erfolglose eigenständige Versuche bleiben Misserfolgsevidenz. Die FSRS-Kalibrierung für beobachtete Arbeit ist eine zu prüfende Produktannahme. Der Kernel bleibt AI-agnostisch.
 
 ---
 
@@ -226,7 +227,7 @@ Gleiches Zielkönnen, andere Darstellung → PracticeItem; anderes Zielkönnen �
 1. **Atom H — Hypotenuse-Lage (Bloom 1).** Fachliches Fundament: Zuordnung des rechten Winkels zur gegenüberliegenden Seite, nicht Besitz einer Vokabel. P → H ist hard, über Decision 2 vertagbar (`precondition`-Burial, FSRS unberührt). Optional heißt vertagbar, nicht kantenlos. `reconcileDerivedEdges` projiziert die Kante auf jedes P-Item. Ein Again auf P3 kann P3 blockieren, versetzt P1 nicht in Relearning. `cascadeBlock` lässt `buried_until` bestehender Voraussetzungen unverändert; vorzeitiges Aufheben einer H-Vertagung nach Again ist **Soll**, keine heutige Garantie. *Frage:* Welcher Seite liegt im rechtwinkligen Dreieck der rechte Winkel gegenüber? *Konzept:* der Hypotenuse. Ein Prädikat.
 2. **Atom P, Item P1 — Kernformel (Bloom 1).** *Frage:* Wie lautet der Satz des Pythagoras für Katheten $a, b$ und Hypotenuse $c$? *Konzept:* $a^2 + b^2 = c^2$. Repräsentant von P für abgeleitete Token-Kanten.
 3. **Atom P, Item P2 — Flächenbedeutung (Bloom 2).** Keine Kante zu P1: die Flächenaussage ist ohne die algebraische Form lösbar. P2 verlangt keinen Beweis. Eigenständig eine Flächenzerlegung zu finden wäre ein anderes Zielkönnen. Ein Bild-Item ist zulässig, darf die zu erinnernde Relation nicht verraten. *Frage:* Was gilt für die Quadrate über den Katheten im Vergleich zum Hypotenusenquadrat? *Konzept:* Die Summe der Kathetenquadrat-Flächen ist flächengleich zum Hypotenusenquadrat.
-4. **Atom U — Umkehrung (Bloom 3).** *Prereq:* P, hard. *Frage:* Wie prüfst du rechnerisch, ob ein Dreieck mit Seiten $p, q, r$ rechtwinklig ist? *Konzept:* Bei längster Seite $r$ ist das Dreieck genau dann rechtwinklig, wenn $p^2 + q^2 = r^2$. Nicht das Tripel 3-4-5 auswendig. Der Lehrplan nennt die Umkehrung als eigenen Kompetenzpunkt. Transfer braucht eine untrainierte Aufgabe (Pan & Rickard 2018).
+4. **Atom U — Umkehrung (Bloom 3).** *Prereq:* P, hard. *Frage:* Wie prüfst du rechnerisch, ob ein Dreieck mit Seiten $p, q, r$ und längster Seite $r$ rechtwinklig ist? *Konzept:* Das Dreieck ist genau dann rechtwinklig, wenn $p^2 + q^2 = r^2$. Nicht das Tripel 3-4-5 auswendig. Der Lehrplan nennt die Umkehrung als eigenen Kompetenzpunkt. Transfer braucht eine untrainierte Aufgabe (Pan & Rickard 2018).
 5. **Atom P, Item P3 — Katheten-Falle (Bloom 4).** Gleiches Zielkönnen wie P1 in anderer Beschriftung → Item, kein Atom. Zwischen Items eines Atoms gibt es keine Kanten. Fachlich notwendige Voraussetzungen von P (H) gelten für P3; Again kann P3 wegen H blockieren. *Frage:* $b$ ist Hypotenuse, $a$ und $c$ Katheten — wie lautet die Gleichung? *Konzept:* $a^2 + c^2 = b^2$.
 
 „Pythagoras oder Sinus?“ ist Methodenwahl — eigenes Atom bzw. `practice_set`, kein Sibling von P.
@@ -263,10 +264,10 @@ Zusätzlich, nicht in der Morning-Queue: `practice_set` mit gemischten Aufgabent
 
 1. **Token 1.** *Frage:* Unter welcher Bedingung ruft `executeReviewAction()` nach einem Rating `cascadeBlock()` auf? *Konzept:* Nur bei Rating 1 auf einem Token mit mindestens einem Prerequisite.
 2. **Token 2.** *Prereq:* 1. *Frage:* Was geschieht mit der Karte des verfehlten Tokens? *Konzept:* `blocked = 1`; sie verlässt die Queue, bis sie freigegeben wird.
-3. **Token 3.** *Prereq:* 1. *Frage:* Für welche Tokens legt `cascadeBlock()` Karten an? *Konzept:* Für jedes direkte Prerequisite (unblocked, sofort fällig) — nie die transitive Hülle.
+3. **Token 3.** *Prereq:* 1. *Frage:* Für welche Vorbedingungen erzeugt `cascadeBlock()` fehlende Karten? *Konzept:* Für die direkten Prerequisites des verfehlten Tokens, nicht für die transitive Hülle. *Kontext:* Neue Karten sind unblocked und sofort fällig. Bestehende behalten ihren Zustand; nur eine blockierte Vorbedingung ohne eigene Prerequisites wird entblockt und vorgezogen. `buried_until` bleibt auch dabei unverändert.
 4. **Token 4.** *Prereqs:* 2, 3. *Frage:* Wann gibt `unblockReady()` frei? *Konzept:* Alle direkten Prerequisites haben `reps ≥ 1` und sind selbst nicht blockiert; Freigabe kaskadiert im selben Aufruf.
-5. **Token 5.** *Prereq:* 1. *Frage:* Warum ist Blocking nicht Teil von `evaluateRating()`? *Konzept:* FSRS-Rechnung und Lernpfad-Policy bleiben getrennt; `executeReviewAction()` bündelt Card-Update, Log und Blocking in einer Transaktion.
-6. **Token 6.** *Prereq:* 1. *Frage:* Sperrt ein unerfülltes Prerequisite den Zugang, bevor die Karte je gefragt wurde? *Konzept:* Nein. Blocking ist reaktiv; der Graph beeinflusst Auswahl und Reihenfolge, nie den Zugang.
+5. **Token 5.** *Prereq:* 1. *Frage:* Warum ist Blocking nicht Teil von `evaluateRating()`? *Konzept:* FSRS-Rechnung und Lernpfad-Policy bleiben getrennt. *Kontext:* `executeReviewAction()` bündelt Card-Update, Log und Blocking in einer Transaktion.
+6. **Token 6.** *Prereq:* 1. *Frage:* Sperrt ein unerfülltes Prerequisite den Zugang, bevor die Karte je gefragt wurde? *Konzept:* Nein; harte Kanten sind kein proaktives Admission-Gate. *Kontext:* Nach einem tatsächlichen Fehlversuch kann die Karte reaktiv blockiert werden; der Graph beeinflusst außerdem Auswahl und Reihenfolge.
 
 `source_link` je Token auf den Artikel. Nachschlagewissen (API-Namen, Zyklus-Rollback) bleibt im Artikel. Kernel-Änderungen aktualisieren Tokens per OKF-Re-Import (`update`/`replace`), statt sie zu löschen.
 
@@ -303,7 +304,7 @@ Zusätzlich, nicht in der Morning-Queue: `practice_set` mit gemischten Aufgabent
 
 ### 7.3 Implementierungsvoraussetzungen
 
-Keine Verfassungsregeln. Ohne sie bleiben die Beschlüsse Papier. Reihenfolge = Vorschlag.
+Produktarbeit für den getrennten Implementierungsplan. Verbindliche Voraussetzungen, spätere Optionen und bereits erfüllte Invarianten sind unten ausdrücklich unterschieden; eine optionale Klärphase ist kein Blocker für die übrige Umsetzung. Reihenfolge = Vorschlag.
 
 1. **Grader-Prompt** (`src/cli/llm/client.ts`): pass/fail nur gegen `concept`; `context` Hintergrund; 2 = mühsamer korrekter Abruf, kein Teilpunkt und kein „mostly correct“/„small gap“ mit fehlendem Pflichtinhalt; Stufe 0 für Tippfehler (O1). Feedback auf Aufgabenebene.
 2. **Agenten-Rubrik** (`skills/zam/SKILL.md`): dieselbe Semantik; Anbindung für assistierte Nutzerarbeit ohne FSRS-Rating (O7). Assistierte Nutzerarbeit nicht als `doneBy: "agent"` umetikettieren. `zam_submit_review` erlaubt diesen Weg für `doneBy: "user"` heute nicht.
@@ -321,9 +322,9 @@ Keine Verfassungsregeln. Ohne sie bleiben die Beschlüsse Papier. Reihenfolge = 
 
 Kartenstatistiken nach einem Split sind Diagnose, kein Wirksamkeitsbeweis.
 
-**Design.** Bei ZAMs realem N ist Between-Person-Randomisierung nicht auswertbar. Gewählt: **Single-Case Multiple-Baseline über Themenblöcke** bei $N=1$ (Kratochwill et al. 2013 / WWC): mehrere hinreichend unabhängige Blöcke, wiederholte vergleichbare Messungen vor und nach jedem gestaffelten Wechsel, festgelegte Wechselzeitpunkte. Die Baseline ist Lernen mit dem bisherigen Monolithen. Prüfaufgaben dürfen selbst lernen lassen: Folgemessungen mit neuen Instanzen. Drei Endtests nach unterschiedlicher Lernzeit reichen nicht.
+**Design.** Für den Pilot mit einer Person scheidet Between-Person-Randomisierung aus. Gewählt: **Single-Case Multiple-Baseline über Themenblöcke** bei $N=1$ (Kratochwill et al. 2013 / WWC): mehrere hinreichend unabhängige Blöcke, wiederholte vergleichbare Messungen vor und nach jedem gestaffelten Wechsel. Die Wechselzeitpunkte werden vorab randomisiert zugeteilt. Die Baseline ist Lernen mit dem bisherigen Monolithen. Das aktive Lernzeitbudget pro Block und Messabschnitt einschließlich Tutorzeit wird gleichgehalten; Inhaltsversionen, Studienmodus, Darbietungspolitik und Rubrik werden vor Beginn festgelegt. Prüfaufgaben dürfen selbst lernen lassen: Folgemessungen mit neuen Instanzen; Übertragung zwischen Themen protokollieren. Drei Endtests nach unterschiedlicher Lernzeit reichen nicht.
 
-**Primär.** Verzögerte Leistung auf vorher festgelegten, **untrainierten** Aufgaben zum selben Lernziel. Testabstand ist eine vorab festgelegte Designentscheidung (z. B. ≥ 7 Tage), keine aus Rowland (2014) folgende Untergrenze — Rowland vergleicht Testen mit Wiederlernen, nicht Dekomposition mit Monolithen. Bezugspunkt: letzter geplanter Lernkontakt; weitere Kontakte bis zum Test protokollieren. Format der Zielaufgabe spiegelt die reale Schulaufgabe (TAP). Klassenraum-Nulllinie: Quizzen verbessert Klausurleistung inklusive Transfer-Items (Roediger, Agarwal, McDaniel & McDermott 2011; McDaniel et al. 2013, Realschul-nahes Alter). Der Pilot prüft, ob Dekomposition diesen Effekt erhält oder verbessert.
+**Primär.** Verzögerte Leistung auf vorher festgelegten, **untrainierten** Aufgaben zum selben Lernziel. Testabstand ist eine vorab festgelegte Designentscheidung (z. B. ≥ 7 Tage), keine aus Rowland (2014) folgende Untergrenze — Rowland vergleicht Testen mit Wiederlernen, nicht Dekomposition mit Monolithen. Bezugspunkt: letzter geplanter Lernkontakt; weitere Kontakte bis zum Test protokollieren. Format der Zielaufgabe spiegelt die reale Schulaufgabe (TAP). Klassenraumstudien motivieren den Pilot: Roediger, Agarwal, McDaniel & McDermott (2011) berichten bessere Klausurleistung durch Quizzen; McDaniel et al. (2013) untersuchen Transfer auf Klassenarbeiten. Diese Befunde liefern keine Effektgröße für Dekomposition gegenüber Monolithen; genau diesen Vergleich untersucht der Pilot.
 
 **Zweiter Kanal.** Beobachtete, unassistierte Anwendung nach §4.5, getrennt ausgewertet. Zufällige erfolgreiche Arbeitsbeispiele ohne Nenner der Gelegenheiten sind kein Endpunkt; fehlende Gelegenheit = fehlende Evidenz. Aufgabenbanken vom Fading getrennt. Ein blind bewerteter Endpunkt darf erst danach zur normalen Review-Buchung werden; seine Wiederholung ist nicht erneut „untrainiert“.
 
@@ -332,6 +333,8 @@ Kartenstatistiken nach einem Split sind Diagnose, kein Wirksamkeitsbeweis.
 **Auswertung zum N.** Bei einer Person: Niveau/Trend, zeitliche Abhängigkeit und Unsicherheit pro Block; kein Random Effect für Lernende. Überlegenheit, Nichtunterlegenheit mit Zeitersparnis und Äquivalenz sind unterschiedliche Fragen — eine davon mit Marge vorab (Lakens, Scheel & Isager 2018). Kleine Stichproben dürfen „noch unentschieden“ ergeben. Alle Items eines Lernziels in derselben Bedingung; nicht die Kartenzahl als unabhängige Stichprobe zählen.
 
 **Messgrenzen am heutigen Schema.** `review_logs` speichert Rating, IDs, Zeiten, optionale Dauer, Session-ID, `content_version`. Antwort-, Anzeige-, Klär-, Hinweis- und Reveal-Ereignisse sowie Studienmodus und Karten-Ausgangszustand fehlen. `response_time_ms` ist Gesamtbearbeitungsdauer. Ein betreuter Pilot erhebt die fehlenden Daten prospektiv extern; ein automatisierter Pilot braucht Ereignispersistenz. Latenzen messen keine reine Gedächtniszeit.
+
+Das externe Protokoll erfasst alle gezeigten, übersprungenen und abgebrochenen Items, ursprüngliche Antworten, Hilfe/Klärung, Reveal, Rating, Pausen und tatsächliche Aufgabenfassung samt Grader-/Prompt-Version. Die Summe vorhandener Review-Dauern ist keine aktive Gesamtlernzeit: unbewertete Versuche fehlen, Lesen, Tippen und Wartezeiten sind enthalten. Ohne Expositionsnenner sind Abbruchquote und Einhaltung der Sibling-Trennung nicht aus der DB bestimmbar; ohne Antwort- und Hilfeverlauf lässt sich keine False-Negative-Korrektur messen. `content_version` ersetzt weder die dynamische Aufgabenvariante noch die Grader-Version; Session-IDs sind nicht auf allen Oberflächen durchgehend gesetzt.
 
 **Grader-Blindung.** Wer die Zielaufgaben bewertet, kennt die Bedingung nicht. Reliabilität einmalig messen; nach Promptwechsel erneut.
 

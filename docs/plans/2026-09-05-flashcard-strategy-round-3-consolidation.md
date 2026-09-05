@@ -1,6 +1,7 @@
 # Flashcard Generation and Decomposition Strategy — Round 3 Consolidation Plan
 
 **Status:**
+
 - [x] Phase 1: Präambel, Revisionsstatus & Revisionshistorie (§0)
 - [x] Phase 2: Korpusbefunde, Carpenter-Cue-Stärke & Multiple-Choice-Risiko (§1)
 - [x] Phase 3: Kognitionswissenschaftliche Fundierung (§2)
@@ -12,6 +13,8 @@
 - [x] Phase 9: SCED Multiple-Baseline-Pilotdesign & Klassenraum-Nulllinie (§8)
 - [x] Phase 10: Literaturverzeichnis mit vollständigen DOIs (§9)
 - [x] Phase 11: Verifikation & CI-Health (format, lint, typecheck; docs-only RFC, src unverändert)
+
+Der Konsolidierungsplan ist abgeschlossen. Die abschließende Astra-Prüfung korrigiert unten Belegüberdehnungen und gleicht den Plan mit dem verbindlichen RFC ab; sie startet keine Implementierungsphase.
 
 ---
 
@@ -36,8 +39,8 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
 ### §1 Problemaufriss: Die monolithische Mauer
 - **Korpusbefunde (§1.1)**:
   - Beibehalten der gemessenen Fakten (1.165 Token, 973 Cards; Text-Import als Hauptquelle für Monolithen; Scope-Diskrepanz Frage $\leftrightarrow$ Konzept; Fehlen von `sample_solution` im DB-Schema).
-  - *Carpenter (2009)* als Erklärungsmechanismus für J01: Starke Cues, die die Antwort in der Frage verraten, umgehen die Gedächtnissuche und entwerten den Testeffekt.
-  - Multiple-Choice-Risiko (*Roediger & Marsh 2005*, *Butler & Roediger 2008*, *Kang et al. 2007*): Unkorrigiertes MC lehrt falsche Optionen (*Negative Suggestion Effect*).
+  - *Carpenter (2009)*: Bei Wortpaaren erleichtern starke Cues den ersten Abruf; erfolgreich mit schwachen Cues abgerufene Antworten werden später besser behalten. Die Übertragung auf J01 ist eine ZAM-Inferenz, kein gemessener Lernverlust dieses Items.
+  - Multiple-Choice-Risiko (*Roediger & Marsh 2005*, *Butler & Roediger 2008*): Unkorrigiertes MC kann falsche Optionen lehren (*Negative Suggestion Effect*).
 - **Outcome-Hypothesen (§1.2)**:
   - Saubere Trennung von Korpusstrukturen und Lern-Outcomes. Klarstellung: After-Split-Raten sind kein Prä/Post-Vergleich.
 
@@ -45,13 +48,13 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
 - **§2.1 MIP & Desirable Difficulties**:
   - *Soderstrom & Bjork (2015)* als Dachbeleg: Strikte Trennung von *Learning* (Storage Strength) und *Performance* (Retrieval Strength). Schwierigkeit aus dem FSRS-Intervall, nicht aus Kartenüberfrachtung. 5–15s als Gestaltungsziel.
 - **§2.2 Cognitive Load & Transfer-Appropriate Processing (TAP)**:
-  - Format folgt Zielkompetenz (*Morris et al. 1977*, *Rowland 2014*, *Butler 2010*). Wer Produktion prüft, übt mit `binary_choice` das Falsche (*Kang et al. 2007*).
+  - Format folgt Zielkompetenz als ZAM-Entscheidung, kein Gesetz identischer Übungs- und Testformate. *Kang et al. (2007)*: Ohne Feedback war MC-Übung der Kurzantwort-Übung überlegen; mit korrektivem Feedback war Kurzantwort-Übung auf beiden Testformaten überlegen.
 - **§2.3 Unstrukturierte Mengen & Anti-Enumeration**:
   - Interferenzmechanismen als Ursache (RIF, Part-Set-Cuing, Output-Interferenz).
   - Element-Interaktivität (*Sweller 2010*) als Split-Kriterium.
   - Differenzierte Einordnung von *Kornell & Bjork (2008)*: Stützt exemplarisches Einzellernen; Slot-Items neben Gesamtitems sind eine didaktische Designentscheidung (O3), kein Naturgesetz.
 - **§2.4 Task Design & Entscheidbarkeit**:
-  - `concept` als alleiniges Bestehenskriterium; *Pashler et al. (2005)*: Feedback-Inhalt zählt vor Latenz.
+  - `concept` als alleiniges Bestehenskriterium; *Pashler et al. (2005)*: Korrekte Lösungen nach falschen Antworten verbessern auch das Behalten nach einer Woche. Ein verzögerter Behaltenstest belegt nicht die Gleichwertigkeit sofortigen und verzögerten Feedbacks.
 - **§2.5 Topologie, Scaffolding & Forward Testing**:
   - Surmise-System (*Doignon & Falmagne 1985*); *Yang et al. (2018)* und *Wissman et al. (2011)*: Forward Testing Effect — Abruf von Fundamenten erleichtert das Lernen neuer Dependents. Expertise Reversal (*Kalyuga et al. 2003*).
 
@@ -59,15 +62,15 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
 - **§3.1 Flash**:
   - *Smith, Roediger & Karpicke (2013)*: Mentaler Abruf ohne Tippen wirkt; Tippen ist ein Messinstrument, keine Lernbedingung. Null Tutor-Turns vor dem Rating.
 - **§3.2 Bewertungsvertrag & FSRS-Wahrheit**:
-  - FSRS-Zustand exakt nach Kernel-Code: Hard (2) = Erfolg (`reps + 1`, keine Lapse, Malus `w[15]`), aber Halten der Stufe im Lernschritt. Again (1) = Forgetting (`reps = 0`, Lapse).
+  - FSRS-Zustand exakt nach Kernel-Code: Hard (2) = Erfolg (`reps + 1`, keine Lapse), aber Halten der Stufe im konfigurierten Lernschritt. Again (1) = Misserfolg (`reps = 0`, Lapse). Neue Karten verwenden Initialisierung, bereits eingeführte Karten unter einem Tag den Kurzzeitpfad; `w[15]` ist der Hard-Malus des Langzeit-Erfolgspfads.
   - Konsolidierte Bewertungsmatrix mit O1 und O7:
     - Ungestützt korrekt $\rightarrow$ 3 oder 4.
     - Mühsam, aber ungestützt korrekt $\rightarrow$ 2 (Hard).
     - Tippfehler/Kurzform $\rightarrow$ Stufe 0 im Grader (Toleranz ohne Inhaltshilfe; O1).
-    - Inhaltliche Hilfe / Lösungshinweis $\rightarrow$ zwingend 1 (Again).
+    - Eigenständiger Fehlversuch, erst mit Inhaltshilfe vervollständigt $\rightarrow$ 1 (Again). Feedback nach bereits vollständigem korrektem Versuch ändert das Rating nicht rückwirkend.
     - Unassistierter Arbeitsversuch $\rightarrow$ regulär 2/3/4 (O7).
     - Assistierte Ausführung ohne eigenständigen Versuch $\rightarrow$ kein FSRS-Rating (nur Lernevidenz; O7).
-    - Eigenständiger Fehlversuch vor Hilfe $\rightarrow$ bleibt Rating 1 (*Keith & Frese 2008* Error Management).
+    - Eigenständiger Fehlversuch vor Hilfe $\rightarrow$ bleibt nach O7 Rating 1; *Keith & Frese (2008)* stützen Fehlermanagement als Lernansatz, nicht diese konkrete FSRS-Zuordnung.
   - Aufgabenbezogenes Feedback (*Kluger & DeNisi 1996*, *Hattie & Timperley 2007*) statt Personen-Lob.
 
 ### §4 Pipeline, Lebenszyklus & Zwei Evidenzkanäle
@@ -79,8 +82,8 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
 - **§4.5 Zwei Evidenzkanäle: Karte und Arbeit (Owner-Prinzip)**:
   - Systematische Verankerung der Owner-Entscheidungen (Thomas) und Absicherungen (Astra / Muse Spark):
     1. Unassistierte Anwendung ersetzt fällige Karte mit regulärem Rating.
-    2. Bloom-Stufen auf Karten (*Agarwal 2019*, *Jensen et al. 2014*): Faktenabruf stützt höhere Stufen; höhere Stufen brauchen aber eigenes höheres Üben (wie P3).
-    3. Fehlermanagement (*Keith & Frese 2008*): Fehler sind essenziell für Transfer.
+    2. Bloom-Stufen auf Karten: Bei *Agarwal (2019)* verbesserten höherstufige und gemischte Quizze die höherstufige Testleistung, reine Faktenquizze dagegen nicht. *Jensen et al. (2014)* stützen Übung mit höherem Anspruch. P3 bleibt wegen seines entscheidbaren Kurzantwort-Kriteriums eine Karte, nicht aufgrund eines Studiennachweises für dieses Item.
+    3. Fehlermanagement (*Keith & Frese 2008*): Angeleiteter Umgang mit Fehlern kann Transfer fördern; daraus folgt keine Notwendigkeit von Fehlern oder bestimmte FSRS-Bewertung.
     4. Opportunity to Perform (*Blume et al. 2010*, *Ford et al. 1992*): Fehlende Gelegenheit am Arbeitsplatz ist kein Misserfolg; Nenner-Problem bei Gelegenheiten.
     5. Handlungsziele behalten persönliche `card`-Datensätze; künstliche Aufgaben (`practice_set`) fangen ab, wo Arbeit das Konzept nicht berührt. Team-Aufgabenverteilung als Vormerkung für separates ADR.
 
@@ -101,6 +104,7 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
   - Kantenableitung (`reconcileDerivedEdges`), Blocking-Verhalten und Prüfhinweis für Fixture-Kante A03 $\rightarrow$ A01.
 - **§6.2 OKF-Import (Prerequisite Blocking)**:
   - Saubere Beibehaltung der 6 atomaren Nachher-Tokens mit `source_link`-Ankern.
+  - `cascadeBlock()` erzeugt fehlende Karten direkter Prerequisites. Bestehende behalten ihren Zustand, außer einer blockierten Vorbedingung ohne eigene Prerequisites; `buried_until` wird nicht aufgehoben. Erläuterungen außerhalb des abgefragten Prädikats stehen im `context`.
 
 ### §7 Konsensbeschlüsse & Implementierungsvoraussetzungen
 - **§7.1 Grundsatzbeschlüsse (1–8)** in endgültiger Formulierung.
@@ -114,11 +118,11 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
   - **O7**: Unassistierte Arbeitsanwendung ersetzt fällige Abfrage mit regulärem Rating (2/3/4); assistierte Nutzerarbeit ohne unassistierten Versuch erhält kein FSRS-Rating; beobachteter Fehlversuch vor Hilfe bleibt Rating 1.
 - **§7.3 Implementierungsvoraussetzungen**:
   - Grader-Prompt, Agenten-Rubrik, Draft-Capture, Atom-Sibling-Bury, Klärungsprotokoll, Zeitereignisse, Beobachtungskanal.
-  - Neu: **Garantierter Reveal mit korrekter Lösung bei Tier-1-Auswahlitems** als Schadensvermeidung (*Roediger & Marsh 2005*, *Butler & Roediger 2008*).
+  - **Garantierter Reveal mit korrekter Lösung bei Tier-1-Auswahlitems** als Invariante (*Roediger & Marsh 2005*, *Butler & Roediger 2008*), in Desktop/Mobile bereits erfüllt.
 
 ### §8 Falsifikation am Lernziel & Pilotdesign
-- Single-Case Multiple-Baseline über Themenblöcke bei $N=1$.
-- Realschul-Klassenraumevidenz als Nulllinie (*Roediger et al. 2011*, *McDaniel et al. 2013*).
+- Single-Case Multiple-Baseline über Themenblöcke bei $N=1$; vorab randomisierte Wechselzeitpunkte, gleiches aktives Lernzeitbudget einschließlich Tutorzeit, feste Inhaltsversionen, Modi und Rubriken.
+- Klassenraumevidenz (*Roediger et al. 2011*, *McDaniel et al. 2013*) motiviert den Pilot, liefert aber keine Effektgröße für Dekomposition gegenüber Monolithen.
 - Vorab-Äquivalenzmarge (*Lakens et al. 2018*), Testverzögerung (≥ 7 Tage als begründete Designentscheidung), untrainierte Zielaufgaben, Grader-Blindung.
 - Vorhandene DB-Logs vs. prospektives externes Pilotprotokoll (keine Schemaänderung nötig).
 - Getrennte Auswertung von Kartenabruf und Arbeitsbeobachtung.
