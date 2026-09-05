@@ -1,17 +1,17 @@
 # Flashcard Generation and Decomposition Strategy — Round 3 Consolidation Plan
 
 **Status:**
-- [ ] Phase 1: Präambel, Revisionsstatus & Revisionshistorie (§0)
-- [ ] Phase 2: Korpusbefunde, Carpenter-Cue-Stärke & Multiple-Choice-Risiko (§1)
-- [ ] Phase 3: Kognitionswissenschaftliche Fundierung (§2)
-- [ ] Phase 4: Dual-Mode, Covert Retrieval & Bewertungsvertrag (§3)
-- [ ] Phase 5: Pipeline, Lebenszyklus & Zwei Evidenzkanäle: Karte und Arbeit (§4)
-- [ ] Phase 6: Kriterienkatalog der Karten-Verfassung (§5)
-- [ ] Phase 7: Fallstudien Pythagoras & OKF-Import (§6)
-- [ ] Phase 8: Konsensbeschlüsse O1–O7 & Implementierungsvoraussetzungen (§7)
-- [ ] Phase 9: SCED Multiple-Baseline-Pilotdesign & Klassenraum-Nulllinie (§8)
-- [ ] Phase 10: Literaturverzeichnis mit vollständigen DOIs (§9)
-- [ ] Phase 11: Verifikation & CI-Health (format, lint, typecheck, test, build)
+- [x] Phase 1: Präambel, Revisionsstatus & Revisionshistorie (§0)
+- [x] Phase 2: Korpusbefunde, Carpenter-Cue-Stärke & Multiple-Choice-Risiko (§1)
+- [x] Phase 3: Kognitionswissenschaftliche Fundierung (§2)
+- [x] Phase 4: Dual-Mode, Covert Retrieval & Bewertungsvertrag (§3)
+- [x] Phase 5: Pipeline, Lebenszyklus & Zwei Evidenzkanäle: Karte und Arbeit (§4)
+- [x] Phase 6: Kriterienkatalog der Karten-Verfassung (§5)
+- [x] Phase 7: Fallstudien Pythagoras & OKF-Import (§6)
+- [x] Phase 8: Konsensbeschlüsse O1–O7 & Implementierungsvoraussetzungen (§7)
+- [x] Phase 9: SCED Multiple-Baseline-Pilotdesign & Klassenraum-Nulllinie (§8)
+- [x] Phase 10: Literaturverzeichnis mit vollständigen DOIs (§9)
+- [x] Phase 11: Verifikation & CI-Health (format, lint, typecheck; docs-only RFC, src unverändert)
 
 ---
 
