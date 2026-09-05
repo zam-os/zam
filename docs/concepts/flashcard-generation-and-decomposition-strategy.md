@@ -1,12 +1,12 @@
 # Kognitionswissenschaftliche Grundlagen und Richtlinien zur Generierung und Dekomposition von Lerninhalten in ZAM
 
-**Status:** RFC / Revisionsstand Runde 2b (Grok 4.6 nach Gemini-Synthese `503a39d`)  
-**Nächste Stimmen:** Fable 5.1, danach GPT-6 Astra. Kein Implementierungs-PR, solange die offenen Dissense in §7.2 nicht geschlossen oder bewusst stehen gelassen sind.  
+**Status:** RFC / Revisionsstand Runde 2 (Fable 5.1 nach Grok `b93a8b2`; Grok nach Gemini-Synthese `503a39d`)  
+**Nächste Stimme:** GPT-6 Astra (Runde 2), danach Konsolidierung in Runde 3. Kein Implementierungs-PR, solange die offenen Dissense in §7.2 nicht geschlossen oder bewusst stehen gelassen sind.  
 **Datum:** 2026-09-05  
 **Autoren:** ZAM Working Group  
 **Zweck:** Fundierung, Kriterienkatalog und einheitliche Qualitätsregeln zur Ablösung monolithischer „Erkläre Konzept X“-Karten. Gilt für Schüler-Lernpfade (z. B. Realschule Bayern Klasse 9) und für professionelles Entwicklerwissen (OKF-Import).
 
-Diese Fassung ist **kein Konsensdokument**. Sie übernimmt die Gemini-Synthese dort, wo Grok, Fable und Astra übereinstimmten; sie korrigiert Überglättungen, Zitatfehler und Schema-Fiktionen; sie markiert den Rest als Dissens für Fable und Astra.
+Diese Fassung ist **kein Konsensdokument**. Sie übernimmt die Gemini-Synthese dort, wo Grok, Fable und Astra übereinstimmten; sie korrigiert Überglättungen, Zitatfehler und Schema-Fiktionen; sie markiert den Rest als Dissens. Fable 5.1 hat in Runde 2 abgestimmt (§7.2) und Textstellen korrigiert, die gegen den Code falsch waren (§0.1). Ergänzungen, die Astra prüfen soll, tragen die Markierung **F2**.
 
 ---
 
@@ -25,6 +25,18 @@ Diese Fassung ist **kein Konsensdokument**. Sie übernimmt die Gemini-Synthese d
 | `practice_set` | Als existierende Session-Art | **Als Vorschlag.** Existiert nicht im Schema. |
 | LLM-Grader | Nur Kernel-Pfad dokumentiert | **Widerspruch benannt:** Grader mappt Teilantworten auf 2 und liest `context`. |
 | Pythagoras-DAG | Token 1 = hard-Wurzel, Flächenbedeutung fehlt | **Korrigiert.** Token 1 optional; Flächenbedeutung zurück; 3-4-5 ist kein Transfer. |
+
+### 0.1 Fable 5.1, Runde 2 — gegenüber `b93a8b2`
+
+| Bereich | `b93a8b2` | Diese Fassung |
+|---|---|---|
+| §3.2 „`cascadeBlock()` nur hier“ | am Langzeitpfad verortet | **Korrigiert.** Hängt an jedem Rating 1 mit Prerequisites (`actions.ts`); Again setzt `reps = 0`; Hard wiederholt den Lernschritt. |
+| Grader-Widerspruch | nur `client.ts` | **Ergänzt.** Agenten-Rubrik `skills/zam/SKILL.md:202` (2 = partial recall) und Beobachtungsregel `:98` (assistierter Erstlauf → 3) → neues **O7**. |
+| Publish-Gate | als Zustand beschrieben | **Als Voraussetzung markiert.** `createToken()` schreibt `published`; kein Capture-Pfad schreibt `draft`. |
+| Pythagoras-DAG | Token 3/5 als Atome mit hard-Kanten; Token 1 kantenlos; „3, 4, 5 → 10“ | **Redraw (F2).** Atom/Item-Modell nach §7.1.1; Token 1 fachlich hard, aber vertagbar (Decision 2); Fixture-Abgleich; Tippfehler behoben. |
+| O1–O6 | offen; Fable-Positionen aus Runde 1 | **Fable-Stimmen eingetragen.** Drei Runde-1-Positionen zurückgezogen (Cowan-4, Kernel-Trivia-Flag, „Rating nie steigen“). O6 bleibt Dissens zu Grok. |
+| Implementierungsvoraussetzungen | verstreut | **Gesammelt** in §7.3, getrennt von der Verfassung. |
+| Foresight bei J01 | als Befund | **Als Analogie** gekennzeichnet (§1.2). |
 
 ---
 
@@ -45,8 +57,8 @@ In der praktischen Lernerfahrung sowie bei der Analyse des Datenbestands (1.165 
    * **Scope-Diskrepanz in Tier 2:** Fragen-Median **71 Wörter** (p90 180), 215-mal zwei oder mehr Aufgabenverben; `concept`-Median **30 Wörter**. Es werden 2–4 Teilleistungen gefordert, bewertet wird gegen einen Bruchteil.
 4. **`sample_solution` existiert nicht im Token-Schema.**  
    Fixtures tragen oft 200–500 Wörter in `sample_solution`. Das Feld liegt weder in `src/kernel/db/schema.ts` noch schreibt `installKvtTile` es nach `tokens`. Kernel und LLM-Grader bewerten gegen `concept`.
-5. **Der live Grader widerspricht dem angestrebten Bewertungsvertrag.**  
-   `src/cli/llm/client.ts` (ab Zeile 799) vergleicht gegen `concept`, **`context` und Source** und definiert 2 als „hard recall / **partially correct**“. Der Kernel (`src/kernel/scheduler/fsrs.ts`, langfristiger Pfad) behandelt 2, 3 und 4 als Erfolg. Solange der Prompt so bleibt, ist jede Verfassungsregel über Teilpunkte Papier.
+5. **Der live Grader und die Agenten-Rubrik widersprechen dem angestrebten Bewertungsvertrag.**  
+   `src/cli/llm/client.ts:801` vergleicht gegen `concept`, **`context` und Source**; `:805` definiert 2 als „hard recall / **partially correct**“; `:812` erzwingt one-shot. Derselbe Widerspruch steht in der Agenten-Rubrik `skills/zam/SKILL.md:202` („2 = partial recall“), die jede MCP-/Bridge-Review ohne Desktop steuert. Die Beobachtungsregel dort (`:98`) vergibt für einen *assistierten* Erstlauf im Arbeitskontext eine **3** — von §7.1.4 nicht abgedeckt (**O7**). Desktop wendet den Grader-Vorschlag nicht automatisch an, hebt aber den vorgeschlagenen Button hervor (`desktop/src/panel/recall.ts:996`). Der Kernel (`src/kernel/scheduler/fsrs.ts`) behandelt 2, 3 und 4 auf allen Pfaden als Erfolg. Solange Prompt und Rubrik so bleiben, ist jede Verfassungsregel über Teilpunkte Papier.
 
 ### 1.2 Outcome-Hypothesen (offen)
 
@@ -54,7 +66,7 @@ In der praktischen Lernerfahrung sowie bei der Analyse des Datenbestands (1.165 
    *Hypothese:* Unabhängige Fakten in einer Karte haben unterschiedliche Stabilitäten. Ein Again auf einem Teilfakt wiederholt den Verbund.  
    *Status:* plausibel, im Snapshot unbestätigt (Again-Rate Multi-Part 16 % vs. 12 %, $p \approx 0,14$; 0 Leeches bei 146 beübten Karten). Nach einem Split sind diese Raten **kein Prä/Post** (Astra): Aufgaben, Nenner und Kaltstart ändern sich gleichzeitig.
 2. **Vage Prompts erzeugen Extraneous Load und Hindsight/Foresight.**  
-   *Hypothese:* *„Erkläre X“* zwingt zum Gedankenlesen. Items, die die Antwort in der Frage mitliefern (J01), erzeugen *Foresight Bias* (Koriat & Bjork 2005): das Kompetenzgefühl wird gemessen, während die Lösung sichtbar ist. Das ist nicht dasselbe wie Hindsight nach dem Aufdecken (Fischhoff 1975).
+   *Hypothese:* *„Erkläre X“* zwingt zum Gedankenlesen. Items, die die Antwort in der Frage mitliefern (J01), *ähneln* der Foresight-Situation (Koriat & Bjork 2005: Judgments of Learning bei sichtbarer Lösung) — gemessen ist der Effekt für JOLs, nicht für Auswahlitems; bei J01 ist der Mechanismus Rekognition mit 50 % Ratechance. Das ist nicht dasselbe wie Hindsight nach dem Aufdecken (Fischhoff 1975).
 
 ---
 
@@ -137,12 +149,12 @@ Mentaler Abruf, Aufdecken, Selbstbewertung 1–4. **Null Tutor-Turns** vor dem R
 
 ### 3.2 Bewertungsvertrag (Kernel ist hier die Quelle der Wahrheit)
 
-Langfristiger FSRS-Pfad (`fsrs.ts`, `elapsedDays ≥ 1`):
+FSRS-Pfade (`fsrs.ts`) und Blocking (`actions.ts`):
 
-* `rating === 1` → `stabilityAfterForgetting()`, `cascadeBlock()` nur hier.
-* `rating === 2, 3, 4` → `stabilityAfterSuccess()`. **Hard ist Erfolg.** Hard statt Again bei gescheitertem Abruf verlängert das Intervall fälschlich (Anki-FSRS-Handbuch; Astra).
+* `rating === 1` → `stabilityAfterForgetting()` (Langzeit, `elapsedDays ≥ 1`) bzw. `shortTermStability()` (Kurzzeit); `reps = 0`, `lapses + 1`. Damit gilt ein Fundament für seine Dependents wieder als nicht erfüllt (`unblockReady` verlangt `reps ≥ 1`). `cascadeBlock()` hängt **nicht** am Pfad: `executeReviewAction()` ruft es bei jedem Rating 1 auf, wenn das Token Prerequisites hat.
+* `rating === 2, 3, 4` → `stabilityAfterSuccess()` (Hard mit Malus `w[15]`) bzw. `shortTermStability()` ohne Abfall; `reps + 1`, keine Lapse. **Hard ist Erfolg im Gedächtniszustand.** In Lern-/Wiederlernschritten ist Hard aber kein Fortschritt: Hard wiederholt den Schritt, Good geht weiter, Easy graduiert (`stepOutcome`). Hard statt Again bei gescheitertem Abruf verlängert das Intervall fälschlich (Anki-FSRS-Handbuch; Astra).
 
-Der LLM-Grader sagt heute das Gegenteil für Teilantworten (2 = partially correct). **Verfassung ohne Prompt-Änderung ist unwirksam.**
+Der LLM-Grader und die Agenten-Rubrik sagen heute das Gegenteil für Teilantworten (2 = partially correct; §1.1.5). **Verfassung ohne Prompt- und Rubrik-Änderung ist unwirksam.**
 
 #### Bewertungsmatrix (Vorschlag Grok 4.6)
 
@@ -150,11 +162,11 @@ Der LLM-Grader sagt heute das Gegenteil für Teilantworten (2 = partially correc
 |---|---|---|
 | Ungestützt vollständig korrekt | Bestätigen | 3 oder 4 |
 | Ungestützt korrekt, aber mühsam | Bestätigen | **2 (Hard)** — Erfolg an der Grenze, kein Teilpunkt |
-| Tippfehler, Kurzform, Mehrdeutigkeit; das Wissen war da | **Eine** sprachliche Klärfrage | Nach Klärung 2/3/4 zulässig. Das hebt ein False Negative, nicht ein Teilwissen. **Dissens zu Fable** (§7.2). |
+| Tippfehler, Kurzform, Mehrdeutigkeit; das Wissen war da | **Eine** sprachliche Klärfrage, die keinen Kandidaten aus `concept` nennt („bitte ausschreiben“, „Einheit ergänzen“) | Nach Klärung 2/3/4 zulässig, wenn die präzisierte Eingabe `concept` ohne weitere Inhaltshilfe trifft. Das hebt ein False Negative, nicht ein Teilwissen. **Grok, Astra, Fable einig** (Schutzklausel F2). |
 | Pflichtaspekt fehlt; Erfolg erst nach lösungstragendem Hinweis | Auflösen / erklären | **Zwingend 1** |
 | „Weiß ich nicht“ / leer | Sofort auflösen | **Zwingend 1** |
 
-Vor dem Rating: maximal eine Klärfrage, und nur zur Sprache. Sokratik, Elaboration, Generierungseffekt: **Post-Reveal** (ADR 2026-07-06b), FSRS unberührt. Der Mensch bestätigt das Rating; der Kernel schreibt nur über `executeReviewAction({ action: "rate" })`. Nie 3/4 nach inhaltlichem Scaffolding.
+Vor dem Rating: maximal eine Klärfrage, und nur zur Sprache — sie darf kein Wort aus `concept` vorsagen. Sokratik, Elaboration, Generierungseffekt: **Post-Reveal** (ADR 2026-07-06b), FSRS unberührt. Der Mensch bestätigt das Rating; der Kernel schreibt nur über `executeReviewAction({ action: "rate" })`. Nie 3/4 nach inhaltlichem Scaffolding. **Stufe 0 (heute, ohne neuen Modus):** der Grader wertet eindeutige Tippfehler und Kurzformen wie die Vollform. **Stufe 1 (neuer Modus):** die Klärfrage; bis dahin bleibt `answer_feedback` one-shot (`client.ts:812`). Klärungen werden als Ereignis protokolliert, damit §8 die False-Negative-Quote messen kann (F2).
 
 `answer_variation`: eine neue Zahlen-/Wortwahl **derselben** Relation, weiter one-shot. Der heutige Prompt (`client.ts`, Variation) sagt „different wording or from a different angle“ — für MINT muss er heißen: gleiche Relation, neue Zahlen aus einer kopfrechenbaren Menge.
 
@@ -206,13 +218,13 @@ Mehrschrittige Hausaufgaben / Interleaving-Sätze leben **nicht** in der täglic
 
 ## 5. Die 6 Kriterien der ZAM-Karten-Verfassung
 
-Verbindlich am **Publish-Gate** (`editorial_state = 'published'`) für Zellen und OKF-Importe. Capture darf roh sein. Anki-Importe werden nicht still umgeschrieben; Lint + Opt-in.
+Verbindlich am **Publish-Gate** (`editorial_state = 'published'`) für Zellen und OKF-Importe. Capture darf roh sein. Anki-Importe werden nicht still umgeschrieben; Lint + Opt-in. **Voraussetzung:** Capture-Pfade (`zam_add_token`, Ad-hoc-Import) schreiben `draft`. Heute ist `published` der Default von `createToken()` (`src/kernel/models/token.ts:179`), und kein Pfad setzt `draft`; die Queue filtert bereits `editorial_state = 'published'`. Bis dahin ist das Gate eine Implementierungsvoraussetzung (§7.3), kein Zustand.
 
 | Nr. | Regel | Operative Definition |
 |---|---|---|
 | **1** | **10-Sekunden-Designziel** | Intendierter Abruf mental in 5–15 s (Flash-Obergrenze). Kein Verbot anspruchsvoller Aufgaben, kein universelles Zeitgesetz. |
 | **2** | **Anti-„Erkläre“** | Konkrete Zielachse. Offenes *„Erkläre X“* ohne Achse = Lint. Bloom 4/5: offenes Verb + benannte Achse. |
-| **3** | **Anti-Enumeration** | Keine unstrukturierten Mengen. 1:1-Paar oder Cloze eines Slots. Geordnete kurze Prozedur erlaubt, wenn die Sequenz das Zielkönnen ist. **Keine Elementzahl als Chunk-Beweis.** |
+| **3** | **Anti-Enumeration** | Keine unstrukturierten Mengen. 1:1-Paar oder Cloze eines Slots. Geordnete kurze Prozedur erlaubt, wenn die Sequenz das Zielkönnen ist. **Keine Elementzahl als Chunk-Beweis.** Eine geschlossene Menge oder Sequenz als *eine* Aufgabe nur, wenn das Prüfformat (`CurriculumBinding`) die Menge als Ganzes verlangt **und** die Slot-Items desselben Atoms daneben existieren; das Mengen-Item ist Prüfform, die Slot-Items tragen das Lernen (F2). |
 | **4** | **Scope-Gleichheit** | Die Frage darf nur fordern, was `concept` prüft. `question` für neue kuratierte Items obligatorisch, nicht leer, kein Slug-Echo. |
 | **5** | **Inhaltsabhängige Kanten** | *Ohne A ist B fachlich nicht lösbar.* Nicht Bloom-Stufe, nicht „Falle ⇒ soft“. |
 | **6** | **Entscheidbarkeit** | `concept` kanonisch, ein Prädikat. `context` nie Bestehenshürde — **setzt voraus, dass der Grader `context` nicht mehr in den Pass-Vergleich zieht.** |
@@ -232,34 +244,30 @@ Cloze und Bildokklusion sind zulässige PracticeItem-Formen (bereits im Produkt)
 * **J01 (Tier 1):** *„Welche Dreiecksseite liegt im rechtwinkligen Dreieck stets dem 90°-Winkel gegenüber und ist die längste Seite?“* — `binary_choice` Hypotenuse/Ankathete. Die Frage enthält die Definition; 50 % Ratechance schreibt Stabilität. Das ist Foresight, nicht Abruf.
 * **J02 (Tier 2):** Formel *und* Flächenbedeutung in der Frage; `concept` ist der Einzeiler $a^2+b^2=c^2$ (Kathetenquadrate = Hypotenusenquadrat). Scope-Diskrepanz. Die Umkehrung steht nur in `sample_solution` und wird nie installiert — „wenn sie die Umkehrung vergisst, scheitert die Karte“ war falsch.
 
-#### Nachher (DAG; Token 1 ist kein Pflichtwurzel)
+#### Nachher (Atom/Item-Modell nach §7.1.1; F2 — Astra prüft O4/O5)
+
+Gleiches Zielkönnen, andere Darstellung → PracticeItem; anderes Zielkönnen → LearningAtom (§7.1.1). Damit sind Flächenbedeutung und Katheten-Falle **Items** des Formel-Atoms, nicht Atome mit Kanten; Hypotenuse-Lage ist ein Fundament-Atom, die Umkehrung ein eigenes Atom (Rechtwinkligkeit *testen* ist ein anderes Zielkönnen). Pfeil = *requires*.
 
 ```
-                         [Token 1: Hypotenuse-Lage]
-                         optional, Erstkontakt, keine hard-Kante
-                                    │
-                                    ▼  (kein fachliches Muss)
-[Token 2: Formel a²+b²=c²] ──────────────────────────────┐
-   Bloom 1, diagnostische Relation                        │
-         │ [hard: ohne Formel keine Flächenaussage]       │ [hard: ohne Formel
-         ▼                                                │  keine Variablenform]
-[Token 3: Flächenbedeutung]                      [Token 5: Katheten-Falle]
-   Bloom 2                                       Bloom 4
-         │ [hard: Umkehrung braucht die Relation]
-         ▼
-[Token 4: Umkehrung / Rechtwinkligkeits-Test]
-   Bloom 3 — Methode, nicht das Tripel 3-4-5
+[Atom U: Umkehrung / Rechtwinkligkeits-Test] --hard--> [Atom P: Satz des Pythagoras] --hard--> [Atom H: Hypotenuse-Lage]
+  Item U1 = Token 4 (Bloom 3)                        Items: P1 Formel            = Token 2 (Bloom 1)     Item H1 = Token 1 (Bloom 1)
+  Methode, nicht das Tripel                                 P2 Flächenbedeutung   = Token 3 (Bloom 2)   vertagbar (Decision 2,
+                                                            P3 Katheten-Falle     = Token 5 (Bloom 4)   Selbsteinschätzung)
+                                                     keine Kanten zwischen P1–P3; Atom-Sibling-Bury
+[Atom A02: Höhensatz / Kathetensätze] --hard--> [Atom P]   (unverändert aus dem Fixture)
 ```
 
-1. **Token 1 (optional, Bloom 1).** Nicht Pflichtwurzel. Wer das Wort Hypotenuse schon verwendet, braucht die Karte nicht. *Frage:* Welcher Seite liegt im rechtwinkligen Dreieck der rechte Winkel gegenüber? *Konzept:* der Hypotenuse. **Ein** Prädikat. Lage und Länge nicht in einer Karte (das wäre wieder zwei Relationen).
-2. **Token 2 (Kernformel).** *Frage:* Wie lautet der Satz des Pythagoras für Katheten $a, b$ und Hypotenuse $c$? *Konzept:* $a^2 + b^2 = c^2$.
-3. **Token 3 (Flächenbedeutung — die zweite J02-Aufgabe, zuvor verloren).** *Prereq:* Token 2, hard. *Frage:* Was gilt für die Quadrate über den Katheten im Vergleich zum Hypotenusenquadrat? *Konzept:* Die Summe der Kathetenquadrat-Flächen ist flächengleich zum Hypotenusenquadrat.
-4. **Token 4 (Umkehrung / Methodenform).** *Prereq:* Token 2, hard. *Frage:* Wie prüfst du rechnerisch, ob ein Dreieck mit Seiten $p, q, r$ rechtwinklig ist? *Konzept:* Die beiden kürzeren Seiten quadrieren, addieren, mit dem Quadrat der längsten vergleichen. **Nicht** „3, 4, 5 → 10 merken“. 3-4-5 darf als *worked micro-example* auf einer Konzeptkarte stehen; Transfer braucht eine **untrainierte** Aufgabe (Astra; Pan & Rickard 2018: Transfer durch Abruf ist positiv, aber aufgabenabhängig).
-5. **Token 5 (Katheten-Falle).** *Prereq:* Token 2, **hard**, weil B ohne die Relation nicht lösbar ist. Wenn die Falle scheitert und die Formel sitzt, ist das Decision-4-Triage, keine Soft-Kante. *Frage:* $b$ ist Hypotenuse, $a$ und $c$ Katheten — wie lautet die Gleichung? *Konzept:* $a^2 + c^2 = b^2$.
+1. **Atom H — Token 1 (Hypotenuse-Lage, Bloom 1).** Fachliches Fundament von P (hard: ohne den Begriff ist die Katheten-Falle nicht lösbar), aber **keine Pflichtstation**: Als direkte Vorbedingung wird es materialisiert, wenn die Lernende P erreicht (Decision 2); sie kann es per „Kann ich schon“ für eine endliche Frist vertagen (`precondition`-Burial, FSRS unberührt); in die Queue kommt es erst nach einem Again auf ein P-Item oder nach Ablauf der Frist. Optional heißt vertagbar, nicht kantenlos. *Frage:* Welcher Seite liegt im rechtwinkligen Dreieck der rechte Winkel gegenüber? *Konzept:* der Hypotenuse. **Ein** Prädikat; Lage und Länge nicht in einer Karte.
+2. **Atom P, Item P1 — Token 2 (Kernformel, Bloom 1).** *Frage:* Wie lautet der Satz des Pythagoras für Katheten $a, b$ und Hypotenuse $c$? *Konzept:* $a^2 + b^2 = c^2$. Repräsentant von P für abgeleitete Token-Kanten (`reconcileDerivedEdges`: niedrigste Item-Id).
+3. **Atom P, Item P2 — Token 3 (Flächenbedeutung, Bloom 2 — die zweite J02-Aufgabe, zuvor verloren).** Keine Kante zu P1: Die Flächenaussage ist ohne die algebraische Form lösbar (Euklid I.47 beweist sie geometrisch); eine hard-Kante „ohne Formel keine Flächenaussage“ verletzte Regel 5. *Frage:* Was gilt für die Quadrate über den Katheten im Vergleich zum Hypotenusenquadrat? *Konzept:* Die Summe der Kathetenquadrat-Flächen ist flächengleich zum Hypotenusenquadrat. Führt die Zelle „Begründung / Flächenzerlegung“ als eigene Kompetenz, wird P2 ein eigenes Atom mit **soft** Kante zu P (Reihenfolge, kein Blocker).
+4. **Atom U — Token 4 (Umkehrung / Methodenform, Bloom 3).** *Prereq:* P, hard (ohne die Relation kein Test). *Frage:* Wie prüfst du rechnerisch, ob ein Dreieck mit Seiten $p, q, r$ rechtwinklig ist? *Konzept:* Die beiden kürzeren Seiten quadrieren, addieren, mit dem Quadrat der längsten vergleichen. **Nicht** das Tripel 3-4-5 auswendig. 3-4-5 darf als *worked micro-example* auf einer Konzeptkarte stehen; Transfer braucht eine **untrainierte** Aufgabe (Astra; Pan & Rickard 2018: Transfer durch Abruf ist positiv, aber aufgabenabhängig).
+5. **Atom P, Item P3 — Token 5 (Katheten-Falle, Bloom 4).** Gleiches Zielkönnen wie P1 (der Satz in beliebiger Beschriftung), andere Darstellung → Item, kein Atom. Zwischen Items eines Atoms gibt es keine Kanten; ein Again auf P3 blockiert nur P3 und surfaced über die Atom-Kante das Fundament H. Die Frage hard/soft stellt sich nicht (O4). Modelliert ein Autor eine Falle dennoch als eigenes Atom: Kante = fachliche Abhängigkeit (hard), Remediation = Decision 4. *Frage:* $b$ ist Hypotenuse, $a$ und $c$ Katheten — wie lautet die Gleichung? *Konzept:* $a^2 + c^2 = b^2$.
+
+**Fixture-Abgleich.** Atom A01 `satz-des-pythagoras` hat heute J01 (Hypotenuse, `tier1_fast`) **und** J02 als Items. Umbau: J01 → neues Fundament-Atom H (die Aufgabe wechselt von Auswahl zu Abruf → neues Item, kein `replaces`); J02 → P1/P2 als Decision-9-Split (History bleibt, keine Mastery-Übertragung); U mit hard-Kante U → P kommt neu hinzu; A02 → A01 bleibt. Feeder-Regel (§4.2) gilt auch hier: nur Items mit Signal umbauen.
 
 Zusätzlich, **nicht** in der FSRS-Morning-Queue: ein `practice_set` (Vorschlag) mit gemischten Aufgabentypen (Pythagoras / Höhensatz / trigonometrische Zuordnung) — Interleaving als Bloom-4-Methodenwahl (Rohrer & Taylor 2007). `answer_variation` variiert Zahlen der Konzeptkarte, nicht die Relation.
 
-Sibling-Bury: PracticeItems desselben Atoms denselben Tag nicht gemeinsam vorlegen (`burySiblingCards` kennt heute nur `imported_card_bindings.note_guid`; Atom-Gruppe fehlt).
+**Atom-Sibling-Bury (O6, F2).** Items desselben Atoms nicht am selben Tag vorlegen — sonst verrät P1 die Struktur von P3 (Cue-Leakage), und der Pilot (§8) misst diesen Effekt statt Dekomposition. `burySiblingCards` kennt heute nur `imported_card_bindings.note_guid`; die Erweiterung um `tokens.atom_id` hängt an den vorhandenen Schaltern `buryNewSiblings` / `buryReviewSiblings` und ändert keinen FSRS-Zustand. Fable: Voraussetzung des Piloten; Grok: erst nach §8 — offener Dissens (§7.2 O6).
 
 ### 6.2 OKF-Import: Prerequisite-Blocking
 
@@ -271,34 +279,60 @@ Unverändert gegenüber Fables Hygiene-Commit `92438f0`: synthetischer Vorher-Mo
 
 ### 7.1 Vorgeschlagen festzuhalten (Grok 4.6; Fable/Astra sollen widersprechen, wo nötig)
 
-1. **Zielkönnen vs. Darstellung.** Gleiches Zielkönnen, andere Darstellung → weiteres PracticeItem. Anderes Zielkönnen → anderes LearningAtom. „Zwei Aufgaben können unabhängig scheitern“ erzwingt allein keinen Atom-Split (Sprache, Richtung, Cloze vs. Q/A unterscheiden sich in der Schwierigkeit; FSRS bleibt pro Karte).
+1. **Zielkönnen vs. Darstellung.** Gleiches Zielkönnen, andere Darstellung → weiteres PracticeItem. Anderes Zielkönnen → anderes LearningAtom. „Zwei Aufgaben können unabhängig scheitern“ erzwingt allein keinen Atom-Split (Sprache, Richtung, Cloze vs. Q/A unterscheiden sich in der Schwierigkeit; FSRS bleibt pro Karte). Tie-Breaker für „anderes Zielkönnen“: 7.1.2 plus die Kompetenzformulierung der Zelle — nicht „kann unabhängig scheitern“. Konsequenz für §6.1: Flächenbedeutung und Katheten-Falle sind Items des Formel-Atoms (F2).
 2. **Diagnostische Relation** als Autorenheuristik, nicht als mechanische Identitätsregel.
 3. **Kein Hard-Delete.** `replaces` nur 1:1; Split = Decision 9, keine Mastery; Feeder statt Big-Bang.
-4. **Hard ist Erfolg.** Inhaltliche Hilfe vor dem Rating → 1. Flash: null Tutor-Turns. Sokratik nach Reveal.
+4. **Hard ist Erfolg** — im Gedächtniszustand auf allen Pfaden (`reps + 1`, keine Lapse, S sinkt nicht); in Lern-/Wiederlernschritten wiederholt Hard den Schritt statt zu graduieren. Inhaltliche Hilfe vor dem Rating → 1 — **für Recall-Reviews**; Beobachtungs-Ratings im Arbeitskontext sind offen (O7). Flash: null Tutor-Turns. Sokratik nach Reveal.
 5. **Ein Qualitätsvertrag, mehrere Pfade.** Zellen zuerst; Anki ohne stillen Rewrite; Capture ≠ Publish.
-6. **Verfassung am Publish-Gate**, Kernel ohne LLM-Richter.
+6. **Verfassung am Publish-Gate**, Kernel ohne LLM-Richter. Voraussetzung: ein Capture-Pfad, der `draft` schreibt — heute keiner (§7.3).
 7. **5–15 s** = Flash-Designziel, kein Naturgesetz.
 8. **Konzeptkarte vs. Übung.** Mikrobeispiel mit kopfrechenbaren Zahlen darf in FSRS liegen; Mehrschritt und untrainierter Transfer nicht als `evaluateRating()` auf der Konzeptkarte.
 
-### 7.2 Offen — bitte Fable 5.1, danach Astra, explizit entscheiden
+### 7.2 Offen — Fable 5.1 hat abgestimmt (Runde 2); bitte GPT-6 Astra explizit entscheiden
 
 **O1. Sprachliche Klärfrage und Rating.**  
 Grok/Astra: eine Disambiguierung darf ein False Negative nach oben korrigieren. Fable: Rating nach Rückfrage nie steigern. Wenn Fable bei „nie steigen“ bleibt, ist der Tutor strenger und erzeugt mehr Again auf Tippfehlern.
 
+**Fable (Runde 2): annehmen, mit Schutzklausel.** Ein Tippfehler-Again ist kein kürzeres Intervall, sondern `reps = 0`, Lapse +1, ggf. Relearning und aufgehobene Vorbedingung für Dependents — Messfehler, kein Lernbefund. Bedingung: Die Klärfrage nennt keinen Kandidaten aus `concept`; Stufe 0 = Tippfehler-Toleranz im Grader (§3.2). „Nie steigen“ zurückgezogen.
+
 **O2. Trivia-Operationalisierung.**  
 Grok: Glyph-Karten regelmäßig unzulässig; Easy-Serie ist sitzendes Fundament, kein Auto-Flag. Fable wollte ein Kernel-Flag (Easy-Serie + S über Horizont). Astra: Relevanz braucht ein Kriterium *außerhalb* der Karte. Brauchen wir ein Flag, ein Autorenverbot, beides nicht, oder nur den diagnostischen Test?
+
+**Fable (Runde 2): ablehnen (Grok folgen).** Kein Kernel-Flag. Trivia entscheidet der diagnostische Test (7.1.2). Als Autoren-Report in §8, nicht als Regel: Erstkontakt-Easy-Quote eines Items über die Lernenden einer Zelle — „trug für diese Kohorte keine Information“, nicht „Fundament wertlos“.
 
 **O3. Geschlossene kleine Mengen.**  
 Keine Cowan-4. Bleibt irgendeine geschlossene Menge als *eine* Aufgabe zulässig (drei Aggregatzustände, vier Kongruenzsätze), oder immer Cloze/1:1? Astra: Sequenzbeherrschung ≠ gelöste Lücken.
 
+**Fable (Runde 2): annehmen, Cowan-4 zurückgezogen.** Operationalisierung in Regel 3: Mengen-Item nur, wenn das Prüfformat die Menge als Ganzes verlangt **und** die Slot-Items daneben existieren (Prüfform vs. Lernform).
+
 **O4. Soft-Kanten für Fallen.**  
 Grok/Astra: nein, Abhängigkeit ist fachlich; Remediation = Decision 4. Fable: sonst wirft jede verfehlte Falle die Formel in Relearning, und Fixtures haben 413 hard / 0 soft. Wenn Soft bleibt, braucht es ein anderes Kriterium als „ist eine Falle“.
+
+**Fable (Runde 2): soft ablehnen — strukturell gelöst.** Die Falle ist Item des Formel-Atoms (§7.1.1); zwischen Items eines Atoms gibt es keine Kante (`reconcileDerivedEdges` leitet Token-Kanten nur aus hard Atom-Kanten zum Repräsentanten ab). Ein Again auf der Falle blockiert nichts; die Frage hard/soft entsteht nicht. Eigenes Fallen-Atom → hard, Remediation = Decision 4 (Grok/Astra).
 
 **O5. Token 1 (Hypotenuse) im Pythagoras-DAG.**  
 Grok: optional, kein hard-Root. Fable: Cue-Form = Zielform, Granularität lernerabhängig. Soll Token 1 in der Zelle bleiben (Erstkontakt) oder nur angeboten werden (Decision 6, Bonus)?
 
+**Fable (Runde 2): anpassen.** „Optional“ ja, „keine hard-Kante“ nein: Ohne den Begriff ist die Katheten-Falle nicht lösbar (Regel 5). Optional wird über Decision 2 realisiert — Vorbedingung, per Selbsteinschätzung vertagbar (`precondition`-Burial, endliche Frist) — nicht über Decision 6 (Bonus gilt für Atome außerhalb der Zelle; J01 liegt drin).
+
 **O6. Pilot vor Implementierung der Queue- und Sibling-Änderungen.**  
 Queue-Bloom-Monotonie und Atom-Sibling-Bury sind Kernel-Änderungen. RFC darf sie fordern; sie sollten nicht still mit der Verfassung mitwandern, bevor §8 steht.
+
+**Fable (Runde 2): anpassen — verbleibender Dissens.** Queue-Reihenfolge: nach dem Piloten (Grok). Atom-Sibling-Bury: **vor** dem Piloten als Confound-Kontrolle, sonst misst §8 Cue-Leakage statt Dekomposition; Burial ändert keinen FSRS-Zustand, Schalter existieren. Der Pilot begrenzt Sessions über den Domain-/Kontextfilter der Queue. Astra entscheidet; folgt Astra Grok, muss §8 den Confound anders kontrollieren (höchstens ein Item pro Atom und Tag im Pilot-Protokoll).
+
+**O7. Beobachtungs-Ratings im Arbeitskontext (neu, Fable).**  
+Die Agenten-Rubrik (`skills/zam/SKILL.md:98`) vergibt für einen *assistierten* Erstlauf eine 3; §7.1.4 sagt „inhaltliche Hilfe → 1“. Auf einer *neuen* Karte entscheidet dieses Rating `initialStability`. Vorschlag als Default: Beobachtungs-Ratings auf neue Karten sind „establishing evidence“ und höchstens 2, nie 3 — oder 7.1.4 klammert Beobachtungs-Ratings ausdrücklich aus. Astra/Thomas entscheiden; nicht in dieser Runde beschließen, nur benennen.
+
+### 7.3 Implementierungsvoraussetzungen (getrennt von der Verfassung; F2)
+
+Keine Verfassungsregeln, sondern Änderungen, ohne die die Regeln Papier bleiben. Reihenfolge = Vorschlag.
+
+1. **Grader-Prompt** (`src/cli/llm/client.ts:799 ff.`): pass/fail nur gegen `concept`; `context` ist Hintergrund; 2 = mühsamer, aber korrekter Abruf, kein Teilpunkt; eindeutige Tippfehler/Kurzformen wie Vollform (O1, Stufe 0).
+2. **Agenten-Rubrik** (`skills/zam/SKILL.md:202`, `:98`): dieselbe Rating-Semantik; Beobachtungs-Ratings nach O7.
+3. **Draft-Capture:** `zam_add_token` / Ad-hoc-Import schreiben `editorial_state = 'draft'`; eine Oberfläche zeigt Drafts zum Verbessern (7.1.6).
+4. **Atom-Sibling-Bury:** `burySiblingCards` um `tokens.atom_id` erweitern, hinter den vorhandenen Schaltern (O6 — *wann*, ist offen).
+5. **Klärungs-Protokoll** (O1, Stufe 1): eine Klärfrage als Modus in `answer_feedback`, protokolliert für §8.
+6. **Zeitereignisse für §8:** gezeigt / erste Antwort / Hinweis oder Reveal / Rating (heute nur `response_time_ms` = gezeigt → Rating). Schema-Wunsch, kein Verfassungsinhalt.
 
 ---
 
@@ -311,6 +345,7 @@ Kartenstatistiken nach einem Split sind Diagnose, kein Wirksamkeitsbeweis.
 * Zufällig zugeordnete, vergleichbare Themen; gleiches Lernzeitbudget; Modi getrennt ausgewertet.
 * **Primär:** verzögerte Leistung auf vorher festgelegten, **untrainierten** Aufgaben zum selben Lernziel.
 * **Sekundär:** echte Zeit pro Lernziel (inkl. Tutor-Turns), Review-Last, Abbruch.
+* **Sekundär, Autoren-Report (O2, F2):** Erstkontakt-Easy-Quote pro Item über die Lernenden einer Zelle (erste Bewertung auf `state = 'new'` = 4). Kein Kernel-Flag; sagt „trug für diese Kohorte keine Information“, nicht „Fundament wertlos“.
 * Beobachtungen derselben Lernenden/Karten clustern; nicht jede Review als unabhängige VP zählen.
 * Zeitereignisse getrennt: gezeigt / erste Antwort abgeschickt / Hinweis oder Reveal / Rating. Erster Tastendruck ist kein Abrufabschluss; Reveal-Latenz enthält Lesen und UI.
 * Vorab festlegen, was zählt (z. B. praktisch relevante Verbesserung der Transferleistung bei gleichem Zeitbudget). Ein nicht signifikanter Unterschied falsifiziert allein nicht.
