@@ -1,6 +1,6 @@
 # Kognitionswissenschaftliche Grundlagen und Richtlinien zur Generierung und Dekomposition von Lerninhalten in ZAM
 
-**Status:** RFC / Diskussionsentwurf für Multi-Agenten-Review (Gemini, GPT-6 Astra, Fable 5.1, Grok 4.6, Thomas)  
+**Status:** RFC / Revisionsstand Runde 2 (Synthese aus Gemini 3.8 Flash, Grok 4.6, Fable 5.1, GPT-6 Astra, Thomas)  
 **Datum:** 2026-09-05  
 **Autoren:** ZAM Working Group  
 **Zweck:** Fundierung, Kriterienkatalog und einheitliche Dekompositions-Pipeline zur Ablösung monolithischer „Erkläre Konzept X“-Karten und zur Sicherung kontinuierlichen Lernerfolgs. Dieser Standard adressiert gleichermaßen Schüler-Lernpfade (z. B. Realschule Bayern Klasse 9) wie auch professionelles Entwickler- und Architekturwissen im Team (OKF-Import).
@@ -9,33 +9,29 @@
 
 ## 1. Problemaufriss: Die „monolithische Mauer“ in ZAM
 
-In der praktischen Lernerfahrung mit ZAM sowie bei der systematischen Analyse des aktuellen Datenbestands (1.165 Token in der Produktivdatenbank sowie über 200 bayerische Lehrplan-KVT-Pakete) tritt ein systematisches Problem zutage:
+In der praktischen Lernerfahrung mit ZAM sowie bei der systematischen Analyse des aktuellen Datenbestands (1.165 Token, 973 Cards, 512 Review-Logs in der Produktivdatenbank sowie 228 bayerische Lehrplan-KVT-Pakete mit 1.291 Items) treten zwei Ebenen zutage: **gemessene Korpus-Strukturen** und **beobachtbare Lern-Hürden**.
 
-### 1.1 Das generische Prompt-Muster („Erkläre X“)
-Historisch greift ZAM bei Abfragen ohne explizit formulierte Einzelfrage auf die statischen Fallback-Cues in `src/kernel/recall/prompter.ts` zurück:
-* *Bloom 1:* `Recall the definition and core concept of: {slug}`
-* *Bloom 2:* `Explain the concept and how {slug} works.`
-* *Bloom 3:* `Describe how or where you would apply the concept of {slug}.`
-* *Bloom 4:* `Analyze the trade-offs, advantages, or alternatives of {slug}.`
+### 1.1 Korpusbefunde (gemessen)
 
-**Auswirkung:**
-Dieses Muster führt zu offenen, unpräzisen Fragen wie *„Erkläre das Betriebssystem“*, *„Erkläre das ökonomische Prinzip“* oder *„Describe how or where you would apply the concept of vscode utility model split“*.
-Für den Lernenden entsteht eine unklare kognitive Aufgabe: Es muss erraten werden, welche Tiefe, welcher Aspekt und welche Details der Ersteller der Karte im Sinn hatte. Der Lernende übt kein gezieltes Wissen ab, sondern versucht, Gedanken zu lesen.
+1. **Herkunft der Aufzählungs-Monolithen:**  
+   Die weit verbreitete Annahme, der statische Fallback in `src/kernel/recall/prompter.ts` (`BLOOM_CUES`: *„Recall definition of…“*, *„Explain how… works“*) sei der Hauptverursacher schlechter Karten, trifft quantitativ nicht zu: Im Produktiv-Snapshot besitzen lediglich **28 von 1.165 Token (2,4 %)** eine leere `question`.  
+   Der tatsächliche Schwerpunkt liegt beim **Text- und Anki-Import** (`src/kernel/import/text-import.ts`, ADR 2026-08-09): **480 Token (41 %)** stammen aus diesem Pfad (`question_source = 'template'`), sind pauschal als Bloom 1 klassifiziert und stellen 101 der 144 enumerationsartigen Fragen sowie 128 der 196 Konzepte mit mehr als 40 Wörtern.
+2. **Generische Öffner sind quellenübergreifend:**  
+   Fragen, die mit *„Erkläre…“*, *„Was ist…“* oder *„Beschreibe…“* beginnen, verteilen sich gleichmäßig über alle Quellen (68 manuell verfasst, 68 durch LLM generiert, 50 importiert) – obwohl System-Prompts bereits davon abraten.
+3. **Die Schere in den KVT-Lehrplan-Fixtures:**  
+   Die Analyse aller 228 kuratierten KVT-Fixtures (652 Atome, 639 mit Tier-1/Tier-2-Paar) zeigt zwei strukturelle Schieflagen:
+   * **Tier 1 ist zu 100 % (651/651 Items) `binary_choice`:** Es wird kein aktiver Abruf gemessen, sondern Rekognition mit einer 50-prozentigen Ratewahrscheinlichkeit. Da jede geratene Antwort echte FSRS-Stabilität schreibt, entsteht eine Verzerrung des Gedächtnismodells.
+   * **Scope-Diskrepanz in Tier 2:** Die Fragen weisen einen Median von **71 Wörtern** (p90: 180 Wörter) und 215-mal zwei oder mehr eigenständige Aufgabenverben auf. Das referenzierte `concept` hat jedoch einen Median von nur **30 Wörtern**. Es werden somit 2 bis 4 Teilleistungen abgefragt, die Bewertung erfolgt jedoch gegen einen Bruchteil davon.
+4. **`sample_solution` existiert nicht im Token-Schema:**  
+   Curriculum-Fixtures enthalten oft 200–500 Wörter lange Musterlösungen in `sample_solution`. Dieses Feld existiert jedoch weder in `src/kernel/db/schema.ts` noch wird es bei `installKvtTile` in `tokens` gespeichert – es wird beim Import verworfen. Bewertet wird im Kernel und im LLM-Grader ausschließlich gegen `concept`.
 
-### 1.2 Aufzählungs-Monolithen und FSRS-Verzerrung
-Zahlreiche bestehende Token fassen 3 bis 6 eigenständige Fakten in eine einzige Karte zusammen (z. B. *„Erkläre 4 Führungsstile“*, *„Erkläre Zweck von FTP, POP3, SMTP“* oder *„Wie wird Storage bereitgestellt, welches Protokoll wird benötigt, warum dieses Protokoll und welche Reclaim Policy gilt?“*).
+### 1.2 Outcome-Hypothesen (offen)
 
-**Kognitive und mathematische Konsequenzen:**
-1. **Hohe Schwellenangst und Tipp-Ermüdung:** Die Beantwortung erfordert das Verfassen ganzer Textabsätze.
-2. **Entkopplung der FSRS-Vergessenskurven:** Die 3–6 Teilfakten besitzen im Gehirn unterschiedliche Stabilitäten ($S$). Beherrscht der Lernende Fakten A und B perfekt, scheitert jedoch an Detail C, zwingt das System zur Bewertung `1` (Again).
-3. **Frustrierendes Redundanz-Tippen:** FSRS stuft die gesamte Karte auf ein minimales Intervall zurück. Bei der nächsten Wiederholung müssen A und B erneut mühsam reproduziert werden, obwohl sie längst gefestigt sind.
-4. **Das Leech-Phänomen:** Die Karte wird zum Lernhemmnis („Mauer-Gefühl“), der Lernfluss bricht ab.
-
-### 1.3 Die Schere in den Lehrplan-Paketen (Tier 1 vs. Tier 2)
-In den kuratierten KVT-Schulpaketen klafft häufig eine extreme Lücke:
-* **Tier 1 (Fast):** Trivialer binärer Multiple-Choice-Check (z. B. *„Stack = LIFO oder FIFO?“*), der kaum aktiven Abruf erfordert.
-* **Tier 2 (Synthesis):** Ein monolithischer 400-Wörter-Essay, der Definition, Aufrufstapel, Codebeispiel und den theoretischen Vergleich von Rekursion vs. Iteration in einer einzigen Aufgabe abfragt.
-* **Das Fehlen der Stufen dazwischen:** Es fehlen atomare, aufeinander aufbauende Zwischenschritte, die ein Thema progressiv und ohne Frust erschließen.
+1. **FSRS-Verzerrung durch Mehrfakt-Karten:**  
+   *Hypothese:* Werden 3 bis 5 unabhängige Fakten in einer Karte abgefragt, besitzen sie unterschiedliche neuronale Stabilitäten ($S$). Scheitert ein Teilfakt, stuft ein Rating von 1 den gesamten Verbund zurück, was zu redundanter Wiederholung bereits beherrschter Teilfakten führt.  
+   *Empirischer Status im ZAM-Snapshot:* Plausibel, aber statistisch noch unbestätigt (Again-Rate bei Multi-Part-Fragen 16 % vs. 12 % bei Einzelfragen, $p \approx 0,14$; 0 Leeches bei 146 beübten Karten im jungen Korpus).
+2. **Kognitive Überlastung durch vage Prompts:**  
+   *Hypothese:* Prompts nach dem Muster *„Erkläre X“* führen zu Hindsight-Bias beim Selbstrating und zu hohen Abbruchraten, weil der Lernende raten muss, welche Aspekte verlangt sind.
 
 ---
 
@@ -50,181 +46,153 @@ Evidenz (Empirische Studien)
       ──> Falsifikation (Messkriterien für Scheitern)
 ```
 
-### 2.1 Das Minimum Information Principle (MIP)
+### 2.1 Minimum Information Principle (MIP) & Desirable Difficulties
 
 * **Evidenz:**
-  * Wozniak (1999) formalisiert in den *20 Rules of Formulating Knowledge* das Minimum Information Principle: Je einfacher und fokussierter ein Wissenselement formuliert ist, desto geringer ist die Vergessensrate und desto kürzer die Wiederholungszeit.
-  * Karpicke & Roediger (2008) sowie Roediger & Butler (2011) weisen nach, dass aktiver Abruf (*Testing Effect*) die Konsolidierung maximal fördert, wenn der Abruf *erfolgreich* und *punktgenau* erfolgt.
-  * Cowan (2001) zeigt, dass das menschliche Arbeitsgedächtnis im aktiven Zugriff auf etwa $4 \pm 1$ Chunks limitiert ist.
+  * Wozniak (1999): Das Minimum Information Principle besagt, dass Informationseinheiten so formuliert sein müssen, dass sie genau einen atomaren Abrufschritt darstellen.
+  * Karpicke & Roediger (2008): Wiederholter aktiver Abruf führt zu robuster Langzeitretention; der Effekt ist bei freier aktiver Produktion signifikant höher als bei passiver Rekognition.
+  * Bjork (1994) sowie Pyc & Rawson (2009, *Retrieval Effort Hypothesis*): Anstrengender, erfolgreicher Abruf konsolidiert das Gedächtnis stärker als müheloser Abruf (*Desirable Difficulties*).
 * **ZAM-Inferenz:**
-  * Eine Lernkarte darf genau **eine semantische Relation** (1 kognitiven Schritt) abfragen.
-  * Die typische Beantwortungszeit einer guten Karte liegt bei **5 bis 15 Sekunden**.
-  * Wenn ein Lernender länger als 20 Sekunden überlegen oder tippen muss, liegt kein reiner Gedächtnisabruf vor, sondern Textproduktion oder ungelöste kognitive Belastung.
+  * Eine Karte soll genau eine **diagnostische Relation** abbilden (ein Wissenselement, dessen Beherrschung oder Nichtbeherrschung eine klare didaktische Folge hat).
+  * Die Faustregel von **5 bis 15 Sekunden mentaler Abrufzeit** (im Flash-Modus) ist eine **Obergrenze für den Formulierungsumfang**, kein Plädoyer für anspruchslose Trivialitäten.
+  * Die kognitive Schwierigkeit soll aus dem **Wiederholungsintervall** resultieren (von FSRS über die Zielretention gesteuert), **nicht** aus der Unübersichtlichkeit oder Überfrachtung der Karte.
 * **Entscheidung:**
-  * **Verbot von Verbundfragen:** Jedes Token muss auf eine einzige, atomare Aussage beschränkt sein.
-  * **Karten-Verfassungsregel 1:** Kann die Karte von einem Wissenden nicht in unter 15 Sekunden mental beantwortet werden, muss sie in Sub-Tokens dekomponiert werden.
+  * Verbundfragen, die mehrere unabhängige diagnostische Relationen bündeln, sind unzulässig.
+  * *Verfassungsregel 1 (10-Sekunden-Designziel):* Karten im Flash-Modus müssen so fokussiert formuliert sein, dass ein kompetenter Lernender den Zielabruf in unter 15 Sekunden mental vollziehen kann.
 * **Falsifikation:**
-  * Atomare Karten führen gegenüber Verbundkarten zu keiner signifikanten Reduktion der Leech-Quote oder die Gesamtlernzeit pro Themengebiet steigt trotz kleinerer Karten drastisch an.
+  * Atomare Karten reduzieren weder Lapses noch Lernzeit pro Wissensgebiet im Vergleich zu Verbundkarten, oder sie führen durch Fragmentierung zu schlechterem Methoden-Transfer in komplexen Aufgabenstellungen.
 
 ### 2.2 Cognitive Load Theory: Intrinsic vs. Extraneous Load
 
 * **Evidenz:**
-  * Sweller (1988, 2010): Cognitive Load gliedert sich in *Intrinsic Load* (Schwierigkeit des Stoffs an sich durch Element-Interaktivität) und *Extraneous Load* (unnötige mentale Last durch schlechte Aufgabenstellung/Präsentation).
-  * Wenn multiple Informationselemente gleichzeitig im Arbeitsgedächtnis gehalten und koordiniert werden müssen (hohe Element-Interaktivität), kollabiert die Abrufleistung von Novizen.
+  * Sweller (1988, 2010): Der Cognitive Load gliedert sich in *Intrinsic Load* (inhärente Komplexität des Stoffs durch Element-Interaktivität) und *Extraneous Load* (mentale Zusatzbelastung durch inadäquate Instruktions- oder Fragegestaltung).
+  * Cowan (2001): Das Arbeitsgedächtnis hält unter isolierten Bedingungen ca. $4 \pm 1$ Chunks aktiv verfügbar.
 * **ZAM-Inferenz:**
-  * Eine vage Frage wie *„Erkläre das Konzept von X“* erzeugt massiven Extraneous Load: Der Lernende muss überlegen: *„Was will ZAM jetzt von mir hören? Die Definition? Die Architektur? Ein Beispiel?“*
-  * Bei Schülern (z. B. 15 Jahre, Realschule) führt unklarer Extraneous Load unmittelbar zu Resignation und dem Gefühl, „schlecht im Fach zu sein“.
+  * Vage Prompts wie *„Erkläre X“* erzeugen reinen *Extraneous Load*: Der Lernende muss ergründen, welchen Aspekt ZAM hören will, anstatt seine Kapazität für den Wissensabruf zu nutzen.
 * **Entscheidung:**
-  * **Karten-Verfassungsregel 2 (Anti-„Erkläre“-Regel):** Prompts müssen konkrete **kognitive Trigger** enthalten (z. B. *Zweck, Mechanismus, Unterscheidungsmerkmal, Bedingung, Fehlerursache*). Offene Aufforderungen wie *„Erkläre...“*, *„Beschreibe...“* oder *„Was versteht man unter...“* sind unzulässig.
+  * *Verfassungsregel 2 (Anti-„Erkläre“-Regel):* Fragen müssen einen konkreten **kognitiven Trigger** enthalten (*Zweck, Mechanismus, Kriterium, Formel, Bedingung, Fehlerursache*). Allgemeine Aufforderungen (*„Erkläre…“*, *„Beschreibe…“*) ohne Spezifikation der Zielachse sind Lint-Fehler.
 * **Falsifikation:**
-  * Lernende erzielen mit offenen Formulierungen identische Retention-Werte und geringere Abbrecherquoten als mit fokussierten Triggern.
+  * Karten mit offenen Cues erzielen bei Schülern identische oder bessere Retention-Werte und geringere Abbrecherquoten als getriggerte Karten.
 
-### 2.3 Vermeidung von Mengen und Aufzählungen (Anti-Enumeration)
+### 2.3 Vermeidung unstrukturierter Mengen (Anti-Enumeration)
 
 * **Evidenz:**
-  * Wozniak (1999, Regeln 10 & 11): Unstrukturierte Aufzählungen (*„Nenne die 4 Eigenschaften von...“*) unterliegen extremer assoziativer Interferenz. Das Gehirn speichert Listen ohne inhärente Ordnungsstruktur schlecht ab; ein vergessenes Listenelement blockiert den Abruf der übrigen.
-  * Baddeley (2000): Der phonologische Speicher zerfällt bei konkurrierenden, gleichförmigen Begriffen.
+  * Wozniak (1999, Regeln 10 & 11): Unstrukturierte Aufzählungen unterliegen starker assoziativer Interferenz; das Vergessen eines einzelnen Elements blockiert den Gesamtabruf.
+  * Conrad & Hull (1964) / Baddeley (1966): Akustisch und semantisch ähnliche Listenelemente interferieren im phonologischen Speicher.
 * **ZAM-Inferenz:**
-  * Fragen wie *„Nenne vier Führungsstile“* oder *„Welche Schritte gehören zu Prozess P?“* sind didaktische Anti-Patterns.
-  * Statt der gesamten Liste muss jedes Element der Liste über seine **charakteristische Eigenschaft** oder einen **Anwendungsfall** als 1:1-Paar abgefragt werden.
+  * Unstrukturierte Listen (z. B. *„Nenne vier Führungsstile“*) müssen vermieden werden.
+  * Ausnahmen bilden **benannte Chunks $\le 4$ Elemente**, bei denen die Aufzählung als geschlossene Einheit Prüfungswissen darstellt (z. B. *drei Aggregatzustände*, *vier Kongruenzsätze* SSS/SWS/WSW/SsW).
+  * Prozedurale Sequenzen (Schritt 1 $\rightarrow$ Schritt 2 $\rightarrow$ Schritt 3), bei denen die Reihenfolge die Information ist, sind legitim.
 * **Entscheidung:**
-  * Aufzählungen mit mehr als 2 Elementen werden verboten.
-  * Statt *„Nenne die 3 Merkmale von X“* entstehen 3 Karten:
-    1. *„Welches Merkmal von X stellt sicher, dass Y?“*
-    2. *„Wie verhält sich X im Fall Z?“*
-    3. *„Welche Bedingung schränkt X ein?“*
+  * *Verfassungsregel 3 (Chunk-Grenze & 1:1-Paarung):* Unstrukturierte Aufzählungen werden in 1:1-Beziehungen aufgeteilt (z. B. Merkmal $\rightarrow$ Name des Führungsstils) oder als Lückentext (Cloze) formuliert. Benannte Chunks bis maximal 4 Elemente oder kurze Sequenzen sind zulässig.
 * **Falsifikation:**
-  * Listen-Karten weisen im FSRS-Reviewverlauf keine höheren Wiederholungszahlen (Lapses) auf als 1:1-Merkmal-Karten.
+  * Aufzählungskarten bis 4 Elemente weisen gegenüber 1:1-Paarungen keine erhöhte Lapse-Rate auf.
 
-### 2.4 Prompt Design is Task Design (Andy Matuschak & Michael Nielsen)
-
-* **Evidenz:**
-  * Matuschak (2020): Ein Prompt ist kein statischer Notizzettel, sondern eine Verhaltensanweisung für das zukünftige Ich (*„Prompt design is task design“*). Unpräzise Prompts führen zu Scheinerfolgen (*False Positives* durch vages Wiedererkennen) oder Frustration (*False Negatives* durch unerfüllbare Detailtiefe).
-  * Nielsen (2019): Der Erfolg von Spaced Repetition im Alltag hängt an der Leichtigkeit des täglichen Abrufs. Ein Deck aus 30 Karten muss sich in 5–10 Minuten mühelos anfühlen.
-* **ZAM-Inferenz:**
-  * Die Frage muss den Zielzustand der Antwort exakt determinieren.
-  * Die Soll-Antwort (`concept`) darf nicht aus einem Lehrbuchabsatz bestehen, sondern muss auf den Punkt formuliert sein (1–2 Sätze oder ein Schlüsselbegriff).
-* **Entscheidung:**
-  * Die Referenzantwort muss die minimale, unmissverständliche Antwort sein. Kontextuelle Erläuterungen gehören in ein optionales Erklärungs-/Notizfeld (`sample_solution` oder `context`), sind aber nicht Gegenstand des Bestehen-Kriteriums.
-
-### 2.5 Scaffolding und die Wissensraum-Topologie (Prerequisite DAG)
+### 2.4 Task Design & Entscheidbarkeit (Matuschak & Nielsen)
 
 * **Evidenz:**
-  * Wood, Bruner & Ross (1976): Scaffolding – komplexe Fertigkeiten werden durch stützende Teilschritte aufgebaut, die mit zunehmender Kompetenz verblassen.
-  * Falmagne & Doignon (2011) / Knowledge Space Theory: Wissen bildet einen Halbordnungsverband. Ein komplexes Konzept kann erst stabil verankert werden, wenn dessen Grundlagen-Knoten beherrscht werden.
+  * Matuschak (2020): *„Prompt design is task design.“* Unpräzise Aufgaben verführen zu *False Positives* (Wiedererkennungstäuschung) oder *False Negatives*.
+  * Koriat & Bjork (2005): *Hindsight Bias* beim Selbstrating: Unpräzise Antworten verleiten Lernende dazu, nach dem Aufdecken zu glauben, sie hätten es „eigentlich gewusst“.
 * **ZAM-Inferenz:**
-  * Ein komplexer Sachverhalt wird nicht in eine einzelne, schwere Karte gequetscht, sondern in einen **gerichteten azyklischen Graphen (DAG)** aus 3 bis 5 Prerequisite-Knoten aufgeteilt:
-    1. *Stufe 1 (Bloom 1):* Begriff & Definition (Was ist der Fachbegriff?)
-    2. *Stufe 2 (Bloom 2):* Kernmechanismus & Kausalität (Warum / Wie funktioniert es?)
-    3. *Stufe 3 (Bloom 3/4):* Diskriminierung & Kontrast (Unterschied zu Alternative Y / Wann welches?)
-    4. *Stufe 4 (Bloom 3/4):* Diagnose & Anwendung (Szenario / Welcher Fehler liegt vor?)
+  * Das `concept` ist das **alleinige normative Bestehen-Kriterium**. Zusätzliche Erläuterungen im Feld `context` dienen dem Tutor als Erklärungshintergrund, dürfen aber vom Grader nicht als Bestehensvoraussetzung herangezogen werden.
 * **Entscheidung:**
-  * Bei Nichterinnern (Rating 1) an einem höheren Knoten greift ZAMs Blocker-Regel: Der Lernende wird nicht mit dem komplexen Problem gequält, sondern festigt zuerst die Basis-Prerequisites.
+  * *Verfassungsregel 6 (Entscheidbarkeit):* Das `concept` muss eine kanonische, entscheidbare Form aufweisen (ein Fachterminus, eine mathematische Formel, ein Zahlenwert mit Einheit oder maximal 1–2 Sätze mit genau einem prüfbaren Prädikat).
+* **Falsifikation:**
+  * Streng kanonische `concept`-Definitionen führen zu schlechterer Generalisierung in offenen Problemstellungen als freiere Antworttexte.
+
+### 2.5 Topologie, Scaffolding & Queue-Nebenwirkungen
+
+* **Evidenz:**
+  * Wood, Bruner & Ross (1976): Scaffolding unterstützt Lernende bei komplexen Aufgaben durch vorbereitende Grundlagen.
+  * Rittle-Johnson, Siegler & Alibali (2001): Konzeptuelles und prozedurales Wissen entwickeln sich iterativ und bidirektional; prozedurales Können geht deklarativem Wissen häufig voraus.
+* **ZAM-Inferenz:**
+  * Prerequisite-Kanten im ZAM-DAG kodieren **fachliche Inhaltsabhängigkeit** (*„Ohne A ist B fachlich nicht lösbar“*), **nicht** die kognitive Prozessstufe nach Bloom.
+  * Eine Anwendungsaufgabe (Bloom 3) hängt vom Begriffsinhalt ab, nicht zwingend von der Bloom-1-Definitionskarte desselben Themas.
+  * **Aufdeckung der Queue-Nebenwirkung (`queue.ts:276`):**  
+    Die aktuelle ZAM-Queue wählt neue Karten global mit `ORDER BY t.bloom_level ASC, t.slug ASC` aus. Bei umfangreichen Lehrplan-Zellen führt dies dazu, dass Lernende wochenlang ausschließlich Bloom-1-Definitionen aus dutzenden Atomen vorgelegt bekommen, bevor die erste motivierende Anwendungskarte erscheint.
+* **Entscheidung:**
+  * *Verfassungsregel 5 (Inhaltsabhängige Kanten):* Prerequisite-Kanten werden nur bei echter fachlicher Notwendigkeit vergeben. Kanten zu Prüfungsfallen oder vertiefenden Diskriminationen werden als `soft` modelliert (Reihenfolgehinweis, kein Blocker).
+  * Die ZAM-Queue für neue Karten muss themen- bzw. atom-zentriert gesteuert werden (ein Atom bzw. ein kleiner Cluster wird vollständig durchlaufen, statt globale Bloom-1-Monotonie zu erzeugen).
+* **Falsifikation:**
+  * Ein themenzentrierter Durchlauf erzeugt stärkere Cue-Leakage als eine breite globale Bloom-Staffelung.
 
 ---
 
-## 3. Dual-Mode-Architektur: Flash-Modus vs. KI-Tutor-Modus
+## 3. Dual-Mode-Architektur und Bewertungsvertrag
 
-ZAM unterstützt zwei zentrale Interaktionsmodi. Die Kartengestaltung muss für **beide** Modi optimal funktionieren:
+ZAM unterstützt zwei komplementäre Lernmodi: den schnellen **Flash-Modus** und den dialogischen **KI-Tutor-Modus**.
 
-```
-                     ┌─────────────────────────────┐
-                     │   ZAM PracticeItem / Token  │
-                     │  (Präzise Frage + Konzept)  │
-                     └──────────────┬──────────────┘
-                                    │
-               ┌────────────────────┴────────────────────┐
-               ▼                                         ▼
-      [FLASH-MODUS]                             [KI-TUTOR-MODUS]
-  - Mentaler Abruf (3-5s)                   - Schnelle Freitexteingabe
-  - Karte aufdecken                         - Semantische Bewertung durch KI
-  - Blitzschneller Selbstabgleich           - Gezielter Rückfragen-Loop bei Lücken
-  - Selbstbewertung 1-4                     - Vorschlag / Dialog-Führung
-```
+### 3.1 Der Bewertungsvertrag im KI-Tutor-Modus (Astra-Fable-Synthese)
 
-### 3.1 Anforderungen des Flash-Modus
-* **Ziel:** Maximale Durchsatzrate, minimaler Reibungsverlust, reines Active Recall im Kopf.
-* **Karten-Anforderung:**
-  * Die Frage muss eindeutig sein. Der Lernende weiß sofort, welcher Begriff oder Zusammenhang gesucht ist.
-  * Beim Aufdecken muss die Antwort in 1 Sekunde optisch erfasst werden können. Kein Lesen von Schachtelsätzen.
+Der FSRS-Algorithmus in `src/kernel/scheduler/fsrs.ts:399-413` teilt Reviews strikt in zwei Pfade:
+* `rating === 1` (Again): Aufruf von `stabilityAfterForgetting()`. Die Stabilität bricht ein, die Karte wird wiederholt. Nur hier greift `cascadeBlock()`.
+* `rating === 2, 3, 4` (Hard, Good, Easy): Aufruf von `stabilityAfterSuccess()`. **Alle drei Werte gelten als erfolgreicher Abruf**, verlängern das Intervall und steigern die Stabilität.
 
-### 3.2 Anforderungen des KI-Tutor-Modus
-* **Ziel:** Interaktive Lernbegleitung, gezielte Vertiefung, Klärung von Missverständnissen.
-* **Karten-Anforderung:**
-  * Da die Frage atomar ist, muss der Lernende keinen Aufsatz tippen (1–5 Wörter oder eine kurze Formel genügen).
-  * **Der Rückfragen-Loop:** Wenn der Lernende eine unvollständige Antwort eingibt, bricht die KI nicht ab, sondern hakt gezielt nach:
-    * *Beispiel:* Frage nach Pythagoras-Bedingung. Schüler tippt: *$a^2 + b^2 = c^2$*. KI-Tutor hakt nach: *„Richtig! Aber für welche Art von Dreiecken gilt diese Formel ausschließlich?“* $\rightarrow$ Schüler tippt: *„Rechtwinklige“*. Erst danach wird der Schritt abgeschlossen.
-  * Der Tutor bewertet die Antwort semantisch gegen `concept` und schlägt ein ehrliches Rating (1–4) vor.
+Daraus folgt zwingend: **Ein Abruf, der erst durch inhaltliche Hilfestellung des Tutors gelang, darf niemals mit Hard (2) bewertet werden.** Wer nach einem Hinweis ein Rating von 2 vergibt, verbucht einen Gedächtnisverlust fälschlich als Erfolg und verzerrt die FSRS-Vergessenskurve.
+
+#### Verbindliche Bewertungsmatrix für den KI-Tutor:
+
+| Situation bei der Antwortanalyse | Tutor-Aktion | Rating-Vorschlag | Begründung |
+|---|---|---|---|
+| **Vollständig und eigenständig korrekt** | Bestätigen, kurze Verstärkung | **3 (Good)** oder **4 (Easy)** | Ungestützter Abruferfolg. |
+| **Ohne Inhaltshilfe korrekt, aber zögerlich/mühsam** | Bestätigen | **2 (Hard)** | Erfolgreicher Abruf an der Vergessensgrenze. |
+| **Mehrdeutige Eingabe, Tippfehler, informelle Kurzform** | **Max. 1 Disambiguierungs-Rückfrage** (z. B. *„Meinst du NFS v3 oder v4.1?“*) | **Entsprechend der korrigierten Eingabe (2, 3 oder 4)** | Sprachliche Präzisierung; das Wissen war bereits präsent. |
+| **Inhaltlicher Fehler oder Teilaspekt fehlt** | **Lösungstragender Hinweis** oder direkte Auflösung | **Zwingend 1 (Again)** | Der ungestützte Abruf ist gescheitert. Der Hinweis dient dem Lernen für das nächste Intervall. |
+| **„Weiß ich nicht“ / Leere Eingabe** | Sofortige Auflösung und Erklärung | **Zwingend 1 (Again)** | Keine künstlichen Rückfrageschleifen bei Wissenslücken. |
+
+*Regel für Vorab-Dialoge:* Der Tutor darf vor der Bewertung maximal **eine** Disambiguierungsfrage stellen. Ausführliche Sokratische Dialoge, Elaboration und Vertiefung gehören in den **Post-Reveal-Dialog** (nach ADR 2026-07-06b), wo sie FSRS nicht verzerren.
 
 ---
 
-## 4. Die einheitliche ZAM-Dekompositions-Pipeline
+## 4. Die Dekompositions-Pipeline und Systemarchitektur
 
-Es darf im System **nur einen einzigen normativen Weg** geben, wie beliebige Lernquellen in ZAM-Lerntoken transformiert werden:
+### 4.1 Differenzierung: Qualitätsvertrag vs. Ingestionspfade
+
+Es gibt **einen gemeinsamen Qualitätsvertrag** (die Karten-Verfassung), aber **vier differenzierte Systempfade**:
 
 ```
 ┌─────────────────────────────────────────────────────────────────────────────┐
-│                             LERNQUELLE (SOURCE)                             │
-├──────────────────────────────────────┬──────────────────────────────────────┤
-│          PERSISTENTE QUELLE          │           FLÜCHTIGE QUELLE           │
-│  - LehrplanPLUS / Schulbuch          │  - Gescannte handschriftliche Notiz  │
-│  - OKF-Architektur-Artikel im Repo   │  - Meeting-Mitschrift / Whiteboard   │
-│  - Offizielle Dokumentation          │  - Defektes / monolithisches Alttyp  │
-│  (bleibt dauerhaft als Anker)        │  (wird nach Zerlegung gelöscht)      │
-└──────────────────────────────────────┴──────────────────────────────────────┘
+│                   ZAM QUALITÄTSVERTRAG (KARTEN-VERFASSUNG)                  │
+└──────────────────────────────────────┬──────────────────────────────────────┘
                                        │
-                                       ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                    ZAM DECOMPOSER PROTOKOLL (4 SCHRITTE)                    │
-├─────────────────────────────────────────────────────────────────────────────┤
-│ 1. Atom-Identifikation:                                                     │
-│    Welche Fakten/Prinzipien muss der Lernende frei aus dem Gedächtnis       │
-│    abrufen können? (Fakten, die man nachschlägt, bleiben in der Quelle!)    │
-│                                                                             │
-│ 2. Atomare PracticeItem-Formulierung:                                       │
-│    Formuliere pro Fakt genau eine Frage mit kognitivem Trigger und einer    │
-│    1-2-Satz-Referenzantwort. Verbot von "Erkläre X".                        │
-│                                                                             │
-│ 3. Prerequisite-DAG-Verdrahtung:                                            │
-│    Ordne die Tokens hierarchisch (Definition -> Mechanismus -> Anwendung).  │
-│                                                                             │
-│ 4. Grounding & Weltwissen-Verknüpfung:                                      │
-│    - Persistente Quelle: setze source_link (#anchor).                       │
-│    - Flüchtige Quelle: verknüpfe, wo immer möglich, mit externem           │
-│      Weltwissen (Wikidata-ID, Wikipedia, Lehrplan-Code).                    │
-└─────────────────────────────────────────────────────────────────────────────┘
-                                       │
-                                       ▼
-┌─────────────────────────────────────────────────────────────────────────────┐
-│                      ZAM KNOWLEDGE TOKENS & CARDS                           │
-│ - FSRS-optimiert (homogene Stabilität S)                                    │
-│ - 5-15 Sekunden Antwortzeit                                                 │
-│ - Voll kompatibel mit Flash-Modus und KI-Tutor-Modus                        │
-└─────────────────────────────────────────────────────────────────────────────┘
+      ┌──────────────────┬─────────────┴──────┬──────────────────┐
+      ▼                  ▼                    ▼                  ▼
+[Kuratierte Zellen]  [OKF-Import]       [Anki/Text-Import]   [Ad-hoc Capture]
+- Höchste Priorität  - Agent zerlegt    - Keine stillen      - Erfassen als
+- 1 Atom = 1 Relat.  - source_link       Rewrites             `draft`
+- Validiert vor        Anker (#heading) - Lint-Hinweise &    - Verfassung gilt
+  Publish            - Unbestätigt ->     Opt-in-Split         am Publish-Gate
+                       maintenance
 ```
 
-### 4.1 Differenzierung der Quellen
-1. **Persistente Quellen:**
-   * Bleiben dauerhaft verfügbar (z. B. `docs/okf/telemetry.md#prometheus` oder URL zu LehrplanPLUS).
-   * Werden als stabiler `source_link` im Token hinterlegt.
-2. **Flüchtige (ephemere) Quellen:**
-   * Verlieren ihre Existenz (z. B. ein handschriftlicher Zettel, ein Brainstorming-Whiteboard oder ein qualitativ unzureichendes Alt-Token).
-   * Das Alt-Token dient als Quellmaterial für den Decomposer. Sobald die neuen atomaren Tokens mit ihren Prerequisite-Kanten angelegt sind, wird das Alt-Token **vollständig entfernt** (bzw. ersetzt).
-   * **Pflicht zum Weltwissen-Anker:** Da die Originalquelle flüchtig ist, sucht der Decomposer nach einem kanonischen Anker im Weltwissen (z. B. Wikidata-Entity `Q11518` für Satz des Pythagoras oder Wikipedia-Link), sofern es sich nicht um geheimes Projektwissen handelt.
+### 4.2 Lebenszyklus: Kein Hard-Delete von Tokens (Korrektur von „Löschen“)
+
+Alte oder monolithische Tokens dürfen **niemals per `DELETE FROM tokens` gelöscht werden**, da CASCADE-Foreign-Keys verknüpfte Session-Steps und Review-Logs vernichten würden.
+
+Wird ein Monolith dekomponiert, greift der **Split-Mechanismus nach ADR 2026-08-14 Decision 9**:
+1. Die neuen, atomaren Tokens werden angelegt (inkl. ihrer Prerequisite-Kanten).
+2. Das alte monolithische Token wird auf `editorial_state = 'deprecated'` gesetzt oder verbleibt in `maintenance`.
+3. Bestehende `review_logs` des alten Tokens bleiben für die persönliche Lernhistorie und Auswertung erhalten.
+4. **Keine automatische Mastery-Übertragung:** Die neuen Tokens starten als Kaltstart-Karten. Die Beherrschung des Monolithen garantiert nicht die Beherrschung aller Einzelfacetten.
+
+### 4.3 Verankerung im Weltwissen vs. Quell-Anker
+* **Weltwissen:** Gehört als `ConceptAlignment` (`skos:exactMatch`, `skos:broadMatch`) auf die Ebene des **`LearningAtom`** (z. B. Wikidata `Q11518` für den Satz des Pythagoras).
+* **Quell-Anker:** Der `source_link` auf Token-Ebene referenziert den konkreten Textabschnitt (z. B. `docs/okf/prerequisite-blocking.md#unblockready` oder LehrplanPLUS-URL).
 
 ---
 
-## 5. Die 5 Kriterien der ZAM-Karten-Verfassung
+## 5. Die 6 Kriterien der ZAM-Karten-Verfassung
 
-Jeder Decomposer (ob Agenten-Prompt bei `zam_okf_import`, KI-Assistent oder menschlicher Autor) ist an folgende 5 Kardinalregeln gebunden:
+Die Verfassungsregeln gelten verbindlich am **Publish-Gate** (`editorial_state = 'published'`) für kuratierte Zellen und OKF-Importe:
 
-| Nr. | Regel | Beschreibung | Negativ-Beispiel | Positiv-Beispiel |
-|---|---|---|---|---|
-| **1** | **10-Sekunden-Regel** | Die Karte muss mental in 5–15 Sekunden beantwortbar sein. | Frage erfordert 3 Minuten Nachdenken oder Tippen. | Kurze, fokussierte Frage nach einem konkreten Fakt. |
-| **2** | **Anti-„Erkläre“-Regel** | Kein offenes *„Erkläre X“*. Immer konkrete Trigger: *Zweck*, *Mechanismus*, *Unterschied*, *Bedingung*, *Folge*. | *„Erkläre das ökonomische Prinzip.“* | *„Welches Ziel verfolgt das Maximalprinzip bei gegebenem Mitteleinsatz?“* |
-| **3** | **Single-Fakt-Konzept** | Die Antwort (`concept`) umfasst maximal 1–2 Sätze oder einen Terminus. Keine Aufzählungen $> 2$. | 4 Führungsstile mit Definitionen in einer Karte. | Pro Führungsstil eine Karte (z. B. Merkmal $\rightarrow$ Begriff). |
-| **4** | **Obligatorische Frage** | Das Feld `question` ist zwingend erforderlich; keine leeren Cues mit Fallback auf Slug-Templates. | `question: null` (erzeugt *„Recall definition of slug“*). | Explizit und präzise formulierte Frage auf Deutsch/Zielsprache. |
-| **5** | **Prerequisite-Kette** | Höhere Konzepte (Bloom $\ge 3$) dürfen nicht isoliert stehen, sondern müssen Basiskonzepte als Vorbedingungen verlinken. | Komplexe Kurvendiskussion ohne Ableitungsregel-Prereq. | Basis-Token (Ableitungsregel) ist Prerequisite für Extremwert-Token. |
+| Nr. | Regel | Operative Definition & Lint-Bedingung |
+|---|---|---|
+| **1** | **10-Sekunden-Designziel** | Der intendierte Abruf muss von einem Wissenden mental in 5–15 Sekunden vollziehbar sein. Obergrenze gegen Überfrachtung, kein Verbot anspruchsvoller Aufgaben. |
+| **2** | **Anti-„Erkläre“-Regel** | Fragen müssen eine konkrete Zielachse vorgeben (*Zweck, Mechanismus, Kriterium, Formel, Bedingung, Fehlerursache*). Allgemeine Aufforderungen (*„Erkläre X“*) ohne Achsenspezifikation sind Lint-Fehler. |
+| **3** | **Chunk-Grenze & 1:1-Paarung** | Keine unstrukturierten Mengen. Bei Listen $\le 4$ Elementen ist geschlossenes Abfragen nur zulässig, wenn die Menge als Ganzes Zielkönnen ist. Größere Mengen werden als 1:1-Merkmalpaare oder Cloze abgebildet. |
+| **4** | **Scope-Gleichheit (Frage $\leftrightarrow$ Konzept)** | Die Frage darf nur das fordern, was im `concept` definiert ist. Feld `question` ist obligatorisch und darf nicht leer sein. Keine statischen Slug-Echos. |
+| **5** | **Inhaltsabhängige Kanten** | Kanten kodieren fachliche Abhängigkeit (*„Ohne A ist B fachlich nicht lösbar“*), nicht kognitive Bloom-Stufen. Kanten zu Prüfungsfallen/Diskriminationen sind `soft`. |
+| **6** | **Entscheidbarkeit** | Das `concept` muss kanonisch prüfbar sein (Terminus, Formel, Wert mit Einheit, max. 1–2 Sätze mit einem Prädikat). Feld `context` dient nur dem Feedback, nie als Bestehenshürde. |
 
 ---
 
@@ -234,135 +202,129 @@ Jeder Decomposer (ob Agenten-Prompt bei `zam_okf_import`, KI-Assistent oder mens
 
 *Ziel: Ein 15-jähriges Mädchen soll den Stoff schnell erfassen, Lernerfolge feiern und sicher in Schulaufgaben werden.*
 
-#### Vorher (KVT-Fixture / Monolith):
-* **Tier 1:** *„Welche Dreiecksseite liegt im rechtwinkligen Dreieck stets dem 90°-Winkel gegenüber?“* [Binary Choice: Hypotenuse vs Ankathete] *(Zu trivial, kein echter Lerntransfer)*.
-* **Tier 2:** *„Formuliere den Satz des Pythagoras für ein rechtwinkliges Dreieck mit Katheten a, b und Hypotenuse c und gib seine geometrische Flächenbedeutung an.“*  
-  *Antwort:* Ganzer Fließtext über Kathetenquadrate, Hypotenusenquadrat und Umkehrung. Wenn sie die Umkehrung vergisst, scheitert die ganze Karte.
+#### Vorher (Curriculum-Fixture `de-by-realschule-9-mathematik-pythagoras-trigonometrie-kvt.json`):
+* **Item J01 (Tier 1):**  
+  *Frage:* *„Welche Dreiecksseite liegt im rechtwinkligen Dreieck stets dem 90°-Winkel gegenüber und ist die längste Seite?“*  
+  *Fast Check:* `binary_choice` (Hypotenuse vs. Ankathete).  
+  *Problem:* Die Frage nennt die Definition bereits im Text; 50 % Ratechance schreibt echte FSRS-Stabilität, ohne aktiven Abruf zu verlangen.
+* **Item J02 (Tier 2):**  
+  *Frage:* *„Formuliere den Satz des Pythagoras für ein rechtwinkliges Dreieck mit Katheten a, b und Hypotenuse c und gib seine geometrische Flächenbedeutung an.“* (71 Wörter in typischen Tier-2-Fixtures).  
+  *Konzept:* *„a² + b² = c² (Kathetenquadrate = Hypotenusenquadrat)“*.  
+  *Problem:* Scope-Diskrepanz. Zwei Teilaufgaben in der Frage gegen eine Kurzformel im Konzept.
 
 #### Nachher (Progressiver ZAM-Prerequisite-DAG):
 ```
-[Token 1: Hypotenuse-Lage] (Bloom 1)
-         │
+[Token 1: Hypotenuse-Eigenschaft] (Bloom 1)
+         │ [hard]
          ▼
 [Token 2: Pythagoras-Formel] (Bloom 1)
-         │
-         ├────────────────────────────────┐
+         │ [hard]
+         ├────────────────────────────────┐ [soft]
          ▼                                ▼
-[Token 3: Geometrische Flächenbedeutung]  [Token 4: Umkehrung / Rechtwinkligkeits-Test]
-(Bloom 2)                                 (Bloom 3)
-                                                  │
-                                                  ▼
-                                          [Token 5: Katheten-Falle (Variablen-Tausch)]
-                                          (Bloom 4)
+[Token 3: Umkehrung / Rechtwinkligkeit]   [Token 4: Katheten-Falle (Variablen-Tausch)]
+(Bloom 3)                                 (Bloom 4)
 ```
 
-1. **Token 1 (Geometrie-Fundament):**  
-   *Frage:* Welcher Dreiecksseite liegt im rechtwinkligen Dreieck der 90°-Winkel stets gegenüber?  
-   *Antwort:* Der **Hypotenuse** (immer die längste Seite).
-2. **Token 2 (Kernformel):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Wie lautet die Gleichung des Satzes des Pythagoras für Katheten $a, b$ und Hypotenuse $c$?  
-   *Antwort:* $a^2 + b^2 = c^2$
-3. **Token 3 (Flächenbedeutung):**  
-   *Prerequisite:* Token 2  
-   *Frage:* Was besagt der Satz des Pythagoras über die Flächen der Quadrate über den Katheten im Vergleich zum Hypotenusenquadrat?  
-   *Antwort:* Die Summe der beiden Kathetenquadrat-Flächen ist **flächengleich** zum Hypotenusenquadrat ($A_a + A_b = A_c$).
-4. **Token 4 (Rechnerischer Nachweis / Umkehrung):**  
-   *Prerequisite:* Token 2  
-   *Frage:* Ein Dreieck hat die Seitenlängen $3$, $4$ und $5$. Mit welcher Rechnung weist du nach, dass es rechtwinklig ist?  
-   *Antwort:* $3^2 + 4^2 = 9 + 16 = 25 = 5^2$ (Die Pythagoras-Gleichung ist erfüllt).
-5. **Token 5 (Typische Prüfungsfalle / Diskriminierung):**  
-   *Prerequisite:* Token 2  
+1. **Token 1 (Geometrisches Merkmal – Bloom 1):**  
+   *Frage:* Welche Eigenschaft zeichnet die Hypotenuse in jedem rechtwinkligen Dreieck bezüglich ihrer Lage und Länge aus?  
+   *Konzept:* Sie liegt dem 90°-Winkel gegenüber und ist die längste Seite des Dreiecks.
+2. **Token 2 (Kernformel – Bloom 1):**  
+   *Prerequisite:* Token 1 (`hard`)  
+   *Frage:* Wie lautet die Gleichung des Satzes des Pythagoras für ein rechtwinkliges Dreieck mit Katheten $a, b$ und Hypotenuse $c$?  
+   *Konzept:* $a^2 + b^2 = c^2$
+3. **Token 3 (Rechnerischer Nachweis / Umkehrung – Bloom 3):**  
+   *Prerequisite:* Token 2 (`hard`)  
+   *Frage:* Ein Dreieck hat die Seiten $3$, $4$ und $5$. Mit welchem Rechenansatz prüfst du, ob das Dreieck rechtwinklig ist?  
+   *Konzept:* Durch Einsetzen in die Umkehrung: $3^2 + 4^2 = 9 + 16 = 25 = 5^2$ (Gleichung erfüllt $\rightarrow$ rechtwinklig).
+4. **Token 4 (Typische Prüfungsfalle / Diskriminierung – Bloom 4):**  
+   *Prerequisite:* Token 2 (`soft` – Nichtbestehen blockiert nicht die Basisformel)  
    *Frage:* In einem rechtwinkligen Dreieck ist $b$ die Hypotenuse, während $a$ und $c$ die Katheten sind. Wie lautet der Satz des Pythagoras hier?  
-   *Antwort:* $a^2 + c^2 = b^2$ *(Die Hypotenuse steht stets allein im Quadrat!)*
-
-**Ergebnis für die Schülerin:**
-Jede Frage erfordert nur 5–10 Sekunden. Hat sie die Variablenvertauschung (Token 5) nicht parat, verliert sie nicht Token 1–4. Der KI-Tutor kann bei Token 5 sofort einspringen und ihr die Angst vor dieser Prüfungsfalle nehmen.
+   *Konzept:* $a^2 + c^2 = b^2$ (Die Hypotenuse steht stets isoliert im Quadrat).
 
 ---
 
 ### 6.2 Entwickler- & Architekturwissen (OKF-Import: Prerequisite-Blocking im ZAM-Kernel)
 
-*Ziel: Eine Entwicklerin, die neu am ZAM-Kernel arbeitet, soll die Blocking-Regeln im Morgen-Review verinnerlichen — ohne Tipp-Ermüdung und ohne den Artikel jedes Mal nachzuschlagen.*
+*Ziel: Eine Entwicklerin, die neu am ZAM-Kernel arbeitet, soll die Blocking-Regeln im Morgen-Review verinnerlichen — ohne Tipp-Ermüdung.*  
+*Quelle (persistent):* `docs/okf/prerequisite-blocking.md`
 
-*Quelle (persistent):* `docs/okf/prerequisite-blocking.md` — ein OKF-Artikel im Repo, der als dauerhafter `source_link`-Anker dient. Alle Aussagen unten sind gegen `src/kernel/scheduler/blocker.ts` und `src/kernel/recall/actions.ts` geprüft.
-
-#### Vorher (unterdekomponierter OKF-Import: ein Token für den ganzen Artikel):
-* **Slug:** `zam-prerequisite-blocking`
+#### Vorher (Unterdekomponierter OKF-Import):
 * **Frage:** *„Erkläre ZAMs Prerequisite-Blocking: Wann wird eine Karte blockiert, was passiert mit den Vorbedingungen, wann wird sie wieder freigegeben, und warum ist das nicht Teil von `evaluateRating()`?“*
-* **Konzept:** *„Bei Rating 1 auf einem Token mit Prerequisites blockiert `cascadeBlock()` dessen Karte (`blocked = 1`) und legt für alle direkten Prerequisites Karten an, unblocked und sofort fällig; `unblockReady()` gibt die Karte frei, sobald alle direkten Prerequisites `reps ≥ 1` haben und selbst nicht blockiert sind, kaskadierend; Blocking ist absichtlich nicht Teil von `evaluateRating()`, sondern `executeReviewAction()` koordiniert Card-Update, Review-Log und Blocking in einer Transaktion; der Atom-Graph (`hard`/`soft`) ist kein Admission-Gate.“*
-
-Vier Fragen in einer, sechs Relationen in einer Antwort. Wer fünf davon beherrscht und die Freigabebedingung vergisst, bewertet mit `1` und tippt beim nächsten Mal alle sechs erneut. Der KI-Tutor muss eine 70-Wörter-Paraphrase gegen sechs Relationen bewerten — und weiß nicht, welche davon „bestanden“ heißt.
+* **Konzept:** Ein 80 Wörter langer Absatz mit sechs zusammenhängenden Kachaussagen.
 
 #### Nachher (Progressiver ZAM-Prerequisite-DAG):
-```
-                     [Token 1: Auslöser von cascadeBlock()] (Bloom 1)
-                        │            │            │            │
-        ┌───────────────┘            │            │            └───────────────┐
-        ▼                            ▼            ▼                            ▼
-[Token 2: Wirkung auf     [Token 3: Direkte      [Token 5: Trennung von     [Token 6: Kein
- die verfehlte Karte]      Fundamente werden      evaluateRating()]          Admission-Gate]
- (Bloom 2)                 materialisiert]        (Bloom 2)                  (Bloom 4)
-        │                  (Bloom 2)
-        │                            │
-        └─────────────┬──────────────┘
-                      ▼
-      [Token 4: Freigabe durch unblockReady()] (Bloom 3)
-```
-
 1. **Token 1 (Auslöser – Bloom 1):**  
-   *Frage:* Unter welcher Bedingung ruft `executeReviewAction()` nach einem Rating `cascadeBlock()` auf?  
-   *Antwort:* Nur bei **Rating 1 (Again)** auf einem Token, das **mindestens ein Prerequisite** hat.  
-   *source_link:* `docs/okf/prerequisite-blocking.md`
-2. **Token 2 (Wirkung auf die verfehlte Karte – Bloom 2):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Was geschieht mit der Karte des verfehlten Tokens, wenn `cascadeBlock()` läuft?  
-   *Antwort:* Sie wird **`blocked = 1`** gesetzt und verlässt die Review-Queue, bis sie wieder freigegeben wird.  
-   *source_link:* `docs/okf/prerequisite-blocking.md`
+   *Frage:* Unter welcher Bedingung löst `executeReviewAction()` den Aufruf von `cascadeBlock()` aus?  
+   *Konzept:* Nur bei **Rating 1 (Again)** auf einer Karte, deren Token **mindestens ein Prerequisite** besitzt.
+2. **Token 2 (Wirkung auf verfehlte Karte – Bloom 2):**  
+   *Prerequisite:* Token 1 (`hard`)  
+   *Frage:* Welchen Status erhält die Karte des verfehlten Tokens, wenn `cascadeBlock()` ausgeführt wird?  
+   *Konzept:* Sie wird auf `blocked = 1` gesetzt und verlässt die aktive Review-Queue.
 3. **Token 3 (Fundamente materialisieren – Bloom 2):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Für welche Tokens legt `cascadeBlock()` Karten an, damit die Lücke geschlossen werden kann?  
-   *Antwort:* Für jedes **direkte** Prerequisite eine Karte (unblocked, sofort fällig) — **nie für die transitive Hülle**.  
-   *source_link:* `docs/okf/prerequisite-blocking.md`
-4. **Token 4 (Freigabe – Bloom 3):**  
-   *Prerequisites:* Token 2, Token 3  
-   *Frage:* Wann gibt `unblockReady()` eine blockierte Karte wieder frei?  
-   *Antwort:* Wenn **alle direkten Prerequisites `reps ≥ 1`** haben und selbst nicht blockiert sind; die Freigabe kaskadiert im selben Aufruf.  
-   *source_link:* `docs/okf/prerequisite-blocking.md`
-5. **Token 5 (Architekturentscheidung – Bloom 2):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Warum ist Blocking nicht Teil von `evaluateRating()`, sondern von `executeReviewAction()`?  
-   *Antwort:* Damit **FSRS-Rechnung und Lernpfad-Policy getrennt** bleiben: `evaluateRating()` aktualisiert nur den Gedächtniszustand; `executeReviewAction()` entscheidet über Blocking und bündelt Card-Update, Review-Log und Blocking in **einer Transaktion**.  
-   *source_link:* `docs/okf/prerequisite-blocking.md`
-6. **Token 6 (Diskriminierung / typische Fehlvorstellung – Bloom 4):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Sperrt ein unerfülltes Prerequisite den Zugang zu einer abhängigen Karte, bevor sie je gefragt wurde?  
-   *Antwort:* **Nein.** Blocking ist **reaktiv** (nur nach Rating 1); der Graph beeinflusst Auswahl und Reihenfolge, nie den Zugang. Ein aufgeschobenes Fundament ist nur Burial (`buried_until`), kein Beleg.  
-   *source_link:* `docs/okf/prerequisite-blocking.md#atom-prerequisites-and-entry-assessment`
-
-*Bewusst nicht tokenisiert* (Nachschlagewissen, bleibt im Artikel — Schritt 1 des Decomposer-Protokolls): die API-Namen `addPrerequisite()`/`removePrerequisite()`, die Zyklus-Rollback-Regel des OKF-Re-Imports, die zitierten Testdateien.
-
-**Ergebnis für die Entwicklerin:**
-Jede Karte ist im Flash-Modus in wenigen Sekunden entschieden oder im Tutor-Modus mit einem Stichwort beantwortet (*„Rating 1 + Prerequisite“*, *„reps ≥ 1“*, *„nein, reaktiv“*). Verfehlt sie Token 6, bleiben Token 1–5 unberührt. Weil die Quelle persistent ist, zeigt jeder `source_link` auf den Artikel; ändert sich der Kernel, aktualisiert der OKF-Re-Import die betroffenen Tokens (`update`/`replace`), statt sie zu löschen.
+   *Prerequisite:* Token 1 (`hard`)  
+   *Frage:* Für welche Vorbedingungen legt `cascadeBlock()` neue Karten im Deck an?  
+   *Konzept:* Ausschließlich für **direkte Prerequisites** (sofort unblocked und fällig), nie für die transitive Hülle.
+4. **Token 4 (Freigabebedingung – Bloom 3):**  
+   *Prerequisites:* Token 2, Token 3 (`hard`)  
+   *Frage:* Welche Bedingung muss erfüllt sein, damit `unblockReady()` eine blockierte Karte freigibt?  
+   *Konzept:* **Alle direkten Prerequisites müssen `reps ≥ 1`** aufweisen und selbst unblockiert sein.
+5. **Token 5 (Architekturtrennung – Bloom 2):**  
+   *Prerequisite:* Token 1 (`soft`)  
+   *Frage:* Warum ist Prerequisite-Blocking in `executeReviewAction()` implementiert und bewusst nicht in `evaluateRating()`?  
+   *Konzept:* Zur sauberen Trennung von mathematischer FSRS-Intervallberechnung und relationaler Lernpfad-Policy.
 
 ---
 
-## 7. Diskussionsfragen für den Multi-Agenten-Review
+## 7. Synthese und Beschlusslage zu den 4 Diskussionsfragen
 
-Zur Vorbereitung der Beratung mit **GPT-6 Astra**, **Fable 5.1** und **Grok 4.6** stellen wir folgende offene Kernfragen zur Debatte:
+Auf Basis der Stellungnahmen von **Grok 4.6**, **Fable 5.1** und **GPT-6 Astra** wird folgender Konsens festgehalten:
 
 ### Frage 1: Granularitätsgrenze (Atomarität vs. Trivialität)
-*Wo verläuft die exakte Grenze zwischen einem wertvollen atomaren Konzept und einer trivialen Pseudokarte?*  
-*Diskussionspunkt:* Wenn wir mathematische Formeln atomisieren, besteht die Gefahr, Formelbestandteile isoliert abzufragen (*„Was bedeutet das Zeichen c?“*). Wie lautet die Heuristik, um echte kognitive Bausteine von inhaltsleeren Trivia abzugrenzen?
+* **Beschluss:** Ein Wissenselement ist atomar, wenn es **genau ein eigenständiges Zielkönnen** (Target Competency) in einer diagnostischen Relation prüft.
+* **Trivialitäts-Kriterium:** Trivia liegt vor, wenn das Nichtwissen des Fakts keine Auswirkung auf Folgeaufgaben hat und keine didaktische Intervention auslöst. Das Zerteilen von Formeln in Glyphen (*„Was bedeutet das Zeichen c?“*) ist unzulässig, sofern die Variablenbindung nicht die konkrete Fehlerursache darstellt.
+* **Falsifikation:** Karten, die über alle Lernenden hinweg eine Ersttrefferquote von $\approx 100\,\%$ aufweisen und keinerlei Vorhersagekraft für Folge-Items besitzen, werden als Trivia gekennzeichnet.
 
-### Frage 2: Handhabung von MINT-Rechenschritten in FSRS
-*Wie integrieren wir Rechenaufgaben (z. B. in Mathe/Physik 9. Klasse) in einen Spaced-Repetition-Workflow, ohne dass die Schülerin jedes Mal Zettel und Taschenrechner holen muss?*  
-*Vorschlag:* Unterscheidung zwischen **Konzept-Karten** (Kopfrechnen mit einfachen Zahlen wie $3, 4, 5$ zur Veranschaulichung des Rechenwegs) und **Übungsaufgaben** (die außerhalb der schnellen FSRS-Queue als separate Übungssessions fungieren).
+### Frage 2: MINT-Rechenschritte und Transfer
+* **Beschluss:** 
+  1. **Konzept-Karten (FSRS-Queue):** Trainieren den unmittelbaren Rechenansatz anhand einfacher, kopfrechenbarer Zahlen (z. B. $3, 4, 5$).
+  2. **Methoden-Diskriminationskarten (FSRS-Queue, Bloom 4):** Trainieren die Methodenwahl ohne Rechenaufwand (*„Welcher mathematische Satz ist hier anzuwenden?“*).
+  3. **Mehrschrittige Übungsaufgaben:** Werden in separaten **`practice_set`**-Sessions außerhalb der täglichen FSRS-Recall-Queue abgewickelt und dürfen die FSRS-Kartenstabilität nicht direkt manipulieren.
 
-### Frage 3: Modellierung im ZAM-Schema (Multi-PracticeItems vs. DAG-Token)
-*Soll ein semantisches Wissensziel (`LearningAtom`) im Regelfall mehrere `PracticeItems` bündeln (z. B. ein Item für Definition, ein Item für Anwendung), oder soll jedes Item als eigenständiges Token mit eigener Prerequisite-Kante modelliert werden?*  
-*Trade-off:* Multi-PracticeItems halten den Graph kompakter, erschweren aber feinmaschiges Prerequisite-Blocking, wenn ein Lernender nur an der Anwendung scheitert.
+### Frage 3: Modellierung im ZAM-Schema (LearningAtom vs. PracticeItem)
+* **Beschluss:**
+  * **1 Zielkönnen = 1 `LearningAtom`:** Unterschiedliche fachliche Anforderungen (Definition vs. Umkehrung vs. typische Prüfungsfalle) bilden separate Atome im DAG mit getrennten FSRS-Karten.
+  * **PracticeItems:** Repräsentieren alternative Darstellungs- oder Interaktionsformen desselben Zielkönnens (Sprachvarianten, Cloze vs. Q/A, `tier1_fast` vs. `tier2_synthesis`).
+  * **Sibling-Bury:** PracticeItems desselben Atoms müssen am selben Tag gegenseitig zurückgestellt werden (`buried_until`), um Cue-Leakage zu verhindern.
 
 ### Frage 4: Schärfegrad des KI-Tutor-Dialogs
-*Wie viele Nachfrage-Runden soll der KI-Tutor im Text-Eingabe-Modus maximal durchführen, bevor er die Lösung auflöst und die Karte als `1` oder `2` abschließt?*  
-*Diskussionspunkt:* Verhindern, dass der Lernende in eine frustrierende Endlosschleife aus Rückfragen gerät, wenn er die Antwort schlicht nicht weiß.
+* **Beschluss:**
+  * Vor dem Rating ist maximal **eine Klärungs-Rückfrage** zur rein sprachlichen Disambiguierung (Tippfehler, Kurzform) zulässig.
+  * Erfordert die Antwort einen lösungstragenden inhaltlichen Hinweis, schlägt der Tutor **zwingend Rating 1 (Again)** vor, da der ungestützte Abruf gescheitert ist.
+  * Sokratische Vertiefung und Erklärungsdialoge finden im **Post-Reveal-Dialog** statt.
+
+---
+
+## 8. Literaturverzeichnis
+
+* **Baddeley, A. D. (1966).** Short-term memory for word sequences as a function of acoustic, semantic and formal similarity. *Quarterly Journal of Experimental Psychology*, 18(4), 362–365. [https://doi.org/10.1080/14640746608400055](https://doi.org/10.1080/14640746608400055)
+* **Bjork, R. A. (1994).** Memory and metamemory considerations in the training of human beings. In J. Metcalfe & A. P. Shimamura (Eds.), *Metacognition: Knowing about knowing* (pp. 185–205). MIT Press.
+* **Chi, M. T., Bassok, M., Lewis, M. W., Reimann, P., & Glaser, R. (1989).** Self-explanations: How students study and use examples in learning to solve problems. *Cognitive Science*, 13(2), 145–182. [https://doi.org/10.1207/s15516709cog1302_1](https://doi.org/10.1207/s15516709cog1302_1)
+* **Conrad, R., & Hull, A. J. (1964).** Information, acoustic confusion and memory span. *British Journal of Psychology*, 55(4), 429–432. [https://doi.org/10.1111/j.2044-8295.1964.tb00928.x](https://doi.org/10.1111/j.2044-8295.1964.tb00928.x)
+* **Cowan, N. (2001).** The magical number 4 in short-term memory: A reconsideration of mental storage capacity. *Behavioral and Brain Sciences*, 24(1), 87–114. [https://doi.org/10.1017/S0140525X01003922](https://doi.org/10.1017/S0140525X01003922)
+* **Falmagne, J. C., & Doignon, J. P. (2011).** *Learning Spaces: Interdisciplinary Applied Mathematics*. Springer. [https://doi.org/10.1007/978-3-642-16625-9](https://doi.org/10.1007/978-3-642-16625-9)
+* **Fiorella, L., & Mayer, R. E. (2016).** Eight ways to promote generative learning. *Educational Psychology Review*, 28(4), 717–785. [https://doi.org/10.1007/s10648-015-9348-9](https://doi.org/10.1007/s10648-015-9348-9)
+* **Karpicke, J. D., & Roediger, H. L. (2008).** The critical importance of retrieval for learning. *Science*, 319(5865), 966–968. [https://doi.org/10.1126/science.1152408](https://doi.org/10.1126/science.1152408)
+* **Koriat, A., & Bjork, R. A. (2005).** Illusions of competence in monitoring one's knowledge during study. *Journal of Experimental Psychology: Learning, Memory, and Cognition*, 31(2), 187–194. [https://doi.org/10.1037/0278-7393.31.2.187](https://doi.org/10.1037/0278-7393.31.2.187)
+* **Little, J. L., Bjork, E. L., Bjork, R. A., & Angello, G. (2012).** Multiple-choice tests exonerated, at least of some charges: Fostering test-induced learning and avoiding test-induced errors. *Memory & Cognition*, 40(8), 1259–1268. [https://doi.org/10.3758/s13421-012-0231-5](https://doi.org/10.3758/s13421-012-0231-5)
+* **Matuschak, A. (2020).** *How to write good prompts: using spaced repetition to create understanding*. [https://andymatuschak.org/prompts/](https://andymatuschak.org/prompts/)
+* **Morris, C. D., Bransford, J. D., & Franks, J. J. (1977).** Levels of processing versus transfer appropriate processing. *Journal of Verbal Learning and Verbal Behavior*, 16(5), 519–533. [https://doi.org/10.1016/S0022-5371(77)80016-9](https://doi.org/10.1016/S0022-5371(77)80016-9)
+* **Nielsen, M. (2018).** *Augmenting Long-term Memory*. [http://augmentingcognition.com/ltm.html](http://augmentingcognition.com/ltm.html)
+* **Pan, S. C., & Rickard, T. C. (2018).** Transfer of test-enhanced learning: Meta-analytic review and synthesis. *Psychological Bulletin*, 144(7), 710–741. [https://doi.org/10.1037/bul0000151](https://doi.org/10.1037/bul0000151)
+* **Pyc, M. A., & Rawson, K. A. (2009).** Testing the retrieval effort hypothesis: Does greater difficulty preparing for retrieval enhance retention? *Memory & Cognition*, 37(4), 437–446. [https://doi.org/10.3758/MC.37.4.437](https://doi.org/10.3758/MC.37.4.437)
+* **Rittle-Johnson, B., Siegler, R. S., & Alibali, M. W. (2001).** Developing conceptual understanding and procedural skill in mathematics: An iterative process. *Journal of Educational Psychology*, 93(2), 346–362. [https://doi.org/10.1037/0022-0663.93.2.346](https://doi.org/10.1037/0022-0663.93.2.346)
+* **Roediger, H. L., & Butler, A. C. (2011).** The critical role of retrieval practice in long-term retention. *Trends in Cognitive Sciences*, 15(1), 20–27. [https://doi.org/10.1016/j.tics.2010.09.003](https://doi.org/10.1016/j.tics.2010.09.003)
+* **Rohrer, D., & Taylor, K. (2007).** The shuffling of mathematics practice problems improves learning. *Instructional Science*, 35(6), 481–498. [https://doi.org/10.1007/s11251-007-9015-8](https://doi.org/10.1007/s11251-007-9015-8)
+* **Sweller, J. (1988).** Cognitive load during problem solving: Effects on learning. *Cognitive Science*, 12(2), 257–285. [https://doi.org/10.1207/s15516709cog1202_4](https://doi.org/10.1207/s15516709cog1202_4)
+* **Sweller, J. (2010).** Element interactivity and intrinsic, extraneous, and germane cognitive load. *Educational Psychology Review*, 22(2), 123–138. [https://doi.org/10.1007/s10648-010-9128-5](https://doi.org/10.1007/s10648-010-9128-5)
+* **Wood, D., Bruner, J. S., & Ross, G. (1976).** The role of tutoring in problem solving. *Journal of Child Psychology and Psychiatry*, 17(2), 89–100. [https://doi.org/10.1111/j.1469-7610.1976.tb00381.x](https://doi.org/10.1111/j.1469-7610.1976.tb00381.x)
+* **Wozniak, P. (1999).** *Effective learning: Twenty rules of formulating knowledge*. SuperMemo. [https://www.supermemo.com/en/blog/twenty-rules-of-formulating-knowledge](https://www.supermemo.com/en/blog/twenty-rules-of-formulating-knowledge)
