@@ -281,34 +281,69 @@ Jede Frage erfordert nur 5–10 Sekunden. Hat sie die Variablenvertauschung (Tok
 
 ---
 
-### 6.2 Entwickler- & Architekturwissen (OKF-Import: Axon Ivy / Azure K8s Storage)
+### 6.2 Entwickler- & Architekturwissen (OKF-Import: Prerequisite-Blocking im ZAM-Kernel)
 
-*Ziel: Ein Software-Entwickler soll Systementscheidungen und Gotchas beim schnellen Morgen-Review verinnerlichen, ohne Tipp-Ermüdung.*
+*Ziel: Eine Entwicklerin, die neu am ZAM-Kernel arbeitet, soll die Blocking-Regeln im Morgen-Review verinnerlichen — ohne Tipp-Ermüdung und ohne den Artikel jedes Mal nachzuschlagen.*
 
-#### Vorher (Echtes Token aus ZAM-Bestand):
-* **Slug:** `ivy-azure-files-nfs-per-org-storage`
-* **Frage:** *„How is per-org file storage provided for Ivy, what protocol is required and why, and what reclaim policy is used?“*
-* **Konzept:** *„Each org's /ivy/applications and /ivy/data are one Azure Files NFS v4.1 share (share name = org GUID), mounted twice via subPath with an init container that chmod 0777s the roots; NFS not SMB is required for Java NIO atomic-rename semantics, and PVs use reclaimPolicy Retain.“*
+*Quelle (persistent):* `docs/okf/prerequisite-blocking.md` — ein OKF-Artikel im Repo, der als dauerhafter `source_link`-Anker dient. Alle Aussagen unten sind gegen `src/kernel/scheduler/blocker.ts` und `src/kernel/recall/actions.ts` geprüft.
+
+#### Vorher (unterdekomponierter OKF-Import: ein Token für den ganzen Artikel):
+* **Slug:** `zam-prerequisite-blocking`
+* **Frage:** *„Erkläre ZAMs Prerequisite-Blocking: Wann wird eine Karte blockiert, was passiert mit den Vorbedingungen, wann wird sie wieder freigegeben, und warum ist das nicht Teil von `evaluateRating()`?“*
+* **Konzept:** *„Bei Rating 1 auf einem Token mit Prerequisites blockiert `cascadeBlock()` dessen Karte (`blocked = 1`) und legt für alle direkten Prerequisites Karten an, unblocked und sofort fällig; `unblockReady()` gibt die Karte frei, sobald alle direkten Prerequisites `reps ≥ 1` haben und selbst nicht blockiert sind, kaskadierend; Blocking ist absichtlich nicht Teil von `evaluateRating()`, sondern `executeReviewAction()` koordiniert Card-Update, Review-Log und Blocking in einer Transaktion; der Atom-Graph (`hard`/`soft`) ist kein Admission-Gate.“*
+
+Vier Fragen in einer, sechs Relationen in einer Antwort. Wer fünf davon beherrscht und die Freigabebedingung vergisst, bewertet mit `1` und tippt beim nächsten Mal alle sechs erneut. Der KI-Tutor muss eine 70-Wörter-Paraphrase gegen sechs Relationen bewerten — und weiß nicht, welche davon „bestanden“ heißt.
 
 #### Nachher (Progressiver ZAM-Prerequisite-DAG):
-1. **Token 1 (Infrastruktur & Namenskonvention – Bloom 1):**  
-   *Frage:* Welcher Azure-Speicherdienst stellt die Verzeichnisse `/ivy/applications` und `/ivy/data` bereit und wie heißt der Share?  
-   *Antwort:* Ein **Azure Files Share**, benannt nach der Org-GUID.
-2. **Token 2 (Architekturentscheidung / Protokoll-Begründung – Bloom 2):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Warum erfordert Ivy für Azure Files zwingend das **NFS v4.1**-Protokoll anstelle von SMB?  
-   *Antwort:* Für die atomaren Rename-Semantiken von **Java NIO** (`atomic-rename`).
-3. **Token 3 (Berechtigungs-Mechanismus / K8s Init – Bloom 3):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Wie wird sichergestellt, dass die NFS-Root-Verzeichnisse für den unprivilegierten Ivy-Container beschreibbar sind?  
-   *Antwort:* Durch einen **Init-Container**, der vorab `chmod 0777` auf den Mount-Pfaden ausführt.
-4. **Token 4 (Lifecycle & Datenverlustschutz – Bloom 3):**  
-   *Prerequisite:* Token 1  
-   *Frage:* Welche PersistentVolume-`reclaimPolicy` wird für Ivy-Storage konfiguriert und warum?  
-   *Antwort:* **`Retain`** – damit der physische Share beim Löschen der K8s-Ressourcen nicht vernichtet wird.
+```
+                     [Token 1: Auslöser von cascadeBlock()] (Bloom 1)
+                        │            │            │            │
+        ┌───────────────┘            │            │            └───────────────┐
+        ▼                            ▼            ▼                            ▼
+[Token 2: Wirkung auf     [Token 3: Direkte      [Token 5: Trennung von     [Token 6: Kein
+ die verfehlte Karte]      Fundamente werden      evaluateRating()]          Admission-Gate]
+ (Bloom 2)                 materialisiert]        (Bloom 2)                  (Bloom 4)
+        │                  (Bloom 2)
+        │                            │
+        └─────────────┬──────────────┘
+                      ▼
+      [Token 4: Freigabe durch unblockReady()] (Bloom 3)
+```
 
-**Ergebnis für den Entwickler:**
-Beim Review beantwortet er jede Karte im Flash-Modus in 4 Sekunden oder tippt im Tutor-Modus ein präzises Stichwort (*„Java NIO atomicity“*). 100 % Lerneffekt bei 0 % Frustration.
+1. **Token 1 (Auslöser – Bloom 1):**  
+   *Frage:* Unter welcher Bedingung ruft `executeReviewAction()` nach einem Rating `cascadeBlock()` auf?  
+   *Antwort:* Nur bei **Rating 1 (Again)** auf einem Token, das **mindestens ein Prerequisite** hat.  
+   *source_link:* `docs/okf/prerequisite-blocking.md`
+2. **Token 2 (Wirkung auf die verfehlte Karte – Bloom 2):**  
+   *Prerequisite:* Token 1  
+   *Frage:* Was geschieht mit der Karte des verfehlten Tokens, wenn `cascadeBlock()` läuft?  
+   *Antwort:* Sie wird **`blocked = 1`** gesetzt und verlässt die Review-Queue, bis sie wieder freigegeben wird.  
+   *source_link:* `docs/okf/prerequisite-blocking.md`
+3. **Token 3 (Fundamente materialisieren – Bloom 2):**  
+   *Prerequisite:* Token 1  
+   *Frage:* Für welche Tokens legt `cascadeBlock()` Karten an, damit die Lücke geschlossen werden kann?  
+   *Antwort:* Für jedes **direkte** Prerequisite eine Karte (unblocked, sofort fällig) — **nie für die transitive Hülle**.  
+   *source_link:* `docs/okf/prerequisite-blocking.md`
+4. **Token 4 (Freigabe – Bloom 3):**  
+   *Prerequisites:* Token 2, Token 3  
+   *Frage:* Wann gibt `unblockReady()` eine blockierte Karte wieder frei?  
+   *Antwort:* Wenn **alle direkten Prerequisites `reps ≥ 1`** haben und selbst nicht blockiert sind; die Freigabe kaskadiert im selben Aufruf.  
+   *source_link:* `docs/okf/prerequisite-blocking.md`
+5. **Token 5 (Architekturentscheidung – Bloom 2):**  
+   *Prerequisite:* Token 1  
+   *Frage:* Warum ist Blocking nicht Teil von `evaluateRating()`, sondern von `executeReviewAction()`?  
+   *Antwort:* Damit **FSRS-Rechnung und Lernpfad-Policy getrennt** bleiben: `evaluateRating()` aktualisiert nur den Gedächtniszustand; `executeReviewAction()` entscheidet über Blocking und bündelt Card-Update, Review-Log und Blocking in **einer Transaktion**.  
+   *source_link:* `docs/okf/prerequisite-blocking.md`
+6. **Token 6 (Diskriminierung / typische Fehlvorstellung – Bloom 4):**  
+   *Prerequisite:* Token 1  
+   *Frage:* Sperrt ein unerfülltes Prerequisite den Zugang zu einer abhängigen Karte, bevor sie je gefragt wurde?  
+   *Antwort:* **Nein.** Blocking ist **reaktiv** (nur nach Rating 1); der Graph beeinflusst Auswahl und Reihenfolge, nie den Zugang. Ein aufgeschobenes Fundament ist nur Burial (`buried_until`), kein Beleg.  
+   *source_link:* `docs/okf/prerequisite-blocking.md#atom-prerequisites-and-entry-assessment`
+
+*Bewusst nicht tokenisiert* (Nachschlagewissen, bleibt im Artikel — Schritt 1 des Decomposer-Protokolls): die API-Namen `addPrerequisite()`/`removePrerequisite()`, die Zyklus-Rollback-Regel des OKF-Re-Imports, die zitierten Testdateien.
+
+**Ergebnis für die Entwicklerin:**
+Jede Karte ist im Flash-Modus in wenigen Sekunden entschieden oder im Tutor-Modus mit einem Stichwort beantwortet (*„Rating 1 + Prerequisite“*, *„reps ≥ 1“*, *„nein, reaktiv“*). Verfehlt sie Token 6, bleiben Token 1–5 unberührt. Weil die Quelle persistent ist, zeigt jeder `source_link` auf den Artikel; ändert sich der Kernel, aktualisiert der OKF-Re-Import die betroffenen Tokens (`update`/`replace`), statt sie zu löschen.
 
 ---
 
