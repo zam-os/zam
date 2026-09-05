@@ -121,6 +121,15 @@ const KNOWLEDGE_CONTEXT_KEYS = [
 
 const STUDIO_LAYOUT_KEYS = ["content_subtitle"] as const;
 
+const DRAFT_PUBLISH_KEYS = [
+  "lbl_card_status_draft",
+  "btn_publish_card",
+  "lbl_publish_ready",
+  "lbl_publish_blocked",
+  "lbl_published_toast",
+  "lbl_err_question_required",
+] as const;
+
 const DISCUSSION_KEYS = [
   "placeholder_discussion",
   "btn_discussion_send",
@@ -289,6 +298,7 @@ const REQUIRED_KEYS = [
   ...QUESTION_WAIT_KEYS,
   ...KNOWLEDGE_CONTEXT_KEYS,
   ...STUDIO_LAYOUT_KEYS,
+  ...DRAFT_PUBLISH_KEYS,
   ...DISCUSSION_KEYS,
   ...AGENT_CONNECT_KEYS,
   ...CONTEXTBAR_KEYS,

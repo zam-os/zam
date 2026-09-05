@@ -148,9 +148,11 @@ import {
   parseMobileImport,
 } from "./import.js";
 import {
+  isDraftEntry,
   type LibraryEntry,
   listLibrary,
   pauseCard,
+  publishLibraryCard,
   removeCard,
   resumeCard,
   saveCardEdit,
@@ -384,6 +386,7 @@ const detailQuestion = element<HTMLTextAreaElement>("detail-question");
 const detailConcept = element<HTMLTextAreaElement>("detail-concept");
 const detailDomain = element<HTMLInputElement>("detail-domain");
 const detailSaveButton = element<HTMLButtonElement>("detail-save");
+const detailPublishButton = element<HTMLButtonElement>("detail-publish");
 const detailPauseButton = element<HTMLButtonElement>("detail-pause");
 const detailDeleteButton = element<HTMLButtonElement>("detail-delete");
 const detailStatus = element<HTMLParagraphElement>("detail-status");
@@ -4023,9 +4026,11 @@ function renderLibrary(entries: LibraryEntry[]): void {
     title.textContent = entry.title || entry.slug;
     const meta = document.createElement("span");
     meta.className = "t-footnote";
-    meta.textContent = entry.paused
-      ? t("library_paused_note")
-      : entry.domain || t("no_domain");
+    meta.textContent = isDraftEntry(entry)
+      ? t("library_draft_note")
+      : entry.paused
+        ? t("library_paused_note")
+        : entry.domain || t("no_domain");
     text.append(title, meta);
 
     const chevron = document.createElementNS(
@@ -4133,7 +4138,8 @@ function openLibraryDetail(entry: LibraryEntry): void {
   detailPauseButton.textContent = entry.paused
     ? t("library_resume")
     : t("library_pause");
-  detailStatus.textContent = "";
+  detailPublishButton.hidden = !isDraftEntry(entry);
+  detailStatus.textContent = isDraftEntry(entry) ? t("library_draft_note") : "";
   detailStatus.classList.remove("error");
   showLibraryMode("detail");
 }
@@ -4194,6 +4200,30 @@ detailSaveButton.addEventListener("click", async () => {
     setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
   } finally {
     detailSaveButton.disabled = false;
+  }
+});
+
+detailPublishButton.addEventListener("click", async () => {
+  if (!openCard) return;
+  detailPublishButton.disabled = true;
+  try {
+    await publishLibraryCard(db, openCard.tokenId, {
+      title: detailTitle.value.trim(),
+      question: detailQuestion.value.trim() || null,
+      concept: detailConcept.value.trim(),
+      domain: detailDomain.value.trim(),
+    });
+    openCard = { ...openCard, editorialState: "published" };
+    detailPublishButton.hidden = true;
+    setDetailStatus(t("library_published"));
+    if (currentUserId) await refresh(currentUserId);
+  } catch (error) {
+    setDetailStatus(
+      tf("library_publish_blocked", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    detailPublishButton.disabled = false;
   }
 });
 

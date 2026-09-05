@@ -32,7 +32,9 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
-| `zam_add_token` | Register a new knowledge token with a slug, concept definition, Bloom level, and prompt question. |
+| `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
+| `zam_list_drafts` | List unpublished draft tokens for author review. |
+| `zam_publish_revision` | Publish a draft or a classified content revision after author review. |
 | `zam_link_prereq` | Add a prerequisite link between a parent token and a child token. |
 | `zam_submit_review` | Submit a card self-rating, advance its FSRS state, and log it to the session steps. |
 | `zam_review_action` | Apply review actions (rate, skip, edit/deprecate/delete tokens or cards) with optional confirmation. |
@@ -91,6 +93,17 @@ Each token has:
 
 Prerequisites: "to understand A, you must first know B." Register edges via `zam_link_prereq`.
 
+`zam_add_token` writes a **draft**. Drafts do not enter the recall queue. After author review, publish with `zam_publish_revision` (first publication is typically `cosmetic`). Before publishing, the card must satisfy:
+
+1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
+2. **Concrete axis** — no open "explain X" without a named axis.
+3. **No unstructured lists** — 1:1 or a cloze of one slot, unless complete reconstruction is the target competence.
+4. **Scope match** — the question asks only what `concept` tests. New items need a real question, not empty and not a slug echo.
+5. **Subject-matter edges** — A is a prerequisite of B only when B is not solvable without A.
+6. **Decidable criterion** — `concept` is the passing standard; `context` is never an extra hurdle.
+
+The kernel blocks empty criteria, missing questions, slug echoes, and invalid references. Scope, leakage, and subject-matter judgment stay with the author.
+
 ---
 
 ## Two Modes of Knowledge Assessment
@@ -144,7 +157,8 @@ Call `zam_suggest_foundations` (with concept, question, and domain). Present non
 **Register tokens and prerequisites:**
 As the frontier model, YOU author both the concept and the recall question. Pass a clear, concept-free prompt question so the offline fallback stays high quality.
 Register new tokens and link prerequisites:
-Call `zam_add_token` to register a new token.
+Call `zam_add_token` to register a new token as a draft (include a concept-free question).
+Call `zam_publish_revision` after author review so the token can enter the queue.
 Call `zam_link_prereq` to link any parent prerequisites.
 
 ### STEP 3 — Start a session

@@ -470,7 +470,8 @@ describe("publishTokenRevision", () => {
     it("transitions draft token to published upon revision release", async () => {
       const token = await createToken(db, {
         slug: "publish-transition",
-        concept: "Draft to be published",
+        concept: "Draft criterion that is not a slug echo.",
+        question: "What is the draft criterion?",
         editorial_state: "draft",
       });
       await ensureCard(db, token.id, "alice");

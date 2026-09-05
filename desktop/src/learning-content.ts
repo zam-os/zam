@@ -15,6 +15,7 @@ export interface PersonalCard {
   question: string | null;
   createdAt: string;
   updatedAt: string;
+  editorialState?: string;
 
   cardId: string | null;
   state: string | null;
@@ -279,6 +280,8 @@ let btnSave: HTMLButtonElement;
 let btnDelete: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
 let btnPublishRevision: HTMLButtonElement;
+let btnPublishCard: HTMLButtonElement | null;
+let reviewNotesEl: HTMLElement | null;
 let toggleAdvanced: HTMLElement;
 let advancedContent: HTMLElement;
 let toggleArrow: HTMLElement;
@@ -417,6 +420,15 @@ export function initLearningContentStudio(): void {
     "btn-release-modal-submit",
   ) as HTMLButtonElement;
 
+  btnPublishCard = document.getElementById(
+    "btn-content-publish-card",
+  ) as HTMLButtonElement | null;
+  reviewNotesEl = document.getElementById("editor-review-notes");
+  if (btnPublishCard) {
+    btnPublishCard.addEventListener("click", () => {
+      void publishDraftCard();
+    });
+  }
   if (btnPublishRevision) {
     btnPublishRevision.addEventListener("click", () => {
       void showReleaseModal();
@@ -755,6 +767,12 @@ function refreshCardsList(): void {
       statusClass = card.state;
     }
 
+    const isDraft =
+      card.editorialState === "draft" || card.editorialState === "in_review";
+    if (isDraft) {
+      statusText = t("lbl_card_status_draft");
+      statusClass = "draft";
+    }
     const isDue = card.dueAt && new Date(card.dueAt) <= new Date();
     const dueLabel = isDue
       ? `<span class="card-status-badge again" style="font-size: 0.7rem; padding: 1px 4px; background: rgba(239, 68, 68, 0.1); color: #ef4444; margin-left: 5px;">${escapeHtml(t("lbl_card_due"))}</span>`
@@ -801,6 +819,7 @@ function selectCard(card: PersonalCard): void {
 
   updateUIForSelection();
   refreshCardsList(); // Update selected highlight
+  void refreshPublicationNotes();
 }
 
 /**
@@ -853,6 +872,12 @@ function cancelEdit(): void {
   refreshCardsList();
 }
 
+function isDraftCard(card: PersonalCard | null): boolean {
+  return (
+    card?.editorialState === "draft" || card?.editorialState === "in_review"
+  );
+}
+
 function updateUIForSelection(): void {
   if (selectedCard || isCreatingNew) {
     emptyStateEl.classList.add("hidden");
@@ -862,12 +887,16 @@ function updateUIForSelection(): void {
     if (isCreatingNew) {
       btnDelete.classList.add("hidden");
       btnPublishRevision?.classList.add("hidden");
+      btnPublishCard?.classList.add("hidden");
       btnSplitCard?.classList.add("hidden");
       btnFoundationsCard?.classList.add("hidden");
       fieldSlug.value = t("lbl_slug_hint");
+      if (reviewNotesEl) reviewNotesEl.innerHTML = "";
     } else {
       btnDelete.classList.remove("hidden");
-      btnPublishRevision?.classList.remove("hidden");
+      const draft = isDraftCard(selectedCard);
+      btnPublishCard?.classList.toggle("hidden", !draft);
+      btnPublishRevision?.classList.toggle("hidden", draft);
       btnSplitCard?.classList.remove("hidden");
       btnFoundationsCard?.classList.remove("hidden");
     }
@@ -876,8 +905,104 @@ function updateUIForSelection(): void {
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
     btnPublishRevision?.classList.add("hidden");
+    btnPublishCard?.classList.add("hidden");
     btnSplitCard?.classList.add("hidden");
     btnFoundationsCard?.classList.add("hidden");
+    if (reviewNotesEl) reviewNotesEl.innerHTML = "";
+  }
+}
+
+async function refreshPublicationNotes(): Promise<void> {
+  if (!reviewNotesEl || !selectedCard || isCreatingNew) {
+    if (reviewNotesEl) reviewNotesEl.innerHTML = "";
+    return;
+  }
+  try {
+    const res = await runBridge<{
+      success: boolean;
+      publication?: {
+        ready: boolean;
+        checks: Array<{ blocking: boolean; message: string }>;
+        editorialState: string;
+      };
+    }>("personal-card-revision-preview", ["--slug", selectedCard.slug]);
+    const publication = res.publication;
+    if (!publication) {
+      reviewNotesEl.innerHTML = "";
+      return;
+    }
+    if (publication.editorialState === "published") {
+      reviewNotesEl.innerHTML = "";
+      return;
+    }
+    const blocking = (publication.checks ?? []).filter(
+      (check) => check.blocking,
+    );
+    if (publication.ready) {
+      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_ready"))}</p>`;
+    } else {
+      const items = blocking
+        .map((check) => `<li>${escapeHtml(check.message)}</li>`)
+        .join("");
+      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_blocked"))}</p><ul>${items}</ul>`;
+    }
+  } catch {
+    reviewNotesEl.innerHTML = "";
+  }
+}
+
+async function publishDraftCard(): Promise<void> {
+  if (!selectedCard) return;
+  const question = fieldQuestion.value.trim();
+  const concept = fieldConcept.value.trim();
+  if (!concept) {
+    alert(t("lbl_err_concept_required"));
+    fieldConcept.focus();
+    return;
+  }
+  if (!question) {
+    alert(t("lbl_err_question_required"));
+    fieldQuestion.focus();
+    return;
+  }
+  if (btnPublishCard) btnPublishCard.disabled = true;
+  try {
+    const args = [
+      "--slug",
+      selectedCard.slug,
+      "--materiality",
+      "cosmetic",
+      "--question",
+      question,
+      "--concept",
+      concept,
+      "--title",
+      fieldTitle.value.trim(),
+      "--domain",
+      fieldDomain.value.trim(),
+      "--context",
+      fieldContext.value.trim(),
+      "--bloom",
+      fieldBloom.value,
+    ];
+    if (fieldSourceLink.value.trim()) {
+      args.push("--source-link", fieldSourceLink.value.trim());
+    }
+    await runBridge<{ success: boolean }>(
+      "personal-card-publish-revision",
+      args,
+    );
+    alert(t("lbl_published_toast"));
+    const slug = selectedCard.slug;
+    await loadStudioData();
+    const updated = cardsList.find((card) => card.slug === slug);
+    if (updated) selectCard(updated);
+  } catch (err) {
+    alert(
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  } finally {
+    if (btnPublishCard) btnPublishCard.disabled = false;
   }
 }
 

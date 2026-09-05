@@ -16,6 +16,8 @@
  */
 
 import type { Database } from "../../src/kernel/db/types.js";
+import { evaluatePublicationReadiness } from "../../src/kernel/library/publication.js";
+import { publishTokenRevision } from "../../src/kernel/library/revision.js";
 import {
   deleteCardForUser,
   detachCardForUser,
@@ -176,6 +178,53 @@ export async function saveCardEdit(
     ...(edit.question !== undefined
       ? { question: edit.question, question_source: "manual" as const }
       : {}),
+  });
+}
+
+export function isDraftEntry(
+  entry: Pick<PersonalCard, "editorialState">,
+): boolean {
+  return (
+    entry.editorialState === "draft" || entry.editorialState === "in_review"
+  );
+}
+
+/**
+ * First publication of a captured draft. Structural checks run inside
+ * `publishTokenRevision`. Already-published cards use the classified
+ * revision path instead.
+ */
+export async function publishLibraryCard(
+  db: Database,
+  tokenId: string,
+  changes?: CardEdit,
+): Promise<void> {
+  const token = await getTokenById(db, tokenId);
+  if (!token) throw new Error(`Card not found: ${tokenId}`);
+  if (token.editorial_state === "published") {
+    throw new Error("Card is already published");
+  }
+  const review = await evaluatePublicationReadiness(db, tokenId, {
+    question: changes?.question ?? undefined,
+    concept: changes?.concept,
+  });
+  if (!review.ready) {
+    throw new Error(review.blocking.map((check) => check.message).join(" "));
+  }
+  await publishTokenRevision(db, {
+    tokenId,
+    materiality: "cosmetic",
+    changes: {
+      ...(changes?.title !== undefined ? { title: changes.title } : {}),
+      ...(changes?.question !== undefined
+        ? { question: changes.question ?? "" }
+        : {}),
+      ...(changes?.concept !== undefined ? { concept: changes.concept } : {}),
+      ...(changes?.domain !== undefined ? { domain: changes.domain } : {}),
+      ...(changes?.bloomLevel !== undefined
+        ? { bloomLevel: changes.bloomLevel }
+        : {}),
+    },
   });
 }
 

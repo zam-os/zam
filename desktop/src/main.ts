@@ -1166,6 +1166,8 @@ function initializeTranslations() {
   if (btnContentCancelEdit) btnContentCancelEdit.textContent = t("lbl_cancel_action");
   const btnContentSaveCard = document.getElementById("btn-content-save-card");
   if (btnContentSaveCard) btnContentSaveCard.textContent = t("btn_save");
+  const btnContentPublishCard = document.getElementById("btn-content-publish-card");
+  if (btnContentPublishCard) btnContentPublishCard.textContent = t("btn_publish_card");
 
   // Modal Translations
   const lblModalCancel = document.getElementById("btn-modal-cancel");

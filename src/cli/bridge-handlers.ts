@@ -28,6 +28,7 @@ import {
   enrolBonusAtom,
   enrolBundledCell,
   ensureCard,
+  evaluatePublicationReadiness,
   executeReviewAction,
   exportSnapshot,
   findBundledCellsForScope,
@@ -60,6 +61,7 @@ import {
   suggestFoundations as kernelSuggestFoundations,
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
+  listTokens,
   logStep,
   monitorLogExists,
   needsGenericCurriculumImport,
@@ -76,6 +78,7 @@ import {
   resolveReviewContext,
   searchTokensHybrid,
   setTokenMaintenance,
+  structuralPublicationChecks,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -832,6 +835,7 @@ export async function addToken(db: Database, params: AddTokenParams) {
     // Bridge/MCP callers are agents: their questions are LLM-authored and
     // stay refreshable. Humans author questions via the token CLI instead.
     question_source: params.question ? "llm" : undefined,
+    editorial_state: "draft",
   });
 
   for (const context of assignedContexts) {
@@ -982,6 +986,13 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
               `(resets learning state), or choose a different slug.`,
           );
         }
+        const readyToPublish =
+          structuralPublicationChecks({
+            slug: input.slug,
+            concept: input.concept,
+            question: input.question ?? null,
+            requireQuestion: true,
+          }).filter((check) => check.blocking).length === 0;
         const token = await createToken(tx, {
           slug: input.slug,
           title: input.title,
@@ -991,6 +1002,7 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
           source_link: sourceLinkFor(input.anchor),
           question: input.question ?? null,
           question_source: input.question ? "llm" : undefined,
+          editorial_state: readyToPublish ? "published" : "draft",
         });
         inImport.set(input.slug, token);
         created.push(input.slug);
@@ -1667,6 +1679,31 @@ export async function publishRevision(
   };
 }
 
+export interface ListDraftsParams {
+  user?: string;
+}
+
+export async function listDrafts(db: Database, _params: ListDraftsParams = {}) {
+  const drafts = await listTokens(db, { editorialState: "draft" });
+  const inReview = await listTokens(db, { editorialState: "in_review" });
+  const tokens = [...drafts, ...inReview].map((token) => ({
+    id: token.id,
+    slug: token.slug,
+    title: token.title,
+    concept: token.concept,
+    question: token.question,
+    context: token.context,
+    sourceLink: token.source_link,
+    domain: token.domain,
+    bloomLevel: token.bloom_level,
+    editorialState: token.editorial_state,
+  }));
+  return {
+    success: true as const,
+    tokens,
+  };
+}
+
 export interface RevisionPreviewParams {
   tokenId?: string;
   slug?: string;
@@ -1685,9 +1722,11 @@ export async function revisionPreview(
   if (!tokenId) throw new Error("tokenId or slug is required");
 
   const impact = await getRevisionImpact(db, tokenId);
+  const publication = await evaluatePublicationReadiness(db, tokenId);
   return {
     success: true as const,
     ...impact,
+    publication,
   };
 }
 

@@ -11,6 +11,7 @@ import { addPrerequisite } from "../../src/kernel/models/prerequisite.js";
 import {
   type BloomLevel,
   createToken,
+  type EditorialState,
   getTokenBySlug,
   type SymbiosisMode,
   slugify,
@@ -33,6 +34,11 @@ export interface MobileTokenDraft extends AddTokenRequest {
   provider?: string | null;
   /** Stable provider-owned topic id for curriculum re-imports. */
   topicId?: string | null;
+  /**
+   * Capture writes `draft`. Curated starter cards pass `published` so the
+   * first-run path remains immediately reviewable.
+   */
+  editorial_state?: EditorialState;
 }
 
 export interface MobileImportResult {
@@ -233,6 +239,7 @@ export async function confirmMobileImport(
         normalized.question && isLlmOrigin(draft.origin) ? "llm" : "manual",
       provider: normalized.provider ?? null,
       topic_id: normalized.topicId ?? null,
+      editorial_state: draft.editorial_state ?? "draft",
     });
 
     for (const context of contexts) {

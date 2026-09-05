@@ -13,10 +13,12 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import { connectCloudModel } from "../../mobile/src/ai/connect.js";
+import { confirmMobileImport } from "../../mobile/src/import.js";
 import {
   listLibrary,
   listSubjects,
   pauseCard,
+  publishLibraryCard,
   removeCard,
   resumeCard,
   saveCardEdit,
@@ -244,6 +246,41 @@ describe("pause / resume / remove", { timeout: PROVISIONING_TIMEOUT }, () => {
     expect(entries).toHaveLength(2);
     expect(entries.map((entry) => entry.slug)).not.toContain(
       "zam/ehrlich-bewerten",
+    );
+  });
+});
+
+describe("publishLibraryCard", { timeout: PROVISIONING_TIMEOUT }, () => {
+  it("publishes a captured draft so it can enter the queue", async () => {
+    const db = await library();
+    const imported = await confirmMobileImport(db, LOCAL_USER_ID, {
+      origin: "quick-capture",
+      slug: "mobile-draft",
+      title: "Newton II",
+      concept: "Force equals mass times acceleration.",
+      domain: "physik",
+      bloomLevel: 1,
+      question: "How are force, mass and acceleration related?",
+    });
+    expect(imported.token.editorial_state).toBe("draft");
+    await db
+      .prepare(
+        "UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z' WHERE id = ?",
+      )
+      .run(imported.card.id);
+
+    const before = await buildReviewQueue(db, { userId: LOCAL_USER_ID });
+    expect(
+      before.items.some((item) => item.tokenId === imported.token.id),
+    ).toBe(false);
+
+    await publishLibraryCard(db, imported.token.id, {
+      question: "How are force, mass and acceleration related?",
+      concept: "Force equals mass times acceleration.",
+    });
+    const after = await buildReviewQueue(db, { userId: LOCAL_USER_ID });
+    expect(after.items.some((item) => item.tokenId === imported.token.id)).toBe(
+      true,
     );
   });
 });

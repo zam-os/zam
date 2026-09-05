@@ -137,6 +137,7 @@ export async function completeFirstRun(
     await confirmMobileImport(db, userId, {
       ...card,
       knowledgeContexts: [context.name],
+      editorial_state: "published",
     });
   }
 

@@ -44,6 +44,7 @@ import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
+import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
 /**
@@ -544,6 +545,12 @@ export async function installKvtTile(
                 `${holder.id} already holds. Addresses are immutable.`,
             );
           }
+          assertFieldsReadyToPublish({
+            slug,
+            concept: item.concept,
+            question: item.question,
+            requireQuestion: true,
+          });
           await insertToken(tx, {
             id: item.id,
             slug,

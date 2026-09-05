@@ -217,6 +217,20 @@ export {
   preconditionBuriedUntil,
 } from "./library/precondition-assessment.js";
 export type {
+  PublicationCheck,
+  PublicationCheckCode,
+  PublicationFieldChanges,
+  PublicationFields,
+  PublicationReview,
+} from "./library/publication.js";
+export {
+  assertFieldsReadyToPublish,
+  assertReadyToPublish,
+  evaluatePublicationReadiness,
+  isSlugEcho,
+  structuralPublicationChecks,
+} from "./library/publication.js";
+export type {
   PullForwardCandidate,
   PullForwardOptions,
   PullForwardResult,

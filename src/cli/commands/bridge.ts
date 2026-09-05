@@ -23,6 +23,7 @@ import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
   Database,
+  EditorialState,
   KnowledgeContext,
   ListTokensOptions,
   NeighborhoodToken,
@@ -175,6 +176,7 @@ import {
   listAssignmentsHandler as handleListAssignments,
   listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
+  listDrafts as handleListDrafts,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
@@ -5114,6 +5116,10 @@ bridgeCommand
     (value: string, previous: string[]) => [...previous, value],
     [] as string[],
   )
+  .option(
+    "--editorial-state <state>",
+    "Filter by editorial state: draft | in_review | published | deprecated",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = opts.user
@@ -5126,6 +5132,20 @@ bridgeCommand
         listOpts.knowledgeContext = opts.knowledgeContext;
       if (opts.sourceLinkBase.length)
         listOpts.sourceLinkBases = opts.sourceLinkBase;
+      if (opts.editorialState) {
+        const state = opts.editorialState as EditorialState;
+        if (
+          state !== "draft" &&
+          state !== "in_review" &&
+          state !== "published" &&
+          state !== "deprecated"
+        ) {
+          jsonError(
+            "editorial-state must be draft, in_review, published, or deprecated",
+          );
+        }
+        listOpts.editorialState = state;
+      }
 
       const tokens = await listTokens(
         db,
@@ -5204,6 +5224,10 @@ bridgeCommand
           concept: t.concept,
           domain: t.domain,
           bloomLevel: t.bloom_level,
+          editorialState: t.editorial_state,
+          question: t.question,
+          context: t.context,
+          sourceLink: t.source_link,
           knowledgeContexts: contextMap.get(t.id) ?? [],
           card: c
             ? {
@@ -5302,6 +5326,21 @@ bridgeCommand
         prerequisites: nb.prerequisites.map(mapToken),
         dependents: nb.dependents.map(mapToken),
       });
+    });
+  });
+
+// ── zam bridge list-drafts ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("list-drafts")
+  .description("List unpublished draft and in-review tokens (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await handleListDrafts(db));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -5430,6 +5469,7 @@ bridgeCommand
           symbiosis_mode: mode,
           source_link: opts.sourceLink || null,
           question,
+          editorial_state: "draft",
         });
         for (const context of contexts) {
           await assignTokenToContext(tx, createdToken.id, context.id);

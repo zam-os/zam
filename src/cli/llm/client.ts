@@ -710,7 +710,7 @@ export async function generateQuestionViaLLM(
   const existingQuestion = input.existingQuestion?.trim();
   const variationGuideline = existingQuestion
     ? `
-5. A canonical question for this token already exists. Generate a fresh VARIATION of it: test the same knowledge, but with different wording or from a different angle, so the learner cannot memorize the exact phrasing. Never repeat the canonical question verbatim.`
+5. A canonical question for this token already exists. Generate a fresh VARIATION that tests the SAME criterion (the concept). Different wording or angle is required. Do not change what counts as a complete answer. If you cannot vary without changing the criterion, output the canonical question unchanged.`
     : "";
 
   const systemPrompt = `You are ZAM, a highly precise agentic skills trainer.

@@ -9,16 +9,19 @@ import {
   getReview,
   getReviewsBatch,
   linkPrereq,
+  listDrafts,
+  publishRevision,
   startSession,
   submitReview,
   updateCheck,
 } from "../../src/cli/bridge-handlers.js";
 import {
+  buildReviewQueue,
   commitTextImport,
+  endSession as completeSession,
   createToken,
   enrolBundledCell,
   ensureCard,
-  endSession as completeSession,
   getCard,
   getPrerequisites,
   getReviewsForCard,
@@ -548,6 +551,45 @@ describe("bridge-handlers unit tests", () => {
 
     const token = await getTokenBySlug(db, "agent-authored");
     expect(token?.question_source).toBe("llm");
+    expect(token?.editorial_state).toBe("draft");
+  });
+
+  it("addToken writes a draft that stays out of the queue until publish", async () => {
+    const result = await addToken(db, {
+      user: "thomas",
+      slug: "capture-draft",
+      concept: "Force equals mass times acceleration.",
+      question: "How are force, mass and acceleration related?",
+      domain: "physics",
+    });
+    expect(result.token.editorial_state).toBe("draft");
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
+    const before = await buildReviewQueue(db, { userId: "thomas" });
+    expect(before.items.some((item) => item.tokenId === result.token.id)).toBe(
+      false,
+    );
+
+    const drafts = await listDrafts(db);
+    expect(drafts.tokens.map((token) => token.slug)).toContain("capture-draft");
+
+    await expect(
+      publishRevision(db, {
+        slug: "capture-draft",
+        materiality: "cosmetic",
+        changes: { question: "" },
+      }),
+    ).rejects.toThrow(/question is required/i);
+
+    await publishRevision(db, {
+      slug: "capture-draft",
+      materiality: "cosmetic",
+    });
+    const after = await buildReviewQueue(db, { userId: "thomas" });
+    expect(after.items.some((item) => item.tokenId === result.token.id)).toBe(
+      true,
+    );
   });
 
   it("getReviewsBatch serves fresh question variations and never mutates stored questions", async () => {

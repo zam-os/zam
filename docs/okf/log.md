@@ -2,6 +2,9 @@
 
 ## 2026-09-05
 
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Local Card File Import](local-card-file-import.md)
+- **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)
 

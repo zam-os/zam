@@ -28,6 +28,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { assertReadyToPublish } from "./publication.js";
 
 /** How a publish affects people who already learned the token. */
 export type RevisionMateriality = "cosmetic" | "material";
@@ -119,6 +120,10 @@ export async function publishTokenRevisionInTransaction(
   if (!token) throw new Error(`Token not found: ${input.tokenId}`);
 
   const changes = input.changes ?? {};
+  await assertReadyToPublish(db, input.tokenId, {
+    question: changes.question,
+    concept: changes.concept,
+  });
   const setClauses: string[] = [];
   const params: unknown[] = [];
   for (const [key, column] of CHANGE_COLUMNS) {

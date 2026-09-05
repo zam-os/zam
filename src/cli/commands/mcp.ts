@@ -42,6 +42,7 @@ import {
   linkPrereq as handleLinkPrereq,
   listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
+  listDrafts as handleListDrafts,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
@@ -103,6 +104,7 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "personal-card-update",
   "personal-card-publish-revision",
   "personal-card-revision-preview",
+  "list-drafts",
   "personal-card-create-assignment",
   "personal-card-withdraw-assignment",
   "personal-card-list-assignments",
@@ -689,7 +691,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_add_token",
     {
-      description: "Add a new knowledge token",
+      description:
+        "Add a new knowledge token as a draft. It does not enter the recall queue until published with zam_publish_revision after author review.",
       inputSchema: {
         user: z.string().optional().describe("User ID to auto-create card for"),
         slug: z.string().describe("Unique slug for the token"),
@@ -721,7 +724,9 @@ export function createMcpServer(
           .string()
           .nullable()
           .optional()
-          .describe("Pre-defined review question"),
+          .describe(
+            "Pre-defined review question. Raw captures are stored as drafts and need a question before publish.",
+          ),
         knowledgeContexts: z
           .array(z.string())
           .optional()
@@ -755,13 +760,29 @@ export function createMcpServer(
     }),
   );
 
+  server.registerTool(
+    "zam_list_drafts",
+    {
+      description:
+        "List unpublished draft and in-review tokens for author review before publication.",
+      inputSchema: {},
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async () => {
+      return await handleListDrafts(db);
+    }),
+  );
+
   // zam_publish_revision — Closed-Group Library Phase 2 (Studio release step)
   server.registerTool(
     "zam_publish_revision",
     {
       description:
-        "Publish a token content revision with forced cosmetic vs material classification (ADR Decision 2 & 3). " +
-        "Cosmetic changes update text silently; material changes re-test learners who learned earlier versions.",
+        "Publish a draft or a classified content revision. Structural checks (required question, non-empty criterion, no slug echo, valid references) block publication. " +
+        "Cosmetic changes leave FSRS state; material changes re-test learners who learned earlier versions. First publication of a draft is typically cosmetic.",
       inputSchema: {
         tokenId: z.string().optional().describe("Token ULID"),
         slug: z.string().optional().describe("Token slug"),
