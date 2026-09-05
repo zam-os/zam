@@ -126,6 +126,7 @@ Die wesentlichen Pflöcke wurden in Runde 2, 2b, den Owner-Entscheidungen und de
 ### §9 Literaturverzeichnis
 - Vollständige Liste inklusive aller neuen Einträge von Muse Spark (Soderstrom & Bjork 2015, Smith et al. 2013, Carpenter 2009, Roediger & Marsh 2005, Butler & Roediger 2008, Kang et al. 2007, Agarwal 2019, Jensen et al. 2014, Keith & Frese 2008, Blume et al. 2010, Ford et al. 1992, Yang et al. 2018, Wissman et al. 2011, Roediger et al. 2011, McDaniel et al. 2013, Pashler et al. 2005, Butler 2010).
 - Alle DOIs geprüft und ohne Vorbehalt aufgelöst (insb. Nickerson 1984: `https://doi.org/10.3758/BF03213342`, Tulving & Arbuckle 1966: `https://doi.org/10.1037/h0023344`).
+- Nachprüfung (Fable 5.1, Runde 3, Crossref-Abgleich aller 63 DOIs nach Erstautor und Jahr): 62 korrekt; Pyc & Rawson (2009) korrigiert auf *Journal of Memory and Language*, 60(4), 437–447, `https://doi.org/10.1016/j.jml.2009.01.004`.
 
 ---
 
