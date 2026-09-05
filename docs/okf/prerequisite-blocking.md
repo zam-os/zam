@@ -7,18 +7,28 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-08-15T10:51:34.868Z
+timestamp: 2026-09-05T07:20:33.638Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
 `prerequisites`): an edge means "learn this first". The graph powers two
 behaviors:
 
-**Blocking.** When a learner demonstrably lacks a foundation, cards that
-depend on it can be blocked out of the queue. `cascadeBlock()` in
-`src/kernel/scheduler/blocker.ts` walks the dependents of a failed token
-and marks their cards blocked; `unblockReady()` releases cards whose
-prerequisites have recovered.
+**Blocking.** When a learner rates a token `1` and that token has
+prerequisites, `cascadeBlock()` in `src/kernel/scheduler/blocker.ts` blocks
+the *failed token's own card* (`blocked = 1`, so it drops out of the queue)
+and ensures that each of its *direct* prerequisites has a card, so those
+foundations surface in the next session: a missing prerequisite card is
+created unblocked and due now; an existing one keeps its state, except
+that a blocked prerequisite card with no prerequisites of its own is
+unblocked and made due now. Only direct prerequisites are materialized,
+never the transitive hull, and the failed token's dependents are not
+touched. Calling `cascadeBlock()` for a token without prerequisites
+throws. `unblockReady()` releases a blocked card (unblocked, due now) once
+every direct prerequisite has a card with `reps >= 1` that is itself not
+blocked; a blocked card with no prerequisites is released immediately.
+Releases cascade within the same call, so a freed prerequisite can free
+the card that waited on it.
 
 **Separation from FSRS math.** Blocking is deliberately *not* part of
 `evaluateRating()` (see [fsrs-scheduling.md](fsrs-scheduling.md)). The
