@@ -203,6 +203,11 @@ import {
 import { SyncError, syncWithRetry } from "./sync.js";
 import { createNav } from "./ui/nav.js";
 import {
+  initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
+  syncRadioGroupTabStops,
+} from "./ui/radio-group.js";
+import {
   DEFAULT_MOBILE_UPDATE_MANIFEST,
   type MobileUpdateInfo,
 } from "./update.js";
@@ -608,6 +613,9 @@ const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
 const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
 const localAiModels = element<HTMLElement>("local-ai-models");
 const settingsView = element<HTMLElement>("settings-view");
+const settingsModeSwitcher = element<HTMLElement>(
+  "mobile-settings-mode-switcher",
+);
 const settingsModeSimple = element<HTMLButtonElement>(
   "mobile-settings-mode-simple",
 );
@@ -957,6 +965,7 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
   settingsModeSimple.setAttribute("aria-checked", String(simple));
   settingsModeAdvanced.classList.toggle("active", !simple);
   settingsModeAdvanced.setAttribute("aria-checked", String(!simple));
+  syncRadioGroupTabStops(settingsModeSwitcher);
   const descriptionKey = simple
     ? "settings_mode_simple_help"
     : "settings_mode_advanced_help";
@@ -1274,6 +1283,7 @@ function renderReviewModeSwitcher(mode: StudyLearningMode): void {
   reviewModeFeedback.classList.toggle("active", !isFlash);
   reviewModeFlash.setAttribute("aria-checked", String(isFlash));
   reviewModeFeedback.setAttribute("aria-checked", String(!isFlash));
+  syncRadioGroupTabStops(reviewModeSwitcher);
   reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
@@ -1374,7 +1384,13 @@ async function saveStudyLearningSettings(): Promise<void> {
 }
 
 async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
-  if (!currentUserId) return;
+  if (
+    !currentUserId ||
+    mode === currentLearningSettings.learningMode ||
+    learningSettingsMutationsPending > 0
+  ) {
+    return;
+  }
   const epoch = ++learningSettingsEpoch;
   const requestedUserId = currentUserId;
   learningSettingsMutationsPending += 1;
@@ -1415,6 +1431,9 @@ async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
     reviewModeSwitcher.removeAttribute("aria-busy");
     reviewModeFlash.disabled = false;
     reviewModeFeedback.disabled = false;
+    // The re-enable is the moment the group can hold focus again, so the tab
+    // stop and any focus the save cycle took are restored here, not earlier.
+    syncRadioGroupTabStops(reviewModeSwitcher);
   }
 }
 
@@ -2755,7 +2774,8 @@ function renderCurrentReview(message = ""): void {
     !reviewSession.revealed &&
     !voiceController.active &&
     !fastCheck &&
-    !isFlash
+    !isFlash &&
+    !radioGroupHasPendingFocus(reviewModeSwitcher)
   ) {
     reviewAnswer.focus();
   }
@@ -3198,6 +3218,9 @@ element<HTMLButtonElement>("pairing-back").addEventListener("click", () => {
   if (currentUserId) showDashboard();
   else nav.showRoot("setup");
 });
+
+initRadioGroupKeyboard(settingsModeSwitcher);
+initRadioGroupKeyboard(reviewModeSwitcher);
 
 settingsModeSimple.addEventListener("click", () => {
   chooseSettingsViewMode("simple");

@@ -124,6 +124,11 @@ import {
   type SettingsViewMode,
 } from "./settings-view-mode.js";
 import {
+  initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
+  syncRadioGroupTabStops,
+} from "./radio-group.js";
+import {
   acceptsTypedStudyAnswer,
   resolveStudyLearningControlState,
   shouldEvaluateStudyAnswer,
@@ -767,6 +772,7 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
   simple?.setAttribute("aria-checked", String(simpleActive));
   advanced?.classList.toggle("active", !simpleActive);
   advanced?.setAttribute("aria-checked", String(!simpleActive));
+  syncRadioGroupTabStops(document.getElementById("settings-mode-switcher"));
   if (description) {
     description.textContent = t(
       simpleActive
@@ -793,6 +799,7 @@ function initSettingsViewModeControls(): void {
   document
     .getElementById("btn-settings-mode-advanced")
     ?.addEventListener("click", () => chooseSettingsViewMode("advanced"));
+  initRadioGroupKeyboard(document.getElementById("settings-mode-switcher"));
   applySettingsViewMode(settingsViewMode);
 }
 
@@ -2347,6 +2354,7 @@ function applyStudyLearningControlState(): boolean {
   elements.feedback.classList.toggle("active", state.aiSelected);
   elements.feedback.setAttribute("aria-checked", String(state.aiSelected));
   elements.feedback.disabled = state.reviewDisabled;
+  syncRadioGroupTabStops(document.getElementById("study-mode-switcher"));
   return state.flashSelected;
 }
 
@@ -2499,17 +2507,24 @@ async function switchStudyLearningMode(
     return;
   }
 
+  const keepModeSwitcherFocus = radioGroupHasPendingFocus(
+    document.getElementById("study-mode-switcher"),
+  );
+
   await pauseVoiceMode().catch(() => undefined);
   const saved = await persistStudyLearningSettings({ learningMode: next });
   if (!saved || !activeCard || isFlashLearningMode()) return;
   const textarea = document.getElementById(
     "user-answer-input",
   ) as HTMLTextAreaElement;
-  if (!activeCard.fastCheck && !textarea.disabled) textarea.focus();
+  if (!keepModeSwitcherFocus && !activeCard.fastCheck && !textarea.disabled) {
+    textarea.focus();
+  }
 }
 
 function initStudyLearningControls(): void {
   const elements = studyLearningElements();
+  initRadioGroupKeyboard(document.getElementById("study-mode-switcher"));
   elements.mode.addEventListener("change", () => {
     const requested = elements.mode.value as StudyLearningMode;
     void persistStudyLearningSettings({ learningMode: requested });
