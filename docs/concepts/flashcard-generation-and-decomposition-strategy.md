@@ -58,6 +58,12 @@ Bewertung und Zitatkorrekturen: PR-Kommentar Fable 5.1, Runde 2b. **Achtung:** K
 
 ---
 
+### 0.3 Owner-Input (Thomas), 2026-09-05
+
+Neuer Abschnitt **§4.5 Zwei Evidenzkanäle**: Karten prüfen abrufbare Relationen; Anwendung im Arbeitskontext wird **beobachtet** und ersetzt als unassistierte Handlung die fällige Karte (Fälligkeit verschiebt sich wie nach einem Review). O7 erhält damit ein Prinzip; §8 einen zweiten Primärmaß-Kanal; §7.3 einen Punkt 7. Team-Aufgabenverteilung wird als eigenes ADR-Thema notiert. Markierung **(Owner)**.
+
+---
+
 ## 1. Problemaufriss: Die „monolithische Mauer“ in ZAM
 
 In der praktischen Lernerfahrung sowie bei der Analyse des Datenbestands (1.165 Token, 973 Cards, 512 Review-Logs; 228 KVT-Pakete, 1.291 Items) treten zwei Ebenen zutage: **gemessene Korpus-Strukturen** und **offene Outcome-Hypothesen**.
@@ -243,6 +249,22 @@ Mehrschrittige Hausaufgaben / Interleaving-Sätze leben **nicht** in der täglic
 
 ---
 
+### 4.5 Zwei Evidenzkanäle: Karte und Arbeit (Owner-Input, 2026-09-05)
+
+**Anmerkung des Owners (Thomas).** Bloom 1 und 2 lassen sich mit kurz zu beantwortenden Fragen prüfen; bei höheren Stufen ist das fraglich, und vielleicht sollten dafür gar keine Karten entstehen. ZAM hat aber einen zweiten Kanal: das Arbeiten an echten Aufgaben, besonders im Unternehmenskontext. Die Beobachtung des Outputs im Terminal oder am Bildschirm lässt einen leistungsfähigen Agenten beurteilen, ob Konzepte auf höheren Bloom-Stufen tatsächlich zum Einsatz kommen. Man beginnt mit Karten und bewährt sich dann in der Praxis. Eine beobachtete, **unassistierte** Anwendung soll die fällige Karte **ersetzen** — das Fälligkeitsdatum verschiebt sich wie nach einem Review. Die Entlastung der Queue ist ein Mehrwert, den andere Lernwerkzeuge kaum leisten können. ZAM kann außerdem bei der Aufgabenverteilung im Team helfen: Aufgaben mit hoher Deckung zu Lernthemen den Kolleginnen und Kollegen anbieten, die das größte Lernpotential haben, ohne überfordert zu sein.
+
+**Einordnung (Fable, Owner-Antworten vom 2026-09-05 eingearbeitet):**
+
+1. **Die Weiche ist die Form des Zielkönnens, nicht die Bloom-Stufe.** Karten für alles, was eine entscheidbare Kurzantwort hat (Regel 6) — auch Bloom-3/4-Diskriminationen wie die Katheten-Falle oder „Pythagoras oder Sinus?“; Beobachtung für alles, dessen Beleg eine Handlung im Kontext ist. Bloom bleibt Item-Attribut (§2.5), keine Kanalentscheidung.
+2. **Beobachtung ist der transfer-angemessene Test** (TAP, §2.2). Ist die Zielkompetenz Anwendung im Arbeitskontext, ist die echte Aufgabe genau die *untrainierte Zielaufgabe*, die §8 verlangt. Der Pilot kann sein Primärmaß aus diesem Kanal beziehen statt aus konstruierten Aufgaben.
+3. **Beobachtung ersetzt die fällige Karte — unter einer Bedingung.** Owner-Entscheidung: Eine beobachtete, unassistierte, selbst entschiedene Anwendung ist ein Review; das Rating läuft über `executeReviewAction`, FSRS verschiebt die Fälligkeit, die Karte verlässt die Queue. Assistierte Anwendung (Hinweis, Nachschlagen durch den Agenten) wird nur protokolliert (`doneBy: "agent"`, `recordedOnly`, kein FSRS); vom Agenten ausgeführte Schritte sind kein Lernnachweis. Das ist **O7 als Prinzip statt als Ausnahme**; offen bleibt nur die Kappung des Erstkontakt-Ratings (Astra). Der `symbiosis_mode` des Tokens (`shadowing` / `copilot` / `autonomy`) liegt als Träger dieser Unterscheidung nahe: wer handelt, bestimmt die Evidenzstärke.
+4. **Der Kanal existiert im Produkt.** Beobachtungsmodus als primärer Bewertungsmodus im Skill (`skills/zam/SKILL.md`, „Two Modes of Knowledge Assessment“), Level 1 Shell (`zam monitor`, `analyze-monitor` mit Token-Mustern), Level 2 Bildschirm mit `ObserverPolicy` (`zam observer`), Session-Synthese am Ende (`zam_session_end`, `synthesize: true`), Git-Sync. Beobachtungs-Ratings laufen heute schon als normale Reviews durch den Kernel und verschieben die Fälligkeit; der RFC macht daraus eine Regel und begrenzt sie auf unassistierte Handlungen. Der Kernel bleibt AI-agnostisch: der Agent urteilt, der Kernel speichert (ADR 2026-07-18). Konzept-Doku: `docs/concepts/monitoring-methods.md`.
+5. **Was das für die Verfassung heißt.** Ein Token, dessen Zielkönnen eine Handlung ist, braucht keine Karte, sondern ein **beobachtbares Kriterium**: welche Handlung, in welchem Kontext, ohne welche Hilfe gilt als Abruf. Das ist das Pendant zu Regel 6 für den zweiten Kanal. Vorschlag (offen): `concept` trägt das Kriterium, `question` beschreibt die Aufgabensituation; solche Tokens erscheinen nicht in der Flash-Queue, sondern werden „zur Beobachtung fällig“ — die Session zeigt sie als Beobachtungsziele, nicht als Fragen. Ein Token, das lange nicht in der Arbeit vorkam, fällt auf die Karte zurück (Skill: „Verbal probing … when a token hasn't been exercised in a long time“).
+6. **Team-Aufgabenverteilung: eigenes ADR im Rahmen der Team Library, nicht Teil dieses RFC.** Die Bausteine sind vorhanden: Aufgaben lassen sich semantisch auf Atome abbilden (`relevant-tokens`, Embeddings); der Graph kennt „anbietbar, weil harte Fundamente gehalten“ und „lohnend, weil es Späteres erleichtert“ (ADR 2026-08-14 Decision 6); Zuweisungen existieren (`assignments`). „Größtes Lernpotential ohne Überforderung“ heißt in Graphsprache: viele fällige oder neue Atome auf der Aufgabe bei gehaltenen harten Vorbedingungen — die Zone der nächsten Entwicklung, mit Scaffolding (Wood, Bruner & Ross 1976) statt Überforderung. Vor jeder Technik stehen Betriebsrat und Datenschutz für Beobachtung am Arbeitsplatz; die Observer-Richtlinie ist Voraussetzung, kein Ersatz.
+7. **Ohne reale Aufgabe: künstliche Aufgaben (Owner-Ergänzung).** Künstlich angelegte Lernthemen — eine Lehrplan-Zelle, ein privates Interesse, ein Thema, das im Team nie vorkommt — werden in realen Aufgaben vielleicht nie beobachtet. Wer sie trotzdem meistern will, braucht **konstruierte Aufgaben**: Karten für die Relationen, `practice_set` (§4.4) für Anwendung und Transfer, dessen gefadete Endstufe die untrainierte Zielaufgabe ist. Der Beobachtungskanal ersetzt die Karte also nur dort, wo Arbeit das Konzept tatsächlich berührt; sonst gilt der Kartenkanal mit Übungssession als Rückfall. Für die Realschülerin ist die Schulaufgabe die einzige „echte“ Aufgabe; dazwischen trägt das `practice_set`.
+
+---
+
 ## 5. Die 6 Kriterien der ZAM-Karten-Verfassung
 
 Verbindlich am **Publish-Gate** (`editorial_state = 'published'`) für Zellen und OKF-Importe. Capture darf roh sein. Anki-Importe werden nicht still umgeschrieben; Lint + Opt-in. **Voraussetzung:** Capture-Pfade (`zam_add_token`, Ad-hoc-Import) schreiben `draft`. Heute ist `published` der Default von `createToken()` (`src/kernel/models/token.ts:179`), und kein Pfad setzt `draft`; die Queue filtert bereits `editorial_state = 'published'`. Bis dahin ist das Gate eine Implementierungsvoraussetzung (§7.3), kein Zustand.
@@ -355,6 +377,7 @@ Queue-Bloom-Monotonie und Atom-Sibling-Bury sind Kernel-Änderungen. RFC darf si
 **O7. Beobachtungs-Ratings im Arbeitskontext (neu, Fable).**  
 Die Agenten-Rubrik (`skills/zam/SKILL.md:98`) vergibt für einen *assistierten* Erstlauf eine 3; §7.1.4 sagt „inhaltliche Hilfe → 1“. Auf einer *neuen* Karte entscheidet dieses Rating `initialStability`. Vorschlag als Default: Beobachtungs-Ratings auf neue Karten sind „establishing evidence“ und höchstens 2, nie 3 — oder 7.1.4 klammert Beobachtungs-Ratings ausdrücklich aus. Astra/Thomas entscheiden; nicht in dieser Runde beschließen, nur benennen.
 *E (GLM, Kimi):* Der sauberste Default existiert im Code: `zam_submit_review` mit `doneBy: "agent"` und ohne Rating loggt den Schritt (`recordedOnly: true`) und schreibt kein FSRS — ein Rating wirft dort sogar (`src/cli/bridge-handlers.ts`). Vorschlag: assistierter Erstlauf auf neuer Karte → Evidenz ohne Rating; unassistiert korrekt → 4 wie heute; ist ein Rating gewünscht → höchstens 2. Theorie: beobachtete, assistierte Anwendung belegt keinen unprompteden Abruf (inertes Wissen, Renkl, Mandl & Gruber 1996). **Weiter offen — Astra/Thomas entscheiden.**
+**Owner (Thomas, 2026-09-05):** Beobachtete, unassistierte Anwendung **ersetzt** die fällige Karte (Fälligkeit verschiebt sich wie nach einem Review); assistierte Anwendung wird nur protokolliert (§4.5). Damit ist die Richtung von O7 entschieden; offen bleibt die **Kappung des Erstkontakt-Ratings** auf neuen Karten (≤ 2 oder nur Protokoll) — Astra.
 
 ### 7.3 Implementierungsvoraussetzungen (getrennt von der Verfassung; F2)
 
@@ -366,6 +389,7 @@ Keine Verfassungsregeln, sondern Änderungen, ohne die die Regeln Papier bleiben
 4. **Atom-Sibling-Bury:** `burySiblingCards` um `tokens.atom_id` erweitern, hinter den vorhandenen Schaltern (O6 — *wann*, ist offen).
 5. **Klärungs-Protokoll** (O1, Stufe 1): eine Klärfrage als Modus in `answer_feedback`, protokolliert für §8. Mit Grader-/Prompt-Version; bei „weiß ich nicht“ eine Tipp-Aufforderung vor dem Reveal (Pretesting) (E).
 6. **Zeitereignisse für §8:** gezeigt / erste Antwort / Hinweis oder Reveal / Rating (heute nur `response_time_ms` = gezeigt → Rating). Schema-Wunsch, kein Verfassungsinhalt.
+7. **Beobachtungskanal (§4.5, Owner):** beobachtbares Kriterium für Handlungs-Tokens; Ausschluss aus der Flash-Queue, „zur Beobachtung fällig“ in der Session; Evidenzstärke nach Handelndem (unassistiert → Review, assistiert → Protokoll, Agent → kein Nachweis). Vorschlag, kein Schema-Beschluss.
 
 ---
 
@@ -376,7 +400,7 @@ Kartenstatistiken nach einem Split sind Diagnose, kein Wirksamkeitsbeweis.
 **Pilot, klein:**
 
 * **Design (E):** Bei ZAMs realem N — im Snapshot ein Lernender, realistisch wenige pro Zelle — ist Between-Person-Randomisierung nicht auswertbar; die Konfidenzintervalle verschlucken jeden Effekt. Stattdessen ein Single-Case-Design als **Multiple-Baseline über Themenblöcke**: mehrere vergleichbare Blöcke pro Lernendem, der *Zeitpunkt* der Dekomposition randomisiert gestaffelt; gleiches Lernzeitbudget; Modi getrennt ausgewertet (WWC-Standards für Single-Case-Designs: Kratochwill et al. 2013).
-* **Primär:** verzögerte Leistung auf vorher festgelegten, **untrainierten** Aufgaben zum selben Lernziel. Verzögerung **≥ 7 Tage** (Rowland 2014: der Testeffekt wächst mit dem Intervall; kurze Intervalle unterschätzen die Dekomposition). Das Format der Zielaufgabe spiegelt die reale Schulaufgabe — Kriteriumsvalidität über TAP, sonst misst der Pilot Kartenformate statt des Lernziels (E).
+* **Primär:** verzögerte Leistung auf vorher festgelegten, **untrainierten** Aufgaben zum selben Lernziel. Verzögerung **≥ 7 Tage** (Rowland 2014: der Testeffekt wächst mit dem Intervall; kurze Intervalle unterschätzen die Dekomposition). Das Format der Zielaufgabe spiegelt die reale Schulaufgabe — Kriteriumsvalidität über TAP, sonst misst der Pilot Kartenformate statt des Lernziels (E). **Zweiter Primärmaß-Kanal (Owner, §4.5):** beobachtete, unassistierte Anwendung im Arbeitskontext ist die transfer-angemessene untrainierte Zielaufgabe; der Pilot wertet Karten- und Beobachtungskanal getrennt aus.
 * **Sekundär:** echte Zeit pro Lernziel (inkl. Tutor-Turns), Review-Last, Abbruch.
 * **Sekundär, Autoren-Report (O2, F2):** Erstkontakt-Easy-Quote pro Item über die Lernenden einer Zelle (erste Bewertung auf `state = 'new'` = 4). Kein Kernel-Flag; sagt „trug für diese Kohorte keine Information“, nicht „Fundament wertlos“.
 * Beobachtungen derselben Lernenden/Karten clustern; nicht jede Review als unabhängige VP zählen.
