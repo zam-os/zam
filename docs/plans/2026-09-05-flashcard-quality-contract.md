@@ -1,197 +1,197 @@
-# Implementierungsplan: Qualitätsvertrag für Lernkarten und beobachtete Arbeit
+# Implementation plan: quality contract for flashcards and observed work
 
-**Stand:** 2026-09-05, geprüft gegen `main` auf `3fc88eb` (Merge von PR #318).
+**As of:** 2026-09-05, checked against `main` at `3fc88eb` (merge of PR #318).
 
-**Grundlage:** [RFC zur Generierung und Dekomposition](../concepts/flashcard-generation-and-decomposition-strategy.md), insbesondere §4.5, §5, §6.1, §7 und §8.
+**Basis:** [Generation and decomposition RFC](../concepts/flashcard-generation-and-decomposition-strategy.md), particularly §4.5, §5, §6.1, §7 and §8.
 
-**Branch:** `codex/flashcard-quality-contract`. Ein Branch und ein PR für diesen Umsetzungsschnitt; ein Commit je abgeschlossener Phase.
+**Branch:** `codex/flashcard-quality-contract`. One branch and one PR for this implementation slice; one commit per completed phase.
 
 ## Status
 
-Plan erstellt; Produktimplementierung noch nicht begonnen. Bei einem Implementierungsauftrag genau die nächste offene Phase bearbeiten. Eine Phase ist erst mit ihren Abnahmekriterien und den vorgeschriebenen Prüfungen abgeschlossen.
+Plan prepared; product implementation has not started. When asked to implement, work on exactly the next unchecked phase. A phase is complete only when its acceptance criteria and the required checks pass.
 
-- [ ] Phase 1: Bewertungsvertrag und assistierte Nutzerarbeit ohne FSRS-Rating
-- [ ] Phase 2: Entwürfe, Autorenprüfung und Veröffentlichung
-- [ ] Phase 3: Atom-Sibling-Trennung und reaktive Aufhebung von Vorbedingungs-Vertagung
-- [ ] Phase 4: Beobachtete Versuche nachvollziehbar und genau einmal buchen
-- [ ] Phase 5: Begrenzter Inhaltsumbau mit explizitem Umgang mit alten Karten
-- [ ] Phase 6: Betreuten Pilot vorbereiten und den Ablauf technisch erproben
+- [ ] Phase 1: Grading contract and assisted user work without an FSRS rating
+- [ ] Phase 2: Drafts, author review and publication
+- [ ] Phase 3: Atom sibling separation and reactive cancellation of prerequisite deferral
+- [ ] Phase 4: Record observed attempts with traceable evidence and no duplicate reviews
+- [ ] Phase 5: Limited content revision with explicit treatment of existing cards
+- [ ] Phase 6: Prepare a supervised pilot and run a technical rehearsal
 
-Der eigentliche Lernpilot folgt nach der technischen Umsetzung. Seine verzögerten Lernmessungen sind kein Merge-Gate dieses Implementierungs-PRs. Ein erfolgreicher Funktionstest ist noch kein Wirksamkeitsnachweis.
+The actual learning pilot follows technical implementation. Its delayed learning measurements are not a merge gate for this implementation PR. A successful functional test does not establish learning effectiveness.
 
-## Ziel und Umfang
+## Goal and scope
 
-ZAM soll nur eigenständige, am konkreten Item-Kriterium bewertete Versuche als FSRS-Reviews buchen. Neue Inhalte werden vor der Veröffentlichung geprüft. Unterschiedliche Darstellungen desselben Atoms werden über Lerntage verteilt. Anschließend wird der Inhaltsumbau an einem kleinen, nachvollziehbaren Ausschnitt erprobt.
+ZAM should record only independent attempts assessed against the specific item's criterion as FSRS reviews. New content is reviewed before publication. Different representations of the same atom are distributed across learning days. The content revision is then evaluated on a small, traceable sample.
 
-Die Beschlüsse O1–O7 werden umgesetzt, nicht neu abgestimmt. Insbesondere bleiben Flächenbedeutung und Katheten-Falle Items des Pythagoras-Atoms; beobachtete Arbeit darf eine passende fällige Abfrage ersetzen. **Die offene empirische Frage ist die Kalibrierung dieses zweiten Evidenzkanals.** Ein erfolgreicher Befehl belegt weder den Handelnden noch das vollständige Zielkönnen. Deshalb braucht dieser Kanal Kriterien, Hilfeangaben und Schutz vor Doppelbuchung; zunächst werden seine Ergebnisse getrennt ausgewertet.
+Implement decisions O1–O7 without reopening them. In particular, the area interpretation and the leg-label trap remain items of the Pythagorean atom; observed work may replace a matching due recall task. **The open empirical question is the calibration of this second evidence channel.** A successful command establishes neither who performed it nor the complete target competence. This channel therefore needs criteria, assistance records and protection against duplicate reviews; initially, its results are analyzed separately.
 
-Der erste Pilot wird betreut. Fehlende Messdaten werden prospektiv in einem externen Protokoll erfasst. Vollständige automatische Messung, eine zusätzliche Klärungsinteraktion, allgemeines Kanalrouting und eine neue Übungsoberfläche sind nachgelagerte Arbeit. Sie dürfen die Korrektur heute falscher Ratings nicht verzögern.
+The first pilot is supervised. Missing measurements are collected prospectively in an external protocol. Full automatic measurement, an additional clarification interaction, general channel routing and a new practice interface are follow-up work. They must not delay correcting today's incorrect ratings.
 
-## Vorhandene Bausteine weiterverwenden
+## Reuse existing components
 
-| Baustein am geprüften Stand | Konsequenz für die Umsetzung |
+| Component at the inspected revision | Implementation consequence |
 |---|---|
-| Flash, `answer_feedback`, `answer_variation`, Moduswechsel und Voice-Steuerung; [abgeschlossener Plan](2026-09-03-flashcard-learning-mode.md) | Keine erneute Implementierung der Lernmodi. Bestehende Auswahl und Rückfall auf Selbstbewertung erhalten. |
-| CLI-/Agent-Grader in `src/cli/llm/client.ts`; zweiter Prompt in `desktop/src/panel/recall-evaluation.ts`, den Mobile ebenfalls importiert | Beide Promptfamilien sowie ihre Aufrufer müssen denselben Vertrag erfüllen. Nur den im RFC genannten CLI-Prompt zu ändern reicht nicht. |
-| Persönliche Cards, unveränderliche Review-Logs, `session_steps.rating` nullable | Assistierte Arbeit kann zunächst mit einem Session-Schritt ohne Review erfasst werden; dafür ist keine Schemaänderung nötig. |
-| `editorial_state`, Queue-Filter für `published`, `publishTokenRevision()` mit Versions-/Retest-Verhalten | Lebenszyklus erweitern und vorhandene Revisionen integrieren. `createToken()` hat heute weiterhin den Default `published`. |
-| Anki-Sibling-Bury über `note_guid`, nach einem Rating, für New/Review | Das ist keine Atom-Sibling-Trennung. Auch laufende Sessions und unbewertete Darbietungen müssen berücksichtigt werden. |
-| Endliche Vorbedingungs-Vertagung und explizites Vorziehen | Die Aufhebung nach einem tatsächlichen Again ergänzen; keinen neuen proaktiven Zulassungstest bauen. |
-| Monitor, UI-Observer und bestätigte Session-Synthese | Die vorhandenen Wege absichern. Die Synthese ist bereits innerhalb ihres eigenen Pfads idempotent; direkte Review-Buchungen und spätere Synthese sind noch kein gemeinsamer Versuch. |
-| Reveal der korrekten Lösung nach Auswahl auf Desktop und Mobile | Als Invariante prüfen, einschließlich falscher Auswahl; nicht neu bauen. |
+| Flash, `answer_feedback`, `answer_variation`, mode switching and voice control; [completed plan](2026-09-03-flashcard-learning-mode.md) | Do not rebuild study modes. Preserve existing selection and fallback to self-rating. |
+| CLI/agent grader in `src/cli/llm/client.ts`; a second prompt in `desktop/src/panel/recall-evaluation.ts`, also imported by Mobile | Both prompt families and their callers must satisfy the same contract. Changing only the CLI prompt named in the RFC is insufficient. |
+| Personal cards, immutable review logs, nullable `session_steps.rating` | Assisted work can initially be recorded as a session step without a review; this requires no schema change. |
+| `editorial_state`, queue filter for `published`, `publishTokenRevision()` with versioning and retest behavior | Extend the lifecycle and integrate existing revisions. `createToken()` still defaults to `published` today. |
+| Anki sibling burying through `note_guid`, after a rating, for New/Review | This does not provide atom sibling separation. Active sessions and unrated presentations also need coverage. |
+| Finite prerequisite deferral and explicit pull-forward | Add cancellation after an actual Again; do not build a new proactive admission test. |
+| Monitor, UI Observer and confirmed session synthesis | Strengthen existing paths. Synthesis is already idempotent within its own path; direct review submissions and later synthesis do not yet share an attempt identity. |
+| Reveal of the correct answer after a choice on Desktop and Mobile | Verify as an invariant, including incorrect choices; do not rebuild it. |
 
-## Phase 1 — Bewertungsvertrag und Record-only-Pfad
+## Phase 1 — Grading contract and record-only path
 
-**Ergebnis:** Eine unvollständige Pflichtantwort zählt nicht mehr als erfolgreicher Hard-Abruf. Assistierte Nutzerarbeit lässt sich ehrlich als Nutzerarbeit erfassen, ohne FSRS zu verändern.
+**Outcome:** An answer missing required content no longer counts as successful Hard recall. Assisted user work can be recorded accurately as user work without changing FSRS.
 
-**Arbeit:**
+**Work:**
 
-1. In beiden Grader-Promptfamilien ist `concept` das vollständige Bestehenskriterium. Die Frage bestimmt dessen Bezug; `context` und Quellen liefern Hintergrund für Feedback, keine zusätzlichen Pflichtinhalte. Fehlende Fakten, verlangte Einheiten oder Rechenschritte dürfen nicht ergänzt werden. Widersprüche zwischen Frage und Kriterium werden als Inhaltsproblem sichtbar, nicht durch ein erfundenes Soll geheilt.
-2. Eindeutige Tipp-/Transkriptionsfehler, Kurzformen und äquivalente Paraphrasen nach O1 akzeptieren. Bewertet wird die bereits ausgedrückte Bedeutung. `answer_feedback` bleibt one-shot; Auflösung und anschließende Diskussion verbessern keinen zuvor falschen Versuch rückwirkend.
-3. Rating 1 bei gescheitertem eigenständigem Versuch; 2 bei vollständigem, mühsamem Erfolg; 3 bei normalem Erfolg; 4 nur mit Evidenz für mühelosen Erfolg. Strukturierte Grader-Ergebnisse mit `partial`/`incorrect` dürfen keinen Erfolgsvorschlag 2/3/4 anzeigen; widersprüchliche Ergebnisse vor Darstellung/Buchung abfangen. Aus einer knappen richtigen Texteingabe allein lassen sich Geschwindigkeit und Mühelosigkeit nicht ablesen. Bei unbekanntem Aufwand kann 3 vorgeschlagen werden; der Lernende bestätigt oder korrigiert die Einschätzung. Keine automatische 4 und keine Obergrenze 2 für neue Karten.
-4. `zam_submit_review` um einen expliziten Record-only-Aufruf für `doneBy: "user"` erweitern. Dieser verlangt einen gültigen Session-/Lernendenbezug, keinen Rating-Wert und schreibt nur einen Session-Schritt mit Grund. Ungültige Mischformen ablehnen. Bestehende Agent-Schritte bleiben Agent-Schritte. Die bereits mögliche CLI-Session-Erfassung berücksichtigen.
-5. `skills/zam/SKILL.md` und die ausgelieferten Varianten unter `.agents`, `.claude` und `.agent` aktualisieren; Harness-spezifische Anweisungen erhalten. „Alle berührten Tokens als 4“ und „assistierter Erstlauf als 3“ entfernen. Beobachtungsvorschläge ohne belegten eigenständigen Versuch dürfen keine Erfolgsbuchung auslösen. Die stärkere strukturierte Absicherung folgt in Phase 4.
-6. MCP-Schema, Bridge-Vertrag und Aufrufer gemeinsam anpassen. Bei Review plus Session-Schritt den vorhandenen transaktionalen Weg in `executeReviewAction()` nutzen; den Session-Schritt nicht danach ein zweites Mal schreiben. FSRS-Formeln und historische Ratings bleiben unverändert.
+1. In both grader prompt families, `concept` is the complete passing criterion. The question establishes its reference; `context` and sources provide background for feedback, not additional requirements. Do not supply missing facts, required units or calculation steps. Surface contradictions between the question and criterion as content problems rather than inventing an expected answer.
+2. Accept unambiguous typos/transcription errors, abbreviated forms and equivalent paraphrases under O1. Assess the meaning already expressed. `answer_feedback` remains one-shot; reveal and subsequent discussion do not retroactively improve an incorrect attempt.
+3. Use rating 1 for a failed independent attempt; 2 for complete but effortful success; 3 for ordinary success; 4 only with evidence of effortless success. Structured grader results with `partial`/`incorrect` must not display a success suggestion of 2/3/4; catch contradictory results before display or recording. A short correct text answer alone does not establish speed or effortlessness. When effort is unknown, 3 may be suggested; the learner confirms or corrects the assessment. No automatic 4 and no cap of 2 for new cards.
+4. Extend `zam_submit_review` with an explicit record-only call for `doneBy: "user"`. It requires a valid session/learner association, accepts no rating and writes only a session step with a reason. Reject invalid combinations. Existing agent steps remain agent steps. Account for the session recording already available through the CLI.
+5. Update `skills/zam/SKILL.md` and the shipped variants under `.agents`, `.claude` and `.agent`; preserve harness-specific instructions. Remove “rate all touched tokens as 4” and “assisted first run as 3.” Observation suggestions without a documented independent attempt must not trigger a success review. Stronger structured safeguards follow in Phase 4.
+6. Update the MCP schema, Bridge contract and callers together. For a review plus session step, use the existing transactional path in `executeReviewAction()`; do not write the session step a second time afterward. Keep FSRS formulas and historical ratings unchanged.
 
-**Abnahmefälle:**
+**Acceptance cases:**
 
-| Versuch | Erwartung |
+| Attempt | Expected result |
 |---|---|
-| Vollständige Antwort, zusätzliche Erläuterung nur im Kontext fehlt | Erfolg |
-| Eindeutiger Tippfehler, Pflichtinhalt vollständig | Erfolg; keine neue Hilferunde |
-| Pflichtfakt fehlt, Ergebnis fachlich falsch oder verlangte Einheit fehlt | 1; kein Hard als Teilpunkt |
-| Unvollständige Antwort wird erst nach Inhaltshilfe richtig | Erster Versuch bleibt 1; Hilfe getrennt erfassen |
-| Richtige eigenständige Antwort, anschließend Feedback | Erfolg bleibt bestehen |
-| Nutzer führt erstmals die gerade vorgemachten Schritte aus, ohne eigenen Versuch | Session-Schritt mit `done_by = 'user'`, Rating leer; kein Review-Log, keine FSRS-/Blocking-Änderung |
-| Agent führt aus | Kein Nutzer-Review |
-| Neue Karte, eigenständige vollständige Anwendung | Reguläres 2/3/4 nach beobachtetem Aufwand, keine pauschale Begrenzung |
-| Fremde oder abgeschlossene Session, fremde Card, Record-only plus Rating | Fehler ohne Teilschreibvorgang |
+| Complete answer, missing only an additional explanation from the context | Success |
+| Unambiguous typo, all required content present | Success; no additional assistance turn |
+| Missing required fact, factually incorrect result or missing required unit | 1; no Hard as partial credit |
+| Incomplete answer becomes correct only after substantive help | First attempt remains 1; record assistance separately |
+| Correct independent answer followed by feedback | Success remains valid |
+| User first follows steps just demonstrated, without an independent attempt | Session step with `done_by = 'user'`, no rating; no review log and no FSRS/blocking change |
+| Agent performs the action | No user review |
+| New card, independent application satisfying the complete criterion | Normal 2/3/4 based on observed effort, no blanket cap |
+| Another learner's or a completed session, another learner's card, record-only plus rating | Error without partial writes |
 
-**Prüfstellen:** `tests/desktop/recall-evaluation.test.ts`, `tests/mobile/evaluate.test.ts`, `tests/cli/llm.test.ts`, `tests/cli/agent-llm/recall-agent.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/cli/mcp.test.ts` und bestehende FSRS-/Session-Tests. Tests sollen beobachtbares Verhalten prüfen, nicht nur neue Prompt-Sätze suchen. Ein kleines fachlich bewertetes Antwortset prüft zusätzlich die tatsächlichen Grader-Antworten; gemockte Modellantworten belegen nur die Verdrahtung. Modell und Promptstand im Prüfbericht festhalten.
+**Verification points:** `tests/desktop/recall-evaluation.test.ts`, `tests/mobile/evaluate.test.ts`, `tests/cli/llm.test.ts`, `tests/cli/agent-llm/recall-agent.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/cli/mcp.test.ts` and existing FSRS/session tests. Test observable behavior, not just the presence of new prompt sentences. Also use a small set of answers with subject-matter assessments to check actual grader responses; mocked model responses establish only the wiring. Record the model and prompt revision in the verification report.
 
-## Phase 2 — Entwürfe und Veröffentlichung
+## Phase 2 — Drafts and publication
 
-**Ergebnis:** Rohes Capture gelangt nicht automatisch in die Recall-Queue; geprüfte Inhalte können Lernende ohne Terminal veröffentlichen und verwenden.
+**Outcome:** Raw captures do not automatically enter the recall queue; learners can publish and use reviewed content without a terminal.
 
-**Arbeit:**
+**Work:**
 
-1. Capture-Einstiege inventarisieren und explizit trennen: MCP/Bridge `zam_add_token`, manuelle Erstellung, Text-/Datei-/URL-Erfassung, Mobile-Import und generierte Entwürfe. Neue rohe Inhalte schreiben `draft`. Bereits kuratierte Zellen, OKF-Import und Übernahme vorhandener Anki-Karten erhalten eigene, klar erkennbare Veröffentlichungswege. Den globalen Token-Default nicht ohne Aufruferabgleich umstellen.
-2. Studio zeigt persistierte Entwürfe mit Frage, Sollantwort, Erklärung, Quelle und kurzen Prüfhinweisen. Eine klare Aktion „Veröffentlichen“ führt durch denselben Vertrag wie MCP/Bridge. Mobile darf nach „Speichern“ nicht auf unsichtbaren Entwürfen sitzen bleiben: Überarbeiten und Veröffentlichen müssen dort erreichbar sein. Installation von Wissen und persönliche Einschreibung bleiben getrennte Kernel-Schritte.
-3. Die sechs RFC-Kriterien in Autoren-/Generierungsanweisungen und Importprüfung verankern. Billige strukturelle Prüfungen in den Kernel: Pflichtfrage für neue kuratierte Items, kein leeres Kriterium oder bloßes Slug-Echo, gültige referenzierte Items/Kanten. Semantische Prüfung von Scope, Antwort-Leakage, Zielkönnen, Mengen und fachlicher Abhängigkeit erfolgt durch Autor/Agent außerhalb des Kernels. Wortzahl, Verb oder eine geschätzte Abrufzeit sind kein automatischer Beweis mangelnder Qualität.
-4. Am Publish-Übergang gilt die Prüfung für die konkrete Inhaltsversion. Blockierende Strukturfehler verhindern Publish; semantische Hinweise verlangen Bearbeitung oder eine nachvollziehbare Autorenentscheidung. Der Agent kann diese Prüfung im bestehenden Importablauf übernehmen; für Lernende entsteht kein technisches Prüfregister. Ohne LLM bleibt manuelle Autorenprüfung möglich. Änderung nach Prüfung macht deren Freigabe ungültig.
-5. `publishTokenRevision()` und KVT-/OKF-Pfade in diesen Vertrag einbinden. Korrekturen mit gleichem Zielkönnen behalten die vorhandene kosmetisch/materiell-Unterscheidung und Retest-Semantik. Ein Identitätswechsel oder Split ist kein materielles Update desselben Items, sondern Phase 5. Ein erneuter Capture-/Importlauf darf veröffentlichte Inhalte nicht ungeprüft überschreiben oder die zuletzt veröffentlichte Version verschwinden lassen; Änderungsentwürfe bleiben getrennt, bis sie veröffentlicht werden.
-6. Zellenvorrang nach ADR Decision 10 erhalten. Anki-Inhalte und importierte Zeitpläne nicht still umschreiben; Lints und Überarbeitung nur als expliziten Opt-in anbieten. Bestand nicht massenhaft in Draft zurücksetzen. `answer_variation` muss das gleiche Kriterium prüfen; driftet die Aufgabe, auf die kanonische Frage zurückfallen.
+1. Inventory and explicitly distinguish capture entry points: MCP/Bridge `zam_add_token`, manual creation, text/file/URL capture, Mobile import and generated drafts. New raw content is written as `draft`. Already curated cells, OKF import and adoption of existing Anki cards receive their own clearly identifiable publication paths. Do not change the global token default without checking callers.
+2. Studio shows persisted drafts with question, reference answer, explanation, source and concise review notes. A clear “Publish” action applies the same contract as MCP/Bridge. After “Save,” Mobile must not leave learners with inaccessible drafts: editing and publication must be reachable there. Installing knowledge and personal enrollment remain separate kernel steps.
+3. Embed the six RFC criteria in authoring/generation instructions and import review. Put inexpensive structural checks in the kernel: a required question for new curated items, no empty criterion or mere slug echo, and valid referenced items/edges. Authors or agents outside the kernel perform semantic review of scope, answer leakage, target competence, sets and subject-matter dependencies. Word count, a verb or estimated recall time is not automatic proof of poor quality.
+4. At publication, the review applies to the specific content version. Blocking structural errors prevent publication; semantic findings require an edit or a traceable author decision. The agent can perform this review within the existing import flow; learners do not have to manage a technical review register. Manual author review remains possible without an LLM. Changes after review invalidate that version's approval.
+5. Integrate `publishTokenRevision()` and the KVT/OKF paths into this contract. Corrections preserving target competence retain the existing cosmetic/material distinction and retest semantics. An identity change or split is not a material update of the same item; it belongs to Phase 5. A repeated capture/import must not overwrite published content without review or remove the last published version; proposed edits remain separate drafts until publication.
+6. Preserve cell precedence under ADR Decision 10. Do not silently rewrite Anki content or imported schedules; offer lints and revision through explicit opt-in. Do not reset existing content to draft in bulk. `answer_variation` must test the same criterion; fall back to the canonical question if the task drifts.
 
-**Abnahme:** Capture → App-Neustart → Entwurf sichtbar → Korrektur → Veröffentlichung → Einschreibung/Queue funktioniert auf Studio und Mobile. Ohne Veröffentlichung erscheint kein Draft in einer laufenden oder neu aufgebauten Queue. Fehler und Abbruch verlieren keinen Entwurf. Erneutes Veröffentlichen/Importieren ist idempotent. Bestehende Anki-Zeitpläne, Zelleninstallation und materielle Revisionen behalten ihre zugesicherte Semantik.
+**Acceptance:** Capture → app restart → visible draft → correction → publication → enrollment/queue works in Studio and Mobile. Unpublished drafts never appear in an active or newly built queue. Errors and cancellation do not lose drafts. Repeated publication/import is idempotent. Existing Anki schedules, cell installation and material revisions retain their guaranteed semantics.
 
-**Prüfstellen:** `src/kernel/models/token.ts`, `src/kernel/library/revision.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/import/text-import.ts`, `src/cli/bridge-handlers.ts`, `src/cli/llm/client.ts`, `desktop/src/learning-content.ts`, `mobile/src/import.ts`; bestehende Import-, Library-Revision- und Oberflächentests. Vorhandene Editorial-Felder wiederverwenden; falls getrennte Änderungsentwürfe zusätzliche Persistenz benötigen, diese ausdrücklich modellieren und migrieren.
+**Verification points:** `src/kernel/models/token.ts`, `src/kernel/library/revision.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/import/text-import.ts`, `src/cli/bridge-handlers.ts`, `src/cli/llm/client.ts`, `desktop/src/learning-content.ts`, `mobile/src/import.ts`; existing import, library revision and surface tests. Reuse existing editorial fields; if separate drafts for proposed edits require additional persistence, model and migrate it explicitly.
 
-## Phase 3 — Atom-Siblings und vertagte Fundamente
+## Phase 3 — Atom siblings and deferred foundations
 
-**Ergebnis:** Pro Lernendem und lokalem Lerntag wird höchstens ein unterschiedliches Item desselben Atoms dargeboten. Lern-/Relearning-Schritte genau dieser Karte bleiben möglich. Ein echtes Again kann eine passende Vorbedingungs-Vertagung aufheben.
+**Outcome:** At most one distinct item of an atom is presented per learner and local learning day. Learning/relearning steps for that same card remain possible. An actual Again can cancel a matching prerequisite deferral.
 
-**Arbeit:**
+**Work:**
 
-1. Eine kleine dauerhafte Erfassung von Darbietungen ergänzen: stabile ULID des Versuchs, Lernender, Card/Item, Atom zum Darbietungszeitpunkt, lokaler Lerntag mit Zeitzonenbezug, Darbietungszeit und Sessionbezug. Reservierung vor Anzeige und bestätigte Anzeige unterscheiden; ein Queue-Fetch allein ist keine Exposition. Abgebrochene Reservierungen dürfen nicht als tatsächlich gezeigt im Pilotbericht erscheinen.
-2. Queue-Auswahl und Freigabe unmittelbar vor jeder Darbietung verwenden dieselbe Kernel-Regel. Die Auswahl muss transaktional verhindern, dass zwei aktive Sessions gleichzeitig verschiedene Siblings freigeben. Nach bestätigter Anzeige gilt die Sperre auch ohne Rating, nach Skip, Abbruch und Neustart. Bei einer Wiederholung des bereits gewählten Items bleibt dessen Identität erhalten.
-3. Desktop, Mobile einschließlich wiederhergestellter Queue, Voice, CLI und MCP/Bridge anbinden. Eine vom Agenten vorab geladene Queue darf keine spätere unkontrollierte Darbietung erlauben; Agenten brauchen eine Freigabe für das nächste konkrete Item. Sichtbare Referenzantworten in rohen Tooldaten sind keine Nutzeranzeige. Darbietungen außerhalb instrumentierter Wege sind im betreuten Pilot zu protokollieren.
-4. Atom-Trennung unabhängig von den optionalen Anki-Bury-Einstellungen erzwingen. `note_guid`-Bury weiter erhalten; es hat eine andere Gruppierung. Andere Learning-/Relearning-Siblings sind nicht pauschal ausgenommen. Kein Kopieren von Mastery und keine Änderung der globalen Reihenfolge neuer Karten oder der bestehenden `tier1-first`-Regel.
-5. Bei Rating 1 auf einem Item mit direkten harten Voraussetzungen nur deren aktive `precondition`-Vertagung für denselben Lernenden vorzeitig beenden. Die bestehenden Funktionen in `blocker.ts` und `precondition-assessment.ts` verwenden/erweitern. Keine anderen Burial-Gründe aufheben, keine transitive Massenaktivierung und keine Mastery erfinden. P3-Again setzt P1 nicht in Relearning. Ein wegen O6 heute gesperrter Fundament-Sibling bleibt gesperrt; erforderliches Teaching darf stattfinden, zählt aber nicht als weiterer unabhängiger Review.
-6. Den lokalen Lerntag explizit aus dem Lernenden-/Gerätekontext ableiten, nicht still aus der Zeitzone eines entfernten DB-Servers. Tageswechsel und Sommerzeit testen. Für den ersten Pilot eine aktive Geräte-/Datenbankroute festlegen: Zwei getrennte Offline-Kopien können vor Synchronisation keine globale Exklusivität garantieren. Solche Parallelität gehört nicht in einen als kontrolliert ausgewiesenen automatisierten Lauf.
+1. Add a small persistent record of presentations: stable attempt ULID, learner, card/item, atom at presentation time, local learning day with time zone, presentation timestamp and session association. Distinguish reservation before display from confirmed display; a queue fetch alone is not an exposure. Abandoned reservations must not appear as actual presentations in the pilot report.
+2. Queue selection and admission immediately before each presentation use the same kernel rule. Selection must transactionally prevent two active sessions from admitting different siblings simultaneously. After confirmed display, the restriction applies even without a rating, after skipping, cancellation and restart. Repetitions preserve the identity of the selected item.
+3. Integrate Desktop, Mobile including restored queues, Voice, CLI and MCP/Bridge. A queue prefetched by an agent must not permit later uncontrolled presentation; agents need admission for the next specific item. Reference answers visible in raw tool data do not constitute presentation to the learner. Record presentations outside instrumented paths in the supervised pilot protocol.
+4. Enforce atom separation independently of optional Anki bury settings. Preserve `note_guid` burying; it uses a different grouping. Other learning/relearning siblings are not automatically exempt. Do not copy mastery or change the global ordering of new cards or the existing `tier1-first` rule.
+5. On rating 1 for an item with direct hard prerequisites, end only those prerequisites' active `precondition` deferrals early for the same learner. Reuse/extend the existing functions in `blocker.ts` and `precondition-assessment.ts`. Do not clear other burial reasons, activate prerequisites transitively in bulk or invent mastery. A P3 Again does not put P1 into relearning. A foundation sibling excluded today by O6 remains excluded; necessary teaching may take place but does not count as another independent review.
+6. Derive the local learning day explicitly from the learner/device context, not silently from a remote DB server's time zone. Test day boundaries and daylight saving time. Specify one active device/database route for the first pilot: two separate offline copies cannot guarantee global exclusivity before synchronization. Such concurrency must not be included in an automated run reported as controlled.
 
-**Abnahme:** P1 gezeigt und ohne Rating abgebrochen → P2/P3 bleiben heute aus; P1-Lernschritt bleibt möglich. Gleiches Verhalten nach Neustart, in einer zweiten Session und bei konkurrierenden Aufrufen. Am nächsten lokalen Tag ist ein anderes Item wieder zulässig. Andere Lernende und Atome werden nicht gesperrt. Ein P3-Again hebt nur die passende H-Vertagung auf; FSRS und andere Burial-Gründe von H bleiben unberührt.
+**Acceptance:** P1 shown and abandoned without a rating → P2/P3 stay excluded today; a P1 learning step remains possible. Behavior is the same after restart, in a second session and under concurrent calls. A different item becomes eligible on the next local day. Other learners and atoms are unaffected. A P3 Again cancels only the matching H deferral; H's FSRS state and other burial reasons remain untouched.
 
-**Prüfstellen:** `src/kernel/scheduler/queue.ts`, `siblings.ts`, `blocker.ts`, `src/kernel/recall/actions.ts`, `src/kernel/library/precondition-assessment.ts`, `desktop/src/panel/recall.ts`, `mobile/src/review-session.ts`, `src/kernel/recall/voice-review.ts`; Queue-/FSRS-, Anki-Sibling-, Blocker-, Vorbedingungs- und Sessiontests. Neue Persistenz braucht Schema plus idempotente Migration, Versionsinkrement und Tests für Neuinstallation sowie Upgrade. Ein altes Review-Log darf nicht nachträglich als vollständige Expositionshistorie gelten.
+**Verification points:** `src/kernel/scheduler/queue.ts`, `siblings.ts`, `blocker.ts`, `src/kernel/recall/actions.ts`, `src/kernel/library/precondition-assessment.ts`, `desktop/src/panel/recall.ts`, `mobile/src/review-session.ts`, `src/kernel/recall/voice-review.ts`; queue/FSRS, Anki sibling, blocker, prerequisite and session tests. New persistence requires schema changes plus an idempotent migration, a version increment and tests for fresh installation and upgrade. Historical review logs must not be retroactively treated as complete exposure histories.
 
-## Phase 4 — Beobachtete Versuche eindeutig buchen
+## Phase 4 — Record observed attempts without duplicates
 
-**Ergebnis:** Eine nachgewiesene Arbeitsleistung erfüllt ein konkretes Item und aktualisiert dessen persönliche Card genau einmal. Eine spätere Synthese desselben Versuchs erzeugt kein zweites Review.
+**Outcome:** Documented work satisfies a specific item and updates its personal card exactly once. Later synthesis of the same attempt does not create a second review.
 
-**Arbeit:**
+**Work:**
 
-1. Den Versuch als Bezug zwischen direkter Agent-Buchung, Monitor-/Observer-Kandidat, Bestätigung und Session-Synthese verwenden. Vor einer bewerteten Anwendung festhalten: Item/Kriterium und Inhaltsversion, konkreter Arbeitsvorgang, Handelnder, erlaubte Hilfsmittel, tatsächlich erhaltene Hilfe und eigenständiger Versuch vorhanden/fehlend. `symbiosis_mode` ersetzt keines dieser Versuchsfelder.
-2. Kandidaten aus Befehlsmustern bleiben Vorschläge. Prozess-Exitcode oder thematische Nähe allein rechtfertigen kein Rating. Fehlende Angaben führen zur Evidenzerfassung bzw. einem prüfbaren Vorschlag; keine implizite Erfolgsbuchung. Bereits verlässlich vorliegende Angaben nicht als neue Rückfrage an den Nutzer wiederholen.
-3. Die gemeinsame Versuch-ID zur Idempotenz verwenden, mit eindeutigem Bezug auf das daraus entstandene Review-Log. Gleicher Versuch auf mehreren Wegen → ein Review; anderer unabhängiger Versuch → neue Evidenz. Konfligierende Bewertungen desselben Versuchs sichtbar machen, nicht überschreiben oder doppelt buchen. Historische Einträge ohne ID bleiben als solche erhalten; keine Zuordnung durch Textähnlichkeit erfinden.
-4. Der atomare Schreibweg umfasst FSRS, Review-Log, Session-Schritt, Blocking und Evidenzbezug. Den bestehenden Schutz `(session_id, token_id)` in `session_syntheses` gezielt weiterentwickeln: Er schützt Wiederholung dieser Synthese, identifiziert aber weder direkte Buchungen noch mehrere echte Versuche in einer Session.
-5. O7 auf neue und bestehende Cards anwenden. Assisted-first-run bleibt Record-only; beobachteter unabhängiger Fehlversuch bleibt 1. Eine spätere Assistenz ist getrennte Lernevidenz. Fehlende Arbeitsgelegenheit ist kein Fehler. Passende erfolgreiche Anwendung verschiebt die Fälligkeit über den normalen FSRS-Pfad; eine bereits geladene Recall-Queue muss diese neue Fälligkeit beachten.
-6. Kanal und Evidenzqualität für spätere Auswertung erhalten. Der erste Schnitt unterstützt belegte Anwendung an einem vorhandenen Item; er leitet keine allgemeine Kompetenzbewertung aller thematisch betroffenen Tokens ab. Reale, vom Produkt nicht kontrollierte Arbeitsgelegenheiten sind keine planmäßige Sibling-Darbietung und werden als zusätzliche Kontakte im Pilot separat ausgewiesen.
+1. Use the attempt to link direct agent submissions, Monitor/Observer candidates, confirmation and session synthesis. Before an assessed application, record: item/criterion and content version, specific work activity, actor, permitted tools, assistance actually received and whether an independent attempt took place. `symbiosis_mode` replaces none of these attempt fields.
+2. Candidates derived from command patterns remain suggestions. A process exit code or topical similarity alone does not justify a rating. Missing information leads to evidence collection or a reviewable suggestion, not an implicit success review. Do not ask the user again for information already established reliably.
+3. Use the shared attempt ID for idempotency, with an unambiguous link to the resulting review log. Same attempt through several paths → one review; a different independent attempt → new evidence. Surface conflicting assessments of the same attempt rather than overwriting them or recording duplicates. Preserve historical entries without IDs as such; do not invent matches based on text similarity.
+4. The atomic write path covers FSRS, review log, session step, blocking and evidence linkage. Extend the existing `(session_id, token_id)` safeguard in `session_syntheses` deliberately: it protects against repeated application of that synthesis, but identifies neither direct submissions nor multiple real attempts within one session.
+5. Apply O7 to new and existing cards. An assisted first run remains record-only; an observed independent failure remains 1. Subsequent assistance is separate learning evidence. Lack of an opportunity at work is not a failure. A matching successful application reschedules the card through the normal FSRS path; an already loaded recall queue must respect the new due date.
+6. Preserve channel and evidence quality for later analysis. This first slice supports documented application against an existing item; it does not infer a general competence assessment for every topically related token. Real work opportunities outside the product's control are not scheduled sibling presentations and are reported separately as additional contacts in the pilot.
 
-**Abnahme:** Derselbe Versuch wird direkt, per Retry und anschließend per Synthese angeboten → genau ein Review und ein FSRS-Schritt. Zwei nachweislich verschiedene Versuche werden nicht bloß wegen gleicher Session/Token zusammengeworfen. Hilfestatus und Handelnder bleiben getrennt. Unklare Eigenständigkeit, Agent-Ausführung und fehlende Gelegenheit erzeugen keinen erfundenen Nutzererfolg. Schreibfehler rollen die gesamte Buchung zurück.
+**Acceptance:** The same attempt is submitted directly, retried and later submitted through synthesis → exactly one review and one FSRS step. Two documented distinct attempts are not collapsed merely because they share a session/token. Assistance status and actor remain separate. Uncertain independence, agent execution and lack of opportunity do not create an invented user success. Write errors roll back the entire submission.
 
-**Prüfstellen:** `src/kernel/observation/session-synthesis.ts`, `analyzer.ts`, `ui-observer-synthesis.ts`, `src/kernel/models/session.ts`, `src/cli/bridge-handlers.ts`, MCP-/Bridge-Verträge und deren Aufrufer. Vorhandene Synthesis-/Observer-/Bridge-Tests erweitern. Persistenz aus Phase 3 soweit fachlich passend verwenden; notwendige Erweiterungen wieder mit Upgrade- und Idempotenztests. Rohes Screen-/Terminalmaterial nicht pauschal duplizieren; für den Nachweis benötigte Angaben gezielt speichern.
+**Verification points:** `src/kernel/observation/session-synthesis.ts`, `analyzer.ts`, `ui-observer-synthesis.ts`, `src/kernel/models/session.ts`, `src/cli/bridge-handlers.ts`, MCP/Bridge contracts and their callers. Extend existing synthesis/Observer/Bridge tests. Reuse Phase 3 persistence where semantically appropriate; cover required extensions with upgrade and idempotency tests. Do not duplicate raw screen/terminal material indiscriminately; store the specific information needed as evidence.
 
-## Phase 5 — Begrenzter Inhaltsumbau
+## Phase 5 — Limited content revision
 
-**Ergebnis:** Zwei nachvollziehbare Beispiele erreichen den neuen Vertrag: Pythagoras aus RFC §6.1 und der OKF-Import aus §6.2. Kein Umbau aller 228 Fixtures.
+**Outcome:** Two traceable examples satisfy the new contract: Pythagoras from RFC §6.1 and the OKF import from §6.2. Do not revise all 228 fixtures.
 
-**Arbeit:**
+**Work:**
 
-1. `tests/fixtures/curriculum/de-by-realschule-9-mathematik-pythagoras-trigonometrie-kvt.json` quellenbasiert überarbeiten: H eigenständiges Fundament; P mit P1 Formel, P2 Flächenrelation ohne Beweis und P3 andere Beschriftung; U eigenständige Umkehrung. P → H und U → P hard; keine Binnenkanten zwischen P-Items. P1 als Kanten-Repräsentant absichern, statt dies nur aus einer zufälligen ID-Reihenfolge anzunehmen. A02 → P erhalten und A03s Kathete-/Hypotenuse-Abhängigkeit fachlich neu zuordnen.
-2. Für jedes alte Item eine explizite Zuordnungsliste erstellen: unverändert, gültiger 1:1-Nachfolger, neues Item oder Split. J01 Auswahl → Abruf ist ein neues Item ohne `replaces`; J02 → P1/P2 ist Decision-9-Split ohne Mastery-Übertragung. Alte persönliche Reviews bleiben nachvollziehbar; keine kopierten Erfolgszustände auf neue Teilkarten. Wiederholte Installation erzeugt keine zusätzlichen Cards oder Review-Logs.
-3. Altinhalt über den vorhandenen Deprecation-/Maintenance-Weg aus der aktiven Verwendung nehmen, ohne persönliche Evidenz zu löschen. Für neue Items einen begrenzten Feeder innerhalb des normalen Lernbudgets verwenden. Bestandsnutzer nicht mit sämtlichen neuen Karten auf einmal einschreiben. Umsetzung und Opt-in auf einer Testbibliothek prüfen, bevor persönliche Bibliotheken umgestellt werden.
-4. Die sechs entscheidbaren OKF-Items aus §6.2 aus dem aktuellen Artikel erzeugen, mit persistenten `source_link`s und eng abgegrenztem `concept`. Autorenhinweise und Hilfen bleiben `context`. Ändert Phase 3 das beschriebene Blocking-Verhalten, muss der Artikel bereits mit dieser Verhaltensänderung aktualisiert sein; der Import referenziert dann diese Version.
-5. Mindestens ein begründetes Mengen-/Sequenzbeispiel im Prüfset führen: vollständige Rekonstruktion mit expliziter Rubrik und sinnvoll zerlegbaren Slot-/1:1-Items daneben, jeweils eigener Bewertung. Keine pauschale maximale Listenlänge und keine automatische Atomzuordnung aller Slots.
-6. Mehrschrittige Aufgaben und die spätere Zielmessung getrennt vorbereiten. Für den betreuten Pilot genügen versionierte Aufgabenblätter mit Rubrik; eine neue `practice_set`-Oberfläche ist hierfür nicht nötig. Übungserfolge buchen keine pauschalen Reviews auf Teilkarten. „Pythagoras oder Sinus?“ nicht als weiteres P-Sibling ausgeben.
+1. Revise `tests/fixtures/curriculum/de-by-realschule-9-mathematik-pythagoras-trigonometrie-kvt.json` against its sources: H as a separate foundation; P with P1 formula, P2 area relation without proof and P3 alternative labeling; U as the separate converse. P → H and U → P are hard edges; no internal edges between P items. Verify P1's role as the edge representative rather than relying on incidental ID ordering. Preserve A02 → P and reassess A03's leg/hypotenuse dependency on subject-matter grounds.
+2. Create an explicit mapping list for every old item: unchanged, valid 1:1 successor, new item or split. J01 choice → recall is a new item without `replaces`; J02 → P1/P2 is a Decision 9 split without mastery transfer. Preserve traceability of old personal reviews; do not copy success states onto new component cards. Repeated installation creates no additional cards or review logs.
+3. Remove old content from active use through the existing deprecation/maintenance path without deleting personal evidence. Introduce new items through a limited feeder within the normal learning budget. Do not enroll existing users in every new card at once. Verify implementation and opt-in on a test library before migrating personal libraries.
+4. Generate the six OKF items with decidable criteria from §6.2 using the current article, persistent `source_link`s and narrowly defined `concept` fields. Author notes and assistance remain in `context`. If Phase 3 changes the documented blocking behavior, the article must already have been updated with that behavior change; the import then references that version.
+5. Include at least one justified set/sequence example in the evaluation set: complete reconstruction with an explicit rubric, accompanied by slot/1:1 items for components that can meaningfully be separated, each with its own assessment. No blanket maximum list length and no automatic assignment of all slots to one atom.
+6. Prepare multistep practice tasks separately from the later target assessment. Versioned task sheets with a rubric suffice for the supervised pilot; a new `practice_set` interface is not required. Practice successes do not generate blanket reviews on component cards. Do not present “Pythagoras or sine?” as another P sibling.
 
-**Abnahme:** Neue Testbibliothek und Bibliothek mit alten Cards/Reviews installieren den Ausschnitt korrekt. IDs, Kantenprojektion, alte Evidenz, neue FSRS-Zustände und Feeder-Menge sind überprüft. Quelle, Frage und Sollantwort stimmen für jedes neue Item überein. Leichtes Wiedererkennen oder ein bekanntes 3-4-5-Beispiel wird nicht als Transfernachweis ausgewiesen.
+**Acceptance:** Both a fresh test library and a library with old cards/reviews install the sample correctly. Verify IDs, edge projection, old evidence, new FSRS states and feeder volume. Source, question and reference answer agree for every new item. Easy recognition or a familiar 3-4-5 example is not reported as evidence of transfer.
 
-**Prüfstellen:** `tests/kernel/curriculum-kvt-fixture.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/realschule-9-cells.test.ts`, `tests/cli/okf-import.test.ts` sowie der tatsächliche Installieren-/Lernen-/Reimport-Ablauf. OKF-Bundles ausschließlich über `zam_okf_upsert` ändern, gemäß [OKF-Skill](../../.agents/skills/okf/SKILL.md).
+**Verification points:** `tests/kernel/curriculum-kvt-fixture.test.ts`, `tests/kernel/kvt-attach.test.ts`, `tests/kernel/realschule-9-cells.test.ts`, `tests/cli/okf-import.test.ts` and the actual installation/learning/reimport flow. Modify OKF bundles only through `zam_okf_upsert`, following the [OKF skill](../../.agents/skills/okf/SKILL.md).
 
-## Phase 6 — Pilotprotokoll und technische Probe
+## Phase 6 — Pilot protocol and technical rehearsal
 
-**Ergebnis:** Ein betreuter Pilot kann beginnen, ohne aus unvollständigen Logs eine Wirkung zu behaupten. Diese Phase führt noch keine verzögerte Lernstudie durch.
+**Outcome:** A supervised pilot can begin without claiming effectiveness from incomplete logs. This phase does not yet conduct a study of delayed learning outcomes.
 
-Vor dem ersten Lernkontakt werden in einem versionierten Pilotprotokoll festgelegt: Lernender und Geräteweg, mehrere hinreichend unabhängige Lernzielblöcke, Baseline-Material, neue Inhalte, wiederholte äquivalente Testinstanzen, randomisierte gestaffelte Wechselzeitpunkte, gleiches aktives Zeitbudget einschließlich Tutorzeit, Modi, Rubrik und Darbietungspolitik. Pythagoras-Items desselben Ziels zählen nicht als unabhängige Themenblöcke. Die neue Bewertungsrubrik gilt in beiden Bedingungen; alte fehlerhafte Grader-Ratings sind keine vergleichbare Baseline.
+Before the first learning contact, specify in a versioned pilot protocol: learner and device route, several sufficiently independent learning-goal blocks, baseline material, new content, repeated equivalent test instances, randomized staggered switching times, equal active time budgets including tutor time, modes, rubric and presentation policy. Pythagoras items targeting the same goal do not count as independent topic blocks. The new grading rubric applies in both conditions; old incorrect grader ratings are not a comparable baseline.
 
-Vorab genau eine Hauptfrage wählen: Überlegenheit, Nichtunterlegenheit mit Zeitersparnis oder Äquivalenz, jeweils mit begründeter Marge. Ebenso Testabstand und Bezugspunkt festlegen, weitere Kontakte erfassen und untrainierte Zielaufgaben vom Übungsmaterial trennen. Diese Lern- und Studienparameter werden beim konkreten Pilotstart mit dem Owner festgelegt; sie blockieren Phase 1–5 nicht. Blindbewertung und ein einmaliger Rubrik-/Grader-Abgleich gehören zum Protokoll.
+Choose exactly one primary question in advance: superiority, noninferiority with time savings or equivalence, each with a justified margin. Also specify the test delay and its reference point, record additional contacts and keep untrained target tasks separate from practice material. Agree on these learning and study parameters with the owner when starting the actual pilot; they do not block Phases 1–5. Include blinded assessment and a one-time rubric/grader calibration check in the protocol.
 
-| Messgröße | Verfügbar nach diesem Schnitt / externe Erhebung |
+| Measure | Available after this slice / external collection |
 |---|---|
-| Rating und persönlicher FSRS-Verlauf, Inhaltsversion | Review-Logs; neue Evidenzbezüge aus Phase 4 ergänzen den Kanal |
-| Tatsächlich dargebotenes Item, Lerntag, Sibling-Regel | Neue Erfassung aus Phase 3; manuelle Prüfung für nicht instrumentierte Kontakte |
-| Erste Antwort, Hinweis, Klärung, Reveal und deren Zeitpunkte | Im betreuten Pilot prospektiv extern; nicht aus `response_time_ms` rekonstruieren |
-| Ursprüngliche Antwort, tatsächliche Aufgabenvariante, Modell-/Promptversion, Modus und Karten-Ausgangszustand | Im Pilotprotokoll festhalten; `content_version` allein genügt nicht |
-| Aktive Gesamtlernzeit inklusive Tutor, Pausen, Abbruch-/Skip-Nenner | Externe Zeiterfassung und vollständiges Versuchsprotokoll. Summe der Review-Dauern ist kein Ersatz. |
-| Verzögerte Leistung auf untrainierten Zielaufgaben | Separate Aufgabenbank und blinde Bewertung; kein Kartenrating als Ersatz |
-| Arbeitsanwendung | Eigenständigkeit, Kriterium, zulässige Hilfen und alle Gelegenheiten einschließlich Misserfolgen erfassen; separat auswerten |
+| Rating and personal FSRS history, content version | Review logs; new evidence links from Phase 4 identify the channel |
+| Actually presented item, learning day, sibling rule | New records from Phase 3; manual checks for uninstrumented contacts |
+| First answer, hint, clarification, reveal and their timestamps | Collect prospectively outside the product in the supervised pilot; do not reconstruct from `response_time_ms` |
+| Original answer, actual task variant, model/prompt version, mode and initial card state | Record in the pilot protocol; `content_version` alone is insufficient |
+| Total active learning time including tutoring, breaks, abandonment/skip denominators | External time tracking and a complete attempt log. Summed review durations are not a substitute. |
+| Delayed performance on untrained target tasks | Separate task bank and blinded assessment; card ratings are not a substitute |
+| Application at work | Record independence, criterion, permitted assistance and all opportunities including failures; analyze separately |
 
-`response_time_ms` behält seine Bedeutung gezeigt → Rating. Es misst weder reine Gedächtniszeit noch automatisch aktive Lernzeit. Alte Daten werden nicht rückwirkend um unbekannte Ereignisse ergänzt. Unbeobachtete oder nicht rekonstruierbare Fälle bleiben fehlende Daten.
+`response_time_ms` retains its meaning: shown → rating. It measures neither pure memory retrieval time nor automatically active learning time. Do not backfill old data with unknown events. Unobserved or unreconstructable cases remain missing data.
 
-**Technische Probe:** Auf einer Testbibliothek einen vollständigen Durchlauf einschließlich Draft-Publish, P1-Abbruch/Sibling-Sperre, H-Vertagung/P3-Again, assistierter Arbeit, unabhängiger Arbeitsleistung und doppeltem Syntheseaufruf durchführen. Datenauszug und Protokoll müssen zusammenpassen. Reveal nach richtiger und falscher Tier-1-Auswahl auf allen unterstützten Wegen prüfen. Einen nicht tatsächlich unterstützten Weg als solchen benennen, keine Oberflächenparität behaupten.
+**Technical rehearsal:** Run the complete flow on a test library, including draft publication, P1 abandonment/sibling exclusion, H deferral/P3 Again, assisted work, independent work and a duplicate synthesis call. The data extract and protocol must agree. Verify reveal after correct and incorrect Tier 1 choices on all supported paths. Explicitly identify unsupported paths rather than claiming surface parity.
 
-**Fertig, wenn:** Pilotprotokoll und Erfassungsblatt verwendbar sind, technische Probe besteht, unterstützte Gerätewege und Messgrenzen feststehen. Die konkreten Studienparameter bleiben bis zum Pilotstart als offen markiert, nicht mit erfundenen Teilnehmerdaten gefüllt. Ein automatisierter Pilot ist erst nach persistenter Erfassung der noch fehlenden Ereignisse und deren Oberflächenprüfung freigegeben. Die hier geplante manuelle Erhebung ist kein automatischer Telemetrie-Ersatz.
+**Done when:** The pilot protocol and recording sheet are usable, the technical rehearsal passes, and supported device routes and measurement limits are established. Keep the actual study parameters marked as open until pilot start; do not fill them with invented participant data. An automated pilot is authorized only after the remaining missing events are persisted and verified on the participating surfaces. The manual collection planned here does not substitute for automated telemetry.
 
-## Nachgelagerte Arbeit und Abgrenzungen
+## Follow-up work and scope boundaries
 
-| Thema | Entscheidung für diesen Umsetzungsschnitt |
+| Topic | Decision for this implementation slice |
 |---|---|
-| Höchstens eine Klärfrage vor Reveal (O1) | Zurückgestellt. Stufe-0-Toleranz in Phase 1 genügt für diesen Schnitt. Bei späterem Bau eigene Ereignisse und Promptversion vorsehen. |
-| Vollständige automatische Pilotmessung | Folgearbeit; tatsächliche erste Antwort, Hinweise, Reveal, Pausen und Aufgabenfassung über alle teilnehmenden Oberflächen persistieren. Keine Freigabe allein aufgrund der Darbietungserfassung. |
-| Allgemeines Routing Karte/Beobachtung und Fallback bei fehlender Arbeitsgelegenheit | Folgearbeit für Ziele, die keine Flash-Frage benötigen. Persönliche Card bleibt Grundlage der FSRS-Fälligkeit. Keine automatische Kanalwahl nur nach Bloom. |
-| `practice_set` als Produktoberfläche mit Fading/Interleaving | Folgearbeit; im ersten Pilot externe versionierte Aufgaben. Keine verfrühte neue Session-Art im Schema. |
-| Globale Neuordnung der Queue, automatische Trivia-Markierung, kompletter Fixture-Rewrite | Nicht Teil dieses Schnitts. |
-| Team-Aufgabenverteilung | Separates ADR gemäß Owner-Entscheidung. |
+| At most one clarification question before reveal (O1) | Deferred. Stage 0 tolerance in Phase 1 is sufficient for this slice. Include dedicated events and a prompt version if built later. |
+| Full automatic pilot measurement | Follow-up work; persist the actual first answer, hints, reveal, breaks and task version across all participating surfaces. Presentation records alone do not authorize it. |
+| General card/observation routing and fallback when work opportunities are unavailable | Follow-up work for goals that do not require a Flash question. The personal card remains the basis for FSRS due dates. Do not select the channel automatically based only on Bloom level. |
+| `practice_set` as a product interface with fading/interleaving | Follow-up work; use external versioned tasks in the first pilot. Do not introduce a new session type into the schema prematurely. |
+| Global queue reordering, automatic trivia flags, complete fixture rewrite | Outside this slice. |
+| Team task allocation | Separate ADR, as decided by the owner. |
 
-## Abdeckung von RFC §7.3
+## Coverage of RFC §7.3
 
-| RFC-Punkt | Umsetzung / Grenze |
+| RFC point | Implementation / boundary |
 |---|---|
-| 1 Grader | Phase 1, beide Promptfamilien und Aufrufer |
-| 2 Skill-Rubrik und assistierte Nutzerarbeit | Phase 1, einschließlich tatsächlich ausgelieferter Skill-Varianten |
-| 3 Draft-Capture | Phase 2, mit sichtbarem Publish-Übergang |
-| 4 Atom-Sibling-Trennung | Phase 3, Queue plus Darbietung plus Session-Wiederaufnahme |
-| 5 Klärungsprotokoll | Explizit nachgelagert, kein Blocker |
-| 6 Zeitereignisse oder externes Protokoll | Phase 6 extern; automatische Vollmessung nachgelagert |
-| 7 Beobachtungskanal | Phase 1 und 4 sichern konkrete Buchungen; allgemeines Routing bleibt Folgearbeit |
-| 8 H-Vertagung nach Again | Phase 3, nur passende Vorbedingungs-Vertagung |
-| 9 Korrekter Reveal | Bestehende Invariante, Oberflächenprüfung in Phase 6 und bei betroffenen Änderungen |
+| 1 Grader | Phase 1, both prompt families and callers |
+| 2 Skill rubric and assisted user work | Phase 1, including the skill variants actually shipped |
+| 3 Draft capture | Phase 2, with a visible publication transition |
+| 4 Atom sibling separation | Phase 3, queue plus presentation plus session resumption |
+| 5 Clarification protocol | Explicit follow-up work, not a blocker |
+| 6 Timestamped events or external protocol | Phase 6 uses external collection; full automatic measurement follows later |
+| 7 Observation channel | Phases 1 and 4 safeguard specific submissions; general routing remains follow-up work |
+| 8 H deferral after Again | Phase 3, only the matching prerequisite deferral |
+| 9 Correct reveal | Existing invariant, verified across surfaces in Phase 6 and whenever affected by changes |
 
-## Verifikation, Dokumentation und Rollout
+## Verification, documentation and rollout
 
-Vor **jedem Commit** die Repo-Prüfungen ausführen: `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test` und `npm run build`. Während der Arbeit gezielt vorhandene Verhaltenstests erweitern. Grader-Qualität zusätzlich an fachlich bewerteten Antworten und UI-Verhalten auf den tatsächlichen Oberflächen prüfen; ein Snapshot des Prompttexts ersetzt beides nicht.
+Before **every commit**, run the repository checks: `npm run format`, `npm run lint`, `npm run typecheck`, `npm run test` and `npm run build`. Extend relevant existing behavior tests during implementation. Also verify grader quality against answers assessed for subject-matter correctness and inspect UI behavior on the actual surfaces; a snapshot of the prompt text replaces neither.
 
-Neue Kernel-APIs über `src/kernel/index.ts` exportieren. Jede nötige Schemaerweiterung in `src/kernel/db/schema.ts`, einer idempotenten Migration in `src/kernel/db/provision.ts` und `CURRENT_SCHEMA_VERSION` abbilden; die nächste Nummer erst gegen den dann aktuellen Stand wählen. Alle unterstützten Datenbankpfade und die relevanten Upgrade-Tests berücksichtigen. Keine neuen Abhängigkeiten eingeplant.
+Export new kernel APIs through `src/kernel/index.ts`. Implement every required schema extension in `src/kernel/db/schema.ts`, an idempotent migration in `src/kernel/db/provision.ts` and `CURRENT_SCHEMA_VERSION`; choose the next migration number against the current revision at implementation time. Cover all supported database paths and the relevant upgrade tests. No new dependencies are planned.
 
-Ändert eine Phase dokumentiertes Produktverhalten, die betroffenen OKF-Artikel im selben PR über `zam_okf_upsert` aktualisieren, insbesondere je nach Änderung `fsrs-scheduling`, `bridge-protocol`, `mcp-surfaces`, `local-card-file-import`, `open-content-library` und `prerequisite-blocking`. Keine Artikel auf künftig geplantes Verhalten umschreiben. Inhalts- und Review-Historie nicht für einen Rollback löschen; den begrenzten Feeder bzw. Pilot stoppen und den letzten geprüften Inhalt weiter nutzbar halten.
+If a phase changes documented product behavior, update the affected OKF articles in the same PR through `zam_okf_upsert`, particularly, as applicable, `fsrs-scheduling`, `bridge-protocol`, `mcp-surfaces`, `local-card-file-import`, `open-content-library` and `prerequisite-blocking`. Do not rewrite articles to describe planned future behavior. Do not delete content or review history for a rollback; stop the limited feeder or pilot and keep the last reviewed content usable.
 
-Der nächste konkrete Implementierungsschritt ist **Phase 1**. Sie beseitigt die aktuell falsche Erfolgsevidenz und schafft den fehlenden ehrlichen Schreibweg für assistierte Nutzerarbeit, bevor weitere neue Karten entstehen.
+The next concrete implementation step is **Phase 1**. It removes today's incorrect success evidence and provides the missing path for accurately recording assisted user work before more new cards are created.
