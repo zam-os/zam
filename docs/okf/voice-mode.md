@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-09-05T04:50:38.268Z
+timestamp: 2026-09-05T05:21:18.628Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -71,7 +71,10 @@ Flash/AI switch during review. Native Desktop follows the same controller
 contract as the companion: in Flash it hides answer input, skips dynamic
 questioning and evaluation, lets a click reveal the answer, and passes the
 learner's mode and timeouts into the voice controller. Switching modes pauses
-an active voice controller before saving and re-rendering.
+an active voice controller before saving and re-rendering. The in-session
+controls are unavailable only while no card is present or a load, reveal, save,
+edit, or review action is in flight; completing that transition recomputes the
+state and enables them again.
 
 Both native Settings surfaces default to a machine-local **Simple** view. It
 keeps learning mode, the workload preset, the ordinary cloud-AI connection,
@@ -355,5 +358,5 @@ default, which is how the companion behaved before the cloud tier existed.
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
 - [ADR 2026-07-23 — Online-Only Server DB, Mobile Gating, Cloud Config in the DB](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/voice.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`, `tests/desktop/settings-view-mode.test.ts`, `tests/desktop/settings-simplicity.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/settings-simplicity.test.ts`
-- Code: `src/kernel/recall/voice-review.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/index.html`, `desktop/src/main.ts`, `desktop/src/settings-view-mode.ts`, `desktop/src/styles.css`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/ui/components.css`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/voice.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`, `tests/desktop/settings-view-mode.test.ts`, `tests/desktop/settings-simplicity.test.ts`, `tests/desktop/study-learning-ui.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/settings-simplicity.test.ts`
+- Code: `src/kernel/recall/voice-review.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/index.html`, `desktop/src/main.ts`, `desktop/src/settings-view-mode.ts`, `desktop/src/study-learning-ui.ts`, `desktop/src/styles.css`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/ui/components.css`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`

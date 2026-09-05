@@ -603,14 +603,16 @@
               <div
                 id="mobile-settings-mode-switcher"
                 class="segmented"
-                role="group"
+                role="radiogroup"
                 data-i18n-aria="settings_mode_label"
+                aria-describedby="mobile-settings-mode-description"
               >
                 <button
                   id="mobile-settings-mode-simple"
                   class="active"
                   type="button"
-                  aria-pressed="true"
+                  role="radio"
+                  aria-checked="true"
                   data-i18n="settings_mode_simple"
                 >
                   Einfach
@@ -618,7 +620,8 @@
                 <button
                   id="mobile-settings-mode-advanced"
                   type="button"
-                  aria-pressed="false"
+                  role="radio"
+                  aria-checked="false"
                   data-i18n="settings_mode_advanced"
                 >
                   Erweitert
@@ -1080,11 +1083,11 @@
           </div>
           <div class="review-header-bar">
             <p id="review-progress" class="t-footnote"></p>
-            <div id="review-mode-switcher" class="segmented" role="group" aria-label="Lernmodus">
-              <button id="review-mode-flash" type="button" data-mode="flash" data-i18n="learning_mode_switch_flash">
+            <div id="review-mode-switcher" class="segmented" role="radiogroup" aria-label="Lernmodus">
+              <button id="review-mode-flash" type="button" role="radio" aria-checked="true" data-mode="flash" data-i18n="learning_mode_switch_flash">
                 ⚡ Flash
               </button>
-              <button id="review-mode-feedback" type="button" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
+              <button id="review-mode-feedback" type="button" role="radio" aria-checked="false" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
                 💬 KI
               </button>
             </div>

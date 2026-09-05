@@ -722,6 +722,10 @@ textarea:focus-visible {
 
 /* Everyday choices read top-to-bottom in simple mode. Advanced mode keeps the
    source order so related infrastructure remains grouped together. */
+#settings-view[data-settings-mode="simple"] .settings-card {
+  order: 99;
+}
+
 #settings-view[data-settings-mode="simple"] #study-learning-card {
   order: 1;
 }

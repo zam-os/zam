@@ -68,4 +68,35 @@ describe("native desktop settings simplicity", () => {
     expect(main).toContain("void loadLocalVisionStatus();");
     expect(main).toContain("void loadLocalEmbeddingStatus();");
   });
+
+  it("keeps recovery, database health, and backup visible in simple mode", () => {
+    expect(html).toMatch(
+      /<button id="btn-run-onboarding"(?![^>]+data-settings-tier)[^>]*>/,
+    );
+    expect(html).toMatch(
+      /<div class="settings-row">\s*<span id="lbl-settings-database">/,
+    );
+    expect(html).toMatch(
+      /<p id="database-connection-detail"(?![^>]+data-settings-tier)[^>]*>/,
+    );
+    expect(html).toMatch(
+      /<button id="btn-backup-db"(?![^>]+data-settings-tier)[^>]*>/,
+    );
+  });
+
+  it("puts future simple cards after the explicitly ordered everyday cards", () => {
+    expect(css).toContain(
+      '#settings-view[data-settings-mode="simple"] .settings-card {\n  order: 99;',
+    );
+  });
+
+  it("exposes both exclusive choices as described radio groups", () => {
+    expect(html).toMatch(
+      /id="settings-mode-switcher"[\s\S]*?role="radiogroup"[\s\S]*?aria-describedby="settings-mode-description"/,
+    );
+    expect(html).toMatch(/id="study-mode-switcher"[\s\S]*?role="radiogroup"/);
+    expect(html).toMatch(
+      /id="btn-study-mode-flash"[\s\S]*?role="radio"[\s\S]*?aria-checked="true"/,
+    );
+  });
 });

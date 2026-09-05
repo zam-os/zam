@@ -382,14 +382,16 @@
           <div
             id="settings-mode-switcher"
             class="settings-mode-switcher"
-            role="group"
+            role="radiogroup"
             aria-label="Settings complexity"
+            aria-describedby="settings-mode-description"
           >
             <button
               id="btn-settings-mode-simple"
               class="settings-mode-option active"
               type="button"
-              aria-pressed="true"
+              role="radio"
+              aria-checked="true"
             >
               Simple
             </button>
@@ -397,7 +399,8 @@
               id="btn-settings-mode-advanced"
               class="settings-mode-option"
               type="button"
-              aria-pressed="false"
+              role="radio"
+              aria-checked="false"
             >
               Advanced
             </button>
@@ -452,7 +455,7 @@
               <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
                 Releases
               </button>
-              <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
+              <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button">
                 Run setup again
               </button>
             </div>
@@ -682,22 +685,22 @@
 
           <article class="card frosted settings-card" id="settings-data-card">
             <h2 id="lbl-settings-data-title">Data</h2>
-            <div class="settings-row" data-settings-tier="advanced">
+            <div class="settings-row">
               <span id="lbl-settings-database">Database</span>
               <code id="database-connection-status">Checking…</code>
             </div>
-            <p id="database-connection-detail" class="settings-card-help" aria-live="polite" data-settings-tier="advanced"></p>
+            <p id="database-connection-detail" class="settings-card-help" aria-live="polite"></p>
             <label class="settings-field" for="database-user-select">
               <span id="lbl-settings-learning-profile">Learning profile</span>
               <select id="database-user-select" disabled>
                 <option value="">—</option>
               </select>
             </label>
-            <div class="settings-actions" data-settings-tier="advanced">
-              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button">
+            <div class="settings-actions">
+              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
                 Refresh status
               </button>
-              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
+              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
                 Open data folder
               </button>
               <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
@@ -947,14 +950,15 @@
               <div
                 id="study-mode-switcher"
                 class="study-mode-switcher"
-                role="group"
+                role="radiogroup"
                 aria-label="Learning mode"
               >
                 <button
                   id="btn-study-mode-flash"
                   class="study-mode-option active"
                   type="button"
-                  aria-pressed="true"
+                  role="radio"
+                  aria-checked="true"
                 >
                   ⚡ Flash
                 </button>
@@ -962,7 +966,8 @@
                   id="btn-study-mode-feedback"
                   class="study-mode-option"
                   type="button"
-                  aria-pressed="false"
+                  role="radio"
+                  aria-checked="false"
                 >
                   💬 AI
                 </button>

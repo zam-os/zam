@@ -41,6 +41,16 @@ describe("mobile settings simplicity", () => {
     expect(main).toContain("void renderLocalAiModels();");
   });
 
+  it("exposes settings and review choices as exclusive radio groups", () => {
+    expect(html).toMatch(
+      /id="mobile-settings-mode-switcher"[\s\S]*?role="radiogroup"[\s\S]*?aria-describedby="mobile-settings-mode-description"/,
+    );
+    expect(html).toMatch(/id="review-mode-switcher"[\s\S]*?role="radiogroup"/);
+    expect(html).toMatch(
+      /id="review-mode-flash"[\s\S]*?role="radio"[\s\S]*?aria-checked="true"/,
+    );
+  });
+
   it("localizes the setting level in German and English", () => {
     for (const key of [
       "settings_mode_label",

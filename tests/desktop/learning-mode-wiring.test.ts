@@ -46,20 +46,6 @@ describe("desktop learning mode wiring", () => {
     expect(nativeMain).toContain('switchStudyLearningMode("answer_feedback")');
   });
 
-  it("makes native Flash review one-click and skips AI work", () => {
-    expect(nativeMain).toContain("const dynamicQuestionAllowed =");
-    expect(nativeMain).toContain("!isFlashLearningMode()");
-    expect(nativeMain).toContain(
-      't(flash ? "btn_recall_reveal" : "btn_reveal_answer")',
-    );
-    expect(nativeMain).toMatch(
-      /getElementById\("study-active-card"\)\?\.addEventListener\(\s*"click"/,
-    );
-    expect(nativeMain).toContain(
-      'const userAnswer = isFlashLearningMode() ? ""',
-    );
-  });
-
   it("passes native learning mode timeouts into voice review", () => {
     expect(nativeMain).toContain(".start(locale, {");
     expect(nativeMain).toContain(

@@ -123,6 +123,13 @@ import {
   saveSettingsViewMode,
   type SettingsViewMode,
 } from "./settings-view-mode.js";
+import {
+  acceptsTypedStudyAnswer,
+  resolveStudyLearningControlState,
+  shouldEvaluateStudyAnswer,
+  shouldRequestDynamicStudyQuestion,
+  type StudyLearningMode,
+} from "./study-learning-ui.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
 // learning-content.ts and curriculum-wizard.ts now import these directly
@@ -215,7 +222,6 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
 type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view";
 type ThemePreference = "light" | "dark";
-type StudyLearningMode = "flash" | "answer_feedback" | "answer_variation";
 
 interface StudyLearningSettings {
   learningMode: StudyLearningMode;
@@ -758,9 +764,9 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
   const simpleActive = mode === "simple";
 
   simple?.classList.toggle("active", simpleActive);
-  simple?.setAttribute("aria-pressed", String(simpleActive));
+  simple?.setAttribute("aria-checked", String(simpleActive));
   advanced?.classList.toggle("active", !simpleActive);
-  advanced?.setAttribute("aria-pressed", String(!simpleActive));
+  advanced?.setAttribute("aria-checked", String(!simpleActive));
   if (description) {
     description.textContent = t(
       simpleActive
@@ -2318,30 +2324,43 @@ function studyLearningElements() {
   };
 }
 
+function applyStudyLearningControlState(): boolean {
+  const elements = studyLearningElements();
+  const state = resolveStudyLearningControlState({
+    learningMode: currentStudyLearningSettings.learningMode,
+    settingsPending: studyLearningLoading || studyLearningSavePending,
+    hasActiveCard: activeCard !== null,
+    cardLoadInProgress,
+    revealInProgress,
+    reviewActionInProgress,
+    reviewOverlayOpen: isStudyConfirmOpen() || isStudyInlineEditorOpen(),
+  });
+
+  elements.mode.disabled = state.settingsDisabled;
+  elements.revealTimeout.disabled = state.settingsDisabled;
+  elements.flash.classList.toggle("active", state.flashSelected);
+  elements.flash.setAttribute(
+    "aria-checked",
+    String(state.flashSelected),
+  );
+  elements.flash.disabled = state.reviewDisabled;
+  elements.feedback.classList.toggle("active", state.aiSelected);
+  elements.feedback.setAttribute("aria-checked", String(state.aiSelected));
+  elements.feedback.disabled = state.reviewDisabled;
+  return state.flashSelected;
+}
+
 function renderStudyLearningSettings(): void {
   const elements = studyLearningElements();
-  const flash = isFlashLearningMode();
-  const pending = studyLearningLoading || studyLearningSavePending;
-  const reviewPending =
-    pending || cardLoadInProgress || revealInProgress || reviewActionInProgress;
 
   elements.mode.value = currentStudyLearningSettings.learningMode;
-  elements.mode.disabled = pending;
   elements.revealTimeout.value = String(
     currentStudyLearningSettings.voiceRevealTimeoutSec,
   );
-  elements.revealTimeout.disabled = pending;
+  const flash = applyStudyLearningControlState();
 
   elements.flash.textContent = t("learning_mode_switch_flash");
-  elements.flash.classList.toggle("active", flash);
-  elements.flash.setAttribute("aria-pressed", String(flash));
-  elements.flash.disabled = reviewPending;
-
   elements.feedback.textContent = t("learning_mode_switch_feedback");
-  elements.feedback.classList.toggle("active", !flash);
-  elements.feedback.setAttribute("aria-pressed", String(!flash));
-  elements.feedback.disabled = reviewPending;
-
   document
     .getElementById("study-mode-switcher")
     ?.setAttribute("aria-label", t("learning_mode_label"));
@@ -6171,7 +6190,10 @@ async function loadNextCard(
       sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
     ];
     const dynamicQuestionAllowed =
-      !isFlashLearningMode() && options.dynamicQuestion !== false;
+      shouldRequestDynamicStudyQuestion(
+        currentStudyLearningSettings.learningMode,
+        options.dynamicQuestion !== false,
+      );
     if (!dynamicQuestionAllowed) {
       reviewArgs.unshift("--no-dynamic-question");
     }
@@ -6212,10 +6234,15 @@ async function loadNextCard(
 async function submitAndReveal() {
   if (!activeCard || revealInProgress) return;
   revealInProgress = true;
+  updateReviewControlState();
   const requestId = ++evaluationRequestId;
 
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
-  const userAnswer = isFlashLearningMode() ? "" : textarea.value.trim();
+  const userAnswer = acceptsTypedStudyAnswer(
+    currentStudyLearningSettings.learningMode,
+  )
+    ? textarea.value.trim()
+    : "";
   activeUserAnswer = userAnswer;
 
   textarea.disabled = true;
@@ -6227,10 +6254,12 @@ async function submitAndReveal() {
 
   // Run LLM evaluation if enabled and user wrote an answer
   if (
-    !isFlashLearningMode() &&
-    isLlmEnabled &&
-    userAnswer.length > 0 &&
-    !activeCard.fastCheck
+    shouldEvaluateStudyAnswer({
+      learningMode: currentStudyLearningSettings.learningMode,
+      evaluatorAvailable: isLlmEnabled,
+      answer: userAnswer,
+      fastCheck: Boolean(activeCard.fastCheck),
+    })
   ) {
     document.getElementById("npu-loading")!.classList.remove("hidden");
     isWaitingForAi = true;
@@ -6285,6 +6314,7 @@ async function submitAndReveal() {
   if (requestId !== evaluationRequestId) return;
   renderReveal(aiFeedbackText, evaluationSuccessful, evaluationModel);
   revealInProgress = false;
+  updateReviewControlState();
 }
 
 function renderReveal(
@@ -6575,6 +6605,7 @@ function skipAiWaitingAndReveal() {
   finishAiWait();
   renderReveal("", false, null);
   revealInProgress = false;
+  updateReviewControlState();
 }
 
 // ── RATING ACTION SUBMIT ─────────────────────────────────────────────────
@@ -6883,6 +6914,7 @@ function updateReviewControlState(): void {
     const button = document.getElementById(id) as HTMLButtonElement | null;
     if (button) button.disabled = stateBlocked;
   }
+  applyStudyLearningControlState();
 }
 
 function beginReviewAction(): boolean {

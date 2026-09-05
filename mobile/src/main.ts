@@ -954,9 +954,9 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
   settingsView.dataset.settingsMode = mode;
   const simple = mode === "simple";
   settingsModeSimple.classList.toggle("active", simple);
-  settingsModeSimple.setAttribute("aria-pressed", String(simple));
+  settingsModeSimple.setAttribute("aria-checked", String(simple));
   settingsModeAdvanced.classList.toggle("active", !simple);
-  settingsModeAdvanced.setAttribute("aria-pressed", String(!simple));
+  settingsModeAdvanced.setAttribute("aria-checked", String(!simple));
   const descriptionKey = simple
     ? "settings_mode_simple_help"
     : "settings_mode_advanced_help";
@@ -1272,8 +1272,8 @@ function renderReviewModeSwitcher(mode: StudyLearningMode): void {
   const isFlash = mode === "flash";
   reviewModeFlash.classList.toggle("active", isFlash);
   reviewModeFeedback.classList.toggle("active", !isFlash);
-  reviewModeFlash.setAttribute("aria-pressed", String(isFlash));
-  reviewModeFeedback.setAttribute("aria-pressed", String(!isFlash));
+  reviewModeFlash.setAttribute("aria-checked", String(isFlash));
+  reviewModeFeedback.setAttribute("aria-checked", String(!isFlash));
   reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
