@@ -2,6 +2,7 @@
 
 ## 2026-09-05
 
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)
 
 ## 2026-09-04
