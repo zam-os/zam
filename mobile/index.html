@@ -594,10 +594,43 @@
           </section>
 
           <!-- ── Tab: Einstellungen ──────────────────────────────────── -->
-          <section id="settings-view" hidden>
+          <section id="settings-view" data-settings-mode="simple" hidden>
             <header class="screen-head">
               <h1 class="t-large-title" data-i18n="tab_settings">Einstellungen</h1>
             </header>
+
+            <div class="card settings-mode-card">
+              <div
+                id="mobile-settings-mode-switcher"
+                class="segmented"
+                role="radiogroup"
+                data-i18n-aria="settings_mode_label"
+                aria-describedby="mobile-settings-mode-description"
+              >
+                <button
+                  id="mobile-settings-mode-simple"
+                  class="active"
+                  type="button"
+                  role="radio"
+                  aria-checked="true"
+                  data-i18n="settings_mode_simple"
+                >
+                  Einfach
+                </button>
+                <button
+                  id="mobile-settings-mode-advanced"
+                  type="button"
+                  role="radio"
+                  aria-checked="false"
+                  data-i18n="settings_mode_advanced"
+                >
+                  Erweitert
+                </button>
+              </div>
+              <p id="mobile-settings-mode-description" class="t-secondary" data-i18n="settings_mode_simple_help">
+                Nur die Einstellungen für den Lernalltag.
+              </p>
+            </div>
 
             <p class="group-title" data-i18n="learning_mode_heading">Lernmodus</p>
             <div class="card stack">
@@ -612,7 +645,7 @@
                   <option value="answer_variation" data-i18n="learning_mode_answer_variation">Variations-Modus mit KI-Feedback</option>
                 </select>
               </label>
-              <label class="field" id="study-voice-timeout-field">
+              <label class="field" id="study-voice-timeout-field" data-settings-tier="advanced">
                 <span data-i18n="study_voice_timeout">Wartezeit bis automatische Antwort</span>
                 <input id="study-voice-reveal-timeout" type="number" min="5" max="60" step="1" value="20" />
               </label>
@@ -620,8 +653,8 @@
               <p id="study-learning-status" class="status" aria-live="polite"></p>
             </div>
 
-            <p class="group-title" data-i18n="local_ai_heading">Lokale KI</p>
-            <div class="card stack">
+            <p class="group-title" data-i18n="local_ai_heading" data-settings-tier="advanced">Lokale KI</p>
+            <div class="card stack" data-settings-tier="advanced">
               <p class="t-secondary" data-i18n="local_ai_desc">
                 Wähle pro Aufgabe, ob ZAM das Modell auf dem Gerät bevorzugt. Was dieses Gerät nicht kann, steht dabei.
               </p>
@@ -653,15 +686,15 @@
                   <option value="custom" data-i18n="study_preset_custom">Eigene Werte</option>
                 </select>
               </label>
-              <label class="field">
+              <label class="field" data-settings-tier="advanced">
                 <span data-i18n="study_max_new">Neue Karten pro Sitzung</span>
                 <input id="study-max-new" type="number" min="0" max="1000" step="1" />
               </label>
-              <label class="field">
+              <label class="field" data-settings-tier="advanced">
                 <span data-i18n="study_max_reviews">Karten insgesamt pro Sitzung</span>
                 <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
               </label>
-              <ul class="list">
+              <ul class="list" data-settings-tier="advanced">
                 <li class="row static">
                   <span class="row-text" data-i18n="study_bury_new">Nur eine neue Geschwisterkarte pro Tag</span>
                   <input id="study-bury-new" class="switch" type="checkbox" />
@@ -672,7 +705,7 @@
                 </li>
               </ul>
               <button id="study-workload-save" class="btn primary" type="button" data-i18n="study_workload_save">Lernplan speichern</button>
-              <button id="study-unbury" class="btn plain" type="button" data-i18n="study_unbury">Zurückgestellte Karten jetzt zeigen</button>
+              <button id="study-unbury" class="btn plain" type="button" data-i18n="study_unbury" data-settings-tier="advanced">Zurückgestellte Karten jetzt zeigen</button>
               <p id="study-workload-status" class="status" aria-live="polite"></p>
             </div>
 
@@ -769,10 +802,11 @@
               aria-expanded="false"
               aria-controls="endpoints-panel"
               data-i18n="endpoints_toggle"
+              data-settings-tier="advanced"
             >
               Erweitert: Modelle verwalten
             </button>
-            <div id="endpoints-panel" class="card hidden">
+            <div id="endpoints-panel" class="card hidden" data-settings-tier="advanced">
               <p class="t-secondary" data-i18n="endpoints_desc">
                 Eigene Endpunkte für Anbieter, bei denen du direkt ein
                 Guthaben hast. Die Reihenfolge entscheidet: ZAM nimmt den
@@ -879,7 +913,7 @@
             </ul>
             <p id="reminder-status" class="status"></p>
 
-            <div id="voice-settings" hidden>
+            <div id="voice-settings" data-settings-tier="advanced" hidden>
               <p class="group-title" data-i18n="voice_engine_heading">Sprachmodus</p>
               <ul class="list">
                 <li class="row static">
@@ -917,10 +951,10 @@
             <!-- The step that turns "my iPad" into "my devices". Everything
                  already on the device comes along; the local copy stays as a
                  backup. -->
-            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="upgrade_heading">
+            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="upgrade_heading" data-settings-tier="advanced">
               Mehrere Geräte
             </p>
-            <div class="card" id="upgrade-card">
+            <div class="card" id="upgrade-card" data-settings-tier="advanced">
               <p class="t-secondary" data-i18n="upgrade_desc">
                 Lege bei Turso eine Datenbank an und trage sie hier ein. Deine
                 bisherigen Karten ziehen mit um; die Kopie auf dem Gerät bleibt
@@ -961,10 +995,10 @@
               <p id="upgrade-status" class="status" aria-live="polite"></p>
             </div>
 
-            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="device_heading">
+            <p class="group-title" style="margin-top: var(--gap-5)" data-i18n="device_heading" data-settings-tier="advanced">
               Gerät
             </p>
-            <ul class="list">
+            <ul class="list" data-settings-tier="advanced">
               <li class="row static">
                 <span class="row-text" data-i18n="settings_storage">Lernbereich</span>
                 <span id="settings-storage" class="row-value"></span>
@@ -1049,11 +1083,11 @@
           </div>
           <div class="review-header-bar">
             <p id="review-progress" class="t-footnote"></p>
-            <div id="review-mode-switcher" class="segmented" role="group" aria-label="Lernmodus">
-              <button id="review-mode-flash" type="button" data-mode="flash" data-i18n="learning_mode_switch_flash">
+            <div id="review-mode-switcher" class="segmented" role="radiogroup" aria-label="Lernmodus">
+              <button id="review-mode-flash" type="button" role="radio" aria-checked="true" data-mode="flash" data-i18n="learning_mode_switch_flash">
                 ⚡ Flash
               </button>
-              <button id="review-mode-feedback" type="button" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
+              <button id="review-mode-feedback" type="button" role="radio" aria-checked="false" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
                 💬 KI
               </button>
             </div>

@@ -237,6 +237,20 @@ import {
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
 const nav = createNav();
+type SettingsViewMode = "simple" | "advanced";
+const SETTINGS_VIEW_MODE_STORAGE_KEY = "zam:settings-view-mode";
+
+function loadSettingsViewMode(): SettingsViewMode {
+  try {
+    return localStorage.getItem(SETTINGS_VIEW_MODE_STORAGE_KEY) === "advanced"
+      ? "advanced"
+      : "simple";
+  } catch {
+    return "simple";
+  }
+}
+
+let settingsViewMode = loadSettingsViewMode();
 
 interface DatabaseDescription {
   mode: "local" | "remote" | "closed";
@@ -593,6 +607,16 @@ const localAiRows = element<HTMLElement>("local-ai-rows");
 const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
 const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
 const localAiModels = element<HTMLElement>("local-ai-models");
+const settingsView = element<HTMLElement>("settings-view");
+const settingsModeSimple = element<HTMLButtonElement>(
+  "mobile-settings-mode-simple",
+);
+const settingsModeAdvanced = element<HTMLButtonElement>(
+  "mobile-settings-mode-advanced",
+);
+const settingsModeDescription = element<HTMLParagraphElement>(
+  "mobile-settings-mode-description",
+);
 const studyLearningMode = element<HTMLSelectElement>("study-learning-mode");
 const studyVoiceRevealTimeout = element<HTMLInputElement>(
   "study-voice-reveal-timeout",
@@ -925,10 +949,40 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+function applySettingsViewMode(mode: SettingsViewMode): void {
+  settingsViewMode = mode;
+  settingsView.dataset.settingsMode = mode;
+  const simple = mode === "simple";
+  settingsModeSimple.classList.toggle("active", simple);
+  settingsModeSimple.setAttribute("aria-checked", String(simple));
+  settingsModeAdvanced.classList.toggle("active", !simple);
+  settingsModeAdvanced.setAttribute("aria-checked", String(!simple));
+  const descriptionKey = simple
+    ? "settings_mode_simple_help"
+    : "settings_mode_advanced_help";
+  settingsModeDescription.dataset.i18n = descriptionKey;
+  settingsModeDescription.textContent = t(descriptionKey);
+}
+
+function chooseSettingsViewMode(mode: SettingsViewMode): void {
+  try {
+    localStorage.setItem(SETTINGS_VIEW_MODE_STORAGE_KEY, mode);
+  } catch {
+    // A presentation preference is optional; keep it for this app run.
+  }
+  applySettingsViewMode(mode);
+  if (mode === "advanced") {
+    renderVoiceSettings();
+    void refreshLocalAi();
+    void renderLocalAiModels();
+  }
+}
+
 /** Switch the UI locale (from the paired settings, else the device) and repaint. */
 function applyLocale(source: string | null | undefined): void {
   setLocale(resolveLocale(source));
   applyStaticTranslations();
+  applySettingsViewMode(settingsViewMode);
 }
 
 /**
@@ -1218,8 +1272,8 @@ function renderReviewModeSwitcher(mode: StudyLearningMode): void {
   const isFlash = mode === "flash";
   reviewModeFlash.classList.toggle("active", isFlash);
   reviewModeFeedback.classList.toggle("active", !isFlash);
-  reviewModeFlash.setAttribute("aria-pressed", String(isFlash));
-  reviewModeFeedback.setAttribute("aria-pressed", String(!isFlash));
+  reviewModeFlash.setAttribute("aria-checked", String(isFlash));
+  reviewModeFeedback.setAttribute("aria-checked", String(!isFlash));
   reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
@@ -3145,6 +3199,13 @@ element<HTMLButtonElement>("pairing-back").addEventListener("click", () => {
   else nav.showRoot("setup");
 });
 
+settingsModeSimple.addEventListener("click", () => {
+  chooseSettingsViewMode("simple");
+});
+settingsModeAdvanced.addEventListener("click", () => {
+  chooseSettingsViewMode("advanced");
+});
+
 /**
  * A tab is reachable at any moment, so each one refreshes what it shows on
  * arrival rather than relying on whoever navigated there to have done it.
@@ -3162,12 +3223,15 @@ nav.onTabChange((tab) => {
   }
   if (tab === "settings") {
     renderReminderControls();
-    renderVoiceSettings();
     void refreshStorageRow();
     void refreshAiSection();
     void refreshStudyLearningSettings();
     void refreshStudyWorkload();
-    void refreshLocalAi();
+    if (settingsViewMode === "advanced") {
+      renderVoiceSettings();
+      void refreshLocalAi();
+      void renderLocalAiModels();
+    }
   }
 });
 

@@ -366,7 +366,7 @@
       </section>
 
       <!-- VIEW 2: SETTINGS -->
-      <section id="settings-view" class="view">
+      <section id="settings-view" class="view" data-settings-mode="simple">
         <div class="settings-hero frosted">
           <div>
             <p id="lbl-settings-kicker" class="eyebrow">Local configuration</p>
@@ -378,8 +378,71 @@
           <button id="btn-settings-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
         </div>
 
+        <div class="settings-mode-bar frosted">
+          <div
+            id="settings-mode-switcher"
+            class="settings-mode-switcher"
+            role="radiogroup"
+            aria-label="Settings complexity"
+            aria-describedby="settings-mode-description"
+          >
+            <button
+              id="btn-settings-mode-simple"
+              class="settings-mode-option active"
+              type="button"
+              role="radio"
+              aria-checked="true"
+            >
+              Simple
+            </button>
+            <button
+              id="btn-settings-mode-advanced"
+              class="settings-mode-option"
+              type="button"
+              role="radio"
+              aria-checked="false"
+            >
+              Advanced
+            </button>
+          </div>
+          <p id="settings-mode-description" class="settings-mode-description">
+            Only the choices you need for everyday learning.
+          </p>
+        </div>
+
         <div class="settings-list" id="setup-card">
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="study-learning-card">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-learning-title">Learning</h2>
+                <p id="lbl-settings-learning-help" class="settings-card-help">
+                  Choose how cards behave during a review.
+                </p>
+              </div>
+            </div>
+            <label class="settings-field" for="settings-learning-mode">
+              <span id="lbl-settings-learning-mode">Learning mode</span>
+              <select id="settings-learning-mode">
+                <option id="settings-learning-mode-flash" value="flash">Flash (fast, no typing)</option>
+                <option id="settings-learning-mode-feedback" value="answer_feedback">Answer with AI feedback</option>
+                <option id="settings-learning-mode-variation" value="answer_variation">Answer with question variations</option>
+              </select>
+              <span id="lbl-settings-learning-mode-help" class="settings-card-help">
+                In Flash mode, reveal the answer directly and rate your recall without typing.
+              </span>
+            </label>
+            <label
+              class="settings-field settings-advanced-control"
+              for="settings-voice-reveal-timeout"
+              data-settings-tier="advanced"
+            >
+              <span id="lbl-settings-voice-reveal-timeout">Seconds before voice mode reveals the answer</span>
+              <input id="settings-voice-reveal-timeout" type="number" min="5" max="60" step="1" />
+            </label>
+            <p id="study-learning-status" class="sub-label settings-status-row" aria-live="polite"></p>
+          </article>
+
+          <article class="card frosted settings-card" id="settings-system-card">
             <h2 id="lbl-settings-system-title">System</h2>
             <div class="settings-row">
               <span id="lbl-app-version">Version</span>
@@ -417,30 +480,30 @@
                 <option id="study-preset-custom" value="custom">Custom</option>
               </select>
             </label>
-            <label class="settings-field" for="study-max-new">
+            <label class="settings-field" for="study-max-new" data-settings-tier="advanced">
               <span id="lbl-study-max-new">New cards per session</span>
               <input id="study-max-new" type="number" min="0" max="1000" step="1" />
             </label>
-            <label class="settings-field" for="study-max-reviews">
+            <label class="settings-field" for="study-max-reviews" data-settings-tier="advanced">
               <span id="lbl-study-max-reviews">Total cards per session</span>
               <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
             </label>
-            <label class="settings-toggle" for="study-bury-new">
+            <label class="settings-toggle" for="study-bury-new" data-settings-tier="advanced">
               <input id="study-bury-new" type="checkbox" />
               <span id="lbl-study-bury-new">Show only one new sibling per day</span>
             </label>
-            <label class="settings-toggle" for="study-bury-review">
+            <label class="settings-toggle" for="study-bury-review" data-settings-tier="advanced">
               <input id="study-bury-review" type="checkbox" />
               <span id="lbl-study-bury-review">Show only one review sibling per day</span>
             </label>
             <div class="settings-actions">
               <button id="btn-study-workload-save" class="btn primary-btn btn-sm" type="button">Save study plan</button>
-              <button id="btn-study-unbury" class="btn secondary-btn btn-sm" type="button">Show buried cards now</button>
+              <button id="btn-study-unbury" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">Show buried cards now</button>
             </div>
             <p id="study-workload-status" class="sub-label settings-status-row" aria-live="polite"></p>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-ai-card">
             <div class="settings-card-header">
               <div>
                 <h2 id="lbl-settings-ai-title">AI models</h2>
@@ -453,26 +516,26 @@
               <span id="lbl-learning-model">Learning model</span>
               <code id="learning-model-status">—</code>
             </div>
-            <div class="settings-row">
+            <div class="settings-row" data-settings-tier="advanced">
               <span id="lbl-observer-model">Observer model</span>
               <code id="observer-model-status">—</code>
             </div>
             <!-- Dynamic questions (ADR 2026-06-15). On by default; the toggle
                  exists because the per-card model round-trip is what makes the
                  start of a session slow on a modest model. -->
-            <label class="settings-toggle" for="toggle-dynamic-questions">
+            <label class="settings-toggle" for="toggle-dynamic-questions" data-settings-tier="advanced">
               <input type="checkbox" id="toggle-dynamic-questions" checked />
               <span>
                 <span id="lbl-dynamic-questions">Reword questions each review</span>
                 <span id="lbl-dynamic-questions-help" class="settings-card-help"></span>
               </span>
             </label>
-            <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
             <!-- Windows-on-ARM only, and hidden until the status call says so.
                  Foundry Local cannot be installed anywhere else, so on every
                  other machine this section was a heading, an explanation and a
                  button for something that could never happen. -->
-            <div id="foundry-local-setup" class="settings-stack hidden">
+            <div id="foundry-local-setup" class="settings-stack hidden" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
                   <h3 id="lbl-foundry-local-title">Foundry Local</h3>
@@ -492,7 +555,7 @@
               </div>
               <p id="foundry-local-status" class="sub-label settings-status-row" aria-live="polite"></p>
             </div>
-            <div id="local-vision-setup" class="settings-stack">
+            <div id="local-vision-setup" class="settings-stack" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
                   <h3 id="lbl-local-vision-title">Local visual analysis</h3>
@@ -511,7 +574,7 @@
               </div>
               <p id="local-vision-status" class="sub-label settings-status-row" aria-live="polite"></p>
             </div>
-            <div id="local-embedding-setup" class="settings-stack">
+            <div id="local-embedding-setup" class="settings-stack" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
                   <h3 id="lbl-local-embedding-title">Semantic search</h3>
@@ -544,7 +607,7 @@
           </article>
 
           <!-- AGENT HARNESS CONNECTIONS (ADR 2026-07-11) -->
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-agents-card" data-settings-tier="advanced">
             <div class="settings-card-header">
               <div>
                 <h2 id="lbl-settings-agents-title">AI agents</h2>
@@ -562,7 +625,7 @@
             <p id="agent-connect-result" class="sub-label settings-status-row hidden" aria-live="polite"></p>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-workspaces-card" data-settings-tier="advanced">
             <div class="settings-card-header">
               <div>
                 <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>
@@ -580,7 +643,7 @@
             </div>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-context-card" data-settings-tier="advanced">
             <h2 id="lbl-settings-context-title">Knowledge Context</h2>
             <p id="lbl-settings-context-help" class="settings-card-help">Select the default knowledge context for this device.</p>
             <label class="settings-field" for="device-context-select">
@@ -592,7 +655,7 @@
             </label>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-appearance-card">
             <h2 id="lbl-settings-appearance-title">Appearance</h2>
             <label class="settings-field" for="theme-select">
               <span id="lbl-settings-theme">Theme</span>
@@ -606,7 +669,7 @@
           <!-- VOICE MODE (ADR 2026-07-31). The preference is machine-local:
                which tier is right depends on the hardware in front of the
                learner, so it is never synchronized through the database. -->
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-voice-card" data-settings-tier="advanced">
             <h2 id="lbl-settings-voice-title">Voice mode</h2>
             <p id="lbl-settings-voice-help" class="settings-card-help"></p>
             <label class="settings-field" for="voice-preference-select">
@@ -620,7 +683,7 @@
             <p id="voice-preference-detail" class="settings-card-help" aria-live="polite"></p>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-data-card">
             <h2 id="lbl-settings-data-title">Data</h2>
             <div class="settings-row">
               <span id="lbl-settings-database">Database</span>
@@ -634,10 +697,10 @@
               </select>
             </label>
             <div class="settings-actions">
-              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button">
+              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
                 Refresh status
               </button>
-              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button">
+              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
                 Open data folder
               </button>
               <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
@@ -646,7 +709,7 @@
             </div>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-server-db-card" data-settings-tier="advanced">
             <div class="settings-card-header">
               <div>
                 <h2 id="lbl-settings-server-db-title">Server database</h2>
@@ -693,7 +756,7 @@
           <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
                of onboarding entirely. Ticking the box reveals the body; until
                then this card is one checkbox and one sentence. -->
-          <article class="card frosted settings-card" id="secrets-vault-card">
+          <article class="card frosted settings-card" id="secrets-vault-card" data-settings-tier="advanced">
             <div class="settings-card-header">
               <div>
                 <!-- The title text has its own span: applyLabels() writes
@@ -753,7 +816,7 @@
             </div>
           </article>
 
-          <article class="card frosted settings-card">
+          <article class="card frosted settings-card" id="settings-mobile-card" data-settings-tier="advanced">
             <div class="settings-card-header">
               <div>
                 <h2 id="lbl-settings-mobile-title">Mobile companion</h2>
@@ -884,6 +947,31 @@
           <div class="card-header">
             <span class="card-progress" id="card-progress">1/10</span>
             <div class="tag-row">
+              <div
+                id="study-mode-switcher"
+                class="study-mode-switcher"
+                role="radiogroup"
+                aria-label="Learning mode"
+              >
+                <button
+                  id="btn-study-mode-flash"
+                  class="study-mode-option active"
+                  type="button"
+                  role="radio"
+                  aria-checked="true"
+                >
+                  ⚡ Flash
+                </button>
+                <button
+                  id="btn-study-mode-feedback"
+                  class="study-mode-option"
+                  type="button"
+                  role="radio"
+                  aria-checked="false"
+                >
+                  💬 AI
+                </button>
+              </div>
               <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
               <span class="badge domain-badge" id="tier-badge" hidden></span>

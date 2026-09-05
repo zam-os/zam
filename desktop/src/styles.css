@@ -666,6 +666,90 @@ textarea:focus-visible {
 }
 
 /* ── SETTINGS VIEW ───────────────────────────────────────────────────────── */
+.settings-mode-bar {
+  align-items: center;
+  display: flex;
+  gap: 14px;
+  justify-content: space-between;
+  margin-bottom: 14px;
+  padding: 12px 14px;
+}
+
+.settings-mode-switcher {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  display: inline-grid;
+  flex: 0 0 auto;
+  grid-template-columns: 1fr 1fr;
+  padding: 3px;
+}
+
+.settings-mode-option {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  min-width: 94px;
+  padding: 7px 12px;
+}
+
+.settings-mode-option:hover {
+  color: var(--clr-text-primary);
+}
+
+.settings-mode-option.active {
+  background: var(--clr-bg-surface);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
+  color: var(--clr-accent-cyan);
+}
+
+.settings-mode-description {
+  color: var(--clr-text-muted);
+  font-size: 13px;
+  line-height: 1.4;
+  margin: 0;
+  text-align: right;
+}
+
+#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"] {
+  display: none !important;
+}
+
+/* Everyday choices read top-to-bottom in simple mode. Advanced mode keeps the
+   source order so related infrastructure remains grouped together. */
+#settings-view[data-settings-mode="simple"] .settings-card {
+  order: 99;
+}
+
+#settings-view[data-settings-mode="simple"] #study-learning-card {
+  order: 1;
+}
+
+#settings-view[data-settings-mode="simple"] #study-workload-card {
+  order: 2;
+}
+
+#settings-view[data-settings-mode="simple"] #settings-ai-card {
+  order: 3;
+}
+
+#settings-view[data-settings-mode="simple"] #settings-appearance-card {
+  order: 4;
+}
+
+#settings-view[data-settings-mode="simple"] #settings-data-card {
+  order: 5;
+}
+
+#settings-view[data-settings-mode="simple"] #settings-system-card {
+  order: 6;
+}
+
 .settings-list {
   display: grid;
   gap: 14px;
@@ -804,6 +888,10 @@ textarea:focus-visible {
 .settings-field {
   display: grid;
   gap: 8px;
+}
+
+.settings-field + .settings-field {
+  margin-top: 12px;
 }
 
 .settings-field-stack {
@@ -1389,8 +1477,53 @@ textarea:focus-visible {
 }
 
 .tag-row {
+  align-items: center;
   display: flex;
+  flex-wrap: wrap;
   gap: 10px;
+  justify-content: flex-end;
+}
+
+.study-mode-switcher {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 999px;
+  display: inline-grid;
+  grid-template-columns: 1fr 1fr;
+  padding: 2px;
+}
+
+.study-mode-option {
+  background: transparent;
+  border: 0;
+  border-radius: 999px;
+  color: var(--clr-text-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: 11px;
+  font-weight: 750;
+  line-height: 1;
+  min-width: 62px;
+  padding: 6px 9px;
+}
+
+.study-mode-option:hover:not(:disabled) {
+  color: var(--clr-text-primary);
+}
+
+.study-mode-option.active {
+  background: var(--clr-bg-surface);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
+  color: var(--clr-accent-cyan);
+}
+
+.study-mode-option:disabled {
+  cursor: wait;
+  opacity: 0.62;
+}
+
+.study-card.flash-mode .question-container {
+  cursor: pointer;
 }
 
 .badge {
@@ -2550,6 +2683,19 @@ textarea::placeholder {
   .hero-actions {
     min-width: 0;
     width: 100%;
+  }
+
+  .settings-mode-bar {
+    align-items: stretch;
+    flex-direction: column;
+  }
+
+  .settings-mode-switcher {
+    width: 100%;
+  }
+
+  .settings-mode-description {
+    text-align: left;
   }
 
   .stat-card {

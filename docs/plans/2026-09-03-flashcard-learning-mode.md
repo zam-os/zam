@@ -6,6 +6,7 @@
 - [x] Phase 3: Mobile UI & Review Session (Flashcard experience, In-Session Switcher, Settings)
 - [x] Phase 4: Desktop UI & Settings
 - [x] Phase 5: Verification & Full Test Suite
+- [x] Phase 6: Native Desktop parity and learner-first simple/advanced Settings on Desktop and Mobile
 
 ## Goal
 

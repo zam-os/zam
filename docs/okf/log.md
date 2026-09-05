@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-05
+
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
+
 ## 2026-09-04
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
