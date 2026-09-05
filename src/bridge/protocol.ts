@@ -500,7 +500,7 @@ export interface SubmitReviewResult {
     prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
   } | null;
   stepError?: string;
-  /** True when an agent-completed step was logged without advancing FSRS. */
+  /** True when an unrated agent or assisted-user step was logged without advancing FSRS. */
   recordedOnly?: boolean;
 }
 

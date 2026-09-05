@@ -10,7 +10,7 @@
 
 Plan prepared; product implementation has not started. When asked to implement, work on exactly the next unchecked phase. A phase is complete only when its acceptance criteria and the required checks pass.
 
-- [ ] Phase 1: Grading contract and assisted user work without an FSRS rating
+- [x] Phase 1: Grading contract and assisted user work without an FSRS rating
 - [ ] Phase 2: Drafts, author review and publication
 - [ ] Phase 3: Atom sibling separation and reactive cancellation of prerequisite deferral
 - [ ] Phase 4: Record observed attempts with traceable evidence and no duplicate reviews

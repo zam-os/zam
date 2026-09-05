@@ -92,7 +92,7 @@ Prerequisites: "to understand A, you must first know B." Register edges via `zam
 
 ## Two Modes of Knowledge Assessment
 
-**Observation (primary)**: Agent watches the user do the task. If done correctly without help or hesitation → silently rate all touched tokens as 4. No interruption, no questions. Like a driving examiner in the back seat. But if you supplied the knowledge *this session* — looked it up, taught it, or handed over the exact steps — that is an assisted first run, not mastery: log a modest establishing rating (a 3, not a 4); real recall is tested when the card next falls due.
+**Observation (primary)**: Agent watches the user do the task. Rate an FSRS review only for a documented independent attempt that meets the item's `concept` in full. Complete independent success is 2 (effortful), 3 (ordinary; use 3 when effort is unknown), or 4 (effortless — never automatic). Missing required content is 1, never Hard. If you supplied the knowledge this session — looked it up, taught it, or handed over the exact steps — that is assisted user work, not recall: call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, the session ID, card ID, and a `reason`; do not send a rating. Observation without a documented independent attempt must not create a success review.
 
 **Verbal probing (secondary)**: Used when observation is insufficient — conceptual sessions with no executable output, or when a token hasn't been exercised in a long time and a practice task isn't appropriate.
 
@@ -196,11 +196,11 @@ For each due token, ask a conceptual question at the right Bloom level:
 After the user answers, run the explicit review loop:
 1. **Check the answer first.** Compare the user's answer with the concept definition, the recall question, and resolved source context.
 2. **Give learning feedback before asking for a rating.** State the verdict, give a reference answer, and explain gaps.
-3. **Suggest a self-rating.** Propose a rating from 1 to 4: 4 = instant, 3 = knew it with small gap, 2 = partial recall, 1 = blank/incorrect.
+3. **Suggest a self-rating.** Propose 1–4 against the `concept` only (context is not a pass hurdle): 4 = effortless complete success, 3 = ordinary complete success (use 3 when effort is unknown), 2 = complete but effortful success, 1 = blank, wrong, or missing a required element. Never use 2 for a partial answer.
 4. **Ask the user to choose the final rating.**
 5. **WAIT for the user to choose.**
 6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, and `doneBy: "user"`.
-*(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating; this logs evidence without advancing FSRS.)*
+*(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating. If the user followed steps just demonstrated, with no independent attempt, call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, session ID, card ID, and `reason`. Both log evidence without advancing FSRS.)*
 
 #### Leveraging Source Links for AI Agent Context
 When calling `zam_get_reviews` or other review lookups, if a token has a `source_link`, the resolved code/documentation context will be returned. Use it to:

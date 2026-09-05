@@ -528,13 +528,14 @@ export function createMcpServer(
   server.registerTool(
     "zam_submit_review",
     {
-      description: "Submit a user rating or log an unrated agent step",
+      description:
+        "Submit a user FSRS rating, log an unrated agent step, or record assisted user work without a rating",
       inputSchema: {
         user: z.string().optional().describe("User ID submitting the review"),
         cardId: z
           .string()
           .optional()
-          .describe("Card ULID; required for agent steps"),
+          .describe("Card ULID; required for agent and record-only steps"),
         tokenId: z
           .string()
           .optional()
@@ -546,12 +547,14 @@ export function createMcpServer(
           .max(4)
           .optional()
           .describe(
-            "User FSRS rating (1=Again, 2=Hard, 3=Good, 4=Easy); omit when doneBy is agent",
+            "User FSRS rating (1=Again, 2=Hard, 3=Good, 4=Easy); omit when doneBy is agent or recordOnly is true",
           ),
         sessionId: z
           .string()
           .optional()
-          .describe("Optional active session ULID to log step"),
+          .describe(
+            "Active session ULID to log the step; required for agent and record-only steps",
+          ),
         doneBy: z
           .enum(["user", "agent"])
           .optional()
@@ -563,6 +566,18 @@ export function createMcpServer(
           .optional()
           .describe(
             "Milliseconds between showing the card and this rating (study-time stats)",
+          ),
+        recordOnly: z
+          .boolean()
+          .optional()
+          .describe(
+            "Log assisted user work as a session step without an FSRS rating",
+          ),
+        reason: z
+          .string()
+          .optional()
+          .describe(
+            "Why this step is record-only; required when recordOnly is true",
           ),
       },
       annotations: {
@@ -581,6 +596,8 @@ export function createMcpServer(
         sessionId: params.sessionId,
         doneBy: params.doneBy,
         responseTimeMs: params.responseTimeMs,
+        recordOnly: params.recordOnly,
+        reason: params.reason,
       });
     }),
   );

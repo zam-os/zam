@@ -18,6 +18,7 @@ import {
   createToken,
   enrolBundledCell,
   ensureCard,
+  endSession as completeSession,
   getCard,
   getPrerequisites,
   getReviewsForCard,
@@ -219,7 +220,7 @@ describe("bridge-handlers unit tests", () => {
     );
   });
 
-  it("submitReview logs steps and reviews and handles stepError on session step write failure", async () => {
+  it("submitReview logs reviews and rejects an invalid session without a partial FSRS write", async () => {
     const token = await createToken(db, {
       slug: "submit-token",
       concept: "Concept",
@@ -245,17 +246,47 @@ describe("bridge-handlers unit tests", () => {
     expect(logs[0].rating).toBe(3);
     expect(logs[0].response_time_ms).toBe(2_500);
 
-    // Submit review with invalid sessionId (causes step write failure, should return stepError)
-    const res2 = await submitReview(db, {
+    const repsAfterValid = (await getCard(db, token.id, "thomas"))!.reps;
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 4,
+        sessionId: "non-existent-session-ulid",
+      }),
+    ).rejects.toThrow("Session not found");
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(repsAfterValid);
+  });
+
+  it("writes a rated review and session step in one transaction", async () => {
+    const token = await createToken(db, {
+      slug: "session-rate-token",
+      concept: "Session rate",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Rated work",
+    });
+
+    const result = await submitReview(db, {
       user: "thomas",
       cardId: card.id,
-      rating: 4,
-      sessionId: "non-existent-session-ulid",
+      rating: 3,
+      sessionId: session.id,
     });
-    expect(res2.success).toBe(true);
-    expect(res2.rating).toBe(4);
-    expect(res2.stepError).toBeDefined();
-    expect(res2.stepError).toContain("Session not found");
+    expect(result.success).toBe(true);
+    expect(result.rating).toBe(3);
+    expect(result.stepError).toBeUndefined();
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+    expect(steps[0].rating).toBe(3);
+    expect(steps[0].done_by).toBe("user");
   });
 
   it("logs agent-completed steps without advancing FSRS", async () => {
@@ -300,6 +331,120 @@ describe("bridge-handlers unit tests", () => {
         rating: 4,
       }),
     ).rejects.toThrow("must not include a rating");
+  });
+
+  it("records assisted user work without advancing FSRS", async () => {
+    const token = await createToken(db, {
+      slug: "assisted-user-token",
+      concept: "Assisted work",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Assisted first run",
+    });
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      doneBy: "user",
+      recordOnly: true,
+      reason: "followed demonstrated steps",
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      rating: null,
+      evaluation: null,
+      recordedOnly: true,
+    });
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
+    const step = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .get(session.id);
+    expect(step.done_by).toBe("user");
+    expect(step.rating).toBeNull();
+    expect(step.notes).toBe("followed demonstrated steps");
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        recordOnly: true,
+        reason: "demo",
+        rating: 2,
+      }),
+    ).rejects.toThrow("must not include a rating");
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        doneBy: "agent",
+        recordOnly: true,
+        reason: "demo",
+      }),
+    ).rejects.toThrow("recordOnly is for assisted user work");
+  });
+
+  it("rejects record-only against another learner, a completed session, or a foreign card", async () => {
+    const token = await createToken(db, {
+      slug: "record-only-guard",
+      concept: "Guard",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const otherCard = await ensureCard(db, token.id, "other");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Own session",
+    });
+    const otherSession = await startSession(db, {
+      user: "other",
+      task: "Other session",
+    });
+    await completeSession(db, session.id);
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        recordOnly: true,
+        reason: "too late",
+      }),
+    ).rejects.toThrow("already completed");
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: otherSession.id,
+        recordOnly: true,
+        reason: "wrong learner",
+      }),
+    ).rejects.toThrow("does not belong");
+    const live = await startSession(db, {
+      user: "thomas",
+      task: "Live",
+    });
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: otherCard.id,
+        sessionId: live.id,
+        recordOnly: true,
+        reason: "foreign card",
+      }),
+    ).rejects.toThrow("does not belong");
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+    expect((await getCard(db, token.id, "other"))!.reps).toBe(0);
   });
 
   it("creates a card only after a token-based synthesis rating is confirmed", async () => {

@@ -1107,7 +1107,10 @@ bridgeCommand
   .description("Submit a rating for a card (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
-  .option("--rating <n>", "User rating (1-4); omit with --done-by agent")
+  .option(
+    "--rating <n>",
+    "User rating (1-4); omit with --done-by agent or --record-only",
+  )
   .option("--session <id>", "Session ID to associate the review with")
   .option(
     "--done-by <user|agent>",
@@ -1117,6 +1120,14 @@ bridgeCommand
   .option(
     "--response-time-ms <n>",
     "Milliseconds between showing the card and this rating (study-time stats)",
+  )
+  .option(
+    "--record-only",
+    "Log assisted user work without an FSRS rating (requires --session and --reason)",
+  )
+  .option(
+    "--reason <text>",
+    "Why this step is record-only (required with --record-only)",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -1144,6 +1155,8 @@ bridgeCommand
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
           responseTimeMs,
+          recordOnly: Boolean(opts.recordOnly),
+          reason: opts.reason,
         });
         jsonOut(result);
       } catch (err) {

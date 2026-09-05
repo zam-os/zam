@@ -493,6 +493,10 @@ export interface SubmitReviewParams {
   doneBy?: "user" | "agent";
   /** Milliseconds between showing the card and submitting the rating (ADR 2026-08-01 Decision 5). */
   responseTimeMs?: number;
+  /** Assisted user work: log a session step without an FSRS rating. */
+  recordOnly?: boolean;
+  /** Why this step is record-only (required when recordOnly is true). */
+  reason?: string;
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -503,6 +507,65 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
   ) {
     throw new Error("doneBy must be user or agent");
   }
+  if (params.recordOnly) {
+    if (params.doneBy === "agent") {
+      throw new Error(
+        "recordOnly is for assisted user work; use doneBy agent without a rating for agent steps",
+      );
+    }
+    if (params.rating !== undefined) {
+      throw new Error("recordOnly must not include a rating");
+    }
+    const reason = params.reason?.trim();
+    if (!reason) {
+      throw new Error("reason is required for a record-only user step");
+    }
+    if (!params.sessionId) {
+      throw new Error("sessionId is required for a record-only user step");
+    }
+    if (!params.cardId) {
+      throw new Error("cardId is required for a record-only user step");
+    }
+    const card = await getCardById(db, params.cardId);
+    if (!card) {
+      throw new Error(`Card not found: ${params.cardId}`);
+    }
+    if (card.user_id !== userId) {
+      throw new Error(
+        `Card ${params.cardId} does not belong to user ${userId}`,
+      );
+    }
+    const session = (await db
+      .prepare("SELECT user_id, completed_at FROM sessions WHERE id = ?")
+      .get(params.sessionId)) as
+      | { user_id: string; completed_at: string | null }
+      | undefined;
+    if (!session) {
+      throw new Error(`Session not found: ${params.sessionId}`);
+    }
+    if (session.user_id !== userId) {
+      throw new Error(
+        `Session ${params.sessionId} does not belong to user ${userId}`,
+      );
+    }
+    if (session.completed_at) {
+      throw new Error(`Session already completed: ${params.sessionId}`);
+    }
+    await logStep(db, {
+      session_id: params.sessionId,
+      token_id: card.token_id,
+      done_by: "user",
+      notes: reason,
+    });
+    return {
+      success: true,
+      rating: null,
+      evaluation: null,
+      blocked: null,
+      recordedOnly: true,
+    };
+  }
+
   if (params.doneBy === "agent") {
     if (params.rating !== undefined) {
       throw new Error("Agent-completed steps must not include a rating");
@@ -556,29 +619,15 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     cardId,
     userId,
     rating: params.rating,
+    sessionId: params.sessionId,
     responseTimeMs: params.responseTimeMs,
   });
-
-  let stepError: string | undefined;
-  if (params.sessionId) {
-    try {
-      await logStep(db, {
-        session_id: params.sessionId,
-        token_id: result.token.id,
-        done_by: "user",
-        rating: params.rating,
-      });
-    } catch (err) {
-      stepError = (err as Error).message;
-    }
-  }
 
   return {
     success: true,
     rating: params.rating,
     evaluation: result.evaluation,
     blocked: result.blocked ?? null,
-    ...(stepError ? { stepError } : {}),
   };
 }
 
