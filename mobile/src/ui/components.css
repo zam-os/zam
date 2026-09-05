@@ -862,6 +862,30 @@ button.chip {
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
 }
 
+/* Settings opens in a learner-first view. Device AI, endpoint routing and
+   database plumbing stay one explicit step away for people who need them. */
+#settings-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+}
+
+#settings-view > .group-title {
+  margin-top: var(--gap-4);
+}
+
+#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"] {
+  display: none !important;
+}
+
+.settings-mode-card {
+  margin: var(--gap-2) 0 var(--gap-2);
+}
+
+.settings-mode-card .t-secondary {
+  text-align: center;
+}
+
 /* ── Setup ─────────────────────────────────────────────────────────────── */
 
 .setup {

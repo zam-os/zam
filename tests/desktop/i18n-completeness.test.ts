@@ -262,6 +262,18 @@ const SETTINGS_PANEL_KEYS = [
   "settings_section_update",
 ] as const;
 
+const NATIVE_SETTINGS_KEYS = [
+  "settings_mode_label",
+  "settings_mode_simple",
+  "settings_mode_advanced",
+  "settings_mode_simple_help",
+  "settings_mode_advanced_help",
+  "settings_learning_title",
+  "settings_learning_help",
+  "study_learning_saved",
+  "study_learning_load_failed",
+] as const;
+
 const LEARNING_MODE_SHARED_KEYS = [
   "study_learning_failed",
   "learning_mode_switch_flash",
@@ -283,6 +295,7 @@ const REQUIRED_KEYS = [
   ...OKF_PANEL_KEYS,
   ...GRAPH_PANEL_KEYS,
   ...SETTINGS_PANEL_KEYS,
+  ...NATIVE_SETTINGS_KEYS,
   ...LEARNING_MODE_SHARED_KEYS,
 ];
 

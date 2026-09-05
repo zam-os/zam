@@ -144,6 +144,12 @@ const DE: Messages = {
   study_workload_saved: "Lernplan gespeichert.",
   study_workload_unburied: "{count} Karte(n) sind wieder sichtbar.",
   study_workload_failed: "Lernplan konnte nicht geändert werden: {error}",
+  settings_mode_label: "Umfang der Einstellungen",
+  settings_mode_simple: "Einfach",
+  settings_mode_advanced: "Erweitert",
+  settings_mode_simple_help: "Nur die Einstellungen für den Lernalltag.",
+  settings_mode_advanced_help:
+    "Zusätzlich Geräte-KI, eigene Endpunkte und Verbindungen.",
   learning_mode_heading: "Lernmodus",
   learning_mode_desc:
     "Wähle deinen bevorzugten Lernstil. Du kannst den Modus auch direkt während der Abfrage umschalten.",
@@ -674,6 +680,12 @@ const EN: Messages = {
   study_workload_saved: "Study plan saved.",
   study_workload_unburied: "{count} card(s) are visible again.",
   study_workload_failed: "Could not update the study plan: {error}",
+  settings_mode_label: "Settings level",
+  settings_mode_simple: "Simple",
+  settings_mode_advanced: "Advanced",
+  settings_mode_simple_help: "Only the settings you need for everyday study.",
+  settings_mode_advanced_help:
+    "Also show on-device AI, custom endpoints, and connections.",
   learning_mode_heading: "Learning mode",
   learning_mode_desc:
     "Choose your preferred learning style. You can also switch modes on the fly during review.",
