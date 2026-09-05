@@ -90,6 +90,21 @@ describe("native desktop settings simplicity", () => {
     );
   });
 
+  it("honours the radio-group keyboard contract it advertises", () => {
+    expect(main).toContain(
+      'initRadioGroupKeyboard(document.getElementById("settings-mode-switcher"))',
+    );
+    expect(main).toContain(
+      'initRadioGroupKeyboard(document.getElementById("study-mode-switcher"))',
+    );
+    expect(main).toContain(
+      'syncRadioGroupTabStops(document.getElementById("settings-mode-switcher"))',
+    );
+    expect(main).toContain(
+      'syncRadioGroupTabStops(document.getElementById("study-mode-switcher"))',
+    );
+  });
+
   it("exposes both exclusive choices as described radio groups", () => {
     expect(html).toMatch(
       /id="settings-mode-switcher"[\s\S]*?role="radiogroup"[\s\S]*?aria-describedby="settings-mode-description"/,

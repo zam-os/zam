@@ -41,6 +41,13 @@ describe("mobile settings simplicity", () => {
     expect(main).toContain("void renderLocalAiModels();");
   });
 
+  it("honours the radio-group keyboard contract it advertises", () => {
+    expect(main).toContain("initRadioGroupKeyboard(settingsModeSwitcher)");
+    expect(main).toContain("initRadioGroupKeyboard(reviewModeSwitcher)");
+    expect(main).toContain("syncRadioGroupTabStops(settingsModeSwitcher)");
+    expect(main).toContain("syncRadioGroupTabStops(reviewModeSwitcher)");
+  });
+
   it("exposes settings and review choices as exclusive radio groups", () => {
     expect(html).toMatch(
       /id="mobile-settings-mode-switcher"[\s\S]*?role="radiogroup"[\s\S]*?aria-describedby="mobile-settings-mode-description"/,
