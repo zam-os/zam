@@ -204,6 +204,7 @@ import { SyncError, syncWithRetry } from "./sync.js";
 import { createNav } from "./ui/nav.js";
 import {
   initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./ui/radio-group.js";
 import {
@@ -1383,7 +1384,13 @@ async function saveStudyLearningSettings(): Promise<void> {
 }
 
 async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
-  if (!currentUserId) return;
+  if (
+    !currentUserId ||
+    mode === currentLearningSettings.learningMode ||
+    learningSettingsMutationsPending > 0
+  ) {
+    return;
+  }
   const epoch = ++learningSettingsEpoch;
   const requestedUserId = currentUserId;
   learningSettingsMutationsPending += 1;
@@ -2767,7 +2774,8 @@ function renderCurrentReview(message = ""): void {
     !reviewSession.revealed &&
     !voiceController.active &&
     !fastCheck &&
-    !isFlash
+    !isFlash &&
+    !radioGroupHasPendingFocus(reviewModeSwitcher)
   ) {
     reviewAnswer.focus();
   }

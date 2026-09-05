@@ -125,6 +125,7 @@ import {
 } from "./settings-view-mode.js";
 import {
   initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
 import {
@@ -2506,13 +2507,19 @@ async function switchStudyLearningMode(
     return;
   }
 
+  const keepModeSwitcherFocus = radioGroupHasPendingFocus(
+    document.getElementById("study-mode-switcher"),
+  );
+
   await pauseVoiceMode().catch(() => undefined);
   const saved = await persistStudyLearningSettings({ learningMode: next });
   if (!saved || !activeCard || isFlashLearningMode()) return;
   const textarea = document.getElementById(
     "user-answer-input",
   ) as HTMLTextAreaElement;
-  if (!activeCard.fastCheck && !textarea.disabled) textarea.focus();
+  if (!keepModeSwitcherFocus && !activeCard.fastCheck && !textarea.disabled) {
+    textarea.focus();
+  }
 }
 
 function initStudyLearningControls(): void {

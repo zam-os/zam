@@ -39,14 +39,20 @@ function radioOptions(group: HTMLElement): HTMLButtonElement[] {
 }
 
 /**
- * Where the keyboard was when a group last handled an arrow key.
+ * Whether the keyboard selected a radio whose save cycle may take focus away.
  *
  * Activating a radio can disable the whole group while the choice is saved,
  * and a disabled button hands focus back to the document. Remembering the
- * intent lets {@link syncRadioGroupTabStops} put the learner back once the
- * group accepts focus again.
+ * group lets {@link syncRadioGroupTabStops} put the learner on whichever
+ * option is actually checked once the group accepts focus again. That matters
+ * when a failed save rolls the optimistic choice back.
  */
-const pendingFocus = new WeakMap<HTMLElement, HTMLButtonElement>();
+const pendingFocus = new WeakSet<HTMLElement>();
+
+/** Whether rendering should avoid moving focus away from this radio group. */
+export function radioGroupHasPendingFocus(group: HTMLElement | null): boolean {
+  return group !== null && pendingFocus.has(group);
+}
 
 /**
  * Give the checked radio the group's single tab stop, and restore focus that
@@ -66,11 +72,16 @@ export function syncRadioGroupTabStops(group: HTMLElement | null): void {
     radio.tabIndex = radio === checked ? 0 : -1;
   }
 
-  const wanted = pendingFocus.get(group);
-  if (!wanted || wanted.disabled) return;
+  if (!pendingFocus.has(group) || checked.disabled) return;
   pendingFocus.delete(group);
   const active = document.activeElement;
-  if (!active || active === document.body) wanted.focus();
+  if (
+    !active ||
+    active === document.body ||
+    radios.includes(active as HTMLButtonElement)
+  ) {
+    checked.focus();
+  }
 }
 
 /** Wire the arrow-key contract onto one `role="radiogroup"` element. */
@@ -81,14 +92,14 @@ export function initRadioGroupKeyboard(group: HTMLElement | null): void {
     // A disabled radio cannot be focused, so it is not a step the learner can
     // land on either.
     const radios = radioOptions(group).filter((radio) => !radio.disabled);
-    const next = nextRadioIndex(
-      event.key,
-      radios.indexOf(document.activeElement as HTMLButtonElement),
-      radios.length,
-    );
+    const current = radios.indexOf(document.activeElement as HTMLButtonElement);
+    const next = nextRadioIndex(event.key, current, radios.length);
     if (next === null) return;
     event.preventDefault();
-    pendingFocus.set(group, radios[next]);
+    // Home on the first item and End on the last item are handled keys, but
+    // they do not change selection and must not trigger another database save.
+    if (next === current) return;
+    pendingFocus.add(group);
     radios[next].focus();
     radios[next].click();
   });

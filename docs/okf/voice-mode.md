@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-09-05T05:21:18.628Z
+timestamp: 2026-09-05T06:22:42.426Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -76,10 +76,11 @@ controls are unavailable only while no card is present or a load, reveal, save,
 edit, or review action is in flight; completing that transition recomputes the
 state and enables them again. Both switchers are radio groups in behaviour and
 not only in name: the group carries one tab stop, the arrow keys move and select
-within it, and focus returns to the chosen option after the save that briefly
-disables it. Announcing the role without honouring its keys would leave a
-keyboard or screen-reader user worse off than the plain toggle buttons these
-replaced.
+within it, and focus stays with the committed option after the save that briefly
+disables it. A failed save restores both selection and focus to the still-checked
+option, and keyboard navigation never hands focus to the answer field.
+Announcing the role without honouring its keys would leave a keyboard or
+screen-reader user worse off than the plain toggle buttons these replaced.
 
 Both native Settings surfaces default to a machine-local **Simple** view. It
 keeps learning mode, the workload preset, the ordinary cloud-AI connection,

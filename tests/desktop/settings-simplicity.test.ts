@@ -103,6 +103,7 @@ describe("native desktop settings simplicity", () => {
     expect(main).toContain(
       'syncRadioGroupTabStops(document.getElementById("study-mode-switcher"))',
     );
+    expect(main).toContain("keepModeSwitcherFocus");
   });
 
   it("exposes both exclusive choices as described radio groups", () => {

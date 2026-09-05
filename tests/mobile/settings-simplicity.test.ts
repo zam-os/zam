@@ -46,6 +46,8 @@ describe("mobile settings simplicity", () => {
     expect(main).toContain("initRadioGroupKeyboard(reviewModeSwitcher)");
     expect(main).toContain("syncRadioGroupTabStops(settingsModeSwitcher)");
     expect(main).toContain("syncRadioGroupTabStops(reviewModeSwitcher)");
+    expect(main).toContain("!radioGroupHasPendingFocus(reviewModeSwitcher)");
+    expect(main).toContain("mode === currentLearningSettings.learningMode");
   });
 
   it("exposes settings and review choices as exclusive radio groups", () => {
