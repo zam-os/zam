@@ -1,12 +1,16 @@
 # Kognitionswissenschaftliche Grundlagen und Richtlinien zur Generierung und Dekomposition von Lerninhalten in ZAM
 
-**Status:** RFC / Revisionsstand Runde 2b (Fable 5.1 nach Grok `b93a8b2`; externe Inputs DeepSeek v4 Pro, Kimi K3, Qwen3.8-Max, GLM-5.3 eingearbeitet, Markierung **E**)  
-**Nächste Stimme:** GPT-6 Astra (Runde 2), danach Konsolidierung in Runde 3. Kein Implementierungs-PR, solange die offenen Dissense in §7.2 nicht geschlossen oder bewusst stehen gelassen sind.  
+**Status:** RFC / Revisionsstand Runde 2b (**A2:** GPT-6 Astra nach Fable `4258b56`, einschließlich externer Inputs **E** und Owner-Entscheidungen; Grok `b93a8b2`, Fable **F2** `21bdd85`)
+
+**Nächster Schritt (A2):** Abschließende Konsolidierung in Runde 3. Die Stimmen zu O1–O7 stehen in §7.2; die vorgeschlagenen Ersatzfassungen sind noch zusammenzuführen. Kein Implementierungs-PR, solange Dissense nicht geschlossen oder bewusst stehen gelassen sind.
+
 **Datum:** 2026-09-05  
 **Autoren:** ZAM Working Group  
 **Zweck:** Fundierung, Kriterienkatalog und einheitliche Qualitätsregeln zur Ablösung monolithischer „Erkläre Konzept X“-Karten. Gilt für Schüler-Lernpfade (z. B. Realschule Bayern Klasse 9) und für professionelles Entwicklerwissen (OKF-Import).
 
 Diese Fassung ist **kein Konsensdokument**. Sie übernimmt die Gemini-Synthese dort, wo Grok, Fable und Astra übereinstimmten; sie korrigiert Überglättungen, Zitatfehler und Schema-Fiktionen; sie markiert den Rest als Dissens. Fable 5.1 hat in Runde 2 abgestimmt (§7.2) und Textstellen korrigiert, die gegen den Code falsch waren (§0.1); Ergänzungen zur Prüfung durch Astra tragen **F2**. Externe Inputs ohne Stimmrecht (DeepSeek v4 Pro, Kimi K3, Qwen3.8-Max, GLM-5.3, PR-Kommentare vom 2026-09-05) sind mit **E** markiert (§0.2); Fables Bewertung dazu steht im PR-Kommentar „Runde 2b“. Stimmrecht für §7.2 haben nur Grok, Fable und Astra.
+
+**A2:** Astras Runde-2-Ergänzungen bewerten F2, E und die Einordnung der Owner-Entscheidungen; die bisherigen Markierungen bleiben als nachvollziehbare Spur stehen. Bei abweichenden Stimmen steht der konkrete Ersatzsatz in §7.2; Runde 3 muss die betroffenen Passagen damit abgleichen, statt die nebeneinander dokumentierten Vorschläge als gemeinsamen Beschluss zu lesen.
 
 ---
 
@@ -40,7 +44,7 @@ Diese Fassung ist **kein Konsensdokument**. Sie übernimmt die Gemini-Synthese d
 
 ### 0.2 Externe Inputs (E) — gegenüber `21bdd85`
 
-Bewertung und Zitatkorrekturen: PR-Kommentar Fable 5.1, Runde 2b. **Achtung:** Kimis Kommentar trägt die Überschrift „GPT-6 Astra — Runde 2“; das sind Kimis Stimmen, nicht Astras. O6 und O7 bleiben offen, bis Astra abstimmt.
+Bewertung und Zitatkorrekturen: PR-Kommentar Fable 5.1, Runde 2b. **Achtung:** Kimis Kommentar trägt die Überschrift „GPT-6 Astra — Runde 2“; das sind Kimis Stimmen, nicht Astras. **A2:** Astras eigene Stimmen stehen jetzt in §7.2; die damaligen Offen-Markierungen dokumentieren den Stand vor A2.
 
 | Bereich | Quelle | Aufgenommen |
 |---|---|---|
@@ -61,6 +65,23 @@ Bewertung und Zitatkorrekturen: PR-Kommentar Fable 5.1, Runde 2b. **Achtung:** K
 ### 0.3 Owner-Input (Thomas), 2026-09-05
 
 Neuer Abschnitt **§4.5 Zwei Evidenzkanäle**: Karten prüfen abrufbare Relationen; Anwendung im Arbeitskontext wird **beobachtet** und ersetzt als unassistierte Handlung die fällige Karte (Fälligkeit verschiebt sich wie nach einem Review). O7 erhält damit ein Prinzip; §8 einen zweiten Primärmaß-Kanal; §7.3 einen Punkt 7. Team-Aufgabenverteilung wird als eigenes ADR-Thema notiert. Markierung **(Owner)**.
+
+---
+
+### 0.4 Astra, Runde 2 — gegenüber `4258b56`
+
+**A2:** RFC an `4258b56`, Fables Runde-2-Kommentar, Groks Runde 2b, Astras Runde 1 sowie die neuen externen Kommentare und Fables Owner-Auswertung gelesen; Code, Agenten-Rubrik, Oberflächen und Fixture in einem unabhängigen Worktree geprüft. Nur dieses Dokument geändert. Die ursprünglich angefragte Nummer 0.2 ist inzwischen durch E belegt; Astras Nachtrag steht deshalb unter 0.4.
+
+| Bereich | A2-Stimme / Ergänzung |
+|---|---|
+| O1–O3 | Semantischer Hinweis-Schutz und Stufe 0; kein Trivia-Flag oder Nutzlosigkeitsbeweis durch Easy; Gesamtprüfung neben gezielten Teilübungen, keine pauschale Atomzuordnung durch Listenmitgliedschaft. |
+| §6.1, O4/O5 | Flächenaussage und Beschriftungsvariante als P-Items bestätigt; Beweis wäre eigenes Zielkönnen. Geerbte H-Kante kann P3 blockieren; Again hebt H-Burial heute nicht automatisch auf. |
+| O6 | Fable in der Reihenfolge folgen: überprüfbare Atom-Sibling-Trennung vor automatisiertem Produktpilot, globale Queue-Reihenfolge danach. Manuell kontrollierter Pilot bleibt möglich. |
+| O7 / §7.1.4 | Default „assistierter Erstlauf → höchstens 2“ abgelehnt. Ohne eigenständigen Abruf kein FSRS-Rating; nach gescheitertem Abruf mit Hilfe 1. Feedback nach abgeschlossenem Abruf bleibt ohne Rückwirkung. |
+| §4.5 Owner / E | Beobachtete eigenständige Anwendung darf die passende fällige Abfrage ersetzen. Keine automatische Transfer-Evidenz, kein Umdeklarieren assistierter Nutzerarbeit als Agentenarbeit, persönliche Karte und sichtbare Frage unterscheiden. |
+| §7.3 / §8 | Voraussetzungsliste präzisiert; vorhandene Messwerte von zusätzlichem Pilotprotokoll getrennt. Keine rückwirkende Messung fehlender Antwort-/Hinweis-/Reveal-Ereignisse. |
+
+**A2 — Reifeurteil:** Ja, bereit für die abschließende Konsolidierung in Runde 3; keine Implementierungsfreigabe für den noch nicht zusammengeführten Text. §7.1 wird grundsätzlich getragen, mit Widerspruch zur bisherigen Rating-Abgrenzung in Punkt 4. Die verbleibende Textarbeit ist unter §7.3 benannt; dazu gehören jetzt auch die Grenzen der E-Inferenzen und der Owner-Auslegung in §4.5/§8.
 
 ---
 
@@ -129,6 +150,8 @@ Evidenz (Empirische Studien)
 * **Falsifikation:** offene Cues liefern gleiche Retention und weniger Abbruch als getriggerte Karten.
 
 ### 2.3 Unstrukturierte Mengen (Anti-Enumeration)
+
+**A2 — Evidenzgrenzen für die Konsolidierung von §2.2/§2.3:** „Format folgt Zielkönnen“ annehmen; „binary_choice übt bei schriftlicher Zielform das Falsche“ ist zu absolut. Kompetitive Auswahlaufgaben können späteren freien Abruf fördern (Little et al. 2012, §1.1); allein belegen sie aber keine Produktionskompetenz. [Kornell & Bjork (2008)](https://doi.org/10.1111/j.1467-9280.2008.02127.x) vergleichen geblockte und verschachtelte Gemälde verschiedener Künstler beim Kategorienlernen, nicht Slot-Abruf mit vollständigen Enumerationen. Ersatz für die nachfolgende Schlussfolgerung: „Die Studie stützt verteiltes bzw. verschachteltes Exemplarlernen; Slot-Items neben Gesamtitems sind eine ZAM-Entscheidung nach O3, kein daraus bewiesenes Gesetz.“ Element-Interaktivität hilft beim Zuschnitt, ist vorwissensabhängig und ersetzt nicht die Definition des Zielkönnens in §7.1.1.
 
 * **Evidenz:**
   * Wozniak (1999, Regeln 9–11): Sets vermeiden; Enumerationen sind besser als Sets, aber immer noch teuer — Cloze (überlappend) statt „nenne die Liste“. Sets $\gt 5$ sind ohne Mnemotechnik praktisch unlernbar; das ist eine Warnung, keine Freigabe für 4er-Listen.
@@ -199,6 +222,10 @@ Vor dem Rating höchstens **ein** zusätzlicher Turn: eine sprachliche Klärfrag
 
 **Feedback-Ebene und Fehlerkultur (E).** Der Grader gibt Feedback auf **Aufgabenebene**, kein Lob auf Personenebene: Personen-Feedback senkt im Mittel die Leistung (Kluger & DeNisi 1996; Hattie & Timperley 2007). Der heutige Prompt („Celebrate every honest attempt! Offer high praise“) verstößt dagegen (§7.3.1). „Erfolge feiern“ heißt: ehrlicher Versuch plus gutes Again-Reveal, nicht leichte Karten — Mühe ist kein Beleg für schlechtes Lernen (Bjork & Bjork 1992; Karpicke, Butler & Roediger 2009). Hyperkorrektion (Butterfield & Metcalfe 2001): ein Again auf einen selbstsicher falschen Abruf ist ein Lernereignis, kein Systemfehler; eine §8-Vorhersage dazu bräuchte ein Konfidenzsignal, das ZAM nicht erfasst.
 
+**A2 — Präzisierung zu F2, in Runde 3 einzuarbeiten:** O1 unten ersetzt das Wortverbot durch einen semantischen Schutz und entscheidet zunächst nur Stufe 0. Diese ist eine ausstehende Promptänderung, keine bereits garantierte Produkteigenschaft; Klärereignisse werden heute nicht strukturiert gespeichert (§8). „Einheit ergänzen“ ist Inhaltshilfe, wenn die richtige Einheit ein fehlender Pflichtaspekt ist. Die Einigung in der Matrix betrifft die Korrektur sprachlicher False Negatives, nicht alle F2-Beispiele oder einen neuen Modus. Bewertet wird der Abrufversuch vor der Auflösung, nicht alles bis zum Rating-Klick (O7). Zwei Code-Präzisierungen: Neue Karten verwenden `initialStability`/`initialDifficulty` (`fsrs.ts:381–383`); die beiden obigen Stabilitätszweige gelten für bereits eingeführte Karten. Auch `applySessionSynthesis` schreibt Reviews und behandelt Blocking separat (`src/kernel/observation/session-synthesis.ts:318–334`); `executeReviewAction` ist nicht der einzige Kernel-Schreiber.
+
+**A2 — Zum neuen Pretesting-Vorschlag (E):** Als freiwillige spätere Tutor-Option anpassen, nicht als Pflichtturn nach jedem „weiß ich nicht“. Ein bestätigter gescheiterter Abruf bleibt 1; ein technisches leeres Submit ist noch kein solcher Befund. Die Lernwirkung eines zusätzlichen Versuchs rechtfertigt weder eine veränderte Erfolgsdefinition noch einen bereits beschlossenen neuen Modus. Aufgabenbezogenes Feedback annehmen; dessen fachliche Genauigkeit muss unabhängig von aufmunternder Formulierung geprüft werden.
+
 `answer_variation`: eine neue Zahlen-/Wortwahl **derselben** Relation, weiter one-shot. Der heutige Prompt (`client.ts`, Variation) sagt „different wording or from a different angle“ — für MINT muss er heißen: gleiche Relation, neue Zahlen aus einer kopfrechenbaren Menge.
 
 ---
@@ -263,6 +290,15 @@ Mehrschrittige Hausaufgaben / Interleaving-Sätze leben **nicht** in der täglic
 6. **Team-Aufgabenverteilung: eigenes ADR im Rahmen der Team Library, nicht Teil dieses RFC.** Die Bausteine sind vorhanden: Aufgaben lassen sich semantisch auf Atome abbilden (`relevant-tokens`, Embeddings); der Graph kennt „anbietbar, weil harte Fundamente gehalten“ und „lohnend, weil es Späteres erleichtert“ (ADR 2026-08-14 Decision 6); Zuweisungen existieren (`assignments`). „Größtes Lernpotential ohne Überforderung“ heißt in Graphsprache: viele fällige oder neue Atome auf der Aufgabe bei gehaltenen harten Vorbedingungen — die Zone der nächsten Entwicklung, mit Scaffolding (Wood, Bruner & Ross 1976) statt Überforderung. Vor jeder Technik stehen Betriebsrat und Datenschutz für Beobachtung am Arbeitsplatz; die Observer-Richtlinie ist Voraussetzung, kein Ersatz.
 7. **Ohne reale Aufgabe: künstliche Aufgaben (Owner-Ergänzung).** Künstlich angelegte Lernthemen — eine Lehrplan-Zelle, ein privates Interesse, ein Thema, das im Team nie vorkommt — werden in realen Aufgaben vielleicht nie beobachtet. Wer sie trotzdem meistern will, braucht **konstruierte Aufgaben**: Karten für die Relationen, `practice_set` (§4.4) für Anwendung und Transfer, dessen gefadete Endstufe die untrainierte Zielaufgabe ist. Der Beobachtungskanal ersetzt die Karte also nur dort, wo Arbeit das Konzept tatsächlich berührt; sonst gilt der Kartenkanal mit Übungssession als Rückfall. Für die Realschülerin ist die Schulaufgabe die einzige „echte“ Aufgabe; dazwischen trägt das `practice_set`.
 
+**A2 — Rückmeldung zur Owner-Entscheidung:** Die Richtung annehmen: Eine beobachtete, selbständig gewählte und ausgeführte Anwendung darf eine passende fällige Abfrage ersetzen; fehlende Arbeitsgelegenheiten brauchen konstruierte Aufgaben, Team-Zuteilung bleibt ein eigenes ADR. Das erfordert keine vorgeschaltete Karte für jedes Zielkönnen. Fachliche Einwände betreffen die folgenden Folgerungen in der Einordnung, nicht diese drei Owner-Entscheidungen:
+
+1. **Passung und Urheberschaft vor Rating:** Erfolgreicher Terminal-Output allein zeigt weder, wer die Lösung gewählt hat, noch welche Entscheidung beherrscht wird. Vorab festlegen, welche beobachtbare Leistung das vollständige Kriterium des konkreten Items erfüllt und welche Hilfsmittel dabei zulässig sind. Werkzeuggebrauch kann selbst das Zielkönnen sein; er ist dann nicht pauschal unerlaubte Hilfe. Ein Arbeitsvorgang berechtigt nicht automatisch zu Erfolg auf allen thematisch berührten Teilkarten. Keine zweite Buchung desselben Ereignisses bei späterer Session-Synthese. Die Übertragung der FSRS-Kalibrierung auf diesen Evidenzkanal bleibt eine zu prüfende Produktannahme; reguläre Ratings heißen nicht automatisch 4.
+2. **Handelnder ist nicht Hilfestatus:** Assistierte Nutzerarbeit bleibt `doneBy: "user"`; `doneBy: "agent"` ist für vom Agenten ausgeführte Schritte. Der record-only-Zweig von `zam_submit_review` ist daher kein korrekter Umweg für assistierte Nutzerarbeit (O7). Auch `symbiosis_mode` ist ein gemeinsames Token-Attribut (`schema.ts:39`), kein Nachweis darüber, wer in einem konkreten Versuch welche Hilfe erhielt. Ereignisbezogene Evidenz und Bestätigung bleiben nötig; das Feld kann eine Vorgabe tragen, aber keinen Versuch belegen.
+3. **Ohne Frage-UI, mit persönlicher Karte:** Ersatz für Punkt 5: „Ein Handlungsziel braucht keine sichtbare Fragekarte, aber für FSRS-Fälligkeit weiterhin einen persönlichen `card`-Datensatz und ein bewertbares Item-Kriterium.“ Ausschluss aus Flash und eine eigene Beobachtungsfälligkeit sind gewünschte Produktrouten, keine heutige Garantie. Bei fehlender Gelegenheit muss die Ersatzaufgabe dasselbe Zielkönnen prüfen; eine verbale Erklärung ersetzt den Nachweis einer Handlung nicht automatisch.
+4. **Produktreview und Pilot-Endpunkt unterscheiden:** Reale Arbeit kann Routine, zuvor geübt oder durch den Agenten vorbereitet sein. Als untrainierter Pilot-Endpunkt zählt sie nur mit zuvor festgelegtem Ziel, unabhängiger Aufgabeninstanz, Hilferegel, Zeitabstand und Rubrik; außerdem müssen geeignete Gelegenheiten und Misserfolge erfasst werden, nicht nur erfolgreiche Beispiele. Ersatz für §4.4/Punkt 7: „Fading endet mit selbständigem Üben; der Pilot testet anschließend an gesonderten, nicht im Fading verwendeten Aufgaben.“ Eine passende Beobachtung darf nach der unabhängigen Bewertung ihren normalen Review ersetzen, ohne zusätzlich die Teilkarten zu bewerten; ein wiederholtes Training derselben Testaufgabe ist kein neuer untrainierter Endpunkt (§8).
+
+**A2 — Weitere Grenze zu §4.4 (E):** Interleaving ist eine begründete Übungsgestaltung, kein aus Murayama et al. (2014) abgeleitetes pauschales Gegenmittel gegen RIF zwischen beliebigen Atom-Items. Weder die exakte Ein-Item-pro-Tag-Regel noch das Ausbleiben von Interferenz ist damit empirisch beschlossen (O6).
+
 ---
 
 ## 5. Die 6 Kriterien der ZAM-Karten-Verfassung
@@ -320,6 +356,16 @@ Zusätzlich, **nicht** in der FSRS-Morning-Queue: ein `practice_set` (Vorschlag)
 
 **Atom-Sibling-Bury (O6, F2).** Items desselben Atoms nicht am selben Tag vorlegen — sonst verrät P1 die Struktur von P3 (Cue-Leakage), und der Pilot (§8) misst diesen Effekt statt Dekomposition. `burySiblingCards` kennt heute nur `imported_card_bindings.note_guid`; die Erweiterung um `tokens.atom_id` hängt an den vorhandenen Schaltern `buryNewSiblings` / `buryReviewSiblings` und ändert keinen FSRS-Zustand. Fable: Voraussetzung des Piloten; Grok: erst nach §8 — offener Dissens (§7.2 O6).
 
+**A2 — Prüfung des F2-Redraws:** Für die tatsächlich formulierten Fragen trägt §7.1.1 die Zuordnung. P heißt präziser **„Pythagoreische Relation darstellen“**: P1 symbolisch, P2 als Flächengleichheit, P3 mit anderer Beschriftung. P2 verlangt keinen Beweis und braucht deshalb kein eigenes Atom. Eigenständig eine Flächenzerlegung zu finden oder zu begründen wäre ein anderes Zielkönnen; dessen Kanten wären fachlich zu begründen, nicht automatisch soft. Ein Erfolg auf P1 beweist weiterhin keine Beherrschung von P2/P3; FSRS bleibt pro persönlicher Karte.
+
+**A2 — Zum E-Kontrastitem:** „Pythagoras oder Sinus?“ ist nicht allein wegen der Kontrastform ein Sibling des Formel-Atoms. Ist die Auswahl zwischen Methoden das Zielkönnen, greift §7.1.1 mit einem eigenen Atom bzw. einer Aufgabe aus dem `practice_set`. Ein Bild für P2 darf die zu erinnernde Flächenrelation nicht schon verraten; Darstellungswechsel allein ist kein Lernwirksamkeitsbeleg.
+
+**A2 — Drei Nacharbeiten am Beispiel:**
+
+1. **H und Blocking:** H als fachliche Zuordnung des rechten Winkels zur gegenüberliegenden Seite verstehen, nicht als Besitz einer deutschen Vokabel. P → H ist im so definierten Zielkönnen hard, über Decision 2 vertagbar. `reconcileDerivedEdges` projiziert diese Kante auf jedes P-Item (`kvt-attach.ts:365–385`). Ein Again auf P3 kann P3 blockieren, versetzt P1 aber nicht in Relearning. `cascadeBlock` lässt die `buried_until` bestehender Voraussetzungen unverändert (`blocker.ts:57–87`; `ensureCard`, `models/card.ts:112–121`). Vorzeitiges Aufheben einer H-Vertagung nach Again ist somit Sollverhalten, keine heutige Garantie (O5).
+2. **U1 vervollständigen:** Ersatz für das `concept`: „Bei längster Seite $r$ ist das Dreieck genau dann rechtwinklig, wenn $p^2 + q^2 = r^2$.“ Quadrieren und Vergleichen allein nennt das entscheidende Ergebnis noch nicht. U bleibt ein eigenes Atom; auch der aktuelle Lehrplan nennt die Umkehrung als eigenen Kompetenzpunkt neben Anwendungen des Satzes ([Realschule 9 I](https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1), [II/III](https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg2-3)).
+3. **Fixture-Mapping als geplanten Umbau kennzeichnen:** Neue Abrufitems für J01/J02, alte Belege erhalten, keine Mastery-Verteilung und kein `replaces` für diesen Split bzw. Formatwechsel. Auch die von F2 nicht genannte Kante **A03 → A01** prüfen: Ihre Rationale nennt ausdrücklich Kathete/Hypotenuse (Fixture `:173–177`). Nach Herauslösen von H darf sie nicht ungeprüft an P hängen bleiben. Kein Fixture-Umbau in diesem RFC-PR.
+
 ### 6.2 OKF-Import: Prerequisite-Blocking
 
 Unverändert gegenüber Fables Hygiene-Commit `92438f0`: synthetischer Vorher-Monolith aus `docs/okf/prerequisite-blocking.md`, sechs Nachher-Tokens mit `source_link`-Ankern. Kein Produktiv-Token aus einer Arbeitsumgebung.
@@ -333,13 +379,13 @@ Unverändert gegenüber Fables Hygiene-Commit `92438f0`: synthetischer Vorher-Mo
 1. **Zielkönnen vs. Darstellung.** Gleiches Zielkönnen, andere Darstellung → weiteres PracticeItem. Anderes Zielkönnen → anderes LearningAtom. „Zwei Aufgaben können unabhängig scheitern“ erzwingt allein keinen Atom-Split (Sprache, Richtung, Cloze vs. Q/A unterscheiden sich in der Schwierigkeit; FSRS bleibt pro Karte). Tie-Breaker für „anderes Zielkönnen“: 7.1.2 plus die Kompetenzformulierung der Zelle — nicht „kann unabhängig scheitern“. Konsequenz für §6.1: Flächenbedeutung und Katheten-Falle sind Items des Formel-Atoms (F2). Das lernwissenschaftliche Pendant zum LearningAtom sind *Knowledge Components* im KLI-Framework (Koedinger, Corbett & Perfetti 2012): die Granularität, die Instruktion und Assessment verbindet (E).
 2. **Diagnostische Relation** als Autorenheuristik, nicht als mechanische Identitätsregel.
 3. **Kein Hard-Delete.** `replaces` nur 1:1; Split = Decision 9, keine Mastery; Feeder statt Big-Bang.
-4. **Hard ist Erfolg** — im Gedächtniszustand auf allen Pfaden (`reps + 1`, keine Lapse, S sinkt nicht); in Lern-/Wiederlernschritten wiederholt Hard den Schritt statt zu graduieren. Inhaltliche Hilfe vor dem Rating → 1 — **für Recall-Reviews**; Beobachtungs-Ratings im Arbeitskontext sind offen (O7). Flash: null Tutor-Turns. Sokratik nach Reveal. Kurzform (Kimi, E): Im FSRS-Zustand ist 2 ein Erfolgspfad; am Bestehenskriterium ist 2 ein ungestützt korrekter, mühsamer Abruf — kein Teilpunkt.
+4. **Hard ist Erfolg** — im Gedächtniszustand auf allen Pfaden (`reps + 1`, keine Lapse, S sinkt nicht); in konfigurierten Lern-/Wiederlernschritten hält Hard die Stufe statt zu graduieren. **A2:** Bewertet wird der eigenständige Versuch am vorab definierten Item-Kriterium vor der Auflösung, auch bei beobachteter Arbeit (§4.5). Scheitert dieser Versuch und gelingt die Leistung erst mit Inhaltshilfe, gilt 1. Ein assistierter Erstlauf ohne eigenständigen Versuch erhält kein FSRS-Rating, sondern Lern-/Beobachtungsevidenz (O7). Nachfolgendes Feedback oder Reveal ändert einen abgeschlossenen korrekten Versuch nicht rückwirkend. Flash: null Tutor-Turns. Sokratik nach Reveal. Kurzform (Kimi, E): Im FSRS-Zustand ist 2 ein Erfolgspfad; am Bestehenskriterium ist 2 ein ungestützt korrekter, mühsamer Abruf — kein Teilpunkt.
 5. **Ein Qualitätsvertrag, mehrere Pfade.** Zellen zuerst; Anki ohne stillen Rewrite; Capture ≠ Publish.
 6. **Verfassung am Publish-Gate**, Kernel ohne LLM-Richter. Voraussetzung: ein Capture-Pfad, der `draft` schreibt — heute keiner (§7.3).
 7. **5–15 s** = Flash-Designziel, kein Naturgesetz. Die Obergrenze ist **formatabhängig** — mentaler Bildabruf ist schnell, eine schriftliche Mini-Herleitung nicht — und wird pro Item-Format definiert, nicht global (TAP; E).
 8. **Konzeptkarte vs. Übung.** Mikrobeispiel mit kopfrechenbaren Zahlen darf in FSRS liegen; Mehrschritt und untrainierter Transfer nicht als `evaluateRating()` auf der Konzeptkarte.
 
-### 7.2 Offen — Fable 5.1 hat abgestimmt (Runde 2); bitte GPT-6 Astra explizit entscheiden
+### 7.2 Stimmen zu O1–O7 — Fable und Astra, Runde 2; Ersatzfassungen für Runde 3 (A2)
 
 **O1. Sprachliche Klärfrage und Rating.**  
 Grok/Astra: eine Disambiguierung darf ein False Negative nach oben korrigieren. Fable: Rating nach Rückfrage nie steigern. Wenn Fable bei „nie steigen“ bleibt, ist der Tutor strenger und erzeugt mehr Again auf Tippfehlern.
@@ -347,26 +393,48 @@ Grok/Astra: eine Disambiguierung darf ein False Negative nach oben korrigieren. 
 **Fable (Runde 2): annehmen, mit Schutzklausel.** Ein Tippfehler-Again ist kein kürzeres Intervall, sondern `reps = 0`, Lapse +1, ggf. Relearning und aufgehobene Vorbedingung für Dependents — Messfehler, kein Lernbefund. Bedingung: Die Klärfrage nennt keinen Kandidaten aus `concept`; Stufe 0 = Tippfehler-Toleranz im Grader (§3.2). „Nie steigen“ zurückgezogen.
 *E (Kimi):* False-Negative-Quote **pro Grader-/Prompt-Version** auswerten, sonst ist nach einer Prompt-Änderung nicht unterscheidbar, ob die Klärquote steigt, weil der Grader ungenauer wurde (→ §7.3.5).
 
+**A2 — Astra (Runde 2): anpassen.** Die False-Negative-Korrektur und Stufe 0 annehmen. „Kein Wort aus `concept`“ verhindert keine sinngleichen Lösungshinweise; Wortüberlappung allein beweist umgekehrt keine Hilfe. Eine fehlende Einheit nachzufordern kann einen Pflichtaspekt verraten. Ein zusätzlicher Studienmodus ist für Stufe 0 unnötig; eine interaktive Klärphase ist eine spätere UX-Entscheidung.
+
+> **A2 — Ersatz:** Der Grader akzeptiert eindeutige Tipp-/Transkriptionsfehler, Kurzformen und äquivalente Paraphrasen, soweit die ursprüngliche Eingabe im Kontext der Frage bereits den vollständigen Pflichtinhalt ausdrückt; er ergänzt keine Fakten, Einheiten oder Rechenschritte. `answer_feedback` bleibt one-shot. Eine spätere, höchstens einmalige Klärfrage vor Reveal darf ausschließlich die Bedeutung der eigenen Eingabe präzisieren, ohne Lösungskandidaten, fehlenden Pflichtaspekt oder Lösungsweg vorzugeben. Nur solche Disambiguierung darf ein False Negative heben; inhaltlich vervollständigter Abruf bleibt Again. Ein neuer Studienmodus wird damit nicht beschlossen.
+
 **O2. Trivia-Operationalisierung.**  
 Grok: Glyph-Karten regelmäßig unzulässig; Easy-Serie ist sitzendes Fundament, kein Auto-Flag. Fable wollte ein Kernel-Flag (Easy-Serie + S über Horizont). Astra: Relevanz braucht ein Kriterium *außerhalb* der Karte. Brauchen wir ein Flag, ein Autorenverbot, beides nicht, oder nur den diagnostischen Test?
 
 **Fable (Runde 2): ablehnen (Grok folgen).** Kein Kernel-Flag. Trivia entscheidet der diagnostische Test (7.1.2). Als Autoren-Report in §8, nicht als Regel: Erstkontakt-Easy-Quote eines Items über die Lernenden einer Zelle — „trug für diese Kohorte keine Information“, nicht „Fundament wertlos“.
 *E (DeepSeek, Kimi, GLM):* Zusätzlich zur Erstkontakt-Easy-Quote die **Item-Trennschärfe** (punkt-biseriale Korrelation Item-Erfolg × Zellen-Erfolg): hohe Easy-Quote *und* Trennschärfe ≈ 0 = informationsloses Item; hohe Easy-Quote *und* positive Trennschärfe = sitzendes Fundament. Nur mit Kohorte berechenbar — Team-Library-Kennzahl, kein Pilot-Instrument. Frisch gesplittete Items sind wegen Savings erwartbar Easy und werden ausgenommen.
 
+**A2 — Astra (Runde 2): anpassen; die Entscheidung gegen das Kernel-Flag annehmen.** Eine Easy-Quote kann auf Vorwissen, starke Cues oder geringe Schwierigkeit hinweisen. Sie beweist weder fehlenden Lernwert noch fehlenden zusätzlichen Nutzen. `state = 'new'` bedeutet nicht „noch nie gelernt“; der Ausgangszustand ist zudem kein Feld des heutigen Review-Logs.
+
+**A2 — Zum E-Zusatz:** Bei einem Deckeneffekt fehlt Varianz; eine punkt-biseriale Korrelation ist dann unzuverlässig oder bei konstantem Erfolg undefiniert. „Hohe Easy-Quote plus r ≈ 0 ⇒ informationslos“ ablehnen; ebenso beweist positive Korrelation keine Fundamentrolle. Explorativ sind ein externer Zielscore, Unsicherheit und genug Streuung nötig; ein Zellen-Score, der das Item selbst enthält, erzeugt zudem eine Teil-Ganzes-Korrelation. Savings ist plausibel, garantiert aber kein Easy beim Split eines zuvor unvollständig beherrschten Monolithen. Frisch gesplittete Items deshalb separat berichten und ihr Vorwissen dokumentieren, nicht nach erwarteter Leichtigkeit aus der Diagnose streichen (§4.2/§8).
+
+> **A2 — Ersatz:** Kein Kernel-Trivia-Flag. Relevanz wird am Lernziel und an der Zielgruppe begründet. Die Erstkontakt-Easy-Quote ist nur ein Autorenhinweis auf mögliche fehlende Passung zur Kohorte. Ihr Nenner sind dokumentierte Erstkontakte mit bekanntem Aufgabenformat, Hilfestatus und Karten-Ausgangszustand; eine hohe Quote belegt keine Nutzlosigkeit des Items.
+
 **O3. Geschlossene kleine Mengen.**  
 Keine Cowan-4. Bleibt irgendeine geschlossene Menge als *eine* Aufgabe zulässig (drei Aggregatzustände, vier Kongruenzsätze), oder immer Cloze/1:1? Astra: Sequenzbeherrschung ≠ gelöste Lücken.
 
 **Fable (Runde 2): annehmen, Cowan-4 zurückgezogen.** Operationalisierung in Regel 3: Mengen-Item nur, wenn das Prüfformat die Menge als Ganzes verlangt **und** die Slot-Items daneben existieren (Prüfform vs. Lernform).
+
+**A2 — Astra (Runde 2): anpassen.** Gesamtprüfung neben gezielten Teilübungen für den Piloten annehmen. Slot-Erfolg beweist keine Gesamtbeherrschung. Daraus folgt aber keine universelle Pflicht zu Slot-Karten oder deren automatischer Zuordnung zu demselben Atom; auch Gesamt-Abruf ist Lernpraxis. „Prüfform“ ist eine didaktische Rolle, kein neuer technischer Itemtyp.
+
+> **A2 — Ersatz:** Ein Gesamtitem für eine Menge oder Sequenz ist nur zulässig, wenn deren vollständige Rekonstruktion ausdrücklich Zielkönnen ist; Geltungsbereich, Vollständigkeit und gegebenenfalls Reihenfolge stehen im Bestehen-Kriterium. Im Piloten gibt es für sinnvoll zerlegbare Teilanforderungen Slot-/1:1-Items daneben. Das Gesamtitem erhält eine eigene Bewertung; die Atomzuordnung folgt §7.1.1 und nicht allein der gemeinsamen Liste. Kurze Gesamtitems können eigene FSRS-Karten sein; mehrschrittige Gesamtaufgaben fallen unter §4.4 und aktualisieren keine Teilkarten.
 
 **O4. Soft-Kanten für Fallen.**  
 Grok/Astra: nein, Abhängigkeit ist fachlich; Remediation = Decision 4. Fable: sonst wirft jede verfehlte Falle die Formel in Relearning, und Fixtures haben 413 hard / 0 soft. Wenn Soft bleibt, braucht es ein anderes Kriterium als „ist eine Falle“.
 
 **Fable (Runde 2): soft ablehnen — strukturell gelöst.** Die Falle ist Item des Formel-Atoms (§7.1.1); zwischen Items eines Atoms gibt es keine Kante (`reconcileDerivedEdges` leitet Token-Kanten nur aus hard Atom-Kanten zum Repräsentanten ab). Ein Again auf der Falle blockiert nichts; die Frage hard/soft entsteht nicht. Eigenes Fallen-Atom → hard, Remediation = Decision 4 (Grok/Astra).
 
+**A2 — Astra (Runde 2): anpassen.** Die Zuordnung von P3 zu P und die Ablehnung von „Falle ⇒ soft“ annehmen. „Again blockiert nichts“ widerspricht aber dem F2-Beispiel selbst: P3 hat die aus P → H abgeleitete Voraussetzung; `executeReviewAction` blockiert bei Again mit solchen Kanten die verfehlte Karte (`actions.ts:113–128`). Ein eigener Fallen-Atomtyp begründet ebenso wenig automatisch hard.
+
+> **A2 — Ersatz:** Die hier formulierte Katheten-Falle ist ein P-Item ohne Voraussetzungskante zum Formel-Sibling P1. Fachlich notwendige Voraussetzungen von P gelten weiterhin für P3; ein Again kann P3 wegen H blockieren, versetzt aber P1 nicht in Relearning. Andere Fallen werden nach ihrem Zielkönnen modelliert; hard/soft folgt der tatsächlichen fachlichen Abhängigkeit, diagnostische Triage bleibt Decision 4.
+
 **O5. Token 1 (Hypotenuse) im Pythagoras-DAG.**  
 Grok: optional, kein hard-Root. Fable: Cue-Form = Zielform, Granularität lernerabhängig. Soll Token 1 in der Zelle bleiben (Erstkontakt) oder nur angeboten werden (Decision 6, Bonus)?
 
 **Fable (Runde 2): anpassen.** „Optional“ ja, „keine hard-Kante“ nein: Ohne den Begriff ist die Katheten-Falle nicht lösbar (Regel 5). Optional wird über Decision 2 realisiert — Vorbedingung, per Selbsteinschätzung vertagbar (`precondition`-Burial, endliche Frist) — nicht über Decision 6 (Bonus gilt für Atome außerhalb der Zelle; J01 liegt drin).
+
+**A2 — Astra (Runde 2): anpassen.** Decision 2 und das fachliche Fundament annehmen; H als Seitenzuordnung statt bloße Vokabel definieren (§6.1). Die in F2 angekündigte automatische Queue-Rückkehr nach Again ist gegen den Code nicht zugesichert: Bestehende H-Karten behalten ihre Burial. Decision 6 ist für dieses innerhalb der Zelle benötigte Fundament die falsche Begründung.
+
+> **A2 — Ersatz:** H ist fachliches hard-Fundament von P, aber keine Zugangssperre. Decision 2 erlaubt die endliche Vertagung ohne Mastery-Buchung; Fristablauf und ausdrücklich gewähltes Vorziehen ermöglichen den echten Abruf. Soll ein Again auf P eine laufende H-Vertagung vorzeitig aufheben, ist dies als ausstehende Implementierungsvoraussetzung zu kennzeichnen. Optional heißt vertagbar, nicht kantenlos.
 
 **O6. Pilot vor Implementierung der Queue- und Sibling-Änderungen.**  
 Queue-Bloom-Monotonie und Atom-Sibling-Bury sind Kernel-Änderungen. RFC darf sie fordern; sie sollten nicht still mit der Verfassung mitwandern, bevor §8 steht.
@@ -374,10 +442,24 @@ Queue-Bloom-Monotonie und Atom-Sibling-Bury sind Kernel-Änderungen. RFC darf si
 **Fable (Runde 2): anpassen — verbleibender Dissens.** Queue-Reihenfolge: nach dem Piloten (Grok). Atom-Sibling-Bury: **vor** dem Piloten als Confound-Kontrolle, sonst misst §8 Cue-Leakage statt Dekomposition; Burial ändert keinen FSRS-Zustand, Schalter existieren. Der Pilot begrenzt Sessions über den Domain-/Kontextfilter der Queue. Astra entscheidet; folgt Astra Grok, muss §8 den Confound anders kontrollieren (höchstens ein Item pro Atom und Tag im Pilot-Protokoll).
 *E (GLM, DeepSeek, Qwen):* Interferenz- und RIF-Literatur (§2.3) sowie Spacing ähnlichen Materials (Appleton-Knapp, Bjork & Wickens 2005 — Enkodiervariabilität × Spacing) stützen Sibling-Bury als **Designregel**, nicht nur als Pilot-Hygiene. **Weiter offen — Astra entscheidet.** Kimis Kommentar trägt eine Astra-Überschrift, ist aber Kimis Stimme ohne Stimmrecht.
 
+**A2 — Astra (Runde 2): anpassen, in der Reihenfolge Fable folgen.** Atom-Sibling-Trennung **vor dem automatisierten Produktpiloten**, globale Queue-Reihenfolge danach. Die Queue gruppiert heute ebenfalls nur über `note_guid` (`queue.ts:158–159`); `burySiblingCards` läuft erst nach Rating und nimmt learning/relearning-Siblings aus (`siblings.ts:18–75`). Eine SQL-Erweiterung der Bury-Funktion allein deckt vorab geladene Queues sowie gezeigte/aufgedeckte, aber unbewertete Items nicht ab.
+
+> **A2 — Ersatz:** Vor dem automatisierten Produktpiloten wird nachweislich höchstens ein unterschiedliches Item je Atom, Lernendem und lokalem Lerntag gezeigt; planmäßige Lern-/Wiederlernschritte derselben Karte bleiben möglich. Atom-Sibling-Bury, Queue-Auswahl und laufende Sessions müssen diese Regel gemeinsam erfüllen; Abweichungen werden protokolliert. Vorhandene Burial-Felder und Schalter sind nutzbar, FSRS-Zustände bleiben unverändert. Ein betreuter Pilot darf diese Kontrolle ohne Produktänderung manuell durchführen. Die globale Reihenfolge neuer Karten bleibt zunächst unverändert.
+
+**A2 — Aussagegrenze:** Die Regel beseitigt nicht alle thematischen Hinweise, etwa von P auf U. Der Pilot misst Dekomposition **unter der festgelegten Darbietungspolitik**, nicht isolierte Effekte jeder Einzelmaßnahme. „Sonst nur Cue-Leakage statt Dekomposition“ wäre deshalb zu absolut.
+
 **O7. Beobachtungs-Ratings im Arbeitskontext (neu, Fable).**  
 Die Agenten-Rubrik (`skills/zam/SKILL.md:98`) vergibt für einen *assistierten* Erstlauf eine 3; §7.1.4 sagt „inhaltliche Hilfe → 1“. Auf einer *neuen* Karte entscheidet dieses Rating `initialStability`. Vorschlag als Default: Beobachtungs-Ratings auf neue Karten sind „establishing evidence“ und höchstens 2, nie 3 — oder 7.1.4 klammert Beobachtungs-Ratings ausdrücklich aus. Astra/Thomas entscheiden; nicht in dieser Runde beschließen, nur benennen.
 *E (GLM, Kimi):* Der sauberste Default existiert im Code: `zam_submit_review` mit `doneBy: "agent"` und ohne Rating loggt den Schritt (`recordedOnly: true`) und schreibt kein FSRS — ein Rating wirft dort sogar (`src/cli/bridge-handlers.ts`). Vorschlag: assistierter Erstlauf auf neuer Karte → Evidenz ohne Rating; unassistiert korrekt → 4 wie heute; ist ein Rating gewünscht → höchstens 2. Theorie: beobachtete, assistierte Anwendung belegt keinen unprompteden Abruf (inertes Wissen, Renkl, Mandl & Gruber 1996). **Weiter offen — Astra/Thomas entscheiden.**
 **Owner (Thomas, 2026-09-05):** Beobachtete, unassistierte Anwendung **ersetzt** die fällige Karte (Fälligkeit verschiebt sich wie nach einem Review); assistierte Anwendung wird nur protokolliert (§4.5). Damit ist die Richtung von O7 entschieden; offen bleibt die **Kappung des Erstkontakt-Ratings** auf neuen Karten (≤ 2 oder nur Protokoll) — Astra.
+
+**A2 — Astra (Runde 2): ablehnen — den Default „höchstens 2“; Owner-Prinzip annehmen.** Passende, eigenständige Anwendung ersetzt die fällige Abfrage (§4.5), auch bei neuen Karten nach regulärer Rubrik ohne pauschale Kappung auf 2 oder Automatik auf 4. Assistiertes Lernen allein rechtfertigt kein FSRS-Rating. Auf neuen Karten setzt 2 bereits `initialStability(w[1])` und erhöht `reps` (`fsrs.ts:381–383`, `:473–474`); das ist keine neutrale Expositionsmarkierung. Hard bedeutet erfolgreichen Abruf, auch im [Anki-FSRS-Handbuch](https://docs.ankiweb.net/deck-options.html#a-short-guide). Die Übertragung auf Beobachtungen ist der vorgeschlagene ZAM-Vertrag, kein experimenteller Beleg für eine optimale Erstkontaktbewertung.
+
+> **A2 — Ersatz:** Für jeden FSRS-schreibenden Review wird der eigenständige Versuch am vorab definierten Item-Kriterium vor der Auflösung bewertet, auch bei beobachteter Arbeit und neuen Karten. Eine passende, eigenständige Anwendung ersetzt die fällige Abfrage und wird regulär mit 2/3/4 bewertet, ohne automatische 4. Ein nachweislich gescheiterter eigenständiger Versuch erhält 1; eine anschließend assistierte Ausführung bleibt separate Lernevidenz. Ein bloß assistierter Erstlauf ohne eigenständigen Versuch erhält kein FSRS-Rating. Feedback oder Reveal nach einer abgeschlossenen korrekten Leistung ändert deren Bewertung nicht rückwirkend.
+
+**A2 — Heutiger Weg und Lücke:** Ohne Abrufversuch wäre auch eine automatische 1 erfundene Misserfolgsevidenz. `session_steps.rating` darf NULL sein; `logStep` und `zam session log` können einen Nutzer-Schritt ohne Rating erfassen (`models/session.ts:128–165`, `src/cli/commands/session.ts:436–460`). `zam_submit_review` erlaubt diesen Weg für `doneBy: "user"` heute nicht (`bridge-handlers.ts:498–540`). Die Anbindung gehört zu §7.3; assistierte Nutzerarbeit darf nicht als `doneBy: "agent"` umetikettiert werden.
+
+**A2 — Abgrenzung zum Owner-Satz „assistierte Anwendung nur protokollieren“:** Dem stimme ich für die assistierte Ausführung zu. Ein davor beobachteter, eigenständiger Fehlversuch bleibt jedoch reale Misserfolgsevidenz und darf nicht verschwinden, nur weil danach geholfen wurde. Falls auch dieser Fehlversuch vom Rating ausgenommen werden soll, widerspreche ich: Dann würde der Beobachtungskanal Erfolge buchen und beobachtete Misserfolge auslassen. Diese engere Lesart des Owner-Satzes darf Runde 3 nicht stillschweigend wählen.
 
 ### 7.3 Implementierungsvoraussetzungen (getrennt von der Verfassung; F2)
 
@@ -390,6 +472,10 @@ Keine Verfassungsregeln, sondern Änderungen, ohne die die Regeln Papier bleiben
 5. **Klärungs-Protokoll** (O1, Stufe 1): eine Klärfrage als Modus in `answer_feedback`, protokolliert für §8. Mit Grader-/Prompt-Version; bei „weiß ich nicht“ eine Tipp-Aufforderung vor dem Reveal (Pretesting) (E).
 6. **Zeitereignisse für §8:** gezeigt / erste Antwort / Hinweis oder Reveal / Rating (heute nur `response_time_ms` = gezeigt → Rating). Schema-Wunsch, kein Verfassungsinhalt.
 7. **Beobachtungskanal (§4.5, Owner):** beobachtbares Kriterium für Handlungs-Tokens; Ausschluss aus der Flash-Queue, „zur Beobachtung fällig“ in der Session; Evidenzstärke nach Handelndem (unassistiert → Review, assistiert → Protokoll, Agent → kein Nachweis). Vorschlag, kein Schema-Beschluss.
+
+**A2 — Präzisierungen der Voraussetzungsliste für Runde 3:** Punkt 1/2 gilt auch für „mostly correct“ / „small gap“: Kein fehlender Pflichtinhalt darf als Erfolg gelten. Punkt 2 braucht zusätzlich eine Agenten-/Studio-Anbindung für assistierte Nutzerarbeit ohne FSRS-Rating (O7); das Schema kann solche Session-Schritte bereits speichern. Punkt 3 umfasst einen nutzbaren Publish-Übergang in Studio. Punkt 4 ist vor dem automatisierten Produktpiloten fällig und umfasst Queue-Auswahl und laufende Sessions, nicht nur `burySiblingCards`. Punkt 5 bleibt eine spätere UX-Option, kein jetzt beschlossener zusätzlicher Studienmodus. Punkt 6 benötigt Ereignispersistenz **oder** ein prospektives externes Pilotprotokoll; die Messgrenzen stehen in §8. Punkt 7 braucht den Item-Vertrag, getrennte Erfassung von Handelndem und Hilfe, persönliche Karten sowie eine gegen Doppelbuchung geschützte Review-Anbindung; Kanalrouting und Ausweichaufgaben sind als Soll zu markieren (§4.5). Zusätzlich ist das gewünschte vorzeitige Aufheben einer H-Vertagung nach Again als Lücke sichtbar zu machen (O5).
+
+**A2 — Abschließende Textarbeit:** §3.2 auf O1/O7 abstimmen, Initialisierung und weitere Review-Schreiber korrekt benennen; §5 Regel 3 mit O3 abgleichen; §6.1 gemäß den A2-Nacharbeiten präzisieren; §7.1.4 mit O7 zusammenführen. Bei den neuen Inputs die in A2 benannten Überdehnungen von TAP, Kategorie-Lernen, RIF, Trennschärfe und Sieben-Tage-Grenze korrigieren; Owner-Prinzipien von zusätzlichen Behauptungen zu Urheberschaft, Kartenmodell und Transfer trennen (§4.5). §7.3/§8 brauchen eine gewählte Pilotform mit erfüllbaren Messbedingungen, einschließlich der Behandlung beobachteter Fehlversuche. Die in §9 verlangte Auflösung aller DOIs bleibt offen; A2 ist keine Vollprüfung des erweiterten Literaturverzeichnisses. F2/E/Owner bleiben als Herkunft sichtbar; Runde 3 übernimmt Ersatzfassungen oder markiert verbleibende Abweichungen ausdrücklich. Damit ist die abschließende Konsolidierung reif, die Implementierung selbst weiterhin ein getrenntes Vorhaben.
 
 ---
 
@@ -410,6 +496,30 @@ Kartenstatistiken nach einem Split sind Diagnose, kein Wirksamkeitsbeweis.
 * **Grader-Blindung (E):** Wer die Zielaufgaben bewertet (Mensch oder LLM), kennt die Bedingung nicht (dekomponiert vs. Monolith); Grader-Reliabilität einmalig messen (Mensch vs. LLM auf einer Stichprobe).
 * **Monitoring (E):** Intervallverteilung pro Atom — Sibling-Bury darf Items nicht aus dem Retentionshorizont drücken (RIF-Risiko der Dekomposition, Murayama et al. 2014); Erstkontakt-Easy-Quote unter Ausschluss frisch gesplitteter Items (Savings).
 * **Erwartungsmanagement (E):** Practice Testing und Distributed Practice sind die beiden hoch-utilitären Techniken (Dunlosky et al. 2013); ob der Testeffekt bei komplexem Material kleiner ausfällt, ist umstritten (van Gog & Sweller 2015 gegen Karpicke & Aue 2015) — deshalb Marge vorab, nicht nur Signifikanz.
+
+**A2 — Korrekturen des E-/Owner-Pilotvorschlags vor Beginn:**
+
+* **Design wirklich wählen:** Ein Multiple-Baseline-Design über Themen ist bei N = 1 eine sinnvolle Option, noch kein ausführbares Protokoll. Nötig sind mehrere hinreichend unabhängige Blöcke, wiederholte vergleichbare Messungen vor und nach jedem gestaffelten Wechsel sowie festgelegte Wechselzeitpunkte; bloß drei Endtests nach unterschiedlicher Lernzeit reichen nicht ([WWC-Dokumentation](https://ies.ed.gov/ncee/wwc/Document/229)). Prüfaufgaben dürfen selbst lernen lassen: für Folgemessungen neue, vergleichbare Aufgabeninstanzen verwenden und Übertragung zwischen Themen berücksichtigen. Die Baseline ist Lernen mit dem bisherigen Monolithen, wenn dessen Ersatz geprüft werden soll; kein Training als Baseline würde eine andere Frage beantworten.
+* **Auswertung zum N passend:** Ein Random Effect für Lernende ist bei genau einer Person nicht schätzbar. Für diesen Piloten Niveau/Trend, zeitliche Abhängigkeit und Unsicherheit pro Block auswerten; ein Randomisierungstest setzt tatsächlich randomisierte Wechsel voraus. Ein Modell mit mehreren Lernenden und Items bleibt für eine ausreichend große spätere Stichprobe möglich. Überlegenheit, Nichtunterlegenheit mit Zeitersparnis und Äquivalenz sind unterschiedliche Fragen; eine davon mit passender Marge vorab wählen. Kleine Stichproben und breite Intervalle dürfen „noch unentschieden“ ergeben.
+* **Verzögerung als Designentscheidung:** Sieben Tage sind ein möglicher vorab festgelegter Abstand, keine aus [Rowland (2014)](https://pubmed.ncbi.nlm.nih.gov/25150680/) folgende Untergrenze. Die Meta-Analyse vergleicht Testen mit Wiederlernen, nicht Dekomposition mit Monolithen. Deshalb auch „kurze Intervalle unterschätzen die Dekomposition“ streichen. Bezugspunkt ist der letzte geplante Lernkontakt zum Lernziel; weitere Kontakte bis zum Test protokollieren.
+* **Beobachtungs-Endpunkt qualifizieren:** Es gelten die Bedingungen aus §4.5 A2. Zufällige erfolgreiche Arbeitsbeispiele sind ohne Nenner der geeigneten Gelegenheiten kein vergleichbarer Endpunkt; bei fehlender Gelegenheit gibt es fehlende Evidenz, keinen Misserfolg. Aufgabenbanken für den Piloten bleiben vom Fading getrennt. Ein blind bewerteter Endpunkt darf erst danach zur normalen Review-Buchung werden; seine Wiederholung ist nicht erneut „untrainiert“. Beide Kanäle getrennt auswerten und ihre primäre Rolle vorab festlegen.
+
+**A2 — Operationalisierbarkeit am HEAD `4258b56`:** `review_logs` speichert Rating, Karten-/Token-/Nutzer-ID, Bewertungs- und Fälligkeitszeit, optionale Dauer und Session-ID sowie `content_version` (`src/kernel/db/schema.ts:188–215`). Antwort-, Anzeige-, Klär-, Hinweis- und Reveal-Ereignisse sowie Studienmodus und Karten-Ausgangszustand fehlen. Desktop und Mobile messen Kartenbeginn bis Rating (`desktop/src/panel/recall.ts:935–951`, `mobile/src/review-session.ts:263–276`), einschließlich Lesen, Tippen, Feedback/LLM-Warten und gegebenenfalls Pausen. Session-Verknüpfungen sind nicht durchgehend: Desktop sendet hier keine `sessionId`.
+
+| Messgröße | A2: heutiger Nachweis / fehlendes Instrument |
+|---|---|
+| Reviews, Ratings, zeitlicher Verlauf | Aus Logs verfügbar; Lernziel-Zuordnung und Ausgangszustände im Pilot einfrieren. Nach dem Split ändert sich der Nenner. |
+| Zeit pro bewerteter Karte | `response_time_ms`, sofern gesetzt, ist Gesamtbearbeitungsdauer; keine reine Abrufzeit. |
+| Erste Antwort, Hinweiswirkung, False-Negative-Korrektur | Nicht aus heutigen Logs messbar: ursprüngliche Antwort, Art und Zeitpunkt der Hilfe/Klärung, Reveal und Bewertungsstände fehlen. Die Klassifikation benötigt zusätzlich unabhängige Prüfung. |
+| Aktive Gesamtlernzeit pro Lernziel | Die Summe bewerteter Versuche lässt Abbrüche und zusätzliche Nachbesprechung aus und trennt keine Pausen. Session-Start/-Ende sind allenfalls Bruttozeit. |
+| Abbruchquote, Sibling-Exposition | Kein vollständiger Nenner aller gezeigten/übersprungenen Items. Laufende UI-Snapshots sind kein dauerhaftes Ereignisarchiv. |
+| Modi, Erstkontakt-Easy-Quote, konkrete Variation | Prospektiv Modus, Ausgangszustand, Hilfestatus und tatsächliche Aufgabenfassung erfassen. `content_version` belegt die Token-Version, nicht jede dynamische Variante oder Grader-Version. Die Easy-Quote ist nur ein Autorenhinweis (O2), kein Informationslosigkeitsbeweis. |
+| Verzögerter untrainierter Transfer | Kein vorhandener Produktmesswert: gesonderter Test mit eingefrorener Aufgabenbank und Rubrik; qualifizierte Arbeitsbeobachtungen nach §4.5 separat auswerten. Keine pauschale Rückbuchung auf die FSRS-Karten der Teilkonzepte. |
+| Beobachtete Anwendung als Pilot-Endpunkt | Session-Schritte und bestätigte Synthese-Evidenz existieren; sie belegen nicht automatisch Selbständigkeit, Neuheit, erlaubte Hilfen, vollständige Kriterienerfüllung oder alle passenden Gelegenheiten. Ein eigener prospektiver Nachweis muss diese Angaben mit Aufgabe, Nutzer, Item und Review verbinden. |
+
+**A2 — Pilot ohne Schemaänderung:** Ein betreuter Pilot kann diese fehlenden Daten prospektiv in einem externen Protokoll erheben; eine rückwirkende Vollmessung aus der heutigen DB ist unmöglich. Vor Beginn festlegen: Zuteilung zu vergleichbaren Lernzielblöcken, Inhaltsversionen, identisches aktives Zeitbudget einschließlich Tutorzeit, Modus, Darbietungsregel, Testabstand, Bewertungskriterien und Mindestnutzen. Alle Items eines Lernziels bleiben in derselben Bedingung; nach Lernenden und Lernzielblöcken auswerten, nicht die zusätzliche Kartenzahl als unabhängige Stichprobe zählen. Testantworten möglichst ohne Kenntnis der Bedingung bewerten. Das Protokoll erfasst gezeigte Items, erste Antworten, Klärung/Hilfe, Reveal, Rating, Pausen und Abbruch. Ein rein automatisierter Pilot braucht entsprechende Ereignispersistenz (§7.3 Punkt 6); auch dann messen Latenzen keine reine Gedächtniszeit.
+
+**A2 — Aussagegrenze des Monitorings:** Lange Intervalle oder selten gezeigte Siblings können eine Versorgungslücke anzeigen, identifizieren aber nicht den Mechanismus RIF. Erstkontakt-Easy nach Format und Herkunft einschließlich Split getrennt berichten (O2). Prompt-/Modellversion und tatsächliche Aufgabenfassung gehören ins Pilotprotokoll; eine einmalige Grader-Prüfung gilt nicht unverändert nach einem Promptwechsel.
 
 Ohne diesen Rahmen riskiert Dekomposition, nur leichtere Ratings zu produzieren.
 
