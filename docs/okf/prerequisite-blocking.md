@@ -7,7 +7,7 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-09-05T07:20:33.638Z
+timestamp: 2026-09-06T12:00:00.000Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
@@ -25,7 +25,7 @@ unblocked and made due now. Only direct prerequisites are materialized,
 never the transitive hull, and the failed token's dependents are not
 touched. Calling `cascadeBlock()` for a token without prerequisites
 throws. `unblockReady()` releases a blocked card (unblocked, due now) once
-every direct prerequisite has a card with `reps >= 1` that is itself not
+every direct prerequisite has a card with `reps ≥ 1` that is itself not
 blocked; a blocked card with no prerequisites is released immediately.
 Releases cascade within the same call, so a freed prerequisite can free
 the card that waited on it.
@@ -72,13 +72,17 @@ either learn it now or defer its unretrieved cards to a finite date. Deferral is
 burial only, never evidence that the atom is held. Explicitly pulling such a
 card forward replaces its future date with `precondition_ready` intent until
 a genuine review clears the marker, so a restart cannot cause the same
-self-assessment prompt again. Actual failure can still use the existing
-token-card cascade, and only observed retrieval satisfies the held-atom
-predicate used by bonus offers.
+self-assessment prompt again. An actual Again (rating 1) on an item whose atom
+has direct hard prerequisites cancels only those prerequisites' active
+`precondition` deferrals for the same learner; it does not lift
+`precondition_ready`, other burial reasons, or FSRS state, and it does not put
+a foundation sibling into relearning. Token-level `cascadeBlock` still runs for
+token prerequisites. Only observed retrieval satisfies the held-atom predicate
+used by bonus offers.
 
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
-- Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`
+- Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/presentation.test.ts`
 - Code: `src/kernel/library/precondition-assessment.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/db/schema.ts`
 
 - [ADR 2026-03-27 — Stabilization and Workflow Integrity](../adr/2026-03-27-stabilization-and-workflow-integrity.md)

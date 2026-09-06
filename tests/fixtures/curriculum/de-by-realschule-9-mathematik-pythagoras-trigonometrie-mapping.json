@@ -1,0 +1,101 @@
+{
+  "tile_id": "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
+  "version": "2026.09.1",
+  "decision": "ADR 2026-08-14 Decision 9 — mapping is editorial, never inferred",
+  "items": [
+    {
+      "old_id": "01K4T9M0000000000000000J01",
+      "kind": "new_item",
+      "successor_id": "01K4T9M0000000000000000HH1",
+      "replaces": false,
+      "note": "Choice → recall of hypotenuse location. Format change, no mastery transfer."
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J02",
+      "kind": "split",
+      "successor_ids": [
+        "01K4T9M0000000000000000PP1",
+        "01K4T9M0000000000000000PP2"
+      ],
+      "replaces": false,
+      "note": "Decision 9 split: formula vs area relation. Old reviews stay on J02."
+    },
+    {
+      "old_id": null,
+      "kind": "new_item",
+      "successor_id": "01K4T9M0000000000000000PA0",
+      "replaces": false,
+      "note": "P3 alternative labeling of the same P atom. No predecessor."
+    },
+    {
+      "old_id": null,
+      "kind": "new_item",
+      "successor_id": "01K4T9M0000000000000000VV1",
+      "replaces": false,
+      "note": "Converse is a separate atom U, not a P sibling."
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J03",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J03",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J04",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J04",
+      "replaces": false,
+      "note": "Complete reconstruction of both Kathetensätze with an explicit two-formula rubric."
+    },
+    {
+      "old_id": null,
+      "kind": "new_item",
+      "successor_id": "01K4T9M0000000000000000KK1",
+      "replaces": false,
+      "note": "1:1 slot for Kathetensatz a² = c·p; not a replaces of J04."
+    },
+    {
+      "old_id": null,
+      "kind": "new_item",
+      "successor_id": "01K4T9M0000000000000000KK2",
+      "replaces": false,
+      "note": "1:1 slot for Kathetensatz b² = c·q."
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J05",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J05",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J06",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J06",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J07",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J07",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J08",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J08",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J09",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J09",
+      "replaces": false
+    },
+    {
+      "old_id": "01K4T9M0000000000000000J10",
+      "kind": "unchanged",
+      "successor_id": "01K4T9M0000000000000000J10",
+      "replaces": false
+    }
+  ]
+}

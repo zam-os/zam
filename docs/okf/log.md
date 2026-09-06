@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-06
+
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
+
 ## 2026-09-05
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

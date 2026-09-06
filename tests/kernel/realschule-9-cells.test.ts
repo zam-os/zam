@@ -117,12 +117,21 @@ describe("Realschule Bayern 9 Curriculum Cells", () => {
       totalCards += res.cardsCreated;
     }
 
-    // 176 + 4 (BwR) + 4 (Fra) = 184 practice items
-    expect(totalCards).toBe(184);
+    const expected = RS9_CELL_IDS.reduce((count, cellId) => {
+      const tile = getBundledCellTile(cellId);
+      return (
+        count +
+        (tile?.atoms.reduce(
+          (items, atom) => items + atom.practice_items.length,
+          0,
+        ) ?? 0)
+      );
+    }, 0);
+    expect(totalCards).toBe(expected);
 
     const cards = (await db
       .prepare(`SELECT COUNT(*) as count FROM cards WHERE user_id = ?`)
       .get(user)) as { count: number };
-    expect(cards.count).toBe(184);
+    expect(cards.count).toBe(expected);
   });
 });
