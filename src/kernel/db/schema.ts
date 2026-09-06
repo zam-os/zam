@@ -219,7 +219,10 @@ CREATE TABLE IF NOT EXISTS review_logs (
   -- classified later as the same item or a materially revised one. NULL means
   -- the row predates this column -- not version 1, because assuming 1 would
   -- invent evidence.
-  content_version INTEGER
+  content_version INTEGER,
+  -- Shared attempt identity (Phase 4). NULL means a historical rating with
+  -- no attempt record; never invent a match from text similarity.
+  attempt_id      TEXT
 );
 
 -- Steps within a session: who did what
@@ -233,20 +236,50 @@ CREATE TABLE IF NOT EXISTS session_steps (
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Observed attempts: one identity for direct submit, monitor/UI candidates,
+-- confirmation and synthesis. Same attempt → one review; a different
+-- independent attempt is new evidence even in the same session.
+CREATE TABLE IF NOT EXISTS review_attempts (
+  id               TEXT PRIMARY KEY,
+  user_id          TEXT NOT NULL,
+  card_id          TEXT REFERENCES cards(id) ON DELETE SET NULL,
+  token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  content_version  INTEGER,
+  session_id       TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+  activity         TEXT NOT NULL DEFAULT '',
+  actor            TEXT NOT NULL CHECK (actor IN ('user', 'agent')),
+  permitted_tools  TEXT NOT NULL DEFAULT '[]',
+  assistance       TEXT NOT NULL DEFAULT '',
+  independent      INTEGER,
+  channel          TEXT NOT NULL,
+  evidence         TEXT NOT NULL DEFAULT '{}',
+  evidence_key     TEXT,
+  suggested_rating INTEGER CHECK (suggested_rating BETWEEN 1 AND 4),
+  rating           INTEGER CHECK (rating BETWEEN 1 AND 4),
+  review_log_id    TEXT REFERENCES review_logs(id) ON DELETE SET NULL,
+  session_step_id  TEXT REFERENCES session_steps(id) ON DELETE SET NULL,
+  status           TEXT NOT NULL CHECK (status IN ('suggestion', 'recorded', 'rated', 'conflict')),
+  conflict_note    TEXT,
+  created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Confirmed ratings synthesized from monitor evidence.
--- The composite primary key makes repeated synthesis idempotent per token.
+-- Row identity is the attempt, not (session, token): two real attempts in
+-- one session must not collapse. A missing attempt_id is a historical row.
 CREATE TABLE IF NOT EXISTS session_syntheses (
+  id               TEXT PRIMARY KEY,
   session_id       TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
   token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  attempt_id       TEXT UNIQUE,
   card_id          TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-  inferred_rating  INTEGER NOT NULL CHECK (inferred_rating BETWEEN 1 AND 4),
+  inferred_rating  INTEGER CHECK (inferred_rating BETWEEN 1 AND 4),
   confirmed_rating INTEGER NOT NULL CHECK (confirmed_rating BETWEEN 1 AND 4),
   confidence       TEXT NOT NULL CHECK (confidence IN ('medium', 'high')),
   evidence         TEXT NOT NULL DEFAULT '{}',
   review_log_id    TEXT NOT NULL REFERENCES review_logs(id) ON DELETE CASCADE,
   session_step_id  TEXT NOT NULL REFERENCES session_steps(id) ON DELETE CASCADE,
-  created_at       TEXT NOT NULL DEFAULT (datetime('now')),
-  PRIMARY KEY (session_id, token_id)
+  created_at       TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 -- Sources: textbook files, web links, or scan paths
@@ -410,6 +443,9 @@ CREATE INDEX IF NOT EXISTS idx_card_presentations_card
   ON card_presentations(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
+CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);
+CREATE INDEX IF NOT EXISTS idx_review_attempts_session
+  ON review_attempts(session_id, token_id, evidence_key);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);

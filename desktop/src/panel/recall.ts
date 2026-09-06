@@ -76,6 +76,10 @@ function isAtomSiblingOccupied(error: unknown): boolean {
   return errorMessage(error).includes("already presented today");
 }
 
+function isCardNoLongerDue(error: unknown): boolean {
+  return errorMessage(error).includes("no longer due");
+}
+
 let contextBar: ContextBarHandle | undefined;
 let panelVersion: string | undefined;
 
@@ -761,7 +765,7 @@ async function presentCurrentCard(): Promise<void> {
     );
   } catch (error) {
     if (revision !== sessionRevision) return;
-    if (isAtomSiblingOccupied(error)) {
+    if (isAtomSiblingOccupied(error) || isCardNoLongerDue(error)) {
       advance();
       return;
     }

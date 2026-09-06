@@ -6156,6 +6156,11 @@ function isAtomSiblingOccupied(error: unknown): boolean {
   return message.includes("already presented today");
 }
 
+function isCardNoLongerDue(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("no longer due");
+}
+
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
@@ -7356,7 +7361,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
     if (zamUiSessionId) args.push("--session", zamUiSessionId);
     await runBridge("admit-review", args);
   } catch (err) {
-    if (isAtomSiblingOccupied(err)) {
+    if (isAtomSiblingOccupied(err) || isCardNoLongerDue(err)) {
       await loadNextCard();
       return;
     }

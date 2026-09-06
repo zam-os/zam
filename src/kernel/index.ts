@@ -455,6 +455,21 @@ export {
   pairCommands,
   parseMonitorLog,
 } from "./observation/analyzer.js";
+export type {
+  AttemptActor,
+  AttemptChannel,
+  AttemptStatus,
+  RecordAttemptInput,
+  ReviewAttempt,
+} from "./observation/attempts.js";
+export {
+  AssistedSuccessError,
+  AttemptConflictError,
+  findAttemptByEvidenceKey,
+  getAttemptById,
+  observationEvidenceKey,
+  recordAttempt,
+} from "./observation/attempts.js";
 export {
   ensureMonitorDir,
   getMonitorDir,
@@ -628,6 +643,7 @@ export {
   abandonPresentation,
   abandonUnconfirmedForSession,
   admitPresentation,
+  CardNotDueError,
   cardAllowedForAtom,
   hostTimeZone,
   isValidTimeZone,

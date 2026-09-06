@@ -15,6 +15,7 @@ import type { Rating } from "../../src/kernel/scheduler/fsrs.js";
 import {
   AtomSiblingOccupiedError,
   admitPresentation,
+  CardNotDueError,
 } from "../../src/kernel/scheduler/presentation.js";
 import {
   buildReviewQueue,
@@ -418,7 +419,12 @@ export class MobileReviewSession {
         });
         return;
       } catch (error) {
-        if (!(error instanceof AtomSiblingOccupiedError)) throw error;
+        if (
+          !(error instanceof AtomSiblingOccupiedError) &&
+          !(error instanceof CardNotDueError)
+        ) {
+          throw error;
+        }
         snapshot.currentIndex += 1;
         snapshot.draftAnswer = "";
         snapshot.revealed = false;

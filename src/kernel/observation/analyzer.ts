@@ -330,7 +330,7 @@ interface RatingSignals {
   matchedCommands: number;
 }
 
-function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 {
+function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 | null {
   const {
     helpSeeking,
     errorCount,
@@ -350,8 +350,9 @@ function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 {
   else if (medianGapMs != null && medianGapMs > 10_000) negatives += 1;
   if (thinkingGapMs != null && thinkingGapMs > 30_000) negatives += 1;
 
+  // Exit code 0 plus a command match is not an independent success.
+  if (negatives === 0) return null;
   if (negatives >= 5) return 1;
   if (negatives >= 3) return 2;
-  if (negatives >= 1) return 3;
-  return 4;
+  return 3;
 }

@@ -1,3 +1,4 @@
+import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import type { DeleteCardResult } from "../models/card.js";
@@ -16,6 +17,14 @@ import {
   getTokenById,
   updateToken,
 } from "../models/token.js";
+import {
+  type AttemptActor,
+  type AttemptChannel,
+  AttemptConflictError,
+  assertAttemptAllowsRating,
+  getAttemptById,
+  recordAttempt,
+} from "../observation/attempts.js";
 import type { CascadeBlockResult } from "../scheduler/blocker.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
@@ -40,6 +49,13 @@ export interface ExecuteReviewActionInput {
   responseTimeMs?: number;
   tokenUpdates?: UpdateTokenInput;
   now?: Date;
+  attemptId?: string;
+  activity?: string;
+  actor?: AttemptActor;
+  permittedTools?: string[];
+  assistance?: string;
+  independent?: boolean | null;
+  channel?: AttemptChannel;
 }
 
 export interface ReviewActionResult {
@@ -53,6 +69,8 @@ export interface ReviewActionResult {
   deletedCard?: DeleteCardResult;
   skipped?: boolean;
   stopped?: boolean;
+  attemptId?: string;
+  applied?: boolean;
 }
 
 async function getReviewTarget(
@@ -111,6 +129,54 @@ export async function executeReviewAction(
         await assertActiveSessionForUser(tx, input.sessionId, input.userId);
       }
 
+      const actor = input.actor ?? "user";
+      const independent = input.independent ?? true;
+      assertAttemptAllowsRating(independent, rating, actor);
+      const attemptId = input.attemptId ?? ulid();
+      const existingAttempt = input.attemptId
+        ? await getAttemptById(tx, input.attemptId)
+        : undefined;
+      if (
+        existingAttempt &&
+        (existingAttempt.status === "rated" ||
+          existingAttempt.status === "recorded" ||
+          existingAttempt.status === "conflict") &&
+        existingAttempt.rating !== rating
+      ) {
+        throw new AttemptConflictError(
+          existingAttempt.id,
+          existingAttempt.rating,
+          rating,
+        );
+      }
+      if (
+        existingAttempt?.status === "rated" &&
+        existingAttempt.rating === rating
+      ) {
+        const card = await getCardById(tx, target.cardId);
+        return {
+          action: input.action,
+          token: target.token,
+          evaluation: card
+            ? {
+                nextDueAt: card.due_at,
+                stability: card.stability,
+                difficulty: card.difficulty,
+                state: card.state,
+                learningStep: card.learning_step,
+                scheduledDays: card.scheduled_days,
+                reps: card.reps,
+                lapses: card.lapses,
+                buriedSiblings: 0,
+                buriedUntil: card.buried_until,
+              }
+            : undefined,
+          attemptId: existingAttempt.id,
+          applied: false,
+        };
+      }
+
+      const reviewLogId = ulid();
       const evaluation = await evaluateRatingWithinTransaction(tx, {
         cardId: target.cardId,
         tokenId: target.token.id,
@@ -118,6 +184,8 @@ export async function executeReviewAction(
         rating,
         sessionId: input.sessionId,
         responseTimeMs: input.responseTimeMs,
+        reviewLogId,
+        attemptId,
         now: input.now,
       });
 
@@ -142,12 +210,33 @@ export async function executeReviewAction(
           })
         : undefined;
 
+      await recordAttempt(tx, {
+        id: attemptId,
+        userId: input.userId,
+        cardId: target.cardId,
+        tokenId: target.token.id,
+        sessionId: input.sessionId,
+        activity: input.activity,
+        actor,
+        permittedTools: input.permittedTools,
+        assistance: input.assistance,
+        independent,
+        channel: input.channel ?? (input.sessionId ? "direct" : "recall"),
+        rating,
+        reviewLogId,
+        sessionStepId: sessionStep?.id,
+        status: "rated",
+        now: input.now,
+      });
+
       return {
         action: input.action,
         token: target.token,
         evaluation,
         blocked,
         sessionStep,
+        attemptId,
+        applied: true,
       };
     });
   }

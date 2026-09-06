@@ -8,6 +8,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import { listAgentSkills } from "../models/agent-skill.js";
 import { ensureCard } from "../models/card.js";
 import { getPrerequisites } from "../models/prerequisite.js";
@@ -24,6 +25,13 @@ import type {
   TokenPattern,
 } from "./analyzer.js";
 import { analyzeObservation, pairCommands } from "./analyzer.js";
+import {
+  AttemptConflictError,
+  findAttemptByEvidenceKey,
+  getAttemptById,
+  observationEvidenceKey,
+  recordAttempt,
+} from "./attempts.js";
 import { readMonitorLog } from "./monitor-io.js";
 import { readUiObservationLog } from "./ui-observer-io.js";
 import {
@@ -38,10 +46,11 @@ export interface SessionSynthesisCandidate {
   tokenSlug: string;
   concept: string;
   domain: string;
-  inferredRating: Rating;
+  inferredRating: Rating | null;
   confidence: SynthesisConfidence;
   evidence: ObservationRating["evidence"];
   matchedCommandTexts: string[];
+  evidenceKey: string;
 }
 
 export interface PrepareSessionSynthesisInput {
@@ -74,10 +83,12 @@ export interface SessionSynthesisEvidence {
 }
 
 export interface SessionSynthesisRecord {
+  id: string;
   session_id: string;
   token_id: string;
+  attempt_id: string | null;
   card_id: string;
-  inferred_rating: Rating;
+  inferred_rating: Rating | null;
   confirmed_rating: Rating;
   confidence: SynthesisConfidence;
   evidence: SessionSynthesisEvidence;
@@ -93,11 +104,16 @@ interface SessionSynthesisRow extends Omit<SessionSynthesisRecord, "evidence"> {
 export interface ApplySessionSynthesisInput {
   sessionId: string;
   tokenSlug: string;
-  inferredRating: Rating;
+  inferredRating: Rating | null;
   confirmedRating: Rating;
   confidence: SynthesisConfidence;
   evidence: ObservationRating["evidence"];
   matchedCommandTexts: string[];
+  attemptId?: string;
+  independent?: boolean | null;
+  activity?: string;
+  assistance?: string;
+  permittedTools?: string[];
 }
 
 export interface ApplySessionSynthesisResult {
@@ -238,9 +254,25 @@ export async function prepareSessionSynthesis(
     const { candidates, skippedLowConfidence } = buildUiSynthesisCandidates(
       reports,
       tokens,
-      applied,
+      new Set(),
       minConfidence,
     );
+    const pending: SessionSynthesisCandidate[] = [];
+    for (const candidate of candidates) {
+      const existingAttempt = await findAttemptByEvidenceKey(db, {
+        sessionId: session.id,
+        tokenId: candidate.tokenId,
+        evidenceKey: candidate.evidenceKey,
+      });
+      if (
+        existingAttempt &&
+        (existingAttempt.status === "rated" ||
+          existingAttempt.status === "recorded")
+      ) {
+        continue;
+      }
+      pending.push(candidate);
+    }
 
     return {
       sessionId: session.id,
@@ -249,7 +281,7 @@ export async function prepareSessionSynthesis(
       commandCount: reports.length,
       alreadyApplied: applied.size,
       skippedLowConfidence,
-      candidates,
+      candidates: pending,
       unmatchedCommands: [],
       timeSpan: uiObservationTimeSpan(reports),
     };
@@ -264,9 +296,23 @@ export async function prepareSessionSynthesis(
 
   for (const rating of analysis.ratings) {
     const token = tokens.get(rating.tokenSlug);
-    if (!token || rating.rating == null || applied.has(token.id)) continue;
+    if (!token || rating.evidence.matchedCommands === 0) continue;
     if (confidenceRank(rating.confidence) < minRank) {
       skippedLowConfidence++;
+      continue;
+    }
+
+    const evidenceKey = observationEvidenceKey(rating.matchedCommandTexts);
+    const existingAttempt = await findAttemptByEvidenceKey(db, {
+      sessionId: session.id,
+      tokenId: token.id,
+      evidenceKey,
+    });
+    if (
+      existingAttempt &&
+      (existingAttempt.status === "rated" ||
+        existingAttempt.status === "recorded")
+    ) {
       continue;
     }
 
@@ -279,6 +325,7 @@ export async function prepareSessionSynthesis(
       confidence: rating.confidence as SynthesisConfidence,
       evidence: rating.evidence,
       matchedCommandTexts: rating.matchedCommandTexts,
+      evidenceKey,
     });
   }
 
@@ -306,16 +353,94 @@ export async function applySessionSynthesis(
       throw new Error(`Active token not found: ${input.tokenSlug}`);
     }
 
-    const existing = (await tx
-      .prepare(
-        "SELECT * FROM session_syntheses WHERE session_id = ? AND token_id = ?",
-      )
-      .get(session.id, token.id)) as SessionSynthesisRow | undefined;
-    if (existing) {
-      return { applied: false, record: parseSynthesisRow(existing) };
+    const evidenceKey = observationEvidenceKey(input.matchedCommandTexts);
+    const existingAttempt = input.attemptId
+      ? await getAttemptById(tx, input.attemptId)
+      : await findAttemptByEvidenceKey(tx, {
+          sessionId: session.id,
+          tokenId: token.id,
+          evidenceKey,
+        });
+
+    if (existingAttempt?.status === "rated" && existingAttempt.review_log_id) {
+      if (
+        existingAttempt.rating != null &&
+        existingAttempt.rating !== input.confirmedRating
+      ) {
+        await recordAttempt(tx, {
+          id: existingAttempt.id,
+          userId: session.user_id,
+          tokenId: token.id,
+          actor: "user",
+          channel: "synthesis",
+          status: "conflict",
+          rating: input.confirmedRating,
+          conflictNote: `existing ${existingAttempt.rating}, proposed ${input.confirmedRating}`,
+        });
+        throw new AttemptConflictError(
+          existingAttempt.id,
+          existingAttempt.rating,
+          input.confirmedRating,
+        );
+      }
+      const existing = (await tx
+        .prepare(
+          "SELECT * FROM session_syntheses WHERE attempt_id = ? OR review_log_id = ?",
+        )
+        .get(existingAttempt.id, existingAttempt.review_log_id)) as
+        | SessionSynthesisRow
+        | undefined;
+      if (existing) {
+        return { applied: false, record: parseSynthesisRow(existing) };
+      }
+      const card = await ensureCard(tx, token.id, session.user_id);
+      const evidence: SessionSynthesisEvidence = {
+        signals: input.evidence,
+        matchedCommandTexts: input.matchedCommandTexts,
+      };
+      const synthesisId = ulid();
+      await tx
+        .prepare(
+          `INSERT INTO session_syntheses (
+             id, session_id, token_id, attempt_id, card_id, inferred_rating,
+             confirmed_rating, confidence, evidence, review_log_id,
+             session_step_id, created_at
+           ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          synthesisId,
+          session.id,
+          token.id,
+          existingAttempt.id,
+          card.id,
+          input.inferredRating,
+          input.confirmedRating,
+          input.confidence,
+          JSON.stringify(evidence),
+          existingAttempt.review_log_id,
+          existingAttempt.session_step_id,
+          new Date().toISOString(),
+        );
+      const linked = (await tx
+        .prepare("SELECT * FROM session_syntheses WHERE id = ?")
+        .get(synthesisId)) as SessionSynthesisRow;
+      return { applied: false, record: parseSynthesisRow(linked) };
+    }
+
+    if (!input.attemptId && evidenceKey == null) {
+      const legacy = (await tx
+        .prepare(
+          `SELECT * FROM session_syntheses
+            WHERE session_id = ? AND token_id = ? AND attempt_id IS NULL`,
+        )
+        .get(session.id, token.id)) as SessionSynthesisRow | undefined;
+      if (legacy) {
+        return { applied: false, record: parseSynthesisRow(legacy) };
+      }
     }
 
     const card = await ensureCard(tx, token.id, session.user_id);
+    const attemptId = existingAttempt?.id ?? input.attemptId ?? ulid();
     const reviewLogId = ulid();
     await evaluateRatingWithinTransaction(tx, {
       cardId: card.id,
@@ -324,6 +449,7 @@ export async function applySessionSynthesis(
       rating: input.confirmedRating,
       sessionId: session.id,
       reviewLogId,
+      attemptId,
     });
 
     let blocked: Awaited<ReturnType<typeof cascadeBlock>> | undefined;
@@ -332,6 +458,10 @@ export async function applySessionSynthesis(
       if (prerequisites.length > 0) {
         blocked = await cascadeBlock(tx, session.user_id, token.slug);
       }
+      await cancelMatchingPreconditionDeferrals(tx, {
+        userId: session.user_id,
+        tokenId: token.id,
+      });
     }
 
     const notes = `Observation synthesis (${input.confidence}, inferred ${input.inferredRating}): ${input.matchedCommandTexts.slice(0, 3).join(" | ")}`;
@@ -347,17 +477,45 @@ export async function applySessionSynthesis(
       signals: input.evidence,
       matchedCommandTexts: input.matchedCommandTexts,
     };
+    const recorded = await recordAttempt(tx, {
+      id: attemptId,
+      userId: session.user_id,
+      cardId: card.id,
+      tokenId: token.id,
+      sessionId: session.id,
+      activity: input.activity ?? "observed work",
+      actor: "user",
+      permittedTools: input.permittedTools,
+      assistance: input.assistance,
+      independent: input.independent ?? true,
+      channel: session.execution_context === "ui" ? "ui_observer" : "synthesis",
+      evidence: {
+        signals: input.evidence,
+        matchedCommandTexts: input.matchedCommandTexts,
+      },
+      evidenceKey,
+      suggestedRating: input.inferredRating,
+      rating: input.confirmedRating,
+      reviewLogId,
+      sessionStepId: step.id,
+      status: "rated",
+    });
+
     const now = new Date().toISOString();
+    const synthesisId = ulid();
     await tx
       .prepare(
         `INSERT INTO session_syntheses (
-           session_id, token_id, card_id, inferred_rating, confirmed_rating,
-           confidence, evidence, review_log_id, session_step_id, created_at
-         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+           id, session_id, token_id, attempt_id, card_id, inferred_rating,
+           confirmed_rating, confidence, evidence, review_log_id,
+           session_step_id, created_at
+         ) VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
       )
       .run(
+        synthesisId,
         session.id,
         token.id,
+        recorded.attempt.id,
         card.id,
         input.inferredRating,
         input.confirmedRating,
@@ -369,10 +527,8 @@ export async function applySessionSynthesis(
       );
 
     const record = (await tx
-      .prepare(
-        "SELECT * FROM session_syntheses WHERE session_id = ? AND token_id = ?",
-      )
-      .get(session.id, token.id)) as SessionSynthesisRow;
+      .prepare("SELECT * FROM session_syntheses WHERE id = ?")
+      .get(synthesisId)) as SessionSynthesisRow;
 
     return {
       applied: true,

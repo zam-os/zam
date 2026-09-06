@@ -74,6 +74,7 @@ import {
   publishTokenRevision,
   pullForwardCards,
   readMonitorLog,
+  recordAttempt,
   removePrerequisite,
   resetCardsForToken,
   resolveReviewContext,
@@ -525,6 +526,11 @@ export interface SubmitReviewParams {
   recordOnly?: boolean;
   /** Why this step is record-only (required when recordOnly is true). */
   reason?: string;
+  attemptId?: string;
+  activity?: string;
+  assistance?: string;
+  independent?: boolean;
+  permittedTools?: string[];
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -579,11 +585,26 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     if (session.completed_at) {
       throw new Error(`Session already completed: ${params.sessionId}`);
     }
-    await logStep(db, {
+    const step = await logStep(db, {
       session_id: params.sessionId,
       token_id: card.token_id,
       done_by: "user",
       notes: reason,
+    });
+    const recorded = await recordAttempt(db, {
+      id: params.attemptId,
+      userId,
+      cardId: card.id,
+      tokenId: card.token_id,
+      sessionId: params.sessionId,
+      activity: params.activity ?? reason,
+      actor: "user",
+      permittedTools: params.permittedTools,
+      assistance: params.assistance ?? reason,
+      independent: false,
+      channel: "direct",
+      sessionStepId: step.id,
+      status: "recorded",
     });
     return {
       success: true,
@@ -591,6 +612,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       evaluation: null,
       blocked: null,
       recordedOnly: true,
+      attemptId: recorded.attempt.id,
     };
   }
 
@@ -613,10 +635,25 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
         `Card ${params.cardId} does not belong to user ${userId}`,
       );
     }
-    await logStep(db, {
+    const step = await logStep(db, {
       session_id: params.sessionId,
       token_id: card.token_id,
       done_by: "agent",
+    });
+    const recorded = await recordAttempt(db, {
+      id: params.attemptId,
+      userId,
+      cardId: card.id,
+      tokenId: card.token_id,
+      sessionId: params.sessionId,
+      activity: params.activity,
+      actor: "agent",
+      permittedTools: params.permittedTools,
+      assistance: params.assistance,
+      independent: false,
+      channel: "direct",
+      sessionStepId: step.id,
+      status: "recorded",
     });
     return {
       success: true,
@@ -624,6 +661,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       evaluation: null,
       blocked: null,
       recordedOnly: true,
+      attemptId: recorded.attempt.id,
     };
   }
 
@@ -649,6 +687,13 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     rating: params.rating,
     sessionId: params.sessionId,
     responseTimeMs: params.responseTimeMs,
+    attemptId: params.attemptId,
+    activity: params.activity,
+    actor: "user",
+    permittedTools: params.permittedTools,
+    assistance: params.assistance,
+    independent: params.independent,
+    channel: "direct",
   });
 
   return {
@@ -656,6 +701,8 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     rating: params.rating,
     evaluation: result.evaluation,
     blocked: result.blocked ?? null,
+    attemptId: result.attemptId,
+    applied: result.applied ?? true,
   };
 }
 

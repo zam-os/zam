@@ -52,6 +52,7 @@ export const SNAPSHOT_TABLES = [
   "prerequisites",
   "session_steps",
   "review_logs",
+  "review_attempts",
   "session_syntheses",
   "user_config",
   "agent_skills",

@@ -374,7 +374,9 @@ async function runSynthesisPhase(
   for (const candidate of preview.candidates) {
     console.log(`\n${candidate.tokenSlug}: ${candidate.concept}`);
     console.log(
-      `  Suggested: ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]} (${candidate.confidence} confidence)`,
+      candidate.inferredRating == null
+        ? `  Suggested: none (${candidate.confidence} confidence; exit code or similarity alone is not a rating)`
+        : `  Suggested: ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]} (${candidate.confidence} confidence)`,
     );
     console.log(
       `  Evidence: ${candidate.evidence.matchedCommands} command(s), ${candidate.evidence.errorCount} error(s), ${candidate.evidence.selfCorrections} correction(s)${candidate.evidence.helpSeeking ? ", help used" : ""}`,
@@ -386,13 +388,19 @@ async function runSynthesisPhase(
     const otherRatings = ([1, 2, 3, 4] as Rating[]).filter(
       (rating) => rating !== candidate.inferredRating,
     );
+    const acceptChoice =
+      candidate.inferredRating == null
+        ? []
+        : [
+            {
+              name: `Accept ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]}`,
+              value: candidate.inferredRating,
+            },
+          ];
     const choice = await select<Rating | "skip">({
       message: `Confirm rating for ${candidate.tokenSlug}:`,
       choices: [
-        {
-          name: `Accept ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]}`,
-          value: candidate.inferredRating,
-        },
+        ...acceptChoice,
         ...otherRatings.map((rating) => ({
           name: `Override with ${rating} - ${RATING_LABELS[rating]}`,
           value: rating,

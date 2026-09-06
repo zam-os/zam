@@ -27,6 +27,18 @@ export class AtomSiblingOccupiedError extends Error {
   }
 }
 
+export class CardNotDueError extends Error {
+  readonly cardId: string;
+  readonly dueAt: string;
+
+  constructor(cardId: string, dueAt: string) {
+    super("This card is no longer due");
+    this.name = "CardNotDueError";
+    this.cardId = cardId;
+    this.dueAt = dueAt;
+  }
+}
+
 export function isValidTimeZone(timeZone: string): boolean {
   try {
     Intl.DateTimeFormat("en-US", { timeZone }).format(new Date());
@@ -193,6 +205,9 @@ export async function admitPresentationInTransaction(
   if (!token) throw new Error(`Token not found for card ${input.cardId}`);
 
   const now = input.now ?? new Date();
+  if (card.last_review_at && Date.parse(card.due_at) > now.getTime()) {
+    throw new CardNotDueError(card.id, card.due_at);
+  }
   const timeZone = await resolvePresentationTimeZone(db, input.timeZone);
   const learningDay = localLearningDay(now, timeZone);
   const nowISO = now.toISOString();

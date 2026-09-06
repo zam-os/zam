@@ -1170,6 +1170,13 @@ bridgeCommand
     "--reason <text>",
     "Why this step is record-only (required with --record-only)",
   )
+  .option("--attempt-id <id>", "Shared attempt ULID for idempotent submits")
+  .option("--activity <text>", "Specific work activity for this attempt")
+  .option("--assistance <text>", "Assistance actually received")
+  .option(
+    "--independent",
+    "Mark this as an independent attempt (default for a rated submit)",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -1198,6 +1205,15 @@ bridgeCommand
           responseTimeMs,
           recordOnly: Boolean(opts.recordOnly),
           reason: opts.reason,
+          attemptId: opts.attemptId,
+          activity: opts.activity,
+          assistance: opts.assistance,
+          independent:
+            opts.independent === true
+              ? true
+              : opts.recordOnly
+                ? false
+                : undefined,
         });
         jsonOut(result);
       } catch (err) {

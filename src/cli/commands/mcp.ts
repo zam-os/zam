@@ -617,6 +617,30 @@ export function createMcpServer(
           .describe(
             "Why this step is record-only; required when recordOnly is true",
           ),
+        attemptId: z
+          .string()
+          .optional()
+          .describe(
+            "Shared attempt ULID; the same attempt cannot create two reviews",
+          ),
+        independent: z
+          .boolean()
+          .optional()
+          .describe(
+            "Whether this was an independent attempt; false forbids an FSRS success",
+          ),
+        activity: z
+          .string()
+          .optional()
+          .describe("Specific work activity for this attempt"),
+        assistance: z
+          .string()
+          .optional()
+          .describe("Assistance actually received"),
+        permittedTools: z
+          .array(z.string())
+          .optional()
+          .describe("Tools that were permitted for this attempt"),
       },
       annotations: {
         ...commonAnnotations,
@@ -636,6 +660,11 @@ export function createMcpServer(
         responseTimeMs: params.responseTimeMs,
         recordOnly: params.recordOnly,
         reason: params.reason,
+        attemptId: params.attemptId,
+        independent: params.independent,
+        activity: params.activity,
+        assistance: params.assistance,
+        permittedTools: params.permittedTools,
       });
     }),
   );

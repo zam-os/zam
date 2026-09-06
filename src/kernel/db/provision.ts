@@ -14,6 +14,7 @@
  * M021 on one side only.
  */
 
+import { ulid } from "ulid";
 import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
 import type { Database } from "./types.js";
 
@@ -23,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 30;
+export const CURRENT_SCHEMA_VERSION = 31;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -73,6 +74,84 @@ async function columnsOf(db: Database, table: string): Promise<string[]> {
     name: string;
   }>;
   return rows.map((row) => row.name);
+}
+
+interface LegacySessionSynthesisRow {
+  session_id: string;
+  token_id: string;
+  card_id: string;
+  inferred_rating: number;
+  confirmed_rating: number;
+  confidence: string;
+  evidence: string;
+  review_log_id: string;
+  session_step_id: string;
+  created_at: string;
+}
+
+/**
+ * Replace the (session_id, token_id) synthesis key with a row id plus an
+ * optional attempt_id. Two real attempts in one session must not collapse.
+ */
+async function migrateSessionSynthesesToAttemptKeyed(
+  db: Database,
+): Promise<void> {
+  const cols = await columnsOf(db, "session_syntheses");
+  if (cols.length === 0 || cols.includes("id")) return;
+
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS session_syntheses_m031 (
+      id               TEXT PRIMARY KEY,
+      session_id       TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
+      token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      attempt_id       TEXT UNIQUE,
+      card_id          TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+      inferred_rating  INTEGER CHECK (inferred_rating BETWEEN 1 AND 4),
+      confirmed_rating INTEGER NOT NULL CHECK (confirmed_rating BETWEEN 1 AND 4),
+      confidence       TEXT NOT NULL CHECK (confidence IN ('medium', 'high')),
+      evidence         TEXT NOT NULL DEFAULT '{}',
+      review_log_id    TEXT NOT NULL REFERENCES review_logs(id) ON DELETE CASCADE,
+      session_step_id  TEXT NOT NULL REFERENCES session_steps(id) ON DELETE CASCADE,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+
+  const rows = (await db
+    .prepare(
+      `SELECT session_id, token_id, card_id, inferred_rating, confirmed_rating,
+              confidence, evidence, review_log_id, session_step_id, created_at
+         FROM session_syntheses`,
+    )
+    .all()) as LegacySessionSynthesisRow[];
+
+  for (const row of rows) {
+    await db
+      .prepare(
+        `INSERT INTO session_syntheses_m031 (
+           id, session_id, token_id, attempt_id, card_id, inferred_rating,
+           confirmed_rating, confidence, evidence, review_log_id,
+           session_step_id, created_at
+         ) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      )
+      .run(
+        ulid(),
+        row.session_id,
+        row.token_id,
+        row.card_id,
+        row.inferred_rating,
+        row.confirmed_rating,
+        row.confidence,
+        row.evidence,
+        row.review_log_id,
+        row.session_step_id,
+        row.created_at,
+      );
+  }
+
+  await db.exec(`DROP TABLE session_syntheses`);
+  await db.exec(
+    `ALTER TABLE session_syntheses_m031 RENAME TO session_syntheses`,
+  );
 }
 
 const ATOM_BINDING_UNIQUE_INDEX = `CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
@@ -695,6 +774,51 @@ export async function runMigrations(db: Database): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_card_presentations_card
       ON card_presentations(card_id);
   `);
+
+  // M031: observed-attempt identity. Direct submit, monitor/UI candidates
+  // and synthesis share one attempt ULID so the same work cannot create two
+  // FSRS reviews. Historical ratings keep a NULL attempt_id.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS review_attempts (
+      id               TEXT PRIMARY KEY,
+      user_id          TEXT NOT NULL,
+      card_id          TEXT REFERENCES cards(id) ON DELETE SET NULL,
+      token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+      content_version  INTEGER,
+      session_id       TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+      activity         TEXT NOT NULL DEFAULT '',
+      actor            TEXT NOT NULL CHECK (actor IN ('user', 'agent')),
+      permitted_tools  TEXT NOT NULL DEFAULT '[]',
+      assistance       TEXT NOT NULL DEFAULT '',
+      independent      INTEGER,
+      channel          TEXT NOT NULL,
+      evidence         TEXT NOT NULL DEFAULT '{}',
+      evidence_key     TEXT,
+      suggested_rating INTEGER CHECK (suggested_rating BETWEEN 1 AND 4),
+      rating           INTEGER CHECK (rating BETWEEN 1 AND 4),
+      review_log_id    TEXT REFERENCES review_logs(id) ON DELETE SET NULL,
+      session_step_id  TEXT REFERENCES session_steps(id) ON DELETE SET NULL,
+      status           TEXT NOT NULL CHECK (status IN ('suggestion', 'recorded', 'rated', 'conflict')),
+      conflict_note    TEXT,
+      created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+      updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
+    );
+  `);
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_review_attempts_session
+      ON review_attempts(session_id, token_id, evidence_key);
+  `);
+  const reviewLogColsM031 = await columnsOf(db, "review_logs");
+  if (
+    reviewLogColsM031.length > 0 &&
+    !reviewLogColsM031.includes("attempt_id")
+  ) {
+    await db.exec(`ALTER TABLE review_logs ADD COLUMN attempt_id TEXT`);
+  }
+  await db.exec(`
+    CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);
+  `);
+  await migrateSessionSynthesesToAttemptKeyed(db);
 }
 
 /**

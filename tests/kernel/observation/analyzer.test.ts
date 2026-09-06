@@ -191,7 +191,7 @@ describe("analyzeObservation", () => {
     expect(result.ratings[0].confidence).toBe("low");
   });
 
-  it("rates 4 for clean, fast execution with no errors", () => {
+  it("does not infer a success rating from clean exit codes alone", () => {
     // Each command needs a unique 2-word prefix to avoid self-correction signal
     const widePatterns: TokenPattern[] = [
       {
@@ -233,7 +233,7 @@ describe("analyzeObservation", () => {
     ];
 
     const result = analyzeObservation(commands, widePatterns);
-    expect(result.ratings[0].rating).toBe(4);
+    expect(result.ratings[0].rating).toBeNull();
     expect(result.ratings[0].confidence).toBe("high");
     expect(result.ratings[0].evidence.matchedCommands).toBe(3);
     expect(result.ratings[0].evidence.errorCount).toBe(0);
