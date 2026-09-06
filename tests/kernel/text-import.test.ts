@@ -159,8 +159,37 @@ describe("deterministic text import", () => {
       contentChanged: true,
       cardAction: "keep",
     });
+    expect(
+      preview.cards[0].warnings.some(
+        (w) => w.code === "published_content_opt_in",
+      ),
+    ).toBe(true);
     await commitTextImport(db, "alice", changed, preview.planHash);
 
+    const preserved = (await db
+      .prepare(
+        `SELECT t.concept, t.content_version, t.published_by,
+                c.state, c.stability, c.difficulty, c.reps, c.lapses,
+                c.learned_content_version, c.due_at
+           FROM tokens t JOIN cards c ON c.token_id = t.id
+          WHERE t.id = ?`,
+      )
+      .get(token.id)) as Record<string, unknown>;
+    expect(preserved).toMatchObject({
+      concept: "Paris",
+      content_version: 1,
+      state: "review",
+      stability: 12.5,
+      difficulty: 0.42,
+      reps: 8,
+      lapses: 2,
+    });
+    expect(preserved.due_at).toBe("2099-01-01T00:00:00.000Z");
+
+    const applied = await previewTextImport(db, "alice", changed);
+    await commitTextImport(db, "alice", changed, applied.planHash, {
+      applyPublishedContentUpdates: true,
+    });
     const updated = (await db
       .prepare(
         `SELECT t.concept, t.content_version, t.published_by,

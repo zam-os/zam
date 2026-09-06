@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-03T20:56:44.033Z
+timestamp: 2026-09-06T19:08:40.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -96,6 +96,17 @@ The model-visible learning tools cover:
 - review queues and rating submission — submissions accept an optional
   `responseTimeMs` (milliseconds between showing a card and rating it), which
   feeds the study-time statistic (ADR 2026-08-01 Decision 5);
+- presentation admission: `zam_admit_review` records that one card is being
+  shown (a queue prefetch is not an exposure), refuses a second practice item
+  of the same learning atom on one local learning day and any unpublished
+  card, and returns the `attemptId` that `zam_submit_review` takes so a
+  retried submit stays one review. A completed session still accepts ratings
+  of its own work, because confirmed synthesis candidates arrive after
+  `zam_session_end`; `recordOnly` with a `reason` logs assisted user work as a
+  session step without an FSRS rating and needs an open session;
+- draft review: `zam_add_token` stores a draft that stays out of every queue,
+  due list, admission and rating until `zam_publish_revision`;
+  `zam_list_drafts` lists unpublished captures;
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each
@@ -117,7 +128,7 @@ The model-visible learning tools cover:
 | `zam_okf_read_citation` | Read a repo-contained Markdown citation such as an ADR |
 | `zam_okf_visualize` | Open the searchable reader, article graph, or log |
 | `zam_okf_focused` | Resolve the article currently focused in any connected reader |
-| `zam_okf_import` | Atomically record an agent's finished decomposition as tokens and cards |
+| `zam_okf_import` | Atomically record an agent's finished decomposition as tokens and cards; tokens without a question are parked as drafts (`drafts` in the result) until published |
 
 ## Bundle resolution and containment
 
@@ -382,7 +393,10 @@ The Recall panel calls `zam_get_reviews` with `respectWorkload: true`, so
 its snapshot observes the learner's total-card limit, new-card limit, sibling
 settings, and `tier1-first` ordering. A learner who explicitly chooses “keep
 going” supplies only the selected batch's additional-new count as a temporary
-override. Tier-1 binary checks render as one-tap choices and are compared
+override. Immediately before a card is shown the panel calls
+`zam_admit_review` and forwards the returned `attemptId` with the rating; a
+sibling refused for the day leaves the session instead of being counted as
+shown. Tier-1 binary checks render as one-tap choices and are compared
 locally rather than sent to a model. Precondition, keep-going, and bonus
 choices use the dedicated tools; none manufactures an FSRS rating.
 

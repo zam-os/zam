@@ -191,7 +191,7 @@ describe("analyzeObservation", () => {
     expect(result.ratings[0].confidence).toBe("low");
   });
 
-  it("rates 4 for clean, fast execution with no errors", () => {
+  it("does not infer a success rating from clean exit codes alone", () => {
     // Each command needs a unique 2-word prefix to avoid self-correction signal
     const widePatterns: TokenPattern[] = [
       {
@@ -233,14 +233,14 @@ describe("analyzeObservation", () => {
     ];
 
     const result = analyzeObservation(commands, widePatterns);
-    expect(result.ratings[0].rating).toBe(4);
+    expect(result.ratings[0].rating).toBeNull();
     expect(result.ratings[0].confidence).toBe("high");
     expect(result.ratings[0].evidence.matchedCommands).toBe(3);
     expect(result.ratings[0].evidence.errorCount).toBe(0);
     expect(result.ratings[0].evidence.helpSeeking).toBe(false);
   });
 
-  it("rates lower when help-seeking detected", () => {
+  it("does not suggest a success rating when help was sought", () => {
     const commands: CommandRecord[] = [
       {
         seq: 1,
@@ -266,7 +266,9 @@ describe("analyzeObservation", () => {
 
     const result = analyzeObservation(commands, dockerPatterns);
     expect(result.ratings[0].evidence.helpSeeking).toBe(true);
-    expect(result.ratings[0].rating).toBeLessThanOrEqual(3);
+    // Help plus a slow gap reads as effortful work at best; a success
+    // suggestion of Good or Easy never comes out of assisted work.
+    expect([1, 2]).toContain(result.ratings[0].rating);
   });
 
   it("rates lower with errors", () => {

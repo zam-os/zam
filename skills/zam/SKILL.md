@@ -28,11 +28,14 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | Tool Name | Purpose |
 |---|---|
 | `zam_status` | Retrieve database connection target, active user, stats, and due review queue size. |
-| `zam_get_reviews` | Retrieve a batch of due cards, optionally filtering by domain or context and resolving code context. |
+| `zam_get_reviews` | Retrieve a batch of due cards, optionally filtering by domain or context and resolving code context. A prefetch is not a presentation. |
+| `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. Returns the `attemptId` to pass to `zam_submit_review`. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
-| `zam_add_token` | Register a new knowledge token with a slug, concept definition, Bloom level, and prompt question. |
+| `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
+| `zam_list_drafts` | List unpublished draft tokens for author review. |
+| `zam_publish_revision` | Publish a draft or a classified content revision after author review. |
 | `zam_link_prereq` | Add a prerequisite link between a parent token and a child token. |
 | `zam_submit_review` | Submit a card self-rating, advance its FSRS state, and log it to the session steps. |
 | `zam_review_action` | Apply review actions (rate, skip, edit/deprecate/delete tokens or cards) with optional confirmation. |
@@ -91,11 +94,22 @@ Each token has:
 
 Prerequisites: "to understand A, you must first know B." Register edges via `zam_link_prereq`.
 
+`zam_add_token` writes a **draft**. Drafts do not enter the recall queue. After author review, publish with `zam_publish_revision` (first publication is typically `cosmetic`). Before publishing, the card must satisfy:
+
+1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
+2. **Concrete axis** — no open "explain X" without a named axis.
+3. **No unstructured lists** — 1:1 or a cloze of one slot, unless complete reconstruction is the target competence.
+4. **Scope match** — the question asks only what `concept` tests. New items need a real question, not empty and not a slug echo.
+5. **Subject-matter edges** — A is a prerequisite of B only when B is not solvable without A.
+6. **Decidable criterion** — `concept` is the passing standard; `context` is never an extra hurdle.
+
+The kernel blocks empty criteria, missing questions, slug echoes, and invalid references. Scope, leakage, and subject-matter judgment stay with the author.
+
 ---
 
 ## Two Modes of Knowledge Assessment
 
-**Observation (primary)**: Agent watches the user do the task. If done correctly without help or hesitation → silently rate all touched tokens as 4. No interruption, no questions. Like a driving examiner in the back seat. But if you supplied the knowledge *this session* — looked it up, taught it, or handed over the exact steps — that is an assisted first run, not mastery: log a modest establishing rating (a 3, not a 4); real recall is tested when the card next falls due.
+**Observation (primary)**: Agent watches the user do the task. Rate an FSRS review only for a documented independent attempt that meets the item's `concept` in full. Complete independent success is 2 (effortful), 3 (ordinary; use 3 when effort is unknown), or 4 (effortless — never automatic). Missing required content is 1, never Hard. If you supplied the knowledge this session — looked it up, taught it, or handed over the exact steps — that is assisted user work, not recall: call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, the session ID, card ID, and a `reason`; do not send a rating. Observation without a documented independent attempt must not create a success review.
 
 **Verbal probing (secondary)**: Used when observation is insufficient — conceptual sessions with no executable output, or when a token hasn't been exercised in a long time and a practice task isn't appropriate.
 
@@ -120,7 +134,7 @@ Pick the lowest level that captures the task honestly — shell for command-line
 Call `zam_status` to fetch connection target, current user, stats, and due review queue size. Show stats as a brief friendly greeting.
 
 For **review/conceptual** sessions, query due reviews without resolving:
-Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it.
+Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it. Immediately before asking a card, call `zam_admit_review` with that `cardId` and the session ID and keep the returned `attemptId` for the submit. If it reports another item of the same atom was already presented today, skip to the next card.
 
 For **executable/task** sessions, also query for tokens relevant to the current task to weave them into the session planning:
 Call `zam_find_tokens` (with the task description context). If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
@@ -144,7 +158,8 @@ Call `zam_suggest_foundations` (with concept, question, and domain). Present non
 **Register tokens and prerequisites:**
 As the frontier model, YOU author both the concept and the recall question. Pass a clear, concept-free prompt question so the offline fallback stays high quality.
 Register new tokens and link prerequisites:
-Call `zam_add_token` to register a new token.
+Call `zam_add_token` to register a new token as a draft (include a concept-free question).
+Call `zam_publish_revision` after author review so the token can enter the queue.
 Call `zam_link_prereq` to link any parent prerequisites.
 
 ### STEP 3 — Start a session
@@ -171,7 +186,7 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them using each candidate's `cardId` or `tokenId`.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work.
 
 **For UI / screen tasks (observation mode):**
 
@@ -199,11 +214,11 @@ For each due token, ask a conceptual question at the right Bloom level:
 After the user answers, run the explicit review loop:
 1. **Check the answer first.** Compare the user's answer with the concept definition, the recall question, and resolved source context.
 2. **Give learning feedback before asking for a rating.** State the verdict, give a reference answer, and explain gaps.
-3. **Suggest a self-rating.** Propose a rating from 1 to 4: 4 = instant, 3 = knew it with small gap, 2 = partial recall, 1 = blank/incorrect.
+3. **Suggest a self-rating.** Propose 1–4 against the `concept` only (context is not a pass hurdle): 4 = effortless complete success, 3 = ordinary complete success (use 3 when effort is unknown), 2 = complete but effortful success, 1 = blank, wrong, or missing a required element. Never use 2 for a partial answer.
 4. **Ask the user to choose the final rating.**
 5. **WAIT for the user to choose.**
-6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, and `doneBy: "user"`.
-*(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating; this logs evidence without advancing FSRS.)*
+6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, the `attemptId` from `zam_admit_review`, and `doneBy: "user"`. The same attempt id never creates a second review, so a retry after a timeout is safe.
+*(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating. If the user followed steps just demonstrated, with no independent attempt, call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, session ID, card ID, and `reason`. Both log evidence without advancing FSRS.)*
 
 #### Leveraging Source Links for AI Agent Context
 When calling `zam_get_reviews` or other review lookups, if a token has a `source_link`, the resolved code/documentation context will be returned. Use it to:
@@ -308,6 +323,7 @@ If the MCP transport is unavailable, execute the corresponding `zam` bridge CLI 
 | Get Status / Stats | `zam bridge check-due --user <id>` |
 | Check Due reviews | `zam bridge check-due --user <id>` |
 | Get Reviews Batch | `zam bridge get-reviews --user <id> --include-questions --no-resolve --no-dynamic-question` |
+| Admit a card for presentation | `zam bridge admit-review --card-id <id> [--session <id>] [--time-zone <iana>]` |
 | Get Single Review | `zam bridge get-review --user <id>` |
 | Start Session | `zam bridge start-session --user <id> --task "<task>"` |
 | Session Open | `zam bridge session-open --user <id> --task "<task>"` |

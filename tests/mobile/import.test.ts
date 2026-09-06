@@ -117,6 +117,7 @@ describe("mobile additive import and quick capture", () => {
     expect(result.token).toMatchObject({
       slug: "newton-two",
       question_source: "llm",
+      editorial_state: "draft",
     });
     expect(await getCard(db, result.token.id, "student-9")).toMatchObject({
       id: result.card.id,

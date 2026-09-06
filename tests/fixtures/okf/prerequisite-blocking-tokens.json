@@ -1,0 +1,64 @@
+[
+  {
+    "slug": "zam-cascade-block-trigger",
+    "title": "When cascadeBlock runs",
+    "bloomLevel": 1,
+    "domain": "zam/kernel",
+    "question": "Under which condition does executeReviewAction() call cascadeBlock() after a rating?",
+    "concept": "Only on rating 1 for a token that has at least one prerequisite.",
+    "anchor": "blocking"
+  },
+  {
+    "slug": "zam-cascade-block-failed-card",
+    "title": "Effect on the failed card",
+    "bloomLevel": 2,
+    "domain": "zam/kernel",
+    "question": "What happens to the card of the token that received rating 1?",
+    "concept": "blocked = 1; it leaves the queue until unblockReady releases it.",
+    "prerequisites": ["zam-cascade-block-trigger"],
+    "anchor": "blocking"
+  },
+  {
+    "slug": "zam-cascade-block-direct-foundations",
+    "title": "Direct foundations materialised",
+    "bloomLevel": 2,
+    "domain": "zam/kernel",
+    "question": "For which prerequisites does cascadeBlock() create missing cards?",
+    "concept": "For the direct prerequisites of the failed token, not the transitive hull.",
+    "prerequisites": ["zam-cascade-block-trigger"],
+    "anchor": "blocking"
+  },
+  {
+    "slug": "zam-unblock-ready",
+    "title": "When unblockReady releases",
+    "bloomLevel": 2,
+    "domain": "zam/kernel",
+    "question": "When does unblockReady() release a blocked card?",
+    "concept": "Every direct prerequisite has a card with reps ≥ 1 that is itself not blocked; release cascades in the same call.",
+    "prerequisites": [
+      "zam-cascade-block-failed-card",
+      "zam-cascade-block-direct-foundations"
+    ],
+    "anchor": "blocking"
+  },
+  {
+    "slug": "zam-blocking-not-in-evaluate-rating",
+    "title": "Blocking is not evaluateRating",
+    "bloomLevel": 2,
+    "domain": "zam/kernel",
+    "question": "Why is blocking not part of evaluateRating()?",
+    "concept": "FSRS arithmetic and learning-path policy stay separate.",
+    "prerequisites": ["zam-cascade-block-trigger"],
+    "anchor": "separation-from-fsrs-math"
+  },
+  {
+    "slug": "zam-no-proactive-admission-gate",
+    "title": "No proactive admission gate",
+    "bloomLevel": 2,
+    "domain": "zam/kernel",
+    "question": "Does an unmet prerequisite block access before the card is ever asked?",
+    "concept": "No; hard edges are not a proactive admission gate.",
+    "prerequisites": ["zam-cascade-block-trigger"],
+    "anchor": "atom-prerequisites-and-entry-assessment"
+  }
+]

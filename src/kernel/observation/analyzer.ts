@@ -330,7 +330,7 @@ interface RatingSignals {
   matchedCommands: number;
 }
 
-function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 {
+function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 | null {
   const {
     helpSeeking,
     errorCount,
@@ -350,8 +350,13 @@ function inferRating(signals: RatingSignals): 1 | 2 | 3 | 4 {
   else if (medianGapMs != null && medianGapMs > 10_000) negatives += 1;
   if (thinkingGapMs != null && thinkingGapMs > 30_000) negatives += 1;
 
+  // Exit code 0 plus a command match is not an independent success, and a
+  // slow gap or one stray error on top of it does not make it one either:
+  // nothing here proves the learner recalled the concept. Only visible
+  // struggle is evidence in itself — effortful (2) or failed (1) work — and
+  // even that stays a suggestion the learner confirms. Everything else is
+  // left without a rating rather than guessed as Good.
   if (negatives >= 5) return 1;
   if (negatives >= 3) return 2;
-  if (negatives >= 1) return 3;
-  return 4;
+  return null;
 }

@@ -1,20 +1,28 @@
 import { mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
+import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addToken,
+  admitReview,
   backupCreate,
+  checkDue,
   endSession,
   getReview,
   getReviewsBatch,
   linkPrereq,
+  listDrafts,
+  publishRevision,
   startSession,
   submitReview,
   updateCheck,
 } from "../../src/cli/bridge-handlers.js";
 import {
+  AtomSiblingOccupiedError,
+  buildReviewQueue,
   commitTextImport,
+  endSession as completeSession,
   createToken,
   enrolBundledCell,
   ensureCard,
@@ -111,6 +119,68 @@ describe("bridge-handlers unit tests", () => {
     expect(res2.cards[0].bloomVerb).toBe("Remember");
     expect(res2.cards[1].question).toBe("Explain 2.");
     expect(res2.cards[1].bloomVerb).toBe("Understand");
+  });
+
+  it("does not treat a queue prefetch as a presentation", async () => {
+    const atomId = ulid();
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run(atomId, "P");
+    const p1 = await createToken(db, {
+      slug: "p1-prefetch",
+      concept: "P1",
+      domain: "math",
+      question: "P1?",
+      atom_id: atomId,
+    });
+    const p2 = await createToken(db, {
+      slug: "p2-prefetch",
+      concept: "P2",
+      domain: "math",
+      question: "P2?",
+      atom_id: atomId,
+    });
+    await ensureCard(db, p1.id, "thomas");
+    const p2Card = await ensureCard(db, p2.id, "thomas");
+
+    const batch = await getReviewsBatch(db, {
+      user: "thomas",
+      includeQuestions: true,
+      noResolve: true,
+      noDynamicQuestion: true,
+      respectWorkload: true,
+      maxNew: 10,
+    });
+    expect(batch.cards.length).toBeGreaterThanOrEqual(2);
+    expect(
+      (await db
+        .prepare("SELECT COUNT(*) AS n FROM card_presentations")
+        .get()) as { n: number },
+    ).toEqual({ n: 0 });
+
+    await getReview(db, {
+      user: "thomas",
+      noResolve: true,
+      noDynamicQuestion: true,
+    });
+    expect(
+      (await db
+        .prepare("SELECT COUNT(*) AS n FROM card_presentations")
+        .get()) as { n: number },
+    ).toEqual({ n: 0 });
+
+    await admitReview(db, {
+      user: "thomas",
+      cardId: p2Card.id,
+      timeZone: "UTC",
+    });
+    await expect(
+      admitReview(db, {
+        user: "thomas",
+        cardId: (await getCard(db, p1.id, "thomas"))!.id,
+        timeZone: "UTC",
+      }),
+    ).rejects.toBeInstanceOf(AtomSiblingOccupiedError);
   });
 
   it("applies session admission, tier ordering, and structured fast checks on learner surfaces", async () => {
@@ -219,7 +289,7 @@ describe("bridge-handlers unit tests", () => {
     );
   });
 
-  it("submitReview logs steps and reviews and handles stepError on session step write failure", async () => {
+  it("submitReview logs reviews and rejects an invalid session without a partial FSRS write", async () => {
     const token = await createToken(db, {
       slug: "submit-token",
       concept: "Concept",
@@ -245,17 +315,48 @@ describe("bridge-handlers unit tests", () => {
     expect(logs[0].rating).toBe(3);
     expect(logs[0].response_time_ms).toBe(2_500);
 
-    // Submit review with invalid sessionId (causes step write failure, should return stepError)
-    const res2 = await submitReview(db, {
+    const repsAfterValid = (await getCard(db, token.id, "thomas"))!.reps;
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 4,
+        sessionId: "non-existent-session-ulid",
+      }),
+    ).rejects.toThrow("Session not found");
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(repsAfterValid);
+  });
+
+  it("writes a rated review and session step in one transaction", async () => {
+    const token = await createToken(db, {
+      slug: "session-rate-token",
+      concept: "Session rate",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Rated work",
+    });
+
+    const result = await submitReview(db, {
       user: "thomas",
       cardId: card.id,
-      rating: 4,
-      sessionId: "non-existent-session-ulid",
+      rating: 3,
+      sessionId: session.id,
     });
-    expect(res2.success).toBe(true);
-    expect(res2.rating).toBe(4);
-    expect(res2.stepError).toBeDefined();
-    expect(res2.stepError).toContain("Session not found");
+    expect(result.success).toBe(true);
+    expect(result.rating).toBe(3);
+    expect(result.applied).toBe(true);
+    expect(result.attemptId).toBeTruthy();
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+    expect(steps[0].rating).toBe(3);
+    expect(steps[0].done_by).toBe("user");
   });
 
   it("logs agent-completed steps without advancing FSRS", async () => {
@@ -300,6 +401,226 @@ describe("bridge-handlers unit tests", () => {
         rating: 4,
       }),
     ).rejects.toThrow("must not include a rating");
+  });
+
+  it("records assisted user work without advancing FSRS", async () => {
+    const token = await createToken(db, {
+      slug: "assisted-user-token",
+      concept: "Assisted work",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Assisted first run",
+    });
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      doneBy: "user",
+      recordOnly: true,
+      reason: "followed demonstrated steps",
+    });
+
+    expect(result).toMatchObject({
+      success: true,
+      rating: null,
+      evaluation: null,
+      recordedOnly: true,
+    });
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
+    const step = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .get(session.id);
+    expect(step.done_by).toBe("user");
+    expect(step.rating).toBeNull();
+    expect(step.notes).toBe("followed demonstrated steps");
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        recordOnly: true,
+        reason: "demo",
+        rating: 2,
+      }),
+    ).rejects.toThrow("must not include a rating");
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        doneBy: "agent",
+        recordOnly: true,
+        reason: "demo",
+      }),
+    ).rejects.toThrow("recordOnly is for assisted user work");
+  });
+
+  it("replays a record-only step by attempt id without a second session step", async () => {
+    const token = await createToken(db, {
+      slug: "record-only-replay",
+      concept: "Replay",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Assisted work",
+    });
+    const attemptId = ulid();
+
+    const first = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      recordOnly: true,
+      reason: "followed the demo",
+      attemptId,
+    });
+    expect(first).toMatchObject({ recordedOnly: true, attemptId, replayed: false });
+
+    const retry = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      recordOnly: true,
+      reason: "followed the demo",
+      attemptId,
+    });
+    expect(retry).toMatchObject({ recordedOnly: true, attemptId, replayed: true });
+
+    // The assisted attempt cannot later be turned into an FSRS success, and
+    // the refusal leaves no orphan step behind.
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 3,
+        sessionId: session.id,
+        attemptId,
+      }),
+    ).rejects.toThrow("already has a different assessment");
+
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+  });
+
+  it("accepts a rating for a completed session so confirmed synthesis candidates are not lost", async () => {
+    const token = await createToken(db, {
+      slug: "late-confirmation",
+      concept: "Late confirmation",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Observed work",
+    });
+    await completeSession(db, session.id);
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      rating: 3,
+      sessionId: session.id,
+    });
+    expect(result.success).toBe(true);
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+  });
+
+  it("keeps drafts out of due lists, admission, and rating", async () => {
+    const added = await addToken(db, {
+      user: "thomas",
+      slug: "draft-only",
+      concept: "Captured without review",
+      domain: "math",
+    });
+    expect(added.token.editorial_state).toBe("draft");
+
+    const due = await checkDue(db, { user: "thomas" });
+    expect(due.cards.map((card: { tokenId: string }) => card.tokenId)).not.toContain(
+      added.token.id,
+    );
+    const batch = await getReviewsBatch(db, { user: "thomas" });
+    expect(batch.cards.map((card: { tokenId: string }) => card.tokenId)).not.toContain(
+      added.token.id,
+    );
+    await expect(
+      admitReview(db, { user: "thomas", cardId: added.card.id }),
+    ).rejects.toThrow("not published");
+    await expect(
+      submitReview(db, { user: "thomas", cardId: added.card.id, rating: 3 }),
+    ).rejects.toThrow("cannot be reviewed");
+  });
+
+  it("rejects record-only against another learner, a completed session, or a foreign card", async () => {
+    const token = await createToken(db, {
+      slug: "record-only-guard",
+      concept: "Guard",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const otherCard = await ensureCard(db, token.id, "other");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Own session",
+    });
+    const otherSession = await startSession(db, {
+      user: "other",
+      task: "Other session",
+    });
+    await completeSession(db, session.id);
+
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: session.id,
+        recordOnly: true,
+        reason: "too late",
+      }),
+    ).rejects.toThrow("already completed");
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        sessionId: otherSession.id,
+        recordOnly: true,
+        reason: "wrong learner",
+      }),
+    ).rejects.toThrow("does not belong");
+    const live = await startSession(db, {
+      user: "thomas",
+      task: "Live",
+    });
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: otherCard.id,
+        sessionId: live.id,
+        recordOnly: true,
+        reason: "foreign card",
+      }),
+    ).rejects.toThrow("does not belong");
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+    expect((await getCard(db, token.id, "other"))!.reps).toBe(0);
   });
 
   it("creates a card only after a token-based synthesis rating is confirmed", async () => {
@@ -403,6 +724,45 @@ describe("bridge-handlers unit tests", () => {
 
     const token = await getTokenBySlug(db, "agent-authored");
     expect(token?.question_source).toBe("llm");
+    expect(token?.editorial_state).toBe("draft");
+  });
+
+  it("addToken writes a draft that stays out of the queue until publish", async () => {
+    const result = await addToken(db, {
+      user: "thomas",
+      slug: "capture-draft",
+      concept: "Force equals mass times acceleration.",
+      question: "How are force, mass and acceleration related?",
+      domain: "physics",
+    });
+    expect(result.token.editorial_state).toBe("draft");
+    await db
+      .prepare("UPDATE cards SET due_at = '2000-01-01T00:00:00.000Z'")
+      .run();
+    const before = await buildReviewQueue(db, { userId: "thomas" });
+    expect(before.items.some((item) => item.tokenId === result.token.id)).toBe(
+      false,
+    );
+
+    const drafts = await listDrafts(db);
+    expect(drafts.tokens.map((token) => token.slug)).toContain("capture-draft");
+
+    await expect(
+      publishRevision(db, {
+        slug: "capture-draft",
+        materiality: "cosmetic",
+        changes: { question: "" },
+      }),
+    ).rejects.toThrow(/question is required/i);
+
+    await publishRevision(db, {
+      slug: "capture-draft",
+      materiality: "cosmetic",
+    });
+    const after = await buildReviewQueue(db, { userId: "thomas" });
+    expect(after.items.some((item) => item.tokenId === result.token.id)).toBe(
+      true,
+    );
   });
 
   it("getReviewsBatch serves fresh question variations and never mutates stored questions", async () => {

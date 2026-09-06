@@ -73,7 +73,7 @@ export function buildUiSynthesisCandidates(
     string,
     {
       token: Token;
-      inferredRating: Rating;
+      inferredRating: Rating | null;
       confidence: SynthesisConfidence;
       evidence: ObservationRating["evidence"];
       matchedCommandTexts: string[];
@@ -105,7 +105,7 @@ export function buildUiSynthesisCandidates(
         continue;
       }
 
-      const inferredRating = candidate.rating ?? 3;
+      const inferredRating = candidate.rating;
       const existing = bestBySlug.get(candidate.slug);
       if (existing && existing.reportConfidence >= candidate.confidence) {
         continue;
@@ -133,6 +133,10 @@ export function buildUiSynthesisCandidates(
       confidence: entry.confidence,
       evidence: entry.evidence,
       matchedCommandTexts: entry.matchedCommandTexts,
+      evidenceKey: entry.matchedCommandTexts
+        .map((text) => text.trim())
+        .filter(Boolean)
+        .join("\n"),
     }));
 
   return { candidates, skippedLowConfidence };

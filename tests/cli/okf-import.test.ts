@@ -1,4 +1,10 @@
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -99,6 +105,8 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
 
     expect(result.created.sort()).toEqual(["first-concept", "second-concept"]);
     expect(result.cards).toBe(2);
+    // Without a question a token is stored, carded, and parked as a draft.
+    expect(result.drafts.sort()).toEqual(["first-concept", "second-concept"]);
     expect(result.article.source_link).toBe(RESOURCE);
 
     const first = await getTokenBySlug(db, "first-concept");
@@ -121,6 +129,30 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
       { slug: "only-concept", concept: "One genuine concept." },
     ]);
     expect(result.created).toEqual(["only-concept"]);
+  });
+
+  it("publishes a parked draft once a re-import supplies the question", async () => {
+    const parked = await importSample([
+      { slug: "first-concept", concept: "The first memorable concept." },
+    ]);
+    expect(parked.drafts).toEqual(["first-concept"]);
+    expect((await getTokenBySlug(db, "first-concept"))?.editorial_state).toBe(
+      "draft",
+    );
+
+    const published = await importSample([
+      {
+        slug: "first-concept",
+        concept: "The first memorable concept.",
+        question: "Which concept comes first in the sample article?",
+        mode: "update",
+      },
+    ]);
+    expect(published.updated).toEqual(["first-concept"]);
+    expect(published.drafts).toEqual([]);
+    const token = await getTokenBySlug(db, "first-concept");
+    expect(token?.editorial_state).toBe("published");
+    expect(token?.question).toContain("comes first");
   });
 
   it("rejects mode 'new' on an existing slug with an instructive error", async () => {
@@ -295,5 +327,58 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
         tokens: [],
       }),
     ).rejects.toThrow(/non-empty/);
+  });
+});
+
+describe("OKF import of prerequisite-blocking §6.2 items", () => {
+  let db: Database;
+  let tempDir: string;
+  let previousConfigPath: string | undefined;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-okf-blocking-"));
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(tempDir, "machine-config.json");
+    db = await openDatabase({
+      dbPath: join(tempDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  });
+
+  afterEach(async () => {
+    await db.close();
+    if (previousConfigPath === undefined) {
+      delete process.env.ZAM_CONFIG_PATH;
+    } else {
+      process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    }
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  it("installs six decidable items from the current article", async () => {
+    const tokens = JSON.parse(
+      readFileSync(
+        join(
+          process.cwd(),
+          "tests/fixtures/okf/prerequisite-blocking-tokens.json",
+        ),
+        "utf8",
+      ),
+    ) as Parameters<typeof importOkfTokens>[1]["tokens"];
+    const result = await importOkfTokens(db, {
+      user: USER,
+      bundleDir: join(process.cwd(), "docs/okf"),
+      file: "prerequisite-blocking.md",
+      tokens,
+    });
+    expect(result.created).toHaveLength(6);
+    expect(result.cards).toBe(6);
+    const trigger = await getTokenBySlug(db, "zam-cascade-block-trigger");
+    expect(trigger?.question).toContain("cascadeBlock");
+    expect(trigger?.source_link).toContain("prerequisite-blocking.md");
+    const unblock = await getTokenBySlug(db, "zam-unblock-ready");
+    const prereqs = await getPrerequisites(db, unblock!.id);
+    expect(prereqs).toHaveLength(2);
   });
 });

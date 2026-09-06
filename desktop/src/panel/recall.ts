@@ -68,6 +68,18 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  return errorMessage(error).includes("already presented today");
+}
+
+function isCardNoLongerDue(error: unknown): boolean {
+  return errorMessage(error).includes("no longer due");
+}
+
 let contextBar: ContextBarHandle | undefined;
 let panelVersion: string | undefined;
 
@@ -132,6 +144,12 @@ interface SubmitResult {
   rating: number;
   evaluation: SubmitEvaluation;
   blocked: BlockedInfo | null;
+  attemptId?: string;
+  applied?: boolean;
+}
+
+interface AdmitResult {
+  attemptId?: string;
 }
 
 type CardState =
@@ -262,7 +280,11 @@ async function changeLearningMode(
     if (revision !== sessionRevision || requestedUser !== currentUser) return;
     learningMode = next;
     if (requestedCardId === cards[index]?.cardId) {
-      renderCard();
+      // The card is rebuilt only after its (re-)admission resolves; restoring
+      // the draft before that would write into the textarea about to be
+      // replaced.
+      await renderCard();
+      if (revision !== sessionRevision) return;
       const answer =
         contentEl?.querySelector<HTMLTextAreaElement>(".recall-answer");
       if (answer && draft) {
@@ -428,7 +450,7 @@ async function decideRecallPrecondition(
     advance();
     return;
   }
-  renderCard();
+  void renderCard();
 }
 
 async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
@@ -622,7 +644,7 @@ function advance(): void {
   if (index >= cards.length) {
     void offerAfterQueue("done");
   } else {
-    renderCard();
+    void renderCard();
   }
 }
 
@@ -703,7 +725,11 @@ async function sampleViaHost(
   return text;
 }
 
-function renderCard(): void {
+function renderCard(): Promise<void> {
+  return presentCurrentCard();
+}
+
+async function presentCurrentCard(): Promise<void> {
   if (!contentEl) return;
   const card = cards[index];
   if (!card) {
@@ -738,6 +764,31 @@ function renderCard(): void {
       return;
     }
   }
+  const revision = sessionRevision;
+  let attemptId: string | undefined;
+  try {
+    const admission = (await callTool(
+      "zam_admit_review",
+      recallUserArgs({
+        cardId: card.cardId,
+        timeZone: learnerTimeZone(),
+      }),
+    )) as AdmitResult | undefined;
+    attemptId = admission?.attemptId;
+  } catch (error) {
+    if (revision !== sessionRevision) return;
+    if (isAtomSiblingOccupied(error) || isCardNoLongerDue(error)) {
+      // Not shown, so not part of this session: drop it from the queue
+      // instead of stepping past it, or the counter and summary would count
+      // a card the learner never saw.
+      cards.splice(index, 1);
+      void renderCard();
+      return;
+    }
+    renderError(errorMessage(error));
+    return;
+  }
+  if (revision !== sessionRevision || cards[index] !== card) return;
   cardStartedAt = Date.now();
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
@@ -947,6 +998,8 @@ function renderCard(): void {
         doneBy: "user",
         responseTimeMs: Math.max(0, Date.now() - cardStartedAt),
       };
+      // The admission's attempt id keeps a retried submit one review.
+      if (attemptId) args.attemptId = attemptId;
       if (currentUser) args.user = currentUser;
       const res = (await callTool("zam_submit_review", args)) as SubmitResult;
       tally.done += 1;
@@ -1268,6 +1321,7 @@ async function loadReviews(): Promise<void> {
     const args: Record<string, unknown> = {
       includeQuestions: true,
       respectWorkload: true,
+      timeZone: learnerTimeZone(),
     };
     if (nextMaxNewOverride !== undefined) {
       args.maxNew = nextMaxNewOverride;
@@ -1288,7 +1342,7 @@ async function loadReviews(): Promise<void> {
     if (cards.length === 0) {
       renderEmpty();
     } else {
-      renderCard();
+      void renderCard();
     }
   } catch (error) {
     if (revision !== sessionRevision) return;

@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-08-09T14:10:00Z
+timestamp: 2026-09-06T19:42:57.000Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -33,7 +33,7 @@ FSRS state for the importing learner.
 
 Basic front/back cards, native Cloze cards, and native image-occlusion cards
 with rectangular or elliptical masks are rendered without executing Anki
-templates. Cloze questions reveal only the active deletion as `[…]` or its
+templates. Cloze questions reveal only the active deletion as `[...]` or its
 hint; answers reveal that deletion. Image-occlusion questions draw the active
 mask over the packaged image and answers show the unmasked image. Unsupported
 template expressions, Cloze variants, occlusion shapes, or cards that become
@@ -66,13 +66,16 @@ state invalidates confirmation before the first write.
 
 `imported_card_bindings` maps an external identity to its token and last
 imported hashes. Unchanged re-import skips shared content while still creating
-a missing personal card. Source changes update the token and media links through
-the material content-revision path, making learned cards due for a re-test while
-preserving FSRS history, and superseded payloads that no card references any
-more are deleted from `media_assets` in the same transaction. If local content
-and the source both changed since the last import, preview reports a conflict
-and preserves the local token. All non-conflicting cards, media assets, links,
-and bindings commit together or the library remains unchanged.
+a missing personal card. First import of an existing Anki or file card is an
+adoption path: the new token is published. A later source wording change
+against **published** content is linted (`published_content_opt_in`) and does
+not overwrite the last published version or imported schedule unless the
+confirm call passes `--apply-published`, which applies the source wording as a
+material revision through the normal publish path. Drafts may still be
+updated. If local
+content and the source both changed since the last import, preview reports a
+conflict and preserves the local token. All non-conflicting cards, media
+assets, links, and bindings commit together or the library remains unchanged.
 
 The [curated open-content library](open-content-library.md) is a separate
 network-assisted discovery surface in front of this same parser. It verifies a

@@ -3,6 +3,7 @@ import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
   parseRecallEvaluation,
+  reconcileRecallSuggestedRating,
   resolveRecallEvaluationRoute,
 } from "../../desktop/src/panel/recall-evaluation.js";
 
@@ -23,6 +24,9 @@ describe("Recall smart evaluation", () => {
     expect(prompt).toContain(card.resolvedContext);
     expect(prompt).toContain("Both call a model.");
     expect(prompt).toContain('"suggestedRating"');
+    expect(prompt).toContain("reference answer only");
+    expect(prompt).toContain("never 2/3/4");
+    expect(prompt).not.toContain("2 for partial");
   });
 
   it("names the answer language, so a German learner is not answered in English", () => {
@@ -55,8 +59,16 @@ describe("Recall smart evaluation", () => {
       feedback: "One important distinction is missing.",
       referenceAnswer: "Use the stored concept.",
       gaps: ["sampling returns the response"],
-      suggestedRating: 2,
+      suggestedRating: 1,
     });
+  });
+
+  it("never suggests Hard/Good/Easy for a partial or incorrect verdict", () => {
+    expect(reconcileRecallSuggestedRating("partial", 2)).toBe(1);
+    expect(reconcileRecallSuggestedRating("partial", 3)).toBe(1);
+    expect(reconcileRecallSuggestedRating("incorrect", 4)).toBe(1);
+    expect(reconcileRecallSuggestedRating("correct", 2)).toBe(2);
+    expect(reconcileRecallSuggestedRating("correct", 1)).toBe(3);
   });
 
   it("continues the discussion with the grounded review context", () => {

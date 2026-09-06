@@ -27,6 +27,7 @@ import {
 import type { EvaluatorRoute } from "../../vscode-extension/companion-evaluator.js";
 import {
   addToken as handleAddToken,
+  admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
@@ -42,6 +43,7 @@ import {
   linkPrereq as handleLinkPrereq,
   listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
+  listDrafts as handleListDrafts,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
@@ -103,6 +105,7 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "personal-card-update",
   "personal-card-publish-revision",
   "personal-card-revision-preview",
+  "list-drafts",
   "personal-card-create-assignment",
   "personal-card-withdraw-assignment",
   "personal-card-list-assignments",
@@ -503,6 +506,10 @@ export function createMcpServer(
           .literal(true)
           .optional()
           .describe("Keep review retrieval read-only (always true over MCP)"),
+        timeZone: z
+          .string()
+          .optional()
+          .describe("Learner IANA time zone for the local learning day"),
       },
       annotations: {
         ...externalAnnotations,
@@ -520,6 +527,37 @@ export function createMcpServer(
         maxNew: params.maxNew,
         noResolve: params.noResolve,
         noDynamicQuestion: true,
+        timeZone: params.timeZone,
+      });
+    }),
+  );
+
+  server.registerTool(
+    "zam_admit_review",
+    {
+      description:
+        "Admit a specific card for presentation. A queue prefetch is not an exposure; call this immediately before showing the item. Rejects a different sibling of the same atom already presented today and any unpublished card. Returns the attemptId to pass to zam_submit_review for this display.",
+      inputSchema: {
+        user: z.string().optional().describe("User ID"),
+        cardId: z.string().describe("Card ULID to present"),
+        session: z.string().optional().describe("Active session ID"),
+        timeZone: z
+          .string()
+          .optional()
+          .describe("Learner IANA time zone for the local learning day"),
+      },
+      annotations: {
+        ...externalAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(async (params) => {
+      const userId = await getUserId(params.user);
+      return await handleAdmitReview(db, {
+        user: userId,
+        cardId: params.cardId,
+        session: params.session,
+        timeZone: params.timeZone,
       });
     }),
   );
@@ -528,13 +566,14 @@ export function createMcpServer(
   server.registerTool(
     "zam_submit_review",
     {
-      description: "Submit a user rating or log an unrated agent step",
+      description:
+        "Submit a user FSRS rating, log an unrated agent step, or record assisted user work without a rating. Pass the attemptId that zam_admit_review returned for this display so a retried submit stays one review; a completed session still accepts ratings of its own work.",
       inputSchema: {
         user: z.string().optional().describe("User ID submitting the review"),
         cardId: z
           .string()
           .optional()
-          .describe("Card ULID; required for agent steps"),
+          .describe("Card ULID; required for agent and record-only steps"),
         tokenId: z
           .string()
           .optional()
@@ -546,12 +585,14 @@ export function createMcpServer(
           .max(4)
           .optional()
           .describe(
-            "User FSRS rating (1=Again, 2=Hard, 3=Good, 4=Easy); omit when doneBy is agent",
+            "User FSRS rating (1=Again, 2=Hard, 3=Good, 4=Easy); omit when doneBy is agent or recordOnly is true",
           ),
         sessionId: z
           .string()
           .optional()
-          .describe("Optional active session ULID to log step"),
+          .describe(
+            "Active session ULID to log the step; required for agent and record-only steps",
+          ),
         doneBy: z
           .enum(["user", "agent"])
           .optional()
@@ -564,6 +605,42 @@ export function createMcpServer(
           .describe(
             "Milliseconds between showing the card and this rating (study-time stats)",
           ),
+        recordOnly: z
+          .boolean()
+          .optional()
+          .describe(
+            "Log assisted user work as a session step without an FSRS rating",
+          ),
+        reason: z
+          .string()
+          .optional()
+          .describe(
+            "Why this step is record-only; required when recordOnly is true",
+          ),
+        attemptId: z
+          .string()
+          .optional()
+          .describe(
+            "Attempt ULID returned by zam_admit_review for this display; the same attempt cannot create two reviews",
+          ),
+        independent: z
+          .boolean()
+          .optional()
+          .describe(
+            "Whether this was an independent attempt; false forbids an FSRS success",
+          ),
+        activity: z
+          .string()
+          .optional()
+          .describe("Specific work activity for this attempt"),
+        assistance: z
+          .string()
+          .optional()
+          .describe("Assistance actually received"),
+        permittedTools: z
+          .array(z.string())
+          .optional()
+          .describe("Tools that were permitted for this attempt"),
       },
       annotations: {
         ...commonAnnotations,
@@ -581,6 +658,13 @@ export function createMcpServer(
         sessionId: params.sessionId,
         doneBy: params.doneBy,
         responseTimeMs: params.responseTimeMs,
+        recordOnly: params.recordOnly,
+        reason: params.reason,
+        attemptId: params.attemptId,
+        independent: params.independent,
+        activity: params.activity,
+        assistance: params.assistance,
+        permittedTools: params.permittedTools,
       });
     }),
   );
@@ -672,7 +756,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_add_token",
     {
-      description: "Add a new knowledge token",
+      description:
+        "Add a new knowledge token as a draft. It does not enter the recall queue until published with zam_publish_revision after author review.",
       inputSchema: {
         user: z.string().optional().describe("User ID to auto-create card for"),
         slug: z.string().describe("Unique slug for the token"),
@@ -704,7 +789,9 @@ export function createMcpServer(
           .string()
           .nullable()
           .optional()
-          .describe("Pre-defined review question"),
+          .describe(
+            "Pre-defined review question. Raw captures are stored as drafts and need a question before publish.",
+          ),
         knowledgeContexts: z
           .array(z.string())
           .optional()
@@ -738,13 +825,29 @@ export function createMcpServer(
     }),
   );
 
+  server.registerTool(
+    "zam_list_drafts",
+    {
+      description:
+        "List unpublished draft and in-review tokens for author review before publication.",
+      inputSchema: {},
+      annotations: {
+        ...externalAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async () => {
+      return await handleListDrafts(db);
+    }),
+  );
+
   // zam_publish_revision — Closed-Group Library Phase 2 (Studio release step)
   server.registerTool(
     "zam_publish_revision",
     {
       description:
-        "Publish a token content revision with forced cosmetic vs material classification (ADR Decision 2 & 3). " +
-        "Cosmetic changes update text silently; material changes re-test learners who learned earlier versions.",
+        "Publish a draft or a classified content revision. Structural checks (required question, non-empty criterion, no slug echo, valid references) block publication. " +
+        "Cosmetic changes leave FSRS state; material changes re-test learners who learned earlier versions. First publication of a draft is typically cosmetic.",
       inputSchema: {
         tokenId: z.string().optional().describe("Token ULID"),
         slug: z.string().optional().describe("Token slug"),
@@ -1830,7 +1933,9 @@ export function createMcpServer(
         "outcome for real articles. On RE-import classify each token via mode: 'new' adds, 'update' refreshes " +
         "content and KEEPS learning state, 'replace' means the concept changed — content refreshed and learning " +
         "state RESET to the beginning. Previously imported tokens you do not confirm are moved to maintenance " +
-        "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user.",
+        "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user. " +
+        "A token without a question is stored as a draft and listed under `drafts`: it keeps its card but stays out of " +
+        "the queue until zam_publish_revision or a re-import (mode 'update') supplies the question.",
       inputSchema: {
         user: z.string().optional().describe("User ID to create cards for"),
         bundle_dir: okfBundleDirSchema,
@@ -1881,7 +1986,9 @@ export function createMcpServer(
                 .string()
                 .nullable()
                 .optional()
-                .describe("Optional pre-defined review question"),
+                .describe(
+                  "Review question. Without one the token is stored as a draft and does not enter the queue until published",
+                ),
               mode: z
                 .enum(["new", "update", "replace"])
                 .optional()

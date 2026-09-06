@@ -20,6 +20,7 @@ export interface EvaluateInput {
   sessionId?: string;
   responseTimeMs?: number;
   reviewLogId?: string;
+  attemptId?: string;
   now?: Date;
 }
 
@@ -139,8 +140,8 @@ export async function evaluateRatingWithinTransaction(
     .get(input.tokenId)) as { content_version: number } | undefined;
   await db
     .prepare(
-      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version, attempt_id)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       reviewLogId,
@@ -153,6 +154,7 @@ export async function evaluateRatingWithinTransaction(
       card.due_at,
       input.sessionId ?? null,
       asked?.content_version ?? null,
+      input.attemptId ?? null,
     );
 
   const siblingBurial = await burySiblingCards(db, {

@@ -16,6 +16,7 @@ import type {
 } from "../kernel/index.js";
 import {
   addPrerequisite,
+  admitPresentation,
   analyzeObservation,
   assessPrecondition,
   assignTokenToContext,
@@ -28,6 +29,7 @@ import {
   enrolBonusAtom,
   enrolBundledCell,
   ensureCard,
+  evaluatePublicationReadiness,
   executeReviewAction,
   exportSnapshot,
   findBundledCellsForScope,
@@ -36,7 +38,6 @@ import {
   getBundledCell,
   getBundledCellsWithStatus,
   getCard,
-  getCardById,
   getCardDeletionImpact,
   getDatabaseTargetInfo,
   getDisplayTitle,
@@ -60,7 +61,7 @@ import {
   suggestFoundations as kernelSuggestFoundations,
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
-  logStep,
+  listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
   OBSERVER_POLICY_UNSET_HINT,
@@ -69,13 +70,16 @@ import {
   prepareSessionSynthesis,
   presentFastCheck,
   publishTokenRevision,
+  publishTokenRevisionInTransaction,
   pullForwardCards,
   readMonitorLog,
+  recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
   resolveReviewContext,
   searchTokensHybrid,
   setTokenMaintenance,
+  structuralPublicationChecks,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -183,6 +187,7 @@ export async function checkDue(db: Database, params: CheckDueParams) {
 // 2. getReview
 export interface GetReviewParams {
   user?: string;
+  timeZone?: string;
   /** Session-local admission budget. Zero keeps unseen cards out. */
   maxNew?: number;
   noResolve?: boolean;
@@ -204,9 +209,11 @@ export async function getReview(db: Database, params: GetReviewParams) {
     maxReviews: 1,
     maxNew: params.maxNew ?? 1,
     knowledgeContext: params.knowledgeContext || undefined,
+    timeZone: params.timeZone,
   });
+  const item = queue.items[0];
 
-  if (queue.items.length === 0) {
+  if (!item) {
     return {
       userId,
       hasReview: false,
@@ -216,8 +223,6 @@ export async function getReview(db: Database, params: GetReviewParams) {
       queueSize: 0,
     };
   }
-
-  const item = queue.items[0];
   const media = !params.includeMedia
     ? []
     : (await getTokenMedia(db, item.tokenId)).map((entry) => ({
@@ -291,6 +296,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
     userId,
     maxNew: params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
+    timeZone: params.timeZone,
   });
 
   return {
@@ -305,6 +311,26 @@ export async function getReview(db: Database, params: GetReviewParams) {
   };
 }
 
+export interface AdmitReviewParams {
+  user?: string;
+  cardId: string;
+  session?: string;
+  timeZone?: string;
+}
+
+export async function admitReview(db: Database, params: AdmitReviewParams) {
+  const userId = await resolveHandlerUser(db, params.user);
+  if (!params.cardId?.trim()) throw new Error("cardId is required");
+  const admission = await admitPresentation(db, {
+    userId,
+    cardId: params.cardId,
+    sessionId: params.session,
+    timeZone: params.timeZone,
+    confirm: true,
+  });
+  return { success: true as const, ...admission };
+}
+
 // 3. getReviewsBatch
 export interface GetReviewsBatchParams {
   user?: string;
@@ -317,6 +343,7 @@ export interface GetReviewsBatchParams {
   respectWorkload?: boolean;
   /** Optional session-local new-card override when workload rules are used. */
   maxNew?: number;
+  timeZone?: string;
 }
 
 export async function getReviewsBatch(
@@ -331,6 +358,7 @@ export async function getReviewsBatch(
           domain: params.domain,
           knowledgeContext: params.knowledgeContext,
           maxNew: params.maxNew,
+          timeZone: params.timeZone,
         })
       ).items.map((item) => ({
         cardId: item.cardId,
@@ -493,6 +521,15 @@ export interface SubmitReviewParams {
   doneBy?: "user" | "agent";
   /** Milliseconds between showing the card and submitting the rating (ADR 2026-08-01 Decision 5). */
   responseTimeMs?: number;
+  /** Assisted user work: log a session step without an FSRS rating. */
+  recordOnly?: boolean;
+  /** Why this step is record-only (required when recordOnly is true). */
+  reason?: string;
+  attemptId?: string;
+  activity?: string;
+  assistance?: string;
+  independent?: boolean;
+  permittedTools?: string[];
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -503,6 +540,49 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
   ) {
     throw new Error("doneBy must be user or agent");
   }
+  if (params.recordOnly) {
+    if (params.doneBy === "agent") {
+      throw new Error(
+        "recordOnly is for assisted user work; use doneBy agent without a rating for agent steps",
+      );
+    }
+    if (params.rating !== undefined) {
+      throw new Error("recordOnly must not include a rating");
+    }
+    const reason = params.reason?.trim();
+    if (!reason) {
+      throw new Error("reason is required for a record-only user step");
+    }
+    if (!params.sessionId) {
+      throw new Error("sessionId is required for a record-only user step");
+    }
+    if (!params.cardId) {
+      throw new Error("cardId is required for a record-only user step");
+    }
+    // Session, card and attempt checks and both writes live in the kernel so
+    // a replay or conflict cannot leave a step without its attempt.
+    const recorded = await recordAssistedStep(db, {
+      cardId: params.cardId,
+      userId,
+      sessionId: params.sessionId,
+      actor: "user",
+      reason,
+      attemptId: params.attemptId,
+      activity: params.activity,
+      assistance: params.assistance,
+      permittedTools: params.permittedTools,
+    });
+    return {
+      success: true,
+      rating: null,
+      evaluation: null,
+      blocked: null,
+      recordedOnly: true,
+      attemptId: recorded.attemptId,
+      replayed: recorded.replayed,
+    };
+  }
+
   if (params.doneBy === "agent") {
     if (params.rating !== undefined) {
       throw new Error("Agent-completed steps must not include a rating");
@@ -513,19 +593,15 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     if (!params.cardId) {
       throw new Error("cardId is required for an agent-completed step");
     }
-    const card = await getCardById(db, params.cardId);
-    if (!card) {
-      throw new Error(`Card not found: ${params.cardId}`);
-    }
-    if (card.user_id !== userId) {
-      throw new Error(
-        `Card ${params.cardId} does not belong to user ${userId}`,
-      );
-    }
-    await logStep(db, {
-      session_id: params.sessionId,
-      token_id: card.token_id,
-      done_by: "agent",
+    const recorded = await recordAssistedStep(db, {
+      cardId: params.cardId,
+      userId,
+      sessionId: params.sessionId,
+      actor: "agent",
+      attemptId: params.attemptId,
+      activity: params.activity,
+      assistance: params.assistance,
+      permittedTools: params.permittedTools,
     });
     return {
       success: true,
@@ -533,6 +609,8 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       evaluation: null,
       blocked: null,
       recordedOnly: true,
+      attemptId: recorded.attemptId,
+      replayed: recorded.replayed,
     };
   }
 
@@ -556,29 +634,24 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     cardId,
     userId,
     rating: params.rating,
+    sessionId: params.sessionId,
     responseTimeMs: params.responseTimeMs,
+    attemptId: params.attemptId,
+    activity: params.activity,
+    actor: "user",
+    permittedTools: params.permittedTools,
+    assistance: params.assistance,
+    independent: params.independent,
+    channel: "direct",
   });
-
-  let stepError: string | undefined;
-  if (params.sessionId) {
-    try {
-      await logStep(db, {
-        session_id: params.sessionId,
-        token_id: result.token.id,
-        done_by: "user",
-        rating: params.rating,
-      });
-    } catch (err) {
-      stepError = (err as Error).message;
-    }
-  }
 
   return {
     success: true,
     rating: params.rating,
     evaluation: result.evaluation,
     blocked: result.blocked ?? null,
-    ...(stepError ? { stepError } : {}),
+    attemptId: result.attemptId,
+    applied: result.applied ?? true,
   };
 }
 
@@ -783,6 +856,7 @@ export async function addToken(db: Database, params: AddTokenParams) {
     // Bridge/MCP callers are agents: their questions are LLM-authored and
     // stay refreshable. Humans author questions via the token CLI instead.
     question_source: params.question ? "llm" : undefined,
+    editorial_state: "draft",
   });
 
   for (const context of assignedContexts) {
@@ -916,6 +990,8 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
   const updated: string[] = [];
   const replaced: string[] = [];
   const maintenance: string[] = [];
+  /** Tokens that stay unpublished because a structural check blocks them. */
+  const drafts: string[] = [];
   let cardsEnsured = 0;
 
   await db.transaction(async (tx) => {
@@ -933,6 +1009,14 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
               `(resets learning state), or choose a different slug.`,
           );
         }
+        const readyToPublish =
+          structuralPublicationChecks({
+            slug: input.slug,
+            concept: input.concept,
+            question: input.question ?? null,
+            domain: input.domain,
+            requireQuestion: true,
+          }).filter((check) => check.blocking).length === 0;
         const token = await createToken(tx, {
           slug: input.slug,
           title: input.title,
@@ -942,9 +1026,11 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
           source_link: sourceLinkFor(input.anchor),
           question: input.question ?? null,
           question_source: input.question ? "llm" : undefined,
+          editorial_state: readyToPublish ? "published" : "draft",
         });
         inImport.set(input.slug, token);
         created.push(input.slug);
+        if (!readyToPublish) drafts.push(input.slug);
       } else {
         if (!existing) {
           throw new Error(
@@ -964,10 +1050,29 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
           updates.question = input.question;
           updates.question_source = input.question ? "llm" : undefined;
         }
-        const token = await updateToken(tx, input.slug, updates);
+        let token = await updateToken(tx, input.slug, updates);
         // An explicit update/replace re-confirms the source binding.
         if (existing.maintenance_at) {
           await clearTokenMaintenance(tx, input.slug);
+        }
+        // A draft parked by an earlier import publishes as soon as the
+        // re-import supplies what was missing; nobody has learned it yet, so
+        // the first publication is cosmetic. Still blocked → still a draft.
+        if (
+          existing.editorial_state === "draft" ||
+          existing.editorial_state === "in_review"
+        ) {
+          const readiness = await evaluatePublicationReadiness(tx, token.id);
+          if (readiness.ready) {
+            await publishTokenRevisionInTransaction(tx, {
+              tokenId: token.id,
+              materiality: "cosmetic",
+              publishedBy: "okf-import",
+            });
+            token = (await getTokenBySlug(tx, input.slug)) ?? token;
+          } else {
+            drafts.push(input.slug);
+          }
         }
         if (mode === "replace") {
           await resetCardsForToken(tx, token.id);
@@ -1053,6 +1158,13 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
     updated,
     replaced,
     maintenance,
+    /**
+     * Stored but unpublished: a structural check (usually the missing
+     * question) blocks them, so they have a card yet never enter the queue
+     * until published via zam_publish_revision or a re-import that adds the
+     * question.
+     */
+    drafts,
     cards: cardsEnsured,
   };
 }
@@ -1618,6 +1730,31 @@ export async function publishRevision(
   };
 }
 
+export interface ListDraftsParams {
+  user?: string;
+}
+
+export async function listDrafts(db: Database, _params: ListDraftsParams = {}) {
+  const drafts = await listTokens(db, { editorialState: "draft" });
+  const inReview = await listTokens(db, { editorialState: "in_review" });
+  const tokens = [...drafts, ...inReview].map((token) => ({
+    id: token.id,
+    slug: token.slug,
+    title: token.title,
+    concept: token.concept,
+    question: token.question,
+    context: token.context,
+    sourceLink: token.source_link,
+    domain: token.domain,
+    bloomLevel: token.bloom_level,
+    editorialState: token.editorial_state,
+  }));
+  return {
+    success: true as const,
+    tokens,
+  };
+}
+
 export interface RevisionPreviewParams {
   tokenId?: string;
   slug?: string;
@@ -1636,9 +1773,11 @@ export async function revisionPreview(
   if (!tokenId) throw new Error("tokenId or slug is required");
 
   const impact = await getRevisionImpact(db, tokenId);
+  const publication = await evaluatePublicationReadiness(db, tokenId);
   return {
     success: true as const,
     ...impact,
+    publication,
   };
 }
 

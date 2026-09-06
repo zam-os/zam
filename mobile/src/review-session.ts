@@ -13,6 +13,12 @@ import {
 } from "../../src/kernel/recall/prompter.js";
 import type { Rating } from "../../src/kernel/scheduler/fsrs.js";
 import {
+  AtomSiblingOccupiedError,
+  abandonPresentation,
+  admitPresentation,
+  CardNotDueError,
+} from "../../src/kernel/scheduler/presentation.js";
+import {
   buildReviewQueue,
   type ReviewQueueItem,
 } from "../../src/kernel/scheduler/queue.js";
@@ -35,6 +41,8 @@ interface ReviewSessionSnapshot {
   revealed: boolean;
   cardStartedAt: number;
   assessedAtomIds?: string[];
+  /** Attempt id from the current card's admission; travels with its rating. */
+  attemptId?: string | null;
 }
 
 export interface MobileReviewProgress {
@@ -174,6 +182,7 @@ export class MobileReviewSession {
     const queue = await buildReviewQueue(this.db, {
       userId,
       maxNew: options.maxNew,
+      timeZone: this.timeZone(),
     });
     if (queue.items.length === 0) return false;
 
@@ -193,6 +202,11 @@ export class MobileReviewSession {
       cardStartedAt: this.now(),
       assessedAtomIds: [],
     };
+    await this.admitCurrent();
+    if (!this.currentItem) {
+      await this.finish();
+      return false;
+    }
     this.persist();
     return true;
   }
@@ -241,6 +255,10 @@ export class MobileReviewSession {
     if (!this.currentItem) {
       return { kind: "completed", summary: await this.finish() };
     }
+    await this.admitCurrent();
+    if (!this.currentItem) {
+      return { kind: "completed", summary: await this.finish() };
+    }
     this.persist();
     return { kind: "active" };
   }
@@ -273,11 +291,13 @@ export class MobileReviewSession {
       rating,
       sessionId: snapshot.sessionId,
       responseTimeMs: Math.max(0, this.now() - snapshot.cardStartedAt),
+      attemptId: snapshot.attemptId ?? undefined,
     });
 
     snapshot.currentIndex += 1;
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
+    snapshot.attemptId = null;
     snapshot.cardStartedAt = this.now();
 
     const response: MobileReviewRatingResult = {
@@ -288,7 +308,12 @@ export class MobileReviewSession {
     if (!this.currentItem) {
       response.summary = await this.finish();
     } else {
-      this.persist();
+      await this.admitCurrent();
+      if (!this.currentItem) {
+        response.summary = await this.finish();
+      } else {
+        this.persist();
+      }
     }
     return response;
   }
@@ -324,10 +349,13 @@ export class MobileReviewSession {
   async dropCurrent(): Promise<MobileReviewSummary | null> {
     const snapshot = this.snapshot;
     if (!snapshot || !this.currentItem) return null;
+    await this.releaseUnshownCurrent();
     snapshot.items.splice(snapshot.currentIndex, 1);
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
+    if (!this.currentItem) return await this.finish();
+    await this.admitCurrent();
     if (!this.currentItem) return await this.finish();
     this.persist();
     return null;
@@ -341,12 +369,15 @@ export class MobileReviewSession {
   async dropAtom(atomId: string): Promise<MobileReviewSummary | null> {
     const snapshot = this.snapshot;
     if (!snapshot || !atomId) return null;
+    await this.releaseUnshownCurrent();
     snapshot.items = snapshot.items.filter(
       (item, index) => index < snapshot.currentIndex || item.atomId !== atomId,
     );
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
+    if (!this.currentItem) return await this.finish();
+    await this.admitCurrent();
     if (!this.currentItem) return await this.finish();
     this.persist();
     return null;
@@ -380,6 +411,58 @@ export class MobileReviewSession {
     };
     this.clear();
     return result;
+  }
+
+  /** Same zone for queue building and admission, so both see one learning day. */
+  private timeZone(): string {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  }
+
+  /**
+   * Confirm the reserved current card as an actual display. Call this only
+   * when the card itself is shown, not when a precondition offer covers it.
+   */
+  async confirmCurrent(): Promise<void> {
+    await this.admitCurrent(true);
+  }
+
+  private async releaseUnshownCurrent(): Promise<void> {
+    const snapshot = this.snapshot;
+    if (!snapshot?.attemptId) return;
+    await abandonPresentation(this.db, snapshot.attemptId);
+    snapshot.attemptId = null;
+  }
+
+  private async admitCurrent(confirm = false): Promise<void> {
+    const snapshot = this.snapshot;
+    if (!snapshot) return;
+    while (this.currentItem) {
+      try {
+        const admission = await admitPresentation(this.db, {
+          userId: snapshot.userId,
+          cardId: this.currentItem.cardId,
+          sessionId: snapshot.sessionId,
+          timeZone: this.timeZone(),
+          confirm,
+        });
+        snapshot.attemptId = admission.attemptId;
+        return;
+      } catch (error) {
+        if (
+          !(error instanceof AtomSiblingOccupiedError) &&
+          !(error instanceof CardNotDueError)
+        ) {
+          throw error;
+        }
+        // Never shown, so not part of this session: remove it like a dropped
+        // card so `progress.total` and the summary stay truthful.
+        snapshot.items.splice(snapshot.currentIndex, 1);
+        snapshot.draftAnswer = "";
+        snapshot.revealed = false;
+        snapshot.attemptId = null;
+        snapshot.cardStartedAt = this.now();
+      }
+    }
   }
 
   private persist(): void {

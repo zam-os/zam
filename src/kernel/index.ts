@@ -193,6 +193,7 @@ export type {
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
+  KvtRetiredItem,
   KvtTile,
   MaterialiseKvtResult,
 } from "./library/kvt-attach.js";
@@ -208,7 +209,9 @@ export type {
 } from "./library/precondition-assessment.js";
 export {
   assessPrecondition,
+  cancelMatchingPreconditionDeferrals,
   getPreconditionCandidates,
+  liftActivePreconditionDeferral,
   liftPreconditionBury,
   PRECONDITION_BURIED_REASON,
   PRECONDITION_HORIZON_DAYS,
@@ -216,6 +219,21 @@ export {
   PRECONDITION_STAGGER_DAYS,
   preconditionBuriedUntil,
 } from "./library/precondition-assessment.js";
+export type {
+  PublicationCheck,
+  PublicationCheckCode,
+  PublicationFieldChanges,
+  PublicationFields,
+  PublicationReview,
+} from "./library/publication.js";
+export {
+  assertFieldsReadyToPublish,
+  assertReadyToPublish,
+  evaluatePublicationReadiness,
+  isDerivedSlug,
+  isSlugEcho,
+  structuralPublicationChecks,
+} from "./library/publication.js";
 export type {
   PullForwardCandidate,
   PullForwardOptions,
@@ -439,6 +457,22 @@ export {
   pairCommands,
   parseMonitorLog,
 } from "./observation/analyzer.js";
+export type {
+  AttemptActor,
+  AttemptChannel,
+  AttemptStatus,
+  RecordAttemptInput,
+  ReviewAttempt,
+} from "./observation/attempts.js";
+export {
+  AssistedSuccessError,
+  AttemptConflictError,
+  assertAttemptAllowsRating,
+  findAttemptByEvidenceKey,
+  getAttemptById,
+  observationEvidenceKey,
+  recordAttempt,
+} from "./observation/attempts.js";
 export {
   ensureMonitorDir,
   getMonitorDir,
@@ -537,10 +571,15 @@ export {
 } from "./observation/ui-observer-synthesis.js";
 export type {
   ExecuteReviewActionInput,
+  RecordAssistedStepInput,
+  RecordAssistedStepResult,
   ReviewActionResult,
   ReviewActionType,
 } from "./recall/actions.js";
-export { executeReviewAction } from "./recall/actions.js";
+export {
+  executeReviewAction,
+  recordAssistedStep,
+} from "./recall/actions.js";
 export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 export { evaluateRating } from "./recall/evaluator.js";
 export type { PromptInput, RecallPrompt } from "./recall/prompter.js";
@@ -603,6 +642,29 @@ export type {
 // Scheduler
 export { createFSRS } from "./scheduler/fsrs.js";
 export { interleave } from "./scheduler/interleaver.js";
+export type {
+  AdmitPresentationInput,
+  CardPresentation,
+  PresentationAdmission,
+} from "./scheduler/presentation.js";
+export {
+  AtomSiblingOccupiedError,
+  abandonPresentation,
+  abandonUnconfirmedForSession,
+  admitPresentation,
+  admitPresentationInTransaction,
+  CardNotDueError,
+  CardNotReviewableError,
+  cardAllowedForAtom,
+  findPresentationByAttemptId,
+  hostTimeZone,
+  isValidTimeZone,
+  localLearningDay,
+  occupyingAtomCards,
+  parseStoredTimestamp,
+  resolvePresentationTimeZone,
+  TIMEZONE_SETTING,
+} from "./scheduler/presentation.js";
 export type {
   ReviewFastCheck,
   ReviewQueue,

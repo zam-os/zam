@@ -8,6 +8,12 @@
 import type { Database } from "../db/types.js";
 import { getDisplayTitle } from "../models/token.js";
 import { interleave } from "./interleaver.js";
+import {
+  cardAllowedForAtom,
+  localLearningDay,
+  occupyingAtomCards,
+  resolvePresentationTimeZone,
+} from "./presentation.js";
 import { getStudyWorkloadSettings } from "./study-settings.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -21,6 +27,8 @@ export interface ReviewQueueOptions {
   now?: Date;
   domain?: string;
   knowledgeContext?: string;
+  /** IANA time zone for the local learning day. Device context, not DB server. */
+  timeZone?: string;
 }
 
 export interface ReviewFastCheck {
@@ -135,6 +143,8 @@ export async function buildReviewQueue(
   }
   const now = options.now ?? new Date();
   const nowISO = now.toISOString();
+  const timeZone = await resolvePresentationTimeZone(db, options.timeZone);
+  const learningDay = localLearningDay(now, timeZone);
 
   // ── Step 1: Fetch due cards (review, relearning, learning — not new) ───
   let dueSql = `SELECT
@@ -295,8 +305,13 @@ export async function buildReviewQueue(
   const newItems = newRows.map(rowToItem);
   const merged = intersperseNew(interleavedDue, newItems, 5);
 
+  const occupying = await occupyingAtomCards(db, options.userId, learningDay);
+  const atomFiltered = merged.filter((item) =>
+    cardAllowedForAtom(item.cardId, item.atomId, occupying),
+  );
+
   // ── Step 6: Keep one sibling per enabled bucket, then apply limits ─────
-  const capped = applyWorkloadLimits(merged, {
+  const capped = applyWorkloadLimits(atomFiltered, {
     maxNew,
     maxReviews,
     buryNewSiblings,

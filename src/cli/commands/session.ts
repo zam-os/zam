@@ -18,13 +18,17 @@ import type {
   TokenPattern,
 } from "../../kernel/index.js";
 import {
+  AtomSiblingOccupiedError,
+  admitPresentation,
   applySessionSynthesis,
   buildReviewQueue,
+  CardNotDueError,
   endSession,
   fetchActiveWorkItems,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
+  hostTimeZone,
   isObserverPolicyConfigured,
   loadADOConfig,
   logStep,
@@ -167,7 +171,8 @@ async function runRepetitionPhase(
   userId: string,
   maxMinutes: number,
 ): Promise<RepetitionResult> {
-  const queue = await buildReviewQueue(db, { userId });
+  const timeZone = hostTimeZone();
+  const queue = await buildReviewQueue(db, { userId, timeZone });
 
   if (queue.items.length === 0) {
     console.log("No cards due for review — moving to task selection.\n");
@@ -199,6 +204,27 @@ async function runRepetitionPhase(
       break;
     }
 
+    // Record the exposure before the question is printed; a sibling of the
+    // same atom shown earlier today is skipped rather than shown twice.
+    let attemptId: string;
+    try {
+      const admission = await admitPresentation(db, {
+        userId,
+        cardId: item.cardId,
+        timeZone,
+        confirm: true,
+      });
+      attemptId = admission.attemptId;
+    } catch (err) {
+      if (
+        err instanceof AtomSiblingOccupiedError ||
+        err instanceof CardNotDueError
+      ) {
+        continue;
+      }
+      throw err;
+    }
+
     const prompt = generatePrompt({
       cardId: item.cardId,
       tokenId: item.tokenId,
@@ -220,6 +246,7 @@ async function runRepetitionPhase(
       item,
       mode: "session",
       startedAt: Date.now(),
+      attemptId,
     });
 
     if (action.action === "stop") {
@@ -374,7 +401,9 @@ async function runSynthesisPhase(
   for (const candidate of preview.candidates) {
     console.log(`\n${candidate.tokenSlug}: ${candidate.concept}`);
     console.log(
-      `  Suggested: ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]} (${candidate.confidence} confidence)`,
+      candidate.inferredRating == null
+        ? `  Suggested: none (${candidate.confidence} confidence; exit code or similarity alone is not a rating)`
+        : `  Suggested: ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]} (${candidate.confidence} confidence)`,
     );
     console.log(
       `  Evidence: ${candidate.evidence.matchedCommands} command(s), ${candidate.evidence.errorCount} error(s), ${candidate.evidence.selfCorrections} correction(s)${candidate.evidence.helpSeeking ? ", help used" : ""}`,
@@ -386,13 +415,19 @@ async function runSynthesisPhase(
     const otherRatings = ([1, 2, 3, 4] as Rating[]).filter(
       (rating) => rating !== candidate.inferredRating,
     );
+    const acceptChoice =
+      candidate.inferredRating == null
+        ? []
+        : [
+            {
+              name: `Accept ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]}`,
+              value: candidate.inferredRating,
+            },
+          ];
     const choice = await select<Rating | "skip">({
       message: `Confirm rating for ${candidate.tokenSlug}:`,
       choices: [
-        {
-          name: `Accept ${candidate.inferredRating} - ${RATING_LABELS[candidate.inferredRating]}`,
-          value: candidate.inferredRating,
-        },
+        ...acceptChoice,
         ...otherRatings.map((rating) => ({
           name: `Override with ${rating} - ${RATING_LABELS[rating]}`,
           value: rating,
@@ -414,6 +449,7 @@ async function runSynthesisPhase(
       confidence: candidate.confidence,
       evidence: candidate.evidence,
       matchedCommandTexts: candidate.matchedCommandTexts,
+      attemptId: candidate.attemptId,
     });
 
     if (!result.applied) {

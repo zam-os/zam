@@ -448,6 +448,8 @@ interface ReviewPayload {
 }
 
 let activeCard: BridgeCard | null = null;
+/** Attempt id from the admission of `activeCard`; travels with its rating. */
+let activeAttemptId: string | null = null;
 let activePromptQuestion = "";
 let resolvedContextContent: string | null = null;
 let studySessionActive = false;
@@ -1166,6 +1168,8 @@ function initializeTranslations() {
   if (btnContentCancelEdit) btnContentCancelEdit.textContent = t("lbl_cancel_action");
   const btnContentSaveCard = document.getElementById("btn-content-save-card");
   if (btnContentSaveCard) btnContentSaveCard.textContent = t("btn_save");
+  const btnContentPublishCard = document.getElementById("btn-content-publish-card");
+  if (btnContentPublishCard) btnContentPublishCard.textContent = t("btn_publish_card");
 
   // Modal Translations
   const lblModalCancel = document.getElementById("btn-modal-cancel");
@@ -6145,6 +6149,20 @@ function clearDashboardError(): void {
 }
 
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("already presented today");
+}
+
+function isCardNoLongerDue(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("no longer due");
+}
+
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
@@ -6155,6 +6173,7 @@ async function loadNextCard(
   const requestId = ++questionRequestId;
   cardLoadInProgress = true;
   activeCard = null;
+  activeAttemptId = null;
   activePromptQuestion = "";
   updateReviewControlState();
   try {
@@ -6203,6 +6222,8 @@ async function loadNextCard(
       "--media",
       "--max-new",
       sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+      "--time-zone",
+      learnerTimeZone(),
     ];
     const dynamicQuestionAllowed =
       shouldRequestDynamicStudyQuestion(
@@ -6232,7 +6253,7 @@ async function loadNextCard(
       return;
     }
 
-    presentFetchedCard(payload);
+    await presentFetchedCard(payload);
   } catch (err) {
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
@@ -6975,14 +6996,15 @@ async function submitRating(ratingVal: number) {
     return;
   }
   const cardId = activeCard.cardId;
+  const attemptId = activeAttemptId;
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
 
   try {
-    await runBridge("submit", [
-      "--card-id", cardId,
-      "--rating", String(ratingVal)
-    ]);
+    const submitArgs = ["--card-id", cardId, "--rating", String(ratingVal)];
+    // The attempt id from admission makes a retried submit one review.
+    if (attemptId) submitArgs.push("--attempt-id", attemptId);
+    await runBridge("submit", submitArgs);
 
     if (ratingVal >= 1 && ratingVal <= 4) {
       const r = ratingVal as 1 | 2 | 3 | 4;
@@ -7331,8 +7353,28 @@ function showStudyOffer(spec: {
   offer.classList.remove("hidden");
 }
 
-function presentFetchedCard(payload: ReviewPayload): void {
+async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   if (!payload.card || !payload.prompt) return;
+  try {
+    const args = [
+      "--card-id",
+      payload.card.cardId,
+      "--time-zone",
+      learnerTimeZone(),
+    ];
+    if (zamUiSessionId) args.push("--session", zamUiSessionId);
+    const admission = await runBridge<{ attemptId?: string }>(
+      "admit-review",
+      args,
+    );
+    activeAttemptId = admission?.attemptId ?? null;
+  } catch (err) {
+    if (isAtomSiblingOccupied(err) || isCardNoLongerDue(err)) {
+      await loadNextCard();
+      return;
+    }
+    throw err;
+  }
   hideStudyOffer();
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-footer")?.classList.remove("hidden");
@@ -7483,8 +7525,17 @@ async function decidePrecondition(
   preconditionCache = null;
   assessedAtomsThisSession.add(atomId);
   if (decision === "learn" && pendingReviewPayload) {
-    presentFetchedCard(pendingReviewPayload);
-    return;
+    // Same recovery as loadNextCard: an admission failure must not leave the
+    // offer on screen with a rejected promise nobody handles.
+    try {
+      await presentFetchedCard(pendingReviewPayload);
+      return;
+    } catch (err) {
+      console.error("Failed to present the deferred card:", err);
+      pendingReviewPayload = null;
+      await loadNextCard();
+      return;
+    }
   }
   pendingReviewPayload = null;
   await loadNextCard();
