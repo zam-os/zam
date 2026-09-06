@@ -449,6 +449,12 @@ CREATE INDEX IF NOT EXISTS idx_card_presentations_day
   ON card_presentations(user_id, learning_day, atom_id);
 CREATE INDEX IF NOT EXISTS idx_card_presentations_card
   ON card_presentations(card_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_atom_day
+  ON card_presentations(user_id, learning_day, atom_id)
+  WHERE atom_id IS NOT NULL AND abandoned_at IS NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_card_day
+  ON card_presentations(user_id, learning_day, card_id)
+  WHERE abandoned_at IS NULL;
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);

@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 32;
+export const CURRENT_SCHEMA_VERSION = 33;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -850,6 +850,20 @@ export async function runMigrations(db: Database): Promise<void> {
       `ALTER TABLE tokens ADD COLUMN edge_representative INTEGER NOT NULL DEFAULT 0`,
     );
   }
+
+  // M033: check-then-insert cannot exclude a sibling across PostgreSQL
+  // connections. One live presentation per atom (and per card) per learner
+  // and local day is the uniqueness the admission path relies on.
+  await db.exec(`
+    CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_atom_day
+      ON card_presentations(user_id, learning_day, atom_id)
+      WHERE atom_id IS NOT NULL AND abandoned_at IS NULL
+  `);
+  await db.exec(`
+    CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_card_day
+      ON card_presentations(user_id, learning_day, card_id)
+      WHERE abandoned_at IS NULL
+  `);
 }
 
 /**

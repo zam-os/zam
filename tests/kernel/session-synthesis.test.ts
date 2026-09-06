@@ -21,6 +21,7 @@ import {
   getSessionSynthesisRecords,
   openDatabase,
   prepareSessionSynthesis,
+  recordAttempt,
   startSession,
 } from "../../src/kernel/index.js";
 import type { CommandRecord } from "../../src/kernel/observation/analyzer.js";
@@ -666,5 +667,152 @@ describe("automatic session synthesis", () => {
 
     const after = await buildReviewQueue(db, { userId: "tester" });
     expect(after.items.some((item) => item.tokenId === token.id)).toBe(false);
+  });
+
+  it("collapses a session-local direct rating and later synthesis without a shared attempt id", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const card = await ensureCard(db, token.id, "tester");
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Inspect a repository",
+    });
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "tester",
+      rating: 3,
+      sessionId: session.id,
+      independent: true,
+    });
+
+    const preview = await prepareSessionSynthesis(db, {
+      sessionId: session.id,
+      explicitPatterns: [{ slug: token.slug, patterns: ["git status"] }],
+      commands: [command(1, "git status --short")],
+    });
+    expect(preview.candidates).toEqual([]);
+
+    const linked = await applySessionSynthesis(db, {
+      sessionId: session.id,
+      tokenSlug: token.slug,
+      inferredRating: null,
+      confirmedRating: 3,
+      confidence: "medium",
+      evidence: cleanEvidence,
+      matchedCommandTexts: ["git status --short"],
+    });
+    expect(linked.applied).toBe(false);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(1);
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(1);
+  });
+
+  it("links a sessionless direct rating to later synthesis without a second FSRS step", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const card = await ensureCard(db, token.id, "tester");
+    const attemptId = ulid();
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "tester",
+      rating: 3,
+      attemptId,
+      independent: true,
+    });
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(1);
+
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Inspect a repository",
+    });
+    const linked = await applySessionSynthesis(db, {
+      sessionId: session.id,
+      tokenSlug: token.slug,
+      inferredRating: null,
+      confirmedRating: 3,
+      confidence: "medium",
+      evidence: cleanEvidence,
+      matchedCommandTexts: ["git status --short"],
+      attemptId,
+    });
+    expect(linked.applied).toBe(false);
+    expect(linked.record.session_step_id).toBeTruthy();
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(1);
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(1);
+    expect(await getSessionSynthesisRecords(db, session.id)).toHaveLength(1);
+  });
+
+  it("does not let synthesis overwrite stored assistance as a user success", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const card = await ensureCard(db, token.id, "tester");
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Inspect a repository",
+    });
+    const attemptId = ulid();
+    await recordAttempt(db, {
+      id: attemptId,
+      userId: "tester",
+      cardId: card.id,
+      tokenId: token.id,
+      sessionId: session.id,
+      actor: "agent",
+      independent: false,
+      channel: "monitor",
+      status: "suggestion",
+    });
+
+    await expect(
+      applySessionSynthesis(db, {
+        sessionId: session.id,
+        tokenSlug: token.slug,
+        inferredRating: 3,
+        confirmedRating: 3,
+        confidence: "medium",
+        evidence: cleanEvidence,
+        matchedCommandTexts: ["git status --short"],
+        attemptId,
+      }),
+    ).rejects.toThrow(/agent-completed|Assisted work/i);
+
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(0);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
+  });
+
+  it("refuses a success rating when independence is explicitly unknown", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const card = await ensureCard(db, token.id, "tester");
+
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: card.id,
+        userId: "tester",
+        rating: 3,
+        independent: null,
+      }),
+    ).rejects.toBeInstanceOf(AssistedSuccessError);
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(0);
   });
 });

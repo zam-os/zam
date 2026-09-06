@@ -292,10 +292,6 @@ export async function executeReviewAction(
         });
       }
 
-      const actor = input.actor ?? "user";
-      const independent = input.independent ?? true;
-      assertAttemptAllowsRating(independent, rating, actor);
-      const attemptId = input.attemptId ?? ulid();
       const existingAttempt = input.attemptId
         ? await resolveAttemptForTarget(
             tx,
@@ -304,6 +300,12 @@ export async function executeReviewAction(
             target,
           )
         : undefined;
+      const actor = existingAttempt?.actor ?? input.actor ?? "user";
+      const independent =
+        input.independent !== undefined
+          ? input.independent
+          : (existingAttempt?.independent ?? true);
+      const attemptId = existingAttempt?.id ?? input.attemptId ?? ulid();
       if (
         existingAttempt &&
         (existingAttempt.status === "rated" ||
@@ -317,6 +319,7 @@ export async function executeReviewAction(
           rating,
         );
       }
+      assertAttemptAllowsRating(independent, rating, actor);
       if (
         existingAttempt?.status === "rated" &&
         existingAttempt.rating === rating

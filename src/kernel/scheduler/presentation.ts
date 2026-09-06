@@ -255,14 +255,60 @@ export function cardAllowedForAtom(
   return cards.has(cardId);
 }
 
+function isUniqueConstraintError(error: unknown): boolean {
+  const code = (error as { code?: unknown } | null)?.code;
+  if (
+    code === "23505" ||
+    code === "SQLITE_CONSTRAINT" ||
+    code === "SQLITE_CONSTRAINT_UNIQUE"
+  ) {
+    return true;
+  }
+  const message = error instanceof Error ? error.message : String(error);
+  return /unique constraint/i.test(message) || /duplicate key/i.test(message);
+}
+
 export async function admitPresentation(
   db: Database,
   input: AdmitPresentationInput,
 ): Promise<PresentationAdmission> {
   const confirm = input.confirm !== false;
-  return db.transaction((tx) =>
-    admitPresentationInTransaction(tx, input, confirm),
-  );
+  try {
+    return await db.transaction((tx) =>
+      admitPresentationInTransaction(tx, input, confirm),
+    );
+  } catch (error) {
+    // PostgreSQL aborts the transaction on unique violation; a second
+    // transaction now sees the winner and either reuses the same card or
+    // reports the occupying sibling instead of leaking a raw constraint error.
+    if (!isUniqueConstraintError(error)) throw error;
+    try {
+      return await db.transaction((tx) =>
+        admitPresentationInTransaction(tx, input, confirm),
+      );
+    } catch (retryError) {
+      if (!isUniqueConstraintError(retryError)) throw retryError;
+      const timeZone = await resolvePresentationTimeZone(db, input.timeZone);
+      const learningDay = localLearningDay(input.now ?? new Date(), timeZone);
+      const token = await getTokenById(
+        db,
+        (await getCardById(db, input.cardId))?.token_id ?? "",
+      );
+      if (token?.atom_id) {
+        const occupying = await occupyingRows(
+          db,
+          input.userId,
+          learningDay,
+          token.atom_id,
+        );
+        const foreign = occupying.find((row) => row.card_id !== input.cardId);
+        if (foreign) {
+          throw new AtomSiblingOccupiedError(token.atom_id, foreign.card_id);
+        }
+      }
+      throw retryError;
+    }
+  }
 }
 
 export async function admitPresentationInTransaction(
@@ -342,7 +388,7 @@ export async function admitPresentationInTransaction(
         presented: confirm || existing.presented_at !== null,
       };
     }
-  } else if (confirm) {
+  } else {
     const existing = (await db
       .prepare(
         `SELECT id, card_id, presented_at, attempt_id
@@ -356,7 +402,7 @@ export async function admitPresentationInTransaction(
       )
       .get(input.userId, card.id, learningDay)) as OccupyingRow | undefined;
     if (existing) {
-      if (!existing.presented_at) {
+      if (confirm && !existing.presented_at) {
         await db
           .prepare(
             `UPDATE card_presentations
@@ -373,7 +419,7 @@ export async function admitPresentationInTransaction(
         atomId: null,
         learningDay,
         timeZone,
-        presented: true,
+        presented: confirm || existing.presented_at !== null,
       };
     }
   }

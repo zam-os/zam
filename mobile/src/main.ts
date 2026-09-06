@@ -2681,7 +2681,7 @@ async function acceptBonusFromDashboard(
   }
 }
 
-function renderCurrentReview(message = ""): void {
+async function renderCurrentReview(message = ""): Promise<void> {
   const item = reviewSession.currentItem;
   const prompt = reviewSession.currentPrompt;
   if (!item || !prompt) return;
@@ -2706,6 +2706,11 @@ function renderCurrentReview(message = ""): void {
     }
   }
 
+  await reviewSession.confirmCurrent();
+  if (reviewSession.currentItem?.cardId !== item.cardId) {
+    await renderCurrentReview(message);
+    return;
+  }
   hideReviewOffer();
   showReview();
   // The title is free text, and for imported cards it is often the first

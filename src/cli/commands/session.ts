@@ -449,6 +449,7 @@ async function runSynthesisPhase(
       confidence: candidate.confidence,
       evidence: candidate.evidence,
       matchedCommandTexts: candidate.matchedCommandTexts,
+      attemptId: candidate.attemptId,
     });
 
     if (!result.applied) {

@@ -146,6 +146,17 @@ describe("atom sibling presentations", () => {
       .prepare("SELECT version FROM zam_schema_version WHERE singleton = 1")
       .get()) as { version: number };
     expect(marker.version).toBe(CURRENT_SCHEMA_VERSION);
+    const unique = (await db
+      .prepare(
+        `SELECT name FROM sqlite_master
+          WHERE type = 'index' AND name LIKE 'ux_card_presentations%'
+          ORDER BY name`,
+      )
+      .all()) as Array<{ name: string }>;
+    expect(unique.map((row) => row.name)).toEqual([
+      "ux_card_presentations_atom_day",
+      "ux_card_presentations_card_day",
+    ]);
   });
 
   it("refuses a different atom sibling after a confirmed presentation", async () => {
@@ -589,9 +600,7 @@ describe("atom sibling presentations", () => {
       "due-p1",
     ]);
     await db
-      .prepare(
-        "UPDATE cards SET last_review_at = ?, due_at = ? WHERE id = ?",
-      )
+      .prepare("UPDATE cards SET last_review_at = ?, due_at = ? WHERE id = ?")
       .run("2026-09-01T10:00:00.000Z", "2026-09-06 14:00:00", p1.cardId);
     await expect(
       admitPresentation(db, {

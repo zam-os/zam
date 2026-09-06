@@ -185,6 +185,28 @@ export async function findAttemptByEvidenceKey(
   return row ? parseAttempt(row) : undefined;
 }
 
+/**
+ * A direct rating in this session stores no evidence key. There is then at
+ * most one such row to attach later synthesis to; two of them are distinct
+ * attempts and must not be guessed apart.
+ */
+export async function findSessionTokenAttemptWithoutEvidence(
+  db: Database,
+  input: { sessionId: string; tokenId: string },
+): Promise<ReviewAttempt | undefined> {
+  const rows = (await db
+    .prepare(
+      `SELECT * FROM review_attempts
+        WHERE session_id = ? AND token_id = ?
+          AND status IN ('rated', 'recorded')
+          AND evidence_key IS NULL
+        ORDER BY created_at`,
+    )
+    .all(input.sessionId, input.tokenId)) as AttemptRow[];
+  if (rows.length !== 1) return undefined;
+  return parseAttempt(rows[0]);
+}
+
 export function assertAttemptAllowsRating(
   independent: boolean | null | undefined,
   rating: Rating | null | undefined,
@@ -194,7 +216,9 @@ export function assertAttemptAllowsRating(
   if (actor === "agent") {
     throw new Error("Agent-completed steps must not include a rating");
   }
-  if (independent === false && rating >= 2) {
+  // Unknown independence is not a success: only an explicit independent
+  // attempt may write Hard/Good/Easy.
+  if (independent !== true && rating >= 2) {
     throw new AssistedSuccessError();
   }
 }
@@ -278,9 +302,11 @@ export async function recordAttempt(
   }
 
   assertAttemptAllowsRating(
-    input.independent ?? existing?.independent ?? null,
+    input.independent !== undefined
+      ? input.independent
+      : (existing?.independent ?? null),
     input.rating ?? null,
-    input.actor,
+    existing?.actor ?? input.actor,
   );
 
   const id = existing?.id ?? input.id ?? ulid();

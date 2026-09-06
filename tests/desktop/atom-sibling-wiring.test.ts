@@ -17,6 +17,8 @@ describe("atom sibling presentation wiring", () => {
     const mobile = file("mobile/src/review-session.ts");
     expect(mobile).toContain("admitPresentation");
     expect(mobile).toContain("admitCurrent");
+    expect(mobile).toContain("confirmCurrent");
+    expect(file("mobile/src/main.ts")).toContain("confirmCurrent");
 
     const learn = file("src/cli/commands/learn.ts");
     expect(learn).toContain("admitPresentation");

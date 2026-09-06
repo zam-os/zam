@@ -27,7 +27,9 @@ import type {
 import { analyzeObservation, pairCommands } from "./analyzer.js";
 import {
   AttemptConflictError,
+  assertAttemptAllowsRating,
   findAttemptByEvidenceKey,
+  findSessionTokenAttemptWithoutEvidence,
   getAttemptById,
   observationEvidenceKey,
   recordAttempt,
@@ -51,6 +53,8 @@ export interface SessionSynthesisCandidate {
   evidence: ObservationRating["evidence"];
   matchedCommandTexts: string[];
   evidenceKey: string;
+  /** Set when a matching attempt already exists for this session work. */
+  attemptId?: string;
 }
 
 export interface PrepareSessionSynthesisInput {
@@ -206,6 +210,26 @@ export async function getSessionSynthesisRecords(
   return rows.map(parseSynthesisRow);
 }
 
+async function matchingAttemptForCandidate(
+  db: Database,
+  input: { sessionId: string; tokenId: string; evidenceKey: string },
+) {
+  const byKey = await findAttemptByEvidenceKey(db, input);
+  if (byKey) return byKey;
+  return findSessionTokenAttemptWithoutEvidence(db, {
+    sessionId: input.sessionId,
+    tokenId: input.tokenId,
+  });
+}
+
+function alreadyAssessed(
+  attempt:
+    | { status: "suggestion" | "recorded" | "rated" | "conflict" }
+    | undefined,
+): boolean {
+  return attempt?.status === "rated" || attempt?.status === "recorded";
+}
+
 export async function prepareSessionSynthesis(
   db: Database,
   input: PrepareSessionSynthesisInput,
@@ -264,19 +288,18 @@ export async function prepareSessionSynthesis(
     );
     const pending: SessionSynthesisCandidate[] = [];
     for (const candidate of candidates) {
-      const existingAttempt = await findAttemptByEvidenceKey(db, {
+      const existingAttempt = await matchingAttemptForCandidate(db, {
         sessionId: session.id,
         tokenId: candidate.tokenId,
         evidenceKey: candidate.evidenceKey,
       });
-      if (
-        existingAttempt &&
-        (existingAttempt.status === "rated" ||
-          existingAttempt.status === "recorded")
-      ) {
+      if (alreadyAssessed(existingAttempt)) {
         continue;
       }
-      pending.push(candidate);
+      pending.push({
+        ...candidate,
+        attemptId: existingAttempt?.id,
+      });
     }
 
     return {
@@ -309,16 +332,12 @@ export async function prepareSessionSynthesis(
     }
 
     const evidenceKey = observationEvidenceKey(rating.matchedCommandTexts);
-    const existingAttempt = await findAttemptByEvidenceKey(db, {
+    const existingAttempt = await matchingAttemptForCandidate(db, {
       sessionId: session.id,
       tokenId: token.id,
       evidenceKey,
     });
-    if (
-      existingAttempt &&
-      (existingAttempt.status === "rated" ||
-        existingAttempt.status === "recorded")
-    ) {
+    if (alreadyAssessed(existingAttempt)) {
       continue;
     }
 
@@ -332,6 +351,7 @@ export async function prepareSessionSynthesis(
       evidence: rating.evidence,
       matchedCommandTexts: rating.matchedCommandTexts,
       evidenceKey,
+      attemptId: existingAttempt?.id,
     });
   }
 
@@ -365,13 +385,19 @@ export async function applySessionSynthesis(
     }
 
     const evidenceKey = observationEvidenceKey(input.matchedCommandTexts);
-    const existingAttempt = input.attemptId
+    let existingAttempt = input.attemptId
       ? await getAttemptById(tx, input.attemptId)
       : await findAttemptByEvidenceKey(tx, {
           sessionId: session.id,
           tokenId: token.id,
           evidenceKey,
         });
+    if (!existingAttempt && !input.attemptId) {
+      existingAttempt = await findSessionTokenAttemptWithoutEvidence(tx, {
+        sessionId: session.id,
+        tokenId: token.id,
+      });
+    }
     if (
       existingAttempt &&
       (existingAttempt.user_id !== session.user_id ||
@@ -410,6 +436,28 @@ export async function applySessionSynthesis(
         signals: input.evidence,
         matchedCommandTexts: input.matchedCommandTexts,
       };
+      let sessionStepId = existingAttempt.session_step_id;
+      if (!sessionStepId) {
+        const step = await logStep(tx, {
+          session_id: session.id,
+          token_id: token.id,
+          done_by: existingAttempt.actor,
+          rating: existingAttempt.rating,
+          notes: "Linked observation synthesis to an existing review",
+        });
+        sessionStepId = step.id;
+      }
+      const now = new Date().toISOString();
+      await tx
+        .prepare(
+          `UPDATE review_attempts
+              SET session_step_id = COALESCE(session_step_id, ?),
+                  session_id = COALESCE(session_id, ?),
+                  evidence_key = COALESCE(evidence_key, ?),
+                  updated_at = ?
+            WHERE id = ?`,
+        )
+        .run(sessionStepId, session.id, evidenceKey, now, existingAttempt.id);
       const synthesisId = ulid();
       await tx
         .prepare(
@@ -430,8 +478,8 @@ export async function applySessionSynthesis(
           input.confidence,
           JSON.stringify(evidence),
           existingAttempt.review_log_id,
-          existingAttempt.session_step_id,
-          new Date().toISOString(),
+          sessionStepId,
+          now,
         );
       const linked = (await tx
         .prepare("SELECT * FROM session_syntheses WHERE id = ?")
@@ -454,6 +502,15 @@ export async function applySessionSynthesis(
         return { applied: false, record: parseSynthesisRow(legacy) };
       }
     }
+
+    const actor = existingAttempt?.actor ?? "user";
+    const independent =
+      input.independent !== undefined
+        ? input.independent
+        : existingAttempt
+          ? existingAttempt.independent
+          : true;
+    assertAttemptAllowsRating(independent, input.confirmedRating, actor);
 
     const card = await ensureCard(tx, token.id, session.user_id);
     const attemptId = existingAttempt?.id ?? input.attemptId ?? ulid();
@@ -500,10 +557,10 @@ export async function applySessionSynthesis(
       tokenId: token.id,
       sessionId: session.id,
       activity: input.activity ?? "observed work",
-      actor: "user",
+      actor,
       permittedTools: input.permittedTools,
       assistance: input.assistance,
-      independent: input.independent ?? true,
+      independent,
       channel: session.execution_context === "ui" ? "ui_observer" : "synthesis",
       evidence: {
         signals: input.evidence,

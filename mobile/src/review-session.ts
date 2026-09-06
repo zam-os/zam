@@ -14,6 +14,7 @@ import {
 import type { Rating } from "../../src/kernel/scheduler/fsrs.js";
 import {
   AtomSiblingOccupiedError,
+  abandonPresentation,
   admitPresentation,
   CardNotDueError,
 } from "../../src/kernel/scheduler/presentation.js";
@@ -348,6 +349,7 @@ export class MobileReviewSession {
   async dropCurrent(): Promise<MobileReviewSummary | null> {
     const snapshot = this.snapshot;
     if (!snapshot || !this.currentItem) return null;
+    await this.releaseUnshownCurrent();
     snapshot.items.splice(snapshot.currentIndex, 1);
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
@@ -367,6 +369,7 @@ export class MobileReviewSession {
   async dropAtom(atomId: string): Promise<MobileReviewSummary | null> {
     const snapshot = this.snapshot;
     if (!snapshot || !atomId) return null;
+    await this.releaseUnshownCurrent();
     snapshot.items = snapshot.items.filter(
       (item, index) => index < snapshot.currentIndex || item.atomId !== atomId,
     );
@@ -415,7 +418,22 @@ export class MobileReviewSession {
     return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
   }
 
-  private async admitCurrent(): Promise<void> {
+  /**
+   * Confirm the reserved current card as an actual display. Call this only
+   * when the card itself is shown, not when a precondition offer covers it.
+   */
+  async confirmCurrent(): Promise<void> {
+    await this.admitCurrent(true);
+  }
+
+  private async releaseUnshownCurrent(): Promise<void> {
+    const snapshot = this.snapshot;
+    if (!snapshot?.attemptId) return;
+    await abandonPresentation(this.db, snapshot.attemptId);
+    snapshot.attemptId = null;
+  }
+
+  private async admitCurrent(confirm = false): Promise<void> {
     const snapshot = this.snapshot;
     if (!snapshot) return;
     while (this.currentItem) {
@@ -425,7 +443,7 @@ export class MobileReviewSession {
           cardId: this.currentItem.cardId,
           sessionId: snapshot.sessionId,
           timeZone: this.timeZone(),
-          confirm: true,
+          confirm,
         });
         snapshot.attemptId = admission.attemptId;
         return;

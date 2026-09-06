@@ -10,6 +10,7 @@ import {
 } from "../../mobile/src/review-session.js";
 import {
   addPrerequisite,
+  admitPresentation,
   createToken,
   type Database,
   ensureCard,
@@ -123,11 +124,101 @@ describe("mobile review session", () => {
     expect(session.currentItem?.tokenId).toBe(p1.id);
     expect(session.progress.total).toBe(3);
 
+    await session.confirmCurrent();
     session.updateDraftAnswer("ok");
     session.reveal();
     const rated = await session.rate(3);
     expect(rated.summary).toBeUndefined();
     expect(session.currentItem?.tokenId).toBe(other.id);
+  });
+
+  it("does not treat a reserved card as shown when the atom is dropped", async () => {
+    const atomId = ulid();
+    await db
+      .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+      .run(atomId, "Foundation");
+    const h1 = await createToken(db, {
+      slug: "a-h1",
+      concept: "Foundation criterion",
+      domain: "math",
+      question: "Foundation?",
+      atom_id: atomId,
+    });
+    const p = await createToken(db, {
+      slug: "b-p",
+      concept: "Dependent item",
+      domain: "math",
+      question: "P?",
+      atom_id: atomId,
+    });
+    await ensureCard(db, h1.id, "student-9");
+    await ensureCard(db, p.id, "student-9");
+
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await session.start("student-9")).toBe(true);
+    const current = session.currentItem;
+    expect(current?.atomId).toBe(atomId);
+    const shownCardId = current!.cardId;
+
+    const reserved = (await db
+      .prepare(
+        `SELECT presented_at, abandoned_at FROM card_presentations
+          WHERE card_id = ?`,
+      )
+      .get(shownCardId)) as {
+      presented_at: string | null;
+      abandoned_at: string | null;
+    };
+    expect(reserved.presented_at).toBeNull();
+    expect(reserved.abandoned_at).toBeNull();
+
+    await session.dropAtom(atomId);
+
+    const after = (await db
+      .prepare(
+        `SELECT presented_at, abandoned_at FROM card_presentations
+          WHERE card_id = ?`,
+      )
+      .get(shownCardId)) as {
+      presented_at: string | null;
+      abandoned_at: string | null;
+    };
+    expect(after.presented_at).toBeNull();
+    expect(after.abandoned_at).not.toBeNull();
+
+    const h1Card = await getCard(db, h1.id, "student-9");
+    const pCard = await getCard(db, p.id, "student-9");
+    const otherId = shownCardId === h1Card!.id ? pCard!.id : h1Card!.id;
+    const admitted = await admitPresentation(db, {
+      userId: "student-9",
+      cardId: otherId,
+      timeZone: "UTC",
+      confirm: true,
+    });
+    expect(admitted.presented).toBe(true);
+  });
+
+  it("confirms a display only when confirmCurrent runs", async () => {
+    const token = await createToken(db, {
+      slug: "shown-item",
+      concept: "A criterion",
+      domain: "math",
+      question: "Q?",
+    });
+    await ensureCard(db, token.id, "student-9");
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await session.start("student-9")).toBe(true);
+    const card = await getCard(db, token.id, "student-9");
+    const before = (await db
+      .prepare("SELECT presented_at FROM card_presentations WHERE card_id = ?")
+      .get(card!.id)) as { presented_at: string | null };
+    expect(before.presented_at).toBeNull();
+
+    await session.confirmCurrent();
+    const after = (await db
+      .prepare("SELECT presented_at FROM card_presentations WHERE card_id = ?")
+      .get(card!.id)) as { presented_at: string | null };
+    expect(after.presented_at).not.toBeNull();
   });
 
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {
