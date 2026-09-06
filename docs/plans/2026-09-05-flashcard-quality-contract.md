@@ -15,7 +15,7 @@ Plan prepared; product implementation has not started. When asked to implement, 
 - [x] Phase 3: Atom sibling separation and reactive cancellation of prerequisite deferral
 - [x] Phase 4: Record observed attempts with traceable evidence and no duplicate reviews
 - [x] Phase 5: Limited content revision with explicit treatment of existing cards
-- [ ] Phase 6: Prepare a supervised pilot and run a technical rehearsal
+- [x] Phase 6: Prepare a supervised pilot and run a technical rehearsal
 
 The actual learning pilot follows technical implementation. Its delayed learning measurements are not a merge gate for this implementation PR. A successful functional test does not establish learning effectiveness.
 
