@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-05T22:00:00.000Z
+timestamp: 2026-09-06T19:08:40.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -52,9 +52,17 @@ Outbound HTTP that the bridge performs on a learner's behalf identifies
 itself with the release-versioned `ZAM-Content-Studio/<version>`
 User-Agent, which every release bumps in step with the package version.
 
-Representative commands: `next` (pull the next queue card), `submit`
-(apply a rating; accepts `--response-time-ms` so a rating contributes its
-study time — ADR 2026-08-01), `stats-activity` (review activity series),
+Representative commands: `next` (pull the next queue card), `admit-review`
+(record that a card is shown: refuses a same-atom sibling already presented
+on the learner's local day and any unpublished card, and returns the
+`attemptId` for the following submit), `submit` (apply a rating; accepts
+`--response-time-ms` so a rating contributes its study time — ADR
+2026-08-01, and `--attempt-id` so a retried submit is one review: the result
+carries `attemptId` and `applied: false` on a replay; `--record-only
+--reason <text>` logs assisted user work without a rating and answers
+`recordedOnly`/`replayed`; a completed session still accepts a rating of its
+own work, while record-only steps need an open session), `stats-activity`
+(review activity series),
 `add-token` (register a **draft** token *and* create the calling user's card —
 see [token-card-model.md](token-card-model.md)), `list-drafts`,
 `personal-card-update` (partial update by slug), and

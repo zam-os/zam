@@ -73,7 +73,11 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- free recall of the same objective.
   language           TEXT,
   tier               TEXT,
-  fast_check         TEXT
+  fast_check         TEXT,
+  -- Declared edge representative of its atom (KVT tile flag, M032). Token
+  -- prerequisites derived from atom edges point at this item; without the
+  -- flag the first published Tier-1 item by id represents the atom.
+  edge_representative INTEGER NOT NULL DEFAULT 0
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -199,6 +203,10 @@ CREATE TABLE IF NOT EXISTS card_presentations (
   reserved_at   TEXT NOT NULL,
   presented_at  TEXT,
   abandoned_at  TEXT,
+  -- Attempt id handed to the surface at admission (M032). A presentation is
+  -- not an attempt: once this id is rated or recorded, the next admission of
+  -- the same card mints a new one, so a same-day learning step is new evidence.
+  attempt_id    TEXT,
   created_at    TEXT NOT NULL DEFAULT (datetime('now'))
 );
 

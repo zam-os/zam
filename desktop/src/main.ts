@@ -448,6 +448,8 @@ interface ReviewPayload {
 }
 
 let activeCard: BridgeCard | null = null;
+/** Attempt id from the admission of `activeCard`; travels with its rating. */
+let activeAttemptId: string | null = null;
 let activePromptQuestion = "";
 let resolvedContextContent: string | null = null;
 let studySessionActive = false;
@@ -6171,6 +6173,7 @@ async function loadNextCard(
   const requestId = ++questionRequestId;
   cardLoadInProgress = true;
   activeCard = null;
+  activeAttemptId = null;
   activePromptQuestion = "";
   updateReviewControlState();
   try {
@@ -6993,14 +6996,15 @@ async function submitRating(ratingVal: number) {
     return;
   }
   const cardId = activeCard.cardId;
+  const attemptId = activeAttemptId;
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
 
   try {
-    await runBridge("submit", [
-      "--card-id", cardId,
-      "--rating", String(ratingVal)
-    ]);
+    const submitArgs = ["--card-id", cardId, "--rating", String(ratingVal)];
+    // The attempt id from admission makes a retried submit one review.
+    if (attemptId) submitArgs.push("--attempt-id", attemptId);
+    await runBridge("submit", submitArgs);
 
     if (ratingVal >= 1 && ratingVal <= 4) {
       const r = ratingVal as 1 | 2 | 3 | 4;
@@ -7359,7 +7363,11 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
       learnerTimeZone(),
     ];
     if (zamUiSessionId) args.push("--session", zamUiSessionId);
-    await runBridge("admit-review", args);
+    const admission = await runBridge<{ attemptId?: string }>(
+      "admit-review",
+      args,
+    );
+    activeAttemptId = admission?.attemptId ?? null;
   } catch (err) {
     if (isAtomSiblingOccupied(err) || isCardNoLongerDue(err)) {
       await loadNextCard();
@@ -7517,8 +7525,17 @@ async function decidePrecondition(
   preconditionCache = null;
   assessedAtomsThisSession.add(atomId);
   if (decision === "learn" && pendingReviewPayload) {
-    await presentFetchedCard(pendingReviewPayload);
-    return;
+    // Same recovery as loadNextCard: an admission failure must not leave the
+    // offer on screen with a rejected promise nobody handles.
+    try {
+      await presentFetchedCard(pendingReviewPayload);
+      return;
+    } catch (err) {
+      console.error("Failed to present the deferred card:", err);
+      pendingReviewPayload = null;
+      await loadNextCard();
+      return;
+    }
   }
   pendingReviewPayload = null;
   await loadNextCard();

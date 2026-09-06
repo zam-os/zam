@@ -961,7 +961,7 @@ async function publishDraftCard(): Promise<void> {
     return;
   }
   if (!question) {
-    alert(t("lbl_err_question_required"));
+    alert(t("lbl_err_publish_question_required"));
     fieldQuestion.focus();
     return;
   }

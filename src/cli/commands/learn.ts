@@ -22,9 +22,11 @@ import {
   AtomSiblingOccupiedError,
   admitPresentation,
   buildReviewQueue,
+  CardNotDueError,
   generatePrompt,
   getSetting,
   getTokenById,
+  hostTimeZone,
   openDatabase,
   resolveReviewContext,
   setSetting,
@@ -66,12 +68,15 @@ export const learnCommand = new Command("learn")
       db = await openDatabase();
       const userId = await resolveUser(opts, db);
 
+      // One zone for queue and admission, or the two could disagree about
+      // which learning day a sibling was already shown on.
+      const timeZone = hostTimeZone();
       const queue = await buildReviewQueue(db, {
         userId,
         maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
         maxReviews:
           opts.maxReviews === undefined ? undefined : Number(opts.maxReviews),
-        timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+        timeZone,
       });
 
       const locale = ((await getSetting(db, "system.locale")) ||
@@ -116,14 +121,24 @@ export const learnCommand = new Command("learn")
       const results: Array<{ slug: string; rating: number }> = [];
 
       for (const [index, item] of queue.items.entries()) {
+        let attemptId: string;
         try {
-          await admitPresentation(db, {
+          const admission = await admitPresentation(db, {
             userId,
             cardId: item.cardId,
+            timeZone,
             confirm: true,
           });
+          attemptId = admission.attemptId;
         } catch (err) {
-          if (err instanceof AtomSiblingOccupiedError) continue;
+          // A sibling shown earlier today or a card that stopped being due
+          // since the queue was built is skipped, not a reason to abort.
+          if (
+            err instanceof AtomSiblingOccupiedError ||
+            err instanceof CardNotDueError
+          ) {
+            continue;
+          }
           throw err;
         }
 
@@ -254,6 +269,7 @@ export const learnCommand = new Command("learn")
             item,
             mode: "review",
             startedAt: cardStartedAt,
+            attemptId,
           });
         } catch (err) {
           if (isExitPrompt(err)) {

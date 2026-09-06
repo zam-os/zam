@@ -40,6 +40,8 @@ interface ReviewSessionSnapshot {
   revealed: boolean;
   cardStartedAt: number;
   assessedAtomIds?: string[];
+  /** Attempt id from the current card's admission; travels with its rating. */
+  attemptId?: string | null;
 }
 
 export interface MobileReviewProgress {
@@ -179,7 +181,7 @@ export class MobileReviewSession {
     const queue = await buildReviewQueue(this.db, {
       userId,
       maxNew: options.maxNew,
-      timeZone: Intl.DateTimeFormat().resolvedOptions().timeZone,
+      timeZone: this.timeZone(),
     });
     if (queue.items.length === 0) return false;
 
@@ -288,11 +290,13 @@ export class MobileReviewSession {
       rating,
       sessionId: snapshot.sessionId,
       responseTimeMs: Math.max(0, this.now() - snapshot.cardStartedAt),
+      attemptId: snapshot.attemptId ?? undefined,
     });
 
     snapshot.currentIndex += 1;
     snapshot.draftAnswer = "";
     snapshot.revealed = false;
+    snapshot.attemptId = null;
     snapshot.cardStartedAt = this.now();
 
     const response: MobileReviewRatingResult = {
@@ -406,17 +410,24 @@ export class MobileReviewSession {
     return result;
   }
 
+  /** Same zone for queue building and admission, so both see one learning day. */
+  private timeZone(): string {
+    return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  }
+
   private async admitCurrent(): Promise<void> {
     const snapshot = this.snapshot;
     if (!snapshot) return;
     while (this.currentItem) {
       try {
-        await admitPresentation(this.db, {
+        const admission = await admitPresentation(this.db, {
           userId: snapshot.userId,
           cardId: this.currentItem.cardId,
           sessionId: snapshot.sessionId,
+          timeZone: this.timeZone(),
           confirm: true,
         });
+        snapshot.attemptId = admission.attemptId;
         return;
       } catch (error) {
         if (
@@ -425,9 +436,12 @@ export class MobileReviewSession {
         ) {
           throw error;
         }
-        snapshot.currentIndex += 1;
+        // Never shown, so not part of this session: remove it like a dropped
+        // card so `progress.total` and the summary stay truthful.
+        snapshot.items.splice(snapshot.currentIndex, 1);
         snapshot.draftAnswer = "";
         snapshot.revealed = false;
+        snapshot.attemptId = null;
         snapshot.cardStartedAt = this.now();
       }
     }

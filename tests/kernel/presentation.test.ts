@@ -9,6 +9,8 @@ import {
   abandonPresentation,
   admitPresentation,
   buildReviewQueue,
+  CardNotDueError,
+  CardNotReviewableError,
   createToken,
   type Database,
   endSession,
@@ -16,10 +18,13 @@ import {
   executeReviewAction,
   exportSnapshot,
   getCard,
+  getDueCards,
+  getReviewsForCard,
   importSnapshot,
   localLearningDay,
   occupyingAtomCards,
   openDatabase,
+  parseStoredTimestamp,
   PRECONDITION_BURIED_REASON,
   PRECONDITION_READY_REASON,
   resolvePresentationTimeZone,
@@ -449,6 +454,160 @@ describe("atom sibling presentations", () => {
     const p1After = await getCard(db, p1.id, "learner");
     expect(p1After?.state).toBe("new");
     expect(p1After?.reps).toBe(0);
+  });
+
+  it("hands out one attempt id per attempt, not per presentation", async () => {
+    const atomId = await insertAtom("Attempts");
+    const [p1] = await siblingCards("learner", atomId, ["attempt-p1"]);
+    const now = new Date("2026-09-05T12:00:00.000Z");
+    const admit = (at: Date) =>
+      admitPresentation(db, {
+        userId: "learner",
+        cardId: p1.cardId,
+        timeZone: "UTC",
+        now: at,
+      });
+
+    const first = await admit(now);
+    // A retry before any submit sees the same pending attempt.
+    const retry = await admit(now);
+    expect(retry.presentationId).toBe(first.presentationId);
+    expect(retry.attemptId).toBe(first.attemptId);
+
+    const rated = await executeReviewAction(db, {
+      action: "rate",
+      cardId: p1.cardId,
+      userId: "learner",
+      rating: 1,
+      attemptId: first.attemptId,
+      now,
+    });
+    expect(rated.applied).toBe(true);
+    // The same attempt cannot write a second review.
+    const replay = await executeReviewAction(db, {
+      action: "rate",
+      cardId: p1.cardId,
+      userId: "learner",
+      rating: 1,
+      attemptId: first.attemptId,
+      now,
+    });
+    expect(replay.applied).toBe(false);
+    expect(await getReviewsForCard(db, p1.cardId)).toHaveLength(1);
+
+    // The one-minute learning step brings the card back on the same day:
+    // same presentation, new attempt, second review.
+    const later = new Date(now.getTime() + 2 * 60_000);
+    const again = await admit(later);
+    expect(again.presentationId).toBe(first.presentationId);
+    expect(again.attemptId).not.toBe(first.attemptId);
+    const second = await executeReviewAction(db, {
+      action: "rate",
+      cardId: p1.cardId,
+      userId: "learner",
+      rating: 3,
+      attemptId: again.attemptId,
+      now: later,
+    });
+    expect(second.applied).toBe(true);
+    expect(await getReviewsForCard(db, p1.cardId)).toHaveLength(2);
+  });
+
+  it("refuses an attempt id that belongs to another card", async () => {
+    const [a, b] = await siblingCards("learner", await insertAtom("A"), [
+      "own-a",
+    ]).then(async ([a]) => [
+      a,
+      (await siblingCards("learner", await insertAtom("B"), ["own-b"]))[0],
+    ]);
+    const now = new Date("2026-09-05T12:00:00.000Z");
+    const admission = await admitPresentation(db, {
+      userId: "learner",
+      cardId: a.cardId,
+      timeZone: "UTC",
+      now,
+    });
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: b.cardId,
+        userId: "learner",
+        rating: 3,
+        attemptId: admission.attemptId,
+        now,
+      }),
+    ).rejects.toThrow("different card");
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: a.cardId,
+        userId: "someone-else",
+        rating: 3,
+        attemptId: admission.attemptId,
+        now,
+      }),
+    ).rejects.toThrow("does not belong");
+    expect(await getReviewsForCard(db, b.cardId)).toHaveLength(0);
+  });
+
+  it("admits, lists and rates only published content", async () => {
+    const draft = await createToken(db, {
+      slug: "draft-item",
+      concept: "Criterion for a draft",
+      domain: "math",
+      bloom_level: 1,
+      question: "Question for a draft?",
+      editorial_state: "draft",
+    });
+    const card = await ensureCard(db, draft.id, "learner");
+    await expect(
+      admitPresentation(db, {
+        userId: "learner",
+        cardId: card.id,
+        timeZone: "UTC",
+      }),
+    ).rejects.toBeInstanceOf(CardNotReviewableError);
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: card.id,
+        userId: "learner",
+        rating: 3,
+      }),
+    ).rejects.toThrow("cannot be reviewed");
+    expect(
+      (await getDueCards(db, "learner")).map((row) => row.token_id),
+    ).not.toContain(draft.id);
+  });
+
+  it("reads zone-less SQLite timestamps as UTC when judging due dates", async () => {
+    const utc = Date.parse("2026-09-06T14:00:00.000Z");
+    expect(parseStoredTimestamp("2026-09-06 14:00:00")).toBe(utc);
+    expect(parseStoredTimestamp("2026-09-06T14:00:00.000Z")).toBe(utc);
+
+    const [p1] = await siblingCards("learner", await insertAtom("Due"), [
+      "due-p1",
+    ]);
+    await db
+      .prepare(
+        "UPDATE cards SET last_review_at = ?, due_at = ? WHERE id = ?",
+      )
+      .run("2026-09-01T10:00:00.000Z", "2026-09-06 14:00:00", p1.cardId);
+    await expect(
+      admitPresentation(db, {
+        userId: "learner",
+        cardId: p1.cardId,
+        timeZone: "America/New_York",
+        now: new Date("2026-09-06T13:00:00.000Z"),
+      }),
+    ).rejects.toBeInstanceOf(CardNotDueError);
+    const admitted = await admitPresentation(db, {
+      userId: "learner",
+      cardId: p1.cardId,
+      timeZone: "America/New_York",
+      now: new Date("2026-09-06T15:00:00.000Z"),
+    });
+    expect(admitted.presented).toBe(true);
   });
 
   it("round-trips presentations through a snapshot", async () => {

@@ -229,10 +229,15 @@ export async function prepareSessionSynthesis(
     tokens.set(pattern.slug, token);
   }
 
-  const applied = new Set(
-    (await getSessionSynthesisRecords(db, input.sessionId)).map(
-      (record) => record.token_id,
-    ),
+  const records = await getSessionSynthesisRecords(db, input.sessionId);
+  const applied = new Set(records.map((record) => record.token_id));
+  // Rows written before attempt identity existed carry no attempt_id. They
+  // cannot be matched by evidence key, so for them the old rule holds: one
+  // synthesis per token per session. Attempt-keyed rows are matched below.
+  const legacyApplied = new Set(
+    records
+      .filter((record) => record.attempt_id == null)
+      .map((record) => record.token_id),
   );
   const minConfidence = input.minConfidence ?? "medium";
 
@@ -254,7 +259,7 @@ export async function prepareSessionSynthesis(
     const { candidates, skippedLowConfidence } = buildUiSynthesisCandidates(
       reports,
       tokens,
-      new Set(),
+      legacyApplied,
       minConfidence,
     );
     const pending: SessionSynthesisCandidate[] = [];
@@ -297,6 +302,7 @@ export async function prepareSessionSynthesis(
   for (const rating of analysis.ratings) {
     const token = tokens.get(rating.tokenSlug);
     if (!token || rating.evidence.matchedCommands === 0) continue;
+    if (legacyApplied.has(token.id)) continue;
     if (confidenceRank(rating.confidence) < minRank) {
       skippedLowConfidence++;
       continue;
@@ -352,6 +358,11 @@ export async function applySessionSynthesis(
     if (!token || token.deprecated_at) {
       throw new Error(`Active token not found: ${input.tokenSlug}`);
     }
+    if (token.editorial_state !== "published") {
+      throw new Error(
+        `Token ${input.tokenSlug} is ${token.editorial_state}; only published content takes a rating`,
+      );
+    }
 
     const evidenceKey = observationEvidenceKey(input.matchedCommandTexts);
     const existingAttempt = input.attemptId
@@ -361,22 +372,23 @@ export async function applySessionSynthesis(
           tokenId: token.id,
           evidenceKey,
         });
+    if (
+      existingAttempt &&
+      (existingAttempt.user_id !== session.user_id ||
+        existingAttempt.token_id !== token.id)
+    ) {
+      throw new Error(
+        `Attempt ${existingAttempt.id} does not belong to ${input.tokenSlug} in session ${session.id}`,
+      );
+    }
 
     if (existingAttempt?.status === "rated" && existingAttempt.review_log_id) {
       if (
         existingAttempt.rating != null &&
         existingAttempt.rating !== input.confirmedRating
       ) {
-        await recordAttempt(tx, {
-          id: existingAttempt.id,
-          userId: session.user_id,
-          tokenId: token.id,
-          actor: "user",
-          channel: "synthesis",
-          status: "conflict",
-          rating: input.confirmedRating,
-          conflictNote: `existing ${existingAttempt.rating}, proposed ${input.confirmedRating}`,
-        });
+        // Surfaced, not written: the transaction rolls back anyway, so a
+        // conflict marker could never have survived here.
         throw new AttemptConflictError(
           existingAttempt.id,
           existingAttempt.rating,
@@ -427,7 +439,11 @@ export async function applySessionSynthesis(
       return { applied: false, record: parseSynthesisRow(linked) };
     }
 
-    if (!input.attemptId && evidenceKey == null) {
+    // No attempt matched. A synthesis written before attempt identity existed
+    // has no attempt_id to match on; for those the (session, token) key is
+    // the only identity there is, and applying again would write a second
+    // review for the same evidence.
+    if (!existingAttempt) {
       const legacy = (await tx
         .prepare(
           `SELECT * FROM session_syntheses

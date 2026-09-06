@@ -72,9 +72,10 @@ import {
   prepareSessionSynthesis,
   presentFastCheck,
   publishTokenRevision,
+  publishTokenRevisionInTransaction,
   pullForwardCards,
   readMonitorLog,
-  recordAttempt,
+  recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
   resolveReviewContext,
@@ -560,51 +561,18 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     if (!params.cardId) {
       throw new Error("cardId is required for a record-only user step");
     }
-    const card = await getCardById(db, params.cardId);
-    if (!card) {
-      throw new Error(`Card not found: ${params.cardId}`);
-    }
-    if (card.user_id !== userId) {
-      throw new Error(
-        `Card ${params.cardId} does not belong to user ${userId}`,
-      );
-    }
-    const session = (await db
-      .prepare("SELECT user_id, completed_at FROM sessions WHERE id = ?")
-      .get(params.sessionId)) as
-      | { user_id: string; completed_at: string | null }
-      | undefined;
-    if (!session) {
-      throw new Error(`Session not found: ${params.sessionId}`);
-    }
-    if (session.user_id !== userId) {
-      throw new Error(
-        `Session ${params.sessionId} does not belong to user ${userId}`,
-      );
-    }
-    if (session.completed_at) {
-      throw new Error(`Session already completed: ${params.sessionId}`);
-    }
-    const step = await logStep(db, {
-      session_id: params.sessionId,
-      token_id: card.token_id,
-      done_by: "user",
-      notes: reason,
-    });
-    const recorded = await recordAttempt(db, {
-      id: params.attemptId,
+    // Session, card and attempt checks and both writes live in the kernel so
+    // a replay or conflict cannot leave a step without its attempt.
+    const recorded = await recordAssistedStep(db, {
+      cardId: params.cardId,
       userId,
-      cardId: card.id,
-      tokenId: card.token_id,
       sessionId: params.sessionId,
-      activity: params.activity ?? reason,
       actor: "user",
+      reason,
+      attemptId: params.attemptId,
+      activity: params.activity,
+      assistance: params.assistance,
       permittedTools: params.permittedTools,
-      assistance: params.assistance ?? reason,
-      independent: false,
-      channel: "direct",
-      sessionStepId: step.id,
-      status: "recorded",
     });
     return {
       success: true,
@@ -612,7 +580,8 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       evaluation: null,
       blocked: null,
       recordedOnly: true,
-      attemptId: recorded.attempt.id,
+      attemptId: recorded.attemptId,
+      replayed: recorded.replayed,
     };
   }
 
@@ -626,34 +595,15 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     if (!params.cardId) {
       throw new Error("cardId is required for an agent-completed step");
     }
-    const card = await getCardById(db, params.cardId);
-    if (!card) {
-      throw new Error(`Card not found: ${params.cardId}`);
-    }
-    if (card.user_id !== userId) {
-      throw new Error(
-        `Card ${params.cardId} does not belong to user ${userId}`,
-      );
-    }
-    const step = await logStep(db, {
-      session_id: params.sessionId,
-      token_id: card.token_id,
-      done_by: "agent",
-    });
-    const recorded = await recordAttempt(db, {
-      id: params.attemptId,
+    const recorded = await recordAssistedStep(db, {
+      cardId: params.cardId,
       userId,
-      cardId: card.id,
-      tokenId: card.token_id,
       sessionId: params.sessionId,
-      activity: params.activity,
       actor: "agent",
-      permittedTools: params.permittedTools,
+      attemptId: params.attemptId,
+      activity: params.activity,
       assistance: params.assistance,
-      independent: false,
-      channel: "direct",
-      sessionStepId: step.id,
-      status: "recorded",
+      permittedTools: params.permittedTools,
     });
     return {
       success: true,
@@ -661,7 +611,8 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
       evaluation: null,
       blocked: null,
       recordedOnly: true,
-      attemptId: recorded.attempt.id,
+      attemptId: recorded.attemptId,
+      replayed: recorded.replayed,
     };
   }
 
@@ -1041,6 +992,8 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
   const updated: string[] = [];
   const replaced: string[] = [];
   const maintenance: string[] = [];
+  /** Tokens that stay unpublished because a structural check blocks them. */
+  const drafts: string[] = [];
   let cardsEnsured = 0;
 
   await db.transaction(async (tx) => {
@@ -1063,6 +1016,7 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
             slug: input.slug,
             concept: input.concept,
             question: input.question ?? null,
+            domain: input.domain,
             requireQuestion: true,
           }).filter((check) => check.blocking).length === 0;
         const token = await createToken(tx, {
@@ -1078,6 +1032,7 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
         });
         inImport.set(input.slug, token);
         created.push(input.slug);
+        if (!readyToPublish) drafts.push(input.slug);
       } else {
         if (!existing) {
           throw new Error(
@@ -1097,10 +1052,29 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
           updates.question = input.question;
           updates.question_source = input.question ? "llm" : undefined;
         }
-        const token = await updateToken(tx, input.slug, updates);
+        let token = await updateToken(tx, input.slug, updates);
         // An explicit update/replace re-confirms the source binding.
         if (existing.maintenance_at) {
           await clearTokenMaintenance(tx, input.slug);
+        }
+        // A draft parked by an earlier import publishes as soon as the
+        // re-import supplies what was missing; nobody has learned it yet, so
+        // the first publication is cosmetic. Still blocked → still a draft.
+        if (
+          existing.editorial_state === "draft" ||
+          existing.editorial_state === "in_review"
+        ) {
+          const readiness = await evaluatePublicationReadiness(tx, token.id);
+          if (readiness.ready) {
+            await publishTokenRevisionInTransaction(tx, {
+              tokenId: token.id,
+              materiality: "cosmetic",
+              publishedBy: "okf-import",
+            });
+            token = (await getTokenBySlug(tx, input.slug)) ?? token;
+          } else {
+            drafts.push(input.slug);
+          }
         }
         if (mode === "replace") {
           await resetCardsForToken(tx, token.id);
@@ -1186,6 +1160,13 @@ export async function importOkfTokens(db: Database, params: ImportOkfParams) {
     updated,
     replaced,
     maintenance,
+    /**
+     * Stored but unpublished: a structural check (usually the missing
+     * question) blocks them, so they have a card yet never enter the queue
+     * until published via zam_publish_revision or a re-import that adds the
+     * question.
+     */
+    drafts,
     cards: cardsEnsured,
   };
 }

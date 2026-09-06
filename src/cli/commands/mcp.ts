@@ -536,7 +536,7 @@ export function createMcpServer(
     "zam_admit_review",
     {
       description:
-        "Admit a specific card for presentation. A queue prefetch is not an exposure; call this immediately before showing the item. Rejects a different sibling of the same atom already presented today.",
+        "Admit a specific card for presentation. A queue prefetch is not an exposure; call this immediately before showing the item. Rejects a different sibling of the same atom already presented today and any unpublished card. Returns the attemptId to pass to zam_submit_review for this display.",
       inputSchema: {
         user: z.string().optional().describe("User ID"),
         cardId: z.string().describe("Card ULID to present"),
@@ -567,7 +567,7 @@ export function createMcpServer(
     "zam_submit_review",
     {
       description:
-        "Submit a user FSRS rating, log an unrated agent step, or record assisted user work without a rating",
+        "Submit a user FSRS rating, log an unrated agent step, or record assisted user work without a rating. Pass the attemptId that zam_admit_review returned for this display so a retried submit stays one review; a completed session still accepts ratings of its own work.",
       inputSchema: {
         user: z.string().optional().describe("User ID submitting the review"),
         cardId: z
@@ -621,7 +621,7 @@ export function createMcpServer(
           .string()
           .optional()
           .describe(
-            "Shared attempt ULID; the same attempt cannot create two reviews",
+            "Attempt ULID returned by zam_admit_review for this display; the same attempt cannot create two reviews",
           ),
         independent: z
           .boolean()
@@ -1933,7 +1933,9 @@ export function createMcpServer(
         "outcome for real articles. On RE-import classify each token via mode: 'new' adds, 'update' refreshes " +
         "content and KEEPS learning state, 'replace' means the concept changed — content refreshed and learning " +
         "state RESET to the beginning. Previously imported tokens you do not confirm are moved to maintenance " +
-        "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user.",
+        "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user. " +
+        "A token without a question is stored as a draft and listed under `drafts`: it keeps its card but stays out of " +
+        "the queue until zam_publish_revision or a re-import (mode 'update') supplies the question.",
       inputSchema: {
         user: z.string().optional().describe("User ID to create cards for"),
         bundle_dir: okfBundleDirSchema,
@@ -1984,7 +1986,9 @@ export function createMcpServer(
                 .string()
                 .nullable()
                 .optional()
-                .describe("Optional pre-defined review question"),
+                .describe(
+                  "Review question. Without one the token is stored as a draft and does not enter the queue until published",
+                ),
               mode: z
                 .enum(["new", "update", "replace"])
                 .optional()

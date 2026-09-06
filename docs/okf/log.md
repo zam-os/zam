@@ -2,6 +2,10 @@
 
 ## 2026-09-06
 
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 
 ## 2026-09-05

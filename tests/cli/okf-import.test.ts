@@ -105,6 +105,8 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
 
     expect(result.created.sort()).toEqual(["first-concept", "second-concept"]);
     expect(result.cards).toBe(2);
+    // Without a question a token is stored, carded, and parked as a draft.
+    expect(result.drafts.sort()).toEqual(["first-concept", "second-concept"]);
     expect(result.article.source_link).toBe(RESOURCE);
 
     const first = await getTokenBySlug(db, "first-concept");
@@ -127,6 +129,30 @@ describe("importOkfTokens (ADR 2026-07-18)", () => {
       { slug: "only-concept", concept: "One genuine concept." },
     ]);
     expect(result.created).toEqual(["only-concept"]);
+  });
+
+  it("publishes a parked draft once a re-import supplies the question", async () => {
+    const parked = await importSample([
+      { slug: "first-concept", concept: "The first memorable concept." },
+    ]);
+    expect(parked.drafts).toEqual(["first-concept"]);
+    expect((await getTokenBySlug(db, "first-concept"))?.editorial_state).toBe(
+      "draft",
+    );
+
+    const published = await importSample([
+      {
+        slug: "first-concept",
+        concept: "The first memorable concept.",
+        question: "Which concept comes first in the sample article?",
+        mode: "update",
+      },
+    ]);
+    expect(published.updated).toEqual(["first-concept"]);
+    expect(published.drafts).toEqual([]);
+    const token = await getTokenBySlug(db, "first-concept");
+    expect(token?.editorial_state).toBe("published");
+    expect(token?.question).toContain("comes first");
   });
 
   it("rejects mode 'new' on an existing slug with an instructive error", async () => {

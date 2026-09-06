@@ -149,6 +149,83 @@ describe("Pythagoras fixture revision (Phase 5)", () => {
     expect(await getCard(db, P2, "learner")).toBeUndefined();
   });
 
+  it("removes derived edges that pointed at a retired representative", async () => {
+    // Before the revision J01 represented P, so A02's item inherited an edge
+    // to it. Retiring J01 must take that edge with it, or a learner without
+    // a J01 review could never unblock J03 again.
+    const oldTile: KvtTile = {
+      tile_id: TILE_ID,
+      version: "2026.08.1",
+      title: "Satz des Pythagoras",
+      publisher: "ZAM Curriculum Working Group",
+      atoms: [
+        {
+          id: P,
+          title: "Satz des Pythagoras",
+          domain: "schule/mathematik/geometrie",
+          practice_items: [
+            {
+              id: J01,
+              language: "de",
+              tier: "tier1_fast",
+              bloom_level: 1,
+              question:
+                "Welche Dreiecksseite liegt dem rechten Winkel gegenüber?",
+              concept: "Hypotenuse",
+            },
+          ],
+        },
+        {
+          id: A02,
+          title: "Höhensatz",
+          domain: "schule/mathematik/geometrie",
+          prerequisites: [{ atom_id: P, type: "hard" }],
+          practice_items: [
+            {
+              id: J03,
+              language: "de",
+              tier: "tier1_fast",
+              bloom_level: 1,
+              question: "Wie lautet der Höhensatz für die Höhe h?",
+              concept: "h² = p · q",
+            },
+          ],
+        },
+      ],
+    };
+    await installKvtTile(db, oldTile);
+    expect(
+      (await getPrerequisites(db, J03)).map((row) => row.requires_id),
+    ).toEqual([J01]);
+
+    await installKvtTile(db, loadTile());
+    const edges = (await getPrerequisites(db, J03)).map(
+      (row) => row.requires_id,
+    );
+    expect(edges).toEqual([P1]);
+    expect(edges).not.toContain(J01);
+  });
+
+  it("honours a declared edge representative over a lower-id Tier-1 item", async () => {
+    const tile = loadTile();
+    const pAtom = tile.atoms.find((atom) => atom.id === P);
+    pAtom?.practice_items.push({
+      id: "01K4T9M0000000000000000P00",
+      language: "de",
+      tier: "tier1_fast",
+      bloom_level: 1,
+      question: "Wie heißt die längste Seite im rechtwinkligen Dreieck?",
+      concept: "Die Hypotenuse.",
+    });
+    await installKvtTile(db, tile);
+    expect(
+      (await getPrerequisites(db, J03)).map((row) => row.requires_id),
+    ).toEqual([P1]);
+    expect(
+      (await getPrerequisites(db, U1)).map((row) => row.requires_id),
+    ).toEqual([P1]);
+  });
+
   it("does not add cards or review logs on a repeated install", async () => {
     await installKvtTile(db, loadTile());
     const first = await materialiseKvtCards(db, "fresh", [H, P, U, A02, A03]);

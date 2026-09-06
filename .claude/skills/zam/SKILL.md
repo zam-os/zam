@@ -26,7 +26,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 |---|---|
 | `zam_status` | Retrieve database connection target, active user, stats, and due review queue size. |
 | `zam_get_reviews` | Retrieve a batch of due cards, optionally filtering by domain or context and resolving code context. A prefetch is not a presentation. |
-| `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. |
+| `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. Returns the `attemptId` to pass to `zam_submit_review`. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
@@ -131,7 +131,7 @@ Pick the lowest level that captures the task honestly — shell for command-line
 Call `zam_status` to fetch connection target, current user, stats, and due review queue size. Show stats as a brief friendly greeting.
 
 For **review/conceptual** sessions, query due reviews without resolving:
-Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it. Immediately before asking a card, call `zam_admit_review` with that `cardId` and the session ID. If it reports another item of the same atom was already presented today, skip to the next card.
+Call `zam_get_reviews` (with `includeQuestions: true`, `noResolve: true`, and `noDynamicQuestion: true`). Keep the returned question hidden until you ask it. Immediately before asking a card, call `zam_admit_review` with that `cardId` and the session ID and keep the returned `attemptId` for the submit. If it reports another item of the same atom was already presented today, skip to the next card.
 
 For **executable/task** sessions, also query for tokens relevant to the current task to weave them into the session planning:
 Call `zam_find_tokens` (with the task description context). If relevant tokens are returned, weave them into the planning session (e.g. "We will be working on task T; you already know X, which applies here").
@@ -183,7 +183,7 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them using each candidate's `cardId` or `tokenId`.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work.
 
 **For UI / screen tasks (observation mode):**
 
@@ -214,7 +214,7 @@ After the user answers, run the explicit review loop:
 3. **Suggest a self-rating.** Propose 1–4 against the `concept` only (context is not a pass hurdle): 4 = effortless complete success, 3 = ordinary complete success (use 3 when effort is unknown), 2 = complete but effortful success, 1 = blank, wrong, or missing a required element. Never use 2 for a partial answer.
 4. **Ask the user to choose the final rating.**
 5. **WAIT for the user to choose.**
-6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, and `doneBy: "user"`.
+6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, the `attemptId` from `zam_admit_review`, and `doneBy: "user"`. The same attempt id never creates a second review, so a retry after a timeout is safe.
 *(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating. If the user followed steps just demonstrated, with no independent attempt, call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, session ID, card ID, and `reason`. Both log evidence without advancing FSRS.)*
 
 #### Leveraging Source Links for AI Agent Context

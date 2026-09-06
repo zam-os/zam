@@ -330,6 +330,56 @@ describe("automatic session synthesis", () => {
     expect(preview.candidates).toEqual([]);
   });
 
+  it("does not re-apply a synthesis recorded before attempt identity existed", async () => {
+    const token = await createToken(db, {
+      slug: "legacy-synthesis",
+      concept: "git stash keeps uncommitted work aside",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Legacy session",
+    });
+    const input = {
+      sessionId: session.id,
+      tokenSlug: token.slug,
+      inferredRating: 3 as const,
+      confirmedRating: 3 as const,
+      confidence: "medium" as const,
+      evidence: cleanEvidence,
+      matchedCommandTexts: ["git stash push -m wip", "git stash apply"],
+    };
+    const first = await applySessionSynthesis(db, input);
+    expect(first.applied).toBe(true);
+    // A row migrated from before M031: no attempt to match, only the
+    // (session, token) key.
+    await db
+      .prepare("UPDATE session_syntheses SET attempt_id = NULL WHERE id = ?")
+      .run(first.record.id);
+    await db
+      .prepare("DELETE FROM review_attempts WHERE session_id = ?")
+      .run(session.id);
+
+    const replay = await applySessionSynthesis(db, input);
+    expect(replay.applied).toBe(false);
+    const card = await getCard(db, token.id, "tester");
+    expect(await getReviewsForCard(db, card!.id)).toHaveLength(1);
+
+    const preview = await prepareSessionSynthesis(db, {
+      sessionId: session.id,
+      explicitPatterns: [
+        { slug: token.slug, patterns: ["git stash push", "git stash apply"] },
+      ],
+      commands: [
+        command(1, "git stash push -m wip"),
+        command(2, "git stash apply"),
+      ],
+    });
+    expect(preview.alreadyApplied).toBe(1);
+    expect(preview.candidates).toEqual([]);
+  });
+
   it("routes a confirmed rating of 1 through prerequisite blocking", async () => {
     const prerequisite = await createToken(db, {
       slug: "git-working-tree",

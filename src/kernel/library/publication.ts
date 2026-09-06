@@ -9,6 +9,7 @@
 import type { Database } from "../db/types.js";
 import { getPrerequisites } from "../models/prerequisite.js";
 import {
+  buildTokenSlug,
   type EditorialState,
   getTokenById,
   slugify,
@@ -47,6 +48,8 @@ export interface PublicationFields {
   slug: string;
   concept: string;
   question?: string | null;
+  /** Domain the slug may carry as its prefix; used to recognise derived slugs. */
+  domain?: string | null;
   /** When true, an empty question is a blocking error (new curated items). */
   requireQuestion: boolean;
 }
@@ -59,12 +62,66 @@ export function isSlugEcho(slug: string, text: string): boolean {
   return normalizedText === normalizedSlug;
 }
 
+function escapeRegExp(text: string): string {
+  return text.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+}
+
+/** A raw slug pasted as text: lowercase tokens joined by hyphens, no prose. */
+function looksLikeSlug(text: string): boolean {
+  return /^[a-z0-9]+(?:[-_][a-z0-9]+)*$/.test(text.trim());
+}
+
+/**
+ * True when `slug` is what ZAM's own slug derivation produces from these
+ * fields — from the question, or from the concept for a token whose question
+ * was added after capture — with or without the domain prefix, optionally
+ * carrying a collision suffix. Such a slug is downstream of the text, so the
+ * text cannot be echoing it; the echo rule exists for the reverse case, a
+ * criterion that is only the slug re-worded.
+ *
+ * Text that is itself slug-shaped never counts as a derivation source: an
+ * author who pasted the slug into a field did not derive anything.
+ */
+export function isDerivedSlug(
+  slug: string,
+  fields: Pick<PublicationFields, "concept" | "question" | "domain">,
+): boolean {
+  const concept = fields.concept.trim();
+  const question = fields.question?.trim() ?? "";
+  if (!concept || looksLikeSlug(concept)) return false;
+  if (question && looksLikeSlug(question)) return false;
+
+  const never = () => false;
+  const domain = fields.domain ?? "";
+  const bases = new Set<string>();
+  for (const base of [question || null, null]) {
+    bases.add(buildTokenSlug(domain, concept, base, never));
+    bases.add(buildTokenSlug("", concept, base, never));
+  }
+  const actual = slug.replace(/-+$/, "");
+  return [...bases].some(
+    (base) =>
+      base === actual ||
+      new RegExp(`^${escapeRegExp(base)}-\\d+$`).test(actual),
+  );
+}
+
 export function structuralPublicationChecks(
   fields: PublicationFields,
 ): PublicationCheck[] {
   const checks: PublicationCheck[] = [];
   const concept = fields.concept.trim();
   const question = fields.question?.trim() ?? "";
+  // A slug derived from the token's own text carries no information of its
+  // own, so neither field can be an echo of it. The one case this cannot
+  // tell apart — an authored slug that happens to equal the slugified
+  // criterion next to a real question — is a semantic-review question, not
+  // a structural one.
+  const derived = isDerivedSlug(fields.slug, {
+    concept,
+    question: question || null,
+    domain: fields.domain,
+  });
 
   if (!concept) {
     checks.push({
@@ -72,7 +129,7 @@ export function structuralPublicationChecks(
       blocking: true,
       message: "Criterion (concept) must not be empty.",
     });
-  } else if (isSlugEcho(fields.slug, concept)) {
+  } else if (!derived && isSlugEcho(fields.slug, concept)) {
     checks.push({
       code: "criterion_slug_echo",
       blocking: true,
@@ -88,7 +145,7 @@ export function structuralPublicationChecks(
         message: "A question is required to publish.",
       });
     }
-  } else if (isSlugEcho(fields.slug, question)) {
+  } else if (!derived && isSlugEcho(fields.slug, question)) {
     checks.push({
       code: "question_slug_echo",
       blocking: true,
@@ -102,12 +159,13 @@ export function structuralPublicationChecks(
 function mergeTokenFields(
   token: Token,
   changes?: PublicationFieldChanges,
-): { slug: string; concept: string; question: string | null } {
+): { slug: string; concept: string; question: string | null; domain: string } {
   return {
     slug: token.slug,
     concept: changes?.concept ?? token.concept,
     question:
       changes?.question !== undefined ? changes.question : token.question,
+    domain: token.domain,
   };
 }
 
@@ -137,6 +195,7 @@ export async function evaluatePublicationReadiness(
     slug: merged.slug,
     concept: merged.concept,
     question: merged.question,
+    domain: merged.domain,
     requireQuestion,
   });
 

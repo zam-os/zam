@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-09-05T22:00:00.000Z
+timestamp: 2026-09-06T19:08:40.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -52,7 +52,8 @@ review queue and due list until the binding is repaired and maintenance
 cleared.
 
 Tokens carry an **editorial state**: `draft`, `in_review`, `published`, or
-`deprecated`. Only `published` content enters review queues. Raw captures —
+`deprecated`. Only `published` content enters review queues, due lists,
+presentation admission and rating. Raw captures —
 MCP/Bridge `zam_add_token`, `zam token register`, Studio create, generic
 curriculum extract, source/URL capture, Mobile import, and generated
 split/foundation items — write `draft`. Curated KVT cells, OKF import that
@@ -63,7 +64,11 @@ so those curated callers stay explicit. First-run starter cards pass
 
 Publishing runs inexpensive structural checks: a required question for first
 publication of a draft, a non-empty criterion that is not a slug echo, and
-valid referenced atoms and prerequisite edges. Semantic review of scope,
+valid referenced atoms and prerequisite edges. A slug that ZAM derived from
+the token's own question or concept is never an echo of them; a raw slug
+pasted into a field always is. OKF import parks a token without a question
+as a draft (listed under `drafts`) and publishes it on a re-import that
+supplies the question. Semantic review of scope,
 leakage, and subject-matter dependencies stays with the author. Publishing
 records `published_by` / `published_at`; a material revision increments
 `content_version`, while a cosmetic revision keeps the version. The version
@@ -118,10 +123,20 @@ A bundled cell is commit-controlled shared content plus an explicit list of
 in-scope atom ids. Installing it creates or reconciles atoms, alignments,
 curriculum bindings, prerequisite edges, and local PracticeItem/token rows; it
 creates **zero cards**. Enrolling a learner is a second operation that
-materializes cards for every practice item of the in-scope atoms. A concept
-appears in a learner's queue only after that card exists and the token is
-published. Installation, enrolment, and publication remain separate kernel
-steps.
+materializes cards for the in-scope atoms' practice items: every item of an
+atom the learner has no card on yet, and one new item per enrolment call
+for an atom that already carries cards, so a content revision feeds new
+items within the normal learning budget instead of enrolling existing
+learners in every new card at once. A concept appears in a learner's queue
+only after that card exists and the token is published. Installation,
+enrolment, and publication remain separate kernel steps.
+
+A tile may retire practice items. A retired item keeps its cards and review
+history but stops representing its atom: token prerequisites derived from
+atom edges move to the item flagged `edge_representative` (else the first
+published Tier-1 item, else the lowest published id), and edges that
+pointed at the retired item are removed so it cannot block a learner who
+never reviewed it.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while

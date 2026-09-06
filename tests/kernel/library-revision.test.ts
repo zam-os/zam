@@ -118,16 +118,12 @@ describe("publishTokenRevision", () => {
     expect(result.cardsRetested).toBe(1);
     expect(result.contentVersion).toBe(2);
 
-    // Compare against the *database's* clock, not Date.now(). due_at is written
-    // as datetime('now'), which truncates to the second — so it is never in the
-    // future by SQLite's own reckoning. Node's clock is a different source and
-    // can read several milliseconds behind SQLite's, which made a Date.now()
-    // comparison fail whenever the write landed just past a second boundary.
+    // due_at is written as an ISO timestamp from Node's clock, like every other
+    // due_at writer, so it compares against Date.now() from the same source
+    // (a zone-less SQLite datetime would read as local time in JavaScript).
     const card = await getCard(db, token.id, "alice");
-    const dbNow = (await db.prepare("SELECT datetime('now') AS now").get()) as {
-      now: string;
-    };
-    expect(card!.due_at <= dbNow.now).toBe(true);
+    expect(card!.due_at).toMatch(/^\d{4}-\d{2}-\d{2}T.*Z$/);
+    expect(Date.parse(card!.due_at)).toBeLessThanOrEqual(Date.now());
     expect(await isAwaitingRetest(db, cardId)).toBe(true);
   });
 

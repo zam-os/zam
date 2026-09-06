@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 31;
+export const CURRENT_SCHEMA_VERSION = 32;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -99,6 +99,11 @@ async function migrateSessionSynthesesToAttemptKeyed(
   const cols = await columnsOf(db, "session_syntheses");
   if (cols.length === 0 || cols.includes("id")) return;
 
+  // A run interrupted between the copy and the rename leaves a half-filled
+  // staging table behind; copying into it again would duplicate every row.
+  // Start from an empty staging table and make copy, drop and rename one
+  // transaction so the legacy table is only gone once its rows are over.
+  await db.exec(`DROP TABLE IF EXISTS session_syntheses_m031`);
   await db.exec(`
     CREATE TABLE IF NOT EXISTS session_syntheses_m031 (
       id               TEXT PRIMARY KEY,
@@ -116,42 +121,44 @@ async function migrateSessionSynthesesToAttemptKeyed(
     );
   `);
 
-  const rows = (await db
-    .prepare(
-      `SELECT session_id, token_id, card_id, inferred_rating, confirmed_rating,
-              confidence, evidence, review_log_id, session_step_id, created_at
-         FROM session_syntheses`,
-    )
-    .all()) as LegacySessionSynthesisRow[];
-
-  for (const row of rows) {
-    await db
+  await db.transaction(async (tx) => {
+    const rows = (await tx
       .prepare(
-        `INSERT INTO session_syntheses_m031 (
-           id, session_id, token_id, attempt_id, card_id, inferred_rating,
-           confirmed_rating, confidence, evidence, review_log_id,
-           session_step_id, created_at
-         ) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        `SELECT session_id, token_id, card_id, inferred_rating, confirmed_rating,
+                confidence, evidence, review_log_id, session_step_id, created_at
+           FROM session_syntheses`,
       )
-      .run(
-        ulid(),
-        row.session_id,
-        row.token_id,
-        row.card_id,
-        row.inferred_rating,
-        row.confirmed_rating,
-        row.confidence,
-        row.evidence,
-        row.review_log_id,
-        row.session_step_id,
-        row.created_at,
-      );
-  }
+      .all()) as LegacySessionSynthesisRow[];
 
-  await db.exec(`DROP TABLE session_syntheses`);
-  await db.exec(
-    `ALTER TABLE session_syntheses_m031 RENAME TO session_syntheses`,
-  );
+    for (const row of rows) {
+      await tx
+        .prepare(
+          `INSERT INTO session_syntheses_m031 (
+             id, session_id, token_id, attempt_id, card_id, inferred_rating,
+             confirmed_rating, confidence, evidence, review_log_id,
+             session_step_id, created_at
+           ) VALUES (?, ?, ?, NULL, ?, ?, ?, ?, ?, ?, ?, ?)`,
+        )
+        .run(
+          ulid(),
+          row.session_id,
+          row.token_id,
+          row.card_id,
+          row.inferred_rating,
+          row.confirmed_rating,
+          row.confidence,
+          row.evidence,
+          row.review_log_id,
+          row.session_step_id,
+          row.created_at,
+        );
+    }
+
+    await tx.exec(`DROP TABLE session_syntheses`);
+    await tx.exec(
+      `ALTER TABLE session_syntheses_m031 RENAME TO session_syntheses`,
+    );
+  });
 }
 
 const ATOM_BINDING_UNIQUE_INDEX = `CREATE UNIQUE INDEX IF NOT EXISTS ux_atom_binding
@@ -819,6 +826,30 @@ export async function runMigrations(db: Database): Promise<void> {
     CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);
   `);
   await migrateSessionSynthesesToAttemptKeyed(db);
+
+  // M032: a presentation is not an attempt. The admission hands the surface
+  // an attempt id and remembers it on the presentation; once that attempt is
+  // rated or recorded, the next admission of the same card mints a new one,
+  // so a same-day learning step is new evidence rather than a replay. Tiles
+  // also declare which practice item represents its atom for derived edges;
+  // the flag has to live on the token because edges are reconciled from the
+  // stored atom graph, not from the tile that happens to be installing.
+  const presentationColsM032 = await columnsOf(db, "card_presentations");
+  if (
+    presentationColsM032.length > 0 &&
+    !presentationColsM032.includes("attempt_id")
+  ) {
+    await db.exec(`ALTER TABLE card_presentations ADD COLUMN attempt_id TEXT`);
+  }
+  const tokenColsM032 = await columnsOf(db, "tokens");
+  if (
+    tokenColsM032.length > 0 &&
+    !tokenColsM032.includes("edge_representative")
+  ) {
+    await db.exec(
+      `ALTER TABLE tokens ADD COLUMN edge_representative INTEGER NOT NULL DEFAULT 0`,
+    );
+  }
 }
 
 /**

@@ -297,6 +297,39 @@ describe("mobile review session", () => {
       expect(restored.currentPrompt?.question).toContain("MCP server");
     });
 
+    it("drops an atom sibling that cannot be shown today instead of counting it", async () => {
+      const atomId = ulid();
+      await db
+        .prepare("INSERT INTO learning_atoms (id, title) VALUES (?, ?)")
+        .run(atomId, "Sibling atom");
+      for (const slug of ["sib-a", "sib-b"]) {
+        const token = await createToken(db, {
+          slug,
+          concept: `Criterion for ${slug}`,
+          domain: "test",
+          bloom_level: 1,
+          question: `Question for ${slug}?`,
+          atom_id: atomId,
+        });
+        await ensureCard(db, token.id, "student-9");
+      }
+      const session = new MobileReviewSession(
+        db,
+        new MemoryStorage(),
+        () => 1_000,
+      );
+      expect(await session.start("student-9")).toBe(true);
+      expect(session.progress).toEqual({ current: 1, total: 2 });
+      session.reveal({ allowEmpty: true });
+      const result = await session.rate(3);
+      // The second sibling was never shown, so the session was one card long.
+      expect(result.summary).toMatchObject({
+        completedCount: 1,
+        totalCount: 1,
+        stopped: false,
+      });
+    });
+
     it("drops a deleted card without rating it", async () => {
       const storage = new MemoryStorage();
       const { session, second } = await twoCardSession(storage);

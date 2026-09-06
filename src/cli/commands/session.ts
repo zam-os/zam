@@ -18,13 +18,17 @@ import type {
   TokenPattern,
 } from "../../kernel/index.js";
 import {
+  AtomSiblingOccupiedError,
+  admitPresentation,
   applySessionSynthesis,
   buildReviewQueue,
+  CardNotDueError,
   endSession,
   fetchActiveWorkItems,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
+  hostTimeZone,
   isObserverPolicyConfigured,
   loadADOConfig,
   logStep,
@@ -167,7 +171,8 @@ async function runRepetitionPhase(
   userId: string,
   maxMinutes: number,
 ): Promise<RepetitionResult> {
-  const queue = await buildReviewQueue(db, { userId });
+  const timeZone = hostTimeZone();
+  const queue = await buildReviewQueue(db, { userId, timeZone });
 
   if (queue.items.length === 0) {
     console.log("No cards due for review — moving to task selection.\n");
@@ -199,6 +204,27 @@ async function runRepetitionPhase(
       break;
     }
 
+    // Record the exposure before the question is printed; a sibling of the
+    // same atom shown earlier today is skipped rather than shown twice.
+    let attemptId: string;
+    try {
+      const admission = await admitPresentation(db, {
+        userId,
+        cardId: item.cardId,
+        timeZone,
+        confirm: true,
+      });
+      attemptId = admission.attemptId;
+    } catch (err) {
+      if (
+        err instanceof AtomSiblingOccupiedError ||
+        err instanceof CardNotDueError
+      ) {
+        continue;
+      }
+      throw err;
+    }
+
     const prompt = generatePrompt({
       cardId: item.cardId,
       tokenId: item.tokenId,
@@ -220,6 +246,7 @@ async function runRepetitionPhase(
       item,
       mode: "session",
       startedAt: Date.now(),
+      attemptId,
     });
 
     if (action.action === "stop") {

@@ -170,15 +170,17 @@ export async function publishTokenRevisionInTransaction(
   // the next rating can recalibrate from what the learner actually answers.
   // Blocked cards are left alone: a prerequisite gate outranks a re-test, and
   // the card will surface once it unblocks and is already due.
+  // ISO like every other due_at writer: a zone-less SQLite timestamp would
+  // be read as local time by anything that parses the column in JavaScript.
   const result = await db
     .prepare(
       `UPDATE cards
-          SET due_at = datetime('now')
+          SET due_at = ?
         WHERE token_id = ?
           AND learned_content_version < ?
           AND state <> 'new'`,
     )
-    .run(input.tokenId, nextVersion);
+    .run(nowISO, input.tokenId, nextVersion);
 
   return {
     tokenId: input.tokenId,

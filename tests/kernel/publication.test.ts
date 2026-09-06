@@ -9,6 +9,7 @@ import {
   type Database,
   ensureCard,
   evaluatePublicationReadiness,
+  isDerivedSlug,
   isSlugEcho,
   openDatabase,
   publishTokenRevision,
@@ -55,6 +56,55 @@ describe("structural publication checks", () => {
       ),
     ).toBe(true);
     expect(isSlugEcho("force-equals-mass-times-accel", "F = m a")).toBe(false);
+  });
+
+  it("does not flag a slug derived from the token's own question or concept", () => {
+    // Studio card without a domain: the slug came from the question.
+    expect(
+      structuralPublicationChecks({
+        slug: "was-ist-die-hypotenuse",
+        concept: "Die Seite gegenüber dem rechten Winkel.",
+        question: "Was ist die Hypotenuse?",
+        domain: "",
+        requireQuestion: true,
+      }),
+    ).toEqual([]);
+    // Mobile quick capture: the slug came from the note, the question later.
+    expect(
+      structuralPublicationChecks({
+        slug: "paris-ist-die-hauptstadt-frankreichs",
+        concept: "Paris ist die Hauptstadt Frankreichs",
+        question: "Welche Stadt ist die Hauptstadt Frankreichs?",
+        domain: "inbox",
+        requireQuestion: true,
+      }),
+    ).toEqual([]);
+    // Collision suffixes from generateTokenSlug still count as derived.
+    expect(
+      isDerivedSlug("was-ist-die-hypotenuse-2", {
+        concept: "Die Seite gegenüber dem rechten Winkel.",
+        question: "Was ist die Hypotenuse?",
+        domain: "",
+      }),
+    ).toBe(true);
+    // A pasted slug is never a derivation source.
+    expect(
+      isDerivedSlug("pythagorean-theorem", {
+        concept: "Pythagorean theorem",
+        question: "pythagorean-theorem",
+      }),
+    ).toBe(false);
+    // A raw slug pasted as the criterion stays an echo even next to a real
+    // question.
+    expect(
+      structuralPublicationChecks({
+        slug: "kusto-summarize-operator",
+        concept: "kusto-summarize-operator",
+        question: "What does the summarize operator return in Kusto?",
+        domain: "kusto",
+        requireQuestion: true,
+      }).map((check) => check.code),
+    ).toEqual(["criterion_slug_echo"]);
   });
 });
 

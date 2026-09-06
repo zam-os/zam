@@ -7,6 +7,7 @@ import {
   addToken,
   admitReview,
   backupCreate,
+  checkDue,
   endSession,
   getReview,
   getReviewsBatch,
@@ -347,7 +348,8 @@ describe("bridge-handlers unit tests", () => {
     });
     expect(result.success).toBe(true);
     expect(result.rating).toBe(3);
-    expect(result.stepError).toBeUndefined();
+    expect(result.applied).toBe(true);
+    expect(result.attemptId).toBeTruthy();
     expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
     const steps = await db
       .prepare("SELECT * FROM session_steps WHERE session_id = ?")
@@ -459,6 +461,112 @@ describe("bridge-handlers unit tests", () => {
         reason: "demo",
       }),
     ).rejects.toThrow("recordOnly is for assisted user work");
+  });
+
+  it("replays a record-only step by attempt id without a second session step", async () => {
+    const token = await createToken(db, {
+      slug: "record-only-replay",
+      concept: "Replay",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Assisted work",
+    });
+    const attemptId = ulid();
+
+    const first = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      recordOnly: true,
+      reason: "followed the demo",
+      attemptId,
+    });
+    expect(first).toMatchObject({ recordedOnly: true, attemptId, replayed: false });
+
+    const retry = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      sessionId: session.id,
+      recordOnly: true,
+      reason: "followed the demo",
+      attemptId,
+    });
+    expect(retry).toMatchObject({ recordedOnly: true, attemptId, replayed: true });
+
+    // The assisted attempt cannot later be turned into an FSRS success, and
+    // the refusal leaves no orphan step behind.
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 3,
+        sessionId: session.id,
+        attemptId,
+      }),
+    ).rejects.toThrow("already has a different assessment");
+
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(0);
+  });
+
+  it("accepts a rating for a completed session so confirmed synthesis candidates are not lost", async () => {
+    const token = await createToken(db, {
+      slug: "late-confirmation",
+      concept: "Late confirmation",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    const session = await startSession(db, {
+      user: "thomas",
+      task: "Observed work",
+    });
+    await completeSession(db, session.id);
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      rating: 3,
+      sessionId: session.id,
+    });
+    expect(result.success).toBe(true);
+    expect((await getCard(db, token.id, "thomas"))!.reps).toBe(1);
+    const steps = await db
+      .prepare("SELECT * FROM session_steps WHERE session_id = ?")
+      .all(session.id);
+    expect(steps).toHaveLength(1);
+  });
+
+  it("keeps drafts out of due lists, admission, and rating", async () => {
+    const added = await addToken(db, {
+      user: "thomas",
+      slug: "draft-only",
+      concept: "Captured without review",
+      domain: "math",
+    });
+    expect(added.token.editorial_state).toBe("draft");
+
+    const due = await checkDue(db, { user: "thomas" });
+    expect(due.cards.map((card: { tokenId: string }) => card.tokenId)).not.toContain(
+      added.token.id,
+    );
+    const batch = await getReviewsBatch(db, { user: "thomas" });
+    expect(batch.cards.map((card: { tokenId: string }) => card.tokenId)).not.toContain(
+      added.token.id,
+    );
+    await expect(
+      admitReview(db, { user: "thomas", cardId: added.card.id }),
+    ).rejects.toThrow("not published");
+    await expect(
+      submitReview(db, { user: "thomas", cardId: added.card.id, rating: 3 }),
+    ).rejects.toThrow("cannot be reviewed");
   });
 
   it("rejects record-only against another learner, a completed session, or a foreign card", async () => {
