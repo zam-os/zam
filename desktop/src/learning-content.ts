@@ -917,6 +917,12 @@ async function refreshPublicationNotes(): Promise<void> {
     if (reviewNotesEl) reviewNotesEl.innerHTML = "";
     return;
   }
+  // Only drafts have publication notes; the list already knows the state, so
+  // a published card costs no bridge round trip here.
+  if (!isDraftCard(selectedCard)) {
+    reviewNotesEl.innerHTML = "";
+    return;
+  }
   try {
     const res = await runBridge<{
       success: boolean;

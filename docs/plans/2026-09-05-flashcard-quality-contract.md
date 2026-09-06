@@ -65,7 +65,8 @@ The first pilot is supervised. Missing measurements are collected prospectively 
 | User first follows steps just demonstrated, without an independent attempt | Session step with `done_by = 'user'`, no rating; no review log and no FSRS/blocking change |
 | Agent performs the action | No user review |
 | New card, independent application satisfying the complete criterion | Normal 2/3/4 based on observed effort, no blanket cap |
-| Another learner's or a completed session, another learner's card, record-only plus rating | Error without partial writes |
+| Another learner's session or card, record-only on a completed session, record-only plus rating | Error without partial writes |
+| Rating with the id of a completed session the learner owns | Accepted and logged to that session: confirmed synthesis candidates arrive after `zam_session_end` (review decision 2026-09-06) |
 
 **Verification points:** `tests/desktop/recall-evaluation.test.ts`, `tests/mobile/evaluate.test.ts`, `tests/cli/llm.test.ts`, `tests/cli/agent-llm/recall-agent.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/cli/mcp.test.ts` and existing FSRS/session tests. Test observable behavior, not just the presence of new prompt sentences. Also use a small set of answers with subject-matter assessments to check actual grader responses; mocked model responses establish only the wiring. Record the model and prompt revision in the verification report.
 

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-06T19:08:40.000Z
+timestamp: 2026-09-06T19:42:57.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -77,7 +77,9 @@ Local text-card files use an explicit two-command handshake:
 `personal-card-import-file-preview --path <file>` parses an APKG, CSV, or TSV
 file and returns its deterministic decks, cards, warnings, action counts, and
 `planHash`. `personal-card-import-file-confirm --path <file> --plan-hash
-<hash>` reparses and atomically commits that exact plan. Both commands are
+<hash>` reparses and atomically commits that exact plan; `--apply-published`
+additionally applies changed source wording onto already published tokens as
+a material revision, which a plain re-import never does. Both commands are
 model-free and network-free. See
 [local-card-file-import.md](local-card-file-import.md) for formats, security,
 and re-import semantics.

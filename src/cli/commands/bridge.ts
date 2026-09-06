@@ -6187,6 +6187,10 @@ bridgeCommand
   .requiredOption("--id <id>", "Curated catalog item ID")
   .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--apply-published",
+    "Apply changed source wording onto already published tokens as a material revision",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6196,7 +6200,10 @@ bridgeCommand
         opts.id,
         opts.planHash,
         {},
-        { onProgress: throttledProgress("import-progress") },
+        {
+          onProgress: throttledProgress("import-progress"),
+          applyPublishedContentUpdates: opts.applyPublished === true,
+        },
       );
       jsonOut({ success: true, ...result });
     });
@@ -6226,16 +6233,26 @@ bridgeCommand
   .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
   .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--apply-published",
+    "Apply changed source wording onto already published tokens as a material revision",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const document = await readTextImportFile(opts.path);
+      // Published content is never rewritten silently on re-import; the
+      // preview lints it (`published_content_opt_in`) and this flag is the
+      // explicit opt-in that turns the lint into a material revision.
       const result = await commitTextImport(
         db,
         userId,
         document,
         opts.planHash,
-        { onProgress: throttledProgress("import-progress") },
+        {
+          onProgress: throttledProgress("import-progress"),
+          applyPublishedContentUpdates: opts.applyPublished === true,
+        },
       );
       jsonOut({ success: true, ...result });
     });

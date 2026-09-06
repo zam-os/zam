@@ -240,7 +240,7 @@ describe("analyzeObservation", () => {
     expect(result.ratings[0].evidence.helpSeeking).toBe(false);
   });
 
-  it("rates lower when help-seeking detected", () => {
+  it("does not suggest a success rating when help was sought", () => {
     const commands: CommandRecord[] = [
       {
         seq: 1,
@@ -266,7 +266,9 @@ describe("analyzeObservation", () => {
 
     const result = analyzeObservation(commands, dockerPatterns);
     expect(result.ratings[0].evidence.helpSeeking).toBe(true);
-    expect(result.ratings[0].rating).toBeLessThanOrEqual(3);
+    // Help plus a slow gap reads as effortful work at best; a success
+    // suggestion of Good or Easy never comes out of assisted work.
+    expect([1, 2]).toContain(result.ratings[0].rating);
   });
 
   it("rates lower with errors", () => {

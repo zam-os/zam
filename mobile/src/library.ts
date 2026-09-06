@@ -204,8 +204,13 @@ export async function publishLibraryCard(
   if (token.editorial_state === "published") {
     throw new Error("Card is already published");
   }
+  // The same normalised question feeds the readiness check and the publish,
+  // so a cleared field is judged as "no question" by both, not only by the
+  // kernel's own assert inside publishTokenRevision.
+  const question =
+    changes?.question === undefined ? undefined : (changes.question ?? "");
   const review = await evaluatePublicationReadiness(db, tokenId, {
-    question: changes?.question ?? undefined,
+    question,
     concept: changes?.concept,
   });
   if (!review.ready) {
@@ -216,9 +221,7 @@ export async function publishLibraryCard(
     materiality: "cosmetic",
     changes: {
       ...(changes?.title !== undefined ? { title: changes.title } : {}),
-      ...(changes?.question !== undefined
-        ? { question: changes.question ?? "" }
-        : {}),
+      ...(question !== undefined ? { question } : {}),
       ...(changes?.concept !== undefined ? { concept: changes.concept } : {}),
       ...(changes?.domain !== undefined ? { domain: changes.domain } : {}),
       ...(changes?.bloomLevel !== undefined

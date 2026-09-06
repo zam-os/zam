@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-09-05T22:00:00.000Z
+timestamp: 2026-09-06T19:42:57.000Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -69,8 +69,10 @@ imported hashes. Unchanged re-import skips shared content while still creating
 a missing personal card. First import of an existing Anki or file card is an
 adoption path: the new token is published. A later source wording change
 against **published** content is linted (`published_content_opt_in`) and does
-not overwrite the last published version or imported schedule unless the caller
-opts in to apply a material revision. Drafts may still be updated. If local
+not overwrite the last published version or imported schedule unless the
+confirm call passes `--apply-published`, which applies the source wording as a
+material revision through the normal publish path. Drafts may still be
+updated. If local
 content and the source both changed since the last import, preview reports a
 conflict and preserves the local token. All non-conflicting cards, media
 assets, links, and bindings commit together or the library remains unchanged.

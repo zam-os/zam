@@ -2,6 +2,7 @@
 
 ## 2026-09-06
 
+- **Update** — [Local Card File Import](local-card-file-import.md)
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
