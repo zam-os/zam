@@ -23,6 +23,8 @@ export interface ReviewLog {
   session_id: string | null;
   /** Token `content_version` at answer time; NULL for rows predating M027. */
   content_version: number | null;
+  /** Attempt identity; NULL for historical ratings without an attempt record. */
+  attempt_id: string | null;
 }
 
 export interface CreateReviewInput {

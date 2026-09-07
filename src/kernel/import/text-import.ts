@@ -133,6 +133,12 @@ export interface TextImportCommitOptions {
    * still spinner as a hang (field report, 2026-08-09, 440 cards over Turso).
    */
   onProgress?: (progress: TextImportProgress) => void;
+  /**
+   * Apply source wording onto already-published tokens. Default false: a
+   * repeated import must not silently rewrite published content (quality
+   * contract). Callers that opt in still go through publishTokenRevision.
+   */
+  applyPublishedContentUpdates?: boolean;
 }
 
 interface NormalizedCard {
@@ -178,6 +184,7 @@ interface ImportBindingRow {
   binding_metadata_hash: string;
   token_question: string | null;
   token_concept: string | null;
+  editorial_state: string | null;
   deprecated_at: string | null;
   user_card_id: string | null;
   local_media: NormalizedMediaReference[];
@@ -468,6 +475,7 @@ async function loadBindings(
                 b.metadata_hash AS binding_metadata_hash,
                 t.question AS token_question,
                 t.concept AS token_concept,
+                t.editorial_state,
                 t.deprecated_at,
                 c.id AS user_card_id
            FROM imported_card_bindings b
@@ -639,6 +647,14 @@ export async function previewTextImport(
         : binding?.user_card_id
           ? "keep"
           : "create";
+    const warnings = [...card.warnings];
+    if (contentChanged && binding?.editorial_state === "published") {
+      warnings.push({
+        code: "published_content_opt_in",
+        message:
+          "Published content is not rewritten on re-import. Publish a revision explicitly to apply the source wording.",
+      });
+    }
     return {
       externalId: card.externalId,
       question: card.question,
@@ -650,7 +666,7 @@ export async function previewTextImport(
       cardAction,
       contentChanged,
       mediaCount: card.media.length,
-      warnings: card.warnings,
+      warnings,
     };
   });
 
@@ -931,19 +947,25 @@ export async function commitTextImport(
           throw new Error(`Import binding disappeared: ${item.externalId}`);
         }
         if (item.action === "update" && item.contentChanged) {
-          await publishTokenRevisionInTransaction(tx, {
-            tokenId,
-            materiality: "material",
-            changes: {
-              question: card.question,
-              concept: card.answer,
-            },
-            publishedBy: "file-import",
-          });
-          await replaceTokenMedia(tx, tokenId, card, assetsByHash);
-          mediaRewritten = true;
-        }
-        if (item.action === "update") {
+          const stateRow = (await tx
+            .prepare("SELECT editorial_state FROM tokens WHERE id = ?")
+            .get(tokenId)) as { editorial_state: string } | undefined;
+          const published = stateRow?.editorial_state === "published";
+          if (!published || options.applyPublishedContentUpdates) {
+            await publishTokenRevisionInTransaction(tx, {
+              tokenId,
+              materiality: "material",
+              changes: {
+                question: card.question,
+                concept: card.answer,
+              },
+              publishedBy: "file-import",
+            });
+            await replaceTokenMedia(tx, tokenId, card, assetsByHash);
+            mediaRewritten = true;
+            await updateBinding(tx, document, card, now);
+          }
+        } else if (item.action === "update") {
           await updateBinding(tx, document, card, now);
         }
       }

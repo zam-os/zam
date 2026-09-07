@@ -127,6 +127,30 @@ CREATE POLICY learner_session_steps_policy ON session_steps FOR ALL
     SELECT id FROM sessions WHERE user_id = current_learner_id()))
   WITH CHECK (session_id IN (
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
+
+ALTER TABLE card_presentations ENABLE ROW LEVEL SECURITY;
+ALTER TABLE card_presentations FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_card_presentations_policy ON card_presentations;
+CREATE POLICY learner_card_presentations_policy ON card_presentations FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
+ALTER TABLE review_attempts ENABLE ROW LEVEL SECURITY;
+ALTER TABLE review_attempts FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_review_attempts_policy ON review_attempts;
+CREATE POLICY learner_review_attempts_policy ON review_attempts FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
+-- session_syntheses carries no user_id; it inherits through the session.
+ALTER TABLE session_syntheses ENABLE ROW LEVEL SECURITY;
+ALTER TABLE session_syntheses FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_session_syntheses_policy ON session_syntheses;
+CREATE POLICY learner_session_syntheses_policy ON session_syntheses FOR ALL
+  USING (session_id IN (
+    SELECT id FROM sessions WHERE user_id = current_learner_id()))
+  WITH CHECK (session_id IN (
+    SELECT id FROM sessions WHERE user_id = current_learner_id()));
 `;
 
 /**
@@ -145,6 +169,9 @@ export const RLS_PROTECTED_TABLES = [
   "review_logs",
   "sessions",
   "session_steps",
+  "card_presentations",
+  "review_attempts",
+  "session_syntheses",
 ] as const;
 
 /**

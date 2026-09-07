@@ -186,6 +186,8 @@ export interface CompanionRatingRequest {
   rating?: Rating;
   sessionId?: string;
   doneBy?: "user" | "agent";
+  recordOnly?: boolean;
+  reason?: string;
 }
 
 /**

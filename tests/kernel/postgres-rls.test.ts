@@ -56,6 +56,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     tx: Awaited<ReturnType<typeof openPostgresDatabase>>,
   ): Promise<void> {
     await tx.exec(`
+      DROP TABLE IF EXISTS session_syntheses CASCADE;
+      DROP TABLE IF EXISTS review_attempts CASCADE;
+      DROP TABLE IF EXISTS card_presentations CASCADE;
       DROP TABLE IF EXISTS session_steps CASCADE;
       DROP TABLE IF EXISTS sessions CASCADE;
       DROP TABLE IF EXISTS review_logs CASCADE;
@@ -158,6 +161,25 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
         1,
       );
 
+      await tx
+        .prepare(
+          `INSERT INTO card_presentations (
+             id, user_id, card_id, token_id, learning_day, time_zone,
+             reserved_at, created_at
+           ) VALUES (
+             'pres_alice', ?, 'card_alice', 'tok1', '2026-09-07', 'UTC',
+             CURRENT_TIMESTAMP, CURRENT_TIMESTAMP
+           )`,
+        )
+        .run(ALICE);
+      await tx
+        .prepare(
+          `INSERT INTO review_attempts (
+             id, user_id, token_id, actor, channel, status
+           ) VALUES ('att_alice', ?, 'tok1', 'user', 'direct', 'rated')`,
+        )
+        .run(ALICE);
+
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
       await asRole(tx, "bob_role");
@@ -166,6 +188,12 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
+      expect(
+        await tx.prepare("SELECT * FROM card_presentations").all(),
+      ).toHaveLength(0);
+      expect(
+        await tx.prepare("SELECT * FROM review_attempts").all(),
+      ).toHaveLength(0);
       expect(
         await tx.prepare("SELECT * FROM cards WHERE id = 'card_alice'").get(),
       ).toBeUndefined();
@@ -206,6 +234,12 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       expect(cards).toHaveLength(1);
       expect(cards[0].id).toBe("card_alice");
       expect(Number(cards[0].blocked)).toBe(0);
+      expect(
+        await tx.prepare("SELECT * FROM card_presentations").all(),
+      ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM review_attempts").all(),
+      ).toHaveLength(1);
     });
   });
 

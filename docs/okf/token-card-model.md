@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-08-15T08:54:42.759Z
+timestamp: 2026-09-06T19:08:40.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -51,12 +51,32 @@ deleted — with its learning state preserved, but its cards leave the
 review queue and due list until the binding is repaired and maintenance
 cleared.
 
-Curated tokens also carry an **editorial state**: `draft`, `in_review`,
-`published`, or `deprecated`. Only `published` content enters review
-queues. Publishing records `published_by` / `published_at`; a material
-revision increments `content_version`, while a cosmetic revision keeps
-the version. The version lets ZAM identify cards whose learner last
-answered older substance.
+Tokens carry an **editorial state**: `draft`, `in_review`, `published`, or
+`deprecated`. Only `published` content enters review queues, due lists,
+presentation admission and rating. Raw captures —
+MCP/Bridge `zam_add_token`, `zam token register`, Studio create, generic
+curriculum extract, source/URL capture, Mobile import, and generated
+split/foundation items — write `draft`. Curated KVT cells, OKF import that
+passes structural checks, and adoption of existing Anki/file cards remain
+identifiable published paths. `createToken()` still defaults to `published`
+so those curated callers stay explicit. First-run starter cards pass
+`published` so they remain immediately reviewable.
+
+Publishing runs inexpensive structural checks: a required question for first
+publication of a draft, a non-empty criterion that is not a slug echo, and
+valid referenced atoms and prerequisite edges. A slug that ZAM derived from
+the token's own question or concept is never an echo of them; a raw slug
+pasted into a field always is. OKF import parks a token without a question
+as a draft (listed under `drafts`) and publishes it on a re-import that
+supplies the question. Semantic review of scope,
+leakage, and subject-matter dependencies stays with the author. Publishing
+records `published_by` / `published_at`; a material revision increments
+`content_version`, while a cosmetic revision keeps the version. The version
+lets ZAM identify cards whose learner last answered older substance. First
+publication of a draft is typically cosmetic. Studio and Mobile expose a
+Publish action that uses the same `personal-card-publish-revision` /
+`zam_publish_revision` contract as MCP/Bridge. `zam_list_drafts` and
+`zam bridge list-drafts` list unpublished captures.
 
 A **card** is one user's FSRS and participation state for a token:
 stability, difficulty, due date, state, block status, the
@@ -65,12 +85,14 @@ stability, difficulty, due date, state, block status, the
 [prerequisite-blocking.md](prerequisite-blocking.md)).
 
 The practical consequence: **a concept needs a card for that user and must
-remain eligible to enter the review queue.** `zam token register` creates
-only the shared token; `zam bridge add-token` creates the token *and* the
-calling user's card. The Android additive-import and quick-capture flow
-preserves the same invariant: after explicit confirmation it atomically
-creates the token and the paired learner's card, together with requested
-prerequisite and knowledge-context links.
+be published to enter the review queue.** `zam token register` creates the
+shared token as a draft; `zam bridge add-token` creates the draft *and* the
+calling user's card. The card is visible in Studio and Mobile, but unpublished
+drafts stay out of the queue until publish. The Android additive-import and
+quick-capture flow preserves the same split: after explicit confirmation it
+atomically creates a draft token and the paired learner's card, together with
+requested prerequisite and knowledge-context links. Editing and publication
+remain reachable there after Save.
 
 Local APKG, CSV, and TSV imports preserve the same split. One valid external
 card direction maps to one shared token. The importer then ensures a separate
@@ -101,8 +123,20 @@ A bundled cell is commit-controlled shared content plus an explicit list of
 in-scope atom ids. Installing it creates or reconciles atoms, alignments,
 curriculum bindings, prerequisite edges, and local PracticeItem/token rows; it
 creates **zero cards**. Enrolling a learner is a second operation that
-materializes cards for every practice item of the in-scope atoms. A concept
-appears in a learner's queue only after that card exists.
+materializes cards for the in-scope atoms' practice items: every item of an
+atom the learner has no card on yet, and one new item per enrolment call
+for an atom that already carries cards, so a content revision feeds new
+items within the normal learning budget instead of enrolling existing
+learners in every new card at once. A concept appears in a learner's queue
+only after that card exists and the token is published. Installation,
+enrolment, and publication remain separate kernel steps.
+
+A tile may retire practice items. A retired item keeps its cards and review
+history but stops representing its atom: token prerequisites derived from
+atom edges move to the item flagged `edge_representative` (else the first
+published Tier-1 item, else the lowest published id), and edges that
+pointed at the retired item are removed so it cannot block a learner who
+never reviewed it.
 
 Different cells may reuse the same atom and some of the same practice items.
 Installation status therefore checks every declared atom and item id, while
@@ -114,8 +148,8 @@ changed mappings require real re-retrieval.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`
-- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/scheduler/queue.ts`
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`
+- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/scheduler/queue.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)

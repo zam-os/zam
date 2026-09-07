@@ -44,6 +44,7 @@ import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
+import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
 /**
@@ -131,6 +132,12 @@ export interface KvtPracticeItem {
    * for real.
    */
   replaces?: string[];
+  /**
+   * When true, this item is the atom's edge representative for derived
+   * token prerequisites. Absent that flag, the first published Tier-1 item
+   * is used, then the lowest id. Didactic, not incidental ordering.
+   */
+  edge_representative?: boolean;
 }
 
 export interface KvtAtom {
@@ -151,12 +158,23 @@ export interface KvtAtom {
   practice_items: KvtPracticeItem[];
 }
 
+export interface KvtRetiredItem {
+  id: string;
+  reason: string;
+}
+
 export interface KvtTile {
   tile_id: string;
   version: string;
   title?: string;
   publisher?: string;
   atoms: KvtAtom[];
+  /**
+   * Practice items this release takes out of active use. Deprecated, never
+   * deleted: personal cards and review logs stay. No `replaces` — splits and
+   * format changes do not transfer mastery.
+   */
+  retired_items?: KvtRetiredItem[];
 }
 
 export interface InstallKvtResult {
@@ -340,27 +358,65 @@ async function projectedBinding(
     .get(atomId)) as { provider: string; topic_code: string } | undefined;
 }
 
-/** Every practice item of an atom, lowest id first. */
-async function itemsOfAtom(tx: Database, atomId: string): Promise<string[]> {
+/**
+ * Every live practice item of an atom, Tier-1 first, then lowest id. With
+ * `includeRetired`, deprecated items are listed too: a retired item still
+ * holds the edges it was given while it represented its atom.
+ */
+async function itemsOfAtom(
+  tx: Database,
+  atomId: string,
+  includeRetired = false,
+): Promise<string[]> {
   const rows = (await tx
-    .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id")
+    .prepare(
+      `SELECT id FROM tokens
+        WHERE atom_id = ?
+          ${includeRetired ? "" : "AND deprecated_at IS NULL"}
+        ORDER BY CASE WHEN tier = 'tier1_fast' THEN 0 ELSE 1 END, id`,
+    )
     .all(atomId)) as Array<{ id: string }>;
   return rows.map((row) => row.id);
 }
 
 /**
+ * The item that stands for an atom in derived token edges: the declared edge
+ * representative if the tile named one, else the first published Tier-1 item,
+ * else the lowest published id. Retired and unpublished items never represent.
+ */
+async function representativeOfAtom(
+  tx: Database,
+  atomId: string,
+): Promise<string | undefined> {
+  const row = (await tx
+    .prepare(
+      `SELECT id FROM tokens
+        WHERE atom_id = ?
+          AND deprecated_at IS NULL
+          AND editorial_state = 'published'
+        ORDER BY edge_representative DESC,
+                 CASE WHEN tier = 'tier1_fast' THEN 0 ELSE 1 END,
+                 id
+        LIMIT 1`,
+    )
+    .get(atomId)) as { id: string } | undefined;
+  return row?.id;
+}
+
+/**
  * Bring the token edges derived from one hard atom edge to their target state.
  *
- * The representative is the lowest stored item id of the prerequisite atom. It
- * can therefore *change* when a later release adds an item with a lower id, and
- * merely adding the new edge would leave the old one behind — which is how the
- * result came to depend on install order.
+ * The representative is the atom's declared edge representative, else its
+ * first published Tier-1 item, else the lowest remaining id. Adding a later
+ * item with a lower id must not silently steal the edge.
  *
- * Scope of the delete: only edges from an item of `atomId` to a non-representative
- * item of `requiresId`. That is exactly this projection's own output. A curator
- * who hand-linked two items of these same atoms would be caught by it; naming
- * the owner of an edge needs the release contract's per-row provenance, which
- * does not exist yet.
+ * Scope of the delete: only edges from a live item of `atomId` to a
+ * non-representative item of `requiresId`, retired items included — a
+ * retired former representative would otherwise keep an edge that blocks the
+ * child forever, since a deprecated card never enters the queue. That is
+ * exactly this projection's own output. A curator who hand-linked two items
+ * of these same atoms would be caught by it; naming the owner of an edge
+ * needs the release contract's per-row provenance, which does not exist yet.
  */
 async function reconcileDerivedEdges(
   tx: Database,
@@ -368,8 +424,8 @@ async function reconcileDerivedEdges(
   requiresId: string,
 ): Promise<number> {
   const children = await itemsOfAtom(tx, atomId);
-  const parents = await itemsOfAtom(tx, requiresId);
-  const [representative] = parents;
+  const parents = await itemsOfAtom(tx, requiresId, true);
+  const representative = await representativeOfAtom(tx, requiresId);
   if (!representative) return 0;
 
   let written = 0;
@@ -544,6 +600,13 @@ export async function installKvtTile(
                 `${holder.id} already holds. Addresses are immutable.`,
             );
           }
+          assertFieldsReadyToPublish({
+            slug,
+            concept: item.concept,
+            question: item.question,
+            domain: atom.domain ?? "",
+            requireQuestion: true,
+          });
           await insertToken(tx, {
             id: item.id,
             slug,
@@ -560,6 +623,9 @@ export async function installKvtTile(
             tier: item.tier ?? null,
             fast_check: fastCheckOf(item),
           });
+          await tx
+            .prepare("UPDATE tokens SET edge_representative = ? WHERE id = ?")
+            .run(item.edge_representative ? 1 : 0, item.id);
           tokensCreated += 1;
           itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
           continue;
@@ -620,17 +686,34 @@ export async function installKvtTile(
         // Classification, not substance: never part of a content revision.
         await tx
           .prepare(
-            `UPDATE tokens SET atom_id = ?, provider = ?, topic_id = ?
+            `UPDATE tokens
+                SET atom_id = ?, provider = ?, topic_id = ?, edge_representative = ?
               WHERE id = ?`,
           )
           .run(
             atom.id,
             projected?.provider ?? existing.provider,
             projected?.topic_code ?? existing.topic_id,
+            item.edge_representative ? 1 : 0,
             item.id,
           );
         itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
       }
+    }
+
+    for (const retired of tile.retired_items ?? []) {
+      assertItemId(retired.id, "retired practice-item id");
+      const existing = await getTokenById(tx, retired.id);
+      if (!existing) continue;
+      await tx
+        .prepare(
+          `UPDATE tokens
+              SET deprecated_at = COALESCE(deprecated_at, datetime('now')),
+                  editorial_state = 'deprecated',
+                  updated_at = datetime('now')
+            WHERE id = ?`,
+        )
+        .run(retired.id);
     }
 
     // Re-project the legacy fields for every atom the tile touched: a binding
@@ -724,13 +807,37 @@ export async function materialiseKvtCards(
     let cardsReused = 0;
     for (const atomId of atomIds) {
       const items = (await tx
-        .prepare("SELECT id FROM tokens WHERE atom_id = ? ORDER BY id")
+        .prepare(
+          `SELECT id FROM tokens
+            WHERE atom_id = ?
+              AND deprecated_at IS NULL
+              AND editorial_state = 'published'
+            ORDER BY CASE WHEN tier = 'tier1_fast' THEN 0 ELSE 1 END, id`,
+        )
         .all(atomId)) as Array<{ id: string }>;
+      const alreadyOnAtom = (await tx
+        .prepare(
+          `SELECT COUNT(*) AS n
+             FROM cards c
+             JOIN tokens t ON t.id = c.token_id
+            WHERE c.user_id = ?
+              AND t.atom_id = ?
+              AND c.detached_at IS NULL`,
+        )
+        .get(userId, atomId)) as { n: number };
+      const missing = [];
       for (const item of items) {
         const before = await getCard(tx, item.id, userId);
-        await ensureCard(tx, item.id, userId);
-        if (before) cardsReused += 1;
-        else cardsCreated += 1;
+        if (before) {
+          cardsReused += 1;
+          continue;
+        }
+        missing.push(item.id);
+      }
+      const toCreate = alreadyOnAtom.n > 0 ? missing.slice(0, 1) : missing;
+      for (const tokenId of toCreate) {
+        await ensureCard(tx, tokenId, userId);
+        cardsCreated += 1;
       }
     }
     return { cardsCreated, cardsReused };

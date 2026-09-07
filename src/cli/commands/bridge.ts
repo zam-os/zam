@@ -23,6 +23,7 @@ import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
   Database,
+  EditorialState,
   KnowledgeContext,
   ListTokensOptions,
   NeighborhoodToken,
@@ -157,6 +158,7 @@ import {
 import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   addToken as handleAddToken,
+  admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
@@ -175,6 +177,7 @@ import {
   listAssignmentsHandler as handleListAssignments,
   listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
+  listDrafts as handleListDrafts,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
@@ -1038,6 +1041,10 @@ bridgeCommand
   )
   .option("--knowledge-context <context>", "Filter cards by knowledge context")
   .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
+  .option(
     "--media",
     "Inline the card's media as base64 (rendering surfaces only)",
   )
@@ -1052,6 +1059,7 @@ bridgeCommand
           noDynamicQuestion: opts.dynamicQuestion === false,
           knowledgeContext: opts.knowledgeContext,
           includeMedia: opts.media === true,
+          timeZone: opts.timeZone,
         });
         jsonOut(result);
       } catch (err) {
@@ -1079,6 +1087,10 @@ bridgeCommand
     "--no-dynamic-question",
     "Use the stored question without generating a fresh LLM question",
   )
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -1092,8 +1104,37 @@ bridgeCommand
           maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
+          timeZone: opts.timeZone,
         });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("admit-review")
+  .description("Admit a specific card for presentation (JSON)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--card-id <id>", "Card ID to present")
+  .option("--session <id>", "Active session to associate the presentation with")
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await handleAdmitReview(db, {
+            user: userId,
+            cardId: opts.cardId,
+            session: opts.session,
+            timeZone: opts.timeZone,
+          }),
+        );
       } catch (err) {
         jsonError((err as Error).message);
       }
@@ -1107,7 +1148,10 @@ bridgeCommand
   .description("Submit a rating for a card (JSON)")
   .option("--user <id>", "User ID (default: whoami)")
   .requiredOption("--card-id <id>", "Card ID")
-  .option("--rating <n>", "User rating (1-4); omit with --done-by agent")
+  .option(
+    "--rating <n>",
+    "User rating (1-4); omit with --done-by agent or --record-only",
+  )
   .option("--session <id>", "Session ID to associate the review with")
   .option(
     "--done-by <user|agent>",
@@ -1117,6 +1161,21 @@ bridgeCommand
   .option(
     "--response-time-ms <n>",
     "Milliseconds between showing the card and this rating (study-time stats)",
+  )
+  .option(
+    "--record-only",
+    "Log assisted user work without an FSRS rating (requires --session and --reason)",
+  )
+  .option(
+    "--reason <text>",
+    "Why this step is record-only (required with --record-only)",
+  )
+  .option("--attempt-id <id>", "Shared attempt ULID for idempotent submits")
+  .option("--activity <text>", "Specific work activity for this attempt")
+  .option("--assistance <text>", "Assistance actually received")
+  .option(
+    "--independent",
+    "Mark this as an independent attempt (default for a rated submit)",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -1144,6 +1203,17 @@ bridgeCommand
           sessionId: opts.session,
           doneBy: opts.doneBy as "user" | "agent",
           responseTimeMs,
+          recordOnly: Boolean(opts.recordOnly),
+          reason: opts.reason,
+          attemptId: opts.attemptId,
+          activity: opts.activity,
+          assistance: opts.assistance,
+          independent:
+            opts.independent === true
+              ? true
+              : opts.recordOnly
+                ? false
+                : undefined,
         });
         jsonOut(result);
       } catch (err) {
@@ -5101,6 +5171,10 @@ bridgeCommand
     (value: string, previous: string[]) => [...previous, value],
     [] as string[],
   )
+  .option(
+    "--editorial-state <state>",
+    "Filter by editorial state: draft | in_review | published | deprecated",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = opts.user
@@ -5113,6 +5187,20 @@ bridgeCommand
         listOpts.knowledgeContext = opts.knowledgeContext;
       if (opts.sourceLinkBase.length)
         listOpts.sourceLinkBases = opts.sourceLinkBase;
+      if (opts.editorialState) {
+        const state = opts.editorialState as EditorialState;
+        if (
+          state !== "draft" &&
+          state !== "in_review" &&
+          state !== "published" &&
+          state !== "deprecated"
+        ) {
+          jsonError(
+            "editorial-state must be draft, in_review, published, or deprecated",
+          );
+        }
+        listOpts.editorialState = state;
+      }
 
       const tokens = await listTokens(
         db,
@@ -5191,6 +5279,10 @@ bridgeCommand
           concept: t.concept,
           domain: t.domain,
           bloomLevel: t.bloom_level,
+          editorialState: t.editorial_state,
+          question: t.question,
+          context: t.context,
+          sourceLink: t.source_link,
           knowledgeContexts: contextMap.get(t.id) ?? [],
           card: c
             ? {
@@ -5289,6 +5381,21 @@ bridgeCommand
         prerequisites: nb.prerequisites.map(mapToken),
         dependents: nb.dependents.map(mapToken),
       });
+    });
+  });
+
+// ── zam bridge list-drafts ──────────────────────────────────────────────────
+
+bridgeCommand
+  .command("list-drafts")
+  .description("List unpublished draft and in-review tokens (JSON)")
+  .action(async () => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await handleListDrafts(db));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
@@ -5417,6 +5524,7 @@ bridgeCommand
           symbiosis_mode: mode,
           source_link: opts.sourceLink || null,
           question,
+          editorial_state: "draft",
         });
         for (const context of contexts) {
           await assignTokenToContext(tx, createdToken.id, context.id);
@@ -6079,6 +6187,10 @@ bridgeCommand
   .requiredOption("--id <id>", "Curated catalog item ID")
   .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--apply-published",
+    "Apply changed source wording onto already published tokens as a material revision",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6088,7 +6200,10 @@ bridgeCommand
         opts.id,
         opts.planHash,
         {},
-        { onProgress: throttledProgress("import-progress") },
+        {
+          onProgress: throttledProgress("import-progress"),
+          applyPublishedContentUpdates: opts.applyPublished === true,
+        },
       );
       jsonOut({ success: true, ...result });
     });
@@ -6118,16 +6233,26 @@ bridgeCommand
   .requiredOption("--path <path>", "Local .apkg, .csv, or .tsv file")
   .requiredOption("--plan-hash <hash>", "Plan hash returned by preview")
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--apply-published",
+    "Apply changed source wording onto already published tokens as a material revision",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       const document = await readTextImportFile(opts.path);
+      // Published content is never rewritten silently on re-import; the
+      // preview lints it (`published_content_opt_in`) and this flag is the
+      // explicit opt-in that turns the lint into a material revision.
       const result = await commitTextImport(
         db,
         userId,
         document,
         opts.planHash,
-        { onProgress: throttledProgress("import-progress") },
+        {
+          onProgress: throttledProgress("import-progress"),
+          applyPublishedContentUpdates: opts.applyPublished === true,
+        },
       );
       jsonOut({ success: true, ...result });
     });

@@ -442,8 +442,68 @@ export async function assessPrecondition(
 }
 
 /**
- * Lift precondition burying on an atom or card so it can enter the queue.
+ * End an active self-assessment deferral for one atom. Other burial reasons
+ * and FSRS state stay untouched. `precondition_ready` is not a deferral.
  */
+export async function liftActivePreconditionDeferral(
+  db: Database,
+  userId: string,
+  atomId: string,
+): Promise<boolean> {
+  if (!userId.trim() || !atomId.trim()) return false;
+  const result = await db
+    .prepare(
+      `UPDATE cards
+          SET buried_until = NULL,
+              buried_reason = NULL
+        WHERE user_id = ?
+          AND buried_reason = ?
+          AND token_id IN (
+            SELECT id FROM tokens WHERE atom_id = ?
+          )`,
+    )
+    .run(userId, PRECONDITION_BURIED_REASON, atomId);
+  return result.changes > 0;
+}
+
+/**
+ * On an actual Again, cancel only the matching hard-precondition deferrals
+ * of the presented item's atom. Does not put those foundations into
+ * relearning or copy mastery.
+ */
+export async function cancelMatchingPreconditionDeferrals(
+  db: Database,
+  input: { userId: string; tokenId: string },
+): Promise<string[]> {
+  const token = (await db
+    .prepare("SELECT atom_id FROM tokens WHERE id = ?")
+    .get(input.tokenId)) as { atom_id: string | null } | undefined;
+  if (!token?.atom_id) return [];
+
+  const foundations = (await db
+    .prepare(
+      `SELECT requires_id
+         FROM atom_prerequisites
+        WHERE atom_id = ?
+          AND kind = 'hard'`,
+    )
+    .all(token.atom_id)) as Array<{ requires_id: string }>;
+
+  const cancelled: string[] = [];
+  for (const foundation of foundations) {
+    if (
+      await liftActivePreconditionDeferral(
+        db,
+        input.userId,
+        foundation.requires_id,
+      )
+    ) {
+      cancelled.push(foundation.requires_id);
+    }
+  }
+  return cancelled;
+}
+
 export async function liftPreconditionBury(
   db: Database,
   userId: string,

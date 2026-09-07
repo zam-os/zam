@@ -2,10 +2,7 @@ import { mkdtemp, readFile, rm } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
-import {
-  type UiIntentApp,
-  writeUiIntent,
-} from "../../src/cli/ui-intent.js";
+import { type UiIntentApp, writeUiIntent } from "../../src/cli/ui-intent.js";
 import { createLatestTaskQueue } from "../../src/vscode-extension/latest-task-queue.js";
 import {
   buildOpeningArguments,
@@ -78,7 +75,12 @@ describe("VS Code companion protocol", () => {
       }),
     ).toEqual({ user: "thomas", domain: "rag" });
     expect(COMPANION_APPS.recall.allowedTools).toEqual(
-      new Set(["zam_get_reviews", "zam_submit_review", "zam_companion_context"]),
+      new Set([
+        "zam_get_reviews",
+        "zam_admit_review",
+        "zam_submit_review",
+        "zam_companion_context",
+      ]),
     );
     // The shared context bar (0.11.0 Phase 4) needs zam_companion_context
     // reachable from every proxied app.

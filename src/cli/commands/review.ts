@@ -5,9 +5,14 @@
 import { Command } from "commander";
 import type { BloomLevel, Database } from "../../kernel/index.js";
 import {
+  AtomSiblingOccupiedError,
+  admitPresentation,
   buildReviewQueue,
+  CardNotDueError,
+  CardNotReviewableError,
   generatePrompt,
   getKnowledgeContextByName,
+  hostTimeZone,
   openDatabase,
   resolveReviewContext,
 } from "../../kernel/index.js";
@@ -48,12 +53,14 @@ export const reviewCommand = new Command("review")
         resolvedContext = context.name;
       }
 
+      const timeZone = hostTimeZone();
       const queue = await buildReviewQueue(db, {
         userId,
         maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
         maxReviews:
           opts.maxReviews === undefined ? undefined : Number(opts.maxReviews),
         knowledgeContext: resolvedContext,
+        timeZone,
       });
 
       if (queue.items.length === 0) {
@@ -82,6 +89,31 @@ export const reviewCommand = new Command("review")
       }> = [];
 
       for (const [index, item] of queue.items.entries()) {
+        // Showing a card is an exposure: record it so a sibling of the same
+        // atom stays out for the rest of the learning day on every surface.
+        let attemptId: string;
+        try {
+          const admission = await admitPresentation(db, {
+            userId,
+            cardId: item.cardId,
+            timeZone,
+            confirm: true,
+          });
+          attemptId = admission.attemptId;
+        } catch (err) {
+          // A sibling shown earlier today, a card that stopped being due,
+          // or a token unpublished since the queue was built: skip the card,
+          // never abandon the session around it.
+          if (
+            err instanceof AtomSiblingOccupiedError ||
+            err instanceof CardNotDueError ||
+            err instanceof CardNotReviewableError
+          ) {
+            continue;
+          }
+          throw err;
+        }
+
         const prompt = generatePrompt({
           cardId: item.cardId,
           tokenId: item.tokenId,
@@ -125,6 +157,7 @@ export const reviewCommand = new Command("review")
           item,
           mode: "review",
           startedAt: Date.now(),
+          attemptId,
         });
 
         if (action.action === "stop") {

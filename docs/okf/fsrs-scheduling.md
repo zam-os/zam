@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-03T20:57:04.693Z
+timestamp: 2026-09-06T19:08:40.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -76,6 +76,16 @@ prerequisite cascade, and optional session auditing. When a `sessionId` is
 supplied, the review-log row references that session and a matching user
 `session_steps` row is written with the rating. A failure in any write rolls
 back the card update, review log, burial, blocking changes, and session step.
+The session must exist and belong to the learner; it may already be
+completed, because confirmed synthesis candidates arrive after
+`zam_session_end`. Only published, non-deprecated tokens take a rating.
+
+A rating may carry the attempt id that admission handed out when the card
+was shown. The same attempt never writes a second review: a retried submit
+returns `applied: false`, a different rating for the same attempt is
+refused, and an id issued for another learner or card is rejected. A
+same-day learning step is a new attempt — re-admitting a card whose previous
+attempt was rated hands out a fresh id.
 
 Published learning content has a substance version. A cosmetic publication
 leaves scheduling untouched. A material publication increments the token's
@@ -91,7 +101,16 @@ overdue work by urgency, interleaves domains, and inserts new cards regularly.
 Due Learning and Relearning cards use the same timestamp comparison as Review
 cards, including minute-level due times. The queue excludes blocked, detached,
 actively buried, deprecated, maintenance, and unpublished cards; a knowledge
-context can narrow it further.
+context can narrow it further. The due list behind `check-due` and
+`get-reviews` applies the same published and non-deprecated filter.
+
+At most one distinct practice item of a learning atom is shown to a learner
+on one local learning day. Every surface — Studio, Mobile, the Recall panel,
+`zam learn`, `zam review`, `zam session`, and agents through
+`zam_admit_review` — admits a card immediately before display, and the queue
+hides the other items of an atom that already has a presentation that day.
+A queue prefetch is not an exposure. Due dates are compared as UTC instants
+regardless of the learner's zone.
 
 Each learner has persisted workload settings. The balanced default allows 10
 new cards within 50 total cards and buries both new and review siblings. The

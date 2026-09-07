@@ -7,6 +7,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import { abandonUnconfirmedForSession } from "../scheduler/presentation.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -108,6 +109,7 @@ export async function endSession(
   }
 
   const now = new Date().toISOString();
+  await abandonUnconfirmedForSession(db, sessionId, new Date(now));
   await db
     .prepare("UPDATE sessions SET completed_at = ? WHERE id = ?")
     .run(now, sessionId);

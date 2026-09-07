@@ -128,6 +128,30 @@ describe("recall via the agent transport", () => {
     expect(result.text).toContain("Bewertung: 3");
   });
 
+  it("asks the harness to grade against the concept only", async () => {
+    let seenSystem = "";
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seenSystem = req.system ?? "";
+        return { text: "Gut. Vorgeschlagene Bewertung: 3" };
+      }),
+    );
+    const db = await seedDb();
+    await evaluateAnswerViaLLM(db, {
+      slug: "bayern-hauptstadt",
+      concept: "München",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Bayern?",
+      userAnswer: "München",
+      context: "Optional background that must not be a pass hurdle.",
+    });
+    expect(seenSystem).toContain("target concept only");
+    expect(seenSystem).toContain("Never use 2 for a partial answer");
+    expect(seenSystem).not.toContain("partially correct");
+    expect(seenSystem).not.toContain("Celebrate every honest attempt");
+  });
+
   it("flattens the discussion thread into one transcript prompt", async () => {
     let seenUser = "";
     vi.mocked(getAgentAdapter).mockReturnValue(

@@ -43,6 +43,7 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
     toolName: "zam_open_recall",
     allowedTools: new Set([
       "zam_get_reviews",
+      "zam_admit_review",
       "zam_submit_review",
       "zam_companion_context",
     ]),

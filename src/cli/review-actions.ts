@@ -46,6 +46,8 @@ export interface RunInteractiveReviewActionInput {
   mode: "review" | "session";
   /** When the question was shown (Date.now()); study time for the rating (ADR 2026-08-01 Decision 5). */
   startedAt?: number;
+  /** Attempt id from the admission that preceded this display. */
+  attemptId?: string;
 }
 
 export interface RunInteractiveReviewActionResult {
@@ -92,6 +94,7 @@ export async function runInteractiveReviewAction(
           inputData.startedAt !== undefined
             ? Math.max(0, Date.now() - inputData.startedAt)
             : undefined,
+        attemptId: inputData.attemptId,
       });
 
       const ratingLabels: Record<number, string> = {

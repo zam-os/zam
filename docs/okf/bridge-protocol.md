@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-03T20:56:17.349Z
+timestamp: 2026-09-06T19:42:57.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -38,7 +38,10 @@ and closes it when that command finishes. The Desktop instead keeps
 `zam bridge serve --stdin` alive: this host opens its database lazily on the
 first database-backed request, injects the same handle into every later
 Commander action, and closes it after stdin ends and the final queued request
-finishes. Failed open attempts are forgotten so a later request can retry.\nThe exceptional `server-db-connect` setup command retires the old handle after\nit changes the configured target, ensuring the next status/dashboard request\nopens the newly selected library.
+finishes. Failed open attempts are forgotten so a later request can retry.
+The exceptional `server-db-connect` setup command retires the old handle after
+it changes the configured target, ensuring the next status/dashboard request
+opens the newly selected library.
 
 The injection is scoped to one asynchronous command execution. It is not a
 global connection cache, and concurrent in-process callers cannot borrow one
@@ -49,24 +52,34 @@ Outbound HTTP that the bridge performs on a learner's behalf identifies
 itself with the release-versioned `ZAM-Content-Studio/<version>`
 User-Agent, which every release bumps in step with the package version.
 
-Representative commands: `next` (pull the next queue card), `submit`
-(apply a rating; accepts `--response-time-ms` so a rating contributes its
-study time — ADR 2026-08-01), `stats-activity` (review activity series),
-`add-token` (register a token *and* create the calling user's card — see
-[token-card-model.md](token-card-model.md)), `personal-card-update`
-(partial update by slug), and `personal-card-publish-revision` (publish
-with an explicit `cosmetic` or `material` classification). The destructive
-pair `personal-card-remove` / `personal-card-delete` uses a
-preview→confirm handshake: without `--confirm` it returns an impact
-preview (affected cards, review logs, session steps, agent skills); with
-`--confirm` it executes. Assignment create, withdraw, and list commands use
-the same JSON-only surface.
+Representative commands: `next` (pull the next queue card), `admit-review`
+(record that a card is shown: refuses a same-atom sibling already presented
+on the learner's local day and any unpublished card, and returns the
+`attemptId` for the following submit), `submit` (apply a rating; accepts
+`--response-time-ms` so a rating contributes its study time — ADR
+2026-08-01, and `--attempt-id` so a retried submit is one review: the result
+carries `attemptId` and `applied: false` on a replay; `--record-only
+--reason <text>` logs assisted user work without a rating and answers
+`recordedOnly`/`replayed`; a completed session still accepts a rating of its
+own work, while record-only steps need an open session), `stats-activity`
+(review activity series),
+`add-token` (register a **draft** token *and* create the calling user's card —
+see [token-card-model.md](token-card-model.md)), `list-drafts`,
+`personal-card-update` (partial update by slug), and
+`personal-card-publish-revision` (the publish gate: structural checks then an
+explicit `cosmetic` or `material` classification). The destructive pair
+`personal-card-remove` / `personal-card-delete` uses a preview→confirm
+handshake: without `--confirm` it returns an impact preview (affected cards,
+review logs, session steps, agent skills); with `--confirm` it executes.
+Assignment create, withdraw, and list commands use the same JSON-only surface.
 
 Local text-card files use an explicit two-command handshake:
 `personal-card-import-file-preview --path <file>` parses an APKG, CSV, or TSV
 file and returns its deterministic decks, cards, warnings, action counts, and
 `planHash`. `personal-card-import-file-confirm --path <file> --plan-hash
-<hash>` reparses and atomically commits that exact plan. Both commands are
+<hash>` reparses and atomically commits that exact plan; `--apply-published`
+additionally applies changed source wording onto already published tokens as
+a material revision, which a plain re-import never does. Both commands are
 model-free and network-free. See
 [local-card-file-import.md](local-card-file-import.md) for formats, security,
 and re-import semantics.
@@ -133,10 +146,10 @@ The mobile companion accepts one `AddTokenRequest`-shaped bridge-token
 object from a selected JSON file or an Android share intent. It also accepts
 the CLI's snake-case compatibility spellings, always shows an editable
 confirmation draft, ignores a payload-supplied user in favor of the paired
-learner, then atomically creates the token, that learner's card, requested
-prerequisite edges, and existing knowledge-context assignments. Plain shared
-or pasted text and URLs use the same confirmation path as quick-capture
-drafts.
+learner, then atomically creates the **draft** token, that learner's card,
+requested prerequisite edges, and existing knowledge-context assignments.
+Plain shared or pasted text and URLs use the same confirmation path as
+quick-capture drafts. Editing and publication stay reachable after Save.
 
 A photo or screenshot from the camera or gallery is downscaled on-device
 and sent through the native Android command to the library's configured
@@ -174,7 +187,7 @@ bridge's JSON helpers.
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
 - Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)

@@ -73,7 +73,11 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- free recall of the same objective.
   language           TEXT,
   tier               TEXT,
-  fast_check         TEXT
+  fast_check         TEXT,
+  -- Declared edge representative of its atom (KVT tile flag, M032). Token
+  -- prerequisites derived from atom edges point at this item; without the
+  -- flag the first published Tier-1 item by id represents the atom.
+  edge_representative INTEGER NOT NULL DEFAULT 0
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -184,6 +188,28 @@ CREATE TABLE IF NOT EXISTS sessions (
   completed_at  TEXT
 );
 
+-- Confirmed and reserved presentations of a practice item. A queue fetch is
+-- not an exposure; reservation/confirmation happens immediately before display.
+-- Abandoned reservations release the atom sibling slot and are not exposures.
+CREATE TABLE IF NOT EXISTS card_presentations (
+  id            TEXT PRIMARY KEY,
+  user_id       TEXT NOT NULL,
+  card_id       TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
+  token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  atom_id       TEXT,
+  session_id    TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+  learning_day  TEXT NOT NULL,
+  time_zone     TEXT NOT NULL,
+  reserved_at   TEXT NOT NULL,
+  presented_at  TEXT,
+  abandoned_at  TEXT,
+  -- Attempt id handed to the surface at admission (M032). A presentation is
+  -- not an attempt: once this id is rated or recorded, the next admission of
+  -- the same card mints a new one, so a same-day learning step is new evidence.
+  attempt_id    TEXT,
+  created_at    TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Immutable review log: every rating event
 CREATE TABLE IF NOT EXISTS review_logs (
   id              TEXT PRIMARY KEY,
@@ -201,7 +227,10 @@ CREATE TABLE IF NOT EXISTS review_logs (
   -- classified later as the same item or a materially revised one. NULL means
   -- the row predates this column -- not version 1, because assuming 1 would
   -- invent evidence.
-  content_version INTEGER
+  content_version INTEGER,
+  -- Shared attempt identity (Phase 4). NULL means a historical rating with
+  -- no attempt record; never invent a match from text similarity.
+  attempt_id      TEXT
 );
 
 -- Steps within a session: who did what
@@ -215,20 +244,50 @@ CREATE TABLE IF NOT EXISTS session_steps (
   created_at  TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
+-- Observed attempts: one identity for direct submit, monitor/UI candidates,
+-- confirmation and synthesis. Same attempt → one review; a different
+-- independent attempt is new evidence even in the same session.
+CREATE TABLE IF NOT EXISTS review_attempts (
+  id               TEXT PRIMARY KEY,
+  user_id          TEXT NOT NULL,
+  card_id          TEXT REFERENCES cards(id) ON DELETE SET NULL,
+  token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  content_version  INTEGER,
+  session_id       TEXT REFERENCES sessions(id) ON DELETE SET NULL,
+  activity         TEXT NOT NULL DEFAULT '',
+  actor            TEXT NOT NULL CHECK (actor IN ('user', 'agent')),
+  permitted_tools  TEXT NOT NULL DEFAULT '[]',
+  assistance       TEXT NOT NULL DEFAULT '',
+  independent      INTEGER,
+  channel          TEXT NOT NULL,
+  evidence         TEXT NOT NULL DEFAULT '{}',
+  evidence_key     TEXT,
+  suggested_rating INTEGER CHECK (suggested_rating BETWEEN 1 AND 4),
+  rating           INTEGER CHECK (rating BETWEEN 1 AND 4),
+  review_log_id    TEXT REFERENCES review_logs(id) ON DELETE SET NULL,
+  session_step_id  TEXT REFERENCES session_steps(id) ON DELETE SET NULL,
+  status           TEXT NOT NULL CHECK (status IN ('suggestion', 'recorded', 'rated', 'conflict')),
+  conflict_note    TEXT,
+  created_at       TEXT NOT NULL DEFAULT (datetime('now')),
+  updated_at       TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
 -- Confirmed ratings synthesized from monitor evidence.
--- The composite primary key makes repeated synthesis idempotent per token.
+-- Row identity is the attempt, not (session, token): two real attempts in
+-- one session must not collapse. A missing attempt_id is a historical row.
 CREATE TABLE IF NOT EXISTS session_syntheses (
+  id               TEXT PRIMARY KEY,
   session_id       TEXT NOT NULL REFERENCES sessions(id) ON DELETE CASCADE,
   token_id         TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  attempt_id       TEXT UNIQUE,
   card_id          TEXT NOT NULL REFERENCES cards(id) ON DELETE CASCADE,
-  inferred_rating  INTEGER NOT NULL CHECK (inferred_rating BETWEEN 1 AND 4),
+  inferred_rating  INTEGER CHECK (inferred_rating BETWEEN 1 AND 4),
   confirmed_rating INTEGER NOT NULL CHECK (confirmed_rating BETWEEN 1 AND 4),
   confidence       TEXT NOT NULL CHECK (confidence IN ('medium', 'high')),
   evidence         TEXT NOT NULL DEFAULT '{}',
   review_log_id    TEXT NOT NULL REFERENCES review_logs(id) ON DELETE CASCADE,
   session_step_id  TEXT NOT NULL REFERENCES session_steps(id) ON DELETE CASCADE,
-  created_at       TEXT NOT NULL DEFAULT (datetime('now')),
-  PRIMARY KEY (session_id, token_id)
+  created_at       TEXT NOT NULL DEFAULT (datetime('now'))
 );
 
 -- Sources: textbook files, web links, or scan paths
@@ -386,8 +445,21 @@ CREATE INDEX IF NOT EXISTS idx_prereqs_requires ON prerequisites(requires_id);
 CREATE INDEX IF NOT EXISTS idx_cards_user_due ON cards(user_id, blocked, due_at);
 CREATE INDEX IF NOT EXISTS idx_cards_user_buried ON cards(user_id, buried_until);
 CREATE INDEX IF NOT EXISTS idx_cards_token_user ON cards(token_id, user_id);
+CREATE INDEX IF NOT EXISTS idx_card_presentations_day
+  ON card_presentations(user_id, learning_day, atom_id);
+CREATE INDEX IF NOT EXISTS idx_card_presentations_card
+  ON card_presentations(card_id);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_atom_day
+  ON card_presentations(user_id, learning_day, atom_id)
+  WHERE atom_id IS NOT NULL AND abandoned_at IS NULL;
+CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_card_day
+  ON card_presentations(user_id, learning_day, card_id)
+  WHERE abandoned_at IS NULL;
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
+CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);
+CREATE INDEX IF NOT EXISTS idx_review_attempts_session
+  ON review_attempts(session_id, token_id, evidence_key);
 CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
