@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-06T19:08:40.000Z
+timestamp: 2026-09-07T21:41:23.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -16,8 +16,13 @@ version 6), implemented as pure functions in
 random operations: the same card, rating, time, and parameters produce the same
 result on every surface.
 
-A review takes a **rating** on a four-point scale: `1` Again (forgot),
-`2` Hard, `3` Good, or `4` Easy. Each card carries per-user FSRS state:
+A review takes a **rating** on a four-point scale, and the scale is binary
+before it is graded: `1` Again records a recall that **failed** — missed
+outright or only partly there — while `2` Hard, `3` Good, and `4` Easy all
+record a recall that **succeeded** and differ only in how much effort it cost.
+Every review surface renders that as two labelled groups rather than four
+peers, so a learner who half-remembered a card reaches for Again instead of
+Hard. Each card carries per-user FSRS state:
 **stability** (the interval in days at which recall reaches 90%),
 **difficulty** (1–10), elapsed/scheduled days, repetition and lapse counts, a
 state of `new`, `learning`, `review`, or `relearning`, a nullable
@@ -215,6 +220,6 @@ snapshots with the same workload and tier rules.
 - [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
 - Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>
