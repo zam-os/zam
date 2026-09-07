@@ -2,7 +2,7 @@
 
 **Version:** 2026-09-06.1  
 **Status:** technical rehearsal complete; **study parameters remain OPEN** until the owner starts the actual pilot.  
-**Implements:** Phase 6 of [2026-09-05-flashcard-quality-contract.md](2026-09-05-flashcard-quality-contract.md).  
+**Implements:** Phase 6 of the flashcard quality contract (PR #321, shipped in 0.37.0).  
 **Recording sheet:** [2026-09-06-supervised-pilot-recording-sheet.md](2026-09-06-supervised-pilot-recording-sheet.md).
 
 This protocol prepares a supervised learning pilot. It does not conduct that
@@ -184,6 +184,6 @@ score delayed tasks.
 
 ## Citations
 
-- Plan: `docs/plans/2026-09-05-flashcard-quality-contract.md` Phase 6
+- Plan: flashcard quality contract, Phase 6 (PR #321; the plan file was removed when it shipped)
 - RFC: `docs/concepts/flashcard-generation-and-decomposition-strategy.md` §7–§8
 - Practice sheet: `tests/fixtures/curriculum/de-by-realschule-9-pythagoras-practice-tasks.md`
