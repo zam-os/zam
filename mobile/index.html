@@ -1238,19 +1238,36 @@
             <p class="t-secondary" data-i18n="how_well">
               Wie gut konntest du dich erinnern?
             </p>
+            <!-- Two groups, not four peers: "Nochmal" records a failed recall
+                 (missed or only partly recalled), the other three all record a
+                 successful one and differ only in effort. -->
             <div class="ratings">
-              <button class="rating again" type="button" data-rating="1" data-i18n="rating_again">
-                Nochmal
-              </button>
-              <button class="rating hard" type="button" data-rating="2" data-i18n="rating_hard">
-                Schwer
-              </button>
-              <button class="rating good" type="button" data-rating="3" data-i18n="rating_good">
-                Gut
-              </button>
-              <button class="rating easy" type="button" data-rating="4" data-i18n="rating_easy">
-                Leicht
-              </button>
+              <div class="rating-group missed" role="group" aria-labelledby="rating-group-missed">
+                <p class="rating-group-caption" id="rating-group-missed" data-i18n="rating_group_missed">
+                  Nicht oder nur teilweise gewusst
+                </p>
+                <div class="rating-row">
+                  <button class="rating again" type="button" data-rating="1" data-i18n="rating_again">
+                    Nochmal
+                  </button>
+                </div>
+              </div>
+              <div class="rating-group known" role="group" aria-labelledby="rating-group-known">
+                <p class="rating-group-caption" id="rating-group-known" data-i18n="rating_group_known">
+                  Vollständig gewusst – wie leicht?
+                </p>
+                <div class="rating-row three">
+                  <button class="rating hard" type="button" data-rating="2" data-i18n="rating_hard">
+                    Schwer
+                  </button>
+                  <button class="rating good" type="button" data-rating="3" data-i18n="rating_good">
+                    Gut
+                  </button>
+                  <button class="rating easy" type="button" data-rating="4" data-i18n="rating_easy">
+                    Leicht
+                  </button>
+                </div>
+              </div>
             </div>
           </div>
 

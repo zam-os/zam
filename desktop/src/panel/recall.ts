@@ -1051,25 +1051,53 @@ async function presentCurrentCard(): Promise<void> {
       t("lbl_rate_3"),
       t("lbl_rate_4"),
     ];
-    for (let r = 1; r <= 4; r += 1) {
-      const rating = r as 1 | 2 | 3 | 4;
-      const ratingBtn = document.createElement("button");
-      ratingBtn.className = "btn secondary-btn recall-rating-btn";
-      if (rating === suggestedRating) {
-        ratingBtn.classList.add("recall-rating-suggested");
+    const tones = ["again", "hard", "good", "easy"] as const;
+
+    // Rating 1 records a failed recall (missed or only partly recalled);
+    // 2-4 all record a successful one and differ only in effort. The panel
+    // shows that as two captioned groups rather than one row of four peers.
+    function addGroup(
+      tone: "missed" | "known",
+      captionKey: "lbl_rating_group_missed" | "lbl_rating_group_known",
+      values: readonly (1 | 2 | 3 | 4)[],
+    ): void {
+      const group = document.createElement("div");
+      group.className = `recall-rating-group ${tone}`;
+      group.setAttribute("role", "group");
+      const caption = document.createElement("div");
+      caption.className = "recall-rating-group-caption";
+      caption.textContent = t(captionKey);
+      group.appendChild(caption);
+      group.setAttribute("aria-label", caption.textContent);
+
+      const row = document.createElement("div");
+      row.className = "recall-rating-row";
+      for (const rating of values) {
+        const ratingBtn = document.createElement("button");
+        ratingBtn.className = `btn secondary-btn recall-rating-btn ${
+          tones[rating - 1]
+        }`;
+        if (rating === suggestedRating) {
+          ratingBtn.classList.add("recall-rating-suggested");
+        }
+        ratingBtn.type = "button";
+        const label = document.createElement("span");
+        label.textContent = labels[rating - 1];
+        const num = document.createElement("span");
+        num.className = "rating-num";
+        num.textContent = String(rating);
+        ratingBtn.append(label, num);
+        ratingBtn.addEventListener("click", () => {
+          void submitRating(rating);
+        });
+        row.appendChild(ratingBtn);
       }
-      ratingBtn.type = "button";
-      const label = document.createElement("span");
-      label.textContent = labels[r - 1];
-      const num = document.createElement("span");
-      num.className = "rating-num";
-      num.textContent = String(r);
-      ratingBtn.append(label, num);
-      ratingBtn.addEventListener("click", () => {
-        void submitRating(rating);
-      });
-      ratings.appendChild(ratingBtn);
+      group.appendChild(row);
+      ratings.appendChild(group);
     }
+
+    addGroup("missed", "lbl_rating_group_missed", [1]);
+    addGroup("known", "lbl_rating_group_known", [2, 3, 4]);
     reveal.appendChild(ratings);
   }
 

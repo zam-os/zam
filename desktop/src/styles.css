@@ -1997,8 +1997,47 @@ textarea::placeholder {
 
 .rating-buttons {
   display: flex;
-  gap: 10px;
+  align-items: flex-end;
+  gap: 14px;
   flex: 0 0 auto;
+  flex-wrap: wrap;
+}
+
+/* The four ratings are not four peers: 1 records a failed recall (missed or
+   only partly recalled), 2-4 all record a successful one and differ only in
+   how much effort it cost. The two captioned groups — separated by a rule —
+   make that split readable without hovering (ADR 2026-07-06b bar layout). */
+.rating-group {
+  display: flex;
+  flex-direction: column;
+  gap: 5px;
+  min-width: 0;
+}
+
+.rating-group.known {
+  border-left: 1px solid var(--border-soft);
+  padding-left: 14px;
+}
+
+.rating-group-caption {
+  font-size: 10px;
+  font-weight: 700;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+
+.rating-group.missed .rating-group-caption {
+  color: var(--clr-again);
+}
+
+.rating-group.known .rating-group-caption {
+  color: var(--clr-good);
+}
+
+.rating-group-buttons {
+  display: flex;
+  gap: 10px;
 }
 
 .rating-btn {
@@ -2035,6 +2074,18 @@ textarea::placeholder {
   opacity: 0.5;
   cursor: not-allowed;
   pointer-events: none;
+}
+
+/* Resting accents: each rating keeps its hue without a hover, and the failed-
+   recall button carries a visible tint so it never reads as a fourth peer. */
+.rating-btn.again .rating-num { color: var(--clr-again); }
+.rating-btn.hard .rating-num { color: var(--clr-hard); }
+.rating-btn.good .rating-num { color: var(--clr-good); }
+.rating-btn.easy .rating-num { color: var(--clr-easy); }
+
+.rating-btn.again {
+  background: rgba(239, 68, 68, 0.05);
+  border-color: rgba(239, 68, 68, 0.4);
 }
 
 /* Dynamic Hover Glow styles per FSRS rating button */

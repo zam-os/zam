@@ -1107,22 +1107,36 @@
               <div class="rating-bar-container">
                 <p class="rating-instruction" id="lbl-rating-instruction">Rate your active recall honestly:</p>
                 <div class="rating-buttons">
-                  <button class="btn rating-btn again" data-rating="1">
-                    <span class="rating-num">1</span>
-                    <span class="rating-label" id="lbl-rate-1">Again</span>
-                  </button>
-                  <button class="btn rating-btn hard" data-rating="2">
-                    <span class="rating-num">2</span>
-                    <span class="rating-label" id="lbl-rate-2">Hard</span>
-                  </button>
-                  <button class="btn rating-btn good" data-rating="3">
-                    <span class="rating-num">3</span>
-                    <span class="rating-label" id="lbl-rate-3">Good</span>
-                  </button>
-                  <button class="btn rating-btn easy" data-rating="4">
-                    <span class="rating-num">4</span>
-                    <span class="rating-label" id="lbl-rate-4">Easy</span>
-                  </button>
+                  <!-- Two groups, not four peers: rating 1 means the recall
+                       failed (wholly or partly), 2-4 all mean it succeeded and
+                       differ only in effort. The captions carry that split so
+                       the learner does not have to infer it from the colours. -->
+                  <div class="rating-group missed" role="group" aria-labelledby="lbl-rating-group-missed">
+                    <span class="rating-group-caption" id="lbl-rating-group-missed">Not, or only partly, recalled</span>
+                    <div class="rating-group-buttons">
+                      <button class="btn rating-btn again" data-rating="1">
+                        <span class="rating-num">1</span>
+                        <span class="rating-label" id="lbl-rate-1">Again</span>
+                      </button>
+                    </div>
+                  </div>
+                  <div class="rating-group known" role="group" aria-labelledby="lbl-rating-group-known">
+                    <span class="rating-group-caption" id="lbl-rating-group-known">Fully recalled — how easy was it?</span>
+                    <div class="rating-group-buttons">
+                      <button class="btn rating-btn hard" data-rating="2">
+                        <span class="rating-num">2</span>
+                        <span class="rating-label" id="lbl-rate-2">Hard</span>
+                      </button>
+                      <button class="btn rating-btn good" data-rating="3">
+                        <span class="rating-num">3</span>
+                        <span class="rating-label" id="lbl-rate-3">Good</span>
+                      </button>
+                      <button class="btn rating-btn easy" data-rating="4">
+                        <span class="rating-num">4</span>
+                        <span class="rating-label" id="lbl-rate-4">Easy</span>
+                      </button>
+                    </div>
+                  </div>
                 </div>
                 <div class="rating-stop-wrap">
                   <button id="btn-study-stop" class="btn stop-btn" type="button">
