@@ -23,6 +23,7 @@ import {
   admitPresentation,
   buildReviewQueue,
   CardNotDueError,
+  CardNotReviewableError,
   generatePrompt,
   getSetting,
   getTokenById,
@@ -131,11 +132,13 @@ export const learnCommand = new Command("learn")
           });
           attemptId = admission.attemptId;
         } catch (err) {
-          // A sibling shown earlier today or a card that stopped being due
-          // since the queue was built is skipped, not a reason to abort.
+          // A sibling shown earlier today, a card that stopped being due,
+          // or a token unpublished since the queue was built is skipped, not
+          // a reason to abort.
           if (
             err instanceof AtomSiblingOccupiedError ||
-            err instanceof CardNotDueError
+            err instanceof CardNotDueError ||
+            err instanceof CardNotReviewableError
           ) {
             continue;
           }

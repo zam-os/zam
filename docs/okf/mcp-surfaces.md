@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-06T19:08:40.000Z
+timestamp: 2026-09-07T20:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -395,10 +395,14 @@ settings, and `tier1-first` ordering. A learner who explicitly chooses “keep
 going” supplies only the selected batch's additional-new count as a temporary
 override. Immediately before a card is shown the panel calls
 `zam_admit_review` and forwards the returned `attemptId` with the rating; a
-sibling refused for the day leaves the session instead of being counted as
-shown. Tier-1 binary checks render as one-tap choices and are compared
-locally rather than sent to a model. Precondition, keep-going, and bonus
-choices use the dedicated tools; none manufactures an FSRS rating.
+card refused at that moment leaves the session instead of being counted as
+shown. Every review surface — Recall panel, Mobile, `zam learn`, `zam review`,
+`zam session` — treats all three refusals the same way: a sibling already
+shown today, a card that stopped being due, and a token unpublished between
+queue build and display each cost that one card, never the session around it.
+Tier-1 binary checks render as one-tap choices and are compared locally rather
+than sent to a model. Precondition, keep-going, and bonus choices use the
+dedicated tools; none manufactures an FSRS rating.
 
 In Flash mode the answer field stays hidden, tapping the question reveals the
 stored answer, and the learner self-rates directly; no sampling or host message

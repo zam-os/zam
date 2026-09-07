@@ -301,10 +301,15 @@ export async function executeReviewAction(
           )
         : undefined;
       const actor = existingAttempt?.actor ?? input.actor ?? "user";
+      // A stored attempt speaks for itself, including when what it stored is
+      // "unknown": `null ?? true` would declare an unassessed attempt an
+      // independent success. Only the absence of an attempt defaults to true.
       const independent =
         input.independent !== undefined
           ? input.independent
-          : (existingAttempt?.independent ?? true);
+          : existingAttempt
+            ? existingAttempt.independent
+            : true;
       const attemptId = existingAttempt?.id ?? input.attemptId ?? ulid();
       if (
         existingAttempt &&

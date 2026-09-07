@@ -30,4 +30,22 @@ describe("atom sibling presentation wiring", () => {
     const bridge = file("src/cli/commands/bridge.ts");
     expect(bridge).toContain('.command("admit-review")');
   });
+
+  it("skips, never aborts, when a token stops being reviewable", () => {
+    // A token unpublished between queue build and display costs one card, not
+    // the session around it. Mobile is covered behaviourally in
+    // tests/mobile/review-session.test.ts; these surfaces have no cheap
+    // harness, so the wiring itself is what is asserted.
+    for (const path of [
+      "src/cli/commands/learn.ts",
+      "src/cli/commands/review.ts",
+      "src/cli/commands/session.ts",
+      "mobile/src/review-session.ts",
+    ]) {
+      expect(file(path)).toContain("CardNotReviewableError");
+    }
+    expect(file("desktop/src/panel/recall.ts")).toContain(
+      "isCardNotReviewable(error)",
+    );
+  });
 });

@@ -221,6 +221,36 @@ describe("mobile review session", () => {
     expect(after.presented_at).not.toBeNull();
   });
 
+  it("skips a card whose token was unpublished before the display", async () => {
+    const withdrawn = await createToken(db, {
+      slug: "a-withdrawn",
+      concept: "An item pulled back for revision",
+      domain: "math",
+      question: "Q1?",
+    });
+    const kept = await createToken(db, {
+      slug: "b-kept",
+      concept: "An item that stays published",
+      domain: "math",
+      question: "Q2?",
+    });
+    await ensureCard(db, withdrawn.id, "student-9");
+    await ensureCard(db, kept.id, "student-9");
+
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await session.start("student-9")).toBe(true);
+    expect(session.currentItem?.tokenId).toBe(withdrawn.id);
+
+    // An author pulls the item back between queue build and display.
+    await db
+      .prepare("UPDATE tokens SET editorial_state = 'draft' WHERE id = ?")
+      .run(withdrawn.id);
+
+    const summary = await session.confirmCurrent();
+    expect(summary).toBeNull();
+    expect(session.currentItem?.tokenId).toBe(kept.id);
+  });
+
   it("ends the session when confirmation empties the queue", async () => {
     const token = await createToken(db, {
       slug: "rated-elsewhere",

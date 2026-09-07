@@ -80,6 +80,11 @@ function isCardNoLongerDue(error: unknown): boolean {
   return errorMessage(error).includes("no longer due");
 }
 
+/** The token left the published state between queue build and display. */
+function isCardNotReviewable(error: unknown): boolean {
+  return errorMessage(error).includes("not published");
+}
+
 let contextBar: ContextBarHandle | undefined;
 let panelVersion: string | undefined;
 
@@ -777,7 +782,11 @@ async function presentCurrentCard(): Promise<void> {
     attemptId = admission?.attemptId;
   } catch (error) {
     if (revision !== sessionRevision) return;
-    if (isAtomSiblingOccupied(error) || isCardNoLongerDue(error)) {
+    if (
+      isAtomSiblingOccupied(error) ||
+      isCardNoLongerDue(error) ||
+      isCardNotReviewable(error)
+    ) {
       // Not shown, so not part of this session: drop it from the queue
       // instead of stepping past it, or the counter and summary would count
       // a card the learner never saw.

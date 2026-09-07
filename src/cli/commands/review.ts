@@ -9,6 +9,7 @@ import {
   admitPresentation,
   buildReviewQueue,
   CardNotDueError,
+  CardNotReviewableError,
   generatePrompt,
   getKnowledgeContextByName,
   hostTimeZone,
@@ -100,9 +101,13 @@ export const reviewCommand = new Command("review")
           });
           attemptId = admission.attemptId;
         } catch (err) {
+          // A sibling shown earlier today, a card that stopped being due,
+          // or a token unpublished since the queue was built: skip the card,
+          // never abandon the session around it.
           if (
             err instanceof AtomSiblingOccupiedError ||
-            err instanceof CardNotDueError
+            err instanceof CardNotDueError ||
+            err instanceof CardNotReviewableError
           ) {
             continue;
           }

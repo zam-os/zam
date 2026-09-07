@@ -638,6 +638,95 @@ describe("automatic session synthesis", () => {
     expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
   });
 
+  it("does not turn unknown independence into a user success", async () => {
+    const token = await createToken(db, {
+      slug: "git-stash-pop",
+      concept: "git stash pop restores and drops the stashed entry",
+      domain: "git",
+      bloom_level: 3,
+      question: "How do you restore a stash?",
+    });
+    const card = await ensureCard(db, token.id, "tester");
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Restore stashed work",
+    });
+    // An observation suggestion knows what was run, not whether the learner
+    // needed help: independence stays unknown until someone says.
+    const attemptId = ulid();
+    await recordAttempt(db, {
+      id: attemptId,
+      userId: "tester",
+      cardId: card.id,
+      tokenId: token.id,
+      sessionId: session.id,
+      activity: "observed work",
+      actor: "user",
+      channel: "synthesis",
+      status: "suggestion",
+      suggestedRating: 3,
+    });
+
+    await expect(
+      executeReviewAction(db, {
+        action: "rate",
+        cardId: card.id,
+        userId: "tester",
+        rating: 3,
+        sessionId: session.id,
+        attemptId,
+      }),
+    ).rejects.toBeInstanceOf(AssistedSuccessError);
+
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(0);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(0);
+    const stored = (await db
+      .prepare("SELECT independent FROM review_attempts WHERE id = ?")
+      .get(attemptId)) as { independent: number | null };
+    expect(stored.independent).toBeNull();
+  });
+
+  it("still rates an attempt whose independence was recorded as true", async () => {
+    const token = await createToken(db, {
+      slug: "git-restore-staged",
+      concept: "git restore --staged unstages without touching the worktree",
+      domain: "git",
+      bloom_level: 3,
+      question: "How do you unstage a file?",
+    });
+    const card = await ensureCard(db, token.id, "tester");
+    const session = await startSession(db, {
+      user_id: "tester",
+      task: "Unstage a file",
+    });
+    const attemptId = ulid();
+    await recordAttempt(db, {
+      id: attemptId,
+      userId: "tester",
+      cardId: card.id,
+      tokenId: token.id,
+      sessionId: session.id,
+      activity: "observed work",
+      actor: "user",
+      independent: true,
+      channel: "synthesis",
+      status: "suggestion",
+      suggestedRating: 3,
+    });
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "tester",
+      rating: 3,
+      sessionId: session.id,
+      attemptId,
+    });
+
+    expect((await getCard(db, token.id, "tester"))?.reps).toBe(1);
+    expect(await getReviewsForCard(db, card.id)).toHaveLength(1);
+  });
+
   it("drops a successfully applied card from a later queue build", async () => {
     const token = await createToken(db, {
       slug: "git-inspect-worktree",

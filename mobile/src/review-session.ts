@@ -17,6 +17,7 @@ import {
   abandonPresentation,
   admitPresentation,
   CardNotDueError,
+  CardNotReviewableError,
 } from "../../src/kernel/scheduler/presentation.js";
 import {
   buildReviewQueue,
@@ -461,7 +462,8 @@ export class MobileReviewSession {
       } catch (error) {
         if (
           !(error instanceof AtomSiblingOccupiedError) &&
-          !(error instanceof CardNotDueError)
+          !(error instanceof CardNotDueError) &&
+          !(error instanceof CardNotReviewableError)
         ) {
           throw error;
         }
