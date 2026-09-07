@@ -3,7 +3,7 @@ import type { Database } from "../db/types.js";
 import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import type { DeleteCardResult } from "../models/card.js";
 import { deleteCardForUser, getCardById } from "../models/card.js";
-import { getPrerequisites } from "../models/prerequisite.js";
+import { getBlockingPrerequisites } from "../models/prerequisite.js";
 import type { SessionStep } from "../models/session.js";
 import { logStep } from "../models/session.js";
 import type {
@@ -362,7 +362,8 @@ export async function executeReviewAction(
 
       let blocked: CascadeBlockResult | undefined;
       if (rating === 1) {
-        const prereqs = await getPrerequisites(tx, target.token.id);
+        // Same set cascadeBlock uses, so the guard and the block agree.
+        const prereqs = await getBlockingPrerequisites(tx, target.token.id);
         if (prereqs.length > 0) {
           blocked = await cascadeBlock(tx, input.userId, target.token.slug);
         }

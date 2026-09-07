@@ -221,6 +221,33 @@ describe("mobile review session", () => {
     expect(after.presented_at).not.toBeNull();
   });
 
+  it("ends the session when confirmation empties the queue", async () => {
+    const token = await createToken(db, {
+      slug: "rated-elsewhere",
+      concept: "A criterion",
+      domain: "math",
+      question: "Q?",
+    });
+    await ensureCard(db, token.id, "student-9");
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await session.start("student-9")).toBe(true);
+
+    // Another surface rates the reserved card before this one shows it, so
+    // the card is no longer due when the confirmation arrives.
+    const card = await getCard(db, token.id, "student-9");
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card!.id,
+      userId: "student-9",
+      rating: 3,
+    });
+
+    const summary = await session.confirmCurrent();
+    expect(session.currentItem).toBeNull();
+    expect(summary?.completedCount).toBe(0);
+    expect(summary?.totalCount).toBe(0);
+  });
+
   it("restores the current answer, rates through FSRS, blocks, and summarizes", async () => {
     const prerequisite = await createToken(db, {
       slug: "prerequisite",

@@ -7,7 +7,7 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-09-06T12:00:00.000Z
+timestamp: 2026-09-07T08:00:00.000Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
@@ -29,6 +29,18 @@ every direct prerequisite has a card with `reps ≥ 1` that is itself not
 blocked; a blocked card with no prerequisites is released immediately.
 Releases cascade within the same call, so a freed prerequisite can free
 the card that waited on it.
+
+**Only foundations the queue can show block.** Blocking counts the direct
+prerequisites whose token is `published` and not deprecated —
+`getBlockingPrerequisites()` in `src/kernel/models/prerequisite.ts`, the same
+predicate `queue.ts` applies. A draft or retired foundation never reaches a
+review, so a card waiting on one could never collect the `reps ≥ 1` that
+releases it. An Again on a token whose only prerequisites are unpublished
+therefore does not block at all, `cascadeBlock()` reports that token as having
+no prerequisites, and `unblockReady()` releases cards blocked while their
+foundation was still published. The edge itself is kept: it stays in
+`prerequisites`, and `getPrerequisites()` still reports it for display and
+reconciliation.
 
 **Separation from FSRS math.** Blocking is deliberately *not* part of
 `evaluateRating()` (see [fsrs-scheduling.md](fsrs-scheduling.md)). The
@@ -53,7 +65,10 @@ An OKF learning re-import treats each confirmed token's submitted
 prerequisite list as its complete desired direct-neighbor set. It removes
 obsolete edges before adding declared edges inside the import transaction.
 If an addition would create a cycle, the transaction restores the prior
-content and graph rather than leaving a partial reconciliation.
+content and graph rather than leaving a partial reconciliation. A token the
+import parks as a draft (no question yet) still receives its declared edges,
+which is why the blocking policy, not the graph, is where unpublished
+foundations are excluded.
 
 # Atom prerequisites and entry assessment
 
@@ -89,4 +104,5 @@ used by bonus offers.
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
+- Tests: `tests/kernel/blocker.test.ts`
 - Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/actions.ts`

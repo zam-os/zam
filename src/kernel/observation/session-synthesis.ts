@@ -11,7 +11,7 @@ import type { Database } from "../db/types.js";
 import { cancelMatchingPreconditionDeferrals } from "../library/precondition-assessment.js";
 import { listAgentSkills } from "../models/agent-skill.js";
 import { ensureCard } from "../models/card.js";
-import { getPrerequisites } from "../models/prerequisite.js";
+import { getBlockingPrerequisites } from "../models/prerequisite.js";
 import type { Session } from "../models/session.js";
 import { logStep } from "../models/session.js";
 import type { Token } from "../models/token.js";
@@ -527,7 +527,7 @@ export async function applySessionSynthesis(
 
     let blocked: Awaited<ReturnType<typeof cascadeBlock>> | undefined;
     if (input.confirmedRating === 1) {
-      const prerequisites = await getPrerequisites(tx, token.id);
+      const prerequisites = await getBlockingPrerequisites(tx, token.id);
       if (prerequisites.length > 0) {
         blocked = await cascadeBlock(tx, session.user_id, token.slug);
       }

@@ -151,6 +151,32 @@ export async function getPrerequisites(
 }
 
 /**
+ * The direct prerequisites a learner can actually be sent to.
+ *
+ * `queue.ts` only ever offers published, non-deprecated tokens, so a draft or
+ * retired foundation never reaches a review. Blocking a card behind one would
+ * hold it out of the queue with nothing able to release it, because
+ * `unblockReady` waits for a review that can never happen. Structure is kept
+ * — the edge stays in the graph and `getPrerequisites` still reports it — but
+ * the blocking policy ignores what it cannot show.
+ */
+export async function getBlockingPrerequisites(
+  db: Database,
+  tokenId: string,
+): Promise<PrerequisiteWithToken[]> {
+  return (await db
+    .prepare(
+      `SELECT p.token_id, p.requires_id, t.slug, t.title, t.concept, t.domain, t.bloom_level
+       FROM prerequisites p
+       JOIN tokens t ON t.id = p.requires_id
+       WHERE p.token_id = ?
+         AND t.editorial_state = 'published'
+         AND t.deprecated_at IS NULL`,
+    )
+    .all(tokenId)) as PrerequisiteWithToken[];
+}
+
+/**
  * Get the direct dependents of a token — "what depends on token X?"
  *
  * Returns prerequisite rows joined with the dependent token's details.

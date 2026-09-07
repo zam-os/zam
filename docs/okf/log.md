@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-07
+
+- **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
+
 ## 2026-09-06
 
 - **Update** — [Local Card File Import](local-card-file-import.md)

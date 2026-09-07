@@ -342,6 +342,7 @@ export type {
 export {
   addPrerequisite,
   buildAncestorMap,
+  getBlockingPrerequisites,
   getDependents,
   getPrerequisites,
   getTokenNeighborhood,

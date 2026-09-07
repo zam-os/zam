@@ -2706,7 +2706,19 @@ async function renderCurrentReview(message = ""): Promise<void> {
     }
   }
 
-  await reviewSession.confirmCurrent();
+  // Most callers do not await this render, so an admission failure must be
+  // shown here rather than escaping as an unhandled rejection.
+  let drained: MobileReviewSummary | null = null;
+  try {
+    drained = await reviewSession.confirmCurrent();
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+    return;
+  }
+  if (drained) {
+    await offerAfterQueueFromReview(drained);
+    return;
+  }
   if (reviewSession.currentItem?.cardId !== item.cardId) {
     await renderCurrentReview(message);
     return;

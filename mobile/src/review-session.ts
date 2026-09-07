@@ -421,9 +421,20 @@ export class MobileReviewSession {
   /**
    * Confirm the reserved current card as an actual display. Call this only
    * when the card itself is shown, not when a precondition offer covers it.
+   *
+   * A reservation can still lose its slot between the prefetch and the
+   * display — a sibling taken on another surface, or a rating that moved the
+   * card out of due — and `admitCurrent` then drops it from the queue. When
+   * that empties the queue this returns the summary, like `rate` and
+   * `dropCurrent`, so the caller ends the session instead of leaving the
+   * previous card on screen.
    */
-  async confirmCurrent(): Promise<void> {
+  async confirmCurrent(): Promise<MobileReviewSummary | null> {
+    if (!this.snapshot || !this.currentItem) return null;
     await this.admitCurrent(true);
+    if (!this.currentItem) return await this.finish();
+    this.persist();
+    return null;
   }
 
   private async releaseUnshownCurrent(): Promise<void> {

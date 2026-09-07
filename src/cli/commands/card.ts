@@ -9,6 +9,7 @@ import {
   deleteCardForUser,
   ensureCard,
   evaluateRating,
+  getBlockingPrerequisites,
   getCardDeletionImpact,
   getDueCards,
   getPrerequisites,
@@ -191,10 +192,10 @@ cardCommand
         process.exit(1);
       }
 
-      const prereqs = await getPrerequisites(db, token.id);
+      const prereqs = await getBlockingPrerequisites(db, token.id);
       if (prereqs.length === 0) {
         console.error(
-          `Cannot block ${opts.token}: token has no prerequisites.`,
+          `Cannot block ${opts.token}: token has no published prerequisites.`,
         );
         process.exit(1);
       }
