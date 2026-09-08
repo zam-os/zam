@@ -121,12 +121,9 @@ produces one signal.
 Two evaluators exist and they land differently. The JSON evaluator shared by
 the Recall panel and Mobile carries `recalledPoints`, so those surfaces show a
 score. The CLI evaluator behind the study window replies in free prose and has
-no structured field to carry one; there, the rule is only that it may propose
-`1` and nothing else — printing "suggested rating: 3" to a learner reads as an
-endorsement of Good, which is the effort judgement being removed. On a complete
-answer it says so and leaves the rating alone. Deriving a score by parsing
-prose would reinstate the fabrication in a new place, so the study window shows
-the expected count and no score.
+no structured field to carry one, so it states completeness in words instead
+(§7). Deriving a score by parsing that prose would reinstate the fabrication in
+a new place, so the study window shows the expected count and no score.
 
 ### 4. Partial coverage is rating 1, and nothing else
 
