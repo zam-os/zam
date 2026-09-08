@@ -157,6 +157,42 @@ notice puts the decomposition in front of the author at publish time, and
 inline card editing during a review remains the escape hatch. This ADR accepts
 the raised stakes on reference-answer quality rather than adding a mechanism.
 
+### 7. No agent is asked for a rating anywhere — the metric is completeness
+
+The rule is not limited to the JSON evaluator. Every place that asked an agent
+or a model for a rating now asks for **complete / incomplete** instead, and on
+incomplete, *how many* required elements are missing plus their names in the
+feedback:
+
+| Surface | Before | Now |
+|---|---|---|
+| JSON evaluator (Recall panel, Mobile) | `suggestedRating: 1–4` | `recalledPoints` + `gaps` |
+| Prose evaluator (study window, agent harnesses) | `"Suggested rating: N"` | `"Complete"` / `"Incomplete (N)"`, localized |
+| `skills/zam/SKILL.md` and its three harness copies | "Propose 1–4 … 4 = effortless complete success" | "State completeness — never a rating" |
+
+Observation synthesis (`src/kernel/observation/session-synthesis.ts`) keeps its
+`inferredRating`. It is not an agent judging a recall answer: it is rule-based
+evidence from observed commands, and the learner confirms it before anything is
+written. Changing it is a separate decision.
+
+### 8. Judge generously — the asymmetry is real
+
+A vague, imprecise or clumsily worded answer that points at the right thing
+counts as covering its point, and genuine uncertainty resolves in the learner's
+favour.
+
+This is not softness, it is the asymmetry of the two errors. Being told you
+failed when you nearly had it discourages, and discouragement does not reverse.
+Being told you were complete when you were vague costs one scheduling step —
+and the learner keeps the final word: they can mark themselves down when they
+know they were guessing, or that they meant something else than what the
+evaluator generously read into their words.
+
+The cost is real and accepted: leniency moves some load onto learner honesty,
+and a learner who always takes the generous reading will see cards scheduled
+further out than their knowledge warrants. That is recoverable through the next
+review; a learner who has stopped is not.
+
 ## Consequences
 
 - The evaluator stops emitting a value it cannot observe. Suggested ratings
@@ -170,6 +206,11 @@ the raised stakes on reference-answer quality rather than adding a mechanism.
   and the multi-point notice is the path to fixing it.
 - Authors gain a formatting obligation for multi-point answers. It is the same
   obligation good cards already meet.
+- The prose evaluator's trailing line changes shape. Nothing parses it — the
+  harness adapters keep the whole reply and only *document* that line — but
+  their comments name the new format so they do not describe a format that no
+  longer exists.
+- Leniency shifts some accuracy onto learner honesty, deliberately (§8).
 
 ## Alternatives considered
 

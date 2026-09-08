@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-08T12:00:00.000Z
+timestamp: 2026-09-08T21:30:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -128,6 +128,21 @@ never an intermediate rating: three of four points is a `1`, and no
 partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
 window replies in prose and carries no score; there the rule is only that it
 may propose `1` or `3`.
+
+No agent is asked for a rating anywhere. The JSON evaluator returns
+`recalledPoints` and `gaps`; the prose evaluator ends with a localized
+`Complete` / `Incomplete (N)` line and names the missing elements above it; the
+`skills/zam` skill and its three harness copies tell an external agent to state
+completeness rather than propose `1`-`4`. Observation synthesis keeps its
+`inferredRating`, because that is rule-based evidence from observed commands
+which the learner confirms, not an agent judging a recall answer.
+
+Both evaluators judge completeness generously: a vague or clumsily worded
+answer that points at the right thing counts, and genuine uncertainty resolves
+in the learner's favour. The two errors are not symmetric — being told you
+failed when you nearly had it discourages and does not reverse, while a
+generous reading costs one scheduling step the learner can correct by choosing
+Again themselves.
 
 When asking, a surface shows how many points are expected and never which —
 a learner who knows three things are wanted keeps digging past the first. The
@@ -258,5 +273,5 @@ snapshots with the same workload and tier rules.
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
 - Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

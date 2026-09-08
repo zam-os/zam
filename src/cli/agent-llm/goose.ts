@@ -31,9 +31,9 @@ const DEFAULT_TIMEOUT_MS = 120_000;
 
 /**
  * Drop goose banner lines and keep the full substantive reply. Multi-line is
- * load-bearing: answer evaluation ends with a "Suggested rating: N" line, so
- * returning only the last line would throw away the feedback prose above it
- * (same reasoning as {@link parseCopilotStdout}).
+ * load-bearing: answer evaluation ends with a completeness line ("Complete" /
+ * "Incomplete (N)"), so returning only the last line would throw away the
+ * feedback prose above it (same reasoning as {@link parseCopilotStdout}).
  */
 export function parseGooseStdout(stdout: string): string {
   const lines = stdout

@@ -64,16 +64,31 @@ describe("coverage score", () => {
   });
 });
 
-describe("the CLI evaluator stops guessing at effort", () => {
+describe("the CLI evaluator reports completeness, not a rating", () => {
   const client = read("src/cli/llm/client.ts");
 
-  it("may propose only a failed or a neutral rating", () => {
-    expect(client).toContain("suggest only 1 or 3");
-    expect(client).toContain("a partial answer is a 1, never a 2");
+  it("asks for a completeness verdict instead of a number", () => {
+    expect(client).toContain("completeness verdict on its own line");
+    expect(client).toContain("LOCALIZED_COMPLETENESS");
+    expect(client).toContain("Never suggest a rating");
   });
 
-  it("hands the effort judgement back to the learner", () => {
-    expect(client).toContain("the learner chooses between Hard, Good and Easy");
+  it("names how many required elements are missing", () => {
+    // "Incomplete (N)" plus the elements themselves in the prose above, so the
+    // learner can check the claim instead of taking it on faith.
+    expect(client).toContain("${completeness.incomplete} (N)");
+    expect(client).toContain("name them in the feedback above");
+  });
+
+  it("keeps no rating wording anywhere in the prompt", () => {
+    // Every earlier round left a contradiction behind in a second place: the
+    // paragraph, then guideline 3, then guideline 4's "rating suggestion".
+    const prompt = client.slice(
+      client.indexOf("const systemPrompt = "),
+      client.indexOf("const userPrompt = "),
+    );
+    expect(prompt).not.toMatch(/rating \(1 to 4\)|1 or 3|rating suggestion/i);
+    expect(prompt).not.toContain("Suggested rating");
   });
 
   it("enumerates the concept's points only when there is more than one", () => {
@@ -82,41 +97,44 @@ describe("the CLI evaluator stops guessing at effort", () => {
   });
 });
 
-// ADR 2026-09-08 §2 only works if the author actually sees the notice. A
-// non-blocking check leaves `publication.ready` true, so Studio's "ready"
-// branch has to render advisory checks too — otherwise the first non-blocking
-// structural check is invisible and the ADR has no authoring path.
-describe("the multi-point notice reaches the author", () => {
-  const studio = read("desktop/src/learning-content.ts");
+// A learner who nearly had it and is told they failed stops trying, and the
+// asymmetry is real: they can always mark themselves down, but discouragement
+// does not reverse. Both evaluators and the agent skill carry the same rule.
+describe("vague answers are judged generously", () => {
+  const surfaces = [
+    "src/cli/llm/client.ts",
+    "desktop/src/panel/recall-evaluation.ts",
+    "skills/zam/SKILL.md",
+  ] as const;
 
-  it("renders advisory checks in the ready branch as well", () => {
-    expect(studio).toContain("(check) => !check.blocking");
-    const ready = studio.slice(
-      studio.indexOf("if (publication.ready) {"),
-      studio.indexOf("} catch {", studio.indexOf("if (publication.ready) {")),
-    );
-    expect(ready).toContain("advisoryHtml");
-    // Both branches, so a blocked draft still sees its advisory notes.
-    expect(ready.split("advisoryHtml").length - 1).toBeGreaterThanOrEqual(2);
-  });
-
-  it("labels them as advice rather than as blockers", () => {
-    expect(studio).toContain('t("lbl_publish_notes")');
-    expect(studio).toContain('t("lbl_publish_blocked")');
-  });
+  for (const file of surfaces) {
+    it(`tells the evaluator in ${file} to lean generous`, () => {
+      const source = read(file);
+      expect(source.toLowerCase()).toContain("generous");
+      expect(source).toMatch(/points at the right thing/);
+      expect(source).toMatch(/mark themselves down/);
+    });
+  }
 });
 
-describe("the CLI prompt agrees with itself", () => {
-  const client = read("src/cli/llm/client.ts");
+// The skill is how an external harness is instructed, so it is the one place
+// where a stale rating ladder would keep reaching learners after every prompt
+// in the repo had been fixed. All four tracked copies must agree.
+describe("the agent skill asks for completeness", () => {
+  const copies = [
+    "skills/zam/SKILL.md",
+    ".agent/skills/zam/SKILL.md",
+    ".agents/skills/zam/SKILL.md",
+    ".claude/skills/zam/SKILL.md",
+  ] as const;
 
-  it("no longer asks for a 1-4 rating further down the same prompt", () => {
-    expect(client).not.toContain("Suggest a clear FSRS rating (1 to 4)");
-    expect(client).toContain("Never print a rating of 2, 3 or 4");
-  });
-
-  it("prints a suggestion only for the half it can observe", () => {
-    // "Suggested rating: 3" reads to a learner as an endorsement of Good,
-    // which is the effort judgement this change removes. Only 1 is printed.
-    expect(client).toContain('"${ratingPrefix}: 1"');
-  });
+  for (const copy of copies) {
+    it(`no longer asks ${copy} to propose 1-4`, () => {
+      const skill = read(copy);
+      expect(skill).toContain("State completeness — never a rating");
+      expect(skill).toContain("Incomplete (N)");
+      expect(skill).not.toContain("Propose 1–4");
+      expect(skill).not.toContain("effortless complete success");
+    });
+  }
 });

@@ -616,14 +616,25 @@ export async function getVisionConfig(db: Database): Promise<LlmConfig> {
   };
 }
 
-const LOCALIZED_RATING_PREFIX: Record<SupportedLocale, string> = {
-  en: "Suggested rating",
-  de: "Empfohlene Bewertung",
-  es: "Calificación sugerida",
-  fr: "Note suggérée",
-  pt: "Avaliação sugerida",
-  zh: "建议评分",
-  ja: "推奨評価",
+/**
+ * What the evaluator states instead of a rating (ADR 2026-09-08 §7).
+ *
+ * Completeness is the half it can observe. A rating would also carry effort,
+ * which it cannot see — and "suggested rating: 3" reads to a learner as an
+ * endorsement of Good, which is that invented judgement reaching them in
+ * words.
+ */
+const LOCALIZED_COMPLETENESS: Record<
+  SupportedLocale,
+  { complete: string; incomplete: string }
+> = {
+  en: { complete: "Complete", incomplete: "Incomplete" },
+  de: { complete: "Vollständig", incomplete: "Unvollständig" },
+  es: { complete: "Completa", incomplete: "Incompleta" },
+  fr: { complete: "Complète", incomplete: "Incomplète" },
+  pt: { complete: "Completa", incomplete: "Incompleta" },
+  zh: { complete: "完整", incomplete: "不完整" },
+  ja: { complete: "完全", incomplete: "不完全" },
 };
 
 const BLOOM_VERBS = {
@@ -777,7 +788,8 @@ Active-Recall Question:`;
 
 /**
  * Evaluate the learner's active-recall answer against the target concept.
- * Suggests an FSRS rating (1-4) in the active locale.
+ * States whether the answer was complete, in the active locale. It never
+ * suggests a rating: completeness is observable from the text, effort is not.
  */
 export async function evaluateAnswerViaLLM(
   db: Database,
@@ -795,8 +807,8 @@ export async function evaluateAnswerViaLLM(
   const cfg = await getProviderForRole(db, "recall");
   const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
-  const ratingPrefix =
-    LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
+  const completeness =
+    LOCALIZED_COMPLETENESS[cfg.locale] || LOCALIZED_COMPLETENESS.en;
 
   // Enumerating the concept's own points turns "is a required element
   // missing" from a decomposition the model redoes every review into a lookup
@@ -819,13 +831,13 @@ Compare the learner's active-recall answer against the target concept only. The 
 Accept unambiguous typos, abbreviated forms, and equivalent paraphrases when the required content is already present.
 
 ${scoringRules}
-Rating: suggest only 1 or 3. 1 when any required element is missing — a partial answer is a 1, never a 2. 3 when the answer is complete. Do not judge how hard it was: you see the finished text, not the effort behind it, and the learner chooses between Hard, Good and Easy themselves.
+Judge completeness only, and judge it generously. A vague, imprecise or clumsily worded answer that points at the right thing counts as covering it; when you are genuinely unsure whether an element is there, count it as there. A learner who nearly had it and is told they failed stops trying, and they can always mark themselves down if they know they were guessing.
 
 Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
 2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
-3. If any required element is missing, end your response with exactly "${ratingPrefix}: 1" in ${langName}. If the answer is complete, end with the sentence in ${langName} that says the answer was complete and the learner picks how easy it felt. Never print a rating of 2, 3 or 4: naming one would be judging an effort you cannot see.
-4. Output ONLY the evaluation and rating suggestion. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
+3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours.
+4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}

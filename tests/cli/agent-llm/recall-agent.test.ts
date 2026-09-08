@@ -147,11 +147,12 @@ describe("recall via the agent transport", () => {
       context: "Optional background that must not be a pass hurdle.",
     });
     expect(seenSystem).toContain("target concept only");
-    // A partial answer stays a 1, and the evaluator no longer guesses effort
-    // at all — it may propose only 1 or 3 (ADR 2026-09-08 §3).
-    expect(seenSystem).toContain("a partial answer is a 1, never a 2");
-    expect(seenSystem).toContain("suggest only 1 or 3");
-    expect(seenSystem).toContain("the learner chooses between Hard, Good and Easy");
+    // The harness is asked for completeness, never a rating: effort is the
+    // half it cannot see (ADR 2026-09-08 §3, §7).
+    expect(seenSystem).toContain("Judge completeness only");
+    expect(seenSystem).toContain("completeness verdict on its own line");
+    expect(seenSystem).toContain("Never suggest a rating");
+    expect(seenSystem).not.toContain("Suggested rating");
     expect(seenSystem).not.toContain("partially correct");
     expect(seenSystem).not.toContain("Celebrate every honest attempt");
   });
