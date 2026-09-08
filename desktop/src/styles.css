@@ -1850,6 +1850,16 @@ textarea::placeholder {
   color: var(--clr-accent-cyan);
 }
 
+/* The expected point count. A cue for how long to keep digging, not a hint at
+   the content — quiet enough that it never competes with the question. */
+.question-points {
+  margin: 6px 0 0;
+  font-size: 12px;
+  font-weight: 600;
+  letter-spacing: 0.02em;
+  color: var(--clr-text-muted);
+}
+
 /* The learner's own answer, above the feedback about it. Quieter than the
    reference answer below — it is there to be compared against, not learned. */
 .own-answer-box {

@@ -31,7 +31,9 @@ import {
   hasCommand,
   LANGUAGE_NAMES,
   normalizeLocale,
+  parseAnswerPoints,
   resolveReviewContext,
+  supportsAnswerPoints,
   t,
 } from "../../kernel/index.js";
 import {
@@ -796,16 +798,28 @@ export async function evaluateAnswerViaLLM(
   const ratingPrefix =
     LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
 
+  // Enumerating the concept's own points turns "is a required element
+  // missing" from a decomposition the model redoes every review into a lookup
+  // against a fixed list (ADR 2026-09-08 §3). Bloom 4-5 answers do not
+  // decompose, so they keep the unenumerated form.
+  const points = supportsAnswerPoints(input.bloomLevel)
+    ? parseAnswerPoints(input.concept)
+    : [];
+  const scoringRules =
+    points.length > 1
+      ? `The concept asks for ${points.length} points:
+${points.map((point, i) => `${i + 1}. ${point}`).join("\n")}
+An answer missing any of them is incomplete. Name the missing ones in your feedback.
+`
+      : "";
+
   const systemPrompt = `You are ZAM, a patient skills trainer.
 Compare the learner's active-recall answer against the target concept only. The question identifies the task. Target context and source code are background for feedback, not extra passing requirements. Do not invent missing facts, required units, or calculation steps. If the question and concept disagree, say so as a content problem.
 
 Accept unambiguous typos, abbreviated forms, and equivalent paraphrases when the required content is already present.
 
-FSRS Rating scale:
-- 1: blank, wrong, or missing a required element of the concept (Again). Never use 2 for a partial answer.
-- 2: complete success that was effortful (Hard)
-- 3: ordinary complete success (Good). Use 3 when effort is unknown. Never "mostly correct".
-- 4: complete success with evidence of effortless recall (Easy). A short correct answer alone does not prove speed.
+${scoringRules}
+Rating: suggest only 1 or 3. 1 when any required element is missing — a partial answer is a 1, never a 2. 3 when the answer is complete. Do not judge how hard it was: you see the finished text, not the effort behind it, and the learner chooses between Hard, Good and Easy themselves.
 
 Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.

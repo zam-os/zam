@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-08T00:00:00.000Z
+timestamp: 2026-09-08T12:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -102,6 +102,38 @@ leaves scheduling untouched. A material publication increments the token's
 while preserving stability, difficulty, repetitions, lapses, and the active
 step cursor. After the answer, `evaluateRating()` synchronizes the card's
 `learned_content_version`.
+
+# Answer points and coverage
+
+A reference answer's **required points** are its formatting, not a stored field
+(ADR 2026-09-08). A list has one point per item; prose has exactly one. Nothing
+is persisted, so the count cannot drift from the text it counts:
+`parseAnswerPoints()` and `countAnswerPoints()` in
+`src/kernel/library/answer-points.ts` derive both, and every surface reads
+them from there rather than counting for itself.
+
+An item should ask for one thing, and prose therefore needs no authoring
+ceremony. Items that ask for more stay valid — some facts only make sense
+together — so `structuralPublicationChecks()` raises
+`criterion_multiple_points` as the one **non-blocking** structural check: the
+author is told and may publish anyway.
+
+The two evaluators split the judgement rather than conflating it. Coverage is
+observable from the answer text; effort is not, and only the learner knows it.
+The JSON evaluator shared by the Recall panel and Mobile receives the points
+enumerated and returns `recalledPoints`; `parseRecallEvaluation()` derives the
+rating from it — below full coverage rating `1`, at full coverage the neutral
+`3` the learner then overrides with Hard, Good, or Easy. Partial coverage is
+never an intermediate rating: three of four points is a `1`, and no
+partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
+window replies in prose and carries no score; there the rule is only that it
+may propose `1` or `3`.
+
+When asking, a surface shows how many points are expected and never which —
+a learner who knows three things are wanted keeps digging past the first. The
+count appears only above one point and only up to Bloom level 3, since
+`analyse` and `synthesise` answers do not decompose into countable facts
+(`shouldShowPointCount()`).
 
 # Review queue and workload
 
@@ -216,6 +248,7 @@ snapshots with the same workload and tier rules.
 - Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/mobile/review-session.test.ts`
 - Code: `src/kernel/library/precondition-assessment.ts`, `src/kernel/library/pull-forward.ts`, `src/kernel/scheduler/queue.ts`, `src/cli/bridge-handlers.ts`, `desktop/src/panel/recall.ts`, `desktop/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/main.ts`
 
+- [ADR 2026-09-08 — Answer Points and Score-Based Rating](../adr/2026-09-08-answer-points-and-score-based-rating.md)
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
 - [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
@@ -224,6 +257,6 @@ snapshots with the same workload and tier rules.
 - [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

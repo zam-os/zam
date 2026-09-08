@@ -591,6 +591,20 @@ button.chip {
   line-height: 1.5;
 }
 
+/* The expected point count under the question, and the score in the verdict.
+   The count says how many, never which (ADR 2026-09-08 §5). */
+.points-expected {
+  margin: var(--gap-1) 0 0;
+  font-size: 0.82em;
+  font-weight: 600;
+  color: var(--label-secondary);
+}
+
+.points-score {
+  margin: var(--gap-1) 0 0;
+  font-weight: 700;
+}
+
 /* Two captioned groups rather than four peers: "Nochmal" records a failed
    recall (missed or only partly recalled), the other three record a successful
    one and differ only in effort. Every button stays at least 44pt and

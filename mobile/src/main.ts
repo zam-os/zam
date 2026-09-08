@@ -40,6 +40,10 @@ import {
   type AiTierPreference,
 } from "../../src/kernel/ai/tier-preference.js";
 import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../src/kernel/library/answer-points.js";
+import {
   bonusCandidates,
   enrolBonusAtom,
 } from "../../src/kernel/library/bonus.js";
@@ -504,6 +508,8 @@ const reviewAnswerMedia = element<HTMLElement>("review-answer-media");
 const reviewSource = element<HTMLAnchorElement>("review-source");
 const evaluationPanel = element<HTMLElement>("evaluation-panel");
 const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
+const evaluationPoints = element<HTMLElement>("evaluation-points");
+const reviewPointsExpected = element<HTMLElement>("review-points-expected");
 const evaluationFeedback = element<HTMLElement>("evaluation-feedback");
 const evaluationMeta = element<HTMLElement>("evaluation-meta");
 const discussionPanel = element<HTMLElement>("discussion-panel");
@@ -2091,6 +2097,14 @@ function showEvaluationUi(result: MobileEvaluationResult): void {
   currentEvaluation = result;
   evaluationPanel.hidden = false;
   evaluationVerdict.textContent = t(verdictI18nKey(result.evaluation.verdict));
+  const coverage = result.evaluation.coverage;
+  evaluationPoints.hidden = !coverage;
+  evaluationPoints.textContent = coverage
+    ? tf("points_score", {
+        recalled: coverage.recalled,
+        total: coverage.total,
+      })
+    : "";
   evaluationFeedback.textContent = result.evaluation.feedback;
   evaluationMeta.textContent = [
     tf("evaluation_suggested", {
@@ -2358,6 +2372,8 @@ function showReviewOffer(spec: {
 }): void {
   showReview();
   reviewQuestion.textContent = "";
+  reviewPointsExpected.hidden = true;
+  reviewPointsExpected.textContent = "";
   reviewOfferTitle.textContent = spec.title;
   reviewOfferBody.textContent = spec.body;
   fillOfferActions(reviewOfferActions, spec.actions);
@@ -2742,6 +2758,12 @@ async function renderCurrentReview(message = ""): Promise<void> {
     : item.domain || t("no_domain");
   reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
   reviewQuestion.textContent = prompt.question;
+  // The count calibrates how long to keep digging; the points stay hidden.
+  const showsPoints = shouldShowPointCount(prompt.concept, item.bloomLevel);
+  reviewPointsExpected.hidden = !showsPoints;
+  reviewPointsExpected.textContent = showsPoints
+    ? tf("points_expected", { count: countAnswerPoints(prompt.concept) })
+    : "";
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;

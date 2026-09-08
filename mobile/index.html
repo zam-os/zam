@@ -1115,6 +1115,8 @@
                losing the session. Mirrors the desktop's card-manage menu. -->
           <div class="prompt-row">
             <h2 id="review-question" class="prompt"></h2>
+            <!-- How many points are wanted, never which (ADR 2026-09-08 §5). -->
+            <p id="review-points-expected" class="points-expected" hidden></p>
             <button
               id="card-manage"
               class="btn icon"
@@ -1195,6 +1197,7 @@
           <div id="revealed-answer" hidden class="stack">
             <div id="evaluation-panel" hidden class="card">
               <p id="evaluation-verdict" class="verdict"></p>
+              <p id="evaluation-points" class="points-score" hidden></p>
               <p id="evaluation-feedback" class="t-body"></p>
               <p id="evaluation-meta" class="t-footnote"></p>
             </div>

@@ -160,6 +160,14 @@ export {
   commitTextImport,
   previewTextImport,
 } from "./import/text-import.js";
+export {
+  countAnswerPoints,
+  MAX_SCORED_BLOOM_LEVEL,
+  parseAnswerPoints,
+  ratingFromCoverage,
+  shouldShowPointCount,
+  supportsAnswerPoints,
+} from "./library/answer-points.js";
 export type {
   BonusCandidate,
   BonusOptions,

@@ -15,6 +15,7 @@ import {
   slugify,
   type Token,
 } from "../models/token.js";
+import { countAnswerPoints } from "./answer-points.js";
 
 /** Subset of revision fields that affect structural publication checks. */
 export interface PublicationFieldChanges {
@@ -26,6 +27,7 @@ export type PublicationCheckCode =
   | "missing_question"
   | "empty_criterion"
   | "criterion_slug_echo"
+  | "criterion_multiple_points"
   | "question_slug_echo"
   | "invalid_referenced_item"
   | "invalid_prerequisite_edge";
@@ -134,6 +136,19 @@ export function structuralPublicationChecks(
       code: "criterion_slug_echo",
       blocking: true,
       message: "Criterion must not merely echo the slug.",
+    });
+  }
+
+  // An item should ask for one thing, and most do. Some genuinely cannot be
+  // split — a formula and the precondition it only holds under are one fact
+  // together — so this is the one structural check that does not block: the
+  // author is told and may publish anyway (ADR 2026-09-08 §2).
+  const points = countAnswerPoints(concept);
+  if (points > 1) {
+    checks.push({
+      code: "criterion_multiple_points",
+      blocking: false,
+      message: `Criterion asks for ${points} points. Split it unless they only make sense together.`,
     });
   }
 

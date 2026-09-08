@@ -147,7 +147,11 @@ describe("recall via the agent transport", () => {
       context: "Optional background that must not be a pass hurdle.",
     });
     expect(seenSystem).toContain("target concept only");
-    expect(seenSystem).toContain("Never use 2 for a partial answer");
+    // A partial answer stays a 1, and the evaluator no longer guesses effort
+    // at all — it may propose only 1 or 3 (ADR 2026-09-08 §3).
+    expect(seenSystem).toContain("a partial answer is a 1, never a 2");
+    expect(seenSystem).toContain("suggest only 1 or 3");
+    expect(seenSystem).toContain("the learner chooses between Hard, Good and Easy");
     expect(seenSystem).not.toContain("partially correct");
     expect(seenSystem).not.toContain("Celebrate every honest attempt");
   });
