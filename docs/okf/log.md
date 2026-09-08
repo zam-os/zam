@@ -1,7 +1,12 @@
 # Log
 
+## 2026-09-08
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-09-07
 
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Prerequisite Graph and Blocking](prerequisite-blocking.md)
 

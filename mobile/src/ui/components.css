@@ -591,11 +591,48 @@ button.chip {
   line-height: 1.5;
 }
 
-/* All four ratings on one row, each at least 44pt, thumb-reachable. */
+/* Two captioned groups rather than four peers: "Nochmal" records a failed
+   recall (missed or only partly recalled), the other three record a successful
+   one and differ only in effort. Every button stays at least 44pt and
+   thumb-reachable. */
 .ratings {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-3);
+}
+
+.rating-group {
+  display: grid;
+  gap: var(--gap-1);
+}
+
+.rating-group-caption {
+  margin: 0;
+  font-size: 0.76em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rating-group.missed .rating-group-caption {
+  color: var(--again);
+}
+
+.rating-group.known .rating-group-caption {
+  color: var(--good);
+}
+
+.rating-group.known {
+  border-top: 1px solid var(--separator);
+  padding-top: var(--gap-2);
+}
+
+.rating-row {
+  display: grid;
   gap: var(--gap-2);
+}
+
+.rating-row.three {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .rating {
@@ -617,6 +654,7 @@ button.chip {
 
 .rating.again {
   color: var(--again);
+  background: var(--again-wash);
 }
 .rating.hard {
   color: var(--hard);

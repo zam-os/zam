@@ -51,6 +51,7 @@ import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
   parseRecallEvaluation,
+  RATING_GROUPS,
   type RecallEvaluation,
   type RecallEvaluationRoute,
   resolveRecallEvaluationRoute,
@@ -1030,6 +1031,8 @@ async function presentCurrentCard(): Promise<void> {
     }
   }
 
+  let ratingGroupSeq = 0;
+
   function appendRatings(
     reveal: HTMLElement,
     suggestedRating?: 1 | 2 | 3 | 4,
@@ -1051,24 +1054,56 @@ async function presentCurrentCard(): Promise<void> {
       t("lbl_rate_3"),
       t("lbl_rate_4"),
     ];
-    for (let r = 1; r <= 4; r += 1) {
-      const rating = r as 1 | 2 | 3 | 4;
-      const ratingBtn = document.createElement("button");
-      ratingBtn.className = "btn secondary-btn recall-rating-btn";
-      if (rating === suggestedRating) {
-        ratingBtn.classList.add("recall-rating-suggested");
+    const tones = ["again", "hard", "good", "easy"] as const;
+    const captionKeys = {
+      missed: "lbl_rating_group_missed",
+      known: "lbl_rating_group_known",
+    } as const;
+
+    // Two captioned groups rather than one row of four peers, over the shared
+    // RATING_GROUPS table so the panel cannot drift from the rating semantics
+    // the evaluator reconciles against.
+    for (const { group: tone, ratings: values } of RATING_GROUPS) {
+      const group = document.createElement("div");
+      group.className = `recall-rating-group ${tone}`;
+      group.setAttribute("role", "group");
+
+      // aria-labelledby, not aria-label: the caption is already visible, and
+      // duplicating its text would have a screen reader announce it twice.
+      // The id is per render — a reveal and a smart-feedback block must never
+      // put two elements with the same id into one document.
+      const caption = document.createElement("div");
+      caption.className = "recall-rating-group-caption";
+      ratingGroupSeq += 1;
+      caption.id = `recall-rating-group-${tone}-${ratingGroupSeq}`;
+      caption.textContent = t(captionKeys[tone]);
+      group.setAttribute("aria-labelledby", caption.id);
+      group.appendChild(caption);
+
+      const row = document.createElement("div");
+      row.className = "recall-rating-row";
+      for (const rating of values) {
+        const ratingBtn = document.createElement("button");
+        ratingBtn.className = `btn secondary-btn recall-rating-btn ${
+          tones[rating - 1]
+        }`;
+        if (rating === suggestedRating) {
+          ratingBtn.classList.add("recall-rating-suggested");
+        }
+        ratingBtn.type = "button";
+        const label = document.createElement("span");
+        label.textContent = labels[rating - 1];
+        const num = document.createElement("span");
+        num.className = "rating-num";
+        num.textContent = String(rating);
+        ratingBtn.append(label, num);
+        ratingBtn.addEventListener("click", () => {
+          void submitRating(rating);
+        });
+        row.appendChild(ratingBtn);
       }
-      ratingBtn.type = "button";
-      const label = document.createElement("span");
-      label.textContent = labels[r - 1];
-      const num = document.createElement("span");
-      num.className = "rating-num";
-      num.textContent = String(r);
-      ratingBtn.append(label, num);
-      ratingBtn.addEventListener("click", () => {
-        void submitRating(rating);
-      });
-      ratings.appendChild(ratingBtn);
+      group.appendChild(row);
+      ratings.appendChild(group);
     }
     reveal.appendChild(ratings);
   }

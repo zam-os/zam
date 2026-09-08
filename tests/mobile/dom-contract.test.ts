@@ -70,6 +70,29 @@ describe("index.html / TypeScript element contract", () => {
     expect(ratings).toEqual(["1", "2", "3", "4"]);
   });
 
+  // "Nochmal" means the recall failed — missed outright or only half there —
+  // while Schwer/Gut/Leicht all mean it succeeded and differ only in effort.
+  // Four buttons in one row hide that; a learner who half-remembered reaches
+  // for "Schwer" and quietly corrupts the schedule.
+  it("splits the ratings into a missed group and a knew-it group", () => {
+    const html = read("mobile/index.html");
+    const missedAt = html.indexOf('class="rating-group missed"');
+    const knownAt = html.indexOf('class="rating-group known"');
+    expect(missedAt).toBeGreaterThan(-1);
+    expect(knownAt).toBeGreaterThan(missedAt);
+
+    const missed = html.slice(missedAt, knownAt);
+    const known = html.slice(knownAt);
+    expect(
+      [...missed.matchAll(/data-rating="(\d)"/g)].map((m) => m[1]),
+    ).toEqual(["1"]);
+    expect([...known.matchAll(/data-rating="(\d)"/g)].map((m) => m[1])).toEqual(
+      ["2", "3", "4"],
+    );
+    expect(missed).toContain('data-i18n="rating_group_missed"');
+    expect(known).toContain('data-i18n="rating_group_known"');
+  });
+
   it("keeps a section for every tab the navigation switches between", () => {
     const nav = read("mobile/src/ui/nav.ts");
     const present = markupIds();

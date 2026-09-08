@@ -892,6 +892,12 @@ function initializeTranslations() {
   renderObserverHistory();
   
   // Rating labels
+  document.getElementById("lbl-rating-group-missed")!.textContent = t(
+    "lbl_rating_group_missed",
+  );
+  document.getElementById("lbl-rating-group-known")!.textContent = t(
+    "lbl_rating_group_known",
+  );
   document.getElementById("lbl-rate-1")!.textContent = t("lbl_rate_1");
   document.getElementById("lbl-rate-2")!.textContent = t("lbl_rate_2");
   document.getElementById("lbl-rate-3")!.textContent = t("lbl_rate_3");
