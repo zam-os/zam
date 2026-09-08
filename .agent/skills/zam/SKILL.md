@@ -211,8 +211,9 @@ For each due token, ask a conceptual question at the right Bloom level:
 After the user answers, run the explicit review loop:
 1. **Check the answer first.** Compare the user's answer with the concept definition, the recall question, and resolved source context.
 2. **Give learning feedback before asking for a rating.** State the verdict, give a reference answer, and explain gaps.
-3. **Suggest a self-rating.** Propose 1–4 against the `concept` only (context is not a pass hurdle): 4 = effortless complete success, 3 = ordinary complete success (use 3 when effort is unknown), 2 = complete but effortful success, 1 = blank, wrong, or missing a required element. Never use 2 for a partial answer.
-4. **Ask the user to choose the final rating.**
+3. **State completeness — never a rating.** Judge the answer against the `concept` only (context is not a pass hurdle) and say either **Complete** or **Incomplete (N)**, where N is how many required elements are missing; name those elements in the feedback. The `concept`'s required elements are its list items, or the whole answer when it is prose. Do not propose a rating: completeness is what you can observe, effort is not, and a suggested rating would be you guessing at how hard it felt.
+   **Judge generously.** A vague, imprecise or clumsily worded answer that points at the right thing counts as covering it; when genuinely unsure, count it as covered. A learner who nearly had it and is told they failed stops trying, and they can always mark themselves down.
+4. **Ask the user to choose the rating.** Incomplete means Again. Complete means the user picks Hard, Good, or Easy by how hard it felt — that choice is theirs alone.
 5. **WAIT for the user to choose.**
 6. **Submit the rating.** Call `zam_submit_review` with the cardId, rating, sessionId, the `attemptId` from `zam_admit_review`, and `doneBy: "user"`. The same attempt id never creates a second review, so a retry after a timeout is safe.
 *(For a skipped card, call `zam_review_action`. If the agent executed the step, call `zam_submit_review` with `doneBy: "agent"`, the session ID, and no rating. If the user followed steps just demonstrated, with no independent attempt, call `zam_submit_review` with `recordOnly: true`, `doneBy: "user"`, session ID, card ID, and `reason`. Both log evidence without advancing FSRS.)*
@@ -302,7 +303,8 @@ If a token is outdated:
 - Never register a token that already exists under a different slug — dedup first
 - Never skip the knowledge plan
 - Be honest in the session summary about what the agent did vs. what the user did
-- Rating scale is 1-4
+- Rating scale is 1-4, but the agent never proposes one: it reports Complete / Incomplete (N) and the user chooses
+- Never judge a vague answer harshly; the user can always mark themselves down, and a discouraged learner stops
 - Agent execution (`done-by agent`) does NOT advance FSRS state
 - Observation ratings DO count
 - Prefer observation over verbal probing

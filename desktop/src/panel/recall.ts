@@ -46,6 +46,10 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
+import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../../src/kernel/library/answer-points.js";
 import { preferredRecallDisplayMode } from "./display-mode.js";
 import {
   buildRecallEvaluationPrompt,
@@ -903,6 +907,16 @@ async function presentCurrentCard(): Promise<void> {
       }
     });
   }
+  // How many points are wanted, never which: a learner who knows three things
+  // are asked for keeps digging past the first (ADR 2026-09-08 §5).
+  if (shouldShowPointCount(card.concept, card.bloomLevel)) {
+    const expected = document.createElement("div");
+    expected.className = "recall-points-expected";
+    expected.textContent = tf("recall_points_expected", {
+      count: countAnswerPoints(card.concept),
+    });
+    question.appendChild(expected);
+  }
   root.appendChild(question);
 
   const answer = document.createElement("textarea");
@@ -1240,6 +1254,16 @@ async function presentCurrentCard(): Promise<void> {
     feedback.textContent = evaluation.feedback;
     reveal.append(ownTitle, own, feedbackTitle, feedback);
 
+    if (evaluation.coverage) {
+      const score = document.createElement("div");
+      score.className = "recall-points-score";
+      score.textContent = tf("recall_points_score", {
+        recalled: evaluation.coverage.recalled,
+        total: evaluation.coverage.total,
+      });
+      reveal.appendChild(score);
+    }
+
     if (evaluation.gaps.length > 0) {
       const gaps = document.createElement("ul");
       gaps.className = "recall-gaps";
@@ -1318,7 +1342,9 @@ async function presentCurrentCard(): Promise<void> {
         currentLocale,
       );
       const raw = await sampleRecall([{ role: "user", text: prompt }]);
-      const evaluation = parseRecallEvaluation(raw);
+      // The card comes along so the parser can score the reply against the
+      // reference answer's own points rather than trusting a rating from it.
+      const evaluation = parseRecallEvaluation(raw, card);
       showSmartEvaluation(learnerAnswer, evaluation);
       pushContext(card, "answered");
       return;

@@ -33,8 +33,9 @@ const DEFAULT_TIMEOUT_MS = 120_000;
 /**
  * Quiet mode prints session_id / warnings then the answer; drop the meta lines
  * and keep the full reply. Multi-line is load-bearing: answer evaluation ends
- * with a "Suggested rating: N" line, so returning only the last line would
- * throw away the feedback prose above it (same as {@link parseCopilotStdout}).
+ * with a completeness line ("Complete" / "Incomplete (N)"), so returning only
+ * the last line would throw away the feedback prose above it (same as
+ * {@link parseCopilotStdout}).
  */
 export function parseHermesStdout(stdout: string): string {
   const lines = stdout

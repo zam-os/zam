@@ -147,7 +147,12 @@ describe("recall via the agent transport", () => {
       context: "Optional background that must not be a pass hurdle.",
     });
     expect(seenSystem).toContain("target concept only");
-    expect(seenSystem).toContain("Never use 2 for a partial answer");
+    // The harness is asked for completeness, never a rating: effort is the
+    // half it cannot see (ADR 2026-09-08 §3, §7).
+    expect(seenSystem).toContain("Judge completeness only");
+    expect(seenSystem).toContain("completeness verdict on its own line");
+    expect(seenSystem).toContain("Never suggest a rating");
+    expect(seenSystem).not.toContain("Suggested rating");
     expect(seenSystem).not.toContain("partially correct");
     expect(seenSystem).not.toContain("Celebrate every honest attempt");
   });

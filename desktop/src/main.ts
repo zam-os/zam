@@ -8,6 +8,10 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
+import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import {
   BLOOM_PACKS,
@@ -7260,6 +7264,8 @@ async function saveInlineEdit(): Promise<void> {
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
     document.getElementById("question-text")!.textContent = activePromptQuestion;
+    // The edit may have changed how many points the answer asks for.
+    renderQuestionPointCount();
     const conceptVal = document
       .getElementById("reveal-content-list")!
       .querySelector(".reveal-item .reveal-val");
@@ -7440,6 +7446,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
 
   document.getElementById("translation-loading")?.classList.add("hidden");
   document.getElementById("question-text")!.textContent = activePromptQuestion;
+  renderQuestionPointCount();
   renderReviewMedia("question-media", activeCard.media, "question");
   setModelAttributionBadge(
     "question-model-badge",
@@ -7506,8 +7513,31 @@ function renderFastCheckAnswer(
   }
 }
 
+/**
+ * Show how many points the reference answer asks for — never which.
+ *
+ * A learner who knows three things are wanted keeps digging past the first
+ * (ADR 2026-09-08 §5). Single-point cards say nothing, because "1 point" is
+ * noise, and Bloom 4-5 answers do not decompose into countable facts.
+ */
+function renderQuestionPointCount(): void {
+  const el = document.getElementById("question-points") as HTMLElement | null;
+  if (!el) return;
+  const shows =
+    activeCard !== null &&
+    shouldShowPointCount(activeCard.concept, activeCard.bloomLevel || 1);
+  el.hidden = !shows;
+  el.textContent =
+    shows && activeCard
+      ? tf("recall_points_expected", {
+          count: countAnswerPoints(activeCard.concept),
+        })
+      : "";
+}
+
 function showPreconditionOffer(precondition: PreconditionOffer): void {
   document.getElementById("question-text")!.textContent = "";
+  renderQuestionPointCount();
   renderReviewMedia("question-media", [], "question");
   showStudyOffer({
     title: t("lbl_precondition_title"),

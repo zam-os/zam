@@ -98,8 +98,8 @@ export function parseCopilotStdout(stdout: string): string {
     if (last) return last;
   }
   // Silent text: keep the full multi-line reply (evaluation + trailing
-  // "Suggested rating: N" / "Empfohlene Bewertung: N"), strip footer noise.
-  // Taking only the first line was wrong — the FSRS rating is always last.
+  // completeness line, "Complete" / "Vollständig"), strip footer noise.
+  // Taking only the first line was wrong — that verdict is always last.
   const lines = trimmed
     .split(/\r?\n/)
     .map((l) => l.trimEnd())

@@ -17,6 +17,38 @@ import {
 } from "../../src/kernel/index.js";
 
 describe("structural publication checks", () => {
+  // ADR 2026-09-08 §2: an item should ask for one thing, but some genuinely
+  // cannot be split — a formula and the precondition it only holds under are
+  // one fact together. So this is the one structural check that does not
+  // block: the author is told and may publish anyway.
+  it("notices a multi-point criterion without blocking publication", () => {
+    const checks = structuralPublicationChecks({
+      slug: "pythagorean-theorem",
+      concept:
+        "The Pythagorean theorem:\n- holds only for right triangles\n- a² + b² = c²",
+      question: "What does the Pythagorean theorem state, and when?",
+      requireQuestion: true,
+    });
+    const notice = checks.find(
+      (check) => check.code === "criterion_multiple_points",
+    );
+    expect(notice).toBeDefined();
+    expect(notice?.blocking).toBe(false);
+    expect(notice?.message).toContain("2 points");
+    expect(checks.filter((check) => check.blocking)).toEqual([]);
+  });
+
+  it("says nothing about a single-point criterion", () => {
+    expect(
+      structuralPublicationChecks({
+        slug: "bavaria-capital",
+        concept: "The capital of Bavaria is Munich.",
+        question: "What is the capital of Bavaria?",
+        requireQuestion: true,
+      }).map((check) => check.code),
+    ).not.toContain("criterion_multiple_points");
+  });
+
   it("detects empty criteria, missing questions, and slug echoes", () => {
     expect(
       structuralPublicationChecks({
