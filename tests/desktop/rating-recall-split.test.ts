@@ -219,6 +219,37 @@ describe("study window keeps the learner's own answer visible", () => {
     );
   });
 
+  // The bug this guards: renderReveal() toggles the reference answer with
+  // `#revealed-box .answer-box`, and querySelector returns the FIRST match.
+  // Giving the own-answer box that class put it ahead of the reference box, so
+  // a successful evaluation hid the learner's answer instead — defeating the
+  // feature on exactly the path it exists for — and unhid it again on flash
+  // cards, showing an empty box.
+  it("cannot be caught by the reference answer's own toggle", () => {
+    const ownBox = html.slice(
+      html.indexOf('id="own-answer-box"') - 200,
+      html.indexOf('id="own-answer-box"') + 40,
+    );
+    expect(ownBox).not.toContain('class="answer-box');
+    expect(ownBox).toContain('class="own-answer-box');
+  });
+
+  it("toggles the reference answer by id, not by position among classes", () => {
+    expect(html).toContain('class="answer-box" id="reference-answer-box"');
+    expect(main).toContain('document.getElementById("reference-answer-box")');
+    expect(main).not.toContain('querySelector("#revealed-box .answer-box")');
+  });
+
+  it("carries its own box styling now that it shares no class", () => {
+    const css = read("desktop/src/styles.css");
+    const rule = css.slice(
+      css.indexOf(".own-answer-box {"),
+      css.indexOf("}", css.indexOf(".own-answer-box {")),
+    );
+    expect(rule).toContain("border:");
+    expect(rule).toContain("padding:");
+  });
+
   it("preserves the line breaks the answer was typed with", () => {
     const css = read("desktop/src/styles.css");
     const rule = css.slice(css.indexOf(".own-answer-text {"));

@@ -6296,7 +6296,8 @@ async function submitAndReveal() {
   document.getElementById("answer-capture-box")!.classList.add("hidden");
   // Carry the typed answer into the reveal box before the capture box goes:
   // the learner has to be able to re-read it while judging the feedback and
-  // choosing a rating. Nothing to show in flash mode or a fast check.
+  // choosing a rating. A fast check writes the chosen option into the textarea,
+  // so it shows that; only flash mode leaves nothing to show.
   const ownAnswerBox = document.getElementById("own-answer-box")!;
   document.getElementById("own-answer-text")!.textContent = userAnswer;
   ownAnswerBox.classList.toggle("hidden", userAnswer.length === 0);
@@ -6451,8 +6452,10 @@ function renderReveal(
     }
   }
 
-  // Show/hide the static reference answer box based on whether local AI evaluation succeeded
-  const answerBox = document.querySelector("#revealed-box .answer-box") as HTMLElement;
+  // Show/hide the static reference answer box based on whether local AI evaluation succeeded.
+  // By id: a descendant-class query takes the first match, so any box added
+  // above this one inside #revealed-box would silently steal the toggle.
+  const answerBox = document.getElementById("reference-answer-box");
   if (answerBox) {
     const hasAnswerMedia = activeCard.media?.some((item) => item.side === "answer");
     if (evaluationSuccessful && !hasAnswerMedia) {

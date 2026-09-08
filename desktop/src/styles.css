@@ -1850,12 +1850,14 @@ textarea::placeholder {
   color: var(--clr-accent-cyan);
 }
 
-/* The learner's own answer sits above the feedback about it. Quieter than the
-   reference answer next to it — it is there to be compared against, not to be
-   learned. Line breaks are preserved because the answer was typed with them. */
+/* The learner's own answer, above the feedback about it. Quieter than the
+   reference answer below — it is there to be compared against, not learned. */
 .own-answer-box {
   background: transparent;
-  border-style: dashed;
+  border: 1px dashed var(--border-soft);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 80ch;
 }
 
 #lbl-own-answer-title {
