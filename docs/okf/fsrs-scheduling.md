@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-08T21:30:00.000Z
+timestamp: 2026-09-08T21:07:21.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -126,8 +126,8 @@ rating from it — below full coverage rating `1`, at full coverage the neutral
 `3` the learner then overrides with Hard, Good, or Easy. Partial coverage is
 never an intermediate rating: three of four points is a `1`, and no
 partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
-window replies in prose and carries no score; there the rule is only that it
-may propose `1` or `3`.
+window replies in prose and carries no score; it reports completeness, not a
+rating.
 
 No agent is asked for a rating anywhere. The JSON evaluator returns
 `recalledPoints` and `gaps`; the prose evaluator ends with a localized
