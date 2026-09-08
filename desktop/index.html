@@ -1067,6 +1067,16 @@
 
             <!-- REVEALED SCREEN -->
             <div class="revealed-container hidden" id="revealed-box">
+              <!-- WHAT THE LEARNER WROTE. Submitting hides the capture box, so
+                   without this the answer under discussion is off-screen exactly
+                   when the feedback, the reference and the rating buttons all
+                   talk about it. Shown first, before the feedback about it, the
+                   same way the Recall panel orders the reveal. -->
+              <div class="answer-box own-answer-box hidden" id="own-answer-box">
+                <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
+                <div class="own-answer-text" id="own-answer-text"></div>
+              </div>
+
               <!-- AI FEEDBACK -->
               <div class="ai-feedback-box hidden" id="ai-feedback-container">
                 <div class="feedback-title-row">

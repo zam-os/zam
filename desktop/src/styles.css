@@ -1850,6 +1850,24 @@ textarea::placeholder {
   color: var(--clr-accent-cyan);
 }
 
+/* The learner's own answer sits above the feedback about it. Quieter than the
+   reference answer next to it — it is there to be compared against, not to be
+   learned. Line breaks are preserved because the answer was typed with them. */
+.own-answer-box {
+  background: transparent;
+  border-style: dashed;
+}
+
+#lbl-own-answer-title {
+  color: var(--clr-text-muted);
+}
+
+.own-answer-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--clr-text-secondary);
+}
+
 .reveal-content-list {
   display: flex;
   flex-direction: column;

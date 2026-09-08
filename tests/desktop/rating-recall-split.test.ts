@@ -170,3 +170,58 @@ describe("CLI review choices", () => {
     expect(actions).not.toContain("Again (forgot)");
   });
 });
+
+// Submitting an answer hides the capture box, so the answer under discussion
+// used to leave the screen exactly when the feedback, the reference answer and
+// the rating buttons all refer to it — a learner who disagreed with "you missed
+// this point" had nothing to check it against. The Recall panel and Mobile
+// always kept it visible; the study window now does too.
+describe("study window keeps the learner's own answer visible", () => {
+  const html = read("desktop/index.html");
+  const main = read("desktop/src/main.ts");
+
+  it("puts the own-answer block inside the reveal box, above the feedback", () => {
+    const revealAt = html.indexOf('id="revealed-box"');
+    const ownAt = html.indexOf('id="own-answer-box"');
+    const feedbackAt = html.indexOf('id="ai-feedback-container"');
+    const referenceAt = html.indexOf('id="lbl-reveal-title"');
+    expect(revealAt).toBeGreaterThan(-1);
+    expect(ownAt).toBeGreaterThan(revealAt);
+    expect(ownAt).toBeLessThan(feedbackAt);
+    expect(ownAt).toBeLessThan(referenceAt);
+  });
+
+  it("fills it from the same answer it submits for evaluation", () => {
+    expect(main).toContain(
+      'document.getElementById("own-answer-text")!.textContent = userAnswer;',
+    );
+  });
+
+  it("stays hidden when there is no typed answer", () => {
+    expect(main).toContain(
+      'ownAnswerBox.classList.toggle("hidden", userAnswer.length === 0);',
+    );
+  });
+
+  it("clears with the rest of the study screen on the next card", () => {
+    const reset = main.slice(main.indexOf("// Reset study screen elements"));
+    expect(reset).toContain(
+      'document.getElementById("own-answer-box")!.classList.add("hidden")',
+    );
+    expect(reset).toContain(
+      'document.getElementById("own-answer-text")!.textContent = ""',
+    );
+  });
+
+  it("reuses the panel's localized title rather than a new key", () => {
+    expect(main.replace(/\s+/g, " ")).toContain(
+      't( "recall_your_answer_title", )',
+    );
+  });
+
+  it("preserves the line breaks the answer was typed with", () => {
+    const css = read("desktop/src/styles.css");
+    const rule = css.slice(css.indexOf(".own-answer-text {"));
+    expect(rule.slice(0, rule.indexOf("}"))).toContain("white-space: pre-wrap");
+  });
+});
