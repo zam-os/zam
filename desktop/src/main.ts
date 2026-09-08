@@ -861,6 +861,9 @@ function initializeTranslations() {
     t("btn_question_use_saved");
   document.getElementById("lbl-ai-feedback-title")!.textContent = t("lbl_ai_feedback_title");
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
+  document.getElementById("lbl-own-answer-title")!.textContent = t(
+    "recall_your_answer_title",
+  );
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
   document.getElementById("session-summary-title")!.textContent =
@@ -6194,6 +6197,8 @@ async function loadNextCard(
 
     // Reset study screen elements
     document.getElementById("revealed-box")!.classList.add("hidden");
+    document.getElementById("own-answer-box")!.classList.add("hidden");
+    document.getElementById("own-answer-text")!.textContent = "";
     document.getElementById("npu-loading")!.classList.add("hidden");
     document.getElementById("wait-prompt")!.classList.add("hidden");
     document.getElementById("answer-capture-box")!.classList.remove("hidden");
@@ -6289,6 +6294,13 @@ async function submitAndReveal() {
 
   textarea.disabled = true;
   document.getElementById("answer-capture-box")!.classList.add("hidden");
+  // Carry the typed answer into the reveal box before the capture box goes:
+  // the learner has to be able to re-read it while judging the feedback and
+  // choosing a rating. A fast check writes the chosen option into the textarea,
+  // so it shows that; only flash mode leaves nothing to show.
+  const ownAnswerBox = document.getElementById("own-answer-box")!;
+  document.getElementById("own-answer-text")!.textContent = userAnswer;
+  ownAnswerBox.classList.toggle("hidden", userAnswer.length === 0);
 
   let aiFeedbackText = "";
   let evaluationModel: string | null = null;
@@ -6440,8 +6452,10 @@ function renderReveal(
     }
   }
 
-  // Show/hide the static reference answer box based on whether local AI evaluation succeeded
-  const answerBox = document.querySelector("#revealed-box .answer-box") as HTMLElement;
+  // Show/hide the static reference answer box based on whether local AI evaluation succeeded.
+  // By id: a descendant-class query takes the first match, so any box added
+  // above this one inside #revealed-box would silently steal the toggle.
+  const answerBox = document.getElementById("reference-answer-box");
   if (answerBox) {
     const hasAnswerMedia = activeCard.media?.some((item) => item.side === "answer");
     if (evaluationSuccessful && !hasAnswerMedia) {

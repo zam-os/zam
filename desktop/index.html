@@ -1067,6 +1067,16 @@
 
             <!-- REVEALED SCREEN -->
             <div class="revealed-container hidden" id="revealed-box">
+              <!-- What the learner wrote: submitting hides the capture box, so
+                   without this it is off-screen while the feedback, the
+                   reference and the rating buttons all refer to it. Deliberately
+                   NOT .answer-box — renderReveal() toggles the reference box by
+                   "#revealed-box .answer-box", which takes the first match. -->
+              <div class="own-answer-box hidden" id="own-answer-box">
+                <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
+                <div class="own-answer-text" id="own-answer-text"></div>
+              </div>
+
               <!-- AI FEEDBACK -->
               <div class="ai-feedback-box hidden" id="ai-feedback-container">
                 <div class="feedback-title-row">
@@ -1085,7 +1095,7 @@
               </div>
 
               <!-- CORE REFERENCE ANSWER -->
-              <div class="answer-box">
+              <div class="answer-box" id="reference-answer-box">
                 <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
                 <div class="reveal-content-list" id="reveal-content-list">
                   <!-- Generated dynamically: Token, Concept, Context, Source -->

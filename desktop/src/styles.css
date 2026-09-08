@@ -1850,6 +1850,26 @@ textarea::placeholder {
   color: var(--clr-accent-cyan);
 }
 
+/* The learner's own answer, above the feedback about it. Quieter than the
+   reference answer below — it is there to be compared against, not learned. */
+.own-answer-box {
+  background: transparent;
+  border: 1px dashed var(--border-soft);
+  border-radius: 12px;
+  padding: 20px;
+  max-width: 80ch;
+}
+
+#lbl-own-answer-title {
+  color: var(--clr-text-muted);
+}
+
+.own-answer-text {
+  white-space: pre-wrap;
+  overflow-wrap: anywhere;
+  color: var(--clr-text-secondary);
+}
+
 .reveal-content-list {
   display: flex;
   flex-direction: column;
