@@ -927,7 +927,7 @@ Guidelines:
 1. Answer the learner's follow-up directly and concretely in ${langName}, grounded in the card's target concept, context, and source reference.
 2. Stay scoped to this card and its concept. If the learner drifts to unrelated territory, answer briefly and steer back to the concept.
 3. Keep replies conversational and short (a few sentences) unless the learner explicitly asks for depth. Plain text only — no markdown wrapper, headers, or bullet lists.
-4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 forgot, 2 hard, 3 good, 4 easy) but never pressure them toward a specific rating.`;
+4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating.`;
 
   const cardFrame = `The card under discussion:
 Domain: ${input.domain}

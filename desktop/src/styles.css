@@ -2006,7 +2006,8 @@ textarea::placeholder {
 /* The four ratings are not four peers: 1 records a failed recall (missed or
    only partly recalled), 2-4 all record a successful one and differ only in
    how much effort it cost. The two captioned groups — separated by a rule —
-   make that split readable without hovering (ADR 2026-07-06b bar layout). */
+   make that split readable without hovering. Buttons stay bottom-aligned so a
+   caption that wraps to two lines does not shift its group's row. */
 .rating-group {
   display: flex;
   flex-direction: column;
@@ -2024,7 +2025,10 @@ textarea::placeholder {
   font-weight: 700;
   letter-spacing: 0.04em;
   text-transform: uppercase;
-  white-space: nowrap;
+  /* Wraps rather than overflowing: a long localized caption in a narrow study
+     window has to stay inside its group. */
+  max-width: 32ch;
+  text-wrap: balance;
 }
 
 .rating-group.missed .rating-group-caption {

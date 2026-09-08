@@ -9,7 +9,8 @@
  * Reference: https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm
  */
 
-/** 1 = Again (forgot), 2 = Hard, 3 = Good, 4 = Easy. */
+/** 1 = Again (missed, or only partly recalled); 2 = Hard, 3 = Good, 4 = Easy
+ * all record a full recall and differ only in effort. */
 export type Rating = 1 | 2 | 3 | 4;
 
 export type CardState = "new" | "learning" | "review" | "relearning";

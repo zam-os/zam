@@ -60,6 +60,27 @@ function groundedCardContext(card: RecallEvaluationCard): string {
  * otherwise the model answered a German learner in English. Any locale-ish
  * string works — see `languageName`.
  */
+/**
+ * The rating scale is binary before it is graded: `1` records a recall that
+ * failed — missed outright or only partly there — and `2`-`4` all record one
+ * that succeeded, differing only in effort. `reconcileRecallSuggestedRating()`
+ * below enforces that on the evaluator's suggestion; this table is the same
+ * contract for the surfaces that render the buttons, so a group can never
+ * drift from the rating it contains.
+ */
+export const RATING_GROUPS = [
+  { group: "missed", ratings: [1] },
+  { group: "known", ratings: [2, 3, 4] },
+] as const satisfies readonly {
+  group: "missed" | "known";
+  ratings: readonly (1 | 2 | 3 | 4)[];
+}[];
+
+/** Which of the two groups a rating belongs to. */
+export function ratingGroupOf(rating: 1 | 2 | 3 | 4): "missed" | "known" {
+  return rating === 1 ? "missed" : "known";
+}
+
 export function reconcileRecallSuggestedRating(
   verdict: RecallEvaluation["verdict"],
   suggestedRating: 1 | 2 | 3 | 4,

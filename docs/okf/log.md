@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-08
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-09-07
 
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)

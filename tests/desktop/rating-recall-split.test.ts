@@ -15,6 +15,11 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
+import {
+  RATING_GROUPS,
+  ratingGroupOf,
+  reconcileRecallSuggestedRating,
+} from "../../desktop/src/panel/recall-evaluation.js";
 
 const root = join(import.meta.dirname, "..", "..");
 
@@ -54,8 +59,9 @@ describe("study window rating bar", () => {
     for (const id of ["lbl-rating-group-missed", "lbl-rating-group-known"]) {
       expect(main).toContain(`document.getElementById("${id}")`);
     }
-    expect(main).toContain('t(\n    "lbl_rating_group_missed",\n  )');
-    expect(main).toContain('t(\n    "lbl_rating_group_known",\n  )');
+    for (const key of ["lbl_rating_group_missed", "lbl_rating_group_known"]) {
+      expect(main.replace(/\s+/g, " ")).toContain(`t( "${key}", )`);
+    }
   });
 
   it("shows each rating's hue at rest, not only on hover", () => {
@@ -76,20 +82,20 @@ describe("study window rating bar", () => {
 describe("recall panel rating bar", () => {
   const recall = read("desktop/src/panel/recall.ts");
 
-  it("renders the same two groups the study window does", () => {
+  it("builds its groups from the shared table, not its own literals", () => {
     expect(recall).toContain(
-      'addGroup("missed", "lbl_rating_group_missed", [1]);',
+      "for (const { group: tone, ratings: values } of RATING_GROUPS)",
     );
-    expect(recall).toContain(
-      'addGroup("known", "lbl_rating_group_known", [2, 3, 4]);',
-    );
+    expect(recall).toContain("RATING_GROUPS,");
   });
 
-  it("labels each group for screen readers", () => {
+  it("labels each group by its visible caption, not a duplicate string", () => {
     expect(recall).toContain('group.setAttribute("role", "group")');
     expect(recall).toContain(
-      'group.setAttribute("aria-label", caption.textContent)',
+      'group.setAttribute("aria-labelledby", caption.id)',
     );
+    // aria-label would make a screen reader announce the caption twice.
+    expect(recall).not.toContain('group.setAttribute("aria-label"');
   });
 
   it("keeps the panel stylesheet in step with the rendered classes", () => {
@@ -103,5 +109,64 @@ describe("recall panel rating bar", () => {
     ]) {
       expect(panel).toContain(`${selector} {`);
     }
+  });
+});
+
+// The grouping is only worth anything if it agrees with what a rating means to
+// the scheduler and to the evaluator. Those are real functions, so pin them
+// directly rather than matching source text.
+describe("rating-group contract", () => {
+  it("puts the failed recall alone and the successful ones together", () => {
+    expect(
+      RATING_GROUPS.map((entry) => [entry.group, [...entry.ratings]]),
+    ).toEqual([
+      ["missed", [1]],
+      ["known", [2, 3, 4]],
+    ]);
+  });
+
+  it("covers all four ratings exactly once, in order", () => {
+    expect(RATING_GROUPS.flatMap((entry) => [...entry.ratings])).toEqual([
+      1, 2, 3, 4,
+    ]);
+  });
+
+  it("agrees with ratingGroupOf for every rating", () => {
+    for (const { group, ratings } of RATING_GROUPS) {
+      for (const rating of ratings) {
+        expect(ratingGroupOf(rating)).toBe(group);
+      }
+    }
+  });
+
+  // The caption over rating 1 says "not, or only partly, recalled". An
+  // evaluator that answered "partial, rating 2" would put a half-remembered
+  // card under "fully recalled" — the exact failure this split exists to stop.
+  it("never lets a partial verdict land in the knew-it group", () => {
+    for (const suggested of [1, 2, 3, 4] as const) {
+      for (const verdict of ["partial", "incorrect"] as const) {
+        const rating = reconcileRecallSuggestedRating(verdict, suggested);
+        expect(ratingGroupOf(rating)).toBe("missed");
+      }
+    }
+    expect(ratingGroupOf(reconcileRecallSuggestedRating("correct", 2))).toBe(
+      "known",
+    );
+  });
+});
+
+describe("CLI review choices", () => {
+  it("names the split in the zam learn / zam review option labels", () => {
+    const actions = read("src/cli/review-actions.ts");
+    expect(actions).toContain('"1 - Again (missed, or only partly)"');
+    for (const label of [
+      '"2 - Hard (recalled, with effort)"',
+      '"3 - Good (recalled)"',
+      '"4 - Easy (recalled effortlessly)"',
+    ]) {
+      expect(actions).toContain(label);
+    }
+    // The old label framed rating 1 as forgetting alone.
+    expect(actions).not.toContain("Again (forgot)");
   });
 });

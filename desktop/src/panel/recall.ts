@@ -51,6 +51,7 @@ import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
   parseRecallEvaluation,
+  RATING_GROUPS,
   type RecallEvaluation,
   type RecallEvaluationRoute,
   resolveRecallEvaluationRoute,
@@ -1030,6 +1031,8 @@ async function presentCurrentCard(): Promise<void> {
     }
   }
 
+  let ratingGroupSeq = 0;
+
   function appendRatings(
     reveal: HTMLElement,
     suggestedRating?: 1 | 2 | 3 | 4,
@@ -1052,23 +1055,30 @@ async function presentCurrentCard(): Promise<void> {
       t("lbl_rate_4"),
     ];
     const tones = ["again", "hard", "good", "easy"] as const;
+    const captionKeys = {
+      missed: "lbl_rating_group_missed",
+      known: "lbl_rating_group_known",
+    } as const;
 
-    // Rating 1 records a failed recall (missed or only partly recalled);
-    // 2-4 all record a successful one and differ only in effort. The panel
-    // shows that as two captioned groups rather than one row of four peers.
-    function addGroup(
-      tone: "missed" | "known",
-      captionKey: "lbl_rating_group_missed" | "lbl_rating_group_known",
-      values: readonly (1 | 2 | 3 | 4)[],
-    ): void {
+    // Two captioned groups rather than one row of four peers, over the shared
+    // RATING_GROUPS table so the panel cannot drift from the rating semantics
+    // the evaluator reconciles against.
+    for (const { group: tone, ratings: values } of RATING_GROUPS) {
       const group = document.createElement("div");
       group.className = `recall-rating-group ${tone}`;
       group.setAttribute("role", "group");
+
+      // aria-labelledby, not aria-label: the caption is already visible, and
+      // duplicating its text would have a screen reader announce it twice.
+      // The id is per render — a reveal and a smart-feedback block must never
+      // put two elements with the same id into one document.
       const caption = document.createElement("div");
       caption.className = "recall-rating-group-caption";
-      caption.textContent = t(captionKey);
+      ratingGroupSeq += 1;
+      caption.id = `recall-rating-group-${tone}-${ratingGroupSeq}`;
+      caption.textContent = t(captionKeys[tone]);
+      group.setAttribute("aria-labelledby", caption.id);
       group.appendChild(caption);
-      group.setAttribute("aria-label", caption.textContent);
 
       const row = document.createElement("div");
       row.className = "recall-rating-row";
@@ -1095,9 +1105,6 @@ async function presentCurrentCard(): Promise<void> {
       group.appendChild(row);
       ratings.appendChild(group);
     }
-
-    addGroup("missed", "lbl_rating_group_missed", [1]);
-    addGroup("known", "lbl_rating_group_known", [2, 3, 4]);
     reveal.appendChild(ratings);
   }
 
