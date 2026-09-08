@@ -21,6 +21,13 @@ const BULLET = /^\s*(?:[-*•·–—]|\d{1,2}[.)])\s+(?<text>\S.*)$/u;
  * Returns the whole trimmed answer as a single point when it is prose — the
  * common and correct case for an atomic item, which is why it needs no
  * authoring ceremony. An empty answer asks for nothing.
+ *
+ * The rule for a mixed answer is deliberately blunt: **once any line is a list
+ * item, only list items are points.** Prose around them is a lead-in or a
+ * closing remark, not a required point. The alternative — guessing which
+ * unmarked sentences are load-bearing — would make the count depend on
+ * paragraph shape, and a count an author cannot predict is worse than one they
+ * must opt into. Anything that has to be recalled goes in a list item.
  */
 export function parseAnswerPoints(concept: string): string[] {
   const lines = concept.split(/\r?\n/);

@@ -944,13 +944,24 @@ async function refreshPublicationNotes(): Promise<void> {
     const blocking = (publication.checks ?? []).filter(
       (check) => check.blocking,
     );
-    if (publication.ready) {
-      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_ready"))}</p>`;
-    } else {
-      const items = blocking
+    // Advisory checks do not clear `ready`, so they have to be rendered in
+    // both branches or they are invisible — which is what happened to the
+    // multi-point notice, the first non-blocking check (ADR 2026-09-08 §2).
+    const advisory = (publication.checks ?? []).filter(
+      (check) => !check.blocking,
+    );
+    const list = (checks: typeof advisory) =>
+      `<ul>${checks
         .map((check) => `<li>${escapeHtml(check.message)}</li>`)
-        .join("");
-      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_blocked"))}</p><ul>${items}</ul>`;
+        .join("")}</ul>`;
+    const advisoryHtml = advisory.length
+      ? `<p class="t-footnote">${escapeHtml(t("lbl_publish_notes"))}</p>${list(advisory)}`
+      : "";
+
+    if (publication.ready) {
+      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_ready"))}</p>${advisoryHtml}`;
+    } else {
+      reviewNotesEl.innerHTML = `<p class="t-footnote">${escapeHtml(t("lbl_publish_blocked"))}</p>${list(blocking)}${advisoryHtml}`;
     }
   } catch {
     reviewNotesEl.innerHTML = "";

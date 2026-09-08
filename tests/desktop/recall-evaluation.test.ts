@@ -279,6 +279,35 @@ describe("coverage-scored evaluation", () => {
     expect(result.coverage).toEqual({ recalled: 2, total: 2 });
   });
 
+  it("takes the verdict from the score, not from the model's word for it", () => {
+    // A reply claiming "correct" while reporting 1 of 2 points would otherwise
+    // show "Correct" above a rating of 1 — the old mixed signal, one field over.
+    const result = parseRecallEvaluation(reply(1, "correct"), twoPointCard);
+    expect(result.verdict).toBe("partial");
+    expect(result.suggestedRating).toBe(1);
+  });
+
+  it("calls a zero score incorrect and a full one correct", () => {
+    expect(
+      parseRecallEvaluation(reply(0, "correct"), twoPointCard).verdict,
+    ).toBe("incorrect");
+    expect(
+      parseRecallEvaluation(reply(2, "incorrect"), twoPointCard).verdict,
+    ).toBe("correct");
+  });
+
+  it("does not ask for a score it will throw away above Bloom 3", () => {
+    // Requesting recalledPoints and then ignoring it is its own small
+    // fabrication; the unscored shape simply omits the field.
+    const prompt = buildRecallEvaluationPrompt(
+      { ...twoPointCard, bloomLevel: 5 },
+      "x",
+      "de",
+    );
+    expect(prompt).not.toContain('"recalledPoints"');
+    expect(prompt).not.toContain('Set "recalledPoints"');
+  });
+
   it("scores nothing above Bloom 3 and falls back to the verdict", () => {
     const card = { ...twoPointCard, bloomLevel: 5 };
     const result = parseRecallEvaluation(reply(2, "correct"), card);

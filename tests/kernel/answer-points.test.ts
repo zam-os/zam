@@ -19,15 +19,17 @@ import {
 
 describe("parseAnswerPoints", () => {
   it("treats prose as exactly one point", () => {
-    expect(parseAnswerPoints("Die Hauptstadt von Bayern ist München.")).toEqual([
-      "Die Hauptstadt von Bayern ist München.",
-    ]);
+    expect(parseAnswerPoints("Die Hauptstadt von Bayern ist München.")).toEqual(
+      ["Die Hauptstadt von Bayern ist München."],
+    );
   });
 
   it("treats a multi-line prose answer as one point, not one per line", () => {
     // Only list markers make points. A wrapped sentence is still one fact.
     expect(
-      countAnswerPoints("Der Impuls ist\ndas Produkt aus Masse\nund Geschwindigkeit."),
+      countAnswerPoints(
+        "Der Impuls ist\ndas Produkt aus Masse\nund Geschwindigkeit.",
+      ),
     ).toBe(1);
   });
 
@@ -58,6 +60,18 @@ describe("parseAnswerPoints", () => {
     expect(countAnswerPoints("Impuls — das Produkt aus Masse und Tempo.")).toBe(
       1,
     );
+  });
+
+  // The rule for a mixed answer is blunt on purpose: once any line is a list
+  // item, only list items are points. Guessing which unmarked sentences are
+  // load-bearing would make the count depend on paragraph shape, and a count
+  // the author cannot predict is worse than one they opt into.
+  it("counts only the list items once the answer uses a list", () => {
+    expect(
+      parseAnswerPoints(
+        "Der Satz des Pythagoras:\n- gilt für rechtwinklige Dreiecke\n- a² + b² = c²\nMerke dir beides zusammen.",
+      ),
+    ).toEqual(["gilt für rechtwinklige Dreiecke", "a² + b² = c²"]);
   });
 
   it("asks for nothing when the answer is empty", () => {

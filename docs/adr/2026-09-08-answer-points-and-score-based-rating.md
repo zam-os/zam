@@ -84,6 +84,15 @@ thing and may publish anyway. This is the first non-blocking structural check;
 
 Prose remains one point, so the existing corpus stays valid without migration.
 
+Once any line is a list item, **only** list items are points: prose around them
+is a lead-in or a closing remark. Guessing which unmarked sentences are
+load-bearing would make the count depend on paragraph shape, and a count the
+author cannot predict is worse than one they opt into.
+
+The notice is only worth having if the author sees it. A non-blocking check
+leaves `publication.ready` true, so Studio renders advisory checks in the ready
+branch as well as the blocked one.
+
 ### 3. The evaluator reports coverage; it no longer proposes effort
 
 The evaluation contract gains `recalledPoints: number` — how many of the
@@ -104,13 +113,20 @@ subjective half. Neither is asked for the other's judgement.
 `reconcileRecallSuggestedRating()` stays as the guard for replies that omit or
 contradict the score, and for the Bloom levels of §5 where no score exists.
 
+The verdict label follows the score too. A reply of `{verdict: "correct",
+recalledPoints: 1}` on a two-point card must not read "Correct" above a rating
+of `1`; on a scored card the label is derived from coverage, so one judgement
+produces one signal.
+
 Two evaluators exist and they land differently. The JSON evaluator shared by
 the Recall panel and Mobile carries `recalledPoints`, so those surfaces show a
 score. The CLI evaluator behind the study window replies in free prose and has
 no structured field to carry one; there, the rule is only that it may propose
-`1` or `3` and nothing else. Deriving a score by parsing prose would reinstate
-the fabrication in a new place, so the study window shows the expected count
-and no score.
+`1` and nothing else — printing "suggested rating: 3" to a learner reads as an
+endorsement of Good, which is the effort judgement being removed. On a complete
+answer it says so and leaves the rating alone. Deriving a score by parsing
+prose would reinstate the fabrication in a new place, so the study window shows
+the expected count and no score.
 
 ### 4. Partial coverage is rating 1, and nothing else
 

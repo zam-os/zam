@@ -824,7 +824,7 @@ Rating: suggest only 1 or 3. 1 when any required element is missing — a partia
 Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
 2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
-3. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the exact format: "${ratingPrefix}: X" in ${langName}.
+3. If any required element is missing, end your response with exactly "${ratingPrefix}: 1" in ${langName}. If the answer is complete, end with the sentence in ${langName} that says the answer was complete and the learner picks how easy it felt. Never print a rating of 2, 3 or 4: naming one would be judging an effort you cannot see.
 4. Output ONLY the evaluation and rating suggestion. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
