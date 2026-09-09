@@ -10,7 +10,7 @@
 
 import type { Database } from "../db/types.js";
 import { ensureCard } from "../models/card.js";
-import { getPrerequisites } from "../models/prerequisite.js";
+import { getBlockingPrerequisites } from "../models/prerequisite.js";
 import { getTokenBySlug } from "../models/token.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -32,7 +32,9 @@ export interface UnblockResult {
  * Called when a user rates a token as "forgot" (rating 1). The token is
  * marked as blocked so it won't appear in review queues. All direct
  * prerequisites are ensured to have cards (unblocked, due now) so they
- * appear in the user's next review session.
+ * appear in the user's next review session. Only prerequisites the queue can
+ * show count: a draft or retired foundation is not something the learner can
+ * be sent to, so it neither blocks nor gets a card.
  *
  * @param db - Database connection
  * @param userId - The user whose card to block
@@ -49,7 +51,7 @@ export async function cascadeBlock(
     throw new Error(`Unknown token slug: ${tokenSlug}`);
   }
 
-  const prereqs = await getPrerequisites(db, token.id);
+  const prereqs = await getBlockingPrerequisites(db, token.id);
   if (prereqs.length === 0) {
     throw new Error(`Cannot block ${tokenSlug}: token has no prerequisites`);
   }
@@ -106,6 +108,11 @@ export async function cascadeBlock(
  * - reps >= 1 (the user has successfully recalled it at least once)
  * - blocked = 0 (the prerequisite itself is not blocked)
  *
+ * Only prerequisites the queue can show are counted, on both sides: a draft or
+ * retired foundation can never collect a review, so waiting for one would hold
+ * the card blocked for good. This also releases cards blocked while their
+ * foundation was still published.
+ *
  * If a blocked card has no prerequisites at all, it is unblocked immediately
  * (it was likely blocked in error or its prerequisites were removed).
  *
@@ -135,11 +142,17 @@ export async function unblockReady(
          JOIN tokens t ON t.id = c.token_id
          WHERE c.user_id = ? AND c.blocked = 1
            AND (SELECT COUNT(*) FROM prerequisites p
-                WHERE p.token_id = c.token_id) =
+                JOIN tokens pt ON pt.id = p.requires_id
+                WHERE p.token_id = c.token_id
+                  AND pt.editorial_state = 'published'
+                  AND pt.deprecated_at IS NULL) =
                (SELECT COUNT(*) FROM prerequisites p
+                JOIN tokens pt ON pt.id = p.requires_id
                 JOIN cards pc ON pc.token_id = p.requires_id
                   AND pc.user_id = c.user_id
                 WHERE p.token_id = c.token_id
+                  AND pt.editorial_state = 'published'
+                  AND pt.deprecated_at IS NULL
                   AND pc.reps >= 1 AND pc.blocked = 0)`,
       )
       .all(userId)) as Array<{

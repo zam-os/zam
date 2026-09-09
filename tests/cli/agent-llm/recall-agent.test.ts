@@ -128,6 +128,35 @@ describe("recall via the agent transport", () => {
     expect(result.text).toContain("Bewertung: 3");
   });
 
+  it("asks the harness to grade against the concept only", async () => {
+    let seenSystem = "";
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seenSystem = req.system ?? "";
+        return { text: "Gut. Vorgeschlagene Bewertung: 3" };
+      }),
+    );
+    const db = await seedDb();
+    await evaluateAnswerViaLLM(db, {
+      slug: "bayern-hauptstadt",
+      concept: "München",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Bayern?",
+      userAnswer: "München",
+      context: "Optional background that must not be a pass hurdle.",
+    });
+    expect(seenSystem).toContain("target concept only");
+    // The harness is asked for completeness, never a rating: effort is the
+    // half it cannot see (ADR 2026-09-08 §3, §7).
+    expect(seenSystem).toContain("Judge completeness only");
+    expect(seenSystem).toContain("completeness verdict on its own line");
+    expect(seenSystem).toContain("Never suggest a rating");
+    expect(seenSystem).not.toContain("Suggested rating");
+    expect(seenSystem).not.toContain("partially correct");
+    expect(seenSystem).not.toContain("Celebrate every honest attempt");
+  });
+
   it("flattens the discussion thread into one transcript prompt", async () => {
     let seenUser = "";
     vi.mocked(getAgentAdapter).mockReturnValue(

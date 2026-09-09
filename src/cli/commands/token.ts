@@ -104,6 +104,7 @@ tokenCommand
         bloom_level: Number(opts.bloom) as BloomLevel,
         source_link: opts.sourceLink || null,
         question,
+        editorial_state: "draft",
       });
 
       for (const context of assignedContexts) {

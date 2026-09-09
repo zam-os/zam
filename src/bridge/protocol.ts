@@ -499,9 +499,17 @@ export interface SubmitReviewResult {
     blockedSlug: string;
     prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
   } | null;
-  stepError?: string;
-  /** True when an agent-completed step was logged without advancing FSRS. */
+  /** True when an unrated agent or assisted-user step was logged without advancing FSRS. */
   recordedOnly?: boolean;
+  /**
+   * Attempt this submission belongs to. Pass the id `admit-review` returned so
+   * a retried submit is recognised as the same attempt.
+   */
+  attemptId?: string;
+  /** False when the same attempt was already rated identically; FSRS was not touched. */
+  applied?: boolean;
+  /** True when a record-only or agent step for this attempt already existed. */
+  replayed?: boolean;
 }
 
 export interface SessionOpenResponse {

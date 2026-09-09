@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-03T20:56:44.033Z
+timestamp: 2026-09-09T08:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -96,6 +96,17 @@ The model-visible learning tools cover:
 - review queues and rating submission — submissions accept an optional
   `responseTimeMs` (milliseconds between showing a card and rating it), which
   feeds the study-time statistic (ADR 2026-08-01 Decision 5);
+- presentation admission: `zam_admit_review` records that one card is being
+  shown (a queue prefetch is not an exposure), refuses a second practice item
+  of the same learning atom on one local learning day and any unpublished
+  card, and returns the `attemptId` that `zam_submit_review` takes so a
+  retried submit stays one review. A completed session still accepts ratings
+  of its own work, because confirmed synthesis candidates arrive after
+  `zam_session_end`; `recordOnly` with a `reason` logs assisted user work as a
+  session step without an FSRS rating and needs an open session;
+- draft review: `zam_add_token` stores a draft that stays out of every queue,
+  due list, admission and rating until `zam_publish_revision`;
+  `zam_list_drafts` lists unpublished captures;
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each
@@ -117,7 +128,7 @@ The model-visible learning tools cover:
 | `zam_okf_read_citation` | Read a repo-contained Markdown citation such as an ADR |
 | `zam_okf_visualize` | Open the searchable reader, article graph, or log |
 | `zam_okf_focused` | Resolve the article currently focused in any connected reader |
-| `zam_okf_import` | Atomically record an agent's finished decomposition as tokens and cards |
+| `zam_okf_import` | Atomically record an agent's finished decomposition as tokens and cards; tokens without a question are parked as drafts (`drafts` in the result) until published |
 
 ## Bundle resolution and containment
 
@@ -382,9 +393,16 @@ The Recall panel calls `zam_get_reviews` with `respectWorkload: true`, so
 its snapshot observes the learner's total-card limit, new-card limit, sibling
 settings, and `tier1-first` ordering. A learner who explicitly chooses “keep
 going” supplies only the selected batch's additional-new count as a temporary
-override. Tier-1 binary checks render as one-tap choices and are compared
-locally rather than sent to a model. Precondition, keep-going, and bonus
-choices use the dedicated tools; none manufactures an FSRS rating.
+override. Immediately before a card is shown the panel calls
+`zam_admit_review` and forwards the returned `attemptId` with the rating; a
+card refused at that moment leaves the session instead of being counted as
+shown. Every review surface — Recall panel, Mobile, `zam learn`, `zam review`,
+`zam session` — treats all three refusals the same way: a sibling already
+shown today, a card that stopped being due, and a token unpublished between
+queue build and display each cost that one card, never the session around it.
+Tier-1 binary checks render as one-tap choices and are compared locally rather
+than sent to a model. Precondition, keep-going, and bonus choices use the
+dedicated tools; none manufactures an FSRS rating.
 
 In Flash mode the answer field stays hidden, tapping the question reveals the
 stored answer, and the learner self-rates directly; no sampling or host message
@@ -396,7 +414,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
-- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/mcp.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/kernel/scheduler/study-settings.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `desktop/src/learning-content.ts`
 

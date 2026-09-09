@@ -40,6 +40,10 @@ import {
   type AiTierPreference,
 } from "../../src/kernel/ai/tier-preference.js";
 import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../src/kernel/library/answer-points.js";
+import {
   bonusCandidates,
   enrolBonusAtom,
 } from "../../src/kernel/library/bonus.js";
@@ -148,9 +152,11 @@ import {
   parseMobileImport,
 } from "./import.js";
 import {
+  isDraftEntry,
   type LibraryEntry,
   listLibrary,
   pauseCard,
+  publishLibraryCard,
   removeCard,
   resumeCard,
   saveCardEdit,
@@ -203,6 +209,11 @@ import {
 import { SyncError, syncWithRetry } from "./sync.js";
 import { createNav } from "./ui/nav.js";
 import {
+  initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
+  syncRadioGroupTabStops,
+} from "./ui/radio-group.js";
+import {
   DEFAULT_MOBILE_UPDATE_MANIFEST,
   type MobileUpdateInfo,
 } from "./update.js";
@@ -237,6 +248,20 @@ import {
 
 const db = createTauriDatabase((command, args) => invoke(command, args));
 const nav = createNav();
+type SettingsViewMode = "simple" | "advanced";
+const SETTINGS_VIEW_MODE_STORAGE_KEY = "zam:settings-view-mode";
+
+function loadSettingsViewMode(): SettingsViewMode {
+  try {
+    return localStorage.getItem(SETTINGS_VIEW_MODE_STORAGE_KEY) === "advanced"
+      ? "advanced"
+      : "simple";
+  } catch {
+    return "simple";
+  }
+}
+
+let settingsViewMode = loadSettingsViewMode();
 
 interface DatabaseDescription {
   mode: "local" | "remote" | "closed";
@@ -365,6 +390,7 @@ const detailQuestion = element<HTMLTextAreaElement>("detail-question");
 const detailConcept = element<HTMLTextAreaElement>("detail-concept");
 const detailDomain = element<HTMLInputElement>("detail-domain");
 const detailSaveButton = element<HTMLButtonElement>("detail-save");
+const detailPublishButton = element<HTMLButtonElement>("detail-publish");
 const detailPauseButton = element<HTMLButtonElement>("detail-pause");
 const detailDeleteButton = element<HTMLButtonElement>("detail-delete");
 const detailStatus = element<HTMLParagraphElement>("detail-status");
@@ -482,6 +508,8 @@ const reviewAnswerMedia = element<HTMLElement>("review-answer-media");
 const reviewSource = element<HTMLAnchorElement>("review-source");
 const evaluationPanel = element<HTMLElement>("evaluation-panel");
 const evaluationVerdict = element<HTMLElement>("evaluation-verdict");
+const evaluationPoints = element<HTMLElement>("evaluation-points");
+const reviewPointsExpected = element<HTMLElement>("review-points-expected");
 const evaluationFeedback = element<HTMLElement>("evaluation-feedback");
 const evaluationMeta = element<HTMLElement>("evaluation-meta");
 const discussionPanel = element<HTMLElement>("discussion-panel");
@@ -593,6 +621,19 @@ const localAiRows = element<HTMLElement>("local-ai-rows");
 const localAiPrepare = element<HTMLButtonElement>("local-ai-prepare");
 const localAiStatus = element<HTMLParagraphElement>("local-ai-status");
 const localAiModels = element<HTMLElement>("local-ai-models");
+const settingsView = element<HTMLElement>("settings-view");
+const settingsModeSwitcher = element<HTMLElement>(
+  "mobile-settings-mode-switcher",
+);
+const settingsModeSimple = element<HTMLButtonElement>(
+  "mobile-settings-mode-simple",
+);
+const settingsModeAdvanced = element<HTMLButtonElement>(
+  "mobile-settings-mode-advanced",
+);
+const settingsModeDescription = element<HTMLParagraphElement>(
+  "mobile-settings-mode-description",
+);
 const studyLearningMode = element<HTMLSelectElement>("study-learning-mode");
 const studyVoiceRevealTimeout = element<HTMLInputElement>(
   "study-voice-reveal-timeout",
@@ -925,10 +966,41 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
+function applySettingsViewMode(mode: SettingsViewMode): void {
+  settingsViewMode = mode;
+  settingsView.dataset.settingsMode = mode;
+  const simple = mode === "simple";
+  settingsModeSimple.classList.toggle("active", simple);
+  settingsModeSimple.setAttribute("aria-checked", String(simple));
+  settingsModeAdvanced.classList.toggle("active", !simple);
+  settingsModeAdvanced.setAttribute("aria-checked", String(!simple));
+  syncRadioGroupTabStops(settingsModeSwitcher);
+  const descriptionKey = simple
+    ? "settings_mode_simple_help"
+    : "settings_mode_advanced_help";
+  settingsModeDescription.dataset.i18n = descriptionKey;
+  settingsModeDescription.textContent = t(descriptionKey);
+}
+
+function chooseSettingsViewMode(mode: SettingsViewMode): void {
+  try {
+    localStorage.setItem(SETTINGS_VIEW_MODE_STORAGE_KEY, mode);
+  } catch {
+    // A presentation preference is optional; keep it for this app run.
+  }
+  applySettingsViewMode(mode);
+  if (mode === "advanced") {
+    renderVoiceSettings();
+    void refreshLocalAi();
+    void renderLocalAiModels();
+  }
+}
+
 /** Switch the UI locale (from the paired settings, else the device) and repaint. */
 function applyLocale(source: string | null | undefined): void {
   setLocale(resolveLocale(source));
   applyStaticTranslations();
+  applySettingsViewMode(settingsViewMode);
 }
 
 /**
@@ -1218,8 +1290,9 @@ function renderReviewModeSwitcher(mode: StudyLearningMode): void {
   const isFlash = mode === "flash";
   reviewModeFlash.classList.toggle("active", isFlash);
   reviewModeFeedback.classList.toggle("active", !isFlash);
-  reviewModeFlash.setAttribute("aria-pressed", String(isFlash));
-  reviewModeFeedback.setAttribute("aria-pressed", String(!isFlash));
+  reviewModeFlash.setAttribute("aria-checked", String(isFlash));
+  reviewModeFeedback.setAttribute("aria-checked", String(!isFlash));
+  syncRadioGroupTabStops(reviewModeSwitcher);
   reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
@@ -1320,7 +1393,13 @@ async function saveStudyLearningSettings(): Promise<void> {
 }
 
 async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
-  if (!currentUserId) return;
+  if (
+    !currentUserId ||
+    mode === currentLearningSettings.learningMode ||
+    learningSettingsMutationsPending > 0
+  ) {
+    return;
+  }
   const epoch = ++learningSettingsEpoch;
   const requestedUserId = currentUserId;
   learningSettingsMutationsPending += 1;
@@ -1361,6 +1440,9 @@ async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
     reviewModeSwitcher.removeAttribute("aria-busy");
     reviewModeFlash.disabled = false;
     reviewModeFeedback.disabled = false;
+    // The re-enable is the moment the group can hold focus again, so the tab
+    // stop and any focus the save cycle took are restored here, not earlier.
+    syncRadioGroupTabStops(reviewModeSwitcher);
   }
 }
 
@@ -2015,6 +2097,14 @@ function showEvaluationUi(result: MobileEvaluationResult): void {
   currentEvaluation = result;
   evaluationPanel.hidden = false;
   evaluationVerdict.textContent = t(verdictI18nKey(result.evaluation.verdict));
+  const coverage = result.evaluation.coverage;
+  evaluationPoints.hidden = !coverage;
+  evaluationPoints.textContent = coverage
+    ? tf("points_score", {
+        recalled: coverage.recalled,
+        total: coverage.total,
+      })
+    : "";
   evaluationFeedback.textContent = result.evaluation.feedback;
   evaluationMeta.textContent = [
     tf("evaluation_suggested", {
@@ -2282,6 +2372,8 @@ function showReviewOffer(spec: {
 }): void {
   showReview();
   reviewQuestion.textContent = "";
+  reviewPointsExpected.hidden = true;
+  reviewPointsExpected.textContent = "";
   reviewOfferTitle.textContent = spec.title;
   reviewOfferBody.textContent = spec.body;
   fillOfferActions(reviewOfferActions, spec.actions);
@@ -2605,7 +2697,7 @@ async function acceptBonusFromDashboard(
   }
 }
 
-function renderCurrentReview(message = ""): void {
+async function renderCurrentReview(message = ""): Promise<void> {
   const item = reviewSession.currentItem;
   const prompt = reviewSession.currentPrompt;
   if (!item || !prompt) return;
@@ -2630,6 +2722,23 @@ function renderCurrentReview(message = ""): void {
     }
   }
 
+  // Most callers do not await this render, so an admission failure must be
+  // shown here rather than escaping as an unhandled rejection.
+  let drained: MobileReviewSummary | null = null;
+  try {
+    drained = await reviewSession.confirmCurrent();
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+    return;
+  }
+  if (drained) {
+    await offerAfterQueueFromReview(drained);
+    return;
+  }
+  if (reviewSession.currentItem?.cardId !== item.cardId) {
+    await renderCurrentReview(message);
+    return;
+  }
   hideReviewOffer();
   showReview();
   // The title is free text, and for imported cards it is often the first
@@ -2649,6 +2758,12 @@ function renderCurrentReview(message = ""): void {
     : item.domain || t("no_domain");
   reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
   reviewQuestion.textContent = prompt.question;
+  // The count calibrates how long to keep digging; the points stay hidden.
+  const showsPoints = shouldShowPointCount(prompt.concept, item.bloomLevel);
+  reviewPointsExpected.hidden = !showsPoints;
+  reviewPointsExpected.textContent = showsPoints
+    ? tf("points_expected", { count: countAnswerPoints(prompt.concept) })
+    : "";
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
@@ -2701,7 +2816,8 @@ function renderCurrentReview(message = ""): void {
     !reviewSession.revealed &&
     !voiceController.active &&
     !fastCheck &&
-    !isFlash
+    !isFlash &&
+    !radioGroupHasPendingFocus(reviewModeSwitcher)
   ) {
     reviewAnswer.focus();
   }
@@ -3145,6 +3261,16 @@ element<HTMLButtonElement>("pairing-back").addEventListener("click", () => {
   else nav.showRoot("setup");
 });
 
+initRadioGroupKeyboard(settingsModeSwitcher);
+initRadioGroupKeyboard(reviewModeSwitcher);
+
+settingsModeSimple.addEventListener("click", () => {
+  chooseSettingsViewMode("simple");
+});
+settingsModeAdvanced.addEventListener("click", () => {
+  chooseSettingsViewMode("advanced");
+});
+
 /**
  * A tab is reachable at any moment, so each one refreshes what it shows on
  * arrival rather than relying on whoever navigated there to have done it.
@@ -3162,12 +3288,15 @@ nav.onTabChange((tab) => {
   }
   if (tab === "settings") {
     renderReminderControls();
-    renderVoiceSettings();
     void refreshStorageRow();
     void refreshAiSection();
     void refreshStudyLearningSettings();
     void refreshStudyWorkload();
-    void refreshLocalAi();
+    if (settingsViewMode === "advanced") {
+      renderVoiceSettings();
+      void refreshLocalAi();
+      void renderLocalAiModels();
+    }
   }
 });
 
@@ -3936,9 +4065,11 @@ function renderLibrary(entries: LibraryEntry[]): void {
     title.textContent = entry.title || entry.slug;
     const meta = document.createElement("span");
     meta.className = "t-footnote";
-    meta.textContent = entry.paused
-      ? t("library_paused_note")
-      : entry.domain || t("no_domain");
+    meta.textContent = isDraftEntry(entry)
+      ? t("library_draft_note")
+      : entry.paused
+        ? t("library_paused_note")
+        : entry.domain || t("no_domain");
     text.append(title, meta);
 
     const chevron = document.createElementNS(
@@ -4046,7 +4177,8 @@ function openLibraryDetail(entry: LibraryEntry): void {
   detailPauseButton.textContent = entry.paused
     ? t("library_resume")
     : t("library_pause");
-  detailStatus.textContent = "";
+  detailPublishButton.hidden = !isDraftEntry(entry);
+  detailStatus.textContent = isDraftEntry(entry) ? t("library_draft_note") : "";
   detailStatus.classList.remove("error");
   showLibraryMode("detail");
 }
@@ -4107,6 +4239,30 @@ detailSaveButton.addEventListener("click", async () => {
     setDetailStatus(tf("library_failed", { error: errorMessage(error) }), true);
   } finally {
     detailSaveButton.disabled = false;
+  }
+});
+
+detailPublishButton.addEventListener("click", async () => {
+  if (!openCard) return;
+  detailPublishButton.disabled = true;
+  try {
+    await publishLibraryCard(db, openCard.tokenId, {
+      title: detailTitle.value.trim(),
+      question: detailQuestion.value.trim() || null,
+      concept: detailConcept.value.trim(),
+      domain: detailDomain.value.trim(),
+    });
+    openCard = { ...openCard, editorialState: "published" };
+    detailPublishButton.hidden = true;
+    setDetailStatus(t("library_published"));
+    if (currentUserId) await refresh(currentUserId);
+  } catch (error) {
+    setDetailStatus(
+      tf("library_publish_blocked", { error: errorMessage(error) }),
+      true,
+    );
+  } finally {
+    detailPublishButton.disabled = false;
   }
 });
 

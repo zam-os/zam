@@ -7,18 +7,40 @@ tags:
   - scheduling
   - prerequisites
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/prerequisite-blocking.md"
-timestamp: 2026-08-15T10:51:34.868Z
+timestamp: 2026-09-07T08:00:00.000Z
 ---
 
 Tokens are connected by a **directed prerequisite graph** (table
 `prerequisites`): an edge means "learn this first". The graph powers two
 behaviors:
 
-**Blocking.** When a learner demonstrably lacks a foundation, cards that
-depend on it can be blocked out of the queue. `cascadeBlock()` in
-`src/kernel/scheduler/blocker.ts` walks the dependents of a failed token
-and marks their cards blocked; `unblockReady()` releases cards whose
-prerequisites have recovered.
+**Blocking.** When a learner rates a token `1` and that token has
+prerequisites, `cascadeBlock()` in `src/kernel/scheduler/blocker.ts` blocks
+the *failed token's own card* (`blocked = 1`, so it drops out of the queue)
+and ensures that each of its *direct* prerequisites has a card, so those
+foundations surface in the next session: a missing prerequisite card is
+created unblocked and due now; an existing one keeps its state, except
+that a blocked prerequisite card with no prerequisites of its own is
+unblocked and made due now. Only direct prerequisites are materialized,
+never the transitive hull, and the failed token's dependents are not
+touched. Calling `cascadeBlock()` for a token without prerequisites
+throws. `unblockReady()` releases a blocked card (unblocked, due now) once
+every direct prerequisite has a card with `reps ≥ 1` that is itself not
+blocked; a blocked card with no prerequisites is released immediately.
+Releases cascade within the same call, so a freed prerequisite can free
+the card that waited on it.
+
+**Only foundations the queue can show block.** Blocking counts the direct
+prerequisites whose token is `published` and not deprecated —
+`getBlockingPrerequisites()` in `src/kernel/models/prerequisite.ts`, the same
+predicate `queue.ts` applies. A draft or retired foundation never reaches a
+review, so a card waiting on one could never collect the `reps ≥ 1` that
+releases it. An Again on a token whose only prerequisites are unpublished
+therefore does not block at all, `cascadeBlock()` reports that token as having
+no prerequisites, and `unblockReady()` releases cards blocked while their
+foundation was still published. The edge itself is kept: it stays in
+`prerequisites`, and `getPrerequisites()` still reports it for display and
+reconciliation.
 
 **Separation from FSRS math.** Blocking is deliberately *not* part of
 `evaluateRating()` (see [fsrs-scheduling.md](fsrs-scheduling.md)). The
@@ -43,7 +65,10 @@ An OKF learning re-import treats each confirmed token's submitted
 prerequisite list as its complete desired direct-neighbor set. It removes
 obsolete edges before adding declared edges inside the import transaction.
 If an addition would create a cycle, the transaction restores the prior
-content and graph rather than leaving a partial reconciliation.
+content and graph rather than leaving a partial reconciliation. A token the
+import parks as a draft (no question yet) still receives its declared edges,
+which is why the blocking policy, not the graph, is where unpublished
+foundations are excluded.
 
 # Atom prerequisites and entry assessment
 
@@ -62,17 +87,22 @@ either learn it now or defer its unretrieved cards to a finite date. Deferral is
 burial only, never evidence that the atom is held. Explicitly pulling such a
 card forward replaces its future date with `precondition_ready` intent until
 a genuine review clears the marker, so a restart cannot cause the same
-self-assessment prompt again. Actual failure can still use the existing
-token-card cascade, and only observed retrieval satisfies the held-atom
-predicate used by bonus offers.
+self-assessment prompt again. An actual Again (rating 1) on an item whose atom
+has direct hard prerequisites cancels only those prerequisites' active
+`precondition` deferrals for the same learner; it does not lift
+`precondition_ready`, other burial reasons, or FSRS state, and it does not put
+a foundation sibling into relearning. Token-level `cascadeBlock` still runs for
+token prerequisites. Only observed retrieval satisfies the held-atom predicate
+used by bonus offers.
 
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
-- Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`
+- Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/presentation.test.ts`
 - Code: `src/kernel/library/precondition-assessment.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/kvt-attach.ts`, `src/kernel/db/schema.ts`
 
 - [ADR 2026-03-27 — Stabilization and Workflow Integrity](../adr/2026-03-27-stabilization-and-workflow-integrity.md)
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
+- Tests: `tests/kernel/blocker.test.ts`
 - Code: `src/kernel/models/prerequisite.ts`, `src/kernel/scheduler/blocker.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/recall/actions.ts`

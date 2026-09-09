@@ -46,6 +46,8 @@ export interface RunInteractiveReviewActionInput {
   mode: "review" | "session";
   /** When the question was shown (Date.now()); study time for the rating (ADR 2026-08-01 Decision 5). */
   startedAt?: number;
+  /** Attempt id from the admission that preceded this display. */
+  attemptId?: string;
 }
 
 export interface RunInteractiveReviewActionResult {
@@ -63,10 +65,12 @@ export async function runInteractiveReviewAction(
     const choice = await select<InteractiveReviewChoice>({
       message: "What next?",
       choices: [
-        { name: "1 - Again (forgot)", value: 1 },
-        { name: "2 - Hard", value: 2 },
-        { name: "3 - Good", value: 3 },
-        { name: "4 - Easy", value: 4 },
+        // 1 is the whole "did not fully recall it" half of the scale; 2-4
+        // all mean it was recalled and differ only in effort.
+        { name: "1 - Again (missed, or only partly)", value: 1 },
+        { name: "2 - Hard (recalled, with effort)", value: 2 },
+        { name: "3 - Good (recalled)", value: 3 },
+        { name: "4 - Easy (recalled effortlessly)", value: 4 },
         { name: "Skip this card", value: "skip" },
         { name: "Edit token", value: "edit-token" },
         { name: "Deprecate token", value: "deprecate-token" },
@@ -92,6 +96,7 @@ export async function runInteractiveReviewAction(
           inputData.startedAt !== undefined
             ? Math.max(0, Date.now() - inputData.startedAt)
             : undefined,
+        attemptId: inputData.attemptId,
       });
 
       const ratingLabels: Record<number, string> = {

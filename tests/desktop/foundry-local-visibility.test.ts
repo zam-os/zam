@@ -22,8 +22,8 @@ describe("Foundry Local section visibility", () => {
   const bridge = file("src/cli/commands/bridge.ts");
 
   it("ships hidden, so no machine sees it before the check answers", () => {
-    expect(html).toContain(
-      '<div id="foundry-local-setup" class="settings-stack hidden">',
+    expect(html).toMatch(
+      /<div id="foundry-local-setup" class="settings-stack hidden"[^>]*>/,
     );
   });
 

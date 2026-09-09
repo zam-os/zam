@@ -591,11 +591,62 @@ button.chip {
   line-height: 1.5;
 }
 
-/* All four ratings on one row, each at least 44pt, thumb-reachable. */
+/* The expected point count under the question, and the score in the verdict.
+   The count says how many, never which (ADR 2026-09-08 §5). */
+.points-expected {
+  margin: var(--gap-1) 0 0;
+  font-size: 0.82em;
+  font-weight: 600;
+  color: var(--label-secondary);
+}
+
+.points-score {
+  margin: var(--gap-1) 0 0;
+  font-weight: 700;
+}
+
+/* Two captioned groups rather than four peers: "Nochmal" records a failed
+   recall (missed or only partly recalled), the other three record a successful
+   one and differ only in effort. Every button stays at least 44pt and
+   thumb-reachable. */
 .ratings {
   display: grid;
-  grid-template-columns: repeat(4, 1fr);
+  gap: var(--gap-3);
+}
+
+.rating-group {
+  display: grid;
+  gap: var(--gap-1);
+}
+
+.rating-group-caption {
+  margin: 0;
+  font-size: 0.76em;
+  font-weight: 700;
+  letter-spacing: 0.03em;
+  text-transform: uppercase;
+}
+
+.rating-group.missed .rating-group-caption {
+  color: var(--again);
+}
+
+.rating-group.known .rating-group-caption {
+  color: var(--good);
+}
+
+.rating-group.known {
+  border-top: 1px solid var(--separator);
+  padding-top: var(--gap-2);
+}
+
+.rating-row {
+  display: grid;
   gap: var(--gap-2);
+}
+
+.rating-row.three {
+  grid-template-columns: repeat(3, 1fr);
 }
 
 .rating {
@@ -617,6 +668,7 @@ button.chip {
 
 .rating.again {
   color: var(--again);
+  background: var(--again-wash);
 }
 .rating.hard {
   color: var(--hard);
@@ -860,6 +912,30 @@ button.chip {
   background: var(--bg-elevated);
   font-weight: 600;
   box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+}
+
+/* Settings opens in a learner-first view. Device AI, endpoint routing and
+   database plumbing stay one explicit step away for people who need them. */
+#settings-view {
+  display: flex;
+  flex-direction: column;
+  gap: var(--gap-2);
+}
+
+#settings-view > .group-title {
+  margin-top: var(--gap-4);
+}
+
+#settings-view[data-settings-mode="simple"] [data-settings-tier="advanced"] {
+  display: none !important;
+}
+
+.settings-mode-card {
+  margin: var(--gap-2) 0 var(--gap-2);
+}
+
+.settings-mode-card .t-secondary {
+  text-align: center;
 }
 
 /* ── Setup ─────────────────────────────────────────────────────────────── */

@@ -392,10 +392,19 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
           ["bridge", "add-token"],
           JSON.stringify({
             slug: `${context}-token`,
-            concept: `${context} concept`,
+            concept: `${context} concept that is not a slug echo`,
+            question: `What is the ${context} concept?`,
             knowledgeContexts: [context],
           }),
         );
+        runCliJson([
+          "bridge",
+          "personal-card-publish-revision",
+          "--slug",
+          `${context}-token`,
+          "--materiality",
+          "cosmetic",
+        ]);
       }
 
       const due = runCliJson([

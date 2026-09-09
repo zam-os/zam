@@ -4,9 +4,11 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   addPrerequisite,
+  cascadeBlock,
   createToken,
   type Database,
   ensureCard,
+  executeReviewAction,
   getCard,
   openDatabase,
   type Token,
@@ -203,5 +205,138 @@ describe("unblockReady", () => {
     await unblockReady(counted, "thomas");
 
     expect(counter.count).toBe(queriesForTwoCards);
+  });
+});
+
+describe("blocking behind content the queue cannot show", () => {
+  let db: Database;
+  let tempDir: string;
+
+  beforeEach(async () => {
+    tempDir = mkdtempSync(join(tmpdir(), "zam-blocker-unpublished-"));
+    db = await openDatabase({
+      dbPath: join(tempDir, "zam-test.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+  });
+
+  afterEach(async () => {
+    await db.close();
+    rmSync(tempDir, { recursive: true, force: true });
+  });
+
+  /**
+   * An OKF import parks a token without a question as a draft but still
+   * declares the edges around it, so a published item can end up requiring a
+   * draft. A draft never enters a queue, so blocking behind one would take
+   * the card away for good.
+   */
+  it("does not block a card behind a draft foundation", async () => {
+    const foundation = await createToken(db, {
+      slug: "draft-foundation",
+      concept: "A foundation whose question is still missing",
+      domain: "testing",
+      editorial_state: "draft",
+    });
+    const target = await createToken(db, {
+      slug: "published-target",
+      concept: "A published item",
+      domain: "testing",
+      question: "What holds here?",
+    });
+    await addPrerequisite(db, target.id, foundation.id);
+    const card = await ensureCard(db, target.id, "thomas");
+
+    const result = await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating: 1,
+    });
+
+    expect(result.blocked).toBeUndefined();
+    expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(0);
+  });
+
+  it("blocks behind a published foundation as before", async () => {
+    const foundation = await createToken(db, {
+      slug: "published-foundation",
+      concept: "A foundation the learner can be sent to",
+      domain: "testing",
+      question: "What is the foundation?",
+    });
+    const target = await createToken(db, {
+      slug: "dependent-target",
+      concept: "A dependent item",
+      domain: "testing",
+      question: "What builds on it?",
+    });
+    await addPrerequisite(db, target.id, foundation.id);
+    const card = await ensureCard(db, target.id, "thomas");
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating: 1,
+    });
+
+    expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(1);
+  });
+
+  it("releases a card whose only foundation was retired after the block", async () => {
+    const foundation = await createToken(db, {
+      slug: "retired-foundation",
+      concept: "A foundation that was replaced",
+      domain: "testing",
+      question: "What is the foundation?",
+    });
+    const target = await createToken(db, {
+      slug: "orphaned-target",
+      concept: "An item left waiting on it",
+      domain: "testing",
+      question: "What builds on it?",
+    });
+    await addPrerequisite(db, target.id, foundation.id);
+    const card = await ensureCard(db, target.id, "thomas");
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: card.id,
+      userId: "thomas",
+      rating: 1,
+    });
+    expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(1);
+
+    await db
+      .prepare("UPDATE tokens SET deprecated_at = ? WHERE id = ?")
+      .run(new Date().toISOString(), foundation.id);
+
+    const released = await unblockReady(db, "thomas");
+    expect(released.unblocked.map((entry) => entry.slug)).toContain(
+      "orphaned-target",
+    );
+    expect((await getCard(db, target.id, "thomas"))?.blocked).toBe(0);
+  });
+
+  it("refuses an explicit cascadeBlock with only unpublished foundations", async () => {
+    const foundation = await createToken(db, {
+      slug: "only-draft-foundation",
+      concept: "The single, unpublished foundation",
+      domain: "testing",
+      editorial_state: "draft",
+    });
+    const target = await createToken(db, {
+      slug: "target-of-draft",
+      concept: "An item above it",
+      domain: "testing",
+      question: "What builds on it?",
+    });
+    await addPrerequisite(db, target.id, foundation.id);
+    await ensureCard(db, target.id, "thomas");
+
+    await expect(cascadeBlock(db, "thomas", "target-of-draft")).rejects.toThrow(
+      /no prerequisites/,
+    );
   });
 });

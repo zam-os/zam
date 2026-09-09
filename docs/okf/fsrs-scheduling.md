@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-03T20:57:04.693Z
+timestamp: 2026-09-09T08:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -16,8 +16,17 @@ version 6), implemented as pure functions in
 random operations: the same card, rating, time, and parameters produce the same
 result on every surface.
 
-A review takes a **rating** on a four-point scale: `1` Again (forgot),
-`2` Hard, `3` Good, or `4` Easy. Each card carries per-user FSRS state:
+A review takes a **rating** on a four-point scale, and the scale is binary
+before it is graded: `1` Again records a recall that **failed** — missed
+outright or only partly there — while `2` Hard, `3` Good, and `4` Easy all
+record a recall that **succeeded** and differ only in how much effort it cost.
+Studio, the Recall panel, and Mobile render that as two labelled groups
+rather than four peers, so a learner who half-remembered a card reaches for
+Again instead of Hard; the `zam learn`/`zam review` choice list names the same
+split in its option labels, and `reconcileRecallSuggestedRating()` holds the
+evaluator to it by rewriting any partial or incorrect verdict to `1`. The
+spoken voice prompt still offers the four names as a flat list.
+Each card carries per-user FSRS state:
 **stability** (the interval in days at which recall reaches 90%),
 **difficulty** (1–10), elapsed/scheduled days, repetition and lapse counts, a
 state of `new`, `learning`, `review`, or `relearning`, a nullable
@@ -76,6 +85,16 @@ prerequisite cascade, and optional session auditing. When a `sessionId` is
 supplied, the review-log row references that session and a matching user
 `session_steps` row is written with the rating. A failure in any write rolls
 back the card update, review log, burial, blocking changes, and session step.
+The session must exist and belong to the learner; it may already be
+completed, because confirmed synthesis candidates arrive after
+`zam_session_end`. Only published, non-deprecated tokens take a rating.
+
+A rating may carry the attempt id that admission handed out when the card
+was shown. The same attempt never writes a second review: a retried submit
+returns `applied: false`, a different rating for the same attempt is
+refused, and an id issued for another learner or card is rejected. A
+same-day learning step is a new attempt — re-admitting a card whose previous
+attempt was rated hands out a fresh id.
 
 Published learning content has a substance version. A cosmetic publication
 leaves scheduling untouched. A material publication increments the token's
@@ -84,6 +103,53 @@ while preserving stability, difficulty, repetitions, lapses, and the active
 step cursor. After the answer, `evaluateRating()` synchronizes the card's
 `learned_content_version`.
 
+# Answer points and coverage
+
+A reference answer's **required points** are its formatting, not a stored field
+(ADR 2026-09-08). A list has one point per item; prose has exactly one. Nothing
+is persisted, so the count cannot drift from the text it counts:
+`parseAnswerPoints()` and `countAnswerPoints()` in
+`src/kernel/library/answer-points.ts` derive both, and every surface reads
+them from there rather than counting for itself.
+
+An item should ask for one thing, and prose therefore needs no authoring
+ceremony. Items that ask for more stay valid — some facts only make sense
+together — so `structuralPublicationChecks()` raises
+`criterion_multiple_points` as the one **non-blocking** structural check: the
+author is told and may publish anyway.
+
+The two evaluators split the judgement rather than conflating it. Coverage is
+observable from the answer text; effort is not, and only the learner knows it.
+The JSON evaluator shared by the Recall panel and Mobile receives the points
+enumerated and returns `recalledPoints`; `parseRecallEvaluation()` derives the
+rating from it — below full coverage rating `1`, at full coverage the neutral
+`3` the learner then overrides with Hard, Good, or Easy. Partial coverage is
+never an intermediate rating: three of four points is a `1`, and no
+partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
+window replies in prose and carries no score; it reports completeness, not a
+rating.
+
+No agent is asked for a rating anywhere. The JSON evaluator returns
+`recalledPoints` and `gaps`; the prose evaluator ends with a localized
+`Complete` / `Incomplete (N)` line and names the missing elements above it; the
+`skills/zam` skill and its three harness copies tell an external agent to state
+completeness rather than propose `1`-`4`. Observation synthesis keeps its
+`inferredRating`, because that is rule-based evidence from observed commands
+which the learner confirms, not an agent judging a recall answer.
+
+Both evaluators judge completeness generously: a vague or clumsily worded
+answer that points at the right thing counts, and genuine uncertainty resolves
+in the learner's favour. The two errors are not symmetric — being told you
+failed when you nearly had it discourages and does not reverse, while a
+generous reading costs one scheduling step the learner can correct by choosing
+Again themselves.
+
+When asking, a surface shows how many points are expected and never which —
+a learner who knows three things are wanted keeps digging past the first. The
+count appears only above one point and only up to Bloom level 3, since
+`analyse` and `synthesise` answers do not decompose into countable facts
+(`shouldShowPointCount()`).
+
 # Review queue and workload
 
 `src/kernel/scheduler/queue.ts` assembles eligible due and new cards, sorts
@@ -91,7 +157,16 @@ overdue work by urgency, interleaves domains, and inserts new cards regularly.
 Due Learning and Relearning cards use the same timestamp comparison as Review
 cards, including minute-level due times. The queue excludes blocked, detached,
 actively buried, deprecated, maintenance, and unpublished cards; a knowledge
-context can narrow it further.
+context can narrow it further. The due list behind `check-due` and
+`get-reviews` applies the same published and non-deprecated filter.
+
+At most one distinct practice item of a learning atom is shown to a learner
+on one local learning day. Every surface — Studio, Mobile, the Recall panel,
+`zam learn`, `zam review`, `zam session`, and agents through
+`zam_admit_review` — admits a card immediately before display, and the queue
+hides the other items of an atom that already has a presentation that day.
+A queue prefetch is not an exposure. Due dates are compared as UTC instants
+regardless of the learner's zone.
 
 Each learner has persisted workload settings. The balanced default allows 10
 new cards within 50 total cards and buries both new and review siblings. The
@@ -188,14 +263,15 @@ snapshots with the same workload and tier rules.
 - Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/mobile/review-session.test.ts`
 - Code: `src/kernel/library/precondition-assessment.ts`, `src/kernel/library/pull-forward.ts`, `src/kernel/scheduler/queue.ts`, `src/cli/bridge-handlers.ts`, `desktop/src/panel/recall.ts`, `desktop/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/main.ts`
 
+- [ADR 2026-09-08 — Answer Points and Score-Based Rating](../adr/2026-09-08-answer-points-and-score-based-rating.md)
 - [ADR 2026-05-30a — Standalone Learning Session](../adr/2026-05-30a-standalone-learning-session.md)
 - [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

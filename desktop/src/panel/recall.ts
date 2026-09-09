@@ -46,11 +46,16 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
+import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../../src/kernel/library/answer-points.js";
 import { preferredRecallDisplayMode } from "./display-mode.js";
 import {
   buildRecallEvaluationPrompt,
   buildRecallFollowUpPrompt,
   parseRecallEvaluation,
+  RATING_GROUPS,
   type RecallEvaluation,
   type RecallEvaluationRoute,
   resolveRecallEvaluationRoute,
@@ -66,6 +71,23 @@ const clearConnectionNotice = (): void => clearConnectionNoticeShared(noticeEl);
 
 function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
+}
+
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  return errorMessage(error).includes("already presented today");
+}
+
+function isCardNoLongerDue(error: unknown): boolean {
+  return errorMessage(error).includes("no longer due");
+}
+
+/** The token left the published state between queue build and display. */
+function isCardNotReviewable(error: unknown): boolean {
+  return errorMessage(error).includes("not published");
 }
 
 let contextBar: ContextBarHandle | undefined;
@@ -132,6 +154,12 @@ interface SubmitResult {
   rating: number;
   evaluation: SubmitEvaluation;
   blocked: BlockedInfo | null;
+  attemptId?: string;
+  applied?: boolean;
+}
+
+interface AdmitResult {
+  attemptId?: string;
 }
 
 type CardState =
@@ -262,7 +290,11 @@ async function changeLearningMode(
     if (revision !== sessionRevision || requestedUser !== currentUser) return;
     learningMode = next;
     if (requestedCardId === cards[index]?.cardId) {
-      renderCard();
+      // The card is rebuilt only after its (re-)admission resolves; restoring
+      // the draft before that would write into the textarea about to be
+      // replaced.
+      await renderCard();
+      if (revision !== sessionRevision) return;
       const answer =
         contentEl?.querySelector<HTMLTextAreaElement>(".recall-answer");
       if (answer && draft) {
@@ -428,7 +460,7 @@ async function decideRecallPrecondition(
     advance();
     return;
   }
-  renderCard();
+  void renderCard();
 }
 
 async function offerAfterQueue(mode: "empty" | "done"): Promise<void> {
@@ -622,7 +654,7 @@ function advance(): void {
   if (index >= cards.length) {
     void offerAfterQueue("done");
   } else {
-    renderCard();
+    void renderCard();
   }
 }
 
@@ -703,7 +735,11 @@ async function sampleViaHost(
   return text;
 }
 
-function renderCard(): void {
+function renderCard(): Promise<void> {
+  return presentCurrentCard();
+}
+
+async function presentCurrentCard(): Promise<void> {
   if (!contentEl) return;
   const card = cards[index];
   if (!card) {
@@ -738,6 +774,35 @@ function renderCard(): void {
       return;
     }
   }
+  const revision = sessionRevision;
+  let attemptId: string | undefined;
+  try {
+    const admission = (await callTool(
+      "zam_admit_review",
+      recallUserArgs({
+        cardId: card.cardId,
+        timeZone: learnerTimeZone(),
+      }),
+    )) as AdmitResult | undefined;
+    attemptId = admission?.attemptId;
+  } catch (error) {
+    if (revision !== sessionRevision) return;
+    if (
+      isAtomSiblingOccupied(error) ||
+      isCardNoLongerDue(error) ||
+      isCardNotReviewable(error)
+    ) {
+      // Not shown, so not part of this session: drop it from the queue
+      // instead of stepping past it, or the counter and summary would count
+      // a card the learner never saw.
+      cards.splice(index, 1);
+      void renderCard();
+      return;
+    }
+    renderError(errorMessage(error));
+    return;
+  }
+  if (revision !== sessionRevision || cards[index] !== card) return;
   cardStartedAt = Date.now();
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
@@ -841,6 +906,16 @@ function renderCard(): void {
         actionBtn.click();
       }
     });
+  }
+  // How many points are wanted, never which: a learner who knows three things
+  // are asked for keeps digging past the first (ADR 2026-09-08 §5).
+  if (shouldShowPointCount(card.concept, card.bloomLevel)) {
+    const expected = document.createElement("div");
+    expected.className = "recall-points-expected";
+    expected.textContent = tf("recall_points_expected", {
+      count: countAnswerPoints(card.concept),
+    });
+    question.appendChild(expected);
   }
   root.appendChild(question);
 
@@ -947,6 +1022,8 @@ function renderCard(): void {
         doneBy: "user",
         responseTimeMs: Math.max(0, Date.now() - cardStartedAt),
       };
+      // The admission's attempt id keeps a retried submit one review.
+      if (attemptId) args.attemptId = attemptId;
       if (currentUser) args.user = currentUser;
       const res = (await callTool("zam_submit_review", args)) as SubmitResult;
       tally.done += 1;
@@ -967,6 +1044,8 @@ function renderCard(): void {
       );
     }
   }
+
+  let ratingGroupSeq = 0;
 
   function appendRatings(
     reveal: HTMLElement,
@@ -989,24 +1068,56 @@ function renderCard(): void {
       t("lbl_rate_3"),
       t("lbl_rate_4"),
     ];
-    for (let r = 1; r <= 4; r += 1) {
-      const rating = r as 1 | 2 | 3 | 4;
-      const ratingBtn = document.createElement("button");
-      ratingBtn.className = "btn secondary-btn recall-rating-btn";
-      if (rating === suggestedRating) {
-        ratingBtn.classList.add("recall-rating-suggested");
+    const tones = ["again", "hard", "good", "easy"] as const;
+    const captionKeys = {
+      missed: "lbl_rating_group_missed",
+      known: "lbl_rating_group_known",
+    } as const;
+
+    // Two captioned groups rather than one row of four peers, over the shared
+    // RATING_GROUPS table so the panel cannot drift from the rating semantics
+    // the evaluator reconciles against.
+    for (const { group: tone, ratings: values } of RATING_GROUPS) {
+      const group = document.createElement("div");
+      group.className = `recall-rating-group ${tone}`;
+      group.setAttribute("role", "group");
+
+      // aria-labelledby, not aria-label: the caption is already visible, and
+      // duplicating its text would have a screen reader announce it twice.
+      // The id is per render — a reveal and a smart-feedback block must never
+      // put two elements with the same id into one document.
+      const caption = document.createElement("div");
+      caption.className = "recall-rating-group-caption";
+      ratingGroupSeq += 1;
+      caption.id = `recall-rating-group-${tone}-${ratingGroupSeq}`;
+      caption.textContent = t(captionKeys[tone]);
+      group.setAttribute("aria-labelledby", caption.id);
+      group.appendChild(caption);
+
+      const row = document.createElement("div");
+      row.className = "recall-rating-row";
+      for (const rating of values) {
+        const ratingBtn = document.createElement("button");
+        ratingBtn.className = `btn secondary-btn recall-rating-btn ${
+          tones[rating - 1]
+        }`;
+        if (rating === suggestedRating) {
+          ratingBtn.classList.add("recall-rating-suggested");
+        }
+        ratingBtn.type = "button";
+        const label = document.createElement("span");
+        label.textContent = labels[rating - 1];
+        const num = document.createElement("span");
+        num.className = "rating-num";
+        num.textContent = String(rating);
+        ratingBtn.append(label, num);
+        ratingBtn.addEventListener("click", () => {
+          void submitRating(rating);
+        });
+        row.appendChild(ratingBtn);
       }
-      ratingBtn.type = "button";
-      const label = document.createElement("span");
-      label.textContent = labels[r - 1];
-      const num = document.createElement("span");
-      num.className = "rating-num";
-      num.textContent = String(r);
-      ratingBtn.append(label, num);
-      ratingBtn.addEventListener("click", () => {
-        void submitRating(rating);
-      });
-      ratings.appendChild(ratingBtn);
+      group.appendChild(row);
+      ratings.appendChild(group);
     }
     reveal.appendChild(ratings);
   }
@@ -1143,6 +1254,16 @@ function renderCard(): void {
     feedback.textContent = evaluation.feedback;
     reveal.append(ownTitle, own, feedbackTitle, feedback);
 
+    if (evaluation.coverage) {
+      const score = document.createElement("div");
+      score.className = "recall-points-score";
+      score.textContent = tf("recall_points_score", {
+        recalled: evaluation.coverage.recalled,
+        total: evaluation.coverage.total,
+      });
+      reveal.appendChild(score);
+    }
+
     if (evaluation.gaps.length > 0) {
       const gaps = document.createElement("ul");
       gaps.className = "recall-gaps";
@@ -1221,7 +1342,9 @@ function renderCard(): void {
         currentLocale,
       );
       const raw = await sampleRecall([{ role: "user", text: prompt }]);
-      const evaluation = parseRecallEvaluation(raw);
+      // The card comes along so the parser can score the reply against the
+      // reference answer's own points rather than trusting a rating from it.
+      const evaluation = parseRecallEvaluation(raw, card);
       showSmartEvaluation(learnerAnswer, evaluation);
       pushContext(card, "answered");
       return;
@@ -1268,6 +1391,7 @@ async function loadReviews(): Promise<void> {
     const args: Record<string, unknown> = {
       includeQuestions: true,
       respectWorkload: true,
+      timeZone: learnerTimeZone(),
     };
     if (nextMaxNewOverride !== undefined) {
       args.maxNew = nextMaxNewOverride;
@@ -1288,7 +1412,7 @@ async function loadReviews(): Promise<void> {
     if (cards.length === 0) {
       renderEmpty();
     } else {
-      renderCard();
+      void renderCard();
     }
   } catch (error) {
     if (revision !== sessionRevision) return;

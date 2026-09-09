@@ -414,12 +414,16 @@ export async function getDueCards(
 ): Promise<DueCard[]> {
   const cutoff = now ?? new Date().toISOString();
 
+  // Same eligibility as the review queue: a draft is not learning content
+  // yet, a deprecated token is not learning content any more.
   let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
     FROM cards c
     JOIN tokens t ON t.id = c.token_id
     WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
       AND (c.buried_until IS NULL OR c.buried_until <= ?)
       AND t.maintenance_at IS NULL
+      AND t.deprecated_at IS NULL
+      AND t.editorial_state = 'published'
       AND c.detached_at IS NULL`;
   const params: unknown[] = [userId, cutoff, cutoff];
 

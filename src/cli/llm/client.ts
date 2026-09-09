@@ -31,7 +31,9 @@ import {
   hasCommand,
   LANGUAGE_NAMES,
   normalizeLocale,
+  parseAnswerPoints,
   resolveReviewContext,
+  supportsAnswerPoints,
   t,
 } from "../../kernel/index.js";
 import {
@@ -614,14 +616,25 @@ export async function getVisionConfig(db: Database): Promise<LlmConfig> {
   };
 }
 
-const LOCALIZED_RATING_PREFIX: Record<SupportedLocale, string> = {
-  en: "Suggested rating",
-  de: "Empfohlene Bewertung",
-  es: "Calificación sugerida",
-  fr: "Note suggérée",
-  pt: "Avaliação sugerida",
-  zh: "建议评分",
-  ja: "推奨評価",
+/**
+ * What the evaluator states instead of a rating (ADR 2026-09-08 §7).
+ *
+ * Completeness is the half it can observe. A rating would also carry effort,
+ * which it cannot see — and "suggested rating: 3" reads to a learner as an
+ * endorsement of Good, which is that invented judgement reaching them in
+ * words.
+ */
+const LOCALIZED_COMPLETENESS: Record<
+  SupportedLocale,
+  { complete: string; incomplete: string }
+> = {
+  en: { complete: "Complete", incomplete: "Incomplete" },
+  de: { complete: "Vollständig", incomplete: "Unvollständig" },
+  es: { complete: "Completa", incomplete: "Incompleta" },
+  fr: { complete: "Complète", incomplete: "Incomplète" },
+  pt: { complete: "Completa", incomplete: "Incompleta" },
+  zh: { complete: "完整", incomplete: "不完整" },
+  ja: { complete: "完全", incomplete: "不完全" },
 };
 
 const BLOOM_VERBS = {
@@ -710,7 +723,7 @@ export async function generateQuestionViaLLM(
   const existingQuestion = input.existingQuestion?.trim();
   const variationGuideline = existingQuestion
     ? `
-5. A canonical question for this token already exists. Generate a fresh VARIATION of it: test the same knowledge, but with different wording or from a different angle, so the learner cannot memorize the exact phrasing. Never repeat the canonical question verbatim.`
+5. A canonical question for this token already exists. Generate a fresh VARIATION that tests the SAME criterion (the concept). Different wording or angle is required. Do not change what counts as a complete answer. If you cannot vary without changing the criterion, output the canonical question unchanged.`
     : "";
 
   const systemPrompt = `You are ZAM, a highly precise agentic skills trainer.
@@ -774,8 +787,9 @@ Active-Recall Question:`;
 }
 
 /**
- * Warmly evaluate the learner's active-recall answer against the target concept.
- * Suggests an FSRS rating (1-4) and explains in the active locale with praise/motivation.
+ * Evaluate the learner's active-recall answer against the target concept.
+ * States whether the answer was complete, in the active locale. It never
+ * suggests a rating: completeness is observable from the text, effort is not.
  */
 export async function evaluateAnswerViaLLM(
   db: Database,
@@ -793,25 +807,37 @@ export async function evaluateAnswerViaLLM(
   const cfg = await getProviderForRole(db, "recall");
   const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
-  const ratingPrefix =
-    LOCALIZED_RATING_PREFIX[cfg.locale] || "Suggested rating";
+  const completeness =
+    LOCALIZED_COMPLETENESS[cfg.locale] || LOCALIZED_COMPLETENESS.en;
 
-  const systemPrompt = `You are ZAM, an extremely warm, encouraging, and patient skills trainer.
-Your mission is to build lasting autonomy through conceptual knowledge, not rote procedure.
-Compare the learner's active-recall answer against the target concept, context, and optional source code.
+  // Enumerating the concept's own points turns "is a required element
+  // missing" from a decomposition the model redoes every review into a lookup
+  // against a fixed list (ADR 2026-09-08 §3). Bloom 4-5 answers do not
+  // decompose, so they keep the unenumerated form.
+  const points = supportsAnswerPoints(input.bloomLevel)
+    ? parseAnswerPoints(input.concept)
+    : [];
+  const scoringRules =
+    points.length > 1
+      ? `The concept asks for ${points.length} points:
+${points.map((point, i) => `${i + 1}. ${point}`).join("\n")}
+An answer missing any of them is incomplete. Name the missing ones in your feedback.
+`
+      : "";
 
-FSRS Rating scale:
-- 1: drew a blank / completely forgot or wrong (Again)
-- 2: hard recall / partially correct (Hard)
-- 3: knew it / mostly correct (Good)
-- 4: perfect, instant, and accurate recall (Easy)
+  const systemPrompt = `You are ZAM, a patient skills trainer.
+Compare the learner's active-recall answer against the target concept only. The question identifies the task. Target context and source code are background for feedback, not extra passing requirements. Do not invent missing facts, required units, or calculation steps. If the question and concept disagree, say so as a content problem.
+
+Accept unambiguous typos, abbreviated forms, and equivalent paraphrases when the required content is already present.
+
+${scoringRules}
+Judge completeness only, and judge it generously. A vague, imprecise or clumsily worded answer that points at the right thing counts as covering it; when you are genuinely unsure whether an element is there, count it as there. A learner who nearly had it and is told they failed stops trying, and they can always mark themselves down if they know they were guessing.
 
 Guidelines:
-1. Provide a constructive, encouraging evaluation in ${langName} (2-3 sentences) to promote the joy of learning. Seamlessly weave a brief explanation of the correct solution (target concept) into your feedback paragraphs. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block at the end of your response.
-2. Celebrate every honest attempt! Offer high praise or a motivating word of encouragement in ${langName} if they did well or tried hard.
-3. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Instead, immediately evaluate what they wrote, explain the complete solution and target concept directly.
-4. Suggest a clear FSRS rating (1 to 4) at the very end of your response in the exact format: "${ratingPrefix}: X" in ${langName}.
-5. Output ONLY the evaluation and rating suggestion. Keep it concise, friendly, and clean. No conversational introduction or markdown wrapper.`;
+1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
+2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
+3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours.
+4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
@@ -927,7 +953,7 @@ Guidelines:
 1. Answer the learner's follow-up directly and concretely in ${langName}, grounded in the card's target concept, context, and source reference.
 2. Stay scoped to this card and its concept. If the learner drifts to unrelated territory, answer briefly and steer back to the concept.
 3. Keep replies conversational and short (a few sentences) unless the learner explicitly asks for depth. Plain text only — no markdown wrapper, headers, or bullet lists.
-4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 forgot, 2 hard, 3 good, 4 easy) but never pressure them toward a specific rating.`;
+4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating.`;
 
   const cardFrame = `The card under discussion:
 Domain: ${input.domain}

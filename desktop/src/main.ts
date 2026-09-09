@@ -8,6 +8,10 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
+import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import {
   BLOOM_PACKS,
@@ -118,6 +122,23 @@ import {
   pullForwardCandidatesCommand,
   pullForwardExecuteCommand,
 } from "./study-offers.js";
+import {
+  loadSettingsViewMode,
+  saveSettingsViewMode,
+  type SettingsViewMode,
+} from "./settings-view-mode.js";
+import {
+  initRadioGroupKeyboard,
+  radioGroupHasPendingFocus,
+  syncRadioGroupTabStops,
+} from "./radio-group.js";
+import {
+  acceptsTypedStudyAnswer,
+  resolveStudyLearningControlState,
+  shouldEvaluateStudyAnswer,
+  shouldRequestDynamicStudyQuestion,
+  type StudyLearningMode,
+} from "./study-learning-ui.js";
 
 // Re-exported so any other importer of "./main.js" keeps working unchanged;
 // learning-content.ts and curriculum-wizard.ts now import these directly
@@ -211,7 +232,30 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view";
 type ThemePreference = "light" | "dark";
 
+interface StudyLearningSettings {
+  learningMode: StudyLearningMode;
+  voiceRevealTimeoutSec: number;
+  voiceRatingTimeoutSec: number;
+}
+
+interface StudyLearningResult {
+  success: boolean;
+  userId: string;
+  settings: StudyLearningSettings;
+}
+
+const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
+  learningMode: "flash",
+  voiceRevealTimeoutSec: 20,
+  voiceRatingTimeoutSec: 20,
+};
+
 let isLlmEnabled = false;
+let settingsViewMode: SettingsViewMode = "simple";
+let currentStudyLearningSettings = { ...DEFAULT_STUDY_LEARNING_SETTINGS };
+let studyLearningRequestRevision = 0;
+let studyLearningLoading = false;
+let studyLearningSavePending = false;
 let aiConfigEditorOpen = false;
 let modelRegistry: ModelRow[] = [];
 let editingModelId: string | null = null;
@@ -408,6 +452,8 @@ interface ReviewPayload {
 }
 
 let activeCard: BridgeCard | null = null;
+/** Attempt id from the admission of `activeCard`; travels with its rating. */
+let activeAttemptId: string | null = null;
 let activePromptQuestion = "";
 let resolvedContextContent: string | null = null;
 let studySessionActive = false;
@@ -713,6 +759,56 @@ function saveThemePreference(theme: ThemePreference): void {
   applyTheme(theme);
 }
 
+function applySettingsViewMode(mode: SettingsViewMode): void {
+  settingsViewMode = mode;
+  document
+    .getElementById("settings-view")
+    ?.setAttribute("data-settings-mode", mode);
+
+  const simple = document.getElementById(
+    "btn-settings-mode-simple",
+  ) as HTMLButtonElement | null;
+  const advanced = document.getElementById(
+    "btn-settings-mode-advanced",
+  ) as HTMLButtonElement | null;
+  const description = document.getElementById("settings-mode-description");
+  const simpleActive = mode === "simple";
+
+  simple?.classList.toggle("active", simpleActive);
+  simple?.setAttribute("aria-checked", String(simpleActive));
+  advanced?.classList.toggle("active", !simpleActive);
+  advanced?.setAttribute("aria-checked", String(!simpleActive));
+  syncRadioGroupTabStops(document.getElementById("settings-mode-switcher"));
+  if (description) {
+    description.textContent = t(
+      simpleActive
+        ? "settings_mode_simple_help"
+        : "settings_mode_advanced_help",
+    );
+  }
+}
+
+function chooseSettingsViewMode(mode: SettingsViewMode): void {
+  saveSettingsViewMode(mode);
+  applySettingsViewMode(mode);
+  if (mode === "advanced") {
+    void loadFoundryLocalStatus();
+    void loadLocalVisionStatus();
+    void loadLocalEmbeddingStatus();
+  }
+}
+
+function initSettingsViewModeControls(): void {
+  document
+    .getElementById("btn-settings-mode-simple")
+    ?.addEventListener("click", () => chooseSettingsViewMode("simple"));
+  document
+    .getElementById("btn-settings-mode-advanced")
+    ?.addEventListener("click", () => chooseSettingsViewMode("advanced"));
+  initRadioGroupKeyboard(document.getElementById("settings-mode-switcher"));
+  applySettingsViewMode(settingsViewMode);
+}
+
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
   document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
@@ -769,6 +865,9 @@ function initializeTranslations() {
     t("btn_question_use_saved");
   document.getElementById("lbl-ai-feedback-title")!.textContent = t("lbl_ai_feedback_title");
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
+  document.getElementById("lbl-own-answer-title")!.textContent = t(
+    "recall_your_answer_title",
+  );
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
   document.getElementById("session-summary-title")!.textContent =
@@ -800,6 +899,12 @@ function initializeTranslations() {
   renderObserverHistory();
   
   // Rating labels
+  document.getElementById("lbl-rating-group-missed")!.textContent = t(
+    "lbl_rating_group_missed",
+  );
+  document.getElementById("lbl-rating-group-known")!.textContent = t(
+    "lbl_rating_group_known",
+  );
   document.getElementById("lbl-rate-1")!.textContent = t("lbl_rate_1");
   document.getElementById("lbl-rate-2")!.textContent = t("lbl_rate_2");
   document.getElementById("lbl-rate-3")!.textContent = t("lbl_rate_3");
@@ -826,8 +931,33 @@ function initializeTranslations() {
     t("settings_title");
   document.getElementById("lbl-settings-subtitle")!.textContent =
     t("settings_subtitle");
+  document
+    .getElementById("settings-mode-switcher")!
+    .setAttribute("aria-label", t("settings_mode_label"));
+  document.getElementById("btn-settings-mode-simple")!.textContent =
+    t("settings_mode_simple");
+  document.getElementById("btn-settings-mode-advanced")!.textContent =
+    t("settings_mode_advanced");
+  applySettingsViewMode(settingsViewMode);
   document.getElementById("btn-settings-back")!.textContent =
     t("settings_back");
+  document.getElementById("lbl-settings-learning-title")!.textContent =
+    t("settings_learning_title");
+  document.getElementById("lbl-settings-learning-help")!.textContent =
+    t("settings_learning_help");
+  document.getElementById("lbl-settings-learning-mode")!.textContent =
+    t("learning_mode_label");
+  document.getElementById("settings-learning-mode-flash")!.textContent =
+    t("learning_mode_flash");
+  document.getElementById("settings-learning-mode-feedback")!.textContent =
+    t("learning_mode_answer_feedback");
+  document.getElementById("settings-learning-mode-variation")!.textContent =
+    t("learning_mode_answer_variation");
+  document.getElementById("lbl-settings-learning-mode-help")!.textContent =
+    t("learning_mode_hint");
+  document.getElementById("lbl-settings-voice-reveal-timeout")!.textContent =
+    t("study_voice_timeout");
+  renderStudyLearningSettings();
   document.getElementById("lbl-settings-system-title")!.textContent =
     t("settings_system_title");
   document.getElementById("lbl-study-workload-title")!.textContent = t("study_workload_title");
@@ -1051,6 +1181,8 @@ function initializeTranslations() {
   if (btnContentCancelEdit) btnContentCancelEdit.textContent = t("lbl_cancel_action");
   const btnContentSaveCard = document.getElementById("btn-content-save-card");
   if (btnContentSaveCard) btnContentSaveCard.textContent = t("btn_save");
+  const btnContentPublishCard = document.getElementById("btn-content-publish-card");
+  if (btnContentPublishCard) btnContentPublishCard.textContent = t("btn_publish_card");
 
   // Modal Translations
   const lblModalCancel = document.getElementById("btn-modal-cancel");
@@ -2188,6 +2320,272 @@ async function setDynamicQuestions(enabled: boolean): Promise<void> {
     if (toggle) toggle.checked = !enabled;
     if (status) status.textContent = t("dynamic_questions_error");
   }
+}
+
+function studyLearningFallbackMode(): "flash" | "answer_feedback" {
+  return isLlmEnabled ? "answer_feedback" : "flash";
+}
+
+function isFlashLearningMode(): boolean {
+  return currentStudyLearningSettings.learningMode === "flash";
+}
+
+function studyLearningElements() {
+  return {
+    mode: document.getElementById(
+      "settings-learning-mode",
+    ) as HTMLSelectElement,
+    revealTimeout: document.getElementById(
+      "settings-voice-reveal-timeout",
+    ) as HTMLInputElement,
+    status: document.getElementById("study-learning-status")!,
+    flash: document.getElementById(
+      "btn-study-mode-flash",
+    ) as HTMLButtonElement,
+    feedback: document.getElementById(
+      "btn-study-mode-feedback",
+    ) as HTMLButtonElement,
+  };
+}
+
+function applyStudyLearningControlState(): boolean {
+  const elements = studyLearningElements();
+  const state = resolveStudyLearningControlState({
+    learningMode: currentStudyLearningSettings.learningMode,
+    settingsPending: studyLearningLoading || studyLearningSavePending,
+    hasActiveCard: activeCard !== null,
+    cardLoadInProgress,
+    revealInProgress,
+    reviewActionInProgress,
+    reviewOverlayOpen: isStudyConfirmOpen() || isStudyInlineEditorOpen(),
+  });
+
+  elements.mode.disabled = state.settingsDisabled;
+  elements.revealTimeout.disabled = state.settingsDisabled;
+  elements.flash.classList.toggle("active", state.flashSelected);
+  elements.flash.setAttribute(
+    "aria-checked",
+    String(state.flashSelected),
+  );
+  elements.flash.disabled = state.reviewDisabled;
+  elements.feedback.classList.toggle("active", state.aiSelected);
+  elements.feedback.setAttribute("aria-checked", String(state.aiSelected));
+  elements.feedback.disabled = state.reviewDisabled;
+  syncRadioGroupTabStops(document.getElementById("study-mode-switcher"));
+  return state.flashSelected;
+}
+
+function renderStudyLearningSettings(): void {
+  const elements = studyLearningElements();
+
+  elements.mode.value = currentStudyLearningSettings.learningMode;
+  elements.revealTimeout.value = String(
+    currentStudyLearningSettings.voiceRevealTimeoutSec,
+  );
+  const flash = applyStudyLearningControlState();
+
+  elements.flash.textContent = t("learning_mode_switch_flash");
+  elements.feedback.textContent = t("learning_mode_switch_feedback");
+  document
+    .getElementById("study-mode-switcher")
+    ?.setAttribute("aria-label", t("learning_mode_label"));
+  document
+    .getElementById("study-active-card")
+    ?.classList.toggle("flash-mode", flash);
+
+  // The same persisted preference drives Settings and the active review. A
+  // switch therefore updates the current card immediately without fetching a
+  // replacement or losing a typed draft.
+  resetFastCheckAnswer();
+  if (activeCard) renderFastCheckAnswer(activeCard.fastCheck ?? null);
+}
+
+async function loadStudyLearningSettings(): Promise<boolean> {
+  if (studyLearningSavePending) return false;
+  const revision = ++studyLearningRequestRevision;
+  studyLearningLoading = true;
+  renderStudyLearningSettings();
+  try {
+    const requestedUser = await ensureDesktopUserId();
+    const result = await runBridge<StudyLearningResult>(
+      "study-learning-get",
+      [
+        "--user",
+        requestedUser,
+        "--fallback-mode",
+        studyLearningFallbackMode(),
+      ],
+    );
+    if (
+      revision !== studyLearningRequestRevision ||
+      requestedUser !== desktopUserId
+    ) {
+      return false;
+    }
+    currentStudyLearningSettings = result.settings;
+    studyLearningElements().status.textContent = "";
+    return true;
+  } catch (error) {
+    if (revision === studyLearningRequestRevision) {
+      studyLearningElements().status.textContent = tf(
+        "study_learning_load_failed",
+        { message: errorMessage(error) },
+      );
+    }
+    return false;
+  } finally {
+    if (revision === studyLearningRequestRevision) {
+      studyLearningLoading = false;
+      renderStudyLearningSettings();
+    }
+  }
+}
+
+async function persistStudyLearningSettings(
+  update: Partial<StudyLearningSettings>,
+): Promise<boolean> {
+  if (studyLearningSavePending) return false;
+
+  const previous = { ...currentStudyLearningSettings };
+  const revision = ++studyLearningRequestRevision;
+  studyLearningLoading = false;
+  studyLearningSavePending = true;
+  currentStudyLearningSettings = {
+    ...currentStudyLearningSettings,
+    ...update,
+  };
+  studyLearningElements().status.textContent = "";
+  renderStudyLearningSettings();
+
+  try {
+    const requestedUser = await ensureDesktopUserId();
+    const args = [
+      "--user",
+      requestedUser,
+      "--fallback-mode",
+      studyLearningFallbackMode(),
+    ];
+    if (update.learningMode) {
+      args.push("--mode", update.learningMode);
+    }
+    if (update.voiceRevealTimeoutSec !== undefined) {
+      args.push(
+        "--reveal-timeout",
+        String(update.voiceRevealTimeoutSec),
+      );
+    }
+    if (update.voiceRatingTimeoutSec !== undefined) {
+      args.push("--rating-timeout", String(update.voiceRatingTimeoutSec));
+    }
+
+    const result = await runBridge<StudyLearningResult>(
+      "study-learning-set",
+      args,
+    );
+    if (
+      revision !== studyLearningRequestRevision ||
+      requestedUser !== desktopUserId
+    ) {
+      return false;
+    }
+    currentStudyLearningSettings = result.settings;
+    studyLearningElements().status.textContent = t("study_learning_saved");
+    return true;
+  } catch (error) {
+    if (revision === studyLearningRequestRevision) {
+      currentStudyLearningSettings = previous;
+      studyLearningElements().status.textContent = tf(
+        "study_learning_failed",
+        { message: errorMessage(error) },
+      );
+    }
+    return false;
+  } finally {
+    if (revision === studyLearningRequestRevision) {
+      studyLearningSavePending = false;
+      renderStudyLearningSettings();
+    }
+  }
+}
+
+async function switchStudyLearningMode(
+  next: "flash" | "answer_feedback",
+): Promise<void> {
+  const alreadySelected = isFlashLearningMode()
+    ? next === "flash"
+    : next === "answer_feedback";
+  if (
+    alreadySelected ||
+    studyLearningSavePending ||
+    cardLoadInProgress ||
+    revealInProgress ||
+    reviewActionInProgress
+  ) {
+    return;
+  }
+
+  const keepModeSwitcherFocus = radioGroupHasPendingFocus(
+    document.getElementById("study-mode-switcher"),
+  );
+
+  await pauseVoiceMode().catch(() => undefined);
+  const saved = await persistStudyLearningSettings({ learningMode: next });
+  if (!saved || !activeCard || isFlashLearningMode()) return;
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement;
+  if (!keepModeSwitcherFocus && !activeCard.fastCheck && !textarea.disabled) {
+    textarea.focus();
+  }
+}
+
+function initStudyLearningControls(): void {
+  const elements = studyLearningElements();
+  initRadioGroupKeyboard(document.getElementById("study-mode-switcher"));
+  elements.mode.addEventListener("change", () => {
+    const requested = elements.mode.value as StudyLearningMode;
+    void persistStudyLearningSettings({ learningMode: requested });
+  });
+  elements.revealTimeout.addEventListener("change", () => {
+    const seconds = Math.max(
+      5,
+      Math.min(60, Math.trunc(elements.revealTimeout.valueAsNumber || 20)),
+    );
+    elements.revealTimeout.value = String(seconds);
+    void persistStudyLearningSettings({ voiceRevealTimeoutSec: seconds });
+  });
+  elements.flash.addEventListener("click", () => {
+    void switchStudyLearningMode("flash");
+  });
+  elements.feedback.addEventListener("click", () => {
+    void switchStudyLearningMode("answer_feedback");
+  });
+
+  document.getElementById("study-active-card")?.addEventListener(
+    "click",
+    (event) => {
+      if (
+        !isFlashLearningMode() ||
+        !activeCard ||
+        revealInProgress ||
+        !document.getElementById("revealed-box")?.classList.contains("hidden")
+      ) {
+        return;
+      }
+      const target = event.target as HTMLElement | null;
+      if (
+        !target ||
+        target.closest(
+          "button, a, input, textarea, select, #study-manage-menu, #study-inline-editor",
+        )
+      ) {
+        return;
+      }
+      document.getElementById("btn-reveal-answer")?.click();
+    },
+  );
+
+  renderStudyLearningSettings();
 }
 
 type StudyWorkloadPreset = "balanced" | "exam" | "problems" | "custom";
@@ -4277,6 +4675,11 @@ async function selectDatabaseUser(userId: string): Promise<void> {
     }>("database-select-user", ["--user", userId]);
     desktopUserId = result.userId;
     databaseCurrentUserId = result.userId;
+    currentStudyLearningSettings = {
+      ...DEFAULT_STUDY_LEARNING_SETTINGS,
+      learningMode: studyLearningFallbackMode(),
+    };
+    renderStudyLearningSettings();
     if (status) {
       status.textContent = tf("database_profile_switched", {
         profile: result.userId,
@@ -4284,6 +4687,7 @@ async function selectDatabaseUser(userId: string): Promise<void> {
       });
     }
     await loadDatabaseStatus();
+    await loadStudyLearningSettings();
     await loadDashboard();
     updateGraphLearnerFilterUi();
     if (document.getElementById("graph-view")?.classList.contains("active")) {
@@ -4325,13 +4729,16 @@ function refreshSettingsData(): void {
   void loadAppVersion();
   void loadWorkspaceList();
   void loadProviderStatus();
-  void loadFoundryLocalStatus();
-  void loadLocalVisionStatus();
-  void loadLocalEmbeddingStatus();
+  if (settingsViewMode === "advanced") {
+    void loadFoundryLocalStatus();
+    void loadLocalVisionStatus();
+    void loadLocalEmbeddingStatus();
+  }
   void loadDatabaseStatus();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
+  void loadStudyLearningSettings();
   void loadStudyWorkload();
   if (aiConfigEditorOpen) void loadModelRegistry();
 }
@@ -5755,6 +6162,20 @@ function clearDashboardError(): void {
 }
 
 // ── ACTIVE STUDY FLOW ─────────────────────────────────────────────────────
+function learnerTimeZone(): string {
+  return Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+}
+
+function isAtomSiblingOccupied(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("already presented today");
+}
+
+function isCardNoLongerDue(error: unknown): boolean {
+  const message = error instanceof Error ? error.message : String(error);
+  return message.includes("no longer due");
+}
+
 async function loadNextCard(
   options: { dynamicQuestion?: boolean } = {},
 ) {
@@ -5765,6 +6186,7 @@ async function loadNextCard(
   const requestId = ++questionRequestId;
   cardLoadInProgress = true;
   activeCard = null;
+  activeAttemptId = null;
   activePromptQuestion = "";
   updateReviewControlState();
   try {
@@ -5779,6 +6201,8 @@ async function loadNextCard(
 
     // Reset study screen elements
     document.getElementById("revealed-box")!.classList.add("hidden");
+    document.getElementById("own-answer-box")!.classList.add("hidden");
+    document.getElementById("own-answer-text")!.textContent = "";
     document.getElementById("npu-loading")!.classList.add("hidden");
     document.getElementById("wait-prompt")!.classList.add("hidden");
     document.getElementById("answer-capture-box")!.classList.remove("hidden");
@@ -5813,11 +6237,18 @@ async function loadNextCard(
       "--media",
       "--max-new",
       sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+      "--time-zone",
+      learnerTimeZone(),
     ];
-    if (options.dynamicQuestion === false) {
+    const dynamicQuestionAllowed =
+      shouldRequestDynamicStudyQuestion(
+        currentStudyLearningSettings.learningMode,
+        options.dynamicQuestion !== false,
+      );
+    if (!dynamicQuestionAllowed) {
       reviewArgs.unshift("--no-dynamic-question");
     }
-    if (isLlmEnabled && options.dynamicQuestion !== false) {
+    if (isLlmEnabled && dynamicQuestionAllowed) {
       isWaitingForQuestion = true;
       startQuestionWaitTimer();
     }
@@ -5837,7 +6268,7 @@ async function loadNextCard(
       return;
     }
 
-    presentFetchedCard(payload);
+    await presentFetchedCard(payload);
   } catch (err) {
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
@@ -5854,21 +6285,40 @@ async function loadNextCard(
 async function submitAndReveal() {
   if (!activeCard || revealInProgress) return;
   revealInProgress = true;
+  updateReviewControlState();
   const requestId = ++evaluationRequestId;
 
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
-  const userAnswer = textarea.value.trim();
+  const userAnswer = acceptsTypedStudyAnswer(
+    currentStudyLearningSettings.learningMode,
+  )
+    ? textarea.value.trim()
+    : "";
   activeUserAnswer = userAnswer;
 
   textarea.disabled = true;
   document.getElementById("answer-capture-box")!.classList.add("hidden");
+  // Carry the typed answer into the reveal box before the capture box goes:
+  // the learner has to be able to re-read it while judging the feedback and
+  // choosing a rating. A fast check writes the chosen option into the textarea,
+  // so it shows that; only flash mode leaves nothing to show.
+  const ownAnswerBox = document.getElementById("own-answer-box")!;
+  document.getElementById("own-answer-text")!.textContent = userAnswer;
+  ownAnswerBox.classList.toggle("hidden", userAnswer.length === 0);
 
   let aiFeedbackText = "";
   let evaluationModel: string | null = null;
   let evaluationSuccessful = false;
 
   // Run LLM evaluation if enabled and user wrote an answer
-  if (isLlmEnabled && userAnswer.length > 0 && !activeCard.fastCheck) {
+  if (
+    shouldEvaluateStudyAnswer({
+      learningMode: currentStudyLearningSettings.learningMode,
+      evaluatorAvailable: isLlmEnabled,
+      answer: userAnswer,
+      fastCheck: Boolean(activeCard.fastCheck),
+    })
+  ) {
     document.getElementById("npu-loading")!.classList.remove("hidden");
     isWaitingForAi = true;
 
@@ -5922,6 +6372,7 @@ async function submitAndReveal() {
   if (requestId !== evaluationRequestId) return;
   renderReveal(aiFeedbackText, evaluationSuccessful, evaluationModel);
   revealInProgress = false;
+  updateReviewControlState();
 }
 
 function renderReveal(
@@ -6005,8 +6456,10 @@ function renderReveal(
     }
   }
 
-  // Show/hide the static reference answer box based on whether local AI evaluation succeeded
-  const answerBox = document.querySelector("#revealed-box .answer-box") as HTMLElement;
+  // Show/hide the static reference answer box based on whether local AI evaluation succeeded.
+  // By id: a descendant-class query takes the first match, so any box added
+  // above this one inside #revealed-box would silently steal the toggle.
+  const answerBox = document.getElementById("reference-answer-box");
   if (answerBox) {
     const hasAnswerMedia = activeCard.media?.some((item) => item.side === "answer");
     if (evaluationSuccessful && !hasAnswerMedia) {
@@ -6212,6 +6665,7 @@ function skipAiWaitingAndReveal() {
   finishAiWait();
   renderReveal("", false, null);
   revealInProgress = false;
+  updateReviewControlState();
 }
 
 // ── RATING ACTION SUBMIT ─────────────────────────────────────────────────
@@ -6453,7 +6907,13 @@ function startVoiceMode(): void {
   const locale = resolveVoiceLocale(currentLocale);
   updateVoiceButton();
   void voiceController
-    .start(locale)
+    .start(locale, {
+      mode: currentStudyLearningSettings.learningMode,
+      revealTimeoutMs:
+        currentStudyLearningSettings.voiceRevealTimeoutSec * 1000,
+      ratingTimeoutMs:
+        currentStudyLearningSettings.voiceRatingTimeoutSec * 1000,
+    })
     .catch((error: unknown) => {
       const message = error instanceof Error ? error.message : String(error);
       setVoiceStatus(tf("voice_paused_msg", { message }), true);
@@ -6514,6 +6974,7 @@ function updateReviewControlState(): void {
     const button = document.getElementById(id) as HTMLButtonElement | null;
     if (button) button.disabled = stateBlocked;
   }
+  applyStudyLearningControlState();
 }
 
 function beginReviewAction(): boolean {
@@ -6559,14 +7020,15 @@ async function submitRating(ratingVal: number) {
     return;
   }
   const cardId = activeCard.cardId;
+  const attemptId = activeAttemptId;
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
 
   try {
-    await runBridge("submit", [
-      "--card-id", cardId,
-      "--rating", String(ratingVal)
-    ]);
+    const submitArgs = ["--card-id", cardId, "--rating", String(ratingVal)];
+    // The attempt id from admission makes a retried submit one review.
+    if (attemptId) submitArgs.push("--attempt-id", attemptId);
+    await runBridge("submit", submitArgs);
 
     if (ratingVal >= 1 && ratingVal <= 4) {
       const r = ratingVal as 1 | 2 | 3 | 4;
@@ -6802,6 +7264,8 @@ async function saveInlineEdit(): Promise<void> {
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
     document.getElementById("question-text")!.textContent = activePromptQuestion;
+    // The edit may have changed how many points the answer asks for.
+    renderQuestionPointCount();
     const conceptVal = document
       .getElementById("reveal-content-list")!
       .querySelector(".reveal-item .reveal-val");
@@ -6915,8 +7379,28 @@ function showStudyOffer(spec: {
   offer.classList.remove("hidden");
 }
 
-function presentFetchedCard(payload: ReviewPayload): void {
+async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   if (!payload.card || !payload.prompt) return;
+  try {
+    const args = [
+      "--card-id",
+      payload.card.cardId,
+      "--time-zone",
+      learnerTimeZone(),
+    ];
+    if (zamUiSessionId) args.push("--session", zamUiSessionId);
+    const admission = await runBridge<{ attemptId?: string }>(
+      "admit-review",
+      args,
+    );
+    activeAttemptId = admission?.attemptId ?? null;
+  } catch (err) {
+    if (isAtomSiblingOccupied(err) || isCardNoLongerDue(err)) {
+      await loadNextCard();
+      return;
+    }
+    throw err;
+  }
   hideStudyOffer();
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-footer")?.classList.remove("hidden");
@@ -6962,6 +7446,7 @@ function presentFetchedCard(payload: ReviewPayload): void {
 
   document.getElementById("translation-loading")?.classList.add("hidden");
   document.getElementById("question-text")!.textContent = activePromptQuestion;
+  renderQuestionPointCount();
   renderReviewMedia("question-media", activeCard.media, "question");
   setModelAttributionBadge(
     "question-model-badge",
@@ -6971,8 +7456,8 @@ function presentFetchedCard(payload: ReviewPayload): void {
     "user-answer-input",
   ) as HTMLTextAreaElement;
   textarea.disabled = false;
-  renderFastCheckAnswer(activeCard.fastCheck ?? null);
-  if (!activeCard.fastCheck) textarea.focus();
+  renderStudyLearningSettings();
+  if (!isFlashLearningMode() && !activeCard.fastCheck) textarea.focus();
 }
 
 function resetFastCheckAnswer(): void {
@@ -6981,20 +7466,24 @@ function resetFastCheckAnswer(): void {
   ) as HTMLTextAreaElement | null;
   const options = document.getElementById("fast-check-options");
   const reveal = document.getElementById("btn-reveal-answer");
-  if (textarea) textarea.hidden = false;
-  if (reveal) reveal.hidden = false;
+  const flash = isFlashLearningMode();
+  if (textarea) textarea.hidden = flash;
+  if (reveal) {
+    reveal.hidden = false;
+    reveal.textContent = t(flash ? "btn_recall_reveal" : "btn_reveal_answer");
+  }
   if (options) {
     options.replaceChildren();
     options.hidden = true;
   }
   const tier = document.getElementById("tier-badge");
-  if (tier) tier.hidden = true;
+  if (tier && !activeCard) tier.hidden = true;
 }
 
 function renderFastCheckAnswer(
   fastCheck: BridgeCard["fastCheck"],
 ): void {
-  if (!fastCheck) return;
+  if (!fastCheck || isFlashLearningMode()) return;
   const textarea = document.getElementById(
     "user-answer-input",
   ) as HTMLTextAreaElement;
@@ -7024,8 +7513,31 @@ function renderFastCheckAnswer(
   }
 }
 
+/**
+ * Show how many points the reference answer asks for — never which.
+ *
+ * A learner who knows three things are wanted keeps digging past the first
+ * (ADR 2026-09-08 §5). Single-point cards say nothing, because "1 point" is
+ * noise, and Bloom 4-5 answers do not decompose into countable facts.
+ */
+function renderQuestionPointCount(): void {
+  const el = document.getElementById("question-points") as HTMLElement | null;
+  if (!el) return;
+  const shows =
+    activeCard !== null &&
+    shouldShowPointCount(activeCard.concept, activeCard.bloomLevel || 1);
+  el.hidden = !shows;
+  el.textContent =
+    shows && activeCard
+      ? tf("recall_points_expected", {
+          count: countAnswerPoints(activeCard.concept),
+        })
+      : "";
+}
+
 function showPreconditionOffer(precondition: PreconditionOffer): void {
   document.getElementById("question-text")!.textContent = "";
+  renderQuestionPointCount();
   renderReviewMedia("question-media", [], "question");
   showStudyOffer({
     title: t("lbl_precondition_title"),
@@ -7063,8 +7575,17 @@ async function decidePrecondition(
   preconditionCache = null;
   assessedAtomsThisSession.add(atomId);
   if (decision === "learn" && pendingReviewPayload) {
-    presentFetchedCard(pendingReviewPayload);
-    return;
+    // Same recovery as loadNextCard: an admission failure must not leave the
+    // offer on screen with a rejected promise nobody handles.
+    try {
+      await presentFetchedCard(pendingReviewPayload);
+      return;
+    } catch (err) {
+      console.error("Failed to present the deferred card:", err);
+      pendingReviewPayload = null;
+      await loadNextCard();
+      return;
+    }
   }
   pendingReviewPayload = null;
   await loadNextCard();
@@ -7325,6 +7846,7 @@ function devObserverEnabled(): boolean {
 
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
+  settingsViewMode = loadSettingsViewMode();
   // Apply the remembered locale before the first render, so the startup
   // overlay and the chrome behind it speak the learner's language from the
   // outset rather than switching once the bridge answers.
@@ -7332,6 +7854,7 @@ window.addEventListener("DOMContentLoaded", () => {
   if (remembered) setCurrentLocale(remembered);
   initBootOverlay();
   initializeTranslations();
+  initSettingsViewModeControls();
   setupLocaleSwitcher();
   initPanel("learning-content", () => initLearningContentStudio());
   initPanel("curriculum-wizard", () => {
@@ -7357,6 +7880,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );
+  initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
   // Goal-driven import stays reachable outside first run (plan Phase 8):
   // Learning Content's "Goal import" reopens the flow at the goal page.
@@ -7415,6 +7939,7 @@ window.addEventListener("DOMContentLoaded", () => {
     void (async () => {
       prepareStudyViewForSession();
       await configureSessionWorkload();
+      await loadStudyLearningSettings();
       await ensureUiLearningSession("Desktop learning session");
       switchView("study-view");
       await loadNextCard();
@@ -7724,7 +8249,10 @@ window.addEventListener("DOMContentLoaded", () => {
     });
 
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {
-    submitAndReveal();
+    void (async () => {
+      await pauseVoiceMode().catch(() => undefined);
+      await submitAndReveal();
+    })();
   });
 
   document
@@ -7857,7 +8385,7 @@ window.addEventListener("DOMContentLoaded", () => {
       // Ctrl+Enter or Shift+Enter inside textarea -> Reveal answer
       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
-        submitAndReveal();
+        document.getElementById("btn-reveal-answer")?.click();
       }
       return;
     }

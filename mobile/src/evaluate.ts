@@ -511,7 +511,7 @@ export async function evaluateMobileAnswer(
       maxTokens: RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
       retryMaxTokens: RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
     },
-    parseRecallEvaluation,
+    (text) => parseRecallEvaluation(text, input.card),
   );
   return {
     evaluation: result.value,

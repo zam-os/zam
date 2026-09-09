@@ -201,10 +201,11 @@ describe("embedded practice items are identical across tiles", () => {
       const tile = JSON.parse(
         readFileSync(join(FIXTURE_DIR, file), "utf-8"),
       ) as {
-        atoms: Array<{
+        atoms?: Array<{
           practice_items: Array<Record<string, unknown>>;
         }>;
       };
+      if (!Array.isArray(tile.atoms)) continue;
       for (const atom of tile.atoms) {
         for (const item of atom.practice_items) {
           const body = JSON.stringify(

@@ -752,6 +752,7 @@ export interface PersonalCard {
   question: string | null;
   createdAt: string;
   updatedAt: string;
+  editorialState: EditorialState;
 
   cardId: string | null;
   state: CardState | null;
@@ -904,6 +905,7 @@ export async function listPersonalCards(
       t.question,
       t.created_at AS createdAt,
       t.updated_at AS updatedAt,
+      t.editorial_state AS editorialState,
       t.provider,
       t.topic_id AS topicId,
       c.id AS cardId,
@@ -1168,6 +1170,7 @@ export async function importCurriculumCards(
           question_source: "llm",
           provider: card.provider || null,
           topic_id: card.topic_id || null,
+          editorial_state: "draft",
         });
         createdCount++;
       } else {
@@ -1495,6 +1498,7 @@ export async function confirmCardSplit(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || originalToken.source_link || null,
           question: card.question || null,
+          editorial_state: "draft",
         });
         createdCount++;
       }
@@ -1692,6 +1696,7 @@ export async function confirmFoundations(
             symbiosis_mode: symbiosisMode,
             source_link: card.source_link || originalToken.source_link || null,
             question: card.question || null,
+            editorial_state: "draft",
           });
           createdCount++;
         }
@@ -1812,6 +1817,7 @@ export async function applySourceProposals(
         question: card.question || null,
         provider: card.provider || null,
         topic_id: card.topic_id || null,
+        editorial_state: "draft",
       });
       createdCount++;
     } else {

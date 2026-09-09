@@ -1,11 +1,21 @@
 {
   "$schema": "https://zam.app/schemas/v1/kvt-tile.json",
   "tile_id": "de-by:realschule-9-mathematik-pythagoras-trigonometrie",
-  "version": "2026.08.1",
+  "version": "2026.09.1",
   "title": "Satzgruppe des Pythagoras und Trigonometrie (Realschule 9 Bayern)",
-  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9 (Zweig I & Zweig II/III): Satz des Pythagoras, Höhensatz, Kathetensätze, Sinus, Kosinus, Tangens und trigonometrischer Pythagoras.",
+  "description": "Geerdetes KVT-Paket für Realschule Bayern Mathematik 9 (Zweig I & Zweig II/III): Hypotenuse-Lage, pythagoreische Relation, Umkehrung, Höhensatz, Kathetensätze, Sinus, Kosinus, Tangens und trigonometrischer Pythagoras.",
   "publisher": "ZAM Curriculum Working Group",
-  "published_at": "2026-08-15T21:15:00Z",
+  "published_at": "2026-09-06T12:00:00Z",
+  "retired_items": [
+    {
+      "id": "01K4T9M0000000000000000J01",
+      "reason": "Format change choice→recall is a new item (H1) without replaces; personal evidence stays on J01."
+    },
+    {
+      "id": "01K4T9M0000000000000000J02",
+      "reason": "Decision 9 split into P1/P2 without mastery transfer; J02 keeps its review history."
+    }
+  ],
   "sources": [
     {
       "uri": "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/mathematik/wpfg1",
@@ -20,15 +30,72 @@
   ],
   "atoms": [
     {
-      "id": "01K4T9M0000000000000000A01",
-      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A01",
+      "id": "01K4T9M0000000000000000AH0",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000AH0",
       "namespace": "mathematik-geometrie",
-      "slug": "satz-des-pythagoras",
-      "title": "Satz des Pythagoras",
+      "slug": "hypotenuse-lage",
+      "title": "Hypotenuse-Lage",
       "domain": "schule/mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Pythagorean theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000HH1",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Welcher Seite liegt im rechtwinkligen Dreieck der rechte Winkel gegenüber?",
+          "concept": "Der rechte Winkel liegt der Hypotenuse gegenüber."
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000A01",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000A01",
+      "namespace": "mathematik-geometrie",
+      "slug": "satz-des-pythagoras",
+      "title": "Pythagoreische Relation",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000AH0",
+          "type": "hard",
+          "rationale": "Die Zuordnung des rechten Winkels zur Hypotenuse ist das fachliche Fundament der pythagoreischen Relation."
+        }
+      ],
       "alignments": [
         {
           "target_uri": "http://www.wikidata.org/entity/Q11518",
@@ -61,29 +128,86 @@
       ],
       "practice_items": [
         {
-          "id": "01K4T9M0000000000000000J01",
+          "id": "01K4T9M0000000000000000PP1",
           "language": "de",
           "tier": "tier1_fast",
           "bloom_level": 1,
-          "question": "Welche Dreiecksseite liegt im rechtwinkligen Dreieck stets dem 90°-Winkel gegenüber und ist die längste Seite?",
-          "concept": "Hypotenuse",
-          "fast_check": {
-            "type": "binary_choice",
-            "options": [
-              "Die Hypotenuse",
-              "Die Ankathete"
-            ],
-            "correct_index": 0
-          }
+          "edge_representative": true,
+          "question": "Wie lautet der Satz des Pythagoras für Katheten a, b und Hypotenuse c?",
+          "concept": "a² + b² = c²"
         },
         {
-          "id": "01K4T9M0000000000000000J02",
+          "id": "01K4T9M0000000000000000PP2",
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Formuliere den Satz des Pythagoras für ein rechtwinkliges Dreieck mit Katheten a, b und Hypotenuse c und gib seine geometrische Flächenbedeutung an.",
-          "concept": "a² + b² = c² (Kathetenquadrate = Hypotenusenquadrat)",
-          "sample_solution": "In jedem rechtwinkligen Dreieck ist die Summe der Flächeninhalte der beiden Kathetenquadrate gleich dem Flächeninhalt des Hypotenusenquadrats: a² + b² = c². Gilt umgekehrt in einem Dreieck a² + b² = c², so ist das Dreieck rechtwinklig mit dem rechten Winkel gegenüber von c."
+          "question": "Was gilt für die Quadrate über den Katheten im Vergleich zum Hypotenusenquadrat?",
+          "concept": "Die Summe der Kathetenquadrat-Flächen ist flächengleich zum Hypotenusenquadrat."
+        },
+        {
+          "id": "01K4T9M0000000000000000PA0",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 4,
+          "question": "b ist Hypotenuse, a und c sind Katheten. Wie lautet die Gleichung?",
+          "concept": "a² + c² = b²"
+        }
+      ]
+    },
+    {
+      "id": "01K4T9M0000000000000000AV0",
+      "atom_uri": "urn:zam:atom:01K4T9M0000000000000000AV0",
+      "namespace": "mathematik-geometrie",
+      "slug": "umkehrung-satz-des-pythagoras",
+      "title": "Umkehrung des Satzes des Pythagoras",
+      "domain": "schule/mathematik/geometrie",
+      "reduction": "axiomatic",
+      "typical_age_min": 14.0,
+      "prerequisites": [
+        {
+          "atom_id": "01K4T9M0000000000000000A01",
+          "type": "hard",
+          "rationale": "Die Umkehrung prüft Rechtwinkligkeit an der pythagoreischen Relation, nicht an einem auswendigen Tripel."
+        }
+      ],
+      "alignments": [
+        {
+          "target_uri": "http://www.wikidata.org/entity/Q11518",
+          "target_label": "Pythagorean theorem",
+          "alignment_type": "skos:broadMatch",
+          "provenance": "manual_curation_v1"
+        }
+      ],
+      "curricula": [
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "I",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        },
+        {
+          "provider": "lehrplanplus-bayern",
+          "school_type": "realschule",
+          "grade": 9,
+          "track": "II_III",
+          "subject": "mathematik",
+          "topic_code": "lb3",
+          "topic_title": "Rechtwinklige Dreiecke",
+          "exam_relevant": true
+        }
+      ],
+      "practice_items": [
+        {
+          "id": "01K4T9M0000000000000000VV1",
+          "language": "de",
+          "tier": "tier2_synthesis",
+          "bloom_level": 3,
+          "question": "Wie prüfst du rechnerisch, ob ein Dreieck mit Seiten p, q, r und längster Seite r rechtwinklig ist?",
+          "concept": "Das Dreieck ist genau dann rechtwinklig, wenn p² + q² = r²."
         }
       ]
     },
@@ -155,9 +279,24 @@
           "language": "de",
           "tier": "tier2_synthesis",
           "bloom_level": 2,
-          "question": "Formuliere die beiden Kathetensätze von Euklid für die Katheten a und b bei Hypotenusenabschnitten p und q (mit c = p + q).",
-          "concept": "a² = c * p und b² = c * q",
-          "sample_solution": "In einem rechtwinkligen Dreieck ist das Quadrat über einer Kathete flächengleich zum Rechteck aus der Hypotenuse c und dem anliegenden Hypotenusenabschnitt: a² = c * p und b² = c * q (wobei p der zu a gehörende und q der zu b gehörende Abschnitt auf c ist)."
+          "question": "Formuliere beide Kathetensätze von Euklid für die Katheten a und b bei Hypotenusenabschnitten p und q (c = p + q). Beide Formeln sind Pflicht.",
+          "concept": "Beide Aussagen gelten: a² = c·p (Kathete a zum Abschnitt p) und b² = c·q (Kathete b zum Abschnitt q)."
+        },
+        {
+          "id": "01K4T9M0000000000000000KK1",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet der Kathetensatz für Kathete a und den anliegenden Hypotenusenabschnitt p?",
+          "concept": "a² = c · p"
+        },
+        {
+          "id": "01K4T9M0000000000000000KK2",
+          "language": "de",
+          "tier": "tier1_fast",
+          "bloom_level": 1,
+          "question": "Wie lautet der Kathetensatz für Kathete b und den anliegenden Hypotenusenabschnitt q?",
+          "concept": "b² = c · q"
         }
       ]
     },
@@ -172,9 +311,9 @@
       "typical_age_min": 14.0,
       "prerequisites": [
         {
-          "atom_id": "01K4T9M0000000000000000A01",
+          "atom_id": "01K4T9M0000000000000000AH0",
           "type": "hard",
-          "rationale": "Die Begriffe Kathete und Hypotenuse aus dem rechtwinkligen Dreieck sind Voraussetzung für Winkelfunktionen."
+          "rationale": "Sinus und Kosinus brauchen die Lage der Hypotenuse gegenüber dem rechten Winkel, nicht die pythagoreische Gleichung."
         }
       ],
       "alignments": [

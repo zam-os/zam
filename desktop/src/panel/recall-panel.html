@@ -241,9 +241,50 @@
         font-size: 0.82rem;
         color: var(--muted);
       }
+      /* How many points the answer asks for, and how many landed. The count
+         is a retrieval-effort cue; it never names the points themselves. */
+      .recall-points-expected {
+        margin-top: 6px;
+        font-size: 0.78rem;
+        font-weight: 600;
+        color: var(--muted);
+      }
+      .recall-points-score {
+        margin-bottom: 10px;
+        font-size: 0.85rem;
+        font-weight: 700;
+        color: var(--accent);
+      }
+      /* Two captioned groups, not four peers: 1 = recall failed (wholly or
+         partly), 2-4 = recall succeeded and differ only in effort. */
       .recall-ratings {
         display: grid;
-        grid-template-columns: repeat(4, 1fr);
+        gap: 10px;
+      }
+      .recall-rating-group {
+        display: grid;
+        gap: 4px;
+      }
+      .recall-rating-group.known {
+        border-top: 1px solid var(--border);
+        padding-top: 8px;
+      }
+      .recall-rating-group-caption {
+        font-size: 0.68rem;
+        font-weight: 700;
+        letter-spacing: 0.04em;
+        text-transform: uppercase;
+      }
+      .recall-rating-group.missed .recall-rating-group-caption {
+        color: var(--danger);
+      }
+      .recall-rating-group.known .recall-rating-group-caption {
+        color: var(--ok);
+      }
+      .recall-rating-row {
+        display: grid;
+        grid-auto-columns: 1fr;
+        grid-auto-flow: column;
         gap: 8px;
       }
       .recall-rating-btn {
@@ -254,6 +295,10 @@
       .recall-rating-btn .rating-num {
         font-size: 0.7rem;
         opacity: 0.7;
+      }
+      .recall-rating-btn.again {
+        border-color: var(--danger);
+        background: var(--danger-bg);
       }
       .recall-rating-suggested {
         border-color: var(--accent);
