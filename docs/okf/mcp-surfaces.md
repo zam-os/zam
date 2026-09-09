@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-07T20:00:00.000Z
+timestamp: 2026-09-09T08:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -414,7 +414,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
-- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/mcp.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/kernel/scheduler/study-settings.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `desktop/src/learning-content.ts`
 
