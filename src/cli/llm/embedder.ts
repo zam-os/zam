@@ -20,6 +20,7 @@ import {
   searchTokensHybrid,
   upsertTokenEmbedding,
 } from "../../kernel/index.js";
+import { embeddingsEndpointUrl } from "../../kernel/util/embeddings-url.js";
 import {
   DEFAULT_LLM_API_KEY,
   getAvailableModels,
@@ -163,7 +164,7 @@ export async function embedTexts(
 
   let res: Response;
   try {
-    res = await fetch(`${endpoint.url}/embeddings`, {
+    res = await fetch(embeddingsEndpointUrl(endpoint.url), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
