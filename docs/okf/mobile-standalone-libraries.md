@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-09-03T20:57:29.306Z
+timestamp: 2026-09-09T08:00:00.000Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -120,7 +120,7 @@ not succeed, the follow-up control stays hidden and ordinary self-rating
 continues to work without AI.
 
 # Citations
-- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-06b — Checkpointed Review Dialogue](../adr/2026-07-06b-checkpointed-review-dialogue.md)
 - Tests: `tests/mobile/discuss.test.ts`, `tests/mobile/discussion-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/mobile/voice.test.ts`, `tests/desktop/discussion.test.ts`
 - Code: `mobile/src/discuss.ts`, `mobile/src/evaluate.ts`, `mobile/src/main.ts`, `mobile/src/review-session.ts`, `mobile/src/voice.ts`, `mobile/index.html`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/recall/voice-review.ts`, `desktop/src/discussion.ts`

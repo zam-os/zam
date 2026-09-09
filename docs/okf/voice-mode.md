@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-09-05T06:22:42.426Z
+timestamp: 2026-09-09T08:00:00.000Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -359,7 +359,7 @@ default, which is how the companion behaved before the cloud tier existed.
 # Citations
 
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
-- [Flashcard learning-mode plan](../plans/2026-09-03-flashcard-learning-mode.md)
+- [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
