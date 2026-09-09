@@ -31,11 +31,11 @@ re-derives the same Lehrplan material for itself: minutes of generation per
 topic, per learner, every time, against a manifest that only covers Realschule
 grade 9.
 
-**It may be sponsored.** DocuWare, or another company, may host it. That makes
+**It may be sponsored.** A company may host it. That makes
 the data boundary a commercial question and not only an ethical one — and it is
 much easier to answer *before* a partner and a bill exist than after.
 
-The parent ADR's Deployment B — the DocuWare closed group, where learning state
+The parent ADR's Deployment B — the company closed group, where learning state
 does live in the shared database under RLS — is a **different thing that stays
 different**. That is a team setup in a business context, and it separates
 cleanly from this (project owner, 2026-07-26). This ADR is not about it.
@@ -81,7 +81,7 @@ in git, release step in the Studio), not an API.
 ### 4. Pulled forward, and run in parallel with the Azure/Entra pilot
 
 Phase E runs **now**, alongside Phases C/C0/D rather than after them. The
-DocuWare Postgres pilot starts the week of 2026-07-27; the curriculum service
+company Postgres pilot starts the week of 2026-07-27; the curriculum service
 is due before the school year, roughly six weeks later. Neither waits for the
 other.
 

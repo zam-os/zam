@@ -1,7 +1,10 @@
 # Closed-Group Learning Library: Curation, Privacy and Deployment
 
 **Status:** Accepted (2026-07-25; rewritten from and superseding the
-2026-07-04 draft)
+2026-07-04 draft). Deployment B — Decisions 13, 14, 15 and the cost section —
+is superseded, and Decisions 6, 7 and 9 refined, by
+[2026-09-04](2026-09-04-team-library-postgres-entra-pilot.md); everything else
+stands.
 **Date:** 2026-07-04, rewritten and accepted 2026-07-25
 **Deciders:** Thomas (project owner)
 **Related:**
@@ -21,7 +24,7 @@
 
 ## Context
 
-Inside a closed group — a company like DocuWare, a family, a class — people
+Inside a closed group — a company, a family, a class — people
 learn overlapping material. Today each learner curates alone: everyone imports
 the same curriculum, writes their own version of the same card, re-embeds the
 same tokens, and repeats the same mistakes in wording, scope and Bloom level.
@@ -264,10 +267,10 @@ own-data display filter labeled as cosmetic, not a security boundary.
 
 ### 6. Deployment B — closed company group on Azure PostgreSQL with Microsoft Entra (new, parallel)
 
-For DocuWare colleagues. This is an **additional** path selected by
+For colleagues in a company team. This is an **additional** path selected by
 configuration, never a replacement.
 
-**Hosted in a company subscription in the `docuware.com` tenant from the
+**Hosted in a company subscription in the company's own Entra tenant from the
 start** (project owner, 2026-07-25). An earlier plan would have piloted on the
 project owner's Visual Studio Professional credit and migrated later; that
 subscription could not be activated, and going straight to a company-owned one
@@ -281,7 +284,7 @@ turns out to be the simpler design anyway:
   earlier draft required disappears with it.
 - Nobody's learning history depends on a personal subscription staying funded.
 
-The cost is a dependency: this needs DocuWare to provide a subscription and
+The cost is a dependency: this needs the company to provide a subscription and
 carry the (small) bill before the first colleague can use it. That is a
 conversation to have early, not a technical risk.
 
@@ -357,7 +360,7 @@ library — just not a pilot in infrastructure.
   to a working local option is a choice.
 
   Deliberately, this does not wait on a works-council agreement or a corporate
-  privacy review. Those may well follow and are DocuWare's to run, but the
+  privacy review. Those may well follow and are the company's to run, but the
   honesty is part of the product and ships with it. ZAM is not blocked by a
   process it does not control, and no colleague ends up in the company library
   without having been told what that means.
@@ -624,7 +627,7 @@ token is accepted, that `pgaadauth_create_principal` grants behave like the
 local roles, and that reconnect-on-expiry works end to end. Decision 15 gives
 that a permanent home at no extra cost.
 
-### 15. ZAM is a co-tenant on a server DocuWare needs anyway
+### 15. ZAM is a co-tenant on a server the company needs anyway
 
 The server is not being bought for ZAM (project owner, 2026-07-25). It is set
 up as the **prototype for migrating an existing Azure SQL resource to Azure
@@ -683,7 +686,7 @@ inner development loop.
 
 The company subscription carries the bill (Decision 6), so the figures below
 are not a budget ceiling — they exist so the ask is small and concrete when
-someone at DocuWare has to approve it. The honest version of that ask is
+someone at the company has to approve it. The honest version of that ask is
 "roughly the price of one lunch per month, and it can be switched off".
 
 Figures checked July 2026; region-dependent, so **confirm in the Azure pricing
@@ -744,7 +747,7 @@ this, not the price.
 |--------|------|---------|
 | **Neon Serverless Postgres (Azure Native)** | free tier 100 CU-h/month; then ~$0.106/CU-h + $0.35/GiB — plausibly **$0–10** with scale-to-zero after 5 min idle | Genuinely cheaper and a real Azure-native service billed through the subscription. But its Entra integration documents **provisioning, portal and billing** — not Entra identities as *database* logins. Fails the deciding requirement unless that turns out to be supported; worth a check if cost ever becomes the binding constraint. |
 | **Self-hosted Postgres on a small Azure VM** | ~$8–10 | Cheaper compute, but there is no production-ready way to authenticate Postgres against Entra: PG17 has no OAuth, and PG18's OAuth validators for Entra are explicitly not production-ready. Also hands us patching, backup and HA. |
-| **Supabase / Hetzner / any non-Azure Postgres** | €5–25 | Same failure, plus the data leaves the corporate tenant — a harder conversation at DocuWare than the $16 it saves. |
+| **Supabase / Hetzner / any non-Azure Postgres** | €5–25 | Same failure, plus the data leaves the corporate tenant — a harder conversation at a company than the $16 it saves. |
 | **Azure SQL Database serverless** | can auto-pause to near-zero | Excellent native Entra auth and now has vector types, but T-SQL moves the dialect distance from "tens of sites" (Open Question 1) to a rewrite. Not worth it to save ~$10. |
 
 **Conclusion: nothing cheaper currently satisfies the Entra requirement.** The
@@ -760,7 +763,7 @@ All questions this ADR raised for the project owner were resolved on
 
 | Question | Answer |
 |----------|--------|
-| Which tenant? | `docuware.com`, in a company subscription from day one — ordinary members, no B2B guests, no planned migration (Decision 6) |
+| Which tenant? | The company's own tenant, in a company subscription from day one — ordinary members, no B2B guests, no planned migration (Decision 6) |
 | Where does curation happen? | Content in git, release step in the Studio (Decision 2) |
 | Learning state in the shared database? | Yes, isolated by RLS — which makes RLS load-bearing and testable (Decision 6) |
 | Default for materiality? | None; publishing forces the curator to classify (Decision 3) |
