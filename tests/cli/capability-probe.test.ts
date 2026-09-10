@@ -1,7 +1,9 @@
+import { createServer, type Server } from "node:http";
 import { describe, expect, it } from "vitest";
 import {
   type CapabilityProbeResult,
   classifyCapabilities,
+  probeModelCapabilities,
   reconcileCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
@@ -13,6 +15,51 @@ import {
 
 function caps(over: Partial<CapabilityFlags> = {}): CapabilityFlags {
   return { ...emptyCapabilityFlags(), ...over };
+}
+
+/**
+ * How many times the second catalogue was asked for. The reachability check
+ * hits `/models` on its own, so counting this path is the only honest way to
+ * assert the extra request stayed conditional.
+ */
+function embeddingCatalogueHits(paths: string[]): number {
+  return paths.filter((path) => path.endsWith("/embeddings/models")).length;
+}
+
+/**
+ * Serves a chat catalogue at `/models` and a separate embedding catalogue at
+ * `/embeddings/models`, the way a provider that keeps embedding ids out of its
+ * chat listing does.
+ */
+async function startSplitCatalogueStub(options: {
+  chatModels: string[];
+  embeddingModels: string[];
+}): Promise<{ url: string; paths: string[]; close(): Promise<void> }> {
+  const paths: string[] = [];
+  const server: Server = createServer((req, res) => {
+    const url = req.url ?? "";
+    paths.push(url);
+    const models = url.endsWith("/embeddings/models")
+      ? options.embeddingModels
+      : options.chatModels;
+    res
+      .writeHead(200, { "content-type": "application/json" })
+      .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  if (address === null || typeof address === "string") {
+    throw new Error("Failed to bind split-catalogue stub");
+  }
+  return {
+    url: `http://127.0.0.1:${address.port}/v1`,
+    paths,
+    async close() {
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => (err ? reject(err) : resolve())),
+      );
+    },
+  };
 }
 
 describe("classifyCapabilities", () => {
@@ -261,5 +308,104 @@ describe("speech capabilities are checked against the provider's catalog", () =>
 
     expect(result.ok).toBe(true);
     expect(result.entry?.capabilities.text).toBe(true);
+  });
+});
+
+describe("probeModelCapabilities and a split model catalogue", () => {
+  const embeddingEntry = {
+    url: "",
+    model: "qwen/qwen3-embedding-8b",
+    apiFlavor: "chat-completions" as const,
+  };
+
+  it("finds an embedding model published only at /embeddings/models", async () => {
+    // Without this the row cannot be saved at all: validateModelSave refuses a
+    // model the catalogue does not list, so it cannot even be renamed.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        url: stub.url,
+      });
+
+      expect(probe.reachable).toBe(true);
+      expect(probe.catalog).toContain("qwen/qwen3-embedding-8b");
+      expect(probe.detected.embedding).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("asks only the chat catalogue when it already lists the model", async () => {
+    // Every probe pays for this request, so the second one stays conditional.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["text-embedding-3-small"],
+      embeddingModels: [],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        model: "text-embedding-3-small",
+        url: stub.url,
+      });
+
+      expect(probe.detected.embedding).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(0);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("does not ask the second catalogue for a chat model", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        model: "openai/gpt-5.6-luna",
+        url: stub.url,
+      });
+
+      expect(probe.detected.text).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(0);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("lets a split-catalogue embedding row save", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const entry: ModelEntry = {
+        id: "emb",
+        label: "renamed by the learner",
+        url: stub.url,
+        model: "qwen/qwen3-embedding-8b",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: caps({ embedding: true }),
+        detectedCapabilities: emptyCapabilityFlags(),
+      };
+
+      const result = validateModelSave(
+        entry,
+        await probeModelCapabilities(entry),
+      );
+
+      expect(result.ok).toBe(true);
+      expect(result.entry?.label).toBe("renamed by the learner");
+    } finally {
+      await stub.close();
+    }
   });
 });

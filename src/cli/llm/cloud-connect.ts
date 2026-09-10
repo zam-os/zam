@@ -215,7 +215,8 @@ export async function connectCloudProvider(
     embedFlags.embedding = true;
     const embedRow: ResolvedModelEntry = {
       id: embedExisting?.id ?? ulid(),
-      label: descriptor.label,
+      // Keep a name the learner chose, as the chat row above does.
+      label: embedExisting?.label ?? descriptor.label,
       url: descriptor.baseUrl,
       model: OPENROUTER_EMBEDDING_MODEL,
       local: false,
@@ -243,7 +244,7 @@ export async function connectCloudProvider(
     sttFlags.stt = true;
     const sttRow: ResolvedModelEntry = {
       id: sttExisting?.id ?? ulid(),
-      label: descriptor.label,
+      label: sttExisting?.label ?? descriptor.label,
       url: descriptor.baseUrl,
       model: OPENROUTER_STT_MODEL,
       local: false,
