@@ -33,15 +33,21 @@ function embeddingCatalogueHits(paths: string[]): number {
  */
 async function startSplitCatalogueStub(options: {
   chatModels: string[];
-  embeddingModels: string[];
+  embeddingModels?: string[];
+  transcriptionModels?: string[];
+  speechModels?: string[];
 }): Promise<{ url: string; paths: string[]; close(): Promise<void> }> {
   const paths: string[] = [];
   const server: Server = createServer((req, res) => {
     const url = req.url ?? "";
     paths.push(url);
-    const models = url.endsWith("/embeddings/models")
-      ? options.embeddingModels
-      : options.chatModels;
+    const models = url.includes("/embeddings/models")
+      ? (options.embeddingModels ?? [])
+      : url.includes("output_modalities=transcription")
+        ? (options.transcriptionModels ?? [])
+        : url.includes("output_modalities=speech")
+          ? (options.speechModels ?? [])
+          : options.chatModels;
     res
       .writeHead(200, { "content-type": "application/json" })
       .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
@@ -404,6 +410,97 @@ describe("probeModelCapabilities and a split model catalogue", () => {
 
       expect(result.ok).toBe(true);
       expect(result.entry?.label).toBe("renamed by the learner");
+    } finally {
+      await stub.close();
+    }
+  });
+});
+
+// OpenRouter answers `/models` with its text models only. Embedding ids sit at
+// `{base}/embeddings/models`, and speech ids appear only behind a modality
+// filter — so a working transcription model read as one the endpoint does not
+// offer, and `validateModelSave` refused to store the row at all (2026-09-10).
+describe("probeModelCapabilities and a modality-filtered catalogue", () => {
+  it("finds a transcription model published only behind the filter", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      transcriptionModels: ["openai/gpt-transcribe"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "openai/gpt-transcribe",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toContain("openai/gpt-transcribe");
+      expect(probe.detected.stt).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=transcription")),
+      ).toHaveLength(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("finds a speech model published only behind the filter", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "hexgrad/kokoro-82m",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.detected.tts).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=speech")),
+      ).toHaveLength(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("still refuses a speech name the provider serves nowhere", async () => {
+    // The 2026-08-01 guard: `mimo-v2.5-tts` looks like TTS and Xiaomi does not
+    // serve it. Widening where we look must not widen what we believe.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["mimo-v2.5", "mimo-v2.5-vl"],
+      speechModels: ["some-other-voice"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "mimo-v2.5-tts",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.detected.tts).toBe(false);
+      expect(probe.detected.stt).toBe(false);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("asks for no modality catalogue when the model is a listed chat model", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      transcriptionModels: ["openai/gpt-transcribe"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      await probeModelCapabilities({
+        url: stub.url,
+        model: "openai/gpt-5.6-luna",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities")),
+      ).toHaveLength(0);
     } finally {
       await stub.close();
     }
