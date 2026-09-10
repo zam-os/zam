@@ -195,6 +195,86 @@ describe("bridge model-* registry commands", () => {
     expect(renamed.parsed.model.label).toBe("New name");
     // Nothing was re-probed, so the stamp must not pretend otherwise.
     expect(renamed.parsed.model.probedAt).toBe(probedAt);
+
+    // Read it back rather than trusting the command's own echo.
+    const listed = (await runBridge(["model-list"])) as {
+      parsed: { models: Array<{ id: string; label: string }> };
+    };
+    expect(listed.parsed.models.find((m) => m.id === id)?.label).toBe(
+      "New name",
+    );
+  });
+
+  it("re-probes when the credential changed, even if nothing else did", async () => {
+    // A replacement secret is stored under the row's existing ref, so every
+    // field stays identical while the key changes — and the catalogue an
+    // endpoint reports is answered for that key. Without the signal this looks
+    // exactly like a rename, and the row would keep a verification earned by
+    // the previous credential.
+    const created = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { model: { id: string } } };
+
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+
+    const res = (await runBridge([
+      "model-upsert",
+      "--id",
+      created.parsed.model.id,
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+      "--key-changed",
+    ])) as { parsed: { error?: string } };
+
+    // The endpoint is gone, so a probe can only fail — which is the proof that
+    // one was attempted.
+    expect(res.parsed.error).toMatch(/unreachable/i);
+  });
+
+  it("re-probes when a capability is widened", async () => {
+    const created = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { model: { id: string } } };
+
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+
+    const res = (await runBridge([
+      "model-upsert",
+      "--id",
+      created.parsed.model.id,
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true, embedding: true }),
+    ])) as { parsed: { error?: string } };
+
+    expect(res.parsed.error).toMatch(/unreachable/i);
   });
 
   it("still verifies the endpoint when the model itself changes", async () => {

@@ -506,3 +506,60 @@ describe("probeModelCapabilities and a modality-filtered catalogue", () => {
     }
   });
 });
+
+describe("a provider that ignores the modality filter", () => {
+  /** Answers every `/models` request with the same unfiltered list. */
+  async function startUnfilteredStub(
+    models: string[],
+  ): Promise<{ url: string; close(): Promise<void> }> {
+    const server: Server = createServer((_req, res) => {
+      res
+        .writeHead(200, { "content-type": "application/json" })
+        .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const address = server.address();
+    if (address === null || typeof address === "string") {
+      throw new Error("Failed to bind unfiltered stub");
+    }
+    return {
+      url: `http://127.0.0.1:${address.port}/v1`,
+      async close() {
+        await new Promise<void>((resolve, reject) =>
+          server.close((err) => (err ? reject(err) : resolve())),
+        );
+      },
+    };
+  }
+
+  it("claims nothing when the unknown parameter is ignored", async () => {
+    // The fix's own premise: an endpoint that does not know
+    // `output_modalities` answers with its normal list, and the verdict is
+    // unchanged. The model is absent from that list by construction — the
+    // second lookup only happens because the first missed it — so merging the
+    // same list twice must not make it appear.
+    const stub = await startUnfilteredStub(["mimo-v2.5", "mimo-v2.5-vl"]);
+    try {
+      const entry: ModelEntry = {
+        id: "x",
+        label: "Ignored filter",
+        url: stub.url,
+        model: "mimo-v2.5-tts",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: caps({ tts: true }),
+        detectedCapabilities: emptyCapabilityFlags(),
+      };
+      const probe = await probeModelCapabilities(entry);
+
+      expect(probe.reachable).toBe(true);
+      expect(probe.detected.tts).toBe(false);
+      expect(probe.detected.stt).toBe(false);
+      // And the save is still refused, exactly as before the fix.
+      expect(validateModelSave(entry, probe).ok).toBe(false);
+    } finally {
+      await stub.close();
+    }
+  });
+});

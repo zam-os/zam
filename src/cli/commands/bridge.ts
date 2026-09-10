@@ -3152,6 +3152,10 @@ bridgeCommand
   )
   .option("--id <id>", "Existing entry id (omit to create)")
   .option("--label <label>", "Human label")
+  .option(
+    "--key-changed",
+    "The credential behind this row was just replaced, so re-probe even when nothing else changed",
+  )
   .option("--url <url>", "Endpoint base URL")
   .option("--model <model>", "Model id")
   .option(
@@ -3360,8 +3364,14 @@ bridgeCommand
     // way to fix a name becomes deleting the row. Saving a name is not
     // verifying a model; `model-reprobe` is for that, and an unavailable model
     // still announces itself on first use.
+    // `--key-changed` cannot be inferred from the fields: a caller that stores
+    // a new secret under the row's existing `apiKeyRef` leaves every one of
+    // them byte-identical while the credential behind it is different, and the
+    // catalogue an endpoint reports is answered *for that key*. Comparing
+    // `apiKeyRef` would not catch it, so the caller says so instead.
     const renameOnly =
       prev !== undefined &&
+      opts.keyChanged !== true &&
       candidate.url === prev.url &&
       candidate.model === prev.model &&
       candidate.apiFlavor === prev.apiFlavor &&
@@ -3370,7 +3380,9 @@ bridgeCommand
     if (renameOnly) {
       const kept: ModelEntry = {
         ...candidate,
-        detectedCapabilities: prev.detectedCapabilities,
+        // `candidate` already carries `prev.detectedCapabilities` behind an
+        // `?? emptyCapabilityFlags()` fallback; re-assigning the raw value here
+        // would put `undefined` back on a row that never had the field.
         ...(prev.probedAt ? { probedAt: prev.probedAt } : {}),
       };
       const next = [...models];
