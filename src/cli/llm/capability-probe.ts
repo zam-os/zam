@@ -14,6 +14,7 @@
 
 import {
   type CapabilityFlags,
+  embeddingsEndpointUrl,
   emptyCapabilityFlags,
   getProviderApiKey,
   type ModelEntry,
@@ -190,11 +191,24 @@ export async function probeModelCapabilities(
     return { reachable: false, catalog: [], detected: emptyCapabilityFlags() };
   }
 
-  const catalog = await getAvailableModels(entry.url, apiKey);
+  const chatCatalog = await getAvailableModels(entry.url, apiKey);
+  const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
+
+  // An embedding model may be published only at `{base}/embeddings/models`,
+  // and a catalogue that omits it makes `validateModelSave` refuse to store
+  // the row at all — so the model cannot even be renamed. Ask the second
+  // catalogue only for a model that looks like an embedding one and is
+  // missing from the first, which keeps every other probe at one request.
+  const embeddingsUrl = embeddingsEndpointUrl(entry.url);
+  const catalog =
+    looksEmbedding &&
+    embeddingsUrl !== entry.url &&
+    !catalogHasModel(chatCatalog, entry.model)
+      ? [...chatCatalog, ...(await getAvailableModels(embeddingsUrl, apiKey))]
+      : chatCatalog;
   const catalogKnown = catalog.length > 0;
 
   let dimProbeEmbedding = false;
-  const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
   if (opts.embeddingDimProbe && !catalogKnown && !looksEmbedding) {
     try {
       const [vector] = await embedTexts(

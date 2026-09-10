@@ -14,6 +14,7 @@ import type { Database, Token } from "../../kernel/index.js";
 import {
   computeContentHash,
   embeddingContentForToken,
+  embeddingsEndpointUrl,
   getEmbeddingCoverage,
   getSetting,
   listTokensNeedingEmbedding,
@@ -110,6 +111,49 @@ export function embeddingTextForQuery(text: string, model: string): string {
   return isGemma ? `task: search result | query: ${text}` : text;
 }
 
+/** Whether a stored key is a real one rather than the local placeholder. */
+function hasUsableKey(apiKey: string | undefined): boolean {
+  return (
+    apiKey !== undefined && apiKey !== "" && apiKey !== DEFAULT_LLM_API_KEY
+  );
+}
+
+/**
+ * Whether an endpoint admits to serving the embedding model it is configured
+ * for.
+ *
+ * Two catalogues, because a provider may publish embedding ids in either
+ * place: some list them alongside their chat models at `{base}/models`,
+ * others only at `{base}/embeddings/models`.
+ *
+ * An empty catalogue is a yes: a local runner that answers nothing here still
+ * embeds, and a wrong model id surfaces on the first call.
+ */
+async function endpointOffersModel(endpoint: ProviderConfig): Promise<boolean> {
+  // One request in the common case. The second catalogue is asked for only
+  // when the first neither lists the model nor is the same URL — resolution
+  // runs on paths as ordinary as registering a token, where an avoidable
+  // round-trip is felt.
+  const embeddingsUrl = embeddingsEndpointUrl(endpoint.url);
+  const urls =
+    embeddingsUrl === endpoint.url
+      ? [endpoint.url]
+      : [endpoint.url, embeddingsUrl];
+
+  const wanted = endpoint.model.toLowerCase();
+  let anyCatalogue = false;
+  for (const url of urls) {
+    const models = await getAvailableModels(url, endpoint.apiKey);
+    if (models.length === 0) continue;
+    anyCatalogue = true;
+    if (models.some((candidate) => candidate.toLowerCase() === wanted)) {
+      return true;
+    }
+  }
+  // No catalogue at all is a yes; a catalogue that omits the model is a no.
+  return !anyCatalogue;
+}
+
 /**
  * Resolve a usable embedding endpoint, or null when unavailable — never
  * throws. Semantic search is a pure capability add: the caller always has a
@@ -126,19 +170,14 @@ export async function resolveUsableEmbeddingEndpoint(
 
   for (const endpoint of [cfg, ...(cfg.fallback ? [cfg.fallback] : [])]) {
     if (endpoint.apiFlavor !== "chat-completions") continue;
+    // A hosted endpoint with no key answers 401 on every call, so choosing it
+    // over a configured fallback loses semantic search to a row that cannot
+    // work. The companion applies the same rule when it picks a cloud row.
+    if (!endpoint.local && !hasUsableKey(endpoint.apiKey)) continue;
     const online = await isLlmOnline(endpoint.url);
     if (!online) continue;
 
-    const availableModels = await getAvailableModels(
-      endpoint.url,
-      endpoint.apiKey,
-    );
-    const modelAvailable =
-      availableModels.length === 0 ||
-      availableModels.some(
-        (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
-      );
-    if (modelAvailable) return endpoint;
+    if (await endpointOffersModel(endpoint)) return endpoint;
   }
 
   return null;
@@ -163,7 +202,7 @@ export async function embedTexts(
 
   let res: Response;
   try {
-    res = await fetch(`${endpoint.url}/embeddings`, {
+    res = await fetch(embeddingsEndpointUrl(endpoint.url), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
