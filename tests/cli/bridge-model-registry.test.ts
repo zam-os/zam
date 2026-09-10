@@ -153,6 +153,82 @@ describe("bridge model-* registry commands", () => {
     });
   });
 
+  it("saves a rename with the endpoint gone, and keeps the old probe stamp", async () => {
+    // Renaming does not change what the endpoint serves. Re-proving the model
+    // exists made rows uneditable wherever the provider publishes no catalogue
+    // covering them — OpenRouter's speech models — or where the model has since
+    // been deprecated: the only way to fix a name became deleting the row.
+    // Killing the stub first is the sharpest way to say "no probe happened".
+    const created = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Old name",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { model: { id: string; probedAt?: string } } };
+    const { id, probedAt } = created.parsed.model;
+    expect(probedAt).toBeTruthy();
+
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+
+    const renamed = (await runBridge([
+      "model-upsert",
+      "--id",
+      id,
+      "--label",
+      "New name",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as {
+      parsed: { ok: boolean; model: { label: string; probedAt?: string } };
+    };
+
+    expect(renamed.parsed.ok).toBe(true);
+    expect(renamed.parsed.model.label).toBe("New name");
+    // Nothing was re-probed, so the stamp must not pretend otherwise.
+    expect(renamed.parsed.model.probedAt).toBe(probedAt);
+  });
+
+  it("still verifies the endpoint when the model itself changes", async () => {
+    const created = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "gemma4-it:e4b",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { model: { id: string } } };
+
+    await new Promise<void>((resolve) => server.close(() => resolve()));
+
+    const changed = (await runBridge([
+      "model-upsert",
+      "--id",
+      created.parsed.model.id,
+      "--label",
+      "Gemma",
+      "--url",
+      baseUrl,
+      "--model",
+      "some-other-model",
+      "--capabilities",
+      JSON.stringify({ text: true }),
+    ])) as { parsed: { error?: string } };
+
+    expect(changed.parsed.error).toMatch(/unreachable/i);
+  });
+
   it("lists, reorders, and removes registry entries", async () => {
     const a = (await runBridge([
       "model-upsert",
