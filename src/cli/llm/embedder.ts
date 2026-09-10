@@ -111,6 +111,40 @@ export function embeddingTextForQuery(text: string, model: string): string {
   return isGemma ? `task: search result | query: ${text}` : text;
 }
 
+/** Whether a stored key is a real one rather than the local placeholder. */
+function hasUsableKey(apiKey: string | undefined): boolean {
+  return (
+    apiKey !== undefined && apiKey !== "" && apiKey !== DEFAULT_LLM_API_KEY
+  );
+}
+
+/**
+ * Whether an endpoint admits to serving the embedding model it is configured
+ * for.
+ *
+ * Two catalogues, because a provider may publish embedding models in either
+ * place: OpenAI lists them alongside its chat models at `{base}/models`, while
+ * OpenRouter omits them there and lists them at `{base}/embeddings/models`.
+ * Consulting only the first rejects a correctly configured OpenRouter row as a
+ * model the endpoint does not offer, which is how `cloud-connect`'s own row
+ * used to fail.
+ *
+ * An empty catalogue is a yes: a local runner that answers nothing here still
+ * embeds, and a wrong model id surfaces on the first call.
+ */
+async function endpointOffersModel(endpoint: ProviderConfig): Promise<boolean> {
+  const catalogues = await Promise.all([
+    getAvailableModels(endpoint.url, endpoint.apiKey),
+    getAvailableModels(embeddingsEndpointUrl(endpoint.url), endpoint.apiKey),
+  ]);
+  const wanted = endpoint.model.toLowerCase();
+  return catalogues.every((models) => models.length === 0)
+    ? true
+    : catalogues.some((models) =>
+        models.some((candidate) => candidate.toLowerCase() === wanted),
+      );
+}
+
 /**
  * Resolve a usable embedding endpoint, or null when unavailable — never
  * throws. Semantic search is a pure capability add: the caller always has a
@@ -127,19 +161,14 @@ export async function resolveUsableEmbeddingEndpoint(
 
   for (const endpoint of [cfg, ...(cfg.fallback ? [cfg.fallback] : [])]) {
     if (endpoint.apiFlavor !== "chat-completions") continue;
+    // A hosted endpoint with no key answers 401 on every call, so choosing it
+    // over a configured fallback loses semantic search to a row that cannot
+    // work. The companion applies the same rule when it picks a cloud row.
+    if (!endpoint.local && !hasUsableKey(endpoint.apiKey)) continue;
     const online = await isLlmOnline(endpoint.url);
     if (!online) continue;
 
-    const availableModels = await getAvailableModels(
-      endpoint.url,
-      endpoint.apiKey,
-    );
-    const modelAvailable =
-      availableModels.length === 0 ||
-      availableModels.some(
-        (candidate) => candidate.toLowerCase() === endpoint.model.toLowerCase(),
-      );
-    if (modelAvailable) return endpoint;
+    if (await endpointOffersModel(endpoint)) return endpoint;
   }
 
   return null;

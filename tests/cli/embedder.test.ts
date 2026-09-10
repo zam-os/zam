@@ -12,6 +12,7 @@ import {
   embedTexts,
   ensureTokenEmbeddings,
   findPossibleDuplicates,
+  resolveUsableEmbeddingEndpoint,
 } from "../../src/cli/llm/embedder.js";
 import {
   computeContentHash,
@@ -56,6 +57,11 @@ async function readJsonBody(req: IncomingMessage): Promise<unknown> {
 async function startEmbeddingsStub(options?: {
   /** Model ids reported by GET /models; empty means endpoint doesn't expose it. */
   availableModels?: string[];
+  /**
+   * Model ids reported by GET /embeddings/models only, the way OpenRouter
+   * publishes its embedding catalogue while omitting it from /models.
+   */
+  embeddingsCatalogueModels?: string[];
   /** Reorder/shuffle the `index` field on embeddings responses. */
   shuffleIndex?: boolean;
   /** Respond with this HTTP status for /embeddings (default 200). */
@@ -71,6 +77,14 @@ async function startEmbeddingsStub(options?: {
   const server: Server = createServer((req, res) => {
     void (async () => {
       const url = req.url ?? "";
+      if (url.endsWith("/embeddings/models")) {
+        const models = options?.embeddingsCatalogueModels ?? [];
+        res
+          .writeHead(200, { "content-type": "application/json" })
+          .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
+        return;
+      }
+
       if (url.endsWith("/models")) {
         const models = options?.availableModels ?? [];
         res
@@ -178,6 +192,68 @@ async function enableEmbeddingRole(url: string, model?: string) {
 }
 
 // ── Tests ────────────────────────────────────────────────────────────────────
+
+describe("resolveUsableEmbeddingEndpoint", () => {
+  it("accepts a model listed only in the endpoint's embeddings catalogue", async () => {
+    // A provider may keep embedding models out of `/models` and publish them
+    // at `/embeddings/models`. Consulting only the first rejected a correctly
+    // configured row as a model the endpoint does not offer.
+    const stub = await startEmbeddingsStub({
+      availableModels: ["openai/gpt-5.6-luna"],
+      embeddingsCatalogueModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      await enableEmbeddingRole(stub.url, "qwen/qwen3-embedding-8b");
+      const endpoint = await resolveUsableEmbeddingEndpoint(db);
+      expect(endpoint?.model).toBe("qwen/qwen3-embedding-8b");
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("accepts a model listed only in the chat catalogue", async () => {
+    const stub = await startEmbeddingsStub({
+      availableModels: ["text-embedding-3-small"],
+      embeddingsCatalogueModels: [],
+    });
+    try {
+      await enableEmbeddingRole(stub.url, "text-embedding-3-small");
+      const endpoint = await resolveUsableEmbeddingEndpoint(db);
+      expect(endpoint?.model).toBe("text-embedding-3-small");
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("rejects a model neither catalogue lists", async () => {
+    const stub = await startEmbeddingsStub({
+      availableModels: ["openai/gpt-5.6-luna"],
+      embeddingsCatalogueModels: ["qwen/qwen3-embedding-4b"],
+    });
+    try {
+      await enableEmbeddingRole(stub.url, "qwen/qwen3-embedding-8b");
+      expect(await resolveUsableEmbeddingEndpoint(db)).toBeNull();
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("accepts any model when the endpoint publishes no catalogue at all", async () => {
+    // A single-model local runner answers nothing useful here; a wrong id
+    // surfaces on the first call instead.
+    const stub = await startEmbeddingsStub({
+      availableModels: [],
+      embeddingsCatalogueModels: [],
+    });
+    try {
+      await enableEmbeddingRole(stub.url, "embeddinggemma:300m");
+      const endpoint = await resolveUsableEmbeddingEndpoint(db);
+      expect(endpoint?.model).toBe("embeddinggemma:300m");
+    } finally {
+      await stub.close();
+    }
+  });
+});
 
 describe("embedTexts", () => {
   it("sends the OpenAI-compatible request shape and reorders shuffled indices", async () => {
