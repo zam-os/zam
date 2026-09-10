@@ -92,10 +92,25 @@ writeFileSync(
 );
 cpSync(packageLock, join(resourceRoot, "package-lock.json"));
 
+// `--ignore-scripts` is what keeps this build possible without a C++
+// toolchain. better-sqlite3 ships a `binding.gyp`, and npm defaults to
+// `node-gyp rebuild` for any package that has one and declares no install
+// script of its own — so the bundled CLI was compiled from source on every
+// desktop build. It never needed to be: the package also ships a prebuilt
+// `prebuilds/win32-x64.node` (and one per supported platform), which is what
+// it loads at runtime anyway.
+//
+// The compile is not merely wasted work, it fails outright on a machine whose
+// Visual Studio is newer than node-gyp knows: against Visual Studio 2026,
+// node-gyp 11.5.0 reports "Could not find any Visual Studio installation to
+// use" while listing only VS2013–2017 as candidates, and takes the whole
+// `zam ui --build` down with it. None of the four runtime dependencies needs
+// an install script to work.
 const npmArgs = [
   "ci",
   "--omit=dev",
   "--include=optional",
+  "--ignore-scripts",
   "--no-audit",
   "--no-fund",
 ];

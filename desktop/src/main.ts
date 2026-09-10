@@ -3717,6 +3717,11 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
   ];
   if (data.id) args.push("--id", data.id);
   if (!isLocal && keyRef) args.push("--key-ref", keyRef);
+  // A replacement secret is stored under the row's existing ref, so every
+  // argument below stays identical while the credential changes. Say so, or
+  // the bridge takes this for a rename and keeps a verification that was
+  // earned by the previous key.
+  if (!isLocal && data.key) args.push("--key-changed");
 
   try {
     await runBridge("model-upsert", args);

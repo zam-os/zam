@@ -97,6 +97,44 @@ function catalogHasModel(catalog: string[], model: string): boolean {
   return catalog.some((id) => id.toLowerCase() === lower);
 }
 
+/**
+ * The rest of a provider's catalogue, for a model the main listing omits.
+ *
+ * `/models` is not always the whole story. OpenRouter answers it with its
+ * text models only: embedding ids live at `{base}/embeddings/models`, and
+ * speech ids appear only behind a modality filter. A model missing from the
+ * main listing is otherwise treated as one the endpoint does not offer, which
+ * makes `validateModelSave` refuse to store the row at all — so a working
+ * transcription or embedding model could not be added, nor even renamed.
+ *
+ * Asked only for a model whose *name* suggests a modality, and only after the
+ * main listing came back without it, so an ordinary chat probe still costs one
+ * request. An endpoint that does not know these paths or parameters answers
+ * with nothing, or with its normal list, and the verdict is unchanged.
+ */
+async function modalityCatalogue(
+  entry: Pick<ModelEntry, "url" | "model">,
+  apiKey: string,
+  looksEmbedding: boolean,
+): Promise<string[]> {
+  if (looksEmbedding) {
+    const embeddingsUrl = embeddingsEndpointUrl(entry.url);
+    if (embeddingsUrl === entry.url) return [];
+    return getAvailableModels(embeddingsUrl, apiKey);
+  }
+  if (matchesAny(entry.model, STT_MODEL_HINTS)) {
+    return getAvailableModels(
+      entry.url,
+      apiKey,
+      "?output_modalities=transcription",
+    );
+  }
+  if (matchesAny(entry.model, TTS_MODEL_HINTS)) {
+    return getAvailableModels(entry.url, apiKey, "?output_modalities=speech");
+  }
+  return [];
+}
+
 /** What `probeModelCapabilities` learned about an endpoint. */
 export interface CapabilityProbeResult {
   /** Whether the endpoint answered at all (drives the offline-save guard). */
@@ -194,18 +232,12 @@ export async function probeModelCapabilities(
   const chatCatalog = await getAvailableModels(entry.url, apiKey);
   const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
 
-  // An embedding model may be published only at `{base}/embeddings/models`,
-  // and a catalogue that omits it makes `validateModelSave` refuse to store
-  // the row at all — so the model cannot even be renamed. Ask the second
-  // catalogue only for a model that looks like an embedding one and is
-  // missing from the first, which keeps every other probe at one request.
-  const embeddingsUrl = embeddingsEndpointUrl(entry.url);
-  const catalog =
-    looksEmbedding &&
-    embeddingsUrl !== entry.url &&
-    !catalogHasModel(chatCatalog, entry.model)
-      ? [...chatCatalog, ...(await getAvailableModels(embeddingsUrl, apiKey))]
-      : chatCatalog;
+  const catalog = catalogHasModel(chatCatalog, entry.model)
+    ? chatCatalog
+    : [
+        ...chatCatalog,
+        ...(await modalityCatalogue(entry, apiKey, looksEmbedding)),
+      ];
   const catalogKnown = catalog.length > 0;
 
   let dimProbeEmbedding = false;

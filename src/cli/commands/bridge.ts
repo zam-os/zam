@@ -3048,6 +3048,13 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
   };
 }
 
+/** Whether two flag records select exactly the same capabilities. */
+function sameCapabilityFlags(a: CapabilityFlags, b: CapabilityFlags): boolean {
+  return (
+    Object.keys(emptyCapabilityFlags()) as Array<keyof CapabilityFlags>
+  ).every((key) => a[key] === b[key]);
+}
+
 /** Parse a `{cap: true}` JSON object into a full capability flag record. */
 function parseCapabilityFlags(json: string | undefined): CapabilityFlags {
   const flags = emptyCapabilityFlags();
@@ -3145,6 +3152,10 @@ bridgeCommand
   )
   .option("--id <id>", "Existing entry id (omit to create)")
   .option("--label <label>", "Human label")
+  .option(
+    "--key-changed",
+    "The credential behind this row was just replaced, so re-probe even when nothing else changed",
+  )
   .option("--url <url>", "Endpoint base URL")
   .option("--model <model>", "Model id")
   .option(
@@ -3345,6 +3356,41 @@ bridgeCommand
     if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
     // Clearing agent fields when re-saving as HTTP keeps the row coherent.
     // (transport/agentHarness omitted = HTTP default.)
+
+    // Renaming a row does not change what the endpoint serves, so re-proving
+    // the model exists is at best a wasted round-trip. At worst it makes the
+    // row uneditable: a provider that publishes no catalogue covering the
+    // model — or that has since deprecated it — fails the save, and the only
+    // way to fix a name becomes deleting the row. Saving a name is not
+    // verifying a model; `model-reprobe` is for that, and an unavailable model
+    // still announces itself on first use.
+    // `--key-changed` cannot be inferred from the fields: a caller that stores
+    // a new secret under the row's existing `apiKeyRef` leaves every one of
+    // them byte-identical while the credential behind it is different, and the
+    // catalogue an endpoint reports is answered *for that key*. Comparing
+    // `apiKeyRef` would not catch it, so the caller says so instead.
+    const renameOnly =
+      prev !== undefined &&
+      opts.keyChanged !== true &&
+      candidate.url === prev.url &&
+      candidate.model === prev.model &&
+      candidate.apiFlavor === prev.apiFlavor &&
+      candidate.local === prev.local &&
+      sameCapabilityFlags(candidate.capabilities, prev.capabilities);
+    if (renameOnly) {
+      const kept: ModelEntry = {
+        ...candidate,
+        // `candidate` already carries `prev.detectedCapabilities` behind an
+        // `?? emptyCapabilityFlags()` fallback; re-assigning the raw value here
+        // would put `undefined` back on a row that never had the field.
+        ...(prev.probedAt ? { probedAt: prev.probedAt } : {}),
+      };
+      const next = [...models];
+      next[existingIndex] = kept;
+      await writeRegistry(next);
+      jsonOut({ ok: true, model: modelRow(kept), probe: null });
+      return;
+    }
 
     const probe = await probeModelCapabilities(candidate, {
       embeddingDimProbe: true,

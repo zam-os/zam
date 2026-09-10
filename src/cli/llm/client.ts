@@ -1924,11 +1924,18 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 export async function getAvailableModels(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
+  /**
+   * Query string appended to `/models`, for a provider that publishes part of
+   * its catalogue only behind a filter. An endpoint that does not know the
+   * parameter answers with its unfiltered list, which is the same answer the
+   * caller would otherwise have got.
+   */
+  search = "",
 ): Promise<string[]> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
-    const res = await fetch(`${url}/models`, {
+    const res = await fetch(`${url}/models${search}`, {
       method: "GET",
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: controller.signal,
