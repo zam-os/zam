@@ -14,13 +14,13 @@ import type { Database, Token } from "../../kernel/index.js";
 import {
   computeContentHash,
   embeddingContentForToken,
+  embeddingsEndpointUrl,
   getEmbeddingCoverage,
   getSetting,
   listTokensNeedingEmbedding,
   searchTokensHybrid,
   upsertTokenEmbedding,
 } from "../../kernel/index.js";
-import { embeddingsEndpointUrl } from "../../kernel/util/embeddings-url.js";
 import {
   DEFAULT_LLM_API_KEY,
   getAvailableModels,

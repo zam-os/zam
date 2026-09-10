@@ -889,4 +889,5 @@ export {
   planUpdate,
   WINGET_PACKAGE_ID,
 } from "./system/update-check.js";
+export { embeddingsEndpointUrl } from "./util/embeddings-url.js";
 export { sha256Hex, sha256HexBytes } from "./util/sha256.js";
