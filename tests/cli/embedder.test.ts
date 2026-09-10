@@ -195,9 +195,8 @@ async function enableEmbeddingRole(url: string, model?: string) {
 
 describe("resolveUsableEmbeddingEndpoint", () => {
   it("accepts a model listed only in the endpoint's embeddings catalogue", async () => {
-    // A provider may keep embedding models out of `/models` and publish them
-    // at `/embeddings/models`. Consulting only the first rejected a correctly
-    // configured row as a model the endpoint does not offer.
+    // A provider may keep embedding ids out of `/models` and publish them at
+    // `/embeddings/models` instead.
     const stub = await startEmbeddingsStub({
       availableModels: ["openai/gpt-5.6-luna"],
       embeddingsCatalogueModels: ["qwen/qwen3-embedding-8b"],
@@ -483,6 +482,58 @@ describe("ensureTokenEmbeddings", () => {
       expect(result.embedded).toBe(1);
       expect(fallback.requests).toHaveLength(1);
     } finally {
+      await fallback.close();
+    }
+  });
+
+  it("skips a hosted primary with no key and uses the local fallback", async () => {
+    // A hosted row without a key answers 401 on every call, so it must not
+    // take the role from a fallback that works. Both stubs serve the model and
+    // both are reachable, so the only thing that can send the request to the
+    // fallback is the missing key: drop the skip, or count "sk-none" as a
+    // usable key, and the primary answers instead.
+    const hosted = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+    });
+    const fallback = await startEmbeddingsStub({
+      availableModels: ["embeddinggemma"],
+    });
+    try {
+      await setSetting(db, "llm.enabled", "true");
+      await setSetting(
+        db,
+        "llm.providers",
+        JSON.stringify({
+          hosted: {
+            url: hosted.url,
+            model: "embeddinggemma",
+            // Loopback by address, hosted by declaration: `isLocalEndpoint`
+            // would otherwise exempt every stub in this file from the skip.
+            local: false,
+          },
+          fallback: { url: fallback.url, model: "embeddinggemma" },
+        }),
+      );
+      await setSetting(
+        db,
+        "llm.roles",
+        JSON.stringify({
+          embedding: { primary: "hosted", fallback: "fallback" },
+        }),
+      );
+      await createToken(db, {
+        slug: "keyless-hosted-token",
+        concept: "keyless hosted primary concept",
+        domain: "testing",
+      });
+
+      const result = await ensureTokenEmbeddings(db);
+      expect(result.status).toBe("ok");
+      expect(result.embedded).toBe(1);
+      expect(fallback.requests).toHaveLength(1);
+      expect(hosted.requests).toHaveLength(0);
+    } finally {
+      await hosted.close();
       await fallback.close();
     }
   });

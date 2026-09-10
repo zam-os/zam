@@ -122,12 +122,9 @@ function hasUsableKey(apiKey: string | undefined): boolean {
  * Whether an endpoint admits to serving the embedding model it is configured
  * for.
  *
- * Two catalogues, because a provider may publish embedding models in either
- * place: OpenAI lists them alongside its chat models at `{base}/models`, while
- * OpenRouter omits them there and lists them at `{base}/embeddings/models`.
- * Consulting only the first rejects a correctly configured OpenRouter row as a
- * model the endpoint does not offer, which is how `cloud-connect`'s own row
- * used to fail.
+ * Two catalogues, because a provider may publish embedding ids in either
+ * place: some list them alongside their chat models at `{base}/models`,
+ * others only at `{base}/embeddings/models`.
  *
  * An empty catalogue is a yes: a local runner that answers nothing here still
  * embeds, and a wrong model id surfaces on the first call.
