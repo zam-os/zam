@@ -24,6 +24,7 @@
  * the same trade `llm.vision.api_key` has always made.
  */
 
+import { getProviderApiKey } from "../../kernel/credentials.js";
 import type { Database, ModelEntry } from "../../kernel/index.js";
 import { getSetting, setSetting } from "../../kernel/models/settings.js";
 import {
@@ -59,6 +60,31 @@ export function isMachineLocalEntry(entry: ModelEntry): boolean {
 function stripSecret(entry: ResolvedModelEntry): ModelEntry {
   const { apiKey: _apiKey, ...rest } = entry;
   return rest;
+}
+
+/**
+ * Give a shared row the key it needs to be usable anywhere.
+ *
+ * A cloud row is shared by construction, but `apiKeyRef` names an entry in one
+ * machine's credentials file. A row saved with only that reference reaches
+ * every other client as a model without a key: the companion excludes it
+ * (`no-key`) and a direct call answers 401, which reads as a broken model
+ * rather than as a credential that never left the laptop. `cloud-connect`
+ * always resolved the reference before saving; a row configured through
+ * Settings did not, and that is the whole difference between an endpoint that
+ * works on one desktop and one that works wherever the learner signs in.
+ *
+ * A reference this machine cannot resolve is left as it stands — it belongs to
+ * another machine, and replacing it would trade a row that works there for one
+ * that works nowhere.
+ */
+function withSharedSecret(
+  entry: ResolvedModelEntry,
+  resolveKey: (ref: string) => string | null,
+): ResolvedModelEntry {
+  if (entry.apiKey || !entry.apiKeyRef) return entry;
+  const apiKey = resolveKey(entry.apiKeyRef);
+  return apiKey ? { ...entry, apiKey } : entry;
 }
 
 async function readCloudModels(db: Database): Promise<ResolvedModelEntry[]> {
@@ -135,6 +161,7 @@ export async function loadModelRegistry(
 export async function saveModelRegistry(
   db: Database,
   entries: ResolvedModelEntry[],
+  resolveKey: (ref: string) => string | null = getProviderApiKey,
 ): Promise<void> {
   // Claim the migration slot first: writing the split list *is* the migration,
   // and letting a later lazy pass run would re-upload rows just removed.
@@ -142,7 +169,9 @@ export async function saveModelRegistry(
   saveMachineAiModels(entries.filter(isMachineLocalEntry).map(stripSecret));
   await writeCloudModels(
     db,
-    entries.filter((entry) => !isMachineLocalEntry(entry)),
+    entries
+      .filter((entry) => !isMachineLocalEntry(entry))
+      .map((entry) => withSharedSecret(entry, resolveKey)),
   );
 }
 
