@@ -133,16 +133,28 @@ function hasUsableKey(apiKey: string | undefined): boolean {
  * embeds, and a wrong model id surfaces on the first call.
  */
 async function endpointOffersModel(endpoint: ProviderConfig): Promise<boolean> {
-  const catalogues = await Promise.all([
-    getAvailableModels(endpoint.url, endpoint.apiKey),
-    getAvailableModels(embeddingsEndpointUrl(endpoint.url), endpoint.apiKey),
-  ]);
+  // One request in the common case. The second catalogue is asked for only
+  // when the first neither lists the model nor is the same URL — resolution
+  // runs on paths as ordinary as registering a token, where an avoidable
+  // round-trip is felt.
+  const embeddingsUrl = embeddingsEndpointUrl(endpoint.url);
+  const urls =
+    embeddingsUrl === endpoint.url
+      ? [endpoint.url]
+      : [endpoint.url, embeddingsUrl];
+
   const wanted = endpoint.model.toLowerCase();
-  return catalogues.every((models) => models.length === 0)
-    ? true
-    : catalogues.some((models) =>
-        models.some((candidate) => candidate.toLowerCase() === wanted),
-      );
+  let anyCatalogue = false;
+  for (const url of urls) {
+    const models = await getAvailableModels(url, endpoint.apiKey);
+    if (models.length === 0) continue;
+    anyCatalogue = true;
+    if (models.some((candidate) => candidate.toLowerCase() === wanted)) {
+      return true;
+    }
+  }
+  // No catalogue at all is a yes; a catalogue that omits the model is a no.
+  return !anyCatalogue;
 }
 
 /**
