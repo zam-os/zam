@@ -87,7 +87,7 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.
 - **FSRS tests are the source of truth** for scheduling behavior — check `tests/kernel/fsrs.test.ts` when changing scheduling or rating semantics.
-- **Semantic search**: kernel stores embeddings (`token_embeddings`) and ranks (`searchTokensHybrid`); the CLI layer embeds (role `embedding`, `src/cli/llm/embedder.ts`). Never import HTTP/LLM code into the kernel.
+- **Semantic search**: kernel stores embeddings (`token_embeddings`) and ranks (`searchTokensHybrid`); the CLI layer embeds (role `embedding`, `src/cli/llm/embedder.ts`). Never import HTTP/LLM code into the kernel. The one exception is the binding-free database driver in `src/kernel/db/remote/hrana.ts`, which is transport for the `Database` contract, not an integration. Anything else that needs HTTP takes it as an injected function (see `ReferenceFetcher`).
 - **OKF knowledge base (`docs/okf/`)**: living current-truth reference articles that ZAM cards cite as `source_link` (ADR 2026-07-17). Never edit bundle files by hand — write through the `zam_okf_upsert` MCP tool (it validates and regenerates `index.md`/`log.md`); a PR that changes behavior an article describes updates that article in the same PR. Decision rationale stays in ADRs; articles only reference them (`# Citations`).
 
 ## Commit format
