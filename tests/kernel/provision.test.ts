@@ -664,6 +664,83 @@ describe("M027 review content version", () => {
 });
 
 /**
+ * A migration that adds two columns behind one column check is only
+ * idempotent when both statements land. The schema marker is written after
+ * the whole chain, so a run that dies between the two ALTERs re-enters the
+ * chain on the next open — and then skips the block, because the first column
+ * already exists. The second column is never added (issue #334).
+ */
+describe("multi-statement migration guards", () => {
+  async function columns(db: Database, table: string): Promise<string[]> {
+    const rows = (await db.pragma(`table_info(${table})`)) as Array<{
+      name: string;
+    }>;
+    return rows.map((row) => row.name);
+  }
+
+  it("finishes a column pair that an interrupted run left half-added", async () => {
+    const db = await openDatabase({
+      dbPath: join(tempDir(), "half-added.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+
+    // The shape after a crash between the two statements of M014, M016 and
+    // M018: the column the guard checks exists, its sibling does not.
+    await db.exec("ALTER TABLE tokens DROP COLUMN maintenance_reason");
+    await db.exec("ALTER TABLE tokens DROP COLUMN published_at");
+    await db.exec("ALTER TABLE cards DROP COLUMN assigned_by");
+
+    await applySchemaAndMigrations(db);
+
+    expect(await columns(db, "tokens")).toEqual(
+      expect.arrayContaining(["maintenance_reason", "published_at"]),
+    );
+    expect(await columns(db, "cards")).toContain("assigned_by");
+    await db.close();
+  });
+
+  it("commits the M017 column together with its backfill, or neither", async () => {
+    const db = await openDatabase({
+      dbPath: join(tempDir(), "m017.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await db
+      .prepare(
+        `INSERT INTO tokens (id, slug, concept, deprecated_at)
+         VALUES ('01K3X9A7R4B8C1D2E3F4G5D001', 'retired', 'c', '2026-07-01T00:00:00.000Z')`,
+      )
+      .run();
+    await db.exec("ALTER TABLE tokens DROP COLUMN editorial_state");
+
+    // A run that dies on the backfill must not leave the column behind —
+    // that column is exactly what makes the next run skip the backfill.
+    const backfill = "SET editorial_state = 'deprecated'";
+    const dying = (inner: Database): Database => ({
+      ...inner,
+      exec: async (sql: string) => {
+        if (sql.includes(backfill)) throw new Error("simulated crash");
+        await inner.exec(sql);
+      },
+      transaction: (fn) => inner.transaction((tx) => fn(dying(tx))),
+    });
+    await expect(applySchemaAndMigrations(dying(db))).rejects.toThrow(
+      "simulated crash",
+    );
+    expect(await columns(db, "tokens")).not.toContain("editorial_state");
+
+    await applySchemaAndMigrations(db);
+
+    const row = (await db
+      .prepare("SELECT editorial_state FROM tokens WHERE slug = 'retired'")
+      .get()) as { editorial_state: string };
+    expect(row.editorial_state).toBe("deprecated");
+    await db.close();
+  });
+});
+
+/**
  * The version gate makes `CURRENT_SCHEMA_VERSION` load-bearing: a database
  * stamped with it skips the whole migration chain. So a migration added
  * without bumping the constant is not a stale comment — it is a migration that

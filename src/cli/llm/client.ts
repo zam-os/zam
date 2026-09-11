@@ -21,6 +21,7 @@ import type {
   SupportedLocale,
 } from "../../kernel/index.js";
 import {
+  BLOOM_VERBS,
   ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
@@ -636,14 +637,6 @@ const LOCALIZED_COMPLETENESS: Record<
   zh: { complete: "完整", incomplete: "不完整" },
   ja: { complete: "完全", incomplete: "不完全" },
 };
-
-const BLOOM_VERBS = {
-  1: "Remember",
-  2: "Understand",
-  3: "Apply",
-  4: "Analyze",
-  5: "Synthesize",
-} as const;
 
 interface ChatCompletionResponse {
   choices?: Array<{
