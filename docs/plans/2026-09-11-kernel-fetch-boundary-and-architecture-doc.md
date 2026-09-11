@@ -23,7 +23,7 @@ schema change or a release note beyond one line.
 
 ## Status
 
-- [ ] **Phase 1 — Azure DevOps connector moves to the CLI layer**
+- [x] **Phase 1 — Azure DevOps connector moves to the CLI layer**
 - [ ] **Phase 2 — reference resolver takes an injected fetcher**
 - [ ] **Phase 3 — the rule names its one exception**
 - [ ] **Phase 4 — `docs/ARCHITECTURE.md` becomes a map**

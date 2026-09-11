@@ -46,12 +46,6 @@ export {
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
-export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
-// Connectors
-export {
-  fetchActiveWorkItems,
-  loadADOConfig,
-} from "./connectors/azure-devops.js";
 export type {
   ADOCredentials,
   CredentialCheckEntry,
