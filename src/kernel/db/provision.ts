@@ -418,9 +418,18 @@ export async function runMigrations(db: Database): Promise<void> {
   // M014: token maintenance state (ADR 2026-07-18). NULL = healthy; a
   // timestamp marks the token as needing repair (stale source binding,
   // ambiguous re-import) — its cards leave the review queue until cleared.
-  if (tokenCols.length > 0 && !tokenCols.includes("maintenance_at")) {
-    await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_at TEXT`);
-    await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_reason TEXT`);
+  //
+  // Each ALTER is guarded on its own column. One guard over both would skip
+  // the second column forever after a run that died between the two
+  // statements: the first column exists, so the block never runs again
+  // (issue #334). The same rule holds for M016 and M018 below.
+  if (tokenCols.length > 0) {
+    if (!tokenCols.includes("maintenance_at")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_at TEXT`);
+    }
+    if (!tokenCols.includes("maintenance_reason")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN maintenance_reason TEXT`);
+    }
   }
 
   // M015: content versioning for curated libraries (ADR 2026-07-04 Decision 3).
@@ -445,27 +454,41 @@ export async function runMigrations(db: Database): Promise<void> {
   }
 
   // M016: provenance columns for published revisions (ADR 2026-07-04 Phase 1).
-  if (tokenCols.length > 0 && !tokenCols.includes("published_by")) {
-    await db.exec(`ALTER TABLE tokens ADD COLUMN published_by TEXT`);
-    await db.exec(`ALTER TABLE tokens ADD COLUMN published_at TEXT`);
+  if (tokenCols.length > 0) {
+    if (!tokenCols.includes("published_by")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN published_by TEXT`);
+    }
+    if (!tokenCols.includes("published_at")) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN published_at TEXT`);
+    }
   }
 
   // M017: editorial state for tokens (ADR 2026-07-04 Phase 3).
+  //
+  // The backfill cannot be guarded by a column check, so column and backfill
+  // commit together: a run that dies in between leaves no column behind, and
+  // the next run redoes both instead of skipping the backfill.
   if (tokenCols.length > 0 && !tokenCols.includes("editorial_state")) {
-    await db.exec(
-      `ALTER TABLE tokens ADD COLUMN editorial_state TEXT NOT NULL DEFAULT 'published'`,
-    );
-    await db.exec(
-      `UPDATE tokens SET editorial_state = 'deprecated' WHERE deprecated_at IS NOT NULL`,
-    );
+    await db.transaction(async (tx) => {
+      await tx.exec(
+        `ALTER TABLE tokens ADD COLUMN editorial_state TEXT NOT NULL DEFAULT 'published'`,
+      );
+      await tx.exec(
+        `UPDATE tokens SET editorial_state = 'deprecated' WHERE deprecated_at IS NOT NULL`,
+      );
+    });
   }
 
   // M018: knowledge assignments (ADR 2026-07-04 Decision 10).
-  if (cardCols.length > 0 && !cardCols.includes("assigned_by")) {
-    await db.exec(`ALTER TABLE cards ADD COLUMN assigned_by TEXT`);
-    await db.exec(
-      `ALTER TABLE cards ADD COLUMN assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL`,
-    );
+  if (cardCols.length > 0) {
+    if (!cardCols.includes("assigned_by")) {
+      await db.exec(`ALTER TABLE cards ADD COLUMN assigned_by TEXT`);
+    }
+    if (!cardCols.includes("assignment_id")) {
+      await db.exec(
+        `ALTER TABLE cards ADD COLUMN assignment_id TEXT REFERENCES assignments(id) ON DELETE SET NULL`,
+      );
+    }
   }
 
   await db.exec(`
