@@ -189,6 +189,8 @@ import {
   updateCheck as handleUpdateCheck,
   withdrawAssignmentHandler as handleWithdrawAssignment,
   type ImportOkfTokenInput,
+  parseKnowledgeContextNames,
+  resolveKnowledgeContexts,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
 import { mapWithConcurrency } from "../curriculum/concurrency.js";
@@ -215,7 +217,6 @@ import {
 } from "../curriculum/pdf-text.js";
 import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
-import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
   probeModelCapabilities,
   validateModelSave,
@@ -394,28 +395,6 @@ function jsonError(message: string): never {
   }
   console.log(JSON.stringify({ error: msg }, null, 2));
   process.exit(1);
-}
-
-function parseKnowledgeContextNames(value: unknown): string[] {
-  if (value == null) return [];
-  if (
-    !Array.isArray(value) ||
-    value.some((name) => typeof name !== "string" || !name.trim())
-  ) {
-    jsonError("knowledgeContexts must be an array of non-empty context names");
-  }
-  return [...new Set(value.map((name) => name.trim()))];
-}
-
-async function resolveKnowledgeContexts(
-  db: Database,
-  names: string[],
-): Promise<KnowledgeContext[]> {
-  try {
-    return await resolveOperationKnowledgeContexts(db, names);
-  } catch (error) {
-    jsonError((error as Error).message);
-  }
 }
 
 function parseNonNegativeIntegerOption(name: string, value: string): number {

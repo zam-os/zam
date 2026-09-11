@@ -20,6 +20,7 @@ import {
   analyzeObservation,
   assessPrecondition,
   assignTokenToContext,
+  BLOOM_VERBS,
   bonusCandidates,
   buildReviewQueue,
   clearTokenMaintenance,
@@ -101,14 +102,6 @@ import {
 } from "./update/latest-version.js";
 import { ensureActiveWorkspace } from "./workspaces/active.js";
 
-const BLOOM_VERBS: Record<BloomLevel, string> = {
-  1: "Remember",
-  2: "Understand",
-  3: "Apply",
-  4: "Analyze",
-  5: "Synthesize",
-};
-
 async function resolveHandlerUser(
   db: Database,
   user?: string,
@@ -121,7 +114,12 @@ async function resolveHandlerUser(
   );
 }
 
-function parseKnowledgeContextNames(value: unknown): string[] {
+/**
+ * Validate a `knowledgeContexts` argument and dedupe its names. Throws on a
+ * malformed value; the bridge command surface turns that into its JSON error
+ * through `withDb`, so both transports share one definition.
+ */
+export function parseKnowledgeContextNames(value: unknown): string[] {
   if (value == null) return [];
   if (
     !Array.isArray(value) ||
@@ -134,7 +132,7 @@ function parseKnowledgeContextNames(value: unknown): string[] {
   return [...new Set(value.map((name) => name.trim()))];
 }
 
-async function resolveKnowledgeContexts(
+export async function resolveKnowledgeContexts(
   db: Database,
   names: string[],
 ): Promise<KnowledgeContext[]> {

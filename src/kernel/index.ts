@@ -593,7 +593,11 @@ export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 export { evaluateRating } from "./recall/evaluator.js";
 export type { PromptInput, RecallPrompt } from "./recall/prompter.js";
 // Recall
-export { generateConceptFreeCue, generatePrompt } from "./recall/prompter.js";
+export {
+  BLOOM_VERBS,
+  generateConceptFreeCue,
+  generatePrompt,
+} from "./recall/prompter.js";
 export type {
   ResolvedReference,
   ReviewContext,
