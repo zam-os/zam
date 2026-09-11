@@ -148,7 +148,7 @@ zam agent connect claude-code   # or codex · antigravity · opencode · copilot
 - **Sessions** — every work/learning episode is logged, so ratings come from real evidence.
 
 The learning engine is an **AI-agnostic kernel** with zero LLM dependencies; the agent
-layer just drives it. See [Architecture](docs/ARCHITECTURE.md).
+layer just drives it. See [Kernel Architecture](docs/okf/kernel-architecture.md).
 
 ---
 
