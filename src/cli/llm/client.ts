@@ -33,10 +33,10 @@ import {
   LANGUAGE_NAMES,
   normalizeLocale,
   parseAnswerPoints,
-  resolveReviewContext,
   supportsAnswerPoints,
   t,
 } from "../../kernel/index.js";
+import { resolveReviewContext } from "../review-context.js";
 import {
   OPENROUTER_EVALUATION_REASONING_EFFORT,
   OPENROUTER_PROVIDER,

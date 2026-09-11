@@ -593,7 +593,10 @@ export {
   generatePrompt,
 } from "./recall/prompter.js";
 export type {
+  ReferenceFetcher,
   ResolvedReference,
+  ResolveReferenceOptions,
+  ResolveReviewContextOptions,
   ReviewContext,
 } from "./recall/reference-resolver.js";
 // NOTE: LLM integration is intentionally NOT part of the kernel. The kernel is

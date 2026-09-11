@@ -77,7 +77,6 @@ import {
   recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
-  resolveReviewContext,
   searchTokensHybrid,
   setTokenMaintenance,
   structuralPublicationChecks,
@@ -95,6 +94,7 @@ import {
   resolveDedupThreshold,
   resolveSuggestMinSimilarity,
 } from "./llm/embedder.js";
+import { resolveReviewContext } from "./review-context.js";
 import {
   currentVersion,
   fetchLatestVersion,
