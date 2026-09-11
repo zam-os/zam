@@ -7,7 +7,7 @@ tags:
   - cli
   - boundaries
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/kernel-architecture.md"
-timestamp: 2026-09-11T16:28:11Z
+timestamp: 2026-09-11T16:59:00Z
 ---
 
 ZAM has exactly two code layers with a hard boundary between them.
@@ -15,10 +15,14 @@ ZAM has exactly two code layers with a hard boundary between them.
 The **kernel** (`src/kernel/`) is the learning engine. It owns scheduling,
 recall, prerequisite blocking, sessions, analytics, and persistence, and it
 has **zero LLM dependencies**: no fetch to model endpoints, no embedding
-calls, ever. It stores vectors and ranks search results, but never produces
-embeddings itself. Its public API is `src/kernel/index.ts`; the package root
-`src/index.ts` re-exports it for programmatic use, and every new kernel
-function must be re-exported there to be usable.
+calls, ever. The one exception is the binding-free database driver in
+`src/kernel/db/remote/hrana.ts`, which is transport for the `Database`
+contract, not an integration. Anything else that needs HTTP takes it as an
+injected function (see `ReferenceFetcher`). It stores vectors and ranks
+search results, but never produces embeddings itself. Its public API is
+`src/kernel/index.ts`; the package root `src/index.ts` re-exports it for
+programmatic use, and every new kernel function must be re-exported there to
+be usable.
 
 The **CLI** (`src/cli/`) is thin orchestration. Each command opens the
 database, calls kernel functions, renders output, and closes the
@@ -78,4 +82,4 @@ Machine-local state (config, selections and credentials) stays under
 - [ADR 2026-07-07 — Resilient Self-Update and Dependency-Failure Isolation](../adr/2026-07-07-resilient-self-update-and-dependency-isolation.md)
 - [ADR 2026-07-23 — Online-Only Server Database and Mobile Gating](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/postgres.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/index.ts`
+- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/postgres.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/recall/reference-resolver.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/review-context.ts`, `src/cli/index.ts`

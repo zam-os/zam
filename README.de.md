@@ -158,7 +158,7 @@ zam agent connect claude-code   # oder codex · antigravity · opencode · copil
   echten Belegen stammen.
 
 Die Lern-Engine ist ein **KI-agnostischer Kernel** ohne jede LLM-Abhängigkeit; die
-Agenten-Schicht steuert ihn nur. Siehe [Architektur](docs/ARCHITECTURE.md).
+Agenten-Schicht steuert ihn nur. Siehe [Kernel-Architektur](docs/okf/kernel-architecture.md).
 
 ---
 

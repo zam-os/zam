@@ -6,6 +6,7 @@ import {
   clearReviewContextCache,
   matchesFilePath,
   normalizePath,
+  type ReferenceFetcher,
   resolveReference,
   resolveReviewContext,
 } from "../../src/kernel/index.js";
@@ -195,6 +196,67 @@ describe("ZAM Reference Resolver & Path Matching", () => {
 
       expect(first?.content).toBe("version-one");
       expect(second?.content).toBe("version-one");
+    });
+
+    it("returns unresolvable shape without fetcher for remote web links", async () => {
+      const link = "https://example.com/article";
+      const result = await resolveReference(link);
+      expect(result.sourceType).toBe("remote_web");
+      expect(result.content).toContain(
+        "Error fetching URL reference: No HTTP fetcher configured",
+      );
+      expect(result.content).toContain(link);
+      expect(result.url).toBe(link);
+
+      const ctx = await resolveReviewContext(link);
+      expect(ctx?.sourceType).toBe("remote_web");
+      expect(ctx?.content).toContain(
+        "Error fetching URL reference: No HTTP fetcher configured",
+      );
+    });
+
+    it("uses stubbed fetcher for remote web links", async () => {
+      const link = "https://example.com/article";
+      let fetchedUrl = "";
+      const stubFetcher: ReferenceFetcher = async (url: string) => {
+        fetchedUrl = url;
+        return {
+          ok: true,
+          status: 200,
+          statusText: "OK",
+          text: async () =>
+            "<html><body><p>Fetched remote text</p></body></html>",
+        };
+      };
+
+      const result = await resolveReference(link, { fetch: stubFetcher });
+      expect(fetchedUrl).toBe(link);
+      expect(result.sourceType).toBe("remote_web");
+      expect(result.content).toBe("Fetched remote text");
+
+      const ctx = await resolveReviewContext(link, { fetch: stubFetcher });
+      expect(ctx?.sourceType).toBe("remote_web");
+      expect(ctx?.content).toBe("Fetched remote text");
+    });
+
+    it("distinguishes cache entries by fetcher presence", async () => {
+      const link = "https://example.com/cached-article";
+      const stubFetcher: ReferenceFetcher = async () => ({
+        ok: true,
+        status: 200,
+        statusText: "OK",
+        text: async () => "remote content",
+      });
+
+      // Without fetcher: cached as unresolvable
+      const withoutFetcher = await resolveReviewContext(link);
+      expect(withoutFetcher?.content).toContain("No HTTP fetcher configured");
+
+      // With fetcher: should not reuse offline miss
+      const withFetcher = await resolveReviewContext(link, {
+        fetch: stubFetcher,
+      });
+      expect(withFetcher?.content).toBe("remote content");
     });
   });
 });

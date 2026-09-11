@@ -85,7 +85,7 @@ To qualify knowledge, every Token in the GCR has an `epistemic_status` attribute
 
 ## Data Model Extensions
 
-To integrate the GCR, the ZAM Core schema (see [ARCHITECTURE.md](file:///c:/src/zam/docs/ARCHITECTURE.md#L65-L78)) is extended with namespacing, epistemic tags, and remote tracking:
+To integrate the GCR, the ZAM Core schema (see [Token & Card Model](../../docs/okf/token-card-model.md)) is extended with namespacing, epistemic tags, and remote tracking:
 
 ### 1. `tokens` Table Extensions
 * `registry_id`: `TEXT NULL` (Reference to the GCR UUID; if null, the token is purely local).
@@ -112,7 +112,7 @@ Tracks imported curriculum paths:
 ### A. Onboarding & Curriculum Adoption
 1. **Profile Selection:** Onboarding asks: *Country -> Region -> School Type -> Grade* (e.g., *Germany -> Bavaria -> Realschule -> Grade 8*).
 2. **Package Pull:** ZAM calls `zam registry pull de.by.realschule.k8`.
-3. **Card Instantiation:** The local agent registers the tokens and creates FSRS `cards` for the entry-level tokens. Prerequisite blocking (see [ARCHITECTURE.md](file:///c:/src/zam/docs/ARCHITECTURE.md#L172-L188)) ensures advanced concepts remain blocked until baseline concepts are mastered.
+3. **Card Instantiation:** The local agent registers the tokens and creates FSRS `cards` for the entry-level tokens. Prerequisite blocking (see [Prerequisite Blocking](../../docs/okf/prerequisite-blocking.md)) ensures advanced concepts remain blocked until baseline concepts are mastered.
 
 ### B. University Lectures & Textbook Imports
 1. **Local Audio/PDF Processing:** The user records a lecture or imports a textbook chapter.

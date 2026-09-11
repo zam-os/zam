@@ -4,7 +4,6 @@
 
 import { input, password } from "@inquirer/prompts";
 import { Command } from "commander";
-import { fetchActiveWorkItems } from "../../kernel/connectors/azure-devops.js";
 import {
   clearADOCredentials,
   clearTursoCredentials,
@@ -19,6 +18,7 @@ import {
 } from "../../kernel/credentials.js";
 import type { Database } from "../../kernel/index.js";
 import { getSystemProfile, openDatabaseWithSync } from "../../kernel/index.js";
+import { fetchActiveWorkItems } from "../connectors/azure-devops.js";
 
 export const connectorCommand = new Command("connector").description(
   "Manage external service connectors",

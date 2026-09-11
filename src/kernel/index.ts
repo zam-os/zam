@@ -46,12 +46,6 @@ export {
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
-export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
-// Connectors
-export {
-  fetchActiveWorkItems,
-  loadADOConfig,
-} from "./connectors/azure-devops.js";
 export type {
   ADOCredentials,
   CredentialCheckEntry,
@@ -599,7 +593,10 @@ export {
   generatePrompt,
 } from "./recall/prompter.js";
 export type {
+  ReferenceFetcher,
   ResolvedReference,
+  ResolveReferenceOptions,
+  ResolveReviewContextOptions,
   ReviewContext,
 } from "./recall/reference-resolver.js";
 // NOTE: LLM integration is intentionally NOT part of the kernel. The kernel is

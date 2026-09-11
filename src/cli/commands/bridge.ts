@@ -109,7 +109,6 @@ import {
   readUiObservationLog,
   resolveCredentials,
   resolveObserverPolicy,
-  resolveReviewContext,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
@@ -306,6 +305,7 @@ import {
   summarizeSkillLinkHealth,
   wireSkills,
 } from "../provisioning/index.js";
+import { resolveReviewContext } from "../review-context.js";
 import {
   configureBitwardenServer,
   disconnectBitwardenToLocalSecrets,
