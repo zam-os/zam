@@ -2,6 +2,7 @@
 
 ## 2026-09-11
 
+- **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
 - **Creation** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
 - **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
 

@@ -36,7 +36,7 @@ ZAM prioritizes passive background observation over intrusive testing:
 
 ## Symbiosis Modes
 
-Symbiosis modes configure the interaction balance between the learner and AI agents during practice and observation. For mode defaults, token overrides, and observer policy presets, see [Kernel & CLI Architecture](okf/kernel-architecture.md) and [Observer Privacy Model](okf/observer-privacy-model.md).
+A token's `symbiosis_mode` (`shadowing`, `copilot`, `autonomy`) is the balance between learner and AI agent during practice and observation. The observer policy presets each mode implies are documented in [Observer Privacy Model](okf/observer-privacy-model.md); the type lives in `src/kernel/models/token.ts`.
 
 ---
 
