@@ -33,7 +33,8 @@ export type AgentHarnessId =
   | "antigravity"
   | "goose"
   | "grok"
-  | "hermes";
+  | "hermes"
+  | "zcode";
 
 export interface AgentHarness {
   id: AgentHarnessId;
@@ -123,6 +124,21 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     candidatePaths: {
       darwin: [join(homedir(), ".local", "bin", "hermes")],
       linux: [join(homedir(), ".local", "bin", "hermes")],
+    },
+  },
+  // ZCode is a desktop app that installs no `zcode` CLI, so it launches like
+  // Cursor: via the app binary with the workspace as an argument. Kept last
+  // so it cannot steal the first-detected default from the established CLIs.
+  {
+    id: "zcode",
+    label: "ZCode",
+    kind: "app",
+    command: "zcode",
+    candidatePaths: {
+      darwin: ["/Applications/ZCode.app/Contents/MacOS/ZCode"],
+      win32: [
+        join(homedir(), "AppData", "Local", "Programs", "ZCode", "ZCode.exe"),
+      ],
     },
   },
 ];
@@ -262,7 +278,8 @@ export type ConnectHarnessId =
   | "opencode"
   | "goose"
   | "copilot"
-  | "hermes";
+  | "hermes"
+  | "zcode";
 
 export interface DetectConnectHarnessesOptions {
   home?: string;
@@ -350,6 +367,12 @@ export function detectInstalledConnectHarnesses(
   }
   if (hasCommandOrPath("hermes", [join(home, ".hermes")])) {
     detected.push("hermes");
+  }
+  // ZCode keeps its data root at ~/.zcode even when no `zcode` binary is on
+  // PATH (the desktop app installs none), so the directory is the primary
+  // install signal.
+  if (hasCommandOrPath("zcode", [join(home, ".zcode")])) {
+    detected.push("zcode");
   }
   if (
     hasCommandOrPath("antigravity", [
@@ -774,6 +797,151 @@ approval_mode = "prompt"
     }
     existing.mcpServers.zam = expected;
     content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "zcode") {
+    // ZCode reads MCP servers from the nested `mcp.servers` map in
+    // ~/.zcode/cli/config.json. ZCode's own Settings page stores keys of its
+    // own on the entry (`enable: false` for a server the learner switched
+    // off, an `env` map), so ZAM owns only `type`/`command`/`args`: it
+    // compares against exactly those fields and merges into the existing
+    // entry — replacing wholesale would silently re-enable a disabled server
+    // and drop the learner's env.
+    //
+    // Within the user scope, ~/.agents/mcp.json (top-level `mcpServers`,
+    // Claude-style entries) is a fallback read only while the .zcode file
+    // defines no MCP servers — writing a .zcode entry while that fallback is
+    // the active source would shadow every server in it, so zam merges into
+    // the fallback instead. The fallback is read lazily, only once the
+    // canonical file proves empty: a malformed fallback must not abort a
+    // connect that ZCode would never consult it for.
+    const canonicalPath = join(opts.home, ".zcode", "cli", "config.json");
+    const fallbackPath = join(opts.home, ".agents", "mcp.json");
+    hint =
+      "ZCode connects MCP servers automatically at session start; open Settings → MCP in ZCode to see the 'zam' server's status.";
+
+    // Read the server map for either file dialect, validating shapes the way
+    // the other writers do instead of silently repairing a broken value.
+    const serversOf = (
+      config: McpJsonConfig | null,
+      dialect: "nested" | "topLevel",
+      path: string,
+    ): Record<string, unknown> => {
+      if (!config) return {};
+      if (dialect === "topLevel") return config.mcpServers ?? {};
+      const mcp = config.mcp;
+      if (mcp === undefined) return {};
+      if (typeof mcp !== "object" || mcp === null || Array.isArray(mcp)) {
+        throw new Error(`Cannot update ${path}: mcp must be a JSON object`);
+      }
+      const servers = (mcp as Record<string, unknown>).servers;
+      if (servers === undefined) return {};
+      if (
+        typeof servers !== "object" ||
+        servers === null ||
+        Array.isArray(servers)
+      ) {
+        throw new Error(
+          `Cannot update ${path}: mcp.servers must be a JSON object`,
+        );
+      }
+      return servers as Record<string, unknown>;
+    };
+
+    // ZAM owns these fields; every other key on an existing entry belongs to
+    // ZCode or the learner and survives a merge.
+    const zamEntryMatches = (
+      current: unknown,
+      owned: Record<string, unknown>,
+    ): boolean => {
+      if (
+        typeof current !== "object" ||
+        current === null ||
+        Array.isArray(current)
+      ) {
+        return false;
+      }
+      const entry = current as Record<string, unknown>;
+      return Object.entries(owned).every(
+        ([key, value]) => JSON.stringify(entry[key]) === JSON.stringify(value),
+      );
+    };
+    const writeZamEntry = (
+      servers: Record<string, unknown>,
+      owned: Record<string, unknown>,
+    ): void => {
+      const current = servers.zam;
+      if (zamEntryMatches(current, owned)) {
+        alreadyConfigured = true;
+        return;
+      }
+      servers.zam =
+        typeof current === "object" &&
+        current !== null &&
+        !Array.isArray(current)
+          ? { ...current, ...owned }
+          : owned;
+    };
+
+    const canonical = exists(canonicalPath)
+      ? parseMcpJsonConfig(canonicalPath, read(canonicalPath))
+      : null;
+    const canonicalServers = serversOf(canonical, "nested", canonicalPath);
+    const isJs = opts.zamPath.endsWith(".js");
+
+    if (Object.keys(canonicalServers).length === 0) {
+      const fallback = exists(fallbackPath)
+        ? parseMcpJsonConfig(fallbackPath, read(fallbackPath))
+        : null;
+      const fallbackServers = serversOf(fallback, "topLevel", fallbackPath);
+      if (Object.keys(fallbackServers).length > 0) {
+        targetPath = fallbackPath;
+        // The fallback file speaks the `mcpServers` dialect shared with
+        // other agents, whose entries carry no `type` — ZAM owns only
+        // `command`/`args` there.
+        const owned = isJs
+          ? { command: process.execPath, args: [opts.zamPath, "mcp"] }
+          : { command: opts.zamPath, args: ["mcp"] };
+        writeZamEntry(fallbackServers, owned);
+        content = JSON.stringify(
+          fallback ?? { mcpServers: fallbackServers },
+          null,
+          2,
+        );
+      }
+    }
+
+    if (targetPath !== fallbackPath) {
+      targetPath = canonicalPath;
+      const owned = isJs
+        ? {
+            type: "stdio",
+            command: process.execPath,
+            args: [opts.zamPath, "mcp"],
+          }
+        : { type: "stdio", command: opts.zamPath, args: ["mcp"] };
+      writeZamEntry(canonicalServers, owned);
+      if (canonical) {
+        // serversOf returned the live `mcp.servers` reference when the key
+        // existed, so the mutation above already landed; attach it when the
+        // file had no `mcp` (or no `servers`) yet.
+        if (canonical.mcp === undefined) {
+          canonical.mcp = { servers: canonicalServers };
+        } else if (
+          typeof canonical.mcp === "object" &&
+          canonical.mcp !== null &&
+          !Array.isArray(canonical.mcp) &&
+          (canonical.mcp as Record<string, unknown>).servers === undefined
+        ) {
+          (canonical.mcp as Record<string, unknown>).servers = canonicalServers;
+        }
+        content = JSON.stringify(canonical, null, 2);
+      } else {
+        content = JSON.stringify(
+          { mcp: { servers: canonicalServers } },
+          null,
+          2,
+        );
+      }
+    }
   }
 
   return {
