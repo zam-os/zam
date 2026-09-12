@@ -405,6 +405,24 @@ export async function deleteCardForUser(
  * When `domain` or `knowledgeContext` is set, only matching due cards are
  * returned.
  */
+/**
+ * The row source and eligibility every "due" reader shares: the same schedule
+ * window and the same review-queue filters. A draft is not learning content
+ * yet, a deprecated token is not learning content any more, a detached card is
+ * not this user's to learn. One string keeps the queue and the dashboard
+ * summary from disagreeing about what is due.
+ */
+function dueCardSource(): string {
+  return `FROM cards c
+    JOIN tokens t ON t.id = c.token_id
+    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
+      AND (c.buried_until IS NULL OR c.buried_until <= ?)
+      AND t.maintenance_at IS NULL
+      AND t.deprecated_at IS NULL
+      AND t.editorial_state = 'published'
+      AND c.detached_at IS NULL`;
+}
+
 export async function getDueCards(
   db: Database,
   userId: string,
@@ -414,17 +432,8 @@ export async function getDueCards(
 ): Promise<DueCard[]> {
   const cutoff = now ?? new Date().toISOString();
 
-  // Same eligibility as the review queue: a draft is not learning content
-  // yet, a deprecated token is not learning content any more.
   let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
-    FROM cards c
-    JOIN tokens t ON t.id = c.token_id
-    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
-      AND (c.buried_until IS NULL OR c.buried_until <= ?)
-      AND t.maintenance_at IS NULL
-      AND t.deprecated_at IS NULL
-      AND t.editorial_state = 'published'
-      AND c.detached_at IS NULL`;
+    ${dueCardSource()}`;
   const params: unknown[] = [userId, cutoff, cutoff];
 
   if (domain) {
@@ -443,6 +452,50 @@ export async function getDueCards(
 
   sql += " ORDER BY t.bloom_level ASC, c.due_at ASC";
   return (await db.prepare(sql).all(...params)) as DueCard[];
+}
+
+export interface DueSummary {
+  /** How many cards the review queue would offer right now. */
+  dueCount: number;
+  /** Domains the due cards belong to, sorted, without empty names. */
+  domains: string[];
+  /** Total cards in the learner's deck, regardless of due state. */
+  cardsInDeck: number;
+}
+
+/**
+ * The dashboard's startup digest of the due state.
+ *
+ * The desktop used to issue a whole second bridge command (`check-due`)
+ * whose only startup use was exactly these three numbers, so they ride the
+ * bootstrap payload instead. The counts come from the same eligibility
+ * source as {@link getDueCards} — one definition of "due" — but read only
+ * aggregates and the domain column rather than every due card's full row.
+ */
+export async function getDueSummary(
+  db: Database,
+  userId: string,
+  now?: string,
+): Promise<DueSummary> {
+  const cutoff = now ?? new Date().toISOString();
+  const source = dueCardSource();
+
+  const countRow = (await db
+    .prepare(`SELECT COUNT(*) AS n ${source}`)
+    .get(userId, cutoff, cutoff)) as { n: number };
+  const domainRows = (await db
+    .prepare(`SELECT DISTINCT t.domain ${source} AND t.domain != ''`)
+    .all(userId, cutoff, cutoff)) as { domain: string }[];
+  const deckRow = (await db
+    .prepare("SELECT COUNT(*) AS n FROM cards WHERE user_id = ?")
+    .get(userId)) as { n: number };
+
+  return {
+    dueCount: countRow.n,
+    // checkDue derives its domain list in JS; keep the exact same order.
+    domains: domainRows.map((row) => row.domain).sort(),
+    cardsInDeck: deckRow.n,
+  };
 }
 
 /**
