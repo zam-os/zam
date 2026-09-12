@@ -42,53 +42,60 @@ async function count(
 
 /**
  * Get overall learning stats for a user (ported from PoC's `stats` command).
+ *
+ * All aggregates ride one statement: on a remote provider every separate
+ * read is a network round trip, and the dashboard bootstrap runs on every
+ * start. The per-user card figures are conditional aggregates over the same
+ * row set; the token count and the session figures are uncorrelated scalar
+ * subqueries, evaluated once. The `dueToday` condition is deliberately the
+ * raw scheduling rule (`blocked = 0 AND due_at <= now`), not the review
+ * queue's eligibility — the queue applies burial, maintenance and
+ * publication filters that must not change this historical count.
  */
 export async function getUserStats(
   db: Database,
   userId: string,
 ): Promise<UserStats> {
-  const avgRow = (await q(
+  const row = (await q(
     db,
-    "SELECT AVG(stability) as v FROM cards WHERE user_id = ? AND reps > 0",
+    `SELECT
+       (SELECT COUNT(*) FROM tokens) AS totalTokens,
+       (SELECT COUNT(*) FROM sessions WHERE user_id = ?) AS totalSessions,
+       (SELECT started_at FROM sessions WHERE user_id = ?
+         ORDER BY started_at DESC LIMIT 1) AS lastSession,
+       COUNT(*) AS cardsInDeck,
+       SUM(CASE WHEN blocked = 0 AND due_at <= datetime('now')
+                THEN 1 ELSE 0 END) AS dueToday,
+       SUM(CASE WHEN blocked = 1 THEN 1 ELSE 0 END) AS blocked,
+       SUM(CASE WHEN reps >= 3 AND stability >= 21 THEN 1 ELSE 0 END) AS mature,
+       AVG(CASE WHEN reps > 0 THEN stability END) AS avgStability
+     FROM cards WHERE user_id = ?`,
     userId,
-  )) as { v: number | null };
-
-  const lastSessionRow = (await db
-    .prepare(
-      "SELECT started_at FROM sessions WHERE user_id = ? ORDER BY started_at DESC LIMIT 1",
-    )
-    .get(userId)) as { started_at: string } | undefined;
+    userId,
+    userId,
+  )) as {
+    totalTokens: number;
+    totalSessions: number;
+    lastSession: string | null;
+    cardsInDeck: number;
+    dueToday: number | null;
+    blocked: number | null;
+    mature: number | null;
+    avgStability: number | null;
+  };
 
   return {
     userId,
-    totalTokens: await count(db, "SELECT COUNT(*) as n FROM tokens"),
-    cardsInDeck: await count(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ?",
-      userId,
-    ),
-    dueToday: await count(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 0 AND due_at <= datetime('now')",
-      userId,
-    ),
-    blocked: await count(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND blocked = 1",
-      userId,
-    ),
-    mature: await count(
-      db,
-      "SELECT COUNT(*) as n FROM cards WHERE user_id = ? AND reps >= 3 AND stability >= 21",
-      userId,
-    ),
-    avgStability: avgRow.v ? Math.round(avgRow.v * 100) / 100 : null,
-    totalSessions: await count(
-      db,
-      "SELECT COUNT(*) as n FROM sessions WHERE user_id = ?",
-      userId,
-    ),
-    lastSession: lastSessionRow?.started_at ?? null,
+    totalTokens: row.totalTokens,
+    cardsInDeck: row.cardsInDeck,
+    dueToday: row.dueToday ?? 0,
+    blocked: row.blocked ?? 0,
+    mature: row.mature ?? 0,
+    avgStability: row.avgStability
+      ? Math.round(row.avgStability * 100) / 100
+      : null,
+    totalSessions: row.totalSessions,
+    lastSession: row.lastSession ?? null,
   };
 }
 

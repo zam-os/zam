@@ -28,6 +28,7 @@ import {
   getMachineAiConfig,
   getProviderApiKey,
   getSetting,
+  getSettings,
   getSystemProfile,
   hasCommand,
   LANGUAGE_NAMES,
@@ -116,13 +117,21 @@ export interface LlmConfig {
 
 /** Read all LLM-related settings at once, applying defaults in one place. */
 export async function getLlmConfig(db: Database): Promise<LlmConfig> {
+  // One batched read: five per-key reads are five remote round trips on a
+  // provider like Turso, and this config is re-read on most commands.
+  const s = await getSettings(db, [
+    "llm.enabled",
+    "llm.url",
+    "llm.model",
+    "llm.api_key",
+    "system.locale",
+  ]);
   return {
-    enabled: (await getSetting(db, "llm.enabled")) === "true",
-    url: (await getSetting(db, "llm.url")) || DEFAULT_LLM_URL,
-    model: (await getSetting(db, "llm.model")) || DEFAULT_LLM_MODEL,
-    apiKey: (await getSetting(db, "llm.api_key")) || DEFAULT_LLM_API_KEY,
-    locale: ((await getSetting(db, "system.locale")) ||
-      "en") as SupportedLocale,
+    enabled: s["llm.enabled"] === "true",
+    url: s["llm.url"] || DEFAULT_LLM_URL,
+    model: s["llm.model"] || DEFAULT_LLM_MODEL,
+    apiKey: s["llm.api_key"] || DEFAULT_LLM_API_KEY,
+    locale: (s["system.locale"] || "en") as SupportedLocale,
   };
 }
 

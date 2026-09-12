@@ -4779,8 +4779,8 @@ let onboardingWorkspaceStructure: OnboardingWorkspaceStructure = {
   missing: [],
   complete: false,
 };
-// Dashboard checklist state (Phase 9). Deck size comes from check-due's
-// stats; the agent probe answers asynchronously. Both stay null until known
+// Dashboard checklist state (Phase 9). Deck size comes from the bootstrap
+// dueSummary; the agent probe answers asynchronously. Both stay null until known
 // so the checklist never claims a gap it has not positively established.
 let deckCardCount: number | null = null;
 let agentHarnessConfigured: boolean | null = null;
@@ -5775,6 +5775,7 @@ async function loadDashboard() {
       userId: string;
       locale: string;
       llm: { enabled: boolean };
+      dueSummary: { dueCount: number; domains: string[]; cardsInDeck: number };
       activeWorkspaceId?: string;
       workspaceDir?: string;
       onboardingDone?: boolean;
@@ -5823,8 +5824,10 @@ async function loadDashboard() {
     void loadProviderStatus();
     runAgentAutoConnectOnce();
 
-    // 2. Vault-backed secrets (e.g. Turso token in Bitwarden) must resolve
-    // before any DB read — otherwise we silently hit an empty local file.
+    // 2. Vault-backed secrets (e.g. a Turso token in Bitwarden) must resolve
+    // before the database is read: the bootstrap above already opens it, and
+    // a locked vault fails that open with BITWARDEN_REQUIRED, which the catch
+    // below turns into the unlock modal and a reload.
     clearDashboardError();
     beginBootStep("vault");
     const vaultOk = await assureBitwardenAccess();
@@ -5836,30 +5839,14 @@ async function loadDashboard() {
     }
     completeBootStep("vault");
 
-    // 3. Check due cards count and active domains
-    let dueInfo: {
-      dueCount: number;
-      domains: string[];
-      stats?: { cardsInDeck?: number };
-    };
+    // 3. Due cards count and active domains. The digest rides the
+    // desktop-bootstrap payload (plan 2026-09-02 Phase 3) — the same values
+    // the check-due command used to return here, without a second bridge
+    // command and its nine reads on every dashboard load.
     beginBootStep("cards");
-    try {
-      dueInfo = await runBridge<{
-        dueCount: number;
-        domains: string[];
-        stats?: { cardsInDeck?: number };
-      }>("check-due");
-    } catch (err) {
-      const retried = await assureBitwardenAccessAfterError(err);
-      if (!retried) throw err;
-      dueInfo = await runBridge<{
-        dueCount: number;
-        domains: string[];
-        stats?: { cardsInDeck?: number };
-      }>("check-due");
-    }
+    const dueInfo = settings.dueSummary;
     totalDue = dueInfo.dueCount;
-    deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
+    deckCardCount = dueInfo.cardsInDeck;
     completeBootStep("cards");
 
     const dueCountEl = document.getElementById("due-count")!;
@@ -5882,7 +5869,7 @@ async function loadDashboard() {
     }
 
     // Remaining-setup checklist (plan Phase 9): render synchronously from
-    // what bootstrap and check-due established, then refresh once the async
+    // what the bootstrap payload established, then refresh once the async
     // agent probe answers.
     renderOnboardingChecklist();
     void refreshAgentChecklistSignal();

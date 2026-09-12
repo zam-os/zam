@@ -69,6 +69,7 @@ import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getDisplayTitle,
+  getDueSummary,
   getKnowledgeContextByName,
   getMachineVoicePreference,
   getOnboardingDone,
@@ -4051,6 +4052,12 @@ bridgeCommand
         locale,
         llm: { enabled, url, model },
         studyWorkload: await getStudyWorkloadSettings(db, userId),
+        // The dashboard's due digest (plan 2026-09-02 Phase 3): the desktop
+        // used to issue a second bridge command (check-due) right after this
+        // one — one more request over the persistent bridge host and nine
+        // more reads on every start, for three numbers. Same eligibility as
+        // the review queue, one light read instead of a full card pull.
+        dueSummary: await getDueSummary(db, userId),
         activeWorkspaceId,
         workspaceDir,
         skillLinks,
