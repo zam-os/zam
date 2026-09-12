@@ -394,6 +394,22 @@ export async function deleteCardForUser(
 }
 
 /**
+ * The row source and eligibility every "due" reader shares: the same schedule
+ * window and the same review-queue filters. A draft is not learning content
+ * yet, a deprecated token is not learning content any more, a detached card is
+ * not this user's to learn. One string keeps the queue and the dashboard
+ * summary from disagreeing about what is due.
+ */
+const DUE_CARD_SOURCE = `FROM cards c
+    JOIN tokens t ON t.id = c.token_id
+    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
+      AND (c.buried_until IS NULL OR c.buried_until <= ?)
+      AND t.maintenance_at IS NULL
+      AND t.deprecated_at IS NULL
+      AND t.editorial_state = 'published'
+      AND c.detached_at IS NULL`;
+
+/**
  * Get all cards that are due for review.
  *
  * A card is due when it is not blocked/buried and due_at <= now.
@@ -405,24 +421,6 @@ export async function deleteCardForUser(
  * When `domain` or `knowledgeContext` is set, only matching due cards are
  * returned.
  */
-/**
- * The row source and eligibility every "due" reader shares: the same schedule
- * window and the same review-queue filters. A draft is not learning content
- * yet, a deprecated token is not learning content any more, a detached card is
- * not this user's to learn. One string keeps the queue and the dashboard
- * summary from disagreeing about what is due.
- */
-function dueCardSource(): string {
-  return `FROM cards c
-    JOIN tokens t ON t.id = c.token_id
-    WHERE c.user_id = ? AND c.blocked = 0 AND c.due_at <= ?
-      AND (c.buried_until IS NULL OR c.buried_until <= ?)
-      AND t.maintenance_at IS NULL
-      AND t.deprecated_at IS NULL
-      AND t.editorial_state = 'published'
-      AND c.detached_at IS NULL`;
-}
-
 export async function getDueCards(
   db: Database,
   userId: string,
@@ -433,7 +431,7 @@ export async function getDueCards(
   const cutoff = now ?? new Date().toISOString();
 
   let sql = `SELECT c.*, t.slug, t.concept, t.domain, t.bloom_level
-    ${dueCardSource()}`;
+    ${DUE_CARD_SOURCE}`;
   const params: unknown[] = [userId, cutoff, cutoff];
 
   if (domain) {
@@ -468,9 +466,12 @@ export interface DueSummary {
  *
  * The desktop used to issue a whole second bridge command (`check-due`)
  * whose only startup use was exactly these three numbers, so they ride the
- * bootstrap payload instead. The counts come from the same eligibility
- * source as {@link getDueCards} — one definition of "due" — but read only
- * aggregates and the domain column rather than every due card's full row.
+ * bootstrap payload instead. All three come from one statement — on a remote
+ * provider each separate read is a round trip — built on the same eligibility
+ * source as {@link getDueCards}, so queue and dashboard share one definition
+ * of "due". The domain list is aggregated as JSON rather than pulled row by
+ * row; `null` and empty names are dropped and sorting happens in JS, the
+ * same derivation `checkDue` performs on its card rows.
  */
 export async function getDueSummary(
   db: Database,
@@ -478,23 +479,29 @@ export async function getDueSummary(
   now?: string,
 ): Promise<DueSummary> {
   const cutoff = now ?? new Date().toISOString();
-  const source = dueCardSource();
 
-  const countRow = (await db
-    .prepare(`SELECT COUNT(*) AS n ${source}`)
-    .get(userId, cutoff, cutoff)) as { n: number };
-  const domainRows = (await db
-    .prepare(`SELECT DISTINCT t.domain ${source} AND t.domain != ''`)
-    .all(userId, cutoff, cutoff)) as { domain: string }[];
-  const deckRow = (await db
-    .prepare("SELECT COUNT(*) AS n FROM cards WHERE user_id = ?")
-    .get(userId)) as { n: number };
+  // The scalar subquery's `?` precedes the eligibility placeholders in the
+  // SQL text, so its userId parameter comes first.
+  const row = (await db
+    .prepare(
+      `SELECT
+         json_group_array(DISTINCT t.domain) AS domains,
+         COUNT(*) AS dueCount,
+         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS cardsInDeck
+       ${DUE_CARD_SOURCE}`,
+    )
+    .get(userId, userId, cutoff, cutoff)) as {
+    domains: string;
+    dueCount: number;
+    cardsInDeck: number;
+  };
 
   return {
-    dueCount: countRow.n,
-    // checkDue derives its domain list in JS; keep the exact same order.
-    domains: domainRows.map((row) => row.domain).sort(),
-    cardsInDeck: deckRow.n,
+    dueCount: row.dueCount,
+    domains: (JSON.parse(row.domains) as (string | null)[])
+      .filter((domain): domain is string => Boolean(domain))
+      .sort(),
+    cardsInDeck: row.cardsInDeck,
   };
 }
 

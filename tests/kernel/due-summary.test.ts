@@ -14,6 +14,20 @@ import {
 const PAST = "2026-01-01T00:00:00.000Z";
 const FUTURE = "2030-01-01T00:00:00.000Z";
 
+/** Wrap a Database so every prepare() call is counted. */
+function countPrepares(db: Database, counter: { count: number }): Database {
+  return {
+    prepare(sql: string) {
+      counter.count++;
+      return db.prepare(sql);
+    },
+    exec: (sql: string) => db.exec(sql),
+    pragma: (source: string) => db.pragma(source),
+    transaction: <T>(fn: (tx: Database) => Promise<T>) => db.transaction(fn),
+    close: () => db.close(),
+  };
+}
+
 /**
  * getDueSummary must agree with getDueCards on what is due — it feeds the
  * dashboard from the bootstrap payload, and a disagreement with the queue
@@ -116,5 +130,11 @@ describe("getDueSummary", () => {
     await createToken(db, { slug: "sum-solo", concept: "solo" });
     const summary = await getDueSummary(db, "nobody");
     expect(summary).toEqual({ dueCount: 0, domains: [], cardsInDeck: 0 });
+  });
+
+  it("reads all three numbers in one statement", async () => {
+    const counter = { count: 0 };
+    await getDueSummary(countPrepares(db, counter), "carol");
+    expect(counter.count).toBe(1);
   });
 });

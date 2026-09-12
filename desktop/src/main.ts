@@ -5842,7 +5842,7 @@ async function loadDashboard() {
     // 3. Due cards count and active domains. The digest rides the
     // desktop-bootstrap payload (plan 2026-09-02 Phase 3) — the same values
     // the check-due command used to return here, without a second bridge
-    // command and database open on every dashboard load.
+    // command and its nine reads on every dashboard load.
     beginBootStep("cards");
     const dueInfo = settings.dueSummary;
     totalDue = dueInfo.dueCount;
