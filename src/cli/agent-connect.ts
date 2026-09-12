@@ -38,6 +38,7 @@ export const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "goose",
   "copilot",
   "hermes",
+  "zcode",
 ];
 
 /**
@@ -54,6 +55,7 @@ export const USER_SCOPED_CONNECT_HARNESSES: ConnectHarnessId[] = [
   "goose",
   "copilot",
   "hermes",
+  "zcode",
 ];
 
 export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
@@ -66,6 +68,7 @@ export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
   goose: "Goose",
   copilot: "GitHub Copilot",
   hermes: "Hermes Agent",
+  zcode: "ZCode",
 };
 
 export function isConnectHarnessId(value: string): value is ConnectHarnessId {

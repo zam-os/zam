@@ -324,6 +324,7 @@ describe("isConnectHarnessId", () => {
     expect(isConnectHarnessId("codex")).toBe(true);
     expect(isConnectHarnessId("claude-code")).toBe(true);
     expect(isConnectHarnessId("hermes")).toBe(true);
+    expect(isConnectHarnessId("zcode")).toBe(true);
     expect(isConnectHarnessId("cursor")).toBe(false);
     expect(isConnectHarnessId("bogus")).toBe(false);
   });
