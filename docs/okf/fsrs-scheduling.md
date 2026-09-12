@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-09T08:00:00.000Z
+timestamp: 2026-09-12T17:52:51.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -158,7 +158,11 @@ Due Learning and Relearning cards use the same timestamp comparison as Review
 cards, including minute-level due times. The queue excludes blocked, detached,
 actively buried, deprecated, maintenance, and unpublished cards; a knowledge
 context can narrow it further. The due list behind `check-due` and
-`get-reviews` applies the same published and non-deprecated filter.
+`get-reviews` applies the same published and non-deprecated filter, and the
+desktop dashboard's startup due digest reads the same eligibility source:
+`getDueSummary()` in `src/kernel/models/card.ts` aggregates it into the
+`desktop-bootstrap` payload instead of issuing a separate `check-due`
+request.
 
 At most one distinct practice item of a learning atom is shown to a learner
 on one local learning day. Every surface — Studio, Mobile, the Recall panel,
