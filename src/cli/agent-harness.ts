@@ -70,7 +70,6 @@ const ANTIGRAVITY_IDE_CANDIDATE_PATHS: Partial<
 export const AGENT_HARNESSES: AgentHarness[] = [
   { id: "claude-code", label: "Claude Code", kind: "cli", command: "claude" },
   { id: "codex", label: "Codex", kind: "cli", command: "codex" },
-  { id: "zcode", label: "ZCode", kind: "cli", command: "zcode" },
   { id: "opencode", label: "opencode", kind: "cli", command: "opencode" },
   {
     id: "cursor",
@@ -125,6 +124,21 @@ export const AGENT_HARNESSES: AgentHarness[] = [
     candidatePaths: {
       darwin: [join(homedir(), ".local", "bin", "hermes")],
       linux: [join(homedir(), ".local", "bin", "hermes")],
+    },
+  },
+  // ZCode is a desktop app that installs no `zcode` CLI, so it launches like
+  // Cursor: via the app binary with the workspace as an argument. Kept last
+  // so it cannot steal the first-detected default from the established CLIs.
+  {
+    id: "zcode",
+    label: "ZCode",
+    kind: "app",
+    command: "zcode",
+    candidatePaths: {
+      darwin: ["/Applications/ZCode.app/Contents/MacOS/ZCode"],
+      win32: [
+        join(homedir(), "AppData", "Local", "Programs", "ZCode", "ZCode.exe"),
+      ],
     },
   },
 ];
@@ -785,23 +799,24 @@ approval_mode = "prompt"
     content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "zcode") {
     // ZCode reads MCP servers from the nested `mcp.servers` map in
-    // ~/.zcode/cli/config.json. The server schema there is strict — unknown
-    // keys drop the whole server — so the entry carries only canonical
-    // fields. Within the user scope, ~/.agents/mcp.json (top-level
-    // `mcpServers`, Claude-style entries) is a fallback read only while the
-    // .zcode file defines no MCP servers: writing a .zcode entry while that
-    // fallback is the active source would shadow every server in it, so zam
-    // merges into the fallback instead.
+    // ~/.zcode/cli/config.json. ZCode's own Settings page stores keys of its
+    // own on the entry (`enable: false` for a server the learner switched
+    // off, an `env` map), so ZAM owns only `type`/`command`/`args`: it
+    // compares against exactly those fields and merges into the existing
+    // entry — replacing wholesale would silently re-enable a disabled server
+    // and drop the learner's env.
+    //
+    // Within the user scope, ~/.agents/mcp.json (top-level `mcpServers`,
+    // Claude-style entries) is a fallback read only while the .zcode file
+    // defines no MCP servers — writing a .zcode entry while that fallback is
+    // the active source would shadow every server in it, so zam merges into
+    // the fallback instead. The fallback is read lazily, only once the
+    // canonical file proves empty: a malformed fallback must not abort a
+    // connect that ZCode would never consult it for.
     const canonicalPath = join(opts.home, ".zcode", "cli", "config.json");
     const fallbackPath = join(opts.home, ".agents", "mcp.json");
     hint =
       "ZCode connects MCP servers automatically at session start; open Settings → MCP in ZCode to see the 'zam' server's status.";
-    const canonical = exists(canonicalPath)
-      ? parseMcpJsonConfig(canonicalPath, read(canonicalPath))
-      : null;
-    const fallback = exists(fallbackPath)
-      ? parseMcpJsonConfig(fallbackPath, read(fallbackPath))
-      : null;
 
     // Read the server map for either file dialect, validating shapes the way
     // the other writers do instead of silently repairing a broken value.
@@ -831,62 +846,101 @@ approval_mode = "prompt"
       return servers as Record<string, unknown>;
     };
 
-    const canonicalServers = serversOf(canonical, "nested", canonicalPath);
-    const fallbackServers = serversOf(fallback, "topLevel", fallbackPath);
-    const isJs = opts.zamPath.endsWith(".js");
-    const mergeIntoFallback =
-      Object.keys(canonicalServers).length === 0 &&
-      Object.keys(fallbackServers).length > 0;
-
-    if (mergeIntoFallback) {
-      targetPath = fallbackPath;
-      // The fallback file speaks the `mcpServers` dialect shared with other
-      // agents, whose entries carry no `type` — keep it plain.
-      const expected = isJs
-        ? { command: process.execPath, args: [opts.zamPath, "mcp"] }
-        : { command: opts.zamPath, args: ["mcp"] };
-      const current = fallbackServers.zam;
+    // ZAM owns these fields; every other key on an existing entry belongs to
+    // ZCode or the learner and survives a merge.
+    const zamEntryMatches = (
+      current: unknown,
+      owned: Record<string, unknown>,
+    ): boolean => {
       if (
+        typeof current !== "object" ||
+        current === null ||
+        Array.isArray(current)
+      ) {
+        return false;
+      }
+      const entry = current as Record<string, unknown>;
+      return Object.entries(owned).every(
+        ([key, value]) => JSON.stringify(entry[key]) === JSON.stringify(value),
+      );
+    };
+    const writeZamEntry = (
+      servers: Record<string, unknown>,
+      owned: Record<string, unknown>,
+    ): void => {
+      const current = servers.zam;
+      if (zamEntryMatches(current, owned)) {
+        alreadyConfigured = true;
+        return;
+      }
+      servers.zam =
         typeof current === "object" &&
         current !== null &&
-        !Array.isArray(current) &&
-        JSON.stringify(current) === JSON.stringify(expected)
-      ) {
-        alreadyConfigured = true;
+        !Array.isArray(current)
+          ? { ...current, ...owned }
+          : owned;
+    };
+
+    const canonical = exists(canonicalPath)
+      ? parseMcpJsonConfig(canonicalPath, read(canonicalPath))
+      : null;
+    const canonicalServers = serversOf(canonical, "nested", canonicalPath);
+    const isJs = opts.zamPath.endsWith(".js");
+
+    if (Object.keys(canonicalServers).length === 0) {
+      const fallback = exists(fallbackPath)
+        ? parseMcpJsonConfig(fallbackPath, read(fallbackPath))
+        : null;
+      const fallbackServers = serversOf(fallback, "topLevel", fallbackPath);
+      if (Object.keys(fallbackServers).length > 0) {
+        targetPath = fallbackPath;
+        // The fallback file speaks the `mcpServers` dialect shared with
+        // other agents, whose entries carry no `type` — ZAM owns only
+        // `command`/`args` there.
+        const owned = isJs
+          ? { command: process.execPath, args: [opts.zamPath, "mcp"] }
+          : { command: opts.zamPath, args: ["mcp"] };
+        writeZamEntry(fallbackServers, owned);
+        content = JSON.stringify(
+          fallback ?? { mcpServers: fallbackServers },
+          null,
+          2,
+        );
       }
-      fallbackServers.zam = expected;
-      fallback!.mcpServers = fallbackServers;
-      content = JSON.stringify(fallback, null, 2);
-    } else {
+    }
+
+    if (targetPath !== fallbackPath) {
       targetPath = canonicalPath;
-      const expected = isJs
+      const owned = isJs
         ? {
             type: "stdio",
             command: process.execPath,
             args: [opts.zamPath, "mcp"],
           }
         : { type: "stdio", command: opts.zamPath, args: ["mcp"] };
-      const current = canonicalServers.zam;
-      if (
-        typeof current === "object" &&
-        current !== null &&
-        !Array.isArray(current) &&
-        JSON.stringify(current) === JSON.stringify(expected)
-      ) {
-        alreadyConfigured = true;
+      writeZamEntry(canonicalServers, owned);
+      if (canonical) {
+        // serversOf returned the live `mcp.servers` reference when the key
+        // existed, so the mutation above already landed; attach it when the
+        // file had no `mcp` (or no `servers`) yet.
+        if (canonical.mcp === undefined) {
+          canonical.mcp = { servers: canonicalServers };
+        } else if (
+          typeof canonical.mcp === "object" &&
+          canonical.mcp !== null &&
+          !Array.isArray(canonical.mcp) &&
+          (canonical.mcp as Record<string, unknown>).servers === undefined
+        ) {
+          (canonical.mcp as Record<string, unknown>).servers = canonicalServers;
+        }
+        content = JSON.stringify(canonical, null, 2);
+      } else {
+        content = JSON.stringify(
+          { mcp: { servers: canonicalServers } },
+          null,
+          2,
+        );
       }
-      canonicalServers.zam = expected;
-      const config: Record<string, unknown> = canonical ? { ...canonical } : {};
-      const mcpBase =
-        canonical &&
-        typeof canonical.mcp === "object" &&
-        canonical.mcp !== null &&
-        !Array.isArray(canonical.mcp)
-          ? { ...(canonical.mcp as Record<string, unknown>) }
-          : {};
-      mcpBase.servers = canonicalServers;
-      config.mcp = mcpBase;
-      content = JSON.stringify(config, null, 2);
     }
   }
 

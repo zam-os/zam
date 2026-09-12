@@ -2,6 +2,7 @@
 
 ## 2026-09-12
 
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
 
 ## 2026-09-11

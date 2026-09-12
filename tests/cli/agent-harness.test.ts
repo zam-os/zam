@@ -41,6 +41,8 @@ describe("agent harness registry", () => {
   it("resolves a harness by id", () => {
     expect(getHarness("claude-code")?.kind).toBe("cli");
     expect(getHarness("cursor")?.kind).toBe("app");
+    // ZCode ships as a desktop app without a `zcode` CLI on PATH.
+    expect(getHarness("zcode")?.kind).toBe("app");
     expect(getHarness("nope")).toBeUndefined();
   });
 });
@@ -88,6 +90,24 @@ describe("resolveHarnessExecutable", () => {
         platform: "linux",
       }),
     ).toBe("/opt/x/x");
+  });
+
+  it("resolves ZCode via its desktop app binary", () => {
+    const zcode = getHarness("zcode") as AgentHarness;
+    expect(
+      resolveHarnessExecutable(zcode, undefined, {
+        find: () => null,
+        exists: (p) => p === "/Applications/ZCode.app/Contents/MacOS/ZCode",
+        platform: "darwin",
+      }),
+    ).toBe("/Applications/ZCode.app/Contents/MacOS/ZCode");
+    expect(
+      resolveHarnessExecutable(zcode, undefined, {
+        find: () => null,
+        exists: () => false,
+        platform: "linux",
+      }),
+    ).toBeNull();
   });
 
   it("resolves antigravity-ide on PATH for antigravity harness", () => {
@@ -745,6 +765,96 @@ describe("connectHarnessMcp", () => {
     expect(() => connectHarnessMcp("zcode", mockDeps)).toThrow(
       "mcp.servers must be a JSON object",
     );
+  });
+
+  it("zcode reports a disabled zam server as configured instead of re-enabling it", () => {
+    // ZCode's Settings page stores the disabled state on the entry itself;
+    // replacing the object wholesale would switch the server back on.
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: {
+            type: "stdio",
+            command: "/usr/local/bin/zam",
+            args: ["mcp"],
+            enable: false,
+          },
+        },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    const entry = JSON.parse(res.content).mcp.servers.zam;
+    expect(entry.enable).toBe(false);
+  });
+
+  it("zcode matches an existing entry regardless of key order", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: { args: ["mcp"], command: "/usr/local/bin/zam", type: "stdio" },
+        },
+      },
+    });
+    expect(connectHarnessMcp("zcode", mockDeps).alreadyConfigured).toBe(true);
+  });
+
+  it("zcode preserves ZCode-owned keys when it updates the entry", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: {
+            command: "/old/zam",
+            args: ["mcp"],
+            enable: false,
+            env: { ZAM_CONFIG_PATH: "/tmp/z.json" },
+          },
+        },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    const entry = JSON.parse(res.content).mcp.servers.zam;
+    expect(entry).toMatchObject({
+      type: "stdio",
+      command: "/usr/local/bin/zam",
+      args: ["mcp"],
+      enable: false,
+      env: { ZAM_CONFIG_PATH: "/tmp/z.json" },
+    });
+  });
+
+  it("zcode no-ops when the fallback already holds zam and other servers", () => {
+    mockFiles["/home/user/.agents/mcp.json"] = JSON.stringify({
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.agents/mcp.json");
+    expect(res.alreadyConfigured).toBe(true);
+    expect(Object.keys(JSON.parse(res.content).mcpServers)).toEqual([
+      "other",
+      "zam",
+    ]);
+  });
+
+  it("zcode ignores a malformed fallback while the canonical file is active", () => {
+    // ZCode never reads the fallback once the .zcode file defines servers,
+    // so garbage there must not abort a connect.
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: { servers: { other: { command: "other-server" } } },
+    });
+    mockFiles["/home/user/.agents/mcp.json"] = "{ not json";
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.zcode/cli/config.json");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(JSON.parse(res.content).mcp.servers.zam).toEqual({
+      type: "stdio",
+      command: "/usr/local/bin/zam",
+      args: ["mcp"],
+    });
   });
 
   it("claude-desktop fresh write targets the platform config", () => {
