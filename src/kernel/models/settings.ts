@@ -21,6 +21,36 @@ export async function getSetting(
   return row?.value;
 }
 
+/**
+ * Get several settings in one read.
+ *
+ * Callers that need a fixed set of keys used to issue one `getSetting` per
+ * key; on a remote provider each of those is a network round trip, so the
+ * bootstrap path batches them instead. Absent keys are simply missing from
+ * the returned map — the same `undefined` a per-key read would produce.
+ *
+ * Generic over the requested key literals, so a caller reading a key it did
+ * not ask for is a type error rather than a silent `undefined`.
+ */
+export async function getSettings<K extends string>(
+  db: Database,
+  keys: readonly K[],
+): Promise<Record<K, string | undefined>> {
+  if (keys.length === 0) return {} as Record<K, string | undefined>;
+  const placeholders = keys.map(() => "?").join(", ");
+  const rows = (await db
+    .prepare(
+      `SELECT key, value FROM user_config WHERE key IN (${placeholders})`,
+    )
+    .all(...keys)) as { key: string; value: string }[];
+  const map = {} as Record<K, string | undefined>;
+  for (const key of keys) map[key] = undefined;
+  for (const row of rows) {
+    map[row.key as K] = row.value;
+  }
+  return map;
+}
+
 /** Get all settings as a key-value map. */
 export async function getAllSettings(
   db: Database,

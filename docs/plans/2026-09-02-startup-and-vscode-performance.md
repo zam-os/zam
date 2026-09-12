@@ -15,7 +15,7 @@ new machinery.
 
 - [x] **Phase 1 — version-gated schema provisioning**
 - [x] **Phase 2 — one database connection per persistent host**
-- [ ] **Phase 3 — fewer remote reads during bootstrap**
+- [x] **Phase 3 — fewer remote reads during bootstrap**
 - [ ] **Phase 4 — a narrow VS Code activation graph**
 - [ ] **Phase 5 — lazy optional UI modules**
 
@@ -127,6 +127,28 @@ Acceptance:
 - Dashboard bootstrap renders the same values with a documented lower query
   count.
 - Local behavior and failure messages remain unchanged.
+
+Done on 2026-09-12. Read counts measured by wrapping `db.prepare` around the
+real bootstrap composition on a seeded local database (20 tokens, 20 cards):
+
+- `getLlmConfig`: 5 reads → 1, via the new batched `getSettings`.
+- `getUserStats`: 8 reads → 1, a single statement of conditional aggregates
+  plus uncorrelated scalar subqueries (regression-tested to stay 1).
+- The due summary rides `desktop-bootstrap` as one light read
+  (`getDueSummary`: count, distinct domains and deck size aggregated in a
+  single statement, no full card rows). The desktop no longer issues
+  `check-due` at startup, so a dashboard start went from 28 reads over
+  2 host requests to 16 reads over 1; the `check-due` command itself drops
+  from 9 reads to 2 for its remaining callers. The vault failure path is
+  unchanged: a locked vault already fails the bootstrap open with
+  `BITWARDEN_REQUIRED`, and the desktop's catch offers the unlock modal
+  exactly as the old `check-due` failure did.
+- Settings/secret batching was applied where it preserves simple fallbacks
+  (`getLlmConfig`). The embedding-status path still spends 12 of the
+  remaining 16 reads in the embedding role resolution
+  (`getProviderForRole`: registry scan, legacy config, provider/role
+  settings) — a measured candidate for a dedicated follow-up, left alone
+  here because its sequential fallbacks are not independent reads.
 
 ## Phase 4 — a narrow VS Code activation graph
 

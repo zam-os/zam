@@ -284,6 +284,7 @@ export type {
   CardDeletionImpact,
   CardState,
   DeleteCardResult,
+  DueSummary,
   UpdateCardInput,
 } from "./models/card.js";
 export {
@@ -295,6 +296,7 @@ export {
   getCardById,
   getCardDeletionImpact,
   getDueCards,
+  getDueSummary,
   reattachCardForUser,
   resetCardsForToken,
   updateCard,
@@ -377,6 +379,7 @@ export {
   getAllSettings,
   getAllSettingsDetailed,
   getSetting,
+  getSettings,
   setSetting,
 } from "./models/settings.js";
 export type {

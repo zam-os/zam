@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-12
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-09-11
 
 - **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
