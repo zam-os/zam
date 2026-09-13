@@ -103,6 +103,19 @@ the learner decides only what a row is *used for*.
    outcome is no verdict, and the save is **not** blocked — the row stays
    editable so the fix is a re-paste, not a dead end. Rows without their own
    credential are never checked.
+8. **The recall chain recovers from failures the health check cannot see.**
+   The key probe makes rows honest, but a key can also break *after*
+   selection, and a shared upstream pool can run out of capacity — so the
+   chain handles the rest at call time: the health check validates the stored
+   key where the provider offers a key-metadata endpoint and skips rows the
+   probe flagged `keyValid: false`; the chain walk covers the **full**
+   fallback depth (the previous two-level walk silently stranded rows three
+   and beyond); and the answer evaluation and follow-up discussion fall
+   through to the next configured row on 401 (rejected key), 402 (exhausted
+   credit), 403 (forbidden), and 429 (upstream capacity — OpenRouter answers
+   for the shared provider pool, and a transient limit must not fail the
+   learner's answer while other rows sit idle). Any other error propagates,
+   and an exhausted chain raises the original failure.
 
 ## Consequences
 
@@ -126,7 +139,8 @@ the learner decides only what a row is *used for*.
   reading OpenRouter's `architecture.input_modalities`.
 - Evaluation consumes the stored level via `endpoint.effort`
   (`evaluateAnswerViaLLM`); the reasoning control is still only ever sent to
-  OpenRouter URLs.
+  OpenRouter URLs. Evaluation and discussion walk the resolved chain
+  (`resolveRecallEndpointChain`) and fall through on auth-level failures.
 - UI: overview rows render detected capabilities only; the editor form dropped
   its capability section (`desktop/src/main.ts`). HTTP rows show the stored
   effort level in their meta line.

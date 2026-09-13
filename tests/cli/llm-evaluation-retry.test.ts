@@ -4,10 +4,11 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   clearRecallEndpointCache,
+  discussReviewViaLLM,
   evaluateAnswerViaLLM,
+  probeKeyValidity,
 } from "../../src/cli/llm/client.js";
 import {
-  probeKeyValidity,
   probeModelCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
@@ -26,7 +27,10 @@ import {
  * `reasoning: { effort: "none" }` evaluation default with a 400 instead of an
  * evaluation (reported 2026-09-13: the whole answer-feedback flow silently
  * degraded to the static reveal). The retry must drop the control and let the
- * model reason natively.
+ * model reason natively. The same file covers the fallback chain: rows that
+ * fail with an auth-level status (401/402/403) at call time are skipped in
+ * favour of the next configured row, and rows the probe flagged `keyValid:
+ * false` are never called at all.
  */
 
 function textCaps(): CapabilityFlags {
@@ -40,18 +44,27 @@ function textCaps(): CapabilityFlags {
   };
 }
 
-function openRouterEntry(effort?: ModelEntry["effort"]): ModelEntry {
+function openRouterEntry(
+  options: {
+    model?: string;
+    effort?: ModelEntry["effort"];
+    keyValid?: boolean;
+    id?: string;
+    order?: number;
+  } = {},
+): ModelEntry {
   return {
-    id: "glm",
+    id: options.id ?? "glm",
     label: "GLM-5.3 Flash",
     url: "https://openrouter.ai/api/v1",
-    model: "z-ai/glm-5.3-flash",
+    model: options.model ?? "z-ai/glm-5.3-flash",
     local: false,
     apiFlavor: "chat-completions",
-    order: 0,
+    order: options.order ?? 0,
     capabilities: textCaps(),
     detectedCapabilities: textCaps(),
-    ...(effort ? { effort } : {}),
+    ...(options.effort ? { effort: options.effort } : {}),
+    ...(options.keyValid !== undefined ? { keyValid: options.keyValid } : {}),
   };
 }
 
@@ -265,10 +278,10 @@ describe("reasoning-effort probe and a stored effort level", () => {
   });
 
   it("keeps the stored level when the probe has no verdict", async () => {
-    saveMachineAiModels([openRouterEntry("low")]);
+    saveMachineAiModels([openRouterEntry({ effort: "low" })]);
     stubFetch([{ status: 500, body: { error: { message: "boom" } } }]);
 
-    const entry = openRouterEntry("low");
+    const entry = openRouterEntry({ effort: "low" });
     const probe = await probeModelCapabilities(entry, {
       reasoningEffortProbe: true,
     });
@@ -279,7 +292,7 @@ describe("reasoning-effort probe and a stored effort level", () => {
   });
 
   it("sends the stored level during evaluation", async () => {
-    saveMachineAiModels([openRouterEntry("minimal")]);
+    saveMachineAiModels([openRouterEntry({ effort: "minimal" })]);
     const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
 
     const result = await evaluateAnswerViaLLM(db, {
@@ -354,5 +367,192 @@ describe("key-validity probe", () => {
     const rejected = { ...openRouterEntry(), keyValid: false };
     const kept = validateModelSave(rejected, base);
     expect(kept.entry?.keyValid).toBe(false);
+  });
+});
+
+/**
+ * Chat responses keyed by the requested model: rows share the OpenRouter URL
+ * in these tests, so the model id is what distinguishes one row's call from
+ * another's.
+ */
+function stubFetchByModel(
+  respond: (model: string) => { status: number; body: unknown },
+): { calls: RecordedCall[] } {
+  const calls: RecordedCall[] = [];
+  vi.stubGlobal(
+    "fetch",
+    async (
+      url: string | URL | Request,
+      init?: { method?: string; body?: unknown },
+    ): Promise<Response> => {
+      const urlText = String(url);
+      const body =
+        typeof init?.body === "string"
+          ? (JSON.parse(init.body) as Record<string, unknown>)
+          : null;
+      calls.push({ url: urlText, method: init?.method ?? "GET", body });
+      if (urlText.endsWith("/models")) {
+        return new Response(JSON.stringify({ data: [] }), {
+          status: 200,
+          headers: { "content-type": "application/json" },
+        });
+      }
+      const r = respond((body?.model as string) ?? "");
+      return new Response(JSON.stringify(r.body), {
+        status: r.status,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  );
+  return { calls };
+}
+
+describe("recall fallback chain", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+  let db: Database;
+
+  beforeEach(async () => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-recall-chain-"));
+    const configPath = join(testConfigDir, "config.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({ ai: { providers: {}, roles: {} } }),
+    );
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+    clearRecallEndpointCache();
+    db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+  });
+
+  afterEach(async () => {
+    vi.unstubAllGlobals();
+    clearRecallEndpointCache();
+    await db.close();
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    rmSync(testConfigDir, { recursive: true, force: true });
+  });
+
+  const evaluate = () =>
+    evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+  const modelsCalled = (calls: RecordedCall[]): unknown[] =>
+    calls
+      .filter((call) => !call.url.endsWith("/models"))
+      .map((call) => call.body?.model);
+
+  it("falls through to the next row when the primary rejects the key", async () => {
+    saveMachineAiModels([
+      openRouterEntry({ id: "broken", model: "broken/model", order: 0 }),
+      openRouterEntry({ id: "working", model: "working/model", order: 1 }),
+    ]);
+    const { calls } = stubFetchByModel((model) =>
+      model === "broken/model"
+        ? {
+            status: 401,
+            body: { error: { message: "Missing Authentication header", code: 401 } },
+          }
+        : { status: 200, body: evaluationBody },
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("working/model");
+    expect(modelsCalled(calls)).toEqual(["broken/model", "working/model"]);
+  });
+
+  it("walks the whole chain, not just the first two rows", async () => {
+    saveMachineAiModels([
+      openRouterEntry({ id: "a", model: "a/model", order: 0 }),
+      openRouterEntry({ id: "b", model: "b/model", order: 1 }),
+      openRouterEntry({ id: "c", model: "c/model", order: 2 }),
+    ]);
+    const { calls } = stubFetchByModel((model) =>
+      model === "c/model"
+        ? { status: 200, body: evaluationBody }
+        : model === "b/model"
+          ? {
+              status: 429,
+              body: {
+                error: { message: "Provider returned error", code: 429 },
+              },
+            }
+          : {
+              status: 402,
+              body: { error: { message: "Insufficient credits", code: 402 } },
+            },
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("c/model");
+    expect(modelsCalled(calls)).toEqual(["a/model", "b/model", "c/model"]);
+  });
+
+  it("never calls a row the probe flagged keyValid: false", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "flagged",
+        model: "flagged/model",
+        order: 0,
+        keyValid: false,
+      }),
+      openRouterEntry({ id: "healthy", model: "healthy/model", order: 1 }),
+    ]);
+    const { calls } = stubFetchByModel((model) =>
+      model === "healthy/model"
+        ? { status: 200, body: evaluationBody }
+        : {
+            status: 401,
+            body: { error: { message: "Missing Authentication header", code: 401 } },
+          },
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("healthy/model");
+    expect(modelsCalled(calls)).toEqual(["healthy/model"]);
+  });
+
+  it("the discussion falls through on an auth-level failure too", async () => {
+    saveMachineAiModels([
+      openRouterEntry({ id: "broken", model: "broken/model", order: 0 }),
+      openRouterEntry({ id: "working", model: "working/model", order: 1 }),
+    ]);
+    const { calls } = stubFetchByModel((model) =>
+      model === "broken/model"
+        ? {
+            status: 401,
+            body: { error: { message: "Missing Authentication header", code: 401 } },
+          }
+        : { status: 200, body: { choices: [{ message: { content: "Sure!" }, finish_reason: "stop" }] } },
+    );
+
+    const result = await discussReviewViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+      thread: [],
+      message: "Warum ist Paris die Hauptstadt?",
+    });
+
+    expect(result.model).toBe("working/model");
+    expect(modelsCalled(calls)).toEqual(["broken/model", "working/model"]);
   });
 });

@@ -74,15 +74,15 @@ export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
-let cachedRecallEndpoint: {
-  endpoint: ProviderConfig;
+let cachedRecallChain: {
+  endpoints: ProviderConfig[];
   signature: string;
   expiresAt: number;
 } | null = null;
 
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
 export function clearRecallEndpointCache(): void {
-  cachedRecallEndpoint = null;
+  cachedRecallChain = null;
   reasoningRejections.clear();
 }
 
@@ -93,6 +93,16 @@ export function clearRecallEndpointCache(): void {
  * the durable verdict on the row, so this only short-circuits stale rows.
  */
 const reasoningRejections = new Map<string, true>();
+
+/**
+ * HTTP statuses where a chain endpoint "cannot serve right now" and the next
+ * configured row should get its turn: rejected key (401), exhausted credit
+ * (402), forbidden access (403), and upstream capacity (429 — OpenRouter
+ * answers for the shared provider pool; when five other rows are idle, a
+ * transient capacity limit should not fail the learner's answer). Any other
+ * status is the endpoint's own answer about the request and propagates.
+ */
+const CHAIN_FALLTHROUGH_STATUSES = new Set([401, 402, 403, 429]);
 
 /**
  * Compact fingerprint of the resolved recall provider. When any of these change
@@ -234,6 +244,12 @@ export interface ProviderConfig {
    * When set, overrides adapter defaults derived from the model id.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+  /**
+   * Probe verdict from the provider's key-metadata endpoint (ADR 2026-09-13).
+   * `false` = the stored key was rejected, so this endpoint is skipped by the
+   * fallback chain instead of failing the first real call.
+   */
+  keyValid?: boolean;
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
@@ -378,6 +394,7 @@ function materializeModelEntry(
     local: entry.local,
   };
   if (entry.runner) cfg.runner = entry.runner;
+  if (entry.keyValid !== undefined) cfg.keyValid = entry.keyValid;
   if (maxFrames !== undefined) cfg.maxFrames = maxFrames;
   if (entry.transport === "agent") {
     cfg.transport = "agent";
@@ -833,7 +850,7 @@ export async function evaluateAnswerViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+  const endpoints = await resolveRecallEndpointChain(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const completeness =
     LOCALIZED_COMPLETENESS[cfg.locale] || LOCALIZED_COMPLETENESS.en;
@@ -878,115 +895,147 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 
 Evaluation:`;
 
-  // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
-  // connected harness instead of an HTTP chat-completions call.
-  if (endpoint.transport === "agent") {
-    const text = await requestAgentCompletion(endpoint, {
-      system: systemPrompt,
-      user: userPrompt,
-    });
-    return {
-      text,
-      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
-      providerName: endpoint.providerName,
-    };
-  }
-
-  const requestEvaluation = async (
-    maxTokens: number,
-    reasoningEffort: string | null,
-  ): Promise<string> => {
-    // Evaluation wants short JSON, not a multi-page chain of thought.
-    // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
-    // thinking and return `finish_reason: length` with empty content.
-    // `none` is the product default for OpenRouter models that allow it
-    // (GPT-5.6 Luna). Privacy injection still runs on the body via
-    // fetchWithInteractiveTimeout.
-    const body: Record<string, unknown> = {
-      model: endpoint.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: maxTokens,
-    };
-    if (reasoningEffort !== null) {
-      body.reasoning = { effort: reasoningEffort };
+  const evaluateOn = async (
+    endpoint: ProviderConfig,
+  ): Promise<LlmTextResult> => {
+    // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
+    // connected harness instead of an HTTP chat-completions call.
+    if (endpoint.transport === "agent") {
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: userPrompt,
+      });
+      return {
+        text,
+        model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+        providerName: endpoint.providerName,
+      };
     }
-    const res = await fetchWithInteractiveTimeout(
-      `${endpoint.url}/chat/completions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${endpoint.apiKey}`,
+
+    const requestEvaluation = async (
+      maxTokens: number,
+      reasoningEffort: string | null,
+    ): Promise<string> => {
+      // Evaluation wants short JSON, not a multi-page chain of thought.
+      // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
+      // thinking and return `finish_reason: length` with empty content.
+      // `none` is the product default for OpenRouter models that allow it
+      // (GPT-5.6 Luna). Privacy injection still runs on the body via
+      // fetchWithInteractiveTimeout.
+      const body: Record<string, unknown> = {
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: maxTokens,
+      };
+      if (reasoningEffort !== null) {
+        body.reasoning = { effort: reasoningEffort };
+      }
+      const res = await fetchWithInteractiveTimeout(
+        `${endpoint.url}/chat/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${endpoint.apiKey}`,
+          },
+          body: JSON.stringify(body),
+          locale: cfg.locale,
         },
-        body: JSON.stringify(body),
-        locale: cfg.locale,
-      },
-    );
-    return readChatContent(res, "LLM evaluation");
-  };
-
-  // A reasoning model can spend the whole allowance thinking before writing a
-  // visible token, so no single budget is right for every model. A truncated
-  // attempt is retried with real room at the same reasoning control.
-  const attemptEvaluation = async (
-    maxTokens: number,
-    reasoningEffort: string | null,
-  ): Promise<string> => {
-    try {
-      return await requestEvaluation(maxTokens, reasoningEffort);
-    } catch (error) {
-      if (!(error instanceof LlmResponseTruncatedError)) throw error;
-      return requestEvaluation(
-        RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
-        reasoningEffort,
       );
+      return readChatContent(res, "LLM evaluation");
+    };
+
+    // A reasoning model can spend the whole allowance thinking before writing a
+    // visible token, so no single budget is right for every model. A truncated
+    // attempt is retried with real room at the same reasoning control.
+    const attemptEvaluation = async (
+      maxTokens: number,
+      reasoningEffort: string | null,
+    ): Promise<string> => {
+      try {
+        return await requestEvaluation(maxTokens, reasoningEffort);
+      } catch (error) {
+        if (!(error instanceof LlmResponseTruncatedError)) throw error;
+        return requestEvaluation(
+          RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+          reasoningEffort,
+        );
+      }
+    };
+
+    // Reasoning control: the probe stores the lowest level the endpoint accepts
+    // ("none", or "minimal" when the model mandates reasoning); rows probed
+    // before effort detection keep the product default, with the 400 retry
+    // below as the safety net. An endpoint that already rejected the control
+    // skips it outright instead of paying the rejected round trip per answer.
+    const memoKey = `${endpoint.url}|${endpoint.model}`;
+    const reasoningEffort = isOpenRouterUrl(endpoint.url)
+      ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
+      : null;
+    const firstEffort =
+      reasoningEffort !== null && reasoningRejections.has(memoKey)
+        ? null
+        : reasoningEffort;
+    try {
+      return await attemptEvaluation(
+        RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+        firstEffort,
+      ).then((text) => ({
+        text,
+        model: endpoint.model,
+        providerName: endpoint.providerName,
+      }));
+    } catch (error) {
+      // Reasoning-mandatory models answer the control with a 400 — "Reasoning
+      // is mandatory for this endpoint" — which used to kill the whole
+      // answer-feedback flow. Retry without the control and let the model
+      // reason natively; reasoning tokens count against max_tokens on
+      // OpenRouter, so this attempt starts with the larger budget instead of
+      // billing a thinking pass that gets thrown away.
+      if (
+        !(error instanceof LlmHttpError && error.status === 400) ||
+        firstEffort === null
+      ) {
+        throw error;
+      }
+      reasoningRejections.set(memoKey, true);
+      const text = await attemptEvaluation(
+        RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+        null,
+      );
+      return {
+        text,
+        model: endpoint.model,
+        providerName: endpoint.providerName,
+      };
     }
   };
 
-  // Reasoning control: the probe stores the lowest level the endpoint accepts
-  // ("none", or "minimal" when the model mandates reasoning); rows probed
-  // before effort detection keep the product default, with the 400 retry
-  // below as the safety net. An endpoint that already rejected the control
-  // skips it outright instead of paying the rejected round trip per answer.
-  const memoKey = `${endpoint.url}|${endpoint.model}`;
-  const reasoningEffort = isOpenRouterUrl(endpoint.url)
-    ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
-    : null;
-  const firstEffort =
-    reasoningEffort !== null && reasoningRejections.has(memoKey)
-      ? null
-      : reasoningEffort;
-  let text: string;
-  try {
-    text = await attemptEvaluation(
-      RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-      firstEffort,
-    );
-  } catch (error) {
-    // Reasoning-mandatory models answer the control with a 400 — "Reasoning
-    // is mandatory for this endpoint" — which used to kill the whole
-    // answer-feedback flow. Retry without the control and let the model
-    // reason natively; reasoning tokens count against max_tokens on
-    // OpenRouter, so this attempt starts with the larger budget instead of
-    // billing a thinking pass that gets thrown away.
-    if (
-      !(error instanceof LlmHttpError && error.status === 400) ||
-      firstEffort === null
-    ) {
+  // Auth-level and capacity failures — a rejected key, exhausted credit,
+  // forbidden access, an upstream rate limit — fall through to the next
+  // configured row instead of failing the learner's answer. The health check
+  // already skips rows whose key probe rejected; this covers a key that
+  // breaks after selection. Anything else propagates.
+  let lastError: unknown;
+  for (const endpoint of endpoints) {
+    try {
+      return await evaluateOn(endpoint);
+    } catch (error) {
+      if (
+        error instanceof LlmHttpError &&
+        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
+      ) {
+        lastError = error;
+        continue;
+      }
       throw error;
     }
-    reasoningRejections.set(memoKey, true);
-    text = await attemptEvaluation(RECALL_EVALUATION_RETRY_OUTPUT_TOKENS, null);
   }
-  return {
-    text,
-    model: endpoint.model,
-    providerName: endpoint.providerName,
-  };
+  throw lastError;
 }
 
 /**
@@ -1016,7 +1065,7 @@ export async function discussReviewViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+  const endpoints = await resolveRecallEndpointChain(db, { allowAgent: true });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a warm, precise, and encouraging skills trainer in a follow-up discussion about one flashcard.
@@ -1051,59 +1100,82 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
   }
   messages.push({ role: "user", content: input.message });
 
-  // Agent transport (ADR 2026-07-12a): the discussion is stateless — the full
-  // thread is resent on every call — so we flatten it into one transcript prompt
-  // for the single-shot harness instead of passing a messages array.
-  if (endpoint.transport === "agent") {
-    const transcript = [
-      cardFrame,
-      "",
-      "Discussion so far:",
-      ...(feedback ? [`ZAM: ${feedback}`] : []),
-      ...input.thread.map(
-        (turn) =>
-          `${turn.role === "assistant" ? "ZAM" : "Learner"}: ${turn.content}`,
-      ),
-      "",
-      `The learner now says: ${input.message}`,
-      "",
-      "Reply to the learner's latest message.",
-    ].join("\n");
-    const text = await requestAgentCompletion(endpoint, {
-      system: systemPrompt,
-      user: transcript,
-    });
+  const discussOn = async (
+    endpoint: ProviderConfig,
+  ): Promise<LlmTextResult> => {
+    // Agent transport (ADR 2026-07-12a): the discussion is stateless — the full
+    // thread is resent on every call — so we flatten it into one transcript prompt
+    // for the single-shot harness instead of passing a messages array.
+    if (endpoint.transport === "agent") {
+      const transcript = [
+        cardFrame,
+        "",
+        "Discussion so far:",
+        ...(feedback ? [`ZAM: ${feedback}`] : []),
+        ...input.thread.map(
+          (turn) =>
+            `${turn.role === "assistant" ? "ZAM" : "Learner"}: ${turn.content}`,
+        ),
+        "",
+        `The learner now says: ${input.message}`,
+        "",
+        "Reply to the learner's latest message.",
+      ].join("\n");
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: transcript,
+      });
+      return {
+        text,
+        model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+        providerName: endpoint.providerName,
+      };
+    }
+
+    const res = await fetchWithInteractiveTimeout(
+      `${endpoint.url}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${endpoint.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: endpoint.model,
+          messages,
+          temperature: 0.3,
+          max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
+        }),
+        locale: cfg.locale,
+      },
+    );
+
+    const text = await readChatContent(res, "LLM discussion");
     return {
       text,
-      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+      model: endpoint.model,
       providerName: endpoint.providerName,
     };
-  }
-
-  const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${endpoint.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: endpoint.model,
-        messages,
-        temperature: 0.3,
-        max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
-      }),
-      locale: cfg.locale,
-    },
-  );
-
-  const text = await readChatContent(res, "LLM discussion");
-  return {
-    text,
-    model: endpoint.model,
-    providerName: endpoint.providerName,
   };
+
+  // Same fallthrough as the evaluation: a rejected key, empty credit, or an
+  // upstream rate limit moves the discussion to the next configured row.
+  let lastError: unknown;
+  for (const endpoint of endpoints) {
+    try {
+      return await discussOn(endpoint);
+    } catch (error) {
+      if (
+        error instanceof LlmHttpError &&
+        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
+      ) {
+        lastError = error;
+        continue;
+      }
+      throw error;
+    }
+  }
+  throw lastError;
 }
 
 export interface GeneratedCardProposal {
@@ -1991,6 +2063,38 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 }
 
 /**
+ * Check a stored key against the provider's key-metadata endpoint
+ * (OpenRouter `/auth/key`). One authenticated GET, no tokens consumed — and
+ * the only way to notice a broken key from ZAM's side, because the `/models`
+ * catalog is public on OpenRouter: a row with an unusable key probed clean
+ * and looked healthy until the first real chat call 401'd (field report
+ * 2026-09-13, a 29-character wrong paste sat undetected on a row whose
+ * `keyState` said "set"). 401/403 are a definitive false; every other outcome
+ * is "no verdict" so a transient failure cannot mark a good key bad.
+ */
+export async function probeKeyValidity(
+  url: string,
+  apiKey: string,
+): Promise<boolean | undefined> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(`${url}/auth/key`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: controller.signal,
+    });
+    await res.text().catch(() => "");
+    if (res.ok) return true;
+    if (res.status === 401 || res.status === 403) return false;
+    return undefined;
+  } catch {
+    return undefined;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
  * One `/models` record: the id plus whatever architecture metadata the
  * endpoint publishes alongside it. OpenRouter declares `input_modalities`
  * per model; most other endpoints (OpenAI, local runners) serve bare ids.
@@ -2150,6 +2254,34 @@ async function checkProviderEndpoint(
     };
   }
 
+  // A stored key-validity verdict — or a live key check, where the provider
+  // publishes a key-metadata endpoint — marks the endpoint unusable:
+  // OpenRouter's /models catalog is public, so "online" alone cannot tell a
+  // working credential from a broken paste, and the first real chat call
+  // would 401 (ADR 2026-09-13).
+  if (resolved.keyValid === false) {
+    return {
+      endpoint: resolved,
+      online: false,
+      availableModels: [],
+      modelAvailable: false,
+    };
+  }
+  if (
+    isOpenRouterUrl(resolved.url) &&
+    resolved.apiKey &&
+    resolved.apiKey !== DEFAULT_LLM_API_KEY
+  ) {
+    if ((await probeKeyValidity(resolved.url, resolved.apiKey)) === false) {
+      return {
+        endpoint: resolved,
+        online: false,
+        availableModels: [],
+        modelAvailable: false,
+      };
+    }
+  }
+
   const availableModels = await getAvailableModels(
     resolved.url,
     resolved.apiKey,
@@ -2173,7 +2305,13 @@ function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
 }
 
 function providerChain(primary: ProviderConfig): ProviderConfig[] {
-  return [primary, ...(primary.fallback ? [primary.fallback] : [])];
+  // Walk the whole chain: resolveCapability links every eligible row, and a
+  // two-level walk silently stranded rows three and beyond.
+  const chain: ProviderConfig[] = [];
+  for (let cfg: ProviderConfig | undefined = primary; cfg; cfg = cfg.fallback) {
+    chain.push(cfg);
+  }
+  return chain;
 }
 
 async function checkProviderChain(
@@ -2208,10 +2346,17 @@ export interface QuestionResolution {
   model?: string;
 }
 
-export async function resolveUsableRecallEndpoint(
+/**
+ * Resolve the recall chain in call-time order: every endpoint the health
+ * check passes, deepest fallback last. Callers that can recover from an
+ * auth-level failure (rejected key, exhausted credit) walk this list and try
+ * the next entry; the health check itself has already skipped rows whose
+ * stored `keyValid` verdict is false or whose live key check was rejected.
+ */
+export async function resolveRecallEndpointChain(
   db: Database,
   opts: { allowAgent?: boolean } = {},
-): Promise<ProviderConfig> {
+): Promise<ProviderConfig[]> {
   // Resolve the role config first (cheap, local reads) so configuration changes
   // are observed immediately. The cached value reuses only the *network* health
   // check, and only while the resolved provider signature is unchanged AND the
@@ -2222,6 +2367,8 @@ export async function resolveUsableRecallEndpoint(
   }
   // Agent transport (ADR 2026-07-12a) has no URL to health-check; only recall
   // callers wired for it (dynamic question, answer evaluation) may opt in.
+  // An agent endpoint cannot fall through to an HTTP one, so it is a
+  // single-element chain.
   if (cfg.transport === "agent") {
     if (!opts.allowAgent) {
       throw new Error(
@@ -2229,32 +2376,42 @@ export async function resolveUsableRecallEndpoint(
           "which this operation does not support yet. Configure a Local or Cloud recall model for it.",
       );
     }
-    return cfg;
+    return [cfg];
   }
   assertChatCompletions(cfg);
 
   const signature = recallEndpointSignature(cfg);
   if (
-    cachedRecallEndpoint &&
-    cachedRecallEndpoint.signature === signature &&
-    cachedRecallEndpoint.expiresAt > Date.now()
+    cachedRecallChain &&
+    cachedRecallChain.signature === signature &&
+    cachedRecallChain.expiresAt > Date.now()
   ) {
-    return cachedRecallEndpoint.endpoint;
+    return cachedRecallChain.endpoints;
   }
 
-  const chain = await checkProviderChain(cfg, {
-    prepareFoundry: true,
-  });
-  const selected = chain.firstUsable;
-  if (!selected || !isEndpointUsable(selected)) {
+  const endpoints: ProviderConfig[] = [];
+  for (const endpoint of providerChain(cfg)) {
+    const readiness = await checkProviderEndpoint(endpoint, {
+      prepareFoundry: true,
+    });
+    if (isEndpointUsable(readiness)) endpoints.push(readiness.endpoint);
+  }
+  if (endpoints.length === 0) {
     throw new Error("No recall LLM endpoint is online");
   }
-  cachedRecallEndpoint = {
-    endpoint: selected.endpoint,
+  cachedRecallChain = {
+    endpoints,
     signature,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
   };
-  return selected.endpoint;
+  return endpoints;
+}
+
+export async function resolveUsableRecallEndpoint(
+  db: Database,
+  opts: { allowAgent?: boolean } = {},
+): Promise<ProviderConfig> {
+  return (await resolveRecallEndpointChain(db, opts))[0];
 }
 
 export async function sampleViaLocalLLM(

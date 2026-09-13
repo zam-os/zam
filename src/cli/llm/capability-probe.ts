@@ -29,6 +29,7 @@ import {
   getAvailableModels,
   isOpenRouterUrl,
   isLlmOnline,
+  probeKeyValidity,
 } from "./client.js";
 import { embedTexts } from "./embedder.js";
 
@@ -286,46 +287,13 @@ async function probeReasoningEffort(
 }
 
 /**
- * Check the stored key against the provider's key-metadata endpoint
- * (OpenRouter `/auth/key`). One authenticated GET, no tokens consumed — and
- * the only way to notice a broken key from ZAM's side, because the `/models`
- * catalog this probe otherwise relies on is public: a row with an unusable
- * key probed clean and looked healthy until the first real chat call 401'd
- * (field report 2026-09-13, a 29-character wrong paste sat undetected on a
- * row whose `keyState` said "set"). 401/403 are a definitive false; every
- * other outcome is "no verdict" so a transient failure cannot mark a good
- * key bad.
- */
-export async function probeKeyValidity(
-  url: string,
-  apiKey: string,
-): Promise<boolean | undefined> {
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 10000);
-  try {
-    const res = await fetch(`${url}/auth/key`, {
-      headers: { Authorization: `Bearer ${apiKey}` },
-      signal: controller.signal,
-    });
-    await res.text().catch(() => "");
-    if (res.ok) return true;
-    if (res.status === 401 || res.status === 403) return false;
-    return undefined;
-  } catch {
-    return undefined;
-  } finally {
-    clearTimeout(timeoutId);
-  }
-}
-
-/**
  * Probe an endpoint's capabilities over HTTP. Metadata-only by default; two
  * optional single-call exceptions: an embeddings dimension probe when the
  * catalog is silent (`embeddingDimProbe`), and a reasoning-effort probe for
  * OpenRouter chat models (`reasoningEffortProbe`) that stores the level the
  * evaluation should send. OpenRouter rows with a stored key additionally get
- * a key-validity check (`/auth/key`), whose verdict rides along as
- * `keyValid`.
+ * a key-validity check (`/auth/key`, from client.ts), whose verdict rides
+ * along as `keyValid`.
  */
 export async function probeModelCapabilities(
   entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef">,
