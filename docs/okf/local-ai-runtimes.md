@@ -8,7 +8,7 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-09-13T16:00:00.000Z
+timestamp: 2026-09-13T17:00:00.000Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
@@ -145,6 +145,14 @@ When preparation fails, the endpoint is treated as offline so the **next
 configured provider in `order` still gets its turn**. Both the `server` and the
 preview-era `service` command groups are attempted, and the first error is the
 one reported.
+
+One direction is deliberately closed (ADR 2026-09-13): a **cloud** primary
+never falls through to a local runtime. Chain readiness is checked lazily, per
+attempt, so a healthy cloud primary never starts Foundry or Ollama "for a
+check", and a cloud row's failures fall through to the next *cloud* row — a
+model load that costs gigabytes of RAM must not become a side effect of a
+review. A **local** primary keeps its cloud fallback: Foundry failing to
+prepare still sends the learner's action to the next configured row, as before.
 
 # What the runtime is inferred from
 

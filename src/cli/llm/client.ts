@@ -75,15 +75,20 @@ export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
-let cachedRecallChain: {
-  endpoints: ProviderConfig[];
-  signature: string;
-  expiresAt: number;
-} | null = null;
+/**
+ * Lazily ensured readiness per chain entry (`signature|url|model`), with the
+ * same 60 s TTL the endpoint cache used — the lazy successor of the eager
+ * full-chain health check, so a healthy primary pays one check and local
+ * fallback rows are never started for a check they never needed.
+ */
+const recallReadiness = new Map<
+  string,
+  { ready: boolean; expiresAt: number }
+>();
 
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
 export function clearRecallEndpointCache(): void {
-  cachedRecallChain = null;
+  recallReadiness.clear();
   reasoningRejections.clear();
 }
 
@@ -851,7 +856,9 @@ export async function evaluateAnswerViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoints = await resolveRecallEndpointChain(db, { allowAgent: true });
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, {
+    allowAgent: true,
+  });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const completeness =
     LOCALIZED_COMPLETENESS[cfg.locale] || LOCALIZED_COMPLETENESS.en;
@@ -1016,13 +1023,14 @@ Evaluation:`;
     }
   };
 
-  // Auth-level and capacity failures — a rejected key, exhausted credit,
-  // forbidden access, an upstream rate limit — fall through to the next
-  // configured row instead of failing the learner's answer. The health check
-  // already skips rows whose key probe rejected; this covers a key that
-  // breaks after selection. Anything else propagates.
+  // Readiness is ensured lazily per attempt, and auth/capacity failures — a
+  // rejected key, exhausted credit, forbidden access, an upstream rate limit —
+  // fall through to the next configured row instead of failing the learner's
+  // answer. Anything else propagates; an exhausted chain raises the original
+  // failure.
   let lastError: unknown;
   for (const endpoint of endpoints) {
+    if (!(await ensureRecallEndpointReady(endpoint, signature))) continue;
     try {
       return await evaluateOn(endpoint);
     } catch (error) {
@@ -1036,7 +1044,7 @@ Evaluation:`;
       throw error;
     }
   }
-  throw lastError;
+  throw lastError ?? new Error("No recall LLM endpoint is online");
 }
 
 /**
@@ -1066,7 +1074,9 @@ export async function discussReviewViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoints = await resolveRecallEndpointChain(db, { allowAgent: true });
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, {
+    allowAgent: true,
+  });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a warm, precise, and encouraging skills trainer in a follow-up discussion about one flashcard.
@@ -1159,10 +1169,12 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
     };
   };
 
-  // Same fallthrough as the evaluation: a rejected key, empty credit, or an
-  // upstream rate limit moves the discussion to the next configured row.
+  // Readiness is ensured lazily per attempt, and the same fallthrough as the
+  // evaluation applies: a rejected key, empty credit, or an upstream rate
+  // limit moves the discussion to the next configured row.
   let lastError: unknown;
   for (const endpoint of endpoints) {
+    if (!(await ensureRecallEndpointReady(endpoint, signature))) continue;
     try {
       return await discussOn(endpoint);
     } catch (error) {
@@ -1176,7 +1188,7 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
       throw error;
     }
   }
-  throw lastError;
+  throw lastError ?? new Error("No recall LLM endpoint is online");
 }
 
 export interface GeneratedCardProposal {
@@ -2323,8 +2335,15 @@ async function checkProviderChain(
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
-  for (const endpoint of providerChain(primary)) {
-    const readiness = await checkProviderEndpoint(endpoint, options);
+  const chain = providerChain(primary);
+  for (const [index, endpoint] of chain.entries()) {
+    const readiness = await checkProviderEndpoint(endpoint, {
+      ...options,
+      // Foundry rows are started and loaded only when a caller is about to
+      // use them — the chain's first entry qualifies, a deeper fallback does
+      // not (a healthy primary must never trigger a local model load).
+      prepareFoundry: options.prepareFoundry === true && index === 0,
+    });
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
@@ -2348,20 +2367,20 @@ export interface QuestionResolution {
 }
 
 /**
- * Resolve the recall chain in call-time order: every endpoint the health
- * check passes, deepest fallback last. Callers that can recover from an
- * auth-level failure (rejected key, exhausted credit) walk this list and try
- * the next entry; the health check itself has already skipped rows whose
- * stored `keyValid` verdict is false or whose live key check was rejected.
+ * Resolve the recall chain in call-time order. Deliberately network-free: the
+ * raw chain in registry order, with one boundary — a cloud primary never
+ * falls through to a local model, because a fallback must not start a local
+ * runtime (a model load costs gigabytes of RAM the learner did not ask to
+ * spend on a review; owner decision 2026-09-13). A local primary keeps its
+ * cloud fallback — that direction is the documented setup. Readiness
+ * (reachability, key, catalog) is ensured lazily by the walk right before
+ * each attempt via {@link ensureRecallEndpointReady}, so a healthy primary
+ * pays exactly one health check and no local row is ever started for a check.
  */
 export async function resolveRecallEndpointChain(
   db: Database,
   opts: { allowAgent?: boolean } = {},
-): Promise<ProviderConfig[]> {
-  // Resolve the role config first (cheap, local reads) so configuration changes
-  // are observed immediately. The cached value reuses only the *network* health
-  // check, and only while the resolved provider signature is unchanged AND the
-  // TTL holds — so the enable gate and a Studio rebind both take effect at once.
+): Promise<{ endpoints: ProviderConfig[]; signature: string }> {
   const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
@@ -2377,42 +2396,50 @@ export async function resolveRecallEndpointChain(
           "which this operation does not support yet. Configure a Local or Cloud recall model for it.",
       );
     }
-    return [cfg];
+    return { endpoints: [cfg], signature: recallEndpointSignature(cfg) };
   }
   assertChatCompletions(cfg);
 
-  const signature = recallEndpointSignature(cfg);
-  if (
-    cachedRecallChain &&
-    cachedRecallChain.signature === signature &&
-    cachedRecallChain.expiresAt > Date.now()
-  ) {
-    return cachedRecallChain.endpoints;
-  }
+  const raw = providerChain(cfg);
+  const endpoints = cfg.local ? raw : raw.filter((endpoint) => !endpoint.local);
+  return { endpoints, signature: recallEndpointSignature(cfg) };
+}
 
-  const endpoints: ProviderConfig[] = [];
-  for (const endpoint of providerChain(cfg)) {
-    const readiness = await checkProviderEndpoint(endpoint, {
-      prepareFoundry: true,
-    });
-    if (isEndpointUsable(readiness)) endpoints.push(readiness.endpoint);
-  }
-  if (endpoints.length === 0) {
-    throw new Error("No recall LLM endpoint is online");
-  }
-  cachedRecallChain = {
-    endpoints,
-    signature,
+/**
+ * Lazily ensure one chain entry is ready to serve (online, key accepted,
+ * model in the catalog), with the same 60 s TTL the endpoint cache used.
+ * Foundry rows are prepared here — i.e. started and loaded only when a walk
+ * is actually about to call them, never for a row a healthy primary made
+ * unreachable.
+ */
+async function ensureRecallEndpointReady(
+  endpoint: ProviderConfig,
+  signature: string,
+): Promise<boolean> {
+  if (endpoint.transport === "agent") return true;
+  const key = `${signature}|${endpoint.url}|${endpoint.model}`;
+  const hit = recallReadiness.get(key);
+  if (hit && hit.expiresAt > Date.now()) return hit.ready;
+  const readiness = await checkProviderEndpoint(endpoint, {
+    prepareFoundry: true,
+  });
+  const ready = isEndpointUsable(readiness);
+  recallReadiness.set(key, {
+    ready,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
-  };
-  return endpoints;
+  });
+  return ready;
 }
 
 export async function resolveUsableRecallEndpoint(
   db: Database,
   opts: { allowAgent?: boolean } = {},
 ): Promise<ProviderConfig> {
-  return (await resolveRecallEndpointChain(db, opts))[0];
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, opts);
+  for (const endpoint of endpoints) {
+    if (await ensureRecallEndpointReady(endpoint, signature)) return endpoint;
+  }
+  throw new Error("No recall LLM endpoint is online");
 }
 
 export async function sampleViaLocalLLM(

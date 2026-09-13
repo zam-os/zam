@@ -103,19 +103,26 @@ the learner decides only what a row is *used for*.
    outcome is no verdict, and the save is **not** blocked — the row stays
    editable so the fix is a re-paste, not a dead end. Rows without their own
    credential are never checked.
-8. **The recall chain recovers from failures the health check cannot see.**
-   The key probe makes rows honest, but a key can also break *after*
-   selection, and a shared upstream pool can run out of capacity — so the
-   chain handles the rest at call time: the health check validates the stored
-   key where the provider offers a key-metadata endpoint and skips rows the
-   probe flagged `keyValid: false`; the chain walk covers the **full**
-   fallback depth (the previous two-level walk silently stranded rows three
-   and beyond); and the answer evaluation and follow-up discussion fall
-   through to the next configured row on 401 (rejected key), 402 (exhausted
-   credit), 403 (forbidden), and 429 (upstream capacity — OpenRouter answers
-   for the shared provider pool, and a transient limit must not fail the
-   learner's answer while other rows sit idle). Any other error propagates,
-   and an exhausted chain raises the original failure.
+8. **The recall chain recovers from failures the health check cannot see —
+   without ever starting a local runtime as a side effect.** Readiness is
+   ensured **lazily, per attempt**: the chain resolver returns the raw
+   fallback chain network-free, and the walk checks one row just before
+   calling it (online, key accepted via the provider's key-metadata endpoint
+   where one exists, model in the catalog), memoized for 60 s. A healthy
+   primary therefore pays exactly one health check — no eager full-chain
+   sweep, and Foundry/Ollama rows are never started for a check they never
+   needed (the previous eager check loaded Foundry models for fallback rows
+   that a healthy primary made unreachable). The walk covers the **full**
+   fallback depth and falls through to the next row on 401 (rejected key),
+   402 (exhausted credit), 403 (forbidden), and 429 (upstream capacity).
+   **Boundary (owner decision, 2026-09-13): a cloud primary never falls
+   through to a local model** — a fallback that starts a local runtime costs
+   gigabytes of RAM the learner did not ask to spend mid-review, and a local
+   row placed behind cloud rows is there despite that preference, not for
+   fallback duty. Local rows are excluded from a cloud primary's chain
+   entirely (not even health-checked); a **local** primary keeps its cloud
+   fallback, the direction the guided setups document. Any other error
+   propagates, and an exhausted chain raises the original failure.
 
 ## Consequences
 
@@ -140,7 +147,9 @@ the learner decides only what a row is *used for*.
 - Evaluation consumes the stored level via `endpoint.effort`
   (`evaluateAnswerViaLLM`); the reasoning control is still only ever sent to
   OpenRouter URLs. Evaluation and discussion walk the resolved chain
-  (`resolveRecallEndpointChain`) and fall through on auth-level failures.
+  (`resolveRecallEndpointChain`) and fall through on auth/capacity failures;
+  readiness is ensured lazily per attempt (decision 8), including the
+  cloud-primary/ local-fallback boundary.
 - UI: overview rows render detected capabilities only; the editor form dropped
   its capability section (`desktop/src/main.ts`). HTTP rows show the stored
   effort level in their meta line.

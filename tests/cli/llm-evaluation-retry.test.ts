@@ -52,12 +52,13 @@ function openRouterEntry(
     keyValid?: boolean;
     id?: string;
     order?: number;
+    url?: string;
   } = {},
 ): ModelEntry {
   return {
     id: options.id ?? "glm",
     label: "GLM-5.3 Flash",
-    url: "https://openrouter.ai/api/v1",
+    url: options.url ?? "https://openrouter.ai/api/v1",
     model: options.model ?? "z-ai/glm-5.3-flash",
     local: false,
     apiFlavor: "chat-completions",
@@ -639,5 +640,222 @@ describe("recall fallback chain", () => {
 
     expect(result.model).toBe("working/model");
     expect(modelsCalled(calls)).toEqual(["broken/model", "working/model"]);
+  });
+});
+
+/**
+ * URL-keyed stub for the boundary tests: rows use distinct hosts so the
+ * assertions can prove a row was never contacted at all.
+ */
+function stubFetchByUrl(
+  respond: (url: string) => { status: number; body: unknown } | undefined,
+): { calls: RecordedCall[] } {
+  const calls: RecordedCall[] = [];
+  vi.stubGlobal("fetch", async (url: string | URL | Request): Promise<Response> => {
+    const urlText = String(url);
+    calls.push({ url: urlText, method: "GET", body: null });
+    const r = respond(urlText);
+    return new Response(JSON.stringify(r?.body ?? {}), {
+      status: r?.status ?? 404,
+      headers: { "content-type": "application/json" },
+    });
+  });
+  return { calls };
+}
+
+const okResponse = (content: string) => ({
+  status: 200,
+  body: { choices: [{ message: { content }, finish_reason: "stop" }] },
+});
+
+describe("fallback chain boundaries", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+  let db: Database;
+
+  beforeEach(async () => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-chain-boundary-"));
+    const configPath = join(testConfigDir, "config.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({ ai: { providers: {}, roles: {} } }),
+    );
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+    clearRecallEndpointCache();
+    db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+  });
+
+  afterEach(async () => {
+    vi.unstubAllGlobals();
+    clearRecallEndpointCache();
+    await db.close();
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    rmSync(testConfigDir, { recursive: true, force: true });
+  });
+
+  const evaluate = () =>
+    evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+  it("a healthy primary never contacts fallback rows before the chat", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "r1",
+        model: "a/model",
+        order: 0,
+        url: "https://r1.openrouter.ai/api/v1",
+      }),
+      openRouterEntry({
+        id: "r2",
+        model: "b/model",
+        order: 1,
+        url: "https://r2.openrouter.ai/api/v1",
+      }),
+      openRouterEntry({
+        id: "r3",
+        model: "c/model",
+        order: 2,
+        url: "https://r3.openrouter.ai/api/v1",
+      }),
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://r1.")
+        ? okResponse("OK")
+        : undefined,
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("a/model");
+    expect(
+      calls.filter((call) => !call.url.includes("r1.openrouter.ai")),
+    ).toEqual([]);
+  });
+
+  it("a foundry fallback is never started when the primary serves", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      {
+        id: "foundry-fallback",
+        label: "Foundry",
+        url: "http://127.0.0.1:5273/v1",
+        model: "qwen3.5-0.8b",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "foundry",
+        order: 1,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://primary.") ? okResponse("OK") : undefined,
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("cloud/model");
+    expect(calls.filter((call) => call.url.includes("127.0.0.1:5273"))).toEqual(
+      [],
+    );
+  });
+
+  it("a cloud primary never falls through to a local row", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      {
+        id: "local-ollama",
+        label: "Ollama",
+        url: "http://localhost:11434/v1",
+        model: "local/model",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "ollama",
+        order: 1,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://primary.")
+        ? {
+            status: 401,
+            body: {
+              error: { message: "Missing Authentication header", code: 401 },
+            },
+          }
+        : okResponse("OK"),
+    );
+
+    // The local row is out of the chain entirely: the chain is exhausted and
+    // the original 401 is raised, without ever touching the Ollama endpoint.
+    await expect(evaluate()).rejects.toThrow(/401/);
+    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
+      [],
+    );
+  });
+
+  it("a local primary keeps its cloud fallback", async () => {
+    saveMachineAiModels([
+      {
+        id: "local-ollama",
+        label: "Ollama",
+        url: "http://localhost:11434/v1",
+        model: "local/model",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "ollama",
+        order: 0,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 1,
+        url: "https://cloud.openrouter.ai/api/v1",
+      }),
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("http://localhost:11434")
+        ? {
+            status: 401,
+            body: { error: { message: "model gone", code: 401 } },
+          }
+        : okResponse("OK"),
+    );
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("cloud/model");
+    expect(calls.some((call) => call.url.includes("localhost:11434"))).toBe(
+      true,
+    );
+    expect(calls.some((call) => call.url.includes("cloud.openrouter.ai"))).toBe(
+      true,
+    );
   });
 });
