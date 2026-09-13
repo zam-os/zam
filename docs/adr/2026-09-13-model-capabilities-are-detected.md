@@ -153,6 +153,13 @@ the learner decides only what a row is *used for*.
   yet — consumers arrive with the Observer video work.
 - Callers that pass explicit `--capabilities` keep that selection on fresh
   rows; they are not flooded by newly detected capabilities.
+- One registry order serves every capability: a row that can do more than
+  the learner wants it for (a text model that also accepts images) is kept
+  out of a capability by unticking it in the overview, so there is no need
+  for a separate order per capability.
+- A local row placed behind a cloud row is an offline backup, not a
+  same-tier fallback; a learner who wants the local model as the everyday
+  model puts it first.
 
 ---
 
