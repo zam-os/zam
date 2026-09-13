@@ -603,7 +603,6 @@
                   + Add model
                 </button>
               </div>
-              <div id="ai-provider-form" class="ai-provider-form hidden"></div>
               <div id="ai-role-bindings" class="ai-role-bindings"></div>
             </div>
           </article>
@@ -1289,6 +1288,21 @@
           <div class="modal-actions">
             <button id="btn-study-confirm-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-study-confirm-ok" class="btn primary-btn btn-sm" type="button">Not for me</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI MODEL ADD/EDIT MODAL — the editor used to render at a fixed spot
+           below the whole model list, off-screen whenever more than a couple
+           of models were configured; as a dialog it opens where the user is. -->
+      <div id="ai-model-form-overlay" class="modal-overlay">
+        <div class="modal-box ai-model-form-modal" role="dialog" aria-modal="true" aria-labelledby="ai-model-form-title">
+          <div class="modal-header">
+            <h3 id="ai-model-form-title">Model</h3>
+          </div>
+          <div class="modal-body">
+            <p id="ai-model-form-status" class="sub-label settings-status-row" role="status"></p>
+            <div id="ai-provider-form" class="ai-provider-form hidden"></div>
           </div>
         </div>
       </div>

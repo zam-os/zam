@@ -3080,6 +3080,22 @@ function aiConfigStatusEl(): HTMLElement | null {
   return document.getElementById("ai-config-status");
 }
 
+function aiModelFormStatusEl(): HTMLElement | null {
+  return document.getElementById("ai-model-form-status");
+}
+
+/** Save/validation errors must render where the user is looking: the editor
+    is a modal now, and the section status line sits behind the overlay. */
+function showModelFormError(message: string): void {
+  const status = aiConfigStatusEl();
+  if (status) status.textContent = message;
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = message;
+    formStatus.classList.add("failed");
+  }
+}
+
 function capabilityLabel(cap: ModelCapability): string {
   switch (cap) {
     case "text":
@@ -3378,6 +3394,14 @@ function hideModelForm(): void {
     form.classList.add("hidden");
     form.replaceChildren();
   }
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = "";
+    formStatus.classList.remove("failed");
+  }
+  document
+    .getElementById("ai-model-form-overlay")
+    ?.classList.remove("active");
 }
 
 function modelFieldLabel(
@@ -3429,12 +3453,18 @@ async function showModelForm(id?: string): Promise<void> {
 
   form.classList.remove("hidden");
   form.replaceChildren();
-
-  const title = document.createElement("h3");
-  title.textContent = existing
-    ? t("model_form_edit_title")
-    : t("model_form_add_title");
-  form.appendChild(title);
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = "";
+    formStatus.classList.remove("failed");
+  }
+  const titleEl = document.getElementById("ai-model-form-title");
+  if (titleEl) {
+    titleEl.textContent = existing
+      ? t("model_form_edit_title")
+      : t("model_form_add_title");
+  }
+  document.getElementById("ai-model-form-overlay")?.classList.add("active");
 
   const kindWrap = document.createElement("div");
   kindWrap.className = "provider-kind-switch";
@@ -3779,7 +3809,7 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
 
   if (data.kind === "agent") {
     if (!data.agentHarness) {
-      if (status) status.textContent = t("model_agent_missing_harness");
+      showModelFormError(t("model_agent_missing_harness"));
       return;
     }
     const harnesses = await loadOutboundAgentHarnesses();
@@ -3813,17 +3843,17 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
       await loadProviderStatus();
       if (status) status.textContent = tf("model_saved", { label });
     } catch (err) {
-      if (status) {
-        status.textContent = tf("model_save_failed", {
+      showModelFormError(
+        tf("model_save_failed", {
           message: errorMessage(err),
-        });
-      }
+        }),
+      );
     }
     return;
   }
 
   if (!data.url || !data.model) {
-    if (status) status.textContent = t("model_missing_fields");
+    showModelFormError(t("model_missing_fields"));
     return;
   }
   const label = data.label || data.model;
@@ -3837,11 +3867,11 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     try {
       await runBridge("provider-set-key", ["--ref", keyRef, "--key", data.key]);
     } catch (err) {
-      if (status) {
-        status.textContent = tf("model_save_failed", {
+      showModelFormError(
+        tf("model_save_failed", {
           message: errorMessage(err),
-        });
-      }
+        }),
+      );
       return;
     }
   }
@@ -3874,11 +3904,11 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     await loadProviderStatus();
     if (status) status.textContent = tf("model_saved", { label });
   } catch (err) {
-    if (status) {
-      status.textContent = tf("model_save_failed", {
+    showModelFormError(
+      tf("model_save_failed", {
         message: errorMessage(err),
-      });
-    }
+      }),
+    );
   }
 }
 
@@ -3892,6 +3922,7 @@ function toggleAiConfigEditor(): void {
     ? t("btn_ai_config_close")
     : t("btn_ai_config_open");
   if (aiConfigEditorOpen) void loadModelRegistry();
+  else hideModelForm();
 }
 
 interface InstallRepairReport {
