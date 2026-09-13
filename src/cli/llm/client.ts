@@ -83,7 +83,7 @@ const RECALL_ENDPOINT_CACHE_MS = 60_000;
  */
 const recallReadiness = new Map<
   string,
-  { ready: boolean; expiresAt: number }
+  { ready: ProviderConfig | null; expiresAt: number }
 >();
 
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
@@ -458,10 +458,24 @@ export async function resolveCapability(
   const configs = eligible.map((entry) =>
     materializeModelEntry(entry, base, enabled, maxFrames),
   );
-  for (let i = configs.length - 1; i > 0; i--) {
-    configs[i - 1] = { ...configs[i - 1], fallback: configs[i] };
+  // A cloud primary never falls through to a local model (ADR 2026-09-13,
+  // owner decision): a fallback that starts a local runtime costs gigabytes
+  // of RAM mid-review, and a local row placed behind cloud rows is there
+  // despite that preference, not for fallback duty. The learner who wants
+  // offline study puts the local model first — a local primary keeps its
+  // cloud fallback, the direction the guided setups document. Applied here,
+  // where the chain is linked, so every surface (recall, text, ensure-llm)
+  // agrees.
+  const primaryIsLocal = configs[0].local ?? isLocalEndpoint(configs[0].url);
+  const chained = primaryIsLocal
+    ? configs
+    : configs.filter(
+        (config) => !(config.local ?? isLocalEndpoint(config.url)),
+      );
+  for (let i = chained.length - 1; i > 0; i--) {
+    chained[i - 1] = { ...chained[i - 1], fallback: chained[i] };
   }
-  return configs[0];
+  return chained[0];
 }
 
 /**
@@ -1030,9 +1044,10 @@ Evaluation:`;
   // failure.
   let lastError: unknown;
   for (const endpoint of endpoints) {
-    if (!(await ensureRecallEndpointReady(endpoint, signature))) continue;
+    const ready = await ensureRecallEndpointReady(endpoint, signature);
+    if (!ready) continue;
     try {
-      return await evaluateOn(endpoint);
+      return await evaluateOn(ready);
     } catch (error) {
       if (
         error instanceof LlmHttpError &&
@@ -1174,9 +1189,10 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
   // limit moves the discussion to the next configured row.
   let lastError: unknown;
   for (const endpoint of endpoints) {
-    if (!(await ensureRecallEndpointReady(endpoint, signature))) continue;
+    const ready = await ensureRecallEndpointReady(endpoint, signature);
+    if (!ready) continue;
     try {
-      return await discussOn(endpoint);
+      return await discussOn(ready);
     } catch (error) {
       if (
         error instanceof LlmHttpError &&
@@ -2335,15 +2351,8 @@ async function checkProviderChain(
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
-  const chain = providerChain(primary);
-  for (const [index, endpoint] of chain.entries()) {
-    const readiness = await checkProviderEndpoint(endpoint, {
-      ...options,
-      // Foundry rows are started and loaded only when a caller is about to
-      // use them — the chain's first entry qualifies, a deeper fallback does
-      // not (a healthy primary must never trigger a local model load).
-      prepareFoundry: options.prepareFoundry === true && index === 0,
-    });
+  for (const endpoint of providerChain(primary)) {
+    const readiness = await checkProviderEndpoint(endpoint, options);
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
@@ -2400,9 +2409,16 @@ export async function resolveRecallEndpointChain(
   }
   assertChatCompletions(cfg);
 
-  const raw = providerChain(cfg);
-  const endpoints = cfg.local ? raw : raw.filter((endpoint) => !endpoint.local);
-  return { endpoints, signature: recallEndpointSignature(cfg) };
+  // No network here — the raw chain in registry order (the cloud/local
+  // fallback boundary is applied where the chain is linked, in
+  // resolveCapability). Readiness (reachability, key, catalog) is ensured
+  // lazily by the walk right before each attempt via
+  // {@link ensureRecallEndpointReady}, so a healthy primary pays exactly one
+  // health check and no local row is ever started for a check.
+  return {
+    endpoints: providerChain(cfg),
+    signature: recallEndpointSignature(cfg),
+  };
 }
 
 /**
@@ -2410,20 +2426,23 @@ export async function resolveRecallEndpointChain(
  * model in the catalog), with the same 60 s TTL the endpoint cache used.
  * Foundry rows are prepared here — i.e. started and loaded only when a walk
  * is actually about to call them, never for a row a healthy primary made
- * unreachable.
+ * unreachable. Returns the **resolved** config to call: prepareFoundryEndpoint
+ * swaps in the URL the local service actually reports, so a recall call
+ * survives a service restart instead of hitting the stale stored URL. Null =
+ * not ready; the walk skips the row.
  */
 async function ensureRecallEndpointReady(
   endpoint: ProviderConfig,
   signature: string,
-): Promise<boolean> {
-  if (endpoint.transport === "agent") return true;
+): Promise<ProviderConfig | null> {
+  if (endpoint.transport === "agent") return endpoint;
   const key = `${signature}|${endpoint.url}|${endpoint.model}`;
   const hit = recallReadiness.get(key);
   if (hit && hit.expiresAt > Date.now()) return hit.ready;
   const readiness = await checkProviderEndpoint(endpoint, {
     prepareFoundry: true,
   });
-  const ready = isEndpointUsable(readiness);
+  const ready = isEndpointUsable(readiness) ? readiness.endpoint : null;
   recallReadiness.set(key, {
     ready,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
@@ -2437,7 +2456,8 @@ export async function resolveUsableRecallEndpoint(
 ): Promise<ProviderConfig> {
   const { endpoints, signature } = await resolveRecallEndpointChain(db, opts);
   for (const endpoint of endpoints) {
-    if (await ensureRecallEndpointReady(endpoint, signature)) return endpoint;
+    const ready = await ensureRecallEndpointReady(endpoint, signature);
+    if (ready) return ready;
   }
   throw new Error("No recall LLM endpoint is online");
 }
@@ -2546,7 +2566,7 @@ async function resolveUsableTextEndpoint(
   return selected.endpoint;
 }
 
-async function prepareRecallChain(
+export async function prepareRecallChain(
   db: Database,
   opts: { timeoutMs: number; interactive: boolean },
 ): Promise<LlmReadyResult> {
@@ -2592,14 +2612,23 @@ async function prepareRecallChain(
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);
+  // Same boundary as resolveCapability (ADR 2026-09-13, owner decision): a
+  // cloud primary never falls through to a local model, and ensure-llm must
+  // not start a local runner for a row the recall walk would refuse.
+  const primaryIsLocal = cfg.local ?? isLocalEndpoint(cfg.url);
+  const candidates = primaryIsLocal
+    ? chain
+    : chain.filter(
+        (endpoint) => !(endpoint.local ?? isLocalEndpoint(endpoint.url)),
+      );
   const deadline = Date.now() + opts.timeoutMs;
   let lastReason: LlmReadiness["reason"] = "offline";
   let lastOnline = false;
   let lastModel = cfg.model;
   let lastAvailable: string[] = [];
 
-  for (let index = 0; index < chain.length; index++) {
-    let endpoint = chain[index];
+  for (let index = 0; index < candidates.length; index++) {
+    let endpoint = candidates[index];
     let online = await isLlmOnline(endpoint.url);
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {

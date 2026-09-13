@@ -6,9 +6,25 @@ import {
   clearRecallEndpointCache,
   discussReviewViaLLM,
   evaluateAnswerViaLLM,
+  prepareRecallChain,
   probeKeyValidity,
   RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
 } from "../../src/cli/llm/client.js";
+
+vi.mock("../../src/cli/llm/foundry-local.js", async (importActual) => {
+  const actual = await importActual<
+    typeof import("../../src/cli/llm/foundry-local.js")
+  >();
+  return {
+    ...actual,
+    // The prepared service answers on a different URL than the row stores —
+    // the resolved config, not the stored one, is what the walk must call.
+    ensureFoundryModelLoaded: async () => ({
+      ok: true,
+      endpoint: "http://127.0.0.1:9999/v1",
+    }),
+  };
+});
 import {
   probeModelCapabilities,
   validateModelSave,
@@ -856,6 +872,125 @@ describe("fallback chain boundaries", () => {
     );
     expect(calls.some((call) => call.url.includes("cloud.openrouter.ai"))).toBe(
       true,
+    );
+  });
+});
+
+describe("foundry resolution and ensure-llm boundary", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+  let db: Database;
+
+  beforeEach(async () => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-foundry-ready-"));
+    const configPath = join(testConfigDir, "config.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({ ai: { providers: {}, roles: {} } }),
+    );
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+    clearRecallEndpointCache();
+    db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+  });
+
+  afterEach(async () => {
+    vi.unstubAllGlobals();
+    clearRecallEndpointCache();
+    await db.close();
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    rmSync(testConfigDir, { recursive: true, force: true });
+  });
+
+  it("calls a foundry primary on the URL the prepared service reports", async () => {
+    saveMachineAiModels([
+      {
+        id: "foundry-primary",
+        label: "Foundry",
+        url: "http://127.0.0.1:5273/v1",
+        model: "qwen3.5-0.8b",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "foundry",
+        order: 0,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (!url.startsWith("http://127.0.0.1:9999")) return undefined;
+      return url.endsWith("/models")
+        ? { status: 200, body: { data: [{ id: "qwen3.5-0.8b" }] } }
+        : okResponse("OK");
+    });
+
+    const result = await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    expect(result.model).toBe("qwen3.5-0.8b");
+    // The chat goes to the URL the prepared service reported — never to the
+    // stale stored one.
+    expect(
+      calls.some(
+        (call) =>
+          call.url.startsWith("http://127.0.0.1:9999") &&
+          !call.url.endsWith("/models"),
+      ),
+    ).toBe(true);
+    expect(calls.some((call) => call.url.includes("127.0.0.1:5273"))).toBe(
+      false,
+    );
+  });
+
+  it("ensure-llm skips local rows behind a cloud primary instead of starting them", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://offline.openrouter.ai/api/v1",
+      }),
+      {
+        id: "local-ollama",
+        label: "Ollama",
+        url: "http://localhost:59999/v1",
+        model: "local/model",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "ollama",
+        order: 1,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://offline.") ? { status: 500, body: {} } : undefined,
+    );
+
+    const result = await prepareRecallChain(db, {
+      timeoutMs: 800,
+      interactive: false,
+    });
+
+    // The cloud row is offline and the local row is out of the chain: not
+    // usable, and the reported model is still the primary's — the local row
+    // was never probed, let alone started.
+    expect(result.usable).toBe(false);
+    expect(result.model).toBe("cloud/model");
+    expect(calls.filter((call) => call.url.includes("localhost:59999"))).toEqual(
+      [],
     );
   });
 });

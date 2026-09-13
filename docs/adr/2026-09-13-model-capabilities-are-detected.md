@@ -112,17 +112,23 @@ the learner decides only what a row is *used for*.
    primary therefore pays exactly one health check — no eager full-chain
    sweep, and Foundry/Ollama rows are never started for a check they never
    needed (the previous eager check loaded Foundry models for fallback rows
-   that a healthy primary made unreachable). The walk covers the **full**
+   that a healthy primary made unreachable). The walk calls the **resolved**
+   config — the URL the local service actually reported — not the stored one,
+   so a recall call survives a service restart. It covers the **full**
    fallback depth and falls through to the next row on 401 (rejected key),
    402 (exhausted credit), 403 (forbidden), and 429 (upstream capacity).
    **Boundary (owner decision, 2026-09-13): a cloud primary never falls
    through to a local model** — a fallback that starts a local runtime costs
    gigabytes of RAM the learner did not ask to spend mid-review, and a local
    row placed behind cloud rows is there despite that preference, not for
-   fallback duty. Local rows are excluded from a cloud primary's chain
-   entirely (not even health-checked); a **local** primary keeps its cloud
-   fallback, the direction the guided setups document. Any other error
-   propagates, and an exhausted chain raises the original failure.
+   fallback duty. The learner who wants offline study puts the local model
+   first. The boundary is enforced **where the chain is linked**
+   (`resolveCapability` drops local rows from a cloud primary's fallback
+   links), so recall, the text role, and `ensure-llm` all agree and the
+   readiness sweep never starts a local runner for a row the walk would
+   refuse; a **local** primary keeps its cloud fallback, the direction the
+   guided setups document. Any other error propagates, and an exhausted
+   chain raises the original failure.
 
 ## Consequences
 
