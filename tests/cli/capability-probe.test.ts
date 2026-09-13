@@ -230,6 +230,18 @@ describe("mergeProbeCapabilities", () => {
     expect(result).toEqual(caps({ text: true, image: true }));
   });
 
+  it("honors an explicit selection on a never-probed row", () => {
+    // Guided setups (Ollama vision → image only, Foundry text → text only)
+    // and `model-upsert --capabilities` select deliberately; the probe must
+    // not flood that selection with everything else it detected.
+    const result = mergeProbeCapabilities(
+      caps({ image: true }),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ image: true }));
+  });
+
   it("drops a capability the probe no longer detects", () => {
     const result = mergeProbeCapabilities(
       caps({ text: true, image: true }),
@@ -516,7 +528,8 @@ describe("probeModelCapabilities and a split model catalogue", () => {
                 id: "deepseek/deepseek-v4-flash",
                 architecture: { input_modalities: ["text"] },
               },
-              { id: "no-meta-model" },
+              // No architecture record → name hints stay in charge.
+              { id: "gpt-4o" },
             ],
           }),
         );

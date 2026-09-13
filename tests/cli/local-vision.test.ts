@@ -9,6 +9,7 @@ import {
   openDatabase,
   saveMachineAiModels,
 } from "../../src/kernel/index.js";
+import { resolveCapability } from "../../src/cli/llm/client.js";
 import { OLLAMA_BASE_URL } from "../../src/cli/llm/local-embedding.js";
 import {
   DEFAULT_LOCAL_VISION_MODEL,
@@ -195,6 +196,52 @@ describe("local vision enhancement", () => {
     expect(models[1].label).toBe("Foundry Local Vision");
     expect(models[1].capabilities.image).toBe(false);
     expect(await getSetting(db, "llm.vision.enabled")).toBe("true");
+  });
+
+  it("keeps the guided image-only selection off the text fallback chain", async () => {
+    saveMachineAiModels([
+      {
+        id: "cloud-luna",
+        label: "GPT-5.6 Luna",
+        url: "https://openrouter.ai/api/v1",
+        model: "openai/gpt-5.6-luna",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: {
+          text: true,
+          embedding: false,
+          image: true,
+          video: false,
+          stt: false,
+          tts: false,
+        },
+        detectedCapabilities: {
+          text: true,
+          embedding: false,
+          image: true,
+          video: false,
+          stt: false,
+          tts: false,
+        },
+      },
+    ]);
+
+    const result = await enableLocalVision(db, deps());
+    expect(result.ok).toBe(true);
+
+    // The guided setup selects image only; the probe also detects text for a
+    // chat model, and that must not flood the deliberate selection.
+    const models = getMachineAiModels();
+    const vision = models.find((m) => m.runner === "ollama");
+    expect(vision?.capabilities).toMatchObject({ image: true, text: false });
+
+    // Promoted to order 0, the 4B vision model must still not take over
+    // recall coaching: text resolves to the learner's cloud row.
+    const text = await resolveCapability(db, "text");
+    expect(text?.providerName).toBe("cloud-luna");
+    const image = await resolveCapability(db, "image");
+    expect(image?.providerName).toBe(vision?.id);
   });
 
   it("is idempotent and reports a usable local vision path", async () => {

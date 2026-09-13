@@ -37,7 +37,11 @@ describe("bridge model-* registry commands", () => {
     server = createServer((req, res) => {
       if (req.url === "/v1/models") {
         res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ data: [{ id: "gemma4-it:e4b" }] }));
+        res.end(
+          JSON.stringify({
+            data: [{ id: "gemma4-it:e4b" }, { id: "mimo-v2.5" }],
+          }),
+        );
         return;
       }
       res.writeHead(404);
@@ -107,6 +111,40 @@ describe("bridge model-* registry commands", () => {
     expect(model.probedAt).toBeTruthy();
 
     expect(readConfig().ai?.models).toHaveLength(1);
+  });
+
+  it("honors an explicit --capabilities selection on a fresh row", async () => {
+    // mimo-v2.5 matches the MiMo vision hint, so the probe detects text +
+    // image; the caller's deliberate text-only selection must survive.
+    const res = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Mimo",
+      "--url",
+      baseUrl,
+      "--model",
+      "mimo-v2.5",
+      "--capabilities",
+      JSON.stringify({
+        text: true,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: false,
+        tts: false,
+      }),
+    ])) as { parsed: { ok: boolean; model: Record<string, unknown> } };
+
+    expect(res.parsed.ok).toBe(true);
+    const model = res.parsed.model as {
+      capabilities: Record<string, boolean>;
+      detectedCapabilities: Record<string, boolean>;
+    };
+    expect(model.detectedCapabilities).toMatchObject({
+      text: true,
+      image: true,
+    });
+    expect(model.capabilities).toMatchObject({ text: true, image: false });
   });
 
   it("blocks a save when the endpoint is unreachable", async () => {

@@ -61,12 +61,19 @@ the learner decides only what a row is *used for*.
 3. **Newly detected capabilities switch on.** The probe merge rule
    (`mergeProbeCapabilities`) is: detected **and** previously detected → keep
    the user's toggle; detected but **new** since the last probe → on; no
-   longer detected → off. A fresh row (nothing previously detected) starts
-   with everything the endpoint offers enabled — "a new configuration is
-   always fully active".
+   longer detected → off. One guard keeps caller intent intact: a
+   *never-probed* row that still carries selected flags is acting on its
+   caller's explicit selection — the guided setups (Ollama vision → image
+   only, Foundry text → text only) and `model-upsert --capabilities` — and
+   that selection is honored instead of flooded. Only a row saved with no
+   selection at all (the manual editor sends none) starts with everything
+   the endpoint offers enabled. Note the manual editor path itself: a fresh
+   Foundry row typed by hand has no selection, so a name-hinted `image`
+   *is* auto-enabled under this rule — that is the decision working as
+   written, and the learner can toggle it off in the overview.
 4. **The editor no longer offers capability checkboxes.** Saving probes and
-   applies rule 3; `model-upsert` callers that still pass `--capabilities`
-   keep their meaning as the user-selection input to the merge.
+   applies rule 3; `model-upsert` callers that pass `--capabilities` keep
+   their meaning as the user-selection input to the merge (rule 3's guard).
 5. **`video` is a first-class capability from this release on, displayed and
    stored separately.** "Vision" remains `image` and keeps its current
    meaning — the Observer reads frames. Nothing consumes `video` yet; it is
@@ -106,9 +113,8 @@ the learner decides only what a row is *used for*.
 - The registry rows gain `video` flags over time as models are re-probed; no
   schema or migration change (flags are JSON), and no behavior reads `video`
   yet — consumers arrive with the Observer video work.
-- Callers that pass explicit `--capabilities` on a *new* row get newly
-  detected capabilities enabled on top of their selection; the registry is the
-  source of truth, not the payload.
+- Callers that pass explicit `--capabilities` keep that selection on fresh
+  rows; they are not flooded by newly detected capabilities.
 
 ---
 

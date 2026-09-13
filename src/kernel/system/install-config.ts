@@ -231,9 +231,13 @@ export interface ModelEntry {
   apiKeyRef?: string;
   /** Sort key: lower = higher priority. */
   order: number;
-  /** User-selected capabilities (may only shrink after the first probe). */
+  /**
+   * Learner-enabled capabilities. Re-probes keep these toggles, auto-enable
+   * newly detected ones, and drop capabilities the endpoint no longer serves
+   * (ADR 2026-09-13) — the probe verdict is merged, not intersected.
+   */
   capabilities: CapabilityFlags;
-  /** Last successful metadata probe; drives the checkbox ceiling. */
+  /** Last successful metadata probe; the ceiling — undetected is always off. */
   detectedCapabilities: CapabilityFlags;
   /** ISO timestamp of the last probe; undefined until probed. */
   probedAt?: string;

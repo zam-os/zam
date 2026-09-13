@@ -434,6 +434,13 @@ export async function probeModelCapabilities(
  *   widens the row must not hand the learner another chore, and a fresh
  *   row (nothing detected yet) starts with everything the endpoint offers;
  * - no longer detected → off. The probe is the ceiling.
+ *
+ * One guard on the fresh-row path: a never-probed row that still carries
+ * selected flags is acting on its caller's explicit intent — the guided
+ * setups (Ollama vision → image only, Foundry text → text only) and
+ * `model-upsert --capabilities` — and that selection is honored instead of
+ * being flooded by everything the probe found. Only a row saved with no
+ * selection at all (the manual editor sends none) is seeded fully.
  */
 export function mergeProbeCapabilities(
   previous: CapabilityFlags,
@@ -441,9 +448,16 @@ export function mergeProbeCapabilities(
   detected: CapabilityFlags,
 ): CapabilityFlags {
   const result = emptyCapabilityFlags();
+  const neverProbed = ALL_CAPABILITIES.every((key) => !previousDetected[key]);
+  const explicit = ALL_CAPABILITIES.some((key) => previous[key] === true);
   for (const key of ALL_CAPABILITIES) {
     if (!detected[key]) continue;
-    result[key] = previousDetected[key] ? previous[key] === true : true;
+    result[key] =
+      neverProbed && explicit
+        ? previous[key] === true
+        : previousDetected[key]
+          ? previous[key] === true
+          : true;
   }
   return result;
 }

@@ -8,7 +8,7 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-08-08T20:20:00Z
+timestamp: 2026-09-13T16:00:00.000Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
@@ -199,9 +199,13 @@ detected Windows NPU except on ARM64, which made it wrong on Intel.
 
 Foundry labels its multimodal Qwen family `qwen3.5-*` and suffixes the text-only
 siblings `-text`. The capability probe therefore treats `qwen3.5-` as a vision
-hint **unless** the id contains `-text`. `validateModelSave` still stores the
-intersection of what the learner ticked and what the probe confirmed, so a
-name-based hint alone never grants a capability.
+hint **unless** the id contains `-text`. Since ADR 2026-09-13 the save merges
+the probe with the row's state instead of intersecting: the guided Foundry
+setup selects `text` explicitly, and that selection is honored — a
+hint-detected `image` stays off on the registered row, because the Foundry
+image path is known to be unreliable. A model typed in by hand through the
+editor has no selection, so it starts with everything the probe detected
+enabled, hint included; the overview row toggles that off if unwanted.
 
 # Setup surface
 
@@ -248,6 +252,7 @@ English until native review.
 
 - [ADR 2026-08-02 — Local Generation Only on Accelerated Hardware](../adr/2026-08-02-foundry-local-and-hardware-classification.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
+- [ADR 2026-09-13 — Model Capabilities Are Detected, Not Chosen](../adr/2026-09-13-model-capabilities-are-detected.md)
 - [ADR 2026-05-30b — Hardware Setup and Agent Distribution](../adr/2026-05-30b-hardware-setup-and-agent-distribution.md)
 - [bridge-protocol.md](bridge-protocol.md)
 - Tests: `tests/cli/foundry-local.test.ts`, `tests/cli/local-vision.test.ts`, `tests/cli/llm-vision.test.ts`, `tests/cli/embedder.test.ts`, `tests/kernel/system.test.ts`, `tests/desktop/i18n-completeness.test.ts`, `tests/desktop/foundry-local-visibility.test.ts`
