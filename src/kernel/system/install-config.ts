@@ -238,6 +238,15 @@ export interface ModelEntry {
   /** ISO timestamp of the last probe; undefined until probed. */
   probedAt?: string;
   /**
+   * Outcome of the probe's key-validity check, when the provider offers a
+   * key-metadata endpoint (OpenRouter `/auth/key`): true = the stored key
+   * authenticated, false = it was rejected. Absent = never checked or no
+   * verdict — `keyState` "set" only means a credential exists, and a public
+   * `/models` catalog cannot tell a working key from a broken one
+   * (ADR 2026-09-13).
+   */
+  keyValid?: boolean;
+  /**
    * How ZAM reaches this model (ADR 2026-07-12a). Absent/"http" is the direct
    * HTTP path (local or cloud). "agent" delegates generation through a connected
    * agent harness named by {@link agentHarness}; `url`/`apiFlavor` are then

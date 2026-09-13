@@ -3020,6 +3020,9 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
         ? "set"
         : "missing"
       : "none",
+    // Probe verdict from the provider's key-metadata endpoint; absent =
+    // never checked. "set" above only means a credential exists.
+    keyValid: entry.keyValid,
     // Agent transport fields (ADR 2026-07-12a). Absent/"http" for HTTP rows.
     transport: entry.transport ?? "http",
     agentHarness: entry.agentHarness,

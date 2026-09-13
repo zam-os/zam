@@ -339,6 +339,8 @@ interface ModelRow {
   probedAt?: string;
   apiKeyRef?: string;
   keyState: "set" | "missing" | "none";
+  /** Probe verdict from the provider's key-metadata endpoint; absent = never checked. */
+  keyValid?: boolean;
   /** ADR 2026-07-12a — "http" (default) or "agent". */
   transport?: "http" | "agent";
   /** Harness id when transport is "agent" (e.g. "claude-code"). */
@@ -3298,6 +3300,12 @@ function createModelRow(
     }
   } else if (row.keyState === "missing") {
     statusChip.textContent = t("model_status_key_missing");
+    statusChip.classList.add("warn");
+  } else if (row.keyValid === false) {
+    // The probe authenticated the stored key against the provider's
+    // key-metadata endpoint and was rejected — a broken paste used to sit
+    // unnoticed on a row whose keyState said "set".
+    statusChip.textContent = t("model_status_key_invalid");
     statusChip.classList.add("warn");
   } else if (row.probedAt) {
     statusChip.textContent = t("model_status_probed");

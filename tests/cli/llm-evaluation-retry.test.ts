@@ -7,11 +7,13 @@ import {
   evaluateAnswerViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
+  probeKeyValidity,
   probeModelCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
 import {
   type CapabilityFlags,
+  emptyCapabilityFlags,
   type ModelEntry,
   openDatabase,
   saveMachineAiModels,
@@ -293,5 +295,64 @@ describe("reasoning-effort probe and a stored effort level", () => {
     const chats = calls.filter((call) => !call.url.endsWith("/models"));
     expect(chats).toHaveLength(1);
     expect(chats[0]?.body?.reasoning).toEqual({ effort: "minimal" });
+  });
+});
+
+describe("key-validity probe", () => {
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  function stubStatus(status: number): void {
+    vi.stubGlobal("fetch", async () => new Response("{}", { status }));
+  }
+
+  it("reports true for a key the provider authenticates", async () => {
+    stubStatus(200);
+    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBe(true);
+  });
+
+  it("reports false for a rejected key (401/403)", async () => {
+    stubStatus(401);
+    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad")).resolves.toBe(false);
+    stubStatus(403);
+    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad")).resolves.toBe(false);
+  });
+
+  it("gives no verdict on transient failures", async () => {
+    stubStatus(500);
+    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBeUndefined();
+    vi.stubGlobal("fetch", async () => {
+      throw new Error("offline");
+    });
+    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBeUndefined();
+  });
+
+  it("skips keyless rows entirely", async () => {
+    // A row without its own credential must not be marked invalid: the check
+    // would run against the default sentinel key and 401.
+    saveMachineAiModels([openRouterEntry()]);
+    stubFetch([{ status: 200, body: evaluationBody }]);
+    const probe = await probeModelCapabilities(openRouterEntry(), {
+      reasoningEffortProbe: true,
+    });
+    expect(probe.keyValid).toBeUndefined();
+  });
+
+  it("stamps the verdict onto the saved row and keeps a prior one without a verdict", () => {
+    const entry = openRouterEntry();
+    const base = {
+      reachable: true,
+      catalog: ["z-ai/glm-5.3-flash"],
+      detected: { ...emptyCapabilityFlags(), text: true },
+    };
+    const invalid = validateModelSave(entry, { ...base, keyValid: false });
+    expect(invalid.entry?.keyValid).toBe(false);
+    const valid = validateModelSave(entry, { ...base, keyValid: true });
+    expect(valid.entry?.keyValid).toBe(true);
+    // No verdict from a later probe must not wipe the last known state.
+    const rejected = { ...openRouterEntry(), keyValid: false };
+    const kept = validateModelSave(rejected, base);
+    expect(kept.entry?.keyValid).toBe(false);
   });
 });

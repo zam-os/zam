@@ -86,6 +86,16 @@ the learner decides only what a row is *used for*.
    evaluation's 400 retry remains the safety net for rows probed before this
    existed. The endpoint cache signature includes the stored level so a
    re-probe takes effect immediately.
+7. **The probe verifies the stored API key when the provider publishes a
+   key-metadata endpoint** (OpenRouter `/auth/key`; one authenticated GET, no
+   tokens consumed). This closes the blind spot that let a broken 29-character
+   key paste sit unnoticed on a row whose `keyState` said "set": the catalog
+   the probe otherwise reads is public, so it cannot tell a working key from
+   a rejected one. The verdict is stored on the row (`keyValid`) and shown in
+   the overview ("API key invalid"); 401/403 are definitive, every other
+   outcome is no verdict, and the save is **not** blocked — the row stays
+   editable so the fix is a re-paste, not a dead end. Rows without their own
+   credential are never checked.
 
 ## Consequences
 

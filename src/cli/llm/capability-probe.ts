@@ -156,6 +156,12 @@ export interface CapabilityProbeResult {
    * row keeps its stored setting.
    */
   effort?: "none" | "minimal";
+  /**
+   * Verdict of the key-validity check, when the provider publishes a
+   * key-metadata endpoint (OpenRouter `/auth/key`): true = the stored key
+   * authenticated, false = rejected. Absent = no such endpoint or no verdict.
+   */
+  keyValid?: boolean;
 }
 
 /**
@@ -280,11 +286,46 @@ async function probeReasoningEffort(
 }
 
 /**
+ * Check the stored key against the provider's key-metadata endpoint
+ * (OpenRouter `/auth/key`). One authenticated GET, no tokens consumed — and
+ * the only way to notice a broken key from ZAM's side, because the `/models`
+ * catalog this probe otherwise relies on is public: a row with an unusable
+ * key probed clean and looked healthy until the first real chat call 401'd
+ * (field report 2026-09-13, a 29-character wrong paste sat undetected on a
+ * row whose `keyState` said "set"). 401/403 are a definitive false; every
+ * other outcome is "no verdict" so a transient failure cannot mark a good
+ * key bad.
+ */
+export async function probeKeyValidity(
+  url: string,
+  apiKey: string,
+): Promise<boolean | undefined> {
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(`${url}/auth/key`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: controller.signal,
+    });
+    await res.text().catch(() => "");
+    if (res.ok) return true;
+    if (res.status === 401 || res.status === 403) return false;
+    return undefined;
+  } catch {
+    return undefined;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
  * Probe an endpoint's capabilities over HTTP. Metadata-only by default; two
  * optional single-call exceptions: an embeddings dimension probe when the
  * catalog is silent (`embeddingDimProbe`), and a reasoning-effort probe for
  * OpenRouter chat models (`reasoningEffortProbe`) that stores the level the
- * evaluation should send.
+ * evaluation should send. OpenRouter rows with a stored key additionally get
+ * a key-validity check (`/auth/key`), whose verdict rides along as
+ * `keyValid`.
  */
 export async function probeModelCapabilities(
   entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef">,
@@ -353,10 +394,24 @@ export async function probeModelCapabilities(
     catalogVideo,
   );
 
+  // Key validity is only checkable where the provider publishes a key-metadata
+  // endpoint, and only for rows that store a credential of their own — the
+  // default sentinel would 401 and mark every keyless row broken.
+  const keyValid =
+    entry.apiKeyRef &&
+    apiKey !== DEFAULT_LLM_API_KEY &&
+    isOpenRouterUrl(entry.url)
+      ? await probeKeyValidity(entry.url, apiKey)
+      : undefined;
+
   // The effort level matters only where the evaluation sends the control —
-  // OpenRouter URLs — and only for models that actually serve chat.
+  // OpenRouter URLs — and only for models that actually serve chat. A key the
+  // endpoint rejected cannot probe effort: every call would 401.
   const effort =
-    opts.reasoningEffortProbe && detected.text && isOpenRouterUrl(entry.url)
+    opts.reasoningEffortProbe &&
+    detected.text &&
+    keyValid !== false &&
+    isOpenRouterUrl(entry.url)
       ? await probeReasoningEffort(entry, apiKey)
       : undefined;
 
@@ -365,6 +420,7 @@ export async function probeModelCapabilities(
     catalog,
     detected,
     effort,
+    keyValid,
   };
 }
 
@@ -448,6 +504,7 @@ export function validateModelSave(
       // overwrites whatever level the row stored before. No verdict → keep
       // the stored level (the evaluation's retry still covers stale rows).
       ...(probe.effort ? { effort: probe.effort } : {}),
+      ...(probe.keyValid !== undefined ? { keyValid: probe.keyValid } : {}),
       capabilities: mergeProbeCapabilities(
         entry.capabilities,
         entry.detectedCapabilities,
