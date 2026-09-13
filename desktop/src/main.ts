@@ -3193,6 +3193,16 @@ function textButton(label: string): HTMLButtonElement {
   return button;
 }
 
+/** Same shapes the CLI's `urlLooksLocal` treats as a local runner. */
+function looksLocalModelEndpoint(value: string): boolean {
+  return (
+    value.includes("localhost") ||
+    value.includes("127.0.0.1") ||
+    value.includes("[::1]") ||
+    value.includes("::1")
+  );
+}
+
 let endpointDatalist: HTMLDataListElement | null = null;
 
 /** One shared <datalist> with the well-known endpoints; built lazily so the
@@ -3285,6 +3295,14 @@ function createModelRow(
     text.textContent = capabilityLabel(cap);
     label.append(box, text);
     caps.append(label);
+  }
+  if (caps.children.length === 0) {
+    // An offline agent harness or an unprobed row would render an empty
+    // strip; keep the overview self-explaining instead.
+    const none = document.createElement("span");
+    none.className = "ai-model-caps-empty";
+    none.textContent = t("model_cap_none");
+    caps.append(none);
   }
 
   const statusChip = document.createElement("span");
@@ -3539,6 +3557,21 @@ async function showModelForm(id?: string): Promise<void> {
   let urlTouched = Boolean(existing);
   urlInput.addEventListener("input", () => {
     urlTouched = true;
+    // Mirror of the kind→URL prefill: picking Ollama from the datalist while
+    // the kind radio still sits on cloud would otherwise save the row with
+    // --no-local. Fresh rows only — an existing row's transport is never
+    // re-pointed by typing.
+    if (existing) return;
+    const value = urlInput.value.trim();
+    const local = looksLocalModelEndpoint(value);
+    const kind = selectedKind();
+    if (local && kind === "cloud") {
+      radios.get("local")!.checked = true;
+      syncKindVisibility();
+    } else if (value && !local && kind === "local") {
+      radios.get("cloud")!.checked = true;
+      syncKindVisibility();
+    }
   });
   const modelInput = document.createElement("input");
   modelInput.type = "text";
@@ -3790,6 +3823,10 @@ async function showModelForm(id?: string): Promise<void> {
   actions.append(saveButton, cancelButton);
 
   form.append(kindWrap, grid, agentHint, actions);
+  // Focus the first field: with aria-modal the rest of the page is inert, and
+  // leaving focus on the "+ Add model" button behind the overlay strands
+  // keyboard users.
+  labelInput.focus();
 }
 
 interface ModelFormData {

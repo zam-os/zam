@@ -83,7 +83,16 @@ let cachedRecallEndpoint: {
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
 export function clearRecallEndpointCache(): void {
   cachedRecallEndpoint = null;
+  reasoningRejections.clear();
 }
+
+/**
+ * Endpoints (url|model) that rejected the reasoning control with a 400. The
+ * evaluation skips the control for these instead of paying the rejected round
+ * trip on every call. Cleared with the endpoint cache; the effort probe stores
+ * the durable verdict on the row, so this only short-circuits stale rows.
+ */
+const reasoningRejections = new Map<string, true>();
 
 /**
  * Compact fingerprint of the resolved recall provider. When any of these change
@@ -941,28 +950,37 @@ Evaluation:`;
   // Reasoning control: the probe stores the lowest level the endpoint accepts
   // ("none", or "minimal" when the model mandates reasoning); rows probed
   // before effort detection keep the product default, with the 400 retry
-  // below as the safety net.
+  // below as the safety net. An endpoint that already rejected the control
+  // skips it outright instead of paying the rejected round trip per answer.
+  const memoKey = `${endpoint.url}|${endpoint.model}`;
   const reasoningEffort = isOpenRouterUrl(endpoint.url)
     ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
     : null;
+  const firstEffort =
+    reasoningEffort !== null && reasoningRejections.has(memoKey)
+      ? null
+      : reasoningEffort;
   let text: string;
   try {
     text = await attemptEvaluation(
       RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-      reasoningEffort,
+      firstEffort,
     );
   } catch (error) {
     // Reasoning-mandatory models answer the control with a 400 — "Reasoning
     // is mandatory for this endpoint" — which used to kill the whole
     // answer-feedback flow. Retry without the control and let the model
-    // reason natively.
+    // reason natively; reasoning tokens count against max_tokens on
+    // OpenRouter, so this attempt starts with the larger budget instead of
+    // billing a thinking pass that gets thrown away.
     if (
       !(error instanceof LlmHttpError && error.status === 400) ||
-      reasoningEffort === null
+      firstEffort === null
     ) {
       throw error;
     }
-    text = await attemptEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS, null);
+    reasoningRejections.set(memoKey, true);
+    text = await attemptEvaluation(RECALL_EVALUATION_RETRY_OUTPUT_TOKENS, null);
   }
   return {
     text,
@@ -1973,10 +1991,6 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 }
 
 /**
- * List the model ids the server actually serves (OpenAI `/v1/models`).
- * Returns [] on any error so callers can treat "unknown" as "skip validation".
- */
-/**
  * One `/models` record: the id plus whatever architecture metadata the
  * endpoint publishes alongside it. OpenRouter declares `input_modalities`
  * per model; most other endpoints (OpenAI, local runners) serve bare ids.
@@ -1988,6 +2002,9 @@ export interface ModelCatalogEntry {
   inputModalities?: string[];
 }
 
+/**
+ * Fetch the `/models` catalogue with architecture metadata.
+ */
 export async function getAvailableModelEntries(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
@@ -2032,6 +2049,10 @@ export async function getAvailableModelEntries(
   }
 }
 
+/**
+ * List the model ids the server actually serves (OpenAI `/v1/models`).
+ * Returns [] on any error so callers can treat "unknown" as "skip validation".
+ */
 export async function getAvailableModels(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,

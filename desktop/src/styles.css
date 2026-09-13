@@ -1082,7 +1082,12 @@ textarea:focus-visible {
 .ai-model-caps {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px 14px;
+}
+
+.ai-model-caps-empty {
+  color: var(--clr-text-muted);
+  font-size: 12px;
 }
 
 .ai-model-cap {

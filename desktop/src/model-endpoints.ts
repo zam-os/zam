@@ -34,7 +34,7 @@ export const MODEL_ENDPOINTS: readonly ModelEndpoint[] = [
   // First-party providers with an OpenAI-compatible surface.
   { label: "OpenAI", url: "https://api.openai.com/v1" },
   {
-    label: "Anthropic (OpenAI-compatible)",
+    label: "Anthropic",
     url: "https://api.anthropic.com/v1",
   },
   {

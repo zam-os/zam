@@ -429,22 +429,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Guardar",
     model_btn_up: "Subir",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Solo se pueden activar las capacidades que admite el endpoint tras la comprobación.",
     model_cap_image: "Visión",
     model_cap_none: "Sin capacidades",
     model_cap_stt: "Voz a texto",
     model_cap_text: "Texto",
     model_cap_tts: "Texto a voz",
-    model_cap_undetected: "No compatible con este endpoint",
     model_cap_video: "Vídeo",
     model_agent_badge: "Agente",
-    model_agent_cap_hint:
-      "Los modelos de agente usan el modelo y la suscripción del harness. Solo texto.",
-    model_agent_cap_hint_multimodal:
-      "Este agente admite texto y visión (OCR/escaneos) con tu suscripción.",
-    model_agent_cap_undetected:
-      "Harness no detectado — vuelve a comprobar tras instalarlo",
     model_agent_harness_missing: "no detectado",
     model_agent_harness_none: "Aún no hay harness de texto de agente",
     model_agent_hint:
@@ -1334,22 +1325,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Enregistrer",
     model_btn_up: "Monter",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Seules les capacités prises en charge par l'endpoint peuvent être activées après vérification.",
     model_cap_image: "Vision",
     model_cap_none: "Aucune capacité",
     model_cap_stt: "Parole vers texte",
     model_cap_text: "Texte",
     model_cap_tts: "Synthèse vocale",
-    model_cap_undetected: "Non pris en charge par cet endpoint",
     model_cap_video: "Vidéo",
     model_agent_badge: "Agent",
-    model_agent_cap_hint:
-      "Les modèles agent utilisent le modèle et l'abonnement du harness. Texte uniquement.",
-    model_agent_cap_hint_multimodal:
-      "Cet agent gère texte et vision (OCR/scans) via votre abonnement.",
-    model_agent_cap_undetected:
-      "Harness non détecté — revérifiez après l'installation",
     model_agent_harness_missing: "non détecté",
     model_agent_harness_none: "Aucun harness texte agent disponible",
     model_agent_hint:
@@ -2240,22 +2222,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Salvar",
     model_btn_up: "Mover para cima",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Só é possível ativar os recursos que o endpoint suporta após a verificação.",
     model_cap_image: "Visão",
     model_cap_none: "Sem recursos",
     model_cap_stt: "Voz para texto",
     model_cap_text: "Texto",
     model_cap_tts: "Texto para voz",
-    model_cap_undetected: "Não suportado por este endpoint",
     model_cap_video: "Vídeo",
     model_agent_badge: "Agente",
-    model_agent_cap_hint:
-      "Modelos de agente usam o modelo e a assinatura do harness. Somente texto.",
-    model_agent_cap_hint_multimodal:
-      "Este agente faz texto e visão (OCR/scans) com a sua assinatura.",
-    model_agent_cap_undetected:
-      "Harness não detectado — verifique de novo após instalar",
     model_agent_harness_missing: "não detectado",
     model_agent_harness_none: "Nenhum harness de texto de agente disponível",
     model_agent_hint:
@@ -3030,8 +3003,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_cap_stt: "语音转文字",
     model_cap_tts: "文字转语音",
     model_cap_none: "无能力",
-    model_cap_undetected: "此端点不支持",
-    model_cap_hint: "勾选后，仅端点支持的能力可以启用。",
     model_status_probed: "已检查",
     model_status_unprobed: "尚未检查",
     model_status_key_missing: "缺少 API 密钥",
@@ -3041,10 +3012,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_meta: "通过 {harness}",
     model_agent_meta_with_model: "通过 {harness} · {model}",
     model_agent_model_placeholder: "默认：{model}",
-    model_agent_cap_undetected: "未检测到 Harness — 安装后请重新检查",
-    model_agent_cap_hint: "代理模型使用 Harness 自带的模型与订阅。仅文本。",
-    model_agent_cap_hint_multimodal:
-      "此代理支持文本与视觉（OCR/扫描），使用你的订阅。",
     model_agent_hint:
       "使用已连接的代理 Harness（订阅 / OAuth）。无需 API 密钥或 URL。",
     model_agent_harness_missing: "未检测到",
@@ -3872,9 +3839,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_cap_stt: "音声認識",
     model_cap_tts: "音声合成",
     model_cap_none: "能力なし",
-    model_cap_undetected: "このエンドポイントでは未対応",
-    model_cap_hint:
-      "チェック後、エンドポイントがサポートする能力のみ有効化できます。",
     model_status_probed: "確認済み",
     model_status_unprobed: "未確認",
     model_status_key_missing: "APIキーがありません",
@@ -3884,11 +3848,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_agent_meta: "{harness} 経由",
     model_agent_meta_with_model: "{harness} 経由 · {model}",
     model_agent_model_placeholder: "デフォルト: {model}",
-    model_agent_cap_undetected: "Harness 未検出 — インストール後に再確認",
-    model_agent_cap_hint:
-      "エージェントモデルは Harness のモデルとサブスクリプションを使います。テキストのみ。",
-    model_agent_cap_hint_multimodal:
-      "このエージェントはテキストとビジョン（OCR/スキャン）に対応。サブスクリプションを使用します。",
     model_agent_hint:
       "接続済みのエージェント Harness（サブスク / OAuth）を使います。APIキーや URL は不要です。",
     model_agent_harness_missing: "未検出",
@@ -4955,9 +4914,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_stt: "Speech-to-text",
     model_cap_tts: "Text-to-speech",
     model_cap_none: "No capabilities",
-    model_cap_undetected: "Not supported by this endpoint",
-    model_cap_hint:
-      "Only capabilities the endpoint supports can be enabled after checking.",
     model_status_probed: "Checked",
     model_status_unprobed: "Not checked yet",
     model_status_key_missing: "API key missing",
@@ -4967,11 +4923,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_agent_meta: "Via {harness}",
     model_agent_meta_with_model: "Via {harness} · {model}",
     model_agent_model_placeholder: "Default: {model}",
-    model_agent_cap_undetected: "Harness not detected — re-check after install",
-    model_agent_cap_hint:
-      "Agent models use the harness's own model and subscription. Text only.",
-    model_agent_cap_hint_multimodal:
-      "This agent can do text and vision (OCR/scans) via your subscription.",
     model_agent_hint:
       "Uses the connected agent harness (subscription / OAuth). No API key or URL needed.",
     model_agent_card_title: "Agent harness as a model source",
@@ -6346,9 +6297,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_stt: "Sprache-zu-Text",
     model_cap_tts: "Text-zu-Sprache",
     model_cap_none: "Keine Fähigkeiten",
-    model_cap_undetected: "Von diesem Endpunkt nicht unterstützt",
-    model_cap_hint:
-      "Nach dem Prüfen lassen sich nur Fähigkeiten aktivieren, die der Endpunkt unterstützt.",
     model_status_probed: "Geprüft",
     model_status_unprobed: "Noch nicht geprüft",
     model_status_key_missing: "API-Schlüssel fehlt",
@@ -6358,12 +6306,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_agent_meta: "Über {harness}",
     model_agent_meta_with_model: "Über {harness} · {model}",
     model_agent_model_placeholder: "Standard: {model}",
-    model_agent_cap_undetected:
-      "Harness nicht erkannt — nach Installation neu prüfen",
-    model_agent_cap_hint:
-      "Agent-Modelle nutzen Modell und Abo des Harness. Nur Text.",
-    model_agent_cap_hint_multimodal:
-      "Dieser Agent kann Text und Vision (OCR/Scans) über dein Abo.",
     model_agent_hint:
       "Nutzt den verbundenen Agent-Harness (Abo / OAuth). Kein API-Schlüssel und keine URL nötig.",
     model_agent_card_title: "Agent-Harness als Modellquelle",
