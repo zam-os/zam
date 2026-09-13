@@ -6524,6 +6524,7 @@ async function submitAndReveal() {
   let aiFeedbackText = "";
   let evaluationModel: string | null = null;
   let evaluationSuccessful = false;
+  let evaluationError = "";
 
   // Run LLM evaluation if enabled and user wrote an answer
   if (
@@ -6571,11 +6572,14 @@ async function submitAndReveal() {
         aiFeedbackText = evalPayload.evaluation;
         evaluationModel = evalPayload.evaluationModel ?? null;
         evaluationSuccessful = true;
+        evaluationError = "";
       } else {
+        evaluationError = evalPayload.error ?? "";
         console.warn("LLM evaluation returned error state:", evalPayload.error);
       }
     } catch (err) {
       if (requestId !== evaluationRequestId) return;
+      evaluationError = err instanceof Error ? err.message : String(err);
       console.warn("LLM evaluation call failed:", err);
     } finally {
       if (requestId === evaluationRequestId) {
@@ -6585,7 +6589,12 @@ async function submitAndReveal() {
   }
 
   if (requestId !== evaluationRequestId) return;
-  renderReveal(aiFeedbackText, evaluationSuccessful, evaluationModel);
+  renderReveal(
+    aiFeedbackText,
+    evaluationSuccessful,
+    evaluationModel,
+    evaluationError,
+  );
   revealInProgress = false;
   updateReviewControlState();
 }
@@ -6594,13 +6603,17 @@ function renderReveal(
   aiFeedbackText: string,
   evaluationSuccessful: boolean,
   evaluationModel: string | null,
+  evaluationError = "",
 ) {
   if (!activeCard) return;
 
   // Display feedback if evaluated
   const feedbackContainer = document.getElementById("ai-feedback-container")!;
   const feedbackTextEl = document.getElementById("ai-feedback-text")!;
-  
+  const evaluationErrorNote = document.getElementById(
+    "evaluation-error-note",
+  )!;
+
   if (evaluationSuccessful && aiFeedbackText) {
     feedbackTextEl.textContent = aiFeedbackText;
     setModelAttributionBadge(
@@ -6610,9 +6623,17 @@ function renderReveal(
         : null,
     );
     feedbackContainer.classList.remove("hidden");
+    evaluationErrorNote.classList.add("hidden");
   } else {
     setModelAttributionBadge("evaluation-model-badge", null);
     feedbackContainer.classList.add("hidden");
+    // The static reference answer shows instead of feedback, but the learner
+    // must still see WHY the AI stayed silent — a config problem should not
+    // masquerade as a normal flash-mode reveal.
+    evaluationErrorNote.textContent = evaluationError
+      ? tf("study_evaluation_failed", { message: evaluationError })
+      : "";
+    evaluationErrorNote.classList.toggle("hidden", !evaluationError);
   }
 
   // Populate Musterlösung / Reference Answer

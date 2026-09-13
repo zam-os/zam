@@ -1827,6 +1827,18 @@ textarea::placeholder {
   white-space: pre-wrap;
 }
 
+/* Same visual family as the feedback box, in the failure color: what went
+   wrong must be readable where the learner is looking, not only in a console. */
+.evaluation-error-note {
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  color: var(--clr-again);
+  font-size: 13px;
+  margin: 0;
+  overflow-wrap: anywhere;
+  padding: 10px 14px;
+}
+
 .answer-box {
   background: var(--bg-card-subtle);
   border: 1px solid var(--border-soft);

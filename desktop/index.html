@@ -1091,6 +1091,11 @@
                 </p>
               </div>
 
+              <!-- Shown instead of feedback when the AI evaluation failed, so a
+                   broken model config says what happened instead of silently
+                   degrading to the static answer with no follow-ups. -->
+              <p class="evaluation-error-note hidden" id="evaluation-error-note"></p>
+
               <!-- POST-REVEAL CARD MANAGEMENT (stays visible with AI feedback) -->
               <div class="study-edit-controls">
                 <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
