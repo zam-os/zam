@@ -39,6 +39,7 @@ import {
 } from "../../kernel/index.js";
 import { resolveReviewContext } from "../review-context.js";
 import {
+  CLOUD_PROVIDERS,
   OPENROUTER_EVALUATION_REASONING_EFFORT,
   OPENROUTER_PROVIDER,
 } from "./cloud-providers.js";
@@ -970,21 +971,23 @@ Evaluation:`;
     // Reasoning control: the probe stores the lowest level the endpoint accepts
     // ("none", or "minimal" when the model mandates reasoning); rows probed
     // before effort detection keep the product default, with the 400 retry
-    // below as the safety net. An endpoint that already rejected the control
-    // skips it outright instead of paying the rejected round trip per answer.
-    const memoKey = `${endpoint.url}|${endpoint.model}`;
+    // below as the safety net. The rejection memo is keyed by the level — a
+    // "none" rejection says nothing about "minimal", which a re-probe may have
+    // stored in the meantime — and a memo hit means the endpoint is known to
+    // reason, so the control-free attempt starts at the larger budget:
+    // reasoning tokens count against max_tokens on OpenRouter.
     const reasoningEffort = isOpenRouterUrl(endpoint.url)
       ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
       : null;
-    const firstEffort =
-      reasoningEffort !== null && reasoningRejections.has(memoKey)
-        ? null
-        : reasoningEffort;
+    const memoKey = `${endpoint.url}|${endpoint.model}|${reasoningEffort ?? ""}`;
+    const rejected =
+      reasoningEffort !== null && reasoningRejections.has(memoKey);
+    const firstEffort = rejected ? null : reasoningEffort;
+    const firstBudget = rejected
+      ? RECALL_EVALUATION_RETRY_OUTPUT_TOKENS
+      : RECALL_EVALUATION_MAX_OUTPUT_TOKENS;
     try {
-      return await attemptEvaluation(
-        RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-        firstEffort,
-      ).then((text) => ({
+      return await attemptEvaluation(firstBudget, firstEffort).then((text) => ({
         text,
         model: endpoint.model,
         providerName: endpoint.providerName,
@@ -993,9 +996,7 @@ Evaluation:`;
       // Reasoning-mandatory models answer the control with a 400 — "Reasoning
       // is mandatory for this endpoint" — which used to kill the whole
       // answer-feedback flow. Retry without the control and let the model
-      // reason natively; reasoning tokens count against max_tokens on
-      // OpenRouter, so this attempt starts with the larger budget instead of
-      // billing a thinking pass that gets thrown away.
+      // reason natively, at the larger budget for the same reason.
       if (
         !(error instanceof LlmHttpError && error.status === 400) ||
         firstEffort === null
@@ -2063,23 +2064,27 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 }
 
 /**
- * Check a stored key against the provider's key-metadata endpoint
- * (OpenRouter `/auth/key`). One authenticated GET, no tokens consumed — and
- * the only way to notice a broken key from ZAM's side, because the `/models`
- * catalog is public on OpenRouter: a row with an unusable key probed clean
- * and looked healthy until the first real chat call 401'd (field report
- * 2026-09-13, a 29-character wrong paste sat undetected on a row whose
- * `keyState` said "set"). 401/403 are a definitive false; every other outcome
- * is "no verdict" so a transient failure cannot mark a good key bad.
+ * Check a stored key against the provider's key-metadata endpoint. One
+ * authenticated GET, no tokens consumed — and the only way to notice a broken
+ * key from ZAM's side, because the `/models` catalog is public on OpenRouter:
+ * a row with an unusable key probed clean and looked healthy until the first
+ * real chat call 401'd (field report 2026-09-13, a 29-character wrong paste
+ * sat undetected on a row whose `keyState` said "set"). The route comes from
+ * the provider descriptor (`CloudProviderDescriptor.keyCheckPath`) — the one
+ * place that knows it. 401/403 are a definitive false; every other outcome
+ * (unknown provider, other statuses, network errors) is "no verdict" so a
+ * transient failure cannot mark a good key bad.
  */
 export async function probeKeyValidity(
   url: string,
   apiKey: string,
 ): Promise<boolean | undefined> {
+  const provider = CLOUD_PROVIDERS.find((p) => url.startsWith(p.baseUrl));
+  if (!provider) return undefined;
   const controller = new AbortController();
   const timeoutId = setTimeout(() => controller.abort(), 10000);
   try {
-    const res = await fetch(`${url}/auth/key`, {
+    const res = await fetch(`${provider.baseUrl}${provider.keyCheckPath}`, {
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: controller.signal,
     });
@@ -2267,11 +2272,7 @@ async function checkProviderEndpoint(
       modelAvailable: false,
     };
   }
-  if (
-    isOpenRouterUrl(resolved.url) &&
-    resolved.apiKey &&
-    resolved.apiKey !== DEFAULT_LLM_API_KEY
-  ) {
+  if (resolved.apiKey && resolved.apiKey !== DEFAULT_LLM_API_KEY) {
     if ((await probeKeyValidity(resolved.url, resolved.apiKey)) === false) {
       return {
         endpoint: resolved,

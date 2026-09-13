@@ -7,6 +7,7 @@ import {
   discussReviewViaLLM,
   evaluateAnswerViaLLM,
   probeKeyValidity,
+  RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
 } from "../../src/cli/llm/client.js";
 import {
   probeModelCapabilities,
@@ -204,6 +205,90 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
     const chats = calls.filter((call) => !call.url.endsWith("/models"));
     expect(chats).toHaveLength(1);
     expect(chats[0]?.body?.reasoning).toEqual({ effort: "none" });
+  });
+
+  it("sends a newly stored minimal level even after none was memoized", async () => {
+    // First evaluation: effort none is rejected and memoized, then retried
+    // natively. A re-probe stores "minimal" — the memo is keyed by level, so
+    // the stored control must be sent again instead of being suppressed.
+    const { calls } = stubFetch([
+      {
+        status: 400,
+        body: {
+          error: {
+            message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+            code: 400,
+          },
+        },
+      },
+      { status: 200, body: evaluationBody },
+      { status: 200, body: evaluationBody },
+    ]);
+    await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+    saveMachineAiModels([openRouterEntry({ effort: "minimal" })]);
+
+    const result = await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    expect(result.model).toBe("z-ai/glm-5.3-flash");
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(3);
+    expect(chats[2]?.body?.reasoning).toEqual({ effort: "minimal" });
+  });
+
+  it("a memo hit skips the control and starts at the retry budget", async () => {
+    // The endpoint is known to reason: the control-free attempt must not bill
+    // a thinking pass at the small budget that would be thrown away anyway.
+    const { calls } = stubFetch([
+      {
+        status: 400,
+        body: {
+          error: {
+            message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+            code: 400,
+          },
+        },
+      },
+      { status: 200, body: evaluationBody },
+      { status: 200, body: evaluationBody },
+    ]);
+    await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(3);
+    expect(chats[2]?.body?.reasoning).toBeUndefined();
+    expect(chats[2]?.body?.max_tokens).toBe(
+      RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+    );
   });
 });
 

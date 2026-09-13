@@ -27,8 +27,8 @@ import {
   DEFAULT_LLM_API_KEY,
   getAvailableModelEntries,
   getAvailableModels,
-  isOpenRouterUrl,
   isLlmOnline,
+  isOpenRouterUrl,
   probeKeyValidity,
 } from "./client.js";
 import { embedTexts } from "./embedder.js";
@@ -363,12 +363,11 @@ export async function probeModelCapabilities(
   );
 
   // Key validity is only checkable where the provider publishes a key-metadata
-  // endpoint, and only for rows that store a credential of their own — the
-  // default sentinel would 401 and mark every keyless row broken.
+  // endpoint (probeKeyValidity resolves it from the provider descriptor), and
+  // only for rows that store a credential of their own — the default sentinel
+  // would 401 and mark every keyless row broken.
   const keyValid =
-    entry.apiKeyRef &&
-    apiKey !== DEFAULT_LLM_API_KEY &&
-    isOpenRouterUrl(entry.url)
+    entry.apiKeyRef && apiKey !== DEFAULT_LLM_API_KEY
       ? await probeKeyValidity(entry.url, apiKey)
       : undefined;
 

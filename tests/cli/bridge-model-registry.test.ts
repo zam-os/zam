@@ -162,6 +162,63 @@ describe("bridge model-* registry commands", () => {
     expect(readConfig().ai?.models ?? []).toHaveLength(0);
   });
 
+  it("keeps effort and keyValid on a rename-only save", async () => {
+    // A pure rename rebuilds the candidate field by field; the probe-verdict
+    // fields must ride along or a rename would silently wipe them.
+    writeFileSync(
+      configPath,
+      JSON.stringify({
+        ai: {
+          models: [
+            {
+              id: "row1",
+              label: "GLM",
+              url: baseUrl,
+              model: "gemma4-it:e4b",
+              local: true,
+              apiFlavor: "chat-completions",
+              order: 0,
+              capabilities: {
+                text: true,
+                embedding: false,
+                image: false,
+                video: false,
+                stt: false,
+                tts: false,
+              },
+              detectedCapabilities: {
+                text: true,
+                embedding: false,
+                image: false,
+                video: false,
+                stt: false,
+                tts: false,
+              },
+              probedAt: "2026-09-13T00:00:00.000Z",
+              effort: "minimal",
+              keyValid: true,
+            },
+          ],
+        },
+      }),
+    );
+
+    const res = (await runBridge([
+      "model-upsert",
+      "--id",
+      "row1",
+      "--label",
+      "Renamed",
+    ])) as { parsed: { ok: boolean; model: Record<string, unknown> } };
+
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.model).toMatchObject({
+      label: "Renamed",
+      effort: "minimal",
+      keyValid: true,
+    });
+  });
+
   it("sets capabilities within the detected ceiling without re-probing", async () => {
     const created = (await runBridge([
       "model-upsert",

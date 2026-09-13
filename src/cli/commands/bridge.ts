@@ -3161,7 +3161,7 @@ bridgeCommand
   )
   .option(
     "--effort <level>",
-    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value.',
+    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value. HTTP rows ignore this option — their level is probe-determined.',
   )
   .action(async (opts, command) => {
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
@@ -3332,6 +3332,10 @@ bridgeCommand
         : (prev?.capabilities ?? emptyCapabilityFlags()),
       detectedCapabilities:
         prev?.detectedCapabilities ?? emptyCapabilityFlags(),
+      // Rename-only saves spread this candidate, so the probe-verdict fields
+      // must ride along or a pure rename would silently wipe them.
+      ...(prev?.effort ? { effort: prev.effort } : {}),
+      ...(prev?.keyValid !== undefined ? { keyValid: prev.keyValid } : {}),
     };
     const runner = opts.runner ?? prev?.runner;
     if (runner) candidate.runner = runner;

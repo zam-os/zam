@@ -3269,10 +3269,10 @@ function createModelRow(
         });
   } else {
     // The probe stores the reasoning-effort level the evaluation sends;
-    // "minimal" marks a reasoning-mandatory model. Same technical register
-    // as the model id and URL.
+    // "minimal" marks a reasoning-mandatory model. The label comes from i18n,
+    // the level value itself is a technical identifier.
     meta.textContent = row.effort
-      ? `${row.model} · ${row.url} · effort ${row.effort}`
+      ? `${row.model} · ${row.url} · ${t("model_field_effort")}: ${row.effort}`
       : `${row.model} · ${row.url}`;
   }
 
@@ -3557,19 +3557,18 @@ async function showModelForm(id?: string): Promise<void> {
   let urlTouched = Boolean(existing);
   urlInput.addEventListener("input", () => {
     urlTouched = true;
-    // Mirror of the kind→URL prefill: picking Ollama from the datalist while
-    // the kind radio still sits on cloud would otherwise save the row with
-    // --no-local. Fresh rows only — an existing row's transport is never
-    // re-pointed by typing.
+    // Mirror of the kind→URL prefill, local direction only: picking Ollama
+    // from the datalist while the kind radio still sits on cloud would
+    // otherwise save the row with --no-local. Fresh rows only — an existing
+    // row's transport is never re-pointed by typing. The reverse direction is
+    // deliberately omitted: flipping Local→Cloud on a not-yet-local-looking
+    // partial input would yank the kind away from a LAN runner mid-typing.
     if (existing) return;
-    const value = urlInput.value.trim();
-    const local = looksLocalModelEndpoint(value);
-    const kind = selectedKind();
-    if (local && kind === "cloud") {
+    if (
+      looksLocalModelEndpoint(urlInput.value.trim()) &&
+      selectedKind() === "cloud"
+    ) {
       radios.get("local")!.checked = true;
-      syncKindVisibility();
-    } else if (value && !local && kind === "local") {
-      radios.get("cloud")!.checked = true;
       syncKindVisibility();
     }
   });

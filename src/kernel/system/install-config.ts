@@ -265,9 +265,11 @@ export interface ModelEntry {
    */
   agentHarness?: string;
   /**
-   * Optional reasoning effort for harnesses that accept it (e.g. Copilot
-   * `--effort`). Pure config — interpreted by the CLI agent-llm adapters.
-   * When absent, adapters pick a default from the model id.
+   * Reasoning-effort setting with two owners (ADR 2026-09-13): on `agent`
+   * rows it is the learner's choice, interpreted by the CLI agent-llm
+   * adapters (when absent, adapters pick a default from the model id); on
+   * HTTP rows it is the probe's verdict — the lowest level the endpoint
+   * accepts — and every re-probe that produces a verdict overwrites it.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }
