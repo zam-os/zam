@@ -1844,6 +1844,26 @@ textarea::placeholder {
   padding: 10px 14px;
 }
 
+.evaluation-error-text {
+  margin: 0;
+}
+
+/* The raw bridge error stays one click away: small, muted, collapsed. */
+.evaluation-error-details {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.evaluation-error-details summary {
+  cursor: pointer;
+}
+
+.evaluation-error-raw {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  margin: 4px 0 0;
+}
+
 .answer-box {
   background: var(--bg-card-subtle);
   border: 1px solid var(--border-soft);

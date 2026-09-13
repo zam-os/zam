@@ -6606,6 +6606,16 @@ function renderReveal(
   const evaluationErrorNote = document.getElementById(
     "evaluation-error-note",
   )!;
+  const evaluationErrorText = document.getElementById(
+    "evaluation-error-text",
+  )!;
+  const evaluationErrorDetails = document.getElementById(
+    "evaluation-error-details",
+  ) as HTMLDetailsElement;
+  const evaluationErrorDetailsLabel = document.getElementById(
+    "evaluation-error-details-label",
+  )!;
+  const evaluationErrorRaw = document.getElementById("evaluation-error-raw")!;
 
   if (evaluationSuccessful && aiFeedbackText) {
     feedbackTextEl.textContent = aiFeedbackText;
@@ -6622,10 +6632,17 @@ function renderReveal(
     feedbackContainer.classList.add("hidden");
     // The static reference answer shows instead of feedback, but the learner
     // must still see WHY the AI stayed silent — a config problem should not
-    // masquerade as a normal flash-mode reveal.
-    evaluationErrorNote.textContent = evaluationError
+    // masquerade as a normal flash-mode reveal. The learner gets one plain
+    // sentence; the raw bridge error (HTTP status, provider body) is kept
+    // behind a collapsed "Details", where whoever fixes the setup finds it.
+    evaluationErrorText.textContent = evaluationError
+      ? t("study_evaluation_unavailable")
+      : "";
+    evaluationErrorDetailsLabel.textContent = t("study_evaluation_details");
+    evaluationErrorRaw.textContent = evaluationError
       ? tf("study_evaluation_failed", { message: evaluationError })
       : "";
+    evaluationErrorDetails.open = false;
     evaluationErrorNote.classList.toggle("hidden", !evaluationError);
   }
 

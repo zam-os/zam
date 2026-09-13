@@ -34,6 +34,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_question_original: "Original",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "Error en la retroalimentación de IA: {message}",
+    study_evaluation_unavailable:
+      "La retroalimentación de IA no está disponible ahora mismo. Revisa el modelo de IA en Ajustes.",
+    study_evaluation_details: "Detalles",
     nav_dashboard: "Panel",
     nav_settings: "Ajustes",
     nav_stats: "Estadísticas",
@@ -925,6 +928,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_question_original: "Original",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "Échec du retour de l'IA : {message}",
+    study_evaluation_unavailable:
+      "Le retour de l'IA n'est pas disponible pour le moment. Vérifie le modèle d'IA dans les Paramètres.",
+    study_evaluation_details: "Détails",
     nav_dashboard: "Tableau de bord",
     nav_settings: "Paramètres",
     nav_stats: "Statistiques",
@@ -1826,6 +1832,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_question_original: "Original",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "Falha no feedback de IA: {message}",
+    study_evaluation_unavailable:
+      "O feedback de IA não está disponível agora. Verifique o modelo de IA nas Configurações.",
+    study_evaluation_details: "Detalhes",
     nav_dashboard: "Painel",
     nav_settings: "Configurações",
     nav_stats: "Estatísticas",
@@ -2713,6 +2722,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_question_original: "原文",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "AI 反馈失败：{message}",
+    study_evaluation_unavailable:
+      "AI 反馈暂时不可用。请在设置中检查 AI 模型。",
+    study_evaluation_details: "详情",
     nav_dashboard: "仪表板",
     nav_settings: "设置",
     nav_stats: "学习统计",
@@ -3530,6 +3542,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_question_original: "原文",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "AIフィードバックに失敗しました：{message}",
+    study_evaluation_unavailable:
+      "AIフィードバックは現在利用できません。設定でAIモデルを確認してください。",
+    study_evaluation_details: "詳細",
     nav_dashboard: "ダッシュボード",
     nav_stats: "学習統計",
     stats_kicker: "復習アクティビティ",
@@ -4476,6 +4491,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     study_question_original: "Original",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "AI feedback failed: {message}",
+    study_evaluation_unavailable:
+      "AI feedback is not available right now. Check the AI model in Settings.",
+    study_evaluation_details: "Details",
     nav_dashboard: "Dashboard",
     nav_settings: "Settings",
     nav_stats: "Statistics",
@@ -5845,6 +5863,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     study_question_original: "Urtext",
     study_evaluation_model: "{model}",
     study_evaluation_failed: "KI-Feedback fehlgeschlagen: {message}",
+    study_evaluation_unavailable:
+      "KI-Feedback ist gerade nicht verfügbar. Prüfe das KI-Modell in den Einstellungen.",
+    study_evaluation_details: "Details",
     nav_dashboard: "Übersicht",
     nav_settings: "Einstellungen",
     nav_stats: "Statistik",
