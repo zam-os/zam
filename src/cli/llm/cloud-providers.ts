@@ -101,8 +101,8 @@ export const OPENROUTER_LEGACY_DEFAULT_MODELS = ["xiaomi/mimo-v2.5"] as const;
  * `minimal` next. The evaluation sends only a level the probe verified — a
  * row without a verdict runs with the model's native reasoning, because a
  * rejected control fails the answer while a thinking pass merely costs a
- * little time. The companions still send this constant unconditionally
- * (#343).
+ * little time. The companions read the same verified level off the shared
+ * row (`ZamPairLlmEndpoint.effort`).
  */
 export const OPENROUTER_EVALUATION_REASONING_EFFORT = "none" as const;
 

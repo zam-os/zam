@@ -16,6 +16,13 @@ export interface ZamPairLlmEndpoint {
   apiKey?: string;
   local: boolean;
   label?: string;
+  /**
+   * Reasoning level the desktop's setup probe verified for this row (ADR
+   * 2026-09-13, decision 6): `none` where switching reasoning off works,
+   * `minimal` for a model that mandates reasoning. Absent = no verdict; the
+   * companion then sends no control and lets the model reason natively.
+   */
+  effort?: string;
   fallback?: ZamPairLlmEndpoint;
 }
 

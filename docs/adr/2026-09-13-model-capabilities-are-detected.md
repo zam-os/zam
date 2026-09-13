@@ -96,7 +96,11 @@ the learner decides only what a row is *used for*.
    works most often (owner decision, 2026-09-13) — with the
    truncated-response retry covering the budget; a stale verdict is caught by
    the evaluation's 400 retry. The endpoint cache signature includes the
-   stored level so a re-probe takes effect immediately.
+   stored level so a re-probe takes effect immediately. The companions apply
+   the same rule: the shared row carries the level (`ZamPairLlmEndpoint.effort`),
+   the companion sends the control only with it and retries once without it
+   on a 400 — so a reasoning-mandatory primary row evaluates on iPad and
+   Android as it does on the desktop.
 7. **The probe verifies the stored API key when the provider publishes a
    key-metadata endpoint** (OpenRouter `/auth/key`; one authenticated GET, no
    tokens consumed). This closes the blind spot that let a broken 29-character
