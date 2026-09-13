@@ -342,6 +342,25 @@ describe("reasoning-effort probe and a stored effort level", () => {
     rmSync(testConfigDir, { recursive: true, force: true });
   });
 
+  it("sends the OpenRouter routing preferences on the probe call", async () => {
+    // A chat-completions call on OpenRouter is bound by the same privacy
+    // routing as every other one (ADR 2026-07-24 §5) — the probe must not be
+    // the one call site that slips past it.
+    saveMachineAiModels([openRouterEntry()]);
+    const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
+
+    await probeModelCapabilities(openRouterEntry(), {
+      reasoningEffortProbe: true,
+    });
+
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(1);
+    expect(chats[0]?.body?.provider).toEqual({
+      data_collection: "deny",
+      zdr: true,
+    });
+  });
+
   it("stores none when the endpoint honors the control", async () => {
     saveMachineAiModels([openRouterEntry()]);
     const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
@@ -688,6 +707,11 @@ function stubFetchByUrl(
   return { calls };
 }
 
+const catalog = (...ids: string[]) => ({
+  status: 200,
+  body: { data: ids.map((id) => ({ id })) },
+});
+
 const okResponse = (content: string) => ({
   status: 200,
   body: { choices: [{ message: { content }, finish_reason: "stop" }] },
@@ -928,6 +952,122 @@ describe("fallback chain boundaries", () => {
     const result = await evaluate();
 
     expect(result.model).toBe("b/model");
+    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
+      [],
+    );
+  });
+
+  it("a healthy catalog with a 5xx on the serving call is silence, not an answer", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) {
+        return url.endsWith("/models")
+          ? catalog("cloud/model")
+          : { status: 502, body: { error: { message: "Bad gateway" } } };
+      }
+      return url.endsWith("/models")
+        ? catalog("local/model")
+        : okResponse("OK");
+    });
+
+    // `/models` being up says nothing about the serving path: a 5xx there
+    // opens the offline tier exactly like no response at all.
+    const result = await evaluate();
+
+    expect(result.model).toBe("local/model");
+    expect(calls.some((call) => call.url.includes("localhost:11434"))).toBe(
+      true,
+    );
+  });
+
+  it("a transport failure on the serving call opens the offline tier too", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) {
+        return url.endsWith("/models") ? catalog("cloud/model") : "unreachable";
+      }
+      return url.endsWith("/models")
+        ? catalog("local/model")
+        : okResponse("OK");
+    });
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("local/model");
+    expect(calls.some((call) => call.url.includes("localhost:11434"))).toBe(
+      true,
+    );
+  });
+
+  it("a 5xx on the primary still tries the next cloud row before any local one", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "r1",
+        model: "a/model",
+        order: 0,
+        url: "https://r1.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+      openRouterEntry({
+        id: "r2",
+        model: "b/model",
+        order: 2,
+        url: "https://r2.openrouter.ai/api/v1",
+      }),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://r1.")) {
+        return url.endsWith("/models")
+          ? catalog("a/model")
+          : { status: 503, body: { error: { message: "overloaded" } } };
+      }
+      return url.endsWith("/models") ? catalog("b/model") : okResponse("OK");
+    });
+
+    const result = await evaluate();
+
+    expect(result.model).toBe("b/model");
+    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
+      [],
+    );
+  });
+
+  it("a 429 keeps the offline tier closed even though the chain is exhausted", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) {
+        return url.endsWith("/models")
+          ? catalog("cloud/model")
+          : { status: 429, body: { error: { message: "rate limited" } } };
+      }
+      return okResponse("OK");
+    });
+
+    await expect(evaluate()).rejects.toThrow(/429/);
     expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
       [],
     );

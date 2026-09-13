@@ -125,10 +125,16 @@ the learner decides only what a row is *used for*.
    once with one rule: with a **cloud** primary, local rows move behind every
    cloud row and are flagged `offlineOnly`; a walker consults them **only
    when no cloud row answered at all** — no response, timeout, or a 5xx.
-   A cloud row that answers and refuses (rejected key, exhausted credit,
-   forbidden, rate limit, a 400) keeps the tier closed, so the error surfaces
-   and names itself instead of a local runtime starting; a refused key is
-   therefore reported as `key-invalid`, never as `offline`. Inside the offline
+   "Answered" is judged on the **serving call** (or on a readiness verdict
+   that needed an answer: rejected key, model not offered) — a reachable
+   `/models` catalog alone is not an answer, because it says nothing about
+   the serving path; transport failures are typed (`LlmTransportError`) so
+   silence and refusal never blur. A cloud row that answers and refuses
+   (rejected key, exhausted credit, forbidden, rate limit, a 400) keeps the
+   tier closed, so the error surfaces and names itself instead of a local
+   runtime starting; a refused key is therefore reported as `key-invalid`,
+   never as `offline`. A 5xx or transport failure on a cloud row moves on
+   to the next cloud row first; the offline tier comes last. Inside the offline
    tier the runtime **may** be started (`ensure-llm` spawns it, the recall
    walk prepares Foundry) — offline study is exactly what the local row was
    set up for. A **local** primary keeps registry order, local → cloud, the

@@ -23,8 +23,11 @@ import {
   DEFAULT_LLM_MAX_TOKENS,
   fetchWithInteractiveTimeout,
   getProviderForRole,
-  isLlmOnline,
+  isNoAnswerFailure,
+  LlmHttpError,
+  LlmTransportError,
   prepareFoundryEndpoint,
+  providerChain,
 } from "./client.js";
 
 const OBSERVATION_KINDS = new Set<UiObservationKind>([
@@ -158,44 +161,36 @@ export async function observeUiSnapshotViaLLM(
     throw new Error("No image data available for vision analysis");
   }
 
-  // Try the role's primary endpoint, then its configured fallback. The
-  // frame-sampled images are materialized for each endpoint; only the endpoint
-  // (url/key/model/flavor) changes. `input.model` overrides the primary only.
+  // Walk the role's full fallback chain as resolveCapability linked it — a
+  // two-level walk stranded a third row. The frame-sampled images are
+  // materialized for each endpoint; only the endpoint (url/key/model/flavor)
+  // changes. `input.model` overrides the primary only.
   type VisionEndpoint = Pick<
     VisionRequestArgs,
     "url" | "apiKey" | "model" | "apiFlavor"
   > & { runner?: string; offlineOnly?: boolean };
-  const endpoints: VisionEndpoint[] = [
-    {
-      url: cfg.url,
-      apiKey: cfg.apiKey || DEFAULT_LLM_API_KEY,
-      model: input.model ?? cfg.model,
-      apiFlavor: cfg.apiFlavor,
-      runner: cfg.runner,
-    },
-  ];
-  if (cfg.fallback) {
-    endpoints.push({
-      url: cfg.fallback.url,
-      apiKey: cfg.fallback.apiKey || DEFAULT_LLM_API_KEY,
-      model: cfg.fallback.model,
-      apiFlavor: cfg.fallback.apiFlavor,
-      runner: cfg.fallback.runner,
-      offlineOnly: cfg.fallback.offlineOnly,
-    });
-  }
+  const endpoints: VisionEndpoint[] = providerChain(cfg).map(
+    (endpoint, index) => ({
+      url: endpoint.url,
+      apiKey: endpoint.apiKey || DEFAULT_LLM_API_KEY,
+      model: index === 0 ? (input.model ?? endpoint.model) : endpoint.model,
+      apiFlavor: endpoint.apiFlavor,
+      runner: endpoint.runner,
+      offlineOnly: endpoint.offlineOnly,
+    }),
+  );
 
   let lastRequestError: Error | undefined;
   let sawUnparseableDraft = false;
   let sawInvalidDraft = false;
   // A local fallback behind a cloud primary is the offline tier (ADR
-  // 2026-09-13, decision 9): it serves only when the cloud did not answer at
-  // all, never when the cloud answered and the draft was refused or bad.
-  const hasOfflineTier = endpoints.some((endpoint) => endpoint.offlineOnly);
-  let anyReachable = false;
+  // 2026-09-13, decision 9): it serves only when no cloud row answered. The
+  // draft request itself decides: a 4xx or a bad draft is the cloud
+  // speaking; a transport failure or a 5xx is silence.
+  let cloudAnswered = false;
 
   for (const endpoint of endpoints) {
-    if (endpoint.offlineOnly && anyReachable) break;
+    if (endpoint.offlineOnly && cloudAnswered) break;
     let content: string;
     try {
       const preparedEndpoint = await prepareFoundryEndpoint(endpoint);
@@ -205,15 +200,10 @@ export async function observeUiSnapshotViaLLM(
         images,
         input,
       });
-      anyReachable = true;
+      cloudAnswered = true;
     } catch (err) {
       lastRequestError = err as Error;
-      // A request that failed may still have reached the endpoint (an HTTP
-      // error rather than no answer); one cheap probe decides the tier, and
-      // only when there is an offline tier to decide about.
-      if (hasOfflineTier && !anyReachable) {
-        anyReachable = await isLlmOnline(endpoint.url);
-      }
+      if (!isNoAnswerFailure(err)) cloudAnswered = true;
       continue;
     }
 
@@ -361,8 +351,11 @@ async function requestChatCompletionsVisionDraft(
           `Set a multimodal model: zam settings set llm.vision.model <model>`,
       );
     }
-    throw new Error(
-      `Vision LLM request failed: ${res.statusText} (${res.status}) - ${errorText}`,
+    throw new LlmHttpError(
+      "Vision LLM request",
+      res.status,
+      res.statusText,
+      errorText,
     );
   }
 
@@ -449,8 +442,11 @@ async function requestAnthropicVisionDraft(
 
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
-    throw new Error(
-      `Vision LLM request failed: ${res.statusText} (${res.status}) - ${errorText}`,
+    throw new LlmHttpError(
+      "Vision LLM request",
+      res.status,
+      res.statusText,
+      errorText,
     );
   }
 
@@ -663,7 +659,7 @@ async function readOllamaVisionResponse(
         timeoutId = setTimeout(() => {
           void reader.cancel();
           reject(
-            new Error(
+            new LlmTransportError(
               `Ollama vision request timed out after ${hardTimeoutMs}ms`,
             ),
           );
@@ -720,8 +716,11 @@ async function requestOllamaVisionDraft(
 
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
-    throw new Error(
-      `Ollama vision request failed: ${res.statusText} (${res.status}) - ${errorText}`,
+    throw new LlmHttpError(
+      "Ollama vision request",
+      res.status,
+      res.statusText,
+      errorText,
     );
   }
 

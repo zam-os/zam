@@ -3833,10 +3833,38 @@ async function showModelForm(id?: string): Promise<void> {
   actions.append(saveButton, cancelButton);
 
   form.append(kindWrap, grid, agentHint, actions);
-  // Focus the first field: with aria-modal the rest of the page is inert, and
-  // leaving focus on the "+ Add model" button behind the overlay strands
-  // keyboard users.
+  // Focus the first field: leaving focus on the "+ Add model" button behind
+  // the overlay strands keyboard users. (aria-modal only tells assistive
+  // technology the dialog is modal; it does not make the page inert.)
   labelInput.focus();
+}
+
+/** Whether the model add/edit dialog is currently shown. */
+function isModelFormOpen(): boolean {
+  return (
+    document
+      .getElementById("ai-model-form-overlay")
+      ?.classList.contains("active") ?? false
+  );
+}
+
+/**
+ * Escape and a click on the backdrop close the model dialog like Cancel does.
+ * The backdrop counts only when the click lands on the overlay itself — a
+ * click inside the box (a half-typed key, a select) must never dismiss it.
+ */
+function wireModelFormDismissal(): void {
+  const overlay = document.getElementById("ai-model-form-overlay");
+  if (!overlay) return;
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) hideModelForm();
+  });
+  window.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape" && isModelFormOpen()) {
+      event.preventDefault();
+      hideModelForm();
+    }
+  });
 }
 
 interface ModelFormData {
@@ -8101,6 +8129,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initBootOverlay();
   initializeTranslations();
   initSettingsViewModeControls();
+  wireModelFormDismissal();
   setupLocaleSwitcher();
   initPanel("learning-content", () => initLearningContentStudio());
   initPanel("curriculum-wizard", () => {

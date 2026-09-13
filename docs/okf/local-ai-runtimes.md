@@ -8,7 +8,7 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-09-13T19:00:00.000Z
+timestamp: 2026-09-13T19:50:00.000Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
@@ -148,20 +148,22 @@ one reported.
 
 Local rows behind a **cloud** primary form an *offline tier* (ADR 2026-09-13,
 decision 9). They are consulted only when **no cloud row answered at all** —
-no response, a timeout, or a 5xx. A cloud row that answers and refuses (a
-rejected key, exhausted credit, a rate limit, a 400) keeps the tier closed:
-the error surfaces and names itself, and a local model is not pulled into
-gigabytes of RAM as a side effect of a review while the cloud is up. Inside
-the tier the runtime may be started — offline study is what the local row was
-set up for. The tier is decided where the fallback chain is linked
-(`resolveCapability` flags such rows `offlineOnly`), so the recall walk, the
-text role, the vision fallback, `ensure-llm` and the status surfaces all
-agree; readiness is ensured lazily, per attempt, so a healthy cloud primary
-never starts Foundry or Ollama "for a check". A **local** primary keeps its
-cloud fallback in registry order: Foundry failing to prepare still sends the
-learner's action to the next configured row. The companions never use this
-chain — their recall tier order is `device-first` (Gemini Nano, then cloud,
-then self-rating) and stays untouched.
+no response, a timeout, or a 5xx, judged on the serving call itself: a
+reachable `/models` catalog is not an answer. A cloud row that answers and
+refuses (a rejected key, exhausted credit, a rate limit, a 400) keeps the
+tier closed: the error surfaces and names itself, and a local model is not
+pulled into gigabytes of RAM as a side effect of a review while the cloud is
+up. A silent cloud row hands over to the next cloud row first; the offline
+tier comes last. Inside the tier the runtime may be started — offline study is
+what the local row was set up for. The tier is decided where the fallback
+chain is linked (`resolveCapability` flags such rows `offlineOnly`), so the
+recall walk, the text role, the vision fallback, `ensure-llm` and the status
+surfaces all agree; readiness is ensured lazily, per attempt, so a healthy
+cloud primary never starts Foundry or Ollama "for a check". A **local**
+primary keeps its cloud fallback in registry order: Foundry failing to prepare
+still sends the learner's action to the next configured row. The companions
+never use this chain — their recall tier order is `device-first` (Gemini Nano,
+then cloud, then self-rating) and stays untouched.
 
 # What the runtime is inferred from
 

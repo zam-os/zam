@@ -539,7 +539,7 @@ describe("vision offline tier", () => {
     global.fetch = (async (url) => {
       urls.push(String(url));
       if (String(url).startsWith("https://vision.")) {
-        // Reachable: the chat call is refused, the readiness probe answers.
+        // The draft request itself is refused with a 4xx: the cloud spoke.
         return new Response("image input unsupported", { status: 400 });
       }
       return draft();
@@ -547,6 +547,82 @@ describe("vision offline tier", () => {
     try {
       await expect(observe(db)).rejects.toThrow();
       expect(urls.some((u) => u.includes("localhost:11434"))).toBe(false);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("treats a 5xx on the draft request as silence and uses the local row", async () => {
+    saveMachineAiModels(rows());
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      const text = String(url);
+      if (text.startsWith("https://vision.")) {
+        // A healthy catalog says nothing about the serving path.
+        if (text.endsWith("/models")) {
+          return new Response(JSON.stringify({ data: [{ id: "cloud/vision" }] }));
+        }
+        return new Response("upstream error", { status: 502 });
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("walks the full chain: two silent cloud rows, then the local row", async () => {
+    const [cloud, local] = rows();
+    saveMachineAiModels([
+      cloud,
+      {
+        ...cloud,
+        id: "cloud-vision-2",
+        label: "Cloud vision 2",
+        url: "https://vision2.openrouter.ai/api/v1",
+        model: "cloud/vision-2",
+        order: 1,
+      },
+      { ...local, order: 2 },
+    ]);
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      const text = String(url);
+      if (text.startsWith("https://vision.")) throw new TypeError("fetch failed");
+      if (text.startsWith("https://vision2.")) {
+        return new Response("overloaded", { status: 503 });
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      // A two-level walk stranded the third row; the offline tier sits at
+      // the end of the linked chain and must still be reachable.
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("vision2.openrouter.ai"))).toBe(true);
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
     } finally {
       global.fetch = originalFetch;
       await db.close();

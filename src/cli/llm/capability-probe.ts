@@ -25,6 +25,7 @@ import {
 } from "../../kernel/index.js";
 import {
   DEFAULT_LLM_API_KEY,
+  enforceOpenRouterPrivacy,
   getAvailableModelEntries,
   getAvailableModels,
   isLlmOnline,
@@ -257,18 +258,26 @@ async function probeReasoningEffort(
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 15000);
     try {
-      const res = await fetch(`${entry.url}/chat/completions`, {
+      // A chat-completions call on OpenRouter carries the same routing
+      // preferences as every other one (ADR 2026-07-24 §5: no data
+      // collection, zero-data-retention providers) — the probe is a plain
+      // fetch only because fetchWithInteractiveTimeout would prompt on a TTY.
+      const url = `${entry.url}/chat/completions`;
+      const res = await fetch(url, {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
           Authorization: `Bearer ${apiKey}`,
         },
-        body: JSON.stringify({
-          model: entry.model,
-          messages: [{ role: "user", content: "Reply with: OK" }],
-          max_tokens: 16,
-          reasoning: { effort },
-        }),
+        body: enforceOpenRouterPrivacy(
+          url,
+          JSON.stringify({
+            model: entry.model,
+            messages: [{ role: "user", content: "Reply with: OK" }],
+            max_tokens: 16,
+            reasoning: { effort },
+          }),
+        ),
         signal: controller.signal,
       });
       await res.text().catch(() => "");

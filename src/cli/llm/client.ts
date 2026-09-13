@@ -749,6 +749,32 @@ export class LlmHttpError extends Error {
   }
 }
 
+/**
+ * The endpoint did not answer at all: connection failure, abort, or the hard
+ * timeout in `fetchWithInteractiveTimeout`. Kept apart from `LlmHttpError`
+ * because the chain walkers read the two differently (ADR 2026-09-13,
+ * decision 9): an HTTP answer is the cloud speaking, a transport failure is
+ * silence — and only silence from every cloud row opens the offline tier.
+ */
+export class LlmTransportError extends Error {
+  constructor(message: string, cause?: unknown) {
+    super(message, cause === undefined ? undefined : { cause });
+    this.name = "LlmTransportError";
+  }
+}
+
+/**
+ * Whether a serving call failed without the cloud answering: transport
+ * failure or a 5xx. A 4xx is an answer (refusal), so is a parse or model
+ * error on a 2xx body.
+ */
+export function isNoAnswerFailure(error: unknown): boolean {
+  return (
+    error instanceof LlmTransportError ||
+    (error instanceof LlmHttpError && error.status >= 500)
+  );
+}
+
 /** Extract the assistant message content from an OpenAI-compatible response. */
 async function readChatContent(res: Response, label: string): Promise<string> {
   if (!res.ok) {
@@ -2330,7 +2356,8 @@ function readinessReason(
   return "model-not-found";
 }
 
-function providerChain(primary: ProviderConfig): ProviderConfig[] {
+/** The full fallback chain in call order, as resolveCapability linked it. */
+export function providerChain(primary: ProviderConfig): ProviderConfig[] {
   // Walk the whole chain: resolveCapability links every eligible row, and a
   // two-level walk silently stranded rows three and beyond.
   const chain: ProviderConfig[] = [];
@@ -2348,17 +2375,20 @@ async function checkProviderChain(
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
-  let anyReachable = false;
+  let cloudAnswered = false;
   for (const endpoint of providerChain(primary)) {
     // The offline tier sits at the end of the chain (resolveCapability) and
-    // opens only when no cloud row answered at all.
-    if (endpoint.offlineOnly && anyReachable) break;
+    // opens only when no cloud row answered. A readiness check has no
+    // serving call, so "answered" here is a row that was online and refused
+    // (rejected key, model not in the catalog); an unreachable row is
+    // silence.
+    if (endpoint.offlineOnly && cloudAnswered) break;
     const readiness = await checkProviderEndpoint(endpoint, options);
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
     }
-    anyReachable ||= readiness.online;
+    cloudAnswered ||= readiness.online;
   }
   return { primary: first! };
 }
@@ -2463,27 +2493,32 @@ async function ensureRecallEndpointReady(
  * calling it, hand the resolved row to `call`, and move on when the row is not
  * ready or answers with a fallthrough status (rejected key, exhausted credit,
  * forbidden, upstream capacity). The offline tier — local rows behind a cloud
- * primary — is entered only when no cloud row answered at all (ADR
- * 2026-09-13, decision 9): a cloud that answers and refuses keeps it closed,
- * so the error surfaces instead of a local model being pulled into RAM; a
- * learner without a network reaches the local model they set up. Anything
- * else `call` throws propagates; an exhausted chain raises the last
- * fallthrough error, or names why the last reachable row could not serve.
+ * primary — is entered only when **no cloud row answered** (ADR 2026-09-13,
+ * decision 9). "Answered" means the cloud spoke: a refusal on the serving
+ * call (any 4xx), or a readiness verdict that needed an answer (rejected key,
+ * model not in the catalog). Silence — the host unreachable, a transport
+ * failure or a 5xx on the serving call — moves on to the next row without
+ * counting as an answer, so later cloud rows and finally the offline tier
+ * can serve. A reachable catalog alone is not an answer: `/models` being up
+ * says nothing about the serving path. Anything else `call` throws propagates;
+ * an exhausted chain raises the last failure, or names why the last reachable
+ * row could not serve.
  */
 async function walkRecallChain<T>(
   endpoints: ProviderConfig[],
   signature: string,
   call: (endpoint: ProviderConfig) => Promise<T>,
 ): Promise<T> {
-  let anyReachable = false;
+  let cloudAnswered = false;
   let lastError: unknown;
   let lastSkip: { endpoint: ProviderConfig; reason: string } | undefined;
   for (const endpoint of endpoints) {
-    if (endpoint.offlineOnly && anyReachable) break;
+    if (endpoint.offlineOnly && cloudAnswered) break;
     const readiness = await ensureRecallEndpointReady(endpoint, signature);
-    anyReachable ||= readiness.reachable;
     if (!readiness.ready) {
       if (readiness.reason && readiness.reason !== "offline") {
+        // The row answered and cannot serve: that is the cloud speaking.
+        cloudAnswered = true;
         lastSkip = { endpoint, reason: readiness.reason };
       }
       continue;
@@ -2495,7 +2530,11 @@ async function walkRecallChain<T>(
         error instanceof LlmHttpError &&
         CHAIN_FALLTHROUGH_STATUSES.has(error.status)
       ) {
-        anyReachable = true;
+        cloudAnswered = true;
+        lastError = error;
+        continue;
+      }
+      if (isNoAnswerFailure(error)) {
         lastError = error;
         continue;
       }
@@ -2677,16 +2716,18 @@ export async function prepareRecallChain(
   let lastOnline = false;
   let lastModel = cfg.model;
   let lastAvailable: string[] = [];
-  let anyReachable = false;
+  let cloudAnswered = false;
 
   for (let index = 0; index < chain.length; index++) {
     let endpoint = chain[index];
     // The offline tier (local rows behind a cloud primary, ADR 2026-09-13
     // decision 9) is entered only when no cloud row answered: ensure-llm
-    // must not start a local runner the recall walk would refuse.
-    if (endpoint.offlineOnly && anyReachable) break;
+    // must not start a local runner the recall walk would refuse. A usable
+    // row returns below, so an online row only counts as "answered" here
+    // when it was online and refused (rejected key, model not offered).
+    if (endpoint.offlineOnly && cloudAnswered) break;
     let online = await isLlmOnline(endpoint.url);
-    anyReachable ||= online;
+    cloudAnswered ||= online;
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
       if (opts.interactive) {
@@ -3284,17 +3325,28 @@ export async function fetchWithInteractiveTimeout(
     ...fetchOptions
   } = options;
   const controller = new AbortController();
+  // A connection failure or abort is silence, not an answer — the chain
+  // walkers rely on the distinction (see LlmTransportError).
   const fetchPromise = fetch(url, {
     ...fetchOptions,
     body: enforceOpenRouterPrivacy(url, fetchOptions.body),
     signal: controller.signal,
+  }).catch((cause: unknown) => {
+    throw new LlmTransportError(
+      cause instanceof Error ? cause.message : String(cause),
+      cause,
+    );
   });
 
   if (!process.stdout.isTTY || process.env.ZAM_BRIDGE === "true") {
     let timeoutId: NodeJS.Timeout | undefined;
     const hardTimeout = new Promise<never>((_resolve, reject) => {
       timeoutId = setTimeout(() => {
-        reject(new Error(`LLM request timed out after ${hardTimeoutMs}ms`));
+        reject(
+          new LlmTransportError(
+            `LLM request timed out after ${hardTimeoutMs}ms`,
+          ),
+        );
         controller.abort();
       }, hardTimeoutMs);
     });
