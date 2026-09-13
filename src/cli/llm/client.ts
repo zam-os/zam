@@ -974,11 +974,9 @@ Evaluation:`;
       maxTokens: number,
       reasoningEffort: string | null,
     ): Promise<string> => {
-      // Evaluation wants short JSON, not a multi-page chain of thought, so
-      // the reasoning control is sent when the setup probe verified that the
-      // endpoint accepts it (`none` for GPT-5.6 Luna; `minimal` for a model
-      // that mandates reasoning). Privacy injection still runs on the body
-      // via fetchWithInteractiveTimeout.
+      // The reasoning control goes out only with a probe-verified level (ADR
+      // 2026-09-13, decision 6). Privacy injection still runs on the body via
+      // fetchWithInteractiveTimeout.
       const body: Record<string, unknown> = {
         model: endpoint.model,
         messages: [
@@ -1024,18 +1022,12 @@ Evaluation:`;
       }
     };
 
-    // Reasoning control (ADR 2026-09-13, decision 6): reasoning is switched
-    // off only where the setup probe verified that switching it off works —
-    // the row then carries the lowest accepted level ("none", or "minimal"
-    // for a model that mandates reasoning). A row without a verdict runs
-    // with the model's native reasoning: a control that the endpoint might
-    // reject would fail the answer, a thinking pass merely costs a little
-    // time, and the truncated-response retry covers the budget. The
+    // Only a probe-verified level is sent (ADR 2026-09-13, decision 6). The
     // rejection memo is keyed by the level — a "none" rejection says nothing
-    // about "minimal", which a re-probe may have stored in the meantime —
-    // and a memo hit means the endpoint is known to reason, so the
-    // control-free attempt starts at the larger budget: reasoning tokens
-    // count against max_tokens on OpenRouter.
+    // about "minimal", which a re-probe may have stored in the meantime — and
+    // a memo hit means the endpoint is known to reason, so the control-free
+    // attempt starts at the larger budget: reasoning tokens count against
+    // max_tokens on OpenRouter.
     const reasoningEffort = isOpenRouterUrl(endpoint.url)
       ? (endpoint.effort ?? null)
       : null;

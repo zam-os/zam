@@ -273,17 +273,10 @@ function httpStatusOf(error: unknown): number | undefined {
  * Exported because evaluation is no longer the only caller: translating a card
  * mid-review (`ai/translate.ts`) and the follow-up discussion need the same
  * endpoint handling — the flavour check, the `/chat/completions` suffix, the
- * bearer header, and the reasoning control.
- *
- * Reasoning is switched off only where the desktop's setup probe verified
- * that switching it off works (ADR 2026-09-13, decision 6): the shared row
- * carries that level as `effort` (`none` for Luna, `minimal` for a model that
- * mandates reasoning). Without a verdict the model reasons natively — a
- * control the endpoint rejects fails the learner's answer, a thinking pass
- * merely costs a little time, and the truncation retry covers the budget. A
- * stale verdict (the model turned reasoning-mandatory since the probe) is
- * caught here: a 400 on the control is retried once without it, at the
- * larger budget, because the model is then known to reason.
+ * bearer header, and the reasoning control, which goes out only with the
+ * probe-verified level the shared row carries (ADR 2026-09-13, decision 6).
+ * A 400 on that control means the level went stale and the model reasons
+ * anyway, so the one retry without it gets the larger budget.
  */
 export async function generateViaHttp(
   endpoint: ZamPairLlmEndpoint,
