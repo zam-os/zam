@@ -3020,6 +3020,9 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
         ? "set"
         : "missing"
       : "none",
+    // Probe verdict from the provider's key-metadata endpoint; absent =
+    // never checked. "set" above only means a credential exists.
+    keyValid: entry.keyValid,
     // Agent transport fields (ADR 2026-07-12a). Absent/"http" for HTTP rows.
     transport: entry.transport ?? "http",
     agentHarness: entry.agentHarness,
@@ -3158,7 +3161,7 @@ bridgeCommand
   )
   .option(
     "--effort <level>",
-    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value.',
+    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value. HTTP rows ignore this option — their level is probe-determined.',
   )
   .action(async (opts, command) => {
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
@@ -3329,6 +3332,10 @@ bridgeCommand
         : (prev?.capabilities ?? emptyCapabilityFlags()),
       detectedCapabilities:
         prev?.detectedCapabilities ?? emptyCapabilityFlags(),
+      // Rename-only saves spread this candidate, so the probe-verdict fields
+      // must ride along or a pure rename would silently wipe them.
+      ...(prev?.effort ? { effort: prev.effort } : {}),
+      ...(prev?.keyValid !== undefined ? { keyValid: prev.keyValid } : {}),
     };
     const runner = opts.runner ?? prev?.runner;
     if (runner) candidate.runner = runner;
@@ -3374,6 +3381,7 @@ bridgeCommand
 
     const probe = await probeModelCapabilities(candidate, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(candidate, probe);
     if (!validation.ok || !validation.entry) {
@@ -3445,6 +3453,7 @@ bridgeCommand
 
     const probe = await probeModelCapabilities(entry, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(entry, probe);
     if (!validation.ok || !validation.entry) {

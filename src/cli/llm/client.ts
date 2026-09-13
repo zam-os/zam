@@ -38,10 +38,7 @@ import {
   t,
 } from "../../kernel/index.js";
 import { resolveReviewContext } from "../review-context.js";
-import {
-  OPENROUTER_EVALUATION_REASONING_EFFORT,
-  OPENROUTER_PROVIDER,
-} from "./cloud-providers.js";
+import { CLOUD_PROVIDERS, OPENROUTER_PROVIDER } from "./cloud-providers.js";
 import {
   ensureFoundryModelLoaded,
   FOUNDRY_DEFAULT_PORT,
@@ -74,16 +71,40 @@ export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
-let cachedRecallEndpoint: {
-  endpoint: ProviderConfig;
-  signature: string;
-  expiresAt: number;
-} | null = null;
+/**
+ * Lazily ensured readiness per chain entry (`signature|url|model`), with the
+ * same 60 s TTL the endpoint cache used — the lazy successor of the eager
+ * full-chain health check, so a healthy primary pays one check and local
+ * fallback rows are never started for a check they never needed.
+ */
+const recallReadiness = new Map<
+  string,
+  { readiness: RecallReadiness; expiresAt: number }
+>();
 
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
 export function clearRecallEndpointCache(): void {
-  cachedRecallEndpoint = null;
+  recallReadiness.clear();
+  reasoningRejections.clear();
 }
+
+/**
+ * Endpoints (url|model) that rejected the reasoning control with a 400. The
+ * evaluation skips the control for these instead of paying the rejected round
+ * trip on every call. Cleared with the endpoint cache; the effort probe stores
+ * the durable verdict on the row, so this only short-circuits stale rows.
+ */
+const reasoningRejections = new Map<string, true>();
+
+/**
+ * HTTP statuses where a chain endpoint "cannot serve right now" and the next
+ * configured row should get its turn: rejected key (401), exhausted credit
+ * (402), forbidden access (403), and upstream capacity (429 — OpenRouter
+ * answers for the shared provider pool; when five other rows are idle, a
+ * transient capacity limit should not fail the learner's answer). Any other
+ * status is the endpoint's own answer about the request and propagates.
+ */
+const CHAIN_FALLTHROUGH_STATUSES = new Set([401, 402, 403, 429]);
 
 /**
  * Compact fingerprint of the resolved recall provider. When any of these change
@@ -99,8 +120,12 @@ function recallEndpointSignature(cfg: ProviderConfig): string {
     cfg.url,
     cfg.model,
     cfg.apiFlavor,
+    // Effort participates: a re-probe that stores a different reasoning level
+    // must reach the evaluation immediately, not after the cache TTL.
+    cfg.effort ?? "",
     cfg.fallback?.url ?? "",
     cfg.fallback?.model ?? "",
+    cfg.fallback?.effort ?? "",
   ].join("|");
 }
 export const DEFAULT_LLM_MODEL = "qwen3.5:4b";
@@ -221,6 +246,21 @@ export interface ProviderConfig {
    * When set, overrides adapter defaults derived from the model id.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+  /**
+   * Probe verdict from the provider's key-metadata endpoint (ADR 2026-09-13).
+   * `false` = the stored key was rejected, so this endpoint is skipped by the
+   * fallback chain instead of failing the first real call.
+   */
+  keyValid?: boolean;
+  /**
+   * Offline tier (ADR 2026-09-13, decision 9): a local row chained behind a
+   * cloud primary. Set by {@link resolveCapability} when it links the chain;
+   * a walker consults such a row only when no cloud row answered at all —
+   * never when a cloud row answered and refused (bad key, no credit, rate
+   * limit) — so a local runtime is started for offline study, not as a
+   * silent fallback while the cloud is up.
+   */
+  offlineOnly?: boolean;
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
@@ -365,6 +405,7 @@ function materializeModelEntry(
     local: entry.local,
   };
   if (entry.runner) cfg.runner = entry.runner;
+  if (entry.keyValid !== undefined) cfg.keyValid = entry.keyValid;
   if (maxFrames !== undefined) cfg.maxFrames = maxFrames;
   if (entry.transport === "agent") {
     cfg.transport = "agent";
@@ -422,10 +463,29 @@ export async function resolveCapability(
   const configs = eligible.map((entry) =>
     materializeModelEntry(entry, base, enabled, maxFrames),
   );
-  for (let i = configs.length - 1; i > 0; i--) {
-    configs[i - 1] = { ...configs[i - 1], fallback: configs[i] };
+  // Offline tier (ADR 2026-09-13, decision 9): with a cloud primary, local
+  // rows move behind every cloud row and are flagged `offlineOnly`, so a
+  // walker reaches them only when no cloud row answered at all. A local
+  // runtime must not be pulled into RAM as a fallback while the cloud is up —
+  // a cloud row that answers and refuses (bad key, no credit, rate limit)
+  // keeps the tier closed — but a learner without a network still gets the
+  // local model they set up. A local primary keeps registry order: the
+  // guided setups document local → cloud. Decided here, where the chain is
+  // linked, so recall, text, vision, ensure-llm and status all agree.
+  const isLocal = (config: ProviderConfig): boolean =>
+    config.local ?? isLocalEndpoint(config.url);
+  const chained = isLocal(configs[0])
+    ? configs
+    : [
+        ...configs.filter((config) => !isLocal(config)),
+        ...configs
+          .filter(isLocal)
+          .map((config) => ({ ...config, offlineOnly: true })),
+      ];
+  for (let i = chained.length - 1; i > 0; i--) {
+    chained[i - 1] = { ...chained[i - 1], fallback: chained[i] };
   }
-  return configs[0];
+  return chained[0];
 }
 
 /**
@@ -670,13 +730,52 @@ export class LlmResponseTruncatedError extends Error {
   }
 }
 
+/**
+ * Non-2xx from a chat endpoint. Carries the status so callers can retry on
+ * specific codes — e.g. a reasoning-mandatory model (GLM-5.3-Flash on
+ * OpenRouter) answering `reasoning: { effort: "none" }` with a 400 instead of
+ * an evaluation.
+ */
+export class LlmHttpError extends Error {
+  readonly status: number;
+  constructor(label: string, status: number, statusText: string, body: string) {
+    super(`${label} failed: ${statusText} (${status}) - ${body}`);
+    this.name = "LlmHttpError";
+    this.status = status;
+  }
+}
+
+/**
+ * The endpoint did not answer at all: connection failure, abort, or the hard
+ * timeout in `fetchWithInteractiveTimeout`. Kept apart from `LlmHttpError`
+ * because the chain walkers read the two differently (ADR 2026-09-13,
+ * decision 9): an HTTP answer is the cloud speaking, a transport failure is
+ * silence — and only silence from every cloud row opens the offline tier.
+ */
+export class LlmTransportError extends Error {
+  constructor(message: string, cause?: unknown) {
+    super(message, cause === undefined ? undefined : { cause });
+    this.name = "LlmTransportError";
+  }
+}
+
+/**
+ * Whether a serving call failed without the cloud answering: transport
+ * failure or a 5xx. A 4xx is an answer (refusal), so is a parse or model
+ * error on a 2xx body.
+ */
+export function isNoAnswerFailure(error: unknown): boolean {
+  return (
+    error instanceof LlmTransportError ||
+    (error instanceof LlmHttpError && error.status >= 500)
+  );
+}
+
 /** Extract the assistant message content from an OpenAI-compatible response. */
 async function readChatContent(res: Response, label: string): Promise<string> {
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
-    throw new Error(
-      `${label} failed: ${res.statusText} (${res.status}) - ${errorText}`,
-    );
+    throw new LlmHttpError(label, res.status, res.statusText, errorText);
   }
   const data = (await res.json()) as ChatCompletionResponse;
   const choice = data.choices?.[0];
@@ -807,7 +906,9 @@ export async function evaluateAnswerViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, {
+    allowAgent: true,
+  });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
   const completeness =
     LOCALIZED_COMPLETENESS[cfg.locale] || LOCALIZED_COMPLETENESS.en;
@@ -852,70 +953,125 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
 
 Evaluation:`;
 
-  // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
-  // connected harness instead of an HTTP chat-completions call.
-  if (endpoint.transport === "agent") {
-    const text = await requestAgentCompletion(endpoint, {
-      system: systemPrompt,
-      user: userPrompt,
-    });
-    return {
-      text,
-      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
-      providerName: endpoint.providerName,
-    };
-  }
-
-  const requestEvaluation = async (maxTokens: number): Promise<string> => {
-    // Evaluation wants short JSON, not a multi-page chain of thought.
-    // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
-    // thinking and return `finish_reason: length` with empty content.
-    // `low` is the product default for GPT-5.6 Luna. Privacy injection still
-    // runs on the body via fetchWithInteractiveTimeout.
-    const body: Record<string, unknown> = {
-      model: endpoint.model,
-      messages: [
-        { role: "system", content: systemPrompt },
-        { role: "user", content: userPrompt },
-      ],
-      temperature: 0.2,
-      max_tokens: maxTokens,
-    };
-    if (isOpenRouterUrl(endpoint.url)) {
-      body.reasoning = {
-        effort: OPENROUTER_EVALUATION_REASONING_EFFORT,
+  const evaluateOn = async (
+    endpoint: ProviderConfig,
+  ): Promise<LlmTextResult> => {
+    // Agent transport (ADR 2026-07-12a): delegate answer evaluation to the
+    // connected harness instead of an HTTP chat-completions call.
+    if (endpoint.transport === "agent") {
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: userPrompt,
+      });
+      return {
+        text,
+        model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+        providerName: endpoint.providerName,
       };
     }
-    const res = await fetchWithInteractiveTimeout(
-      `${endpoint.url}/chat/completions`,
-      {
-        method: "POST",
-        headers: {
-          "Content-Type": "application/json",
-          Authorization: `Bearer ${endpoint.apiKey}`,
+
+    const requestEvaluation = async (
+      maxTokens: number,
+      reasoningEffort: string | null,
+    ): Promise<string> => {
+      // The reasoning control goes out only with a probe-verified level (ADR
+      // 2026-09-13, decision 6). Privacy injection still runs on the body via
+      // fetchWithInteractiveTimeout.
+      const body: Record<string, unknown> = {
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: systemPrompt },
+          { role: "user", content: userPrompt },
+        ],
+        temperature: 0.2,
+        max_tokens: maxTokens,
+      };
+      if (reasoningEffort !== null) {
+        body.reasoning = { effort: reasoningEffort };
+      }
+      const res = await fetchWithInteractiveTimeout(
+        `${endpoint.url}/chat/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${endpoint.apiKey}`,
+          },
+          body: JSON.stringify(body),
+          locale: cfg.locale,
         },
-        body: JSON.stringify(body),
-        locale: cfg.locale,
-      },
-    );
-    return readChatContent(res, "LLM evaluation");
+      );
+      return readChatContent(res, "LLM evaluation");
+    };
+
+    // A reasoning model can spend the whole allowance thinking before writing a
+    // visible token, so no single budget is right for every model. A truncated
+    // attempt is retried with real room at the same reasoning control.
+    const attemptEvaluation = async (
+      maxTokens: number,
+      reasoningEffort: string | null,
+    ): Promise<string> => {
+      try {
+        return await requestEvaluation(maxTokens, reasoningEffort);
+      } catch (error) {
+        if (!(error instanceof LlmResponseTruncatedError)) throw error;
+        return requestEvaluation(
+          RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+          reasoningEffort,
+        );
+      }
+    };
+
+    // Only a probe-verified level is sent (ADR 2026-09-13, decision 6). The
+    // rejection memo is keyed by the level — a "none" rejection says nothing
+    // about "minimal", which a re-probe may have stored in the meantime — and
+    // a memo hit means the endpoint is known to reason, so the control-free
+    // attempt starts at the larger budget: reasoning tokens count against
+    // max_tokens on OpenRouter.
+    const reasoningEffort = isOpenRouterUrl(endpoint.url)
+      ? (endpoint.effort ?? null)
+      : null;
+    const memoKey = `${endpoint.url}|${endpoint.model}|${reasoningEffort ?? ""}`;
+    const rejected =
+      reasoningEffort !== null && reasoningRejections.has(memoKey);
+    const firstEffort = rejected ? null : reasoningEffort;
+    const firstBudget = rejected
+      ? RECALL_EVALUATION_RETRY_OUTPUT_TOKENS
+      : RECALL_EVALUATION_MAX_OUTPUT_TOKENS;
+    try {
+      return await attemptEvaluation(firstBudget, firstEffort).then((text) => ({
+        text,
+        model: endpoint.model,
+        providerName: endpoint.providerName,
+      }));
+    } catch (error) {
+      // Reasoning-mandatory models answer the control with a 400 — "Reasoning
+      // is mandatory for this endpoint" — which used to kill the whole
+      // answer-feedback flow. Retry without the control and let the model
+      // reason natively, at the larger budget for the same reason.
+      if (
+        !(error instanceof LlmHttpError && error.status === 400) ||
+        firstEffort === null
+      ) {
+        throw error;
+      }
+      reasoningRejections.set(memoKey, true);
+      const text = await attemptEvaluation(
+        RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+        null,
+      );
+      return {
+        text,
+        model: endpoint.model,
+        providerName: endpoint.providerName,
+      };
+    }
   };
 
-  // A reasoning model can spend the whole allowance thinking before writing a
-  // visible token, so no single budget is right for every model. The first
-  // attempt stays cheap; only a truncated one is retried with real room.
-  let text: string;
-  try {
-    text = await requestEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS);
-  } catch (error) {
-    if (!(error instanceof LlmResponseTruncatedError)) throw error;
-    text = await requestEvaluation(RECALL_EVALUATION_RETRY_OUTPUT_TOKENS);
-  }
-  return {
-    text,
-    model: endpoint.model,
-    providerName: endpoint.providerName,
-  };
+  // Readiness is ensured lazily per attempt, auth/capacity failures fall
+  // through to the next configured row, and the offline tier opens only when
+  // no cloud row answered — see walkRecallChain.
+  return walkRecallChain(endpoints, signature, evaluateOn);
 }
 
 /**
@@ -945,7 +1101,9 @@ export async function discussReviewViaLLM(
   },
 ): Promise<LlmTextResult> {
   const cfg = await getProviderForRole(db, "recall");
-  const endpoint = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, {
+    allowAgent: true,
+  });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a warm, precise, and encouraging skills trainer in a follow-up discussion about one flashcard.
@@ -980,59 +1138,67 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
   }
   messages.push({ role: "user", content: input.message });
 
-  // Agent transport (ADR 2026-07-12a): the discussion is stateless — the full
-  // thread is resent on every call — so we flatten it into one transcript prompt
-  // for the single-shot harness instead of passing a messages array.
-  if (endpoint.transport === "agent") {
-    const transcript = [
-      cardFrame,
-      "",
-      "Discussion so far:",
-      ...(feedback ? [`ZAM: ${feedback}`] : []),
-      ...input.thread.map(
-        (turn) =>
-          `${turn.role === "assistant" ? "ZAM" : "Learner"}: ${turn.content}`,
-      ),
-      "",
-      `The learner now says: ${input.message}`,
-      "",
-      "Reply to the learner's latest message.",
-    ].join("\n");
-    const text = await requestAgentCompletion(endpoint, {
-      system: systemPrompt,
-      user: transcript,
-    });
+  const discussOn = async (
+    endpoint: ProviderConfig,
+  ): Promise<LlmTextResult> => {
+    // Agent transport (ADR 2026-07-12a): the discussion is stateless — the full
+    // thread is resent on every call — so we flatten it into one transcript prompt
+    // for the single-shot harness instead of passing a messages array.
+    if (endpoint.transport === "agent") {
+      const transcript = [
+        cardFrame,
+        "",
+        "Discussion so far:",
+        ...(feedback ? [`ZAM: ${feedback}`] : []),
+        ...input.thread.map(
+          (turn) =>
+            `${turn.role === "assistant" ? "ZAM" : "Learner"}: ${turn.content}`,
+        ),
+        "",
+        `The learner now says: ${input.message}`,
+        "",
+        "Reply to the learner's latest message.",
+      ].join("\n");
+      const text = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: transcript,
+      });
+      return {
+        text,
+        model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+        providerName: endpoint.providerName,
+      };
+    }
+
+    const res = await fetchWithInteractiveTimeout(
+      `${endpoint.url}/chat/completions`,
+      {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${endpoint.apiKey}`,
+        },
+        body: JSON.stringify({
+          model: endpoint.model,
+          messages,
+          temperature: 0.3,
+          max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
+        }),
+        locale: cfg.locale,
+      },
+    );
+
+    const text = await readChatContent(res, "LLM discussion");
     return {
       text,
-      model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
+      model: endpoint.model,
       providerName: endpoint.providerName,
     };
-  }
-
-  const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${endpoint.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: endpoint.model,
-        messages,
-        temperature: 0.3,
-        max_tokens: RECALL_DISCUSSION_MAX_OUTPUT_TOKENS,
-      }),
-      locale: cfg.locale,
-    },
-  );
-
-  const text = await readChatContent(res, "LLM discussion");
-  return {
-    text,
-    model: endpoint.model,
-    providerName: endpoint.providerName,
   };
+
+  // Same walk as the evaluation: lazy readiness, fallthrough on auth and
+  // capacity failures, offline tier only when no cloud row answered.
+  return walkRecallChain(endpoints, signature, discussOn);
 }
 
 export interface GeneratedCardProposal {
@@ -1920,10 +2086,57 @@ export async function isLlmOnline(url: string): Promise<boolean> {
 }
 
 /**
- * List the model ids the server actually serves (OpenAI `/v1/models`).
- * Returns [] on any error so callers can treat "unknown" as "skip validation".
+ * Check a stored key against the provider's key-metadata endpoint. One
+ * authenticated GET, no tokens consumed — and the only way to notice a broken
+ * key from ZAM's side, because the `/models` catalog is public on OpenRouter:
+ * a row with an unusable key probed clean and looked healthy until the first
+ * real chat call 401'd (field report 2026-09-13, a 29-character wrong paste
+ * sat undetected on a row whose `keyState` said "set"). The route comes from
+ * the provider descriptor (`CloudProviderDescriptor.keyCheckPath`) — the one
+ * place that knows it. 401/403 are a definitive false; every other outcome
+ * (unknown provider, other statuses, network errors) is "no verdict" so a
+ * transient failure cannot mark a good key bad.
  */
-export async function getAvailableModels(
+export async function probeKeyValidity(
+  url: string,
+  apiKey: string,
+): Promise<boolean | undefined> {
+  const provider = CLOUD_PROVIDERS.find((p) => url.startsWith(p.baseUrl));
+  if (!provider) return undefined;
+  const controller = new AbortController();
+  const timeoutId = setTimeout(() => controller.abort(), 10000);
+  try {
+    const res = await fetch(`${provider.baseUrl}${provider.keyCheckPath}`, {
+      headers: { Authorization: `Bearer ${apiKey}` },
+      signal: controller.signal,
+    });
+    await res.text().catch(() => "");
+    if (res.ok) return true;
+    if (res.status === 401 || res.status === 403) return false;
+    return undefined;
+  } catch {
+    return undefined;
+  } finally {
+    clearTimeout(timeoutId);
+  }
+}
+
+/**
+ * One `/models` record: the id plus whatever architecture metadata the
+ * endpoint publishes alongside it. OpenRouter declares `input_modalities`
+ * per model; most other endpoints (OpenAI, local runners) serve bare ids.
+ */
+export interface ModelCatalogEntry {
+  id: string;
+  /** Declared input modalities (e.g. ["text", "image"]); absent when the
+      endpoint publishes no architecture metadata for this model. */
+  inputModalities?: string[];
+}
+
+/**
+ * Fetch the `/models` catalogue with architecture metadata.
+ */
+export async function getAvailableModelEntries(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
   /**
@@ -1933,7 +2146,7 @@ export async function getAvailableModels(
    * caller would otherwise have got.
    */
   search = "",
-): Promise<string[]> {
+): Promise<ModelCatalogEntry[]> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -1944,13 +2157,41 @@ export async function getAvailableModels(
     });
     clearTimeout(timeoutId);
     if (!res.ok) return [];
-    const data = (await res.json()) as { data?: Array<{ id?: string }> };
-    return (data.data ?? [])
-      .map((m) => m.id)
-      .filter((id): id is string => typeof id === "string" && id.length > 0);
+    const data = (await res.json()) as {
+      data?: Array<{
+        id?: string;
+        architecture?: { input_modalities?: unknown };
+      }>;
+    };
+    return (data.data ?? []).flatMap((m) => {
+      if (typeof m.id !== "string" || m.id.length === 0) return [];
+      const modalities = m.architecture?.input_modalities;
+      return [
+        {
+          id: m.id,
+          inputModalities: Array.isArray(modalities)
+            ? modalities.filter((x): x is string => typeof x === "string")
+            : undefined,
+        },
+      ];
+    });
   } catch {
     return [];
   }
+}
+
+/**
+ * List the model ids the server actually serves (OpenAI `/v1/models`).
+ * Returns [] on any error so callers can treat "unknown" as "skip validation".
+ */
+export async function getAvailableModels(
+  url: string,
+  apiKey = DEFAULT_LLM_API_KEY,
+  search = "",
+): Promise<string[]> {
+  return (await getAvailableModelEntries(url, apiKey, search)).map(
+    (entry) => entry.id,
+  );
 }
 
 export interface VisionReadyResult {
@@ -1969,9 +2210,16 @@ export interface VisionReadyResult {
 
 interface ProviderEndpointReadiness {
   endpoint: ProviderConfig;
+  /** The endpoint answered `/models` — reachable, whether or not usable. */
   online: boolean;
   availableModels: string[];
   modelAvailable: boolean;
+  /**
+   * The endpoint is online but rejected the stored key (probe verdict or live
+   * check). Kept apart from `online: false`: a refused key is a *reachable*
+   * cloud and must not open the offline tier (ADR 2026-09-13, decision 9).
+   */
+  keyRejected?: boolean;
 }
 
 function isLocalEndpoint(url: string): boolean {
@@ -2040,6 +2288,33 @@ async function checkProviderEndpoint(
     };
   }
 
+  // A stored key-validity verdict — or a live key check, where the provider
+  // publishes a key-metadata endpoint — marks the endpoint unusable:
+  // OpenRouter's /models catalog is public, so "online" alone cannot tell a
+  // working credential from a broken paste, and the first real chat call
+  // would 401 (ADR 2026-09-13). The endpoint stays `online`: it answered,
+  // and a refused key must not read as "cloud unreachable".
+  if (resolved.keyValid === false) {
+    return {
+      endpoint: resolved,
+      online: true,
+      keyRejected: true,
+      availableModels: [],
+      modelAvailable: false,
+    };
+  }
+  if (resolved.apiKey && resolved.apiKey !== DEFAULT_LLM_API_KEY) {
+    if ((await probeKeyValidity(resolved.url, resolved.apiKey)) === false) {
+      return {
+        endpoint: resolved,
+        online: true,
+        keyRejected: true,
+        availableModels: [],
+        modelAvailable: false,
+      };
+    }
+  }
+
   const availableModels = await getAvailableModels(
     resolved.url,
     resolved.apiKey,
@@ -2059,11 +2334,27 @@ async function checkProviderEndpoint(
 }
 
 function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
-  return readiness.online && readiness.modelAvailable;
+  return readiness.online && readiness.modelAvailable && !readiness.keyRejected;
 }
 
-function providerChain(primary: ProviderConfig): ProviderConfig[] {
-  return [primary, ...(primary.fallback ? [primary.fallback] : [])];
+/** Why an endpoint that answered cannot serve, for status and error text. */
+function readinessReason(
+  readiness: ProviderEndpointReadiness,
+): "offline" | "key-invalid" | "model-not-found" | undefined {
+  if (isEndpointUsable(readiness)) return undefined;
+  if (!readiness.online) return "offline";
+  if (readiness.keyRejected) return "key-invalid";
+  return "model-not-found";
+}
+
+/** The full fallback chain in call order, as resolveCapability linked it. */
+export function providerChain(primary: ProviderConfig): ProviderConfig[] {
+  // resolveCapability links every eligible row; walkers honour that order.
+  const chain: ProviderConfig[] = [];
+  for (let cfg: ProviderConfig | undefined = primary; cfg; cfg = cfg.fallback) {
+    chain.push(cfg);
+  }
+  return chain;
 }
 
 async function checkProviderChain(
@@ -2074,12 +2365,20 @@ async function checkProviderChain(
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
+  let cloudAnswered = false;
   for (const endpoint of providerChain(primary)) {
+    // The offline tier sits at the end of the chain (resolveCapability) and
+    // opens only when no cloud row answered. A readiness check has no
+    // serving call, so "answered" here is a row that was online and refused
+    // (rejected key, model not in the catalog); an unreachable row is
+    // silence.
+    if (endpoint.offlineOnly && cloudAnswered) break;
     const readiness = await checkProviderEndpoint(endpoint, options);
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
     }
+    if (!endpoint.offlineOnly) cloudAnswered ||= readiness.online;
   }
   return { primary: first! };
 }
@@ -2098,20 +2397,27 @@ export interface QuestionResolution {
   model?: string;
 }
 
-export async function resolveUsableRecallEndpoint(
+/**
+ * Resolve the recall chain in call-time order. Deliberately network-free: the
+ * raw chain as {@link resolveCapability} linked it — cloud rows first, then
+ * the offline tier (`offlineOnly` local rows behind a cloud primary).
+ * Readiness (reachability, key, catalog) is ensured lazily by the walk right
+ * before each attempt via {@link ensureRecallEndpointReady}, so a healthy
+ * primary pays exactly one health check and no local row is ever started for
+ * a check it never needed.
+ */
+export async function resolveRecallEndpointChain(
   db: Database,
   opts: { allowAgent?: boolean } = {},
-): Promise<ProviderConfig> {
-  // Resolve the role config first (cheap, local reads) so configuration changes
-  // are observed immediately. The cached value reuses only the *network* health
-  // check, and only while the resolved provider signature is unchanged AND the
-  // TTL holds — so the enable gate and a Studio rebind both take effect at once.
+): Promise<{ endpoints: ProviderConfig[]; signature: string }> {
   const cfg = await getProviderForRole(db, "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
   // Agent transport (ADR 2026-07-12a) has no URL to health-check; only recall
   // callers wired for it (dynamic question, answer evaluation) may opt in.
+  // An agent endpoint cannot fall through to an HTTP one, so it is a
+  // single-element chain.
   if (cfg.transport === "agent") {
     if (!opts.allowAgent) {
       throw new Error(
@@ -2119,32 +2425,134 @@ export async function resolveUsableRecallEndpoint(
           "which this operation does not support yet. Configure a Local or Cloud recall model for it.",
       );
     }
-    return cfg;
+    return { endpoints: [cfg], signature: recallEndpointSignature(cfg) };
   }
   assertChatCompletions(cfg);
 
-  const signature = recallEndpointSignature(cfg);
-  if (
-    cachedRecallEndpoint &&
-    cachedRecallEndpoint.signature === signature &&
-    cachedRecallEndpoint.expiresAt > Date.now()
-  ) {
-    return cachedRecallEndpoint.endpoint;
-  }
+  return {
+    endpoints: providerChain(cfg),
+    signature: recallEndpointSignature(cfg),
+  };
+}
 
-  const chain = await checkProviderChain(cfg, {
+interface RecallReadiness {
+  /** The **resolved** config to call, or null when the row cannot serve. */
+  ready: ProviderConfig | null;
+  /** The row answered at all — a refused key or a missing model still counts. */
+  reachable: boolean;
+  /** Why an unready row was skipped, for the exhausted-chain error. */
+  reason?: "offline" | "key-invalid" | "model-not-found";
+}
+
+/**
+ * Lazily ensure one chain entry is ready to serve (online, key accepted,
+ * model in the catalog), with the same 60 s TTL the endpoint cache used.
+ * Foundry rows are prepared here — i.e. started and loaded only when a walk
+ * is actually about to call them, never for a row a healthy primary made
+ * unreachable. `ready` is the **resolved** config: prepareFoundryEndpoint
+ * swaps in the URL the local service actually reports, so a recall call
+ * survives a service restart instead of hitting the stale stored URL.
+ */
+async function ensureRecallEndpointReady(
+  endpoint: ProviderConfig,
+  signature: string,
+): Promise<RecallReadiness> {
+  if (endpoint.transport === "agent") {
+    return { ready: endpoint, reachable: true };
+  }
+  const key = `${signature}|${endpoint.url}|${endpoint.model}`;
+  const hit = recallReadiness.get(key);
+  if (hit && hit.expiresAt > Date.now()) return hit.readiness;
+  const checked = await checkProviderEndpoint(endpoint, {
     prepareFoundry: true,
   });
-  const selected = chain.firstUsable;
-  if (!selected || !isEndpointUsable(selected)) {
-    throw new Error("No recall LLM endpoint is online");
-  }
-  cachedRecallEndpoint = {
-    endpoint: selected.endpoint,
-    signature,
-    expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
+  const readiness: RecallReadiness = {
+    ready: isEndpointUsable(checked) ? checked.endpoint : null,
+    reachable: checked.online,
+    reason: readinessReason(checked),
   };
-  return selected.endpoint;
+  recallReadiness.set(key, {
+    readiness,
+    expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
+  });
+  return readiness;
+}
+
+/**
+ * Walk the recall chain tier by tier: ensure each row's readiness right before
+ * calling it, hand the resolved row to `call`, and move on when the row is not
+ * ready or answers with a fallthrough status (rejected key, exhausted credit,
+ * forbidden, upstream capacity). The offline tier — local rows behind a cloud
+ * primary — is entered only when **no cloud row answered** (ADR 2026-09-13,
+ * decision 9). "Answered" means the cloud spoke: a refusal on the serving
+ * call (any 4xx), or a readiness verdict that needed an answer (rejected key,
+ * model not in the catalog). Silence — the host unreachable, a transport
+ * failure or a 5xx on the serving call — moves on to the next row without
+ * counting as an answer, so later cloud rows and finally the offline tier
+ * can serve. A reachable catalog alone is not an answer: `/models` being up
+ * says nothing about the serving path. Anything else `call` throws propagates;
+ * an exhausted chain raises the last failure, or names why the last reachable
+ * row could not serve.
+ */
+async function walkRecallChain<T>(
+  endpoints: ProviderConfig[],
+  signature: string,
+  call: (endpoint: ProviderConfig) => Promise<T>,
+): Promise<T> {
+  let cloudAnswered = false;
+  let lastError: unknown;
+  let lastSkip: { endpoint: ProviderConfig; reason: string } | undefined;
+  for (const endpoint of endpoints) {
+    if (endpoint.offlineOnly && cloudAnswered) break;
+    // Only a cloud row can "answer": a local row in the offline tier that
+    // refuses says nothing about the cloud and must not shut the tier for
+    // the local rows after it.
+    const isCloudRow = !endpoint.offlineOnly;
+    const readiness = await ensureRecallEndpointReady(endpoint, signature);
+    if (!readiness.ready) {
+      if (readiness.reason && readiness.reason !== "offline") {
+        // The row answered and cannot serve: that is the cloud speaking.
+        if (isCloudRow) cloudAnswered = true;
+        lastSkip = { endpoint, reason: readiness.reason };
+      }
+      continue;
+    }
+    try {
+      return await call(readiness.ready);
+    } catch (error) {
+      if (
+        error instanceof LlmHttpError &&
+        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
+      ) {
+        if (isCloudRow) cloudAnswered = true;
+        lastError = error;
+        continue;
+      }
+      if (isNoAnswerFailure(error)) {
+        lastError = error;
+        continue;
+      }
+      throw error;
+    }
+  }
+  if (lastError) throw lastError;
+  if (lastSkip) {
+    const name = lastSkip.endpoint.label ?? lastSkip.endpoint.model;
+    const why =
+      lastSkip.reason === "key-invalid"
+        ? "the stored API key was rejected"
+        : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
+    throw new Error(`No recall LLM endpoint is usable: ${name} — ${why}`);
+  }
+  throw new Error("No recall LLM endpoint is online");
+}
+
+export async function resolveUsableRecallEndpoint(
+  db: Database,
+  opts: { allowAgent?: boolean } = {},
+): Promise<ProviderConfig> {
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, opts);
+  return walkRecallChain(endpoints, signature, async (endpoint) => endpoint);
 }
 
 export async function sampleViaLocalLLM(
@@ -2251,7 +2659,7 @@ async function resolveUsableTextEndpoint(
   return selected.endpoint;
 }
 
-async function prepareRecallChain(
+export async function prepareRecallChain(
   db: Database,
   opts: { timeoutMs: number; interactive: boolean },
 ): Promise<LlmReadyResult> {
@@ -2302,10 +2710,18 @@ async function prepareRecallChain(
   let lastOnline = false;
   let lastModel = cfg.model;
   let lastAvailable: string[] = [];
+  let cloudAnswered = false;
 
   for (let index = 0; index < chain.length; index++) {
     let endpoint = chain[index];
+    // The offline tier (local rows behind a cloud primary, ADR 2026-09-13
+    // decision 9) is entered only when no cloud row answered: ensure-llm
+    // must not start a local runner the recall walk would refuse. A usable
+    // row returns below, so an online row only counts as "answered" here
+    // when it was online and refused (rejected key, model not offered).
+    if (endpoint.offlineOnly && cloudAnswered) break;
     let online = await isLlmOnline(endpoint.url);
+    if (!endpoint.offlineOnly) cloudAnswered ||= online;
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
       if (opts.interactive) {
@@ -2341,6 +2757,12 @@ async function prepareRecallChain(
 
     if (!online) {
       lastReason = "offline";
+      continue;
+    }
+    // A row whose stored key the probe rejected is reachable but unusable —
+    // report it as such instead of letting the first real call 401.
+    if (endpoint.keyValid === false) {
+      lastReason = "key-invalid";
       continue;
     }
 
@@ -2464,7 +2886,12 @@ export interface ProviderRoleStatus {
   modelAvailable: boolean;
   availableModels: string[];
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  reason?:
+    | "disabled"
+    | "offline"
+    | "key-invalid"
+    | "model-not-found"
+    | "unsupported-provider";
   fallback?: {
     providerName?: string;
     label?: string;
@@ -2473,6 +2900,8 @@ export interface ProviderRoleStatus {
     model: string;
     apiFlavor: ApiFlavor;
     local: boolean;
+    /** Offline tier: served only when no cloud row answers (ADR 2026-09-13). */
+    offlineOnly?: boolean;
   };
 }
 
@@ -2488,6 +2917,7 @@ function summarizeFallback(
     model: provider.model,
     apiFlavor: provider.apiFlavor,
     local: provider.local,
+    ...(provider.offlineOnly ? { offlineOnly: true } : {}),
   };
 }
 
@@ -2543,12 +2973,8 @@ export async function getProviderRoleStatus(
   const chain = await checkProviderChain(cfg);
   const selected = chain.firstUsable ?? chain.primary;
   const active = selected.endpoint;
-  const usable = selected.online && selected.modelAvailable;
-  const reason = usable
-    ? undefined
-    : selected.online
-      ? "model-not-found"
-      : "offline";
+  const usable = isEndpointUsable(selected);
+  const reason = readinessReason(selected);
 
   return {
     role,
@@ -2572,7 +2998,12 @@ export async function getProviderRoleStatus(
 /** Whether the local LLM can actually be used this session, and if not, why. */
 export interface LlmReadiness {
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  reason?:
+    | "disabled"
+    | "offline"
+    | "key-invalid"
+    | "model-not-found"
+    | "unsupported-provider";
 }
 
 type RunnerKind = "fastflowlm" | "ollama" | "foundry" | "generic" | "unknown";
@@ -2888,17 +3319,28 @@ export async function fetchWithInteractiveTimeout(
     ...fetchOptions
   } = options;
   const controller = new AbortController();
+  // A connection failure or abort is silence, not an answer — the chain
+  // walkers rely on the distinction (see LlmTransportError).
   const fetchPromise = fetch(url, {
     ...fetchOptions,
     body: enforceOpenRouterPrivacy(url, fetchOptions.body),
     signal: controller.signal,
+  }).catch((cause: unknown) => {
+    throw new LlmTransportError(
+      cause instanceof Error ? cause.message : String(cause),
+      cause,
+    );
   });
 
   if (!process.stdout.isTTY || process.env.ZAM_BRIDGE === "true") {
     let timeoutId: NodeJS.Timeout | undefined;
     const hardTimeout = new Promise<never>((_resolve, reject) => {
       timeoutId = setTimeout(() => {
-        reject(new Error(`LLM request timed out after ${hardTimeoutMs}ms`));
+        reject(
+          new LlmTransportError(
+            `LLM request timed out after ${hardTimeoutMs}ms`,
+          ),
+        );
         controller.abort();
       }, hardTimeoutMs);
     });

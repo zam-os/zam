@@ -37,7 +37,11 @@ describe("bridge model-* registry commands", () => {
     server = createServer((req, res) => {
       if (req.url === "/v1/models") {
         res.writeHead(200, { "content-type": "application/json" });
-        res.end(JSON.stringify({ data: [{ id: "gemma4-it:e4b" }] }));
+        res.end(
+          JSON.stringify({
+            data: [{ id: "gemma4-it:e4b" }, { id: "mimo-v2.5" }],
+          }),
+        );
         return;
       }
       res.writeHead(404);
@@ -109,6 +113,40 @@ describe("bridge model-* registry commands", () => {
     expect(readConfig().ai?.models).toHaveLength(1);
   });
 
+  it("honors an explicit --capabilities selection on a fresh row", async () => {
+    // mimo-v2.5 matches the MiMo vision hint, so the probe detects text +
+    // image; the caller's deliberate text-only selection must survive.
+    const res = (await runBridge([
+      "model-upsert",
+      "--label",
+      "Mimo",
+      "--url",
+      baseUrl,
+      "--model",
+      "mimo-v2.5",
+      "--capabilities",
+      JSON.stringify({
+        text: true,
+        image: false,
+        embedding: false,
+        video: false,
+        stt: false,
+        tts: false,
+      }),
+    ])) as { parsed: { ok: boolean; model: Record<string, unknown> } };
+
+    expect(res.parsed.ok).toBe(true);
+    const model = res.parsed.model as {
+      capabilities: Record<string, boolean>;
+      detectedCapabilities: Record<string, boolean>;
+    };
+    expect(model.detectedCapabilities).toMatchObject({
+      text: true,
+      image: true,
+    });
+    expect(model.capabilities).toMatchObject({ text: true, image: false });
+  });
+
   it("blocks a save when the endpoint is unreachable", async () => {
     const res = (await runBridge([
       "model-upsert",
@@ -122,6 +160,63 @@ describe("bridge model-* registry commands", () => {
     expect(res.parsed.error).toMatch(/unreachable/i);
     // Nothing was persisted.
     expect(readConfig().ai?.models ?? []).toHaveLength(0);
+  });
+
+  it("keeps effort and keyValid on a rename-only save", async () => {
+    // A pure rename rebuilds the candidate field by field; the probe-verdict
+    // fields must ride along or a rename would silently wipe them.
+    writeFileSync(
+      configPath,
+      JSON.stringify({
+        ai: {
+          models: [
+            {
+              id: "row1",
+              label: "GLM",
+              url: baseUrl,
+              model: "gemma4-it:e4b",
+              local: true,
+              apiFlavor: "chat-completions",
+              order: 0,
+              capabilities: {
+                text: true,
+                embedding: false,
+                image: false,
+                video: false,
+                stt: false,
+                tts: false,
+              },
+              detectedCapabilities: {
+                text: true,
+                embedding: false,
+                image: false,
+                video: false,
+                stt: false,
+                tts: false,
+              },
+              probedAt: "2026-09-13T00:00:00.000Z",
+              effort: "minimal",
+              keyValid: true,
+            },
+          ],
+        },
+      }),
+    );
+
+    const res = (await runBridge([
+      "model-upsert",
+      "--id",
+      "row1",
+      "--label",
+      "Renamed",
+    ])) as { parsed: { ok: boolean; model: Record<string, unknown> } };
+
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.model).toMatchObject({
+      label: "Renamed",
+      effort: "minimal",
+      keyValid: true,
+    });
   });
 
   it("sets capabilities within the detected ceiling without re-probing", async () => {

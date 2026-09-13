@@ -2,6 +2,8 @@
 
 ## 2026-09-13
 
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 
 ## 2026-09-12

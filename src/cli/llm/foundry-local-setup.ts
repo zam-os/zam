@@ -83,6 +83,11 @@ export async function setupFoundryLocalForZam(
     capabilities,
     detectedCapabilities:
       existing?.detectedCapabilities ?? emptyCapabilityFlags(),
+    // Probe-verdict fields must survive a re-registration of the same row.
+    ...(existing?.effort ? { effort: existing.effort } : {}),
+    ...(existing?.keyValid !== undefined
+      ? { keyValid: existing.keyValid }
+      : {}),
   };
 
   const probe = await probeModelCapabilities(candidate);

@@ -1005,20 +1005,11 @@ textarea:focus-visible {
   text-transform: uppercase;
 }
 
+/* The model add/edit form lives inside #ai-model-form-overlay's .modal-body,
+   which already supplies the card look — the form itself stays chrome-free. */
 .ai-provider-form {
-  background: var(--bg-card-subtle);
-  border: 1px solid var(--border-soft);
-  border-radius: 14px;
   display: grid;
   gap: 12px;
-  padding: 14px;
-}
-
-.ai-provider-form h3 {
-  color: var(--clr-text-primary);
-  font-size: 14px;
-  font-weight: 800;
-  margin: 0;
 }
 
 .ai-provider-form-grid {
@@ -1091,7 +1082,12 @@ textarea:focus-visible {
 .ai-model-caps {
   display: flex;
   flex-wrap: wrap;
-  gap: 12px;
+  gap: 8px 14px;
+}
+
+.ai-model-caps-empty {
+  color: var(--clr-text-muted);
+  font-size: 12px;
 }
 
 .ai-model-cap {
@@ -1834,6 +1830,38 @@ textarea::placeholder {
   overflow-wrap: anywhere;
   overscroll-behavior: contain;
   white-space: pre-wrap;
+}
+
+/* Same visual family as the feedback box, in the failure color: what went
+   wrong must be readable where the learner is looking, not only in a console. */
+.evaluation-error-note {
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: 12px;
+  color: var(--clr-again);
+  font-size: 13px;
+  margin: 0;
+  overflow-wrap: anywhere;
+  padding: 10px 14px;
+}
+
+.evaluation-error-text {
+  margin: 0;
+}
+
+/* The raw bridge error stays one click away: small, muted, collapsed. */
+.evaluation-error-details {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+  margin-top: 6px;
+}
+
+.evaluation-error-details summary {
+  cursor: pointer;
+}
+
+.evaluation-error-raw {
+  font-family: var(--font-mono, ui-monospace, monospace);
+  margin: 4px 0 0;
 }
 
 .answer-box {
@@ -3156,6 +3184,12 @@ textarea::placeholder {
 
 .pairing-modal {
   max-width: 520px;
+}
+
+/* URL, model id, key and capability rows need more width than a confirm
+   dialog; anything wider crowds the settings window on small screens. */
+.ai-model-form-modal {
+  max-width: 560px;
 }
 
 .pairing-warning {

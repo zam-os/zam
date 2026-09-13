@@ -492,6 +492,111 @@ describe("a reasoning model that thinks past its budget", () => {
   });
 });
 
+// Reasoning is switched off only where the desktop's setup probe verified
+// that switching it off works; the companion relays the stored level and
+// otherwise lets the model reason natively (ADR 2026-09-13, decision 6).
+describe("the reasoning control follows the verified level", () => {
+  function portsFor(fetchText: EvaluationPorts["fetchText"]): EvaluationPorts {
+    return {
+      checkOnDeviceStatus: async () => ({
+        status: "unavailable",
+        available: false,
+        downloadable: false,
+      }),
+      generateOnDevice: async (): Promise<never> => {
+        throw new Error("not on iOS");
+      },
+      fetchText,
+    };
+  }
+
+  function openRouter(
+    overrides: Partial<ZamPairLlmEndpoint> = {},
+  ): ZamPairLlmEndpoint {
+    return {
+      enabled: true,
+      url: "https://openrouter.ai/api/v1",
+      model: "z-ai/glm-5.3-flash",
+      apiFlavor: "chat-completions",
+      local: false,
+      apiKey: "sk-or",
+      ...overrides,
+    };
+  }
+
+  const evaluateWith = (endpoint: ZamPairLlmEndpoint, fetchText: EvaluationPorts["fetchText"]) =>
+    evaluateMobileAnswer({
+      card,
+      learnerAnswer: "F = m · a",
+      locale: "de",
+      endpoint,
+      onDeviceAvailable: false,
+      ports: portsFor(fetchText),
+    });
+
+  it("sends the stored level when the row carries one", async () => {
+    const bodies: Record<string, unknown>[] = [];
+    const fetchText = vi.fn(async (_url: string, init: RequestInit) => {
+      bodies.push(JSON.parse(init.body as string));
+      return goodJson;
+    });
+
+    await evaluateWith(openRouter({ effort: "none" }), fetchText);
+
+    expect(bodies).toHaveLength(1);
+    expect(bodies[0]?.reasoning).toEqual({ effort: "none" });
+  });
+
+  it("sends no control at all for a row without a verdict", async () => {
+    const bodies: Record<string, unknown>[] = [];
+    const fetchText = vi.fn(async (_url: string, init: RequestInit) => {
+      bodies.push(JSON.parse(init.body as string));
+      return goodJson;
+    });
+
+    await evaluateWith(openRouter(), fetchText);
+
+    expect(bodies).toHaveLength(1);
+    expect(bodies[0]?.reasoning).toBeUndefined();
+  });
+
+  it("retries once without the control, with real room, when a stale level is rejected", async () => {
+    // The GLM-5.3-Flash field report: a reasoning-mandatory model answers
+    // `effort: none` with a 400 instead of an evaluation.
+    const bodies: Record<string, unknown>[] = [];
+    const fetchText = vi.fn(async (_url: string, init: RequestInit) => {
+      const body = JSON.parse(init.body as string);
+      bodies.push(body);
+      if (body.reasoning) {
+        throw new Error(
+          "HTTP 400: Reasoning is mandatory for this endpoint and cannot be disabled.",
+        );
+      }
+      return goodJson;
+    });
+
+    const result = await evaluateWith(openRouter({ effort: "none" }), fetchText);
+
+    expect(result?.backend).toBe("http");
+    expect(bodies).toHaveLength(2);
+    expect(bodies[0]?.reasoning).toEqual({ effort: "none" });
+    expect(bodies[1]?.reasoning).toBeUndefined();
+    expect(bodies[1]?.max_tokens).toBe(4000);
+  });
+
+  it("never sends the control to a host that is not OpenRouter", async () => {
+    const bodies: Record<string, unknown>[] = [];
+    const fetchText = vi.fn(async (_url: string, init: RequestInit) => {
+      bodies.push(JSON.parse(init.body as string));
+      return goodJson;
+    });
+
+    await evaluateWith(cloudEndpoint2({ effort: "none" }), fetchText);
+
+    expect(bodies[0]?.reasoning).toBeUndefined();
+  });
+});
+
 describe("no backend at all", () => {
   /**
    * An iPad with no key pasted: no on-device model, no endpoint, and nothing

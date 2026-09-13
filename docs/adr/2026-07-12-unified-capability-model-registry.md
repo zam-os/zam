@@ -161,6 +161,15 @@ expose — no OpenAI-shaped embedding or speech routes on Anthropic endpoints.
 
 ### Save rules
 
+> **Amended 2026-09-13** by
+> [2026-09-13-model-capabilities-are-detected.md](2026-09-13-model-capabilities-are-detected.md):
+> rules 1 and 3 no longer intersect the user's selection with the detection.
+> A probe **merge** now keeps the learner's toggles for capabilities that stay
+> detected, **switches on** newly detected ones, and drops undetected ones;
+> the manual editor no longer offers capability checkboxes. A never-probed
+> row that carries an explicit selection (guided setups, `--capabilities`)
+> keeps that selection.
+
 1. After probe, **auto-uncheck** user capabilities that `detectedCapabilities`
    does not support.
 2. **Only persist reachable capabilities** — if the endpoint is offline at save

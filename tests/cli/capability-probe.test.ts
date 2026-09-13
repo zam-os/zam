@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   type CapabilityProbeResult,
   classifyCapabilities,
+  mergeProbeCapabilities,
   probeModelCapabilities,
-  reconcileCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
 import {
@@ -145,15 +145,110 @@ describe("classifyCapabilities", () => {
     expect(d.embedding).toBe(true);
     expect(d.text).toBe(false);
   });
+
+  it("claims image from declared catalog modalities even without a name hint", () => {
+    const d = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(true);
+  });
+
+  it("lets declared modalities deny image for a name that hints at it", () => {
+    const d = classifyCapabilities(
+      { model: "qwen3.5-vl", apiFlavor: "chat-completions" },
+      ["qwen3.5-vl"],
+      true,
+      false,
+      false,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(false);
+  });
+
+  it("falls back to name hints when the catalog declares no modalities", () => {
+    const d = classifyCapabilities(
+      { model: "gpt-4o", apiFlavor: "chat-completions" },
+      ["gpt-4o"],
+      true,
+      false,
+      undefined,
+    );
+    expect(d.image).toBe(true);
+  });
+
+  it("claims video only from declared catalog modalities, never from a name", () => {
+    const declared = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+      true,
+    );
+    expect(declared.video).toBe(true);
+    // No architecture metadata → no video claim: no name heuristic is worth a
+    // false positive on a modality this rare.
+    const undeclared = classifyCapabilities(
+      { model: "video-master-pro", apiFlavor: "chat-completions" },
+      [],
+      false,
+    );
+    expect(undeclared.video).toBe(false);
+  });
 });
 
-describe("reconcileCapabilities", () => {
-  it("keeps only user-selected flags the probe detected", () => {
-    const result = reconcileCapabilities(
-      caps({ text: true, image: true, embedding: true }),
-      caps({ text: true, image: false, embedding: true }),
+describe("mergeProbeCapabilities", () => {
+  it("keeps the user's toggle for a capability that stays detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: false }),
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
     );
-    expect(result).toEqual(caps({ text: true, embedding: true }));
+    expect(result).toEqual(caps({ text: true }));
+  });
+
+  it("switches on a capability that is newly detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true }),
+      caps({ text: true }),
+      caps({ text: true, image: true, video: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true, video: true }));
+  });
+
+  it("starts a fresh row with everything the endpoint detected", () => {
+    const result = mergeProbeCapabilities(
+      emptyCapabilityFlags(),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true }));
+  });
+
+  it("honors an explicit selection on a never-probed row", () => {
+    // Guided setups (Ollama vision → image only, Foundry text → text only)
+    // and `model-upsert --capabilities` select deliberately; the probe must
+    // not flood that selection with everything else it detected.
+    const result = mergeProbeCapabilities(
+      caps({ image: true }),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ image: true }));
+  });
+
+  it("drops a capability the probe no longer detects", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
+      caps({ text: true }),
+    );
+    expect(result).toEqual(caps({ text: true }));
   });
 });
 
@@ -182,7 +277,7 @@ describe("validateModelSave", () => {
     expect(result.error).toMatch(/unreachable/i);
   });
 
-  it("stamps detected capabilities and shrinks user flags to the intersection", () => {
+  it("stamps detected capabilities, merged with the row's prior state", () => {
     const probe: CapabilityProbeResult = {
       reachable: true,
       catalog: ["gemma"],
@@ -412,6 +507,69 @@ describe("probeModelCapabilities and a split model catalogue", () => {
       expect(result.entry?.label).toBe("renamed by the learner");
     } finally {
       await stub.close();
+    }
+  });
+
+  it("reads image capability from OpenRouter-style architecture metadata", async () => {
+    // A catalog record that declares input modalities decides vision on its
+    // own: `z-ai/glm-5.3-flash` is image-capable but matches no name hint,
+    // while `deepseek/deepseek-v4-flash` stays text-only.
+    const server: Server = createServer((req, res) => {
+      res
+        .writeHead(200, { "content-type": "application/json" })
+        .end(
+          JSON.stringify({
+            data: [
+              {
+                id: "z-ai/glm-5.3-flash",
+                architecture: { input_modalities: ["text", "image", "video"] },
+              },
+              {
+                id: "deepseek/deepseek-v4-flash",
+                architecture: { input_modalities: ["text"] },
+              },
+              // No architecture record → name hints stay in charge.
+              { id: "gpt-4o" },
+            ],
+          }),
+        );
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const address = server.address();
+    if (address === null || typeof address === "string") {
+      throw new Error("Failed to bind architecture-metadata stub");
+    }
+    const url = `http://127.0.0.1:${address.port}/v1`;
+    try {
+      const vision = await probeModelCapabilities({
+        url,
+        model: "z-ai/glm-5.3-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(vision.detected.image).toBe(true);
+      expect(vision.detected.video).toBe(true);
+      expect(vision.detected.text).toBe(true);
+
+      const textOnly = await probeModelCapabilities({
+        url,
+        model: "deepseek/deepseek-v4-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(textOnly.detected.image).toBe(false);
+      expect(textOnly.detected.video).toBe(false);
+      expect(textOnly.detected.text).toBe(true);
+
+      // No architecture record → name hints stay in charge.
+      const hinted = await probeModelCapabilities({
+        url,
+        model: "gpt-4o",
+        apiFlavor: "chat-completions",
+      });
+      expect(hinted.detected.image).toBe(true);
+    } finally {
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => (err ? reject(err) : resolve())),
+      );
     }
   });
 });
