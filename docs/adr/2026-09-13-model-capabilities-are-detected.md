@@ -117,18 +117,30 @@ the learner decides only what a row is *used for*.
    so a recall call survives a service restart. It covers the **full**
    fallback depth and falls through to the next row on 401 (rejected key),
    402 (exhausted credit), 403 (forbidden), and 429 (upstream capacity).
-   **Boundary (owner decision, 2026-09-13): a cloud primary never falls
-   through to a local model** — a fallback that starts a local runtime costs
-   gigabytes of RAM the learner did not ask to spend mid-review, and a local
-   row placed behind cloud rows is there despite that preference, not for
-   fallback duty. The learner who wants offline study puts the local model
-   first. The boundary is enforced **where the chain is linked**
-   (`resolveCapability` drops local rows from a cloud primary's fallback
-   links), so recall, the text role, and `ensure-llm` all agree and the
-   readiness sweep never starts a local runner for a row the walk would
-   refuse; a **local** primary keeps its cloud fallback, the direction the
-   guided setups document. Any other error propagates, and an exhausted
-   chain raises the original failure.
+9. **Local rows behind a cloud primary form an offline tier** (owner
+   decision, 2026-09-13, refined the same day). A learner who is practically
+   never offline puts the cloud first and does not want a local model pulled
+   into gigabytes of RAM as a fallback while the cloud is up; a learner
+   without a network still wants the local model they set up. Both hold at
+   once with one rule: with a **cloud** primary, local rows move behind every
+   cloud row and are flagged `offlineOnly`; a walker consults them **only
+   when no cloud row answered at all** — no response, timeout, or a 5xx.
+   A cloud row that answers and refuses (rejected key, exhausted credit,
+   forbidden, rate limit, a 400) keeps the tier closed, so the error surfaces
+   and names itself instead of a local runtime starting; a refused key is
+   therefore reported as `key-invalid`, never as `offline`. Inside the offline
+   tier the runtime **may** be started (`ensure-llm` spawns it, the recall
+   walk prepares Foundry) — offline study is exactly what the local row was
+   set up for. A **local** primary keeps registry order, local → cloud, the
+   direction the guided setups document. The tier is decided **where the
+   chain is linked** (`resolveCapability`), so every consumer agrees: the
+   recall walk, the text role, the vision fallback, `ensure-llm` and the
+   status surfaces; the speech resolver never picks an offline-only row
+   because voice mode's offline path is the device engine, not a local
+   server. The rule is desktop/CLI only: the companions never use this chain
+   and keep their own tier logic (`device-first` recall — Gemini Nano, then
+   cloud, then self-rating), which is why lightweight on-device models are
+   untouched by it.
 
 ## Consequences
 
@@ -153,9 +165,10 @@ the learner decides only what a row is *used for*.
 - Evaluation consumes the stored level via `endpoint.effort`
   (`evaluateAnswerViaLLM`); the reasoning control is still only ever sent to
   OpenRouter URLs. Evaluation and discussion walk the resolved chain
-  (`resolveRecallEndpointChain`) and fall through on auth/capacity failures;
-  readiness is ensured lazily per attempt (decision 8), including the
-  cloud-primary/ local-fallback boundary.
+  (`resolveRecallEndpointChain`, `walkRecallChain`) and fall through on
+  auth/capacity failures; readiness is ensured lazily per attempt
+  (decision 8), and the offline tier (decision 9) is flagged on the linked
+  chain as `offlineOnly`.
 - UI: overview rows render detected capabilities only; the editor form dropped
   its capability section (`desktop/src/main.ts`). HTTP rows show the stored
   effort level in their meta line.

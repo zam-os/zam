@@ -83,7 +83,7 @@ const RECALL_ENDPOINT_CACHE_MS = 60_000;
  */
 const recallReadiness = new Map<
   string,
-  { ready: ProviderConfig | null; expiresAt: number }
+  { readiness: RecallReadiness; expiresAt: number }
 >();
 
 /** Clear the in-process recall-endpoint cache (used by tests and explicit resets). */
@@ -256,6 +256,15 @@ export interface ProviderConfig {
    * fallback chain instead of failing the first real call.
    */
   keyValid?: boolean;
+  /**
+   * Offline tier (ADR 2026-09-13, decision 9): a local row chained behind a
+   * cloud primary. Set by {@link resolveCapability} when it links the chain;
+   * a walker consults such a row only when no cloud row answered at all —
+   * never when a cloud row answered and refused (bad key, no credit, rate
+   * limit) — so a local runtime is started for offline study, not as a
+   * silent fallback while the cloud is up.
+   */
+  offlineOnly?: boolean;
 }
 
 /** Infer the wire protocol from the endpoint host (anthropic.com → Messages API). */
@@ -458,20 +467,25 @@ export async function resolveCapability(
   const configs = eligible.map((entry) =>
     materializeModelEntry(entry, base, enabled, maxFrames),
   );
-  // A cloud primary never falls through to a local model (ADR 2026-09-13,
-  // owner decision): a fallback that starts a local runtime costs gigabytes
-  // of RAM mid-review, and a local row placed behind cloud rows is there
-  // despite that preference, not for fallback duty. The learner who wants
-  // offline study puts the local model first — a local primary keeps its
-  // cloud fallback, the direction the guided setups document. Applied here,
-  // where the chain is linked, so every surface (recall, text, ensure-llm)
-  // agrees.
-  const primaryIsLocal = configs[0].local ?? isLocalEndpoint(configs[0].url);
-  const chained = primaryIsLocal
+  // Offline tier (ADR 2026-09-13, decision 9): with a cloud primary, local
+  // rows move behind every cloud row and are flagged `offlineOnly`, so a
+  // walker reaches them only when no cloud row answered at all. A local
+  // runtime must not be pulled into RAM as a fallback while the cloud is up —
+  // a cloud row that answers and refuses (bad key, no credit, rate limit)
+  // keeps the tier closed — but a learner without a network still gets the
+  // local model they set up. A local primary keeps registry order: the
+  // guided setups document local → cloud. Decided here, where the chain is
+  // linked, so recall, text, vision, ensure-llm and status all agree.
+  const isLocal = (config: ProviderConfig): boolean =>
+    config.local ?? isLocalEndpoint(config.url);
+  const chained = isLocal(configs[0])
     ? configs
-    : configs.filter(
-        (config) => !(config.local ?? isLocalEndpoint(config.url)),
-      );
+    : [
+        ...configs.filter((config) => !isLocal(config)),
+        ...configs
+          .filter(isLocal)
+          .map((config) => ({ ...config, offlineOnly: true })),
+      ];
   for (let i = chained.length - 1; i > 0; i--) {
     chained[i - 1] = { ...chained[i - 1], fallback: chained[i] };
   }
@@ -1037,29 +1051,10 @@ Evaluation:`;
     }
   };
 
-  // Readiness is ensured lazily per attempt, and auth/capacity failures — a
-  // rejected key, exhausted credit, forbidden access, an upstream rate limit —
-  // fall through to the next configured row instead of failing the learner's
-  // answer. Anything else propagates; an exhausted chain raises the original
-  // failure.
-  let lastError: unknown;
-  for (const endpoint of endpoints) {
-    const ready = await ensureRecallEndpointReady(endpoint, signature);
-    if (!ready) continue;
-    try {
-      return await evaluateOn(ready);
-    } catch (error) {
-      if (
-        error instanceof LlmHttpError &&
-        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
-      ) {
-        lastError = error;
-        continue;
-      }
-      throw error;
-    }
-  }
-  throw lastError ?? new Error("No recall LLM endpoint is online");
+  // Readiness is ensured lazily per attempt, auth/capacity failures fall
+  // through to the next configured row, and the offline tier opens only when
+  // no cloud row answered — see walkRecallChain.
+  return walkRecallChain(endpoints, signature, evaluateOn);
 }
 
 /**
@@ -1184,27 +1179,9 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
     };
   };
 
-  // Readiness is ensured lazily per attempt, and the same fallthrough as the
-  // evaluation applies: a rejected key, empty credit, or an upstream rate
-  // limit moves the discussion to the next configured row.
-  let lastError: unknown;
-  for (const endpoint of endpoints) {
-    const ready = await ensureRecallEndpointReady(endpoint, signature);
-    if (!ready) continue;
-    try {
-      return await discussOn(ready);
-    } catch (error) {
-      if (
-        error instanceof LlmHttpError &&
-        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
-      ) {
-        lastError = error;
-        continue;
-      }
-      throw error;
-    }
-  }
-  throw lastError ?? new Error("No recall LLM endpoint is online");
+  // Same walk as the evaluation: lazy readiness, fallthrough on auth and
+  // capacity failures, offline tier only when no cloud row answered.
+  return walkRecallChain(endpoints, signature, discussOn);
 }
 
 export interface GeneratedCardProposal {
@@ -2216,9 +2193,16 @@ export interface VisionReadyResult {
 
 interface ProviderEndpointReadiness {
   endpoint: ProviderConfig;
+  /** The endpoint answered `/models` — reachable, whether or not usable. */
   online: boolean;
   availableModels: string[];
   modelAvailable: boolean;
+  /**
+   * The endpoint is online but rejected the stored key (probe verdict or live
+   * check). Kept apart from `online: false`: a refused key is a *reachable*
+   * cloud and must not open the offline tier (ADR 2026-09-13, decision 9).
+   */
+  keyRejected?: boolean;
 }
 
 function isLocalEndpoint(url: string): boolean {
@@ -2291,11 +2275,13 @@ async function checkProviderEndpoint(
   // publishes a key-metadata endpoint — marks the endpoint unusable:
   // OpenRouter's /models catalog is public, so "online" alone cannot tell a
   // working credential from a broken paste, and the first real chat call
-  // would 401 (ADR 2026-09-13).
+  // would 401 (ADR 2026-09-13). The endpoint stays `online`: it answered,
+  // and a refused key must not read as "cloud unreachable".
   if (resolved.keyValid === false) {
     return {
       endpoint: resolved,
-      online: false,
+      online: true,
+      keyRejected: true,
       availableModels: [],
       modelAvailable: false,
     };
@@ -2304,7 +2290,8 @@ async function checkProviderEndpoint(
     if ((await probeKeyValidity(resolved.url, resolved.apiKey)) === false) {
       return {
         endpoint: resolved,
-        online: false,
+        online: true,
+        keyRejected: true,
         availableModels: [],
         modelAvailable: false,
       };
@@ -2330,7 +2317,17 @@ async function checkProviderEndpoint(
 }
 
 function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
-  return readiness.online && readiness.modelAvailable;
+  return readiness.online && readiness.modelAvailable && !readiness.keyRejected;
+}
+
+/** Why an endpoint that answered cannot serve, for status and error text. */
+function readinessReason(
+  readiness: ProviderEndpointReadiness,
+): "offline" | "key-invalid" | "model-not-found" | undefined {
+  if (isEndpointUsable(readiness)) return undefined;
+  if (!readiness.online) return "offline";
+  if (readiness.keyRejected) return "key-invalid";
+  return "model-not-found";
 }
 
 function providerChain(primary: ProviderConfig): ProviderConfig[] {
@@ -2351,12 +2348,17 @@ async function checkProviderChain(
   firstUsable?: ProviderEndpointReadiness;
 }> {
   let first: ProviderEndpointReadiness | undefined;
+  let anyReachable = false;
   for (const endpoint of providerChain(primary)) {
+    // The offline tier sits at the end of the chain (resolveCapability) and
+    // opens only when no cloud row answered at all.
+    if (endpoint.offlineOnly && anyReachable) break;
     const readiness = await checkProviderEndpoint(endpoint, options);
     first ??= readiness;
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
     }
+    anyReachable ||= readiness.online;
   }
   return { primary: first! };
 }
@@ -2377,14 +2379,12 @@ export interface QuestionResolution {
 
 /**
  * Resolve the recall chain in call-time order. Deliberately network-free: the
- * raw chain in registry order, with one boundary — a cloud primary never
- * falls through to a local model, because a fallback must not start a local
- * runtime (a model load costs gigabytes of RAM the learner did not ask to
- * spend on a review; owner decision 2026-09-13). A local primary keeps its
- * cloud fallback — that direction is the documented setup. Readiness
- * (reachability, key, catalog) is ensured lazily by the walk right before
- * each attempt via {@link ensureRecallEndpointReady}, so a healthy primary
- * pays exactly one health check and no local row is ever started for a check.
+ * raw chain as {@link resolveCapability} linked it — cloud rows first, then
+ * the offline tier (`offlineOnly` local rows behind a cloud primary).
+ * Readiness (reachability, key, catalog) is ensured lazily by the walk right
+ * before each attempt via {@link ensureRecallEndpointReady}, so a healthy
+ * primary pays exactly one health check and no local row is ever started for
+ * a check it never needed.
  */
 export async function resolveRecallEndpointChain(
   db: Database,
@@ -2409,16 +2409,19 @@ export async function resolveRecallEndpointChain(
   }
   assertChatCompletions(cfg);
 
-  // No network here — the raw chain in registry order (the cloud/local
-  // fallback boundary is applied where the chain is linked, in
-  // resolveCapability). Readiness (reachability, key, catalog) is ensured
-  // lazily by the walk right before each attempt via
-  // {@link ensureRecallEndpointReady}, so a healthy primary pays exactly one
-  // health check and no local row is ever started for a check.
   return {
     endpoints: providerChain(cfg),
     signature: recallEndpointSignature(cfg),
   };
+}
+
+interface RecallReadiness {
+  /** The **resolved** config to call, or null when the row cannot serve. */
+  ready: ProviderConfig | null;
+  /** The row answered at all — a refused key or a missing model still counts. */
+  reachable: boolean;
+  /** Why an unready row was skipped, for the exhausted-chain error. */
+  reason?: "offline" | "key-invalid" | "model-not-found";
 }
 
 /**
@@ -2426,28 +2429,89 @@ export async function resolveRecallEndpointChain(
  * model in the catalog), with the same 60 s TTL the endpoint cache used.
  * Foundry rows are prepared here — i.e. started and loaded only when a walk
  * is actually about to call them, never for a row a healthy primary made
- * unreachable. Returns the **resolved** config to call: prepareFoundryEndpoint
+ * unreachable. `ready` is the **resolved** config: prepareFoundryEndpoint
  * swaps in the URL the local service actually reports, so a recall call
- * survives a service restart instead of hitting the stale stored URL. Null =
- * not ready; the walk skips the row.
+ * survives a service restart instead of hitting the stale stored URL.
  */
 async function ensureRecallEndpointReady(
   endpoint: ProviderConfig,
   signature: string,
-): Promise<ProviderConfig | null> {
-  if (endpoint.transport === "agent") return endpoint;
+): Promise<RecallReadiness> {
+  if (endpoint.transport === "agent") {
+    return { ready: endpoint, reachable: true };
+  }
   const key = `${signature}|${endpoint.url}|${endpoint.model}`;
   const hit = recallReadiness.get(key);
-  if (hit && hit.expiresAt > Date.now()) return hit.ready;
-  const readiness = await checkProviderEndpoint(endpoint, {
+  if (hit && hit.expiresAt > Date.now()) return hit.readiness;
+  const checked = await checkProviderEndpoint(endpoint, {
     prepareFoundry: true,
   });
-  const ready = isEndpointUsable(readiness) ? readiness.endpoint : null;
+  const readiness: RecallReadiness = {
+    ready: isEndpointUsable(checked) ? checked.endpoint : null,
+    reachable: checked.online,
+    reason: readinessReason(checked),
+  };
   recallReadiness.set(key, {
-    ready,
+    readiness,
     expiresAt: Date.now() + RECALL_ENDPOINT_CACHE_MS,
   });
-  return ready;
+  return readiness;
+}
+
+/**
+ * Walk the recall chain tier by tier: ensure each row's readiness right before
+ * calling it, hand the resolved row to `call`, and move on when the row is not
+ * ready or answers with a fallthrough status (rejected key, exhausted credit,
+ * forbidden, upstream capacity). The offline tier — local rows behind a cloud
+ * primary — is entered only when no cloud row answered at all (ADR
+ * 2026-09-13, decision 9): a cloud that answers and refuses keeps it closed,
+ * so the error surfaces instead of a local model being pulled into RAM; a
+ * learner without a network reaches the local model they set up. Anything
+ * else `call` throws propagates; an exhausted chain raises the last
+ * fallthrough error, or names why the last reachable row could not serve.
+ */
+async function walkRecallChain<T>(
+  endpoints: ProviderConfig[],
+  signature: string,
+  call: (endpoint: ProviderConfig) => Promise<T>,
+): Promise<T> {
+  let anyReachable = false;
+  let lastError: unknown;
+  let lastSkip: { endpoint: ProviderConfig; reason: string } | undefined;
+  for (const endpoint of endpoints) {
+    if (endpoint.offlineOnly && anyReachable) break;
+    const readiness = await ensureRecallEndpointReady(endpoint, signature);
+    anyReachable ||= readiness.reachable;
+    if (!readiness.ready) {
+      if (readiness.reason && readiness.reason !== "offline") {
+        lastSkip = { endpoint, reason: readiness.reason };
+      }
+      continue;
+    }
+    try {
+      return await call(readiness.ready);
+    } catch (error) {
+      if (
+        error instanceof LlmHttpError &&
+        CHAIN_FALLTHROUGH_STATUSES.has(error.status)
+      ) {
+        anyReachable = true;
+        lastError = error;
+        continue;
+      }
+      throw error;
+    }
+  }
+  if (lastError) throw lastError;
+  if (lastSkip) {
+    const name = lastSkip.endpoint.label ?? lastSkip.endpoint.model;
+    const why =
+      lastSkip.reason === "key-invalid"
+        ? "the stored API key was rejected"
+        : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
+    throw new Error(`No recall LLM endpoint is usable: ${name} — ${why}`);
+  }
+  throw new Error("No recall LLM endpoint is online");
 }
 
 export async function resolveUsableRecallEndpoint(
@@ -2455,11 +2519,7 @@ export async function resolveUsableRecallEndpoint(
   opts: { allowAgent?: boolean } = {},
 ): Promise<ProviderConfig> {
   const { endpoints, signature } = await resolveRecallEndpointChain(db, opts);
-  for (const endpoint of endpoints) {
-    const ready = await ensureRecallEndpointReady(endpoint, signature);
-    if (ready) return ready;
-  }
-  throw new Error("No recall LLM endpoint is online");
+  return walkRecallChain(endpoints, signature, async (endpoint) => endpoint);
 }
 
 export async function sampleViaLocalLLM(
@@ -2612,24 +2672,21 @@ export async function prepareRecallChain(
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);
-  // Same boundary as resolveCapability (ADR 2026-09-13, owner decision): a
-  // cloud primary never falls through to a local model, and ensure-llm must
-  // not start a local runner for a row the recall walk would refuse.
-  const primaryIsLocal = cfg.local ?? isLocalEndpoint(cfg.url);
-  const candidates = primaryIsLocal
-    ? chain
-    : chain.filter(
-        (endpoint) => !(endpoint.local ?? isLocalEndpoint(endpoint.url)),
-      );
   const deadline = Date.now() + opts.timeoutMs;
   let lastReason: LlmReadiness["reason"] = "offline";
   let lastOnline = false;
   let lastModel = cfg.model;
   let lastAvailable: string[] = [];
+  let anyReachable = false;
 
-  for (let index = 0; index < candidates.length; index++) {
-    let endpoint = candidates[index];
+  for (let index = 0; index < chain.length; index++) {
+    let endpoint = chain[index];
+    // The offline tier (local rows behind a cloud primary, ADR 2026-09-13
+    // decision 9) is entered only when no cloud row answered: ensure-llm
+    // must not start a local runner the recall walk would refuse.
+    if (endpoint.offlineOnly && anyReachable) break;
     let online = await isLlmOnline(endpoint.url);
+    anyReachable ||= online;
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
       if (opts.interactive) {
@@ -2665,6 +2722,12 @@ export async function prepareRecallChain(
 
     if (!online) {
       lastReason = "offline";
+      continue;
+    }
+    // A row whose stored key the probe rejected is reachable but unusable —
+    // report it as such instead of letting the first real call 401.
+    if (endpoint.keyValid === false) {
+      lastReason = "key-invalid";
       continue;
     }
 
@@ -2788,7 +2851,12 @@ export interface ProviderRoleStatus {
   modelAvailable: boolean;
   availableModels: string[];
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  reason?:
+    | "disabled"
+    | "offline"
+    | "key-invalid"
+    | "model-not-found"
+    | "unsupported-provider";
   fallback?: {
     providerName?: string;
     label?: string;
@@ -2797,6 +2865,8 @@ export interface ProviderRoleStatus {
     model: string;
     apiFlavor: ApiFlavor;
     local: boolean;
+    /** Offline tier: served only when no cloud row answers (ADR 2026-09-13). */
+    offlineOnly?: boolean;
   };
 }
 
@@ -2812,6 +2882,7 @@ function summarizeFallback(
     model: provider.model,
     apiFlavor: provider.apiFlavor,
     local: provider.local,
+    ...(provider.offlineOnly ? { offlineOnly: true } : {}),
   };
 }
 
@@ -2867,12 +2938,8 @@ export async function getProviderRoleStatus(
   const chain = await checkProviderChain(cfg);
   const selected = chain.firstUsable ?? chain.primary;
   const active = selected.endpoint;
-  const usable = selected.online && selected.modelAvailable;
-  const reason = usable
-    ? undefined
-    : selected.online
-      ? "model-not-found"
-      : "offline";
+  const usable = isEndpointUsable(selected);
+  const reason = readinessReason(selected);
 
   return {
     role,
@@ -2896,7 +2963,12 @@ export async function getProviderRoleStatus(
 /** Whether the local LLM can actually be used this session, and if not, why. */
 export interface LlmReadiness {
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  reason?:
+    | "disabled"
+    | "offline"
+    | "key-invalid"
+    | "model-not-found"
+    | "unsupported-provider";
 }
 
 type RunnerKind = "fastflowlm" | "ollama" | "foundry" | "generic" | "unknown";

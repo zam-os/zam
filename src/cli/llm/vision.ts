@@ -23,6 +23,7 @@ import {
   DEFAULT_LLM_MAX_TOKENS,
   fetchWithInteractiveTimeout,
   getProviderForRole,
+  isLlmOnline,
   prepareFoundryEndpoint,
 } from "./client.js";
 
@@ -163,7 +164,7 @@ export async function observeUiSnapshotViaLLM(
   type VisionEndpoint = Pick<
     VisionRequestArgs,
     "url" | "apiKey" | "model" | "apiFlavor"
-  > & { runner?: string };
+  > & { runner?: string; offlineOnly?: boolean };
   const endpoints: VisionEndpoint[] = [
     {
       url: cfg.url,
@@ -180,14 +181,21 @@ export async function observeUiSnapshotViaLLM(
       model: cfg.fallback.model,
       apiFlavor: cfg.fallback.apiFlavor,
       runner: cfg.fallback.runner,
+      offlineOnly: cfg.fallback.offlineOnly,
     });
   }
 
   let lastRequestError: Error | undefined;
   let sawUnparseableDraft = false;
   let sawInvalidDraft = false;
+  // A local fallback behind a cloud primary is the offline tier (ADR
+  // 2026-09-13, decision 9): it serves only when the cloud did not answer at
+  // all, never when the cloud answered and the draft was refused or bad.
+  const hasOfflineTier = endpoints.some((endpoint) => endpoint.offlineOnly);
+  let anyReachable = false;
 
   for (const endpoint of endpoints) {
+    if (endpoint.offlineOnly && anyReachable) break;
     let content: string;
     try {
       const preparedEndpoint = await prepareFoundryEndpoint(endpoint);
@@ -197,8 +205,15 @@ export async function observeUiSnapshotViaLLM(
         images,
         input,
       });
+      anyReachable = true;
     } catch (err) {
       lastRequestError = err as Error;
+      // A request that failed may still have reached the endpoint (an HTTP
+      // error rather than no answer); one cheap probe decides the tier, and
+      // only when there is an offline tier to decide about.
+      if (hasOfflineTier && !anyReachable) {
+        anyReachable = await isLlmOnline(endpoint.url);
+      }
       continue;
     }
 

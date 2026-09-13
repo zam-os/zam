@@ -75,6 +75,10 @@ export async function resolveSpeechEndpoint(
   ]) {
     if (endpoint.apiFlavor !== "chat-completions") continue;
     if (endpoint.transport === "agent") continue; // agents cannot carry audio
+    // The cloud tier is resolved without a network check, so a local row in
+    // the offline tier (ADR 2026-09-13, decision 9) cannot be chosen here;
+    // voice mode's offline path is the device engine, not a local server.
+    if (endpoint.offlineOnly) continue;
     return endpoint;
   }
   return null;

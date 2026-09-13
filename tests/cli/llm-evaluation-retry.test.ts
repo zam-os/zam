@@ -6,6 +6,7 @@ import {
   clearRecallEndpointCache,
   discussReviewViaLLM,
   evaluateAnswerViaLLM,
+  getProviderRoleStatus,
   prepareRecallChain,
   probeKeyValidity,
   RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
@@ -663,14 +664,22 @@ describe("recall fallback chain", () => {
  * URL-keyed stub for the boundary tests: rows use distinct hosts so the
  * assertions can prove a row was never contacted at all.
  */
+/**
+ * Responses keyed by URL. `undefined` answers 404 (reachable, nothing there);
+ * `"unreachable"` throws the way fetch does without a network — the
+ * distinction the offline tier is built on.
+ */
 function stubFetchByUrl(
-  respond: (url: string) => { status: number; body: unknown } | undefined,
+  respond: (
+    url: string,
+  ) => { status: number; body: unknown } | "unreachable" | undefined,
 ): { calls: RecordedCall[] } {
   const calls: RecordedCall[] = [];
   vi.stubGlobal("fetch", async (url: string | URL | Request): Promise<Response> => {
     const urlText = String(url);
     calls.push({ url: urlText, method: "GET", body: null });
     const r = respond(urlText);
+    if (r === "unreachable") throw new TypeError("fetch failed");
     return new Response(JSON.stringify(r?.body ?? {}), {
       status: r?.status ?? 404,
       headers: { "content-type": "application/json" },
@@ -794,7 +803,20 @@ describe("fallback chain boundaries", () => {
     );
   });
 
-  it("a cloud primary never falls through to a local row", async () => {
+  const localOllamaRow = (order: number): ModelEntry => ({
+    id: "local-ollama",
+    label: "Ollama",
+    url: "http://localhost:11434/v1",
+    model: "local/model",
+    local: true,
+    apiFlavor: "chat-completions",
+    runner: "ollama",
+    order,
+    capabilities: textCaps(),
+    detectedCapabilities: textCaps(),
+  });
+
+  it("a cloud primary that answers keeps the offline tier closed", async () => {
     saveMachineAiModels([
       openRouterEntry({
         id: "cloud",
@@ -802,18 +824,7 @@ describe("fallback chain boundaries", () => {
         order: 0,
         url: "https://primary.openrouter.ai/api/v1",
       }),
-      {
-        id: "local-ollama",
-        label: "Ollama",
-        url: "http://localhost:11434/v1",
-        model: "local/model",
-        local: true,
-        apiFlavor: "chat-completions",
-        runner: "ollama",
-        order: 1,
-        capabilities: textCaps(),
-        detectedCapabilities: textCaps(),
-      },
+      localOllamaRow(1),
     ]);
     const { calls } = stubFetchByUrl((url) =>
       url.startsWith("https://primary.")
@@ -826,12 +837,143 @@ describe("fallback chain boundaries", () => {
         : okResponse("OK"),
     );
 
-    // The local row is out of the chain entirely: the chain is exhausted and
-    // the original 401 is raised, without ever touching the Ollama endpoint.
+    // The cloud answered and refused: the local row is the offline tier and
+    // stays untouched — the original 401 is raised, Ollama is never called,
+    // let alone started.
     await expect(evaluate()).rejects.toThrow(/401/);
     expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
       [],
     );
+  });
+
+  it("a rejected stored key keeps the offline tier closed and names itself", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+        keyValid: false,
+      }),
+      localOllamaRow(1),
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://primary.") && url.endsWith("/models")
+        ? { status: 200, body: { data: [] } }
+        : okResponse("OK"),
+    );
+
+    // Reachable cloud, refused key: not "offline", so no local fallback — and
+    // the error says what to fix instead of "no endpoint is online".
+    await expect(evaluate()).rejects.toThrow(/API key was rejected/);
+    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
+      [],
+    );
+    expect(
+      calls.some((call) => call.url.includes("primary.openrouter.ai")),
+    ).toBe(true);
+  });
+
+  it("a cloud primary that does not answer falls through to the local row", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) return "unreachable";
+      return url.endsWith("/models")
+        ? { status: 200, body: { data: [{ id: "local/model" }] } }
+        : okResponse("OK");
+    });
+
+    // No network: the offline tier opens and the learner's own local model
+    // evaluates the answer — the graceful-degradation path.
+    const result = await evaluate();
+
+    expect(result.model).toBe("local/model");
+    expect(calls.some((call) => call.url.includes("localhost:11434"))).toBe(
+      true,
+    );
+  });
+
+  it("the offline tier opens only after every cloud row failed to answer", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "r1",
+        model: "a/model",
+        order: 0,
+        url: "https://r1.openrouter.ai/api/v1",
+      }),
+      localOllamaRow(1),
+      openRouterEntry({
+        id: "r2",
+        model: "b/model",
+        order: 2,
+        url: "https://r2.openrouter.ai/api/v1",
+      }),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://r1.")) return "unreachable";
+      if (url.startsWith("https://r2.")) return okResponse("OK");
+      return okResponse("OK");
+    });
+
+    // The second cloud row sits behind the local row in registry order, but
+    // cloud rows come first: it answers, so Ollama is never consulted.
+    const result = await evaluate();
+
+    expect(result.model).toBe("b/model");
+    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
+      [],
+    );
+  });
+
+  it("a foundry row in the offline tier is prepared and called when the cloud is gone", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      {
+        id: "foundry-fallback",
+        label: "Foundry",
+        url: "http://127.0.0.1:5273/v1",
+        model: "qwen3.5-0.8b",
+        local: true,
+        apiFlavor: "chat-completions",
+        runner: "foundry",
+        order: 1,
+        capabilities: textCaps(),
+        detectedCapabilities: textCaps(),
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) return "unreachable";
+      if (!url.startsWith("http://127.0.0.1:9999")) return undefined;
+      return url.endsWith("/models")
+        ? { status: 200, body: { data: [{ id: "qwen3.5-0.8b" }] } }
+        : okResponse("OK");
+    });
+
+    const result = await evaluate();
+
+    // Prepared (mocked service reports :9999) and called there — starting the
+    // local runtime is the point of the offline tier, not a side effect.
+    expect(result.model).toBe("qwen3.5-0.8b");
+    expect(
+      calls.some(
+        (call) =>
+          call.url.startsWith("http://127.0.0.1:9999") &&
+          !call.url.endsWith("/models"),
+      ),
+    ).toBe(true);
   });
 
   it("a local primary keeps its cloud fallback", async () => {
@@ -954,29 +1096,34 @@ describe("foundry resolution and ensure-llm boundary", () => {
     );
   });
 
-  it("ensure-llm skips local rows behind a cloud primary instead of starting them", async () => {
+  const localRowBehindCloud = (): ModelEntry => ({
+    id: "local-ollama",
+    label: "Ollama",
+    url: "http://localhost:59999/v1",
+    model: "local/model",
+    local: true,
+    apiFlavor: "chat-completions",
+    runner: "ollama",
+    order: 1,
+    capabilities: textCaps(),
+    detectedCapabilities: textCaps(),
+  });
+
+  it("ensure-llm reports a reachable cloud that rejected its key without touching the local row", async () => {
     saveMachineAiModels([
       openRouterEntry({
         id: "cloud",
         model: "cloud/model",
         order: 0,
-        url: "https://offline.openrouter.ai/api/v1",
+        url: "https://primary.openrouter.ai/api/v1",
+        keyValid: false,
       }),
-      {
-        id: "local-ollama",
-        label: "Ollama",
-        url: "http://localhost:59999/v1",
-        model: "local/model",
-        local: true,
-        apiFlavor: "chat-completions",
-        runner: "ollama",
-        order: 1,
-        capabilities: textCaps(),
-        detectedCapabilities: textCaps(),
-      },
+      localRowBehindCloud(),
     ]);
     const { calls } = stubFetchByUrl((url) =>
-      url.startsWith("https://offline.") ? { status: 500, body: {} } : undefined,
+      url.startsWith("https://primary.") && url.endsWith("/models")
+        ? { status: 200, body: { data: [] } }
+        : undefined,
     );
 
     const result = await prepareRecallChain(db, {
@@ -984,11 +1131,72 @@ describe("foundry resolution and ensure-llm boundary", () => {
       interactive: false,
     });
 
-    // The cloud row is offline and the local row is out of the chain: not
-    // usable, and the reported model is still the primary's — the local row
-    // was never probed, let alone started.
+    // The cloud answered: the offline tier stays closed, the header learns
+    // the real reason, and the local row is never probed, let alone started.
     expect(result.usable).toBe(false);
+    expect(result.reason).toBe("key-invalid");
     expect(result.model).toBe("cloud/model");
+    expect(calls.filter((call) => call.url.includes("localhost:59999"))).toEqual(
+      [],
+    );
+  });
+
+  it("ensure-llm opens the offline tier when no cloud row answers", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://offline.openrouter.ai/api/v1",
+      }),
+      localRowBehindCloud(),
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://offline.")) return "unreachable";
+      return url.endsWith("/models")
+        ? { status: 200, body: { data: [{ id: "local/model" }] } }
+        : undefined;
+    });
+
+    const result = await prepareRecallChain(db, {
+      timeoutMs: 800,
+      interactive: false,
+    });
+
+    // Same verdict the recall walk will reach: the local row serves, and the
+    // header says so instead of going green on a row the walk would refuse.
+    expect(result.usable).toBe(true);
+    expect(result.model).toBe("local/model");
+    expect(result.local).toBe(true);
+    expect(result.activeTier).toBe("fallback");
+    expect(calls.some((call) => call.url.includes("localhost:59999"))).toBe(
+      true,
+    );
+  });
+
+  it("the text role applies the same tiering through the role status", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+        keyValid: false,
+      }),
+      localRowBehindCloud(),
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.startsWith("https://primary.") && url.endsWith("/models")
+        ? { status: 200, body: { data: [] } }
+        : undefined,
+    );
+
+    const status = await getProviderRoleStatus(db, "text");
+
+    expect(status.usable).toBe(false);
+    expect(status.reason).toBe("key-invalid");
+    expect(status.providerName).toBe("cloud");
+    expect(status.fallback?.offlineOnly).toBe(true);
     expect(calls.filter((call) => call.url.includes("localhost:59999"))).toEqual(
       [],
     );
