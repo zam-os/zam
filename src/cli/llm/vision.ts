@@ -161,10 +161,10 @@ export async function observeUiSnapshotViaLLM(
     throw new Error("No image data available for vision analysis");
   }
 
-  // Walk the role's full fallback chain as resolveCapability linked it — a
-  // two-level walk stranded a third row. The frame-sampled images are
-  // materialized for each endpoint; only the endpoint (url/key/model/flavor)
-  // changes. `input.model` overrides the primary only.
+  // Walk the role's full fallback chain in the order resolveCapability linked
+  // it. The frame-sampled images are materialized for each endpoint; only the
+  // endpoint (url/key/model/flavor) changes. `input.model` overrides the
+  // primary only.
   type VisionEndpoint = Pick<
     VisionRequestArgs,
     "url" | "apiKey" | "model" | "apiFlavor"
@@ -186,11 +186,14 @@ export async function observeUiSnapshotViaLLM(
   // A local fallback behind a cloud primary is the offline tier (ADR
   // 2026-09-13, decision 9): it serves only when no cloud row answered. The
   // draft request itself decides: a 4xx or a bad draft is the cloud
-  // speaking; a transport failure or a 5xx is silence.
+  // speaking; a transport failure or a 5xx is silence. Only cloud rows can
+  // "answer" — a local row that fails to prepare or refuses says nothing
+  // about the cloud and must not shut the tier for the local rows after it.
   let cloudAnswered = false;
 
   for (const endpoint of endpoints) {
     if (endpoint.offlineOnly && cloudAnswered) break;
+    const isCloudRow = !endpoint.offlineOnly;
     let content: string;
     try {
       const preparedEndpoint = await prepareFoundryEndpoint(endpoint);
@@ -200,10 +203,10 @@ export async function observeUiSnapshotViaLLM(
         images,
         input,
       });
-      cloudAnswered = true;
+      if (isCloudRow) cloudAnswered = true;
     } catch (err) {
       lastRequestError = err as Error;
-      if (!isNoAnswerFailure(err)) cloudAnswered = true;
+      if (isCloudRow && !isNoAnswerFailure(err)) cloudAnswered = true;
       continue;
     }
 

@@ -187,7 +187,12 @@ export async function connectCloudProvider(
       : {}),
   };
 
-  const probe: CapabilityProbeResult = await deps.probe(candidate, {});
+  // The effort probe runs at onboarding too, so the connected row carries a
+  // verified reasoning level from its first evaluation on (ADR 2026-09-13,
+  // decision 6): without a verdict the evaluation runs with native reasoning.
+  const probe: CapabilityProbeResult = await deps.probe(candidate, {
+    reasoningEffortProbe: true,
+  });
   const validation = validateModelSave(candidate, probe);
   const saved = validation.entry;
   if (!validation.ok || !saved) {

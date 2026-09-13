@@ -41,11 +41,13 @@ import {
 } from "../../src/kernel/index.js";
 
 /**
- * GLM-5.3-Flash and other reasoning-mandatory OpenRouter models answer the
- * `reasoning: { effort: "none" }` evaluation default with a 400 instead of an
- * evaluation (reported 2026-09-13: the whole answer-feedback flow silently
- * degraded to the static reveal). The retry must drop the control and let the
- * model reason natively. The same file covers the fallback chain: rows that
+ * GLM-5.3-Flash and other reasoning-mandatory OpenRouter models answer a
+ * `reasoning: { effort: "none" }` control with a 400 instead of an evaluation
+ * (reported 2026-09-13: the whole answer-feedback flow silently degraded to
+ * the static reveal). The evaluation sends the control only where the setup
+ * probe verified it (the row's stored level); a stale verdict is still caught
+ * by the retry, which drops the control and lets the model reason natively.
+ * The same file covers the fallback chain: rows that
  * fail with an auth-level status (401/402/403) at call time are skipped in
  * favour of the next configured row, and rows the probe flagged `keyValid:
  * false` are never called at all.
@@ -163,7 +165,9 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
       useConfiguredCloud: false,
     });
     await setSetting(db, "llm.enabled", "true");
-    saveMachineAiModels([openRouterEntry()]);
+    // The row carries the level the setup probe verified; a stale "none" on
+    // a model that has since turned reasoning-mandatory is the retry's case.
+    saveMachineAiModels([openRouterEntry({ effort: "none" })]);
   });
 
   afterEach(async () => {
@@ -203,6 +207,27 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
     expect(chats).toHaveLength(2);
     expect(chats[0]?.body?.reasoning).toEqual({ effort: "none" });
     expect(chats[1]?.body?.reasoning).toBeUndefined();
+  });
+
+  it("sends no control at all for a row without a verified level", async () => {
+    // Reasoning is switched off only where switching it off is known to
+    // work; an unprobed row runs with the model's native reasoning.
+    saveMachineAiModels([openRouterEntry()]);
+    const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
+
+    const result = await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    expect(result.text).toContain("Paris");
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(1);
+    expect(chats[0]?.body?.reasoning).toBeUndefined();
   });
 
   it("keeps the effort control for a model that accepts it", async () => {
@@ -1070,6 +1095,43 @@ describe("fallback chain boundaries", () => {
     await expect(evaluate()).rejects.toThrow(/429/);
     expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
       [],
+    );
+  });
+
+  it("a refusing local row does not shut the offline tier for the local row after it", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "cloud",
+        model: "cloud/model",
+        order: 0,
+        url: "https://primary.openrouter.ai/api/v1",
+      }),
+      { ...localOllamaRow(1), id: "local-a", url: "http://localhost:11434/v1" },
+      {
+        ...localOllamaRow(2),
+        id: "local-b",
+        url: "http://localhost:11435/v1",
+        model: "local/second",
+      },
+    ]);
+    const { calls } = stubFetchByUrl((url) => {
+      if (url.startsWith("https://primary.")) return "unreachable";
+      if (url.startsWith("http://localhost:11434")) {
+        // Online, but the catalog does not list the configured model.
+        return catalog("something-else");
+      }
+      return url.endsWith("/models")
+        ? catalog("local/second")
+        : okResponse("OK");
+    });
+
+    // Only a cloud row can "answer"; the first local row refusing says
+    // nothing about the cloud, so the second local row still gets its turn.
+    const result = await evaluate();
+
+    expect(result.model).toBe("local/second");
+    expect(calls.some((call) => call.url.includes("localhost:11435"))).toBe(
+      true,
     );
   });
 

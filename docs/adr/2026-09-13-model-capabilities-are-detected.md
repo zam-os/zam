@@ -80,19 +80,23 @@ the learner decides only what a row is *used for*.
    stored so the planned Observer screen-recording/learner-observation work
    can select for it without a registry migration. A model with video input
    (e.g. GLM-5.3-Flash) shows the capability as soon as a probe finds it.
-6. **The probe also determines the reasoning-effort setting.** The evaluation
-   sends `reasoning: { effort }` to OpenRouter endpoints; whether a model
-   honors that control is not visible in catalog metadata (GLM-5.3-Flash
-   lists `reasoning_effort` yet rejects `none` with "Reasoning is mandatory").
-   The probe therefore makes one tiny chat call — the second documented
-   functional exception — storing the lowest level the endpoint accepts:
-   `none` when the control is honored, `minimal` when the model mandates
-   reasoning (it keeps reasoning, bounded — reasoning is not harmful, and the
-   learner-facing policy is lowest acceptable effort). No verdict (other
-   statuses, network errors) leaves the stored setting untouched, and the
-   evaluation's 400 retry remains the safety net for rows probed before this
-   existed. The endpoint cache signature includes the stored level so a
-   re-probe takes effect immediately.
+6. **Reasoning is switched off only where switching it off is verified to
+   work; the probe determines the level.** Whether a model honors the
+   `reasoning: { effort }` control is not visible in catalog metadata
+   (GLM-5.3-Flash lists `reasoning_effort` yet rejects `none` with "Reasoning
+   is mandatory"), and a rejected control fails the learner's answer while a
+   thinking pass merely costs a little time. So the evaluation sends the
+   control **only** with a level the setup probe verified: the probe makes
+   one tiny chat call — the second documented functional exception, run on
+   every save, re-probe and at onboarding — and stores the lowest level the
+   endpoint accepts: `none` when the control is honored (Luna), `minimal`
+   when the model mandates reasoning (it keeps reasoning, bounded). A row
+   without a verdict (other statuses, network errors, rows probed before
+   this existed) runs with the model's native reasoning — the default that
+   works most often (owner decision, 2026-09-13) — with the
+   truncated-response retry covering the budget; a stale verdict is caught by
+   the evaluation's 400 retry. The endpoint cache signature includes the
+   stored level so a re-probe takes effect immediately.
 7. **The probe verifies the stored API key when the provider publishes a
    key-metadata endpoint** (OpenRouter `/auth/key`; one authenticated GET, no
    tokens consumed). This closes the blind spot that let a broken 29-character

@@ -1,9 +1,24 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { checkVisionReadiness } from "../../src/cli/llm/client.js";
 import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
+
+// Foundry never starts in these tests: a prepare failure is the one local
+// failure the offline tier must not read as "the cloud answered".
+vi.mock("../../src/cli/llm/foundry-local.js", async (importActual) => {
+  const actual = await importActual<
+    typeof import("../../src/cli/llm/foundry-local.js")
+  >();
+  return {
+    ...actual,
+    ensureFoundryModelLoaded: async () => ({
+      ok: false,
+      error: "Foundry Local is not installed.",
+    }),
+  };
+});
 import {
   type CapabilityFlags,
   type ModelEntry,
@@ -578,6 +593,49 @@ describe("vision offline tier", () => {
     try {
       const report = await observe(db);
       expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("a local row that fails to prepare does not shut the tier for the next local row", async () => {
+    const [cloud, local] = rows();
+    saveMachineAiModels([
+      cloud,
+      {
+        ...local,
+        id: "foundry-vision",
+        label: "Foundry vision",
+        url: "http://127.0.0.1:5273/v1",
+        model: "qwen3.5-0.8b",
+        runner: "foundry",
+        order: 1,
+      },
+      { ...local, order: 2 },
+    ]);
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url).startsWith("https://vision.")) {
+        throw new TypeError("fetch failed");
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      // Cloud silent → Foundry row (prepare throws, mocked) → Ollama row must
+      // still run: a local failure is not the cloud speaking.
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("127.0.0.1:5273"))).toBe(false);
       expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
     } finally {
       global.fetch = originalFetch;

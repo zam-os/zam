@@ -92,12 +92,17 @@ export const OPENROUTER_RECOMMENDED_MODELS = [
 export const OPENROUTER_LEGACY_DEFAULT_MODELS = ["xiaomi/mimo-v2.5"] as const;
 
 /**
- * Reasoning effort for short OpenRouter evaluation calls.
+ * The reasoning level the setup probe tries first for an OpenRouter row
+ * (ADR 2026-09-13, decision 6).
  *
- * Card grading wants a small JSON object, not a chain of thought. `none`
- * keeps Flash/Luna from spending the output budget on thinking (the MiMo
- * failure mode on iPad). Learners who want deeper reasoning can pick a
- * heavier model; the evaluation path stays cheap and fast.
+ * Card grading wants a small JSON object, not a chain of thought, so `none`
+ * is preferred where the endpoint honors it (it keeps Luna from spending the
+ * output budget on thinking); a model that mandates reasoning is probed at
+ * `minimal` next. The evaluation sends only a level the probe verified — a
+ * row without a verdict runs with the model's native reasoning, because a
+ * rejected control fails the answer while a thinking pass merely costs a
+ * little time. The companions still send this constant unconditionally
+ * (#343).
  */
 export const OPENROUTER_EVALUATION_REASONING_EFFORT = "none" as const;
 

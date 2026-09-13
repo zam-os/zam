@@ -38,11 +38,7 @@ import {
   t,
 } from "../../kernel/index.js";
 import { resolveReviewContext } from "../review-context.js";
-import {
-  CLOUD_PROVIDERS,
-  OPENROUTER_EVALUATION_REASONING_EFFORT,
-  OPENROUTER_PROVIDER,
-} from "./cloud-providers.js";
+import { CLOUD_PROVIDERS, OPENROUTER_PROVIDER } from "./cloud-providers.js";
 import {
   ensureFoundryModelLoaded,
   FOUNDRY_DEFAULT_PORT,
@@ -978,12 +974,11 @@ Evaluation:`;
       maxTokens: number,
       reasoningEffort: string | null,
     ): Promise<string> => {
-      // Evaluation wants short JSON, not a multi-page chain of thought.
-      // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
-      // thinking and return `finish_reason: length` with empty content.
-      // `none` is the product default for OpenRouter models that allow it
-      // (GPT-5.6 Luna). Privacy injection still runs on the body via
-      // fetchWithInteractiveTimeout.
+      // Evaluation wants short JSON, not a multi-page chain of thought, so
+      // the reasoning control is sent when the setup probe verified that the
+      // endpoint accepts it (`none` for GPT-5.6 Luna; `minimal` for a model
+      // that mandates reasoning). Privacy injection still runs on the body
+      // via fetchWithInteractiveTimeout.
       const body: Record<string, unknown> = {
         model: endpoint.model,
         messages: [
@@ -1029,16 +1024,20 @@ Evaluation:`;
       }
     };
 
-    // Reasoning control: the probe stores the lowest level the endpoint accepts
-    // ("none", or "minimal" when the model mandates reasoning); rows probed
-    // before effort detection keep the product default, with the 400 retry
-    // below as the safety net. The rejection memo is keyed by the level — a
-    // "none" rejection says nothing about "minimal", which a re-probe may have
-    // stored in the meantime — and a memo hit means the endpoint is known to
-    // reason, so the control-free attempt starts at the larger budget:
-    // reasoning tokens count against max_tokens on OpenRouter.
+    // Reasoning control (ADR 2026-09-13, decision 6): reasoning is switched
+    // off only where the setup probe verified that switching it off works —
+    // the row then carries the lowest accepted level ("none", or "minimal"
+    // for a model that mandates reasoning). A row without a verdict runs
+    // with the model's native reasoning: a control that the endpoint might
+    // reject would fail the answer, a thinking pass merely costs a little
+    // time, and the truncated-response retry covers the budget. The
+    // rejection memo is keyed by the level — a "none" rejection says nothing
+    // about "minimal", which a re-probe may have stored in the meantime —
+    // and a memo hit means the endpoint is known to reason, so the
+    // control-free attempt starts at the larger budget: reasoning tokens
+    // count against max_tokens on OpenRouter.
     const reasoningEffort = isOpenRouterUrl(endpoint.url)
-      ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
+      ? (endpoint.effort ?? null)
       : null;
     const memoKey = `${endpoint.url}|${endpoint.model}|${reasoningEffort ?? ""}`;
     const rejected =
@@ -2358,8 +2357,7 @@ function readinessReason(
 
 /** The full fallback chain in call order, as resolveCapability linked it. */
 export function providerChain(primary: ProviderConfig): ProviderConfig[] {
-  // Walk the whole chain: resolveCapability links every eligible row, and a
-  // two-level walk silently stranded rows three and beyond.
+  // resolveCapability links every eligible row; walkers honour that order.
   const chain: ProviderConfig[] = [];
   for (let cfg: ProviderConfig | undefined = primary; cfg; cfg = cfg.fallback) {
     chain.push(cfg);
@@ -2388,7 +2386,7 @@ async function checkProviderChain(
     if (isEndpointUsable(readiness)) {
       return { primary: first, firstUsable: readiness };
     }
-    cloudAnswered ||= readiness.online;
+    if (!endpoint.offlineOnly) cloudAnswered ||= readiness.online;
   }
   return { primary: first! };
 }
@@ -2514,11 +2512,15 @@ async function walkRecallChain<T>(
   let lastSkip: { endpoint: ProviderConfig; reason: string } | undefined;
   for (const endpoint of endpoints) {
     if (endpoint.offlineOnly && cloudAnswered) break;
+    // Only a cloud row can "answer": a local row in the offline tier that
+    // refuses says nothing about the cloud and must not shut the tier for
+    // the local rows after it.
+    const isCloudRow = !endpoint.offlineOnly;
     const readiness = await ensureRecallEndpointReady(endpoint, signature);
     if (!readiness.ready) {
       if (readiness.reason && readiness.reason !== "offline") {
         // The row answered and cannot serve: that is the cloud speaking.
-        cloudAnswered = true;
+        if (isCloudRow) cloudAnswered = true;
         lastSkip = { endpoint, reason: readiness.reason };
       }
       continue;
@@ -2530,7 +2532,7 @@ async function walkRecallChain<T>(
         error instanceof LlmHttpError &&
         CHAIN_FALLTHROUGH_STATUSES.has(error.status)
       ) {
-        cloudAnswered = true;
+        if (isCloudRow) cloudAnswered = true;
         lastError = error;
         continue;
       }
@@ -2727,7 +2729,7 @@ export async function prepareRecallChain(
     // when it was online and refused (rejected key, model not offered).
     if (endpoint.offlineOnly && cloudAnswered) break;
     let online = await isLlmOnline(endpoint.url);
-    cloudAnswered ||= online;
+    if (!endpoint.offlineOnly) cloudAnswered ||= online;
 
     if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
       if (opts.interactive) {

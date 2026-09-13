@@ -32,6 +32,7 @@ import {
   isOpenRouterUrl,
   probeKeyValidity,
 } from "./client.js";
+import { OPENROUTER_EVALUATION_REASONING_EFFORT } from "./cloud-providers.js";
 import { embedTexts } from "./embedder.js";
 
 /** Model-name fragments that mark an embeddings model. */
@@ -288,8 +289,10 @@ async function probeReasoningEffort(
       clearTimeout(timeoutId);
     }
   };
-  const noneStatus = await attempt("none");
-  if (noneStatus >= 200 && noneStatus < 300) return "none";
+  const noneStatus = await attempt(OPENROUTER_EVALUATION_REASONING_EFFORT);
+  if (noneStatus >= 200 && noneStatus < 300) {
+    return OPENROUTER_EVALUATION_REASONING_EFFORT;
+  }
   if (noneStatus !== 400) return undefined;
   const minimalStatus = await attempt("minimal");
   return minimalStatus >= 200 && minimalStatus < 300 ? "minimal" : undefined;
