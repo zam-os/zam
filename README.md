@@ -60,6 +60,7 @@ your work, and guiding you step by step. ZAM connects to the agent apps you alre
 | **OpenCode** | `zam agent connect opencode` |
 | **GitHub Copilot** (CLI / app) | `zam agent connect copilot` |
 | **Goose** | `zam agent connect goose` |
+| **Grok Build** | `zam agent connect grok` |
 | **Hermes** | `zam agent connect hermes` |
 
 One command writes the MCP config (your agent may ask you to approve the server). For
@@ -135,7 +136,7 @@ The same setup runs as commands — `zam init` is the guided wizard, CLI-style:
 
 ```bash
 zam init                        # workspace · AI model · database · /zam skill
-zam agent connect claude-code   # or codex · zcode · antigravity · opencode · copilot · goose · hermes
+zam agent connect claude-code   # or codex · zcode · grok · antigravity · opencode · copilot · goose · hermes
 ```
 
 ---

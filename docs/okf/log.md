@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-13
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
 ## 2026-09-12
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

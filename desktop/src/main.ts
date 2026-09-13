@@ -2790,17 +2790,31 @@ async function loadAgentHarnessStatus(): Promise<void> {
   const list = document.getElementById("agent-harness-list");
   if (!list) return;
   try {
-    const status = await runBridge<{
-      success: boolean;
-      zamOnPath: boolean;
-      connectAutoDone: boolean;
-      harnesses: AgentHarnessStatusEntry[];
-    }>("agent-harness-status");
+    // The connect status is the row's reason to exist; the outbound adapter
+    // list and the model registry only decide whether a row also offers
+    // "Use as model", so their failure degrades to rows without that control.
+    const [status, outbound, registry] = await Promise.all([
+      runBridge<{
+        success: boolean;
+        zamOnPath: boolean;
+        connectAutoDone: boolean;
+        harnesses: AgentHarnessStatusEntry[];
+      }>("agent-harness-status"),
+      runBridge<{ harnesses?: AgentHarnessListEntry[] }>("agent-list").catch(
+        () => ({ harnesses: [] }),
+      ),
+      runBridge<{ models?: ModelRow[] }>("model-list").catch(() => ({
+        models: [],
+      })),
+    ]);
     if (status.connectAutoDone && agentConnectState === "not_run") {
       agentConnectState = "success";
       agentConnectErrorDetail = "";
     }
-    renderAgentHarnessList(status.harnesses);
+    renderAgentHarnessList(status.harnesses, {
+      outbound: outbound.harnesses ?? [],
+      models: registry.models ?? [],
+    });
     updateAgentConnectResultUI();
   } catch (err) {
     console.warn("Failed to load agent harness status:", err);
@@ -2816,7 +2830,20 @@ async function loadAgentHarnessStatus(): Promise<void> {
   }
 }
 
-function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
+/**
+ * What the Agents page needs beyond connect status to offer an installed CLI
+ * as a model: the outbound adapter facts (`agent-list`) and the registry, to
+ * mark harnesses that already back a model instead of adding a duplicate.
+ */
+interface AgentHarnessModelContext {
+  outbound: AgentHarnessListEntry[];
+  models: ModelRow[];
+}
+
+function renderAgentHarnessList(
+  harnesses: AgentHarnessStatusEntry[],
+  modelContext: AgentHarnessModelContext = { outbound: [], models: [] },
+): void {
   const list = document.getElementById("agent-harness-list");
   if (!list) return;
   list.textContent = "";
@@ -2843,6 +2870,31 @@ function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
 
     row.append(name, state);
 
+    // An installed CLI with an outbound adapter can also generate ZAM's text
+    // (and, for multimodal adapters, read images) through the learner's
+    // subscription — offer that right here instead of sending the learner
+    // through the Add-model form (ADR 2026-07-12a, agent transport). Gate on
+    // the adapter's own `detected`, not the connect-style install signal: a
+    // data root on disk proves the install, but only a resolvable executable
+    // proves the adapter can spawn it from this process. Otherwise the pick
+    // would persist an offline row and show "Model ✓" for a model that
+    // cannot generate.
+    const outbound = modelContext.outbound.find((h) => h.id === entry.harness);
+    if (entry.installed && outbound?.detected && outbound.outboundText) {
+      const inUse = modelContext.models.find(
+        (m) => m.transport === "agent" && m.agentHarness === entry.harness,
+      );
+      if (inUse) {
+        const badge = document.createElement("span");
+        badge.className = "agent-harness-state model";
+        badge.textContent = t("agent_model_in_use");
+        badge.title = inUse.label;
+        row.appendChild(badge);
+      } else {
+        row.appendChild(buildUseAsModelSelect(entry, outbound));
+      }
+    }
+
     // Connect stays available for already-connected hosts too — it refreshes
     // the global skill and companion extension idempotently.
     if (entry.installed || entry.configured) {
@@ -2856,6 +2908,98 @@ function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
       row.appendChild(btn);
     }
     list.appendChild(row);
+  }
+}
+
+/**
+ * "Use as model ▾" for one installed CLI: a native select whose first option
+ * is the prompt, so a single pick creates the registry row. Image is offered
+ * only when the adapter actually forwards local image files; a text-only
+ * adapter would silently drop them and the choice would be a lie.
+ */
+function buildUseAsModelSelect(
+  entry: AgentHarnessStatusEntry,
+  outbound: AgentHarnessListEntry,
+): HTMLSelectElement {
+  const select = document.createElement("select");
+  select.className = "settings-select agent-harness-model-select";
+  select.setAttribute("aria-label", t("agent_model_use_as"));
+
+  const prompt = document.createElement("option");
+  prompt.value = "";
+  prompt.textContent = t("agent_model_use_as");
+  select.appendChild(prompt);
+
+  const textOpt = document.createElement("option");
+  textOpt.value = "text";
+  textOpt.textContent = t("agent_model_option_text");
+  select.appendChild(textOpt);
+
+  if (outbound.outboundImage) {
+    const imageOpt = document.createElement("option");
+    imageOpt.value = "text+image";
+    imageOpt.textContent = t("agent_model_option_text_image");
+    select.appendChild(imageOpt);
+  }
+
+  select.addEventListener("change", () => {
+    const choice = select.value;
+    if (!choice) return;
+    select.disabled = true;
+    void addAgentHarnessAsModel(
+      entry,
+      outbound,
+      choice === "text+image",
+      select,
+    );
+  });
+  return select;
+}
+
+/**
+ * Create an agent-transport model for an installed CLI with the same
+ * `model-upsert` arguments the Add-model form sends: text always, image on
+ * request, the adapter's recommended default model id, the harness label as
+ * the row label. On success the Agents list reloads and the row shows
+ * "Model ✓"; on failure the select comes back with the error on the row, so
+ * the connection-status line below keeps reporting connects only.
+ */
+async function addAgentHarnessAsModel(
+  entry: AgentHarnessStatusEntry,
+  outbound: AgentHarnessListEntry,
+  withImage: boolean,
+  select: HTMLSelectElement,
+): Promise<void> {
+  const args = [
+    "--transport",
+    "agent",
+    "--agent-harness",
+    entry.harness,
+    "--label",
+    entry.label,
+    "--capabilities",
+    JSON.stringify({ text: true, image: withImage }),
+  ];
+  if (outbound.defaultModel) args.push("--model", outbound.defaultModel);
+  try {
+    await runBridge("model-upsert", args);
+    // The AI-models editor may be open on the same Settings page; keep its
+    // table and the provider status in step with the new row.
+    await loadModelRegistry();
+    await loadProviderStatus();
+    void loadAgentHarnessStatus();
+  } catch (err) {
+    console.warn("agent model-upsert failed:", err);
+    select.disabled = false;
+    select.value = "";
+    // One note per row: a second failed pick replaces the first message.
+    select.parentElement
+      ?.querySelector(".agent-harness-error")
+      ?.remove();
+    const note = document.createElement("span");
+    note.className = "sub-label agent-harness-error";
+    note.textContent = tf("model_save_failed", { message: errorMessage(err) });
+    select.insertAdjacentElement("afterend", note);
   }
 }
 

@@ -5453,6 +5453,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_not_installed: "Not installed",
     agent_status_installed: "Installed",
     agent_status_connected: "Connected",
+    agent_model_use_as: "Use as model…",
+    agent_model_option_text: "Text model",
+    agent_model_option_text_image: "Text + image model",
+    agent_model_in_use: "Model ✓",
     agent_connect_running: "Connecting...",
     agent_connect_done:
       "Connected {n} harness(es). Global ZAM skill refreshed.",
@@ -6856,6 +6860,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_not_installed: "Nicht installiert",
     agent_status_installed: "Installiert",
     agent_status_connected: "Verbunden",
+    agent_model_use_as: "Als Modell nutzen…",
+    agent_model_option_text: "Textmodell",
+    agent_model_option_text_image: "Text- + Bildmodell",
+    agent_model_in_use: "Modell ✓",
     agent_connect_running: "Verbinde...",
     agent_connect_done:
       "{n} Harness(es) verbunden. Globaler ZAM-Skill aktualisiert.",

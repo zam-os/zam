@@ -51,7 +51,7 @@ describe("bridge agent-harness-status / agent-connect", () => {
     return JSON.parse(output);
   }
 
-  it("reports the nine user-scoped harnesses plus Claude Code with detection state", () => {
+  it("reports every user-scoped harness with detection state", () => {
     const result = runBridge(["agent-harness-status"]) as {
       success: boolean;
       zamOnPath: boolean;
@@ -66,15 +66,14 @@ describe("bridge agent-harness-status / agent-connect", () => {
 
     expect(result.success).toBe(true);
     expect(typeof result.zamOnPath).toBe("boolean");
-    // Claude Code is probed too (finding: it was silently excluded from the
-    // inventory, always reported unconfigured with no supporting evidence)
-    // — its `.mcp.json` target is the bridge's temp cwd, honestly probed the
-    // same way as every other harness's config file. Hermes joined the
-    // user-scoped list in plan Phase 5 (ADR 2026-07-24 §6).
-    expect(result.harnesses).toHaveLength(10);
+    // Every connect harness is user-scoped now, Claude Code included (its
+    // probe target is ~/.claude.json, not the bridge's temp cwd). Hermes
+    // joined in plan Phase 5 (ADR 2026-07-24 §6), ZCode and Grok Build later.
+    expect(result.harnesses).toHaveLength(11);
     expect(result.harnesses.map((h) => h.harness)).toContain("claude-code");
     expect(result.harnesses.map((h) => h.harness)).toContain("hermes");
     expect(result.harnesses.map((h) => h.harness)).toContain("zcode");
+    expect(result.harnesses.map((h) => h.harness)).toContain("grok");
     for (const entry of result.harnesses) {
       expect(typeof entry.label).toBe("string");
       expect(typeof entry.installed).toBe("boolean");

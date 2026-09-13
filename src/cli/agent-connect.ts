@@ -17,6 +17,7 @@ import { homedir } from "node:os";
 import { dirname } from "node:path";
 import { distributeGlobalSkills } from "../kernel/index.js";
 import {
+  type ClaudeCodeConnectScope,
   type ConnectHarnessId,
   connectHarnessMcp,
   detectInstalledConnectHarnesses,
@@ -26,7 +27,10 @@ import { installCopilotExtension } from "./copilot-extension.js";
 import { findExecutable } from "./terminal-open.js";
 import { installVscodeExtension } from "./vscode-extension.js";
 
-export type { ConnectHarnessId } from "./agent-harness.js";
+export type {
+  ClaudeCodeConnectScope,
+  ConnectHarnessId,
+} from "./agent-harness.js";
 
 export const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "claude-code",
@@ -39,24 +43,17 @@ export const CONNECT_HARNESSES: ConnectHarnessId[] = [
   "copilot",
   "hermes",
   "zcode",
+  "grok",
 ];
 
 /**
  * Harnesses with a user-scoped MCP target, i.e. the ones auto-detection and
- * the App settings can act on. Claude Code stays explicit-only because its
- * MCP target is the current workspace (`.mcp.json`).
+ * the App settings can act on. Claude Code qualifies since its connect
+ * defaults to `~/.claude.json` (`claudeCodeScope: "user"`); only the explicit
+ * CLI `zam agent connect claude-code` opts into the workspace `.mcp.json`.
  */
-export const USER_SCOPED_CONNECT_HARNESSES: ConnectHarnessId[] = [
-  "claude-desktop",
-  "antigravity",
-  "codex",
-  "vscode",
-  "opencode",
-  "goose",
-  "copilot",
-  "hermes",
-  "zcode",
-];
+export const USER_SCOPED_CONNECT_HARNESSES: ConnectHarnessId[] =
+  CONNECT_HARNESSES;
 
 export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
   "claude-code": "Claude Code",
@@ -69,6 +66,7 @@ export const CONNECT_HARNESS_LABELS: Record<ConnectHarnessId, string> = {
   copilot: "GitHub Copilot",
   hermes: "Hermes Agent",
   zcode: "ZCode",
+  grok: "Grok Build",
 };
 
 export function isConnectHarnessId(value: string): value is ConnectHarnessId {
@@ -80,6 +78,8 @@ export interface AgentConnectDeps {
   home?: string;
   cwd?: string;
   copilotHome?: string;
+  /** Claude Code's `CLAUDE_CONFIG_DIR` override; defaults to the env var. */
+  claudeConfigDir?: string;
   findZam?: () => string | null;
   detect?: () => ConnectHarnessId[];
   connectMcp?: typeof connectHarnessMcp;
@@ -126,10 +126,13 @@ function resolveDeps(deps: AgentConnectDeps) {
   const home = deps.home ?? homedir();
   const cwd = deps.cwd ?? process.cwd();
   const copilotHome = deps.copilotHome ?? process.env.COPILOT_HOME;
+  const claudeConfigDir =
+    deps.claudeConfigDir ?? process.env.CLAUDE_CONFIG_DIR ?? undefined;
   return {
     home,
     cwd,
     copilotHome,
+    claudeConfigDir,
     findZam:
       deps.findZam ??
       (() => {
@@ -165,7 +168,12 @@ function resolveDeps(deps: AgentConnectDeps) {
  * writing files or invoking `code --install-extension`.
  */
 export function performAgentConnect(
-  opts: { harness?: ConnectHarnessId; dryRun?: boolean } = {},
+  opts: {
+    harness?: ConnectHarnessId;
+    dryRun?: boolean;
+    /** Claude Code target; defaults to the user scope (`~/.claude.json`). */
+    claudeCodeScope?: ClaudeCodeConnectScope;
+  } = {},
   deps: AgentConnectDeps = {},
 ): AgentConnectReport {
   const d = resolveDeps(deps);
@@ -183,6 +191,8 @@ export function performAgentConnect(
         cwd: d.cwd,
         home: d.home,
         copilotHome: d.copilotHome,
+        claudeConfigDir: d.claudeConfigDir,
+        claudeCodeScope: opts.claudeCodeScope,
       });
 
       let extension: HarnessExtensionOutcome | null = null;
@@ -290,26 +300,10 @@ export interface HarnessStatusReport {
 }
 
 /**
- * Harnesses `inspectConnectHarnesses` reports on: every user-scoped harness
- * plus Claude Code. Claude Code is deliberately excluded from
- * `USER_SCOPED_CONNECT_HARNESSES` (which drives auto-detection and stays
- * claude-code-free per that constant's own doc comment) but its MCP target
- * — the current working directory's `.mcp.json` — is just as honestly
- * probeable as any other harness's config file via the same
- * `connectHarnessMcp` pure builder, so status reporting includes it here
- * instead of hardcoding it as always-unconfigured (the previous behavior,
- * which meant a Claude Code session actually connected to `zam` was still
- * reported as configured-but-unroutable with no supporting evidence).
- */
-const INSPECTED_HARNESSES: ConnectHarnessId[] = [
-  ...USER_SCOPED_CONNECT_HARNESSES,
-  "claude-code",
-];
-
-/**
- * Read-only detection + configuration probe for the user-scoped harnesses
- * plus Claude Code. `connectHarnessMcp` is a pure builder, so probing never
- * writes anything.
+ * Read-only detection + configuration probe for every user-scoped harness.
+ * `connectHarnessMcp` is a pure builder, so probing never writes anything.
+ * Claude Code is probed at its user scope (`~/.claude.json`): the App has no
+ * workspace, and a project `.mcp.json` says nothing about the machine.
  */
 export function inspectConnectHarnesses(
   deps: AgentConnectDeps = {},
@@ -319,7 +313,7 @@ export function inspectConnectHarnesses(
   const zamPath = foundZam ?? "zam";
   const installed = new Set(d.detect());
 
-  const harnesses = INSPECTED_HARNESSES.map((harness) => {
+  const harnesses = USER_SCOPED_CONNECT_HARNESSES.map((harness) => {
     const status: HarnessStatus = {
       harness,
       label: CONNECT_HARNESS_LABELS[harness],
@@ -333,6 +327,7 @@ export function inspectConnectHarnesses(
         cwd: d.cwd,
         home: d.home,
         copilotHome: d.copilotHome,
+        claudeConfigDir: d.claudeConfigDir,
       });
       status.configured = probe.alreadyConfigured;
       status.configPath = probe.path;
