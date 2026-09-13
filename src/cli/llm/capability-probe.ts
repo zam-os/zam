@@ -13,6 +13,7 @@
  */
 
 import {
+  ALL_CAPABILITIES,
   type CapabilityFlags,
   embeddingsEndpointUrl,
   emptyCapabilityFlags,
@@ -158,12 +159,13 @@ export function classifyCapabilities(
   catalogKnown: boolean,
   dimProbeEmbedding = false,
   /**
-   * What the endpoint's own architecture metadata says about image input for
-   * this exact model id: true declares image, false declares text-only,
-   * undefined means the endpoint publishes no modalities. Declared metadata
-   * wins; the name hints below only cover endpoints that publish none.
+   * What the endpoint's own architecture metadata says about this exact model
+   * id: true declares the modality, false declares it absent, undefined means
+   * the endpoint publishes no modalities. Declared metadata wins; the name
+   * hints below only cover endpoints that publish none.
    */
   catalogImage?: boolean,
+  catalogVideo?: boolean,
 ): CapabilityFlags {
   const detected = emptyCapabilityFlags();
 
@@ -190,8 +192,11 @@ export function classifyCapabilities(
   // no hint, so every re-probe unchecked the learner's Vision box
   // (reported 2026-09-13) — while `gpt-5.6-luna` kept it on the bare "gpt-5"
   // substring. Where the catalog declares modalities, that answer beats the
-  // substring guess in both directions.
+  // substring guess in both directions. Video is metadata-only: video input is
+  // rare and no name heuristic is worth a false positive, so endpoints without
+  // architecture metadata never report it.
   detected.image = catalogImage ?? looksVision;
+  detected.video = catalogVideo ?? false;
   // Speech is claimed from the model *name*, so it must be checked against the
   // provider's own catalog exactly as text is. Without that gate a name that
   // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
@@ -255,15 +260,16 @@ export async function probeModelCapabilities(
       ];
   const catalogKnown = catalog.length > 0;
 
-  // Image comes from the matched catalog record's declared modalities, when
-  // the endpoint publishes them for this id; anything else (record missing,
-  // metadata without modalities) leaves the name hints in charge.
+  // Image and video come from the matched catalog record's declared
+  // modalities, when the endpoint publishes them for this id; anything else
+  // (record missing, metadata without modalities) leaves the name hints in
+  // charge.
   const catalogEntry = chatEntries.find(
     (e) => e.id.toLowerCase() === entry.model.toLowerCase(),
   );
-  const catalogImage = catalogEntry?.inputModalities
-    ? catalogEntry.inputModalities.includes("image")
-    : undefined;
+  const declared = catalogEntry?.inputModalities;
+  const catalogImage = declared ? declared.includes("image") : undefined;
+  const catalogVideo = declared ? declared.includes("video") : undefined;
 
   let dimProbeEmbedding = false;
   if (opts.embeddingDimProbe && !catalogKnown && !looksEmbedding) {
@@ -287,23 +293,31 @@ export async function probeModelCapabilities(
       catalogKnown,
       dimProbeEmbedding,
       catalogImage,
+      catalogVideo,
     ),
   };
 }
 
 /**
- * Reconcile user-selected capabilities against a fresh probe: keep only the
- * flags the user wants AND the probe detected (ADR save rule 1 — auto-uncheck
- * unsupported). The only-shrink-until-reprobe rule is enforced by callers that
- * offer the checkbox ceiling; this function is the final intersection.
+ * Merge a fresh probe into a row's capability state (ADR 2026-07-12 save
+ * rule 1, reworked 2026-09-13 — capabilities are *detected*, not chosen):
+ *
+ * - detected and previously detected → keep the user's toggle, so a choice
+ *   made in the overview survives every re-probe;
+ * - detected but new since the last probe → switch on. A re-probe that
+ *   widens the row must not hand the learner another chore, and a fresh
+ *   row (nothing detected yet) starts with everything the endpoint offers;
+ * - no longer detected → off. The probe is the ceiling.
  */
-export function reconcileCapabilities(
-  userSelected: CapabilityFlags,
+export function mergeProbeCapabilities(
+  previous: CapabilityFlags,
+  previousDetected: CapabilityFlags,
   detected: CapabilityFlags,
 ): CapabilityFlags {
   const result = emptyCapabilityFlags();
-  for (const key of Object.keys(result) as (keyof CapabilityFlags)[]) {
-    result[key] = userSelected[key] && detected[key];
+  for (const key of ALL_CAPABILITIES) {
+    if (!detected[key]) continue;
+    result[key] = previousDetected[key] ? previous[key] === true : true;
   }
   return result;
 }
@@ -311,15 +325,16 @@ export function reconcileCapabilities(
 export interface ModelSaveValidation {
   ok: boolean;
   error?: string;
-  /** The reconciled entry to persist, present only when `ok`. */
+  /** The merged entry to persist, present only when `ok`. */
   entry?: ModelEntry;
 }
 
 /**
  * Apply the ADR save rules to a would-be registry entry using a fresh probe:
  * block when the endpoint is unreachable (rule 2 — no persisting unreachable
- * capabilities), otherwise stamp `detectedCapabilities`/`probedAt` and shrink
- * `capabilities` to the detected intersection (rule 1).
+ * capabilities), otherwise stamp `detectedCapabilities`/`probedAt` and merge
+ * `capabilities` with the detection (rule 1 — see
+ * {@link mergeProbeCapabilities}).
  */
 export function validateModelSave(
   entry: ModelEntry,
@@ -359,7 +374,11 @@ export function validateModelSave(
     ok: true,
     entry: {
       ...entry,
-      capabilities: reconcileCapabilities(entry.capabilities, probe.detected),
+      capabilities: mergeProbeCapabilities(
+        entry.capabilities,
+        entry.detectedCapabilities,
+        probe.detected,
+      ),
       detectedCapabilities: probe.detected,
       probedAt: now(),
     },

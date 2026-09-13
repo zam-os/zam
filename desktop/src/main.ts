@@ -3118,16 +3118,17 @@ function capabilityLabel(cap: ModelCapability): string {
   }
 }
 
-// Capabilities exposed in the Settings UI. stt/tts joined the list in 0.24.0:
-// voice mode's cloud tier reads `capabilities.stt`/`.tts`, and `validateModelSave`
-// intersects what the learner ticked with what the probe detected — so a
-// capability the editor never offers can never be stored, and a correctly
-// detected Whisper endpoint would sit there permanently unusable. `video` stays
-// out until something consumes it (ADR 2026-07-12, ADR 2026-07-31).
+// Capabilities the Settings UI knows about (ADR 2026-07-12, ADR 2026-07-31,
+// ADR 2026-09-13). stt/tts joined in 0.24.0 for voice mode. `video` joins as
+// its own modality: "vision" stays `image` (the Observer reads frames), while
+// direct video input is the Observer's future screen-recording path. The
+// overview renders only what a probe detected — capabilities are detected,
+// not chosen — so a row never offers a modality the endpoint lacks.
 const UI_CAPABILITIES: ModelCapability[] = [
   "text",
   "embedding",
   "image",
+  "video",
   "stt",
   "tts",
 ];
@@ -3260,29 +3261,22 @@ function createModelRow(
 
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
+  // Only what the last probe detected is shown, and every shown capability is
+  // freely toggleable — no edit dialog needed. A modality the endpoint gains
+  // later appears (enabled) on the next re-probe.
   for (const cap of UI_CAPABILITIES) {
-    // Agent entries: text always; image only when the harness is multimodal
-    // (e.g. Antigravity/Gemini). Embedding is never agent-backed.
-    if (agent && cap === "embedding") continue;
-    if (agent && cap === "image" && !row.detectedCapabilities.image) continue;
+    if (!row.detectedCapabilities[cap]) continue;
     const label = document.createElement("label");
     label.className = "ai-model-cap";
     const box = document.createElement("input");
     box.type = "checkbox";
     box.checked = row.capabilities[cap];
-    // The ceiling: only capabilities a probe detected can be enabled.
-    box.disabled = !row.detectedCapabilities[cap];
     box.addEventListener("change", () => {
       void toggleCapability(row, cap, box.checked);
     });
     const text = document.createElement("span");
     text.textContent = capabilityLabel(cap);
     label.append(box, text);
-    if (!row.detectedCapabilities[cap]) {
-      label.title = agent
-        ? t("model_agent_cap_undetected")
-        : t("model_cap_undetected");
-    }
     caps.append(label);
   }
 
@@ -3656,25 +3650,9 @@ async function showModelForm(id?: string): Promise<void> {
   agentHint.className = "ai-provider-hint";
   agentHint.textContent = t("model_agent_hint");
 
-  const capsWrap = document.createElement("div");
-  capsWrap.className = "ai-model-caps";
-  const capBoxes = new Map<ModelCapability, HTMLInputElement>();
-  for (const cap of UI_CAPABILITIES) {
-    const label = document.createElement("label");
-    label.className = "ai-model-cap";
-    label.dataset.cap = cap;
-    const box = document.createElement("input");
-    box.type = "checkbox";
-    box.checked = existing?.capabilities[cap] ?? cap === "text";
-    const text = document.createElement("span");
-    text.textContent = capabilityLabel(cap);
-    label.append(box, text);
-    capsWrap.append(label);
-    capBoxes.set(cap, box);
-  }
-  const capHint = document.createElement("p");
-  capHint.className = "ai-provider-hint";
-  capHint.textContent = t("model_cap_hint");
+  // No capability checkboxes here: capabilities are detected by the probe on
+  // save (ADR 2026-09-13), a fresh row starts with everything detected
+  // enabled, and the overview row is where they get toggled.
 
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
@@ -3718,32 +3696,6 @@ async function showModelForm(id?: string): Promise<void> {
     // Effort applies to agent harnesses that support it (e.g. Copilot).
     effortField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
-    // Agent: text always; image when the selected harness adapter is multimodal.
-    // Embedding is never agent-backed.
-    const harnessMeta = harnesses.find((h) => h.id === harnessSelect.value);
-    const agentImageOk = isAgent && harnessMeta?.outboundImage === true;
-    for (const cap of UI_CAPABILITIES) {
-      const label = capsWrap.querySelector(
-        `label[data-cap="${cap}"]`,
-      ) as HTMLLabelElement | null;
-      if (!label) continue;
-      if (isAgent) {
-        const show = cap === "text" || (cap === "image" && agentImageOk);
-        label.classList.toggle("hidden", !show);
-        const box = capBoxes.get(cap);
-        if (box && cap === "text") box.checked = true;
-        if (box && cap === "image" && agentImageOk && !editingModelId) {
-          box.checked = true;
-        }
-      } else {
-        label.classList.remove("hidden");
-      }
-    }
-    capHint.textContent = isAgent
-      ? agentImageOk
-        ? t("model_agent_cap_hint_multimodal")
-        : t("model_agent_cap_hint")
-      : t("model_cap_hint");
     // Default label / model from harness when adding a new agent model.
     if (isAgent) {
       const selected = harnesses.find((h) => h.id === harnessSelect.value);
@@ -3801,16 +3753,6 @@ async function showModelForm(id?: string): Promise<void> {
     if (saveButton.disabled) return;
     saveButton.disabled = true;
     const kind = selectedKind();
-    const capabilities: Record<string, boolean> = {};
-    for (const [cap, box] of capBoxes) {
-      if (kind === "agent") {
-        // Agent: text + optional image (multimodal harnesses); never embedding.
-        capabilities[cap] =
-          cap === "text" ? true : cap === "image" ? box.checked : false;
-      } else {
-        capabilities[cap] = box.checked;
-      }
-    }
     void saveModelForm({
       id: editingModelId ?? undefined,
       kind,
@@ -3821,7 +3763,6 @@ async function showModelForm(id?: string): Promise<void> {
       effort: effortSelect.value,
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
-      capabilities,
     }).finally(() => {
       // The form is torn down on success; re-enabling only matters when it
       // stayed open because the save failed or a field was rejected.
@@ -3835,7 +3776,7 @@ async function showModelForm(id?: string): Promise<void> {
   cancelButton.addEventListener("click", hideModelForm);
   actions.append(saveButton, cancelButton);
 
-  form.append(kindWrap, grid, agentHint, capsWrap, capHint, actions);
+  form.append(kindWrap, grid, agentHint, actions);
 }
 
 interface ModelFormData {
@@ -3849,7 +3790,6 @@ interface ModelFormData {
   effort?: string;
   key: string;
   existingKeyRef?: string;
-  capabilities: Record<string, boolean>;
 }
 
 async function saveModelForm(data: ModelFormData): Promise<void> {
@@ -3870,11 +3810,6 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
       data.agentHarness,
       "--label",
       label,
-      "--capabilities",
-      JSON.stringify({
-        text: true,
-        image: data.capabilities.image === true,
-      }),
     ];
     if (data.model) {
       args.push("--model", data.model);
@@ -3933,8 +3868,6 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     data.url,
     "--model",
     data.model,
-    "--capabilities",
-    JSON.stringify(data.capabilities),
     ...(isLocal ? ["--local"] : ["--no-local"]),
   ];
   if (data.id) args.push("--id", data.id);

@@ -3,8 +3,8 @@ import { describe, expect, it } from "vitest";
 import {
   type CapabilityProbeResult,
   classifyCapabilities,
+  mergeProbeCapabilities,
   probeModelCapabilities,
-  reconcileCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
 import {
@@ -180,15 +180,63 @@ describe("classifyCapabilities", () => {
     );
     expect(d.image).toBe(true);
   });
+
+  it("claims video only from declared catalog modalities, never from a name", () => {
+    const declared = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+      true,
+    );
+    expect(declared.video).toBe(true);
+    // No architecture metadata → no video claim: no name heuristic is worth a
+    // false positive on a modality this rare.
+    const undeclared = classifyCapabilities(
+      { model: "video-master-pro", apiFlavor: "chat-completions" },
+      [],
+      false,
+    );
+    expect(undeclared.video).toBe(false);
+  });
 });
 
-describe("reconcileCapabilities", () => {
-  it("keeps only user-selected flags the probe detected", () => {
-    const result = reconcileCapabilities(
-      caps({ text: true, image: true, embedding: true }),
-      caps({ text: true, image: false, embedding: true }),
+describe("mergeProbeCapabilities", () => {
+  it("keeps the user's toggle for a capability that stays detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: false }),
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
     );
-    expect(result).toEqual(caps({ text: true, embedding: true }));
+    expect(result).toEqual(caps({ text: true }));
+  });
+
+  it("switches on a capability that is newly detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true }),
+      caps({ text: true }),
+      caps({ text: true, image: true, video: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true, video: true }));
+  });
+
+  it("starts a fresh row with everything the endpoint detected", () => {
+    const result = mergeProbeCapabilities(
+      emptyCapabilityFlags(),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true }));
+  });
+
+  it("drops a capability the probe no longer detects", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
+      caps({ text: true }),
+    );
+    expect(result).toEqual(caps({ text: true }));
   });
 });
 
@@ -217,7 +265,7 @@ describe("validateModelSave", () => {
     expect(result.error).toMatch(/unreachable/i);
   });
 
-  it("stamps detected capabilities and shrinks user flags to the intersection", () => {
+  it("stamps detected capabilities, merged with the row's prior state", () => {
     const probe: CapabilityProbeResult = {
       reachable: true,
       catalog: ["gemma"],
@@ -462,7 +510,7 @@ describe("probeModelCapabilities and a split model catalogue", () => {
             data: [
               {
                 id: "z-ai/glm-5.3-flash",
-                architecture: { input_modalities: ["text", "image"] },
+                architecture: { input_modalities: ["text", "image", "video"] },
               },
               {
                 id: "deepseek/deepseek-v4-flash",
@@ -486,6 +534,7 @@ describe("probeModelCapabilities and a split model catalogue", () => {
         apiFlavor: "chat-completions",
       });
       expect(vision.detected.image).toBe(true);
+      expect(vision.detected.video).toBe(true);
       expect(vision.detected.text).toBe(true);
 
       const textOnly = await probeModelCapabilities({
@@ -494,6 +543,7 @@ describe("probeModelCapabilities and a split model catalogue", () => {
         apiFlavor: "chat-completions",
       });
       expect(textOnly.detected.image).toBe(false);
+      expect(textOnly.detected.video).toBe(false);
       expect(textOnly.detected.text).toBe(true);
 
       // No architecture record → name hints stay in charge.
