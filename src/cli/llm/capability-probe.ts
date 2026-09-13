@@ -21,6 +21,7 @@ import {
 } from "../../kernel/index.js";
 import {
   DEFAULT_LLM_API_KEY,
+  getAvailableModelEntries,
   getAvailableModels,
   isLlmOnline,
 } from "./client.js";
@@ -156,6 +157,13 @@ export function classifyCapabilities(
   catalog: string[],
   catalogKnown: boolean,
   dimProbeEmbedding = false,
+  /**
+   * What the endpoint's own architecture metadata says about image input for
+   * this exact model id: true declares image, false declares text-only,
+   * undefined means the endpoint publishes no modalities. Declared metadata
+   * wins; the name hints below only cover endpoints that publish none.
+   */
+  catalogImage?: boolean,
 ): CapabilityFlags {
   const detected = emptyCapabilityFlags();
 
@@ -177,7 +185,13 @@ export function classifyCapabilities(
   const looksTts = matchesAny(entry.model, TTS_MODEL_HINTS);
 
   detected.embedding = looksEmbedding || dimProbeEmbedding;
-  detected.image = looksVision;
+  // Name hints age badly: `z-ai/glm-5.3-flash` and
+  // `deepseek/deepseek-v4.1-flash` are vision-capable per catalog but matched
+  // no hint, so every re-probe unchecked the learner's Vision box
+  // (reported 2026-09-13) — while `gpt-5.6-luna` kept it on the bare "gpt-5"
+  // substring. Where the catalog declares modalities, that answer beats the
+  // substring guess in both directions.
+  detected.image = catalogImage ?? looksVision;
   // Speech is claimed from the model *name*, so it must be checked against the
   // provider's own catalog exactly as text is. Without that gate a name that
   // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
@@ -229,7 +243,8 @@ export async function probeModelCapabilities(
     return { reachable: false, catalog: [], detected: emptyCapabilityFlags() };
   }
 
-  const chatCatalog = await getAvailableModels(entry.url, apiKey);
+  const chatEntries = await getAvailableModelEntries(entry.url, apiKey);
+  const chatCatalog = chatEntries.map((e) => e.id);
   const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
 
   const catalog = catalogHasModel(chatCatalog, entry.model)
@@ -239,6 +254,16 @@ export async function probeModelCapabilities(
         ...(await modalityCatalogue(entry, apiKey, looksEmbedding)),
       ];
   const catalogKnown = catalog.length > 0;
+
+  // Image comes from the matched catalog record's declared modalities, when
+  // the endpoint publishes them for this id; anything else (record missing,
+  // metadata without modalities) leaves the name hints in charge.
+  const catalogEntry = chatEntries.find(
+    (e) => e.id.toLowerCase() === entry.model.toLowerCase(),
+  );
+  const catalogImage = catalogEntry?.inputModalities
+    ? catalogEntry.inputModalities.includes("image")
+    : undefined;
 
   let dimProbeEmbedding = false;
   if (opts.embeddingDimProbe && !catalogKnown && !looksEmbedding) {
@@ -261,6 +286,7 @@ export async function probeModelCapabilities(
       catalog,
       catalogKnown,
       dimProbeEmbedding,
+      catalogImage,
     ),
   };
 }

@@ -1923,7 +1923,19 @@ export async function isLlmOnline(url: string): Promise<boolean> {
  * List the model ids the server actually serves (OpenAI `/v1/models`).
  * Returns [] on any error so callers can treat "unknown" as "skip validation".
  */
-export async function getAvailableModels(
+/**
+ * One `/models` record: the id plus whatever architecture metadata the
+ * endpoint publishes alongside it. OpenRouter declares `input_modalities`
+ * per model; most other endpoints (OpenAI, local runners) serve bare ids.
+ */
+export interface ModelCatalogEntry {
+  id: string;
+  /** Declared input modalities (e.g. ["text", "image"]); absent when the
+      endpoint publishes no architecture metadata for this model. */
+  inputModalities?: string[];
+}
+
+export async function getAvailableModelEntries(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
   /**
@@ -1933,7 +1945,7 @@ export async function getAvailableModels(
    * caller would otherwise have got.
    */
   search = "",
-): Promise<string[]> {
+): Promise<ModelCatalogEntry[]> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
@@ -1944,13 +1956,37 @@ export async function getAvailableModels(
     });
     clearTimeout(timeoutId);
     if (!res.ok) return [];
-    const data = (await res.json()) as { data?: Array<{ id?: string }> };
-    return (data.data ?? [])
-      .map((m) => m.id)
-      .filter((id): id is string => typeof id === "string" && id.length > 0);
+    const data = (await res.json()) as {
+      data?: Array<{
+        id?: string;
+        architecture?: { input_modalities?: unknown };
+      }>;
+    };
+    return (data.data ?? []).flatMap((m) => {
+      if (typeof m.id !== "string" || m.id.length === 0) return [];
+      const modalities = m.architecture?.input_modalities;
+      return [
+        {
+          id: m.id,
+          inputModalities: Array.isArray(modalities)
+            ? modalities.filter((x): x is string => typeof x === "string")
+            : undefined,
+        },
+      ];
+    });
   } catch {
     return [];
   }
+}
+
+export async function getAvailableModels(
+  url: string,
+  apiKey = DEFAULT_LLM_API_KEY,
+  search = "",
+): Promise<string[]> {
+  return (await getAvailableModelEntries(url, apiKey, search)).map(
+    (entry) => entry.id,
+  );
 }
 
 export interface VisionReadyResult {

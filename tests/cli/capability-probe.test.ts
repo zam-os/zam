@@ -145,6 +145,41 @@ describe("classifyCapabilities", () => {
     expect(d.embedding).toBe(true);
     expect(d.text).toBe(false);
   });
+
+  it("claims image from declared catalog modalities even without a name hint", () => {
+    const d = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(true);
+  });
+
+  it("lets declared modalities deny image for a name that hints at it", () => {
+    const d = classifyCapabilities(
+      { model: "qwen3.5-vl", apiFlavor: "chat-completions" },
+      ["qwen3.5-vl"],
+      true,
+      false,
+      false,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(false);
+  });
+
+  it("falls back to name hints when the catalog declares no modalities", () => {
+    const d = classifyCapabilities(
+      { model: "gpt-4o", apiFlavor: "chat-completions" },
+      ["gpt-4o"],
+      true,
+      false,
+      undefined,
+    );
+    expect(d.image).toBe(true);
+  });
 });
 
 describe("reconcileCapabilities", () => {
@@ -412,6 +447,66 @@ describe("probeModelCapabilities and a split model catalogue", () => {
       expect(result.entry?.label).toBe("renamed by the learner");
     } finally {
       await stub.close();
+    }
+  });
+
+  it("reads image capability from OpenRouter-style architecture metadata", async () => {
+    // A catalog record that declares input modalities decides vision on its
+    // own: `z-ai/glm-5.3-flash` is image-capable but matches no name hint,
+    // while `deepseek/deepseek-v4-flash` stays text-only.
+    const server: Server = createServer((req, res) => {
+      res
+        .writeHead(200, { "content-type": "application/json" })
+        .end(
+          JSON.stringify({
+            data: [
+              {
+                id: "z-ai/glm-5.3-flash",
+                architecture: { input_modalities: ["text", "image"] },
+              },
+              {
+                id: "deepseek/deepseek-v4-flash",
+                architecture: { input_modalities: ["text"] },
+              },
+              { id: "no-meta-model" },
+            ],
+          }),
+        );
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const address = server.address();
+    if (address === null || typeof address === "string") {
+      throw new Error("Failed to bind architecture-metadata stub");
+    }
+    const url = `http://127.0.0.1:${address.port}/v1`;
+    try {
+      const vision = await probeModelCapabilities({
+        url,
+        model: "z-ai/glm-5.3-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(vision.detected.image).toBe(true);
+      expect(vision.detected.text).toBe(true);
+
+      const textOnly = await probeModelCapabilities({
+        url,
+        model: "deepseek/deepseek-v4-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(textOnly.detected.image).toBe(false);
+      expect(textOnly.detected.text).toBe(true);
+
+      // No architecture record → name hints stay in charge.
+      const hinted = await probeModelCapabilities({
+        url,
+        model: "gpt-4o",
+        apiFlavor: "chat-completions",
+      });
+      expect(hinted.detected.image).toBe(true);
+    } finally {
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => (err ? reject(err) : resolve())),
+      );
     }
   });
 });
