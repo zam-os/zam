@@ -670,13 +670,26 @@ export class LlmResponseTruncatedError extends Error {
   }
 }
 
+/**
+ * Non-2xx from a chat endpoint. Carries the status so callers can retry on
+ * specific codes — e.g. a reasoning-mandatory model (GLM-5.3-Flash on
+ * OpenRouter) answering `reasoning: { effort: "none" }` with a 400 instead of
+ * an evaluation.
+ */
+export class LlmHttpError extends Error {
+  readonly status: number;
+  constructor(label: string, status: number, statusText: string, body: string) {
+    super(`${label} failed: ${statusText} (${status}) - ${body}`);
+    this.name = "LlmHttpError";
+    this.status = status;
+  }
+}
+
 /** Extract the assistant message content from an OpenAI-compatible response. */
 async function readChatContent(res: Response, label: string): Promise<string> {
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
-    throw new Error(
-      `${label} failed: ${res.statusText} (${res.status}) - ${errorText}`,
-    );
+    throw new LlmHttpError(label, res.status, res.statusText, errorText);
   }
   const data = (await res.json()) as ChatCompletionResponse;
   const choice = data.choices?.[0];
@@ -866,12 +879,16 @@ Evaluation:`;
     };
   }
 
-  const requestEvaluation = async (maxTokens: number): Promise<string> => {
+  const requestEvaluation = async (
+    maxTokens: number,
+    reasoningEffort: string | null,
+  ): Promise<string> => {
     // Evaluation wants short JSON, not a multi-page chain of thought.
     // Reasoning models (notably MiMo V2.5) otherwise burn the whole budget
     // thinking and return `finish_reason: length` with empty content.
-    // `low` is the product default for GPT-5.6 Luna. Privacy injection still
-    // runs on the body via fetchWithInteractiveTimeout.
+    // `none` is the product default for OpenRouter models that allow it
+    // (GPT-5.6 Luna). Privacy injection still runs on the body via
+    // fetchWithInteractiveTimeout.
     const body: Record<string, unknown> = {
       model: endpoint.model,
       messages: [
@@ -881,10 +898,8 @@ Evaluation:`;
       temperature: 0.2,
       max_tokens: maxTokens,
     };
-    if (isOpenRouterUrl(endpoint.url)) {
-      body.reasoning = {
-        effort: OPENROUTER_EVALUATION_REASONING_EFFORT,
-      };
+    if (reasoningEffort !== null) {
+      body.reasoning = { effort: reasoningEffort };
     }
     const res = await fetchWithInteractiveTimeout(
       `${endpoint.url}/chat/completions`,
@@ -902,14 +917,40 @@ Evaluation:`;
   };
 
   // A reasoning model can spend the whole allowance thinking before writing a
-  // visible token, so no single budget is right for every model. The first
-  // attempt stays cheap; only a truncated one is retried with real room.
+  // visible token, so no single budget is right for every model. A truncated
+  // attempt is retried with real room at the same reasoning control.
+  const attemptEvaluation = async (
+    maxTokens: number,
+    reasoningEffort: string | null,
+  ): Promise<string> => {
+    try {
+      return await requestEvaluation(maxTokens, reasoningEffort);
+    } catch (error) {
+      if (!(error instanceof LlmResponseTruncatedError)) throw error;
+      return requestEvaluation(
+        RECALL_EVALUATION_RETRY_OUTPUT_TOKENS,
+        reasoningEffort,
+      );
+    }
+  };
+
   let text: string;
-  try {
-    text = await requestEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS);
-  } catch (error) {
-    if (!(error instanceof LlmResponseTruncatedError)) throw error;
-    text = await requestEvaluation(RECALL_EVALUATION_RETRY_OUTPUT_TOKENS);
+  if (isOpenRouterUrl(endpoint.url)) {
+    try {
+      text = await attemptEvaluation(
+        RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+        OPENROUTER_EVALUATION_REASONING_EFFORT,
+      );
+    } catch (error) {
+      // Reasoning-mandatory models (e.g. GLM-5.3-Flash) answer `effort: "none"`
+      // with a 400 — "Reasoning is mandatory for this endpoint" — which used to
+      // kill the whole answer-feedback flow. Retry without the control and let
+      // the model reason natively.
+      if (!(error instanceof LlmHttpError && error.status === 400)) throw error;
+      text = await attemptEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS, null);
+    }
+  } else {
+    text = await attemptEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS, null);
   }
   return {
     text,
