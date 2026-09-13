@@ -2873,9 +2873,14 @@ function renderAgentHarnessList(
     // An installed CLI with an outbound adapter can also generate ZAM's text
     // (and, for multimodal adapters, read images) through the learner's
     // subscription — offer that right here instead of sending the learner
-    // through the Add-model form (ADR 2026-07-12a, agent transport).
+    // through the Add-model form (ADR 2026-07-12a, agent transport). Gate on
+    // the adapter's own `detected`, not the connect-style install signal: a
+    // data root on disk proves the install, but only a resolvable executable
+    // proves the adapter can spawn it from this process. Otherwise the pick
+    // would persist an offline row and show "Model ✓" for a model that
+    // cannot generate.
     const outbound = modelContext.outbound.find((h) => h.id === entry.harness);
-    if (entry.installed && outbound?.outboundText) {
+    if (entry.installed && outbound?.detected && outbound.outboundText) {
       const inUse = modelContext.models.find(
         (m) => m.transport === "agent" && m.agentHarness === entry.harness,
       );
@@ -2987,6 +2992,10 @@ async function addAgentHarnessAsModel(
     console.warn("agent model-upsert failed:", err);
     select.disabled = false;
     select.value = "";
+    // One note per row: a second failed pick replaces the first message.
+    select.parentElement
+      ?.querySelector(".agent-harness-error")
+      ?.remove();
     const note = document.createElement("span");
     note.className = "sub-label agent-harness-error";
     note.textContent = tf("model_save_failed", { message: errorMessage(err) });

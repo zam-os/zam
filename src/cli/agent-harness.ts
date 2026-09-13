@@ -68,7 +68,26 @@ const ANTIGRAVITY_IDE_CANDIDATE_PATHS: Partial<
  * the user points us at it with `zam settings set agent.<id>.command <path>`.
  */
 export const AGENT_HARNESSES: AgentHarness[] = [
-  { id: "claude-code", label: "Claude Code", kind: "cli", command: "claude" },
+  {
+    id: "claude-code",
+    label: "Claude Code",
+    kind: "cli",
+    command: "claude",
+    // The native installer puts the binary under ~/.local/bin and adds that
+    // to the shell profile only, so a desktop process launched by launchd
+    // never sees it on PATH.
+    candidatePaths: {
+      darwin: [
+        join(homedir(), ".local", "bin", "claude"),
+        join(homedir(), ".claude", "local", "claude"),
+      ],
+      linux: [
+        join(homedir(), ".local", "bin", "claude"),
+        join(homedir(), ".claude", "local", "claude"),
+      ],
+      win32: [join(homedir(), ".local", "bin", "claude.exe")],
+    },
+  },
   { id: "codex", label: "Codex", kind: "cli", command: "codex" },
   { id: "opencode", label: "opencode", kind: "cli", command: "opencode" },
   {
@@ -461,9 +480,6 @@ function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
 }
 
 /**
- * Pure helper to build the target path and expected MCP server configuration.
- */
-/**
  * Where a Claude Code connect lands. `user` merges into `~/.claude.json`
  * (what `claude mcp add --scope user` writes) and is the default — the only
  * target that makes sense from the App, which has no workspace. `project`
@@ -472,6 +488,9 @@ function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
  */
 export type ClaudeCodeConnectScope = "user" | "project";
 
+/**
+ * Pure helper to build the target path and expected MCP server configuration.
+ */
 export function connectHarnessMcp(
   harnessId: ConnectHarnessId,
   opts: {

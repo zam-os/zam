@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -58,9 +59,12 @@ describe("resolveHarnessExecutable", () => {
     ).toBe("/usr/bin/claude");
   });
 
-  it("returns null for a CLI harness that isn't on PATH", () => {
+  it("returns null for a CLI harness that isn't on PATH or at a known location", () => {
     expect(
-      resolveHarnessExecutable(claude, undefined, { find: () => null }),
+      resolveHarnessExecutable(claude, undefined, {
+        find: () => null,
+        exists: () => false,
+      }),
     ).toBeNull();
   });
 
@@ -158,13 +162,28 @@ describe("resolveHarnessExecutable", () => {
     ).toBeNull();
   });
 
-  it("does not probe candidate paths for CLI harnesses", () => {
+  it("returns null for a CLI harness without candidate paths even when everything exists", () => {
+    const codex = getHarness("codex") as AgentHarness;
     expect(
-      resolveHarnessExecutable(claude, undefined, {
+      resolveHarnessExecutable(codex, undefined, {
         find: () => null,
         exists: () => true,
       }),
     ).toBeNull();
+  });
+
+  it("falls back to Claude Code's native-installer location when claude is off PATH", () => {
+    // The desktop app runs with launchd's PATH, where ~/.local/bin is
+    // missing; the adapter must still find the binary or the Agents page
+    // would offer a model that cannot generate.
+    const home = homedir().replaceAll("\\", "/");
+    expect(
+      resolveHarnessExecutable(claude, undefined, {
+        find: () => null,
+        exists: (p) => p.replaceAll("\\", "/") === `${home}/.local/bin/claude`,
+        platform: "darwin",
+      })?.replaceAll("\\", "/"),
+    ).toBe(`${home}/.local/bin/claude`);
   });
 });
 
@@ -248,8 +267,7 @@ describe("detectInstalledConnectHarnesses", () => {
         home: "/home/user",
         platform: "linux",
         find: () => null,
-        exists: (path) =>
-          path.replaceAll("\\", "/") === "/home/user/.hermes",
+        exists: (path) => path.replaceAll("\\", "/") === "/home/user/.hermes",
       }),
     ).toEqual(["hermes"]);
   });
@@ -271,8 +289,7 @@ describe("detectInstalledConnectHarnesses", () => {
         home: "/home/user",
         platform: "linux",
         find: () => null,
-        exists: (path) =>
-          path.replaceAll("\\", "/") === "/home/user/.zcode",
+        exists: (path) => path.replaceAll("\\", "/") === "/home/user/.zcode",
       }),
     ).toEqual(["zcode"]);
   });
