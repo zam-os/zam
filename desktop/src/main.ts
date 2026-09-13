@@ -14,6 +14,11 @@ import {
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import {
+  DEFAULT_LOCAL_ENDPOINT_URL,
+  DEFAULT_MODEL_ENDPOINT_URL,
+  MODEL_ENDPOINTS,
+} from "./model-endpoints.js";
+import {
   BLOOM_PACKS,
   currentLocale,
   type Locale,
@@ -3185,6 +3190,24 @@ function textButton(label: string): HTMLButtonElement {
   return button;
 }
 
+let endpointDatalist: HTMLDataListElement | null = null;
+
+/** One shared <datalist> with the well-known endpoints; built lazily so the
+    module stays side-effect-free at import time. */
+function ensureEndpointDatalist(): void {
+  if (endpointDatalist) return;
+  const list = document.createElement("datalist");
+  list.id = "model-endpoint-options";
+  for (const endpoint of MODEL_ENDPOINTS) {
+    const option = document.createElement("option");
+    option.value = endpoint.url;
+    option.textContent = endpoint.label;
+    list.appendChild(option);
+  }
+  document.body.appendChild(list);
+  endpointDatalist = list;
+}
+
 function isAgentModel(row: ModelRow): boolean {
   return row.transport === "agent";
 }
@@ -3419,7 +3442,10 @@ function modelFieldLabel(
 type ModelFormKind = "local" | "cloud" | "agent";
 
 function existingModelKind(existing: ModelRow | undefined): ModelFormKind {
-  if (!existing) return "local";
+  // A fresh row starts on cloud: onboarding connects OpenRouter, and the URL
+  // field opens prefilled with it. Local is one radio click away, and the
+  // kind switch prefills Ollama's URL on an untouched field.
+  if (!existing) return "cloud";
   if (isAgentModel(existing)) return "agent";
   return existing.local ? "local" : "cloud";
 }
@@ -3497,6 +3523,16 @@ async function showModelForm(id?: string): Promise<void> {
   const urlInput = document.createElement("input");
   urlInput.type = "url";
   urlInput.value = existing?.url ?? "";
+  // A fresh row starts on OpenRouter so adding a cloud model needs no URL
+  // hunting; the kind switch re-points an untouched field (Ollama for local).
+  // Anything the learner typed or any existing row is never re-pointed.
+  if (!existing) urlInput.value = DEFAULT_MODEL_ENDPOINT_URL;
+  urlInput.setAttribute("list", "model-endpoint-options");
+  ensureEndpointDatalist();
+  let urlTouched = Boolean(existing);
+  urlInput.addEventListener("input", () => {
+    urlTouched = true;
+  });
   const modelInput = document.createElement("input");
   modelInput.type = "text";
   modelInput.value =
@@ -3719,7 +3755,18 @@ async function showModelForm(id?: string): Promise<void> {
   };
 
   for (const radio of radios.values()) {
-    radio.addEventListener("change", syncKindVisibility);
+    radio.addEventListener("change", () => {
+      // A kind switch re-points only a URL the learner never edited, so the
+      // prefill follows the kind without ever fighting an entered value.
+      if (!urlTouched) {
+        const switched = selectedKind();
+        if (switched === "local") urlInput.value = DEFAULT_LOCAL_ENDPOINT_URL;
+        else if (switched === "cloud") {
+          urlInput.value = DEFAULT_MODEL_ENDPOINT_URL;
+        }
+      }
+      syncKindVisibility();
+    });
   }
   harnessSelect.addEventListener("change", () => {
     if (selectedKind() === "agent") {
@@ -3737,7 +3784,8 @@ async function showModelForm(id?: string): Promise<void> {
   if (!editingModelId && existingModelKind(existing) === "agent") {
     syncAgentModelDefault(true);
   } else if (!editingModelId && !existing) {
-    // Default kind is local; model field will be filled when Agent is chosen.
+    // Default kind is cloud (OpenRouter prefilled); switching to Agent fills
+    // the harness default model via syncKindVisibility below.
   }
   syncKindVisibility();
 
