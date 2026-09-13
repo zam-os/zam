@@ -3451,6 +3451,7 @@ textarea::placeholder {
 
 .agent-harness-row {
   display: flex;
+  flex-wrap: wrap;
   align-items: center;
   gap: 12px;
   padding: 8px 12px;
@@ -3486,8 +3487,24 @@ textarea::placeholder {
   border-color: currentColor;
 }
 
+.agent-harness-state.model {
+  color: var(--clr-text-primary);
+}
+
 .agent-harness-row .btn {
   flex: 0 0 auto;
+}
+
+.agent-harness-model-select {
+  flex: 0 0 auto;
+  width: auto;
+  font-size: 12px;
+  padding: 4px 8px;
+}
+
+.agent-harness-error {
+  flex: 1 1 100%;
+  color: var(--clr-hard);
 }
 
 /* ── In-recall card management (ADR 2026-07-16b) ─────────────────────────── */

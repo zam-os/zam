@@ -279,7 +279,8 @@ export type ConnectHarnessId =
   | "goose"
   | "copilot"
   | "hermes"
-  | "zcode";
+  | "zcode"
+  | "grok";
 
 export interface DetectConnectHarnessesOptions {
   home?: string;
@@ -290,9 +291,10 @@ export interface DetectConnectHarnessesOptions {
 }
 
 /**
- * Detect user-scoped harness targets for parameterless `zam agent connect`.
- * Claude Code is deliberately excluded because its existing MCP target is the
- * current workspace; users can still configure it explicitly.
+ * Detect installed connect harnesses for parameterless `zam agent connect`
+ * and the App's agent page. Every id returned here has a user-scoped MCP
+ * target (`connectHarnessMcp` with the default scope), so a caller may
+ * connect all of them without touching the current workspace.
  */
 export function detectInstalledConnectHarnesses(
   options: DetectConnectHarnessesOptions = {},
@@ -305,6 +307,13 @@ export function detectInstalledConnectHarnesses(
 
   const hasCommandOrPath = (command: string, paths: string[] = []) =>
     Boolean(find(command)) || paths.some((path) => exists(path));
+
+  // Claude Code: the `claude` binary, or its ~/.claude data root when the
+  // install script's ~/.local/bin is not on this process's PATH (the desktop
+  // app inherits launchd's minimal PATH, not the learner's shell profile).
+  if (hasCommandOrPath("claude", [join(home, ".claude")])) {
+    detected.push("claude-code");
+  }
 
   if (
     hasCommandOrPath("codex", [
@@ -373,6 +382,11 @@ export function detectInstalledConnectHarnesses(
   // install signal.
   if (hasCommandOrPath("zcode", [join(home, ".zcode")])) {
     detected.push("zcode");
+  }
+  // Grok Build installs under ~/.grok/bin and only adds itself to PATH via
+  // the shell profile, so the data root is the reliable signal.
+  if (hasCommandOrPath("grok", [join(home, ".grok")])) {
+    detected.push("grok");
   }
   if (
     hasCommandOrPath("antigravity", [
@@ -449,6 +463,15 @@ function parseMcpJsonConfig(path: string, content: string): McpJsonConfig {
 /**
  * Pure helper to build the target path and expected MCP server configuration.
  */
+/**
+ * Where a Claude Code connect lands. `user` merges into `~/.claude.json`
+ * (what `claude mcp add --scope user` writes) and is the default — the only
+ * target that makes sense from the App, which has no workspace. `project`
+ * keeps the historical `<cwd>/.mcp.json`, for `zam agent connect claude-code`
+ * run inside a repository that wants the server shared with the team.
+ */
+export type ClaudeCodeConnectScope = "user" | "project";
+
 export function connectHarnessMcp(
   harnessId: ConnectHarnessId,
   opts: {
@@ -456,6 +479,9 @@ export function connectHarnessMcp(
     cwd: string;
     home: string;
     copilotHome?: string;
+    /** Claude Code's `CLAUDE_CONFIG_DIR`, when the learner relocated it. */
+    claudeConfigDir?: string;
+    claudeCodeScope?: ClaudeCodeConnectScope;
     readFile?: (path: string) => string;
     platform?: NodeJS.Platform;
   },
@@ -518,9 +544,18 @@ export function connectHarnessMcp(
   };
 
   if (harnessId === "claude-code") {
-    targetPath = join(opts.cwd, ".mcp.json");
-    hint =
-      "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+    if ((opts.claudeCodeScope ?? "user") === "project") {
+      targetPath = join(opts.cwd, ".mcp.json");
+      hint =
+        "Claude Code will prompt you to approve the 'zam' MCP server on next launch.";
+    } else {
+      // User scope lives in ~/.claude.json (or $CLAUDE_CONFIG_DIR/.claude.json),
+      // the same file Claude Code keeps its own state in; the merge preserves
+      // every other key and only owns `mcpServers.zam`.
+      targetPath = join(opts.claudeConfigDir ?? opts.home, ".claude.json");
+      hint =
+        "Claude Code picks up the user-scoped 'zam' MCP server in new sessions; restart running ones.";
+    }
     content = mergeMcpServersJson(targetPath);
   } else if (harnessId === "claude-desktop") {
     const platform = opts.platform ?? process.platform;
@@ -797,6 +832,36 @@ approval_mode = "prompt"
     }
     existing.mcpServers.zam = expected;
     content = JSON.stringify(existing, null, 2);
+  } else if (harnessId === "grok") {
+    // Grok Build reads `[mcp_servers.<name>]` tables from ~/.grok/config.toml
+    // — the Codex TOML shape minus Codex's approval keys. Grok also loads
+    // ~/.claude.json servers for Claude Code compatibility, but the native
+    // table is the one its Settings and `grok mcp list` show.
+    targetPath = join(opts.home, ".grok", "config.toml");
+    hint =
+      "Grok Build loads the 'zam' server at session start; `grok mcp list` shows its status.";
+    let existingStr = "";
+    if (exists(targetPath)) {
+      existingStr = read(targetPath);
+    }
+    if (existingStr.includes("[mcp_servers.zam]")) {
+      alreadyConfigured = true;
+      content = existingStr;
+    } else {
+      const isJs = opts.zamPath.endsWith(".js");
+      const cmdStr = isJs
+        ? JSON.stringify(process.execPath)
+        : JSON.stringify(opts.zamPath);
+      const argsStr = isJs
+        ? `[${JSON.stringify(opts.zamPath)}, "mcp"]`
+        : '["mcp"]';
+      const block = `
+[mcp_servers.zam]
+command = ${cmdStr}
+args = ${argsStr}
+`;
+      content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
+    }
   } else if (harnessId === "zcode") {
     // ZCode reads MCP servers from the nested `mcp.servers` map in
     // ~/.zcode/cli/config.json. ZCode's own Settings page stores keys of its

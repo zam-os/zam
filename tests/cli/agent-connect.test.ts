@@ -220,9 +220,9 @@ describe("performAgentConnect", () => {
 });
 
 describe("inspectConnectHarnesses", () => {
-  it("reports the user-scoped harnesses plus Claude Code without touching disk", () => {
+  it("reports every user-scoped harness without touching disk", () => {
     const { deps, calls } = makeDeps({
-      detect: () => ["codex", "vscode"] as ConnectHarnessId[],
+      detect: () => ["claude-code", "codex", "vscode"] as ConnectHarnessId[],
     });
     deps.connectMcp = ((harness: string) => ({
       path: `/home/user/config/${harness}`,
@@ -232,17 +232,18 @@ describe("inspectConnectHarnesses", () => {
     })) as AgentConnectDeps["connectMcp"];
 
     const report = inspectConnectHarnesses(deps);
-    // Claude Code is probed too (finding: it was silently excluded from the
-    // inventory, so it was always reported configured:false with no
-    // supporting evidence). It is appended after the seven auto-detectable
-    // harnesses, never added to USER_SCOPED_CONNECT_HARNESSES itself — that
-    // constant still drives auto-detection and stays claude-code-free.
-    expect(report.harnesses.map((h) => h.harness)).toEqual([
-      ...USER_SCOPED_CONNECT_HARNESSES,
-      "claude-code",
-    ]);
+    expect(report.harnesses.map((h) => h.harness)).toEqual(
+      USER_SCOPED_CONNECT_HARNESSES,
+    );
 
     const byId = new Map(report.harnesses.map((h) => [h.harness, h]));
+    // Claude Code is an ordinary user-scoped harness: `installed` follows
+    // detection instead of being pinned to false (which the App rendered as
+    // "not installed" on machines running Claude Code).
+    expect(byId.get("claude-code")).toMatchObject({
+      installed: true,
+      configured: false,
+    });
     expect(byId.get("codex")).toMatchObject({
       installed: true,
       configured: false,
@@ -255,46 +256,66 @@ describe("inspectConnectHarnesses", () => {
       installed: false,
       configured: false,
     });
-    // Claude Code is never in `detect()`'s output (workspace-scoped, not
-    // machine-detectable), so "installed" honestly stays false; "configured"
-    // reflects the same connectMcp probe as every other harness — here the
-    // stub returns alreadyConfigured only for "vscode", so false.
-    expect(byId.get("claude-code")).toMatchObject({
-      installed: false,
-      configured: false,
-    });
     expect(calls.writes).toHaveLength(0);
   });
 
-  it("reports claude-code as configured only when the cwd's .mcp.json already has a matching zam entry", () => {
-    const cwd = mkdtempSync(join(tmpdir(), "zam-claude-code-probe-"));
+  it("probes claude-code at the user scope: ~/.claude.json, never the cwd's .mcp.json", () => {
+    const home = mkdtempSync(join(tmpdir(), "zam-claude-code-home-"));
+    const cwd = mkdtempSync(join(tmpdir(), "zam-claude-code-cwd-"));
     try {
-      const { deps } = makeDeps({ cwd, connectMcp: undefined });
+      const { deps } = makeDeps({ home, cwd, connectMcp: undefined });
+      const zamEntry = {
+        mcpServers: {
+          zam: { command: deps.findZam?.() ?? "zam", args: ["mcp"] },
+        },
+      };
 
+      // A project .mcp.json says nothing about the machine.
+      writeFileSync(join(cwd, ".mcp.json"), JSON.stringify(zamEntry), "utf-8");
       const before = inspectConnectHarnesses(deps);
-      expect(
-        before.harnesses.find((h) => h.harness === "claude-code")?.configured,
-      ).toBe(false);
-
-      writeFileSync(
-        join(cwd, ".mcp.json"),
-        JSON.stringify({
-          mcpServers: {
-            zam: { command: deps.findZam?.() ?? "zam", args: ["mcp"] },
-          },
-        }),
-        "utf-8",
-      );
-
-      const after = inspectConnectHarnesses(deps);
-      const claudeCode = after.harnesses.find(
+      const beforeRow = before.harnesses.find(
         (h) => h.harness === "claude-code",
       );
-      expect(claudeCode?.configured).toBe(true);
-      expect(claudeCode?.configPath).toBe(join(cwd, ".mcp.json"));
+      expect(beforeRow?.configured).toBe(false);
+      expect(beforeRow?.configPath).toBe(join(home, ".claude.json"));
+
+      writeFileSync(
+        join(home, ".claude.json"),
+        JSON.stringify({ numStartups: 3, ...zamEntry }),
+        "utf-8",
+      );
+      const after = inspectConnectHarnesses(deps);
+      expect(
+        after.harnesses.find((h) => h.harness === "claude-code")?.configured,
+      ).toBe(true);
     } finally {
       rmSync(cwd, { recursive: true, force: true });
+      rmSync(home, { recursive: true, force: true });
     }
+  });
+
+  it("performAgentConnect routes claude-code by scope", () => {
+    const { deps, calls } = makeDeps({
+      home: "/home/user",
+      cwd: "/workspace",
+      connectMcp: undefined,
+      detect: () => ["claude-code"] as ConnectHarnessId[],
+    });
+
+    const auto = performAgentConnect({}, deps);
+    expect(auto.results[0].path).toBe(join("/home/user", ".claude.json"));
+
+    const explicitProject = performAgentConnect(
+      { harness: "claude-code", claudeCodeScope: "project" },
+      deps,
+    );
+    expect(explicitProject.results[0].path).toBe(
+      join("/workspace", ".mcp.json"),
+    );
+    expect(calls.writes.map((w) => w.path)).toEqual([
+      join("/home/user", ".claude.json"),
+      join("/workspace", ".mcp.json"),
+    ]);
   });
 
   it("degrades an unreadable host config to a note instead of failing", () => {

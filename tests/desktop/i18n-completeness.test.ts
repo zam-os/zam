@@ -671,6 +671,13 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "boot_continue",
   "boot_continue_note",
   "boot_panel_failed",
+  // Agents page "Use as model" control (installed CLI → agent-transport
+  // model). en/de reference pair only; the other packs fall back until
+  // native review.
+  "agent_model_use_as",
+  "agent_model_option_text",
+  "agent_model_option_text_image",
+  "agent_model_in_use",
 ]);
 
 /**

@@ -169,7 +169,7 @@ describe("resolveHarnessExecutable", () => {
 });
 
 describe("detectInstalledConnectHarnesses", () => {
-  it("detects user-scoped Codex, VS Code, and Copilot targets", () => {
+  it("detects Claude Code, Codex, VS Code, and Copilot targets", () => {
     const detected = detectInstalledConnectHarnesses({
       home: "/home/user",
       platform: "darwin",
@@ -189,8 +189,25 @@ describe("detectInstalledConnectHarnesses", () => {
       },
     });
 
-    expect(detected).toEqual(["codex", "vscode", "copilot"]);
-    expect(detected).not.toContain("claude-code");
+    // Claude Code is a user-scoped target since its connect defaults to
+    // ~/.claude.json, so `claude` on PATH counts like any other CLI.
+    expect(detected).toEqual(["claude-code", "codex", "vscode", "copilot"]);
+  });
+
+  it("detects Claude Code and Grok Build by data root when the binary is off PATH", () => {
+    // The desktop app inherits launchd's minimal PATH, where ~/.local/bin
+    // (Claude Code) and ~/.grok/bin (Grok Build) are missing; the data
+    // roots still prove the install.
+    const detected = detectInstalledConnectHarnesses({
+      home: "/home/user",
+      platform: "linux",
+      find: () => null,
+      exists: (path) => {
+        const key = path.replaceAll("\\", "/");
+        return key === "/home/user/.claude" || key === "/home/user/.grok";
+      },
+    });
+    expect(detected).toEqual(["claude-code", "grok"]);
   });
 
   it("returns no targets when no supported user host is installed", () => {
@@ -350,8 +367,54 @@ describe("connectHarnessMcp", () => {
     }
   });
 
-  it("claude-code fresh write", () => {
+  it("claude-code defaults to the user scope in ~/.claude.json", () => {
     const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.claude.json");
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("claude-code user scope preserves Claude Code's own state in ~/.claude.json", () => {
+    // ~/.claude.json is Claude Code's state file, not a dedicated MCP config:
+    // the merge must own nothing but mcpServers.zam.
+    mockFiles["/home/user/.claude.json"] = JSON.stringify({
+      numStartups: 42,
+      projects: { "/work": { allowedTools: [] } },
+      mcpServers: { other: { command: "other-server" } },
+    });
+
+    const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(JSON.parse(res.content)).toEqual({
+      numStartups: 42,
+      projects: { "/work": { allowedTools: [] } },
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("claude-code user scope honours CLAUDE_CONFIG_DIR", () => {
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeConfigDir: "/home/user/.config/claude-work",
+    });
+    expect(posix(res.path)).toBe("/home/user/.config/claude-work/.claude.json");
+  });
+
+  it("claude-code project scope writes the workspace .mcp.json", () => {
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeCodeScope: "project",
+    });
     expect(posix(res.path)).toBe("/work/.mcp.json");
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
@@ -364,7 +427,7 @@ describe("connectHarnessMcp", () => {
     expect(res.alreadyConfigured).toBe(false);
   });
 
-  it("claude-code merges and preserves other servers", () => {
+  it("claude-code project scope merges and preserves other servers", () => {
     mockFiles["/work/.mcp.json"] = JSON.stringify({
       mcpServers: {
         other: {
@@ -373,7 +436,10 @@ describe("connectHarnessMcp", () => {
       },
     });
 
-    const res = connectHarnessMcp("claude-code", mockDeps);
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeCodeScope: "project",
+    });
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
         other: {
@@ -438,6 +504,28 @@ describe("connectHarnessMcp", () => {
     const existing = `[mcp_servers.zam]\ncommand = "/usr/local/bin/zam"\nargs = ["mcp"]\n`;
     mockFiles["/home/user/.codex/config.toml"] = existing;
     const res = connectHarnessMcp("codex", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(res.content).toBe(existing);
+  });
+
+  it("grok appends a plain [mcp_servers.zam] table to ~/.grok/config.toml", () => {
+    mockFiles["/home/user/.grok/config.toml"] =
+      `[models]\ndefault = "grok-build"\n`;
+    const res = connectHarnessMcp("grok", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.grok/config.toml");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toContain("[models]");
+    expect(res.content).toContain("[mcp_servers.zam]");
+    expect(res.content).toContain('command = "/usr/local/bin/zam"');
+    expect(res.content).toContain('args = ["mcp"]');
+    // Codex's approval keys are not part of Grok's server schema.
+    expect(res.content).not.toContain("approval_mode");
+  });
+
+  it("grok no-ops and returns alreadyConfigured when present", () => {
+    const existing = `[mcp_servers.zam]\ncommand = "/usr/local/bin/zam"\nargs = ["mcp"]\n`;
+    mockFiles["/home/user/.grok/config.toml"] = existing;
+    const res = connectHarnessMcp("grok", mockDeps);
     expect(res.alreadyConfigured).toBe(true);
     expect(res.content).toBe(existing);
   });
@@ -916,7 +1004,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("treats a whitespace-only stub as an empty object", () => {
-    mockFiles["/work/.mcp.json"] = "   \n\t\n";
+    mockFiles["/home/user/.claude.json"] = "   \n\t\n";
     const res = connectHarnessMcp("claude-code", mockDeps);
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
@@ -926,7 +1014,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("refuses to overwrite malformed JSON configuration", () => {
-    mockFiles["/work/.mcp.json"] = "{ definitely not JSON";
+    mockFiles["/home/user/.claude.json"] = "{ definitely not JSON";
 
     expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
       "existing file is not valid JSON",
@@ -934,7 +1022,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("refuses to replace a non-object mcpServers value", () => {
-    mockFiles["/work/.mcp.json"] = JSON.stringify({ mcpServers: [] });
+    mockFiles["/home/user/.claude.json"] = JSON.stringify({ mcpServers: [] });
 
     expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
       "mcpServers must be a JSON object",

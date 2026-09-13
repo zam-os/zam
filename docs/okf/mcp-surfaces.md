@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-12T20:31:44.000Z
+timestamp: 2026-09-13T07:30:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -30,15 +30,31 @@ harness:
 - `copilot`
 - `hermes`
 - `zcode`
+- `grok`
 
-With no target, the command detects installed user-scoped harnesses. The writer
-merges into each harness's existing configuration and owns only the fields it
-sets, so a server the learner disabled in the host stays disabled and
-host-managed entry keys survive. For ZCode the target is the nested
-`mcp.servers` map in `~/.zcode/cli/config.json`, with `~/.agents/mcp.json`
-consulted as that scope's fallback only while the canonical file defines no
-servers. The MCP command itself is loaded lazily so the CLI bootstrap stays
-light.
+With no target, the command detects installed user-scoped harnesses — every
+supported harness, Claude Code included. Detection accepts the binary on
+`PATH` or the harness's data root (`~/.claude`, `~/.grok`, `~/.zcode`, …),
+because the desktop app inherits a minimal `PATH` without the learner's shell
+profile. The writer merges into each harness's existing configuration and owns
+only the fields it sets, so a server the learner disabled in the host stays
+disabled and host-managed entry keys survive.
+
+Claude Code has two scopes. The default is the **user scope**:
+`mcpServers.zam` in `~/.claude.json` (or `$CLAUDE_CONFIG_DIR/.claude.json`),
+the file `claude mcp add --scope user` writes; the merge preserves every other
+key of Claude Code's state file. Auto-detection, the bridge, and the desktop
+agent page use it, so the app can connect Claude Code without a workspace. The
+explicit CLI `zam agent connect claude-code` keeps the **project scope**,
+`<cwd>/.mcp.json`, so a repository can share the server with its team. Status
+probes report Claude Code against the user scope.
+
+Grok Build reads `[mcp_servers.<name>]` tables from `~/.grok/config.toml`;
+ZAM appends a plain `[mcp_servers.zam]` table with `command` and `args`. For
+ZCode the target is the nested `mcp.servers` map in `~/.zcode/cli/config.json`,
+with `~/.agents/mcp.json` consulted as that scope's fallback only while the
+canonical file defines no servers. The MCP command itself is loaded lazily so
+the CLI bootstrap stays light.
 
 # Portable Agent Plugin package
 
