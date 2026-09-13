@@ -1,11 +1,14 @@
 /**
- * Capability detection for the unified model registry (ADR 2026-07-12, phase 2).
+ * Capability detection for the unified model registry (ADR 2026-07-12, phase 2;
+ * ADR 2026-09-13).
  *
  * CLI-layer HTTP only (kernel stays AI-agnostic). On add / edit / re-probe we
  * query endpoint metadata — primarily the OpenAI `/v1/models` catalog plus
  * model-family heuristics — and never run functional text/vision smoke tests.
- * The one documented exception is an optional single `/v1/embeddings` dimension
- * probe when the catalog is silent about embeddings.
+ * Two documented exceptions, both optional single calls: a `/v1/embeddings`
+ * dimension probe when the catalog is silent about embeddings, and a
+ * reasoning-effort probe (one tiny chat call) that learns which reasoning
+ * level the endpoint accepts for evaluation.
  *
  * The classification step is a pure function so it is deterministic and unit-
  * testable without a live endpoint; `probeModelCapabilities` is the thin HTTP
@@ -24,6 +27,7 @@ import {
   DEFAULT_LLM_API_KEY,
   getAvailableModelEntries,
   getAvailableModels,
+  isOpenRouterUrl,
   isLlmOnline,
 } from "./client.js";
 import { embedTexts } from "./embedder.js";
@@ -145,6 +149,13 @@ export interface CapabilityProbeResult {
   catalog: string[];
   /** Capabilities the metadata actually supports. */
   detected: CapabilityFlags;
+  /**
+   * The reasoning-effort level the endpoint accepted during the optional
+   * effort probe: "none" when the control is honored, "minimal" when the
+   * model mandates reasoning at the lowest level. Absent = no verdict; the
+   * row keeps its stored setting.
+   */
+  effort?: "none" | "minimal";
 }
 
 /**
@@ -222,13 +233,62 @@ function resolveApiKey(apiKeyRef?: string): string {
 }
 
 /**
- * Probe an endpoint's capabilities over HTTP. Metadata-only by default; when
- * the catalog is silent about embeddings and `embeddingDimProbe` is set, makes
- * one cheap `/v1/embeddings` call to confirm (the documented exception).
+ * Learn which reasoning-effort level the endpoint accepts, with one tiny chat
+ * call per level (the second documented probe exception, ADR 2026-09-13). The
+ * reply is discarded — only the status matters: `none` honored → "none" (the
+ * evaluation's cheapest setting); `none` rejected with a 400 → try "minimal",
+ * which reasoning-mandatory models (GLM-5.3-Flash) keep reasoning at the
+ * lowest level; anything else (other statuses, network errors) → no verdict,
+ * so the row keeps its stored setting and the evaluation's 400 retry remains
+ * the safety net.
+ */
+async function probeReasoningEffort(
+  entry: Pick<ModelEntry, "url" | "model" | "apiKeyRef">,
+  apiKey: string,
+): Promise<"none" | "minimal" | undefined> {
+  const attempt = async (effort: "none" | "minimal"): Promise<number> => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    try {
+      const res = await fetch(`${entry.url}/chat/completions`, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: JSON.stringify({
+          model: entry.model,
+          messages: [{ role: "user", content: "Reply with: OK" }],
+          max_tokens: 16,
+          reasoning: { effort },
+        }),
+        signal: controller.signal,
+      });
+      await res.text().catch(() => "");
+      return res.status;
+    } catch {
+      return 0;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  };
+  const noneStatus = await attempt("none");
+  if (noneStatus >= 200 && noneStatus < 300) return "none";
+  if (noneStatus !== 400) return undefined;
+  const minimalStatus = await attempt("minimal");
+  return minimalStatus >= 200 && minimalStatus < 300 ? "minimal" : undefined;
+}
+
+/**
+ * Probe an endpoint's capabilities over HTTP. Metadata-only by default; two
+ * optional single-call exceptions: an embeddings dimension probe when the
+ * catalog is silent (`embeddingDimProbe`), and a reasoning-effort probe for
+ * OpenRouter chat models (`reasoningEffortProbe`) that stores the level the
+ * evaluation should send.
  */
 export async function probeModelCapabilities(
   entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef">,
-  opts: { embeddingDimProbe?: boolean } = {},
+  opts: { embeddingDimProbe?: boolean; reasoningEffortProbe?: boolean } = {},
 ): Promise<CapabilityProbeResult> {
   const apiKey = resolveApiKey(entry.apiKeyRef);
 
@@ -284,17 +344,27 @@ export async function probeModelCapabilities(
     }
   }
 
+  const detected = classifyCapabilities(
+    entry,
+    catalog,
+    catalogKnown,
+    dimProbeEmbedding,
+    catalogImage,
+    catalogVideo,
+  );
+
+  // The effort level matters only where the evaluation sends the control —
+  // OpenRouter URLs — and only for models that actually serve chat.
+  const effort =
+    opts.reasoningEffortProbe && detected.text && isOpenRouterUrl(entry.url)
+      ? await probeReasoningEffort(entry, apiKey)
+      : undefined;
+
   return {
     reachable: true,
     catalog,
-    detected: classifyCapabilities(
-      entry,
-      catalog,
-      catalogKnown,
-      dimProbeEmbedding,
-      catalogImage,
-      catalogVideo,
-    ),
+    detected,
+    effort,
   };
 }
 
@@ -374,6 +444,10 @@ export function validateModelSave(
     ok: true,
     entry: {
       ...entry,
+      // The probe verdict is the freshest statement about the endpoint, so it
+      // overwrites whatever level the row stored before. No verdict → keep
+      // the stored level (the evaluation's retry still covers stale rows).
+      ...(probe.effort ? { effort: probe.effort } : {}),
       capabilities: mergeProbeCapabilities(
         entry.capabilities,
         entry.detectedCapabilities,

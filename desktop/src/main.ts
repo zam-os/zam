@@ -3256,7 +3256,12 @@ function createModelRow(
           model: modelId,
         });
   } else {
-    meta.textContent = `${row.model} · ${row.url}`;
+    // The probe stores the reasoning-effort level the evaluation sends;
+    // "minimal" marks a reasoning-mandatory model. Same technical register
+    // as the model id and URL.
+    meta.textContent = row.effort
+      ? `${row.model} · ${row.url} · effort ${row.effort}`
+      : `${row.model} · ${row.url}`;
   }
 
   const caps = document.createElement("div");

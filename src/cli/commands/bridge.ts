@@ -3374,6 +3374,7 @@ bridgeCommand
 
     const probe = await probeModelCapabilities(candidate, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(candidate, probe);
     if (!validation.ok || !validation.entry) {
@@ -3445,6 +3446,7 @@ bridgeCommand
 
     const probe = await probeModelCapabilities(entry, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(entry, probe);
     if (!validation.ok || !validation.entry) {

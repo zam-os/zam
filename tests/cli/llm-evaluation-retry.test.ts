@@ -7,6 +7,10 @@ import {
   evaluateAnswerViaLLM,
 } from "../../src/cli/llm/client.js";
 import {
+  probeModelCapabilities,
+  validateModelSave,
+} from "../../src/cli/llm/capability-probe.js";
+import {
   type CapabilityFlags,
   type ModelEntry,
   openDatabase,
@@ -34,7 +38,7 @@ function textCaps(): CapabilityFlags {
   };
 }
 
-function openRouterEntry(): ModelEntry {
+function openRouterEntry(effort?: ModelEntry["effort"]): ModelEntry {
   return {
     id: "glm",
     label: "GLM-5.3 Flash",
@@ -45,6 +49,7 @@ function openRouterEntry(): ModelEntry {
     order: 0,
     capabilities: textCaps(),
     detectedCapabilities: textCaps(),
+    ...(effort ? { effort } : {}),
   };
 }
 
@@ -184,5 +189,109 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
     const chats = calls.filter((call) => !call.url.endsWith("/models"));
     expect(chats).toHaveLength(1);
     expect(chats[0]?.body?.reasoning).toEqual({ effort: "none" });
+  });
+});
+
+describe("reasoning-effort probe and a stored effort level", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+  let db: Database;
+
+  beforeEach(async () => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-effort-probe-"));
+    const configPath = join(testConfigDir, "config.json");
+    writeFileSync(
+      configPath,
+      JSON.stringify({ ai: { providers: {}, roles: {} } }),
+    );
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = configPath;
+    clearRecallEndpointCache();
+    db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+  });
+
+  afterEach(async () => {
+    vi.unstubAllGlobals();
+    clearRecallEndpointCache();
+    await db.close();
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    rmSync(testConfigDir, { recursive: true, force: true });
+  });
+
+  it("stores none when the endpoint honors the control", async () => {
+    saveMachineAiModels([openRouterEntry()]);
+    const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
+
+    const probe = await probeModelCapabilities(openRouterEntry(), {
+      reasoningEffortProbe: true,
+    });
+
+    expect(probe.effort).toBe("none");
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(1);
+    const result = validateModelSave(openRouterEntry(), probe);
+    expect(result.ok).toBe(true);
+    expect(result.entry?.effort).toBe("none");
+  });
+
+  it("stores minimal for a reasoning-mandatory model", async () => {
+    saveMachineAiModels([openRouterEntry()]);
+    const mandatory = {
+      status: 400,
+      body: {
+        error: {
+          message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+          code: 400,
+        },
+      },
+    };
+    stubFetch([mandatory, { status: 200, body: evaluationBody }]);
+
+    const probe = await probeModelCapabilities(openRouterEntry(), {
+      reasoningEffortProbe: true,
+    });
+
+    expect(probe.effort).toBe("minimal");
+    const result = validateModelSave(openRouterEntry(), probe);
+    expect(result.entry?.effort).toBe("minimal");
+  });
+
+  it("keeps the stored level when the probe has no verdict", async () => {
+    saveMachineAiModels([openRouterEntry("low")]);
+    stubFetch([{ status: 500, body: { error: { message: "boom" } } }]);
+
+    const entry = openRouterEntry("low");
+    const probe = await probeModelCapabilities(entry, {
+      reasoningEffortProbe: true,
+    });
+
+    expect(probe.effort).toBeUndefined();
+    const result = validateModelSave(entry, probe);
+    expect(result.entry?.effort).toBe("low");
+  });
+
+  it("sends the stored level during evaluation", async () => {
+    saveMachineAiModels([openRouterEntry("minimal")]);
+    const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
+
+    const result = await evaluateAnswerViaLLM(db, {
+      slug: "frankreich-hauptstadt",
+      concept: "Paris",
+      domain: "Geografie",
+      bloomLevel: 1,
+      question: "Was ist die Hauptstadt von Frankreich?",
+      userAnswer: "Paris",
+    });
+
+    expect(result.text).toContain("Paris");
+    const chats = calls.filter((call) => !call.url.endsWith("/models"));
+    expect(chats).toHaveLength(1);
+    expect(chats[0]?.body?.reasoning).toEqual({ effort: "minimal" });
   });
 });

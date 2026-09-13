@@ -73,6 +73,19 @@ the learner decides only what a row is *used for*.
    stored so the planned Observer screen-recording/learner-observation work
    can select for it without a registry migration. A model with video input
    (e.g. GLM-5.3-Flash) shows the capability as soon as a probe finds it.
+6. **The probe also determines the reasoning-effort setting.** The evaluation
+   sends `reasoning: { effort }` to OpenRouter endpoints; whether a model
+   honors that control is not visible in catalog metadata (GLM-5.3-Flash
+   lists `reasoning_effort` yet rejects `none` with "Reasoning is mandatory").
+   The probe therefore makes one tiny chat call — the second documented
+   functional exception — storing the lowest level the endpoint accepts:
+   `none` when the control is honored, `minimal` when the model mandates
+   reasoning (it keeps reasoning, bounded — reasoning is not harmful, and the
+   learner-facing policy is lowest acceptable effort). No verdict (other
+   statuses, network errors) leaves the stored setting untouched, and the
+   evaluation's 400 retry remains the safety net for rows probed before this
+   existed. The endpoint cache signature includes the stored level so a
+   re-probe takes effect immediately.
 
 ## Consequences
 
@@ -92,8 +105,12 @@ the learner decides only what a row is *used for*.
 ## Notes
 
 - Probe merge: `src/cli/llm/capability-probe.ts` (`mergeProbeCapabilities`,
-  `classifyCapabilities`).
+  `classifyCapabilities`, `probeReasoningEffort`).
 - Metadata source: `getAvailableModelEntries` (`src/cli/llm/client.ts`),
   reading OpenRouter's `architecture.input_modalities`.
+- Evaluation consumes the stored level via `endpoint.effort`
+  (`evaluateAnswerViaLLM`); the reasoning control is still only ever sent to
+  OpenRouter URLs.
 - UI: overview rows render detected capabilities only; the editor form dropped
-  its capability section (`desktop/src/main.ts`).
+  its capability section (`desktop/src/main.ts`). HTTP rows show the stored
+  effort level in their meta line.

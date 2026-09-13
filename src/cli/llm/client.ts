@@ -99,8 +99,12 @@ function recallEndpointSignature(cfg: ProviderConfig): string {
     cfg.url,
     cfg.model,
     cfg.apiFlavor,
+    // Effort participates: a re-probe that stores a different reasoning level
+    // must reach the evaluation immediately, not after the cache TTL.
+    cfg.effort ?? "",
     cfg.fallback?.url ?? "",
     cfg.fallback?.model ?? "",
+    cfg.fallback?.effort ?? "",
   ].join("|");
 }
 export const DEFAULT_LLM_MODEL = "qwen3.5:4b";
@@ -934,22 +938,30 @@ Evaluation:`;
     }
   };
 
+  // Reasoning control: the probe stores the lowest level the endpoint accepts
+  // ("none", or "minimal" when the model mandates reasoning); rows probed
+  // before effort detection keep the product default, with the 400 retry
+  // below as the safety net.
+  const reasoningEffort = isOpenRouterUrl(endpoint.url)
+    ? (endpoint.effort ?? OPENROUTER_EVALUATION_REASONING_EFFORT)
+    : null;
   let text: string;
-  if (isOpenRouterUrl(endpoint.url)) {
-    try {
-      text = await attemptEvaluation(
-        RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
-        OPENROUTER_EVALUATION_REASONING_EFFORT,
-      );
-    } catch (error) {
-      // Reasoning-mandatory models (e.g. GLM-5.3-Flash) answer `effort: "none"`
-      // with a 400 — "Reasoning is mandatory for this endpoint" — which used to
-      // kill the whole answer-feedback flow. Retry without the control and let
-      // the model reason natively.
-      if (!(error instanceof LlmHttpError && error.status === 400)) throw error;
-      text = await attemptEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS, null);
+  try {
+    text = await attemptEvaluation(
+      RECALL_EVALUATION_MAX_OUTPUT_TOKENS,
+      reasoningEffort,
+    );
+  } catch (error) {
+    // Reasoning-mandatory models answer the control with a 400 — "Reasoning
+    // is mandatory for this endpoint" — which used to kill the whole
+    // answer-feedback flow. Retry without the control and let the model
+    // reason natively.
+    if (
+      !(error instanceof LlmHttpError && error.status === 400) ||
+      reasoningEffort === null
+    ) {
+      throw error;
     }
-  } else {
     text = await attemptEvaluation(RECALL_EVALUATION_MAX_OUTPUT_TOKENS, null);
   }
   return {
