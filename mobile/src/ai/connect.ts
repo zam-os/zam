@@ -278,7 +278,8 @@ export async function connectCloudModel(
     );
     if (existing) {
       existing.apiKey = key;
-      existing.label = descriptor.label;
+      // Not the label: a reconnect refreshes the key and the capabilities, and
+      // renaming a row the learner named is not part of that.
       existing.capabilities = { ...entry.flags };
       existing.detectedCapabilities = { ...entry.flags };
       existing.probedAt = now;

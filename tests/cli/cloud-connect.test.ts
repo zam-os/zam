@@ -15,7 +15,10 @@ import {
   CLOUD_PROVIDERS,
   OPENROUTER_PROVIDER,
 } from "../../src/cli/llm/cloud-providers.js";
-import { loadModelRegistry } from "../../src/cli/llm/model-registry.js";
+import {
+  loadModelRegistry,
+  saveModelRegistry,
+} from "../../src/cli/llm/model-registry.js";
 import {
   type Database,
   getMachineAiModels,
@@ -251,6 +254,25 @@ describe("connectCloudProvider", () => {
     expect(chat?.apiKey).toBe("sk-or-2");
     expect(chat?.order).toBe(first?.order);
     expect(storedKeys.map((k) => k.apiKey)).toEqual(["sk-or-1", "sk-or-2"]);
+  });
+
+  it("keeps names the learner gave the embedding and speech rows", async () => {
+    // The chat row already preserved its label; these two were rewritten to
+    // the provider name on every reconnect, so a rename never survived.
+    await connectCloudProvider(db, "openrouter", "sk-or-1", deps());
+    const renamed = (await loadModelRegistry(db)).map((row) =>
+      row.capabilities.text ? row : { ...row, label: `mine: ${row.model}` },
+    );
+    await saveModelRegistry(db, renamed);
+
+    await connectCloudProvider(db, "openrouter", "sk-or-2", deps());
+
+    const models = await loadModelRegistry(db);
+    for (const row of models.filter((m) => !m.capabilities.text)) {
+      expect(row.label).toBe(`mine: ${row.model}`);
+      // Still refreshed by the reconnect, just not renamed.
+      expect(row.apiKey).toBe("sk-or-2");
+    }
   });
 
   it("fails the save when the endpoint is unreachable", async () => {

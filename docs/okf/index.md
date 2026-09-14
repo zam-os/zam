@@ -20,6 +20,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 - [Local AI Runtimes](local-ai-runtimes.md) — Local text and image generation is offered only on accelerated hardware - Foundry Local for text, Ollama for images - because CPU generation is too slow to review with; embeddings are the exception and run on any machine.
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport, and the Agent Plugins package ships it with ZAM's portable skill for compatible clients.
 - [Standalone Mobile Libraries](mobile-standalone-libraries.md) — ZAM Mobile runs standalone libraries, per-learner Flash or answer review, and cell-first curriculum flows on Android and iOS; pairing remains an optional multi-device upgrade.
+- [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md) — Two-layer consent and the ObserverPolicy contract that governs screen capture across the CLI and the native Rust observer sidecar.
 - [Hands-Free Voice Mode](voice-mode.md) — Voice review shares one controller across device and cloud speech tiers, while learner-specific modes and simple-by-default settings keep advanced routing out of everyday use.
 
 ## data-model

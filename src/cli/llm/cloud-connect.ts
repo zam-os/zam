@@ -180,9 +180,19 @@ export async function connectCloudProvider(
     capabilities,
     detectedCapabilities:
       existing?.detectedCapabilities ?? emptyCapabilityFlags(),
+    // Probe-verdict fields must survive a re-registration of the same row.
+    ...(existing?.effort ? { effort: existing.effort } : {}),
+    ...(existing?.keyValid !== undefined
+      ? { keyValid: existing.keyValid }
+      : {}),
   };
 
-  const probe: CapabilityProbeResult = await deps.probe(candidate, {});
+  // The effort probe runs at onboarding too, so the connected row carries a
+  // verified reasoning level from its first evaluation on (ADR 2026-09-13,
+  // decision 6): without a verdict the evaluation runs with native reasoning.
+  const probe: CapabilityProbeResult = await deps.probe(candidate, {
+    reasoningEffortProbe: true,
+  });
   const validation = validateModelSave(candidate, probe);
   const saved = validation.entry;
   if (!validation.ok || !saved) {
@@ -215,7 +225,8 @@ export async function connectCloudProvider(
     embedFlags.embedding = true;
     const embedRow: ResolvedModelEntry = {
       id: embedExisting?.id ?? ulid(),
-      label: descriptor.label,
+      // Keep a name the learner chose, as the chat row above does.
+      label: embedExisting?.label ?? descriptor.label,
       url: descriptor.baseUrl,
       model: OPENROUTER_EMBEDDING_MODEL,
       local: false,
@@ -243,7 +254,7 @@ export async function connectCloudProvider(
     sttFlags.stt = true;
     const sttRow: ResolvedModelEntry = {
       id: sttExisting?.id ?? ulid(),
-      label: descriptor.label,
+      label: sttExisting?.label ?? descriptor.label,
       url: descriptor.baseUrl,
       model: OPENROUTER_STT_MODEL,
       local: false,

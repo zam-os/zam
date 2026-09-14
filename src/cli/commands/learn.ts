@@ -29,7 +29,6 @@ import {
   getTokenById,
   hostTimeZone,
   openDatabase,
-  resolveReviewContext,
   setSetting,
   t,
 } from "../../kernel/index.js";
@@ -40,6 +39,7 @@ import {
   evaluateAnswerViaLLM,
 } from "../llm/client.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import { resolveReviewContext } from "../review-context.js";
 import {
   buildShellSetupCommand,
   normalizeShell,

@@ -299,7 +299,7 @@ export const ONBOARDING_CHECKLIST_ITEMS: readonly OnboardingChecklistDescriptor[
     },
   ];
 
-/** Live signals the dashboard already has (bootstrap + check-due + probe). */
+/** Live signals the dashboard already has (bootstrap + probe). */
 export interface OnboardingChecklistState {
   /** A text LLM is enabled (bootstrap `llm.enabled`). */
   aiConnected: boolean;
@@ -310,7 +310,7 @@ export interface OnboardingChecklistState {
   agentConfigured: boolean | null;
   /** Active workspace's fresh-setup structure, from bootstrap. */
   workspaceStructure: OnboardingWorkspaceStructure | null;
-  /** Total cards in the user's deck (`check-due` stats); null while unknown. */
+  /** Total cards in the user's deck (bootstrap `dueSummary`); null while unknown. */
   cardsInDeck: number | null;
 }
 

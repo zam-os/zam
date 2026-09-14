@@ -1,11 +1,14 @@
 /**
- * Capability detection for the unified model registry (ADR 2026-07-12, phase 2).
+ * Capability detection for the unified model registry (ADR 2026-07-12, phase 2;
+ * ADR 2026-09-13).
  *
  * CLI-layer HTTP only (kernel stays AI-agnostic). On add / edit / re-probe we
  * query endpoint metadata — primarily the OpenAI `/v1/models` catalog plus
  * model-family heuristics — and never run functional text/vision smoke tests.
- * The one documented exception is an optional single `/v1/embeddings` dimension
- * probe when the catalog is silent about embeddings.
+ * Two documented exceptions, both optional single calls: a `/v1/embeddings`
+ * dimension probe when the catalog is silent about embeddings, and a
+ * reasoning-effort probe (one tiny chat call) that learns which reasoning
+ * level the endpoint accepts for evaluation.
  *
  * The classification step is a pure function so it is deterministic and unit-
  * testable without a live endpoint; `probeModelCapabilities` is the thin HTTP
@@ -13,16 +16,23 @@
  */
 
 import {
+  ALL_CAPABILITIES,
   type CapabilityFlags,
+  embeddingsEndpointUrl,
   emptyCapabilityFlags,
   getProviderApiKey,
   type ModelEntry,
 } from "../../kernel/index.js";
 import {
   DEFAULT_LLM_API_KEY,
+  enforceOpenRouterPrivacy,
+  getAvailableModelEntries,
   getAvailableModels,
   isLlmOnline,
+  isOpenRouterUrl,
+  probeKeyValidity,
 } from "./client.js";
+import { OPENROUTER_EVALUATION_REASONING_EFFORT } from "./cloud-providers.js";
 import { embedTexts } from "./embedder.js";
 
 /** Model-name fragments that mark an embeddings model. */
@@ -96,6 +106,44 @@ function catalogHasModel(catalog: string[], model: string): boolean {
   return catalog.some((id) => id.toLowerCase() === lower);
 }
 
+/**
+ * The rest of a provider's catalogue, for a model the main listing omits.
+ *
+ * `/models` is not always the whole story. OpenRouter answers it with its
+ * text models only: embedding ids live at `{base}/embeddings/models`, and
+ * speech ids appear only behind a modality filter. A model missing from the
+ * main listing is otherwise treated as one the endpoint does not offer, which
+ * makes `validateModelSave` refuse to store the row at all — so a working
+ * transcription or embedding model could not be added, nor even renamed.
+ *
+ * Asked only for a model whose *name* suggests a modality, and only after the
+ * main listing came back without it, so an ordinary chat probe still costs one
+ * request. An endpoint that does not know these paths or parameters answers
+ * with nothing, or with its normal list, and the verdict is unchanged.
+ */
+async function modalityCatalogue(
+  entry: Pick<ModelEntry, "url" | "model">,
+  apiKey: string,
+  looksEmbedding: boolean,
+): Promise<string[]> {
+  if (looksEmbedding) {
+    const embeddingsUrl = embeddingsEndpointUrl(entry.url);
+    if (embeddingsUrl === entry.url) return [];
+    return getAvailableModels(embeddingsUrl, apiKey);
+  }
+  if (matchesAny(entry.model, STT_MODEL_HINTS)) {
+    return getAvailableModels(
+      entry.url,
+      apiKey,
+      "?output_modalities=transcription",
+    );
+  }
+  if (matchesAny(entry.model, TTS_MODEL_HINTS)) {
+    return getAvailableModels(entry.url, apiKey, "?output_modalities=speech");
+  }
+  return [];
+}
+
 /** What `probeModelCapabilities` learned about an endpoint. */
 export interface CapabilityProbeResult {
   /** Whether the endpoint answered at all (drives the offline-save guard). */
@@ -104,6 +152,19 @@ export interface CapabilityProbeResult {
   catalog: string[];
   /** Capabilities the metadata actually supports. */
   detected: CapabilityFlags;
+  /**
+   * The reasoning-effort level the endpoint accepted during the optional
+   * effort probe: "none" when the control is honored, "minimal" when the
+   * model mandates reasoning at the lowest level. Absent = no verdict; the
+   * row keeps its stored setting.
+   */
+  effort?: "none" | "minimal";
+  /**
+   * Verdict of the key-validity check, when the provider publishes a
+   * key-metadata endpoint (OpenRouter `/auth/key`): true = the stored key
+   * authenticated, false = rejected. Absent = no such endpoint or no verdict.
+   */
+  keyValid?: boolean;
 }
 
 /**
@@ -117,6 +178,14 @@ export function classifyCapabilities(
   catalog: string[],
   catalogKnown: boolean,
   dimProbeEmbedding = false,
+  /**
+   * What the endpoint's own architecture metadata says about this exact model
+   * id: true declares the modality, false declares it absent, undefined means
+   * the endpoint publishes no modalities. Declared metadata wins; the name
+   * hints below only cover endpoints that publish none.
+   */
+  catalogImage?: boolean,
+  catalogVideo?: boolean,
 ): CapabilityFlags {
   const detected = emptyCapabilityFlags();
 
@@ -138,7 +207,16 @@ export function classifyCapabilities(
   const looksTts = matchesAny(entry.model, TTS_MODEL_HINTS);
 
   detected.embedding = looksEmbedding || dimProbeEmbedding;
-  detected.image = looksVision;
+  // Name hints age badly: `z-ai/glm-5.3-flash` and
+  // `deepseek/deepseek-v4.1-flash` are vision-capable per catalog but matched
+  // no hint, so every re-probe unchecked the learner's Vision box
+  // (reported 2026-09-13) — while `gpt-5.6-luna` kept it on the bare "gpt-5"
+  // substring. Where the catalog declares modalities, that answer beats the
+  // substring guess in both directions. Video is metadata-only: video input is
+  // rare and no name heuristic is worth a false positive, so endpoints without
+  // architecture metadata never report it.
+  detected.image = catalogImage ?? looksVision;
+  detected.video = catalogVideo ?? false;
   // Speech is claimed from the model *name*, so it must be checked against the
   // provider's own catalog exactly as text is. Without that gate a name that
   // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
@@ -164,13 +242,74 @@ function resolveApiKey(apiKeyRef?: string): string {
 }
 
 /**
- * Probe an endpoint's capabilities over HTTP. Metadata-only by default; when
- * the catalog is silent about embeddings and `embeddingDimProbe` is set, makes
- * one cheap `/v1/embeddings` call to confirm (the documented exception).
+ * Learn which reasoning-effort level the endpoint accepts, with one tiny chat
+ * call per level (the second documented probe exception, ADR 2026-09-13). The
+ * reply is discarded — only the status matters: `none` honored → "none" (the
+ * evaluation's cheapest setting); `none` rejected with a 400 → try "minimal",
+ * which reasoning-mandatory models (GLM-5.3-Flash) keep reasoning at the
+ * lowest level; anything else (other statuses, network errors) → no verdict,
+ * so the row keeps its stored setting and the evaluation's 400 retry remains
+ * the safety net.
+ */
+async function probeReasoningEffort(
+  entry: Pick<ModelEntry, "url" | "model" | "apiKeyRef">,
+  apiKey: string,
+): Promise<"none" | "minimal" | undefined> {
+  const attempt = async (effort: "none" | "minimal"): Promise<number> => {
+    const controller = new AbortController();
+    const timeoutId = setTimeout(() => controller.abort(), 15000);
+    try {
+      // A chat-completions call on OpenRouter carries the same routing
+      // preferences as every other one (ADR 2026-07-24 §5: no data
+      // collection, zero-data-retention providers) — the probe is a plain
+      // fetch only because fetchWithInteractiveTimeout would prompt on a TTY.
+      const url = `${entry.url}/chat/completions`;
+      const res = await fetch(url, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+          Authorization: `Bearer ${apiKey}`,
+        },
+        body: enforceOpenRouterPrivacy(
+          url,
+          JSON.stringify({
+            model: entry.model,
+            messages: [{ role: "user", content: "Reply with: OK" }],
+            max_tokens: 16,
+            reasoning: { effort },
+          }),
+        ),
+        signal: controller.signal,
+      });
+      await res.text().catch(() => "");
+      return res.status;
+    } catch {
+      return 0;
+    } finally {
+      clearTimeout(timeoutId);
+    }
+  };
+  const noneStatus = await attempt(OPENROUTER_EVALUATION_REASONING_EFFORT);
+  if (noneStatus >= 200 && noneStatus < 300) {
+    return OPENROUTER_EVALUATION_REASONING_EFFORT;
+  }
+  if (noneStatus !== 400) return undefined;
+  const minimalStatus = await attempt("minimal");
+  return minimalStatus >= 200 && minimalStatus < 300 ? "minimal" : undefined;
+}
+
+/**
+ * Probe an endpoint's capabilities over HTTP. Metadata-only by default; two
+ * optional single-call exceptions: an embeddings dimension probe when the
+ * catalog is silent (`embeddingDimProbe`), and a reasoning-effort probe for
+ * OpenRouter chat models (`reasoningEffortProbe`) that stores the level the
+ * evaluation should send. OpenRouter rows with a stored key additionally get
+ * a key-validity check (`/auth/key`, from client.ts), whose verdict rides
+ * along as `keyValid`.
  */
 export async function probeModelCapabilities(
   entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef">,
-  opts: { embeddingDimProbe?: boolean } = {},
+  opts: { embeddingDimProbe?: boolean; reasoningEffortProbe?: boolean } = {},
 ): Promise<CapabilityProbeResult> {
   const apiKey = resolveApiKey(entry.apiKeyRef);
 
@@ -190,11 +329,30 @@ export async function probeModelCapabilities(
     return { reachable: false, catalog: [], detected: emptyCapabilityFlags() };
   }
 
-  const catalog = await getAvailableModels(entry.url, apiKey);
+  const chatEntries = await getAvailableModelEntries(entry.url, apiKey);
+  const chatCatalog = chatEntries.map((e) => e.id);
+  const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
+
+  const catalog = catalogHasModel(chatCatalog, entry.model)
+    ? chatCatalog
+    : [
+        ...chatCatalog,
+        ...(await modalityCatalogue(entry, apiKey, looksEmbedding)),
+      ];
   const catalogKnown = catalog.length > 0;
 
+  // Image and video come from the matched catalog record's declared
+  // modalities, when the endpoint publishes them for this id; anything else
+  // (record missing, metadata without modalities) leaves the name hints in
+  // charge.
+  const catalogEntry = chatEntries.find(
+    (e) => e.id.toLowerCase() === entry.model.toLowerCase(),
+  );
+  const declared = catalogEntry?.inputModalities;
+  const catalogImage = declared ? declared.includes("image") : undefined;
+  const catalogVideo = declared ? declared.includes("video") : undefined;
+
   let dimProbeEmbedding = false;
-  const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
   if (opts.embeddingDimProbe && !catalogKnown && !looksEmbedding) {
     try {
       const [vector] = await embedTexts(
@@ -207,31 +365,78 @@ export async function probeModelCapabilities(
     }
   }
 
+  const detected = classifyCapabilities(
+    entry,
+    catalog,
+    catalogKnown,
+    dimProbeEmbedding,
+    catalogImage,
+    catalogVideo,
+  );
+
+  // Key validity is only checkable where the provider publishes a key-metadata
+  // endpoint (probeKeyValidity resolves it from the provider descriptor), and
+  // only for rows that store a credential of their own — the default sentinel
+  // would 401 and mark every keyless row broken.
+  const keyValid =
+    entry.apiKeyRef && apiKey !== DEFAULT_LLM_API_KEY
+      ? await probeKeyValidity(entry.url, apiKey)
+      : undefined;
+
+  // The effort level matters only where the evaluation sends the control —
+  // OpenRouter URLs — and only for models that actually serve chat. A key the
+  // endpoint rejected cannot probe effort: every call would 401.
+  const effort =
+    opts.reasoningEffortProbe &&
+    detected.text &&
+    keyValid !== false &&
+    isOpenRouterUrl(entry.url)
+      ? await probeReasoningEffort(entry, apiKey)
+      : undefined;
+
   return {
     reachable: true,
     catalog,
-    detected: classifyCapabilities(
-      entry,
-      catalog,
-      catalogKnown,
-      dimProbeEmbedding,
-    ),
+    detected,
+    effort,
+    keyValid,
   };
 }
 
 /**
- * Reconcile user-selected capabilities against a fresh probe: keep only the
- * flags the user wants AND the probe detected (ADR save rule 1 — auto-uncheck
- * unsupported). The only-shrink-until-reprobe rule is enforced by callers that
- * offer the checkbox ceiling; this function is the final intersection.
+ * Merge a fresh probe into a row's capability state (ADR 2026-07-12 save
+ * rule 1, reworked 2026-09-13 — capabilities are *detected*, not chosen):
+ *
+ * - detected and previously detected → keep the user's toggle, so a choice
+ *   made in the overview survives every re-probe;
+ * - detected but new since the last probe → switch on. A re-probe that
+ *   widens the row must not hand the learner another chore, and a fresh
+ *   row (nothing detected yet) starts with everything the endpoint offers;
+ * - no longer detected → off. The probe is the ceiling.
+ *
+ * One guard on the fresh-row path: a never-probed row that still carries
+ * selected flags is acting on its caller's explicit intent — the guided
+ * setups (Ollama vision → image only, Foundry text → text only) and
+ * `model-upsert --capabilities` — and that selection is honored instead of
+ * being flooded by everything the probe found. Only a row saved with no
+ * selection at all (the manual editor sends none) is seeded fully.
  */
-export function reconcileCapabilities(
-  userSelected: CapabilityFlags,
+export function mergeProbeCapabilities(
+  previous: CapabilityFlags,
+  previousDetected: CapabilityFlags,
   detected: CapabilityFlags,
 ): CapabilityFlags {
   const result = emptyCapabilityFlags();
-  for (const key of Object.keys(result) as (keyof CapabilityFlags)[]) {
-    result[key] = userSelected[key] && detected[key];
+  const neverProbed = ALL_CAPABILITIES.every((key) => !previousDetected[key]);
+  const explicit = ALL_CAPABILITIES.some((key) => previous[key] === true);
+  for (const key of ALL_CAPABILITIES) {
+    if (!detected[key]) continue;
+    result[key] =
+      neverProbed && explicit
+        ? previous[key] === true
+        : previousDetected[key]
+          ? previous[key] === true
+          : true;
   }
   return result;
 }
@@ -239,15 +444,16 @@ export function reconcileCapabilities(
 export interface ModelSaveValidation {
   ok: boolean;
   error?: string;
-  /** The reconciled entry to persist, present only when `ok`. */
+  /** The merged entry to persist, present only when `ok`. */
   entry?: ModelEntry;
 }
 
 /**
  * Apply the ADR save rules to a would-be registry entry using a fresh probe:
  * block when the endpoint is unreachable (rule 2 — no persisting unreachable
- * capabilities), otherwise stamp `detectedCapabilities`/`probedAt` and shrink
- * `capabilities` to the detected intersection (rule 1).
+ * capabilities), otherwise stamp `detectedCapabilities`/`probedAt` and merge
+ * `capabilities` with the detection (rule 1 — see
+ * {@link mergeProbeCapabilities}).
  */
 export function validateModelSave(
   entry: ModelEntry,
@@ -287,7 +493,16 @@ export function validateModelSave(
     ok: true,
     entry: {
       ...entry,
-      capabilities: reconcileCapabilities(entry.capabilities, probe.detected),
+      // The probe verdict is the freshest statement about the endpoint, so it
+      // overwrites whatever level the row stored before. No verdict → keep
+      // the stored level (the evaluation's retry still covers stale rows).
+      ...(probe.effort ? { effort: probe.effort } : {}),
+      ...(probe.keyValid !== undefined ? { keyValid: probe.keyValid } : {}),
+      capabilities: mergeProbeCapabilities(
+        entry.capabilities,
+        entry.detectedCapabilities,
+        probe.detected,
+      ),
       detectedCapabilities: probe.detected,
       probedAt: now(),
     },

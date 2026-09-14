@@ -14,6 +14,11 @@ import {
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
 import {
+  DEFAULT_LOCAL_ENDPOINT_URL,
+  DEFAULT_MODEL_ENDPOINT_URL,
+  MODEL_ENDPOINTS,
+} from "./model-endpoints.js";
+import {
   BLOOM_PACKS,
   currentLocale,
   type Locale,
@@ -289,7 +294,12 @@ interface ProviderRoleStatus {
   apiFlavor: string;
   local: boolean;
   usable: boolean;
-  reason?: "disabled" | "offline" | "model-not-found" | "unsupported-provider";
+  reason?:
+    | "disabled"
+    | "offline"
+    | "key-invalid"
+    | "model-not-found"
+    | "unsupported-provider";
 }
 
 interface ProviderStatusResponse {
@@ -334,6 +344,8 @@ interface ModelRow {
   probedAt?: string;
   apiKeyRef?: string;
   keyState: "set" | "missing" | "none";
+  /** Probe verdict from the provider's key-metadata endpoint; absent = never checked. */
+  keyValid?: boolean;
   /** ADR 2026-07-12a — "http" (default) or "agent". */
   transport?: "http" | "agent";
   /** Harness id when transport is "agent" (e.g. "claude-code"). */
@@ -1810,6 +1822,8 @@ function providerReasonText(status: ProviderRoleStatus): string {
   switch (status.reason) {
     case "model-not-found":
       return t("provider_model_missing");
+    case "key-invalid":
+      return t("model_status_key_invalid");
     case "unsupported-provider":
       return t("provider_unsupported");
     case "offline":
@@ -1892,6 +1906,10 @@ function refreshAiStatus(): void {
         );
       } else if (llm.reason === "model-not-found") {
         setAiStatus(t("ai_status_model_missing"), "gray");
+      } else if (llm.reason === "key-invalid") {
+        // A reachable cloud that rejected the stored key is not "offline":
+        // the fix is a re-paste in Settings, and the header should say so.
+        setAiStatus(t("model_status_key_invalid"), "gray");
       } else if (llm.local === false && (llm.model || llm.label)) {
         setAiStatus(
           tf("ai_status_cloud_offline", { model: display }),
@@ -2790,17 +2808,31 @@ async function loadAgentHarnessStatus(): Promise<void> {
   const list = document.getElementById("agent-harness-list");
   if (!list) return;
   try {
-    const status = await runBridge<{
-      success: boolean;
-      zamOnPath: boolean;
-      connectAutoDone: boolean;
-      harnesses: AgentHarnessStatusEntry[];
-    }>("agent-harness-status");
+    // The connect status is the row's reason to exist; the outbound adapter
+    // list and the model registry only decide whether a row also offers
+    // "Use as model", so their failure degrades to rows without that control.
+    const [status, outbound, registry] = await Promise.all([
+      runBridge<{
+        success: boolean;
+        zamOnPath: boolean;
+        connectAutoDone: boolean;
+        harnesses: AgentHarnessStatusEntry[];
+      }>("agent-harness-status"),
+      runBridge<{ harnesses?: AgentHarnessListEntry[] }>("agent-list").catch(
+        () => ({ harnesses: [] }),
+      ),
+      runBridge<{ models?: ModelRow[] }>("model-list").catch(() => ({
+        models: [],
+      })),
+    ]);
     if (status.connectAutoDone && agentConnectState === "not_run") {
       agentConnectState = "success";
       agentConnectErrorDetail = "";
     }
-    renderAgentHarnessList(status.harnesses);
+    renderAgentHarnessList(status.harnesses, {
+      outbound: outbound.harnesses ?? [],
+      models: registry.models ?? [],
+    });
     updateAgentConnectResultUI();
   } catch (err) {
     console.warn("Failed to load agent harness status:", err);
@@ -2816,7 +2848,20 @@ async function loadAgentHarnessStatus(): Promise<void> {
   }
 }
 
-function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
+/**
+ * What the Agents page needs beyond connect status to offer an installed CLI
+ * as a model: the outbound adapter facts (`agent-list`) and the registry, to
+ * mark harnesses that already back a model instead of adding a duplicate.
+ */
+interface AgentHarnessModelContext {
+  outbound: AgentHarnessListEntry[];
+  models: ModelRow[];
+}
+
+function renderAgentHarnessList(
+  harnesses: AgentHarnessStatusEntry[],
+  modelContext: AgentHarnessModelContext = { outbound: [], models: [] },
+): void {
   const list = document.getElementById("agent-harness-list");
   if (!list) return;
   list.textContent = "";
@@ -2843,6 +2888,31 @@ function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
 
     row.append(name, state);
 
+    // An installed CLI with an outbound adapter can also generate ZAM's text
+    // (and, for multimodal adapters, read images) through the learner's
+    // subscription — offer that right here instead of sending the learner
+    // through the Add-model form (ADR 2026-07-12a, agent transport). Gate on
+    // the adapter's own `detected`, not the connect-style install signal: a
+    // data root on disk proves the install, but only a resolvable executable
+    // proves the adapter can spawn it from this process. Otherwise the pick
+    // would persist an offline row and show "Model ✓" for a model that
+    // cannot generate.
+    const outbound = modelContext.outbound.find((h) => h.id === entry.harness);
+    if (entry.installed && outbound?.detected && outbound.outboundText) {
+      const inUse = modelContext.models.find(
+        (m) => m.transport === "agent" && m.agentHarness === entry.harness,
+      );
+      if (inUse) {
+        const badge = document.createElement("span");
+        badge.className = "agent-harness-state model";
+        badge.textContent = t("agent_model_in_use");
+        badge.title = inUse.label;
+        row.appendChild(badge);
+      } else {
+        row.appendChild(buildUseAsModelSelect(entry, outbound));
+      }
+    }
+
     // Connect stays available for already-connected hosts too — it refreshes
     // the global skill and companion extension idempotently.
     if (entry.installed || entry.configured) {
@@ -2856,6 +2926,98 @@ function renderAgentHarnessList(harnesses: AgentHarnessStatusEntry[]): void {
       row.appendChild(btn);
     }
     list.appendChild(row);
+  }
+}
+
+/**
+ * "Use as model ▾" for one installed CLI: a native select whose first option
+ * is the prompt, so a single pick creates the registry row. Image is offered
+ * only when the adapter actually forwards local image files; a text-only
+ * adapter would silently drop them and the choice would be a lie.
+ */
+function buildUseAsModelSelect(
+  entry: AgentHarnessStatusEntry,
+  outbound: AgentHarnessListEntry,
+): HTMLSelectElement {
+  const select = document.createElement("select");
+  select.className = "settings-select agent-harness-model-select";
+  select.setAttribute("aria-label", t("agent_model_use_as"));
+
+  const prompt = document.createElement("option");
+  prompt.value = "";
+  prompt.textContent = t("agent_model_use_as");
+  select.appendChild(prompt);
+
+  const textOpt = document.createElement("option");
+  textOpt.value = "text";
+  textOpt.textContent = t("agent_model_option_text");
+  select.appendChild(textOpt);
+
+  if (outbound.outboundImage) {
+    const imageOpt = document.createElement("option");
+    imageOpt.value = "text+image";
+    imageOpt.textContent = t("agent_model_option_text_image");
+    select.appendChild(imageOpt);
+  }
+
+  select.addEventListener("change", () => {
+    const choice = select.value;
+    if (!choice) return;
+    select.disabled = true;
+    void addAgentHarnessAsModel(
+      entry,
+      outbound,
+      choice === "text+image",
+      select,
+    );
+  });
+  return select;
+}
+
+/**
+ * Create an agent-transport model for an installed CLI with the same
+ * `model-upsert` arguments the Add-model form sends: text always, image on
+ * request, the adapter's recommended default model id, the harness label as
+ * the row label. On success the Agents list reloads and the row shows
+ * "Model ✓"; on failure the select comes back with the error on the row, so
+ * the connection-status line below keeps reporting connects only.
+ */
+async function addAgentHarnessAsModel(
+  entry: AgentHarnessStatusEntry,
+  outbound: AgentHarnessListEntry,
+  withImage: boolean,
+  select: HTMLSelectElement,
+): Promise<void> {
+  const args = [
+    "--transport",
+    "agent",
+    "--agent-harness",
+    entry.harness,
+    "--label",
+    entry.label,
+    "--capabilities",
+    JSON.stringify({ text: true, image: withImage }),
+  ];
+  if (outbound.defaultModel) args.push("--model", outbound.defaultModel);
+  try {
+    await runBridge("model-upsert", args);
+    // The AI-models editor may be open on the same Settings page; keep its
+    // table and the provider status in step with the new row.
+    await loadModelRegistry();
+    await loadProviderStatus();
+    void loadAgentHarnessStatus();
+  } catch (err) {
+    console.warn("agent model-upsert failed:", err);
+    select.disabled = false;
+    select.value = "";
+    // One note per row: a second failed pick replaces the first message.
+    select.parentElement
+      ?.querySelector(".agent-harness-error")
+      ?.remove();
+    const note = document.createElement("span");
+    note.className = "sub-label agent-harness-error";
+    note.textContent = tf("model_save_failed", { message: errorMessage(err) });
+    select.insertAdjacentElement("afterend", note);
   }
 }
 
@@ -2936,6 +3098,22 @@ function aiConfigStatusEl(): HTMLElement | null {
   return document.getElementById("ai-config-status");
 }
 
+function aiModelFormStatusEl(): HTMLElement | null {
+  return document.getElementById("ai-model-form-status");
+}
+
+/** Save/validation errors must render where the user is looking: the editor
+    is a modal now, and the section status line sits behind the overlay. */
+function showModelFormError(message: string): void {
+  const status = aiConfigStatusEl();
+  if (status) status.textContent = message;
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = message;
+    formStatus.classList.add("failed");
+  }
+}
+
 function capabilityLabel(cap: ModelCapability): string {
   switch (cap) {
     case "text":
@@ -2953,16 +3131,17 @@ function capabilityLabel(cap: ModelCapability): string {
   }
 }
 
-// Capabilities exposed in the Settings UI. stt/tts joined the list in 0.24.0:
-// voice mode's cloud tier reads `capabilities.stt`/`.tts`, and `validateModelSave`
-// intersects what the learner ticked with what the probe detected — so a
-// capability the editor never offers can never be stored, and a correctly
-// detected Whisper endpoint would sit there permanently unusable. `video` stays
-// out until something consumes it (ADR 2026-07-12, ADR 2026-07-31).
+// Capabilities the Settings UI knows about (ADR 2026-07-12, ADR 2026-07-31,
+// ADR 2026-09-13). stt/tts joined in 0.24.0 for voice mode. `video` joins as
+// its own modality: "vision" stays `image` (the Observer reads frames), while
+// direct video input is the Observer's future screen-recording path. The
+// overview renders only what a probe detected — capabilities are detected,
+// not chosen — so a row never offers a modality the endpoint lacks.
 const UI_CAPABILITIES: ModelCapability[] = [
   "text",
   "embedding",
   "image",
+  "video",
   "stt",
   "tts",
 ];
@@ -3025,6 +3204,34 @@ function textButton(label: string): HTMLButtonElement {
   return button;
 }
 
+/** Same shapes the CLI's `urlLooksLocal` treats as a local runner. */
+function looksLocalModelEndpoint(value: string): boolean {
+  return (
+    value.includes("localhost") ||
+    value.includes("127.0.0.1") ||
+    value.includes("[::1]") ||
+    value.includes("::1")
+  );
+}
+
+let endpointDatalist: HTMLDataListElement | null = null;
+
+/** One shared <datalist> with the well-known endpoints; built lazily so the
+    module stays side-effect-free at import time. */
+function ensureEndpointDatalist(): void {
+  if (endpointDatalist) return;
+  const list = document.createElement("datalist");
+  list.id = "model-endpoint-options";
+  for (const endpoint of MODEL_ENDPOINTS) {
+    const option = document.createElement("option");
+    option.value = endpoint.url;
+    option.textContent = endpoint.label;
+    list.appendChild(option);
+  }
+  document.body.appendChild(list);
+  endpointDatalist = list;
+}
+
 function isAgentModel(row: ModelRow): boolean {
   return row.transport === "agent";
 }
@@ -3072,35 +3279,41 @@ function createModelRow(
           model: modelId,
         });
   } else {
-    meta.textContent = `${row.model} · ${row.url}`;
+    // The probe stores the reasoning-effort level the evaluation sends;
+    // "minimal" marks a reasoning-mandatory model. The label comes from i18n,
+    // the level value itself is a technical identifier.
+    meta.textContent = row.effort
+      ? `${row.model} · ${row.url} · ${t("model_field_effort")}: ${row.effort}`
+      : `${row.model} · ${row.url}`;
   }
 
   const caps = document.createElement("div");
   caps.className = "ai-model-caps";
+  // Only what the last probe detected is shown, and every shown capability is
+  // freely toggleable — no edit dialog needed. A modality the endpoint gains
+  // later appears (enabled) on the next re-probe.
   for (const cap of UI_CAPABILITIES) {
-    // Agent entries: text always; image only when the harness is multimodal
-    // (e.g. Antigravity/Gemini). Embedding is never agent-backed.
-    if (agent && cap === "embedding") continue;
-    if (agent && cap === "image" && !row.detectedCapabilities.image) continue;
+    if (!row.detectedCapabilities[cap]) continue;
     const label = document.createElement("label");
     label.className = "ai-model-cap";
     const box = document.createElement("input");
     box.type = "checkbox";
     box.checked = row.capabilities[cap];
-    // The ceiling: only capabilities a probe detected can be enabled.
-    box.disabled = !row.detectedCapabilities[cap];
     box.addEventListener("change", () => {
       void toggleCapability(row, cap, box.checked);
     });
     const text = document.createElement("span");
     text.textContent = capabilityLabel(cap);
     label.append(box, text);
-    if (!row.detectedCapabilities[cap]) {
-      label.title = agent
-        ? t("model_agent_cap_undetected")
-        : t("model_cap_undetected");
-    }
     caps.append(label);
+  }
+  if (caps.children.length === 0) {
+    // An offline agent harness or an unprobed row would render an empty
+    // strip; keep the overview self-explaining instead.
+    const none = document.createElement("span");
+    none.className = "ai-model-caps-empty";
+    none.textContent = t("model_cap_none");
+    caps.append(none);
   }
 
   const statusChip = document.createElement("span");
@@ -3116,6 +3329,12 @@ function createModelRow(
     }
   } else if (row.keyState === "missing") {
     statusChip.textContent = t("model_status_key_missing");
+    statusChip.classList.add("warn");
+  } else if (row.keyValid === false) {
+    // The probe authenticated the stored key against the provider's
+    // key-metadata endpoint and was rejected — a broken paste used to sit
+    // unnoticed on a row whose keyState said "set".
+    statusChip.textContent = t("model_status_key_invalid");
     statusChip.classList.add("warn");
   } else if (row.probedAt) {
     statusChip.textContent = t("model_status_probed");
@@ -3234,6 +3453,14 @@ function hideModelForm(): void {
     form.classList.add("hidden");
     form.replaceChildren();
   }
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = "";
+    formStatus.classList.remove("failed");
+  }
+  document
+    .getElementById("ai-model-form-overlay")
+    ?.classList.remove("active");
 }
 
 function modelFieldLabel(
@@ -3251,7 +3478,10 @@ function modelFieldLabel(
 type ModelFormKind = "local" | "cloud" | "agent";
 
 function existingModelKind(existing: ModelRow | undefined): ModelFormKind {
-  if (!existing) return "local";
+  // A fresh row starts on cloud: onboarding connects OpenRouter, and the URL
+  // field opens prefilled with it. Local is one radio click away, and the
+  // kind switch prefills Ollama's URL on an untouched field.
+  if (!existing) return "cloud";
   if (isAgentModel(existing)) return "agent";
   return existing.local ? "local" : "cloud";
 }
@@ -3285,12 +3515,18 @@ async function showModelForm(id?: string): Promise<void> {
 
   form.classList.remove("hidden");
   form.replaceChildren();
-
-  const title = document.createElement("h3");
-  title.textContent = existing
-    ? t("model_form_edit_title")
-    : t("model_form_add_title");
-  form.appendChild(title);
+  const formStatus = aiModelFormStatusEl();
+  if (formStatus) {
+    formStatus.textContent = "";
+    formStatus.classList.remove("failed");
+  }
+  const titleEl = document.getElementById("ai-model-form-title");
+  if (titleEl) {
+    titleEl.textContent = existing
+      ? t("model_form_edit_title")
+      : t("model_form_add_title");
+  }
+  document.getElementById("ai-model-form-overlay")?.classList.add("active");
 
   const kindWrap = document.createElement("div");
   kindWrap.className = "provider-kind-switch";
@@ -3323,6 +3559,30 @@ async function showModelForm(id?: string): Promise<void> {
   const urlInput = document.createElement("input");
   urlInput.type = "url";
   urlInput.value = existing?.url ?? "";
+  // A fresh row starts on OpenRouter so adding a cloud model needs no URL
+  // hunting; the kind switch re-points an untouched field (Ollama for local).
+  // Anything the learner typed or any existing row is never re-pointed.
+  if (!existing) urlInput.value = DEFAULT_MODEL_ENDPOINT_URL;
+  urlInput.setAttribute("list", "model-endpoint-options");
+  ensureEndpointDatalist();
+  let urlTouched = Boolean(existing);
+  urlInput.addEventListener("input", () => {
+    urlTouched = true;
+    // Mirror of the kind→URL prefill, local direction only: picking Ollama
+    // from the datalist while the kind radio still sits on cloud would
+    // otherwise save the row with --no-local. Fresh rows only — an existing
+    // row's transport is never re-pointed by typing. The reverse direction is
+    // deliberately omitted: flipping Local→Cloud on a not-yet-local-looking
+    // partial input would yank the kind away from a LAN runner mid-typing.
+    if (existing) return;
+    if (
+      looksLocalModelEndpoint(urlInput.value.trim()) &&
+      selectedKind() === "cloud"
+    ) {
+      radios.get("local")!.checked = true;
+      syncKindVisibility();
+    }
+  });
   const modelInput = document.createElement("input");
   modelInput.type = "text";
   modelInput.value =
@@ -3446,25 +3706,9 @@ async function showModelForm(id?: string): Promise<void> {
   agentHint.className = "ai-provider-hint";
   agentHint.textContent = t("model_agent_hint");
 
-  const capsWrap = document.createElement("div");
-  capsWrap.className = "ai-model-caps";
-  const capBoxes = new Map<ModelCapability, HTMLInputElement>();
-  for (const cap of UI_CAPABILITIES) {
-    const label = document.createElement("label");
-    label.className = "ai-model-cap";
-    label.dataset.cap = cap;
-    const box = document.createElement("input");
-    box.type = "checkbox";
-    box.checked = existing?.capabilities[cap] ?? cap === "text";
-    const text = document.createElement("span");
-    text.textContent = capabilityLabel(cap);
-    label.append(box, text);
-    capsWrap.append(label);
-    capBoxes.set(cap, box);
-  }
-  const capHint = document.createElement("p");
-  capHint.className = "ai-provider-hint";
-  capHint.textContent = t("model_cap_hint");
+  // No capability checkboxes here: capabilities are detected by the probe on
+  // save (ADR 2026-09-13), a fresh row starts with everything detected
+  // enabled, and the overview row is where they get toggled.
 
   const grid = document.createElement("div");
   grid.className = "ai-provider-form-grid";
@@ -3508,32 +3752,6 @@ async function showModelForm(id?: string): Promise<void> {
     // Effort applies to agent harnesses that support it (e.g. Copilot).
     effortField.classList.toggle("hidden", !isAgent);
     agentHint.classList.toggle("hidden", !isAgent);
-    // Agent: text always; image when the selected harness adapter is multimodal.
-    // Embedding is never agent-backed.
-    const harnessMeta = harnesses.find((h) => h.id === harnessSelect.value);
-    const agentImageOk = isAgent && harnessMeta?.outboundImage === true;
-    for (const cap of UI_CAPABILITIES) {
-      const label = capsWrap.querySelector(
-        `label[data-cap="${cap}"]`,
-      ) as HTMLLabelElement | null;
-      if (!label) continue;
-      if (isAgent) {
-        const show = cap === "text" || (cap === "image" && agentImageOk);
-        label.classList.toggle("hidden", !show);
-        const box = capBoxes.get(cap);
-        if (box && cap === "text") box.checked = true;
-        if (box && cap === "image" && agentImageOk && !editingModelId) {
-          box.checked = true;
-        }
-      } else {
-        label.classList.remove("hidden");
-      }
-    }
-    capHint.textContent = isAgent
-      ? agentImageOk
-        ? t("model_agent_cap_hint_multimodal")
-        : t("model_agent_cap_hint")
-      : t("model_cap_hint");
     // Default label / model from harness when adding a new agent model.
     if (isAgent) {
       const selected = harnesses.find((h) => h.id === harnessSelect.value);
@@ -3545,7 +3763,18 @@ async function showModelForm(id?: string): Promise<void> {
   };
 
   for (const radio of radios.values()) {
-    radio.addEventListener("change", syncKindVisibility);
+    radio.addEventListener("change", () => {
+      // A kind switch re-points only a URL the learner never edited, so the
+      // prefill follows the kind without ever fighting an entered value.
+      if (!urlTouched) {
+        const switched = selectedKind();
+        if (switched === "local") urlInput.value = DEFAULT_LOCAL_ENDPOINT_URL;
+        else if (switched === "cloud") {
+          urlInput.value = DEFAULT_MODEL_ENDPOINT_URL;
+        }
+      }
+      syncKindVisibility();
+    });
   }
   harnessSelect.addEventListener("change", () => {
     if (selectedKind() === "agent") {
@@ -3563,7 +3792,8 @@ async function showModelForm(id?: string): Promise<void> {
   if (!editingModelId && existingModelKind(existing) === "agent") {
     syncAgentModelDefault(true);
   } else if (!editingModelId && !existing) {
-    // Default kind is local; model field will be filled when Agent is chosen.
+    // Default kind is cloud (OpenRouter prefilled); switching to Agent fills
+    // the harness default model via syncKindVisibility below.
   }
   syncKindVisibility();
 
@@ -3579,16 +3809,6 @@ async function showModelForm(id?: string): Promise<void> {
     if (saveButton.disabled) return;
     saveButton.disabled = true;
     const kind = selectedKind();
-    const capabilities: Record<string, boolean> = {};
-    for (const [cap, box] of capBoxes) {
-      if (kind === "agent") {
-        // Agent: text + optional image (multimodal harnesses); never embedding.
-        capabilities[cap] =
-          cap === "text" ? true : cap === "image" ? box.checked : false;
-      } else {
-        capabilities[cap] = box.checked;
-      }
-    }
     void saveModelForm({
       id: editingModelId ?? undefined,
       kind,
@@ -3599,7 +3819,6 @@ async function showModelForm(id?: string): Promise<void> {
       effort: effortSelect.value,
       key: keyInput.value.trim(),
       existingKeyRef: existing?.apiKeyRef,
-      capabilities,
     }).finally(() => {
       // The form is torn down on success; re-enabling only matters when it
       // stayed open because the save failed or a field was rejected.
@@ -3613,7 +3832,39 @@ async function showModelForm(id?: string): Promise<void> {
   cancelButton.addEventListener("click", hideModelForm);
   actions.append(saveButton, cancelButton);
 
-  form.append(kindWrap, grid, agentHint, capsWrap, capHint, actions);
+  form.append(kindWrap, grid, agentHint, actions);
+  // Focus the first field: leaving focus on the "+ Add model" button behind
+  // the overlay strands keyboard users. (aria-modal only tells assistive
+  // technology the dialog is modal; it does not make the page inert.)
+  labelInput.focus();
+}
+
+/** Whether the model add/edit dialog is currently shown. */
+function isModelFormOpen(): boolean {
+  return (
+    document
+      .getElementById("ai-model-form-overlay")
+      ?.classList.contains("active") ?? false
+  );
+}
+
+/**
+ * Escape and a click on the backdrop close the model dialog like Cancel does.
+ * The backdrop counts only when the click lands on the overlay itself — a
+ * click inside the box (a half-typed key, a select) must never dismiss it.
+ */
+function wireModelFormDismissal(): void {
+  const overlay = document.getElementById("ai-model-form-overlay");
+  if (!overlay) return;
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) hideModelForm();
+  });
+  window.addEventListener("keydown", (event: KeyboardEvent) => {
+    if (event.key === "Escape" && isModelFormOpen()) {
+      event.preventDefault();
+      hideModelForm();
+    }
+  });
 }
 
 interface ModelFormData {
@@ -3627,7 +3878,6 @@ interface ModelFormData {
   effort?: string;
   key: string;
   existingKeyRef?: string;
-  capabilities: Record<string, boolean>;
 }
 
 async function saveModelForm(data: ModelFormData): Promise<void> {
@@ -3635,7 +3885,7 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
 
   if (data.kind === "agent") {
     if (!data.agentHarness) {
-      if (status) status.textContent = t("model_agent_missing_harness");
+      showModelFormError(t("model_agent_missing_harness"));
       return;
     }
     const harnesses = await loadOutboundAgentHarnesses();
@@ -3648,11 +3898,6 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
       data.agentHarness,
       "--label",
       label,
-      "--capabilities",
-      JSON.stringify({
-        text: true,
-        image: data.capabilities.image === true,
-      }),
     ];
     if (data.model) {
       args.push("--model", data.model);
@@ -3669,17 +3914,17 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
       await loadProviderStatus();
       if (status) status.textContent = tf("model_saved", { label });
     } catch (err) {
-      if (status) {
-        status.textContent = tf("model_save_failed", {
+      showModelFormError(
+        tf("model_save_failed", {
           message: errorMessage(err),
-        });
-      }
+        }),
+      );
     }
     return;
   }
 
   if (!data.url || !data.model) {
-    if (status) status.textContent = t("model_missing_fields");
+    showModelFormError(t("model_missing_fields"));
     return;
   }
   const label = data.label || data.model;
@@ -3693,11 +3938,11 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     try {
       await runBridge("provider-set-key", ["--ref", keyRef, "--key", data.key]);
     } catch (err) {
-      if (status) {
-        status.textContent = tf("model_save_failed", {
+      showModelFormError(
+        tf("model_save_failed", {
           message: errorMessage(err),
-        });
-      }
+        }),
+      );
       return;
     }
   }
@@ -3711,12 +3956,15 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     data.url,
     "--model",
     data.model,
-    "--capabilities",
-    JSON.stringify(data.capabilities),
     ...(isLocal ? ["--local"] : ["--no-local"]),
   ];
   if (data.id) args.push("--id", data.id);
   if (!isLocal && keyRef) args.push("--key-ref", keyRef);
+  // A replacement secret is stored under the row's existing ref, so every
+  // argument below stays identical while the credential changes. Say so, or
+  // the bridge takes this for a rename and keeps a verification that was
+  // earned by the previous key.
+  if (!isLocal && data.key) args.push("--key-changed");
 
   try {
     await runBridge("model-upsert", args);
@@ -3725,11 +3973,11 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
     await loadProviderStatus();
     if (status) status.textContent = tf("model_saved", { label });
   } catch (err) {
-    if (status) {
-      status.textContent = tf("model_save_failed", {
+    showModelFormError(
+      tf("model_save_failed", {
         message: errorMessage(err),
-      });
-    }
+      }),
+    );
   }
 }
 
@@ -3743,6 +3991,7 @@ function toggleAiConfigEditor(): void {
     ? t("btn_ai_config_close")
     : t("btn_ai_config_open");
   if (aiConfigEditorOpen) void loadModelRegistry();
+  else hideModelForm();
 }
 
 interface InstallRepairReport {
@@ -4774,8 +5023,8 @@ let onboardingWorkspaceStructure: OnboardingWorkspaceStructure = {
   missing: [],
   complete: false,
 };
-// Dashboard checklist state (Phase 9). Deck size comes from check-due's
-// stats; the agent probe answers asynchronously. Both stay null until known
+// Dashboard checklist state (Phase 9). Deck size comes from the bootstrap
+// dueSummary; the agent probe answers asynchronously. Both stay null until known
 // so the checklist never claims a gap it has not positively established.
 let deckCardCount: number | null = null;
 let agentHarnessConfigured: boolean | null = null;
@@ -5770,6 +6019,7 @@ async function loadDashboard() {
       userId: string;
       locale: string;
       llm: { enabled: boolean };
+      dueSummary: { dueCount: number; domains: string[]; cardsInDeck: number };
       activeWorkspaceId?: string;
       workspaceDir?: string;
       onboardingDone?: boolean;
@@ -5818,8 +6068,10 @@ async function loadDashboard() {
     void loadProviderStatus();
     runAgentAutoConnectOnce();
 
-    // 2. Vault-backed secrets (e.g. Turso token in Bitwarden) must resolve
-    // before any DB read — otherwise we silently hit an empty local file.
+    // 2. Vault-backed secrets (e.g. a Turso token in Bitwarden) must resolve
+    // before the database is read: the bootstrap above already opens it, and
+    // a locked vault fails that open with BITWARDEN_REQUIRED, which the catch
+    // below turns into the unlock modal and a reload.
     clearDashboardError();
     beginBootStep("vault");
     const vaultOk = await assureBitwardenAccess();
@@ -5831,30 +6083,14 @@ async function loadDashboard() {
     }
     completeBootStep("vault");
 
-    // 3. Check due cards count and active domains
-    let dueInfo: {
-      dueCount: number;
-      domains: string[];
-      stats?: { cardsInDeck?: number };
-    };
+    // 3. Due cards count and active domains. The digest rides the
+    // desktop-bootstrap payload (plan 2026-09-02 Phase 3) — the same values
+    // the check-due command used to return here, without a second bridge
+    // command and its nine reads on every dashboard load.
     beginBootStep("cards");
-    try {
-      dueInfo = await runBridge<{
-        dueCount: number;
-        domains: string[];
-        stats?: { cardsInDeck?: number };
-      }>("check-due");
-    } catch (err) {
-      const retried = await assureBitwardenAccessAfterError(err);
-      if (!retried) throw err;
-      dueInfo = await runBridge<{
-        dueCount: number;
-        domains: string[];
-        stats?: { cardsInDeck?: number };
-      }>("check-due");
-    }
+    const dueInfo = settings.dueSummary;
     totalDue = dueInfo.dueCount;
-    deckCardCount = dueInfo.stats?.cardsInDeck ?? null;
+    deckCardCount = dueInfo.cardsInDeck;
     completeBootStep("cards");
 
     const dueCountEl = document.getElementById("due-count")!;
@@ -5877,7 +6113,7 @@ async function loadDashboard() {
     }
 
     // Remaining-setup checklist (plan Phase 9): render synchronously from
-    // what bootstrap and check-due established, then refresh once the async
+    // what the bootstrap payload established, then refresh once the async
     // agent probe answers.
     renderOnboardingChecklist();
     void refreshAgentChecklistSignal();
@@ -6309,6 +6545,7 @@ async function submitAndReveal() {
   let aiFeedbackText = "";
   let evaluationModel: string | null = null;
   let evaluationSuccessful = false;
+  let evaluationError = "";
 
   // Run LLM evaluation if enabled and user wrote an answer
   if (
@@ -6356,11 +6593,14 @@ async function submitAndReveal() {
         aiFeedbackText = evalPayload.evaluation;
         evaluationModel = evalPayload.evaluationModel ?? null;
         evaluationSuccessful = true;
+        evaluationError = "";
       } else {
+        evaluationError = evalPayload.error ?? "";
         console.warn("LLM evaluation returned error state:", evalPayload.error);
       }
     } catch (err) {
       if (requestId !== evaluationRequestId) return;
+      evaluationError = err instanceof Error ? err.message : String(err);
       console.warn("LLM evaluation call failed:", err);
     } finally {
       if (requestId === evaluationRequestId) {
@@ -6370,7 +6610,12 @@ async function submitAndReveal() {
   }
 
   if (requestId !== evaluationRequestId) return;
-  renderReveal(aiFeedbackText, evaluationSuccessful, evaluationModel);
+  renderReveal(
+    aiFeedbackText,
+    evaluationSuccessful,
+    evaluationModel,
+    evaluationError,
+  );
   revealInProgress = false;
   updateReviewControlState();
 }
@@ -6379,13 +6624,27 @@ function renderReveal(
   aiFeedbackText: string,
   evaluationSuccessful: boolean,
   evaluationModel: string | null,
+  evaluationError = "",
 ) {
   if (!activeCard) return;
 
   // Display feedback if evaluated
   const feedbackContainer = document.getElementById("ai-feedback-container")!;
   const feedbackTextEl = document.getElementById("ai-feedback-text")!;
-  
+  const evaluationErrorNote = document.getElementById(
+    "evaluation-error-note",
+  )!;
+  const evaluationErrorText = document.getElementById(
+    "evaluation-error-text",
+  )!;
+  const evaluationErrorDetails = document.getElementById(
+    "evaluation-error-details",
+  ) as HTMLDetailsElement;
+  const evaluationErrorDetailsLabel = document.getElementById(
+    "evaluation-error-details-label",
+  )!;
+  const evaluationErrorRaw = document.getElementById("evaluation-error-raw")!;
+
   if (evaluationSuccessful && aiFeedbackText) {
     feedbackTextEl.textContent = aiFeedbackText;
     setModelAttributionBadge(
@@ -6395,9 +6654,24 @@ function renderReveal(
         : null,
     );
     feedbackContainer.classList.remove("hidden");
+    evaluationErrorNote.classList.add("hidden");
   } else {
     setModelAttributionBadge("evaluation-model-badge", null);
     feedbackContainer.classList.add("hidden");
+    // The static reference answer shows instead of feedback, but the learner
+    // must still see WHY the AI stayed silent — a config problem should not
+    // masquerade as a normal flash-mode reveal. The learner gets one plain
+    // sentence; the raw bridge error (HTTP status, provider body) is kept
+    // behind a collapsed "Details", where whoever fixes the setup finds it.
+    evaluationErrorText.textContent = evaluationError
+      ? t("study_evaluation_unavailable")
+      : "";
+    evaluationErrorDetailsLabel.textContent = t("study_evaluation_details");
+    evaluationErrorRaw.textContent = evaluationError
+      ? tf("study_evaluation_failed", { message: evaluationError })
+      : "";
+    evaluationErrorDetails.open = false;
+    evaluationErrorNote.classList.toggle("hidden", !evaluationError);
   }
 
   // Populate Musterlösung / Reference Answer
@@ -7855,6 +8129,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initBootOverlay();
   initializeTranslations();
   initSettingsViewModeControls();
+  wireModelFormDismissal();
   setupLocaleSwitcher();
   initPanel("learning-content", () => initLearningContentStudio());
   initPanel("curriculum-wizard", () => {

@@ -26,6 +26,7 @@ import {
 } from "../../../src/kernel/models/token-embedding.js";
 import { resolveMobileCloudChain } from "../model-registry.js";
 import { CLOUD_EMBEDDING_MODEL_ID } from "./connect.js";
+import { embeddingsEndpointUrl } from "../../../src/kernel/util/embeddings-url.js";
 
 /** Tokens embedded per pass. Small on purpose: every vector costs money. */
 export const EMBED_BATCH = 16;
@@ -52,7 +53,7 @@ export async function requestEmbeddings(
   inputs: string[],
   fetchImpl: typeof fetch = fetch,
 ): Promise<number[][]> {
-  const response = await fetchImpl(`${endpoint.url}/embeddings`, {
+  const response = await fetchImpl(embeddingsEndpointUrl(endpoint.url), {
     method: "POST",
     headers: {
       "Content-Type": "application/json",

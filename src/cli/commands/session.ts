@@ -25,19 +25,21 @@ import {
   CardNotDueError,
   CardNotReviewableError,
   endSession,
-  fetchActiveWorkItems,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
   hostTimeZone,
   isObserverPolicyConfigured,
-  loadADOConfig,
   logStep,
   OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   prepareSessionSynthesis,
   startSession,
 } from "../../kernel/index.js";
+import {
+  fetchActiveWorkItems,
+  loadADOConfig,
+} from "../connectors/azure-devops.js";
 import { formatHeader } from "../learn-format.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
 import { resolveUser } from "../users/identity.js";

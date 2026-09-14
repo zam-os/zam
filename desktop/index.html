@@ -603,7 +603,6 @@
                   + Add model
                 </button>
               </div>
-              <div id="ai-provider-form" class="ai-provider-form hidden"></div>
               <div id="ai-role-bindings" class="ai-role-bindings"></div>
             </div>
           </article>
@@ -1092,6 +1091,19 @@
                 </p>
               </div>
 
+              <!-- Shown instead of feedback when the AI evaluation failed, so a
+                   broken model config says what happened instead of silently
+                   degrading to the static answer with no follow-ups. One plain
+                   line for the learner; the raw bridge error stays one click
+                   away for whoever fixes the setup. -->
+              <div class="evaluation-error-note hidden" id="evaluation-error-note">
+                <p class="evaluation-error-text" id="evaluation-error-text"></p>
+                <details class="evaluation-error-details" id="evaluation-error-details">
+                  <summary id="evaluation-error-details-label">Details</summary>
+                  <p class="evaluation-error-raw" id="evaluation-error-raw"></p>
+                </details>
+              </div>
+
               <!-- POST-REVEAL CARD MANAGEMENT (stays visible with AI feedback) -->
               <div class="study-edit-controls">
                 <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
@@ -1289,6 +1301,21 @@
           <div class="modal-actions">
             <button id="btn-study-confirm-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-study-confirm-ok" class="btn primary-btn btn-sm" type="button">Not for me</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- AI MODEL ADD/EDIT MODAL — the editor used to render at a fixed spot
+           below the whole model list, off-screen whenever more than a couple
+           of models were configured; as a dialog it opens where the user is. -->
+      <div id="ai-model-form-overlay" class="modal-overlay">
+        <div class="modal-box ai-model-form-modal" role="dialog" aria-modal="true" aria-labelledby="ai-model-form-title">
+          <div class="modal-header">
+            <h3 id="ai-model-form-title">Model</h3>
+          </div>
+          <div class="modal-body">
+            <p id="ai-model-form-status" class="sub-label settings-status-row" role="status"></p>
+            <div id="ai-provider-form" class="ai-provider-form hidden"></div>
           </div>
         </div>
       </div>

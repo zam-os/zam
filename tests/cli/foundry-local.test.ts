@@ -1,5 +1,9 @@
 import { describe, expect, it } from "vitest";
 import {
+  classifyCapabilities,
+  validateModelSave,
+} from "../../src/cli/llm/capability-probe.js";
+import {
   chooseFoundryRecommendations,
   foundryHttpModelId,
   getFoundryLocalStatus,
@@ -8,6 +12,10 @@ import {
   type FoundryLocalDeps,
 } from "../../src/cli/llm/foundry-local.js";
 import { promoteModelToPrimary } from "../../src/cli/llm/model-registry.js";
+import {
+  type ModelEntry,
+  emptyCapabilityFlags,
+} from "../../src/kernel/index.js";
 
 const MODELS: FoundryCatalogModel[] = [
   {
@@ -185,5 +193,51 @@ describe("Foundry Local setup", () => {
     expect(
       calls.some((call) => call[1] === "model" && call[2] === "download"),
     ).toBe(false);
+  });
+});
+
+describe("Foundry text rows keep the guided text-only selection", () => {
+  it("saves a qwen3.5 build without image even though the name hint would grant it", () => {
+    // The real save path (setupFoundryLocalForZam) composes exactly these two
+    // calls: classify from the probe, then validateModelSave with the guided
+    // `{ text: true }` selection. Foundry publishes no architecture metadata,
+    // so the `qwen3.5-` hint detects image for the chat build — and flooding
+    // the deliberate selection would reactivate the Foundry image path as the
+    // primary vision transport, which local-ai-runtimes documents as
+    // unreliable for image input.
+    const modelId = foundryHttpModelId({
+      id: "qwen3.5-0.8b-generic-npu:2",
+      alias: "qwen3.5-0.8b",
+    });
+    const detected = classifyCapabilities(
+      { model: modelId, apiFlavor: "chat-completions" },
+      [modelId],
+      true,
+    );
+    expect(detected).toMatchObject({ text: true, image: true });
+
+    const candidate: ModelEntry = {
+      id: "foundry-text",
+      label: "Foundry Local Text",
+      url: "http://127.0.0.1:5273/v1",
+      model: modelId,
+      local: true,
+      apiFlavor: "chat-completions",
+      runner: "foundry",
+      order: 0,
+      capabilities: { ...emptyCapabilityFlags(), text: true },
+      detectedCapabilities: emptyCapabilityFlags(),
+    };
+    const result = validateModelSave(candidate, {
+      reachable: true,
+      catalog: [modelId],
+      detected,
+    });
+
+    expect(result.ok).toBe(true);
+    expect(result.entry?.capabilities).toMatchObject({
+      text: true,
+      image: false,
+    });
   });
 });

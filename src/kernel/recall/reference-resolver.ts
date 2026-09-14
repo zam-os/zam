@@ -21,6 +21,23 @@ export interface ReviewContext {
   truncated: boolean;
 }
 
+/** Minimal transport the resolver needs; `globalThis.fetch` satisfies it. */
+export type ReferenceFetcher = (url: string) => Promise<{
+  ok: boolean;
+  status: number;
+  statusText: string;
+  text(): Promise<string>;
+}>;
+
+export interface ResolveReferenceOptions {
+  fetch?: ReferenceFetcher;
+}
+
+export interface ResolveReviewContextOptions {
+  fetch?: ReferenceFetcher;
+  maxChars?: number;
+}
+
 /** Default cap on resolved content length, so bridge JSON / terminal output stays bounded. */
 export const DEFAULT_REVIEW_CONTEXT_MAX_CHARS = 6000;
 
@@ -34,8 +51,12 @@ type CachedReviewContext = {
 
 const reviewContextCache = new Map<string, CachedReviewContext>();
 
-function reviewContextCacheKey(sourceLink: string, maxChars: number): string {
-  return `${sourceLink}\0${maxChars}`;
+function reviewContextCacheKey(
+  sourceLink: string,
+  maxChars: number,
+  hasFetcher: boolean,
+): string {
+  return `${sourceLink}\0${maxChars}\0${hasFetcher ? "1" : "0"}`;
 }
 
 /** Clear the in-process review-context cache (mainly for tests). */
@@ -103,6 +124,7 @@ function extractLines(content: string, anchor: string): string {
  */
 export async function resolveReference(
   sourceLink: string,
+  opts: ResolveReferenceOptions = {},
 ): Promise<ResolvedReference> {
   const cleaned = sourceLink.trim();
 
@@ -129,6 +151,8 @@ export async function resolveReference(
 
   // 2. HTTP/HTTPS URLs
   if (cleaned.startsWith("http://") || cleaned.startsWith("https://")) {
+    const fetcher = opts.fetch;
+
     // 2.a GitHub URIs
     const gitHubMatch =
       /^https?:\/\/(?:www\.)?github\.com\/([^/]+)\/([^/]+)\/blob\/([^/]+)\/(.+)$/i.exec(
@@ -166,28 +190,38 @@ export async function resolveReference(
       }
 
       // Remote fallback: fetch raw content from githubusercontent
-      const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filePath}`;
-      try {
-        const response = await fetch(rawUrl);
-        if (response.ok) {
-          let rawText = await response.text();
-          if (anchor) {
-            rawText = extractLines(rawText, anchor);
+      if (fetcher) {
+        const rawUrl = `https://raw.githubusercontent.com/${owner}/${repo}/${branch}/${filePath}`;
+        try {
+          const response = await fetcher(rawUrl);
+          if (response.ok) {
+            let rawText = await response.text();
+            if (anchor) {
+              rawText = extractLines(rawText, anchor);
+            }
+            return {
+              sourceType: "remote_web",
+              content: rawText,
+              url: cleaned,
+            };
           }
-          return {
-            sourceType: "remote_web",
-            content: rawText,
-            url: cleaned,
-          };
+        } catch (_e) {
+          // Fallback to generic URL loading
         }
-      } catch (_e) {
-        // Fallback to generic URL loading
       }
     }
 
     // 2.b Generic HTTPS/HTTP URLs
+    if (!fetcher) {
+      return {
+        sourceType: "remote_web",
+        content: `Error fetching URL reference: No HTTP fetcher configured\nLink: ${cleaned}`,
+        url: cleaned,
+      };
+    }
+
     try {
-      const response = await fetch(cleaned);
+      const response = await fetcher(cleaned);
       if (response.ok) {
         const text = await response.text();
         const cleanText = htmlToText(text);
@@ -247,19 +281,20 @@ export async function resolveReference(
  */
 export async function resolveReviewContext(
   sourceLink: string | null | undefined,
-  opts: { maxChars?: number } = {},
+  opts: ResolveReviewContextOptions = {},
 ): Promise<ReviewContext | null> {
   const cleaned = sourceLink?.trim();
   if (!cleaned) return null;
 
   const maxChars = opts.maxChars ?? DEFAULT_REVIEW_CONTEXT_MAX_CHARS;
-  const cacheKey = reviewContextCacheKey(cleaned, maxChars);
+  const hasFetcher = Boolean(opts.fetch);
+  const cacheKey = reviewContextCacheKey(cleaned, maxChars, hasFetcher);
   const cached = reviewContextCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.context;
   }
 
-  const resolved = await resolveReference(cleaned);
+  const resolved = await resolveReference(cleaned, { fetch: opts.fetch });
 
   let content = resolved.content;
   let truncated = false;

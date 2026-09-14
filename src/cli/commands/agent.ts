@@ -191,7 +191,7 @@ const connectCmd = new Command("connect")
   )
   .argument(
     "[harness]",
-    "Optional harness: claude-code | claude-desktop | antigravity | codex | vscode | opencode | goose | copilot | hermes",
+    "Optional harness: claude-code | claude-desktop | antigravity | codex | vscode | opencode | goose | copilot | hermes | zcode | grok",
   )
   .option(
     "--print",
@@ -213,6 +213,11 @@ const connectCmd = new Command("connect")
     const report = performAgentConnect({
       harness: explicitHarness,
       dryRun: Boolean(opts.print),
+      // An explicit `zam agent connect claude-code` inside a repository keeps
+      // the historical workspace `.mcp.json` target (shareable with the
+      // team); every other path — auto-detect, bridge, App — connects Claude
+      // Code at the user scope.
+      claudeCodeScope: explicitHarness === "claude-code" ? "project" : "user",
     });
 
     if (report.detected.length === 0) {

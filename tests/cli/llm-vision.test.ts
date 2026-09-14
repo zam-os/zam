@@ -1,10 +1,31 @@
 import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import { checkVisionReadiness } from "../../src/cli/llm/client.js";
 import { observeUiSnapshotViaLLM } from "../../src/cli/llm/vision.js";
-import { openDatabase, setSetting } from "../../src/kernel/index.js";
+
+// Foundry never starts in these tests: a prepare failure is the one local
+// failure the offline tier must not read as "the cloud answered".
+vi.mock("../../src/cli/llm/foundry-local.js", async (importActual) => {
+  const actual = await importActual<
+    typeof import("../../src/cli/llm/foundry-local.js")
+  >();
+  return {
+    ...actual,
+    ensureFoundryModelLoaded: async () => ({
+      ok: false,
+      error: "Foundry Local is not installed.",
+    }),
+  };
+});
+import {
+  type CapabilityFlags,
+  type ModelEntry,
+  openDatabase,
+  saveMachineAiModels,
+  setSetting,
+} from "../../src/kernel/index.js";
 
 const PNG_BYTES = Buffer.from([0x89, 0x50, 0x4e, 0x47, 0x0d, 0x0a, 0x1a, 0x0a]);
 
@@ -429,3 +450,240 @@ describe("vision UI observer adapter", () => {
       await db.close();
     }
   });
+
+// Registry rows (ADR 2026-07-12) instead of legacy role bindings: the offline
+// tier is decided when resolveCapability links the chain, so it only exists
+// for registry-resolved endpoints.
+describe("vision offline tier", () => {
+  const imageCaps = (): CapabilityFlags => ({
+    text: false,
+    embedding: false,
+    image: true,
+    video: false,
+    stt: false,
+    tts: false,
+  });
+  const rows = (): ModelEntry[] => [
+    {
+      id: "cloud-vision",
+      label: "Cloud vision",
+      url: "https://vision.openrouter.ai/api/v1",
+      model: "cloud/vision",
+      local: false,
+      apiFlavor: "chat-completions",
+      order: 0,
+      capabilities: imageCaps(),
+      detectedCapabilities: imageCaps(),
+    },
+    {
+      id: "local-vision",
+      label: "Ollama vision",
+      url: "http://localhost:11434/v1",
+      model: "qwen3-vl:4b",
+      local: true,
+      apiFlavor: "chat-completions",
+      runner: "ollama",
+      order: 1,
+      capabilities: imageCaps(),
+      detectedCapabilities: imageCaps(),
+    },
+  ];
+  // The Ollama row answers on its native /api/chat shape (see
+  // requestOllamaVisionDraft), not the OpenAI-compatible one.
+  const draft = () =>
+    new Response(
+      JSON.stringify({
+        message: {
+          content: JSON.stringify({
+            kind: "help-seeking",
+            summary: "Lokal gelaufen.",
+            actions: [],
+            candidateTokens: [],
+            confidence: 0.7,
+          }),
+        },
+      }),
+    );
+  const observe = (db: Awaited<ReturnType<typeof openDatabase>>) =>
+    observeUiSnapshotViaLLM(db, {
+      sessionId: "s-offline",
+      sequence: 1,
+      observedFrom: "2026-09-13T00:00:00.000Z",
+      observedTo: "2026-09-13T00:00:01.000Z",
+      imagePath: makeSnapshot(),
+      application: { processName: "explorer.exe" },
+    });
+
+  it("uses the local vision row when the cloud does not answer", async () => {
+    saveMachineAiModels(rows());
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url).startsWith("https://vision.")) {
+        throw new TypeError("fetch failed");
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("keeps the local vision row out when the cloud answered and refused", async () => {
+    saveMachineAiModels(rows());
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url).startsWith("https://vision.")) {
+        // The draft request itself is refused with a 4xx: the cloud spoke.
+        return new Response("image input unsupported", { status: 400 });
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      await expect(observe(db)).rejects.toThrow();
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(false);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("treats a 5xx on the draft request as silence and uses the local row", async () => {
+    saveMachineAiModels(rows());
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      const text = String(url);
+      if (text.startsWith("https://vision.")) {
+        // A healthy catalog says nothing about the serving path.
+        if (text.endsWith("/models")) {
+          return new Response(JSON.stringify({ data: [{ id: "cloud/vision" }] }));
+        }
+        return new Response("upstream error", { status: 502 });
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("a local row that fails to prepare does not shut the tier for the next local row", async () => {
+    const [cloud, local] = rows();
+    saveMachineAiModels([
+      cloud,
+      {
+        ...local,
+        id: "foundry-vision",
+        label: "Foundry vision",
+        url: "http://127.0.0.1:5273/v1",
+        model: "qwen3.5-0.8b",
+        runner: "foundry",
+        order: 1,
+      },
+      { ...local, order: 2 },
+    ]);
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      if (String(url).startsWith("https://vision.")) {
+        throw new TypeError("fetch failed");
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      // Cloud silent → Foundry row (prepare throws, mocked) → Ollama row must
+      // still run: a local failure is not the cloud speaking.
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("127.0.0.1:5273"))).toBe(false);
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("walks the full chain: two silent cloud rows, then the local row", async () => {
+    const [cloud, local] = rows();
+    saveMachineAiModels([
+      cloud,
+      {
+        ...cloud,
+        id: "cloud-vision-2",
+        label: "Cloud vision 2",
+        url: "https://vision2.openrouter.ai/api/v1",
+        model: "cloud/vision-2",
+        order: 1,
+      },
+      { ...local, order: 2 },
+    ]);
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.vision.enabled", "true");
+    const originalFetch = global.fetch;
+    const urls: string[] = [];
+    global.fetch = (async (url) => {
+      urls.push(String(url));
+      const text = String(url);
+      if (text.startsWith("https://vision.")) throw new TypeError("fetch failed");
+      if (text.startsWith("https://vision2.")) {
+        return new Response("overloaded", { status: 503 });
+      }
+      return draft();
+    }) as typeof fetch;
+    try {
+      // A two-level walk stranded the third row; the offline tier sits at
+      // the end of the linked chain and must still be reachable.
+      const report = await observe(db);
+      expect(report).toMatchObject({ summary: "Lokal gelaufen." });
+      expect(urls.some((u) => u.includes("vision2.openrouter.ai"))).toBe(true);
+      expect(urls.some((u) => u.includes("localhost:11434"))).toBe(true);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+});

@@ -2,7 +2,7 @@
  * Azure DevOps connector — fetches work items from ADO boards.
  */
 
-import { getADOCredentials } from "../credentials.js";
+import { getADOCredentials } from "../../kernel/index.js";
 
 export interface ADOConfig {
   orgUrl: string;

@@ -1,8 +1,10 @@
+import { createServer, type Server } from "node:http";
 import { describe, expect, it } from "vitest";
 import {
   type CapabilityProbeResult,
   classifyCapabilities,
-  reconcileCapabilities,
+  mergeProbeCapabilities,
+  probeModelCapabilities,
   validateModelSave,
 } from "../../src/cli/llm/capability-probe.js";
 import {
@@ -13,6 +15,57 @@ import {
 
 function caps(over: Partial<CapabilityFlags> = {}): CapabilityFlags {
   return { ...emptyCapabilityFlags(), ...over };
+}
+
+/**
+ * How many times the second catalogue was asked for. The reachability check
+ * hits `/models` on its own, so counting this path is the only honest way to
+ * assert the extra request stayed conditional.
+ */
+function embeddingCatalogueHits(paths: string[]): number {
+  return paths.filter((path) => path.endsWith("/embeddings/models")).length;
+}
+
+/**
+ * Serves a chat catalogue at `/models` and a separate embedding catalogue at
+ * `/embeddings/models`, the way a provider that keeps embedding ids out of its
+ * chat listing does.
+ */
+async function startSplitCatalogueStub(options: {
+  chatModels: string[];
+  embeddingModels?: string[];
+  transcriptionModels?: string[];
+  speechModels?: string[];
+}): Promise<{ url: string; paths: string[]; close(): Promise<void> }> {
+  const paths: string[] = [];
+  const server: Server = createServer((req, res) => {
+    const url = req.url ?? "";
+    paths.push(url);
+    const models = url.includes("/embeddings/models")
+      ? (options.embeddingModels ?? [])
+      : url.includes("output_modalities=transcription")
+        ? (options.transcriptionModels ?? [])
+        : url.includes("output_modalities=speech")
+          ? (options.speechModels ?? [])
+          : options.chatModels;
+    res
+      .writeHead(200, { "content-type": "application/json" })
+      .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
+  });
+  await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+  const address = server.address();
+  if (address === null || typeof address === "string") {
+    throw new Error("Failed to bind split-catalogue stub");
+  }
+  return {
+    url: `http://127.0.0.1:${address.port}/v1`,
+    paths,
+    async close() {
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => (err ? reject(err) : resolve())),
+      );
+    },
+  };
 }
 
 describe("classifyCapabilities", () => {
@@ -92,15 +145,110 @@ describe("classifyCapabilities", () => {
     expect(d.embedding).toBe(true);
     expect(d.text).toBe(false);
   });
+
+  it("claims image from declared catalog modalities even without a name hint", () => {
+    const d = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(true);
+  });
+
+  it("lets declared modalities deny image for a name that hints at it", () => {
+    const d = classifyCapabilities(
+      { model: "qwen3.5-vl", apiFlavor: "chat-completions" },
+      ["qwen3.5-vl"],
+      true,
+      false,
+      false,
+    );
+    expect(d.text).toBe(true);
+    expect(d.image).toBe(false);
+  });
+
+  it("falls back to name hints when the catalog declares no modalities", () => {
+    const d = classifyCapabilities(
+      { model: "gpt-4o", apiFlavor: "chat-completions" },
+      ["gpt-4o"],
+      true,
+      false,
+      undefined,
+    );
+    expect(d.image).toBe(true);
+  });
+
+  it("claims video only from declared catalog modalities, never from a name", () => {
+    const declared = classifyCapabilities(
+      { model: "z-ai/glm-5.3-flash", apiFlavor: "chat-completions" },
+      ["z-ai/glm-5.3-flash"],
+      true,
+      false,
+      true,
+      true,
+    );
+    expect(declared.video).toBe(true);
+    // No architecture metadata → no video claim: no name heuristic is worth a
+    // false positive on a modality this rare.
+    const undeclared = classifyCapabilities(
+      { model: "video-master-pro", apiFlavor: "chat-completions" },
+      [],
+      false,
+    );
+    expect(undeclared.video).toBe(false);
+  });
 });
 
-describe("reconcileCapabilities", () => {
-  it("keeps only user-selected flags the probe detected", () => {
-    const result = reconcileCapabilities(
-      caps({ text: true, image: true, embedding: true }),
-      caps({ text: true, image: false, embedding: true }),
+describe("mergeProbeCapabilities", () => {
+  it("keeps the user's toggle for a capability that stays detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: false }),
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
     );
-    expect(result).toEqual(caps({ text: true, embedding: true }));
+    expect(result).toEqual(caps({ text: true }));
+  });
+
+  it("switches on a capability that is newly detected", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true }),
+      caps({ text: true }),
+      caps({ text: true, image: true, video: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true, video: true }));
+  });
+
+  it("starts a fresh row with everything the endpoint detected", () => {
+    const result = mergeProbeCapabilities(
+      emptyCapabilityFlags(),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ text: true, image: true }));
+  });
+
+  it("honors an explicit selection on a never-probed row", () => {
+    // Guided setups (Ollama vision → image only, Foundry text → text only)
+    // and `model-upsert --capabilities` select deliberately; the probe must
+    // not flood that selection with everything else it detected.
+    const result = mergeProbeCapabilities(
+      caps({ image: true }),
+      emptyCapabilityFlags(),
+      caps({ text: true, image: true }),
+    );
+    expect(result).toEqual(caps({ image: true }));
+  });
+
+  it("drops a capability the probe no longer detects", () => {
+    const result = mergeProbeCapabilities(
+      caps({ text: true, image: true }),
+      caps({ text: true, image: true }),
+      caps({ text: true }),
+    );
+    expect(result).toEqual(caps({ text: true }));
   });
 });
 
@@ -129,7 +277,7 @@ describe("validateModelSave", () => {
     expect(result.error).toMatch(/unreachable/i);
   });
 
-  it("stamps detected capabilities and shrinks user flags to the intersection", () => {
+  it("stamps detected capabilities, merged with the row's prior state", () => {
     const probe: CapabilityProbeResult = {
       reachable: true,
       catalog: ["gemma"],
@@ -261,5 +409,315 @@ describe("speech capabilities are checked against the provider's catalog", () =>
 
     expect(result.ok).toBe(true);
     expect(result.entry?.capabilities.text).toBe(true);
+  });
+});
+
+describe("probeModelCapabilities and a split model catalogue", () => {
+  const embeddingEntry = {
+    url: "",
+    model: "qwen/qwen3-embedding-8b",
+    apiFlavor: "chat-completions" as const,
+  };
+
+  it("finds an embedding model published only at /embeddings/models", async () => {
+    // Without this the row cannot be saved at all: validateModelSave refuses a
+    // model the catalogue does not list, so it cannot even be renamed.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        url: stub.url,
+      });
+
+      expect(probe.reachable).toBe(true);
+      expect(probe.catalog).toContain("qwen/qwen3-embedding-8b");
+      expect(probe.detected.embedding).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("asks only the chat catalogue when it already lists the model", async () => {
+    // Every probe pays for this request, so the second one stays conditional.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["text-embedding-3-small"],
+      embeddingModels: [],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        model: "text-embedding-3-small",
+        url: stub.url,
+      });
+
+      expect(probe.detected.embedding).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(0);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("does not ask the second catalogue for a chat model", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        ...embeddingEntry,
+        model: "openai/gpt-5.6-luna",
+        url: stub.url,
+      });
+
+      expect(probe.detected.text).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(0);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("lets a split-catalogue embedding row save", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: ["qwen/qwen3-embedding-8b"],
+    });
+    try {
+      const entry: ModelEntry = {
+        id: "emb",
+        label: "renamed by the learner",
+        url: stub.url,
+        model: "qwen/qwen3-embedding-8b",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: caps({ embedding: true }),
+        detectedCapabilities: emptyCapabilityFlags(),
+      };
+
+      const result = validateModelSave(
+        entry,
+        await probeModelCapabilities(entry),
+      );
+
+      expect(result.ok).toBe(true);
+      expect(result.entry?.label).toBe("renamed by the learner");
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("reads image capability from OpenRouter-style architecture metadata", async () => {
+    // A catalog record that declares input modalities decides vision on its
+    // own: `z-ai/glm-5.3-flash` is image-capable but matches no name hint,
+    // while `deepseek/deepseek-v4-flash` stays text-only.
+    const server: Server = createServer((req, res) => {
+      res
+        .writeHead(200, { "content-type": "application/json" })
+        .end(
+          JSON.stringify({
+            data: [
+              {
+                id: "z-ai/glm-5.3-flash",
+                architecture: { input_modalities: ["text", "image", "video"] },
+              },
+              {
+                id: "deepseek/deepseek-v4-flash",
+                architecture: { input_modalities: ["text"] },
+              },
+              // No architecture record → name hints stay in charge.
+              { id: "gpt-4o" },
+            ],
+          }),
+        );
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const address = server.address();
+    if (address === null || typeof address === "string") {
+      throw new Error("Failed to bind architecture-metadata stub");
+    }
+    const url = `http://127.0.0.1:${address.port}/v1`;
+    try {
+      const vision = await probeModelCapabilities({
+        url,
+        model: "z-ai/glm-5.3-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(vision.detected.image).toBe(true);
+      expect(vision.detected.video).toBe(true);
+      expect(vision.detected.text).toBe(true);
+
+      const textOnly = await probeModelCapabilities({
+        url,
+        model: "deepseek/deepseek-v4-flash",
+        apiFlavor: "chat-completions",
+      });
+      expect(textOnly.detected.image).toBe(false);
+      expect(textOnly.detected.video).toBe(false);
+      expect(textOnly.detected.text).toBe(true);
+
+      // No architecture record → name hints stay in charge.
+      const hinted = await probeModelCapabilities({
+        url,
+        model: "gpt-4o",
+        apiFlavor: "chat-completions",
+      });
+      expect(hinted.detected.image).toBe(true);
+    } finally {
+      await new Promise<void>((resolve, reject) =>
+        server.close((err) => (err ? reject(err) : resolve())),
+      );
+    }
+  });
+});
+
+// OpenRouter answers `/models` with its text models only. Embedding ids sit at
+// `{base}/embeddings/models`, and speech ids appear only behind a modality
+// filter — so a working transcription model read as one the endpoint does not
+// offer, and `validateModelSave` refused to store the row at all (2026-09-10).
+describe("probeModelCapabilities and a modality-filtered catalogue", () => {
+  it("finds a transcription model published only behind the filter", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      transcriptionModels: ["openai/gpt-transcribe"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "openai/gpt-transcribe",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toContain("openai/gpt-transcribe");
+      expect(probe.detected.stt).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=transcription")),
+      ).toHaveLength(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("finds a speech model published only behind the filter", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "hexgrad/kokoro-82m",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.detected.tts).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=speech")),
+      ).toHaveLength(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("still refuses a speech name the provider serves nowhere", async () => {
+    // The 2026-08-01 guard: `mimo-v2.5-tts` looks like TTS and Xiaomi does not
+    // serve it. Widening where we look must not widen what we believe.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["mimo-v2.5", "mimo-v2.5-vl"],
+      speechModels: ["some-other-voice"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "mimo-v2.5-tts",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.detected.tts).toBe(false);
+      expect(probe.detected.stt).toBe(false);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("asks for no modality catalogue when the model is a listed chat model", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      transcriptionModels: ["openai/gpt-transcribe"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      await probeModelCapabilities({
+        url: stub.url,
+        model: "openai/gpt-5.6-luna",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities")),
+      ).toHaveLength(0);
+    } finally {
+      await stub.close();
+    }
+  });
+});
+
+describe("a provider that ignores the modality filter", () => {
+  /** Answers every `/models` request with the same unfiltered list. */
+  async function startUnfilteredStub(
+    models: string[],
+  ): Promise<{ url: string; close(): Promise<void> }> {
+    const server: Server = createServer((_req, res) => {
+      res
+        .writeHead(200, { "content-type": "application/json" })
+        .end(JSON.stringify({ data: models.map((id) => ({ id })) }));
+    });
+    await new Promise<void>((resolve) => server.listen(0, "127.0.0.1", resolve));
+    const address = server.address();
+    if (address === null || typeof address === "string") {
+      throw new Error("Failed to bind unfiltered stub");
+    }
+    return {
+      url: `http://127.0.0.1:${address.port}/v1`,
+      async close() {
+        await new Promise<void>((resolve, reject) =>
+          server.close((err) => (err ? reject(err) : resolve())),
+        );
+      },
+    };
+  }
+
+  it("claims nothing when the unknown parameter is ignored", async () => {
+    // The fix's own premise: an endpoint that does not know
+    // `output_modalities` answers with its normal list, and the verdict is
+    // unchanged. The model is absent from that list by construction — the
+    // second lookup only happens because the first missed it — so merging the
+    // same list twice must not make it appear.
+    const stub = await startUnfilteredStub(["mimo-v2.5", "mimo-v2.5-vl"]);
+    try {
+      const entry: ModelEntry = {
+        id: "x",
+        label: "Ignored filter",
+        url: stub.url,
+        model: "mimo-v2.5-tts",
+        local: false,
+        apiFlavor: "chat-completions",
+        order: 0,
+        capabilities: caps({ tts: true }),
+        detectedCapabilities: emptyCapabilityFlags(),
+      };
+      const probe = await probeModelCapabilities(entry);
+
+      expect(probe.reachable).toBe(true);
+      expect(probe.detected.tts).toBe(false);
+      expect(probe.detected.stt).toBe(false);
+      // And the save is still refused, exactly as before the fix.
+      expect(validateModelSave(entry, probe).ok).toBe(false);
+    } finally {
+      await stub.close();
+    }
   });
 });

@@ -46,12 +46,6 @@ export {
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
-export type { ADOConfig, WorkItem } from "./connectors/azure-devops.js";
-// Connectors
-export {
-  fetchActiveWorkItems,
-  loadADOConfig,
-} from "./connectors/azure-devops.js";
 export type {
   ADOCredentials,
   CredentialCheckEntry,
@@ -290,6 +284,7 @@ export type {
   CardDeletionImpact,
   CardState,
   DeleteCardResult,
+  DueSummary,
   UpdateCardInput,
 } from "./models/card.js";
 export {
@@ -301,6 +296,7 @@ export {
   getCardById,
   getCardDeletionImpact,
   getDueCards,
+  getDueSummary,
   reattachCardForUser,
   resetCardsForToken,
   updateCard,
@@ -383,6 +379,7 @@ export {
   getAllSettings,
   getAllSettingsDetailed,
   getSetting,
+  getSettings,
   setSetting,
 } from "./models/settings.js";
 export type {
@@ -593,9 +590,16 @@ export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 export { evaluateRating } from "./recall/evaluator.js";
 export type { PromptInput, RecallPrompt } from "./recall/prompter.js";
 // Recall
-export { generateConceptFreeCue, generatePrompt } from "./recall/prompter.js";
+export {
+  BLOOM_VERBS,
+  generateConceptFreeCue,
+  generatePrompt,
+} from "./recall/prompter.js";
 export type {
+  ReferenceFetcher,
   ResolvedReference,
+  ResolveReferenceOptions,
+  ResolveReviewContextOptions,
   ReviewContext,
 } from "./recall/reference-resolver.js";
 // NOTE: LLM integration is intentionally NOT part of the kernel. The kernel is
@@ -889,4 +893,5 @@ export {
   planUpdate,
   WINGET_PACKAGE_ID,
 } from "./system/update-check.js";
+export { embeddingsEndpointUrl } from "./util/embeddings-url.js";
 export { sha256Hex, sha256HexBytes } from "./util/sha256.js";

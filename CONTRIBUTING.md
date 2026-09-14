@@ -29,10 +29,25 @@ ZAM is rooted in the principles of human dignity, solidarity, and subsidiarity. 
 
 ## Getting Started
 
-1. **Fork** the repository and clone it locally.
+1. **Fork** the repository and clone it locally, then run `npm ci`.
 2. Create a **feature branch**: `git checkout -b feature/your-idea`
 3. Make your changes and commit with a clear message.
-4. Push to your fork and open a **Pull Request**.
+4. Run the verification chain below — CI runs the same steps.
+5. Push to your fork and open a **Pull Request**.
+
+### Before You Commit
+
+```bash
+npm run format     # Biome, fixes formatting in place
+npm run lint       # must be clean
+npm run typecheck  # must be clean
+npm run test       # full Vitest suite, all pre-existing tests stay green
+npm run build      # tsup must succeed
+```
+
+Run a single test file while iterating with `npm run test -- tests/kernel/<file>.test.ts`.
+
+If you work with an AI coding agent, point it at [AGENTS.md](AGENTS.md) — it carries the same chain plus the repository's architectural rules.
 
 ### Commit Message Style
 

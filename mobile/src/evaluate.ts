@@ -20,7 +20,6 @@ import {
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
-import { OPENROUTER_EVALUATION_REASONING_EFFORT } from "../../src/cli/llm/cloud-providers.js";
 import {
   type AiTierPreference,
   DEFAULT_AI_TIER_PREFERENCES,
@@ -260,14 +259,24 @@ async function defaultFetchText(
   return text;
 }
 
+/** HTTP status carried in a transport error message (`HTTP 400: …`). */
+function httpStatusOf(error: unknown): number | undefined {
+  const match = /^HTTP (\d{3})/.exec(
+    error instanceof Error ? error.message : String(error),
+  );
+  return match ? Number(match[1]) : undefined;
+}
+
 /**
  * One prompt to one chat endpoint, in the shape mobile supports.
  *
  * Exported because evaluation is no longer the only caller: translating a card
- * mid-review (`ai/translate.ts`) needs the same endpoint handling — the
- * flavour check, the `/chat/completions` suffix, the bearer header, and the
- * reasoning-off setting that keeps a reasoning model from spending its whole
- * budget before writing anything.
+ * mid-review (`ai/translate.ts`) and the follow-up discussion need the same
+ * endpoint handling — the flavour check, the `/chat/completions` suffix, the
+ * bearer header, and the reasoning control, which goes out only with the
+ * probe-verified level the shared row carries (ADR 2026-09-13, decision 6).
+ * A 400 on that control means the level went stale and the model reasons
+ * anyway, so the one retry without it gets the larger budget.
  */
 export async function generateViaHttp(
   endpoint: ZamPairLlmEndpoint,
@@ -289,26 +298,38 @@ export async function generateViaHttp(
   };
   if (endpoint.apiKey) headers.Authorization = `Bearer ${endpoint.apiKey}`;
 
-  // Recall wants a short response, not a multi-page chain of thought. Reasoning
-  // models (MiMo V2.5 especially) otherwise spend the whole output budget
-  // thinking and return `finish_reason: length` with empty content. `low` is
-  // the product default for GPT-5.6 Luna: enough for honest coaching, cheap and
-  // fast enough for a review loop. Non-OpenRouter hosts omit the key.
-  const body: Record<string, unknown> = {
-    model: endpoint.model,
-    messages: [{ role: "user", content: prompt }],
-    temperature: 0.2,
-    max_tokens: maxTokens,
+  const send = (
+    budget: number,
+    reasoningEffort: string | null,
+  ): Promise<string> => {
+    const body: Record<string, unknown> = {
+      model: endpoint.model,
+      messages: [{ role: "user", content: prompt }],
+      temperature: 0.2,
+      max_tokens: budget,
+    };
+    if (reasoningEffort !== null) {
+      body.reasoning = { effort: reasoningEffort };
+    }
+    return (fetchText ?? defaultFetchText)(url, {
+      method: "POST",
+      headers,
+      body: JSON.stringify(body),
+    });
   };
-  if (isOpenRouterEndpoint(endpoint)) {
-    body.reasoning = { effort: OPENROUTER_EVALUATION_REASONING_EFFORT };
-  }
 
-  return (fetchText ?? defaultFetchText)(url, {
-    method: "POST",
-    headers,
-    body: JSON.stringify(body),
-  });
+  const verified =
+    isOpenRouterEndpoint(endpoint) && endpoint.effort ? endpoint.effort : null;
+  if (verified === null) return send(maxTokens, null);
+  try {
+    return await send(maxTokens, verified);
+  } catch (error) {
+    if (httpStatusOf(error) !== 400) throw error;
+    return send(
+      Math.max(maxTokens, RECALL_EVALUATION_RETRY_OUTPUT_TOKENS),
+      null,
+    );
+  }
 }
 
 interface MobileRecallGenerationResult<T> {

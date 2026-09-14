@@ -39,7 +39,11 @@ open a terminal.
 ## Hard rules
 
 - **Kernel stays AI-agnostic.** No fetch/LLM/embedding calls under
-  `src/kernel/`. The kernel stores vectors and ranks; the CLI layer embeds.
+  `src/kernel/`. The one exception is the binding-free database driver in
+  `src/kernel/db/remote/hrana.ts`, which is transport for the `Database`
+  contract, not an integration. Anything else that needs HTTP takes it as an
+  injected function (see `ReferenceFetcher`). The kernel stores vectors and
+  ranks; the CLI layer embeds.
 - **`zam bridge` emits JSON only** — every output through the existing
   `jsonOut`/`jsonError` helpers in `src/cli/commands/bridge.ts`. No stray
   `console.log`.

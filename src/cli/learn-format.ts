@@ -7,18 +7,16 @@
  * answer that is revealed only AFTER the learner has committed an answer.
  */
 
-import type { ReviewContext } from "../kernel/index.js";
+import {
+  BLOOM_VERBS,
+  type BloomLevel,
+  type ReviewContext,
+} from "../kernel/index.js";
 
-export const BLOOM_VERBS: Record<number, string> = {
-  1: "Remember",
-  2: "Understand",
-  3: "Apply",
-  4: "Analyze",
-  5: "Synthesize",
-};
-
-function clampBloom(n: number): number {
-  return Number.isFinite(n) && n >= 1 && n <= 5 ? Math.trunc(n) : 1;
+function clampBloom(n: number): BloomLevel {
+  return (
+    Number.isFinite(n) && n >= 1 && n <= 5 ? Math.trunc(n) : 1
+  ) as BloomLevel;
 }
 
 /**

@@ -231,12 +231,25 @@ export interface ModelEntry {
   apiKeyRef?: string;
   /** Sort key: lower = higher priority. */
   order: number;
-  /** User-selected capabilities (may only shrink after the first probe). */
+  /**
+   * Learner-enabled capabilities. Re-probes keep these toggles, auto-enable
+   * newly detected ones, and drop capabilities the endpoint no longer serves
+   * (ADR 2026-09-13) — the probe verdict is merged, not intersected.
+   */
   capabilities: CapabilityFlags;
-  /** Last successful metadata probe; drives the checkbox ceiling. */
+  /** Last successful metadata probe; the ceiling — undetected is always off. */
   detectedCapabilities: CapabilityFlags;
   /** ISO timestamp of the last probe; undefined until probed. */
   probedAt?: string;
+  /**
+   * Outcome of the probe's key-validity check, when the provider offers a
+   * key-metadata endpoint (OpenRouter `/auth/key`): true = the stored key
+   * authenticated, false = it was rejected. Absent = never checked or no
+   * verdict — `keyState` "set" only means a credential exists, and a public
+   * `/models` catalog cannot tell a working key from a broken one
+   * (ADR 2026-09-13).
+   */
+  keyValid?: boolean;
   /**
    * How ZAM reaches this model (ADR 2026-07-12a). Absent/"http" is the direct
    * HTTP path (local or cloud). "agent" delegates generation through a connected
@@ -252,9 +265,11 @@ export interface ModelEntry {
    */
   agentHarness?: string;
   /**
-   * Optional reasoning effort for harnesses that accept it (e.g. Copilot
-   * `--effort`). Pure config — interpreted by the CLI agent-llm adapters.
-   * When absent, adapters pick a default from the model id.
+   * Reasoning-effort setting with two owners (ADR 2026-09-13): on `agent`
+   * rows it is the learner's choice, interpreted by the CLI agent-llm
+   * adapters (when absent, adapters pick a default from the model id); on
+   * HTTP rows it is the probe's verdict — the lowest level the endpoint
+   * accepts — and every re-probe that produces a verdict overwrites it.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
 }

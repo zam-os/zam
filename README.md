@@ -55,10 +55,12 @@ your work, and guiding you step by step. ZAM connects to the agent apps you alre
 |---|---|
 | **Claude** (Code / desktop app) | `zam agent connect claude-code` |
 | **Codex** | `zam agent connect codex` |
+| **ZCode** | `zam agent connect zcode` |
 | **Antigravity** | `zam agent connect antigravity` |
 | **OpenCode** | `zam agent connect opencode` |
 | **GitHub Copilot** (CLI / app) | `zam agent connect copilot` |
 | **Goose** | `zam agent connect goose` |
+| **Grok Build** | `zam agent connect grok` |
 | **Hermes** | `zam agent connect hermes` |
 
 One command writes the MCP config (your agent may ask you to approve the server). For
@@ -134,7 +136,7 @@ The same setup runs as commands — `zam init` is the guided wizard, CLI-style:
 
 ```bash
 zam init                        # workspace · AI model · database · /zam skill
-zam agent connect claude-code   # or codex · antigravity · opencode · copilot · goose · hermes
+zam agent connect claude-code   # or codex · zcode · grok · antigravity · opencode · copilot · goose · hermes
 ```
 
 ---
@@ -148,7 +150,7 @@ zam agent connect claude-code   # or codex · antigravity · opencode · copilot
 - **Sessions** — every work/learning episode is logged, so ratings come from real evidence.
 
 The learning engine is an **AI-agnostic kernel** with zero LLM dependencies; the agent
-layer just drives it. See [Architecture](docs/ARCHITECTURE.md).
+layer just drives it. See [Kernel Architecture](docs/okf/kernel-architecture.md).
 
 ---
 

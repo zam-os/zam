@@ -14,10 +14,10 @@ import {
   getKnowledgeContextByName,
   hostTimeZone,
   openDatabase,
-  resolveReviewContext,
 } from "../../kernel/index.js";
 import { formatHeader } from "../learn-format.js";
 import { runInteractiveReviewAction } from "../review-actions.js";
+import { resolveReviewContext } from "../review-context.js";
 import { resolveUser } from "../users/identity.js";
 
 export const reviewCommand = new Command("review")

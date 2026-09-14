@@ -115,7 +115,7 @@ as the connected role and no flag or parameter can change it.
 
 ## Phase 4 — Settings scopes
 
-- M030: `user_settings(user_id, machine_id DEFAULT '', key, value,
+- Next free M-series migration (M034 as of 2026-09-14; main is at M033): `user_settings(user_id, machine_id DEFAULT '', key, value,
   updated_at)`; index on `(user_id, key)`.
 - Machine id: `getMachineId()` in `install-config.ts` mints a ULID once and
   stores it as `machine.id` in `~/.zam/config.json`.

@@ -132,12 +132,12 @@ describe("desktop voice availability", () => {
 
   /**
    * The cloud tier is reachable only through `capabilities.stt`/`.tts` on a
-   * registry entry, and `validateModelSave` intersects what the learner ticked
-   * with what the probe detected. A capability the Settings editor never offers
-   * can therefore never be stored — 0.24.0 shipped with stt/tts detected but
-   * unofferable, so every cloud speech model was saved with both flags false
-   * and the tier was dead on arrival. Asserted against the source because
-   * main.ts owns the DOM and cannot be imported here.
+   * registry entry, and the UI can only toggle capabilities it knows about.
+   * 0.24.0 shipped with stt/tts detected but unofferable, so every cloud
+   * speech model was saved with both flags false and the tier was dead on
+   * arrival. The overview shows only probe-detected capabilities now, which
+   * makes the known-set guard doubly load-bearing. Asserted against the source
+   * because main.ts owns the DOM and cannot be imported here.
    */
   it("offers every voice capability the cloud tier reads", () => {
     const source = readFileSync(

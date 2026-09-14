@@ -1,5 +1,22 @@
 # Log
 
+## 2026-09-13
+
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
+## 2026-09-12
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
+## 2026-09-11
+
+- **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
+- **Creation** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
+- **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
+
 ## 2026-09-09
 
 - **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)

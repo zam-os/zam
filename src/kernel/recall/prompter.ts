@@ -21,7 +21,8 @@ export interface RecallPrompt {
   sourceLink?: string | null;
 }
 
-const BLOOM_VERBS: Record<BloomLevel, string> = {
+/** The cognitive verb each Bloom level asks of the learner. */
+export const BLOOM_VERBS: Record<BloomLevel, string> = {
   1: "Remember",
   2: "Understand",
   3: "Apply",

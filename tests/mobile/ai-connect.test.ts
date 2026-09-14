@@ -137,6 +137,31 @@ describe("connectCloudModel", { timeout: 30_000 }, () => {
     expect(rows.some((row) => row.model === CLOUD_STT_MODEL)).toBe(true);
   });
 
+  it("refreshes a reconnected row's key without renaming it", async () => {
+    const db = await library();
+    await connectCloudModel(db, "sk-or-key", { verify: accept });
+
+    const before = JSON.parse(
+      (await getSetting(db, "ai.models.cloud")) as string,
+    ) as Array<Record<string, unknown>>;
+    await setSetting(
+      db,
+      "ai.models.cloud",
+      JSON.stringify(before.map((row) => ({ ...row, label: "my endpoint" }))),
+    );
+
+    await connectCloudModel(db, "sk-or-key-2", { verify: accept });
+
+    const after = JSON.parse(
+      (await getSetting(db, "ai.models.cloud")) as string,
+    ) as Array<{ label: string; apiKey: string }>;
+    expect(after).toHaveLength(3);
+    for (const row of after) {
+      expect(row.label).toBe("my endpoint");
+      expect(row.apiKey).toBe("sk-or-key-2");
+    }
+  });
+
   it("refuses to store a key the provider rejected", async () => {
     const db = await library();
     const result = await connectCloudModel(db, "nope", {

@@ -118,6 +118,20 @@ describe("mobile cloud registry", () => {
     expect(chain?.apiKey).toBe("sk-shared");
   });
 
+  it("carries the probe-verified reasoning level, and nothing when there is none", async () => {
+    const chain = await resolveMobileCloudChain(
+      dbWith([
+        row({ id: "luna", order: 0, effort: "none" }),
+        row({ id: "unprobed", order: 1 }),
+      ]),
+      "text",
+    );
+    // The desktop's setup probe decides whether reasoning can be switched
+    // off (ADR 2026-09-13, decision 6); the companion only relays that.
+    expect(chain?.effort).toBe("none");
+    expect(chain?.fallback?.effort).toBeUndefined();
+  });
+
   it("treats an absent or corrupt setting as no cloud models", async () => {
     expect(await resolveMobileCloudChain(dbWith([]), "text")).toBeNull();
     expect(

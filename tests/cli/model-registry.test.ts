@@ -124,6 +124,68 @@ describe("registry split", () => {
 
     expect((await loadModelRegistry(db))[0].id).toBe("local");
   });
+
+  it("resolves a cloud row's key reference onto the row", async () => {
+    // The database is the only channel another client reads a cloud row
+    // through, and `apiKeyRef` names a file on this machine. A row saved with
+    // the reference alone arrives elsewhere as a model with no key.
+    await saveModelRegistry(
+      db,
+      [entry({ id: "cloud", apiKeyRef: "openrouter" })],
+      (ref) => (ref === "openrouter" ? "sk-resolved" : null),
+    );
+
+    const stored = JSON.parse(
+      (await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]",
+    );
+    expect(stored[0].apiKey).toBe("sk-resolved");
+    // The reference stays, so the machine that owns it can still rotate.
+    expect(stored[0].apiKeyRef).toBe("openrouter");
+  });
+
+  it("leaves a reference this machine cannot resolve alone", async () => {
+    // It belongs to another machine; replacing it would trade a row that works
+    // there for one that works nowhere.
+    await saveModelRegistry(
+      db,
+      [entry({ id: "cloud", apiKeyRef: "other-machine" })],
+      () => null,
+    );
+
+    const stored = JSON.parse(
+      (await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]",
+    );
+    expect(stored[0]).not.toHaveProperty("apiKey");
+    expect(stored[0].apiKeyRef).toBe("other-machine");
+  });
+
+  it("does not overwrite a key the row already carries", async () => {
+    await saveModelRegistry(
+      db,
+      [entry({ id: "cloud", apiKey: "sk-inline", apiKeyRef: "openrouter" })],
+      () => "sk-from-reference",
+    );
+
+    const stored = JSON.parse(
+      (await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]",
+    );
+    expect(stored[0].apiKey).toBe("sk-inline");
+  });
+
+  it("does not let the resolver put a secret into the machine config", async () => {
+    // The guard that matters: resolution must not become a back door around
+    // the "never inline" rule for config.json.
+    await saveModelRegistry(
+      db,
+      [entry({ id: "ollama", local: true, apiKeyRef: "openrouter" })],
+      () => "sk-resolved",
+    );
+
+    expect(getMachineAiModels()[0]).not.toHaveProperty("apiKey");
+    expect(
+      JSON.parse((await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]"),
+    ).toEqual([]);
+  });
 });
 
 describe("migration out of the machine config", () => {

@@ -49,6 +49,8 @@ interface CloudModelRow {
   capabilities?: Record<string, boolean>;
   detectedCapabilities?: Record<string, boolean>;
   transport?: string;
+  /** Probe-verified reasoning level (see ZamPairLlmEndpoint.effort). */
+  effort?: string;
 }
 
 function isLoopbackUrl(url: string): boolean {
@@ -116,6 +118,7 @@ function toEndpoint(row: CloudModelRow): ZamPairLlmEndpoint {
     ...(row.apiKey ? { apiKey: row.apiKey } : {}),
     local: false,
     ...(row.label ? { label: row.label } : {}),
+    ...(row.effort ? { effort: row.effort } : {}),
   };
 }
 

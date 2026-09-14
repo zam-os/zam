@@ -38,8 +38,7 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) | Hierarchical Domain Ontology and Composite Token Identity | Draft |
 | [2026-07-04](2026-07-04-human-friendly-titles-and-prefixed-domains.md) | Human-friendly Titles and Prefixed Domains for the Knowledge Graph | Implemented |
 | [2026-07-04](2026-07-04-knowledge-contexts.md) | Knowledge Contexts: Work, School, Private | Implemented |
-| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted — Phase E amended by 2026-07-26b; Deployment B amended by 2026-09-04 |
-| [2026-07-05](../plans/2026-07-05-titles-doctor-adaptation.md) | Human-friendly Titles + `zam doctor` adaptation plan (post Fable 5 review) | In progress |
+| [2026-07-04](2026-07-04-multi-learner-shared-knowledge.md) | Closed-Group Learning Library: Curation, Privacy and Deployment | Accepted — Phase E scope and ordering amended by 2026-07-26b; Deployment B amended by 2026-09-04 |
 | [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) | MCP as the Canonical Agent Transport (and the Surface Topology Around It) | Partially implemented |
 | [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) | Checkpointed Review Dialogue | Implemented |
 | [2026-07-07](2026-07-07-resilient-self-update-and-dependency-isolation.md) | Resilient Self-Update and Dependency-Failure Isolation | Implemented |
@@ -78,3 +77,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Accepted — staged pilot and publication boundaries |
 | [2026-09-04](2026-09-04-team-library-postgres-entra-pilot.md) | Team Learning Library on Managed PostgreSQL: Entra Identity, Per-Learner Roles, and a ZAM-Only Server | Proposed |
 | [2026-09-08](2026-09-08-answer-points-and-score-based-rating.md) | Answer Points and Score-Based Rating | Accepted |
+| [2026-09-13](2026-09-13-model-capabilities-are-detected.md) | Model Capabilities Are Detected, Not Chosen — video splits from image | Accepted |

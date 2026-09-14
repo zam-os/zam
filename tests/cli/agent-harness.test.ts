@@ -1,4 +1,5 @@
 import { execFileSync } from "node:child_process";
+import { homedir } from "node:os";
 import { join } from "node:path";
 import { afterEach, describe, expect, it, vi } from "vitest";
 import {
@@ -33,6 +34,7 @@ describe("agent harness registry", () => {
         "opencode",
         "goose",
         "copilot",
+        "zcode",
       ]),
     );
   });
@@ -40,6 +42,8 @@ describe("agent harness registry", () => {
   it("resolves a harness by id", () => {
     expect(getHarness("claude-code")?.kind).toBe("cli");
     expect(getHarness("cursor")?.kind).toBe("app");
+    // ZCode ships as a desktop app without a `zcode` CLI on PATH.
+    expect(getHarness("zcode")?.kind).toBe("app");
     expect(getHarness("nope")).toBeUndefined();
   });
 });
@@ -55,9 +59,12 @@ describe("resolveHarnessExecutable", () => {
     ).toBe("/usr/bin/claude");
   });
 
-  it("returns null for a CLI harness that isn't on PATH", () => {
+  it("returns null for a CLI harness that isn't on PATH or at a known location", () => {
     expect(
-      resolveHarnessExecutable(claude, undefined, { find: () => null }),
+      resolveHarnessExecutable(claude, undefined, {
+        find: () => null,
+        exists: () => false,
+      }),
     ).toBeNull();
   });
 
@@ -87,6 +94,24 @@ describe("resolveHarnessExecutable", () => {
         platform: "linux",
       }),
     ).toBe("/opt/x/x");
+  });
+
+  it("resolves ZCode via its desktop app binary", () => {
+    const zcode = getHarness("zcode") as AgentHarness;
+    expect(
+      resolveHarnessExecutable(zcode, undefined, {
+        find: () => null,
+        exists: (p) => p === "/Applications/ZCode.app/Contents/MacOS/ZCode",
+        platform: "darwin",
+      }),
+    ).toBe("/Applications/ZCode.app/Contents/MacOS/ZCode");
+    expect(
+      resolveHarnessExecutable(zcode, undefined, {
+        find: () => null,
+        exists: () => false,
+        platform: "linux",
+      }),
+    ).toBeNull();
   });
 
   it("resolves antigravity-ide on PATH for antigravity harness", () => {
@@ -137,18 +162,33 @@ describe("resolveHarnessExecutable", () => {
     ).toBeNull();
   });
 
-  it("does not probe candidate paths for CLI harnesses", () => {
+  it("returns null for a CLI harness without candidate paths even when everything exists", () => {
+    const codex = getHarness("codex") as AgentHarness;
     expect(
-      resolveHarnessExecutable(claude, undefined, {
+      resolveHarnessExecutable(codex, undefined, {
         find: () => null,
         exists: () => true,
       }),
     ).toBeNull();
   });
+
+  it("falls back to Claude Code's native-installer location when claude is off PATH", () => {
+    // The desktop app runs with launchd's PATH, where ~/.local/bin is
+    // missing; the adapter must still find the binary or the Agents page
+    // would offer a model that cannot generate.
+    const home = homedir().replaceAll("\\", "/");
+    expect(
+      resolveHarnessExecutable(claude, undefined, {
+        find: () => null,
+        exists: (p) => p.replaceAll("\\", "/") === `${home}/.local/bin/claude`,
+        platform: "darwin",
+      })?.replaceAll("\\", "/"),
+    ).toBe(`${home}/.local/bin/claude`);
+  });
 });
 
 describe("detectInstalledConnectHarnesses", () => {
-  it("detects user-scoped Codex, VS Code, and Copilot targets", () => {
+  it("detects Claude Code, Codex, VS Code, and Copilot targets", () => {
     const detected = detectInstalledConnectHarnesses({
       home: "/home/user",
       platform: "darwin",
@@ -168,8 +208,25 @@ describe("detectInstalledConnectHarnesses", () => {
       },
     });
 
-    expect(detected).toEqual(["codex", "vscode", "copilot"]);
-    expect(detected).not.toContain("claude-code");
+    // Claude Code is a user-scoped target since its connect defaults to
+    // ~/.claude.json, so `claude` on PATH counts like any other CLI.
+    expect(detected).toEqual(["claude-code", "codex", "vscode", "copilot"]);
+  });
+
+  it("detects Claude Code and Grok Build by data root when the binary is off PATH", () => {
+    // The desktop app inherits launchd's minimal PATH, where ~/.local/bin
+    // (Claude Code) and ~/.grok/bin (Grok Build) are missing; the data
+    // roots still prove the install.
+    const detected = detectInstalledConnectHarnesses({
+      home: "/home/user",
+      platform: "linux",
+      find: () => null,
+      exists: (path) => {
+        const key = path.replaceAll("\\", "/");
+        return key === "/home/user/.claude" || key === "/home/user/.grok";
+      },
+    });
+    expect(detected).toEqual(["claude-code", "grok"]);
   });
 
   it("returns no targets when no supported user host is installed", () => {
@@ -210,10 +267,31 @@ describe("detectInstalledConnectHarnesses", () => {
         home: "/home/user",
         platform: "linux",
         find: () => null,
-        exists: (path) =>
-          path.replaceAll("\\", "/") === "/home/user/.hermes",
+        exists: (path) => path.replaceAll("\\", "/") === "/home/user/.hermes",
       }),
     ).toEqual(["hermes"]);
+  });
+
+  it("detects ZCode by its CLI name or its ~/.zcode data root", () => {
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: (command) => (command === "zcode" ? "/usr/bin/zcode" : null),
+        exists: () => false,
+      }),
+    ).toEqual(["zcode"]);
+
+    // The desktop app installs no `zcode` binary, so the data root is the
+    // primary install signal.
+    expect(
+      detectInstalledConnectHarnesses({
+        home: "/home/user",
+        platform: "linux",
+        find: () => null,
+        exists: (path) => path.replaceAll("\\", "/") === "/home/user/.zcode",
+      }),
+    ).toEqual(["zcode"]);
   });
 });
 
@@ -306,8 +384,54 @@ describe("connectHarnessMcp", () => {
     }
   });
 
-  it("claude-code fresh write", () => {
+  it("claude-code defaults to the user scope in ~/.claude.json", () => {
     const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.claude.json");
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        zam: {
+          command: "/usr/local/bin/zam",
+          args: ["mcp"],
+        },
+      },
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("claude-code user scope preserves Claude Code's own state in ~/.claude.json", () => {
+    // ~/.claude.json is Claude Code's state file, not a dedicated MCP config:
+    // the merge must own nothing but mcpServers.zam.
+    mockFiles["/home/user/.claude.json"] = JSON.stringify({
+      numStartups: 42,
+      projects: { "/work": { allowedTools: [] } },
+      mcpServers: { other: { command: "other-server" } },
+    });
+
+    const res = connectHarnessMcp("claude-code", mockDeps);
+    expect(JSON.parse(res.content)).toEqual({
+      numStartups: 42,
+      projects: { "/work": { allowedTools: [] } },
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+    expect(res.alreadyConfigured).toBe(false);
+  });
+
+  it("claude-code user scope honours CLAUDE_CONFIG_DIR", () => {
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeConfigDir: "/home/user/.config/claude-work",
+    });
+    expect(posix(res.path)).toBe("/home/user/.config/claude-work/.claude.json");
+  });
+
+  it("claude-code project scope writes the workspace .mcp.json", () => {
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeCodeScope: "project",
+    });
     expect(posix(res.path)).toBe("/work/.mcp.json");
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
@@ -320,7 +444,7 @@ describe("connectHarnessMcp", () => {
     expect(res.alreadyConfigured).toBe(false);
   });
 
-  it("claude-code merges and preserves other servers", () => {
+  it("claude-code project scope merges and preserves other servers", () => {
     mockFiles["/work/.mcp.json"] = JSON.stringify({
       mcpServers: {
         other: {
@@ -329,7 +453,10 @@ describe("connectHarnessMcp", () => {
       },
     });
 
-    const res = connectHarnessMcp("claude-code", mockDeps);
+    const res = connectHarnessMcp("claude-code", {
+      ...mockDeps,
+      claudeCodeScope: "project",
+    });
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
         other: {
@@ -394,6 +521,28 @@ describe("connectHarnessMcp", () => {
     const existing = `[mcp_servers.zam]\ncommand = "/usr/local/bin/zam"\nargs = ["mcp"]\n`;
     mockFiles["/home/user/.codex/config.toml"] = existing;
     const res = connectHarnessMcp("codex", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(res.content).toBe(existing);
+  });
+
+  it("grok appends a plain [mcp_servers.zam] table to ~/.grok/config.toml", () => {
+    mockFiles["/home/user/.grok/config.toml"] =
+      `[models]\ndefault = "grok-build"\n`;
+    const res = connectHarnessMcp("grok", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.grok/config.toml");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.content).toContain("[models]");
+    expect(res.content).toContain("[mcp_servers.zam]");
+    expect(res.content).toContain('command = "/usr/local/bin/zam"');
+    expect(res.content).toContain('args = ["mcp"]');
+    // Codex's approval keys are not part of Grok's server schema.
+    expect(res.content).not.toContain("approval_mode");
+  });
+
+  it("grok no-ops and returns alreadyConfigured when present", () => {
+    const existing = `[mcp_servers.zam]\ncommand = "/usr/local/bin/zam"\nargs = ["mcp"]\n`;
+    mockFiles["/home/user/.grok/config.toml"] = existing;
+    const res = connectHarnessMcp("grok", mockDeps);
     expect(res.alreadyConfigured).toBe(true);
     expect(res.content).toBe(existing);
   });
@@ -629,6 +778,190 @@ describe("connectHarnessMcp", () => {
     expect(posix(res.path)).toBe("/custom/copilot/mcp-config.json");
   });
 
+  it("zcode fresh write targets the nested mcp.servers config", () => {
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.zcode/cli/config.json");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(JSON.parse(res.content)).toEqual({
+      mcp: {
+        servers: {
+          zam: {
+            type: "stdio",
+            command: "/usr/local/bin/zam",
+            args: ["mcp"],
+          },
+        },
+      },
+    });
+  });
+
+  it("zcode merges and preserves sibling state and other servers", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      plugins: { "zcode-guide": true },
+      mcp: { servers: { other: { command: "other-server" } } },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(JSON.parse(res.content)).toEqual({
+      plugins: { "zcode-guide": true },
+      mcp: {
+        servers: {
+          other: { command: "other-server" },
+          zam: {
+            type: "stdio",
+            command: "/usr/local/bin/zam",
+            args: ["mcp"],
+          },
+        },
+      },
+    });
+  });
+
+  it("zcode reports an existing matching entry as configured", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: {
+            type: "stdio",
+            command: "/usr/local/bin/zam",
+            args: ["mcp"],
+          },
+        },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    expect(JSON.parse(res.content).mcp.servers.zam.args).toEqual(["mcp"]);
+  });
+
+  it("zcode merges into the active .agents/mcp.json fallback instead of shadowing it", () => {
+    // The fallback is read while the .zcode file defines no MCP servers; a
+    // fresh .zcode entry would make the client ignore the fallback's servers
+    // entirely, so zam merges there and leaves ~/.zcode untouched.
+    mockFiles["/home/user/.agents/mcp.json"] = JSON.stringify({
+      mcpServers: { other: { command: "other-server" } },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.agents/mcp.json");
+    expect(JSON.parse(res.content)).toEqual({
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+  });
+
+  it("zcode prefers the canonical file once it carries servers", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: { servers: { other: { command: "other-server" } } },
+    });
+    mockFiles["/home/user/.agents/mcp.json"] = JSON.stringify({
+      mcpServers: { legacy: { command: "legacy-server" } },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.zcode/cli/config.json");
+    const parsed = JSON.parse(res.content);
+    expect(Object.keys(parsed.mcp.servers)).toEqual(["other", "zam"]);
+  });
+
+  it("zcode refuses to replace malformed mcp state", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: { servers: [] },
+    });
+    expect(() => connectHarnessMcp("zcode", mockDeps)).toThrow(
+      "mcp.servers must be a JSON object",
+    );
+  });
+
+  it("zcode reports a disabled zam server as configured instead of re-enabling it", () => {
+    // ZCode's Settings page stores the disabled state on the entry itself;
+    // replacing the object wholesale would switch the server back on.
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: {
+            type: "stdio",
+            command: "/usr/local/bin/zam",
+            args: ["mcp"],
+            enable: false,
+          },
+        },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(res.alreadyConfigured).toBe(true);
+    const entry = JSON.parse(res.content).mcp.servers.zam;
+    expect(entry.enable).toBe(false);
+  });
+
+  it("zcode matches an existing entry regardless of key order", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: { args: ["mcp"], command: "/usr/local/bin/zam", type: "stdio" },
+        },
+      },
+    });
+    expect(connectHarnessMcp("zcode", mockDeps).alreadyConfigured).toBe(true);
+  });
+
+  it("zcode preserves ZCode-owned keys when it updates the entry", () => {
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: {
+        servers: {
+          zam: {
+            command: "/old/zam",
+            args: ["mcp"],
+            enable: false,
+            env: { ZAM_CONFIG_PATH: "/tmp/z.json" },
+          },
+        },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    const entry = JSON.parse(res.content).mcp.servers.zam;
+    expect(entry).toMatchObject({
+      type: "stdio",
+      command: "/usr/local/bin/zam",
+      args: ["mcp"],
+      enable: false,
+      env: { ZAM_CONFIG_PATH: "/tmp/z.json" },
+    });
+  });
+
+  it("zcode no-ops when the fallback already holds zam and other servers", () => {
+    mockFiles["/home/user/.agents/mcp.json"] = JSON.stringify({
+      mcpServers: {
+        other: { command: "other-server" },
+        zam: { command: "/usr/local/bin/zam", args: ["mcp"] },
+      },
+    });
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.agents/mcp.json");
+    expect(res.alreadyConfigured).toBe(true);
+    expect(Object.keys(JSON.parse(res.content).mcpServers)).toEqual([
+      "other",
+      "zam",
+    ]);
+  });
+
+  it("zcode ignores a malformed fallback while the canonical file is active", () => {
+    // ZCode never reads the fallback once the .zcode file defines servers,
+    // so garbage there must not abort a connect.
+    mockFiles["/home/user/.zcode/cli/config.json"] = JSON.stringify({
+      mcp: { servers: { other: { command: "other-server" } } },
+    });
+    mockFiles["/home/user/.agents/mcp.json"] = "{ not json";
+    const res = connectHarnessMcp("zcode", mockDeps);
+    expect(posix(res.path)).toBe("/home/user/.zcode/cli/config.json");
+    expect(res.alreadyConfigured).toBe(false);
+    expect(JSON.parse(res.content).mcp.servers.zam).toEqual({
+      type: "stdio",
+      command: "/usr/local/bin/zam",
+      args: ["mcp"],
+    });
+  });
+
   it("claude-desktop fresh write targets the platform config", () => {
     const res = connectHarnessMcp("claude-desktop", {
       ...mockDeps,
@@ -688,7 +1021,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("treats a whitespace-only stub as an empty object", () => {
-    mockFiles["/work/.mcp.json"] = "   \n\t\n";
+    mockFiles["/home/user/.claude.json"] = "   \n\t\n";
     const res = connectHarnessMcp("claude-code", mockDeps);
     expect(JSON.parse(res.content)).toEqual({
       mcpServers: {
@@ -698,7 +1031,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("refuses to overwrite malformed JSON configuration", () => {
-    mockFiles["/work/.mcp.json"] = "{ definitely not JSON";
+    mockFiles["/home/user/.claude.json"] = "{ definitely not JSON";
 
     expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
       "existing file is not valid JSON",
@@ -706,7 +1039,7 @@ describe("connectHarnessMcp", () => {
   });
 
   it("refuses to replace a non-object mcpServers value", () => {
-    mockFiles["/work/.mcp.json"] = JSON.stringify({ mcpServers: [] });
+    mockFiles["/home/user/.claude.json"] = JSON.stringify({ mcpServers: [] });
 
     expect(() => connectHarnessMcp("claude-code", mockDeps)).toThrow(
       "mcpServers must be a JSON object",

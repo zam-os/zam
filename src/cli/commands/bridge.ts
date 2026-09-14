@@ -69,6 +69,7 @@ import {
   getConfiguredWorkspaces,
   getDatabaseTargetInfo,
   getDisplayTitle,
+  getDueSummary,
   getKnowledgeContextByName,
   getMachineVoicePreference,
   getOnboardingDone,
@@ -109,7 +110,6 @@ import {
   readUiObservationLog,
   resolveCredentials,
   resolveObserverPolicy,
-  resolveReviewContext,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
@@ -189,6 +189,8 @@ import {
   updateCheck as handleUpdateCheck,
   withdrawAssignmentHandler as handleWithdrawAssignment,
   type ImportOkfTokenInput,
+  parseKnowledgeContextNames,
+  resolveKnowledgeContexts,
 } from "../bridge-handlers.js";
 import { installCliShim } from "../cli-install.js";
 import { mapWithConcurrency } from "../curriculum/concurrency.js";
@@ -215,7 +217,6 @@ import {
 } from "../curriculum/pdf-text.js";
 import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
-import { resolveOperationKnowledgeContexts } from "../knowledge-contexts.js";
 import {
   probeModelCapabilities,
   validateModelSave,
@@ -305,6 +306,7 @@ import {
   summarizeSkillLinkHealth,
   wireSkills,
 } from "../provisioning/index.js";
+import { resolveReviewContext } from "../review-context.js";
 import {
   configureBitwardenServer,
   disconnectBitwardenToLocalSecrets,
@@ -394,28 +396,6 @@ function jsonError(message: string): never {
   }
   console.log(JSON.stringify({ error: msg }, null, 2));
   process.exit(1);
-}
-
-function parseKnowledgeContextNames(value: unknown): string[] {
-  if (value == null) return [];
-  if (
-    !Array.isArray(value) ||
-    value.some((name) => typeof name !== "string" || !name.trim())
-  ) {
-    jsonError("knowledgeContexts must be an array of non-empty context names");
-  }
-  return [...new Set(value.map((name) => name.trim()))];
-}
-
-async function resolveKnowledgeContexts(
-  db: Database,
-  names: string[],
-): Promise<KnowledgeContext[]> {
-  try {
-    return await resolveOperationKnowledgeContexts(db, names);
-  } catch (error) {
-    jsonError((error as Error).message);
-  }
 }
 
 function parseNonNegativeIntegerOption(name: string, value: string): number {
@@ -3040,12 +3020,22 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
         ? "set"
         : "missing"
       : "none",
+    // Probe verdict from the provider's key-metadata endpoint; absent =
+    // never checked. "set" above only means a credential exists.
+    keyValid: entry.keyValid,
     // Agent transport fields (ADR 2026-07-12a). Absent/"http" for HTTP rows.
     transport: entry.transport ?? "http",
     agentHarness: entry.agentHarness,
     // Optional reasoning effort (e.g. Copilot --effort); unset = adapter default.
     effort: entry.effort,
   };
+}
+
+/** Whether two flag records select exactly the same capabilities. */
+function sameCapabilityFlags(a: CapabilityFlags, b: CapabilityFlags): boolean {
+  return (
+    Object.keys(emptyCapabilityFlags()) as Array<keyof CapabilityFlags>
+  ).every((key) => a[key] === b[key]);
 }
 
 /** Parse a `{cap: true}` JSON object into a full capability flag record. */
@@ -3145,6 +3135,10 @@ bridgeCommand
   )
   .option("--id <id>", "Existing entry id (omit to create)")
   .option("--label <label>", "Human label")
+  .option(
+    "--key-changed",
+    "The credential behind this row was just replaced, so re-probe even when nothing else changed",
+  )
   .option("--url <url>", "Endpoint base URL")
   .option("--model <model>", "Model id")
   .option(
@@ -3167,7 +3161,7 @@ bridgeCommand
   )
   .option(
     "--effort <level>",
-    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value.',
+    'Reasoning effort for agent harnesses that support it (auto|none|minimal|low|medium|high|xhigh|max). "auto" clears a stored value. HTTP rows ignore this option — their level is probe-determined.',
   )
   .action(async (opts, command) => {
     if (opts.flavor && !VALID_API_FLAVORS.includes(opts.flavor)) {
@@ -3338,6 +3332,10 @@ bridgeCommand
         : (prev?.capabilities ?? emptyCapabilityFlags()),
       detectedCapabilities:
         prev?.detectedCapabilities ?? emptyCapabilityFlags(),
+      // Rename-only saves spread this candidate, so the probe-verdict fields
+      // must ride along or a pure rename would silently wipe them.
+      ...(prev?.effort ? { effort: prev.effort } : {}),
+      ...(prev?.keyValid !== undefined ? { keyValid: prev.keyValid } : {}),
     };
     const runner = opts.runner ?? prev?.runner;
     if (runner) candidate.runner = runner;
@@ -3346,8 +3344,44 @@ bridgeCommand
     // Clearing agent fields when re-saving as HTTP keeps the row coherent.
     // (transport/agentHarness omitted = HTTP default.)
 
+    // Renaming a row does not change what the endpoint serves, so re-proving
+    // the model exists is at best a wasted round-trip. At worst it makes the
+    // row uneditable: a provider that publishes no catalogue covering the
+    // model — or that has since deprecated it — fails the save, and the only
+    // way to fix a name becomes deleting the row. Saving a name is not
+    // verifying a model; `model-reprobe` is for that, and an unavailable model
+    // still announces itself on first use.
+    // `--key-changed` cannot be inferred from the fields: a caller that stores
+    // a new secret under the row's existing `apiKeyRef` leaves every one of
+    // them byte-identical while the credential behind it is different, and the
+    // catalogue an endpoint reports is answered *for that key*. Comparing
+    // `apiKeyRef` would not catch it, so the caller says so instead.
+    const renameOnly =
+      prev !== undefined &&
+      opts.keyChanged !== true &&
+      candidate.url === prev.url &&
+      candidate.model === prev.model &&
+      candidate.apiFlavor === prev.apiFlavor &&
+      candidate.local === prev.local &&
+      sameCapabilityFlags(candidate.capabilities, prev.capabilities);
+    if (renameOnly) {
+      const kept: ModelEntry = {
+        ...candidate,
+        // `candidate` already carries `prev.detectedCapabilities` behind an
+        // `?? emptyCapabilityFlags()` fallback; re-assigning the raw value here
+        // would put `undefined` back on a row that never had the field.
+        ...(prev.probedAt ? { probedAt: prev.probedAt } : {}),
+      };
+      const next = [...models];
+      next[existingIndex] = kept;
+      await writeRegistry(next);
+      jsonOut({ ok: true, model: modelRow(kept), probe: null });
+      return;
+    }
+
     const probe = await probeModelCapabilities(candidate, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(candidate, probe);
     if (!validation.ok || !validation.entry) {
@@ -3419,6 +3453,7 @@ bridgeCommand
 
     const probe = await probeModelCapabilities(entry, {
       embeddingDimProbe: true,
+      reasoningEffortProbe: true,
     });
     const validation = validateModelSave(entry, probe);
     if (!validation.ok || !validation.entry) {
@@ -4026,6 +4061,12 @@ bridgeCommand
         locale,
         llm: { enabled, url, model },
         studyWorkload: await getStudyWorkloadSettings(db, userId),
+        // The dashboard's due digest (plan 2026-09-02 Phase 3): the desktop
+        // used to issue a second bridge command (check-due) right after this
+        // one — one more request over the persistent bridge host and nine
+        // more reads on every start, for three numbers. Same eligibility as
+        // the review queue, one light read instead of a full card pull.
+        dueSummary: await getDueSummary(db, userId),
         activeWorkspaceId,
         workspaceDir,
         skillLinks,

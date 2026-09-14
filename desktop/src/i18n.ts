@@ -33,6 +33,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "IA: modelo no encontrado",
     study_question_original: "Original",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "Error en la retroalimentación de IA: {message}",
+    study_evaluation_unavailable:
+      "La retroalimentación de IA no está disponible ahora mismo. Revisa el modelo de IA en Ajustes.",
+    study_evaluation_details: "Detalles",
     nav_dashboard: "Panel",
     nav_settings: "Ajustes",
     nav_stats: "Estadísticas",
@@ -428,22 +432,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Guardar",
     model_btn_up: "Subir",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Solo se pueden activar las capacidades que admite el endpoint tras la comprobación.",
     model_cap_image: "Visión",
     model_cap_none: "Sin capacidades",
     model_cap_stt: "Voz a texto",
     model_cap_text: "Texto",
     model_cap_tts: "Texto a voz",
-    model_cap_undetected: "No compatible con este endpoint",
     model_cap_video: "Vídeo",
     model_agent_badge: "Agente",
-    model_agent_cap_hint:
-      "Los modelos de agente usan el modelo y la suscripción del harness. Solo texto.",
-    model_agent_cap_hint_multimodal:
-      "Este agente admite texto y visión (OCR/escaneos) con tu suscripción.",
-    model_agent_cap_undetected:
-      "Harness no detectado — vuelve a comprobar tras instalarlo",
     model_agent_harness_missing: "no detectado",
     model_agent_harness_none: "Aún no hay harness de texto de agente",
     model_agent_hint:
@@ -488,6 +483,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_save_failed: "Error al guardar: {message}",
     model_saved: "Se guardó {label}",
     model_status_key_missing: "Falta la clave API",
+    model_status_key_invalid: "Clave de API no válida",
     model_status_probed: "Comprobado",
     model_status_unprobed: "Sin comprobar",
     wizard_btn_confirm_import: "Guardar selección",
@@ -931,6 +927,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "IA : modèle introuvable",
     study_question_original: "Original",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "Échec du retour de l'IA : {message}",
+    study_evaluation_unavailable:
+      "Le retour de l'IA n'est pas disponible pour le moment. Vérifie le modèle d'IA dans les Paramètres.",
+    study_evaluation_details: "Détails",
     nav_dashboard: "Tableau de bord",
     nav_settings: "Paramètres",
     nav_stats: "Statistiques",
@@ -1331,22 +1331,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Enregistrer",
     model_btn_up: "Monter",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Seules les capacités prises en charge par l'endpoint peuvent être activées après vérification.",
     model_cap_image: "Vision",
     model_cap_none: "Aucune capacité",
     model_cap_stt: "Parole vers texte",
     model_cap_text: "Texte",
     model_cap_tts: "Synthèse vocale",
-    model_cap_undetected: "Non pris en charge par cet endpoint",
     model_cap_video: "Vidéo",
     model_agent_badge: "Agent",
-    model_agent_cap_hint:
-      "Les modèles agent utilisent le modèle et l'abonnement du harness. Texte uniquement.",
-    model_agent_cap_hint_multimodal:
-      "Cet agent gère texte et vision (OCR/scans) via votre abonnement.",
-    model_agent_cap_undetected:
-      "Harness non détecté — revérifiez après l'installation",
     model_agent_harness_missing: "non détecté",
     model_agent_harness_none: "Aucun harness texte agent disponible",
     model_agent_hint:
@@ -1391,6 +1382,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_save_failed: "Échec de l'enregistrement : {message}",
     model_saved: "{label} enregistré",
     model_status_key_missing: "Clé API manquante",
+    model_status_key_invalid: "Clé API invalide",
     model_status_probed: "Vérifié",
     model_status_unprobed: "Pas encore vérifié",
     wizard_btn_confirm_import: "Enregistrer la sélection",
@@ -1839,6 +1831,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "IA: modelo não encontrado",
     study_question_original: "Original",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "Falha no feedback de IA: {message}",
+    study_evaluation_unavailable:
+      "O feedback de IA não está disponível agora. Verifique o modelo de IA nas Configurações.",
+    study_evaluation_details: "Detalhes",
     nav_dashboard: "Painel",
     nav_settings: "Configurações",
     nav_stats: "Estatísticas",
@@ -2235,22 +2231,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_btn_save: "Salvar",
     model_btn_up: "Mover para cima",
     model_cap_embedding: "Embeddings",
-    model_cap_hint:
-      "Só é possível ativar os recursos que o endpoint suporta após a verificação.",
     model_cap_image: "Visão",
     model_cap_none: "Sem recursos",
     model_cap_stt: "Voz para texto",
     model_cap_text: "Texto",
     model_cap_tts: "Texto para voz",
-    model_cap_undetected: "Não suportado por este endpoint",
     model_cap_video: "Vídeo",
     model_agent_badge: "Agente",
-    model_agent_cap_hint:
-      "Modelos de agente usam o modelo e a assinatura do harness. Somente texto.",
-    model_agent_cap_hint_multimodal:
-      "Este agente faz texto e visão (OCR/scans) com a sua assinatura.",
-    model_agent_cap_undetected:
-      "Harness não detectado — verifique de novo após instalar",
     model_agent_harness_missing: "não detectado",
     model_agent_harness_none: "Nenhum harness de texto de agente disponível",
     model_agent_hint:
@@ -2295,6 +2282,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_save_failed: "Falha ao salvar: {message}",
     model_saved: "{label} salvo",
     model_status_key_missing: "Chave de API ausente",
+    model_status_key_invalid: "Chave de API inválida",
     model_status_probed: "Verificado",
     model_status_unprobed: "Ainda não verificado",
     wizard_btn_confirm_import: "Salvar seleção",
@@ -2733,6 +2721,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "AI：未找到模型",
     study_question_original: "原文",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "AI 反馈失败：{message}",
+    study_evaluation_unavailable:
+      "AI 反馈暂时不可用。请在设置中检查 AI 模型。",
+    study_evaluation_details: "详情",
     nav_dashboard: "仪表板",
     nav_settings: "设置",
     nav_stats: "学习统计",
@@ -3023,20 +3015,15 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_cap_stt: "语音转文字",
     model_cap_tts: "文字转语音",
     model_cap_none: "无能力",
-    model_cap_undetected: "此端点不支持",
-    model_cap_hint: "勾选后，仅端点支持的能力可以启用。",
     model_status_probed: "已检查",
     model_status_unprobed: "尚未检查",
     model_status_key_missing: "缺少 API 密钥",
+    model_status_key_invalid: "API 密钥无效",
     model_agent_status_ready: "Harness 就绪",
     model_agent_status_offline: "未检测到 Harness",
     model_agent_meta: "通过 {harness}",
     model_agent_meta_with_model: "通过 {harness} · {model}",
     model_agent_model_placeholder: "默认：{model}",
-    model_agent_cap_undetected: "未检测到 Harness — 安装后请重新检查",
-    model_agent_cap_hint: "代理模型使用 Harness 自带的模型与订阅。仅文本。",
-    model_agent_cap_hint_multimodal:
-      "此代理支持文本与视觉（OCR/扫描），使用你的订阅。",
     model_agent_hint:
       "使用已连接的代理 Harness（订阅 / OAuth）。无需 API 密钥或 URL。",
     model_agent_harness_missing: "未检测到",
@@ -3554,6 +3541,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "AI: モデルが見つかりません",
     study_question_original: "原文",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "AIフィードバックに失敗しました：{message}",
+    study_evaluation_unavailable:
+      "AIフィードバックは現在利用できません。設定でAIモデルを確認してください。",
+    study_evaluation_details: "詳細",
     nav_dashboard: "ダッシュボード",
     nav_stats: "学習統計",
     stats_kicker: "復習アクティビティ",
@@ -3863,22 +3854,15 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     model_cap_stt: "音声認識",
     model_cap_tts: "音声合成",
     model_cap_none: "能力なし",
-    model_cap_undetected: "このエンドポイントでは未対応",
-    model_cap_hint:
-      "チェック後、エンドポイントがサポートする能力のみ有効化できます。",
     model_status_probed: "確認済み",
     model_status_unprobed: "未確認",
     model_status_key_missing: "APIキーがありません",
+    model_status_key_invalid: "APIキーが無効です",
     model_agent_status_ready: "Harness 準備完了",
     model_agent_status_offline: "Harness 未検出",
     model_agent_meta: "{harness} 経由",
     model_agent_meta_with_model: "{harness} 経由 · {model}",
     model_agent_model_placeholder: "デフォルト: {model}",
-    model_agent_cap_undetected: "Harness 未検出 — インストール後に再確認",
-    model_agent_cap_hint:
-      "エージェントモデルは Harness のモデルとサブスクリプションを使います。テキストのみ。",
-    model_agent_cap_hint_multimodal:
-      "このエージェントはテキストとビジョン（OCR/スキャン）に対応。サブスクリプションを使用します。",
     model_agent_hint:
       "接続済みのエージェント Harness（サブスク / OAuth）を使います。APIキーや URL は不要です。",
     model_agent_harness_missing: "未検出",
@@ -4506,6 +4490,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "AI: model not found",
     study_question_original: "Original",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "AI feedback failed: {message}",
+    study_evaluation_unavailable:
+      "AI feedback is not available right now. Check the AI model in Settings.",
+    study_evaluation_details: "Details",
     nav_dashboard: "Dashboard",
     nav_settings: "Settings",
     nav_stats: "Statistics",
@@ -4944,22 +4932,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_stt: "Speech-to-text",
     model_cap_tts: "Text-to-speech",
     model_cap_none: "No capabilities",
-    model_cap_undetected: "Not supported by this endpoint",
-    model_cap_hint:
-      "Only capabilities the endpoint supports can be enabled after checking.",
     model_status_probed: "Checked",
     model_status_unprobed: "Not checked yet",
     model_status_key_missing: "API key missing",
+    model_status_key_invalid: "API key invalid",
     model_agent_status_ready: "Harness ready",
     model_agent_status_offline: "Harness not detected",
     model_agent_meta: "Via {harness}",
     model_agent_meta_with_model: "Via {harness} · {model}",
     model_agent_model_placeholder: "Default: {model}",
-    model_agent_cap_undetected: "Harness not detected — re-check after install",
-    model_agent_cap_hint:
-      "Agent models use the harness's own model and subscription. Text only.",
-    model_agent_cap_hint_multimodal:
-      "This agent can do text and vision (OCR/scans) via your subscription.",
     model_agent_hint:
       "Uses the connected agent harness (subscription / OAuth). No API key or URL needed.",
     model_agent_card_title: "Agent harness as a model source",
@@ -5453,6 +5434,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_not_installed: "Not installed",
     agent_status_installed: "Installed",
     agent_status_connected: "Connected",
+    agent_model_use_as: "Use as model…",
+    agent_model_option_text: "Text model",
+    agent_model_option_text_image: "Text + image model",
+    agent_model_in_use: "Model ✓",
     agent_connect_running: "Connecting...",
     agent_connect_done:
       "Connected {n} harness(es). Global ZAM skill refreshed.",
@@ -5877,6 +5862,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     ai_status_model_missing: "KI: Modell fehlt",
     study_question_original: "Urtext",
     study_evaluation_model: "{model}",
+    study_evaluation_failed: "KI-Feedback fehlgeschlagen: {message}",
+    study_evaluation_unavailable:
+      "KI-Feedback ist gerade nicht verfügbar. Prüfe das KI-Modell in den Einstellungen.",
+    study_evaluation_details: "Details",
     nav_dashboard: "Übersicht",
     nav_settings: "Einstellungen",
     nav_stats: "Statistik",
@@ -6329,23 +6318,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_cap_stt: "Sprache-zu-Text",
     model_cap_tts: "Text-zu-Sprache",
     model_cap_none: "Keine Fähigkeiten",
-    model_cap_undetected: "Von diesem Endpunkt nicht unterstützt",
-    model_cap_hint:
-      "Nach dem Prüfen lassen sich nur Fähigkeiten aktivieren, die der Endpunkt unterstützt.",
     model_status_probed: "Geprüft",
     model_status_unprobed: "Noch nicht geprüft",
     model_status_key_missing: "API-Schlüssel fehlt",
+    model_status_key_invalid: "API-Schlüssel ungültig",
     model_agent_status_ready: "Harness bereit",
     model_agent_status_offline: "Harness nicht erkannt",
     model_agent_meta: "Über {harness}",
     model_agent_meta_with_model: "Über {harness} · {model}",
     model_agent_model_placeholder: "Standard: {model}",
-    model_agent_cap_undetected:
-      "Harness nicht erkannt — nach Installation neu prüfen",
-    model_agent_cap_hint:
-      "Agent-Modelle nutzen Modell und Abo des Harness. Nur Text.",
-    model_agent_cap_hint_multimodal:
-      "Dieser Agent kann Text und Vision (OCR/Scans) über dein Abo.",
     model_agent_hint:
       "Nutzt den verbundenen Agent-Harness (Abo / OAuth). Kein API-Schlüssel und keine URL nötig.",
     model_agent_card_title: "Agent-Harness als Modellquelle",
@@ -6856,6 +6837,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     agent_status_not_installed: "Nicht installiert",
     agent_status_installed: "Installiert",
     agent_status_connected: "Verbunden",
+    agent_model_use_as: "Als Modell nutzen…",
+    agent_model_option_text: "Textmodell",
+    agent_model_option_text_image: "Text- + Bildmodell",
+    agent_model_in_use: "Modell ✓",
     agent_connect_running: "Verbinde...",
     agent_connect_done:
       "{n} Harness(es) verbunden. Globaler ZAM-Skill aktualisiert.",
