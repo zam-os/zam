@@ -8,7 +8,7 @@ tags:
   - setup
   - windows
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-ai-runtimes.md"
-timestamp: 2026-09-13T19:50:00.000Z
+timestamp: 2026-09-15T11:40:00.000Z
 ---
 
 ZAM can serve its `text`, `image`, and `embedding` roles from the learner's own
@@ -165,6 +165,18 @@ still sends the learner's action to the next configured row. The companions
 never use this chain — their recall tier order is `device-first` (Gemini Nano,
 then cloud, then self-rating) and stays untouched.
 
+The status a row *answers with* is read from the body as well as the wire.
+OpenRouter delivers some upstream failures — "temporarily rate-limited
+upstream", a provider error after routing — as HTTP 200 with an `error`
+object and no `choices`; every chat reader (`readChatContent`) treats that as
+the status the object carries, so an embedded 429 or 401 walks the chain like
+the same status on the wire and anything else surfaces with the upstream
+message instead of "empty response" or a JSON parse error. The goal
+decomposition (`zam bridge goal-decompose`) walks this same text chain: the
+learner's goal is not failed because the first row is rate-limited, and a
+reply a reasoning model cut off before the array gets one retry with a larger
+output budget.
+
 # What the runtime is inferred from
 
 `detectRunner` in `client.ts` resolves `foundry` from the runner hint (`foundry`
@@ -274,5 +286,5 @@ English until native review.
 - [ADR 2026-09-13 — Model Capabilities Are Detected, Not Chosen](../adr/2026-09-13-model-capabilities-are-detected.md)
 - [ADR 2026-05-30b — Hardware Setup and Agent Distribution](../adr/2026-05-30b-hardware-setup-and-agent-distribution.md)
 - [bridge-protocol.md](bridge-protocol.md)
-- Tests: `tests/cli/foundry-local.test.ts`, `tests/cli/local-vision.test.ts`, `tests/cli/llm-vision.test.ts`, `tests/cli/embedder.test.ts`, `tests/kernel/system.test.ts`, `tests/desktop/i18n-completeness.test.ts`, `tests/desktop/foundry-local-visibility.test.ts`
+- Tests: `tests/cli/foundry-local.test.ts`, `tests/cli/local-vision.test.ts`, `tests/cli/llm-vision.test.ts`, `tests/cli/embedder.test.ts`, `tests/kernel/system.test.ts`, `tests/desktop/i18n-completeness.test.ts`, `tests/desktop/foundry-local-visibility.test.ts`, `tests/cli/goal-decompose-chain.test.ts`, `tests/cli/llm-evaluation-retry.test.ts`
 - Code: `src/cli/llm/foundry-local.ts`, `src/cli/llm/foundry-local-setup.ts`, `src/cli/llm/local-vision.ts`, `src/cli/llm/local-embedding.ts`, `src/cli/llm/vision.ts`, `src/cli/llm/client.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `src/kernel/system/profiler.ts`, `src/cli/commands/bridge.ts`, `desktop/src/main.ts`

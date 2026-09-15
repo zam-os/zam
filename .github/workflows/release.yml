@@ -57,7 +57,47 @@ jobs:
           fi
           npm publish --provenance --access public
 
+  # One draft per tag, created once. The four publish-tauri matrix jobs used
+  # to let tauri-action "find or create" the draft in parallel; on v0.41.0 two
+  # jobs raced and produced two drafts for the same tag, with the macOS updater
+  # tarball and the Windows ARM64 installers on the one nobody looked at. Every
+  # job now uploads into this release id instead.
+  create-release:
+    name: 'Create draft release'
+    runs-on: ubuntu-22.04
+    permissions:
+      contents: write
+    outputs:
+      release_id: ${{ steps.create.outputs.release_id }}
+    steps:
+      - name: Create draft release
+        id: create
+        uses: actions/github-script@v8
+        with:
+          script: |
+            const tag = '${{ github.ref_name }}';
+            const { data: notes } = await github.rest.repos.generateReleaseNotes({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+            });
+            // Not "ZAM Desktop": one release carries the desktop apps, the
+            // Android APK, the editor companion and the npm package. A
+            // hand-written title replaces this before publishing; this is
+            // only the draft's name.
+            const { data: release } = await github.rest.repos.createRelease({
+              owner: context.repo.owner,
+              repo: context.repo.repo,
+              tag_name: tag,
+              name: `ZAM ${tag}`,
+              body: notes.body,
+              draft: true,
+              prerelease: false,
+            });
+            core.setOutput('release_id', String(release.id));
+
   publish-tauri:
+    needs: create-release
     permissions:
       contents: write
     env:
@@ -210,18 +250,6 @@ jobs:
           # build starts — the same ordering trap that cost three iOS releases.
           printf %s "$APPLE_API_KEY_CONTENT" | base64 -d > "$RUNNER_TEMP/AuthKey.p8"
 
-      - name: Generate release notes
-        id: notes
-        uses: actions/github-script@v8
-        with:
-          script: |
-            const { data: notes } = await github.rest.repos.generateReleaseNotes({
-              owner: context.repo.owner,
-              repo: context.repo.repo,
-              tag_name: '${{ github.ref_name }}',
-            });
-            core.setOutput('body', notes.body);
-
       - name: Build Tauri Desktop Application & Publish Draft Release
         uses: tauri-apps/tauri-action@v0
         env:
@@ -241,15 +269,9 @@ jobs:
           APPLE_API_KEY: ${{ secrets.APPLE_API_KEY }}
           APPLE_API_KEY_PATH: ${{ runner.temp }}/AuthKey.p8
         with:
-          tagName: ${{ github.ref_name }}
-          # Not "ZAM Desktop": one release carries the desktop apps, the
-          # Android APK, the editor companion and the npm package. A hand-written
-          # title replaces this before publishing; this is only the draft's name.
-          releaseName: 'ZAM ${{ github.ref_name }}'
-          releaseBody: |
-            ${{ steps.notes.outputs.body }}
-          releaseDraft: true
-          prerelease: false
+          # The draft already exists (create-release); tauri-action only
+          # uploads bundles and merges its platform entry into latest.json.
+          releaseId: ${{ needs.create-release.outputs.release_id }}
           projectPath: './desktop'
           args: ${{ matrix.args }}
 

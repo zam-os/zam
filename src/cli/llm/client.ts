@@ -68,6 +68,14 @@ export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
  * desktop layer.
  */
 export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
+
+/**
+ * Output budget for one goal-decomposition level (3–6 sub-topics with a
+ * one-sentence description each) and the retry budget when a reasoning model
+ * used the first allowance up before writing the array.
+ */
+export const GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS = 1500;
+export const GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
@@ -712,6 +720,14 @@ interface ChatCompletionResponse {
     message?: { content?: string };
     finish_reason?: string;
   }>;
+  /**
+   * OpenRouter answers some upstream failures — "temporarily rate-limited
+   * upstream", a provider error after routing — with HTTP 200 and this
+   * object instead of `choices` (seen 2026-09-15 on gpt-5.6-luna under the
+   * zero-data-retention routing). `code` carries the status the upstream
+   * would have sent.
+   */
+  error?: { message?: string; code?: number | string };
 }
 
 /**
@@ -739,7 +755,9 @@ export class LlmResponseTruncatedError extends Error {
 export class LlmHttpError extends Error {
   readonly status: number;
   constructor(label: string, status: number, statusText: string, body: string) {
-    super(`${label} failed: ${statusText} (${status}) - ${body}`);
+    super(
+      `${label} failed: ${statusText} (${status})${body ? ` - ${body}` : ""}`,
+    );
     this.name = "LlmHttpError";
     this.status = status;
   }
@@ -771,6 +789,28 @@ export function isNoAnswerFailure(error: unknown): boolean {
   );
 }
 
+/**
+ * An `error` object in a 2xx chat body. The status is the embedded code when
+ * it is one, so a 429 or 401 delivered this way walks the chain exactly like
+ * the same status on the wire; anything else surfaces as a 502-class answer
+ * with the upstream message, never as "empty response" or a JSON parse error.
+ */
+function readEmbeddedError(
+  data: ChatCompletionResponse,
+): { status: number; message: string } | null {
+  const error = data.error;
+  if (!error || typeof error !== "object") return null;
+  if (Array.isArray(data.choices) && data.choices.length > 0) return null;
+  const code = Number(error.code);
+  const status =
+    Number.isInteger(code) && code >= 400 && code <= 599 ? code : 502;
+  const message =
+    typeof error.message === "string" && error.message.trim()
+      ? error.message.trim()
+      : "upstream error";
+  return { status, message };
+}
+
 /** Extract the assistant message content from an OpenAI-compatible response. */
 async function readChatContent(res: Response, label: string): Promise<string> {
   if (!res.ok) {
@@ -778,6 +818,10 @@ async function readChatContent(res: Response, label: string): Promise<string> {
     throw new LlmHttpError(label, res.status, res.statusText, errorText);
   }
   const data = (await res.json()) as ChatCompletionResponse;
+  const embedded = readEmbeddedError(data);
+  if (embedded) {
+    throw new LlmHttpError(label, embedded.status, embedded.message, "");
+  }
   const choice = data.choices?.[0];
   const content = choice?.message?.content;
   const trimmed = content?.trim() ?? "";
@@ -1584,7 +1628,14 @@ export async function generateGoalDecompositionViaLLM(
   input: { title: string; description: string; path: string[] },
 ): Promise<GoalDecompositionOption[]> {
   const cfg = await getProviderForRole(db, "text");
-  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
+  // Text and recall are one capability, so the goal step walks the same
+  // chain as the evaluation: a primary that is rate-limited upstream or
+  // rejects its key hands over to the next configured row instead of
+  // failing the learner's goal with a parse error (Klara, 2026-09-15).
+  const { endpoints, signature } = await resolveRecallEndpointChain(db, {
+    allowAgent: true,
+    role: "text",
+  });
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const focus =
@@ -1606,44 +1657,57 @@ ${input.description ? `Why it matters to the learner: ${input.description}\n` : 
 
 JSON Array Output:`;
 
-  // Agent transport (ADR 2026-07-12a): onboarding's model page can connect an
-  // agent, so the goal step two pages later must accept one too.
-  if (endpoint.transport === "agent") {
-    const agentText = await requestAgentCompletion(endpoint, {
-      system: systemPrompt,
-      user: userPrompt,
-    });
-    return parseGoalDecompositionArray(agentText);
-  }
+  const decomposeOn = async (
+    endpoint: ProviderConfig,
+  ): Promise<GoalDecompositionOption[]> => {
+    // Agent transport (ADR 2026-07-12a): onboarding's model page can connect
+    // an agent, so the goal step two pages later must accept one too.
+    if (endpoint.transport === "agent") {
+      const agentText = await requestAgentCompletion(endpoint, {
+        system: systemPrompt,
+        user: userPrompt,
+      });
+      return parseGoalDecompositionArray(agentText);
+    }
 
-  const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
-    {
-      method: "POST",
-      headers: {
-        "Content-Type": "application/json",
-        Authorization: `Bearer ${endpoint.apiKey}`,
-      },
-      body: JSON.stringify({
-        model: endpoint.model,
-        messages: [
-          { role: "system", content: systemPrompt },
-          { role: "user", content: userPrompt },
-        ],
-        temperature: 0.3,
-        max_tokens: 1500,
-      }),
-      locale: cfg.locale,
-    },
-  );
-  if (!res.ok) {
-    throw new Error(`Goal decomposition failed: ${res.statusText}`);
-  }
-  const data = (await res.json()) as {
-    choices?: Array<{ message?: { content?: string } }>;
+    const request = async (maxTokens: number): Promise<string> => {
+      const res = await fetchWithInteractiveTimeout(
+        `${endpoint.url}/chat/completions`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Authorization: `Bearer ${endpoint.apiKey}`,
+          },
+          body: JSON.stringify({
+            model: endpoint.model,
+            messages: [
+              { role: "system", content: systemPrompt },
+              { role: "user", content: userPrompt },
+            ],
+            temperature: 0.3,
+            max_tokens: maxTokens,
+          }),
+          locale: cfg.locale,
+        },
+      );
+      return readChatContent(res, "Goal decomposition");
+    };
+
+    // A reasoning model spends part of the allowance thinking before the
+    // first visible token (reasoning tokens count against max_tokens on
+    // OpenRouter); a truncated reply gets one retry with real room.
+    let content: string;
+    try {
+      content = await request(GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS);
+    } catch (error) {
+      if (!(error instanceof LlmResponseTruncatedError)) throw error;
+      content = await request(GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS);
+    }
+    return parseGoalDecompositionArray(content);
   };
-  const content = data.choices?.[0]?.message?.content ?? "";
-  return parseGoalDecompositionArray(content);
+
+  return walkRecallChain(endpoints, signature, decomposeOn);
 }
 
 export async function importCurriculumViaLLM(
@@ -2408,9 +2472,11 @@ export interface QuestionResolution {
  */
 export async function resolveRecallEndpointChain(
   db: Database,
-  opts: { allowAgent?: boolean } = {},
+  opts: { allowAgent?: boolean; role?: "recall" | "text" } = {},
 ): Promise<{ endpoints: ProviderConfig[]; signature: string }> {
-  const cfg = await getProviderForRole(db, "recall");
+  // Both roles resolve to the text capability of the model registry; the
+  // role only matters for a legacy install still on `llm.roles`.
+  const cfg = await getProviderForRole(db, opts.role ?? "recall");
   if (!cfg.enabled) {
     throw new Error("LLM integration is disabled in settings (llm.enabled)");
   }
