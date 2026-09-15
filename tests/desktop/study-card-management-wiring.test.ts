@@ -37,6 +37,21 @@ describe("study-view card-management wiring", () => {
     expect(html).toContain('class="study-busy-progress"');
   });
 
+  it("keeps the blocked-prerequisite notice on the Recall busy overlay", () => {
+    const recall = desktopFile("src/panel/recall.ts");
+    expect(recall).toContain('tf("recall_blocked_notice"');
+  });
+
+  it("clears the busy overlay and clock when navigating away from a live session", () => {
+    const start = main.indexOf(
+      'if (viewId !== "study-view" && studySessionActive)',
+    );
+    expect(start).toBeGreaterThan(-1);
+    const body = main.slice(start, start + 900);
+    expect(body).toContain("hideStudyBusy()");
+    expect(body).toContain("learningClock.reset()");
+  });
+
   it("uses one review-action gate across rating and card management", () => {
     expect(main).not.toContain("ratingSubmitInProgress");
     expect(main).not.toContain("cardManageInProgress");

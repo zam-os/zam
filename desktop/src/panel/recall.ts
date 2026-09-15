@@ -341,7 +341,11 @@ function clearContent(): void {
   contentEl?.replaceChildren();
 }
 
-function setCardBusy(root: HTMLElement, message: string | null): void {
+function setCardBusy(
+  root: HTMLElement,
+  message: string | null,
+  detail?: string,
+): void {
   let overlay = root.querySelector<HTMLElement>(".recall-busy-overlay");
   if (!message) {
     overlay?.remove();
@@ -362,15 +366,22 @@ function setCardBusy(root: HTMLElement, message: string | null): void {
     }
     const msg = document.createElement("p");
     msg.className = "recall-busy-message";
+    const detailEl = document.createElement("p");
+    detailEl.className = "recall-busy-detail";
     const bar = document.createElement("div");
     bar.className = "recall-busy-progress";
     bar.setAttribute("aria-hidden", "true");
     bar.appendChild(document.createElement("span"));
-    overlay.append(dots, msg, bar);
+    overlay.append(dots, msg, detailEl, bar);
     root.appendChild(overlay);
   }
   const msgEl = overlay.querySelector(".recall-busy-message");
   if (msgEl) msgEl.textContent = message;
+  const detailEl = overlay.querySelector<HTMLElement>(".recall-busy-detail");
+  if (detailEl) {
+    detailEl.textContent = detail ?? "";
+    detailEl.hidden = !detail;
+  }
   root.classList.add("recall-card-busy");
 }
 
@@ -1025,11 +1036,20 @@ async function presentCurrentCard(): Promise<void> {
       // The admission's attempt id keeps a retried submit one review.
       if (attemptId) args.attemptId = attemptId;
       if (currentUser) args.user = currentUser;
-      await callTool("zam_submit_review", args);
+      const res = (await callTool("zam_submit_review", args)) as {
+        blocked?: { blockedSlug?: string } | null;
+      };
       tally.done += 1;
       tally.ratings[rating] = (tally.ratings[rating] ?? 0) + 1;
       pushContext(card, "rated");
-      setCardBusy(root, t("lbl_study_busy_next"));
+      const blockedSlug = res.blocked?.blockedSlug;
+      setCardBusy(
+        root,
+        t("lbl_study_busy_next"),
+        blockedSlug
+          ? tf("recall_blocked_notice", { slug: blockedSlug })
+          : undefined,
+      );
       advance();
     } catch (error) {
       rated = false; // allow a retry

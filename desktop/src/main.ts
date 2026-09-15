@@ -5140,7 +5140,10 @@ function switchView(
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
+    learningClock.reset();
     finishAiWait();
+    finishQuestionWait();
+    hideStudyBusy();
     closeManageMenu();
     closeInlineEditor();
     if (isStudyConfirmOpen()) hideStudyConfirm();
@@ -6516,6 +6519,11 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     hideStudyBusy();
+    const questionText = document.getElementById("question-text");
+    if (questionText) {
+      const detail = err instanceof Error ? err.message : String(err);
+      questionText.textContent = `${t("lbl_error_loading")}: ${detail}`;
+    }
     console.error("Failed to load next card:", err);
   } finally {
     if (requestId === questionRequestId) {

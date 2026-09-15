@@ -79,7 +79,9 @@ visible rather than a frozen card. On submit failure the rated card
 comes back so the learner can retry.
 
 The MCP Recall card follows the same rule: no next-due dwell after a
-rating.
+rating. If that rating blocked the card (unmet prerequisites), the
+busy overlay still shows `recall_blocked_notice` so the learner sees
+why it vanished.
 
 ## Consequences
 
@@ -89,7 +91,8 @@ rating.
   and the ten-minute read cap all pull it down versus wall-clock.
 - Mobile and CLI keep wall-clock until they grow an idle watcher; the
   kernel clock is shared so they can switch without a new policy.
-- The next-due flash after a rating is gone on purpose.
+- The next-due flash after a rating is gone on purpose. A blocked-card
+  notice is not: Recall still surfaces it on the overlay.
 
 ## Citations
 
