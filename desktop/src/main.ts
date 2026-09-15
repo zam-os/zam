@@ -7,6 +7,7 @@ import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
+import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
 import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
 import {
   countAnswerPoints,
@@ -113,6 +114,7 @@ import {
   ratingShortcutForKey,
   removeConfirmCommand,
   removePreviewCommand,
+  submitRatingCommand,
 } from "./study-card-actions.js";
 import {
   type BonusOffer,
@@ -478,6 +480,8 @@ let evaluationRequestId = 0;
 let revealInProgress = false;
 let reviewActionInProgress = false;
 let cardLoadInProgress = false;
+const learningClock = createLearningClock();
+type StudyBusyKind = "evaluating" | "saving" | "next" | "question";
 let pendingReviewPayload: ReviewPayload | null = null;
 let preconditionCache: PreconditionOffer[] | null = null;
 const assessedAtomsThisSession = new Set<string>();
@@ -5136,7 +5140,10 @@ function switchView(
     evaluationRequestId++;
     if (revealInProgress) cancelActiveBridgeRequest();
     revealInProgress = false;
+    learningClock.reset();
     finishAiWait();
+    finishQuestionWait();
+    hideStudyBusy();
     closeManageMenu();
     closeInlineEditor();
     if (isStudyConfirmOpen()) hideStudyConfirm();
@@ -6439,7 +6446,6 @@ async function loadNextCard(
     document.getElementById("revealed-box")!.classList.add("hidden");
     document.getElementById("own-answer-box")!.classList.add("hidden");
     document.getElementById("own-answer-text")!.textContent = "";
-    document.getElementById("npu-loading")!.classList.add("hidden");
     document.getElementById("wait-prompt")!.classList.add("hidden");
     document.getElementById("answer-capture-box")!.classList.remove("hidden");
     closeInlineEditor();
@@ -6452,15 +6458,19 @@ async function loadNextCard(
 
     setModelAttributionBadge("question-model-badge", null);
 
-    // Set question text to a pulsing loading state so the user has immediate visual feedback
     const questionText = document.getElementById("question-text")!;
     renderReviewMedia("question-media", [], "question");
     renderReviewMedia("answer-media", [], "answer");
-    questionText.innerHTML = "";
-    const loadingText = document.createElement("span");
-    loadingText.className = "loading-pulse";
-    loadingText.textContent = t("lbl_generating_question");
-    questionText.appendChild(loadingText);
+    questionText.textContent = "";
+    showStudyBusy(
+      isLlmEnabled &&
+        shouldRequestDynamicStudyQuestion(
+          currentStudyLearningSettings.learningMode,
+          options.dynamicQuestion !== false,
+        )
+        ? "question"
+        : "next",
+    );
 
     // Fetch review. Dynamic question generation may need to cold-start a local
     // model, so offer the learner a choice after 30 seconds instead of leaving
@@ -6508,6 +6518,12 @@ async function loadNextCard(
   } catch (err) {
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
+    hideStudyBusy();
+    const questionText = document.getElementById("question-text");
+    if (questionText) {
+      const detail = err instanceof Error ? err.message : String(err);
+      questionText.textContent = `${t("lbl_error_loading")}: ${detail}`;
+    }
     console.error("Failed to load next card:", err);
   } finally {
     if (requestId === questionRequestId) {
@@ -6556,7 +6572,8 @@ async function submitAndReveal() {
       fastCheck: Boolean(activeCard.fastCheck),
     })
   ) {
-    document.getElementById("npu-loading")!.classList.remove("hidden");
+    learningClock.beginBusy(Date.now());
+    showStudyBusy("evaluating");
     isWaitingForAi = true;
 
     // Start UI timeout check (triggers wait confirm after 30 seconds)
@@ -6604,7 +6621,9 @@ async function submitAndReveal() {
       console.warn("LLM evaluation call failed:", err);
     } finally {
       if (requestId === evaluationRequestId) {
+        learningClock.endBusy(Date.now());
         finishAiWait();
+        hideStudyBusy();
       }
     }
   }
@@ -6833,6 +6852,7 @@ async function sendDiscussionTurn(): Promise<void> {
   pendingEl.classList.add("pending");
 
   const args = buildDiscussReviewArgs(discussion.card, discussion.turns, message);
+  learningClock.beginFollowUp(Date.now());
   try {
     const payload = await runBridge<{
       success: boolean;
@@ -6862,6 +6882,7 @@ async function sendDiscussionTurn(): Promise<void> {
     console.warn("Discussion turn failed:", err);
   } finally {
     if (guard === discussion.seq) {
+      learningClock.endFollowUp(Date.now());
       els.input.disabled = false;
       els.send.disabled = false;
       els.input.focus();
@@ -6915,7 +6936,6 @@ function clearAiWaitTimer() {
 function finishAiWait() {
   clearAiWaitTimer();
   isWaitingForAi = false;
-  document.getElementById("npu-loading")!.classList.add("hidden");
 }
 
 async function cancelActiveBridgeRequest(): Promise<void> {
@@ -6936,7 +6956,9 @@ function skipAiWaitingAndReveal() {
   if (!revealInProgress) return;
   evaluationRequestId++;
   void cancelActiveBridgeRequest();
+  learningClock.endBusy(Date.now());
   finishAiWait();
+  hideStudyBusy();
   renderReveal("", false, null);
   revealInProgress = false;
   updateReviewControlState();
@@ -7263,6 +7285,36 @@ function endReviewAction(): void {
   updateReviewControlState();
 }
 
+function noteStudyActivity(): void {
+  if (!studySessionActive || !activeCard) return;
+  learningClock.noteActivity(Date.now());
+}
+
+function showStudyBusy(kind: StudyBusyKind): void {
+  const card = document.getElementById("study-active-card");
+  const loader = document.getElementById("npu-loading");
+  const message = document.getElementById("lbl-ai-evaluating");
+  const sub = document.getElementById("lbl-ai-working");
+  if (!card || !loader || !message || !sub) return;
+  const messageKey =
+    kind === "evaluating"
+      ? "lbl_ai_evaluating"
+      : kind === "saving"
+        ? "lbl_study_busy_saving"
+        : kind === "question"
+          ? "lbl_generating_question"
+          : "lbl_study_busy_next";
+  message.textContent = t(messageKey);
+  sub.textContent = t("lbl_ai_working");
+  card.classList.add("study-waiting");
+  loader.classList.remove("hidden");
+}
+
+function hideStudyBusy(): void {
+  document.getElementById("study-active-card")?.classList.remove("study-waiting");
+  document.getElementById("npu-loading")?.classList.add("hidden");
+}
+
 function isStudyConfirmOpen(): boolean {
   const overlay = document.getElementById("study-confirm-overlay");
   return overlay?.classList.contains("active") ?? false;
@@ -7295,14 +7347,22 @@ async function submitRating(ratingVal: number) {
   }
   const cardId = activeCard.cardId;
   const attemptId = activeAttemptId;
+  const responseTimeMs = learningClock.elapsedMs(Date.now());
   // Checking in the rating closes the thread (ADR 2026-07-06b).
   resetDiscussionUi();
+  // Hide the rated card immediately — leaving it up looks like the press
+  // missed while submit and the next load run (ADR 2026-09-15).
+  document.getElementById("revealed-box")!.classList.add("hidden");
+  showStudyBusy("saving");
 
   try {
-    const submitArgs = ["--card-id", cardId, "--rating", String(ratingVal)];
-    // The attempt id from admission makes a retried submit one review.
-    if (attemptId) submitArgs.push("--attempt-id", attemptId);
-    await runBridge("submit", submitArgs);
+    const call = submitRatingCommand({
+      cardId,
+      rating: ratingVal,
+      attemptId,
+      responseTimeMs,
+    });
+    await runBridge(call.cmd, call.args);
 
     if (ratingVal >= 1 && ratingVal <= 4) {
       const r = ratingVal as 1 | 2 | 3 | 4;
@@ -7310,10 +7370,13 @@ async function submitRating(ratingVal: number) {
       sessionRatingTally.done += 1;
     }
 
+    showStudyBusy("next");
     // Load next card or finish
     if (studySessionActive) await loadNextCard();
   } catch (err) {
     console.error("Failed to submit rating:", err);
+    hideStudyBusy();
+    document.getElementById("revealed-box")!.classList.remove("hidden");
   } finally {
     endReviewAction();
   }
@@ -7635,6 +7698,7 @@ function showStudyOffer(spec: {
   const actionsEl = document.getElementById("study-offer-actions");
   if (!offer || !titleEl || !bodyEl || !actionsEl) return;
 
+  hideStudyBusy();
   document.getElementById("study-active-card")?.classList.add("hidden");
   document.getElementById("session-summary")?.classList.add("hidden");
   titleEl.textContent = spec.title;
@@ -7676,11 +7740,13 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
     throw err;
   }
   hideStudyOffer();
+  hideStudyBusy();
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-footer")?.classList.remove("hidden");
 
   pendingReviewPayload = null;
   activeCard = payload.card;
+  learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;
   resolvedContextContent = payload.resolvedContext?.content || null;
   cardsReviewedThisSession++;
@@ -8068,8 +8134,10 @@ async function finishStudySession(): Promise<void> {
   evaluationRequestId++;
   if (revealInProgress) cancelActiveBridgeRequest();
   revealInProgress = false;
+  learningClock.reset();
   finishAiWait();
   finishQuestionWait();
+  hideStudyBusy();
   closeManageMenu();
   closeInlineEditor();
   if (isStudyConfirmOpen()) hideStudyConfirm();
@@ -8626,6 +8694,24 @@ window.addEventListener("DOMContentLoaded", () => {
       void sendDiscussionTurn();
     }
   });
+
+  const noteStudyInput = (event: Event) => {
+    if (!studySessionActive) return;
+    const studyView = document.getElementById("study-view");
+    if (!studyView?.classList.contains("active")) return;
+    const target = event.target;
+    if (
+      target instanceof Node &&
+      !studyView.contains(target) &&
+      event.type !== "keydown"
+    ) {
+      return;
+    }
+    noteStudyActivity();
+  };
+  window.addEventListener("pointerdown", noteStudyInput, { passive: true });
+  window.addEventListener("keydown", noteStudyInput, { passive: true });
+  window.addEventListener("input", noteStudyInput, { passive: true });
 
   // Keyboard events
   window.addEventListener("keydown", (e: KeyboardEvent) => {

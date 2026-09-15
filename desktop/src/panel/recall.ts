@@ -26,6 +26,11 @@
  */
 
 import { App } from "@modelcontextprotocol/ext-apps";
+import { createLearningClock } from "../../../src/kernel/analytics/learning-clock.js";
+import {
+  countAnswerPoints,
+  shouldShowPointCount,
+} from "../../../src/kernel/library/answer-points.js";
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
 import {
   type BonusOffer,
@@ -46,10 +51,6 @@ import {
   fallbackContextBarState,
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
-import {
-  countAnswerPoints,
-  shouldShowPointCount,
-} from "../../../src/kernel/library/answer-points.js";
 import { preferredRecallDisplayMode } from "./display-mode.js";
 import {
   buildRecallEvaluationPrompt,
@@ -134,30 +135,6 @@ interface ReviewCard {
   } | null;
 }
 
-interface SubmitEvaluation {
-  nextDueAt: string;
-  stability: number;
-  difficulty: number;
-  state: string;
-  scheduledDays: number;
-  reps: number;
-  lapses: number;
-}
-
-interface BlockedInfo {
-  blockedSlug: string;
-  prerequisites: Array<{ slug: string; concept: string; bloomLevel: number }>;
-}
-
-interface SubmitResult {
-  success: boolean;
-  rating: number;
-  evaluation: SubmitEvaluation;
-  blocked: BlockedInfo | null;
-  attemptId?: string;
-  applied?: boolean;
-}
-
 interface AdmitResult {
   attemptId?: string;
 }
@@ -187,8 +164,10 @@ let preconditionCache: PreconditionOffer[] = [];
 const assessedAtoms = new Set<string>();
 let bonusIgnoredThisSession = false;
 let nextMaxNewOverride: number | undefined;
-/** When the current card was shown (Date.now()); sent as responseTimeMs with the rating (ADR 2026-08-01 Decision 5). */
-let cardStartedAt = 0;
+/** Active learning time for the current card (ADR 2026-09-15). */
+const learningClock = createLearningClock();
+/** Shown on the next card (or empty/summary screen), not the rated overlay. */
+let pendingBlockedNotice: string | null = null;
 
 // Session-local tally for the finish/done summary. Never persisted; the card
 // owns no ZAM session, so this is pure UI state.
@@ -238,6 +217,8 @@ function reloadForContext(newState: CompanionContextBarState): void {
   finished = false;
   cards = [];
   index = 0;
+  learningClock.reset();
+  pendingBlockedNotice = null;
   tally.done = 0;
   tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
   void loadLearningMode()
@@ -363,6 +344,60 @@ function clearContent(): void {
   contentEl?.replaceChildren();
 }
 
+function setCardBusy(
+  root: HTMLElement,
+  message: string | null,
+  detail?: string,
+): void {
+  let overlay = root.querySelector<HTMLElement>(".recall-busy-overlay");
+  if (!message) {
+    overlay?.remove();
+    root.classList.remove("recall-card-busy");
+    return;
+  }
+  if (!overlay) {
+    overlay = document.createElement("div");
+    overlay.className = "recall-busy-overlay";
+    overlay.setAttribute("role", "status");
+    overlay.setAttribute("aria-live", "polite");
+    overlay.setAttribute("aria-busy", "true");
+    const dots = document.createElement("div");
+    dots.className = "recall-busy-dots";
+    dots.setAttribute("aria-hidden", "true");
+    for (let i = 0; i < 3; i += 1) {
+      dots.appendChild(document.createElement("span"));
+    }
+    const msg = document.createElement("p");
+    msg.className = "recall-busy-message";
+    const detailEl = document.createElement("p");
+    detailEl.className = "recall-busy-detail";
+    const bar = document.createElement("div");
+    bar.className = "recall-busy-progress";
+    bar.setAttribute("aria-hidden", "true");
+    bar.appendChild(document.createElement("span"));
+    overlay.append(dots, msg, detailEl, bar);
+    root.appendChild(overlay);
+  }
+  const msgEl = overlay.querySelector(".recall-busy-message");
+  if (msgEl) msgEl.textContent = message;
+  const detailEl = overlay.querySelector<HTMLElement>(".recall-busy-detail");
+  if (detailEl) {
+    detailEl.textContent = detail ?? "";
+    detailEl.hidden = !detail;
+  }
+  root.classList.add("recall-card-busy");
+}
+
+function attachPendingBlockedNotice(host: HTMLElement): void {
+  const message = pendingBlockedNotice;
+  pendingBlockedNotice = null;
+  if (!message) return;
+  const notice = document.createElement("div");
+  notice.className = "recall-notice";
+  notice.textContent = message;
+  host.appendChild(notice);
+}
+
 function renderMessage(emoji: string, title: string, sub: string): void {
   if (!contentEl) return;
   clearContent();
@@ -378,6 +413,7 @@ function renderMessage(emoji: string, title: string, sub: string): void {
   subEl.className = "recall-empty-sub";
   subEl.textContent = sub;
   box.append(emojiEl, titleEl, subEl);
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -417,6 +453,7 @@ function renderChoiceOffer(
     row.appendChild(btn);
   }
   box.append(titleEl, subEl, row);
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -639,6 +676,7 @@ function renderSummary(): void {
     }
     box.appendChild(spread);
   }
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -803,7 +841,7 @@ async function presentCurrentCard(): Promise<void> {
     return;
   }
   if (revision !== sessionRevision || cards[index] !== card) return;
-  cardStartedAt = Date.now();
+  learningClock.start(Date.now());
   // Spoiler discipline: `concept` stays in this closure and only reaches the
   // DOM inside showReveal(); it is never rendered before the user reveals.
   const concept = card.concept;
@@ -994,19 +1032,6 @@ async function presentCurrentCard(): Promise<void> {
     notice.textContent = message;
   }
 
-  function showResult(res: SubmitResult): void {
-    const result = document.createElement("div");
-    result.className = "recall-result";
-    const due = formatDue(res.evaluation.nextDueAt);
-    result.textContent = tf("recall_next_due", { due });
-    root.appendChild(result);
-    if (res.blocked) {
-      showNotice(
-        tf("recall_blocked_notice", { slug: res.blocked.blockedSlug }),
-      );
-    }
-  }
-
   async function submitRating(rating: 1 | 2 | 3 | 4): Promise<void> {
     if (rated) return;
     rated = true;
@@ -1015,25 +1040,35 @@ async function presentCurrentCard(): Promise<void> {
     ratingButtons.forEach((b) => {
       b.disabled = true;
     });
+    const responseTimeMs = learningClock.elapsedMs(Date.now());
+    setCardBusy(root, t("lbl_study_busy_saving"));
     try {
       const args: Record<string, unknown> = {
         cardId: card.cardId,
         rating,
         doneBy: "user",
-        responseTimeMs: Math.max(0, Date.now() - cardStartedAt),
+        responseTimeMs,
       };
       // The admission's attempt id keeps a retried submit one review.
       if (attemptId) args.attemptId = attemptId;
       if (currentUser) args.user = currentUser;
-      const res = (await callTool("zam_submit_review", args)) as SubmitResult;
+      const res = (await callTool("zam_submit_review", args)) as {
+        blocked?: { blockedSlug?: string } | null;
+      };
       tally.done += 1;
       tally.ratings[rating] = (tally.ratings[rating] ?? 0) + 1;
       pushContext(card, "rated");
-      showResult(res);
-      // Let the user read the next-due line before moving on.
-      window.setTimeout(advance, 1400);
+      const blockedSlug = res.blocked?.blockedSlug;
+      if (blockedSlug) {
+        pendingBlockedNotice = tf("recall_blocked_notice", {
+          slug: blockedSlug,
+        });
+      }
+      setCardBusy(root, t("lbl_study_busy_next"));
+      advance();
     } catch (error) {
       rated = false; // allow a retry
+      setCardBusy(root, null);
       ratingButtons.forEach((b) => {
         b.disabled = false;
       });
@@ -1209,6 +1244,7 @@ async function presentCurrentCard(): Promise<void> {
         samplingMessages.push({ role: "user", text: question });
       }
       pushContext(card, "discussing");
+      learningClock.beginFollowUp(Date.now());
       void sampleRecall(samplingMessages)
         .then((reply) => {
           samplingMessages.push({ role: "assistant", text: reply });
@@ -1224,6 +1260,7 @@ async function presentCurrentCard(): Promise<void> {
           ),
         )
         .finally(() => {
+          learningClock.endFollowUp(Date.now());
           button.disabled = false;
           followUp.disabled = false;
         });
@@ -1330,33 +1367,41 @@ async function presentCurrentCard(): Promise<void> {
     // detour just because the host happens to expose messaging.
     const route = currentEvaluationRoute();
     pushContext(card, "evaluating");
-    if (route.kind === "zam-text-model" || route.kind === "host-sampling") {
-      const prompt = buildRecallEvaluationPrompt(
-        {
-          ...card,
-          resolvedContext: card.resolvedContext?.content ?? null,
-        },
-        learnerAnswer,
-        // The panel has no settings access; its locale comes from the host's
-        // browser language, resolved during connect().
-        currentLocale,
-      );
-      const raw = await sampleRecall([{ role: "user", text: prompt }]);
-      // The card comes along so the parser can score the reply against the
-      // reference answer's own points rather than trusting a rating from it.
-      const evaluation = parseRecallEvaluation(raw, card);
-      showSmartEvaluation(learnerAnswer, evaluation);
-      pushContext(card, "answered");
-      return;
+    learningClock.beginBusy(Date.now());
+    setCardBusy(root, t("lbl_ai_evaluating"));
+    try {
+      if (route.kind === "zam-text-model" || route.kind === "host-sampling") {
+        const prompt = buildRecallEvaluationPrompt(
+          {
+            ...card,
+            resolvedContext: card.resolvedContext?.content ?? null,
+          },
+          learnerAnswer,
+          // The panel has no settings access; its locale comes from the host's
+          // browser language, resolved during connect().
+          currentLocale,
+        );
+        const raw = await sampleRecall([{ role: "user", text: prompt }]);
+        // The card comes along so the parser can score the reply against the
+        // reference answer's own points rather than trusting a rating from it.
+        const evaluation = parseRecallEvaluation(raw, card);
+        setCardBusy(root, null);
+        showSmartEvaluation(learnerAnswer, evaluation);
+        pushContext(card, "answered");
+        return;
+      }
+      if (route.kind === "host-message") {
+        await sendToHostConversation(learnerAnswer);
+        setCardBusy(root, null);
+        showReveal(learnerAnswer);
+        showNotice(t("recall_sent_to_host"));
+        pushContext(card, "answered", { learnerAnswer });
+        return;
+      }
+      throw new Error(route.reason);
+    } finally {
+      learningClock.endBusy(Date.now());
     }
-    if (route.kind === "host-message") {
-      await sendToHostConversation(learnerAnswer);
-      showReveal(learnerAnswer);
-      showNotice(t("recall_sent_to_host"));
-      pushContext(card, "answered", { learnerAnswer });
-      return;
-    }
-    throw new Error(route.reason);
   }
 
   actionBtn.addEventListener("click", () => {
@@ -1372,6 +1417,7 @@ async function presentCurrentCard(): Promise<void> {
     } else {
       actionBtn.textContent = t("btn_recall_checking");
       void evaluateAnswer(text).catch((error) => {
+        setCardBusy(root, null);
         showNotice(tf("recall_check_failed", { message: errorMessage(error) }));
         unlockInputs();
         actionBtn.textContent = t("btn_recall_check");
@@ -1380,8 +1426,18 @@ async function presentCurrentCard(): Promise<void> {
   });
 
   contentEl.appendChild(root);
+  attachPendingBlockedNotice(root);
   pushContext(card, "shown");
 }
+
+function noteRecallActivity(): void {
+  if (finished || !started) return;
+  learningClock.noteActivity(Date.now());
+}
+
+contentEl?.addEventListener("pointerdown", noteRecallActivity);
+contentEl?.addEventListener("keydown", noteRecallActivity);
+contentEl?.addEventListener("input", noteRecallActivity);
 
 async function loadReviews(): Promise<void> {
   const revision = sessionRevision;
@@ -1456,6 +1512,8 @@ app.ontoolresult = (params) => {
     finished = false;
     cards = [];
     index = 0;
+    learningClock.reset();
+    pendingBlockedNotice = null;
     preconditionCache = [];
     assessedAtoms.clear();
     bonusIgnoredThisSession = false;

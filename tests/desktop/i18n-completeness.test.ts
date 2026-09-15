@@ -136,6 +136,11 @@ const DISCUSSION_KEYS = [
   "discussion_error",
 ] as const;
 
+const STUDY_BUSY_KEYS = [
+  "lbl_study_busy_saving",
+  "lbl_study_busy_next",
+] as const;
+
 const AGENT_CONNECT_KEYS = [
   "settings_agents_title",
   "settings_agents_help",
@@ -300,6 +305,7 @@ const REQUIRED_KEYS = [
   ...STUDIO_LAYOUT_KEYS,
   ...DRAFT_PUBLISH_KEYS,
   ...DISCUSSION_KEYS,
+  ...STUDY_BUSY_KEYS,
   ...AGENT_CONNECT_KEYS,
   ...CONTEXTBAR_KEYS,
   ...OKF_PANEL_KEYS,

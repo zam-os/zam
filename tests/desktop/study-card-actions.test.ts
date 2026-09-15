@@ -1,12 +1,13 @@
 import { describe, expect, it } from "vitest";
 import {
-  StudyEditError,
   deleteConfirmCommand,
   deletePreviewCommand,
   editCommand,
   ratingShortcutForKey,
   removeConfirmCommand,
   removePreviewCommand,
+  StudyEditError,
+  submitRatingCommand,
 } from "../../desktop/src/study-card-actions.js";
 
 describe("study-card-actions", () => {
@@ -70,6 +71,39 @@ describe("study-card-actions", () => {
       expect(err).toBeInstanceOf(StudyEditError);
       expect((err as StudyEditError).reason).toBe("question-required");
     }
+  });
+
+  it("always sends response time with a rating, including zero", () => {
+    expect(
+      submitRatingCommand({
+        cardId: "card-1",
+        rating: 3,
+        responseTimeMs: 0,
+      }),
+    ).toEqual({
+      cmd: "submit",
+      args: ["--card-id", "card-1", "--rating", "3", "--response-time-ms", "0"],
+    });
+    expect(
+      submitRatingCommand({
+        cardId: "card-1",
+        rating: 2,
+        attemptId: "attempt-1",
+        responseTimeMs: 1_750,
+      }),
+    ).toEqual({
+      cmd: "submit",
+      args: [
+        "--card-id",
+        "card-1",
+        "--rating",
+        "2",
+        "--response-time-ms",
+        "1750",
+        "--attempt-id",
+        "attempt-1",
+      ],
+    });
   });
 
   it.each([

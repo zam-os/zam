@@ -28,6 +28,32 @@ describe("study-view card-management wiring", () => {
     expect(controls).toBeLessThan(answerBox);
   });
 
+  it("sends study time with every rating and hides the card behind a busy overlay", () => {
+    expect(main).toContain("submitRatingCommand({");
+    expect(main).toContain("learningClock.elapsedMs");
+    expect(main).toContain('showStudyBusy("saving")');
+    expect(main).toContain('card.classList.add("study-waiting")');
+    expect(html).toContain('id="npu-loading"');
+    expect(html).toContain('class="study-busy-progress"');
+  });
+
+  it("carries the blocked-prerequisite notice onto the next Recall card", () => {
+    const recall = desktopFile("src/panel/recall.ts");
+    expect(recall).toContain("pendingBlockedNotice");
+    expect(recall).toContain("attachPendingBlockedNotice");
+    expect(recall).toContain('tf("recall_blocked_notice"');
+  });
+
+  it("clears the busy overlay and clock when navigating away from a live session", () => {
+    const start = main.indexOf(
+      'if (viewId !== "study-view" && studySessionActive)',
+    );
+    expect(start).toBeGreaterThan(-1);
+    const body = main.slice(start, start + 900);
+    expect(body).toContain("hideStudyBusy()");
+    expect(body).toContain("learningClock.reset()");
+  });
+
   it("uses one review-action gate across rating and card management", () => {
     expect(main).not.toContain("ratingSubmitInProgress");
     expect(main).not.toContain("cardManageInProgress");

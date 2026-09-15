@@ -29,6 +29,15 @@ export {
 } from "./ai/tier-preference.js";
 
 export type {
+  LearningClock,
+  LearningClockOptions,
+} from "./analytics/learning-clock.js";
+export {
+  createLearningClock,
+  LEARNING_FOLLOW_UP_CAP_MS,
+  LEARNING_IDLE_GRACE_MS,
+} from "./analytics/learning-clock.js";
+export type {
   ActivityBucketLabelOptions,
   ActivityPeriod,
   GetReviewActivityOptions,

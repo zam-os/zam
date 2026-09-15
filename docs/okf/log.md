@@ -1,5 +1,10 @@
 # Log
 
+## 2026-09-15
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+
 ## 2026-09-13
 
 - **Update** — [Local AI Runtimes](local-ai-runtimes.md)

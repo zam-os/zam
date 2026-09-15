@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-09T08:00:00.000Z
+timestamp: 2026-09-15T05:33:07.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -57,7 +57,8 @@ Representative commands: `next` (pull the next queue card), `admit-review`
 on the learner's local day and any unpublished card, and returns the
 `attemptId` for the following submit), `submit` (apply a rating; accepts
 `--response-time-ms` so a rating contributes its study time — ADR
-2026-08-01, and `--attempt-id` so a retried submit is one review: the result
+2026-08-01; Studio always sends a number from the idle-aware clock in
+ADR 2026-09-15, and `--attempt-id` so a retried submit is one review: the result
 carries `attemptId` and `applied: false` on a replay; `--record-only
 --reason <text>` logs assisted user work without a rating and answers
 `recordedOnly`/`replayed`; a completed session still accepts a rating of its
@@ -100,8 +101,10 @@ learner's local time and keyed `2026-08-01`, `2026-W31`, `2026-08`; each
 carries `reviewedCards` and `studyTimeMs`. Study time sums
 `review_logs.response_time_ms` with each rating clamped to ten minutes
 (`STUDY_TIME_CAP_MS`) so a card left open on a locked phone cannot swamp the
-series. Ratings logged before response-time measurement existed count as
-worked cards and contribute no time.
+series. Studio and the Recall card measure active time with a one-minute idle
+pause and a two-minute cap per follow-up (ADR 2026-09-15). Ratings logged
+before response-time measurement existed count as worked cards and contribute
+no time.
 
 # Per-learner learning interaction
 
@@ -192,7 +195,8 @@ bridge's JSON helpers.
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
+- [ADR 2026-09-15 — Idle-Aware Study Time](../adr/2026-09-15-idle-aware-study-time.md)
 - [ADR 2026-08-02 — Local Generation Only on Accelerated Hardware](../adr/2026-08-02-foundry-local-and-hardware-classification.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
 - [Android companion plan](../plans/2026-07-21-android-companion-app.md)
-- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/cli/import/text-file.ts`, `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`, `src/cli/open-content/service.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
+- Code: `src/cli/app.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/shared/activity.ts`, `src/bridge/protocol.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/import/text-file.ts`, `src/cli/open-content/catalog.ts`, `src/cli/open-content/download.ts`, `src/cli/open-content/service.ts`, `src/kernel/import/text-import.ts`, `mobile/src/import.ts`, `mobile/src/main.ts`, `mobile/src/vl-import.ts`, `mobile/src/vision-config.ts`, `mobile/src-tauri/src/vision.rs`
