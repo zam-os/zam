@@ -1,39 +1,17 @@
 import { defineConfig } from "vitest/config";
 
-/**
- * Two timeout tiers. `tests/cli` and `tests/integration` drive the built CLI
- * as a subprocess (`execFileSync(node, dist/cli/index.js, …)`), and one such
- * call costs 0.5–2.5 s on the self-hosted Windows-on-ARM runner — a test with
- * a handful of them overruns Vitest's 5 s default there (0.42.0 release PR:
- * `bridge-knowledge-contexts` at 5.2 s). Everything else stays at the default
- * so a genuinely hung unit test still fails fast.
- */
-const SUBPROCESS_TEST_TIMEOUT_MS = 30_000;
-
 export default defineConfig({
   test: {
     globals: true,
-    projects: [
-      {
-        test: {
-          name: "unit",
-          globals: true,
-          include: ["tests/**/*.test.ts"],
-          exclude: [
-            "**/node_modules/**",
-            "tests/cli/**",
-            "tests/integration/**",
-          ],
-        },
-      },
-      {
-        test: {
-          name: "cli",
-          globals: true,
-          include: ["tests/cli/**/*.test.ts", "tests/integration/**/*.test.ts"],
-          testTimeout: SUBPROCESS_TEST_TIMEOUT_MS,
-        },
-      },
-    ],
+    include: ["tests/**/*.test.ts"],
+    // The self-hosted Windows-on-ARM runner is slow enough that Vitest's 5 s
+    // default trips on tests that are fine everywhere else: one CLI
+    // subprocess call (`execFileSync(node, dist/cli/index.js, …)`) costs
+    // 0.5–2.5 s there, and even a few in-process suites (`mobile/ai-connect`,
+    // `kernel/system`) pass 5 s under worker contention (0.42.0 release PR,
+    // then #352's first run). One global budget; splitting the suites into
+    // separately timed projects only doubled the parallelism and moved the
+    // timeouts onto the unit tests.
+    testTimeout: 30_000,
   },
 });
