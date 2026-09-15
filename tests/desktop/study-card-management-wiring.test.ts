@@ -37,8 +37,10 @@ describe("study-view card-management wiring", () => {
     expect(html).toContain('class="study-busy-progress"');
   });
 
-  it("keeps the blocked-prerequisite notice on the Recall busy overlay", () => {
+  it("carries the blocked-prerequisite notice onto the next Recall card", () => {
     const recall = desktopFile("src/panel/recall.ts");
+    expect(recall).toContain("pendingBlockedNotice");
+    expect(recall).toContain("attachPendingBlockedNotice");
     expect(recall).toContain('tf("recall_blocked_notice"');
   });
 

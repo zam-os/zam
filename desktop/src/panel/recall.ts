@@ -166,6 +166,8 @@ let bonusIgnoredThisSession = false;
 let nextMaxNewOverride: number | undefined;
 /** Active learning time for the current card (ADR 2026-09-15). */
 const learningClock = createLearningClock();
+/** Shown on the next card (or empty/summary screen), not the rated overlay. */
+let pendingBlockedNotice: string | null = null;
 
 // Session-local tally for the finish/done summary. Never persisted; the card
 // owns no ZAM session, so this is pure UI state.
@@ -216,6 +218,7 @@ function reloadForContext(newState: CompanionContextBarState): void {
   cards = [];
   index = 0;
   learningClock.reset();
+  pendingBlockedNotice = null;
   tally.done = 0;
   tally.ratings = { 1: 0, 2: 0, 3: 0, 4: 0 };
   void loadLearningMode()
@@ -385,6 +388,16 @@ function setCardBusy(
   root.classList.add("recall-card-busy");
 }
 
+function attachPendingBlockedNotice(host: HTMLElement): void {
+  const message = pendingBlockedNotice;
+  pendingBlockedNotice = null;
+  if (!message) return;
+  const notice = document.createElement("div");
+  notice.className = "recall-notice";
+  notice.textContent = message;
+  host.appendChild(notice);
+}
+
 function renderMessage(emoji: string, title: string, sub: string): void {
   if (!contentEl) return;
   clearContent();
@@ -400,6 +413,7 @@ function renderMessage(emoji: string, title: string, sub: string): void {
   subEl.className = "recall-empty-sub";
   subEl.textContent = sub;
   box.append(emojiEl, titleEl, subEl);
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -439,6 +453,7 @@ function renderChoiceOffer(
     row.appendChild(btn);
   }
   box.append(titleEl, subEl, row);
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -661,6 +676,7 @@ function renderSummary(): void {
     }
     box.appendChild(spread);
   }
+  attachPendingBlockedNotice(box);
   contentEl.appendChild(box);
 }
 
@@ -1043,13 +1059,12 @@ async function presentCurrentCard(): Promise<void> {
       tally.ratings[rating] = (tally.ratings[rating] ?? 0) + 1;
       pushContext(card, "rated");
       const blockedSlug = res.blocked?.blockedSlug;
-      setCardBusy(
-        root,
-        t("lbl_study_busy_next"),
-        blockedSlug
-          ? tf("recall_blocked_notice", { slug: blockedSlug })
-          : undefined,
-      );
+      if (blockedSlug) {
+        pendingBlockedNotice = tf("recall_blocked_notice", {
+          slug: blockedSlug,
+        });
+      }
+      setCardBusy(root, t("lbl_study_busy_next"));
       advance();
     } catch (error) {
       rated = false; // allow a retry
@@ -1411,6 +1426,7 @@ async function presentCurrentCard(): Promise<void> {
   });
 
   contentEl.appendChild(root);
+  attachPendingBlockedNotice(root);
   pushContext(card, "shown");
 }
 
@@ -1497,6 +1513,7 @@ app.ontoolresult = (params) => {
     cards = [];
     index = 0;
     learningClock.reset();
+    pendingBlockedNotice = null;
     preconditionCache = [];
     assessedAtoms.clear();
     bonusIgnoredThisSession = false;
