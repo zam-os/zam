@@ -77,3 +77,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-08-14b](2026-08-14b-published-atom-identity-and-alignment.md) | Published Atom Identity and Alignment Semantics | Accepted — staged pilot and publication boundaries |
 | [2026-09-08](2026-09-08-answer-points-and-score-based-rating.md) | Answer Points and Score-Based Rating | Accepted |
 | [2026-09-13](2026-09-13-model-capabilities-are-detected.md) | Model Capabilities Are Detected, Not Chosen — video splits from image | Accepted |
+| [2026-09-15](2026-09-15-idle-aware-study-time.md) | Idle-Aware Study Time and Immediate Busy After Rating | Accepted |

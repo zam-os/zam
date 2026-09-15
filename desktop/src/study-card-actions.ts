@@ -73,6 +73,30 @@ export function editCommand(edit: InlineEdit): BridgeCall {
  * rating. Keeping this decision pure makes the destructive/navigation guard
  * testable without a browser DOM.
  */
+export interface SubmitRatingInput {
+  cardId: string;
+  rating: number;
+  attemptId?: string | null;
+  /** Active learning ms from the idle-aware clock (ADR 2026-09-15). */
+  responseTimeMs: number;
+}
+
+/** FSRS rating check-in. Always sends a response time, including 0. */
+export function submitRatingCommand(input: SubmitRatingInput): BridgeCall {
+  const args = [
+    "--card-id",
+    input.cardId,
+    "--rating",
+    String(input.rating),
+    "--response-time-ms",
+    String(input.responseTimeMs),
+  ];
+  if (input.attemptId) {
+    args.push("--attempt-id", input.attemptId);
+  }
+  return { cmd: "submit", args };
+}
+
 export function ratingShortcutForKey(
   key: string,
   context: RatingShortcutContext,

@@ -28,6 +28,15 @@ describe("study-view card-management wiring", () => {
     expect(controls).toBeLessThan(answerBox);
   });
 
+  it("sends study time with every rating and hides the card behind a busy overlay", () => {
+    expect(main).toContain("submitRatingCommand({");
+    expect(main).toContain("learningClock.elapsedMs");
+    expect(main).toContain('showStudyBusy("saving")');
+    expect(main).toContain('card.classList.add("study-waiting")');
+    expect(html).toContain('id="npu-loading"');
+    expect(html).toContain('class="study-busy-progress"');
+  });
+
   it("uses one review-action gate across rating and card management", () => {
     expect(main).not.toContain("ratingSubmitInProgress");
     expect(main).not.toContain("cardManageInProgress");

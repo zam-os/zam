@@ -26,14 +26,15 @@ export const DEFAULT_ACTIVITY_WINDOWS: Record<ActivityPeriod, number> = {
  * Upper bound a single rating may contribute to study time (ADR 2026-08-01
  * Decision 7).
  *
- * Every surface measures "card shown → rating submitted" in wall-clock time,
- * so a card left open — a locked phone, a backgrounded app resuming its
- * persisted session, a terminal abandoned mid-prompt — books hours of "study
- * time" for one card and swamps the statistic. The review log keeps the raw
- * measurement (it is an immutable audit trail); the interpretation is capped
- * here, at read time, so the cap also repairs rows written before it existed.
- * Ten minutes is well past any honest single-card answer, including a slow
- * cloud evaluation and a spoken answer.
+ * Every surface measures one rating's active learning time (card shown →
+ * rating submitted). Studio and the Recall card use an idle-aware clock
+ * (ADR 2026-09-15) so a walk-away does not book as study; other surfaces
+ * still send wall-clock. A card left open — a locked phone, a backgrounded
+ * app resuming its persisted session, a terminal abandoned mid-prompt —
+ * can still book a long raw value. The review log keeps that measurement
+ * (it is an immutable audit trail); the interpretation is capped here, at
+ * read time, so the cap also repairs rows written before idle tracking
+ * existed. Ten minutes is a backstop past any honest single-card answer.
  */
 export const STUDY_TIME_CAP_MS = 10 * 60_000;
 
