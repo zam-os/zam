@@ -67,7 +67,7 @@ token's address, what is its identity, and what gives domains meaning?**
    filter by subtree, color by top segment.
 4. **Ontology as leverage, not bureaucracy** — standard anchors where they
    help (general knowledge, cross-learner matching later), freedom where
-   reality is idiosyncratic (`docuware-cops/ai` fits no standard ontology).
+   reality is idiosyncratic (`team-alpha/ai` fits no standard ontology).
 5. **Contract stability** — bridge consumers and agent skills must keep
    working through the transition.
 6. **Small steps** — each phase shippable, each reversible short of the
@@ -118,9 +118,9 @@ domain. The doctor `domains` task maintains both (renames update tokens +
 meta in one transaction).
 
 **Path roots are subject areas — never life areas or teams.** `mathematik`,
-`ai`, `axon-ivy` are roots; "school", "work", `docuware-cops` are contexts
+`ai`, `axon-ivy` are roots; "school", "work", `team-alpha` are contexts
 (contexts ADR) and must not appear in paths. The team-scoping example from
-the titles ADR (`docuware-cops/ai`) therefore migrates into a context once
+the titles ADR (`team-alpha/ai`) therefore migrates into a context once
 contexts ship; the `/` mechanics it introduced are unchanged.
 
 **4. The ontology actively guides naming; the schema stays free.**
@@ -163,7 +163,7 @@ no absorption.
 - **Existing 253+ tokens:** untouched by default. Doctor tasks do the work
   incrementally and with confirmation: `domains` (restructure flat domains
   into subject paths, e.g. `rag` → `ai/rag` — team membership like
-  `docuware-cops` moves to the *context* attribute, never into the path),
+  `team-alpha` moves to the *context* attribute, never into the path),
   `identity`
   (shorten legacy slugs, updating nothing but the slug since references are
   id-based after Phase A).
