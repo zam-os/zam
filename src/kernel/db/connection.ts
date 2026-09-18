@@ -85,6 +85,19 @@ function isLoopbackHost(host: string): boolean {
   return /^(localhost|127\.0\.0\.1|::1)$/i.test(host.trim());
 }
 
+/**
+ * Whether a connection to `target` is encrypted. Only a loopback host may
+ * store `ssl: false`; for every other host the answer is TLS regardless of
+ * what a hand-edited credentials file or a caller says — the Entra token or
+ * password would otherwise cross the network in the clear. `connector setup`
+ * enforces the same rule at input time; this is the last line of defence.
+ */
+export function postgresSslFor(
+  target: Pick<PostgresCredentials, "host" | "ssl">,
+): boolean {
+  return !(target.ssl === false && isLoopbackHost(target.host));
+}
+
 /** Human-readable location of a PostgreSQL target, without credentials. */
 export function describePostgresTarget(target: PostgresCredentials): string {
   return `postgres://${target.host}:${target.port ?? 5432}/${target.database}`;
@@ -646,7 +659,7 @@ function connectPostgres(target: PostgresCredentials): Database {
     database: target.database,
     user: target.username,
     password,
-    ssl: target.ssl ?? !isLoopbackHost(target.host),
+    ssl: postgresSslFor(target),
     applicationName: "zam",
   });
 }

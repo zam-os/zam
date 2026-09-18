@@ -3,6 +3,8 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  bindStandingAssignments,
+  buildReviewQueue,
   createAssignment,
   createToken,
   type Database,
@@ -10,12 +12,19 @@ import {
   detachCardForUser,
   evaluateRating,
   getCard,
+  hasStandingAssignment,
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
   openDatabase,
   withdrawAssignment,
 } from "../../src/kernel/index.js";
 
+/**
+ * ADR 2026-07-04 Decision 10, as the team library forces it to be
+ * (ADR 2026-09-04): the assigner writes only the assignment row; the
+ * assignee's own client creates and binds the card when it next builds a
+ * queue. The binding holds from the moment the assignment exists.
+ */
 describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
   let db: Database;
   let tempDir: string;
@@ -32,7 +41,7 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
-  it("creates an assignment and binds a card for the assignee", async () => {
+  it("creates the assignment row; the assignee's next queue build binds the card", async () => {
     const token = await createToken(db, {
       slug: "assigned-token",
       concept: "Assigned Knowledge Concept",
@@ -52,11 +61,63 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
     expect(assignment.due_date).toBe("2026-12-31T23:59:59Z");
     expect(assignment.withdrawn_at).toBeNull();
 
-    // Verify card was automatically created and bound for learner_bob
+    // Nothing was written into Bob's learning state on Alice's behalf …
+    expect(await getCard(db, token.id, "learner_bob")).toBeUndefined();
+    expect(await hasStandingAssignment(db, token.id, "learner_bob")).toBe(true);
+
+    // … the card appears when Bob's client builds his queue, and is in it.
+    const queue = await buildReviewQueue(db, { userId: "learner_bob" });
     const card = await getCard(db, token.id, "learner_bob");
     expect(card).toBeDefined();
     expect(card?.assigned_by).toBe("lead_alice");
     expect(card?.assignment_id).toBe(assignment.id);
+    expect(queue.items.map((item) => item.cardId)).toContain(card?.id);
+
+    // Idempotent: a bound card is left alone.
+    expect(await bindStandingAssignments(db, "learner_bob")).toEqual([]);
+  });
+
+  it("does not flip a card between two standing assignments, and rebinds after a withdrawal", async () => {
+    const token = await createToken(db, { slug: "twice", concept: "Twice" });
+    const first = await createAssignment(db, {
+      tokenId: token.id,
+      assignerId: "lead_alice",
+      assigneeId: "learner_bob",
+    });
+    const second = await createAssignment(db, {
+      tokenId: token.id,
+      assignerId: "lead_carol",
+      assigneeId: "learner_bob",
+    });
+
+    // One card, bound to one of the two (both were created within the same
+    // millisecond, so which one is not the point — stability is).
+    const bound = await bindStandingAssignments(db, "learner_bob");
+    expect(bound).toHaveLength(1);
+    let card = await getCard(db, token.id, "learner_bob");
+    const winner = [first, second].find((a) => a.id === card?.assignment_id);
+    const loser = winner === first ? second : first;
+    expect(winner).toBeDefined();
+    expect(await bindStandingAssignments(db, "learner_bob")).toEqual([]);
+    expect((await getCard(db, token.id, "learner_bob"))?.assignment_id).toBe(
+      winner?.id,
+    );
+
+    // The binding assigner withdraws; the other assignment still binds.
+    await withdrawAssignment(db, winner!.id, winner!.assigner_id);
+    await expect(
+      detachCardForUser(db, token.id, "learner_bob"),
+    ).rejects.toThrow(/active assignment/i);
+    expect(await bindStandingAssignments(db, "learner_bob")).toHaveLength(1);
+    card = await getCard(db, token.id, "learner_bob");
+    expect(card?.assignment_id).toBe(loser.id);
+    expect(card?.assigned_by).toBe(loser.assigner_id);
+
+    await withdrawAssignment(db, loser.id, loser.assigner_id);
+    expect(await bindStandingAssignments(db, "learner_bob")).toEqual([]);
+    expect(await hasStandingAssignment(db, token.id, "learner_bob")).toBe(
+      false,
+    );
   });
 
   it("prevents the learner from detaching an actively assigned card", async () => {
@@ -70,6 +131,7 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
       assignerId: "lead_alice",
       assigneeId: "learner_bob",
     });
+    await bindStandingAssignments(db, "learner_bob");
 
     // Both ways out are refused while the assignment stands. Detach and
     // delete are distinct actions now (ADR Decision 10: keep, detach, or
@@ -93,6 +155,7 @@ describe("Phase D — Knowledge Assignments (ADR Decision 10)", () => {
       assignerId: "lead_alice",
       assigneeId: "learner_bob",
     });
+    await bindStandingAssignments(db, "learner_bob");
 
     const card = await getCard(db, token.id, "learner_bob");
     expect(card).toBeDefined();

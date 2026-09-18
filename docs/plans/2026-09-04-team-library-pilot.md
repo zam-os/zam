@@ -12,7 +12,7 @@ resource before Phase 8.
 - [x] Phase 2 — `postgres` provider wired in (2026-09-18). **Open:** retiring `native` and the embedded replica ships as its own PR — a packaging change that must not ride along with the pilot's client work
 - [~] Phase 3 — Derived identity and team mode (2026-09-18; `database-select-user` is refused on the team library). **Open:** the single-context rule (active context = the `team` row, picker hidden) is not implemented; the Studio still shows its profile picker although it cannot change the identity
 - [ ] Phase 4 — Settings scopes: `user_settings`, machine id — **next**: on a shared database `user_config` still collides across colleagues (locale, `llm.*`, review method)
-- [~] Phase 5 — RLS completion, group roles, schema-derived coverage test — the group roles `zam_member`/`zam_curator` with explicit per-class grants, the `assignments` policy and a classification-completeness test landed with Phase 6 (2026-09-18). **Open:** the `user_settings` policy (with Phase 4) and the derived RLS coverage test. **Known exposure until Phase 4:** every member may write the shared `user_config` (locale, `llm.*`, `agent.default`), so a member could repoint colleagues' model endpoints — the pilot must not add colleagues before Phase 4 lands
+- [~] Phase 5 — RLS completion, group roles, schema-derived coverage test — the group roles `zam_member`/`zam_curator` with explicit per-class grants, the `assignments` policies (read for both parties, writes for the assigner only; the assignee's queue build binds the card) and a classification-completeness test landed with Phase 6 (2026-09-18). **Open:** the `user_settings` policy (with Phase 4) and the derived RLS coverage test. **Known exposure until Phase 4:** every member may write the shared `user_config` (locale, `llm.*`, `agent.default`), so a member could repoint colleagues' model endpoints — the pilot must not add colleagues before Phase 4 lands
 - [x] Phase 6 — `zam team` administration commands (2026-09-18: `provision`, `add-member`, `remove-member`, `members`; Entra principals via pgaadauth, existing roles on password servers); the generic runbook is the ADR appendix and the colleague's side is `docs/team-library.md`
 - [ ] Phase 7 — Desktop "Connect to team library", disclosure, `zam doctor`
 - [~] Phase 8 — Server created and the first database provisioned as a team library on 2026-09-18 (PostgreSQL 18, Entra-only, the administrator mapped as the first member, one review round trip verified over the Entra token path). The colleague pilot waits for Phase 7, or for colleagues comfortable with `zam connector setup postgres` in a terminal
@@ -139,8 +139,11 @@ machine B.
 
 ## Phase 5 — RLS completion and roles
 
-- Policies for `session_syntheses`, `user_settings`, `assignments`
-  (`assigner_id = current_learner_id() OR assignee_id = current_learner_id()`).
+- Policies for `session_syntheses`, `user_settings`, `assignments` (read:
+  `assigner_id = current_learner_id() OR assignee_id = current_learner_id()`;
+  insert, update and delete: the assigner only — separate policies, never one
+  `FOR ALL`). Assignments bind lazily: the assignee's next queue build creates
+  and binds the card, since nobody may write another learner's state.
 - Group roles `zam_owner` (schema owner, NOLOGIN), `zam_member`, `zam_curator`
   with the grants the ADR names; `grantsForLearnerRoleSql` grants membership
   instead of table rights.

@@ -174,9 +174,14 @@ teamCommand
           return;
         }
         console.log(
-          `${result.created ? "Added" : "Updated"} ${result.upn} → learner ${result.userId}` +
+          `${result.created ? "Added" : "Updated"} ${result.role} → learner ${result.userId}` +
             (result.curator ? " (member, curator)" : " (member)"),
         );
+        if (result.role !== result.upn) {
+          console.log(
+            `  note: the server spells this account ${result.role}; the colleague connects with exactly that spelling (zam connector setup postgres --username ${result.role} …).`,
+          );
+        }
         if (maintenance && !result.objectId) {
           console.log(
             "  note: no Entra object id reported for this role — is the principal an Entra user on this server?",
@@ -213,7 +218,7 @@ teamCommand
       return;
     }
     console.log(
-      `Login revoked for ${result.upn}` +
+      `Login revoked for ${result.role}` +
         (result.wasMapped
           ? "; the mapping and history stay."
           : " (was not mapped)."),

@@ -183,7 +183,12 @@ export async function entraCliSignedInUpn(
       "The Azure CLI did not report a signed-in user. Run `az login` and try again, or pass --username <upn>.",
     );
   }
-  return upn;
+  // PostgreSQL role names are case-sensitive, UPNs are not, and Azure
+  // matches the token by object id whatever the role's casing. `zam team
+  // add-member` creates Entra principals in lower case; deriving the same
+  // form here makes the two sides agree. A role created by hand under
+  // another spelling is passed explicitly with --username.
+  return upn.toLowerCase();
 }
 
 /**

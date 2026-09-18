@@ -291,7 +291,18 @@ CREATE TABLE user_settings (
 
 - Policies are added for `session_syntheses` (learning state the parent ADR
   lists and the policies missed), `user_settings` (Decision 4) and
-  `assignments` (visible to assigner **or** assignee, parent Decision 10).
+  `assignments` (parent Decision 10): readable by assigner **or** assignee,
+  written — inserted, changed, withdrawn, deleted — by the assigner only, as
+  four separate policies. One `FOR ALL` policy with the wider `USING` would
+  let the assignee delete the row (DELETE checks `USING` only) or rewrite
+  `assigner_id` to themselves.
+- Consequence for assignments: the assigner writes the assignment row only.
+  The assignee's own client creates and binds the card when it next builds
+  a queue (`bindStandingAssignments`, called by the queue builder), and the
+  detach/delete refusal asks the assignments table rather than the card's
+  cached `assignment_id`. No learner writes another learner's state on any
+  backend; the personal library follows the same rule rather than keeping a
+  second path.
 - Three `NOLOGIN` group roles carry authorisation: `zam_owner` owns the
   schema and no human ever logs in as it; `zam_member` may `SELECT` knowledge
   and read/write its own learning state under RLS; `zam_curator` may also

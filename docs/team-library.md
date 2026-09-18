@@ -17,10 +17,14 @@ zam connector setup postgres --host <server>.postgres.database.azure.com --datab
 zam whoami                                   # your learner id, once the administrator has added you
 ```
 
-`setup` reads your user principal name from the Azure CLI. If that lookup
-fails, pass it yourself: `--username you@example.org`. Nothing secret is
-written to disk — host, database and your UPN only — and every connection
-fetches a fresh token from `az`.
+`setup` reads your user principal name from the Azure CLI and stores it in
+lower case — the spelling `zam team add-member` creates roles with, because
+PostgreSQL role names are case-sensitive even though your UPN is not. If the
+lookup fails, or the administrator reports another spelling, pass it
+yourself: `--username you@example.org`. Nothing secret is written to disk —
+host, database and your UPN only — and every connection fetches a fresh
+token from `az`. Connections to any host but `localhost` are always
+encrypted; a stored `ssl: false` is ignored for other hosts.
 
 What you may see:
 
@@ -54,6 +58,14 @@ zam team add-member <upn> --no-curator       # learn, but do not publish
 zam team members
 zam team remove-member <upn>                 # revokes login; history stays
 ```
+
+`add-member` takes the UPN in any casing. A role that already exists under
+another spelling is reused as the server spells it (pgaadauth keeps the
+spelling it was given, and a second casing would be a second role for the
+same person); a new Entra principal is created in lower case, which is what
+`connector setup postgres` derives on the colleague's machine. The output
+names the role the colleague connects with (`Added jane.doe@example.org →
+learner …`), and `remove-member` resolves the spelling the same way.
 
 Re-run `zam team provision` after every ZAM release that ships a migration;
 members cannot migrate and see "schema version N, this ZAM needs M" until you

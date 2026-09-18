@@ -223,13 +223,25 @@ export async function provisionTeamLibrary(
  * only in the server's `postgres` maintenance database; a self-hosted server
  * or local development uses roles that already exist. Same contract either way.
  */
+export interface EnsuredPrincipal {
+  /**
+   * The role name as the server spells it. PostgreSQL role names are
+   * case-sensitive while user principal names are not, so `current_user`,
+   * the mapping row and every GRANT must use this spelling, never the string
+   * the administrator typed.
+   */
+  roleName: string;
+  objectId: string | null;
+}
+
 export interface PrincipalDirectory {
   /**
    * Make sure a login role for `upn` exists and return what is known about
    * it. Must be idempotent: an existing principal (the administrator's own
-   * account, a colleague added twice) is returned, not an error.
+   * account, a colleague added twice, in any casing) is returned, not an
+   * error.
    */
-  ensurePrincipal(upn: string): Promise<{ objectId: string | null }>;
+  ensurePrincipal(upn: string): Promise<EnsuredPrincipal>;
 }
 
 /**
@@ -240,29 +252,68 @@ export interface PrincipalDirectory {
  * would list administrators only and make every colleague look new.
  */
 export function entraPrincipalDirectory(adminDb: Database): PrincipalDirectory {
-  const lookup = async (
-    upn: string,
-  ): Promise<{ present: boolean; objectId: string | null }> => {
+  const lookup = async (upn: string): Promise<EnsuredPrincipal | null> => {
     const rows = (await adminDb
       .prepare(
         "SELECT * FROM pgaadauth_list_principals(false) WHERE lower(rolname) = lower(?)",
       )
       .all(upn)) as Array<Record<string, unknown>>;
-    if (rows.length === 0) return { present: false, objectId: null };
-    const objectId = rows[0].objectid ?? rows[0].objectId ?? null;
-    return { present: true, objectId: objectId ? String(objectId) : null };
+    if (rows.length === 0) return null;
+    const row = rows.find((r) => r.rolname === upn) ?? rows[0];
+    const objectId = row.objectid ?? row.objectId ?? null;
+    return {
+      roleName: String(row.rolname),
+      objectId: objectId ? String(objectId) : null,
+    };
   };
   return {
     async ensurePrincipal(upn) {
       const existing = await lookup(upn);
-      if (!existing.present) {
-        await adminDb
-          .prepare("SELECT * FROM pgaadauth_create_principal(?, false, false)")
-          .get(upn);
+      if (existing) return existing;
+      // pgaadauth stores the role under the spelling it is given (verified
+      // on Azure Database for PostgreSQL 18, 2026-09-18: a second casing of
+      // the same account becomes a second role for the same object id, and
+      // both log in). New principals are therefore created in lower case —
+      // the spelling `connector setup postgres` derives on the colleague's
+      // machine — so both sides agree without anyone comparing notes.
+      await adminDb
+        .prepare("SELECT * FROM pgaadauth_create_principal(?, false, false)")
+        .get(upn.toLowerCase());
+      const created = await lookup(upn);
+      if (!created) {
+        throw new Error(
+          `pgaadauth_create_principal returned but no role matching ${upn} is listed — is it an Entra user or group of this tenant?`,
+        );
       }
-      return { objectId: (await lookup(upn)).objectId };
+      return created;
     },
   };
+}
+
+/**
+ * The server's spelling of a login role, or null when none matches. An
+ * exact match wins; otherwise a *unique* case-insensitive match is accepted
+ * (UPNs are case-insensitive, `pg_roles.rolname` is not). Two roles that
+ * differ only by case are an error rather than a guess.
+ */
+async function resolveRoleName(
+  db: Database,
+  upn: string,
+): Promise<string | null> {
+  const rows = (await db
+    .prepare(
+      "SELECT rolname FROM pg_roles WHERE lower(rolname) = lower(?) ORDER BY rolname",
+    )
+    .all(upn)) as Array<{ rolname: string }>;
+  if (rows.length === 0) return null;
+  const exact = rows.find((row) => row.rolname === upn);
+  if (exact) return exact.rolname;
+  if (rows.length > 1) {
+    throw new Error(
+      `${upn} matches several roles (${rows.map((row) => row.rolname).join(", ")}); pass the exact spelling.`,
+    );
+  }
+  return rows[0].rolname;
 }
 
 /**
@@ -273,15 +324,13 @@ export function entraPrincipalDirectory(adminDb: Database): PrincipalDirectory {
 export function existingRoleDirectory(db: Database): PrincipalDirectory {
   return {
     async ensurePrincipal(upn) {
-      const row = (await db
-        .prepare("SELECT 1 AS present FROM pg_roles WHERE rolname = ?")
-        .get(upn)) as { present: number } | undefined;
-      if (!row) {
+      const roleName = await resolveRoleName(db, upn);
+      if (!roleName) {
         throw new Error(
           `Role ${upn} does not exist on this server. Create it first, e.g. CREATE ROLE ${quoteIdent(upn)} LOGIN PASSWORD '…';`,
         );
       }
-      return { objectId: null };
+      return { roleName, objectId: null };
     },
   };
 }
@@ -303,7 +352,10 @@ function assertPrincipalName(upn: string, currentRole: string): void {
 }
 
 export interface AddMemberResult {
+  /** What the administrator typed, trimmed. */
   upn: string;
+  /** The login role as the server spells it — what the colleague connects as. */
+  role: string;
   userId: string;
   /** False when the role was already mapped and kept its ULID. */
   created: boolean;
@@ -318,6 +370,12 @@ export interface AddMemberResult {
  * history belongs to the person — and refreshes the Entra details. The
  * mapping row and the grants land in one transaction, so a failure leaves no
  * mapped-but-unusable member behind.
+ *
+ * Everything is keyed by the server's spelling of the role
+ * ({@link EnsuredPrincipal.roleName}): `current_learner_id()` compares
+ * `db_role` with `current_user` byte for byte, so a mapping row or GRANT in
+ * the administrator's casing would leave the colleague locked out after a
+ * "successful" add.
  */
 export async function addTeamMember(
   db: Database,
@@ -336,30 +394,43 @@ export async function addTeamMember(
     throw new Error(`${upn} is a group role, not a colleague.`);
   }
   const curator = options.curator ?? true;
-  const role = quoteIdent(upn);
 
-  const { objectId } = await directory.ensurePrincipal(upn);
+  const { roleName, objectId } = await directory.ensurePrincipal(upn);
+  const role = quoteIdent(roleName);
 
   return db.transaction(async (tx) => {
-    const existing = (await tx
-      .prepare("SELECT zam_user_id FROM learner_principals WHERE db_role = ?")
-      .get(upn)) as { zam_user_id: string } | undefined;
+    // A row keyed by another spelling of this role is this person's history:
+    // adopt it and correct the key. Two case-variant roles mapped separately
+    // (possible on a password server) are never merged by guesswork.
+    const rows = (await tx
+      .prepare(
+        "SELECT zam_user_id, db_role FROM learner_principals WHERE lower(db_role) = lower(?)",
+      )
+      .all(roleName)) as Array<{ zam_user_id: string; db_role: string }>;
+    const existing =
+      rows.find((row) => row.db_role === roleName) ??
+      (rows.length === 1 ? rows[0] : undefined);
+    if (!existing && rows.length > 1) {
+      throw new Error(
+        `${roleName} is mapped under several spellings (${rows.map((row) => row.db_role).join(", ")}); fix learner_principals by hand first.`,
+      );
+    }
     const userId = existing?.zam_user_id ?? ulid();
     if (existing) {
       await tx
         .prepare(
           `UPDATE learner_principals
-              SET entra_upn = ?, entra_object_id = COALESCE(?, entra_object_id)
+              SET db_role = ?, entra_upn = ?, entra_object_id = COALESCE(?, entra_object_id)
             WHERE db_role = ?`,
         )
-        .run(upn, objectId, upn);
+        .run(roleName, roleName, objectId, existing.db_role);
     } else {
       await tx
         .prepare(
           `INSERT INTO learner_principals (zam_user_id, db_role, entra_object_id, entra_upn)
            VALUES (?, ?, ?, ?)`,
         )
-        .run(userId, upn, objectId, upn);
+        .run(userId, roleName, objectId, roleName);
     }
 
     await tx.exec(`GRANT ${TEAM_MEMBER_ROLE} TO ${role};`);
@@ -372,11 +443,18 @@ export async function addTeamMember(
       `GRANT CONNECT ON DATABASE ${quoteIdent(options.database)} TO ${role};`,
     );
     // The administrator's own login is never toggled; a returning colleague's is.
-    if (lower !== who.role.toLowerCase()) {
+    if (roleName.toLowerCase() !== who.role.toLowerCase()) {
       await tx.exec(`ALTER ROLE ${role} LOGIN;`);
     }
 
-    return { upn, userId, created: !existing, objectId, curator };
+    return {
+      upn,
+      role: roleName,
+      userId,
+      created: !existing,
+      objectId,
+      curator,
+    };
   });
 }
 
@@ -387,25 +465,23 @@ export async function addTeamMember(
 export async function removeTeamMember(
   db: Database,
   upn: string,
-): Promise<{ upn: string; wasMapped: boolean }> {
+): Promise<{ upn: string; role: string; wasMapped: boolean }> {
   const trimmed = upn.trim();
   const who = (await db.prepare("SELECT current_user AS role").get()) as {
     role: string;
   };
   assertPrincipalName(trimmed, who.role);
-  const exists = (await db
-    .prepare("SELECT 1 AS present FROM pg_roles WHERE rolname = ?")
-    .get(trimmed)) as { present: number } | undefined;
-  if (!exists) {
+  const roleName = await resolveRoleName(db, trimmed);
+  if (!roleName) {
     throw new Error(
       `No role ${trimmed} exists on this server — nothing to revoke.`,
     );
   }
   const mapped = (await db
     .prepare("SELECT 1 AS present FROM learner_principals WHERE db_role = ?")
-    .get(trimmed)) as { present: number } | undefined;
-  await db.exec(`ALTER ROLE ${quoteIdent(trimmed)} NOLOGIN;`);
-  return { upn: trimmed, wasMapped: Boolean(mapped) };
+    .get(roleName)) as { present: number } | undefined;
+  await db.exec(`ALTER ROLE ${quoteIdent(roleName)} NOLOGIN;`);
+  return { upn: trimmed, role: roleName, wasMapped: Boolean(mapped) };
 }
 
 export interface TeamMember {

@@ -3,6 +3,7 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  bindStandingAssignments,
   buildReviewQueue,
   createAssignment,
   createToken,
@@ -148,6 +149,9 @@ describe("detachCardForUser", () => {
         assignerId: "lead",
         assigneeId: "alice",
       });
+      // Alice's own client materialises the card (ADR 2026-09-04: nobody
+      // writes another learner's state); the binding held already.
+      await bindStandingAssignments(db, "alice");
 
       await expect(detachCardForUser(db, token.id, "alice")).rejects.toThrow(
         /active assignment/i,
@@ -164,6 +168,7 @@ describe("detachCardForUser", () => {
         assignerId: "lead",
         assigneeId: "alice",
       });
+      await bindStandingAssignments(db, "alice");
       const card = await getCard(db, token.id, "alice");
       await evaluateRating(db, {
         cardId: card!.id,
@@ -191,7 +196,11 @@ describe("detachCardForUser", () => {
         assignerId: "lead",
         assigneeId: "alice",
       });
+      // Still declined until Alice's client looks at her queue …
+      expect((await getCard(db, token.id, "alice"))?.detached_at).toBeTruthy();
+      await buildReviewQueue(db, { userId: "alice" });
 
+      // … then the assignment re-attaches it.
       const card = await getCard(db, token.id, "alice");
       expect(card?.detached_at).toBeFalsy();
       expect(await getDueCards(db, "alice")).toHaveLength(1);

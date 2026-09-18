@@ -153,14 +153,27 @@ CREATE POLICY learner_session_syntheses_policy ON session_syntheses FOR ALL
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
 
 -- assignments are visible to the assigner and the assignee (ADR 2026-07-04
--- Decision 10); only the assigner may create or withdraw one.
+-- Decision 10); only the assigner may create, change or withdraw one. The
+-- read and write halves are separate policies on purpose: one FOR ALL policy
+-- with the wider USING would let the assignee DELETE the row (DELETE checks
+-- USING only) or UPDATE assigner_id to themselves and then withdraw it.
 ALTER TABLE assignments ENABLE ROW LEVEL SECURITY;
 ALTER TABLE assignments FORCE ROW LEVEL SECURITY;
 DROP POLICY IF EXISTS learner_assignments_policy ON assignments;
-CREATE POLICY learner_assignments_policy ON assignments FOR ALL
+DROP POLICY IF EXISTS assignments_read_policy ON assignments;
+DROP POLICY IF EXISTS assignments_insert_policy ON assignments;
+DROP POLICY IF EXISTS assignments_update_policy ON assignments;
+DROP POLICY IF EXISTS assignments_delete_policy ON assignments;
+CREATE POLICY assignments_read_policy ON assignments FOR SELECT
   USING (assigner_id = current_learner_id()
-         OR assignee_id = current_learner_id())
+         OR assignee_id = current_learner_id());
+CREATE POLICY assignments_insert_policy ON assignments FOR INSERT
   WITH CHECK (assigner_id = current_learner_id());
+CREATE POLICY assignments_update_policy ON assignments FOR UPDATE
+  USING (assigner_id = current_learner_id())
+  WITH CHECK (assigner_id = current_learner_id());
+CREATE POLICY assignments_delete_policy ON assignments FOR DELETE
+  USING (assigner_id = current_learner_id());
 `;
 
 /**

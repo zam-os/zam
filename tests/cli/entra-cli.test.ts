@@ -100,7 +100,9 @@ describe("Azure CLI token source", () => {
   });
 
   it("reads the signed-in principal name for the setup wizard", async () => {
-    const exec = fakeExec({ stdout: "learner@example.org\n" });
+    // Lower-cased: `zam team add-member` creates Entra principals in lower
+    // case, and PostgreSQL role names are case-sensitive.
+    const exec = fakeExec({ stdout: "Learner@Example.org\n" });
     await expect(entraCliSignedInUpn(exec)).resolves.toBe(
       "learner@example.org",
     );

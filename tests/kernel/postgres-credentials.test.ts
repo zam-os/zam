@@ -15,7 +15,25 @@ import {
 import {
   describePostgresTarget,
   getDatabaseTargetInfo,
+  postgresSslFor,
 } from "../../src/kernel/db/connection.js";
+
+describe("postgresSslFor", () => {
+  it("encrypts every non-loopback connection whatever the stored flag says", () => {
+    expect(postgresSslFor({ host: "localhost", ssl: false })).toBe(false);
+    expect(postgresSslFor({ host: "127.0.0.1", ssl: false })).toBe(false);
+    expect(postgresSslFor({ host: "localhost" })).toBe(true);
+    // `connector setup` refuses --no-ssl for these; a hand-edited credentials
+    // file or a caller passing ssl:false must not send a token in the clear.
+    expect(
+      postgresSslFor({ host: "team.postgres.database.azure.com", ssl: false }),
+    ).toBe(true);
+    expect(postgresSslFor({ host: "10.0.0.5", ssl: false })).toBe(true);
+    expect(postgresSslFor({ host: "team.postgres.database.azure.com" })).toBe(
+      true,
+    );
+  });
+});
 
 /**
  * The PostgreSQL block of credentials.json (ADR 2026-09-04 Decisions 3 and 6):

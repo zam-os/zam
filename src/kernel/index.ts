@@ -298,6 +298,7 @@ export type {
   CreateAssignmentInput,
 } from "./models/assignment.js";
 export {
+  bindStandingAssignments,
   createAssignment,
   getAssignment,
   listAssignmentsByAssigner,
@@ -322,6 +323,7 @@ export {
   getCardDeletionImpact,
   getDueCards,
   getDueSummary,
+  hasStandingAssignment,
   reattachCardForUser,
   resetCardsForToken,
   updateCard,

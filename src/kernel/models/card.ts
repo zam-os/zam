@@ -312,13 +312,30 @@ async function assertNotBoundByAssignment(
   card: Card,
   action: string,
 ): Promise<void> {
-  if (!card.assignment_id) return;
-  const assignment = (await db
-    .prepare("SELECT withdrawn_at FROM assignments WHERE id = ?")
-    .get(card.assignment_id)) as { withdrawn_at: string | null } | undefined;
-  if (assignment && assignment.withdrawn_at === null) {
+  if (await hasStandingAssignment(db, card.token_id, card.user_id)) {
     throw new Error(`Cannot ${action} card: bound by an active assignment.`);
   }
+}
+
+/**
+ * True while any assignment to `userId` for `tokenId` stands. The
+ * assignments table *is* the binding; the card's `assignment_id` is
+ * provenance that lags until the learner's client binds the card
+ * (`bindStandingAssignments`), so refusals ask the table, not the card.
+ */
+export async function hasStandingAssignment(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): Promise<boolean> {
+  const row = await db
+    .prepare(
+      `SELECT 1 AS standing FROM assignments
+        WHERE token_id = ? AND assignee_id = ? AND withdrawn_at IS NULL
+        LIMIT 1`,
+    )
+    .get(tokenId, userId);
+  return row !== undefined;
 }
 
 /**

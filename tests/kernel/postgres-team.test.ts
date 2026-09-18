@@ -3,6 +3,7 @@ import { RLS_PROTECTED_TABLES } from "../../src/cli/deploy/rls-policies.js";
 import {
   ADMIN_TABLES,
   addTeamMember,
+  entraPrincipalDirectory,
   KNOWLEDGE_TABLES,
   LIBRARY_SETTINGS_TABLES,
   listTeamMembers,
@@ -20,7 +21,15 @@ import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
 import { CURRENT_SCHEMA_VERSION } from "../../src/kernel/db/provision.js";
 import { SCHEMA } from "../../src/kernel/db/schema.js";
 import type { Database } from "../../src/kernel/db/types.js";
-import { createToken, ensureCard } from "../../src/kernel/index.js";
+import {
+  bindStandingAssignments,
+  createAssignment,
+  createToken,
+  detachCardForUser,
+  ensureCard,
+  listAssignmentsForLearner,
+  withdrawAssignment,
+} from "../../src/kernel/index.js";
 
 /**
  * `zam team` end to end on a real PostgreSQL (ADR 2026-09-04 Decisions 2, 7
@@ -61,6 +70,72 @@ describe("team library table classification", () => {
   });
 });
 
+describe("entraPrincipalDirectory", () => {
+  /**
+   * A stand-in for the server's `postgres` maintenance database: answers
+   * `pgaadauth_list_principals` from a role list, records every call, and
+   * lets `pgaadauth_create_principal` add a role under the spelling it is
+   * given — which is what Azure does (verified 2026-09-18).
+   */
+  function fakeAdminDb(roles: Array<{ rolname: string; objectid: string }>) {
+    const calls: Array<{ sql: string; params: unknown[] }> = [];
+    const db = {
+      prepare(sql: string) {
+        return {
+          async all(...params: unknown[]) {
+            calls.push({ sql, params });
+            const wanted = String(params[0]).toLowerCase();
+            return roles.filter((r) => r.rolname.toLowerCase() === wanted);
+          },
+          async get(...params: unknown[]) {
+            calls.push({ sql, params });
+            if (sql.includes("pgaadauth_create_principal")) {
+              roles.push({ rolname: String(params[0]), objectid: "oid-new" });
+            }
+            return undefined;
+          },
+          async run() {
+            return { changes: 0, lastInsertRowid: 0 };
+          },
+        };
+      },
+      async exec() {},
+      async pragma() {
+        return [];
+      },
+      async transaction() {
+        throw new Error("not used here");
+      },
+      async close() {},
+    };
+    return { db: db as unknown as Database, calls };
+  }
+
+  it("reuses an existing role in the server's spelling and creates new ones in lower case", async () => {
+    const { db, calls } = fakeAdminDb([
+      { rolname: "Casey.Mixed@example.org", objectid: "oid-casey" },
+    ]);
+    const directory = entraPrincipalDirectory(db);
+
+    expect(await directory.ensurePrincipal("casey.mixed@example.org")).toEqual({
+      roleName: "Casey.Mixed@example.org",
+      objectId: "oid-casey",
+    });
+    expect(
+      calls.some((c) => c.sql.includes("pgaadauth_create_principal")),
+    ).toBe(false);
+
+    expect(await directory.ensurePrincipal("Jane.Doe@Example.org")).toEqual({
+      roleName: "jane.doe@example.org",
+      objectId: "oid-new",
+    });
+    const create = calls.find((c) =>
+      c.sql.includes("pgaadauth_create_principal"),
+    );
+    expect(create?.params).toEqual(["jane.doe@example.org"]);
+  });
+});
+
 describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const url = POSTGRES_URL as string;
   const admin = new URL(url);
@@ -68,26 +143,33 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const database = admin.pathname.replace(/^\//, "");
   const created = new Set<string>();
 
-  /** Local stand-in for pgaadauth: a password role per "principal". */
+  /**
+   * Local stand-in for pgaadauth: a password role per "principal", matched
+   * regardless of case and reported in the server's spelling — exactly what
+   * `pgaadauth_list_principals` gives the Azure flavour.
+   */
   const localDirectory: PrincipalDirectory = {
     async ensurePrincipal(upn) {
       const db = openPostgresDatabase({ connectionString: url });
       try {
+        const known = (await db
+          .prepare(
+            "SELECT rolname FROM pg_roles WHERE lower(rolname) = lower(?)",
+          )
+          .get(upn)) as { rolname: string } | undefined;
+        if (known) {
+          created.add(known.rolname);
+          return { roleName: known.rolname, objectId: `oid-${known.rolname}` };
+        }
         await db.exec(`
-          DO $$
-          BEGIN
-            IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${upn}') THEN
-              CREATE ROLE "${upn}" LOGIN PASSWORD 'pw' NOSUPERUSER NOBYPASSRLS;
-            END IF;
-          END
-          $$;
+          CREATE ROLE "${upn}" LOGIN PASSWORD 'pw' NOSUPERUSER NOBYPASSRLS;
           ALTER ROLE "${upn}" SET search_path = ${schema};
         `);
         created.add(upn);
+        return { roleName: upn, objectId: `oid-${upn}` };
       } finally {
         await db.close();
       }
-      return { objectId: `oid-${upn}` };
     },
   };
 
@@ -167,6 +249,28 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         });
         expect(again.created).toBe(false);
         expect(again.userId).toBe(alice.userId);
+        // The server's spelling wins over the administrator's: a role that
+        // exists as Casey.Mixed@… is mapped, granted and reported under that
+        // name when typed in lower case. `current_learner_id()` compares
+        // db_role with current_user byte for byte, so a row in the typed
+        // casing would leave Casey locked out after a "successful" add.
+        await localDirectory.ensurePrincipal("Casey.Mixed@example.org");
+        const casey = await addTeamMember(control, localDirectory, {
+          upn: "casey.mixed@example.org",
+          database,
+        });
+        expect(casey.role).toBe("Casey.Mixed@example.org");
+        expect(casey.upn).toBe("casey.mixed@example.org");
+        expect(
+          await control
+            .prepare(
+              "SELECT db_role, entra_upn FROM learner_principals WHERE zam_user_id = ?",
+            )
+            .get(casey.userId),
+        ).toEqual({
+          db_role: "Casey.Mixed@example.org",
+          entra_upn: "Casey.Mixed@example.org",
+        });
         // Group roles and blanks are never colleagues.
         await expect(
           addTeamMember(control, localDirectory, {
@@ -188,10 +292,12 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         const asAlice = await connectAs("alice@example.org");
         const asBob = await connectAs("bob@example.org");
         const asIsabel = await connectAs("isabel.real.blob@example.org");
+        const asCasey = await connectAs("Casey.Mixed@example.org");
         try {
           expect(await resolveLearnerId(asAlice)).toBe(alice.userId);
           expect(await resolveLearnerId(asBob)).toBe(bob.userId);
           expect(await resolveLearnerId(asIsabel)).toBe(isabel.userId);
+          expect(await resolveLearnerId(asCasey)).toBe(casey.userId);
 
           // Alice writes her learning state; Bob cannot see it (RLS).
           await ensureCard(asAlice, token.id, alice.userId);
@@ -253,17 +359,76 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
             )
             .get(schema, [...RLS_PROTECTED_TABLES])) as { n: number | string };
           expect(Number(forced.n)).toBe(RLS_PROTECTED_TABLES.length);
+
+          // ── assignments under the shipped grants: the assigner writes the
+          //    assignment row only; the assignee's own client binds the card
+          //    (nobody may write another learner's state); the assignee can
+          //    neither withdraw, take over nor delete the assignment ───────
+          const assignment = await createAssignment(asAlice, {
+            tokenId: token.id,
+            assignerId: alice.userId,
+            assigneeId: bob.userId,
+          });
+          expect(
+            (await listAssignmentsForLearner(asBob, bob.userId)).map(
+              (a) => a.id,
+            ),
+          ).toEqual([assignment.id]);
+          expect(await asBob.prepare("SELECT id FROM cards").all()).toHaveLength(
+            0,
+          );
+          const bound = await bindStandingAssignments(asBob, bob.userId);
+          expect(bound.map((c) => [c.user_id, c.assignment_id])).toEqual([
+            [bob.userId, assignment.id],
+          ]);
+          expect(await bindStandingAssignments(asBob, bob.userId)).toEqual([]);
+          await expect(
+            detachCardForUser(asBob, token.id, bob.userId),
+          ).rejects.toThrow(/active assignment/i);
+          for (const [sql, params] of [
+            [
+              "UPDATE assignments SET assigner_id = ? WHERE id = ?",
+              [bob.userId, assignment.id],
+            ],
+            [
+              "UPDATE assignments SET withdrawn_at = '2026-01-01T00:00:00.000Z' WHERE id = ?",
+              [assignment.id],
+            ],
+            ["DELETE FROM assignments WHERE id = ?", [assignment.id]],
+          ] as Array<[string, unknown[]]>) {
+            expect((await asBob.prepare(sql).run(...params)).changes, sql).toBe(
+              0,
+            );
+          }
+          await expect(
+            withdrawAssignment(asBob, assignment.id, bob.userId),
+          ).rejects.toThrow(/Permission denied/);
+          await withdrawAssignment(asAlice, assignment.id, alice.userId);
+          const detached = await detachCardForUser(asBob, token.id, bob.userId);
+          expect(detached.detached_at).toBeTruthy();
+          // Bound or not, Bob's card never became visible to Alice.
+          expect(
+            await asAlice
+              .prepare("SELECT id FROM cards WHERE user_id = ?")
+              .all(bob.userId),
+          ).toHaveLength(0);
         } finally {
           await asAlice.close();
           await asBob.close();
           await asIsabel.close();
+          await asCasey.close();
         }
 
         // ── listing and revocation ─────────────────────────────────────
         const members = await listTeamMembers(control);
-        expect(members.map((m) => [m.upn, m.canLogin, m.curator])).toEqual([
+        expect(
+          members
+            .map((m) => [m.upn, m.canLogin, m.curator])
+            .sort((a, b) => String(a[0]).localeCompare(String(b[0]), "en")),
+        ).toEqual([
           ["alice@example.org", true, true],
           ["bob@example.org", true, false],
+          ["Casey.Mixed@example.org", true, true],
           ["isabel.real.blob@example.org", true, true],
         ]);
         expect(members[0].createdAt).toMatch(
@@ -286,6 +451,16 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           )
           .get("bob@example.org");
         expect(bobRow).toBeDefined();
+        // Revocation resolves the spelling the same way as adding did.
+        const caseyGone = await removeTeamMember(
+          control,
+          "CASEY.MIXED@example.org",
+        );
+        expect(caseyGone.role).toBe("Casey.Mixed@example.org");
+        expect(caseyGone.wasMapped).toBe(true);
+        await expect(connectAs("Casey.Mixed@example.org")).rejects.toThrow(
+          /not permitted to log in|password authentication failed/i,
+        );
 
         // Revocation refuses what is not a colleague.
         await expect(

@@ -268,6 +268,76 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     });
   });
 
+  it("lets the assignee see an assignment but never take it over", async () => {
+    // ADR 2026-07-04 Decision 10: visible to both, owned by the assigner. A
+    // single FOR ALL policy with the wider USING would let Bob delete the
+    // row (DELETE checks USING only) or rewrite assigner_id to himself.
+    await withSession(async (tx) => {
+      await seed(tx);
+      await asRole(tx, "alice_role");
+      await tx
+        .prepare(
+          `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+           VALUES ('asg1', 'tok1', ?, ?)`,
+        )
+        .run(ALICE, BOB);
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "bob_role");
+      expect(await tx.prepare("SELECT id FROM assignments").all()).toEqual([
+        { id: "asg1" },
+      ]);
+      const attempts = [
+        "UPDATE assignments SET withdrawn_at = '2026-01-01T00:00:00.000Z' WHERE id = 'asg1'",
+        `UPDATE assignments SET assigner_id = '${BOB}' WHERE id = 'asg1'`,
+        "DELETE FROM assignments WHERE id = 'asg1'",
+      ];
+      for (const sql of attempts) {
+        expect((await tx.prepare(sql).run()).changes, sql).toBe(0);
+      }
+      await tx.exec("SAVEPOINT forge");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+             VALUES ('forged', 'tok1', ?, ?)`,
+          )
+          .run(ALICE, BOB),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge");
+      // Bob may assign in his own name; a third party sees neither.
+      await tx
+        .prepare(
+          `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+           VALUES ('asg2', 'tok1', ?, ?)`,
+        )
+        .run(BOB, ALICE);
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "unmapped_role");
+      expect(await tx.prepare("SELECT id FROM assignments").all()).toHaveLength(
+        0,
+      );
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "alice_role");
+      expect(
+        (
+          await tx
+            .prepare(
+              "UPDATE assignments SET withdrawn_at = '2026-01-01T00:00:00.000Z' WHERE id = 'asg1'",
+            )
+            .run()
+        ).changes,
+      ).toBe(1);
+      expect(
+        (await tx.prepare("SELECT id FROM assignments ORDER BY id").all()).map(
+          (row) => (row as { id: string }).id,
+        ),
+      ).toEqual(["asg1", "asg2"]);
+    });
+  });
+
   it("protects every learning-state table the deployment lists", async () => {
     // Guards against a table being added to the schema and forgotten here.
     await withSession(async (tx) => {

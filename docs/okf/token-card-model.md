@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-09-06T19:08:40.000Z
+timestamp: 2026-09-18T17:10:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -105,7 +105,15 @@ siblings remain distinct directions with independent personal schedules. See
 
 A learner can detach a card as "not for me": the card and review history
 remain, scheduling stops, and reattaching resumes the preserved state.
-An active assignment prevents detaching or deleting until it is withdrawn.
+An **assignment** is written as a row only: the assigner never touches the
+assignee's cards. The assignee's own client creates and binds the card the
+next time it builds a review queue (`bindStandingAssignments`), which also
+re-attaches a card the learner had declined earlier. While an assignment
+stands it prevents detaching or deleting; that refusal asks the assignments
+table, not the card's cached `assignment_id`, so it holds before the card
+exists. On the shared team library this is what row-level security demands
+— no learner may write another learner's state — and the personal library
+follows the same rule.
 Removing a card (`personal-card-remove`) clears that user's learning state
 and history but leaves the shared token untouched; deleting a token
 (`personal-card-delete`) removes the concept for everyone.
@@ -148,12 +156,13 @@ changed mappings require real re-retrieval.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`
 - Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/scheduler/queue.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)
 - [ADR 2026-07-04 — Multi-Learner Shared Knowledge](../adr/2026-07-04-multi-learner-shared-knowledge.md)
+- [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [ADR 2026-07-25 — Shared Curated Learning Content](../adr/2026-07-25-shared-curated-learning-content.md)
 - [ADR 2026-07-03 — RAG Semantic Token Search](../adr/2026-07-03-rag-semantic-token-search.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)

@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-18
+
+- **Update** — [Token and Card Model](token-card-model.md)
+
 ## 2026-09-15
 
 - **Update** — [Local AI Runtimes](local-ai-runtimes.md)
