@@ -4682,7 +4682,7 @@ export async function readDatabaseUserSummaries(
 ): Promise<DatabaseUserSummary[]> {
   return (await db
     .prepare(
-      `SELECT user_id AS id, COUNT(*) AS cardCount
+      `SELECT user_id AS id, COUNT(*) AS "cardCount"
        FROM cards
        GROUP BY user_id
        ORDER BY user_id`,

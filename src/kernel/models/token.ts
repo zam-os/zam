@@ -883,14 +883,14 @@ export async function listPersonalCards(
 ): Promise<PersonalCard[]> {
   let sql = `
     SELECT 
-      t.id AS tokenId,
+      t.id AS "tokenId",
       t.slug,
       t.title,
       t.concept,
       t.domain,
-      t.bloom_level AS bloomLevel,
+      t.bloom_level AS "bloomLevel",
       t.context,
-      t.symbiosis_mode AS symbiosisMode,
+      t.symbiosis_mode AS "symbiosisMode",
       COALESCE(
         t.source_link,
         (
@@ -901,24 +901,24 @@ export async function listPersonalCards(
           ORDER BY s.created_at DESC, s.id DESC
           LIMIT 1
         )
-      ) AS sourceLink,
+      ) AS "sourceLink",
       t.question,
-      t.created_at AS createdAt,
-      t.updated_at AS updatedAt,
-      t.editorial_state AS editorialState,
+      t.created_at AS "createdAt",
+      t.updated_at AS "updatedAt",
+      t.editorial_state AS "editorialState",
       t.provider,
-      t.topic_id AS topicId,
-      c.id AS cardId,
+      t.topic_id AS "topicId",
+      c.id AS "cardId",
       c.state,
-      c.due_at AS dueAt,
+      c.due_at AS "dueAt",
       c.stability,
       c.difficulty,
       c.reps,
       c.lapses,
-      c.elapsed_days AS elapsedDays,
-      c.scheduled_days AS scheduledDays,
+      c.elapsed_days AS "elapsedDays",
+      c.scheduled_days AS "scheduledDays",
       c.blocked,
-      c.detached_at AS detachedAt
+      c.detached_at AS "detachedAt"
     FROM tokens t
     INNER JOIN cards c ON c.token_id = t.id AND c.user_id = ?
     WHERE t.deprecated_at IS NULL
@@ -1076,9 +1076,9 @@ export async function listUserCardsForCurriculumTopic(
          t.question,
          t.concept,
          t.domain,
-         t.bloom_level AS bloomLevel,
-         t.symbiosis_mode AS symbiosisMode,
-         t.topic_id AS topicId
+         t.bloom_level AS "bloomLevel",
+         t.symbiosis_mode AS "symbiosisMode",
+         t.topic_id AS "topicId"
        FROM cards c
        INNER JOIN tokens t ON t.id = c.token_id
        WHERE c.user_id = ?

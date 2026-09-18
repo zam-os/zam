@@ -23,7 +23,7 @@ import type { Database } from "../../src/kernel/db/types.js";
  *
  *   npm run pg:up && npm run pg:test
  *
- * CI sets `POSTGRES_URL` for the whole run (`postgres:17-alpine`), so it runs
+ * CI sets `POSTGRES_URL` for the whole run (`postgres:18-alpine`), so it runs
  * there automatically.
  */
 

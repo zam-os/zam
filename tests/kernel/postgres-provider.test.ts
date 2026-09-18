@@ -21,8 +21,16 @@ describe("PostgreSQL provider helpers", () => {
   });
 
   it("translates SQLite DDL and datetime keywords for PostgreSQL", () => {
+    // ISO-8601 UTC text with millisecond precision — byte-compatible with the
+    // `toISOString()` values the kernel writes, unlike a bare timestamptz
+    // cast (ADR 2026-09-04 Decision 5).
     expect(translateSqlForPostgres("DEFAULT (datetime('now'))")).toBe(
-      "DEFAULT CURRENT_TIMESTAMP",
+      `DEFAULT (to_char(timezone('UTC', now()), 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"'))`,
+    );
+    expect(
+      translateSqlForPostgres("UPDATE t SET updated_at = datetime('now')"),
+    ).toBe(
+      `UPDATE t SET updated_at = to_char(timezone('UTC', now()), 'YYYY-MM-DD"T"HH24:MI:SS.MS"Z"')`,
     );
     expect(
       translateSqlForPostgres("id INTEGER PRIMARY KEY AUTOINCREMENT"),

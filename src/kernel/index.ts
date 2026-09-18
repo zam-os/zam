@@ -121,10 +121,12 @@ export {
   SNAPSHOT_VERSION,
   verifySnapshot,
 } from "./db/snapshot.js";
+export { dialectOf, nowIso, parseStoredTimestampUtc } from "./db/sql.js";
 export type {
   Database,
   DatabaseValue,
   RunResult,
+  SqlDialect,
   Statement,
 } from "./db/types.js";
 export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";

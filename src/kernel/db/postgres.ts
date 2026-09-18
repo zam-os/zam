@@ -7,6 +7,7 @@
  */
 
 import type { Pool, PoolClient } from "pg";
+import { POSTGRES_ISO_NOW_SQL } from "./sql.js";
 import type { Database, RunResult, Statement } from "./types.js";
 
 export interface PostgresDatabaseOptions {
@@ -49,14 +50,21 @@ export function translatePlaceholders(sql: string): string {
 
 /**
  * Translate SQLite-specific DDL syntax to PostgreSQL equivalents.
+ *
+ * `datetime('now')` becomes an expression that yields the same ISO-8601 UTC
+ * text JavaScript writes (ADR 2026-09-04 Decision 5), not `CURRENT_TIMESTAMP`:
+ * a `timestamptz` default cast into a `TEXT` column produced
+ * `2026-09-18 14:00:00.123456+00`, which neither sorts nor compares against
+ * `2026-09-18T14:00:00.123Z`. Kernel queries no longer contain the call at
+ * all; this keeps schema defaults (and any straggler) honest.
  */
 export function translateSqlForPostgres(sql: string): string {
   return sql
     .replace(
       /DEFAULT\s*\(\s*datetime\s*\(\s*'now'\s*\)\s*\)/gi,
-      "DEFAULT CURRENT_TIMESTAMP",
+      `DEFAULT (${POSTGRES_ISO_NOW_SQL})`,
     )
-    .replace(/datetime\s*\(\s*'now'\s*\)/gi, "CURRENT_TIMESTAMP")
+    .replace(/datetime\s*\(\s*'now'\s*\)/gi, POSTGRES_ISO_NOW_SQL)
     .replace(/INTEGER\s+PRIMARY\s+KEY\s+AUTOINCREMENT/gi, "SERIAL PRIMARY KEY")
     .replace(/\bBLOB\b/gi, "BYTEA")
     .replace(/\bREAL\b/gi, "DOUBLE PRECISION");
@@ -160,6 +168,7 @@ export function openPostgresDatabase(
   }
 
   const db: Database = {
+    dialect: "postgres",
     prepare(sql: string): Statement {
       return {
         async run(...params: unknown[]): Promise<RunResult> {

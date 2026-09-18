@@ -1,15 +1,15 @@
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
 import { ulid } from "ulid";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it } from "vitest";
 import {
   createToken,
   type Database,
   ensureCard,
   getUserStats,
-  openDatabase,
 } from "../../src/kernel/index.js";
+import {
+  describeWithProviders,
+  type ProvidedDatabase,
+} from "../helpers/provider-matrix.js";
 
 /** Wrap a Database so every prepare() call is counted. */
 function countPrepares(db: Database, counter: { count: number }): Database {
@@ -28,22 +28,17 @@ function countPrepares(db: Database, counter: { count: number }): Database {
 const PAST = "2026-01-01T00:00:00.000Z";
 const FUTURE = "2030-01-01T00:00:00.000Z";
 
-describe("getUserStats", () => {
+describeWithProviders("getUserStats", "zam_stats", (provider) => {
+  let provided: ProvidedDatabase;
   let db: Database;
-  let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = mkdtempSync(join(tmpdir(), "zam-stats-"));
-    db = await openDatabase({
-      dbPath: join(tempDir, "zam.db"),
-      initialize: true,
-      useConfiguredCloud: false,
-    });
+    provided = await provider.open();
+    db = provided.db;
   });
 
   afterEach(async () => {
-    await db.close();
-    rmSync(tempDir, { recursive: true, force: true });
+    await provided.cleanup();
   });
 
   it("reads every aggregate in one statement", async () => {

@@ -486,8 +486,8 @@ export async function getDueSummary(
     .prepare(
       `SELECT
          json_group_array(DISTINCT t.domain) AS domains,
-         COUNT(*) AS dueCount,
-         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS cardsInDeck
+         COUNT(*) AS "dueCount",
+         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS "cardsInDeck"
        ${DUE_CARD_SOURCE}`,
     )
     .get(userId, userId, cutoff, cutoff)) as {

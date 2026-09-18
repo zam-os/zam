@@ -21,8 +21,9 @@ import { SCHEMA } from "../../src/kernel/db/schema.js";
  *
  *   npm run pg:up && npm run pg:test
  *
- * CI always runs it (`postgres:17-alpine`; 17 because Entra auth is broken
- * on 18).
+ * CI always runs it (`postgres:18-alpine`, the version the team library
+ * runs on — Entra sign-in on 18 was verified on the real server, ADR
+ * 2026-09-04).
  */
 const POSTGRES_URL = process.env.POSTGRES_URL;
 
@@ -40,10 +41,20 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
    * transaction this provider takes a fresh client per query and the role
    * would silently not apply — the test would measure nothing.
    */
+  /**
+   * Own schema, not `public`: other Postgres suites run in parallel workers
+   * against the same database, and `GRANT ... ON ALL TABLES IN SCHEMA public`
+   * racing another suite's `DROP TABLE` in `public` fails both with
+   * "tuple concurrently updated". A schema per suite ends the contention.
+   */
+  const SCHEMA_NAME = "zam_rls";
+
   async function withSession<T>(
     fn: (tx: Awaited<ReturnType<typeof openPostgresDatabase>>) => Promise<T>,
   ): Promise<T> {
-    const db = openPostgresDatabase({ connectionString: POSTGRES_URL });
+    const db = openPostgresDatabase({
+      connectionString: `${POSTGRES_URL}?options=-c%20search_path%3D${SCHEMA_NAME}`,
+    });
     try {
       return await db.transaction(async (tx) => fn(tx));
     } finally {
@@ -56,17 +67,8 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     tx: Awaited<ReturnType<typeof openPostgresDatabase>>,
   ): Promise<void> {
     await tx.exec(`
-      DROP TABLE IF EXISTS session_syntheses CASCADE;
-      DROP TABLE IF EXISTS review_attempts CASCADE;
-      DROP TABLE IF EXISTS card_presentations CASCADE;
-      DROP TABLE IF EXISTS session_steps CASCADE;
-      DROP TABLE IF EXISTS sessions CASCADE;
-      DROP TABLE IF EXISTS review_logs CASCADE;
-      DROP TABLE IF EXISTS cards CASCADE;
-      DROP TABLE IF EXISTS assignments CASCADE;
-      DROP TABLE IF EXISTS prerequisites CASCADE;
-      DROP TABLE IF EXISTS tokens CASCADE;
-      DROP TABLE IF EXISTS learner_principals CASCADE;
+      DROP SCHEMA IF EXISTS ${SCHEMA_NAME} CASCADE;
+      CREATE SCHEMA ${SCHEMA_NAME};
     `);
     await tx.exec(SCHEMA);
     await tx.exec(DEPLOYMENT_RLS_SQL);
@@ -81,7 +83,7 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
         END
         $$;
       `);
-      await tx.exec(grantsForLearnerRoleSql(role));
+      await tx.exec(grantsForLearnerRoleSql(role, SCHEMA_NAME));
     }
 
     // Only alice and bob are mapped; unmapped_role deliberately is not.

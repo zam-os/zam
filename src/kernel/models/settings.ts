@@ -2,6 +2,7 @@
  * User settings — key/value store backed by the user_config table.
  */
 
+import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
 export interface UserSetting {
@@ -83,10 +84,10 @@ export async function setSetting(
   await db
     .prepare(
       `INSERT INTO user_config (key, value, updated_at)
-     VALUES (?, ?, datetime('now'))
+     VALUES (?, ?, ?)
      ON CONFLICT(key) DO UPDATE SET value = excluded.value, updated_at = excluded.updated_at`,
     )
-    .run(key, value);
+    .run(key, value, nowIso());
 }
 
 /** Delete a setting. Returns true if it existed. */

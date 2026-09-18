@@ -178,11 +178,15 @@ export const RLS_PROTECTED_TABLES = [
  * Grants a learner role needs. Read on the mapping table so
  * `current_learner_id()` resolves; RLS then decides which rows they see.
  */
-export function grantsForLearnerRoleSql(role: string): string {
+export function grantsForLearnerRoleSql(
+  role: string,
+  schema = "public",
+): string {
   return `
-GRANT USAGE ON SCHEMA public TO ${role};
+GRANT USAGE ON SCHEMA ${schema} TO ${role};
 GRANT SELECT ON learner_principals TO ${role};
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${role};
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${schema} TO ${role};
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA ${schema} TO ${role};
 GRANT EXECUTE ON FUNCTION current_learner_id() TO ${role};
 `;
 }
