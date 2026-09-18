@@ -30,11 +30,18 @@ import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
+import { registerEntraCliPasswordSupplier } from "./db/entra-cli.js";
 
 // Resolve vault references into the process-lifetime snapshot before any
 // command (or the persistent desktop bridge) reads credentials synchronously.
 // Literals need no backend; failures degrade to null accessors (ADR 2026-07-30b).
 await resolveCredentials();
+
+// The team library authenticates with Entra tokens from the Azure CLI; the
+// kernel only knows a password-supplier function, so the CLI layer plugs the
+// `az` call in once per process (ADR 2026-09-04 Decision 3). Every host that
+// opens the database — commands, `bridge serve`, `zam mcp` — goes through here.
+registerEntraCliPasswordSupplier();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(

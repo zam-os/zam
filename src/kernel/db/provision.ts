@@ -39,6 +39,16 @@ function isMissingSchemaVersionTable(error: unknown): boolean {
   );
 }
 
+/**
+ * The stored schema version, or `null` when the database was never
+ * provisioned. Public for providers whose connections must not run DDL (a
+ * team-library member, ADR 2026-09-04 Decision 8): they compare it against
+ * `CURRENT_SCHEMA_VERSION` and refuse with a message instead of migrating.
+ */
+export async function getSchemaVersion(db: Database): Promise<number | null> {
+  return readSchemaVersion(db);
+}
+
 /** Read the marker without turning transport/authentication failures into DDL. */
 async function readSchemaVersion(db: Database): Promise<number | null> {
   let row: { version?: unknown } | undefined;

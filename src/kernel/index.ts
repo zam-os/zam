@@ -59,17 +59,22 @@ export type {
   ADOCredentials,
   CredentialCheckEntry,
   Credentials,
+  PostgresAuthMode,
+  PostgresCredentials,
   StoredCredentials,
+  StoredPostgresCredentials,
   TursoCredentials,
 } from "./credentials.js";
 // Credentials (stored in ~/.zam/credentials.json, survives db deletion)
 export {
   checkCredentials,
   clearADOCredentials,
+  clearPostgresCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
   credentialsNeedVaultAccess,
   getADOCredentials,
+  getPostgresCredentials,
   getProviderApiKey,
   getTursoCredentials,
   invalidateCredentialsSnapshot,
@@ -77,11 +82,13 @@ export {
   loadCredentials,
   loadStoredCredentials,
   looksLikeSecretUri,
+  postgresVaultAccessPending,
   resetCredentialsResolutionState,
   resolveCredentials,
   saveCredentials,
   secretRefFromUri,
   setADOCredentials,
+  setPostgresCredentials,
   setProviderApiKey,
   setTursoCredentials,
   tursoVaultAccessPending,
@@ -93,14 +100,20 @@ export type {
   DatabaseTargetInfo,
 } from "./db/connection.js";
 export {
+  describePostgresTarget,
   getDatabaseTargetInfo,
   getDefaultDbPath,
   isTransientRemoteDatabaseError,
   openDatabase,
   openDatabaseWithSync,
   openReadOnlySqliteDatabase,
+  registerPostgresPasswordSupplier,
+  resetPostgresPasswordSuppliers,
 } from "./db/connection.js";
-export type { PostgresDatabaseOptions } from "./db/postgres.js";
+export type {
+  PostgresDatabaseOptions,
+  PostgresPasswordSupplier,
+} from "./db/postgres.js";
 export { openPostgresDatabase } from "./db/postgres.js";
 // Provisioning is deliberately also importable directly from
 // `db/provision.js`: the mobile WebView cannot load this barrel, which reaches

@@ -10,13 +10,27 @@ import type { Pool, PoolClient } from "pg";
 import { POSTGRES_ISO_NOW_SQL } from "./sql.js";
 import type { Database, RunResult, Statement } from "./types.js";
 
+/**
+ * Supplies the password for one new pooled connection. A function is called
+ * per connection, which is how a short-lived Entra access token becomes the
+ * password without any refresh loop: an open session is never
+ * re-authenticated, a new one simply fetches a fresh token (ADR 2026-09-04
+ * Decision 3). The provider only sees a function returning a string; what
+ * spawns the Azure CLI lives in the CLI layer.
+ */
+export type PostgresPasswordSupplier = () => Promise<string>;
+
 export interface PostgresDatabaseOptions {
   connectionString?: string;
   host?: string;
   port?: number;
   database?: string;
   user?: string;
-  password?: string;
+  password?: string | PostgresPasswordSupplier;
+  /** TLS: `true` verifies the server certificate against the system roots. */
+  ssl?: boolean;
+  /** Reported to the server as `application_name`. */
+  applicationName?: string;
   pool?: Pool;
 }
 
@@ -150,6 +164,11 @@ export function openPostgresDatabase(
         database: options.database,
         user: options.user,
         password: options.password,
+        ...(options.ssl === true ? { ssl: { rejectUnauthorized: true } } : {}),
+        ...(options.ssl === false ? { ssl: false } : {}),
+        ...(options.applicationName
+          ? { application_name: options.applicationName }
+          : {}),
       });
       return poolInstance;
     } catch (err) {

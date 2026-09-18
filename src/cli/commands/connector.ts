@@ -6,19 +6,28 @@ import { input, password } from "@inquirer/prompts";
 import { Command } from "commander";
 import {
   clearADOCredentials,
+  clearPostgresCredentials,
   clearTursoCredentials,
   getADOCredentials,
+  getPostgresCredentials,
   getTursoCredentials,
   loadStoredCredentials,
+  type PostgresAuthMode,
   resolveCredentials,
   type StoredSecret,
   secretRefFromUri,
   setADOCredentials,
+  setPostgresCredentials,
   setTursoCredentials,
 } from "../../kernel/credentials.js";
 import type { Database } from "../../kernel/index.js";
-import { getSystemProfile, openDatabaseWithSync } from "../../kernel/index.js";
+import {
+  describePostgresTarget,
+  getSystemProfile,
+  openDatabaseWithSync,
+} from "../../kernel/index.js";
 import { fetchActiveWorkItems } from "../connectors/azure-devops.js";
+import { entraCliSignedInUpn, isEntraLoginRequired } from "../db/entra-cli.js";
 
 export const connectorCommand = new Command("connector").description(
   "Manage external service connectors",
@@ -29,7 +38,7 @@ export const connectorCommand = new Command("connector").description(
 connectorCommand
   .command("setup")
   .description("Configure a connector")
-  .argument("<type>", "Connector type (ado, turso)")
+  .argument("<type>", "Connector type (ado, turso, postgres)")
   .option("--url <url>", "Turso database URL (non-interactive)")
   .option("--token <token>", "Turso auth token (non-interactive)")
   .option(
@@ -40,7 +49,27 @@ connectorCommand
     "--mode <mode>",
     "Turso access mode: native (libsql driver) | remote (HTTP, works on Windows ARM64)",
   )
+  .option("--host <host>", "PostgreSQL server host (team library)")
+  .option("--port <port>", "PostgreSQL port (default 5432)")
+  .option("--database <name>", "PostgreSQL database name")
+  .option(
+    "--username <name>",
+    "PostgreSQL role; with Entra your UPN (discovered from `az` when omitted)",
+  )
+  .option(
+    "--auth <mode>",
+    "PostgreSQL authentication: entra-cli (default, token from `az`) | password",
+  )
+  .option("--password <password>", "PostgreSQL password (auth password)")
+  .option(
+    "--password-from <ref>",
+    "Vault reference instead of --password (e.g. bw://zam-team-db/password)",
+  )
+  .option("--no-ssl", "Plain connection (local development only)")
   .action(async (type, opts) => {
+    if (type === "postgres") {
+      return setupPostgres(opts);
+    }
     if (type === "turso") {
       if (opts.mode && opts.mode !== "native" && opts.mode !== "remote") {
         console.error(`Invalid --mode: ${opts.mode}. Use native or remote.`);
@@ -53,7 +82,9 @@ connectorCommand
       return setupTurso(opts.url, opts.token, opts.mode, opts.tokenFrom);
     }
     if (type !== "ado") {
-      console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
+      console.error(
+        `Unknown connector type: ${type}. Supported: ado, turso, postgres`,
+      );
       process.exit(1);
     }
 
@@ -135,7 +166,7 @@ connectorCommand
 connectorCommand
   .command("clear")
   .description("Remove a connector configuration")
-  .argument("<type>", "Connector type (ado, turso)")
+  .argument("<type>", "Connector type (ado, turso, postgres)")
   .action((type) => {
     if (type === "turso") {
       clearTursoCredentials();
@@ -143,8 +174,18 @@ connectorCommand
       return;
     }
 
+    if (type === "postgres") {
+      clearPostgresCredentials();
+      console.log(
+        "Team library connection removed. Database remains local-only.",
+      );
+      return;
+    }
+
     if (type !== "ado") {
-      console.error(`Unknown connector type: ${type}. Supported: ado, turso`);
+      console.error(
+        `Unknown connector type: ${type}. Supported: ado, turso, postgres`,
+      );
       process.exit(1);
     }
 
@@ -376,6 +417,159 @@ async function setupTurso(
     if ((err as Error).name === "ExitPromptError") {
       console.log("\nSetup cancelled.");
       process.exit(0);
+    }
+    console.error("Error:", (err as Error).message);
+    process.exit(1);
+  }
+}
+
+// ── PostgreSQL (team library) setup ─────────────────────────────────────────
+
+interface PostgresSetupOptions {
+  host?: string;
+  port?: string;
+  database?: string;
+  username?: string;
+  auth?: string;
+  password?: string;
+  passwordFrom?: string;
+  /** Commander's `--no-ssl` sets this to false; absent means "decide by host". */
+  ssl?: boolean;
+}
+
+/**
+ * Connect this machine to the team library (ADR 2026-09-04 Decisions 3, 6 and
+ * 9). With Entra nothing secret is stored: host, database and the colleague's
+ * UPN — read from the Azure CLI when not given — are all the file holds, and
+ * every connection fetches its own token. `password` mode exists for local
+ * Docker development and servers without Entra; the password may be a vault
+ * reference like every other secret.
+ *
+ * Verification opens the configured library once. Membership is reported, not
+ * enforced here: an administrator maps the account with `zam team add-member`.
+ */
+async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
+  let db: Database | undefined;
+  try {
+    if (opts.password && opts.passwordFrom) {
+      console.error("Use either --password or --password-from, not both.");
+      process.exit(1);
+    }
+    const stored = loadStoredCredentials().postgres;
+    const authRaw = opts.auth ?? stored?.auth ?? "entra-cli";
+    if (authRaw !== "entra-cli" && authRaw !== "password") {
+      console.error(`Invalid --auth: ${authRaw}. Use entra-cli or password.`);
+      process.exit(1);
+    }
+    const auth: PostgresAuthMode = authRaw;
+
+    const host =
+      opts.host ??
+      (await input({
+        message:
+          "PostgreSQL host (e.g. my-team-pg.postgres.database.azure.com):",
+        ...(stored?.host ? { default: stored.host } : {}),
+      }));
+    const database =
+      opts.database ??
+      (await input({
+        message: "Database name:",
+        default: stored?.database ?? "zam_prod",
+      }));
+    const portRaw =
+      opts.port ?? (stored?.port !== undefined ? String(stored.port) : "");
+    const port = portRaw.trim() ? Number(portRaw) : undefined;
+    if (port !== undefined && (!Number.isInteger(port) || port <= 0)) {
+      console.error(`Invalid --port: ${portRaw}`);
+      process.exit(1);
+    }
+
+    let username = opts.username ?? stored?.username;
+    if (!username && auth === "entra-cli") {
+      console.log("Reading your signed-in account from the Azure CLI…");
+      username = await entraCliSignedInUpn();
+    }
+    if (!username) {
+      username = await input({ message: "Database role (username):" });
+    }
+
+    let pw: StoredSecret | undefined;
+    if (auth === "password") {
+      if (opts.passwordFrom) pw = secretRefFromUri(opts.passwordFrom);
+      else if (opts.password) pw = opts.password;
+      else pw = await password({ message: "Password:" });
+      if (!pw) {
+        console.error("A password is required with --auth password.");
+        process.exit(1);
+      }
+    }
+
+    if (!host || !database || !username) {
+      console.error("Host, database and username are required.");
+      process.exit(1);
+    }
+
+    setPostgresCredentials({
+      host: host.trim(),
+      database: database.trim(),
+      username: username.trim(),
+      auth,
+      ...(port !== undefined ? { port } : {}),
+      ...(pw !== undefined ? { password: pw } : {}),
+      ...(opts.ssl === false ? { ssl: false } : {}),
+    });
+    await resolveCredentials();
+
+    const target = getPostgresCredentials();
+    if (!target) {
+      console.error(
+        opts.passwordFrom
+          ? `Could not resolve password reference "${opts.passwordFrom}". Fix the vault item or run: zam credentials check`
+          : "PostgreSQL credentials incomplete after setup.",
+      );
+      process.exit(1);
+    }
+
+    // Verify by opening the configured library; the open refuses an
+    // unprovisioned or outdated schema with the administrator's next step.
+    db = await openDatabaseWithSync();
+    let learner: string | null = null;
+    let mapped = false;
+    try {
+      const who = (await db
+        .prepare("SELECT current_learner_id() AS learner")
+        .get()) as { learner: string | null } | undefined;
+      learner = who?.learner ?? null;
+      mapped = true;
+    } catch {
+      // No `current_learner_id()` — a plain PostgreSQL without the team
+      // deployment SQL. Connection proven; membership cannot be judged.
+    }
+    await db.close();
+
+    console.log(
+      `Team library configured and verified: ${describePostgresTarget(target)}` +
+        ` as ${target.username} (auth: ${target.auth})`,
+    );
+    if (mapped && learner === null) {
+      console.log(
+        "Your account is not yet a member of this library. Ask the administrator to run:\n" +
+          `  zam team add-member ${target.username}`,
+      );
+    } else if (learner) {
+      console.log(`Learner id: ${learner}`);
+    }
+  } catch (err) {
+    await db?.close();
+    if ((err as Error).name === "ExitPromptError") {
+      console.log("\nSetup cancelled.");
+      process.exit(0);
+    }
+    if (isEntraLoginRequired(err)) {
+      console.error(
+        (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, ""),
+      );
+      process.exit(1);
     }
     console.error("Error:", (err as Error).message);
     process.exit(1);

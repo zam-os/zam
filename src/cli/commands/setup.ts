@@ -38,6 +38,8 @@ export function formatDatabaseInitTarget(target: DatabaseTargetInfo): string {
       return `ZAM database via Turso native driver at ${target.location}`;
     case "turso-replica":
       return `ZAM database replica at ${target.location} syncing from ${target.syncUrl}`;
+    case "postgres":
+      return `ZAM team library at ${target.location} (PostgreSQL)`;
   }
 }
 
