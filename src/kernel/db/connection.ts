@@ -557,34 +557,7 @@ export async function openDatabase(
 async function openPostgresTarget(
   target: PostgresCredentials,
 ): Promise<Database> {
-  let password: PostgresPasswordSupplier;
-  if (target.auth === "password") {
-    const literal = target.password;
-    if (!literal) {
-      throw new Error(
-        "The PostgreSQL target uses password authentication but no password is configured. Run: zam connector setup postgres",
-      );
-    }
-    password = async () => literal;
-  } else {
-    const supplier = postgresPasswordSuppliers.get(target.auth);
-    if (!supplier) {
-      throw new Error(
-        `ENTRA_LOGIN_REQUIRED: no ${target.auth} token source is registered in this process, so the team library cannot be opened here.`,
-      );
-    }
-    password = supplier;
-  }
-
-  const db = openPostgresDatabase({
-    host: target.host,
-    port: target.port ?? 5432,
-    database: target.database,
-    user: target.username,
-    password,
-    ssl: target.ssl ?? !isLoopbackHost(target.host),
-    applicationName: "zam",
-  });
+  const db = connectPostgres(target);
   try {
     const version = await getSchemaVersion(db);
     const where = describePostgresTarget(target);
@@ -604,6 +577,50 @@ async function openPostgresTarget(
     throw err;
   }
   return db;
+}
+
+/**
+ * Open a PostgreSQL target **without** the schema-version gate — for the
+ * administrator's `zam team` commands, which provision the schema themselves
+ * or work on the server's `postgres` maintenance database. Learners never
+ * take this path.
+ */
+export function openPostgresAdministration(
+  target: PostgresCredentials,
+): Database {
+  return connectPostgres(target);
+}
+
+/** Build the pooled connection; the password comes from the registered supplier. */
+function connectPostgres(target: PostgresCredentials): Database {
+  let password: PostgresPasswordSupplier;
+  if (target.auth === "password") {
+    const literal = target.password;
+    if (!literal) {
+      throw new Error(
+        "The PostgreSQL target uses password authentication but no password is configured. Run: zam connector setup postgres",
+      );
+    }
+    password = async () => literal;
+  } else {
+    const supplier = postgresPasswordSuppliers.get(target.auth);
+    if (!supplier) {
+      throw new Error(
+        `ENTRA_LOGIN_REQUIRED: no ${target.auth} token source is registered in this process, so the team library cannot be opened here.`,
+      );
+    }
+    password = supplier;
+  }
+
+  return openPostgresDatabase({
+    host: target.host,
+    port: target.port ?? 5432,
+    database: target.database,
+    user: target.username,
+    password,
+    ssl: target.ssl ?? !isLoopbackHost(target.host),
+    applicationName: "zam",
+  });
 }
 
 function resolveProvider(

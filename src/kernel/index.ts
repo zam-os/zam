@@ -106,6 +106,7 @@ export {
   isTransientRemoteDatabaseError,
   openDatabase,
   openDatabaseWithSync,
+  openPostgresAdministration,
   openReadOnlySqliteDatabase,
   registerPostgresPasswordSupplier,
   resetPostgresPasswordSuppliers,
