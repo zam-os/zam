@@ -58,6 +58,7 @@ import {
 } from "../companion-context-server.js";
 import type { CatalogEntry } from "../okf/bundle.js";
 import { publishUiIntent } from "../ui-intent.js";
+import { resolveLearnerId } from "../users/identity.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 import {
   createLazyDatabase,
@@ -265,9 +266,11 @@ export function createMcpServer(
   );
 
   async function getUserId(paramUser: string | undefined) {
-    if (paramUser) return paramUser;
-    const stored = await getSetting(db, "user.id");
-    if (stored) return stored;
+    // Team library: the connection decides and a disagreeing `user` parameter
+    // is a rejection (ADR 2026-09-04 Decision 2); personal library: the
+    // parameter, else the stored default.
+    const userId = await resolveLearnerId(db, paramUser);
+    if (userId) return userId;
     throw new Error(
       "No user specified. Set a default with: zam whoami --set <id>",
     );

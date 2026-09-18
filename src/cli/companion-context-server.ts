@@ -74,6 +74,7 @@ import {
   inspectConnectHarnesses,
 } from "./agent-connect.js";
 import { readDatabaseUserSummaries } from "./commands/bridge.js";
+import { currentUserIdOrNull } from "./users/identity.js";
 
 export interface CompanionContextServerOptions {
   /** Machine-local config path override — tests point this at a temp file. */
@@ -295,7 +296,8 @@ async function assembleCompanionContext(
   // - the legacy `recall.quick_mode` setting, which seeds (never overrides)
   //   the default evaluator below.
   const [fallbackUserIdRaw, profiles, quickModeRaw] = await Promise.all([
-    getSetting(db, "user.id"),
+    // Team library: the connection's learner, not a stored default.
+    currentUserIdOrNull(db),
     readDatabaseUserSummaries(db),
     getSetting(db, "recall.quick_mode"),
   ]);

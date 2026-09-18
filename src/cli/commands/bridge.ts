@@ -319,7 +319,11 @@ import {
   unlockBitwardenForProcess,
 } from "../secrets-bridge.js";
 import { normalizeShell } from "../terminal-open.js";
-import { ensureDefaultUser, resolveUser } from "../users/identity.js";
+import {
+  currentUserIdOrNull,
+  ensureDefaultUser,
+  resolveUser,
+} from "../users/identity.js";
 import {
   activateWorkspacePath,
   defaultWorkspaceDir,
@@ -4717,7 +4721,7 @@ bridgeCommand
     }
     const target = getDatabaseTargetInfo();
     await withDb(async (db) => {
-      const userId = (await getSetting(db, "user.id")) ?? null;
+      const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
       jsonOut({
         success: true,
@@ -4803,7 +4807,7 @@ bridgeCommand
           "Credentials were stored but the active target is still local. Check URL/token.",
         );
       }
-      const userId = (await getSetting(db, "user.id")) ?? null;
+      const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
       jsonOut({
         success: true,
