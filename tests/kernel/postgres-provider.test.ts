@@ -18,6 +18,14 @@ describe("PostgreSQL provider helpers", () => {
         "SELECT 'is this ? a question' AS text, ? AS param",
       ),
     ).toBe("SELECT 'is this ? a question' AS text, $1 AS param");
+
+    expect(
+      translatePlaceholders(
+        `SELECT * FROM cards -- the learner's cards\nWHERE user_id = ? AND token_id = ?`,
+      ),
+    ).toBe(
+      `SELECT * FROM cards -- the learner's cards\nWHERE user_id = $1 AND token_id = $2`,
+    );
   });
 
   it("translates SQLite DDL and datetime keywords for PostgreSQL", () => {

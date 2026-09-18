@@ -30,7 +30,7 @@ describeWithPostgres(
   "derived identity on PostgreSQL (needs POSTGRES_URL)",
   () => {
     const url = POSTGRES_URL as string;
-    const admin = new URL(url);
+    const admin = POSTGRES_URL ? new URL(url) : ({} as URL);
     const schema = "zam_identity";
     const roles = ["zam_id_alice", "zam_id_bob", "zam_id_nobody"];
 

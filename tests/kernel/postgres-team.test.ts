@@ -138,9 +138,9 @@ describe("entraPrincipalDirectory", () => {
 
 describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const url = POSTGRES_URL as string;
-  const admin = new URL(url);
+  const admin = POSTGRES_URL ? new URL(url) : ({} as URL);
   const schema = "zam_team";
-  const database = admin.pathname.replace(/^\//, "");
+  const database = admin.pathname ? admin.pathname.replace(/^\//, "") : "";
   const created = new Set<string>();
 
   /**

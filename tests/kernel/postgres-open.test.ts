@@ -40,7 +40,9 @@ describeWithPostgres(
   "openDatabase against PostgreSQL (needs POSTGRES_URL)",
   () => {
     const url = POSTGRES_URL as string;
-    const parsed = parseUrl(url);
+    const parsed = POSTGRES_URL
+      ? parseUrl(url)
+      : ({} as ReturnType<typeof parseUrl>);
     const schema = "zam_open_target";
     const role = "zam_open_learner";
 

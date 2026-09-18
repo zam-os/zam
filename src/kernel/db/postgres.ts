@@ -36,37 +36,10 @@ export interface PostgresDatabaseOptions {
 }
 
 /**
- * Replace `?` parameter placeholders with `$1, $2, ...` for PostgreSQL,
- * ignoring `?` inside single- or double-quoted string literals.
- */
-export function translatePlaceholders(sql: string): string {
-  let paramIndex = 1;
-  let inSingleQuote = false;
-  let inDoubleQuote = false;
-  let result = "";
-
-  for (let i = 0; i < sql.length; i++) {
-    const char = sql[i];
-    if (char === "'" && !inDoubleQuote) {
-      inSingleQuote = !inSingleQuote;
-      result += char;
-    } else if (char === '"' && !inSingleQuote) {
-      inDoubleQuote = !inDoubleQuote;
-      result += char;
-    } else if (char === "?" && !inSingleQuote && !inDoubleQuote) {
-      result += `$${paramIndex++}`;
-    } else {
-      result += char;
-    }
-  }
-
-  return result;
-}
-
-/**
  * Split SQL into code and quoted segments: single-quoted string literals,
  * double-quoted identifiers and dollar-quoted bodies (`$$ … $$`, `$tag$ … $tag$`)
- * are returned verbatim so no rewrite ever touches them.
+ * are returned verbatim so no rewrite ever touches them. Comments (line and block)
+ * are marked as non-code so apostrophes inside comments do not open string literals.
  */
 function splitQuotedSegments(
   sql: string,
@@ -132,6 +105,22 @@ function splitQuotedSegments(
   }
   flushCode();
   return segments;
+}
+
+/**
+ * Replace `?` parameter placeholders with `$1, $2, ...` for PostgreSQL,
+ * ignoring `?` inside string literals, quoted identifiers, dollar-quoted
+ * bodies and SQL comments (which may contain apostrophes).
+ */
+export function translatePlaceholders(sql: string): string {
+  let paramIndex = 1;
+  return splitQuotedSegments(sql)
+    .map((segment) =>
+      segment.code
+        ? segment.text.replace(/\?/g, () => `$${paramIndex++}`)
+        : segment.text,
+    )
+    .join("");
 }
 
 /**

@@ -108,6 +108,7 @@ export {
   openDatabaseWithSync,
   openPostgresAdministration,
   openReadOnlySqliteDatabase,
+  postgresSslFor,
   registerPostgresPasswordSupplier,
   resetPostgresPasswordSuppliers,
 } from "./db/connection.js";

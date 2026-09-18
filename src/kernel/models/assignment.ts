@@ -15,6 +15,7 @@
  */
 
 import { ulid } from "ulid";
+import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { type Card, ensureCard } from "./card.js";
 
@@ -48,7 +49,7 @@ export async function createAssignment(
   input: CreateAssignmentInput,
 ): Promise<Assignment> {
   const id = ulid();
-  const now = new Date().toISOString();
+  const now = nowIso();
 
   const assignment: Assignment = {
     id,
@@ -166,7 +167,7 @@ export async function withdrawAssignment(
     throw new Error(`Assignment already withdrawn: ${assignmentId}`);
   }
 
-  const now = new Date().toISOString();
+  const now = nowIso();
   await db
     .prepare("UPDATE assignments SET withdrawn_at = ? WHERE id = ?")
     .run(now, assignmentId);
