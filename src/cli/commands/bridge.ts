@@ -105,6 +105,7 @@ import {
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
   pairCommands,
+  postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
   readUiObservationLog,
@@ -322,6 +323,7 @@ import { normalizeShell } from "../terminal-open.js";
 import {
   currentUserIdOrNull,
   ensureDefaultUser,
+  isTeamLibrary,
   resolveUser,
 } from "../users/identity.js";
 import {
@@ -4700,26 +4702,37 @@ bridgeCommand
   .action(async () => {
     // Restore ≤30-day session and resolve vault refs before opening the DB.
     await resolveCredentials();
-    if (tursoVaultAccessPending()) {
+    if (tursoVaultAccessPending() || postgresVaultAccessPending()) {
       const stored = loadStoredCredentials();
+      const postgresPending = postgresVaultAccessPending();
       jsonOut({
         success: false,
         connected: false,
         bitwardenRequired: true,
         target: {
-          kind: "local",
-          location: stored.turso?.url ?? "vault-locked",
+          kind: postgresPending ? "postgres" : "local",
+          location: postgresPending
+            ? `postgres://${stored.postgres?.host ?? "?"}/${stored.postgres?.database ?? "?"}`
+            : (stored.turso?.url ?? "vault-locked"),
         },
         tursoUrl: stored.turso?.url ?? null,
         userId: null,
         cardCount: 0,
         users: [],
-        error:
-          "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
+        error: postgresPending
+          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 30 days)."
+          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
       });
       return;
     }
-    const target = getDatabaseTargetInfo();
+    // Resolving the target can itself refuse (two libraries configured);
+    // that answer must be JSON too, not a stack trace.
+    let target: ReturnType<typeof getDatabaseTargetInfo>;
+    try {
+      target = getDatabaseTargetInfo();
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
     await withDb(async (db) => {
       const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
@@ -4776,6 +4789,15 @@ bridgeCommand
         jsonError("mode must be remote or native");
       }
       mode = raw;
+    }
+
+    // One machine, one library (ADR 2026-09-04 Decision 6): storing a Turso
+    // database beside a configured team library would leave every command
+    // refusing; say so before writing anything.
+    if (loadStoredCredentials().postgres) {
+      jsonError(
+        "A team library (PostgreSQL) is configured on this machine. Remove it first with: zam connector clear postgres",
+      );
     }
 
     if (tokenFrom) {
@@ -5103,6 +5125,14 @@ bridgeCommand
   .requiredOption("--user <id>", "Existing user ID")
   .action(async (opts) => {
     await withDb(async (db) => {
+      if (isTeamLibrary(db)) {
+        // The connection decides who is learning (ADR 2026-09-04 Decision 2);
+        // there is no profile to pick, and user.id must not be written into
+        // the shared settings table.
+        jsonError(
+          "In the team library your identity is derived from your database login and cannot be selected.",
+        );
+      }
       const userId = String(opts.user ?? "").trim();
       const users = await readDatabaseUserSummaries(db);
       const selected = users.find((user) => user.id === userId);
@@ -5127,9 +5157,20 @@ bridgeCommand
   .requiredOption("--user <id>", "Learner ID to bind to the mobile device")
   .option("--create-user", "Create and select a learner without cards")
   .action(async (opts) => {
-    const target = getDatabaseTargetInfo();
+    let target: ReturnType<typeof getDatabaseTargetInfo>;
+    try {
+      target = getDatabaseTargetInfo();
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
     if (target.kind === "local") {
       jsonError("Mobile pairing requires a configured server database.");
+    }
+    if (target.kind === "postgres") {
+      // ADR 2026-09-04 Decision 9: mobile is not part of the team library pilot.
+      jsonError(
+        "Mobile pairing is not available for the team library yet (ADR 2026-09-04).",
+      );
     }
     const credentials = getTursoCredentials();
     if (!credentials) {

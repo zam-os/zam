@@ -54,6 +54,15 @@ export function classifyServerDbError(message: string): string {
   if (m.includes("bitwarden_required") || m.includes("bitwarden")) {
     return t("server_db_err_bitwarden");
   }
+  // Team library (ADR 2026-09-04): the connection carries the identity, so
+  // an unmapped account and a missing Azure sign-in are the two states a
+  // colleague can actually act on.
+  if (m.includes("not_a_member") || m.includes("not yet a member")) {
+    return t("server_db_err_not_member");
+  }
+  if (m.includes("entra_login_required") || m.includes("az login")) {
+    return t("server_db_err_entra_login");
+  }
   if (
     /enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns/.test(
       m,
@@ -68,7 +77,9 @@ export function classifyServerDbError(message: string): string {
   ) {
     return t("server_db_err_token");
   }
-  if (/quota|429|too many requests|limit exceeded|free tier|storage limit/.test(m)) {
+  if (
+    /quota|429|too many requests|limit exceeded|free tier|storage limit/.test(m)
+  ) {
     return t("server_db_err_quota");
   }
   return tf("server_db_error", { message });
@@ -76,11 +87,10 @@ export function classifyServerDbError(message: string): string {
 
 export function isServerDbError(message: string): boolean {
   const m = message.toLowerCase();
-  return /bitwarden|enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns|401|403|unauthorized|forbidden|invalid token|authentication|auth failed|jwt|quota|429|too many requests|limit exceeded|free tier|storage limit|turso|sqld|database/.test(
+  return /bitwarden|enotfound|eai_again|econnrefused|etimedout|econnreset|fetch failed|network|dns|401|403|unauthorized|forbidden|invalid token|authentication|auth failed|jwt|quota|429|too many requests|limit exceeded|free tier|storage limit|turso|sqld|database|not_a_member|not yet a member|entra_login_required|identity_mismatch|team library/.test(
     m,
   );
 }
-
 
 export function initServerDbWizard(
   onServerDbReady: () => void,
@@ -113,8 +123,9 @@ export function initServerDbWizard(
   urlInput.placeholder = t("server_db_url_ph");
   tokenInput.placeholder = t("server_db_token_ph");
 
-  requiredElement("server-db-create-hint").textContent =
-    t("server_db_create_hint");
+  requiredElement("server-db-create-hint").textContent = t(
+    "server_db_create_hint",
+  );
   links.replaceChildren();
   for (const [label, url] of [
     [t("server_db_link_signup"), TURSO_SIGNUP_URL],
@@ -139,9 +150,17 @@ export function initServerDbWizard(
     statusLine.classList.toggle("error-banner", error);
   };
 
+  /** The team library (PostgreSQL) has no mobile path yet (ADR 2026-09-04 Decision 9). */
+  let teamLibrary = false;
+
   const applyGate = (): void => {
-    pairButton.disabled = !serverDb;
-    pairButton.title = serverDb ? "" : t("server_db_pair_blocked");
+    const pairable = serverDb && !teamLibrary;
+    pairButton.disabled = !pairable;
+    pairButton.title = pairable
+      ? ""
+      : teamLibrary
+        ? t("server_db_team_pair_blocked")
+        : t("server_db_pair_blocked");
     form.hidden = false;
   };
 
@@ -178,6 +197,7 @@ export function initServerDbWizard(
       }
 
       serverDb = status.success && status.target.kind !== "local";
+      teamLibrary = status.target.kind === "postgres";
       applyGate();
       if (serverDb) {
         vaultBacked = true;
@@ -233,7 +253,10 @@ export function initServerDbWizard(
 
   const connect = async (): Promise<void> => {
     // Vault-backed path: only unlock, never re-paste.
-    if (vaultBacked || connectButton.textContent === t("server_db_unlock_bitwarden")) {
+    if (
+      vaultBacked ||
+      connectButton.textContent === t("server_db_unlock_bitwarden")
+    ) {
       await unlockAndRefresh();
       return;
     }

@@ -1,6 +1,6 @@
 # Team Learning Library on Managed PostgreSQL: Entra Identity, Per-Learner Roles, and a ZAM-Only Server
 
-**Status:** Proposed (2026-09-04) — awaiting owner sign-off
+**Status:** Partially implemented (2026-09-18) — phases 1, 2, 3 and 6 shipped; see the status history
 **Date:** 2026-09-04
 **Deciders:** Thomas (project owner)
 **Amends:**
@@ -400,30 +400,35 @@ only after the client can prove the identity path against local Docker.
 ```bash
 # 1. Resource group and server: Entra only, cheapest tier, PostgreSQL 18.
 az group create --name <rg> --location <region>
-az postgres flexible-server create \
-  --resource-group <rg> --name <server> --location <region> \
-  --tier Burstable --sku-name Standard_B1ms --storage-size 32 --version 18 \
-  --microsoft-entra-auth Enabled --password-auth Disabled \
-  --backup-retention 7 --geo-redundant-backup Disabled --zonal-resiliency Disabled \
-  --public-access <All | start-ip-end-ip>
+az postgres flexible-server create   --resource-group <rg> --name <server> --location <region>   --tier Burstable --sku-name Standard_B1ms --storage-size 32 --version 18   --microsoft-entra-auth Enabled --password-auth Disabled   --backup-retention 7 --geo-redundant-backup Disabled   --public-access <All | start-ip-end-ip>
 
 # 2. The Entra administrator (the project owner's own account).
-az postgres flexible-server microsoft-entra-admin create \
-  --resource-group <rg> --server-name <server> \
-  --admin-display-name <admin-upn> --admin-object-id <admin-object-id> --admin-type User
+az postgres flexible-server microsoft-entra-admin create   --resource-group <rg> --server-name <server>   --admin-display-name <admin-upn> --admin-object-id <admin-object-id> --admin-type User
 
 # 3. Databases.
 az postgres flexible-server db create --resource-group <rg> --server-name <server> --database-name zam_test
 az postgres flexible-server db create --resource-group <rg> --server-name <server> --database-name zam_prod
 
-# 4. Prove Entra on 18 before anything else: admin connects with a token.
-export PGPASSWORD=$(az account get-access-token --resource-type oss-rdbms --query accessToken -o tsv)
-psql "host=<server>.postgres.database.azure.com dbname=zam_test user=<admin-upn> sslmode=require" \
-  -c "select * from pgaadauth_create_principal('<colleague-upn>', false, false);"
+# 4. The administrator's machine points ZAM at the server (nothing secret is
+#    stored: host, database and the administrator's UPN). The first run reports
+#    "not provisioned yet" and saves the settings.
+zam connector setup postgres --host <server>.postgres.database.azure.com --database zam_test
 
-# 5. Hand over to ZAM.
+# 5. Provision as the administrator: schema, migrations, RLS, group roles, the
+#    single context. Idempotent — re-run after every ZAM release with a migration.
 zam team provision --database zam_test
+
+# 6. Map colleagues (and the administrator, whom FORCE RLS binds too). The
+#    principal is created through pgaadauth in the server's `postgres`
+#    maintenance database automatically — that is the only database where
+#    those functions exist.
+zam team add-member <admin-upn>
 zam team add-member <colleague-upn>
+
+# 7. A colleague's machine: sign in once, point ZAM at the library, done.
+az login
+zam connector setup postgres --host <server>.postgres.database.azure.com --database zam_test
+zam whoami
 ```
 
 ## Status history
@@ -431,5 +436,5 @@ zam team add-member <colleague-upn>
 | Date | State | Note |
 |------|-------|------|
 | 2026-09-04 | Proposed | Written after the architecture review and the owner's answers of the same day: ZAM-only server, cheapest tier, PostgreSQL 18, Entra-only, `az` as token source, one role per colleague with the owner as administrator, derived identity, settings scopes with a machine id, `native` provider retired, mobile and migration out of scope, company specifics kept out of the repository. |
-| 2026-09-18 | Partially implemented | Phases 1, 2, 3 and 6 of the plan shipped: provider-neutral timestamps and a `dialect` on the `Database` contract; `postgres` as a first-class provider with the Azure CLI as per-connection token source; identity derived from `current_learner_id()` with `IDENTITY_MISMATCH` / `NOT_A_MEMBER`; the `zam team` commands `provision`, `add-member`, `remove-member` and `members`. The first team library was provisioned on the real server, the administrator mapped as first member, and a complete review round trip (publish, queue, rating) ran over the Entra token path. Not yet: settings scopes (4), RLS completion beyond the group roles (5), the Desktop path (7), the `native` retirement (own PR). |
 | 2026-09-18 | Proposed | Server created per the appendix on PostgreSQL 18 (Burstable B1ms, 32 GiB, Entra-only) in the team's nearest fleet region; the region provisioned without a quota request. The Entra administrator connected with an `az` token — the PostgreSQL 18 risk of Decision 1 is closed. Finding for Phase 6: the `pgaadauth_*` functions exist only in the `postgres` maintenance database, so `zam team add-member` must run its principal statements there, not in `zam_test`/`zam_prod`. |
+| 2026-09-18 | Partially implemented | Phases 1, 2, 3 and 6 of the plan shipped: provider-neutral timestamps and a `dialect` on the `Database` contract; `postgres` as a first-class provider with the Azure CLI as per-connection token source; identity derived from `current_learner_id()` with `IDENTITY_MISMATCH` / `NOT_A_MEMBER`; the `zam team` commands `provision`, `add-member`, `remove-member` and `members`. The first team library was provisioned on the real server, the administrator mapped as first member, and a complete review round trip (publish, queue, rating) ran over the Entra token path. Not yet: settings scopes (4), RLS completion beyond the group roles (5), the Desktop path (7), the `native` retirement (own PR). |

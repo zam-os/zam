@@ -8,7 +8,7 @@
  * stops being tested, so this makes a matching database a one-liner:
  *
  *   npm run pg:up      # start it, print the URL
- *   npm run pg:test    # run the Postgres-backed suites against it
+ *   npm run pg:test    # run the Postgres-backed suites against it (any OS)
  *   npm run pg:down    # stop it
  *
  * Two backends, picked automatically, because contributors differ:
@@ -202,7 +202,34 @@ if (command === "up") {
   console.log("Run the Postgres-backed suites with:  npm run pg:test");
 } else if (command === "down") {
   backend === "docker" ? dockerDown() : localDown();
+} else if (command === "test") {
+  // `POSTGRES_URL=$(…) vitest run …` only works in a POSIX shell; npm runs
+  // scripts through cmd.exe on Windows, so the env is set here instead.
+  const suites = [
+    "tests/kernel/postgres-rls.test.ts",
+    "tests/kernel/provider-contract.test.ts",
+    "tests/kernel/postgres-provider.test.ts",
+    "tests/kernel/postgres-provision.test.ts",
+    "tests/kernel/postgres-presentation.test.ts",
+    "tests/kernel/postgres-open.test.ts",
+    "tests/kernel/postgres-identity.test.ts",
+    "tests/kernel/postgres-team.test.ts",
+    "tests/kernel/analytics-stats.test.ts",
+    "tests/kernel/progress.test.ts",
+    "tests/kernel/due-summary.test.ts",
+  ];
+  const extra = process.argv.slice(3);
+  const result = spawnSync(
+    process.platform === "win32" ? "npx.cmd" : "npx",
+    ["vitest", "run", ...(extra.length > 0 ? extra : suites)],
+    {
+      stdio: "inherit",
+      env: { ...process.env, POSTGRES_URL },
+      shell: process.platform === "win32",
+    },
+  );
+  process.exit(result.status ?? 1);
 } else {
-  console.error(`Unknown command: ${command} (use up | down | url)`);
+  console.error(`Unknown command: ${command} (use up | down | url | test)`);
   process.exit(1);
 }

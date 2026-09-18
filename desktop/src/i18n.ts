@@ -248,6 +248,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Conectado ({kind}): {location}. Emparejamiento móvil desbloqueado.",
     server_db_fields_required: "Se requieren URL y token de autenticación.",
     server_db_error: "Base del servidor: {message}",
+    server_db_err_not_member:
+      "Tu cuenta aún no es miembro de esta biblioteca de equipo. Pide al administrador que te añada.",
+    server_db_err_entra_login:
+      "Inicia sesión en Azure primero: ejecuta `az login` en una terminal y vuelve a intentarlo.",
+    server_db_team_pair_blocked:
+      "El emparejamiento móvil aún no está disponible para la biblioteca de equipo.",
     server_db_pair_blocked:
       "Conecta primero una base de datos del servidor (sección de arriba).",
     settings_mobile_title: "Compañero móvil",
@@ -1146,6 +1152,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_fields_required:
       "L'URL et le jeton d'authentification sont requis.",
     server_db_error: "Base serveur : {message}",
+    server_db_err_not_member:
+      "Votre compte n'est pas encore membre de cette bibliothèque d'équipe. Demandez à l'administrateur de vous ajouter.",
+    server_db_err_entra_login:
+      "Connectez-vous d'abord à Azure : exécutez `az login` dans un terminal, puis réessayez.",
+    server_db_team_pair_blocked:
+      "Le jumelage mobile n'est pas encore disponible pour la bibliothèque d'équipe.",
     server_db_pair_blocked:
       "Connectez d'abord une base de données serveur (section ci-dessus).",
     settings_mobile_title: "Compagnon mobile",
@@ -2050,6 +2062,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Conectado ({kind}): {location}. Pareamento móvel liberado.",
     server_db_fields_required: "URL e token de autenticação são obrigatórios.",
     server_db_error: "Banco do servidor: {message}",
+    server_db_err_not_member:
+      "A sua conta ainda não é membro desta biblioteca de equipa. Peça ao administrador para o adicionar.",
+    server_db_err_entra_login:
+      "Inicie sessão no Azure primeiro: execute `az login` num terminal e tente novamente.",
+    server_db_team_pair_blocked:
+      "O emparelhamento móvel ainda não está disponível para a biblioteca de equipa.",
     server_db_pair_blocked:
       "Conecte primeiro um banco de dados do servidor (seção acima).",
     settings_mobile_title: "Companheiro móvel",
@@ -2917,6 +2935,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_connected: "已连接（{kind}）：{location}。手机配对已解锁。",
     server_db_fields_required: "需要 URL 和认证令牌。",
     server_db_error: "服务器数据库：{message}",
+    server_db_err_not_member:
+      "您的账户尚未成为此团队知识库的成员。请联系管理员将您添加进来。",
+    server_db_err_entra_login:
+      "请先登录 Azure：在终端中运行 `az login`，然后重试。",
+    server_db_team_pair_blocked:
+      "团队知识库暂不支持移动端配对。",
     server_db_pair_blocked: "请先连接服务器数据库（上方部分）。",
     settings_mobile_title: "移动伴侣",
     settings_mobile_help: "将 Android 设备与此服务器数据库及一位学习者配对。",
@@ -3752,6 +3776,12 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "接続済み（{kind}）: {location}。モバイルペアリングが有効です。",
     server_db_fields_required: "URL と認証トークンが必要です。",
     server_db_error: "サーバーデータベース: {message}",
+    server_db_err_not_member:
+      "あなたのアカウントはまだこのチームライブラリのメンバーではありません。管理者に追加を依頼してください。",
+    server_db_err_entra_login:
+      "先に Azure にサインインしてください。ターミナルで `az login` を実行してから再試行してください。",
+    server_db_team_pair_blocked:
+      "チームライブラリではモバイル連携はまだ利用できません。",
     server_db_pair_blocked:
       "先にサーバーデータベースを接続してください（上のセクション）。",
     settings_mobile_title: "モバイルコンパニオン",
@@ -4733,6 +4763,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Connected ({kind}): {location}. Mobile pairing is unlocked.",
     server_db_fields_required: "URL and auth token are required.",
     server_db_error: "Server database: {message}",
+    server_db_err_not_member:
+      "Your account is not yet a member of this team library. Ask the administrator to add you.",
+    server_db_err_entra_login:
+      "Sign in to Azure first: run `az login` in a terminal, then try again.",
+    server_db_team_pair_blocked:
+      "Mobile pairing is not available for the team library yet.",
     server_db_pair_blocked: "Connect a server database first (section above).",
     server_db_create_hint:
       "No database yet? Create a free one on Turso, then paste its URL and token here. ZAM never creates the account for you.",
@@ -6113,6 +6149,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Verbunden ({kind}): {location}. Mobile-Pairing ist freigeschaltet.",
     server_db_fields_required: "URL und Auth-Token sind erforderlich.",
     server_db_error: "Server-Datenbank: {message}",
+    server_db_err_not_member:
+      "Dein Konto ist noch kein Mitglied dieser Team-Bibliothek. Bitte den Administrator, dich hinzuzufügen.",
+    server_db_err_entra_login:
+      "Melde dich zuerst bei Azure an: führe `az login` in einem Terminal aus und versuche es erneut.",
+    server_db_team_pair_blocked:
+      "Mobile Kopplung ist für die Team-Bibliothek noch nicht verfügbar.",
     server_db_pair_blocked:
       "Zuerst eine Server-Datenbank verbinden (Abschnitt oben).",
     server_db_create_hint:

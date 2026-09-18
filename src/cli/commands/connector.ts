@@ -28,6 +28,7 @@ import {
 } from "../../kernel/index.js";
 import { fetchActiveWorkItems } from "../connectors/azure-devops.js";
 import { entraCliSignedInUpn, isEntraLoginRequired } from "../db/entra-cli.js";
+import { describeIdentity } from "../users/identity.js";
 
 export const connectorCommand = new Command("connector").description(
   "Manage external service connectors",
@@ -65,7 +66,11 @@ connectorCommand
     "--password-from <ref>",
     "Vault reference instead of --password (e.g. bw://zam-team-db/password)",
   )
-  .option("--no-ssl", "Plain connection (local development only)")
+  .option("--no-ssl", "Plain connection (loopback hosts only)")
+  .option(
+    "--replace",
+    "Replace a configured database of the other kind (turso ↔ postgres) instead of refusing",
+  )
   .action(async (type, opts) => {
     if (type === "postgres") {
       return setupPostgres(opts);
@@ -77,6 +82,9 @@ connectorCommand
       }
       if (opts.token && opts.tokenFrom) {
         console.error("Use either --token or --token-from, not both.");
+        process.exit(1);
+      }
+      if (!refuseOtherLibrary("turso", Boolean(opts.replace))) {
         process.exit(1);
       }
       return setupTurso(opts.url, opts.token, opts.mode, opts.tokenFrom);
@@ -222,21 +230,36 @@ connectorCommand
 
 connectorCommand
   .command("sync")
-  .description("Verify the Turso cloud database connection")
+  .description(
+    "Verify the configured server database connection (Turso or team library)",
+  )
   .action(async () => {
     const turso = getTursoCredentials();
-    if (!turso) {
+    const postgres = getPostgresCredentials();
+    if (!turso && !postgres) {
       console.error(
-        "No Turso cloud database configured. Run: zam connector setup turso",
+        "No server database configured. Run: zam connector setup turso | zam connector setup postgres",
       );
       process.exit(1);
     }
 
     let db: Database | undefined;
     try {
-      db = await openDatabaseWithSync({ initialize: true });
+      db = await openDatabaseWithSync(postgres ? {} : { initialize: true });
       await db.prepare("SELECT 1").get();
-      console.log(`Connected to ${turso.url}`);
+      if (postgres) {
+        const identity = await describeIdentity(db);
+        console.log(
+          `Connected to ${describePostgresTarget(postgres)} as ${postgres.username}`,
+        );
+        console.log(
+          identity.userId
+            ? `Learner id: ${identity.userId}`
+            : `Not a member yet. Ask the administrator to run: zam team add-member ${postgres.username}`,
+        );
+      } else if (turso) {
+        console.log(`Connected to ${turso.url}`);
+      }
       await db.close();
     } catch (err) {
       await db?.close();
@@ -244,6 +267,36 @@ connectorCommand
       process.exit(1);
     }
   });
+
+/**
+ * One machine is bound to one library (ADR 2026-09-04 Decision 6). Storing
+ * a second kind would leave every command refusing until someone clears one
+ * by hand, so setup refuses first — or replaces on request.
+ */
+function refuseOtherLibrary(
+  setting: "turso" | "postgres",
+  replace: boolean,
+): boolean {
+  const stored = loadStoredCredentials();
+  const other = setting === "turso" ? stored.postgres : stored.turso;
+  if (!other) return true;
+  if (replace) {
+    if (setting === "turso") clearPostgresCredentials();
+    else clearTursoCredentials();
+    console.log(
+      `Removed the configured ${setting === "turso" ? "team library" : "Turso database"} (--replace).`,
+    );
+    return true;
+  }
+  const otherName =
+    setting === "turso" ? "team library (postgres)" : "Turso database";
+  const clear = setting === "turso" ? "postgres" : "turso";
+  console.error(
+    `A ${otherName} is already configured on this machine. ZAM binds a machine to one library:\n` +
+      `  keep it and stop, or run: zam connector clear ${clear}   (or pass --replace)`,
+  );
+  return false;
+}
 
 // ── Turso setup helpers ─────────────────────────────────────────────────────
 
@@ -433,8 +486,9 @@ interface PostgresSetupOptions {
   auth?: string;
   password?: string;
   passwordFrom?: string;
-  /** Commander's `--no-ssl` sets this to false; absent means "decide by host". */
+  /** Commander defaults `ssl` to true and `--no-ssl` sets it to false. */
   ssl?: boolean;
+  replace?: boolean;
 }
 
 /**
@@ -453,6 +507,9 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
   try {
     if (opts.password && opts.passwordFrom) {
       console.error("Use either --password or --password-from, not both.");
+      process.exit(1);
+    }
+    if (!refuseOtherLibrary("postgres", Boolean(opts.replace))) {
       process.exit(1);
     }
     const stored = loadStoredCredentials().postgres;
@@ -509,6 +566,21 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
       process.exit(1);
     }
 
+    // A bearer token or password must never cross the network in the clear;
+    // plain connections are for a database on this machine only.
+    const plainRequested = opts.ssl === false;
+    const loopback = /^(localhost|127\.0\.0\.1|::1)$/i.test(host.trim());
+    if (plainRequested && !loopback) {
+      console.error(
+        `--no-ssl is only allowed for loopback hosts; ${host.trim()} would receive credentials unencrypted.`,
+      );
+      process.exit(1);
+    }
+    // Re-running setup without --no-ssl keeps a stored plain setting for a
+    // loopback host; a remote host always gets TLS.
+    const ssl =
+      plainRequested || (stored?.ssl === false && loopback) ? false : undefined;
+
     setPostgresCredentials({
       host: host.trim(),
       database: database.trim(),
@@ -516,7 +588,7 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
       auth,
       ...(port !== undefined ? { port } : {}),
       ...(pw !== undefined ? { password: pw } : {}),
-      ...(opts.ssl === false ? { ssl: false } : {}),
+      ...(ssl === false ? { ssl: false } : {}),
     });
     await resolveCredentials();
 
@@ -532,7 +604,24 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
 
     // Verify by opening the configured library; the open refuses an
     // unprovisioned or outdated schema with the administrator's next step.
-    db = await openDatabaseWithSync();
+    const location = describePostgresTarget(target);
+    try {
+      db = await openDatabaseWithSync();
+    } catch (err) {
+      const message = (err as Error).message;
+      if (/not provisioned yet/.test(message)) {
+        // The administrator's normal first run: the connection is right, the
+        // library is simply not there yet. Settings stay; nothing is wrong.
+        console.log(
+          `Connection settings saved for ${location} as ${target.username} (auth: ${target.auth}).`,
+        );
+        console.log(
+          `The library is not provisioned yet. Administrator: zam team provision --database ${target.database}`,
+        );
+        return;
+      }
+      throw err;
+    }
     let learner: string | null = null;
     let mapped = false;
     try {
@@ -548,7 +637,7 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
     await db.close();
 
     console.log(
-      `Team library configured and verified: ${describePostgresTarget(target)}` +
+      `Team library configured and verified: ${location}` +
         ` as ${target.username} (auth: ${target.auth})`,
     );
     if (mapped && learner === null) {
@@ -565,13 +654,17 @@ async function setupPostgres(opts: PostgresSetupOptions): Promise<void> {
       console.log("\nSetup cancelled.");
       process.exit(0);
     }
-    if (isEntraLoginRequired(err)) {
+    const saved = getPostgresCredentials() !== null;
+    const detail = isEntraLoginRequired(err)
+      ? (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, "")
+      : (err as Error).message;
+    console.error(`Error: ${detail}`);
+    if (saved) {
       console.error(
-        (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, ""),
+        "The connection settings were saved but could not be verified. Fix them with " +
+          "`zam connector setup postgres …` or undo with `zam connector clear postgres`.",
       );
-      process.exit(1);
     }
-    console.error("Error:", (err as Error).message);
     process.exit(1);
   }
 }

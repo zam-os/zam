@@ -1,10 +1,10 @@
 /**
  * `zam team` — administer the team library (ADR 2026-09-04 Decision 8).
  *
- * Usable by the Entra administrator only: the commands open the server with
- * the administrator's own configured connection (`zam connector setup
- * postgres`) and their own token. Company values — host, database, names —
- * live in the team's configuration, never here.
+ * Usable by the administrator only: the commands open the server with the
+ * administrator's own configured connection (`zam connector setup postgres`)
+ * and their own token. Company values — host, database, names — live in the
+ * team's configuration, never here.
  */
 
 import { Command } from "commander";
@@ -19,7 +19,9 @@ import { isEntraLoginRequired } from "../db/entra-cli.js";
 import {
   addTeamMember,
   entraPrincipalDirectory,
+  existingRoleDirectory,
   listTeamMembers,
+  type PrincipalDirectory,
   provisionTeamLibrary,
   removeTeamMember,
 } from "../deploy/team-provision.js";
@@ -29,20 +31,22 @@ export const teamCommand = new Command("team").description(
   "Administer the team library on PostgreSQL (administrator only)",
 );
 
-function fail(message: string, json: boolean): never {
-  if (json) jsonOut({ error: message });
+/** Report a failure and mark the exit code; never `process.exit` mid-flight. */
+function report(message: string, json: boolean): undefined {
+  if (json) jsonOut({ success: false, error: message });
   else console.error(`Error: ${message}`);
-  process.exit(1);
+  process.exitCode = 1;
+  return undefined;
 }
 
 /** The administrator's configured target, optionally pointed at another database. */
 function adminTarget(
   database: string | undefined,
   json: boolean,
-): PostgresCredentials {
+): PostgresCredentials | undefined {
   const configured = getPostgresCredentials();
   if (!configured) {
-    return fail(
+    return report(
       "No team library is configured on this machine. Run: zam connector setup postgres",
       json,
     );
@@ -50,19 +54,35 @@ function adminTarget(
   return database ? { ...configured, database } : configured;
 }
 
+/**
+ * Translate the PostgreSQL errors an administrator actually meets into the
+ * next step; everything else passes through unchanged.
+ */
+function explain(err: unknown, target: PostgresCredentials): string {
+  if (isEntraLoginRequired(err)) {
+    return (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, "");
+  }
+  const code = (err as { code?: string }).code;
+  const message = (err as Error).message ?? String(err);
+  if (code === "42P01" && /learner_principals/.test(message)) {
+    return `${describePostgresTarget(target)} is not a team library yet. Run: zam team provision --database ${target.database}`;
+  }
+  if (code === "3D000") {
+    return `Database ${target.database} does not exist on ${target.host}.`;
+  }
+  return message;
+}
+
 async function withAdminDb<T>(
   target: PostgresCredentials,
   json: boolean,
   fn: (db: Database) => Promise<T>,
-): Promise<T> {
+): Promise<T | undefined> {
   const db = openPostgresAdministration(target);
   try {
     return await fn(db);
   } catch (err) {
-    const message = isEntraLoginRequired(err)
-      ? (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, "")
-      : (err as Error).message;
-    return fail(message, json);
+    return report(explain(err, target), json);
   } finally {
     await db.close().catch(() => {});
   }
@@ -83,18 +103,17 @@ teamCommand
   .action(async (opts: { database?: string; json?: boolean }) => {
     const json = Boolean(opts.json);
     const target = adminTarget(opts.database, json);
+    if (!target) return;
     const result = await withAdminDb(target, json, (db) =>
       provisionTeamLibrary(db),
     );
+    if (!result) return;
+    const location = describePostgresTarget(target);
     if (json) {
-      jsonOut({
-        success: true,
-        target: describePostgresTarget(target),
-        ...result,
-      });
+      jsonOut({ success: true, target: location, ...result });
       return;
     }
-    console.log(`Provisioned ${describePostgresTarget(target)}`);
+    console.log(`Provisioned ${location}`);
     console.log(
       `  schema version ${result.schemaVersion}, owner ${result.ownerRole}`,
     );
@@ -111,7 +130,7 @@ teamCommand
 teamCommand
   .command("add-member")
   .description(
-    "Map a colleague's Entra account into the library: role, ZAM id, grants (idempotent)",
+    "Map a colleague's account into the library: role, ZAM id, grants (idempotent)",
   )
   .argument("<upn>", "User principal name, e.g. jane.doe@example.org")
   .option("--database <name>", "Library database (default: the configured one)")
@@ -124,34 +143,47 @@ teamCommand
     ) => {
       const json = Boolean(opts.json);
       const target = adminTarget(opts.database, json);
-      // Principal management lives in the server's `postgres` database.
-      const maintenance = openPostgresAdministration({
-        ...target,
-        database: "postgres",
-      });
+      if (!target) return;
+
+      // Where login roles come from depends on how this server authenticates:
+      // Entra principals are created through pgaadauth in the server's
+      // `postgres` maintenance database; a password server uses roles the
+      // administrator already created.
+      const maintenance =
+        target.auth === "entra-cli"
+          ? openPostgresAdministration({ ...target, database: "postgres" })
+          : null;
       try {
-        const result = await withAdminDb(target, json, (db) =>
-          addTeamMember(db, entraPrincipalDirectory(maintenance), {
+        const result = await withAdminDb(target, json, (db) => {
+          const directory: PrincipalDirectory = maintenance
+            ? entraPrincipalDirectory(maintenance)
+            : existingRoleDirectory(db);
+          return addTeamMember(db, directory, {
             upn,
             database: target.database,
             curator: opts.curator !== false,
-          }),
-        );
+          });
+        });
+        if (!result) return;
         if (json) {
-          jsonOut({ success: true, ...result });
+          jsonOut({
+            success: true,
+            target: describePostgresTarget(target),
+            ...result,
+          });
           return;
         }
         console.log(
           `${result.created ? "Added" : "Updated"} ${result.upn} → learner ${result.userId}` +
             (result.curator ? " (member, curator)" : " (member)"),
         );
-        if (!result.objectId) {
+        if (maintenance && !result.objectId) {
           console.log(
             "  note: no Entra object id reported for this role — is the principal an Entra user on this server?",
           );
         }
       } finally {
-        await maintenance.close().catch(() => {});
+        await maintenance?.close().catch(() => {});
       }
     },
   );
@@ -167,11 +199,17 @@ teamCommand
   .action(async (upn: string, opts: { database?: string; json?: boolean }) => {
     const json = Boolean(opts.json);
     const target = adminTarget(opts.database, json);
+    if (!target) return;
     const result = await withAdminDb(target, json, (db) =>
       removeTeamMember(db, upn),
     );
+    if (!result) return;
     if (json) {
-      jsonOut({ success: true, ...result });
+      jsonOut({
+        success: true,
+        target: describePostgresTarget(target),
+        ...result,
+      });
       return;
     }
     console.log(
@@ -192,9 +230,11 @@ teamCommand
   .action(async (opts: { database?: string; json?: boolean }) => {
     const json = Boolean(opts.json);
     const target = adminTarget(opts.database, json);
+    if (!target) return;
     const members = await withAdminDb(target, json, (db) =>
       listTeamMembers(db),
     );
+    if (!members) return;
     if (json) {
       jsonOut({
         success: true,
