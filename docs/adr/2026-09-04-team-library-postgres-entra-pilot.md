@@ -379,6 +379,9 @@ signals only above a threshold (12).
 1. **Region access.** Whether the company's agreement already permits
    Flexible Server creation in Germany West Central, or a quota request is
    needed — settled by trying, on the day the server is created.
+   *Settled 2026-09-18:* the server was created in the team's fleet region
+   (the same region as the AKS clusters it may later move to), which
+   provisioned PostgreSQL 18 on B1ms without any request.
 2. **Firewall shape.** All addresses versus company egress ranges — the
    administrator's call at creation; ZAM is indifferent.
 3. **Curator for everyone** is the pilot rule. When publishing should narrow,
@@ -428,3 +431,4 @@ zam team add-member <colleague-upn>
 | Date | State | Note |
 |------|-------|------|
 | 2026-09-04 | Proposed | Written after the architecture review and the owner's answers of the same day: ZAM-only server, cheapest tier, PostgreSQL 18, Entra-only, `az` as token source, one role per colleague with the owner as administrator, derived identity, settings scopes with a machine id, `native` provider retired, mobile and migration out of scope, company specifics kept out of the repository. |
+| 2026-09-18 | Proposed | Server created per the appendix on PostgreSQL 18 (Burstable B1ms, 32 GiB, Entra-only) in the team's nearest fleet region; the region provisioned without a quota request. The Entra administrator connected with an `az` token — the PostgreSQL 18 risk of Decision 1 is closed. Finding for Phase 6: the `pgaadauth_*` functions exist only in the `postgres` maintenance database, so `zam team add-member` must run its principal statements there, not in `zam_test`/`zam_prod`. |
