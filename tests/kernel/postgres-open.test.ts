@@ -16,7 +16,11 @@ import {
  * never provisioned from a learner's connection, and an unprovisioned or
  * stale library is a clear message rather than DDL.
  *
- *   npm run pg:up   →   POSTGRES_URL=... vitest run tests/kernel/postgres-open.test.ts
+ * The suite owns a login role of its own whose default `search_path` points
+ * at the suite's schema — never the shared `POSTGRES_URL` role, whose
+ * settings other suites running in parallel rely on.
+ *
+ *   npm run pg:up   →   npm run pg:test
  */
 const POSTGRES_URL = process.env.POSTGRES_URL;
 const describeWithPostgres = POSTGRES_URL ? describe : describe.skip;
@@ -38,32 +42,46 @@ describeWithPostgres(
     const url = POSTGRES_URL as string;
     const parsed = parseUrl(url);
     const schema = "zam_open_target";
+    const role = "zam_open_learner";
 
     async function withSchema<T>(fn: () => Promise<T>): Promise<T> {
       const admin = openPostgresDatabase({ connectionString: url });
       await admin.exec(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
       await admin.exec(`CREATE SCHEMA ${schema}`);
+      await admin.exec(`
+        DO $$
+        BEGIN
+          IF NOT EXISTS (SELECT FROM pg_roles WHERE rolname = '${role}') THEN
+            CREATE ROLE ${role} LOGIN PASSWORD 'pw' NOSUPERUSER NOBYPASSRLS;
+          END IF;
+        END
+        $$;
+        ALTER ROLE ${role} SET search_path = ${schema};
+        GRANT USAGE ON SCHEMA ${schema} TO ${role};
+        ALTER DEFAULT PRIVILEGES IN SCHEMA ${schema} GRANT SELECT ON TABLES TO ${role};
+      `);
       await admin.close();
       try {
         return await fn();
       } finally {
         const cleanup = openPostgresDatabase({ connectionString: url });
         await cleanup.exec(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
+        await cleanup.exec(
+          `DROP OWNED BY ${role}; DROP ROLE IF EXISTS ${role}`,
+        );
         await cleanup.close();
       }
     }
 
-    /** The target used by the tests — the search_path pins the test schema. */
+    /** The learner target: the suite's own role, whose search_path is the schema. */
     function target(overrides: Record<string, unknown> = {}) {
       return {
         host: parsed.host,
         port: parsed.port,
-        // `options=-c search_path=…` is not expressible through the credential
-        // block, so the schema is selected via the role's default instead.
         database: parsed.database,
-        username: parsed.username,
+        username: role,
         auth: "password" as const,
-        password: parsed.password,
+        password: "pw",
         ssl: false,
         ...overrides,
       };
@@ -74,44 +92,33 @@ describeWithPostgres(
         connectionString: `${url}?options=-c%20search_path%3D${schema}`,
       });
       await applySchemaAndMigrations(db);
-      await db.close();
-    }
-
-    async function setRoleSearchPath(path: string): Promise<void> {
-      const admin = openPostgresDatabase({ connectionString: url });
-      await admin.exec(
-        `ALTER ROLE "${parsed.username}" SET search_path = ${path}`,
+      await db.exec(
+        `GRANT SELECT ON ALL TABLES IN SCHEMA ${schema} TO ${role}`,
       );
-      await admin.close();
+      await db.close();
     }
 
     it("refuses an unprovisioned library instead of running DDL as a learner", async () => {
       await withSchema(async () => {
-        await setRoleSearchPath(schema);
-        try {
-          await expect(openDatabase({ postgres: target() })).rejects.toThrow(
-            /not provisioned yet[\s\S]*zam team provision/,
-          );
-          const probe = openPostgresDatabase({
-            connectionString: `${url}?options=-c%20search_path%3D${schema}`,
-          });
-          const tables = (await probe
-            .prepare(
-              "SELECT count(*) AS n FROM information_schema.tables WHERE table_schema = ?",
-            )
-            .get(schema)) as { n: number | string };
-          await probe.close();
-          expect(Number(tables.n)).toBe(0);
-        } finally {
-          await setRoleSearchPath("public");
-        }
+        await expect(openDatabase({ postgres: target() })).rejects.toThrow(
+          /not provisioned yet[\s\S]*zam team provision/,
+        );
+        const probe = openPostgresDatabase({
+          connectionString: `${url}?options=-c%20search_path%3D${schema}`,
+        });
+        const tables = (await probe
+          .prepare(
+            "SELECT count(*) AS n FROM information_schema.tables WHERE table_schema = ?",
+          )
+          .get(schema)) as { n: number | string };
+        await probe.close();
+        expect(Number(tables.n)).toBe(0);
       });
     });
 
     it("opens a provisioned library with a per-connection password supplier", async () => {
       await withSchema(async () => {
         await provisionInSchema();
-        await setRoleSearchPath(schema);
         resetPostgresPasswordSuppliers();
         // entra-cli without a registered supplier is a typed refusal…
         await expect(
@@ -121,7 +128,7 @@ describeWithPostgres(
         let supplied = 0;
         registerPostgresPasswordSupplier("entra-cli", async () => {
           supplied += 1;
-          return parsed.password;
+          return "pw";
         });
         try {
           const db = await openDatabase({
@@ -139,7 +146,6 @@ describeWithPostgres(
           expect(supplied).toBeGreaterThanOrEqual(1);
         } finally {
           resetPostgresPasswordSuppliers();
-          await setRoleSearchPath("public");
         }
       });
     });

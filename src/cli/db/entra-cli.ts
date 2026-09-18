@@ -10,6 +10,7 @@
  */
 
 import { execFile } from "node:child_process";
+import { homedir } from "node:os";
 import { registerPostgresPasswordSupplier } from "../../kernel/db/connection.js";
 
 /** Resource the token must be issued for — Azure Database for PostgreSQL. */
@@ -54,8 +55,15 @@ const defaultExec: ExecFn = (file, args) =>
       args,
       {
         encoding: "utf8",
-        // `az` is a .cmd shim on Windows, which only a shell can start.
+        // `az` is a .cmd shim on Windows, which only a shell can start. cmd.exe
+        // resolves a bare name in the current directory before PATH, and a
+        // host such as `zam mcp` runs inside an arbitrary workspace — so the
+        // lookup is pinned to the home directory and the current-directory
+        // rule switched off (NoDefaultCurrentDirectoryInExePath). The
+        // arguments are constants; no caller input ever reaches the shell.
         shell: process.platform === "win32",
+        cwd: homedir(),
+        env: { ...process.env, NoDefaultCurrentDirectoryInExePath: "1" },
         windowsHide: true,
         maxBuffer: 1024 * 1024,
       },
@@ -161,12 +169,18 @@ export async function entraCliSignedInUpn(
     "-o",
     "tsv",
   ]);
-  if (result.code !== 0 || result.spawnError) throw classifyFailure(result);
+  if (result.code !== 0 || result.spawnError) {
+    const failure = classifyFailure(result);
+    throw new EntraLoginRequiredError(
+      failure.failure,
+      `${failure.message.replace(/^ENTRA_LOGIN_REQUIRED: /, "")} (Or pass --username <upn> to skip the lookup.)`,
+    );
+  }
   const upn = result.stdout.trim();
   if (!upn) {
     throw new EntraLoginRequiredError(
       "no-token",
-      "The Azure CLI did not report a signed-in user. Run `az login` and try again.",
+      "The Azure CLI did not report a signed-in user. Run `az login` and try again, or pass --username <upn>.",
     );
   }
   return upn;

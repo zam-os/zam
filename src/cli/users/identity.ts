@@ -198,12 +198,22 @@ export async function ensureDefaultUser(
   return userId;
 }
 
+/** The message without its machine-readable `CODE: ` prefix, for people. */
+export function humanIdentityMessage(message: string): string {
+  return message.replace(/^(NOT_A_MEMBER|IDENTITY_MISMATCH): /, "");
+}
+
+/**
+ * Bridge callers (`json: true`) get a thrown error: the bridge's own `withDb`
+ * turns it into `{ "error": … }` and, in `bridge serve`, keeps the long-lived
+ * host alive — a `process.exit` here would take the Studio's whole session
+ * down with one bad `--user`. The plain CLI prints and exits as before.
+ */
 function fail(message: string, resolveOpts?: ResolveUserOptions): never {
   if (resolveOpts?.json) {
-    console.log(JSON.stringify({ error: message }, null, 2));
-  } else {
-    console.error(message);
+    throw new Error(message);
   }
+  console.error(humanIdentityMessage(message));
   process.exit(1);
 }
 

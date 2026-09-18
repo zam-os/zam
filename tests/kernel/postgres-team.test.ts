@@ -1,6 +1,10 @@
 import { describe, expect, it } from "vitest";
+import { RLS_PROTECTED_TABLES } from "../../src/cli/deploy/rls-policies.js";
 import {
+  ADMIN_TABLES,
   addTeamMember,
+  KNOWLEDGE_TABLES,
+  LIBRARY_SETTINGS_TABLES,
   listTeamMembers,
   type PrincipalDirectory,
   provisionTeamLibrary,
@@ -14,27 +18,55 @@ import {
 } from "../../src/kernel/db/connection.js";
 import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
 import { CURRENT_SCHEMA_VERSION } from "../../src/kernel/db/provision.js";
+import { SCHEMA } from "../../src/kernel/db/schema.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import { createToken, ensureCard } from "../../src/kernel/index.js";
 
 /**
  * `zam team` end to end on a real PostgreSQL (ADR 2026-09-04 Decisions 2, 7
  * and 8): provision → add-member → connect as that member → review state is
- * private under RLS → remove-member revokes the login. Plain password roles
- * stand in for Entra principals through the injected directory; the Azure
- * flavour differs only in how the login role comes to exist.
+ * private under RLS → the mapping table and the version marker are out of
+ * every member's reach → remove-member revokes the login. Plain password
+ * roles stand in for Entra principals through the injected directory; the
+ * Azure flavour differs only in how the login role comes to exist.
  *
- *   npm run pg:up   →   POSTGRES_URL=... vitest run tests/kernel/postgres-team.test.ts
+ *   npm run pg:up   →   npm run pg:test
  */
 const POSTGRES_URL = process.env.POSTGRES_URL;
 const describeWithPostgres = POSTGRES_URL ? describe : describe.skip;
+
+/** Every table the kernel creates, read from the schema itself. */
+function schemaTables(): string[] {
+  return [...SCHEMA.matchAll(/CREATE TABLE IF NOT EXISTS (\w+)/g)].map(
+    (m) => m[1],
+  );
+}
+
+describe("team library table classification", () => {
+  it("names every kernel table exactly once", () => {
+    // A table that is not classified has no writer and no reader beyond the
+    // owner — fail closed, but fail loudly here so the classification keeps
+    // up with the schema.
+    const classified = [
+      ...RLS_PROTECTED_TABLES,
+      ...LIBRARY_SETTINGS_TABLES,
+      ...KNOWLEDGE_TABLES,
+      ...ADMIN_TABLES,
+    ];
+    expect(new Set(classified).size).toBe(classified.length);
+    // learner_principals is deployment-scoped (rls-policies.ts), not kernel schema.
+    expect([...classified].sort()).toEqual(
+      [...schemaTables(), "learner_principals"].sort(),
+    );
+  });
+});
 
 describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
   const url = POSTGRES_URL as string;
   const admin = new URL(url);
   const schema = "zam_team";
   const database = admin.pathname.replace(/^\//, "");
-  const created: string[] = [];
+  const created = new Set<string>();
 
   /** Local stand-in for pgaadauth: a password role per "principal". */
   const localDirectory: PrincipalDirectory = {
@@ -51,7 +83,7 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           $$;
           ALTER ROLE "${upn}" SET search_path = ${schema};
         `);
-        created.push(upn);
+        created.add(upn);
       } finally {
         await db.close();
       }
@@ -85,9 +117,10 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
       await db.exec(
         `DROP SCHEMA IF EXISTS ${schema} CASCADE; CREATE SCHEMA ${schema};`,
       );
-      for (const upn of new Set(created.splice(0))) {
+      for (const upn of created) {
         await db.exec(`DROP OWNED BY "${upn}"; DROP ROLE IF EXISTS "${upn}";`);
       }
+      created.clear();
     } finally {
       await db.close();
     }
@@ -110,7 +143,8 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           .get(TEAM_CONTEXT_NAME)) as { name: string };
         expect(ctx.name).toBe(TEAM_CONTEXT_NAME);
 
-        // ── add two members; the second without curator rights ─────────
+        // ── add members; one without curator rights; one whose name the
+        //    SQLite→PostgreSQL type rewrite used to mangle ("real", "blob") ─
         const alice = await addTeamMember(control, localDirectory, {
           upn: "alice@example.org",
           database,
@@ -119,6 +153,10 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           upn: "bob@example.org",
           database,
           curator: false,
+        });
+        const isabel = await addTeamMember(control, localDirectory, {
+          upn: "isabel.real.blob@example.org",
+          database,
         });
         expect(alice.created).toBe(true);
         expect(alice.objectId).toBe("oid-alice@example.org");
@@ -129,6 +167,16 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         });
         expect(again.created).toBe(false);
         expect(again.userId).toBe(alice.userId);
+        // Group roles and blanks are never colleagues.
+        await expect(
+          addTeamMember(control, localDirectory, {
+            upn: "zam_member",
+            database,
+          }),
+        ).rejects.toThrow(/group role/);
+        await expect(
+          addTeamMember(control, localDirectory, { upn: "  ", database }),
+        ).rejects.toThrow(/principal name/);
 
         const token = await createToken(control, {
           slug: "team-token",
@@ -139,9 +187,11 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         // ── members connect as themselves ─────────────────────────────
         const asAlice = await connectAs("alice@example.org");
         const asBob = await connectAs("bob@example.org");
+        const asIsabel = await connectAs("isabel.real.blob@example.org");
         try {
           expect(await resolveLearnerId(asAlice)).toBe(alice.userId);
           expect(await resolveLearnerId(asBob)).toBe(bob.userId);
+          expect(await resolveLearnerId(asIsabel)).toBe(isabel.userId);
 
           // Alice writes her learning state; Bob cannot see it (RLS).
           await ensureCard(asAlice, token.id, alice.userId);
@@ -160,9 +210,53 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           await expect(
             createToken(asBob, { slug: "bob-publishes", concept: "Denied" }),
           ).rejects.toThrow(/permission denied/i);
+
+          // Nobody but the owner touches the mapping or the version marker —
+          // otherwise a curator could become any colleague.
+          await expect(
+            asAlice
+              .prepare(
+                "UPDATE learner_principals SET zam_user_id = ? WHERE db_role = ?",
+              )
+              .run(bob.userId, "alice@example.org"),
+          ).rejects.toThrow(/permission denied/i);
+          await expect(
+            asAlice.prepare("UPDATE zam_schema_version SET version = 0").run(),
+          ).rejects.toThrow(/permission denied/i);
+          // Members read only the two columns current_learner_id() needs.
+          await expect(
+            asAlice
+              .prepare("SELECT entra_object_id FROM learner_principals")
+              .all(),
+          ).rejects.toThrow(/permission denied/i);
+          expect(
+            await asAlice
+              .prepare(
+                "SELECT zam_user_id FROM learner_principals WHERE db_role = current_user",
+              )
+              .get(),
+          ).toEqual({ zam_user_id: alice.userId });
+          // …and still see their own learning state after the owner re-ran
+          // provisioning, which lifts FORCE RLS only for the duration of the
+          // migrations.
+          await provisionTeamLibrary(control, { schema });
+          expect(
+            await asAlice.prepare("SELECT id FROM cards").all(),
+          ).toHaveLength(1);
+          expect(
+            await asBob.prepare("SELECT id FROM cards").all(),
+          ).toHaveLength(0);
+          const forced = (await control
+            .prepare(
+              `SELECT count(*) AS n FROM pg_class c JOIN pg_namespace n ON n.oid = c.relnamespace
+                WHERE n.nspname = ? AND c.relname = ANY(?) AND c.relforcerowsecurity`,
+            )
+            .get(schema, [...RLS_PROTECTED_TABLES])) as { n: number | string };
+          expect(Number(forced.n)).toBe(RLS_PROTECTED_TABLES.length);
         } finally {
           await asAlice.close();
           await asBob.close();
+          await asIsabel.close();
         }
 
         // ── listing and revocation ─────────────────────────────────────
@@ -170,7 +264,11 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
         expect(members.map((m) => [m.upn, m.canLogin, m.curator])).toEqual([
           ["alice@example.org", true, true],
           ["bob@example.org", true, false],
+          ["isabel.real.blob@example.org", true, true],
         ]);
+        expect(members[0].createdAt).toMatch(
+          /^\d{4}-\d{2}-\d{2}T\d{2}:\d{2}:\d{2}\.\d{3}Z$/,
+        );
 
         const removed = await removeTeamMember(control, "bob@example.org");
         expect(removed.wasMapped).toBe(true);
@@ -188,6 +286,17 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           )
           .get("bob@example.org");
         expect(bobRow).toBeDefined();
+
+        // Revocation refuses what is not a colleague.
+        await expect(
+          removeTeamMember(control, "ghost@example.org"),
+        ).rejects.toThrow(/No role ghost@example.org exists/);
+        await expect(removeTeamMember(control, "zam_curator")).rejects.toThrow(
+          /group role/,
+        );
+        await expect(
+          removeTeamMember(control, decodeURIComponent(admin.username)),
+        ).rejects.toThrow(/connected as/);
       } finally {
         await control.close();
       }

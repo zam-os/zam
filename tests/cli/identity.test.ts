@@ -4,9 +4,11 @@ import {
   describeIdentity,
   ensureDefaultUser,
   forgetDerivedIdentity,
+  humanIdentityMessage,
   IdentityMismatchError,
   NotAMemberError,
   resolveLearnerId,
+  resolveUser,
 } from "../../src/cli/users/identity.js";
 import type { Database } from "../../src/kernel/index.js";
 import { openDatabase, setSetting } from "../../src/kernel/index.js";
@@ -102,6 +104,29 @@ describe("team library identity", () => {
     answer.learner = ALICE;
     forgetDerivedIdentity(db);
     expect(await resolveLearnerId(db)).toBe(ALICE);
+  });
+});
+
+describe("resolveUser for bridge callers", () => {
+  it("throws instead of exiting so a serving bridge host stays alive", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    await expect(
+      resolveUser({ user: "01JBOB000000000000000000" }, db, { json: true }),
+    ).rejects.toThrow(/IDENTITY_MISMATCH/);
+    const nobody = teamDb({ role: "newcomer@example.org", learner: null });
+    await expect(resolveUser({}, nobody, { json: true })).rejects.toThrow(
+      /NOT_A_MEMBER/,
+    );
+    expect(await resolveUser({}, db, { json: true })).toBe(ALICE);
+  });
+
+  it("strips the machine-readable prefix for people", () => {
+    expect(
+      humanIdentityMessage(new NotAMemberError("newcomer@example.org").message),
+    ).toMatch(/^Your account is not yet a member/);
+    expect(
+      humanIdentityMessage(new IdentityMismatchError("a", "b").message),
+    ).toMatch(/^The team library identifies you/);
   });
 });
 

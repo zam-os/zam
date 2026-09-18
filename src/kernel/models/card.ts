@@ -6,6 +6,7 @@
  */
 
 import { ulid } from "ulid";
+import { dialectOf } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -482,10 +483,17 @@ export async function getDueSummary(
 
   // The scalar subquery's `?` precedes the eligibility placeholders in the
   // SQL text, so its userId parameter comes first.
+  // SQLite's json_group_array has no PostgreSQL twin: json_agg over zero
+  // rows is NULL rather than '[]', and pg would parse a json-typed column
+  // into objects before `JSON.parse` sees it — hence COALESCE and ::text.
+  const domainsExpr =
+    dialectOf(db) === "postgres"
+      ? "COALESCE(json_agg(DISTINCT t.domain), '[]')::text"
+      : "json_group_array(DISTINCT t.domain)";
   const row = (await db
     .prepare(
       `SELECT
-         json_group_array(DISTINCT t.domain) AS domains,
+         ${domainsExpr} AS domains,
          COUNT(*) AS "dueCount",
          (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS "cardsInDeck"
        ${DUE_CARD_SOURCE}`,

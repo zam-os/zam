@@ -39,4 +39,40 @@ describe("PostgreSQL provider helpers", () => {
       "weight DOUBLE PRECISION, payload BYTEA",
     );
   });
+
+  it("leaves quoted identifiers, string literals and dollar bodies alone", () => {
+    // A colleague named real.blob is a role, not two column types.
+    expect(
+      translateSqlForPostgres(
+        `GRANT zam_member TO "isabel.real.blob@example.org";`,
+      ),
+    ).toBe(`GRANT zam_member TO "isabel.real.blob@example.org";`);
+    expect(
+      translateSqlForPostgres(
+        "INSERT INTO t (kind) VALUES ('blob'), ('a ''real'' one')",
+      ),
+    ).toBe("INSERT INTO t (kind) VALUES ('blob'), ('a ''real'' one')");
+    expect(
+      translateSqlForPostgres(
+        "DO $$ BEGIN PERFORM 'real BLOB'; END $$; ALTER TABLE x ADD c REAL",
+      ),
+    ).toBe(
+      "DO $$ BEGIN PERFORM 'real BLOB'; END $$; ALTER TABLE x ADD c DOUBLE PRECISION",
+    );
+    expect(
+      translateSqlForPostgres(
+        'CREATE TABLE "blob" (id INTEGER PRIMARY KEY AUTOINCREMENT, data BLOB)',
+      ),
+    ).toBe('CREATE TABLE "blob" (id SERIAL PRIMARY KEY, data BYTEA)');
+    // An apostrophe inside a comment must not open a string literal.
+    expect(
+      translateSqlForPostgres(
+        `-- the learner's blob
+CREATE TABLE t (payload BLOB, weight REAL); /* it's REAL */`,
+      ),
+    ).toBe(
+      `-- the learner's blob
+CREATE TABLE t (payload BYTEA, weight DOUBLE PRECISION); /* it's REAL */`,
+    );
+  });
 });

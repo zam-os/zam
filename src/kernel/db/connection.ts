@@ -180,11 +180,27 @@ function resolveDatabaseTarget(
     };
   }
 
+  // `provider: "local"` (or ZAM_DB_PROVIDER=local, the escape hatch the
+  // remote provider advertises) means "ignore every configured library".
+  const envProvider = isDatabaseProvider(process.env.ZAM_DB_PROVIDER)
+    ? process.env.ZAM_DB_PROVIDER
+    : undefined;
+  const requestedProvider = options.provider ?? envProvider;
+  const forcedLocal = requestedProvider === "local";
+
   const configuredPostgres =
-    wantsConfigured && options.provider !== "local"
-      ? getPostgresCredentials()
-      : null;
+    wantsConfigured && !forcedLocal ? getPostgresCredentials() : null;
   const configuredTurso = wantsConfigured ? getTursoCredentials() : null;
+
+  if (
+    wantsConfigured &&
+    requestedProvider === "postgres" &&
+    !configuredPostgres
+  ) {
+    throw new Error(
+      "The postgres provider is selected but no team library is configured. Run: zam connector setup postgres",
+    );
+  }
 
   // One machine is bound to one library (ADR 2026-09-04 Decision 6): two
   // configured targets is a broken setup, not a choice to make silently.
@@ -208,7 +224,12 @@ function resolveDatabaseTarget(
 
   // A vault-backed PostgreSQL password that has not resolved: fail loud, like
   // the Turso case below, instead of opening an empty local database.
-  if (wantsConfigured && !configuredPostgres && postgresVaultAccessPending()) {
+  if (
+    wantsConfigured &&
+    !forcedLocal &&
+    !configuredPostgres &&
+    postgresVaultAccessPending()
+  ) {
     throw new Error(
       "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock or log in to Bitwarden to continue.",
     );
@@ -570,6 +591,13 @@ async function openPostgresTarget(
     if (version < CURRENT_SCHEMA_VERSION) {
       throw new Error(
         `The team library at ${where} has schema version ${version}, this ZAM needs ${CURRENT_SCHEMA_VERSION}. ${provision}`,
+      );
+    }
+    if (version > CURRENT_SCHEMA_VERSION) {
+      // An older client on a newer library keeps working for everything it
+      // knows; say so once per open rather than refusing a whole team.
+      process.stderr.write(
+        `zam: the team library at ${where} has schema version ${version}, newer than this ZAM (${CURRENT_SCHEMA_VERSION}). Update ZAM when you can.\n`,
       );
     }
   } catch (err) {

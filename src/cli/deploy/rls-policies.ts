@@ -151,6 +151,16 @@ CREATE POLICY learner_session_syntheses_policy ON session_syntheses FOR ALL
     SELECT id FROM sessions WHERE user_id = current_learner_id()))
   WITH CHECK (session_id IN (
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
+
+-- assignments are visible to the assigner and the assignee (ADR 2026-07-04
+-- Decision 10); only the assigner may create or withdraw one.
+ALTER TABLE assignments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assignments FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_assignments_policy ON assignments;
+CREATE POLICY learner_assignments_policy ON assignments FOR ALL
+  USING (assigner_id = current_learner_id()
+         OR assignee_id = current_learner_id())
+  WITH CHECK (assigner_id = current_learner_id());
 `;
 
 /**
@@ -172,6 +182,7 @@ export const RLS_PROTECTED_TABLES = [
   "card_presentations",
   "review_attempts",
   "session_syntheses",
+  "assignments",
 ] as const;
 
 /**

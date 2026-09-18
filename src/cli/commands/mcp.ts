@@ -964,7 +964,7 @@ export function createMcpServer(
     },
     wrapHandler(async (params) => {
       return await handleSuggestFoundations(db, {
-        user: params.user,
+        user: (await resolveLearnerId(db, params.user)) ?? undefined,
         slug: params.slug,
         concept: params.concept,
         question: params.question,

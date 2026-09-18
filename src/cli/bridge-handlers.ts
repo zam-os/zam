@@ -100,15 +100,17 @@ import {
   fetchLatestVersion,
   GITHUB_REPO,
 } from "./update/latest-version.js";
+import { resolveLearnerId } from "./users/identity.js";
 import { ensureActiveWorkspace } from "./workspaces/active.js";
 
 async function resolveHandlerUser(
   db: Database,
   user?: string,
 ): Promise<string> {
-  if (user) return user;
-  const stored = await getSetting(db, "user.id");
-  if (stored) return stored;
+  // Team library: the connection decides and a disagreeing `user` is a
+  // rejection (ADR 2026-09-04 Decision 2); personal library: as before.
+  const userId = await resolveLearnerId(db, user);
+  if (userId) return userId;
   throw new Error(
     "No user specified. Set a default with: zam whoami --set <id>",
   );
