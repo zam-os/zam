@@ -8,14 +8,14 @@ resource before Phase 8.
 **Status:**
 
 - [x] Phase 0 — ADR proposed; company specifics removed from the repository
-- [ ] Phase 1 — Dialect foundation: ISO timestamps, `dialect`, Postgres in the model-test matrix
-- [ ] Phase 2 — `postgres` provider wired in; `native` and the embedded replica retired
-- [ ] Phase 3 — Derived identity and team mode
-- [ ] Phase 4 — Settings scopes: `user_settings`, machine id
-- [ ] Phase 5 — RLS completion, group roles, schema-derived coverage test
-- [ ] Phase 6 — `zam team` administration commands and the generic runbook
+- [x] Phase 1 — Dialect foundation: ISO timestamps, `dialect`, Postgres in the model-test matrix (2026-09-18; the matrix covers the stats and progress suites so far, the review-path suites follow as they are touched)
+- [x] Phase 2 — `postgres` provider wired in (2026-09-18). **Open:** retiring `native` and the embedded replica ships as its own PR — a packaging change that must not ride along with the pilot's client work
+- [x] Phase 3 — Derived identity and team mode (2026-09-18). **Open:** the Studio's user picker (`database-select-user`) and the Companion's selected-user setting are not yet refused in team mode; they cannot change the identity (the connection decides) but still show a picker
+- [ ] Phase 4 — Settings scopes: `user_settings`, machine id — **next**: on a shared database `user_config` still collides across colleagues (locale, `llm.*`, review method)
+- [ ] Phase 5 — RLS completion, group roles, schema-derived coverage test — the group roles `zam_member`/`zam_curator` and their grants landed with Phase 6; `assignments` and `user_settings` policies and the derived coverage test are open
+- [x] Phase 6 — `zam team` administration commands (2026-09-18: `provision`, `add-member`, `remove-member`, `members`); the generic runbook stays the ADR appendix
 - [ ] Phase 7 — Desktop "Connect to team library", disclosure, `zam doctor`
-- [ ] Phase 8 — Server creation, `zam_test` pilot with two or three colleagues, then `zam_prod`
+- [~] Phase 8 — Server created and the first database provisioned as a team library on 2026-09-18 (PostgreSQL 18, Entra-only, the administrator mapped as the first member, one review round trip verified over the Entra token path). The colleague pilot waits for Phase 7, or for colleagues comfortable with `zam connector setup postgres` in a terminal
 - [ ] Final check — every ADR decision mapped to a shipped phase (table at the end)
 
 ## Ground rules for every phase
