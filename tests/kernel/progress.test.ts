@@ -1,6 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
+import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   createToken,
@@ -8,10 +6,13 @@ import {
   ensureCard,
   formatActivityBucketLabel,
   getReviewActivity,
-  openDatabase,
   parseActivityBucket,
   STUDY_TIME_CAP_MS,
 } from "../../src/kernel/index.js";
+import {
+  describeWithProviders,
+  type ProvidedDatabase,
+} from "../helpers/provider-matrix.js";
 
 /**
  * ADR 2026-08-01: the activity series (cards reviewed per day/week/month and
@@ -27,18 +28,16 @@ import {
  * UTC, this project's machines are Europe/Berlin), so the labels hold without
  * pinning a zone — see the local-day test for the bucketing shift itself.
  */
-describe("getReviewActivity", () => {
+describeWithProviders("getReviewActivity", "zam_progress", (provider) => {
+  let provided: ProvidedDatabase;
   let db: Database;
-  let tempDir: string;
   let userId: string;
+  let tokenId: string;
+  let cardId: string;
 
   beforeEach(async () => {
-    tempDir = mkdtempSync(join(tmpdir(), "zam-progress-"));
-    db = await openDatabase({
-      dbPath: join(tempDir, "zam-test.db"),
-      initialize: true,
-      useConfiguredCloud: false,
-    });
+    provided = await provider.open();
+    db = provided.db;
     userId = "thomas";
     const token = await createToken(db, {
       slug: "progress-token",
@@ -46,12 +45,12 @@ describe("getReviewActivity", () => {
       domain: "stats",
       bloom_level: 1,
     });
-    await ensureCard(db, token.id, userId);
+    tokenId = token.id;
+    cardId = (await ensureCard(db, token.id, userId)).id;
   });
 
   afterEach(async () => {
-    await db.close();
-    rmSync(tempDir, { recursive: true, force: true });
+    await provided.cleanup();
   });
 
   /** Insert one immutable review-log event with a controlled timestamp. */
@@ -64,11 +63,9 @@ describe("getReviewActivity", () => {
         `INSERT INTO review_logs
            (id, card_id, token_id, user_id, rating, response_time_ms,
             reviewed_at, scheduled_at, session_id)
-         SELECT 'r' || substr(hex(randomblob(8)), 1, 16), id, token_id, ?,
-                3, ?, ?, '2000-01-01 00:00:00', NULL
-         FROM cards WHERE user_id = ? LIMIT 1`,
+         VALUES (?, ?, ?, ?, 3, ?, ?, '2000-01-01 00:00:00', NULL)`,
       )
-      .run(userId, responseTimeMs, reviewedAt, userId);
+      .run(ulid(), cardId, tokenId, userId, responseTimeMs, reviewedAt);
   }
 
   it("groups ratings into local-day buckets with study time", async () => {
@@ -213,12 +210,13 @@ describe("getReviewActivity", () => {
   });
 
   it("buckets a review on the learner's local day, not the UTC day", async () => {
-    // The zone cannot be pinned from inside the test: SQLite's 'localtime'
-    // resolves against the C runtime's timezone, which Windows fixes at
-    // process start and does not re-read when process.env.TZ is assigned —
-    // an earlier version of this test set TZ here and passed only on machines
-    // that already ran in a non-UTC zone. So the case is built from the
-    // runtime's own offset instead, and holds in UTC CI and in Europe/Berlin.
+    // The zone cannot be pinned from inside the test: the bucket now forms
+    // in JavaScript's local calendar (as SQLite's 'localtime' did before),
+    // and Node fixes its zone at process start rather than re-reading
+    // process.env.TZ on assignment — an earlier version of this test set TZ
+    // here and passed only on machines that already ran in a non-UTC zone.
+    // So the case is built from the runtime's own offset instead, and holds
+    // in UTC CI and in Europe/Berlin.
     const offsetMinutes = -new Date(
       Date.UTC(2026, 6, 15, 12),
     ).getTimezoneOffset();
@@ -277,8 +275,8 @@ describe("getReviewActivity", () => {
       .prepare(
         "SELECT MAX(response_time_ms) AS ms FROM review_logs WHERE user_id = ?",
       )
-      .get(userId)) as { ms: number };
-    expect(raw.ms).toBe(abandoned);
+      .get(userId)) as { ms: number | string };
+    expect(Number(raw.ms)).toBe(abandoned);
   });
 
   it("returns an empty series for a user without reviews", async () => {

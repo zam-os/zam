@@ -5,6 +5,7 @@
  * Ported from PoC's `stats` command with additions for FSRS and symbiosis modes.
  */
 
+import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
 export interface UserStats {
@@ -59,19 +60,25 @@ export async function getUserStats(
   const row = (await q(
     db,
     `SELECT
-       (SELECT COUNT(*) FROM tokens) AS totalTokens,
-       (SELECT COUNT(*) FROM sessions WHERE user_id = ?) AS totalSessions,
+       (SELECT COUNT(*) FROM tokens) AS "totalTokens",
+       (SELECT COUNT(*) FROM sessions WHERE user_id = ?) AS "totalSessions",
        (SELECT started_at FROM sessions WHERE user_id = ?
-         ORDER BY started_at DESC LIMIT 1) AS lastSession,
-       COUNT(*) AS cardsInDeck,
-       SUM(CASE WHEN blocked = 0 AND due_at <= datetime('now')
-                THEN 1 ELSE 0 END) AS dueToday,
+         ORDER BY started_at DESC LIMIT 1) AS "lastSession",
+       COUNT(*) AS "cardsInDeck",
+       SUM(CASE WHEN blocked = 0 AND due_at <= ?
+                THEN 1 ELSE 0 END) AS "dueToday",
        SUM(CASE WHEN blocked = 1 THEN 1 ELSE 0 END) AS blocked,
        SUM(CASE WHEN reps >= 3 AND stability >= 21 THEN 1 ELSE 0 END) AS mature,
-       AVG(CASE WHEN reps > 0 THEN stability END) AS avgStability
+       AVG(CASE WHEN reps > 0 THEN stability END) AS "avgStability"
      FROM cards WHERE user_id = ?`,
     userId,
     userId,
+    // The instant comes from JavaScript, as every kernel comparison does
+    // (ADR 2026-09-04 Decision 5): SQLite's `datetime('now')` yields a
+    // space-separated UTC string that sorts *before* the ISO `T` form the
+    // kernel writes into `due_at`, so a card due earlier today compared
+    // lexically as "not yet due" — the `dueToday` miscount.
+    nowIso(),
     userId,
   )) as {
     totalTokens: number;

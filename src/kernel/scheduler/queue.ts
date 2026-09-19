@@ -6,6 +6,7 @@
  */
 
 import type { Database } from "../db/types.js";
+import { bindStandingAssignments } from "../models/assignment.js";
 import { getDisplayTitle } from "../models/token.js";
 import { interleave } from "./interleaver.js";
 import {
@@ -145,6 +146,12 @@ export async function buildReviewQueue(
   const nowISO = now.toISOString();
   const timeZone = await resolvePresentationTimeZone(db, options.timeZone);
   const learningDay = localLearningDay(now, timeZone);
+
+  // ── Step 0: Cards for standing assignments enter the learner's deck ────
+  // An assignment constrains the queue (ADR 2026-07-04 Decision 10), and the
+  // learner's own client is the only party allowed to write their cards
+  // (ADR 2026-09-04, RLS). A no-op once every standing assignment is bound.
+  await bindStandingAssignments(db, options.userId);
 
   // ── Step 1: Fetch due cards (review, relearning, learning — not new) ───
   let dueSql = `SELECT

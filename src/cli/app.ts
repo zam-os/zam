@@ -25,16 +25,30 @@ import { setupCommand } from "./commands/setup.js";
 import { skillCommand } from "./commands/skill.js";
 import { snapshotCommand } from "./commands/snapshot.js";
 import { statsCommand } from "./commands/stats.js";
+import { teamCommand } from "./commands/team.js";
 import { tokenCommand } from "./commands/token.js";
 import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
+import { registerEntraCliPasswordSupplier } from "./db/entra-cli.js";
+import { registerCliSettingsScope } from "./users/identity.js";
 
 // Resolve vault references into the process-lifetime snapshot before any
 // command (or the persistent desktop bridge) reads credentials synchronously.
 // Literals need no backend; failures degrade to null accessors (ADR 2026-07-30b).
 await resolveCredentials();
+
+// The team library authenticates with Entra tokens from the Azure CLI; the
+// kernel only knows a password-supplier function, so the CLI layer plugs the
+// `az` call in once per process (ADR 2026-09-04 Decision 3). Every host that
+// opens the database — commands, `bridge serve`, `zam mcp` — goes through here.
+registerEntraCliPasswordSupplier();
+
+// Settings have scopes (Decision 4); the kernel stores them, the CLI says
+// whose they are: the derived learner or the configured `user.id`, plus this
+// install's id. Without this, every setting would stay library-wide.
+registerCliSettingsScope();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
@@ -78,6 +92,7 @@ program.addCommand(monitorCommand);
 program.addCommand(observerCommand);
 program.addCommand(settingsCommand);
 program.addCommand(whoamiCommand);
+program.addCommand(teamCommand);
 program.addCommand(connectorCommand);
 program.addCommand(credentialsCommand);
 program.addCommand(providerCommand);

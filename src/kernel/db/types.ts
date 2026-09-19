@@ -18,7 +18,17 @@ export interface Statement {
   all(...params: unknown[]): Promise<unknown[]>;
 }
 
+/**
+ * The SQL dialect a provider speaks. The kernel writes provider-neutral SQL
+ * and ISO-8601 UTC timestamps from JavaScript; the few places where SQLite and
+ * PostgreSQL genuinely differ (date bucketing, `LIKE` case rules) branch on
+ * this instead of a regex over statement text (ADR 2026-09-04 Decision 5).
+ */
+export type SqlDialect = "sqlite" | "postgres";
+
 export interface Database {
+  /** Dialect of the underlying engine; absent means `sqlite`. */
+  readonly dialect?: SqlDialect;
   prepare(sql: string): Statement;
   /** Execute one or more SQL statements without reading results. */
   exec(sql: string): Promise<void>;

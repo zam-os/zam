@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 33;
+export const CURRENT_SCHEMA_VERSION = 34;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -37,6 +37,16 @@ function isMissingSchemaVersionTable(error: unknown): boolean {
     message.toLowerCase().includes(SCHEMA_VERSION_TABLE) &&
     (/no such table/i.test(message) || /does not exist/i.test(message))
   );
+}
+
+/**
+ * The stored schema version, or `null` when the database was never
+ * provisioned. Public for providers whose connections must not run DDL (a
+ * team-library member, ADR 2026-09-04 Decision 8): they compare it against
+ * `CURRENT_SCHEMA_VERSION` and refuse with a message instead of migrating.
+ */
+export async function getSchemaVersion(db: Database): Promise<number | null> {
+  return readSchemaVersion(db);
 }
 
 /** Read the marker without turning transport/authentication failures into DDL. */
@@ -886,6 +896,21 @@ export async function runMigrations(db: Database): Promise<void> {
     CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_card_day
       ON card_presentations(user_id, learning_day, card_id)
       WHERE abandoned_at IS NULL
+  `);
+
+  // M034: settings gain scopes (ADR 2026-09-04 Decision 4). Person and
+  // machine rows live in `user_settings`, keyed by learner and install id;
+  // `user_config` keeps the library-wide keys. Nothing is copied: a personal
+  // key still in `user_config` is read from there until it is next written.
+  await db.exec(`
+    CREATE TABLE IF NOT EXISTS user_settings (
+      user_id     TEXT NOT NULL,
+      machine_id  TEXT NOT NULL DEFAULT '',
+      key         TEXT NOT NULL,
+      value       TEXT NOT NULL,
+      updated_at  TEXT NOT NULL,
+      PRIMARY KEY (user_id, machine_id, key)
+    )
   `);
 }
 

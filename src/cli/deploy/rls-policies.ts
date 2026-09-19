@@ -151,6 +151,39 @@ CREATE POLICY learner_session_syntheses_policy ON session_syntheses FOR ALL
     SELECT id FROM sessions WHERE user_id = current_learner_id()))
   WITH CHECK (session_id IN (
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
+
+-- user_settings is a person's and their machines' configuration (ADR
+-- 2026-09-04 Decision 4) — learning-adjacent personal data, same policy as
+-- cards. user_config stays library-wide and is a curator's to write.
+ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_settings FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_user_settings_policy ON user_settings;
+CREATE POLICY learner_user_settings_policy ON user_settings FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
+-- assignments are visible to the assigner and the assignee (ADR 2026-07-04
+-- Decision 10); only the assigner may create, change or withdraw one. The
+-- read and write halves are separate policies on purpose: one FOR ALL policy
+-- with the wider USING would let the assignee DELETE the row (DELETE checks
+-- USING only) or UPDATE assigner_id to themselves and then withdraw it.
+ALTER TABLE assignments ENABLE ROW LEVEL SECURITY;
+ALTER TABLE assignments FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_assignments_policy ON assignments;
+DROP POLICY IF EXISTS assignments_read_policy ON assignments;
+DROP POLICY IF EXISTS assignments_insert_policy ON assignments;
+DROP POLICY IF EXISTS assignments_update_policy ON assignments;
+DROP POLICY IF EXISTS assignments_delete_policy ON assignments;
+CREATE POLICY assignments_read_policy ON assignments FOR SELECT
+  USING (assigner_id = current_learner_id()
+         OR assignee_id = current_learner_id());
+CREATE POLICY assignments_insert_policy ON assignments FOR INSERT
+  WITH CHECK (assigner_id = current_learner_id());
+CREATE POLICY assignments_update_policy ON assignments FOR UPDATE
+  USING (assigner_id = current_learner_id())
+  WITH CHECK (assigner_id = current_learner_id());
+CREATE POLICY assignments_delete_policy ON assignments FOR DELETE
+  USING (assigner_id = current_learner_id());
 `;
 
 /**
@@ -172,17 +205,23 @@ export const RLS_PROTECTED_TABLES = [
   "card_presentations",
   "review_attempts",
   "session_syntheses",
+  "assignments",
+  "user_settings",
 ] as const;
 
 /**
  * Grants a learner role needs. Read on the mapping table so
  * `current_learner_id()` resolves; RLS then decides which rows they see.
  */
-export function grantsForLearnerRoleSql(role: string): string {
+export function grantsForLearnerRoleSql(
+  role: string,
+  schema = "public",
+): string {
   return `
-GRANT USAGE ON SCHEMA public TO ${role};
+GRANT USAGE ON SCHEMA ${schema} TO ${role};
 GRANT SELECT ON learner_principals TO ${role};
-GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA public TO ${role};
+GRANT SELECT, INSERT, UPDATE, DELETE ON ALL TABLES IN SCHEMA ${schema} TO ${role};
+GRANT USAGE, SELECT ON ALL SEQUENCES IN SCHEMA ${schema} TO ${role};
 GRANT EXECUTE ON FUNCTION current_learner_id() TO ${role};
 `;
 }

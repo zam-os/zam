@@ -4,13 +4,15 @@
  * Activity series over the immutable review log: how many cards a user
  * reviewed per day/week/month and how much study time those reviews took.
  *
- * Aggregation happens in SQL over `idx_review_logs_user (user_id,
+ * The events come straight from `idx_review_logs_user (user_id,
  * reviewed_at)` — no aggregate table, no write path. Stored timestamps stay
- * UTC; buckets are formed in the learner's local time via SQLite's
- * 'localtime' modifier, and the `window` bound is cut on the same local
- * calendar so "last N buckets" means exactly N local periods.
+ * UTC; buckets are formed in the learner's local time in JavaScript (the
+ * same calendar SQLite's 'localtime' modifier used, on every database
+ * provider), and the `window` bound is cut on that local calendar so "last N
+ * buckets" means exactly N local periods.
  */
 
+import { parseStoredTimestampUtc } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
 export type ActivityPeriod = "day" | "week" | "month";
@@ -82,50 +84,94 @@ export interface GetReviewActivityOptions {
   since?: string;
 }
 
-const BUCKET_EXPRESSIONS: Record<ActivityPeriod, string> = {
-  day: "date(reviewed_at, 'localtime')",
-  // %G-W%V is the ISO 8601 week-year/week pair: weeks start on Monday and
-  // week 1 is the one containing the year's first Thursday. Early-January
-  // days that belong to the previous ISO year label correctly (2027-01-01
-  // → "2026-W53", 2025-12-29 → "2026-W01").
-  week: "strftime('%G-W%V', reviewed_at, 'localtime')",
-  month: "strftime('%Y-%m', reviewed_at, 'localtime')",
-};
+const pad2 = (n: number): string => String(n).padStart(2, "0");
 
-/** First day of the current local period (day: today; week: Monday; month: 1st). */
-function currentPeriodStart(period: ActivityPeriod): string {
+/** The local calendar day (process time zone) an instant falls on, at midnight. */
+function localDayOf(ms: number): Date {
+  const d = new Date(ms);
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+function dayKey(local: Date): string {
+  return `${local.getFullYear()}-${pad2(local.getMonth() + 1)}-${pad2(local.getDate())}`;
+}
+
+function monthKey(local: Date): string {
+  return `${local.getFullYear()}-${pad2(local.getMonth() + 1)}`;
+}
+
+/**
+ * ISO 8601 week-year/week pair ("YYYY-Www"): weeks start on Monday and week 1
+ * is the one containing the year's first Thursday, so early-January days that
+ * belong to the previous ISO year label correctly (2027-01-01 → "2026-W53",
+ * 2025-12-29 → "2026-W01"). Same output SQLite's `strftime('%G-W%V')` gave.
+ */
+function weekKey(local: Date): string {
+  const thursday = new Date(
+    local.getFullYear(),
+    local.getMonth(),
+    local.getDate(),
+  );
+  thursday.setDate(thursday.getDate() - ((thursday.getDay() + 6) % 7) + 3);
+  const isoYear = thursday.getFullYear();
+  const jan4 = new Date(isoYear, 0, 4);
+  const week1Thursday = new Date(isoYear, 0, 4 - ((jan4.getDay() + 6) % 7) + 3);
+  const week =
+    1 +
+    Math.round(
+      (thursday.getTime() - week1Thursday.getTime()) / (7 * 86_400_000),
+    );
+  return `${isoYear}-W${pad2(week)}`;
+}
+
+function bucketKey(period: ActivityPeriod, local: Date): string {
   switch (period) {
     case "day":
-      return "date('now', 'localtime')";
+      return dayKey(local);
     case "week":
-      // The Monday of the current week: back 6 days, then forward to the next
-      // Monday ('weekday 1'). SQLite has no 'start of week' support and no
-      // 'N weeks' modifier, so week spans are expressed in days below.
-      return "date('now', 'localtime', '-6 days', 'weekday 1')";
+      return weekKey(local);
     case "month":
-      return "date('now', 'localtime', 'start of month')";
+      return monthKey(local);
   }
 }
 
 /**
- * SQL fragment bounding the series to the `window` most recent local
- * periods: rows are cut on `date(reviewed_at, 'localtime')` so the bound
- * and the buckets never disagree about which local day a row belongs to.
- * SQLite modifiers know no 'weeks' unit, so week windows shift by days.
+ * First local day of the period `shift` periods before the current one
+ * (day: today; week: Monday; month: the 1st), so a window of N periods starts
+ * at `periodStartShifted(period, N - 1)`.
  */
-function windowCondition(period: ActivityPeriod, window: number): string {
-  const shift = window - 1;
-  const modifier =
-    period === "day"
-      ? `-${shift} days`
-      : period === "week"
-        ? `-${shift * 7} days`
-        : `-${shift} months`;
-  return `${currentPeriodStart(period)} , '${modifier}'`;
+function periodStartShifted(
+  period: ActivityPeriod,
+  shift: number,
+  now: Date,
+): Date {
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  switch (period) {
+    case "day":
+      return new Date(
+        today.getFullYear(),
+        today.getMonth(),
+        today.getDate() - shift,
+      );
+    case "week": {
+      const monday = new Date(today);
+      monday.setDate(today.getDate() - ((today.getDay() + 6) % 7) - 7 * shift);
+      return monday;
+    }
+    case "month":
+      return new Date(today.getFullYear(), today.getMonth() - shift, 1);
+  }
 }
 
 /**
  * Get the review activity series for a user, bucketed per day/week/month.
+ *
+ * The database returns the raw events (`reviewed_at`, `response_time_ms`);
+ * bucketing and the window cut happen here, in the learner's local calendar,
+ * because SQLite's `'localtime'` modifiers have no PostgreSQL counterpart and
+ * a series of a few thousand rows is cheap to fold (ADR 2026-09-04
+ * Decision 5). `reviewed_at` mixes ISO strings and zone-less SQLite defaults;
+ * both are read as UTC, exactly as SQLite did.
  *
  * Buckets with no reviews are omitted; a chart can fill gaps itself. Study
  * time only exists from the release that started logging response times on
@@ -139,47 +185,66 @@ export async function getReviewActivity(
 ): Promise<ReviewActivity> {
   const period = options.period ?? "day";
   const window = options.window ?? DEFAULT_ACTIVITY_WINDOWS[period];
+  const now = new Date();
 
   const conditions = ["user_id = ?"];
   const params: unknown[] = [userId];
   if (options.since) {
-    conditions.push("date(reviewed_at) >= ?");
+    // The first ten characters are the UTC calendar date in every stored
+    // shape, which is exactly what `date(reviewed_at)` compared before.
+    conditions.push("substr(reviewed_at, 1, 10) >= ?");
     params.push(options.since);
   }
+
+  let localCutoff: Date | null = null;
   if (window > 0) {
-    conditions.push(
-      `date(reviewed_at, 'localtime') >= date(${windowCondition(period, window)})`,
-    );
+    localCutoff = periodStartShifted(period, window - 1, now);
+    // Coarse pre-filter so the database does not ship the whole log. Two days
+    // of slack cover any UTC offset; the exact local-day cut follows below.
+    // A bare "YYYY-MM-DD" sorts before every stored value of that day.
+    conditions.push("reviewed_at >= ?");
+    params.push(dayKey(new Date(localCutoff.getTime() - 2 * 86_400_000)));
   }
 
-  // MIN/MAX are SQLite's scalar two-argument forms here, not the aggregates:
-  // they clamp each row into [0, cap] before SUM adds it up.
-  const sql = `
-    SELECT ${BUCKET_EXPRESSIONS[period]} AS bucket,
-           COUNT(*) AS reviewed,
-           COALESCE(
-             SUM(MIN(MAX(response_time_ms, 0), ${STUDY_TIME_CAP_MS})),
-             0
-           ) AS study_time_ms
-    FROM review_logs
-    WHERE ${conditions.join(" AND ")}
-    GROUP BY bucket
-    ORDER BY bucket ASC`;
-
-  const rows = (await db.prepare(sql).all(...params)) as Array<{
-    bucket: string;
-    reviewed: number;
-    study_time_ms: number;
+  const rows = (await db
+    .prepare(
+      `SELECT reviewed_at, response_time_ms
+         FROM review_logs
+        WHERE ${conditions.join(" AND ")}`,
+    )
+    .all(...params)) as Array<{
+    reviewed_at: string;
+    response_time_ms: number | string | null;
   }>;
+
+  const buckets = new Map<string, { reviewed: number; studyTimeMs: number }>();
+  for (const row of rows) {
+    const ms = parseStoredTimestampUtc(String(row.reviewed_at));
+    if (Number.isNaN(ms)) continue;
+    const local = localDayOf(ms);
+    if (localCutoff && local.getTime() < localCutoff.getTime()) continue;
+    const key = bucketKey(period, local);
+    const entry = buckets.get(key) ?? { reviewed: 0, studyTimeMs: 0 };
+    entry.reviewed += 1;
+    const measured =
+      row.response_time_ms == null ? 0 : Number(row.response_time_ms);
+    entry.studyTimeMs += Math.min(
+      Math.max(Number.isFinite(measured) ? measured : 0, 0),
+      STUDY_TIME_CAP_MS,
+    );
+    buckets.set(key, entry);
+  }
 
   return {
     period,
     window,
-    buckets: rows.map((row) => ({
-      bucket: row.bucket,
-      reviewedCards: row.reviewed,
-      studyTimeMs: row.study_time_ms,
-    })),
+    buckets: [...buckets.entries()]
+      .sort(([a], [b]) => (a < b ? -1 : a > b ? 1 : 0))
+      .map(([bucket, entry]) => ({
+        bucket,
+        reviewedCards: entry.reviewed,
+        studyTimeMs: entry.studyTimeMs,
+      })),
   };
 }
 

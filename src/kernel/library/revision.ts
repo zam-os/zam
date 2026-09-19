@@ -148,7 +148,8 @@ export async function publishTokenRevisionInTransaction(
   setClauses.push("published_at = ?");
   params.push(nowISO);
   setClauses.push("editorial_state = 'published'");
-  setClauses.push("updated_at = datetime('now')");
+  setClauses.push("updated_at = ?");
+  params.push(nowISO);
 
   await db
     .prepare(`UPDATE tokens SET ${setClauses.join(", ")} WHERE id = ?`)

@@ -55,6 +55,9 @@ export const SNAPSHOT_TABLES = [
   "review_attempts",
   "session_syntheses",
   "user_config",
+  // A person's and their installs' settings travel with the library; a row
+  // for another machine's id is simply never resolved on this one.
+  "user_settings",
   "agent_skills",
   "sources",
   "token_sources",

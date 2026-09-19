@@ -118,33 +118,44 @@ export function createPersistentDatabaseHost(
     return closePromise;
   };
 
+  let openedDialect: Database["dialect"];
+  const rememberDialect = (opened: Database): Database => {
+    openedDialect = opened.dialect;
+    return opened;
+  };
+
   const database: Database = {
+    // Known only once the lazy open has happened; callers that branch on the
+    // dialect always query first, and `dialectOf` treats undefined as SQLite.
+    get dialect() {
+      return openedDialect;
+    },
     prepare(sql) {
       return {
         async run(...params: unknown[]) {
-          const opened = await getDatabase();
+          const opened = rememberDialect(await getDatabase());
           return opened.prepare(sql).run(...params);
         },
         async get(...params: unknown[]) {
-          const opened = await getDatabase();
+          const opened = rememberDialect(await getDatabase());
           return opened.prepare(sql).get(...params);
         },
         async all(...params: unknown[]) {
-          const opened = await getDatabase();
+          const opened = rememberDialect(await getDatabase());
           return opened.prepare(sql).all(...params);
         },
       };
     },
     async exec(sql) {
-      const opened = await getDatabase();
+      const opened = rememberDialect(await getDatabase());
       return opened.exec(sql);
     },
     async pragma(source) {
-      const opened = await getDatabase();
+      const opened = rememberDialect(await getDatabase());
       return opened.pragma(source);
     },
     async transaction<T>(fn: (transactionDatabase: Database) => Promise<T>) {
-      const opened = await getDatabase();
+      const opened = rememberDialect(await getDatabase());
       return opened.transaction(fn);
     },
     async sync() {

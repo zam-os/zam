@@ -64,6 +64,8 @@ function makeDatabase(run: RunPipeline, transport: HranaTransport): Database {
   let txTail: Promise<unknown> = Promise.resolve();
 
   const db: Database = {
+    // Turso/sqld is SQLite over the wire; the dialect is the same.
+    dialect: "sqlite",
     prepare(sql: string) {
       return makeStatement(sql, run);
     },

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-15T05:33:07.000Z
+timestamp: 2026-09-19T12:05:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -39,9 +39,11 @@ and closes it when that command finishes. The Desktop instead keeps
 first database-backed request, injects the same handle into every later
 Commander action, and closes it after stdin ends and the final queued request
 finishes. Failed open attempts are forgotten so a later request can retry.
-The exceptional `server-db-connect` setup command retires the old handle after
-it changes the configured target, ensuring the next status/dashboard request
-opens the newly selected library.
+The commands that change the configured library — `server-db-connect`,
+`team-db-connect`, `library-restore`, `team-db-disconnect` — retire the old
+handle after they succeed, ensuring the next status/dashboard request opens
+the newly selected library (`retiresPersistentDatabaseHost`; a source-scan
+test keeps that list honest).
 
 The injection is scoped to one asynchronous command execution. It is not a
 global connection cache, and concurrent in-process callers cannot borrow one
@@ -72,7 +74,10 @@ explicit `cosmetic` or `material` classification). The destructive pair
 `personal-card-remove` / `personal-card-delete` uses a preview→confirm
 handshake: without `--confirm` it returns an impact preview (affected cards,
 review logs, session steps, agent skills); with `--confirm` it executes.
-Assignment create, withdraw, and list commands use the same JSON-only surface.
+Assignment create, withdraw, and list commands use the same JSON-only surface;
+`create-assignment` writes the assignment row only — the assignee's card is
+created and bound by the assignee's own next queue build (see
+[token-card-model.md](token-card-model.md)).
 
 Local text-card files use an explicit two-command handshake:
 `personal-card-import-file-preview --path <file>` parses an APKG, CSV, or TSV
@@ -105,6 +110,47 @@ series. Studio and the Recall card measure active time with a one-minute idle
 pause and a two-minute cap per follow-up (ADR 2026-09-15). Ratings logged
 before response-time measurement existed count as worked cards and contribute
 no time.
+
+# Library switching
+
+A machine is bound to one library — the local SQLite file, a personal
+Turso/sqld server database, or the team library on PostgreSQL (ADR
+2026-09-04). `database-status` reports the active `target` (`kind`:
+`local`, `turso-*`, `postgres`), the learner id, on the team library the
+database `role` the connection runs as, `configured` (which library kind
+`credentials.json` binds the machine to, also while a vault-backed token is
+locked), and `previous`: the connection a switch kept (`kind`, `location`,
+`replacedAt`), never its token. An open failure is not an exit: a team
+library that is not provisioned yet answers `success: true, connected: true,
+provisioned: false`, any other failure `success: false` with `error` — both
+still carry `target`, `configured` and `previous`, so a surface keeps showing
+which library the machine is bound to and the way out of it.
+
+Switching keeps the replaced connection so switching back needs no new
+token, and a switch that does not verify is undone — the machine is left as
+it was:
+
+- `server-db-connect --url --token [--mode] [--replace]` attaches a Turso
+  database; `--replace` keeps a configured team library as the previous one,
+  without it the command refuses with `LIBRARY_CONFIGURED`.
+- `team-db-connect --host --database [--port] [--username] [--auth entra-cli|password]
+  [--password] [--replace]` attaches the team library. With Entra the
+  username comes from the Azure CLI when omitted; the result carries
+  `connected`, `provisioned` (false when the server answered but
+  `zam team provision` has not run), `member`, `userId`, `role`, `previous`.
+  Not being a member is a state, not an error.
+- `entra-login` runs `az login --allow-no-subscriptions` for the learner (the
+  browser opens, the command waits) and returns the signed-in `upn` in lower
+  case — the Studio's "Sign in with Microsoft".
+- `library-restore` makes the previous library current and keeps the one
+  being left as the new previous; a verification failure is reported as
+  `verifyError` but does not undo the restore.
+- `team-db-disconnect` — the Studio's "Learn locally instead" — leaves the
+  team library for the previous one when kept, else for the local file, and
+  keeps nothing.
+
+The same paths on the CLI are `zam connector setup … --replace`,
+`zam connector restore` and `zam connector clear previous`.
 
 # Per-learner learning interaction
 
@@ -189,9 +235,10 @@ bridge's JSON helpers.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
+- [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

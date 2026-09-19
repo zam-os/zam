@@ -7,7 +7,9 @@ import { Command } from "commander";
 import type { Database } from "../../kernel/db/types.js";
 import {
   assignTokenToContext,
+  describePostgresTarget,
   getEmbeddingCoverage,
+  getPostgresCredentials,
   getSetting,
   getShortSlug,
   type KnowledgeContext,
@@ -22,6 +24,7 @@ import {
 } from "../../kernel/models/token.js";
 import { listEmbeddedTokens } from "../../kernel/models/token-embedding.js";
 import { cosineSimilarity } from "../../kernel/search/hybrid.js";
+import { entraCliSignedInUpn, isEntraLoginRequired } from "../db/entra-cli.js";
 import {
   generateTitleViaLLM,
   getLlmConfig,
@@ -32,6 +35,7 @@ import {
   ensureTokenEmbeddings,
   resolveDedupThreshold,
 } from "../llm/embedder.js";
+import { describeIdentity } from "../users/identity.js";
 import { withDb } from "./shared/db.js";
 
 export interface DoctorOptions {
@@ -974,6 +978,52 @@ export const doctorTasks: DoctorTask[] = [
       );
     },
   },
+  {
+    name: "team-library",
+    description:
+      "Check the team library connection: Azure CLI sign-in, account, membership (read-only).",
+    run: async (db) => {
+      const target = getPostgresCredentials();
+      if (!target) {
+        console.log("No team library configured on this machine — skipped.");
+        return;
+      }
+      console.log(`Team library: ${describePostgresTarget(target)}`);
+      console.log(`Connecting as: ${target.username} (auth ${target.auth})`);
+      if (target.auth === "entra-cli") {
+        try {
+          const signedIn = await entraCliSignedInUpn();
+          if (signedIn.toLowerCase() === target.username.toLowerCase()) {
+            console.log(`Azure CLI: signed in as ${signedIn} — matches.`);
+          } else {
+            console.log(
+              `WARN Azure CLI is signed in as ${signedIn}, but the library is configured for ${target.username}. ` +
+                "Sign in with the right account (az login) or run: zam connector setup postgres --username <upn>",
+            );
+          }
+        } catch (err) {
+          console.log(
+            `WARN Azure CLI: ${
+              isEntraLoginRequired(err)
+                ? (err as Error).message.replace(/^ENTRA_LOGIN_REQUIRED: /, "")
+                : (err as Error).message
+            }`,
+          );
+        }
+      }
+      const identity = await describeIdentity(db);
+      if (identity.userId) {
+        console.log(
+          `Membership: learner ${identity.userId} (database role ${identity.role ?? target.username}).`,
+        );
+      } else {
+        console.log(
+          `WARN Not a member yet (database role ${identity.role ?? target.username}). ` +
+            `Administrator: zam team add-member ${identity.role ?? target.username}`,
+        );
+      }
+    },
+  },
 ];
 
 export function parseDoctorTimeout(value: string): number {
@@ -1007,7 +1057,7 @@ export const doctorCommand = new Command("doctor")
   .option("--json", "Emit report in JSON format")
   .argument(
     "[task]",
-    "Specific task: titles, texts, duplicates, domains, contexts",
+    "Specific task: titles, texts, duplicates, domains, contexts, team-library",
   )
   .action(async (taskName, opts) => {
     await withDb(async (db) => {

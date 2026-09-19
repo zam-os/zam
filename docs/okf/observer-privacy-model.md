@@ -8,7 +8,7 @@ tags:
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-09-11T17:42:55Z
+timestamp: 2026-09-19T08:40:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
@@ -30,8 +30,13 @@ Responsibility is split cleanly between the calling environment and the ZAM kern
 
 # The `ObserverPolicy` Contract
 
-The policy is resolved from user configuration (`user_config` table via `zam settings`),
-falling back to active symbiosis mode presets, then safe defaults:
+The policy is resolved from the `observer.*` settings (`zam settings`),
+falling back to active symbiosis mode presets, then safe defaults. The
+`observer.*` keys are **machine-scoped** (ADR 2026-09-04 Decision 4): what a
+capture may see depends on the machine in front of the learner, so each
+install keeps its own row in `user_settings`, and on a shared team library
+no other member can read or change it. On a personal library the last write
+is mirrored to `user_config`, where older clients still look.
 
 - `scope`: `"off"` disables observation completely; `"window"` requires an explicit
   target (`--process-name` or `--hwnd`); `"fullscreen"` permits untargeted captures.
@@ -102,4 +107,5 @@ overridden by `policy.json`.
 # Citations
 
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
-- Code: `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `observer/src/privacy.rs`, `src/cli/commands/bridge.ts`
+- [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
+- Code: `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `observer/src/privacy.rs`, `src/cli/commands/bridge.ts`

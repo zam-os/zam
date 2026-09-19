@@ -248,8 +248,56 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Conectado ({kind}): {location}. Emparejamiento móvil desbloqueado.",
     server_db_fields_required: "Se requieren URL y token de autenticación.",
     server_db_error: "Base del servidor: {message}",
+    server_db_err_not_member:
+      "Tu cuenta aún no es miembro de esta biblioteca de equipo. Pide al administrador que te añada.",
+    server_db_err_entra_login:
+      "Inicia sesión primero: pulsa «Iniciar sesión con Microsoft» en esta tarjeta y vuelve a intentarlo. (En una terminal: `az login`.)",
+    server_db_err_az_missing:
+      "La CLI de Azure no está instalada en este equipo. Instálala desde https://aka.ms/installazurecli y vuelve a intentarlo.",
+    team_db_leave: "Salir de la biblioteca del equipo",
+    server_db_team_pair_blocked:
+      "El emparejamiento móvil aún no está disponible para la biblioteca de equipo.",
     server_db_pair_blocked:
       "Conecta primero una base de datos del servidor (sección de arriba).",
+    server_db_turso_title: "Base de datos del servidor personal (Turso)",
+    server_db_err_library_configured:
+      "En este equipo hay otra biblioteca configurada. Usa el cambio de esta tarjeta; la conexión actual se conserva como biblioteca anterior.",
+    team_db_title: "Biblioteca del equipo",
+    team_db_help:
+      "La biblioteca PostgreSQL compartida de tu equipo. Inicias sesión con tu cuenta de trabajo; la conexión es tu identidad y en este equipo no se guarda ningún secreto.",
+    team_db_host: "Host del servidor",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "Base de datos",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Iniciar sesión con Microsoft",
+    team_db_signing_in: "Esperando el inicio de sesión en el navegador…",
+    team_db_signed_in: "Sesión iniciada como {upn}.",
+    team_db_connect: "Conectar con la biblioteca del equipo",
+    team_db_connecting: "Verificando la biblioteca del equipo…",
+    team_db_active:
+      "Biblioteca del equipo activa: {location} — eres {role} (aprendiz {userId}).",
+    team_db_not_member:
+      "Biblioteca del equipo configurada: {location}. Tu cuenta {role} aún no es miembro — pide al administrador que ejecute: zam team add-member {role}",
+    team_db_not_provisioned:
+      "Conectado a {location}, pero la biblioteca aún no está aprovisionada. Administrador: zam team provision --database {database}",
+    team_db_fields_required: "Se requieren host del servidor y base de datos.",
+    team_db_disclosure:
+      "Tu progreso de aprendizaje se guarda en una base de datos operada por tu organización. Otros aprendices no pueden verlo. Los administradores de la base de datos técnicamente sí pueden.",
+    team_db_understood: "Entendido",
+    team_db_learn_locally: "Prefiero aprender localmente",
+    library_switch_confirm_team:
+      "¿Cambiar este equipo a la biblioteca del equipo? Tu conexión Turso se conserva como biblioteca anterior y se puede restaurar con un clic.",
+    library_switch_confirm_turso:
+      "¿Cambiar este equipo a una base de datos del servidor personal? Tu conexión con la biblioteca del equipo se conserva como biblioteca anterior.",
+    library_restore_btn: "Volver a {kind}: {location}",
+    library_restore_confirm: "¿Volver a la biblioteca anterior ({location})?",
+    library_restoring: "Cambiando…",
+    library_switched: "Cambiado a {location}.",
+    library_verify_failed:
+      "Cambiado, pero no se pudo abrir la biblioteca: {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "la biblioteca del equipo",
+    database_status_team: "Biblioteca del equipo · conectado",
     settings_mobile_title: "Compañero móvil",
     settings_mobile_help:
       "Vincula un dispositivo Android con esta base de datos del servidor y un solo alumno.",
@@ -1146,8 +1194,58 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_fields_required:
       "L'URL et le jeton d'authentification sont requis.",
     server_db_error: "Base serveur : {message}",
+    server_db_err_not_member:
+      "Votre compte n'est pas encore membre de cette bibliothèque d'équipe. Demandez à l'administrateur de vous ajouter.",
+    server_db_err_entra_login:
+      "Connectez-vous d'abord : cliquez sur « Se connecter avec Microsoft » dans cette carte, puis réessayez. (Dans un terminal : `az login`.)",
+    server_db_err_az_missing:
+      "L'Azure CLI n'est pas installée sur cette machine. Installez-la depuis https://aka.ms/installazurecli, puis réessayez.",
+    team_db_leave: "Quitter la bibliothèque d'équipe",
+    server_db_team_pair_blocked:
+      "Le jumelage mobile n'est pas encore disponible pour la bibliothèque d'équipe.",
     server_db_pair_blocked:
       "Connectez d'abord une base de données serveur (section ci-dessus).",
+    server_db_turso_title: "Base de données serveur personnelle (Turso)",
+    server_db_err_library_configured:
+      "Une autre bibliothèque est configurée sur cette machine. Utilisez le basculement de cette carte ; la connexion actuelle est conservée comme bibliothèque précédente.",
+    team_db_title: "Bibliothèque d'équipe",
+    team_db_help:
+      "La bibliothèque PostgreSQL partagée de votre équipe. Vous vous connectez avec votre compte professionnel ; la connexion est votre identité et aucun secret n'est stocké sur cette machine.",
+    team_db_host: "Hôte du serveur",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "Base de données",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Se connecter avec Microsoft",
+    team_db_signing_in: "En attente de la connexion dans le navigateur…",
+    team_db_signed_in: "Connecté en tant que {upn}.",
+    team_db_connect: "Se connecter à la bibliothèque d'équipe",
+    team_db_connecting: "Vérification de la bibliothèque d'équipe…",
+    team_db_active:
+      "Bibliothèque d'équipe active : {location} — vous êtes {role} (apprenant {userId}).",
+    team_db_not_member:
+      "Bibliothèque d'équipe configurée : {location}. Votre compte {role} n'est pas encore membre — demandez à l'administrateur d'exécuter : zam team add-member {role}",
+    team_db_not_provisioned:
+      "Connecté à {location}, mais la bibliothèque n'est pas encore provisionnée. Administrateur : zam team provision --database {database}",
+    team_db_fields_required:
+      "L'hôte du serveur et la base de données sont requis.",
+    team_db_disclosure:
+      "Votre progression d'apprentissage est stockée dans une base de données exploitée par votre organisation. Les autres apprenants ne peuvent pas la voir. Les administrateurs de la base de données le peuvent techniquement.",
+    team_db_understood: "Compris",
+    team_db_learn_locally: "Apprendre localement plutôt",
+    library_switch_confirm_team:
+      "Basculer cette machine vers la bibliothèque d'équipe ? Votre connexion Turso est conservée comme bibliothèque précédente et peut être rétablie en un clic.",
+    library_switch_confirm_turso:
+      "Basculer cette machine vers une base de données serveur personnelle ? Votre connexion à la bibliothèque d'équipe est conservée comme bibliothèque précédente.",
+    library_restore_btn: "Revenir à {kind} : {location}",
+    library_restore_confirm:
+      "Revenir à la bibliothèque précédente ({location}) ?",
+    library_restoring: "Basculement…",
+    library_switched: "Basculé vers {location}.",
+    library_verify_failed:
+      "Basculé, mais la bibliothèque n'a pas pu être ouverte : {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "la bibliothèque d'équipe",
+    database_status_team: "Bibliothèque d'équipe · connecté",
     settings_mobile_title: "Compagnon mobile",
     settings_mobile_help:
       "Associez un appareil Android à cette base serveur et à un seul apprenant.",
@@ -2050,8 +2148,57 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "Conectado ({kind}): {location}. Pareamento móvel liberado.",
     server_db_fields_required: "URL e token de autenticação são obrigatórios.",
     server_db_error: "Banco do servidor: {message}",
+    server_db_err_not_member:
+      "A sua conta ainda não é membro desta biblioteca de equipa. Peça ao administrador para o adicionar.",
+    server_db_err_entra_login:
+      "Entre primeiro: clique em “Entrar com a Microsoft” neste cartão e tente novamente. (No terminal: `az login`.)",
+    server_db_err_az_missing:
+      "A CLI do Azure não está instalada nesta máquina. Instale-a em https://aka.ms/installazurecli e tente novamente.",
+    team_db_leave: "Sair da biblioteca da equipe",
+    server_db_team_pair_blocked:
+      "O emparelhamento móvel ainda não está disponível para a biblioteca de equipa.",
     server_db_pair_blocked:
       "Conecte primeiro um banco de dados do servidor (seção acima).",
+    server_db_turso_title: "Banco de dados do servidor pessoal (Turso)",
+    server_db_err_library_configured:
+      "Outra biblioteca está configurada nesta máquina. Use a troca neste cartão; a conexão atual é mantida como biblioteca anterior.",
+    team_db_title: "Biblioteca da equipe",
+    team_db_help:
+      "A biblioteca PostgreSQL compartilhada da sua equipe. Você entra com sua conta de trabalho; a conexão é sua identidade e nenhum segredo fica guardado nesta máquina.",
+    team_db_host: "Host do servidor",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "Banco de dados",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Entrar com a Microsoft",
+    team_db_signing_in: "Aguardando o login no navegador…",
+    team_db_signed_in: "Conectado como {upn}.",
+    team_db_connect: "Conectar à biblioteca da equipe",
+    team_db_connecting: "Verificando a biblioteca da equipe…",
+    team_db_active:
+      "Biblioteca da equipe ativa: {location} — você é {role} (aprendiz {userId}).",
+    team_db_not_member:
+      "Biblioteca da equipe configurada: {location}. Sua conta {role} ainda não é membro — peça ao administrador para executar: zam team add-member {role}",
+    team_db_not_provisioned:
+      "Conectado a {location}, mas a biblioteca ainda não foi provisionada. Administrador: zam team provision --database {database}",
+    team_db_fields_required:
+      "Host do servidor e banco de dados são obrigatórios.",
+    team_db_disclosure:
+      "Seu progresso de aprendizagem é armazenado em um banco de dados operado pela sua organização. Outros aprendizes não podem vê-lo. Administradores do banco de dados tecnicamente podem.",
+    team_db_understood: "Entendi",
+    team_db_learn_locally: "Prefiro aprender localmente",
+    library_switch_confirm_team:
+      "Trocar esta máquina para a biblioteca da equipe? Sua conexão Turso é mantida como biblioteca anterior e pode ser restaurada com um clique.",
+    library_switch_confirm_turso:
+      "Trocar esta máquina para um banco de dados do servidor pessoal? Sua conexão com a biblioteca da equipe é mantida como biblioteca anterior.",
+    library_restore_btn: "Voltar para {kind}: {location}",
+    library_restore_confirm: "Voltar para a biblioteca anterior ({location})?",
+    library_restoring: "Trocando…",
+    library_switched: "Trocado para {location}.",
+    library_verify_failed:
+      "Trocado, mas a biblioteca não pôde ser aberta: {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "a biblioteca da equipe",
+    database_status_team: "Biblioteca da equipe · conectado",
     settings_mobile_title: "Companheiro móvel",
     settings_mobile_help:
       "Vincule um dispositivo Android a este banco do servidor e a um único aluno.",
@@ -2917,7 +3064,53 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_connected: "已连接（{kind}）：{location}。手机配对已解锁。",
     server_db_fields_required: "需要 URL 和认证令牌。",
     server_db_error: "服务器数据库：{message}",
+    server_db_err_not_member:
+      "您的账户尚未成为此团队知识库的成员。请联系管理员将您添加进来。",
+    server_db_err_entra_login:
+      "请先登录：点击本卡片中的“使用 Microsoft 登录”，然后重试。（在终端中：`az login`。）",
+    server_db_err_az_missing:
+      "此设备未安装 Azure CLI。请从 https://aka.ms/installazurecli 安装后重试。",
+    team_db_leave: "离开团队知识库",
+    server_db_team_pair_blocked: "团队知识库暂不支持移动端配对。",
     server_db_pair_blocked: "请先连接服务器数据库（上方部分）。",
+    server_db_turso_title: "个人服务器数据库（Turso）",
+    server_db_err_library_configured:
+      "此设备已配置另一个知识库。请使用本卡片中的切换；当前连接将保留为上一个知识库。",
+    team_db_title: "团队知识库",
+    team_db_help:
+      "团队共享的 PostgreSQL 知识库。使用工作账户登录；连接即身份，此设备上不会保存任何机密。",
+    team_db_host: "服务器主机",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "数据库",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "使用 Microsoft 登录",
+    team_db_signing_in: "正在等待浏览器中的登录…",
+    team_db_signed_in: "已登录为 {upn}。",
+    team_db_connect: "连接团队知识库",
+    team_db_connecting: "正在验证团队知识库…",
+    team_db_active:
+      "团队知识库已启用：{location} — 你是 {role}（学习者 {userId}）。",
+    team_db_not_member:
+      "团队知识库已配置：{location}。你的账户 {role} 尚未成为成员 — 请管理员执行：zam team add-member {role}",
+    team_db_not_provisioned:
+      "已连接到 {location}，但知识库尚未初始化。管理员：zam team provision --database {database}",
+    team_db_fields_required: "需要服务器主机和数据库。",
+    team_db_disclosure:
+      "你的学习进度保存在由你的组织运营的数据库中。其他学习者无法看到。数据库管理员在技术上可以。",
+    team_db_understood: "明白了",
+    team_db_learn_locally: "改为本地学习",
+    library_switch_confirm_team:
+      "将此设备切换到团队知识库？你的 Turso 连接将保留为上一个知识库，可一键恢复。",
+    library_switch_confirm_turso:
+      "将此设备切换到个人服务器数据库？你的团队知识库连接将保留为上一个知识库。",
+    library_restore_btn: "切换回 {kind}：{location}",
+    library_restore_confirm: "切换回上一个知识库（{location}）？",
+    library_restoring: "正在切换…",
+    library_switched: "已切换到 {location}。",
+    library_verify_failed: "已切换，但无法打开知识库：{message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "团队知识库",
+    database_status_team: "团队知识库 · 已连接",
     settings_mobile_title: "移动伴侣",
     settings_mobile_help: "将 Android 设备与此服务器数据库及一位学习者配对。",
     pairing_open: "配对移动设备",
@@ -3752,8 +3945,56 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
       "接続済み（{kind}）: {location}。モバイルペアリングが有効です。",
     server_db_fields_required: "URL と認証トークンが必要です。",
     server_db_error: "サーバーデータベース: {message}",
+    server_db_err_not_member:
+      "あなたのアカウントはまだこのチームライブラリのメンバーではありません。管理者に追加を依頼してください。",
+    server_db_err_entra_login:
+      "先にサインインしてください。このカードの「Microsoft でサインイン」をクリックしてから再試行してください。（ターミナルでは `az login`。）",
+    server_db_err_az_missing:
+      "このマシンには Azure CLI がインストールされていません。https://aka.ms/installazurecli からインストールして再試行してください。",
+    team_db_leave: "チームライブラリを離れる",
+    server_db_team_pair_blocked:
+      "チームライブラリではモバイル連携はまだ利用できません。",
     server_db_pair_blocked:
       "先にサーバーデータベースを接続してください（上のセクション）。",
+    server_db_turso_title: "個人用サーバーデータベース（Turso）",
+    server_db_err_library_configured:
+      "このマシンには別のライブラリが設定されています。このカードの切り替えを使ってください。現在の接続は以前のライブラリとして保持されます。",
+    team_db_title: "チームライブラリ",
+    team_db_help:
+      "チームで共有する PostgreSQL ライブラリです。仕事用アカウントでサインインします。接続があなたの身元であり、このマシンには秘密情報は保存されません。",
+    team_db_host: "サーバーホスト",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "データベース",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Microsoft でサインイン",
+    team_db_signing_in: "ブラウザーでのサインインを待っています…",
+    team_db_signed_in: "{upn} としてサインインしました。",
+    team_db_connect: "チームライブラリに接続",
+    team_db_connecting: "チームライブラリを確認しています…",
+    team_db_active:
+      "チームライブラリが有効: {location} — あなたは {role}（学習者 {userId}）です。",
+    team_db_not_member:
+      "チームライブラリを設定しました: {location}。アカウント {role} はまだメンバーではありません — 管理者に次の実行を依頼してください: zam team add-member {role}",
+    team_db_not_provisioned:
+      "{location} に接続しましたが、ライブラリはまだ準備されていません。管理者: zam team provision --database {database}",
+    team_db_fields_required: "サーバーホストとデータベースが必要です。",
+    team_db_disclosure:
+      "あなたの学習進捗は、所属組織が運用するデータベースに保存されます。他の学習者には見えません。データベース管理者は技術的には閲覧できます。",
+    team_db_understood: "了解しました",
+    team_db_learn_locally: "代わりにローカルで学ぶ",
+    library_switch_confirm_team:
+      "このマシンをチームライブラリに切り替えますか？Turso 接続は以前のライブラリとして保持され、ワンクリックで戻せます。",
+    library_switch_confirm_turso:
+      "このマシンを個人用サーバーデータベースに切り替えますか？チームライブラリ接続は以前のライブラリとして保持されます。",
+    library_restore_btn: "{kind} に戻す: {location}",
+    library_restore_confirm: "以前のライブラリ（{location}）に戻しますか？",
+    library_restoring: "切り替えています…",
+    library_switched: "{location} に切り替えました。",
+    library_verify_failed:
+      "切り替えましたが、ライブラリを開けませんでした: {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "チームライブラリ",
+    database_status_team: "チームライブラリ · 接続済み",
     settings_mobile_title: "モバイルコンパニオン",
     settings_mobile_help:
       "Android 端末をこのサーバーデータベースと一人の学習者にペアリングします。",
@@ -4733,7 +4974,56 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Connected ({kind}): {location}. Mobile pairing is unlocked.",
     server_db_fields_required: "URL and auth token are required.",
     server_db_error: "Server database: {message}",
+    server_db_err_not_member:
+      "Your account is not yet a member of this team library. Ask the administrator to add you.",
+    server_db_err_entra_login:
+      "Sign in first: click “Sign in with Microsoft” on this card, then try again. (In a terminal: `az login`.)",
+    server_db_err_az_missing:
+      "The Azure CLI is not installed on this machine. Install it from https://aka.ms/installazurecli, then try again.",
+    team_db_leave: "Leave the team library",
+    server_db_team_pair_blocked:
+      "Mobile pairing is not available for the team library yet.",
     server_db_pair_blocked: "Connect a server database first (section above).",
+    server_db_turso_title: "Personal server database (Turso)",
+    server_db_err_library_configured:
+      "Another library is configured on this machine. Use the switch in this card; the current connection is kept as the previous library.",
+    team_db_title: "Team library",
+    team_db_help:
+      "Your team's shared PostgreSQL library. You sign in with your work account; the connection is your identity, and nothing secret is stored on this machine.",
+    team_db_host: "Server host",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "Database",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Sign in with Microsoft",
+    team_db_signing_in: "Waiting for the sign-in in your browser…",
+    team_db_signed_in: "Signed in as {upn}.",
+    team_db_connect: "Connect to team library",
+    team_db_connecting: "Verifying the team library…",
+    team_db_active:
+      "Team library active: {location} — you are {role} (learner {userId}).",
+    team_db_not_member:
+      "Team library configured: {location}. Your account {role} is not a member yet — ask the administrator to run: zam team add-member {role}",
+    team_db_not_provisioned:
+      "Connected to {location}, but the library is not provisioned yet. Administrator: zam team provision --database {database}",
+    team_db_fields_required: "Server host and database are required.",
+    team_db_disclosure:
+      "Your learning progress is stored in a database operated by your organisation. Other learners cannot see it. Database administrators technically can.",
+    team_db_understood: "Understood",
+    team_db_learn_locally: "Learn locally instead",
+    library_switch_confirm_team:
+      "Switch this machine to the team library? Your Turso connection is kept as the previous library and can be restored with one click.",
+    library_switch_confirm_turso:
+      "Switch this machine to a personal server database? Your team library connection is kept as the previous library.",
+    library_restore_btn: "Switch back to {kind}: {location}",
+    library_restore_confirm:
+      "Switch back to the previous library ({location})?",
+    library_restoring: "Switching…",
+    library_switched: "Switched to {location}.",
+    library_verify_failed:
+      "Switched, but the library could not be opened: {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "the team library",
+    database_status_team: "Team library · connected",
     server_db_create_hint:
       "No database yet? Create a free one on Turso, then paste its URL and token here. ZAM never creates the account for you.",
     server_db_link_signup: "Create a Turso account",
@@ -6113,8 +6403,57 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Verbunden ({kind}): {location}. Mobile-Pairing ist freigeschaltet.",
     server_db_fields_required: "URL und Auth-Token sind erforderlich.",
     server_db_error: "Server-Datenbank: {message}",
+    server_db_err_not_member:
+      "Dein Konto ist noch kein Mitglied dieser Team-Bibliothek. Bitte den Administrator, dich hinzuzufügen.",
+    server_db_err_entra_login:
+      "Melde dich zuerst an: klicke in dieser Karte auf „Mit Microsoft anmelden“ und versuche es erneut. (Im Terminal: `az login`.)",
+    server_db_err_az_missing:
+      "Die Azure CLI ist auf diesem Rechner nicht installiert. Installiere sie von https://aka.ms/installazurecli und versuche es erneut.",
+    team_db_leave: "Team-Bibliothek verlassen",
+    server_db_team_pair_blocked:
+      "Mobile Kopplung ist für die Team-Bibliothek noch nicht verfügbar.",
     server_db_pair_blocked:
       "Zuerst eine Server-Datenbank verbinden (Abschnitt oben).",
+    server_db_turso_title: "Persönliche Server-Datenbank (Turso)",
+    server_db_err_library_configured:
+      "Auf diesem Rechner ist eine andere Bibliothek konfiguriert. Nutze den Wechsel in dieser Karte; die aktuelle Verbindung bleibt als vorherige Bibliothek erhalten.",
+    team_db_title: "Team-Bibliothek",
+    team_db_help:
+      "Die gemeinsame PostgreSQL-Bibliothek deines Teams. Du meldest dich mit deinem Arbeitskonto an; die Verbindung ist deine Identität, auf diesem Rechner wird nichts Geheimes gespeichert.",
+    team_db_host: "Server-Host",
+    team_db_host_ph: "my-team-pg.postgres.database.azure.com",
+    team_db_database: "Datenbank",
+    team_db_database_ph: "zam_prod",
+    team_db_signin: "Mit Microsoft anmelden",
+    team_db_signing_in: "Warte auf die Anmeldung im Browser…",
+    team_db_signed_in: "Angemeldet als {upn}.",
+    team_db_connect: "Mit Team-Bibliothek verbinden",
+    team_db_connecting: "Team-Bibliothek wird geprüft…",
+    team_db_active:
+      "Team-Bibliothek aktiv: {location} — du bist {role} (Lernende/r {userId}).",
+    team_db_not_member:
+      "Team-Bibliothek konfiguriert: {location}. Dein Konto {role} ist noch kein Mitglied — bitte die Administration um: zam team add-member {role}",
+    team_db_not_provisioned:
+      "Verbunden mit {location}, aber die Bibliothek ist noch nicht eingerichtet. Administration: zam team provision --database {database}",
+    team_db_fields_required: "Server-Host und Datenbank sind erforderlich.",
+    team_db_disclosure:
+      "Dein Lernfortschritt wird in einer Datenbank gespeichert, die deine Organisation betreibt. Andere Lernende können ihn nicht sehen. Datenbank-Administratoren können es technisch.",
+    team_db_understood: "Verstanden",
+    team_db_learn_locally: "Lieber lokal lernen",
+    library_switch_confirm_team:
+      "Diesen Rechner auf die Team-Bibliothek umschalten? Deine Turso-Verbindung bleibt als vorherige Bibliothek erhalten und ist mit einem Klick zurückzuholen.",
+    library_switch_confirm_turso:
+      "Diesen Rechner auf eine persönliche Server-Datenbank umschalten? Deine Team-Bibliothek bleibt als vorherige Bibliothek erhalten.",
+    library_restore_btn: "Zurück zu {kind}: {location}",
+    library_restore_confirm:
+      "Zurück zur vorherigen Bibliothek ({location}) wechseln?",
+    library_restoring: "Wechsle…",
+    library_switched: "Gewechselt zu {location}.",
+    library_verify_failed:
+      "Gewechselt, aber die Bibliothek ließ sich nicht öffnen: {message}",
+    library_kind_turso: "Turso",
+    library_kind_postgres: "Team-Bibliothek",
+    database_status_team: "Team-Bibliothek · verbunden",
     server_db_create_hint:
       "Noch keine Datenbank? Lege bei Turso eine kostenlose an und füge URL und Token hier ein. ZAM legt niemals ein Konto für dich an.",
     server_db_link_signup: "Turso-Konto anlegen",

@@ -3,12 +3,22 @@ import { createRequire } from "node:module";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import {
+  getPostgresCredentials,
   getTursoCredentials,
+  type PostgresAuthMode,
+  type PostgresCredentials,
+  postgresVaultAccessPending,
   tursoVaultAccessPending,
 } from "../credentials.js";
 import {
+  openPostgresDatabase,
+  type PostgresPasswordSupplier,
+} from "./postgres.js";
+import {
   applySchemaAndMigrations,
+  CURRENT_SCHEMA_VERSION,
   ensureSchemaAndMigrations,
+  getSchemaVersion,
 } from "./provision.js";
 import { openRemoteDatabase } from "./remote/provider.js";
 import { wrapSyncDatabase } from "./sync-adapter.js";
@@ -45,8 +55,55 @@ type LibsqlConstructor = new (
  * - `local`: better-sqlite3 file database (default without cloud credentials)
  * - `native`: legacy native libsql driver (remote URLs and embedded replicas)
  * - `remote`: Turso over HTTP, no native bindings (works on Windows ARM64)
+ * - `postgres`: a PostgreSQL server — the team library (ADR 2026-09-04)
  */
-export type DatabaseProvider = "local" | "native" | "remote";
+export type DatabaseProvider = "local" | "native" | "remote" | "postgres";
+
+/**
+ * Password sources for the PostgreSQL provider, keyed by auth mode. The kernel
+ * never spawns anything: the CLI layer registers the `entra-cli` supplier at
+ * startup (`src/cli/db/entra-cli.ts`), and `password` needs no registration.
+ */
+const postgresPasswordSuppliers = new Map<
+  PostgresAuthMode,
+  PostgresPasswordSupplier
+>();
+
+export function registerPostgresPasswordSupplier(
+  mode: PostgresAuthMode,
+  supplier: PostgresPasswordSupplier,
+): void {
+  postgresPasswordSuppliers.set(mode, supplier);
+}
+
+/** Test hook: forget registered suppliers. */
+export function resetPostgresPasswordSuppliers(): void {
+  postgresPasswordSuppliers.clear();
+}
+
+function isLoopbackHost(host: string): boolean {
+  return /^(localhost|127\.0\.0\.1|::1)$/i.test(host.trim());
+}
+
+/**
+ * Whether a connection to `target` is encrypted. A loopback host — local
+ * Docker development — is plain unless `ssl: true` is stored; every other
+ * host gets TLS regardless of what a hand-edited credentials file or a caller
+ * says, because the Entra token or password would otherwise cross the
+ * network in the clear. `connector setup` enforces the same rule at input
+ * time; this is the last line of defence.
+ */
+export function postgresSslFor(
+  target: Pick<PostgresCredentials, "host" | "ssl">,
+): boolean {
+  if (isLoopbackHost(target.host)) return target.ssl === true;
+  return true;
+}
+
+/** Human-readable location of a PostgreSQL target, without credentials. */
+export function describePostgresTarget(target: PostgresCredentials): string {
+  return `postgres://${target.host}:${target.port ?? 5432}/${target.database}`;
+}
 
 export interface ConnectionOptions {
   /** Path to the SQLite database file. Defaults to ~/.zam/zam.db */
@@ -61,11 +118,23 @@ export interface ConnectionOptions {
   useConfiguredCloud?: boolean;
   /** Explicit provider; overrides ZAM_DB_PROVIDER and the credentials mode. */
   provider?: DatabaseProvider;
+  /**
+   * Explicit PostgreSQL target, overriding the configured one — used by
+   * administration commands that open a second database on the same server
+   * (the `postgres` maintenance database for principal management) and by
+   * tests. Never stored.
+   */
+  postgres?: PostgresCredentials;
 }
 
 export interface DatabaseTargetInfo {
   /** User-facing category of database target selected for this connection. */
-  kind: "local" | "turso-native" | "turso-remote" | "turso-replica";
+  kind:
+    | "local"
+    | "turso-native"
+    | "turso-remote"
+    | "turso-replica"
+    | "postgres";
   /** Driver/provider that will be used for the selected target. */
   provider: DatabaseProvider;
   /** Local filesystem path or remote URL selected as the database target. */
@@ -80,6 +149,8 @@ interface ResolvedDatabaseTarget {
   isRemote: boolean;
   isEmbeddedReplica: boolean;
   configuredCloud: ReturnType<typeof getTursoCredentials>;
+  /** Set when the connection targets PostgreSQL (configured or explicit). */
+  postgres?: PostgresCredentials;
 }
 
 function isRemoteDatabasePath(dbPath: string): boolean {
@@ -87,7 +158,12 @@ function isRemoteDatabasePath(dbPath: string): boolean {
 }
 
 function isDatabaseProvider(value: unknown): value is DatabaseProvider {
-  return value === "local" || value === "native" || value === "remote";
+  return (
+    value === "local" ||
+    value === "native" ||
+    value === "remote" ||
+    value === "postgres"
+  );
 }
 
 function cwdRequiresTursoCredentials(): boolean {
@@ -104,10 +180,77 @@ function cwdRequiresTursoCredentials(): boolean {
 function resolveDatabaseTarget(
   options: ConnectionOptions = {},
 ): ResolvedDatabaseTarget {
-  const configuredCloud =
-    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl
-      ? getTursoCredentials()
-      : null;
+  const wantsConfigured =
+    options.useConfiguredCloud !== false && !options.dbPath && !options.syncUrl;
+
+  // An explicit PostgreSQL target wins over everything configured.
+  if (options.postgres) {
+    return {
+      dbPath: describePostgresTarget(options.postgres),
+      provider: "postgres",
+      isRemote: false,
+      isEmbeddedReplica: false,
+      configuredCloud: null,
+      postgres: options.postgres,
+    };
+  }
+
+  // `provider: "local"` (or ZAM_DB_PROVIDER=local, the escape hatch the
+  // remote provider advertises) means "ignore every configured library".
+  const envProvider = isDatabaseProvider(process.env.ZAM_DB_PROVIDER)
+    ? process.env.ZAM_DB_PROVIDER
+    : undefined;
+  const requestedProvider = options.provider ?? envProvider;
+  const forcedLocal = requestedProvider === "local";
+
+  const configuredPostgres =
+    wantsConfigured && !forcedLocal ? getPostgresCredentials() : null;
+  const configuredTurso = wantsConfigured ? getTursoCredentials() : null;
+
+  if (
+    wantsConfigured &&
+    requestedProvider === "postgres" &&
+    !configuredPostgres
+  ) {
+    throw new Error(
+      "The postgres provider is selected but no team library is configured. Run: zam connector setup postgres",
+    );
+  }
+
+  // One machine is bound to one library (ADR 2026-09-04 Decision 6): two
+  // configured targets is a broken setup, not a choice to make silently.
+  if (configuredPostgres && configuredTurso) {
+    throw new Error(
+      "Both a PostgreSQL team library and a Turso database are configured in " +
+        "credentials.json. Keep one: zam connector clear turso | zam connector clear postgres",
+    );
+  }
+
+  if (configuredPostgres) {
+    return {
+      dbPath: describePostgresTarget(configuredPostgres),
+      provider: "postgres",
+      isRemote: false,
+      isEmbeddedReplica: false,
+      configuredCloud: null,
+      postgres: configuredPostgres,
+    };
+  }
+
+  // A vault-backed PostgreSQL password that has not resolved: fail loud, like
+  // the Turso case below, instead of opening an empty local database.
+  if (
+    wantsConfigured &&
+    !forcedLocal &&
+    !configuredPostgres &&
+    postgresVaultAccessPending()
+  ) {
+    throw new Error(
+      "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock or log in to Bitwarden to continue.",
+    );
+  }
+
+  const configuredCloud = configuredTurso;
 
   // Vault-backed Turso token configured but not resolved: never silently fall
   // back to an empty local DB — the UI must assure Bitwarden login/unlock first.
@@ -153,6 +296,14 @@ export function getDatabaseTargetInfo(
   options: ConnectionOptions = {},
 ): DatabaseTargetInfo {
   const target = resolveDatabaseTarget(options);
+
+  if (target.postgres) {
+    return {
+      kind: "postgres",
+      provider: "postgres",
+      location: target.dbPath,
+    };
+  }
 
   if (target.isEmbeddedReplica) {
     return {
@@ -276,8 +427,12 @@ export function isTransientRemoteDatabaseError(err: unknown): boolean {
 export async function openDatabase(
   options: ConnectionOptions = {},
 ): Promise<Database> {
+  const target = resolveDatabaseTarget(options);
   const { dbPath, provider, isRemote, isEmbeddedReplica, configuredCloud } =
-    resolveDatabaseTarget(options);
+    target;
+
+  if (target.postgres) return openPostgresTarget(target.postgres);
+
   const shouldInitialize =
     options.initialize === true ||
     (!isRemote && !isEmbeddedReplica && !existsSync(dbPath));
@@ -427,6 +582,88 @@ export async function openDatabase(
   }
 
   return finishOpen();
+}
+
+/**
+ * Open the team library. The schema is never provisioned from here: a learner
+ * connects as a member role without DDL rights, and `zam team provision` is
+ * the administrator's step (ADR 2026-09-04 Decision 8). The version marker is
+ * still read, so an unprovisioned database fails with a clear message.
+ */
+async function openPostgresTarget(
+  target: PostgresCredentials,
+): Promise<Database> {
+  const db = connectPostgres(target);
+  try {
+    const version = await getSchemaVersion(db);
+    const where = describePostgresTarget(target);
+    const provision = `The administrator runs: zam team provision --database ${target.database}`;
+    if (version === null) {
+      throw new Error(
+        `The team library at ${where} is not provisioned yet. ${provision}`,
+      );
+    }
+    if (version < CURRENT_SCHEMA_VERSION) {
+      throw new Error(
+        `The team library at ${where} has schema version ${version}, this ZAM needs ${CURRENT_SCHEMA_VERSION}. ${provision}`,
+      );
+    }
+    if (version > CURRENT_SCHEMA_VERSION) {
+      // An older client on a newer library keeps working for everything it
+      // knows; say so once per open rather than refusing a whole team.
+      process.stderr.write(
+        `zam: the team library at ${where} has schema version ${version}, newer than this ZAM (${CURRENT_SCHEMA_VERSION}). Update ZAM when you can.\n`,
+      );
+    }
+  } catch (err) {
+    await db.close().catch(() => {});
+    throw err;
+  }
+  return db;
+}
+
+/**
+ * Open a PostgreSQL target **without** the schema-version gate — for the
+ * administrator's `zam team` commands, which provision the schema themselves
+ * or work on the server's `postgres` maintenance database. Learners never
+ * take this path.
+ */
+export function openPostgresAdministration(
+  target: PostgresCredentials,
+): Database {
+  return connectPostgres(target);
+}
+
+/** Build the pooled connection; the password comes from the registered supplier. */
+function connectPostgres(target: PostgresCredentials): Database {
+  let password: PostgresPasswordSupplier;
+  if (target.auth === "password") {
+    const literal = target.password;
+    if (!literal) {
+      throw new Error(
+        "The PostgreSQL target uses password authentication but no password is configured. Run: zam connector setup postgres",
+      );
+    }
+    password = async () => literal;
+  } else {
+    const supplier = postgresPasswordSuppliers.get(target.auth);
+    if (!supplier) {
+      throw new Error(
+        `ENTRA_LOGIN_REQUIRED: no ${target.auth} token source is registered in this process, so the team library cannot be opened here.`,
+      );
+    }
+    password = supplier;
+  }
+
+  return openPostgresDatabase({
+    host: target.host,
+    port: target.port ?? 5432,
+    database: target.database,
+    user: target.username,
+    password,
+    ssl: postgresSslFor(target),
+    applicationName: "zam",
+  });
 }
 
 function resolveProvider(

@@ -21,6 +21,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import { nowIso } from "./db/sql.js";
 import {
   ensureDefaultSecretBackends,
   isSecretRef,
@@ -48,16 +49,76 @@ export interface ADOCredentials {
   pat: string;
 }
 
+/**
+ * How the PostgreSQL provider authenticates (ADR 2026-09-04 Decision 3).
+ *
+ * - `entra-cli`: the password of every new pooled connection is a fresh
+ *   Microsoft Entra access token fetched from the Azure CLI by the host
+ *   process — no secret at rest, no refresh loop.
+ * - `password`: a literal or vault-referenced password, for local Docker
+ *   development and for servers without Entra.
+ */
+export type PostgresAuthMode = "entra-cli" | "password";
+
+/** Resolved PostgreSQL target — the team library (ADR 2026-09-04 Decision 6). */
+export interface PostgresCredentials {
+  host: string;
+  port?: number;
+  database: string;
+  /** Database role to connect as; for Entra the user principal name. */
+  username: string;
+  auth: PostgresAuthMode;
+  /** Only with `auth: "password"`; resolved to a plain string. */
+  password?: string;
+  /** TLS to the server. Defaults to on unless the host is loopback. */
+  ssl?: boolean;
+}
+
+/** On-disk shape of the PostgreSQL block — the password may be a vault reference. */
+export interface StoredPostgresCredentials {
+  host: string;
+  port?: number;
+  database: string;
+  username: string;
+  auth: PostgresAuthMode;
+  password?: StoredSecret;
+  ssl?: boolean;
+}
+
 /** Resolved view — every secret field is a plain string. Accessor return type. */
 export interface Credentials {
   turso?: Partial<TursoCredentials>;
   ado?: Partial<ADOCredentials>;
+  postgres?: Partial<PostgresCredentials>;
   /**
    * API keys for named LLM providers, keyed by the provider's reference name
    * (the `apiKeyRef` in the `llm.providers` setting). Kept here — not in the
    * database — so workspace exports / DB snapshots never carry provider keys.
    */
   llmProviders?: Record<string, { apiKey: string }>;
+}
+
+/** The two library kinds a machine can be bound to (ADR 2026-09-04 Decision 6). */
+export type LibraryKind = "turso" | "postgres";
+
+/**
+ * The connection a switch replaced, kept so switching back needs no new
+ * token (pilot plan phase 7). Exactly one is kept: a second switch
+ * overwrites it.
+ */
+export interface StoredPreviousLibrary {
+  kind: LibraryKind;
+  turso?: StoredCredentials["turso"];
+  postgres?: Partial<StoredPostgresCredentials>;
+  /** ISO-8601 UTC. */
+  replacedAt: string;
+}
+
+/** Secret-free view of the kept connection, for status surfaces. */
+export interface PreviousLibrary {
+  kind: LibraryKind;
+  location: string;
+  replacedAt: string;
 }
 
 /** On-disk document — secret fields may be literals or vault references. */
@@ -72,6 +133,8 @@ export interface StoredCredentials {
     project?: string;
     pat?: StoredSecret;
   };
+  postgres?: Partial<StoredPostgresCredentials>;
+  previous?: StoredPreviousLibrary;
   llmProviders?: Record<string, { apiKey: StoredSecret }>;
 }
 
@@ -142,6 +205,19 @@ function materializeLiteralsOnly(stored: StoredCredentials): Credentials {
       ...(pat !== undefined ? { pat } : {}),
     };
   }
+  if (stored.postgres) {
+    const pg = stored.postgres;
+    const password = typeof pg.password === "string" ? pg.password : undefined;
+    out.postgres = {
+      ...(pg.host !== undefined ? { host: pg.host } : {}),
+      ...(pg.port !== undefined ? { port: pg.port } : {}),
+      ...(pg.database !== undefined ? { database: pg.database } : {}),
+      ...(pg.username !== undefined ? { username: pg.username } : {}),
+      ...(pg.auth !== undefined ? { auth: pg.auth } : {}),
+      ...(password !== undefined ? { password } : {}),
+      ...(pg.ssl !== undefined ? { ssl: pg.ssl } : {}),
+    };
+  }
   if (stored.llmProviders) {
     const providers: Record<string, { apiKey: string }> = {};
     for (const [name, entry] of Object.entries(stored.llmProviders)) {
@@ -159,6 +235,7 @@ function materializeLiteralsOnly(stored: StoredCredentials): Credentials {
 function storedHasReferences(stored: StoredCredentials): boolean {
   if (stored.turso && isSecretRef(stored.turso.token)) return true;
   if (stored.ado && isSecretRef(stored.ado.pat)) return true;
+  if (stored.postgres && isSecretRef(stored.postgres.password)) return true;
   if (stored.llmProviders) {
     for (const entry of Object.values(stored.llmProviders)) {
       if (isSecretRef(entry?.apiKey)) return true;
@@ -204,6 +281,16 @@ export async function resolveCredentials(path?: string): Promise<Credentials> {
       uri,
       apply: (value) => {
         resolved.ado = { ...resolved.ado, pat: value };
+      },
+    });
+  }
+  if (stored.postgres && isSecretRef(stored.postgres.password)) {
+    const uri = stored.postgres.password.$secret;
+    jobs.push({
+      label: "postgres.password",
+      uri,
+      apply: (value) => {
+        resolved.postgres = { ...resolved.postgres, password: value };
       },
     });
   }
@@ -331,6 +418,13 @@ export function checkCredentials(path?: string): CredentialCheckEntry[] {
   if (stored.ado?.pat !== undefined) {
     pushSecret("ado.pat", stored.ado.pat, snap?.credentials.ado?.pat);
   }
+  if (stored.postgres?.password !== undefined) {
+    pushSecret(
+      "postgres.password",
+      stored.postgres.password,
+      snap?.credentials.postgres?.password,
+    );
+  }
 
   for (const name of Object.keys(stored.llmProviders ?? {}).sort()) {
     pushSecret(
@@ -445,6 +539,176 @@ export function clearTursoCredentials(path?: string): void {
   saveCredentials(creds, path);
 }
 
+/**
+ * Get the complete PostgreSQL target, or null if incomplete.
+ *
+ * "Complete" depends on the auth mode: `entra-cli` needs no password (the
+ * host fetches a token per connection), `password` needs a resolved one — so
+ * a vault-referenced password that failed to resolve reads as unconfigured,
+ * and `postgresVaultAccessPending()` tells that case apart.
+ */
+export function getPostgresCredentials(
+  path?: string,
+): PostgresCredentials | null {
+  const pg = readResolved(path).postgres;
+  if (!pg?.host || !pg.database || !pg.username || !pg.auth) return null;
+  if (pg.auth === "password" && !pg.password) return null;
+  return {
+    host: pg.host,
+    database: pg.database,
+    username: pg.username,
+    auth: pg.auth,
+    ...(pg.port !== undefined ? { port: pg.port } : {}),
+    ...(pg.password !== undefined ? { password: pg.password } : {}),
+    ...(pg.ssl !== undefined ? { ssl: pg.ssl } : {}),
+  };
+}
+
+/** Store the PostgreSQL target. The password may be a literal or a vault reference. */
+export function setPostgresCredentials(
+  target: StoredPostgresCredentials,
+  path?: string,
+): void {
+  const creds = loadStoredCredentials(path);
+  creds.postgres = {
+    host: target.host,
+    database: target.database,
+    username: target.username,
+    auth: target.auth,
+    ...(target.port !== undefined ? { port: target.port } : {}),
+    ...(target.password !== undefined ? { password: target.password } : {}),
+    ...(target.ssl !== undefined ? { ssl: target.ssl } : {}),
+  };
+  saveCredentials(creds, path);
+}
+
+/** Clear the PostgreSQL target. */
+export function clearPostgresCredentials(path?: string): void {
+  const creds = loadStoredCredentials(path);
+  delete creds.postgres;
+  saveCredentials(creds, path);
+}
+
+// ── Switching between libraries (pilot plan phase 7) ────────────────────────
+
+function locationOf(
+  kind: LibraryKind,
+  block: StoredCredentials["turso"] | Partial<StoredPostgresCredentials>,
+): string {
+  if (kind === "turso") {
+    return (block as StoredCredentials["turso"])?.url ?? "?";
+  }
+  const pg = block as Partial<StoredPostgresCredentials>;
+  return `postgres://${pg.host ?? "?"}:${pg.port ?? 5432}/${pg.database ?? "?"}`;
+}
+
+/** Which library kind the document currently binds the machine to, if any. */
+export function configuredLibraryKind(path?: string): LibraryKind | null {
+  const creds = loadStoredCredentials(path);
+  if (creds.postgres?.host) return "postgres";
+  if (creds.turso?.url) return "turso";
+  return null;
+}
+
+/**
+ * Move the configured library of `kind` aside as the previous library, so
+ * the other kind can take its place and the learner can switch back without
+ * fetching a new token. Returns false when nothing of that kind was stored.
+ */
+export function keepLibraryAsPrevious(
+  kind: LibraryKind,
+  path?: string,
+): boolean {
+  const creds = loadStoredCredentials(path);
+  const block = kind === "turso" ? creds.turso : creds.postgres;
+  if (!block) return false;
+  creds.previous = {
+    kind,
+    ...(kind === "turso"
+      ? { turso: creds.turso }
+      : { postgres: creds.postgres }),
+    replacedAt: nowIso(),
+  };
+  delete creds[kind];
+  saveCredentials(creds, path);
+  return true;
+}
+
+/** The kept connection without its secret, or null. */
+export function getPreviousLibrary(path?: string): PreviousLibrary | null {
+  const previous = loadStoredCredentials(path).previous;
+  if (!previous?.kind) return null;
+  const block = previous.kind === "turso" ? previous.turso : previous.postgres;
+  if (!block) return null;
+  return {
+    kind: previous.kind,
+    location: locationOf(previous.kind, block),
+    replacedAt: previous.replacedAt,
+  };
+}
+
+/** Forget the kept connection (its token goes with it). */
+export function clearPreviousLibrary(path?: string): void {
+  const creds = loadStoredCredentials(path);
+  delete creds.previous;
+  saveCredentials(creds, path);
+}
+
+/**
+ * Make the previous library the current one again. With `keepCurrent` (the
+ * default) the library being left becomes the new previous, so a learner can
+ * flip back and forth; without it the current connection is dropped — the
+ * undo of a switch whose verification failed.
+ */
+export function restorePreviousLibrary(
+  path?: string,
+  options: { keepCurrent?: boolean } = {},
+): { restored: LibraryKind; kept: LibraryKind | null } {
+  const creds = loadStoredCredentials(path);
+  const previous = creds.previous;
+  const block =
+    previous?.kind === "turso" ? previous.turso : previous?.postgres;
+  if (!previous?.kind || !block) {
+    throw new Error("No previous library is kept on this machine.");
+  }
+  const current: LibraryKind | null = creds.postgres?.host
+    ? "postgres"
+    : creds.turso?.url
+      ? "turso"
+      : null;
+  const keepCurrent = options.keepCurrent ?? true;
+  let kept: LibraryKind | null = null;
+  if (current && keepCurrent && current !== previous.kind) {
+    creds.previous = {
+      kind: current,
+      ...(current === "turso"
+        ? { turso: creds.turso }
+        : { postgres: creds.postgres }),
+      replacedAt: nowIso(),
+    };
+    kept = current;
+  } else {
+    delete creds.previous;
+  }
+  if (current) delete creds[current];
+  if (previous.kind === "turso") creds.turso = previous.turso;
+  else creds.postgres = previous.postgres;
+  saveCredentials(creds, path);
+  return { restored: previous.kind, kept };
+}
+
+/**
+ * True when a PostgreSQL password is a vault reference that has not resolved
+ * into a usable value (vault locked / not logged in / resolve failed).
+ */
+export function postgresVaultAccessPending(path?: string): boolean {
+  const stored = loadStoredCredentials(path);
+  if (!stored.postgres?.host || !isSecretRef(stored.postgres.password)) {
+    return false;
+  }
+  return getPostgresCredentials(path) === null;
+}
+
 /** Get complete ADO credentials, or null if incomplete. */
 export function getADOCredentials(path?: string): ADOCredentials | null {
   const creds = readResolved(path);
@@ -523,6 +787,7 @@ export function credentialsNeedVaultAccess(path?: string): boolean {
   const stored = loadStoredCredentials(path);
   if (stored.turso && isSecretRef(stored.turso.token)) return true;
   if (stored.ado && isSecretRef(stored.ado.pat)) return true;
+  if (stored.postgres && isSecretRef(stored.postgres.password)) return true;
   if (stored.llmProviders) {
     for (const entry of Object.values(stored.llmProviders)) {
       if (isSecretRef(entry?.apiKey)) return true;

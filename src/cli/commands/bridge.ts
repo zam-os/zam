@@ -41,7 +41,9 @@ import {
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
+  clearTursoCredentials,
   commitTextImport,
+  configuredLibraryKind,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
@@ -74,6 +76,8 @@ import {
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
+  getPostgresCredentials,
+  getPreviousLibrary,
   getProviderApiKey,
   getReviewActivity,
   getSetting,
@@ -92,6 +96,7 @@ import {
   isStudyLearningMode,
   isStudyWorkloadPreset,
   isVoiceEnginePreference,
+  keepLibraryAsPrevious,
   listAgentSkills,
   listKnowledgeContexts,
   listPersonalCards,
@@ -105,11 +110,13 @@ import {
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
   pairCommands,
+  postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
   readUiObservationLog,
   resolveCredentials,
   resolveObserverPolicy,
+  restorePreviousLibrary,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
@@ -215,6 +222,12 @@ import {
   isPdfUrl,
   plainTextToExtractableHtml,
 } from "../curriculum/pdf-text.js";
+import { entraCliLogin } from "../db/entra-cli.js";
+import {
+  connectTeamLibrary,
+  leaveTeamLibrary,
+  restoreLibrary,
+} from "../db/library-switch.js";
 import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
 import {
@@ -319,7 +332,13 @@ import {
   unlockBitwardenForProcess,
 } from "../secrets-bridge.js";
 import { normalizeShell } from "../terminal-open.js";
-import { ensureDefaultUser, resolveUser } from "../users/identity.js";
+import {
+  currentUserIdOrNull,
+  describeIdentity,
+  ensureDefaultUser,
+  isTeamLibrary,
+  resolveUser,
+} from "../users/identity.js";
 import {
   activateWorkspacePath,
   defaultWorkspaceDir,
@@ -4682,7 +4701,7 @@ export async function readDatabaseUserSummaries(
 ): Promise<DatabaseUserSummary[]> {
   return (await db
     .prepare(
-      `SELECT user_id AS id, COUNT(*) AS cardCount
+      `SELECT user_id AS id, COUNT(*) AS "cardCount"
        FROM cards
        GROUP BY user_id
        ORDER BY user_id`,
@@ -4696,39 +4715,89 @@ bridgeCommand
   .action(async () => {
     // Restore ≤30-day session and resolve vault refs before opening the DB.
     await resolveCredentials();
-    if (tursoVaultAccessPending()) {
+    if (tursoVaultAccessPending() || postgresVaultAccessPending()) {
       const stored = loadStoredCredentials();
+      const postgresPending = postgresVaultAccessPending();
       jsonOut({
         success: false,
         connected: false,
         bitwardenRequired: true,
         target: {
-          kind: "local",
-          location: stored.turso?.url ?? "vault-locked",
+          kind: postgresPending ? "postgres" : "local",
+          location: postgresPending
+            ? `postgres://${stored.postgres?.host ?? "?"}/${stored.postgres?.database ?? "?"}`
+            : (stored.turso?.url ?? "vault-locked"),
         },
         tursoUrl: stored.turso?.url ?? null,
         userId: null,
         cardCount: 0,
         users: [],
-        error:
-          "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
+        error: postgresPending
+          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 30 days)."
+          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
       });
       return;
     }
-    const target = getDatabaseTargetInfo();
-    await withDb(async (db) => {
-      const userId = (await getSetting(db, "user.id")) ?? null;
-      const users = await readDatabaseUserSummaries(db);
-      jsonOut({
-        success: true,
-        connected: true,
-        bitwardenRequired: false,
-        target,
-        userId,
-        cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
-        users,
-      });
-    });
+    // Resolving the target can itself refuse (two libraries configured);
+    // that answer must be JSON too, not a stack trace.
+    let target: ReturnType<typeof getDatabaseTargetInfo>;
+    try {
+      target = getDatabaseTargetInfo();
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+    const previous = getPreviousLibrary();
+    const configured = configuredLibraryKind();
+    // The role the team connection runs as is known before the library opens
+    // — what a colleague quotes to the administrator when not yet mapped.
+    const configuredRole =
+      target.kind === "postgres"
+        ? (getPostgresCredentials()?.username ?? null)
+        : null;
+    await sharedWithDb(
+      async (db) => {
+        const identity =
+          target.kind === "postgres"
+            ? await describeIdentity(db)
+            : { userId: await currentUserIdOrNull(db), role: null };
+        const userId = identity.userId;
+        const users = await readDatabaseUserSummaries(db);
+        jsonOut({
+          success: true,
+          connected: true,
+          provisioned: true,
+          bitwardenRequired: false,
+          target,
+          userId,
+          role: identity.role ?? configuredRole,
+          cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
+          users,
+          previous,
+          configured,
+        });
+      },
+      (message) => {
+        // A team library that is not provisioned yet is a state the Studio
+        // shows (the administrator's next step), not a failure of this
+        // command; every other open failure keeps the target so the card
+        // still knows which library this machine is bound to.
+        const notProvisioned = /not provisioned yet/.test(message);
+        jsonOut({
+          success: notProvisioned,
+          connected: notProvisioned,
+          provisioned: false,
+          bitwardenRequired: false,
+          target,
+          userId: null,
+          role: configuredRole,
+          cardCount: 0,
+          users: [],
+          previous,
+          configured,
+          error: message,
+        });
+      },
+    );
   });
 
 /**
@@ -4748,6 +4817,10 @@ bridgeCommand
     "Vault reference instead of --token (e.g. bw://zam-turso/token)",
   )
   .option("--mode <mode>", "Access mode: remote | native")
+  .option(
+    "--replace",
+    "Keep a configured team library as the previous library and switch",
+  )
   .action(async (opts) => {
     const url = String(opts.url ?? "").trim();
     const tokenLiteral = String(opts.token ?? "").trim();
@@ -4774,14 +4847,49 @@ bridgeCommand
       mode = raw;
     }
 
+    // One machine, one library (ADR 2026-09-04 Decision 6): storing a Turso
+    // database beside a configured team library would leave every command
+    // refusing; say so before writing anything — or, with --replace, keep the
+    // team library as the previous one so the learner can switch back.
+    const stored = loadStoredCredentials();
+    if (stored.postgres && !opts.replace) {
+      jsonError(
+        "LIBRARY_CONFIGURED: A team library (PostgreSQL) is configured on this machine. Pass --replace to keep it as the previous library and switch, or remove it with: zam connector clear postgres",
+      );
+    }
+    // Whatever was there before the write comes back if the new connection
+    // does not verify: the kept team library, the earlier Turso credentials,
+    // or nothing. From here on every failure exit goes through `undo`.
+    const earlierTurso = stored.turso;
+    const replacedTeamLibrary = stored.postgres
+      ? keepLibraryAsPrevious("postgres")
+      : false;
+    const undo = async (): Promise<void> => {
+      if (replacedTeamLibrary) {
+        restorePreviousLibrary(undefined, { keepCurrent: false });
+      } else if (earlierTurso?.url && earlierTurso.token) {
+        setTursoCredentials(
+          earlierTurso.url,
+          earlierTurso.token,
+          undefined,
+          earlierTurso.mode,
+        );
+      } else {
+        clearTursoCredentials();
+      }
+      await resolveCredentials();
+    };
+
     if (tokenFrom) {
       try {
         setTursoCredentials(url, secretRefFromUri(tokenFrom), undefined, mode);
       } catch (err) {
+        await undo();
         jsonError(err instanceof Error ? err.message : String(err));
       }
       await resolveCredentials();
       if (!getTursoCredentials()) {
+        await undo();
         jsonError(
           `Could not resolve token reference "${tokenFrom}". Unlock Bitwarden in Settings or fix the vault item.`,
         );
@@ -4803,7 +4911,7 @@ bridgeCommand
           "Credentials were stored but the active target is still local. Check URL/token.",
         );
       }
-      const userId = (await getSetting(db, "user.id")) ?? null;
+      const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
       jsonOut({
         success: true,
@@ -4812,8 +4920,12 @@ bridgeCommand
         userId,
         cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
         users,
+        previous: getPreviousLibrary(),
       });
     } catch (error) {
+      // A connection that did not verify is undone: the team library or the
+      // earlier Turso credentials come back, the unverified ones go.
+      await undo();
       jsonError(
         error instanceof Error
           ? error.message
@@ -4821,6 +4933,104 @@ bridgeCommand
       );
     } finally {
       await db?.close().catch(() => undefined);
+    }
+  });
+
+// ── Library switching for the Studio (pilot plan phase 7) ─────────────────
+
+/**
+ * Point this machine at the team library (ADR 2026-09-04 Decision 9). A
+ * configured Turso database is refused unless `--replace` keeps it as the
+ * previous library. Entra by default — the username comes from the Azure CLI
+ * when omitted; `--auth password` serves local Docker development. A switch
+ * that does not verify is undone, so the Studio never leaves a learner on a
+ * library that does not open.
+ */
+bridgeCommand
+  .command("team-db-connect")
+  .description("Connect this machine to the team library on PostgreSQL (JSON)")
+  .requiredOption("--host <host>", "PostgreSQL host")
+  .requiredOption("--database <name>", "Library database")
+  .option("--port <port>", "Port (default 5432)")
+  .option(
+    "--username <upn>",
+    "Database role; read from the Azure CLI when omitted",
+  )
+  .option("--auth <mode>", "entra-cli (default) | password")
+  .option("--password <password>", "Password (auth password only)")
+  .option(
+    "--replace",
+    "Keep a configured Turso database as the previous library and switch",
+  )
+  .action(async (opts) => {
+    const port = opts.port !== undefined ? Number(opts.port) : undefined;
+    if (port !== undefined && (!Number.isInteger(port) || port <= 0)) {
+      jsonError(`port must be a positive integer, got ${String(opts.port)}`);
+    }
+    const auth = opts.auth === undefined ? "entra-cli" : String(opts.auth);
+    if (auth !== "entra-cli" && auth !== "password") {
+      jsonError("auth must be entra-cli or password");
+    }
+    try {
+      const status = await connectTeamLibrary({
+        host: String(opts.host),
+        database: String(opts.database),
+        port,
+        username: opts.username ? String(opts.username) : undefined,
+        auth,
+        password: opts.password ? String(opts.password) : undefined,
+        replace: Boolean(opts.replace),
+      });
+      jsonOut({ success: true, ...status });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+/**
+ * "Sign in with Microsoft": run `az login` for the learner (the browser
+ * opens) and report the signed-in principal name. Waits for the browser;
+ * a cancelled sign-in is an ordinary error, not a hang.
+ */
+bridgeCommand
+  .command("entra-login")
+  .description(
+    "Sign in through the Azure CLI and report the signed-in account (JSON)",
+  )
+  .action(async () => {
+    try {
+      const upn = await entraCliLogin();
+      jsonOut({ success: true, upn });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+/** Switch back to the library a previous switch kept (turso ↔ postgres). */
+bridgeCommand
+  .command("library-restore")
+  .description("Switch back to the previous library kept by a switch (JSON)")
+  .action(async () => {
+    try {
+      const status = await restoreLibrary();
+      jsonOut({ success: true, ...status });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+/** "Learn locally instead": leave the team library for the previous one, else the local file. */
+bridgeCommand
+  .command("team-db-disconnect")
+  .description(
+    "Leave the team library: back to the previous library, else local SQLite (JSON)",
+  )
+  .action(async () => {
+    try {
+      const status = await leaveTeamLibrary();
+      jsonOut({ success: true, ...status });
+    } catch (err) {
+      jsonError((err as Error).message);
     }
   });
 
@@ -5099,6 +5309,14 @@ bridgeCommand
   .requiredOption("--user <id>", "Existing user ID")
   .action(async (opts) => {
     await withDb(async (db) => {
+      if (isTeamLibrary(db)) {
+        // The connection decides who is learning (ADR 2026-09-04 Decision 2);
+        // there is no profile to pick, and user.id must not be written into
+        // the shared settings table.
+        jsonError(
+          "In the team library your identity is derived from your database login and cannot be selected.",
+        );
+      }
       const userId = String(opts.user ?? "").trim();
       const users = await readDatabaseUserSummaries(db);
       const selected = users.find((user) => user.id === userId);
@@ -5123,9 +5341,20 @@ bridgeCommand
   .requiredOption("--user <id>", "Learner ID to bind to the mobile device")
   .option("--create-user", "Create and select a learner without cards")
   .action(async (opts) => {
-    const target = getDatabaseTargetInfo();
+    let target: ReturnType<typeof getDatabaseTargetInfo>;
+    try {
+      target = getDatabaseTargetInfo();
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
     if (target.kind === "local") {
       jsonError("Mobile pairing requires a configured server database.");
+    }
+    if (target.kind === "postgres") {
+      // ADR 2026-09-04 Decision 9: mobile is not part of the team library pilot.
+      jsonError(
+        "Mobile pairing is not available for the team library yet (ADR 2026-09-04).",
+      );
     }
     const credentials = getTursoCredentials();
     if (!credentials) {
@@ -7797,7 +8026,12 @@ let bridgeExecutionQueue: Promise<unknown> = Promise.resolve();
  * this list against the commands that actually write Turso credentials.
  */
 export function retiresPersistentDatabaseHost(cmd: string): boolean {
-  return cmd === "server-db-connect";
+  return (
+    cmd === "server-db-connect" ||
+    cmd === "team-db-connect" ||
+    cmd === "library-restore" ||
+    cmd === "team-db-disconnect"
+  );
 }
 
 export function executeBridgeCommandJson(

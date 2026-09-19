@@ -1,15 +1,15 @@
-import { mkdtempSync, rmSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { join } from "node:path";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, expect, it } from "vitest";
 import {
   createToken,
   type Database,
   ensureCard,
   getDueCards,
   getDueSummary,
-  openDatabase,
 } from "../../src/kernel/index.js";
+import {
+  describeWithProviders,
+  type ProvidedDatabase,
+} from "../helpers/provider-matrix.js";
 
 const PAST = "2026-01-01T00:00:00.000Z";
 const FUTURE = "2030-01-01T00:00:00.000Z";
@@ -17,6 +17,7 @@ const FUTURE = "2030-01-01T00:00:00.000Z";
 /** Wrap a Database so every prepare() call is counted. */
 function countPrepares(db: Database, counter: { count: number }): Database {
   return {
+    dialect: db.dialect,
     prepare(sql: string) {
       counter.count++;
       return db.prepare(sql);
@@ -33,22 +34,17 @@ function countPrepares(db: Database, counter: { count: number }): Database {
  * dashboard from the bootstrap payload, and a disagreement with the queue
  * would show a count the first started session then contradicts.
  */
-describe("getDueSummary", () => {
+describeWithProviders("getDueSummary", "zam_due_summary", (provider) => {
+  let provided: ProvidedDatabase;
   let db: Database;
-  let tempDir: string;
 
   beforeEach(async () => {
-    tempDir = mkdtempSync(join(tmpdir(), "zam-due-summary-"));
-    db = await openDatabase({
-      dbPath: join(tempDir, "zam.db"),
-      initialize: true,
-      useConfiguredCloud: false,
-    });
+    provided = await provider.open();
+    db = provided.db;
   });
 
   afterEach(async () => {
-    await db.close();
-    rmSync(tempDir, { recursive: true, force: true });
+    await provided.cleanup();
   });
 
   async function dueCardWith(
@@ -63,17 +59,15 @@ describe("getDueSummary", () => {
       domain,
     });
     for (const [column, value] of Object.entries(tokenUpdate)) {
-      await db.prepare(`UPDATE tokens SET ${column} = ? WHERE id = ?`).run(
-        value,
-        token.id,
-      );
+      await db
+        .prepare(`UPDATE tokens SET ${column} = ? WHERE id = ?`)
+        .run(value, token.id);
     }
     const card = await ensureCard(db, token.id, "carol");
     for (const [column, value] of Object.entries(cardUpdate)) {
-      await db.prepare(`UPDATE cards SET ${column} = ? WHERE id = ?`).run(
-        value,
-        card.id,
-      );
+      await db
+        .prepare(`UPDATE cards SET ${column} = ? WHERE id = ?`)
+        .run(value, card.id);
     }
   }
 
@@ -86,11 +80,7 @@ describe("getDueSummary", () => {
     // Blocked: excluded from the queue.
     await dueCardWith("sum-blocked", {}, { due_at: PAST, blocked: 1 });
     // Buried into the future: excluded from the queue.
-    await dueCardWith(
-      "sum-buried",
-      {},
-      { due_at: PAST, buried_until: FUTURE },
-    );
+    await dueCardWith("sum-buried", {}, { due_at: PAST, buried_until: FUTURE });
     // Draft token: not learning content yet.
     await dueCardWith(
       "sum-draft",

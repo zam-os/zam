@@ -37,6 +37,12 @@ export interface InstallConfig {
   mode?: InstallMode;
   /** How this copy was installed; drives the self-update mechanism. */
   channel?: InstallChannel;
+  /**
+   * This install's identity for machine-scoped settings (ADR 2026-09-04
+   * Decision 4): a ULID minted once, on first use. It says "this install" and
+   * nothing about the device — no hostname, no serial.
+   */
+  machine?: { id: string };
   /** Machine-local AI provider choices; never synchronized through the DB. */
   ai?: MachineAiConfig;
   /** Machine-local agent-connect state; harness installs are per-machine. */
@@ -610,6 +616,21 @@ export function updateInstallConfig<T>(
   } finally {
     release?.();
   }
+}
+
+/**
+ * This install's id for machine-scoped settings, minted on first use and
+ * kept for the install's life. Read without the lock on the everyday path;
+ * the first-ever call takes it, so two processes starting together agree on
+ * one id.
+ */
+export function getMachineId(path = defaultConfigPath()): string {
+  const existing = loadInstallConfig(path).machine?.id;
+  if (existing && typeof existing === "string") return existing;
+  return updateInstallConfig((config) => {
+    if (!config.machine?.id) config.machine = { ...config.machine, id: ulid() };
+    return config.machine.id;
+  }, path);
 }
 
 /**

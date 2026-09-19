@@ -8,25 +8,25 @@
  * stops being tested, so this makes a matching database a one-liner:
  *
  *   npm run pg:up      # start it, print the URL
- *   npm run pg:test    # run the Postgres-backed suites against it
+ *   npm run pg:test    # run the Postgres-backed suites against it (any OS)
  *   npm run pg:down    # stop it
  *
  * Two backends, picked automatically, because contributors differ:
  *
- * - **Docker** — `postgres:17-alpine`, byte-identical to CI. Preferred.
+ * - **Docker** — `postgres:18-alpine`, byte-identical to CI. Preferred.
  * - **Local binaries** — a project-local cluster under `.pgdata/`, for
- *   machines without a container runtime (`brew install postgresql@17`).
+ *   machines without a container runtime (`brew install postgresql@18`).
  *
  * Both listen on port 55432, not 5432, so a system PostgreSQL or another
  * project's container is never disturbed.
  *
- * PostgreSQL **17**, deliberately: Entra authentication is broken on 18
- * (ADR Decision 13), so 17 is what Deployment B will run and therefore what
- * local work must match.
+ * PostgreSQL **18**: the team library runs on 18 (ADR 2026-09-04 supersedes
+ * the earlier 17 pin — Entra sign-in on 18 was verified on the real server),
+ * so local work matches it.
  */
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -37,7 +37,7 @@ const PASSWORD = "zam_password";
 const DB = "zam_test";
 const CONTAINER = "zam-pg-dev";
 const PGDATA = join(ROOT, ".pgdata");
-const IMAGE = "postgres:17-alpine";
+const IMAGE = "postgres:18-alpine";
 
 export const POSTGRES_URL = `postgres://${USER}:${PASSWORD}@localhost:${PORT}/${DB}`;
 
@@ -50,13 +50,13 @@ function dockerUsable() {
   return spawnSync("docker", ["info"], { stdio: "ignore" }).status === 0;
 }
 
-/** Locate PostgreSQL 17 binaries: PATH first, then the usual Homebrew spots. */
+/** Locate PostgreSQL 18 binaries: PATH first, then the usual Homebrew spots. */
 function findPgBin() {
   if (has("pg_ctl")) return "";
   for (const prefix of [
-    "/opt/homebrew/opt/postgresql@17/bin",
-    "/usr/local/opt/postgresql@17/bin",
-    "/usr/lib/postgresql/17/bin",
+    "/opt/homebrew/opt/postgresql@18/bin",
+    "/usr/local/opt/postgresql@18/bin",
+    "/usr/lib/postgresql/18/bin",
   ]) {
     if (existsSync(join(prefix, "pg_ctl"))) return prefix;
   }
@@ -69,7 +69,7 @@ const pgBin = (name) => {
 };
 
 /**
- * PostgreSQL 17 on recent macOS aborts at startup with "Postmaster became
+ * PostgreSQL 18 on recent macOS aborts at startup with "Postmaster became
  * multithreaded during startup" unless a concrete locale is set — the
  * Homebrew caveat says the same. Harmless elsewhere, so it is set for every
  * local invocation rather than guarded by platform.
@@ -123,7 +123,25 @@ function localUp() {
 
   if (!existsSync(PGDATA)) {
     mkdirSync(PGDATA, { recursive: true });
-    run(initdb, ["-D", PGDATA, "-U", USER, "--auth=trust", "-E", "UTF8"]);
+    // Password authentication like the Docker image: under `trust` the server
+    // never challenges the client, so the provider's per-connection password
+    // supplier is never called and `postgres-open.test.ts` cannot observe it.
+    const pwfile = join(dirname(PGDATA), ".pgdata-password");
+    writeFileSync(pwfile, `${PASSWORD}\n`);
+    try {
+      run(initdb, [
+        "-D",
+        PGDATA,
+        "-U",
+        USER,
+        "--auth=scram-sha-256",
+        `--pwfile=${pwfile}`,
+        "-E",
+        "UTF8",
+      ]);
+    } finally {
+      rmSync(pwfile, { force: true });
+    }
     // Loopback only — a dev database must not be reachable from the network.
     writeFileSync(
       join(PGDATA, "postgresql.conf"),
@@ -153,7 +171,7 @@ function localUp() {
   const q = (sql, db = "postgres") =>
     spawnSync(psql, ["-p", String(PORT), "-U", USER, "-d", db, "-tAc", sql], {
       stdio: ["ignore", "pipe", "pipe"],
-      env: PG_ENV,
+      env: { ...PG_ENV, PGPASSWORD: PASSWORD },
     });
   q(`ALTER ROLE ${USER} WITH PASSWORD '${PASSWORD}'`);
   const exists = q(
@@ -187,7 +205,7 @@ if (backend === null) {
     [
       "No PostgreSQL backend found. Either:",
       "  • start Docker (preferred — same image as CI), or",
-      "  • install binaries: brew install postgresql@17",
+      "  • install binaries: brew install postgresql@18",
       "",
       "The Postgres-backed suites skip without POSTGRES_URL; see docs/plans/.",
     ].join("\n"),
@@ -197,12 +215,39 @@ if (backend === null) {
 
 if (command === "up") {
   backend === "docker" ? dockerUp() : localUp();
-  console.log(`\nPostgreSQL 17 ready via ${backend}.`);
+  console.log(`\nPostgreSQL 18 ready via ${backend}.`);
   console.log(`POSTGRES_URL=${POSTGRES_URL}\n`);
   console.log("Run the Postgres-backed suites with:  npm run pg:test");
 } else if (command === "down") {
   backend === "docker" ? dockerDown() : localDown();
+} else if (command === "test") {
+  // `POSTGRES_URL=$(…) vitest run …` only works in a POSIX shell; npm runs
+  // scripts through cmd.exe on Windows, so the env is set here instead.
+  const suites = [
+    "tests/kernel/postgres-rls.test.ts",
+    "tests/kernel/provider-contract.test.ts",
+    "tests/kernel/postgres-provider.test.ts",
+    "tests/kernel/postgres-provision.test.ts",
+    "tests/kernel/postgres-presentation.test.ts",
+    "tests/kernel/postgres-open.test.ts",
+    "tests/kernel/postgres-identity.test.ts",
+    "tests/kernel/postgres-team.test.ts",
+    "tests/kernel/analytics-stats.test.ts",
+    "tests/kernel/progress.test.ts",
+    "tests/kernel/due-summary.test.ts",
+  ];
+  const extra = process.argv.slice(3);
+  const result = spawnSync(
+    process.platform === "win32" ? "npx.cmd" : "npx",
+    ["vitest", "run", ...(extra.length > 0 ? extra : suites)],
+    {
+      stdio: "inherit",
+      env: { ...process.env, POSTGRES_URL },
+      shell: process.platform === "win32",
+    },
+  );
+  process.exit(result.status ?? 1);
 } else {
-  console.error(`Unknown command: ${command} (use up | down | url)`);
+  console.error(`Unknown command: ${command} (use up | down | url | test)`);
   process.exit(1);
 }

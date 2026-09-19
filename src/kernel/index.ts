@@ -59,29 +59,44 @@ export type {
   ADOCredentials,
   CredentialCheckEntry,
   Credentials,
+  LibraryKind,
+  PostgresAuthMode,
+  PostgresCredentials,
+  PreviousLibrary,
   StoredCredentials,
+  StoredPostgresCredentials,
+  StoredPreviousLibrary,
   TursoCredentials,
 } from "./credentials.js";
 // Credentials (stored in ~/.zam/credentials.json, survives db deletion)
 export {
   checkCredentials,
   clearADOCredentials,
+  clearPostgresCredentials,
+  clearPreviousLibrary,
   clearProviderApiKey,
   clearTursoCredentials,
+  configuredLibraryKind,
   credentialsNeedVaultAccess,
   getADOCredentials,
+  getPostgresCredentials,
+  getPreviousLibrary,
   getProviderApiKey,
   getTursoCredentials,
   invalidateCredentialsSnapshot,
+  keepLibraryAsPrevious,
   listProviderApiKeyRefs,
   loadCredentials,
   loadStoredCredentials,
   looksLikeSecretUri,
+  postgresVaultAccessPending,
   resetCredentialsResolutionState,
   resolveCredentials,
+  restorePreviousLibrary,
   saveCredentials,
   secretRefFromUri,
   setADOCredentials,
+  setPostgresCredentials,
   setProviderApiKey,
   setTursoCredentials,
   tursoVaultAccessPending,
@@ -93,14 +108,22 @@ export type {
   DatabaseTargetInfo,
 } from "./db/connection.js";
 export {
+  describePostgresTarget,
   getDatabaseTargetInfo,
   getDefaultDbPath,
   isTransientRemoteDatabaseError,
   openDatabase,
   openDatabaseWithSync,
+  openPostgresAdministration,
   openReadOnlySqliteDatabase,
+  postgresSslFor,
+  registerPostgresPasswordSupplier,
+  resetPostgresPasswordSuppliers,
 } from "./db/connection.js";
-export type { PostgresDatabaseOptions } from "./db/postgres.js";
+export type {
+  PostgresDatabaseOptions,
+  PostgresPasswordSupplier,
+} from "./db/postgres.js";
 export { openPostgresDatabase } from "./db/postgres.js";
 // Provisioning is deliberately also importable directly from
 // `db/provision.js`: the mobile WebView cannot load this barrel, which reaches
@@ -121,10 +144,12 @@ export {
   SNAPSHOT_VERSION,
   verifySnapshot,
 } from "./db/snapshot.js";
+export { dialectOf, nowIso, parseStoredTimestampUtc } from "./db/sql.js";
 export type {
   Database,
   DatabaseValue,
   RunResult,
+  SqlDialect,
   Statement,
 } from "./db/types.js";
 export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";
@@ -282,6 +307,7 @@ export type {
   CreateAssignmentInput,
 } from "./models/assignment.js";
 export {
+  bindStandingAssignments,
   createAssignment,
   getAssignment,
   listAssignmentsByAssigner,
@@ -306,6 +332,7 @@ export {
   getCardDeletionImpact,
   getDueCards,
   getDueSummary,
+  hasStandingAssignment,
   reattachCardForUser,
   resetCardsForToken,
   updateCard,
@@ -382,14 +409,23 @@ export {
   logStep,
   startSession,
 } from "./models/session.js";
-export type { UserSetting } from "./models/settings.js";
+export type {
+  SettingScope,
+  SettingsScope,
+  SettingsScopeResolver,
+  UserSetting,
+} from "./models/settings.js";
 export {
+  bindSettingsScope,
   deleteSetting,
+  forgetSettingsScope,
   getAllSettings,
   getAllSettingsDetailed,
   getSetting,
   getSettings,
+  registerSettingsScopeResolver,
   setSetting,
+  settingScopeOf,
 } from "./models/settings.js";
 export type {
   BloomLevel,
@@ -812,6 +848,7 @@ export {
   getMachineAiConfig,
   getMachineAiModels,
   getMachineCompanionConfig,
+  getMachineId,
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,

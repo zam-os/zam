@@ -8,14 +8,14 @@ resource before Phase 8.
 **Status:**
 
 - [x] Phase 0 — ADR proposed; company specifics removed from the repository
-- [ ] Phase 1 — Dialect foundation: ISO timestamps, `dialect`, Postgres in the model-test matrix
-- [ ] Phase 2 — `postgres` provider wired in; `native` and the embedded replica retired
-- [ ] Phase 3 — Derived identity and team mode
-- [ ] Phase 4 — Settings scopes: `user_settings`, machine id
-- [ ] Phase 5 — RLS completion, group roles, schema-derived coverage test
-- [ ] Phase 6 — `zam team` administration commands and the generic runbook
-- [ ] Phase 7 — Desktop "Connect to team library", disclosure, `zam doctor`
-- [ ] Phase 8 — Server creation, `zam_test` pilot with two or three colleagues, then `zam_prod`
+- [~] Phase 1 — Dialect foundation: ISO timestamps, `dialect` (2026-09-18). **Open:** the provider matrix covers the stats, progress and due-summary suites; `queue`, `card-detach`, `library-revision`, `assignment` and `token-embeddings` still run on SQLite only
+- [x] Phase 2 — `postgres` provider wired in (2026-09-18). **Open:** retiring `native` and the embedded replica ships as its own PR — a packaging change that must not ride along with the pilot's client work
+- [~] Phase 3 — Derived identity and team mode (2026-09-18; `database-select-user` is refused on the team library). **Open:** the single-context rule (active context = the `team` row, picker hidden) is not implemented; the Studio still shows its profile picker although it cannot change the identity
+- [x] Phase 4 — Settings scopes (2026-09-19): `user_settings` (M034), the install id in `~/.zam/config.json`, the key registry and one `getSetting`/`setSetting` API resolving machine → person → library; the CLI registers the scope (derived learner or `user.id`, plus the install id). **Deviation from the plan text:** on a personal library person keys stay in `user_config` (one person, so person = library) and machine writes are mirrored there — nothing a learner configured moves, and older clients and the mobile companion keep reading the old place. On the team library nothing but library keys touches `user_config`, and members have no write on it
+- [~] Phase 5 — RLS completion, group roles, schema-derived coverage test — the group roles `zam_member`/`zam_curator` with explicit per-class grants, the `assignments` policies (read for both parties, writes for the assigner only; the assignee's queue build binds the card) and a classification-completeness test landed with Phase 6 (2026-09-18). The `user_settings` policy landed with Phase 4 (2026-09-19), and the exposure that every member could write the shared `user_config` is closed: members read it, curators write it. **Open:** the derived RLS coverage test (the classification-completeness test covers the grants side)
+- [x] Phase 6 — `zam team` administration commands (2026-09-18: `provision`, `add-member`, `remove-member`, `members`; Entra principals via pgaadauth, existing roles on password servers); the generic runbook is the ADR appendix and the colleague's side is `docs/team-library.md`
+- [~] Phase 7 — Desktop "Connect to team library", disclosure, `zam doctor` (2026-09-19): the server-database card switches a machine between a personal Turso database and the team library in both directions (`team-db-connect`, `entra-login` = "Sign in with Microsoft", `library-restore`, `team-db-disconnect` = "Learn locally instead"), keeps the replaced connection as the previous library, shows the disclosure once and keeps its text; `zam connector restore` and `clear previous` on the CLI; `zam doctor team-library`. **Open:** the click-through in the built Desktop app (the wiring is pinned by `tests/desktop/library-switch-wiring.test.ts`, the bridge path by `tests/cli/bridge-library-switch.test.ts` and against the pilot server)
+- [~] Phase 8 — Server created and the first database provisioned as a team library on 2026-09-18 (PostgreSQL 18, Entra-only, the administrator mapped as the first member, one review round trip verified over the Entra token path). The colleague pilot waits for Phase 7, or for colleagues comfortable with `zam connector setup postgres` in a terminal
 - [ ] Final check — every ADR decision mapped to a shipped phase (table at the end)
 
 ## Ground rules for every phase
@@ -137,10 +137,34 @@ Acceptance: two colleagues on one Docker database keep separate locales and
 separate local-model endpoints; a person's locale set on machine A appears on
 machine B.
 
+**Shipped 2026-09-19** (`src/kernel/models/settings.ts`,
+`tests/kernel/settings-scopes.test.ts` on both providers, the team and RLS
+suites for the grants and the policy). Two deliberate differences from the
+text above:
+
+- **Read-through, no move.** A key still in `user_config` is read from there
+  until the scope writes its own row; nothing is deleted from the old place.
+- **Personal libraries keep person keys in `user_config`** and mirror every
+  machine-scope write there. One person owns the library, so person and
+  library are the same thing; the mirror is what keeps an older client on a
+  second machine and the mobile companion (which reads `user_config`
+  directly) seeing the last value. Only the team library (`shared: true`)
+  routes person keys to `user_settings` and leaves `user_config` to curators.
+- The API signature did not change: `getSetting(db, key)` stays; whose rows
+  are meant comes from a scope the CLI binds per handle
+  (`registerCliSettingsScope`, ADR Decision 4). A host without a resolver —
+  the mobile companion, embedded callers — keeps the library-only behaviour.
+- `llm.providers`/`llm.roles` are person keys (the per-install variant is
+  `~/.zam/config.json`); `agent.<harness>.command` and `ai.models.cloud` are
+  machine keys; `search.*` thresholds are library keys.
+
 ## Phase 5 — RLS completion and roles
 
-- Policies for `session_syntheses`, `user_settings`, `assignments`
-  (`assigner_id = current_learner_id() OR assignee_id = current_learner_id()`).
+- Policies for `session_syntheses`, `user_settings`, `assignments` (read:
+  `assigner_id = current_learner_id() OR assignee_id = current_learner_id()`;
+  insert, update and delete: the assigner only — separate policies, never one
+  `FOR ALL`). Assignments bind lazily: the assignee's next queue build creates
+  and binds the card, since nobody may write another learner's state.
 - Group roles `zam_owner` (schema owner, NOLOGIN), `zam_member`, `zam_curator`
   with the grants the ADR names; `grantsForLearnerRoleSql` grants membership
   instead of table rights.
@@ -185,8 +209,21 @@ review round trip, all through the CLI.
 - Verify in the real host per the repo rule (VSIX or Desktop build, intent,
   screenshot or log), not only unit tests.
 
+- **Both directions, one flow each (owner, 2026-09-19).** Switching a
+  machine between a personal Turso database and the team library must be as
+  easy from the Studio as getting a fresh Turso token is on turso.tech (Google
+  sign-in, copy). Turso side: the existing server-database card, plus a
+  button that opens the Turso dashboard for the token and a paste field.
+  Team side: host and database, an **Sign in with Microsoft** step that runs
+  `az login` from the app when the CLI reports no login, identity derived.
+  Switching replaces the other connection after one confirmation and keeps
+  the replaced connection (URL, mode, token) as `previous` in
+  `credentials.json`, so switching back is one click and needs no new token.
+  The CLI's `--replace` gains the same keep-and-restore behaviour.
+
 Acceptance: a colleague with `az login` done connects from the Studio without
-a terminal and sees the disclosure exactly once.
+a terminal and sees the disclosure exactly once; the owner switches this
+machine from Turso to the team library and back from Settings alone.
 
 ## Phase 8 — Server and pilot
 

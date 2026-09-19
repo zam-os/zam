@@ -15,6 +15,7 @@ export function wrapSyncDatabase(driver: SyncDatabase): Database {
   let txTail: Promise<unknown> = Promise.resolve();
 
   const db: Database = {
+    dialect: "sqlite",
     prepare(sql: string) {
       return {
         async run(...params: unknown[]) {

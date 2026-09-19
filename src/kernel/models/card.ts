@@ -6,6 +6,7 @@
  */
 
 import { ulid } from "ulid";
+import { dialectOf } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
@@ -311,13 +312,30 @@ async function assertNotBoundByAssignment(
   card: Card,
   action: string,
 ): Promise<void> {
-  if (!card.assignment_id) return;
-  const assignment = (await db
-    .prepare("SELECT withdrawn_at FROM assignments WHERE id = ?")
-    .get(card.assignment_id)) as { withdrawn_at: string | null } | undefined;
-  if (assignment && assignment.withdrawn_at === null) {
+  if (await hasStandingAssignment(db, card.token_id, card.user_id)) {
     throw new Error(`Cannot ${action} card: bound by an active assignment.`);
   }
+}
+
+/**
+ * True while any assignment to `userId` for `tokenId` stands. The
+ * assignments table *is* the binding; the card's `assignment_id` is
+ * provenance that lags until the learner's client binds the card
+ * (`bindStandingAssignments`), so refusals ask the table, not the card.
+ */
+export async function hasStandingAssignment(
+  db: Database,
+  tokenId: string,
+  userId: string,
+): Promise<boolean> {
+  const row = await db
+    .prepare(
+      `SELECT 1 AS standing FROM assignments
+        WHERE token_id = ? AND assignee_id = ? AND withdrawn_at IS NULL
+        LIMIT 1`,
+    )
+    .get(tokenId, userId);
+  return row !== undefined;
 }
 
 /**
@@ -482,12 +500,19 @@ export async function getDueSummary(
 
   // The scalar subquery's `?` precedes the eligibility placeholders in the
   // SQL text, so its userId parameter comes first.
+  // SQLite's json_group_array has no PostgreSQL twin: json_agg over zero
+  // rows is NULL rather than '[]', and pg would parse a json-typed column
+  // into objects before `JSON.parse` sees it — hence COALESCE and ::text.
+  const domainsExpr =
+    dialectOf(db) === "postgres"
+      ? "COALESCE(json_agg(DISTINCT t.domain), '[]')::text"
+      : "json_group_array(DISTINCT t.domain)";
   const row = (await db
     .prepare(
       `SELECT
-         json_group_array(DISTINCT t.domain) AS domains,
-         COUNT(*) AS dueCount,
-         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS cardsInDeck
+         ${domainsExpr} AS domains,
+         COUNT(*) AS "dueCount",
+         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS "cardsInDeck"
        ${DUE_CARD_SOURCE}`,
     )
     .get(userId, userId, cutoff, cutoff)) as {

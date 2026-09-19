@@ -1,0 +1,211 @@
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
+import {
+  currentUserIdOrNull,
+  describeIdentity,
+  ensureDefaultUser,
+  forgetDerivedIdentity,
+  humanIdentityMessage,
+  IdentityMismatchError,
+  NotAMemberError,
+  resolveLearnerId,
+  resolveSettingsScope,
+  resolveUser,
+} from "../../src/cli/users/identity.js";
+import type { Database } from "../../src/kernel/index.js";
+import {
+  getMachineId,
+  openDatabase,
+  setSetting,
+} from "../../src/kernel/index.js";
+
+// The settings scope reads this install's id from the config file; point it
+// at a scratch file so the suite never touches the developer's own config.
+let configDir: string;
+const previousConfigPath = process.env.ZAM_CONFIG_PATH;
+beforeAll(() => {
+  configDir = mkdtempSync(join(tmpdir(), "zam-identity-config-"));
+  process.env.ZAM_CONFIG_PATH = join(configDir, "config.json");
+});
+afterAll(() => {
+  if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+  else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+  rmSync(configDir, { recursive: true, force: true });
+});
+
+/**
+ * ADR 2026-09-04 Decision 2: on the team library the identity is the
+ * connection. The PostgreSQL leg (`tests/kernel/postgres-identity.test.ts`)
+ * proves it against real roles; this suite pins the client rules with a
+ * stand-in database that answers `current_learner_id()` like the server.
+ */
+function teamDb(answer: {
+  role: string | null;
+  learner: string | null;
+}): Database & { queries: number } {
+  const db = {
+    dialect: "postgres" as const,
+    queries: 0,
+    prepare() {
+      return {
+        async run() {
+          return { changes: 0, lastInsertRowid: 0 };
+        },
+        async get() {
+          db.queries += 1;
+          return answer;
+        },
+        async all() {
+          return [answer];
+        },
+      };
+    },
+    async exec() {},
+    async pragma() {
+      return [];
+    },
+    async transaction<T>(fn: (tx: Database) => Promise<T>) {
+      return fn(db as unknown as Database);
+    },
+    async close() {},
+  };
+  return db as unknown as Database & { queries: number };
+}
+
+const ALICE = "01JALICE0000000000000000";
+
+describe("team library identity", () => {
+  it("derives the learner from the connection and never writes user.id", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    expect(await resolveLearnerId(db)).toBe(ALICE);
+    expect(await ensureDefaultUser(db, "someone-else")).toBe(ALICE);
+    expect(await describeIdentity(db)).toEqual({
+      userId: ALICE,
+      source: "team-library",
+      role: "alice@example.org",
+    });
+  });
+
+  it("resolves once per handle and remembers it for the host's lifetime", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    await resolveLearnerId(db);
+    await resolveLearnerId(db);
+    await currentUserIdOrNull(db);
+    expect(db.queries).toBe(1);
+  });
+
+  it("accepts an explicit id only when it equals the derived one", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    expect(await resolveLearnerId(db, ALICE)).toBe(ALICE);
+    await expect(
+      resolveLearnerId(db, "01JBOB000000000000000000"),
+    ).rejects.toThrow(IdentityMismatchError);
+  });
+
+  it("locks an unmapped role out with one plain message, and forgets the failure", async () => {
+    const answer = {
+      role: "newcomer@example.org",
+      learner: null as string | null,
+    };
+    const db = teamDb(answer);
+    const error = await resolveLearnerId(db).catch((e) => e);
+    expect(error).toBeInstanceOf(NotAMemberError);
+    expect((error as Error).message).toMatch(/not yet a member/);
+    expect((error as Error).message).toMatch(/newcomer@example.org/);
+    expect(await currentUserIdOrNull(db)).toBeNull();
+    expect(await describeIdentity(db)).toEqual({
+      userId: null,
+      source: "team-library",
+      role: "newcomer@example.org",
+    });
+
+    // The administrator maps the role while the host keeps running: the next
+    // command sees it — a failed derivation was not cached.
+    answer.learner = ALICE;
+    forgetDerivedIdentity(db);
+    expect(await resolveLearnerId(db)).toBe(ALICE);
+  });
+});
+
+describe("resolveUser for bridge callers", () => {
+  it("throws instead of exiting so a serving bridge host stays alive", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    await expect(
+      resolveUser({ user: "01JBOB000000000000000000" }, db, { json: true }),
+    ).rejects.toThrow(/IDENTITY_MISMATCH/);
+    const nobody = teamDb({ role: "newcomer@example.org", learner: null });
+    await expect(resolveUser({}, nobody, { json: true })).rejects.toThrow(
+      /NOT_A_MEMBER/,
+    );
+    expect(await resolveUser({}, db, { json: true })).toBe(ALICE);
+  });
+
+  it("strips the machine-readable prefix for people", () => {
+    expect(
+      humanIdentityMessage(new NotAMemberError("newcomer@example.org").message),
+    ).toMatch(/^Your account is not yet a member/);
+    expect(
+      humanIdentityMessage(new IdentityMismatchError("a", "b").message),
+    ).toMatch(/^The team library identifies you/);
+  });
+});
+
+describe("settings scope", () => {
+  it("is the derived learner on the team library, shared", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    expect(await resolveSettingsScope(db)).toEqual({
+      userId: ALICE,
+      machineId: getMachineId(),
+      shared: true,
+    });
+    // Not a member: no scope — the caller falls back to library reads.
+    await expect(
+      resolveSettingsScope(
+        teamDb({ role: "newcomer@example.org", learner: null }),
+      ),
+    ).rejects.toThrow(NotAMemberError);
+  });
+
+  it("is the configured user.id on a personal library, not shared", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      useConfiguredCloud: false,
+    });
+    try {
+      expect(await resolveSettingsScope(db)).toBeNull();
+      await setSetting(db, "user.id", "klara");
+      expect(await resolveSettingsScope(db)).toEqual({
+        userId: "klara",
+        machineId: getMachineId(),
+        shared: false,
+      });
+    } finally {
+      await db.close();
+    }
+  });
+});
+
+describe("personal library identity", () => {
+  it("keeps the explicit id, the stored default and the null case", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      useConfiguredCloud: false,
+    });
+    try {
+      expect(await resolveLearnerId(db)).toBeNull();
+      expect(await resolveLearnerId(db, "explicit")).toBe("explicit");
+      await setSetting(db, "user.id", "configured");
+      expect(await resolveLearnerId(db)).toBe("configured");
+      expect(await resolveLearnerId(db, "other")).toBe("other");
+      expect(await describeIdentity(db)).toEqual({
+        userId: "configured",
+        source: "configured",
+        role: null,
+      });
+    } finally {
+      await db.close();
+    }
+  });
+});

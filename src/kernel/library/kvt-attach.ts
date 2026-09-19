@@ -40,6 +40,7 @@
  *   legitimately ask the same thing.
  */
 
+import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
@@ -290,10 +291,10 @@ async function applyDeclaredReplacements(
     }
     await tx
       .prepare(
-        `UPDATE tokens SET deprecated_at = COALESCE(deprecated_at, datetime('now'))
+        `UPDATE tokens SET deprecated_at = COALESCE(deprecated_at, ?)
           WHERE id = ?`,
       )
-      .run(oldId);
+      .run(nowIso(), oldId);
     moved += 1;
   }
   return moved;
@@ -708,12 +709,12 @@ export async function installKvtTile(
       await tx
         .prepare(
           `UPDATE tokens
-              SET deprecated_at = COALESCE(deprecated_at, datetime('now')),
+              SET deprecated_at = COALESCE(deprecated_at, ?),
                   editorial_state = 'deprecated',
-                  updated_at = datetime('now')
+                  updated_at = ?
             WHERE id = ?`,
         )
-        .run(retired.id);
+        .run(nowIso(), nowIso(), retired.id);
     }
 
     // Re-project the legacy fields for every atom the tile touched: a binding

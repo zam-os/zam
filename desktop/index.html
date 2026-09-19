@@ -721,36 +721,79 @@
               </div>
             </div>
             <div id="server-db-form" class="settings-stack">
-              <p id="server-db-create-hint" class="settings-card-help">
-                No database yet? Create a free one, then paste its URL and token here.
-              </p>
-              <div id="server-db-links" class="settings-card-actions"></div>
-              <label class="settings-field" for="server-db-url">
-                <span id="lbl-server-db-url">Database URL</span>
-                <input
-                  id="server-db-url"
-                  class="settings-input"
-                  type="url"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
-              </label>
-              <label class="settings-field" for="server-db-token">
-                <span id="lbl-server-db-token">Auth token</span>
-                <input
-                  id="server-db-token"
-                  class="settings-input"
-                  type="password"
-                  autocomplete="off"
-                  spellcheck="false"
-                />
-              </label>
-              <div class="settings-card-actions">
-                <button id="btn-server-db-connect" class="btn primary-btn btn-sm" type="button">
-                  Connect server database
-                </button>
-              </div>
               <p id="server-db-status" class="sub-label" aria-live="polite"></p>
+              <div id="team-db-notice" class="settings-card-help" hidden>
+                <p id="team-db-disclosure"></p>
+                <div id="team-db-disclosure-actions" class="settings-card-actions" hidden>
+                  <button id="btn-team-db-understood" class="btn primary-btn btn-sm" type="button">Understood</button>
+                  <button id="btn-team-db-learn-locally" class="btn secondary-btn btn-sm" type="button">Learn locally instead</button>
+                </div>
+              </div>
+              <div id="library-switch-back" class="settings-card-actions" hidden>
+                <button id="btn-library-restore" class="btn secondary-btn btn-sm" type="button">Switch back</button>
+                <button id="btn-team-db-leave" class="btn secondary-btn btn-sm" type="button">Leave the team library</button>
+              </div>
+              <div id="server-db-turso-section" class="settings-stack">
+                <h3 id="lbl-server-db-turso-title" class="sub-label">Personal server database (Turso)</h3>
+                <p id="server-db-create-hint" class="settings-card-help">
+                  No database yet? Create a free one, then paste its URL and token here.
+                </p>
+                <div id="server-db-links" class="settings-card-actions"></div>
+                <label class="settings-field" for="server-db-url">
+                  <span id="lbl-server-db-url">Database URL</span>
+                  <input
+                    id="server-db-url"
+                    class="settings-input"
+                    type="url"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+                <label class="settings-field" for="server-db-token">
+                  <span id="lbl-server-db-token">Auth token</span>
+                  <input
+                    id="server-db-token"
+                    class="settings-input"
+                    type="password"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+                <div class="settings-card-actions">
+                  <button id="btn-server-db-connect" class="btn primary-btn btn-sm" type="button">
+                    Connect server database
+                  </button>
+                </div>
+              </div>
+              <div id="team-db-section" class="settings-stack">
+                <h3 id="lbl-team-db-title" class="sub-label">Team library</h3>
+                <p id="lbl-team-db-help" class="settings-card-help"></p>
+                <label class="settings-field" for="team-db-host">
+                  <span id="lbl-team-db-host">Server host</span>
+                  <input
+                    id="team-db-host"
+                    class="settings-input"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+                <label class="settings-field" for="team-db-database">
+                  <span id="lbl-team-db-database">Database</span>
+                  <input
+                    id="team-db-database"
+                    class="settings-input"
+                    type="text"
+                    autocomplete="off"
+                    spellcheck="false"
+                  />
+                </label>
+                <div class="settings-card-actions">
+                  <button id="btn-team-db-signin" class="btn secondary-btn btn-sm" type="button">Sign in with Microsoft</button>
+                  <button id="btn-team-db-connect" class="btn primary-btn btn-sm" type="button">Connect to team library</button>
+                </div>
+                <p id="team-db-status" class="sub-label" aria-live="polite"></p>
+              </div>
             </div>
           </article>
 

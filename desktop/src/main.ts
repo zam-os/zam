@@ -316,7 +316,12 @@ interface DatabaseStatusResponse {
   success: boolean;
   connected: boolean;
   target: {
-    kind: "local" | "turso-native" | "turso-remote" | "turso-replica";
+    kind:
+      | "local"
+      | "turso-native"
+      | "turso-remote"
+      | "turso-replica"
+      | "postgres";
     location: string;
     syncUrl?: string;
   };
@@ -1054,6 +1059,29 @@ function initializeTranslations() {
     t("server_db_token_ph");
   document.getElementById("btn-server-db-connect")!.textContent =
     t("server_db_connect");
+  document.getElementById("lbl-server-db-turso-title")!.textContent =
+    t("server_db_turso_title");
+  document.getElementById("lbl-team-db-title")!.textContent = t("team_db_title");
+  document.getElementById("lbl-team-db-help")!.textContent = t("team_db_help");
+  document.getElementById("lbl-team-db-host")!.textContent = t("team_db_host");
+  document.getElementById("lbl-team-db-database")!.textContent =
+    t("team_db_database");
+  (document.getElementById("team-db-host") as HTMLInputElement).placeholder =
+    t("team_db_host_ph");
+  (document.getElementById("team-db-database") as HTMLInputElement).placeholder =
+    t("team_db_database_ph");
+  document.getElementById("btn-team-db-signin")!.textContent =
+    t("team_db_signin");
+  document.getElementById("btn-team-db-connect")!.textContent =
+    t("team_db_connect");
+  document.getElementById("team-db-disclosure")!.textContent =
+    t("team_db_disclosure");
+  document.getElementById("btn-team-db-understood")!.textContent =
+    t("team_db_understood");
+  document.getElementById("btn-team-db-learn-locally")!.textContent =
+    t("team_db_learn_locally");
+  document.getElementById("btn-team-db-leave")!.textContent =
+    t("team_db_leave");
 
   document.getElementById("lbl-settings-secrets-title-text")!.textContent =
     t("secrets_vault_title");
@@ -4871,7 +4899,9 @@ async function loadDatabaseStatus(): Promise<void> {
     status.textContent =
       result.target.kind === "local"
         ? t("database_status_local")
-        : t("database_status_turso");
+        : result.target.kind === "postgres"
+          ? t("database_status_team")
+          : t("database_status_turso");
     detail.textContent = tf("database_detail", {
       location: result.target.location,
       profile: result.userId ?? t("database_no_profile"),

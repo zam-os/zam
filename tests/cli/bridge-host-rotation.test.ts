@@ -21,14 +21,20 @@ describe("persistent database host rotation", () => {
     "utf-8",
   );
 
-  /** Bridge commands whose body writes Turso credentials. */
+  /**
+   * Bridge commands whose body changes the configured library: writing Turso
+   * credentials directly, or switching through `library-switch.ts` (the team
+   * library connect, restore and leave paths of pilot plan phase 7).
+   */
   const targetChangingCommands = (): string[] => {
     const declarations = [...source.matchAll(/\.command\(\s*"([^"]+)"/g)];
     const names = new Set<string>();
     // A call site belongs to the nearest `.command("…")` declared above it;
     // the bare identifier in the import list carries no parenthesis and so
     // never matches.
-    for (const call of source.matchAll(/setTursoCredentials\(/g)) {
+    for (const call of source.matchAll(
+      /(?:setTursoCredentials|connectTeamLibrary|restoreLibrary|leaveTeamLibrary)\(/g,
+    )) {
       const enclosing = declarations.filter(
         (declaration) => declaration.index < (call.index ?? 0),
       );

@@ -21,8 +21,9 @@ import { SCHEMA } from "../../src/kernel/db/schema.js";
  *
  *   npm run pg:up && npm run pg:test
  *
- * CI always runs it (`postgres:17-alpine`; 17 because Entra auth is broken
- * on 18).
+ * CI always runs it (`postgres:18-alpine`, the version the team library
+ * runs on — Entra sign-in on 18 was verified on the real server, ADR
+ * 2026-09-04).
  */
 const POSTGRES_URL = process.env.POSTGRES_URL;
 
@@ -40,10 +41,20 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
    * transaction this provider takes a fresh client per query and the role
    * would silently not apply — the test would measure nothing.
    */
+  /**
+   * Own schema, not `public`: other Postgres suites run in parallel workers
+   * against the same database, and `GRANT ... ON ALL TABLES IN SCHEMA public`
+   * racing another suite's `DROP TABLE` in `public` fails both with
+   * "tuple concurrently updated". A schema per suite ends the contention.
+   */
+  const SCHEMA_NAME = "zam_rls";
+
   async function withSession<T>(
     fn: (tx: Awaited<ReturnType<typeof openPostgresDatabase>>) => Promise<T>,
   ): Promise<T> {
-    const db = openPostgresDatabase({ connectionString: POSTGRES_URL });
+    const db = openPostgresDatabase({
+      connectionString: `${POSTGRES_URL}?options=-c%20search_path%3D${SCHEMA_NAME}`,
+    });
     try {
       return await db.transaction(async (tx) => fn(tx));
     } finally {
@@ -56,17 +67,8 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
     tx: Awaited<ReturnType<typeof openPostgresDatabase>>,
   ): Promise<void> {
     await tx.exec(`
-      DROP TABLE IF EXISTS session_syntheses CASCADE;
-      DROP TABLE IF EXISTS review_attempts CASCADE;
-      DROP TABLE IF EXISTS card_presentations CASCADE;
-      DROP TABLE IF EXISTS session_steps CASCADE;
-      DROP TABLE IF EXISTS sessions CASCADE;
-      DROP TABLE IF EXISTS review_logs CASCADE;
-      DROP TABLE IF EXISTS cards CASCADE;
-      DROP TABLE IF EXISTS assignments CASCADE;
-      DROP TABLE IF EXISTS prerequisites CASCADE;
-      DROP TABLE IF EXISTS tokens CASCADE;
-      DROP TABLE IF EXISTS learner_principals CASCADE;
+      DROP SCHEMA IF EXISTS ${SCHEMA_NAME} CASCADE;
+      CREATE SCHEMA ${SCHEMA_NAME};
     `);
     await tx.exec(SCHEMA);
     await tx.exec(DEPLOYMENT_RLS_SQL);
@@ -81,7 +83,7 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
         END
         $$;
       `);
-      await tx.exec(grantsForLearnerRoleSql(role));
+      await tx.exec(grantsForLearnerRoleSql(role, SCHEMA_NAME));
     }
 
     // Only alice and bob are mapped; unmapped_role deliberately is not.
@@ -179,12 +181,31 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
            ) VALUES ('att_alice', ?, 'tok1', 'user', 'direct', 'rated')`,
         )
         .run(ALICE);
+      await tx
+        .prepare(
+          `INSERT INTO user_settings (user_id, machine_id, key, value, updated_at)
+           VALUES (?, '', 'system.locale', 'de', '2026-09-19T00:00:00.000Z')`,
+        )
+        .run(ALICE);
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
       await asRole(tx, "bob_role");
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
+      expect(
+        await tx.prepare("SELECT * FROM user_settings").all(),
+      ).toHaveLength(0);
+      await tx.exec("SAVEPOINT forge_setting");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO user_settings (user_id, machine_id, key, value, updated_at)
+             VALUES (?, '', 'system.locale', 'fr', '2026-09-19T00:00:00.000Z')`,
+          )
+          .run(ALICE),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_setting");
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
@@ -240,6 +261,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       expect(
         await tx.prepare("SELECT * FROM review_attempts").all(),
       ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM user_settings").all(),
+      ).toHaveLength(1);
     });
   });
 
@@ -263,6 +287,76 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
         .get()) as { learner: string | null };
       expect(learner.learner).toBeNull();
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
+    });
+  });
+
+  it("lets the assignee see an assignment but never take it over", async () => {
+    // ADR 2026-07-04 Decision 10: visible to both, owned by the assigner. A
+    // single FOR ALL policy with the wider USING would let Bob delete the
+    // row (DELETE checks USING only) or rewrite assigner_id to himself.
+    await withSession(async (tx) => {
+      await seed(tx);
+      await asRole(tx, "alice_role");
+      await tx
+        .prepare(
+          `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+           VALUES ('asg1', 'tok1', ?, ?)`,
+        )
+        .run(ALICE, BOB);
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "bob_role");
+      expect(await tx.prepare("SELECT id FROM assignments").all()).toEqual([
+        { id: "asg1" },
+      ]);
+      const attempts = [
+        "UPDATE assignments SET withdrawn_at = '2026-01-01T00:00:00.000Z' WHERE id = 'asg1'",
+        `UPDATE assignments SET assigner_id = '${BOB}' WHERE id = 'asg1'`,
+        "DELETE FROM assignments WHERE id = 'asg1'",
+      ];
+      for (const sql of attempts) {
+        expect((await tx.prepare(sql).run()).changes, sql).toBe(0);
+      }
+      await tx.exec("SAVEPOINT forge");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+             VALUES ('forged', 'tok1', ?, ?)`,
+          )
+          .run(ALICE, BOB),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge");
+      // Bob may assign in his own name; a third party sees neither.
+      await tx
+        .prepare(
+          `INSERT INTO assignments (id, token_id, assigner_id, assignee_id)
+           VALUES ('asg2', 'tok1', ?, ?)`,
+        )
+        .run(BOB, ALICE);
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "unmapped_role");
+      expect(await tx.prepare("SELECT id FROM assignments").all()).toHaveLength(
+        0,
+      );
+
+      await tx.exec("SET LOCAL ROLE NONE");
+      await asRole(tx, "alice_role");
+      expect(
+        (
+          await tx
+            .prepare(
+              "UPDATE assignments SET withdrawn_at = '2026-01-01T00:00:00.000Z' WHERE id = 'asg1'",
+            )
+            .run()
+        ).changes,
+      ).toBe(1);
+      expect(
+        (await tx.prepare("SELECT id FROM assignments ORDER BY id").all()).map(
+          (row) => (row as { id: string }).id,
+        ),
+      ).toEqual(["asg1", "asg2"]);
     });
   });
 
