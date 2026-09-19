@@ -237,7 +237,7 @@ bridge's JSON helpers.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
 - Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
