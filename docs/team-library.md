@@ -38,6 +38,15 @@ A machine is bound to one library. If a personal Turso database is configured
 here, `setup postgres` refuses until you clear it (`zam connector clear turso`)
 or pass `--replace`.
 
+## Your settings are yours
+
+Locale, review method, quick mode and study settings follow you to every
+machine you connect from. Local model endpoints, observer policy and paths
+follow the machine (each install carries its own id, minted once — no
+hostname, no serial). Both live in your own rows, which no other member can
+read or change. A curator can set library-wide defaults (for example a
+shared model endpoint); your own value always wins over a default.
+
 ## Every surface follows
 
 The CLI, the Studio, `zam mcp` (agents) and the VS Code Companion all open the

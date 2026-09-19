@@ -308,11 +308,24 @@ CREATE TABLE IF NOT EXISTS token_sources (
   PRIMARY KEY (token_id, source_id)
 );
 
--- User configuration
+-- Library-wide configuration: the library's identity and curator defaults
 CREATE TABLE IF NOT EXISTS user_config (
   key         TEXT PRIMARY KEY,
   value       TEXT NOT NULL,
   updated_at  TEXT NOT NULL DEFAULT (datetime('now'))
+);
+
+-- Person and machine settings (ADR 2026-09-04 Decision 4). machine_id '' is
+-- the person row that follows the learner everywhere; otherwise the ULID of
+-- one install (never a hostname or serial). Resolution: machine → person →
+-- user_config.
+CREATE TABLE IF NOT EXISTS user_settings (
+  user_id     TEXT NOT NULL,
+  machine_id  TEXT NOT NULL DEFAULT '',
+  key         TEXT NOT NULL,
+  value       TEXT NOT NULL,
+  updated_at  TEXT NOT NULL,
+  PRIMARY KEY (user_id, machine_id, key)
 );
 
 -- Token embeddings: one vector per token for semantic search (ADR 2026-07-03).
@@ -455,6 +468,7 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_atom_day
 CREATE UNIQUE INDEX IF NOT EXISTS ux_card_presentations_card_day
   ON card_presentations(user_id, learning_day, card_id)
   WHERE abandoned_at IS NULL;
+CREATE INDEX IF NOT EXISTS idx_user_settings_user_key ON user_settings(user_id, key);
 CREATE INDEX IF NOT EXISTS idx_review_logs_card ON review_logs(card_id);
 CREATE INDEX IF NOT EXISTS idx_review_logs_user ON review_logs(user_id, reviewed_at);
 CREATE INDEX IF NOT EXISTS idx_review_logs_attempt ON review_logs(attempt_id);

@@ -51,7 +51,11 @@ export const TEAM_CURATOR_ROLE = "zam_curator";
 /** Name of the one knowledge context a team library carries (Decision 2). */
 export const TEAM_CONTEXT_NAME = "team";
 
-/** Shared library settings — members may write until phase 4 splits scopes. */
+/**
+ * Library-wide settings — curator defaults, read by everyone, written by
+ * curators only. A person's own settings live in `user_settings` under RLS
+ * (ADR 2026-09-04 Decision 4).
+ */
 export const LIBRARY_SETTINGS_TABLES = ["user_config"] as const;
 
 /** Knowledge — read by all, written by curators. */
@@ -113,17 +117,18 @@ function qualified(schema: string, tables: readonly string[]): string {
  */
 export function groupRoleGrantsSql(schema: string, ownerRole: string): string {
   const owner = quoteIdent(ownerRole);
-  const learningState = qualified(schema, [
-    ...RLS_PROTECTED_TABLES,
-    ...LIBRARY_SETTINGS_TABLES,
-  ]);
+  const learningState = qualified(schema, RLS_PROTECTED_TABLES);
+  const librarySettings = qualified(schema, LIBRARY_SETTINGS_TABLES);
   const knowledge = qualified(schema, KNOWLEDGE_TABLES);
   const admin = qualified(schema, ADMIN_TABLES);
+  // The REVOKE on the library settings narrows what an earlier provisioning
+  // granted members before settings had scopes.
   return `
 GRANT USAGE ON SCHEMA ${schema} TO ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};
 GRANT SELECT ON ALL TABLES IN SCHEMA ${schema} TO ${TEAM_MEMBER_ROLE};
 GRANT INSERT, UPDATE, DELETE ON ${learningState} TO ${TEAM_MEMBER_ROLE};
-GRANT INSERT, UPDATE, DELETE ON ${knowledge} TO ${TEAM_CURATOR_ROLE};
+GRANT INSERT, UPDATE, DELETE ON ${knowledge}, ${librarySettings} TO ${TEAM_CURATOR_ROLE};
+REVOKE INSERT, UPDATE, DELETE ON ${librarySettings} FROM ${TEAM_MEMBER_ROLE};
 REVOKE INSERT, UPDATE, DELETE ON ${admin} FROM ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};
 REVOKE SELECT ON ${schema}.learner_principals FROM ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};
 GRANT SELECT (zam_user_id, db_role) ON ${schema}.learner_principals TO ${TEAM_MEMBER_ROLE};

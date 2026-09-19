@@ -1,4 +1,7 @@
-import { describe, expect, it } from "vitest";
+import { mkdtempSync, rmSync } from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   currentUserIdOrNull,
   describeIdentity,
@@ -8,10 +11,29 @@ import {
   IdentityMismatchError,
   NotAMemberError,
   resolveLearnerId,
+  resolveSettingsScope,
   resolveUser,
 } from "../../src/cli/users/identity.js";
 import type { Database } from "../../src/kernel/index.js";
-import { openDatabase, setSetting } from "../../src/kernel/index.js";
+import {
+  getMachineId,
+  openDatabase,
+  setSetting,
+} from "../../src/kernel/index.js";
+
+// The settings scope reads this install's id from the config file; point it
+// at a scratch file so the suite never touches the developer's own config.
+let configDir: string;
+const previousConfigPath = process.env.ZAM_CONFIG_PATH;
+beforeAll(() => {
+  configDir = mkdtempSync(join(tmpdir(), "zam-identity-config-"));
+  process.env.ZAM_CONFIG_PATH = join(configDir, "config.json");
+});
+afterAll(() => {
+  if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+  else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+  rmSync(configDir, { recursive: true, force: true });
+});
 
 /**
  * ADR 2026-09-04 Decision 2: on the team library the identity is the
@@ -127,6 +149,41 @@ describe("resolveUser for bridge callers", () => {
     expect(
       humanIdentityMessage(new IdentityMismatchError("a", "b").message),
     ).toMatch(/^The team library identifies you/);
+  });
+});
+
+describe("settings scope", () => {
+  it("is the derived learner on the team library, shared", async () => {
+    const db = teamDb({ role: "alice@example.org", learner: ALICE });
+    expect(await resolveSettingsScope(db)).toEqual({
+      userId: ALICE,
+      machineId: getMachineId(),
+      shared: true,
+    });
+    // Not a member: no scope — the caller falls back to library reads.
+    await expect(
+      resolveSettingsScope(
+        teamDb({ role: "newcomer@example.org", learner: null }),
+      ),
+    ).rejects.toThrow(NotAMemberError);
+  });
+
+  it("is the configured user.id on a personal library, not shared", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      useConfiguredCloud: false,
+    });
+    try {
+      expect(await resolveSettingsScope(db)).toBeNull();
+      await setSetting(db, "user.id", "klara");
+      expect(await resolveSettingsScope(db)).toEqual({
+        userId: "klara",
+        machineId: getMachineId(),
+        shared: false,
+      });
+    } finally {
+      await db.close();
+    }
   });
 });
 

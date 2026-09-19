@@ -22,12 +22,15 @@ import { CURRENT_SCHEMA_VERSION } from "../../src/kernel/db/provision.js";
 import { SCHEMA } from "../../src/kernel/db/schema.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import {
+  bindSettingsScope,
   bindStandingAssignments,
   createAssignment,
   createToken,
   detachCardForUser,
   ensureCard,
+  getSetting,
   listAssignmentsForLearner,
+  setSetting,
   withdrawAssignment,
 } from "../../src/kernel/index.js";
 
@@ -374,9 +377,9 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
               (a) => a.id,
             ),
           ).toEqual([assignment.id]);
-          expect(await asBob.prepare("SELECT id FROM cards").all()).toHaveLength(
-            0,
-          );
+          expect(
+            await asBob.prepare("SELECT id FROM cards").all(),
+          ).toHaveLength(0);
           const bound = await bindStandingAssignments(asBob, bob.userId);
           expect(bound.map((c) => [c.user_id, c.assignment_id])).toEqual([
             [bob.userId, assignment.id],
@@ -412,6 +415,52 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
               .prepare("SELECT id FROM cards WHERE user_id = ?")
               .all(bob.userId),
           ).toHaveLength(0);
+
+          // ── settings scopes (Decision 4) under the shipped grants: a
+          //    person's keys are theirs under RLS, nothing of them touches
+          //    the shared table, and only a curator writes library defaults ─
+          bindSettingsScope(asAlice, {
+            userId: alice.userId,
+            machineId: "01MALICEPC000000000000000000",
+            shared: true,
+          });
+          bindSettingsScope(asBob, {
+            userId: bob.userId,
+            machineId: "01MBOBPC00000000000000000000",
+            shared: true,
+          });
+          await setSetting(asAlice, "system.locale", "de");
+          await setSetting(asAlice, "llm.url", "http://alice-pc:11434/v1");
+          await setSetting(asBob, "system.locale", "en");
+          expect(await getSetting(asAlice, "system.locale")).toBe("de");
+          expect(await getSetting(asBob, "system.locale")).toBe("en");
+          expect(await getSetting(asBob, "llm.url")).toBeUndefined();
+          const shared = (await control
+            .prepare(
+              "SELECT count(*) AS n FROM user_config WHERE key IN ('system.locale', 'llm.url')",
+            )
+            .get()) as { n: number | string };
+          expect(Number(shared.n)).toBe(0);
+          expect(
+            await asBob
+              .prepare("SELECT key FROM user_settings WHERE user_id = ?")
+              .all(alice.userId),
+          ).toHaveLength(0);
+          await expect(
+            asBob
+              .prepare(
+                `INSERT INTO user_settings (user_id, machine_id, key, value, updated_at)
+                 VALUES (?, '', 'system.locale', 'fr', '2026-09-19T00:00:00.000Z')`,
+              )
+              .run(alice.userId),
+          ).rejects.toThrow(/row-level security/i);
+          // Library defaults: a plain member is refused, a curator sets them
+          // for everyone.
+          await expect(
+            setSetting(asBob, "search.dedup_threshold", "0.5"),
+          ).rejects.toThrow(/permission denied/i);
+          await setSetting(asAlice, "search.dedup_threshold", "0.9");
+          expect(await getSetting(asBob, "search.dedup_threshold")).toBe("0.9");
         } finally {
           await asAlice.close();
           await asBob.close();

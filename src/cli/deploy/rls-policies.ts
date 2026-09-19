@@ -152,6 +152,16 @@ CREATE POLICY learner_session_syntheses_policy ON session_syntheses FOR ALL
   WITH CHECK (session_id IN (
     SELECT id FROM sessions WHERE user_id = current_learner_id()));
 
+-- user_settings is a person's and their machines' configuration (ADR
+-- 2026-09-04 Decision 4) — learning-adjacent personal data, same policy as
+-- cards. user_config stays library-wide and is a curator's to write.
+ALTER TABLE user_settings ENABLE ROW LEVEL SECURITY;
+ALTER TABLE user_settings FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_user_settings_policy ON user_settings;
+CREATE POLICY learner_user_settings_policy ON user_settings FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- assignments are visible to the assigner and the assignee (ADR 2026-07-04
 -- Decision 10); only the assigner may create, change or withdraw one. The
 -- read and write halves are separate policies on purpose: one FOR ALL policy
@@ -196,6 +206,7 @@ export const RLS_PROTECTED_TABLES = [
   "review_attempts",
   "session_syntheses",
   "assignments",
+  "user_settings",
 ] as const;
 
 /**

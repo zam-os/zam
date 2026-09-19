@@ -401,14 +401,23 @@ export {
   logStep,
   startSession,
 } from "./models/session.js";
-export type { UserSetting } from "./models/settings.js";
+export type {
+  SettingScope,
+  SettingsScope,
+  SettingsScopeResolver,
+  UserSetting,
+} from "./models/settings.js";
 export {
+  bindSettingsScope,
   deleteSetting,
+  forgetSettingsScope,
   getAllSettings,
   getAllSettingsDetailed,
   getSetting,
   getSettings,
+  registerSettingsScopeResolver,
   setSetting,
+  settingScopeOf,
 } from "./models/settings.js";
 export type {
   BloomLevel,
@@ -831,6 +840,7 @@ export {
   getMachineAiConfig,
   getMachineAiModels,
   getMachineCompanionConfig,
+  getMachineId,
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,

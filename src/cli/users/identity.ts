@@ -11,11 +11,13 @@
  * another colleague's queue.
  */
 
-import type { Database } from "../../kernel/index.js";
+import type { Database, SettingsScope } from "../../kernel/index.js";
 import {
   dialectOf,
   getDatabaseTargetInfo,
+  getMachineId,
   getSetting,
+  registerSettingsScopeResolver,
   setSetting,
 } from "../../kernel/index.js";
 
@@ -196,6 +198,32 @@ export async function ensureDefaultUser(
     "default";
   await setSetting(db, "user.id", userId);
   return userId;
+}
+
+/**
+ * Whose settings a handle reads and writes (ADR 2026-09-04 Decision 4): the
+ * derived learner on the team library, the configured `user.id` on a
+ * personal one, plus this install's id. `null` while nobody is configured
+ * or mapped yet — settings then stay library-wide, exactly as before.
+ */
+export async function resolveSettingsScope(
+  db: Database,
+): Promise<SettingsScope | null> {
+  const shared = isTeamLibrary(db);
+  const userId = shared
+    ? (await deriveTeamIdentity(db)).userId
+    : ((await getSetting(db, "user.id")) ?? null);
+  if (!userId) return null;
+  return { userId, machineId: getMachineId(), shared };
+}
+
+/**
+ * Make the identity above the settings scope for every database this
+ * process opens. Called once by the CLI bootstrap; a host embedding the
+ * kernel without the CLI registers its own or keeps library-wide settings.
+ */
+export function registerCliSettingsScope(): void {
+  registerSettingsScopeResolver(resolveSettingsScope);
 }
 
 /** The message without its machine-readable `CODE: ` prefix, for people. */

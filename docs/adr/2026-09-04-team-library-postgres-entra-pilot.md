@@ -1,6 +1,6 @@
 # Team Learning Library on Managed PostgreSQL: Entra Identity, Per-Learner Roles, and a ZAM-Only Server
 
-**Status:** Partially implemented (2026-09-18) — phases 1, 2, 3 and 6 shipped; see the status history
+**Status:** Partially implemented (2026-09-19) — phases 1, 2, 3, 4 and 6 shipped, phase 5 except the derived coverage test; see the status history
 **Date:** 2026-09-04
 **Deciders:** Thomas (project owner)
 **Amends:**
@@ -250,6 +250,21 @@ CREATE TABLE user_settings (
 - `user_settings` is learning-adjacent personal data and gets the same RLS
   policy as `cards`.
 
+**Shipped 2026-09-19 with two refinements.** The transitional rule is a
+*read-through*, not a move: a key still in `user_config` is read from there
+until the scope writes its own row, and nothing is deleted from the old
+place. And a **personal** library keeps person keys in `user_config` — one
+person owns it, so person and library are the same thing — while every
+machine-scope write is mirrored there; that is what keeps an older client on
+a second machine and the mobile companion (which reads `user_config`
+directly) seeing the last value. Only the shared team library routes person
+keys to `user_settings`, and there `user_config` is a curator's to write:
+members read it, and a member's own row always wins over a library default.
+The API did not change: `getSetting(db, key)` stays, the key registry decides
+the scope, and the CLI binds *whose* rows are meant (the derived learner or
+`user.id`, plus the install id from `~/.zam/config.json`). A host without a
+registered scope keeps the library-only behaviour.
+
 ### 5. Timestamps and dialect become the kernel's responsibility, not a regex's
 
 - **Every timestamp ZAM writes is ISO 8601 UTC, written by JavaScript.** No
@@ -449,3 +464,4 @@ zam whoami
 | 2026-09-04 | Proposed | Written after the architecture review and the owner's answers of the same day: ZAM-only server, cheapest tier, PostgreSQL 18, Entra-only, `az` as token source, one role per colleague with the owner as administrator, derived identity, settings scopes with a machine id, `native` provider retired, mobile and migration out of scope, company specifics kept out of the repository. |
 | 2026-09-18 | Proposed | Server created per the appendix on PostgreSQL 18 (Burstable B1ms, 32 GiB, Entra-only) in the team's nearest fleet region; the region provisioned without a quota request. The Entra administrator connected with an `az` token — the PostgreSQL 18 risk of Decision 1 is closed. Finding for Phase 6: the `pgaadauth_*` functions exist only in the `postgres` maintenance database, so `zam team add-member` must run its principal statements there, not in `zam_test`/`zam_prod`. |
 | 2026-09-18 | Partially implemented | Phases 1, 2, 3 and 6 of the plan shipped: provider-neutral timestamps and a `dialect` on the `Database` contract; `postgres` as a first-class provider with the Azure CLI as per-connection token source; identity derived from `current_learner_id()` with `IDENTITY_MISMATCH` / `NOT_A_MEMBER`; the `zam team` commands `provision`, `add-member`, `remove-member` and `members`. The first team library was provisioned on the real server, the administrator mapped as first member, and a complete review round trip (publish, queue, rating) ran over the Entra token path. Not yet: settings scopes (4), RLS completion beyond the group roles (5), the Desktop path (7), the `native` retirement (own PR). |
+| 2026-09-19 | Partially implemented | Two review rounds (three independent passes, then a fourth) closed a blocker and the majors on the branch: curators can no longer write the mapping table, the `assignments` policies are split into read (both parties) and write (assigner only), assignments bind lazily through the assignee's own queue build, member roles are keyed by the server's spelling (new Entra principals in lower case — pgaadauth keeps the typed casing, verified on the server), TLS is forced off-loopback. Phase 4 shipped: `user_settings` (M034), the install id, the key registry and the scoped settings API with the refinements noted under Decision 4; the `user_settings` policy and curator-only writes on `user_config` complete Phase 5 except the derived coverage test. `zam_test` re-provisioned. Not yet: the Desktop path (7), the `native` retirement (own PR). |

@@ -181,12 +181,31 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
            ) VALUES ('att_alice', ?, 'tok1', 'user', 'direct', 'rated')`,
         )
         .run(ALICE);
+      await tx
+        .prepare(
+          `INSERT INTO user_settings (user_id, machine_id, key, value, updated_at)
+           VALUES (?, '', 'system.locale', 'de', '2026-09-19T00:00:00.000Z')`,
+        )
+        .run(ALICE);
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
       await asRole(tx, "bob_role");
 
       expect(await tx.prepare("SELECT * FROM cards").all()).toHaveLength(0);
+      expect(
+        await tx.prepare("SELECT * FROM user_settings").all(),
+      ).toHaveLength(0);
+      await tx.exec("SAVEPOINT forge_setting");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO user_settings (user_id, machine_id, key, value, updated_at)
+             VALUES (?, '', 'system.locale', 'fr', '2026-09-19T00:00:00.000Z')`,
+          )
+          .run(ALICE),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_setting");
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
@@ -241,6 +260,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       ).toHaveLength(1);
       expect(
         await tx.prepare("SELECT * FROM review_attempts").all(),
+      ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM user_settings").all(),
       ).toHaveLength(1);
     });
   });

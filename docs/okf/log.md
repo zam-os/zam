@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-19
+
+- **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
+
 ## 2026-09-18
 
 - **Update** — [Token and Card Model](token-card-model.md)

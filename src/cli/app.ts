@@ -32,6 +32,7 @@ import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
 import { registerEntraCliPasswordSupplier } from "./db/entra-cli.js";
+import { registerCliSettingsScope } from "./users/identity.js";
 
 // Resolve vault references into the process-lifetime snapshot before any
 // command (or the persistent desktop bridge) reads credentials synchronously.
@@ -43,6 +44,11 @@ await resolveCredentials();
 // `az` call in once per process (ADR 2026-09-04 Decision 3). Every host that
 // opens the database — commands, `bridge serve`, `zam mcp` — goes through here.
 registerEntraCliPasswordSupplier();
+
+// Settings have scopes (Decision 4); the kernel stores them, the CLI says
+// whose they are: the derived learner or the configured `user.id`, plus this
+// install's id. Without this, every setting would stay library-wide.
+registerCliSettingsScope();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
