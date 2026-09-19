@@ -209,8 +209,21 @@ review round trip, all through the CLI.
 - Verify in the real host per the repo rule (VSIX or Desktop build, intent,
   screenshot or log), not only unit tests.
 
+- **Both directions, one flow each (owner, 2026-09-19).** Switching a
+  machine between a personal Turso database and the team library must be as
+  easy from the Studio as getting a fresh Turso token is on turso.tech (Google
+  sign-in, copy). Turso side: the existing server-database card, plus a
+  button that opens the Turso dashboard for the token and a paste field.
+  Team side: host and database, an **Sign in with Microsoft** step that runs
+  `az login` from the app when the CLI reports no login, identity derived.
+  Switching replaces the other connection after one confirmation and keeps
+  the replaced connection (URL, mode, token) as `previous` in
+  `credentials.json`, so switching back is one click and needs no new token.
+  The CLI's `--replace` gains the same keep-and-restore behaviour.
+
 Acceptance: a colleague with `az login` done connects from the Studio without
-a terminal and sees the disclosure exactly once.
+a terminal and sees the disclosure exactly once; the owner switches this
+machine from Turso to the team library and back from Settings alone.
 
 ## Phase 8 — Server and pilot
 
