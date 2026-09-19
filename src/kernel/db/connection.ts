@@ -86,16 +86,18 @@ function isLoopbackHost(host: string): boolean {
 }
 
 /**
- * Whether a connection to `target` is encrypted. Only a loopback host may
- * store `ssl: false`; for every other host the answer is TLS regardless of
- * what a hand-edited credentials file or a caller says — the Entra token or
- * password would otherwise cross the network in the clear. `connector setup`
- * enforces the same rule at input time; this is the last line of defence.
+ * Whether a connection to `target` is encrypted. A loopback host — local
+ * Docker development — is plain unless `ssl: true` is stored; every other
+ * host gets TLS regardless of what a hand-edited credentials file or a caller
+ * says, because the Entra token or password would otherwise cross the
+ * network in the clear. `connector setup` enforces the same rule at input
+ * time; this is the last line of defence.
  */
 export function postgresSslFor(
   target: Pick<PostgresCredentials, "host" | "ssl">,
 ): boolean {
-  return !(target.ssl === false && isLoopbackHost(target.host));
+  if (isLoopbackHost(target.host)) return target.ssl === true;
+  return true;
 }
 
 /** Human-readable location of a PostgreSQL target, without credentials. */

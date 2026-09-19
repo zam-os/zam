@@ -7,10 +7,13 @@ import { Command } from "commander";
 import {
   clearADOCredentials,
   clearPostgresCredentials,
+  clearPreviousLibrary,
   clearTursoCredentials,
   getADOCredentials,
   getPostgresCredentials,
+  getPreviousLibrary,
   getTursoCredentials,
+  keepLibraryAsPrevious,
   loadStoredCredentials,
   type PostgresAuthMode,
   resolveCredentials,
@@ -28,6 +31,7 @@ import {
 } from "../../kernel/index.js";
 import { fetchActiveWorkItems } from "../connectors/azure-devops.js";
 import { entraCliSignedInUpn, isEntraLoginRequired } from "../db/entra-cli.js";
+import { restoreLibrary } from "../db/library-switch.js";
 import { describeIdentity } from "../users/identity.js";
 
 export const connectorCommand = new Command("connector").description(
@@ -171,10 +175,62 @@ connectorCommand
 
 // ── zam connector clear ─────────────────────────────────────────────────────
 
+// ── zam connector restore ───────────────────────────────────────────────────
+
+connectorCommand
+  .command("restore")
+  .description(
+    "Switch back to the previous library kept by --replace (turso ↔ postgres)",
+  )
+  .option("--json", "Output as JSON")
+  .action(async (opts: { json?: boolean }) => {
+    const previous = getPreviousLibrary();
+    if (!previous) {
+      const message =
+        "No previous library is kept on this machine. Nothing to restore.";
+      if (opts.json)
+        console.log(JSON.stringify({ success: false, error: message }));
+      else console.error(message);
+      process.exit(1);
+    }
+    try {
+      const status = await restoreLibrary();
+      if (opts.json) {
+        console.log(JSON.stringify({ success: true, ...status }, null, 2));
+        return;
+      }
+      console.log(`Switched back to ${status.target.location}.`);
+      if (status.verifyError) {
+        console.log(
+          `  note: the library could not be opened: ${status.verifyError}`,
+        );
+      } else if (status.target.kind === "postgres") {
+        console.log(
+          status.member
+            ? `  learner ${status.userId} (database role ${status.role})`
+            : `  your account ${status.role ?? ""} is not a member yet — administrator: zam team add-member ${status.role ?? "<upn>"}`,
+        );
+      }
+      if (status.previous) {
+        console.log(
+          `  kept as previous library: ${status.previous.location} (zam connector restore switches again)`,
+        );
+      }
+    } catch (err) {
+      const message = (err as Error).message;
+      if (opts.json)
+        console.log(JSON.stringify({ success: false, error: message }));
+      else console.error(`Error: ${message}`);
+      process.exit(1);
+    }
+  });
+
+// ── zam connector clear ─────────────────────────────────────────────────────
+
 connectorCommand
   .command("clear")
   .description("Remove a connector configuration")
-  .argument("<type>", "Connector type (ado, turso, postgres)")
+  .argument("<type>", "Connector type (ado, turso, postgres, previous)")
   .action((type) => {
     if (type === "turso") {
       clearTursoCredentials();
@@ -190,9 +246,20 @@ connectorCommand
       return;
     }
 
+    if (type === "previous") {
+      const previous = getPreviousLibrary();
+      clearPreviousLibrary();
+      console.log(
+        previous
+          ? `Forgot the previous library (${previous.location}) and its token.`
+          : "No previous library was kept.",
+      );
+      return;
+    }
+
     if (type !== "ado") {
       console.error(
-        `Unknown connector type: ${type}. Supported: ado, turso, postgres`,
+        `Unknown connector type: ${type}. Supported: ado, turso, postgres, previous`,
       );
       process.exit(1);
     }
@@ -281,10 +348,11 @@ function refuseOtherLibrary(
   const other = setting === "turso" ? stored.postgres : stored.turso;
   if (!other) return true;
   if (replace) {
-    if (setting === "turso") clearPostgresCredentials();
-    else clearTursoCredentials();
+    // Kept, not dropped: switching back is `zam connector restore`, with no
+    // new token to fetch (pilot plan phase 7).
+    keepLibraryAsPrevious(setting === "turso" ? "postgres" : "turso");
     console.log(
-      `Removed the configured ${setting === "turso" ? "team library" : "Turso database"} (--replace).`,
+      `Kept the configured ${setting === "turso" ? "team library" : "Turso database"} as the previous library (--replace). Switch back with: zam connector restore`,
     );
     return true;
   }

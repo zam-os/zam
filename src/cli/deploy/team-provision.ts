@@ -18,9 +18,11 @@
  * classification is complete, so a new table cannot slip through unnamed):
  *
  * - **learning state** (`RLS_PROTECTED_TABLES`): members write their own rows,
- *   row-level security decides which those are;
- * - **library settings** (`user_config`): shared, writable by members until
- *   settings scopes split personal keys out (pilot plan phase 4);
+ *   row-level security decides which those are — a person's own settings
+ *   (`user_settings`) are in this class;
+ * - **library settings** (`user_config`): read by everyone, written by
+ *   curators only — the library's identity and the defaults a curator sets
+ *   for the team (ADR 2026-09-04 Decision 4);
  * - **knowledge** (`KNOWLEDGE_TABLES`): readable by everyone, written by
  *   curators only;
  * - **administration** (`ADMIN_TABLES`): `learner_principals`, which

@@ -2,6 +2,7 @@
 
 ## 2026-09-19
 
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
 
 ## 2026-09-18

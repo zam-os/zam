@@ -97,6 +97,29 @@ export interface Credentials {
   llmProviders?: Record<string, { apiKey: string }>;
 }
 
+/** The two library kinds a machine can be bound to (ADR 2026-09-04 Decision 6). */
+export type LibraryKind = "turso" | "postgres";
+
+/**
+ * The connection a switch replaced, kept so switching back needs no new
+ * token (pilot plan phase 7). Exactly one is kept: a second switch
+ * overwrites it.
+ */
+export interface StoredPreviousLibrary {
+  kind: LibraryKind;
+  turso?: StoredCredentials["turso"];
+  postgres?: Partial<StoredPostgresCredentials>;
+  /** ISO-8601 UTC. */
+  replacedAt: string;
+}
+
+/** Secret-free view of the kept connection, for status surfaces. */
+export interface PreviousLibrary {
+  kind: LibraryKind;
+  location: string;
+  replacedAt: string;
+}
+
 /** On-disk document — secret fields may be literals or vault references. */
 export interface StoredCredentials {
   turso?: {
@@ -110,6 +133,7 @@ export interface StoredCredentials {
     pat?: StoredSecret;
   };
   postgres?: Partial<StoredPostgresCredentials>;
+  previous?: StoredPreviousLibrary;
   llmProviders?: Record<string, { apiKey: StoredSecret }>;
 }
 
@@ -562,6 +586,114 @@ export function clearPostgresCredentials(path?: string): void {
   const creds = loadStoredCredentials(path);
   delete creds.postgres;
   saveCredentials(creds, path);
+}
+
+// ── Switching between libraries (pilot plan phase 7) ────────────────────────
+
+function locationOf(
+  kind: LibraryKind,
+  block: StoredCredentials["turso"] | Partial<StoredPostgresCredentials>,
+): string {
+  if (kind === "turso") {
+    return (block as StoredCredentials["turso"])?.url ?? "?";
+  }
+  const pg = block as Partial<StoredPostgresCredentials>;
+  return `postgres://${pg.host ?? "?"}:${pg.port ?? 5432}/${pg.database ?? "?"}`;
+}
+
+/** Which library kind the document currently binds the machine to, if any. */
+export function configuredLibraryKind(path?: string): LibraryKind | null {
+  const creds = loadStoredCredentials(path);
+  if (creds.postgres?.host) return "postgres";
+  if (creds.turso?.url) return "turso";
+  return null;
+}
+
+/**
+ * Move the configured library of `kind` aside as the previous library, so
+ * the other kind can take its place and the learner can switch back without
+ * fetching a new token. Returns false when nothing of that kind was stored.
+ */
+export function keepLibraryAsPrevious(
+  kind: LibraryKind,
+  path?: string,
+): boolean {
+  const creds = loadStoredCredentials(path);
+  const block = kind === "turso" ? creds.turso : creds.postgres;
+  if (!block) return false;
+  creds.previous = {
+    kind,
+    ...(kind === "turso"
+      ? { turso: creds.turso }
+      : { postgres: creds.postgres }),
+    replacedAt: new Date().toISOString(),
+  };
+  delete creds[kind];
+  saveCredentials(creds, path);
+  return true;
+}
+
+/** The kept connection without its secret, or null. */
+export function getPreviousLibrary(path?: string): PreviousLibrary | null {
+  const previous = loadStoredCredentials(path).previous;
+  if (!previous?.kind) return null;
+  const block = previous.kind === "turso" ? previous.turso : previous.postgres;
+  if (!block) return null;
+  return {
+    kind: previous.kind,
+    location: locationOf(previous.kind, block),
+    replacedAt: previous.replacedAt,
+  };
+}
+
+/** Forget the kept connection (its token goes with it). */
+export function clearPreviousLibrary(path?: string): void {
+  const creds = loadStoredCredentials(path);
+  delete creds.previous;
+  saveCredentials(creds, path);
+}
+
+/**
+ * Make the previous library the current one again. With `keepCurrent` (the
+ * default) the library being left becomes the new previous, so a learner can
+ * flip back and forth; without it the current connection is dropped — the
+ * undo of a switch whose verification failed.
+ */
+export function restorePreviousLibrary(
+  path?: string,
+  options: { keepCurrent?: boolean } = {},
+): { restored: LibraryKind; kept: LibraryKind | null } {
+  const creds = loadStoredCredentials(path);
+  const previous = creds.previous;
+  const block =
+    previous?.kind === "turso" ? previous.turso : previous?.postgres;
+  if (!previous?.kind || !block) {
+    throw new Error("No previous library is kept on this machine.");
+  }
+  const current: LibraryKind | null = creds.postgres?.host
+    ? "postgres"
+    : creds.turso?.url
+      ? "turso"
+      : null;
+  const keepCurrent = options.keepCurrent ?? true;
+  let kept: LibraryKind | null = null;
+  if (current && keepCurrent && current !== previous.kind) {
+    creds.previous = {
+      kind: current,
+      ...(current === "turso"
+        ? { turso: creds.turso }
+        : { postgres: creds.postgres }),
+      replacedAt: new Date().toISOString(),
+    };
+    kept = current;
+  } else {
+    delete creds.previous;
+  }
+  if (current) delete creds[current];
+  if (previous.kind === "turso") creds.turso = previous.turso;
+  else creds.postgres = previous.postgres;
+  saveCredentials(creds, path);
+  return { restored: previous.kind, kept };
 }
 
 /**

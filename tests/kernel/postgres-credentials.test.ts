@@ -22,7 +22,9 @@ describe("postgresSslFor", () => {
   it("encrypts every non-loopback connection whatever the stored flag says", () => {
     expect(postgresSslFor({ host: "localhost", ssl: false })).toBe(false);
     expect(postgresSslFor({ host: "127.0.0.1", ssl: false })).toBe(false);
-    expect(postgresSslFor({ host: "localhost" })).toBe(true);
+    // Local Docker is plain by default; TLS on loopback is an explicit choice.
+    expect(postgresSslFor({ host: "localhost" })).toBe(false);
+    expect(postgresSslFor({ host: "localhost", ssl: true })).toBe(true);
     // `connector setup` refuses --no-ssl for these; a hand-edited credentials
     // file or a caller passing ssl:false must not send a token in the clear.
     expect(

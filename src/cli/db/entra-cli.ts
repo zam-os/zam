@@ -192,6 +192,38 @@ export async function entraCliSignedInUpn(
 }
 
 /**
+ * Sign the learner in through the Azure CLI — `az login` opens the browser
+ * and waits for it — and return the principal name that is now signed in.
+ * Accounts without an Azure subscription (most colleagues) are allowed; the
+ * team library needs the identity, not a subscription. Used by the Studio's
+ * "Sign in with Microsoft" step (pilot plan phase 7); the CLI user runs
+ * `az login` themselves.
+ */
+export async function entraCliLogin(
+  exec: ExecFn = defaultExec,
+): Promise<string> {
+  const result = await exec("az", [
+    "login",
+    "--allow-no-subscriptions",
+    "--output",
+    "none",
+  ]);
+  if (result.code !== 0 || result.spawnError) {
+    const failure = classifyFailure(result);
+    if (failure.failure === "az-missing") throw failure;
+    throw new EntraLoginRequiredError(
+      "az-error",
+      `Signing in with the Azure CLI did not complete${
+        result.stderr.trim()
+          ? `: ${result.stderr.trim().split(/\r?\n/).at(-1)}`
+          : ""
+      }. Try again, or run \`az login\` in a terminal.`,
+    );
+  }
+  return entraCliSignedInUpn(exec);
+}
+
+/**
  * Make the Azure CLI the `entra-cli` password source for every PostgreSQL
  * database this process opens. Called once by the CLI bootstrap; hosts that
  * embed the kernel without the CLI (none today) would register their own.

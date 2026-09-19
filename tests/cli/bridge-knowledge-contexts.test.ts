@@ -439,6 +439,7 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         "duplicates",
         "domains",
         "contexts",
+        "team-library",
       ]);
       expect(
         report.tasks.every((task: any) => Array.isArray(task.lines)),

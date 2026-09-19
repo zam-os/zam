@@ -17,6 +17,16 @@ zam connector setup postgres --host <server>.postgres.database.azure.com --datab
 zam whoami                                   # your learner id, once the administrator has added you
 ```
 
+**From the Studio instead:** Settings › Server database › *Team library*.
+Enter the server host and the database, click **Sign in with Microsoft** if
+the card asks for it (your browser opens for the work-account sign-in), then
+**Connect to team library**. The card shows who the library takes you for,
+or that the administrator still has to add you. A machine bound to a
+personal Turso database is switched after one confirmation; that connection
+is kept as the *previous library*, and **Switch back** brings it back with
+one click and no new token. The first connection shows the disclosure with
+**Understood** / **Learn locally instead**; its text stays in the card.
+
 `setup` reads your user principal name from the Azure CLI and stores it in
 lower case — the spelling `zam team add-member` creates roles with, because
 PostgreSQL role names are case-sensitive even though your UPN is not. If the
@@ -35,8 +45,12 @@ What you may see:
   the administrator runs `zam team provision`.
 
 A machine is bound to one library. If a personal Turso database is configured
-here, `setup postgres` refuses until you clear it (`zam connector clear turso`)
-or pass `--replace`.
+here, `setup postgres` refuses until you pass `--replace` (or clear it with
+`zam connector clear turso`). `--replace` keeps the Turso connection — URL,
+token, mode — as the previous library; `zam connector restore` switches back
+to it, and again forward, without a new token. `zam connector clear previous`
+forgets the kept connection. `zam doctor team-library` checks the Azure CLI
+sign-in, that it matches the configured account, and whether you are mapped.
 
 ## Your settings are yours
 
