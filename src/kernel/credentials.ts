@@ -21,6 +21,7 @@ import {
 } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
+import { nowIso } from "./db/sql.js";
 import {
   ensureDefaultSecretBackends,
   isSecretRef,
@@ -626,7 +627,7 @@ export function keepLibraryAsPrevious(
     ...(kind === "turso"
       ? { turso: creds.turso }
       : { postgres: creds.postgres }),
-    replacedAt: new Date().toISOString(),
+    replacedAt: nowIso(),
   };
   delete creds[kind];
   saveCredentials(creds, path);
@@ -683,7 +684,7 @@ export function restorePreviousLibrary(
       ...(current === "turso"
         ? { turso: creds.turso }
         : { postgres: creds.postgres }),
-      replacedAt: new Date().toISOString(),
+      replacedAt: nowIso(),
     };
     kept = current;
   } else {

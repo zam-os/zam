@@ -251,7 +251,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "Tu cuenta aún no es miembro de esta biblioteca de equipo. Pide al administrador que te añada.",
     server_db_err_entra_login:
-      "Inicia sesión en Azure primero: ejecuta `az login` en una terminal y vuelve a intentarlo.",
+      "Inicia sesión primero: pulsa «Iniciar sesión con Microsoft» en esta tarjeta y vuelve a intentarlo. (En una terminal: `az login`.)",
+    server_db_err_az_missing:
+      "La CLI de Azure no está instalada en este equipo. Instálala desde https://aka.ms/installazurecli y vuelve a intentarlo.",
+    team_db_leave: "Salir de la biblioteca del equipo",
     server_db_team_pair_blocked:
       "El emparejamiento móvil aún no está disponible para la biblioteca de equipo.",
     server_db_pair_blocked:
@@ -1194,7 +1197,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "Votre compte n'est pas encore membre de cette bibliothèque d'équipe. Demandez à l'administrateur de vous ajouter.",
     server_db_err_entra_login:
-      "Connectez-vous d'abord à Azure : exécutez `az login` dans un terminal, puis réessayez.",
+      "Connectez-vous d'abord : cliquez sur « Se connecter avec Microsoft » dans cette carte, puis réessayez. (Dans un terminal : `az login`.)",
+    server_db_err_az_missing:
+      "L'Azure CLI n'est pas installée sur cette machine. Installez-la depuis https://aka.ms/installazurecli, puis réessayez.",
+    team_db_leave: "Quitter la bibliothèque d'équipe",
     server_db_team_pair_blocked:
       "Le jumelage mobile n'est pas encore disponible pour la bibliothèque d'équipe.",
     server_db_pair_blocked:
@@ -2145,7 +2151,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "A sua conta ainda não é membro desta biblioteca de equipa. Peça ao administrador para o adicionar.",
     server_db_err_entra_login:
-      "Inicie sessão no Azure primeiro: execute `az login` num terminal e tente novamente.",
+      "Entre primeiro: clique em “Entrar com a Microsoft” neste cartão e tente novamente. (No terminal: `az login`.)",
+    server_db_err_az_missing:
+      "A CLI do Azure não está instalada nesta máquina. Instale-a em https://aka.ms/installazurecli e tente novamente.",
+    team_db_leave: "Sair da biblioteca da equipe",
     server_db_team_pair_blocked:
       "O emparelhamento móvel ainda não está disponível para a biblioteca de equipa.",
     server_db_pair_blocked:
@@ -3058,7 +3067,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "您的账户尚未成为此团队知识库的成员。请联系管理员将您添加进来。",
     server_db_err_entra_login:
-      "请先登录 Azure：在终端中运行 `az login`，然后重试。",
+      "请先登录：点击本卡片中的“使用 Microsoft 登录”，然后重试。（在终端中：`az login`。）",
+    server_db_err_az_missing:
+      "此设备未安装 Azure CLI。请从 https://aka.ms/installazurecli 安装后重试。",
+    team_db_leave: "离开团队知识库",
     server_db_team_pair_blocked: "团队知识库暂不支持移动端配对。",
     server_db_pair_blocked: "请先连接服务器数据库（上方部分）。",
     server_db_turso_title: "个人服务器数据库（Turso）",
@@ -3936,7 +3948,10 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "あなたのアカウントはまだこのチームライブラリのメンバーではありません。管理者に追加を依頼してください。",
     server_db_err_entra_login:
-      "先に Azure にサインインしてください。ターミナルで `az login` を実行してから再試行してください。",
+      "先にサインインしてください。このカードの「Microsoft でサインイン」をクリックしてから再試行してください。（ターミナルでは `az login`。）",
+    server_db_err_az_missing:
+      "このマシンには Azure CLI がインストールされていません。https://aka.ms/installazurecli からインストールして再試行してください。",
+    team_db_leave: "チームライブラリを離れる",
     server_db_team_pair_blocked:
       "チームライブラリではモバイル連携はまだ利用できません。",
     server_db_pair_blocked:
@@ -4962,7 +4977,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "Your account is not yet a member of this team library. Ask the administrator to add you.",
     server_db_err_entra_login:
-      "Sign in to Azure first: run `az login` in a terminal, then try again.",
+      "Sign in first: click “Sign in with Microsoft” on this card, then try again. (In a terminal: `az login`.)",
+    server_db_err_az_missing:
+      "The Azure CLI is not installed on this machine. Install it from https://aka.ms/installazurecli, then try again.",
+    team_db_leave: "Leave the team library",
     server_db_team_pair_blocked:
       "Mobile pairing is not available for the team library yet.",
     server_db_pair_blocked: "Connect a server database first (section above).",
@@ -6388,7 +6406,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_err_not_member:
       "Dein Konto ist noch kein Mitglied dieser Team-Bibliothek. Bitte den Administrator, dich hinzuzufügen.",
     server_db_err_entra_login:
-      "Melde dich zuerst bei Azure an: führe `az login` in einem Terminal aus und versuche es erneut.",
+      "Melde dich zuerst an: klicke in dieser Karte auf „Mit Microsoft anmelden“ und versuche es erneut. (Im Terminal: `az login`.)",
+    server_db_err_az_missing:
+      "Die Azure CLI ist auf diesem Rechner nicht installiert. Installiere sie von https://aka.ms/installazurecli und versuche es erneut.",
+    team_db_leave: "Team-Bibliothek verlassen",
     server_db_team_pair_blocked:
       "Mobile Kopplung ist für die Team-Bibliothek noch nicht verfügbar.",
     server_db_pair_blocked:

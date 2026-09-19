@@ -14,7 +14,7 @@
  * Azure CLI has no session, and the identity comes from the connection. The
  * disclosure of parent ADR 2026-07-04 Decision 6 is shown once with
  * **Understood** / **Learn locally instead** and stays visible while the
- * team library is active.
+ * team library is active; leaving stays one button away after that.
  *
  * When the token is vault-backed (Bitwarden), never push the learner to re-paste
  * URL/token — unlock once (≤30 day session) and reconnect automatically.
@@ -35,9 +35,13 @@ interface PreviousLibrary {
   replacedAt: string;
 }
 
+type ConfiguredKind = "turso" | "postgres" | null;
+
 interface DatabaseStatusResponse {
   success: boolean;
   connected: boolean;
+  /** False when the team library's server answered but nobody provisioned it yet. */
+  provisioned?: boolean;
   bitwardenRequired?: boolean;
   tursoUrl?: string | null;
   error?: string;
@@ -47,6 +51,8 @@ interface DatabaseStatusResponse {
   /** Team library: the database role the connection runs as. */
   role?: string | null;
   previous?: PreviousLibrary | null;
+  /** Which library kind `credentials.json` binds this machine to, if any. */
+  configured?: ConfiguredKind;
 }
 
 interface LibraryStatusResponse {
@@ -99,7 +105,7 @@ function rememberDisclosure(location: string): void {
 
 /**
  * Map a raw connect failure onto a localized, actionable message. The bridge
- * surfaces the driver's own English text; the three cases below are the ones a
+ * surfaces the driver's own English text; the cases below are the ones a
  * learner can actually act on (issue #218). Anything else keeps the raw detail
  * rather than guessing.
  */
@@ -109,10 +115,17 @@ export function classifyServerDbError(message: string): string {
     return t("server_db_err_bitwarden");
   }
   // Team library (ADR 2026-09-04): the connection carries the identity, so
-  // an unmapped account and a missing Azure sign-in are the two states a
-  // colleague can actually act on.
+  // an unmapped account, a missing Azure CLI and a missing sign-in are the
+  // states a colleague can act on — and this card carries the sign-in, so
+  // the copy points at it rather than at a terminal.
   if (m.includes("not_a_member") || m.includes("not yet a member")) {
     return t("server_db_err_not_member");
+  }
+  if (
+    m.includes("installazurecli") ||
+    /azure cli \(az\) was not found/.test(m)
+  ) {
+    return t("server_db_err_az_missing");
   }
   if (m.includes("entra_login_required") || m.includes("az login")) {
     return t("server_db_err_entra_login");
@@ -157,6 +170,11 @@ function kindOf(target: DatabaseTarget): LibraryKind {
   return "turso";
 }
 
+/** The database name at the end of a `postgres://host:port/db` location. */
+function databaseOf(location: string): string {
+  return location.split("/").pop() ?? "";
+}
+
 /** One line that says which library is active and, for the team, who you are. */
 export function describeLibraryStatus(status: LibraryStatusResponse): string {
   if (kindOf(status.target) !== "postgres") {
@@ -168,7 +186,7 @@ export function describeLibraryStatus(status: LibraryStatusResponse): string {
   if (!status.provisioned) {
     return tf("team_db_not_provisioned", {
       location: status.target.location,
-      database: status.target.location.split("/").pop() ?? "",
+      database: databaseOf(status.target.location),
     });
   }
   if (!status.member) {
@@ -228,8 +246,16 @@ export function initServerDbWizard(
   const restoreButton = requiredElement<HTMLButtonElement>(
     "btn-library-restore",
   );
+  const leaveButton = requiredElement<HTMLButtonElement>("btn-team-db-leave");
 
+  /** What the dashboard runs on right now. */
   let kind: LibraryKind = "local";
+  /**
+   * What `credentials.json` binds the machine to — differs from `kind` while
+   * a vault-backed Turso token is locked (the UI shows local, the file still
+   * says Turso). Switching decides on this, never on the painted state.
+   */
+  let configured: ConfiguredKind = null;
   let location = "";
   let previous: PreviousLibrary | null = null;
   /** True when credentials point at cloud via Bitwarden (no re-paste needed). */
@@ -258,6 +284,7 @@ export function initServerDbWizard(
   disclosureText.textContent = t("team_db_disclosure");
   understoodButton.textContent = t("team_db_understood");
   learnLocallyButton.textContent = t("team_db_learn_locally");
+  leaveButton.textContent = t("team_db_leave");
 
   createHint.textContent = t("server_db_create_hint");
   links.replaceChildren();
@@ -318,8 +345,15 @@ export function initServerDbWizard(
     }
   };
 
+  /**
+   * Switch back when a previous library is kept; leave the team library
+   * whenever it is active — the way out must not vanish with the disclosure.
+   */
   const renderSwitchBack = (): void => {
-    switchBack.hidden = !previous;
+    const onTeam = configured === "postgres";
+    switchBack.hidden = !previous && !onTeam;
+    restoreButton.hidden = !previous;
+    leaveButton.hidden = !onTeam;
     if (previous) {
       restoreButton.textContent = tf("library_restore_btn", {
         kind: t(
@@ -333,9 +367,9 @@ export function initServerDbWizard(
   };
 
   const renderNotice = (): void => {
-    notice.hidden = kind !== "postgres";
+    notice.hidden = configured !== "postgres";
     disclosureActions.hidden =
-      kind !== "postgres" ||
+      configured !== "postgres" ||
       (!disclosurePending && disclosureAcknowledged(location));
   };
 
@@ -345,8 +379,19 @@ export function initServerDbWizard(
     renderSwitchBack();
     renderNotice();
     // The team form is for joining; once joined it makes no sense to show it.
-    teamSection.hidden = kind === "postgres";
-    if (kind !== "postgres") setTeamStatus("");
+    teamSection.hidden = configured === "postgres";
+    if (configured !== "postgres") setTeamStatus("");
+  };
+
+  /** Take the facts of a switch result over. */
+  const adopt = (result: {
+    target: DatabaseTarget;
+    previous?: PreviousLibrary | null;
+  }): void => {
+    kind = kindOf(result.target);
+    configured = kind === "local" ? null : kind;
+    location = result.target.location;
+    previous = result.previous ?? null;
   };
 
   const refresh = async (): Promise<boolean> => {
@@ -358,18 +403,35 @@ export function initServerDbWizard(
       if (status.bitwardenRequired) {
         vaultBacked = true;
         kind = "local";
+        configured =
+          status.configured ??
+          (status.target.kind === "postgres"
+            ? "postgres"
+            : status.tursoUrl
+              ? "turso"
+              : null);
         location = "";
         render();
         if (status.tursoUrl) urlInput.value = status.tursoUrl;
         setFormMode("vault-locked");
         setStatus(t("server_db_err_bitwarden"), false);
-        statusLine.classList.remove("error-banner");
         return false;
       }
 
-      kind = status.success ? kindOf(status.target) : "local";
+      kind = kindOf(status.target);
+      configured = status.configured ?? (kind === "local" ? null : kind);
       location = status.target.location ?? "";
       render();
+
+      if (!status.success) {
+        // The library is configured but did not open: say why and keep the
+        // card in the state of the configured library, so the way out —
+        // switch back, leave — stays available.
+        vaultBacked = false;
+        setFormMode("paste");
+        setStatus(classifyServerDbError(status.error ?? ""), true);
+        return false;
+      }
       if (kind === "turso") {
         vaultBacked = true;
         setFormMode("connected");
@@ -386,24 +448,37 @@ export function initServerDbWizard(
         vaultBacked = false;
         // Switching to a personal database is the paste form again.
         setFormMode("paste");
-        setStatus(
-          status.userId
-            ? tf("team_db_active", {
-                location: status.target.location,
-                role: status.role ?? "",
-                userId: status.userId,
-              })
-            : tf("team_db_not_member", {
-                location: status.target.location,
-                role: status.role ?? "",
-              }),
-        );
+        if (status.provisioned === false) {
+          setStatus(
+            tf("team_db_not_provisioned", {
+              location: status.target.location,
+              database: databaseOf(status.target.location),
+            }),
+            true,
+          );
+        } else if (status.userId) {
+          setStatus(
+            tf("team_db_active", {
+              location: status.target.location,
+              role: status.role ?? "",
+              userId: status.userId,
+            }),
+          );
+        } else {
+          setStatus(
+            tf("team_db_not_member", {
+              location: status.target.location,
+              role: status.role ?? "",
+            }),
+            true,
+          );
+        }
       } else {
         vaultBacked = false;
         setFormMode("paste");
         setStatus(t("server_db_local_only"));
       }
-      return serverDb();
+      return serverDb() && status.connected;
     } catch (error) {
       const msg = error instanceof Error ? error.message : String(error);
       if (msg.includes("BITWARDEN_REQUIRED") || /bitwarden/i.test(msg)) {
@@ -454,7 +529,7 @@ export function initServerDbWizard(
       setStatus(t("server_db_fields_required"), true);
       return;
     }
-    const replace = kind === "postgres";
+    const replace = configured === "postgres";
     if (replace && !window.confirm(t("library_switch_confirm_turso"))) return;
     connectButton.disabled = true;
     setStatus(t("server_db_connecting"));
@@ -472,9 +547,7 @@ export function initServerDbWizard(
         ],
       );
       tokenInput.value = "";
-      kind = kindOf(result.target);
-      location = result.target.location;
-      previous = result.previous ?? null;
+      adopt(result);
       render();
       setFormMode(kind === "turso" ? "connected" : "paste");
       setStatus(
@@ -525,7 +598,9 @@ export function initServerDbWizard(
       setTeamStatus(t("team_db_fields_required"), true);
       return;
     }
-    const replace = kind === "turso";
+    // A vault-locked Turso is still a configured Turso: it is kept as the
+    // previous library and switched away from without an unlock.
+    const replace = configured === "turso";
     if (replace && !window.confirm(t("library_switch_confirm_team"))) return;
     teamConnectButton.disabled = true;
     signInButton.disabled = true;
@@ -538,14 +613,13 @@ export function initServerDbWizard(
         database,
         ...(replace ? ["--replace"] : []),
       ]);
-      kind = kindOf(result.target);
-      location = result.target.location;
-      previous = result.previous;
+      adopt(result);
       disclosurePending = true;
       render();
       setFormMode("paste");
+      // Not a member yet and not provisioned yet are warnings the colleague
+      // acts on; the banner stays until the next status read clears it.
       setStatus(describeLibraryStatus(result), !result.member);
-      statusLine.classList.remove("error-banner");
       onServerDbReady();
     } catch (error) {
       setTeamStatus(
@@ -557,6 +631,24 @@ export function initServerDbWizard(
     } finally {
       teamConnectButton.disabled = false;
       signInButton.disabled = false;
+    }
+  };
+
+  /** Status line after a restore or a leave — a verification failure is not hidden. */
+  const reportSwitch = (result: LibraryStatusResponse): void => {
+    if (result.verifyError) {
+      setStatus(
+        tf("library_verify_failed", { message: result.verifyError }),
+        true,
+      );
+      return;
+    }
+    if (kind === "postgres") {
+      setStatus(describeLibraryStatus(result), !result.member);
+    } else if (kind === "local") {
+      setStatus(t("server_db_local_only"));
+    } else {
+      setStatus(tf("library_switched", { location: result.target.location }));
     }
   };
 
@@ -573,20 +665,11 @@ export function initServerDbWizard(
     setStatus(t("library_restoring"));
     try {
       const result = await runBridge<LibraryStatusResponse>("library-restore");
-      kind = kindOf(result.target);
-      location = result.target.location;
-      previous = result.previous;
+      adopt(result);
       disclosurePending = false;
       render();
       setFormMode(kind === "turso" ? "connected" : "paste");
-      setStatus(
-        result.verifyError
-          ? tf("library_verify_failed", { message: result.verifyError })
-          : kind === "postgres"
-            ? describeLibraryStatus(result)
-            : tf("library_switched", { location: result.target.location }),
-        Boolean(result.verifyError),
-      );
+      reportSwitch(result);
       onServerDbReady();
     } catch (error) {
       setStatus(
@@ -606,23 +689,18 @@ export function initServerDbWizard(
     renderNotice();
   };
 
-  const learnLocally = async (): Promise<void> => {
+  const leave = async (): Promise<void> => {
     learnLocallyButton.disabled = true;
+    leaveButton.disabled = true;
     setStatus(t("library_restoring"));
     try {
       const result =
         await runBridge<LibraryStatusResponse>("team-db-disconnect");
-      kind = kindOf(result.target);
-      location = result.target.location;
-      previous = result.previous;
+      adopt(result);
       disclosurePending = false;
       render();
       setFormMode(kind === "turso" ? "connected" : "paste");
-      setStatus(
-        kind === "local"
-          ? t("server_db_local_only")
-          : tf("library_switched", { location: result.target.location }),
-      );
+      reportSwitch(result);
       onServerDbReady();
     } catch (error) {
       setStatus(
@@ -633,6 +711,7 @@ export function initServerDbWizard(
       );
     } finally {
       learnLocallyButton.disabled = false;
+      leaveButton.disabled = false;
     }
   };
 
@@ -641,7 +720,8 @@ export function initServerDbWizard(
   teamConnectButton.addEventListener("click", () => void connectTeam());
   restoreButton.addEventListener("click", () => void restore());
   understoodButton.addEventListener("click", understood);
-  learnLocallyButton.addEventListener("click", () => void learnLocally());
+  learnLocallyButton.addEventListener("click", () => void leave());
+  leaveButton.addEventListener("click", () => void leave());
   void refresh();
 
   return {

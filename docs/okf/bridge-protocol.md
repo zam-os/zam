@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-19T10:30:00.000Z
+timestamp: 2026-09-19T12:05:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -117,8 +117,14 @@ A machine is bound to one library — the local SQLite file, a personal
 Turso/sqld server database, or the team library on PostgreSQL (ADR
 2026-09-04). `database-status` reports the active `target` (`kind`:
 `local`, `turso-*`, `postgres`), the learner id, on the team library the
-database `role` the connection runs as, and `previous`: the connection a
-switch kept (`kind`, `location`, `replacedAt`), never its token.
+database `role` the connection runs as, `configured` (which library kind
+`credentials.json` binds the machine to, also while a vault-backed token is
+locked), and `previous`: the connection a switch kept (`kind`, `location`,
+`replacedAt`), never its token. An open failure is not an exit: a team
+library that is not provisioned yet answers `success: true, connected: true,
+provisioned: false`, any other failure `success: false` with `error` — both
+still carry `target`, `configured` and `previous`, so a surface keeps showing
+which library the machine is bound to and the way out of it.
 
 Switching keeps the replaced connection so switching back needs no new
 token, and a switch that does not verify is undone — the machine is left as

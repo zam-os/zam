@@ -25,7 +25,11 @@ or that the administrator still has to add you. A machine bound to a
 personal Turso database is switched after one confirmation; that connection
 is kept as the *previous library*, and **Switch back** brings it back with
 one click and no new token. The first connection shows the disclosure with
-**Understood** / **Learn locally instead**; its text stays in the card.
+**Understood** / **Learn locally instead**; its text stays in the card, and
+**Leave the team library** stays available for as long as you are connected.
+If the library is not provisioned yet, the card says so and names the
+administrator's command; if the Azure CLI is missing or signed out, it points
+at the installer or at **Sign in with Microsoft**.
 
 `setup` reads your user principal name from the Azure CLI and stores it in
 lower case — the spelling `zam team add-member` creates roles with, because

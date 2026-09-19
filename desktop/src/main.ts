@@ -1080,6 +1080,8 @@ function initializeTranslations() {
     t("team_db_understood");
   document.getElementById("btn-team-db-learn-locally")!.textContent =
     t("team_db_learn_locally");
+  document.getElementById("btn-team-db-leave")!.textContent =
+    t("team_db_leave");
 
   document.getElementById("lbl-settings-secrets-title-text")!.textContent =
     t("secrets_vault_title");

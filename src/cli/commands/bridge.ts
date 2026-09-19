@@ -41,7 +41,9 @@ import {
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
+  clearTursoCredentials,
   commitTextImport,
+  configuredLibraryKind,
   confirmCardSplit,
   confirmFoundations,
   confirmSourceImport,
@@ -74,6 +76,7 @@ import {
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
+  getPostgresCredentials,
   getPreviousLibrary,
   getProviderApiKey,
   getReviewActivity,
@@ -4743,27 +4746,58 @@ bridgeCommand
     } catch (err) {
       jsonError((err as Error).message);
     }
-    await withDb(async (db) => {
-      // On the team library the connection carries the identity; the role is
-      // what a colleague quotes to the administrator when not yet mapped.
-      const identity =
-        target.kind === "postgres"
-          ? await describeIdentity(db)
-          : { userId: await currentUserIdOrNull(db), role: null };
-      const userId = identity.userId;
-      const users = await readDatabaseUserSummaries(db);
-      jsonOut({
-        success: true,
-        connected: true,
-        bitwardenRequired: false,
-        target,
-        userId,
-        role: identity.role,
-        cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
-        users,
-        previous: getPreviousLibrary(),
-      });
-    });
+    const previous = getPreviousLibrary();
+    const configured = configuredLibraryKind();
+    // The role the team connection runs as is known before the library opens
+    // — what a colleague quotes to the administrator when not yet mapped.
+    const configuredRole =
+      target.kind === "postgres"
+        ? (getPostgresCredentials()?.username ?? null)
+        : null;
+    await sharedWithDb(
+      async (db) => {
+        const identity =
+          target.kind === "postgres"
+            ? await describeIdentity(db)
+            : { userId: await currentUserIdOrNull(db), role: null };
+        const userId = identity.userId;
+        const users = await readDatabaseUserSummaries(db);
+        jsonOut({
+          success: true,
+          connected: true,
+          provisioned: true,
+          bitwardenRequired: false,
+          target,
+          userId,
+          role: identity.role ?? configuredRole,
+          cardCount: users.find((user) => user.id === userId)?.cardCount ?? 0,
+          users,
+          previous,
+          configured,
+        });
+      },
+      (message) => {
+        // A team library that is not provisioned yet is a state the Studio
+        // shows (the administrator's next step), not a failure of this
+        // command; every other open failure keeps the target so the card
+        // still knows which library this machine is bound to.
+        const notProvisioned = /not provisioned yet/.test(message);
+        jsonOut({
+          success: notProvisioned,
+          connected: notProvisioned,
+          provisioned: false,
+          bitwardenRequired: false,
+          target,
+          userId: null,
+          role: configuredRole,
+          cardCount: 0,
+          users: [],
+          previous,
+          configured,
+          error: message,
+        });
+      },
+    );
   });
 
 /**
@@ -4817,24 +4851,45 @@ bridgeCommand
     // database beside a configured team library would leave every command
     // refusing; say so before writing anything — or, with --replace, keep the
     // team library as the previous one so the learner can switch back.
-    let replacedTeamLibrary = false;
-    if (loadStoredCredentials().postgres) {
-      if (!opts.replace) {
-        jsonError(
-          "LIBRARY_CONFIGURED: A team library (PostgreSQL) is configured on this machine. Pass --replace to keep it as the previous library and switch, or remove it with: zam connector clear postgres",
-        );
-      }
-      replacedTeamLibrary = keepLibraryAsPrevious("postgres");
+    const stored = loadStoredCredentials();
+    if (stored.postgres && !opts.replace) {
+      jsonError(
+        "LIBRARY_CONFIGURED: A team library (PostgreSQL) is configured on this machine. Pass --replace to keep it as the previous library and switch, or remove it with: zam connector clear postgres",
+      );
     }
+    // Whatever was there before the write comes back if the new connection
+    // does not verify: the kept team library, the earlier Turso credentials,
+    // or nothing. From here on every failure exit goes through `undo`.
+    const earlierTurso = stored.turso;
+    const replacedTeamLibrary = stored.postgres
+      ? keepLibraryAsPrevious("postgres")
+      : false;
+    const undo = async (): Promise<void> => {
+      if (replacedTeamLibrary) {
+        restorePreviousLibrary(undefined, { keepCurrent: false });
+      } else if (earlierTurso?.url && earlierTurso.token) {
+        setTursoCredentials(
+          earlierTurso.url,
+          earlierTurso.token,
+          undefined,
+          earlierTurso.mode,
+        );
+      } else {
+        clearTursoCredentials();
+      }
+      await resolveCredentials();
+    };
 
     if (tokenFrom) {
       try {
         setTursoCredentials(url, secretRefFromUri(tokenFrom), undefined, mode);
       } catch (err) {
+        await undo();
         jsonError(err instanceof Error ? err.message : String(err));
       }
       await resolveCredentials();
       if (!getTursoCredentials()) {
+        await undo();
         jsonError(
           `Could not resolve token reference "${tokenFrom}". Unlock Bitwarden in Settings or fix the vault item.`,
         );
@@ -4868,12 +4923,9 @@ bridgeCommand
         previous: getPreviousLibrary(),
       });
     } catch (error) {
-      // A switch that did not verify is undone: the team library comes back
-      // and the unverified Turso credentials go.
-      if (replacedTeamLibrary) {
-        restorePreviousLibrary(undefined, { keepCurrent: false });
-        await resolveCredentials();
-      }
+      // A connection that did not verify is undone: the team library or the
+      // earlier Turso credentials come back, the unverified ones go.
+      await undo();
       jsonError(
         error instanceof Error
           ? error.message

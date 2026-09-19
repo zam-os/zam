@@ -102,7 +102,9 @@ async function verifyConfiguredLibrary(
         connected: true,
         provisioned: false,
         userId: null,
-        role: null,
+        // The role is known before the library opens: it is the configured
+        // username, what the administrator will map.
+        role: getPostgresCredentials()?.username ?? null,
         member: false,
       };
     }
@@ -151,7 +153,11 @@ export async function connectTeamLibrary(
     input.username?.trim() ||
     (auth === "entra-cli" ? await deps.signedInUpn() : "");
   if (!username) {
-    throw new Error("A username is required with password authentication.");
+    throw new Error(
+      auth === "password"
+        ? "A username is required with password authentication."
+        : "The Azure CLI did not report a signed-in account. Sign in first, or pass --username <upn>.",
+    );
   }
 
   const earlierPostgres = stored.postgres;

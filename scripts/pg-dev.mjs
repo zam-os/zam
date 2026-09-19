@@ -26,7 +26,7 @@
  */
 
 import { execFileSync, spawnSync } from "node:child_process";
-import { existsSync, mkdirSync, writeFileSync } from "node:fs";
+import { existsSync, mkdirSync, rmSync, writeFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 
@@ -123,7 +123,25 @@ function localUp() {
 
   if (!existsSync(PGDATA)) {
     mkdirSync(PGDATA, { recursive: true });
-    run(initdb, ["-D", PGDATA, "-U", USER, "--auth=trust", "-E", "UTF8"]);
+    // Password authentication like the Docker image: under `trust` the server
+    // never challenges the client, so the provider's per-connection password
+    // supplier is never called and `postgres-open.test.ts` cannot observe it.
+    const pwfile = join(dirname(PGDATA), ".pgdata-password");
+    writeFileSync(pwfile, `${PASSWORD}\n`);
+    try {
+      run(initdb, [
+        "-D",
+        PGDATA,
+        "-U",
+        USER,
+        "--auth=scram-sha-256",
+        `--pwfile=${pwfile}`,
+        "-E",
+        "UTF8",
+      ]);
+    } finally {
+      rmSync(pwfile, { force: true });
+    }
     // Loopback only — a dev database must not be reachable from the network.
     writeFileSync(
       join(PGDATA, "postgresql.conf"),
@@ -153,7 +171,7 @@ function localUp() {
   const q = (sql, db = "postgres") =>
     spawnSync(psql, ["-p", String(PORT), "-U", USER, "-d", db, "-tAc", sql], {
       stdio: ["ignore", "pipe", "pipe"],
-      env: PG_ENV,
+      env: { ...PG_ENV, PGPASSWORD: PASSWORD },
     });
   q(`ALTER ROLE ${USER} WITH PASSWORD '${PASSWORD}'`);
   const exists = q(
