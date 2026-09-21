@@ -97,8 +97,7 @@ export interface AgentTextAdapter {
 
 /**
  * Typed failure that always names the harness, so the UI can say "Claude Code
- * is offline" rather than surfacing a generic LLM timeout. There is deliberately
- * no silent fallback to cloud — a learner who chose Agent chose it on purpose.
+ * is offline" rather than surfacing a generic LLM timeout.
  */
 export class AgentError extends Error {
   constructor(
