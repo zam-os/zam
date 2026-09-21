@@ -40,9 +40,15 @@ export interface VoiceReviewCard {
 
 /** Optional smart-evaluation result for the current answer. */
 export interface VoiceEvaluationSpeech {
-  /** Full TTS block (feedback + suggested rating + rating prompt). */
+  /**
+   * Full TTS block: feedback, completeness, rating prompt. It never carries a
+   * proposed rating — an evaluator observes coverage, not effort, and the
+   * spoken surface follows the same rule as the visual ones (ADR 2026-09-08
+   * §3/§7, #337).
+   */
   speech: string;
-  suggestedRating: Rating;
+  /** The coverage verdict the block states, for hosts that log or display it. */
+  completeness: "complete" | "incomplete" | "unscored";
 }
 
 export interface VoiceReviewAdapter {

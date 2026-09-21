@@ -119,8 +119,8 @@ describe("Android hands-free voice review", () => {
         },
         async evaluateAnswer() {
           return {
-            speech: "Genau. Vorgeschlagene Bewertung: Gut.",
-            suggestedRating: 3,
+            speech: "Genau. Vollständig. Sage Schwer, Gut oder Leicht.",
+            completeness: "complete",
           };
         },
         async rate(rating) {
@@ -133,7 +133,9 @@ describe("Android hands-free voice review", () => {
 
     await controller.start("de-DE");
 
-    expect(spoken).toContain("Genau. Vorgeschlagene Bewertung: Gut.");
+    expect(spoken).toContain(
+      "Genau. Vollständig. Sage Schwer, Gut oder Leicht.",
+    );
     expect(spoken.some((text) => text.includes(card.expectedAnswer))).toBe(
       false,
     );
