@@ -9,6 +9,7 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
+import { resolveCredentials } from "../../kernel/credentials.js";
 import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
 import {
   getReviewActivity,
@@ -56,9 +57,13 @@ import {
   resolveOpeningCompanionContext,
   writeCompanionContext,
 } from "../companion-context-server.js";
+import { registerEntraCliPasswordSupplier } from "../db/entra-cli.js";
 import type { CatalogEntry } from "../okf/bundle.js";
 import { publishUiIntent } from "../ui-intent.js";
-import { resolveLearnerId } from "../users/identity.js";
+import {
+  registerCliSettingsScope,
+  resolveLearnerId,
+} from "../users/identity.js";
 import { executeBridgeCommandJson } from "./bridge.js";
 import {
   createLazyDatabase,
@@ -2256,9 +2261,28 @@ export function createMcpServer(
   return server;
 }
 
+/**
+ * The process-level services the CLI layer plugs into the kernel, exactly as
+ * app.ts does at startup: the credentials snapshot (ADR 2026-07-30b), the
+ * Entra token supplier for the team library (ADR 2026-09-04 Decision 3) and
+ * the settings scope (Decision 4). app.ts already ran them in its own process
+ * — but the MCP transport is its own bundle with its own copy of the kernel
+ * (tsup.config.ts: no shared chunks, ADR 2026-07-07), so those registrations
+ * never reach this module graph. Without this, `zam mcp` on a team library
+ * failed with "no entra-cli token source is registered in this process" and
+ * settings fell back to library-wide reads (2026-09-21). Idempotent.
+ */
+export async function registerMcpProcessServices(): Promise<void> {
+  await resolveCredentials();
+  registerEntraCliPasswordSupplier();
+  registerCliSettingsScope();
+}
+
 export async function runMcpServer(): Promise<void> {
   // Rebind console.log to console.error immediately to prevent stdio transport corruption
   console.log = console.error;
+
+  await registerMcpProcessServices();
 
   const databaseHost = createPersistentDatabaseHost(openDatabase);
   const server = createMcpServer(databaseHost.database, {
