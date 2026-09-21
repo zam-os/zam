@@ -542,11 +542,7 @@ export async function evaluateMobileAnswer(
   };
 }
 
-/**
- * The objective half of a verdict (ADR 2026-09-08 §3): derived from coverage,
- * never from the model's own word. Unscored cards (Bloom 4–5, or a host that
- * predates the contract) carry no coverage and get no verdict.
- */
+/** Coverage verdict; unscored when the card carries no coverage (ADR 2026-09-08 §3). */
 export type EvaluationCompleteness =
   | { kind: "complete" }
   | { kind: "incomplete"; missing: number }
@@ -562,10 +558,8 @@ export function evaluationCompleteness(
 }
 
 /**
- * Spoken summary for hands-free mode: feedback, then completeness, then the
- * rating prompt. It never proposes an effort rating — an evaluator can observe
- * coverage, not how hard the recall felt, so that choice stays with the learner
- * (ADR 2026-09-08 §3/§7, #337). Incomplete keeps the objective "Again" cue.
+ * Spoken summary for hands-free mode. It must not name an effort rating: an
+ * evaluator can observe coverage, not how hard the recall felt (ADR 2026-09-08 §3).
  */
 export function evaluationSpeech(
   evaluation: RecallEvaluation,

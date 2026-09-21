@@ -1,6 +1,6 @@
 # Answer Points and Score-Based Rating
 
-**Status:** Accepted — 2026-09-08\
+**Status:** Implemented — 2026-09-21\
 **Date:** 2026-09-08\
 **Deciders:** Thomas (project owner)\
 **Related:**
