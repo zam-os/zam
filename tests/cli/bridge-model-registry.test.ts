@@ -477,6 +477,7 @@ describe("bridge model-* registry commands", () => {
           capabilities: Record<string, boolean>;
           model: string;
         };
+        probe?: { reachable: boolean };
       };
     };
 
@@ -507,6 +508,15 @@ describe("bridge model-* registry commands", () => {
       transport: "agent",
       agentHarness: "claude-code",
     });
+
+    // Saving a working agent model opens the text-LLM gate, as cloud-connect
+    // and the Foundry setup do after their validated saves. Left to a separate
+    // switch, every answer check stayed "disabled" on a fresh library
+    // (2026-09-21). Without the harness on PATH the gate stays as it was.
+    const check = (await runBridge(["check-llm"])) as {
+      parsed: { enabled?: boolean };
+    };
+    expect(check.parsed.enabled).toBe(res.parsed.probe?.reachable === true);
   });
 
   it("updates the same agent entry instead of appending a duplicate", async () => {

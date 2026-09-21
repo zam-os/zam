@@ -3313,6 +3313,20 @@ bridgeCommand
       if (targetIndex >= 0) next[targetIndex] = entry;
       else next.push(entry);
       await writeRegistry(next);
+      if (probe.available) {
+        // A working agent model opens the text-LLM gate, exactly as
+        // cloud-connect and the Foundry setup do after their validated saves.
+        // Left to a separate switch, every answer check stayed "disabled" on a
+        // fresh library (2026-09-21). llm.vision.enabled stays a deliberate
+        // opt-in. The registry save above stands even when the database is
+        // unreachable — the gate can still be opened later.
+        await sharedWithDb(
+          async (db) => {
+            await setSetting(db, "llm.enabled", "true");
+          },
+          () => undefined,
+        );
+      }
       jsonOut({
         ok: true,
         created: targetIndex < 0,
