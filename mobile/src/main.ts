@@ -129,6 +129,7 @@ import {
 import { discussMobileReview } from "./discuss.js";
 import {
   evaluateMobileAnswer,
+  evaluationCompleteness,
   evaluationSpeech,
   generateViaHttp,
   type MobileEvaluationResult,
@@ -955,7 +956,7 @@ const voiceController = new HandsFreeReviewController(voicePort, {
     if (!result) return null;
     return {
       speech: evaluationSpeech(result.evaluation, getLocale()),
-      suggestedRating: result.evaluation.suggestedRating,
+      completeness: evaluationCompleteness(result.evaluation).kind,
     };
   },
   rate: (rating) => rateCurrentReview(rating),

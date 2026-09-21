@@ -542,34 +542,60 @@ export async function evaluateMobileAnswer(
   };
 }
 
-export function ratingLabel(
-  rating: 1 | 2 | 3 | 4,
-  locale: "de" | "en",
-): string {
-  if (locale === "en") {
-    return ({ 1: "Again", 2: "Hard", 3: "Good", 4: "Easy" } as const)[rating];
-  }
-  return ({ 1: "Nochmal", 2: "Schwer", 3: "Gut", 4: "Leicht" } as const)[
-    rating
-  ];
+/** Coverage verdict; unscored when the card carries no coverage (ADR 2026-09-08 §3). */
+export type EvaluationCompleteness =
+  | { kind: "complete" }
+  | { kind: "incomplete"; missing: number }
+  | { kind: "unscored" };
+
+export function evaluationCompleteness(
+  evaluation: RecallEvaluation,
+): EvaluationCompleteness {
+  const coverage = evaluation.coverage;
+  if (!coverage) return { kind: "unscored" };
+  const missing = Math.max(0, coverage.total - coverage.recalled);
+  return missing === 0 ? { kind: "complete" } : { kind: "incomplete", missing };
 }
 
-/** Spoken summary for hands-free mode. */
+/**
+ * Spoken summary for hands-free mode. It must not name an effort rating: an
+ * evaluator can observe coverage, not how hard the recall felt (ADR 2026-09-08 §3).
+ */
 export function evaluationSpeech(
   evaluation: RecallEvaluation,
   locale: "de" | "en",
 ): string {
-  const rating = ratingLabel(evaluation.suggestedRating, locale);
+  const completeness = evaluationCompleteness(evaluation);
   if (locale === "en") {
-    return [
-      evaluation.feedback,
-      `Suggested rating: ${rating}.`,
-      "Say Again, Hard, Good, or Easy to confirm or change.",
-    ].join(" ");
+    const verdict =
+      completeness.kind === "complete"
+        ? "Complete."
+        : completeness.kind === "incomplete"
+          ? `Incomplete, ${
+              completeness.missing === 1
+                ? "one point missing"
+                : `${completeness.missing} points missing`
+            }. That is an Again.`
+          : null;
+    const prompt =
+      completeness.kind === "complete"
+        ? "How hard was it? Say Hard, Good, or Easy."
+        : "Say Again, Hard, Good, or Easy.";
+    return [evaluation.feedback, verdict, prompt].filter(Boolean).join(" ");
   }
-  return [
-    evaluation.feedback,
-    `Vorgeschlagene Bewertung: ${rating}.`,
-    "Sage Nochmal, Schwer, Gut oder Leicht zum Bestätigen oder Ändern.",
-  ].join(" ");
+  const verdict =
+    completeness.kind === "complete"
+      ? "Vollständig."
+      : completeness.kind === "incomplete"
+        ? `Unvollständig, ${
+            completeness.missing === 1
+              ? "ein Punkt fehlt"
+              : `${completeness.missing} Punkte fehlen`
+          }. Das ist ein Nochmal.`
+        : null;
+  const prompt =
+    completeness.kind === "complete"
+      ? "Wie schwer war es? Sage Schwer, Gut oder Leicht."
+      : "Sage Nochmal, Schwer, Gut oder Leicht.";
+  return [evaluation.feedback, verdict, prompt].filter(Boolean).join(" ");
 }

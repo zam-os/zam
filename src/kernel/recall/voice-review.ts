@@ -40,9 +40,10 @@ export interface VoiceReviewCard {
 
 /** Optional smart-evaluation result for the current answer. */
 export interface VoiceEvaluationSpeech {
-  /** Full TTS block (feedback + suggested rating + rating prompt). */
+  /** Full TTS block; states completeness, never a proposed rating. */
   speech: string;
-  suggestedRating: Rating;
+  /** The coverage verdict the block states, for hosts that log or display it. */
+  completeness: "complete" | "incomplete" | "unscored";
 }
 
 export interface VoiceReviewAdapter {

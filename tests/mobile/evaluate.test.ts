@@ -3,6 +3,7 @@ import {
   DeviceOnlyUnavailableError,
   type EvaluationPorts,
   evaluateMobileAnswer,
+  evaluationCompleteness,
   evaluationSpeech,
   isCloudHttpEndpoint,
   NoEvaluationBackendError,
@@ -182,21 +183,79 @@ describe("evaluateMobileAnswer", () => {
   });
 });
 
+// ADR 2026-09-08 §3/§7 (#337): the spoken block states completeness derived
+// from coverage and never proposes an effort rating — that choice is the
+// learner's alone. The visual pre-selection of the neutral 3 is out of scope.
+const partial = {
+  verdict: "partial" as const,
+  feedback: "Fast — die Richtung fehlt noch.",
+  referenceAnswer: "F = m · a",
+  gaps: ["Richtung"],
+  suggestedRating: 1 as const,
+  coverage: { recalled: 1, total: 2 },
+};
+
 describe("evaluationSpeech", () => {
-  it("speaks feedback and the suggested rating in German", () => {
+  it("states Incomplete with the missing count and the Again cue, never a rating", () => {
+    const speech = evaluationSpeech(partial, "de");
+
+    expect(speech).toContain("Fast — die Richtung fehlt noch.");
+    expect(speech).toMatch(/Unvollständig/);
+    expect(speech).toMatch(/ein Punkt fehlt/);
+    expect(speech).toMatch(/Nochmal/);
+    expect(speech).not.toMatch(/Vorgeschlagene Bewertung/);
+  });
+
+  it("states Complete and asks for the effort without proposing one", () => {
     const speech = evaluationSpeech(
       {
-        verdict: "partial",
-        feedback: "Fast — die Richtung fehlt noch.",
-        referenceAnswer: "F = m · a",
-        gaps: ["Richtung"],
-        suggestedRating: 2,
+        ...partial,
+        verdict: "correct",
+        suggestedRating: 3,
+        coverage: { recalled: 2, total: 2 },
       },
-      "de",
+      "en",
     );
+
+    expect(speech).toMatch(/Complete./);
+    expect(speech).toMatch(/Hard, Good, or Easy/);
+    expect(speech).not.toMatch(/Suggested rating/);
+    expect(speech).not.toMatch(/Incomplete/);
+  });
+
+  it("speaks only feedback and the prompt on an unscored card", () => {
+    const { coverage: _coverage, ...unscored } = partial;
+    const speech = evaluationSpeech(unscored, "en");
+
     expect(speech).toContain("Fast — die Richtung fehlt noch.");
-    expect(speech).toContain("Schwer");
-    expect(speech).toContain("Nochmal");
+    expect(speech).not.toMatch(/Complete|Incomplete|Suggested rating/);
+    expect(speech).toMatch(/Again, Hard, Good, or Easy/);
+  });
+
+  it("pluralises the missing points", () => {
+    const speech = evaluationSpeech(
+      { ...partial, coverage: { recalled: 1, total: 3 } },
+      "en",
+    );
+
+    expect(speech).toMatch(/Incomplete, 2 points missing/);
+  });
+});
+
+describe("evaluationCompleteness", () => {
+  it("derives the verdict from coverage and marks unscored cards", () => {
+    expect(
+      evaluationCompleteness({
+        ...partial,
+        coverage: { recalled: 2, total: 2 },
+      }),
+    ).toEqual({ kind: "complete" });
+    expect(evaluationCompleteness(partial)).toEqual({
+      kind: "incomplete",
+      missing: 1,
+    });
+    const { coverage: _coverage, ...unscored } = partial;
+    expect(evaluationCompleteness(unscored)).toEqual({ kind: "unscored" });
   });
 });
 
