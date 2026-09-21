@@ -20,6 +20,7 @@ import {
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
   generateQuestionViaLLM,
+  getProviderRoleStatus,
   sampleViaLocalLLM,
 } from "../../../src/cli/llm/client.js";
 import {
@@ -242,5 +243,39 @@ describe("recall via the agent transport", () => {
 
     expect(ready.usable).toBe(true);
     expect(ready.model).toContain("claude");
+  });
+
+  it("reports the agent as usable in the provider role status (no URL ping)", async () => {
+    // provider-status feeds the Studio's AI chip. Its chain walk pinged the
+    // agent row's placeholder URL and called a working Claude Code model
+    // "offline" while answer evaluation went through fine (2026-09-21).
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async () => ({ text: "" })),
+    );
+    const db = await seedDb();
+
+    const status = await getProviderRoleStatus(db, "recall");
+
+    expect(status.enabled).toBe(true);
+    expect(status.online).toBe(true);
+    expect(status.usable).toBe(true);
+    expect(status.reason).toBeUndefined();
+  });
+
+  it("reports an agent whose harness is missing as offline in the role status", async () => {
+    vi.mocked(getAgentAdapter).mockReturnValue({
+      ...fakeAdapter(async () => ({ text: "" })),
+      probe: async () => ({
+        harness: "claude-code",
+        available: false,
+        detail: "Claude Code CLI (`claude`) not found on PATH",
+      }),
+    });
+    const db = await seedDb();
+
+    const status = await getProviderRoleStatus(db, "recall");
+
+    expect(status.usable).toBe(false);
+    expect(status.reason).toBe("offline");
   });
 });

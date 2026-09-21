@@ -1,6 +1,8 @@
 import { execFile } from "node:child_process";
 import {
+  chmodSync,
   existsSync,
+  mkdirSync,
   mkdtempSync,
   readFileSync,
   rmSync,
@@ -61,18 +63,31 @@ describe("bridge model-* registry commands", () => {
     rmSync(tempHome, { recursive: true, force: true });
   });
 
-  async function runBridge(args: string[]): Promise<{ parsed: unknown }> {
-    const env = {
+  async function runBridge(
+    args: string[],
+    envOverrides: Record<string, string> = {},
+  ): Promise<{ parsed: unknown }> {
+    const env: NodeJS.ProcessEnv = {
       ...process.env,
       USERPROFILE: tempHome,
       HOME: tempHome,
       ZAM_CONFIG_PATH: configPath,
     };
+    // Windows spells PATH as "Path"; replace case-insensitively so an override
+    // does not leave two competing keys in the child environment.
+    for (const [key, value] of Object.entries(envOverrides)) {
+      for (const existing of Object.keys(env)) {
+        if (existing.toLowerCase() === key.toLowerCase()) delete env[existing];
+      }
+      env[key] = value;
+    }
     let stdout = "";
     try {
-      const result = await execFileAsync("node", [cliPath, "bridge", ...args], {
-        env,
-      });
+      const result = await execFileAsync(
+        process.execPath,
+        [cliPath, "bridge", ...args],
+        { env },
+      );
       stdout = result.stdout;
     } catch (err) {
       stdout = (err as { stdout?: string }).stdout ?? "";
@@ -84,6 +99,24 @@ describe("bridge model-* registry commands", () => {
   function readConfig(): InstallConfig {
     if (!existsSync(configPath)) return {};
     return JSON.parse(readFileSync(configPath, "utf-8")) as InstallConfig;
+  }
+
+  /**
+   * An empty executable named like a harness CLI in a temp bin dir. The
+   * harness probe only checks presence on PATH (PATHEXT-aware on Windows),
+   * so this stands in for a real installation on every runner.
+   */
+  function stubHarnessOnPath(name: string): string {
+    const bin = join(tempHome, "bin");
+    mkdirSync(bin, { recursive: true });
+    if (process.platform === "win32") {
+      writeFileSync(join(bin, `${name}.cmd`), "@echo off\r\n");
+    } else {
+      const file = join(bin, name);
+      writeFileSync(file, "#!/bin/sh\nexit 0\n");
+      chmodSync(file, 0o755);
+    }
+    return bin;
   }
 
   it("upserts a reachable text model and persists detected capabilities", async () => {
@@ -111,6 +144,14 @@ describe("bridge model-* registry commands", () => {
     expect(model.probedAt).toBeTruthy();
 
     expect(readConfig().ai?.models).toHaveLength(1);
+
+    // A validated text model opens the text-LLM gate, as cloud-connect and the
+    // Foundry setup do. The Studio's Add-model form lands here and has no gate
+    // switch of its own (2026-09-21).
+    const check = (await runBridge(["check-llm"])) as {
+      parsed: { enabled?: boolean };
+    };
+    expect(check.parsed.enabled).toBe(true);
   });
 
   it("honors an explicit --capabilities selection on a fresh row", async () => {
@@ -477,6 +518,7 @@ describe("bridge model-* registry commands", () => {
           capabilities: Record<string, boolean>;
           model: string;
         };
+        probe?: { reachable: boolean };
       };
     };
 
@@ -507,6 +549,59 @@ describe("bridge model-* registry commands", () => {
       transport: "agent",
       agentHarness: "claude-code",
     });
+  });
+
+  it("opens the text-LLM gate when the saved agent harness is present", async () => {
+    // Saving a working agent model is the moment the gate opens, as
+    // cloud-connect and the Foundry setup do after their validated saves.
+    // Left to a separate switch, every answer check stayed "disabled" on a
+    // fresh library (2026-09-21).
+    const bin = stubHarnessOnPath("claude");
+    const res = (await runBridge(
+      [
+        "model-upsert",
+        "--transport",
+        "agent",
+        "--agent-harness",
+        "claude-code",
+        "--label",
+        "Claude Code",
+      ],
+      { PATH: bin },
+    )) as { parsed: { ok?: boolean; probe?: { reachable: boolean } } };
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.probe?.reachable).toBe(true);
+
+    const check = (await runBridge(["check-llm"])) as {
+      parsed: { enabled?: boolean };
+    };
+    expect(check.parsed.enabled).toBe(true);
+  });
+
+  it("leaves the gate closed when the saved agent harness is missing", async () => {
+    // Without the harness the row has no detected text capability and would
+    // not serve; opening the gate would only produce a phantom "offline" model.
+    const emptyBin = join(tempHome, "empty-bin");
+    mkdirSync(emptyBin, { recursive: true });
+    const res = (await runBridge(
+      [
+        "model-upsert",
+        "--transport",
+        "agent",
+        "--agent-harness",
+        "claude-code",
+        "--label",
+        "Claude Code",
+      ],
+      { PATH: emptyBin },
+    )) as { parsed: { ok?: boolean; probe?: { reachable: boolean } } };
+    expect(res.parsed.ok).toBe(true);
+    expect(res.parsed.probe?.reachable).toBe(false);
+
+    const check = (await runBridge(["check-llm"])) as {
+      parsed: { enabled?: boolean };
+    };
+    expect(check.parsed.enabled).toBe(false);
   });
 
   it("updates the same agent entry instead of appending a duplicate", async () => {

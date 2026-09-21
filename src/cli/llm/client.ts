@@ -2327,6 +2327,21 @@ async function checkProviderEndpoint(
   endpoint: ProviderConfig,
   options: ProviderCheckOptions = {},
 ): Promise<ProviderEndpointReadiness> {
+  // Agent transport (ADR 2026-07-12a) has no URL: readiness is the harness
+  // executable being present, as ensureLlmReadyHeadless already reports it.
+  // Pinging the row's placeholder URL here made provider-status — and with it
+  // the Studio's AI chip — call a working Claude Code model "offline" while
+  // answer evaluation went through fine (2026-09-21).
+  if (endpoint.transport === "agent") {
+    const ready = await isAgentEndpointReady(endpoint.agentHarness);
+    return {
+      endpoint,
+      online: ready,
+      availableModels: [],
+      modelAvailable: ready,
+    };
+  }
+
   let resolved = endpoint;
   if (options.prepareFoundry) {
     try {
