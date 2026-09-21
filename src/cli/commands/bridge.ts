@@ -3425,6 +3425,18 @@ bridgeCommand
     if (existingIndex >= 0) next[existingIndex] = validation.entry;
     else next.push(validation.entry);
     await writeRegistry(next);
+    if (validation.entry.detectedCapabilities.text) {
+      // Same moment as cloud-connect and the Foundry setup: a validated text
+      // model opens the text-LLM gate. The Studio's Add-model form for a local
+      // Ollama / LM Studio row lands here and has no gate switch of its own,
+      // so a learner on a fresh library stayed "disabled" with no way out.
+      await sharedWithDb(
+        async (db) => {
+          await setSetting(db, "llm.enabled", "true");
+        },
+        () => undefined,
+      );
+    }
 
     jsonOut({
       ok: true,
