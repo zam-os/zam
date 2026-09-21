@@ -790,12 +790,8 @@ export function isNoAnswerFailure(error: unknown): boolean {
 }
 
 /**
- * A harness that could not be run or returned no usable envelope
- * (`AgentError`, src/cli/agent-llm/adapter.ts) — matched by name so the
- * optional agent surface stays out of the eager module graph. In chain terms
- * it is silence: nothing answered, so the learner's next configured row and
- * finally the offline tier may serve (#346). ZAM still invents no fallback of
- * its own; a chain is what the learner ordered in Settings.
+ * A harness failure (`AgentError`), matched by name so the optional agent
+ * surface stays out of the eager module graph. The walk treats it as silence.
  */
 function isAgentFailure(error: unknown): boolean {
   return error instanceof Error && error.name === "AgentError";
@@ -1459,11 +1455,6 @@ async function requestAgentCompletion(
   return text;
 }
 
-/**
- * Readiness probe for an agent-transport endpoint (ADR 2026-07-12a): the harness
- * has no URL to health-check, so "ready" means its executable is present. Cheap
- * — never runs a real generation.
- */
 /** How an agent row names itself in readiness reports: `agent:<harness>`. */
 function agentModelLabel(endpoint: ProviderConfig): string {
   return endpoint.agentHarness
@@ -1471,6 +1462,11 @@ function agentModelLabel(endpoint: ProviderConfig): string {
     : endpoint.model || "agent";
 }
 
+/**
+ * Readiness probe for an agent-transport endpoint (ADR 2026-07-12a): the harness
+ * has no URL to health-check, so "ready" means its executable is present. Cheap
+ * — never runs a real generation.
+ */
 async function isAgentEndpointReady(agentHarness?: string): Promise<boolean> {
   if (!agentHarness) return false;
   const { getAgentAdapter } = await import("../agent-llm/adapter.js");
@@ -2516,9 +2512,7 @@ export async function resolveRecallEndpointChain(
   }
   // Agent transport (ADR 2026-07-12a) has no URL to health-check; only recall
   // callers wired for it (dynamic question, answer evaluation) may opt in.
-  // The rows behind the agent stay in the chain: a missing or failing harness
-  // is skipped like any unreachable row, so the learner's next model serves
-  // instead of the whole answer failing (#346).
+  // The rows behind the agent stay in the chain; the walk probes the harness.
   if (cfg.transport === "agent") {
     if (!opts.allowAgent) {
       throw new Error(
@@ -2562,10 +2556,8 @@ async function ensureRecallEndpointReady(
   signature: string,
 ): Promise<RecallReadiness> {
   if (endpoint.transport === "agent") {
-    // The harness is the endpoint: present and executable means ready. Absent,
-    // it is "offline" — silence, not an answer — and the walk moves on to the
-    // learner's next row instead of failing the whole answer (#346). The same
-    // probe prepareRecallChain applies, so ensure-llm and the walk agree.
+    // Probe the harness instead of the empty URL; absent reads as offline
+    // (silence), the same verdict prepareRecallChain gives it.
     const ready = await isAgentEndpointReady(endpoint.agentHarness);
     return ready
       ? { ready: endpoint, reachable: true }
@@ -2792,12 +2784,8 @@ export async function prepareRecallChain(
   });
 
   if (!cfg.enabled) return fail("disabled");
-  // Agent rows (ADR 2026-07-12a) walk the same loop as HTTP rows below: the
-  // harness has no URL to health-check, so their readiness is "executable
-  // present" — the probe the recall walk applies too (#346). A present
-  // harness serves from its slot (never treated as offline because its url
-  // is empty — the old "jumped to Ollama" bug); a missing one is skipped so
-  // the learner's next row can serve, exactly as the walk will do.
+  // Agent rows walk the same loop as HTTP rows; their readiness is the probe
+  // below, never the empty URL, so ensure-llm and the recall walk agree.
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);
