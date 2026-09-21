@@ -97,8 +97,9 @@ export interface AgentTextAdapter {
 
 /**
  * Typed failure that always names the harness, so the UI can say "Claude Code
- * is offline" rather than surfacing a generic LLM timeout. There is deliberately
- * no silent fallback to cloud — a learner who chose Agent chose it on purpose.
+ * is offline" rather than surfacing a generic LLM timeout. In the recall chain
+ * it counts as silence: the learner's own next configured row serves (#346).
+ * ZAM still invents no fallback — a single agent row stays a single choice.
  */
 export class AgentError extends Error {
   constructor(

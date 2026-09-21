@@ -790,6 +790,18 @@ export function isNoAnswerFailure(error: unknown): boolean {
 }
 
 /**
+ * A harness that could not be run or returned no usable envelope
+ * (`AgentError`, src/cli/agent-llm/adapter.ts) — matched by name so the
+ * optional agent surface stays out of the eager module graph. In chain terms
+ * it is silence: nothing answered, so the learner's next configured row and
+ * finally the offline tier may serve (#346). ZAM still invents no fallback of
+ * its own; a chain is what the learner ordered in Settings.
+ */
+function isAgentFailure(error: unknown): boolean {
+  return error instanceof Error && error.name === "AgentError";
+}
+
+/**
  * An `error` object in a 2xx chat body. The status is the embedded code when
  * it is one, so a 429 or 401 delivered this way walks the chain exactly like
  * the same status on the wire; anything else surfaces as a 502-class answer
@@ -1452,6 +1464,13 @@ async function requestAgentCompletion(
  * has no URL to health-check, so "ready" means its executable is present. Cheap
  * — never runs a real generation.
  */
+/** How an agent row names itself in readiness reports: `agent:<harness>`. */
+function agentModelLabel(endpoint: ProviderConfig): string {
+  return endpoint.agentHarness
+    ? `agent:${endpoint.agentHarness}`
+    : endpoint.model || "agent";
+}
+
 async function isAgentEndpointReady(agentHarness?: string): Promise<boolean> {
   if (!agentHarness) return false;
   const { getAgentAdapter } = await import("../agent-llm/adapter.js");
@@ -2497,8 +2516,9 @@ export async function resolveRecallEndpointChain(
   }
   // Agent transport (ADR 2026-07-12a) has no URL to health-check; only recall
   // callers wired for it (dynamic question, answer evaluation) may opt in.
-  // An agent endpoint cannot fall through to an HTTP one, so it is a
-  // single-element chain.
+  // The rows behind the agent stay in the chain: a missing or failing harness
+  // is skipped like any unreachable row, so the learner's next model serves
+  // instead of the whole answer failing (#346).
   if (cfg.transport === "agent") {
     if (!opts.allowAgent) {
       throw new Error(
@@ -2506,7 +2526,10 @@ export async function resolveRecallEndpointChain(
           "which this operation does not support yet. Configure a Local or Cloud recall model for it.",
       );
     }
-    return { endpoints: [cfg], signature: recallEndpointSignature(cfg) };
+    return {
+      endpoints: providerChain(cfg),
+      signature: recallEndpointSignature(cfg),
+    };
   }
   assertChatCompletions(cfg);
 
@@ -2539,7 +2562,14 @@ async function ensureRecallEndpointReady(
   signature: string,
 ): Promise<RecallReadiness> {
   if (endpoint.transport === "agent") {
-    return { ready: endpoint, reachable: true };
+    // The harness is the endpoint: present and executable means ready. Absent,
+    // it is "offline" — silence, not an answer — and the walk moves on to the
+    // learner's next row instead of failing the whole answer (#346). The same
+    // probe prepareRecallChain applies, so ensure-llm and the walk agree.
+    const ready = await isAgentEndpointReady(endpoint.agentHarness);
+    return ready
+      ? { ready: endpoint, reachable: true }
+      : { ready: null, reachable: false, reason: "offline" };
   }
   const key = `${signature}|${endpoint.url}|${endpoint.model}`;
   const hit = recallReadiness.get(key);
@@ -2609,7 +2639,7 @@ async function walkRecallChain<T>(
         lastError = error;
         continue;
       }
-      if (isNoAnswerFailure(error)) {
+      if (isNoAnswerFailure(error) || isAgentFailure(error)) {
         lastError = error;
         continue;
       }
@@ -2762,27 +2792,12 @@ export async function prepareRecallChain(
   });
 
   if (!cfg.enabled) return fail("disabled");
-  // Agent transport (ADR 2026-07-12a): the harness has no URL to health-check,
-  // so readiness = executable present. Report it directly instead of walking the
-  // HTTP online-chain (which would treat the empty url as offline and fall
-  // through to the next model — the recall "jumped to Ollama" bug).
-  if (cfg.transport === "agent") {
-    const model = cfg.agentHarness
-      ? `agent:${cfg.agentHarness}`
-      : cfg.model || "agent";
-    const ready = await isAgentEndpointReady(cfg.agentHarness);
-    if (!ready) return fail("offline", { model });
-    return {
-      usable: true,
-      online: true,
-      model,
-      availableModels: [],
-      providerName: cfg.providerName,
-      label: cfg.label,
-      local: false,
-      activeTier: "primary",
-    };
-  }
+  // Agent rows (ADR 2026-07-12a) walk the same loop as HTTP rows below: the
+  // harness has no URL to health-check, so their readiness is "executable
+  // present" — the probe the recall walk applies too (#346). A present
+  // harness serves from its slot (never treated as offline because its url
+  // is empty — the old "jumped to Ollama" bug); a missing one is skipped so
+  // the learner's next row can serve, exactly as the walk will do.
   if (cfg.apiFlavor !== "chat-completions") return fail("unsupported-provider");
 
   const chain = providerChain(cfg);
@@ -2801,10 +2816,17 @@ export async function prepareRecallChain(
     // row returns below, so an online row only counts as "answered" here
     // when it was online and refused (rejected key, model not offered).
     if (endpoint.offlineOnly && cloudAnswered) break;
-    let online = await isLlmOnline(endpoint.url);
+    const isAgent = endpoint.transport === "agent";
+    let online = isAgent
+      ? await isAgentEndpointReady(endpoint.agentHarness)
+      : await isLlmOnline(endpoint.url);
     if (!endpoint.offlineOnly) cloudAnswered ||= online;
 
-    if (!online && (endpoint.local ?? isLocalEndpoint(endpoint.url))) {
+    if (
+      !isAgent &&
+      !online &&
+      (endpoint.local ?? isLocalEndpoint(endpoint.url))
+    ) {
       if (opts.interactive) {
         online = await startLocalRunner(
           endpoint.url,
@@ -2834,11 +2856,23 @@ export async function prepareRecallChain(
     }
 
     lastOnline = online;
-    lastModel = endpoint.model;
+    lastModel = isAgent ? agentModelLabel(endpoint) : endpoint.model;
 
     if (!online) {
       lastReason = "offline";
       continue;
+    }
+    if (isAgent) {
+      return {
+        usable: true,
+        online: true,
+        model: agentModelLabel(endpoint),
+        availableModels: [],
+        providerName: endpoint.providerName,
+        label: endpoint.label,
+        local: false,
+        activeTier: index === 0 ? "primary" : "fallback",
+      };
     }
     // A row whose stored key the probe rejected is reachable but unusable —
     // report it as such instead of letting the first real call 401.
