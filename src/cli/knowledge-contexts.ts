@@ -47,7 +47,7 @@ export async function resolveOperationKnowledgeContexts(
 
   const hint =
     available.length > 0
-      ? ` — this library has: ${available.map((c) => c.name).join(", ")}; pick one with \`zam kc use <name>\``
+      ? ` — this library has: ${available.map((c) => c.name).join(", ")}; pick one in Settings or with \`zam kc use <name>\``
       : "";
   throw new Error(
     `Active knowledge context not found: ${activeDefault}${hint}`,

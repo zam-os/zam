@@ -81,6 +81,23 @@ describe("resolveOperationKnowledgeContexts", () => {
     );
   });
 
+  it("returns no context when no default is configured, even with a single one", async () => {
+    // A library run deliberately without a default keeps that choice; the
+    // fallback only rescues a configured default the library does not have.
+    writeFileSync(
+      process.env.ZAM_CONFIG_PATH as string,
+      JSON.stringify({
+        activeWorkspaceId: "w1",
+        workspaces: [{ id: "w1", label: "Repo", kind: "custom", path: dir }],
+      }),
+    );
+    await createKnowledgeContext(db, { name: "team" });
+
+    const contexts = await resolveOperationKnowledgeContexts(db, []);
+
+    expect(contexts).toEqual([]);
+  });
+
   it("never substitutes an explicitly requested context", async () => {
     await createKnowledgeContext(db, { name: "team" });
 
