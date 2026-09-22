@@ -665,6 +665,146 @@ describe("probeModelCapabilities and a modality-filtered catalogue", () => {
   });
 });
 
+// Issue #332: a name that matches more than one modality used to be verified
+// against whichever modality catalogue was fetched first, and every speech
+// claim then rode on that one lookup.
+describe("each capability is verified against its own modality's listing", () => {
+  it("does not claim a voice for a model listed only as a transcriber", () => {
+    const detected = classifyCapabilities(
+      { model: "acme/tts-transcribe", apiFlavor: "chat-completions" },
+      {
+        main: ["openai/gpt-5.6-luna"],
+        transcription: ["acme/tts-transcribe"],
+        speech: [],
+      },
+      true,
+    );
+
+    expect(detected.stt).toBe(true);
+    expect(detected.tts).toBe(false);
+    expect(detected.text).toBe(false);
+  });
+
+  it("does not claim transcription for a model listed only as a voice", () => {
+    const detected = classifyCapabilities(
+      { model: "acme/tts-transcribe", apiFlavor: "chat-completions" },
+      {
+        main: ["openai/gpt-5.6-luna"],
+        transcription: [],
+        speech: ["acme/tts-transcribe"],
+      },
+      true,
+    );
+
+    expect(detected.stt).toBe(false);
+    expect(detected.tts).toBe(true);
+  });
+
+  it("lets the main listing vouch for every modality", () => {
+    // OpenAI and local runners list whisper and tts ids in plain `/models`.
+    const detected = classifyCapabilities(
+      { model: "acme/tts-transcribe", apiFlavor: "chat-completions" },
+      { main: ["acme/tts-transcribe"] },
+      true,
+    );
+
+    expect(detected.stt).toBe(true);
+    expect(detected.tts).toBe(true);
+  });
+
+  it("asks each modality listing a two-modality name suggests", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      transcriptionModels: ["acme/tts-transcribe"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/tts-transcribe",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.detected.stt).toBe(true);
+      expect(probe.detected.tts).toBe(false);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=transcription")),
+      ).toHaveLength(1);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=speech")),
+      ).toHaveLength(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("still reaches the transcription listing for a name that also reads as embedding", async () => {
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: [],
+      transcriptionModels: ["acme/whisper-embed"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/whisper-embed",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toContain("acme/whisper-embed");
+      expect(probe.detected.stt).toBe(true);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("still reaches the speech listing for a name that also reads as embedding", async () => {
+    // The old `looksEmbedding` early return hid this lookup entirely.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: [],
+      speechModels: ["acme/tts-embed"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/tts-embed",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toContain("acme/tts-embed");
+      expect(probe.detected.tts).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=speech")),
+      ).toHaveLength(1);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("counts an id that two listings spell differently once", async () => {
+    // Membership is case-insensitive, so the echoed catalogue is too.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["Hexgrad/Kokoro-82M"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/ghost-tts",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toEqual(["Hexgrad/Kokoro-82M"]);
+      expect(probe.detected.tts).toBe(false);
+    } finally {
+      await stub.close();
+    }
+  });
+});
+
 describe("a provider that ignores the modality filter", () => {
   /** Answers every `/models` request with the same unfiltered list. */
   async function startUnfilteredStub(
@@ -714,8 +854,13 @@ describe("a provider that ignores the modality filter", () => {
       expect(probe.reachable).toBe(true);
       expect(probe.detected.tts).toBe(false);
       expect(probe.detected.stt).toBe(false);
+      // The echoed list is the same ids, not the same ids twice: duplicates
+      // reached the bridge's `catalog` and the save error's sample.
+      expect(probe.catalog).toEqual(["mimo-v2.5", "mimo-v2.5-vl"]);
       // And the save is still refused, exactly as before the fix.
-      expect(validateModelSave(entry, probe).ok).toBe(false);
+      const save = validateModelSave(entry, probe);
+      expect(save.ok).toBe(false);
+      expect(save.error).toContain("It lists: mimo-v2.5, mimo-v2.5-vl.");
     } finally {
       await stub.close();
     }

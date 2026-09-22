@@ -107,6 +107,49 @@ function catalogHasModel(catalog: string[], model: string): boolean {
 }
 
 /**
+ * Where a provider lists its models. Most endpoints serve one `/models`
+ * listing that covers every modality; some keep part of the catalogue in
+ * listings of their own (OpenRouter: embeddings at `{base}/embeddings/models`,
+ * speech only behind an `output_modalities` filter). Each list here is the
+ * provider's answer for one kind of model, so a speech capability is verified
+ * against the listing for the modality it claims — never against whichever
+ * listing happened to be fetched. An omitted listing means the provider does
+ * not list the model there. (Embedding stays name- and dimension-probe-based:
+ * gating it on a failed lookup would relabel an embedding model as text, and
+ * `validateModelSave` already refuses a hosted row no listing names.)
+ */
+export interface ModelCatalogs {
+  /** The main `/models` listing. */
+  main: string[];
+  /** `{base}/embeddings/models`, when it was asked for. */
+  embedding?: string[];
+  /** `/models?output_modalities=transcription`, when it was asked for. */
+  transcription?: string[];
+  /** `/models?output_modalities=speech`, when it was asked for. */
+  speech?: string[];
+}
+
+/**
+ * Every id across the listings, once each, in first-seen order and spelling.
+ * Case-insensitive, like {@link catalogHasModel}: `Whisper-1` and `whisper-1`
+ * from two listings are one model.
+ */
+function allCatalogIds(catalogs: ModelCatalogs): string[] {
+  const seen = new Set<string>();
+  return [
+    ...catalogs.main,
+    ...(catalogs.embedding ?? []),
+    ...(catalogs.transcription ?? []),
+    ...(catalogs.speech ?? []),
+  ].filter((id) => {
+    const key = id.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
+}
+
+/**
  * The rest of a provider's catalogue, for a model the main listing omits.
  *
  * `/models` is not always the whole story. OpenRouter answers it with its
@@ -118,37 +161,46 @@ function catalogHasModel(catalog: string[], model: string): boolean {
  *
  * Asked only for a model whose *name* suggests a modality, and only after the
  * main listing came back without it, so an ordinary chat probe still costs one
- * request. An endpoint that does not know these paths or parameters answers
- * with nothing, or with its normal list, and the verdict is unchanged.
+ * request. Every modality the name suggests gets its own listing: a name that
+ * reads as both transcription and speech is looked up in both, so neither
+ * claim rests on the other's catalogue. An endpoint that does not know these
+ * paths or parameters answers with nothing, or with its normal list, and the
+ * verdict is unchanged.
  */
-async function modalityCatalogue(
+async function modalityCatalogs(
   entry: Pick<ModelEntry, "url" | "model">,
   apiKey: string,
-  looksEmbedding: boolean,
-): Promise<string[]> {
-  if (looksEmbedding) {
-    const embeddingsUrl = embeddingsEndpointUrl(entry.url);
-    if (embeddingsUrl === entry.url) return [];
-    return getAvailableModels(embeddingsUrl, apiKey);
-  }
-  if (matchesAny(entry.model, STT_MODEL_HINTS)) {
-    return getAvailableModels(
-      entry.url,
-      apiKey,
-      "?output_modalities=transcription",
-    );
-  }
-  if (matchesAny(entry.model, TTS_MODEL_HINTS)) {
-    return getAvailableModels(entry.url, apiKey, "?output_modalities=speech");
-  }
-  return [];
+): Promise<Omit<ModelCatalogs, "main">> {
+  const embeddingsUrl = embeddingsEndpointUrl(entry.url);
+  const [embedding, transcription, speech] = await Promise.all([
+    matchesAny(entry.model, EMBEDDING_MODEL_HINTS) &&
+    embeddingsUrl !== entry.url
+      ? getAvailableModels(embeddingsUrl, apiKey)
+      : undefined,
+    matchesAny(entry.model, STT_MODEL_HINTS)
+      ? getAvailableModels(entry.url, apiKey, {
+          output_modalities: "transcription",
+        })
+      : undefined,
+    matchesAny(entry.model, TTS_MODEL_HINTS)
+      ? getAvailableModels(entry.url, apiKey, { output_modalities: "speech" })
+      : undefined,
+  ]);
+  return {
+    ...(embedding !== undefined ? { embedding } : {}),
+    ...(transcription !== undefined ? { transcription } : {}),
+    ...(speech !== undefined ? { speech } : {}),
+  };
 }
 
 /** What `probeModelCapabilities` learned about an endpoint. */
 export interface CapabilityProbeResult {
   /** Whether the endpoint answered at all (drives the offline-save guard). */
   reachable: boolean;
-  /** Model ids the endpoint advertised (`/v1/models`), when any. */
+  /**
+   * Model ids the endpoint advertised, when any: the main `/models` listing
+   * plus any modality listing the probe consulted, each id once.
+   */
   catalog: string[];
   /** Capabilities the metadata actually supports. */
   detected: CapabilityFlags;
@@ -169,13 +221,16 @@ export interface CapabilityProbeResult {
 
 /**
  * Classify capabilities from endpoint metadata alone — no network. `catalog` is
- * the `/v1/models` list (empty + `catalogKnown=false` means the endpoint served
- * no catalog, common for single-model local runners). `dimProbeEmbedding`
- * records the outcome of the optional embeddings dimension probe (see below).
+ * what the endpoint lists: a bare array is a single `/models` listing that
+ * covers every modality, {@link ModelCatalogs} adds the modality listings of a
+ * provider that splits its catalogue (empty + `catalogKnown=false` means the
+ * endpoint served no catalog, common for single-model local runners).
+ * `dimProbeEmbedding` records the outcome of the optional embeddings dimension
+ * probe (see below).
  */
 export function classifyCapabilities(
   entry: Pick<ModelEntry, "model" | "apiFlavor">,
-  catalog: string[],
+  catalog: string[] | ModelCatalogs,
   catalogKnown: boolean,
   dimProbeEmbedding = false,
   /**
@@ -201,7 +256,13 @@ export function classifyCapabilities(
   const looksVision =
     matchesAny(entry.model, VISION_MODEL_HINTS) &&
     !entry.model.toLowerCase().includes("-text");
-  const inCatalog = catalogHasModel(catalog, entry.model);
+  const catalogs = Array.isArray(catalog) ? { main: catalog } : catalog;
+  // The main listing speaks for every modality; a modality listing only for
+  // its own. A model found only among the transcription ids is verified as a
+  // transcription model, not as a voice.
+  const inMain = catalogHasModel(catalogs.main, entry.model);
+  const listedFor = (modality?: string[]): boolean =>
+    inMain || !catalogKnown || catalogHasModel(modality ?? [], entry.model);
 
   const looksStt = matchesAny(entry.model, STT_MODEL_HINTS);
   const looksTts = matchesAny(entry.model, TTS_MODEL_HINTS);
@@ -221,18 +282,17 @@ export function classifyCapabilities(
   // provider's own catalog exactly as text is. Without that gate a name that
   // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
   // serve — was accepted, and the misconfiguration only surfaced mid-review as
-  // a 404 from the gateway (reported 2026-08-01). An endpoint that publishes no
-  // catalog is trusted, as everywhere else.
-  detected.stt = looksStt && (inCatalog || !catalogKnown);
-  detected.tts = looksTts && (inCatalog || !catalogKnown);
+  // a 404 from the gateway (reported 2026-08-01). Each claim is checked against
+  // the listing for its own modality, so a name that reads as both never gets
+  // one claim on the strength of the other's catalogue. An endpoint that
+  // publishes no catalog is trusted, as everywhere else.
+  detected.stt = looksStt && listedFor(catalogs.transcription);
+  detected.tts = looksTts && listedFor(catalogs.speech);
   // A chat-completions endpoint serves text unless it is a single-purpose
   // embedding or audio model. Audio models answer on /audio/*, not /chat, so
   // offering them for text would break recall coaching.
   detected.text =
-    !detected.embedding &&
-    !looksStt &&
-    !looksTts &&
-    (inCatalog || !catalogKnown);
+    !detected.embedding && !looksStt && !looksTts && (inMain || !catalogKnown);
   return detected;
 }
 
@@ -333,12 +393,10 @@ export async function probeModelCapabilities(
   const chatCatalog = chatEntries.map((e) => e.id);
   const looksEmbedding = matchesAny(entry.model, EMBEDDING_MODEL_HINTS);
 
-  const catalog = catalogHasModel(chatCatalog, entry.model)
-    ? chatCatalog
-    : [
-        ...chatCatalog,
-        ...(await modalityCatalogue(entry, apiKey, looksEmbedding)),
-      ];
+  const catalogs: ModelCatalogs = catalogHasModel(chatCatalog, entry.model)
+    ? { main: chatCatalog }
+    : { main: chatCatalog, ...(await modalityCatalogs(entry, apiKey)) };
+  const catalog = allCatalogIds(catalogs);
   const catalogKnown = catalog.length > 0;
 
   // Image and video come from the matched catalog record's declared
@@ -367,7 +425,7 @@ export async function probeModelCapabilities(
 
   const detected = classifyCapabilities(
     entry,
-    catalog,
+    catalogs,
     catalogKnown,
     dimProbeEmbedding,
     catalogImage,

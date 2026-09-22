@@ -2220,23 +2220,51 @@ export interface ModelCatalogEntry {
 }
 
 /**
+ * `{base}/models`, with `query` merged into whatever query the base URL
+ * already carries (`…/v1?api-version=…` stays one query string, not two).
+ * A base that is not an http(s) URL keeps the plain concatenation the callers
+ * always used — including a scheme-less `localhost:11434/v1`, which parses as
+ * a `localhost:` URL whose opaque path ignores any `pathname` assignment.
+ */
+export function modelsListingUrl(
+  base: string,
+  query: Record<string, string> = {},
+): string {
+  let parsed: URL | undefined;
+  try {
+    parsed = new URL(base);
+  } catch {
+    parsed = undefined;
+  }
+  if (!parsed || !/^https?:$/i.test(parsed.protocol)) {
+    const search = new URLSearchParams(query).toString();
+    return `${base}/models${search ? `?${search}` : ""}`;
+  }
+  parsed.pathname = `${parsed.pathname.replace(/\/+$/, "")}/models`;
+  for (const [key, value] of Object.entries(query)) {
+    parsed.searchParams.set(key, value);
+  }
+  return parsed.toString();
+}
+
+/**
  * Fetch the `/models` catalogue with architecture metadata.
  */
 export async function getAvailableModelEntries(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
   /**
-   * Query string appended to `/models`, for a provider that publishes part of
-   * its catalogue only behind a filter. An endpoint that does not know the
+   * Query parameters for `/models`, for a provider that publishes part of its
+   * catalogue only behind a filter. An endpoint that does not know a
    * parameter answers with its unfiltered list, which is the same answer the
    * caller would otherwise have got.
    */
-  search = "",
+  query: Record<string, string> = {},
 ): Promise<ModelCatalogEntry[]> {
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
-    const res = await fetch(`${url}/models${search}`, {
+    const res = await fetch(modelsListingUrl(url, query), {
       method: "GET",
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: controller.signal,
@@ -2273,9 +2301,9 @@ export async function getAvailableModelEntries(
 export async function getAvailableModels(
   url: string,
   apiKey = DEFAULT_LLM_API_KEY,
-  search = "",
+  query: Record<string, string> = {},
 ): Promise<string[]> {
-  return (await getAvailableModelEntries(url, apiKey, search)).map(
+  return (await getAvailableModelEntries(url, apiKey, query)).map(
     (entry) => entry.id,
   );
 }
