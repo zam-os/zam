@@ -41,11 +41,17 @@ describe("built MCP server on a team library", () => {
 
   it("reaches the Entra token supplier instead of calling it unregistered", async () => {
     // No `az` on PATH and an unresolvable host: once the supplier is
-    // registered the pool builds and the connection dies at DNS, before any
-    // token is requested. Unregistered, the pool refuses to build at all.
+    // registered the pool builds and the connection dies at the network
+    // layer, before any token is requested. Unregistered, the pool refuses
+    // to build at all. ZAM_DB_PROVIDER is dropped so a developer's SQLite
+    // escape hatch cannot bypass the postgres block under test.
     const env: Record<string, string> = {};
     for (const [key, value] of Object.entries(process.env)) {
-      if (value !== undefined && key.toLowerCase() !== "path") env[key] = value;
+      const name = key.toLowerCase();
+      if (value === undefined || name === "path" || name === "zam_db_provider") {
+        continue;
+      }
+      env[key] = value;
     }
     env.HOME = tempHome;
     env.USERPROFILE = tempHome;
@@ -67,6 +73,10 @@ describe("built MCP server on a team library", () => {
       .join("\n");
 
     expect(text).not.toMatch(/no entra-cli token source is registered/);
-    expect(text).toMatch(/ENOTFOUND|EAI_AGAIN|getaddrinfo/);
+    // Any connection-layer failure will do; a captive DNS resolver may answer
+    // the .invalid host and fail at TLS or on a refused socket instead.
+    expect(text).toMatch(
+      /ENOTFOUND|EAI_AGAIN|getaddrinfo|ECONNREFUSED|ECONNRESET|ETIMEDOUT|timeout|certificate|TLS|SSL/i,
+    );
   }, 90_000);
 });
