@@ -1912,7 +1912,9 @@ JSON Array Output:`;
 }
 
 /**
- * Generate 2 to 4 prerequisite suggestions for a card.
+ * Suggest the prerequisite cards a card actually needs — at least 1, no
+ * upper bound. Like the split, a stated range anchors the model on its
+ * maximum, and a floor of 2 would force padding when one foundation is missing.
  */
 export async function generateFoundationsProposalsViaLLM(
   db: Database,
@@ -1929,7 +1931,7 @@ export async function generateFoundationsProposalsViaLLM(
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
-Your task is to analyze a learning card and propose 2 to 4 atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
+Your task is to analyze a learning card and propose the atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
 
 The current card details are:
 - Question: ${token.question || "N/A"}
@@ -1946,11 +1948,13 @@ For each proposed foundational card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
+- First identify which prerequisites the card really depends on, then create exactly one card per prerequisite. The number of cards follows from the card: at least 1, and as many as are genuinely necessary.
+- Never pad: do not add loosely related, merely helpful, or overlapping prerequisites to reach a larger number.
 - Recommend only highly relevant and necessary prerequisites.
 - Keep each proposed card atomic and focused on one concept.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
-  const userPrompt = `Suggest 2 to 4 foundational prerequisite cards for the card above.
+  const userPrompt = `Suggest one foundational prerequisite card per prerequisite the card above genuinely needs.
 
 JSON Array Output:`;
 
@@ -1962,8 +1966,7 @@ JSON Array Output:`;
       user: userPrompt,
     });
     return parseGeneratedCardArray(agentText, "foundation proposal", {
-      min: 2,
-      max: 4,
+      min: 1,
     }).map((card) => ({ ...card, source_link: token.source_link || null }));
   }
 
@@ -1994,8 +1997,7 @@ JSON Array Output:`;
   );
 
   return parseGeneratedCardArray(responseText, "foundation proposal", {
-    min: 2,
-    max: 4,
+    min: 1,
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
 }
 

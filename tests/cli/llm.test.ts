@@ -1000,4 +1000,65 @@ describe("LLM client utilities (CLI layer)", () => {
       await db.close();
     }
   });
+
+  it("generateFoundationsProposalsViaLLM accepts a single foundation and has no upper bound", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const cards = (count: number) =>
+      JSON.stringify(
+        Array.from({ length: count }, (_, i) => ({
+          question: `Prerequisite ${i + 1}?`,
+          concept: `Fact ${i + 1}`,
+          domain: "math",
+          bloom_level: 1,
+          symbiosis_mode: "shadowing",
+          context: `context ${i + 1}`,
+        })),
+      );
+
+    let content = cards(1);
+    let sentPrompt = "";
+    const originalFetch = global.fetch;
+    global.fetch = async (_url, init) => {
+      sentPrompt = String(init?.body ?? "");
+      return new Response(
+        JSON.stringify({ choices: [{ message: { content } }] }),
+      );
+    };
+
+    const card = {
+      question: "How do you differentiate x^2?",
+      concept: "2x",
+      domain: "math",
+      context: "",
+      source_link: null,
+    };
+    try {
+      expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(
+        1,
+      );
+      // A stated range anchors the model on its maximum.
+      expect(sentPrompt).not.toMatch(/2 to 4/);
+      expect(sentPrompt).toMatch(/Never pad/);
+
+      content = cards(5);
+      expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(
+        5,
+      );
+
+      content = cards(0);
+      await expect(
+        generateFoundationsProposalsViaLLM(db, card),
+      ).rejects.toThrow("expected at least 1 cards, got 0");
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
 });
