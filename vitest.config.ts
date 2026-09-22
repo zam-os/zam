@@ -4,7 +4,7 @@ export default defineConfig({
   test: {
     globals: true,
     include: ["tests/**/*.test.ts"],
-    // Every test file gets its own machine config path; see the file.
+    // Every test file gets its own throw-away home directory; see the file.
     setupFiles: ["tests/setup/machine-config-sandbox.ts"],
     // The self-hosted Windows-on-ARM runner is slow enough that Vitest's 5 s
     // default trips on tests that are fine everywhere else: one CLI
