@@ -14,6 +14,7 @@ import {
   importCurriculumViaLLM,
   isLlmOnline,
   LlmResponseTruncatedError,
+  modelsListingUrl,
   repairUmlautsViaLLM,
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
@@ -1078,5 +1079,36 @@ describe("LLM client utilities (CLI layer)", () => {
       global.fetch = originalFetch;
       await db.close();
     }
+  });
+});
+
+describe("modelsListingUrl", () => {
+  it("appends /models to a plain base URL", () => {
+    expect(modelsListingUrl("http://localhost:11434/v1")).toBe(
+      "http://localhost:11434/v1/models",
+    );
+    expect(modelsListingUrl("https://openrouter.ai/api/v1/")).toBe(
+      "https://openrouter.ai/api/v1/models",
+    );
+  });
+
+  it("encodes query parameters instead of trusting a raw string", () => {
+    expect(
+      modelsListingUrl("https://openrouter.ai/api/v1", {
+        output_modalities: "speech",
+      }),
+    ).toBe("https://openrouter.ai/api/v1/models?output_modalities=speech");
+  });
+
+  it("merges into a query the base URL already carries", () => {
+    // Previously `…?api-version=…` + `?output_modalities=…` produced a second
+    // `?`, and `/models` landed inside the query value.
+    expect(
+      modelsListingUrl("https://example.azure.com/openai/v1?api-version=2025", {
+        output_modalities: "transcription",
+      }),
+    ).toBe(
+      "https://example.azure.com/openai/v1/models?api-version=2025&output_modalities=transcription",
+    );
   });
 });
