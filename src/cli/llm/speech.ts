@@ -15,7 +15,7 @@
  * import HTTP or LLM code.
  */
 
-import type { Database } from "../../kernel/index.js";
+import { type Database, endpointUrl } from "../../kernel/index.js";
 import {
   DEFAULT_LLM_API_KEY,
   fetchWithInteractiveTimeout,
@@ -170,7 +170,7 @@ export async function transcribeAudio(
   );
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/audio/transcriptions`,
+    endpointUrl(endpoint.url, "audio/transcriptions"),
     {
       method: "POST",
       headers: {
@@ -204,7 +204,7 @@ export async function synthesizeSpeech(
   if (!text) throw new Error("There is nothing to read aloud.");
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/audio/speech`,
+    endpointUrl(endpoint.url, "audio/speech"),
     {
       method: "POST",
       headers: {

@@ -32,4 +32,18 @@ describe("embeddingsEndpointUrl", () => {
       "http://localhost:11434/v1/embeddings",
     );
   });
+
+  it("reads the path, not the query, when the base carries one", () => {
+    // Plain string checks saw `…?api-version=…` as the end of the URL: the
+    // existing `/embeddings` segment was missed and the route landed inside
+    // the query value.
+    expect(
+      embeddingsEndpointUrl("https://x.azure.com/openai/v1?api-version=2025"),
+    ).toBe("https://x.azure.com/openai/v1/embeddings?api-version=2025");
+    expect(
+      embeddingsEndpointUrl(
+        "https://x.azure.com/openai/v1/embeddings?api-version=2025",
+      ),
+    ).toBe("https://x.azure.com/openai/v1/embeddings?api-version=2025");
+  });
 });
