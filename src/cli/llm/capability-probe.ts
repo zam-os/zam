@@ -111,9 +111,12 @@ function catalogHasModel(catalog: string[], model: string): boolean {
  * listing that covers every modality; some keep part of the catalogue in
  * listings of their own (OpenRouter: embeddings at `{base}/embeddings/models`,
  * speech only behind an `output_modalities` filter). Each list here is the
- * provider's answer for one kind of model, so a capability is verified against
- * the listing for the modality it claims — never against whichever listing
- * happened to be fetched.
+ * provider's answer for one kind of model, so a speech capability is verified
+ * against the listing for the modality it claims — never against whichever
+ * listing happened to be fetched. An omitted listing means the provider does
+ * not list the model there. (Embedding stays name- and dimension-probe-based:
+ * gating it on a failed lookup would relabel an embedding model as text, and
+ * `validateModelSave` already refuses a hosted row no listing names.)
  */
 export interface ModelCatalogs {
   /** The main `/models` listing. */
@@ -126,16 +129,24 @@ export interface ModelCatalogs {
   speech?: string[];
 }
 
-/** Every id across the listings, once each, in first-seen order. */
+/**
+ * Every id across the listings, once each, in first-seen order and spelling.
+ * Case-insensitive, like {@link catalogHasModel}: `Whisper-1` and `whisper-1`
+ * from two listings are one model.
+ */
 function allCatalogIds(catalogs: ModelCatalogs): string[] {
+  const seen = new Set<string>();
   return [
-    ...new Set([
-      ...catalogs.main,
-      ...(catalogs.embedding ?? []),
-      ...(catalogs.transcription ?? []),
-      ...(catalogs.speech ?? []),
-    ]),
-  ];
+    ...catalogs.main,
+    ...(catalogs.embedding ?? []),
+    ...(catalogs.transcription ?? []),
+    ...(catalogs.speech ?? []),
+  ].filter((id) => {
+    const key = id.toLowerCase();
+    if (seen.has(key)) return false;
+    seen.add(key);
+    return true;
+  });
 }
 
 /**
@@ -176,9 +187,9 @@ async function modalityCatalogs(
       : undefined,
   ]);
   return {
-    ...(embedding ? { embedding } : {}),
-    ...(transcription ? { transcription } : {}),
-    ...(speech ? { speech } : {}),
+    ...(embedding !== undefined ? { embedding } : {}),
+    ...(transcription !== undefined ? { transcription } : {}),
+    ...(speech !== undefined ? { speech } : {}),
   };
 }
 

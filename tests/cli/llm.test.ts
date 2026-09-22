@@ -1098,6 +1098,20 @@ describe("modelsListingUrl", () => {
         output_modalities: "speech",
       }),
     ).toBe("https://openrouter.ai/api/v1/models?output_modalities=speech");
+    expect(
+      modelsListingUrl("https://openrouter.ai/api/v1", { filter: "a b&c=d" }),
+    ).toBe("https://openrouter.ai/api/v1/models?filter=a+b%26c%3Dd");
+  });
+
+  it("falls back to plain concatenation for a base that is not an http(s) URL", () => {
+    // Unparseable, and scheme-less: `localhost:11434/v1` parses as a
+    // `localhost:` URL whose opaque path would silently drop `/models`.
+    expect(modelsListingUrl("not a url", { output_modalities: "speech" })).toBe(
+      "not a url/models?output_modalities=speech",
+    );
+    expect(modelsListingUrl("localhost:11434/v1")).toBe(
+      "localhost:11434/v1/models",
+    );
   });
 
   it("merges into a query the base URL already carries", () => {

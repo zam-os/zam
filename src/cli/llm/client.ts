@@ -2222,17 +2222,21 @@ export interface ModelCatalogEntry {
 /**
  * `{base}/models`, with `query` merged into whatever query the base URL
  * already carries (`…/v1?api-version=…` stays one query string, not two).
- * A base that does not parse as a URL keeps the plain concatenation the
- * callers always used.
+ * A base that is not an http(s) URL keeps the plain concatenation the callers
+ * always used — including a scheme-less `localhost:11434/v1`, which parses as
+ * a `localhost:` URL whose opaque path ignores any `pathname` assignment.
  */
 export function modelsListingUrl(
   base: string,
   query: Record<string, string> = {},
 ): string {
-  let parsed: URL;
+  let parsed: URL | undefined;
   try {
     parsed = new URL(base);
   } catch {
+    parsed = undefined;
+  }
+  if (!parsed || !/^https?:$/i.test(parsed.protocol)) {
     const search = new URLSearchParams(query).toString();
     return `${base}/models${search ? `?${search}` : ""}`;
   }

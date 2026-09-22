@@ -738,7 +738,7 @@ describe("each capability is verified against its own modality's listing", () =>
     }
   });
 
-  it("still reaches the speech listing for a name that also reads as embedding", async () => {
+  it("still reaches the transcription listing for a name that also reads as embedding", async () => {
     const stub = await startSplitCatalogueStub({
       chatModels: ["openai/gpt-5.6-luna"],
       embeddingModels: [],
@@ -754,6 +754,51 @@ describe("each capability is verified against its own modality's listing", () =>
       expect(probe.catalog).toContain("acme/whisper-embed");
       expect(probe.detected.stt).toBe(true);
       expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("still reaches the speech listing for a name that also reads as embedding", async () => {
+    // The old `looksEmbedding` early return hid this lookup entirely.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["openai/gpt-5.6-luna"],
+      embeddingModels: [],
+      speechModels: ["acme/tts-embed"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/tts-embed",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toContain("acme/tts-embed");
+      expect(probe.detected.tts).toBe(true);
+      expect(
+        stub.paths.filter((p) => p.includes("output_modalities=speech")),
+      ).toHaveLength(1);
+      expect(embeddingCatalogueHits(stub.paths)).toBe(1);
+    } finally {
+      await stub.close();
+    }
+  });
+
+  it("counts an id that two listings spell differently once", async () => {
+    // Membership is case-insensitive, so the echoed catalogue is too.
+    const stub = await startSplitCatalogueStub({
+      chatModels: ["Hexgrad/Kokoro-82M"],
+      speechModels: ["hexgrad/kokoro-82m"],
+    });
+    try {
+      const probe = await probeModelCapabilities({
+        url: stub.url,
+        model: "acme/ghost-tts",
+        apiFlavor: "chat-completions",
+      });
+
+      expect(probe.catalog).toEqual(["Hexgrad/Kokoro-82M"]);
+      expect(probe.detected.tts).toBe(false);
     } finally {
       await stub.close();
     }
