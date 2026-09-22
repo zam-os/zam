@@ -1272,7 +1272,7 @@ const VALID_GENERATED_MODES = new Set(["shadowing", "copilot", "autonomy"]);
 function parseGeneratedCardArray(
   responseText: string,
   label: string,
-  limits: { min: number; max: number },
+  limits: { min: number; max?: number },
 ): GeneratedCardProposal[] {
   const startIdx = responseText.indexOf("[");
   const endIdx = responseText.lastIndexOf("]");
@@ -1289,7 +1289,14 @@ function parseGeneratedCardArray(
   if (!Array.isArray(parsed)) {
     throw new Error(`Invalid ${label} response: expected a JSON array`);
   }
-  if (parsed.length < limits.min || parsed.length > limits.max) {
+  if (limits.max === undefined) {
+    if (parsed.length < limits.min) {
+      const noun = limits.min === 1 ? "card" : "cards";
+      throw new Error(
+        `Invalid ${label} response: expected at least ${limits.min} ${noun}, got ${parsed.length}`,
+      );
+    }
+  } else if (parsed.length < limits.min || parsed.length > limits.max) {
     throw new Error(
       `Invalid ${label} response: expected ${limits.min}-${limits.max} cards, got ${parsed.length}`,
     );
@@ -1819,7 +1826,7 @@ export async function importCurriculumViaLLM(
 }
 
 /**
- * Generate 2 to 4 atomic proposal cards by splitting a broad card.
+ * Split a card into atomic proposal cards: at least 2, no upper bound.
  */
 export async function generateSplitProposalsViaLLM(
   db: Database,
@@ -1836,7 +1843,7 @@ export async function generateSplitProposalsViaLLM(
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
-Your task is to analyze a learning card that is too broad or covers multiple ideas, and split it into 2 to 4 atomic, focused proposal cards in ${langName}.
+Your task is to analyze a learning card that the learner found too detailed, and split it into atomic, focused proposal cards in ${langName}.
 
 The input card details are:
 - Question: ${token.question || "N/A"}
@@ -1853,11 +1860,13 @@ For each split proposal card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
+- First identify the distinct facts or ideas the original card actually contains, then create exactly one card per idea. The number of cards follows from the content: at least 2, and as many as the card really holds.
+- Never pad: do not add cards that restate, generalize, or merely rephrase another card, and do not split a single idea into several cards.
 - Make sure each card is completely atomic (covers exactly one concept).
 - Do not repeat the same concept across cards.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
-  const userPrompt = `Split the broad card details above into 2 to 4 atomic cards.
+  const userPrompt = `Split the card above into one atomic card per distinct idea it contains.
 
 JSON Array Output:`;
 
@@ -1870,7 +1879,6 @@ JSON Array Output:`;
     });
     return parseGeneratedCardArray(agentText, "card split", {
       min: 2,
-      max: 4,
     }).map((card) => ({ ...card, source_link: token.source_link || null }));
   }
 
@@ -1899,12 +1907,11 @@ JSON Array Output:`;
 
   return parseGeneratedCardArray(responseText, "card split", {
     min: 2,
-    max: 4,
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
 }
 
 /**
- * Generate 2 to 4 prerequisite suggestions for a card.
+ * Suggest prerequisite cards for a card: at least 1, no upper bound.
  */
 export async function generateFoundationsProposalsViaLLM(
   db: Database,
@@ -1921,7 +1928,7 @@ export async function generateFoundationsProposalsViaLLM(
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
-Your task is to analyze a learning card and propose 2 to 4 atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
+Your task is to analyze a learning card and propose the atomic, foundational prerequisite concepts (foundations) that a learner must master *before* studying this card, in ${langName}.
 
 The current card details are:
 - Question: ${token.question || "N/A"}
@@ -1938,11 +1945,13 @@ For each proposed foundational card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
+- First identify which prerequisites the card really depends on, then create exactly one card per prerequisite. The number of cards follows from the card: at least 1, and as many as are genuinely necessary.
+- Never pad: do not add loosely related, merely helpful, or overlapping prerequisites to reach a larger number.
 - Recommend only highly relevant and necessary prerequisites.
 - Keep each proposed card atomic and focused on one concept.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
-  const userPrompt = `Suggest 2 to 4 foundational prerequisite cards for the card above.
+  const userPrompt = `Suggest one foundational prerequisite card per prerequisite the card above genuinely needs.
 
 JSON Array Output:`;
 
@@ -1954,8 +1963,7 @@ JSON Array Output:`;
       user: userPrompt,
     });
     return parseGeneratedCardArray(agentText, "foundation proposal", {
-      min: 2,
-      max: 4,
+      min: 1,
     }).map((card) => ({ ...card, source_link: token.source_link || null }));
   }
 
@@ -1986,8 +1994,7 @@ JSON Array Output:`;
   );
 
   return parseGeneratedCardArray(responseText, "foundation proposal", {
-    min: 2,
-    max: 4,
+    min: 1,
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
 }
 

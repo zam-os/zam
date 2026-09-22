@@ -545,6 +545,53 @@ describe("review maintenance primitives", () => {
     expect(originalCard2).toBeUndefined();
   });
 
+  it("splits into as many cards as the content holds, but at least 2", async () => {
+    const token = await createToken(db, {
+      slug: "photosynthesis-broad",
+      concept: "Inputs, outputs, place, energy source and product use",
+      domain: "biology",
+      bloom_level: 2,
+    });
+    await ensureCard(db, token.id, "thomas");
+
+    const proposals = [
+      "Which gas does a plant take up?",
+      "Which gas does a plant release?",
+      "Where in the cell does it happen?",
+      "Which energy source drives it?",
+      "What does the plant do with the sugar?",
+    ].map((question, i) => ({
+      question,
+      concept: `fact ${i + 1}`,
+      domain: "biology",
+      bloom_level: 1,
+    }));
+
+    await expect(
+      confirmCardSplit(
+        db,
+        "thomas",
+        "photosynthesis-broad",
+        "block",
+        "What is photosynthesis?",
+        "Plants turn light into sugar",
+        proposals.slice(0, 1),
+      ),
+    ).rejects.toThrow("at least 2 proposals");
+
+    const res = await confirmCardSplit(
+      db,
+      "thomas",
+      "photosynthesis-broad",
+      "block",
+      "What is photosynthesis?",
+      "Plants turn light into sugar",
+      proposals,
+    );
+    expect(res.createdCount).toBe(5);
+    expect(res.ensuredCount).toBe(5);
+  });
+
   it("splits without destroying history when a proposal reuses a blocked prerequisite", async () => {
     const original = await createToken(db, {
       slug: "calc-advanced",

@@ -24,6 +24,18 @@ import {
   setSetting,
 } from "../../src/kernel/index.js";
 
+function promptWithoutBloomScale(requestBody: string): string {
+  const { messages } = JSON.parse(requestBody) as {
+    messages: { content: string }[];
+  };
+  return messages
+    .map((m) => m.content)
+    .join("\n")
+    .split("\n")
+    .filter((line) => !line.includes('"bloom_level"'))
+    .join("\n");
+}
+
 describe("LLM client utilities (CLI layer)", () => {
   let testConfigDir: string;
   let previousConfigPath: string | undefined;
@@ -889,6 +901,56 @@ describe("LLM client utilities (CLI layer)", () => {
     }
   });
 
+  it("generateSplitProposalsViaLLM lets the content decide the card count (no upper bound)", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const fiveCards = JSON.stringify(
+      [1, 2, 3, 4, 5].map((n) => ({
+        question: `Question ${n}?`,
+        concept: `Fact ${n}`,
+        domain: "biology",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: `context ${n}`,
+      })),
+    );
+
+    let sentPrompt = "";
+    const originalFetch = global.fetch;
+    global.fetch = async (_url, init) => {
+      sentPrompt = String(init?.body ?? "");
+      return new Response(
+        JSON.stringify({ choices: [{ message: { content: fiveCards } }] }),
+      );
+    };
+
+    try {
+      const proposals = await generateSplitProposalsViaLLM(db, {
+        question: "Explain photosynthesis",
+        concept: "Inputs, outputs, place, energy source and product use",
+        domain: "biology",
+        context: "",
+        source_link: null,
+      });
+      expect(proposals).toHaveLength(5);
+      // A stated card-count band anchors the model on it. The Bloom scale
+      // line is the only numeric range the prompt may name.
+      expect(promptWithoutBloomScale(sentPrompt)).not.toMatch(
+        /\b\d+\s+(?:to|or|-)\s+\d+\b/,
+      );
+      expect(sentPrompt).toMatch(/Never pad/);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
   it("generateFoundationsProposalsViaLLM correctly queries LLM and parses prerequisite proposal objects", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",
@@ -948,6 +1010,70 @@ describe("LLM client utilities (CLI layer)", () => {
         bloom_level: 1,
         source_link: "https://git-scm.com",
       });
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
+  it("generateFoundationsProposalsViaLLM accepts a single foundation and has no upper bound", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const cards = (count: number) =>
+      JSON.stringify(
+        Array.from({ length: count }, (_, i) => ({
+          question: `Prerequisite ${i + 1}?`,
+          concept: `Fact ${i + 1}`,
+          domain: "math",
+          bloom_level: 1,
+          symbiosis_mode: "shadowing",
+          context: `context ${i + 1}`,
+        })),
+      );
+
+    let content = cards(1);
+    let sentPrompt = "";
+    const originalFetch = global.fetch;
+    global.fetch = async (_url, init) => {
+      sentPrompt = String(init?.body ?? "");
+      return new Response(
+        JSON.stringify({ choices: [{ message: { content } }] }),
+      );
+    };
+
+    const card = {
+      question: "How do you differentiate x^2?",
+      concept: "2x",
+      domain: "math",
+      context: "",
+      source_link: null,
+    };
+    try {
+      expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(
+        1,
+      );
+      // A stated card-count band anchors the model on it. The Bloom scale
+      // line is the only numeric range the prompt may name.
+      expect(promptWithoutBloomScale(sentPrompt)).not.toMatch(
+        /\b\d+\s+(?:to|or|-)\s+\d+\b/,
+      );
+      expect(sentPrompt).toMatch(/Never pad/);
+
+      content = cards(5);
+      expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(
+        5,
+      );
+
+      content = cards(0);
+      await expect(
+        generateFoundationsProposalsViaLLM(db, card),
+      ).rejects.toThrow("expected at least 1 card, got 0");
     } finally {
       global.fetch = originalFetch;
       await db.close();
