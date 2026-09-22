@@ -459,8 +459,20 @@ describe("reasoning-effort probe and a stored effort level", () => {
 });
 
 describe("key-validity probe", () => {
+  let testConfigDir: string;
+  let previousConfigPath: string | undefined;
+
+  beforeEach(() => {
+    testConfigDir = mkdtempSync(join(tmpdir(), "zam-key-validity-"));
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(testConfigDir, "config.json");
+  });
+
   afterEach(() => {
     vi.unstubAllGlobals();
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
+    rmSync(testConfigDir, { recursive: true, force: true });
   });
 
   function stubStatus(status: number): void {
