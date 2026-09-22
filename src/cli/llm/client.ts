@@ -1291,8 +1291,9 @@ function parseGeneratedCardArray(
   }
   if (limits.max === undefined) {
     if (parsed.length < limits.min) {
+      const noun = limits.min === 1 ? "card" : "cards";
       throw new Error(
-        `Invalid ${label} response: expected at least ${limits.min} cards, got ${parsed.length}`,
+        `Invalid ${label} response: expected at least ${limits.min} ${noun}, got ${parsed.length}`,
       );
     }
   } else if (parsed.length < limits.min || parsed.length > limits.max) {
@@ -1825,9 +1826,7 @@ export async function importCurriculumViaLLM(
 }
 
 /**
- * Split a card into atomic proposal cards — as many as it holds distinct
- * ideas, at least 2. There is deliberately no upper bound: a stated range
- * anchors the model on its maximum (it proposed 4 almost every time).
+ * Split a card into atomic proposal cards: at least 2, no upper bound.
  */
 export async function generateSplitProposalsViaLLM(
   db: Database,
@@ -1861,7 +1860,7 @@ For each split proposal card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
-- First identify the distinct facts or ideas the original card actually contains, then create exactly one card per idea. The number of cards follows from the content: at least 2, and as many as the card really holds — often 2 or 3, sometimes more.
+- First identify the distinct facts or ideas the original card actually contains, then create exactly one card per idea. The number of cards follows from the content: at least 2, and as many as the card really holds.
 - Never pad: do not add cards that restate, generalize, or merely rephrase another card, and do not split a single idea into several cards.
 - Make sure each card is completely atomic (covers exactly one concept).
 - Do not repeat the same concept across cards.
@@ -1912,9 +1911,7 @@ JSON Array Output:`;
 }
 
 /**
- * Suggest the prerequisite cards a card actually needs — at least 1, no
- * upper bound. Like the split, a stated range anchors the model on its
- * maximum, and a floor of 2 would force padding when one foundation is missing.
+ * Suggest prerequisite cards for a card: at least 1, no upper bound.
  */
 export async function generateFoundationsProposalsViaLLM(
   db: Database,

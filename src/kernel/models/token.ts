@@ -1422,8 +1422,6 @@ export async function confirmCardSplit(
   if (action !== "block" && action !== "remove") {
     throw new Error(`Invalid split action: ${action}`);
   }
-  // No upper bound: the card's content decides how many atomic cards it
-  // holds, and a cap turns into the number the model aims for.
   if (proposals.length < 2) {
     throw new Error("A card split requires at least 2 proposals");
   }

@@ -24,6 +24,18 @@ import {
   setSetting,
 } from "../../src/kernel/index.js";
 
+function promptWithoutBloomScale(requestBody: string): string {
+  const { messages } = JSON.parse(requestBody) as {
+    messages: { content: string }[];
+  };
+  return messages
+    .map((m) => m.content)
+    .join("\n")
+    .split("\n")
+    .filter((line) => !line.includes('"bloom_level"'))
+    .join("\n");
+}
+
 describe("LLM client utilities (CLI layer)", () => {
   let testConfigDir: string;
   let previousConfigPath: string | undefined;
@@ -927,8 +939,11 @@ describe("LLM client utilities (CLI layer)", () => {
         source_link: null,
       });
       expect(proposals).toHaveLength(5);
-      // A stated range anchors the model on its maximum.
-      expect(sentPrompt).not.toMatch(/2 to 4/);
+      // A stated card-count band anchors the model on it. The Bloom scale
+      // line is the only numeric range the prompt may name.
+      expect(promptWithoutBloomScale(sentPrompt)).not.toMatch(
+        /\b\d+\s+(?:to|or|-)\s+\d+\b/,
+      );
       expect(sentPrompt).toMatch(/Never pad/);
     } finally {
       global.fetch = originalFetch;
@@ -1043,8 +1058,11 @@ describe("LLM client utilities (CLI layer)", () => {
       expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(
         1,
       );
-      // A stated range anchors the model on its maximum.
-      expect(sentPrompt).not.toMatch(/2 to 4/);
+      // A stated card-count band anchors the model on it. The Bloom scale
+      // line is the only numeric range the prompt may name.
+      expect(promptWithoutBloomScale(sentPrompt)).not.toMatch(
+        /\b\d+\s+(?:to|or|-)\s+\d+\b/,
+      );
       expect(sentPrompt).toMatch(/Never pad/);
 
       content = cards(5);
@@ -1055,7 +1073,7 @@ describe("LLM client utilities (CLI layer)", () => {
       content = cards(0);
       await expect(
         generateFoundationsProposalsViaLLM(db, card),
-      ).rejects.toThrow("expected at least 1 cards, got 0");
+      ).rejects.toThrow("expected at least 1 card, got 0");
     } finally {
       global.fetch = originalFetch;
       await db.close();
