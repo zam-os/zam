@@ -889,6 +889,53 @@ describe("LLM client utilities (CLI layer)", () => {
     }
   });
 
+  it("generateSplitProposalsViaLLM lets the content decide the card count (no upper bound)", async () => {
+    const db = await openDatabase({
+      dbPath: ":memory:",
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    await setSetting(db, "llm.enabled", "true");
+    await setSetting(db, "llm.url", "http://dummy/v1");
+
+    const fiveCards = JSON.stringify(
+      [1, 2, 3, 4, 5].map((n) => ({
+        question: `Question ${n}?`,
+        concept: `Fact ${n}`,
+        domain: "biology",
+        bloom_level: 1,
+        symbiosis_mode: "shadowing",
+        context: `context ${n}`,
+      })),
+    );
+
+    let sentPrompt = "";
+    const originalFetch = global.fetch;
+    global.fetch = async (_url, init) => {
+      sentPrompt = String(init?.body ?? "");
+      return new Response(
+        JSON.stringify({ choices: [{ message: { content: fiveCards } }] }),
+      );
+    };
+
+    try {
+      const proposals = await generateSplitProposalsViaLLM(db, {
+        question: "Explain photosynthesis",
+        concept: "Inputs, outputs, place, energy source and product use",
+        domain: "biology",
+        context: "",
+        source_link: null,
+      });
+      expect(proposals).toHaveLength(5);
+      // A stated range anchors the model on its maximum.
+      expect(sentPrompt).not.toMatch(/2 to 4/);
+      expect(sentPrompt).toMatch(/Never pad/);
+    } finally {
+      global.fetch = originalFetch;
+      await db.close();
+    }
+  });
+
   it("generateFoundationsProposalsViaLLM correctly queries LLM and parses prerequisite proposal objects", async () => {
     const db = await openDatabase({
       dbPath: ":memory:",

@@ -1272,7 +1272,7 @@ const VALID_GENERATED_MODES = new Set(["shadowing", "copilot", "autonomy"]);
 function parseGeneratedCardArray(
   responseText: string,
   label: string,
-  limits: { min: number; max: number },
+  limits: { min: number; max?: number },
 ): GeneratedCardProposal[] {
   const startIdx = responseText.indexOf("[");
   const endIdx = responseText.lastIndexOf("]");
@@ -1289,7 +1289,13 @@ function parseGeneratedCardArray(
   if (!Array.isArray(parsed)) {
     throw new Error(`Invalid ${label} response: expected a JSON array`);
   }
-  if (parsed.length < limits.min || parsed.length > limits.max) {
+  if (limits.max === undefined) {
+    if (parsed.length < limits.min) {
+      throw new Error(
+        `Invalid ${label} response: expected at least ${limits.min} cards, got ${parsed.length}`,
+      );
+    }
+  } else if (parsed.length < limits.min || parsed.length > limits.max) {
     throw new Error(
       `Invalid ${label} response: expected ${limits.min}-${limits.max} cards, got ${parsed.length}`,
     );
@@ -1819,7 +1825,9 @@ export async function importCurriculumViaLLM(
 }
 
 /**
- * Generate 2 to 4 atomic proposal cards by splitting a broad card.
+ * Split a card into atomic proposal cards — as many as it holds distinct
+ * ideas, at least 2. There is deliberately no upper bound: a stated range
+ * anchors the model on its maximum (it proposed 4 almost every time).
  */
 export async function generateSplitProposalsViaLLM(
   db: Database,
@@ -1836,7 +1844,7 @@ export async function generateSplitProposalsViaLLM(
   const langName = LANGUAGE_NAMES[cfg.locale] || "English";
 
   const systemPrompt = `You are ZAM, a highly precise agentic learning assistant.
-Your task is to analyze a learning card that is too broad or covers multiple ideas, and split it into 2 to 4 atomic, focused proposal cards in ${langName}.
+Your task is to analyze a learning card that the learner found too detailed, and split it into atomic, focused proposal cards in ${langName}.
 
 The input card details are:
 - Question: ${token.question || "N/A"}
@@ -1853,11 +1861,13 @@ For each split proposal card, you MUST generate:
 6. "symbiosis_mode": Symbiosis mode ("shadowing", "copilot", or "autonomy").
 
 Guidelines:
+- First identify the distinct facts or ideas the original card actually contains, then create exactly one card per idea. The number of cards follows from the content: at least 2, and as many as the card really holds — often 2 or 3, sometimes more.
+- Never pad: do not add cards that restate, generalize, or merely rephrase another card, and do not split a single idea into several cards.
 - Make sure each card is completely atomic (covers exactly one concept).
 - Do not repeat the same concept across cards.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
-  const userPrompt = `Split the broad card details above into 2 to 4 atomic cards.
+  const userPrompt = `Split the card above into one atomic card per distinct idea it contains.
 
 JSON Array Output:`;
 
@@ -1870,7 +1880,6 @@ JSON Array Output:`;
     });
     return parseGeneratedCardArray(agentText, "card split", {
       min: 2,
-      max: 4,
     }).map((card) => ({ ...card, source_link: token.source_link || null }));
   }
 
@@ -1899,7 +1908,6 @@ JSON Array Output:`;
 
   return parseGeneratedCardArray(responseText, "card split", {
     min: 2,
-    max: 4,
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
 }
 
