@@ -57,6 +57,7 @@ import {
   writeCompanionContext,
 } from "../companion-context-server.js";
 import type { CatalogEntry } from "../okf/bundle.js";
+import { registerCliProcessServices } from "../process-services.js";
 import { publishUiIntent } from "../ui-intent.js";
 import { resolveLearnerId } from "../users/identity.js";
 import { executeBridgeCommandJson } from "./bridge.js";
@@ -2259,6 +2260,9 @@ export function createMcpServer(
 export async function runMcpServer(): Promise<void> {
   // Rebind console.log to console.error immediately to prevent stdio transport corruption
   console.log = console.error;
+
+  // Own bundle, own kernel copy: app.ts's registrations do not reach here.
+  await registerCliProcessServices();
 
   const databaseHost = createPersistentDatabaseHost(openDatabase);
   const server = createMcpServer(databaseHost.database, {

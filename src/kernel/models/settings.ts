@@ -124,6 +124,11 @@ export function registerSettingsScopeResolver(
   scopeGeneration += 1;
 }
 
+/** Whether a host has registered a resolver in this module graph. */
+export function hasSettingsScopeResolver(): boolean {
+  return scopeResolver !== null;
+}
+
 /**
  * Pin a handle to one scope, bypassing the resolver — for hosts that know
  * their learner, and for tests. `null` forces library-only behaviour.

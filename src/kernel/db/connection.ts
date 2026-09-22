@@ -81,6 +81,11 @@ export function resetPostgresPasswordSuppliers(): void {
   postgresPasswordSuppliers.clear();
 }
 
+/** Whether a supplier for this auth mode is registered in this module graph. */
+export function hasPostgresPasswordSupplier(mode: PostgresAuthMode): boolean {
+  return postgresPasswordSuppliers.has(mode);
+}
+
 function isLoopbackHost(host: string): boolean {
   return /^(localhost|127\.0\.0\.1|::1)$/i.test(host.trim());
 }

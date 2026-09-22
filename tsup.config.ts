@@ -28,7 +28,9 @@ export default defineConfig([
     // chunk files (and a mid-command kernel chunk via bridge-handlers' dynamic
     // import) — load failures must stay pre-side-effect so the bootstrap's
     // heal-and-re-exec model holds (ADR 2026-07-07). Duplicated kernel code
-    // between app.js and mcp.js is process-local and accepted.
+    // between app.js and mcp.js is process-local and accepted — so is the
+    // duplicated module state: process-level registrations live in
+    // src/cli/process-services.ts and every entry calls them itself.
     splitting: false,
     sourcemap: true,
     external: ["./commands/mcp.js", "pg"],

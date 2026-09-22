@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import { dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import { Command } from "commander";
-import { resolveCredentials } from "../kernel/credentials.js";
 import { agentCommand } from "./commands/agent.js";
 import { bridgeCommand } from "./commands/bridge.js";
 import { cardCommand } from "./commands/card.js";
@@ -31,24 +30,11 @@ import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
 import { workspaceCommand } from "./commands/workspace.js";
-import { registerEntraCliPasswordSupplier } from "./db/entra-cli.js";
-import { registerCliSettingsScope } from "./users/identity.js";
+import { registerCliProcessServices } from "./process-services.js";
 
-// Resolve vault references into the process-lifetime snapshot before any
-// command (or the persistent desktop bridge) reads credentials synchronously.
-// Literals need no backend; failures degrade to null accessors (ADR 2026-07-30b).
-await resolveCredentials();
-
-// The team library authenticates with Entra tokens from the Azure CLI; the
-// kernel only knows a password-supplier function, so the CLI layer plugs the
-// `az` call in once per process (ADR 2026-09-04 Decision 3). Every host that
-// opens the database — commands, `bridge serve`, `zam mcp` — goes through here.
-registerEntraCliPasswordSupplier();
-
-// Settings have scopes (Decision 4); the kernel stores them, the CLI says
-// whose they are: the derived learner or the configured `user.id`, plus this
-// install's id. Without this, every setting would stay library-wide.
-registerCliSettingsScope();
+// Before any command reads credentials or opens the database. `zam mcp` is its
+// own bundle and runs the same call itself.
+await registerCliProcessServices();
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 const pkg = JSON.parse(
