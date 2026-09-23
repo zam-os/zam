@@ -153,6 +153,11 @@ export type {
   SqlDialect,
   Statement,
 } from "./db/types.js";
+export type { GoalBreakdownItem } from "./goals/breakdown.js";
+export {
+  formatGoalBreakdown,
+  goalTopicCurriculumText,
+} from "./goals/breakdown.js";
 export type { CreateGoalInput, GoalSummary } from "./goals/engine.js";
 // Goals
 export {

@@ -1,5 +1,11 @@
 import { execFileSync } from "node:child_process";
-import { existsSync, mkdirSync, mkdtempSync, readFileSync, rmSync } from "node:fs";
+import {
+  existsSync,
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -106,5 +112,26 @@ describe("bridge goal-create", () => {
       "[]",
     ]);
     expect(second.slug).toBe("learn-guitar-2");
+  });
+
+  it("goal-topic-cards rejects a topic without label and description", () => {
+    let failure: { status?: number; stdout?: string } = {};
+    try {
+      runBridge([
+        "goal-topic-cards",
+        "--title",
+        "Learn Guitar",
+        "--topic",
+        JSON.stringify({ label: "Open chords" }),
+        "--source",
+        join(tempHome, "goals", "learn-guitar.md"),
+      ]);
+    } catch (err) {
+      failure = err as { status?: number; stdout?: string };
+    }
+    expect(failure.status).not.toBe(0);
+    expect(JSON.parse(String(failure.stdout)).error).toMatch(
+      /--topic must be a JSON \{label, description\} object/,
+    );
   });
 });

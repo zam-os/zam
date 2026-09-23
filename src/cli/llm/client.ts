@@ -58,6 +58,12 @@ export const DEFAULT_LLM_MAX_TOKENS = 10_000;
 /** Bridge hard deadline for curriculum import — large blocks need more time locally. */
 const LOCAL_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 600_000;
 const CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 180_000;
+/**
+ * An agent harness run pays process startup on top of a subscription model
+ * that writes a card array far slower than a flash HTTP model; the adapters'
+ * 120 s default cut off a goal import before its first card (2026-09-23).
+ */
+export const AGENT_CURRICULUM_IMPORT_TIMEOUT_MS = 300_000;
 
 /** Tight output caps for recall — short questions/evaluations, faster round-trips. */
 export const RECALL_QUESTION_MAX_OUTPUT_TOKENS = 400;
@@ -1427,6 +1433,8 @@ async function requestAgentCompletion(
     imagePaths?: string[];
     /** Per-call effort override; wins over registry entry effort. */
     effort?: ProviderConfig["effort"];
+    /** Wall-clock budget; the adapter's own default applies when omitted. */
+    timeoutMs?: number;
   },
 ): Promise<string> {
   if (!endpoint.agentHarness) {
@@ -1459,6 +1467,7 @@ async function requestAgentCompletion(
     imagePaths: messages.imagePaths,
     model,
     effort,
+    timeoutMs: messages.timeoutMs,
   });
   return text;
 }
@@ -1542,6 +1551,7 @@ JSON Array Output:`;
     return requestAgentCompletion(endpoint, {
       system: systemPrompt,
       user: userPrompt,
+      timeoutMs: AGENT_CURRICULUM_IMPORT_TIMEOUT_MS,
     });
   }
 
