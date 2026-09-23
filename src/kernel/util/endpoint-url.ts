@@ -6,9 +6,10 @@
  * inside that query value. These helpers rewrite the URL's *path* and keep its
  * query, merging any parameters of their own into it.
  *
- * A base that is not an http(s) URL keeps the plain concatenation the callers
- * always used. That includes a scheme-less `localhost:11434/v1`, which parses
- * as a `localhost:` URL whose opaque path ignores any `pathname` assignment.
+ * A base that is not an http(s) URL is joined as a plain string, with its
+ * query split off first so the route still lands in the path. That includes a
+ * scheme-less `localhost:11434/v1`, which parses as a `localhost:` URL whose
+ * opaque path ignores any `pathname` assignment.
  *
  * Pure string work, no HTTP, so it lives in the kernel beside
  * `embeddingsEndpointUrl` and mobile can share it.
@@ -30,8 +31,13 @@ export function mapEndpointPath(
     parsed = undefined;
   }
   if (!parsed || !/^https?:$/i.test(parsed.protocol)) {
-    const search = new URLSearchParams(query).toString();
-    return `${mapPath(base.replace(/\/+$/, ""))}${search ? `?${search}` : ""}`;
+    // Split the query off by hand so the route still lands in the path.
+    const mark = base.indexOf("?");
+    const head = mark < 0 ? base : base.slice(0, mark);
+    const params = new URLSearchParams(mark < 0 ? "" : base.slice(mark + 1));
+    for (const [key, value] of Object.entries(query)) params.set(key, value);
+    const search = params.toString();
+    return `${mapPath(head.replace(/\/+$/, ""))}${search ? `?${search}` : ""}`;
   }
   parsed.pathname = mapPath(parsed.pathname.replace(/\/+$/, ""));
   for (const [key, value] of Object.entries(query)) {
@@ -48,14 +54,4 @@ export function endpointUrl(
 ): string {
   const suffix = route.replace(/^\/+/, "");
   return mapEndpointPath(base, (path) => `${path}/${suffix}`, query);
-}
-
-/**
- * The chat-completions URL for a base that may already be that URL: mobile
- * lets a learner paste either the API root or the full chat endpoint.
- */
-export function chatCompletionsUrl(base: string): string {
-  return mapEndpointPath(base, (path) =>
-    path.endsWith("/chat/completions") ? path : `${path}/chat/completions`,
-  );
 }

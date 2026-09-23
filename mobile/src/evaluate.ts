@@ -20,7 +20,7 @@ import {
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
-import { chatCompletionsUrl } from "../../src/kernel/util/endpoint-url.js";
+import { chatCompletionsUrl } from "./ai/chat-url.js";
 import {
   type AiTierPreference,
   DEFAULT_AI_TIER_PREFERENCES,

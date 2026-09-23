@@ -22,6 +22,7 @@
 import { ulid } from "ulid";
 import type { Database } from "../../../src/kernel/db/types.js";
 import { getSetting, setSetting } from "../../../src/kernel/models/settings.js";
+import { endpointUrl } from "../../../src/kernel/util/endpoint-url.js";
 import { CLOUD_MODELS_SETTING } from "../model-registry.js";
 
 /** Capabilities a hand-managed endpoint can be asked to serve. */
@@ -205,14 +206,14 @@ export async function checkEndpoint(
   draft: Pick<EndpointDraft, "url" | "apiKey">,
   fetchImpl: typeof fetch = fetch,
 ): Promise<{ ok: boolean; status?: number; error?: string }> {
-  const base = draft.url.trim().replace(/\/+$/, "");
+  const base = draft.url.trim();
   if (!base) return { ok: false, error: "empty_url" };
   const headers: Record<string, string> = {};
   if (draft.apiKey.trim()) {
     headers.Authorization = `Bearer ${draft.apiKey.trim()}`;
   }
   try {
-    const response = await fetchImpl(`${base}/models`, { headers });
+    const response = await fetchImpl(endpointUrl(base, "models"), { headers });
     if (response.ok) return { ok: true, status: response.status };
     return { ok: false, status: response.status };
   } catch (error) {

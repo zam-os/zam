@@ -156,6 +156,16 @@ describe("checkEndpoint", () => {
     );
   });
 
+  it("keeps a query on the base out of the route (issue #363)", async () => {
+    const fetchImpl = vi.fn(async () => new Response("{}", { status: 200 }));
+    await checkEndpoint(
+      { url: "https://x.azure.com/openai/v1?api-version=2025", apiKey: "k" },
+      fetchImpl as unknown as typeof fetch,
+    );
+    const [url] = fetchImpl.mock.calls[0] as [string, RequestInit];
+    expect(url).toBe("https://x.azure.com/openai/v1/models?api-version=2025");
+  });
+
   it("separates a rejected key from an unreachable host", async () => {
     const rejected = await checkEndpoint(
       { url: "https://api.example.com/v1", apiKey: "bad" },

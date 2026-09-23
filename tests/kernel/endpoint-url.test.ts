@@ -1,7 +1,6 @@
 import { describe, expect, it } from "vitest";
 
 import {
-  chatCompletionsUrl,
   endpointUrl,
   mapEndpointPath,
 } from "../../src/kernel/util/endpoint-url.js";
@@ -60,6 +59,14 @@ describe("endpointUrl", () => {
       "localhost:11434/v1/models",
     );
   });
+
+  it("still puts the route in the path when a fallback base carries a query", () => {
+    expect(
+      endpointUrl("localhost:11434/v1?api-version=x", "models", {
+        output_modalities: "speech",
+      }),
+    ).toBe("localhost:11434/v1/models?api-version=x&output_modalities=speech");
+  });
 });
 
 describe("mapEndpointPath", () => {
@@ -78,20 +85,15 @@ describe("mapEndpointPath", () => {
       "https://proxy.example/v1/messages?tenant=a",
     );
   });
-});
 
-describe("chatCompletionsUrl", () => {
-  it("accepts the API root or the full chat URL", () => {
-    expect(chatCompletionsUrl("https://api.openai.com/v1")).toBe(
-      "https://api.openai.com/v1/chat/completions",
+  it("strips a /v1 the query used to hide (Ollama's native chat route)", () => {
+    const ollamaChat = (base: string) =>
+      mapEndpointPath(base, (path) => `${path.replace(/\/v1$/, "")}/api/chat`);
+    expect(ollamaChat("http://localhost:11434/v1")).toBe(
+      "http://localhost:11434/api/chat",
     );
-    expect(chatCompletionsUrl("https://api.openai.com/v1/chat/completions/")).toBe(
-      "https://api.openai.com/v1/chat/completions",
+    expect(ollamaChat("http://host:11434/v1?x=1")).toBe(
+      "http://host:11434/api/chat?x=1",
     );
-    expect(
-      chatCompletionsUrl(
-        "https://x.azure.com/openai/v1/chat/completions?api-version=2025",
-      ),
-    ).toBe("https://x.azure.com/openai/v1/chat/completions?api-version=2025");
   });
 });

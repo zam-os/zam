@@ -695,9 +695,12 @@ async function requestOllamaVisionDraft(
   args: VisionRequestArgs,
 ): Promise<string> {
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
-  const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const chatUrl = mapEndpointPath(
+    args.url,
+    (path) => `${path.replace(/\/v1$/, "")}/api/chat`,
+  );
   const hardTimeoutMs = args.input.hardTimeoutMs ?? OLLAMA_VISION_TIMEOUT_MS;
-  const res = await fetchWithInteractiveTimeout(`${base}/api/chat`, {
+  const res = await fetchWithInteractiveTimeout(chatUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
