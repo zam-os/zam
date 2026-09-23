@@ -6076,8 +6076,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_goal_writing_file: "Writing your goal file…",
     onboarding_goal_generating_topic_cards:
       "Drafting cards for topic {index} of {total}: {topic}…",
-    onboarding_goal_topics_failed:
-      "No cards yet for: {topics}. Reason: {message}",
+    onboarding_goal_topics_failed: "No cards yet for these topics:",
+    onboarding_goal_topic_empty: "the model proposed no cards",
+    onboarding_goal_topic_stopped: "stopped when you left this page",
     onboarding_goal_retry_topics: "Try these topics again",
     onboarding_goal_cards_hint:
       "These cards were drafted from your confirmed breakdown. Uncheck anything you don't want — nothing is saved until you import.",
@@ -7542,8 +7543,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     onboarding_goal_writing_file: "Deine Ziel-Datei wird geschrieben …",
     onboarding_goal_generating_topic_cards:
       "Karten für Thema {index} von {total} werden entworfen: {topic} …",
-    onboarding_goal_topics_failed:
-      "Noch keine Karten für: {topics}. Grund: {message}",
+    onboarding_goal_topics_failed: "Noch keine Karten für diese Themen:",
+    onboarding_goal_topic_empty: "das Modell hat keine Karten vorgeschlagen",
+    onboarding_goal_topic_stopped:
+      "angehalten, als du die Seite verlassen hast",
     onboarding_goal_retry_topics: "Diese Themen erneut versuchen",
     onboarding_goal_cards_hint:
       "Diese Karten wurden aus deiner bestätigten Aufschlüsselung entworfen. Wähle ab, was du nicht willst – gespeichert wird erst beim Import.",

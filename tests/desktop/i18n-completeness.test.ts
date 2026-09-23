@@ -591,6 +591,8 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "onboarding_goal_writing_file",
   "onboarding_goal_generating_topic_cards",
   "onboarding_goal_topics_failed",
+  "onboarding_goal_topic_empty",
+  "onboarding_goal_topic_stopped",
   "onboarding_goal_retry_topics",
   "onboarding_goal_cards_hint",
   "onboarding_goal_back_to_topics",
