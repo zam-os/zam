@@ -185,6 +185,11 @@ export interface OnboardingStepActions {
   goToStep(id: string): void;
   /** Trigger an existing Studio import entry point (modal overlays). */
   openContentEntry(entry: "curriculum" | "free-import"): void;
+  /**
+   * True once the learner has asked to leave the flow, while the page is
+   * still shown; see {@link createOnboardingExit}.
+   */
+  isLeaving(): boolean;
 }
 
 // ── Content paths (ADR 2026-07-24 §2, plan Phase 8) ─────────────────────────
@@ -1263,7 +1268,10 @@ interface GoalTopicFailure extends GoalTopic {
 
 /** The goal area on screen, as the draft loop reports to it. */
 export interface GoalAreaView {
-  /** True while this area is attached to the document and shown. */
+  /**
+   * True while this area is attached to the document and shown, and the
+   * learner has not asked to leave the flow.
+   */
   isLive(): boolean;
   rerender(): void;
 }
@@ -1331,7 +1339,10 @@ function renderGoalArea(
 
   const rerender = () => renderGoalArea(root, actions, state);
   state.view = {
-    isLive: () => root.isConnected && root.getClientRects().length > 0,
+    isLive: () =>
+      !actions.isLeaving() &&
+      root.isConnected &&
+      root.getClientRects().length > 0,
     rerender,
   };
   if (state.notice) {
@@ -1858,6 +1869,40 @@ function requiredElement<T extends HTMLElement>(id: string): T {
   return element as T;
 }
 
+/**
+ * The flow's exit, shared by Finish and Finish later. It persists completion
+ * through the one desktop bridge, which a goal draft can hold for minutes per
+ * topic, so the page stays on screen until that request is done. `leaving`
+ * is set before the bridge call: a running draft checks it and queues no
+ * further topic ahead of the dashboard load.
+ */
+export function createOnboardingExit(onLeft: () => void): {
+  readonly leaving: boolean;
+  leave(): Promise<void>;
+} {
+  let leaving = false;
+  return {
+    get leaving() {
+      return leaving;
+    },
+    async leave() {
+      if (leaving) return;
+      leaving = true;
+      try {
+        await runBridge("onboarding-complete");
+      } catch (err) {
+        // Persisting the flag is best-effort: a failure here must not trap
+        // the user in the flow. Log and leave; the gate simply re-shows next
+        // launch.
+        console.error("onboarding-complete failed", err);
+      } finally {
+        leaving = false;
+        onLeft();
+      }
+    },
+  };
+}
+
 export function initOnboarding(deps: OnboardingDeps): OnboardingController {
   const kicker = requiredElement<HTMLElement>("onboarding-kicker");
   const progress = requiredElement<HTMLElement>("onboarding-progress");
@@ -1873,7 +1918,11 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
 
   let steps: OnboardingStep[] = [];
   let index = 0;
-  let leaving = false;
+  const exit = createOnboardingExit(() => {
+    nextBtn.disabled = false;
+    finishLaterBtn.disabled = false;
+    deps.onLeave("completed");
+  });
 
   function render(): void {
     const step = steps[index];
@@ -1932,43 +1981,22 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     goTo(index + 1);
   }
 
-  async function complete(): Promise<void> {
-    if (leaving) return;
-    leaving = true;
+  function complete(): void {
     nextBtn.disabled = true;
-    try {
-      await runBridge("onboarding-complete");
-    } catch (err) {
-      // Persisting the flag is best-effort: a failure here must not trap the
-      // user in the flow. Log and leave; the gate simply re-shows next launch.
-      console.error("onboarding-complete failed", err);
-    } finally {
-      nextBtn.disabled = false;
-      leaving = false;
-      deps.onLeave("completed");
-    }
+    finishLaterBtn.disabled = true;
+    void exit.leave();
   }
 
   backBtn.addEventListener("click", () => goTo(index - 1));
   skipBtn.addEventListener("click", () => goTo(index + 1));
   nextBtn.addEventListener("click", () => {
     if (index === steps.length - 1) {
-      void complete();
+      complete();
     } else {
       void advance();
     }
   });
-  finishLaterBtn.addEventListener("click", () => {
-    void (async () => {
-      try {
-        await runBridge("onboarding-complete");
-      } catch (err) {
-        console.error("onboarding-complete failed", err);
-      } finally {
-        deps.onLeave("completed");
-      }
-    })();
-  });
+  finishLaterBtn.addEventListener("click", complete);
 
   function rebuild(): void {
     steps = buildOnboardingSteps(deps.getStepContext(), {
@@ -1981,6 +2009,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
         const target = steps.findIndex((step) => step.id === id);
         if (target >= 0) goTo(target);
       },
+      isLeaving: () => exit.leaving,
     });
   }
 

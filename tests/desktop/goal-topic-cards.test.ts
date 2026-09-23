@@ -3,6 +3,7 @@ import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { t } from "../../desktop/src/i18n.js";
 import {
   appendGoalCards,
+  createOnboardingExit,
   draftGoalTopicCards,
   type GoalAreaView,
   type GoalImportState,
@@ -55,8 +56,6 @@ afterEach(() => {
   });
 });
 
-// Grok review on #366: every topic keeps its own reason, an empty answer is
-// not a silent success, and leaving the step stops the draft.
 describe("draftGoalTopicCards", () => {
   it("keeps each topic's own reason and treats an empty answer as one", async () => {
     const progress: string[] = [];
@@ -112,6 +111,49 @@ describe("draftGoalTopicCards", () => {
       })),
     );
     expect(state.busy).toBeNull();
+  });
+
+  it("stops once Finish later is clicked, while the page is still shown", async () => {
+    const calls: string[] = [];
+    let onScreen = true;
+    const exit = createOnboardingExit(() => {
+      onScreen = false;
+    });
+    // As renderGoalArea wires it: shown on screen, and not leaving the flow.
+    const state = goalState({
+      isLive: () => !exit.leaving && onScreen,
+      rerender() {},
+    });
+    let releaseBridge = () => {};
+    const bridgeFree = new Promise<void>((resolve) => {
+      releaseBridge = resolve;
+    });
+    let left: Promise<void> | undefined;
+    setBridgeTransport(async (cmd, args) => {
+      calls.push(cmd === "goal-topic-cards" ? topicOf(args) : cmd);
+      if (cmd === "onboarding-complete") {
+        // Queued behind the topic in flight on the one desktop bridge.
+        await bridgeFree;
+        return {};
+      }
+      left ??= exit.leave(); // Finish later during the first topic
+      return cardsFor(topicOf(args));
+    });
+
+    await draftGoalTopicCards(state, TOPICS, "C:/goals/kubernetes.md");
+
+    expect(onScreen).toBe(true);
+    expect(calls).toEqual(["Pods", "onboarding-complete"]);
+    expect(state.failedTopics).toEqual(
+      TOPICS.slice(1).map((topic) => ({
+        ...topic,
+        error: t("onboarding_goal_topic_stopped"),
+      })),
+    );
+    releaseBridge();
+    await left;
+    expect(onScreen).toBe(false);
+    expect(exit.leaving).toBe(false);
   });
 
   it("carries on when the learner comes back while a request runs", async () => {
