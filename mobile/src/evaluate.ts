@@ -20,6 +20,7 @@ import {
   type RecallEvaluationCard,
 } from "../../desktop/src/panel/recall-evaluation.js";
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
+import { chatCompletionsUrl } from "./ai/chat-url.js";
 import {
   type AiTierPreference,
   DEFAULT_AI_TIER_PREFERENCES,
@@ -289,10 +290,7 @@ export async function generateViaHttp(
       `API flavor ${endpoint.apiFlavor} is not supported on mobile yet`,
     );
   }
-  const base = endpoint.url.replace(/\/+$/, "");
-  const url = base.endsWith("/chat/completions")
-    ? base
-    : `${base}/chat/completions`;
+  const url = chatCompletionsUrl(endpoint.url);
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };

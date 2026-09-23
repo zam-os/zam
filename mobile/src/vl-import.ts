@@ -6,6 +6,7 @@
  * normalizes each JSON array entry into a MobileTokenDraft.
  */
 
+import { chatCompletionsUrl } from "./ai/chat-url.js";
 import { type MobileTokenDraft, normalizeBridgeDraft } from "./import.js";
 import {
   type MobileVisionEndpoint,
@@ -74,11 +75,6 @@ export function buildVlChatCompletionsBody(
     temperature: 0,
     max_tokens: 4_000,
   };
-}
-
-export function chatCompletionsUrl(baseUrl: string): string {
-  const base = baseUrl.replace(/\/+$/, "");
-  return base.endsWith("/chat/completions") ? base : `${base}/chat/completions`;
 }
 
 export function visionRequestHeaders(

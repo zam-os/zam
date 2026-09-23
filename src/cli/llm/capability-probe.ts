@@ -20,6 +20,7 @@ import {
   type CapabilityFlags,
   embeddingsEndpointUrl,
   emptyCapabilityFlags,
+  endpointUrl,
   getProviderApiKey,
   type ModelEntry,
 } from "../../kernel/index.js";
@@ -323,7 +324,7 @@ async function probeReasoningEffort(
       // preferences as every other one (ADR 2026-07-24 §5: no data
       // collection, zero-data-retention providers) — the probe is a plain
       // fetch only because fetchWithInteractiveTimeout would prompt on a TTY.
-      const url = `${entry.url}/chat/completions`;
+      const url = endpointUrl(entry.url, "chat/completions");
       const res = await fetch(url, {
         method: "POST",
         headers: {

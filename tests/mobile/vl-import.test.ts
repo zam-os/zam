@@ -1,8 +1,8 @@
 import { describe, expect, it, vi } from "vitest";
+import { chatCompletionsUrl } from "../../mobile/src/ai/chat-url.js";
 import type { MobileVisionEndpoint } from "../../mobile/src/vision-config.js";
 import {
   buildVlChatCompletionsBody,
-  chatCompletionsUrl,
   decomposeImageViaVision,
   extractChatCompletionsContent,
   parseVlDecomposeResponse,
@@ -42,6 +42,16 @@ describe("vl-import request shaping", () => {
     expect(
       chatCompletionsUrl("https://api.openai.com/v1/chat/completions"),
     ).toBe("https://api.openai.com/v1/chat/completions");
+    // A query on the base stays a query, and the pasted full chat URL is
+    // still recognised behind it (issue #363).
+    expect(
+      chatCompletionsUrl("https://x.azure.com/openai/v1?api-version=2025"),
+    ).toBe("https://x.azure.com/openai/v1/chat/completions?api-version=2025");
+    expect(
+      chatCompletionsUrl(
+        "https://x.azure.com/openai/v1/chat/completions?api-version=2025",
+      ),
+    ).toBe("https://x.azure.com/openai/v1/chat/completions?api-version=2025");
     expect(visionRequestHeaders(endpoint)).toEqual({
       "Content-Type": "application/json",
       Authorization: "Bearer sk-test",

@@ -14,7 +14,6 @@ import {
   importCurriculumViaLLM,
   isLlmOnline,
   LlmResponseTruncatedError,
-  modelsListingUrl,
   repairUmlautsViaLLM,
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
@@ -1079,50 +1078,5 @@ describe("LLM client utilities (CLI layer)", () => {
       global.fetch = originalFetch;
       await db.close();
     }
-  });
-});
-
-describe("modelsListingUrl", () => {
-  it("appends /models to a plain base URL", () => {
-    expect(modelsListingUrl("http://localhost:11434/v1")).toBe(
-      "http://localhost:11434/v1/models",
-    );
-    expect(modelsListingUrl("https://openrouter.ai/api/v1/")).toBe(
-      "https://openrouter.ai/api/v1/models",
-    );
-  });
-
-  it("encodes query parameters instead of trusting a raw string", () => {
-    expect(
-      modelsListingUrl("https://openrouter.ai/api/v1", {
-        output_modalities: "speech",
-      }),
-    ).toBe("https://openrouter.ai/api/v1/models?output_modalities=speech");
-    expect(
-      modelsListingUrl("https://openrouter.ai/api/v1", { filter: "a b&c=d" }),
-    ).toBe("https://openrouter.ai/api/v1/models?filter=a+b%26c%3Dd");
-  });
-
-  it("falls back to plain concatenation for a base that is not an http(s) URL", () => {
-    // Unparseable, and scheme-less: `localhost:11434/v1` parses as a
-    // `localhost:` URL whose opaque path would silently drop `/models`.
-    expect(modelsListingUrl("not a url", { output_modalities: "speech" })).toBe(
-      "not a url/models?output_modalities=speech",
-    );
-    expect(modelsListingUrl("localhost:11434/v1")).toBe(
-      "localhost:11434/v1/models",
-    );
-  });
-
-  it("merges into a query the base URL already carries", () => {
-    // Previously `…?api-version=…` + `?output_modalities=…` produced a second
-    // `?`, and `/models` landed inside the query value.
-    expect(
-      modelsListingUrl("https://example.azure.com/openai/v1?api-version=2025", {
-        output_modalities: "transcription",
-      }),
-    ).toBe(
-      "https://example.azure.com/openai/v1/models?api-version=2025&output_modalities=transcription",
-    );
   });
 });

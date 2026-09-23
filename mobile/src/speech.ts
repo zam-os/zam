@@ -15,6 +15,7 @@
  */
 
 import type { ZamPairLlmEndpoint } from "../../src/bridge/mobile-pairing.js";
+import { mapEndpointPath } from "../../src/kernel/util/endpoint-url.js";
 import { isCloudHttpEndpoint } from "./evaluate.js";
 
 /** Injected so tests can stub the network. Defaults to global fetch. */
@@ -40,14 +41,17 @@ export function isUsableSpeechEndpoint(
 }
 
 /**
- * Base URL for the audio routes.
+ * URL of an audio route.
  *
  * A learner who pasted the full chat URL gets the same endpoint as one who
  * pasted the API root; without this the audio call would land on
  * `/chat/completions/audio/speech`.
  */
-function audioBase(url: string): string {
-  return url.replace(/\/+$/, "").replace(/\/chat\/completions$/, "");
+function audioUrl(url: string, route: "transcriptions" | "speech"): string {
+  return mapEndpointPath(
+    url,
+    (path) => `${path.replace(/\/chat\/completions$/, "")}/audio/${route}`,
+  );
 }
 
 function authHeaders(endpoint: ZamPairLlmEndpoint): Record<string, string> {
@@ -134,7 +138,7 @@ export async function transcribeViaCloud(
   );
 
   const response = await withTimeout((signal) =>
-    fetchFn(`${audioBase(endpoint.url)}/audio/transcriptions`, {
+    fetchFn(audioUrl(endpoint.url, "transcriptions"), {
       method: "POST",
       headers: authHeaders(endpoint),
       body: form,
@@ -171,7 +175,7 @@ export async function synthesizeViaCloud(
   if (!text) throw new Error("There is nothing to read aloud.");
 
   const response = await withTimeout((signal) =>
-    fetchFn(`${audioBase(endpoint.url)}/audio/speech`, {
+    fetchFn(audioUrl(endpoint.url, "speech"), {
       method: "POST",
       headers: {
         "Content-Type": "application/json",

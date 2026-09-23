@@ -22,6 +22,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   BLOOM_VERBS,
+  endpointUrl,
   ensureMachineProviderRolesSanitized,
   getActiveWorkspaceContext,
   getKnowledgeContextByName,
@@ -911,7 +912,7 @@ Active-Recall Question:`;
   }
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -1042,7 +1043,7 @@ Evaluation:`;
         body.reasoning = { effort: reasoningEffort };
       }
       const res = await fetchWithInteractiveTimeout(
-        `${endpoint.url}/chat/completions`,
+        endpointUrl(endpoint.url, "chat/completions"),
         {
           method: "POST",
           headers: {
@@ -1223,7 +1224,7 @@ ${input.sourceLinkContent ? `Source Code Reference:\n${input.sourceLinkContent}`
     }
 
     const res = await fetchWithInteractiveTimeout(
-      `${endpoint.url}/chat/completions`,
+      endpointUrl(endpoint.url, "chat/completions"),
       {
         method: "POST",
         headers: {
@@ -1549,7 +1550,7 @@ JSON Array Output:`;
     : CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS;
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -1694,7 +1695,7 @@ JSON Array Output:`;
 
     const request = async (maxTokens: number): Promise<string> => {
       const res = await fetchWithInteractiveTimeout(
-        `${endpoint.url}/chat/completions`,
+        endpointUrl(endpoint.url, "chat/completions"),
         {
           method: "POST",
           headers: {
@@ -1883,7 +1884,7 @@ JSON Array Output:`;
   }
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -1968,7 +1969,7 @@ JSON Array Output:`;
   }
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -2060,7 +2061,7 @@ export async function extractTextFromScanViaLLM(
   const visionEndpoint = await getVisionConfig(db);
 
   const res = await fetchWithInteractiveTimeout(
-    `${visionEndpoint.url}/chat/completions`,
+    endpointUrl(visionEndpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -2127,7 +2128,7 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
   }
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -2160,7 +2161,7 @@ export async function isLlmOnline(url: string): Promise<boolean> {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1500);
     // Check OpenAI standard /models list to verify readiness
-    const res = await fetch(`${url}/models`, {
+    const res = await fetch(endpointUrl(url, "models"), {
       method: "GET",
       signal: controller.signal,
     });
@@ -2220,34 +2221,6 @@ export interface ModelCatalogEntry {
 }
 
 /**
- * `{base}/models`, with `query` merged into whatever query the base URL
- * already carries (`…/v1?api-version=…` stays one query string, not two).
- * A base that is not an http(s) URL keeps the plain concatenation the callers
- * always used — including a scheme-less `localhost:11434/v1`, which parses as
- * a `localhost:` URL whose opaque path ignores any `pathname` assignment.
- */
-export function modelsListingUrl(
-  base: string,
-  query: Record<string, string> = {},
-): string {
-  let parsed: URL | undefined;
-  try {
-    parsed = new URL(base);
-  } catch {
-    parsed = undefined;
-  }
-  if (!parsed || !/^https?:$/i.test(parsed.protocol)) {
-    const search = new URLSearchParams(query).toString();
-    return `${base}/models${search ? `?${search}` : ""}`;
-  }
-  parsed.pathname = `${parsed.pathname.replace(/\/+$/, "")}/models`;
-  for (const [key, value] of Object.entries(query)) {
-    parsed.searchParams.set(key, value);
-  }
-  return parsed.toString();
-}
-
-/**
  * Fetch the `/models` catalogue with architecture metadata.
  */
 export async function getAvailableModelEntries(
@@ -2264,7 +2237,7 @@ export async function getAvailableModelEntries(
   try {
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
-    const res = await fetch(modelsListingUrl(url, query), {
+    const res = await fetch(endpointUrl(url, "models", query), {
       method: "GET",
       headers: { Authorization: `Bearer ${apiKey}` },
       signal: controller.signal,
@@ -2730,7 +2703,7 @@ export async function sampleViaLocalLLM(
   }
 
   const res = await fetchWithInteractiveTimeout(
-    `${endpoint.url}/chat/completions`,
+    endpointUrl(endpoint.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -3685,7 +3658,7 @@ Title:`;
   }
 
   // Use recall endpoint as fallback if text not available; many setups share.
-  const url = `${endpoint.url}/chat/completions`;
+  const url = endpointUrl(endpoint.url, "chat/completions");
   const apiKey = endpoint.apiKey;
   const model = endpoint.model;
 
@@ -3763,7 +3736,7 @@ Repaired text:`;
     }
   }
 
-  const url = `${endpoint.url}/chat/completions`;
+  const url = endpointUrl(endpoint.url, "chat/completions");
   const apiKey = endpoint.apiKey;
   const model = endpoint.model;
 

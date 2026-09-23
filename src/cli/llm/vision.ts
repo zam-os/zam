@@ -13,8 +13,10 @@ import type {
   UiObservedAction,
 } from "../../kernel/index.js";
 import {
+  endpointUrl,
   isUiObservationReport,
   LANGUAGE_NAMES,
+  mapEndpointPath,
   UI_OBSERVATION_PROTOCOL_VERSION,
 } from "../../kernel/index.js";
 import {
@@ -306,7 +308,7 @@ async function requestChatCompletionsVisionDraft(
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
 
   const res = await fetchWithInteractiveTimeout(
-    `${args.url}/chat/completions`,
+    endpointUrl(args.url, "chat/completions"),
     {
       method: "POST",
       headers: {
@@ -416,9 +418,12 @@ async function requestAnthropicVisionDraft(
   args: VisionRequestArgs,
 ): Promise<string> {
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
-  const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const messagesUrl = mapEndpointPath(
+    args.url,
+    (path) => `${path.replace(/\/v1$/, "")}/v1/messages`,
+  );
 
-  const res = await fetchWithInteractiveTimeout(`${base}/v1/messages`, {
+  const res = await fetchWithInteractiveTimeout(messagesUrl, {
     method: "POST",
     headers: {
       "Content-Type": "application/json",
@@ -690,9 +695,12 @@ async function requestOllamaVisionDraft(
   args: VisionRequestArgs,
 ): Promise<string> {
   const language = LANGUAGE_NAMES[args.locale] ?? "English";
-  const base = args.url.replace(/\/+$/, "").replace(/\/v1$/, "");
+  const chatUrl = mapEndpointPath(
+    args.url,
+    (path) => `${path.replace(/\/v1$/, "")}/api/chat`,
+  );
   const hardTimeoutMs = args.input.hardTimeoutMs ?? OLLAMA_VISION_TIMEOUT_MS;
-  const res = await fetchWithInteractiveTimeout(`${base}/api/chat`, {
+  const res = await fetchWithInteractiveTimeout(chatUrl, {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({
