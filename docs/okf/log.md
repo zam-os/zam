@@ -1,5 +1,9 @@
 # Log
 
+## 2026-09-23
+
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+
 ## 2026-09-19
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

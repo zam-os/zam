@@ -92,6 +92,7 @@ describe("dashboard onboarding checklist", () => {
       openExternal() {},
       goToStep() {},
       openContentEntry() {},
+      isLeaving: () => false,
     });
     const stepIds = new Set(steps.map((step) => step.id));
     for (const item of ONBOARDING_CHECKLIST_ITEMS) {
@@ -109,6 +110,7 @@ describe("dashboard onboarding checklist", () => {
       openExternal() {},
       goToStep() {},
       openContentEntry() {},
+      isLeaving: () => false,
     });
     expect(steps.map((step) => step.id)).not.toContain("secrets");
     expect(ONBOARDING_CHECKLIST_ITEMS.map((item) => item.id)).not.toContain(

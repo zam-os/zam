@@ -17,6 +17,7 @@ vi.mock("../../../src/cli/agent-llm/adapter.js", async (importActual) => {
 
 import { getAgentAdapter } from "../../../src/cli/agent-llm/adapter.js";
 import {
+  AGENT_CURRICULUM_IMPORT_TIMEOUT_MS,
   generateGoalDecompositionViaLLM,
   importCurriculumViaLLM,
 } from "../../../src/cli/llm/client.js";
@@ -144,6 +145,24 @@ describe("curriculum import via the agent transport", () => {
     expect(seen?.user).toContain("Add two-digit numbers.");
   });
 
+  // 2026-09-23: a goal import through Claude Code hit the adapter's 120 s
+  // default before a single card came back.
+  it("gives the harness the curriculum-import budget, not the adapter default", async () => {
+    let timeoutMs: number | undefined;
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        timeoutMs = req.timeoutMs;
+        return { text: CANNED_CARDS };
+      }),
+    );
+    const db = await seedDb();
+
+    await importCurriculumViaLLM(db, "Add two-digit numbers.", "Mathematik");
+
+    expect(timeoutMs).toBe(AGENT_CURRICULUM_IMPORT_TIMEOUT_MS);
+    expect(timeoutMs).toBeGreaterThan(120_000);
+  });
+
   it("propagates a harness failure instead of silently falling back", async () => {
     vi.mocked(getAgentAdapter).mockReturnValue(
       fakeAdapter(async () => {
@@ -156,7 +175,6 @@ describe("curriculum import via the agent transport", () => {
       importCurriculumViaLLM(db, "Add two-digit numbers.", "Mathematik"),
     ).rejects.toThrow(/claude code is offline/i);
   });
-
 });
 
 // Issue #224: onboarding's model page can connect an agent, so the goal step

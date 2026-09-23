@@ -61,6 +61,7 @@ import {
   emptyCapabilityFlags,
   ensureCard,
   ensureMachineAiModelsMigrated,
+  formatGoalBreakdown,
   generateConceptFreeCue,
   generateTokenSlug,
   getActiveWorkspaceContext,
@@ -88,6 +89,7 @@ import {
   getTokenDeleteImpact,
   getTokenNeighborhood,
   getTursoCredentials,
+  goalTopicCurriculumText,
   hasCommand,
   importCurriculumCards,
   isBitwardenVaultEnabled,
@@ -4282,6 +4284,78 @@ bridgeCommand
   );
 
 bridgeCommand
+  .command("goal-topic-cards")
+  .description(
+    "Draft card proposals for ONE confirmed goal topic via the text LLM " +
+      "(JSON, preview only). The goal flow asks once per selected topic, so " +
+      "each request stays bounded and a failing topic keeps the others " +
+      "(ADR 2026-07-24 §3).",
+  )
+  .requiredOption("--title <title>", "Goal title (also the cards' domain)")
+  .option("--description <text>", "Why the goal matters to the learner", "")
+  .option(
+    "--path <json>",
+    "JSON array of confirmed drill-down labels above the topic",
+    "[]",
+  )
+  .requiredOption("--topic <json>", "JSON {label, description} of the topic")
+  .requiredOption(
+    "--source <path>",
+    "Goal file every proposal cites as source_link",
+  )
+  .action(
+    async (opts: {
+      title: string;
+      description: string;
+      path: string;
+      topic: string;
+      source: string;
+    }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        let topic: { label: string; description: string } | null = null;
+        try {
+          const parsedPath = JSON.parse(opts.path);
+          if (Array.isArray(parsedPath)) {
+            path = parsedPath.filter(
+              (item): item is string => typeof item === "string",
+            );
+          }
+          const parsedTopic = JSON.parse(opts.topic);
+          if (
+            parsedTopic &&
+            typeof parsedTopic.label === "string" &&
+            typeof parsedTopic.description === "string"
+          ) {
+            topic = {
+              label: parsedTopic.label,
+              description: parsedTopic.description,
+            };
+          }
+        } catch {
+          jsonError("Invalid --path or --topic JSON");
+        }
+        if (!topic) {
+          jsonError("--topic must be a JSON {label, description} object");
+        }
+
+        const proposals = await importCurriculumViaLLM(
+          db,
+          goalTopicCurriculumText({
+            title: opts.title,
+            description: opts.description ?? "",
+            path,
+            topic,
+          }),
+          opts.title.trim(),
+          opts.source,
+        );
+        jsonOut({ success: true, proposals });
+      });
+    },
+  );
+
+bridgeCommand
   .command("goal-create")
   .description(
     "Create a goal markdown file (Lernziel) in the goals directory, with the " +
@@ -4346,17 +4420,7 @@ bridgeCommand
           slug = `${base}-${n}`;
         }
 
-        const breakdown =
-          outline.length > 0
-            ? [
-                "",
-                "### Breakdown",
-                ...(path.length > 0 ? [`Path: ${path.join(" → ")}`, ""] : []),
-                ...outline.map(
-                  (item) => `- **${item.label}** — ${item.description}`,
-                ),
-              ].join("\n")
-            : "";
+        const breakdown = formatGoalBreakdown(path, outline);
 
         try {
           const goal = createGoal(goalsDir, {
@@ -8079,6 +8143,24 @@ export function executeBridgeCommandJson(
   return run;
 }
 
+/** Serve requests at or above this duration are logged even when they succeed. */
+const SLOW_SERVE_REQUEST_MS = 30_000;
+
+/**
+ * The error a command reported inside a successful response — commands such
+ * as `goal-decompose` answer `{ success: false, error }` instead of throwing.
+ * A `false` without an `error` string is a status (e.g. `backup-db` on a
+ * remote library), not a failure.
+ */
+export function reportedError(result: unknown): string | null {
+  if (!result || typeof result !== "object" || Array.isArray(result)) {
+    return null;
+  }
+  const { success, ok, error } = result as Record<string, unknown>;
+  if (success !== false && ok !== false) return null;
+  return typeof error === "string" && error ? error : null;
+}
+
 // ── zam bridge serve ──────────────────────────────────────────────────────
 
 bridgeCommand
@@ -8107,6 +8189,21 @@ bridgeCommand
         appendFileSync(logPath, `[${new Date().toISOString()}] ${msg}\n`);
       } catch {
         // best-effort only — never let logging break the bridge
+      }
+    };
+    // Failed and slow requests leave a line so a learner's "it timed out"
+    // can be traced afterwards. Only the command name, duration and error
+    // are written — arguments carry learner content and are never logged.
+    const logServeOutcome = (
+      cmd: string,
+      elapsedMs: number,
+      error: string | null,
+    ): void => {
+      if (error !== null) {
+        const line = error.replace(/\s+/g, " ").slice(0, 500);
+        logDiag(`request failed | cmd=${cmd} | ${elapsedMs} ms | ${line}`);
+      } else if (elapsedMs >= SLOW_SERVE_REQUEST_MS) {
+        logDiag(`request slow | cmd=${cmd} | ${elapsedMs} ms`);
       }
     };
     logDiag(
@@ -8140,15 +8237,19 @@ bridgeCommand
         }
 
         const requestDatabaseHost = databaseHost;
+        const startedAt = Date.now();
         try {
           const result = await executeBridgeCommandJson(cmd, args, {
             database: requestDatabaseHost,
           });
+          logServeOutcome(cmd, Date.now() - startedAt, reportedError(result));
           return JSON.stringify({ id: requestId, result });
         } catch (err) {
+          const message = (err as Error).message || String(err);
+          logServeOutcome(cmd, Date.now() - startedAt, message);
           return JSON.stringify({
             id: requestId,
-            error: (err as Error).message || String(err),
+            error: message,
           });
         } finally {
           if (retiresPersistentDatabaseHost(cmd)) {

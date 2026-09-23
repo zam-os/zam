@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-19T12:05:00.000Z
+timestamp: 2026-09-23T15:50:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -49,6 +49,16 @@ The injection is scoped to one asynchronous command execution. It is not a
 global connection cache, and concurrent in-process callers cannot borrow one
 another's database. This keeps the JSON protocol identical while removing a
 connection and schema-version round trip from each warm Desktop interaction.
+
+A windowed Desktop swallows the serve process's stderr, so the process keeps
+a diagnostics log at `~/.zam/desktop-bridge.log`: one line per start with the
+resolved home directory, one per failed request — a thrown error, or a
+response that reports `success: false` / `ok: false` with an `error` string —
+and one per request that took 30 seconds or longer. A line carries the
+command name, the duration and the error; arguments are never written,
+because they carry learner content. A `false` without an `error` string is a
+status (for example `backup-db` on a remote library) and is not logged. The
+Desktop's spawn log sits beside it as `desktop-bridge.rust.log`.
 
 Outbound HTTP that the bridge performs on a learner's behalf identifies
 itself with the release-versioned `ZAM-Content-Studio/<version>`
@@ -237,7 +247,7 @@ bridge's JSON helpers.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
 - Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)

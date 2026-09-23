@@ -185,6 +185,11 @@ export interface OnboardingStepActions {
   goToStep(id: string): void;
   /** Trigger an existing Studio import entry point (modal overlays). */
   openContentEntry(entry: "curriculum" | "free-import"): void;
+  /**
+   * True once the learner has asked to leave the flow, while the page is
+   * still shown; see {@link createOnboardingExit}.
+   */
+  isLeaving(): boolean;
 }
 
 // ── Content paths (ADR 2026-07-24 §2, plan Phase 8) ─────────────────────────
@@ -361,6 +366,10 @@ export function buildOnboardingSteps(
     path: [],
     levels: [],
     cards: null,
+    failedTopics: [],
+    busy: null,
+    notice: null,
+    view: null,
     sourceId: null,
     goalFile: null,
     imported: null,
@@ -1241,14 +1250,33 @@ interface GoalLevelOption {
   checked: boolean;
 }
 
-interface GoalCardProposal {
+export interface GoalCardProposal {
   concept: string;
   question: string;
   selected: boolean;
   proposal: Record<string, unknown>;
 }
 
-interface GoalImportState {
+interface GoalTopic {
+  label: string;
+  description: string;
+}
+
+interface GoalTopicFailure extends GoalTopic {
+  error: string;
+}
+
+/** The goal area on screen, as the draft loop reports to it. */
+export interface GoalAreaView {
+  /**
+   * True while this area is attached to the document and shown, and the
+   * learner has not asked to leave the flow.
+   */
+  isLive(): boolean;
+  rerender(): void;
+}
+
+export interface GoalImportState {
   title: string;
   description: string;
   /** Confirmed drill-down labels (user-driven depth: one level at a time). */
@@ -1256,6 +1284,18 @@ interface GoalImportState {
   /** Cached level stack aligned with `path` — going up never regenerates. */
   levels: GoalLevelOption[][];
   cards: GoalCardProposal[] | null;
+  /** Topics whose card request failed — offered for a retry in the preview. */
+  failedTopics: GoalTopicFailure[];
+  /** Progress line while the goal file or card drafts are written. */
+  busy: string | null;
+  /** One-shot status line for the next render (e.g. a goal-file error). */
+  notice: string | null;
+  /**
+   * The latest rendered goal area. Drafting renders progress into it, so
+   * coming back to the step mid-draft shows live progress, and stops once
+   * no goal area is shown.
+   */
+  view: GoalAreaView | null;
   sourceId: string | null;
   goalFile: { slug: string; filePath: string } | null;
   imported: { created: number; ensured: number } | null;
@@ -1298,6 +1338,17 @@ function renderGoalArea(
   status.setAttribute("aria-live", "polite");
 
   const rerender = () => renderGoalArea(root, actions, state);
+  state.view = {
+    isLive: () =>
+      !actions.isLeaving() &&
+      root.isConnected &&
+      root.getClientRects().length > 0,
+    rerender,
+  };
+  if (state.notice) {
+    status.textContent = state.notice;
+    state.notice = null;
+  }
 
   if (state.imported) {
     status.classList.add("ok");
@@ -1487,7 +1538,7 @@ function renderGoalLevel(
   importBtn.textContent = t("onboarding_goal_import_topics");
   importBtn.addEventListener("click", () => {
     void (async () => {
-      const selected = level
+      const selected: GoalTopic[] = level
         .filter((option) => option.checked)
         .map((option) => ({
           label: option.label,
@@ -1497,11 +1548,13 @@ function renderGoalLevel(
         status.textContent = t("onboarding_goal_no_selection");
         return;
       }
-      importBtn.disabled = true;
-      status.classList.remove("ok");
+      // Busy disables the area's buttons: navigating the levels meanwhile
+      // would change the path under the remaining requests.
+      state.busy = t("onboarding_goal_writing_file");
+      rerender();
+      let goalFilePath: string;
       try {
         // 1. Write the goal file — the source_link every card will cite.
-        status.textContent = t("onboarding_goal_writing_file");
         const goal = await runBridge<{
           success: boolean;
           slug: string;
@@ -1523,39 +1576,134 @@ function renderGoalLevel(
           ["--type", "file", "--uri", goal.filePath],
         );
         state.sourceId = source.sourceId;
-        // 3. LLM card proposals over the recorded breakdown — preview only.
-        status.textContent = t("onboarding_goal_generating_cards");
-        const preview = await runBridge<{
-          success: boolean;
-          proposals: Array<Record<string, unknown>>;
-        }>("personal-card-import-curriculum", [
-          "--sourceId",
-          source.sourceId,
-          "--domain",
-          state.title.trim(),
-          "--source",
-          goal.filePath,
-          "--preview",
-        ]);
-        state.cards = preview.proposals.map((proposal) => ({
-          concept: String(proposal.concept ?? ""),
-          question: String(proposal.question ?? ""),
-          selected: true,
-          proposal,
-        }));
-        status.textContent = "";
-        rerender();
+        goalFilePath = goal.filePath;
       } catch (err) {
-        status.textContent = t("onboarding_goal_error").replace(
+        state.busy = null;
+        state.notice = t("onboarding_goal_error").replace(
           "{message}",
           bridgeErrorMessage(err),
         );
-        importBtn.disabled = false;
+        state.view?.rerender();
+        return;
       }
+      // 3. LLM card proposals, one topic per request — preview only. The
+      // preview opens even when every topic failed, so a retry reuses the
+      // goal file instead of writing a second one.
+      state.cards = [];
+      await draftGoalTopicCards(state, selected, goalFilePath);
     })();
   });
   controls.append(importBtn);
   root.append(controls, status);
+  applyGoalBusy(root, status, state);
+}
+
+/**
+ * Draft card proposals topic by topic. One request for a whole selection
+ * outran the agent harness's budget before a single card came back
+ * (2026-09-23); per topic, each request stays small, the learner sees
+ * progress, and a failed topic is kept for a retry instead of sinking the
+ * topics that already succeeded.
+ */
+export async function draftGoalTopicCards(
+  state: GoalImportState,
+  topics: GoalTopic[],
+  goalFilePath: string,
+): Promise<void> {
+  const failed: GoalTopicFailure[] = [];
+  const path = JSON.stringify(state.path);
+  for (const [index, topic] of topics.entries()) {
+    // Leaving the step (Back, Finish later, the top navigation) stops the
+    // draft before the next request instead of holding the one desktop
+    // bridge for every remaining topic; what is left stays retryable.
+    if (state.view?.isLive() !== true) {
+      failed.push(
+        ...topics.slice(index).map((rest) => ({
+          ...rest,
+          error: t("onboarding_goal_topic_stopped"),
+        })),
+      );
+      break;
+    }
+    state.busy = tf("onboarding_goal_generating_topic_cards", {
+      index: index + 1,
+      total: topics.length,
+      topic: topic.label,
+    });
+    state.view.rerender();
+    try {
+      const preview = await runBridge<{
+        success: boolean;
+        proposals: Array<Record<string, unknown>>;
+      }>("goal-topic-cards", [
+        "--title",
+        state.title.trim(),
+        "--description",
+        state.description.trim(),
+        "--path",
+        path,
+        "--topic",
+        JSON.stringify(topic),
+        "--source",
+        goalFilePath,
+      ]);
+      const proposals = preview.proposals ?? [];
+      if (proposals.length === 0) {
+        // A valid empty answer would otherwise make the topic vanish.
+        failed.push({ ...topic, error: t("onboarding_goal_topic_empty") });
+      } else {
+        state.cards = appendGoalCards(state.cards ?? [], proposals);
+      }
+    } catch (err) {
+      failed.push({ ...topic, error: bridgeErrorMessage(err) });
+    }
+  }
+  state.busy = null;
+  state.failedTopics = failed;
+  state.view?.rerender();
+}
+
+/** While work runs, the goal area shows its progress and offers no actions. */
+function applyGoalBusy(
+  root: HTMLElement,
+  status: HTMLElement,
+  state: GoalImportState,
+): void {
+  if (!state.busy) return;
+  setButtonsDisabled(root, true);
+  status.textContent = state.busy;
+}
+
+function setButtonsDisabled(root: HTMLElement, disabled: boolean): void {
+  for (const button of root.querySelectorAll("button")) {
+    button.disabled = disabled;
+  }
+}
+
+/** Add proposals to the preview, skipping any already drafted by a topic. */
+export function appendGoalCards(
+  cards: GoalCardProposal[],
+  proposals: Array<Record<string, unknown>>,
+): GoalCardProposal[] {
+  const key = (question: string, concept: string) =>
+    `${question.trim().toLocaleLowerCase()}\u0000${concept
+      .trim()
+      .toLocaleLowerCase()}`;
+  const seen = new Set(cards.map((card) => key(card.question, card.concept)));
+  const next = [...cards];
+  for (const proposal of proposals) {
+    const card: GoalCardProposal = {
+      concept: String(proposal.concept ?? ""),
+      question: String(proposal.question ?? ""),
+      selected: true,
+      proposal,
+    };
+    const cardKey = key(card.question, card.concept);
+    if (seen.has(cardKey)) continue;
+    seen.add(cardKey);
+    next.push(card);
+  }
+  return next;
 }
 
 function renderGoalCardPreview(
@@ -1564,7 +1712,43 @@ function renderGoalCardPreview(
   state: GoalImportState,
   rerender: () => void,
 ): void {
-  root.append(paragraph(t("onboarding_goal_cards_hint")));
+  if ((state.cards ?? []).length > 0) {
+    root.append(paragraph(t("onboarding_goal_cards_hint")));
+  }
+  if (state.failedTopics.length > 0) {
+    const failure = document.createElement("p");
+    failure.className = "onboarding-model-status";
+    failure.textContent = t("onboarding_goal_topics_failed");
+    // Each topic keeps its own reason: a timeout and an empty answer ask
+    // for different things.
+    const reasons = document.createElement("ul");
+    reasons.className = "onboarding-goal-failures";
+    for (const topic of state.failedTopics) {
+      const item = document.createElement("li");
+      item.textContent = `${topic.label} — ${topic.error}`;
+      reasons.append(item);
+    }
+    const retryBtn = document.createElement("button");
+    retryBtn.type = "button";
+    retryBtn.className = "btn secondary-btn btn-sm";
+    retryBtn.textContent = t("onboarding_goal_retry_topics");
+    retryBtn.addEventListener("click", () => {
+      void (async () => {
+        const goalFilePath = state.goalFile?.filePath;
+        if (!goalFilePath) return;
+        const topics = state.failedTopics.map(({ label, description }) => ({
+          label,
+          description,
+        }));
+        state.failedTopics = [];
+        await draftGoalTopicCards(state, topics, goalFilePath);
+      })();
+    });
+    const retryRow = document.createElement("div");
+    retryRow.className = "onboarding-model-links";
+    retryRow.append(retryBtn);
+    root.append(failure, reasons, retryRow);
+  }
   const list = document.createElement("div");
   list.className = "onboarding-goal-level";
   for (const card of state.cards ?? []) {
@@ -1591,6 +1775,7 @@ function renderGoalCardPreview(
   backBtn.textContent = t("onboarding_goal_back_to_topics");
   backBtn.addEventListener("click", () => {
     state.cards = null;
+    state.failedTopics = [];
     rerender();
   });
   const confirmBtn = document.createElement("button");
@@ -1634,8 +1819,12 @@ function renderGoalCardPreview(
       }
     })();
   });
-  controls.append(backBtn, confirmBtn);
+  controls.append(backBtn);
+  // Nothing drafted yet (every topic failed or came back empty): the retry
+  // above is the way forward, not an import of nothing.
+  if ((state.cards ?? []).length > 0) controls.append(confirmBtn);
   root.append(controls, status);
+  applyGoalBusy(root, status, state);
 }
 
 /** Unwrap the bridge's `{"error": …}` JSON when present; never echoes keys. */
@@ -1680,6 +1869,40 @@ function requiredElement<T extends HTMLElement>(id: string): T {
   return element as T;
 }
 
+/**
+ * The flow's exit, shared by Finish and Finish later. It persists completion
+ * through the one desktop bridge, which a goal draft can hold for minutes per
+ * topic, so the page stays on screen until that request is done. `leaving`
+ * is set before the bridge call: a running draft checks it and queues no
+ * further topic ahead of the dashboard load.
+ */
+export function createOnboardingExit(onLeft: () => void): {
+  readonly leaving: boolean;
+  leave(): Promise<void>;
+} {
+  let leaving = false;
+  return {
+    get leaving() {
+      return leaving;
+    },
+    async leave() {
+      if (leaving) return;
+      leaving = true;
+      try {
+        await runBridge("onboarding-complete");
+      } catch (err) {
+        // Persisting the flag is best-effort: a failure here must not trap
+        // the user in the flow. Log and leave; the gate simply re-shows next
+        // launch.
+        console.error("onboarding-complete failed", err);
+      } finally {
+        leaving = false;
+        onLeft();
+      }
+    },
+  };
+}
+
 export function initOnboarding(deps: OnboardingDeps): OnboardingController {
   const kicker = requiredElement<HTMLElement>("onboarding-kicker");
   const progress = requiredElement<HTMLElement>("onboarding-progress");
@@ -1695,7 +1918,11 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
 
   let steps: OnboardingStep[] = [];
   let index = 0;
-  let leaving = false;
+  const exit = createOnboardingExit(() => {
+    nextBtn.disabled = false;
+    finishLaterBtn.disabled = false;
+    deps.onLeave("completed");
+  });
 
   function render(): void {
     const step = steps[index];
@@ -1754,43 +1981,22 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     goTo(index + 1);
   }
 
-  async function complete(): Promise<void> {
-    if (leaving) return;
-    leaving = true;
+  function complete(): void {
     nextBtn.disabled = true;
-    try {
-      await runBridge("onboarding-complete");
-    } catch (err) {
-      // Persisting the flag is best-effort: a failure here must not trap the
-      // user in the flow. Log and leave; the gate simply re-shows next launch.
-      console.error("onboarding-complete failed", err);
-    } finally {
-      nextBtn.disabled = false;
-      leaving = false;
-      deps.onLeave("completed");
-    }
+    finishLaterBtn.disabled = true;
+    void exit.leave();
   }
 
   backBtn.addEventListener("click", () => goTo(index - 1));
   skipBtn.addEventListener("click", () => goTo(index + 1));
   nextBtn.addEventListener("click", () => {
     if (index === steps.length - 1) {
-      void complete();
+      complete();
     } else {
       void advance();
     }
   });
-  finishLaterBtn.addEventListener("click", () => {
-    void (async () => {
-      try {
-        await runBridge("onboarding-complete");
-      } catch (err) {
-        console.error("onboarding-complete failed", err);
-      } finally {
-        deps.onLeave("completed");
-      }
-    })();
-  });
+  finishLaterBtn.addEventListener("click", complete);
 
   function rebuild(): void {
     steps = buildOnboardingSteps(deps.getStepContext(), {
@@ -1803,6 +2009,7 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
         const target = steps.findIndex((step) => step.id === id);
         if (target >= 0) goTo(target);
       },
+      isLeaving: () => exit.leaving,
     });
   }
 
