@@ -6881,7 +6881,7 @@ async function fetchRawHtml(url: string): Promise<string> {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "ZAM-Content-Studio/0.43.2",
+        "User-Agent": "ZAM-Content-Studio/0.43.3",
       },
     });
     if (!res.ok) {
