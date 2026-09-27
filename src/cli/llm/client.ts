@@ -39,6 +39,14 @@ import {
   t,
 } from "../../kernel/index.js";
 import { resolveReviewContext } from "../review-context.js";
+import type { ChoiceGeneration } from "./choice-prepare.js";
+import {
+  CHOICE_FILTER_MAX_OUTPUT_TOKENS,
+  CHOICE_GENERATION_MAX_OUTPUT_TOKENS,
+  type ChoiceGenerationItem,
+  type ChoicePrompt,
+  runChoiceGeneration,
+} from "./choice-prompt.js";
 import { CLOUD_PROVIDERS, OPENROUTER_PROVIDER } from "./cloud-providers.js";
 import {
   ensureFoundryModelLoaded,
@@ -1919,6 +1927,90 @@ JSON Array Output:`;
   return parseGeneratedCardArray(responseText, "card split", {
     min: 2,
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
+}
+
+/** One prompt to a resolved endpoint, over the agent harness or HTTP. */
+async function completeChoicePrompt(
+  endpoint: ProviderConfig,
+  locale: SupportedLocale,
+  prompt: ChoicePrompt,
+  maxTokens: number,
+): Promise<string> {
+  if (endpoint.transport === "agent") {
+    return requestAgentCompletion(endpoint, {
+      system: prompt.system,
+      user: prompt.user,
+    });
+  }
+  const res = await fetchWithInteractiveTimeout(
+    endpointUrl(endpoint.url, "chat/completions"),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: prompt.system },
+          { role: "user", content: prompt.user },
+        ],
+        temperature: 0.3,
+        max_tokens: maxTokens,
+      }),
+      locale,
+    },
+  );
+  return readChatContent(res, "LLM choice options");
+}
+
+function endpointLabel(endpoint: ProviderConfig): string {
+  return endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`;
+}
+
+/**
+ * Generate and filter choice options for one item (ADR 2026-09-27 Decision
+ * 6). Generation uses the `text` role, like every other content-authoring
+ * call. The reject filter prefers the `recall` role when it runs a different
+ * model, so that one model's blind spots do not pass its own check; with a
+ * single model configured, the same one filters.
+ */
+export async function generateChoiceOptionsViaLLM(
+  db: Database,
+  item: ChoiceGenerationItem,
+): Promise<ChoiceGeneration> {
+  const cfg = await getProviderForRole(db, "text");
+  const generator = await resolveUsableTextEndpoint(db, { allowAgent: true });
+  let filter = generator;
+  try {
+    const recall = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+    if (endpointLabel(recall) !== endpointLabel(generator)) filter = recall;
+  } catch {
+    // No usable recall model: the generator filters its own options.
+  }
+  const result = await runChoiceGeneration({
+    item,
+    complete: (prompt) =>
+      completeChoicePrompt(
+        generator,
+        cfg.locale,
+        prompt,
+        CHOICE_GENERATION_MAX_OUTPUT_TOKENS,
+      ),
+    completeFilter: (prompt) =>
+      completeChoicePrompt(
+        filter,
+        cfg.locale,
+        prompt,
+        CHOICE_FILTER_MAX_OUTPUT_TOKENS,
+      ),
+  });
+  return {
+    result,
+    model: endpointLabel(generator),
+    filterModel: endpointLabel(filter),
+  };
 }
 
 /**

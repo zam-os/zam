@@ -39,6 +39,7 @@ import {
   applySourceProposals,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
+  buildReviewQueue,
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
@@ -238,6 +239,7 @@ import {
   probeModelCapabilities,
   validateModelSave,
 } from "../llm/capability-probe.js";
+import { prepareChoiceOptionsForCards } from "../llm/choice-prepare.js";
 import {
   type ApiFlavor,
   checkVisionReadiness,
@@ -246,6 +248,7 @@ import {
   discussReviewViaLLM,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
+  generateChoiceOptionsViaLLM,
   generateFoundationsProposalsViaLLM,
   generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
@@ -1178,6 +1181,64 @@ bridgeCommand
             knowledgeContext: opts.knowledgeContext,
           }),
         );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge choice-prepare ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("choice-prepare")
+  .description(
+    "Generate choice options ahead of the review for the next queue cards (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--limit <n>", "How many upcoming queue cards to consider", "3")
+  .option("--card-id <id...>", "Prepare these cards instead of the queue")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context the session is filtered by",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const limit = Number(opts.limit);
+        if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
+          throw new Error("--limit must be an integer from 1 to 50");
+        }
+        if (!(await getLlmConfig(db)).enabled) {
+          jsonOut({
+            success: true,
+            prepared: 0,
+            skipped: 0,
+            failed: [],
+            modelCalls: 0,
+            reason: "no_model",
+          });
+          return;
+        }
+        let cardIds: string[] = opts.cardId ?? [];
+        if (cardIds.length === 0) {
+          const workload = await getStudyWorkloadSettings(db, userId);
+          const queue = await buildReviewQueue(db, {
+            userId,
+            maxNew: workload.maxNew,
+            maxReviews: workload.maxReviews,
+            buryNewSiblings: workload.buryNewSiblings,
+            buryReviewSiblings: workload.buryReviewSiblings,
+            knowledgeContext: opts.knowledgeContext,
+          });
+          cardIds = queue.items.slice(0, limit).map((item) => item.cardId);
+        }
+        const outcome = await prepareChoiceOptionsForCards(
+          db,
+          { userId, cardIds, knowledgeContext: opts.knowledgeContext },
+          (item) => generateChoiceOptionsViaLLM(db, item),
+        );
+        jsonOut({ success: true, ...outcome });
       } catch (err) {
         jsonError((err as Error).message);
       }

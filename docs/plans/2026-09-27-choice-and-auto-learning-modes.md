@@ -1,6 +1,6 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** Phases 1–3 done on 2026-09-27; Phase 4 is next.\
+**Status:** Phases 1–4 done on 2026-09-27; Phase 5 is next.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -27,8 +27,8 @@ schedules beyond 20 days (D4).
 
 - [x] **Phase 1** — answer format and the tap ceiling (kernel and every submit path) — `dad5d0e`
 - [x] **Phase 2** — the two new modes in study settings (kernel and bridge) — `8cfb3e7`
-- [x] **Phase 3** — choice presentation in the kernel (LLM-free)
-- [ ] **Phase 4** — generated options (the `text` role, reject filter, cache fill)
+- [x] **Phase 3** — choice presentation in the kernel (LLM-free) — `20f0daa`
+- [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill)
 - [ ] **Phase 5** — Desktop Studio
 - [ ] **Phase 6** — Mobile (iPadOS and Android)
 - [ ] **Phase 7** — documentation and handover
@@ -510,6 +510,10 @@ and cached options, and the correct recall reason in every other case.
      degradation is accepted (D6).
    - Call `runChoiceGeneration` through `generateViaHttp`, and store via the
      kernel.
+   - *As built:* Mobile has one cloud text chain and no separate recall row,
+     so its filter runs on the same chain. The shared orchestration is
+     `src/cli/llm/choice-prepare.ts` (`prepareChoiceOptionsForCards`), used by
+     both the bridge and `mobile/src/choice-generate.ts`.
 5. **Prefetch contract.** Generation never blocks a displayed card: a card
    without options is asked in a recall format (D6).
    - Desktop runs `choice-prepare --limit 3` in the background at session
