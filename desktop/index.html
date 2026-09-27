@@ -426,12 +426,20 @@
               <span id="lbl-settings-learning-mode">Learning mode</span>
               <select id="settings-learning-mode">
                 <option id="settings-learning-mode-flash" value="flash">Flash (fast, no typing)</option>
+                <option id="settings-learning-mode-choice" value="choice">Choice (pick one of three)</option>
                 <option id="settings-learning-mode-feedback" value="answer_feedback">Answer with AI feedback</option>
                 <option id="settings-learning-mode-variation" value="answer_variation">Answer with question variations</option>
+                <option id="settings-learning-mode-auto" value="auto">Auto (choice first, free recall later)</option>
               </select>
               <span id="lbl-settings-learning-mode-help" class="settings-card-help">
                 In Flash mode, reveal the answer directly and rate your recall without typing.
               </span>
+            </label>
+            <!-- Auto's free-recall format (ADR 2026-09-27 Decision 8): shown
+                 only while Auto is selected. -->
+            <label class="settings-toggle hidden" id="settings-auto-recall-flash-row" for="settings-auto-recall-flash">
+              <input type="checkbox" id="settings-auto-recall-flash" />
+              <span id="lbl-settings-auto-recall-flash">Later without typing (Flash instead of an AI-checked answer)</span>
             </label>
             <label
               class="settings-field settings-advanced-control"
@@ -1007,6 +1015,15 @@
                   ⚡ Flash
                 </button>
                 <button
+                  id="btn-study-mode-choice"
+                  class="study-mode-option"
+                  type="button"
+                  role="radio"
+                  aria-checked="false"
+                >
+                  🔘 Choice
+                </button>
+                <button
                   id="btn-study-mode-feedback"
                   class="study-mode-option"
                   type="button"
@@ -1015,10 +1032,21 @@
                 >
                   💬 AI
                 </button>
+                <button
+                  id="btn-study-mode-auto"
+                  class="study-mode-option"
+                  type="button"
+                  role="radio"
+                  aria-checked="false"
+                >
+                  🔄 Auto
+                </button>
               </div>
               <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
               <span class="badge domain-badge" id="tier-badge" hidden></span>
+              <!-- Auto's recall probe (ADR 2026-09-27 Decision 8). -->
+              <span class="badge choice-stage-badge" id="choice-stage-badge" hidden></span>
               <div class="card-manage-wrap">
                 <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">⋯</button>
                 <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
@@ -1064,6 +1092,8 @@
 
             <!-- ANSWER CAPTURE SCREEN -->
             <div class="answer-capture" id="answer-capture-box">
+              <!-- Why a card in Choice is asked without options. -->
+              <p id="choice-notice" class="choice-notice" hidden></p>
               <textarea id="user-answer-input" placeholder="Type your conceptual answer here... (Enter to submit)"></textarea>
               <div id="fast-check-options" class="study-offer-actions" hidden></div>
               <div class="card-buttons">
@@ -1155,6 +1185,18 @@
               <div class="study-edit-controls">
                 <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
                 <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
+              </div>
+
+              <!-- CHOICE RESULT (ADR 2026-09-27 Decision 7): the rating is
+                   derived from the pick, so this replaces the rating bar. -->
+              <div class="choice-result hidden" id="choice-result" aria-live="polite">
+                <p class="choice-result-status" id="choice-result-status"></p>
+                <p class="choice-result-contrast" id="choice-result-contrast" hidden></p>
+                <div class="choice-result-actions">
+                  <button id="btn-choice-ask" class="btn secondary-btn btn-sm" type="button" hidden>Ask</button>
+                  <button id="btn-choice-dispute" class="btn ghost-btn btn-sm" type="button" hidden>My answer is also correct</button>
+                  <button id="btn-choice-next" class="btn primary-btn" type="button">Next</button>
+                </div>
               </div>
 
               <!-- CORE REFERENCE ANSWER -->

@@ -1155,6 +1155,35 @@ function parseChoiceEvidenceOption(raw: string): ChoiceEvidence {
   }
 }
 
+/** `--choice-json` of discuss-review; malformed input is ignored. */
+function parseDiscussionChoice(
+  raw: string | undefined,
+): { options: string[]; chosen: string | null; answer: string } | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw) as {
+      options?: unknown;
+      chosen?: unknown;
+      answer?: unknown;
+    };
+    if (
+      !Array.isArray(value.options) ||
+      !value.options.every((option) => typeof option === "string") ||
+      typeof value.answer !== "string" ||
+      (value.chosen !== null && typeof value.chosen !== "string")
+    ) {
+      return null;
+    }
+    return {
+      options: value.options as string[],
+      chosen: value.chosen as string | null,
+      answer: value.answer,
+    };
+  } catch {
+    return null;
+  }
+}
+
 // ── zam bridge answer-presentation ──────────────────────────────────────────
 
 bridgeCommand
@@ -4134,6 +4163,10 @@ bridgeCommand
     'Prior turns, oldest first, as JSON: [{"role":"user"|"assistant","content":"…"},…]',
   )
   .option("--context <context>", "Optional token context details")
+  .option(
+    "--choice-json <json>",
+    'A choice the learner answered: {"options":[…],"chosen":"…"|null,"answer":"…"}',
+  )
   .option("--source-link <link>", "Optional source link")
   .option(
     "--source-content <content>",
@@ -4184,6 +4217,7 @@ bridgeCommand
           userAnswer: opts.userAnswer,
           sourceLinkContent: resolvedContextContent,
           feedback: opts.feedback ?? null,
+          choice: parseDiscussionChoice(opts.choiceJson),
           thread,
           message: opts.message,
         });

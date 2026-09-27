@@ -84,6 +84,8 @@ export interface SubmitRatingInput {
    * tapped fast check; omitted means `recall`.
    */
   answerFormat?: "recall" | "options" | "choice";
+  /** What a choice showed and what was picked; required with `choice`. */
+  choiceEvidence?: unknown;
 }
 
 /** FSRS rating check-in. Always sends a response time, including 0. */
@@ -101,6 +103,9 @@ export function submitRatingCommand(input: SubmitRatingInput): BridgeCall {
   }
   if (input.answerFormat && input.answerFormat !== "recall") {
     args.push("--answer-format", input.answerFormat);
+  }
+  if (input.choiceEvidence !== undefined) {
+    args.push("--choice-evidence", JSON.stringify(input.choiceEvidence));
   }
   return { cmd: "submit", args };
 }

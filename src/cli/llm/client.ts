@@ -1161,6 +1161,15 @@ export async function discussReviewViaLLM(
     sourceLinkContent?: string | null;
     /** AI feedback already shown for this answer (becomes the thread's first assistant turn). */
     feedback?: string | null;
+    /**
+     * A choice the learner answered (ADR 2026-09-27 Decision 7): the options,
+     * the pick (null for "Don't know") and the answer.
+     */
+    choice?: {
+      options: string[];
+      chosen: string | null;
+      answer: string;
+    } | null;
     /** Prior discussion turns, oldest first. */
     thread: DiscussionTurn[];
     /** The learner's newest turn. */
@@ -1180,13 +1189,23 @@ Guidelines:
 1. Answer the learner's follow-up directly and concretely in ${langName}, grounded in the card's target concept, context, and source reference.
 2. Stay scoped to this card and its concept. If the learner drifts to unrelated territory, answer briefly and steer back to the concept.
 3. Keep replies conversational and short (a few sentences) unless the learner explicitly asks for depth. Plain text only — no markdown wrapper, headers, or bullet lists.
-4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating.`;
+${
+  input.choice
+    ? "4. The learner answered by choosing one of several options, and the rating follows from that choice — do not discuss self-rating. When they chose a wrong option, explain concretely how it differs from the correct answer and why the two are easy to confuse."
+    : "4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating."
+}`;
 
   const cardFrame = `The card under discussion:
 Domain: ${input.domain}
 Slug: ${input.slug}
 Recall Question: ${input.question}
-Learner's Answer: ${input.userAnswer}
+${
+  input.choice
+    ? `Options shown: ${input.choice.options.map((option) => `"${option}"`).join(", ")}
+Learner chose: ${input.choice.chosen === null ? "(did not know)" : `"${input.choice.chosen}"`}
+Correct option: "${input.choice.answer}"`
+    : `Learner's Answer: ${input.userAnswer}`
+}
 
 Target Concept (Correct Answer): ${input.concept}
 Target Context: ${input.context || "(none)"}

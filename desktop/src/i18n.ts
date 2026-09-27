@@ -5898,6 +5898,33 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Flash mode is active. Switch to answer mode.",
     learning_mode_switch_to_flash:
       "Answer mode is active. Switch to Flash mode.",
+    learning_mode_choice: "Choice (pick one of three)",
+    learning_mode_auto: "Auto (choice first, free recall later)",
+    learning_mode_switch_choice: "🔘 Choice",
+    learning_mode_switch_auto: "🔄 Auto",
+    learning_mode_auto_recall_flash:
+      "Later without typing (Flash instead of an AI-checked answer)",
+    choice_dont_know: "Don't know",
+    choice_next: "Next",
+    choice_ask: "Ask",
+    choice_ask_starter: "What's the difference?",
+    choice_dispute: "My answer is also correct",
+    choice_correct: "✓ Correct",
+    choice_wrong: "✗ Not quite — the answer is: {answer}",
+    choice_dont_know_result: "The answer is: {answer}",
+    choice_disputed: "Counted as correct. This option will not be shown to you again.",
+    choice_answers_other: "This answers: {question}",
+    choice_now_without_options: "Now without options",
+    choice_notice_unsuitable:
+      "This card asks for more than one option can show, so it comes without options.",
+    choice_notice_no_options:
+      "There are no answer options for this card yet, so it comes without options.",
+    choice_notice_curated_disputed:
+      "You disputed this card's options, so it comes without options for now.",
+    choice_discussion_frame:
+      "You chose: {chosen}. The answer is: {answer}.",
+    summary_choice_ready:
+      "{count} cards are ready for free recall — Auto, Flash or the AI mode asks them without options.",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
     // First-run onboarding (ADR 2026-07-24, Phase 0).
@@ -7361,6 +7388,33 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Flash-Modus ist aktiv. Zum Antwortmodus wechseln.",
     learning_mode_switch_to_flash:
       "Antwortmodus ist aktiv. Zum Flash-Modus wechseln.",
+    learning_mode_choice: "Auswahl (eine von drei Antworten wählen)",
+    learning_mode_auto: "Auto (erst Auswahl, später freier Abruf)",
+    learning_mode_switch_choice: "🔘 Auswahl",
+    learning_mode_switch_auto: "🔄 Auto",
+    learning_mode_auto_recall_flash:
+      "Später ohne Tippen (Flash statt KI-geprüfter Antwort)",
+    choice_dont_know: "Weiß ich nicht",
+    choice_next: "Weiter",
+    choice_ask: "Nachfragen",
+    choice_ask_starter: "Was ist der Unterschied?",
+    choice_dispute: "Meine Antwort stimmt auch",
+    choice_correct: "✓ Richtig",
+    choice_wrong: "✗ Nicht ganz – richtig ist: {answer}",
+    choice_dont_know_result: "Die Antwort ist: {answer}",
+    choice_disputed: "Als richtig gewertet. Diese Option bekommst du nicht mehr angezeigt.",
+    choice_answers_other: "Das beantwortet: {question}",
+    choice_now_without_options: "Jetzt ohne Auswahl",
+    choice_notice_unsuitable:
+      "Diese Karte fragt mehr ab, als eine Auswahl zeigen kann – sie kommt ohne Optionen.",
+    choice_notice_no_options:
+      "Für diese Karte gibt es noch keine Antwortoptionen – sie kommt ohne Optionen.",
+    choice_notice_curated_disputed:
+      "Du hast die Optionen dieser Karte angefochten – sie kommt vorerst ohne Optionen.",
+    choice_discussion_frame:
+      "Du hast gewählt: {chosen}. Richtig ist: {answer}.",
+    summary_choice_ready:
+      "{count} Karten sind bereit für freien Abruf – Auto, Flash oder der KI-Modus fragen sie ohne Optionen.",
     settings_section_backup: "Backup",
     settings_section_update: "Update",
     // First-run onboarding (ADR 2026-07-24, Phase 0).

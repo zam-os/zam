@@ -27,6 +27,12 @@ export interface DiscussionCardContext {
   sourceLink?: string | null;
   /** AI feedback already shown for this answer (the thread's opening turn). */
   feedback: string;
+  /**
+   * A choice the learner answered (ADR 2026-09-27 Decision 7): the options,
+   * the pick (null for "Don't know") and the answer. Its rating is derived
+   * from the pick, so the thread never discusses self-rating.
+   */
+  choice?: { options: string[]; chosen: string | null; answer: string } | null;
 }
 
 export interface DiscussionState {
@@ -134,6 +140,9 @@ export function buildDiscussReviewArgs(
     "--feedback",
     card.feedback,
   ];
+  if (card.choice) {
+    args.push("--choice-json", JSON.stringify(card.choice));
+  }
   if (card.context) {
     args.push("--context", card.context);
   }

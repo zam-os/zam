@@ -84,9 +84,11 @@ export function shouldEvaluateStudyAnswer(input: {
   evaluatorAvailable: boolean;
   answer: string;
   fastCheck: boolean;
+  /** Auto's format for the current card. */
+  autoFormat?: AutoCardFormat;
 }): boolean {
   return (
-    acceptsTypedStudyAnswer(input.learningMode) &&
+    acceptsTypedStudyAnswer(input.learningMode, input.autoFormat) &&
     input.evaluatorAvailable &&
     input.answer.length > 0 &&
     !input.fastCheck

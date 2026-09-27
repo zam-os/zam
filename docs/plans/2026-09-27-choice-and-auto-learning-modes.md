@@ -1,6 +1,6 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** Phases 1–4 done on 2026-09-27; Phase 5 is next.\
+**Status:** Phases 1–5 done on 2026-09-27, except the manual Studio pass of phase 5; Phase 6 is next.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -28,8 +28,8 @@ schedules beyond 20 days (D4).
 - [x] **Phase 1** — answer format and the tap ceiling (kernel and every submit path) — `dad5d0e`
 - [x] **Phase 2** — the two new modes in study settings (kernel and bridge) — `8cfb3e7`
 - [x] **Phase 3** — choice presentation in the kernel (LLM-free) — `20f0daa`
-- [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill)
-- [ ] **Phase 5** — Desktop Studio
+- [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill) — `5f0a014`
+- [x] **Phase 5** — Desktop Studio (code and tests; the manual Studio pass is still open)
 - [ ] **Phase 6** — Mobile (iPadOS and Android)
 - [ ] **Phase 7** — documentation and handover
 

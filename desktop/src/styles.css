@@ -1485,7 +1485,7 @@ textarea:focus-visible {
   border: 1px solid var(--border-soft);
   border-radius: 999px;
   display: inline-grid;
-  grid-template-columns: 1fr 1fr;
+  grid-template-columns: repeat(4, auto);
   padding: 2px;
 }
 
@@ -4179,4 +4179,95 @@ textarea::placeholder {
   margin-top: 0.75rem;
   font-size: 0.85rem;
   color: var(--clr-text-muted, #8b8b95);
+}
+
+/* ── Choice mode (ADR 2026-09-27) ───────────────────────────────────────── */
+
+.choice-notice {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+  margin: 0 0 8px;
+}
+
+.choice-stage-badge {
+  background: color-mix(in srgb, var(--clr-accent-cyan) 16%, transparent);
+  color: var(--clr-accent-cyan);
+}
+
+.choice-options {
+  display: grid;
+  gap: 8px;
+}
+
+.choice-option {
+  align-items: center;
+  display: flex;
+  gap: 10px;
+  justify-content: flex-start;
+  text-align: left;
+  width: 100%;
+}
+
+.choice-option .choice-key {
+  color: var(--clr-text-muted);
+  font-size: 12px;
+  font-weight: 750;
+  min-width: 1.2em;
+}
+
+.choice-option.choice-correct {
+  border-color: var(--clr-accent-green, #22c55e);
+  box-shadow: inset 0 0 0 1px var(--clr-accent-green, #22c55e);
+}
+
+.choice-option.choice-wrong {
+  border-color: var(--clr-accent-red, #ef4444);
+  box-shadow: inset 0 0 0 1px var(--clr-accent-red, #ef4444);
+}
+
+.choice-option:disabled {
+  cursor: default;
+  opacity: 1;
+}
+
+.choice-dont-know {
+  justify-self: start;
+}
+
+.choice-result {
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  margin-bottom: 12px;
+  padding: 12px 14px;
+}
+
+.choice-result.correct {
+  border-color: var(--clr-accent-green, #22c55e);
+}
+
+.choice-result.wrong {
+  border-color: var(--clr-accent-red, #ef4444);
+}
+
+.choice-result-status {
+  font-weight: 700;
+  margin: 0 0 6px;
+}
+
+.choice-result-contrast {
+  color: var(--clr-text-muted);
+  margin: 0 0 10px;
+}
+
+.choice-result-actions {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px;
+  justify-content: flex-end;
+}
+
+/* The rating of a choice is derived from the pick: no rating bar. */
+#revealed-box.choice-reveal .rating-bar-container {
+  display: none;
 }

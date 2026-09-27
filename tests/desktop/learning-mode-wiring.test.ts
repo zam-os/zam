@@ -48,8 +48,9 @@ describe("desktop learning mode wiring", () => {
 
   it("passes native learning mode timeouts into voice review", () => {
     expect(nativeMain).toContain(".start(locale, {");
+    // Voice keeps its Flash loop in Choice and Auto (ADR 2026-09-27).
     expect(nativeMain).toContain(
-      "mode: currentStudyLearningSettings.learningMode",
+      "mode: isChoiceOrAutoMode()\n        ? \"flash\"\n        : currentStudyLearningSettings.learningMode",
     );
     expect(nativeMain).toContain(
       "currentStudyLearningSettings.voiceRevealTimeoutSec * 1000",
