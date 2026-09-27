@@ -1,6 +1,6 @@
 # Choice and Auto Learning Modes
 
-**Status:** Proposed — 2026-09-27, revised after review round 1\
+**Status:** Proposed — 2026-09-27, revised after review rounds 1 and 2\
 **Date:** 2026-09-27\
 **Deciders:** Thomas (project owner)\
 **Related:**
@@ -22,6 +22,20 @@
 >   generated options (Decision 6).
 > - Three statements about the evidence were corrected: Smith & Karpicke 2014,
 >   RemNote, and the scope of Yang et al. 2021.
+>
+> **Revision after review round 2** (MiMo, which reviewed the first version).
+> Five changes:
+>
+> - Cards that plain Choice cannot ask as a choice are asked as Flash, so the
+>   modes no longer contradict each other (Decisions 6, 8, 9).
+> - A dispute writes a `choice` rating, so the ceiling still applies
+>   (Decision 7).
+> - Options from other items come only from items the learner has already
+>   met (Decision 6).
+> - The checks run again on the set actually shown, and a card with one usable
+>   distractor is asked in a recall format (Decisions 2, 6).
+> - `choice` rows are excluded from parameter fitting, the ceiling is named an
+>   engineering hypothesis, and Rowland 2014 is cited for its checked direction.
 
 ---
 
@@ -61,8 +75,8 @@ Multiple choice is legitimate retrieval practice, with known limits.
   choice practice transfers to later free recall; the format result below
   does. In grade-7 science and high-school history, multiple choice with
   feedback matched short-answer quizzing on unit exams (McDermott et al. 2014).
-  Older meta-analyses disagree in both directions (Rowland 2014; Adesope et
-  al. 2017).
+  Laboratory evidence leans the other way: a meta-analysis found larger
+  benefits from recall than from recognition practice (Rowland 2014).
 - **Feedback and repetition carry the effect.** Quizzes help with feedback
   (g = 0.54) far more than without it (0.37). One quiz gives 0.44, three or
   more give 0.64 (Yang et al. 2021). A cheap format buys repetitions.
@@ -100,6 +114,9 @@ Multiple choice is legitimate retrieval practice, with known limits.
   "Recalled with effort" — its third, Good-level grade — for a
   multiple-choice answer and lets the learner override it. FSRS publishes no
   guidance for multiple choice.
+- **No study tests a ceiling.** No study we found examines capping scheduler
+  stability that was earned by recognition. The ceiling below is an
+  engineering hypothesis; the falsification checks exist to test it.
 
 ### What the scheduler would do
 
@@ -121,7 +138,8 @@ at two. The curriculum's tier-1 items have two options. Auto asks for free
 recall after three correct taps, which a guesser reaches with 3.7 % or 12.5 %;
 that free-recall question is the one they cannot guess. For comparison,
 unrestricted FSRS shelves a card for half a year after five taps: 0.4 % or
-3.1 %.
+3.1 %. These figures assume blind guessing; a learner who can rule out one of
+three options faces the two-option odds.
 
 **The lasting risk is systematic.** Recognising an answer does not show that
 it can be recalled, and every round of feedback makes the correct option more
@@ -151,7 +169,8 @@ it applies to ratings derived from a chosen option.
 
 A choice shows the correct answer and two distractors. Existing binary fast
 checks keep their two options. A curated item may carry up to four options
-when every distractor is plausible. No surface pads a set with weak options.
+when every distractor is plausible. No surface pads a set with weak options:
+a card with only one usable distractor is asked in a recall format.
 
 ### 3. Grading without self-assessment
 
@@ -202,7 +221,7 @@ interval = nextInterval(min(S_stored, CHOICE_CEILING_DAYS))   (long-term reviews
 
 - **Choice alone never makes a card mature.** Stability built by choice stays
   at or below 20 days, below the 21-day maturity threshold used by statistics
-  (`stability >= 21`). The ceiling must stay below that threshold;
+  (`stability >= 21`). A test pins the ceiling below that threshold;
   calibrating it higher means changing the maturity definition with it.
 - **No answer by choice is booked beyond 20 days.** One lucky tap on a mature
   card brings it back within 20 days.
@@ -234,9 +253,9 @@ The review attempt's evidence records:
 - whether an evaluator judged a free answer.
 
 The records serve statistics, the distractor analysis of Decision 6, and the
-falsification checks below. Later FSRS parameter fitting must exclude or
-down-weight `choice` and `options` rows, because recognition inflates their
-pass rate.
+falsification checks below. Later FSRS parameter fitting must exclude
+`choice` and `options` rows. Recognition inflates their pass rate, and a
+`choice` row stores a clamped stability, which is not an FSRS outcome.
 
 ### 6. Where options come from
 
@@ -245,13 +264,17 @@ The first available source wins.
 **1. Curated.** Options authored and reviewed with the content. Today this is
 the tier-1 `fast_check`, which is item substance (ADR 2026-08-14 Decision 7).
 Curated options for recall items ship in tiles as presentation data. This is
-the route for bundled curriculum cells and for iPads without a model.
+the route for bundled curriculum cells and for iPads without a model. The
+review contract's fast check is generalised beyond `binary_choice` to carry
+up to four options; `presentFastCheck()` remains the permutation.
 
 **2. Derived, without AI.** Answers of other items. They are computed per
 learner when the card is presented, and never shared.
 
-- **Donors.** Published items in the knowledge context being studied, and
-  only items this learner may see.
+- **Donors.** Only items this learner has already been presented, in the
+  knowledge context being studied. Never an item the learner has not met: the
+  contrast line shows a derived distractor's own question, which would spoil
+  later material and plant a lure.
 - **Ranking.** Closeness to the correct answer — by stored embeddings where
   present, otherwise by domain and form — with a similar length and answer
   type.
@@ -270,7 +293,8 @@ ZAM's content-generation role.
 - The model writes four to six candidates, each with a one-line reason.
 - A second call, the **reject filter**, answers the question from the shuffled
   set and discards every candidate it considers correct. A different model is
-  preferred for it when one is configured.
+  preferred for it when one is configured. Its verdicts are logged, so that
+  samples can be audited.
 - Deterministic checks reject duplicates, options equal to or containing the
   answer after normalisation, "all/none of the above", negation tricks and
   length outliers.
@@ -281,8 +305,8 @@ ZAM's content-generation role.
   ones, or a recall format.
 
 **4. None available** — offline, no model, or too small a domain. The card is
-asked in a recall format (Flash, or Auto's free-recall format), with a short
-notice.
+asked in a recall format — Flash in plain Choice, free recall in Auto — with a
+short notice.
 
 **The generated cache.** Generated options are a rebuildable presentation
 cache, not item substance.
@@ -291,11 +315,19 @@ cache, not item substance.
   regenerated when either changes.
 - They contain only the item's own content, so the library shares them.
 - Unlike a `fast_check` change, regenerating them never makes a card due.
+- They live in the library database beside the items. Any device with a model
+  can fill the cache for the others: a desktop on the same library prepares
+  options for an iPad.
+- A card whose options are not ready is asked in a recall format; it never
+  waits for generation. On an iPad set to `device-only`, fewer cards come as
+  choices. That degradation is accepted, and it weakens the no-typing promise
+  for those learners.
 
 **Presentation.** Each presentation shows two distractors from the pool. The
 choice and order are derived deterministically from the card and its due
 date, as `presentFastCheck()` already does. A model's option order is never
-used.
+used. The deterministic checks run again on the set actually shown: the
+correct option must not be the only long, short or parenthesised one.
 
 **Retirement.** A distractor is retired when any of these holds:
 
@@ -325,9 +357,11 @@ After a correct answer the surface confirms briefly and moves on. The chat
 stays reachable but is not offered prominently.
 
 **"Meine Antwort stimmt auch" / "My answer is also correct"** counts the attempt
-as correct and retires that distractor for this item. This follows the
-leniency of ADR 2026-09-08 §8: being told you were wrong when you were right
-discourages, and discouragement does not reverse.
+as correct and retires that distractor for this item. The rating becomes `3`
+and stays recorded as `choice`, so Decision 4 still applies: a dispute
+corrects a distractor, it does not turn recognition into recall. This follows
+the leniency of ADR 2026-09-08 §8: being told you were wrong when you were
+right discourages, and discouragement does not reverse.
 
 - **Curated options** are flagged for their curator instead of being edited
   locally.
@@ -362,7 +396,8 @@ In `auto`, each card passes through two stages:
 The probe asks one review before a choice would reach the ceiling. After that
 point, further choices could no longer add stability that the scheduler may
 use. The probe also supplies the free-recall evidence that plain Choice never
-collects.
+collects. It moves with the ceiling by design: it exists because choice
+cannot carry the card any further.
 
 **The free-recall format:**
 
@@ -380,8 +415,10 @@ collects.
 The surface names the moment of the switch: "Jetzt ohne Auswahl" / "Now
 without options".
 
-Plain `choice` never asks a card in free recall. Its session summary counts
-the cards ready for free recall ("12 Karten sind bereit für freien Abruf") and
+Plain `choice` never moves a card to free recall because of its state. Cards
+it cannot ask as a choice (Decisions 6 and 9) are asked as Flash. Its session
+summary counts the cards ready for free recall ("12 Karten sind bereit für
+freien Abruf") and
 points to Auto, Flash or the answer mode. It does not interrupt the session.
 
 ### 9. Where choice applies
@@ -389,7 +426,7 @@ points to Auto, Flash or the answer mode. It does not interrupt the session.
 - **Choice:** single-point answers at Bloom levels 1–3 — terms, definitions,
   formulas, values, vocabulary, cloze gaps, and applications whose
   distractors model typical mistakes.
-- **A recall format instead**, in both new modes:
+- **A recall format instead** — Flash in plain Choice, free recall in Auto:
   - Bloom levels 4–5;
   - answers with more than one point (ADR 2026-09-08);
   - answers carried by answer media such as image occlusion.
@@ -452,6 +489,9 @@ The design is wrong if field review logs show any of these:
 - **Generation quality is insufficient.** A substantial share of generated
   distractors is disputed or never chosen.
 - **Learners leave Auto** at the switch to free recall.
+- **The probe comes at the wrong point.** The failure rate of the first free
+  recall, broken down by the number of correct choices before it, shows
+  whether the probe comes too early or too late.
 
 Plain Choice never asks for free recall, so its logs cannot test the first two
 points. Auto's probe provides that data.
@@ -489,6 +529,15 @@ points. Auto's probe provides that data.
   Declined for this ADR. The ceiling bounds ratings that no learner chose; a
   learner who self-rates after the reveal can mark a guess as Again. The case
   is recorded as `options` for the separate decision.
+- **Letting an overdue correct choice raise stability past the ceiling**
+  (review proposal). Declined. A late tap is still recognition, which
+  outlasts recall. At three options, one lucky tap after a long break would
+  shelve the card for months — the failure round 1 removed. A learner's own
+  rhythm is honoured through free recall.
+- **A probe point independent of the ceiling** (review proposal). Deferred.
+  One constant keeps one reason: ask for recall once choice can carry the card
+  no further. The falsification check on the probe point can justify a
+  separate constant later.
 - **Restricting derived distractors to one-to-one relations** (review
   proposal). Declined. Such relations cannot be detected reliably; the reject
   filter, disputes and retirement cover the risk.
@@ -519,11 +568,10 @@ Code and repository documents:
 - `desktop/src/main.ts`, `mobile/src/main.ts`, `mobile/src/discuss.ts`
 - [docs/okf/fsrs-scheduling.md](../okf/fsrs-scheduling.md)
 - [Flashcard quality RFC](../concepts/flashcard-generation-and-decomposition-strategy.md)
-- Review round 1: [PR #368](https://github.com/zam-os/zam/pull/368) (Gemini 3.8 Flash, Grok 4.7)
+- Review rounds: [PR #368](https://github.com/zam-os/zam/pull/368) (Gemini 3.8 Flash, Grok 4.7, MiMo v2.6 Pro)
 
 Research:
 
-- Adesope, O. O., Trevisan, D. A., & Sundararajan, N. (2017). Rethinking the use of tests: A meta-analysis of practice testing. *Review of Educational Research*, 87(3), 659–701. <https://doi.org/10.3102/0034654316689306>
 - Butler, A. C., Godbole, N., & Marsh, E. J. (2013). Explanation feedback is better than correct answer feedback for promoting transfer of learning. *Journal of Educational Psychology*, 105(2), 290–298. <https://doi.org/10.1037/a0031026>
 - Butler, A. C., & Roediger, H. L. (2008). Feedback enhances the positive effects and reduces the negative effects of multiple-choice testing. *Memory & Cognition*, 36(3), 604–616. <https://doi.org/10.3758/MC.36.3.604>
 - Camarata et al. (2025). LLM-generated multiple choice practice quizzes for preclinical medical students. *Advances in Physiology Education*, 49, 758–763. <https://doi.org/10.1152/advan.00106.2024>
