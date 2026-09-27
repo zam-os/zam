@@ -15,6 +15,7 @@ export type CandidateRejection =
   | "duplicate"
   | "all_or_none"
   | "negated_answer"
+  | "in_question"
   | "length_outlier";
 
 export type ShownSetRejection = "length_cue" | "parenthesis_cue";
@@ -74,13 +75,28 @@ function outsideLengthBand(answer: string, candidate: string): boolean {
 }
 
 /**
+ * Whether the question already names the candidate as a whole word or phrase:
+ * "Totalreflexion" beside "… ab dem Totalreflexion eintritt?" is either a
+ * give-away or implausible, never a distractor.
+ */
+function appearsInQuestion(
+  question: string | null | undefined,
+  normalized: string,
+): boolean {
+  if (!question || normalized.length < 3) return false;
+  return ` ${normalizeOption(question)} `.includes(` ${normalized} `);
+}
+
+/**
  * Why a candidate distractor must not be offered for this answer, or `null`.
- * `accepted` are the distractors already chosen for the same set.
+ * `accepted` are the distractors already chosen for the same set; `question`
+ * is the item's question, when it has one.
  */
 export function checkCandidate(
   answer: string,
   candidate: string,
   accepted: readonly string[] = [],
+  question?: string | null,
 ): CandidateRejection | null {
   const normalizedAnswer = normalizeOption(answer);
   const normalized = normalizeOption(candidate);
@@ -94,6 +110,7 @@ export function checkCandidate(
   ) {
     return "contains_answer";
   }
+  if (appearsInQuestion(question, normalized)) return "in_question";
   if (accepted.some((other) => normalizeOption(other) === normalized)) {
     return "duplicate";
   }

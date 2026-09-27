@@ -195,6 +195,7 @@ function chooseFromPool(
 function usable(
   correct: string,
   candidates: readonly Candidate[],
+  question: string | null,
 ): Candidate[] {
   const kept: Candidate[] = [];
   for (const candidate of candidates) {
@@ -203,6 +204,7 @@ function usable(
         correct,
         candidate.text,
         kept.map((entry) => entry.text),
+        question,
       ) === null
     ) {
       kept.push(candidate);
@@ -306,6 +308,7 @@ export async function resolveAnswerPresentation(
         text: row.text,
         entry: { source: "curated", distractorId: row.id, reason: row.reason },
       })),
+    token.question,
   );
   const siblingGroup = (
     (await db
@@ -335,6 +338,7 @@ export async function resolveAnswerPresentation(
             reason: donor.question,
           },
         })),
+        token.question,
       ),
     async () =>
       usable(
@@ -349,6 +353,7 @@ export async function resolveAnswerPresentation(
               reason: row.reason,
             },
           })),
+        token.question,
       ),
   ];
   for (const source of sources) {

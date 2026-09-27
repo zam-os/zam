@@ -55,6 +55,19 @@ describe("deterministic option checks", () => {
     expect(checkCandidate("Brechung", "Reflexion")).toBeNull();
   });
 
+  it("rejects a candidate the question already names", () => {
+    const question =
+      "Wie heißt der Einfallswinkel, ab dem Totalreflexion eintritt?";
+    expect(checkCandidate("Grenzwinkel", "Totalreflexion", [], question)).toBe(
+      "in_question",
+    );
+    // Whole words only: "Reflexion" is not named by "Totalreflexion".
+    expect(checkCandidate("Grenzwinkel", "Reflexion", [], question)).toBeNull();
+    expect(
+      checkCandidate("Grenzwinkel", "Totalreflexion", [], null),
+    ).toBeNull();
+  });
+
   it("rejects a shown set whose form gives the answer away", () => {
     expect(
       checkShownSet(

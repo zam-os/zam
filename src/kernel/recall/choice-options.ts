@@ -211,7 +211,7 @@ export interface DerivedDistractor {
 
 export interface DeriveDistractorsInput {
   userId: string;
-  token: Pick<Token, "id" | "concept" | "domain" | "atom_id">;
+  token: Pick<Token, "id" | "concept" | "question" | "domain" | "atom_id">;
   /** The target item's sibling group (Anki note), excluded as donor. */
   siblingGroup?: string | null;
   /** The knowledge context the session is filtered by, if any. */
@@ -331,7 +331,16 @@ export async function deriveDistractors(
     ) {
       continue;
     }
-    if (checkCandidate(input.token.concept, donor.concept) !== null) continue;
+    if (
+      checkCandidate(
+        input.token.concept,
+        donor.concept,
+        [],
+        input.token.question,
+      )
+    ) {
+      continue;
+    }
     const semantic =
       targetVector && donor.emb_blob && donor.emb_model === target?.model
         ? cosineSimilarity(targetVector, decodeEmbedding(donor.emb_blob))
@@ -360,6 +369,7 @@ export async function deriveDistractors(
         input.token.concept,
         candidate.text,
         chosen.map((entry) => entry.text),
+        input.token.question,
       ) !== null
     ) {
       continue;

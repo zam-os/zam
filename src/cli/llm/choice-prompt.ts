@@ -201,6 +201,7 @@ export async function runChoiceGeneration(input: {
       item.concept,
       candidate.text,
       checked.map((entry) => entry.text),
+      item.question,
     );
     if (reason) rejected.push({ text: candidate.text, reason });
     else checked.push(candidate);

@@ -2318,6 +2318,11 @@ textarea::placeholder {
   padding: 14px 20px;
 }
 
+/* A hidden button stays hidden, whatever display its variant sets. */
+.btn[hidden] {
+  display: none;
+}
+
 .btn-sm {
   padding: 6px 14px;
   font-size: 12px;
@@ -4192,6 +4197,11 @@ textarea::placeholder {
 .choice-stage-badge {
   background: color-mix(in srgb, var(--clr-accent-cyan) 16%, transparent);
   color: var(--clr-accent-cyan);
+}
+
+.study-offer-actions.choice-mode {
+  align-items: stretch;
+  flex-direction: column;
 }
 
 .choice-options {

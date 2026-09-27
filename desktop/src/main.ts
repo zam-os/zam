@@ -8079,6 +8079,7 @@ function renderChoiceOptions(): void {
   if (textarea) textarea.hidden = true;
   if (reveal) reveal.hidden = true;
   container.hidden = false;
+  container.classList.add("choice-mode");
   container.replaceChildren();
 
   const list = document.createElement("div");
@@ -8306,6 +8307,7 @@ function resetFastCheckAnswer(): void {
   }
   if (options) {
     options.replaceChildren();
+    options.classList.remove("choice-mode");
     options.hidden = true;
   }
   const tier = document.getElementById("tier-badge");
