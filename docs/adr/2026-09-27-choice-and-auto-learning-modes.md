@@ -3,6 +3,7 @@
 **Status:** Proposed — 2026-09-27, revised after review rounds 1 and 2\
 **Date:** 2026-09-27\
 **Deciders:** Thomas (project owner)\
+**Implementation plan:** [2026-09-27-choice-and-auto-learning-modes.md](../plans/2026-09-27-choice-and-auto-learning-modes.md)\
 **Related:**
 [2026-07-06b](2026-07-06b-checkpointed-review-dialogue.md) ·
 [2026-08-09](2026-08-09-free-offline-learning-and-anki-interoperability.md) ·
@@ -36,6 +37,9 @@
 >   distractor is asked in a recall format (Decisions 2, 6).
 > - `choice` rows are excluded from parameter fitting, the ceiling is named an
 >   engineering hypothesis, and Rowland 2014 is cited for its checked direction.
+>
+> **Owner decision after round 2:** tier-1 taps in the answer modes fall under
+> the ceiling as well (Decisions 1, 4, 5, 9).
 
 ---
 
@@ -162,8 +166,8 @@ The in-session switcher offers ⚡ Flash · 🔘 Auswahl · 💬 KI · 🔄 Auto
 `answer_variation` remains a Settings choice.
 
 A mode still decides how a surface gathers evidence. Decision 4 adds one
-scheduling consequence, keyed not on the mode but on how the rating arose:
-it applies to ratings derived from a chosen option.
+scheduling consequence, keyed not on the mode but on how the card was
+answered: it applies to every rating that rests on a tapped option.
 
 ### 2. Three options
 
@@ -193,9 +197,10 @@ The rating is derived at the tap. It is written when the learner moves on —
 checkpoint 3 of ADR 2026-07-06b — so a dispute (Decision 7) can still change
 it. The follow-up chat never does.
 
-### 4. A choice builds stability to 20 days and never books longer
+### 4. A tapped answer builds stability to 20 days and never books longer
 
-After FSRS has scheduled a correct choice:
+After FSRS has scheduled a successful answer that rests on a tapped option — a
+`choice`, or an `options` tap the learner then rated (Decision 5):
 
 ```
 S_stored = min(S_fsrs, max(CHOICE_CEILING_DAYS, S_old))      CHOICE_CEILING_DAYS = 20
@@ -207,23 +212,24 @@ interval = nextInterval(min(S_stored, CHOICE_CEILING_DAYS))   (long-term reviews
 - **Steps keep their timing.** Learning and relearning steps keep their minute
   intervals. The interval rule applies only when FSRS returns a long-term
   review.
-- **Difficulty is not lowered.** A new card answered by choice starts at
+- **Difficulty is not lowered.** A new card answered by a tap starts at
   FSRS's initial difficulty for Hard (5.1 with the default parameters),
-  instead of Good's 2.1. Later correct choices leave difficulty unchanged. A
-  successful choice says nothing about how hard recall is, so only a
-  learner-rated recall may lower it.
-- **Misses are ordinary.** A distractor or "Don't know" is an ordinary lapse,
-  and difficulty updates as FSRS defines.
-- **Learner ratings are untouched.** Ratings the learner chooses — Flash, or
-  the answer modes — schedule exactly as today.
+  instead of Good's 2.1. Later successful taps leave difficulty unchanged,
+  whatever grade the learner gave after an `options` tap. A tap says nothing
+  about how hard recall is, so only free recall may change difficulty on
+  success.
+- **Misses are ordinary.** A distractor, "Don't know", or Again after a tap is
+  an ordinary lapse, and difficulty updates as FSRS defines.
+- **Free recall is untouched.** Flash ratings and typed or spoken answers
+  schedule exactly as today.
 
 **Each consequence is intended:**
 
-- **Choice alone never makes a card mature.** Stability built by choice stays
+- **Taps alone never make a card mature.** Stability built by taps stays
   at or below 20 days, below the 21-day maturity threshold used by statistics
   (`stability >= 21`). A test pins the ceiling below that threshold;
   calibrating it higher means changing the maturity definition with it.
-- **No answer by choice is booked beyond 20 days.** One lucky tap on a mature
+- **No tapped answer is booked beyond 20 days.** One lucky tap on a mature
   card brings it back within 20 days.
 - **Earned stability is kept.** Stability earned by recall is neither lowered
   nor raised, so the next free recall continues from it.
@@ -243,7 +249,7 @@ review logs.
 | `choice` | the rating was derived from the selected option |
 | `NULL` | history before this change; those ratings were learner-rated and count as `recall` for these rules |
 
-Decision 4 reads `choice`; Decision 8 reads `recall`.
+Decision 4 reads `choice` and `options`; Decision 8 reads `recall`.
 
 The review attempt's evidence records:
 
@@ -433,8 +439,8 @@ points to Auto, Flash or the answer mode. It does not interrupt the session.
 - **Tier-1 binary fast checks:**
   - In both new modes they are graded automatically, under Decisions 3 and 4.
   - In the answer modes they keep today's tap followed by self-rating,
-    recorded as `options`. Whether the ceiling applies there is a separate
-    decision. The recorded format gives it its data.
+    recorded as `options`, and Decision 4 bounds them too. The screen does
+    not change, and a guess can still be rated Again.
 
 ### 10. Surfaces
 
@@ -460,9 +466,9 @@ and Android).
   least every 20 days, mature cards included; 300 cards mean about 15 quick
   reviews a day. When the learner returns to free recall, a mature card
   continues from its kept stability.
-- **Known gap:** a tier-1 tap followed by a self-rating in the answer modes is
-  not bounded by the ceiling. The learner can mark a guess as Again, exactly
-  as in Flash. The case is recorded as `options` for the separate decision.
+- **Existing tier-1 cards change schedule.** Taps in the answer modes are
+  bounded from now on. The screen is unchanged, but no tap books more than 20
+  days, so tier-1 cards return more often than before.
 - `docs/okf/fsrs-scheduling.md` says learning modes "never change the FSRS
   calculation". That statement changes with the implementation: modes decide
   what evidence is gathered, and ratings derived from a choice are bounded by
@@ -525,10 +531,13 @@ points. Auto's probe provides that data.
   proposal). Declined. Switching to Flash without AI is the owner's design,
   and a Flash self-rating is the evidence every Flash learner already
   provides. The probe now comes early, with a moderate step (8 → 26 days).
-- **Keying the ceiling on whether options were shown** (review proposal).
-  Declined for this ADR. The ceiling bounds ratings that no learner chose; a
-  learner who self-rates after the reveal can mark a guess as Again. The case
-  is recorded as `options` for the separate decision.
+- **Leaving tier-1 taps in the answer modes unbounded** (first version).
+  Rejected by the owner after review round 2. The tap is the response, and the
+  self-rating that follows rates a recognition, so five taps could shelve a
+  card for half a year.
+- **Grading tier-1 taps automatically in every mode** (review proposal).
+  Declined. Bounding the interval closes the gap without changing the screen,
+  and the learner can still rate a guess as Again.
 - **Letting an overdue correct choice raise stability past the ceiling**
   (review proposal). Declined. A late tap is still recognition, which
   outlasts recall. At three options, one lucky tap after a long break would
