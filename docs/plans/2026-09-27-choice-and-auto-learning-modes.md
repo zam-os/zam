@@ -1,6 +1,6 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** Phases 1–2 done on 2026-09-27; Phase 3 is next.\
+**Status:** Phases 1–3 done on 2026-09-27; Phase 4 is next.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -26,8 +26,8 @@ schedules beyond 20 days (D4).
 ## Status
 
 - [x] **Phase 1** — answer format and the tap ceiling (kernel and every submit path) — `dad5d0e`
-- [x] **Phase 2** — the two new modes in study settings (kernel and bridge)
-- [ ] **Phase 3** — choice presentation in the kernel (LLM-free)
+- [x] **Phase 2** — the two new modes in study settings (kernel and bridge) — `8cfb3e7`
+- [x] **Phase 3** — choice presentation in the kernel (LLM-free)
 - [ ] **Phase 4** — generated options (the `text` role, reject filter, cache fill)
 - [ ] **Phase 5** — Desktop Studio
 - [ ] **Phase 6** — Mobile (iPadOS and Android)
@@ -307,6 +307,16 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (   -- personal: disputes of derive
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
 ```
+
+**Team library** (added while implementing): classify both tables in
+`src/cli/deploy/`.
+
+- `choice_exclusions` is learning state under row-level security
+  (`rls-policies.ts`).
+- `choice_distractors` is a new **shared cache** class (`team-provision.ts`).
+  Members may insert rows and update only `shown_count`, `chosen_count`,
+  `retired_at` and `retired_reason`; curators write everything. Without this
+  a member's choice rating fails with "permission denied".
 
 Add both tables to the table list in `src/kernel/db/snapshot.ts`, after
 `tokens`, and to the snapshot round-trip test.

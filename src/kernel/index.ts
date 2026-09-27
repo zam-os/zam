@@ -642,6 +642,52 @@ export {
   executeReviewAction,
   recordAssistedStep,
 } from "./recall/actions.js";
+export type {
+  AnswerPresentation,
+  AnswerPresentationInput,
+  ChoiceEntry,
+  ChoiceEntrySource,
+  ChoiceEvidence,
+  PresentedChoice,
+  RecallReason,
+} from "./recall/answer-presentation.js";
+export {
+  applyChoiceOutcome,
+  assertChoiceEvidence,
+  ratingForChoice,
+  resolveAnswerPresentation,
+  SHOWN_DISTRACTORS,
+} from "./recall/answer-presentation.js";
+export type {
+  CandidateRejection,
+  ShownSetRejection,
+} from "./recall/choice-checks.js";
+export {
+  checkCandidate,
+  checkShownSet,
+  normalizeOption,
+} from "./recall/choice-checks.js";
+export type {
+  ChoiceSuitabilityInput,
+  DeriveDistractorsInput,
+  DerivedDistractor,
+  NewDistractor,
+  StoreDistractorsInput,
+  StoredDistractor,
+  StoredDistractorSource,
+} from "./recall/choice-options.js";
+export {
+  choiceSourceHash,
+  DERIVED_POOL_SIZE,
+  deriveDistractors,
+  isChoiceSuitable,
+  listActiveDistractors,
+  MAX_CHOICE_BLOOM_LEVEL,
+  RETIRE_MAX_CHOSEN_SHARE,
+  RETIRE_MIN_SHOWN,
+  storeDistractors,
+  syncCuratedDistractors,
+} from "./recall/choice-options.js";
 export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 export { evaluateRating } from "./recall/evaluator.js";
 export type { PromptInput, RecallPrompt } from "./recall/prompter.js";

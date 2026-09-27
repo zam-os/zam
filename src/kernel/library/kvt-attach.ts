@@ -45,6 +45,7 @@ import type { Database } from "../db/types.js";
 import { ensureCard, getCard } from "../models/card.js";
 import { addPrerequisite, removePrerequisite } from "../models/prerequisite.js";
 import { type BloomLevel, getTokenById, insertToken } from "../models/token.js";
+import { syncCuratedDistractors } from "../recall/choice-options.js";
 import { assertFieldsReadyToPublish } from "./publication.js";
 import { publishTokenRevisionInTransaction } from "./revision.js";
 
@@ -109,6 +110,12 @@ export interface KvtPracticeItem {
   tier?: string;
   /** Structured fast-check payload. Substance, persisted verbatim as JSON. */
   fast_check?: unknown;
+  /**
+   * Curated distractors for asking this recall item as a choice (ADR
+   * 2026-09-27 Decision 6). Presentation data, not substance: changing them
+   * never makes a card due.
+   */
+  choice_distractors?: Array<{ text: string; reason?: string | null }>;
   question: string;
   concept: string;
   /**
@@ -327,6 +334,27 @@ function fastCheckOf(item: KvtPracticeItem): string | null {
     throw new Error(`fast_check on ${item.id} must be an object`);
   }
   return JSON.stringify(item.fast_check);
+}
+
+function choiceDistractorsOf(
+  item: KvtPracticeItem,
+): Array<{ text: string; reason: string | null }> {
+  const raw = item.choice_distractors;
+  if (raw === undefined || raw === null) return [];
+  if (!Array.isArray(raw)) {
+    throw new Error(`choice_distractors on ${item.id} must be an array`);
+  }
+  return raw.map((entry, index) => {
+    if (!entry || typeof entry.text !== "string" || !entry.text.trim()) {
+      throw new Error(
+        `choice_distractors[${index}] on ${item.id} needs a non-empty text`,
+      );
+    }
+    return {
+      text: entry.text,
+      reason: typeof entry.reason === "string" ? entry.reason : null,
+    };
+  });
 }
 
 function bloomOf(item: KvtPracticeItem): BloomLevel {
@@ -627,6 +655,7 @@ export async function installKvtTile(
           await tx
             .prepare("UPDATE tokens SET edge_representative = ? WHERE id = ?")
             .run(item.edge_representative ? 1 : 0, item.id);
+          await syncCuratedDistractors(tx, item, choiceDistractorsOf(item));
           tokensCreated += 1;
           itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
           continue;
@@ -698,6 +727,7 @@ export async function installKvtTile(
             item.edge_representative ? 1 : 0,
             item.id,
           );
+        await syncCuratedDistractors(tx, item, choiceDistractorsOf(item));
         itemsSuperseded += await applyDeclaredReplacements(tx, tile, item);
       }
     }

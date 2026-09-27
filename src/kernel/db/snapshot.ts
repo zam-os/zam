@@ -42,6 +42,9 @@ export const SNAPSHOT_TABLES = [
   // Declared item succession. Not derivable by construction: the whole point
   // of Decision 9 is that no similarity heuristic may reconstruct it.
   "practice_item_replacements",
+  // Choice options (ADR 2026-09-27): the shared cache keeps an offline device
+  // usable after a restore; exclusions are the learner's own disputes.
+  "choice_distractors",
   "imported_card_bindings",
   "media_assets",
   "token_media",
@@ -53,6 +56,7 @@ export const SNAPSHOT_TABLES = [
   "session_steps",
   "review_logs",
   "review_attempts",
+  "choice_exclusions",
   "session_syntheses",
   "user_config",
   // A person's and their installs' settings travel with the library; a row

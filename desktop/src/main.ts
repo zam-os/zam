@@ -428,7 +428,7 @@ interface BridgeCard {
   atomId?: string | null;
   tier?: string | null;
   fastCheck?: {
-    type: "binary_choice";
+    type: "binary_choice" | "multiple_choice";
     options: string[];
     correctIndex: number;
   } | null;

@@ -31,6 +31,12 @@ import { cascadeBlock } from "../scheduler/blocker.js";
 import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { findPresentationByAttemptId } from "../scheduler/presentation.js";
+import {
+  applyChoiceOutcome,
+  assertChoiceEvidence,
+  type ChoiceEvidence,
+  ratingForChoice,
+} from "./answer-presentation.js";
 import type { EvaluateResult } from "./evaluator.js";
 import { evaluateRatingWithinTransaction } from "./evaluator.js";
 
@@ -63,9 +69,9 @@ export interface ExecuteReviewActionInput {
   answerFormat?: AnswerFormat;
   /**
    * What a choice presented and what was picked (ADR 2026-09-27 Decision 5).
-   * Stored with the attempt; its shape is fixed by the choice presentation.
+   * Required with `answerFormat: "choice"`; stored with the attempt.
    */
-  choiceEvidence?: Record<string, unknown>;
+  choiceEvidence?: ChoiceEvidence;
 }
 
 export interface ReviewActionResult {
@@ -290,6 +296,19 @@ export async function executeReviewAction(
       throw new Error("rating is required for action=rate");
     }
     const rating = input.rating;
+    if (input.answerFormat === "choice") {
+      // A choice is graded by the kernel's rule, not by the caller: the
+      // rating must be the one the evidence earns (ADR 2026-09-27 Decision 3).
+      if (!input.choiceEvidence) {
+        throw new Error("A choice rating requires its choice evidence");
+      }
+      assertChoiceEvidence(input.choiceEvidence);
+      if (ratingForChoice(input.choiceEvidence) !== rating) {
+        throw new Error(
+          `A choice earns rating ${ratingForChoice(input.choiceEvidence)}, not ${rating}`,
+        );
+      }
+    }
 
     return db.transaction(async (tx) => {
       const target = await getReviewTarget(tx, input.cardId, input.userId);
@@ -374,6 +393,14 @@ export async function executeReviewAction(
         answerFormat: input.answerFormat,
         now: input.now,
       });
+      if (input.answerFormat === "choice" && input.choiceEvidence) {
+        await applyChoiceOutcome(tx, {
+          userId: input.userId,
+          tokenId: target.token.id,
+          answerFormat: input.answerFormat,
+          evidence: input.choiceEvidence,
+        });
+      }
 
       let blocked: CascadeBlockResult | undefined;
       if (rating === 1) {

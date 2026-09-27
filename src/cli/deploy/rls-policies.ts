@@ -162,6 +162,15 @@ CREATE POLICY learner_user_settings_policy ON user_settings FOR ALL
   USING (user_id = current_learner_id())
   WITH CHECK (user_id = current_learner_id());
 
+-- choice_exclusions are a learner's disputes of choice options (ADR
+-- 2026-09-27 Decision 7) — personal, same policy as cards.
+ALTER TABLE choice_exclusions ENABLE ROW LEVEL SECURITY;
+ALTER TABLE choice_exclusions FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_choice_exclusions_policy ON choice_exclusions;
+CREATE POLICY learner_choice_exclusions_policy ON choice_exclusions FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- assignments are visible to the assigner and the assignee (ADR 2026-07-04
 -- Decision 10); only the assigner may create, change or withdraw one. The
 -- read and write halves are separate policies on purpose: one FOR ALL policy
@@ -207,6 +216,7 @@ export const RLS_PROTECTED_TABLES = [
   "session_syntheses",
   "assignments",
   "user_settings",
+  "choice_exclusions",
 ] as const;
 
 /**

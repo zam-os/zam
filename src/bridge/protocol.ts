@@ -53,7 +53,7 @@ export interface GetReviewResponse {
   atomId?: string | null;
   tier?: string | null;
   fastCheck?: {
-    type: "binary_choice";
+    type: "binary_choice" | "multiple_choice";
     options: string[];
     correctIndex: number;
   } | null;
@@ -476,12 +476,45 @@ export interface GetReviewsResponse {
     atomId?: string | null;
     tier?: string | null;
     fastCheck?: {
-      type: "binary_choice";
+      type: "binary_choice" | "multiple_choice";
       options: string[];
       correctIndex: number;
     } | null;
     resolvedContext?: ResolvedReviewContext | null;
   }>;
+}
+
+/**
+ * `zam bridge answer-presentation` (ADR 2026-09-27 Decisions 6–9): how a card
+ * is asked in the choice or auto mode. `entries` is aligned with `options`.
+ */
+export interface AnswerPresentationResponse {
+  success: true;
+  presentation:
+    | {
+        format: "choice";
+        choice: {
+          options: string[];
+          correctIndex: number;
+          entries: Array<{
+            source: "correct" | "curated" | "derived" | "generated";
+            distractorId?: string;
+            curatedIndex?: number;
+            donorTokenId?: string;
+            reason?: string | null;
+          }>;
+        };
+      }
+    | {
+        format: "recall";
+        reason:
+          | "mode"
+          | "unsuitable"
+          | "no_options"
+          | "probe"
+          | "recall_stage"
+          | "curated_disputed";
+      };
 }
 
 export interface SubmitReviewResult {

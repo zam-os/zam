@@ -22,6 +22,7 @@ import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
+  ChoiceEvidence,
   Database,
   EditorialState,
   KnowledgeContext,
@@ -169,6 +170,7 @@ import {
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
+  answerPresentation as handleAnswerPresentation,
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
@@ -1142,6 +1144,46 @@ bridgeCommand
     });
   });
 
+function parseChoiceEvidenceOption(raw: string): ChoiceEvidence {
+  try {
+    return JSON.parse(raw) as ChoiceEvidence;
+  } catch {
+    throw new Error("--choice-evidence must be JSON");
+  }
+}
+
+// ── zam bridge answer-presentation ──────────────────────────────────────────
+
+bridgeCommand
+  .command("answer-presentation")
+  .description(
+    "How a card is asked in the choice or auto mode, with its options (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--card-id <id>", "Card ID being presented")
+  .requiredOption("--mode <name>", "choice | auto")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context the session is filtered by",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await handleAnswerPresentation(db, {
+            user: userId,
+            cardId: opts.cardId,
+            mode: opts.mode,
+            knowledgeContext: opts.knowledgeContext,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
 // ── zam bridge submit ─────────────────────────────────────────────────────
 
 bridgeCommand
@@ -1175,6 +1217,10 @@ bridgeCommand
   .option(
     "--answer-format <recall|options|choice>",
     "How the card was answered: options for a tapped fast check (default: recall)",
+  )
+  .option(
+    "--choice-evidence <json>",
+    "What a choice showed and what was picked (required with --answer-format choice)",
   )
   .option("--activity <text>", "Specific work activity for this attempt")
   .option("--assistance <text>", "Assistance actually received")
@@ -1212,6 +1258,10 @@ bridgeCommand
           reason: opts.reason,
           attemptId: opts.attemptId,
           answerFormat: opts.answerFormat,
+          choiceEvidence:
+            opts.choiceEvidence === undefined
+              ? undefined
+              : parseChoiceEvidenceOption(opts.choiceEvidence),
           activity: opts.activity,
           assistance: opts.assistance,
           independent:

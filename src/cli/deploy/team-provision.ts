@@ -25,6 +25,12 @@
  *   for the team (ADR 2026-09-04 Decision 4);
  * - **knowledge** (`KNOWLEDGE_TABLES`): readable by everyone, written by
  *   curators only;
+ * - **shared cache** (`SHARED_CACHE_TABLES`): `choice_distractors`, the
+ *   rebuildable options for asking items as a choice (ADR 2026-09-27
+ *   Decision 6). Every member's reviews add generated options and move their
+ *   exposure and pick counters, so members may insert rows and update only
+ *   those counters and the retirement columns; curators write everything.
+ *   The worst a member can do is retire an option, which is regenerated;
  * - **administration** (`ADMIN_TABLES`): `learner_principals`, which
  *   `current_learner_id()` reads, and the schema version marker — nobody but
  *   the owner may change them. A member who could rewrite the mapping table
@@ -81,6 +87,20 @@ export const KNOWLEDGE_TABLES = [
   "agent_skills",
 ] as const;
 
+/**
+ * Shared, rebuildable presentation cache — read by all, extended by every
+ * member's reviews, fully writable by curators (ADR 2026-09-27 Decision 6).
+ */
+export const SHARED_CACHE_TABLES = ["choice_distractors"] as const;
+
+/** Columns a member's review may change in the shared cache. */
+export const SHARED_CACHE_MEMBER_COLUMNS = [
+  "shown_count",
+  "chosen_count",
+  "retired_at",
+  "retired_reason",
+] as const;
+
 /** Written by the owner only; readable as far as the client needs. */
 export const ADMIN_TABLES = [
   "learner_principals",
@@ -122,6 +142,7 @@ export function groupRoleGrantsSql(schema: string, ownerRole: string): string {
   const learningState = qualified(schema, RLS_PROTECTED_TABLES);
   const librarySettings = qualified(schema, LIBRARY_SETTINGS_TABLES);
   const knowledge = qualified(schema, KNOWLEDGE_TABLES);
+  const sharedCache = qualified(schema, SHARED_CACHE_TABLES);
   const admin = qualified(schema, ADMIN_TABLES);
   // The REVOKE on the library settings narrows what an earlier provisioning
   // granted members before settings had scopes.
@@ -129,7 +150,8 @@ export function groupRoleGrantsSql(schema: string, ownerRole: string): string {
 GRANT USAGE ON SCHEMA ${schema} TO ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};
 GRANT SELECT ON ALL TABLES IN SCHEMA ${schema} TO ${TEAM_MEMBER_ROLE};
 GRANT INSERT, UPDATE, DELETE ON ${learningState} TO ${TEAM_MEMBER_ROLE};
-GRANT INSERT, UPDATE, DELETE ON ${knowledge}, ${librarySettings} TO ${TEAM_CURATOR_ROLE};
+GRANT INSERT, UPDATE, DELETE ON ${knowledge}, ${librarySettings}, ${sharedCache} TO ${TEAM_CURATOR_ROLE};
+GRANT INSERT, UPDATE (${SHARED_CACHE_MEMBER_COLUMNS.join(", ")}) ON ${sharedCache} TO ${TEAM_MEMBER_ROLE};
 REVOKE INSERT, UPDATE, DELETE ON ${librarySettings} FROM ${TEAM_MEMBER_ROLE};
 REVOKE INSERT, UPDATE, DELETE ON ${admin} FROM ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};
 REVOKE SELECT ON ${schema}.learner_principals FROM ${TEAM_MEMBER_ROLE}, ${TEAM_CURATOR_ROLE};

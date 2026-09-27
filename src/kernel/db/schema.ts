@@ -448,6 +448,35 @@ CREATE TABLE IF NOT EXISTS practice_item_replacements (
   PRIMARY KEY (old_item_id, new_item_id)
 );
 
+CREATE TABLE IF NOT EXISTS choice_distractors (
+  id              TEXT PRIMARY KEY,
+  token_id        TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  -- Item id + question + answer text (ADR 2026-09-27 Decision 6): an edit of
+  -- either text leaves the old options behind and asks for new ones.
+  source_hash     TEXT NOT NULL,
+  source          TEXT NOT NULL CHECK (source IN ('curated', 'generated')),
+  text            TEXT NOT NULL,
+  -- One line on why the option is wrong; the contrast line after a miss.
+  reason          TEXT,
+  model           TEXT,
+  filter_model    TEXT,
+  -- The reject filter's answer, kept so samples can be audited.
+  filter_verdict  TEXT,
+  shown_count     INTEGER NOT NULL DEFAULT 0,
+  chosen_count    INTEGER NOT NULL DEFAULT 0,
+  retired_at      TEXT,
+  retired_reason  TEXT CHECK (retired_reason IN ('disputed', 'unchosen', 'filter')),
+  created_at      TEXT NOT NULL
+);
+-- Personal: a learner disputed an option taken from another item or a curated
+-- option. Never shared — derived options are built from one learner's history.
+CREATE TABLE IF NOT EXISTS choice_exclusions (
+  user_id       TEXT NOT NULL,
+  token_id      TEXT NOT NULL REFERENCES tokens(id) ON DELETE CASCADE,
+  excluded_key  TEXT NOT NULL,
+  created_at    TEXT NOT NULL,
+  PRIMARY KEY (user_id, token_id, excluded_key)
+);
 `;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
@@ -482,6 +511,8 @@ CREATE INDEX IF NOT EXISTS idx_session_steps_session ON session_steps(session_id
 CREATE INDEX IF NOT EXISTS idx_tokens_title ON tokens(title);
 CREATE INDEX IF NOT EXISTS idx_token_contexts_context ON token_contexts(context_id);
 CREATE INDEX IF NOT EXISTS idx_tokens_atom ON tokens(atom_id);
+CREATE INDEX IF NOT EXISTS idx_choice_distractors_token
+  ON choice_distractors(token_id, source_hash);
 CREATE INDEX IF NOT EXISTS idx_atom_bindings_provider
   ON atom_curriculum_bindings(provider, topic_code);
 -- Uniqueness over COALESCE(grade, -1) rather than a composite key: grade is
