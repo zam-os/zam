@@ -155,34 +155,60 @@ export async function setStudyWorkloadSettings(
 /* Learning mode & voice timeout settings                                     */
 /* -------------------------------------------------------------------------- */
 
+/**
+ * How a learner answers in a review session.
+ *
+ * `choice` picks one of three options and is graded without self-assessment;
+ * `auto` asks new cards as a choice and switches each card to free recall at
+ * its recall probe (ADR 2026-09-27 Decisions 1 and 8).
+ */
 export type StudyLearningMode =
   | "flash"
+  | "choice"
   | "answer_feedback"
-  | "answer_variation";
+  | "answer_variation"
+  | "auto";
 
 export const STUDY_LEARNING_MODES: readonly StudyLearningMode[] = [
   "flash",
+  "choice",
   "answer_feedback",
   "answer_variation",
+  "auto",
 ];
+
+/**
+ * The free-recall format Auto switches to (ADR 2026-09-27 Decision 8).
+ * `null` follows evaluator availability: an AI-evaluated answer when one can
+ * be judged, Flash otherwise. `flash` is "later without typing".
+ */
+export type AutoRecallPin = "answer" | "flash" | null;
 
 export interface StudyLearningSettings {
   learningMode: StudyLearningMode;
   voiceRevealTimeoutSec: number;
   voiceRatingTimeoutSec: number;
+  autoRecallPin: AutoRecallPin;
 }
 
 export interface UpdateStudyLearningInput {
   learningMode?: StudyLearningMode;
   voiceRevealTimeoutSec?: number;
   voiceRatingTimeoutSec?: number;
+  /** `null` clears the pin. */
+  autoRecallPin?: AutoRecallPin;
 }
 
 export const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
   learningMode: "flash",
   voiceRevealTimeoutSec: 20,
   voiceRatingTimeoutSec: 20,
+  autoRecallPin: null,
 };
+
+export function isAutoRecallPin(value: unknown): value is AutoRecallPin {
+  return value === null || value === "answer" || value === "flash";
+}
 
 export const MIN_VOICE_TIMEOUT_SEC = 5;
 export const MAX_VOICE_TIMEOUT_SEC = 60;
@@ -222,10 +248,15 @@ function normalizeLearningSettings(
     ? value.voiceRatingTimeoutSec
     : DEFAULT_STUDY_LEARNING_SETTINGS.voiceRatingTimeoutSec;
 
+  const autoRecallPin = isAutoRecallPin(value.autoRecallPin)
+    ? value.autoRecallPin
+    : DEFAULT_STUDY_LEARNING_SETTINGS.autoRecallPin;
+
   return {
     learningMode,
     voiceRevealTimeoutSec,
     voiceRatingTimeoutSec,
+    autoRecallPin,
   };
 }
 
@@ -279,6 +310,14 @@ export async function setStudyLearningSettings(
     !isStudyLearningMode(input.learningMode)
   ) {
     throw new Error(`Unsupported study learning mode: ${input.learningMode}`);
+  }
+  if (
+    input.autoRecallPin !== undefined &&
+    !isAutoRecallPin(input.autoRecallPin)
+  ) {
+    throw new Error(
+      `Unsupported auto recall pin: ${String(input.autoRecallPin)}`,
+    );
   }
   for (const [label, value] of [
     ["voice reveal timeout", input.voiceRevealTimeoutSec],

@@ -4616,7 +4616,14 @@ bridgeCommand
     "Save persistent review learning mode settings for a learner (JSON)",
   )
   .option("--user <id>", "User ID (default: whoami)")
-  .option("--mode <name>", "flash | answer_feedback | answer_variation")
+  .option(
+    "--mode <name>",
+    "flash | choice | answer_feedback | answer_variation | auto",
+  )
+  .option(
+    "--auto-recall-pin <pin>",
+    "Free-recall format Auto switches to: answer | flash | none (follow the evaluator)",
+  )
   .option(
     "--fallback-mode <name>",
     "Default for an unset learner: flash | answer_feedback",
@@ -4627,8 +4634,22 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       if (opts.mode !== undefined && !isStudyLearningMode(opts.mode)) {
-        jsonError("mode must be flash, answer_feedback, or answer_variation");
+        jsonError(
+          "mode must be flash, choice, answer_feedback, answer_variation, or auto",
+        );
       }
+      if (
+        opts.autoRecallPin !== undefined &&
+        !["answer", "flash", "none"].includes(opts.autoRecallPin)
+      ) {
+        jsonError("auto-recall-pin must be answer, flash, or none");
+      }
+      const autoRecallPin =
+        opts.autoRecallPin === undefined
+          ? undefined
+          : opts.autoRecallPin === "none"
+            ? null
+            : (opts.autoRecallPin as "answer" | "flash");
       if (
         opts.fallbackMode !== undefined &&
         opts.fallbackMode !== "flash" &&
@@ -4663,6 +4684,7 @@ bridgeCommand
           learningMode: opts.mode,
           voiceRevealTimeoutSec,
           voiceRatingTimeoutSec,
+          autoRecallPin,
         },
         {
           fallbackLearningMode:

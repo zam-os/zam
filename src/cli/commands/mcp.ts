@@ -9,7 +9,13 @@ import {
 import { McpServer } from "@modelcontextprotocol/sdk/server/mcp.js";
 import { StdioServerTransport } from "@modelcontextprotocol/sdk/server/stdio.js";
 import { z } from "zod";
-import type { Database, Rating, ReviewActionType } from "../../kernel/index.js";
+import type {
+  AutoRecallPin,
+  Database,
+  Rating,
+  ReviewActionType,
+  StudyLearningMode,
+} from "../../kernel/index.js";
 import {
   getReviewActivity,
   getSetting,
@@ -253,6 +259,25 @@ async function resolveOpeningCompanionContextSafely(
 /**
  * Creates and configures the McpServer instance with all tools mapped.
  */
+/**
+ * The mode the MCP Recall panel opens in. The panel has no choice
+ * presentation yet (ADR 2026-09-27 Decision 10): Choice opens without typing,
+ * as Flash, and Auto in its free-recall format.
+ */
+export function recallPanelLearningMode(
+  mode: StudyLearningMode,
+  autoRecallPin: AutoRecallPin,
+  evaluatorActive: boolean,
+): "flash" | "answer_feedback" | "answer_variation" {
+  if (mode === "choice") return "flash";
+  if (mode === "auto") {
+    return evaluatorActive && autoRecallPin !== "flash"
+      ? "answer_feedback"
+      : "flash";
+  }
+  return mode;
+}
+
 export function createMcpServer(
   db: Database,
   options: { bridgeDatabase?: DatabaseSource } = {},
@@ -1388,15 +1413,20 @@ export function createMcpServer(
         try {
           quickMode = (await getSetting(db, "recall.quick_mode")) === "true";
           if (userId) {
-            learningMode = (
-              await getStudyLearningSettings(db, userId, {
-                fallbackLearningMode:
-                  companionContext.activeEvaluatorId &&
-                  companionContext.activeEvaluatorId !== "quick-mode"
-                    ? "answer_feedback"
-                    : "flash",
-              })
-            ).learningMode;
+            const evaluatorActive = Boolean(
+              companionContext.activeEvaluatorId &&
+                companionContext.activeEvaluatorId !== "quick-mode",
+            );
+            const settings = await getStudyLearningSettings(db, userId, {
+              fallbackLearningMode: evaluatorActive
+                ? "answer_feedback"
+                : "flash",
+            });
+            learningMode = recallPanelLearningMode(
+              settings.learningMode,
+              settings.autoRecallPin,
+              evaluatorActive,
+            );
           }
         } catch (error) {
           degraded = true;

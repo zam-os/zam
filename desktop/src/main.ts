@@ -2566,9 +2566,12 @@ async function persistStudyLearningSettings(
 async function switchStudyLearningMode(
   next: "flash" | "answer_feedback",
 ): Promise<void> {
-  const alreadySelected = isFlashLearningMode()
-    ? next === "flash"
-    : next === "answer_feedback";
+  // The 💬 segment stands for both answer modes; any other mode is only
+  // selected when it is the saved one.
+  const current = currentStudyLearningSettings.learningMode;
+  const alreadySelected =
+    current === next ||
+    (next === "answer_feedback" && current === "answer_variation");
   if (
     alreadySelected ||
     studyLearningSavePending ||

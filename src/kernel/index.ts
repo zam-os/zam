@@ -764,6 +764,7 @@ export {
   unburySiblingCards,
 } from "./scheduler/siblings.js";
 export type {
+  AutoRecallPin,
   StudyLearningMode,
   StudyLearningSettings,
   StudyWorkloadPreset,
@@ -776,6 +777,7 @@ export {
   DEFAULT_STUDY_WORKLOAD,
   getStudyLearningSettings,
   getStudyWorkloadSettings,
+  isAutoRecallPin,
   isStudyLearningMode,
   isStudyWorkloadPreset,
   MAX_VOICE_TIMEOUT_SEC,
