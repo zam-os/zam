@@ -8,6 +8,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -25,6 +26,11 @@ export interface ReviewLog {
   content_version: number | null;
   /** Attempt identity; NULL for historical ratings without an attempt record. */
   attempt_id: string | null;
+  /**
+   * How the card was answered (ADR 2026-09-27 Decision 5). NULL marks history
+   * before M035; those ratings were learner-rated and count as `recall`.
+   */
+  answer_format: AnswerFormat | null;
 }
 
 export interface CreateReviewInput {
@@ -35,6 +41,7 @@ export interface CreateReviewInput {
   scheduled_at: string;
   response_time_ms?: number | null;
   session_id?: string | null;
+  answer_format?: AnswerFormat;
 }
 
 export interface ListReviewsOptions {
@@ -73,8 +80,8 @@ export async function logReview(
 
   await db
     .prepare(
-      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version, answer_format)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       id,
@@ -87,6 +94,7 @@ export async function logReview(
       input.scheduled_at,
       input.session_id ?? null,
       asked?.content_version ?? null,
+      input.answer_format ?? "recall",
     );
 
   return (await db

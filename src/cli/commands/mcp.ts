@@ -645,6 +645,12 @@ export function createMcpServer(
           .array(z.string())
           .optional()
           .describe("Tools that were permitted for this attempt"),
+        answerFormat: z
+          .enum(["recall", "options", "choice"])
+          .optional()
+          .describe(
+            "How the card was answered: options when a fast check was tapped before the rating (default: recall)",
+          ),
       },
       annotations: {
         ...commonAnnotations,
@@ -669,6 +675,7 @@ export function createMcpServer(
         activity: params.activity,
         assistance: params.assistance,
         permittedTools: params.permittedTools,
+        answerFormat: params.answerFormat,
       });
     }),
   );

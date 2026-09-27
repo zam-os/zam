@@ -473,6 +473,11 @@ interface ReviewPayload {
 let activeCard: BridgeCard | null = null;
 /** Attempt id from the admission of `activeCard`; travels with its rating. */
 let activeAttemptId: string | null = null;
+/**
+ * How `activeCard` was answered (ADR 2026-09-27 Decision 5). A tapped fast
+ * check is `options`: the rating that follows is bounded by the tap ceiling.
+ */
+let activeAnswerFormat: "recall" | "options" = "recall";
 let activePromptQuestion = "";
 let resolvedContextContent: string | null = null;
 let studySessionActive = false;
@@ -6460,6 +6465,7 @@ async function loadNextCard(
   cardLoadInProgress = true;
   activeCard = null;
   activeAttemptId = null;
+  activeAnswerFormat = "recall";
   activePromptQuestion = "";
   updateReviewControlState();
   try {
@@ -7391,6 +7397,7 @@ async function submitRating(ratingVal: number) {
       rating: ratingVal,
       attemptId,
       responseTimeMs,
+      answerFormat: activeAnswerFormat,
     });
     await runBridge(call.cmd, call.args);
 
@@ -7871,6 +7878,7 @@ function renderFastCheckAnswer(
     button.dataset.fastCheckIndex = String(index);
     button.addEventListener("click", () => {
       if (revealInProgress) return;
+      activeAnswerFormat = "options";
       textarea.value = label;
       for (const option of options.querySelectorAll<HTMLButtonElement>(
         "button",

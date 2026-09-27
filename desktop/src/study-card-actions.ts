@@ -79,6 +79,11 @@ export interface SubmitRatingInput {
   attemptId?: string | null;
   /** Active learning ms from the idle-aware clock (ADR 2026-09-15). */
   responseTimeMs: number;
+  /**
+   * How the card was answered (ADR 2026-09-27 Decision 5). `options` marks a
+   * tapped fast check; omitted means `recall`.
+   */
+  answerFormat?: "recall" | "options" | "choice";
 }
 
 /** FSRS rating check-in. Always sends a response time, including 0. */
@@ -93,6 +98,9 @@ export function submitRatingCommand(input: SubmitRatingInput): BridgeCall {
   ];
   if (input.attemptId) {
     args.push("--attempt-id", input.attemptId);
+  }
+  if (input.answerFormat && input.answerFormat !== "recall") {
+    args.push("--answer-format", input.answerFormat);
   }
   return { cmd: "submit", args };
 }

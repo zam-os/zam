@@ -1,6 +1,7 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type {
+  AnswerFormat,
   BloomLevel,
   Database,
   InstallChannel,
@@ -56,6 +57,7 @@ import {
   getTokenMedia,
   getTokensBySourceLinkBase,
   getUserStats,
+  isAnswerFormat,
   isObserverPolicyConfigured,
   endSession as kernelEndSession,
   startSession as kernelStartSession,
@@ -530,6 +532,11 @@ export interface SubmitReviewParams {
   assistance?: string;
   independent?: boolean;
   permittedTools?: string[];
+  /**
+   * How the card was answered (ADR 2026-09-27 Decision 5): `options` for a
+   * tapped fast check the learner then rated. Defaults to `recall`.
+   */
+  answerFormat?: AnswerFormat;
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -617,6 +624,12 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
   if (params.rating == null || params.rating < 1 || params.rating > 4) {
     throw new Error("Rating must be between 1 and 4");
   }
+  if (
+    params.answerFormat !== undefined &&
+    !isAnswerFormat(params.answerFormat)
+  ) {
+    throw new Error("answerFormat must be recall, options or choice");
+  }
   let cardId = params.cardId;
   if (!cardId) {
     if (!params.tokenId) {
@@ -643,6 +656,7 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     assistance: params.assistance,
     independent: params.independent,
     channel: "direct",
+    answerFormat: params.answerFormat,
   });
 
   return {

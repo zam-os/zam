@@ -1172,6 +1172,10 @@ bridgeCommand
     "Why this step is record-only (required with --record-only)",
   )
   .option("--attempt-id <id>", "Shared attempt ULID for idempotent submits")
+  .option(
+    "--answer-format <recall|options|choice>",
+    "How the card was answered: options for a tapped fast check (default: recall)",
+  )
   .option("--activity <text>", "Specific work activity for this attempt")
   .option("--assistance <text>", "Assistance actually received")
   .option(
@@ -1207,6 +1211,7 @@ bridgeCommand
           recordOnly: Boolean(opts.recordOnly),
           reason: opts.reason,
           attemptId: opts.attemptId,
+          answerFormat: opts.answerFormat,
           activity: opts.activity,
           assistance: opts.assistance,
           independent:

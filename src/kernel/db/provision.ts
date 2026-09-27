@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 34;
+export const CURRENT_SCHEMA_VERSION = 35;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -912,6 +912,18 @@ export async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (user_id, machine_id, key)
     )
   `);
+
+  // M035: how each review was answered (ADR 2026-09-27 Decision 5). The tap
+  // ceiling reads it; NULL rows predate it and were learner-rated recall.
+  const reviewLogColsM035 = await columnsOf(db, "review_logs");
+  if (
+    reviewLogColsM035.length > 0 &&
+    !reviewLogColsM035.includes("answer_format")
+  ) {
+    await db.exec(
+      `ALTER TABLE review_logs ADD COLUMN answer_format TEXT CHECK (answer_format IN ('recall', 'options', 'choice'))`,
+    );
+  }
 }
 
 /**

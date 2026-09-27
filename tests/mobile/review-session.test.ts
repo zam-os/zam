@@ -575,4 +575,41 @@ describe("mobile review session", () => {
     session.reveal({ allowEmpty: true });
     expect(session.revealed).toBe(true);
   });
+  it("books a tapped fast check as options, bounded by the tap ceiling", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-tap-ceiling",
+      concept: "The normal is perpendicular.",
+      domain: "optik",
+      bloom_level: 1,
+      question: "How does the normal meet the surface?",
+      tier: "tier1_fast",
+      fast_check: JSON.stringify({
+        type: "binary_choice",
+        options: ["Perpendicular", "Parallel"],
+        correct_index: 0,
+      }),
+    });
+    await ensureCard(db, token.id, "student-tap");
+
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage, () => 1);
+    expect(await session.start("student-tap", { maxNew: 1 })).toBe(true);
+    await session.confirmCurrent();
+    session.updateDraftAnswer("Perpendicular");
+    session.markOptionsTapped();
+    // A restored session remembers the tap.
+    expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toContain(
+      '"answerFormat":"options"',
+    );
+    session.reveal();
+    await session.rate(4);
+
+    const log = (await db
+      .prepare("SELECT answer_format FROM review_logs WHERE token_id = ?")
+      .get(token.id)) as { answer_format: string };
+    expect(log.answer_format).toBe("options");
+    const card = await getCard(db, token.id, "student-tap");
+    // Plain FSRS would give an Easy new card difficulty 1.
+    expect(card?.difficulty).toBeCloseTo(5.1122, 3);
+  });
 });

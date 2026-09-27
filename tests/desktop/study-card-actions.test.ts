@@ -104,6 +104,23 @@ describe("study-card-actions", () => {
         "attempt-1",
       ],
     });
+    // A tapped fast check is recognition evidence (ADR 2026-09-27).
+    expect(
+      submitRatingCommand({
+        cardId: "card-1",
+        rating: 4,
+        responseTimeMs: 900,
+        answerFormat: "options",
+      }).args.slice(-2),
+    ).toEqual(["--answer-format", "options"]);
+    expect(
+      submitRatingCommand({
+        cardId: "card-1",
+        rating: 3,
+        responseTimeMs: 900,
+        answerFormat: "recall",
+      }).args,
+    ).not.toContain("--answer-format");
   });
 
   it.each([

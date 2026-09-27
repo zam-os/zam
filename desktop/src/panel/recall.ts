@@ -851,6 +851,9 @@ async function presentCurrentCard(): Promise<void> {
   // double-committed. `rated` guards against a second zam_submit_review.
   let committed = false;
   let rated = false;
+  // A tapped fast check is recognition: its rating is bounded by the tap
+  // ceiling (ADR 2026-09-27 Decisions 4 and 9).
+  let tappedOption = false;
 
   const root = document.createElement("div");
   root.className = "zam-card";
@@ -997,6 +1000,7 @@ async function presentCurrentCard(): Promise<void> {
   )) {
     option.addEventListener("click", () => {
       if (committed) return;
+      tappedOption = true;
       answer.value = option.textContent ?? "";
       actionBtn.click();
     });
@@ -1051,6 +1055,7 @@ async function presentCurrentCard(): Promise<void> {
       };
       // The admission's attempt id keeps a retried submit one review.
       if (attemptId) args.attemptId = attemptId;
+      if (tappedOption) args.answerFormat = "options";
       if (currentUser) args.user = currentUser;
       const res = (await callTool("zam_submit_review", args)) as {
         blocked?: { blockedSlug?: string } | null;

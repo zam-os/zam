@@ -327,6 +327,35 @@ describe("bridge-handlers unit tests", () => {
     expect((await getCard(db, token.id, "thomas"))!.reps).toBe(repsAfterValid);
   });
 
+  it("records the answer format and rejects an unknown one", async () => {
+    const token = await createToken(db, {
+      slug: "answer-format-token",
+      concept: "Concept",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 3,
+        answerFormat: "typed" as never,
+      }),
+    ).rejects.toThrow("answerFormat must be recall, options or choice");
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      rating: 4,
+      answerFormat: "options",
+    });
+    expect(result.success).toBe(true);
+    const logs = await getReviewsForCard(db, card.id);
+    expect(logs).toHaveLength(1);
+    expect(logs[0].answer_format).toBe("options");
+  });
+
   it("writes a rated review and session step in one transaction", async () => {
     const token = await createToken(db, {
       slug: "session-rate-token",

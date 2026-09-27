@@ -28,6 +28,7 @@ import {
 } from "../observation/attempts.js";
 import type { CascadeBlockResult } from "../scheduler/blocker.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
+import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { findPresentationByAttemptId } from "../scheduler/presentation.js";
 import type { EvaluateResult } from "./evaluator.js";
@@ -58,6 +59,13 @@ export interface ExecuteReviewActionInput {
   assistance?: string;
   independent?: boolean | null;
   channel?: AttemptChannel;
+  /** How the card was answered (ADR 2026-09-27 Decision 5). Default `recall`. */
+  answerFormat?: AnswerFormat;
+  /**
+   * What a choice presented and what was picked (ADR 2026-09-27 Decision 5).
+   * Stored with the attempt; its shape is fixed by the choice presentation.
+   */
+  choiceEvidence?: Record<string, unknown>;
 }
 
 export interface ReviewActionResult {
@@ -345,6 +353,7 @@ export async function executeReviewAction(
                 lapses: card.lapses,
                 buriedSiblings: 0,
                 buriedUntil: card.buried_until,
+                ceilingApplied: false,
               }
             : undefined,
           attemptId: existingAttempt.id,
@@ -362,6 +371,7 @@ export async function executeReviewAction(
         responseTimeMs: input.responseTimeMs,
         reviewLogId,
         attemptId,
+        answerFormat: input.answerFormat,
         now: input.now,
       });
 
@@ -399,6 +409,10 @@ export async function executeReviewAction(
         assistance: input.assistance,
         independent,
         channel: input.channel ?? (input.sessionId ? "direct" : "recall"),
+        evidence: {
+          answerFormat: input.answerFormat ?? "recall",
+          ...(input.choiceEvidence ? { choice: input.choiceEvidence } : {}),
+        },
         rating,
         reviewLogId,
         sessionStepId: sessionStep?.id,

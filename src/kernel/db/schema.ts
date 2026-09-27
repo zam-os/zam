@@ -230,7 +230,11 @@ CREATE TABLE IF NOT EXISTS review_logs (
   content_version INTEGER,
   -- Shared attempt identity (Phase 4). NULL means a historical rating with
   -- no attempt record; never invent a match from text similarity.
-  attempt_id      TEXT
+  attempt_id      TEXT,
+  -- How the card was answered (ADR 2026-09-27 Decision 5): recall, a tapped
+  -- fast check the learner then rated (options), or a rating derived from the
+  -- chosen option (choice). NULL is history before M035, learner-rated.
+  answer_format   TEXT CHECK (answer_format IN ('recall', 'options', 'choice'))
 );
 
 -- Steps within a session: who did what

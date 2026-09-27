@@ -2789,6 +2789,7 @@ async function renderCurrentReview(message = ""): Promise<void> {
       option.addEventListener("click", () => {
         reviewAnswer.value = label;
         reviewSession.updateDraftAnswer(label);
+        reviewSession.markOptionsTapped();
         for (const button of reviewFastCheckOptions.querySelectorAll(
           "button",
         )) {

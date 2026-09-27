@@ -494,6 +494,8 @@ export interface SubmitReviewResult {
     state: string;
     reps: number;
     lapses: number;
+    /** The tap ceiling bounded this rating (ADR 2026-09-27 Decision 4). */
+    ceilingApplied?: boolean;
   } | null;
   blocked?: {
     blockedSlug: string;

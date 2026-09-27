@@ -44,6 +44,11 @@ interface ReviewSessionSnapshot {
   assessedAtomIds?: string[];
   /** Attempt id from the current card's admission; travels with its rating. */
   attemptId?: string | null;
+  /**
+   * `options` once the learner tapped a fast check on the current card: the
+   * rating that follows is bounded by the tap ceiling (ADR 2026-09-27).
+   */
+  answerFormat?: "recall" | "options";
 }
 
 export interface MobileReviewProgress {
@@ -249,6 +254,7 @@ export class MobileReviewSession {
     ) {
       snapshot.currentIndex += 1;
       snapshot.draftAnswer = "";
+      delete snapshot.answerFormat;
       snapshot.revealed = false;
       snapshot.cardStartedAt = this.now();
     }
@@ -262,6 +268,13 @@ export class MobileReviewSession {
     }
     this.persist();
     return { kind: "active" };
+  }
+
+  /** The current card was answered by tapping one of its fast-check options. */
+  markOptionsTapped(): void {
+    if (!this.snapshot || this.snapshot.revealed) return;
+    this.snapshot.answerFormat = "options";
+    this.persist();
   }
 
   updateDraftAnswer(answer: string): void {
@@ -293,10 +306,12 @@ export class MobileReviewSession {
       sessionId: snapshot.sessionId,
       responseTimeMs: Math.max(0, this.now() - snapshot.cardStartedAt),
       attemptId: snapshot.attemptId ?? undefined,
+      answerFormat: snapshot.answerFormat ?? "recall",
     });
 
     snapshot.currentIndex += 1;
     snapshot.draftAnswer = "";
+    delete snapshot.answerFormat;
     snapshot.revealed = false;
     snapshot.attemptId = null;
     snapshot.cardStartedAt = this.now();
@@ -353,6 +368,7 @@ export class MobileReviewSession {
     await this.releaseUnshownCurrent();
     snapshot.items.splice(snapshot.currentIndex, 1);
     snapshot.draftAnswer = "";
+    delete snapshot.answerFormat;
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
     if (!this.currentItem) return await this.finish();
@@ -375,6 +391,7 @@ export class MobileReviewSession {
       (item, index) => index < snapshot.currentIndex || item.atomId !== atomId,
     );
     snapshot.draftAnswer = "";
+    delete snapshot.answerFormat;
     snapshot.revealed = false;
     snapshot.cardStartedAt = this.now();
     if (!this.currentItem) return await this.finish();
@@ -471,6 +488,7 @@ export class MobileReviewSession {
         // card so `progress.total` and the summary stay truthful.
         snapshot.items.splice(snapshot.currentIndex, 1);
         snapshot.draftAnswer = "";
+        delete snapshot.answerFormat;
         snapshot.revealed = false;
         snapshot.attemptId = null;
         snapshot.cardStartedAt = this.now();

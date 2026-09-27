@@ -8,6 +8,13 @@
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
 
+/**
+ * Stability (days) from which a card with three or more successful reviews
+ * counts as mature. The tap ceiling (`CHOICE_CEILING_DAYS`) must stay below
+ * it, so that taps alone never mature a card (ADR 2026-09-27 Decision 4).
+ */
+export const MATURE_STABILITY_DAYS = 21;
+
 export interface UserStats {
   userId: string;
   totalTokens: number;
@@ -68,7 +75,7 @@ export async function getUserStats(
        SUM(CASE WHEN blocked = 0 AND due_at <= ?
                 THEN 1 ELSE 0 END) AS "dueToday",
        SUM(CASE WHEN blocked = 1 THEN 1 ELSE 0 END) AS blocked,
-       SUM(CASE WHEN reps >= 3 AND stability >= 21 THEN 1 ELSE 0 END) AS mature,
+       SUM(CASE WHEN reps >= 3 AND stability >= ${MATURE_STABILITY_DAYS} THEN 1 ELSE 0 END) AS mature,
        AVG(CASE WHEN reps > 0 THEN stability END) AS "avgStability"
      FROM cards WHERE user_id = ?`,
     userId,
@@ -137,7 +144,7 @@ export async function getDomainCompetence(
       db,
       `SELECT COUNT(*) as n FROM cards c
        JOIN tokens t ON t.id = c.token_id
-       WHERE c.user_id = ? AND t.domain = ? AND c.reps >= 3 AND c.stability >= 21`,
+       WHERE c.user_id = ? AND t.domain = ? AND c.reps >= 3 AND c.stability >= ${MATURE_STABILITY_DAYS}`,
       userId,
       d.domain,
     );

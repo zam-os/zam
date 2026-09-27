@@ -71,6 +71,10 @@ const MINUTES_PER_DAY = 24 * 60;
 export interface FSRS {
   /** Return a fully updated card after applying a rating. Pure function. */
   schedule(card: SchedulingCard, rating: Rating, now?: Date): SchedulingCard;
+  /** Whole-day long-term interval for a stability, under this instance's retention and cap. */
+  intervalDays(stability: number): number;
+  /** Difficulty a new card receives for its first rating. */
+  initialDifficulty(rating: Rating): number;
   /** The immutable parameters baked into this instance. */
   readonly params: Readonly<FSRSParameters>;
 }
@@ -480,5 +484,16 @@ export function createFSRS(params?: Partial<FSRSParameters>): FSRS {
     };
   }
 
-  return { schedule, params: resolvedParams };
+  return {
+    schedule,
+    intervalDays: (stability) =>
+      nextInterval(
+        resolvedParams.w,
+        clampStability(stability),
+        resolvedParams.requestRetention,
+        resolvedParams.maximumIntervalDays,
+      ),
+    initialDifficulty: (rating) => initialDifficulty(resolvedParams.w, rating),
+    params: resolvedParams,
+  };
 }
