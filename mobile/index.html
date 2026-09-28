@@ -650,10 +650,20 @@
                 <span data-i18n="learning_mode_label">Modus</span>
                 <select id="study-learning-mode">
                   <option value="flash" data-i18n="learning_mode_flash">Flash-Modus (schnell, ohne Tippen)</option>
+                  <option value="choice" data-i18n="learning_mode_choice">Auswahl (eine von drei Antworten wählen)</option>
                   <option value="answer_feedback" data-i18n="learning_mode_answer_feedback">Antwort-Modus mit KI-Feedback</option>
                   <option value="answer_variation" data-i18n="learning_mode_answer_variation">Variations-Modus mit KI-Feedback</option>
+                  <option value="auto" data-i18n="learning_mode_auto">Auto (erst Auswahl, später freier Abruf)</option>
                 </select>
               </label>
+              <!-- Only while Auto is selected: which free-recall format a card
+                   switches to once it leaves the choice stage (ADR 2026-09-27). -->
+              <ul class="list" id="study-auto-recall-flash-row" hidden>
+                <li class="row static">
+                  <span class="row-text" data-i18n="learning_mode_auto_recall_flash">Später ohne Tippen (Flash statt KI-geprüfter Antwort)</span>
+                  <input id="study-auto-recall-flash" class="switch" type="checkbox" />
+                </li>
+              </ul>
               <label class="field" id="study-voice-timeout-field" data-settings-tier="advanced">
                 <span data-i18n="study_voice_timeout">Wartezeit bis automatische Antwort</span>
                 <input id="study-voice-reveal-timeout" type="number" min="5" max="60" step="1" value="20" />
@@ -1096,8 +1106,14 @@
               <button id="review-mode-flash" type="button" role="radio" aria-checked="true" data-mode="flash" data-i18n="learning_mode_switch_flash">
                 ⚡ Flash
               </button>
+              <button id="review-mode-choice" type="button" role="radio" aria-checked="false" data-mode="choice" data-i18n="learning_mode_switch_choice">
+                🔘 Auswahl
+              </button>
               <button id="review-mode-feedback" type="button" role="radio" aria-checked="false" data-mode="answer_feedback" data-i18n="learning_mode_switch_feedback">
                 💬 KI
+              </button>
+              <button id="review-mode-auto" type="button" role="radio" aria-checked="false" data-mode="auto" data-i18n="learning_mode_switch_auto">
+                🔄 Auto
               </button>
             </div>
           </div>
@@ -1139,6 +1155,10 @@
                     data-i18n="card_delete">Karte löschen</button>
           </div>
           <p id="review-meta" class="t-footnote"></p>
+          <!-- Choice and Auto (ADR 2026-09-27): Auto's switch to free recall,
+               and why a card in Choice comes without options. -->
+          <p id="review-choice-stage" class="chip choice-stage" hidden></p>
+          <p id="review-choice-notice" class="t-footnote" hidden></p>
 
           <div id="card-edit-panel" class="stack hidden">
             <label class="field">
@@ -1190,11 +1210,28 @@
             ></textarea>
           </label>
           <div id="review-fast-check-options" class="stack" hidden></div>
+          <div id="review-choice-options" class="stack choice-options" hidden></div>
           <button id="reveal-answer" class="btn primary" type="button" data-i18n="reveal_answer">
             Antwort aufdecken
           </button>
 
           <div id="revealed-answer" hidden class="stack">
+            <!-- A picked choice: its rating follows from the pick, so the
+                 result replaces the rating buttons. -->
+            <div id="review-choice-result" class="card stack choice-result" hidden aria-live="polite">
+              <p id="review-choice-status" class="t-headline"></p>
+              <p id="review-choice-contrast" class="t-secondary" hidden></p>
+              <button id="review-choice-ask" class="btn" type="button" hidden data-i18n="choice_ask">
+                Nachfragen
+              </button>
+              <button id="review-choice-dispute" class="btn plain" type="button" hidden data-i18n="choice_dispute">
+                Meine Antwort stimmt auch
+              </button>
+              <button id="review-choice-next" class="btn primary" type="button" data-i18n="choice_next">
+                Weiter
+              </button>
+            </div>
+
             <div id="evaluation-panel" hidden class="card">
               <p id="evaluation-verdict" class="verdict"></p>
               <p id="evaluation-points" class="points-score" hidden></p>
@@ -1238,13 +1275,13 @@
             <a id="review-source" href="#" hidden target="_blank" rel="noreferrer"
                data-i18n="open_source">Quelle öffnen</a>
 
-            <p class="t-secondary" data-i18n="how_well">
+            <p id="review-how-well" class="t-secondary" data-i18n="how_well">
               Wie gut konntest du dich erinnern?
             </p>
             <!-- Two groups, not four peers: "Nochmal" records a failed recall
                  (missed or only partly recalled), the other three all record a
                  successful one and differ only in effort. -->
-            <div class="ratings">
+            <div id="review-ratings" class="ratings">
               <div class="rating-group missed" role="group" aria-labelledby="rating-group-missed">
                 <p class="rating-group-caption" id="rating-group-missed" data-i18n="rating_group_missed">
                   Nicht oder nur teilweise gewusst

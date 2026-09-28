@@ -54,6 +54,40 @@ describe("mobile post-reveal discussion", () => {
     expect(prompt).toContain("Kannst du ein Beispiel geben?");
   });
 
+  it("frames a choice with its options and never discusses self-rating", () => {
+    const prompt = buildMobileDiscussionPrompt(
+      {
+        ...card,
+        userAnswer: "F = m / a",
+        feedback: "Du hast gewählt: F = m / a. Richtig ist: F = m · a.",
+        choice: {
+          options: ["F = m · a", "F = m / a", "F = m + a"],
+          chosen: "F = m / a",
+          answer: "F = m · a",
+        },
+      },
+      [],
+      "Was ist der Unterschied?",
+      "de",
+    );
+    expect(prompt).toContain(
+      'Options shown: "F = m · a", "F = m / a", "F = m + a"',
+    );
+    expect(prompt).toContain('Learner chose: "F = m / a"');
+    expect(prompt).toContain('Correct option: "F = m · a"');
+    expect(prompt).toContain("do not discuss self-rating");
+    expect(prompt).not.toContain("Learner's answer:");
+    expect(prompt).not.toContain("chooses their own FSRS rating");
+
+    const dontKnow = buildMobileDiscussionPrompt(
+      { ...card, choice: { options: ["a", "b"], chosen: null, answer: "a" } },
+      [],
+      "?",
+      "de",
+    );
+    expect(dontKnow).toContain("Learner chose: (did not know)");
+  });
+
   it("uses the connected cloud recall model on iPadOS", async () => {
     const fetchText = vi.fn(async () =>
       Promise.resolve("Zum Beispiel beschleunigt ein leerer Wagen stärker."),

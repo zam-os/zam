@@ -65,6 +65,10 @@ import {
   type TokenMedia,
 } from "../../src/kernel/models/media.js";
 import { getSetting } from "../../src/kernel/models/settings.js";
+import type {
+  AnswerPresentation,
+  RecallReason,
+} from "../../src/kernel/recall/answer-presentation.js";
 import {
   buildReviewQueue,
   type ReviewQueue,
@@ -126,6 +130,7 @@ import {
   previewMobileCurriculumTopic,
   resolveMobileCurriculumPosition,
 } from "./curriculum.js";
+import { prepareMobileChoiceOptions } from "./choice-generate.js";
 import { discussMobileReview } from "./discuss.js";
 import {
   evaluateMobileAnswer,
@@ -181,6 +186,8 @@ import {
   type ReminderConfig,
 } from "./reminder.js";
 import {
+  type ChoicePick,
+  type MobileReviewRatingResult,
   MobileReviewSession,
   type MobileReviewSummary,
 } from "./review-session.js";
@@ -523,6 +530,19 @@ const ratingButtons = Array.from(
 );
 const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
+const reviewChoiceStage = element<HTMLElement>("review-choice-stage");
+const reviewChoiceNotice = element<HTMLElement>("review-choice-notice");
+const reviewChoiceOptions = element<HTMLElement>("review-choice-options");
+const reviewChoiceResult = element<HTMLElement>("review-choice-result");
+const reviewChoiceStatus = element<HTMLElement>("review-choice-status");
+const reviewChoiceContrast = element<HTMLElement>("review-choice-contrast");
+const reviewChoiceAsk = element<HTMLButtonElement>("review-choice-ask");
+const reviewChoiceDispute = element<HTMLButtonElement>(
+  "review-choice-dispute",
+);
+const reviewChoiceNext = element<HTMLButtonElement>("review-choice-next");
+const reviewHowWell = element<HTMLElement>("review-how-well");
+const reviewRatings = element<HTMLElement>("review-ratings");
 
 const SAFE_REVIEW_MEDIA_TYPES = new Set([
   "image/png",
@@ -643,8 +663,22 @@ const studyLearningSave = element<HTMLButtonElement>("study-learning-save");
 const studyLearningStatus = element<HTMLParagraphElement>(
   "study-learning-status",
 );
+const studyAutoRecallFlashRow = element<HTMLElement>(
+  "study-auto-recall-flash-row",
+);
+const studyAutoRecallFlash = element<HTMLInputElement>(
+  "study-auto-recall-flash",
+);
 const reviewModeFlash = element<HTMLButtonElement>("review-mode-flash");
+const reviewModeChoice = element<HTMLButtonElement>("review-mode-choice");
 const reviewModeFeedback = element<HTMLButtonElement>("review-mode-feedback");
+const reviewModeAuto = element<HTMLButtonElement>("review-mode-auto");
+const reviewModeButtons = [
+  reviewModeFlash,
+  reviewModeChoice,
+  reviewModeFeedback,
+  reviewModeAuto,
+];
 const reviewModeSwitcher = element<HTMLElement>("review-mode-switcher");
 const studyWorkloadPreset = element<HTMLSelectElement>("study-workload-preset");
 const studyMaxNew = element<HTMLInputElement>("study-max-new");
@@ -946,12 +980,12 @@ const voiceController = new HandsFreeReviewController(voicePort, {
   },
   revealAnswer: () => {
     reviewSession.reveal({
-      allowEmpty: currentLearningSettings.learningMode === "flash",
+      allowEmpty: voiceLoopMode() === "flash",
     });
     renderCurrentReview(t("voice_answer_recognized"));
   },
   evaluateAnswer: async () => {
-    if (currentLearningSettings.learningMode === "flash") return null;
+    if (voiceLoopMode() === "flash") return null;
     const result = await runSmartEvaluation();
     if (!result) return null;
     return {
@@ -1288,19 +1322,27 @@ async function prepareLocalAi(): Promise<void> {
 }
 
 function renderReviewModeSwitcher(mode: StudyLearningMode): void {
-  const isFlash = mode === "flash";
-  reviewModeFlash.classList.toggle("active", isFlash);
-  reviewModeFeedback.classList.toggle("active", !isFlash);
-  reviewModeFlash.setAttribute("aria-checked", String(isFlash));
-  reviewModeFeedback.setAttribute("aria-checked", String(!isFlash));
+  // The variation mode is an AI mode; the switcher shows it as "AI".
+  const shown = mode === "answer_variation" ? "answer_feedback" : mode;
+  for (const button of reviewModeButtons) {
+    const active = button.dataset.mode === shown;
+    button.classList.toggle("active", active);
+    button.setAttribute("aria-checked", String(active));
+  }
   syncRadioGroupTabStops(reviewModeSwitcher);
-  reviewCard.classList.toggle("flash-mode", isFlash);
 }
 
 function renderStudyLearningSettings(settings: StudyLearningSettings): void {
   studyLearningMode.value = settings.learningMode;
   studyVoiceRevealTimeout.value = String(settings.voiceRevealTimeoutSec);
+  studyAutoRecallFlash.checked = settings.autoRecallPin === "flash";
+  syncAutoRecallPinVisibility();
   renderReviewModeSwitcher(settings.learningMode);
+}
+
+/** The pin only means something while Auto is selected. */
+function syncAutoRecallPinVisibility(): void {
+  studyAutoRecallFlashRow.hidden = studyLearningMode.value !== "auto";
 }
 
 async function refreshStudyLearningSettings(): Promise<void> {
@@ -1368,6 +1410,7 @@ async function saveStudyLearningSettings(): Promise<void> {
       {
         learningMode,
         voiceRevealTimeoutSec,
+        autoRecallPin: studyAutoRecallFlash.checked ? "flash" : null,
       },
       fallbackLearningMode,
     );
@@ -1406,8 +1449,7 @@ async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
   learningSettingsMutationsPending += 1;
   const previous = { ...currentLearningSettings };
   reviewModeSwitcher.setAttribute("aria-busy", "true");
-  reviewModeFlash.disabled = true;
-  reviewModeFeedback.disabled = true;
+  for (const button of reviewModeButtons) button.disabled = true;
   try {
     await pauseVoiceMode();
     const fallbackLearningMode = await defaultStudyLearningMode();
@@ -1439,8 +1481,7 @@ async function switchReviewMode(mode: StudyLearningMode): Promise<void> {
   } finally {
     learningSettingsMutationsPending -= 1;
     reviewModeSwitcher.removeAttribute("aria-busy");
-    reviewModeFlash.disabled = false;
-    reviewModeFeedback.disabled = false;
+    for (const button of reviewModeButtons) button.disabled = false;
     // The re-enable is the moment the group can hold focus again, so the tab
     // stop and any focus the save cycle took are restored here, not earlier.
     syncRadioGroupTabStops(reviewModeSwitcher);
@@ -2242,7 +2283,7 @@ function startVoiceMode(): void {
     if (planLeavesDevice(plan)) setReviewStatus(t("voice_cloud_notice"));
     try {
       await voiceController.start(locale, {
-        mode: currentLearningSettings.learningMode,
+        mode: voiceLoopMode(),
         revealTimeoutMs: currentLearningSettings.voiceRevealTimeoutSec * 1000,
         ratingTimeoutMs: currentLearningSettings.voiceRatingTimeoutSec * 1000,
       });
@@ -2740,6 +2781,17 @@ async function renderCurrentReview(message = ""): Promise<void> {
     await renderCurrentReview(message);
     return;
   }
+  // Choice and Auto ask the kernel how this card is presented (ADR 2026-09-27).
+  const mode = currentLearningSettings.learningMode;
+  let format = await resolveCardFormat(mode);
+  if (reviewSession.currentItem?.cardId !== item.cardId) return;
+  const choicePick = reviewSession.choicePick;
+  // Answered freely after all (voice keeps its Flash loop): rate it as Flash.
+  if (format === "choice" && reviewSession.revealed && !choicePick) {
+    format = "flash";
+  }
+  currentCardFormat = format;
+  if (format !== "choice") clearChoiceAdvance();
   hideReviewOffer();
   showReview();
   // The title is free text, and for imported cards it is often the first
@@ -2768,16 +2820,23 @@ async function renderCurrentReview(message = ""): Promise<void> {
   void renderMobileReviewMedia(item.tokenId);
   reviewAnswer.value = reviewSession.draftAnswer;
   reviewAnswer.disabled = reviewSession.revealed;
-  const isFlash = currentLearningSettings.learningMode === "flash";
-  const fastCheck = isFlash ? null : item.fastCheck;
-  renderReviewModeSwitcher(currentLearningSettings.learningMode);
-  reviewAnswerField.hidden = Boolean(fastCheck) || isFlash;
-  revealAnswerButton.hidden = reviewSession.revealed || Boolean(fastCheck);
+  const isFlash = format === "flash";
+  const isChoice = format === "choice";
+  // Choice and Auto present authored fast checks through the choice path.
+  const fastCheck = isFlash || isChoiceOrAutoMode(mode) ? null : item.fastCheck;
+  fastCheckShown = Boolean(fastCheck);
+  renderReviewModeSwitcher(mode);
+  reviewAnswerField.hidden = Boolean(fastCheck) || isFlash || isChoice;
+  revealAnswerButton.hidden =
+    reviewSession.revealed || Boolean(fastCheck) || isChoice;
   reviewFastCheckOptions.hidden = reviewSession.revealed || !fastCheck;
+  reviewCard.classList.toggle("flash-mode", isFlash);
   reviewCard.classList.toggle(
     "flash-tap-zone",
     isFlash && !reviewSession.revealed,
   );
+  renderChoiceStage(mode);
+  renderChoiceOptions(isChoice);
   reviewFastCheckOptions.replaceChildren();
   if (fastCheck && !reviewSession.revealed) {
     for (const [optionIndex, label] of fastCheck.options.entries()) {
@@ -2801,6 +2860,10 @@ async function renderCurrentReview(message = ""): Promise<void> {
     }
   }
   revealedAnswer.hidden = !reviewSession.revealed;
+  renderChoiceResult();
+  // A choice's rating follows from the pick: no rating buttons.
+  reviewHowWell.hidden = Boolean(choicePick);
+  reviewRatings.hidden = Boolean(choicePick);
   expectedAnswer.textContent = prompt.concept;
   const sourceUrl = externalSourceUrl(prompt.sourceLink);
   reviewSource.hidden = !sourceUrl;
@@ -2819,10 +2882,283 @@ async function renderCurrentReview(message = ""): Promise<void> {
     !voiceController.active &&
     !fastCheck &&
     !isFlash &&
+    !isChoice &&
     !radioGroupHasPendingFocus(reviewModeSwitcher)
   ) {
     reviewAnswer.focus();
   }
+  prepareChoiceOptionsAhead();
+}
+
+/* ── Choice and Auto (ADR 2026-09-27) ────────────────────────────────────── */
+
+/** How the card on screen is asked: a choice, a typed answer, or Flash. */
+type CardFormat = "choice" | "answer" | "flash";
+
+let currentCardFormat: CardFormat = "flash";
+let currentRecallReason: RecallReason | null = null;
+/** Whether the card on screen shows its authored fast-check options. */
+let fastCheckShown = false;
+let choiceAdvanceTimer: number | null = null;
+let choicePrepareInFlight = false;
+/** Cards whose options were already prepared (or tried) in this app run. */
+const choicePreparedCardIds = new Set<string>();
+
+function isChoiceOrAutoMode(
+  mode: StudyLearningMode = currentLearningSettings.learningMode,
+): boolean {
+  return mode === "choice" || mode === "auto";
+}
+
+function isFlashCard(): boolean {
+  return currentCardFormat === "flash";
+}
+
+/** Voice keeps its Flash loop in Choice and Auto; spoken choices come later. */
+function voiceLoopMode(): StudyLearningMode {
+  return isChoiceOrAutoMode() ? "flash" : currentLearningSettings.learningMode;
+}
+
+/**
+ * The free-recall format Auto switches a card to (Decision 8): an AI-checked
+ * answer when a model can judge it and the learner did not pin Flash.
+ */
+function autoRecallFormat(): CardFormat {
+  return recallEndpoint() && currentLearningSettings.autoRecallPin !== "flash"
+    ? "answer"
+    : "flash";
+}
+
+async function resolveCardFormat(mode: StudyLearningMode): Promise<CardFormat> {
+  currentRecallReason = null;
+  if (mode === "flash") return "flash";
+  if (!isChoiceOrAutoMode(mode)) return "answer";
+  let presentation: AnswerPresentation;
+  try {
+    presentation = await reviewSession.presentCurrent(mode);
+  } catch (error) {
+    // A card is never blocked for want of options.
+    console.warn("Choice presentation failed; asking the card freely:", error);
+    presentation = { format: "recall", reason: "no_options" };
+  }
+  if (presentation.format === "choice") return "choice";
+  currentRecallReason = presentation.reason;
+  return mode === "auto" ? autoRecallFormat() : "flash";
+}
+
+function clearChoiceAdvance(): void {
+  if (choiceAdvanceTimer !== null) {
+    window.clearTimeout(choiceAdvanceTimer);
+    choiceAdvanceTimer = null;
+  }
+}
+
+/** Auto's "Now without options" badge and Choice's reason for no options. */
+function renderChoiceStage(mode: StudyLearningMode): void {
+  reviewChoiceStage.hidden = !(
+    mode === "auto" && currentRecallReason === "probe"
+  );
+  reviewChoiceStage.textContent = t("choice_now_without_options");
+  const reason = currentRecallReason;
+  const key =
+    mode === "choice" &&
+    !reviewSession.revealed &&
+    (reason === "unsuitable" ||
+      reason === "no_options" ||
+      reason === "curated_disputed")
+      ? `choice_notice_${reason}`
+      : null;
+  reviewChoiceNotice.hidden = key === null;
+  reviewChoiceNotice.textContent = key ? t(key) : "";
+}
+
+function renderChoiceOptions(show: boolean): void {
+  reviewChoiceOptions.replaceChildren();
+  const presentation = reviewSession.presentation;
+  if (!show || presentation?.format !== "choice") {
+    reviewChoiceOptions.hidden = true;
+    return;
+  }
+  reviewChoiceOptions.hidden = false;
+  const { options, correctIndex } = presentation.choice;
+  const pick = reviewSession.choicePick;
+  for (const [index, label] of options.entries()) {
+    const option = document.createElement("button");
+    option.type = "button";
+    option.className = "btn choice-option";
+    option.dataset.choiceIndex = String(index);
+    const key = document.createElement("span");
+    key.className = "choice-key";
+    key.textContent = String(index + 1);
+    const text = document.createElement("span");
+    // Imported card text is always inert in the review UI.
+    text.textContent = label;
+    option.append(key, text);
+    if (pick) {
+      option.disabled = true;
+      if (index === correctIndex) option.classList.add("choice-correct");
+      else if (pick.chosen === index) option.classList.add("choice-wrong");
+    }
+    option.addEventListener("click", () => pickChoice(index));
+    reviewChoiceOptions.appendChild(option);
+  }
+  const dontKnow = document.createElement("button");
+  dontKnow.type = "button";
+  dontKnow.className = "btn plain";
+  dontKnow.textContent = t("choice_dont_know");
+  dontKnow.disabled = pick !== null;
+  dontKnow.addEventListener("click", () => pickChoice("dont_know"));
+  reviewChoiceOptions.appendChild(dontKnow);
+}
+
+/** The pick is the answer; the rating follows from it (Decision 3). */
+function pickChoice(chosen: ChoicePick): void {
+  const presentation = reviewSession.presentation;
+  if (presentation?.format !== "choice" || reviewSession.choicePick) return;
+  void pauseVoiceMode().catch(() => undefined);
+  try {
+    reviewSession.choose(chosen);
+  } catch (error) {
+    setReviewStatus(errorMessage(error), true);
+    return;
+  }
+  void renderCurrentReview();
+  if (chosen === presentation.choice.correctIndex) {
+    choiceAdvanceTimer = window.setTimeout(() => {
+      choiceAdvanceTimer = null;
+      void submitCurrentChoice();
+    }, 1200);
+  }
+}
+
+function renderChoiceResult(): void {
+  const presentation = reviewSession.presentation;
+  const pick = reviewSession.choicePick;
+  if (presentation?.format !== "choice" || !pick) {
+    reviewChoiceResult.hidden = true;
+    return;
+  }
+  const { options, correctIndex, entries } = presentation.choice;
+  const { chosen, disputed } = pick;
+  const correct = chosen === correctIndex;
+  const answer = options[correctIndex] ?? "";
+  reviewChoiceStatus.textContent = correct
+    ? t("choice_correct")
+    : disputed
+      ? t("choice_disputed")
+      : chosen === "dont_know"
+        ? tf("choice_dont_know_result", { answer })
+        : tf("choice_wrong", { answer });
+  reviewChoiceResult.classList.toggle("correct", correct || disputed);
+  reviewChoiceResult.classList.toggle("wrong", !correct && !disputed);
+
+  let reason = "";
+  if (typeof chosen === "number" && !correct && !disputed) {
+    const entry = entries[chosen];
+    reason =
+      entry?.source === "derived"
+        ? entry.reason
+          ? tf("choice_answers_other", { question: entry.reason })
+          : ""
+        : (entry?.reason ?? "");
+  }
+  reviewChoiceContrast.textContent = reason;
+  reviewChoiceContrast.hidden = reason === "";
+  reviewChoiceAsk.hidden =
+    correct || disputed || !recallEndpoint() || discussion.active;
+  reviewChoiceDispute.hidden =
+    typeof chosen !== "number" || correct || disputed;
+  reviewChoiceResult.hidden = false;
+}
+
+async function submitCurrentChoice(): Promise<void> {
+  clearChoiceAdvance();
+  if (!reviewSession.choicePick) return;
+  await finishRating(() => reviewSession.rateChoice());
+}
+
+/** "Ask": the follow-up chat, opened with a one-tap starter (Decision 7). */
+function openChoiceDiscussion(): void {
+  const item = reviewSession.currentItem;
+  const prompt = reviewSession.currentPrompt;
+  const presentation = reviewSession.presentation;
+  const pick = reviewSession.choicePick;
+  if (!item || !prompt || presentation?.format !== "choice" || !pick) return;
+  clearChoiceAdvance();
+  const { options, correctIndex } = presentation.choice;
+  const answer = options[correctIndex] ?? "";
+  const chosen =
+    pick.chosen === "dont_know" ? null : (options[pick.chosen] ?? null);
+  const card: DiscussionCardContext = {
+    slug: item.slug,
+    concept: prompt.concept,
+    domain: item.domain,
+    bloomLevel: item.bloomLevel,
+    context: null,
+    question: prompt.question,
+    userAnswer: chosen ?? "",
+    sourceContent: null,
+    sourceLink: prompt.sourceLink,
+    feedback: tf("choice_discussion_frame", {
+      chosen: chosen ?? t("choice_dont_know"),
+      answer,
+    }),
+    choice: { options, chosen, answer },
+  };
+  if (!openDiscussion(discussion, card, { evaluationSuccessful: true })) return;
+  discussionPanel.hidden = false;
+  renderDiscussionTurns();
+  discussionInput.value = t("choice_ask_starter");
+  discussionInput.disabled = false;
+  setDiscussionStatus("");
+  renderChoiceResult();
+  void sendDiscussionTurn();
+}
+
+function disputeCurrentChoice(): void {
+  clearChoiceAdvance();
+  reviewSession.disputeChoice();
+  renderChoiceResult();
+}
+
+/**
+ * Prepare generated options for the next cards in the background (Decision
+ * 6). It never blocks the card on screen, and each card is tried once per app
+ * run, so a card no model can serve does not cost a call on every render.
+ */
+function prepareChoiceOptionsAhead(): void {
+  if (
+    !currentUserId ||
+    !isChoiceOrAutoMode() ||
+    choicePrepareInFlight ||
+    !cloudEndpoints.text
+  ) {
+    return;
+  }
+  const cardIds = reviewSession
+    .upcomingCardIds(3)
+    .filter((cardId) => !choicePreparedCardIds.has(cardId));
+  if (cardIds.length === 0) return;
+  for (const cardId of cardIds) choicePreparedCardIds.add(cardId);
+  choicePrepareInFlight = true;
+  void prepareMobileChoiceOptions(db, {
+    userId: currentUserId,
+    cardIds,
+    preference: readAiPreference(storedAiPreferences(), "text"),
+  })
+    .then((result) => {
+      if (result.modelCalls > 0) {
+        console.info(
+          `Choice options: ${result.prepared} prepared, ${result.modelCalls} model calls`,
+        );
+      }
+    })
+    .catch((error: unknown) => {
+      console.warn("Choice options could not be prepared:", error);
+    })
+    .finally(() => {
+      choicePrepareInFlight = false;
+    });
 }
 
 /* ── Confirming something destructive ────────────────────────────────────── */
@@ -3451,10 +3787,22 @@ importDraftForm.addEventListener("submit", async (event) => {
 });
 
 async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
+  return finishRating(() => reviewSession.rate(rating));
+}
+
+/** One rating at a time: a tap on Next can race the auto-advance. */
+let ratingInFlight = false;
+
+async function finishRating(
+  submit: () => Promise<MobileReviewRatingResult>,
+): Promise<boolean> {
+  if (ratingInFlight) return false;
+  ratingInFlight = true;
   for (const candidate of ratingButtons) candidate.disabled = true;
+  reviewChoiceNext.disabled = true;
   stopReviewButton.disabled = true;
   try {
-    const result = await reviewSession.rate(rating);
+    const result = await submit();
     clearEvaluationUi();
     if (result.summary) {
       await offerAfterQueueFromReview(result.summary);
@@ -3477,6 +3825,8 @@ async function rateCurrentReview(rating: 1 | 2 | 3 | 4): Promise<boolean> {
     reviewStatus.classList.add("error");
     return false;
   } finally {
+    ratingInFlight = false;
+    reviewChoiceNext.disabled = false;
     stopReviewButton.disabled = false;
   }
 }
@@ -3567,14 +3917,14 @@ installVoiceDataButton.addEventListener("click", async () => {
 
 revealAnswerButton.addEventListener("click", async () => {
   await pauseVoiceMode().catch(() => undefined);
-  const isFlash = currentLearningSettings.learningMode === "flash";
+  const isFlash = isFlashCard();
   try {
     if (!isFlash) {
       reviewSession.updateDraftAnswer(reviewAnswer.value);
     }
     reviewSession.reveal({ allowEmpty: isFlash });
     clearEvaluationUi();
-    if (reviewSession.currentItem?.fastCheck || isFlash) {
+    if (fastCheckShown || isFlash) {
       renderCurrentReview();
       return;
     }
@@ -3590,10 +3940,7 @@ revealAnswerButton.addEventListener("click", async () => {
 });
 
 reviewCard.addEventListener("click", (event) => {
-  if (
-    currentLearningSettings.learningMode !== "flash" ||
-    reviewSession.revealed
-  ) {
+  if (!isFlashCard() || reviewSession.revealed) {
     return;
   }
   const target = event.target as HTMLElement | null;
@@ -3616,6 +3963,52 @@ reviewModeFeedback.addEventListener("click", () => {
   void switchReviewMode("answer_feedback");
 });
 
+reviewModeChoice.addEventListener("click", () => {
+  void switchReviewMode("choice");
+});
+
+reviewModeAuto.addEventListener("click", () => {
+  void switchReviewMode("auto");
+});
+
+studyLearningMode.addEventListener("change", syncAutoRecallPinVisibility);
+
+reviewChoiceNext.addEventListener("click", () => {
+  void submitCurrentChoice();
+});
+reviewChoiceAsk.addEventListener("click", openChoiceDiscussion);
+reviewChoiceDispute.addEventListener("click", disputeCurrentChoice);
+// Touching the result stops the auto-advance after a correct pick: the
+// learner wants to read or act.
+revealedAnswer.addEventListener("pointerdown", clearChoiceAdvance);
+
+// A keyboard on the iPad: 1–9 pick an option while the options are open.
+document.addEventListener("keydown", (event) => {
+  if (
+    reviewChoiceOptions.hidden ||
+    reviewSession.choicePick ||
+    event.metaKey ||
+    event.ctrlKey ||
+    event.altKey
+  ) {
+    return;
+  }
+  const target = event.target as HTMLElement | null;
+  if (target?.closest("input, textarea, select")) return;
+  const presentation = reviewSession.presentation;
+  const index = Number(event.key) - 1;
+  if (
+    presentation?.format !== "choice" ||
+    !Number.isInteger(index) ||
+    index < 0 ||
+    index >= presentation.choice.options.length
+  ) {
+    return;
+  }
+  event.preventDefault();
+  pickChoice(index);
+});
+
 studyLearningSave.addEventListener("click", () => {
   void saveStudyLearningSettings();
 });
@@ -3630,6 +4023,7 @@ for (const button of ratingButtons) {
 }
 
 stopReviewButton.addEventListener("click", async () => {
+  clearChoiceAdvance();
   stopReviewButton.disabled = true;
   try {
     await pauseVoiceMode();

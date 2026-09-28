@@ -34,7 +34,7 @@ describe("mobile learning mode wiring", () => {
 
   it("hides the typing answer field and keyboard focus when in flash mode", () => {
     expect(main).toContain(
-      "reviewAnswerField.hidden = Boolean(fastCheck) || isFlash;",
+      "reviewAnswerField.hidden = Boolean(fastCheck) || isFlash || isChoice;",
     );
     expect(main).toContain("!isFlash");
     expect(main).toContain("reviewCard.classList.toggle");
@@ -42,14 +42,12 @@ describe("mobile learning mode wiring", () => {
 
   it("allows reveal without typing and skips AI evaluation in flash mode", () => {
     expect(main).toContain("reviewSession.reveal({ allowEmpty: isFlash })");
-    expect(main).toContain(
-      "if (reviewSession.currentItem?.fastCheck || isFlash) {",
-    );
+    expect(main).toContain("if (fastCheckShown || isFlash) {");
   });
 
   it("supports tapping the card to reveal in flash mode", () => {
     expect(main).toContain('reviewCard.addEventListener("click"');
-    expect(main).toContain('currentLearningSettings.learningMode !== "flash"');
+    expect(main).toContain("if (!isFlashCard() || reviewSession.revealed) {");
     expect(main).toContain("revealAnswerButton.click()");
   });
 

@@ -1,6 +1,6 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** Phases 1–5 done on 2026-09-27; the manual Studio pass without an AI model ran on 2026-09-28 (fixes in a33b1a8), the pass with a model is still open. Phase 6 is next.\
+**Status:** Phases 1–6 done (2026-09-27/28). Manual passes still open: the Studio with an AI model, and Mobile on a device or simulator. Phase 7 is next.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -29,8 +29,8 @@ schedules beyond 20 days (D4).
 - [x] **Phase 2** — the two new modes in study settings (kernel and bridge) — `8cfb3e7`
 - [x] **Phase 3** — choice presentation in the kernel (LLM-free) — `20f0daa`
 - [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill) — `5f0a014`
-- [x] **Phase 5** — Desktop Studio (code and tests; the manual Studio pass is still open)
-- [ ] **Phase 6** — Mobile (iPadOS and Android)
+- [x] **Phase 5** — Desktop Studio — `1a99554`, fixes from the manual pass in `a33b1a8`
+- [x] **Phase 6** — Mobile (iPadOS and Android) — code and tests; the manual device pass is still open
 - [ ] **Phase 7** — documentation and handover
 
 **Order.**
@@ -657,6 +657,13 @@ paths:
 
 **Manual check:** the iPad simulator, and an Android emulator if available,
 with the same card paths as Phase 5.
+
+*As built:* the presentation is resolved when a card is rendered
+(`MobileReviewSession.presentCurrent(mode)`) rather than in `admitCurrent()`,
+because the mode can change mid-card; it is stored in the snapshot per card
+and mode, and an answered card keeps it. The Studio's session summary line
+("N cards are ready for free recall") is not on Mobile yet. "Ask" appears when
+a cloud text model is connected.
 
 ---
 

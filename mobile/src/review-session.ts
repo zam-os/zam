@@ -8,9 +8,16 @@ import {
 } from "../../src/kernel/models/session.js";
 import { executeReviewAction } from "../../src/kernel/recall/actions.js";
 import {
+  type AnswerPresentation,
+  type ChoiceEvidence,
+  ratingForChoice,
+  resolveAnswerPresentation,
+} from "../../src/kernel/recall/answer-presentation.js";
+import {
   generatePrompt,
   type RecallPrompt,
 } from "../../src/kernel/recall/prompter.js";
+import type { AnswerFormat } from "../../src/kernel/scheduler/choice-ceiling.js";
 import type { Rating } from "../../src/kernel/scheduler/fsrs.js";
 import {
   AtomSiblingOccupiedError,
@@ -23,8 +30,23 @@ import {
   buildReviewQueue,
   type ReviewQueueItem,
 } from "../../src/kernel/scheduler/queue.js";
+import type { StudyLearningMode } from "../../src/kernel/scheduler/study-settings.js";
 
 export const MOBILE_REVIEW_STORAGE_KEY = "zam.mobile-review-session.v1";
+
+/** A choice answer: the option index, or "Don't know". */
+export type ChoicePick = number | "dont_know";
+
+interface StoredPresentation {
+  cardId: string;
+  mode: StudyLearningMode;
+  value: AnswerPresentation;
+}
+
+export interface StoredChoicePick {
+  chosen: ChoicePick;
+  disputed: boolean;
+}
 
 export interface ReviewSessionStorage {
   getItem(key: string): string | null;
@@ -45,10 +67,18 @@ interface ReviewSessionSnapshot {
   /** Attempt id from the current card's admission; travels with its rating. */
   attemptId?: string | null;
   /**
-   * `options` once the learner tapped a fast check on the current card: the
-   * rating that follows is bounded by the tap ceiling (ADR 2026-09-27).
+   * `options` once the learner tapped a fast check on the current card, and
+   * `choice` once they picked an option: both ratings are bounded by the tap
+   * ceiling (ADR 2026-09-27).
    */
-  answerFormat?: "recall" | "options";
+  answerFormat?: AnswerFormat;
+  /**
+   * How the current card is asked in Choice or Auto, kept so a restored
+   * session shows the same options under the learner's finger.
+   */
+  presentation?: StoredPresentation;
+  /** The learner's pick on the current choice card. */
+  choicePick?: StoredChoicePick;
 }
 
 export interface MobileReviewProgress {
@@ -109,6 +139,26 @@ function parseSnapshot(raw: string | null): ReviewSessionSnapshot | null {
       typeof value.cardStartedAt !== "number"
     ) {
       return null;
+    }
+    // A malformed choice state costs the options, never the session.
+    const presentation = value.presentation as Partial<StoredPresentation>;
+    if (
+      presentation &&
+      (typeof presentation.cardId !== "string" ||
+        (presentation.value?.format !== "choice" &&
+          presentation.value?.format !== "recall"))
+    ) {
+      delete value.presentation;
+      delete value.choicePick;
+    }
+    const pick = value.choicePick as Partial<StoredChoicePick> | undefined;
+    if (
+      pick &&
+      (!value.presentation ||
+        typeof pick.disputed !== "boolean" ||
+        (pick.chosen !== "dont_know" && !Number.isInteger(pick.chosen)))
+    ) {
+      delete value.choicePick;
     }
     return value as ReviewSessionSnapshot;
   } catch {
@@ -253,10 +303,7 @@ export class MobileReviewSession {
       completedTokenIds.has(snapshot.items[snapshot.currentIndex].tokenId)
     ) {
       snapshot.currentIndex += 1;
-      snapshot.draftAnswer = "";
-      delete snapshot.answerFormat;
-      snapshot.revealed = false;
-      snapshot.cardStartedAt = this.now();
+      this.resetCardAnswer(snapshot);
     }
 
     if (!this.currentItem) {
@@ -292,12 +339,132 @@ export class MobileReviewSession {
     this.persist();
   }
 
+  /**
+   * How the current card is asked in `mode` (ADR 2026-09-27 Decisions 6–9).
+   *
+   * Resolved once per card and mode and kept in the snapshot, so a re-render
+   * or a restored session shows the same options. Once the card is answered
+   * the stored presentation stands, whatever the mode switcher says since.
+   */
+  async presentCurrent(
+    mode: StudyLearningMode,
+    options: { knowledgeContext?: string } = {},
+  ): Promise<AnswerPresentation> {
+    const snapshot = this.snapshot;
+    const item = this.currentItem;
+    if (!snapshot || !item) throw new Error("No active review card");
+    const stored = snapshot.presentation;
+    if (
+      stored?.cardId === item.cardId &&
+      (stored.mode === mode || snapshot.revealed)
+    ) {
+      return stored.value;
+    }
+    if (snapshot.revealed) return { format: "recall", reason: "mode" };
+    const value = await resolveAnswerPresentation(this.db, {
+      userId: snapshot.userId,
+      cardId: item.cardId,
+      mode,
+      now: new Date(this.now()),
+      knowledgeContext: options.knowledgeContext,
+    });
+    // The learner may have moved on while the kernel answered.
+    if (this.snapshot !== snapshot || this.currentItem !== item) return value;
+    snapshot.presentation = { cardId: item.cardId, mode, value };
+    this.persist();
+    return value;
+  }
+
+  /** The stored presentation for the current card, if it has one. */
+  get presentation(): AnswerPresentation | null {
+    const stored = this.snapshot?.presentation;
+    return stored && stored.cardId === this.currentItem?.cardId
+      ? stored.value
+      : null;
+  }
+
+  get choicePick(): StoredChoicePick | null {
+    return this.snapshot?.choicePick ?? null;
+  }
+
+  /**
+   * The learner picked an option, or "Don't know". The pick is the answer:
+   * the card counts as revealed and its rating follows from the pick.
+   */
+  choose(chosen: ChoicePick): void {
+    const snapshot = this.snapshot;
+    const presentation = this.presentation;
+    if (!snapshot || presentation?.format !== "choice") {
+      throw new Error("The current card is not asked as a choice");
+    }
+    if (snapshot.revealed || snapshot.choicePick) return;
+    const { options } = presentation.choice;
+    if (
+      chosen !== "dont_know" &&
+      (!Number.isInteger(chosen) || chosen < 0 || chosen >= options.length)
+    ) {
+      throw new Error("That option was not shown");
+    }
+    snapshot.choicePick = { chosen, disputed: false };
+    snapshot.answerFormat = "choice";
+    snapshot.draftAnswer = chosen === "dont_know" ? "" : options[chosen]!;
+    snapshot.revealed = true;
+    this.persist();
+  }
+
+  /** "My answer is also correct" on a chosen distractor (Decision 7). */
+  disputeChoice(): void {
+    const snapshot = this.snapshot;
+    const pick = snapshot?.choicePick;
+    const presentation = this.presentation;
+    if (
+      !snapshot ||
+      !pick ||
+      pick.disputed ||
+      pick.chosen === "dont_know" ||
+      presentation?.format !== "choice" ||
+      pick.chosen === presentation.choice.correctIndex
+    ) {
+      return;
+    }
+    pick.disputed = true;
+    this.persist();
+  }
+
+  /** The evidence a picked choice is booked with, or null. */
+  private choiceEvidence(): ChoiceEvidence | null {
+    const pick = this.snapshot?.choicePick;
+    const presentation = this.presentation;
+    if (!pick || presentation?.format !== "choice") return null;
+    const { options, correctIndex, entries } = presentation.choice;
+    return {
+      options,
+      correctIndex,
+      entries,
+      chosen: pick.chosen,
+      ...(pick.disputed ? { disputed: true } : {}),
+    };
+  }
+
+  /** Book the picked choice with the rating it earns (Decision 3). */
+  async rateChoice(): Promise<MobileReviewRatingResult> {
+    const evidence = this.choiceEvidence();
+    if (!evidence) throw new Error("Pick an option before moving on");
+    return this.rate(ratingForChoice(evidence));
+  }
+
   async rate(rating: Rating): Promise<MobileReviewRatingResult> {
     const snapshot = this.snapshot;
     const item = this.currentItem;
     if (!snapshot || !item) throw new Error("No active review card");
     if (!snapshot.revealed) throw new Error("Reveal the answer before rating");
 
+    const choiceEvidence = this.choiceEvidence();
+    if (choiceEvidence && rating !== ratingForChoice(choiceEvidence)) {
+      throw new Error(
+        `A choice earns rating ${ratingForChoice(choiceEvidence)}, not ${rating}`,
+      );
+    }
     const result = await executeReviewAction(this.db, {
       action: "rate",
       cardId: item.cardId,
@@ -306,15 +473,17 @@ export class MobileReviewSession {
       sessionId: snapshot.sessionId,
       responseTimeMs: Math.max(0, this.now() - snapshot.cardStartedAt),
       attemptId: snapshot.attemptId ?? undefined,
-      answerFormat: snapshot.answerFormat ?? "recall",
+      answerFormat: choiceEvidence
+        ? "choice"
+        : snapshot.answerFormat === "options"
+          ? "options"
+          : "recall",
+      ...(choiceEvidence ? { choiceEvidence } : {}),
     });
 
     snapshot.currentIndex += 1;
-    snapshot.draftAnswer = "";
-    delete snapshot.answerFormat;
-    snapshot.revealed = false;
+    this.resetCardAnswer(snapshot);
     snapshot.attemptId = null;
-    snapshot.cardStartedAt = this.now();
 
     const response: MobileReviewRatingResult = {
       nextDueAt: result.evaluation?.nextDueAt ?? item.dueAt,
@@ -349,6 +518,8 @@ export class MobileReviewSession {
     if (!snapshot || !item) return;
     if (edit.question !== undefined) item.question = edit.question;
     if (edit.concept !== undefined) item.concept = edit.concept;
+    // Options chosen for the old wording must not outlive it.
+    if (!snapshot.revealed) delete snapshot.presentation;
     this.persist();
   }
 
@@ -367,10 +538,7 @@ export class MobileReviewSession {
     if (!snapshot || !this.currentItem) return null;
     await this.releaseUnshownCurrent();
     snapshot.items.splice(snapshot.currentIndex, 1);
-    snapshot.draftAnswer = "";
-    delete snapshot.answerFormat;
-    snapshot.revealed = false;
-    snapshot.cardStartedAt = this.now();
+    this.resetCardAnswer(snapshot);
     if (!this.currentItem) return await this.finish();
     await this.admitCurrent();
     if (!this.currentItem) return await this.finish();
@@ -390,10 +558,7 @@ export class MobileReviewSession {
     snapshot.items = snapshot.items.filter(
       (item, index) => index < snapshot.currentIndex || item.atomId !== atomId,
     );
-    snapshot.draftAnswer = "";
-    delete snapshot.answerFormat;
-    snapshot.revealed = false;
-    snapshot.cardStartedAt = this.now();
+    this.resetCardAnswer(snapshot);
     if (!this.currentItem) return await this.finish();
     await this.admitCurrent();
     if (!this.currentItem) return await this.finish();
@@ -487,13 +652,28 @@ export class MobileReviewSession {
         // Never shown, so not part of this session: remove it like a dropped
         // card so `progress.total` and the summary stay truthful.
         snapshot.items.splice(snapshot.currentIndex, 1);
-        snapshot.draftAnswer = "";
-        delete snapshot.answerFormat;
-        snapshot.revealed = false;
+        this.resetCardAnswer(snapshot);
         snapshot.attemptId = null;
-        snapshot.cardStartedAt = this.now();
       }
     }
+  }
+
+  /** Card ids after the current one, for preparing their options ahead. */
+  upcomingCardIds(limit: number): string[] {
+    if (!this.snapshot) return [];
+    return this.snapshot.items
+      .slice(this.snapshot.currentIndex + 1, this.snapshot.currentIndex + 1 + limit)
+      .map((item) => item.cardId);
+  }
+
+  /** Forget everything the learner did on the card that was current. */
+  private resetCardAnswer(snapshot: ReviewSessionSnapshot): void {
+    snapshot.draftAnswer = "";
+    delete snapshot.answerFormat;
+    delete snapshot.presentation;
+    delete snapshot.choicePick;
+    snapshot.revealed = false;
+    snapshot.cardStartedAt = this.now();
   }
 
   private persist(): void {
