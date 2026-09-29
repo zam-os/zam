@@ -1614,6 +1614,12 @@ textarea:focus-visible {
   white-space: nowrap;
 }
 
+/* The card's topic before the question: the same question can mean different
+   things in different repositories or subjects. */
+.question-topic {
+  font-weight: 750;
+}
+
 .question-text {
   font-size: 21px;
   font-weight: 500;

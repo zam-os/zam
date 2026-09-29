@@ -14,6 +14,7 @@ import {
   shouldShowPointCount,
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
+import { renderQuestionWithTopic } from "./question-topic.js";
 import {
   DEFAULT_LOCAL_ENDPOINT_URL,
   DEFAULT_MODEL_ENDPOINT_URL,
@@ -7770,7 +7771,11 @@ async function saveInlineEdit(): Promise<void> {
     // Reflect the edit in place (no full re-render — feedback stays put).
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
-    document.getElementById("question-text")!.textContent = activePromptQuestion;
+    renderQuestionWithTopic(
+      document.getElementById("question-text")!,
+      activeCard.domain,
+      activePromptQuestion,
+    );
     // The edit may have changed how many points the answer asks for.
     renderQuestionPointCount();
     const conceptVal = document
@@ -7956,7 +7961,11 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
 
   document.getElementById("translation-loading")?.classList.add("hidden");
-  document.getElementById("question-text")!.textContent = activePromptQuestion;
+  renderQuestionWithTopic(
+    document.getElementById("question-text")!,
+    activeCard.domain,
+    activePromptQuestion,
+  );
   renderQuestionPointCount();
   renderReviewMedia("question-media", activeCard.media, "question");
   setModelAttributionBadge(

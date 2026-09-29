@@ -32,6 +32,7 @@ import {
   shouldShowPointCount,
 } from "../../../src/kernel/library/answer-points.js";
 import { currentLocale, setCurrentLocale, t, tf } from "../i18n.js";
+import { renderQuestionWithTopic } from "../question-topic.js";
 import {
   type BonusOffer,
   bonusBecause,
@@ -939,7 +940,11 @@ async function presentCurrentCard(): Promise<void> {
 
   const question = document.createElement("div");
   question.className = "recall-question";
-  question.textContent = card.question?.trim() ? card.question : card.slug;
+  renderQuestionWithTopic(
+    question,
+    card.domain,
+    card.question?.trim() ? card.question : card.slug,
+  );
   if (isFlash) {
     question.style.cursor = "pointer";
     question.addEventListener("click", () => {

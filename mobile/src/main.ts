@@ -11,6 +11,7 @@ import {
   requestPermissions,
   scan,
 } from "@tauri-apps/plugin-barcode-scanner";
+import { renderQuestionWithTopic } from "../../desktop/src/question-topic.js";
 import {
   beginTurn,
   completeTurn,
@@ -2811,7 +2812,7 @@ async function renderCurrentReview(message = ""): Promise<void> {
       })
     : item.domain || t("no_domain");
   reviewMeta.textContent = tierLabel ? `${baseMeta} · ${tierLabel}` : baseMeta;
-  reviewQuestion.textContent = prompt.question;
+  renderQuestionWithTopic(reviewQuestion, item.domain, prompt.question);
   // The count calibrates how long to keep digging; the points stay hidden.
   const showsPoints = shouldShowPointCount(prompt.concept, item.bloomLevel);
   reviewPointsExpected.hidden = !showsPoints;
