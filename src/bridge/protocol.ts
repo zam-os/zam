@@ -514,6 +514,8 @@ export interface AnswerPresentationResponse {
           | "probe"
           | "recall_stage"
           | "curated_disputed";
+        /** For `unsuitable`: which rule excluded the item. */
+        detail?: "bloom_level" | "answer_media";
       };
 }
 

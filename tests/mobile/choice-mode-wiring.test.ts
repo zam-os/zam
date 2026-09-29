@@ -78,6 +78,8 @@ describe("mobile choice and auto wiring", () => {
       "choice_answers_other",
       "choice_now_without_options",
       "choice_notice_unsuitable",
+      "choice_notice_unsuitable_bloom_level",
+      "choice_notice_unsuitable_answer_media",
       "choice_notice_no_options",
       "choice_notice_curated_disputed",
       "choice_discussion_frame",

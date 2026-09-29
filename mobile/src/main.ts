@@ -2897,6 +2897,8 @@ type CardFormat = "choice" | "answer" | "flash";
 
 let currentCardFormat: CardFormat = "flash";
 let currentRecallReason: RecallReason | null = null;
+/** For an unsuitable card: which rule excluded it (bloom_level, answer_media). */
+let currentRecallDetail: string | null = null;
 /** Whether the card on screen shows its authored fast-check options. */
 let fastCheckShown = false;
 let choiceAdvanceTimer: number | null = null;
@@ -2931,6 +2933,7 @@ function autoRecallFormat(): CardFormat {
 
 async function resolveCardFormat(mode: StudyLearningMode): Promise<CardFormat> {
   currentRecallReason = null;
+  currentRecallDetail = null;
   if (mode === "flash") return "flash";
   if (!isChoiceOrAutoMode(mode)) return "answer";
   let presentation: AnswerPresentation;
@@ -2943,6 +2946,7 @@ async function resolveCardFormat(mode: StudyLearningMode): Promise<CardFormat> {
   }
   if (presentation.format === "choice") return "choice";
   currentRecallReason = presentation.reason;
+  currentRecallDetail = presentation.detail ?? null;
   return mode === "auto" ? autoRecallFormat() : "flash";
 }
 
@@ -2966,7 +2970,11 @@ function renderChoiceStage(mode: StudyLearningMode): void {
     (reason === "unsuitable" ||
       reason === "no_options" ||
       reason === "curated_disputed")
-      ? `choice_notice_${reason}`
+      ? `choice_notice_${reason}${
+          reason === "unsuitable" && currentRecallDetail
+            ? `_${currentRecallDetail}`
+            : ""
+        }`
       : null;
   reviewChoiceNotice.hidden = key === null;
   reviewChoiceNotice.textContent = key ? t(key) : "";

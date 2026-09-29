@@ -673,11 +673,13 @@ export type {
   DerivedDistractor,
   NewDistractor,
   StoreDistractorsInput,
+  ChoiceUnsuitability,
   StoredDistractor,
   StoredDistractorSource,
 } from "./recall/choice-options.js";
 export {
   choiceSourceHash,
+  choiceUnsuitability,
   DERIVED_POOL_SIZE,
   deriveDistractors,
   isChoiceSuitable,

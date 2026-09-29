@@ -18,6 +18,7 @@ import {
   ensureCard,
   executeReviewAction,
   getCardById,
+  choiceUnsuitability,
   isChoiceSuitable,
   listActiveDistractors,
   openDatabase,
@@ -81,14 +82,13 @@ describe("deterministic option checks", () => {
     expect(checkShownSet(["Brechung", "Reflexion", "Streuung"], 0)).toBeNull();
   });
 
-  it("asks only single-point answers up to Bloom 3 without answer media", () => {
-    const base = { bloomLevel: 2, concept: "Brechung", hasAnswerMedia: false };
+  it("asks answers up to Bloom 3 without answer media, and names why not", () => {
+    const base = { bloomLevel: 2, hasAnswerMedia: false };
     expect(isChoiceSuitable(base)).toBe(true);
-    expect(isChoiceSuitable({ ...base, bloomLevel: 4 })).toBe(false);
-    expect(isChoiceSuitable({ ...base, hasAnswerMedia: true })).toBe(false);
-    expect(
-      isChoiceSuitable({ ...base, concept: "Zwei Punkte:\n- eins\n- zwei" }),
-    ).toBe(false);
+    expect(choiceUnsuitability({ ...base, bloomLevel: 4 })).toBe("bloom_level");
+    expect(choiceUnsuitability({ ...base, hasAnswerMedia: true })).toBe(
+      "answer_media",
+    );
   });
 });
 
@@ -190,12 +190,28 @@ describe("resolveAnswerPresentation", () => {
     });
   });
 
-  it("asks unsuitable items in a recall format", async () => {
+  it("asks unsuitable items in a recall format and says why", async () => {
     const { cardId } = await item("analyse", "Brechung", { bloom_level: 4 });
     expect(await present(cardId)).toEqual({
       format: "recall",
       reason: "unsuitable",
+      detail: "bloom_level",
     });
+  });
+
+  it("asks multi-point answers as a choice (items that predate the one-point rule)", async () => {
+    const { cardId } = await item(
+      "zwei-punkte",
+      "Zwei Punkte:\n- eins\n- zwei",
+      {
+        fast_check: JSON.stringify({
+          type: "multiple_choice",
+          options: ["Zwei Punkte: eins, zwei", "Nur eins", "Nur zwei"],
+          correct_index: 0,
+        }),
+      },
+    );
+    expect((await present(cardId)).format).toBe("choice");
   });
 
   it("falls back to recall when no source has two usable distractors", async () => {

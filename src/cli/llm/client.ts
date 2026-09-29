@@ -2008,28 +2008,87 @@ export async function generateChoiceOptionsViaLLM(
   } catch {
     // No usable recall model: the generator filters its own options.
   }
+  // A row can pass the readiness walk and still refuse the call — a keyless
+  // OpenRouter row does, because its /models catalogue is public. Each call
+  // therefore walks on to the next row of its chain, as Mobile does.
+  const generators = chainFrom(generator, cfg);
+  const filters =
+    filter === generator
+      ? generators
+      : chainFrom(filter, await getProviderForRole(db, "recall"));
+  const served = { generator, filter };
   const result = await runChoiceGeneration({
     item,
     complete: (prompt) =>
-      completeChoicePrompt(
-        generator,
+      completeChoiceOnChain(
+        generators,
         cfg.locale,
         prompt,
         CHOICE_GENERATION_MAX_OUTPUT_TOKENS,
+        (endpoint) => {
+          served.generator = endpoint;
+        },
       ),
     completeFilter: (prompt) =>
-      completeChoicePrompt(
-        filter,
+      completeChoiceOnChain(
+        filters,
         cfg.locale,
         prompt,
         CHOICE_FILTER_MAX_OUTPUT_TOKENS,
+        (endpoint) => {
+          served.filter = endpoint;
+        },
       ),
   });
   return {
     result,
-    model: endpointLabel(generator),
-    filterModel: endpointLabel(filter),
+    model: endpointLabel(served.generator),
+    filterModel: endpointLabel(served.filter),
   };
+}
+
+/** The resolved endpoint first, then the rows after it in its role's chain. */
+function chainFrom(
+  first: ProviderConfig,
+  role: ProviderConfig,
+): ProviderConfig[] {
+  const chain = providerChain(role).filter((endpoint) => !endpoint.offlineOnly);
+  const at = chain.findIndex(
+    (endpoint) =>
+      endpoint.providerName === first.providerName &&
+      endpoint.model === first.model,
+  );
+  return [first, ...(at >= 0 ? chain.slice(at + 1) : [])];
+}
+
+/** Try each endpoint in order; the first answer wins, all failures are named. */
+async function completeChoiceOnChain(
+  chain: readonly ProviderConfig[],
+  locale: SupportedLocale,
+  prompt: ChoicePrompt,
+  maxTokens: number,
+  onServed: (endpoint: ProviderConfig) => void,
+): Promise<string> {
+  const errors: string[] = [];
+  for (const endpoint of chain) {
+    try {
+      const text = await completeChoicePrompt(
+        endpoint,
+        locale,
+        prompt,
+        maxTokens,
+      );
+      onServed(endpoint);
+      return text;
+    } catch (error) {
+      errors.push(
+        `${endpoint.label || endpointLabel(endpoint)}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+  }
+  throw new Error(errors.join("; ") || "no model answered");
 }
 
 /**

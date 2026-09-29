@@ -431,13 +431,18 @@ points to Auto, Flash or the answer mode. It does not interrupt the session.
 
 ### 9. Where choice applies
 
-- **Choice:** single-point answers at Bloom levels 1–3 — terms, definitions,
+- **Choice:** answers at Bloom levels 1–3 — terms, definitions,
   formulas, values, vocabulary, cloze gaps, and applications whose
   distractors model typical mistakes.
 - **A recall format instead** — Flash in plain Choice, free recall in Auto:
   - Bloom levels 4–5;
-  - answers with more than one point (ADR 2026-09-08);
   - answers carried by answer media such as image occlusion.
+- **Amended 2026-09-29 (owner decision):** answers with more than one point
+  (ADR 2026-09-08) are asked as a choice too. New items should still ask for
+  one thing, but many existing libraries hold items written before that rule,
+  and excluding them left too many cards without the mode. The presentation
+  names which rule excluded a card (`detail`: `bloom_level` or
+  `answer_media`), so a surface can say why.
 - **Tier-1 binary fast checks:**
   - In both new modes they are graded automatically, under Decisions 3 and 4.
   - In the answer modes they keep today's tap followed by self-rating,

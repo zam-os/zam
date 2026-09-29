@@ -6,6 +6,7 @@ import {
   clearRecallEndpointCache,
   discussReviewViaLLM,
   evaluateAnswerViaLLM,
+  generateChoiceOptionsViaLLM,
   getProviderRoleStatus,
   prepareRecallChain,
   probeKeyValidity,
@@ -795,6 +796,55 @@ describe("fallback chain boundaries", () => {
       question: "Was ist die Hauptstadt von Frankreich?",
       userAnswer: "Paris",
     });
+
+  it("choice generation walks on when a row refuses the call (keyless OpenRouter)", async () => {
+    // Reported 2026-09-29: a keyless GLM row passed the readiness walk (the
+    // /models catalogue is public) and every choice-prepare call ended in 401.
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "keyless",
+        model: "a/model",
+        order: 0,
+        url: "https://r1.openrouter.ai/api/v1",
+      }),
+      openRouterEntry({
+        id: "keyed",
+        model: "b/model",
+        order: 1,
+        url: "https://r2.openrouter.ai/api/v1",
+      }),
+    ]);
+    const options = JSON.stringify([
+      { text: "Reflexion", reason: "wirft Licht zurück" },
+      { text: "Beugung", reason: "Ablenkung an Kanten" },
+    ]);
+    stubFetchByUrl((url) => {
+      if (url.endsWith("/models")) return catalog("a/model", "b/model");
+      if (url.startsWith("https://r1.")) {
+        return { status: 401, body: { error: { message: "Missing Authentication header" } } };
+      }
+      if (url.startsWith("https://r2.")) return okResponse(options);
+      return undefined;
+    });
+
+    const generation = await generateChoiceOptionsViaLLM(db, {
+      id: "01K8TESTITEM000000000000A1",
+      question: "Wie heißt die Richtungsänderung von Licht an einer Grenzfläche?",
+      concept: "Brechung",
+      domain: "Physik",
+      bloomLevel: 1,
+      language: "de",
+    });
+
+    expect(generation.model).toBe("b/model");
+    expect(generation.filterModel).toBe("b/model");
+    // The filter got the same stub reply, which names no option number, so
+    // it called none correct: both candidates survive.
+    expect(generation.result.accepted.map((entry) => entry.text)).toEqual([
+      "Reflexion",
+      "Beugung",
+    ]);
+  });
 
   it("a healthy primary never contacts fallback rows before the chat", async () => {
     saveMachineAiModels([

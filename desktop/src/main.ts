@@ -500,6 +500,8 @@ type RecallReason = Extract<
 let activeCardFormat: AutoCardFormat = "flash";
 let activeChoice: PresentedChoice | null = null;
 let activeRecallReason: RecallReason | null = null;
+/** For an unsuitable card: which rule excluded it (bloom_level, answer_media). */
+let activeRecallDetail: string | null = null;
 let activeChoicePick: { chosen: number | "dont_know"; disputed: boolean } | null =
   null;
 let choiceAdvanceTimer: number | null = null;
@@ -7990,6 +7992,7 @@ function resetChoiceState(): void {
   activeCardFormat = defaultCardFormat();
   activeChoice = null;
   activeRecallReason = null;
+  activeRecallDetail = null;
   activeChoicePick = null;
   document.getElementById("choice-result")?.classList.add("hidden");
   document.getElementById("revealed-box")?.classList.remove("choice-reveal");
@@ -8003,6 +8006,7 @@ function resetChoiceState(): void {
 async function resolveActivePresentation(): Promise<void> {
   activeChoice = null;
   activeRecallReason = null;
+  activeRecallDetail = null;
   activeChoicePick = null;
   const mode = currentStudyLearningSettings.learningMode;
   if (!activeCard || (mode !== "choice" && mode !== "auto")) {
@@ -8026,6 +8030,7 @@ async function resolveActivePresentation(): Promise<void> {
       activeChoice = presentation.choice;
     } else {
       activeRecallReason = presentation.reason;
+      activeRecallDetail = presentation.detail ?? null;
       activeCardFormat = recallFormat();
     }
   } catch (err) {
@@ -8062,7 +8067,11 @@ function renderChoiceStage(): void {
       (activeRecallReason === "unsuitable" ||
         activeRecallReason === "no_options" ||
         activeRecallReason === "curated_disputed")
-        ? `choice_notice_${activeRecallReason}`
+        ? `choice_notice_${activeRecallReason}${
+            activeRecallReason === "unsuitable" && activeRecallDetail
+              ? `_${activeRecallDetail}`
+              : ""
+          }`
         : null;
     notice.hidden = key === null;
     notice.textContent = key ? t(key) : "";

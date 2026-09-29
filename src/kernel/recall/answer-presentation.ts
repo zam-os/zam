@@ -25,7 +25,8 @@ import { checkCandidate, checkShownSet } from "./choice-checks.js";
 import {
   choiceSourceHash,
   deriveDistractors,
-  isChoiceSuitable,
+  type ChoiceUnsuitability,
+  choiceUnsuitability,
   listActiveDistractors,
   RETIRE_MAX_CHOSEN_SHARE,
   RETIRE_MIN_SHOWN,
@@ -65,7 +66,12 @@ export interface PresentedChoice {
 
 export type AnswerPresentation =
   | { format: "choice"; choice: PresentedChoice }
-  | { format: "recall"; reason: RecallReason };
+  | {
+      format: "recall";
+      reason: RecallReason;
+      /** For `unsuitable`: which rule excluded the item. */
+      detail?: ChoiceUnsuitability;
+    };
 
 export interface AnswerPresentationInput {
   userId: string;
@@ -241,14 +247,12 @@ export async function resolveAnswerPresentation(
     )
     .get(token.id)) as { n: number } | undefined;
 
-  if (
-    !isChoiceSuitable({
-      bloomLevel: token.bloom_level,
-      concept: token.concept,
-      hasAnswerMedia: Number(media?.n ?? 0) > 0,
-    })
-  ) {
-    return { format: "recall", reason: "unsuitable" };
+  const unsuitable = choiceUnsuitability({
+    bloomLevel: token.bloom_level,
+    hasAnswerMedia: Number(media?.n ?? 0) > 0,
+  });
+  if (unsuitable) {
+    return { format: "recall", reason: "unsuitable", detail: unsuitable };
   }
 
   const now = input.now ?? new Date();

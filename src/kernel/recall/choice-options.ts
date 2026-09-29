@@ -12,7 +12,6 @@
 import { ulid } from "ulid";
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
-import { countAnswerPoints } from "../library/answer-points.js";
 import type { Token } from "../models/token.js";
 import { decodeEmbedding } from "../models/token-embedding.js";
 import { cosineSimilarity } from "../search/hybrid.js";
@@ -31,21 +30,29 @@ export const RETIRE_MAX_CHOSEN_SHARE = 0.05;
 
 export interface ChoiceSuitabilityInput {
   bloomLevel: number;
-  concept: string;
   hasAnswerMedia: boolean;
 }
 
+/** Why an item is asked in a recall format rather than as a choice. */
+export type ChoiceUnsuitability = "bloom_level" | "answer_media";
+
 /**
- * Single-point answers at Bloom levels 1–3 without answer media (Decision 9).
- * Everything else is asked in a recall format.
+ * Answers at Bloom levels 1–3 without answer media (Decision 9, amended
+ * 2026-09-29): the number of answer points no longer excludes an item, since
+ * many existing items predate the one-point authoring rule. Returns why an
+ * item is unsuitable, or null.
  */
+export function choiceUnsuitability(
+  input: ChoiceSuitabilityInput,
+): ChoiceUnsuitability | null {
+  if (input.bloomLevel < 1 || input.bloomLevel > MAX_CHOICE_BLOOM_LEVEL) {
+    return "bloom_level";
+  }
+  return input.hasAnswerMedia ? "answer_media" : null;
+}
+
 export function isChoiceSuitable(input: ChoiceSuitabilityInput): boolean {
-  return (
-    input.bloomLevel >= 1 &&
-    input.bloomLevel <= MAX_CHOICE_BLOOM_LEVEL &&
-    countAnswerPoints(input.concept) === 1 &&
-    !input.hasAnswerMedia
-  );
+  return choiceUnsuitability(input) === null;
 }
 
 /** Cache key for an item's options: its id plus its question and answer text. */
@@ -325,7 +332,6 @@ export async function deriveDistractors(
     if (
       !isChoiceSuitable({
         bloomLevel: Number(donor.bloom_level),
-        concept: donor.concept,
         hasAnswerMedia: Number(donor.answer_media) > 0,
       })
     ) {

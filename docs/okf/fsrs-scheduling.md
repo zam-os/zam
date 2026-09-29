@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-29T08:00:00.000Z
+timestamp: 2026-09-29T10:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -150,8 +150,11 @@ options. `resolveAnswerPresentation()` in
 `src/kernel/recall/answer-presentation.ts` decides, without any model, whether
 a card is shown as a choice or in a recall format, and why:
 
-1. Only single-point answers up to Bloom level 3 without answer media are
-   suitable (`isChoiceSuitable()`); anything else is asked freely.
+1. Answers up to Bloom level 3 without answer media are suitable;
+   `choiceUnsuitability()` names the rule that excludes the rest
+   (`bloom_level` or `answer_media`), and the presentation carries it as
+   `detail` so a surface can say why. The number of answer points does not
+   matter: many items predate the one-point authoring rule.
 2. In `auto`, a card is in the **recall stage** once any of its review-log
    rows is `recall` or `NULL`, and stays there. Before that, the review at
    which a correct choice would bring stability to 20 days (the card already
@@ -185,9 +188,12 @@ excludes a disputed curated or derived option for that learner only
 Generated options are written by the CLI (`zam bridge choice-prepare`) or
 Mobile, never by the kernel: a `text`-role model writes candidates with a
 reason each, the same checks run, and a reject filter answering from a
-seeded, shuffled set drops every candidate it considers correct. Surfaces
-prepare the next cards in the background; a card whose options are not ready
-is asked in a recall format.
+seeded, shuffled set drops every candidate it considers correct. Each call
+walks on to the next model of its role's chain when a row refuses it — a
+keyless OpenRouter row passes the readiness check, because the model
+catalogue is public, and fails only at the call. Surfaces prepare the next
+cards in the background; a card whose options are not ready is asked in a
+recall format.
 
 # Review queue and workload
 
@@ -307,7 +313,7 @@ snapshots with the same workload and tier rules.
 
 # Citations
 - [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)
-- Tests: `tests/kernel/choice-ceiling.test.ts`, `tests/kernel/choice-presentation.test.ts`, `tests/cli/choice-generation.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/desktop/answer-format-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`
+- Tests: `tests/kernel/choice-ceiling.test.ts`, `tests/kernel/choice-presentation.test.ts`, `tests/cli/choice-generation.test.ts`, `tests/cli/llm-evaluation-retry.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/desktop/answer-format-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`
 - Code: `src/kernel/scheduler/choice-ceiling.ts`, `src/kernel/recall/answer-presentation.ts`, `src/kernel/recall/choice-options.ts`, `src/kernel/recall/choice-checks.ts`, `src/kernel/util/seeded.ts`, `src/cli/llm/choice-prompt.ts`, `src/cli/llm/choice-prepare.ts`, `mobile/src/choice-generate.ts`, `mobile/src/review-session.ts`
 
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
