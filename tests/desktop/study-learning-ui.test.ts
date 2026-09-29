@@ -53,6 +53,27 @@ describe("desktop study learning controls", () => {
     expect(state.aiSelected).toBe(true);
   });
 
+  it("selects Choice and Auto on their own segments, never the AI one", () => {
+    for (const learningMode of ["choice", "auto"] as const) {
+      const state = resolveStudyLearningControlState({
+        ...readyCard,
+        learningMode,
+      });
+      expect(state.selectedMode).toBe(learningMode);
+      expect(state.flashSelected).toBe(false);
+      expect(state.aiSelected).toBe(false);
+    }
+  });
+
+  it("asks for typing in Auto only once a card is an answer", () => {
+    expect(acceptsTypedStudyAnswer("choice")).toBe(false);
+    expect(acceptsTypedStudyAnswer("auto")).toBe(false);
+    expect(acceptsTypedStudyAnswer("auto", "choice")).toBe(false);
+    expect(acceptsTypedStudyAnswer("auto", "flash")).toBe(false);
+    expect(acceptsTypedStudyAnswer("auto", "answer")).toBe(true);
+    expect(acceptsTypedStudyAnswer("answer_feedback")).toBe(true);
+  });
+
   it("keeps Flash free of typing, dynamic questions, and evaluation", () => {
     expect(acceptsTypedStudyAnswer("flash")).toBe(false);
     expect(shouldRequestDynamicStudyQuestion("flash", true)).toBe(false);

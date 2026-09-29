@@ -54,7 +54,11 @@ export {
   STUDY_TIME_CAP_MS,
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
-export { getDomainCompetence, getUserStats } from "./analytics/stats.js";
+export {
+  getDomainCompetence,
+  getUserStats,
+  MATURE_STABILITY_DAYS,
+} from "./analytics/stats.js";
 export type {
   ADOCredentials,
   CredentialCheckEntry,
@@ -638,6 +642,54 @@ export {
   executeReviewAction,
   recordAssistedStep,
 } from "./recall/actions.js";
+export type {
+  AnswerPresentation,
+  AnswerPresentationInput,
+  ChoiceEntry,
+  ChoiceEntrySource,
+  ChoiceEvidence,
+  PresentedChoice,
+  RecallReason,
+} from "./recall/answer-presentation.js";
+export {
+  applyChoiceOutcome,
+  assertChoiceEvidence,
+  choiceOptionsNeeded,
+  ratingForChoice,
+  resolveAnswerPresentation,
+  SHOWN_DISTRACTORS,
+} from "./recall/answer-presentation.js";
+export type {
+  CandidateRejection,
+  ShownSetRejection,
+} from "./recall/choice-checks.js";
+export {
+  checkCandidate,
+  checkShownSet,
+  normalizeOption,
+} from "./recall/choice-checks.js";
+export type {
+  ChoiceSuitabilityInput,
+  ChoiceUnsuitability,
+  DeriveDistractorsInput,
+  DerivedDistractor,
+  NewDistractor,
+  StoreDistractorsInput,
+  StoredDistractor,
+  StoredDistractorSource,
+} from "./recall/choice-options.js";
+export {
+  choiceSourceHash,
+  choiceUnsuitability,
+  DERIVED_POOL_SIZE,
+  deriveDistractors,
+  isChoiceSuitable,
+  listActiveDistractors,
+  RETIRE_MAX_CHOSEN_SHARE,
+  RETIRE_MIN_SHOWN,
+  storeDistractors,
+  syncCuratedDistractors,
+} from "./recall/choice-options.js";
 export type { EvaluateInput, EvaluateResult } from "./recall/evaluator.js";
 export { evaluateRating } from "./recall/evaluator.js";
 export type { PromptInput, RecallPrompt } from "./recall/prompter.js";
@@ -700,6 +752,17 @@ export {
 export type { CascadeBlockResult, UnblockResult } from "./scheduler/blocker.js";
 export { cascadeBlock, unblockReady } from "./scheduler/blocker.js";
 export type {
+  AnswerFormat,
+  TapCeilingResult,
+} from "./scheduler/choice-ceiling.js";
+export {
+  ANSWER_FORMATS,
+  applyTapCeiling,
+  CHOICE_CEILING_DAYS,
+  isAnswerFormat,
+  isTapBounded,
+} from "./scheduler/choice-ceiling.js";
+export type {
   FSRSParameters,
   Rating,
   SchedulingCard,
@@ -749,6 +812,7 @@ export {
   unburySiblingCards,
 } from "./scheduler/siblings.js";
 export type {
+  AutoRecallPin,
   StudyLearningMode,
   StudyLearningSettings,
   StudyWorkloadPreset,
@@ -761,6 +825,7 @@ export {
   DEFAULT_STUDY_WORKLOAD,
   getStudyLearningSettings,
   getStudyWorkloadSettings,
+  isAutoRecallPin,
   isStudyLearningMode,
   isStudyWorkloadPreset,
   MAX_VOICE_TIMEOUT_SEC,

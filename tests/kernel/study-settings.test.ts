@@ -8,8 +8,10 @@ import {
   DEFAULT_STUDY_WORKLOAD,
   getStudyLearningSettings,
   getStudyWorkloadSettings,
+  isAutoRecallPin,
   isStudyLearningMode,
   openDatabase,
+  setSetting,
   setStudyLearningSettings,
   setStudyWorkloadSettings,
 } from "../../src/kernel/index.js";
@@ -103,10 +105,71 @@ describe("study workload and learning settings", () => {
     ).rejects.toThrow("voice rating timeout must be an integer from 5 to 60");
   });
 
+  it("stores the choice and auto modes and the auto recall pin", async () => {
+    const choice = await setStudyLearningSettings(db, "erin", {
+      learningMode: "choice",
+    });
+    expect(choice.learningMode).toBe("choice");
+    expect(choice.autoRecallPin).toBeNull();
+
+    const auto = await setStudyLearningSettings(db, "erin", {
+      learningMode: "auto",
+      autoRecallPin: "flash",
+    });
+    expect(auto).toMatchObject({
+      learningMode: "auto",
+      autoRecallPin: "flash",
+    });
+    expect(await getStudyLearningSettings(db, "erin")).toMatchObject({
+      learningMode: "auto",
+      autoRecallPin: "flash",
+    });
+
+    // Another update keeps the pin; null clears it.
+    expect(
+      (
+        await setStudyLearningSettings(db, "erin", {
+          voiceRevealTimeoutSec: 10,
+        })
+      ).autoRecallPin,
+    ).toBe("flash");
+    expect(
+      (await setStudyLearningSettings(db, "erin", { autoRecallPin: null }))
+        .autoRecallPin,
+    ).toBeNull();
+  });
+
+  it("rejects an unknown auto recall pin", async () => {
+    await expect(
+      setStudyLearningSettings(db, "erin", {
+        autoRecallPin: "voice" as never,
+      }),
+    ).rejects.toThrow("Unsupported auto recall pin: voice");
+    expect(isAutoRecallPin("answer")).toBe(true);
+    expect(isAutoRecallPin(null)).toBe(true);
+    expect(isAutoRecallPin(undefined)).toBe(false);
+  });
+
+  it("reads settings saved before the pin existed as unpinned", async () => {
+    await setSetting(
+      db,
+      "study.learning.frank",
+      JSON.stringify({
+        learningMode: "answer_feedback",
+        voiceRevealTimeoutSec: 20,
+        voiceRatingTimeoutSec: 20,
+      }),
+    );
+    const settings = await getStudyLearningSettings(db, "frank");
+    expect(settings.autoRecallPin).toBeNull();
+  });
+
   it("validates isStudyLearningMode helper", () => {
     expect(isStudyLearningMode("flash")).toBe(true);
     expect(isStudyLearningMode("answer_feedback")).toBe(true);
     expect(isStudyLearningMode("answer_variation")).toBe(true);
+    expect(isStudyLearningMode("choice")).toBe(true);
+    expect(isStudyLearningMode("auto")).toBe(true);
     expect(isStudyLearningMode("custom")).toBe(false);
     expect(isStudyLearningMode(undefined)).toBe(false);
     expect(isStudyLearningMode(null)).toBe(false);

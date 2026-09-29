@@ -575,4 +575,164 @@ describe("mobile review session", () => {
     session.reveal({ allowEmpty: true });
     expect(session.revealed).toBe(true);
   });
+  it("books a tapped fast check as options, bounded by the tap ceiling", async () => {
+    const token = await createToken(db, {
+      slug: "mobile-tap-ceiling",
+      concept: "The normal is perpendicular.",
+      domain: "optik",
+      bloom_level: 1,
+      question: "How does the normal meet the surface?",
+      tier: "tier1_fast",
+      fast_check: JSON.stringify({
+        type: "binary_choice",
+        options: ["Perpendicular", "Parallel"],
+        correct_index: 0,
+      }),
+    });
+    await ensureCard(db, token.id, "student-tap");
+
+    const storage = new MemoryStorage();
+    const session = new MobileReviewSession(db, storage, () => 1);
+    expect(await session.start("student-tap", { maxNew: 1 })).toBe(true);
+    await session.confirmCurrent();
+    session.updateDraftAnswer("Perpendicular");
+    session.markOptionsTapped();
+    // A restored session remembers the tap.
+    expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).toContain(
+      '"answerFormat":"options"',
+    );
+    session.reveal();
+    await session.rate(4);
+
+    const log = (await db
+      .prepare("SELECT answer_format FROM review_logs WHERE token_id = ?")
+      .get(token.id)) as { answer_format: string };
+    expect(log.answer_format).toBe("options");
+    const card = await getCard(db, token.id, "student-tap");
+    // Plain FSRS would give an Easy new card difficulty 1.
+    expect(card?.difficulty).toBeCloseTo(5.1122, 3);
+  });
+
+  describe("choice and auto (ADR 2026-09-27)", () => {
+    async function choiceCard(userId: string, slug = "mobile-choice") {
+      const token = await createToken(db, {
+        slug,
+        concept: "Brechung",
+        domain: "optik",
+        bloom_level: 1,
+        question:
+          "Wie heißt die Richtungsänderung von Licht an einer Grenzfläche?",
+        fast_check: JSON.stringify({
+          type: "multiple_choice",
+          options: ["Reflexion", "Brechung", "Beugung"],
+          correct_index: 1,
+        }),
+      });
+      await ensureCard(db, token.id, userId);
+      return token;
+    }
+
+    it("keeps the presented options across a restore and books the pick", async () => {
+      const token = await choiceCard("student-choice");
+      const storage = new MemoryStorage();
+      const session = new MobileReviewSession(db, storage, () => 1);
+      expect(await session.start("student-choice")).toBe(true);
+      await session.confirmCurrent();
+
+      const presentation = await session.presentCurrent("choice");
+      expect(presentation.format).toBe("choice");
+      if (presentation.format !== "choice") return;
+      const { options, correctIndex } = presentation.choice;
+      expect(options[correctIndex]).toBe("Brechung");
+      const wrong = options.findIndex((option) => option === "Reflexion");
+
+      // A restored session shows the same options and remembers the pick.
+      session.choose(wrong);
+      const restored = new MobileReviewSession(db, storage, () => 2);
+      expect(await restored.restore("student-choice")).toEqual({
+        kind: "active",
+      });
+      expect(restored.presentation).toEqual(presentation);
+      expect(restored.choicePick).toEqual({ chosen: wrong, disputed: false });
+      expect(restored.revealed).toBe(true);
+      // Once answered, a mode switch does not re-decide the card.
+      expect(await restored.presentCurrent("flash")).toEqual(presentation);
+
+      // The rating follows from the pick; a self-rating cannot override it.
+      await expect(restored.rate(3)).rejects.toThrow(
+        "A choice earns rating 1, not 3",
+      );
+      await restored.rateChoice();
+      const log = (await db
+        .prepare(
+          "SELECT rating, answer_format FROM review_logs WHERE token_id = ?",
+        )
+        .get(token.id)) as { rating: number; answer_format: string };
+      expect(log).toEqual({ rating: 1, answer_format: "choice" });
+    });
+
+    it("counts a disputed option as correct and excludes it for the learner", async () => {
+      const token = await choiceCard("student-dispute", "mobile-dispute");
+      const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+      await session.start("student-dispute");
+      await session.confirmCurrent();
+      const presentation = await session.presentCurrent("choice");
+      if (presentation.format !== "choice") throw new Error("expected choice");
+      const wrong = presentation.choice.options.indexOf("Beugung");
+
+      session.choose(wrong);
+      session.disputeChoice();
+      expect(session.choicePick).toEqual({ chosen: wrong, disputed: true });
+      await session.rateChoice();
+
+      const log = (await db
+        .prepare(
+          "SELECT rating, answer_format FROM review_logs WHERE token_id = ?",
+        )
+        .get(token.id)) as { rating: number; answer_format: string };
+      expect(log).toEqual({ rating: 3, answer_format: "choice" });
+      const excluded = (await db
+        .prepare(
+          "SELECT excluded_key FROM choice_exclusions WHERE user_id = ? AND token_id = ?",
+        )
+        .all("student-dispute", token.id)) as Array<{ excluded_key: string }>;
+      // The authored option's index in the stored fast check.
+      expect(excluded.map((row) => row.excluded_key)).toEqual(["curated:2"]);
+    });
+
+    it("re-decides an unanswered card when the mode or its wording changes", async () => {
+      await choiceCard("student-switch", "mobile-switch");
+      const storage = new MemoryStorage();
+      const session = new MobileReviewSession(db, storage, () => 1);
+      await session.start("student-switch");
+      await session.confirmCurrent();
+
+      expect(await session.presentCurrent("flash")).toEqual({
+        format: "recall",
+        reason: "mode",
+      });
+      expect((await session.presentCurrent("choice")).format).toBe("choice");
+      expect(() => session.choose(7)).toThrow("That option was not shown");
+
+      session.applyCardEdit({ concept: "Brechung des Lichts" });
+      expect(session.presentation).toBeNull();
+      expect(storage.getItem(MOBILE_REVIEW_STORAGE_KEY)).not.toContain(
+        '"presentation"',
+      );
+    });
+
+    it("rates an unpicked choice card as recall, as voice does", async () => {
+      const token = await choiceCard("student-voice", "mobile-voice");
+      const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+      await session.start("student-voice");
+      await session.confirmCurrent();
+      await session.presentCurrent("choice");
+      session.reveal({ allowEmpty: true });
+      await session.rate(3);
+      const log = (await db
+        .prepare("SELECT answer_format FROM review_logs WHERE token_id = ?")
+        .get(token.id)) as { answer_format: string };
+      expect(log.answer_format).toBe("recall");
+    });
+  });
 });

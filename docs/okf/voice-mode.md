@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-09-13T16:00:00.000Z
+timestamp: 2026-09-29T08:00:00.000Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -47,6 +47,11 @@ or other FSRS evidence. At each timed boundary the controller stops and
 restarts the injected port before listening again, so one abandoned native
 recognizer cannot overlap its successor.
 
+The `choice` and `auto` learning modes run the flash loop as well: there are
+no spoken choices yet, so voice reveals the answer and takes a spoken rating,
+recorded with answer format `recall` (see
+[fsrs-scheduling.md](fsrs-scheduling.md)).
+
 `parseSpokenAction` recognizes reveal/next and stop phrases in German and
 English. `parseSpokenRating` matches whole words only
 (`nochmal`/`again` → 1 … `leicht` or `einfach`/`easy` → 4).
@@ -58,16 +63,18 @@ English becomes German.
 The interaction is a **per-learner database setting**, separate from the
 machine-local speech-engine preference below. The kernel stores one validated
 JSON object under `study.learning.<encoded-user-id>` with
-`learningMode`, `voiceRevealTimeoutSec`, and
-`voiceRatingTimeoutSec`. Both timeouts are integers from 5 to 60 seconds.
+`learningMode`, `voiceRevealTimeoutSec`, `voiceRatingTimeoutSec`, and Auto's
+`autoRecallPin`. Both timeouts are integers from 5 to 60 seconds.
 An explicit learner choice always wins. With no stored choice, a surface may
 supply an honest contextual fallback: Flash when no evaluator is available,
 answer-and-feedback when one is active. Reading a fallback does not persist it,
 so connecting an evaluator never overwrites a learner who explicitly chose
 Flash.
 
-Desktop and Mobile expose all three modes in their native Settings and a two-way
-Flash/AI switch during review. Native Desktop follows the same controller
+Desktop and Mobile expose all five modes in their native Settings — Flash,
+Choice, answer with feedback, variation, and Auto, with Auto's "later without
+typing" pin shown only while Auto is selected — and a four-way Flash / Choice /
+AI / Auto switch during review. Native Desktop follows the same controller
 contract as the companion: in Flash it hides answer input, skips dynamic
 questioning and evaluation, lets a click reveal the answer, and passes the
 learner's mode and timeouts into the voice controller. Switching modes pauses
@@ -94,7 +101,8 @@ settings.
 The MCP Recall and Settings panels read and write the same per-learner object
 through `study-learning-get` and `study-learning-set`; the old global
 `recall.quick_mode` remains only an evaluator-selection compatibility seed,
-not a second learning-mode store.
+not a second learning-mode store. The Recall panel offers no choice screen: it
+opens Choice as Flash and Auto in its free-recall format.
 
 Each surface supplies its own adapter and port:
 
@@ -362,11 +370,12 @@ default, which is how the companion behaved before the cloud tier existed.
 # Citations
 
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
+- [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [ADR 2026-07-21 — Android Companion Tauri Shell](../adr/2026-07-21-android-companion-tauri-shell.md)
 - [ADR 2026-07-26 — iPadOS Companion Target](../adr/2026-07-26-ipados-companion-target.md)
 - [ADR 2026-07-12 — Unified Capability Model Registry](../adr/2026-07-12-unified-capability-model-registry.md)
 - [ADR 2026-09-13 — Model Capabilities Are Detected, Not Chosen](../adr/2026-09-13-model-capabilities-are-detected.md)
 - [ADR 2026-07-23 — Online-Only Server DB, Mobile Gating, Cloud Config in the DB](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
-- Tests: `tests/kernel/voice-review.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/voice.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`, `tests/desktop/settings-view-mode.test.ts`, `tests/desktop/settings-simplicity.test.ts`, `tests/desktop/study-learning-ui.test.ts`, `tests/desktop/radio-group.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/settings-simplicity.test.ts`
+- Tests: `tests/kernel/voice-review.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/desktop/voice.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/desktop/settings-view-mode.test.ts`, `tests/desktop/settings-simplicity.test.ts`, `tests/desktop/study-learning-ui.test.ts`, `tests/desktop/radio-group.test.ts`, `tests/cli/speech.test.ts`, `tests/cli/model-registry.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/mobile/model-registry.test.ts`, `tests/cli/mobile-pairing.test.ts`, `tests/bridge/mobile-pairing.test.ts`, `tests/mobile/voice.test.ts`, `tests/mobile/speech.test.ts`, `tests/mobile/voice-wiring.test.ts`, `tests/mobile/learning-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/settings-simplicity.test.ts`
 - Code: `src/kernel/recall/voice-review.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/speech.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/model-registry.ts`, `mobile/src/model-registry.ts`, `src/cli/mobile-pairing.ts`, `src/bridge/mobile-pairing.ts`, `desktop/index.html`, `desktop/src/main.ts`, `desktop/src/settings-view-mode.ts`, `desktop/src/study-learning-ui.ts`, `desktop/src/radio-group.ts`, `desktop/src/styles.css`, `desktop/src/voice.ts`, `desktop/src-tauri/src/voice.rs`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/ui/components.css`, `mobile/src/ui/radio-group.ts`, `mobile/src/voice.ts`, `mobile/src/speech.ts`, `mobile/src-tauri/src/voice.rs`, `mobile/src-tauri/ios/Sources/VoicePlugin.swift`, `src/kernel/system/install-config.ts`

@@ -17,7 +17,7 @@ describe("Tier-1 choice reveal on Mobile", () => {
       'throw new Error("Reveal the answer before rating")',
     );
     const reveal = session.slice(session.indexOf("reveal(options"));
-    const body = reveal.slice(0, reveal.indexOf("async rate("));
+    const body = reveal.slice(0, reveal.indexOf("\n  }\n"));
     expect(body).not.toMatch(/correct_index|isCorrect|correctIndex/);
   });
 });

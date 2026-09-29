@@ -1,6 +1,8 @@
 # Choice and Auto Learning Modes
 
-**Status:** Proposed — 2026-09-27, revised after review rounds 1 and 2\
+**Status:** Implemented — 2026-09-29 (PR #369). Accepted after review rounds 1
+and 2; the Studio and Mobile ship both modes. Not yet built: the "ready for
+free recall" session line on Mobile.\
 **Date:** 2026-09-27\
 **Deciders:** Thomas (project owner)\
 **Implementation plan:** [2026-09-27-choice-and-auto-learning-modes.md](../plans/2026-09-27-choice-and-auto-learning-modes.md)\
@@ -286,10 +288,11 @@ learner when the card is presented, and never shared.
   type.
 - **Exclusions.** The item's own atom and sibling group, and every candidate
   that fails the deterministic checks of source 3.
-- **Filtering.** When a `text` model is available, a derived set passes the
-  same reject filter as a generated one before first use. Without a model,
-  dispute and retirement are the safeguard: a different correct answer, such
-  as Neon for "a noble gas", survives any string check.
+- **Filtering.** A derived set passes the deterministic checks of source 3
+  and nothing more; the reject filter runs on generated candidates only
+  (amended 2026-09-29, below). Dispute and retirement are the safeguard: a
+  different correct answer, such as Neon for "a noble gas", survives any
+  string check.
 - **Explanation.** It comes free: "This answers: <the other question>".
   Vocabulary and imported Anki decks fit well.
 
@@ -344,6 +347,47 @@ correct option must not be the only long, short or parenthesised one.
 
 A filtered set is not a verified one. The quality gate that works everywhere,
 offline included, is dispute and retirement, plus curator review for tiles.
+
+**Amended 2026-09-29 (owner decisions, field test).**
+
+- **Order.** Generated options now come before derived ones: authored fast
+  check → curated → generated → derived. An answer taken from another
+  question is easy to recognise as belonging to that other question, so
+  derived options are only the last resort — mainly for learners without a
+  model.
+- **Fresh wrong answers.** A choice works like a question variation, and it
+  loses its value once the learner can recognise the wrong options instead
+  of knowing the right one. A presentation therefore prefers generated
+  options this learner has not been shown yet (read from the choice evidence
+  of their attempts), and the background preparation generates new ones
+  whenever fewer than two unseen ones are left, passing the existing options
+  to the model as ones to avoid. Seen options are reused only when no fresh
+  ones are ready. Cost: roughly one generation (two model calls) per choice
+  presentation of a card without an authored or curated set.
+- **Attribution.** A generated option records the model that wrote it, and
+  the surfaces name it next to the options ("Options: <model>"), as they do
+  for a generated question variation.
+- **Fallback on refusal.** Each generation call walks on to the next model of
+  its role's chain when a row refuses the call. A row of a known cloud
+  provider without a stored key is skipped at readiness and does not count
+  as the cloud having answered, so it neither serves nor closes the offline
+  tier.
+
+**Amended 2026-09-29 (owner decision, review of PR #369).**
+
+- **Derived sets are not filtered.** As proposed, a derived set passed the
+  reject filter before first use whenever a text model was available. That
+  is not built, and it will not be: since derived options became the last
+  resort, a learner with a model sees them only while generated options are
+  not ready, and filtering them at presentation would put a model call
+  before the card, against the rule that a card never waits for generation.
+  Filtering them in the background would need a per-learner store of
+  rejected donors for a source that is meant for learners without a model.
+  Derived candidates pass the deterministic checks; a derived option that
+  is itself a correct answer is caught by dispute (Decision 7), which
+  excludes that donor for the learner. The falsification check on
+  generation quality covers derived options as well: a high dispute rate on
+  derived options reopens this decision.
 
 ### 7. Feedback after a wrong answer, and disputes
 
@@ -429,13 +473,22 @@ points to Auto, Flash or the answer mode. It does not interrupt the session.
 
 ### 9. Where choice applies
 
-- **Choice:** single-point answers at Bloom levels 1–3 — terms, definitions,
-  formulas, values, vocabulary, cloze gaps, and applications whose
-  distractors model typical mistakes.
+- **Choice:** every item whose answer is text, at any Bloom level and with
+  any number of answer points.
 - **A recall format instead** — Flash in plain Choice, free recall in Auto:
-  - Bloom levels 4–5;
-  - answers with more than one point (ADR 2026-09-08);
-  - answers carried by answer media such as image occlusion.
+  answers carried by answer media such as image occlusion. The presentation
+  says so (`detail: "answer_media"`), so a surface can name the reason.
+- **Amended 2026-09-29 (owner decisions).** As proposed, Choice covered only
+  single-point answers at Bloom levels 1–3. The field test showed that this
+  left many cards without the mode: libraries hold items written before the
+  one-point rule (ADR 2026-09-08), and the Bloom label of an item says little
+  about whether its options can be told apart. Both limits are lifted.
+  Options remain a first stage, not an end state: the tap ceiling (Decision 4)
+  keeps a card answered by choice from maturing, so once a card reaches the
+  ceiling the learner takes it further in Flash or an answer mode — or Auto
+  does it at the recall probe (Decision 8). Higher-order items are where
+  generated distractors are least likely to be clearly wrong; disputes and
+  retirement (Decisions 6 and 7) remain the safeguard.
 - **Tier-1 binary fast checks:**
   - In both new modes they are graded automatically, under Decisions 3 and 4.
   - In the answer modes they keep today's tap followed by self-rating,

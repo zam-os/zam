@@ -8,6 +8,7 @@
 import type { Database } from "../db/types.js";
 import { bindStandingAssignments } from "../models/assignment.js";
 import { getDisplayTitle } from "../models/token.js";
+import { seededPermutation } from "../util/seeded.js";
 import { interleave } from "./interleaver.js";
 import {
   cardAllowedForAtom,
@@ -33,7 +34,11 @@ export interface ReviewQueueOptions {
 }
 
 export interface ReviewFastCheck {
-  type: "binary_choice";
+  /**
+   * `binary_choice`: a tier-1 two-way check. `multiple_choice`: a curated set
+   * of three or four options (ADR 2026-09-27 Decision 2).
+   */
+  type: "binary_choice" | "multiple_choice";
   options: string[];
   correctIndex: number;
 }
@@ -392,16 +397,6 @@ function rowToItem(row: CardRow): ReviewQueueItem {
   };
 }
 
-/** 32-bit FNV-1a. Small, stable, and not a security primitive. */
-function seedHash(seed: string): number {
-  let hash = 0x811c9dc5;
-  for (let index = 0; index < seed.length; index++) {
-    hash ^= seed.charCodeAt(index);
-    hash = Math.imul(hash, 0x01000193) >>> 0;
-  }
-  return hash >>> 0;
-}
-
 /**
  * Order the options a learner sees, and move `correctIndex` with them.
  *
@@ -425,20 +420,10 @@ export function presentFastCheck(
   seed: string,
 ): ReviewFastCheck | null {
   if (!fastCheck) return null;
-  const order = fastCheck.options.map((option, index) => ({ option, index }));
-  let hash = seedHash(seed);
-  for (let index = order.length - 1; index > 0; index--) {
-    // Draw from the high bits. Practice-item ids differ only in their last
-    // characters, and the low bit of an FNV hash barely moves with them: taking
-    // `hash % 2` put six of seven Optik cards in the same position, which is
-    // the tell this function exists to remove.
-    hash = Math.imul(hash ^ (hash >>> 15), 0x2c1b3c6d) >>> 0;
-    hash ^= hash >>> 13;
-    const target = (hash >>> 16) % (index + 1);
-    const swap = order[index]!;
-    order[index] = order[target]!;
-    order[target] = swap;
-  }
+  const order = seededPermutation(
+    fastCheck.options.map((option, index) => ({ option, index })),
+    seed,
+  );
   return {
     type: fastCheck.type,
     options: order.map((entry) => entry.option),
@@ -472,12 +457,18 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
     correct_index?: unknown;
     correctIndex?: unknown;
   };
-  if (candidate.type !== "binary_choice" || !Array.isArray(candidate.options)) {
+  if (
+    (candidate.type !== "binary_choice" &&
+      candidate.type !== "multiple_choice") ||
+    !Array.isArray(candidate.options)
+  ) {
     return null;
   }
   const options = candidate.options;
   if (
     options.length < 2 ||
+    (candidate.type === "multiple_choice" &&
+      (options.length < 3 || options.length > 4)) ||
     !options.every(
       (option): option is string =>
         typeof option === "string" && option.trim().length > 0,
@@ -494,7 +485,7 @@ export function parseReviewFastCheck(raw: unknown): ReviewFastCheck | null {
     return null;
   }
   return {
-    type: "binary_choice",
+    type: candidate.type,
     options: [...options],
     correctIndex: correctIndex as number,
   };

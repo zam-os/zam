@@ -1,7 +1,16 @@
 export type StudyLearningMode =
   | "flash"
+  | "choice"
   | "answer_feedback"
-  | "answer_variation";
+  | "answer_variation"
+  | "auto";
+
+/**
+ * The format Auto resolved for the current card (ADR 2026-09-27 Decision 8):
+ * a choice while the card is new, then free recall as an AI-evaluated answer
+ * or as Flash.
+ */
+export type AutoCardFormat = "choice" | "answer" | "flash";
 
 export interface StudyLearningControlInput {
   learningMode: StudyLearningMode;
@@ -14,7 +23,10 @@ export interface StudyLearningControlInput {
 }
 
 export interface StudyLearningControlState {
+  /** The mode whose switcher segment is checked. */
+  selectedMode: StudyLearningMode;
   flashSelected: boolean;
+  /** One of the two answer modes, which share the 💬 segment. */
   aiSelected: boolean;
   settingsDisabled: boolean;
   reviewDisabled: boolean;
@@ -30,10 +42,12 @@ export interface StudyLearningControlState {
 export function resolveStudyLearningControlState(
   input: StudyLearningControlInput,
 ): StudyLearningControlState {
-  const flashSelected = input.learningMode === "flash";
   return {
-    flashSelected,
-    aiSelected: !flashSelected,
+    selectedMode: input.learningMode,
+    flashSelected: input.learningMode === "flash",
+    aiSelected:
+      input.learningMode === "answer_feedback" ||
+      input.learningMode === "answer_variation",
     settingsDisabled: input.settingsPending,
     reviewDisabled:
       input.settingsPending ||
@@ -45,8 +59,17 @@ export function resolveStudyLearningControlState(
   };
 }
 
-export function acceptsTypedStudyAnswer(mode: StudyLearningMode): boolean {
-  return mode !== "flash";
+/**
+ * Whether the learner types (or speaks) an answer. Flash and Choice never ask
+ * for typing; Auto does only once a card is asked as an answer.
+ */
+export function acceptsTypedStudyAnswer(
+  mode: StudyLearningMode,
+  autoFormat?: AutoCardFormat,
+): boolean {
+  if (mode === "flash" || mode === "choice") return false;
+  if (mode === "auto") return autoFormat === "answer";
+  return true;
 }
 
 export function shouldRequestDynamicStudyQuestion(
@@ -61,9 +84,11 @@ export function shouldEvaluateStudyAnswer(input: {
   evaluatorAvailable: boolean;
   answer: string;
   fastCheck: boolean;
+  /** Auto's format for the current card. */
+  autoFormat?: AutoCardFormat;
 }): boolean {
   return (
-    acceptsTypedStudyAnswer(input.learningMode) &&
+    acceptsTypedStudyAnswer(input.learningMode, input.autoFormat) &&
     input.evaluatorAvailable &&
     input.answer.length > 0 &&
     !input.fastCheck

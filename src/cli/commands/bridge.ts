@@ -22,6 +22,7 @@ import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
 import type { DiscussionTurn } from "../../bridge/protocol.js";
 import type {
   BloomLevel,
+  ChoiceEvidence,
   Database,
   EditorialState,
   KnowledgeContext,
@@ -38,6 +39,7 @@ import {
   applySourceProposals,
   assignTokenToContext,
   BUILT_IN_SENSITIVE_MATCHERS,
+  buildReviewQueue,
   type CapabilityFlags,
   checkCredentials,
   clearProviderApiKey,
@@ -169,6 +171,7 @@ import {
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
   analyzeMonitor as handleAnalyzeMonitor,
+  answerPresentation as handleAnswerPresentation,
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
@@ -236,6 +239,7 @@ import {
   probeModelCapabilities,
   validateModelSave,
 } from "../llm/capability-probe.js";
+import { prepareChoiceOptionsForCards } from "../llm/choice-prepare.js";
 import {
   type ApiFlavor,
   checkVisionReadiness,
@@ -244,6 +248,7 @@ import {
   discussReviewViaLLM,
   ensureLlmReadyHeadless,
   evaluateAnswerViaLLM,
+  generateChoiceOptionsViaLLM,
   generateFoundationsProposalsViaLLM,
   generateGoalDecompositionViaLLM,
   generateSplitProposalsViaLLM,
@@ -1142,6 +1147,133 @@ bridgeCommand
     });
   });
 
+function parseChoiceEvidenceOption(raw: string): ChoiceEvidence {
+  try {
+    return JSON.parse(raw) as ChoiceEvidence;
+  } catch {
+    throw new Error("--choice-evidence must be JSON");
+  }
+}
+
+/** `--choice-json` of discuss-review; malformed input is ignored. */
+function parseDiscussionChoice(
+  raw: string | undefined,
+): { options: string[]; chosen: string | null; answer: string } | null {
+  if (!raw) return null;
+  try {
+    const value = JSON.parse(raw) as {
+      options?: unknown;
+      chosen?: unknown;
+      answer?: unknown;
+    };
+    if (
+      !Array.isArray(value.options) ||
+      !value.options.every((option) => typeof option === "string") ||
+      typeof value.answer !== "string" ||
+      (value.chosen !== null && typeof value.chosen !== "string")
+    ) {
+      return null;
+    }
+    return {
+      options: value.options as string[],
+      chosen: value.chosen as string | null,
+      answer: value.answer,
+    };
+  } catch {
+    return null;
+  }
+}
+
+// ── zam bridge answer-presentation ──────────────────────────────────────────
+
+bridgeCommand
+  .command("answer-presentation")
+  .description(
+    "How a card is asked in the choice or auto mode, with its options (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--card-id <id>", "Card ID being presented")
+  .requiredOption("--mode <name>", "choice | auto")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context the session is filtered by",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await handleAnswerPresentation(db, {
+            user: userId,
+            cardId: opts.cardId,
+            mode: opts.mode,
+            knowledgeContext: opts.knowledgeContext,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge choice-prepare ───────────────────────────────────────────────
+
+bridgeCommand
+  .command("choice-prepare")
+  .description(
+    "Generate choice options ahead of the review for the next queue cards (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option("--limit <n>", "How many upcoming queue cards to consider", "3")
+  .option("--card-id <id...>", "Prepare these cards instead of the queue")
+  .option(
+    "--knowledge-context <context>",
+    "Knowledge context the session is filtered by",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        const limit = Number(opts.limit);
+        if (!Number.isInteger(limit) || limit < 1 || limit > 50) {
+          throw new Error("--limit must be an integer from 1 to 50");
+        }
+        if (!(await getLlmConfig(db)).enabled) {
+          jsonOut({
+            success: true,
+            prepared: 0,
+            skipped: 0,
+            failed: [],
+            modelCalls: 0,
+            reason: "no_model",
+          });
+          return;
+        }
+        let cardIds: string[] = opts.cardId ?? [];
+        if (cardIds.length === 0) {
+          const workload = await getStudyWorkloadSettings(db, userId);
+          const queue = await buildReviewQueue(db, {
+            userId,
+            maxNew: workload.maxNew,
+            maxReviews: workload.maxReviews,
+            buryNewSiblings: workload.buryNewSiblings,
+            buryReviewSiblings: workload.buryReviewSiblings,
+            knowledgeContext: opts.knowledgeContext,
+          });
+          cardIds = queue.items.slice(0, limit).map((item) => item.cardId);
+        }
+        const outcome = await prepareChoiceOptionsForCards(
+          db,
+          { userId, cardIds, knowledgeContext: opts.knowledgeContext },
+          (item) => generateChoiceOptionsViaLLM(db, item),
+        );
+        jsonOut({ success: true, ...outcome });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
 // ── zam bridge submit ─────────────────────────────────────────────────────
 
 bridgeCommand
@@ -1172,6 +1304,14 @@ bridgeCommand
     "Why this step is record-only (required with --record-only)",
   )
   .option("--attempt-id <id>", "Shared attempt ULID for idempotent submits")
+  .option(
+    "--answer-format <recall|options|choice>",
+    "How the card was answered: options for a tapped fast check (default: recall)",
+  )
+  .option(
+    "--choice-evidence <json>",
+    "What a choice showed and what was picked (required with --answer-format choice)",
+  )
   .option("--activity <text>", "Specific work activity for this attempt")
   .option("--assistance <text>", "Assistance actually received")
   .option(
@@ -1207,6 +1347,11 @@ bridgeCommand
           recordOnly: Boolean(opts.recordOnly),
           reason: opts.reason,
           attemptId: opts.attemptId,
+          answerFormat: opts.answerFormat,
+          choiceEvidence:
+            opts.choiceEvidence === undefined
+              ? undefined
+              : parseChoiceEvidenceOption(opts.choiceEvidence),
           activity: opts.activity,
           assistance: opts.assistance,
           independent:
@@ -4018,6 +4163,10 @@ bridgeCommand
     'Prior turns, oldest first, as JSON: [{"role":"user"|"assistant","content":"…"},…]',
   )
   .option("--context <context>", "Optional token context details")
+  .option(
+    "--choice-json <json>",
+    'A choice the learner answered: {"options":[…],"chosen":"…"|null,"answer":"…"}',
+  )
   .option("--source-link <link>", "Optional source link")
   .option(
     "--source-content <content>",
@@ -4068,6 +4217,7 @@ bridgeCommand
           userAnswer: opts.userAnswer,
           sourceLinkContent: resolvedContextContent,
           feedback: opts.feedback ?? null,
+          choice: parseDiscussionChoice(opts.choiceJson),
           thread,
           message: opts.message,
         });
@@ -4611,7 +4761,14 @@ bridgeCommand
     "Save persistent review learning mode settings for a learner (JSON)",
   )
   .option("--user <id>", "User ID (default: whoami)")
-  .option("--mode <name>", "flash | answer_feedback | answer_variation")
+  .option(
+    "--mode <name>",
+    "flash | choice | answer_feedback | answer_variation | auto",
+  )
+  .option(
+    "--auto-recall-pin <pin>",
+    "Free-recall format Auto switches to: answer | flash | none (follow the evaluator)",
+  )
   .option(
     "--fallback-mode <name>",
     "Default for an unset learner: flash | answer_feedback",
@@ -4622,8 +4779,22 @@ bridgeCommand
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
       if (opts.mode !== undefined && !isStudyLearningMode(opts.mode)) {
-        jsonError("mode must be flash, answer_feedback, or answer_variation");
+        jsonError(
+          "mode must be flash, choice, answer_feedback, answer_variation, or auto",
+        );
       }
+      if (
+        opts.autoRecallPin !== undefined &&
+        !["answer", "flash", "none"].includes(opts.autoRecallPin)
+      ) {
+        jsonError("auto-recall-pin must be answer, flash, or none");
+      }
+      const autoRecallPin =
+        opts.autoRecallPin === undefined
+          ? undefined
+          : opts.autoRecallPin === "none"
+            ? null
+            : (opts.autoRecallPin as "answer" | "flash");
       if (
         opts.fallbackMode !== undefined &&
         opts.fallbackMode !== "flash" &&
@@ -4658,6 +4829,7 @@ bridgeCommand
           learningMode: opts.mode,
           voiceRevealTimeoutSec,
           voiceRatingTimeoutSec,
+          autoRecallPin,
         },
         {
           fallbackLearningMode:

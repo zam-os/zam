@@ -8,6 +8,11 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import { updateCard } from "../models/card.js";
+import {
+  type AnswerFormat,
+  applyTapCeiling,
+  isTapBounded,
+} from "../scheduler/choice-ceiling.js";
 import type { Rating, SchedulingCard } from "../scheduler/fsrs.js";
 import { createFSRS } from "../scheduler/fsrs.js";
 import { burySiblingCards } from "../scheduler/siblings.js";
@@ -21,6 +26,8 @@ export interface EvaluateInput {
   responseTimeMs?: number;
   reviewLogId?: string;
   attemptId?: string;
+  /** How the card was answered (ADR 2026-09-27 Decision 5). Default `recall`. */
+  answerFormat?: AnswerFormat;
   now?: Date;
 }
 
@@ -35,6 +42,8 @@ export interface EvaluateResult {
   lapses: number;
   buriedSiblings: number;
   buriedUntil: string | null;
+  /** The tap ceiling lowered what FSRS would have scheduled (Decision 4). */
+  ceilingApplied: boolean;
 }
 
 /**
@@ -98,8 +107,15 @@ export async function evaluateRatingWithinTransaction(
     lastReviewAt: card.last_review_at ? new Date(card.last_review_at) : null,
   };
 
-  // Run FSRS
-  const updated = fsrs.schedule(schedulingCard, input.rating, now);
+  // Run FSRS; a successful tapped answer is bounded by the tap ceiling.
+  const answerFormat = input.answerFormat ?? "recall";
+  let updated = fsrs.schedule(schedulingCard, input.rating, now);
+  let ceilingApplied = false;
+  if (isTapBounded(answerFormat, input.rating)) {
+    const bounded = applyTapCeiling(fsrs, schedulingCard, updated, now);
+    updated = bounded.card;
+    ceilingApplied = bounded.ceilingApplied;
+  }
 
   // Update the card in the DB
   await updateCard(db, input.cardId, {
@@ -140,8 +156,8 @@ export async function evaluateRatingWithinTransaction(
     .get(input.tokenId)) as { content_version: number } | undefined;
   await db
     .prepare(
-      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version, attempt_id)
-     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
+      `INSERT INTO review_logs (id, card_id, token_id, user_id, rating, response_time_ms, reviewed_at, scheduled_at, session_id, content_version, attempt_id, answer_format)
+     VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)`,
     )
     .run(
       reviewLogId,
@@ -155,6 +171,7 @@ export async function evaluateRatingWithinTransaction(
       input.sessionId ?? null,
       asked?.content_version ?? null,
       input.attemptId ?? null,
+      answerFormat,
     );
 
   const siblingBurial = await burySiblingCards(db, {
@@ -175,5 +192,6 @@ export async function evaluateRatingWithinTransaction(
     lapses: updated.lapses,
     buriedSiblings: siblingBurial.buried,
     buriedUntil: siblingBurial.until,
+    ceilingApplied,
   };
 }

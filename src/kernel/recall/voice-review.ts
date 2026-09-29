@@ -13,6 +13,7 @@
 
 import { decideAiTier } from "../ai/tier-preference.js";
 import type { Rating } from "../scheduler/fsrs.js";
+import type { StudyLearningMode } from "../scheduler/study-settings.js";
 
 export type VoiceLocale = "de-DE" | "en-US";
 
@@ -25,7 +26,8 @@ export interface VoicePort {
 }
 
 export interface HandsFreeReviewOptions {
-  mode?: "flash" | "answer_feedback" | "answer_variation";
+  /** Voice keeps its Flash and answer loops; its ratings are `recall`. */
+  mode?: StudyLearningMode;
   revealTimeoutMs?: number;
   ratingTimeoutMs?: number;
   promptNudgeMs?: number;

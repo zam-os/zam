@@ -1,7 +1,10 @@
 import { mkdirSync, writeFileSync } from "node:fs";
 import { join } from "node:path";
 import type {
+  AnswerFormat,
+  AnswerPresentation,
   BloomLevel,
+  ChoiceEvidence,
   Database,
   InstallChannel,
   KnowledgeContext,
@@ -56,7 +59,9 @@ import {
   getTokenMedia,
   getTokensBySourceLinkBase,
   getUserStats,
+  isAnswerFormat,
   isObserverPolicyConfigured,
+  isStudyLearningMode,
   endSession as kernelEndSession,
   startSession as kernelStartSession,
   suggestFoundations as kernelSuggestFoundations,
@@ -77,6 +82,7 @@ import {
   recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
+  resolveAnswerPresentation,
   searchTokensHybrid,
   setTokenMaintenance,
   structuralPublicationChecks,
@@ -530,6 +536,13 @@ export interface SubmitReviewParams {
   assistance?: string;
   independent?: boolean;
   permittedTools?: string[];
+  /**
+   * How the card was answered (ADR 2026-09-27 Decision 5): `options` for a
+   * tapped fast check the learner then rated. Defaults to `recall`.
+   */
+  answerFormat?: AnswerFormat;
+  /** What a choice showed and what was picked (with `answerFormat: choice`). */
+  choiceEvidence?: ChoiceEvidence;
 }
 
 export async function submitReview(db: Database, params: SubmitReviewParams) {
@@ -617,6 +630,12 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
   if (params.rating == null || params.rating < 1 || params.rating > 4) {
     throw new Error("Rating must be between 1 and 4");
   }
+  if (
+    params.answerFormat !== undefined &&
+    !isAnswerFormat(params.answerFormat)
+  ) {
+    throw new Error("answerFormat must be recall, options or choice");
+  }
   let cardId = params.cardId;
   if (!cardId) {
     if (!params.tokenId) {
@@ -643,6 +662,8 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     assistance: params.assistance,
     independent: params.independent,
     channel: "direct",
+    answerFormat: params.answerFormat,
+    choiceEvidence: params.choiceEvidence,
   });
 
   return {
@@ -652,6 +673,36 @@ export async function submitReview(db: Database, params: SubmitReviewParams) {
     blocked: result.blocked ?? null,
     attemptId: result.attemptId,
     applied: result.applied ?? true,
+  };
+}
+
+// 4b. answerPresentation — how a card is asked in Choice or Auto
+export interface AnswerPresentationParams {
+  user?: string;
+  cardId: string;
+  mode: string;
+  knowledgeContext?: string;
+}
+
+export async function answerPresentation(
+  db: Database,
+  params: AnswerPresentationParams,
+): Promise<{ success: true; presentation: AnswerPresentation }> {
+  const userId = await resolveHandlerUser(db, params.user);
+  if (
+    !isStudyLearningMode(params.mode) ||
+    (params.mode !== "choice" && params.mode !== "auto")
+  ) {
+    throw new Error("mode must be choice or auto");
+  }
+  return {
+    success: true,
+    presentation: await resolveAnswerPresentation(db, {
+      userId,
+      cardId: params.cardId,
+      mode: params.mode,
+      knowledgeContext: params.knowledgeContext,
+    }),
   };
 }
 

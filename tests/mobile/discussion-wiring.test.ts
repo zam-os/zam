@@ -28,7 +28,8 @@ describe("mobile follow-up discussion wiring", () => {
     expect(clear.slice(0, clear.indexOf("\n}"))).toContain(
       "clearDiscussionUi()",
     );
-    expect(main).toContain("const result = await reviewSession.rate(rating)");
+    expect(main).toContain("finishRating(() => reviewSession.rate(rating))");
+    expect(main).toContain("const result = await submit();");
     expect(main).toContain("clearEvaluationUi()");
   });
 

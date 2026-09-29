@@ -84,6 +84,7 @@ Bridge responses are always JSON, including errors. Treat `protocol.ts` types as
   before offering the wizard. A cell carries resolved sources, prerequisites
   and reviewed items; a generic import carries none of that.
 - **Blocking is separate from rating**: `evaluateRating()` updates FSRS state; callers decide whether to invoke blocking after a rating of `1`.
+- **Every rating submit declares its `answer_format`** (ADR 2026-09-27): `recall`, `options` for a tapped fast check followed by a self-rating, or `choice` for a rating derived from the chosen option. The kernel's tap ceiling depends on it.
 - **`zam bridge` must emit JSON only** (stricter than `--json` flag on other commands).
 - **Token metadata drives behavior**: Bloom levels drive prompt generation; `symbiosis_mode` is load-bearing.
 - **FSRS tests are the source of truth** for scheduling behavior — check `tests/kernel/fsrs.test.ts` when changing scheduling or rating semantics.

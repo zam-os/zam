@@ -39,6 +39,14 @@ import {
   t,
 } from "../../kernel/index.js";
 import { resolveReviewContext } from "../review-context.js";
+import type { ChoiceGeneration } from "./choice-prepare.js";
+import {
+  CHOICE_FILTER_MAX_OUTPUT_TOKENS,
+  CHOICE_GENERATION_MAX_OUTPUT_TOKENS,
+  type ChoiceGenerationItem,
+  type ChoicePrompt,
+  runChoiceGeneration,
+} from "./choice-prompt.js";
 import { CLOUD_PROVIDERS, OPENROUTER_PROVIDER } from "./cloud-providers.js";
 import {
   ensureFoundryModelLoaded,
@@ -1153,6 +1161,15 @@ export async function discussReviewViaLLM(
     sourceLinkContent?: string | null;
     /** AI feedback already shown for this answer (becomes the thread's first assistant turn). */
     feedback?: string | null;
+    /**
+     * A choice the learner answered (ADR 2026-09-27 Decision 7): the options,
+     * the pick (null for "Don't know") and the answer.
+     */
+    choice?: {
+      options: string[];
+      chosen: string | null;
+      answer: string;
+    } | null;
     /** Prior discussion turns, oldest first. */
     thread: DiscussionTurn[];
     /** The learner's newest turn. */
@@ -1172,13 +1189,23 @@ Guidelines:
 1. Answer the learner's follow-up directly and concretely in ${langName}, grounded in the card's target concept, context, and source reference.
 2. Stay scoped to this card and its concept. If the learner drifts to unrelated territory, answer briefly and steer back to the concept.
 3. Keep replies conversational and short (a few sentences) unless the learner explicitly asks for depth. Plain text only — no markdown wrapper, headers, or bullet lists.
-4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating.`;
+${
+  input.choice
+    ? "4. The learner answered by choosing one of several options, and the rating follows from that choice — do not discuss self-rating. When they chose a wrong option, explain concretely how it differs from the correct answer and why the two are easy to confuse."
+    : "4. The self-rating is the learner's own choice. If asked, explain the FSRS scale (1 = did not recall it, or only partly; 2-4 = recalled it, differing only in effort: hard, good, easy) but never pressure them toward a specific rating."
+}`;
 
   const cardFrame = `The card under discussion:
 Domain: ${input.domain}
 Slug: ${input.slug}
 Recall Question: ${input.question}
-Learner's Answer: ${input.userAnswer}
+${
+  input.choice
+    ? `Options shown: ${input.choice.options.map((option) => `"${option}"`).join(", ")}
+Learner chose: ${input.choice.chosen === null ? "(did not know)" : `"${input.choice.chosen}"`}
+Correct option: "${input.choice.answer}"`
+    : `Learner's Answer: ${input.userAnswer}`
+}
 
 Target Concept (Correct Answer): ${input.concept}
 Target Context: ${input.context || "(none)"}
@@ -1921,6 +1948,149 @@ JSON Array Output:`;
   }).map((card) => ({ ...card, source_link: token.source_link || null }));
 }
 
+/** One prompt to a resolved endpoint, over the agent harness or HTTP. */
+async function completeChoicePrompt(
+  endpoint: ProviderConfig,
+  locale: SupportedLocale,
+  prompt: ChoicePrompt,
+  maxTokens: number,
+): Promise<string> {
+  if (endpoint.transport === "agent") {
+    return requestAgentCompletion(endpoint, {
+      system: prompt.system,
+      user: prompt.user,
+    });
+  }
+  const res = await fetchWithInteractiveTimeout(
+    endpointUrl(endpoint.url, "chat/completions"),
+    {
+      method: "POST",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${endpoint.apiKey}`,
+      },
+      body: JSON.stringify({
+        model: endpoint.model,
+        messages: [
+          { role: "system", content: prompt.system },
+          { role: "user", content: prompt.user },
+        ],
+        temperature: 0.3,
+        max_tokens: maxTokens,
+      }),
+      locale,
+    },
+  );
+  return readChatContent(res, "LLM choice options");
+}
+
+function endpointLabel(endpoint: ProviderConfig): string {
+  return endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`;
+}
+
+/**
+ * Generate and filter choice options for one item (ADR 2026-09-27 Decision
+ * 6). Generation uses the `text` role, like every other content-authoring
+ * call. The reject filter prefers the `recall` role when it runs a different
+ * model, so that one model's blind spots do not pass its own check; with a
+ * single model configured, the same one filters.
+ */
+export async function generateChoiceOptionsViaLLM(
+  db: Database,
+  item: ChoiceGenerationItem,
+): Promise<ChoiceGeneration> {
+  const cfg = await getProviderForRole(db, "text");
+  const generator = await resolveUsableTextEndpoint(db, { allowAgent: true });
+  let filter = generator;
+  try {
+    const recall = await resolveUsableRecallEndpoint(db, { allowAgent: true });
+    if (endpointLabel(recall) !== endpointLabel(generator)) filter = recall;
+  } catch {
+    // No usable recall model: the generator filters its own options.
+  }
+  // A row can pass the readiness walk and still refuse the call — a keyless
+  // OpenRouter row does, because its /models catalogue is public. Each call
+  // therefore walks on to the next row of its chain, as Mobile does.
+  const generators = chainFrom(generator, cfg);
+  const filters =
+    filter === generator
+      ? generators
+      : chainFrom(filter, await getProviderForRole(db, "recall"));
+  const served = { generator, filter };
+  const result = await runChoiceGeneration({
+    item,
+    complete: (prompt) =>
+      completeChoiceOnChain(
+        generators,
+        cfg.locale,
+        prompt,
+        CHOICE_GENERATION_MAX_OUTPUT_TOKENS,
+        (endpoint) => {
+          served.generator = endpoint;
+        },
+      ),
+    completeFilter: (prompt) =>
+      completeChoiceOnChain(
+        filters,
+        cfg.locale,
+        prompt,
+        CHOICE_FILTER_MAX_OUTPUT_TOKENS,
+        (endpoint) => {
+          served.filter = endpoint;
+        },
+      ),
+  });
+  return {
+    result,
+    model: endpointLabel(served.generator),
+    filterModel: endpointLabel(served.filter),
+  };
+}
+
+/** The resolved endpoint first, then the rows after it in its role's chain. */
+function chainFrom(
+  first: ProviderConfig,
+  role: ProviderConfig,
+): ProviderConfig[] {
+  const chain = providerChain(role).filter((endpoint) => !endpoint.offlineOnly);
+  const at = chain.findIndex(
+    (endpoint) =>
+      endpoint.providerName === first.providerName &&
+      endpoint.model === first.model,
+  );
+  return [first, ...(at >= 0 ? chain.slice(at + 1) : [])];
+}
+
+/** Try each endpoint in order; the first answer wins, all failures are named. */
+async function completeChoiceOnChain(
+  chain: readonly ProviderConfig[],
+  locale: SupportedLocale,
+  prompt: ChoicePrompt,
+  maxTokens: number,
+  onServed: (endpoint: ProviderConfig) => void,
+): Promise<string> {
+  const errors: string[] = [];
+  for (const endpoint of chain) {
+    try {
+      const text = await completeChoicePrompt(
+        endpoint,
+        locale,
+        prompt,
+        maxTokens,
+      );
+      onServed(endpoint);
+      return text;
+    } catch (error) {
+      errors.push(
+        `${endpoint.label || endpointLabel(endpoint)}: ${
+          error instanceof Error ? error.message : String(error)
+        }`,
+      );
+    }
+  }
+  throw new Error(errors.join("; ") || "no model answered");
+}
+
 /**
  * Suggest prerequisite cards for a card: at least 1, no upper bound.
  */
@@ -2317,6 +2487,25 @@ interface ProviderEndpointReadiness {
    * cloud and must not open the offline tier (ADR 2026-09-13, decision 9).
    */
   keyRejected?: boolean;
+  /**
+   * A known cloud provider with no key stored for this row. Nothing was sent:
+   * unlike a rejected key, the cloud did not answer (reported 2026-09-29 — a
+   * keyless OpenRouter row looked online because its catalogue is public).
+   */
+  keyMissing?: boolean;
+}
+
+/**
+ * A row for a provider that always needs a key (OpenRouter and the other
+ * known cloud providers) but has none: calling it can only 401.
+ */
+export function isCloudKeyMissing(endpoint: ProviderConfig): boolean {
+  if (endpoint.transport === "agent" || endpoint.local) return false;
+  const known = CLOUD_PROVIDERS.some((provider) =>
+    endpoint.url.startsWith(provider.baseUrl),
+  );
+  const key = endpoint.apiKey?.trim();
+  return known && (!key || key === DEFAULT_LLM_API_KEY);
 }
 
 function isLocalEndpoint(url: string): boolean {
@@ -2399,6 +2588,15 @@ async function checkProviderEndpoint(
       modelAvailable: false,
     };
   }
+  if (isCloudKeyMissing(resolved)) {
+    return {
+      endpoint: resolved,
+      online: true,
+      keyMissing: true,
+      availableModels: [],
+      modelAvailable: false,
+    };
+  }
 
   // A stored key-validity verdict — or a live key check, where the provider
   // publishes a key-metadata endpoint — marks the endpoint unusable:
@@ -2446,15 +2644,21 @@ async function checkProviderEndpoint(
 }
 
 function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
-  return readiness.online && readiness.modelAvailable && !readiness.keyRejected;
+  return (
+    readiness.online &&
+    readiness.modelAvailable &&
+    !readiness.keyRejected &&
+    !readiness.keyMissing
+  );
 }
 
 /** Why an endpoint that answered cannot serve, for status and error text. */
 function readinessReason(
   readiness: ProviderEndpointReadiness,
-): "offline" | "key-invalid" | "model-not-found" | undefined {
+): "offline" | "key-missing" | "key-invalid" | "model-not-found" | undefined {
   if (isEndpointUsable(readiness)) return undefined;
   if (!readiness.online) return "offline";
+  if (readiness.keyMissing) return "key-missing";
   if (readiness.keyRejected) return "key-invalid";
   return "model-not-found";
 }
@@ -2557,7 +2761,7 @@ interface RecallReadiness {
   /** The row answered at all — a refused key or a missing model still counts. */
   reachable: boolean;
   /** Why an unready row was skipped, for the exhausted-chain error. */
-  reason?: "offline" | "key-invalid" | "model-not-found";
+  reason?: "offline" | "key-missing" | "key-invalid" | "model-not-found";
 }
 
 /**
@@ -2632,8 +2836,11 @@ async function walkRecallChain<T>(
     const readiness = await ensureRecallEndpointReady(endpoint, signature);
     if (!readiness.ready) {
       if (readiness.reason && readiness.reason !== "offline") {
-        // The row answered and cannot serve: that is the cloud speaking.
-        if (isCloudRow) cloudAnswered = true;
+        // The row answered and cannot serve: that is the cloud speaking. A
+        // missing key sent nothing, so the cloud has not answered.
+        if (isCloudRow && readiness.reason !== "key-missing") {
+          cloudAnswered = true;
+        }
         lastSkip = { endpoint, reason: readiness.reason };
       }
       continue;
@@ -2662,7 +2869,9 @@ async function walkRecallChain<T>(
     const why =
       lastSkip.reason === "key-invalid"
         ? "the stored API key was rejected"
-        : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
+        : lastSkip.reason === "key-missing"
+          ? "no API key is stored for it"
+          : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
     throw new Error(`No recall LLM endpoint is usable: ${name} — ${why}`);
   }
   throw new Error("No recall LLM endpoint is online");
@@ -2823,6 +3032,13 @@ export async function prepareRecallChain(
     // when it was online and refused (rejected key, model not offered).
     if (endpoint.offlineOnly && cloudAnswered) break;
     const isAgent = endpoint.transport === "agent";
+    // No key for a provider that needs one: skip it without asking the cloud,
+    // so it neither passes as ready nor keeps the offline tier closed.
+    if (isCloudKeyMissing(endpoint)) {
+      lastReason = "key-missing";
+      lastModel = endpoint.model;
+      continue;
+    }
     let online = isAgent
       ? await isAgentEndpointReady(endpoint.agentHarness)
       : await isLlmOnline(endpoint.url);
@@ -3010,6 +3226,7 @@ export interface ProviderRoleStatus {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";
@@ -3122,6 +3339,7 @@ export interface LlmReadiness {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";

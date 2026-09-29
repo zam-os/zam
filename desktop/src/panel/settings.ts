@@ -151,7 +151,12 @@ interface SettingsResult {
   recall?: { quickMode?: boolean };
 }
 
-type StudyLearningMode = "flash" | "answer_feedback" | "answer_variation";
+type StudyLearningMode =
+  | "flash"
+  | "choice"
+  | "answer_feedback"
+  | "answer_variation"
+  | "auto";
 
 interface StudyLearningResult {
   success: boolean;
@@ -304,12 +309,20 @@ function renderRecallSettings(data: {
       label: t("learning_mode_flash"),
     },
     {
+      value: "choice",
+      label: t("learning_mode_choice"),
+    },
+    {
       value: "answer_feedback",
       label: t("learning_mode_answer_feedback"),
     },
     {
       value: "answer_variation",
       label: t("learning_mode_answer_variation"),
+    },
+    {
+      value: "auto",
+      label: t("learning_mode_auto"),
     },
   ];
 

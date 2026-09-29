@@ -1343,6 +1343,63 @@ fn execute_zam_bridge_blocking(
     }
 }
 
+/// Bridge commands allowed to run beside the persistent bridge. Each one is
+/// background work that makes model calls and must not stall the review.
+const BACKGROUND_BRIDGE_COMMANDS: &[&str] = &["choice-prepare"];
+
+/// Run one bridge command in its own short-lived CLI process, beside the
+/// persistent bridge.
+///
+/// The persistent bridge answers one request at a time behind a mutex, so a
+/// model-bound job there — generating choice options for the next cards (ADR
+/// 2026-09-27 Decision 6) — would hold up loading and rating the card on
+/// screen. A separate process shares only the library database, which already
+/// serves concurrent readers and one writer. The allowlist keeps this from
+/// becoming a second, unrestricted route into the CLI.
+#[tauri::command]
+async fn execute_zam_bridge_background(
+    app: tauri::AppHandle,
+    cmd: String,
+    args: Vec<String>,
+) -> Result<String, String> {
+    if !BACKGROUND_BRIDGE_COMMANDS.contains(&cmd.as_str()) {
+        return Err(format!("{} is not a background bridge command", cmd));
+    }
+    tauri::async_runtime::spawn_blocking(move || {
+        let runtime = resolve_bridge_runtime(&app)
+            .ok_or_else(|| "Could not locate the ZAM CLI.".to_string())?;
+        let mut command = Command::new(&runtime.node_path);
+        #[cfg(target_os = "windows")]
+        command.creation_flags(0x08000000); // CREATE_NO_WINDOW
+        command.current_dir(&runtime.working_dir);
+        command.arg(&runtime.cli_path);
+        command.arg("bridge");
+        command.arg(&cmd);
+        command.args(&args);
+        command.stdin(std::process::Stdio::null());
+        let output = command
+            .output()
+            .map_err(|e| format!("Failed to spawn ZAM CLI: {}", e))?;
+        let stdout = String::from_utf8_lossy(&output.stdout).trim().to_string();
+        if stdout.is_empty() {
+            let stderr = String::from_utf8_lossy(&output.stderr);
+            diag_log(&format!(
+                "background bridge {} returned nothing | status={} | stderr={}",
+                cmd,
+                output.status,
+                stderr.trim()
+            ));
+            return Err(format!(
+                "Background bridge {} returned nothing (status {})",
+                cmd, output.status
+            ));
+        }
+        Ok(stdout)
+    })
+    .await
+    .map_err(|e| format!("Bridge task failed: {}", e))?
+}
+
 #[tauri::command]
 fn cancel_zam_bridge(state: tauri::State<'_, Arc<BridgeState>>) -> Result<bool, String> {
     let pid = state.active_pid.swap(0, Ordering::SeqCst);
@@ -1508,6 +1565,7 @@ pub fn run() {
         .invoke_handler(tauri::generate_handler![
             get_bridge_info,
             execute_zam_bridge,
+            execute_zam_bridge_background,
             cancel_zam_bridge,
             probe_zam_observer,
             list_zam_observer_windows,

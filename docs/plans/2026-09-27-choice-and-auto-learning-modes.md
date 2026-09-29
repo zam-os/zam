@@ -1,6 +1,12 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** written 2026-09-27; no phase started.\
+**Status:** All seven phases done (2026-09-27 to 2026-09-29). The manual
+Studio pass with an AI model ran on 2026-09-29 against an isolated library
+with an OpenRouter text model (see "Manual pass with a model" below); it
+found no defect in the Studio. Review of the branch found one PostgreSQL
+defect in the kernel (`966d180`), covered by `tests/kernel/postgres-choice.test.ts`.
+Delete this plan before the release that ships the feature, unless open
+tasks remain.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -25,13 +31,13 @@ schedules beyond 20 days (D4).
 
 ## Status
 
-- [ ] **Phase 1** — answer format and the tap ceiling (kernel and every submit path)
-- [ ] **Phase 2** — the two new modes in study settings (kernel and bridge)
-- [ ] **Phase 3** — choice presentation in the kernel (LLM-free)
-- [ ] **Phase 4** — generated options (the `text` role, reject filter, cache fill)
-- [ ] **Phase 5** — Desktop Studio
-- [ ] **Phase 6** — Mobile (iPadOS and Android)
-- [ ] **Phase 7** — documentation and handover
+- [x] **Phase 1** — answer format and the tap ceiling (kernel and every submit path) — `dad5d0e`
+- [x] **Phase 2** — the two new modes in study settings (kernel and bridge) — `8cfb3e7`
+- [x] **Phase 3** — choice presentation in the kernel (LLM-free) — `20f0daa`
+- [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill) — `5f0a014`
+- [x] **Phase 5** — Desktop Studio — `1a99554`, fixes from the manual pass in `a33b1a8`
+- [x] **Phase 6** — Mobile (iPadOS and Android) — `4451d55`; manual pass on the iPad (A16) simulator
+- [x] **Phase 7** — documentation and handover — OKF `fsrs-scheduling.md` and `voice-mode.md`, conventions in `CLAUDE.md`/`AGENTS.md`, ADR status
 
 **Order.**
 
@@ -308,6 +314,16 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (   -- personal: disputes of derive
 );
 ```
 
+**Team library** (added while implementing): classify both tables in
+`src/cli/deploy/`.
+
+- `choice_exclusions` is learning state under row-level security
+  (`rls-policies.ts`).
+- `choice_distractors` is a new **shared cache** class (`team-provision.ts`).
+  Members may insert rows and update only `shown_count`, `chosen_count`,
+  `retired_at` and `retired_reason`; curators write everything. Without this
+  a member's choice rating fails with "permission denied".
+
 Add both tables to the table list in `src/kernel/db/snapshot.ts`, after
 `tokens`, and to the snapshot round-trip test.
 
@@ -500,6 +516,10 @@ and cached options, and the correct recall reason in every other case.
      degradation is accepted (D6).
    - Call `runChoiceGeneration` through `generateViaHttp`, and store via the
      kernel.
+   - *As built:* Mobile has one cloud text chain and no separate recall row,
+     so its filter runs on the same chain. The shared orchestration is
+     `src/cli/llm/choice-prepare.ts` (`prepareChoiceOptionsForCards`), used by
+     both the bridge and `mobile/src/choice-generate.ts`.
 5. **Prefetch contract.** Generation never blocks a displayed card: a card
    without options is asked in a recall format (D6).
    - Desktop runs `choice-prepare --limit 3` in the background at session
@@ -644,6 +664,13 @@ paths:
 **Manual check:** the iPad simulator, and an Android emulator if available,
 with the same card paths as Phase 5.
 
+*As built:* the presentation is resolved when a card is rendered
+(`MobileReviewSession.presentCurrent(mode)`) rather than in `admitCurrent()`,
+because the mode can change mid-card; it is stored in the snapshot per card
+and mode, and an answered card keeps it. The Studio's session summary line
+("N cards are ready for free recall") is not on Mobile yet. "Ask" appears when
+a cloud text model is connected.
+
 ---
 
 ## Phase 7 — documentation and handover
@@ -663,6 +690,41 @@ with the same card paths as Phase 5.
    with a delivery note, and update its row in `docs/adr/README.md`.
 4. **This plan.** Mark each phase with its commit hash. Delete the plan before
    the release that ships the feature, unless open tasks remain.
+
+## Manual pass with a model (2026-09-29)
+
+Studio built from the branch (`cargo build --release --features tauri/custom-protocol`),
+driven over the WebView2 debugging port against an isolated profile: a fresh
+local library with eight published Physik/Optik items and an OpenRouter text
+model. Every path below was exercised in the real app, not a harness.
+
+- **Live generation.** Cards without authored options got five generated
+  options each before they came up; the badge named the model that wrote
+  them. A card that came back after a miss showed a fresh set, none of the
+  options it had shown before.
+- **Wrong pick.** The chosen option turned red, the correct one green, the
+  option's reason appeared as the contrast line, and Ask, "My answer is also
+  correct" and Next were offered. Next booked the pick as `choice` with
+  rating 1.
+- **Ask.** The follow-up chat opened with the one-tap starter and the model
+  answered in the choice frame. The very first Ask of the session showed "No
+  reply from the AI"; the same call through `zam bridge discuss-review`
+  succeeded, and every later Ask in the Studio succeeded. Not reproduced.
+- **Dispute.** "My answer is also correct" counted the attempt as correct,
+  hid Ask and the dispute, booked `choice` with rating 3, and retired the
+  generated option for everyone (`retired_reason = disputed`).
+- **Auto.** A card with only choice reviews stayed a choice. The card with a
+  `recall` review was asked as a typed answer: the evaluator judged it
+  "Complete", the rating bar appeared, Good booked a `recall` row, and the
+  "Now without options" badge stayed hidden (recall stage, not a probe).
+- **Session summary** in Auto showed the rating spread and, by design, no
+  "ready for free recall" line.
+
+Observations that are not defects of this feature: with an OpenRouter key and
+no model registry, the legacy-config migration registers OpenRouter's default
+model (`openai/gpt-6-luna` here), so generation and evaluation ran on it
+rather than the provider row bound to the role — a cost to keep in mind when
+Choice is switched on with a bare OpenRouter key.
 
 ## Deliberately not in this plan
 

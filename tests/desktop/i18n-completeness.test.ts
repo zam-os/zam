@@ -688,6 +688,33 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "agent_model_option_text",
   "agent_model_option_text_image",
   "agent_model_in_use",
+  // Choice and Auto modes (ADR 2026-09-27). English and German are the
+  // reference pair; the other packs fall back until native review.
+  "learning_mode_choice",
+  "learning_mode_auto",
+  "learning_mode_switch_choice",
+  "learning_mode_switch_auto",
+  "learning_mode_auto_recall_flash",
+  "choice_dont_know",
+  "choice_next",
+  "choice_ask",
+  "choice_ask_starter",
+  "choice_dispute",
+  "choice_correct",
+  "choice_wrong",
+  "choice_dont_know_result",
+  "choice_disputed",
+  "choice_answers_other",
+  "choice_now_without_options",
+  "choice_notice_unsuitable",
+  "choice_options_by",
+  "choice_reference_hide",
+  "choice_reference_show",
+  "choice_notice_unsuitable_answer_media",
+  "choice_notice_no_options",
+  "choice_notice_curated_disputed",
+  "choice_discussion_frame",
+  "summary_choice_ready",
 ]);
 
 /**

@@ -14,6 +14,7 @@ import {
   shouldShowPointCount,
 } from "../../src/kernel/library/answer-points.js";
 import { runBridge, setBridgeTransport } from "./bridge-transport.js";
+import { renderQuestionWithTopic } from "./question-topic.js";
 import {
   DEFAULT_LOCAL_ENDPOINT_URL,
   DEFAULT_MODEL_ENDPOINT_URL,
@@ -139,8 +140,12 @@ import {
   radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
+import type {
+  AnswerPresentationResponse,
+} from "../../src/bridge/protocol.js";
 import {
   acceptsTypedStudyAnswer,
+  type AutoCardFormat,
   resolveStudyLearningControlState,
   shouldEvaluateStudyAnswer,
   shouldRequestDynamicStudyQuestion,
@@ -243,6 +248,8 @@ interface StudyLearningSettings {
   learningMode: StudyLearningMode;
   voiceRevealTimeoutSec: number;
   voiceRatingTimeoutSec: number;
+  /** Auto's free-recall format; null follows the evaluator (ADR 2026-09-27). */
+  autoRecallPin: "answer" | "flash" | null;
 }
 
 interface StudyLearningResult {
@@ -255,6 +262,7 @@ const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
   learningMode: "flash",
   voiceRevealTimeoutSec: 20,
   voiceRatingTimeoutSec: 20,
+  autoRecallPin: null,
 };
 
 let isLlmEnabled = false;
@@ -299,6 +307,7 @@ interface ProviderRoleStatus {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";
@@ -428,7 +437,7 @@ interface BridgeCard {
   atomId?: string | null;
   tier?: string | null;
   fastCheck?: {
-    type: "binary_choice";
+    type: "binary_choice" | "multiple_choice";
     options: string[];
     correctIndex: number;
   } | null;
@@ -473,6 +482,34 @@ interface ReviewPayload {
 let activeCard: BridgeCard | null = null;
 /** Attempt id from the admission of `activeCard`; travels with its rating. */
 let activeAttemptId: string | null = null;
+/**
+ * How `activeCard` was answered (ADR 2026-09-27 Decision 5). A tapped fast
+ * check is `options`: the rating that follows is bounded by the tap ceiling.
+ */
+let activeAnswerFormat: "recall" | "options" | "choice" = "recall";
+type PresentedChoice = Extract<
+  AnswerPresentationResponse["presentation"],
+  { format: "choice" }
+>["choice"];
+type RecallReason = Extract<
+  AnswerPresentationResponse["presentation"],
+  { format: "recall" }
+>["reason"];
+/**
+ * How the active card is asked (ADR 2026-09-27 Decisions 1 and 8). Flash and
+ * the answer modes fix it; Choice and Auto resolve it per card.
+ */
+let activeCardFormat: AutoCardFormat = "flash";
+let activeChoice: PresentedChoice | null = null;
+let activeRecallReason: RecallReason | null = null;
+/** For an unsuitable card: which rule excluded it (bloom_level, answer_media). */
+let activeRecallDetail: string | null = null;
+let activeChoicePick: { chosen: number | "dont_know"; disputed: boolean } | null =
+  null;
+let choiceAdvanceTimer: number | null = null;
+let choicePrepareInFlight = false;
+/** Ratings in plain Choice the tap ceiling bounded: ready for free recall. */
+let sessionChoiceReady = 0;
 let activePromptQuestion = "";
 let resolvedContextContent: string | null = null;
 let studySessionActive = false;
@@ -974,6 +1011,12 @@ function initializeTranslations() {
     t("learning_mode_answer_feedback");
   document.getElementById("settings-learning-mode-variation")!.textContent =
     t("learning_mode_answer_variation");
+  document.getElementById("settings-learning-mode-choice")!.textContent =
+    t("learning_mode_choice");
+  document.getElementById("settings-learning-mode-auto")!.textContent =
+    t("learning_mode_auto");
+  document.getElementById("lbl-settings-auto-recall-flash")!.textContent =
+    t("learning_mode_auto_recall_flash");
   document.getElementById("lbl-settings-learning-mode-help")!.textContent =
     t("learning_mode_hint");
   document.getElementById("lbl-settings-voice-reveal-timeout")!.textContent =
@@ -1854,6 +1897,8 @@ function providerReasonText(status: ProviderRoleStatus): string {
   switch (status.reason) {
     case "model-not-found":
       return t("provider_model_missing");
+    case "key-missing":
+      return t("model_status_key_missing");
     case "key-invalid":
       return t("model_status_key_invalid");
     case "unsupported-provider":
@@ -1938,6 +1983,9 @@ function refreshAiStatus(): void {
         );
       } else if (llm.reason === "model-not-found") {
         setAiStatus(t("ai_status_model_missing"), "gray");
+      } else if (llm.reason === "key-missing") {
+        // A cloud model with no key stored: the fix is a paste in Settings.
+        setAiStatus(t("model_status_key_missing"), "gray");
       } else if (llm.reason === "key-invalid") {
         // A reachable cloud that rejected the stored key is not "offline":
         // the fix is a re-paste in Settings, and the header should say so.
@@ -2376,8 +2424,29 @@ function studyLearningFallbackMode(): "flash" | "answer_feedback" {
   return isLlmEnabled ? "answer_feedback" : "flash";
 }
 
+function isChoiceOrAutoMode(): boolean {
+  const mode = currentStudyLearningSettings.learningMode;
+  return mode === "choice" || mode === "auto";
+}
+
+/** Whether the active card is asked as Flash — per card in Choice and Auto. */
 function isFlashLearningMode(): boolean {
-  return currentStudyLearningSettings.learningMode === "flash";
+  return isChoiceOrAutoMode()
+    ? activeCardFormat === "flash"
+    : currentStudyLearningSettings.learningMode === "flash";
+}
+
+function isChoiceCard(): boolean {
+  return (
+    isChoiceOrAutoMode() && activeCardFormat === "choice" && activeChoice !== null
+  );
+}
+
+function defaultCardFormat(): AutoCardFormat {
+  const mode = currentStudyLearningSettings.learningMode;
+  return mode === "answer_feedback" || mode === "answer_variation"
+    ? "answer"
+    : "flash";
 }
 
 function studyLearningElements() {
@@ -2395,6 +2464,14 @@ function studyLearningElements() {
     feedback: document.getElementById(
       "btn-study-mode-feedback",
     ) as HTMLButtonElement,
+    choice: document.getElementById(
+      "btn-study-mode-choice",
+    ) as HTMLButtonElement,
+    auto: document.getElementById("btn-study-mode-auto") as HTMLButtonElement,
+    autoRecallRow: document.getElementById("settings-auto-recall-flash-row")!,
+    autoRecallFlash: document.getElementById(
+      "settings-auto-recall-flash",
+    ) as HTMLInputElement,
   };
 }
 
@@ -2421,6 +2498,16 @@ function applyStudyLearningControlState(): boolean {
   elements.feedback.classList.toggle("active", state.aiSelected);
   elements.feedback.setAttribute("aria-checked", String(state.aiSelected));
   elements.feedback.disabled = state.reviewDisabled;
+  for (const [button, mode] of [
+    [elements.choice, "choice"],
+    [elements.auto, "auto"],
+  ] as const) {
+    const selected = state.selectedMode === mode;
+    button.classList.toggle("active", selected);
+    button.setAttribute("aria-checked", String(selected));
+    button.disabled = state.reviewDisabled;
+  }
+  elements.autoRecallFlash.disabled = state.settingsDisabled;
   syncRadioGroupTabStops(document.getElementById("study-mode-switcher"));
   return state.flashSelected;
 }
@@ -2432,10 +2519,19 @@ function renderStudyLearningSettings(): void {
   elements.revealTimeout.value = String(
     currentStudyLearningSettings.voiceRevealTimeoutSec,
   );
-  const flash = applyStudyLearningControlState();
+  applyStudyLearningControlState();
+  const flash = isFlashLearningMode();
 
   elements.flash.textContent = t("learning_mode_switch_flash");
   elements.feedback.textContent = t("learning_mode_switch_feedback");
+  elements.choice.textContent = t("learning_mode_switch_choice");
+  elements.auto.textContent = t("learning_mode_switch_auto");
+  elements.autoRecallRow.classList.toggle(
+    "hidden",
+    currentStudyLearningSettings.learningMode !== "auto",
+  );
+  elements.autoRecallFlash.checked =
+    currentStudyLearningSettings.autoRecallPin === "flash";
   document
     .getElementById("study-mode-switcher")
     ?.setAttribute("aria-label", t("learning_mode_label"));
@@ -2447,7 +2543,11 @@ function renderStudyLearningSettings(): void {
   // switch therefore updates the current card immediately without fetching a
   // replacement or losing a typed draft.
   resetFastCheckAnswer();
-  if (activeCard) renderFastCheckAnswer(activeCard.fastCheck ?? null);
+  if (activeCard) {
+    if (isChoiceCard()) renderChoiceOptions();
+    else renderFastCheckAnswer(activeCard.fastCheck ?? null);
+  }
+  renderChoiceStage();
 }
 
 async function loadStudyLearningSettings(): Promise<boolean> {
@@ -2527,6 +2627,9 @@ async function persistStudyLearningSettings(
     if (update.voiceRatingTimeoutSec !== undefined) {
       args.push("--rating-timeout", String(update.voiceRatingTimeoutSec));
     }
+    if (update.autoRecallPin !== undefined) {
+      args.push("--auto-recall-pin", update.autoRecallPin ?? "none");
+    }
 
     const result = await runBridge<StudyLearningResult>(
       "study-learning-set",
@@ -2558,12 +2661,13 @@ async function persistStudyLearningSettings(
   }
 }
 
-async function switchStudyLearningMode(
-  next: "flash" | "answer_feedback",
-): Promise<void> {
-  const alreadySelected = isFlashLearningMode()
-    ? next === "flash"
-    : next === "answer_feedback";
+async function switchStudyLearningMode(next: StudyLearningMode): Promise<void> {
+  // The 💬 segment stands for both answer modes; any other mode is only
+  // selected when it is the saved one.
+  const current = currentStudyLearningSettings.learningMode;
+  const alreadySelected =
+    current === next ||
+    (next === "answer_feedback" && current === "answer_variation");
   if (
     alreadySelected ||
     studyLearningSavePending ||
@@ -2580,7 +2684,8 @@ async function switchStudyLearningMode(
 
   await pauseVoiceMode().catch(() => undefined);
   const saved = await persistStudyLearningSettings({ learningMode: next });
-  if (!saved || !activeCard || isFlashLearningMode()) return;
+  if (saved) await applyModeChangeToActiveCard();
+  if (!saved || !activeCard || isFlashLearningMode() || isChoiceCard()) return;
   const textarea = document.getElementById(
     "user-answer-input",
   ) as HTMLTextAreaElement;
@@ -2594,7 +2699,12 @@ function initStudyLearningControls(): void {
   initRadioGroupKeyboard(document.getElementById("study-mode-switcher"));
   elements.mode.addEventListener("change", () => {
     const requested = elements.mode.value as StudyLearningMode;
-    void persistStudyLearningSettings({ learningMode: requested });
+    void (async () => {
+      const saved = await persistStudyLearningSettings({
+        learningMode: requested,
+      });
+      if (saved) await applyModeChangeToActiveCard();
+    })();
   });
   elements.revealTimeout.addEventListener("change", () => {
     const seconds = Math.max(
@@ -2610,6 +2720,21 @@ function initStudyLearningControls(): void {
   elements.feedback.addEventListener("click", () => {
     void switchStudyLearningMode("answer_feedback");
   });
+  elements.choice.addEventListener("click", () => {
+    void switchStudyLearningMode("choice");
+  });
+  elements.auto.addEventListener("click", () => {
+    void switchStudyLearningMode("auto");
+  });
+  elements.autoRecallFlash.addEventListener("change", () => {
+    void (async () => {
+      const saved = await persistStudyLearningSettings({
+        autoRecallPin: elements.autoRecallFlash.checked ? "flash" : null,
+      });
+      if (saved) await applyModeChangeToActiveCard();
+    })();
+  });
+  initChoiceControls();
 
   document.getElementById("study-active-card")?.addEventListener(
     "click",
@@ -6460,6 +6585,8 @@ async function loadNextCard(
   cardLoadInProgress = true;
   activeCard = null;
   activeAttemptId = null;
+  activeAnswerFormat = "recall";
+  resetChoiceState();
   activePromptQuestion = "";
   updateReviewControlState();
   try {
@@ -6573,6 +6700,7 @@ async function submitAndReveal() {
   const textarea = document.getElementById("user-answer-input") as HTMLTextAreaElement;
   const userAnswer = acceptsTypedStudyAnswer(
     currentStudyLearningSettings.learningMode,
+    activeCardFormat,
   )
     ? textarea.value.trim()
     : "";
@@ -6599,7 +6727,8 @@ async function submitAndReveal() {
       learningMode: currentStudyLearningSettings.learningMode,
       evaluatorAvailable: isLlmEnabled,
       answer: userAnswer,
-      fastCheck: Boolean(activeCard.fastCheck),
+      fastCheck: Boolean(activeCard.fastCheck) && !isChoiceOrAutoMode(),
+      autoFormat: activeCardFormat,
     })
   ) {
     learningClock.beginBusy(Date.now());
@@ -6819,6 +6948,7 @@ function resetDiscussionUi(): void {
   els.input.value = "";
   els.input.disabled = false;
   els.send.disabled = false;
+  document.getElementById("discussion-choice-next")?.setAttribute("hidden", "");
 }
 
 /**
@@ -7016,6 +7146,9 @@ const REVIEW_ACTION_TRIGGER_IDS = [
   "btn-study-stop",
   "btn-study-edit",
   "btn-study-open-editor",
+  "btn-choice-next",
+  "btn-choice-next-bottom",
+  "btn-choice-dispute",
 ] as const;
 
 // ── HANDS-FREE VOICE MODE (ADR 2026-07-31) ──────────────────────────────────
@@ -7234,7 +7367,11 @@ function startVoiceMode(): void {
   updateVoiceButton();
   void voiceController
     .start(locale, {
-      mode: currentStudyLearningSettings.learningMode,
+      // Spoken choices come later (ADR 2026-09-27 Decision 10): voice keeps
+      // its Flash loop in Choice and Auto.
+      mode: isChoiceOrAutoMode()
+        ? "flash"
+        : currentStudyLearningSettings.learningMode,
       revealTimeoutMs:
         currentStudyLearningSettings.voiceRevealTimeoutSec * 1000,
       ratingTimeoutMs:
@@ -7366,7 +7503,7 @@ function showStudyActionError(label: string, err: unknown): void {
   alert(err instanceof Error ? err.message : String(err));
 }
 
-async function submitRating(ratingVal: number) {
+async function submitRating(ratingVal: number, choiceEvidence?: unknown) {
   if (
     !activeCard ||
     isStudyConfirmOpen() ||
@@ -7391,8 +7528,20 @@ async function submitRating(ratingVal: number) {
       rating: ratingVal,
       attemptId,
       responseTimeMs,
+      answerFormat: activeAnswerFormat,
+      choiceEvidence,
     });
-    await runBridge(call.cmd, call.args);
+    const submitted = await runBridge<{
+      evaluation?: { ceilingApplied?: boolean } | null;
+    }>(call.cmd, call.args);
+    // A rating in plain Choice that the tap ceiling bounded is a card ready
+    // for free recall (ADR 2026-09-27 Decision 8): the summary counts them.
+    if (
+      currentStudyLearningSettings.learningMode === "choice" &&
+      submitted?.evaluation?.ceilingApplied
+    ) {
+      sessionChoiceReady += 1;
+    }
 
     if (ratingVal >= 1 && ratingVal <= 4) {
       const r = ratingVal as 1 | 2 | 3 | 4;
@@ -7630,7 +7779,11 @@ async function saveInlineEdit(): Promise<void> {
     // Reflect the edit in place (no full re-render — feedback stays put).
     activeCard.concept = concept.trim();
     activePromptQuestion = question.trim();
-    document.getElementById("question-text")!.textContent = activePromptQuestion;
+    renderQuestionWithTopic(
+      document.getElementById("question-text")!,
+      activeCard.domain,
+      activePromptQuestion,
+    );
     // The edit may have changed how many points the answer asks for.
     renderQuestionPointCount();
     const conceptVal = document
@@ -7776,6 +7929,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
 
   pendingReviewPayload = null;
   activeCard = payload.card;
+  await resolveActivePresentation();
   learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;
   resolvedContextContent = payload.resolvedContext?.content || null;
@@ -7815,7 +7969,11 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   bloomBadge.className = `badge bloom-badge bloom-${bloomVal}`;
 
   document.getElementById("translation-loading")?.classList.add("hidden");
-  document.getElementById("question-text")!.textContent = activePromptQuestion;
+  renderQuestionWithTopic(
+    document.getElementById("question-text")!,
+    activeCard.domain,
+    activePromptQuestion,
+  );
   renderQuestionPointCount();
   renderReviewMedia("question-media", activeCard.media, "question");
   setModelAttributionBadge(
@@ -7827,7 +7985,388 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   ) as HTMLTextAreaElement;
   textarea.disabled = false;
   renderStudyLearningSettings();
-  if (!isFlashLearningMode() && !activeCard.fastCheck) textarea.focus();
+  if (
+    !isFlashLearningMode() &&
+    !isChoiceCard() &&
+    (!activeCard.fastCheck || isChoiceOrAutoMode())
+  ) {
+    textarea.focus();
+  }
+  prepareChoiceOptionsInBackground();
+}
+
+// ── CHOICE AND AUTO (ADR 2026-09-27) ─────────────────────────────────────
+
+function clearChoiceAdvance(): void {
+  if (choiceAdvanceTimer !== null) {
+    window.clearTimeout(choiceAdvanceTimer);
+    choiceAdvanceTimer = null;
+  }
+}
+
+function resetChoiceState(): void {
+  clearChoiceAdvance();
+  activeCardFormat = defaultCardFormat();
+  activeChoice = null;
+  activeRecallReason = null;
+  activeRecallDetail = null;
+  activeChoicePick = null;
+  document.getElementById("choice-result")?.classList.add("hidden");
+  document.getElementById("revealed-box")?.classList.remove("choice-reveal");
+  setModelAttributionBadge("choice-model-badge", null);
+  setReferenceAnswerFolded(false);
+  document.getElementById("discussion-choice-next")?.setAttribute("hidden", "");
+  renderChoiceStage();
+}
+
+/**
+ * Fold the reference answer away after a pick: the answer is already marked
+ * among the options, and a long reference (source code) would push the
+ * result and the chat out of view. A toggle shows it on demand.
+ */
+function setReferenceAnswerFolded(folded: boolean, offerToggle = folded): void {
+  const box = document.getElementById("reference-answer-box");
+  const toggle = document.getElementById(
+    "btn-reference-toggle",
+  ) as HTMLButtonElement | null;
+  box?.classList.toggle("collapsed", folded);
+  if (!toggle) return;
+  toggle.hidden = !offerToggle;
+  toggle.textContent = t(
+    folded ? "choice_reference_show" : "choice_reference_hide",
+  );
+  toggle.setAttribute("aria-expanded", String(!folded));
+}
+
+/** "Options: <model>" when a model wrote the wrong answers shown. */
+function choiceModelLabel(choice: PresentedChoice | null): string | null {
+  const models = [
+    ...new Set(
+      (choice?.entries ?? [])
+        .filter((entry) => entry.source === "generated" && entry.model?.trim())
+        .map((entry) => entry.model!.trim()),
+    ),
+  ];
+  return models.length > 0
+    ? tf("choice_options_by", { model: models.join(", ") })
+    : null;
+}
+
+/**
+ * Ask the kernel how the active card is presented in Choice or Auto. A
+ * failure falls back to Flash: a card is never blocked for want of options.
+ */
+async function resolveActivePresentation(): Promise<void> {
+  activeChoice = null;
+  activeRecallReason = null;
+  activeRecallDetail = null;
+  activeChoicePick = null;
+  const mode = currentStudyLearningSettings.learningMode;
+  if (!activeCard || (mode !== "choice" && mode !== "auto")) {
+    activeCardFormat = defaultCardFormat();
+    return;
+  }
+  const recallFormat = (): AutoCardFormat =>
+    mode === "auto" &&
+    isLlmEnabled &&
+    currentStudyLearningSettings.autoRecallPin !== "flash"
+      ? "answer"
+      : "flash";
+  try {
+    const result = await runBridge<AnswerPresentationResponse>(
+      "answer-presentation",
+      ["--card-id", activeCard.cardId, "--mode", mode],
+    );
+    const presentation = result.presentation;
+    if (presentation.format === "choice") {
+      activeCardFormat = "choice";
+      activeChoice = presentation.choice;
+    } else {
+      activeRecallReason = presentation.reason;
+      activeRecallDetail = presentation.detail ?? null;
+      activeCardFormat = recallFormat();
+    }
+  } catch (err) {
+    console.warn("Choice presentation failed; asking the card freely:", err);
+    activeRecallReason = "no_options";
+    activeCardFormat = recallFormat();
+  }
+}
+
+/** A mode switch before the card is answered re-decides how it is asked. */
+async function applyModeChangeToActiveCard(): Promise<void> {
+  const revealed = !document
+    .getElementById("revealed-box")
+    ?.classList.contains("hidden");
+  if (!activeCard || activeChoicePick || revealed) return;
+  await resolveActivePresentation();
+  renderStudyLearningSettings();
+  prepareChoiceOptionsInBackground();
+}
+
+/** Auto's "Now without options" badge and Choice's reason for no options. */
+function renderChoiceStage(): void {
+  const badge = document.getElementById("choice-stage-badge");
+  const notice = document.getElementById("choice-notice");
+  const mode = currentStudyLearningSettings.learningMode;
+  if (badge) {
+    badge.hidden = !(activeCard && mode === "auto" && activeRecallReason === "probe");
+    badge.textContent = t("choice_now_without_options");
+  }
+  if (notice) {
+    const key =
+      activeCard &&
+      mode === "choice" &&
+      (activeRecallReason === "unsuitable" ||
+        activeRecallReason === "no_options" ||
+        activeRecallReason === "curated_disputed")
+        ? `choice_notice_${activeRecallReason}${
+            activeRecallReason === "unsuitable" && activeRecallDetail
+              ? `_${activeRecallDetail}`
+              : ""
+          }`
+        : null;
+    notice.hidden = key === null;
+    notice.textContent = key ? t(key) : "";
+  }
+}
+
+function renderChoiceOptions(): void {
+  const container = document.getElementById("fast-check-options");
+  const textarea = document.getElementById(
+    "user-answer-input",
+  ) as HTMLTextAreaElement | null;
+  const reveal = document.getElementById("btn-reveal-answer");
+  if (!container || !activeChoice) return;
+  setModelAttributionBadge("choice-model-badge", choiceModelLabel(activeChoice));
+  if (textarea) textarea.hidden = true;
+  if (reveal) reveal.hidden = true;
+  container.hidden = false;
+  container.classList.add("choice-mode");
+  container.replaceChildren();
+
+  const list = document.createElement("div");
+  list.className = "choice-options";
+  for (const [index, label] of activeChoice.options.entries()) {
+    const button = document.createElement("button");
+    button.type = "button";
+    button.className = "btn secondary-btn btn-large choice-option";
+    button.dataset.choiceIndex = String(index);
+    const key = document.createElement("span");
+    key.className = "choice-key";
+    key.textContent = String(index + 1);
+    const text = document.createElement("span");
+    text.textContent = label;
+    button.append(key, text);
+    if (activeChoicePick) {
+      button.disabled = true;
+      if (index === activeChoice.correctIndex) {
+        button.classList.add("choice-correct");
+      } else if (activeChoicePick.chosen === index) {
+        button.classList.add("choice-wrong");
+      }
+    }
+    button.addEventListener("click", () => pickChoice(index));
+    list.appendChild(button);
+  }
+
+  const dontKnow = document.createElement("button");
+  dontKnow.type = "button";
+  dontKnow.className = "btn ghost-btn btn-sm choice-dont-know";
+  dontKnow.textContent = t("choice_dont_know");
+  dontKnow.disabled = activeChoicePick !== null;
+  dontKnow.addEventListener("click", () => pickChoice("dont_know"));
+  container.append(list, dontKnow);
+}
+
+/** The pick is the answer; the rating follows from it (Decision 3). */
+function pickChoice(chosen: number | "dont_know"): void {
+  if (
+    !activeCard ||
+    !activeChoice ||
+    activeChoicePick ||
+    revealInProgress ||
+    reviewActionInProgress
+  ) {
+    return;
+  }
+  activeChoicePick = { chosen, disputed: false };
+  activeAnswerFormat = "choice";
+  activeUserAnswer =
+    chosen === "dont_know" ? "" : (activeChoice.options[chosen] ?? "");
+  renderChoiceOptions();
+  renderReveal("", false, null, "");
+  document.getElementById("own-answer-box")?.classList.add("hidden");
+  document.getElementById("revealed-box")?.classList.add("choice-reveal");
+  setReferenceAnswerFolded(true);
+  renderChoiceResult();
+  updateReviewControlState();
+  if (chosen === activeChoice.correctIndex) {
+    choiceAdvanceTimer = window.setTimeout(() => {
+      choiceAdvanceTimer = null;
+      void submitChoice();
+    }, 1200);
+  } else {
+    document.getElementById("btn-choice-next")?.focus();
+  }
+}
+
+function choiceAnswerText(): string {
+  if (!activeChoice) return activeCard?.concept ?? "";
+  return activeChoice.options[activeChoice.correctIndex] ?? "";
+}
+
+function renderChoiceResult(): void {
+  const box = document.getElementById("choice-result");
+  if (!box) return;
+  if (!activeChoice || !activeChoicePick) {
+    box.classList.add("hidden");
+    return;
+  }
+  const { chosen, disputed } = activeChoicePick;
+  const correct = chosen === activeChoice.correctIndex;
+  const answer = choiceAnswerText();
+  const status = document.getElementById("choice-result-status")!;
+  status.textContent = correct
+    ? t("choice_correct")
+    : disputed
+      ? t("choice_disputed")
+      : chosen === "dont_know"
+        ? tf("choice_dont_know_result", { answer })
+        : tf("choice_wrong", { answer });
+  box.classList.toggle("correct", correct || disputed);
+  box.classList.toggle("wrong", !correct && !disputed);
+
+  const contrast = document.getElementById("choice-result-contrast")!;
+  let reason = "";
+  if (typeof chosen === "number" && !correct && !disputed) {
+    const entry = activeChoice.entries[chosen];
+    reason =
+      entry?.source === "derived"
+        ? entry.reason
+          ? tf("choice_answers_other", { question: entry.reason })
+          : ""
+        : (entry?.reason ?? "");
+  }
+  contrast.textContent = reason;
+  contrast.hidden = reason === "";
+
+  const ask = document.getElementById("btn-choice-ask") as HTMLButtonElement;
+  ask.textContent = t("choice_ask");
+  ask.hidden = correct || disputed || !isLlmEnabled || discussion.active;
+  const dispute = document.getElementById(
+    "btn-choice-dispute",
+  ) as HTMLButtonElement;
+  dispute.textContent = t("choice_dispute");
+  dispute.hidden = typeof chosen !== "number" || correct || disputed;
+  document.getElementById("btn-choice-next")!.textContent = t("choice_next");
+  box.classList.remove("hidden");
+}
+
+async function submitChoice(): Promise<void> {
+  clearChoiceAdvance();
+  if (!activeChoice || !activeChoicePick) return;
+  const { chosen, disputed } = activeChoicePick;
+  const evidence = {
+    options: activeChoice.options,
+    correctIndex: activeChoice.correctIndex,
+    entries: activeChoice.entries,
+    chosen,
+    ...(disputed ? { disputed: true } : {}),
+  };
+  await submitRating(
+    chosen === activeChoice.correctIndex || disputed ? 3 : 1,
+    evidence,
+  );
+}
+
+/** "Ask": the follow-up chat, opened with a one-tap starter (Decision 7). */
+function openChoiceDiscussion(): void {
+  if (!activeCard || !activeChoice || !activeChoicePick) return;
+  clearChoiceAdvance();
+  const answer = choiceAnswerText();
+  const chosen =
+    activeChoicePick.chosen === "dont_know"
+      ? null
+      : (activeChoice.options[activeChoicePick.chosen] ?? null);
+  const card: DiscussionCardContext = {
+    slug: activeCard.slug,
+    concept: activeCard.concept,
+    domain: activeCard.domain,
+    bloomLevel: activeCard.bloomLevel || 1,
+    context: activeCard.context || null,
+    question: activePromptQuestion,
+    userAnswer: chosen ?? "",
+    sourceContent: resolvedContextContent,
+    sourceLink: activeCard.sourceLink || null,
+    feedback: tf("choice_discussion_frame", {
+      chosen: chosen ?? t("choice_dont_know"),
+      answer,
+    }),
+    choice: { options: activeChoice.options, chosen, answer },
+  };
+  if (!openDiscussion(discussion, card, { evaluationSuccessful: true })) return;
+  const els = discussionElements();
+  els.box.classList.remove("hidden");
+  const bottomNext = document.getElementById("discussion-choice-next");
+  bottomNext?.removeAttribute("hidden");
+  document.getElementById("btn-choice-next-bottom")!.textContent =
+    t("choice_next");
+  els.input.value = t("choice_ask_starter");
+  renderChoiceResult();
+  void sendDiscussionTurn();
+}
+
+function disputeChoice(): void {
+  if (!activeChoicePick || activeChoicePick.chosen === "dont_know") return;
+  clearChoiceAdvance();
+  activeChoicePick.disputed = true;
+  renderChoiceResult();
+}
+
+function initChoiceControls(): void {
+  document
+    .getElementById("btn-choice-next")
+    ?.addEventListener("click", () => void submitChoice());
+  document
+    .getElementById("btn-choice-next-bottom")
+    ?.addEventListener("click", () => void submitChoice());
+  document
+    .getElementById("btn-reference-toggle")
+    ?.addEventListener("click", () => {
+      const box = document.getElementById("reference-answer-box");
+      setReferenceAnswerFolded(!box?.classList.contains("collapsed"), true);
+    });
+  document
+    .getElementById("btn-choice-ask")
+    ?.addEventListener("click", openChoiceDiscussion);
+  document
+    .getElementById("btn-choice-dispute")
+    ?.addEventListener("click", disputeChoice);
+  // Any interaction with the result stops the auto-advance after a correct
+  // pick: the learner wants to read or act.
+  document
+    .getElementById("revealed-box")
+    ?.addEventListener("pointerdown", clearChoiceAdvance);
+}
+
+/**
+ * Prepare options for the next cards in a separate CLI process, so model
+ * calls never hold up the bridge the card on screen depends on (Decision 6).
+ */
+function prepareChoiceOptionsInBackground(): void {
+  if (!isChoiceOrAutoMode() || !isLlmEnabled || choicePrepareInFlight) return;
+  choicePrepareInFlight = true;
+  void invoke<string>("execute_zam_bridge_background", {
+    cmd: "choice-prepare",
+    args: ["--limit", "3"],
+  })
+    .catch((err: unknown) => {
+      console.warn("Choice options could not be prepared:", err);
+    })
+    .finally(() => {
+      choicePrepareInFlight = false;
+    });
 }
 
 function resetFastCheckAnswer(): void {
@@ -7837,13 +8376,15 @@ function resetFastCheckAnswer(): void {
   const options = document.getElementById("fast-check-options");
   const reveal = document.getElementById("btn-reveal-answer");
   const flash = isFlashLearningMode();
-  if (textarea) textarea.hidden = flash;
+  const choice = isChoiceCard();
+  if (textarea) textarea.hidden = flash || choice;
   if (reveal) {
-    reveal.hidden = false;
+    reveal.hidden = choice;
     reveal.textContent = t(flash ? "btn_recall_reveal" : "btn_reveal_answer");
   }
   if (options) {
     options.replaceChildren();
+    options.classList.remove("choice-mode");
     options.hidden = true;
   }
   const tier = document.getElementById("tier-badge");
@@ -7853,7 +8394,8 @@ function resetFastCheckAnswer(): void {
 function renderFastCheckAnswer(
   fastCheck: BridgeCard["fastCheck"],
 ): void {
-  if (!fastCheck || isFlashLearningMode()) return;
+  // Choice and Auto present authored fast checks through the choice path.
+  if (!fastCheck || isFlashLearningMode() || isChoiceOrAutoMode()) return;
   const textarea = document.getElementById(
     "user-answer-input",
   ) as HTMLTextAreaElement;
@@ -7871,6 +8413,7 @@ function renderFastCheckAnswer(
     button.dataset.fastCheckIndex = String(index);
     button.addEventListener("click", () => {
       if (revealInProgress) return;
+      activeAnswerFormat = "options";
       textarea.value = label;
       for (const option of options.querySelectorAll<HTMLButtonElement>(
         "button",
@@ -8087,6 +8630,7 @@ function resetSessionTally(): void {
   cardsReviewedThisSession = 0;
   sessionStartedDue = totalDue;
   sessionSummaryVisible = false;
+  sessionChoiceReady = 0;
 }
 
 async function configureSessionWorkload(): Promise<void> {
@@ -8142,6 +8686,14 @@ function renderSessionSummary(): void {
       chip.textContent = `${t(`lbl_rate_${r}`)}: ${sessionRatingTally.ratings[r]}`;
       spreadEl.appendChild(chip);
     }
+  }
+  if (sessionChoiceReady > 0) {
+    const ready = document.createElement("p");
+    ready.className = "session-summary-note";
+    ready.textContent = tf("summary_choice_ready", {
+      count: sessionChoiceReady,
+    });
+    spreadEl.appendChild(ready);
   }
 
   doneBtn.textContent = t("btn_back_to_dashboard");
@@ -8777,6 +9329,24 @@ window.addEventListener("DOMContentLoaded", () => {
       if (e.key === "Enter" && (e.ctrlKey || e.metaKey)) {
         e.preventDefault();
         document.getElementById("btn-reveal-answer")?.click();
+      }
+      return;
+    }
+
+    // 3a. A choice is picked with 1–9 and graded by the kernel: the rating
+    // keys never apply to it (ADR 2026-09-27 Decision 3).
+    if (studySessionActive && isChoiceCard()) {
+      if (
+        !activeChoicePick &&
+        !isEditableTarget &&
+        !isStudyConfirmOpen() &&
+        !isStudyInlineEditorOpen() &&
+        /^[1-9]$/.test(e.key)
+      ) {
+        const index = Number(e.key) - 1;
+        if (activeChoice && index < activeChoice.options.length) {
+          pickChoice(index);
+        }
       }
       return;
     }

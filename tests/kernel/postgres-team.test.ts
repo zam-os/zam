@@ -10,6 +10,7 @@ import {
   type PrincipalDirectory,
   provisionTeamLibrary,
   removeTeamMember,
+  SHARED_CACHE_TABLES,
   TEAM_CONTEXT_NAME,
 } from "../../src/cli/deploy/team-provision.js";
 import { resolveLearnerId } from "../../src/cli/users/identity.js";
@@ -29,8 +30,10 @@ import {
   detachCardForUser,
   ensureCard,
   getSetting,
+  listActiveDistractors,
   listAssignmentsForLearner,
   setSetting,
+  storeDistractors,
   withdrawAssignment,
 } from "../../src/kernel/index.js";
 
@@ -63,6 +66,7 @@ describe("team library table classification", () => {
       ...RLS_PROTECTED_TABLES,
       ...LIBRARY_SETTINGS_TABLES,
       ...KNOWLEDGE_TABLES,
+      ...SHARED_CACHE_TABLES,
       ...ADMIN_TABLES,
     ];
     expect(new Set(classified).size).toBe(classified.length);
@@ -319,6 +323,100 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           await expect(
             createToken(asBob, { slug: "bob-publishes", concept: "Denied" }),
           ).rejects.toThrow(/permission denied/i);
+
+          // The choice-option cache (ADR 2026-09-27): every member's reviews
+          // add generated options and move their counters, but may not
+          // rewrite or delete an option.
+          await storeDistractors(asBob, {
+            tokenId: token.id,
+            sourceHash: "hash-1",
+            source: "generated",
+            entries: [{ text: "A plausible lure", reason: "Why not" }],
+          });
+          const [option] = await listActiveDistractors(
+            asAlice,
+            token.id,
+            "hash-1",
+          );
+          expect(option?.text).toBe("A plausible lure");
+          await asBob
+            .prepare(
+              "UPDATE choice_distractors SET shown_count = shown_count + 1 WHERE id = ?",
+            )
+            .run(option!.id);
+          await expect(
+            asBob
+              .prepare("UPDATE choice_distractors SET text = ? WHERE id = ?")
+              .run("Rewritten", option!.id),
+          ).rejects.toThrow(/permission denied/i);
+          await expect(
+            asBob
+              .prepare("DELETE FROM choice_distractors WHERE id = ?")
+              .run(option!.id),
+          ).rejects.toThrow(/permission denied/i);
+          // Column grants alone would let a member plant a curated lure —
+          // preferred over generated options, and it stops generation — or
+          // retire a curator's option. The row policies bind members to
+          // generated rows.
+          await expect(
+            storeDistractors(asBob, {
+              tokenId: token.id,
+              sourceHash: "hash-1",
+              source: "curated",
+              entries: [{ text: "Planted lure" }],
+            }),
+          ).rejects.toThrow(/row-level security|permission denied/i);
+          await storeDistractors(asAlice, {
+            tokenId: token.id,
+            sourceHash: "hash-1",
+            source: "curated",
+            entries: [{ text: "A curator's lure" }],
+          });
+          const curated = (
+            await listActiveDistractors(asBob, token.id, "hash-1")
+          ).find((row) => row.source === "curated");
+          expect(curated?.text).toBe("A curator's lure");
+          // The counters of a curator's option still move for a member…
+          expect(
+            (
+              await asBob
+                .prepare(
+                  "UPDATE choice_distractors SET shown_count = shown_count + 1 WHERE id = ?",
+                )
+                .run(curated!.id)
+            ).changes,
+          ).toBe(1);
+          // …but a member cannot retire it, and can retire a generated one.
+          const retiredAt = new Date().toISOString();
+          await expect(
+            asBob
+              .prepare(
+                "UPDATE choice_distractors SET retired_at = ?, retired_reason = 'disputed' WHERE id = ?",
+              )
+              .run(retiredAt, curated!.id),
+          ).rejects.toThrow(/row-level security|permission denied/i);
+          expect(
+            (
+              await asBob
+                .prepare(
+                  "UPDATE choice_distractors SET retired_at = ?, retired_reason = 'disputed' WHERE id = ?",
+                )
+                .run(retiredAt, option!.id)
+            ).changes,
+          ).toBe(1);
+          // A learner's disputes stay theirs (RLS).
+          await asBob
+            .prepare(
+              `INSERT INTO choice_exclusions (user_id, token_id, excluded_key, created_at)
+               VALUES (?, ?, ?, ?)`,
+            )
+            .run(bob.userId, token.id, "donor:x", new Date().toISOString());
+          expect(
+            await asAlice.prepare("SELECT * FROM choice_exclusions").all(),
+          ).toHaveLength(0);
+          expect(
+            await asBob.prepare("SELECT * FROM choice_exclusions").all(),
+          ).toHaveLength(1);
 
           // Nobody but the owner touches the mapping or the version marker —
           // otherwise a curator could become any colleague.

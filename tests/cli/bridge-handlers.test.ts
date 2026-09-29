@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { ulid } from "ulid";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  answerPresentation,
   addToken,
   admitReview,
   backupCreate,
@@ -325,6 +326,58 @@ describe("bridge-handlers unit tests", () => {
       }),
     ).rejects.toThrow("Session not found");
     expect((await getCard(db, token.id, "thomas"))!.reps).toBe(repsAfterValid);
+  });
+
+  it("records the answer format and rejects an unknown one", async () => {
+    const token = await createToken(db, {
+      slug: "answer-format-token",
+      concept: "Concept",
+      domain: "math",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    await expect(
+      submitReview(db, {
+        user: "thomas",
+        cardId: card.id,
+        rating: 3,
+        answerFormat: "typed" as never,
+      }),
+    ).rejects.toThrow("answerFormat must be recall, options or choice");
+
+    const result = await submitReview(db, {
+      user: "thomas",
+      cardId: card.id,
+      rating: 4,
+      answerFormat: "options",
+    });
+    expect(result.success).toBe(true);
+    const logs = await getReviewsForCard(db, card.id);
+    expect(logs).toHaveLength(1);
+    expect(logs[0].answer_format).toBe("options");
+  });
+
+  it("presents answers only for the choice and auto modes", async () => {
+    const token = await createToken(db, {
+      slug: "presentation-token",
+      concept: "Brechung",
+      domain: "Physik",
+      bloom_level: 1,
+    });
+    const card = await ensureCard(db, token.id, "thomas");
+    await expect(
+      answerPresentation(db, { user: "thomas", cardId: card.id, mode: "flash" }),
+    ).rejects.toThrow("mode must be choice or auto");
+    expect(
+      await answerPresentation(db, {
+        user: "thomas",
+        cardId: card.id,
+        mode: "choice",
+      }),
+    ).toEqual({
+      success: true,
+      presentation: { format: "recall", reason: "no_options" },
+    });
   });
 
   it("writes a rated review and session step in one transaction", async () => {

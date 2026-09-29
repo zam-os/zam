@@ -28,8 +28,15 @@ import {
 } from "../observation/attempts.js";
 import type { CascadeBlockResult } from "../scheduler/blocker.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
+import type { AnswerFormat } from "../scheduler/choice-ceiling.js";
 import type { Rating } from "../scheduler/fsrs.js";
 import { findPresentationByAttemptId } from "../scheduler/presentation.js";
+import {
+  applyChoiceOutcome,
+  assertChoiceEvidence,
+  type ChoiceEvidence,
+  ratingForChoice,
+} from "./answer-presentation.js";
 import type { EvaluateResult } from "./evaluator.js";
 import { evaluateRatingWithinTransaction } from "./evaluator.js";
 
@@ -58,6 +65,13 @@ export interface ExecuteReviewActionInput {
   assistance?: string;
   independent?: boolean | null;
   channel?: AttemptChannel;
+  /** How the card was answered (ADR 2026-09-27 Decision 5). Default `recall`. */
+  answerFormat?: AnswerFormat;
+  /**
+   * What a choice presented and what was picked (ADR 2026-09-27 Decision 5).
+   * Required with `answerFormat: "choice"`; stored with the attempt.
+   */
+  choiceEvidence?: ChoiceEvidence;
 }
 
 export interface ReviewActionResult {
@@ -282,6 +296,19 @@ export async function executeReviewAction(
       throw new Error("rating is required for action=rate");
     }
     const rating = input.rating;
+    if (input.answerFormat === "choice") {
+      // A choice is graded by the kernel's rule, not by the caller: the
+      // rating must be the one the evidence earns (ADR 2026-09-27 Decision 3).
+      if (!input.choiceEvidence) {
+        throw new Error("A choice rating requires its choice evidence");
+      }
+      assertChoiceEvidence(input.choiceEvidence);
+      if (ratingForChoice(input.choiceEvidence) !== rating) {
+        throw new Error(
+          `A choice earns rating ${ratingForChoice(input.choiceEvidence)}, not ${rating}`,
+        );
+      }
+    }
 
     return db.transaction(async (tx) => {
       const target = await getReviewTarget(tx, input.cardId, input.userId);
@@ -345,6 +372,7 @@ export async function executeReviewAction(
                 lapses: card.lapses,
                 buriedSiblings: 0,
                 buriedUntil: card.buried_until,
+                ceilingApplied: false,
               }
             : undefined,
           attemptId: existingAttempt.id,
@@ -362,8 +390,17 @@ export async function executeReviewAction(
         responseTimeMs: input.responseTimeMs,
         reviewLogId,
         attemptId,
+        answerFormat: input.answerFormat,
         now: input.now,
       });
+      if (input.answerFormat === "choice" && input.choiceEvidence) {
+        await applyChoiceOutcome(tx, {
+          userId: input.userId,
+          tokenId: target.token.id,
+          answerFormat: input.answerFormat,
+          evidence: input.choiceEvidence,
+        });
+      }
 
       let blocked: CascadeBlockResult | undefined;
       if (rating === 1) {
@@ -399,6 +436,10 @@ export async function executeReviewAction(
         assistance: input.assistance,
         independent,
         channel: input.channel ?? (input.sessionId ? "direct" : "recall"),
+        evidence: {
+          answerFormat: input.answerFormat ?? "recall",
+          ...(input.choiceEvidence ? { choice: input.choiceEvidence } : {}),
+        },
         rating,
         reviewLogId,
         sessionStepId: sessionStep?.id,
