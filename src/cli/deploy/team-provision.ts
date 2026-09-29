@@ -30,7 +30,10 @@
  *   Decision 6). Every member's reviews add generated options and move their
  *   exposure and pick counters, so members may insert rows and update only
  *   those counters and the retirement columns; curators write everything.
- *   The worst a member can do is retire an option, which is regenerated;
+ *   Row policies (`sharedCacheRlsSql`) bind members to **generated** rows:
+ *   they cannot plant a curated row, which the presentation would prefer
+ *   and which would stop generation, nor retire a curator's. The worst a
+ *   member can do is retire a generated option, which is regenerated;
  * - **administration** (`ADMIN_TABLES`): `learner_principals`, which
  *   `current_learner_id()` reads, and the schema version marker — nobody but
  *   the owner may change them. A member who could rewrite the mapping table
@@ -166,6 +169,43 @@ ALTER DEFAULT PRIVILEGES FOR ROLE ${owner} IN SCHEMA ${schema}
 }
 
 /**
+ * Row policies on the shared cache (ADR 2026-09-27 Decision 6). The column
+ * grant above lets a member insert rows and update the counters and
+ * retirement columns; on its own it would also let a member insert a
+ * `curated` row with any text — which `resolveAnswerPresentation()` prefers
+ * over generated options and which stops generation once two exist — or
+ * retire a curator's rows, which nothing regenerates. The policies bind
+ * members to generated rows: they may insert only those, and an update may
+ * retire only those, while the exposure and pick counters of an active
+ * curated row still move. Curators write every row. The owner is not bound
+ * (no FORCE), so migrations and tile installs run unhindered. Applied after
+ * the group roles exist, which is why this is not part of `RLS_POLICIES_SQL`.
+ */
+function sharedCacheRlsSql(schema: string): string {
+  const table = `${schema}.choice_distractors`;
+  return `
+ALTER TABLE ${table} ENABLE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS shared_cache_read_policy ON ${table};
+CREATE POLICY shared_cache_read_policy ON ${table} FOR SELECT
+  USING (true);
+DROP POLICY IF EXISTS shared_cache_member_insert_policy ON ${table};
+CREATE POLICY shared_cache_member_insert_policy ON ${table} FOR INSERT
+  TO ${TEAM_MEMBER_ROLE}
+  WITH CHECK (source = 'generated');
+DROP POLICY IF EXISTS shared_cache_member_update_policy ON ${table};
+CREATE POLICY shared_cache_member_update_policy ON ${table} FOR UPDATE
+  TO ${TEAM_MEMBER_ROLE}
+  USING (source = 'generated' OR retired_at IS NULL)
+  WITH CHECK (source = 'generated' OR retired_at IS NULL);
+DROP POLICY IF EXISTS shared_cache_curator_policy ON ${table};
+CREATE POLICY shared_cache_curator_policy ON ${table} FOR ALL
+  TO ${TEAM_CURATOR_ROLE}
+  USING (true)
+  WITH CHECK (true);
+`;
+}
+
+/**
  * Migrations run as the owner, and `FORCE ROW LEVEL SECURITY` binds the owner
  * too — a copy-and-rename migration over a learning-state table would then
  * carry only the administrator's rows and drop everyone else's. Lift FORCE
@@ -227,6 +267,7 @@ export async function provisionTeamLibrary(
   await db.exec(createGroupRoleSql(TEAM_MEMBER_ROLE));
   await db.exec(createGroupRoleSql(TEAM_CURATOR_ROLE));
   await db.exec(groupRoleGrantsSql(schema, who.role));
+  await db.exec(sharedCacheRlsSql(schema));
 
   let context = await getKnowledgeContextByName(db, TEAM_CONTEXT_NAME);
   let contextCreated = false;

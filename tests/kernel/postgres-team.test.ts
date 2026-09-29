@@ -6,11 +6,11 @@ import {
   entraPrincipalDirectory,
   KNOWLEDGE_TABLES,
   LIBRARY_SETTINGS_TABLES,
-  SHARED_CACHE_TABLES,
   listTeamMembers,
   type PrincipalDirectory,
   provisionTeamLibrary,
   removeTeamMember,
+  SHARED_CACHE_TABLES,
   TEAM_CONTEXT_NAME,
 } from "../../src/cli/deploy/team-provision.js";
 import { resolveLearnerId } from "../../src/cli/users/identity.js";
@@ -29,8 +29,8 @@ import {
   createToken,
   detachCardForUser,
   ensureCard,
-  listActiveDistractors,
   getSetting,
+  listActiveDistractors,
   listAssignmentsForLearner,
   setSetting,
   storeDistractors,
@@ -354,6 +354,56 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
               .prepare("DELETE FROM choice_distractors WHERE id = ?")
               .run(option!.id),
           ).rejects.toThrow(/permission denied/i);
+          // Column grants alone would let a member plant a curated lure —
+          // preferred over generated options, and it stops generation — or
+          // retire a curator's option. The row policies bind members to
+          // generated rows.
+          await expect(
+            storeDistractors(asBob, {
+              tokenId: token.id,
+              sourceHash: "hash-1",
+              source: "curated",
+              entries: [{ text: "Planted lure" }],
+            }),
+          ).rejects.toThrow(/row-level security|permission denied/i);
+          await storeDistractors(asAlice, {
+            tokenId: token.id,
+            sourceHash: "hash-1",
+            source: "curated",
+            entries: [{ text: "A curator's lure" }],
+          });
+          const curated = (
+            await listActiveDistractors(asBob, token.id, "hash-1")
+          ).find((row) => row.source === "curated");
+          expect(curated?.text).toBe("A curator's lure");
+          // The counters of a curator's option still move for a member…
+          expect(
+            (
+              await asBob
+                .prepare(
+                  "UPDATE choice_distractors SET shown_count = shown_count + 1 WHERE id = ?",
+                )
+                .run(curated!.id)
+            ).changes,
+          ).toBe(1);
+          // …but a member cannot retire it, and can retire a generated one.
+          const retiredAt = new Date().toISOString();
+          await expect(
+            asBob
+              .prepare(
+                "UPDATE choice_distractors SET retired_at = ?, retired_reason = 'disputed' WHERE id = ?",
+              )
+              .run(retiredAt, curated!.id),
+          ).rejects.toThrow(/row-level security|permission denied/i);
+          expect(
+            (
+              await asBob
+                .prepare(
+                  "UPDATE choice_distractors SET retired_at = ?, retired_reason = 'disputed' WHERE id = ?",
+                )
+                .run(retiredAt, option!.id)
+            ).changes,
+          ).toBe(1);
           // A learner's disputes stay theirs (RLS).
           await asBob
             .prepare(
