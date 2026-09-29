@@ -5915,10 +5915,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_disputed: "Counted as correct. This option will not be shown to you again.",
     choice_answers_other: "This answers: {question}",
     choice_now_without_options: "Now without options",
+    choice_options_by: "Options: {model}",
     choice_notice_unsuitable:
       "This card doesn't suit a choice, so it comes without options.",
-    choice_notice_unsuitable_bloom_level:
-      "This card asks you to analyse or create, which can't be picked from options, so it comes without options.",
     choice_notice_unsuitable_answer_media:
       "This card's answer is an image or a sound, so it comes without options.",
     choice_notice_no_options:
@@ -7409,10 +7408,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_disputed: "Als richtig gewertet. Diese Option bekommst du nicht mehr angezeigt.",
     choice_answers_other: "Das beantwortet: {question}",
     choice_now_without_options: "Jetzt ohne Auswahl",
+    choice_options_by: "Optionen: {model}",
     choice_notice_unsuitable:
       "Diese Karte eignet sich nicht für eine Auswahl – sie kommt ohne Optionen.",
-    choice_notice_unsuitable_bloom_level:
-      "Diese Karte verlangt Analysieren oder Erschaffen – das lässt sich nicht aus Optionen wählen, sie kommt ohne Optionen.",
     choice_notice_unsuitable_answer_media:
       "Die Antwort dieser Karte ist ein Bild oder ein Ton – sie kommt ohne Optionen.",
     choice_notice_no_options:

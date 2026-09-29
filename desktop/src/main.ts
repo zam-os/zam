@@ -7996,7 +7996,22 @@ function resetChoiceState(): void {
   activeChoicePick = null;
   document.getElementById("choice-result")?.classList.add("hidden");
   document.getElementById("revealed-box")?.classList.remove("choice-reveal");
+  setModelAttributionBadge("choice-model-badge", null);
   renderChoiceStage();
+}
+
+/** "Options: <model>" when a model wrote the wrong answers shown. */
+function choiceModelLabel(choice: PresentedChoice | null): string | null {
+  const models = [
+    ...new Set(
+      (choice?.entries ?? [])
+        .filter((entry) => entry.source === "generated" && entry.model?.trim())
+        .map((entry) => entry.model!.trim()),
+    ),
+  ];
+  return models.length > 0
+    ? tf("choice_options_by", { model: models.join(", ") })
+    : null;
 }
 
 /**
@@ -8085,6 +8100,7 @@ function renderChoiceOptions(): void {
   ) as HTMLTextAreaElement | null;
   const reveal = document.getElementById("btn-reveal-answer");
   if (!container || !activeChoice) return;
+  setModelAttributionBadge("choice-model-badge", choiceModelLabel(activeChoice));
   if (textarea) textarea.hidden = true;
   if (reveal) reveal.hidden = true;
   container.hidden = false;

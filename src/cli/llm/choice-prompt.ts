@@ -36,6 +36,8 @@ export interface ChoiceGenerationItem {
   context?: string | null;
   /** The item's language (`tokens.language`); null asks for the item's own. */
   language?: string | null;
+  /** Options already written for this item: new ones must differ from them. */
+  avoid?: readonly string[];
 }
 
 export interface ChoicePrompt {
@@ -72,9 +74,14 @@ Rules:
 5. For each distractor, give one short sentence in ${language} explaining why it is wrong — addressed to the learner who picked it.
 6. Reply with JSON only, no markdown fence and no prose:
 [{"text": "...", "reason": "..."}]`;
+  const avoid = (item.avoid ?? []).filter((text) => text.trim());
   const user = `Domain: ${item.domain}
 Question: ${item.question?.trim() || "(the card has no separate question; ask about the answer)"}
-Correct answer: ${item.concept}${item.context?.trim() ? `\nContext: ${item.context.trim()}` : ""}
+Correct answer: ${item.concept}${item.context?.trim() ? `\nContext: ${item.context.trim()}` : ""}${
+    avoid.length
+      ? `\nAlready used — write different ones:\n${avoid.map((text) => `- ${text}`).join("\n")}`
+      : ""
+  }
 
 Distractors:`;
   return { system, user };

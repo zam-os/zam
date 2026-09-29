@@ -347,6 +347,29 @@ correct option must not be the only long, short or parenthesised one.
 A filtered set is not a verified one. The quality gate that works everywhere,
 offline included, is dispute and retirement, plus curator review for tiles.
 
+**Amended 2026-09-29 (owner decisions, field test).**
+
+- **Order.** Generated options now come before derived ones: authored fast
+  check → curated → generated → derived. An answer taken from another
+  question is easy to recognise as belonging to that other question, so
+  derived options are only the last resort — mainly for learners without a
+  model.
+- **Fresh wrong answers.** A choice works like a question variation, and it
+  loses its value once the learner can recognise the wrong options instead
+  of knowing the right one. A presentation therefore prefers generated
+  options this learner has not been shown yet (read from the choice evidence
+  of their attempts), and the background preparation generates new ones
+  whenever fewer than two unseen ones are left, passing the existing options
+  to the model as ones to avoid. Seen options are reused only when no fresh
+  ones are ready. Cost: roughly one generation (two model calls) per choice
+  presentation of a card without an authored or curated set.
+- **Attribution.** A generated option records the model that wrote it, and
+  the surfaces name it next to the options ("Options: <model>"), as they do
+  for a generated question variation.
+- **Fallback on refusal.** Each generation call walks on to the next model of
+  its role's chain when a row refuses the call — a keyless OpenRouter row
+  passes the readiness check, because the model catalogue is public.
+
 ### 7. Feedback after a wrong answer, and disputes
 
 After a distractor or "Don't know", the card waits for the learner:
@@ -431,18 +454,22 @@ points to Auto, Flash or the answer mode. It does not interrupt the session.
 
 ### 9. Where choice applies
 
-- **Choice:** answers at Bloom levels 1–3 — terms, definitions,
-  formulas, values, vocabulary, cloze gaps, and applications whose
-  distractors model typical mistakes.
+- **Choice:** every item whose answer is text, at any Bloom level and with
+  any number of answer points.
 - **A recall format instead** — Flash in plain Choice, free recall in Auto:
-  - Bloom levels 4–5;
-  - answers carried by answer media such as image occlusion.
-- **Amended 2026-09-29 (owner decision):** answers with more than one point
-  (ADR 2026-09-08) are asked as a choice too. New items should still ask for
-  one thing, but many existing libraries hold items written before that rule,
-  and excluding them left too many cards without the mode. The presentation
-  names which rule excluded a card (`detail`: `bloom_level` or
-  `answer_media`), so a surface can say why.
+  answers carried by answer media such as image occlusion. The presentation
+  says so (`detail: "answer_media"`), so a surface can name the reason.
+- **Amended 2026-09-29 (owner decisions).** As proposed, Choice covered only
+  single-point answers at Bloom levels 1–3. The field test showed that this
+  left many cards without the mode: libraries hold items written before the
+  one-point rule (ADR 2026-09-08), and the Bloom label of an item says little
+  about whether its options can be told apart. Both limits are lifted.
+  Options remain a first stage, not an end state: the tap ceiling (Decision 4)
+  keeps a card answered by choice from maturing, so once a card reaches the
+  ceiling the learner takes it further in Flash or an answer mode — or Auto
+  does it at the recall probe (Decision 8). Higher-order items are where
+  generated distractors are least likely to be clearly wrong; disputes and
+  retirement (Decisions 6 and 7) remain the safeguard.
 - **Tier-1 binary fast checks:**
   - In both new modes they are graded automatically, under Decisions 3 and 4.
   - In the answer modes they keep today's tap followed by self-rating,

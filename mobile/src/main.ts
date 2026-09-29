@@ -532,6 +532,7 @@ const stopReviewButton = element<HTMLButtonElement>("stop-review");
 const reviewStatus = element<HTMLParagraphElement>("review-status");
 const reviewChoiceStage = element<HTMLElement>("review-choice-stage");
 const reviewChoiceNotice = element<HTMLElement>("review-choice-notice");
+const reviewChoiceModel = element<HTMLElement>("review-choice-model");
 const reviewChoiceOptions = element<HTMLElement>("review-choice-options");
 const reviewChoiceResult = element<HTMLElement>("review-choice-result");
 const reviewChoiceStatus = element<HTMLElement>("review-choice-status");
@@ -2903,7 +2904,10 @@ let currentRecallDetail: string | null = null;
 let fastCheckShown = false;
 let choiceAdvanceTimer: number | null = null;
 let choicePrepareInFlight = false;
-/** Cards whose options were already prepared (or tried) in this app run. */
+/**
+ * Cards whose options were prepared (or tried) since they were last rated, so
+ * a card no model can serve does not cost a call on every render.
+ */
 const choicePreparedCardIds = new Set<string>();
 
 function isChoiceOrAutoMode(
@@ -2985,9 +2989,22 @@ function renderChoiceOptions(show: boolean): void {
   const presentation = reviewSession.presentation;
   if (!show || presentation?.format !== "choice") {
     reviewChoiceOptions.hidden = true;
+    reviewChoiceModel.hidden = true;
     return;
   }
   reviewChoiceOptions.hidden = false;
+  // Like a question variation: say which model wrote the wrong answers.
+  const models = [
+    ...new Set(
+      presentation.choice.entries
+        .filter((entry) => entry.source === "generated" && entry.model?.trim())
+        .map((entry) => entry.model!.trim()),
+    ),
+  ];
+  reviewChoiceModel.hidden = models.length === 0;
+  reviewChoiceModel.textContent = models.length
+    ? tf("choice_options_by", { model: models.join(", ") })
+    : "";
   const { options, correctIndex } = presentation.choice;
   const pick = reviewSession.choicePick;
   for (const [index, label] of options.entries()) {
@@ -3806,6 +3823,10 @@ async function finishRating(
 ): Promise<boolean> {
   if (ratingInFlight) return false;
   ratingInFlight = true;
+  // A rated card may come back (a missed one within minutes): let it get
+  // fresh options then, instead of the ones just seen.
+  const ratedCardId = reviewSession.currentItem?.cardId;
+  if (ratedCardId) choicePreparedCardIds.delete(ratedCardId);
   for (const candidate of ratingButtons) candidate.disabled = true;
   reviewChoiceNext.disabled = true;
   stopReviewButton.disabled = true;

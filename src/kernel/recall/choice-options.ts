@@ -18,9 +18,6 @@ import { cosineSimilarity } from "../search/hybrid.js";
 import { sha256Hex } from "../util/sha256.js";
 import { checkCandidate, normalizeOption } from "./choice-checks.js";
 
-/** Highest Bloom level asked as a choice. */
-export const MAX_CHOICE_BLOOM_LEVEL = 3;
-
 /** How many derived options a presentation may choose from. */
 export const DERIVED_POOL_SIZE = 4;
 
@@ -29,25 +26,23 @@ export const RETIRE_MIN_SHOWN = 30;
 export const RETIRE_MAX_CHOSEN_SHARE = 0.05;
 
 export interface ChoiceSuitabilityInput {
-  bloomLevel: number;
   hasAnswerMedia: boolean;
 }
 
 /** Why an item is asked in a recall format rather than as a choice. */
-export type ChoiceUnsuitability = "bloom_level" | "answer_media";
+export type ChoiceUnsuitability = "answer_media";
 
 /**
- * Answers at Bloom levels 1–3 without answer media (Decision 9, amended
- * 2026-09-29): the number of answer points no longer excludes an item, since
- * many existing items predate the one-point authoring rule. Returns why an
- * item is unsuitable, or null.
+ * Every item whose answer is text (Decision 9, amended 2026-09-29): neither
+ * the Bloom level nor the number of answer points excludes an item. Options
+ * are a first stage; the tap ceiling keeps such a card from maturing, so the
+ * learner moves it on in Flash, the answer modes, or Auto. Only an answer
+ * carried by media (image occlusion, audio) cannot be offered as text
+ * options. Returns why an item is unsuitable, or null.
  */
 export function choiceUnsuitability(
   input: ChoiceSuitabilityInput,
 ): ChoiceUnsuitability | null {
-  if (input.bloomLevel < 1 || input.bloomLevel > MAX_CHOICE_BLOOM_LEVEL) {
-    return "bloom_level";
-  }
   return input.hasAnswerMedia ? "answer_media" : null;
 }
 
@@ -70,6 +65,8 @@ export interface StoredDistractor {
   source: StoredDistractorSource;
   text: string;
   reason: string | null;
+  /** The model that wrote a generated option. */
+  model: string | null;
   shownCount: number;
   chosenCount: number;
 }
@@ -80,6 +77,7 @@ interface DistractorRow {
   source: StoredDistractorSource;
   text: string;
   reason: string | null;
+  model: string | null;
   shown_count: number;
   chosen_count: number;
 }
@@ -91,6 +89,7 @@ function fromRow(row: DistractorRow): StoredDistractor {
     source: row.source,
     text: row.text,
     reason: row.reason,
+    model: row.model ?? null,
     shownCount: Number(row.shown_count),
     chosenCount: Number(row.chosen_count),
   };
@@ -104,7 +103,8 @@ export async function listActiveDistractors(
 ): Promise<StoredDistractor[]> {
   const rows = (await db
     .prepare(
-      `SELECT id, token_id, source, text, reason, shown_count, chosen_count
+      `SELECT id, token_id, source, text, reason, model, shown_count,
+              chosen_count
          FROM choice_distractors
         WHERE token_id = ? AND source_hash = ? AND retired_at IS NULL
         ORDER BY created_at, id`,
@@ -230,7 +230,6 @@ interface DonorRow {
   id: string;
   concept: string;
   question: string | null;
-  bloom_level: number;
   atom_id: string | null;
   sibling_group: string | null;
   answer_media: number;
@@ -277,7 +276,7 @@ export async function deriveDistractors(
 ): Promise<DerivedDistractor[]> {
   const params: unknown[] = [input.userId, input.token.id, input.token.domain];
   let sql = `
-    SELECT t.id, t.concept, t.question, t.bloom_level, t.atom_id,
+    SELECT t.id, t.concept, t.question, t.atom_id,
            (SELECT b.note_guid FROM imported_card_bindings b
              WHERE b.token_id = t.id LIMIT 1) AS sibling_group,
            (SELECT COUNT(*) FROM token_media tm
@@ -331,7 +330,6 @@ export async function deriveDistractors(
     if (excluded.has(`donor:${donor.id}`)) continue;
     if (
       !isChoiceSuitable({
-        bloomLevel: Number(donor.bloom_level),
         hasAnswerMedia: Number(donor.answer_media) > 0,
       })
     ) {

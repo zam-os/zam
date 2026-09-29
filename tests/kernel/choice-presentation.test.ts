@@ -82,13 +82,9 @@ describe("deterministic option checks", () => {
     expect(checkShownSet(["Brechung", "Reflexion", "Streuung"], 0)).toBeNull();
   });
 
-  it("asks answers up to Bloom 3 without answer media, and names why not", () => {
-    const base = { bloomLevel: 2, hasAnswerMedia: false };
-    expect(isChoiceSuitable(base)).toBe(true);
-    expect(choiceUnsuitability({ ...base, bloomLevel: 4 })).toBe("bloom_level");
-    expect(choiceUnsuitability({ ...base, hasAnswerMedia: true })).toBe(
-      "answer_media",
-    );
+  it("excludes only answers carried by media, and names why", () => {
+    expect(isChoiceSuitable({ hasAnswerMedia: false })).toBe(true);
+    expect(choiceUnsuitability({ hasAnswerMedia: true })).toBe("answer_media");
   });
 });
 
@@ -190,13 +186,36 @@ describe("resolveAnswerPresentation", () => {
     });
   });
 
-  it("asks unsuitable items in a recall format and says why", async () => {
-    const { cardId } = await item("analyse", "Brechung", { bloom_level: 4 });
+  it("asks an answer carried by media in a recall format and says why", async () => {
+    const { token, cardId } = await item("bild", "Brechung");
+    await db
+      .prepare(
+        "INSERT INTO media_assets (hash, mime_type, byte_size, data) VALUES (?, ?, ?, ?)",
+      )
+      .run("h1", "image/png", 1, new Uint8Array([0]));
+    await db
+      .prepare(
+        `INSERT INTO token_media (token_id, asset_hash, side, kind, ordinal, original_name)
+         VALUES (?, 'h1', 'answer', 'image', 0, 'bild.png')`,
+      )
+      .run(token.id);
     expect(await present(cardId)).toEqual({
       format: "recall",
       reason: "unsuitable",
-      detail: "bloom_level",
+      detail: "answer_media",
     });
+  });
+
+  it("asks every Bloom level as a choice (owner decision 2026-09-29)", async () => {
+    const { cardId } = await item("analyse", "Brechung", {
+      bloom_level: 5,
+      fast_check: JSON.stringify({
+        type: "multiple_choice",
+        options: ["Brechung", "Reflexion", "Beugung"],
+        correct_index: 0,
+      }),
+    });
+    expect((await present(cardId)).format).toBe("choice");
   });
 
   it("asks multi-point answers as a choice (items that predate the one-point rule)", async () => {
@@ -337,6 +356,35 @@ describe("resolveAnswerPresentation", () => {
         choiceSourceHash({ ...token, concept: "neu" }),
       ),
     ).toHaveLength(0);
+  });
+
+  it("prefers generated options to answers of other questions", async () => {
+    // Answers of other items are easy to spot as belonging elsewhere, so they
+    // are only the last resort (owner decision 2026-09-29).
+    const target = await item("vorrang", "Brechung");
+    for (const [slug, concept] of [
+      ["reflexion-2", "Reflexion"],
+      ["streuung-2", "Streuung"],
+    ] as const) {
+      await meet((await item(slug, concept)).cardId);
+    }
+    await storeDistractors(db, {
+      tokenId: target.token.id,
+      sourceHash: choiceSourceHash(target.token),
+      source: "generated",
+      entries: [{ text: "Beugung" }, { text: "Absorption" }],
+      model: "writer",
+    });
+    const shown = await present(target.cardId);
+    if (shown.format !== "choice") throw new Error("expected a choice");
+    expect(
+      shown.choice.entries
+        .filter((entry) => entry.source !== "correct")
+        .map((entry) => [entry.source, entry.model]),
+    ).toEqual([
+      ["generated", "writer"],
+      ["generated", "writer"],
+    ]);
   });
 
   it("grades a choice by the kernel's rule and counts exposures", async () => {

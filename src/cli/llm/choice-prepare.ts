@@ -2,11 +2,13 @@
  * Fill the choice-option cache ahead of the review (ADR 2026-09-27 Decision 6).
  *
  * Shared by the CLI (`zam bridge choice-prepare`) and Mobile, which inject the
- * model transport. A card is generated for only when a choice for it would
- * otherwise fall back to recall for lack of options: authored, curated and
- * derived options come first and cost nothing. Generation never blocks a
- * displayed card — callers run this in the background, and a card whose
- * options are not ready is simply asked in a recall format.
+ * model transport. A card is generated for when it has no authored or curated
+ * set and fewer than two usable generated options its learner has not seen:
+ * fresh wrong answers each time make a choice a variation rather than a set
+ * to memorise (amended 2026-09-29). Existing options are passed as ones to
+ * avoid. Generation never blocks a displayed card — callers run this in the
+ * background, and a card whose options are not ready is asked with what
+ * there is, or in a recall format.
  *
  * Imports kernel modules by path, never `kernel/index.js`: the Mobile WebView
  * bundles this file.
@@ -15,7 +17,7 @@
 import type { Database } from "../../kernel/db/types.js";
 import { getCardById } from "../../kernel/models/card.js";
 import { getTokenById } from "../../kernel/models/token.js";
-import { resolveAnswerPresentation } from "../../kernel/recall/answer-presentation.js";
+import { choiceOptionsNeeded } from "../../kernel/recall/answer-presentation.js";
 import {
   choiceSourceHash,
   storeDistractors,
@@ -65,17 +67,11 @@ export async function prepareChoiceOptionsForCards(
   };
   for (const cardId of input.cardIds) {
     try {
-      const presentation = await resolveAnswerPresentation(db, {
+      const need = await choiceOptionsNeeded(db, {
         userId: input.userId,
         cardId,
-        mode: "choice",
-        now: input.now,
-        knowledgeContext: input.knowledgeContext,
       });
-      if (
-        presentation.format !== "recall" ||
-        presentation.reason !== "no_options"
-      ) {
+      if (!need.needed) {
         outcome.skipped += 1;
         continue;
       }
@@ -91,6 +87,7 @@ export async function prepareChoiceOptionsForCards(
         bloomLevel: token.bloom_level,
         context: token.context,
         language: token.language,
+        avoid: need.avoid,
       });
       outcome.modelCalls +=
         generation.result.accepted.length > 0 ||

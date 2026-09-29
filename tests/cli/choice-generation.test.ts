@@ -23,6 +23,7 @@ import {
   createToken,
   type Database,
   ensureCard,
+  executeReviewAction,
   listActiveDistractors,
   openDatabase,
   resolveAnswerPresentation,
@@ -177,9 +178,9 @@ describe("filling the option cache", () => {
     filterModel: "checker",
   });
 
-  it("generates only for cards that would otherwise lack options", async () => {
+  it("generates for every card without an authored set, at any Bloom level", async () => {
     const needs = await card("needs-options");
-    const unsuitable = await card("unsuitable", { bloom_level: 5 });
+    const analyse = await card("analyse", { bloom_level: 5 });
     const authored = await card("authored", {
       fast_check: JSON.stringify({
         type: "binary_choice",
@@ -191,15 +192,15 @@ describe("filling the option cache", () => {
       db,
       {
         userId: "learner",
-        cardIds: [needs.cardId, unsuitable.cardId, authored.cardId],
+        cardIds: [needs.cardId, analyse.cardId, authored.cardId],
       },
       fakeGenerate,
     );
     expect(outcome).toEqual({
-      prepared: 1,
-      skipped: 2,
+      prepared: 2,
+      skipped: 1,
       failed: [],
-      modelCalls: 2,
+      modelCalls: 4,
     });
     const rows = await listActiveDistractors(
       db,
@@ -217,13 +218,90 @@ describe("filling the option cache", () => {
     });
     expect(presentation.format).toBe("choice");
 
-    // A second pass finds enough options and spends nothing.
+    // A second pass finds enough unseen options and spends nothing.
     const second = await prepareChoiceOptionsForCards(
       db,
       { userId: "learner", cardIds: [needs.cardId] },
       fakeGenerate,
     );
     expect(second).toMatchObject({ prepared: 0, skipped: 1, modelCalls: 0 });
+  });
+
+  it("asks for new wrong answers once the learner has seen the old ones", async () => {
+    const needs = await card("fresh-options");
+    await prepareChoiceOptionsForCards(
+      db,
+      { userId: "learner", cardIds: [needs.cardId] },
+      fakeGenerate,
+    );
+    const first = await resolveAnswerPresentation(db, {
+      userId: "learner",
+      cardId: needs.cardId,
+      mode: "choice",
+    });
+    if (first.format !== "choice") throw new Error("expected a choice");
+    // Generated options name the model that wrote them.
+    expect(
+      first.choice.entries
+        .filter((entry) => entry.source === "generated")
+        .map((entry) => entry.model),
+    ).toEqual(["writer", "writer"]);
+
+    await executeReviewAction(db, {
+      action: "rate",
+      cardId: needs.cardId,
+      userId: "learner",
+      rating: 3,
+      answerFormat: "choice",
+      choiceEvidence: {
+        options: first.choice.options,
+        correctIndex: first.choice.correctIndex,
+        entries: first.choice.entries,
+        chosen: first.choice.correctIndex,
+      },
+    });
+
+    // Both options were seen: the next preparation writes new ones and is
+    // told which to avoid.
+    let avoided: readonly string[] | undefined;
+    const outcome = await prepareChoiceOptionsForCards(
+      db,
+      { userId: "learner", cardIds: [needs.cardId] },
+      async (generationItem) => {
+        avoided = generationItem.avoid;
+        return {
+          result: await runChoiceGeneration({
+            item: generationItem,
+            complete: async () =>
+              JSON.stringify([
+                { text: "Streuung", reason: "neu" },
+                { text: "Beugung", reason: "neu" },
+                { text: "Absorption", reason: "neu" },
+              ]),
+            completeFilter: async () => "[]",
+          }),
+          model: "writer-2",
+          filterModel: "checker",
+        };
+      },
+    );
+    expect(outcome.prepared).toBe(1);
+    expect([...(avoided ?? [])].sort()).toEqual(["Reflexion", "Streuung"]);
+    expect(
+      buildChoiceGenerationPrompt({ ...item, avoid: ["Reflexion"] }).user,
+    ).toContain("Already used — write different ones:\n- Reflexion");
+
+    const next = await resolveAnswerPresentation(db, {
+      userId: "learner",
+      cardId: needs.cardId,
+      mode: "choice",
+    });
+    if (next.format !== "choice") throw new Error("expected a choice");
+    const shownBefore = first.choice.options;
+    const fresh = next.choice.options.filter(
+      (option, index) => index !== next.choice.correctIndex,
+    );
+    expect(fresh.every((option) => !shownBefore.includes(option))).toBe(true);
   });
 
   it("reports a failing card without failing the others", async () => {

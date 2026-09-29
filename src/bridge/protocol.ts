@@ -502,6 +502,8 @@ export interface AnswerPresentationResponse {
             curatedIndex?: number;
             donorTokenId?: string;
             reason?: string | null;
+            /** The model that wrote a generated option. */
+            model?: string | null;
           }>;
         };
       }
@@ -515,7 +517,7 @@ export interface AnswerPresentationResponse {
           | "recall_stage"
           | "curated_disputed";
         /** For `unsuitable`: which rule excluded the item. */
-        detail?: "bloom_level" | "answer_media";
+        detail?: "answer_media";
       };
 }
 

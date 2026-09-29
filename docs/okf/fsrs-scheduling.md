@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-29T10:00:00.000Z
+timestamp: 2026-09-29T14:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -150,11 +150,13 @@ options. `resolveAnswerPresentation()` in
 `src/kernel/recall/answer-presentation.ts` decides, without any model, whether
 a card is shown as a choice or in a recall format, and why:
 
-1. Answers up to Bloom level 3 without answer media are suitable;
-   `choiceUnsuitability()` names the rule that excludes the rest
-   (`bloom_level` or `answer_media`), and the presentation carries it as
-   `detail` so a surface can say why. The number of answer points does not
-   matter: many items predate the one-point authoring rule.
+1. Every item whose answer is text is suitable, at any Bloom level and with
+   any number of answer points. Only an answer carried by media is asked
+   freely: `choiceUnsuitability()` returns `answer_media`, and the
+   presentation carries it as `detail` so a surface can say why. Options are
+   a first stage — the tap ceiling keeps a card answered by choice from
+   maturing, so once it reaches the ceiling the learner takes it further in
+   Flash or an answer mode, or Auto does at the recall probe.
 2. In `auto`, a card is in the **recall stage** once any of its review-log
    rows is `recall` or `NULL`, and stays there. Before that, the review at
    which a correct choice would bring stability to 20 days (the card already
@@ -164,10 +166,12 @@ a card is shown as a choice or in a recall format, and why:
    and the learner has not pinned `flash` ("later without typing").
 3. Options come from the first source that yields enough usable distractors:
    the item's authored `fast_check` (binary, or 3–4 options), curated
-   `choice_distractors` rows shipped with a tile, answers of other items the
-   learner has already met in the same domain and knowledge context (derived
-   per learner, ranked by stored embeddings or text similarity, never
-   stored), then cached generated options.
+   `choice_distractors` rows shipped with a tile, generated options — those
+   this learner has not been shown yet first, read from the choice evidence
+   of their attempts — and only then answers of other items the learner has
+   met in the same domain and knowledge context (derived per learner, never
+   stored). Derived options are the last resort because an answer to another
+   question is easy to recognise as such.
 4. Every candidate passes the deterministic checks in
    `src/kernel/recall/choice-checks.ts` (empty, equal to or containing the
    answer, duplicate, all/none of the above, negated answer, named in the
@@ -186,14 +190,19 @@ excludes a disputed curated or derived option for that learner only
 (`choice_exclusions`, migration M036).
 
 Generated options are written by the CLI (`zam bridge choice-prepare`) or
-Mobile, never by the kernel: a `text`-role model writes candidates with a
-reason each, the same checks run, and a reject filter answering from a
-seeded, shuffled set drops every candidate it considers correct. Each call
-walks on to the next model of its role's chain when a row refuses it — a
-keyless OpenRouter row passes the readiness check, because the model
-catalogue is public, and fails only at the call. Surfaces prepare the next
-cards in the background; a card whose options are not ready is asked in a
-recall format.
+Mobile, never by the kernel. A choice works like a question variation, so the
+wrong answers should not be learnable: `choiceOptionsNeeded()` reports a card
+without an authored or curated set whose learner has fewer than two unseen
+generated options, and the preparation then asks a `text`-role model for new
+candidates, passing the existing ones to avoid. The same checks run, and a
+reject filter answering from a seeded, shuffled set drops every candidate it
+considers correct. Each stored option records the model that wrote it, and
+the surfaces name that model next to the options, as they do for a generated
+question. Each call walks on to the next model of its role's chain when a row
+refuses it — a keyless OpenRouter row passes the readiness check, because the
+model catalogue is public, and fails only at the call. Surfaces prepare the
+next cards in the background; a card whose fresh options are not ready is
+asked with options already seen, or in a recall format.
 
 # Review queue and workload
 

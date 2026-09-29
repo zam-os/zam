@@ -23,13 +23,14 @@ import type { StudyLearningMode } from "../scheduler/study-settings.js";
 import { seededPermutation } from "../util/seeded.js";
 import { checkCandidate, checkShownSet } from "./choice-checks.js";
 import {
-  choiceSourceHash,
-  deriveDistractors,
   type ChoiceUnsuitability,
+  choiceSourceHash,
   choiceUnsuitability,
+  deriveDistractors,
   listActiveDistractors,
   RETIRE_MAX_CHOSEN_SHARE,
   RETIRE_MIN_SHOWN,
+  type StoredDistractor,
 } from "./choice-options.js";
 
 /** How many distractors a presentation shows beside the answer (Decision 2). */
@@ -55,6 +56,8 @@ export interface ChoiceEntry {
   donorTokenId?: string;
   /** Contrast line after a miss; a derived option names its own question. */
   reason?: string | null;
+  /** The model that wrote a generated option, for attribution. */
+  model?: string | null;
 }
 
 export interface PresentedChoice {
@@ -220,12 +223,115 @@ function usable(
 }
 
 /**
+ * Generated options this learner has already been shown for an item, read
+ * from the choice evidence of their attempts. A wrong option seen before can
+ * be recognised as wrong without knowing the answer, so fresh ones are
+ * preferred (Decision 6, amended 2026-09-29).
+ */
+async function seenDistractorIds(
+  db: Database,
+  userId: string,
+  tokenId: string,
+): Promise<Set<string>> {
+  const rows = (await db
+    .prepare(
+      `SELECT evidence FROM review_attempts
+        WHERE user_id = ? AND token_id = ? AND evidence LIKE '%distractorId%'`,
+    )
+    .all(userId, tokenId)) as Array<{ evidence: string }>;
+  const seen = new Set<string>();
+  for (const row of rows) {
+    try {
+      const evidence = JSON.parse(row.evidence) as {
+        choice?: { entries?: Array<{ distractorId?: string }> };
+      };
+      for (const entry of evidence.choice?.entries ?? []) {
+        if (entry.distractorId) seen.add(entry.distractorId);
+      }
+    } catch {
+      // Unreadable evidence never blocks a presentation.
+    }
+  }
+  return seen;
+}
+
+function generatedCandidates(stored: readonly StoredDistractor[]): Candidate[] {
+  return stored
+    .filter((row) => row.source === "generated")
+    .map((row) => ({
+      text: row.text,
+      entry: {
+        source: "generated",
+        distractorId: row.id,
+        reason: row.reason,
+        model: row.model,
+      },
+    }));
+}
+
+/**
+ * Whether an item should get freshly generated options before it is next
+ * asked, and which options the generator should avoid repeating. True when
+ * the item would be a choice but has no authored or curated set and fewer
+ * than two usable generated options this learner has not seen yet.
+ */
+export async function choiceOptionsNeeded(
+  db: Database,
+  input: { userId: string; cardId: string },
+): Promise<{ needed: boolean; avoid: string[] }> {
+  const none = { needed: false, avoid: [] };
+  const card = await getCardById(db, input.cardId);
+  if (!card || card.user_id !== input.userId) return none;
+  const token = await getTokenById(db, card.token_id);
+  if (!token || parseReviewFastCheck(token.fast_check)) return none;
+  const media = (await db
+    .prepare(
+      `SELECT COUNT(*) AS n FROM token_media
+        WHERE token_id = ? AND side = 'answer'`,
+    )
+    .get(token.id)) as { n: number } | undefined;
+  if (choiceUnsuitability({ hasAnswerMedia: Number(media?.n ?? 0) > 0 })) {
+    return none;
+  }
+  const stored = await listActiveDistractors(
+    db,
+    token.id,
+    choiceSourceHash(token),
+  );
+  const correct = token.concept.trim();
+  const curated = usable(
+    correct,
+    stored
+      .filter((row) => row.source === "curated")
+      .map((row) => ({ text: row.text, entry: { source: "curated" } })),
+    token.question,
+  );
+  if (curated.length >= SHOWN_DISTRACTORS) return none;
+  const seen = await seenDistractorIds(db, input.userId, token.id);
+  const fresh = usable(
+    correct,
+    generatedCandidates(stored).filter(
+      (candidate) => !seen.has(candidate.entry.distractorId ?? ""),
+    ),
+    token.question,
+  );
+  return {
+    needed: fresh.length < SHOWN_DISTRACTORS,
+    avoid: stored
+      .filter((row) => row.source === "generated")
+      .map((row) => row.text),
+  };
+}
+
+/**
  * Decide how a card is asked and, for a choice, what the learner sees.
  *
  * Order: the mode, the item's suitability, Auto's stage, then the first option
  * source with enough usable distractors — the item's authored fast check,
- * curated options, options derived from items the learner has met, generated
- * options. Without enough options the card is asked in a recall format.
+ * curated options, generated options (those this learner has not seen first),
+ * and only then options derived from items the learner has met, which are
+ * easy to recognise as answers to other questions. Without enough options the
+ * card is asked in a recall format.
  */
 export async function resolveAnswerPresentation(
   db: Database,
@@ -248,7 +354,6 @@ export async function resolveAnswerPresentation(
     .get(token.id)) as { n: number } | undefined;
 
   const unsuitable = choiceUnsuitability({
-    bloomLevel: token.bloom_level,
     hasAnswerMedia: Number(media?.n ?? 0) > 0,
   });
   if (unsuitable) {
@@ -295,7 +400,7 @@ export async function resolveAnswerPresentation(
     return { format: "choice", choice: presentSet(answer, distractors, seed) };
   }
 
-  // 2–4. Curated options, derived options, generated options.
+  // 2–4. Curated options, generated options, derived options.
   const stored = await listActiveDistractors(
     db,
     token.id,
@@ -322,8 +427,20 @@ export async function resolveAnswerPresentation(
       )
       .get(token.id)) as { note_guid: string | null } | undefined
   )?.note_guid;
+  const generated = usable(
+    correct,
+    generatedCandidates(stored),
+    token.question,
+  );
+  const seen = await seenDistractorIds(db, input.userId, token.id);
+  const fresh = generated.filter(
+    (candidate) => !seen.has(candidate.entry.distractorId ?? ""),
+  );
   const sources: Array<() => Promise<Candidate[]>> = [
     async () => curated,
+    // New wrong answers each time, while there are enough of them.
+    async () => fresh,
+    async () => generated,
     async () =>
       usable(
         correct,
@@ -342,21 +459,6 @@ export async function resolveAnswerPresentation(
             reason: donor.question,
           },
         })),
-        token.question,
-      ),
-    async () =>
-      usable(
-        correct,
-        stored
-          .filter((row) => row.source === "generated")
-          .map((row) => ({
-            text: row.text,
-            entry: {
-              source: "generated",
-              distractorId: row.id,
-              reason: row.reason,
-            },
-          })),
         token.question,
       ),
   ];

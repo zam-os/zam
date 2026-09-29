@@ -654,6 +654,7 @@ export type {
 export {
   applyChoiceOutcome,
   assertChoiceEvidence,
+  choiceOptionsNeeded,
   ratingForChoice,
   resolveAnswerPresentation,
   SHOWN_DISTRACTORS,
@@ -669,11 +670,11 @@ export {
 } from "./recall/choice-checks.js";
 export type {
   ChoiceSuitabilityInput,
+  ChoiceUnsuitability,
   DeriveDistractorsInput,
   DerivedDistractor,
   NewDistractor,
   StoreDistractorsInput,
-  ChoiceUnsuitability,
   StoredDistractor,
   StoredDistractorSource,
 } from "./recall/choice-options.js";
@@ -684,7 +685,6 @@ export {
   deriveDistractors,
   isChoiceSuitable,
   listActiveDistractors,
-  MAX_CHOICE_BLOOM_LEVEL,
   RETIRE_MAX_CHOSEN_SHARE,
   RETIRE_MIN_SHOWN,
   storeDistractors,
