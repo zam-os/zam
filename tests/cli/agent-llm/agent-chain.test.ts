@@ -61,6 +61,8 @@ const agentRow: ModelEntry = {
 const cloudRow: ModelEntry = {
   id: "cloud",
   label: "Cloud fallback",
+  // OpenRouter needs a key; a keyless row is reported "key-missing".
+  apiKey: "sk-or-test",
   url: "https://openrouter.ai/api/v1",
   model: "working/model",
   local: false,
@@ -91,6 +93,9 @@ function stubCloud(): { calls: string[] } {
           : input instanceof URL
             ? input.toString()
             : input.url;
+      if (url.endsWith("/auth/key")) {
+        return new Response(JSON.stringify({ data: {} }), { status: 200 });
+      }
       if (url.endsWith("/models")) {
         return new Response(JSON.stringify({ data: [] }), {
           status: 200,
@@ -117,12 +122,11 @@ function adapter(overrides: Partial<AgentTextAdapter>): AgentTextAdapter {
   };
 }
 
-const missingHarness = (): AgentTextAdapter["probe"] =>
-  async () => ({
-    harness: "claude-code",
-    available: false,
-    detail: "Claude Code CLI (`claude`) not found on PATH",
-  });
+const missingHarness = (): AgentTextAdapter["probe"] => async () => ({
+  harness: "claude-code",
+  available: false,
+  detail: "Claude Code CLI (`claude`) not found on PATH",
+});
 
 /**
  * Issue #346: the recall walk treated every agent row as ready without a

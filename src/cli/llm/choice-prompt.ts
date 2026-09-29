@@ -19,10 +19,15 @@ import {
 import { languageName } from "../../kernel/system/language-names.js";
 import { seededPermutation } from "../../kernel/util/seeded.js";
 
-/** Output budget: a handful of short options with one line each. */
-export const CHOICE_GENERATION_MAX_OUTPUT_TOKENS = 1200;
-/** Output budget for the filter's index list. */
-export const CHOICE_FILTER_MAX_OUTPUT_TOKENS = 300;
+/**
+ * Output budgets. The answer itself is short, but reasoning models spend the
+ * budget on thinking first: GLM-5.3 Flash used 1,143 of 1,200 tokens reasoning
+ * and was cut off (2026-09-29). A budget caps, it does not bill — only tokens
+ * actually used cost.
+ */
+export const CHOICE_GENERATION_MAX_OUTPUT_TOKENS = 4000;
+/** Output budget for the filter's index list, reasoning included. */
+export const CHOICE_FILTER_MAX_OUTPUT_TOKENS = 2000;
 
 /** How many candidates generation asks for. */
 export const CHOICE_CANDIDATES_REQUESTED = 5;

@@ -307,6 +307,7 @@ interface ProviderRoleStatus {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";
@@ -1896,6 +1897,8 @@ function providerReasonText(status: ProviderRoleStatus): string {
   switch (status.reason) {
     case "model-not-found":
       return t("provider_model_missing");
+    case "key-missing":
+      return t("model_status_key_missing");
     case "key-invalid":
       return t("model_status_key_invalid");
     case "unsupported-provider":
@@ -1980,6 +1983,9 @@ function refreshAiStatus(): void {
         );
       } else if (llm.reason === "model-not-found") {
         setAiStatus(t("ai_status_model_missing"), "gray");
+      } else if (llm.reason === "key-missing") {
+        // A cloud model with no key stored: the fix is a paste in Settings.
+        setAiStatus(t("model_status_key_missing"), "gray");
       } else if (llm.reason === "key-invalid") {
         // A reachable cloud that rejected the stored key is not "offline":
         // the fix is a re-paste in Settings, and the header should say so.

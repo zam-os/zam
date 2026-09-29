@@ -2487,6 +2487,25 @@ interface ProviderEndpointReadiness {
    * cloud and must not open the offline tier (ADR 2026-09-13, decision 9).
    */
   keyRejected?: boolean;
+  /**
+   * A known cloud provider with no key stored for this row. Nothing was sent:
+   * unlike a rejected key, the cloud did not answer (reported 2026-09-29 — a
+   * keyless OpenRouter row looked online because its catalogue is public).
+   */
+  keyMissing?: boolean;
+}
+
+/**
+ * A row for a provider that always needs a key (OpenRouter and the other
+ * known cloud providers) but has none: calling it can only 401.
+ */
+export function isCloudKeyMissing(endpoint: ProviderConfig): boolean {
+  if (endpoint.transport === "agent" || endpoint.local) return false;
+  const known = CLOUD_PROVIDERS.some((provider) =>
+    endpoint.url.startsWith(provider.baseUrl),
+  );
+  const key = endpoint.apiKey?.trim();
+  return known && (!key || key === DEFAULT_LLM_API_KEY);
 }
 
 function isLocalEndpoint(url: string): boolean {
@@ -2569,6 +2588,15 @@ async function checkProviderEndpoint(
       modelAvailable: false,
     };
   }
+  if (isCloudKeyMissing(resolved)) {
+    return {
+      endpoint: resolved,
+      online: true,
+      keyMissing: true,
+      availableModels: [],
+      modelAvailable: false,
+    };
+  }
 
   // A stored key-validity verdict — or a live key check, where the provider
   // publishes a key-metadata endpoint — marks the endpoint unusable:
@@ -2616,15 +2644,21 @@ async function checkProviderEndpoint(
 }
 
 function isEndpointUsable(readiness: ProviderEndpointReadiness): boolean {
-  return readiness.online && readiness.modelAvailable && !readiness.keyRejected;
+  return (
+    readiness.online &&
+    readiness.modelAvailable &&
+    !readiness.keyRejected &&
+    !readiness.keyMissing
+  );
 }
 
 /** Why an endpoint that answered cannot serve, for status and error text. */
 function readinessReason(
   readiness: ProviderEndpointReadiness,
-): "offline" | "key-invalid" | "model-not-found" | undefined {
+): "offline" | "key-missing" | "key-invalid" | "model-not-found" | undefined {
   if (isEndpointUsable(readiness)) return undefined;
   if (!readiness.online) return "offline";
+  if (readiness.keyMissing) return "key-missing";
   if (readiness.keyRejected) return "key-invalid";
   return "model-not-found";
 }
@@ -2727,7 +2761,7 @@ interface RecallReadiness {
   /** The row answered at all — a refused key or a missing model still counts. */
   reachable: boolean;
   /** Why an unready row was skipped, for the exhausted-chain error. */
-  reason?: "offline" | "key-invalid" | "model-not-found";
+  reason?: "offline" | "key-missing" | "key-invalid" | "model-not-found";
 }
 
 /**
@@ -2802,8 +2836,11 @@ async function walkRecallChain<T>(
     const readiness = await ensureRecallEndpointReady(endpoint, signature);
     if (!readiness.ready) {
       if (readiness.reason && readiness.reason !== "offline") {
-        // The row answered and cannot serve: that is the cloud speaking.
-        if (isCloudRow) cloudAnswered = true;
+        // The row answered and cannot serve: that is the cloud speaking. A
+        // missing key sent nothing, so the cloud has not answered.
+        if (isCloudRow && readiness.reason !== "key-missing") {
+          cloudAnswered = true;
+        }
         lastSkip = { endpoint, reason: readiness.reason };
       }
       continue;
@@ -2832,7 +2869,9 @@ async function walkRecallChain<T>(
     const why =
       lastSkip.reason === "key-invalid"
         ? "the stored API key was rejected"
-        : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
+        : lastSkip.reason === "key-missing"
+          ? "no API key is stored for it"
+          : `the endpoint does not offer model "${lastSkip.endpoint.model}"`;
     throw new Error(`No recall LLM endpoint is usable: ${name} — ${why}`);
   }
   throw new Error("No recall LLM endpoint is online");
@@ -2993,6 +3032,13 @@ export async function prepareRecallChain(
     // when it was online and refused (rejected key, model not offered).
     if (endpoint.offlineOnly && cloudAnswered) break;
     const isAgent = endpoint.transport === "agent";
+    // No key for a provider that needs one: skip it without asking the cloud,
+    // so it neither passes as ready nor keeps the offline tier closed.
+    if (isCloudKeyMissing(endpoint)) {
+      lastReason = "key-missing";
+      lastModel = endpoint.model;
+      continue;
+    }
     let online = isAgent
       ? await isAgentEndpointReady(endpoint.agentHarness)
       : await isLlmOnline(endpoint.url);
@@ -3180,6 +3226,7 @@ export interface ProviderRoleStatus {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";
@@ -3292,6 +3339,7 @@ export interface LlmReadiness {
   reason?:
     | "disabled"
     | "offline"
+    | "key-missing"
     | "key-invalid"
     | "model-not-found"
     | "unsupported-provider";

@@ -14,9 +14,8 @@ import {
 } from "../../src/cli/llm/client.js";
 
 vi.mock("../../src/cli/llm/foundry-local.js", async (importActual) => {
-  const actual = await importActual<
-    typeof import("../../src/cli/llm/foundry-local.js")
-  >();
+  const actual =
+    await importActual<typeof import("../../src/cli/llm/foundry-local.js")>();
   return {
     ...actual,
     // The prepared service answers on a different URL than the row stores —
@@ -73,9 +72,13 @@ function openRouterEntry(
     id?: string;
     order?: number;
     url?: string;
+    /** A row with no key at all (default: a test key). */
+    keyless?: boolean;
   } = {},
 ): ModelEntry {
   return {
+    // OpenRouter needs a key: a keyless row is reported "key-missing".
+    ...(options.keyless ? {} : { apiKey: "sk-or-test" }),
     id: options.id ?? "glm",
     label: "GLM-5.3 Flash",
     url: options.url ?? "https://openrouter.ai/api/v1",
@@ -99,7 +102,9 @@ interface RecordedCall {
 const evaluationBody = {
   choices: [
     {
-      message: { content: "Vollständig — Paris ist die Hauptstadt Frankreichs." },
+      message: {
+        content: "Vollständig — Paris ist die Hauptstadt Frankreichs.",
+      },
       finish_reason: "stop",
     },
   ],
@@ -110,9 +115,9 @@ const evaluationBody = {
  * completion sequence, all through a stubbed global fetch — no real network,
  * which is the point: the configured URL is openrouter.ai.
  */
-function stubFetch(
-  chatResponses: Array<{ status: number; body: unknown }>,
-): { calls: RecordedCall[] } {
+function stubFetch(chatResponses: Array<{ status: number; body: unknown }>): {
+  calls: RecordedCall[];
+} {
   const calls: RecordedCall[] = [];
   const queue = [...chatResponses];
   vi.stubGlobal(
@@ -122,6 +127,11 @@ function stubFetch(
       init?: { method?: string; body?: unknown },
     ): Promise<Response> => {
       const urlText = String(url);
+      // The key check readiness runs for a keyed OpenRouter row: accept the
+      // key and keep it out of the recorded calls, which count chat turns.
+      if (urlText.endsWith("/auth/key")) {
+        return new Response(JSON.stringify({ data: {} }), { status: 200 });
+      }
       const method = init?.method ?? "GET";
       const body =
         typeof init?.body === "string"
@@ -186,7 +196,8 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
         status: 400,
         body: {
           error: {
-            message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+            message:
+              "Reasoning is mandatory for this endpoint and cannot be disabled.",
             code: 400,
           },
         },
@@ -232,9 +243,7 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
   });
 
   it("keeps the effort control for a model that accepts it", async () => {
-    const { calls } = stubFetch([
-      { status: 200, body: evaluationBody },
-    ]);
+    const { calls } = stubFetch([{ status: 200, body: evaluationBody }]);
 
     const result = await evaluateAnswerViaLLM(db, {
       slug: "frankreich-hauptstadt",
@@ -260,7 +269,8 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
         status: 400,
         body: {
           error: {
-            message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+            message:
+              "Reasoning is mandatory for this endpoint and cannot be disabled.",
             code: 400,
           },
         },
@@ -301,7 +311,8 @@ describe("evaluateAnswerViaLLM and a reasoning-mandatory endpoint", () => {
         status: 400,
         body: {
           error: {
-            message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+            message:
+              "Reasoning is mandatory for this endpoint and cannot be disabled.",
             code: 400,
           },
         },
@@ -409,7 +420,8 @@ describe("reasoning-effort probe and a stored effort level", () => {
       status: 400,
       body: {
         error: {
-          message: "Reasoning is mandatory for this endpoint and cannot be disabled.",
+          message:
+            "Reasoning is mandatory for this endpoint and cannot be disabled.",
           code: 400,
         },
       },
@@ -482,23 +494,33 @@ describe("key-validity probe", () => {
 
   it("reports true for a key the provider authenticates", async () => {
     stubStatus(200);
-    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBe(true);
+    await expect(
+      probeKeyValidity("https://openrouter.ai/api/v1", "sk-x"),
+    ).resolves.toBe(true);
   });
 
   it("reports false for a rejected key (401/403)", async () => {
     stubStatus(401);
-    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad")).resolves.toBe(false);
+    await expect(
+      probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad"),
+    ).resolves.toBe(false);
     stubStatus(403);
-    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad")).resolves.toBe(false);
+    await expect(
+      probeKeyValidity("https://openrouter.ai/api/v1", "sk-bad"),
+    ).resolves.toBe(false);
   });
 
   it("gives no verdict on transient failures", async () => {
     stubStatus(500);
-    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBeUndefined();
+    await expect(
+      probeKeyValidity("https://openrouter.ai/api/v1", "sk-x"),
+    ).resolves.toBeUndefined();
     vi.stubGlobal("fetch", async () => {
       throw new Error("offline");
     });
-    await expect(probeKeyValidity("https://openrouter.ai/api/v1", "sk-x")).resolves.toBeUndefined();
+    await expect(
+      probeKeyValidity("https://openrouter.ai/api/v1", "sk-x"),
+    ).resolves.toBeUndefined();
   });
 
   it("skips keyless rows entirely", async () => {
@@ -546,6 +568,9 @@ function stubFetchByModel(
       init?: { method?: string; body?: unknown },
     ): Promise<Response> => {
       const urlText = String(url);
+      if (urlText.endsWith("/auth/key")) {
+        return new Response(JSON.stringify({ data: {} }), { status: 200 });
+      }
       const body =
         typeof init?.body === "string"
           ? (JSON.parse(init.body) as Record<string, unknown>)
@@ -623,7 +648,9 @@ describe("recall fallback chain", () => {
       model === "broken/model"
         ? {
             status: 401,
-            body: { error: { message: "Missing Authentication header", code: 401 } },
+            body: {
+              error: { message: "Missing Authentication header", code: 401 },
+            },
           }
         : { status: 200, body: evaluationBody },
     );
@@ -677,7 +704,9 @@ describe("recall fallback chain", () => {
         ? { status: 200, body: evaluationBody }
         : {
             status: 401,
-            body: { error: { message: "Missing Authentication header", code: 401 } },
+            body: {
+              error: { message: "Missing Authentication header", code: 401 },
+            },
           },
     );
 
@@ -696,9 +725,18 @@ describe("recall fallback chain", () => {
       model === "broken/model"
         ? {
             status: 401,
-            body: { error: { message: "Missing Authentication header", code: 401 } },
+            body: {
+              error: { message: "Missing Authentication header", code: 401 },
+            },
           }
-        : { status: 200, body: { choices: [{ message: { content: "Sure!" }, finish_reason: "stop" }] } },
+        : {
+            status: 200,
+            body: {
+              choices: [
+                { message: { content: "Sure!" }, finish_reason: "stop" },
+              ],
+            },
+          },
     );
 
     const result = await discussReviewViaLLM(db, {
@@ -732,16 +770,22 @@ function stubFetchByUrl(
   ) => { status: number; body: unknown } | "unreachable" | undefined,
 ): { calls: RecordedCall[] } {
   const calls: RecordedCall[] = [];
-  vi.stubGlobal("fetch", async (url: string | URL | Request): Promise<Response> => {
-    const urlText = String(url);
-    calls.push({ url: urlText, method: "GET", body: null });
-    const r = respond(urlText);
-    if (r === "unreachable") throw new TypeError("fetch failed");
-    return new Response(JSON.stringify(r?.body ?? {}), {
-      status: r?.status ?? 404,
-      headers: { "content-type": "application/json" },
-    });
-  });
+  vi.stubGlobal(
+    "fetch",
+    async (url: string | URL | Request): Promise<Response> => {
+      const urlText = String(url);
+      if (urlText.endsWith("/auth/key")) {
+        return new Response(JSON.stringify({ data: {} }), { status: 200 });
+      }
+      calls.push({ url: urlText, method: "GET", body: null });
+      const r = respond(urlText);
+      if (r === "unreachable") throw new TypeError("fetch failed");
+      return new Response(JSON.stringify(r?.body ?? {}), {
+        status: r?.status ?? 404,
+        headers: { "content-type": "application/json" },
+      });
+    },
+  );
   return { calls };
 }
 
@@ -797,6 +841,51 @@ describe("fallback chain boundaries", () => {
       userAnswer: "Paris",
     });
 
+  it("reports a keyless OpenRouter row as key-missing and never calls it", async () => {
+    // Reported 2026-09-29: GLM-5.3 Flash was the chosen model but had no key;
+    // it looked online (the catalogue is public) and every call fell back.
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "keyless",
+        model: "a/model",
+        order: 0,
+        keyless: true,
+      }),
+      openRouterEntry({ id: "keyed", model: "b/model", order: 1 }),
+    ]);
+    const { calls } = stubFetchByUrl((url) =>
+      url.endsWith("/models")
+        ? catalog("a/model", "b/model")
+        : okResponse("Vollständig — Paris."),
+    );
+
+    const result = await evaluate();
+    expect(result.model).toBe("b/model");
+    // Nothing was sent for the keyless row: no chat with its model.
+    expect(
+      calls.filter((call) => call.url.endsWith("/chat/completions")),
+    ).toHaveLength(1);
+  });
+
+  it("ensure-llm names a missing key instead of calling the row online", async () => {
+    saveMachineAiModels([
+      openRouterEntry({
+        id: "keyless",
+        model: "a/model",
+        order: 0,
+        keyless: true,
+      }),
+    ]);
+    stubFetchByUrl((url) =>
+      url.endsWith("/models") ? catalog("a/model") : undefined,
+    );
+    const ready = await prepareRecallChain(db, {
+      timeoutMs: 200,
+      interactive: false,
+    });
+    expect(ready).toMatchObject({ usable: false, reason: "key-missing" });
+  });
+
   it("choice generation walks on when a row refuses the call (keyless OpenRouter)", async () => {
     // Reported 2026-09-29: a keyless GLM row passed the readiness walk (the
     // /models catalogue is public) and every choice-prepare call ended in 401.
@@ -821,7 +910,10 @@ describe("fallback chain boundaries", () => {
     stubFetchByUrl((url) => {
       if (url.endsWith("/models")) return catalog("a/model", "b/model");
       if (url.startsWith("https://r1.")) {
-        return { status: 401, body: { error: { message: "Missing Authentication header" } } };
+        return {
+          status: 401,
+          body: { error: { message: "Missing Authentication header" } },
+        };
       }
       if (url.startsWith("https://r2.")) return okResponse(options);
       return undefined;
@@ -829,7 +921,8 @@ describe("fallback chain boundaries", () => {
 
     const generation = await generateChoiceOptionsViaLLM(db, {
       id: "01K8TESTITEM000000000000A1",
-      question: "Wie heißt die Richtungsänderung von Licht an einer Grenzfläche?",
+      question:
+        "Wie heißt die Richtungsänderung von Licht an einer Grenzfläche?",
       concept: "Brechung",
       domain: "Physik",
       bloomLevel: 1,
@@ -868,9 +961,7 @@ describe("fallback chain boundaries", () => {
       }),
     ]);
     const { calls } = stubFetchByUrl((url) =>
-      url.startsWith("https://r1.")
-        ? okResponse("OK")
-        : undefined,
+      url.startsWith("https://r1.") ? okResponse("OK") : undefined,
     );
 
     const result = await evaluate();
@@ -952,9 +1043,9 @@ describe("fallback chain boundaries", () => {
     // stays untouched — the original 401 is raised, Ollama is never called,
     // let alone started.
     await expect(evaluate()).rejects.toThrow(/401/);
-    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:11434")),
+    ).toEqual([]);
   });
 
   it("a rejected stored key keeps the offline tier closed and names itself", async () => {
@@ -977,9 +1068,9 @@ describe("fallback chain boundaries", () => {
     // Reachable cloud, refused key: not "offline", so no local fallback — and
     // the error says what to fix instead of "no endpoint is online".
     await expect(evaluate()).rejects.toThrow(/API key was rejected/);
-    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:11434")),
+    ).toEqual([]);
     expect(
       calls.some((call) => call.url.includes("primary.openrouter.ai")),
     ).toBe(true);
@@ -1039,9 +1130,9 @@ describe("fallback chain boundaries", () => {
     const result = await evaluate();
 
     expect(result.model).toBe("b/model");
-    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:11434")),
+    ).toEqual([]);
   });
 
   it("a healthy catalog with a 5xx on the serving call is silence, not an answer", async () => {
@@ -1130,9 +1221,9 @@ describe("fallback chain boundaries", () => {
     const result = await evaluate();
 
     expect(result.model).toBe("b/model");
-    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:11434")),
+    ).toEqual([]);
   });
 
   it("a 429 keeps the offline tier closed even though the chain is exhausted", async () => {
@@ -1155,9 +1246,9 @@ describe("fallback chain boundaries", () => {
     });
 
     await expect(evaluate()).rejects.toThrow(/429/);
-    expect(calls.filter((call) => call.url.includes("localhost:11434"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:11434")),
+    ).toEqual([]);
   });
 
   it("a refusing local row does not shut the offline tier for the local row after it", async () => {
@@ -1400,9 +1491,9 @@ describe("foundry resolution and ensure-llm boundary", () => {
     expect(result.usable).toBe(false);
     expect(result.reason).toBe("key-invalid");
     expect(result.model).toBe("cloud/model");
-    expect(calls.filter((call) => call.url.includes("localhost:59999"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:59999")),
+    ).toEqual([]);
   });
 
   it("ensure-llm opens the offline tier when no cloud row answers", async () => {
@@ -1461,8 +1552,8 @@ describe("foundry resolution and ensure-llm boundary", () => {
     expect(status.reason).toBe("key-invalid");
     expect(status.providerName).toBe("cloud");
     expect(status.fallback?.offlineOnly).toBe(true);
-    expect(calls.filter((call) => call.url.includes("localhost:59999"))).toEqual(
-      [],
-    );
+    expect(
+      calls.filter((call) => call.url.includes("localhost:59999")),
+    ).toEqual([]);
   });
 });
