@@ -1,9 +1,12 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** All seven phases done (2026-09-27 to 2026-09-29). Open before the
-release: the manual Studio pass with an AI model (Ask chat, Auto with a typed
-answer, live option generation). Delete this plan before the release that
-ships the feature, unless open tasks remain.\
+**Status:** All seven phases done (2026-09-27 to 2026-09-29). The manual
+Studio pass with an AI model ran on 2026-09-29 against an isolated library
+with an OpenRouter text model (see "Manual pass with a model" below); it
+found no defect in the Studio. Review of the branch found one PostgreSQL
+defect in the kernel (`966d180`), covered by `tests/kernel/postgres-choice.test.ts`.
+Delete this plan before the release that ships the feature, unless open
+tasks remain.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -687,6 +690,41 @@ a cloud text model is connected.
    with a delivery note, and update its row in `docs/adr/README.md`.
 4. **This plan.** Mark each phase with its commit hash. Delete the plan before
    the release that ships the feature, unless open tasks remain.
+
+## Manual pass with a model (2026-09-29)
+
+Studio built from the branch (`cargo build --release --features tauri/custom-protocol`),
+driven over the WebView2 debugging port against an isolated profile: a fresh
+local library with eight published Physik/Optik items and an OpenRouter text
+model. Every path below was exercised in the real app, not a harness.
+
+- **Live generation.** Cards without authored options got five generated
+  options each before they came up; the badge named the model that wrote
+  them. A card that came back after a miss showed a fresh set, none of the
+  options it had shown before.
+- **Wrong pick.** The chosen option turned red, the correct one green, the
+  option's reason appeared as the contrast line, and Ask, "My answer is also
+  correct" and Next were offered. Next booked the pick as `choice` with
+  rating 1.
+- **Ask.** The follow-up chat opened with the one-tap starter and the model
+  answered in the choice frame. The very first Ask of the session showed "No
+  reply from the AI"; the same call through `zam bridge discuss-review`
+  succeeded, and every later Ask in the Studio succeeded. Not reproduced.
+- **Dispute.** "My answer is also correct" counted the attempt as correct,
+  hid Ask and the dispute, booked `choice` with rating 3, and retired the
+  generated option for everyone (`retired_reason = disputed`).
+- **Auto.** A card with only choice reviews stayed a choice. The card with a
+  `recall` review was asked as a typed answer: the evaluator judged it
+  "Complete", the rating bar appeared, Good booked a `recall` row, and the
+  "Now without options" badge stayed hidden (recall stage, not a probe).
+- **Session summary** in Auto showed the rating spread and, by design, no
+  "ready for free recall" line.
+
+Observations that are not defects of this feature: with an OpenRouter key and
+no model registry, the legacy-config migration registers OpenRouter's default
+model (`openai/gpt-6-luna` here), so generation and evaluation ran on it
+rather than the provider row bound to the role — a cost to keep in mind when
+Choice is switched on with a bare OpenRouter key.
 
 ## Deliberately not in this plan
 
