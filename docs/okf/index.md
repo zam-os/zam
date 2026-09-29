@@ -12,7 +12,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## algorithm
 
-- [FSRS-6 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, per-learner workload controls, and sibling-aware queues and burial.
+- [FSRS-6 Scheduling](fsrs-scheduling.md) — ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, a 20-day ceiling for tapped answers, per-learner workload controls, and sibling-aware queues and burial.
 
 ## architecture
 

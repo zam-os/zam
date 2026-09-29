@@ -1,13 +1,13 @@
 ---
 type: algorithm
 title: FSRS-6 Scheduling
-description: ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, per-learner workload controls, and sibling-aware queues and burial.
+description: ZAM schedules reviews with a deterministic FSRS-6 kernel, persisted same-day learning steps, a 20-day ceiling for tapped answers, per-learner workload controls, and sibling-aware queues and burial.
 tags:
   - kernel
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-12T17:52:51.000Z
+timestamp: 2026-09-29T08:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -49,7 +49,9 @@ store fractional `scheduled_days` values and exact `due_at` timestamps, so
 they are not clamped to the one-day minimum used by long-term reviews.
 `tests/kernel/fsrs.test.ts` pins the default vector, long-term and same-day
 formulas, difficulty damping and mean reversion, lapse bounds, interval caps,
-and state transitions.
+and state transitions. The instance also exposes two pure helpers bound to its
+resolved parameters, `intervalDays(stability)` and
+`initialDifficulty(rating)`; they add no scheduling behavior of their own.
 
 # Learning and relearning steps
 
@@ -73,21 +75,22 @@ restart or restore.
 # Rating transaction
 
 `evaluateRating()` in `src/kernel/recall/evaluator.ts` loads the persisted
-card and cursor, runs FSRS scheduling, updates the card, appends an immutable
-row to `review_logs`, and applies enabled sibling burial. Rating is separate
-from prerequisite blocking: `evaluateRating()` does not itself block or
-unblock cards (see [prerequisite-blocking.md](prerequisite-blocking.md)).
+card and cursor, runs FSRS scheduling, applies the tap ceiling where the
+answer format calls for it, updates the card, appends an immutable row to
+`review_logs`, and applies enabled sibling burial. Rating is separate from
+prerequisite blocking: `evaluateRating()` does not itself block or unblock
+cards (see [prerequisite-blocking.md](prerequisite-blocking.md)).
 
 Interactive surfaces normally call `executeReviewAction()` in
 `src/kernel/recall/actions.ts`. Its `rate` action owns one database
 transaction around FSRS evaluation, sibling burial, an optional rating-1
-prerequisite cascade, and optional session auditing. When a `sessionId` is
-supplied, the review-log row references that session and a matching user
-`session_steps` row is written with the rating. A failure in any write rolls
-back the card update, review log, burial, blocking changes, and session step.
-The session must exist and belong to the learner; it may already be
-completed, because confirmed synthesis candidates arrive after
-`zam_session_end`. Only published, non-deprecated tokens take a rating.
+prerequisite cascade, choice bookkeeping, and optional session auditing. When a
+`sessionId` is supplied, the review-log row references that session and a
+matching user `session_steps` row is written with the rating. A failure in any
+write rolls back the card update, review log, burial, blocking changes, choice
+counters, and session step. The session must exist and belong to the learner;
+it may already be completed, because confirmed synthesis candidates arrive
+after `zam_session_end`. Only published, non-deprecated tokens take a rating.
 
 A rating may carry the attempt id that admission handed out when the card
 was shown. The same attempt never writes a second review: a retried submit
@@ -103,52 +106,88 @@ while preserving stability, difficulty, repetitions, lapses, and the active
 step cursor. After the answer, `evaluateRating()` synchronizes the card's
 `learned_content_version`.
 
-# Answer points and coverage
+# Answer format and the tap ceiling
 
-A reference answer's **required points** are its formatting, not a stored field
-(ADR 2026-09-08). A list has one point per item; prose has exactly one. Nothing
-is persisted, so the count cannot drift from the text it counts:
-`parseAnswerPoints()` and `countAnswerPoints()` in
-`src/kernel/library/answer-points.ts` derive both, and every surface reads
-them from there rather than counting for itself.
+Every rating declares **how** the card was answered, stored in
+`review_logs.answer_format` (migration M035):
 
-An item should ask for one thing, and prose therefore needs no authoring
-ceremony. Items that ask for more stay valid — some facts only make sense
-together — so `structuralPublicationChecks()` raises
-`criterion_multiple_points` as the one **non-blocking** structural check: the
-author is told and may publish anyway.
+- `recall` — the learner produced the answer (Flash, typed, spoken) and rated
+  it or had it evaluated;
+- `options` — the learner tapped an authored fast-check option and then rated
+  themselves;
+- `choice` — the rating was derived from the option the learner chose.
 
-The two evaluators split the judgement rather than conflating it. Coverage is
-observable from the answer text; effort is not, and only the learner knows it.
-The JSON evaluator shared by the Recall panel and Mobile receives the points
-enumerated and returns `recalledPoints`; `parseRecallEvaluation()` derives the
-rating from it — below full coverage rating `1`, at full coverage the neutral
-`3` the learner then overrides with Hard, Good, or Easy. Partial coverage is
-never an intermediate rating: three of four points is a `1`, and no
-partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
-window replies in prose and carries no score; it reports completeness, not a
-rating.
+`NULL` is history from before M035 and counts as `recall`. Surfaces pass the
+format to `executeReviewAction()` (bridge `submit --answer-format`, MCP
+`zam_submit_review` `answerFormat`); anything that does not say so is `recall`.
 
-No agent is asked for a rating anywhere. The JSON evaluator returns
-`recalledPoints` and `gaps`; the prose evaluator ends with a localized
-`Complete` / `Incomplete (N)` line and names the missing elements above it; the
-`skills/zam` skill and its three harness copies tell an external agent to state
-completeness rather than propose `1`-`4`. Observation synthesis keeps its
-`inferredRating`, because that is rule-based evidence from observed commands
-which the learner confirms, not an agent judging a recall answer.
+Recognising an answer among options is weaker evidence than producing it, so a
+**successful** rating (`2`–`4`) with format `options` or `choice` passes
+through `applyTapCeiling()` in `src/kernel/scheduler/choice-ceiling.ts`, with
+`CHOICE_CEILING_DAYS = 20`:
 
-Both evaluators judge completeness generously: a vague or clumsily worded
-answer that points at the right thing counts, and genuine uncertainty resolves
-in the learner's favour. The two errors are not symmetric — being told you
-failed when you nearly had it discourages and does not reverse, while a
-generous reading costs one scheduling step the learner can correct by choosing
-Again themselves.
+- stored stability is `min(S_fsrs, max(20, S_previous))` — taps build
+  stability up to 20 days and never erode stability that free recall earned;
+- in Review, the next interval is `intervalDays(min(stability, 20))`, so a tap
+  never books more than 20 days ahead; learning and relearning steps keep
+  their minute intervals;
+- a new card's difficulty is `initialDifficulty(2)` (5.11) whatever the
+  rating, and later taps leave difficulty unchanged — a tap cannot make a card
+  look easy.
 
-When asking, a surface shows how many points are expected and never which —
-a learner who knows three things are wanted keeps digging past the first. The
-count appears only above one point and only up to Bloom level 3, since
-`analyse` and `synthesise` answers do not decompose into countable facts
-(`shouldShowPointCount()`).
+A miss (`1`) is an ordinary FSRS lapse, and `recall` ratings are unchanged
+FSRS. With default parameters, a new card answered correctly by choice each
+time it is due runs 10 minutes → 2 → 8 → 20 → 20 days. The evaluation reports
+`ceilingApplied` when the ceiling shortened the result. Because
+`CHOICE_CEILING_DAYS` is below `MATURE_STABILITY_DAYS` (21, the maturity line
+in `src/kernel/analytics/stats.ts`), a card answered only by taps never counts
+as mature.
+
+# Choice and Auto presentation
+
+The `choice` and `auto` learning modes ask a card as a choice of three
+options. `resolveAnswerPresentation()` in
+`src/kernel/recall/answer-presentation.ts` decides, without any model, whether
+a card is shown as a choice or in a recall format, and why:
+
+1. Only single-point answers up to Bloom level 3 without answer media are
+   suitable (`isChoiceSuitable()`); anything else is asked freely.
+2. In `auto`, a card is in the **recall stage** once any of its review-log
+   rows is `recall` or `NULL`, and stays there. Before that, the review at
+   which a correct choice would bring stability to 20 days (the card already
+   holds 20, or a Good would reach it) is the **recall probe** and is asked
+   freely — with default parameters the fourth presentation, on day 10. The
+   free-recall format is an AI-evaluated answer when an evaluator is available
+   and the learner has not pinned `flash` ("later without typing").
+3. Options come from the first source that yields enough usable distractors:
+   the item's authored `fast_check` (binary, or 3–4 options), curated
+   `choice_distractors` rows shipped with a tile, answers of other items the
+   learner has already met in the same domain and knowledge context (derived
+   per learner, ranked by stored embeddings or text similarity, never
+   stored), then cached generated options.
+4. Every candidate passes the deterministic checks in
+   `src/kernel/recall/choice-checks.ts` (empty, equal to or containing the
+   answer, duplicate, all/none of the above, negated answer, named in the
+   question, outside the length band), and the shown set is rejected when its
+   form gives the answer away (a length or parenthesis cue).
+5. Which distractors are shown and their order are seeded by card id and due
+   date: a re-render never moves an option under the learner's finger.
+
+The rating follows from the pick: the correct option, or a disputed one
+("my answer is also correct"), earns `3`; a wrong option or "Don't know" earns
+`1`. `executeReviewAction()` refuses a choice rating that contradicts its
+evidence, stores the evidence with the attempt, counts exposures and picks of
+cached options, retires a generated option picked in fewer than 5% of at
+least 30 showings, retires a disputed generated option for everyone, and
+excludes a disputed curated or derived option for that learner only
+(`choice_exclusions`, migration M036).
+
+Generated options are written by the CLI (`zam bridge choice-prepare`) or
+Mobile, never by the kernel: a `text`-role model writes candidates with a
+reason each, the same checks run, and a reject filter answering from a
+seeded, shuffled set drops every candidate it considers correct. Surfaces
+prepare the next cards in the background; a card whose options are not ready
+is asked in a recall format.
 
 # Review queue and workload
 
@@ -182,11 +221,12 @@ queue options remain available for automation. Limits are applied after
 sibling filtering, so a suppressed sibling does not consume a daily slot.
 
 The same settings module stores a separate per-learner interaction object:
-`flash`, `answer_feedback`, or the scaffolded `answer_variation`, plus
-bounded voice reveal and rating timeouts. These preferences change how a
-surface gathers evidence, never the FSRS calculation. A contextual default may
-depend on evaluator availability, but it is not persisted by a read and cannot
-override an explicit learner choice.
+`flash`, `choice`, `answer_feedback`, the scaffolded `answer_variation`, or
+`auto`, Auto's recall pin (`answer`, `flash`, or unset), and bounded voice
+reveal and rating timeouts. A mode changes how a surface gathers evidence;
+the evidence's answer format — not the mode — decides whether the tap ceiling
+applies. A contextual default may depend on evaluator availability, but it is
+not persisted by a read and cannot override an explicit learner choice.
 
 # Sibling-aware study
 
@@ -210,11 +250,12 @@ sessions. In answer modes the shared controller captures an answer before
 presenting or speaking the expected answer/evaluation. In Flash mode it
 captures only reveal/stop/rating commands and never treats silence as evidence:
 a reveal timeout shows the answer, while a rating timeout pauses the session
-without scheduling or logging the card. The selected German or English rating
-still enters the shared kernel through `executeReviewAction()`, so voice,
-typing, tap, and click interactions persist the same FSRS-6, burial, and
-short-step state. See [voice-mode.md](voice-mode.md) for speech-engine and
-platform behavior.
+without scheduling or logging the card. In the `choice` and `auto` modes voice
+runs the Flash loop; there are no spoken choices yet, so a spoken rating is a
+`recall` rating. The selected German or English rating still enters the shared
+kernel through `executeReviewAction()`, so voice, typing, tap, and click
+interactions persist the same FSRS-6, burial, and short-step state. See
+[voice-mode.md](voice-mode.md) for speech-engine and platform behavior.
 
 # Example
 
@@ -229,6 +270,7 @@ await executeReviewAction(db, {
   rating: 3,
   sessionId,
   responseTimeMs: 1250,
+  answerFormat: "recall",
 });
 ```
 
@@ -237,9 +279,11 @@ await executeReviewAction(db, {
 Published practice items may belong to a language-neutral learning atom and
 carry a presentation tier. The field-test rule is named `tier1-first`: a new
 `tier2_synthesis` card stays out while the same atom still has an unseen
-`tier1_fast` card. A valid `binary_choice` `fast_check` is normalized by
-the queue and rendered as a one-tap choice; malformed optional metadata falls
-back to the ordinary question instead of breaking the queue.
+`tier1_fast` card. A valid `fast_check` — `binary_choice` with two options or
+`multiple_choice` with three or four — is normalized by the queue and rendered
+as a one-tap choice in the answer modes; the tap is recorded as `options`, so
+the self-rating that follows is bounded by the tap ceiling. Malformed optional
+metadata falls back to the ordinary question instead of breaking the queue.
 
 A learner may self-assess only an atom that is a **hard**
 precondition of one of that learner's live, published cards. Globally installed
@@ -262,6 +306,10 @@ limits across repeated bridge reads; Mobile and MCP Recall take bounded queue
 snapshots with the same workload and tier rules.
 
 # Citations
+- [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)
+- Tests: `tests/kernel/choice-ceiling.test.ts`, `tests/kernel/choice-presentation.test.ts`, `tests/cli/choice-generation.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/desktop/answer-format-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`
+- Code: `src/kernel/scheduler/choice-ceiling.ts`, `src/kernel/recall/answer-presentation.ts`, `src/kernel/recall/choice-options.ts`, `src/kernel/recall/choice-checks.ts`, `src/kernel/util/seeded.ts`, `src/cli/llm/choice-prompt.ts`, `src/cli/llm/choice-prepare.ts`, `mobile/src/choice-generate.ts`, `mobile/src/review-session.ts`
+
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
 - Tests: `tests/kernel/precondition-assessment.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/mobile/review-session.test.ts`
@@ -277,5 +325,5 @@ snapshots with the same workload and tier rules.
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
 - Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/analytics/stats.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

@@ -1,6 +1,8 @@
 # Choice and Auto Learning Modes
 
-**Status:** Proposed — 2026-09-27, revised after review rounds 1 and 2\
+**Status:** Implemented — 2026-09-29 (PR #369). Accepted after review rounds 1
+and 2; the Studio and Mobile ship both modes. Not yet built: the "ready for
+free recall" session line on Mobile.\
 **Date:** 2026-09-27\
 **Deciders:** Thomas (project owner)\
 **Implementation plan:** [2026-09-27-choice-and-auto-learning-modes.md](../plans/2026-09-27-choice-and-auto-learning-modes.md)\

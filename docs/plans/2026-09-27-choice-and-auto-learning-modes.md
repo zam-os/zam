@@ -1,6 +1,9 @@
 # Choice and Auto learning modes — implementation plan
 
-**Status:** Phases 1–6 done (2026-09-27/28). Manual passes still open: the Studio with an AI model, and Mobile on a device or simulator. Phase 7 is next.\
+**Status:** All seven phases done (2026-09-27 to 2026-09-29). Open before the
+release: the manual Studio pass with an AI model (Ask chat, Auto with a typed
+answer, live option generation). Delete this plan before the release that
+ships the feature, unless open tasks remain.\
 **Decision:** [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md).
 Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -30,8 +33,8 @@ schedules beyond 20 days (D4).
 - [x] **Phase 3** — choice presentation in the kernel (LLM-free) — `20f0daa`
 - [x] **Phase 4** — generated options (the `text` role, reject filter, cache fill) — `5f0a014`
 - [x] **Phase 5** — Desktop Studio — `1a99554`, fixes from the manual pass in `a33b1a8`
-- [x] **Phase 6** — Mobile (iPadOS and Android) — code and tests; the manual device pass is still open
-- [ ] **Phase 7** — documentation and handover
+- [x] **Phase 6** — Mobile (iPadOS and Android) — `4451d55`; manual pass on the iPad (A16) simulator
+- [x] **Phase 7** — documentation and handover — OKF `fsrs-scheduling.md` and `voice-mode.md`, conventions in `CLAUDE.md`/`AGENTS.md`, ADR status
 
 **Order.**
 
