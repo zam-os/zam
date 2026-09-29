@@ -288,10 +288,11 @@ learner when the card is presented, and never shared.
   type.
 - **Exclusions.** The item's own atom and sibling group, and every candidate
   that fails the deterministic checks of source 3.
-- **Filtering.** When a `text` model is available, a derived set passes the
-  same reject filter as a generated one before first use. Without a model,
-  dispute and retirement are the safeguard: a different correct answer, such
-  as Neon for "a noble gas", survives any string check.
+- **Filtering.** A derived set passes the deterministic checks of source 3
+  and nothing more; the reject filter runs on generated candidates only
+  (amended 2026-09-29, below). Dispute and retirement are the safeguard: a
+  different correct answer, such as Neon for "a noble gas", survives any
+  string check.
 - **Explanation.** It comes free: "This answers: <the other question>".
   Vocabulary and imported Anki decks fit well.
 
@@ -367,8 +368,26 @@ offline included, is dispute and retirement, plus curator review for tiles.
   the surfaces name it next to the options ("Options: <model>"), as they do
   for a generated question variation.
 - **Fallback on refusal.** Each generation call walks on to the next model of
-  its role's chain when a row refuses the call — a keyless OpenRouter row
-  passes the readiness check, because the model catalogue is public.
+  its role's chain when a row refuses the call. A row of a known cloud
+  provider without a stored key is skipped at readiness and does not count
+  as the cloud having answered, so it neither serves nor closes the offline
+  tier.
+
+**Amended 2026-09-29 (owner decision, review of PR #369).**
+
+- **Derived sets are not filtered.** As proposed, a derived set passed the
+  reject filter before first use whenever a text model was available. That
+  is not built, and it will not be: since derived options became the last
+  resort, a learner with a model sees them only while generated options are
+  not ready, and filtering them at presentation would put a model call
+  before the card, against the rule that a card never waits for generation.
+  Filtering them in the background would need a per-learner store of
+  rejected donors for a source that is meant for learners without a model.
+  Derived candidates pass the deterministic checks; a derived option that
+  is itself a correct answer is caught by dispute (Decision 7), which
+  excludes that donor for the learner. The falsification check on
+  generation quality covers derived options as well: a high dispute rate on
+  derived options reopens this decision.
 
 ### 7. Feedback after a wrong answer, and disputes
 
