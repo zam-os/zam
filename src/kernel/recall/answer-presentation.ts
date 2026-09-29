@@ -539,6 +539,9 @@ export async function applyChoiceOutcome(
           WHERE id = ? AND token_id = ?`,
       )
       .run(chosen, entry.distractorId, input.tokenId);
+    // The thresholds are written into the SQL, not bound: PostgreSQL types a
+    // bound parameter after the column it meets, so `shown_count * $1` makes
+    // the share an integer and rejects 0.05. Both are module constants.
     await db
       .prepare(
         `UPDATE choice_distractors
@@ -546,10 +549,10 @@ export async function applyChoiceOutcome(
           WHERE id = ?
             AND source = 'generated'
             AND retired_at IS NULL
-            AND shown_count >= ?
-            AND chosen_count < shown_count * ?`,
+            AND shown_count >= ${RETIRE_MIN_SHOWN}
+            AND chosen_count < shown_count * ${RETIRE_MAX_CHOSEN_SHARE}`,
       )
-      .run(now, entry.distractorId, RETIRE_MIN_SHOWN, RETIRE_MAX_CHOSEN_SHARE);
+      .run(now, entry.distractorId);
   }
 
   if (!evidence.disputed || evidence.chosen === "dont_know") return;
