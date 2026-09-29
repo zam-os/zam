@@ -6942,6 +6942,7 @@ function resetDiscussionUi(): void {
   els.input.value = "";
   els.input.disabled = false;
   els.send.disabled = false;
+  document.getElementById("discussion-choice-next")?.setAttribute("hidden", "");
 }
 
 /**
@@ -7140,6 +7141,7 @@ const REVIEW_ACTION_TRIGGER_IDS = [
   "btn-study-edit",
   "btn-study-open-editor",
   "btn-choice-next",
+  "btn-choice-next-bottom",
   "btn-choice-dispute",
 ] as const;
 
@@ -8006,7 +8008,28 @@ function resetChoiceState(): void {
   document.getElementById("choice-result")?.classList.add("hidden");
   document.getElementById("revealed-box")?.classList.remove("choice-reveal");
   setModelAttributionBadge("choice-model-badge", null);
+  setReferenceAnswerFolded(false);
+  document.getElementById("discussion-choice-next")?.setAttribute("hidden", "");
   renderChoiceStage();
+}
+
+/**
+ * Fold the reference answer away after a pick: the answer is already marked
+ * among the options, and a long reference (source code) would push the
+ * result and the chat out of view. A toggle shows it on demand.
+ */
+function setReferenceAnswerFolded(folded: boolean, offerToggle = folded): void {
+  const box = document.getElementById("reference-answer-box");
+  const toggle = document.getElementById(
+    "btn-reference-toggle",
+  ) as HTMLButtonElement | null;
+  box?.classList.toggle("collapsed", folded);
+  if (!toggle) return;
+  toggle.hidden = !offerToggle;
+  toggle.textContent = t(
+    folded ? "choice_reference_show" : "choice_reference_hide",
+  );
+  toggle.setAttribute("aria-expanded", String(!folded));
 }
 
 /** "Options: <model>" when a model wrote the wrong answers shown. */
@@ -8169,6 +8192,7 @@ function pickChoice(chosen: number | "dont_know"): void {
   renderReveal("", false, null, "");
   document.getElementById("own-answer-box")?.classList.add("hidden");
   document.getElementById("revealed-box")?.classList.add("choice-reveal");
+  setReferenceAnswerFolded(true);
   renderChoiceResult();
   updateReviewControlState();
   if (chosen === activeChoice.correctIndex) {
@@ -8278,6 +8302,10 @@ function openChoiceDiscussion(): void {
   if (!openDiscussion(discussion, card, { evaluationSuccessful: true })) return;
   const els = discussionElements();
   els.box.classList.remove("hidden");
+  const bottomNext = document.getElementById("discussion-choice-next");
+  bottomNext?.removeAttribute("hidden");
+  document.getElementById("btn-choice-next-bottom")!.textContent =
+    t("choice_next");
   els.input.value = t("choice_ask_starter");
   renderChoiceResult();
   void sendDiscussionTurn();
@@ -8294,6 +8322,15 @@ function initChoiceControls(): void {
   document
     .getElementById("btn-choice-next")
     ?.addEventListener("click", () => void submitChoice());
+  document
+    .getElementById("btn-choice-next-bottom")
+    ?.addEventListener("click", () => void submitChoice());
+  document
+    .getElementById("btn-reference-toggle")
+    ?.addEventListener("click", () => {
+      const box = document.getElementById("reference-answer-box");
+      setReferenceAnswerFolded(!box?.classList.contains("collapsed"), true);
+    });
   document
     .getElementById("btn-choice-ask")
     ?.addEventListener("click", openChoiceDiscussion);

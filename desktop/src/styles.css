@@ -2325,7 +2325,8 @@ textarea::placeholder {
 }
 
 /* A hidden button stays hidden, whatever display its variant sets. */
-.btn[hidden] {
+.btn[hidden],
+.discussion-choice-next[hidden] {
   display: none;
 }
 
@@ -4286,4 +4287,36 @@ textarea::placeholder {
 /* The rating of a choice is derived from the pick: no rating bar. */
 #revealed-box.choice-reveal .rating-bar-container {
   display: none;
+}
+
+/* After a pick the follow-up chat sits right under the result, and the
+   (often long) reference answer comes last, folded away until asked for. */
+#revealed-box.choice-reveal > #discussion-box {
+  order: 1;
+}
+
+#revealed-box.choice-reveal > #reference-answer-box {
+  order: 2;
+}
+
+.reference-answer-header {
+  align-items: center;
+  display: flex;
+  gap: 12px;
+  justify-content: space-between;
+  margin-bottom: 10px;
+}
+
+.reference-answer-header .box-title {
+  margin-bottom: 0;
+}
+
+#reference-answer-box.collapsed .reveal-content-list,
+#reference-answer-box.collapsed #answer-media {
+  display: none;
+}
+
+.discussion-choice-next {
+  display: flex;
+  justify-content: flex-end;
 }

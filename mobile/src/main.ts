@@ -543,6 +543,9 @@ const reviewChoiceDispute = element<HTMLButtonElement>(
   "review-choice-dispute",
 );
 const reviewChoiceNext = element<HTMLButtonElement>("review-choice-next");
+const reviewChoiceNextBottom = element<HTMLButtonElement>(
+  "review-choice-next-bottom",
+);
 const reviewHowWell = element<HTMLElement>("review-how-well");
 const reviewRatings = element<HTMLElement>("review-ratings");
 
@@ -2022,6 +2025,7 @@ function clearDiscussionUi(): void {
   discussionInput.disabled = false;
   discussionSendButton.disabled = true;
   setDiscussionStatus("");
+  reviewChoiceNextBottom.hidden = true;
 }
 
 function openDiscussionForEvaluation(result: MobileEvaluationResult): void {
@@ -3133,6 +3137,7 @@ function openChoiceDiscussion(): void {
   };
   if (!openDiscussion(discussion, card, { evaluationSuccessful: true })) return;
   discussionPanel.hidden = false;
+  reviewChoiceNextBottom.hidden = false;
   renderDiscussionTurns();
   discussionInput.value = t("choice_ask_starter");
   discussionInput.disabled = false;
@@ -3830,6 +3835,7 @@ async function finishRating(
   if (ratedCardId) choicePreparedCardIds.delete(ratedCardId);
   for (const candidate of ratingButtons) candidate.disabled = true;
   reviewChoiceNext.disabled = true;
+  reviewChoiceNextBottom.disabled = true;
   stopReviewButton.disabled = true;
   try {
     const result = await submit();
@@ -3857,6 +3863,7 @@ async function finishRating(
   } finally {
     ratingInFlight = false;
     reviewChoiceNext.disabled = false;
+    reviewChoiceNextBottom.disabled = false;
     stopReviewButton.disabled = false;
   }
 }
@@ -4004,6 +4011,9 @@ reviewModeAuto.addEventListener("click", () => {
 studyLearningMode.addEventListener("change", syncAutoRecallPinVisibility);
 
 reviewChoiceNext.addEventListener("click", () => {
+  void submitCurrentChoice();
+});
+reviewChoiceNextBottom.addEventListener("click", () => {
   void submitCurrentChoice();
 });
 reviewChoiceAsk.addEventListener("click", openChoiceDiscussion);

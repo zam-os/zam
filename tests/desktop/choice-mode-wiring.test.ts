@@ -30,10 +30,29 @@ describe("Studio choice and auto wiring", () => {
   it("stacks the options and hides the reveal button while they show", () => {
     const css = file("desktop/src/styles.css");
     // `.btn-block` sets display: flex, which would override `hidden`.
-    expect(css).toMatch(/\.btn\[hidden\]\s*\{\s*display:\s*none;/);
+    expect(css).toMatch(/\.btn\[hidden\][^{]*\{\s*display:\s*none;/);
     expect(css).toContain(".study-offer-actions.choice-mode");
     expect(main).toContain('container.classList.add("choice-mode");');
     expect(main).toContain('options.classList.remove("choice-mode");');
+  });
+
+  it("keeps the chat and a Next button in view after a pick", () => {
+    const css = file("desktop/src/styles.css");
+    // Chat right under the result; the long reference answer last, folded.
+    expect(css).toMatch(
+      /#revealed-box\.choice-reveal > #discussion-box \{\s*order: 1;/,
+    );
+    expect(css).toMatch(
+      /#revealed-box\.choice-reveal > #reference-answer-box \{\s*order: 2;/,
+    );
+    expect(css).toContain("#reference-answer-box.collapsed .reveal-content-list");
+    expect(html).toContain('id="btn-reference-toggle"');
+    expect(main).toContain("setReferenceAnswerFolded(true);");
+    // A second Next under the chat, so nobody scrolls back to the result.
+    expect(html).toContain('id="btn-choice-next-bottom"');
+    expect(main).toContain(
+      '.getElementById("btn-choice-next-bottom")\n    ?.addEventListener("click", () => void submitChoice());',
+    );
   });
 
   it("asks the kernel how each card is presented in Choice and Auto", () => {

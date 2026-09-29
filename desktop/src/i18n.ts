@@ -5916,6 +5916,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_answers_other: "This answers: {question}",
     choice_now_without_options: "Now without options",
     choice_options_by: "Options: {model}",
+    choice_reference_show: "Show reference answer",
+    choice_reference_hide: "Hide reference answer",
     choice_notice_unsuitable:
       "This card doesn't suit a choice, so it comes without options.",
     choice_notice_unsuitable_answer_media:
@@ -7409,6 +7411,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_answers_other: "Das beantwortet: {question}",
     choice_now_without_options: "Jetzt ohne Auswahl",
     choice_options_by: "Optionen: {model}",
+    choice_reference_show: "Musterlösung anzeigen",
+    choice_reference_hide: "Musterlösung ausblenden",
     choice_notice_unsuitable:
       "Diese Karte eignet sich nicht für eine Auswahl – sie kommt ohne Optionen.",
     choice_notice_unsuitable_answer_media:

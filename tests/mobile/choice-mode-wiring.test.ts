@@ -46,6 +46,14 @@ describe("mobile choice and auto wiring", () => {
     expect(main).toContain("reviewRatings.hidden = Boolean(choicePick);");
   });
 
+  it("offers Next under the chat as well as above it", () => {
+    expect(html).toContain('id="review-choice-next-bottom"');
+    expect(main).toContain("reviewChoiceNextBottom.hidden = false;");
+    expect(main).toContain(
+      'reviewChoiceNextBottom.addEventListener("click", () => {\n  void submitCurrentChoice();',
+    );
+  });
+
   it("opens the follow-up chat with the choice and a one-tap starter", () => {
     expect(main).toContain("choice: { options, chosen, answer }");
     expect(main).toContain('discussionInput.value = t("choice_ask_starter");');

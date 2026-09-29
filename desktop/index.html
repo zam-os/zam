@@ -1202,7 +1202,12 @@
 
               <!-- CORE REFERENCE ANSWER -->
               <div class="answer-box" id="reference-answer-box">
-                <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
+                <div class="reference-answer-header">
+                  <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
+                  <!-- Choice reveals fold the reference away: the answer is
+                       already marked among the options (ADR 2026-09-27). -->
+                  <button id="btn-reference-toggle" class="btn ghost-btn btn-sm" type="button" hidden aria-expanded="false" aria-controls="reveal-content-list">Show reference answer</button>
+                </div>
                 <div class="reveal-content-list" id="reveal-content-list">
                   <!-- Generated dynamically: Token, Concept, Context, Source -->
                 </div>
@@ -1216,6 +1221,11 @@
                 <div class="discussion-input-row">
                   <textarea id="discussion-input" rows="2" placeholder="Ask a follow-up about this card... (Enter to send)"></textarea>
                   <button id="btn-discussion-send" class="btn secondary-btn">Send</button>
+                </div>
+                <!-- After a choice: move on from under the chat, without
+                     scrolling back up to the result. -->
+                <div class="discussion-choice-next" id="discussion-choice-next" hidden>
+                  <button id="btn-choice-next-bottom" class="btn primary-btn" type="button">Next</button>
                 </div>
               </div>
 

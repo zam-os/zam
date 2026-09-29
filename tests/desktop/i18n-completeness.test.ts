@@ -708,6 +708,8 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "choice_now_without_options",
   "choice_notice_unsuitable",
   "choice_options_by",
+  "choice_reference_hide",
+  "choice_reference_show",
   "choice_notice_unsuitable_answer_media",
   "choice_notice_no_options",
   "choice_notice_curated_disputed",
