@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-29T14:00:00.000Z
+timestamp: 2026-09-29T17:40:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -106,6 +106,54 @@ while preserving stability, difficulty, repetitions, lapses, and the active
 step cursor. After the answer, `evaluateRating()` synchronizes the card's
 `learned_content_version`.
 
+# Answer points and coverage
+
+A reference answer's **required points** are its formatting, not a stored field
+(ADR 2026-09-08). A list has one point per item; prose has exactly one. Nothing
+is persisted, so the count cannot drift from the text it counts:
+`parseAnswerPoints()` and `countAnswerPoints()` in
+`src/kernel/library/answer-points.ts` derive both, and every surface reads
+them from there rather than counting for itself.
+
+An item should ask for one thing, and prose therefore needs no authoring
+ceremony. Items that ask for more stay valid — some facts only make sense
+together — so `structuralPublicationChecks()` raises
+`criterion_multiple_points` as the one **non-blocking** structural check: the
+author is told and may publish anyway. A multi-point item may still be asked
+as a choice (see below); the point count matters to the answer modes.
+
+The two evaluators split the judgement rather than conflating it. Coverage is
+observable from the answer text; effort is not, and only the learner knows it.
+The JSON evaluator shared by the Recall panel and Mobile receives the points
+enumerated and returns `recalledPoints`; `parseRecallEvaluation()` derives the
+rating from it — below full coverage rating `1`, at full coverage the neutral
+`3` the learner then overrides with Hard, Good, or Easy. Partial coverage is
+never an intermediate rating: three of four points is a `1`, and no
+partial-credit arithmetic enters FSRS. The CLI evaluator behind the study
+window replies in prose and carries no score; it reports completeness, not a
+rating.
+
+No agent is asked for a rating anywhere. The JSON evaluator returns
+`recalledPoints` and `gaps`; the prose evaluator ends with a localized
+`Complete` / `Incomplete (N)` line and names the missing elements above it; the
+`skills/zam` skill and its three harness copies tell an external agent to state
+completeness rather than propose `1`-`4`. Observation synthesis keeps its
+`inferredRating`, because that is rule-based evidence from observed commands
+which the learner confirms, not an agent judging a recall answer.
+
+Both evaluators judge completeness generously: a vague or clumsily worded
+answer that points at the right thing counts, and genuine uncertainty resolves
+in the learner's favour. The two errors are not symmetric — being told you
+failed when you nearly had it discourages and does not reverse, while a
+generous reading costs one scheduling step the learner can correct by choosing
+Again themselves.
+
+When asking, a surface shows how many points are expected and never which —
+a learner who knows three things are wanted keeps digging past the first. The
+count appears only above one point and only up to Bloom level 3, since
+`analyse` and `synthesise` answers do not decompose into countable facts
+(`shouldShowPointCount()`).
+
 # Answer format and the tap ceiling
 
 Every rating declares **how** the card was answered, stored in
@@ -172,11 +220,17 @@ a card is shown as a choice or in a recall format, and why:
    met in the same domain and knowledge context (derived per learner, never
    stored). Derived options are the last resort because an answer to another
    question is easy to recognise as such.
-4. Every candidate passes the deterministic checks in
-   `src/kernel/recall/choice-checks.ts` (empty, equal to or containing the
+4. Curated, generated, and derived candidates pass the deterministic checks
+   in `src/kernel/recall/choice-checks.ts` (empty, equal to or containing the
    answer, duplicate, all/none of the above, negated answer, named in the
-   question, outside the length band), and the shown set is rejected when its
-   form gives the answer away (a length or parenthesis cue).
+   question, outside the length band), and a set drawn from those pools is
+   rejected when its form gives the answer away (a length or parenthesis
+   cue); the next seeded pair is tried. An authored `fast_check` is shown in
+   full, as its author wrote it, and passes neither check — its options are
+   item substance and need a content pass, not a filter. Derived candidates
+   pass only these string checks; the model-backed reject filter runs on
+   generated candidates alone, so a different correct answer among derived
+   options is caught by dispute and retirement, not by a filter.
 5. Which distractors are shown and their order are seeded by card id and due
    date: a re-render never moves an option under the learner's finger.
 
@@ -187,7 +241,10 @@ evidence, stores the evidence with the attempt, counts exposures and picks of
 cached options, retires a generated option picked in fewer than 5% of at
 least 30 showings, retires a disputed generated option for everyone, and
 excludes a disputed curated or derived option for that learner only
-(`choice_exclusions`, migration M036).
+(`choice_exclusions`, migration M036). On a team library, row policies bind
+members to generated rows of the shared cache: a member may insert and retire
+only those, while a curator's rows take counters but nothing else from a
+member (`sharedCacheRlsSql()` in `src/cli/deploy/team-provision.ts`).
 
 Generated options are written by the CLI (`zam bridge choice-prepare`) or
 Mobile, never by the kernel. A choice works like a question variation, so the
@@ -199,10 +256,11 @@ reject filter answering from a seeded, shuffled set drops every candidate it
 considers correct. Each stored option records the model that wrote it, and
 the surfaces name that model next to the options, as they do for a generated
 question. Each call walks on to the next model of its role's chain when a row
-refuses it — a keyless OpenRouter row passes the readiness check, because the
-model catalogue is public, and fails only at the call. Surfaces prepare the
-next cards in the background; a card whose fresh options are not ready is
-asked with options already seen, or in a recall format.
+refuses it. A row of a known cloud provider with no stored key is skipped at
+readiness (`isCloudKeyMissing()`): it neither passes as usable nor counts as
+the cloud having answered, so it does not close the offline tier. Surfaces
+prepare the next cards in the background; a card whose fresh options are not
+ready is asked with options already seen, or in a recall format.
 
 # Review queue and workload
 
@@ -322,8 +380,8 @@ snapshots with the same workload and tier rules.
 
 # Citations
 - [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)
-- Tests: `tests/kernel/choice-ceiling.test.ts`, `tests/kernel/choice-presentation.test.ts`, `tests/cli/choice-generation.test.ts`, `tests/cli/llm-evaluation-retry.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/desktop/answer-format-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`
-- Code: `src/kernel/scheduler/choice-ceiling.ts`, `src/kernel/recall/answer-presentation.ts`, `src/kernel/recall/choice-options.ts`, `src/kernel/recall/choice-checks.ts`, `src/kernel/util/seeded.ts`, `src/cli/llm/choice-prompt.ts`, `src/cli/llm/choice-prepare.ts`, `mobile/src/choice-generate.ts`, `mobile/src/review-session.ts`
+- Tests: `tests/kernel/choice-ceiling.test.ts`, `tests/kernel/choice-presentation.test.ts`, `tests/kernel/postgres-choice.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/cli/choice-generation.test.ts`, `tests/cli/llm-evaluation-retry.test.ts`, `tests/cli/recall-panel-learning-mode.test.ts`, `tests/desktop/answer-format-wiring.test.ts`, `tests/desktop/choice-mode-wiring.test.ts`, `tests/mobile/choice-mode-wiring.test.ts`, `tests/mobile/review-session.test.ts`
+- Code: `src/kernel/scheduler/choice-ceiling.ts`, `src/kernel/recall/answer-presentation.ts`, `src/kernel/recall/choice-options.ts`, `src/kernel/recall/choice-checks.ts`, `src/kernel/util/seeded.ts`, `src/cli/llm/choice-prompt.ts`, `src/cli/llm/choice-prepare.ts`, `src/cli/deploy/team-provision.ts`, `mobile/src/choice-generate.ts`, `mobile/src/review-session.ts`
 
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
