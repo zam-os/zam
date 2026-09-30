@@ -32,7 +32,7 @@ export interface OnboardingStep {
    * trapping the user. "Skip" deliberately bypasses this hook — skipping a
    * page must leave no side effect (ADR 2026-07-24 §7).
    */
-  onNext?(): Promise<void> | void;
+  onNext?(): Promise<boolean> | Promise<void> | boolean | undefined;
 }
 
 /**
@@ -645,6 +645,7 @@ export function buildOnboardingSteps(
         container.append(root);
         renderGoalArea(root, actions, goalState);
       },
+      onNext: () => commitGoalStep(goalState),
     },
     // No multi-machine vault step here (ADR 2026-07-30b, revised): the vault
     // is an alpha feature most learners never need, and a page about
@@ -1706,6 +1707,57 @@ export function appendGoalCards(
   return next;
 }
 
+function selectedGoalProposals(
+  state: GoalImportState,
+): Array<Record<string, unknown>> {
+  return (state.cards ?? [])
+    .filter((card) => card.selected)
+    .map((card) => card.proposal);
+}
+
+/** Saves the ticked preview cards as tokens; throws when the bridge fails. */
+export async function importSelectedGoalCards(
+  state: GoalImportState,
+): Promise<void> {
+  const selected = selectedGoalProposals(state);
+  if (selected.length === 0 || !state.sourceId) return;
+  const result = await runBridge<{
+    success: boolean;
+    createdCount: number;
+    ensuredCount: number;
+  }>("personal-source-confirm-import", [
+    "--sourceId",
+    state.sourceId,
+    "--proposals",
+    JSON.stringify(selected),
+  ]);
+  state.imported = {
+    created: result.createdCount,
+    ensured: result.ensuredCount,
+  };
+}
+
+/**
+ * "Next" on the goal step. Drafted cards exist only in this preview until
+ * they are imported, so leaving with Next must save the ticked ones instead
+ * of dropping them. Returns false to stay on the step after a failed save;
+ * "Skip" still leaves without importing.
+ */
+export async function commitGoalStep(state: GoalImportState): Promise<boolean> {
+  if (state.imported || selectedGoalProposals(state).length === 0) return true;
+  try {
+    await importSelectedGoalCards(state);
+    return true;
+  } catch (err) {
+    state.notice = t("onboarding_goal_error").replace(
+      "{message}",
+      bridgeErrorMessage(err),
+    );
+    state.view?.rerender();
+    return false;
+  }
+}
+
 function renderGoalCardPreview(
   root: HTMLElement,
   status: HTMLElement,
@@ -1784,10 +1836,7 @@ function renderGoalCardPreview(
   confirmBtn.textContent = t("onboarding_goal_import_cards");
   confirmBtn.addEventListener("click", () => {
     void (async () => {
-      const selected = (state.cards ?? [])
-        .filter((card) => card.selected)
-        .map((card) => card.proposal);
-      if (selected.length === 0 || !state.sourceId) {
+      if (selectedGoalProposals(state).length === 0 || !state.sourceId) {
         status.textContent = t("onboarding_goal_no_selection");
         return;
       }
@@ -1795,20 +1844,7 @@ function renderGoalCardPreview(
       status.classList.remove("ok");
       status.textContent = t("onboarding_goal_importing");
       try {
-        const result = await runBridge<{
-          success: boolean;
-          createdCount: number;
-          ensuredCount: number;
-        }>("personal-source-confirm-import", [
-          "--sourceId",
-          state.sourceId,
-          "--proposals",
-          JSON.stringify(selected),
-        ]);
-        state.imported = {
-          created: result.createdCount,
-          ensured: result.ensuredCount,
-        };
+        await importSelectedGoalCards(state);
         rerender();
       } catch (err) {
         status.textContent = t("onboarding_goal_error").replace(
@@ -1971,7 +2007,9 @@ export function initOnboarding(deps: OnboardingDeps): OnboardingController {
     if (step?.onNext) {
       nextBtn.disabled = true;
       try {
-        await step.onNext();
+        // An explicit `false` keeps the learner on the step (a commit that
+        // would lose their work); a thrown error still advances.
+        if ((await step.onNext()) === false) return;
       } catch (err) {
         console.error(`onboarding step "${step.id}" commit failed`, err);
       } finally {

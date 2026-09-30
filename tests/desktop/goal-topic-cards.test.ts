@@ -3,6 +3,7 @@ import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { t } from "../../desktop/src/i18n.js";
 import {
   appendGoalCards,
+  commitGoalStep,
   createOnboardingExit,
   draftGoalTopicCards,
   type GoalAreaView,
@@ -176,6 +177,75 @@ describe("draftGoalTopicCards", () => {
     expect(state.failedTopics).toEqual([]);
     // Progress and the final state reach the area that is on screen.
     expect(reopened.renders).toBe(3);
+  });
+});
+
+// Drafted cards live only in the preview until imported, so the footer Next
+// must save the ticked ones instead of dropping them.
+describe("commitGoalStep", () => {
+  function draftedState(): GoalImportState {
+    const state = goalState(liveView());
+    state.cards = appendGoalCards(
+      [],
+      [{ question: "What is Pod?" }, { question: "What is Service?" }],
+    );
+    state.cards[1].selected = false;
+    return state;
+  }
+
+  it("imports the ticked cards when the learner clicks Next", async () => {
+    const state = draftedState();
+    const calls: Array<{ cmd: string; args: string[] }> = [];
+    setBridgeTransport(async (cmd, args) => {
+      calls.push({ cmd, args });
+      return { success: true, createdCount: 1, ensuredCount: 0 };
+    });
+
+    await expect(commitGoalStep(state)).resolves.toBe(true);
+
+    expect(calls).toHaveLength(1);
+    expect(calls[0].cmd).toBe("personal-source-confirm-import");
+    expect(calls[0].args).toEqual([
+      "--sourceId",
+      "src-1",
+      "--proposals",
+      JSON.stringify([{ question: "What is Pod?" }]),
+    ]);
+    expect(state.imported).toEqual({ created: 1, ensured: 0 });
+  });
+
+  it("does not import twice or when nothing was drafted", async () => {
+    const asked: string[] = [];
+    setBridgeTransport(async (cmd) => {
+      asked.push(cmd);
+      return { success: true, createdCount: 1, ensuredCount: 0 };
+    });
+
+    const imported = draftedState();
+    imported.imported = { created: 1, ensured: 0 };
+    const empty = goalState(liveView());
+    empty.cards = null;
+
+    await expect(commitGoalStep(imported)).resolves.toBe(true);
+    await expect(commitGoalStep(empty)).resolves.toBe(true);
+    expect(asked).toEqual([]);
+  });
+
+  it("stays on the step and says why when the import fails", async () => {
+    const view = liveView();
+    const state = draftedState();
+    state.view = view;
+    setBridgeTransport(async () => {
+      throw new Error(JSON.stringify({ error: "library is read-only" }));
+    });
+
+    await expect(commitGoalStep(state)).resolves.toBe(false);
+
+    expect(state.notice).toBe(
+      t("onboarding_goal_error").replace("{message}", "library is read-only"),
+    );
+    expect(state.imported).toBeNull();
+    expect(view.renders).toBe(1);
   });
 });
 
