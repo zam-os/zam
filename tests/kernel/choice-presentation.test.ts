@@ -24,6 +24,7 @@ import {
   openDatabase,
   ratingForChoice,
   resolveAnswerPresentation,
+  setStudyLearningSettings,
   type StudyLearningMode,
   storeDistractors,
   syncCuratedDistractors,
@@ -263,7 +264,25 @@ describe("resolveAnswerPresentation", () => {
     expect(token.fast_check).toContain("multiple_choice");
   });
 
+  it("does not derive options from other items unless the learner opts in", async () => {
+    const target = await item("off-target", "Brechung");
+    for (const [slug, concept] of [
+      ["off-a", "Reflexion"],
+      ["off-b", "Streuung"],
+      ["off-c", "Beugung"],
+    ] as const) {
+      await meet((await item(slug, concept)).cardId);
+    }
+    expect(await present(target.cardId)).toEqual({
+      format: "recall",
+      reason: "no_options",
+    });
+    await setStudyLearningSettings(db, USER, { derivedChoiceOptions: true });
+    expect((await present(target.cardId)).format).toBe("choice");
+  });
+
   it("takes derived options only from items the learner has met", async () => {
+    await setStudyLearningSettings(db, USER, { derivedChoiceOptions: true });
     const target = await item("target", "Brechung");
     for (const [slug, concept] of [
       ["reflexion", "Reflexion"],
@@ -307,6 +326,7 @@ describe("resolveAnswerPresentation", () => {
   });
 
   it("keeps derived donors inside the studied knowledge context", async () => {
+    await setStudyLearningSettings(db, USER, { derivedChoiceOptions: true });
     const target = await item("ctx-target", "Brechung");
     const school = await createKnowledgeContext(db, { name: "school" });
     for (const [slug, concept, inSchool] of [
@@ -490,6 +510,7 @@ describe("resolveAnswerPresentation", () => {
   });
 
   it("excludes a disputed derived donor for this learner only", async () => {
+    await setStudyLearningSettings(db, USER, { derivedChoiceOptions: true });
     const target = await item("donor-target", "Brechung");
     for (const [slug, concept] of [
       ["d1", "Reflexion"],

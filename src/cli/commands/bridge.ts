@@ -4730,6 +4730,10 @@ bridgeCommand
   )
   .option("--user <id>", "User ID (default: whoami)")
   .option(
+    "--derived-choice-options <on|off>",
+    "Let a choice fall back to answers of other items the learner has met: on | off",
+  )
+  .option(
     "--fallback-mode <name>",
     "Default for an unset learner: flash | answer_feedback",
   )
@@ -4770,6 +4774,10 @@ bridgeCommand
     "Free-recall format Auto switches to: answer | flash | none (follow the evaluator)",
   )
   .option(
+    "--derived-choice-options <on|off>",
+    "Let a choice fall back to answers of other items the learner has met: on | off",
+  )
+  .option(
     "--fallback-mode <name>",
     "Default for an unset learner: flash | answer_feedback",
   )
@@ -4795,6 +4803,16 @@ bridgeCommand
           : opts.autoRecallPin === "none"
             ? null
             : (opts.autoRecallPin as "answer" | "flash");
+      if (
+        opts.derivedChoiceOptions !== undefined &&
+        !["on", "off"].includes(opts.derivedChoiceOptions)
+      ) {
+        jsonError("derived-choice-options must be on or off");
+      }
+      const derivedChoiceOptions =
+        opts.derivedChoiceOptions === undefined
+          ? undefined
+          : opts.derivedChoiceOptions === "on";
       if (
         opts.fallbackMode !== undefined &&
         opts.fallbackMode !== "flash" &&
@@ -4830,6 +4848,7 @@ bridgeCommand
           voiceRevealTimeoutSec,
           voiceRatingTimeoutSec,
           autoRecallPin,
+          derivedChoiceOptions,
         },
         {
           fallbackLearningMode:

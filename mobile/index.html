@@ -664,6 +664,14 @@
                   <input id="study-auto-recall-flash" class="switch" type="checkbox" />
                 </li>
               </ul>
+              <!-- Off by default: an answer taken from another card is easy to
+                   recognise, so it tends to leave one option obviously right. -->
+              <ul class="list" data-settings-tier="advanced">
+                <li class="row static">
+                  <span class="row-text" data-i18n="learning_mode_derived_choice_options">Auswahl darf Antworten deiner anderen Karten nutzen (oft leicht zu durchschauen)</span>
+                  <input id="study-derived-choice-options" class="switch" type="checkbox" />
+                </li>
+              </ul>
               <label class="field" id="study-voice-timeout-field" data-settings-tier="advanced">
                 <span data-i18n="study_voice_timeout">Wartezeit bis automatische Antwort</span>
                 <input id="study-voice-reveal-timeout" type="number" min="5" max="60" step="1" value="20" />

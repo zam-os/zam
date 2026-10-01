@@ -38,6 +38,22 @@ describe("desktop learning mode wiring", () => {
     expect(nativeMain).toContain('"--fallback-mode"');
   });
 
+  it("offers options from other cards only as an advanced opt-in", () => {
+    const row = nativeHtml.slice(
+      nativeHtml.lastIndexOf(
+        "<label",
+        nativeHtml.indexOf('id="settings-derived-choice-options"'),
+      ),
+      nativeHtml.indexOf('id="settings-derived-choice-options"'),
+    );
+    expect(row).toContain('data-settings-tier="advanced"');
+    expect(nativeHtml).not.toMatch(
+      /id="settings-derived-choice-options"[^>]*checked/,
+    );
+    expect(nativeMain).toContain('"--derived-choice-options"');
+    expect(bridgeTs).toContain('"--derived-choice-options <on|off>"');
+  });
+
   it("provides a native in-session Flash and AI switcher", () => {
     expect(nativeHtml).toContain('id="study-mode-switcher"');
     expect(nativeHtml).toContain('id="btn-study-mode-flash"');

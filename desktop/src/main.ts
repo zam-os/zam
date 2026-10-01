@@ -250,6 +250,8 @@ interface StudyLearningSettings {
   voiceRatingTimeoutSec: number;
   /** Auto's free-recall format; null follows the evaluator (ADR 2026-09-27). */
   autoRecallPin: "answer" | "flash" | null;
+  /** Whether a choice may use answers of the learner's other cards. */
+  derivedChoiceOptions: boolean;
 }
 
 interface StudyLearningResult {
@@ -263,6 +265,7 @@ const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
   voiceRevealTimeoutSec: 20,
   voiceRatingTimeoutSec: 20,
   autoRecallPin: null,
+  derivedChoiceOptions: false,
 };
 
 let isLlmEnabled = false;
@@ -1017,6 +1020,8 @@ function initializeTranslations() {
     t("learning_mode_auto");
   document.getElementById("lbl-settings-auto-recall-flash")!.textContent =
     t("learning_mode_auto_recall_flash");
+  document.getElementById("lbl-settings-derived-choice-options")!.textContent =
+    t("learning_mode_derived_choice_options");
   document.getElementById("lbl-settings-learning-mode-help")!.textContent =
     t("learning_mode_hint");
   document.getElementById("lbl-settings-voice-reveal-timeout")!.textContent =
@@ -2472,6 +2477,9 @@ function studyLearningElements() {
     autoRecallFlash: document.getElementById(
       "settings-auto-recall-flash",
     ) as HTMLInputElement,
+    derivedChoiceOptions: document.getElementById(
+      "settings-derived-choice-options",
+    ) as HTMLInputElement,
   };
 }
 
@@ -2508,6 +2516,7 @@ function applyStudyLearningControlState(): boolean {
     button.disabled = state.reviewDisabled;
   }
   elements.autoRecallFlash.disabled = state.settingsDisabled;
+  elements.derivedChoiceOptions.disabled = state.settingsDisabled;
   syncRadioGroupTabStops(document.getElementById("study-mode-switcher"));
   return state.flashSelected;
 }
@@ -2532,6 +2541,8 @@ function renderStudyLearningSettings(): void {
   );
   elements.autoRecallFlash.checked =
     currentStudyLearningSettings.autoRecallPin === "flash";
+  elements.derivedChoiceOptions.checked =
+    currentStudyLearningSettings.derivedChoiceOptions;
   document
     .getElementById("study-mode-switcher")
     ?.setAttribute("aria-label", t("learning_mode_label"));
@@ -2629,6 +2640,12 @@ async function persistStudyLearningSettings(
     }
     if (update.autoRecallPin !== undefined) {
       args.push("--auto-recall-pin", update.autoRecallPin ?? "none");
+    }
+    if (update.derivedChoiceOptions !== undefined) {
+      args.push(
+        "--derived-choice-options",
+        update.derivedChoiceOptions ? "on" : "off",
+      );
     }
 
     const result = await runBridge<StudyLearningResult>(
@@ -2733,6 +2750,11 @@ function initStudyLearningControls(): void {
       });
       if (saved) await applyModeChangeToActiveCard();
     })();
+  });
+  elements.derivedChoiceOptions.addEventListener("change", () => {
+    void persistStudyLearningSettings({
+      derivedChoiceOptions: elements.derivedChoiceOptions.checked,
+    });
   });
   initChoiceControls();
 

@@ -37,6 +37,21 @@ describe("mobile choice and auto wiring", () => {
     );
   });
 
+  it("offers options from other cards only as an advanced opt-in", () => {
+    const row = html.slice(
+      html.lastIndexOf(
+        "<ul",
+        html.indexOf('id="study-derived-choice-options"'),
+      ),
+      html.indexOf('id="study-derived-choice-options"'),
+    );
+    expect(row).toContain('data-settings-tier="advanced"');
+    expect(html).not.toMatch(/id="study-derived-choice-options"[^>]*checked/);
+    expect(main).toContain(
+      "derivedChoiceOptions: studyDerivedChoiceOptions.checked,",
+    );
+  });
+
   it("asks the kernel how each card is presented and books the pick", () => {
     expect(main).toContain("await reviewSession.presentCurrent(mode)");
     expect(main).toContain("reviewSession.choose(chosen)");
@@ -74,6 +89,7 @@ describe("mobile choice and auto wiring", () => {
       "learning_mode_switch_choice",
       "learning_mode_switch_auto",
       "learning_mode_auto_recall_flash",
+      "learning_mode_derived_choice_options",
       "choice_dont_know",
       "choice_next",
       "choice_ask",

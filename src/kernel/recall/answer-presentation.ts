@@ -19,7 +19,10 @@ import {
 } from "../scheduler/choice-ceiling.js";
 import { createFSRS, type SchedulingCard } from "../scheduler/fsrs.js";
 import { parseReviewFastCheck } from "../scheduler/queue.js";
-import type { StudyLearningMode } from "../scheduler/study-settings.js";
+import {
+  getStudyLearningSettings,
+  type StudyLearningMode,
+} from "../scheduler/study-settings.js";
 import { seededPermutation } from "../util/seeded.js";
 import { checkCandidate, checkShownSet } from "./choice-checks.js";
 import {
@@ -329,9 +332,9 @@ export async function choiceOptionsNeeded(
  * Order: the mode, the item's suitability, Auto's stage, then the first option
  * source with enough usable distractors — the item's authored fast check,
  * curated options, generated options (those this learner has not seen first),
- * and only then options derived from items the learner has met, which are
- * easy to recognise as answers to other questions. Without enough options the
- * card is asked in a recall format.
+ * and only then — when the learner has turned them on — options derived from
+ * items they have met, which are easy to recognise as answers to other
+ * questions. Without enough options the card is asked in a recall format.
  */
 export async function resolveAnswerPresentation(
   db: Database,
@@ -441,17 +444,20 @@ export async function resolveAnswerPresentation(
     // New wrong answers each time, while there are enough of them.
     async () => fresh,
     async () => generated,
-    async () =>
-      usable(
+    // Off unless the learner turned them on: an answer to another question
+    // tends to leave one option obviously right.
+    async () => {
+      const settings = await getStudyLearningSettings(db, input.userId);
+      if (!settings.derivedChoiceOptions) return [];
+      const donors = await deriveDistractors(db, {
+        userId: input.userId,
+        token,
+        siblingGroup,
+        knowledgeContext: input.knowledgeContext,
+      });
+      return usable(
         correct,
-        (
-          await deriveDistractors(db, {
-            userId: input.userId,
-            token,
-            siblingGroup,
-            knowledgeContext: input.knowledgeContext,
-          })
-        ).map((donor) => ({
+        donors.map((donor) => ({
           text: donor.text,
           entry: {
             source: "derived",
@@ -460,7 +466,8 @@ export async function resolveAnswerPresentation(
           },
         })),
         token.question,
-      ),
+      );
+    },
   ];
   for (const source of sources) {
     const pool = await source();

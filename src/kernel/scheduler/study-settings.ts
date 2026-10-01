@@ -189,6 +189,12 @@ export interface StudyLearningSettings {
   voiceRevealTimeoutSec: number;
   voiceRatingTimeoutSec: number;
   autoRecallPin: AutoRecallPin;
+  /**
+   * Whether a choice may fall back to answers of other items the learner has
+   * met. Off by default: such an option is easy to recognise as the answer to
+   * another question, which leaves one option obviously right.
+   */
+  derivedChoiceOptions: boolean;
 }
 
 export interface UpdateStudyLearningInput {
@@ -197,6 +203,7 @@ export interface UpdateStudyLearningInput {
   voiceRatingTimeoutSec?: number;
   /** `null` clears the pin. */
   autoRecallPin?: AutoRecallPin;
+  derivedChoiceOptions?: boolean;
 }
 
 export const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
@@ -204,6 +211,7 @@ export const DEFAULT_STUDY_LEARNING_SETTINGS: StudyLearningSettings = {
   voiceRevealTimeoutSec: 20,
   voiceRatingTimeoutSec: 20,
   autoRecallPin: null,
+  derivedChoiceOptions: false,
 };
 
 export function isAutoRecallPin(value: unknown): value is AutoRecallPin {
@@ -251,12 +259,17 @@ function normalizeLearningSettings(
   const autoRecallPin = isAutoRecallPin(value.autoRecallPin)
     ? value.autoRecallPin
     : DEFAULT_STUDY_LEARNING_SETTINGS.autoRecallPin;
+  const derivedChoiceOptions =
+    typeof value.derivedChoiceOptions === "boolean"
+      ? value.derivedChoiceOptions
+      : DEFAULT_STUDY_LEARNING_SETTINGS.derivedChoiceOptions;
 
   return {
     learningMode,
     voiceRevealTimeoutSec,
     voiceRatingTimeoutSec,
     autoRecallPin,
+    derivedChoiceOptions,
   };
 }
 
@@ -318,6 +331,12 @@ export async function setStudyLearningSettings(
     throw new Error(
       `Unsupported auto recall pin: ${String(input.autoRecallPin)}`,
     );
+  }
+  if (
+    input.derivedChoiceOptions !== undefined &&
+    typeof input.derivedChoiceOptions !== "boolean"
+  ) {
+    throw new Error("derivedChoiceOptions must be a boolean");
   }
   for (const [label, value] of [
     ["voice reveal timeout", input.voiceRevealTimeoutSec],
