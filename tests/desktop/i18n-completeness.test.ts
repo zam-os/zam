@@ -695,6 +695,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "learning_mode_switch_choice",
   "learning_mode_switch_auto",
   "learning_mode_auto_recall_flash",
+  "learning_mode_derived_choice_options",
   "choice_dont_know",
   "choice_next",
   "choice_ask",

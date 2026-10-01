@@ -674,6 +674,9 @@ const studyAutoRecallFlashRow = element<HTMLElement>(
 const studyAutoRecallFlash = element<HTMLInputElement>(
   "study-auto-recall-flash",
 );
+const studyDerivedChoiceOptions = element<HTMLInputElement>(
+  "study-derived-choice-options",
+);
 const reviewModeFlash = element<HTMLButtonElement>("review-mode-flash");
 const reviewModeChoice = element<HTMLButtonElement>("review-mode-choice");
 const reviewModeFeedback = element<HTMLButtonElement>("review-mode-feedback");
@@ -1341,6 +1344,7 @@ function renderStudyLearningSettings(settings: StudyLearningSettings): void {
   studyLearningMode.value = settings.learningMode;
   studyVoiceRevealTimeout.value = String(settings.voiceRevealTimeoutSec);
   studyAutoRecallFlash.checked = settings.autoRecallPin === "flash";
+  studyDerivedChoiceOptions.checked = settings.derivedChoiceOptions;
   syncAutoRecallPinVisibility();
   renderReviewModeSwitcher(settings.learningMode);
 }
@@ -1416,6 +1420,7 @@ async function saveStudyLearningSettings(): Promise<void> {
         learningMode,
         voiceRevealTimeoutSec,
         autoRecallPin: studyAutoRecallFlash.checked ? "flash" : null,
+        derivedChoiceOptions: studyDerivedChoiceOptions.checked,
       },
       fallbackLearningMode,
     );
