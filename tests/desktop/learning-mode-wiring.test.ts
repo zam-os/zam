@@ -51,7 +51,10 @@ describe("desktop learning mode wiring", () => {
       /id="settings-derived-choice-options"[^>]*checked/,
     );
     expect(nativeMain).toContain('"--derived-choice-options"');
-    expect(bridgeTs).toContain('"--derived-choice-options <on|off>"');
+    // Only the set command takes the flag; get would silently ignore it.
+    expect(bridgeTs.split('"--derived-choice-options <on|off>"')).toHaveLength(
+      2,
+    );
   });
 
   it("provides a native in-session Flash and AI switcher", () => {

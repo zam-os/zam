@@ -4730,10 +4730,6 @@ bridgeCommand
   )
   .option("--user <id>", "User ID (default: whoami)")
   .option(
-    "--derived-choice-options <on|off>",
-    "Let a choice fall back to answers of other items the learner has met: on | off",
-  )
-  .option(
     "--fallback-mode <name>",
     "Default for an unset learner: flash | answer_feedback",
   )

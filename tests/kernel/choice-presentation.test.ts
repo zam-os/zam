@@ -380,7 +380,9 @@ describe("resolveAnswerPresentation", () => {
 
   it("prefers generated options to answers of other questions", async () => {
     // Answers of other items are easy to spot as belonging elsewhere, so they
-    // are only the last resort (owner decision 2026-09-29).
+    // are only the last resort (owner decision 2026-09-29) — even when the
+    // learner has turned them on.
+    await setStudyLearningSettings(db, USER, { derivedChoiceOptions: true });
     const target = await item("vorrang", "Brechung");
     for (const [slug, concept] of [
       ["reflexion-2", "Reflexion"],
