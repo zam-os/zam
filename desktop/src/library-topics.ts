@@ -92,6 +92,18 @@ export async function startLibraryTopic(
   return result;
 }
 
+/** "Could not …: <reason>", without repeating the prefix as the reason. */
+export function topicsErrorText(
+  err: unknown,
+  prefixKey:
+    | "library_topics_error"
+    | "library_topics_start_error" = "library_topics_error",
+): string {
+  const prefix = t(prefixKey);
+  const reason = err instanceof Error ? err.message : String(err);
+  return !reason || reason === prefix ? prefix : `${prefix}: ${reason}`;
+}
+
 interface DialogParts {
   overlay: HTMLElement;
   title: HTMLElement;
@@ -102,6 +114,8 @@ interface DialogParts {
 }
 
 let dialog: DialogParts | null = null;
+// A start in flight keeps the dialog open: closing and reopening mid-start
+// would show fresh buttons that ignore clicks, then the old start's result.
 let busy = false;
 
 function ensureDialog(): DialogParts {
@@ -110,19 +124,19 @@ function ensureDialog(): DialogParts {
   const overlay = document.createElement("div");
   overlay.id = OVERLAY_ID;
   overlay.className = "modal-overlay";
-  overlay.setAttribute("role", "dialog");
-  overlay.setAttribute("aria-modal", "true");
 
   const box = document.createElement("div");
   box.className = "modal-box";
   box.style.maxWidth = "560px";
+  box.setAttribute("role", "dialog");
+  box.setAttribute("aria-modal", "true");
 
   const header = document.createElement("div");
   header.className = "modal-header";
   const title = document.createElement("h3");
   title.id = "lbl-library-topics-title";
   header.append(title);
-  overlay.setAttribute("aria-labelledby", title.id);
+  box.setAttribute("aria-labelledby", title.id);
 
   const body = document.createElement("div");
   body.className = "modal-body";
@@ -149,8 +163,12 @@ function ensureDialog(): DialogParts {
   overlay.addEventListener("click", (event) => {
     if (event.target === overlay) closeLibraryTopics();
   });
-  overlay.addEventListener("keydown", (event) => {
-    if (event.key === "Escape") closeLibraryTopics();
+  // On the window, not the overlay: re-rendering the rows removes the
+  // focused button, and Escape must still close the dialog afterwards.
+  window.addEventListener("keydown", (event) => {
+    if (event.key === "Escape" && overlay.classList.contains("active")) {
+      closeLibraryTopics();
+    }
   });
   document.body.append(overlay);
 
@@ -159,82 +177,124 @@ function ensureDialog(): DialogParts {
 }
 
 export function closeLibraryTopics(): void {
+  if (busy) return;
   dialog?.overlay.classList.remove("active");
 }
 
+/** Neutral row chrome both hosts render alike (no warning-box styles). */
+function topicRow(topic: LibraryTopicRow): HTMLElement {
+  const row = document.createElement("article");
+  row.dataset.topicKey = topic.key;
+  row.style.display = "flex";
+  row.style.flexDirection = "column";
+  row.style.gap = "6px";
+  row.style.padding = "10px 12px";
+  row.style.borderRadius = "10px";
+  row.style.border =
+    "1px solid var(--clr-border, var(--border-card-frosted, rgba(127, 127, 127, 0.3)))";
+
+  const name = document.createElement("div");
+  name.style.fontWeight = "600";
+  name.style.color = "var(--clr-text-primary, var(--fg))";
+  name.textContent = topic.name;
+  name.title = topic.key;
+
+  const meta = document.createElement("div");
+  meta.style.fontSize = "0.8rem";
+  meta.textContent = topicMetaText(topic);
+
+  row.append(name, meta);
+  return row;
+}
+
+function setActionDone(action: HTMLButtonElement): void {
+  action.dataset.done = "true";
+  action.className = "btn secondary-btn btn-sm";
+  action.textContent = t("library_topics_all_added");
+  action.disabled = true;
+}
+
+/** Rows only; the caller owns the status line. */
 function renderTopics(
   parts: DialogParts,
   topics: LibraryTopicRow[],
   options: LibraryTopicsOptions,
 ): void {
   parts.list.replaceChildren();
-  if (topics.length === 0) {
-    parts.status.textContent = t("library_topics_empty");
-    return;
-  }
   for (const topic of topics) {
-    const row = document.createElement("article");
-    row.className = "modal-impact-section";
-    row.dataset.topicKey = topic.key;
-
-    const name = document.createElement("div");
-    name.className = "modal-impact-title";
-    name.style.color = "var(--clr-text-primary)";
-    name.textContent = topic.name;
-    name.title = topic.key;
-
-    const meta = document.createElement("div");
-    meta.style.fontSize = "0.8rem";
-    meta.textContent = topicMetaText(topic);
-
-    row.append(name, meta);
-
+    const row = topicRow(topic);
     const label = topicActionLabel(topic);
     const action = document.createElement("button");
     action.type = "button";
-    action.className = label
-      ? "btn primary-btn btn-sm"
-      : "btn secondary-btn btn-sm";
-    action.textContent = label ?? t("library_topics_all_added");
-    action.disabled = label === null;
     action.style.alignSelf = "flex-start";
+    if (label) {
+      action.className = "btn primary-btn btn-sm";
+      action.textContent = label;
+    } else {
+      setActionDone(action);
+    }
     action.addEventListener("click", () => {
-      void runStart(parts, topic, options);
+      void runStart(parts, topic, action, options);
     });
     row.append(action);
     parts.list.append(row);
   }
 }
 
+function setRowsDisabled(parts: DialogParts, disabled: boolean): void {
+  for (const button of parts.list.querySelectorAll("button")) {
+    // A finished row stays finished when the others come back.
+    if (!disabled && button.dataset.done) continue;
+    button.disabled = disabled;
+  }
+}
+
 async function runStart(
   parts: DialogParts,
   topic: LibraryTopicRow,
+  action: HTMLButtonElement,
   options: LibraryTopicsOptions,
 ): Promise<void> {
   if (busy) return;
   busy = true;
-  for (const button of parts.list.querySelectorAll("button")) {
-    button.disabled = true;
-  }
+  setRowsDisabled(parts, true);
+  parts.close.disabled = true;
   parts.status.textContent = t("library_topics_starting");
   try {
-    const result = await startLibraryTopic(topic.key);
-    renderTopics(parts, await fetchLibraryTopics(), options);
-    parts.status.textContent = startResultText(result);
-    // The host's refresh (card list, dashboard) can take seconds; the result
-    // is already on screen, so it runs behind it rather than before it.
+    let result: LibraryTopicStartResult;
+    try {
+      result = await startLibraryTopic(topic.key);
+    } catch (err) {
+      // Nothing changed: keep the rows, say why.
+      parts.status.textContent = topicsErrorText(
+        err,
+        "library_topics_start_error",
+      );
+      setRowsDisabled(parts, false);
+      return;
+    }
+
+    // The cards exist now, whatever the re-list below does. The host's
+    // refresh (card list, dashboard) can take seconds, so it runs behind the
+    // result instead of before it.
     if (result.created > 0) {
       void Promise.resolve(options.onStarted?.()).catch((err) =>
         console.error("library topics: refresh after start failed", err),
       );
     }
-  } catch (err) {
-    parts.status.textContent = `${t("library_topics_error")}: ${
-      err instanceof Error ? err.message : String(err)
-    }`;
-    renderTopics(parts, await fetchLibraryTopics().catch(() => []), options);
+    const message = startResultText(result);
+    try {
+      renderTopics(parts, await fetchLibraryTopics(), options);
+    } catch {
+      // The list could not be refreshed; the started row is done anyway.
+      setActionDone(action);
+      setRowsDisabled(parts, false);
+    }
+    parts.status.textContent = message;
   } finally {
     busy = false;
+    parts.close.disabled = false;
+    parts.close.focus();
   }
 }
 
@@ -246,18 +306,18 @@ export async function openLibraryTopics(
   parts.title.textContent = t("library_topics_title");
   parts.intro.textContent = t("library_topics_intro");
   parts.close.textContent = t("library_topics_close");
-  parts.status.textContent = t("library_topics_loading");
-  parts.list.replaceChildren();
   parts.overlay.classList.add("active");
   parts.close.focus();
+  if (busy) return; // a start in flight owns the rows and the status line
+  parts.status.textContent = t("library_topics_loading");
+  parts.list.replaceChildren();
   try {
     const topics = await fetchLibraryTopics();
-    parts.status.textContent = "";
+    parts.status.textContent =
+      topics.length === 0 ? t("library_topics_empty") : "";
     renderTopics(parts, topics, options);
   } catch (err) {
-    parts.status.textContent = `${t("library_topics_error")}: ${
-      err instanceof Error ? err.message : String(err)
-    }`;
+    parts.status.textContent = topicsErrorText(err);
   }
 }
 

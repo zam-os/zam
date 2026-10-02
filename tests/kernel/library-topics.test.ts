@@ -77,10 +77,16 @@ async function seedLibrary(db: Database): Promise<void> {
 }
 
 describe("library topic keys and names", () => {
-  it("drops the fragment and trims", () => {
+  it("drops the fragment and otherwise compares literally", () => {
     expect(libraryTopicKey(`${ARTICLE}#layers`)).toBe(ARTICLE);
-    expect(libraryTopicKey(`  ${ARTICLE}  `)).toBe(ARTICLE);
+    // The same rule as getTokensBySourceLinkBase: no trimming, no URL
+    // normalisation — a trailing slash or a padded link is another key.
+    expect(libraryTopicKey(`${ARTICLE} `)).toBe(`${ARTICLE} `);
+    expect(libraryTopicKey("https://example.org/guide/")).toBe(
+      "https://example.org/guide/",
+    );
     expect(libraryTopicKey("#only-anchor")).toBeNull();
+    expect(libraryTopicKey("   #x")).toBeNull();
     expect(libraryTopicKey("")).toBeNull();
     expect(libraryTopicKey(null)).toBeNull();
   });
@@ -97,6 +103,13 @@ describe("library topic keys and names", () => {
     expect(libraryTopicName("https://example.org/")).toBe("Example.org");
     expect(libraryTopicName("https://example.org/README.md")).toBe(
       "Example.org",
+    );
+    // A version tail is not an extension.
+    expect(libraryTopicName("https://example.org/docs/dotnet-8.0")).toBe(
+      "Dotnet 8.0",
+    );
+    expect(libraryTopicName("https://example.org/docs/node-v20.1/")).toBe(
+      "Node v20.1",
     );
   });
 });
@@ -205,6 +218,35 @@ describe("library topics (SQLite)", () => {
     expect(article).toMatchObject({ heldCount: 2, setAsideCount: 1 });
   });
 
+  it("matches a key literally: no wildcard, no trailing-slash merge", async () => {
+    const base = "https://example.org/a_b";
+    await createToken(db, {
+      slug: "literal-a",
+      concept: "Under a_b",
+      source_link: `${base}#one`,
+    });
+    // `_` is a LIKE wildcard; an unescaped match would pull this one in.
+    await createToken(db, {
+      slug: "literal-x",
+      concept: "Under axb",
+      source_link: "https://example.org/axb#one",
+    });
+    await createToken(db, {
+      slug: "literal-slash",
+      concept: "Under a_b/",
+      source_link: `${base}/#two`,
+    });
+
+    const result = await startLibraryTopic(db, "learner_a", base);
+    expect(result).toMatchObject({ itemCount: 1, created: 1 });
+    const keys = (await listLibraryTopics(db, "learner_a")).map(
+      (topic) => topic.key,
+    );
+    expect(keys).toEqual(
+      expect.arrayContaining([base, `${base}/`, "https://example.org/axb"]),
+    );
+  });
+
   it("refuses a key that names no topic", async () => {
     await expect(
       startLibraryTopic(db, "learner_a", "https://example.org/none.md"),
@@ -255,6 +297,29 @@ describeWithPostgres(
     afterEach(async () => {
       await db.close();
       await admin(`DROP SCHEMA IF EXISTS ${schema} CASCADE`);
+    });
+
+    it("lets two clients of one learner start the same topic at once", async () => {
+      // Two connections, so the two transactions really overlap: both read
+      // "no card" before either commits. The loser's insert must not abort.
+      const second = openPostgresDatabase({
+        connectionString: `${POSTGRES_URL}?options=-c%20search_path%3D${schema}`,
+      });
+      try {
+        const [a, b] = await Promise.all([
+          startLibraryTopic(db, "learner_a", ARTICLE),
+          startLibraryTopic(second, "learner_a", ARTICLE),
+        ]);
+        expect(a.created + b.created).toBe(3);
+        expect(a.created + a.alreadyHeld).toBe(3);
+        expect(b.created + b.alreadyHeld).toBe(3);
+        const cards = (await db
+          .prepare("SELECT COUNT(*) AS n FROM cards WHERE user_id = ?")
+          .get("learner_a")) as { n: number | string };
+        expect(Number(cards.n)).toBe(3);
+      } finally {
+        await second.close();
+      }
     });
 
     it("lists and starts a topic", async () => {

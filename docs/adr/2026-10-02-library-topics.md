@@ -48,6 +48,10 @@ In this phase a topic is computed, never stored:
 - **Key:** `tokens.source_link` with its `#fragment` removed. OKF import writes
   the article's `resource` URL plus an anchor per token, so one article is one
   topic; other source-grounded imports group by their source page the same way.
+  The key compares literally — the rule `getTokensBySourceLinkBase` already
+  applies to one article — so the catalog, a start and an OKF re-import agree
+  on an article's members; a trailing slash, another casing or a query string
+  is another topic. Normalising links is left to the writers.
 - **Members:** tokens with that key that are `editorial_state = 'published'`,
   not deprecated and not in maintenance.
 - **Name:** the key's last path segment without extension, humanised
@@ -92,20 +96,22 @@ first, then by name.
 
 - **Bridge:** `library-topics-list` and `library-topic-start --key <key>`,
   JSON only.
-- **Studio:** a **Library topics** action in the Learning Content header beside
+- **Studio:** a **Library Topics** action in the Learning Content header beside
   Curriculum Wizard and Goal Import, opening the catalog with one **Start
-  learning** per topic and its result ("12 cards added — they appear in your
-  reviews over the next days"). A dashboard with no cards at all on a library
-  that has topics points at the catalog — the one clear action for a newcomer.
+  learning** per topic and its result ("Kubernetes pods: 2 cards added — they
+  join your reviews over the next days."). A dashboard with no cards at all on
+  a library that has topics points at the catalog — the one clear action for a
+  newcomer.
 - **Colleague guide:** `docs/team-library.md` gains "Get your first cards".
-- MCP tools, Mobile and the onboarding step follow in phase 2.
+- MCP tools and the onboarding step follow in phase 2; Mobile is not part of
+  this ADR's phases yet.
 
 ### 5. Relation to cells and generic import
 
 A library topic is not a curriculum position, so it does not compete with
 cells (ADR 2026-08-14 Decision 10); it is offered beside them. The goal step
-is unchanged in this phase except that the commit-on-Next fix (PR #371) ships
-in the same release.
+is unchanged in this phase; the commit-on-Next fix (PR #371) reached `main`
+separately and ships in the same release.
 
 ## Later phases
 
@@ -171,10 +177,10 @@ when it starts.
 ## Verification
 
 On `zam_test`, a member added with `--no-curator` and no cards connects from
-the Studio, opens **Library topics**, starts one article, and reviews its
+the Studio, opens **Library Topics**, starts one article, and reviews its
 first new card the same day; starting it again adds nothing; a card they
-detached stays detached. Kernel tests cover grouping, filtering, idempotence
-and the detached rule on SQLite and PostgreSQL.
+detached stays detached. Kernel tests cover grouping, filtering and
+idempotence on SQLite and PostgreSQL, and the detached rule on SQLite.
 
 ## Status history
 

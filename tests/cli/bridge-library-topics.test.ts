@@ -115,6 +115,7 @@ describe("zam bridge library-topics-list / library-topic-start", () => {
 
   it("answers an unknown topic with a JSON error", () => {
     let output = "";
+    let status: number | null = 0;
     try {
       execFileSync(
         "node",
@@ -133,8 +134,11 @@ describe("zam bridge library-topics-list / library-topic-start", () => {
         },
       );
     } catch (err) {
-      output = String((err as { stdout?: string }).stdout ?? "");
+      const failure = err as { stdout?: string; status?: number | null };
+      output = String(failure.stdout ?? "");
+      status = failure.status ?? null;
     }
+    expect(status).not.toBe(0);
     expect(JSON.parse(output).error).toContain("Library topic not found");
   });
 });

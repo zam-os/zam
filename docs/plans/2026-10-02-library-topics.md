@@ -52,8 +52,8 @@ model.
   `desktop/index.html` and `desktop/src/panel/studio-panel.html`.
 - Dashboard: when the deck is empty, ask `library-topics-list`; if it returns
   topics, show **Start with the library's topics** under the empty-deck line.
-- i18n: `en` and `de` (other locales fall back to English, like the newest
-  keys today).
+- i18n: all seven Studio locales (`en`, `de` and the `es`/`fr`/`pt`/`zh`/`ja`
+  packs), as the locale completeness test requires for new keys.
 
 ## Docs
 

@@ -447,7 +447,7 @@ export async function getTokensBySourceLinkBase(
 }
 
 /** Escape LIKE wildcards so a literal base cannot over-match. */
-function escapeLike(value: string): string {
+export function escapeLike(value: string): string {
   return value.replace(/[\\%_]/g, (ch) => `\\${ch}`);
 }
 

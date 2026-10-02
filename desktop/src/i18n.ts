@@ -35,12 +35,13 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "Esta biblioteca aún no tiene temas. Los temas surgen de tarjetas publicadas que citan una fuente, como un artículo de conocimiento importado.",
     library_topics_error: "No se pudieron cargar los temas de la biblioteca",
+    library_topics_start_error: "No se pudo empezar el tema",
     library_topics_row_meta: "{items} tarjetas · tienes {held}",
     library_topics_row_set_aside: " · {count} apartadas",
     library_topics_start: "Empezar a aprender",
     library_topics_add_new: "Añadir {count} tarjetas nuevas",
     library_topics_all_added: "Todas las tarjetas añadidas",
-    library_topics_starting: "Creando tus tarjetas…",
+    library_topics_starting: "Añadiendo tus tarjetas…",
     library_topics_started:
       "{name}: {count} tarjetas añadidas; se suman a tus repasos en los próximos días.",
     library_topics_nothing_new: "{name}: ya tienes todas las tarjetas.",
@@ -999,6 +1000,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "Cette bibliothèque n'a pas encore de thèmes. Les thèmes proviennent de cartes publiées qui citent une source, comme un article de connaissances importé.",
     library_topics_error: "Impossible de charger les thèmes de la bibliothèque",
+    library_topics_start_error: "Impossible de commencer le thème",
     library_topics_row_meta: "{items} cartes · vous en avez {held}",
     library_topics_row_set_aside: " · {count} mises de côté",
     library_topics_start: "Commencer à apprendre",
@@ -1975,6 +1977,7 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "Esta biblioteca ainda não tem temas. Os temas surgem de cartões publicados que citam uma fonte, como um artigo de conhecimento importado.",
     library_topics_error: "Não foi possível carregar os temas da biblioteca",
+    library_topics_start_error: "Não foi possível começar o tema",
     library_topics_row_meta: "{items} cartões · você tem {held}",
     library_topics_row_set_aside: " · {count} deixados de lado",
     library_topics_start: "Começar a aprender",
@@ -2937,8 +2940,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "此知识库还没有主题。主题来自注明来源的已发布卡片，例如导入的知识文章。",
     library_topics_error: "无法加载知识库主题",
+    library_topics_start_error: "无法开始该主题",
     library_topics_row_meta: "{items} 张卡片 · 您已有 {held} 张",
-    library_topics_row_set_aside: " · {count} 张已搁置",
+    library_topics_row_set_aside: " · {count} 张标为不适合",
     library_topics_start: "开始学习",
     library_topics_add_new: "添加 {count} 张新卡片",
     library_topics_all_added: "已添加全部卡片",
@@ -3824,8 +3828,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "このライブラリにはまだトピックがありません。トピックは、出典を示す公開済みカード（取り込んだナレッジ記事など）から作られます。",
     library_topics_error: "ライブラリのトピックを読み込めませんでした",
+    library_topics_start_error: "トピックを開始できませんでした",
     library_topics_row_meta: "{items} 枚のカード · 所持 {held} 枚",
-    library_topics_row_set_aside: " · {count} 枚を保留中",
+    library_topics_row_set_aside: " · 不要 {count} 枚",
     library_topics_start: "学習を始める",
     library_topics_add_new: "新しいカードを {count} 枚追加",
     library_topics_all_added: "すべてのカードを追加済み",
@@ -6274,6 +6279,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "This library has no topics yet. Topics come from published cards that cite a source, such as an imported knowledge article.",
     library_topics_error: "Could not load the library topics",
+    library_topics_start_error: "Could not start the topic",
     library_topics_row_meta: "{items} cards · you have {held}",
     library_topics_row_set_aside: " · {count} set aside",
     library_topics_start: "Start learning",
@@ -7796,8 +7802,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     library_topics_empty:
       "Diese Bibliothek hat noch keine Themen. Themen entstehen aus veröffentlichten Karten, die eine Quelle angeben, etwa einen importierten Wissensartikel.",
     library_topics_error: "Die Bibliotheksthemen konnten nicht geladen werden",
+    library_topics_start_error: "Das Thema konnte nicht begonnen werden",
     library_topics_row_meta: "{items} Karten · du hast {held}",
-    library_topics_row_set_aside: " · {count} zurückgelegt",
+    library_topics_row_set_aside: " · {count} beiseitegelegt",
     library_topics_start: "Lernen beginnen",
     library_topics_add_new: "{count} neue Karten hinzufügen",
     library_topics_all_added: "Alle Karten hinzugefügt",

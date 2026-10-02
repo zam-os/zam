@@ -15,8 +15,9 @@
  * provider's topic code.
  */
 
+import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
-import { ensureCard } from "../models/card.js";
+import { escapeLike } from "../models/token.js";
 
 export interface LibraryTopic {
   /** `source_link` without its fragment — the topic's identity. */
@@ -53,14 +54,19 @@ interface TopicRow {
   detached_at: string | null;
 }
 
-/** The topic key of a source link: trimmed, fragment removed. */
+/**
+ * The topic key of a source link: everything before the first `#`, compared
+ * literally — the rule `getTokensBySourceLinkBase` applies to one article, so
+ * the catalog, a start and an OKF re-import agree on an article's members.
+ * A trailing slash, another casing or a query string is another key.
+ */
 export function libraryTopicKey(
   sourceLink: string | null | undefined,
 ): string | null {
   if (!sourceLink) return null;
   const hash = sourceLink.indexOf("#");
-  const key = (hash === -1 ? sourceLink : sourceLink.slice(0, hash)).trim();
-  return key.length > 0 ? key : null;
+  const key = hash === -1 ? sourceLink : sourceLink.slice(0, hash);
+  return key.trim().length > 0 ? key : null;
 }
 
 /**
@@ -96,8 +102,10 @@ export function libraryTopicName(key: string): string {
   return capitalise(name);
 }
 
+// Locale-independent on purpose: the bridge output must not depend on the
+// machine's locale (tr-TR would turn "index" into "İndex").
 function capitalise(text: string): string {
-  return text.charAt(0).toLocaleUpperCase() + text.slice(1);
+  return text.charAt(0).toUpperCase() + text.slice(1);
 }
 
 function decode(segment: string): string {
@@ -108,37 +116,51 @@ function decode(segment: string): string {
   }
 }
 
+/** `.md`, `.html` — but not a version tail like `dotnet-8.0`. */
 function stripExtension(segment: string): string {
-  return segment.replace(/\.[A-Za-z0-9]{1,5}$/, "");
+  return segment.replace(/\.[A-Za-z][A-Za-z0-9]{0,4}$/, "");
 }
 
 function humanise(segment: string): string {
   return segment.replace(/[-_]+/g, " ").replace(/\s+/g, " ").trim();
 }
 
-/**
- * Every token that can belong to a topic, with the learner's card if any.
- * Grouping happens in code; the key is the link before its first `#`, the
- * same rule `getTokensBySourceLinkBase` matches in SQL for one article.
- */
+/** Tokens that can belong to a topic — the queue's own eligibility rules. */
+const TOPIC_TOKEN_FILTER = `t.source_link IS NOT NULL
+          AND t.source_link <> ''
+          AND t.deprecated_at IS NULL
+          AND t.maintenance_at IS NULL
+          AND t.editorial_state = 'published'`;
+
+const TOPIC_ROW_SELECT = `SELECT t.id AS token_id, t.source_link, t.domain,
+              c.id AS card_id, c.detached_at
+         FROM tokens t
+         LEFT JOIN cards c ON c.token_id = t.id AND c.user_id = ?`;
+
+/** Every token that can belong to a topic, with the learner's card if any. */
 async function loadTopicRows(
   db: Database,
   userId: string,
 ): Promise<TopicRow[]> {
   return (await db
+    .prepare(`${TOPIC_ROW_SELECT} WHERE ${TOPIC_TOKEN_FILTER} ORDER BY t.id`)
+    .all(userId)) as TopicRow[];
+}
+
+/** One topic's tokens: `key` itself or `key#<anchor>`, matched literally. */
+async function loadTopicMembers(
+  db: Database,
+  userId: string,
+  key: string,
+): Promise<TopicRow[]> {
+  return (await db
     .prepare(
-      `SELECT t.id AS token_id, t.source_link, t.domain,
-              c.id AS card_id, c.detached_at
-         FROM tokens t
-         LEFT JOIN cards c ON c.token_id = t.id AND c.user_id = ?
-        WHERE t.source_link IS NOT NULL
-          AND t.source_link <> ''
-          AND t.deprecated_at IS NULL
-          AND t.maintenance_at IS NULL
-          AND t.editorial_state = 'published'
+      `${TOPIC_ROW_SELECT}
+        WHERE (t.source_link = ? OR t.source_link LIKE ? || '#%' ESCAPE '\\')
+          AND ${TOPIC_TOKEN_FILTER}
         ORDER BY t.id`,
     )
-    .all(userId)) as TopicRow[];
+    .all(userId, key, escapeLike(key))) as TopicRow[];
 }
 
 function mostFrequentDomain(domains: string[]): string | null {
@@ -196,7 +218,7 @@ export async function listLibraryTopics(
   return topics.sort(
     (a, b) =>
       started(a) - started(b) ||
-      a.name.localeCompare(b.name) ||
+      a.name.localeCompare(b.name, "en") ||
       (a.key < b.key ? -1 : a.key > b.key ? 1 : 0),
   );
 }
@@ -215,9 +237,7 @@ export async function startLibraryTopic(
   if (!topicKey) throw new Error("A library topic key is required");
 
   return db.transaction(async (tx) => {
-    const members = (await loadTopicRows(tx, userId)).filter(
-      (row) => libraryTopicKey(row.source_link) === topicKey,
-    );
+    const members = await loadTopicMembers(tx, userId, topicKey);
     if (members.length === 0) {
       throw new Error(`Library topic not found: ${topicKey}`);
     }
@@ -225,14 +245,25 @@ export async function startLibraryTopic(
     let created = 0;
     let alreadyHeld = 0;
     let setAside = 0;
+    const now = new Date().toISOString();
     for (const row of members) {
       if (row.card_id) {
         if (row.detached_at) setAside++;
         else alreadyHeld++;
         continue;
       }
-      await ensureCard(tx, row.token_id, userId);
-      created++;
+      // ON CONFLICT: another client of the same learner (a second window,
+      // `zam mcp`) may create the card between the read and this insert; on
+      // PostgreSQL a plain insert would then abort the whole start.
+      const insert = await tx
+        .prepare(
+          `INSERT INTO cards (id, token_id, user_id, due_at)
+           VALUES (?, ?, ?, ?)
+           ON CONFLICT (token_id, user_id) DO NOTHING`,
+        )
+        .run(ulid(), row.token_id, userId, now);
+      if (insert.changes > 0) created++;
+      else alreadyHeld++;
     }
 
     return {
