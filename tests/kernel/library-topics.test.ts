@@ -104,6 +104,17 @@ describe("library topic keys and names", () => {
     expect(libraryTopicName("https://example.org/README.md")).toBe(
       "Example.org",
     );
+    // An Azure DevOps file link names its file in `?path=`.
+    expect(
+      libraryTopicName(
+        "https://dev.azure.com/contoso/Platform%20Team/_git/Team.Docs?path=/docs/okf/pester-basics.md&version=GBmain",
+      ),
+    ).toBe("Pester basics");
+    expect(
+      libraryTopicName(
+        "https://dev.azure.com/org/project/_git/repo?path=/docs/okf/README.md",
+      ),
+    ).toBe("Okf");
     // A version tail is not an extension.
     expect(libraryTopicName("https://example.org/docs/dotnet-8.0")).toBe(
       "Dotnet 8.0",

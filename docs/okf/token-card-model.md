@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-02T09:30:00.000Z
+timestamp: 2026-10-02T13:45:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -136,8 +136,9 @@ applies to one article: a trailing slash, another casing or a query string
 is another topic. Topics are derived on every read and never stored. A
 topic's name comes from the source's last path segment without its extension,
 dashes and underscores read as spaces (`index` and `readme` name their
-folder, a bare host names itself); `tokens.topic_id`, a curriculum provider's
-topic code, is unrelated. Tokens without a source link form no topic.
+folder, a bare host names itself, and a link that names its file in a `path`
+query parameter — an Azure DevOps file link — is named after that file);
+`tokens.topic_id`, a curriculum provider's topic code, is unrelated. Tokens without a source link form no topic.
 
 `listLibraryTopics` reports per topic its item count, its most frequent
 domain, and the learner's own held and set-aside cards — nothing about other
