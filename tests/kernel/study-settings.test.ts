@@ -162,6 +162,30 @@ describe("study workload and learning settings", () => {
     );
     const settings = await getStudyLearningSettings(db, "frank");
     expect(settings.autoRecallPin).toBeNull();
+    expect(settings.derivedChoiceOptions).toBe(false);
+  });
+
+  it("keeps options derived from other items off until the learner opts in", async () => {
+    expect(
+      (await getStudyLearningSettings(db, "gina")).derivedChoiceOptions,
+    ).toBe(false);
+    expect(
+      (
+        await setStudyLearningSettings(db, "gina", {
+          derivedChoiceOptions: true,
+        })
+      ).derivedChoiceOptions,
+    ).toBe(true);
+    // Another update keeps the opt-in.
+    expect(
+      (await setStudyLearningSettings(db, "gina", { learningMode: "choice" }))
+        .derivedChoiceOptions,
+    ).toBe(true);
+    await expect(
+      setStudyLearningSettings(db, "gina", {
+        derivedChoiceOptions: "yes" as never,
+      }),
+    ).rejects.toThrow("derivedChoiceOptions must be a boolean");
   });
 
   it("validates isStudyLearningMode helper", () => {

@@ -445,6 +445,16 @@
               <input type="checkbox" id="settings-auto-recall-flash" />
               <span id="lbl-settings-auto-recall-flash">Later without typing (Flash instead of an AI-checked answer)</span>
             </label>
+            <!-- Off by default: an answer taken from another card is easy to
+                 recognise, so it tends to leave one option obviously right. -->
+            <label
+              class="settings-toggle settings-advanced-control"
+              for="settings-derived-choice-options"
+              data-settings-tier="advanced"
+            >
+              <input type="checkbox" id="settings-derived-choice-options" />
+              <span id="lbl-settings-derived-choice-options">Choice may use answers from your other cards (often easy to see through)</span>
+            </label>
             <label
               class="settings-field settings-advanced-control"
               for="settings-voice-reveal-timeout"

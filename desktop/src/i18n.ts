@@ -6004,6 +6004,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     learning_mode_switch_auto: "🔄 Auto",
     learning_mode_auto_recall_flash:
       "Later without typing (Flash instead of an AI-checked answer)",
+    learning_mode_derived_choice_options:
+      "Choice may use answers from your other cards (often easy to see through)",
     choice_dont_know: "Don't know",
     choice_next: "Next",
     choice_ask: "Ask",
@@ -7519,6 +7521,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     learning_mode_switch_auto: "🔄 Auto",
     learning_mode_auto_recall_flash:
       "Später ohne Tippen (Flash statt KI-geprüfter Antwort)",
+    learning_mode_derived_choice_options:
+      "Auswahl darf Antworten deiner anderen Karten nutzen (oft leicht zu durchschauen)",
     choice_dont_know: "Weiß ich nicht",
     choice_next: "Weiter",
     choice_ask: "Nachfragen",

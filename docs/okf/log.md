@@ -5,6 +5,10 @@
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [Token and Card Model](token-card-model.md)
 
+## 2026-10-01
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-09-29
 
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)

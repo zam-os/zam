@@ -389,6 +389,20 @@ offline included, is dispute and retirement, plus curator review for tiles.
   generation quality covers derived options as well: a high dispute rate on
   derived options reopens this decision.
 
+**Amended 2026-10-01 (owner decision, field test).**
+
+- **Derived options are off by default.** In practice a set built from
+  answers of other items too often leaves one option obviously right: the
+  learner recognises the distractors as answers to questions they have met
+  and picks the remaining one without knowing it. The source stays, but
+  only as an opt-in: the learning setting `derivedChoiceOptions` (default
+  `false`), shown under the advanced settings in the Studio and on Mobile and
+  set through `zam bridge study-learning-set --derived-choice-options on|off`.
+  With it off, a card without an authored, curated or generated set is asked
+  in a recall format (source 4). This weakens the "curated and derived
+  options need no model" consequence for learners without a model: they get
+  a choice only from authored or curated sets unless they opt in.
+
 ### 7. Feedback after a wrong answer, and disputes
 
 After a distractor or "Don't know", the card waits for the learner:

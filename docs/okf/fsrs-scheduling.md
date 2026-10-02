@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-09-29T17:40:00.000Z
+timestamp: 2026-10-01T18:50:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -219,7 +219,10 @@ a card is shown as a choice or in a recall format, and why:
    of their attempts — and only then answers of other items the learner has
    met in the same domain and knowledge context (derived per learner, never
    stored). Derived options are the last resort because an answer to another
-   question is easy to recognise as such.
+   question is easy to recognise as such, and they are off unless the learner
+   turns on `derivedChoiceOptions` (an advanced learning setting, stored with
+   the learning mode). With it off, a card without an authored, curated, or
+   generated set is asked in a recall format.
 4. Curated, generated, and derived candidates pass the deterministic checks
    in `src/kernel/recall/choice-checks.ts` (empty, equal to or containing the
    answer, duplicate, all/none of the above, negated answer, named in the
@@ -295,7 +298,8 @@ sibling filtering, so a suppressed sibling does not consume a daily slot.
 
 The same settings module stores a separate per-learner interaction object:
 `flash`, `choice`, `answer_feedback`, the scaffolded `answer_variation`, or
-`auto`, Auto's recall pin (`answer`, `flash`, or unset), and bounded voice
+`auto`, Auto's recall pin (`answer`, `flash`, or unset), the opt-in for
+choice options derived from other items (off by default), and bounded voice
 reveal and rating timeouts. A mode changes how a surface gathers evidence;
 the evidence's answer format — not the mode — decides whether the tap ceiling
 applies. A contextual default may depend on evaluator availability, but it is
