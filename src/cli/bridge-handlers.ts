@@ -67,6 +67,7 @@ import {
   suggestFoundations as kernelSuggestFoundations,
   listAssignmentsByAssigner,
   listAssignmentsForLearner,
+  listLibraryTopics,
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
@@ -85,6 +86,7 @@ import {
   resolveAnswerPresentation,
   searchTokensHybrid,
   setTokenMaintenance,
+  startLibraryTopic,
   structuralPublicationChecks,
   updateCard,
   updateToken,
@@ -2110,4 +2112,29 @@ export async function enrolBonusAtomHandler(
   const userId = await resolveHandlerUser(db, params.user);
   const result = await enrolBonusAtom(db, userId, params.atomId.trim());
   return result;
+}
+
+// Library topics (ADR 2026-10-02): the published tokens citing one source,
+// started as the learner's own cards.
+export async function listLibraryTopicsHandler(
+  db: Database,
+  params: { user?: string },
+) {
+  const userId = await resolveHandlerUser(db, params.user);
+  return {
+    success: true as const,
+    topics: await listLibraryTopics(db, userId),
+  };
+}
+
+export async function startLibraryTopicHandler(
+  db: Database,
+  params: { key: string; user?: string },
+) {
+  if (!params.key?.trim()) throw new Error("key is required");
+  const userId = await resolveHandlerUser(db, params.user);
+  return {
+    success: true as const,
+    ...(await startLibraryTopic(db, userId, params.key)),
+  };
 }

@@ -23,8 +23,13 @@ describe("desktop module boundaries", () => {
       (m) => m[1] ?? m[2],
     );
 
-  it("learning-content.ts and curriculum-wizard.ts do not import from main", () => {
-    for (const file of ["learning-content.ts", "curriculum-wizard.ts"]) {
+  it("learning-content.ts, curriculum-wizard.ts and library-topics.ts do not import from main", () => {
+    for (const file of [
+      "learning-content.ts",
+      "curriculum-wizard.ts",
+      // Shared with the MCP Apps panel through learning-content.ts.
+      "library-topics.ts",
+    ]) {
       const specifiers = importSpecifiers(read(file));
       for (const specifier of specifiers) {
         expect(

@@ -32,7 +32,9 @@ import {
   getSetting,
   listActiveDistractors,
   listAssignmentsForLearner,
+  listLibraryTopics,
   setSetting,
+  startLibraryTopic,
   storeDistractors,
   withdrawAssignment,
 } from "../../src/kernel/index.js";
@@ -323,6 +325,46 @@ describeWithPostgres("zam team on PostgreSQL (needs POSTGRES_URL)", () => {
           await expect(
             createToken(asBob, { slug: "bob-publishes", concept: "Denied" }),
           ).rejects.toThrow(/permission denied/i);
+
+          // Library topics (ADR 2026-10-02): a member without curator rights
+          // starts a topic — only their own cards are written, nobody else
+          // sees them, and a second start is a no-op.
+          const article = "https://hub.example.org/okf/rest-api.md";
+          await createToken(control, {
+            slug: "topic-rest-verbs",
+            concept: "Methods carry the verb",
+            source_link: `${article}#verbs`,
+          });
+          await createToken(control, {
+            slug: "topic-rest-status",
+            concept: "201 answers a create",
+            source_link: `${article}#status`,
+          });
+          const bobStart = await startLibraryTopic(asBob, bob.userId, article);
+          expect(bobStart).toMatchObject({ itemCount: 2, created: 2 });
+          expect(
+            await startLibraryTopic(asBob, bob.userId, article),
+          ).toMatchObject({ created: 0, alreadyHeld: 2 });
+          const topicFor = async (db: Database, userId: string) =>
+            (await listLibraryTopics(db, userId)).find(
+              (topic) => topic.key === article,
+            );
+          expect(await topicFor(asBob, bob.userId)).toMatchObject({
+            heldCount: 2,
+          });
+          expect(await topicFor(asAlice, alice.userId)).toMatchObject({
+            heldCount: 0,
+          });
+          expect(
+            await asAlice
+              .prepare("SELECT COUNT(*) AS n FROM cards WHERE user_id = ?")
+              .get(bob.userId),
+          ).toEqual({ n: 0 });
+          // Bob removes his own topic cards again (his to delete), so the
+          // re-provisioning checks below still start from no cards of his.
+          await asBob
+            .prepare("DELETE FROM cards WHERE user_id = ?")
+            .run(bob.userId);
 
           // The choice-option cache (ADR 2026-09-27): every member's reviews
           // add generated options and move their counters, but may not

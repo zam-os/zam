@@ -303,6 +303,16 @@ export {
   publishTokenRevisionInTransaction,
 } from "./library/revision.js";
 export type {
+  LibraryTopic,
+  StartLibraryTopicResult,
+} from "./library/topics.js";
+export {
+  libraryTopicKey,
+  libraryTopicName,
+  listLibraryTopics,
+  startLibraryTopic,
+} from "./library/topics.js";
+export type {
   AgentSkill,
   CreateAgentSkillInput,
   SkillSource,

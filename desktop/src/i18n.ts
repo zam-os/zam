@@ -25,6 +25,27 @@ export const LOCALE_LABELS: Record<Locale, string> = {
 
 export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
   es: {
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "Temas de la biblioteca",
+    dashboard_library_topics: "Empieza con los temas de la biblioteca",
+    library_topics_title: "Temas de esta biblioteca",
+    library_topics_intro:
+      "Cada tema es una fuente de la que proceden tarjetas de la biblioteca. Empieza uno para obtener tus propias tarjetas: se suman a tus repasos en los próximos días.",
+    library_topics_loading: "Cargando temas…",
+    library_topics_empty:
+      "Esta biblioteca aún no tiene temas. Los temas surgen de tarjetas publicadas que citan una fuente, como un artículo de conocimiento importado.",
+    library_topics_error: "No se pudieron cargar los temas de la biblioteca",
+    library_topics_start_error: "No se pudo empezar el tema",
+    library_topics_row_meta: "{items} tarjetas · tienes {held}",
+    library_topics_row_set_aside: " · {count} apartadas",
+    library_topics_start: "Empezar a aprender",
+    library_topics_add_new: "Añadir {count} tarjetas nuevas",
+    library_topics_all_added: "Todas las tarjetas añadidas",
+    library_topics_starting: "Añadiendo tus tarjetas…",
+    library_topics_started:
+      "{name}: {count} tarjetas añadidas; se suman a tus repasos en los próximos días.",
+    library_topics_nothing_new: "{name}: ya tienes todas las tarjetas.",
+    library_topics_close: "Cerrar",
     ai_status_offline: "IA desconectada",
     ai_status_online: "IA local en línea",
     ai_status_cloud_online: "IA en la nube · {model}",
@@ -969,6 +990,27 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Actualización",
   },
   fr: {
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "Thèmes de la bibliothèque",
+    dashboard_library_topics: "Commencer par les thèmes de la bibliothèque",
+    library_topics_title: "Thèmes de cette bibliothèque",
+    library_topics_intro:
+      "Chaque thème est une source dont proviennent des cartes de la bibliothèque. Commencez-en un pour obtenir vos propres cartes : elles rejoignent vos révisions dans les prochains jours.",
+    library_topics_loading: "Chargement des thèmes…",
+    library_topics_empty:
+      "Cette bibliothèque n'a pas encore de thèmes. Les thèmes proviennent de cartes publiées qui citent une source, comme un article de connaissances importé.",
+    library_topics_error: "Impossible de charger les thèmes de la bibliothèque",
+    library_topics_start_error: "Impossible de commencer le thème",
+    library_topics_row_meta: "{items} cartes · vous en avez {held}",
+    library_topics_row_set_aside: " · {count} mises de côté",
+    library_topics_start: "Commencer à apprendre",
+    library_topics_add_new: "Ajouter {count} nouvelles cartes",
+    library_topics_all_added: "Toutes les cartes sont ajoutées",
+    library_topics_starting: "Création de vos cartes…",
+    library_topics_started:
+      "{name} : {count} cartes ajoutées ; elles rejoignent vos révisions dans les prochains jours.",
+    library_topics_nothing_new: "{name} : vous avez déjà toutes les cartes.",
+    library_topics_close: "Fermer",
     ai_status_offline: "IA hors ligne",
     ai_status_online: "IA locale en ligne",
     ai_status_cloud_online: "IA cloud · {model}",
@@ -1925,6 +1967,27 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Mise à jour",
   },
   pt: {
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "Temas da biblioteca",
+    dashboard_library_topics: "Comece pelos temas da biblioteca",
+    library_topics_title: "Temas desta biblioteca",
+    library_topics_intro:
+      "Cada tema é uma fonte de onde vêm cartões da biblioteca. Comece um para receber seus próprios cartões: eles entram nas suas revisões nos próximos dias.",
+    library_topics_loading: "Carregando temas…",
+    library_topics_empty:
+      "Esta biblioteca ainda não tem temas. Os temas surgem de cartões publicados que citam uma fonte, como um artigo de conhecimento importado.",
+    library_topics_error: "Não foi possível carregar os temas da biblioteca",
+    library_topics_start_error: "Não foi possível começar o tema",
+    library_topics_row_meta: "{items} cartões · você tem {held}",
+    library_topics_row_set_aside: " · {count} deixados de lado",
+    library_topics_start: "Começar a aprender",
+    library_topics_add_new: "Adicionar {count} cartões novos",
+    library_topics_all_added: "Todos os cartões adicionados",
+    library_topics_starting: "Criando seus cartões…",
+    library_topics_started:
+      "{name}: {count} cartões adicionados; eles entram nas suas revisões nos próximos dias.",
+    library_topics_nothing_new: "{name}: você já tem todos os cartões.",
+    library_topics_close: "Fechar",
     ai_status_offline: "IA offline",
     ai_status_online: "IA local online",
     ai_status_cloud_online: "IA na nuvem · {model}",
@@ -2867,6 +2930,27 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "Atualização",
   },
   zh: {
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "知识库主题",
+    dashboard_library_topics: "从知识库的主题开始",
+    library_topics_title: "此知识库中的主题",
+    library_topics_intro:
+      "每个主题对应知识库卡片的一个来源。开始一个主题即可获得您自己的卡片，它们会在接下来几天加入您的复习。",
+    library_topics_loading: "正在加载主题…",
+    library_topics_empty:
+      "此知识库还没有主题。主题来自注明来源的已发布卡片，例如导入的知识文章。",
+    library_topics_error: "无法加载知识库主题",
+    library_topics_start_error: "无法开始该主题",
+    library_topics_row_meta: "{items} 张卡片 · 您已有 {held} 张",
+    library_topics_row_set_aside: " · {count} 张标为不适合",
+    library_topics_start: "开始学习",
+    library_topics_add_new: "添加 {count} 张新卡片",
+    library_topics_all_added: "已添加全部卡片",
+    library_topics_starting: "正在创建您的卡片…",
+    library_topics_started:
+      "{name}：已添加 {count} 张卡片，它们会在接下来几天加入您的复习。",
+    library_topics_nothing_new: "{name}：您已拥有全部卡片。",
+    library_topics_close: "关闭",
     ai_status_offline: "AI 已离线",
     ai_status_online: "本地 AI 在线",
     ai_status_cloud_online: "云端 AI · {model}",
@@ -3734,6 +3818,27 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_section_update: "更新",
   },
   ja: {
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "ライブラリのトピック",
+    dashboard_library_topics: "ライブラリのトピックから始める",
+    library_topics_title: "このライブラリのトピック",
+    library_topics_intro:
+      "各トピックは、ライブラリのカードの出典の一つです。トピックを始めると自分用のカードが作られ、数日かけて復習に加わります。",
+    library_topics_loading: "トピックを読み込み中…",
+    library_topics_empty:
+      "このライブラリにはまだトピックがありません。トピックは、出典を示す公開済みカード（取り込んだナレッジ記事など）から作られます。",
+    library_topics_error: "ライブラリのトピックを読み込めませんでした",
+    library_topics_start_error: "トピックを開始できませんでした",
+    library_topics_row_meta: "{items} 枚のカード · 所持 {held} 枚",
+    library_topics_row_set_aside: " · 不要 {count} 枚",
+    library_topics_start: "学習を始める",
+    library_topics_add_new: "新しいカードを {count} 枚追加",
+    library_topics_all_added: "すべてのカードを追加済み",
+    library_topics_starting: "カードを作成中…",
+    library_topics_started:
+      "{name}：{count} 枚のカードを追加しました。数日かけて復習に加わります。",
+    library_topics_nothing_new: "{name}：すべてのカードをすでに持っています。",
+    library_topics_close: "閉じる",
     ai_status_offline: "AI オフライン",
     ai_status_online: "ローカル AI オンライン",
     ai_status_cloud_online: "クラウド AI · {model}",
@@ -6164,6 +6269,27 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Your deck is empty. Pick an import path — curriculum, your own sources, a project, or a goal.",
     dashboard_empty_no_cards:
       "No cards yet — the setup checklist has the import paths.",
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "Library Topics",
+    dashboard_library_topics: "Start with the library's topics",
+    library_topics_title: "Topics in this library",
+    library_topics_intro:
+      "Each topic is one source the library's cards come from. Start one to get your own cards for it — they join your reviews over the next days.",
+    library_topics_loading: "Loading topics…",
+    library_topics_empty:
+      "This library has no topics yet. Topics come from published cards that cite a source, such as an imported knowledge article.",
+    library_topics_error: "Could not load the library topics",
+    library_topics_start_error: "Could not start the topic",
+    library_topics_row_meta: "{items} cards · you have {held}",
+    library_topics_row_set_aside: " · {count} set aside",
+    library_topics_start: "Start learning",
+    library_topics_add_new: "Add {count} new cards",
+    library_topics_all_added: "All cards added",
+    library_topics_starting: "Adding your cards…",
+    library_topics_started:
+      "{name}: {count} cards added — they join your reviews over the next days.",
+    library_topics_nothing_new: "{name}: you already have every card.",
+    library_topics_close: "Close",
     settings_voice_title: "Voice mode",
     settings_voice_help:
       "Review out loud, hands free — on a walk, during housework, at the gym. Your device handles speech for free and without anyone else involved, but it can be less accurate; a cloud model usually understands you better and sounds more natural, at a small cost per session.",
@@ -7666,6 +7792,27 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Dein Stapel ist leer. Wähle einen Import-Weg – Lehrplan, eigene Quellen, ein Projekt oder ein Ziel.",
     dashboard_empty_no_cards:
       "Noch keine Karten – die Einrichtungsliste führt zu den Import-Wegen.",
+    // Library topics (ADR 2026-10-02)
+    btn_library_topics: "Bibliotheksthemen",
+    dashboard_library_topics: "Mit den Themen der Bibliothek beginnen",
+    library_topics_title: "Themen in dieser Bibliothek",
+    library_topics_intro:
+      "Jedes Thema ist eine Quelle, aus der Karten der Bibliothek stammen. Beginne eines, um eigene Karten dafür zu bekommen – sie kommen in den nächsten Tagen in deine Wiederholungen.",
+    library_topics_loading: "Themen werden geladen…",
+    library_topics_empty:
+      "Diese Bibliothek hat noch keine Themen. Themen entstehen aus veröffentlichten Karten, die eine Quelle angeben, etwa einen importierten Wissensartikel.",
+    library_topics_error: "Die Bibliotheksthemen konnten nicht geladen werden",
+    library_topics_start_error: "Das Thema konnte nicht begonnen werden",
+    library_topics_row_meta: "{items} Karten · du hast {held}",
+    library_topics_row_set_aside: " · {count} beiseitegelegt",
+    library_topics_start: "Lernen beginnen",
+    library_topics_add_new: "{count} neue Karten hinzufügen",
+    library_topics_all_added: "Alle Karten hinzugefügt",
+    library_topics_starting: "Deine Karten werden angelegt…",
+    library_topics_started:
+      "{name}: {count} Karten hinzugefügt – sie kommen in den nächsten Tagen in deine Wiederholungen.",
+    library_topics_nothing_new: "{name}: Du hast bereits alle Karten.",
+    library_topics_close: "Schließen",
     settings_voice_title: "Sprachmodus",
     settings_voice_help:
       "Laut wiederholen, ohne Hände — beim Spazieren, bei der Hausarbeit, beim Sport. Dein Gerät übernimmt die Sprache kostenlos und ohne Dritte, versteht dich aber vielleicht schlechter; ein Cloud-Modell erkennt meist besser und klingt natürlicher, für ein paar Cent pro Sitzung.",

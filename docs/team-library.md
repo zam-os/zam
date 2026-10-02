@@ -56,6 +56,22 @@ to it, and again forward, without a new token. `zam connector clear previous`
 forgets the kept connection. `zam doctor team-library` checks the Azure CLI
 sign-in, that it matches the configured account, and whether you are mapped.
 
+## Get your first cards
+
+Connecting gives you the library's knowledge, not cards: your queue starts
+empty. **Library Topics** in Learning Content (or **Start with the library's
+topics** on an empty dashboard) lists what the library holds, one topic per
+source — for example one per imported knowledge article — with how many of
+its cards you already have. **Start learning** creates your own cards for
+that topic; they join your reviews over the next days, paced by your daily
+limit for new cards. Starting it again later adds only the cards that were
+added to the topic since. A card you set aside as "not for me" stays set
+aside. You need no curator rights for this, and nobody else sees which
+topics you started or how you do (ADR 2026-10-02).
+
+From a terminal or an agent: `zam bridge library-topics-list` and
+`zam bridge library-topic-start --key <key>`.
+
 ## Your settings are yours
 
 Locale, review method, quick mode and study settings follow you to every

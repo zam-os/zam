@@ -99,6 +99,9 @@
                  was still starting. loadDashboard() fills both in. -->
             <div class="large-number" id="due-count">—</div>
             <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
+            <!-- Library topics (ADR 2026-10-02): shown on an empty deck when the
+                 library already holds topics to start from. -->
+            <button id="btn-dashboard-library-topics" class="btn primary-btn btn-sm hidden" type="button" style="margin-top: 10px">Start with the library's topics</button>
           </div>
 
           <div class="card stat-card frosted">
@@ -217,6 +220,7 @@
           <div style="display: flex; gap: 10px; align-items: center;">
             <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
             <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
+            <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">Library Topics</button>
             <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import File</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
