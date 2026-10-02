@@ -1,8 +1,9 @@
 # Library Topics — Phase 1
 
 Implements [ADR 2026-10-02](../adr/2026-10-02-library-topics.md), phase 1:
-derived topics, starting one, the learner's own catalog. Ships together with
-the goal-step commit-on-Next fix (PR #371) on `feat/team-topics`.
+derived topics, starting one, the learner's own catalog. Branch
+`feat/team-topics`; the goal-step commit-on-Next fix it started from (PR #371)
+reached `main` separately on 2026-10-02 and ships in the same release.
 
 ## Status
 
