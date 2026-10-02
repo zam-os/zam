@@ -72,7 +72,10 @@ export function libraryTopicKey(
 /**
  * A readable name for a topic key: the last path segment of the URL or file
  * path, decoded, without extension, dashes and underscores as spaces.
- * `index` and `readme` name their folder instead.
+ * `index` and `readme` name their folder instead. A URL that names its file
+ * in a `path` query parameter — an Azure DevOps file link,
+ * `…/_git/<repo>?path=/docs/x.md` — is named after that path, not after the
+ * repository its URL path ends at.
  */
 export function libraryTopicName(key: string): string {
   let segments: string[];
@@ -81,7 +84,10 @@ export function libraryTopicName(key: string): string {
     const url = new URL(key);
     if (url.protocol === "http:" || url.protocol === "https:") {
       host = url.hostname;
-      segments = url.pathname.split("/").filter((s) => s.length > 0);
+      const filePath = url.searchParams.get("path")?.trim();
+      segments = (filePath || url.pathname)
+        .split("/")
+        .filter((s) => s.length > 0);
     } else {
       segments = key.split(/[\\/]+/).filter((s) => s.length > 0);
     }
