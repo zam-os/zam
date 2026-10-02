@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-09-23T15:50:00.000Z
+timestamp: 2026-10-02T09:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -87,6 +87,10 @@ review logs, session steps, agent skills); with `--confirm` it executes.
 Assignment create, withdraw, and list commands use the same JSON-only surface;
 `create-assignment` writes the assignment row only — the assignee's card is
 created and bound by the assignee's own next queue build (see
+[token-card-model.md](token-card-model.md)).
+`library-topics-list` lists the library's topics with the caller's own
+coverage, and `library-topic-start --key <key>` creates the caller's cards for
+one topic; both write nothing but the caller's own cards (see
 [token-card-model.md](token-card-model.md)).
 
 Local text-card files use an explicit two-command handshake:
@@ -246,6 +250,7 @@ bridge's JSON helpers.
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
+- [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`
 - Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`

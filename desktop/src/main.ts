@@ -107,6 +107,7 @@ import {
   setLearningContentFilePicker,
   setLearningContentProgressSource,
 } from "./learning-content.js";
+import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
   StudyEditError,
   deleteConfirmCommand,
@@ -1346,6 +1347,10 @@ function initializeTranslations() {
   // Goal import entry (plan Phase 8): reopens the onboarding goal page.
   const btnContentGoalImport = document.getElementById("btn-content-goal-import");
   if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
+  const btnContentLibraryTopics = document.getElementById("btn-content-library-topics");
+  if (btnContentLibraryTopics) btnContentLibraryTopics.textContent = t("btn_library_topics");
+  const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
+  if (btnDashboardLibraryTopics) btnDashboardLibraryTopics.textContent = t("dashboard_library_topics");
   const lblCurriculumWizardTitle = document.getElementById("lbl-curriculum-wizard-title");
   if (lblCurriculumWizardTitle) lblCurriculumWizardTitle.textContent = t("lbl_curriculum_wizard_title");
   const btnCurriculumWizardBack = document.getElementById("btn-curriculum-wizard-back");
@@ -5262,6 +5267,27 @@ function renderOnboardingChecklist(): void {
 }
 
 /**
+ * Library topics on an empty deck (ADR 2026-10-02): a newcomer to a library
+ * that already holds content gets one clear action — start from its topics —
+ * instead of only the import paths. Asked only while the deck is empty, and
+ * a failed probe just leaves the button hidden.
+ */
+async function refreshDashboardLibraryTopics(): Promise<void> {
+  const button = document.getElementById("btn-dashboard-library-topics");
+  if (!button) return;
+  if (deckCardCount !== 0) {
+    button.classList.add("hidden");
+    return;
+  }
+  try {
+    const topics = await fetchLibraryTopics();
+    button.classList.toggle("hidden", topics.length === 0 || deckCardCount !== 0);
+  } catch {
+    button.classList.add("hidden");
+  }
+}
+
+/**
  * The one checklist signal bootstrap does not carry: whether any known
  * harness already has ZAM's MCP entry. Probed asynchronously off the
  * dashboard's critical path; a failed probe keeps the signal unknown, which
@@ -6273,6 +6299,7 @@ async function loadDashboard() {
       caughtUpEl.classList.remove("hidden");
       startBtn.disabled = true;
     }
+    void refreshDashboardLibraryTopics();
 
     // Remaining-setup checklist (plan Phase 9): render synchronously from
     // what the bootstrap payload established, then refresh once the async
@@ -8812,6 +8839,12 @@ window.addEventListener("DOMContentLoaded", () => {
   document
     .getElementById("btn-content-goal-import")
     ?.addEventListener("click", () => showOnboardingAt("goal"));
+  // Empty deck on a library with topics (ADR 2026-10-02): start from them.
+  document
+    .getElementById("btn-dashboard-library-topics")
+    ?.addEventListener("click", () => {
+      void openLibraryTopics({ onStarted: () => loadDashboard() });
+    });
   initPanel("onboarding", () => {
     onboardingController = initOnboarding({
     getStepContext: () => ({

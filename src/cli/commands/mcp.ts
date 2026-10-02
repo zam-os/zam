@@ -117,6 +117,9 @@ const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
   "personal-card-create-assignment",
   "personal-card-withdraw-assignment",
   "personal-card-list-assignments",
+  // Library topics (ADR 2026-10-02): write only the caller's own cards.
+  "library-topics-list",
+  "library-topic-start",
   "personal-card-remove",
   "personal-card-delete",
   "get-neighborhood",

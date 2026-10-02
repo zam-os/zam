@@ -190,11 +190,13 @@ import {
   listBonusCandidatesHandler as handleListBonusCandidates,
   listBundledCellsHandler as handleListBundledCells,
   listDrafts as handleListDrafts,
+  listLibraryTopicsHandler as handleListLibraryTopics,
   publishRevision as handlePublishRevision,
   pullForwardCardsHandler as handlePullForwardCards,
   reviewAction as handleReviewAction,
   revisionPreview as handleRevisionPreview,
   sessionOpen as handleSessionOpen,
+  startLibraryTopicHandler as handleStartLibraryTopic,
   startSession as handleStartSession,
   submitReview as handleSubmitReview,
   suggestFoundations as handleSuggestFoundations,
@@ -6321,6 +6323,48 @@ bridgeCommand
           assignerId: opts.assigner,
         });
         jsonOut(result);
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge library-topics-list ─────────────────────────────────────────
+
+bridgeCommand
+  .command("library-topics-list")
+  .description(
+    "List the library's topics with your own card coverage (JSON, ADR 2026-10-02)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await handleListLibraryTopics(db, { user: opts.user }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge library-topic-start ─────────────────────────────────────────
+
+bridgeCommand
+  .command("library-topic-start")
+  .description(
+    "Start a library topic: create your own cards for its published tokens (JSON)",
+  )
+  .requiredOption("--key <key>", "Topic key (source link without #anchor)")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await handleStartLibraryTopic(db, {
+            key: opts.key,
+            user: opts.user,
+          }),
+        );
       } catch (err) {
         jsonError((err as Error).message);
       }

@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-09-18T17:10:00.000Z
+timestamp: 2026-10-02T09:00:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -125,6 +125,28 @@ trail of review events), `session`/`session_step` (work+learning episodes
 with per-step ratings), and `token_embeddings` (semantic-search vectors,
 produced by the CLI layer, stored by the kernel).
 
+# Library topics: starting on a library's content
+
+A shared library holds tokens but none of a newcomer's cards. A **library
+topic** is how a learner starts on that content: the tokens that are
+published, not deprecated and not in maintenance, and whose `source_link`
+shares the part before `#` — one topic per OKF article or other cited
+source. Topics are derived on every read and never stored. A topic's name
+comes from the source's last path segment (`index` and `readme` name their
+folder, a bare host names itself); `tokens.topic_id`, a curriculum provider's
+topic code, is unrelated. Tokens without a source link form no topic.
+
+`listLibraryTopics` reports per topic its item count, its most frequent
+domain, and the learner's own held and set-aside cards — nothing about other
+learners. `startLibraryTopic` creates the learner's card for every member
+token they lack, in one transaction. It writes learning state only, so it
+needs no curator rights on the team library; it is idempotent, so a later
+start adds only the tokens added since; and a detached card stays detached.
+The new cards then enter the queue under the normal new-card budget. Bridge:
+`library-topics-list` and `library-topic-start --key <key>`; Studio:
+**Library Topics** in Learning Content, and a pointer on a dashboard whose
+deck is empty.
+
 # Bundled cells: installation and enrolment
 
 A bundled cell is commit-controlled shared content plus an explicit list of
@@ -156,6 +178,8 @@ changed mappings require real re-retrieval.
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
+- [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
+- Tests: `tests/kernel/library-topics.test.ts`; code: `src/kernel/library/topics.ts`
 - Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`
 - Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/scheduler/queue.ts`
 
