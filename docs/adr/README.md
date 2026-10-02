@@ -80,3 +80,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-09-13](2026-09-13-model-capabilities-are-detected.md) | Model Capabilities Are Detected, Not Chosen — video splits from image | Accepted |
 | [2026-09-15](2026-09-15-idle-aware-study-time.md) | Idle-Aware Study Time and Immediate Busy After Rating | Accepted |
 | [2026-09-27](2026-09-27-choice-and-auto-learning-modes.md) | Choice and Auto Learning Modes | Implemented |
+| [2026-10-02](2026-10-02-library-topics.md) | Library Topics: Starting on the Content a Library Already Holds | Accepted — phase 1 implemented |
