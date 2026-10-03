@@ -18,6 +18,9 @@ Tree, Clustered Facet Map) with in-view toggling.
 - [x] Phase 2: Multi-Mode Layout & Navigation Engine (`mindmap-render.ts`)
 - [x] Phase 3: OKF Panel Integration with Unreleased URL Query Switch
 - [x] Phase 4: Module Boundaries, Tests & Build Verification
+- [x] Phase 5: Plugin Architecture & Multi-Provider Registry (Antigravity, Claude, Grok)
+- [x] Phase 6: Settings Integration (Alpha-Feature Toggle & Plugin Selector)
+- [x] Phase 7: Verification, Tests & Final Build
 
 ---
 
@@ -74,3 +77,35 @@ Tree, Clustered Facet Map) with in-view toggling.
   - `npm run typecheck`
   - `npm run test`
   - `npm run build`
+
+## Phase 5: Plugin Architecture & Multi-Provider Registry (Antigravity, Claude, Grok)
+
+- Define standard `MindmapPlugin` contract in `desktop/src/panel/mindmap-plugins.ts`:
+  - `id`: `"antigravity" | "claude" | "grok"`
+  - `name`: Human-readable title
+  - `author`: Implementing author / model
+  - `status`: `"ready" | "in_development"`
+  - `description`: Architectural summary of the presentation format
+  - `mount(container: HTMLElement, options?: MindmapOptions): MindmapController`
+- Register 3 plugins:
+  1. `antigravity`: The fully working proposition-level multi-mode Kintsch map (Radial, Tree, Facet).
+  2. `claude`: Plugin slot for Claude's future mindmap implementation with clean styling and developer hook.
+  3. `grok`: Plugin slot for Grok's future mindmap implementation with clean styling and developer hook.
+
+## Phase 6: Settings Integration (Alpha-Feature Toggle & Plugin Selector)
+
+- Provide configuration helper `desktop/src/panel/mindmap-settings.ts`:
+  - `isMindmapFeatureEnabled()`: Reads from `localStorage` (`zam:mindmap:enabled`), default `false`. Also respects URL parameter as override.
+  - `setMindmapFeatureEnabled(enabled: boolean)`
+  - `getActiveMindmapPluginId()`: Default `"antigravity"`.
+  - `setActiveMindmapPluginId(id: MindmapPluginId)`
+- Add Alpha Feature Card in Desktop Settings (`desktop/index.html`):
+  - Heading: "Repo-Wissenslandkarte" with Alpha badge (`settings-badge-alpha`).
+  - Toggle checkbox (default: unchecked/off).
+  - When enabled: reveals plugin selector with Antigravity (Bereit), Claude (In Entwicklung), Grok (In Entwicklung).
+- Update OKF panel to use `getActiveMindmapPlugin().mount(...)` and display current active plugin with quick-switch option.
+
+## Phase 7: Verification, Tests & Final Build
+
+- Test plugin registry and settings storage in `tests/desktop/mindmap-render.test.ts`.
+- Full check: `npm run format && npm run lint && npm run typecheck && npm run test && npm run build`.

@@ -162,6 +162,8 @@ describe("desktop module boundaries", () => {
       "panel/okf-mermaid.ts",
       "panel/mindmap-render.ts",
       "panel/mindmap-data.ts",
+      "panel/mindmap-plugins.ts",
+      "panel/mindmap-settings.ts",
     ]) {
       const specifiers = importSpecifiers(read(file));
       for (const specifier of specifiers) {

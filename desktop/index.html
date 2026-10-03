@@ -819,6 +819,44 @@
             </div>
           </article>
 
+          <!-- Alpha, opt-in: Repo-Wissenslandkarte (Mindmap). Off by default.
+               Enabling reveals the multi-provider plugin selector: Antigravity, Claude, Grok. -->
+          <article class="card frosted settings-card" id="knowledge-mindmap-card" data-settings-tier="advanced">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-settings-mindmap-title">
+                  <span id="lbl-settings-mindmap-title-text">Repo-Wissenslandkarte</span>
+                  <span id="lbl-settings-mindmap-alpha" class="settings-badge-alpha">Alpha</span>
+                </h2>
+                <p id="lbl-settings-mindmap-help" class="settings-card-help">
+                  Navigierbare Wissenslandkarte über das Wissen des Repositories (1 Aussage pro Knoten, Makrosynthese). Wähle per Plugin aus, welche Implementierung aktiv ist.
+                </p>
+              </div>
+            </div>
+            <label class="settings-toggle" for="toggle-knowledge-mindmap">
+              <input type="checkbox" id="toggle-knowledge-mindmap" />
+              <span>
+                <span id="lbl-knowledge-mindmap-toggle">Wissenslandkarte aktivieren (Alpha)</span>
+                <span id="lbl-knowledge-mindmap-toggle-help" class="settings-card-help">Aktiviert den interaktiven Mindmap-Reiter im ZAM-Wissenspanel</span>
+              </span>
+            </label>
+            <div class="settings-stack" id="knowledge-mindmap-body" hidden>
+              <div class="settings-field">
+                <label for="select-mindmap-plugin">
+                  <span id="lbl-settings-mindmap-plugin-label">Aktive Mindmap-Implementierung (Plugin)</span>
+                  <select id="select-mindmap-plugin" class="settings-select">
+                    <option value="antigravity">Antigravity / Gemini (Propositionale Kintsch-Landkarte) — Bereit</option>
+                    <option value="claude">Claude (Plugin-Slot) — In Entwicklung</option>
+                    <option value="grok">Grok (Plugin-Slot) — In Entwicklung</option>
+                  </select>
+                </label>
+              </div>
+              <p id="knowledge-mindmap-plugin-desc" class="settings-card-help">
+                Antigravity: Multi-Mode Kintsch-Landkarte mit 1 Aussage pro Knoten, Makrosynthese und 3 umschaltbaren Ansichten (Radiale Ego-Karte, Kausalbaum, Zonierte Facetten).
+              </p>
+            </div>
+          </article>
+
           <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
                of onboarding entirely. Ticking the box reveals the body; until
                then this card is one checkbox and one sentence. -->

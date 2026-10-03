@@ -4,7 +4,20 @@ import {
   ZAM_REPO_KNOWLEDGE,
   ZAM_ROOT_ID,
 } from "../../desktop/src/panel/mindmap-data.js";
+import {
+  listMindmapPlugins,
+  getMindmapPlugin,
+} from "../../desktop/src/panel/mindmap-plugins.js";
 import { isMindmapPrototypeActive } from "../../desktop/src/panel/mindmap-render.js";
+import {
+  MINDMAP_ENABLED_STORAGE_KEY,
+  MINDMAP_PLUGIN_STORAGE_KEY,
+  isMindmapFeatureEnabled,
+  setMindmapFeatureEnabled,
+  getActiveMindmapPluginId,
+  setActiveMindmapPluginId,
+  getActiveMindmapPlugin,
+} from "../../desktop/src/panel/mindmap-settings.js";
 
 describe("repo knowledge mindmap data graph", () => {
   it("contains the root node as default entry point", () => {
@@ -145,4 +158,173 @@ describe("isMindmapPrototypeActive switch", () => {
       globalThis.window = originalWindow;
     }
   });
+
+  it("activates when settings storage has enabled=true", () => {
+    const originalWindow = globalThis.window;
+    try {
+      const store = new Map<string, string>();
+      store.set(MINDMAP_ENABLED_STORAGE_KEY, "true");
+      globalThis.window = {
+        location: { search: "", hash: "" },
+        localStorage: {
+          getItem: (key: string) => store.get(key) ?? null,
+          setItem: (key: string, val: string) => store.set(key, val),
+        },
+      } as unknown as Window & typeof globalThis;
+
+      expect(isMindmapPrototypeActive()).toBe(true);
+    } finally {
+      globalThis.window = originalWindow;
+    }
+  });
 });
+
+describe("mindmap plugins registry & multi-provider slots", () => {
+  it("lists all three configured plugins", () => {
+    const plugins = listMindmapPlugins();
+    expect(plugins).toHaveLength(3);
+    const ids = plugins.map((p) => p.id);
+    expect(ids).toContain("antigravity");
+    expect(ids).toContain("claude");
+    expect(ids).toContain("grok");
+  });
+
+  it("provides ready status for antigravity plugin", () => {
+    const plugin = getMindmapPlugin("antigravity");
+    expect(plugin.id).toBe("antigravity");
+    expect(plugin.status).toBe("ready");
+    expect(plugin.author).toContain("Antigravity");
+    expect(plugin.description).toBeTruthy();
+  });
+
+  it("provides development status and placeholder mount for claude plugin", () => {
+    const plugin = getMindmapPlugin("claude");
+    expect(plugin.id).toBe("claude");
+    expect(plugin.status).toBe("in_development");
+    expect(plugin.author).toBe("Claude");
+
+    const container = { innerHTML: "" } as unknown as HTMLElement;
+    const controller = plugin.mount(container, { initialFocusId: "zam_root" });
+    expect(container.innerHTML).toContain("Plugin-Slot: Claude");
+    expect(controller.getState().focusId).toBe("zam_root");
+
+    controller.setFocus("zam_kernel");
+    expect(controller.getState().focusId).toBe("zam_kernel");
+
+    controller.goToRoot();
+    expect(controller.getState().focusId).toBe("zam_root");
+
+    controller.destroy();
+    expect(container.innerHTML).toBe("");
+  });
+
+  it("provides development status and placeholder mount for grok plugin", () => {
+    const plugin = getMindmapPlugin("grok");
+    expect(plugin.id).toBe("grok");
+    expect(plugin.status).toBe("in_development");
+    expect(plugin.author).toBe("Grok");
+
+    const container = { innerHTML: "" } as unknown as HTMLElement;
+    const controller = plugin.mount(container);
+    expect(container.innerHTML).toContain("Plugin-Slot: Grok");
+    expect(controller.getState().focusId).toBe("zam_root");
+
+    controller.destroy();
+    expect(container.innerHTML).toBe("");
+  });
+
+  it("falls back to antigravity plugin for unknown IDs", () => {
+    // @ts-expect-error testing unknown plugin id
+    const plugin = getMindmapPlugin("unknown_id");
+    expect(plugin.id).toBe("antigravity");
+  });
+});
+
+describe("mindmap settings manager", () => {
+  it("manages feature enablement via storage", () => {
+    const originalWindow = globalThis.window;
+    try {
+      const store = new Map<string, string>();
+      const mockStorage = {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => store.set(k, v),
+      };
+
+      globalThis.window = {
+        location: { search: "", hash: "" },
+        localStorage: mockStorage,
+      } as unknown as Window & typeof globalThis;
+
+      expect(isMindmapFeatureEnabled(mockStorage)).toBe(false);
+
+      setMindmapFeatureEnabled(true, mockStorage);
+      expect(store.get(MINDMAP_ENABLED_STORAGE_KEY)).toBe("true");
+      expect(isMindmapFeatureEnabled(mockStorage)).toBe(true);
+
+      setMindmapFeatureEnabled(false, mockStorage);
+      expect(store.get(MINDMAP_ENABLED_STORAGE_KEY)).toBe("false");
+      expect(isMindmapFeatureEnabled(mockStorage)).toBe(false);
+    } finally {
+      globalThis.window = originalWindow;
+    }
+  });
+
+  it("manages active plugin selection via storage with fallback", () => {
+    const originalWindow = globalThis.window;
+    try {
+      const store = new Map<string, string>();
+      const mockStorage = {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => store.set(k, v),
+      };
+
+      globalThis.window = {
+        location: { search: "", hash: "" },
+        localStorage: mockStorage,
+      } as unknown as Window & typeof globalThis;
+
+      // Default is antigravity
+      expect(getActiveMindmapPluginId(mockStorage)).toBe("antigravity");
+
+      // Set to claude
+      setActiveMindmapPluginId("claude", mockStorage);
+      expect(store.get(MINDMAP_PLUGIN_STORAGE_KEY)).toBe("claude");
+      expect(getActiveMindmapPluginId(mockStorage)).toBe("claude");
+      expect(getActiveMindmapPlugin(mockStorage).id).toBe("claude");
+
+      // Set to grok
+      setActiveMindmapPluginId("grok", mockStorage);
+      expect(store.get(MINDMAP_PLUGIN_STORAGE_KEY)).toBe("grok");
+      expect(getActiveMindmapPluginId(mockStorage)).toBe("grok");
+      expect(getActiveMindmapPlugin(mockStorage).id).toBe("grok");
+
+      // Invalid stored value falls back to antigravity
+      store.set(MINDMAP_PLUGIN_STORAGE_KEY, "invalid_plugin");
+      expect(getActiveMindmapPluginId(mockStorage)).toBe("antigravity");
+    } finally {
+      globalThis.window = originalWindow;
+    }
+  });
+
+  it("honors URL search param override for plugin selection", () => {
+    const originalWindow = globalThis.window;
+    try {
+      const store = new Map<string, string>();
+      store.set(MINDMAP_PLUGIN_STORAGE_KEY, "antigravity");
+      const mockStorage = {
+        getItem: (k: string) => store.get(k) ?? null,
+        setItem: (k: string, v: string) => store.set(k, v),
+      };
+
+      globalThis.window = {
+        location: { search: "?plugin=claude", hash: "" },
+        localStorage: mockStorage,
+      } as unknown as Window & typeof globalThis;
+
+      expect(getActiveMindmapPluginId(mockStorage)).toBe("claude");
+    } finally {
+      globalThis.window = originalWindow;
+    }
+  });
+});
+

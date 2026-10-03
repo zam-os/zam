@@ -68,6 +68,7 @@ import {
   assureBitwardenAccessAfterError,
 } from "./bitwarden-assure.js";
 import { initSecretsVault } from "./secrets-vault.js";
+import { initKnowledgeMindmapSettings } from "./knowledge-mindmap-settings.js";
 import {
   classifyServerDbError,
   initServerDbWizard,
@@ -8851,6 +8852,7 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("secrets-vault", () =>
     initSecretsVault({ openExternal: (url: string) => void openUrl(url) }),
   );
+  initPanel("knowledge-mindmap", () => initKnowledgeMindmapSettings());
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );

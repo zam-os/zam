@@ -32,6 +32,8 @@ export interface MindmapOptions {
   onOpenAnchor?: (anchor: PropositionAnchor) => void;
 }
 
+import { isMindmapFeatureEnabled } from "./mindmap-settings.js";
+
 export interface MindmapController {
   setFocus(nodeId: string): void;
   setMode(mode: MindmapMode): void;
@@ -41,18 +43,7 @@ export interface MindmapController {
 }
 
 export function isMindmapPrototypeActive(): boolean {
-  if (typeof window === "undefined") return false;
-  try {
-    const params = new URLSearchParams(window.location.search);
-    return (
-      params.get("prototype") === "mindmap" ||
-      params.get("view") === "mindmap" ||
-      params.get("prototype") === "knowledge-map" ||
-      window.location.hash.includes("prototype=mindmap")
-    );
-  } catch {
-    return false;
-  }
+  return isMindmapFeatureEnabled();
 }
 
 const SVG_NS = "http://www.w3.org/2000/svg";

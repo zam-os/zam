@@ -43,8 +43,13 @@ import { wrapGraphLabel } from "./graph-layout.js";
 import {
   type MindmapController,
   isMindmapPrototypeActive,
-  mountMindmap,
 } from "./mindmap-render.js";
+import {
+  type MindmapPluginId,
+  getActiveMindmapPlugin,
+  listMindmapPlugins,
+  setActiveMindmapPluginId,
+} from "./mindmap-settings.js";
 import { queueMermaidRender } from "./okf-mermaid.js";
 import {
   articlePillSize,
@@ -311,6 +316,10 @@ async function loadCatalogFallback(): Promise<void> {
 }
 
 function start(): void {
+  if (viewMode === "mindmap") {
+    renderAll();
+    return;
+  }
   if (started || !connected) return;
   started = true;
   if (catalogLoaded) {
@@ -518,7 +527,58 @@ let activeMindmapController: MindmapController | null = null;
 
 function renderMindmapView(container: HTMLElement): void {
   activeMindmapController?.destroy();
-  activeMindmapController = mountMindmap(container, {
+  container.replaceChildren();
+
+  const currentPlugin = getActiveMindmapPlugin();
+
+  const pluginBar = document.createElement("div");
+  pluginBar.className = "okf-mindmap-plugin-bar";
+  pluginBar.style.cssText =
+    "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;background:var(--card,#ffffff);border:1px solid var(--border,rgba(15,23,42,0.14));border-radius:8px;margin-bottom:12px;font-size:12px;flex-wrap:wrap;";
+
+  const labelDiv = document.createElement("div");
+  labelDiv.style.cssText = "display:flex;align-items:center;gap:6px;";
+  labelDiv.innerHTML = `
+    <span style="font-size:10px;font-weight:700;text-transform:uppercase;color:${currentPlugin.badgeColor ?? "var(--accent,#827dbd)"};background:rgba(130,125,189,0.14);padding:2px 6px;border-radius:4px;">Plugin</span>
+    <span style="font-weight:600;color:var(--fg,#1c2030);">${currentPlugin.name}</span>
+    <span style="font-size:11px;color:var(--muted,#6b7280);">(${currentPlugin.author})</span>
+  `;
+
+  const selectWrap = document.createElement("div");
+  selectWrap.style.cssText = "display:flex;align-items:center;gap:6px;";
+  const selectLabel = document.createElement("span");
+  selectLabel.style.cssText = "font-size:11px;color:var(--muted,#6b7280);";
+  selectLabel.textContent = "Implementierung:";
+
+  const select = document.createElement("select");
+  select.style.cssText =
+    "font:inherit;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid var(--border,rgba(15,23,42,0.14));background:var(--bg,#f5f7fb);color:var(--fg,#1c2030);cursor:pointer;";
+
+  for (const p of listMindmapPlugins()) {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = `${p.author} ${p.status === "ready" ? "✓" : "(Slot)"}`;
+    opt.selected = p.id === currentPlugin.id;
+    select.appendChild(opt);
+  }
+
+  select.addEventListener("change", () => {
+    setActiveMindmapPluginId(select.value as MindmapPluginId);
+    renderMindmapView(container);
+  });
+
+  selectWrap.appendChild(selectLabel);
+  selectWrap.appendChild(select);
+  pluginBar.appendChild(labelDiv);
+  pluginBar.appendChild(selectWrap);
+
+  const mountContainer = document.createElement("div");
+  mountContainer.style.cssText = "width:100%;height:100%;";
+
+  container.appendChild(pluginBar);
+  container.appendChild(mountContainer);
+
+  activeMindmapController = currentPlugin.mount(mountContainer, {
     onOpenAnchor: (anchor) => {
       if (anchor.path.endsWith(".md") && !anchor.path.startsWith("docs/adr/")) {
         const filename = anchor.path.split("/").pop();
@@ -1807,6 +1867,15 @@ const noHostTimer = setTimeout(
   () => showConnectionNotice(NO_HOST_NOTICE),
   4000,
 );
+
+if (isMindmapPrototypeActive()) {
+  clearTimeout(noHostTimer);
+  if (navigator.language.startsWith("de")) {
+    setCurrentLocale("de");
+    applyStaticLocale();
+  }
+  start();
+}
 
 app
   .connect()
