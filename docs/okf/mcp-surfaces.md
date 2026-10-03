@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-09-15T05:33:07.000Z
+timestamp: 2026-10-03T16:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -167,6 +167,25 @@ The model-visible learning tools cover:
 - The server working directory is the final fallback.
 - Citation reads accept only `.md` targets that resolve inside the repository
   root, including citations outside the bundle such as `docs/adr/`.
+
+## Repo knowledge map (alpha)
+
+Two more tools exist only while the learner has switched on **Knowledge map
+(Alpha)** in Studio Settings; the server reads that machine-local switch
+(`~/.zam/config.json`, key `knowledgeMap`) when it starts.
+
+| Tool | Purpose |
+| --- | --- |
+| `zam_knowledge_map_guide` | Return the authoring guide for a repository knowledge map, the map's location, and the current map with its problems |
+| `zam_knowledge_map_write` | Validate a whole map against the repository and write `docs/knowledge-map/map.json` only when there is no error; on success the Studio shows that repository's map |
+
+A map is a tree of one-sentence statements (each names its `parent`) plus
+typed cross-links (`requires`, `leads_to`, `because`, `instead_of`,
+`example`). Every statement cites at least one source path that must exist in
+the repository. The repository root resolves like the OKF bundle: an explicit
+`repo_root`, else the MCP client's roots (preferring one that already has a
+map), else the server working directory. The `zam` skill routes "knowledge
+map" and "Wissenskarte" requests to these tools.
 
 # MCP Apps panels
 
@@ -460,4 +479,6 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
 - [ADR 2026-09-15 — Idle-Aware Study Time](../adr/2026-09-15-idle-aware-study-time.md)
 - [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
+- [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
+- Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `tests/cli/knowledge-map.test.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`
