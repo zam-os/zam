@@ -22,7 +22,7 @@ import {
   ZAM_ROOT_ID,
 } from "./mindmap-data.js";
 
-export type MindmapMode = "radial" | "tree" | "facet";
+export type MindmapMode = "radial" | "tree" | "facet" | "outline";
 
 export interface MindmapOptions {
   graph?: RepoKnowledgeGraph;
@@ -82,6 +82,9 @@ export function mountMindmap(
           </button>
           <button type="button" data-mode="facet" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;background:transparent;color:var(--muted,#6b7280);">
             3. Zonierte Facetten
+          </button>
+          <button type="button" data-mode="outline" style="font-size:11px;font-weight:600;padding:4px 10px;border-radius:6px;border:none;cursor:pointer;background:transparent;color:var(--muted,#6b7280);">
+            4. Gliederung (Baseline)
           </button>
         </div>
       </div>
@@ -256,8 +259,10 @@ export function mountMindmap(
       renderRadialMode(canvasEl, node);
     } else if (currentMode === "tree") {
       renderTreeMode(canvasEl, node);
-    } else {
+    } else if (currentMode === "facet") {
       renderFacetMode(canvasEl, node);
+    } else {
+      renderOutlineMode(canvasEl, node);
     }
   }
 
@@ -542,6 +547,68 @@ export function mountMindmap(
     wrap.appendChild(south);
 
     container.appendChild(wrap);
+  }
+
+  // ── Mode 4: Collapsible Outline (ADR 2026-10-03 Baseline) ─────────────────
+  function renderOutlineMode(container: HTMLElement, currentNode: PropositionNode): void {
+    const listWrap = document.createElement("div");
+    listWrap.style.cssText =
+      "width:100%;max-width:720px;max-height:390px;overflow-y:auto;padding:12px 14px;box-sizing:border-box;display:flex;flex-direction:column;gap:8px;";
+
+    function renderNodeItem(id: string, depth: number): HTMLElement {
+      const n = graph[id];
+      if (!n) return document.createElement("div");
+
+      const item = document.createElement("div");
+      const isCurrent = id === currentNode.id;
+      item.style.cssText = `
+        margin-left: ${depth * 18}px;
+        padding: 8px 12px;
+        border-radius: 8px;
+        background: ${isCurrent ? "var(--hover, rgba(130,125,189,0.12))" : "var(--bg, #f5f7fb)"};
+        border: 1px solid ${isCurrent ? "var(--accent, #827dbd)" : "var(--border, rgba(15,23,42,0.14))"};
+        box-shadow: ${isCurrent ? "0 2px 6px rgba(130,125,189,0.15)" : "none"};
+      `;
+
+      item.innerHTML = `
+        <div style="display:flex;align-items:center;justify-content:space-between;gap:8px;">
+          <div style="font-weight:700;font-size:12px;color:var(--fg,#1c2030);cursor:pointer;" class="zam-outline-title">
+            ${depth > 0 ? "↳ " : ""}${n.title}
+          </div>
+          <button type="button" class="zam-outline-focus-btn" style="font-size:10px;font-weight:600;padding:2px 8px;border-radius:4px;border:1px solid var(--border,rgba(15,23,42,0.14));background:var(--card,#fff);color:${isCurrent ? "var(--accent,#827dbd)" : "var(--fg,#1c2030)"};cursor:pointer;">
+            ${isCurrent ? "● Fokus" : "Fokusieren"}
+          </button>
+        </div>
+        <div style="font-size:11px;color:var(--muted,#6b7280);margin-top:4px;line-height:1.4;">
+          ${n.statement}
+        </div>
+        ${
+          n.neighbors.length > 0
+            ? `<div style="font-size:10px;color:var(--accent,#827dbd);margin-top:6px;display:flex;flex-wrap:wrap;gap:6px;">
+                ${n.neighbors.map((nb) => `<span style="padding:2px 6px;background:var(--card,#fff);border-radius:4px;border:1px solid var(--border,rgba(15,23,42,0.14));">${nb.relation} → <strong>${graph[nb.id]?.title ?? nb.id}</strong></span>`).join("")}
+              </div>`
+            : ""
+        }
+      `;
+
+      item.querySelector(".zam-outline-title")?.addEventListener("click", () => navigateTo(id));
+      item.querySelector(".zam-outline-focus-btn")?.addEventListener("click", () => navigateTo(id));
+
+      return item;
+    }
+
+    // Traverse root and neighbors
+    listWrap.appendChild(renderNodeItem(ZAM_ROOT_ID, 0));
+    const rootNode = graph[ZAM_ROOT_ID];
+    if (rootNode) {
+      for (const nb of rootNode.neighbors) {
+        if (nb.id !== ZAM_ROOT_ID && graph[nb.id]) {
+          listWrap.appendChild(renderNodeItem(nb.id, 1));
+        }
+      }
+    }
+
+    container.appendChild(listWrap);
   }
 
   // First paint
