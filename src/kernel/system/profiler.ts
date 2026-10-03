@@ -1,4 +1,7 @@
 import { execSync } from "node:child_process";
+import { mkdirSync, readFileSync, writeFileSync } from "node:fs";
+import { homedir, release } from "node:os";
+import { dirname, join } from "node:path";
 
 export type LocalAiHardware =
   | "ryzen-ai"
@@ -34,12 +37,22 @@ function runCommand(cmd: string): string {
   }
 }
 
-const WINDOWS_PROCESSOR_QUERY =
-  'powershell -NoProfile -Command "Get-CimInstance Win32_Processor | Select-Object -ExpandProperty Name"';
-const WINDOWS_ACCELERATOR_QUERY =
-  "powershell -NoProfile -Command \"Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -eq 'ComputeAccelerator' -or $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*Ryzen AI*' -or $_.Name -like '*Qualcomm*NPU*' -or $_.Name -like '*Hexagon*NPU*' } | Select-Object -ExpandProperty Name\"";
-const WINDOWS_GPU_QUERY =
-  'powershell -NoProfile -Command "Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name"';
+/**
+ * One PowerShell session answers all three Windows questions. Starting
+ * PowerShell is the expensive part (6 s on a Windows-on-ARM laptop with
+ * Defender scanning, which made three separate calls take ~10 s), so the
+ * probes share a single start instead of paying it three times.
+ */
+const WINDOWS_PROBE_SEPARATOR = "@@ZAM-SECTION@@";
+const WINDOWS_PROBE_SCRIPT = [
+  "$ErrorActionPreference = 'SilentlyContinue'",
+  '(Get-CimInstance Win32_Processor | Select-Object -ExpandProperty Name) -join "`n"',
+  `'${WINDOWS_PROBE_SEPARATOR}'`,
+  "(Get-CimInstance Win32_PnPEntity | Where-Object { $_.PNPClass -eq 'ComputeAccelerator' -or $_.Name -like '*AMD IPU*' -or $_.Name -like '*AMD NPU*' -or $_.Name -like '*Ryzen AI*' -or $_.Name -like '*Qualcomm*NPU*' -or $_.Name -like '*Hexagon*NPU*' } | Select-Object -ExpandProperty Name) -join \"`n\"",
+  `'${WINDOWS_PROBE_SEPARATOR}'`,
+  '(Get-CimInstance Win32_VideoController | Select-Object -ExpandProperty Name) -join "`n"',
+].join("; ");
+const WINDOWS_PROBE_QUERY = `powershell -NoProfile -EncodedCommand ${Buffer.from(WINDOWS_PROBE_SCRIPT, "utf16le").toString("base64")}`;
 /** `nvidia-smi` is the only probe that is present exactly when the driver is. */
 const LINUX_GPU_QUERY = "nvidia-smi --query-gpu=name --format=csv,noheader";
 
@@ -131,10 +144,100 @@ export function supportsLocalGeneration(
   return acceleration !== "none";
 }
 
+/** Hardware does not change under a running install; re-probe monthly. */
+const PROBE_CACHE_MAX_AGE_MS = 30 * 24 * 60 * 60 * 1000;
+
+interface ProbeCacheFile extends LocalAiHardwareFingerprint {
+  osRelease: string;
+  savedAt: number;
+}
+
+function probeCachePath(): string {
+  return join(homedir(), ".zam", "system-profile.json");
+}
+
+function readProbeCache(
+  platform: NodeJS.Platform,
+  arch: string,
+): LocalAiHardwareFingerprint | undefined {
+  try {
+    const cached = JSON.parse(
+      readFileSync(probeCachePath(), "utf8"),
+    ) as ProbeCacheFile;
+    if (
+      cached.platform === platform &&
+      cached.arch === arch &&
+      cached.osRelease === release() &&
+      Date.now() - cached.savedAt < PROBE_CACHE_MAX_AGE_MS
+    ) {
+      return {
+        platform,
+        arch,
+        processorName: cached.processorName,
+        acceleratorNames: cached.acceleratorNames,
+        gpuNames: cached.gpuNames,
+      };
+    }
+  } catch {
+    // Missing or unreadable cache: probe again.
+  }
+  return undefined;
+}
+
+function writeProbeCache(fingerprint: LocalAiHardwareFingerprint): void {
+  try {
+    const file: ProbeCacheFile = {
+      ...fingerprint,
+      osRelease: release(),
+      savedAt: Date.now(),
+    };
+    mkdirSync(dirname(probeCachePath()), { recursive: true });
+    writeFileSync(probeCachePath(), JSON.stringify(file), "utf8");
+  } catch {
+    // A read-only home only costs the next start another probe.
+  }
+}
+
+function probeHardwareFingerprint(
+  platform: NodeJS.Platform,
+  arch: string,
+): LocalAiHardwareFingerprint {
+  const cached = readProbeCache(platform, arch);
+  if (cached) return cached;
+
+  let fingerprint: LocalAiHardwareFingerprint;
+  if (platform === "win32") {
+    const [processorName = "", acceleratorNames = "", gpuNames = ""] =
+      runCommand(WINDOWS_PROBE_QUERY)
+        .split(WINDOWS_PROBE_SEPARATOR)
+        .map((section) => section.trim());
+    fingerprint = { platform, arch, processorName, acceleratorNames, gpuNames };
+    // An all-empty answer means the probe itself failed (PowerShell blocked or
+    // timed out), not that the machine has no processor. Never persist that:
+    // it would pin "unsupported" for a month.
+    if (!processorName && !acceleratorNames && !gpuNames) return fingerprint;
+  } else {
+    fingerprint = {
+      platform,
+      arch,
+      gpuNames: platform === "linux" ? runCommand(LINUX_GPU_QUERY) : undefined,
+    };
+  }
+  writeProbeCache(fingerprint);
+  return fingerprint;
+}
+
+let memoizedProfile: SystemProfile | undefined;
+
 /**
  * Profile the active system hardware and software capabilities.
  */
 export function getSystemProfile(): SystemProfile {
+  memoizedProfile ??= computeSystemProfile();
+  return memoizedProfile;
+}
+
+function computeSystemProfile(): SystemProfile {
   const platform = process.platform;
   const archStr = process.arch;
 
@@ -147,20 +250,9 @@ export function getSystemProfile(): SystemProfile {
   if (archStr === "x64") arch = "x64";
   else if (archStr === "arm64") arch = "arm64";
 
-  const localAiHardware = classifyLocalAiHardware({
-    platform,
-    arch: archStr,
-    processorName:
-      os === "windows" ? runCommand(WINDOWS_PROCESSOR_QUERY) : undefined,
-    acceleratorNames:
-      os === "windows" ? runCommand(WINDOWS_ACCELERATOR_QUERY) : undefined,
-    gpuNames:
-      os === "windows"
-        ? runCommand(WINDOWS_GPU_QUERY)
-        : os === "linux"
-          ? runCommand(LINUX_GPU_QUERY)
-          : undefined,
-  });
+  const localAiHardware = classifyLocalAiHardware(
+    probeHardwareFingerprint(platform, archStr),
+  );
   const localAiAcceleration: LocalAiAcceleration =
     localAiHardware === "apple-silicon" || localAiHardware === "discrete-gpu"
       ? "gpu"

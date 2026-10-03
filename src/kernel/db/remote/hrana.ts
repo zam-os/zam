@@ -120,16 +120,30 @@ export function rowsToObjects(
 /**
  * Only failures that provably happened before the server could have seen the
  * request are retried; anything else (timeouts, resets mid-response) might
- * have executed the statement already, and retrying could duplicate a write.
+ * have executed the statement already, and retrying could duplicate a write —
+ * except for read-only pipelines, which are safe to repeat after a socket reset.
  */
-function isRetryableTransportError(err: unknown): boolean {
+function isRetryableTransportError(
+  err: unknown,
+  requests: HranaRequest[],
+): boolean {
   if (!(err instanceof Error) || err.name === "HranaResponseError") {
     return false;
   }
   const code = (err.cause as { code?: string } | undefined)?.code;
-  return (
-    code === "ECONNREFUSED" || code === "ENOTFOUND" || code === "EAI_AGAIN"
-  );
+  if (code === "ECONNREFUSED" || code === "ENOTFOUND" || code === "EAI_AGAIN") {
+    return true;
+  }
+  // The server closed a kept-alive connection while it sat idle (the event
+  // loop was blocked, or a proxy dropped it) and fetch only noticed on the
+  // next write. Re-sending is safe only when the statements cannot change
+  // anything, so a write that may have reached the server is never repeated.
+  return code === "UND_ERR_SOCKET" && requests.every(isReadOnlyRequest);
+}
+
+function isReadOnlyRequest(request: HranaRequest): boolean {
+  if (request.type === "close") return true;
+  return request.type === "execute" && /^\s*select\b/i.test(request.stmt.sql);
 }
 
 class HranaResponseError extends Error {
@@ -177,7 +191,7 @@ export class HranaTransport {
         return await this.post(url, { baton: baton ?? null, requests });
       } catch (err) {
         lastError = err;
-        if (!isRetryableTransportError(err) || attempt === attempts) {
+        if (!isRetryableTransportError(err, requests) || attempt === attempts) {
           throw this.offline(err);
         }
       }

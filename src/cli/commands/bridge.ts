@@ -4245,6 +4245,12 @@ bridgeCommand
   .description("Initialize first-run desktop state (JSON)")
   .option("--user <id>", "Preferred user ID when none is configured")
   .action(async (opts) => {
+    // Hardware detection shells out to PowerShell synchronously (several
+    // seconds on slow Windows machines). Run it before the database is
+    // touched: a synchronous stall mid-session freezes the event loop while
+    // the server database's idle keep-alive connection is closed on the far
+    // side, and the next request then dies with "other side closed".
+    const profile = getSystemProfile();
     await withDb(async (db) => {
       const userId = await ensureDefaultUser(db, opts.user);
       const { enabled, url, model, locale } = await getLlmConfig(db);
@@ -4254,7 +4260,6 @@ bridgeCommand
       // desktop app: link the bundled CLI onto the user's PATH. installCliShim
       // never throws and never shadows an externally installed `zam`.
       const cli = installCliShim();
-      const profile = getSystemProfile();
       jsonOut({
         userId,
         locale,
