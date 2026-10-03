@@ -40,6 +40,16 @@ import {
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 import { wrapGraphLabel } from "./graph-layout.js";
+import {
+  type MindmapController,
+  isMindmapPrototypeActive,
+} from "./mindmap-render.js";
+import {
+  type MindmapPluginId,
+  getActiveMindmapPlugin,
+  listMindmapPlugins,
+  setActiveMindmapPluginId,
+} from "./mindmap-settings.js";
 import { queueMermaidRender } from "./okf-mermaid.js";
 import {
   articlePillSize,
@@ -93,10 +103,17 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-type ViewMode = "reader" | "graph" | "log";
+export { isMindmapPrototypeActive };
+
+type ViewMode = "reader" | "graph" | "log" | "mindmap";
 
 function isViewMode(value: unknown): value is ViewMode {
-  return value === "reader" || value === "graph" || value === "log";
+  return (
+    value === "reader" ||
+    value === "graph" ||
+    value === "log" ||
+    (isMindmapPrototypeActive() && value === "mindmap")
+  );
 }
 
 interface OpenOkfResult {
@@ -153,7 +170,13 @@ let freshnessByFile = indexFreshnessByFile(null);
  * cycled). */
 let typeOrder: string[] = [];
 let logText = "";
-let viewMode: ViewMode = "reader";
+let viewMode: ViewMode =
+  isMindmapPrototypeActive() &&
+  typeof window !== "undefined" &&
+  (new URLSearchParams(window.location.search).get("view") === "mindmap" ||
+    new URLSearchParams(window.location.search).get("prototype") === "mindmap")
+    ? "mindmap"
+    : "reader";
 /** Graph view: the node the focused layout centers on; null = overview mode.
  * Set by right-clicking a node, cleared by right-clicking it again, the
  * canvas background, the toolbar's exit button, or Escape. */
@@ -293,6 +316,10 @@ async function loadCatalogFallback(): Promise<void> {
 }
 
 function start(): void {
+  if (viewMode === "mindmap") {
+    renderAll();
+    return;
+  }
   if (started || !connected) return;
   started = true;
   if (catalogLoaded) {
@@ -302,9 +329,26 @@ function start(): void {
   }
 }
 
+function ensureMindmapPrototypeToggle(): void {
+  if (!isMindmapPrototypeActive() || !viewToggleEl) return;
+  if (viewToggleEl.querySelector('[data-view="mindmap"]')) return;
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "okf-view-btn okf-view-btn-prototype";
+  btn.dataset.view = "mindmap";
+  btn.textContent = "Mindmap";
+  btn.addEventListener("click", () => {
+    if (viewMode === "mindmap") return;
+    viewMode = "mindmap";
+    renderAll();
+  });
+  viewToggleEl.appendChild(btn);
+}
+
 // ── Render orchestration ────────────────────────────────────────────────
 
 function renderAll(): void {
+  ensureMindmapPrototypeToggle();
   renderHeader();
   updateViewToggleActiveState();
   renderSidebar();
@@ -479,10 +523,89 @@ function renderSidebar(): void {
   }
 }
 
+let activeMindmapController: MindmapController | null = null;
+
+function renderMindmapView(container: HTMLElement): void {
+  activeMindmapController?.destroy();
+  container.replaceChildren();
+
+  const currentPlugin = getActiveMindmapPlugin();
+
+  const pluginBar = document.createElement("div");
+  pluginBar.className = "okf-mindmap-plugin-bar";
+  pluginBar.style.cssText =
+    "display:flex;align-items:center;justify-content:space-between;gap:8px;padding:6px 12px;background:var(--card,#ffffff);border:1px solid var(--border,rgba(15,23,42,0.14));border-radius:8px;margin-bottom:12px;font-size:12px;flex-wrap:wrap;";
+
+  const labelDiv = document.createElement("div");
+  labelDiv.style.cssText = "display:flex;align-items:center;gap:6px;";
+  labelDiv.innerHTML = `
+    <span style="font-size:10px;font-weight:700;text-transform:uppercase;color:${currentPlugin.badgeColor ?? "var(--accent,#827dbd)"};background:rgba(130,125,189,0.14);padding:2px 6px;border-radius:4px;">Plugin</span>
+    <span style="font-weight:600;color:var(--fg,#1c2030);">${currentPlugin.name}</span>
+    <span style="font-size:11px;color:var(--muted,#6b7280);">(${currentPlugin.author})</span>
+  `;
+
+  const selectWrap = document.createElement("div");
+  selectWrap.style.cssText = "display:flex;align-items:center;gap:6px;";
+  const selectLabel = document.createElement("span");
+  selectLabel.style.cssText = "font-size:11px;color:var(--muted,#6b7280);";
+  selectLabel.textContent = "Implementierung:";
+
+  const select = document.createElement("select");
+  select.style.cssText =
+    "font:inherit;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;border:1px solid var(--border,rgba(15,23,42,0.14));background:var(--bg,#f5f7fb);color:var(--fg,#1c2030);cursor:pointer;";
+
+  for (const p of listMindmapPlugins()) {
+    const opt = document.createElement("option");
+    opt.value = p.id;
+    opt.textContent = `${p.author} ${p.status === "ready" ? "✓" : "(Slot)"}`;
+    opt.selected = p.id === currentPlugin.id;
+    select.appendChild(opt);
+  }
+
+  select.addEventListener("change", () => {
+    setActiveMindmapPluginId(select.value as MindmapPluginId);
+    renderMindmapView(container);
+  });
+
+  selectWrap.appendChild(selectLabel);
+  selectWrap.appendChild(select);
+  pluginBar.appendChild(labelDiv);
+  pluginBar.appendChild(selectWrap);
+
+  const mountContainer = document.createElement("div");
+  mountContainer.style.cssText = "width:100%;height:100%;";
+
+  container.appendChild(pluginBar);
+  container.appendChild(mountContainer);
+
+  activeMindmapController = currentPlugin.mount(mountContainer, {
+    onOpenAnchor: (anchor) => {
+      if (anchor.path.endsWith(".md") && !anchor.path.startsWith("docs/adr/")) {
+        const filename = anchor.path.split("/").pop();
+        if (filename && catalog.some((c) => c.file === filename)) {
+          viewMode = "reader";
+          void openArticle(filename);
+          updateViewToggleActiveState();
+        }
+      } else if (hostOpensLinks()) {
+        void openExternalLink(anchor.path);
+      }
+    },
+  });
+}
+
 function renderContent(): void {
   if (!contentEl) return;
+  if (viewMode !== "mindmap") {
+    activeMindmapController?.destroy();
+    activeMindmapController = null;
+  }
   if (catalogLoaded && catalog.length === 0) {
     renderBundleSelector(contentEl);
+    return;
+  }
+  if (viewMode === "mindmap") {
+    renderMindmapView(contentEl);
     return;
   }
   if (viewMode === "graph") {
@@ -1582,7 +1705,7 @@ function renderLogView(container: HTMLElement): void {
 
 // ── Static event wiring ──────────────────────────────────────────────────
 
-const VIEW_LABEL_KEYS: Record<ViewMode, string> = {
+const VIEW_LABEL_KEYS: Record<Exclude<ViewMode, "mindmap">, string> = {
   reader: "okf_view_reader",
   graph: "okf_view_graph",
   log: "okf_view_log",
@@ -1597,7 +1720,11 @@ const VIEW_LABEL_KEYS: Record<ViewMode, string> = {
 function applyStaticLocale(): void {
   for (const btn of viewButtons()) {
     const mode = btn.dataset.view as ViewMode | undefined;
-    if (mode) btn.textContent = t(VIEW_LABEL_KEYS[mode]);
+    if (mode === "mindmap") {
+      btn.textContent = "Mindmap";
+    } else if (mode && VIEW_LABEL_KEYS[mode]) {
+      btn.textContent = t(VIEW_LABEL_KEYS[mode]);
+    }
   }
   if (searchInputEl) searchInputEl.placeholder = t("okf_search_placeholder");
 }
@@ -1740,6 +1867,15 @@ const noHostTimer = setTimeout(
   () => showConnectionNotice(NO_HOST_NOTICE),
   4000,
 );
+
+if (isMindmapPrototypeActive()) {
+  clearTimeout(noHostTimer);
+  if (navigator.language.startsWith("de")) {
+    setCurrentLocale("de");
+    applyStaticLocale();
+  }
+  start();
+}
 
 app
   .connect()

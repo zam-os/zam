@@ -1,0 +1,194 @@
+{
+  "root": "zam-learning-engine",
+  "focus_question": "How does ZAM help learners acquire lasting software knowledge?",
+  "statements": [
+    {
+      "id": "zam-learning-engine",
+      "statement": "ZAM is a local-first learning engine that builds lasting skills using FSRS spaced repetition and AI-assisted active recall.",
+      "sources": [
+        "AGENTS.md",
+        "src/kernel/index.ts",
+        "docs/okf/index.md"
+      ],
+      "detail": "Core mission and high-level architectural purpose of the ZAM project."
+    },
+    {
+      "id": "kernel-cli-split",
+      "statement": "ZAM strictly separates the AI-agnostic learning kernel from the CLI and orchestration layer.",
+      "sources": [
+        "AGENTS.md",
+        "docs/okf/kernel-architecture.md"
+      ],
+      "detail": "Two-layer architecture separating business logic from transport and endpoints."
+    },
+    {
+      "id": "kernel-ai-agnostic",
+      "statement": "The kernel runs zero HTTP or LLM inference calls, ensuring deterministic execution and full offline capability.",
+      "sources": [
+        "AGENTS.md",
+        "src/kernel/index.ts",
+        "docs/okf/kernel-architecture.md"
+      ],
+      "detail": "Purity invariant: AI models and embeddings are injected or handled in the CLI."
+    },
+    {
+      "id": "cli-orchestration",
+      "statement": "The CLI orchestrates database connections, MCP agent tools, terminal interfaces, and optional LLM endpoints.",
+      "sources": [
+        "src/cli/index.ts",
+        "docs/okf/kernel-architecture.md",
+        "docs/okf/mcp-surfaces.md"
+      ],
+      "detail": "Orchestration layer connecting the engine to users, agents, and external services."
+    },
+    {
+      "id": "token-card-separation",
+      "statement": "Knowledge is stored as shared immutable tokens, while cards maintain per-user FSRS memory states.",
+      "sources": [
+        "docs/okf/token-card-model.md",
+        "src/kernel/db/schema.ts"
+      ],
+      "detail": "Decoupling shared knowledge definitions from individual learning progress."
+    },
+    {
+      "id": "fsrs-scheduling",
+      "statement": "FSRS calculates review intervals based on memory stability and retrievability from active recall ratings.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md",
+        "src/kernel/scheduler/fsrs.ts"
+      ],
+      "detail": "Modern spaced repetition algorithm outperforming classic SuperMemo SM-2."
+    },
+    {
+      "id": "prerequisite-blocking",
+      "statement": "Cards are blocked from study until all foundational prerequisite concepts are mastered.",
+      "sources": [
+        "docs/okf/prerequisite-blocking.md",
+        "src/kernel/models/prerequisite.ts"
+      ],
+      "detail": "Curriculum graph dependencies prevent learner overwhelm."
+    },
+    {
+      "id": "okf-living-reference",
+      "statement": "OKF articles in docs/okf provide living repository documentation that flashcards cite as source evidence.",
+      "sources": [
+        "docs/okf/index.md",
+        "docs/adr/2026-07-17-okf-knowledge-base.md"
+      ],
+      "detail": "Living truth and primary reference material for cards and agent updates."
+    },
+    {
+      "id": "observer-privacy",
+      "statement": "Local-first privacy guardrails ensure study activity and code telemetry never leave the learner machine unprompted.",
+      "sources": [
+        "docs/okf/observer-privacy-model.md",
+        "AGENTS.md"
+      ],
+      "detail": "Zero remote telemetry or surveillance; learner owns all personal review data."
+    },
+    {
+      "id": "repo-knowledge-map",
+      "statement": "The repo knowledge map visualizes repository concepts as navigable statements with verifiable source anchors.",
+      "sources": [
+        "docs/adr/2026-10-03-repo-knowledge-map.md"
+      ],
+      "detail": "Alpha feature providing navigable concept maps with ~1 proposition per node."
+    }
+  ],
+  "relations": [
+    {
+      "from": "zam-learning-engine",
+      "to": "kernel-cli-split",
+      "kind": "elaborates"
+    },
+    {
+      "from": "kernel-cli-split",
+      "to": "kernel-ai-agnostic",
+      "kind": "elaborates"
+    },
+    {
+      "from": "kernel-cli-split",
+      "to": "cli-orchestration",
+      "kind": "elaborates"
+    },
+    {
+      "from": "zam-learning-engine",
+      "to": "token-card-separation",
+      "kind": "elaborates"
+    },
+    {
+      "from": "token-card-separation",
+      "to": "fsrs-scheduling",
+      "kind": "elaborates"
+    },
+    {
+      "from": "zam-learning-engine",
+      "to": "prerequisite-blocking",
+      "kind": "elaborates"
+    },
+    {
+      "from": "zam-learning-engine",
+      "to": "okf-living-reference",
+      "kind": "elaborates"
+    },
+    {
+      "from": "zam-learning-engine",
+      "to": "observer-privacy",
+      "kind": "elaborates"
+    },
+    {
+      "from": "zam-learning-engine",
+      "to": "repo-knowledge-map",
+      "kind": "elaborates"
+    },
+    {
+      "from": "kernel-ai-agnostic",
+      "to": "kernel-cli-split",
+      "kind": "because"
+    },
+    {
+      "from": "fsrs-scheduling",
+      "to": "token-card-separation",
+      "kind": "requires"
+    },
+    {
+      "from": "prerequisite-blocking",
+      "to": "fsrs-scheduling",
+      "kind": "leads_to"
+    },
+    {
+      "from": "observer-privacy",
+      "to": "kernel-ai-agnostic",
+      "kind": "requires"
+    },
+    {
+      "from": "repo-knowledge-map",
+      "to": "okf-living-reference",
+      "kind": "requires"
+    }
+  ],
+  "probes": [
+    {
+      "id": "probe-kernel-ai-purity",
+      "question": "Why does the ZAM kernel contain zero LLM or HTTP code?",
+      "answers": [
+        "kernel-ai-agnostic",
+        "kernel-cli-split"
+      ]
+    },
+    {
+      "id": "probe-card-blocking",
+      "question": "What prevents a learner from being overwhelmed by advanced cards before learning basics?",
+      "answers": [
+        "prerequisite-blocking"
+      ]
+    },
+    {
+      "id": "probe-token-card-split",
+      "question": "How does ZAM support sharing knowledge decks without mixing personal study progress?",
+      "answers": [
+        "token-card-separation"
+      ]
+    }
+  ]
+}
