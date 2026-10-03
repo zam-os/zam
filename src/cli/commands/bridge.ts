@@ -66,6 +66,7 @@ import {
   formatGoalBreakdown,
   generateConceptFreeCue,
   generateTokenSlug,
+  getActiveWorkspace,
   getActiveWorkspaceContext,
   getAgentConnectAutoDone,
   getAgentSkill,
@@ -76,6 +77,7 @@ import {
   getDisplayTitle,
   getDueSummary,
   getKnowledgeContextByName,
+  getKnowledgeMapConfig,
   getMachineVoicePreference,
   getOnboardingDone,
   getOnboardingPersona,
@@ -126,6 +128,7 @@ import {
   setActiveWorkspaceContext,
   setAgentConnectAutoDone,
   setBitwardenVaultEnabled,
+  setKnowledgeMapConfig,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
@@ -8787,4 +8790,93 @@ bridgeCommand
         jsonError((err as Error).message || String(err));
       }
     });
+  });
+
+// ── Knowledge map alpha for Studio — ADR 2026-10-03 ───────────────────────
+
+bridgeCommand
+  .command("knowledge-map-feature")
+  .description(
+    "Read or set this machine's knowledge-map alpha: switch, view and repository (JSON)",
+  )
+  .option("--enable", "Switch the knowledge map on")
+  .option("--disable", "Switch it off (keeps the view and repository)")
+  .option("--view <id>", "View to show: focus, outline or levels")
+  .option("--repo <path>", "Repository whose map the Studio shows")
+  .action((opts) => {
+    // Cheap by design: Studio asks on every Settings paint and nav refresh.
+    if (opts.enable && opts.disable) {
+      jsonError("Pass either --enable or --disable, not both.");
+    }
+    if (
+      opts.view !== undefined &&
+      !/^[a-z][a-z0-9-]*$/.test(String(opts.view))
+    ) {
+      jsonError("--view must be a view id such as focus, outline or levels.");
+    }
+    const patch: { enabled?: boolean; view?: string; repoPath?: string } = {};
+    if (opts.enable || opts.disable) patch.enabled = Boolean(opts.enable);
+    if (opts.view) patch.view = String(opts.view);
+    if (opts.repo) patch.repoPath = resolve(String(opts.repo));
+    if (Object.keys(patch).length > 0) setKnowledgeMapConfig(patch);
+    const config = getKnowledgeMapConfig();
+    jsonOut({
+      success: true,
+      enabled: config.enabled === true,
+      view: config.view ?? null,
+      repoPath: config.repoPath ?? null,
+    });
+  });
+
+bridgeCommand
+  .command("knowledge-map")
+  .description(
+    "Load and validate a repository's knowledge map (docs/knowledge-map/map.json) (JSON)",
+  )
+  .option(
+    "--repo <path>",
+    "Repository root (default: the repository an agent last wrote a map for, else the active workspace)",
+  )
+  .action(async (opts) => {
+    const { loadKnowledgeMap } = await import("../knowledge-map/load.js");
+    const repo =
+      (opts.repo ? String(opts.repo) : undefined) ??
+      getKnowledgeMapConfig().repoPath ??
+      getActiveWorkspace()?.path;
+    if (!repo) {
+      jsonOut({
+        success: true,
+        repo: null,
+        found: false,
+        map: null,
+        issues: [],
+      });
+      return;
+    }
+    jsonOut({ success: true, repo: resolve(repo), ...loadKnowledgeMap(repo) });
+  });
+
+bridgeCommand
+  .command("knowledge-map-feedback")
+  .description(
+    "Save one piece of feedback on a knowledge-map view, or list this machine's feedback (JSON)",
+  )
+  .option("--view <id>", "View the feedback is about")
+  .option("--helpful <n>", "1 (not helpful) to 5 (very helpful)")
+  .option("--found <value>", "yes, partly or no")
+  .option("--comment <text>", "Free text")
+  .option("--list", "List the saved feedback instead")
+  .action(async (opts) => {
+    const feedback = await import("../knowledge-map/feedback.js");
+    if (opts.list) {
+      jsonOut({ success: true, entries: feedback.listKnowledgeMapFeedback() });
+      return;
+    }
+    try {
+      const entry = feedback.parseFeedbackInput(opts);
+      const entries = feedback.appendKnowledgeMapFeedback(entry);
+      jsonOut({ success: true, entry, count: entries.length });
+    } catch (err: unknown) {
+      jsonError((err as Error).message || String(err));
+    }
   });

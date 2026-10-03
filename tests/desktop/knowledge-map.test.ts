@@ -1,0 +1,199 @@
+import { readdirSync, readFileSync, statSync } from "node:fs";
+import { join, resolve } from "node:path";
+import { describe, expect, it } from "vitest";
+import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
+import {
+  layoutFocus,
+  layoutMinimap,
+  MAX_VISIBLE_NEIGHBORS,
+  NARROW_WIDTH,
+  rankNeighbors,
+  relationLabelKey,
+} from "../../desktop/src/knowledge-map/layout.js";
+import {
+  DEFAULT_KNOWLEDGE_MAP_VIEW,
+  KNOWLEDGE_MAP_VIEWS,
+  parseKnowledgeMapViewId,
+} from "../../desktop/src/knowledge-map/registry.js";
+import {
+  buildMapIndex,
+  type KnowledgeMap,
+  RELATION_KINDS,
+  validateKnowledgeMap,
+} from "../../src/cli/knowledge-map/model.js";
+
+const ROOT = resolve(import.meta.dirname, "../..");
+const MAP_DIR = join(ROOT, "desktop/src/knowledge-map");
+
+function zamIndex() {
+  const raw = JSON.parse(
+    readFileSync(join(ROOT, "docs/knowledge-map/map.json"), "utf8"),
+  );
+  return buildMapIndex(validateKnowledgeMap(raw).map as KnowledgeMap);
+}
+
+/** A root with nine details and two cross-links, for overflow cases. */
+function wideIndex() {
+  const statements = [{ id: "root", text: "Root.", sources: ["README.md"] }];
+  for (let i = 0; i < 9; i++) {
+    statements.push({
+      id: `c${i}`,
+      parent: "root",
+      text: `Child ${i}.`,
+      sources: ["README.md"],
+    } as never);
+  }
+  statements.push({
+    id: "why",
+    parent: "c0",
+    text: "Why.",
+    sources: ["README.md"],
+  } as never);
+  statements.push({
+    id: "use",
+    parent: "c1",
+    text: "Use.",
+    sources: ["README.md"],
+  } as never);
+  const map = validateKnowledgeMap({
+    format: "zam-knowledge-map",
+    version: 1,
+    title: "Wide",
+    focus_question: "?",
+    root: "root",
+    statements,
+    relations: [
+      { from: "root", to: "why", kind: "because" },
+      { from: "use", to: "root", kind: "requires" },
+    ],
+  }).map as KnowledgeMap;
+  return buildMapIndex(map);
+}
+
+function filesUnder(dir: string): string[] {
+  return readdirSync(dir).flatMap((name) => {
+    const path = join(dir, name);
+    return statSync(path).isDirectory() ? filesUnder(path) : [path];
+  });
+}
+
+describe("knowledge map layout", () => {
+  it("ranks the parent, the statement just left, cross-links, then details", () => {
+    const index = zamIndex();
+    const ranked = rankNeighbors(index, "review", "skill-decay");
+    expect(ranked[0]).toMatchObject({ id: "zam", tree: "parent" });
+    expect(ranked[1]).toMatchObject({ id: "skill-decay", kind: "because" });
+    expect(ranked.slice(2).every((n) => n.tree === "child")).toBe(true);
+  });
+
+  it("keeps the compass: parent above, details below, out right, in left", () => {
+    const index = wideIndex();
+    const layout = layoutFocus(index, "root", null, 1000, 640);
+    const sides = new Map(layout.nodes.map((n) => [n.neighbor.id, n.side]));
+    expect(sides.get("why")).toBe("right");
+    expect(sides.get("use")).toBe("left");
+    expect(sides.get("c0")).toBe("bottom");
+    const child = layoutFocus(index, "c0", "root", 1000, 640);
+    expect(child.nodes.find((n) => n.neighbor.id === "root")?.side).toBe("top");
+  });
+
+  it("shows at most seven neighbours and folds the rest into +n", () => {
+    const index = wideIndex();
+    const layout = layoutFocus(index, "root", null, 1000, 640);
+    expect(layout.nodes).toHaveLength(MAX_VISIBLE_NEIGHBORS);
+    expect(layout.overflow?.count).toBe(11 - MAX_VISIBLE_NEIGHBORS);
+    const expanded = layoutFocus(index, "root", null, 1000, 640, true);
+    expect(expanded.nodes).toHaveLength(11);
+    expect(expanded.overflow).toBeNull();
+  });
+
+  it("stacks one column on a narrow screen", () => {
+    const layout = layoutFocus(wideIndex(), "c0", null, NARROW_WIDTH - 1, 600);
+    expect(layout.narrow).toBe(true);
+    const xs = new Set(layout.nodes.map((n) => n.x));
+    expect(xs.size).toBe(1);
+    expect(layout.minHeight).toBeGreaterThan(0);
+  });
+
+  it("places every statement in the overview", () => {
+    const index = zamIndex();
+    const { points, edges } = layoutMinimap(index, 220, 96);
+    expect(points.size).toBe(index.order().length);
+    expect(edges).toHaveLength(index.order().length - 1);
+    for (const point of points.values()) {
+      expect(point.x).toBeGreaterThanOrEqual(0);
+      expect(point.x).toBeLessThanOrEqual(220);
+    }
+  });
+});
+
+describe("knowledge map views and strings", () => {
+  it("registers three switchable views with a safe default", () => {
+    expect(KNOWLEDGE_MAP_VIEWS.map((v) => v.id)).toEqual([
+      "focus",
+      "outline",
+      "levels",
+    ]);
+    expect(parseKnowledgeMapViewId("levels")).toBe("levels");
+    expect(parseKnowledgeMapViewId("3d")).toBe(DEFAULT_KNOWLEDGE_MAP_VIEW);
+    expect(parseKnowledgeMapViewId(null)).toBe("focus");
+  });
+
+  it("has every connective and view label in English and German", () => {
+    const keys = [
+      ...KNOWLEDGE_MAP_VIEWS.flatMap((v) => [v.nameKey, v.descriptionKey]),
+      ...["elaborates", ...RELATION_KINDS].flatMap((kind) =>
+        (["out", "in"] as const).map((direction) =>
+          relationLabelKey({ kind: kind as never, direction }),
+        ),
+      ),
+    ];
+    const source = filesUnder(MAP_DIR)
+      .map((path) => readFileSync(path, "utf8"))
+      .join("\n");
+    for (const match of source.matchAll(
+      /\bt\("(km_[a-z_]+)"\)|tf\("(km_[a-z_]+)"/g,
+    )) {
+      keys.push(match[1] ?? match[2]);
+    }
+    for (const locale of ["en", "de"]) {
+      setCurrentLocale(locale);
+      for (const key of new Set(keys)) {
+        expect(t(key), `${locale}: ${key}`).not.toBe(key);
+      }
+    }
+    setCurrentLocale("en");
+  });
+});
+
+describe("knowledge map module boundaries and wiring", () => {
+  it("never imports Tauri, Three.js or main.ts", () => {
+    for (const path of filesUnder(MAP_DIR)) {
+      const text = readFileSync(path, "utf8");
+      expect(text, path).not.toMatch(/@tauri-apps|from "three"|\.\.\/main\.js/);
+    }
+  });
+
+  it("keeps views off the bridge", () => {
+    for (const path of filesUnder(join(MAP_DIR, "views"))) {
+      expect(readFileSync(path, "utf8"), path).not.toContain(
+        "bridge-transport",
+      );
+    }
+  });
+
+  it("loads the map page lazily and hides it until the alpha is on", () => {
+    const main = readFileSync(join(ROOT, "desktop/src/main.ts"), "utf8");
+    expect(main).toContain('await import("./knowledge-map/studio.js")');
+    expect(main).not.toMatch(/^import .*knowledge-map\/studio/m);
+    expect(main).not.toMatch(/^import .*knowledge-map\/views/m);
+    const html = readFileSync(join(ROOT, "desktop/index.html"), "utf8");
+    expect(html).toMatch(/<button id="nav-knowledge-map"[^>]*\bhidden\b/);
+    expect(html).toMatch(
+      /id="knowledge-map-card" data-settings-tier="advanced"/,
+    );
+    expect(html).toMatch(
+      /<div class="settings-stack" id="knowledge-map-settings-body" hidden>/,
+    );
+  });
+});
