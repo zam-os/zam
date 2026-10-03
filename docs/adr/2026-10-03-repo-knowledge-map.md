@@ -1,6 +1,6 @@
 # Repo Knowledge Map: An Alpha Feature with Swappable Views
 
-**Status:** Proposed\
+**Status:** Accepted — alpha implemented (2026-10-03)\
 **Date:** 2026-10-03\
 **Deciders:** Thomas (project owner)\
 **Related:**
@@ -47,6 +47,14 @@ The owner decided on 2026-10-03, after a literature review:
 3. Make the visualization **swappable, like a plugin**. Several variants can
    be built and compared with users later. The preferred one then gets the
    refinement time.
+
+In a second round the same day, the owner decided:
+
+4. **No multi-model review round** for this alpha. The variants are built
+   right away and switched in Settings. Nobody expects alpha quality to be
+   high; **learner feedback decides** which view gets more time.
+5. It must work for **any repository**, through the agent skill, so it can be
+   tried at work. A browsable prototype makes it tangible beforehand.
 
 ### Evidence
 
@@ -127,13 +135,16 @@ keeps labels translatable and consistent.
 **Structure.**
 
 - The map has one root statement and a focus question.
-- `elaborates` relations form a tree, so each statement has exactly one
-  `elaborates` parent.
-- Every statement is reachable from the root through `elaborates`. This makes
-  the map fully navigable, gives every statement a level and a path, and feeds
-  the breadcrumb and the mini-map.
-- All other kinds are cross-links, and a statement may have any number of
-  them.
+- Every statement except the root names its `parent`; that edge is the
+  `elaborates` relation. The parents form a tree.
+- Every statement is reachable from the root. This makes the map fully
+  navigable, gives every statement a level and a path, and feeds the
+  breadcrumb and the mini-map.
+- `relations` hold the cross-links, with the other five kinds. A statement may
+  have any number of them, but a pair of statements is joined at most once.
+- A cross-link between a statement and its own parent or child replaces the
+  plain "in detail" reading of that tree edge, so a detail can say *why*
+  ("FSRS-6 … instead of SM-2 …").
 
 **Identifiers.** Statement ids are readable slugs, not ULIDs. The map is a
 reviewed text artifact, and readable ids make its diffs reviewable.
@@ -145,11 +156,14 @@ fetches or generates content.
 
 **The contract.** A view receives:
 
-- the model and the current focus;
-- a host with these functions: navigate to a statement, open a source,
-  translate, read the theme, and record a local event.
+- the map index and the statement in focus;
+- a host with three functions: navigate to a statement, translate, and
+  translate with values.
 
-A view renders into a container it is given and can be torn down. Views do
+A view renders into a container it is given, may hand the shell an overview
+to show beside it, and can be torn down. The shell around every view owns the
+focus and its history, the breadcrumb, the detail panel (statement, sources,
+all connections as sentences) and the feedback bar. Views do
 not call the bridge, and they import nothing from Tauri, so another host can
 run them later. The MCP Apps panels follow the same module-boundary rule.
 
@@ -172,24 +186,32 @@ that optional surfaces stay out of the eager module graph.
 **Focus map** (primary; the owner's choice).
 
 - The focus statement sits in the centre, with at most seven neighbours on a
-  ring. A degree-of-interest score picks which neighbours to show. The rest
-  folds into a "+n more" node that expands on demand.
-- Each relation shows its connective.
+  fixed compass: the statement it belongs to above, its details below,
+  statements it points to on the right, statements pointing at it on the left.
+  Because every edge keeps its side, the statement you came from lands
+  opposite the one you clicked.
+- A ranking picks the visible neighbours: the parent, the statement just left,
+  up to three cross-links, then the details. The rest folds into a
+  "+n more" node that expands on demand.
+- Each neighbour card opens with its connective, so centre and card read as
+  one sentence.
 - Clicking a neighbour recentres the map with an animated transition, and
-  statements that stay visible keep their relative positions.
+  statements that stay visible glide instead of jumping.
 - A breadcrumb shows the path from the root.
-- A mini-map of the `elaborates` tree marks the current position.
+- A mini-map of the whole tree, beside the view, marks the current position.
+- On a narrow screen the compass stacks into one column.
 
 **Outline** (baseline). The same statements as a collapsible outline of the
 `elaborates` tree. Under each statement, its cross-links are listed as
 sentences. The outline costs little. It exists so that the comparison can
 show whether any map beats a plain list.
 
-**Levels** (second variant, later phase).
+**Levels** (second variant, built in the same phase).
 
-- A semantic zoom over the `elaborates` tree: the parent statement sits in
-  the centre and its children surround it.
-- Zooming moves one level at a time. Cross-links appear only as cues.
+- A semantic zoom over the tree: the statement being spelled out on top, its
+  details as cards below, with the mini-map beside it.
+- Zooming moves one level at a time, animated. Cross-links appear only as
+  counts on the cards.
 
 **Not built now: an argument view.** It would show a claim with its reasons
 and rejected alternatives (argument mapping, IBIS). The `because` and
@@ -217,14 +239,16 @@ Advanced tier with the Alpha badge, next to the Bitwarden vault card.
 
 **While it is on:**
 
-- the Studio's top navigation shows a "Knowledge map" entry with the Alpha
-  badge;
-- the map view has a view picker.
+- the Studio's top navigation shows a "Knowledge map" entry;
+- the card lists the three views as a choice. The map page uses the chosen
+  view the next time it opens; the page itself has no switcher, so a tester
+  compares views deliberately through Settings.
 
 **Storage.**
 
-- The switch and the selected view live in `~/.zam/config.json` through an
-  `install-config.ts` getter/setter pair. The Studio reads them through a
+- The switch, the selected view and the repository whose map is shown live in
+  `~/.zam/config.json` (key `knowledgeMap`) through an `install-config.ts`
+  getter/setter pair. The Studio reads them through a
   bridge command, exactly like the Bitwarden vault opt-in.
 - They are presentation state of one installation, not learning data. The
   shared database may be synced across machines, and a machine running an
@@ -263,65 +287,87 @@ file inside the bundle would break compatibility.
 - one `elaborates` parent per statement and no `elaborates` cycle;
 - that every statement is reachable from the root.
 
-**Which repository the Studio shows.** The Studio reads the map of the active
-workspace through a bridge command; a workspace records its path. Without a
-map file, the view shows one action instead of a dead end: a copyable
-instruction for the learner's agent to build the map.
+**Any repository, through the agent.**
 
-**Later, for other repositories:** a validating MCP write tool in the manner
-of `zam_okf_upsert`, registered only while the alpha is on. Also later:
-marking a statement as possibly stale when its source changed after the map
-was written, as the OKF freshness radar does for articles.
+- Two MCP tools, registered only while the alpha is on:
+  - `zam_knowledge_map_guide` returns the authoring guide (shape, statement
+    rules, relation kinds, file format), the map's location, and the current
+    map with its problems.
+  - `zam_knowledge_map_write` validates a whole map against the repository
+    and writes it only when there is no error, in the manner of
+    `zam_okf_upsert`.
+- The guide ships with the validator in `src/cli/knowledge-map/guide.ts`, so
+  rules and checks cannot drift apart. The shipped `zam` skill only routes
+  "knowledge map" and "Wissenskarte" requests to these tools, and asks the
+  learner to switch the alpha on when the tools are missing. No new skill
+  needs installing.
+- The repository resolves like the OKF bundle: an explicit `repo_root`, else
+  the MCP client's roots (preferring one that already has a map), else the
+  server working directory.
+
+**Which repository the Studio shows.**
+
+- The repository the learner's agent last wrote a map for; a successful
+  write records it. Else the active workspace.
+- "Choose repository…" on the map page picks another folder; "Reload" reads
+  the file again.
+- Without a usable map, the page shows ZAM's own map as an example, says so,
+  lists the errors of a broken map, and offers the request to copy for the
+  agent ("Build a ZAM knowledge map for this repository."). Never a dead end.
+
+**Later:** marking a statement as possibly stale when its source changed after
+the map was written, as the OKF freshness radar does for articles.
 
 ### 6. How the preferred view is chosen
 
-Asking testers which view they like is not enough, because preference and
-performance can diverge (Wang et al., 2026). The choice therefore rests on
-two signals: whether testers find answers, and what they prefer.
+Learner feedback decides (owner decision 4). Every view has the same feedback
+bar under the map:
 
-**The setup.**
+- "How helpful is this view?" from 1 to 5;
+- "Did you find what you were looking for?" yes, partly or no;
+- an optional comment.
 
-- The map file carries a handful of **probe questions**, such as "Why does
-  the kernel contain no LLM code?". Each names the statements that answer
-  it.
-- Each tester uses every view (within-subject, because there are few
-  testers).
-- Each view gets different probes, and the order of views rotates.
+The second question is a light check on performance, because preference and
+performance can diverge (Wang et al., 2026). The view is recorded with every
+entry.
 
-**One probe, step by step.**
+**Privacy.** Feedback stays on the machine, in `knowledge-map-feedback.json`
+next to `config.json`. "Copy all feedback" puts it on the clipboard so a
+tester can pass it on deliberately.
 
-1. The tester navigates until they think they have the answer.
-2. They reveal the reference statements.
-3. They mark themselves right or wrong, as in Flash.
+**Reading the result.** A tester should try every view; with few testers the
+comparison is within each person. A view is worth refining when it is rated
+at least as helpful as the outline and testers find what they look for. If no
+map beats the outline, that is a finding, not a failure.
 
-**What is recorded:** whether the answer was right, the time taken, how often
-the tester recentred and went back, and one preference question per view.
-
-**Privacy.** The record stays on the machine. A tester can export it as a
-file and send it on.
-
-**Decision rule.**
-
-- A map view is worth refining when it is at least as accurate as the
-  outline and is preferred.
-- If no map beats the outline, that is a finding, not a failure.
+**Possible later:** probe questions stored in the map, with a self-checked
+answer, time and navigation counts per view, if the simple feedback does not
+separate the views.
 
 ## Phases
 
-All phases go on one feature branch after this ADR is accepted.
+Implemented on 2026-10-03, on one branch:
 
-1. **Model.** The model, the validator, and ZAM's own map with its CI check.
-2. **First views.** The alpha switch and Studio host, the view registry, the
-   Outline view, and the Focus map with breadcrumb and mini-map.
-3. **Levels.** The Levels view.
-4. **Comparison kit.** The probe runner, the local record and its export.
+1. **Model.** The model, the validator, ZAM's own map (78 statements, 26
+   cross-links) and its CI check.
+2. **Views.** The view registry, the shell, the Focus map, the Outline and the
+   Levels view.
+3. **Alpha in the Studio.** The Settings card with switch and view choice,
+   the navigation entry, the map page with repository choice and the sample
+   map fallback, and the bridge commands behind them.
+4. **Any repository.** The two MCP tools, the guide, and the `zam` skill
+   routing.
+5. **Feedback.** The feedback bar and its local store.
+6. **Prototype.** `scripts/build-knowledge-map-prototype.mjs` builds one
+   self-contained HTML page with ZAM's map and all views, switchable in place,
+   for trying the idea without installing anything.
 
 **Later:**
 
-- the MCP write tool, so other repositories can have maps;
 - staleness marking;
-- the views inside an MCP Apps panel;
+- the views inside an MCP Apps panel, so the map opens next to the agent;
 - an argument view;
+- probe questions, if the feedback does not separate the views;
 - a learning tie-in: hide a neighbour and ask the learner to recall it,
   since constructing a map outperforms studying one.
 
@@ -348,8 +394,8 @@ All phases go on one feature branch after this ADR is accepted.
 
 The design is wrong if any of these holds:
 
-- With every map view, testers answer the probes no better than with the
-  outline.
+- With every map view, testers find what they look for no more often than
+  with the outline.
 - Testers get lost: they go back often, restart from the root, or cannot say
   where they are.
 - Many statements contradict their sources a few weeks after being written.
@@ -360,6 +406,13 @@ The design is wrong if any of these holds:
 - **An unpublished switch (environment variable).** Replaced by the owner's
   decision. An alpha card in Settings lets testers find the feature without a
   terminal.
+- **A review round with several models before building.** Skipped by the
+  owner for this alpha: building the variants and asking learners is cheaper
+  and more telling.
+- **A second skill for map authoring.** Rejected: the provisioning installs
+  only the `zam` skill into agents. A short routing rule there plus a guide
+  served by the MCP server reaches every connected agent without new
+  installation steps.
 - **The switch as a database setting.** Rejected: it is machine-local
   presentation state (see Decision 4).
 - **Extending the OKF visualizer's article graph.** Rejected as the main path,
@@ -382,17 +435,26 @@ The design is wrong if any of these holds:
 
 ## Verification
 
-- Validator unit tests, one per rule, and a CI test that runs the validator on
-  `docs/knowledge-map/map.json`.
-- Alpha off: no navigation entry, no map bridge call, no view chunk loaded.
-- Views import nothing from Tauri, checked by a module-boundary test like the
-  one for panels.
-- `en` and `de` strings complete for every new UI text.
+- `tests/cli/knowledge-map.test.ts`: every validator rule, the navigation
+  index, writing and loading, MCP root resolution, the feedback store, the
+  machine-local settings, the MCP tools absent while the alpha is off and
+  working once it is on, and ZAM's own map valid with every source present.
+- `tests/desktop/knowledge-map.test.ts`: the compass layout, the seven-slot
+  cap with "+n more", the narrow stacking, the mini-map, the view registry,
+  `en`/`de` strings for every connective and label, the module boundaries (no
+  Tauri, no Three.js, views off the bridge), and the lazy loading and hidden
+  defaults in the Studio.
+- The prototype was clicked through in all three views, at desktop and phone
+  width, in light and dark.
 
 ## Citations
 
 Code and repository documents:
 
+- `src/cli/knowledge-map/` — model and validator, loading and writing, guide, feedback
+- `desktop/src/knowledge-map/` — shell, layout, registry, views, Studio page, Settings card, prototype entry
+- `docs/knowledge-map/map.json` — ZAM's own map
+- `scripts/build-knowledge-map-prototype.mjs` — the browsable prototype
 - `desktop/src/panel/okf-render.ts` — `layoutFocusGraph`, the existing focused ring layout
 - `desktop/src/panel/graph.ts` — click-to-recentre and breadcrumb in the learning graph card
 - `desktop/src/secrets-vault.ts`, `src/kernel/system/install-config.ts` — the alpha opt-in pattern
