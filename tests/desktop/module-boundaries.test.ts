@@ -157,7 +157,12 @@ describe("desktop module boundaries", () => {
 
   // OKF visualizer panel (Task 4, docs/plans/2026-07-17-okf-visualizer-panel-plan.md).
   it("OKF panel modules stay Tauri-free, Three-free, and do not import ./main, ./panel, or ./recall", () => {
-    for (const file of ["panel/okf.ts", "panel/okf-mermaid.ts"]) {
+    for (const file of [
+      "panel/okf.ts",
+      "panel/okf-mermaid.ts",
+      "panel/mindmap-render.ts",
+      "panel/mindmap-data.ts",
+    ]) {
       const specifiers = importSpecifiers(read(file));
       for (const specifier of specifiers) {
         expect(

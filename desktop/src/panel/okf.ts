@@ -40,6 +40,11 @@ import {
   showConnectionNotice as showConnectionNoticeShared,
 } from "./context-bar.js";
 import { wrapGraphLabel } from "./graph-layout.js";
+import {
+  type MindmapController,
+  isMindmapPrototypeActive,
+  mountMindmap,
+} from "./mindmap-render.js";
 import { queueMermaidRender } from "./okf-mermaid.js";
 import {
   articlePillSize,
@@ -93,10 +98,17 @@ function errorMessage(error: unknown): string {
   return error instanceof Error ? error.message : String(error);
 }
 
-type ViewMode = "reader" | "graph" | "log";
+export { isMindmapPrototypeActive };
+
+type ViewMode = "reader" | "graph" | "log" | "mindmap";
 
 function isViewMode(value: unknown): value is ViewMode {
-  return value === "reader" || value === "graph" || value === "log";
+  return (
+    value === "reader" ||
+    value === "graph" ||
+    value === "log" ||
+    (isMindmapPrototypeActive() && value === "mindmap")
+  );
 }
 
 interface OpenOkfResult {
@@ -153,7 +165,13 @@ let freshnessByFile = indexFreshnessByFile(null);
  * cycled). */
 let typeOrder: string[] = [];
 let logText = "";
-let viewMode: ViewMode = "reader";
+let viewMode: ViewMode =
+  isMindmapPrototypeActive() &&
+  typeof window !== "undefined" &&
+  (new URLSearchParams(window.location.search).get("view") === "mindmap" ||
+    new URLSearchParams(window.location.search).get("prototype") === "mindmap")
+    ? "mindmap"
+    : "reader";
 /** Graph view: the node the focused layout centers on; null = overview mode.
  * Set by right-clicking a node, cleared by right-clicking it again, the
  * canvas background, the toolbar's exit button, or Escape. */
@@ -302,9 +320,26 @@ function start(): void {
   }
 }
 
+function ensureMindmapPrototypeToggle(): void {
+  if (!isMindmapPrototypeActive() || !viewToggleEl) return;
+  if (viewToggleEl.querySelector('[data-view="mindmap"]')) return;
+  const btn = document.createElement("button");
+  btn.type = "button";
+  btn.className = "okf-view-btn okf-view-btn-prototype";
+  btn.dataset.view = "mindmap";
+  btn.textContent = "Mindmap";
+  btn.addEventListener("click", () => {
+    if (viewMode === "mindmap") return;
+    viewMode = "mindmap";
+    renderAll();
+  });
+  viewToggleEl.appendChild(btn);
+}
+
 // ── Render orchestration ────────────────────────────────────────────────
 
 function renderAll(): void {
+  ensureMindmapPrototypeToggle();
   renderHeader();
   updateViewToggleActiveState();
   renderSidebar();
@@ -479,10 +514,38 @@ function renderSidebar(): void {
   }
 }
 
+let activeMindmapController: MindmapController | null = null;
+
+function renderMindmapView(container: HTMLElement): void {
+  activeMindmapController?.destroy();
+  activeMindmapController = mountMindmap(container, {
+    onOpenAnchor: (anchor) => {
+      if (anchor.path.endsWith(".md") && !anchor.path.startsWith("docs/adr/")) {
+        const filename = anchor.path.split("/").pop();
+        if (filename && catalog.some((c) => c.file === filename)) {
+          viewMode = "reader";
+          void openArticle(filename);
+          updateViewToggleActiveState();
+        }
+      } else if (hostOpensLinks()) {
+        void openExternalLink(anchor.path);
+      }
+    },
+  });
+}
+
 function renderContent(): void {
   if (!contentEl) return;
+  if (viewMode !== "mindmap") {
+    activeMindmapController?.destroy();
+    activeMindmapController = null;
+  }
   if (catalogLoaded && catalog.length === 0) {
     renderBundleSelector(contentEl);
+    return;
+  }
+  if (viewMode === "mindmap") {
+    renderMindmapView(contentEl);
     return;
   }
   if (viewMode === "graph") {
@@ -1582,7 +1645,7 @@ function renderLogView(container: HTMLElement): void {
 
 // ── Static event wiring ──────────────────────────────────────────────────
 
-const VIEW_LABEL_KEYS: Record<ViewMode, string> = {
+const VIEW_LABEL_KEYS: Record<Exclude<ViewMode, "mindmap">, string> = {
   reader: "okf_view_reader",
   graph: "okf_view_graph",
   log: "okf_view_log",
@@ -1597,7 +1660,11 @@ const VIEW_LABEL_KEYS: Record<ViewMode, string> = {
 function applyStaticLocale(): void {
   for (const btn of viewButtons()) {
     const mode = btn.dataset.view as ViewMode | undefined;
-    if (mode) btn.textContent = t(VIEW_LABEL_KEYS[mode]);
+    if (mode === "mindmap") {
+      btn.textContent = "Mindmap";
+    } else if (mode && VIEW_LABEL_KEYS[mode]) {
+      btn.textContent = t(VIEW_LABEL_KEYS[mode]);
+    }
   }
   if (searchInputEl) searchInputEl.placeholder = t("okf_search_placeholder");
 }
