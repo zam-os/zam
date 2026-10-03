@@ -69,6 +69,10 @@ import {
 } from "./bitwarden-assure.js";
 import { initSecretsVault } from "./secrets-vault.js";
 import {
+  initKnowledgeMapSettings,
+  type KnowledgeMapSettings,
+} from "./knowledge-map/settings.js";
+import {
   classifyServerDbError,
   initServerDbWizard,
   isServerDbError,
@@ -242,7 +246,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view" | "knowledge-map-view";
 type ThemePreference = "light" | "dark";
 
 interface StudyLearningSettings {
@@ -876,6 +880,8 @@ function initializeTranslations() {
   document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
   document.getElementById("nav-settings")!.textContent = t("nav_settings");
   document.getElementById("nav-stats")!.textContent = t("nav_stats");
+  const knowledgeMapNav = document.getElementById("nav-knowledge-map");
+  if (knowledgeMapNav) knowledgeMapNav.textContent = t("km_nav");
   document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
@@ -4884,6 +4890,35 @@ function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
+// ── KNOWLEDGE MAP (alpha, ADR 2026-10-03) ─────────────────────────────────
+let knowledgeMapSettings: KnowledgeMapSettings | null = null;
+
+/** Load the map page's module on first use; it stays out of the boot bundle. */
+async function openKnowledgeMapPage(): Promise<void> {
+  const container = document.getElementById("knowledge-map-root");
+  if (!container) return;
+  const { openKnowledgeMapView } = await import("./knowledge-map/studio.js");
+  await openKnowledgeMapView(container, {
+    openUrl: (url) => void openUrl(url),
+    pickFolder: async () => {
+      const selected = await openFolderDialog({
+        directory: true,
+        multiple: false,
+        title: t("km_pick_repo"),
+      });
+      return typeof selected === "string" ? selected : null;
+    },
+    copyText: async (text) => {
+      try {
+        await navigator.clipboard.writeText(text);
+        return true;
+      } catch {
+        return false;
+      }
+    },
+  });
+}
+
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function setActiveNav(viewId: AppView): void {
   const navByView: Partial<Record<AppView, string>> = {
@@ -4891,6 +4926,7 @@ function setActiveNav(viewId: AppView): void {
     "settings-view": "nav-settings",
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
+    "knowledge-map-view": "nav-knowledge-map",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -5372,7 +5408,10 @@ function switchView(
   setActiveNav(viewId);
 
   const mainContainer = document.querySelector('main.container');
-  mainContainer?.classList.toggle('content-full', viewId === "learning-content-view");
+  mainContainer?.classList.toggle(
+    'content-full',
+    viewId === "learning-content-view" || viewId === "knowledge-map-view",
+  );
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
     // lazy init three when first shown
@@ -5383,12 +5422,16 @@ function switchView(
 
   if (viewId === "settings-view") {
     refreshSettingsData();
+    void knowledgeMapSettings?.refresh();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
   }
   if (viewId === "stats-view") {
     void loadStatsView();
+  }
+  if (viewId === "knowledge-map-view") {
+    void openKnowledgeMapPage();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -8851,6 +8894,20 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("secrets-vault", () =>
     initSecretsVault({ openExternal: (url: string) => void openUrl(url) }),
   );
+  initPanel("knowledge-map", () => {
+    knowledgeMapSettings = initKnowledgeMapSettings({
+      onEnabledChange: (enabled) => {
+        const nav = document.getElementById("nav-knowledge-map");
+        if (nav) nav.hidden = !enabled;
+        if (
+          !enabled &&
+          document.getElementById("knowledge-map-view")?.classList.contains("active")
+        ) {
+          switchView("settings-view");
+        }
+      },
+    });
+  });
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );
@@ -8940,6 +8997,10 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {
     switchView("stats-view");
+  });
+
+  document.getElementById("nav-knowledge-map")?.addEventListener("click", () => {
+    switchView("knowledge-map-view");
   });
 
   document.getElementById("btn-stats-back")?.addEventListener("click", () => {
