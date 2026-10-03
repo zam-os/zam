@@ -146,4 +146,22 @@ describe("knowledge-map validator (ADR 2026-10-03)", () => {
     expect(res.valid).toBe(false);
     expect(res.errors.some((e) => e.includes("Cycle detected"))).toBe(true);
   });
+
+  it("validates diagnostic probes refer to existing statements", () => {
+    const data = {
+      root: "root",
+      focus_question: "Focus?",
+      statements: [{ id: "root", statement: "Root statement", sources: ["AGENTS.md"] }],
+      relations: [],
+      probes: [
+        { id: "probe-1", question: "Why?", answers: ["nonexistent-statement-id"] },
+      ],
+    };
+    const res = validateKnowledgeMap(data, repoRoot);
+    expect(res.valid).toBe(false);
+    expect(
+      res.errors.some((e) => e.includes("nonexistent answer statement 'nonexistent-statement-id'")),
+    ).toBe(true);
+  });
 });
+

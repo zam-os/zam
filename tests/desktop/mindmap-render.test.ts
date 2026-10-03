@@ -233,6 +233,16 @@ describe("mindmap plugins registry & multi-provider slots", () => {
     expect(container.innerHTML).toBe("");
   });
 
+  it("antigravity plugin renders copyable agent prompt when graph is empty", () => {
+    const plugin = getMindmapPlugin("antigravity");
+    const container = { innerHTML: "", querySelector: () => null } as unknown as HTMLElement;
+    const controller = plugin.mount(container, { graph: {} });
+    expect(container.innerHTML).toContain("/repo-knowledge-map");
+    expect(container.innerHTML).toContain("Keine Wissenslandkarte");
+    controller.destroy();
+    expect(container.innerHTML).toBe("");
+  });
+
   it("falls back to antigravity plugin for unknown IDs", () => {
     // @ts-expect-error testing unknown plugin id
     const plugin = getMindmapPlugin("unknown_id");

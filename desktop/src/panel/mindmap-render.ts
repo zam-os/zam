@@ -53,6 +53,48 @@ export function mountMindmap(
   options: MindmapOptions = {},
 ): MindmapController {
   const graph = options.graph ?? ZAM_REPO_KNOWLEDGE;
+
+  if (!graph || Object.keys(graph).length === 0) {
+    const promptText = "/repo-knowledge-map Erstelle die Wissenslandkarte für dieses Repository";
+    container.innerHTML = `
+      <div style="display:flex;flex-direction:column;align-items:center;justify-content:center;padding:48px 24px;text-align:center;background:var(--bg,#f5f7fb);border:1px dashed var(--border,rgba(15,23,42,0.14));border-radius:12px;box-sizing:border-box;">
+        <div style="font-size:36px;margin-bottom:12px;">🗺️</div>
+        <h3 style="margin:0 0 8px 0;font-size:16px;font-weight:700;color:var(--fg,#1c2030);">Keine Wissenslandkarte für dieses Repository gefunden</h3>
+        <p style="max-width:540px;font-size:13px;line-height:1.5;color:var(--muted,#6b7280);margin:0 0 20px 0;">
+          Für dieses Repository existiert noch keine <code>docs/knowledge-map/map.json</code>.
+          Bitte deinen KI-Agenten, die Wissenslandkarte mit dem Skill <code>/repo-knowledge-map</code> zu generieren.
+        </p>
+        <div style="display:inline-flex;align-items:center;gap:10px;background:var(--card,#fff);padding:8px 14px;border:1px solid var(--border,rgba(15,23,42,0.14));border-radius:8px;font-size:12px;">
+          <code style="font-family:monospace;color:var(--fg,#1c2030);">${promptText}</code>
+          <button type="button" class="zam-copy-prompt-btn" style="border:none;background:var(--accent,#827dbd);color:#fff;font-weight:600;font-size:11px;padding:4px 10px;border-radius:6px;cursor:pointer;">
+            Prompt kopieren
+          </button>
+        </div>
+      </div>
+    `;
+
+    const copyBtn = container.querySelector<HTMLButtonElement>(".zam-copy-prompt-btn");
+    copyBtn?.addEventListener("click", () => {
+      void navigator.clipboard?.writeText(promptText);
+      copyBtn.textContent = "Kopiert!";
+      setTimeout(() => {
+        copyBtn.textContent = "Prompt kopieren";
+      }, 2000);
+    });
+
+    return {
+      setFocus() {},
+      setMode() {},
+      goToRoot() {},
+      getState() {
+        return { focusId: "", mode: "radial", history: [] };
+      },
+      destroy() {
+        container.innerHTML = "";
+      },
+    };
+  }
+
   let currentFocusId = options.initialFocusId ?? ZAM_ROOT_ID;
   let currentMode: MindmapMode = options.initialMode ?? "radial";
   let history: string[] = [currentFocusId];
