@@ -29,11 +29,11 @@ type Lang = "de" | "en";
 const INTRO: Record<Lang, { label: string; text: string }> = {
   de: {
     label: "Prototyp",
-    text: "Drei Ansichten derselben Wissenskarte über ZAM. Klick auf eine Aussage, um sie in den Fokus zu holen; oben rechts wechselst du die Ansicht. Rückmeldungen bleiben in diesem Browser.",
+    text: "Vier Ansichten derselben Wissenskarte über ZAM. Klick auf eine Aussage, um sie in den Fokus zu holen; oben rechts wechselst du die Ansicht. Rückmeldungen bleiben in diesem Browser.",
   },
   en: {
     label: "Prototype",
-    text: "Three views of the same knowledge map about ZAM. Click a statement to bring it into focus; switch the view at the top right. Feedback stays in this browser.",
+    text: "Four views of the same knowledge map about ZAM. Click a statement to bring it into focus; switch the view at the top right. Feedback stays in this browser.",
   },
 };
 

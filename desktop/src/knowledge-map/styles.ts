@@ -180,14 +180,16 @@ const CSS = `
 .km-concept { padding: 18px 16px 20px; display: flex; flex-direction: column; gap: 16px;
   height: 100%; box-sizing: border-box; overflow: auto; }
 .km-concept-stage { display: grid; align-items: center; justify-items: center; gap: 14px 16px;
-  grid-template-areas: ". north ." "west center east" ". south .";
+  grid-template-areas: ". top ." "left center right" ". bottom .";
   grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); min-height: 280px; }
-.km-concept-north { grid-area: north; }
-.km-concept-east { grid-area: east; }
-.km-concept-south { grid-area: south; }
-.km-concept-west { grid-area: west; }
+.km-concept-side { display: flex; flex-direction: column; align-items: center; gap: 8px; }
+.km-concept-top { grid-area: top; }
+.km-concept-right { grid-area: right; }
+.km-concept-bottom { grid-area: bottom; }
+.km-concept-left { grid-area: left; }
 .km-concept-center { grid-area: center; width: fit-content; max-width: 16rem; background: var(--km-text);
-  color: var(--km-bg); border-radius: 999px; font-weight: 700; padding: 16px 22px; text-align: center; }
+  color: var(--bg-deep-space, #f5f7fb); border-radius: 999px; font-weight: 700; padding: 16px 22px;
+  text-align: center; }
 .km-concept-spoke, .km-concept-chip { border: 1px solid var(--km-border); background: var(--km-card);
   cursor: pointer; }
 .km-concept-spoke { display: flex; flex-direction: column; align-items: center; justify-content: center;

@@ -19,6 +19,9 @@ export const SOFT_MAX_CHILDREN = 7;
 /** The concept-map view shows this instead of the whole sentence. */
 export const MAX_CONCEPT_LABEL_WORDS = 4;
 export const MAX_CONCEPT_LABEL_LENGTH = 40;
+/** Verb phrase on a concept-map edge, in the stored direction. */
+export const MAX_LINK_PHRASE_WORDS = 6;
+export const MAX_LINK_PHRASE_LENGTH = 48;
 
 /** Kinds a cross-link may carry. The tree's own edge is `elaborates`. */
 export const RELATION_KINDS = [
@@ -37,9 +40,14 @@ export interface KnowledgeStatement {
   /** The statement this one spells out in detail; absent only on the root. */
   parent?: string;
   /**
-   * Short concept for the concept-map view. Absent means the view shows the id.
+   * Short concept for the concept-map view. Without it that view skips the node.
    */
   label?: string;
+  /**
+   * Linking phrase from the parent to this concept. The concept-map view
+   * draws the edge only when this, or a relation `link`, is present.
+   */
+  link?: string;
   text: string;
   /** Repository-relative paths, optionally with a `#anchor`. */
   sources: string[];
@@ -49,6 +57,8 @@ export interface KnowledgeRelation {
   from: string;
   to: string;
   kind: RelationKind;
+  /** Linking phrase from `from` to `to` for the concept-map view. */
+  link?: string;
 }
 
 export interface KnowledgeMap {
@@ -89,6 +99,28 @@ function isRecord(value: unknown): value is Record<string, unknown> {
 
 function nonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
+}
+
+/** A short concept-map phrase, or an error message. */
+function shortPhrase(
+  value: unknown,
+  maxWords: number,
+  maxLength: number,
+): { text: string } | { error: string } {
+  if (
+    typeof value !== "string" ||
+    value.trim().length === 0 ||
+    /[\r\n]/.test(value)
+  ) {
+    return { error: "must be a single non-empty line" };
+  }
+  const text = value.trim();
+  if (text.length > maxLength || text.split(/\s+/).length > maxWords) {
+    return {
+      error: `is at most ${maxWords} words and ${maxLength} characters`,
+    };
+  }
+  return { text };
 }
 
 /** The path part of a source, without its `#anchor`. */
@@ -199,33 +231,30 @@ export function validateKnowledgeMap(
     }
     let label: string | undefined;
     if (raw.label !== undefined) {
-      if (
-        typeof raw.label !== "string" ||
-        raw.label.trim().length === 0 ||
-        /[\r\n]/.test(raw.label)
-      ) {
-        error("The concept label must be a single non-empty line.", id);
-      } else {
-        const trimmed = raw.label.trim();
-        const words = trimmed.split(/\s+/);
-        if (
-          trimmed.length > MAX_CONCEPT_LABEL_LENGTH ||
-          words.length > MAX_CONCEPT_LABEL_WORDS
-        ) {
-          error(
-            `The concept label is at most ${MAX_CONCEPT_LABEL_WORDS} words and ${MAX_CONCEPT_LABEL_LENGTH} characters.`,
-            id,
-          );
-        } else {
-          label = trimmed;
-        }
-      }
+      const parsed = shortPhrase(
+        raw.label,
+        MAX_CONCEPT_LABEL_WORDS,
+        MAX_CONCEPT_LABEL_LENGTH,
+      );
+      if ("error" in parsed) error(`The concept label ${parsed.error}.`, id);
+      else label = parsed.text;
+    }
+    let link: string | undefined;
+    if (raw.link !== undefined) {
+      const parsed = shortPhrase(
+        raw.link,
+        MAX_LINK_PHRASE_WORDS,
+        MAX_LINK_PHRASE_LENGTH,
+      );
+      if ("error" in parsed) error(`The linking phrase ${parsed.error}.`, id);
+      else link = parsed.text;
     }
 
     byId.set(id, {
       id,
       ...(nonEmptyString(raw.parent) ? { parent: raw.parent } : {}),
       ...(label ? { label } : {}),
+      ...(link ? { link } : {}),
       text: nonEmptyString(raw.text) ? raw.text : "",
       sources: Array.isArray(raw.sources) ? (raw.sources as string[]) : [],
     });
@@ -315,7 +344,25 @@ export function validateKnowledgeMap(
       continue;
     }
     pairs.add(pair);
-    relations.push({ from, to, kind: kind as RelationKind });
+    let link: string | undefined;
+    if (raw.link !== undefined) {
+      const parsed = shortPhrase(
+        raw.link,
+        MAX_LINK_PHRASE_WORDS,
+        MAX_LINK_PHRASE_LENGTH,
+      );
+      if ("error" in parsed) {
+        error(`The linking phrase ${parsed.error}.`, from);
+      } else {
+        link = parsed.text;
+      }
+    }
+    relations.push({
+      from,
+      to,
+      kind: kind as RelationKind,
+      ...(link ? { link } : {}),
+    });
   }
 
   if (issues.some((issue) => issue.level === "error")) {

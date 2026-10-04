@@ -1,26 +1,26 @@
 /**
  * Pure layout for the concept-map view. No DOM.
  *
- * A node is a short concept. The link carries the statement, and at most
- * four neighbours are drawn. The rest stay reachable as further concepts.
+ * A spoke exists only when both ends have a short label and the edge has
+ * its own linking phrase. Sentence connectives are not reused as phrases.
+ * The parent stays above the centre, so the way back up does not fall off.
  */
 
 import type {
   KnowledgeStatement,
   MapIndex,
+  Neighbor,
 } from "../../../src/cli/knowledge-map/model.js";
-import { relationLabelKey } from "./layout.js";
+import { type CompassSide, compassSide, rankNeighbors } from "./layout.js";
 
 export const CONCEPT_SPOKES = 4;
 
-export const CONCEPT_POSITIONS = ["north", "east", "south", "west"] as const;
-
-export type ConceptPosition = (typeof CONCEPT_POSITIONS)[number];
-
 export interface ConceptSpoke {
   id: string;
-  linkKey: string;
-  position: ConceptPosition;
+  fromId: string;
+  toId: string;
+  phrase: string;
+  side: CompassSide;
 }
 
 export interface ConceptPicture {
@@ -29,36 +29,79 @@ export interface ConceptPicture {
   more: string[];
 }
 
-/** The word on the node. A missing label falls back to the slug. */
-export function conceptLabel(statement: KnowledgeStatement): string {
+/** The word on the node. Missing labels are not shown as slugs. */
+export function conceptLabel(statement: KnowledgeStatement): string | null {
   const label = statement.label?.trim();
-  if (label) return label;
-  return statement.id.replace(/-/g, " ");
+  return label ? label : null;
+}
+
+function relationLink(index: MapIndex, a: string, b: string): string | null {
+  const relation = index.map.relations.find(
+    (item) =>
+      (item.from === a && item.to === b) || (item.from === b && item.to === a),
+  );
+  const link = relation?.link?.trim();
+  if (!relation || !link) return null;
+  return link;
 }
 
 /**
- * Outgoing links first, then incoming, each group ordered by id.
- * An unknown id falls back to the root.
+ * The proposition on this edge, written in the direction the phrase was
+ * stored. A relation phrase wins over the child's parent phrase.
+ */
+export function conceptProposition(
+  index: MapIndex,
+  focusId: string,
+  neighbor: Neighbor,
+): { fromId: string; toId: string; phrase: string } | null {
+  const center = index.get(focusId);
+  const other = index.get(neighbor.id);
+  if (!center || !other) return null;
+  if (!conceptLabel(center) || !conceptLabel(other)) return null;
+  const relationPhrase = relationLink(index, focusId, neighbor.id);
+  if (relationPhrase) {
+    const relation = index.map.relations.find(
+      (item) =>
+        (item.from === focusId && item.to === neighbor.id) ||
+        (item.from === neighbor.id && item.to === focusId),
+    );
+    if (!relation) return null;
+    return { fromId: relation.from, toId: relation.to, phrase: relationPhrase };
+  }
+  const child = neighbor.tree === "child" ? other : center;
+  const parentId = neighbor.tree === "child" ? focusId : neighbor.id;
+  if (neighbor.tree === null) return null;
+  const phrase = child.link?.trim();
+  if (!phrase) return null;
+  return { fromId: parentId, toId: child.id, phrase };
+}
+
+/**
+ * Parent first, then the concept just left, then other propositions.
+ * An unknown id falls back to the root. Only edges with a phrase are drawn.
  */
 export function conceptPicture(
   index: MapIndex,
   conceptId: string,
+  previous: string | null = null,
 ): ConceptPicture {
   const centerId = index.has(conceptId) ? conceptId : index.map.root;
-  const ranked = [...index.neighbors(centerId)].sort((a, b) => {
-    const direction =
-      Number(a.direction === "in") - Number(b.direction === "in");
-    if (direction !== 0) return direction;
-    return a.id.localeCompare(b.id);
-  });
+  const propositions = rankNeighbors(index, centerId, previous).flatMap(
+    (neighbor) => {
+      const proposition = conceptProposition(index, centerId, neighbor);
+      return proposition ? [{ neighbor, ...proposition }] : [];
+    },
+  );
   return {
     centerId,
-    spokes: ranked.slice(0, CONCEPT_SPOKES).map((neighbor, indexInStar) => ({
-      id: neighbor.id,
-      linkKey: relationLabelKey(neighbor),
-      position: CONCEPT_POSITIONS[indexInStar],
+    spokes: propositions.slice(0, CONCEPT_SPOKES).map((item) => ({
+      id: item.neighbor.id,
+      fromId: item.fromId,
+      toId: item.toId,
+      phrase: item.phrase,
+      side: compassSide(item.neighbor),
     })),
-    more: ranked.slice(CONCEPT_SPOKES).map((neighbor) => neighbor.id),
+    more: propositions.slice(CONCEPT_SPOKES).map((item) => item.neighbor.id),
   };
 }
 
@@ -66,16 +109,16 @@ export function conceptPicture(
 export function conceptReading(
   index: MapIndex,
   picture: ConceptPicture,
-  linkText: (key: string) => string,
 ): string {
-  const center = index.get(picture.centerId);
-  if (!center) return "";
-  const from = conceptLabel(center);
   return picture.spokes
     .map((spoke) => {
-      const other = index.get(spoke.id);
-      const to = other ? conceptLabel(other) : spoke.id;
-      return `${from} ${linkText(spoke.linkKey)} ${to}.`;
+      const from = index.get(spoke.fromId);
+      const to = index.get(spoke.toId);
+      const fromLabel = from ? conceptLabel(from) : null;
+      const toLabel = to ? conceptLabel(to) : null;
+      if (!fromLabel || !toLabel) return "";
+      return `${fromLabel} ${spoke.phrase} ${toLabel}.`;
     })
+    .filter((sentence) => sentence.length > 0)
     .join(" ");
 }

@@ -1,8 +1,7 @@
 /**
- * Concept map. The centre is one concept; each link is one statement.
- *
- * Further neighbours navigate instead of becoming a fifth spoke, so the
- * picture stays a sentence you can read off the star.
+ * Concept map. The centre is one concept; each link is a phrase that makes
+ * a sentence with the two labels. Edges without that phrase stay in the
+ * detail panel and do not appear in the star.
  */
 
 import {
@@ -11,6 +10,9 @@ import {
   conceptReading,
 } from "../concept-layout.js";
 import type { KnowledgeMapView, ViewFactory } from "../contract.js";
+import type { CompassSide } from "../layout.js";
+
+const SIDES: CompassSide[] = ["top", "right", "bottom", "left"];
 
 export const createView: ViewFactory = (
   container,
@@ -22,10 +24,11 @@ export const createView: ViewFactory = (
   root.className = "km-concept";
   container.appendChild(root);
 
-  const paint = (id: string) => {
-    const picture = conceptPicture(index, id);
+  const paint = (id: string, previous: string | null) => {
+    const picture = conceptPicture(index, id, previous);
     const center = index.get(picture.centerId);
-    const centerLabel = center ? conceptLabel(center) : picture.centerId;
+    const centerLabel = center ? conceptLabel(center) : null;
+    const centerText = centerLabel ?? center?.text ?? picture.centerId;
     root.replaceChildren();
 
     const stage = document.createElement("div");
@@ -33,42 +36,50 @@ export const createView: ViewFactory = (
     stage.setAttribute("role", "group");
     stage.setAttribute(
       "aria-label",
-      host.tf("km_concept_around", { label: centerLabel }),
+      host.tf("km_concept_around", { label: centerText }),
     );
+    const columns = new Map<CompassSide, HTMLDivElement>();
+    for (const side of SIDES) {
+      const column = document.createElement("div");
+      column.className = `km-concept-side km-concept-${side}`;
+      columns.set(side, column);
+    }
     const centerNode = document.createElement("div");
     centerNode.className = "km-concept-center";
-    centerNode.textContent = centerLabel;
-    stage.appendChild(centerNode);
+    centerNode.textContent = centerText;
+    stage.append(
+      centerNode,
+      ...SIDES.map((side) => columns.get(side) as HTMLDivElement),
+    );
     for (const spoke of picture.spokes) {
       const other = index.get(spoke.id);
       const button = document.createElement("button");
       button.type = "button";
-      button.className = `km-concept-spoke km-concept-${spoke.position}`;
+      button.className = "km-concept-spoke";
       const link = document.createElement("span");
       link.className = "km-concept-link";
-      link.textContent = host.t(spoke.linkKey);
+      link.textContent = spoke.phrase;
       const name = document.createElement("span");
       name.className = "km-concept-name";
-      name.textContent = other ? conceptLabel(other) : spoke.id;
+      name.textContent =
+        (other && conceptLabel(other)) || other?.text || spoke.id;
       button.append(link, name);
       button.addEventListener("click", () => host.navigate(spoke.id));
-      stage.appendChild(button);
+      columns.get(spoke.side)?.appendChild(button);
     }
     root.appendChild(stage);
 
-    const reading = conceptReading(index, picture, (key) => host.t(key));
-    if (reading) {
-      const block = document.createElement("p");
-      block.className = "km-concept-reading";
-      const label = document.createElement("span");
-      label.className = "km-concept-reading-label";
-      label.textContent = host.t("km_concept_reading");
-      const text = document.createElement("span");
-      text.className = "km-concept-reading-text";
-      text.textContent = reading;
-      block.append(label, text);
-      root.appendChild(block);
-    }
+    const reading = conceptReading(index, picture);
+    const block = document.createElement("p");
+    block.className = "km-concept-reading";
+    const label = document.createElement("span");
+    label.className = "km-concept-reading-label";
+    label.textContent = host.t("km_concept_reading");
+    const text = document.createElement("span");
+    text.className = "km-concept-reading-text";
+    text.textContent = reading || host.t("km_concept_empty");
+    block.append(label, text);
+    root.appendChild(block);
 
     if (picture.more.length > 0) {
       const more = document.createElement("div");
@@ -82,7 +93,8 @@ export const createView: ViewFactory = (
         const button = document.createElement("button");
         button.type = "button";
         button.className = "km-concept-chip";
-        button.textContent = extra ? conceptLabel(extra) : extraId;
+        button.textContent =
+          (extra && conceptLabel(extra)) || extra?.text || extraId;
         button.addEventListener("click", () => host.navigate(extraId));
         more.appendChild(button);
       }
@@ -90,11 +102,11 @@ export const createView: ViewFactory = (
     }
   };
 
-  paint(initialFocus);
+  paint(initialFocus, null);
 
   const view: KnowledgeMapView = {
-    setFocus(id) {
-      paint(id);
+    setFocus(id, change) {
+      paint(id, change.previous);
     },
     destroy() {
       root.remove();

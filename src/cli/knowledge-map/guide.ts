@@ -48,9 +48,13 @@ not sure a statement is true, leave it out.
 ## 3. Writing statements
 
 - One declarative sentence of at most ${MAX_STATEMENT_LENGTH} characters, on one line.
-- Optional \`label\`: at most four words, the short concept the concept-map
-  view draws on the node. Leave it out and that view shows the id. The
-  sentence stays in \`text\`.
+- \`label\`: at most four words, the concept the concept-map view draws.
+  The sentence stays in \`text\`. Without a label that view skips the node.
+- \`link\` on every statement except the root: a few words from the parent
+  concept to this one, such as "keeps" or "is scheduled by". The concept-map
+  view draws that edge only when the phrase is there. A relation may carry
+  its own \`link\` from \`from\` to \`to\`; that phrase wins when the pair is
+  also a parent and child.
 - A claim, not a topic title: "Sessions expire after 30 minutes without
   activity." rather than "Session handling".
 - Understandable on its own: name the subject instead of "it" or "this".
@@ -83,7 +87,7 @@ Allowed kinds: ${RELATION_KINDS.join(", ")}.
   "root": "project",
   "statements": [
     { "id": "project", "label": "Project", "text": "One sentence on what the repository is for.", "sources": ["README.md"] },
-    { "id": "storage", "parent": "project", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"] },
+    { "id": "storage", "parent": "project", "label": "Storage", "link": "keeps", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"] },
     { "id": "no-orm", "parent": "storage", "text": "Queries are plain SQL files instead of an ORM.", "sources": ["src/db/queries/"] },
     { "id": "orm", "parent": "no-orm", "text": "An ORM would hide the query plans the team tunes by hand.", "sources": ["docs/adr/0003-sql.md"] }
   ],

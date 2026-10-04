@@ -116,6 +116,10 @@ describe("knowledge map: validator", () => {
     expect(
       errors(map).some((message) => message.includes("concept label")),
     ).toBe(true);
+    statements[0].label = "ZAM";
+    statements[1].link = "rests on";
+    const linked = validateKnowledgeMap(map, { sourceExists: () => true });
+    expect(linked.map?.statements[1]?.link).toBe("rests on");
   });
 
   it("rejects a wrong format, version and missing focus question", () => {
