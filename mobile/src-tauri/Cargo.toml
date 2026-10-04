@@ -1,6 +1,6 @@
 [package]
 name = "zam-mobile"
-version = "0.45.2"
+version = "0.46.0"
 description = "ZAM mobile companion app (Android + iOS)"
 edition = "2021"
 license = "Apache-2.0"
