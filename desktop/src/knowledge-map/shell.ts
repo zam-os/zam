@@ -10,9 +10,10 @@ import { conceptLabel, conceptProposition } from "./concept-layout.js";
 import type { KnowledgeMapView, ViewHost } from "./contract.js";
 import { relationLabelKey } from "./layout.js";
 import {
-  KNOWLEDGE_MAP_VIEWS,
   type KnowledgeMapViewId,
   knowledgeMapViewEntry,
+  knowledgeMapViewsByAuthor,
+  parseKnowledgeMapViewId,
 } from "./registry.js";
 import { ensureKnowledgeMapStyles } from "./styles.js";
 
@@ -236,17 +237,26 @@ export async function mountKnowledgeMap(
 
   const renderSwitcher = () => {
     switcher.replaceChildren();
-    for (const entry of KNOWLEDGE_MAP_VIEWS) {
-      const button = el("button", undefined, t(entry.nameKey));
-      button.type = "button";
-      button.title = t(entry.descriptionKey);
-      button.setAttribute("aria-pressed", String(entry.id === currentViewId));
-      button.addEventListener("click", () => {
-        void setView(entry.id);
-        options.onViewChange?.(entry.id);
-      });
-      switcher.appendChild(button);
+    const select = el("select", "km-switcher-select");
+    select.setAttribute("aria-label", t("km_view_label"));
+    for (const group of knowledgeMapViewsByAuthor()) {
+      const optgroup = el("optgroup");
+      optgroup.label = t(`km_author_${group.author}`);
+      for (const entry of group.views) {
+        const option = el("option", undefined, t(entry.nameKey));
+        option.value = entry.id;
+        option.title = t(entry.descriptionKey);
+        option.selected = entry.id === currentViewId;
+        optgroup.appendChild(option);
+      }
+      select.appendChild(optgroup);
     }
+    select.addEventListener("change", () => {
+      const id = parseKnowledgeMapViewId(select.value);
+      void setView(id);
+      options.onViewChange?.(id);
+    });
+    switcher.appendChild(select);
     viewLabel.textContent = `${t("km_view_label")}: ${t(knowledgeMapViewEntry(currentViewId).nameKey)} · ${t("km_view_switch_hint")}`;
   };
 

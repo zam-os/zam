@@ -10,8 +10,9 @@
 import { runBridge } from "../bridge-transport.js";
 import { t } from "../i18n.js";
 import {
-  KNOWLEDGE_MAP_VIEWS,
+  type KnowledgeMapViewEntry,
   type KnowledgeMapViewId,
+  knowledgeMapViewsByAuthor,
   parseKnowledgeMapViewId,
 } from "./registry.js";
 
@@ -54,7 +55,17 @@ export function initKnowledgeMapSettings(options: {
   let current: KnowledgeMapViewId = "focus";
   const renderViews = () => {
     views.replaceChildren();
-    for (const entry of KNOWLEDGE_MAP_VIEWS) {
+    for (const group of knowledgeMapViewsByAuthor()) {
+      const heading = document.createElement("span");
+      heading.className = "sub-label";
+      heading.textContent = t(`km_author_${group.author}`);
+      views.appendChild(heading);
+      renderGroup(group.views);
+    }
+  };
+
+  const renderGroup = (entries: KnowledgeMapViewEntry[]) => {
+    for (const entry of entries) {
       const label = document.createElement("label");
       label.className = "settings-toggle";
       const input = document.createElement("input");

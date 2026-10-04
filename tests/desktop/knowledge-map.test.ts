@@ -17,6 +17,13 @@ import {
   conceptReading,
 } from "../../desktop/src/knowledge-map/concept-layout.js";
 import {
+  anchorType,
+  causeTree,
+  facetsOf,
+  macroSynthesis,
+  relatedItems,
+} from "../../desktop/src/knowledge-map/gemini-adapter.js";
+import {
   layoutFocus,
   layoutMinimap,
   MAX_VISIBLE_NEIGHBORS,
@@ -27,6 +34,7 @@ import {
 import {
   DEFAULT_KNOWLEDGE_MAP_VIEW,
   KNOWLEDGE_MAP_VIEWS,
+  knowledgeMapViewsByAuthor,
   parseKnowledgeMapViewId,
 } from "../../desktop/src/knowledge-map/registry.js";
 import {
@@ -291,6 +299,51 @@ describe("knowledge map C4 view", () => {
   });
 });
 
+describe("Gemini's views on the shared map", () => {
+  const index = zamIndex();
+
+  it("joins each neighbour with its concept sentence", () => {
+    const items = relatedItems(index, "zam");
+    expect(items[0].proposition).toBe("ZAM guards against Disconnection");
+    expect(items.every((item) => item.proposition !== null)).toBe(true);
+  });
+
+  it("derives the macro-statement from the map, sentence by sentence", () => {
+    const text = macroSynthesis(index, "zam");
+    expect(text).toContain("ZAM rests on Beliefs.");
+    expect(text).toContain("ZAM keeps Kernel.");
+  });
+
+  it("puts what the focus rests on left and what follows right", () => {
+    const { upstream, downstream } = causeTree(index, "kernel");
+    const up = upstream.map((item) => item.id);
+    const down = downstream.map((item) => item.id);
+    expect(up).toContain("zam");
+    expect(up).toContain("local-sqlite");
+    expect(down).toContain("mcp-preferred");
+    expect(down).toContain("kernel-no-llm");
+    expect(up.filter((id) => down.includes(id))).toEqual([]);
+  });
+
+  it("fills the four zones", () => {
+    const facets = facetsOf(index, "fsrs6");
+    expect(facets.purpose.map((item) => item.id)).toEqual(["review"]);
+    expect(facets.rules.map((item) => item.id)).toContain("sm2");
+    expect(facets.places).toEqual([
+      { path: "docs/okf/fsrs-scheduling.md", type: "okf" },
+    ]);
+  });
+
+  it("types repository anchors by path", () => {
+    expect(anchorType("docs/adr/2026-10-03-repo-knowledge-map.md")).toBe("adr");
+    expect(anchorType("tests/cli/knowledge-map.test.ts")).toBe("test");
+    expect(anchorType("docs/knowledge-map/map.schema.json")).toBe("schema");
+    expect(anchorType("package.json")).toBe("config");
+    expect(anchorType("README.md")).toBe("docs");
+    expect(anchorType("src/kernel/index.ts")).toBe("code");
+  });
+});
+
 describe("knowledge map views and strings", () => {
   it("registers the switchable views with a safe default", () => {
     expect(KNOWLEDGE_MAP_VIEWS.map((v) => v.id)).toEqual([
@@ -299,6 +352,19 @@ describe("knowledge map views and strings", () => {
       "levels",
       "concept",
       "c4",
+      "gemini-radial",
+      "gemini-causal",
+      "gemini-facets",
+    ]);
+    expect(
+      knowledgeMapViewsByAuthor().map(
+        (group) => `${group.author}:${group.views.map((v) => v.id).join(",")}`,
+      ),
+    ).toEqual([
+      "shared:outline",
+      "claude:focus,levels,c4",
+      "gemini:gemini-radial,gemini-causal,gemini-facets",
+      "grok:concept",
     ]);
     expect(parseKnowledgeMapViewId("levels")).toBe("levels");
     expect(parseKnowledgeMapViewId("3d")).toBe(DEFAULT_KNOWLEDGE_MAP_VIEW);
