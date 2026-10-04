@@ -47,7 +47,10 @@ export interface C4Box {
 export interface C4Arrow {
   from: string;
   to: string;
+  /** The first phrase; drawn on the arrow. */
   label?: string;
+  /** Every distinct phrase of the links this arrow stands for. */
+  labels: string[];
   technology?: string;
   /** How many `uses` links this arrow stands for. */
   count: number;
@@ -209,11 +212,15 @@ export function buildC4Diagram(
     const existing = arrows.get(key);
     if (existing) {
       existing.count += 1;
+      if (relation.link && !existing.labels.includes(relation.link)) {
+        existing.labels.push(relation.link);
+      }
     } else {
       arrows.set(key, {
         from,
         to,
         ...(relation.link ? { label: relation.link } : {}),
+        labels: relation.link ? [relation.link] : [],
         ...(relation.technology ? { technology: relation.technology } : {}),
         count: 1,
       });

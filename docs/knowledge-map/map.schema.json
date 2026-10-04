@@ -2,7 +2,7 @@
   "$schema": "https://json-schema.org/draft/2020-12/schema",
   "$id": "https://raw.githubusercontent.com/zam-os/zam/main/docs/knowledge-map/map.schema.json",
   "title": "ZAM repository knowledge map",
-  "description": "A tree of one-sentence statements with typed links; a statement may also be a C4 architecture element. ZAM's validator (zam_knowledge_map_write) is authoritative and also checks that sources exist, the tree is reachable from the root, and C4 elements have a place to sit (ADR 2026-10-03).",
+  "description": "A tree of one-sentence statements with typed links; a statement may also be a C4 architecture element. ZAM's validator (zam_knowledge_map_write) is authoritative and also checks that sources exist, the tree is reachable from the root, and C4 elements have a place to sit; it warns about links without a phrase (ADR 2026-10-03).",
   "type": "object",
   "required": [
     "format",
@@ -71,6 +71,7 @@
       "type": "object",
       "required": [
         "id",
+        "label",
         "text",
         "sources"
       ],
@@ -84,12 +85,14 @@
         "label": {
           "$ref": "#/$defs/line",
           "maxLength": 40,
-          "description": "Short concept, at most 4 words; the concept map draws it and a C4 box defaults to it."
+          "description": "Short concept, at most 4 words; the concept map draws it and a C4 box defaults to it.",
+          "pattern": "^\\S+(\\s+\\S+){0,3}$"
         },
         "link": {
           "$ref": "#/$defs/line",
           "maxLength": 48,
-          "description": "Phrase from the parent concept to this one, at most 6 words."
+          "description": "Phrase from the parent concept to this one, at most 6 words; required on every statement that has a parent.",
+          "pattern": "^\\S+(\\s+\\S+){0,5}$"
         },
         "text": {
           "$ref": "#/$defs/line",
@@ -109,6 +112,11 @@
         "c4": {
           "$ref": "#/$defs/c4"
         }
+      },
+      "dependentRequired": {
+        "parent": [
+          "link"
+        ]
       }
     },
     "c4": {
@@ -170,13 +178,30 @@
         "link": {
           "$ref": "#/$defs/line",
           "maxLength": 48,
-          "description": "Phrase from `from` to `to`, at most 6 words; the C4 view draws it on the arrow."
+          "description": "Phrase from `from` to `to`, at most 6 words; the C4 view draws it on the arrow.",
+          "pattern": "^\\S+(\\s+\\S+){0,5}$"
         },
         "technology": {
           "$ref": "#/$defs/line",
           "maxLength": 60
         }
-      }
+      },
+      "allOf": [
+        {
+          "if": {
+            "properties": {
+              "kind": {
+                "const": "uses"
+              }
+            }
+          },
+          "then": {
+            "required": [
+              "link"
+            ]
+          }
+        }
+      ]
     }
   }
 }

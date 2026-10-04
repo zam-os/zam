@@ -310,7 +310,7 @@ export const createView: ViewFactory = (
     for (const [i, arrow] of diagram.arrows.entries()) {
       const text = [
         `${i + 1}. ${nameOf(arrow.from)} → ${nameOf(arrow.to)}`,
-        arrow.label ? `: ${arrow.label}` : "",
+        arrow.labels.length > 0 ? `: ${arrow.labels.join("; ")}` : "",
         arrow.technology ? ` [${arrow.technology}]` : "",
         arrow.count > 1 ? ` (×${arrow.count})` : "",
       ].join("");

@@ -135,11 +135,23 @@ parent's concept to its own, so that "parent label + link + label" reads as a
 sentence ("ZAM rests on Beliefs"). A relation may carry its own `link` from
 `from` to `to`, which wins when the pair is also parent and child, and a
 `technology`. The concept map reads these phrases; the C4 view draws a
-relation's `link` on its arrow, so one field serves both.
+relation's `link` on its arrow, so one field serves both. The validator
+requires a `label` on every statement, a `link` on every statement below the
+root and on every `uses` relation; another relation without a `link` gets a
+warning, because the concept map leaves it out.
+
 **Relations.** A relation joins two statements and has a `kind` from a small
-closed set. The view renders each kind as a fixed connective in the UI
-language, so "statement — connective — statement" reads as a sentence. This
-keeps labels translatable and consistent.
+closed set. An edge therefore reads at two levels:
+
+- **Between sentences**, the focus map, outline and levels render the kind as
+  a fixed connective in the UI language, so "statement — connective —
+  statement" reads as a sentence. This keeps those views translatable.
+- **Between concepts**, the concept map and the C4 view read the `link`
+  phrase: "label — link — label" ("ZAM rests on Beliefs").
+
+The detail panel shows both for every connection: the connective with the
+full statement, and under it the concept sentence when both labels and a
+phrase exist. A view never presents one edge as two unrelated sentences.
 
 | Kind | Reads as | Meaning |
 |---|---|---|
@@ -249,7 +261,8 @@ and rejected alternatives (argument mapping, IBIS). The `because` and
 **Rules for every view:**
 
 - at most seven visible neighbours;
-- relations always read as connectives;
+- relations read as connectives between sentences, or as `link` phrases
+  between labels (Decision 1);
 - no 3D and no fisheye or hyperbolic distortion;
 - animated transitions with stable positions;
 - statement text that predicts what lies behind it;
@@ -269,7 +282,7 @@ Advanced tier with the Alpha badge, next to the Bitwarden vault card.
 **While it is on:**
 
 - the Studio's top navigation shows a "Knowledge map" entry;
-- the card lists the three views as a choice. The map page uses the chosen
+- the card lists every view in the registry as a choice. The map page uses the chosen
   view the next time it opens; the page itself has no switcher, so a tester
   compares views deliberately through Settings.
 
@@ -316,8 +329,10 @@ file inside the bundle would break compatibility.
 - a single root;
 - one `elaborates` parent per statement and no `elaborates` cycle;
 - that every statement is reachable from the root;
-- C4 facets: a known kind, a short name, and a place to sit for every
-  internal container, database and component (Decision 8).
+- C4 facets: a known kind, an optional short name, and a place to sit for
+  every internal container, database and component (Decision 8);
+- a `label` on every statement, a `link` below the root and on every `uses`
+  relation (Decision 1); a warning for other relations without a `link`.
 
 **Any repository, through the agent.**
 
@@ -379,6 +394,21 @@ the map was written, as the OKF freshness radar does for articles.
     absolute, contain `..` or a URL, and they are resolved and checked to stay
     inside the repository. Anchors such as `#L1-L20` already pass.
 
+**Grok's review of the combined branch (2026-10-04).**
+
+- Adopted:
+  - Decision 1 now describes both readings of an edge, and the detail panel
+    shows the concept sentence under each connection, so a side-by-side test
+    does not meet one edge as two different sentences.
+  - Labels and links are required where a view needs them, so a map that
+    validates is never mute in the concept map or the C4 view.
+  - The schema checks the word limits and the required fields, and a test
+    keeps its patterns in step with the validator.
+  - The C4 relationship list shows every phrase of a rolled-up arrow, not
+    only the first.
+  - Decision 4 no longer counts the views.
+- Known and accepted: the `$schema` link points at `main` and resolves only
+  once this branch is merged.
 ### 6. How the preferred view is chosen
 
 Learner feedback decides (owner decision 4). Every view has the same feedback

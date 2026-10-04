@@ -34,7 +34,9 @@ import {
   type KnowledgeStatement,
   MAX_C4_NAME_LENGTH,
   MAX_CONCEPT_LABEL_LENGTH,
+  MAX_CONCEPT_LABEL_WORDS,
   MAX_LINK_PHRASE_LENGTH,
+  MAX_LINK_PHRASE_WORDS,
   MAX_STATEMENT_LENGTH,
   MAX_TECHNOLOGY_LENGTH,
   RELATION_KINDS,
@@ -56,35 +58,48 @@ function smallMap(): Record<string, unknown> {
     focus_question: "How does the demo work?",
     root: "demo",
     statements: [
-      { id: "demo", text: "The demo shows a map.", sources: ["README.md"] },
+      {
+        id: "demo",
+        label: "Demo",
+        text: "The demo shows a map.",
+        sources: ["README.md"],
+      },
       {
         id: "store",
         parent: "demo",
+        label: "One file",
+        link: "keeps data in",
         text: "Data lives in one file.",
         sources: ["README.md"],
       },
       {
         id: "no-db",
         parent: "store",
+        label: "No server",
+        link: "needs",
         text: "There is no database server.",
         sources: ["README.md#setup"],
       },
       {
         id: "db",
         parent: "no-db",
+        label: "Database server",
+        link: "avoids a",
         text: "A server would need hosting.",
         sources: ["README.md"],
       },
       {
         id: "fast",
         parent: "demo",
+        label: "Fast start",
+        link: "has a",
         text: "Start-up takes one second.",
         sources: ["README.md"],
       },
     ],
     relations: [
-      { from: "no-db", to: "db", kind: "instead_of" },
-      { from: "fast", to: "store", kind: "because" },
+      { from: "no-db", to: "db", kind: "instead_of", link: "replaces a" },
+      { from: "fast", to: "store", kind: "because", link: "comes from" },
     ],
   };
 }
@@ -241,6 +256,8 @@ describe("knowledge map: validator", () => {
       statements.push({
         id: `extra-${i}`,
         parent: "demo",
+        label: `Extra ${i}`,
+        link: "has",
         text: "x.",
         sources: ["README.md"],
       });
@@ -264,12 +281,15 @@ function c4Map(): Record<string, unknown> {
     statements: [
       {
         id: "shop",
+        label: "Shop",
         text: "The shop sells books online.",
         sources: ["README.md"],
         c4: { kind: "system", name: "Shop" },
       },
       {
         id: "buyer",
+        label: "Buyer",
+        link: "serves",
         parent: "shop",
         text: "A buyer orders books.",
         sources: ["README.md"],
@@ -277,6 +297,8 @@ function c4Map(): Record<string, unknown> {
       },
       {
         id: "web",
+        label: "Web app",
+        link: "runs",
         parent: "shop",
         text: "A web app takes orders.",
         sources: ["README.md"],
@@ -284,6 +306,8 @@ function c4Map(): Record<string, unknown> {
       },
       {
         id: "db",
+        label: "Orders",
+        link: "stores in",
         parent: "web",
         text: "Orders are stored in PostgreSQL.",
         sources: ["README.md"],
@@ -291,6 +315,8 @@ function c4Map(): Record<string, unknown> {
       },
       {
         id: "checkout",
+        label: "Checkout",
+        link: "checks out with",
         parent: "shop",
         text: "Checkout validates the basket.",
         sources: ["README.md"],
@@ -298,6 +324,8 @@ function c4Map(): Record<string, unknown> {
       },
       {
         id: "pay",
+        label: "Payments",
+        link: "pays through",
         parent: "shop",
         text: "A payment provider charges the card.",
         sources: ["README.md"],
@@ -402,13 +430,38 @@ describe("knowledge map: C4 elements and links", () => {
     expect(messages.some((m) => m.includes("relation technology"))).toBe(true);
   });
 
-  it("names a C4 box after the label unless c4.name is set", () => {
+  it("lets a C4 box take its name from the label", () => {
     const map = c4Map();
     const statements = map.statements as Array<Record<string, unknown>>;
     statements[2].c4 = { kind: "container", technology: "React" };
-    expect(errors(map).some((m) => m.includes("needs a name"))).toBe(true);
-    statements[2].label = "Web app";
     expect(errors(map)).toEqual([]);
+  });
+
+  it("requires what every view draws: labels, links and uses phrases", () => {
+    const map = c4Map();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    delete statements[2].label;
+    delete statements[1].link;
+    const relations = map.relations as Array<Record<string, unknown>>;
+    delete relations[0].link;
+    const messages = errors(map);
+    expect(messages.some((m) => m.includes('needs a "label"'))).toBe(true);
+    expect(messages.some((m) => m.includes('needs a "link"'))).toBe(true);
+    expect(messages.some((m) => m.includes('without a "link" phrase'))).toBe(
+      true,
+    );
+    // The root needs no link, and a non-uses link without a phrase only warns.
+    const fine = c4Map();
+    (fine.relations as Array<Record<string, unknown>>).push({
+      from: "buyer",
+      to: "pay",
+      kind: "because",
+    });
+    const result = validateKnowledgeMap(fine, { sourceExists: () => true });
+    expect(result.map).not.toBeNull();
+    expect(result.issues).toEqual([
+      expect.objectContaining({ level: "warning", id: "buyer" }),
+    ]);
   });
 });
 
@@ -453,6 +506,18 @@ describe("knowledge map: JSON-LD and schema", () => {
     expect(defs.statement.properties.link.maxLength).toBe(
       MAX_LINK_PHRASE_LENGTH,
     );
+    const words = (n: number) => `^\\S+(\\s+\\S+){0,${n - 1}}$`;
+    expect(defs.statement.properties.label.pattern).toBe(
+      words(MAX_CONCEPT_LABEL_WORDS),
+    );
+    expect(defs.statement.properties.link.pattern).toBe(
+      words(MAX_LINK_PHRASE_WORDS),
+    );
+    expect(defs.relation.properties.link.pattern).toBe(
+      words(MAX_LINK_PHRASE_WORDS),
+    );
+    expect(defs.statement.required).toContain("label");
+    expect(defs.statement.dependentRequired).toEqual({ parent: ["link"] });
   });
 });
 

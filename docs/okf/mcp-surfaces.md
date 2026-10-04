@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-04T22:45:00.000Z
+timestamp: 2026-10-04T23:30:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -183,9 +183,12 @@ earlier needs a restart.
 A map is a tree of one-sentence statements (each names its `parent`) plus
 typed links (`requires`, `leads_to`, `because`, `instead_of`, `example`,
 `uses`). Every statement cites at least one source path that must exist in
-the repository. A statement may carry a short `label` (its concept) and a
-`link` phrase from its parent's concept; a relation may carry its own `link`
-and a `technology`. The concept-map view reads those phrases between labels.
+the repository. Every statement carries a short `label` (its concept), and
+every statement below the root a `link` phrase from its parent's concept; a
+relation carries its own `link` (required on `uses`, otherwise a warning when
+missing) and may name a `technology`. The concept-map view reads those
+phrases between labels, and the detail panel shows them under each
+connection.
 A statement may also carry a `c4` facet (person, system, container, database
 or component) that makes it a C4 architecture element; `uses` links become
 the arrows of the C4 view, labelled with their `link`. The written file

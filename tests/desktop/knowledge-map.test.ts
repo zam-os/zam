@@ -48,11 +48,15 @@ function zamIndex() {
 
 /** A root with nine details and two cross-links, for overflow cases. */
 function wideIndex() {
-  const statements = [{ id: "root", text: "Root.", sources: ["README.md"] }];
+  const statements = [
+    { id: "root", label: "Root", text: "Root.", sources: ["README.md"] },
+  ];
   for (let i = 0; i < 9; i++) {
     statements.push({
       id: `c${i}`,
       parent: "root",
+      label: `Child ${i}`,
+      link: "has",
       text: `Child ${i}.`,
       sources: ["README.md"],
     } as never);
@@ -60,12 +64,16 @@ function wideIndex() {
   statements.push({
     id: "why",
     parent: "c0",
+    label: "Why",
+    link: "has",
     text: "Why.",
     sources: ["README.md"],
   } as never);
   statements.push({
     id: "use",
     parent: "c1",
+    label: "Use",
+    link: "has",
     text: "Use.",
     sources: ["README.md"],
   } as never);
@@ -77,8 +85,8 @@ function wideIndex() {
     root: "root",
     statements,
     relations: [
-      { from: "root", to: "why", kind: "because" },
-      { from: "use", to: "root", kind: "requires" },
+      { from: "root", to: "why", kind: "because", link: "is explained by" },
+      { from: "use", to: "root", kind: "requires", link: "needs" },
     ],
   }).map as KnowledgeMap;
   return buildMapIndex(map);
@@ -156,6 +164,12 @@ describe("knowledge map C4 view", () => {
     // A statement without a facet belongs to its nearest element.
     expect(model.elementOf("not-transitive")).toBe("blocking");
     expect(model.elementOf("beliefs")).toBe("zam");
+  });
+
+  it("names a box after c4.name, else the statement's label", () => {
+    expect(model.elements.get("kernel")?.name).toBe("Kernel");
+    expect(model.elements.get("cli-layer")?.name).toBe("CLI and MCP server");
+    expect(model.elements.get("studio")?.name).toBe("Desktop Studio");
   });
 
   it("navigates context → containers → components and back", () => {
@@ -236,6 +250,8 @@ describe("knowledge map C4 view", () => {
       (a) => a.from === "cli-layer" && a.to === "kernel",
     );
     expect(cliToKernel?.count).toBe(2);
+    // Rolled-up links keep every distinct phrase for the list.
+    expect(cliToKernel?.labels).toEqual(["runs learning logic in"]);
     // Links between two outside boxes stay off a container diagram.
     expect(arrows).not.toContain("learner>agents");
     expect(diagram.boundary?.id).toBe("zam");
@@ -317,21 +333,19 @@ describe("knowledge map views and strings", () => {
 });
 
 describe("concept map picture", () => {
+  // Built without the validator on purpose: these fixtures leave labels and
+  // phrases out to show that the view degrades instead of drawing slugs, a
+  // case the validator now rejects for written maps.
   function indexed(statements: Array<Record<string, unknown>>, relations = []) {
-    const map = validateKnowledgeMap(
-      {
-        format: "zam-knowledge-map",
-        version: 1,
-        title: "ZAM",
-        focus_question: "What stays in view?",
-        root: "zam",
-        statements,
-        relations,
-      },
-      { sourceExists: () => true },
-    ).map;
-    if (!map) throw new Error("fixture map was rejected");
-    return buildMapIndex(map);
+    return buildMapIndex({
+      format: "zam-knowledge-map",
+      version: 1,
+      title: "ZAM",
+      focus_question: "What stays in view?",
+      root: "zam",
+      statements,
+      relations,
+    } as unknown as KnowledgeMap);
   }
 
   const star = () =>

@@ -54,13 +54,11 @@ not sure a statement is true, leave it out.
 ## 3. Writing statements
 
 - One declarative sentence of at most ${MAX_STATEMENT_LENGTH} characters, on one line.
-- \`label\`: at most ${MAX_CONCEPT_LABEL_WORDS} words, the concept the concept-map view draws
-  and the default name of a C4 box. The sentence stays in \`text\`. Without a
-  label the concept map skips the node.
-- \`link\` on every statement except the root: at most ${MAX_LINK_PHRASE_WORDS} words from the
-  parent concept to this one, such as "keeps" or "is scheduled by", so that
-  "parent label + link + label" reads as a sentence. The concept map draws
-  that edge only when the phrase is there.
+- \`label\` (required): at most ${MAX_CONCEPT_LABEL_WORDS} words, the concept the concept-map
+  view draws and the default name of a C4 box. The sentence stays in \`text\`.
+- \`link\` (required on every statement except the root): at most ${MAX_LINK_PHRASE_WORDS} words
+  from the parent concept to this one, such as "keeps" or "is scheduled by",
+  so that "parent label + link + label" reads as a sentence.
 - A claim, not a topic title: "Sessions expire after 30 minutes without
   activity." rather than "Session handling".
 - Understandable on its own: name the subject instead of "it" or "this".
@@ -86,9 +84,10 @@ A relation may carry a \`link\`: at most ${MAX_LINK_PHRASE_WORDS} words from \`f
 that say what happens ("stores cards in", "calls tools of"), so that "from
 label + link + to label" reads as a sentence. It wins over a child's own
 \`link\` when the pair is also parent and child. The concept map reads it
-between the labels, and the C4 view draws it on the arrow, so give every
-\`uses\` relation one. A \`uses\` relation may also name its \`technology\`
-("SQL", "MCP over stdio").
+between the labels, and the C4 view draws it on the arrow. It is required on
+every \`uses\` relation; on other relations it is expected, and a relation
+without one gets a warning because the concept map leaves it out. A \`uses\`
+relation may also name its \`technology\` ("SQL", "MCP over stdio").
 
 ## 5. Architecture (C4)
 

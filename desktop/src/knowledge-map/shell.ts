@@ -6,6 +6,7 @@
  */
 
 import type { MapIndex } from "../../../src/cli/knowledge-map/model.js";
+import { conceptLabel, conceptProposition } from "./concept-layout.js";
 import type { KnowledgeMapView, ViewHost } from "./contract.js";
 import { relationLabelKey } from "./layout.js";
 import {
@@ -203,6 +204,20 @@ export async function mountKnowledgeMap(
         ),
         index.get(neighbor.id)?.text ?? neighbor.id,
       );
+      // The same edge between the two concepts ("ZAM rests on Beliefs"), as
+      // the concept map and the C4 arrows read it.
+      const proposition = conceptProposition(index, focus, neighbor);
+      const fromConcept = proposition && index.get(proposition.fromId);
+      const toConcept = proposition && index.get(proposition.toId);
+      if (proposition && fromConcept && toConcept) {
+        button.appendChild(
+          el(
+            "span",
+            "km-proposition",
+            `${conceptLabel(fromConcept)} ${proposition.phrase} ${conceptLabel(toConcept)}`,
+          ),
+        );
+      }
       button.addEventListener("click", () => go(neighbor.id, true));
       li.appendChild(button);
       sentences.appendChild(li);

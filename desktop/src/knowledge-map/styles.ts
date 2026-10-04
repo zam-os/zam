@@ -112,6 +112,7 @@ const CSS = `
   border-radius: 8px; padding: 6px 8px; cursor: pointer; line-height: 1.4; font-size: 0.9rem; }
 .km-sentences button:hover { background: var(--km-accent-soft); border-color: var(--km-border); }
 .km-conn { font-weight: 650; margin-right: 6px; white-space: nowrap; }
+.km-proposition { display: block; margin-top: 3px; font-size: 0.78rem; color: var(--km-muted); font-style: italic; }
 .km-k-elaborates { color: var(--km-k-elaborates); }
 .km-k-because { color: var(--km-k-because); }
 .km-k-requires { color: var(--km-k-requires); }

@@ -424,8 +424,16 @@ export function validateKnowledgeMap(
       error('"parent" must be a statement id.', id);
     }
     const c4 = raw.c4 === undefined ? undefined : parseC4(raw.c4, id, error);
+    // Every view needs these: the concept map draws labels joined by phrases,
+    // a C4 box falls back to the label. A map without them would validate
+    // and still leave those views mute.
     let label: string | undefined;
-    if (raw.label !== undefined) {
+    if (raw.label === undefined) {
+      error(
+        `Every statement needs a "label": its concept in at most ${MAX_CONCEPT_LABEL_WORDS} words.`,
+        id,
+      );
+    } else {
       const parsed = shortPhrase(
         raw.label,
         MAX_CONCEPT_LABEL_WORDS,
@@ -435,7 +443,14 @@ export function validateKnowledgeMap(
       else label = parsed.text;
     }
     let link: string | undefined;
-    if (raw.link !== undefined) {
+    if (raw.link === undefined) {
+      if (id !== input.root) {
+        error(
+          `Every statement except the root needs a "link": the phrase from its parent's concept to its own, at most ${MAX_LINK_PHRASE_WORDS} words.`,
+          id,
+        );
+      }
+    } else {
       const parsed = shortPhrase(
         raw.link,
         MAX_LINK_PHRASE_WORDS,
@@ -443,9 +458,6 @@ export function validateKnowledgeMap(
       );
       if ("error" in parsed) error(`The linking phrase ${parsed.error}.`, id);
       else link = parsed.text;
-    }
-    if (c4 && !c4.name && !label) {
-      error('A C4 element needs a name: set "c4.name" or "label".', id);
     }
 
     byId.set(id, {
@@ -577,7 +589,19 @@ export function validateKnowledgeMap(
       to,
       kind: kind as RelationKind,
     };
-    if (raw.link !== undefined) {
+    if (raw.link === undefined) {
+      if (kind === "uses") {
+        error(
+          `"${from}" uses "${to}" without a "link" phrase; the C4 view writes it on the arrow.`,
+          from,
+        );
+      } else {
+        warn(
+          `The link to "${to}" has no "link" phrase, so the concept map leaves it out.`,
+          from,
+        );
+      }
+    } else {
       const parsed = shortPhrase(
         raw.link,
         MAX_LINK_PHRASE_WORDS,
