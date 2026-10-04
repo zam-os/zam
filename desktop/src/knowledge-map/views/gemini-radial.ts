@@ -106,7 +106,7 @@ export const createView: ViewFactory = (
     const anchors = el("section", "km-g-synthesis");
     anchors.append(
       el("h4", undefined, host.t("km_g_anchors")),
-      anchorList(anchorsOf(index, focusId), host.t("km_g_empty")),
+      anchorList(anchorsOf(index, focusId), host, host.t("km_g_empty")),
     );
     footer.appendChild(anchors);
     root.appendChild(footer);

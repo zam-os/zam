@@ -2105,11 +2105,15 @@ export function createMcpServer(
             // The Studio shows the map the learner's agent wrote last.
             setKnowledgeMapConfig({ repoPath: repoRoot });
           }
+          const ready =
+            "Tell the user the map is ready in ZAM Studio under Knowledge map (Wissenskarte).";
           return {
             ...result,
-            next: result.ok
-              ? "Tell the user the map is ready in ZAM Studio under Knowledge map (Wissenskarte)."
-              : "Fix every error listed in issues and call zam_knowledge_map_write again with the whole map.",
+            next: !result.ok
+              ? "Fix every error listed in issues and call zam_knowledge_map_write again with the whole map."
+              : result.issues.some((issue) => issue.level === "warning")
+                ? `Saved. Each warning in issues leaves something out of a view (a relation without a link is missing from the concept map): fix them and save the whole map again. ${ready}`
+                : ready,
           };
         },
       ),

@@ -35,7 +35,7 @@ export function itemCard(
   return card;
 }
 
-/** Up to `max` cards, then a "+n more" line. */
+/** Up to `max` cards, then a "+n more" button that shows the rest. */
 export function itemList(
   items: RelatedItem[],
   host: ViewHost,
@@ -50,14 +50,25 @@ export function itemList(
   for (const item of items.slice(0, max))
     list.appendChild(itemCard(item, host));
   if (items.length > max) {
-    list.appendChild(
-      el("p", "km-g-empty", host.tf("km_more", { count: items.length - max })),
+    const more = el(
+      "button",
+      "km-g-more",
+      host.tf("km_more", { count: items.length - max }),
     );
+    more.type = "button";
+    more.addEventListener("click", () => {
+      more.replaceWith(...items.slice(max).map((item) => itemCard(item, host)));
+    });
+    list.appendChild(more);
   }
   return list;
 }
 
-export function anchorList(anchors: Anchor[], emptyText: string): HTMLElement {
+export function anchorList(
+  anchors: Anchor[],
+  host: ViewHost,
+  emptyText: string,
+): HTMLElement {
   const list = el("ul", "km-g-anchors");
   if (anchors.length === 0) {
     list.appendChild(el("li", "km-g-empty", emptyText));
@@ -65,14 +76,28 @@ export function anchorList(anchors: Anchor[], emptyText: string): HTMLElement {
   }
   for (const anchor of anchors) {
     const li = el("li");
-    li.append(
+    li.appendChild(
       el(
         "span",
         `km-g-badge km-g-badge-${anchor.type}`,
         anchor.type.toUpperCase(),
       ),
-      el("span", "km-g-path", anchor.path),
     );
+    const url = anchor.url;
+    if (url) {
+      const link = el("a", "km-g-path", anchor.path);
+      link.href = url;
+      link.target = "_blank";
+      link.rel = "noopener noreferrer";
+      link.addEventListener("click", (event) => {
+        if (!host.openSource) return;
+        event.preventDefault();
+        host.openSource(url);
+      });
+      li.appendChild(link);
+    } else {
+      li.appendChild(el("span", "km-g-path", anchor.path));
+    }
     list.appendChild(li);
   }
   return list;

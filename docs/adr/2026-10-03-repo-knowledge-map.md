@@ -264,8 +264,10 @@ show whether any map beats a plain list.
   preconditions, causes, the general case, what it uses), the focus in the
   middle, what follows to the right (details, consequences, dependants,
   examples, rejected alternatives).
-- **Zoned facets**: purpose above, connections to the left, rules and
-  decisions to the right, places in the repository below.
+- **Zoned facets**: purpose above (what the focus belongs to, then its
+  reasons), connections to the left (what it uses, leads to or breaks down
+  into), rules and decisions to the right, places in the repository below.
+  Every neighbour lands in exactly one zone, so each stays reachable.
 - Gemini's prototype wrote syntheses, facets and cause trees by hand per node.
   Here an adapter (`gemini-adapter.ts`) derives them from the statements,
   their phrases and the relation kinds, so the views work on any map. The
@@ -430,6 +432,24 @@ the map was written, as the OKF freshness radar does for articles.
   - Decision 4 no longer counts the views.
 - Known and accepted: the `$schema` link points at `main` and resolves only
   once this branch is merged.
+
+**Gemini's review of the combined branch (2026-10-04).**
+
+- Adopted:
+  - The zoned facets keep the parent beside the reasons. The same check showed
+    that the details (children) never reached a zone either: 39 of ZAM's 81
+    statements lost neighbours, and the root showed none. Every neighbour now
+    lands in exactly one zone, a test checks this for every statement, and
+    "+n more" opens the rest instead of hiding it.
+  - The macro-statement adds no second full stop after a label that ends a
+    sentence.
+  - Missing relation phrases: the guide already says the concept map leaves a
+    relation without a `link` out. A save with warnings now also tells the
+    agent so, and to save again.
+  - On a narrow screen the focus comes first in the zoned facets.
+  - Repository places in Gemini's views are links, opened like the detail
+    panel's sources.
+  - Switching views clears the feedback status line.
 ### 6. How the preferred view is chosen
 
 Learner feedback decides (owner decision 4). Every view has the same feedback

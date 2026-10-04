@@ -49,7 +49,7 @@ export const createView: ViewFactory = (
         "km-g-focus km-g-zone-centre",
       ),
       zone("east", "km_g_rules", itemList(facets.rules, host, empty, PER_ZONE)),
-      zone("south", "km_g_places", anchorList(facets.places, empty)),
+      zone("south", "km_g_places", anchorList(facets.places, host, empty)),
     );
   };
   render(initialFocus);

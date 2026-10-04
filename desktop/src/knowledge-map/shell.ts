@@ -144,6 +144,7 @@ export async function mountKnowledgeMap(
     navigate: (id) => go(id, true),
     t,
     tf,
+    ...(options.openSource ? { openSource: options.openSource } : {}),
   };
 
   const renderCrumbs = () => {
@@ -296,6 +297,7 @@ export async function mountKnowledgeMap(
     helpful = 0;
     found = null;
     comment.value = "";
+    status.textContent = "";
     for (const button of ratingButtons)
       button.setAttribute("aria-pressed", "false");
     for (const button of foundButtons.values())
@@ -355,8 +357,8 @@ export async function mountKnowledgeMap(
           found,
           comment: comment.value,
         });
-        status.textContent = t("km_feedback_saved");
         resetFeedback();
+        status.textContent = t("km_feedback_saved");
         void refreshCount();
       } catch (err) {
         status.textContent = err instanceof Error ? err.message : String(err);

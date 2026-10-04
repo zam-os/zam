@@ -37,6 +37,8 @@ export type AnchorType =
 export interface Anchor {
   path: string;
   type: AnchorType;
+  /** Where the path opens, when the map names its repository URL. */
+  url: string | null;
 }
 
 export function anchorType(path: string): AnchorType {
@@ -96,7 +98,7 @@ export function macroSynthesis(index: MapIndex, focusId: string): string {
   return relatedItems(index, focusId)
     .map((item) => item.proposition)
     .filter((sentence): sentence is string => sentence !== null)
-    .map((sentence) => `${sentence}.`)
+    .map((sentence) => (/[.!?…]$/.test(sentence) ? sentence : `${sentence}.`))
     .join(" ");
 }
 
@@ -104,6 +106,7 @@ export function anchorsOf(index: MapIndex, focusId: string): Anchor[] {
   return (index.get(focusId)?.sources ?? []).map((path) => ({
     path,
     type: anchorType(path),
+    url: index.sourceUrl(path),
   }));
 }
 
@@ -133,9 +136,9 @@ export function causeTree(
 }
 
 export interface Facets {
-  /** Why it exists: its reasons, else what it belongs to. */
+  /** Why it exists: what it belongs to, then its reasons. */
   purpose: RelatedItem[];
-  /** What it connects to at run time or leads to. */
+  /** What it connects to at run time, leads to, or breaks down into. */
   connections: RelatedItem[];
   /** What must hold, and what was decided against. */
   rules: RelatedItem[];
@@ -143,6 +146,7 @@ export interface Facets {
   places: Anchor[];
 }
 
+/** Every neighbour lands in exactly one zone, so each stays reachable. */
 export function facetsOf(index: MapIndex, focusId: string): Facets {
   const purpose: RelatedItem[] = [];
   const connections: RelatedItem[] = [];
@@ -151,21 +155,16 @@ export function facetsOf(index: MapIndex, focusId: string): Facets {
   for (const neighbor of rankNeighbors(index, focusId, null)) {
     const item = relatedItem(index, focusId, neighbor);
     const out = neighbor.direction === "out";
-    if (neighbor.tree === "parent" && neighbor.kind === "elaborates") {
-      parent = item;
-    } else if (out && neighbor.kind === "because") {
+    if (out && neighbor.kind === "because") {
       purpose.push(item);
     } else if (neighbor.kind === "requires" || neighbor.kind === "instead_of") {
       rules.push(item);
-    } else if (
-      neighbor.kind === "uses" ||
-      neighbor.kind === "leads_to" ||
-      neighbor.kind === "because" ||
-      neighbor.kind === "example"
-    ) {
+    } else if (neighbor.tree === "parent") {
+      parent = item;
+    } else {
       connections.push(item);
     }
   }
-  if (purpose.length === 0 && parent) purpose.push(parent);
+  if (parent) purpose.unshift(parent);
   return { purpose, connections, rules, places: anchorsOf(index, focusId) };
 }

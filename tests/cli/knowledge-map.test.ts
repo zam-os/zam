@@ -732,6 +732,23 @@ describe("knowledge map: MCP tools", () => {
     );
     expect(saved.root).toBe("demo");
     expect(getKnowledgeMapConfig().repoPath).toBe(dir);
+    expect(written.structuredContent).toMatchObject({
+      next: expect.not.stringContaining("warning"),
+    });
+
+    // Saved, but the agent is told that a phrase-less relation stays out of
+    // the concept map.
+    const map = smallMap();
+    const relations = map.relations as Array<Record<string, unknown>>;
+    delete relations[1].link;
+    const warned = await client.callTool({
+      name: "zam_knowledge_map_write",
+      arguments: { repo_root: dir, map },
+    });
+    expect(warned.structuredContent).toMatchObject({
+      ok: true,
+      next: expect.stringContaining("concept map"),
+    });
 
     await client.close();
     await server.close();

@@ -14,6 +14,11 @@ export interface ViewHost {
   navigate(id: string): void;
   t(key: string): string;
   tf(key: string, values: Record<string, string | number>): string;
+  /**
+   * Opens a source URL, when the host opens links itself (the Studio). Without
+   * it a source link follows its `href`.
+   */
+  openSource?(url: string): void;
 }
 
 export interface FocusChange {

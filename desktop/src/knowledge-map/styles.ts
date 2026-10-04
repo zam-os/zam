@@ -295,6 +295,9 @@ const CSS = `
 .km-g-anchors { list-style: none; margin: 0; padding: 0; display: flex; flex-direction: column; gap: 4px; font-size: 0.8rem; }
 .km-g-anchors li { display: flex; gap: 6px; align-items: baseline; min-width: 0; }
 .km-g-path { word-break: break-all; color: var(--km-text-2); }
+a.km-g-path { color: var(--km-accent); text-decoration: underline; text-underline-offset: 2px; }
+.km-g-more { align-self: flex-start; border: none; background: none; padding: 2px 0; font: inherit; font-size: 0.82rem;
+  color: var(--km-accent); cursor: pointer; text-decoration: underline; text-underline-offset: 2px; }
 .km-g-badge { font-size: 0.62rem; font-weight: 700; padding: 1px 5px; border-radius: 4px; background: var(--km-accent-soft);
   color: var(--km-accent); flex: none; }
 .km-g-empty { margin: 0; font-size: 0.82rem; color: var(--km-muted); font-style: italic; }
@@ -314,6 +317,7 @@ const CSS = `
 @media (max-width: 860px) {
   .km-g-causal, .km-g-facets { grid-template-columns: minmax(0, 1fr); grid-template-areas: none; }
   .km-g-facets > * { grid-area: auto; }
+  .km-g-facets > .km-g-zone-centre { order: -1; }
   .km-g-footer { grid-template-columns: minmax(0, 1fr); }
   .km-g-column-centre { position: static; }
 }

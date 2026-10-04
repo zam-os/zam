@@ -314,6 +314,46 @@ describe("Gemini's views on the shared map", () => {
     expect(text).toContain("ZAM keeps Kernel.");
   });
 
+  it("does not double the full stop after a label that ends a sentence", () => {
+    const small = buildMapIndex({
+      format: "zam-knowledge-map",
+      version: 1,
+      title: "Shop",
+      focus_question: "Why plain SQL?",
+      root: "sql",
+      statements: [
+        {
+          id: "sql",
+          label: "Plain SQL",
+          text: "Queries are plain SQL.",
+          sources: ["a.md"],
+        },
+        {
+          id: "why",
+          parent: "sql",
+          label: "Why not ORM?",
+          link: "answers",
+          text: "An ORM hides the plans.",
+          sources: ["b.md"],
+        },
+        {
+          id: "etc",
+          parent: "sql",
+          label: "Views etc.",
+          link: "covers",
+          text: "Views are plain SQL too.",
+          sources: ["c.md"],
+        },
+      ],
+      relations: [],
+    } as unknown as KnowledgeMap);
+    const text = macroSynthesis(small, "sql");
+    expect(text).toContain("Plain SQL answers Why not ORM?");
+    expect(text).toContain("Plain SQL covers Views etc.");
+    expect(text).not.toContain("?.");
+    expect(text).not.toContain("..");
+  });
+
   it("puts what the focus rests on left and what follows right", () => {
     const { upstream, downstream } = causeTree(index, "kernel");
     const up = upstream.map((item) => item.id);
@@ -330,8 +370,41 @@ describe("Gemini's views on the shared map", () => {
     expect(facets.purpose.map((item) => item.id)).toEqual(["review"]);
     expect(facets.rules.map((item) => item.id)).toContain("sm2");
     expect(facets.places).toEqual([
-      { path: "docs/okf/fsrs-scheduling.md", type: "okf" },
+      {
+        path: "docs/okf/fsrs-scheduling.md",
+        type: "okf",
+        url: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md",
+      },
     ]);
+  });
+
+  it("keeps the parent above the reasons", () => {
+    const facets = facetsOf(index, "kernel-no-llm");
+    expect(facets.purpose.map((item) => item.id)).toEqual([
+      "kernel",
+      "openness",
+    ]);
+  });
+
+  it("puts every neighbour in exactly one zone, children included", () => {
+    for (const id of index.order()) {
+      const facets = facetsOf(index, id);
+      const placed = [
+        ...facets.purpose,
+        ...facets.connections,
+        ...facets.rules,
+      ].map((item) => item.id);
+      expect(new Set(placed).size).toBe(placed.length);
+      expect(placed.sort()).toEqual(
+        index
+          .neighbors(id)
+          .map((neighbor) => neighbor.id)
+          .sort(),
+      );
+    }
+    expect(facetsOf(index, "zam").connections.length).toBe(
+      index.children("zam").length,
+    );
   });
 
   it("types repository anchors by path", () => {
