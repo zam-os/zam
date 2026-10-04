@@ -63,6 +63,9 @@ decided:
    not Turtle or another RDF syntax.
 7. A **C4 view** is offered for good. Its architecture lives **in the same
    map**, not in a separate file (Decision 8).
+8. Everything is integrated on #380: Grok's concept map (#382) now, Gemini's
+   views (#381) once Antigravity has finished. Gemini and Grok then review
+   the combined branch.
 
 ### Evidence
 
@@ -126,6 +129,13 @@ repository:
 - a `beliefs/` file;
 - a repository file.
 
+**Concept and phrase.** A statement may also carry a `label`, the concept in
+at most four words, and a `link`, a phrase of at most six words from its
+parent's concept to its own, so that "parent label + link + label" reads as a
+sentence ("ZAM rests on Beliefs"). A relation may carry its own `link` from
+`from` to `to`, which wins when the pair is also parent and child, and a
+`technology`. The concept map reads these phrases; the C4 view draws a
+relation's `link` on its arrow, so one field serves both.
 **Relations.** A relation joins two statements and has a `kind` from a small
 closed set. The view renders each kind as a fixed connective in the UI
 language, so "statement — connective — statement" reads as a sentence. This
@@ -221,6 +231,16 @@ show whether any map beats a plain list.
   details as cards below, with the mini-map beside it.
 - Zooming moves one level at a time, animated. Cross-links appear only as
   counts on the cards.
+
+**Concept map** (contributed by Grok, #382).
+
+- The node is the statement's `label`; the edge is the `link` phrase.
+- At most four spokes around the centre, ranked like the focus map and placed
+  on the same compass, so the parent stays on top.
+- The visible spokes are read together as sentences under the star; further
+  concepts are chips that open them.
+- A spoke is drawn only when both ends have a label and the edge has its own
+  phrase. The sentence connectives are not reused between short concepts.
 
 **Not built now: an argument view.** It would show a claim with its reasons
 and rejected alternatives (argument mapping, IBIS). The `because` and
@@ -423,7 +443,7 @@ boxes, joined by labelled arrows.
 
 - A statement may carry a `c4` facet:
   - `kind`: person, system, container, database or component;
-  - `name`: the short name in the box;
+  - `name`: the name in the box, defaulting to the statement's `label`;
   - optional `technology`;
   - optional `external` for things outside the repository;
   - optional `within`, the element it sits in.
@@ -438,8 +458,8 @@ boxes, joined by labelled arrows.
 
 **Links.**
 
-- Architecture links use the new kind `uses`, with an optional `label`
-  ("stores cards in") and `technology` ("SQL").
+- Architecture links use the new kind `uses`, with a `link` phrase
+  ("stores cards in") and an optional `technology` ("SQL").
 - The C4 view draws only `uses` links. A link between parts rolls up to the
   boxes visible at the current level, as C4 tools show implied
   relationships; several links between the same boxes become one arrow that
@@ -492,8 +512,12 @@ Added on 2026-10-04:
 
 7. **JSON-LD and schema.** The context and schema link in every written map,
    and `docs/knowledge-map/map.schema.json`.
-8. **C4.** The `c4` facet, the `uses` kind with labels, the C4 view, and C4
-   elements in ZAM's own map (81 statements, 39 links).
+8. **C4.** The `c4` facet, the `uses` kind, the C4 view, and C4 elements in
+   ZAM's own map (81 statements, 39 links).
+9. **Concept map.** Grok's view from #382, merged: `label` and `link` on
+   statements and relations, a label on every statement of ZAM's map and a
+   phrase on every edge. Grok's relation `link` and the C4 arrow text were the
+   same thing and are one field now.
 
 **Later:**
 

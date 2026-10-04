@@ -11,6 +11,12 @@ import {
   zoomScope,
 } from "../../desktop/src/knowledge-map/c4-layout.js";
 import {
+  CONCEPT_SPOKES,
+  conceptLabel,
+  conceptPicture,
+  conceptReading,
+} from "../../desktop/src/knowledge-map/concept-layout.js";
+import {
   layoutFocus,
   layoutMinimap,
   MAX_VISIBLE_NEIGHBORS,
@@ -275,6 +281,7 @@ describe("knowledge map views and strings", () => {
       "focus",
       "outline",
       "levels",
+      "concept",
       "c4",
     ]);
     expect(parseKnowledgeMapViewId("levels")).toBe("levels");
@@ -306,6 +313,130 @@ describe("knowledge map views and strings", () => {
       }
     }
     setCurrentLocale("en");
+  });
+});
+
+describe("concept map picture", () => {
+  function indexed(statements: Array<Record<string, unknown>>, relations = []) {
+    const map = validateKnowledgeMap(
+      {
+        format: "zam-knowledge-map",
+        version: 1,
+        title: "ZAM",
+        focus_question: "What stays in view?",
+        root: "zam",
+        statements,
+        relations,
+      },
+      { sourceExists: () => true },
+    ).map;
+    if (!map) throw new Error("fixture map was rejected");
+    return buildMapIndex(map);
+  }
+
+  const star = () =>
+    indexed(
+      [
+        {
+          id: "zam",
+          label: "ZAM",
+          text: "ZAM is the studio.",
+          sources: ["README.md"],
+        },
+        {
+          id: "kernel",
+          parent: "zam",
+          label: "Kernel",
+          link: "keeps",
+          text: "The kernel holds learning.",
+          sources: ["README.md"],
+        },
+        {
+          id: "cli",
+          parent: "zam",
+          text: "The CLI orchestrates.",
+          sources: ["README.md"],
+        },
+        {
+          id: "library",
+          parent: "zam",
+          label: "Library",
+          link: "stores",
+          text: "The library stores cards.",
+          sources: ["README.md"],
+        },
+        {
+          id: "articles",
+          parent: "zam",
+          label: "Articles",
+          link: "explains with",
+          text: "Articles explain ZAM.",
+          sources: ["README.md"],
+        },
+        {
+          id: "bridge",
+          parent: "zam",
+          label: "Bridge",
+          link: "offers",
+          text: "The bridge speaks JSON.",
+          sources: ["README.md"],
+        },
+        {
+          id: "mobile",
+          parent: "zam",
+          label: "Mobile",
+          link: "includes",
+          text: "Mobile runs on its own.",
+          sources: ["README.md"],
+        },
+        {
+          id: "learning",
+          parent: "kernel",
+          label: "Learning",
+          link: "contains",
+          text: "Learning lives in the kernel.",
+          sources: ["README.md"],
+        },
+      ],
+      [{ from: "kernel", to: "learning", kind: "because", link: "holds" }],
+    );
+
+  it("draws four spokes and keeps the parent above the centre", () => {
+    const picture = conceptPicture(star(), "zam");
+    expect(picture.spokes).toHaveLength(CONCEPT_SPOKES);
+    expect(picture.spokes.map((spoke) => spoke.id)).toEqual([
+      "kernel",
+      "library",
+      "articles",
+      "bridge",
+    ]);
+    expect(picture.more).toEqual(["mobile"]);
+    expect(picture.spokes.every((spoke) => spoke.side === "bottom")).toBe(true);
+    const kernel = conceptPicture(star(), "kernel");
+    expect(kernel.spokes.find((spoke) => spoke.id === "zam")?.side).toBe("top");
+    expect(kernel.spokes.find((spoke) => spoke.id === "learning")?.phrase).toBe(
+      "holds",
+    );
+  });
+
+  it("reads the stored phrase, not the sentence connective", () => {
+    const index = star();
+    const reading = conceptReading(index, conceptPicture(index, "kernel"));
+    expect(reading).toContain("ZAM keeps Kernel.");
+    expect(reading).toContain("Kernel holds Learning.");
+    expect(reading).not.toContain("im Einzelnen");
+    expect(reading).not.toContain("Library");
+  });
+
+  it("skips a node without a label and falls back to the root", () => {
+    const index = star();
+    expect(
+      conceptLabel(index.get("cli") as KnowledgeMap["statements"][number]),
+    ).toBeNull();
+    expect(
+      conceptPicture(index, "zam").spokes.some((spoke) => spoke.id === "cli"),
+    ).toBe(false);
+    expect(conceptPicture(index, "missing").centerId).toBe("zam");
   });
 });
 

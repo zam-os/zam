@@ -4,25 +4,58 @@
   "title": "ZAM repository knowledge map",
   "description": "A tree of one-sentence statements with typed links; a statement may also be a C4 architecture element. ZAM's validator (zam_knowledge_map_write) is authoritative and also checks that sources exist, the tree is reachable from the root, and C4 elements have a place to sit (ADR 2026-10-03).",
   "type": "object",
-  "required": ["format", "version", "title", "focus_question", "root", "statements", "relations"],
+  "required": [
+    "format",
+    "version",
+    "title",
+    "focus_question",
+    "root",
+    "statements",
+    "relations"
+  ],
   "properties": {
-    "$schema": { "type": "string" },
-    "@context": { "description": "JSON-LD context; ZAM writes it, agents may leave it out." },
-    "format": { "const": "zam-knowledge-map" },
-    "version": { "const": 1 },
-    "title": { "type": "string", "minLength": 1 },
-    "focus_question": { "type": "string", "minLength": 1 },
-    "language": { "type": "string" },
-    "repository_url": { "type": "string", "pattern": "^https://" },
-    "root": { "$ref": "#/$defs/id" },
+    "$schema": {
+      "type": "string"
+    },
+    "@context": {
+      "description": "JSON-LD context; ZAM writes it, agents may leave it out."
+    },
+    "format": {
+      "const": "zam-knowledge-map"
+    },
+    "version": {
+      "const": 1
+    },
+    "title": {
+      "type": "string",
+      "minLength": 1
+    },
+    "focus_question": {
+      "type": "string",
+      "minLength": 1
+    },
+    "language": {
+      "type": "string"
+    },
+    "repository_url": {
+      "type": "string",
+      "pattern": "^https://"
+    },
+    "root": {
+      "$ref": "#/$defs/id"
+    },
     "statements": {
       "type": "array",
       "minItems": 1,
-      "items": { "$ref": "#/$defs/statement" }
+      "items": {
+        "$ref": "#/$defs/statement"
+      }
     },
     "relations": {
       "type": "array",
-      "items": { "$ref": "#/$defs/relation" }
+      "items": {
+        "$ref": "#/$defs/relation"
+      }
     }
   },
   "$defs": {
@@ -36,43 +69,113 @@
     },
     "statement": {
       "type": "object",
-      "required": ["id", "text", "sources"],
+      "required": [
+        "id",
+        "text",
+        "sources"
+      ],
       "properties": {
-        "id": { "$ref": "#/$defs/id" },
-        "parent": { "$ref": "#/$defs/id" },
-        "text": { "$ref": "#/$defs/line", "maxLength": 140 },
+        "id": {
+          "$ref": "#/$defs/id"
+        },
+        "parent": {
+          "$ref": "#/$defs/id"
+        },
+        "label": {
+          "$ref": "#/$defs/line",
+          "maxLength": 40,
+          "description": "Short concept, at most 4 words; the concept map draws it and a C4 box defaults to it."
+        },
+        "link": {
+          "$ref": "#/$defs/line",
+          "maxLength": 48,
+          "description": "Phrase from the parent concept to this one, at most 6 words."
+        },
+        "text": {
+          "$ref": "#/$defs/line",
+          "maxLength": 140
+        },
         "sources": {
           "type": "array",
           "minItems": 1,
           "items": {
             "type": "string",
             "minLength": 1,
-            "not": { "pattern": "^(/|[A-Za-z]:|.*://)" }
+            "not": {
+              "pattern": "^(/|[A-Za-z]:|.*://)"
+            }
           }
         },
-        "c4": { "$ref": "#/$defs/c4" }
+        "c4": {
+          "$ref": "#/$defs/c4"
+        }
       }
     },
     "c4": {
       "type": "object",
-      "required": ["kind", "name"],
+      "required": [
+        "kind"
+      ],
       "properties": {
-        "kind": { "enum": ["person", "system", "container", "database", "component"] },
-        "name": { "$ref": "#/$defs/line", "maxLength": 40 },
-        "technology": { "$ref": "#/$defs/line", "maxLength": 60 },
-        "external": { "type": "boolean" },
-        "within": { "$ref": "#/$defs/id" }
+        "kind": {
+          "enum": [
+            "person",
+            "system",
+            "container",
+            "database",
+            "component"
+          ]
+        },
+        "name": {
+          "$ref": "#/$defs/line",
+          "maxLength": 40,
+          "description": "Defaults to the statement's label."
+        },
+        "technology": {
+          "$ref": "#/$defs/line",
+          "maxLength": 60
+        },
+        "external": {
+          "type": "boolean"
+        },
+        "within": {
+          "$ref": "#/$defs/id"
+        }
       }
     },
     "relation": {
       "type": "object",
-      "required": ["from", "to", "kind"],
+      "required": [
+        "from",
+        "to",
+        "kind"
+      ],
       "properties": {
-        "from": { "$ref": "#/$defs/id" },
-        "to": { "$ref": "#/$defs/id" },
-        "kind": { "enum": ["requires", "leads_to", "because", "instead_of", "example", "uses"] },
-        "label": { "$ref": "#/$defs/line", "maxLength": 40 },
-        "technology": { "$ref": "#/$defs/line", "maxLength": 60 }
+        "from": {
+          "$ref": "#/$defs/id"
+        },
+        "to": {
+          "$ref": "#/$defs/id"
+        },
+        "kind": {
+          "enum": [
+            "requires",
+            "leads_to",
+            "because",
+            "instead_of",
+            "example",
+            "uses"
+          ]
+        },
+        "link": {
+          "$ref": "#/$defs/line",
+          "maxLength": 48,
+          "description": "Phrase from `from` to `to`, at most 6 words; the C4 view draws it on the arrow."
+        },
+        "technology": {
+          "$ref": "#/$defs/line",
+          "maxLength": 60
+        }
       }
     }
   }

@@ -3,8 +3,9 @@
  * elements a diagram shows at which level, and which arrows connect them.
  * No DOM, so it is unit-tested.
  *
- * Elements are statements with a `c4` facet. A statement without one belongs
- * to the nearest ancestor element. Arrows come from `uses` links only: a link
+ * Elements are statements with a `c4` facet; the box shows `c4.name`, else the
+ * statement's `label`. A statement without a facet belongs to the nearest
+ * ancestor element. Arrows come from `uses` links only: a link
  * between parts rolls up to the boxes visible at the current level, the way
  * C4 tools show implied relationships.
  */
@@ -85,7 +86,7 @@ export function buildC4Model(index: MapIndex): C4Model {
     elements.set(id, {
       id,
       kind: facet.kind,
-      name: facet.name,
+      name: facet.name ?? statement.label ?? statement.id,
       ...(facet.technology ? { technology: facet.technology } : {}),
       external: facet.external === true,
       description: statement.text,
@@ -212,7 +213,7 @@ export function buildC4Diagram(
       arrows.set(key, {
         from,
         to,
-        ...(relation.label ? { label: relation.label } : {}),
+        ...(relation.link ? { label: relation.link } : {}),
         ...(relation.technology ? { technology: relation.technology } : {}),
         count: 1,
       });

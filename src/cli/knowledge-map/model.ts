@@ -17,6 +17,12 @@ export const KNOWLEDGE_MAP_VERSION = 1;
 export const MAX_STATEMENT_LENGTH = 140;
 /** Above this many children a level no longer fits in working memory. */
 export const SOFT_MAX_CHILDREN = 7;
+/** The concept-map view shows this instead of the whole sentence. */
+export const MAX_CONCEPT_LABEL_WORDS = 4;
+export const MAX_CONCEPT_LABEL_LENGTH = 40;
+/** Verb phrase on a concept-map edge, in the stored direction. */
+export const MAX_LINK_PHRASE_WORDS = 6;
+export const MAX_LINK_PHRASE_LENGTH = 48;
 
 /** Kinds a cross-link may carry. The tree's own edge is `elaborates`. */
 export const RELATION_KINDS = [
@@ -44,7 +50,6 @@ export type C4Kind = (typeof C4_KINDS)[number];
 
 export const MAX_C4_NAME_LENGTH = 40;
 export const MAX_TECHNOLOGY_LENGTH = 60;
-export const MAX_RELATION_LABEL_LENGTH = 40;
 
 /**
  * Makes a statement a C4 element. The statement text is the element's
@@ -52,8 +57,8 @@ export const MAX_RELATION_LABEL_LENGTH = 40;
  */
 export interface C4Facet {
   kind: C4Kind;
-  /** Short element name drawn in the box. */
-  name: string;
+  /** Element name drawn in the box; defaults to the statement's `label`. */
+  name?: string;
   technology?: string;
   /** Outside the system being described (another system, a hosted service). */
   external?: boolean;
@@ -69,6 +74,15 @@ export interface KnowledgeStatement {
   id: string;
   /** The statement this one spells out in detail; absent only on the root. */
   parent?: string;
+  /**
+   * Short concept for the concept-map view. Without it that view skips the node.
+   */
+  label?: string;
+  /**
+   * Linking phrase from the parent to this concept. The concept-map view
+   * draws the edge only when this, or a relation `link`, is present.
+   */
+  link?: string;
   text: string;
   /** Repository-relative paths, optionally with a `#anchor`. */
   sources: string[];
@@ -79,8 +93,11 @@ export interface KnowledgeRelation {
   from: string;
   to: string;
   kind: RelationKind;
-  /** Short verb phrase, e.g. "stores cards in"; C4 draws it on the arrow. */
-  label?: string;
+  /**
+   * Linking phrase from `from` to `to`, e.g. "stores cards in". The concept
+   * map reads it between the two labels; C4 draws it on the arrow.
+   */
+  link?: string;
   /** How the link is made, e.g. "MCP over stdio". */
   technology?: string;
 }
@@ -169,6 +186,28 @@ function nonEmptyString(value: unknown): value is string {
   return typeof value === "string" && value.trim().length > 0;
 }
 
+/** A short concept-map phrase, or an error message. */
+function shortPhrase(
+  value: unknown,
+  maxWords: number,
+  maxLength: number,
+): { text: string } | { error: string } {
+  if (
+    typeof value !== "string" ||
+    value.trim().length === 0 ||
+    /[\r\n]/.test(value)
+  ) {
+    return { error: "must be a single non-empty line" };
+  }
+  const text = value.trim();
+  if (text.length > maxLength || text.split(/\s+/).length > maxWords) {
+    return {
+      error: `is at most ${maxWords} words and ${maxLength} characters`,
+    };
+  }
+  return { text };
+}
+
 /** The path part of a source, without its `#anchor`. */
 export function sourcePath(source: string): string {
   const hash = source.indexOf("#");
@@ -211,15 +250,18 @@ function parseC4(
     return undefined;
   }
   const kind = raw.kind as C4Kind;
-  const name = shortLine(raw.name, MAX_C4_NAME_LENGTH);
-  if (name === null) {
-    error(
-      `"c4.name" is one line of at most ${MAX_C4_NAME_LENGTH} characters.`,
-      id,
-    );
-    return undefined;
+  const facet: C4Facet = { kind };
+  if (raw.name !== undefined) {
+    const name = shortLine(raw.name, MAX_C4_NAME_LENGTH);
+    if (name === null) {
+      error(
+        `"c4.name" is one line of at most ${MAX_C4_NAME_LENGTH} characters.`,
+        id,
+      );
+      return undefined;
+    }
+    facet.name = name;
   }
-  const facet: C4Facet = { kind, name };
   if (raw.technology !== undefined) {
     const technology = shortLine(raw.technology, MAX_TECHNOLOGY_LENGTH);
     if (technology === null) {
@@ -382,10 +424,35 @@ export function validateKnowledgeMap(
       error('"parent" must be a statement id.', id);
     }
     const c4 = raw.c4 === undefined ? undefined : parseC4(raw.c4, id, error);
+    let label: string | undefined;
+    if (raw.label !== undefined) {
+      const parsed = shortPhrase(
+        raw.label,
+        MAX_CONCEPT_LABEL_WORDS,
+        MAX_CONCEPT_LABEL_LENGTH,
+      );
+      if ("error" in parsed) error(`The concept label ${parsed.error}.`, id);
+      else label = parsed.text;
+    }
+    let link: string | undefined;
+    if (raw.link !== undefined) {
+      const parsed = shortPhrase(
+        raw.link,
+        MAX_LINK_PHRASE_WORDS,
+        MAX_LINK_PHRASE_LENGTH,
+      );
+      if ("error" in parsed) error(`The linking phrase ${parsed.error}.`, id);
+      else link = parsed.text;
+    }
+    if (c4 && !c4.name && !label) {
+      error('A C4 element needs a name: set "c4.name" or "label".', id);
+    }
 
     byId.set(id, {
       id,
       ...(nonEmptyString(raw.parent) ? { parent: raw.parent } : {}),
+      ...(label ? { label } : {}),
+      ...(link ? { link } : {}),
       text: nonEmptyString(raw.text) ? raw.text : "",
       sources: Array.isArray(raw.sources) ? (raw.sources as string[]) : [],
       ...(c4 ? { c4 } : {}),
@@ -510,15 +577,16 @@ export function validateKnowledgeMap(
       to,
       kind: kind as RelationKind,
     };
-    if (raw.label !== undefined) {
-      const label = shortLine(raw.label, MAX_RELATION_LABEL_LENGTH);
-      if (label === null) {
-        error(
-          `A relation label is one line of at most ${MAX_RELATION_LABEL_LENGTH} characters.`,
-          from,
-        );
+    if (raw.link !== undefined) {
+      const parsed = shortPhrase(
+        raw.link,
+        MAX_LINK_PHRASE_WORDS,
+        MAX_LINK_PHRASE_LENGTH,
+      );
+      if ("error" in parsed) {
+        error(`The linking phrase ${parsed.error}.`, from);
       } else {
-        relation.label = label;
+        relation.link = parsed.text;
       }
     }
     if (raw.technology !== undefined) {

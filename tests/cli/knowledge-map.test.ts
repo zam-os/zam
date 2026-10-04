@@ -33,7 +33,8 @@ import {
   type KnowledgeMap,
   type KnowledgeStatement,
   MAX_C4_NAME_LENGTH,
-  MAX_RELATION_LABEL_LENGTH,
+  MAX_CONCEPT_LABEL_LENGTH,
+  MAX_LINK_PHRASE_LENGTH,
   MAX_STATEMENT_LENGTH,
   MAX_TECHNOLOGY_LENGTH,
   RELATION_KINDS,
@@ -113,6 +114,23 @@ describe("knowledge map: validator", () => {
     });
     expect(result.issues).toEqual([]);
     expect(result.map?.statements).toHaveLength(5);
+  });
+
+  it("keeps a short concept label and rejects a sentence used as one", () => {
+    const map = smallMap();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    statements[0].label = "ZAM";
+    const kept = validateKnowledgeMap(map, { sourceExists: () => true });
+    expect(kept.issues).toEqual([]);
+    expect(kept.map?.statements[0]?.label).toBe("ZAM");
+    statements[0].label = "This label is a whole sentence about the repository";
+    expect(
+      errors(map).some((message) => message.includes("concept label")),
+    ).toBe(true);
+    statements[0].label = "ZAM";
+    statements[1].link = "rests on";
+    const linked = validateKnowledgeMap(map, { sourceExists: () => true });
+    expect(linked.map?.statements[1]?.link).toBe("rests on");
   });
 
   it("rejects a wrong format, version and missing focus question", () => {
@@ -287,19 +305,19 @@ function c4Map(): Record<string, unknown> {
       },
     ],
     relations: [
-      { from: "buyer", to: "web", kind: "uses", label: "orders in" },
+      { from: "buyer", to: "web", kind: "uses", link: "orders in" },
       {
         from: "checkout",
         to: "pay",
         kind: "uses",
-        label: "charges via",
+        link: "charges via",
         technology: "HTTPS",
       },
       {
         from: "web",
         to: "db",
         kind: "uses",
-        label: "stores orders in",
+        link: "stores orders in",
         technology: "SQL",
       },
     ],
@@ -320,7 +338,7 @@ describe("knowledge map: C4 elements and links", () => {
     expect(c4HostOf(statements, "pay")).toBeUndefined();
     expect(result.map?.relations[1]).toMatchObject({
       kind: "uses",
-      label: "charges via",
+      link: "charges via",
       technology: "HTTPS",
     });
   });
@@ -368,20 +386,29 @@ describe("knowledge map: C4 elements and links", () => {
     expect(messages.some((m) => m.includes("only for containers"))).toBe(true);
   });
 
-  it("checks relation labels and technology", () => {
+  it("checks relation links and technology", () => {
     const map = c4Map();
     map.relations = [
       {
         from: "buyer",
         to: "web",
         kind: "uses",
-        label: "l".repeat(MAX_RELATION_LABEL_LENGTH + 1),
+        link: "l".repeat(MAX_LINK_PHRASE_LENGTH + 1),
       },
       { from: "web", to: "db", kind: "uses", technology: "two\nlines" },
     ];
     const messages = errors(map);
-    expect(messages.some((m) => m.includes("relation label"))).toBe(true);
+    expect(messages.some((m) => m.includes("linking phrase"))).toBe(true);
     expect(messages.some((m) => m.includes("relation technology"))).toBe(true);
+  });
+
+  it("names a C4 box after the label unless c4.name is set", () => {
+    const map = c4Map();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    statements[2].c4 = { kind: "container", technology: "React" };
+    expect(errors(map).some((m) => m.includes("needs a name"))).toBe(true);
+    statements[2].label = "Web app";
+    expect(errors(map)).toEqual([]);
   });
 });
 
@@ -417,8 +444,14 @@ describe("knowledge map: JSON-LD and schema", () => {
     expect(defs.statement.properties.text.maxLength).toBe(MAX_STATEMENT_LENGTH);
     expect(defs.c4.properties.name.maxLength).toBe(MAX_C4_NAME_LENGTH);
     expect(defs.c4.properties.technology.maxLength).toBe(MAX_TECHNOLOGY_LENGTH);
-    expect(defs.relation.properties.label.maxLength).toBe(
-      MAX_RELATION_LABEL_LENGTH,
+    expect(defs.relation.properties.link.maxLength).toBe(
+      MAX_LINK_PHRASE_LENGTH,
+    );
+    expect(defs.statement.properties.label.maxLength).toBe(
+      MAX_CONCEPT_LABEL_LENGTH,
+    );
+    expect(defs.statement.properties.link.maxLength).toBe(
+      MAX_LINK_PHRASE_LENGTH,
     );
   });
 });

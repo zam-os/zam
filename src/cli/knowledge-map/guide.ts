@@ -11,7 +11,8 @@ import {
   KNOWLEDGE_MAP_SCHEMA_URL,
   KNOWLEDGE_MAP_VERSION,
   MAX_C4_NAME_LENGTH,
-  MAX_RELATION_LABEL_LENGTH,
+  MAX_CONCEPT_LABEL_WORDS,
+  MAX_LINK_PHRASE_WORDS,
   MAX_STATEMENT_LENGTH,
   MAX_TECHNOLOGY_LENGTH,
   RELATION_KINDS,
@@ -53,6 +54,13 @@ not sure a statement is true, leave it out.
 ## 3. Writing statements
 
 - One declarative sentence of at most ${MAX_STATEMENT_LENGTH} characters, on one line.
+- \`label\`: at most ${MAX_CONCEPT_LABEL_WORDS} words, the concept the concept-map view draws
+  and the default name of a C4 box. The sentence stays in \`text\`. Without a
+  label the concept map skips the node.
+- \`link\` on every statement except the root: at most ${MAX_LINK_PHRASE_WORDS} words from the
+  parent concept to this one, such as "keeps" or "is scheduled by", so that
+  "parent label + link + label" reads as a sentence. The concept map draws
+  that edge only when the phrase is there.
 - A claim, not a topic title: "Sessions expire after 30 minutes without
   activity." rather than "Session handling".
 - Understandable on its own: name the subject instead of "it" or "this".
@@ -74,10 +82,13 @@ not sure a statement is true, leave it out.
 
 Allowed kinds: ${RELATION_KINDS.join(", ")}.
 
-A relation may carry a \`label\`: a short verb phrase of at most
-${MAX_RELATION_LABEL_LENGTH} characters that says what happens ("stores cards in", "calls tools
-of"), and a \`technology\` ("SQL", "MCP over stdio"). Give every \`uses\` link a
-label; the C4 view draws it on the arrow.
+A relation may carry a \`link\`: at most ${MAX_LINK_PHRASE_WORDS} words from \`from\` to \`to\`
+that say what happens ("stores cards in", "calls tools of"), so that "from
+label + link + to label" reads as a sentence. It wins over a child's own
+\`link\` when the pair is also parent and child. The concept map reads it
+between the labels, and the C4 view draws it on the arrow, so give every
+\`uses\` relation one. A \`uses\` relation may also name its \`technology\`
+("SQL", "MCP over stdio").
 
 ## 5. Architecture (C4)
 
@@ -94,7 +105,8 @@ the element's one-sentence description.
     service, a CLI, a library loaded at run time.
   - \`database\`: a container that stores data.
   - \`component\`: a major part inside one container.
-- \`name\`: the short name drawn in the box, at most ${MAX_C4_NAME_LENGTH} characters.
+- \`name\`: optional, the name drawn in the box, at most ${MAX_C4_NAME_LENGTH} characters.
+  Without it the box shows the statement's \`label\`.
 - \`technology\`: optional, at most ${MAX_TECHNOLOGY_LENGTH} characters ("Node.js", "PostgreSQL").
 - \`external\`: true for systems and services outside this repository.
 - \`within\`: the element this one sits in: a system for a container or
@@ -104,7 +116,7 @@ the element's one-sentence description.
 
 Aim for 1 to 3 people, the system, its external systems, 3 to 8 containers,
 and components only for the containers that matter most. Connect them with
-\`uses\` links that have a label. A link between components rolls up to their
+\`uses\` relations that carry a \`link\`. A link between components rolls up to their
 containers in the container view, so do not repeat it at every level.
 
 ## 6. File format
@@ -119,18 +131,18 @@ containers in the container view, so do not repeat it at every level.
   "repository_url": "https://github.com/<owner>/<repo>/blob/main/",
   "root": "project",
   "statements": [
-    { "id": "project", "text": "One sentence on what the repository is for.", "sources": ["README.md"],
-      "c4": { "kind": "system", "name": "Project" } },
-    { "id": "api", "parent": "project", "text": "A REST API serves the web app and the partners.", "sources": ["src/api/"],
-      "c4": { "kind": "container", "name": "API", "technology": "Node.js" } },
-    { "id": "storage", "parent": "api", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"],
-      "c4": { "kind": "database", "name": "Database", "technology": "PostgreSQL" } },
-    { "id": "no-orm", "parent": "storage", "text": "Queries are plain SQL files instead of an ORM.", "sources": ["src/db/queries/"] },
-    { "id": "orm", "parent": "no-orm", "text": "An ORM would hide the query plans the team tunes by hand.", "sources": ["docs/adr/0003-sql.md"] }
+    { "id": "project", "label": "Project", "text": "One sentence on what the repository is for.", "sources": ["README.md"],
+      "c4": { "kind": "system" } },
+    { "id": "api", "parent": "project", "label": "API", "link": "is served by", "text": "A REST API serves the web app and the partners.", "sources": ["src/api/"],
+      "c4": { "kind": "container", "technology": "Node.js" } },
+    { "id": "storage", "parent": "api", "label": "Order database", "link": "keeps data in", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"],
+      "c4": { "kind": "database", "technology": "PostgreSQL" } },
+    { "id": "no-orm", "parent": "storage", "label": "Plain SQL", "link": "is queried with", "text": "Queries are plain SQL files instead of an ORM.", "sources": ["src/db/queries/"] },
+    { "id": "orm", "parent": "no-orm", "label": "ORM", "link": "replaces", "text": "An ORM would hide the query plans the team tunes by hand.", "sources": ["docs/adr/0003-sql.md"] }
   ],
   "relations": [
-    { "from": "api", "to": "storage", "kind": "uses", "label": "reads and writes", "technology": "SQL" },
-    { "from": "no-orm", "to": "orm", "kind": "instead_of" }
+    { "from": "api", "to": "storage", "kind": "uses", "link": "reads and writes", "technology": "SQL" },
+    { "from": "no-orm", "to": "orm", "kind": "instead_of", "link": "replaces" }
   ]
 }
 \`\`\`
