@@ -1,4 +1,57 @@
 {
+  "$schema": "https://raw.githubusercontent.com/zam-os/zam/main/docs/knowledge-map/map.schema.json",
+  "@context": {
+    "@vocab": "https://zam-os.org/ns/knowledge-map#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "$schema": null,
+    "id": "@id",
+    "title": "dcterms:title",
+    "language": "dcterms:language",
+    "repository_url": {
+      "@id": "repositoryUrl",
+      "@type": "@id"
+    },
+    "focus_question": "focusQuestion",
+    "root": {
+      "@id": "skos:hasTopConcept",
+      "@type": "@id"
+    },
+    "statements": {
+      "@id": "statement",
+      "@container": "@set"
+    },
+    "parent": {
+      "@id": "skos:broader",
+      "@type": "@id"
+    },
+    "label": "skos:prefLabel",
+    "sources": {
+      "@id": "dcterms:source",
+      "@container": "@set"
+    },
+    "c4": "c4",
+    "kind": {
+      "@id": "kind",
+      "@type": "@vocab"
+    },
+    "within": {
+      "@id": "within",
+      "@type": "@id"
+    },
+    "relations": {
+      "@id": "relation",
+      "@container": "@set"
+    },
+    "from": {
+      "@id": "from",
+      "@type": "@id"
+    },
+    "to": {
+      "@id": "to",
+      "@type": "@id"
+    }
+  },
   "format": "zam-knowledge-map",
   "version": 1,
   "title": "ZAM",
@@ -12,7 +65,11 @@
       "text": "ZAM turns everyday work with an AI agent into active-recall practice, so automation sharpens skills instead of eroding them.",
       "sources": [
         "README.md"
-      ]
+      ],
+      "c4": {
+        "kind": "system",
+        "name": "ZAM"
+      }
     },
     {
       "id": "beliefs",
@@ -205,7 +262,12 @@
       "text": "An AI-agnostic kernel holds all learning logic and never calls a language model.",
       "sources": [
         "docs/okf/kernel-architecture.md"
-      ]
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "Kernel",
+        "technology": "TypeScript library"
+      }
     },
     {
       "id": "kernel-no-llm",
@@ -221,7 +283,12 @@
       "text": "The CLI is thin orchestration: open the database, call the kernel, render the result, close.",
       "sources": [
         "docs/okf/kernel-architecture.md"
-      ]
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "CLI and MCP server",
+        "technology": "Node.js"
+      }
     },
     {
       "id": "llm-in-cli",
@@ -229,7 +296,27 @@
       "text": "Every model and embedding call lives in the CLI layer, under src/cli/llm.",
       "sources": [
         "docs/okf/kernel-architecture.md"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Model clients",
+        "technology": "HTTP"
+      }
+    },
+    {
+      "id": "language-models",
+      "parent": "llm-in-cli",
+      "text": "Cloud or local language models evaluate answers and draft content once the learner connects one.",
+      "sources": [
+        "docs/okf/local-ai-runtimes.md",
+        "README.md"
+      ],
+      "c4": {
+        "kind": "system",
+        "name": "Language models",
+        "technology": "Cloud API or local runtime",
+        "external": true
+      }
     },
     {
       "id": "deterministic-scheduling",
@@ -246,7 +333,12 @@
       "sources": [
         "docs/okf/kernel-architecture.md",
         "README.md"
-      ]
+      ],
+      "c4": {
+        "kind": "database",
+        "name": "Local database",
+        "technology": "SQLite"
+      }
     },
     {
       "id": "server-db",
@@ -254,7 +346,13 @@
       "text": "A library can instead live on Turso or PostgreSQL, behind the same database contract.",
       "sources": [
         "docs/okf/kernel-architecture.md"
-      ]
+      ],
+      "c4": {
+        "kind": "database",
+        "name": "Server database",
+        "technology": "Turso or PostgreSQL",
+        "external": true
+      }
     },
     {
       "id": "machine-local-config",
@@ -337,7 +435,13 @@
       "text": "FSRS-6 schedules every card with 21 trained weights and a 90% retention target.",
       "sources": [
         "docs/okf/fsrs-scheduling.md"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Scheduler",
+        "technology": "FSRS-6",
+        "within": "kernel"
+      }
     },
     {
       "id": "sm2",
@@ -361,7 +465,12 @@
       "text": "Rating Again on a token with prerequisites blocks its card until those foundations have been reviewed.",
       "sources": [
         "docs/okf/prerequisite-blocking.md"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Prerequisite blocker",
+        "within": "kernel"
+      }
     },
     {
       "id": "not-transitive",
@@ -387,7 +496,12 @@
       "sources": [
         "beliefs/learning-in-context/interleaving/README.md",
         "src/kernel/scheduler/queue.ts"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Review queue",
+        "within": "kernel"
+      }
     },
     {
       "id": "answer-format",
@@ -421,7 +535,13 @@
       "sources": [
         "docs/okf/mcp-surfaces.md",
         "README.md"
-      ]
+      ],
+      "c4": {
+        "kind": "system",
+        "name": "AI agent app",
+        "technology": "Claude Code, Codex, VS Code and others",
+        "external": true
+      }
     },
     {
       "id": "mcp-preferred",
@@ -429,7 +549,13 @@
       "text": "zam mcp is the preferred agent connection; the JSON bridge CLI is the fallback.",
       "sources": [
         "docs/okf/mcp-surfaces.md"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "MCP server",
+        "technology": "stdio",
+        "within": "cli-layer"
+      }
     },
     {
       "id": "agent-connect",
@@ -445,7 +571,13 @@
       "text": "Every bridge response is JSON, errors included, and protocol.ts is its stable contract.",
       "sources": [
         "docs/okf/bridge-protocol.md"
-      ]
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Bridge CLI",
+        "technology": "JSON over stdio",
+        "within": "cli-layer"
+      }
     },
     {
       "id": "mcp-apps-panels",
@@ -453,7 +585,13 @@
       "text": "MCP Apps panels show recall, the learning graph and the knowledge base inside the agent app.",
       "sources": [
         "docs/okf/mcp-surfaces.md"
-      ]
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "MCP Apps panels",
+        "technology": "HTML in the agent app",
+        "within": "zam"
+      }
     },
     {
       "id": "observation-mech",
@@ -472,6 +610,18 @@
       ]
     },
     {
+      "id": "learner",
+      "parent": "agents",
+      "text": "A learner works on real tasks with an AI agent and keeps what they learn through ZAM's reviews.",
+      "sources": [
+        "README.md"
+      ],
+      "c4": {
+        "kind": "person",
+        "name": "Learner"
+      }
+    },
+    {
       "id": "surfaces",
       "parent": "zam",
       "text": "The Desktop Studio and the mobile apps handle setup, learning content and focused review.",
@@ -479,6 +629,20 @@
         "README.md",
         "docs/okf/mobile-standalone-libraries.md"
       ]
+    },
+    {
+      "id": "studio",
+      "parent": "surfaces",
+      "text": "The Desktop Studio is a Tauri app for setup, learning content and focused review.",
+      "sources": [
+        "README.md",
+        "docs/adr/2026-05-31b-tauri-active-recall-studio.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "Desktop Studio",
+        "technology": "Tauri 2, TypeScript"
+      }
     },
     {
       "id": "studio-first",
@@ -510,7 +674,12 @@
       "text": "ZAM Mobile runs standalone on Android and iOS, with no desktop, account or network required.",
       "sources": [
         "docs/okf/mobile-standalone-libraries.md"
-      ]
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "ZAM Mobile",
+        "technology": "Tauri 2 on Android and iOS"
+      }
     },
     {
       "id": "pairing-optional",
@@ -759,7 +928,9 @@
     {
       "from": "mcp-apps-panels",
       "to": "mcp-preferred",
-      "kind": "requires"
+      "kind": "uses",
+      "label": "call tools of",
+      "technology": "MCP Apps"
     },
     {
       "from": "bidirectional",
@@ -775,6 +946,92 @@
       "from": "local-ai-accelerated",
       "to": "cpu-too-slow",
       "kind": "because"
+    },
+    {
+      "from": "learner",
+      "to": "agents",
+      "kind": "uses",
+      "label": "works with"
+    },
+    {
+      "from": "learner",
+      "to": "studio",
+      "kind": "uses",
+      "label": "reviews and sets up in"
+    },
+    {
+      "from": "learner",
+      "to": "mobile-standalone",
+      "kind": "uses",
+      "label": "reviews on"
+    },
+    {
+      "from": "agents",
+      "to": "mcp-preferred",
+      "kind": "uses",
+      "label": "calls tools of",
+      "technology": "MCP over stdio"
+    },
+    {
+      "from": "agents",
+      "to": "mcp-apps-panels",
+      "kind": "uses",
+      "label": "shows"
+    },
+    {
+      "from": "mcp-preferred",
+      "to": "kernel",
+      "kind": "uses",
+      "label": "runs learning logic in",
+      "technology": "in-process"
+    },
+    {
+      "from": "bridge-json",
+      "to": "kernel",
+      "kind": "uses",
+      "label": "runs learning logic in",
+      "technology": "in-process"
+    },
+    {
+      "from": "studio",
+      "to": "bridge-json",
+      "kind": "uses",
+      "label": "sends commands to",
+      "technology": "zam bridge serve, stdin"
+    },
+    {
+      "from": "kernel",
+      "to": "local-sqlite",
+      "kind": "uses",
+      "label": "stores cards and reviews in",
+      "technology": "SQL"
+    },
+    {
+      "from": "kernel",
+      "to": "server-db",
+      "kind": "uses",
+      "label": "can keep a shared library in",
+      "technology": "libSQL or PostgreSQL"
+    },
+    {
+      "from": "llm-in-cli",
+      "to": "language-models",
+      "kind": "uses",
+      "label": "asks for evaluations and drafts",
+      "technology": "HTTP"
+    },
+    {
+      "from": "mobile-standalone",
+      "to": "kernel",
+      "kind": "uses",
+      "label": "runs the kernel on the device",
+      "technology": "in the WebView"
+    },
+    {
+      "from": "queue-interleaving",
+      "to": "fsrs6",
+      "kind": "uses",
+      "label": "takes due dates from"
     }
   ]
 }

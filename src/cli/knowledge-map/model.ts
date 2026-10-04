@@ -4,7 +4,8 @@
  *
  * A map is a tree of one-sentence statements (each statement names its
  * `parent`, which reads as "in detail") plus typed cross-links between any two
- * statements. Pure by design: no Node built-ins and no DOM, so
+ * statements. A statement may also be a C4 architecture element, and the file
+ * is JSON-LD, so RDF tools can read it as a graph. Pure by design: no Node built-ins and no DOM, so
  * `desktop/src/knowledge-map/` imports it directly, the way the Studio imports
  * kernel helpers. Checking that sources exist on disk is injected
  * (`sourceExists`); `./load.ts` supplies it for the CLI.
@@ -24,10 +25,45 @@ export const RELATION_KINDS = [
   "because",
   "instead_of",
   "example",
+  "uses",
 ] as const;
 
 export type RelationKind = (typeof RELATION_KINDS)[number];
 export type EdgeKind = "elaborates" | RelationKind;
+
+/** C4 element kinds; a database is a container drawn as a data store. */
+export const C4_KINDS = [
+  "person",
+  "system",
+  "container",
+  "database",
+  "component",
+] as const;
+
+export type C4Kind = (typeof C4_KINDS)[number];
+
+export const MAX_C4_NAME_LENGTH = 40;
+export const MAX_TECHNOLOGY_LENGTH = 60;
+export const MAX_RELATION_LABEL_LENGTH = 40;
+
+/**
+ * Makes a statement a C4 element. The statement text is the element's
+ * one-sentence description.
+ */
+export interface C4Facet {
+  kind: C4Kind;
+  /** Short element name drawn in the box. */
+  name: string;
+  technology?: string;
+  /** Outside the system being described (another system, a hosted service). */
+  external?: boolean;
+  /**
+   * The element this one sits in: a system for a container or database, a
+   * container or database for a component. Defaults to the nearest such
+   * ancestor in the statement tree.
+   */
+  within?: string;
+}
 
 export interface KnowledgeStatement {
   id: string;
@@ -36,12 +72,17 @@ export interface KnowledgeStatement {
   text: string;
   /** Repository-relative paths, optionally with a `#anchor`. */
   sources: string[];
+  c4?: C4Facet;
 }
 
 export interface KnowledgeRelation {
   from: string;
   to: string;
   kind: RelationKind;
+  /** Short verb phrase, e.g. "stores cards in"; C4 draws it on the arrow. */
+  label?: string;
+  /** How the link is made, e.g. "MCP over stdio". */
+  technology?: string;
 }
 
 export interface KnowledgeMap {
@@ -55,6 +96,50 @@ export interface KnowledgeMap {
   root: string;
   statements: KnowledgeStatement[];
   relations: KnowledgeRelation[];
+}
+
+/** Where the published JSON Schema for map files lives. */
+export const KNOWLEDGE_MAP_SCHEMA_URL =
+  "https://raw.githubusercontent.com/zam-os/zam/main/docs/knowledge-map/map.schema.json";
+
+/**
+ * JSON-LD context written into every map (ADR 2026-10-03, Decision 7). It
+ * reads the map as RDF without changing its JSON: the tree as SKOS
+ * `broader`, short labels as SKOS `prefLabel`, sources as Dublin Core
+ * `source`, everything else in ZAM's own vocabulary. Ids are relative IRIs, resolved against the file's location.
+ */
+export const KNOWLEDGE_MAP_CONTEXT = {
+  "@vocab": "https://zam-os.org/ns/knowledge-map#",
+  skos: "http://www.w3.org/2004/02/skos/core#",
+  dcterms: "http://purl.org/dc/terms/",
+  $schema: null,
+  id: "@id",
+  title: "dcterms:title",
+  language: "dcterms:language",
+  repository_url: { "@id": "repositoryUrl", "@type": "@id" },
+  focus_question: "focusQuestion",
+  root: { "@id": "skos:hasTopConcept", "@type": "@id" },
+  statements: { "@id": "statement", "@container": "@set" },
+  parent: { "@id": "skos:broader", "@type": "@id" },
+  label: "skos:prefLabel",
+  sources: { "@id": "dcterms:source", "@container": "@set" },
+  c4: "c4",
+  kind: { "@id": "kind", "@type": "@vocab" },
+  within: { "@id": "within", "@type": "@id" },
+  relations: { "@id": "relation", "@container": "@set" },
+  from: { "@id": "from", "@type": "@id" },
+  to: { "@id": "to", "@type": "@id" },
+} as const;
+
+/** The map as written to disk: schema link and JSON-LD context first. */
+export function toKnowledgeMapDocument(
+  map: KnowledgeMap,
+): Record<string, unknown> {
+  return {
+    $schema: KNOWLEDGE_MAP_SCHEMA_URL,
+    "@context": KNOWLEDGE_MAP_CONTEXT,
+    ...map,
+  };
 }
 
 export interface MapIssue {
@@ -100,6 +185,112 @@ function sourceProblem(source: string): string | null {
   if (path.split(/[\\/]/).includes(".."))
     return "must not leave the repository";
   return null;
+}
+
+/** A trimmed single line within `max` characters, else null. */
+function shortLine(value: unknown, max: number): string | null {
+  if (typeof value !== "string") return null;
+  const trimmed = value.trim();
+  if (trimmed.length === 0 || trimmed.length > max || /[\r\n]/.test(trimmed)) {
+    return null;
+  }
+  return trimmed;
+}
+
+function parseC4(
+  raw: unknown,
+  id: string,
+  error: (message: string, id?: string) => void,
+): C4Facet | undefined {
+  if (!isRecord(raw)) {
+    error('"c4" must be an object.', id);
+    return undefined;
+  }
+  if (!C4_KINDS.includes(raw.kind as C4Kind)) {
+    error(`"c4.kind" must be one of ${C4_KINDS.join(", ")}.`, id);
+    return undefined;
+  }
+  const kind = raw.kind as C4Kind;
+  const name = shortLine(raw.name, MAX_C4_NAME_LENGTH);
+  if (name === null) {
+    error(
+      `"c4.name" is one line of at most ${MAX_C4_NAME_LENGTH} characters.`,
+      id,
+    );
+    return undefined;
+  }
+  const facet: C4Facet = { kind, name };
+  if (raw.technology !== undefined) {
+    const technology = shortLine(raw.technology, MAX_TECHNOLOGY_LENGTH);
+    if (technology === null) {
+      error(
+        `"c4.technology" is one line of at most ${MAX_TECHNOLOGY_LENGTH} characters.`,
+        id,
+      );
+    } else {
+      facet.technology = technology;
+    }
+  }
+  if (raw.external !== undefined) {
+    if (typeof raw.external !== "boolean") {
+      error('"c4.external" must be true or false.', id);
+    } else if (raw.external) {
+      facet.external = true;
+    }
+  }
+  if (raw.within !== undefined) {
+    if (!nonEmptyString(raw.within)) {
+      error('"c4.within" must be a statement id.', id);
+    } else if (!needsHost(facet)) {
+      error(
+        '"c4.within" is only for containers, databases and components that are not external.',
+        id,
+      );
+    } else {
+      facet.within = raw.within;
+    }
+  }
+  return facet;
+}
+
+/** Containers, databases and components belong somewhere unless external. */
+function needsHost(facet: C4Facet): boolean {
+  return (
+    !facet.external &&
+    (facet.kind === "container" ||
+      facet.kind === "database" ||
+      facet.kind === "component")
+  );
+}
+
+function canContain(host: C4Facet, kind: C4Kind): boolean {
+  if (host.external) return false;
+  if (kind === "component") {
+    return host.kind === "container" || host.kind === "database";
+  }
+  return host.kind === "system";
+}
+
+/**
+ * The C4 element a container, database or component sits in: its explicit
+ * `within`, else the nearest suitable ancestor in the statement tree.
+ */
+export function c4HostOf(
+  statements: ReadonlyMap<string, KnowledgeStatement>,
+  id: string,
+): string | undefined {
+  const facet = statements.get(id)?.c4;
+  if (!facet || !needsHost(facet)) return undefined;
+  if (facet.within !== undefined) return facet.within;
+  const seen = new Set<string>([id]);
+  let current = statements.get(id)?.parent;
+  while (current !== undefined && !seen.has(current)) {
+    seen.add(current);
+    const ancestor = statements.get(current);
+    if (ancestor?.c4 && canContain(ancestor.c4, facet.kind)) return current;
+    current = ancestor?.parent;
+  }
+  return undefined;
 }
 
 export function validateKnowledgeMap(
@@ -190,12 +381,14 @@ export function validateKnowledgeMap(
     if (raw.parent !== undefined && !nonEmptyString(raw.parent)) {
       error('"parent" must be a statement id.', id);
     }
+    const c4 = raw.c4 === undefined ? undefined : parseC4(raw.c4, id, error);
 
     byId.set(id, {
       id,
       ...(nonEmptyString(raw.parent) ? { parent: raw.parent } : {}),
       text: nonEmptyString(raw.text) ? raw.text : "",
       sources: Array.isArray(raw.sources) ? (raw.sources as string[]) : [],
+      ...(c4 ? { c4 } : {}),
     });
   }
 
@@ -250,6 +443,35 @@ export function validateKnowledgeMap(
     }
   }
 
+  // Every internal container sits in a system, every component in a container.
+  for (const statement of byId.values()) {
+    const facet = statement.c4;
+    if (!facet) continue;
+    if (facet.within !== undefined) {
+      const host = byId.get(facet.within);
+      if (!host) {
+        error(
+          `"c4.within" names "${facet.within}", which does not exist.`,
+          statement.id,
+        );
+        continue;
+      }
+      if (!host.c4 || !canContain(host.c4, facet.kind)) {
+        error(
+          `"c4.within" must name ${facet.kind === "component" ? "a container or database" : "a system"} that is not external.`,
+          statement.id,
+        );
+        continue;
+      }
+    }
+    if (needsHost(facet) && c4HostOf(byId, statement.id) === undefined) {
+      error(
+        `This ${facet.kind} has no ${facet.kind === "component" ? "container" : "system"} to sit in: set "c4.within" or place it below one.`,
+        statement.id,
+      );
+    }
+  }
+
   const relations: KnowledgeRelation[] = [];
   const pairs = new Set<string>();
   for (const raw of input.relations as unknown[]) {
@@ -283,7 +505,34 @@ export function validateKnowledgeMap(
       continue;
     }
     pairs.add(pair);
-    relations.push({ from, to, kind: kind as RelationKind });
+    const relation: KnowledgeRelation = {
+      from,
+      to,
+      kind: kind as RelationKind,
+    };
+    if (raw.label !== undefined) {
+      const label = shortLine(raw.label, MAX_RELATION_LABEL_LENGTH);
+      if (label === null) {
+        error(
+          `A relation label is one line of at most ${MAX_RELATION_LABEL_LENGTH} characters.`,
+          from,
+        );
+      } else {
+        relation.label = label;
+      }
+    }
+    if (raw.technology !== undefined) {
+      const technology = shortLine(raw.technology, MAX_TECHNOLOGY_LENGTH);
+      if (technology === null) {
+        error(
+          `A relation technology is one line of at most ${MAX_TECHNOLOGY_LENGTH} characters.`,
+          from,
+        );
+      } else {
+        relation.technology = technology;
+      }
+    }
+    relations.push(relation);
   }
 
   if (issues.some((issue) => issue.level === "error")) {

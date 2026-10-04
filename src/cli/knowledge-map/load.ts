@@ -9,6 +9,7 @@ import { fileURLToPath } from "node:url";
 import {
   type KnowledgeMap,
   type MapIssue,
+  toKnowledgeMapDocument,
   validateKnowledgeMap,
 } from "./model.js";
 
@@ -71,7 +72,9 @@ export interface WrittenKnowledgeMap {
 
 /**
  * Validate a whole map against the repository and write it as
- * `docs/knowledge-map/map.json` — only when there is no error.
+ * `docs/knowledge-map/map.json` — only when there is no error. The written
+ * file always carries the schema link and the JSON-LD context, so an agent
+ * never has to write either.
  */
 export function writeKnowledgeMap(
   repoRoot: string,
@@ -83,7 +86,11 @@ export function writeKnowledgeMap(
   });
   if (!map) return { ok: false, path, issues };
   mkdirSync(dirname(path), { recursive: true });
-  writeFileSync(path, `${JSON.stringify(map, null, 2)}\n`, "utf8");
+  writeFileSync(
+    path,
+    `${JSON.stringify(toKnowledgeMapDocument(map), null, 2)}\n`,
+    "utf8",
+  );
   return {
     ok: true,
     path,
@@ -93,14 +100,8 @@ export function writeKnowledgeMap(
   };
 }
 
-/**
- * The repository an agent works in, from the MCP client's roots: the first
- * root that already has a map, else the first file root, else `fallback`.
- */
-export function resolveRepoRootFromRoots(
-  rootUris: string[],
-  fallback: string,
-): string {
+/** The folders behind an MCP client's `file:` roots, in the client's order. */
+export function rootDirsFromUris(rootUris: string[]): string[] {
   const dirs: string[] = [];
   for (const uri of rootUris) {
     if (!uri?.startsWith("file:")) continue;
@@ -110,6 +111,20 @@ export function resolveRepoRootFromRoots(
       // malformed root URI: skip
     }
   }
+  return dirs;
+}
+
+/**
+ * The repository whose map to *read*: the first root that already has a map,
+ * else the first file root, else `fallback`. Writing never uses this rule; it
+ * takes an explicit repository or the first root, so it cannot overwrite the
+ * map of another workspace folder.
+ */
+export function resolveRepoRootFromRoots(
+  rootUris: string[],
+  fallback: string,
+): string {
+  const dirs = rootDirsFromUris(rootUris);
   return (
     dirs.find((dir) => existsSync(join(dir, KNOWLEDGE_MAP_RELATIVE_PATH))) ??
     dirs[0] ??

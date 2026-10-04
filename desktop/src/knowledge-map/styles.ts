@@ -25,6 +25,14 @@ const CSS = `
   --km-k-leads_to: #0e7490;
   --km-k-instead_of: #be123c;
   --km-k-example: #15803d;
+  --km-k-uses: #1d4ed8;
+  --km-c4-person: #08427b;
+  --km-c4-system: #1168bd;
+  --km-c4-container: #2f75c0;
+  --km-c4-component: #85bbf0;
+  --km-c4-external: #6b7280;
+  --km-c4-on: #ffffff;
+  --km-c4-on-light: #0b2540;
   color: var(--km-text);
   font-family: var(--font-family, Inter, -apple-system, "Segoe UI", Roboto, sans-serif);
   display: flex;
@@ -35,6 +43,12 @@ const CSS = `
 }
 :root[data-theme="dark"] .km-root {
   --km-accent-soft: rgba(167, 139, 250, 0.16);
+  --km-k-uses: #93c5fd;
+  --km-c4-person: #1f5aa0;
+  --km-c4-system: #2b7bd0;
+  --km-c4-container: #3f8ad8;
+  --km-c4-component: #9cc8f3;
+  --km-c4-external: #7b8494;
   --km-edge: rgba(203, 213, 225, 0.32);
   --km-k-elaborates: #cbd5e1;
   --km-k-because: #c4b5fd;
@@ -46,6 +60,12 @@ const CSS = `
 @media (prefers-color-scheme: dark) {
   :root:not([data-theme="light"]) .km-root {
     --km-accent-soft: rgba(167, 139, 250, 0.16);
+    --km-k-uses: #93c5fd;
+    --km-c4-person: #1f5aa0;
+    --km-c4-system: #2b7bd0;
+    --km-c4-container: #3f8ad8;
+    --km-c4-component: #9cc8f3;
+    --km-c4-external: #7b8494;
     --km-edge: rgba(203, 213, 225, 0.32);
     --km-k-elaborates: #cbd5e1;
     --km-k-because: #c4b5fd;
@@ -98,6 +118,7 @@ const CSS = `
 .km-k-leads_to { color: var(--km-k-leads_to); }
 .km-k-instead_of { color: var(--km-k-instead_of); }
 .km-k-example { color: var(--km-k-example); }
+.km-k-uses { color: var(--km-k-uses); }
 .km-feedback { border: 1px solid var(--km-border); border-radius: 14px; background: var(--km-bg); padding: 12px 14px;
   display: flex; flex-wrap: wrap; gap: 10px 18px; align-items: center; }
 .km-feedback-group { display: flex; flex-wrap: wrap; align-items: center; gap: 6px; }
@@ -176,6 +197,42 @@ const CSS = `
 .km-lv-anim-out { animation: km-zoom-out 320ms ease-out; }
 @keyframes km-zoom-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
 @keyframes km-zoom-out { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+/* C4 architecture */
+.km-c4 { padding: 14px 16px 18px; display: flex; flex-direction: column; gap: 12px; }
+.km-c4-top { display: flex; align-items: center; gap: 12px; flex-wrap: wrap; }
+.km-c4-title { font-size: 0.98rem; }
+.km-c4-diagram { position: relative; display: flex; flex-direction: column; gap: 72px; padding: 8px 4px 12px; }
+.km-c4-arrows { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 0; }
+.km-c4-arrows line { stroke: var(--km-edge); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.km-c4-head { fill: var(--km-muted); }
+.km-c4-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
+.km-c4-arrow-label { position: absolute; transform: translate(-50%, -50%); font-size: 0.72rem; padding: 2px 7px;
+  border-radius: 999px; background: var(--km-bg); border: 1px solid var(--km-border); color: var(--km-text-2);
+  max-width: 150px; text-align: center; line-height: 1.25; }
+.km-c4-arrow-num { position: absolute; transform: translate(-50%, -50%); min-width: 20px; height: 20px; padding: 0 5px;
+  box-sizing: border-box; border-radius: 999px; background: var(--km-bg); border: 1px solid var(--km-border);
+  color: var(--km-text-2); font-size: 0.7rem; font-weight: 700; display: grid; place-items: center; pointer-events: auto; }
+.km-c4-row { position: relative; z-index: 1; display: flex; flex-wrap: wrap; justify-content: center; gap: 72px 64px; }
+.km-c4-boundary { position: relative; z-index: 1; border: 2px dashed var(--km-c4-external); border-radius: 12px;
+  padding: 30px 14px 18px; }
+.km-c4-boundary-label { position: absolute; left: 12px; top: 6px; font-size: 0.78rem; font-weight: 650; color: var(--km-text-2); }
+.km-c4-box { display: flex; flex-direction: column; gap: 4px; width: 210px; min-height: 110px; padding: 10px 12px;
+  border-radius: 10px; border: 2px solid transparent; text-align: center; cursor: pointer; line-height: 1.3;
+  color: var(--km-c4-on) !important; background: var(--km-c4-container); box-shadow: 0 4px 14px rgba(15, 23, 42, 0.12); }
+.km-c4-box:hover { border-color: var(--km-accent); }
+.km-c4-person { background: var(--km-c4-person); border-radius: 26px 26px 10px 10px; }
+.km-c4-system { background: var(--km-c4-system); }
+.km-c4-container { background: var(--km-c4-container); }
+.km-c4-database { background: var(--km-c4-container); border-radius: 50% / 14px; padding-top: 18px; }
+.km-c4-component { background: var(--km-c4-component); color: var(--km-c4-on-light) !important; }
+.km-c4-ext { background: var(--km-c4-external); }
+.km-c4-box.km-c4-focus { border-color: var(--km-text); outline: 3px solid var(--km-accent); outline-offset: 2px; }
+.km-c4-name { font-weight: 700; font-size: 0.95rem; }
+.km-c4-type { font-size: 0.72rem; opacity: 0.9; }
+.km-c4-desc { font-size: 0.78rem; opacity: 0.95; }
+.km-c4-inside { font-size: 0.72rem; font-weight: 650; margin-top: auto; }
+.km-c4-list h4 { margin: 0 0 6px; font-size: 0.78rem; text-transform: uppercase; letter-spacing: 0.05em; color: var(--km-muted); }
+.km-c4-list ul { margin: 0; padding-left: 4px; list-style: none; display: flex; flex-direction: column; gap: 3px; font-size: 0.86rem; color: var(--km-text-2); }
 @media (prefers-reduced-motion: reduce) {
   .km-lv-anim-in, .km-lv-anim-out { animation: none; }
 }

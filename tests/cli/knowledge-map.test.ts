@@ -7,7 +7,7 @@ import {
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { join, relative, resolve } from "node:path";
 import { pathToFileURL } from "node:url";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { InMemoryTransport } from "@modelcontextprotocol/sdk/inMemory.js";
@@ -21,12 +21,22 @@ import {
 import {
   loadKnowledgeMap,
   resolveRepoRootFromRoots,
+  rootDirsFromUris,
   writeKnowledgeMap,
 } from "../../src/cli/knowledge-map/load.js";
 import {
   buildMapIndex,
+  C4_KINDS,
+  c4HostOf,
+  KNOWLEDGE_MAP_CONTEXT,
+  KNOWLEDGE_MAP_SCHEMA_URL,
   type KnowledgeMap,
+  type KnowledgeStatement,
+  MAX_C4_NAME_LENGTH,
+  MAX_RELATION_LABEL_LENGTH,
   MAX_STATEMENT_LENGTH,
+  MAX_TECHNOLOGY_LENGTH,
+  RELATION_KINDS,
   validateKnowledgeMap,
 } from "../../src/cli/knowledge-map/model.js";
 import {
@@ -225,6 +235,194 @@ describe("knowledge map: validator", () => {
   });
 });
 
+/** A small system: a person, the system, two containers, a component. */
+function c4Map(): Record<string, unknown> {
+  return {
+    format: "zam-knowledge-map",
+    version: 1,
+    title: "Shop",
+    focus_question: "How does the shop work?",
+    root: "shop",
+    statements: [
+      {
+        id: "shop",
+        text: "The shop sells books online.",
+        sources: ["README.md"],
+        c4: { kind: "system", name: "Shop" },
+      },
+      {
+        id: "buyer",
+        parent: "shop",
+        text: "A buyer orders books.",
+        sources: ["README.md"],
+        c4: { kind: "person", name: "Buyer" },
+      },
+      {
+        id: "web",
+        parent: "shop",
+        text: "A web app takes orders.",
+        sources: ["README.md"],
+        c4: { kind: "container", name: "Web app", technology: "React" },
+      },
+      {
+        id: "db",
+        parent: "web",
+        text: "Orders are stored in PostgreSQL.",
+        sources: ["README.md"],
+        c4: { kind: "database", name: "Orders", technology: "PostgreSQL" },
+      },
+      {
+        id: "checkout",
+        parent: "shop",
+        text: "Checkout validates the basket.",
+        sources: ["README.md"],
+        c4: { kind: "component", name: "Checkout", within: "web" },
+      },
+      {
+        id: "pay",
+        parent: "shop",
+        text: "A payment provider charges the card.",
+        sources: ["README.md"],
+        c4: { kind: "system", name: "Payments", external: true },
+      },
+    ],
+    relations: [
+      { from: "buyer", to: "web", kind: "uses", label: "orders in" },
+      {
+        from: "checkout",
+        to: "pay",
+        kind: "uses",
+        label: "charges via",
+        technology: "HTTPS",
+      },
+      {
+        from: "web",
+        to: "db",
+        kind: "uses",
+        label: "stores orders in",
+        technology: "SQL",
+      },
+    ],
+  };
+}
+
+describe("knowledge map: C4 elements and links", () => {
+  it("accepts C4 facets, uses links with labels, and resolves hosts", () => {
+    const result = validateKnowledgeMap(c4Map(), { sourceExists: () => true });
+    expect(result.issues).toEqual([]);
+    const statements = new Map<string, KnowledgeStatement>(
+      (result.map as KnowledgeMap).statements.map((s) => [s.id, s]),
+    );
+    expect(c4HostOf(statements, "web")).toBe("shop");
+    // A database below a container still sits in the system, not the container.
+    expect(c4HostOf(statements, "db")).toBe("shop");
+    expect(c4HostOf(statements, "checkout")).toBe("web");
+    expect(c4HostOf(statements, "pay")).toBeUndefined();
+    expect(result.map?.relations[1]).toMatchObject({
+      kind: "uses",
+      label: "charges via",
+      technology: "HTTPS",
+    });
+  });
+
+  it("checks C4 kinds, names, technology and the external flag", () => {
+    const map = c4Map();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    statements[0].c4 = { kind: "robot", name: "Shop" };
+    statements[1].c4 = {
+      kind: "person",
+      name: "x".repeat(MAX_C4_NAME_LENGTH + 1),
+    };
+    statements[2].c4 = {
+      kind: "container",
+      name: "Web",
+      technology: "t".repeat(MAX_TECHNOLOGY_LENGTH + 1),
+    };
+    statements[5].c4 = { kind: "system", name: "Payments", external: "yes" };
+    const messages = errors(map);
+    expect(messages.some((m) => m.includes('"c4.kind"'))).toBe(true);
+    expect(messages.some((m) => m.includes('"c4.name"'))).toBe(true);
+    expect(messages.some((m) => m.includes('"c4.technology"'))).toBe(true);
+    expect(messages.some((m) => m.includes('"c4.external"'))).toBe(true);
+  });
+
+  it("requires a place to sit for internal containers and components", () => {
+    const map = c4Map();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    statements[0].c4 = undefined;
+    delete statements[0].c4;
+    statements[4].c4 = { kind: "component", name: "Checkout", within: "pay" };
+    statements[5].c4 = {
+      kind: "system",
+      name: "Payments",
+      external: true,
+      within: "shop",
+    };
+    const messages = errors(map);
+    expect(messages.some((m) => m.includes("has no system to sit in"))).toBe(
+      true,
+    );
+    expect(
+      messages.some((m) => m.includes("must name a container or database")),
+    ).toBe(true);
+    expect(messages.some((m) => m.includes("only for containers"))).toBe(true);
+  });
+
+  it("checks relation labels and technology", () => {
+    const map = c4Map();
+    map.relations = [
+      {
+        from: "buyer",
+        to: "web",
+        kind: "uses",
+        label: "l".repeat(MAX_RELATION_LABEL_LENGTH + 1),
+      },
+      { from: "web", to: "db", kind: "uses", technology: "two\nlines" },
+    ];
+    const messages = errors(map);
+    expect(messages.some((m) => m.includes("relation label"))).toBe(true);
+    expect(messages.some((m) => m.includes("relation technology"))).toBe(true);
+  });
+});
+
+describe("knowledge map: JSON-LD and schema", () => {
+  const schema = JSON.parse(
+    readFileSync(join(REPO_ROOT, "docs/knowledge-map/map.schema.json"), "utf8"),
+  );
+
+  it("maps every field to RDF and keeps $schema out of the graph", () => {
+    const context = KNOWLEDGE_MAP_CONTEXT as Record<string, unknown>;
+    expect(context["@vocab"]).toMatch(/^https:\/\//);
+    expect(context.$schema).toBeNull();
+    expect(context.id).toBe("@id");
+    for (const term of ["root", "parent", "within", "from", "to"]) {
+      expect(context[term], term).toMatchObject({ "@type": "@id" });
+    }
+    expect(context.parent).toMatchObject({ "@id": "skos:broader" });
+  });
+
+  it("writes the context and schema link, and ZAM's map carries both", () => {
+    const raw = JSON.parse(
+      readFileSync(join(REPO_ROOT, "docs/knowledge-map/map.json"), "utf8"),
+    );
+    expect(raw.$schema).toBe(KNOWLEDGE_MAP_SCHEMA_URL);
+    expect(raw["@context"]).toEqual(KNOWLEDGE_MAP_CONTEXT);
+    expect(schema.$id).toBe(KNOWLEDGE_MAP_SCHEMA_URL);
+  });
+
+  it("keeps the published schema in step with the validator", () => {
+    const defs = schema.$defs;
+    expect(defs.relation.properties.kind.enum).toEqual([...RELATION_KINDS]);
+    expect(defs.c4.properties.kind.enum).toEqual([...C4_KINDS]);
+    expect(defs.statement.properties.text.maxLength).toBe(MAX_STATEMENT_LENGTH);
+    expect(defs.c4.properties.name.maxLength).toBe(MAX_C4_NAME_LENGTH);
+    expect(defs.c4.properties.technology.maxLength).toBe(MAX_TECHNOLOGY_LENGTH);
+    expect(defs.relation.properties.label.maxLength).toBe(
+      MAX_RELATION_LABEL_LENGTH,
+    );
+  });
+});
+
 describe("knowledge map: navigation index", () => {
   const index = buildMapIndex(
     validateKnowledgeMap(smallMap()).map as KnowledgeMap,
@@ -275,6 +473,8 @@ describe("knowledge map: files, roots and feedback", () => {
     const written = writeKnowledgeMap(dir, smallMap());
     expect(written).toMatchObject({ ok: true, statements: 5, relations: 2 });
     expect(loadKnowledgeMap(dir).map?.root).toBe("demo");
+    const onDisk = JSON.parse(readFileSync(written.path, "utf8"));
+    expect(Object.keys(onDisk).slice(0, 2)).toEqual(["$schema", "@context"]);
   });
 
   it("reports a broken file instead of throwing", () => {
@@ -437,5 +637,61 @@ describe("knowledge map: MCP tools", () => {
 
     await client.close();
     await server.close();
+  });
+
+  it("never falls back to the server's working directory", async () => {
+    setKnowledgeMapConfig({ enabled: true });
+    const { client, server } = await connect();
+    // The test client reports no workspace roots.
+    const guide = await client.callTool({
+      name: "zam_knowledge_map_guide",
+      arguments: {},
+    });
+    expect(guide.structuredContent).toMatchObject({ repo_root: null });
+
+    const refused = await client.callTool({
+      name: "zam_knowledge_map_write",
+      arguments: { map: smallMap() },
+    });
+    expect(refused.isError).toBe(true);
+    expect(
+      existsSync(join(process.cwd(), "docs", "knowledge-map", "map.json")) &&
+        readFileSync(
+          join(process.cwd(), "docs", "knowledge-map", "map.json"),
+          "utf8",
+        ).includes('"demo"'),
+    ).toBe(false);
+    expect(getKnowledgeMapConfig().repoPath).toBeUndefined();
+
+    // A relative repo_root is stored as an absolute path.
+    const relativeRoot = relative(process.cwd(), dir);
+    const written = await client.callTool({
+      name: "zam_knowledge_map_write",
+      arguments: { repo_root: relativeRoot, map: smallMap() },
+    });
+    expect(written.structuredContent).toMatchObject({ ok: true });
+    expect(getKnowledgeMapConfig().repoPath).toBe(dir);
+
+    await client.close();
+    await server.close();
+  });
+});
+
+describe("knowledge map: workspace roots", () => {
+  it("lists file roots in the client's order and skips others", () => {
+    const a = mkdtempSync(join(tmpdir(), "zam-km-a-"));
+    const b = mkdtempSync(join(tmpdir(), "zam-km-b-"));
+    try {
+      expect(
+        rootDirsFromUris([
+          "https://example.com",
+          pathToFileURL(a).href,
+          pathToFileURL(b).href,
+        ]),
+      ).toEqual([a, b]);
+    } finally {
+      rmSync(a, { recursive: true, force: true });
+      rmSync(b, { recursive: true, force: true });
+    }
   });
 });

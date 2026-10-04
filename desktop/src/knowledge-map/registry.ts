@@ -6,7 +6,7 @@
 
 import type { ViewModule } from "./contract.js";
 
-export type KnowledgeMapViewId = "focus" | "outline" | "levels";
+export type KnowledgeMapViewId = "focus" | "outline" | "levels" | "c4";
 
 export interface KnowledgeMapViewEntry {
   id: KnowledgeMapViewId;
@@ -34,6 +34,12 @@ export const KNOWLEDGE_MAP_VIEWS: readonly KnowledgeMapViewEntry[] = [
     nameKey: "km_view_levels",
     descriptionKey: "km_view_levels_desc",
     load: () => import("./views/levels.js"),
+  },
+  {
+    id: "c4",
+    nameKey: "km_view_c4",
+    descriptionKey: "km_view_c4_desc",
+    load: () => import("./views/c4.js"),
   },
 ];
 

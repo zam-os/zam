@@ -3,6 +3,14 @@ import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
 import {
+  buildC4Diagram,
+  buildC4Model,
+  clipToBoxes,
+  homeScope,
+  parentScope,
+  zoomScope,
+} from "../../desktop/src/knowledge-map/c4-layout.js";
+import {
   layoutFocus,
   layoutMinimap,
   MAX_VISIBLE_NEIGHBORS,
@@ -127,12 +135,147 @@ describe("knowledge map layout", () => {
   });
 });
 
+describe("knowledge map C4 view", () => {
+  const index = zamIndex();
+  const model = buildC4Model(index);
+
+  it("places containers in their system and components in their container", () => {
+    expect(model.elements.get("kernel")?.host).toBe("zam");
+    expect(model.elements.get("cli-layer")?.host).toBe("zam");
+    expect(model.elements.get("mcp-apps-panels")?.host).toBe("zam");
+    expect(model.elements.get("mcp-preferred")?.host).toBe("cli-layer");
+    expect(model.elements.get("llm-in-cli")?.host).toBe("cli-layer");
+    expect(model.elements.get("fsrs6")?.host).toBe("kernel");
+    expect(model.elements.get("server-db")?.host).toBeUndefined();
+    // A statement without a facet belongs to its nearest element.
+    expect(model.elementOf("not-transitive")).toBe("blocking");
+    expect(model.elementOf("beliefs")).toBe("zam");
+  });
+
+  it("navigates context → containers → components and back", () => {
+    expect(homeScope(model, "learner")).toEqual({
+      level: "context",
+      scopeId: null,
+    });
+    expect(homeScope(model, "kernel")).toEqual({
+      level: "container",
+      scopeId: "zam",
+    });
+    expect(homeScope(model, "fsrs6")).toEqual({
+      level: "component",
+      scopeId: "kernel",
+    });
+    expect(zoomScope(model, "zam")).toEqual({
+      level: "container",
+      scopeId: "zam",
+    });
+    expect(zoomScope(model, "cli-layer")).toEqual({
+      level: "component",
+      scopeId: "cli-layer",
+    });
+    expect(zoomScope(model, "agents")).toBeNull();
+    expect(
+      parentScope(model, { level: "component", scopeId: "kernel" }),
+    ).toEqual({
+      level: "container",
+      scopeId: "zam",
+    });
+    expect(parentScope(model, { level: "context", scopeId: null })).toBeNull();
+  });
+
+  it("rolls links up to the boxes of the system context", () => {
+    const diagram = buildC4Diagram(index, model, {
+      level: "context",
+      scopeId: null,
+    });
+    const ids = diagram.boxes.map((box) => box.element.id).sort();
+    expect(ids).toEqual([
+      "agents",
+      "language-models",
+      "learner",
+      "server-db",
+      "zam",
+    ]);
+    const arrows = diagram.arrows.map((a) => `${a.from}>${a.to}`);
+    expect(arrows).toContain("learner>zam");
+    expect(arrows).toContain("agents>zam");
+    expect(arrows).toContain("zam>language-models");
+    expect(arrows).toContain("zam>server-db");
+    expect(diagram.boundary).toBeNull();
+  });
+
+  it("draws the containers of a system with the outside it talks to", () => {
+    const diagram = buildC4Diagram(index, model, {
+      level: "container",
+      scopeId: "zam",
+    });
+    const inside = diagram.boxes
+      .filter((b) => b.role === "inside")
+      .map((b) => b.element.id);
+    expect(inside.sort()).toEqual(
+      [
+        "cli-layer",
+        "kernel",
+        "local-sqlite",
+        "mcp-apps-panels",
+        "mobile-standalone",
+        "studio",
+      ].sort(),
+    );
+    const arrows = diagram.arrows.map((a) => `${a.from}>${a.to}`);
+    // agents → MCP server rolls up to the CLI container; two component
+    // links into the kernel become one arrow that counts both.
+    expect(arrows).toContain("agents>cli-layer");
+    const cliToKernel = diagram.arrows.find(
+      (a) => a.from === "cli-layer" && a.to === "kernel",
+    );
+    expect(cliToKernel?.count).toBe(2);
+    // Links between two outside boxes stay off a container diagram.
+    expect(arrows).not.toContain("learner>agents");
+    expect(diagram.boundary?.id).toBe("zam");
+  });
+
+  it("draws the components of a container", () => {
+    const diagram = buildC4Diagram(index, model, {
+      level: "component",
+      scopeId: "cli-layer",
+    });
+    const inside = diagram.boxes
+      .filter((b) => b.role === "inside")
+      .map((b) => b.element.id);
+    expect(inside.sort()).toEqual([
+      "bridge-json",
+      "llm-in-cli",
+      "mcp-preferred",
+    ]);
+    const arrows = diagram.arrows.map((a) => `${a.from}>${a.to}`);
+    expect(arrows).toContain("studio>bridge-json");
+    expect(arrows).toContain("mcp-preferred>kernel");
+    expect(arrows).toContain("llm-in-cli>language-models");
+  });
+
+  it("clips arrows to the box borders", () => {
+    const line = clipToBoxes(
+      { x: 0, y: 0, width: 100, height: 50 },
+      { x: 300, y: 0, width: 100, height: 50 },
+      0,
+    );
+    expect(line).toEqual({ x1: 100, y1: 25, x2: 300, y2: 25 });
+    const same = clipToBoxes(
+      { x: 0, y: 0, width: 0, height: 0 },
+      { x: 0, y: 0, width: 0, height: 0 },
+    );
+    expect(Number.isFinite(same.x1)).toBe(true);
+  });
+});
+
 describe("knowledge map views and strings", () => {
-  it("registers three switchable views with a safe default", () => {
+  it("registers the switchable views with a safe default", () => {
     expect(KNOWLEDGE_MAP_VIEWS.map((v) => v.id)).toEqual([
       "focus",
       "outline",
       "levels",
+      "c4",
     ]);
     expect(parseKnowledgeMapViewId("levels")).toBe("levels");
     expect(parseKnowledgeMapViewId("3d")).toBe(DEFAULT_KNOWLEDGE_MAP_VIEW);

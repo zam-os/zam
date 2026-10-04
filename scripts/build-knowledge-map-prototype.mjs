@@ -35,7 +35,7 @@ const script = result.outputFiles[0].text.replace(/<\/script/gi, "<\\/script");
 
 const page = `<title>ZAM Knowledge Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
-<meta name="description" content="Browsable prototype of ZAM's knowledge map: one statement per node, three switchable views.">
+<meta name="description" content="Browsable prototype of ZAM's knowledge map: one statement per node, switchable views including C4.">
 <style>
 /* Layout: a slim intro bar above the map shell; the shell itself stacks to one column below 860px. */
 :root {

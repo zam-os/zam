@@ -6,9 +6,14 @@
  */
 
 import {
+  C4_KINDS,
   KNOWLEDGE_MAP_FORMAT,
+  KNOWLEDGE_MAP_SCHEMA_URL,
   KNOWLEDGE_MAP_VERSION,
+  MAX_C4_NAME_LENGTH,
+  MAX_RELATION_LABEL_LENGTH,
   MAX_STATEMENT_LENGTH,
+  MAX_TECHNOLOGY_LENGTH,
   RELATION_KINDS,
   SOFT_MAX_CHILDREN,
 } from "./model.js";
@@ -64,10 +69,45 @@ not sure a statement is true, leave it out.
 - A \`instead_of\` B: A was chosen over B. B is the rejected alternative,
   written as its own statement (often a child of A).
 - A \`example\` B: B is an instance of A.
+- A \`uses\` B: A calls, reads, writes or depends on B at run time. This is the
+  kind for architecture links between C4 elements (section 5).
 
 Allowed kinds: ${RELATION_KINDS.join(", ")}.
 
-## 5. File format
+A relation may carry a \`label\`: a short verb phrase of at most
+${MAX_RELATION_LABEL_LENGTH} characters that says what happens ("stores cards in", "calls tools
+of"), and a \`technology\` ("SQL", "MCP over stdio"). Give every \`uses\` link a
+label; the C4 view draws it on the arrow.
+
+## 5. Architecture (C4)
+
+The same map also describes the architecture, so the Studio can draw C4
+diagrams from system context down to components. Mark the statements that
+stand for an architecture element with a \`c4\` object. The statement text is
+the element's one-sentence description.
+
+- \`kind\`: one of ${C4_KINDS.join(", ")}.
+  - \`person\`: someone who uses the system (add a statement for them).
+  - \`system\`: the software system this repository builds, usually on the
+    root, and other systems it talks to.
+  - \`container\`: something that runs or is deployed on its own: an app, a
+    service, a CLI, a library loaded at run time.
+  - \`database\`: a container that stores data.
+  - \`component\`: a major part inside one container.
+- \`name\`: the short name drawn in the box, at most ${MAX_C4_NAME_LENGTH} characters.
+- \`technology\`: optional, at most ${MAX_TECHNOLOGY_LENGTH} characters ("Node.js", "PostgreSQL").
+- \`external\`: true for systems and services outside this repository.
+- \`within\`: the element this one sits in: a system for a container or
+  database, a container or database for a component. Leave it out when that
+  element is an ancestor in the statement tree; set it when the statement sits
+  elsewhere in the tree (for example a component explained under a feature).
+
+Aim for 1 to 3 people, the system, its external systems, 3 to 8 containers,
+and components only for the containers that matter most. Connect them with
+\`uses\` links that have a label. A link between components rolls up to their
+containers in the container view, so do not repeat it at every level.
+
+## 6. File format
 
 \`\`\`json
 {
@@ -79,12 +119,17 @@ Allowed kinds: ${RELATION_KINDS.join(", ")}.
   "repository_url": "https://github.com/<owner>/<repo>/blob/main/",
   "root": "project",
   "statements": [
-    { "id": "project", "text": "One sentence on what the repository is for.", "sources": ["README.md"] },
-    { "id": "storage", "parent": "project", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"] },
+    { "id": "project", "text": "One sentence on what the repository is for.", "sources": ["README.md"],
+      "c4": { "kind": "system", "name": "Project" } },
+    { "id": "api", "parent": "project", "text": "A REST API serves the web app and the partners.", "sources": ["src/api/"],
+      "c4": { "kind": "container", "name": "API", "technology": "Node.js" } },
+    { "id": "storage", "parent": "api", "text": "All data lives in one PostgreSQL database.", "sources": ["docs/architecture.md"],
+      "c4": { "kind": "database", "name": "Database", "technology": "PostgreSQL" } },
     { "id": "no-orm", "parent": "storage", "text": "Queries are plain SQL files instead of an ORM.", "sources": ["src/db/queries/"] },
     { "id": "orm", "parent": "no-orm", "text": "An ORM would hide the query plans the team tunes by hand.", "sources": ["docs/adr/0003-sql.md"] }
   ],
   "relations": [
+    { "from": "api", "to": "storage", "kind": "uses", "label": "reads and writes", "technology": "SQL" },
     { "from": "no-orm", "to": "orm", "kind": "instead_of" }
   ]
 }
@@ -96,8 +141,11 @@ Allowed kinds: ${RELATION_KINDS.join(", ")}.
   Studio can open sources in the browser. Leave it out if you do not know it.
 - \`language\`: the language the statements are written in. Write them in the
   repository's documentation language unless the user asks otherwise.
+- The saved file is JSON-LD: ZAM adds the \`@context\` and the \`$schema\` link
+  (${KNOWLEDGE_MAP_SCHEMA_URL})
+  itself, so you do not write either.
 
-## 6. Save and check
+## 7. Save and check
 
 Call \`zam_knowledge_map_write\` with the whole map. It checks every rule above,
 lists every problem, and writes docs/knowledge-map/map.json only when there is
@@ -106,4 +154,9 @@ ${SOFT_MAX_CHILDREN} details under one statement) are advice.
 
 Then tell the user the map is ready in ZAM Studio under "Knowledge map"
 (Wissenskarte), which shows this repository's map from now on.
+
+Without ZAM's MCP tools, write the file yourself and run
+\`zam knowledge-map validate --repo <path> --write\`. It prints every problem,
+exits with 1 while there are errors, and once the map is valid rewrites it
+with the JSON-LD context and schema link.
 `;

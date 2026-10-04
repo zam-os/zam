@@ -26,6 +26,7 @@ const CROSS_ORDER: EdgeKind[] = [
   "leads_to",
   "instead_of",
   "example",
+  "uses",
 ];
 
 export function relationLabelKey(

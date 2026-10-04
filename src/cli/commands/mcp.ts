@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   RESOURCE_MIME_TYPE,
@@ -1972,27 +1972,40 @@ export function createMcpServer(
       .string()
       .optional()
       .describe(
-        "Repository root (default: the client's workspace root, falling back to the server cwd)",
+        "Absolute repository root. Default: the client's workspace root (for writing, its first folder). Required when the client reports no workspace.",
       );
 
-    const resolveMapRepoRoot = async (explicit?: string): Promise<string> => {
-      if (explicit) return explicit;
-      const { resolveRepoRootFromRoots } = await import(
+    /**
+     * The repository to read or write. Never the server's working directory:
+     * a host-started `zam mcp` often runs in the editor's install folder (the
+     * 0.13.0 finding behind `resolveOkfBundleDir`). Null means the client did
+     * not say, and the agent has to pass `repo_root`.
+     */
+    const resolveMapRepoRoot = async (
+      explicit: string | undefined,
+      purpose: "read" | "write",
+    ): Promise<string | null> => {
+      if (explicit) return resolve(explicit);
+      const { rootDirsFromUris, resolveRepoRootFromRoots } = await import(
         "../knowledge-map/load.js"
       );
       try {
         if (server.server.getClientCapabilities()?.roots) {
           const { roots } = await server.server.listRoots();
-          return resolveRepoRootFromRoots(
-            (roots ?? []).map((root) => root.uri),
-            process.cwd(),
-          );
+          const uris = (roots ?? []).map((root) => root.uri);
+          const dirs = rootDirsFromUris(uris);
+          if (dirs.length === 0) return null;
+          return purpose === "write"
+            ? dirs[0]
+            : resolveRepoRootFromRoots(uris, dirs[0]);
         }
       } catch {
-        // Client advertised roots but the request failed: cwd fallback.
+        // Client advertised roots but the request failed: ask for repo_root.
       }
-      return process.cwd();
+      return null;
     };
+    const NEED_REPO_ROOT =
+      "This agent app did not report its workspace folder. Pass repo_root: the repository's absolute path.";
 
     server.registerTool(
       "zam_knowledge_map_guide",
@@ -2008,7 +2021,20 @@ export function createMcpServer(
             "../knowledge-map/guide.js"
           );
           const { loadKnowledgeMap } = await import("../knowledge-map/load.js");
-          const repoRoot = await resolveMapRepoRoot(params.repo_root);
+          const repoRoot = await resolveMapRepoRoot(params.repo_root, "read");
+          if (repoRoot === null) {
+            return {
+              structuredContent: {
+                repo_root: null,
+                exists: false,
+                next: NEED_REPO_ROOT,
+              },
+              content: [
+                { type: "text" as const, text: KNOWLEDGE_MAP_GUIDE },
+                { type: "text" as const, text: NEED_REPO_ROOT },
+              ],
+            };
+          }
           const loaded = loadKnowledgeMap(repoRoot);
           let current: unknown = null;
           if (loaded.found) {
@@ -2019,6 +2045,7 @@ export function createMcpServer(
             }
           }
           const status = {
+            next: `Save with zam_knowledge_map_write and pass repo_root: "${repoRoot}".`,
             repo_root: repoRoot,
             map_path: loaded.path,
             exists: loaded.found,
@@ -2071,7 +2098,8 @@ export function createMcpServer(
           const { writeKnowledgeMap } = await import(
             "../knowledge-map/load.js"
           );
-          const repoRoot = await resolveMapRepoRoot(params.repo_root);
+          const repoRoot = await resolveMapRepoRoot(params.repo_root, "write");
+          if (repoRoot === null) throw new Error(NEED_REPO_ROOT);
           const result = writeKnowledgeMap(repoRoot, params.map);
           if (result.ok) {
             // The Studio shows the map the learner's agent wrote last.
