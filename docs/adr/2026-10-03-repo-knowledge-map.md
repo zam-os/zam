@@ -1,6 +1,6 @@
 # Repo Knowledge Map: An Alpha Feature with Swappable Views
 
-**Status:** Accepted — alpha implemented (2026-10-03)\
+**Status:** Accepted — alpha implemented (2026-10-03); JSON-LD and C4 added (2026-10-04)\
 **Date:** 2026-10-03\
 **Deciders:** Thomas (project owner)\
 **Related:**
@@ -55,6 +55,14 @@ In a second round the same day, the owner decided:
    high; **learner feedback decides** which view gets more time.
 5. It must work for **any repository**, through the agent skill, so it can be
    tried at work. A browsable prototype makes it tangible beforehand.
+
+On 2026-10-04, after reviews of two parallel proposals (#381, #382), the owner
+decided:
+
+6. The map file becomes **JSON-LD** with a published JSON Schema (Decision 7),
+   not Turtle or another RDF syntax.
+7. A **C4 view** is offered for good. Its architecture lives **in the same
+   map**, not in a separate file (Decision 8).
 
 ### Evidence
 
@@ -131,6 +139,7 @@ keeps labels translatable and consistent.
 | `because` | "because" | The target is a reason for the source. |
 | `instead_of` | "instead of" | The source was chosen over the target. |
 | `example` | "for example" | The target is an instance of the source. |
+| `uses` | "uses" | The source calls, reads, writes or depends on the target at run time; the kind for architecture links (Decision 8). |
 
 **Structure.**
 
@@ -282,10 +291,13 @@ file inside the bundle would break compatibility.
 - the schema and statement length;
 - that every source resolves inside the repository;
 - that every kind is in the closed set;
-- that no relation dangles;
+- that no relation dangles, and that relation labels and technologies are
+  short single lines;
 - a single root;
 - one `elaborates` parent per statement and no `elaborates` cycle;
-- that every statement is reachable from the root.
+- that every statement is reachable from the root;
+- C4 facets: a known kind, a short name, and a place to sit for every
+  internal container, database and component (Decision 8).
 
 **Any repository, through the agent.**
 
@@ -301,9 +313,21 @@ file inside the bundle would break compatibility.
   "knowledge map" and "Wissenskarte" requests to these tools, and asks the
   learner to switch the alpha on when the tools are missing. No new skill
   needs installing.
-- The repository resolves like the OKF bundle: an explicit `repo_root`, else
-  the MCP client's roots (preferring one that already has a map), else the
-  server working directory.
+- Which repository the tools use:
+  - an explicit `repo_root`, always made absolute before it is used or stored;
+  - else the MCP client's roots: for reading, the first root that already has
+    a map; for writing, the first root, so a write cannot overwrite the map of
+    another workspace folder;
+  - never the server's working directory. A host-started `zam mcp` often runs
+    in the editor's install folder (the 0.13.0 finding behind the OKF tools).
+    Without roots, the guide asks for `repo_root` and the write refuses.
+- The tools are registered when `zam mcp` starts. An agent started before the
+  alpha was switched on needs a restart; the Settings card and the skill say
+  so.
+- Agents without the MCP tools, and CI, use the CLI: `zam knowledge-map guide`
+  prints the same guide, and `zam knowledge-map validate --repo <path>`
+  checks a map file and exits with 1 on errors. With `--write` it also
+  rewrites a valid file with the JSON-LD header.
 
 **Which repository the Studio shows.**
 
@@ -317,6 +341,23 @@ file inside the bundle would break compatibility.
 
 **Later:** marking a statement as possibly stale when its source changed after
 the map was written, as the OKF freshness radar does for articles.
+
+**Review of #380 (2026-10-04).**
+
+- Adopted:
+  - no working-directory fallback, absolute paths, first root for writing;
+  - the restart hint in skill and Settings;
+  - the CLI path for agents without MCP (Gemini's point 4, served by the
+    shipped CLI instead of an unshipped standalone skill).
+- Deferred to the next round: grouping views by author in the registry, to
+  host Gemini's views (#381) in the shared shell.
+- Not adopted:
+  - A generated macro-statement: the detail panel already lists every
+    connection of the statement in focus as a sentence, and writing a
+    synthesis would need a model at viewing time.
+  - Extra path containment: sources are already rejected when they are
+    absolute, contain `..` or a URL, and they are resolved and checked to stay
+    inside the repository. Anchors such as `#L1-L20` already pass.
 
 ### 6. How the preferred view is chosen
 
@@ -344,6 +385,91 @@ map beats the outline, that is a finding, not a failure.
 answer, time and navigation counts per view, if the simple feedback does not
 separate the views.
 
+### 7. The map file is JSON-LD with a published schema
+
+The file stays the JSON that agents already write, and it becomes JSON-LD.
+
+- `zam_knowledge_map_write` adds two keys itself, so an agent writes neither:
+  - `@context` maps the fields to RDF: the tree as SKOS `broader`, the root as
+    SKOS `hasTopConcept`, short labels as SKOS `prefLabel`, sources as Dublin
+    Core `source`, everything else in a small ZAM vocabulary
+    (`https://zam-os.org/ns/knowledge-map#`). Ids are relative IRIs, resolved
+    against the file's own location.
+  - `$schema` links the JSON Schema (`docs/knowledge-map/map.schema.json`), so
+    editors and agents can check a map while writing it.
+- ZAM's validator stays authoritative. The schema cannot check that sources
+  exist or that the tree is reachable; a test keeps its enums and length
+  limits in step with the validator.
+- Verified once with an RDF library: ZAM's map reads as about 600 triples,
+  and SPARQL finds the tree, the sources, the C4 facets and the `uses` links.
+
+**Why not Turtle or another RDF syntax.**
+
+- Agents would have to invent IRIs and prefixes, which adds failure points
+  that JSON does not have.
+- The checks that matter (sources exist, tree reachable, at most 140
+  characters) need ZAM's own code either way.
+- Diffs are harder to review.
+- The Studio and the panels would need an RDF parser.
+
+JSON-LD keeps the door to RDF tools open without those costs.
+
+### 8. C4 architecture in the same map
+
+A C4 view shows structure: people, systems, containers and components as
+boxes, joined by labelled arrows.
+
+**The data lives in the map.**
+
+- A statement may carry a `c4` facet:
+  - `kind`: person, system, container, database or component;
+  - `name`: the short name in the box;
+  - optional `technology`;
+  - optional `external` for things outside the repository;
+  - optional `within`, the element it sits in.
+- The statement text is the element's one-sentence description, which keeps
+  "one statement per node".
+- An internal container or database sits in a system, a component in a
+  container or database. By default that is the nearest such ancestor in the
+  statement tree; `within` overrides it when the statement is explained
+  elsewhere in the tree.
+- A statement without a facet belongs to its nearest ancestor element. The C4
+  view therefore highlights the right box for any statement in focus.
+
+**Links.**
+
+- Architecture links use the new kind `uses`, with an optional `label`
+  ("stores cards in") and `technology` ("SQL").
+- The C4 view draws only `uses` links. A link between parts rolls up to the
+  boxes visible at the current level, as C4 tools show implied
+  relationships; several links between the same boxes become one arrow that
+  counts them.
+
+**The view.**
+
+- It has three levels:
+  - **system context**: people, the system, external systems;
+  - **containers** inside a system, in a dashed frame;
+  - **components** inside a container.
+- A box with parts zooms in; "one level up" zooms out.
+- People sit on top, the frame in the middle, everything outside below.
+- An arrow carries its label where the label covers no box. Otherwise it shows
+  a number, and the relationship list under the diagram spells out every
+  arrow with label and technology.
+- Without any C4 facet, the view explains how to get one instead of showing
+  an empty canvas.
+
+**Why one map and not a separate Structurizr file.**
+
+- One set of statements serves every view, and the focus survives switching
+  between the C4 view and the knowledge views.
+- One agent pass and one validator cover both.
+- A Structurizr DSL or Mermaid C4 export can be added later from the same
+  data.
+
+C4 is established practice rather than an empirically tested format like
+concept maps; the feedback per view applies to it like to the others.
+
 ## Phases
 
 Implemented on 2026-10-03, on one branch:
@@ -361,6 +487,13 @@ Implemented on 2026-10-03, on one branch:
 6. **Prototype.** `scripts/build-knowledge-map-prototype.mjs` builds one
    self-contained HTML page with ZAM's map and all views, switchable in place,
    for trying the idea without installing anything.
+
+Added on 2026-10-04:
+
+7. **JSON-LD and schema.** The context and schema link in every written map,
+   and `docs/knowledge-map/map.schema.json`.
+8. **C4.** The `c4` facet, the `uses` kind with labels, the C4 view, and C4
+   elements in ZAM's own map (81 statements, 39 links).
 
 **Later:**
 
@@ -432,6 +565,13 @@ The design is wrong if any of these holds:
 - **Loading third-party view plugins.** Rejected for the alpha: it opens an
   execution boundary, and nobody needs it yet.
 - **Hyperbolic, fisheye or 3D views.** Rejected because of the evidence above.
+- **Turtle or another RDF syntax as the written format.** Rejected for
+  JSON-LD (Decision 7).
+- **C4 in a separate Structurizr DSL file.** Rejected for one map with C4
+  facets (Decision 8); an export can follow.
+- **Drawing every link kind in the C4 view.** Rejected: reasons and
+  alternatives are knowledge, not run-time use. Only `uses` links become
+  arrows.
 
 ## Verification
 
@@ -444,14 +584,22 @@ The design is wrong if any of these holds:
   `en`/`de` strings for every connective and label, the module boundaries (no
   Tauri, no Three.js, views off the bridge), and the lazy loading and hidden
   defaults in the Studio.
-- The prototype was clicked through in all three views, at desktop and phone
+- C4 and JSON-LD (2026-10-04):
+  - the C4 facet rules, host resolution, relation labels;
+  - the written `@context` and `$schema`;
+  - the schema's enums and limits matching the validator;
+  - the C4 levels, zoom and roll-up on ZAM's own map;
+  - arrow clipping.
+- The prototype was clicked through in every view, at desktop and phone
   width, in light and dark.
 
 ## Citations
 
 Code and repository documents:
 
-- `src/cli/knowledge-map/` — model and validator, loading and writing, guide, feedback
+- `src/cli/knowledge-map/` — model and validator, JSON-LD context, loading and writing, guide, feedback
+- `desktop/src/knowledge-map/c4-layout.ts`, `views/c4.ts` — the C4 model and view
+- `docs/knowledge-map/map.schema.json` — the published JSON Schema
 - `desktop/src/knowledge-map/` — shell, layout, registry, views, Studio page, Settings card, prototype entry
 - `docs/knowledge-map/map.json` — ZAM's own map
 - `scripts/build-knowledge-map-prototype.mjs` — the browsable prototype
