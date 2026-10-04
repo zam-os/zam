@@ -176,6 +176,33 @@ const CSS = `
 .km-lv-anim-out { animation: km-zoom-out 320ms ease-out; }
 @keyframes km-zoom-in { from { opacity: 0; transform: scale(0.94); } to { opacity: 1; transform: none; } }
 @keyframes km-zoom-out { from { opacity: 0; transform: scale(1.06); } to { opacity: 1; transform: none; } }
+/* Concept map: four spokes, the statement on the link. */
+.km-concept { padding: 18px 16px 20px; display: flex; flex-direction: column; gap: 16px;
+  height: 100%; box-sizing: border-box; overflow: auto; }
+.km-concept-stage { display: grid; align-items: center; justify-items: center; gap: 14px 16px;
+  grid-template-areas: ". north ." "west center east" ". south .";
+  grid-template-columns: minmax(0, 1fr) auto minmax(0, 1fr); min-height: 280px; }
+.km-concept-north { grid-area: north; }
+.km-concept-east { grid-area: east; }
+.km-concept-south { grid-area: south; }
+.km-concept-west { grid-area: west; }
+.km-concept-center { grid-area: center; width: fit-content; max-width: 16rem; background: var(--km-text);
+  color: var(--km-bg); border-radius: 999px; font-weight: 700; padding: 16px 22px; text-align: center; }
+.km-concept-spoke, .km-concept-chip { border: 1px solid var(--km-border); background: var(--km-card);
+  cursor: pointer; }
+.km-concept-spoke { display: flex; flex-direction: column; align-items: center; justify-content: center;
+  gap: 4px; min-height: 64px; min-width: 120px; max-width: 200px; padding: 10px 12px; border-radius: 14px;
+  text-align: center; }
+.km-concept-spoke:hover, .km-concept-chip:hover { border-color: var(--km-accent); }
+.km-concept-link { color: var(--km-accent); font-size: 0.78rem; font-weight: 700; }
+.km-concept-name { font-weight: 700; }
+.km-concept-reading { background: var(--km-surface); border-radius: 14px; padding: 12px 14px;
+  color: var(--km-text-2); line-height: 1.5; }
+.km-concept-reading-label { display: block; font-size: 0.72rem; font-weight: 700; letter-spacing: 0.06em;
+  text-transform: uppercase; color: var(--km-muted); margin-bottom: 4px; }
+.km-concept-more { display: flex; flex-wrap: wrap; gap: 8px; align-items: center; }
+.km-concept-more-label { color: var(--km-muted); font-size: 0.85rem; }
+.km-concept-chip { border-radius: 999px; min-height: 44px; padding: 8px 12px; }
 @media (prefers-reduced-motion: reduce) {
   .km-lv-anim-in, .km-lv-anim-out { animation: none; }
 }
@@ -183,6 +210,9 @@ const CSS = `
   .km-body { grid-template-columns: minmax(0, 1fr); }
   .km-details { max-height: none; }
   .km-body { --km-stage-h: clamp(440px, 64vh, 640px); }
+  .km-concept-stage { display: flex; flex-direction: column; }
+  .km-concept-center { order: -1; }
+  .km-concept-spoke { width: 100%; max-width: none; }
 }
 `;
 

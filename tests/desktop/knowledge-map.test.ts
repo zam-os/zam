@@ -3,6 +3,12 @@ import { join, resolve } from "node:path";
 import { describe, expect, it } from "vitest";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
 import {
+  CONCEPT_SPOKES,
+  conceptLabel,
+  conceptPicture,
+  conceptReading,
+} from "../../desktop/src/knowledge-map/concept-layout.js";
+import {
   layoutFocus,
   layoutMinimap,
   MAX_VISIBLE_NEIGHBORS,
@@ -128,11 +134,12 @@ describe("knowledge map layout", () => {
 });
 
 describe("knowledge map views and strings", () => {
-  it("registers three switchable views with a safe default", () => {
+  it("registers the switchable views with a safe default", () => {
     expect(KNOWLEDGE_MAP_VIEWS.map((v) => v.id)).toEqual([
       "focus",
       "outline",
       "levels",
+      "concept",
     ]);
     expect(parseKnowledgeMapViewId("levels")).toBe("levels");
     expect(parseKnowledgeMapViewId("3d")).toBe(DEFAULT_KNOWLEDGE_MAP_VIEW);
@@ -163,6 +170,119 @@ describe("knowledge map views and strings", () => {
       }
     }
     setCurrentLocale("en");
+  });
+});
+
+describe("concept map picture", () => {
+  function indexed(statements: Array<Record<string, unknown>>, relations = []) {
+    const map = validateKnowledgeMap(
+      {
+        format: "zam-knowledge-map",
+        version: 1,
+        title: "ZAM",
+        focus_question: "What stays in view?",
+        root: "zam",
+        statements,
+        relations,
+      },
+      { sourceExists: () => true },
+    ).map;
+    if (!map) throw new Error("fixture map was rejected");
+    return buildMapIndex(map);
+  }
+
+  const star = () =>
+    indexed([
+      {
+        id: "zam",
+        label: "ZAM",
+        text: "ZAM is the studio.",
+        sources: ["README.md"],
+      },
+      {
+        id: "kernel",
+        parent: "zam",
+        label: "Kernel",
+        text: "The kernel holds learning.",
+        sources: ["README.md"],
+      },
+      {
+        id: "cli",
+        parent: "zam",
+        text: "The CLI orchestrates.",
+        sources: ["README.md"],
+      },
+      {
+        id: "library",
+        parent: "zam",
+        label: "Library",
+        text: "The library stores cards.",
+        sources: ["README.md"],
+      },
+      {
+        id: "articles",
+        parent: "zam",
+        label: "Articles",
+        text: "Articles explain ZAM.",
+        sources: ["README.md"],
+      },
+      {
+        id: "bridge",
+        parent: "zam",
+        label: "Bridge",
+        text: "The bridge speaks JSON.",
+        sources: ["README.md"],
+      },
+      {
+        id: "learning",
+        parent: "kernel",
+        label: "Learning",
+        text: "Learning lives in the kernel.",
+        sources: ["README.md"],
+      },
+    ]);
+
+  it("draws at most four spokes and keeps the rest as further concepts", () => {
+    const picture = conceptPicture(star(), "zam");
+    expect(picture.spokes).toHaveLength(CONCEPT_SPOKES);
+    expect(picture.spokes.map((spoke) => spoke.id)).toEqual([
+      "articles",
+      "bridge",
+      "cli",
+      "kernel",
+    ]);
+    expect(picture.more).toEqual(["library"]);
+    expect(picture.spokes.map((spoke) => spoke.position)).toEqual([
+      "north",
+      "east",
+      "south",
+      "west",
+    ]);
+  });
+
+  it("reads only the visible spokes, outgoing before incoming", () => {
+    const index = star();
+    const picture = conceptPicture(index, "kernel");
+    expect(picture.spokes.map((spoke) => spoke.id)[0]).not.toBe("zam");
+    const reading = conceptReading(index, picture, (key) =>
+      key.endsWith("_out") ? "in detail" : "is part of",
+    );
+    expect(reading.startsWith("Kernel in detail")).toBe(true);
+    expect(reading).toContain("Kernel is part of ZAM.");
+    expect(reading).not.toContain("Library");
+  });
+
+  it("uses the id when a statement has no label, and the root when the id is missing", () => {
+    const index = star();
+    expect(
+      conceptLabel(index.get("cli") as KnowledgeMap["statements"][number]),
+    ).toBe("cli");
+    expect(conceptPicture(index, "missing").centerId).toBe("zam");
+    for (const id of index.order()) {
+      expect(conceptPicture(index, id).spokes.length).toBeLessThanOrEqual(
+        CONCEPT_SPOKES,
+      );
+    }
   });
 });
 

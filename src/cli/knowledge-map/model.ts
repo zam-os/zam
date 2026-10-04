@@ -16,6 +16,9 @@ export const KNOWLEDGE_MAP_VERSION = 1;
 export const MAX_STATEMENT_LENGTH = 140;
 /** Above this many children a level no longer fits in working memory. */
 export const SOFT_MAX_CHILDREN = 7;
+/** The concept-map view shows this instead of the whole sentence. */
+export const MAX_CONCEPT_LABEL_WORDS = 4;
+export const MAX_CONCEPT_LABEL_LENGTH = 40;
 
 /** Kinds a cross-link may carry. The tree's own edge is `elaborates`. */
 export const RELATION_KINDS = [
@@ -33,6 +36,10 @@ export interface KnowledgeStatement {
   id: string;
   /** The statement this one spells out in detail; absent only on the root. */
   parent?: string;
+  /**
+   * Short concept for the concept-map view. Absent means the view shows the id.
+   */
+  label?: string;
   text: string;
   /** Repository-relative paths, optionally with a `#anchor`. */
   sources: string[];
@@ -190,10 +197,35 @@ export function validateKnowledgeMap(
     if (raw.parent !== undefined && !nonEmptyString(raw.parent)) {
       error('"parent" must be a statement id.', id);
     }
+    let label: string | undefined;
+    if (raw.label !== undefined) {
+      if (
+        typeof raw.label !== "string" ||
+        raw.label.trim().length === 0 ||
+        /[\r\n]/.test(raw.label)
+      ) {
+        error("The concept label must be a single non-empty line.", id);
+      } else {
+        const trimmed = raw.label.trim();
+        const words = trimmed.split(/\s+/);
+        if (
+          trimmed.length > MAX_CONCEPT_LABEL_LENGTH ||
+          words.length > MAX_CONCEPT_LABEL_WORDS
+        ) {
+          error(
+            `The concept label is at most ${MAX_CONCEPT_LABEL_WORDS} words and ${MAX_CONCEPT_LABEL_LENGTH} characters.`,
+            id,
+          );
+        } else {
+          label = trimmed;
+        }
+      }
+    }
 
     byId.set(id, {
       id,
       ...(nonEmptyString(raw.parent) ? { parent: raw.parent } : {}),
+      ...(label ? { label } : {}),
       text: nonEmptyString(raw.text) ? raw.text : "",
       sources: Array.isArray(raw.sources) ? (raw.sources as string[]) : [],
     });

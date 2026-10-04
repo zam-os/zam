@@ -105,6 +105,19 @@ describe("knowledge map: validator", () => {
     expect(result.map?.statements).toHaveLength(5);
   });
 
+  it("keeps a short concept label and rejects a sentence used as one", () => {
+    const map = smallMap();
+    const statements = map.statements as Array<Record<string, unknown>>;
+    statements[0].label = "ZAM";
+    const kept = validateKnowledgeMap(map, { sourceExists: () => true });
+    expect(kept.issues).toEqual([]);
+    expect(kept.map?.statements[0]?.label).toBe("ZAM");
+    statements[0].label = "This label is a whole sentence about the repository";
+    expect(
+      errors(map).some((message) => message.includes("concept label")),
+    ).toBe(true);
+  });
+
   it("rejects a wrong format, version and missing focus question", () => {
     const map = {
       ...smallMap(),
