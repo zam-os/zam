@@ -51,6 +51,8 @@
           <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
           <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
           <button id="nav-stats" class="nav-btn" type="button">Statistics</button>
+          <!-- Alpha (ADR 2026-10-03): hidden until switched on in Settings. -->
+          <button id="nav-knowledge-map" class="nav-btn" type="button" hidden>Knowledge map</button>
           <button id="nav-settings" class="nav-btn" type="button">Settings</button>
         </nav>
         <div class="status-area" id="system-status">
@@ -341,6 +343,12 @@
       </section>
 
       <!-- VIEW: STATISTICS -->
+      <!-- Knowledge map alpha (ADR 2026-10-03): filled lazily by
+           ./knowledge-map/studio.ts the first time the page opens. -->
+      <section id="knowledge-map-view" class="view">
+        <div id="knowledge-map-root"></div>
+      </section>
+
       <section id="stats-view" class="view">
         <div class="settings-hero frosted">
           <div>
@@ -880,6 +888,32 @@
                 </button>
               </div>
             </div>
+          </article>
+
+          <!-- Knowledge map alpha (ADR 2026-10-03): off by default; ticking the
+               box shows the navigation entry and the view choice. -->
+          <article class="card frosted settings-card" id="knowledge-map-card" data-settings-tier="advanced">
+            <div class="settings-card-header">
+              <div>
+                <h2 id="lbl-km-settings-title">
+                  <span id="lbl-km-settings-title-text">Knowledge map</span>
+                  <span class="settings-badge-alpha">Alpha</span>
+                </h2>
+                <p id="lbl-km-settings-help" class="settings-card-help"></p>
+              </div>
+            </div>
+            <label class="settings-toggle" for="toggle-knowledge-map">
+              <input type="checkbox" id="toggle-knowledge-map" />
+              <span id="lbl-km-settings-toggle">Enable the knowledge map (Alpha)</span>
+            </label>
+            <div class="settings-stack" id="knowledge-map-settings-body" hidden>
+              <p id="lbl-km-settings-note" class="settings-card-help settings-alpha-note"></p>
+              <fieldset class="settings-stack" style="border: 0; padding: 0; margin: 0;">
+                <legend id="lbl-km-settings-view" class="sub-label">View</legend>
+                <div id="knowledge-map-views" class="settings-stack"></div>
+              </fieldset>
+            </div>
+            <p id="knowledge-map-status" class="settings-card-help" aria-live="polite"></p>
           </article>
 
           <article class="card frosted settings-card" id="settings-mobile-card" data-settings-tier="advanced">

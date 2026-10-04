@@ -1,5 +1,13 @@
 # Log
 
+## 2026-10-04
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
+## 2026-10-03
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+
 ## 2026-10-02
 
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

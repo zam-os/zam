@@ -33,6 +33,14 @@ import type { InstallChannel } from "./update-check.js";
 
 export type InstallMode = "developer" | "default";
 
+export interface MachineKnowledgeMapConfig {
+  enabled?: boolean;
+  /** View id from the Studio registry (focus, outline, levels). */
+  view?: string;
+  /** Repository root whose `docs/knowledge-map/map.json` the Studio shows. */
+  repoPath?: string;
+}
+
 export interface InstallConfig {
   mode?: InstallMode;
   /** How this copy was installed; drives the self-update mechanism. */
@@ -64,6 +72,12 @@ export interface InstallConfig {
    * vault login is per machine / per install.
    */
   bitwarden?: MachineBitwardenConfig;
+  /**
+   * Machine-local knowledge-map alpha (ADR 2026-10-03, Decision 4): whether
+   * it is switched on, which view the learner picked, and which repository's
+   * map the Studio shows. Presentation state of this install, never the DB.
+   */
+  knowledgeMap?: MachineKnowledgeMapConfig;
   /**
    * Machine-local voice-mode preferences (ADR 2026-07-31). Never the
    * Turso-shared database: whether on-device speech is the right choice
@@ -894,6 +908,32 @@ export function setOnboardingDone(
     } else if (config.onboarding) {
       delete config.onboarding.done;
     }
+  }, path);
+}
+
+export function getKnowledgeMapConfig(
+  path = defaultConfigPath(),
+): MachineKnowledgeMapConfig {
+  return { ...(loadInstallConfig(path).knowledgeMap ?? {}) };
+}
+
+/**
+ * Change the knowledge-map alpha settings. Keys set to `undefined` are left
+ * alone; switching the alpha off keeps the chosen view and repository so a
+ * later switch-on resumes where the learner was.
+ */
+export function setKnowledgeMapConfig(
+  patch: MachineKnowledgeMapConfig,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    const next = { ...(config.knowledgeMap ?? {}) };
+    for (const [key, value] of Object.entries(patch)) {
+      if (value !== undefined) {
+        (next as Record<string, unknown>)[key] = value;
+      }
+    }
+    config.knowledgeMap = next;
   }, path);
 }
 

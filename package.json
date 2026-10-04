@@ -42,6 +42,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
+    "knowledge-map:prototype": "node scripts/build-knowledge-map-prototype.mjs",
     "format": "biome format --write src/",
     "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
     "curriculum:topic-coverage": "tsx scripts/curriculum-topic-coverage-smoke.ts",

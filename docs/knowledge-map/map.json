@@ -1,0 +1,1218 @@
+{
+  "$schema": "https://raw.githubusercontent.com/zam-os/zam/main/docs/knowledge-map/map.schema.json",
+  "@context": {
+    "@vocab": "https://zam-os.org/ns/knowledge-map#",
+    "skos": "http://www.w3.org/2004/02/skos/core#",
+    "dcterms": "http://purl.org/dc/terms/",
+    "$schema": null,
+    "id": "@id",
+    "title": "dcterms:title",
+    "language": "dcterms:language",
+    "repository_url": {
+      "@id": "repositoryUrl",
+      "@type": "@id"
+    },
+    "focus_question": "focusQuestion",
+    "root": {
+      "@id": "skos:hasTopConcept",
+      "@type": "@id"
+    },
+    "statements": {
+      "@id": "statement",
+      "@container": "@set"
+    },
+    "parent": {
+      "@id": "skos:broader",
+      "@type": "@id"
+    },
+    "label": "skos:prefLabel",
+    "sources": {
+      "@id": "dcterms:source",
+      "@container": "@set"
+    },
+    "c4": "c4",
+    "kind": {
+      "@id": "kind",
+      "@type": "@vocab"
+    },
+    "within": {
+      "@id": "within",
+      "@type": "@id"
+    },
+    "relations": {
+      "@id": "relation",
+      "@container": "@set"
+    },
+    "from": {
+      "@id": "from",
+      "@type": "@id"
+    },
+    "to": {
+      "@id": "to",
+      "@type": "@id"
+    }
+  },
+  "format": "zam-knowledge-map",
+  "version": 1,
+  "title": "ZAM",
+  "focus_question": "How does ZAM keep people capable while AI takes on more of their work?",
+  "language": "en",
+  "repository_url": "https://github.com/zam-os/zam/blob/main/",
+  "root": "zam",
+  "statements": [
+    {
+      "id": "zam",
+      "label": "ZAM",
+      "text": "ZAM turns everyday work with an AI agent into active-recall practice, so automation sharpens skills instead of eroding them.",
+      "sources": [
+        "README.md"
+      ],
+      "c4": {
+        "kind": "system"
+      }
+    },
+    {
+      "id": "beliefs",
+      "parent": "zam",
+      "label": "Beliefs",
+      "link": "rests on",
+      "text": "ZAM rests on six beliefs: theses, not proven truths, that evidence may overturn.",
+      "sources": [
+        "beliefs/README.md"
+      ]
+    },
+    {
+      "id": "symbiosis",
+      "parent": "beliefs",
+      "label": "Symbiosis",
+      "link": "include",
+      "text": "Human and AI amplify each other, and their collaboration should evolve as the human's competence grows.",
+      "sources": [
+        "beliefs/symbiosis/README.md"
+      ]
+    },
+    {
+      "id": "modes",
+      "parent": "symbiosis",
+      "label": "Collaboration modes",
+      "link": "changes through",
+      "text": "Per concept, collaboration moves from shadowing to copilot to autonomy as retention and stability grow.",
+      "sources": [
+        "beliefs/symbiosis/modes/README.md"
+      ]
+    },
+    {
+      "id": "autonomy-practice",
+      "parent": "modes",
+      "label": "Practice tasks",
+      "link": "keep",
+      "text": "Even in autonomy, the human gets periodic real practice tasks, not quizzes.",
+      "sources": [
+        "beliefs/symbiosis/modes/README.md",
+        "beliefs/forgetting/skill-decay/README.md"
+      ]
+    },
+    {
+      "id": "disconnection-danger",
+      "parent": "symbiosis",
+      "label": "Disconnection",
+      "link": "warns of",
+      "text": "Delegating without understanding is a safety risk: people cannot act when the agent fails.",
+      "sources": [
+        "beliefs/symbiosis/disconnection-danger/README.md"
+      ]
+    },
+    {
+      "id": "observation",
+      "parent": "symbiosis",
+      "label": "Quiet observation",
+      "link": "prefers",
+      "text": "The best learning happens when the learner barely notices it, so the agent observes instead of interrupting.",
+      "sources": [
+        "beliefs/symbiosis/observation-over-interruption/README.md"
+      ]
+    },
+    {
+      "id": "bidirectional",
+      "parent": "symbiosis",
+      "label": "Two-way learning",
+      "link": "also covers",
+      "text": "Agent skills decay too, so the same scheduling applies to what the agent knows.",
+      "sources": [
+        "beliefs/symbiosis/bidirectional-learning/README.md"
+      ]
+    },
+    {
+      "id": "amplification",
+      "parent": "symbiosis",
+      "label": "Joint capability",
+      "link": "aims at",
+      "text": "The goal is never to make the human unnecessary, but to make human and AI more capable together.",
+      "sources": [
+        "beliefs/symbiosis/README.md"
+      ]
+    },
+    {
+      "id": "forgetting",
+      "parent": "beliefs",
+      "label": "Forgetting",
+      "link": "treats",
+      "text": "Forgetting is a signal that reveals weak foundations, and the system responds to it structurally.",
+      "sources": [
+        "beliefs/forgetting/README.md"
+      ]
+    },
+    {
+      "id": "again-is-signal",
+      "parent": "forgetting",
+      "label": "Again",
+      "link": "treats",
+      "text": "A rating of Again tells the system where to focus; it does not mean the learner failed.",
+      "sources": [
+        "beliefs/forgetting/README.md"
+      ]
+    },
+    {
+      "id": "skill-decay",
+      "parent": "forgetting",
+      "label": "Skill decay",
+      "link": "includes",
+      "text": "Automation without practice causes capability loss, in humans and agents alike.",
+      "sources": [
+        "beliefs/forgetting/skill-decay/README.md"
+      ]
+    },
+    {
+      "id": "knowledge-graph-belief",
+      "parent": "beliefs",
+      "label": "Shared knowledge",
+      "link": "describes",
+      "text": "Knowledge is a shared graph of concepts; learning is each person's own journey through it.",
+      "sources": [
+        "beliefs/knowledge-structure/README.md"
+      ]
+    },
+    {
+      "id": "token-card-separation",
+      "parent": "knowledge-graph-belief",
+      "label": "Token and card",
+      "link": "separates",
+      "text": "A concept and a person's relationship to it are different things and are stored apart.",
+      "sources": [
+        "beliefs/knowledge-structure/token-card-separation/README.md"
+      ]
+    },
+    {
+      "id": "dag",
+      "parent": "knowledge-graph-belief",
+      "label": "Prerequisite graph",
+      "link": "orders",
+      "text": "Concepts build on each other in directed, acyclic prerequisite relations that are the same for every learner.",
+      "sources": [
+        "beliefs/knowledge-structure/dependency-graphs/README.md"
+      ]
+    },
+    {
+      "id": "learning-in-context",
+      "parent": "beliefs",
+      "label": "Learning in work",
+      "link": "situates",
+      "text": "Learning works best inside real, meaningful work; isolated flashcards are the fallback.",
+      "sources": [
+        "beliefs/learning-in-context/README.md"
+      ]
+    },
+    {
+      "id": "session-model",
+      "parent": "learning-in-context",
+      "label": "Work session",
+      "link": "uses",
+      "text": "A work session, not a flashcard deck, is the natural container for learning.",
+      "sources": [
+        "beliefs/learning-in-context/session-model/README.md"
+      ]
+    },
+    {
+      "id": "encoding-specificity",
+      "parent": "learning-in-context",
+      "label": "Work context",
+      "link": "depends on",
+      "text": "Learning something while deploying production leaves a stronger trace than flashcard number 47.",
+      "sources": [
+        "beliefs/learning-in-context/README.md"
+      ]
+    },
+    {
+      "id": "interleaving-belief",
+      "parent": "learning-in-context",
+      "label": "Mixed topics",
+      "link": "mixes",
+      "text": "Mixing topics during review trains telling concepts apart, not just recognising them.",
+      "sources": [
+        "beliefs/learning-in-context/interleaving/README.md"
+      ]
+    },
+    {
+      "id": "openness",
+      "parent": "beliefs",
+      "label": "Open kernel",
+      "link": "require",
+      "text": "The learning kernel must not depend on any AI vendor, programming language or interface.",
+      "sources": [
+        "beliefs/openness/README.md"
+      ]
+    },
+    {
+      "id": "stable-contract",
+      "parent": "openness",
+      "label": "Stable contract",
+      "link": "keeps",
+      "text": "Published protocol fields are a covenant: new ones may be added, existing ones are never removed or retyped.",
+      "sources": [
+        "beliefs/openness/bridge-protocol/README.md"
+      ]
+    },
+    {
+      "id": "funded-learning",
+      "parent": "beliefs",
+      "label": "Funded learning",
+      "link": "allow",
+      "text": "Learning is free to the learner when those who benefit from an informed person fund it.",
+      "sources": [
+        "beliefs/funded-learning/README.md"
+      ]
+    },
+    {
+      "id": "connector-not-tollbooth",
+      "parent": "funded-learning",
+      "label": "Connector",
+      "link": "acts as",
+      "text": "ZAM connects funders and learners but never holds money, which keeps its fee at or below 1%.",
+      "sources": [
+        "beliefs/funded-learning/README.md"
+      ]
+    },
+    {
+      "id": "funder-transparency",
+      "parent": "funded-learning",
+      "label": "Named funder",
+      "link": "names",
+      "text": "Funded content always names who paid for it.",
+      "sources": [
+        "beliefs/funded-learning/README.md"
+      ]
+    },
+    {
+      "id": "kernel",
+      "parent": "zam",
+      "label": "Kernel",
+      "link": "keeps",
+      "text": "An AI-agnostic kernel holds all learning logic and never calls a language model.",
+      "sources": [
+        "docs/okf/kernel-architecture.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "technology": "TypeScript library"
+      }
+    },
+    {
+      "id": "kernel-no-llm",
+      "parent": "kernel",
+      "label": "Model calls",
+      "link": "never makes",
+      "text": "The kernel has zero LLM dependencies; anything that needs HTTP is injected from outside.",
+      "sources": [
+        "docs/okf/kernel-architecture.md"
+      ]
+    },
+    {
+      "id": "cli-layer",
+      "parent": "kernel",
+      "label": "CLI",
+      "link": "is called by",
+      "text": "The CLI is thin orchestration: open the database, call the kernel, render the result, close.",
+      "sources": [
+        "docs/okf/kernel-architecture.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "CLI and MCP server",
+        "technology": "Node.js"
+      }
+    },
+    {
+      "id": "llm-in-cli",
+      "parent": "cli-layer",
+      "label": "CLI models",
+      "link": "holds",
+      "text": "Every model and embedding call lives in the CLI layer, under src/cli/llm.",
+      "sources": [
+        "docs/okf/kernel-architecture.md"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Model clients",
+        "technology": "HTTP"
+      }
+    },
+    {
+      "id": "language-models",
+      "parent": "llm-in-cli",
+      "label": "Language models",
+      "link": "call",
+      "text": "Cloud or local language models evaluate answers and draft content once the learner connects one.",
+      "sources": [
+        "docs/okf/local-ai-runtimes.md",
+        "README.md"
+      ],
+      "c4": {
+        "kind": "system",
+        "technology": "Cloud API or local runtime",
+        "external": true
+      }
+    },
+    {
+      "id": "deterministic-scheduling",
+      "parent": "kernel",
+      "label": "Same schedule",
+      "link": "guarantees",
+      "text": "Scheduling is pure: the same card, rating and time give the same result on every surface.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md"
+      ]
+    },
+    {
+      "id": "local-sqlite",
+      "parent": "kernel",
+      "label": "Local library",
+      "link": "stores",
+      "text": "By default, all data lives in one local SQLite database, shared by the agent and the Studio.",
+      "sources": [
+        "docs/okf/kernel-architecture.md",
+        "README.md"
+      ],
+      "c4": {
+        "kind": "database",
+        "name": "Local database",
+        "technology": "SQLite"
+      }
+    },
+    {
+      "id": "server-db",
+      "parent": "local-sqlite",
+      "label": "Server library",
+      "link": "can move to",
+      "text": "A library can instead live on Turso or PostgreSQL, behind the same database contract.",
+      "sources": [
+        "docs/okf/kernel-architecture.md"
+      ],
+      "c4": {
+        "kind": "database",
+        "name": "Server database",
+        "technology": "Turso or PostgreSQL",
+        "external": true
+      }
+    },
+    {
+      "id": "machine-local-config",
+      "parent": "local-sqlite",
+      "label": "Machine config",
+      "link": "keeps",
+      "text": "Machine-specific state lives in ~/.zam/config.json, never in the shared database.",
+      "sources": [
+        "src/kernel/system/install-config.ts"
+      ]
+    },
+    {
+      "id": "knowledge-model",
+      "parent": "zam",
+      "label": "Knowledge model",
+      "link": "describes",
+      "text": "Knowledge is stored as shared concepts; each learner's progress is a personal card on top of them.",
+      "sources": [
+        "docs/okf/token-card-model.md"
+      ]
+    },
+    {
+      "id": "token",
+      "parent": "knowledge-model",
+      "label": "Token",
+      "link": "shares",
+      "text": "A token is a shared practice item: its wording, Bloom level, domain and an optional source link.",
+      "sources": [
+        "docs/okf/token-card-model.md"
+      ]
+    },
+    {
+      "id": "card",
+      "parent": "knowledge-model",
+      "label": "Card",
+      "link": "tracks",
+      "text": "A card is one learner's FSRS state for one token: stability, difficulty, due date and lapses.",
+      "sources": [
+        "docs/okf/token-card-model.md",
+        "docs/okf/fsrs-scheduling.md"
+      ]
+    },
+    {
+      "id": "token-vs-card-queue",
+      "parent": "card",
+      "label": "Personal queue",
+      "link": "admits",
+      "text": "A concept enters a learner's queue only once that learner has a card for it.",
+      "sources": [
+        "docs/adr/2026-10-02-library-topics.md"
+      ]
+    },
+    {
+      "id": "prerequisites",
+      "parent": "knowledge-model",
+      "label": "Learn first",
+      "link": "requires",
+      "text": "Prerequisite edges mean \"learn this first\" and connect tokens, never cards.",
+      "sources": [
+        "docs/okf/prerequisite-blocking.md"
+      ]
+    },
+    {
+      "id": "bloom",
+      "parent": "token",
+      "label": "Bloom level",
+      "link": "sets",
+      "text": "A token's Bloom level, from 1 to 5, shapes how its recall question is asked.",
+      "sources": [
+        "docs/okf/token-card-model.md"
+      ]
+    },
+    {
+      "id": "five-objects",
+      "parent": "knowledge-model",
+      "label": "Five objects",
+      "link": "splits into",
+      "text": "The central model separates learning atoms, alignments, curriculum bindings, practice items and cards.",
+      "sources": [
+        "docs/okf/token-card-model.md",
+        "docs/adr/2026-08-14-central-learning-atoms-and-identity.md"
+      ]
+    },
+    {
+      "id": "review",
+      "parent": "zam",
+      "label": "Review",
+      "link": "schedules",
+      "text": "Reviews use active recall, scheduled by FSRS-6 spaced repetition over a prerequisite graph.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md",
+        "README.md"
+      ]
+    },
+    {
+      "id": "fsrs6",
+      "parent": "review",
+      "label": "FSRS-6",
+      "link": "uses",
+      "text": "FSRS-6 schedules every card with 21 trained weights and a 90% retention target.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Scheduler",
+        "technology": "FSRS-6",
+        "within": "kernel"
+      }
+    },
+    {
+      "id": "sm2",
+      "parent": "fsrs6",
+      "label": "SM-2",
+      "link": "is used instead of",
+      "text": "SM-2 is the classic spaced-repetition algorithm behind early SuperMemo and Anki.",
+      "sources": [
+        "beliefs/README.md"
+      ]
+    },
+    {
+      "id": "rating-binary",
+      "parent": "review",
+      "label": "Recall grades",
+      "link": "grades with",
+      "text": "Again means recall failed; Hard, Good and Easy all mean it succeeded, with different effort.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md"
+      ]
+    },
+    {
+      "id": "blocking",
+      "parent": "review",
+      "label": "Blocking",
+      "link": "pauses for",
+      "text": "Rating Again on a token with prerequisites blocks its card until those foundations have been reviewed.",
+      "sources": [
+        "docs/okf/prerequisite-blocking.md"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Prerequisite blocker",
+        "within": "kernel"
+      }
+    },
+    {
+      "id": "not-transitive",
+      "parent": "blocking",
+      "label": "Direct prerequisites",
+      "link": "stops at",
+      "text": "Only direct prerequisites surface, never the whole ancestor chain, so one lapse cannot start an avalanche.",
+      "sources": [
+        "beliefs/forgetting/prerequisite-blocking/README.md",
+        "docs/okf/prerequisite-blocking.md"
+      ]
+    },
+    {
+      "id": "unblock",
+      "parent": "blocking",
+      "label": "Unblocking",
+      "link": "ends through",
+      "text": "A blocked card returns once every direct prerequisite has been reviewed and is itself unblocked.",
+      "sources": [
+        "docs/okf/prerequisite-blocking.md"
+      ]
+    },
+    {
+      "id": "queue-interleaving",
+      "parent": "review",
+      "label": "Mixed queue",
+      "link": "mixes",
+      "text": "The review queue mixes domains and slots a new card into every fifth position.",
+      "sources": [
+        "beliefs/learning-in-context/interleaving/README.md",
+        "src/kernel/scheduler/queue.ts"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Review queue",
+        "within": "kernel"
+      }
+    },
+    {
+      "id": "answer-format",
+      "parent": "review",
+      "label": "Answer format",
+      "link": "records",
+      "text": "Every rating records how it was answered: free recall, tapped options, or a chosen answer.",
+      "sources": [
+        "docs/adr/2026-09-27-choice-and-auto-learning-modes.md",
+        "docs/okf/fsrs-scheduling.md"
+      ]
+    },
+    {
+      "id": "tap-ceiling",
+      "parent": "answer-format",
+      "label": "Tap ceiling",
+      "link": "caps at",
+      "text": "A tapped answer never books an interval longer than 20 days.",
+      "sources": [
+        "docs/okf/fsrs-scheduling.md"
+      ]
+    },
+    {
+      "id": "voice",
+      "parent": "answer-format",
+      "label": "Voice review",
+      "link": "speaks through",
+      "text": "Voice mode reads cards aloud and maps spoken words to ratings, so review works on a walk.",
+      "sources": [
+        "docs/okf/voice-mode.md"
+      ]
+    },
+    {
+      "id": "agents",
+      "parent": "zam",
+      "label": "Agents",
+      "link": "lives in",
+      "text": "Learning happens inside the AI agent people already use, connected to ZAM through MCP.",
+      "sources": [
+        "docs/okf/mcp-surfaces.md",
+        "README.md"
+      ],
+      "c4": {
+        "kind": "system",
+        "name": "AI agent app",
+        "technology": "Claude Code, Codex, VS Code and others",
+        "external": true
+      }
+    },
+    {
+      "id": "mcp-preferred",
+      "parent": "agents",
+      "label": "MCP",
+      "link": "connect by",
+      "text": "zam mcp is the preferred agent connection; the JSON bridge CLI is the fallback.",
+      "sources": [
+        "docs/okf/mcp-surfaces.md"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "MCP server",
+        "technology": "stdio",
+        "within": "cli-layer"
+      }
+    },
+    {
+      "id": "agent-connect",
+      "parent": "mcp-preferred",
+      "label": "Agent connect",
+      "link": "is installed by",
+      "text": "zam agent connect writes the MCP registration for eleven supported agent apps.",
+      "sources": [
+        "docs/okf/mcp-surfaces.md"
+      ]
+    },
+    {
+      "id": "bridge-json",
+      "parent": "mcp-preferred",
+      "label": "JSON bridge",
+      "link": "falls back to",
+      "text": "Every bridge response is JSON, errors included, and protocol.ts is its stable contract.",
+      "sources": [
+        "docs/okf/bridge-protocol.md"
+      ],
+      "c4": {
+        "kind": "component",
+        "name": "Bridge CLI",
+        "technology": "JSON over stdio",
+        "within": "cli-layer"
+      }
+    },
+    {
+      "id": "mcp-apps-panels",
+      "parent": "agents",
+      "label": "In-app panels",
+      "link": "show",
+      "text": "MCP Apps panels show recall, the learning graph and the knowledge base inside the agent app.",
+      "sources": [
+        "docs/okf/mcp-surfaces.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "MCP Apps panels",
+        "technology": "HTML in the agent app",
+        "within": "zam"
+      }
+    },
+    {
+      "id": "observation-mech",
+      "parent": "agents",
+      "label": "Observed steps",
+      "link": "notice",
+      "text": "ZAM watches the work and quietly marks a step learned when the learner does it well unaided.",
+      "sources": [
+        "README.md"
+      ]
+    },
+    {
+      "id": "observer-consent",
+      "parent": "observation-mech",
+      "label": "Capture consent",
+      "link": "need",
+      "text": "Screen capture needs two gates: the host allows the call, and ZAM's policy limits what it may see.",
+      "sources": [
+        "docs/okf/observer-privacy-model.md"
+      ]
+    },
+    {
+      "id": "learner",
+      "parent": "agents",
+      "label": "Learner",
+      "link": "serve",
+      "text": "A learner works on real tasks with an AI agent and keeps what they learn through ZAM's reviews.",
+      "sources": [
+        "README.md"
+      ],
+      "c4": {
+        "kind": "person"
+      }
+    },
+    {
+      "id": "surfaces",
+      "parent": "zam",
+      "label": "Studio and mobile",
+      "link": "opens in",
+      "text": "The Desktop Studio and the mobile apps handle setup, learning content and focused review.",
+      "sources": [
+        "README.md",
+        "docs/okf/mobile-standalone-libraries.md"
+      ]
+    },
+    {
+      "id": "studio",
+      "parent": "surfaces",
+      "label": "Desktop Studio",
+      "link": "include",
+      "text": "The Desktop Studio is a Tauri app for setup, learning content and focused review.",
+      "sources": [
+        "README.md",
+        "docs/adr/2026-05-31b-tauri-active-recall-studio.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "technology": "Tauri 2, TypeScript"
+      }
+    },
+    {
+      "id": "studio-first",
+      "parent": "surfaces",
+      "label": "Studio setup",
+      "link": "start with",
+      "text": "Setup that learners see belongs in the Studio, never only on the command line.",
+      "sources": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "no-terminal",
+      "parent": "studio-first",
+      "label": "No terminal",
+      "link": "assumes",
+      "text": "Many learners never open a terminal.",
+      "sources": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "first-run-light",
+      "parent": "studio-first",
+      "label": "Light first run",
+      "link": "starts as",
+      "text": "First run stays light: optional upgrades never block getting started.",
+      "sources": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "mobile-standalone",
+      "parent": "surfaces",
+      "label": "Mobile app",
+      "link": "include",
+      "text": "ZAM Mobile runs standalone on Android and iOS, with no desktop, account or network required.",
+      "sources": [
+        "docs/okf/mobile-standalone-libraries.md"
+      ],
+      "c4": {
+        "kind": "container",
+        "name": "ZAM Mobile",
+        "technology": "Tauri 2 on Android and iOS"
+      }
+    },
+    {
+      "id": "pairing-optional",
+      "parent": "mobile-standalone",
+      "label": "Optional pairing",
+      "link": "can add",
+      "text": "Pairing a phone with a server library by QR code is an optional upgrade.",
+      "sources": [
+        "docs/okf/mobile-standalone-libraries.md"
+      ]
+    },
+    {
+      "id": "local-ai-accelerated",
+      "parent": "surfaces",
+      "label": "Local models",
+      "link": "run",
+      "text": "Local text and image generation is offered only on an NPU, a discrete GPU or Apple Silicon.",
+      "sources": [
+        "docs/okf/local-ai-runtimes.md"
+      ]
+    },
+    {
+      "id": "cpu-too-slow",
+      "parent": "local-ai-accelerated",
+      "label": "Slow CPU",
+      "link": "avoid",
+      "text": "On a CPU, generation finishes but is too slow to review with, and slow reviews mean no reviews.",
+      "sources": [
+        "docs/okf/local-ai-runtimes.md"
+      ]
+    },
+    {
+      "id": "tauri",
+      "parent": "surfaces",
+      "label": "Tauri",
+      "link": "are built with",
+      "text": "The desktop app and the mobile apps are built on Tauri 2.",
+      "sources": [
+        "docs/adr/2026-07-21-android-companion-tauri-shell.md",
+        "docs/adr/2026-05-31b-tauri-active-recall-studio.md"
+      ]
+    },
+    {
+      "id": "notarization",
+      "parent": "tauri",
+      "label": "Notarized macOS",
+      "link": "ships as",
+      "text": "On macOS, ZAM ships notarized with a Developer ID.",
+      "sources": [
+        "docs/adr/2026-07-27-macos-notarization.md"
+      ]
+    },
+    {
+      "id": "mac-app-store",
+      "parent": "notarization",
+      "label": "Mac App Store",
+      "link": "is chosen over",
+      "text": "The Mac App Store's sandbox would cut the app off from the database it shares with the CLI.",
+      "sources": [
+        "docs/adr/2026-07-27-macos-notarization.md"
+      ]
+    },
+    {
+      "id": "content",
+      "parent": "zam",
+      "label": "Learning content",
+      "link": "teaches from",
+      "text": "Learning content comes from the repo's own knowledge base, curricula, open decks and shared libraries.",
+      "sources": [
+        "docs/okf/open-content-library.md",
+        "docs/adr/2026-07-17-okf-knowledge-base.md"
+      ]
+    },
+    {
+      "id": "okf",
+      "parent": "content",
+      "label": "OKF articles",
+      "link": "includes",
+      "text": "The OKF bundle in docs/okf holds living articles about what is true in this repository now.",
+      "sources": [
+        "docs/okf/index.md"
+      ]
+    },
+    {
+      "id": "okf-vs-adr",
+      "parent": "okf",
+      "label": "ADRs",
+      "link": "point to",
+      "text": "OKF articles state current truth; the reasons behind decisions stay in the ADRs.",
+      "sources": [
+        "docs/okf/index.md"
+      ]
+    },
+    {
+      "id": "okf-import",
+      "parent": "okf",
+      "label": "Article cards",
+      "link": "become",
+      "text": "OKF articles can become learning tokens that cite the article and heading they came from.",
+      "sources": [
+        "docs/adr/2026-07-18-okf-learning-import.md",
+        "docs/okf/token-card-model.md"
+      ]
+    },
+    {
+      "id": "cells",
+      "parent": "content",
+      "label": "Curriculum cells",
+      "link": "prefers",
+      "text": "Where a curriculum cell covers a learner's position, import goes through that cell first.",
+      "sources": [
+        "CLAUDE.md",
+        "docs/adr/2026-08-14-central-learning-atoms-and-identity.md"
+      ]
+    },
+    {
+      "id": "generic-import",
+      "parent": "cells",
+      "label": "Generic import",
+      "link": "fall back to",
+      "text": "Where no cell reaches yet, the manifest-driven curriculum import is the fallback.",
+      "sources": [
+        "CLAUDE.md"
+      ]
+    },
+    {
+      "id": "lehrplanplus",
+      "parent": "generic-import",
+      "label": "LehrplanPLUS",
+      "link": "reads",
+      "text": "An import wizard reads Bavaria's LehrplanPLUS curricula for school learners.",
+      "sources": [
+        "docs/adr/2026-07-02-lehrplanplus-import-wizard.md"
+      ]
+    },
+    {
+      "id": "open-library",
+      "parent": "content",
+      "label": "Open Library",
+      "link": "lists",
+      "text": "The Open Library lists reviewed, openly licensed decks that are pinned and checksummed before import.",
+      "sources": [
+        "docs/okf/open-content-library.md"
+      ]
+    },
+    {
+      "id": "anki-import",
+      "parent": "content",
+      "label": "Anki import",
+      "link": "accepts",
+      "text": "Anki packages and CSV or TSV files import without any model or network call.",
+      "sources": [
+        "docs/okf/local-card-file-import.md"
+      ]
+    },
+    {
+      "id": "library-topics",
+      "parent": "content",
+      "label": "Library topics",
+      "link": "offers",
+      "text": "In a team library, newcomers start by taking topics the library already holds as their own cards.",
+      "sources": [
+        "docs/adr/2026-10-02-library-topics.md"
+      ]
+    }
+  ],
+  "relations": [
+    {
+      "from": "zam",
+      "to": "disconnection-danger",
+      "kind": "because",
+      "link": "guards against"
+    },
+    {
+      "from": "review",
+      "to": "skill-decay",
+      "kind": "because",
+      "link": "answers"
+    },
+    {
+      "from": "skill-decay",
+      "to": "disconnection-danger",
+      "kind": "leads_to",
+      "link": "can cause"
+    },
+    {
+      "from": "autonomy-practice",
+      "to": "skill-decay",
+      "kind": "because",
+      "link": "counters"
+    },
+    {
+      "from": "modes",
+      "to": "fsrs6",
+      "kind": "requires",
+      "link": "depends on"
+    },
+    {
+      "from": "again-is-signal",
+      "to": "blocking",
+      "kind": "example",
+      "link": "shows up as"
+    },
+    {
+      "from": "blocking",
+      "to": "prerequisites",
+      "kind": "requires",
+      "link": "needs"
+    },
+    {
+      "from": "prerequisites",
+      "to": "dag",
+      "kind": "because",
+      "link": "follows"
+    },
+    {
+      "from": "knowledge-model",
+      "to": "token-card-separation",
+      "kind": "because",
+      "link": "depends on"
+    },
+    {
+      "from": "token-card-separation",
+      "to": "token-vs-card-queue",
+      "kind": "leads_to",
+      "link": "leads to"
+    },
+    {
+      "from": "library-topics",
+      "to": "token-vs-card-queue",
+      "kind": "because",
+      "link": "creates"
+    },
+    {
+      "from": "queue-interleaving",
+      "to": "interleaving-belief",
+      "kind": "because",
+      "link": "follows"
+    },
+    {
+      "from": "agents",
+      "to": "learning-in-context",
+      "kind": "because",
+      "link": "applies"
+    },
+    {
+      "from": "observation-mech",
+      "to": "observation",
+      "kind": "because",
+      "link": "follows"
+    },
+    {
+      "from": "kernel-no-llm",
+      "to": "openness",
+      "kind": "because",
+      "link": "follows"
+    },
+    {
+      "from": "llm-in-cli",
+      "to": "kernel-no-llm",
+      "kind": "because",
+      "link": "stays outside"
+    },
+    {
+      "from": "bridge-json",
+      "to": "stable-contract",
+      "kind": "because",
+      "link": "obeys"
+    },
+    {
+      "from": "machine-local-config",
+      "to": "server-db",
+      "kind": "because",
+      "link": "stays out of"
+    },
+    {
+      "from": "first-run-light",
+      "to": "pairing-optional",
+      "kind": "example",
+      "link": "for example"
+    },
+    {
+      "from": "studio-first",
+      "to": "no-terminal",
+      "kind": "because",
+      "link": "serves people with"
+    },
+    {
+      "from": "fsrs6",
+      "to": "sm2",
+      "kind": "instead_of",
+      "link": "is used instead of"
+    },
+    {
+      "from": "notarization",
+      "to": "mac-app-store",
+      "kind": "instead_of",
+      "link": "is chosen over"
+    },
+    {
+      "from": "mcp-apps-panels",
+      "to": "mcp-preferred",
+      "kind": "uses",
+      "link": "call tools of",
+      "technology": "MCP Apps"
+    },
+    {
+      "from": "bidirectional",
+      "to": "skill-decay",
+      "kind": "because",
+      "link": "follows"
+    },
+    {
+      "from": "okf-import",
+      "to": "token",
+      "kind": "leads_to",
+      "link": "creates"
+    },
+    {
+      "from": "local-ai-accelerated",
+      "to": "cpu-too-slow",
+      "kind": "because",
+      "link": "avoid"
+    },
+    {
+      "from": "learner",
+      "to": "agents",
+      "kind": "uses",
+      "link": "works with"
+    },
+    {
+      "from": "learner",
+      "to": "studio",
+      "kind": "uses",
+      "link": "reviews and sets up in"
+    },
+    {
+      "from": "learner",
+      "to": "mobile-standalone",
+      "kind": "uses",
+      "link": "reviews on"
+    },
+    {
+      "from": "agents",
+      "to": "mcp-preferred",
+      "kind": "uses",
+      "link": "call tools of",
+      "technology": "MCP over stdio"
+    },
+    {
+      "from": "agents",
+      "to": "mcp-apps-panels",
+      "kind": "uses",
+      "link": "show"
+    },
+    {
+      "from": "mcp-preferred",
+      "to": "kernel",
+      "kind": "uses",
+      "link": "runs learning logic in",
+      "technology": "in-process"
+    },
+    {
+      "from": "bridge-json",
+      "to": "kernel",
+      "kind": "uses",
+      "link": "runs learning logic in",
+      "technology": "in-process"
+    },
+    {
+      "from": "studio",
+      "to": "bridge-json",
+      "kind": "uses",
+      "link": "sends commands to",
+      "technology": "zam bridge serve, stdin"
+    },
+    {
+      "from": "kernel",
+      "to": "local-sqlite",
+      "kind": "uses",
+      "link": "stores cards and reviews in",
+      "technology": "SQL"
+    },
+    {
+      "from": "kernel",
+      "to": "server-db",
+      "kind": "uses",
+      "link": "can keep a shared library in",
+      "technology": "libSQL or PostgreSQL"
+    },
+    {
+      "from": "llm-in-cli",
+      "to": "language-models",
+      "kind": "uses",
+      "link": "asks for evaluations from",
+      "technology": "HTTP"
+    },
+    {
+      "from": "mobile-standalone",
+      "to": "kernel",
+      "kind": "uses",
+      "link": "embeds",
+      "technology": "in the WebView"
+    },
+    {
+      "from": "queue-interleaving",
+      "to": "fsrs6",
+      "kind": "uses",
+      "link": "takes due dates from"
+    }
+  ]
+}

@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { basename, dirname, join } from "node:path";
+import { basename, dirname, join, resolve } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   RESOURCE_MIME_TYPE,
@@ -17,10 +17,12 @@ import type {
   StudyLearningMode,
 } from "../../kernel/index.js";
 import {
+  getKnowledgeMapConfig,
   getReviewActivity,
   getSetting,
   getStudyLearningSettings,
   openDatabase,
+  setKnowledgeMapConfig,
 } from "../../kernel/index.js";
 import {
   COMPANION_SURFACES,
@@ -1961,6 +1963,162 @@ export function createMcpServer(
       },
     ),
   );
+
+  // ── Repo knowledge map (alpha, ADR 2026-10-03) ──
+  // Registered only while the learner has switched the alpha on in Studio
+  // Settings; the switch is read when the server starts.
+  if (getKnowledgeMapConfig().enabled === true) {
+    const repoRootSchema = z
+      .string()
+      .optional()
+      .describe(
+        "Absolute repository root. Default: the client's workspace root (for writing, its first folder). Required when the client reports no workspace.",
+      );
+
+    /**
+     * The repository to read or write. Never the server's working directory:
+     * a host-started `zam mcp` often runs in the editor's install folder (the
+     * 0.13.0 finding behind `resolveOkfBundleDir`). Null means the client did
+     * not say, and the agent has to pass `repo_root`.
+     */
+    const resolveMapRepoRoot = async (
+      explicit: string | undefined,
+      purpose: "read" | "write",
+    ): Promise<string | null> => {
+      if (explicit) return resolve(explicit);
+      const { rootDirsFromUris, resolveRepoRootFromRoots } = await import(
+        "../knowledge-map/load.js"
+      );
+      try {
+        if (server.server.getClientCapabilities()?.roots) {
+          const { roots } = await server.server.listRoots();
+          const uris = (roots ?? []).map((root) => root.uri);
+          const dirs = rootDirsFromUris(uris);
+          if (dirs.length === 0) return null;
+          return purpose === "write"
+            ? dirs[0]
+            : resolveRepoRootFromRoots(uris, dirs[0]);
+        }
+      } catch {
+        // Client advertised roots but the request failed: ask for repo_root.
+      }
+      return null;
+    };
+    const NEED_REPO_ROOT =
+      "This agent app did not report its workspace folder. Pass repo_root: the repository's absolute path.";
+
+    server.registerTool(
+      "zam_knowledge_map_guide",
+      {
+        description:
+          "Start here to build or update a knowledge map (Wissenskarte) of the current repository: returns the authoring guide (one statement per node, typed links, sources), the map's location, and the current map with its problems if one exists. Then save with zam_knowledge_map_write. Alpha.",
+        inputSchema: { repo_root: repoRootSchema },
+        annotations: { ...commonAnnotations, readOnlyHint: true },
+      },
+      async (params: { repo_root?: string }) => {
+        try {
+          const { KNOWLEDGE_MAP_GUIDE } = await import(
+            "../knowledge-map/guide.js"
+          );
+          const { loadKnowledgeMap } = await import("../knowledge-map/load.js");
+          const repoRoot = await resolveMapRepoRoot(params.repo_root, "read");
+          if (repoRoot === null) {
+            return {
+              structuredContent: {
+                repo_root: null,
+                exists: false,
+                next: NEED_REPO_ROOT,
+              },
+              content: [
+                { type: "text" as const, text: KNOWLEDGE_MAP_GUIDE },
+                { type: "text" as const, text: NEED_REPO_ROOT },
+              ],
+            };
+          }
+          const loaded = loadKnowledgeMap(repoRoot);
+          let current: unknown = null;
+          if (loaded.found) {
+            try {
+              current = JSON.parse(readFileSync(loaded.path, "utf8"));
+            } catch {
+              current = null;
+            }
+          }
+          const status = {
+            next: `Save with zam_knowledge_map_write and pass repo_root: "${repoRoot}".`,
+            repo_root: repoRoot,
+            map_path: loaded.path,
+            exists: loaded.found,
+            valid: loaded.map !== null,
+            issues: loaded.issues,
+            current_map: current,
+          };
+          return {
+            structuredContent: status,
+            content: [
+              { type: "text" as const, text: KNOWLEDGE_MAP_GUIDE },
+              { type: "text" as const, text: JSON.stringify(status, null, 2) },
+            ],
+          };
+        } catch (error) {
+          const errMsg = error instanceof Error ? error.message : String(error);
+          return {
+            isError: true,
+            content: [
+              {
+                type: "text" as const,
+                text: JSON.stringify({ error: errMsg }),
+              },
+            ],
+          };
+        }
+      },
+    );
+
+    server.registerTool(
+      "zam_knowledge_map_write",
+      {
+        description:
+          "Save a repository knowledge map through the validated write path: checks every statement, link and source against the repository and writes docs/knowledge-map/map.json only when there is no error; otherwise lists every problem. Call zam_knowledge_map_guide first. Alpha.",
+        inputSchema: {
+          repo_root: repoRootSchema,
+          map: z
+            .record(z.string(), z.unknown())
+            .describe(
+              "The whole map object (format, version, title, focus_question, root, statements, relations)",
+            ),
+        },
+        annotations: { ...commonAnnotations },
+      },
+      wrapHandler(
+        async (params: {
+          repo_root?: string;
+          map: Record<string, unknown>;
+        }) => {
+          const { writeKnowledgeMap } = await import(
+            "../knowledge-map/load.js"
+          );
+          const repoRoot = await resolveMapRepoRoot(params.repo_root, "write");
+          if (repoRoot === null) throw new Error(NEED_REPO_ROOT);
+          const result = writeKnowledgeMap(repoRoot, params.map);
+          if (result.ok) {
+            // The Studio shows the map the learner's agent wrote last.
+            setKnowledgeMapConfig({ repoPath: repoRoot });
+          }
+          const ready =
+            "Tell the user the map is ready in ZAM Studio under Knowledge map (Wissenskarte).";
+          return {
+            ...result,
+            next: !result.ok
+              ? "Fix every error listed in issues and call zam_knowledge_map_write again with the whole map."
+              : result.issues.some((issue) => issue.level === "warning")
+                ? `Saved. Each warning in issues leaves something out of a view (a relation without a link is missing from the concept map): fix them and save the whole map again. ${ready}`
+                : ready,
+          };
+        },
+      ),
+    );
+  }
 
   server.registerTool(
     "zam_okf_import",

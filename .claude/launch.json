@@ -7,6 +7,12 @@
       "runtimeArgs": ["--prefix", "desktop", "run", "dev"],
       "port": 1420,
       "autoPort": true
+    },
+    {
+      "name": "knowledge-map-prototype",
+      "runtimeExecutable": "python3",
+      "runtimeArgs": ["-m", "http.server", "8765", "--directory", "dist"],
+      "port": 8765
     }
   ]
 }
