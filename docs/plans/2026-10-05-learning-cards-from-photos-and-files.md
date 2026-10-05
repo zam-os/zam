@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1–8 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
+**Status:** Phases 1–8 and 10 done (2026-10-05); Phase 9 left out by owner decision. A first opencode run on an older build went well; the manual pass with the current build is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -40,7 +40,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [x] **Phase 8** — Mobile — `615f39a9`
 - [ ] **Phase 9** — the review list as an MCP Apps panel (optional) — left
   out by owner decision (2026-10-05): opencode renders no panels
-- [ ] **Phase 10** — documentation and handover
+- [x] **Phase 10** — documentation and handover — `eedd6fd4`
 
 **Order.**
 
