@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 36;
+export const CURRENT_SCHEMA_VERSION = 37;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -958,6 +958,22 @@ export async function runMigrations(db: Database): Promise<void> {
       PRIMARY KEY (user_id, token_id, excluded_key)
     );
   `);
+
+  // M037: material imports (ADR 2026-10-05 Decision 9). One `sources` row per
+  // import carries the analysis title, the files' fingerprints and the
+  // importing learner; the material itself is never stored.
+  const sourceColsM037 = await columnsOf(db, "sources");
+  if (sourceColsM037.length > 0) {
+    if (!sourceColsM037.includes("title")) {
+      await db.exec(`ALTER TABLE sources ADD COLUMN title TEXT`);
+    }
+    if (!sourceColsM037.includes("fingerprints")) {
+      await db.exec(`ALTER TABLE sources ADD COLUMN fingerprints TEXT`);
+    }
+    if (!sourceColsM037.includes("imported_by")) {
+      await db.exec(`ALTER TABLE sources ADD COLUMN imported_by TEXT`);
+    }
+  }
 }
 
 /**
