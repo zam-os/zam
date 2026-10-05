@@ -43,14 +43,11 @@
 >   (Decision 7).
 > - Bonus items are also offered once the due queue is done (Gemini,
 >   Decision 6).
-> - Photos and rendered pages are downscaled before sending (Gemini,
+> - Photos are downscaled before sending (Gemini,
 >   Decision 1).
-> - PDFs (Decision 1):
->   - a strict `file` gate, because otherwise OpenRouter transcribes PDFs on
->     its server;
->   - rendering pages needs pdf.js, a new dependency;
->   - a PDF's own text layer may travel with the page images, but never
->     instead of them, and it is never stored.
+> - PDFs: a strict `file` gate, because otherwise OpenRouter transcribes PDFs
+>   on its server (Decision 1). The page renderer and text layer proposed in
+>   review were not adopted (see the owner decisions below).
 > - Smaller changes:
 >   - the page stays visible during review;
 >   - cards are grouped by area when a page mixes subjects;
@@ -65,6 +62,16 @@
 > title. A topic is keyed by a file's link and an import row by its import id,
 > so the two do not join. Topic names stay with ADR 2026-10-02 (see
 > Alternatives).
+>
+> **Owner decisions after round 1:**
+>
+> - PDFs are imported only by models that read them natively.
+> - No PDF renderer: pdf.js is not added, and no PDF text layer is sent.
+>   Handling PDFs for other models is a separate improvement, to be built if
+>   learners ask for it often enough (Decision 1).
+> - `completed` without a preset is confirmed.
+> - The harness path comes first. The field-test learner uses opencode, a
+>   terminal harness (Decisions 2, 10).
 
 ---
 
@@ -158,23 +165,27 @@ together with the instructions. No step replaces the input with plain text,
 and no transcript is stored or shown. This holds on both paths (Decision 2).
 
 - **Images** (photo, screenshot, exported note page) need a model with the
-  `image` capability. HEIC, the iPhone default, is converted to JPEG on the
-  device before sending. Photos and rendered pages are downscaled before
-  sending. The mobile import already caps the long edge at 1568 px; a ten-page
-  request at full resolution would cost tens of thousands of tokens.
-- **PDFs** go as a file part **only** to a model whose endpoint metadata
-  declares file input. The capability registry (ADR 2026-09-13) gains a
-  detected `file` capability; like `video`, it is detected from declared
-  metadata only (OpenRouter lists `file` in `input_modalities`), never from
-  model names. The gate is strict: OpenRouter parses a PDF sent to a model
-  without native file input on its own server, with text extraction or OCR —
-  the transcription step this decision rejects.
-- **Every other model** gets the PDF's pages rendered as images by the app.
-  The rendering stays visual, so the layout is intact. The renderer is pdf.js
-  in the app's webview, which the Studio and Mobile share. It is a new
-  dependency and needs the owner's approval (AGENTS.md). When the PDF has a
-  text layer, its text may travel in the same request beside the page images:
-  in addition to them, never instead of them, and never stored.
+  `image` capability. HEIC, the iPhone default, is converted to JPEG by the
+  platform's own image decoding before sending. Where the platform cannot
+  decode HEIC, the dialog says so. Photos are downscaled before sending: the
+  mobile import already caps the long edge at 1568 px, and ten pages at full
+  resolution would cost tens of thousands of tokens.
+- **PDFs** are imported only by a model that reads them natively.
+  - On the built-in path a PDF goes as a file part **only** to a model whose
+    endpoint metadata declares file input.
+  - The capability registry (ADR 2026-09-13) gains a detected `file`
+    capability. Like `video`, it is detected from declared metadata only
+    (OpenRouter lists `file` in `input_modalities`), never from model names.
+  - The gate is strict. OpenRouter parses a PDF sent to a model without native
+    file input on its own server, with text extraction or OCR — the
+    transcription step this decision rejects.
+- **No PDF handling for other models.** ZAM adds no PDF renderer and sends no
+  text layer. A PDF parser in the app means a new dependency that handles
+  untrusted files, and models that read PDFs natively already cover the need.
+  When the connected model cannot read PDFs, the dialog says so and points to
+  the harness path, or to exporting the pages as images. If learners ask for
+  it often enough, PDF handling for other models becomes a separate
+  improvement.
 - **No image-capable model connected:** the import is not a dead end. The
   Studio says in one line what it needs, links to the model setup, and points
   to the harness path. Pasting text stays available.
@@ -214,7 +225,10 @@ The agent proposes; it does not decide:
 
 - It submits its proposals through a ZAM tool, which validates them against
   the kernel's schema and opens the same review list. That list appears as a
-  panel in hosts that render MCP Apps panels, and in the Studio otherwise.
+  panel in hosts that render MCP Apps panels. Otherwise it appears in the
+  Studio, for example for a terminal harness such as opencode, which renders
+  no panels. How the tool brings the Studio forward is for the plan; the
+  existing UI intent is the obvious starting point.
 - The learner chooses Yes, No or Bonus in that list, not in the chat. This is
   the OKF import's division of labour: the agent judges, the tool validates and
   writes.
@@ -227,9 +241,15 @@ The agent proposes; it does not decide:
 import dialog offers both paths and says in one line that the harness path can
 ask back and is often the smarter choice. ZAM cannot put a file into another
 app's chat (ADR 2026-07-18c), so the dialog says what to do there: drop the
-file in and ask to import it into ZAM, with the request ready to copy. Without
-a connected harness, the dialog mentions the option once and links to the
-agent setup.
+file in and ask to import it into ZAM, with the request ready to copy. When
+the learner picked the file in the Studio, the request names the file's path,
+so a harness that reads local files, such as a terminal agent, can open it
+directly. Without a connected harness, the dialog mentions the option once and
+links to the agent setup.
+
+Whether the harness path can read an image or a PDF depends on the model the
+harness runs. When it cannot, the agent says so in the chat. ZAM does not
+second-guess the harness's model.
 
 Harness apps need an account, and some set age limits or need a paid plan. For
 school learners the built-in path therefore stays available everywhere; the
@@ -241,8 +261,10 @@ An import takes one or more images, or one PDF, that belong together — a
 double page, three photos of one entry, a handout — and the model sees all
 pages together.
 
-- **Page cap:** on the built-in path the cap is 10 pages. For a longer PDF the
-  learner picks a page range.
+- **Page cap:** on the built-in path the cap is 10 images. A PDF goes whole,
+  within the provider's size limit. ZAM does not split PDFs, because that
+  would need a PDF parser. The learner can name the pages to use, and that goes
+  into the instructions.
 - **Too many images for the model:** if the model rejects the request because
   of its own image limit, the import splits the pages into smaller requests
   and tells the learner.
@@ -458,21 +480,25 @@ the chain.
 
 ### 10. Delivery: shared contract first, then the paths
 
-The shared contract comes first: proposal format, review list, presets,
-matching, provenance and the transactional write. The two desktop paths follow
-on the same branch, in the order the plan sets; the field-test learner studies
-on a laptop, so the desktop comes before Mobile. Mobile (Android, iPadOS) then
-gets the built-in path with camera, photo library and files, replacing the
-current single-photo import.
+All of it lands on the same branch, in this order:
+
+1. **The shared contract:** proposal format, review list, presets, matching,
+   provenance and the transactional write.
+2. **The harness path.** The field-test learner studies on a laptop and uses
+   opencode. Its first target is therefore a terminal harness without panels,
+   which takes the review list in the Studio.
+3. **The built-in Studio path.**
+4. **Mobile** (Android, iPadOS): the built-in path with camera, photo library
+   and files. It replaces the current single-photo import.
 
 **Where the code lives.** Both apps already import the kernel (the standalone
 apps open it directly, ADR 2026-08-08).
 
 - **In the kernel:** the response schema and its validation, the presets,
   matching and the transactional write.
-- **Outside the kernel:** the provider wire format (image parts, file parts,
-  rendered pages, a PDF's text layer) and the model call. They sit next to the
-  existing vision clients: `mobile/src/vl-import.ts` and `src/cli/llm/`.
+- **Outside the kernel:** the provider wire format (image parts, file parts)
+  and the model call. They sit next to the existing vision clients:
+  `mobile/src/vl-import.ts` and `src/cli/llm/`.
 - **On the harness path,** the MCP tool validates the agent's submission
   against the kernel schema.
 
@@ -513,8 +539,9 @@ the learner's harness sends it; ZAM adds nothing to that.
   built-in path covers the rest.
 - **An image-capable model is needed** on the built-in path. Without one, only
   the harness path and text paste remain.
-- **PDF support on the built-in path** needs a new dependency (pdf.js) unless
-  every connected model declares file input.
+- **On the built-in path, PDFs need a model that declares file input.** With
+  any other model the built-in path offers no PDF import. The harness path, or
+  exporting the pages as images, are then the way.
 - **No original to go back to.** Once the file is gone, the card is all there
   is, so question and answer must stand on their own.
 - **Over-delivery puts a selection step on every import.** For a ten-page
@@ -544,6 +571,9 @@ The field test shows this design wrong if:
 - The share sheet ("Share to ZAM").
 - Office formats (Word, PowerPoint) on the built-in path. The harness path
   takes whatever the harness reads.
+- PDF handling for models without native file input (page rendering, text
+  layer). If learners ask for it often enough, it becomes a separate
+  improvement.
 - Storing originals or transcripts.
 - Correcting the analysis and regenerating from it on the built-in path.
 - Prerequisite edges between imported cards beyond the continuation hint
@@ -555,8 +585,12 @@ The field test shows this design wrong if:
 
 - **Transcribe first, then generate** — Studio Phase 5 as planned and today's
   Scan path. Rejected: the transcript loses layout, and the worked example
-  shows what that costs. A PDF's own text layer may accompany the page images
-  (Decision 1), but it never replaces them.
+  shows what that costs.
+- **Render PDF pages on the device (pdf.js) for models without file input,
+  optionally with the PDF's text layer** (proposed in review). Not adopted for
+  now. It adds a dependency that parses untrusted files inside the app, and
+  models that read PDFs natively already cover the need. It can come back as
+  its own improvement.
 - **Built-in path only.** Rejected: one request cannot ask back, and poor
   notes are exactly where asking back pays.
 - **Harness path only.** Rejected: there is no harness on a phone or school
