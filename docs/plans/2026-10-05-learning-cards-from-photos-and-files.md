@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1, 2, 3, 4, 5 and 7 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
+**Status:** Phases 1, 2, 3, 4, 5 and 7 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -597,6 +597,12 @@ open the Studio and take the batch through:
   - Bonus items are in the Bonus view (once Phase 7 is in);
   - the `sources` row has a fingerprint.
 
+**First result (2026-10-05).** The owner ran an import through opencode on an
+older ZAM build, before this branch's tools were available to it. Within the
+harness the model read the material and handled the task; how good the cards
+are in substance is still open and may depend on reasoning effort and other
+factors. The pass above, with the current build, is still to do.
+
 ---
 
 ## Phase 6 — built-in Studio path
@@ -694,6 +700,25 @@ open the Studio and take the batch through:
 
 - The pure helpers in `study-offers.ts`.
 - A wiring test for the segment and the offer.
+
+**As built.**
+
+- **A button, not a segment.** Learning Content has no segmented control. The
+  Bonus view is a dialog behind a "Bonus (n)" button in the header, like the
+  library topics, shown only while the learner keeps bonus items
+  (`desktop/src/material-bonus.ts`). Items are grouped by import, newest
+  first, each with title, question, area and "Lernen" / "Learn".
+- **The offer after the due queue** names the newest import that still holds
+  bonus items and offers up to two of them, before the atom bonus. It reuses
+  the atom bonus's choices: "Für später merken" / "Save for later" creates the
+  cards and ends the session, "Jetzt nicht" / "Not now" ends it. Taking an
+  item to learn it right away was left out: the queue might show another new
+  card first.
+- **Not built:** the import's source line listing its bonus items (D6). The
+  plan did not include it, and Learning Content has no per-import line yet.
+- **Desktop only.** The MCP Apps recall panel keeps the atom bonus; it cannot
+  reach the `material-import-*` commands before Phase 9. Mobile follows in
+  Phase 8.
 
 ---
 
