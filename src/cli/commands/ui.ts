@@ -14,13 +14,18 @@
  *   zam ui --shortcut   create Desktop + Start-menu shortcuts to the GUI
  */
 
-import { type SpawnSyncOptions, spawn, spawnSync } from "node:child_process";
+import { type SpawnSyncOptions, spawnSync } from "node:child_process";
 import { existsSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname, join } from "node:path";
-import { fileURLToPath } from "node:url";
 import { Command } from "commander";
 import { hasCommand } from "../../kernel/index.js";
+import {
+  findBuiltApp,
+  findDesktopDir,
+  findInstalledApp,
+  launchApp as launchDetached,
+} from "../desktop-launch.js";
 
 const C = {
   reset: "\x1b[0m",
@@ -30,64 +35,6 @@ const C = {
   cyan: "\x1b[36m",
   dim: "\x1b[2m",
 };
-
-/** Walk up from cwd and from this module to find the repo's `desktop/` dir. */
-function findDesktopDir(): string | null {
-  const starts = [process.cwd(), dirname(fileURLToPath(import.meta.url))];
-  for (const start of starts) {
-    let dir = start;
-    for (let i = 0; i < 10; i++) {
-      if (existsSync(join(dir, "desktop", "src-tauri", "tauri.conf.json"))) {
-        return join(dir, "desktop");
-      }
-      const parent = dirname(dir);
-      if (parent === dir) break;
-      dir = parent;
-    }
-  }
-  return null;
-}
-
-/** Locate a previously built native binary, if any. */
-function findBuiltApp(desktopDir: string): string | null {
-  const releaseDir = join(desktopDir, "src-tauri", "target", "release");
-  if (process.platform === "win32") {
-    for (const name of ["ZAM.exe", "zam.exe", "zam-desktop.exe"]) {
-      const p = join(releaseDir, name);
-      if (existsSync(p)) return p;
-    }
-  } else if (process.platform === "darwin") {
-    const app = join(releaseDir, "bundle", "macos", "ZAM.app");
-    if (existsSync(app)) return app;
-  } else {
-    for (const name of ["zam", "ZAM", "zam-desktop"]) {
-      const p = join(releaseDir, name);
-      if (existsSync(p)) return p;
-    }
-  }
-  return null;
-}
-
-/** Locate an app installed by a released ZAM desktop installer. */
-function findInstalledApp(): string | null {
-  const candidates =
-    process.platform === "win32"
-      ? [
-          process.env.LOCALAPPDATA &&
-            join(process.env.LOCALAPPDATA, "Programs", "ZAM", "ZAM.exe"),
-          process.env.ProgramFiles &&
-            join(process.env.ProgramFiles, "ZAM", "ZAM.exe"),
-          process.env["ProgramFiles(x86)"] &&
-            join(process.env["ProgramFiles(x86)"], "ZAM", "ZAM.exe"),
-        ]
-      : process.platform === "darwin"
-        ? ["/Applications/ZAM.app", join(homedir(), "Applications", "ZAM.app")]
-        : ["/opt/ZAM/zam", "/usr/bin/zam-desktop"];
-
-  return (
-    candidates.find((candidate) => candidate && existsSync(candidate)) || null
-  );
-}
 
 /** npm is npm.cmd on Windows, so child processes need a shell there. */
 function runNpm(args: string[], opts: SpawnSyncOptions): number {
@@ -185,20 +132,7 @@ function warnIfCliMissing(repoRoot: string): void {
 
 function launchApp(appPath: string, workingDir: string): void {
   console.log(`${C.green}✓ Launching ZAM Desktop...${C.reset}`);
-  if (process.platform === "darwin" && appPath.endsWith(".app")) {
-    spawn("open", [appPath], {
-      cwd: workingDir,
-      detached: true,
-      stdio: "ignore",
-    }).unref();
-  } else {
-    spawn(appPath, [], {
-      cwd: workingDir,
-      detached: true,
-      stdio: "ignore",
-      windowsHide: true,
-    }).unref();
-  }
+  launchDetached(appPath, workingDir);
 }
 
 function createShortcuts(appPath: string, repoRoot: string): void {

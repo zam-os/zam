@@ -8,9 +8,11 @@
  * curriculum position.
  */
 
+import { createHash } from "node:crypto";
+import { createReadStream } from "node:fs";
 import { readFile, stat } from "node:fs/promises";
-import { basename, extname } from "node:path";
-import { fileURLToPath } from "node:url";
+import { basename, extname, isAbsolute, resolve } from "node:path";
+import { fileURLToPath, pathToFileURL } from "node:url";
 import {
   type CurriculumScope,
   commitMaterialImport,
@@ -40,6 +42,7 @@ import {
   readStagedImport,
   type StagedImport,
   type StagingOptions,
+  stageMaterialImport,
   writeStagedImport,
 } from "./material-staging.js";
 
@@ -359,4 +362,101 @@ export async function previewMaterialImportFile(
     dataUrl: `data:${mime};base64,${bytes.toString("base64")}`,
     reason: "ok",
   };
+}
+
+// ── Harness path (Decision 2) ───────────────────────────────────────────────
+
+/** A file as an agent names it: what it read, and from where. */
+export interface AgentMaterialFile {
+  name: string;
+  path?: string;
+  sha256?: string;
+}
+
+function localDate(now: Date): string {
+  const month = String(now.getMonth() + 1).padStart(2, "0");
+  const day = String(now.getDate()).padStart(2, "0");
+  return `${now.getFullYear()}-${month}-${day}`;
+}
+
+async function sha256OfFile(path: string): Promise<string> {
+  const hash = createHash("sha256");
+  for await (const chunk of createReadStream(path)) {
+    hash.update(chunk as Buffer);
+  }
+  return hash.digest("hex");
+}
+
+/**
+ * Turn an agent's file reference into the set's file entry (Decision 9). A
+ * readable path gives a `file://` link and ZAM's own fingerprint; without
+ * one the link is a dated placeholder and the agent's fingerprint, if any,
+ * is kept.
+ */
+export async function materialFileFromAgent(
+  file: AgentMaterialFile,
+  now: Date = new Date(),
+): Promise<{
+  name: string;
+  sourceLink: string;
+  sha256?: string;
+  path?: string;
+}> {
+  const name = file.name.trim() || (file.path ? basename(file.path) : "");
+  // An agent's own fingerprint is a hint; a malformed one is dropped rather
+  // than refusing the whole import.
+  const agentSha =
+    file.sha256 && /^[0-9a-f]{64}$/i.test(file.sha256.trim())
+      ? file.sha256.trim().toLowerCase()
+      : undefined;
+  if (file.path?.trim()) {
+    const path = isAbsolute(file.path) ? file.path : resolve(file.path);
+    const info = await stat(path).catch(() => null);
+    const sha256 = info?.isFile()
+      ? await sha256OfFile(path).catch(() => undefined)
+      : undefined;
+    return {
+      name: name || basename(path),
+      sourceLink: pathToFileURL(path).href,
+      sha256: sha256 ?? agentSha,
+      path,
+    };
+  }
+  return {
+    name,
+    sourceLink: `photo:${name}@${localDate(now)}`,
+    ...(agentSha ? { sha256: agentSha } : {}),
+  };
+}
+
+/**
+ * Stage what an agent submitted. Validation is the kernel's: an invalid set
+ * is refused with every offending path, and nothing is written.
+ */
+export async function stageHarnessImport(
+  input: {
+    analysis: unknown;
+    proposals: unknown;
+    files: AgentMaterialFile[];
+    harness?: string;
+  },
+  opts: StagingOptions = {},
+): Promise<StagedImport> {
+  const now = opts.now?.() ?? new Date();
+  const files = await Promise.all(
+    input.files.map((file) => materialFileFromAgent(file, now)),
+  );
+  return stageMaterialImport(
+    {
+      set: {
+        version: 1,
+        analysis: input.analysis,
+        proposals: input.proposals,
+        files,
+      },
+      origin: "harness",
+      harness: input.harness,
+    },
+    opts,
+  );
 }

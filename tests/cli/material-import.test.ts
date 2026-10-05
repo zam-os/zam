@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   confirmMaterialImport,
   discardMaterialImport,
+  materialFileFromAgent,
   listPendingMaterialImports,
   parseMaterialAreas,
   PREVIEW_MAX_BYTES,
@@ -206,5 +207,33 @@ describe("material import service", () => {
     await expect(
       previewMaterialImportFile(batch.id, 9, { dir }),
     ).rejects.toThrow(/has no file 9/);
+  });
+
+  it("turns an agent's file reference into a link and a fingerprint", async () => {
+    const path = join(tempDir, "Arbeitsblatt.pdf");
+    writeFileSync(path, "%PDF-1.7");
+    const now = new Date(2026, 9, 5, 12);
+    const fromDisk = await materialFileFromAgent(
+      { name: "Arbeitsblatt.pdf", path, sha256: "not-a-hash" },
+      now,
+    );
+    expect(fromDisk.sourceLink).toMatch(/^file:\/\/.*Arbeitsblatt\.pdf$/);
+    expect(fromDisk.sha256).toMatch(/^[0-9a-f]{64}$/);
+    expect(fromDisk.path).toBe(path);
+
+    expect(
+      await materialFileFromAgent(
+        { name: "IMG_1.HEIC", sha256: "A".repeat(64) },
+        now,
+      ),
+    ).toEqual({
+      name: "IMG_1.HEIC",
+      sourceLink: "photo:IMG_1.HEIC@2026-10-05",
+      sha256: "a".repeat(64),
+    });
+    // A malformed fingerprint is dropped, not fatal.
+    expect(
+      await materialFileFromAgent({ name: "x.jpg", sha256: "zz" }, now),
+    ).toEqual({ name: "x.jpg", sourceLink: "photo:x.jpg@2026-10-05" });
   });
 });

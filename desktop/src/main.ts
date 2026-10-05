@@ -111,6 +111,7 @@ import {
   setLearningContentFilePicker,
   setLearningContentProgressSource,
 } from "./learning-content.js";
+import { setMaterialImportHost } from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
   StudyEditError,
@@ -217,6 +218,33 @@ setLearningContentFilePicker(async () => {
     ],
   });
   return typeof selected === "string" ? selected : null;
+});
+
+// Material import (ADR 2026-10-05): photos and PDFs for the harness handoff,
+// and the way to connecting an agent when none is.
+setMaterialImportHost({
+  pickFiles: async () => {
+    const selected = await openFolderDialog({
+      directory: false,
+      multiple: true,
+      title: t("material_start_choose"),
+      filters: [
+        {
+          name: "Foto / PDF",
+          extensions: ["jpg", "jpeg", "png", "webp", "heic", "heif", "pdf"],
+        },
+      ],
+    });
+    if (Array.isArray(selected)) return selected;
+    return typeof selected === "string" ? [selected] : [];
+  },
+  openAgentSetup: () => {
+    switchView("settings-view");
+    applySettingsViewMode("advanced");
+    document
+      .getElementById("settings-agents-card")
+      ?.scrollIntoView({ block: "start" });
+  },
 });
 
 // Bitwarden assure modal "Open vault" uses the same opener as the rest of Studio.

@@ -32,6 +32,12 @@ export type MaterialChoices = Record<string, MaterialChoiceWire | null>;
 /** Above this many choosable rows, rows preset to Bonus start collapsed. */
 export const COLLAPSE_BONUS_AFTER = 12;
 
+/**
+ * A batch an agent submitted this recently opens by itself when the Studio
+ * comes forward — the agent just told the learner to look here.
+ */
+export const AUTO_OPEN_WINDOW_MS = 10 * 60 * 1000;
+
 // ── Rules (pure) ─────────────────────────────────────────────────────────────
 
 /** A held existing item is information, not a choice. */
@@ -204,6 +210,25 @@ export function pendingBannerText(
     return tf("material_pending_one", { title: imports[0].title });
   }
   return tf("material_pending_many", { count: imports.length });
+}
+
+/**
+ * The harness batch to open by itself: new to this Studio session and
+ * submitted within {@link AUTO_OPEN_WINDOW_MS}. Older or Studio-made batches
+ * wait behind the banner.
+ */
+export function freshHarnessImport(
+  imports: MaterialImportPendingEntry[],
+  announced: ReadonlySet<string>,
+  now: number,
+): MaterialImportPendingEntry | null {
+  return (
+    imports.find((entry) => {
+      if (entry.origin !== "harness" || announced.has(entry.id)) return false;
+      const created = Date.parse(entry.createdAt);
+      return Number.isFinite(created) && now - created <= AUTO_OPEN_WINDOW_MS;
+    }) ?? null
+  );
 }
 
 export function previewNote(
@@ -781,6 +806,8 @@ const NAV_BADGE_ID = "nav-content-pending-badge";
 let pending: MaterialImportPendingEntry[] = [];
 let refreshing: Promise<void> | null = null;
 let bannerOptions: MaterialReviewOptions = {};
+let autoOpen = false;
+const announced = new Set<string>();
 
 function ensureBanner(): HTMLElement | null {
   const existing = document.getElementById(BANNER_ID);
@@ -862,6 +889,12 @@ export async function refreshPendingMaterialImports(): Promise<
         console.warn("material-import-pending failed", err);
       }
       renderPending();
+      const fresh = freshHarnessImport(pending, announced, Date.now());
+      for (const entry of pending) announced.add(entry.id);
+      const open = dialog?.overlay.classList.contains("active") ?? false;
+      if (autoOpen && fresh && !open && !busy) {
+        void openMaterialReview(fresh.id, bannerOptions);
+      }
     })().finally(() => {
       refreshing = null;
     });
@@ -877,6 +910,7 @@ export async function refreshPendingMaterialImports(): Promise<
  */
 export function initMaterialImports(options: MaterialReviewOptions = {}): void {
   bannerOptions = options;
+  autoOpen = true;
   void refreshPendingMaterialImports();
   window.addEventListener("focus", () => {
     void refreshPendingMaterialImports();

@@ -34,8 +34,14 @@ import {
   listEmbeddedTokens,
 } from "../models/token-embedding.js";
 import { cosineSimilarity } from "../search/hybrid.js";
+import {
+  MATERIAL_KINDS,
+  MATERIAL_ORIGINS,
+  MATERIAL_PROPOSAL_SET_VERSION,
+  type MaterialKind,
+  type MaterialOrigin,
+} from "./material-contract.js";
 
-export const MATERIAL_PROPOSAL_SET_VERSION = 1;
 /** `sources.uri` of an import: this prefix plus a ULID, never a file name. */
 export const IMPORT_SOURCE_PREFIX = "zam-import:";
 export const MAX_MATERIAL_PROPOSALS = 200;
@@ -55,19 +61,13 @@ const CONTINUATION_THRESHOLD = 0.4;
 const CONTINUATION_MIN_SHARED = 2;
 const VECTOR_CANDIDATES_PER_PROPOSAL = 5;
 
-export const MATERIAL_KINDS = [
-  "own-notes",
-  "handout",
-  "worksheet",
-  "solution-sheet",
-  "board-picture",
-  "other",
-] as const;
-export type MaterialKind = (typeof MATERIAL_KINDS)[number];
-
-export const MATERIAL_ORIGINS = ["page", "completed", "extra"] as const;
-/** Where a proposed card comes from (Decision 4). */
-export type MaterialOrigin = (typeof MATERIAL_ORIGINS)[number];
+export {
+  MATERIAL_KINDS,
+  MATERIAL_ORIGINS,
+  MATERIAL_PROPOSAL_SET_VERSION,
+  type MaterialKind,
+  type MaterialOrigin,
+} from "./material-contract.js";
 
 /** The learner's choice per card (Decision 5). */
 export type MaterialChoice = "yes" | "bonus" | "no";

@@ -8,12 +8,14 @@ import type {
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { setCurrentLocale } from "../../desktop/src/i18n.js";
 import {
+  AUTO_OPEN_WINDOW_MS,
   analysisLine,
   COLLAPSE_BONUS_AFTER,
   changedAreas,
   confirmArgs,
   confirmCounts,
   confirmLabel,
+  freshHarnessImport,
   initialChoices,
   isChoosable,
   pendingBannerText,
@@ -259,6 +261,38 @@ describe("material review rules", () => {
         reason: "not-viewable",
       }),
     ).toMatch(/open it next to this list/);
+  });
+});
+
+describe("opening a fresh harness import by itself", () => {
+  const now = Date.parse("2026-10-05T10:05:00.000Z");
+  const entry = (
+    id: string,
+    origin: "harness" | "studio",
+    createdAt: string,
+  ) => ({
+    id,
+    title: "Stofferkennung",
+    createdAt,
+    origin,
+    harness: origin === "harness" ? "opencode" : null,
+    proposalCount: 4,
+  });
+
+  it("opens a harness batch the agent just submitted, once", () => {
+    const fresh = entry("01JA", "harness", "2026-10-05T10:04:00.000Z");
+    expect(freshHarnessImport([fresh], new Set(), now)).toBe(fresh);
+    expect(freshHarnessImport([fresh], new Set(["01JA"]), now)).toBeNull();
+  });
+
+  it("leaves older and Studio-made batches behind the banner", () => {
+    const old = entry(
+      "01JB",
+      "harness",
+      new Date(now - AUTO_OPEN_WINDOW_MS - 1000).toISOString(),
+    );
+    const studio = entry("01JC", "studio", "2026-10-05T10:04:00.000Z");
+    expect(freshHarnessImport([old, studio], new Set(), now)).toBeNull();
   });
 });
 

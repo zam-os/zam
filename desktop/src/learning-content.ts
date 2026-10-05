@@ -1,6 +1,7 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 import { initLibraryTopics } from "./library-topics.js";
+import { initMaterialImportStart } from "./material-import-start.js";
 import { initMaterialImports } from "./material-review.js";
 import { buildDomainOptions, domainMatches } from "./panel/graph-scope.js";
 
@@ -586,6 +587,7 @@ export function initLearningContentStudio(): void {
   // Material imports (ADR 2026-10-05): a waiting batch shows as a banner, and
   // confirmed cards show up in the list straight away.
   initMaterialImports({ onConfirmed: () => loadStudioData() });
+  initMaterialImportStart();
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();
