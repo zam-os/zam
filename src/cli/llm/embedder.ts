@@ -100,8 +100,19 @@ export function embeddingTextForToken(
   t: Pick<Token, "concept" | "question" | "domain"> & { title?: string | null },
   model: string,
 ): string {
+  return embeddingTextForDocument(embeddingContentForToken(t), model);
+}
+
+/**
+ * The document-side prompt for canonical token text that is not (yet) a
+ * stored token — a material-import proposal, a bundled cell item — so it
+ * lands in the same space as stored token vectors.
+ */
+export function embeddingTextForDocument(
+  content: string,
+  model: string,
+): string {
   const isGemma = EMBEDDINGGEMMA_ALIASES.has(model.trim().toLowerCase());
-  const content = embeddingContentForToken(t);
   return isGemma ? `title: none | text: ${content}` : content;
 }
 

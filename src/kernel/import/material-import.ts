@@ -29,7 +29,10 @@ import {
   getTokenById,
   type Token,
 } from "../models/token.js";
-import { listEmbeddedTokens } from "../models/token-embedding.js";
+import {
+  embeddingContentForToken,
+  listEmbeddedTokens,
+} from "../models/token-embedding.js";
 import { cosineSimilarity } from "../search/hybrid.js";
 
 export const MATERIAL_PROPOSAL_SET_VERSION = 1;
@@ -541,7 +544,10 @@ export type MaterialReviewRow =
     });
 
 export interface MaterialMatchOptions {
-  /** Embeds texts with the library's embedding model; absent = lexical only. */
+  /**
+   * Embeds canonical token texts (`embeddingContentForToken`) with the
+   * library's embedding model; absent = lexical only.
+   */
   embed?: (texts: string[]) => Promise<number[][]>;
   /** The model the stored token vectors must match; required with `embed`. */
   embeddingModel?: string;
@@ -787,9 +793,25 @@ export async function matchMaterialProposals(
   // proposals and the cell items. Both legs run without it.
   let proposalVectors: Float32Array[] | null = null;
   if (opts.embed && opts.embeddingModel) {
+    // The canonical token text, so a proposal meets a stored token vector on
+    // the same terms.
     const texts = [
-      ...set.proposals.map((p) => rowText(p.question, p.answer, p.title ?? "")),
-      ...cells.map((c) => rowText(c.question, c.answer, c.title)),
+      ...set.proposals.map((p) =>
+        embeddingContentForToken({
+          concept: p.answer,
+          question: p.question,
+          domain: p.area,
+          title: p.title,
+        }),
+      ),
+      ...cells.map((c) =>
+        embeddingContentForToken({
+          concept: c.answer,
+          question: c.question,
+          domain: c.area,
+          title: c.title,
+        }),
+      ),
     ];
     const vectors = await opts.embed(texts);
     proposalVectors = vectors
