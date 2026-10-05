@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Not started.\
+**Status:** Phase 1 done (2026-10-05).\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -28,8 +28,8 @@ reference and file fingerprints. Nothing of the material itself is stored.
 
 ## Status
 
-- [ ] **Phase 1** — kernel contract: schema, validation, presets, matching,
-  write, bonus queries
+- [x] **Phase 1** — kernel contract: schema, validation, presets, matching,
+  write, bonus queries — `b2aa6d29`
 - [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
 - [ ] **Phase 3** — staging store and bridge commands
 - [ ] **Phase 4** — Studio review list
@@ -212,8 +212,9 @@ photos write `scan`.
      path (`proposals[3].origin`).
    - Strings are trimmed. `bloom` is 1–5, `origin` and `kind` come from their
      enums, `file` is in range, and there are at most 200 proposals.
-   - `area` is normalised the way token domains already are (lowercase,
-     `/`-separated). A leading `schule/` is stripped (D7).
+   - `area` is normalised by `normaliseMaterialArea`: trimmed segments, `/`
+     as the only separator, a leading `schule/` stripped (D7). Case is kept, so
+     a learner's existing area (`Deutsch`) still matches itself.
    - Unstructured output never passes this function (ADR 2026-06-30).
 2. **`presetFor(proposal): MaterialChoice | null`** — the D5 table:
    - `page` → `yes`
