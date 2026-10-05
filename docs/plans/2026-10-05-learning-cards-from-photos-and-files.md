@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1, 2, 3, 4 and 5 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
+**Status:** Phases 1, 2, 3, 4, 5 and 7 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -36,7 +36,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [x] **Phase 5** — harness path: MCP tools, skill, Studio handoff — `5620339d`
 - [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
   picker
-- [ ] **Phase 7** — Bonus view and the offer after the due queue
+- [x] **Phase 7** — Bonus view and the offer after the due queue — `ca5b0a59`
 - [ ] **Phase 8** — Mobile
 - [ ] **Phase 9** — the review list as an MCP Apps panel (optional)
 - [ ] **Phase 10** — documentation and handover
