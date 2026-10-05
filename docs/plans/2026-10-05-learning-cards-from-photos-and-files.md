@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1, 3, 4 and 5 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
+**Status:** Phases 1, 2, 3, 4 and 5 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -30,7 +30,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 
 - [x] **Phase 1** — kernel contract: schema, validation, presets, matching,
   write, bonus queries — `b2aa6d29`
-- [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
+- [x] **Phase 2** — the `schule/` rewrite: migration and fixtures — `d7c78a9e`
 - [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
 - [x] **Phase 4** — Studio review list — `09a35032`
 - [x] **Phase 5** — harness path: MCP tools, skill, Studio handoff — `5620339d`
@@ -358,6 +358,19 @@ photos write `scan`.
    - Add a guard test: no bundled tile domain starts with `schule/`.
 5. **Embeddings.** No code change; the lazy top-up renews them. The release
    note recommends `zam token reembed` for large libraries.
+
+**As built.**
+
+- **One statement for both dialects.** PostgreSQL has `substr` too, so M038 is
+  one `UPDATE` per table. The match is `lower(substr(domain, 1, 7)) =
+  'schule/'`: SQLite's `LIKE` ignores case and PostgreSQL's does not, so this
+  keeps both in step. `Schule/…` is rewritten as well.
+- **Left alone.** A bare `schule` (no subject to keep) and paths that merely
+  contain the word, such as `hochschule/…`.
+- **PostgreSQL.** `tests/kernel/postgres-provision.test.ts` covers the rewrite
+  and a repeat run.
+- **Not touched.** The concept papers under `docs/concepts/` that still call
+  the path question open; they record the discussion before D7.
 
 ---
 
