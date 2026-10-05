@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phase 1 done (2026-10-05).\
+**Status:** Phases 1 and 3 done (2026-10-05).\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -31,7 +31,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [x] **Phase 1** — kernel contract: schema, validation, presets, matching,
   write, bonus queries — `b2aa6d29`
 - [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
-- [ ] **Phase 3** — staging store and bridge commands
+- [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
 - [ ] **Phase 4** — Studio review list
 - [ ] **Phase 5** — harness path: MCP tools, skill, Studio handoff
 - [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
@@ -381,9 +381,9 @@ photos write `scan`.
 
 | Command | Result |
 |---|---|
-| `material-import-stage --file <json>` | parse with the kernel, stage (origin `studio`), return `{ id }` — used by tests and Phase 6 |
+| `material-import-stage --file <json> [--origin studio\|harness] [--harness <name>]` | parse with the kernel, stage, return `{ id, proposalCount }` — used by tests and Phase 6 |
 | `material-import-pending` | `[{ id, title, createdAt, origin, harness, proposalCount }]` |
-| `material-import-review --id` | rows with presets and matches, the analysis, area groups, re-import notices |
+| `material-import-review --id` | rows with presets and matches, the analysis, area groups, re-import notices; stores the rows in the batch so the confirm applies choices to exactly what the learner saw |
 | `material-import-confirm --id --decisions <json> --areas <json>` | commit, then delete the staged file |
 | `material-import-discard --id` | delete the staged file |
 | `material-import-areas` | `listMaterialAreaContext` |
@@ -395,6 +395,9 @@ photos write `scan`.
   when an embedding model is configured, and runs lexical-only otherwise.
 - **Protocol.** Add the response types to `src/bridge/protocol.ts`
   (additive).
+- **Shared service.** The command bodies live in `src/cli/material-import.ts`
+  (review, confirm, discard, pending list), so Phase 5's MCP tools reuse
+  them unchanged.
 
 ### Tests
 
