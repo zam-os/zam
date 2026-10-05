@@ -5,7 +5,7 @@
 **Deciders:** Thomas (project owner)\
 **Related:**
 [2026-06-30](2026-06-30-learning-content-studio.md) (Phase 5) ·
-[2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) (Decisions 1, 3) ·
+[2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) (draft; Decisions 1 and 3 adopted in Decision 7) ·
 [2026-07-06a](2026-07-06a-mcp-agent-transport-and-surfaces.md) ·
 [2026-07-12a](2026-07-12a-agent-backed-ai-provider.md) ·
 [2026-07-18](2026-07-18-okf-learning-import.md) ·
@@ -63,6 +63,22 @@
 > so the two do not join. Topic names stay with ADR 2026-10-02 (see
 > Alternatives).
 >
+> **Revision after review round 2** (MiMo, PR #384; it reviewed the version
+> with the harness path and re-checked the current one):
+>
+> - Harness proposals wait in a named staging file that the Studio can read,
+>   with an expiry (Decision 2).
+> - ADR 2026-07-04 is a draft again. The two of its rules this ADR relies on are
+>   now adopted here explicitly (Decision 7).
+> - `domain_meta` does not exist and is dropped from the migration scope
+>   (Decision 7).
+> - Wire format per API flavour, with a named home for the shared request
+>   module (Decision 10).
+> - The confirm button also counts unsaved rows, and Bonus rows collapse on
+>   long lists (Decision 5).
+> - The note on mixed subjects moves before the file picker (Decision 3).
+> - The context table now records the existing exact-slug dedupe.
+>
 > **Owner decisions after round 1:**
 >
 > - PDFs are imported only by models that read them natively.
@@ -90,7 +106,7 @@ serves it poorly today.
 | File | UTF-8 text up to 2 MB; APKG, CSV and TSV decks | — |
 | PDF | Not for learners (`pdftotext` serves only curriculum providers) | — |
 | Area (domain) | The learner types it before the import | The model returns free text; a draft without one gets an empty area (`inbox` is only for quick capture) |
-| Existing content | Not consulted | Not consulted |
+| Existing content | No content matching; only an exact slug match when writing | No content matching; only an exact slug match when writing |
 
 ADR 2026-06-30 Phase 5 planned "images and scans through OCR/vision" as a
 source adapter that yields text. This ADR replaces that part of Phase 5.
@@ -232,8 +248,13 @@ The agent proposes; it does not decide:
 - The learner chooses Yes, No or Bonus in that list, not in the chat. This is
   the OKF import's division of labour: the agent judges, the tool validates and
   writes.
-- Until the learner confirms, the proposals are machine-local state, not
-  database rows.
+- **Until the learner confirms, the proposals are not token or card rows.**
+  They wait in a machine-local staging file under `~/.zam/`. The file is
+  written atomically, like the UI intent and the focused OKF article.
+  - The `zam mcp` process writes the file and the Studio reads it. The two are
+    separate processes, and a waiting batch has to survive a restart.
+  - The Studio shows waiting batches ("1 import waiting for review").
+  - A batch the learner neither confirms nor discards expires after 7 days.
 - The zam skill and the MCP server instructions describe the import, so every
   connected harness recognises the request.
 
@@ -268,8 +289,9 @@ pages together.
 - **Too many images for the model:** if the model rejects the request because
   of its own image limit, the import splits the pages into smaller requests
   and tells the learner.
-- **Mixed subjects:** both paths tell the learner that material from different
-  subjects is imported in separate runs. A sentence will not stop a worksheet
+- **Mixed subjects:** both paths tell the learner, before the file is picked,
+  that material from different subjects is imported in separate runs. A
+  sentence will not stop a worksheet
   that mixes subjects, though. If the analysis finds more than one subject,
   the list groups the cards by area, and the learner confirms each area on its
   own (Decision 7).
@@ -324,8 +346,12 @@ checkbox:
 
 A `completed` card is the model's own addition or correction. Once the import
 is done the page is gone, and the learner has nothing to check that card
-against, so it has to be chosen by hand. A card without a choice is not saved.
-The confirm button states the counts ("Add 7 · 2 as Bonus").
+against, so it has to be chosen by hand.
+
+**Unchosen rows.** A card without a choice is not saved. The confirm button
+states all three counts ("Add 7 · 2 as Bonus · 3 not saved"), so the rows the
+model was unsure about never drop out silently. On a long list, rows preset to
+Bonus start collapsed.
 
 **The page stays in view.** While the list is open, the page stays on screen
 beside it, so a `page` card can be checked against the handwriting. On the
@@ -373,18 +399,26 @@ a new one. The review list shows the area above the cards before anything is
 saved. The learner can switch to another existing area or type one, without
 regenerating the cards.
 
-Proposed paths follow ADR 2026-07-04 Decision 3: the root is the subject, never
-a life area — `chemie/stoffe-und-eigenschaften`, not `schule/chemie/…`. The
-grade belongs in the curriculum anchor, not in the path.
+**Rules adopted here.** ADR 2026-07-04 is a draft again: it was reverted on
+2026-08-14 because cross-publisher atom identity is open. Two of its points
+this ADR adopts as binding on their own:
 
-Bundled cells currently write `schule/<subject>/…`. That contradicts the same
-decision and would split one subject into two areas as soon as imports follow
-it. **Consequence:** the cell fixtures drop the `schule/` prefix, and a
-migration rewrites stored paths.
+- **The root of an area path is the subject, never a life area.** Owner
+  decision of 2026-10-05: no `schule/`. So the path is
+  `chemie/stoffe-und-eigenschaften`, not `schule/chemie/…`. The grade belongs
+  in the curriculum anchor, not in the path.
+- **A token's identity is its id, and its area is metadata.** This is already
+  how the code works: cards and review logs reference `token_id`, so changing
+  a domain touches neither.
+
+Bundled cells currently write `schule/<subject>/…`. That would split one
+subject into two areas as soon as imports follow the rule above.
+**Consequence:** the cell fixtures drop the `schule/` prefix, and a migration
+rewrites stored paths.
 
 - **Scope of the rewrite.** The migration rewrites every stored `schule/<rest>`
-  path to `<rest>`: token domains, `learning_atoms.domain` and `domain_meta`
-  rows, not only cell tokens. It is a direct `UPDATE` in an M-series
+  path to `<rest>`: token domains, including paths a learner wrote by hand,
+  and `learning_atoms.domain`. It is a direct `UPDATE` in an M-series
   migration.
 - **Why it must not go through cell attach.** A cell attach treats a domain
   change as a material revision: absent materiality means `material`, and
@@ -392,8 +426,8 @@ migration rewrites stored paths.
 - **Order.** Migrations run when the library opens, before any cell attach in
   that session, and the fixtures change in the same release. Re-attach
   therefore finds the domain unchanged and publishes no revision. Token ids,
-  cards, scheduling and review history are untouched (ADR 2026-07-04
-  Decision 1).
+  cards, scheduling and review history are untouched (see the rules adopted
+  above).
 - **Embeddings.** The embedding text includes the domain, so the rewritten
   tokens' embeddings become stale. The lazy top-up (`ensureTokenEmbeddings`)
   and `zam token reembed` renew them, and the import's matching tops up before
@@ -496,9 +530,14 @@ apps open it directly, ADR 2026-08-08).
 
 - **In the kernel:** the response schema and its validation, the presets,
   matching and the transactional write.
-- **Outside the kernel:** the provider wire format (image parts, file parts)
-  and the model call. They sit next to the existing vision clients:
-  `mobile/src/vl-import.ts` and `src/cli/llm/`.
+- **Outside the kernel:** request construction and the provider wire format.
+  - Both live in one HTTP-free module that both apps import.
+    `src/cli/llm/choice-prompt.ts` already works this way and serves Mobile
+    (`mobile/src/choice-generate.ts`). There is no third shared root.
+  - The wire format follows the API flavour: OpenAI-style endpoints take image
+    and file parts, and Anthropic Messages endpoints take image and `document`
+    blocks. The capability probe already branches on the flavour.
+  - The HTTP call itself stays with each app's existing vision client.
 - **On the harness path,** the MCP tool validates the agent's submission
   against the kernel schema.
 
