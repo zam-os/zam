@@ -14,10 +14,57 @@
 [2026-07-25](2026-07-25-shared-curated-learning-content.md) (Decision 5) ·
 [2026-08-08](2026-08-08-ios-standalone-app.md) ·
 [2026-08-09c](2026-08-09c-on-device-ai-preference.md) ·
-[2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) (Decisions 6, 9, 10) ·
+[2026-08-14](2026-08-14-central-learning-atoms-and-identity.md) (Decisions 6, 9) ·
 [2026-09-13](2026-09-13-model-capabilities-are-detected.md) ·
 [2026-10-02](2026-10-02-library-topics.md) ·
 [flashcard quality RFC](../concepts/flashcard-generation-and-decomposition-strategy.md)
+
+> **Revision after review round 1** (Grok 4.7 and Gemini, PR #384). Both
+> reviewed the first version, before the harness path was added. Grok's
+> finding that the first version contradicted itself about a missing image
+> model was already resolved by that addition. Changes:
+>
+> - Proposals marked `completed` get no preset; the first version preset them
+>   to Yes. They are the model's additions, and the page is gone after the
+>   import (Decision 5).
+> - A library match no longer replaces the proposal. It stands beside it, and
+>   the learner can keep their own wording (Decision 8).
+> - Bonus gets a named place in the Studio and no longer relies on library
+>   topics. Yes and Bonus tokens are written as published (Decisions 5–6).
+> - Provenance:
+>   - one `sources` row per import, keyed by an import id;
+>   - one fingerprint per file, and the importing learner recorded on the row;
+>   - each card's link names its own file;
+>   - the display title no longer claims to name the library topic
+>     (Decision 9).
+> - The `schule/` rewrite is a direct migration that runs before cells
+>   re-attach, so no card is re-tested. It also covers
+>   `learning_atoms.domain` (Gemini). Stale embeddings are topped up
+>   (Decision 7).
+> - Bonus items are also offered once the due queue is done (Gemini,
+>   Decision 6).
+> - Photos and rendered pages are downscaled before sending (Gemini,
+>   Decision 1).
+> - PDFs (Decision 1):
+>   - a strict `file` gate, because otherwise OpenRouter transcribes PDFs on
+>     its server;
+>   - rendering pages needs pdf.js, a new dependency;
+>   - a PDF's own text layer may travel with the page images, but never
+>     instead of them, and it is never stored.
+> - Smaller changes:
+>   - the page stays visible during review;
+>   - cards are grouped by area when a page mixes subjects;
+>   - HEIC is converted on the device;
+>   - requests with too many images are split;
+>   - the schema version is bumped;
+>   - the split between kernel and wire format is stated precisely;
+>   - the context table is corrected;
+>   - ADR 2026-08-14 Decision 10 is no longer cited as precedent.
+>
+> Not adopted: Gemini's proposal that library topics read the import's display
+> title. A topic is keyed by a file's link and an import row by its import id,
+> so the two do not join. Topic names stay with ADR 2026-10-02 (see
+> Alternatives).
 
 ---
 
@@ -32,10 +79,10 @@ serves it poorly today.
 
 | | Studio (desktop) | Mobile |
 |---|---|---|
-| Image | "Source → Scan": a vision model transcribes the image to plain text; a second step drafts cards from that text | One vision call transcribes and decomposes a single photo (`mobile/src/vl-import.ts`) |
+| Image | The "File / Link / Scan" tab, option "OCR Scan": a vision model transcribes the image to plain text, then a second step drafts cards from that text. JPEG, PNG and WebP only | One vision call transcribes and decomposes a single photo (`mobile/src/vl-import.ts`) |
 | File | UTF-8 text up to 2 MB; APKG, CSV and TSV decks | — |
 | PDF | Not for learners (`pdftotext` serves only curriculum providers) | — |
-| Area (domain) | The learner types it before the import | The model invents free text; fallback `inbox` |
+| Area (domain) | The learner types it before the import | The model returns free text; a draft without one gets an empty area (`inbox` is only for quick capture) |
 | Existing content | Not consulted | Not consulted |
 
 ADR 2026-06-30 Phase 5 planned "images and scans through OCR/vision" as a
@@ -68,8 +115,9 @@ Three observations from that page shaped this ADR:
    looks.** The bundled cell "Chemie 8: Stoffe, Gemische, Aggregatzustände und
    Trennverfahren" (Realschule, grade 8) contains the follow-up — its atom on
    identifying substances by measurable properties — but not the page itself.
-   A learner whose curriculum position is grade 9 does not reach that cell
-   through `findBundledCellsForScope`; only the content connects them.
+   `findBundledCellsForScope` requires equal grades when both sides set one, so
+   a learner whose curriculum position is grade 9 does not reach that cell
+   through it; only the content connects them.
 
 A real pilot library also shows three conventions for school areas side by
 side: `Deutsch`, `mathematik-realschule-9-ii-iii` (grade in the path) and
@@ -106,17 +154,27 @@ more strictly than last year and no longer runs ZAM.
 ### 1. The model reads the page itself — no transcription step
 
 Images and PDFs go to the model as they are, as image or file content parts,
-together with the instructions. No step turns the input into plain text first,
+together with the instructions. No step replaces the input with plain text,
 and no transcript is stored or shown. This holds on both paths (Decision 2).
 
 - **Images** (photo, screenshot, exported note page) need a model with the
-  `image` capability.
-- **PDFs** go as a file part to a model whose endpoint declares document
-  input. The capability registry (ADR 2026-09-13) gains a detected `file`
-  capability; like `video`, it is detected from declared metadata only
-  (OpenRouter lists `file` in `input_modalities`), never from model names.
-  Where the connected model declares no document input, the device renders the
-  pages as images and sends those — still visual, layout intact.
+  `image` capability. HEIC, the iPhone default, is converted to JPEG on the
+  device before sending. Photos and rendered pages are downscaled before
+  sending. The mobile import already caps the long edge at 1568 px; a ten-page
+  request at full resolution would cost tens of thousands of tokens.
+- **PDFs** go as a file part **only** to a model whose endpoint metadata
+  declares file input. The capability registry (ADR 2026-09-13) gains a
+  detected `file` capability; like `video`, it is detected from declared
+  metadata only (OpenRouter lists `file` in `input_modalities`), never from
+  model names. The gate is strict: OpenRouter parses a PDF sent to a model
+  without native file input on its own server, with text extraction or OCR —
+  the transcription step this decision rejects.
+- **Every other model** gets the PDF's pages rendered as images by the app.
+  The rendering stays visual, so the layout is intact. The renderer is pdf.js
+  in the app's webview, which the Studio and Mobile share. It is a new
+  dependency and needs the owner's approval (AGENTS.md). When the PDF has a
+  text layer, its text may travel in the same request beside the page images:
+  in addition to them, never instead of them, and never stored.
 - **No image-capable model connected:** the import is not a dead end. The
   Studio says in one line what it needs, links to the model setup, and points
   to the harness path. Pasting text stays available.
@@ -126,10 +184,13 @@ import once this ships.
 
 ### 2. Two paths: built in, and through a harness
 
-The import runs on two paths. They share everything after the model: the
-proposal format (Decision 4), the review list with Yes, No and Bonus
-(Decision 5), matching (Decision 8), provenance (Decision 9) and the
-transactional write.
+The import runs on two paths. They share everything after the model:
+
+- the proposal format (Decision 4);
+- the review list with Yes, No and Bonus (Decision 5);
+- matching (Decision 8);
+- provenance (Decision 9);
+- the transactional write.
 
 **Built in.** The Studio, and later Mobile, sends one request to the model the
 learner connected. It needs nothing else installed and is the only path on a
@@ -149,22 +210,26 @@ and, unlike a single request, can:
   often as it needs, instead of receiving one candidate list in a prompt;
 - read whatever the harness reads, office files included.
 
-The agent proposes; it does not decide. It submits its proposals through a ZAM
-tool, which validates them and opens the same review list: as a panel in hosts
-that render MCP Apps panels, otherwise in the Studio. The learner chooses Yes,
-No or Bonus in that list, not in the chat. This is the OKF import's division
-of labour: the agent judges, the tool validates and writes. Until the learner
-confirms, the proposals are machine-local state, not database rows. The zam
-skill and the MCP server instructions describe the import, so every connected
-harness recognises the request.
+The agent proposes; it does not decide:
+
+- It submits its proposals through a ZAM tool, which validates them against
+  the kernel's schema and opens the same review list. That list appears as a
+  panel in hosts that render MCP Apps panels, and in the Studio otherwise.
+- The learner chooses Yes, No or Bonus in that list, not in the chat. This is
+  the OKF import's division of labour: the agent judges, the tool validates and
+  writes.
+- Until the learner confirms, the proposals are machine-local state, not
+  database rows.
+- The zam skill and the MCP server instructions describe the import, so every
+  connected harness recognises the request.
 
 **The Studio points to the stronger path.** When a harness is connected, the
-import dialog offers both and says in one line that the harness path can ask
-back and is often the smarter choice. ZAM cannot put a file into another app's
-chat (ADR 2026-07-18c), so the dialog says what to do there — drop the file in
-and ask to import it into ZAM — with the request ready to copy. Without a
-connected harness, the dialog mentions the option once and links to the agent
-setup.
+import dialog offers both paths and says in one line that the harness path can
+ask back and is often the smarter choice. ZAM cannot put a file into another
+app's chat (ADR 2026-07-18c), so the dialog says what to do there: drop the
+file in and ask to import it into ZAM, with the request ready to copy. Without
+a connected harness, the dialog mentions the option once and links to the
+agent setup.
 
 Harness apps need an account, and some set age limits or need a paid plan. For
 school learners the built-in path therefore stays available everywhere; the
@@ -174,9 +239,18 @@ harness path is the better option for those who have one.
 
 An import takes one or more images, or one PDF, that belong together — a
 double page, three photos of one entry, a handout — and the model sees all
-pages together. On the built-in path the cap is 10 pages; for a longer PDF the
-learner picks a page range. Both paths tell the learner that material from
-different subjects is imported in separate runs.
+pages together.
+
+- **Page cap:** on the built-in path the cap is 10 pages. For a longer PDF the
+  learner picks a page range.
+- **Too many images for the model:** if the model rejects the request because
+  of its own image limit, the import splits the pages into smaller requests
+  and tells the learner.
+- **Mixed subjects:** both paths tell the learner that material from different
+  subjects is imported in separate runs. A sentence will not stop a worksheet
+  that mixes subjects, though. If the analysis finds more than one subject,
+  the list groups the cards by area, and the learner confirms each area on its
+  own (Decision 7).
 
 ### 4. Understand, then propose
 
@@ -186,8 +260,8 @@ path, after any dialogue on the harness path:
 - an **analysis**: the kind of material (own notes, handout, worksheet,
   solution sheet, board picture), subject, topic, depth (school level, Bloom
   range) and what the material leads to;
-- **card proposals** — question, answer, Bloom level, page — each with an
-  **origin**:
+- **card proposals** — question, answer, Bloom level, page and proposed area —
+  each with an **origin**:
   - `page` — stated on the page;
   - `completed` — explains, justifies or corrects a statement on the page (the
     reason behind "tasting is forbidden"; a word that was likely mis-noted);
@@ -217,32 +291,64 @@ checkbox:
 | **Bonus** | token without a card — offered, never scheduled |
 | **No** | nothing is written |
 
-The model presets the choice: `page` and `completed` → Yes, `extra` → Bonus,
-flagged as hard to read → no preset. A card without a choice is not saved, and
-the confirm button states the counts ("Add 7 · 2 as Bonus"). Nothing is
-written before the learner confirms; the confirmed batch is written in one
-transaction.
+**Presets.** The model presets each choice from the card's origin:
 
-### 6. Bonus means offered, never scheduled
+| Origin | Preset |
+|---|---|
+| `page` | Yes |
+| `extra` | Bonus |
+| `completed` | none |
+| hard to read (legibility flag) | none |
 
-"Bonus" applies ADR 2026-08-14 Decision 6 to personal imports: the content is
-kept and the learner's queue is untouched. A bonus token carries the same
-source link as its siblings, so it stays where the import is — in the Studio
-under that source, and as a member of the source's library topic. Starting the
-topic (ADR 2026-10-02 Decision 2) creates the missing cards then, and taking a
-single bonus card creates that card. Choosing Bonus over Yes loses nothing.
+A `completed` card is the model's own addition or correction. Once the import
+is done the page is gone, and the learner has nothing to check that card
+against, so it has to be chosen by hand. A card without a choice is not saved.
+The confirm button states the counts ("Add 7 · 2 as Bonus").
 
-The label is "Bonus". Like every bonus offer it carries no score, streak or
-target. Where else bonus content is offered (for example after the due queue)
-is left to the plan.
+**The page stays in view.** While the list is open, the page stays on screen
+beside it, so a `page` card can be checked against the handwriting. On the
+harness path this applies wherever the Studio can read the file.
+
+**Writing.** Nothing is written before the learner confirms, and the confirmed
+batch is written in one transaction. Yes and Bonus tokens are written as
+`published`, because the learner's confirmation is the author review. The
+existing source import writes drafts without a source link, and this import
+does not reuse that writer.
+
+### 6. Bonus means offered, never scheduled — and has a place to be taken from
+
+"Bonus" applies the principle of ADR 2026-08-14 Decision 6 to personal
+imports: the content is kept, the learner's queue is untouched, and the offer
+carries no score, streak or target. It does not use `enrolBonusAtom`. That
+mechanism serves cell atoms that rest on a held hard prerequisite, and it
+rejects personal tokens.
+
+Learning Content today lists cards, not tokens, so a token without a card
+would be invisible there. The Studio therefore gets a **Bonus** view in
+Learning Content:
+
+- It lists the bonus items from the learner's own imports. These are found
+  through `token_sources` and the import's `sources` row, which records the
+  importing learner (Decision 9).
+- Each item has an action that creates its card.
+- The import's source line shows its bonus items too.
+
+A view alone is still a place learners have to go looking. Bonus items are
+therefore also offered when the due queue is done: a few items from the
+learner's recent imports, named by what they belong to ("2 more from your
+chemistry notes"), with the same take-one action.
+
+A bonus token also carries its file's source link and is published. It is
+therefore a member of that file's library topic, and starting the topic picks
+it up as well. Nothing relies on that, though.
 
 ### 7. The area is proposed from what exists, with the subject as root
 
 The model sees the learner's existing area paths and the subjects of the cells
-for the learner's school type — in the request on the built-in path, through
-tools on the harness path. It picks the best existing path or proposes a new
-one. The review list shows the area above the cards before anything is saved;
-the learner can switch to another existing area or type one, without
+for the learner's school type: in the request on the built-in path, and
+through tools on the harness path. It picks the best existing path or proposes
+a new one. The review list shows the area above the cards before anything is
+saved. The learner can switch to another existing area or type one, without
 regenerating the cards.
 
 Proposed paths follow ADR 2026-07-04 Decision 3: the root is the subject, never
@@ -251,58 +357,104 @@ grade belongs in the curriculum anchor, not in the path.
 
 Bundled cells currently write `schule/<subject>/…`. That contradicts the same
 decision and would split one subject into two areas as soon as imports follow
-it. **Consequence:** the cell fixtures drop the `schule/` prefix, and an
-idempotent migration rewrites `schule/<rest>` to `<rest>` for tokens already
-installed. A domain is metadata; token ids, cards and review history are
-untouched (ADR 2026-07-04 Decision 1). Other non-conforming paths (`Deutsch`,
-grade in the path) stay with the doctor's `domains` task.
+it. **Consequence:** the cell fixtures drop the `schule/` prefix, and a
+migration rewrites stored paths.
 
-### 8. Existing content is offered instead of a duplicate, labelled "already there"
+- **Scope of the rewrite.** The migration rewrites every stored `schule/<rest>`
+  path to `<rest>`: token domains, `learning_atoms.domain` and `domain_meta`
+  rows, not only cell tokens. It is a direct `UPDATE` in an M-series
+  migration.
+- **Why it must not go through cell attach.** A cell attach treats a domain
+  change as a material revision: absent materiality means `material`, and
+  every non-new card becomes due.
+- **Order.** Migrations run when the library opens, before any cell attach in
+  that session, and the fixtures change in the same release. Re-attach
+  therefore finds the domain unchanged and publishes no revision. Token ids,
+  cards, scheduling and review history are untouched (ADR 2026-07-04
+  Decision 1).
+- **Embeddings.** The embedding text includes the domain, so the rewritten
+  tokens' embeddings become stale. The lazy top-up (`ensureTokenEmbeddings`)
+  and `zam token reembed` renew them, and the import's matching tops up before
+  it matches.
+
+Other non-conforming paths (`Deutsch`, grade in the path) stay with the
+doctor's `domains` task.
+
+### 8. Existing content stands beside the proposal, labelled "already there"
 
 Before the list is shown, each proposal is matched by content against the
-learner's library and the items of the bundled cells. The curriculum position
-ranks candidates; it does not filter them (see the worked example). The match
-runs in ZAM, on both paths, so a harness that skipped its own lookups still
-gets it.
+learner's library and the items of the bundled cells.
 
-- A match takes the place of the generated proposal and is labelled
-  **"already there"** (German UI: "vorhanden") — not "reviewed". The library is
-  not a reviewed one yet, and the label must not claim it is. Yes creates the
-  learner's card for the existing item; no new token is written.
-- If the learner already has a card for it, the row says so and takes no
-  choice.
-- Items that continue the material — in the example, the cell's atom on
-  measurable properties — join the list, preset to Bonus.
+- **Ranking, not filtering.** The curriculum position ranks candidates; it does
+  not filter them (see the worked example).
+- **Candidate pre-selection.** ZAM pre-selects candidates by the analysed
+  subject; the catalog of a school type is too large to send whole.
+- **Where it runs.** The match runs in ZAM on both paths, so a harness that
+  skipped its own lookups still gets it.
 
-This is the precedence of ADR 2026-07-25 Decision 5 and ADR 2026-08-14
-Decision 10, applied to a photo: what the library holds is offered before
-anything is generated. Similarity only proposes a match; the learner's choice
-decides it, and no review history moves between items (ADR 2026-08-14
-Decision 9). How the match is computed — candidate lists in the request, a
-pass over embeddings, or both — is left to the plan.
+A match is shown **beside** the proposal it matched, never instead of it:
+
+- **Label.** The existing item is labelled **"already there"** (German UI:
+  "vorhanden"), not "reviewed". The library is not a reviewed one yet, and the
+  label must not claim it is.
+- **Choices on a matched pair.** Each of the two rows takes its own choice. The
+  existing item inherits the proposal's preset, and the proposal itself gets
+  none. By default the learner takes what the library holds; their own wording
+  stays one tap away for a near miss.
+- **Yes on the existing item** gives the learner a card for it. A cell item
+  whose token does not exist yet is installed first.
+- **Yes on the proposal** keeps the learner's wording as a new token.
+- **Card already held.** If the learner already has a card for the existing
+  item, the row says so and takes no choice.
+- **Continuation items.** Items that continue the material join the list,
+  preset to Bonus. In the example that is the cell's atom on measurable
+  properties. There are at most a few, and only from the same subject.
+
+The principle is ADR 2026-07-25 Decision 5: prefer what a library already
+holds over generating it again. ADR 2026-08-14 Decision 10 is a different
+mechanism, position precedence through `findBundledCellsForScope`, and the
+worked example shows why it is not the mechanism here. Similarity only
+proposes a match; the learner's choice decides it, and no review history moves
+between items (ADR 2026-08-14 Decision 9). The plan decides how the match is
+computed: candidate lists, a pass over embeddings, or both.
 
 ### 9. Provenance is a reference, not a copy
 
 Nothing of the material is stored: no image, no PDF, no transcript. What
 remains is where it came from.
 
-- Every token from an import carries a `source_link` naming the original:
-  `file:///…/Chemie-Stoffe.pdf#page=2` where the device has a path, and a
-  readable placeholder where it has none — `photo:IMG_1234.HEIC` for a photo
-  from the library, a timestamped placeholder for a photo taken in the app. The
-  link may stop resolving; it still says what the card came from.
-- The import writes one row to the existing `sources` table with `content`
-  left empty, plus two new columns: a **display title** from the analysis
-  ("Stofferkennung mit den Sinnen") and a **SHA-256 fingerprint** of the file.
-  The title names the source in the Studio and names the library topic instead
-  of "IMG 1234". The fingerprint recognises a file imported before.
-  `token_sources.page_number` records the page.
+- **Each card names its own file.** Every token's `source_link` names the file
+  that card came from:
+  - `file:///…/Chemie-Stoffe.pdf#page=2` where the device has a path;
+  - otherwise a placeholder naming the file and the import date, such as
+    `photo:IMG_1234.HEIC@2026-10-05`. It is never a bare camera filename,
+    because cameras reuse them.
 
-On the harness path the agent passes the file's name or path and, where it can
-read the bytes, the fingerprint; without one, re-import detection falls back to
-the link.
+  The link may stop resolving; it still says what the card came from.
+- **One `sources` row per import**, keyed by an import id
+  (`zam-import:<ULID>`), never by a file name, because `sources.uri` is
+  unique.
+  - `type` reuses `file` for files and `scan` for photos, and `content` stays
+    empty.
+  - New columns: a **display title** from the analysis ("Stofferkennung mit
+    den Sinnen"), the **SHA-256 of each file** (a set, since an import can hold
+    several photos), and the **importing learner**.
+  - `token_sources` links each token to its import and records the page.
+- **What the title names.** The title names the import in the Studio and on a
+  card's source line. Library topics keep their own rules (ADR 2026-10-02
+  Decision 1: the link without its fragment is the key, and the last path
+  segment is the name). A single-file import therefore forms one topic named
+  after its file. This ADR does not change topic naming.
+- **Re-import.** A file whose fingerprint matches an earlier import is pointed
+  out ("imported on 5 Oct"), not blocked.
+- **Harness path.** The agent passes the file's name or path and, where it can
+  read the bytes, the fingerprint. Without a fingerprint, re-import detection
+  falls back to the link.
 
-Both columns go into `schema.ts` and an M-series migration.
+**Schema.** The new columns go into `schema.ts` and an M-series migration,
+together with the domain rewrite (Decision 7). `CURRENT_SCHEMA_VERSION` (36 at
+the time of writing) is incremented; otherwise an existing library would skip
+the chain.
 
 ### 10. Delivery: shared contract first, then the paths
 
@@ -313,12 +465,18 @@ on a laptop, so the desktop comes before Mobile. Mobile (Android, iPadOS) then
 gets the built-in path with camera, photo library and files, replacing the
 current single-photo import.
 
-Both apps already share the kernel (the standalone apps open it directly, ADR
-2026-08-08). The kernel owns what is learning logic: presets, matching and the
-transactional write. Request construction and the response schema live in one
-module both apps and the MCP tool import, with no HTTP in it; the model call
-itself is injected, as `ReferenceFetcher` is. Its exact place is left to the
-plan, within the rule that no HTTP or LLM client code enters the kernel.
+**Where the code lives.** Both apps already import the kernel (the standalone
+apps open it directly, ADR 2026-08-08).
+
+- **In the kernel:** the response schema and its validation, the presets,
+  matching and the transactional write.
+- **Outside the kernel:** the provider wire format (image parts, file parts,
+  rendered pages, a PDF's text layer) and the model call. They sit next to the
+  existing vision clients: `mobile/src/vl-import.ts` and `src/cli/llm/`.
+- **On the harness path,** the MCP tool validates the agent's submission
+  against the kernel schema.
+
+No HTTP or LLM client code enters the kernel.
 
 "Share to ZAM" from other apps (the share sheet) comes later.
 
@@ -340,29 +498,32 @@ the learner's harness sends it; ZAM adds nothing to that.
   increasingly have and on ZAM's existing MCP connection.
 - Areas converge instead of sprawling: cells and imports share one area per
   subject.
-- What the library holds is reused; a generated duplicate of library content
-  becomes the exception.
+- What the library holds is reused, without taking the learner's own wording
+  away.
 - No storage or sync cost for originals. The material leaves the device only
   in the request to a model the learner chose.
 
 ### Negative and trade-offs
 
-- Two paths to keep consistent. One shared contract after the model carries
-  that; the paths differ only in how the proposals come about.
-- The harness path depends on third-party apps: their accounts, age limits,
-  plans and uneven support for MCP Apps panels. The Studio fallback for the
-  review list covers the last point; the built-in path covers the rest.
-- The built-in path needs an image-capable model; without one, only the
-  harness path and text paste remain.
-- There is no original to go back to. Once the file is gone, the card is all
-  there is, so question and answer must stand on their own.
-- Over-delivery puts a selection step on every import; for a ten-page handout
-  the list is long. Presets carry most of that load.
-- Presetting `completed` to Yes trusts the model's corrections of the
-  learner's notes, and a wrong correction looks authoritative. The origin must
-  stay visible on those rows.
-- A migration rewrites the domain of installed cell tokens.
-- Cost per built-in import grows with the page count; images are token-heavy.
+- **Two paths to keep consistent.** One shared contract after the model
+  carries that; the paths differ only in how the proposals come about.
+- **Dependence on third-party apps.** The harness path depends on their
+  accounts, age limits and plans, and on their uneven support for MCP Apps
+  panels. The Studio fallback for the review list covers the last point; the
+  built-in path covers the rest.
+- **An image-capable model is needed** on the built-in path. Without one, only
+  the harness path and text paste remain.
+- **PDF support on the built-in path** needs a new dependency (pdf.js) unless
+  every connected model declares file input.
+- **No original to go back to.** Once the file is gone, the card is all there
+  is, so question and answer must stand on their own.
+- **Over-delivery puts a selection step on every import.** For a ten-page
+  handout the list is long. Presets carry most of that load. The `completed`
+  rows stay open on purpose.
+- **A migration rewrites stored area paths**, and their embeddings are renewed
+  lazily afterwards.
+- **Cost grows with the page count** on the built-in path; images are
+  token-heavy.
 
 ## Falsification
 
@@ -375,7 +536,7 @@ The field test shows this design wrong if:
   harness path;
 - "already there" matches are wrong often enough that learners stop trusting
   them — the match must get stricter, or the label must change;
-- re-importing the same file produces duplicates despite the fingerprint —
+- re-importing the same file goes unnoticed despite the fingerprint —
   provenance identity is wrong.
 
 ## Out of scope
@@ -387,13 +548,15 @@ The field test shows this design wrong if:
 - Correcting the analysis and regenerating from it on the built-in path.
 - Prerequisite edges between imported cards beyond the continuation hint
   (Studio Phase 4 covers foundations).
+- Changing how library topics are named.
 - Cleaning up other non-conforming area paths.
 
 ## Alternatives considered
 
 - **Transcribe first, then generate** — Studio Phase 5 as planned and today's
   Scan path. Rejected: the transcript loses layout, and the worked example
-  shows what that costs.
+  shows what that costs. A PDF's own text layer may accompany the page images
+  (Decision 1), but it never replaces them.
 - **Built-in path only.** Rejected: one request cannot ask back, and poor
   notes are exactly where asking back pays.
 - **Harness path only.** Rejected: there is no harness on a phone or school
@@ -402,6 +565,19 @@ The field test shows this design wrong if:
 - **Choosing Yes, No or Bonus in the harness chat.** Rejected: twenty cards
   are a list, not a conversation, and one review list keeps both paths
   identical where the learner decides.
+- **Preset `completed` to Yes** (first version). Rejected: it puts the model's
+  corrections into the queue on a default, and the page they correct is gone
+  afterwards.
+- **Replace a proposal with its library match** (first version). Rejected: a
+  near miss would erase the wording from the learner's page, with no way to
+  keep it.
+- **Library topics name themselves from the import's title** (proposed in
+  review). Rejected: topics are keyed by a file's link, and the import row by
+  its import id, so the two do not join. Curated topic names are ADR
+  2026-10-02's phase 3.
+- **Bonus as a set-aside card** (a card with `detached_at`). Rejected: detached
+  means "not for me" and is skipped by topic starts, while bonus means "maybe
+  later". The owner chose no card.
 - **Keep the original image or PDF with the cards.** Rejected: storage and
   sync cost in a database that may be shared or synced; learners do not keep
   repositories; class material stays private.
