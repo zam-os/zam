@@ -38,7 +38,8 @@ reference and file fingerprints. Nothing of the material itself is stored.
   picker — `efc056ef`
 - [x] **Phase 7** — Bonus view and the offer after the due queue — `ca5b0a59`
 - [x] **Phase 8** — Mobile — `615f39a9`
-- [ ] **Phase 9** — the review list as an MCP Apps panel (optional)
+- [ ] **Phase 9** — the review list as an MCP Apps panel (optional) — left
+  out by owner decision (2026-10-05): opencode renders no panels
 - [ ] **Phase 10** — documentation and handover
 
 **Order.**
@@ -858,6 +859,24 @@ test.
    its row in `docs/adr/README.md`.
 4. **This plan.** Mark each phase with its commit hash. Delete the plan before
    the release that ships the feature, unless open tasks remain.
+
+**As built.**
+
+- **OKF.** New article `material-import.md`; `mcp-surfaces.md`,
+  `bridge-protocol.md`, `local-card-file-import.md`,
+  `mobile-standalone-libraries.md` and `token-card-model.md` updated, all
+  through `zam_okf_upsert`. The bridge article also names the Desktop's
+  background bridge process, and its outdated Mobile photo-import paragraph is
+  replaced.
+- **Conventions.** The line sits under Key conventions in `CLAUDE.md` and
+  under Hard rules in `AGENTS.md` (which has no Key conventions section), with
+  one more sentence: a Bonus token is published but has no card.
+- **ADR status.** `Partially implemented`, with a delivery note: Phase 9 and
+  the per-import bonus line (D6) are open, the library-wide vector match is
+  recorded, and the manual pass is still to do.
+- **This plan stays** until the release: the manual pass and Phase 9 remain
+  open. For the release notes: the Pitfalls below (team libraries need the
+  owner's client to run M037 and M038 first; `zam token reembed` after M038).
 
 ## Deliberately not in this plan
 

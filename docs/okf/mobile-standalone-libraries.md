@@ -10,7 +10,7 @@ tags:
   - offline
   - curriculum
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mobile-standalone-libraries.md"
-timestamp: 2026-09-09T08:00:00.000Z
+timestamp: 2026-10-05T21:20:00.000Z
 ---
 
 ZAM Mobile is a standalone learning app on Android and iOS. An unpaired first
@@ -67,6 +67,35 @@ Every draft carries the official `source_link`, provider, and stable topic id,
 and must pass through the editable multi-draft confirmation UI before it
 becomes a token and personal card. HTTP and model selection stay outside the
 kernel.
+
+# Photos and PDFs as learning cards
+
+The Library's add view takes several photos — camera or photo library — or one
+PDF of the learner's notes or a handout, and runs the same
+[material import](material-import.md) as the desktop's built-in path, entirely
+on the device:
+
+- **Reading.** Photos are scaled to a 1568 px long edge on a WebView canvas;
+  HEIC goes through the WebView's own decoding where it has one, and
+  otherwise the learner is asked to export JPEG. Photos go to the model
+  registry's `image` rows, then to the older `llm.vision.*` endpoint on the
+  library; a PDF goes only to a row whose `file` capability the desktop's
+  probe detected. The request is the shared one from
+  `src/cli/llm/material-prompt.ts`, sent through the native `vision_request`
+  command (HTTPS only, at most 8 MB per body): photos travel in batches under
+  that limit and the replies are merged.
+- **Review.** The kernel matches the proposals against the library on the
+  device — by meaning too when an embedding model is connected — and the
+  learner decides each card as Yes, No or Bonus in the same review list the
+  Studio shows, with its rules from `material-review-state.ts`. There is no
+  staging file: nothing crosses a process boundary.
+- **Commit.** One transaction writes the choices. Files have no path on the
+  phone, so a card links its file as `photo:<name>@<date>`, and the file's
+  SHA-256 (computed with the WebView's `crypto.subtle`) lets a later review
+  say the file was imported before.
+
+Bonus items kept from the learner's imports are offered after a session and on
+the dashboard, before the atom bonus, and taking them creates their cards.
 
 # Bundled learning paths and field-test review
 
@@ -128,6 +157,9 @@ continues to work without AI.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - Tests: `tests/mobile/curriculum.test.ts`, `tests/mobile/curriculum-wiring.test.ts`, `tests/mobile/review-session.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/precondition-assessment.test.ts`
 - Code: `mobile/index.html`, `mobile/src/main.ts`, `mobile/src/curriculum.ts`, `mobile/src/import.ts`, `mobile/src-tauri/src/curriculum.rs`, `mobile/src-tauri/src/vision.rs`, `src/cli/curriculum/registry.ts`, `src/cli/curriculum/content-readiness.ts`, `src/kernel/library/bundled-cells.ts`
+- [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
+- Tests: `tests/mobile/material-import.test.ts`, `tests/mobile/material-import-wiring.test.ts`, `tests/mobile/vl-import.test.ts`
+- Code: `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `mobile/src/image-import.ts`, `mobile/src/study-offers.ts`
 
 - [ADR 2026-08-08 — ZAM on iPadOS Is a Standalone App, Not a Companion](../adr/2026-08-08-ios-standalone-app.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)

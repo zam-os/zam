@@ -1,5 +1,14 @@
 # Log
 
+## 2026-10-05
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Local Card File Import](local-card-file-import.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [Token and Card Model](token-card-model.md)
+- **Creation** — [Learning Cards from Photos and Files](material-import.md)
+
 ## 2026-10-04
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

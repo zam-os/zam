@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-04T23:30:00.000Z
+timestamp: 2026-10-05T21:35:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -135,6 +135,12 @@ The model-visible learning tools cover:
 - draft review: `zam_add_token` stores a draft that stays out of every queue,
   due list, admission and rating until `zam_publish_revision`;
   `zam_list_drafts` lists unpublished captures;
+- material import: `zam_material_import_context` hands an agent the rules for
+  turning a learner's photo or PDF into card proposals, the contract with an
+  example, the learner's areas and the subject codes; `zam_material_import`
+  validates the agent's proposals, stages them and brings the Studio forward,
+  where the learner decides each card. It writes no token or card itself (see
+  [material-import.md](material-import.md));
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each
@@ -429,6 +435,27 @@ transaction:
 
 The same operation is available through `zam bridge okf-import`.
 
+# From a learner's notes to learning
+
+An agent connected through MCP is the stronger of the two ways a learner's
+class notes or handouts become cards (ADR 2026-10-05): it reads the photo or
+PDF itself and can ask back about what it cannot read before it proposes. The
+server instructions and the `zam` skill tell it to fetch
+`zam_material_import_context` first and to submit through
+`zam_material_import` — never through `zam_add_token`, which would skip the
+learner's decision. The submission names each file the agent read; with a
+readable path ZAM fingerprints the file and links the cards to it, otherwise
+it records `photo:<name>@<date>`. The batch is labelled with the host's own
+name from the MCP client info, for example opencode.
+
+`zam_material_import` brings the Studio forward through the same launcher as
+`zam ui` (the installed app first, else a developer build). The launcher
+prints nothing, because the server speaks JSON-RPC on stdout, and a failed
+start never takes the server down: the batch waits in
+`~/.zam/pending-imports/` for up to seven days, and the Studio's banner offers
+it. The review list is not an MCP Apps panel; hosts such as opencode render
+none.
+
 # Learning Graph
 
 `zam_show_graph` opens **ZAM Learning Graph**, never the OKF/ADR graph.
@@ -481,6 +508,10 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/mcp.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/bridge-handlers.test.ts`, `tests/desktop/study-offers.test.ts`, `tests/desktop/learning-mode-wiring.test.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/kernel/scheduler/study-settings.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/settings.ts`, `desktop/src/learning-content.ts`
+
+- [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
+- Tests: `tests/cli/mcp-material-import.test.ts`, `tests/cli/desktop-launch.test.ts`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/desktop-launch.ts`, `skills/zam/SKILL.md`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-07-11 — Codex and VS Code Companion Surfaces](../adr/2026-07-11-codex-and-vscode-companion-surfaces.md)

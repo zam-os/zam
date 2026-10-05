@@ -8,7 +8,7 @@ tags:
   - offline
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/local-card-file-import.md"
-timestamp: 2026-09-06T19:42:57.000Z
+timestamp: 2026-10-05T21:25:00.000Z
 ---
 
 ZAM's model-free file path starts in the Learning Content Studio: choose a
@@ -82,6 +82,14 @@ network-assisted discovery surface in front of this same parser. It verifies a
 catalog-owned artifact before parsing and overlays reviewed provenance; choosing
 a learner-owned local file remains completely network-free.
 
+Photos and PDFs of notes or handouts take a different path, the
+[material import](material-import.md): there is no card in such a file yet, so
+a model reads the page and proposes cards, and the learner decides each one as
+Yes, No or Bonus before anything is written. A card file already holds its
+cards, so this path needs neither a model nor that per-card decision, and it
+keeps the card file's own identity in `imported_card_bindings`; a material
+import keeps only a source link and the file's fingerprint.
+
 The bridge exposes the operation as
 `personal-card-import-file-preview --path <file>` followed by
 `personal-card-import-file-confirm --path <file> --plan-hash <hash>`.
@@ -95,6 +103,7 @@ safe re-import identity and rich reviews.
 # Citations
 
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
+- [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [Anki Manual — Editing](https://docs.ankiweb.net/editing.html)
 - [Anki source — APKG importer](https://github.com/ankitects/anki/blob/main/pylib/anki/importing/apkg.py)
 - Code: `src/cli/import/text-file.ts`, `src/cli/import/delimited.ts`, `src/cli/import/apkg.ts`, `src/cli/import/safe-zip.ts`, `src/cli/import/text-sanitizer.ts`, `src/kernel/import/text-import.ts`, `src/kernel/models/media.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `src/cli/bridge-handlers.ts`, `src/cli/commands/bridge.ts`, `desktop/src/learning-content.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`

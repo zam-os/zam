@@ -80,6 +80,11 @@ open a terminal.
   `recall`, `options` for a tapped fast check followed by a self-rating, or
   `choice` for a rating derived from the chosen option. The kernel's tap
   ceiling depends on it.
+- **Material import** (photos, PDFs, ADR 2026-10-05): the model reads the
+  file itself; the learner decides each card in one review list (Yes / No /
+  Bonus); nothing of the material is stored — only a source link and file
+  fingerprints. PDFs go only to models that declare `file` input. A Bonus
+  token is published but has no card until the learner takes it.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the
