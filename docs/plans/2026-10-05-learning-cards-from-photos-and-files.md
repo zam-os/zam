@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1 and 3 done (2026-10-05).\
+**Status:** Phases 1, 3 and 4 done (2026-10-05).\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -32,7 +32,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
   write, bonus queries — `b2aa6d29`
 - [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
 - [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
-- [ ] **Phase 4** — Studio review list
+- [x] **Phase 4** — Studio review list — `09a35032`
 - [ ] **Phase 5** — harness path: MCP tools, skill, Studio handoff
 - [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
   picker
@@ -456,6 +456,17 @@ photos write `scan`.
    - the counts;
    - the banner;
    - the notices.
+
+**As built.**
+
+- **Where the code lives.** The view is a self-built dialog in
+  `desktop/src/material-review.ts`, like the library topics. It is shared with
+  the MCP Apps panel; `learning-content.ts` only calls `initMaterialImports`.
+- **Files without a preview.** PDFs, HEIC photos and images over 5 MB show name
+  and path, with no "Open" button: opening a local path needs the opener
+  plugin's `open-path` permission, a security setting left to the owner.
+- **The panel.** The `material-import-*` commands are not yet on
+  `zam_studio_bridge`'s allowlist, so the panel stays silent until Phase 9.
 
 ### Tests
 
