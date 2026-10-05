@@ -3,6 +3,9 @@ import {
   bonusBecause,
   bonusCandidatesCommand,
   bonusEnrolCommand,
+  importBonusCommand,
+  importBonusOffer,
+  importBonusTakeCommand,
   keepGoingCardIds,
   matchUnassessedPrecondition,
   preconditionAssessCommand,
@@ -76,6 +79,36 @@ describe("study-offers", () => {
     expect(bonusEnrolCommand("atom-x")).toEqual({
       cmd: "bonus-atom-enrol",
       args: ["atom-x"],
+    });
+  });
+
+  it("offers kept import items from the newest import, named by it", () => {
+    const item = (tokenId: string, sourceId: string) => ({
+      tokenId,
+      title: `Karte ${tokenId}`,
+      sourceId,
+      sourceTitle: sourceId === "s-new" ? "Stofferkennung" : "Dichte",
+    });
+    expect(importBonusOffer([])).toBeNull();
+    expect(
+      importBonusOffer([
+        item("t1", "s-new"),
+        item("t2", "s-old"),
+        item("t3", "s-new"),
+        item("t4", "s-new"),
+      ]),
+    ).toEqual({
+      sourceTitle: "Stofferkennung",
+      tokenIds: ["t1", "t3"],
+      titles: ["Karte t1", "Karte t3"],
+    });
+    expect(importBonusCommand()).toEqual({
+      cmd: "material-import-bonus-list",
+      args: ["--limit", "2"],
+    });
+    expect(importBonusTakeCommand("t1")).toEqual({
+      cmd: "material-import-bonus-take",
+      args: ["--token", "t1"],
     });
   });
 });

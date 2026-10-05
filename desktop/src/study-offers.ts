@@ -1,6 +1,6 @@
 /**
  * Pure helpers for the field-test study prompts: precondition self-assessment,
- * empty-queue keep-going, and the bonus offer. No DOM, no Tauri — same
+ * empty-queue keep-going, and the bonus offers. No DOM, no Tauri — same
  * contract style as study-card-actions.ts.
  */
 
@@ -77,4 +77,52 @@ export function bonusCandidatesCommand(limit = 1): BridgeCall {
 
 export function bonusEnrolCommand(atomId: string): BridgeCall {
   return { cmd: "bonus-atom-enrol", args: [atomId] };
+}
+
+/**
+ * Bonus items the learner kept from their own imports (ADR 2026-10-05
+ * Decision 6): offered once the due queue is done, before the atom bonus.
+ */
+export interface ImportBonusItem {
+  tokenId: string;
+  title: string;
+  sourceId: string;
+  sourceTitle: string | null;
+}
+
+export interface ImportBonusOffer {
+  sourceTitle: string | null;
+  tokenIds: string[];
+  titles: string[];
+}
+
+export function importBonusCommand(limit = 2): BridgeCall {
+  return {
+    cmd: "material-import-bonus-list",
+    args: ["--limit", String(limit)],
+  };
+}
+
+export function importBonusTakeCommand(tokenId: string): BridgeCall {
+  return { cmd: "material-import-bonus-take", args: ["--token", tokenId] };
+}
+
+/**
+ * A few items from the newest import that still holds any, so the offer can
+ * name what they belong to. Items from older imports wait for the next one.
+ */
+export function importBonusOffer(
+  items: ImportBonusItem[],
+  limit = 2,
+): ImportBonusOffer | null {
+  const first = items[0];
+  if (!first) return null;
+  const fromImport = items
+    .filter((item) => item.sourceId === first.sourceId)
+    .slice(0, limit);
+  return {
+    sourceTitle: first.sourceTitle,
+    tokenIds: fromImport.map((item) => item.tokenId),
+    titles: fromImport.map((item) => item.title),
+  };
 }

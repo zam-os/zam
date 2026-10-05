@@ -325,9 +325,8 @@ describe("material review wiring", () => {
   );
 
   it("is started by the Learning Content Studio in both hosts", () => {
-    expect(studio).toContain(
-      "initMaterialImports({ onConfirmed: () => loadStudioData() })",
-    );
+    expect(studio).toContain("initMaterialImports({");
+    expect(studio).toContain("await loadStudioData();");
   });
 
   it("uses the dedicated bridge commands", () => {

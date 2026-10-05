@@ -125,10 +125,14 @@ import {
 } from "./study-card-actions.js";
 import {
   type BonusOffer,
+  type ImportBonusItem,
   type PreconditionOffer,
   bonusBecause,
   bonusCandidatesCommand,
   bonusEnrolCommand,
+  importBonusCommand,
+  importBonusOffer,
+  importBonusTakeCommand,
   keepGoingCardIds,
   matchUnassessedPrecondition,
   preconditionAssessCommand,
@@ -8690,6 +8694,7 @@ async function offerBonusOrFinish(requestId: number): Promise<void> {
     void finishStudySession();
     return;
   }
+  if (await offerImportBonus(requestId)) return;
   try {
     const listed = await runBridge<{ candidates?: BonusOffer[] }>(
       ...bridgeCall(bonusCandidatesCommand()),
@@ -8728,6 +8733,71 @@ async function offerBonusOrFinish(requestId: number): Promise<void> {
     console.warn("Failed to load bonus candidates:", err);
     void finishStudySession();
   }
+}
+
+/**
+ * Bonus items the learner kept from their own imports come first (ADR
+ * 2026-10-05 Decision 6). True when the offer is shown or the request went
+ * stale; false lets the atom bonus have its turn.
+ */
+async function offerImportBonus(requestId: number): Promise<boolean> {
+  let items: ImportBonusItem[];
+  try {
+    const listed = await runBridge<{ items?: ImportBonusItem[] }>(
+      ...bridgeCall(importBonusCommand()),
+    );
+    if (requestId !== questionRequestId) return true;
+    items = listed.items ?? [];
+  } catch (err) {
+    console.warn("Failed to load import bonus items:", err);
+    return false;
+  }
+  const offer = importBonusOffer(items);
+  if (!offer) return false;
+  const source = offer.sourceTitle ?? t("material_bonus_untitled");
+  showStudyOffer({
+    title: t("lbl_import_bonus_title"),
+    body:
+      offer.titles.length === 1
+        ? tf("lbl_import_bonus_body_one", { item: offer.titles[0], source })
+        : tf("lbl_import_bonus_body_many", {
+            count: offer.titles.length,
+            items: offer.titles.join(", "),
+            source,
+          }),
+    actions: [
+      {
+        label: t("btn_bonus_skip"),
+        onClick: () => {
+          bonusIgnoredThisSession = true;
+          void finishStudySession();
+        },
+      },
+      {
+        label: t("btn_bonus_accept"),
+        primary: true,
+        onClick: () => {
+          void acceptImportBonus(offer.tokenIds);
+        },
+      },
+    ],
+  });
+  return true;
+}
+
+async function acceptImportBonus(tokenIds: string[]): Promise<void> {
+  try {
+    for (const tokenId of tokenIds) {
+      await runBridge(...bridgeCall(importBonusTakeCommand(tokenId)));
+    }
+  } catch (err) {
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  bonusIgnoredThisSession = true;
+  void finishStudySession();
 }
 
 async function acceptBonus(atomId: string): Promise<void> {
