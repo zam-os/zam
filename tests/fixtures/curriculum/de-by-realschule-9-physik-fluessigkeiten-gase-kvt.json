@@ -20,7 +20,7 @@
       "namespace": "physik-mechanik",
       "slug": "druckbegriff-kolbendruck-hydraulik",
       "title": "Druckbegriff, Kolbendruck und hydraulische Hebebühne",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "physik-mechanik",
       "slug": "schweredruck-hydrostatisches-paradoxon",
       "title": "Schweredruck und hydrostatisches Paradoxon",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "physik-mechanik",
       "slug": "auftriebskraft-archimedisches-prinzip",
       "title": "Auftriebskraft und Archimedisches Prinzip",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "physik-mechanik",
       "slug": "schwimmen-schweben-sinken-dichte",
       "title": "Schwimmen, Schweben und Sinken: Dichtebedingungen",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

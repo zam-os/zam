@@ -20,7 +20,7 @@
       "namespace": "biologie-zoologie",
       "slug": "wirbeltierklassen-fuenf-stamm-merkmale",
       "title": "Die fünf Wirbeltierklassen im Vergleich: Hautbedeckung, Atmung, Fortpflanzung und Herz",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-zoologie",
       "slug": "angepasstheiten-lebensraum-vogel-fisch",
       "title": "Morphologische Angepasstheiten an den Lebensraum: Vogelflug und Schwimmfähigkeit der Fische",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-oekologie",
       "slug": "oekosystem-biotop-biozoenose-umweltfaktoren",
       "title": "Das Ökosystem: Biotop, Biozönose, abiotische und biotische Umweltfaktoren",
-      "domain": "schule/biologie/oekologie",
+      "domain": "biologie/oekologie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-oekologie",
       "slug": "nahrungskette-trophiestufen-stoffkreislauf-energiefluss",
       "title": "Nahrungsbeziehungen: Produzenten, Konsumenten, Destruenten und Energiepyramide",
-      "domain": "schule/biologie/oekologie",
+      "domain": "biologie/oekologie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

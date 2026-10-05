@@ -20,7 +20,7 @@
       "namespace": "bwr-erfolgsvorgaenge",
       "slug": "erfolgskonten-aufwand-ertrag-guv-abschluss-eigenkapital",
       "title": "Erfolgskonten und GuV: Aufwendungen (Soll) vs. Erträge (Haben), GuV-Konto und Eigenkapitalveränderung",
-      "domain": "schule/bwr/erfolg",
+      "domain": "bwr/erfolg",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "bwr-beschaffung",
       "slug": "werkstoffeinkauf-bezugskosten-liefererrabatt-skonto",
       "title": "Werkstoffbeschaffung: Rohstoffe (AWR), Bezugskosten (BZKR), Liefererrabatt und Liefererskonto",
-      "domain": "schule/bwr/beschaffung",
+      "domain": "bwr/beschaffung",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

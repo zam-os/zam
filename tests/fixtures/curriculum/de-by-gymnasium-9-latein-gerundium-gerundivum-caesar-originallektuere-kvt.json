@@ -20,7 +20,7 @@
       "namespace": "gymnasium-latein-grammatik",
       "slug": "nd-formen-gerundium-gerundivum-dativus-auctoris",
       "title": "Lateinische Grammatik: Gerundium, Gerundivum und das Gerundivum mit 'esse' (Notwendigkeit)",
-      "domain": "schule/latein/grammatik",
+      "domain": "latein/grammatik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-latein-originallektuere",
       "slug": "originallektuere-caesar-de-bello-gallico-stilmittel",
       "title": "Originallektüre Caesar (De Bello Gallico): Erzählstrategie, Selbstdarstellung und Stilistik",
-      "domain": "schule/latein/lektuere",
+      "domain": "latein/lektuere",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "bwr-klr",
       "slug": "zuschlagskalkulation-vollkostenrechnung-selbstkosten-kalkulationsschema",
       "title": "Die Vollkostenrechnung: Zuschlagskalkulation (FM, MGK, FL, FGK, VwGK, VtGK) bis zum Bruttoverkaufspreis",
-      "domain": "schule/bwr/klr",
+      "domain": "bwr/klr",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "bwr-klr",
       "slug": "deckungsbeitragsrechnung-break-even-point-gewinnschwelle",
       "title": "Teilkostenrechnung: Deckungsbeitrag (db / DB), Break-Even-Point (Gewinnschwelle) und Zusatzaufträge",
-      "domain": "schule/bwr/klr",
+      "domain": "bwr/klr",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

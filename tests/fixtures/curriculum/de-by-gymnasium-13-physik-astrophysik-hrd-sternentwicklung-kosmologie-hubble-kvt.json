@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-astrophysik-hrd",
       "slug": "strahlungsgesetze-hertzsprung-russell-diagramm-sternentwicklung",
       "title": "Astrophysik: Strahlungsgesetze (Wien, Stefan-Boltzmann), HRD und Sternentwicklung",
-      "domain": "schule/physik/astrophysik",
+      "domain": "physik/astrophysik",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-kosmologie",
       "slug": "kosmologische-rotverschiebung-hubble-lemaitre-urknall",
       "title": "Kosmologie: Hubble-Lemaître-Gesetz, Kosmologische Rotverschiebung und Urknallmodell",
-      "domain": "schule/physik/kosmologie",
+      "domain": "physik/kosmologie",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [

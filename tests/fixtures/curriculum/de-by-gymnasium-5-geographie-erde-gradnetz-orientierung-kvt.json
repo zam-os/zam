@@ -20,7 +20,7 @@
       "namespace": "geographie-kartographie",
       "slug": "gradnetz-der-erde-breitenkreise-meridiane-koordinaten",
       "title": "Das Gradnetz der Erde: Äquator, Nullmeridian, Breitenkreise und geographische Koordinaten",
-      "domain": "schule/geographie/kartographie",
+      "domain": "geographie/kartographie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "geographie-kartographie",
       "slug": "topographische-karten-massstab-hoehenlinien-gelaende",
       "title": "Topographische Karten: Maßstabsumrechnung, Höhenlinien, Geländeprofile und Signaturen",
-      "domain": "schule/geographie/kartographie",
+      "domain": "geographie/kartographie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "geographie-astronomie",
       "slug": "erdrevolution-achsenneigung-beleuchtungszonen-jahreszeiten",
       "title": "Erdbewegungen und Beleuchtungszonen: 23,5° Achsenneigung, Jahreszeiten und Tropen/Polargebiete",
-      "domain": "schule/geographie/astronomie",
+      "domain": "geographie/astronomie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "geographie-bayern",
       "slug": "natur-und-wirtschaftsraeume-bayerns-relief-landwirtschaft",
       "title": "Räume Bayerns: Reliefstufen, Regierungsbezirke, Hauptflusssysteme und Landnutzung",
-      "domain": "schule/geographie/bayern",
+      "domain": "geographie/bayern",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "ganze-zahlen-zahlengerade-betrag-anordnung",
       "title": "Die Menge der Ganzen Zahlen Z: Vorzeichen, Betrag und Anordnung auf der Zahlengeraden",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "rechnen-in-ganzen-zahlen-rechengesetze",
       "title": "Rechnen in Z: Vorzeichenregeln, Grundrechenarten und Rechengesetze (Kommutativ, Assoziativ, Distributiv)",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "potenzen-zehnerpotenzen-potenzgesetze-grundlagen",
       "title": "Potenzen und Zehnerpotenzen: Basis, Exponent, Zehnerpotenz-Schreibweise und Vorrang",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "mathematik-stochastik",
       "slug": "zaehlprinzip-baumdiagramm-kombinatorik",
       "title": "Kombinatorik und Zählprinzip: Mehrstufige Entscheidungen, Baumdiagramme und Fakultät",
-      "domain": "schule/mathematik/stochastik",
+      "domain": "mathematik/stochastik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

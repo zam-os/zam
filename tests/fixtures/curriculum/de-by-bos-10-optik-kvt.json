@@ -20,7 +20,7 @@
       "namespace": "optik",
       "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -61,7 +61,7 @@
       "namespace": "optik",
       "slug": "totalreflexion-grenzwinkel",
       "title": "Totalreflexion und Grenzwinkel",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [
@@ -108,7 +108,7 @@
       "namespace": "optik",
       "slug": "brechungsgesetz-snellius-formel",
       "title": "Snelliussches Brechungsgesetz (quantitativ)",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "formal_formula",
       "typical_age_min": 14.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "optik",
       "slug": "brechungsindex-bestimmen",
       "title": "Brechungsindex und Grenzwinkel messen",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "formula",
       "typical_age_min": 16.0,
       "prerequisites": [

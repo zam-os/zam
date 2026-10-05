@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-exponential",
       "slug": "exponentialfunktionen-wachstumsmodelle-verdopplung-halbwertszeit",
       "title": "Exponentialfunktionen & Wachstumsmodelle: Diskretes/kontinuierliches Wachstum und Halbwertszeit",
-      "domain": "schule/mathematik/funktionen",
+      "domain": "mathematik/funktionen",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-logarithmus",
       "slug": "logarithmus-rechengesetze-umkehrfunktion-exponentialgleichungen",
       "title": "Der Logarithmus: Rechengesetze, Natürlicher Logarithmus (ln) und Exponentialgleichungen",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

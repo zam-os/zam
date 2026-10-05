@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-raumgeometrie",
       "slug": "raumgeometrie-pyramide-kegel-kugel-cavalieri",
       "title": "Raumgeometrie: Volumen- & Oberflächenberechnung von Pyramide, Kegel und Kugel",
-      "domain": "schule/mathematik/raumgeometrie",
+      "domain": "mathematik/raumgeometrie",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-stochastik",
       "slug": "bedingte-wahrscheinlichkeit-vierfeldertafel-stochastische-unabhaengigkeit",
       "title": "Stochastik: Bedingte Wahrscheinlichkeit P_A(B), Vierfeldertafel und Stochastische Unabhängigkeit",
-      "domain": "schule/mathematik/stochastik",
+      "domain": "mathematik/stochastik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

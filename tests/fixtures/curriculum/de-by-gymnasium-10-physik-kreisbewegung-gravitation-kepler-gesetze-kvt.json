@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-kreisbewegung",
       "slug": "gleichfoermige-kreisbewegung-winkelgeschwindigkeit-zentripetalkraft",
       "title": "Kreisbewegung: Winkelgeschwindigkeit omega, Zentripetalbeschleunigung und Zentripetalkraft F_Z",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-gravitation",
       "slug": "gravitationsgesetz-kepler-gesetze-satellitenbahnen",
       "title": "Gravitation & Himmelsmechanik: Newtonsches Gravitationsgesetz, Keplersche Gesetze und Satelliten",
-      "domain": "schule/physik/astronomie",
+      "domain": "physik/astronomie",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

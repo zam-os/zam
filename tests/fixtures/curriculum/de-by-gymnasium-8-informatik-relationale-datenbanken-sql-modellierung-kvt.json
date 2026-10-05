@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-datenbanken",
       "slug": "relationales-datenmodell-primaerschluessel-fremdschluessel-beziehungen",
       "title": "Das relationale Datenmodell: Entitäten, Attribute, Primär- und Fremdschlüssel sowie 1:n-Beziehungen",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-sql",
       "slug": "sql-abfragesprache-select-where-join-aggregate",
       "title": "SQL-Datenabfragen: SELECT, FROM, WHERE, ORDER BY, Aggregatfunktionen und INNER JOIN",
-      "domain": "schule/informatik/sql",
+      "domain": "informatik/sql",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

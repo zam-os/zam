@@ -20,7 +20,7 @@
       "namespace": "gymnasium-chemie-ph-wert",
       "slug": "saeure-base-protolyse-ionenprodukt-des-wassers-ph-berechnung",
       "title": "Protolyse: Ionenprodukt des Wassers, $pK_s$-Wert und pH-Wert-Berechnungen",
-      "domain": "schule/chemie/analytische-chemie",
+      "domain": "chemie/analytische-chemie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-chemie-titration-puffer",
       "slug": "titrationskurven-aequivalenzpunkt-puffer-henderson-hasselbalch",
       "title": "Titrationskurven, Puffer und die Henderson-Hasselbalch-Gleichung",
-      "domain": "schule/chemie/analytische-chemie",
+      "domain": "chemie/analytische-chemie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

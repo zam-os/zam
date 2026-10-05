@@ -20,7 +20,7 @@
       "namespace": "physik-mechanik",
       "slug": "bewegung-bezugssystem-trajektorie",
       "title": "Bewegungsbegriff: Bezugssystem, Bahnkurve und Relativität der Ruhe",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "physik-mechanik",
       "slug": "geschwindigkeit-formel-einheitenumrechnung",
       "title": "Geschwindigkeit v = s / t und Einheitenumrechnung (m/s in km/h mit Faktor 3,6)",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "physik-mechanik",
       "slug": "gleichfoermige-bewegung-diagramme-s-t-v-t",
       "title": "Gleichförmige geradlinige Bewegung: s-t-Diagramm (Steigung) und v-t-Diagramm (Fläche)",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "physik-mechanik",
       "slug": "durchschnitts-vs-momentangeschwindigkeit-beschleunigung",
       "title": "Durchschnittsgeschwindigkeit vs. Momentangeschwindigkeit und Beschleunigung (qualitativ)",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

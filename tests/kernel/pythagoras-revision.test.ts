@@ -100,7 +100,7 @@ describe("Pythagoras fixture revision (Phase 5)", () => {
         {
           id: P,
           title: "Satz des Pythagoras",
-          domain: "schule/mathematik/geometrie",
+          domain: "mathematik/geometrie",
           practice_items: [
             {
               id: J01,
@@ -162,7 +162,7 @@ describe("Pythagoras fixture revision (Phase 5)", () => {
         {
           id: P,
           title: "Satz des Pythagoras",
-          domain: "schule/mathematik/geometrie",
+          domain: "mathematik/geometrie",
           practice_items: [
             {
               id: J01,
@@ -178,7 +178,7 @@ describe("Pythagoras fixture revision (Phase 5)", () => {
         {
           id: A02,
           title: "Höhensatz",
-          domain: "schule/mathematik/geometrie",
+          domain: "mathematik/geometrie",
           prerequisites: [{ atom_id: P, type: "hard" }],
           practice_items: [
             {

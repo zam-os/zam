@@ -20,7 +20,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "verben-etre-avoir-konjugation-praesens",
       "title": "Die unregelmäßigen Grundverben: Konjugation von 'être' (sein) und 'avoir' (haben) im Présent",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "regelmaessige-verben-er-verneinung-ne-pas-fragen",
       "title": "Regelmäßige Verben auf -er, Verneinung mit 'ne ... pas' und Fragebildung",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "geschichte-weimar",
       "slug": "weimarer-republik-verfassung-krisen",
       "title": "Die Weimarer Republik: Erste deutsche Demokratie, Verfassung und Krisen",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "narrative",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geschichte-ns",
       "slug": "zerschlagung-demokratie-machtergreifung-1933",
       "title": "1933: Ernennung Hitlers, Reichstagsbrand und Zerschlagung des Rechtsstaats",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "narrative",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geschichte-ns",
       "slug": "ns-ideologie-rassenlehre-fuehrerprinzip",
       "title": "NS-Ideologie: Rassenlehre, Antisemitismus, Lebensraum und Führerprinzip",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "narrative",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geschichte-ns",
       "slug": "zweiter-weltkrieg-holocaust-widerstand",
       "title": "Der Zweite Weltkrieg, die Shoah (Holocaust) und Widerstand",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "narrative",
       "typical_age_min": 14.0,
       "prerequisites": [

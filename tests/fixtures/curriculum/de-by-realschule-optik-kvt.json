@@ -30,7 +30,7 @@
       "namespace": "optik",
       "slug": "strahlengang-lot",
       "title": "Lichtstrahl und Einfallslot",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "geometric",
       "typical_age_min": 12.0,
       "prerequisites": [],
@@ -98,7 +98,7 @@
       "namespace": "optik",
       "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -177,7 +177,7 @@
       "namespace": "optik",
       "slug": "totalreflexion-grenzwinkel",
       "title": "Totalreflexion und Grenzwinkel",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [
@@ -250,7 +250,7 @@
       "namespace": "optik",
       "slug": "brechungsgesetz-snellius-formel",
       "title": "Snelliussches Brechungsgesetz (quantitativ)",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "formal_formula",
       "typical_age_min": 14.5,
       "prerequisites": [

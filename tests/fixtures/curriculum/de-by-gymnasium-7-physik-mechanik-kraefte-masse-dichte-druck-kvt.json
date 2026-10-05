@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-mechanik",
       "slug": "kraftbegriff-vektor-hookesches-gesetz-federkonstante",
       "title": "Der Kraftbegriff: Wirkungen, Vektordarstellung und das Hookesche Gesetz (F = D · Δs)",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-mechanik",
       "slug": "masse-gewichtskraft-dichte-druck-fluide",
       "title": "Masse vs. Gewichtskraft (Fg = m · g), Dichte (ρ = m/V) und Druck in Fluiden (p = F/A)",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

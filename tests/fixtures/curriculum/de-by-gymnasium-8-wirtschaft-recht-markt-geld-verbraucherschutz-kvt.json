@@ -20,7 +20,7 @@
       "namespace": "gymnasium-wirtschaft-markt",
       "slug": "wirtschaftskreislauf-markt-preisbildung-gleichgewicht",
       "title": "Der Marktmechanismus: Erweiterter Wirtschaftskreislauf, Angebot, Nachfrage und Gleichgewichtspreis",
-      "domain": "schule/wirtschaft/markt",
+      "domain": "wirtschaft/markt",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-recht-verbraucher",
       "slug": "geld-inflation-geschaeftsfaehigkeit-kaufvertrag-verbraucherschutz",
       "title": "Geld und Recht: Inflation, Geschäftsfähigkeit (§§ 104 ff. BGB), Kaufvertrag und Verbraucherrechte",
-      "domain": "schule/recht/verbraucherschutz",
+      "domain": "recht/verbraucherschutz",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

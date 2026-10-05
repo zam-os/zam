@@ -20,7 +20,7 @@
       "namespace": "gymnasium-wr-arbeitsrecht",
       "slug": "arbeitsrecht-kuendigungsschutz-tarifautonomie-soziale-marktwirtschaft",
       "title": "Arbeitsrecht und Soziale Marktwirtschaft: Arbeitsvertrag, Kündigungsschutz, Tarifpartner und Sozialprinzip",
-      "domain": "schule/wirtschaft-recht/arbeitsrecht",
+      "domain": "wirtschaft-recht/arbeitsrecht",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-wr-konjunktur",
       "slug": "konjunkturzyklus-stabilitaetsgesetz-magisches-viereck-geldpolitik",
       "title": "Konjunktur & Geldpolitik: Konjunkturphasen, Magisches Viereck des Stabilitätsgesetzes und EZB",
-      "domain": "schule/wirtschaft-recht/konjunktur",
+      "domain": "wirtschaft-recht/konjunktur",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

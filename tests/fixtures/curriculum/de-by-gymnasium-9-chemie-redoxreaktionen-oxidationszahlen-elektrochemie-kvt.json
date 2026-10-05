@@ -20,7 +20,7 @@
       "namespace": "gymnasium-chemie-redox",
       "slug": "redoxreaktion-elektronenuebergang-oxidationszahlen-teilgleichungen",
       "title": "Redoxreaktionen: Elektronenübertragung, Oxidationszahlen und Aufstellen von Redoxgleichungen",
-      "domain": "schule/chemie/redox",
+      "domain": "chemie/redox",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-chemie-elektrochemie",
       "slug": "galvanisches-element-daniell-element-spannungsreihe-elektrolyse",
       "title": "Elektrochemie: Spannungsreihe der Metalle, Galvanische Zellen (Daniell-Element) und Elektrolyse",
-      "domain": "schule/chemie/elektrochemie",
+      "domain": "chemie/elektrochemie",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

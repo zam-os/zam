@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geschichte-weimar",
       "slug": "weimarer-republik-verfassung-krisen-praesidialkabinette",
       "title": "Die Weimarer Republik (1918–1933): Verfassungsstruktur, Dauerkrisen und Untergang",
-      "domain": "schule/geschichte/weimarer-republik",
+      "domain": "geschichte/weimarer-republik",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geschichte-ns-shoah",
       "slug": "nationalsozialismus-ideologie-gleichschaltung-shoah",
       "title": "Der Nationalsozialismus (1933–1945): NS-Ideologie, Gleichschaltung und die Shoah",
-      "domain": "schule/geschichte/nationalsozialismus",
+      "domain": "geschichte/nationalsozialismus",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

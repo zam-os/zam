@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geschichte-kalter-krieg",
       "slug": "nachkriegsordnung-kalter-krieg-doppelte-staatsgruendung-mauerbau",
       "title": "Nachkriegszeit & Teilung: Potsdamer Konferenz, Kalter Krieg, BRD/DDR-Gründung 1949 und Mauerbau 1961",
-      "domain": "schule/geschichte/nachkriegszeit",
+      "domain": "geschichte/nachkriegszeit",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geschichte-deutsche-einheit",
       "slug": "ostpolitik-friedliche-revolution-mauerfall-deutsche-einheit",
       "title": "Entspannung & Wiedervereinigung: Neue Ostpolitik (Brandt), Friedliche Revolution 1989 und Deutsche Einheit 1990",
-      "domain": "schule/geschichte/wiedervereinigung",
+      "domain": "geschichte/wiedervereinigung",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

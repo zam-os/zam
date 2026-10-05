@@ -20,7 +20,7 @@
       "namespace": "gymnasium-franzoesisch-grammatik",
       "slug": "passif-gerondif-pronoms-relatifs-composes",
       "title": "Französische Grammatik: Le Passif, Le Gérondif (en + -ant) und Pronoms relatifs composés",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-franzoesisch-francophonie",
       "slug": "la-francophonie-quebec-maghreb-senegal-diversite",
       "title": "La Francophonie: Québec, Maghreb und Westafrika (Kultur, Zweisprachigkeit, Identität)",
-      "domain": "schule/franzoesisch/landeskunde",
+      "domain": "franzoesisch/landeskunde",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

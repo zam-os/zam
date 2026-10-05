@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geographie-globalisierung",
       "slug": "globalisierung-triebkraefte-wertschoepfungsketten-standortfaktoren",
       "title": "Globalisierung: Triebkräfte, globale Wertschöpfungsketten und Standortverlagerung (Offshoring)",
-      "domain": "schule/geographie/wirtschaftsgeographie",
+      "domain": "geographie/wirtschaftsgeographie",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geographie-global-cities",
       "slug": "global-cities-saskia-sassen-fragmentierende-entwicklung-scholz",
       "title": "Global Cities (Saskia Sassen) & Fragmentierende Entwicklung (Fred Scholz)",
-      "domain": "schule/geographie/stadtgeographie",
+      "domain": "geographie/stadtgeographie",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

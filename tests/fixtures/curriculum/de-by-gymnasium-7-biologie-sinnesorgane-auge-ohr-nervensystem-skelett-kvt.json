@@ -20,7 +20,7 @@
       "namespace": "gymnasium-biologie-sinne",
       "slug": "auge-bau-funktion-akkommodation-photorezeptoren",
       "title": "Das menschliche Auge: Bau (Hornhaut, Linse, Netzhaut), Akkommodation und Photorezeptoren (Stäbchen vs. Zapfen)",
-      "domain": "schule/biologie/sinne",
+      "domain": "biologie/sinne",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-biologie-sinne",
       "slug": "ohr-schallleitung-hoerschnecke-nervensystem-reflexe",
       "title": "Das menschliche Ohr (Schallweiterleitung, Cochlea), Nervensystem und der monosynaptische Reflexbogen",
-      "domain": "schule/biologie/sinne",
+      "domain": "biologie/sinne",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

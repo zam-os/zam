@@ -25,7 +25,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "normalparabel-scheitelpunktform",
       "title": "Normalparabel und Scheitelpunktform",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -93,7 +93,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "quadratische-ergaenzung-scheitelpunkt",
       "title": "Quadratische Ergänzung zur Scheitelpunktbestimmung",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -167,7 +167,7 @@
       "namespace": "mathematik-algebra",
       "slug": "quadratische-gleichungen-mitternachtsformel",
       "title": "Quadratische Gleichungen und Mitternachtsformel",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -241,7 +241,7 @@
       "namespace": "mathematik-algebra",
       "slug": "nullstellen-und-linearfaktoren",
       "title": "Nullstellen und Linearfaktorzerlegung",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [

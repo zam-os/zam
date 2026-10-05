@@ -20,7 +20,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "zehnersystem-stellenwerttafel-runden-ordnung",
       "title": "Das Zehnersystem: Stellenwerttafel, Große Zahlen, Anordnung am Zahlenstrahl und Runden",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "rechengesetze-kommutativ-assoziativ-distributivgesetz",
       "title": "Rechengesetze: Kommutativ-, Assoziativ- und Distributivgesetz (Ausklammern & Ausmultiplizieren)",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "potenzen-zehnerpotenzen-quadratzahlen",
       "title": "Potenzen und Quadratzahlen: Basis, Exponent und Rechnen mit Zehnerpotenzen",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-arithmetik",
       "slug": "vorrangregeln-klammern-terme-baumdiagramm",
       "title": "Vorrangregeln: Klammern, Potenz vor Punkt vor Strich (Kla-Po-Pu-Stri) und Termbäume",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

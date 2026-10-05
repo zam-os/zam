@@ -20,7 +20,7 @@
       "namespace": "chemie-atombau",
       "slug": "rutherford-kern-huelle-modell",
       "title": "Rutherford-Streuversuch und Kern-Hülle-Modell",
-      "domain": "schule/chemie/atombau",
+      "domain": "chemie/atombau",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "chemie-atombau",
       "slug": "elementarteilchen-ordnungszahl-masse",
       "title": "Elementarteilchen: Protonen, Neutronen, Elektronen und Isotope",
-      "domain": "schule/chemie/atombau",
+      "domain": "chemie/atombau",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "chemie-atombau",
       "slug": "bohrsches-schalenmodell-elektronenkonfiguration",
       "title": "Bohrsches Schalenmodell und Valenzelektronen",
-      "domain": "schule/chemie/atombau",
+      "domain": "chemie/atombau",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "chemie-atombau",
       "slug": "periodensystem-hauptgruppen-oktettregel",
       "title": "Periodensystem: Hauptgruppen, Perioden und Oktettregel",
-      "domain": "schule/chemie/atombau",
+      "domain": "chemie/atombau",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

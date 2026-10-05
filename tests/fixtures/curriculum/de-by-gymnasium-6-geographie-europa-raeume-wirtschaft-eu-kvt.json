@@ -20,7 +20,7 @@
       "namespace": "geographie-europa",
       "slug": "topographie-europas-meere-gebirge-hauptstaedte",
       "title": "Topographische Gliederung Europas: Meere, Halbinseln, Hochgebirge und europäische Metropolen",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "geographie-europa",
       "slug": "grossraeume-europas-nord-sued-west-osteuropa",
       "title": "Europäische Großräume: Nordeuropa (Fjorde, Eiszeit), Südeuropa (Mittelmeerklima) und Osteuropa",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "geographie-tourismus",
       "slug": "tourismus-mittelmeerraum-chancen-oekologische-probleme",
       "title": "Wirtschaftsraum Mittelmeer: Massentourismus – Wirtschaftsfaktor vs. ökologische Belastung",
-      "domain": "schule/geographie/tourismus",
+      "domain": "geographie/tourismus",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "geographie-europa",
       "slug": "europaeische-union-binnenmarkt-vier-freiheiten-euro",
       "title": "Die Europäische Union: 27 Mitgliedsstaaten, die 4 Grundfreiheiten des Binnenmarkts und der Euro",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

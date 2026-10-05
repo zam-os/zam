@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-rsa",
       "slug": "asymmetrische-kryptographie-rsa-verfahren-einwegfunktion",
       "title": "Asymmetrische Kryptographie: Das RSA-Verfahren und mathematische Einwegfunktionen",
-      "domain": "schule/informatik/kryptographie",
+      "domain": "informatik/kryptographie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-signaturen-hash",
       "slug": "hashfunktionen-sha-digitale-signatur-zertifikate-pki",
       "title": "Digitale Signaturen, Kryptographische Hashfunktionen (SHA) und PKI-Zertifikate",
-      "domain": "schule/informatik/sicherheit",
+      "domain": "informatik/sicherheit",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

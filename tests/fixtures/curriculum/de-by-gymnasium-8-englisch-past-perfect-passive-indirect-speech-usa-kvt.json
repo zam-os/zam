@@ -20,7 +20,7 @@
       "namespace": "gymnasium-englisch-grammar",
       "slug": "past-perfect-passive-voice-indirect-speech-backshift",
       "title": "Englische Grammatik 8: Past Perfect, Passive Voice und Indirect Speech (Backshift of Tenses)",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-englisch-landeskunde",
       "slug": "usa-history-civil-rights-geography-diversity",
       "title": "Cultural Studies: The USA – History (Independence, Civil War), Civil Rights Movement and Diversity",
-      "domain": "schule/englisch/landeskunde",
+      "domain": "englisch/landeskunde",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

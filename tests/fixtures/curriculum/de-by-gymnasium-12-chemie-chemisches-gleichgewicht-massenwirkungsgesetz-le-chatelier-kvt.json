@@ -20,7 +20,7 @@
       "namespace": "gymnasium-chemie-gleichgewicht",
       "slug": "dynamisches-gleichgewicht-massenwirkungsgesetz-konstante-kc",
       "title": "Chemisches Gleichgewicht: Dynamischer Gleichgewichtszustand und Massenwirkungsgesetz (MWG)",
-      "domain": "schule/chemie/physikalische-chemie",
+      "domain": "chemie/physikalische-chemie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-chemie-le-chatelier",
       "slug": "prinzip-von-le-chatelier-haber-bosch-verfahren",
       "title": "Prinzip von Le Chatelier: Zwangsprinzip, Temperatur-/Druckeinfluss und Haber-Bosch-Synthese",
-      "domain": "schule/chemie/reaktionskinetik",
+      "domain": "chemie/reaktionskinetik",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

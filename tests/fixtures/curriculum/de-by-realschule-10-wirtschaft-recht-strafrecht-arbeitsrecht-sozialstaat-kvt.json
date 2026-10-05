@@ -20,7 +20,7 @@
       "namespace": "wirtschaft-recht-strafrecht",
       "slug": "strafrecht-vs-zivilrecht-strafmuendigkeit-jgg-erziehungsgedanke",
       "title": "Strafrecht und Rechtsordnung: Strafmündigkeitsstufen (JGG / StGB), Erziehungsgedanke und Zivilrecht",
-      "domain": "schule/wirtschaft_recht/recht",
+      "domain": "wirtschaft_recht/recht",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "wirtschaft-recht-arbeitsrecht",
       "slug": "arbeitsrecht-kuendigungsschutz-sozialversicherungen",
       "title": "Arbeitsrecht und Soziale Sicherung: Kündigungsschutzgesetz und die 5 Säulen der Sozialversicherung",
-      "domain": "schule/wirtschaft_recht/arbeitsrecht",
+      "domain": "wirtschaft_recht/arbeitsrecht",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

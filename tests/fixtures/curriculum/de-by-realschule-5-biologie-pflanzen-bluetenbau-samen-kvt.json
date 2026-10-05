@@ -20,7 +20,7 @@
       "namespace": "biologie-botanik",
       "slug": "grundorgane-bluetenpflanze-wurzel-spross-blatt",
       "title": "Die Grundorgane der Blütenpflanze: Wurzel, Sprossachse und Laubblatt",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-botanik",
       "slug": "bluetenaufbau-zwitterbluete-stempel-staubblaetter",
       "title": "Aufbau der Blüten: Kelchblätter, Kronblätter, Staubblätter (männlich) und Stempel/Fruchtblatt (weiblich)",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-botanik",
       "slug": "bestaeubung-vs-befruchtung-insekten-windbestaeubung",
       "title": "Bestäubung versus Befruchtung: Insektenblütigkeit, Windblütigkeit und Pollenschlauchwachstum",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-botanik",
       "slug": "fruchtbildung-samen-verbreitungsmechanismen",
       "title": "Von der Blüte zur Frucht: Fruchtwand, Samenaufbau und die 4 Ausbreitungsmechanismen",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

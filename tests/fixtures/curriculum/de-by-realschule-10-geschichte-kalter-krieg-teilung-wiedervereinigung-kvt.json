@@ -20,7 +20,7 @@
       "namespace": "geschichte-kalter-krieg",
       "slug": "kalter-krieg-blockbildung-truman-doktrin-krisen",
       "title": "Der Kalte Krieg: Bipolare Weltordnung (USA vs. UdSSR), Truman-Doktrin, NATO vs. Warschauer Pakt und Kubakrise (1962)",
-      "domain": "schule/geschichte/zeitgeschichte",
+      "domain": "geschichte/zeitgeschichte",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "geschichte-deutschland",
       "slug": "deutsche-teilung-mauerbau-1961-friedliche-revolution-1989-einheit-1990",
       "title": "Deutschland nach 1945: Von der doppelten Staatsgründung 1949 über den Mauerbau 1961 zur Einheit 1990",
-      "domain": "schule/geschichte/zeitgeschichte",
+      "domain": "geschichte/zeitgeschichte",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

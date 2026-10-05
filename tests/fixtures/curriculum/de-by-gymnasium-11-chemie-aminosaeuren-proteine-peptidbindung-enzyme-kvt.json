@@ -20,7 +20,7 @@
       "namespace": "gymnasium-chemie-aminosaeuren",
       "slug": "aminosaeuren-zwitterion-isoelektrischer-punkt-peptidbindung",
       "title": "Aminosäuren & Peptidbindung: Zwitterion, IEP und planare Amidbindung",
-      "domain": "schule/chemie/biochemie",
+      "domain": "chemie/biochemie",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-chemie-proteine-enzyme",
       "slug": "proteinstrukturen-denaturierung-enzymkatalyse-hemmung",
       "title": "Proteine & Enzyme: 4 Strukturebenen, Denaturierung und Enzymkinetik (Michaelis-Menten)",
-      "domain": "schule/chemie/enzymkinetik",
+      "domain": "chemie/enzymkinetik",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

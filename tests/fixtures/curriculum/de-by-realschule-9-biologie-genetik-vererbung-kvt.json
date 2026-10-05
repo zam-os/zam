@@ -20,7 +20,7 @@
       "namespace": "biologie-genetik",
       "slug": "chromosomen-karyogramm-gonosomen",
       "title": "Zellkern, Chromosomen und Karyogramm des Menschen",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-genetik",
       "slug": "dna-struktur-doppelhelix-basenpaarung",
       "title": "DNA-Struktur: Doppelhelix und komplementäre Basenpaarung",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-genetik",
       "slug": "mitose-vs-meiose-zellteilung",
       "title": "Zellteilung: Mitose (Körperzellen) vs. Meiose (Keimzellen)",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-genetik",
       "slug": "mendelsche-regeln-vererbungsgrundlagen",
       "title": "Mendelsche Regeln: Uniformität, Spaltung und Unabhängigkeit",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -310,7 +310,7 @@
       "namespace": "biologie-genetik",
       "slug": "stammbaumanalyse-humangenetik-erbkrankheiten",
       "title": "Stammbaumanalyse und Humangenetik: Erbgänge",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

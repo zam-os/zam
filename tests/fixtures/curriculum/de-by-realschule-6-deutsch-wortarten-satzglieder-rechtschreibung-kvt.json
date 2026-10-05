@@ -20,7 +20,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "wortarten-nomen-verb-adjektiv-pronomen-partikeln",
       "title": "Die fünf Wortarten im Deutschen: Flektierbare (Nomen, Verben, Adjektive, Pronomen) und unflektierbare Wörter",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "sechs-zeitformen-praesens-bis-plusquamperfekt",
       "title": "Die sechs Zeitformen des Verbs: Präsens, Präteritum, Perfekt, Plusquamperfekt, Futur I und Futur II",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "satzglieder-umstellprobe-subjekt-praedikat-objekte-adverbialen",
       "title": "Satzglieder ermitteln: Umstellprobe, Subjekt, Prädikat, Dativ-/Akkusativobjekt und Adverbialbestimmungen",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "deutsch-rechtschreibung",
       "slug": "rechtschreibstrategien-s-laut-nominalisierung-kommasetzung",
       "title": "Rechtschreib- und Zeichensetzungsstrategien: s-Schreibung (das vs. dass), Nominalisierung und Kommasetzung",
-      "domain": "schule/deutsch/rechtschreibung",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

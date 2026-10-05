@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-gauss-lgs",
       "slug": "lineare-gleichungssysteme-gauss-algorithmus-loesbarkeit",
       "title": "Lineare Gleichungssysteme: Gauß-Algorithmus, Zeilenstufenform und Lösbarkeitsanalyse",
-      "domain": "schule/mathematik/lineare-algebra",
+      "domain": "mathematik/lineare-algebra",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-uebergangsmatrizen",
       "slug": "uebergangsmatrizen-stochastische-prozesse-fixvektor",
       "title": "Übergangsmatrizen: Stochastische Prozesse, Potenzen $M^n$ und stationäre Grenzverteilung (Fixvektor)",
-      "domain": "schule/mathematik/stochastik",
+      "domain": "mathematik/stochastik",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

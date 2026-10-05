@@ -20,7 +20,7 @@
       "namespace": "biologie-zoologie",
       "slug": "fische-anatomie-kiemenatmung-gegenstrom-schwimmblase",
       "title": "Klasse der Fische: Kiemenatmung mit Gegenstromprinzip, Schwimmblase und Seitenlinienorgan",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "biologie-zoologie",
       "slug": "amphibien-doppelleben-metamorphose-hautatmung",
       "title": "Klasse der Amphibien (Lurche): Doppelleben, Metamorphose vom Laich zum Frosch und Hautatmung",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "biologie-zoologie",
       "slug": "reptilien-kriechtiere-hornschuppenhaut-amniotenei",
       "title": "Klasse der Reptilien (Kriechtiere): Hornschuppenhaut, Amniotenei und echte Unabhängigkeit vom Wasser",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "biologie-evolution",
       "slug": "wirbeltierklassen-evolution-vergleich-landgang",
       "title": "Wirbeltier-Evolution: Die 5 Klassen im Systematischen Vergleich und der historische Landgang",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

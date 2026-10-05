@@ -20,7 +20,7 @@
       "namespace": "biologie-zoologie",
       "slug": "saeugetiere-klasse-merkmale-thermoregulation-lebendgeburt",
       "title": "Klasse der Säugetiere: Gleichwarmheit (Endothermie), Haarkleid, Milchdrüsen und Differenzierung",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "biologie-zoologie",
       "slug": "gebissanpassungen-fleischfresser-pflanzenfresser-nagetiere",
       "title": "Ernährungsbiologie: Raubtiergebiss (Reißzähne), Pflanzenfressergebiss (Kunde/Schmelzleisten) und Nagetiere",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "biologie-zoologie",
       "slug": "vogelbiologie-skelett-leichtbau-federn-brustbeinkamm",
       "title": "Klasse der Vögel: Bionischer Skelettleichtbau, Luftsäcke, Brustbeinkamm und Federarchitektur",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "biologie-zoologie",
       "slug": "flugarten-auftrieb-vogelei-nesthocker-nestfluechter",
       "title": "Aerodynamik und Fortpflanzung: Flugarten (Gleit-, Segel-, Ruderflug), Vogelei und Bruttypen",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

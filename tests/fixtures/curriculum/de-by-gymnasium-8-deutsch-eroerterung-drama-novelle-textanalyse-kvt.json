@@ -20,7 +20,7 @@
       "namespace": "gymnasium-deutsch-argumentation",
       "slug": "eroerterung-linear-dialektisch-argumentationskette-sanduhr-pingpong",
       "title": "Die Erörterung: Lineare vs. dialektische Erörterung, Argumentationsaufbau (3B) und Gliederungsmodelle",
-      "domain": "schule/deutsch/argumentation",
+      "domain": "deutsch/argumentation",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-deutsch-literatur",
       "slug": "drama-freytag-pyramide-novelle-kurzgeschichte-textanalyse",
       "title": "Dramenanalyse (Freytag-Pyramide) und epische Kurzformen (Novelle mit Dingsymbol & Kurzgeschichte)",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

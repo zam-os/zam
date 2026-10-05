@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 37;
+export const CURRENT_SCHEMA_VERSION = 38;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -973,6 +973,19 @@ export async function runMigrations(db: Database): Promise<void> {
     if (!sourceColsM037.includes("imported_by")) {
       await db.exec(`ALTER TABLE sources ADD COLUMN imported_by TEXT`);
     }
+  }
+
+  // M038: the root of an area path is the subject, never a life area
+  // (ADR 2026-10-05 Decision 7). A direct rewrite, not a cell revision: the
+  // fixtures drop `schule/` in the same release, so the next attach finds the
+  // domain unchanged and re-tests nobody. Token ids, cards and review history
+  // are untouched; `lower()` keeps SQLite and PostgreSQL in step, whose LIKE
+  // folds case differently.
+  for (const table of ["tokens", "learning_atoms"]) {
+    await db.exec(
+      `UPDATE ${table} SET domain = substr(domain, 8)
+        WHERE lower(substr(domain, 1, 7)) = 'schule/' AND length(domain) > 7`,
+    );
   }
 }
 

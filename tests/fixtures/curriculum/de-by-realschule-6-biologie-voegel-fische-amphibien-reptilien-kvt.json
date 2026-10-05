@@ -20,7 +20,7 @@
       "namespace": "biologie-zoologie",
       "slug": "vogelei-aufbau-hagelschnuere-keimscheibe",
       "title": "Das Vogelei: Kalkschale, Eiklar, Dotter, Hagelschnüre und Keimscheibe",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-zoologie",
       "slug": "fische-kiemenatmung-gegenstromprinzip",
       "title": "Kiemenatmung der Fische: Kiemenbögen, Kiemenblättchen und das hocheffiziente Gegenstromprinzip",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-zoologie",
       "slug": "amphibien-metamorphose-frosch-entwicklung",
       "title": "Amphibien (Lurche): Frosch-Metamorphose vom Wasser- zum Landleben",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-zoologie",
       "slug": "reptilien-kriechtiere-echsen-schlangen-trockengebiete",
       "title": "Reptilien (Kriechtiere): Hornschuppenhaut, beschalte Eier und Unabhängigkeit vom Wasser",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

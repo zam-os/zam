@@ -20,7 +20,7 @@
       "namespace": "gymnasium-deutsch-romantik",
       "slug": "romantik-universalpoesie-sehnsucht-blaue-blume-eichendorff",
       "title": "Die Romantik (1795–1835): Progressive Universalpoesie, Sehnsucht und Naturmystik bei Eichendorff",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-deutsch-schauerromantik",
       "slug": "schauerromantik-hoffmann-sandmann-realismus-fontane",
       "title": "Schauerromantik & Realismus: E.T.A. Hoffmann (Der Sandmann) und Fontane (Effi Briest)",
-      "domain": "schule/deutsch/literaturgeschichte",
+      "domain": "deutsch/literaturgeschichte",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

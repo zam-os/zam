@@ -20,7 +20,7 @@
       "namespace": "gymnasium-chemie-farbstoffe-homo-lumo",
       "slug": "farbigkeit-konjugierte-pi-systeme-homo-lumo-bathochrom",
       "title": "Grundlagen der Farbigkeit: Konjugierte Pi-Systeme, HOMO-LUMO-Übergänge und Mesomerie",
-      "domain": "schule/chemie/farbstoffe",
+      "domain": "chemie/farbstoffe",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-chemie-azofarbstoffe-synthese",
       "slug": "azofarbstoffe-diazotierung-azo-kupplung-fluoreszenz",
       "title": "Azo-Farbstoffe: Diazotierung, Azo-Kupplung und Photolumineszenz (Fluoreszenz)",
-      "domain": "schule/chemie/farbstoffe",
+      "domain": "chemie/farbstoffe",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [

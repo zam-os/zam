@@ -20,7 +20,7 @@
       "namespace": "informatik-datenbanken",
       "slug": "relationales-modell-tabelle-primaerschluessel",
       "title": "Relationales Datenmodell: Tabelle, Datensatz und Primärschlüssel",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "informatik-datenbanken",
       "slug": "tabellenbeziehungen-fremdschluessel-integritaet",
       "title": "Tabellenbeziehungen: 1:n, n:m, Fremdschlüssel und referenzielle Integrität",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "informatik-datenbanken",
       "slug": "sql-abfragen-select-from-where",
       "title": "SQL-Datenabfragen: SELECT, FROM, WHERE und ORDER BY",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "informatik-datenbanken",
       "slug": "sql-verbundabfragen-inner-join",
       "title": "SQL-Verbundabfragen über mehrere Tabellen (JOIN)",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [

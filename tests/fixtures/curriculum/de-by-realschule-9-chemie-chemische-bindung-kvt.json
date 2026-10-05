@@ -20,7 +20,7 @@
       "namespace": "chemie-bindung",
       "slug": "ionenbindung-salze-ionengitter",
       "title": "Ionenbindung, Salze und Ionengitter",
-      "domain": "schule/chemie/bindung",
+      "domain": "chemie/bindung",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "chemie-bindung",
       "slug": "elektronenpaarbindung-molekuele-lewis",
       "title": "Elektronenpaarbindung, Moleküle und Lewis-Formeln",
-      "domain": "schule/chemie/bindung",
+      "domain": "chemie/bindung",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "chemie-bindung",
       "slug": "polare-atombindung-dipol-wasser",
       "title": "Polare Elektronenpaarbindung, Elektronegativität und Dipolmoleküle",
-      "domain": "schule/chemie/bindung",
+      "domain": "chemie/bindung",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "chemie-bindung",
       "slug": "metallbindung-zwischenmolekulare-kraefte",
       "title": "Metallbindung und zwischenmolekulare Kräfte",
-      "domain": "schule/chemie/bindung",
+      "domain": "chemie/bindung",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

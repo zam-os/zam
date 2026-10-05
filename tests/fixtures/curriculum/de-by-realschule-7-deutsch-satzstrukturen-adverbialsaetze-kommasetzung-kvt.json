@@ -20,7 +20,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "satzreihe-vs-satzgefuege-hauptsatz-nebensatz-verbposition",
       "title": "Satzbaulehre: Satzreihe (Parataxe) vs. Satzgefüge (Hypotaxe) und Verbendstellung im Nebensatz",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "adverbialsaetze-kausal-temporal-konditional-konsekutiv",
       "title": "Adverbialsätze und Konjunktionen: Die 6 Sinnesrichtungen (Kausal, Temporal, Konditional, Konsekutiv, Final, Konzessiv)",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "deutsch-rechtschreibung",
       "slug": "das-dass-schreibung-ersatzprobe-dieses-jenes-welches",
       "title": "Rechtschreibdiagnose 'das' oder 'dass': Ersatzprobe (dieses/jenes/welches) vs. Konjunktion",
-      "domain": "schule/deutsch/rechtschreibung",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-geometrie",
       "slug": "symmetrie-achsenspiegelung-punktspiegelung-ortslinien",
       "title": "Achsen- und Punktsymmetrie: Mittelsenkrechte, Winkelhalbierende und Abbildungseigenschaften",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-geometrie",
       "slug": "winkel-parallelen-stufen-wechselwinkel-winkelsumme-dreieck",
       "title": "Winkel an Parallelen (Stufen- und Wechselwinkel) und Winkelsumme im Dreieck (180°)",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "gymnasium-mathematik-geometrie",
       "slug": "kongruenzsaetze-dreiecke-sss-sws-wsw-ssw-konstruktion",
       "title": "Kongruenzsätze für Dreiecke: SSS, SWS, WSW, SsW und eindeutige Dreieckskonstruktionen",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "gymnasium-mathematik-geometrie",
       "slug": "besondere-punkte-dreieck-umkreis-inkreis-schwerpunkt-hoehenschnittpunkt",
       "title": "Besondere Punkte im Dreieck: Umkreismittelpunkt, Inkreismittelpunkt, Schwerpunkt und Höhenschnittpunkt",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

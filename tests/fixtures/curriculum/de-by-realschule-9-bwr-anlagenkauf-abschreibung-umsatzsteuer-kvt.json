@@ -20,7 +20,7 @@
       "namespace": "bwr-umsatzsteuer",
       "slug": "umsatzsteuersystem-vorsteuer-umsatzsteuer-zahllast",
       "title": "Das Mehrwertsteuersystem: Vorsteuer (VORST / Forderung) vs. Umsatzsteuer (UST / Verbindlichkeit) und Zahllast",
-      "domain": "schule/bwr/umsatzsteuer",
+      "domain": "bwr/umsatzsteuer",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "bwr-sachanlagen",
       "slug": "anlagenkauf-lineare-abschreibung-afa-restbuchwert",
       "title": "Sachanlagen und Lineare Abschreibung (AfA): Anschaffungskosten, Nutzungsdauer und Restbuchwert",
-      "domain": "schule/bwr/sachanlagen",
+      "domain": "bwr/sachanlagen",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

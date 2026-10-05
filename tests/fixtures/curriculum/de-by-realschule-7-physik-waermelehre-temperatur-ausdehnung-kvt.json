@@ -20,7 +20,7 @@
       "namespace": "physik-waerme",
       "slug": "temperatur-teilchenbewegung-kelvin-skala",
       "title": "Temperatur als Teilchenbewegung: Fixpunkte der Celsius- und Kelvin-Skala",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "physik-waerme",
       "slug": "thermische-ausdehnung-bimetall-technik",
       "title": "Thermische Ausdehnung von Körpern: Längenausdehnung und Bimetallstreifen",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "physik-waerme",
       "slug": "anomalie-des-wassers-oekologische-bedeutung",
       "title": "Die Dichteanomalie des Wassers und ihre lebensrettende ökologische Bedeutung",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "physik-waerme",
       "slug": "waermeuebertragung-leitung-konvektion-strahlung",
       "title": "Wärmeübertragungsarten: Wärmeleitung, Konvektion und Wärmestrahlung",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "menschliches-skelett-wirbelsaeule-knochen-leichtbau",
       "title": "Das menschliche Skelett: Doppel-S-Form der Wirbelsäule, Bandscheiben und Knochenbau",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "gelenke-muskeln-antagonisten-sehnen-baender",
       "title": "Gelenkbiologie und Muskulatur: Gelenktypen, Synovia und das antagonistische Muskelpaar",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "pubertaet-sexualhormone-menstruationszyklus-hypophyse",
       "title": "Sexualbiologie: Pubertät, primäre/sekundäre Geschlechtsmerkmale und der hormonelle Zyklus",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "befruchtung-embryonalentwicklung-plazenta-geburt",
       "title": "Zeugung und Pränatalentwicklung: Befruchtung, Einnistung, Plazentaschranke und Geburt",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

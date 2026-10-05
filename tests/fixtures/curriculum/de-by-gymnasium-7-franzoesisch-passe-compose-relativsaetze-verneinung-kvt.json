@@ -20,7 +20,7 @@
       "namespace": "gymnasium-franzoesisch-grammatik",
       "slug": "passe-compose-avoir-etre-accord-participe",
       "title": "Das Passé composé: Hilfsverben 'avoir' vs. 'être' und die Regeln des Accord du participe passé",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-franzoesisch-grammatik",
       "slug": "relativpronomen-verneinungen-teilungsartikel",
       "title": "Relativpronomen (qui, que, où), Verneinungen (ne... rien/jamais/personne) und Teilungsartikel",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

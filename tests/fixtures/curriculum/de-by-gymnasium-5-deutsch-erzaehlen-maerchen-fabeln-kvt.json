@@ -20,7 +20,7 @@
       "namespace": "deutsch-texte",
       "slug": "gattung-maerchen-merkmale-formeln-gebr-grimm",
       "title": "Die literarische Gattung Märchen: Volksmärchen (Brüder Grimm), Merkmale, Typen und Symbolzahlen",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "deutsch-texte",
       "slug": "gattung-fabel-aufbau-tiercharaktere-moral",
       "title": "Die literarische Gattung Fabel: Fabeltiere, 3-Phasen-Aufbau, Konflikt und Lehre (Moral)",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "deutsch-texte",
       "slug": "erlebniserzaehlung-klimax-zeitdehnung-erzaehlperspektive",
       "title": "Erzähltechnik: Spannungsbogen, Höhepunktgestaltung (Klimax), Zeitdehnung und Perspektive",
-      "domain": "schule/deutsch/texte",
+      "domain": "deutsch/texte",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "deutsch-zeichensetzung",
       "slug": "woertliche-rede-begleitsatz-satzzeichen-regeln",
       "title": "Wörtliche Rede: Redebegleitsatz vorne, hinten, eingeschoben und präzise Zeichensetzung",
-      "domain": "schule/deutsch/zeichensetzung",
+      "domain": "deutsch/zeichensetzung",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

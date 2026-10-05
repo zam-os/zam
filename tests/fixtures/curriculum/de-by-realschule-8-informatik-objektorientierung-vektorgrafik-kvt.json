@@ -20,7 +20,7 @@
       "namespace": "informatik-modellierung",
       "slug": "objekte-attribute-attributwerte-zustand",
       "title": "Objekte und Zustand: Attribute, Attributwerte und Punktschreibweise",
-      "domain": "schule/informatik/modellierung",
+      "domain": "informatik/modellierung",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "informatik-modellierung",
       "slug": "klassen-methoden-klassendiagramm-uml",
       "title": "Klassen, Methoden und UML-Klassendiagramme: Bauplan und Verhaltensmuster",
-      "domain": "schule/informatik/modellierung",
+      "domain": "informatik/modellierung",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "informatik-grafik",
       "slug": "vektorgrafik-vs-rastergrafik-skalierbarkeit",
       "title": "Vektorgrafik vs. Rastergrafik: Geometrische Primitiven, Pixelmatrix und Skalierbarkeit",
-      "domain": "schule/informatik/systeme",
+      "domain": "informatik/systeme",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "informatik-grafik",
       "slug": "farbmodelle-rgb-cmyk-farbtiefe-speicherbedarf",
       "title": "Farbmodelle und Farbtiefe: Additive (RGB) vs. subtraktive (CMYK) Farbmischung und Bitbelegung",
-      "domain": "schule/informatik/systeme",
+      "domain": "informatik/systeme",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

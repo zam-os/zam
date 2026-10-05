@@ -20,7 +20,7 @@
       "namespace": "biologie-botanik",
       "slug": "organe-der-samenpflanze-wurzel-spross-blatt",
       "title": "Organe der Samenpflanze: Wurzel, Sprossachse, Laubblatt und Leitgewebe",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-botanik",
       "slug": "laubblatt-querschnitt-gewebeschichten-stomata",
       "title": "Mikroskopischer Bau des Laubblatts: Cuticula, Palisadengewebe, Schwammgewebe und Spaltöffnungen",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-botanik",
       "slug": "fotosynthese-wortgleichung-chemische-reaktion",
       "title": "Die Fotosynthese: Edukte, Produkte, Chlorophyll und die photochemische Gesamtgleichung",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-botanik",
       "slug": "fotosynthese-vs-zellatmung-kompensationspunkt",
       "title": "Fotosynthese versus Zellatmung bei Pflanzen: Energiebilanz und Lichtkompensationspunkt",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

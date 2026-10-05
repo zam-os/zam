@@ -20,7 +20,7 @@
       "namespace": "gymnasium-latein-ovid-metamorphosen",
       "slug": "ovid-metamorphosen-prooemium-leitmotiv-daedalus-icarus",
       "title": "Ovid: Die Metamorphosen (Proömium), Daedalus & Icarus und die Hybris",
-      "domain": "schule/latein/dichtung",
+      "domain": "latein/dichtung",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-latein-ovid-metrik-apollo",
       "slug": "apollo-und-daphne-hexameter-metrik-zaesuren-ovid",
       "title": "Apollo & Daphne: Amor-Pfeile, Lorbeerbaum und Hexameter-Metrik (Skandieren)",
-      "domain": "schule/latein/dichtung",
+      "domain": "latein/dichtung",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [

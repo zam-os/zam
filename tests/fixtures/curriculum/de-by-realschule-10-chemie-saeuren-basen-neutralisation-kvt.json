@@ -20,7 +20,7 @@
       "namespace": "chemie-saeure-base",
       "slug": "broensted-theorie-protonendonator-akzeptor",
       "title": "Säure-Base-Theorie nach Brönsted: Protonenübertragung und Ampholyte",
-      "domain": "schule/chemie/allgemein",
+      "domain": "chemie/allgemein",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "chemie-saeure-base",
       "slug": "ph-wert-skala-autoprotolyse-wasser",
       "title": "Der pH-Wert: Autoprotolyse des Wassers, Ionenprodukt und pH-Skala (0-14)",
-      "domain": "schule/chemie/allgemein",
+      "domain": "chemie/allgemein",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "chemie-saeure-base",
       "slug": "neutralisation-salzbildung-indikator",
       "title": "Neutralisation und Salzbildung: Protonenausgleich und Indikatoren",
-      "domain": "schule/chemie/allgemein",
+      "domain": "chemie/allgemein",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "chemie-saeure-base",
       "slug": "titration-quantitative-konzentration",
       "title": "Quantitative Titration: Maßanalyse und Konzentrationsberechnung c = n / V",
-      "domain": "schule/chemie/analytisch",
+      "domain": "chemie/analytisch",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [

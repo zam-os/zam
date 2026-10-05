@@ -20,7 +20,7 @@
       "namespace": "mathematik-anwendung",
       "slug": "prozentrechnung-grundbegriffe-formel-dreisatz",
       "title": "Grundbegriffe der Prozentrechnung: Grundwert G, Prozentwert W und Prozentsatz p%",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-anwendung",
       "slug": "vermehrter-verminderter-grundwert-prozentfaktor",
       "title": "Vermehrter und verminderter Grundwert: Prozentfaktor q und Rabattrechnung",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-anwendung",
       "slug": "zinsrechnung-kapital-zinssatz-jahreszinsen",
       "title": "Einfache Zinsrechnung: Kapital K, Zinssatz p% und Jahreszinsen Z",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-anwendung",
       "slug": "monatszinsen-tageszinsen-kaufmaennische-zeitrechnung",
       "title": "Unterjährige Zinsrechnung: Monats- und Tageszinsen nach kaufmännischer Methode",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

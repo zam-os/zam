@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geographie-stadtmodelle",
       "slug": "stadtstrukturmodelle-charta-von-athen-funktionstrennung",
       "title": "Stadtstrukturen: Nordamerikanische Stadtmodelle und Städtebau-Leitbilder (Charta von Athen)",
-      "domain": "schule/geographie/stadtgeographie",
+      "domain": "geographie/stadtgeographie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geographie-nachhaltige-stadt",
       "slug": "stadtentwicklungsphasen-gentrifizierung-nachhaltige-stadt-schwammstadt",
       "title": "Stadtprozesse & Zukunft: Phasenzyklus, Gentrifizierung und das Schwammstadt-Konzept",
-      "domain": "schule/geographie/nachhaltigkeit",
+      "domain": "geographie/nachhaltigkeit",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

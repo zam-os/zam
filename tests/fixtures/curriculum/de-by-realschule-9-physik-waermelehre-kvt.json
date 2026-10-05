@@ -25,7 +25,7 @@
       "namespace": "physik-waerme",
       "slug": "temperatur-thermische-energie-kelvin",
       "title": "Temperatur, thermische Energie und Kelvin-Skala",
-      "domain": "schule/physik/waerme",
+      "domain": "physik/waerme",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -93,7 +93,7 @@
       "namespace": "physik-waerme",
       "slug": "spezifische-waermekapazitaet",
       "title": "Spezifische Wärmekapazität und Erwärmung",
-      "domain": "schule/physik/waerme",
+      "domain": "physik/waerme",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -167,7 +167,7 @@
       "namespace": "physik-waerme",
       "slug": "aggregatzustaende-latente-waerme",
       "title": "Aggregatzustandsänderungen und latente Wärme",
-      "domain": "schule/physik/waerme",
+      "domain": "physik/waerme",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -241,7 +241,7 @@
       "namespace": "physik-waerme",
       "slug": "erster-hauptsatz-mischungstemperatur",
       "title": "Erster Hauptsatz der Wärmelehre und Mischungstemperatur",
-      "domain": "schule/physik/waerme",
+      "domain": "physik/waerme",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -315,7 +315,7 @@
       "namespace": "physik-waerme",
       "slug": "waermeuebertragungsarten",
       "title": "Wärmeübertragung: Wärmeleitung, Konvektion und Wärmestrahlung",
-      "domain": "schule/physik/waerme",
+      "domain": "physik/waerme",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

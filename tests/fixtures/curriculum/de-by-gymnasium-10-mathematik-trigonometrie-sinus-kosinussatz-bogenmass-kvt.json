@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-trigonometrie",
       "slug": "sinussatz-kosinussatz-allgemeines-dreieck-dreiecksflaeche",
       "title": "Trigonometrie: Sinussatz, Kosinussatz und trigonometrische Dreiecksflächenformel",
-      "domain": "schule/mathematik/trigonometrie",
+      "domain": "mathematik/trigonometrie",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-einheitskreis",
       "slug": "einheitskreis-bogenmass-periodizitaet-sinusfunktion",
       "title": "Trigonometrische Funktionen: Einheitskreis, Bogenmaß x und Periodizität",
-      "domain": "schule/mathematik/funktionen",
+      "domain": "mathematik/funktionen",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

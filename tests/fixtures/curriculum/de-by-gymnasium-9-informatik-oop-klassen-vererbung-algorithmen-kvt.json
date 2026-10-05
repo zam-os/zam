@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-oop",
       "slug": "objektorientierung-klasse-objekt-kapselung-vererbung",
       "title": "Objektorientierte Modellierung: Klassen, Instanziierung, Kapselung (private/public) und Vererbung",
-      "domain": "schule/informatik/oop",
+      "domain": "informatik/oop",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-algorithmen",
       "slug": "algorithmen-lineare-binaere-suche-bubblesort-laufzeit",
       "title": "Algorithmen: Lineare vs. binäre Suche, Sortierverfahren (BubbleSort) und Komplexität",
-      "domain": "schule/informatik/algorithmen",
+      "domain": "informatik/algorithmen",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "conditional-type-3-unreal-past-condition",
       "title": "Conditional Sentences Type 3: Unmögliche Bedingung in der Vergangenheit ('had done' -> 'would have done')",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "englisch-grammatik",
       "slug": "reported-speech-backshift-of-tenses-pronoun-time-shift",
       "title": "Reported Speech (Indirekte Rede): Der Zeitensprung (Backshift of Tenses) und Pronomenanpassung",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
