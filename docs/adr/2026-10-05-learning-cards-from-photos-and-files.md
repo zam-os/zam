@@ -1,8 +1,10 @@
 # Learning Cards from Photos and Files: The Model Reads the Page
 
-**Status:** Proposed\
+**Status:** Accepted — 2026-10-05, after review rounds 1 (Grok 4.7, Gemini)
+and 2 (MiMo)\
 **Date:** 2026-10-05\
 **Deciders:** Thomas (project owner)\
+**Implementation plan:** [2026-10-05-learning-cards-from-photos-and-files.md](../plans/2026-10-05-learning-cards-from-photos-and-files.md)\
 **Related:**
 [2026-06-30](2026-06-30-learning-content-studio.md) (Phase 5) ·
 [2026-07-04](2026-07-04-hierarchical-domain-ontology-and-token-identity.md) (draft; Decisions 1 and 3 adopted in Decision 7) ·
@@ -183,9 +185,12 @@ and no transcript is stored or shown. This holds on both paths (Decision 2).
 - **Images** (photo, screenshot, exported note page) need a model with the
   `image` capability. HEIC, the iPhone default, is converted to JPEG by the
   platform's own image decoding before sending. Where the platform cannot
-  decode HEIC, the dialog says so. Photos are downscaled before sending: the
-  mobile import already caps the long edge at 1568 px, and ten pages at full
-  resolution would cost tens of thousands of tokens.
+  decode HEIC, the dialog says so. Photos are downscaled before sending
+  wherever the platform can do it without a new dependency. Mobile's webview
+  already caps the long edge at 1568 px, and macOS ships `sips`. Elsewhere
+  photos go unchanged within a size budget. Providers scale large images down
+  themselves, so the budget protects the request size rather than the token
+  cost.
 - **PDFs** are imported only by a model that reads them natively.
   - On the built-in path a PDF goes as a file part **only** to a model whose
     endpoint metadata declares file input.

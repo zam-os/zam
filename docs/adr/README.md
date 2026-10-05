@@ -82,4 +82,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-09-27](2026-09-27-choice-and-auto-learning-modes.md) | Choice and Auto Learning Modes | Implemented |
 | [2026-10-02](2026-10-02-library-topics.md) | Library Topics: Starting on the Content a Library Already Holds | Accepted — phase 1 implemented |
 | [2026-10-03](2026-10-03-repo-knowledge-map.md) | Repo Knowledge Map: An Alpha Feature with Swappable Views | Accepted — alpha implemented; JSON-LD and C4 added |
-| [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md) | Learning Cards from Photos and Files: The Model Reads the Page | Proposed |
+| [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md) | Learning Cards from Photos and Files: The Model Reads the Page | Accepted — plan written, not yet implemented |
