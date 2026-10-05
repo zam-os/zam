@@ -1,25 +1,48 @@
 /**
- * Starting a material import from the Studio (ADR 2026-10-05 Decision 2).
+ * Starting a material import from the Studio (ADR 2026-10-05 Decisions 1–3,
+ * 11). One dialog, two ways in:
  *
- * The harness path is the stronger one: the learner's AI app reads the file,
- * can ask back, and submits its proposals to ZAM's review list. ZAM cannot
- * put a file into another app's chat (ADR 2026-07-18c), so this dialog hands
- * the learner a ready request to paste — with the file's path once they
- * picked it here, so a terminal agent such as opencode can open it directly.
+ * - **Read it here.** The picked photos or PDF go to the learner's connected
+ *   model, named in the dialog, and its proposals open in the review list.
+ * - **Through a harness.** The learner's AI app reads the file, can ask back,
+ *   and submits its proposals to the same list. ZAM cannot put a file into
+ *   another app's chat (ADR 2026-07-18c), so the dialog hands the learner a
+ *   ready request to paste — with the file's path once they picked it here,
+ *   so a terminal agent such as opencode can open it directly.
  *
- * Desktop only: the shell injects the file picker and the way to the agent
- * setup; without them the matching parts are simply left out.
+ * Desktop only: the shell injects the file picker, drops, progress and the
+ * ways to the settings; without them the matching parts are left out.
  */
 
-import type { AgentHarnessStatusResponse } from "../../src/bridge/protocol.js";
+import type {
+  AgentHarnessStatusResponse,
+  MaterialAnalyzeCodeWire,
+  MaterialImportAnalyzeResponse,
+  MaterialImportModelsResponse,
+} from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
+import {
+  type MaterialReviewOptions,
+  openMaterialReview,
+  refreshPendingMaterialImports,
+} from "./material-review.js";
+import { rememberDisplay, setShown } from "./visibility.js";
 
 export interface MaterialImportHost {
   /** Native multi-file picker for photos and PDFs; absolute paths. */
   pickFiles?: () => Promise<string[]>;
   /** Open the settings where an agent harness is connected to ZAM. */
   openAgentSetup?: () => void;
+  /** Open the setup where a model is connected. */
+  openModelSetup?: () => void;
+  /** Files dropped on the window; returns the unsubscribe. */
+  onFileDrop?: (listener: (paths: string[]) => void) => Promise<() => void>;
+  /**
+   * Run a model-bound bridge command in its own process, so the minute a
+   * model takes to read the pages does not hold up the rest of the Studio.
+   */
+  runInBackground?: (cmd: string, args: string[]) => Promise<unknown>;
 }
 
 let host: MaterialImportHost = {};
@@ -29,6 +52,9 @@ export function setMaterialImportHost(next: MaterialImportHost): void {
 }
 
 // ── Rules (pure) ─────────────────────────────────────────────────────────────
+
+/** Photos per import on the built-in path (D3). */
+export const MAX_PHOTOS = 10;
 
 /** Harnesses that carry ZAM's MCP entry, by their display label. */
 export function connectedHarnesses(
@@ -60,6 +86,93 @@ export function harnessNames(labels: string[]): string {
   return labels.join(" / ");
 }
 
+export type MaterialFileKind = "image" | "heic" | "pdf" | "other";
+
+export function materialFileKind(path: string): MaterialFileKind {
+  const ext = path.slice(path.lastIndexOf(".") + 1).toLowerCase();
+  if (ext === "pdf") return "pdf";
+  if (ext === "heic" || ext === "heif") return "heic";
+  return ["jpg", "jpeg", "png", "webp", "gif"].includes(ext)
+    ? "image"
+    : "other";
+}
+
+/** What the "read it here" part shows for these files and models. */
+export type BuiltInState =
+  | { kind: "hidden" }
+  | { kind: "waiting"; model: string }
+  | { kind: "ready"; model: string; pdf: boolean }
+  | { kind: "blocked"; key: string; setup: boolean };
+
+/** Up to ten photos or one PDF, and a model that reads them (D1, D3). */
+export function builtInState(
+  paths: string[],
+  models: MaterialImportModelsResponse | null,
+): BuiltInState {
+  if (!models?.success) return { kind: "hidden" };
+  const blocked = (key: string, setup = false): BuiltInState => ({
+    kind: "blocked",
+    key,
+    setup,
+  });
+  const noImageModel = blocked("material_builtin_no_image_model", true);
+  if (paths.length === 0) {
+    return models.image
+      ? { kind: "waiting", model: models.image.label }
+      : noImageModel;
+  }
+  const kinds = paths.map(materialFileKind);
+  if (kinds.includes("other")) return blocked("material_builtin_unsupported");
+  const pdfs = kinds.filter((kind) => kind === "pdf").length;
+  if (pdfs > 0 && pdfs < kinds.length) return blocked("material_builtin_mixed");
+  if (pdfs > 1) return blocked("material_builtin_one_pdf");
+  if (pdfs === 1) {
+    return models.file
+      ? { kind: "ready", model: models.file.label, pdf: true }
+      : blocked("material_builtin_no_file_model");
+  }
+  if (paths.length > MAX_PHOTOS) return blocked("material_builtin_too_many");
+  if (!models.image) return noImageModel;
+  if (kinds.includes("heic") && !models.convertsHeic) {
+    return blocked("material_builtin_heic");
+  }
+  return { kind: "ready", model: models.image.label, pdf: false };
+}
+
+export function analyzeArgs(paths: string[], pages: string): string[] {
+  const range = pages.trim();
+  return ["--file", ...paths, ...(range ? ["--pages", range] : [])];
+}
+
+/** The learner-facing line for a refusal from `material-import-analyze`. */
+export function analyzeRefusalKey(code: MaterialAnalyzeCodeWire): string {
+  switch (code) {
+    case "no-image-model":
+      return "material_builtin_no_image_model";
+    case "no-file-model":
+      return "material_builtin_no_file_model";
+    case "heic":
+      return "material_builtin_heic";
+    case "mixed":
+      return "material_builtin_mixed";
+    case "one-pdf":
+      return "material_builtin_one_pdf";
+    case "too-many":
+      return "material_builtin_too_many";
+    case "unsupported":
+    case "no-files":
+      return "material_builtin_unsupported";
+    case "too-large":
+      return "material_builtin_too_large";
+    case "missing":
+      return "material_builtin_missing";
+    case "invalid-answer":
+      return "material_builtin_invalid";
+    default:
+      return "material_builtin_failed";
+  }
+}
+
 // ── Dialog ───────────────────────────────────────────────────────────────────
 
 interface StartParts {
@@ -68,6 +181,16 @@ interface StartParts {
   subject: HTMLElement;
   choose: HTMLButtonElement;
   selected: HTMLElement;
+  dropHint: HTMLElement;
+  builtIn: HTMLElement;
+  builtInTitle: HTMLElement;
+  builtInText: HTMLElement;
+  pagesRow: HTMLElement;
+  pagesLabel: HTMLLabelElement;
+  pages: HTMLInputElement;
+  analyze: HTMLButtonElement;
+  modelSetup: HTMLButtonElement;
+  builtInStatus: HTMLElement;
   harnessText: HTMLElement;
   request: HTMLTextAreaElement;
   copy: HTMLButtonElement;
@@ -82,6 +205,10 @@ const OVERLAY_ID = "material-import-start-overlay";
 let parts: StartParts | null = null;
 let paths: string[] = [];
 let harnesses: string[] = [];
+let models: MaterialImportModelsResponse | null = null;
+let analyzing = false;
+let reviewOptions: MaterialReviewOptions = {};
+let stopDrop: (() => void) | null = null;
 
 function element<K extends keyof HTMLElementTagNameMap>(
   tag: K,
@@ -89,6 +216,25 @@ function element<K extends keyof HTMLElementTagNameMap>(
 ): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
   Object.assign(node.style, style);
+  rememberDisplay(node);
+  return node;
+}
+
+function section(): HTMLElement {
+  const node = element("div", {
+    display: "flex",
+    flexDirection: "column",
+    gap: "8px",
+  });
+  node.className = "modal-impact-section";
+  return node;
+}
+
+function button(className: string, onClick: () => void): HTMLButtonElement {
+  const node = element("button");
+  node.type = "button";
+  node.className = className;
+  node.addEventListener("click", onClick);
   return node;
 }
 
@@ -123,10 +269,7 @@ function ensureDialog(): StartParts {
     alignItems: "center",
     flexWrap: "wrap",
   });
-  const choose = element("button");
-  choose.type = "button";
-  choose.className = "btn secondary-btn btn-sm";
-  choose.addEventListener("click", () => {
+  const choose = button("btn secondary-btn btn-sm", () => {
     void chooseFiles();
   });
   const selected = element("span", {
@@ -134,13 +277,46 @@ function ensureDialog(): StartParts {
     wordBreak: "break-all",
   });
   pick.append(choose, selected);
-
-  const harnessSection = element("div", {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
+  const dropHint = element("p", {
+    margin: "0",
+    fontSize: "0.8rem",
+    opacity: "0.8",
   });
-  harnessSection.className = "modal-impact-section";
+
+  const builtIn = section();
+  const builtInTitle = element("strong");
+  const builtInText = element("p", { margin: "0" });
+  const pagesRow = element("div", {
+    display: "flex",
+    gap: "8px",
+    alignItems: "center",
+  });
+  const pagesLabel = element("label", { fontSize: "0.85rem" });
+  const pages = element("input", { maxWidth: "140px" });
+  pages.type = "text";
+  pages.id = "material-import-pages";
+  pages.className = "editor-input";
+  pagesLabel.htmlFor = pages.id;
+  pagesRow.append(pagesLabel, pages);
+  const builtInActions = element("div", {
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
+    flexWrap: "wrap",
+  });
+  const analyze = button("btn primary-btn btn-sm", () => {
+    void analyzeHere();
+  });
+  const modelSetup = button("btn secondary-btn btn-sm", () => {
+    closeMaterialImportStart();
+    host.openModelSetup?.();
+  });
+  const builtInStatus = element("span", { fontSize: "0.85rem" });
+  builtInStatus.setAttribute("aria-live", "polite");
+  builtInActions.append(analyze, modelSetup, builtInStatus);
+  builtIn.append(builtInTitle, builtInText, pagesRow, builtInActions);
+
+  const harnessSection = section();
   const harnessText = element("p", { margin: "0" });
   const request = element("textarea", { minHeight: "72px" });
   request.className = "editor-textarea";
@@ -150,10 +326,7 @@ function ensureDialog(): StartParts {
     gap: "10px",
     alignItems: "center",
   });
-  const copy = element("button");
-  copy.type = "button";
-  copy.className = "btn primary-btn btn-sm";
-  copy.addEventListener("click", () => {
+  const copy = button("btn secondary-btn btn-sm", () => {
     void copyRequest();
   });
   const copyStatus = element("span", { fontSize: "0.85rem" });
@@ -161,32 +334,32 @@ function ensureDialog(): StartParts {
   copyRow.append(copy, copyStatus);
   harnessSection.append(harnessText, request, copyRow);
 
-  const noHarness = element("div", {
-    display: "flex",
-    flexDirection: "column",
-    gap: "8px",
-  });
-  noHarness.className = "modal-impact-section";
+  const noHarness = section();
   const noHarnessText = element("p", { margin: "0" });
   noHarnessText.dataset.role = "text";
-  const setup = element("button", { alignSelf: "flex-start" });
-  setup.type = "button";
-  setup.className = "btn secondary-btn btn-sm";
-  setup.addEventListener("click", () => {
+  const setup = button("btn secondary-btn btn-sm", () => {
     closeMaterialImportStart();
     host.openAgentSetup?.();
   });
+  setup.style.alignSelf = "flex-start";
   noHarness.append(noHarnessText, setup);
 
   const after = element("p", { margin: "0", fontSize: "0.85rem" });
-  body.append(subject, pick, harnessSection, noHarness, after);
+  body.append(
+    subject,
+    pick,
+    dropHint,
+    builtIn,
+    harnessSection,
+    noHarness,
+    after,
+  );
 
   const actions = element("div");
   actions.className = "modal-actions";
-  const close = element("button");
-  close.type = "button";
-  close.className = "btn secondary-btn btn-sm";
-  close.addEventListener("click", () => closeMaterialImportStart());
+  const close = button("btn secondary-btn btn-sm", () =>
+    closeMaterialImportStart(),
+  );
   actions.append(close);
 
   box.append(header, body, actions);
@@ -204,6 +377,16 @@ function ensureDialog(): StartParts {
     subject,
     choose,
     selected,
+    dropHint,
+    builtIn,
+    builtInTitle,
+    builtInText,
+    pagesRow,
+    pagesLabel,
+    pages,
+    analyze,
+    modelSetup,
+    builtInStatus,
     harnessText,
     request,
     copy,
@@ -216,40 +399,84 @@ function ensureDialog(): StartParts {
   return parts;
 }
 
+function renderBuiltIn(dialog: StartParts): void {
+  const state = builtInState(paths, models);
+  setShown(dialog.builtIn, state.kind !== "hidden");
+  dialog.builtInTitle.textContent = t("material_builtin_title");
+  dialog.pagesLabel.textContent = t("material_builtin_pages");
+  dialog.pages.placeholder = t("material_builtin_pages_placeholder");
+  setShown(dialog.pagesRow, state.kind === "ready" && state.pdf);
+  dialog.analyze.textContent = t("material_builtin_analyze");
+  setShown(dialog.analyze, state.kind === "ready");
+  dialog.analyze.disabled = analyzing;
+  dialog.modelSetup.textContent = t("material_builtin_setup");
+  setShown(
+    dialog.modelSetup,
+    state.kind === "blocked" && state.setup && Boolean(host.openModelSetup),
+  );
+  switch (state.kind) {
+    case "waiting":
+      dialog.builtInText.textContent = tf("material_builtin_photos_to", {
+        model: state.model,
+      });
+      break;
+    case "ready":
+      dialog.builtInText.textContent = tf("material_builtin_sent_to", {
+        model: state.model,
+      });
+      break;
+    case "blocked":
+      dialog.builtInText.textContent = t(state.key);
+      break;
+    default:
+      dialog.builtInText.textContent = "";
+  }
+}
+
 function render(dialog: StartParts): void {
   dialog.title.textContent = t("material_start_title");
   dialog.subject.textContent = t("material_start_one_subject");
   dialog.choose.textContent = t("material_start_choose");
-  dialog.choose.hidden = !host.pickFiles;
-  dialog.selected.hidden = !host.pickFiles;
+  setShown(dialog.choose, Boolean(host.pickFiles));
+  dialog.choose.disabled = analyzing;
+  setShown(dialog.selected, Boolean(host.pickFiles));
   dialog.selected.textContent =
     paths.length > 0 ? paths.join(", ") : t("material_start_none_selected");
+  dialog.dropHint.textContent = t("material_start_drop_hint");
+  setShown(dialog.dropHint, Boolean(host.onFileDrop));
+  renderBuiltIn(dialog);
   const names = harnessNames(harnesses);
   const hasHarness = harnesses.length > 0;
-  dialog.harnessText.parentElement?.toggleAttribute("hidden", !hasHarness);
+  if (dialog.harnessText.parentElement) {
+    setShown(dialog.harnessText.parentElement, hasHarness);
+  }
   dialog.harnessText.textContent = tf("material_start_harness", {
     harness: names,
   });
   dialog.request.value = harnessRequestText(paths);
   dialog.copy.textContent = t("material_start_copy");
-  dialog.noHarness.hidden = hasHarness;
+  setShown(dialog.noHarness, !hasHarness);
   const noHarnessText =
     dialog.noHarness.querySelector<HTMLElement>('[data-role="text"]');
   if (noHarnessText) noHarnessText.textContent = t("material_start_no_harness");
   dialog.setup.textContent = t("material_start_setup");
-  dialog.setup.hidden = !host.openAgentSetup;
+  setShown(dialog.setup, Boolean(host.openAgentSetup));
   dialog.after.textContent = t("material_start_after");
   dialog.close.textContent = t("material_start_close");
 }
 
+function usePaths(next: string[]): void {
+  if (!parts || analyzing || next.length === 0) return;
+  paths = next;
+  parts.copyStatus.textContent = "";
+  parts.builtInStatus.textContent = "";
+  parts.pages.value = "";
+  render(parts);
+}
+
 async function chooseFiles(): Promise<void> {
-  if (!host.pickFiles || !parts) return;
-  const picked = await host.pickFiles().catch(() => []);
-  if (picked.length > 0) {
-    paths = picked;
-    parts.copyStatus.textContent = "";
-    render(parts);
-  }
+  if (!host.pickFiles) return;
+  usePaths(await host.pickFiles().catch(() => []));
 }
 
 async function copyRequest(): Promise<void> {
@@ -265,30 +492,81 @@ async function copyRequest(): Promise<void> {
   }
 }
 
-export function closeMaterialImportStart(): void {
-  parts?.overlay.classList.remove("active");
+/** Send the picked files to the connected model, then open the review. */
+async function analyzeHere(): Promise<void> {
+  const dialog = parts;
+  if (!dialog || analyzing) return;
+  const state = builtInState(paths, models);
+  if (state.kind !== "ready") return;
+  analyzing = true;
+  render(dialog);
+  dialog.builtInStatus.textContent = t("material_builtin_running");
+  try {
+    const args = analyzeArgs(paths, state.pdf ? dialog.pages.value : "");
+    const result = (
+      host.runInBackground
+        ? await host.runInBackground("material-import-analyze", args)
+        : await runBridge("material-import-analyze", args)
+    ) as MaterialImportAnalyzeResponse;
+    if (!result.success) {
+      dialog.builtInStatus.textContent = t(analyzeRefusalKey(result.code));
+      return;
+    }
+    dialog.builtInStatus.textContent = "";
+    closeMaterialImportStart();
+    void openMaterialReview(result.id, reviewOptions);
+    void refreshPendingMaterialImports();
+  } catch (err) {
+    const reason = err instanceof Error ? err.message : String(err);
+    dialog.builtInStatus.textContent = `${t("material_builtin_failed")} ${reason}`;
+  } finally {
+    analyzing = false;
+    render(dialog);
+  }
 }
 
-/** Open the start dialog and look up the connected harnesses. */
+export function closeMaterialImportStart(): void {
+  parts?.overlay.classList.remove("active");
+  stopDrop?.();
+  stopDrop = null;
+}
+
+/** Open the start dialog and look up the harnesses and models. */
 export async function openMaterialImportStart(): Promise<void> {
   const dialog = ensureDialog();
-  paths = [];
-  dialog.copyStatus.textContent = "";
+  if (!analyzing) {
+    paths = [];
+    dialog.copyStatus.textContent = "";
+    dialog.builtInStatus.textContent = "";
+    dialog.pages.value = "";
+  }
   render(dialog);
   dialog.overlay.classList.add("active");
   dialog.close.focus();
-  try {
-    harnesses = connectedHarnesses(
-      await runBridge<AgentHarnessStatusResponse>("agent-harness-status"),
-    );
-  } catch {
-    harnesses = [];
+  if (host.onFileDrop && !stopDrop) {
+    const stop = await host.onFileDrop(usePaths).catch(() => null);
+    // Closed while the listener was being set up: let it go again.
+    if (dialog.overlay.classList.contains("active")) stopDrop = stop;
+    else stop?.();
   }
+  const [harnessReport, modelReport] = await Promise.all([
+    runBridge<AgentHarnessStatusResponse>("agent-harness-status").catch(
+      () => null,
+    ),
+    runBridge<MaterialImportModelsResponse>("material-import-models").catch(
+      () => null,
+    ),
+  ]);
+  harnesses = connectedHarnesses(harnessReport);
+  models = modelReport;
   render(dialog);
 }
 
 /** Wire the Learning Content button, if the host has one. */
-export function initMaterialImportStart(): void {
+export function initMaterialImportStart(
+  options: MaterialReviewOptions = {},
+): void {
+  reviewOptions = options;
   const button = document.getElementById("btn-content-material-import");
   if (!button) return;
   button.textContent = t("btn_material_import");

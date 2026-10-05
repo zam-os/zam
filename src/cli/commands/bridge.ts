@@ -288,6 +288,11 @@ import {
   getLocalVisionStatus,
 } from "../llm/local-vision.js";
 import {
+  analyzeMaterialViaLLM,
+  MaterialAnalyzeError,
+  materialImportModels,
+} from "../llm/material-analyze.js";
+import {
   isMachineLocalEntry,
   loadModelRegistry,
   type ResolvedModelEntry,
@@ -7042,6 +7047,57 @@ bridgeCommand
     } catch (err) {
       jsonError((err as Error).message);
     }
+  });
+
+bridgeCommand
+  .command("material-import-models")
+  .description(
+    "The models a built-in material import would send photos and PDFs to (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut({ success: true, ...(await materialImportModels(db)) });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-analyze")
+  .description(
+    "Read photos or one PDF with the connected model and stage its proposals for review (JSON)",
+  )
+  .requiredOption("--file <path...>", "Up to 10 photos, or one PDF")
+  .option("--pages <range>", "Pages of the PDF to use, e.g. 2-4")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await analyzeMaterialViaLLM(
+          db,
+          opts.file as string[],
+          { pages: opts.pages },
+          {
+            onProgress: (progress) =>
+              progressOut({ type: "material-analyze-progress", ...progress }),
+          },
+        );
+        const batch = await stageMaterialImport({
+          set: result.set,
+          origin: "studio",
+        });
+        jsonOut({
+          success: true,
+          id: batch.id,
+          proposalCount: batch.set.proposals.length,
+          model: result.model,
+        });
+      } catch (err) {
+        // A refusal the Studio explains in the learner's language.
+        if (err instanceof MaterialAnalyzeError) {
+          jsonOut({ success: false, code: err.code, message: err.message });
+          return;
+        }
+        throw err;
+      }
+    });
   });
 
 bridgeCommand

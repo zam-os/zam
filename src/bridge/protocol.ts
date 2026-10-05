@@ -658,6 +658,43 @@ export interface MaterialImportStageResponse {
   proposalCount: number;
 }
 
+/** `material-import-models`: where a built-in import would send the files. */
+export interface MaterialImportModelsResponse {
+  success: boolean;
+  image: { label: string; model: string } | null;
+  file: { label: string; model: string } | null;
+  /** HEIC photos can be converted on this machine. */
+  convertsHeic: boolean;
+}
+
+export type MaterialAnalyzeCodeWire =
+  | "no-files"
+  | "unsupported"
+  | "mixed"
+  | "one-pdf"
+  | "too-many"
+  | "heic"
+  | "too-large"
+  | "missing"
+  | "no-image-model"
+  | "no-file-model"
+  | "model-failed"
+  | "invalid-answer";
+
+/**
+ * `material-import-analyze`: the staged batch, or a refusal with a code the
+ * Studio explains. Progress goes to stderr as
+ * `{"type":"material-analyze-progress","done":n,"total":m}`.
+ */
+export type MaterialImportAnalyzeResponse =
+  | {
+      success: true;
+      id: string;
+      proposalCount: number;
+      model: { label: string; model: string };
+    }
+  | { success: false; code: MaterialAnalyzeCodeWire; message: string };
+
 export interface MaterialImportPendingEntry {
   id: string;
   title: string;

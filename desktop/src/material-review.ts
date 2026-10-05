@@ -26,6 +26,7 @@ import {
   initRadioGroupKeyboard,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
+import { rememberDisplay, setShown } from "./visibility.js";
 
 export type MaterialChoices = Record<string, MaterialChoiceWire | null>;
 
@@ -291,6 +292,7 @@ function element<K extends keyof HTMLElementTagNameMap>(
 ): HTMLElementTagNameMap[K] {
   const node = document.createElement(tag);
   Object.assign(node.style, style);
+  rememberDisplay(node);
   return node;
 }
 
@@ -651,7 +653,7 @@ async function loadPreviews(
   stamp: number,
 ): Promise<void> {
   parts.preview.replaceChildren();
-  parts.preview.hidden = review.files.length === 0;
+  setShown(parts.preview, review.files.length > 0);
   for (let index = 0; index < review.files.length; index++) {
     if (stamp !== generation) return;
     const figure = element("figure", {
@@ -840,7 +842,7 @@ function ensureBanner(): HTMLElement | null {
   });
   banner.id = BANNER_ID;
   banner.className = "frosted";
-  banner.hidden = true;
+  setShown(banner, false);
   banner.setAttribute("role", "status");
   const text = element("span", { flex: "1", fontWeight: "600" });
   text.dataset.role = "text";
@@ -862,7 +864,7 @@ function renderPending(): void {
   const banner = ensureBanner();
   const text = pendingBannerText(pending);
   if (banner) {
-    banner.hidden = text === null;
+    setShown(banner, text !== null);
     const label = banner.querySelector<HTMLElement>('[data-role="text"]');
     const open = banner.querySelector<HTMLElement>('[data-role="open"]');
     if (label) label.textContent = text ?? "";

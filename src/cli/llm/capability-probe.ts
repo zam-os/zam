@@ -242,14 +242,17 @@ export function classifyCapabilities(
    */
   catalogImage?: boolean,
   catalogVideo?: boolean,
+  catalogFile?: boolean,
 ): CapabilityFlags {
   const detected = emptyCapabilityFlags();
 
-  // Anthropic Messages API: text + image (vision) only — no OpenAI-shaped
-  // embedding or audio routes.
+  // Anthropic Messages API: text, image and PDF documents — no OpenAI-shaped
+  // embedding or audio routes. The API itself takes `document` blocks, so a
+  // PDF reaches the model, not a gateway's transcript.
   if (entry.apiFlavor === "anthropic-messages") {
     detected.text = true;
     detected.image = true;
+    detected.file = true;
     return detected;
   }
 
@@ -279,6 +282,10 @@ export function classifyCapabilities(
   // architecture metadata never report it.
   detected.image = catalogImage ?? looksVision;
   detected.video = catalogVideo ?? false;
+  // PDF input is metadata-only too (ADR 2026-10-05 Decision 1): a model that
+  // does not read PDFs itself would have them transcribed by the gateway, so
+  // only a declared `file` modality counts.
+  detected.file = catalogFile ?? false;
   // Speech is claimed from the model *name*, so it must be checked against the
   // provider's own catalog exactly as text is. Without that gate a name that
   // merely looks like a speech model — `mimo-v2.5-tts`, which Xiaomi does not
@@ -410,6 +417,7 @@ export async function probeModelCapabilities(
   const declared = catalogEntry?.inputModalities;
   const catalogImage = declared ? declared.includes("image") : undefined;
   const catalogVideo = declared ? declared.includes("video") : undefined;
+  const catalogFile = declared ? declared.includes("file") : undefined;
 
   let dimProbeEmbedding = false;
   if (opts.embeddingDimProbe && !catalogKnown && !looksEmbedding) {
@@ -431,6 +439,7 @@ export async function probeModelCapabilities(
     dimProbeEmbedding,
     catalogImage,
     catalogVideo,
+    catalogFile,
   );
 
   // Key validity is only checkable where the provider publishes a key-metadata

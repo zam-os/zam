@@ -159,6 +159,26 @@ describe("zam bridge material-import-*", () => {
     expect(runCliJson(["material-import-bonus-list"]).items).toEqual([]);
   });
 
+  it("names the models and refuses a built-in import without one, as JSON", () => {
+    const models = runCliJson(["material-import-models"]);
+    expect(models).toMatchObject({ success: true, image: null, file: null });
+    expect(typeof models.convertsHeic).toBe("boolean");
+
+    const photo = join(tempCwd, "Seite 1.jpg");
+    writeFileSync(photo, "synthetic");
+    expect(runCliJson(["material-import-analyze", "--file", photo])).toEqual({
+      success: false,
+      code: "no-image-model",
+      message: expect.any(String),
+    });
+    const pdf = join(tempCwd, "blatt.pdf");
+    writeFileSync(pdf, "%PDF-1.7");
+    expect(
+      runCliJson(["material-import-analyze", "--file", photo, pdf]),
+    ).toMatchObject({ success: false, code: "mixed" });
+    expect(runCliJson(["material-import-pending"]).imports).toEqual([]);
+  });
+
   it("discards a batch", () => {
     const staged = runCliJson(["material-import-stage", "--file", FIXTURE]);
     expect(runCliJson(["material-import-discard", "--id", staged.id])).toEqual({

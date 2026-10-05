@@ -2,6 +2,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -224,8 +225,9 @@ setLearningContentFilePicker(async () => {
   return typeof selected === "string" ? selected : null;
 });
 
-// Material import (ADR 2026-10-05): photos and PDFs for the harness handoff,
-// and the way to connecting an agent when none is.
+// Material import (ADR 2026-10-05): photos and PDFs, picked or dropped, for
+// the built-in path and the harness handoff, and the ways to connecting a
+// model or an agent when none is.
 setMaterialImportHost({
   pickFiles: async () => {
     const selected = await openFolderDialog({
@@ -248,6 +250,23 @@ setMaterialImportHost({
     document
       .getElementById("settings-agents-card")
       ?.scrollIntoView({ block: "start" });
+  },
+  openModelSetup: () => showOnboardingAt("model"),
+  onFileDrop: async (onDrop) =>
+    getCurrentWebview().onDragDropEvent((event) => {
+      if (event.payload.type === "drop") onDrop(event.payload.paths);
+    }),
+  // The model may take a minute or two; the persistent bridge must not wait.
+  runInBackground: async (cmd, args) => {
+    const raw = await invoke<string>("execute_zam_bridge_background", {
+      cmd,
+      args,
+    });
+    const parsed = JSON.parse(raw) as { error?: string };
+    if (typeof parsed.error === "string" && parsed.error.length > 0) {
+      throw new Error(parsed.error);
+    }
+    return parsed;
   },
 });
 
@@ -383,7 +402,14 @@ let databaseCurrentUserId: string | null = null;
 
 // Unified capability model registry (ADR 2026-07-12). The Settings model table
 // reads these rows from `zam bridge model-list`.
-type ModelCapability = "text" | "embedding" | "image" | "video" | "stt" | "tts";
+type ModelCapability =
+  | "text"
+  | "embedding"
+  | "image"
+  | "video"
+  | "file"
+  | "stt"
+  | "tts";
 type CapabilityFlags = Record<ModelCapability, boolean>;
 
 interface ModelRow {
@@ -3346,6 +3372,8 @@ function capabilityLabel(cap: ModelCapability): string {
       return t("model_cap_image");
     case "video":
       return t("model_cap_video");
+    case "file":
+      return t("model_cap_file");
     case "stt":
       return t("model_cap_stt");
     default:
@@ -3358,12 +3386,15 @@ function capabilityLabel(cap: ModelCapability): string {
 // its own modality: "vision" stays `image` (the Observer reads frames), while
 // direct video input is the Observer's future screen-recording path. The
 // overview renders only what a probe detected — capabilities are detected,
-// not chosen — so a row never offers a modality the endpoint lacks.
+// not chosen — so a row never offers a modality the endpoint lacks. `file`
+// (PDFs the model reads itself) gates PDFs in material imports (ADR
+// 2026-10-05 Decision 1).
 const UI_CAPABILITIES: ModelCapability[] = [
   "text",
   "embedding",
   "image",
   "video",
+  "file",
   "stt",
   "tts",
 ];

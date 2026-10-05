@@ -588,13 +588,14 @@ export function initLearningContentStudio(): void {
   // Material imports (ADR 2026-10-05): a waiting batch shows as a banner,
   // confirmed cards show up in the list straight away, and items kept as
   // Bonus wait behind their own button until the learner takes one.
-  initMaterialImports({
+  const materialReview = {
     onConfirmed: async () => {
       await loadStudioData();
       await refreshMaterialBonus();
     },
-  });
-  initMaterialImportStart();
+  };
+  initMaterialImports(materialReview);
+  initMaterialImportStart(materialReview);
   initMaterialBonus({ onTaken: () => loadStudioData() });
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
