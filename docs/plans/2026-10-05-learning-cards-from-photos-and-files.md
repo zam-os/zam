@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1–7 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
+**Status:** Phases 1–8 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -37,7 +37,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [x] **Phase 6** — built-in Studio path: `file` capability, request module,
   picker — `efc056ef`
 - [x] **Phase 7** — Bonus view and the offer after the due queue — `ca5b0a59`
-- [ ] **Phase 8** — Mobile
+- [x] **Phase 8** — Mobile — `615f39a9`
 - [ ] **Phase 9** — the review list as an MCP Apps panel (optional)
 - [ ] **Phase 10** — documentation and handover
 
@@ -783,6 +783,33 @@ factors. The pass above, with the current build, is still to do.
    - No staging file: the built-in path does not cross a process boundary.
 4. **Bonus.** Offer imported bonus items in `mobile/src/study-offers.ts`.
 5. **Tests** in `tests/mobile/`, following the existing VL-import tests.
+
+**As built.**
+
+- **Modules.** `mobile/src/vl-import.ts` sends the shared request;
+  `mobile/src/material-import.ts` holds the pipeline without DOM (endpoints,
+  reading, matching, commit, bonus); `mobile/src/material-review-view.ts`
+  renders the list. The shared review rules are
+  `src/kernel/import/material-review-state.ts`; the selection rule (ten
+  photos or one PDF) is `materialSelection` / `materialSelectionOfKinds` in
+  `material-prompt.ts`, so desktop, CLI and Mobile apply one rule.
+- **Models.** Photos go to the registry's `image` rows, then to the older
+  `llm.vision.*` endpoint on the library; a PDF only to a registry row whose
+  `file` capability the desktop's probe detected (D1). Mobile adds `file` to
+  its capability type but has no probe of its own.
+- **The 8 MB body limit** of the native `vision_request` command is met by
+  batching photos under 7.5 MB (`batchByBudget`) and merging the replies; the
+  Rust limit is unchanged. A PDF over about 5.6 MB is refused as too large.
+- **Files on the phone** have no path: the link is `photo:<name>@<date>`, the
+  fingerprint is SHA-256 of the file as picked (`crypto.subtle`), so the
+  re-import notice works on the phone too.
+- **The review list replaces** the one-image "decompose" flow and its card-by-
+  card drafts; the obsolete helpers and strings are removed. The curriculum
+  import still uses the card-by-card drafts.
+- **Bonus** is offered at both places the atom bonus was: after a session and
+  on the dashboard, before the atom bonus.
+- **Not verified on a device.** The tests run against a real device database
+  with the model mocked; the list was checked in a browser at phone size.
 
 ---
 
