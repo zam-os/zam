@@ -272,6 +272,12 @@ const BORDER =
 
 let dialog: DialogParts | null = null;
 let busy = false;
+/**
+ * Bumped by every open, close and finished confirm. A review or preview
+ * response that arrives under an older value belongs to a list the learner
+ * is no longer looking at, and is dropped.
+ */
+let generation = 0;
 let current: {
   review: MaterialImportReviewResponse;
   choices: MaterialChoices;
@@ -396,6 +402,7 @@ function ensureDialog(): DialogParts {
 
 export function closeMaterialReview(): void {
   if (busy) return;
+  generation++;
   dialog?.overlay.classList.remove("active");
 }
 
@@ -641,10 +648,12 @@ async function loadAreaOptions(): Promise<void> {
 async function loadPreviews(
   parts: DialogParts,
   review: MaterialImportReviewResponse,
+  stamp: number,
 ): Promise<void> {
   parts.preview.replaceChildren();
   parts.preview.hidden = review.files.length === 0;
   for (let index = 0; index < review.files.length; index++) {
+    if (stamp !== generation) return;
     const figure = element("figure", {
       margin: "0",
       display: "flex",
@@ -663,6 +672,7 @@ async function loadPreviews(
         "material-import-file-preview",
         ["--id", review.id, "--file", String(index)],
       );
+      if (stamp !== generation) return;
       if (preview.dataUrl) {
         const image = element("img", {
           width: "100%",
@@ -692,6 +702,8 @@ export async function openMaterialReview(
 ): Promise<void> {
   const parts = ensureDialog();
   if (busy) return;
+  const stamp = ++generation;
+  current = null;
   parts.overlay.classList.add("active");
   parts.title.textContent = t("material_review_loading");
   parts.meta.textContent = "";
@@ -709,6 +721,7 @@ export async function openMaterialReview(
       "material-import-review",
       ["--id", id],
     );
+    if (stamp !== generation) return;
     if (!review?.success) throw new Error(t("material_review_error"));
     current = {
       review,
@@ -718,8 +731,9 @@ export async function openMaterialReview(
     };
     renderReview(parts);
     void loadAreaOptions();
-    void loadPreviews(parts, review);
+    void loadPreviews(parts, review, stamp);
   } catch (err) {
+    if (stamp !== generation) return;
     current = null;
     parts.status.textContent = errorText(err);
   }
@@ -756,6 +770,7 @@ async function confirmCurrent(): Promise<void> {
     );
     if (!result?.success) throw new Error(t("material_review_error"));
     current = null;
+    generation++;
     parts.status.textContent = tf("material_review_done", {
       cards: result.cardsCreated,
       bonus: result.bonusKept,

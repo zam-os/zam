@@ -820,6 +820,11 @@ export async function matchMaterialProposals(
     vectors.slice(set.proposals.length).forEach((v, index) => {
       cells[index].vector = Float32Array.from(v);
     });
+    // The vector leg searches the whole library, not only the subject's
+    // pre-selection (owner decision, 2026-10-05): a learner's library is
+    // small and personal, a match from elsewhere still has to clear the
+    // threshold, and a subject filter would miss cards filed under an
+    // unconventional area.
     const known = new Map(library.map((c) => [c.key, c]));
     const embedded = await listEmbeddedTokens(db, opts.embeddingModel);
     for (const row of embedded) {
@@ -1229,11 +1234,15 @@ export async function commitMaterialImport(
         const proposal = set.proposals[row.proposalIndex];
         const area = areaFor(proposal);
         // An exact duplicate — same area, same question — is linked, not
-        // written twice (the existing slug-level dedupe, by meaning).
+        // written twice (the existing slug-level dedupe, by meaning). Only a
+        // token the queue deals counts: a draft or one in maintenance would
+        // take the learner's choice and never show it.
         const duplicate = (await tx
           .prepare(
             `SELECT id, question FROM tokens
-              WHERE domain = ? AND deprecated_at IS NULL AND question IS NOT NULL`,
+              WHERE domain = ? AND question IS NOT NULL
+                AND deprecated_at IS NULL AND maintenance_at IS NULL
+                AND editorial_state = 'published'`,
           )
           .all(area)) as Array<{ id: string; question: string }>;
         const same = duplicate.find(
@@ -1267,7 +1276,9 @@ export async function commitMaterialImport(
         await linkToSource(tx, tokenId, sourceId, proposal.page);
         if (choice === "yes") {
           if (await takeCard(tx, tokenId, userId)) result.cardsCreated++;
-        } else if (!(await getCard(tx, tokenId, userId))) {
+        } else if (
+          !(await holdsTarget(tx, userId, { type: "token", tokenId }))
+        ) {
           result.bonusKept++;
         }
         continue;
@@ -1282,7 +1293,7 @@ export async function commitMaterialImport(
       await linkToSource(tx, tokenId, sourceId, page);
       if (choice === "yes") {
         if (await takeCard(tx, tokenId, userId)) result.cardsCreated++;
-      } else if (!(await getCard(tx, tokenId, userId))) {
+      } else if (!(await holdsTarget(tx, userId, { type: "token", tokenId }))) {
         result.bonusKept++;
       }
     }
@@ -1362,7 +1373,7 @@ const BONUS_ITEMS_SQL = `
     LEFT JOIN cards c ON c.token_id = t.id AND c.user_id = ?
    WHERE s.imported_by = ?
      AND s.uri LIKE ?
-     AND c.id IS NULL
+     AND (c.id IS NULL OR c.detached_at < s.created_at)
      AND t.deprecated_at IS NULL
      AND t.maintenance_at IS NULL
      AND t.editorial_state = 'published'
@@ -1370,7 +1381,10 @@ const BONUS_ITEMS_SQL = `
 
 /**
  * Items the learner kept as Bonus from their own imports: linked to one of
- * their imports, no card of theirs (Decision 6). Newest import first.
+ * their imports, no card of theirs in the queue (Decision 6). Newest import
+ * first. A card set aside as "not for me" counts as absent only when that
+ * came before the import: keeping it as Bonus then is the newer choice, while
+ * setting it aside after the import keeps it out of every offer.
  */
 export async function listMaterialBonusItems(
   db: Database,

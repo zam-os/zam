@@ -542,6 +542,30 @@ describe("material import against a library", () => {
       expect(await getCard(db, existing.id, USER)).toBeDefined();
     });
 
+    it("writes a new token rather than link a draft with the same question", async () => {
+      const draft = await createToken(db, {
+        slug: "entwurf",
+        concept: "Farbe, Aggregatzustand, Glanz",
+        question: "Welche Eigenschaften eines Stoffes erkennt man am Aussehen?",
+        domain: "chemie/stoffe-und-eigenschaften",
+        editorial_state: "draft",
+      });
+      const set = withProposals(proposal());
+      const rows: MaterialReviewRow[] = [
+        { kind: "proposal", id: "p:0", proposalIndex: 0, preset: "yes" },
+      ];
+      const result = await commitMaterialImport(db, USER, {
+        set,
+        rows,
+        decisions: { "p:0": "yes" },
+      });
+      expect(result).toMatchObject({ linkedExisting: 0, cardsCreated: 1 });
+      expect(await getCard(db, draft.id, USER)).toBeUndefined();
+      expect(
+        (await buildReviewQueue(db, { userId: USER, maxNew: 20 })).items,
+      ).toHaveLength(1);
+    });
+
     it("rolls back the whole import when one row fails", async () => {
       const set = withProposals(proposal());
       const rows: MaterialReviewRow[] = [
@@ -627,6 +651,40 @@ describe("material import against a library", () => {
         items[0].tokenId,
       );
       expect(cardId).toBeTruthy();
+      expect(await listMaterialBonusItems(db, USER)).toEqual([]);
+    });
+
+    it("keeps a card set aside before the import as Bonus, not one set aside after", async () => {
+      const existing = await createToken(db, {
+        slug: "aussehen",
+        concept:
+          "Farbe, Aggregatzustand bei Raumtemperatur, metallischer Glanz",
+        question: "Welche Eigenschaften eines Stoffes erkennt man am Aussehen?",
+        domain: "chemie/stoffe-und-eigenschaften",
+      });
+      await ensureCard(db, existing.id, USER);
+      await detachCardForUser(db, existing.id, USER);
+      await db
+        .prepare("UPDATE cards SET detached_at = ? WHERE token_id = ?")
+        .run("2026-01-01T00:00:00.000Z", existing.id);
+
+      const set = withProposals(proposal({ origin: "extra" }));
+      const rows = await matchMaterialProposals(db, USER, set);
+      expect(rows[1]).toMatchObject({ id: "e:0", held: false });
+      const result = await commitMaterialImport(db, USER, {
+        set,
+        rows,
+        decisions: { "e:0": "bonus" },
+      });
+      expect(result.bonusKept).toBe(1);
+      expect(
+        (await listMaterialBonusItems(db, USER)).map((item) => item.tokenId),
+      ).toEqual([existing.id]);
+      await takeMaterialBonusItem(db, USER, existing.id);
+      expect((await getCard(db, existing.id, USER))?.detached_at).toBeNull();
+
+      // Set aside again, after the import: no longer offered.
+      await detachCardForUser(db, existing.id, USER);
       expect(await listMaterialBonusItems(db, USER)).toEqual([]);
     });
   });

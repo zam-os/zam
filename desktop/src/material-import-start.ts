@@ -40,10 +40,19 @@ export function connectedHarnesses(
     .map((harness) => harness.label);
 }
 
-/** The request the learner pastes into their harness. */
+/**
+ * The request the learner pastes into their harness. Each path is quoted and
+ * several go one per line: Desktop and iCloud paths carry spaces, and a comma
+ * in a file name must not read as a separator.
+ */
 export function harnessRequestText(paths: string[]): string {
   if (paths.length === 0) return t("material_start_request_drop");
-  return tf("material_start_request_files", { files: paths.join(", ") });
+  if (paths.length === 1) {
+    return tf("material_start_request_one", { file: paths[0] });
+  }
+  return tf("material_start_request_files", {
+    files: paths.map((path) => `"${path}"`).join("\n"),
+  });
 }
 
 /** "opencode", "opencode / Claude Code" */

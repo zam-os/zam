@@ -1,10 +1,6 @@
 import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
-import type {
-  MaterialImportReviewResponse,
-  MaterialImportRowWire,
-} from "../../src/bridge/protocol.js";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { setCurrentLocale } from "../../desktop/src/i18n.js";
 import {
@@ -25,6 +21,10 @@ import {
   reviewGroups,
   startsCollapsed,
 } from "../../desktop/src/material-review.js";
+import type {
+  MaterialImportReviewResponse,
+  MaterialImportRowWire,
+} from "../../src/bridge/protocol.js";
 
 /** ADR 2026-10-05: the Studio's review list for photo and file imports. */
 
@@ -327,6 +327,23 @@ describe("material review wiring", () => {
   it("is started by the Learning Content Studio in both hosts", () => {
     expect(studio).toContain("initMaterialImports({");
     expect(studio).toContain("await loadStudioData();");
+  });
+
+  it("drops review and preview responses from an earlier open", () => {
+    const section = (name: string) =>
+      view.slice(view.indexOf(name), view.indexOf("\n}\n", view.indexOf(name)));
+    const open = section("export async function openMaterialReview");
+    expect(open).toContain("const stamp = ++generation;");
+    // Checked after the await, on success and on error alike.
+    expect(open.match(/if \(stamp !== generation\) return;/g)).toHaveLength(2);
+    expect(open).toContain("loadPreviews(parts, review, stamp)");
+    expect(section("async function loadPreviews")).toContain(
+      "if (stamp !== generation) return;",
+    );
+    expect(section("export function closeMaterialReview")).toContain(
+      "generation++;",
+    );
+    expect(section("async function confirmCurrent")).toContain("generation++;");
   });
 
   it("uses the dedicated bridge commands", () => {

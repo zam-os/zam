@@ -757,6 +757,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "material_start_choose",
   "material_start_none_selected",
   "material_start_harness",
+  "material_start_request_one",
   "material_start_request_files",
   "material_start_request_drop",
   "material_start_copy",

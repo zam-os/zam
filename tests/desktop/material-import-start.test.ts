@@ -44,13 +44,15 @@ describe("material import start", () => {
 
   it("names the picked files so a terminal agent can open them", () => {
     setCurrentLocale("de");
-    expect(harnessRequestText(["/Users/learner/Desktop/IMG_1234.jpg"])).toBe(
-      "Lies /Users/learner/Desktop/IMG_1234.jpg und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.",
+    expect(
+      harnessRequestText(["/Users/learner/Desktop/Chemie, Seite 1.jpg"]),
+    ).toBe(
+      'Lies "/Users/learner/Desktop/Chemie, Seite 1.jpg" und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.',
     );
     expect(harnessRequestText([])).toContain("Ich gebe dir ein Foto oder PDF");
     setCurrentLocale("en");
-    expect(harnessRequestText(["/a.pdf", "/b.jpg"])).toBe(
-      "Read /a.pdf, /b.jpg and turn it into learning cards for ZAM. Ask me about anything you cannot read.",
+    expect(harnessRequestText(["/a b.pdf", "/c.jpg"])).toBe(
+      'Read these files and turn them into learning cards for ZAM. Ask me about anything you cannot read.\n"/a b.pdf"\n"/c.jpg"',
     );
   });
 
