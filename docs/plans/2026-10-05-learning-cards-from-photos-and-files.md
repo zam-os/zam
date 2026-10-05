@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1, 2, 3, 4, 5 and 7 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
+**Status:** Phases 1–7 done (2026-10-05). A first opencode run on an older build went well; the manual pass with the current build is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -34,8 +34,8 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
 - [x] **Phase 4** — Studio review list — `09a35032`
 - [x] **Phase 5** — harness path: MCP tools, skill, Studio handoff — `5620339d`
-- [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
-  picker
+- [x] **Phase 6** — built-in Studio path: `file` capability, request module,
+  picker — `efc056ef`
 - [x] **Phase 7** — Bonus view and the offer after the due queue — `ca5b0a59`
 - [ ] **Phase 8** — Mobile
 - [ ] **Phase 9** — the review list as an MCP Apps panel (optional)
@@ -679,6 +679,48 @@ factors. The pass above, with the current build, is still to do.
   - HEIC off macOS → message;
   - nothing logged.
 - **Studio wiring:** the tab, the model line, the missing-capability states.
+
+**As built.**
+
+- **Where the code lives.** The client is `src/cli/llm/material-analyze.ts`,
+  not `llm/material-import.ts`, so it is not confused with the service in
+  `src/cli/material-import.ts`. The built-in rules differ from the harness
+  rules in two lines (no asking back; subject codes listed in the prompt):
+  `materialCardRules("built-in")`.
+- **Choosing the model.** Photos go to `resolveCapability(db, "image")`, not
+  `getProviderForRole(db, "vision")`: the vision role's switch is the
+  Observer's screen-capture consent, which sending a photo the learner picked
+  does not need. Harness-backed rows are skipped; the harness path is their
+  way in. The Anthropic Messages API has `file` by contract, since it takes
+  PDF `document` blocks and has no catalog metadata.
+- **Effort and output.** No reasoning control is sent: the probe's verified
+  level is the cheap one meant for recall, and card writing should get the
+  model's own default. JSON mode and the native PDF engine
+  (`plugins: [{ id: "file-parser", pdf: { engine: "native" } }]`) are sent
+  on OpenRouter only. Output budget 16,000 tokens, request timeout 5 minutes.
+- **One selection rule** (D3): up to ten photos or one PDF; mixed, two PDFs,
+  eleven photos and other file types are refused before anything is sent.
+- **A dialog, not a tab.** The built-in path lives in the Phase 5 "Foto /
+  PDF" dialog, above the harness handoff. Drag and drop works on the whole
+  window while the dialog is open (Tauri `onDragDropEvent`). The picker is
+  the dialog's own multi-select, not `pickLearningContentFile`.
+- **Background process.** The persistent bridge answers one request at a
+  time, so a minute-long analysis would hold up the whole Studio.
+  `material-import-analyze` runs through `execute_zam_bridge_background`
+  (allowlisted in `desktop/src-tauri/src/lib.rs`). That process's stderr is
+  not streamed, so the dialog shows one waiting line and no split progress;
+  the CLI still emits `material-analyze-progress`.
+- **Refusals** come back as `{ success: false, code, message }`, not as an
+  error, so the Studio can explain each in the learner's language.
+- **Found on the way.** Dialog sections laid out with inline flex ignored the
+  `hidden` attribute: the empty "waiting import" banner (Phase 4) and the
+  no-harness note (Phase 5) stayed on screen. `desktop/src/visibility.ts`
+  fixes both dialogs.
+- **Retired** in the Studio only: the "OCR Scan" option. `zam bridge
+  personal-source-import --type scan` stays for agents.
+- **Mobile's model registry** is untouched; Phase 8 adds `file` there.
+- **Not verified:** a real request to a model; the tests mock the transport.
+  The Rust allowlist change is checked by CI's `cargo check`.
 
 ---
 
