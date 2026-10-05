@@ -18,6 +18,7 @@ import {
   commitMaterialImport,
   type Database,
   findImportsByFingerprints,
+  type MaterialAreaGroup,
   type MaterialChoice,
   type MaterialCommitResult,
   type MaterialFile,
@@ -27,6 +28,7 @@ import {
   type MaterialProposalSet,
   type MaterialReviewRow,
   matchMaterialProposals,
+  materialAreaGroups,
 } from "../kernel/index.js";
 import { getLastCurriculumSelection } from "./curriculum/breadcrumb.js";
 import {
@@ -53,12 +55,6 @@ export interface PendingMaterialImport {
   origin: StagedImport["origin"];
   harness: string | null;
   proposalCount: number;
-}
-
-export interface MaterialAreaGroup {
-  /** The area as proposed; the key a confirmed rename is sent under. */
-  area: string;
-  proposalIndexes: number[];
 }
 
 export interface MaterialImportReview {
@@ -170,19 +166,6 @@ async function matchRows(
   };
 }
 
-function areaGroups(set: MaterialProposalSet): MaterialAreaGroup[] {
-  const groups = new Map<string, number[]>();
-  set.proposals.forEach((proposal, index) => {
-    const list = groups.get(proposal.area) ?? [];
-    list.push(index);
-    groups.set(proposal.area, list);
-  });
-  return [...groups].map(([area, proposalIndexes]) => ({
-    area,
-    proposalIndexes,
-  }));
-}
-
 /**
  * Build the review list for a waiting batch and remember it, so the confirm
  * applies the learner's choices to exactly the rows they saw.
@@ -218,7 +201,7 @@ export async function reviewMaterialImport(
     proposals: batch.set.proposals,
     files: batch.set.files,
     rows,
-    areaGroups: areaGroups(batch.set),
+    areaGroups: materialAreaGroups(batch.set.proposals),
     reimports,
     semantic,
   };

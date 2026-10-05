@@ -2,12 +2,14 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
+  batchByBudget,
   buildMaterialInstructions,
   buildMaterialRequest,
   MATERIAL_CARD_RULES,
   MATERIAL_MAX_OUTPUT_TOKENS,
   type MaterialAttachment,
   materialCardRules,
+  materialSelectionOfKinds,
   mergeMaterialReplies,
   parseMaterialReply,
 } from "../../src/cli/llm/material-prompt.js";
@@ -200,6 +202,24 @@ describe("reading the reply", () => {
       // Out of range stays as it was; validation names it.
       { question: "c", file: 7 },
     ]);
+  });
+
+  it("batches attachments under a body budget, in order", () => {
+    const sized = (n: number) => ({ base64: "A".repeat(n) });
+    expect(batchByBudget([sized(4), sized(4), sized(3), sized(9)], 8)).toEqual(
+      [[0, 1], [2], [3]],
+    );
+    expect(batchByBudget([], 8)).toEqual([]);
+  });
+
+  it("applies the selection rule to kinds a phone already knows", () => {
+    expect(materialSelectionOfKinds(["image", "heic"])).toEqual({
+      ok: true,
+      kind: "image",
+    });
+    expect(materialSelectionOfKinds(["pdf", "image"])).toMatchObject({
+      code: "mixed",
+    });
   });
 
   it("stays free of Node built-ins, for Mobile's bundle", () => {

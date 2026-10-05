@@ -2,11 +2,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import {
-  resolveMobileVisionEndpoint,
-  visionImportUnavailableReason,
-  visionProviderStamp,
-} from "../../mobile/src/vision-config.js";
+import { resolveMobileVisionEndpoint } from "../../mobile/src/vision-config.js";
 import {
   type Database,
   openDatabase,
@@ -34,7 +30,6 @@ describe("mobile vision config from DB settings", () => {
     await setSetting(db, "llm.vision.url", "https://api.openai.com/v1");
     await setSetting(db, "llm.vision.model", "gpt-4o");
     expect(await resolveMobileVisionEndpoint(db)).toBeNull();
-    expect(await visionImportUnavailableReason(db)).toMatch(/not enabled/i);
   });
 
   it("resolves a cloud OpenAI-compatible endpoint from llm.vision.*", async () => {
@@ -51,7 +46,6 @@ describe("mobile vision config from DB settings", () => {
       apiFlavor: "chat-completions",
       label: "gpt-4o",
     });
-    expect(await visionImportUnavailableReason(db)).toBeNull();
   });
 
   it("falls back to llm.url / llm.model / llm.api_key", async () => {
@@ -72,7 +66,6 @@ describe("mobile vision config from DB settings", () => {
     await setSetting(db, "llm.vision.url", "http://127.0.0.1:11434/v1");
     await setSetting(db, "llm.vision.model", "llava");
     expect(await resolveMobileVisionEndpoint(db)).toBeNull();
-    expect(await visionImportUnavailableReason(db)).toMatch(/local|loopback/i);
 
     await setSetting(db, "llm.vision.url", "http://192.168.1.10:8000/v1");
     expect(await resolveMobileVisionEndpoint(db)).toBeNull();
@@ -83,11 +76,5 @@ describe("mobile vision config from DB settings", () => {
     await setSetting(db, "llm.vision.url", "http://vision.example.com/v1");
     await setSetting(db, "llm.vision.model", "gpt-4o");
     expect(await resolveMobileVisionEndpoint(db)).toBeNull();
-    expect(await visionImportUnavailableReason(db)).toMatch(/https/i);
-  });
-
-  it("stamps provider as vision:<model>", () => {
-    expect(visionProviderStamp("gpt-4o")).toBe("vision:gpt-4o");
-    expect(visionProviderStamp("  ")).toBe("vision:unknown");
   });
 });

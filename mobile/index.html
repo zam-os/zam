@@ -473,10 +473,10 @@
                 <input id="import-file" type="file" accept="application/json,.json" />
               </label>
               <label class="field">
-                <span data-i18n="import_image_label">Foto oder Screenshot</span>
-                <input id="import-image" type="file" accept="image/*" />
-                <span class="t-footnote" data-i18n="import_image_hint">
-                  Kamera oder Galerie — braucht KI und Internet
+                <span data-i18n="material_label">Fotos oder PDF</span>
+                <input id="import-image" type="file" accept="image/*,application/pdf" multiple />
+                <span class="t-footnote" data-i18n="material_hint">
+                  Mitschrift oder Arbeitsblatt, ein Fach pro Import – braucht KI und Internet
                 </span>
               </label>
               <button
@@ -491,11 +491,29 @@
                 id="decompose-image"
                 class="btn"
                 type="button"
-                data-i18n="import_image_decompose"
+                data-i18n="material_analyze"
               >
-                Bild zerlegen
+                Lernkarten vorschlagen
               </button>
               <p id="import-status" class="status" aria-live="polite"></p>
+            </div>
+
+            <!-- Learning cards from photos and PDFs (ADR 2026-10-05): the review list. -->
+            <div id="material-review" class="stack" hidden style="margin-top: var(--gap-4)">
+              <h2 class="t-title" data-i18n="material_review_title">Vorschläge prüfen</h2>
+              <p id="material-review-meta" class="t-footnote"></p>
+              <p class="t-secondary" data-i18n="material_review_intro">
+                Ja nimmt eine Karte in deine Wiederholung auf, Bonus hebt sie für später auf, Nein
+                verwirft sie. Karten ohne Wahl werden nicht gespeichert.
+              </p>
+              <p id="material-review-notice" class="t-footnote" hidden></p>
+              <div id="material-review-list" class="stack"></div>
+              <datalist id="material-review-areas"></datalist>
+              <button id="material-review-confirm" class="btn primary" type="button"></button>
+              <button id="material-review-cancel" class="btn plain" type="button" data-i18n="cancel">
+                Abbrechen
+              </button>
+              <p id="material-review-status" class="status" aria-live="polite"></p>
             </div>
 
             <form id="import-draft-form" class="stack" hidden style="margin-top: var(--gap-4)">

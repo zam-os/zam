@@ -20,6 +20,11 @@ import type {
   MaterialImportAnalyzeResponse,
   MaterialImportModelsResponse,
 } from "../../src/bridge/protocol.js";
+import {
+  type MaterialFileKind,
+  materialFileKind,
+  materialSelection,
+} from "../../src/cli/llm/material-prompt.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 import {
@@ -53,9 +58,6 @@ export function setMaterialImportHost(next: MaterialImportHost): void {
 
 // ── Rules (pure) ─────────────────────────────────────────────────────────────
 
-/** Photos per import on the built-in path (D3). */
-export const MAX_PHOTOS = 10;
-
 /** Harnesses that carry ZAM's MCP entry, by their display label. */
 export function connectedHarnesses(
   report: AgentHarnessStatusResponse | null | undefined,
@@ -86,16 +88,7 @@ export function harnessNames(labels: string[]): string {
   return labels.join(" / ");
 }
 
-export type MaterialFileKind = "image" | "heic" | "pdf" | "other";
-
-export function materialFileKind(path: string): MaterialFileKind {
-  const ext = path.slice(path.lastIndexOf(".") + 1).toLowerCase();
-  if (ext === "pdf") return "pdf";
-  if (ext === "heic" || ext === "heif") return "heic";
-  return ["jpg", "jpeg", "png", "webp", "gif"].includes(ext)
-    ? "image"
-    : "other";
-}
+export { type MaterialFileKind, materialFileKind };
 
 /** What the "read it here" part shows for these files and models. */
 export type BuiltInState =
@@ -121,19 +114,18 @@ export function builtInState(
       ? { kind: "waiting", model: models.image.label }
       : noImageModel;
   }
-  const kinds = paths.map(materialFileKind);
-  if (kinds.includes("other")) return blocked("material_builtin_unsupported");
-  const pdfs = kinds.filter((kind) => kind === "pdf").length;
-  if (pdfs > 0 && pdfs < kinds.length) return blocked("material_builtin_mixed");
-  if (pdfs > 1) return blocked("material_builtin_one_pdf");
-  if (pdfs === 1) {
+  const selection = materialSelection(paths);
+  if (!selection.ok) return blocked(analyzeRefusalKey(selection.code));
+  if (selection.kind === "pdf") {
     return models.file
       ? { kind: "ready", model: models.file.label, pdf: true }
       : blocked("material_builtin_no_file_model");
   }
-  if (paths.length > MAX_PHOTOS) return blocked("material_builtin_too_many");
   if (!models.image) return noImageModel;
-  if (kinds.includes("heic") && !models.convertsHeic) {
+  if (
+    paths.some((path) => materialFileKind(path) === "heic") &&
+    !models.convertsHeic
+  ) {
     return blocked("material_builtin_heic");
   }
   return { kind: "ready", model: models.image.label, pdf: false };

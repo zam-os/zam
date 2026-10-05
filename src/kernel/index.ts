@@ -219,6 +219,19 @@ export {
   VECTOR_MATCH_THRESHOLD,
 } from "./import/material-import.js";
 export type {
+  ConfirmCounts as MaterialConfirmCounts,
+  MaterialAreaGroup,
+  MaterialChoices,
+  MaterialReviewRowShape,
+} from "./import/material-review-state.js";
+export {
+  COLLAPSE_BONUS_AFTER,
+  confirmCounts as materialConfirmCounts,
+  decisionsOf as materialDecisionsOf,
+  initialChoices as initialMaterialChoices,
+  materialAreaGroups,
+} from "./import/material-review-state.js";
+export type {
   TextImportAction,
   TextImportAssetInput,
   TextImportCardInput,

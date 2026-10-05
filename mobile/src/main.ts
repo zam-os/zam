@@ -152,7 +152,25 @@ import {
   t,
   tf,
 } from "./i18n.js";
-import { downscaleImageFile } from "./image-import.js";
+import {
+  deviceFileKind,
+  MaterialFileError,
+  readDeviceMaterialFile,
+} from "./image-import.js";
+import {
+  analyzeMaterialOnDevice,
+  confirmMaterialOnDevice,
+  type DeviceMaterialFile,
+  listImportBonus,
+  resolveMaterialEndpoints,
+  reviewMaterialOnDevice,
+  takeImportBonus,
+} from "./material-import.js";
+import {
+  createReviewState,
+  type MaterialReviewState,
+  renderMaterialReview,
+} from "./material-review-view.js";
 import {
   confirmMobileImport,
   type MobileTokenDraft,
@@ -211,6 +229,8 @@ import {
 import {
   type BonusOffer,
   bonusBecause,
+  type ImportBonusOffer,
+  importBonusOffer,
   keepGoingCardIds,
   matchUnassessedPrecondition,
   type PreconditionOffer,
@@ -227,13 +247,11 @@ import {
   type MobileUpdateInfo,
 } from "./update.js";
 import {
-  resolveMobileVisionEndpoint,
-  visionImportUnavailableReason,
-} from "./vision-config.js";
-import {
-  decomposeImageViaVision,
   extractChatCompletionsContent,
+  MOBILE_REQUEST_MAX_BYTES,
+  type VisionRequestFn,
 } from "./vl-import.js";
+import { materialSelectionOfKinds } from "../../src/cli/llm/material-prompt.js";
 import {
   buildMobileAvailability,
   cloudSpeechAvailability,
@@ -311,6 +329,8 @@ async function refreshStorageRow(): Promise<void> {
 const reviewSession = new MobileReviewSession(db, localStorage);
 let preconditionCache: PreconditionOffer[] = [];
 let bonusIgnoredThisSession = false;
+/** A material import's review list waiting for the learner's choices. */
+let materialState: MaterialReviewState | null = null;
 let pendingSessionSummary: MobileReviewSummary | null = null;
 
 function element<T extends HTMLElement>(id: string): T {
@@ -350,6 +370,20 @@ const importInput = element<HTMLTextAreaElement>("import-input");
 const importImage = element<HTMLInputElement>("import-image");
 const prepareImportButton = element<HTMLButtonElement>("prepare-import");
 const decomposeImageButton = element<HTMLButtonElement>("decompose-image");
+const materialReview = element<HTMLElement>("material-review");
+const materialReviewElements = {
+  meta: element<HTMLElement>("material-review-meta"),
+  notice: element<HTMLElement>("material-review-notice"),
+  list: element<HTMLElement>("material-review-list"),
+  confirm: element<HTMLButtonElement>("material-review-confirm"),
+  areaOptions: element<HTMLDataListElement>("material-review-areas"),
+};
+const materialReviewCancel = element<HTMLButtonElement>(
+  "material-review-cancel",
+);
+const materialReviewStatus = element<HTMLParagraphElement>(
+  "material-review-status",
+);
 const cancelImportButton = element<HTMLButtonElement>("cancel-import");
 const importStatus = element<HTMLParagraphElement>("import-status");
 const importDraftForm = element<HTMLFormElement>("import-draft-form");
@@ -1678,6 +1712,8 @@ function draftFromForm(): MobileTokenDraft {
 function resetImport(): void {
   currentImportDraft = null;
   multiDraftController = null;
+  materialState = null;
+  materialReview.hidden = true;
   importFile.value = "";
   importInput.value = "";
   importImage.value = "";
@@ -1690,57 +1726,143 @@ function resetImport(): void {
   setImportStatus("");
 }
 
-async function runImageDecompose(): Promise<void> {
-  const file = importImage.files?.[0];
-  if (!file) {
-    setImportStatus(t("import_image_hint"), true);
+/** The native HTTPS request; the WebView cannot reach the providers itself. */
+const nativeVisionRequest: VisionRequestFn = ({
+  url,
+  headers,
+  body,
+  timeoutMs,
+}) => invoke<string>("vision_request", { url, headers, body, timeoutMs });
+
+const MATERIAL_SELECTION_KEYS = {
+  "no-files": "material_choose_first",
+  unsupported: "material_unsupported",
+  mixed: "material_mixed",
+  "one-pdf": "material_one_pdf",
+  "too-many": "material_too_many",
+} as const;
+
+function showMaterialReview(state: MaterialReviewState | null): void {
+  materialState = state;
+  materialReview.hidden = state === null;
+  importEntry.hidden = state !== null;
+  importDescText.hidden = state !== null;
+  materialReviewStatus.textContent = "";
+  if (state) {
+    renderMaterialReview(materialReviewElements, state, getLocale());
+    materialReview.scrollIntoView({ block: "start" });
+  }
+}
+
+/**
+ * Photos or a PDF → the connected model → the review list (ADR 2026-10-05,
+ * Phase 8). Nothing is written until the learner confirms.
+ */
+async function runMaterialImport(): Promise<void> {
+  const files = [...(importImage.files ?? [])];
+  if (!currentUserId) return;
+  const kinds = files.map(deviceFileKind);
+  const selection = materialSelectionOfKinds(kinds);
+  if (!selection.ok) {
+    setImportStatus(t(MATERIAL_SELECTION_KEYS[selection.code]), true);
     return;
   }
-  if (!currentUserId) return;
 
   decomposeImageButton.disabled = true;
   prepareImportButton.disabled = true;
-  setImportStatus(t("import_image_working"));
   try {
-    const unavailable = await visionImportUnavailableReason(db);
-    const endpoint = await resolveMobileVisionEndpoint(db);
-    if (!endpoint) {
+    const endpoints = await resolveMaterialEndpoints(db, selection.kind);
+    if (endpoints.length === 0) {
       setImportStatus(
-        tf("import_image_unavailable", {
-          error: unavailable ?? "cloud vision not configured",
-        }),
+        t(
+          selection.kind === "pdf"
+            ? "material_no_file_model"
+            : "material_no_image_model",
+        ),
         true,
       );
       return;
     }
-
-    const image = await downscaleImageFile(file);
-    const drafts = await decomposeImageViaVision({
-      endpoint,
-      imageDataUrl: image.dataUrl,
+    setImportStatus(tf("material_working", { model: endpoints[0].label }));
+    const read: DeviceMaterialFile[] = [];
+    for (const [index, file] of files.entries()) {
+      const kind = kinds[index];
+      if (kind === "other") continue;
+      read.push(
+        await readDeviceMaterialFile(
+          file,
+          kind,
+          Math.floor((MOBILE_REQUEST_MAX_BYTES * 3) / 4),
+        ),
+      );
+    }
+    const analysis = await analyzeMaterialOnDevice(db, read, {
+      endpoints,
       locale: getLocale(),
-      request: async ({ url, headers, body, timeoutMs }) => {
-        const result = await invoke<string>("vision_request", {
-          url,
-          headers,
-          body,
-          timeoutMs,
-        });
-        return result;
-      },
+      request: nativeVisionRequest,
     });
-    startMultiDraftImport(drafts);
-  } catch (error) {
-    multiDraftController = null;
-    currentImportDraft = null;
-    importDraftForm.hidden = true;
-    setImportStatus(
-      tf("import_image_failed", { error: errorMessage(error) }),
-      true,
+    const review = await reviewMaterialOnDevice(
+      db,
+      currentUserId,
+      analysis.set,
     );
+    setImportStatus("");
+    showMaterialReview(createReviewState(review, analysis.model));
+  } catch (error) {
+    if (error instanceof MaterialFileError) {
+      setImportStatus(
+        error.reason === "heic"
+          ? t("material_heic")
+          : error.reason === "too-large"
+            ? t("material_too_large")
+            : tf("material_failed", { error: error.message }),
+        true,
+      );
+    } else {
+      setImportStatus(
+        tf("material_failed", { error: errorMessage(error) }),
+        true,
+      );
+    }
   } finally {
     decomposeImageButton.disabled = false;
     prepareImportButton.disabled = false;
+  }
+}
+
+async function confirmMaterialReview(): Promise<void> {
+  if (!materialState || !currentUserId) return;
+  const state = materialState;
+  materialReviewElements.confirm.disabled = true;
+  materialReviewCancel.disabled = true;
+  materialReviewStatus.textContent = t("material_saving");
+  try {
+    const result = await confirmMaterialOnDevice(
+      db,
+      currentUserId,
+      state.review,
+      state.choices,
+      state.areas,
+    );
+    showMaterialReview(null);
+    resetImport();
+    await refresh(currentUserId);
+    showDashboard();
+    setStatus(
+      tf("material_done", {
+        cards: result.cardsCreated,
+        bonus: result.bonusKept,
+      }),
+    );
+    // New cards are searchable by text at once and by meaning shortly after.
+    void runEmbeddingPass(false);
+  } catch (error) {
+    materialReviewStatus.textContent = tf("import_failed", {
+      error: errorMessage(error),
+    });
+  } finally {
+    materialReviewElements.confirm.disabled = false;
+    materialReviewCancel.disabled = false;
   }
 }
 
@@ -2572,11 +2694,80 @@ async function acceptKeepGoingFromReview(
   }
 }
 
+/** Kept Bonus items from the learner's own imports, as one offer. */
+async function loadImportBonusOffer(
+  userId: string,
+): Promise<ImportBonusOffer | null> {
+  try {
+    return importBonusOffer(await listImportBonus(db, userId));
+  } catch (error) {
+    console.warn("Failed to load import bonus items:", error);
+    return null;
+  }
+}
+
+function importBonusBody(offer: ImportBonusOffer): string {
+  const source = offer.sourceTitle ?? t("import_bonus_untitled");
+  return offer.titles.length === 1
+    ? tf("import_bonus_body_one", { item: offer.titles[0], source })
+    : tf("import_bonus_body_many", {
+        count: offer.titles.length,
+        items: offer.titles.join(", "),
+        source,
+      });
+}
+
+/** Take the offered items; false when that failed and the offer stays. */
+async function takeImportBonusOffer(
+  userId: string,
+  offer: ImportBonusOffer,
+  report: (message: string) => void,
+): Promise<boolean> {
+  try {
+    await takeImportBonus(db, userId, offer.tokenIds);
+  } catch (error) {
+    report(errorMessage(error));
+    return false;
+  }
+  bonusIgnoredThisSession = true;
+  return true;
+}
+
 async function offerBonusThenSummary(
   summary: MobileReviewSummary,
 ): Promise<void> {
   if (!currentUserId || bonusIgnoredThisSession) {
     renderSessionSummary(summary);
+    return;
+  }
+  const userId = currentUserId;
+  // The learner's own imports come before the atom bonus (ADR 2026-10-05).
+  const imported = await loadImportBonusOffer(userId);
+  if (imported) {
+    showReviewOffer({
+      title: t("import_bonus_title"),
+      body: importBonusBody(imported),
+      actions: [
+        {
+          label: t("bonus_skip"),
+          onClick: () => {
+            bonusIgnoredThisSession = true;
+            renderSessionSummary(summary);
+          },
+        },
+        {
+          label: t("bonus_accept"),
+          primary: true,
+          onClick: () => {
+            void takeImportBonusOffer(userId, imported, (message) =>
+              setReviewStatus(message, true),
+            ).then((taken) => {
+              if (taken) renderSessionSummary(summary);
+            });
+          },
+        },
+      ],
+    });
     return;
   }
   const bonus = await loadBonusOffer(currentUserId);
@@ -2683,6 +2874,36 @@ async function renderDashboardOffers(userId: string): Promise<void> {
 async function renderDashboardBonus(userId: string): Promise<void> {
   if (bonusIgnoredThisSession) {
     hideQueueOffer();
+    return;
+  }
+  const imported = await loadImportBonusOffer(userId);
+  if (imported) {
+    showQueueOffer({
+      title: t("import_bonus_title"),
+      body: importBonusBody(imported),
+      actions: [
+        {
+          label: t("bonus_skip"),
+          onClick: () => {
+            bonusIgnoredThisSession = true;
+            hideQueueOffer();
+          },
+        },
+        {
+          label: t("bonus_accept"),
+          primary: true,
+          onClick: () => {
+            void takeImportBonusOffer(userId, imported, (message) =>
+              setStatus(message, true),
+            ).then(async (taken) => {
+              if (!taken) return;
+              hideQueueOffer();
+              await refresh(userId);
+            });
+          },
+        },
+      ],
+    });
     return;
   }
   const bonus = await loadBonusOffer(userId);
@@ -3740,8 +3961,9 @@ importFile.addEventListener("change", async () => {
 });
 
 importImage.addEventListener("change", () => {
-  if (importImage.files?.[0]) {
-    setImportStatus(tf("file_loaded", { name: importImage.files[0].name }));
+  const names = [...(importImage.files ?? [])].map((file) => file.name);
+  if (names.length > 0) {
+    setImportStatus(tf("file_loaded", { name: names.join(", ") }));
   }
 });
 
@@ -3751,7 +3973,15 @@ prepareImportButton.addEventListener("click", () => {
 });
 
 decomposeImageButton.addEventListener("click", () => {
-  void runImageDecompose();
+  void runMaterialImport();
+});
+
+materialReviewElements.confirm.addEventListener("click", () => {
+  void confirmMaterialReview();
+});
+
+materialReviewCancel.addEventListener("click", () => {
+  showMaterialReview(null);
 });
 
 cancelImportButton.addEventListener("click", () => {
@@ -4179,8 +4409,12 @@ function showLibraryMode(mode: LibraryMode): void {
   libraryBrowse.hidden = mode !== "browse";
   libraryDetail.hidden = mode !== "detail";
   libraryCurriculum.hidden = mode !== "curriculum";
-  importDescText.hidden = mode !== "add";
-  importEntry.hidden = mode !== "add";
+  // A review list waiting for the learner's choices takes the add view's
+  // place until it is confirmed or cancelled.
+  const reviewing = materialState !== null;
+  importDescText.hidden = mode !== "add" || reviewing;
+  importEntry.hidden = mode !== "add" || reviewing;
+  materialReview.hidden = mode !== "add" || !reviewing;
   if (mode !== "add") importDraftForm.hidden = true;
   // An armed delete belongs to the card that armed it; leaving the detail
   // view must not leave it primed for whichever card is opened next.

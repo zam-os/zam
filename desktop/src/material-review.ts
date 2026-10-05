@@ -6,10 +6,25 @@
  *
  * Shared by the desktop Studio and the MCP Apps panel: it builds its own
  * dialog from the modal classes both hosts style, and talks to the bridge
- * only through `runBridge`. The pure helpers at the top carry the rules and
- * are what the tests exercise.
+ * only through `runBridge`. The rules it shares with Mobile live in
+ * `src/kernel/import/material-review-state.ts`; the words and the DOM are
+ * this app's.
  */
 
+import {
+  analysisLine,
+  COLLAPSE_BONUS_AFTER,
+  type ConfirmCounts,
+  changedAreas,
+  confirmCounts,
+  decisionsOf,
+  reviewGroups as groupReviewRows,
+  initialChoices,
+  isChoosable,
+  type MaterialChoices,
+  type ReviewGroup as SharedReviewGroup,
+  startsCollapsed,
+} from "../../src/kernel/import/material-review-state.js";
 import type {
   MaterialChoiceWire,
   MaterialImportAreasResponse,
@@ -28,10 +43,17 @@ import {
 } from "./radio-group.js";
 import { rememberDisplay, setShown } from "./visibility.js";
 
-export type MaterialChoices = Record<string, MaterialChoiceWire | null>;
-
-/** Above this many choosable rows, rows preset to Bonus start collapsed. */
-export const COLLAPSE_BONUS_AFTER = 12;
+export {
+  analysisLine,
+  COLLAPSE_BONUS_AFTER,
+  type ConfirmCounts,
+  changedAreas,
+  confirmCounts,
+  initialChoices,
+  isChoosable,
+  type MaterialChoices,
+  startsCollapsed,
+};
 
 /**
  * A batch an agent submitted this recently opens by itself when the Studio
@@ -39,43 +61,7 @@ export const COLLAPSE_BONUS_AFTER = 12;
  */
 export const AUTO_OPEN_WINDOW_MS = 10 * 60 * 1000;
 
-// ── Rules (pure) ─────────────────────────────────────────────────────────────
-
-/** A held existing item is information, not a choice. */
-export function isChoosable(row: MaterialImportRowWire): boolean {
-  return !(row.kind === "existing" && row.held);
-}
-
-/** Every choosable row starts on its preset; `null` means "not chosen". */
-export function initialChoices(rows: MaterialImportRowWire[]): MaterialChoices {
-  const choices: MaterialChoices = {};
-  for (const row of rows) {
-    if (isChoosable(row)) choices[row.id] = row.preset;
-  }
-  return choices;
-}
-
-export interface ConfirmCounts {
-  yes: number;
-  bonus: number;
-  /** Rows without a choice, or with No. */
-  notSaved: number;
-}
-
-export function confirmCounts(
-  rows: MaterialImportRowWire[],
-  choices: MaterialChoices,
-): ConfirmCounts {
-  const counts: ConfirmCounts = { yes: 0, bonus: 0, notSaved: 0 };
-  for (const row of rows) {
-    if (!isChoosable(row)) continue;
-    const choice = choices[row.id];
-    if (choice === "yes") counts.yes++;
-    else if (choice === "bonus") counts.bonus++;
-    else counts.notSaved++;
-  }
-  return counts;
-}
+// ── Rules (pure; the shared ones live in the kernel) ─────────────────────────
 
 /** "Add 7 · 2 as Bonus · 3 not saved" — unchosen rows never vanish silently. */
 export function confirmLabel(counts: ConfirmCounts): string {
@@ -91,31 +77,13 @@ export function confirmLabel(counts: ConfirmCounts): string {
   return parts.join(" · ");
 }
 
-/** Proposed area → confirmed area, for the areas the learner changed. */
-export function changedAreas(
-  edited: Record<string, string>,
-): Record<string, string> {
-  const changed: Record<string, string> = {};
-  for (const [proposed, value] of Object.entries(edited)) {
-    const confirmed = value.trim();
-    if (confirmed.length > 0 && confirmed !== proposed) {
-      changed[proposed] = confirmed;
-    }
-  }
-  return changed;
-}
-
 /** Arguments for `material-import-confirm`. */
 export function confirmArgs(
   id: string,
   choices: MaterialChoices,
   editedAreas: Record<string, string>,
 ): string[] {
-  const decisions: Record<string, MaterialChoiceWire> = {};
-  for (const [rowId, choice] of Object.entries(choices)) {
-    if (choice) decisions[rowId] = choice;
-  }
-  const args = ["--id", id, "--decisions", JSON.stringify(decisions)];
+  const args = ["--id", id, "--decisions", JSON.stringify(decisionsOf(choices))];
   const areas = changedAreas(editedAreas);
   if (Object.keys(areas).length > 0) {
     args.push("--areas", JSON.stringify(areas));
@@ -123,55 +91,14 @@ export function confirmArgs(
   return args;
 }
 
-export interface ReviewGroup {
-  area: string;
-  /** Proposal rows, each followed by the existing item beside it. */
-  rows: MaterialImportRowWire[];
-}
+export type ReviewGroup = SharedReviewGroup<MaterialImportRowWire>;
 
 /** Rows per proposed area, then what the material leads to. */
 export function reviewGroups(review: MaterialImportReviewResponse): {
   groups: ReviewGroup[];
   continuations: MaterialImportRowWire[];
 } {
-  const beside = new Map<number, MaterialImportRowWire>();
-  const own = new Map<number, MaterialImportRowWire>();
-  const continuations: MaterialImportRowWire[] = [];
-  for (const row of review.rows) {
-    if (row.kind === "proposal") own.set(row.proposalIndex, row);
-    else if (row.kind === "existing") beside.set(row.besideProposal, row);
-    else continuations.push(row);
-  }
-  const groups = review.areaGroups.map((group) => {
-    const rows: MaterialImportRowWire[] = [];
-    for (const index of group.proposalIndexes) {
-      const proposal = own.get(index);
-      if (proposal) rows.push(proposal);
-      const match = beside.get(index);
-      if (match) rows.push(match);
-    }
-    return { area: group.area, rows };
-  });
-  return { groups, continuations };
-}
-
-/** Long lists fold their Bonus rows, so the list stays readable. */
-export function startsCollapsed(
-  row: MaterialImportRowWire,
-  choices: MaterialChoices,
-  choosableCount: number,
-): boolean {
-  return choosableCount > COLLAPSE_BONUS_AFTER && choices[row.id] === "bonus";
-}
-
-/** "chemie · Stoffe und Stoffeigenschaften · Realschule, Anfangsunterricht" */
-export function analysisLine(
-  analysis: MaterialImportReviewResponse["analysis"],
-): string {
-  return [analysis.subjects.join(", "), analysis.topic, analysis.level]
-    .map((part) => part.trim())
-    .filter((part) => part.length > 0)
-    .join(" · ");
+  return groupReviewRows(review.rows, review.areaGroups);
 }
 
 export function originLabel(origin: "page" | "completed" | "extra"): string {

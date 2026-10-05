@@ -1,176 +1,119 @@
-import { describe, expect, it, vi } from "vitest";
-import { chatCompletionsUrl } from "../../mobile/src/ai/chat-url.js";
-import type { MobileVisionEndpoint } from "../../mobile/src/vision-config.js";
+import { describe, expect, it } from "vitest";
 import {
-  buildVlChatCompletionsBody,
-  decomposeImageViaVision,
   extractChatCompletionsContent,
-  parseVlDecomposeResponse,
+  type MobileMaterialEndpoint,
+  readMaterialOnDevice,
+  type VisionRequestFn,
   visionRequestHeaders,
 } from "../../mobile/src/vl-import.js";
+import type { MaterialAttachment } from "../../src/cli/llm/material-prompt.js";
 
-const endpoint: MobileVisionEndpoint = {
-  enabled: true,
-  url: "https://api.openai.com/v1",
-  model: "gpt-4o",
-  apiKey: "sk-test",
-  apiFlavor: "chat-completions",
-  label: "gpt-4o",
+/**
+ * The phone sends the desktop's built-in request (ADR 2026-10-05, Phase 8)
+ * through the native `vision_request` command, mocked here.
+ */
+
+const photo: MaterialAttachment = {
+  name: "IMG_1.jpg",
+  kind: "image",
+  mime: "image/jpeg",
+  base64: "AAAA",
 };
 
-describe("vl-import request shaping", () => {
-  it("builds a chat-completions multimodal body", () => {
-    const body = buildVlChatCompletionsBody(
-      endpoint,
-      "data:image/jpeg;base64,abc",
-      "de",
-    );
-    expect(body.model).toBe("gpt-4o");
-    expect(body.messages[0]?.role).toBe("system");
-    const user = body.messages[1];
-    expect(user?.role).toBe("user");
-    expect(Array.isArray(user?.content)).toBe(true);
-    const parts = user?.content as Array<{ type: string }>;
-    expect(parts.some((p) => p.type === "text")).toBe(true);
-    expect(parts.some((p) => p.type === "image_url")).toBe(true);
-  });
+function endpoint(over: Partial<MobileMaterialEndpoint> = {}) {
+  return {
+    url: "https://openrouter.ai/api/v1",
+    model: "openai/gpt-6-luna",
+    apiKey: "sk-or",
+    label: "Luna",
+    readsPdf: false,
+    ...over,
+  };
+}
 
-  it("normalizes the completions URL and auth header", () => {
-    expect(chatCompletionsUrl("https://api.openai.com/v1/")).toBe(
-      "https://api.openai.com/v1/chat/completions",
-    );
-    expect(
-      chatCompletionsUrl("https://api.openai.com/v1/chat/completions"),
-    ).toBe("https://api.openai.com/v1/chat/completions");
-    // A query on the base stays a query, and the pasted full chat URL is
-    // still recognised behind it (issue #363).
-    expect(
-      chatCompletionsUrl("https://x.azure.com/openai/v1?api-version=2025"),
-    ).toBe("https://x.azure.com/openai/v1/chat/completions?api-version=2025");
-    expect(
-      chatCompletionsUrl(
-        "https://x.azure.com/openai/v1/chat/completions?api-version=2025",
-      ),
-    ).toBe("https://x.azure.com/openai/v1/chat/completions?api-version=2025");
-    expect(visionRequestHeaders(endpoint)).toEqual({
+const reply = JSON.stringify({
+  choices: [
+    {
+      message: {
+        content:
+          '```json\n{"analysis":{"title":"Notizen"},"proposals":[{"question":"q"}]}\n```',
+      },
+    },
+  ],
+});
+
+describe("mobile material reading", () => {
+  it("sends the shared request to the chat-completions URL with the key", async () => {
+    const calls: Array<Parameters<VisionRequestFn>[0]> = [];
+    const result = await readMaterialOnDevice({
+      endpoints: [endpoint()],
+      instructions: "RULES",
+      attachments: [photo],
+      request: async (args) => {
+        calls.push(args);
+        return reply;
+      },
+    });
+    expect(result.reply).toEqual({
+      analysis: { title: "Notizen" },
+      proposals: [{ question: "q" }],
+    });
+    expect(calls[0].url).toBe("https://openrouter.ai/api/v1/chat/completions");
+    expect(calls[0].headers).toEqual({
       "Content-Type": "application/json",
-      Authorization: "Bearer sk-test",
+      Authorization: "Bearer sk-or",
     });
-  });
-});
-
-describe("vl-import response parsing", () => {
-  it("parses a fenced JSON array into image-vl drafts with provider stamp", () => {
-    const content = `\`\`\`json
-[
-  {
-    "slug": "newton-two",
-    "title": "Newton II",
-    "concept": "F = m a",
-    "domain": "physik",
-    "bloomLevel": 2,
-    "question": "Wie lautet Newton II?"
-  },
-  {
-    "slug": "inertia",
-    "concept": "Trägheit",
-    "domain": "physik",
-    "bloom_level": 1
-  }
-]
-\`\`\``;
-
-    const drafts = parseVlDecomposeResponse(content, "vision:gpt-4o");
-    expect(drafts).toHaveLength(2);
-    expect(drafts[0]).toMatchObject({
-      origin: "image-vl",
-      slug: "newton-two",
-      provider: "vision:gpt-4o",
-      question: "Wie lautet Newton II?",
+    const body = JSON.parse(calls[0].body);
+    expect(body.messages[0]).toEqual({ role: "system", content: "RULES" });
+    expect(body.messages[1].content[0]).toEqual({
+      type: "image_url",
+      image_url: { url: "data:image/jpeg;base64,AAAA" },
     });
-    expect(drafts[1]).toMatchObject({
-      origin: "image-vl",
-      slug: "inertia",
-      bloomLevel: 1,
+    // OpenRouter: JSON mode.
+    expect(body.response_format).toEqual({ type: "json_object" });
+  });
+
+  it("tries the next model when one fails, and refuses a PDF without the file capability", async () => {
+    const tried: string[] = [];
+    const result = await readMaterialOnDevice({
+      endpoints: [
+        endpoint({ model: "first", label: "First" }),
+        endpoint({ model: "second", label: "Second" }),
+      ],
+      instructions: "RULES",
+      attachments: [photo],
+      request: async ({ body }) => {
+        const model = JSON.parse(body).model as string;
+        tried.push(model);
+        if (model === "first") throw new Error("vision request HTTP 429: busy");
+        return reply;
+      },
     });
-  });
+    expect(tried).toEqual(["first", "second"]);
+    expect(result.endpoint.label).toBe("Second");
 
-  it("tolerates a single object and skips invalid entries", () => {
-    const drafts = parseVlDecomposeResponse(
-      JSON.stringify({
-        slug: "only-one",
-        concept: "One concept",
-        domain: "test",
-        bloomLevel: 1,
-      }),
-      "vision:gpt-4o",
-    );
-    expect(drafts).toHaveLength(1);
-
-    expect(() =>
-      parseVlDecomposeResponse(
-        JSON.stringify([{ domain: "missing-slug-and-concept" }]),
-        "vision:gpt-4o",
-      ),
-    ).toThrow(/no usable learning tokens/i);
-  });
-
-  it("extracts content and surfaces multimodal-model hints", () => {
-    expect(
-      extractChatCompletionsContent(
-        JSON.stringify({
-          choices: [{ message: { content: '[{"slug":"a","concept":"b"}]' } }],
-        }),
-      ),
-    ).toBe('[{"slug":"a","concept":"b"}]');
-
-    expect(() =>
-      extractChatCompletionsContent(
-        JSON.stringify({
-          error: { message: "this model does not support image input" },
-        }),
-      ),
-    ).toThrow(/multimodal model/i);
-  });
-});
-
-describe("decomposeImageViaVision", () => {
-  it("end-to-end builds, requests, and normalizes drafts", async () => {
-    const request = vi.fn(async () =>
-      JSON.stringify({
-        choices: [
-          {
-            message: {
-              content: JSON.stringify([
-                {
-                  slug: "ws-1",
-                  concept: "Arbeitsblatt Begriff",
-                  domain: "mathe",
-                  bloomLevel: 2,
-                  question: "Was ist das?",
-                },
-              ]),
-            },
-          },
+    await expect(
+      readMaterialOnDevice({
+        endpoints: [endpoint()],
+        instructions: "RULES",
+        attachments: [
+          { name: "a.pdf", kind: "pdf", mime: "application/pdf", base64: "J" },
         ],
+        request: async () => reply,
       }),
-    );
+    ).rejects.toThrow(/does not read PDFs itself/);
+  });
 
-    const drafts = await decomposeImageViaVision({
-      endpoint,
-      imageDataUrl: "data:image/jpeg;base64,xx",
-      locale: "de",
-      request,
-    });
-
-    expect(request).toHaveBeenCalledOnce();
-    const args = request.mock.calls[0]?.[0];
-    expect(args?.url).toContain("/chat/completions");
-    expect(args?.headers.Authorization).toBe("Bearer sk-test");
-    expect(drafts[0]).toMatchObject({
-      origin: "image-vl",
-      slug: "ws-1",
-      provider: "vision:gpt-4o",
+  it("reads assistant text and names a provider error", () => {
+    expect(extractChatCompletionsContent(reply)).toContain('"analysis"');
+    expect(extractChatCompletionsContent("plain text")).toBe("plain text");
+    expect(() =>
+      extractChatCompletionsContent(
+        JSON.stringify({ error: { message: "no credit" } }),
+      ),
+    ).toThrow(/no credit/);
+    expect(visionRequestHeaders({})).toEqual({
+      "Content-Type": "application/json",
     });
   });
 });

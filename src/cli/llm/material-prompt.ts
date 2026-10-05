@@ -29,6 +29,75 @@ export const MATERIAL_MAX_OUTPUT_TOKENS = 16_000;
 /** The harness can ask back; a single request cannot. */
 export type MaterialPath = "harness" | "built-in";
 
+// ── What one built-in import takes (D3) ─────────────────────────────────────
+
+export type MaterialFileKind = "image" | "heic" | "pdf" | "other";
+
+/** By the file name's extension; works for paths and bare names alike. */
+export function materialFileKind(name: string): MaterialFileKind {
+  const dot = name.lastIndexOf(".");
+  const ext = dot < 0 ? "" : name.slice(dot + 1).toLowerCase();
+  if (ext === "pdf") return "pdf";
+  if (ext === "heic" || ext === "heif") return "heic";
+  return ["jpg", "jpeg", "png", "webp", "gif"].includes(ext)
+    ? "image"
+    : "other";
+}
+
+export type MaterialSelectionCode =
+  | "no-files"
+  | "unsupported"
+  | "mixed"
+  | "one-pdf"
+  | "too-many";
+
+/** Up to {@link MAX_IMAGES_PER_REQUEST} photos, or one PDF — never both. */
+export function materialSelection(names: string[]): MaterialSelection {
+  return materialSelectionOfKinds(names.map(materialFileKind));
+}
+
+export type MaterialSelection =
+  | { ok: true; kind: "image" | "pdf" }
+  | { ok: false; code: MaterialSelectionCode; message: string };
+
+/**
+ * The same rule over kinds already known — a phone's camera photo carries a
+ * MIME type, not always a telling file name.
+ */
+export function materialSelectionOfKinds(
+  kinds: MaterialFileKind[],
+): MaterialSelection {
+  if (kinds.length === 0) {
+    return { ok: false, code: "no-files", message: "Choose a photo or a PDF." };
+  }
+  if (kinds.includes("other")) {
+    return {
+      ok: false,
+      code: "unsupported",
+      message: "Only photos (JPEG, PNG, WebP, HEIC) and PDFs can be imported.",
+    };
+  }
+  const pdfs = kinds.filter((kind) => kind === "pdf").length;
+  if (pdfs > 0 && pdfs < kinds.length) {
+    return {
+      ok: false,
+      code: "mixed",
+      message: "Import photos and a PDF in separate runs.",
+    };
+  }
+  if (pdfs > 1) {
+    return { ok: false, code: "one-pdf", message: "Import one PDF at a time." };
+  }
+  if (pdfs === 0 && kinds.length > MAX_IMAGES_PER_REQUEST) {
+    return {
+      ok: false,
+      code: "too-many",
+      message: `At most ${MAX_IMAGES_PER_REQUEST} photos per import.`,
+    };
+  }
+  return { ok: true, kind: pdfs === 1 ? "pdf" : "image" };
+}
+
 /** The rules, one per line, in the order the producer applies them. */
 export function materialCardRules(path: MaterialPath): string[] {
   return [
@@ -279,6 +348,33 @@ export function buildMaterialRequest(
     }
   }
   return { path: "chat/completions", body };
+}
+
+/**
+ * Attachment numbers in batches whose base64 stays within `maxBytes`, in
+ * order. A transport with a hard body limit (Mobile's native request) sends
+ * one batch per request and merges the replies; an attachment over the
+ * budget on its own forms its own batch, and the caller refuses it.
+ */
+export function batchByBudget(
+  attachments: ReadonlyArray<{ base64: string }>,
+  maxBytes: number,
+): number[][] {
+  const batches: number[][] = [];
+  let current: number[] = [];
+  let size = 0;
+  attachments.forEach((file, index) => {
+    const bytes = file.base64.length;
+    if (current.length > 0 && size + bytes > maxBytes) {
+      batches.push(current);
+      current = [];
+      size = 0;
+    }
+    current.push(index);
+    size += bytes;
+  });
+  if (current.length > 0) batches.push(current);
+  return batches;
 }
 
 /** The model's answer: analysis and proposals, not yet validated. */

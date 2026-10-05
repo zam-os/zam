@@ -3,7 +3,7 @@
  * the photos or the PDF go to the learner's connected model in one request,
  * which proposes the cards for the review list.
  *
- * - **Selection.** Up to {@link MAX_IMAGES_PER_REQUEST} photos, or one PDF —
+ * - **Selection.** Up to ten photos, or one PDF —
  *   never both in one import.
  * - **Model.** Photos go to the first row with the `image` capability, a PDF
  *   to the first with `file` (it reads PDFs itself). Harness-backed rows are
@@ -51,12 +51,15 @@ import {
   buildMaterialInstructions,
   buildMaterialRequest,
   IMAGE_LONG_EDGE_PX,
-  MAX_IMAGES_PER_REQUEST,
   type MaterialAttachment,
   type MaterialReply,
+  materialFileKind,
+  materialSelection,
   mergeMaterialReplies,
   parseMaterialReply,
 } from "./material-prompt.js";
+
+export { materialFileKind, materialSelection };
 
 /** One photo after preparation; PDFs are never changed. */
 export const MATERIAL_FILE_MAX_BYTES = 10 * 1024 * 1024;
@@ -88,54 +91,6 @@ const IMAGE_TYPES: Record<string, string> = {
   ".webp": "image/webp",
   ".gif": "image/gif",
 };
-const HEIC_EXTENSIONS = new Set([".heic", ".heif"]);
-
-export type MaterialFileKind = "image" | "heic" | "pdf" | "other";
-
-export function materialFileKind(path: string): MaterialFileKind {
-  const ext = extname(path).toLowerCase();
-  if (ext === ".pdf") return "pdf";
-  if (HEIC_EXTENSIONS.has(ext)) return "heic";
-  return IMAGE_TYPES[ext] ? "image" : "other";
-}
-
-/** What an import of these files needs, or why it cannot go. */
-export function materialSelection(
-  paths: string[],
-):
-  | { ok: true; kind: "image" | "pdf" }
-  | { ok: false; code: MaterialAnalyzeCode; message: string } {
-  if (paths.length === 0) {
-    return { ok: false, code: "no-files", message: "Choose a photo or a PDF." };
-  }
-  const kinds = paths.map(materialFileKind);
-  if (kinds.includes("other")) {
-    return {
-      ok: false,
-      code: "unsupported",
-      message: "Only photos (JPEG, PNG, WebP, HEIC) and PDFs can be imported.",
-    };
-  }
-  const pdfs = kinds.filter((kind) => kind === "pdf").length;
-  if (pdfs > 0 && pdfs < kinds.length) {
-    return {
-      ok: false,
-      code: "mixed",
-      message: "Import photos and a PDF in separate runs.",
-    };
-  }
-  if (pdfs > 1) {
-    return { ok: false, code: "one-pdf", message: "Import one PDF at a time." };
-  }
-  if (pdfs === 0 && paths.length > MAX_IMAGES_PER_REQUEST) {
-    return {
-      ok: false,
-      code: "too-many",
-      message: `At most ${MAX_IMAGES_PER_REQUEST} photos per import.`,
-    };
-  }
-  return { ok: true, kind: pdfs === 1 ? "pdf" : "image" };
-}
 
 // ── Models ───────────────────────────────────────────────────────────────────
 

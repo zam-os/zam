@@ -6,6 +6,12 @@
  * bounded on mid-range phones.
  */
 
+import {
+  type MaterialFileKind,
+  materialFileKind,
+} from "../../src/cli/llm/material-prompt.js";
+import { type DeviceMaterialFile, sha256Hex } from "./material-import.js";
+
 export const IMAGE_MAX_LONG_EDGE = 1568;
 export const IMAGE_JPEG_QUALITY = 0.7;
 /** Hard ceiling after downscale (raw base64 payload size is larger). */
@@ -121,4 +127,87 @@ export function computeDownscaleSize(
   maxLongEdge = IMAGE_MAX_LONG_EDGE,
 ): { width: number; height: number } {
   return scaleDimensions(width, height, maxLongEdge);
+}
+
+// ── Material import (ADR 2026-10-05) ────────────────────────────────────────
+
+/** A picked file this device cannot send, with the learner-facing reason. */
+export class MaterialFileError extends Error {
+  constructor(
+    readonly reason: "heic" | "too-large" | "unreadable",
+    message: string,
+  ) {
+    super(message);
+    this.name = "MaterialFileError";
+  }
+}
+
+/** By MIME type first: a camera photo's name does not always say much. */
+export function deviceFileKind(file: {
+  name: string;
+  type: string;
+}): MaterialFileKind {
+  const type = file.type.toLowerCase();
+  if (type === "application/pdf") return "pdf";
+  if (type === "image/heic" || type === "image/heif") return "heic";
+  if (type.startsWith("image/")) return "image";
+  return materialFileKind(file.name);
+}
+
+/** Base64 of raw bytes, in chunks the WebView's `btoa` can take. */
+export function bytesToBase64(bytes: Uint8Array): string {
+  let binary = "";
+  const chunk = 0x8000;
+  for (let i = 0; i < bytes.length; i += chunk) {
+    binary += String.fromCharCode(...bytes.subarray(i, i + chunk));
+  }
+  return btoa(binary);
+}
+
+/**
+ * One picked file, ready to send: a photo downscaled to the long-edge cap
+ * (HEIC through the WebView's own decoding, where it has one), a PDF as it
+ * is within `maxPdfBytes`. The fingerprint is of the file as picked.
+ */
+export async function readDeviceMaterialFile(
+  file: File,
+  kind: Exclude<MaterialFileKind, "other">,
+  maxPdfBytes: number,
+): Promise<DeviceMaterialFile> {
+  const bytes = await file.arrayBuffer();
+  const sha256 = await sha256Hex(bytes);
+  if (kind === "pdf") {
+    if (bytes.byteLength > maxPdfBytes) {
+      throw new MaterialFileError("too-large", `${file.name} is too large`);
+    }
+    return {
+      name: file.name,
+      kind: "pdf",
+      mime: "application/pdf",
+      base64: bytesToBase64(new Uint8Array(bytes)),
+      sha256,
+    };
+  }
+  let image: DownscaledImage;
+  try {
+    image = await downscaleImageFile(file);
+  } catch (error) {
+    if (kind === "heic") {
+      throw new MaterialFileError("heic", `${file.name} cannot be decoded here`);
+    }
+    if (error instanceof Error && error.message.includes("too large")) {
+      throw new MaterialFileError("too-large", error.message);
+    }
+    throw new MaterialFileError(
+      "unreadable",
+      error instanceof Error ? error.message : String(error),
+    );
+  }
+  return {
+    name: file.name,
+    kind: "image",
+    mime: image.mime,
+    base64: image.dataUrl.slice(image.dataUrl.indexOf(",") + 1),
+    sha256,
+  };
 }
