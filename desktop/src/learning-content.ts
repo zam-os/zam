@@ -1,6 +1,7 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 import { initLibraryTopics } from "./library-topics.js";
+import { initMaterialImports } from "./material-review.js";
 import { buildDomainOptions, domainMatches } from "./panel/graph-scope.js";
 
 export interface PersonalCard {
@@ -582,6 +583,9 @@ export function initLearningContentStudio(): void {
   // Library topics (ADR 2026-10-02): the cards a started topic adds show up
   // in the list straight away.
   initLibraryTopics({ onStarted: () => loadStudioData() });
+  // Material imports (ADR 2026-10-05): a waiting batch shows as a banner, and
+  // confirmed cards show up in the list straight away.
+  initMaterialImports({ onConfirmed: () => loadStudioData() });
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();

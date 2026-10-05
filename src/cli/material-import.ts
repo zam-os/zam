@@ -8,6 +8,9 @@
  * curriculum position.
  */
 
+import { readFile, stat } from "node:fs/promises";
+import { basename, extname } from "node:path";
+import { fileURLToPath } from "node:url";
 import {
   type CurriculumScope,
   commitMaterialImport,
@@ -280,4 +283,80 @@ export async function discardMaterialImport(
   opts: StagingOptions = {},
 ): Promise<boolean> {
   return discardStagedImport(id, opts);
+}
+
+// ── Page preview (Decision 5: the page stays in view) ───────────────────────
+
+/** Images above this size are not inlined; the review shows the name. */
+export const PREVIEW_MAX_BYTES = 5 * 1024 * 1024;
+
+const PREVIEW_MIME: Record<string, string> = {
+  ".jpg": "image/jpeg",
+  ".jpeg": "image/jpeg",
+  ".png": "image/png",
+  ".webp": "image/webp",
+  ".gif": "image/gif",
+};
+
+export interface MaterialFilePreview {
+  name: string;
+  path: string | null;
+  kind: "image" | "pdf" | "other";
+  /** `data:` URL of the image, when it can be shown inline. */
+  dataUrl: string | null;
+  reason: "ok" | "missing" | "too-large" | "not-viewable";
+}
+
+function filePathOf(file: MaterialFile): string | null {
+  if (file.path) return file.path;
+  if (file.sourceLink.startsWith("file://")) {
+    try {
+      return fileURLToPath(file.sourceLink.split("#")[0]);
+    } catch {
+      return null;
+    }
+  }
+  return null;
+}
+
+/**
+ * The page beside the review list. Only a file the staged batch names is
+ * read — never a path from the caller — and only an image small enough to
+ * inline. A PDF or a HEIC photo is named, not rendered.
+ */
+export async function previewMaterialImportFile(
+  id: string,
+  fileIndex: number,
+  opts: StagingOptions = {},
+): Promise<MaterialFilePreview> {
+  const batch = await requireBatch(id, opts);
+  const file = batch.set.files[fileIndex];
+  if (!file) {
+    throw new Error(`Import ${id} has no file ${fileIndex}`);
+  }
+  const path = filePathOf(file);
+  const extension = extname(path ?? file.name).toLowerCase();
+  const kind =
+    extension === ".pdf"
+      ? "pdf"
+      : extension in PREVIEW_MIME ||
+          extension === ".heic" ||
+          extension === ".heif"
+        ? "image"
+        : "other";
+  const base = { name: file.name || basename(path ?? ""), path, kind } as const;
+  if (!path) return { ...base, dataUrl: null, reason: "missing" };
+  const info = await stat(path).catch(() => null);
+  if (!info?.isFile()) return { ...base, dataUrl: null, reason: "missing" };
+  const mime = PREVIEW_MIME[extension];
+  if (!mime) return { ...base, dataUrl: null, reason: "not-viewable" };
+  if (info.size > PREVIEW_MAX_BYTES) {
+    return { ...base, dataUrl: null, reason: "too-large" };
+  }
+  const bytes = await readFile(path);
+  return {
+    ...base,
+    dataUrl: `data:${mime};base64,${bytes.toString("base64")}`,
+    reason: "ok",
+  };
 }

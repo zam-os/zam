@@ -306,6 +306,7 @@ import {
   listPendingMaterialImports,
   parseMaterialAreas,
   parseMaterialDecisions,
+  previewMaterialImportFile,
   reviewMaterialImport,
 } from "../material-import.js";
 import { stageMaterialImport } from "../material-staging.js";
@@ -7097,6 +7098,25 @@ bridgeCommand
       );
       jsonOut({ success: true, ...result });
     });
+  });
+
+bridgeCommand
+  .command("material-import-file-preview")
+  .description(
+    "Preview one file of a waiting material import: an inline image, or its name (JSON)",
+  )
+  .requiredOption("--id <id>", "Staged import id")
+  .requiredOption("--file <n>", "Index of the file in the import")
+  .action(async (opts) => {
+    const index = parseNonNegativeIntegerOption("--file", opts.file);
+    try {
+      jsonOut({
+        success: true,
+        ...(await previewMaterialImportFile(opts.id, index)),
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
   });
 
 bridgeCommand

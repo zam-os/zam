@@ -787,3 +787,13 @@ export interface MaterialImportBonusTakeResponse {
   success: boolean;
   cardId: string;
 }
+
+export interface MaterialImportFilePreviewResponse {
+  success: boolean;
+  name: string;
+  path: string | null;
+  kind: "image" | "pdf" | "other";
+  /** `data:` URL of an image small enough to show inline. */
+  dataUrl: string | null;
+  reason: "ok" | "missing" | "too-large" | "not-viewable";
+}

@@ -1,4 +1,4 @@
-import { mkdtempSync, readFileSync, rmSync } from "node:fs";
+import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -7,7 +7,9 @@ import {
   discardMaterialImport,
   listPendingMaterialImports,
   parseMaterialAreas,
+  PREVIEW_MAX_BYTES,
   parseMaterialDecisions,
+  previewMaterialImportFile,
   reviewMaterialImport,
 } from "../../src/cli/material-import.js";
 import {
@@ -170,5 +172,39 @@ describe("material import service", () => {
     expect(() => parseMaterialDecisions(["yes"])).toThrow(/object/);
     expect(parseMaterialAreas(undefined)).toEqual({});
     expect(() => parseMaterialAreas({ chemie: "" })).toThrow(/areas\.chemie/);
+  });
+
+  it("previews only files the batch names, and only small images", async () => {
+    const png = join(tempDir, "seite.png");
+    writeFileSync(png, Buffer.from([0x89, 0x50, 0x4e, 0x47]));
+    const big = join(tempDir, "gross.jpg");
+    writeFileSync(big, Buffer.alloc(PREVIEW_MAX_BYTES + 1));
+    const set = structuredClone(FIXTURE) as Record<string, unknown>;
+    set.files = [
+      { name: "seite.png", sourceLink: `file://${png}` },
+      {
+        name: "gross.jpg",
+        sourceLink: "photo:gross.jpg@2026-10-05",
+        path: big,
+      },
+      { name: "blatt.pdf", sourceLink: `file://${join(tempDir, "blatt.pdf")}` },
+      { name: "IMG_1.HEIC", sourceLink: "photo:IMG_1.HEIC@2026-10-05" },
+    ];
+    const batch = await stageMaterialImport({ set, origin: "studio" }, { dir });
+    const image = await previewMaterialImportFile(batch.id, 0, { dir });
+    expect(image).toMatchObject({ kind: "image", reason: "ok", path: png });
+    expect(image.dataUrl).toBe("data:image/png;base64,iVBORw==");
+    expect(await previewMaterialImportFile(batch.id, 1, { dir })).toMatchObject(
+      { kind: "image", reason: "too-large", dataUrl: null },
+    );
+    expect(await previewMaterialImportFile(batch.id, 2, { dir })).toMatchObject(
+      { kind: "pdf", reason: "missing" },
+    );
+    expect(await previewMaterialImportFile(batch.id, 3, { dir })).toMatchObject(
+      { kind: "image", reason: "missing", path: null },
+    );
+    await expect(
+      previewMaterialImportFile(batch.id, 9, { dir }),
+    ).rejects.toThrow(/has no file 9/);
   });
 });
