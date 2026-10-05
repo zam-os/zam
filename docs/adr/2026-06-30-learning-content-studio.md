@@ -180,6 +180,10 @@ will only be linked.
 
 ### Phase 5 — Files, scans, HTML, and web links
 
+> **Superseded in part** by [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md):
+> images, scans and PDFs go to the model as they are, with no transcription
+> step. Local HTML and web links are unaffected.
+
 The import pipeline gains source adapters for:
 
 1. textbook or class-note files,
