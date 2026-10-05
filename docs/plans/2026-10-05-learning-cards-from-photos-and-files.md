@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Phases 1, 3 and 4 done (2026-10-05).\
+**Status:** Phases 1, 3, 4 and 5 done (2026-10-05); the manual pass with opencode on the learner's laptop is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -33,7 +33,7 @@ reference and file fingerprints. Nothing of the material itself is stored.
 - [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
 - [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
 - [x] **Phase 4** — Studio review list — `09a35032`
-- [ ] **Phase 5** — harness path: MCP tools, skill, Studio handoff
+- [x] **Phase 5** — harness path: MCP tools, skill, Studio handoff — `5620339d`
 - [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
   picker
 - [ ] **Phase 7** — Bonus view and the offer after the due queue
@@ -542,6 +542,25 @@ open the Studio and take the batch through:
 6. **opencode.** It is a terminal harness: it reads local files by path and
    renders no panels, so the review always opens in the Studio. Connect it
    with `zam agent connect opencode`.
+
+**As built.**
+
+- **Studio handoff.** The handoff is its own "Foto / PDF" dialog, opened from a
+  button in the Learning Content header, not a tab in the import dialog: that
+  dialog's tab and submit logic is tightly interlocked, and one button with one
+  clear action is simpler for learners. Phase 6 adds the built-in path to the
+  same dialog.
+- **The review opens by itself.** A harness batch submitted within the last
+  ten minutes opens the review list as soon as the Studio comes forward
+  (`AUTO_OPEN_WINDOW_MS`). Older batches wait behind the banner.
+- **Contract constants.** `MATERIAL_KINDS`, `MATERIAL_ORIGINS` and the version
+  live in `src/kernel/import/material-contract.ts`, so `material-prompt.ts`
+  does not pull the bundled curriculum tiles into Mobile's bundle.
+- **Testable launch.** `createMcpServer` takes an optional `launchStudio` for
+  tests. The launcher prints nothing, because MCP speaks on stdout, and it
+  swallows asynchronous spawn errors.
+- **Smoke test.** A run against the built bundle covered MCP stdio, staging,
+  review (including the Chemie 8 continuation), confirm and Bonus.
 
 ### Tests
 
