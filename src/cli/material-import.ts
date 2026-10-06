@@ -62,6 +62,10 @@ export interface MaterialImportReview {
   createdAt: string;
   origin: StagedImport["origin"];
   harness: string | null;
+  /** The model that read the pages on the built-in path (D11). */
+  readBy: string | null;
+  /** Every model the pages were sent to on the built-in path, in order. */
+  sentTo: string[];
   analysis: MaterialProposalSet["analysis"];
   proposals: MaterialProposal[];
   files: MaterialFile[];
@@ -197,6 +201,8 @@ export async function reviewMaterialImport(
     createdAt: batch.createdAt,
     origin: batch.origin,
     harness: batch.harness ?? null,
+    readBy: batch.readBy ?? null,
+    sentTo: batch.sentTo ?? [],
     analysis: batch.set.analysis,
     proposals: batch.set.proposals,
     files: batch.set.files,

@@ -722,6 +722,8 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "material_review_error",
   "material_review_intro",
   "material_review_from",
+  "material_review_read_by",
+  "material_review_sent_to",
   "material_choice_group",
   "material_choice_yes",
   "material_choice_no",

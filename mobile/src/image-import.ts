@@ -154,6 +154,27 @@ export function deviceFileKind(file: {
   return materialFileKind(file.name);
 }
 
+/**
+ * The photo to decode, typed by its name when the picker gave a generic MIME
+ * (a Files picker's `application/octet-stream`): the name already made it a
+ * photo, and the downscale refuses anything not typed `image/*`.
+ */
+export function devicePhotoBlob(
+  file: Blob & { name: string },
+  bytes: ArrayBuffer,
+  kind: "image" | "heic",
+): Blob {
+  if (file.type.toLowerCase().startsWith("image/")) return file;
+  const ext = file.name.slice(file.name.lastIndexOf(".") + 1).toLowerCase();
+  const type =
+    kind === "heic"
+      ? "image/heic"
+      : ext === "jpg" || ext === "jpeg"
+        ? "image/jpeg"
+        : `image/${ext}`;
+  return new Blob([bytes], { type });
+}
+
 /** Base64 of raw bytes, in chunks the WebView's `btoa` can take. */
 export function bytesToBase64(bytes: Uint8Array): string {
   let binary = "";
@@ -190,10 +211,13 @@ export async function readDeviceMaterialFile(
   }
   let image: DownscaledImage;
   try {
-    image = await downscaleImageFile(file);
+    image = await downscaleImageFile(devicePhotoBlob(file, bytes, kind));
   } catch (error) {
     if (kind === "heic") {
-      throw new MaterialFileError("heic", `${file.name} cannot be decoded here`);
+      throw new MaterialFileError(
+        "heic",
+        `${file.name} cannot be decoded here`,
+      );
     }
     if (error instanceof Error && error.message.includes("too large")) {
       throw new MaterialFileError("too-large", error.message);

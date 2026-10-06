@@ -428,13 +428,20 @@ export function mergeMaterialReplies(
       reply.proposals.map((proposal) => {
         if (!proposal || typeof proposal !== "object") return proposal;
         const record = proposal as Record<string, unknown>;
-        const local = record.file;
-        return typeof local === "number" &&
-          Number.isInteger(local) &&
-          local >= 0 &&
-          local < fileIndexes.length
-          ? { ...record, file: fileIndexes[local] }
-          : record;
+        // A missing index means the batch's first file, as in one request.
+        const local = record.file ?? 0;
+        // An index outside its own batch must not land on another file of
+        // the import: -1 makes validation reject the answer instead.
+        return {
+          ...record,
+          file:
+            typeof local === "number" &&
+            Number.isInteger(local) &&
+            local >= 0 &&
+            local < fileIndexes.length
+              ? fileIndexes[local]
+              : -1,
+        };
       }),
     ),
   };

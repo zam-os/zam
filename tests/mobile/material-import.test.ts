@@ -17,6 +17,7 @@ import {
 import {
   confirmText,
   createReviewState,
+  modelText,
   reimportText,
 } from "../../mobile/src/material-review-view.js";
 import { CLOUD_MODELS_SETTING } from "../../mobile/src/model-registry.js";
@@ -229,6 +230,42 @@ describe("material import on the phone", () => {
     );
     expect(bodies).toEqual([{ images: 1 }, { images: 1 }]);
     expect(analysis.set.proposals.map((p) => p.file)).toEqual([0, 1]);
+  });
+
+  it("names every model that read a batch, and one that only got the pages", async () => {
+    const tried: string[] = [];
+    const request: VisionRequestFn = async ({ body }) => {
+      const model = JSON.parse(body).model as string;
+      tried.push(model);
+      // Luna reads the first batch, then is busy; GLM reads the second.
+      if (model === "vendor/luna" && tried.length > 1) {
+        throw new Error("vision request HTTP 429: busy");
+      }
+      return answer([{ ...FIXTURE.proposals[0], file: 0 }]);
+    };
+    const big = "A".repeat(4_000_000);
+    const endpoint = (id: string, label: string) => ({
+      url: "https://openrouter.ai/api/v1",
+      model: `vendor/${id}`,
+      label,
+      readsPdf: false,
+    });
+    const analysis = await analyzeMaterialOnDevice(
+      db,
+      [photo("1.jpg", big), photo("2.jpg", big)],
+      {
+        endpoints: [endpoint("luna", "Luna"), endpoint("glm", "GLM")],
+        locale: "de",
+        request,
+      },
+    );
+    expect(tried).toEqual(["vendor/luna", "vendor/luna", "vendor/glm"]);
+    expect(analysis.model).toBe("Luna, GLM");
+    expect(analysis.sentTo).toEqual(["Luna", "GLM"]);
+    expect(modelText(analysis.model, analysis.sentTo)).toBe("Luna, GLM");
+    expect(modelText("GLM", ["Luna", "GLM"])).toBe(
+      "GLM (auch gesendet an Luna)",
+    );
   });
 
   it("links a photo by name and date, and fingerprints it with the WebView's crypto", async () => {

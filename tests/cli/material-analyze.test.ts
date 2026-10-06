@@ -302,6 +302,55 @@ describe("analyzeMaterialViaLLM", () => {
     expect(progress.at(-1)).toEqual({ done: 2, total: 2 });
   });
 
+  it("hands the request to the next model when a split still fails, and names who read it", async () => {
+    saveMachineAiModels([
+      row({ id: "Gemma", model: "vendor/gemma", order: 0 }),
+      row({ id: "Luna", model: "vendor/luna", order: 1 }),
+    ]);
+    const photos = ["1.jpg", "2.jpg"].map((name) => file(name));
+    const { fetch, calls } = recordingFetch((call) => {
+      if (call.body.model === "vendor/gemma") {
+        // Even one image is too much for this one.
+        return new Response("Too many images: maximum is 0", { status: 400 });
+      }
+      return answer();
+    });
+    const progress: Array<{ done: number; total: number }> = [];
+    const result = await analyzeMaterialViaLLM(
+      db,
+      photos,
+      {},
+      { fetch, platform: "linux", onProgress: (p) => progress.push(p) },
+    );
+    expect(
+      calls.map((call) => [call.body.model, userParts(call).length - 1]),
+    ).toEqual([
+      ["vendor/gemma", 2],
+      ["vendor/gemma", 1],
+      ["vendor/luna", 2],
+    ]);
+    // The dialog named Gemma; Luna read the pages, and both got them.
+    expect(result.model).toEqual({ label: "Luna", model: "vendor/luna" });
+    expect(result.sentTo.map((m) => m.label)).toEqual(["Gemma", "Luna"]);
+    expect(progress.at(-1)).toEqual({ done: 1, total: 1 });
+  });
+
+  it("rejects a split answer whose file number points outside its batch", async () => {
+    saveMachineAiModels([row({ id: "Luna" })]);
+    const photos = ["1.jpg", "2.jpg", "3.jpg"].map((name) => file(name));
+    const { fetch } = recordingFetch((call) => {
+      const images = userParts(call).filter((p) => p.type === "image_url");
+      if (images.length > 2) {
+        return new Response("Too many images: maximum is 2", { status: 400 });
+      }
+      // Photo 2 exists in the import, but not in either batch.
+      return answer([{ ...FIXTURE.proposals[0], file: 2 }]);
+    });
+    await expect(
+      analyzeMaterialViaLLM(db, photos, {}, { fetch, platform: "linux" }),
+    ).rejects.toMatchObject({ code: "invalid-answer" });
+  });
+
   it("converts HEIC and scales large photos with sips on macOS, then cleans up", async () => {
     saveMachineAiModels([row({ id: "Luna" })]);
     const heic = file("IMG_1.HEIC");

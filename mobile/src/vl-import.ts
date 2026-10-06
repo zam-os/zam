@@ -107,8 +107,14 @@ export async function readMaterialOnDevice(input: {
   instructions: string;
   attachments: MaterialAttachment[];
   request: VisionRequestFn;
-}): Promise<{ reply: MaterialReply; endpoint: MobileMaterialEndpoint }> {
+}): Promise<{
+  reply: MaterialReply;
+  endpoint: MobileMaterialEndpoint;
+  /** Every endpoint the material was sent to, the answering one last. */
+  sentTo: MobileMaterialEndpoint[];
+}> {
   let lastError: unknown = new Error("No model can read this material.");
+  const sentTo: MobileMaterialEndpoint[] = [];
   for (const endpoint of input.endpoints) {
     try {
       const request = buildMaterialRequest(
@@ -120,6 +126,7 @@ export async function readMaterialOnDevice(input: {
           openRouter: isOpenRouter(endpoint.url),
         },
       );
+      sentTo.push(endpoint);
       const responseText = await input.request({
         url: chatCompletionsUrl(endpoint.url),
         headers: visionRequestHeaders(endpoint),
@@ -129,7 +136,7 @@ export async function readMaterialOnDevice(input: {
       const reply = parseMaterialReply(
         extractChatCompletionsContent(responseText),
       );
-      return { reply, endpoint };
+      return { reply, endpoint, sentTo };
     } catch (error) {
       lastError = error;
     }

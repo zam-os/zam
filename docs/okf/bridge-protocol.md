@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-05T21:30:00.000Z
+timestamp: 2026-10-06T08:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -150,7 +150,11 @@ library rows:
   that does not fit the contract — comes back as `{ success: false, code,
   message }` rather than an `error`, so a surface can explain it by `code`.
   Progress goes to stderr as `{"type":"material-analyze-progress",...}`.
-  `material-import-models` names the models photos and PDFs would go to.
+  A success names the model that read the pages (`model`) and every model
+  they were sent to (`sentTo`), since a failing first model hands the request
+  on; the batch keeps both, and `material-import-review` returns them as
+  `readBy` and `sentTo`. `material-import-models` names the models photos and
+  PDFs would go to first.
 - `material-import-review --id <id>` matches the proposals against the library
   and the bundled cells, returns the rows with their presets, area groups and
   earlier imports of the same files, and stores those rows in the batch;

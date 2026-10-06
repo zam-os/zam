@@ -54,6 +54,25 @@ describe("material import service", () => {
     rmSync(tempDir, { recursive: true, force: true });
   });
 
+  it("keeps the model that read a Studio batch, and every model it went to", async () => {
+    const batch = await stageMaterialImport(
+      {
+        set: FIXTURE,
+        origin: "studio",
+        readBy: "Luna",
+        sentTo: ["Gemma", "Luna"],
+      },
+      { dir },
+    );
+    expect(
+      await reviewMaterialImport(db, USER, batch.id, { dir }),
+    ).toMatchObject({
+      origin: "studio",
+      readBy: "Luna",
+      sentTo: ["Gemma", "Luna"],
+    });
+  });
+
   it("stages, lists, reviews, confirms and retires a batch", async () => {
     const batch = await stageMaterialImport(
       { set: FIXTURE, origin: "harness", harness: "opencode" },
@@ -72,6 +91,8 @@ describe("material import service", () => {
 
     const review = await reviewMaterialImport(db, USER, batch.id, { dir });
     expect(review.semantic).toBe(false);
+    // A harness batch was not read here, so no model is named.
+    expect(review).toMatchObject({ readBy: null, sentTo: [] });
     expect(review.areaGroups).toEqual([
       {
         area: "chemie/stoffe-und-eigenschaften",

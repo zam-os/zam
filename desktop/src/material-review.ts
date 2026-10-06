@@ -83,7 +83,12 @@ export function confirmArgs(
   choices: MaterialChoices,
   editedAreas: Record<string, string>,
 ): string[] {
-  const args = ["--id", id, "--decisions", JSON.stringify(decisionsOf(choices))];
+  const args = [
+    "--id",
+    id,
+    "--decisions",
+    JSON.stringify(decisionsOf(choices)),
+  ];
   const areas = changedAreas(editedAreas);
   if (Object.keys(areas).length > 0) {
     args.push("--areas", JSON.stringify(areas));
@@ -92,6 +97,26 @@ export function confirmArgs(
 }
 
 export type ReviewGroup = SharedReviewGroup<MaterialImportRowWire>;
+
+/**
+ * Where the proposals came from: the harness, or the model that read the
+ * pages here — named again because it is not always the one the start
+ * dialog named (D11).
+ */
+export function reviewSourceLine(
+  review: Pick<MaterialImportReviewResponse, "harness" | "readBy" | "sentTo">,
+): string | null {
+  if (review.harness !== null) {
+    return tf("material_review_from", { harness: review.harness });
+  }
+  if (review.readBy === null) return null;
+  return review.sentTo.some((label) => label !== review.readBy)
+    ? tf("material_review_sent_to", {
+        models: review.sentTo.join(", "),
+        model: review.readBy,
+      })
+    : tf("material_review_read_by", { model: review.readBy });
+}
 
 /** Rows per proposed area, then what the material leads to. */
 export function reviewGroups(review: MaterialImportReviewResponse): {
@@ -506,10 +531,10 @@ function renderReview(parts: DialogParts): void {
   const { review } = current;
   parts.title.textContent = review.analysis.title;
   parts.meta.textContent = analysisLine(review.analysis);
-  parts.intro.textContent =
-    review.harness !== null
-      ? `${tf("material_review_from", { harness: review.harness })} ${t("material_review_intro")}`
-      : t("material_review_intro");
+  const source = reviewSourceLine(review);
+  parts.intro.textContent = source
+    ? `${source} ${t("material_review_intro")}`
+    : t("material_review_intro");
   const notice = reimportNotice(review.reimports);
   parts.notice.textContent = notice ?? "";
   parts.notice.hidden = notice === null;

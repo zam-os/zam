@@ -5,6 +5,7 @@ import { messageKeys } from "../../mobile/src/i18n.js";
 import {
   bytesToBase64,
   deviceFileKind,
+  devicePhotoBlob,
 } from "../../mobile/src/image-import.js";
 import { importBonusOffer } from "../../mobile/src/study-offers.js";
 
@@ -39,6 +40,29 @@ describe("mobile material import wiring", () => {
     );
     expect(deviceFileKind({ name: "notes.docx", type: "" })).toBe("other");
     expect(bytesToBase64(new TextEncoder().encode("Chemie"))).toBe("Q2hlbWll");
+  });
+
+  it("decodes a photo a Files picker typed as octet-stream, by its name", () => {
+    const bytes = new Uint8Array([1, 2, 3]).buffer;
+    const picked = (name: string, type: string) =>
+      Object.assign(new Blob([bytes], { type }), { name });
+    const generic = "application/octet-stream";
+    expect(deviceFileKind(picked("notes.jpg", generic))).toBe("image");
+    expect(
+      devicePhotoBlob(picked("notes.jpg", generic), bytes, "image").type,
+    ).toBe("image/jpeg");
+    expect(
+      devicePhotoBlob(picked("tafel.PNG", generic), bytes, "image").type,
+    ).toBe("image/png");
+    expect(
+      devicePhotoBlob(picked("IMG_1.HEIC", generic), bytes, "heic").type,
+    ).toBe("image/heic");
+    expect(devicePhotoBlob(picked("blatt.webp", ""), bytes, "image").type).toBe(
+      "image/webp",
+    );
+    // A photo the picker typed already goes as it is.
+    const typed = picked("image", "image/jpeg");
+    expect(devicePhotoBlob(typed, bytes, "image")).toBe(typed);
   });
 
   it("offers kept import items before the atom bonus, on both surfaces", () => {

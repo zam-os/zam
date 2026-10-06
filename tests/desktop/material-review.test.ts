@@ -19,6 +19,7 @@ import {
   refreshPendingMaterialImports,
   reimportNotice,
   reviewGroups,
+  reviewSourceLine,
   startsCollapsed,
 } from "../../desktop/src/material-review.js";
 import type {
@@ -80,6 +81,8 @@ function review(rows: MaterialImportRowWire[]): MaterialImportReviewResponse {
     createdAt: "2026-10-05T10:00:00.000Z",
     origin: "harness",
     harness: "opencode",
+    readBy: null,
+    sentTo: [],
     analysis: {
       kind: "own-notes",
       title: "Stofferkennung mit den Sinnen",
@@ -233,6 +236,24 @@ describe("material review rules", () => {
         "de",
       ),
     ).toBe("Diese Datei hast du am 5. Okt. schon importiert.");
+  });
+
+  it("names the harness, or the model that read the pages here", () => {
+    setCurrentLocale("en");
+    const studio = { harness: null, readBy: "Luna", sentTo: ["Luna"] };
+    expect(reviewSourceLine(review([]))).toBe("Proposed by opencode.");
+    expect(reviewSourceLine(studio)).toBe("Read by Luna.");
+    // The dialog named Gemma; it failed, and Luna answered.
+    expect(reviewSourceLine({ ...studio, sentTo: ["Gemma", "Luna"] })).toBe(
+      "Sent to Gemma, Luna; read by Luna.",
+    );
+    expect(
+      reviewSourceLine({ harness: null, readBy: null, sentTo: [] }),
+    ).toBeNull();
+    setCurrentLocale("de");
+    expect(reviewSourceLine({ ...studio, sentTo: ["Gemma", "Luna"] })).toBe(
+      "Gesendet an Gemma, Luna; gelesen von Luna.",
+    );
   });
 
   it("words the banner and the preview notes", () => {

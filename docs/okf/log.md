@@ -1,5 +1,10 @@
 # Log
 
+## 2026-10-06
+
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
+
 ## 2026-10-05
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

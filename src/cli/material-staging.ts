@@ -42,6 +42,10 @@ export interface StagedImport {
   origin: StagedImportOrigin;
   /** The host that submitted the batch on the harness path, when known. */
   harness?: string;
+  /** On the built-in path: the model that read the pages (D11). */
+  readBy?: string;
+  /** On the built-in path: every model the pages were sent to, in order. */
+  sentTo?: string[];
   set: MaterialProposalSet;
   /**
    * The rows the learner was shown. Kept so a confirm applies decisions to
@@ -106,6 +110,11 @@ function parseBatch(raw: string): StagedImport | null {
       createdAt: batch.createdAt,
       origin: batch.origin,
       ...(typeof batch.harness === "string" ? { harness: batch.harness } : {}),
+      ...(typeof batch.readBy === "string" ? { readBy: batch.readBy } : {}),
+      ...(Array.isArray(batch.sentTo) &&
+      batch.sentTo.every((label) => typeof label === "string")
+        ? { sentTo: batch.sentTo }
+        : {}),
       set: parseMaterialProposalSet(batch.set),
       ...(Array.isArray(batch.rows) ? { rows: batch.rows } : {}),
       ...(typeof batch.reviewedAt === "string"
@@ -131,7 +140,13 @@ export async function writeStagedImport(
 
 /** Validate and stage a new batch; returns it with its fresh id. */
 export async function stageMaterialImport(
-  input: { set: unknown; origin: StagedImportOrigin; harness?: string },
+  input: {
+    set: unknown;
+    origin: StagedImportOrigin;
+    harness?: string;
+    readBy?: string;
+    sentTo?: string[];
+  },
   opts: StagingOptions = {},
 ): Promise<StagedImport> {
   const batch: StagedImport = {
@@ -140,6 +155,8 @@ export async function stageMaterialImport(
     createdAt: (opts.now?.() ?? new Date()).toISOString(),
     origin: input.origin,
     ...(input.harness ? { harness: input.harness } : {}),
+    ...(input.readBy ? { readBy: input.readBy } : {}),
+    ...(input.sentTo ? { sentTo: input.sentTo } : {}),
     set: parseMaterialProposalSet(input.set),
   };
   await writeStagedImport(batch, opts);

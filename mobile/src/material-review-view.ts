@@ -27,8 +27,10 @@ import {
 
 export interface MaterialReviewState {
   review: DeviceReview;
-  /** The model that read the material, as the learner knows it. */
+  /** The models that read the material, as the learner knows them. */
   model: string;
+  /** Every model the material was sent to (D11). */
+  sentTo: string[];
   choices: MaterialChoices;
   /** Proposed area → what the learner typed. */
   areas: Record<string, string>;
@@ -37,10 +39,12 @@ export interface MaterialReviewState {
 export function createReviewState(
   review: DeviceReview,
   model: string,
+  sentTo: string[] = [],
 ): MaterialReviewState {
   return {
     review,
     model,
+    sentTo,
     choices: initialChoices(review.rows),
     areas: {},
   };
@@ -56,6 +60,15 @@ export function confirmText(counts: ConfirmCounts): string {
     parts.push(tf("material_confirm_not_saved", { count: counts.notSaved }));
   }
   return parts.join(" · ");
+}
+
+/** "Luna (also sent to Gemma)" — a model that got the pages is named. */
+export function modelText(model: string, sentTo: string[]): string {
+  const readers = model.split(", ");
+  const others = sentTo.filter((label) => !readers.includes(label));
+  return others.length > 0
+    ? tf("material_review_model_also", { model, others: others.join(", ") })
+    : model;
 }
 
 export function originText(origin: "page" | "completed" | "extra"): string {
@@ -193,7 +206,7 @@ export function renderMaterialReview(
   locale: string,
 ): void {
   elements.meta.textContent = tf("material_review_meta", {
-    model: state.model,
+    model: modelText(state.model, state.sentTo),
     analysis: analysisLine(state.review.set.analysis),
   });
   const notice = reimportText(state.review.reimports, locale);

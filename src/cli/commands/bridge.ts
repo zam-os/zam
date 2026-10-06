@@ -7082,12 +7082,15 @@ bridgeCommand
         const batch = await stageMaterialImport({
           set: result.set,
           origin: "studio",
+          readBy: result.model.label,
+          sentTo: result.sentTo.map((row) => row.label),
         });
         jsonOut({
           success: true,
           id: batch.id,
           proposalCount: batch.set.proposals.length,
           model: result.model,
+          sentTo: result.sentTo,
         });
       } catch (err) {
         // A refusal the Studio explains in the learner's language.

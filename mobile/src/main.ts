@@ -1807,7 +1807,9 @@ async function runMaterialImport(): Promise<void> {
       analysis.set,
     );
     setImportStatus("");
-    showMaterialReview(createReviewState(review, analysis.model));
+    showMaterialReview(
+      createReviewState(review, analysis.model, analysis.sentTo),
+    );
   } catch (error) {
     if (error instanceof MaterialFileError) {
       setImportStatus(

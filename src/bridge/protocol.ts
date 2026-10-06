@@ -691,7 +691,10 @@ export type MaterialImportAnalyzeResponse =
       success: true;
       id: string;
       proposalCount: number;
+      /** The model that read the pages — not always the one named before. */
       model: { label: string; model: string };
+      /** Every model the pages were sent to, in order. */
+      sentTo: Array<{ label: string; model: string }>;
     }
   | { success: false; code: MaterialAnalyzeCodeWire; message: string };
 
@@ -763,6 +766,10 @@ export interface MaterialImportReviewResponse {
   createdAt: string;
   origin: "harness" | "studio";
   harness: string | null;
+  /** The model that read the pages on the built-in path (D11). */
+  readBy: string | null;
+  /** Every model the pages were sent to on the built-in path, in order. */
+  sentTo: string[];
   analysis: {
     kind: string;
     title: string;

@@ -1,7 +1,8 @@
 /**
  * The review list's state, shared by every surface that shows it (ADR
- * 2026-10-05 Decisions 5, 7, 8): the desktop Studio and its MCP Apps panel,
- * which read rows from the bridge, and Mobile, which matches on the device.
+ * 2026-10-05 Decisions 5, 7, 8): the desktop Studio, which reads rows from
+ * the bridge, and Mobile, which matches on the device. The CLI uses the area
+ * grouping when it builds the rows.
  *
  * Pure and free of imports with side effects: no DOM, no i18n, no Node
  * built-ins. The words and the DOM stay with each app. Rows are typed by

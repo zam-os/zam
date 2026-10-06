@@ -146,8 +146,10 @@ async function learnerScope(
 
 export interface DeviceAnalysis {
   set: MaterialProposalSet;
-  /** The model that read the material, as the learner knows it. */
+  /** The models that read the material, as the learner knows them. */
   model: string;
+  /** Every model the material was sent to, in order (D11). */
+  sentTo: string[];
 }
 
 /**
@@ -181,7 +183,9 @@ export async function analyzeMaterialOnDevice(
     ({ name, kind, mime, base64 }) => ({ name, kind, mime, base64 }),
   );
   const replies = [];
-  let model = deps.endpoints[0]?.label ?? "";
+  // A batch can be answered by a later model than the one before it.
+  const readers = new Set<string>();
+  const sentTo = new Set<string>();
   for (const batch of batchByBudget(attachments, MOBILE_REQUEST_MAX_BYTES)) {
     const result = await readMaterialOnDevice({
       endpoints: deps.endpoints,
@@ -189,7 +193,8 @@ export async function analyzeMaterialOnDevice(
       attachments: batch.map((index) => attachments[index]),
       request: deps.request,
     });
-    model = result.endpoint.label;
+    readers.add(result.endpoint.label);
+    for (const endpoint of result.sentTo) sentTo.add(endpoint.label);
     replies.push({ reply: result.reply, fileIndexes: batch });
   }
   const merged = mergeMaterialReplies(replies);
@@ -204,7 +209,7 @@ export async function analyzeMaterialOnDevice(
       ...(file.sha256 ? { sha256: file.sha256 } : {}),
     })),
   });
-  return { set, model };
+  return { set, model: [...readers].join(", "), sentTo: [...sentTo] };
 }
 
 export interface DeviceReview {

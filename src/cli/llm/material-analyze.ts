@@ -326,6 +326,7 @@ async function sendOnce(
   instructions: string,
   attachments: MaterialAttachment[],
   deps: MaterialAnalyzeDeps,
+  sentTo: Set<ProviderConfig>,
 ): Promise<MaterialReply> {
   const endpoint = await prepareFoundryEndpoint(row);
   const request = buildMaterialRequest(
@@ -343,6 +344,7 @@ async function sendOnce(
       )
     : endpointUrl(endpoint.url, request.path);
   const send = deps.fetch ?? fetchWithInteractiveTimeout;
+  sentTo.add(row);
   const res = await send(url, {
     method: "POST",
     headers: anthropic
@@ -365,10 +367,18 @@ async function sendOnce(
   return parseMaterialReply(text);
 }
 
+interface AnsweredBatch {
+  reply: MaterialReply;
+  fileIndexes: number[];
+  /** The row that answered this batch. */
+  row: ProviderConfig;
+}
+
 /**
  * Send the attachments, splitting on a size or count rejection. Walks the
- * chain like the vision path: a local row behind a cloud primary serves only
- * when no cloud row answered (ADR 2026-09-13 decision 9).
+ * chain like the vision path: a row that fails, even after splitting, hands
+ * the whole request to the next one, and a local row behind a cloud primary
+ * serves only when no cloud row answered (ADR 2026-09-13 decision 9).
  */
 async function requestBatches(
   rows: ProviderConfig[],
@@ -378,45 +388,50 @@ async function requestBatches(
   fileIndexes: number[],
   progress: { done: number; total: number },
   deps: MaterialAnalyzeDeps,
-): Promise<Array<{ reply: MaterialReply; fileIndexes: number[] }>> {
+  sentTo: Set<ProviderConfig>,
+): Promise<AnsweredBatch[]> {
   let lastError: unknown;
   let cloudAnswered = false;
   for (const row of rows) {
     if (row.offlineOnly && cloudAnswered) break;
+    const before = { ...progress };
     try {
-      const reply = await sendOnce(row, kind, instructions, attachments, deps);
+      const reply = await sendOnce(
+        row,
+        kind,
+        instructions,
+        attachments,
+        deps,
+        sentTo,
+      );
       progress.done++;
       deps.onProgress?.({ ...progress });
-      return [{ reply, fileIndexes }];
+      return [{ reply, fileIndexes, row }];
     } catch (error) {
-      if (isSplittableRejection(error) && attachments.length > 1) {
-        const half = Math.ceil(attachments.length / 2);
-        progress.total++;
-        deps.onProgress?.({ ...progress });
-        const first = await requestBatches(
-          [row],
-          kind,
-          instructions,
-          attachments.slice(0, half),
-          fileIndexes.slice(0, half),
-          progress,
-          deps,
-        );
-        const second = await requestBatches(
-          [row],
-          kind,
-          instructions,
-          attachments.slice(half),
-          fileIndexes.slice(half),
-          progress,
-          deps,
-        );
-        return [...first, ...second];
-      }
       lastError = error;
+      if (isSplittableRejection(error) && attachments.length > 1) {
+        try {
+          return await requestHalves(
+            row,
+            kind,
+            instructions,
+            attachments,
+            fileIndexes,
+            progress,
+            deps,
+            sentTo,
+          );
+        } catch (splitError) {
+          lastError = splitError;
+          // The next row starts over with every page.
+          Object.assign(progress, before);
+          deps.onProgress?.({ ...progress });
+        }
+      }
       if (!row.offlineOnly && !isNoAnswerFailure(error)) cloudAnswered = true;
     }
   }
+  if (lastError instanceof MaterialAnalyzeError) throw lastError;
   const reason =
     lastError instanceof Error ? lastError.message : String(lastError);
   throw new MaterialAnalyzeError(
@@ -425,9 +440,52 @@ async function requestBatches(
   );
 }
 
+/** Both halves on one row; a half that still fails fails the row. */
+async function requestHalves(
+  row: ProviderConfig,
+  kind: "image" | "pdf",
+  instructions: string,
+  attachments: MaterialAttachment[],
+  fileIndexes: number[],
+  progress: { done: number; total: number },
+  deps: MaterialAnalyzeDeps,
+  sentTo: Set<ProviderConfig>,
+): Promise<AnsweredBatch[]> {
+  const half = Math.ceil(attachments.length / 2);
+  progress.total++;
+  deps.onProgress?.({ ...progress });
+  const first = await requestBatches(
+    [row],
+    kind,
+    instructions,
+    attachments.slice(0, half),
+    fileIndexes.slice(0, half),
+    progress,
+    deps,
+    sentTo,
+  );
+  const second = await requestBatches(
+    [row],
+    kind,
+    instructions,
+    attachments.slice(half),
+    fileIndexes.slice(half),
+    progress,
+    deps,
+    sentTo,
+  );
+  return [...first, ...second];
+}
+
 export interface MaterialAnalyzeResult {
   set: MaterialProposalSet;
+  /**
+   * The model that read the pages. Not always the one the dialog named: when
+   * that one fails, the next connected model may answer (D11).
+   */
   model: MaterialModelInfo;
+  /** Every model the pages were sent to, in order; the reader is one of them. */
+  sentTo: MaterialModelInfo[];
 }
 
 /**
@@ -508,6 +566,7 @@ export async function analyzeMaterialViaLLM(
 
     const progress = { done: 0, total: 1 };
     deps.onProgress?.({ ...progress });
+    const sentTo = new Set<ProviderConfig>();
     const replies = await requestBatches(
       rows,
       selection.kind,
@@ -516,6 +575,7 @@ export async function analyzeMaterialViaLLM(
       attachments.map((_, index) => index),
       progress,
       deps,
+      sentTo,
     );
     const merged = mergeMaterialReplies(replies);
     const now = new Date();
@@ -531,7 +591,11 @@ export async function analyzeMaterialViaLLM(
         proposals: merged.proposals,
         files,
       });
-      return { set, model: describeRow(rows[0]) as MaterialModelInfo };
+      return {
+        set,
+        model: describeRow(replies[0].row) as MaterialModelInfo,
+        sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
+      };
     } catch (error) {
       if (error instanceof MaterialProposalSetError) {
         throw new MaterialAnalyzeError(

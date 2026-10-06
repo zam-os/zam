@@ -9,7 +9,7 @@ tags:
   - mobile
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-05T21:00:00.000Z
+timestamp: 2026-10-06T08:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -61,7 +61,12 @@ first `image` row of the model registry, a PDF to the first `file` row;
 harness-backed rows are left out. The request carries no reasoning-effort
 control, so card writing gets the model's own default rather than the cheap
 level verified for recall. A request the provider rejects for its image count
-or size is split in halves and the cards are merged. The Studio runs the
+or size is split in halves and the cards are merged; a card whose file number
+falls outside its half rejects the answer instead of landing on another photo.
+When the named model fails, even after splitting, the next connected row gets
+the whole request, as on the vision path — so the review list names the model
+that read the pages and every model they were sent to ("Sent to Gemma, Luna;
+read by Luna"), and Mobile does the same in its review line. The Studio runs the
 analysis in its background bridge process, so the rest of the app stays
 responsive. **On Mobile** the same request goes through the native
 `vision_request` command; its 8 MB body limit is met by batching the photos
@@ -101,8 +106,9 @@ Every proposal is a row with Yes, No or Bonus:
   on 5 Oct."); it informs and never blocks.
 
 The rules — presets, counts, grouping — live once in
-`src/kernel/import/material-review-state.ts`, shared by the desktop Studio,
-its MCP Apps panel, the CLI and Mobile; each app keeps its own words and DOM.
+`src/kernel/import/material-review-state.ts`, shared by the desktop Studio and
+Mobile, with the CLI using its area grouping; each app keeps its own words and
+DOM. The review list is not an MCP Apps panel.
 
 # What one confirm writes
 

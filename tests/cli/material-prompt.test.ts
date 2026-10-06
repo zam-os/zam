@@ -189,7 +189,8 @@ describe("reading the reply", () => {
           analysis: { title: "second" },
           proposals: [
             { question: "b", file: 0 },
-            { question: "c", file: 7 },
+            { question: "c", file: 3 },
+            { question: "d" },
           ],
         },
         fileIndexes: [2, 3],
@@ -199,16 +200,21 @@ describe("reading the reply", () => {
     expect(merged.proposals).toEqual([
       { question: "a", file: 1 },
       { question: "b", file: 2 },
-      // Out of range stays as it was; validation names it.
-      { question: "c", file: 7 },
+      // 3 is outside its batch of two, though inside the import: it must not
+      // land on the import's photo 3, so validation rejects it.
+      { question: "c", file: -1 },
+      // No number means the batch's first file, as in one request.
+      { question: "d", file: 2 },
     ]);
   });
 
   it("batches attachments under a body budget, in order", () => {
     const sized = (n: number) => ({ base64: "A".repeat(n) });
-    expect(batchByBudget([sized(4), sized(4), sized(3), sized(9)], 8)).toEqual(
-      [[0, 1], [2], [3]],
-    );
+    expect(batchByBudget([sized(4), sized(4), sized(3), sized(9)], 8)).toEqual([
+      [0, 1],
+      [2],
+      [3],
+    ]);
     expect(batchByBudget([], 8)).toEqual([]);
   });
 
