@@ -41,6 +41,11 @@ export interface MaterialImportHost {
   openAgentSetup?: () => void;
   /** Open the setup where a model is connected. */
   openModelSetup?: () => void;
+  /**
+   * Settles once an overdue check of the models' capabilities is done, so
+   * the dialog names the model that really reads the files.
+   */
+  modelsChecked?: () => Promise<void>;
   /** Files dropped on the window; returns the unsubscribe. */
   onFileDrop?: (listener: (paths: string[]) => void) => Promise<() => void>;
   /**
@@ -545,9 +550,12 @@ export async function openMaterialImportStart(): Promise<void> {
     runBridge<AgentHarnessStatusResponse>("agent-harness-status").catch(
       () => null,
     ),
-    runBridge<MaterialImportModelsResponse>("material-import-models").catch(
-      () => null,
-    ),
+    (host.modelsChecked?.() ?? Promise.resolve())
+      .catch(() => undefined)
+      .then(() =>
+        runBridge<MaterialImportModelsResponse>("material-import-models"),
+      )
+      .catch(() => null),
   ]);
   harnesses = connectedHarnesses(harnessReport);
   models = modelReport;

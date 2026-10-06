@@ -169,6 +169,34 @@ describe("material import start", () => {
       /BACKGROUND_BRIDGE_COMMANDS: &\[&str\] = &\[[^\]]*"material-import-analyze"/,
     );
     expect(main).toContain("runInBackground: async (cmd, args)");
+    // An overdue capability check runs beside the bridge, once per session,
+    // and the dialog names the models only after it.
+    expect(rust).toMatch(
+      /BACKGROUND_BRIDGE_COMMANDS: &\[&str\] = &\[[^\]]*"model-refresh-capabilities"/,
+    );
+    expect(main).toContain(
+      "modelsChecked: () => refreshModelCapabilitiesWhenDue()",
+    );
+    expect(main).toContain(
+      "void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());",
+    );
+    const refresh = main.slice(
+      main.indexOf("function refreshModelCapabilitiesWhenDue"),
+    );
+    expect(refresh.indexOf('["--check"]')).toBeLessThan(
+      refresh.indexOf('cmd: "model-refresh-capabilities"'),
+    );
+    expect(refresh).toContain("modelCapabilityRefresh ??=");
+    const start = readFileSync(
+      join(root, "desktop", "src", "material-import-start.ts"),
+      "utf8",
+    );
+    expect(start.indexOf("host.modelsChecked?.()")).toBeGreaterThan(0);
+    expect(start.indexOf("host.modelsChecked?.()")).toBeLessThan(
+      start.indexOf(
+        'runBridge<MaterialImportModelsResponse>("material-import-models")',
+      ),
+    );
     expect(main).toContain("onDragDropEvent(");
     expect(main).toContain('openModelSetup: () => showOnboardingAt("model")');
     expect(studio).toContain("initMaterialImportStart(materialReview);");

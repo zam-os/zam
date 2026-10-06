@@ -9,7 +9,7 @@ tags:
   - mobile
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-06T08:00:00.000Z
+timestamp: 2026-10-06T10:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -40,7 +40,11 @@ loses.
   builder, not only in the UI: on OpenRouter a PDF sent to another model would
   be transcribed on the provider's server. On OpenRouter the request also pins
   the native PDF engine, so a mismatch fails instead of falling back to OCR.
-  There is no PDF renderer and no text layer for other models.
+  There is no PDF renderer and no text layer for other models. A row probed
+  before ZAM knew `file` reads as "no PDFs" until it is probed again, so the
+  Studio re-checks out-of-date cloud rows by itself, once per session and
+  only when one is due, and the dialog names the models after that check
+  (see [bridge-protocol.md](bridge-protocol.md), `model-refresh-capabilities`).
 
 # Two ways in
 
@@ -172,5 +176,5 @@ a model.
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md) (Decision 6: bonus means offered)
 - [ADR 2026-09-13 — Model Capabilities Are Detected](../adr/2026-09-13-model-capabilities-are-detected.md)
 - [OpenRouter — PDF inputs](https://openrouter.ai/docs/features/multimodal/pdfs)
-- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
+- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/capability-refresh.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
 - Tests: `tests/kernel/material-import.test.ts`, `tests/kernel/material-review-state.test.ts`, `tests/kernel/postgres-material-import.test.ts`, `tests/kernel/schule-domain-migration.test.ts`, `tests/cli/material-import.test.ts`, `tests/cli/material-analyze.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/cli/mcp-material-import.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/desktop/material-review.test.ts`, `tests/desktop/material-import-start.test.ts`, `tests/desktop/material-bonus.test.ts`, `tests/mobile/material-import.test.ts`

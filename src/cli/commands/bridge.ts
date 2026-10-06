@@ -247,6 +247,10 @@ import {
   probeModelCapabilities,
   validateModelSave,
 } from "../llm/capability-probe.js";
+import {
+  refreshStaleCapabilities,
+  staleCapabilityRows,
+} from "../llm/capability-refresh.js";
 import { prepareChoiceOptionsForCards } from "../llm/choice-prepare.js";
 import {
   type ApiFlavor,
@@ -3682,6 +3686,25 @@ bridgeCommand
       ok: true,
       model: modelRow(validation.entry),
       probe: { reachable: probe.reachable, detected: probe.detected },
+    });
+  });
+
+bridgeCommand
+  .command("model-refresh-capabilities")
+  .description(
+    "Ask providers again about cloud models whose detection is out of date; widens only (JSON)",
+  )
+  .option("--check", "Only count the due rows; no network")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      if (opts.check) {
+        jsonOut({
+          success: true,
+          due: (await staleCapabilityRows(db)).length,
+        });
+        return;
+      }
+      jsonOut({ success: true, ...(await refreshStaleCapabilities(db)) });
     });
   });
 

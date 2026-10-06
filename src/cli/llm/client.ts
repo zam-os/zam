@@ -2511,7 +2511,7 @@ export function isCloudKeyMissing(endpoint: ProviderConfig): boolean {
   return known && (!key || key === DEFAULT_LLM_API_KEY);
 }
 
-function isLocalEndpoint(url: string): boolean {
+export function isLocalEndpoint(url: string): boolean {
   return (
     url.includes("localhost") ||
     url.includes("127.0.0.1") ||

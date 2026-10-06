@@ -1345,9 +1345,14 @@ fn execute_zam_bridge_blocking(
 
 /// Bridge commands allowed to run beside the persistent bridge. Each one makes
 /// model calls that must not stall the rest of the Studio: preparing choice
-/// options for the review, and reading a learner's photos or PDF for a
-/// material import (ADR 2026-10-05), which can take a minute or two.
-const BACKGROUND_BRIDGE_COMMANDS: &[&str] = &["choice-prepare", "material-import-analyze"];
+/// options for the review, reading a learner's photos or PDF for a material
+/// import (ADR 2026-10-05), which can take a minute or two, and asking cloud
+/// providers again about models whose detected capabilities are out of date.
+const BACKGROUND_BRIDGE_COMMANDS: &[&str] = &[
+    "choice-prepare",
+    "material-import-analyze",
+    "model-refresh-capabilities",
+];
 
 /// Run one bridge command in its own short-lived CLI process, beside the
 /// persistent bridge.

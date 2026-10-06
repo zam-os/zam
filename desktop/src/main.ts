@@ -153,6 +153,7 @@ import {
 } from "./radio-group.js";
 import type {
   AnswerPresentationResponse,
+  ModelRefreshCapabilitiesResponse,
 } from "../../src/bridge/protocol.js";
 import {
   acceptsTypedStudyAnswer,
@@ -252,6 +253,9 @@ setMaterialImportHost({
       ?.scrollIntoView({ block: "start" });
   },
   openModelSetup: () => showOnboardingAt("model"),
+  // Name the models only after an overdue capability check (0.47.0 added
+  // PDFs; rows probed before it read as "no PDFs").
+  modelsChecked: () => refreshModelCapabilitiesWhenDue(),
   onFileDrop: async (onDrop) =>
     getCurrentWebview().onDragDropEvent((event) => {
       if (event.payload.type === "drop") onDrop(event.payload.paths);
@@ -8505,6 +8509,36 @@ function initChoiceControls(): void {
     ?.addEventListener("pointerdown", clearChoiceAdvance);
 }
 
+let modelCapabilityRefresh: Promise<void> | null = null;
+
+/**
+ * Ask cloud providers again about models whose detected capabilities are out
+ * of date: never probed, probed before ZAM knew a newer capability, or a month
+ * ago. Once per session at most. Deciding that reads no network; only due rows
+ * are asked, in a separate process, and local models never — starting a local
+ * runtime is expensive, so they keep the manual "Re-check".
+ */
+function refreshModelCapabilitiesWhenDue(): Promise<void> {
+  modelCapabilityRefresh ??= (async () => {
+    const check = await runBridge<ModelRefreshCapabilitiesResponse>(
+      "model-refresh-capabilities",
+      ["--check"],
+    );
+    if (!check.success || !check.due) return;
+    const raw = await invoke<string>("execute_zam_bridge_background", {
+      cmd: "model-refresh-capabilities",
+      args: [],
+    });
+    const result = JSON.parse(raw) as ModelRefreshCapabilitiesResponse;
+    if (result.refreshed && result.refreshed.length > 0) {
+      void loadModelRegistry();
+    }
+  })().catch((err: unknown) => {
+    console.warn("Model capabilities could not be checked:", err);
+  });
+  return modelCapabilityRefresh;
+}
+
 /**
  * Prepare options for the next cards in a separate CLI process, so model
  * calls never hold up the bridge the card on screen depends on (Decision 6).
@@ -9089,8 +9123,9 @@ window.addEventListener("DOMContentLoaded", () => {
     });
   });
 
-  // Load initial dashboard state
-  loadDashboard();
+  // Load initial dashboard state; then, off the critical path, an overdue
+  // capability check for cloud models.
+  void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());
   void loadAppVersion();
   repairInstallationOnVersionChange();
 
