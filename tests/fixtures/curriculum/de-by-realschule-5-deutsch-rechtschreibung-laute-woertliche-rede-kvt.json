@@ -20,7 +20,7 @@
       "namespace": "deutsch-rechtschreibung",
       "slug": "vokallaenge-dehnung-stummes-h-doppelvokal-ie",
       "title": "Dehnung langer Vokale: Stummes Dehnungs-h, langes i als 'ie' und Doppelvokale",
-      "domain": "schule/deutsch/rechtschreibung",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "deutsch-rechtschreibung",
       "slug": "vokallaenge-schaerfung-doppelkonsonanten-ck-tz",
       "title": "Schärfung kurzer Vokale: Doppelkonsonanten, ck statt kk und tz statt zz",
-      "domain": "schule/deutsch/rechtschreibung",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "deutsch-rechtschreibung",
       "slug": "auslautverhaertung-verlaengerungsprobe-b-d-g",
       "title": "Auslautverhärtung: b/p, d/t, g/k und die Verlängerungs- und Ableitungsprobe",
-      "domain": "schule/deutsch/rechtschreibung",
+      "domain": "deutsch/rechtschreibung",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "deutsch-zeichensetzung",
       "slug": "woertliche-rede-redebegleitsatz-anfuehrungszeichen",
       "title": "Wörtliche Rede und Zeichensetzung: Redebegleitsatz vorne, hinten und eingeschoben",
-      "domain": "schule/deutsch/zeichensetzung",
+      "domain": "deutsch/zeichensetzung",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

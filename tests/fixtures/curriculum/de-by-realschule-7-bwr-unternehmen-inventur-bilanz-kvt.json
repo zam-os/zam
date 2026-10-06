@@ -20,7 +20,7 @@
       "namespace": "bwr-grundlagen",
       "slug": "oekonomisches-prinzip-beduerfnisse-gueterarten",
       "title": "Grundlagen des Wirtschaftens: Bedürfnisarten, Güterklassifikation und das Ökonomische Prinzip",
-      "domain": "schule/bwr/grundlagen",
+      "domain": "bwr/grundlagen",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "bwr-bilanz",
       "slug": "inventur-inventar-bilanzaufbau-aktiva-passiva",
       "title": "Vom Inventar zur Bilanz: Inventurverfahren, Bilanzstruktur (Aktiva/Passiva) und Bilanzgleichung",
-      "domain": "schule/bwr/bilanz",
+      "domain": "bwr/bilanz",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "bwr-bilanz",
       "slug": "die-vier-bilanzveraenderungen-aktivtausch-passivtausch-mehrung-minderung",
       "title": "Die 4 Bilanzveränderungen: Aktivtausch, Passivtausch, Aktiv-Passiv-Mehrung und Aktiv-Passiv-Minderung",
-      "domain": "schule/bwr/bilanz",
+      "domain": "bwr/bilanz",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

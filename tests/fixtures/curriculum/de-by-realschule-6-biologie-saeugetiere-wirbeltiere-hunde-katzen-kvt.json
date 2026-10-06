@@ -20,7 +20,7 @@
       "namespace": "biologie-zoologie",
       "slug": "raubtiere-hund-vs-katze-hetz-vs-schleichjaeger",
       "title": "Raubtiere im Vergleich: Hund (Hetzjäger/Zehengänger) vs. Katze (Schleichjäger/Krallen)",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-zoologie",
       "slug": "huftiere-zehenspitzengaenger-rind-wiederkaeuer",
       "title": "Huftiere: Zehenspitzengänger, Unpaarhufer (Pferd) und Wiederkäuermagen des Rindes",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-zoologie",
       "slug": "gebisstypen-fleischfresser-pflanzenfresser-allesfresser",
       "title": "Gebisstypen der Säugetiere: Fleischfresser-, Pflanzenfresser- und Allesfressergebiss",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-zoologie",
       "slug": "saeugetier-merkmale-behaarung-plazenta-brutpflege",
       "title": "Grundbauplan der Säugetiere: Fell/Haarkleid, Plazentaentwicklung, Säugen und intensive Brutpflege",
-      "domain": "schule/biologie/zoologie",
+      "domain": "biologie/zoologie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

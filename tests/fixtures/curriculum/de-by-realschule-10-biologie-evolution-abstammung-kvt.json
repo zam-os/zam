@@ -20,7 +20,7 @@
       "namespace": "biologie-evolution",
       "slug": "evolutionstheorien-darwin-selektion",
       "title": "Evolutionstheorien: Lamarck vs. Darwin und Synthetische Evolutionstheorie",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-evolution",
       "slug": "homologie-analogie-homologiekriterien",
       "title": "Evolutionsbelege: Homologie (Divergenz) vs. Analogie (Konvergenz)",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-evolution",
       "slug": "fossilien-brueckentiere-archaeopteryx",
       "title": "Fossilien und Brückentiere: Mosaikformen am Beispiel Archaeopteryx",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-evolution",
       "slug": "hominidenevolution-stammbaum-des-menschen",
       "title": "Stammesgeschichte des Menschen: Hominisation und Gattung Homo",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [

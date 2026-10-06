@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geschichte-aufklaerung",
       "slug": "absolutismus-ludwig-xiv-merkantilismus-aufklaerung-gewaltenteilung",
       "title": "Absolutismus und Aufklärung: Ludwig XIV. (Versailles, Merkantilismus) und Montesquieus Gewaltenteilung",
-      "domain": "schule/geschichte/aufklaerung",
+      "domain": "geschichte/aufklaerung",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geschichte-revolutionen",
       "slug": "franzoesische-revolution-1789-jakobiner-revolution-1848-paulskirche",
       "title": "Die Französische Revolution (1789, Menschenrechte, Jakobiner) und die Deutsche Revolution 1848/49",
-      "domain": "schule/geschichte/revolutionen",
+      "domain": "geschichte/revolutionen",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

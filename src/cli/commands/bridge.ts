@@ -105,6 +105,8 @@ import {
   keepLibraryAsPrevious,
   listAgentSkills,
   listKnowledgeContexts,
+  listMaterialAreaContext,
+  listMaterialBonusItems,
   listPersonalCards,
   listProviderApiKeyRefs,
   listTokens,
@@ -140,6 +142,7 @@ import {
   slugify,
   supportsLocalGeneration,
   syncObserverSidecarPolicy,
+  takeMaterialBonusItem,
   tursoVaultAccessPending,
   uiObservationLogExists,
   unassignTokenFromContext,
@@ -285,6 +288,11 @@ import {
   getLocalVisionStatus,
 } from "../llm/local-vision.js";
 import {
+  analyzeMaterialViaLLM,
+  MaterialAnalyzeError,
+  materialImportModels,
+} from "../llm/material-analyze.js";
+import {
   isMachineLocalEntry,
   loadModelRegistry,
   type ResolvedModelEntry,
@@ -297,6 +305,16 @@ import {
   transcribeAudio,
 } from "../llm/speech.js";
 import { observeUiSnapshotViaLLM } from "../llm/vision.js";
+import {
+  confirmMaterialImport,
+  discardMaterialImport,
+  listPendingMaterialImports,
+  parseMaterialAreas,
+  parseMaterialDecisions,
+  previewMaterialImportFile,
+  reviewMaterialImport,
+} from "../material-import.js";
+import { stageMaterialImport } from "../material-staging.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
 import { listOpenContentCatalog } from "../open-content/catalog.js";
 import {
@@ -6984,6 +7002,242 @@ bridgeCommand
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
       });
+    });
+  });
+
+// ── zam bridge material-import-* (ADR 2026-10-05) ───────────────────────────
+//
+// Learning cards from photos and files. A batch of proposals waits in a
+// machine-local staging file until the learner decides each card in the
+// review list; only the confirm writes to the library.
+
+function parseJsonOption(name: string, value: string | undefined): unknown {
+  if (value === undefined) return undefined;
+  try {
+    return JSON.parse(value);
+  } catch {
+    jsonError(`--${name} must be JSON`);
+  }
+}
+
+bridgeCommand
+  .command("material-import-stage")
+  .description(
+    "Validate a material proposal set (JSON file) and stage it for review (JSON)",
+  )
+  .requiredOption("--file <path>", "JSON file holding a MaterialProposalSet")
+  .option("--origin <origin>", "studio or harness", "studio")
+  .option("--harness <name>", "Host that produced the proposals")
+  .action(async (opts) => {
+    if (opts.origin !== "studio" && opts.origin !== "harness") {
+      jsonError("--origin must be studio or harness");
+    }
+    try {
+      const raw = JSON.parse(readFileSync(opts.file, "utf8")) as unknown;
+      const batch = await stageMaterialImport({
+        set: raw,
+        origin: opts.origin,
+        harness: opts.harness,
+      });
+      jsonOut({
+        success: true,
+        id: batch.id,
+        proposalCount: batch.set.proposals.length,
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("material-import-models")
+  .description(
+    "The models a built-in material import would send photos and PDFs to (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      jsonOut({ success: true, ...(await materialImportModels(db)) });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-analyze")
+  .description(
+    "Read photos or one PDF with the connected model and stage its proposals for review (JSON)",
+  )
+  .requiredOption("--file <path...>", "Up to 10 photos, or one PDF")
+  .option("--pages <range>", "Pages of the PDF to use, e.g. 2-4")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const result = await analyzeMaterialViaLLM(
+          db,
+          opts.file as string[],
+          { pages: opts.pages },
+          {
+            onProgress: (progress) =>
+              progressOut({ type: "material-analyze-progress", ...progress }),
+          },
+        );
+        const batch = await stageMaterialImport({
+          set: result.set,
+          origin: "studio",
+          readBy: result.model.label,
+          sentTo: result.sentTo.map((row) => row.label),
+        });
+        jsonOut({
+          success: true,
+          id: batch.id,
+          proposalCount: batch.set.proposals.length,
+          model: result.model,
+          sentTo: result.sentTo,
+        });
+      } catch (err) {
+        // A refusal the Studio explains in the learner's language.
+        if (err instanceof MaterialAnalyzeError) {
+          jsonOut({ success: false, code: err.code, message: err.message });
+          return;
+        }
+        throw err;
+      }
+    });
+  });
+
+bridgeCommand
+  .command("material-import-pending")
+  .description("List material imports waiting for review (JSON)")
+  .action(async () => {
+    try {
+      jsonOut({ success: true, imports: await listPendingMaterialImports() });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("material-import-review")
+  .description(
+    "Build the review list for a waiting material import: presets, matches, continuations (JSON)",
+  )
+  .requiredOption("--id <id>", "Staged import id")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const review = await reviewMaterialImport(db, userId, opts.id);
+      jsonOut({ success: true, ...review });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-confirm")
+  .description(
+    "Write the learner's choices for a reviewed material import and retire it (JSON)",
+  )
+  .requiredOption("--id <id>", "Staged import id")
+  .requiredOption(
+    "--decisions <json>",
+    'Row id → "yes" | "bonus" | "no"; rows without a choice are not saved',
+  )
+  .option("--areas <json>", "Proposed area → area the learner confirmed")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const decisions = parseMaterialDecisions(
+        parseJsonOption("decisions", opts.decisions),
+      );
+      const areas = parseMaterialAreas(parseJsonOption("areas", opts.areas));
+      const userId = await resolveUser(opts, db, { json: true });
+      const result = await confirmMaterialImport(
+        db,
+        userId,
+        opts.id,
+        decisions,
+        areas,
+      );
+      jsonOut({ success: true, ...result });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-file-preview")
+  .description(
+    "Preview one file of a waiting material import: an inline image, or its name (JSON)",
+  )
+  .requiredOption("--id <id>", "Staged import id")
+  .requiredOption("--file <n>", "Index of the file in the import")
+  .action(async (opts) => {
+    const index = parseNonNegativeIntegerOption("--file", opts.file);
+    try {
+      jsonOut({
+        success: true,
+        ...(await previewMaterialImportFile(opts.id, index)),
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("material-import-discard")
+  .description(
+    "Discard a waiting material import without writing anything (JSON)",
+  )
+  .requiredOption("--id <id>", "Staged import id")
+  .action(async (opts) => {
+    try {
+      jsonOut({
+        success: true,
+        discarded: await discardMaterialImport(opts.id),
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("material-import-areas")
+  .description(
+    "Areas in use and bundled-cell subjects, for proposing an import's area (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      const selection = await getLastCurriculumSelection(db).catch(
+        () => undefined,
+      );
+      const context = await listMaterialAreaContext(db, {
+        schoolType: selection?.schoolType,
+      });
+      jsonOut({ success: true, ...context });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-bonus-list")
+  .description("Bonus items kept from the learner's own imports (JSON)")
+  .option("--limit <n>", "Maximum items", "20")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    const limit = parseNonNegativeIntegerOption("--limit", opts.limit);
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({
+        success: true,
+        items: await listMaterialBonusItems(db, userId, { limit }),
+      });
+    });
+  });
+
+bridgeCommand
+  .command("material-import-bonus-take")
+  .description("Take one bonus item from an import: create its card (JSON)")
+  .requiredOption("--token <id>", "Token id of the bonus item")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const result = await takeMaterialBonusItem(db, userId, opts.token);
+      jsonOut({ success: true, ...result });
     });
   });
 

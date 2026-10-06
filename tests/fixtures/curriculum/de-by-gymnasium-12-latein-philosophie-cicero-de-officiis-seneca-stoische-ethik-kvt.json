@@ -20,7 +20,7 @@
       "namespace": "gymnasium-latein-cicero-philosophie",
       "slug": "cicero-de-re-publica-de-officiis-honestum-utile",
       "title": "Cicero: Staatsphilosophie (Res publica = Res populi) und Pflichtenlehre (Honestum vs. Utile)",
-      "domain": "schule/latein/philosophie",
+      "domain": "latein/philosophie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-latein-seneca-stoa",
       "slug": "seneca-epistulae-morales-stoische-ethik-ataraxie-zeit",
       "title": "Seneca: Stoische Lebenskunst (Epistulae morales), Umgang mit der Zeit und Seelenruhe",
-      "domain": "schule/latein/philosophie",
+      "domain": "latein/philosophie",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "simple-past-regelmaessig-unregelmaessig-did-signalwoerter",
       "title": "Simple Past: Bildung (-ed / unregelmäßige Verben), Verneinung/Fragen mit did und Signalwörter",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "englisch-grammatik",
       "slug": "past-continuous-progressive-was-were-ing-unterbrechung",
       "title": "Past Continuous (Progressive): Bildung (was/were + -ing), Hintergrundhandlungen und 'while/when'",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "englisch-grammatik",
       "slug": "present-perfect-have-has-past-participle-signalwoerter",
       "title": "Present Perfect: Bildung (have/has + 3. Form), Signalwörter (just, already, yet, ever, never) und Bezug zur Gegenwart",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "englisch-grammatik",
       "slug": "adjektivsteigerung-komparativ-superlativ-mengenwoerter",
       "title": "Adjektive und Mengenangaben: Steigerung (-er/-est vs. more/most), unregelmäßige Formen und much/many/some/any",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

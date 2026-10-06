@@ -1,10 +1,10 @@
 /**
- * Resolve the cloud vision endpoint for mobile image import from the synced
- * learner database settings (not from the pairing QR).
+ * The cloud vision endpoint set on the learner's library before the model
+ * registry reached the phone (`llm.vision.*` with `llm.*` fallbacks).
  *
- * Reads the same legacy keys the desktop CLI uses (`llm.vision.*` with
- * `llm.*` fallbacks). Machine-local `~/.zam/config.json` is not available on
- * the phone — operators must set vision on the server DB for field test.
+ * A material import reads photos with the registry's `image` rows first and
+ * falls back to this endpoint (ADR 2026-10-05, Phase 8). Machine-local
+ * `~/.zam/config.json` is not available on the phone.
  */
 
 import type { Database } from "../../src/kernel/db/types.js";
@@ -94,43 +94,4 @@ export async function resolveMobileVisionEndpoint(
     apiFlavor: "chat-completions",
     label: model,
   };
-}
-
-/** Provider stamp for tokens created via image VL import. */
-export function visionProviderStamp(model: string): string {
-  const cleaned = model.trim() || "unknown";
-  return `vision:${cleaned}`;
-}
-
-/** Human-readable reason when image import cannot run. */
-export async function visionImportUnavailableReason(
-  db: Database,
-): Promise<string | null> {
-  if ((await getSetting(db, "llm.vision.enabled")) !== "true") {
-    return "Cloud vision is not enabled on this library (llm.vision.enabled).";
-  }
-  const endpoint = await resolveMobileVisionEndpoint(db);
-  if (endpoint) return null;
-
-  const url =
-    (await getSetting(db, "llm.vision.url"))?.trim() ||
-    (await getSetting(db, "llm.url"))?.trim() ||
-    "";
-  if (!url) {
-    return "No vision endpoint URL is configured (llm.vision.url).";
-  }
-  if (isLocalEndpoint(url)) {
-    return "Vision endpoint is local/loopback and cannot be reached from the phone.";
-  }
-  if (!/^https:\/\//i.test(url)) {
-    return "Vision endpoint must use HTTPS (llm.vision.url).";
-  }
-  const model =
-    (await getSetting(db, "llm.vision.model"))?.trim() ||
-    (await getSetting(db, "llm.model"))?.trim() ||
-    "";
-  if (!model) {
-    return "No vision model is configured (llm.vision.model).";
-  }
-  return "Cloud vision is not available for image import.";
 }

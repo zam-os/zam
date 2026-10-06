@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "simple-present-vs-present-continuous-aspekte",
       "title": "Simple Present versus Present Continuous: Gewohnheiten versus Handlungen im Moment",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "englisch-grammatik",
       "slug": "simple-past-regelmaessig-unregelmaessig-did",
       "title": "Simple Past: Regelmäßige Verben (-ed), unregelmäßige Verben und Verneinung/Fragen mit did",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "englisch-grammatik",
       "slug": "modalverben-can-must-mustnt-neednt",
       "title": "Modalverben: can, must, mustn't (Verbot) versus needn't (keine Notwendigkeit)",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "englisch-grammatik",
       "slug": "pronomen-possessivbegleiter-vs-possessivpronomen",
       "title": "Pronomen: Objektpronomen, Possessivbegleiter (my/your) und echte Possessivpronomen (mine/yours)",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

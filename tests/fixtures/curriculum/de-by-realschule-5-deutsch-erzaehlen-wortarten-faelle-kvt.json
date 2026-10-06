@@ -20,7 +20,7 @@
       "namespace": "deutsch-texte",
       "slug": "erlebniserzaehlung-spannungskurve-hoehepunkt",
       "title": "Erzählen nach Erlebnissen: Einleitung (W-Fragen), Spannungsaufbau und Höhepunkt",
-      "domain": "schule/deutsch/texte",
+      "domain": "deutsch/texte",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "vier-faelle-des-nomens-deklination-ersatzprobe",
       "title": "Die vier Fälle des Nomens: Nominativ, Genitiv, Dativ und Akkusativ (Fragewörter & Ersatzprobe)",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "pronomen-arten-personal-possessiv-demonstrativ",
       "title": "Pronomen (Fürwörter): Personal-, Possessiv-, Demonstrativ- und Relativpronomen",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "deutsch-grammatik",
       "slug": "adjektive-steigerung-komparativ-superlativ-vergleich",
       "title": "Adjektive: Merkmale, Steigerungsstufen (Positiv, Komparativ, Superlativ) und Vergleichspartikeln",
-      "domain": "schule/deutsch/grammatik",
+      "domain": "deutsch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

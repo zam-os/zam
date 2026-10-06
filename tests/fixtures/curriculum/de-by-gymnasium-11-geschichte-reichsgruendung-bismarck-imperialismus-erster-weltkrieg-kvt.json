@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geschichte-reichsgruendung",
       "slug": "reichsgruendung-1871-verfassung-bismarck-buendnissystem",
       "title": "Das Deutsche Kaiserreich 1871: Reichsgründung von oben, Verfassung und Bismarcks Bündnissystem",
-      "domain": "schule/geschichte/kaiserreich",
+      "domain": "geschichte/kaiserreich",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geschichte-erster-weltkrieg",
       "slug": "hochimperialismus-wilhelm-ii-julikrise-erster-weltkrieg-1917",
       "title": "Imperialismus & Erster Weltkrieg: Neuer Kurs Wilhelms II., Julikrise 1914 und das Epochenjahr 1917",
-      "domain": "schule/geschichte/erster-weltkrieg",
+      "domain": "geschichte/erster-weltkrieg",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

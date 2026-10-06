@@ -1,0 +1,62 @@
+{
+  "version": 1,
+  "analysis": {
+    "kind": "own-notes",
+    "title": "Stofferkennung mit den Sinnen",
+    "subjects": ["Chemie"],
+    "topic": "Stoffe und Stoffeigenschaften",
+    "level": "Realschule, Anfangsunterricht Chemie",
+    "bloom": [1, 2],
+    "leadsTo": "Messbare Stoffeigenschaften: Dichte, Schmelz- und Siedetemperatur"
+  },
+  "proposals": [
+    {
+      "question": "Welche Eigenschaften eines Stoffes erkennt man am Aussehen?",
+      "answer": "Farbe, Aggregatzustand bei Raumtemperatur, metallischer Glanz.",
+      "title": "Stofferkennung am Aussehen",
+      "bloom": 1,
+      "file": 0,
+      "page": 1,
+      "area": "schule/chemie/stoffe-und-eigenschaften",
+      "origin": "page"
+    },
+    {
+      "question": "Warum ist die Geschmacksprobe bei chemischen Versuchen verboten?",
+      "answer": "Weil Stoffe giftig oder ätzend sein können.",
+      "title": "Keine Geschmacksprobe",
+      "bloom": 2,
+      "file": 0,
+      "page": 1,
+      "area": "chemie/stoffe-und-eigenschaften",
+      "origin": "completed"
+    },
+    {
+      "question": "Wie prüft man den Geruch eines Stoffes sicher?",
+      "answer": "Man fächelt sich den Geruch mit der Hand zu und riecht nie direkt an der Probe.",
+      "title": "Geruchsprobe durch Zufächeln",
+      "bloom": 1,
+      "file": 0,
+      "page": 1,
+      "area": "chemie/stoffe-und-eigenschaften",
+      "origin": "extra"
+    },
+    {
+      "question": "Wo stößt die Geruchsprobe an ihre Grenzen?",
+      "answer": "Bei geruchlosen Stoffen.",
+      "title": "Grenze der Geruchsprobe",
+      "bloom": 1,
+      "file": 0,
+      "page": 1,
+      "area": "chemie/stoffe-und-eigenschaften",
+      "origin": "page",
+      "hardToRead": true
+    }
+  ],
+  "files": [
+    {
+      "name": "IMG_1234.HEIC",
+      "sourceLink": "photo:IMG_1234.HEIC@2026-10-05",
+      "sha256": "9F86D081884C7D659A2FEAA0C55AD015A3BF4F1B2B0B822CD15D6C15B0F00A08"
+    }
+  ]
+}

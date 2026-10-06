@@ -20,7 +20,7 @@
       "namespace": "biologie-botanik",
       "slug": "samenpflanzen-grundorgane-wurzel-spross-blatt",
       "title": "Die Grundorgane der Samenpflanze: Wurzelhaare, Leitbündel (Xylem/Phloem) und Blatt-Transpiration",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "biologie-botanik",
       "slug": "bluetenbau-zwitterbluete-stempel-staubbeutel",
       "title": "Aufbau der Zwitterblüte: Kelch-, Kron-, Staub- und Fruchtblätter (Stempel)",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "biologie-botanik",
       "slug": "bestaeubungsbiologie-insekten-vs-wind-pollenschlauch",
       "title": "Bestäubungsbiologie und Befruchtung: Insekten- vs. Windblütigkeit und der Pollenschlauch",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "biologie-botanik",
       "slug": "samen-fruchtbildung-keimungsbedingungen-ausbreitung",
       "title": "Samen- und Fruchtbildung: Samenbau, Keimungsfaktoren (Wasser, Wärme, Sauerstoff) und Ausbreitung",
-      "domain": "schule/biologie/botanik",
+      "domain": "biologie/botanik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

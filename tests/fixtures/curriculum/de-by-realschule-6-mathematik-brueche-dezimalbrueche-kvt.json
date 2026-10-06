@@ -20,7 +20,7 @@
       "namespace": "mathematik-zahlen",
       "slug": "bruchbegriff-erweitern-kuerzen-hauptnenner",
       "title": "Bruchbegriff: Zähler, Nenner, Erweitern, Kürzen und Hauptnenner",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-zahlen",
       "slug": "addition-subtraktion-ungleichnamiger-brueche",
       "title": "Addition und Subtraktion ungleichnamiger Brüche und gemischter Zahlen",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-zahlen",
       "slug": "multiplikation-division-brueche-kehrwert",
       "title": "Multiplikation und Division von Brüchen: Zähler mal Zähler, Nenner mal Nenner und Kehrwertregel",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-zahlen",
       "slug": "dezimalbrueche-stellenwert-umwandlung-perioden",
       "title": "Dezimalbrüche: Stellenwerttafel, Umwandlung in Brüche und periodische Dezimalzahlen",
-      "domain": "schule/mathematik/arithmetik",
+      "domain": "mathematik/arithmetik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

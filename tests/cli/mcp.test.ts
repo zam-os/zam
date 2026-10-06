@@ -108,9 +108,9 @@ describe("MCP stdio server tests", () => {
     expect(client.getInstructions()).toContain('view: "graph"');
   });
 
-  it("lists all 39 tools with correct annotations", async () => {
+  it("lists all 41 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(39);
+    expect(response.tools).toHaveLength(41);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -153,6 +153,8 @@ describe("MCP stdio server tests", () => {
       "zam_okf_import",
       "zam_okf_focus",
       "zam_okf_focused",
+      "zam_material_import_context",
+      "zam_material_import",
     ].sort();
     expect(toolNames).toEqual(expectedNames);
 

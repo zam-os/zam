@@ -20,7 +20,7 @@
       "namespace": "gymnasium-latein-syntax",
       "slug": "aci-accusativus-cum-infinitivo-zeitverhaeltnisse-kopfverben",
       "title": "Der AcI (Accusativus cum Infinitivo): Kopfverben, Subjektsakkusativ und relative Zeitenfolge",
-      "domain": "schule/latein/syntax",
+      "domain": "latein/syntax",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-latein-syntax",
       "slug": "participium-coniunctum-pc-ppp-ppa-kng-uebersetzung",
       "title": "Das Participium Coniunctum (PC): KNG-Kongruenz, PPP vs. PPA und Übersetzungsmethoden",
-      "domain": "schule/latein/syntax",
+      "domain": "latein/syntax",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

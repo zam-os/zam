@@ -20,7 +20,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "flaecheninhalt-dreieck-parallelogramm-formeln",
       "title": "Flächeninhalt von Parallelogramm und Dreieck: Grundseite und zugehörige Höhe",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "quader-wuerfel-netz-oberflaeche-formel",
       "title": "Körperlehre: Schrägbild, Körpernetz und Oberflächeninhalt von Quader und Würfel",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "volumen-quader-wuerfel-einheitenumrechnung",
       "title": "Rauminhalt (Volumen): V = a · b · c und Raummaßeinheiten (Liter, dm³, cm³)",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-stochastik",
       "slug": "relative-haeufigkeit-laplace-wahrscheinlichkeit-wuerfel",
       "title": "Daten und Zufall: Relative Häufigkeit, empirisches Gesetz und Laplace-Wahrscheinlichkeit",
-      "domain": "schule/mathematik/stochastik",
+      "domain": "mathematik/stochastik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

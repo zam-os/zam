@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-normalisierung",
       "slug": "er-modellierung-normalisierung-1nf-2nf-3nf-anomalien",
       "title": "Datenbankentwurf & Normalisierung: ER-Modell, 1NF bis 3NF und Anomaliefreiheit",
-      "domain": "schule/informatik/datenbanken",
+      "domain": "informatik/datenbanken",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-sql-acid",
       "slug": "sql-joins-group-by-acid-transaktionen",
       "title": "SQL & Transaktionen: JOINs, Aggregationen (GROUP BY) und das ACID-Prinzip",
-      "domain": "schule/informatik/sql",
+      "domain": "informatik/sql",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "physik-elektrik",
       "slug": "elektrischer-stromkreis-leiter-nichtleiter",
       "title": "Elektrischer Stromkreis: Komponenten, geschlossener Kreis, Leiter und Isolatoren",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "physik-elektrik",
       "slug": "wirkungen-des-stroms-magnet-waerme-chemie",
       "title": "Wirkungen des elektrischen Stroms: Wärme-, Licht-, Magnet- und chemische Wirkung",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "physik-elektrik",
       "slug": "stromstaerke-spannung-messgeraete-schaltung",
       "title": "Stromstärke I, elektrische Spannung U und korrekte Messgeräteverschaltung",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "physik-elektrik",
       "slug": "elektrischer-widerstand-kennlinie-ohm",
       "title": "Elektrischer Widerstand R = U / I und Ohmsches Gesetz als Kennlinie",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

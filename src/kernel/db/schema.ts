@@ -300,7 +300,14 @@ CREATE TABLE IF NOT EXISTS sources (
   type        TEXT NOT NULL CHECK (type IN ('file', 'web', 'scan')),
   uri         TEXT NOT NULL UNIQUE,
   content     TEXT,
-  created_at  TEXT NOT NULL DEFAULT (datetime('now'))
+  created_at  TEXT NOT NULL DEFAULT (datetime('now')),
+  -- Material import (ADR 2026-10-05 Decision 9): one row per import, keyed
+  -- 'zam-import:<ULID>'. The display title comes from the model's analysis,
+  -- fingerprints is a JSON array of the files' SHA-256 hashes, imported_by the
+  -- learner. Nothing of the material itself is stored.
+  title        TEXT,
+  fingerprints TEXT,
+  imported_by  TEXT
 );
 
 -- Token sources: mapping between tokens and their sources

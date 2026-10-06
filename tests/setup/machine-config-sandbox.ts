@@ -21,6 +21,7 @@ for (const name of [
   "ZAM_OBSERVER_DIR",
   "ZAM_OKF_FOCUS_PATH",
   "ZAM_UI_INTENT_PATH",
+  "ZAM_PENDING_IMPORTS_DIR",
 ]) {
   delete process.env[name];
 }

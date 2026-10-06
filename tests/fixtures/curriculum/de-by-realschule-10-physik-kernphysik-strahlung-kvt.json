@@ -20,7 +20,7 @@
       "namespace": "physik-kernphysik",
       "slug": "radioaktive-strahlung-alpha-beta-gamma",
       "title": "Radioaktive Strahlung: Alpha-, Beta- und Gammastrahlung im Vergleich",
-      "domain": "schule/physik/kernphysik",
+      "domain": "physik/kernphysik",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "physik-kernphysik",
       "slug": "zerfallsgesetz-halbwertszeit-c14",
       "title": "Das Zerfallsgesetz: Halbwertszeit und Radiokarbonmethode (C-14)",
-      "domain": "schule/physik/kernphysik",
+      "domain": "physik/kernphysik",
       "reduction": "formal",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "physik-kernphysik",
       "slug": "kernspaltung-kettenreaktion-kernkraftwerk",
       "title": "Kernspaltung: Massendefekt, Kettenreaktion und Kernkraftwerk",
-      "domain": "schule/physik/kernphysik",
+      "domain": "physik/kernphysik",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "physik-kernphysik",
       "slug": "strahlenwirkung-dosimetrie-strahlenschutz",
       "title": "Strahlenbiologie und Strahlenschutz: Dosimetrie und 5-A-Regeln",
-      "domain": "schule/physik/kernphysik",
+      "domain": "physik/kernphysik",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [

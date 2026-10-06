@@ -20,7 +20,7 @@
       "namespace": "informatik-anwendung",
       "slug": "textverarbeitung-zeichen-absatz-formatierung",
       "title": "Strukturierte Textverarbeitung: Zeichen- versus Absatzformatierung und Formatvorlagen",
-      "domain": "schule/informatik/anwendung",
+      "domain": "informatik/anwendung",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "informatik-anwendung",
       "slug": "grafiken-medien-textumfluss-positionierung",
       "title": "Grafikeinbindung und Textumfluss: Passend, Quadratisch, Vor und Hinter dem Text",
-      "domain": "schule/informatik/anwendung",
+      "domain": "informatik/anwendung",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "informatik-anwendung",
       "slug": "praesentationsprogramme-foliengestaltung-kiss-prinzip",
       "title": "Präsentationssoftware: Folienaufbau, Masterfolie und das didaktische KISS-Prinzip",
-      "domain": "schule/informatik/anwendung",
+      "domain": "informatik/anwendung",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "informatik-anwendung",
       "slug": "tabellenkalkulation-zellen-formeln-funktionen",
       "title": "Tabellenkalkulation: Tabellengitter, Zellbezüge und Standardfunktionen (SUMME, MITTELWERT)",
-      "domain": "schule/informatik/anwendung",
+      "domain": "informatik/anwendung",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

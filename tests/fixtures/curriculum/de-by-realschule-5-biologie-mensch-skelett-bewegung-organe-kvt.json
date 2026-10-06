@@ -20,7 +20,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "menschliches-skelett-knochenbau-doppel-s-wirbelsaeule",
       "title": "Das menschliche Skelett: Schädel, Doppel-S-Form der Wirbelsäule und Knochenaufbau",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "gelenktypen-muskeln-antagonistenprinzip-beuger-strecker",
       "title": "Gelenke und Muskeln: Gelenktypen, Gelenkaufbau und das Antagonistenprinzip (Gegenspieler)",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "pubertaet-geschlechtsorgane-menstruationszyklus",
       "title": "Sexualbiologie des Menschen: Pubertät, Geschlechtsmerkmale und der weibliche Zyklus",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-humanbiologie",
       "slug": "befruchtung-schwangerschaft-geburt-beim-menschen",
       "title": "Fortpflanzung und Entwicklung: Von der Befruchtung im Eileiter zur Geburt",
-      "domain": "schule/biologie/humanbiologie",
+      "domain": "biologie/humanbiologie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

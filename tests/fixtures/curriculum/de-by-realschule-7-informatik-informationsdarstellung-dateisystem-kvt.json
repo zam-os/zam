@@ -20,7 +20,7 @@
       "namespace": "informatik-grundlagen",
       "slug": "information-vs-daten-codierung-kontext",
       "title": "Information versus Daten: Codierung, Interpretation und Syntax/Semantik",
-      "domain": "schule/informatik/grundlagen",
+      "domain": "informatik/grundlagen",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "informatik-grundlagen",
       "slug": "binaersystem-dualzahlen-stellenwert-umrechnung",
       "title": "Das Binärsystem (Dualsystem): Stellenwertsystem zur Basis 2 und Umrechnung",
-      "domain": "schule/informatik/grundlagen",
+      "domain": "informatik/grundlagen",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "informatik-grundlagen",
       "slug": "textcodierung-ascii-unicode-utf8-speichereinheiten",
       "title": "Textcodierung und Speichereinheiten: Bit, Byte, ASCII und Unicode/UTF-8",
-      "domain": "schule/informatik/grundlagen",
+      "domain": "informatik/grundlagen",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "informatik-systeme",
       "slug": "dateisystem-baumstruktur-pfade-dateitypen",
       "title": "Hierarchische Dateisysteme: Baumstruktur, absolute/relative Pfade und Dateitypen",
-      "domain": "schule/informatik/systeme",
+      "domain": "informatik/systeme",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

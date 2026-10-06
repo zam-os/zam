@@ -117,13 +117,13 @@ describe("classifyCapabilities", () => {
     expect(d.image).toBe(true);
   });
 
-  it("fixes anthropic endpoints to text + image regardless of model", () => {
+  it("fixes anthropic endpoints to text, image and PDF regardless of model", () => {
     const d = classifyCapabilities(
       { model: "claude-haiku-4-5", apiFlavor: "anthropic-messages" },
       [],
       false,
     );
-    expect(d).toEqual(caps({ text: true, image: true }));
+    expect(d).toEqual(caps({ text: true, image: true, file: true }));
   });
 
   it("does not claim text for a model absent from a known catalog", () => {
@@ -199,6 +199,37 @@ describe("classifyCapabilities", () => {
       false,
     );
     expect(undeclared.video).toBe(false);
+  });
+
+  it("claims PDF input only from declared metadata, never from a name", () => {
+    const declared = classifyCapabilities(
+      { model: "openai/gpt-6-luna", apiFlavor: "chat-completions" },
+      ["openai/gpt-6-luna"],
+      true,
+      false,
+      true,
+      false,
+      true,
+    );
+    expect(declared.file).toBe(true);
+    const notDeclared = classifyCapabilities(
+      { model: "openai/gpt-6-luna", apiFlavor: "chat-completions" },
+      ["openai/gpt-6-luna"],
+      true,
+      false,
+      true,
+      false,
+      false,
+    );
+    expect(notDeclared.file).toBe(false);
+    // A name that sounds like it reads documents claims nothing.
+    expect(
+      classifyCapabilities(
+        { model: "pdf-reader-vision-pro", apiFlavor: "chat-completions" },
+        [],
+        false,
+      ).file,
+    ).toBe(false);
   });
 });
 
@@ -525,6 +556,10 @@ describe("probeModelCapabilities and a split model catalogue", () => {
                 architecture: { input_modalities: ["text", "image", "video"] },
               },
               {
+                id: "openai/gpt-6-luna",
+                architecture: { input_modalities: ["file", "image", "text"] },
+              },
+              {
                 id: "deepseek/deepseek-v4-flash",
                 architecture: { input_modalities: ["text"] },
               },
@@ -549,6 +584,15 @@ describe("probeModelCapabilities and a split model catalogue", () => {
       expect(vision.detected.image).toBe(true);
       expect(vision.detected.video).toBe(true);
       expect(vision.detected.text).toBe(true);
+      expect(vision.detected.file).toBe(false);
+
+      const reader = await probeModelCapabilities({
+        url,
+        model: "openai/gpt-6-luna",
+        apiFlavor: "chat-completions",
+      });
+      expect(reader.detected.file).toBe(true);
+      expect(reader.detected.image).toBe(true);
 
       const textOnly = await probeModelCapabilities({
         url,

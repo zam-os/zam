@@ -20,7 +20,7 @@
       "namespace": "gymnasium-deutsch-kafka",
       "slug": "franz-kafka-die-verwandlung-kafkaesk-entfremdung",
       "title": "Franz Kafka: 'Die Verwandlung' (1915), Das Kafkaeske und existentielle Entfremdung",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-deutsch-jahrhundertwende",
       "slug": "thomas-mann-buddenbrooks-hesse-steppenwolf-moderne",
       "title": "Großepik der Moderne: Thomas Mann (Buddenbrooks) und Hermann Hesse (Der Steppenwolf)",
-      "domain": "schule/deutsch/epik",
+      "domain": "deutsch/epik",
       "reduction": "formal",
       "typical_age_min": 17.5,
       "prerequisites": [

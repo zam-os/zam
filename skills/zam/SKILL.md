@@ -45,6 +45,8 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
 | `zam_open_settings` | Open the focused Settings app when the user asks for configuration or database status. |
+| `zam_material_import_context` | Rules, contract, existing areas and subject codes for turning class material (photo, PDF) into card proposals. |
+| `zam_material_import` | Submit your card proposals for class material; the learner decides each card in the ZAM Studio. Writes no card itself. |
 
 ---
 
@@ -70,6 +72,7 @@ When the user invokes the ZAM skill without a task or mode, do not choose a work
 - When the user asks for a **knowledge map** or **Wissenskarte** of a repository (alpha): call `zam_knowledge_map_guide`, follow the guide it returns, and save the map with `zam_knowledge_map_write` until it reports no errors. Then point the user to ZAM Studio, page **Knowledge map**. If these tools are missing, the alpha is off or this agent was started before it was switched on: ask the user to enable **Knowledge map (Alpha)** in ZAM Studio Settings (advanced view) and restart the agent. Without the MCP tools, `zam knowledge-map guide` prints the same guide and `zam knowledge-map validate --repo <path> --write` checks a map file and adds its JSON-LD header.
 - A host may place an MCP App in a persistent pane or inline. Recall requests standard picture-in-picture only when the host advertises it; never claim control over a host-specific right sidebar.
 - Call `zam_open_settings` only for relevant setup, workspace, backup, or database-status work.
+- When the user gives you **class material** — a photo or PDF of their notes, a handout, a worksheet — and asks for learning cards (Lernkarten, „Mitschrift importieren“): read the file yourself, then call `zam_material_import_context` and follow its rules. Ask the learner about anything you cannot read or place before you propose. Submit with `zam_material_import`, passing each file's path when you read it from disk. Then tell the learner the cards are waiting in ZAM Studio, where they choose Yes, No or Bonus for each one; never decide for them, and never write the cards with `zam_add_token` instead.
 - Never call `zam_open_studio` as part of an agent-harness ZAM menu or ordinary ZAM workflow.
 
 ---

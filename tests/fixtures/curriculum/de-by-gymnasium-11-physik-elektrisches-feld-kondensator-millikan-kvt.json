@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-e-feld",
       "slug": "elektrische-feldstaerke-coulomb-kondensator-feldenergie",
       "title": "Das elektrische Feld: Coulomb-Gesetz, Feldstärke E, Plattenkondensator und Feldenergie",
-      "domain": "schule/physik/elektrizitaet",
+      "domain": "physik/elektrizitaet",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-millikan",
       "slug": "ladungstraegerbewegung-elektronenbeschleunigung-millikan-versuch",
       "title": "Teilchen im E-Feld & Der Millikan-Versuch (Quantelung der elektrischen Elementarladung)",
-      "domain": "schule/physik/quantenphysik",
+      "domain": "physik/quantenphysik",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

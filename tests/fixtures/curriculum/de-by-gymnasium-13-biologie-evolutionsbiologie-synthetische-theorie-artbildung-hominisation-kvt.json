@@ -20,7 +20,7 @@
       "namespace": "gymnasium-biologie-synthetische-evolution",
       "slug": "synthetische-evolutionstheorie-evolutionsfaktoren-artbildung",
       "title": "Synthetische Evolutionstheorie: Evolutionsfaktoren, Selektionstypen und Artbildung",
-      "domain": "schule/biologie/evolution",
+      "domain": "biologie/evolution",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-biologie-hominisation",
       "slug": "hominisation-stammesgeschichte-mensch-out-of-africa",
       "title": "Hominisation: Stammesgeschichte des Menschen, Werkzeuggebrauch und Out-of-Africa-Hypothese",
-      "domain": "schule/biologie/anthropologie",
+      "domain": "biologie/anthropologie",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [

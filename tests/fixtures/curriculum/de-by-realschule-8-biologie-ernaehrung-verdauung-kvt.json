@@ -20,7 +20,7 @@
       "namespace": "biologie-ernaehrung",
       "slug": "grundnaehrstoffe-bausteine-nachweisreaktionen",
       "title": "Grundnährstoffe: Kohlenhydrate, Fette, Proteine und Nachweisreaktionen",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "biologie-ernaehrung",
       "slug": "verdauungstrakt-organe-mechanische-zerkleinerung",
       "title": "Der Verdauungstrakt: Organstationen von der Mundhöhle bis zum Dickdarm",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "biologie-ernaehrung",
       "slug": "enzymatische-verdauung-amylase-pepsin-lipase",
       "title": "Enzymatische Spaltung: Wirk- und Substratspezifität von Amylasen, Pepsin und Lipasen",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "biologie-ernaehrung",
       "slug": "oberflaechenvergroesserung-darmzotten-energiebilanz",
       "title": "Oberflächenvergrößerung im Dünndarm (Darmzotten) und Energiebilanz",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "geographie-europa",
       "slug": "grosslandschaften-europas-relief-gliederung",
       "title": "Die Großlandschaften Europas: Tiefland, Mittelgebirge, Hochgebirge und Küsten",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geographie-europa",
       "slug": "klimazonen-maritim-vs-kontinental-klimadiagramme",
       "title": "Klimazonen Europas: Maritimes vs. kontinentales Klima und Klimadiagramm-Analyse",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geographie-europa",
       "slug": "alpenraum-tektonik-vegetationsstufen-tourismus",
       "title": "Der Alpenraum: Entstehung, Höhenstufen der Vegetation und Nutzungskonflikte",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geographie-europa",
       "slug": "europaeische-union-binnenmarkt-vier-freiheiten",
       "title": "Die Europäische Union: Der Europäische Binnenmarkt und die vier Grundfreiheiten",
-      "domain": "schule/geographie/europa",
+      "domain": "geographie/europa",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

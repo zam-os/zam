@@ -643,3 +643,201 @@ export interface AgentConnectResponse {
   results?: AgentConnectResultEntry[];
   skills?: { refreshed: number; total: number } | null;
 }
+
+// ── Material import (ADR 2026-10-05) ────────────────────────────────────────
+//
+// Learning cards from photos and files. `material-import-stage` (or the MCP
+// tool) leaves a batch waiting; `material-import-review` builds the list the
+// learner decides; `material-import-confirm` writes the choices.
+
+export type MaterialChoiceWire = "yes" | "bonus" | "no";
+
+export interface MaterialImportStageResponse {
+  success: boolean;
+  id: string;
+  proposalCount: number;
+}
+
+/** `material-import-models`: where a built-in import would send the files. */
+export interface MaterialImportModelsResponse {
+  success: boolean;
+  image: { label: string; model: string } | null;
+  file: { label: string; model: string } | null;
+  /** HEIC photos can be converted on this machine. */
+  convertsHeic: boolean;
+}
+
+export type MaterialAnalyzeCodeWire =
+  | "no-files"
+  | "unsupported"
+  | "mixed"
+  | "one-pdf"
+  | "too-many"
+  | "heic"
+  | "too-large"
+  | "missing"
+  | "no-image-model"
+  | "no-file-model"
+  | "model-failed"
+  | "invalid-answer";
+
+/**
+ * `material-import-analyze`: the staged batch, or a refusal with a code the
+ * Studio explains. Progress goes to stderr as
+ * `{"type":"material-analyze-progress","done":n,"total":m}`.
+ */
+export type MaterialImportAnalyzeResponse =
+  | {
+      success: true;
+      id: string;
+      proposalCount: number;
+      /** The model that read the pages — not always the one named before. */
+      model: { label: string; model: string };
+      /** Every model the pages were sent to, in order. */
+      sentTo: Array<{ label: string; model: string }>;
+    }
+  | { success: false; code: MaterialAnalyzeCodeWire; message: string };
+
+export interface MaterialImportPendingEntry {
+  id: string;
+  title: string;
+  createdAt: string;
+  origin: "harness" | "studio";
+  harness: string | null;
+  proposalCount: number;
+}
+
+export interface MaterialImportPendingResponse {
+  success: boolean;
+  imports: MaterialImportPendingEntry[];
+}
+
+export interface MaterialImportProposalWire {
+  question: string;
+  answer: string;
+  title: string | null;
+  bloom: number;
+  file: number;
+  page: number | null;
+  area: string;
+  origin: "page" | "completed" | "extra";
+  hardToRead: boolean;
+}
+
+export type MaterialImportTargetWire =
+  | { type: "token"; tokenId: string }
+  | { type: "cell-item"; cellId: string; atomId: string; itemId: string };
+
+export type MaterialImportRowWire =
+  | {
+      kind: "proposal";
+      id: string;
+      proposalIndex: number;
+      preset: MaterialChoiceWire | null;
+    }
+  | {
+      kind: "existing";
+      id: string;
+      besideProposal: number;
+      preset: MaterialChoiceWire | null;
+      held: boolean;
+      score: number;
+      via: "lexical" | "vector";
+      target: MaterialImportTargetWire;
+      question: string;
+      answer: string;
+      title: string;
+      area: string;
+    }
+  | {
+      kind: "continuation";
+      id: string;
+      preset: "bonus";
+      target: MaterialImportTargetWire;
+      question: string;
+      answer: string;
+      title: string;
+      area: string;
+    };
+
+export interface MaterialImportReviewResponse {
+  success: boolean;
+  id: string;
+  createdAt: string;
+  origin: "harness" | "studio";
+  harness: string | null;
+  /** The model that read the pages on the built-in path (D11). */
+  readBy: string | null;
+  /** Every model the pages were sent to on the built-in path, in order. */
+  sentTo: string[];
+  analysis: {
+    kind: string;
+    title: string;
+    subjects: string[];
+    topic: string;
+    level: string;
+    bloom: [number, number];
+    leadsTo: string | null;
+  };
+  proposals: MaterialImportProposalWire[];
+  files: Array<{
+    name: string;
+    sourceLink: string;
+    sha256: string | null;
+    path: string | null;
+  }>;
+  rows: MaterialImportRowWire[];
+  areaGroups: Array<{ area: string; proposalIndexes: number[] }>;
+  reimports: Array<{
+    sourceId: string;
+    title: string | null;
+    createdAt: string;
+  }>;
+  semantic: boolean;
+}
+
+export interface MaterialImportConfirmResponse {
+  success: boolean;
+  sourceId: string;
+  cardsCreated: number;
+  bonusKept: number;
+  linkedExisting: number;
+  notSaved: number;
+}
+
+export interface MaterialImportAreasResponse {
+  success: boolean;
+  areas: Array<{ path: string; tokenCount: number }>;
+  cellSubjects: string[];
+}
+
+export interface MaterialImportBonusItemWire {
+  tokenId: string;
+  title: string;
+  question: string | null;
+  concept: string;
+  domain: string;
+  sourceId: string;
+  sourceTitle: string | null;
+  importedAt: string;
+}
+
+export interface MaterialImportBonusListResponse {
+  success: boolean;
+  items: MaterialImportBonusItemWire[];
+}
+
+export interface MaterialImportBonusTakeResponse {
+  success: boolean;
+  cardId: string;
+}
+
+export interface MaterialImportFilePreviewResponse {
+  success: boolean;
+  name: string;
+  path: string | null;
+  kind: "image" | "pdf" | "other";
+  /** `data:` URL of an image small enough to show inline. */
+  dataUrl: string | null;
+  reason: "ok" | "missing" | "too-large" | "not-viewable";
+}

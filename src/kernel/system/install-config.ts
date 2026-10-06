@@ -200,12 +200,16 @@ export interface MachineRoleBinding {
  * Model capabilities in the unified registry (ADR 2026-07-12). `text` covers
  * every chat-completions job (recall coaching, curriculum import, translation);
  * `image`/`video` are the Observer vision paths; `stt`/`tts` are future audio.
+ * `file` means the model reads a PDF itself (ADR 2026-10-05 Decision 1): only
+ * then may a material import send one, because a gateway would otherwise
+ * transcribe it on its side.
  */
 export type ModelCapability =
   | "text"
   | "embedding"
   | "image"
   | "video"
+  | "file"
   | "stt"
   | "tts";
 
@@ -214,6 +218,7 @@ export const ALL_CAPABILITIES: ModelCapability[] = [
   "embedding",
   "image",
   "video",
+  "file",
   "stt",
   "tts",
 ];
@@ -226,6 +231,7 @@ export function emptyCapabilityFlags(): CapabilityFlags {
     embedding: false,
     image: false,
     video: false,
+    file: false,
     stt: false,
     tts: false,
   };

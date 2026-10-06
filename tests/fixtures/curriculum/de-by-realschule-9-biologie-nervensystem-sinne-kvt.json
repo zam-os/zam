@@ -20,7 +20,7 @@
       "namespace": "biologie-neuro",
       "slug": "nervenzelle-neuron-axon-myelin",
       "title": "Bau und Funktion des Neurons (Nervenzelle)",
-      "domain": "schule/biologie/neuro",
+      "domain": "biologie/neuro",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "biologie-neuro",
       "slug": "reiz-reaktions-kette-reflexbogen",
       "title": "Reiz-Reaktions-Kette und Reflexbogen",
-      "domain": "schule/biologie/neuro",
+      "domain": "biologie/neuro",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "biologie-neuro",
       "slug": "synapse-chemische-signaluebertragung",
       "title": "Synapse: Chemische Signalübertragung und Neurotransmitter",
-      "domain": "schule/biologie/neuro",
+      "domain": "biologie/neuro",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "biologie-neuro",
       "slug": "vegetatives-nervensystem-sympathikus-parasympathikus",
       "title": "Gliederung des Nervensystems und Vegetativum (Sympathikus / Parasympathikus)",
-      "domain": "schule/biologie/neuro",
+      "domain": "biologie/neuro",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

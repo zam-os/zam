@@ -20,7 +20,7 @@
       "namespace": "deutsch-texte",
       "slug": "inhaltsangabe-basissatz-praesens-sachlichkeit",
       "title": "Die Inhaltsangabe: Basissatz (TATTE-Formel), sachlicher Stil, Präsens und Verzicht auf wörtliche Rede",
-      "domain": "schule/deutsch/texte",
+      "domain": "deutsch/texte",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "deutsch-literatur",
       "slug": "ballade-merkmale-drei-gattungen-goethe-fontane",
       "title": "Die literarische Gattung Ballade: Synthese aus Epik, Lyrik und Dramatik ('Dreimäderlhaus der Poesie')",
-      "domain": "schule/deutsch/literatur",
+      "domain": "deutsch/literatur",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

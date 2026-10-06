@@ -36,14 +36,18 @@ function fakeElement() {
 describe("question topic", () => {
   it("labels the question with the card's domain", () => {
     expect(questionTopic("axon-ivy")).toBe("axon-ivy");
-    expect(questionTopic("schule/physik/optik")).toBe("schule › physik › optik");
+    expect(questionTopic("physik/optik")).toBe("physik › optik");
     expect(questionTopic("  ")).toBeNull();
     expect(questionTopic(null)).toBeNull();
   });
 
   it("puts the topic in bold before the question, as text nodes", () => {
     const { element, nodes } = fakeElement();
-    renderQuestionWithTopic(element, "axon-ivy", "Which probes do the pods use?");
+    renderQuestionWithTopic(
+      element,
+      "axon-ivy",
+      "Which probes do the pods use?",
+    );
     expect(nodes[0]).toMatchObject({
       tag: "strong",
       className: "question-topic",
@@ -60,7 +64,7 @@ describe("question topic", () => {
 
   it("is used by the Studio, Mobile and the Recall panel", () => {
     expect(file("desktop/src/main.ts")).toContain(
-      "renderQuestionWithTopic(\n    document.getElementById(\"question-text\")!,",
+      'renderQuestionWithTopic(\n    document.getElementById("question-text")!,',
     );
     expect(file("mobile/src/main.ts")).toContain(
       "renderQuestionWithTopic(reviewQuestion, item.domain, prompt.question);",

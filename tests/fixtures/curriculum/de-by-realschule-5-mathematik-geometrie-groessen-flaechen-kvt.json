@@ -20,7 +20,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "geometrische-grundbegriffe-lagebeziehungen-koordinatensystem",
       "title": "Geometrische Grundformen: Punkt, Gerade, Strecke, Orthogonalität und das 2D-Koordinatensystem",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "winkelarten-winkelmessung-geodreieck",
       "title": "Winkellehre: Winkelarten (spitz, recht, stumpf, gestreckt, überstumpf, Vollwinkel) und Messung mit dem Geodreieck",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-groessen",
       "slug": "groessen-einheiten-laengen-massen-zeit-umrechnung",
       "title": "Größen und Einheiten: Längen (mm bis km), Massen (mg bis t) und Zeitmaße",
-      "domain": "schule/mathematik/groessen",
+      "domain": "mathematik/groessen",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "rechteck-quadrat-umfang-flaecheninhalt-einheiten",
       "title": "Rechteck und Quadrat: Umfang (U), Flächeninhalt (A) und Flächenmaße (mm² bis km², Ar und Hektar)",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

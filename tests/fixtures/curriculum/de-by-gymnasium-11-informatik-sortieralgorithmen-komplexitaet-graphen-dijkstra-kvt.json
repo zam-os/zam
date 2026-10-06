@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-sortieralgorithmen",
       "slug": "sortieralgorithmen-quicksort-mergesort-o-notation",
       "title": "Sortierverfahren & Komplexität: O-Notation, Quicksort und Mergesort (Divide and Conquer)",
-      "domain": "schule/informatik/algorithmen",
+      "domain": "informatik/algorithmen",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-graphen-dijkstra",
       "slug": "graphentheorie-breitensuche-tiefensuche-dijkstra-algorithmus",
       "title": "Graphentheorie: Graph-Repräsentation, Breitensuche (BFS) und Dijkstra-Algorithmus",
-      "domain": "schule/informatik/graphen",
+      "domain": "informatik/graphen",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

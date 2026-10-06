@@ -20,7 +20,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "achsenspiegelung-mittelsenkrechte-winkelhalbierende",
       "title": "Achsenspiegelung: Abbildungseigenschaften, Mittelsenkrechte und Winkelhalbierende",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "punktspiegelung-drehung-180-grad",
       "title": "Punktspiegelung: Eigenschaften, Drehung um 180° und Parallelogramme",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "winkelbeziehungen-scheitel-stufen-wechselwinkel",
       "title": "Winkelbeziehungen an geschnittenen Geraden: Scheitel-, Neben-, Stufen- und Wechselwinkel",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "dreieckswinkelsumme-aussenwinkelsatz",
       "title": "Winkelsumme im Dreieck und Viereck sowie der Außenwinkelsatz",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

@@ -233,6 +233,7 @@ if (command === "up") {
     "tests/kernel/postgres-identity.test.ts",
     "tests/kernel/postgres-team.test.ts",
     "tests/kernel/postgres-choice.test.ts",
+    "tests/kernel/postgres-material-import.test.ts",
     "tests/kernel/analytics-stats.test.ts",
     "tests/kernel/progress.test.ts",
     "tests/kernel/due-summary.test.ts",

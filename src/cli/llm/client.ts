@@ -835,7 +835,10 @@ function readEmbeddedError(
 }
 
 /** Extract the assistant message content from an OpenAI-compatible response. */
-async function readChatContent(res: Response, label: string): Promise<string> {
+export async function readChatContent(
+  res: Response,
+  label: string,
+): Promise<string> {
   if (!res.ok) {
     const errorText = await res.text().catch(() => "");
     throw new LlmHttpError(label, res.status, res.statusText, errorText);

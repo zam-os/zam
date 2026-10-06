@@ -20,7 +20,7 @@
       "namespace": "geschichte-neuzeit",
       "slug": "aufklaerung-gewaltenteilung-menschenrechte",
       "title": "Die Aufklärung: Vernunft, Volkssouveränität und Gewaltenteilung",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "geschichte-neuzeit",
       "slug": "franzoesische-revolution-1789-menschenrechte",
       "title": "Die Französische Revolution 1789: Sturm auf die Bastille, Menschenrechte und Phasen",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "geschichte-neuzeit",
       "slug": "industrielle-revolution-soziale-frage-marx",
       "title": "Die Industrielle Revolution und die Soziale Frage: Fabrikarbeit, Urbanisierung und Lösungsansätze",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "geschichte-neuzeit",
       "slug": "deutsches-kaiserreich-1871-imperialismus",
       "title": "Das Deutsche Kaiserreich 1871 und Imperialismus: Reichsgründung und Großmachtpolitik",
-      "domain": "schule/geschichte/neuzeit",
+      "domain": "geschichte/neuzeit",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

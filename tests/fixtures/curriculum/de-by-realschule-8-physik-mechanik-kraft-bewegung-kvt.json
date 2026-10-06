@@ -20,7 +20,7 @@
       "namespace": "physik-mechanik",
       "slug": "kraftbegriff-gewichtskraft-masse-feder",
       "title": "Kraftbegriff, Hookesches Gesetz und Gewichtskraft F_G = m · g",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "physik-mechanik",
       "slug": "vektorielle-kraefte-addition-zerlegung",
       "title": "Kräfteaddition und Kräftezerlegung: Kräfteparallelogramm und Hangabtriebskraft",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -150,7 +150,7 @@
       "namespace": "physik-mechanik",
       "slug": "hebelgesetz-drehmoment-gleichgewicht",
       "title": "Das Hebelgesetz und Drehmoment: Kraft mal Kraftarm = Last mal Lastarm",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -223,7 +223,7 @@
       "namespace": "physik-mechanik",
       "slug": "einfache-maschinen-rollen-goldene-regel",
       "title": "Einfache Maschinen: Feste Rolle, lose Rolle, Flaschenzug und Goldene Regel",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

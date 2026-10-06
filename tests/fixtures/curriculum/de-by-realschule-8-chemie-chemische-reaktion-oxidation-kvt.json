@@ -20,7 +20,7 @@
       "namespace": "chemie-reaktionen",
       "slug": "merkmale-chemische-reaktion-stoffumwandlung",
       "title": "Merkmale der chemischen Reaktion: Stoffumwandlung und Bindungsumbau",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "chemie-reaktionen",
       "slug": "energieumsatz-exotherm-endotherm-katalysator",
       "title": "Energetik chemischer Reaktionen: Exotherm, endotherm, Aktivierungsenergie und Katalysator",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "chemie-reaktionen",
       "slug": "oxidation-verbrennung-feuerloeschen",
       "title": "Oxidation, Verbrennung und Grundlagen des Brandschutzes / Feuerlöschens",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "chemie-reaktionen",
       "slug": "massenerhaltung-lavoisier-reaktionsgleichungen",
       "title": "Gesetz von der Erhaltung der Masse (Lavoisier) und Ausgleichen von Reaktionsgleichungen",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

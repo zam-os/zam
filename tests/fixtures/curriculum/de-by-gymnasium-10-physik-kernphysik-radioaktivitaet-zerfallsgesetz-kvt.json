@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-radioaktivitaet",
       "slug": "radioaktive-strahlungsarten-zerfallsgleichungen-zerfallsgesetz",
       "title": "Radioaktivität: Alpha-, Beta- und Gammastrahlung, Zerfallsgleichungen und das Zerfallsgesetz",
-      "domain": "schule/physik/kernphysik",
+      "domain": "physik/kernphysik",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-energie-masse",
       "slug": "massendefekt-bindungsenergie-einstein-kernspaltung-fusion",
       "title": "Kernenergie: Massendefekt Delta m, Einsteinsche Äquivalenz E = mc^2, Kernspaltung und Fusion",
-      "domain": "schule/physik/kernenergie",
+      "domain": "physik/kernenergie",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

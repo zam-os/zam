@@ -20,7 +20,7 @@
       "namespace": "geschichte-urgeschichte",
       "slug": "altsteinzeit-vs-jungsteinzeit-neolithische-revolution",
       "title": "Von Jägern und Sammlern zu Ackerbauern: Die Neolithische Revolution",
-      "domain": "schule/geschichte/urgeschichte",
+      "domain": "geschichte/urgeschichte",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geschichte-antike",
       "slug": "aegypten-hochkultur-nil-pharao-hieroglyphen",
       "title": "Frühe Hochkultur Ägypten: Der Nil als Lebensader, Gottkönigtum (Pharao) und Hieroglyphen",
-      "domain": "schule/geschichte/antike",
+      "domain": "geschichte/antike",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geschichte-antike",
       "slug": "antikes-griechenland-polis-attische-demokratie",
       "title": "Das antike Griechenland: Die Polis Athen und die Wiege der Demokratie",
-      "domain": "schule/geschichte/antike",
+      "domain": "geschichte/antike",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geschichte-antike",
       "slug": "roemisches-reich-republik-kaisertum-limes",
       "title": "Das Römische Reich: Von der Republik (Senat) zum Kaisertum (Augustus) und der Limes in Bayern",
-      "domain": "schule/geschichte/antike",
+      "domain": "geschichte/antike",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "verb-to-be-personalpronomen-kurzformen-fragen",
       "title": "Das Verb 'to be' (sein): Lang- und Kurzformen, Verneinung mit 'not' und Entscheidungsfragen",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "englisch-grammatik",
       "slug": "have-got-has-got-besitz-fragen-kurzantworten",
       "title": "Besitzverhältnisse ausdrücken: have got, has got (3. Person Sg.), haven't/hasn't got und Fragen",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "englisch-grammatik",
       "slug": "nomen-pluralbildung-unregelmaessige-plurale-artikel",
       "title": "Nomen und Artikel: Regelmäßiger Plural (-s, -es), unregelmäßige Pluralformen und Artikel (a/an)",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "englisch-grammatik",
       "slug": "imperativ-aufforderungen-verbote-dont-lets",
       "title": "Der Imperativ: Befehle, freundliche Bitten, Verbote mit 'Don't' und Vorschläge mit 'Let's'",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

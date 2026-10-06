@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-oom",
       "slug": "objektorientierung-objekt-klasse-attribut-methode-uml",
       "title": "Objektorientierte Modellierung: Objekte, Klassen, Attribute, Methoden und UML-Klassendiagramme",
-      "domain": "schule/informatik/oom",
+      "domain": "informatik/oom",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-hypertext",
       "slug": "hypertext-html-baumstruktur-dateisystem-pfade",
       "title": "Hypertextstrukturen: HTML (Tags, hierarchischer Baum), relative/absolute Links und Dateipfade",
-      "domain": "schule/informatik/hypertext",
+      "domain": "informatik/hypertext",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

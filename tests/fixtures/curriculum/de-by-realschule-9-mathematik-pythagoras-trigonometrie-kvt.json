@@ -35,7 +35,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "hypotenuse-lage",
       "title": "Hypotenuse-Lage",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -86,7 +86,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "satz-des-pythagoras",
       "title": "Pythagoreische Relation",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "umkehrung-satz-des-pythagoras",
       "title": "Umkehrung des Satzes des Pythagoras",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -217,7 +217,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "kathetensatz-hoehensatz",
       "title": "Höhensatz und Kathetensätze von Euklid",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -306,7 +306,7 @@
       "namespace": "mathematik-trigonometrie",
       "slug": "trigonometrie-sinus-kosinus",
       "title": "Sinus und Kosinus am rechtwinkligen Dreieck",
-      "domain": "schule/mathematik/trigonometrie",
+      "domain": "mathematik/trigonometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -380,7 +380,7 @@
       "namespace": "mathematik-trigonometrie",
       "slug": "trigonometrie-tangens",
       "title": "Tangens am rechtwinkligen Dreieck",
-      "domain": "schule/mathematik/trigonometrie",
+      "domain": "mathematik/trigonometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -454,7 +454,7 @@
       "namespace": "mathematik-trigonometrie",
       "slug": "trigonometrischer-pythagoras-spezialwerte",
       "title": "Trigonometrischer Pythagoras und spezielle Winkelwerte",
-      "domain": "schule/mathematik/trigonometrie",
+      "domain": "mathematik/trigonometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [

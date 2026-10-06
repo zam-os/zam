@@ -20,7 +20,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "imparfait-bildung-verwendung-vs-passe-compose",
       "title": "Das Imparfait: Bildung (nous-Stamm + Endungen) und Abgrenzung zum Passé composé (Zustand vs. Handlung)",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "objektpronomen-direkt-indirekt-stellung-verneinung",
       "title": "Objektpronomen: Direkte (COD) vs. Indirekte Pronomen (COI) und Pronomenstellung vor dem Verb",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

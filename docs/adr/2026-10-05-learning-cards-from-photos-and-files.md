@@ -1,7 +1,8 @@
 # Learning Cards from Photos and Files: The Model Reads the Page
 
-**Status:** Accepted — 2026-10-05, after review rounds 1 (Grok 4.7, Gemini)
-and 2 (MiMo)\
+**Status:** Partially implemented — 2026-10-05 (PR #385): both paths, the
+review list, Bonus and Mobile shipped; see the delivery note. Accepted
+2026-10-05 after review rounds 1 (Grok 4.7, Gemini) and 2 (MiMo)\
 **Date:** 2026-10-05\
 **Deciders:** Thomas (project owner)\
 **Implementation plan:** [2026-10-05-learning-cards-from-photos-and-files.md](../plans/2026-10-05-learning-cards-from-photos-and-files.md)\
@@ -90,6 +91,27 @@ and 2 (MiMo)\
 > - `completed` without a preset is confirmed.
 > - The harness path comes first. The field-test learner uses opencode, a
 >   terminal harness (Decisions 2, 10).
+>
+> **Delivery note (2026-10-05, PR #385).** Phases 1–8 of the implementation
+> plan shipped: the contract and matching, the `schule/` rewrite (M038), the
+> staging store, the review list, the harness path, the built-in path with the
+> `file` capability, the Bonus view and offer, and Mobile. The plan's "as
+> built" notes record the details. Open, and why:
+>
+> - **The review list as an MCP Apps panel** (plan Phase 9) was left out by
+>   owner decision: the field-test harness, opencode, renders no panels, and
+>   the Studio opens the list itself.
+> - **The import's source line showing its bonus items** (Decision 6) is not
+>   built: Learning Content has no per-import line yet. Bonus items are found
+>   in the Bonus view and in the offer after the due queue.
+> - **One change on review:** the vector match searches the whole library,
+>   not only the subject's pre-selection (owner decision; Decision 8's
+>   pre-selection bounds the word match and the cell catalog). A learner's
+>   library is small, and a subject filter would miss cards filed under an
+>   unconventional area.
+> - **Not yet verified with a real model or device:** the tests mock the model
+>   transport. A first opencode run on an older build read the material well;
+>   the manual pass on the current build is still to do.
 
 ---
 

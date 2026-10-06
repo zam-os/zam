@@ -20,7 +20,7 @@
       "namespace": "gymnasium-mathematik-funktionen",
       "slug": "lineare-funktionen-steigung-achsenabschnitt-nullstellen-orthogonalitaet",
       "title": "Lineare Funktionen: Steigung m, y-Achsenabschnitt t, Nullstellen und Orthogonalitätsbedingung",
-      "domain": "schule/mathematik/funktionen",
+      "domain": "mathematik/funktionen",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-mathematik-algebra",
       "slug": "lineare-gleichungssysteme-2x2-loesungsverfahren-loesungsfaelle",
       "title": "Lineare Gleichungssysteme (2x2): Einsetzungs-, Gleichsetzungs- und Additionsverfahren sowie Lösungsfälle",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

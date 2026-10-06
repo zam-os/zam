@@ -20,7 +20,7 @@
       "namespace": "chemie-grundlagen",
       "slug": "reinstoffe-stoffgemische-homogen-heterogen",
       "title": "Reinstoffe und Stoffgemische: Heterogene und homogene Systeme",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "chemie-grundlagen",
       "slug": "stoffeigenschaften-dichte-schmelz-siedepunkt",
       "title": "Stoffeigenschaften zur Stoffidentifikation: Dichte ρ = m / V, Schmelz- und Siedepunkt",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "chemie-grundlagen",
       "slug": "trennverfahren-filtration-destillation-chromatographie",
       "title": "Trennverfahren für Stoffgemische: Filtration, Destillation und Chromatographie",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "chemie-grundlagen",
       "slug": "aggregatzustaende-teilchenmodell-diffusion",
       "title": "Teilchenmodell, Aggregatzustandswechsel und Diffusion",
-      "domain": "schule/chemie/allgemeine-chemie",
+      "domain": "chemie/allgemeine-chemie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

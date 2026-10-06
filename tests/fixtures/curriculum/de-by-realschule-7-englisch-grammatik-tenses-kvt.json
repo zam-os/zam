@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "present-perfect-vs-past-simple-signalwoerter",
       "title": "Present Perfect vs. Past Simple: Bildung, Verwendung und Signalwörter",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "englisch-grammatik",
       "slug": "past-progressive-continuous-unterbrochene-handlung",
       "title": "Past Continuous / Progressive: Bildung, Verlaufsform und unterbrochene Handlungen",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "englisch-grammatik",
       "slug": "zukunftsformen-will-vs-going-to-future",
       "title": "Zukunftsformen im Englischen: will-Future vs. going-to-Future",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "englisch-grammatik",
       "slug": "steigern-adjektive-adverbien-vergleiche",
       "title": "Steigerung von Adjektiven und Adverbien: Komparativ, Superlativ und as...as",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

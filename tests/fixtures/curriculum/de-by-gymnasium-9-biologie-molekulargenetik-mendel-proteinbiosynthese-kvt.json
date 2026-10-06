@@ -20,7 +20,7 @@
       "namespace": "gymnasium-biologie-molekulargenetik",
       "slug": "dna-aufbau-replikation-proteinbiosynthese-genetischer-code",
       "title": "Molekulargenetik: DNA-Doppelhelix, Replikation, Proteinbiosynthese (Transkription & Translation) und Code-Sonne",
-      "domain": "schule/biologie/genetik",
+      "domain": "biologie/genetik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-biologie-mendel",
       "slug": "mendelsche-regeln-erbgang-stammbaumanalyse-humangenetik",
       "title": "Klassische Genetik: Die drei Mendelschen Regeln, Punnett-Quadrat und Humangenetische Stammbäume",
-      "domain": "schule/biologie/mendel",
+      "domain": "biologie/mendel",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

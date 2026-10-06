@@ -25,7 +25,7 @@
       "namespace": "optik",
       "slug": "strahlengang-lot",
       "title": "Lichtstrahl und Einfallslot",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "geometric",
       "typical_age_min": 12.0,
       "prerequisites": [],
@@ -56,7 +56,7 @@
       "namespace": "optik",
       "slug": "reflexionsgesetz",
       "title": "Reflexionsgesetz",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "geometric",
       "typical_age_min": 12.0,
       "prerequisites": [
@@ -121,7 +121,7 @@
       "namespace": "optik",
       "slug": "sammellinse-abbildung",
       "title": "Abbildung durch eine Sammellinse",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "geometric",
       "typical_age_min": 13.0,
       "prerequisites": [
@@ -179,7 +179,7 @@
       "namespace": "optik",
       "slug": "brechung-qualitativ",
       "title": "Lichtbrechung an Grenzflächen (qualitativ)",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -216,7 +216,7 @@
       "namespace": "optik",
       "slug": "dispersion-spektrum",
       "title": "Dispersion und kontinuierliches Spektrum",
-      "domain": "schule/physik/optik",
+      "domain": "physik/optik",
       "reduction": "qualitative",
       "typical_age_min": 13.0,
       "prerequisites": [

@@ -223,6 +223,8 @@
             <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
             <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
             <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">Library Topics</button>
+            <button id="btn-content-material-import" class="btn secondary-btn btn-sm" type="button">Photo / PDF</button>
+            <button id="btn-content-material-bonus" class="btn secondary-btn btn-sm" type="button" hidden>Bonus</button>
             <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import File</button>
             <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
           </div>
@@ -1480,7 +1482,7 @@
               <button id="btn-import-tab-library" class="btn btn-xs primary-btn" type="button">Open Library</button>
               <button id="btn-import-tab-file" class="btn btn-xs secondary-btn" type="button">APKG / CSV / TSV</button>
               <button id="btn-import-tab-text" class="btn btn-xs secondary-btn" type="button">Direct Text</button>
-              <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link / Scan</button>
+              <button id="btn-import-tab-source" class="btn btn-xs secondary-btn" type="button">File / Link</button>
             </div>
 
             <!-- Tab 1: curated open-content library -->
@@ -1518,7 +1520,7 @@
               </div>
             </div>
 
-            <!-- Tab 4: File/Link/Scan -->
+            <!-- Tab 4: File/Link. Photos and PDFs go through the "Photo / PDF" import (ADR 2026-10-05). -->
             <div id="import-view-source" class="hidden" style="display: flex; flex-direction: column; gap: 12px;">
               <div style="display: flex; gap: 8px; align-items: flex-end;">
                 <div class="editor-form-group" style="flex: 1.2; margin: 0;">
@@ -1526,7 +1528,6 @@
                   <select id="import-source-type" class="editor-input" style="height: 34px;">
                     <option value="file">Local File (.txt, .md)</option>
                     <option value="web">Web Link (HTTP / HTTPS)</option>
-                    <option value="scan">OCR Scan (Image file path)</option>
                   </select>
                 </div>
                 <div class="editor-form-group" style="flex: 3; margin: 0;">

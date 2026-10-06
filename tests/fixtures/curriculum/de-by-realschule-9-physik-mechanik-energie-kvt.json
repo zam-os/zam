@@ -20,7 +20,7 @@
       "namespace": "physik-mechanik",
       "slug": "kraftbegriff-hooke",
       "title": "Kraftbegriff und Hookesches Gesetz",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "physik-mechanik",
       "slug": "newtonsche-axiome-traegheit",
       "title": "Newtonsche Gesetze und Trägheitsprinzip",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -142,7 +142,7 @@
       "namespace": "physik-mechanik",
       "slug": "mechanische-arbeit",
       "title": "Mechanische Arbeit und Arbeitsformen",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -206,7 +206,7 @@
       "namespace": "physik-mechanik",
       "slug": "mechanische-energieformen",
       "title": "Potenzielle und kinetische Energie",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -270,7 +270,7 @@
       "namespace": "physik-mechanik",
       "slug": "energieerhaltung-mechanik",
       "title": "Energieerhaltungssatz der Mechanik",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -334,7 +334,7 @@
       "namespace": "physik-mechanik",
       "slug": "mechanische-leistung-wirkungsgrad",
       "title": "Mechanische Leistung und Wirkungsgrad",
-      "domain": "schule/physik/mechanik",
+      "domain": "physik/mechanik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "gymnasium-latein-sallust",
       "slug": "sallust-catilina-dekadenzmodell-stilmittel-brevitas",
       "title": "Sallust: De coniuratione Catilinae, Sittenverfall der Republik und Stilmittel (Brevitas)",
-      "domain": "schule/latein/historiographie",
+      "domain": "latein/historiographie",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-latein-tacitus",
       "slug": "tacitus-annales-germania-prinzipat-sine-ira-et-studio",
       "title": "Tacitus: Annales (Prinzipatkritik, Sine ira et studio) und Germania (Kulturanthropologie)",
-      "domain": "schule/latein/kaiserzeit",
+      "domain": "latein/kaiserzeit",
       "reduction": "formal",
       "typical_age_min": 16.5,
       "prerequisites": [

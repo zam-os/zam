@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-02T09:30:00.000Z
+timestamp: 2026-10-06T08:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -49,6 +49,13 @@ The injection is scoped to one asynchronous command execution. It is not a
 global connection cache, and concurrent in-process callers cannot borrow one
 another's database. This keeps the JSON protocol identical while removing a
 connection and schema-version round trip from each warm Desktop interaction.
+
+The persistent bridge answers one request at a time. A command that waits on
+a model for a long time would hold up every other Studio request, so the
+Desktop runs an allowlisted few in a short-lived CLI process beside it
+(`execute_zam_bridge_background`): `choice-prepare` and
+`material-import-analyze`. That process shares only the library database;
+its stderr is not streamed to the WebView.
 
 A windowed Desktop swallows the serve process's stderr, so the process keeps
 a diagnostics log at `~/.zam/desktop-bridge.log`: one line per start with the
@@ -124,6 +131,42 @@ series. Studio and the Recall card measure active time with a one-minute idle
 pause and a two-minute cap per follow-up (ADR 2026-09-15). Ratings logged
 before response-time measurement existed count as worked cards and contribute
 no time.
+
+# Material import
+
+Learning cards from photos and PDFs (see [material-import.md](material-import.md))
+move through a staged batch that only the learner's confirm turns into
+library rows:
+
+- `material-import-stage --file <set.json> [--origin studio|harness]
+  [--harness <name>]` validates a proposal set and stages it in
+  `~/.zam/pending-imports/`; `material-import-pending` lists waiting batches
+  (expired ones, after seven days, are pruned); `material-import-discard
+  --id <id>` drops one without writing.
+- `material-import-analyze --file <path>… [--pages <range>]` reads up to ten
+  photos or one PDF with the connected model and stages the result with
+  origin `studio`. A refusal the learner can act on — no image or file model,
+  HEIC that cannot be converted, a mixed or oversized selection, an answer
+  that does not fit the contract — comes back as `{ success: false, code,
+  message }` rather than an `error`, so a surface can explain it by `code`.
+  Progress goes to stderr as `{"type":"material-analyze-progress",...}`.
+  A success names the model that read the pages (`model`) and every model
+  they were sent to (`sentTo`), since a failing first model hands the request
+  on; the batch keeps both, and `material-import-review` returns them as
+  `readBy` and `sentTo`. `material-import-models` names the models photos and
+  PDFs would go to first.
+- `material-import-review --id <id>` matches the proposals against the library
+  and the bundled cells, returns the rows with their presets, area groups and
+  earlier imports of the same files, and stores those rows in the batch;
+  `material-import-confirm --id <id> --decisions <json> [--areas <json>]`
+  applies the decisions to exactly those rows in one transaction and retires
+  the batch. Bad `--decisions` or `--areas` JSON is reported as JSON.
+- `material-import-file-preview --id <id> --file <n>` returns a small image of
+  a staged file for the review list, only for files the batch names;
+  `material-import-areas` lists the areas in use and the cell subject codes.
+- `material-import-bonus-list [--limit <n>]` lists the caller's kept Bonus
+  items; `material-import-bonus-take --token <id>` creates the caller's card
+  for one, and refuses an item that is not from the caller's own imports.
 
 # Library switching
 
@@ -214,13 +257,11 @@ requested prerequisite edges, and existing knowledge-context assignments.
 Plain shared or pasted text and URLs use the same confirmation path as
 quick-capture drafts. Editing and publication stay reachable after Save.
 
-A photo or screenshot from the camera or gallery is downscaled on-device
-and sent through the native Android command to the library's configured
-HTTPS cloud-vision endpoint. The vision model returns one or more
-bridge-token-shaped drafts; each stays editable and requires confirmation
-before the same atomic import runs. The token records `vision:<model>`
-provenance. Image import is online-only and unavailable when cloud vision
-is not configured.
+Photos and PDFs from the camera, gallery or files go a different way: the
+[material import](material-import.md) runs on the device, the connected model
+reads them through the native `vision_request` command, and the learner
+decides each proposed card in a review list before one transaction writes
+them. It is online-only and needs a model that reads images, or PDFs.
 
 # Central learning-field commands
 
@@ -251,9 +292,10 @@ bridge's JSON helpers.
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
+- [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `desktop/src-tauri/src/lib.rs`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

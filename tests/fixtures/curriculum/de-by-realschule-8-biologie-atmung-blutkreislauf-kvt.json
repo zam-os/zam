@@ -20,7 +20,7 @@
       "namespace": "biologie-anatomie",
       "slug": "atmungsorgane-gasaustausch-alveolen-diffusion",
       "title": "Atmungsorgane und Gasaustausch: Bau der Lunge, Alveolen und Ventilation",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "biologie-anatomie",
       "slug": "blut-bestandteile-erythrozyten-leukozyten-plasma",
       "title": "Das Blut: Feste Bestandteile, Blutplasma und physiologische Transportfunktionen",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "biologie-anatomie",
       "slug": "herz-bau-doppelter-blutkreislauf",
       "title": "Das Herz-Kreislauf-System: Bau des Herzens und doppelter Blutkreislauf",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "biologie-anatomie",
       "slug": "immunsystem-antigen-antikoerper-impfung",
       "title": "Das Immunsystem: Antigen-Antikörper-Reaktion, aktive und passive Immunisierung",
-      "domain": "schule/biologie/physiologie",
+      "domain": "biologie/physiologie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

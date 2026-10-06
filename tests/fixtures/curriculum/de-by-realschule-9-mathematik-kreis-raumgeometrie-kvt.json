@@ -25,7 +25,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "kreisumfang-kreisflaeche-pi",
       "title": "Kreisumfang, Kreisfläche und Kreiszahl Pi",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -93,7 +93,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "kreissektor-kreisbogen",
       "title": "Kreissektor und Kreisbogen",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -167,7 +167,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "zylinder-oberflaeche-volumen",
       "title": "Zylinder: Oberflächeninhalt und Volumen",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -231,7 +231,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "pyramide-kegel-spitzkoerper",
       "title": "Pyramide und Kegel: Spitzkörper und Mantellinien",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -295,7 +295,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "kugel-oberflaeche-volumen",
       "title": "Kugel: Oberflächeninhalt und Volumen",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [

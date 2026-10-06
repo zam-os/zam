@@ -25,7 +25,7 @@
       "namespace": "mathematik-algebra",
       "slug": "lineare-gleichung-zwei-variablen",
       "title": "Lineare Gleichung mit zwei Variablen und Geradengraph",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -93,7 +93,7 @@
       "namespace": "mathematik-algebra",
       "slug": "gleichsetzungs-einsetzungsverfahren",
       "title": "Gleichsetzungs- und Einsetzungsverfahren für lineare Gleichungssysteme",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -167,7 +167,7 @@
       "namespace": "mathematik-algebra",
       "slug": "additionsverfahren-elimination",
       "title": "Additionsverfahren zur Variablenelimination",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -241,7 +241,7 @@
       "namespace": "mathematik-algebra",
       "slug": "loesungsfaelle-linearer-gleichungssysteme",
       "title": "Lösungsfälle linearer Gleichungssysteme und geometrische Deutung",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "axiomatic",
       "typical_age_min": 14.0,
       "prerequisites": [

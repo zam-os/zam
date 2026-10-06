@@ -1,6 +1,6 @@
 # Learning cards from photos and files — implementation plan
 
-**Status:** Not started.\
+**Status:** Phases 1–8 and 10 done (2026-10-05); Phase 9 left out by owner decision. A first opencode run on an older build went well; the manual pass with the current build is still open.\
 **Decision:** [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -28,18 +28,19 @@ reference and file fingerprints. Nothing of the material itself is stored.
 
 ## Status
 
-- [ ] **Phase 1** — kernel contract: schema, validation, presets, matching,
-  write, bonus queries
-- [ ] **Phase 2** — the `schule/` rewrite: migration and fixtures
-- [ ] **Phase 3** — staging store and bridge commands
-- [ ] **Phase 4** — Studio review list
-- [ ] **Phase 5** — harness path: MCP tools, skill, Studio handoff
-- [ ] **Phase 6** — built-in Studio path: `file` capability, request module,
-  picker
-- [ ] **Phase 7** — Bonus view and the offer after the due queue
-- [ ] **Phase 8** — Mobile
-- [ ] **Phase 9** — the review list as an MCP Apps panel (optional)
-- [ ] **Phase 10** — documentation and handover
+- [x] **Phase 1** — kernel contract: schema, validation, presets, matching,
+  write, bonus queries — `b2aa6d29`
+- [x] **Phase 2** — the `schule/` rewrite: migration and fixtures — `d7c78a9e`
+- [x] **Phase 3** — staging store and bridge commands — `ec9af5d7`
+- [x] **Phase 4** — Studio review list — `09a35032`
+- [x] **Phase 5** — harness path: MCP tools, skill, Studio handoff — `5620339d`
+- [x] **Phase 6** — built-in Studio path: `file` capability, request module,
+  picker — `efc056ef`
+- [x] **Phase 7** — Bonus view and the offer after the due queue — `ca5b0a59`
+- [x] **Phase 8** — Mobile — `615f39a9`
+- [ ] **Phase 9** — the review list as an MCP Apps panel (optional) — left
+  out by owner decision (2026-10-05): opencode renders no panels
+- [x] **Phase 10** — documentation and handover — `eedd6fd4`
 
 **Order.**
 
@@ -212,8 +213,9 @@ photos write `scan`.
      path (`proposals[3].origin`).
    - Strings are trimmed. `bloom` is 1–5, `origin` and `kind` come from their
      enums, `file` is in range, and there are at most 200 proposals.
-   - `area` is normalised the way token domains already are (lowercase,
-     `/`-separated). A leading `schule/` is stripped (D7).
+   - `area` is normalised by `normaliseMaterialArea`: trimmed segments, `/`
+     as the only separator, a leading `schule/` stripped (D7). Case is kept, so
+     a learner's existing area (`Deutsch`) still matches itself.
    - Unstructured output never passes this function (ADR 2026-06-30).
 2. **`presetFor(proposal): MaterialChoice | null`** — the D5 table:
    - `page` → `yes`
@@ -358,6 +360,19 @@ photos write `scan`.
 5. **Embeddings.** No code change; the lazy top-up renews them. The release
    note recommends `zam token reembed` for large libraries.
 
+**As built.**
+
+- **One statement for both dialects.** PostgreSQL has `substr` too, so M038 is
+  one `UPDATE` per table. The match is `lower(substr(domain, 1, 7)) =
+  'schule/'`: SQLite's `LIKE` ignores case and PostgreSQL's does not, so this
+  keeps both in step. `Schule/…` is rewritten as well.
+- **Left alone.** A bare `schule` (no subject to keep) and paths that merely
+  contain the word, such as `hochschule/…`.
+- **PostgreSQL.** `tests/kernel/postgres-provision.test.ts` covers the rewrite
+  and a repeat run.
+- **Not touched.** The concept papers under `docs/concepts/` that still call
+  the path question open; they record the discussion before D7.
+
 ---
 
 ## Phase 3 — staging store and bridge commands
@@ -380,9 +395,9 @@ photos write `scan`.
 
 | Command | Result |
 |---|---|
-| `material-import-stage --file <json>` | parse with the kernel, stage (origin `studio`), return `{ id }` — used by tests and Phase 6 |
+| `material-import-stage --file <json> [--origin studio\|harness] [--harness <name>]` | parse with the kernel, stage, return `{ id, proposalCount }` — used by tests and Phase 6 |
 | `material-import-pending` | `[{ id, title, createdAt, origin, harness, proposalCount }]` |
-| `material-import-review --id` | rows with presets and matches, the analysis, area groups, re-import notices |
+| `material-import-review --id` | rows with presets and matches, the analysis, area groups, re-import notices; stores the rows in the batch so the confirm applies choices to exactly what the learner saw |
 | `material-import-confirm --id --decisions <json> --areas <json>` | commit, then delete the staged file |
 | `material-import-discard --id` | delete the staged file |
 | `material-import-areas` | `listMaterialAreaContext` |
@@ -394,6 +409,9 @@ photos write `scan`.
   when an embedding model is configured, and runs lexical-only otherwise.
 - **Protocol.** Add the response types to `src/bridge/protocol.ts`
   (additive).
+- **Shared service.** The command bodies live in `src/cli/material-import.ts`
+  (review, confirm, discard, pending list), so Phase 5's MCP tools reuse
+  them unchanged.
 
 ### Tests
 
@@ -452,6 +470,17 @@ photos write `scan`.
    - the counts;
    - the banner;
    - the notices.
+
+**As built.**
+
+- **Where the code lives.** The view is a self-built dialog in
+  `desktop/src/material-review.ts`, like the library topics. It is shared with
+  the MCP Apps panel; `learning-content.ts` only calls `initMaterialImports`.
+- **Files without a preview.** PDFs, HEIC photos and images over 5 MB show name
+  and path, with no "Open" button: opening a local path needs the opener
+  plugin's `open-path` permission, a security setting left to the owner.
+- **The panel.** The `material-import-*` commands are not yet on
+  `zam_studio_bridge`'s allowlist, so the panel stays silent until Phase 9.
 
 ### Tests
 
@@ -528,6 +557,25 @@ open the Studio and take the batch through:
    renders no panels, so the review always opens in the Studio. Connect it
    with `zam agent connect opencode`.
 
+**As built.**
+
+- **Studio handoff.** The handoff is its own "Foto / PDF" dialog, opened from a
+  button in the Learning Content header, not a tab in the import dialog: that
+  dialog's tab and submit logic is tightly interlocked, and one button with one
+  clear action is simpler for learners. Phase 6 adds the built-in path to the
+  same dialog.
+- **The review opens by itself.** A harness batch submitted within the last
+  ten minutes opens the review list as soon as the Studio comes forward
+  (`AUTO_OPEN_WINDOW_MS`). Older batches wait behind the banner.
+- **Contract constants.** `MATERIAL_KINDS`, `MATERIAL_ORIGINS` and the version
+  live in `src/kernel/import/material-contract.ts`, so `material-prompt.ts`
+  does not pull the bundled curriculum tiles into Mobile's bundle.
+- **Testable launch.** `createMcpServer` takes an optional `launchStudio` for
+  tests. The launcher prints nothing, because MCP speaks on stdout, and it
+  swallows asynchronous spawn errors.
+- **Smoke test.** A run against the built bundle covered MCP stdio, staging,
+  review (including the Chemie 8 continuation), confirm and Bonus.
+
 ### Tests
 
 - `tests/cli/mcp-material-import.test.ts`:
@@ -549,6 +597,12 @@ open the Studio and take the batch through:
   - the cards are in the queue;
   - Bonus items are in the Bonus view (once Phase 7 is in);
   - the `sources` row has a fingerprint.
+
+**First result (2026-10-05).** The owner ran an import through opencode on an
+older ZAM build, before this branch's tools were available to it. Within the
+harness the model read the material and handled the task; how good the cards
+are in substance is still open and may depend on reasoning effort and other
+factors. The pass above, with the current build, is still to do.
 
 ---
 
@@ -627,6 +681,48 @@ open the Studio and take the batch through:
   - nothing logged.
 - **Studio wiring:** the tab, the model line, the missing-capability states.
 
+**As built.**
+
+- **Where the code lives.** The client is `src/cli/llm/material-analyze.ts`,
+  not `llm/material-import.ts`, so it is not confused with the service in
+  `src/cli/material-import.ts`. The built-in rules differ from the harness
+  rules in two lines (no asking back; subject codes listed in the prompt):
+  `materialCardRules("built-in")`.
+- **Choosing the model.** Photos go to `resolveCapability(db, "image")`, not
+  `getProviderForRole(db, "vision")`: the vision role's switch is the
+  Observer's screen-capture consent, which sending a photo the learner picked
+  does not need. Harness-backed rows are skipped; the harness path is their
+  way in. The Anthropic Messages API has `file` by contract, since it takes
+  PDF `document` blocks and has no catalog metadata.
+- **Effort and output.** No reasoning control is sent: the probe's verified
+  level is the cheap one meant for recall, and card writing should get the
+  model's own default. JSON mode and the native PDF engine
+  (`plugins: [{ id: "file-parser", pdf: { engine: "native" } }]`) are sent
+  on OpenRouter only. Output budget 16,000 tokens, request timeout 5 minutes.
+- **One selection rule** (D3): up to ten photos or one PDF; mixed, two PDFs,
+  eleven photos and other file types are refused before anything is sent.
+- **A dialog, not a tab.** The built-in path lives in the Phase 5 "Foto /
+  PDF" dialog, above the harness handoff. Drag and drop works on the whole
+  window while the dialog is open (Tauri `onDragDropEvent`). The picker is
+  the dialog's own multi-select, not `pickLearningContentFile`.
+- **Background process.** The persistent bridge answers one request at a
+  time, so a minute-long analysis would hold up the whole Studio.
+  `material-import-analyze` runs through `execute_zam_bridge_background`
+  (allowlisted in `desktop/src-tauri/src/lib.rs`). That process's stderr is
+  not streamed, so the dialog shows one waiting line and no split progress;
+  the CLI still emits `material-analyze-progress`.
+- **Refusals** come back as `{ success: false, code, message }`, not as an
+  error, so the Studio can explain each in the learner's language.
+- **Found on the way.** Dialog sections laid out with inline flex ignored the
+  `hidden` attribute: the empty "waiting import" banner (Phase 4) and the
+  no-harness note (Phase 5) stayed on screen. `desktop/src/visibility.ts`
+  fixes both dialogs.
+- **Retired** in the Studio only: the "OCR Scan" option. `zam bridge
+  personal-source-import --type scan` stays for agents.
+- **Mobile's model registry** is untouched; Phase 8 adds `file` there.
+- **Not verified:** a real request to a model; the tests mock the transport.
+  The Rust allowlist change is checked by CI's `cargo check`.
+
 ---
 
 ## Phase 7 — Bonus view and the offer after the due queue
@@ -647,6 +743,25 @@ open the Studio and take the batch through:
 
 - The pure helpers in `study-offers.ts`.
 - A wiring test for the segment and the offer.
+
+**As built.**
+
+- **A button, not a segment.** Learning Content has no segmented control. The
+  Bonus view is a dialog behind a "Bonus (n)" button in the header, like the
+  library topics, shown only while the learner keeps bonus items
+  (`desktop/src/material-bonus.ts`). Items are grouped by import, newest
+  first, each with title, question, area and "Lernen" / "Learn".
+- **The offer after the due queue** names the newest import that still holds
+  bonus items and offers up to two of them, before the atom bonus. It reuses
+  the atom bonus's choices: "Für später merken" / "Save for later" creates the
+  cards and ends the session, "Jetzt nicht" / "Not now" ends it. Taking an
+  item to learn it right away was left out: the queue might show another new
+  card first.
+- **Not built:** the import's source line listing its bonus items (D6). The
+  plan did not include it, and Learning Content has no per-import line yet.
+- **Desktop only.** The MCP Apps recall panel keeps the atom bonus; it cannot
+  reach the `material-import-*` commands before Phase 9. Mobile follows in
+  Phase 8.
 
 ---
 
@@ -669,6 +784,33 @@ open the Studio and take the batch through:
    - No staging file: the built-in path does not cross a process boundary.
 4. **Bonus.** Offer imported bonus items in `mobile/src/study-offers.ts`.
 5. **Tests** in `tests/mobile/`, following the existing VL-import tests.
+
+**As built.**
+
+- **Modules.** `mobile/src/vl-import.ts` sends the shared request;
+  `mobile/src/material-import.ts` holds the pipeline without DOM (endpoints,
+  reading, matching, commit, bonus); `mobile/src/material-review-view.ts`
+  renders the list. The shared review rules are
+  `src/kernel/import/material-review-state.ts`; the selection rule (ten
+  photos or one PDF) is `materialSelection` / `materialSelectionOfKinds` in
+  `material-prompt.ts`, so desktop, CLI and Mobile apply one rule.
+- **Models.** Photos go to the registry's `image` rows, then to the older
+  `llm.vision.*` endpoint on the library; a PDF only to a registry row whose
+  `file` capability the desktop's probe detected (D1). Mobile adds `file` to
+  its capability type but has no probe of its own.
+- **The 8 MB body limit** of the native `vision_request` command is met by
+  batching photos under 7.5 MB (`batchByBudget`) and merging the replies; the
+  Rust limit is unchanged. A PDF over about 5.6 MB is refused as too large.
+- **Files on the phone** have no path: the link is `photo:<name>@<date>`, the
+  fingerprint is SHA-256 of the file as picked (`crypto.subtle`), so the
+  re-import notice works on the phone too.
+- **The review list replaces** the one-image "decompose" flow and its card-by-
+  card drafts; the obsolete helpers and strings are removed. The curriculum
+  import still uses the card-by-card drafts.
+- **Bonus** is offered at both places the atom bonus was: after a session and
+  on the dashboard, before the atom bonus.
+- **Not verified on a device.** The tests run against a real device database
+  with the model mocked; the list was checked in a browser at phone size.
 
 ---
 
@@ -717,6 +859,24 @@ test.
    its row in `docs/adr/README.md`.
 4. **This plan.** Mark each phase with its commit hash. Delete the plan before
    the release that ships the feature, unless open tasks remain.
+
+**As built.**
+
+- **OKF.** New article `material-import.md`; `mcp-surfaces.md`,
+  `bridge-protocol.md`, `local-card-file-import.md`,
+  `mobile-standalone-libraries.md` and `token-card-model.md` updated, all
+  through `zam_okf_upsert`. The bridge article also names the Desktop's
+  background bridge process, and its outdated Mobile photo-import paragraph is
+  replaced.
+- **Conventions.** The line sits under Key conventions in `CLAUDE.md` and
+  under Hard rules in `AGENTS.md` (which has no Key conventions section), with
+  one more sentence: a Bonus token is published but has no card.
+- **ADR status.** `Partially implemented`, with a delivery note: Phase 9 and
+  the per-import bonus line (D6) are open, the library-wide vector match is
+  recorded, and the manual pass is still to do.
+- **This plan stays** until the release: the manual pass and Phase 9 remain
+  open. For the release notes: the Pitfalls below (team libraries need the
+  owner's client to run M037 and M038 first; `zam token reembed` after M038).
 
 ## Deliberately not in this plan
 

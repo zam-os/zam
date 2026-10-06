@@ -20,7 +20,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "passe-compose-avoir-vs-etre-partizip-accord",
       "title": "Das Passé composé: Bildung mit 'avoir' vs. 'être' (Verben der Bewegung) und Partizipangleichung (Accord)",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "franzoesisch-grammatik",
       "slug": "relativsaetze-qui-que-ou-adjektive-stellung",
       "title": "Relativsätze (qui, que, où) und Adjektivsyntax (Stellung vor/nach Nomen, Steigerung)",
-      "domain": "schule/franzoesisch/grammatik",
+      "domain": "franzoesisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

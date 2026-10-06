@@ -20,7 +20,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "vierecke-systematik-eigenschaften",
       "title": "Systematik der Vierecke: Parallelogramm, Raute, Drachen und Trapez",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "flaechenberechnung-dreieck-parallelogramm-trapez",
       "title": "Flächenberechnung: Dreiecke, Parallelogramme und Trapeze",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "strahlensaetze-v-figur-x-figur",
       "title": "Die Strahlensätze: V- und X-Figur bei parallelen Geraden",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "zentrische-streckung-aehnlichkeit-flaechenfaktor",
       "title": "Zentrische Streckung: Streckungsfaktor k und Ähnlichkeit k²",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

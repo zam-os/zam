@@ -20,7 +20,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "lineare-funktion-steigung-achsenabschnitt",
       "title": "Lineare Funktion: Funktionsgleichung f(x) = mx + t und Steigungsdreieck",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "geradengleichung-zwei-punkte-punktsteigung",
       "title": "Geradengleichung aufstellen: Zwei-Punkte-Formel und Punkt-Steigungs-Form",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "lagebeziehungen-geraden-parallel-orthogonal",
       "title": "Lagebeziehungen zweier Geraden: Schnittpunkt, Parallelität und Orthogonalität",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "mathematik-funktionen",
       "slug": "direkte-indirekte-proportionalitaet-hyperbel",
       "title": "Proportionale und antiproportionale Funktionen: Ursprungsgerade und Hyperbel",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

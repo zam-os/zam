@@ -20,7 +20,7 @@
       "namespace": "mathematik-analysis",
       "slug": "exponentialfunktionen-asymptote-wachstum",
       "title": "Exponentialfunktionen: Funktionsgleichung, Graph und Asymptote",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 15.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "mathematik-analysis",
       "slug": "logarithmus-rechengesetze-basiswechsel",
       "title": "Der Logarithmus: Definition, Logarithmengesetze und Basiswechsel",
-      "domain": "schule/mathematik/analysis",
+      "domain": "mathematik/analysis",
       "reduction": "formal",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "mathematik-analysis",
       "slug": "exponentialgleichungen-loesen",
       "title": "Exponentialgleichungen: Lösungsverfahren durch Logarithmieren",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "mathematik-analysis",
       "slug": "wachstumsprozesse-halbwertszeit-verdopplung",
       "title": "Reale Wachstumsmodelle: Halbwertszeit, Verdopplungszeit und Zinseszins",
-      "domain": "schule/mathematik/anwendung",
+      "domain": "mathematik/anwendung",
       "reduction": "formal",
       "typical_age_min": 15.0,
       "prerequisites": [

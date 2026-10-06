@@ -20,7 +20,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "flaecheninhalt-parallelogramm-dreieck-herleitung",
       "title": "Flächeninhalt ebener Figuren: Parallelogramm (A = g·h) und beliebiges Dreieck (A = 1/2·g·h)",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "flaecheninhalt-trapez-mittelparallele-zerlegung",
       "title": "Flächeninhalt des Trapezes: Formel A = ((a + c) / 2) · h und Mittelparallele m",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "mathematik-stochastik",
       "slug": "kreisdiagramme-mittelpunktswinkel-relative-haeufigkeit",
       "title": "Kreisdiagramme und Daten: Relative Häufigkeiten und Berechnung des Mittelpunktswinkels alpha = p% · 360°",
-      "domain": "schule/mathematik/stochastik",
+      "domain": "mathematik/stochastik",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "mathematik-geometrie",
       "slug": "prisma-grundflaeche-mantel-oberflaeche-volumen",
       "title": "Raumgeometrie des Prismas: Schrägbild, Körpernetz, Mantelfläche, Oberfläche und Volumen V = G·h",
-      "domain": "schule/mathematik/geometrie",
+      "domain": "mathematik/geometrie",
       "reduction": "formal",
       "typical_age_min": 11.5,
       "prerequisites": [

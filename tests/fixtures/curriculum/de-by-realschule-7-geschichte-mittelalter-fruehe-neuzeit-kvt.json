@@ -20,7 +20,7 @@
       "namespace": "geschichte-mittelalter",
       "slug": "lehnswesen-grundherrschaft-staendegesellschaft",
       "title": "Das mittelalterliche Herrschafts- und Sozialgefüge: Lehnswesen, Grundherrschaft und Dreiständelehre",
-      "domain": "schule/geschichte/mittelalter",
+      "domain": "geschichte/mittelalter",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geschichte-mittelalter",
       "slug": "mittelalterliche-stadt-buerger-zuenfte-handel",
       "title": "Die mittelalterliche Stadt: Bürgerfreiheit, Marktrecht, Zünfte und Patriziat",
-      "domain": "schule/geschichte/mittelalter",
+      "domain": "geschichte/mittelalter",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geschichte-mittelalter",
       "slug": "kaisertum-kurfuersten-goldene-bulle-1356",
       "title": "Das Heilige Römische Reich: Kaisertum, Kurfürsten und die Goldene Bulle von 1356",
-      "domain": "schule/geschichte/mittelalter",
+      "domain": "geschichte/mittelalter",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geschichte-fruehe-neuzeit",
       "slug": "wende-zur-neuzeit-buchdruck-renaissance-reformation",
       "title": "Die Wende zur Neuzeit: Humanismus/Renaissance, Buchdruck (Gutenberg) und Reformation (1517)",
-      "domain": "schule/geschichte/fruehe-neuzeit",
+      "domain": "geschichte/fruehe-neuzeit",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

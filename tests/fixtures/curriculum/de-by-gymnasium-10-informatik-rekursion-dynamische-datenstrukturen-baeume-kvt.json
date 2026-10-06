@@ -20,7 +20,7 @@
       "namespace": "gymnasium-informatik-rekursion",
       "slug": "rekursion-rekursionsbasis-rekursionsschritt-callstack",
       "title": "Rekursion: Rekursionsbasis, Rekursionsschritt und Aufrufstapel (Call Stack)",
-      "domain": "schule/informatik/algorithmen",
+      "domain": "informatik/algorithmen",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-informatik-datenstrukturen",
       "slug": "dynamische-datenstrukturen-stapel-schlange-binaerbaum",
       "title": "Dynamische Datenstrukturen: Stack (LIFO), Queue (FIFO) und Binäre Suchbäume (Traversierung)",
-      "domain": "schule/informatik/datenstrukturen",
+      "domain": "informatik/datenstrukturen",
       "reduction": "formal",
       "typical_age_min": 15.5,
       "prerequisites": [

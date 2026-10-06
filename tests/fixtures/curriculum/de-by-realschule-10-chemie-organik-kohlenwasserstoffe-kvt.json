@@ -20,7 +20,7 @@
       "namespace": "chemie-organik",
       "slug": "alkane-homologe-reihe-nomenklatur",
       "title": "Alkane: Homologe Reihe, Summenformel C_n H_2n+2 und IUPAC-Nomenklatur",
-      "domain": "schule/chemie/organisch",
+      "domain": "chemie/organisch",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "chemie-organik",
       "slug": "strukturisomerie-van-der-waals-siedepunkte",
       "title": "Strukturisomerie und zwischenmolekulare Van-der-Waals-Kräfte",
-      "domain": "schule/chemie/organisch",
+      "domain": "chemie/organisch",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "chemie-organik",
       "slug": "alkohole-hydroxylgruppe-wasserstoffbruecken",
       "title": "Alkohole: Funktionelle Hydroxylgruppe (-OH) und Wasserlöslichkeit",
-      "domain": "schule/chemie/organisch",
+      "domain": "chemie/organisch",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "chemie-organik",
       "slug": "carbonsaeuren-carboxylgruppe-veresterung",
       "title": "Carbonsäuren und Ester: Carboxylgruppe (-COOH) und Veresterung",
-      "domain": "schule/chemie/organisch",
+      "domain": "chemie/organisch",
       "reduction": "classical",
       "typical_age_min": 15.0,
       "prerequisites": [

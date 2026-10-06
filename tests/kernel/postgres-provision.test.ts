@@ -121,4 +121,44 @@ describeWithPostgres("PostgreSQL provisioning (needs POSTGRES_URL)", () => {
       await dropSchema("zam_provision_b");
     }
   });
+
+  // M038: PostgreSQL's LIKE is case-sensitive where SQLite's is not.
+  it("drops the schule/ root from stored areas on PostgreSQL too", async () => {
+    const db = await freshSchema("zam_provision_c");
+    try {
+      await applySchemaAndMigrations(db);
+      await db
+        .prepare(
+          "INSERT INTO learning_atoms (id, title, domain) VALUES (?, ?, ?)",
+        )
+        .run("01K3X9A7R4B8C1D2E3F4G5C001", "Stoffe", "schule/chemie/stoffe");
+      const insertToken = db.prepare(
+        "INSERT INTO tokens (id, slug, concept, domain) VALUES (?, ?, 'c', ?)",
+      );
+      await insertToken.run(
+        "01K3X9A7R4B8C1D2E3F4G5C002",
+        "a",
+        "Schule/notizen",
+      );
+      await insertToken.run("01K3X9A7R4B8C1D2E3F4G5C003", "b", "schule");
+
+      await applySchemaAndMigrations(db);
+      await applySchemaAndMigrations(db);
+
+      const atom = (await db
+        .prepare("SELECT domain FROM learning_atoms")
+        .get()) as { domain: string };
+      expect(atom.domain).toBe("chemie/stoffe");
+      const tokens = (await db
+        .prepare("SELECT domain FROM tokens ORDER BY id")
+        .all()) as Array<{ domain: string }>;
+      expect(tokens.map((token) => token.domain)).toEqual([
+        "notizen",
+        "schule",
+      ]);
+    } finally {
+      await db.close();
+      await dropSchema("zam_provision_c");
+    }
+  });
 });

@@ -20,7 +20,7 @@
       "namespace": "englisch-grammatik",
       "slug": "verb-to-be-have-got-pronomen-kurzformen",
       "title": "Grundverben: Formen von 'to be', 'have got', Personal-/Possessivpronomen und Short Answers",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "englisch-grammatik",
       "slug": "simple-present-he-she-it-s-do-does-signalwoerter",
       "title": "Simple Present: Regelmäßige Handlungen, 'he/she/it -s', Verneinung und Fragen mit do/does",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -140,7 +140,7 @@
       "namespace": "englisch-grammatik",
       "slug": "present-continuous-progressive-verlaufsform-kontrast",
       "title": "Present Continuous (Progressive): Bildung (be + -ing), Signalwörter und Kontrast zum Simple Present",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -203,7 +203,7 @@
       "namespace": "englisch-grammatik",
       "slug": "modalverben-can-must-imperativ-satzstellung-s-v-o",
       "title": "Modalverben, Imperativ und Satzstellung: can/must, Verneinung und die S-V-O-Regel",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

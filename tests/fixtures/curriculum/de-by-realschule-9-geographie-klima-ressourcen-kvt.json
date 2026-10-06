@@ -20,7 +20,7 @@
       "namespace": "geographie-klima",
       "slug": "atmosphaerische-zirkulation-itc-passate",
       "title": "Atmosphärische Zirkulation: ITC, Passatkreislauf und Tropen",
-      "domain": "schule/geographie/physisch",
+      "domain": "geographie/physisch",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geographie-oekosysteme",
       "slug": "tropischer-regenwald-naehrstoffkreislauf-gefaehrdung",
       "title": "Der Tropische Regenwald: Stockwerkbau, Nährstoffkreislauf und Gefährdung",
-      "domain": "schule/geographie/physisch",
+      "domain": "geographie/physisch",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geographie-oekosysteme",
       "slug": "aride-zonen-desertifikation-bewaesserung",
       "title": "Aride Zonen: Desertifikation, Übernutzung und Bodenversalzung",
-      "domain": "schule/geographie/physisch",
+      "domain": "geographie/physisch",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geographie-ressourcen",
       "slug": "globaler-wandel-ressourcen-nachhaltigkeit",
       "title": "Globaler Wandel: Ressourcenverbrauch, Treibhauseffekt und Nachhaltigkeit",
-      "domain": "schule/geographie/anthropogen",
+      "domain": "geographie/anthropogen",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

@@ -1,6 +1,9 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 import { initLibraryTopics } from "./library-topics.js";
+import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
+import { initMaterialImportStart } from "./material-import-start.js";
+import { initMaterialImports } from "./material-review.js";
 import { buildDomainOptions, domainMatches } from "./panel/graph-scope.js";
 
 export interface PersonalCard {
@@ -582,6 +585,18 @@ export function initLearningContentStudio(): void {
   // Library topics (ADR 2026-10-02): the cards a started topic adds show up
   // in the list straight away.
   initLibraryTopics({ onStarted: () => loadStudioData() });
+  // Material imports (ADR 2026-10-05): a waiting batch shows as a banner,
+  // confirmed cards show up in the list straight away, and items kept as
+  // Bonus wait behind their own button until the learner takes one.
+  const materialReview = {
+    onConfirmed: async () => {
+      await loadStudioData();
+      await refreshMaterialBonus();
+    },
+  };
+  initMaterialImports(materialReview);
+  initMaterialImportStart(materialReview);
+  initMaterialBonus({ onTaken: () => loadStudioData() });
   btnImportModalCancel.addEventListener("click", () => hideImportModal());
   btnImportModalSubmit.addEventListener("click", () => {
     void submitImport();

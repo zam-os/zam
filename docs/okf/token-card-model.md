@@ -8,7 +8,7 @@ tags:
   - tokens
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/token-card-model.md"
-timestamp: 2026-10-02T13:45:00.000Z
+timestamp: 2026-10-05T21:10:00.000Z
 ---
 
 ZAM's published central-learning model separates five objects:
@@ -153,6 +153,33 @@ The new cards then enter the queue under the normal new-card budget. Bridge:
 **Library Topics** in Learning Content, and a pointer on a dashboard whose
 deck is empty.
 
+# Material imports: published tokens, cards by choice
+
+A [material import](material-import.md) — cards a model proposed from a
+learner's photos or PDF — is the one capture path that writes **published**
+tokens: the learner has already decided each card in the review list, and
+that decision is the editorial step. The choice then splits token and card
+along the usual line:
+
+- **Yes** writes the published token and the learner's card (or, for an item
+  the library already holds, only the card; a detached one is re-attached).
+- **Bonus** writes the same published token, or links an existing one, with
+  **no card**. Without a card it never enters the queue, the due list or a
+  rating — Bonus means kept and offered, never scheduled. The token still
+  carries its file's `source_link`, so it is a member of that file's library
+  topic.
+- **No** writes nothing.
+
+One `sources` row records each import: `uri = zam-import:<ULID>`, the
+analysis `title`, the files' SHA-256 `fingerprints` and `imported_by`, the
+learner who imported (M037). `token_sources` links every kept token to it.
+Those links are how a learner's Bonus items are found again
+(`listMaterialBonusItems`: linked to one of their imports, no card of theirs
+in the queue) and how taking one (`takeMaterialBonusItem`) is restricted to
+the learner's own imports. A card the learner set aside ("not for me") before
+the import counts as absent, because keeping it as Bonus was the newer
+choice; one set aside after the import stays out of every Bonus offer.
+
 # Bundled cells: installation and enrolment
 
 A bundled cell is commit-controlled shared content plus an explicit list of
@@ -185,8 +212,9 @@ changed mappings require real re-retrieval.
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
-- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`
-- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`
+- [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
+- Tests: `tests/kernel/kvt-attach.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/tier-interaction-bonus.test.ts`, `tests/kernel/publication.test.ts`, `tests/kernel/assignment.test.ts`, `tests/kernel/library-topics.test.ts`, `tests/kernel/postgres-team.test.ts`, `tests/kernel/material-import.test.ts`
+- Code: `src/kernel/library/kvt-attach.ts`, `src/kernel/library/bundled-cells.ts`, `src/kernel/library/bonus.ts`, `src/kernel/library/publication.ts`, `src/kernel/library/topics.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/import/material-import.ts`
 
 - [ADR 2026-03-26 — Personal Workflow Foundations](../adr/2026-03-26-personal-workflow-foundations.md)
 - [ADR 2026-07-04 — Knowledge Contexts](../adr/2026-07-04-knowledge-contexts.md)

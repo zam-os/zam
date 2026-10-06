@@ -2,6 +2,7 @@ import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
 import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
+import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
 import { openUrl } from "@tauri-apps/plugin-opener";
@@ -111,6 +112,7 @@ import {
   setLearningContentFilePicker,
   setLearningContentProgressSource,
 } from "./learning-content.js";
+import { setMaterialImportHost } from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
   StudyEditError,
@@ -124,10 +126,14 @@ import {
 } from "./study-card-actions.js";
 import {
   type BonusOffer,
+  type ImportBonusItem,
   type PreconditionOffer,
   bonusBecause,
   bonusCandidatesCommand,
   bonusEnrolCommand,
+  importBonusCommand,
+  importBonusOffer,
+  importBonusTakeCommand,
   keepGoingCardIds,
   matchUnassessedPrecondition,
   preconditionAssessCommand,
@@ -217,6 +223,51 @@ setLearningContentFilePicker(async () => {
     ],
   });
   return typeof selected === "string" ? selected : null;
+});
+
+// Material import (ADR 2026-10-05): photos and PDFs, picked or dropped, for
+// the built-in path and the harness handoff, and the ways to connecting a
+// model or an agent when none is.
+setMaterialImportHost({
+  pickFiles: async () => {
+    const selected = await openFolderDialog({
+      directory: false,
+      multiple: true,
+      title: t("material_start_choose"),
+      filters: [
+        {
+          name: "Foto / PDF",
+          extensions: ["jpg", "jpeg", "png", "webp", "heic", "heif", "pdf"],
+        },
+      ],
+    });
+    if (Array.isArray(selected)) return selected;
+    return typeof selected === "string" ? [selected] : [];
+  },
+  openAgentSetup: () => {
+    switchView("settings-view");
+    applySettingsViewMode("advanced");
+    document
+      .getElementById("settings-agents-card")
+      ?.scrollIntoView({ block: "start" });
+  },
+  openModelSetup: () => showOnboardingAt("model"),
+  onFileDrop: async (onDrop) =>
+    getCurrentWebview().onDragDropEvent((event) => {
+      if (event.payload.type === "drop") onDrop(event.payload.paths);
+    }),
+  // The model may take a minute or two; the persistent bridge must not wait.
+  runInBackground: async (cmd, args) => {
+    const raw = await invoke<string>("execute_zam_bridge_background", {
+      cmd,
+      args,
+    });
+    const parsed = JSON.parse(raw) as { error?: string };
+    if (typeof parsed.error === "string" && parsed.error.length > 0) {
+      throw new Error(parsed.error);
+    }
+    return parsed;
+  },
 });
 
 // Bitwarden assure modal "Open vault" uses the same opener as the rest of Studio.
@@ -351,7 +402,14 @@ let databaseCurrentUserId: string | null = null;
 
 // Unified capability model registry (ADR 2026-07-12). The Settings model table
 // reads these rows from `zam bridge model-list`.
-type ModelCapability = "text" | "embedding" | "image" | "video" | "stt" | "tts";
+type ModelCapability =
+  | "text"
+  | "embedding"
+  | "image"
+  | "video"
+  | "file"
+  | "stt"
+  | "tts";
 type CapabilityFlags = Record<ModelCapability, boolean>;
 
 interface ModelRow {
@@ -3314,6 +3372,8 @@ function capabilityLabel(cap: ModelCapability): string {
       return t("model_cap_image");
     case "video":
       return t("model_cap_video");
+    case "file":
+      return t("model_cap_file");
     case "stt":
       return t("model_cap_stt");
     default:
@@ -3326,12 +3386,15 @@ function capabilityLabel(cap: ModelCapability): string {
 // its own modality: "vision" stays `image` (the Observer reads frames), while
 // direct video input is the Observer's future screen-recording path. The
 // overview renders only what a probe detected — capabilities are detected,
-// not chosen — so a row never offers a modality the endpoint lacks.
+// not chosen — so a row never offers a modality the endpoint lacks. `file`
+// (PDFs the model reads itself) gates PDFs in material imports (ADR
+// 2026-10-05 Decision 1).
 const UI_CAPABILITIES: ModelCapability[] = [
   "text",
   "embedding",
   "image",
   "video",
+  "file",
   "stt",
   "tts",
 ];
@@ -8662,6 +8725,7 @@ async function offerBonusOrFinish(requestId: number): Promise<void> {
     void finishStudySession();
     return;
   }
+  if (await offerImportBonus(requestId)) return;
   try {
     const listed = await runBridge<{ candidates?: BonusOffer[] }>(
       ...bridgeCall(bonusCandidatesCommand()),
@@ -8700,6 +8764,71 @@ async function offerBonusOrFinish(requestId: number): Promise<void> {
     console.warn("Failed to load bonus candidates:", err);
     void finishStudySession();
   }
+}
+
+/**
+ * Bonus items the learner kept from their own imports come first (ADR
+ * 2026-10-05 Decision 6). True when the offer is shown or the request went
+ * stale; false lets the atom bonus have its turn.
+ */
+async function offerImportBonus(requestId: number): Promise<boolean> {
+  let items: ImportBonusItem[];
+  try {
+    const listed = await runBridge<{ items?: ImportBonusItem[] }>(
+      ...bridgeCall(importBonusCommand()),
+    );
+    if (requestId !== questionRequestId) return true;
+    items = listed.items ?? [];
+  } catch (err) {
+    console.warn("Failed to load import bonus items:", err);
+    return false;
+  }
+  const offer = importBonusOffer(items);
+  if (!offer) return false;
+  const source = offer.sourceTitle ?? t("material_bonus_untitled");
+  showStudyOffer({
+    title: t("lbl_import_bonus_title"),
+    body:
+      offer.titles.length === 1
+        ? tf("lbl_import_bonus_body_one", { item: offer.titles[0], source })
+        : tf("lbl_import_bonus_body_many", {
+            count: offer.titles.length,
+            items: offer.titles.join(", "),
+            source,
+          }),
+    actions: [
+      {
+        label: t("btn_bonus_skip"),
+        onClick: () => {
+          bonusIgnoredThisSession = true;
+          void finishStudySession();
+        },
+      },
+      {
+        label: t("btn_bonus_accept"),
+        primary: true,
+        onClick: () => {
+          void acceptImportBonus(offer.tokenIds);
+        },
+      },
+    ],
+  });
+  return true;
+}
+
+async function acceptImportBonus(tokenIds: string[]): Promise<void> {
+  try {
+    for (const tokenId of tokenIds) {
+      await runBridge(...bridgeCall(importBonusTakeCommand(tokenId)));
+    }
+  } catch (err) {
+    alert(
+      `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  bonusIgnoredThisSession = true;
+  void finishStudySession();
 }
 
 async function acceptBonus(atomId: string): Promise<void> {

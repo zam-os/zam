@@ -20,7 +20,7 @@
       "namespace": "gymnasium-geschichte-weimar",
       "slug": "weimarer-republik-verfassung-krisenjahre-scheitern-praesidialkabinette",
       "title": "Die Weimarer Republik: Entstehung, Verfassungsstruktur (Art. 48), Krisen und Scheitern",
-      "domain": "schule/geschichte/weimar",
+      "domain": "geschichte/weimar",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-geschichte-ns",
       "slug": "nationalsozialismus-ideologie-gleichschaltung-shoah-zweiter-weltkrieg",
       "title": "Nationalsozialismus: Ideologie, Machtergreifung 1933, Shoah/Holocaust und Zweiter Weltkrieg",
-      "domain": "schule/geschichte/nationalsozialismus",
+      "domain": "geschichte/nationalsozialismus",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

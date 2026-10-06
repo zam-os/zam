@@ -20,7 +20,7 @@
       "namespace": "bwr-buchfuehrung",
       "slug": "aufloesung-bilanz-aktiv-passivkonten-buchungsregeln",
       "title": "Bestandskonten: Struktur von Aktiv- und Passivkonten, Anfangsbestände und Zugänge/Abgänge",
-      "domain": "schule/bwr/buchfuehrung",
+      "domain": "bwr/buchfuehrung",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [],
@@ -78,7 +78,7 @@
       "namespace": "bwr-buchfuehrung",
       "slug": "buchungssatz-soll-an-haben-geschaeftsfaelle",
       "title": "Der Buchungssatz: Buchungsregel 'Soll an Haben', Kontenanalyse und Buchungspraxis",
-      "domain": "schule/bwr/buchfuehrung",
+      "domain": "bwr/buchfuehrung",
       "reduction": "formal",
       "typical_age_min": 12.5,
       "prerequisites": [

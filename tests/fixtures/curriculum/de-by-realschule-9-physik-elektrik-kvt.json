@@ -25,7 +25,7 @@
       "namespace": "physik-elektrik",
       "slug": "ladungsbegriff-stromfluss",
       "title": "Elektrische Ladung und Stromstärke",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [],
@@ -93,7 +93,7 @@
       "namespace": "physik-elektrik",
       "slug": "elektrische-spannung-potenzial",
       "title": "Elektrische Spannung und Potenzialdifferenz",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -167,7 +167,7 @@
       "namespace": "physik-elektrik",
       "slug": "ohmsches-gesetz-widerstand",
       "title": "Elektrischer Widerstand und Ohmsches Gesetz",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -241,7 +241,7 @@
       "namespace": "physik-elektrik",
       "slug": "reihenschaltung-widerstaende",
       "title": "Reihenschaltung von Widerständen",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -315,7 +315,7 @@
       "namespace": "physik-elektrik",
       "slug": "parallelschaltung-widerstaende",
       "title": "Parallelschaltung von Widerständen",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [
@@ -389,7 +389,7 @@
       "namespace": "physik-elektrik",
       "slug": "elektrische-leistung-arbeit",
       "title": "Elektrische Leistung und elektrische Energie",
-      "domain": "schule/physik/elektrik",
+      "domain": "physik/elektrik",
       "reduction": "classical",
       "typical_age_min": 14.0,
       "prerequisites": [

@@ -20,7 +20,7 @@
       "namespace": "geographie-kartographie",
       "slug": "gradnetz-der-erde-aequator-breiten-und-laengengrade",
       "title": "Das Gradnetz der Erde: Äquator, Nullmeridian, Breitenkreise und Längenhalbkreise",
-      "domain": "schule/geographie/kartographie",
+      "domain": "geographie/kartographie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [],
@@ -88,7 +88,7 @@
       "namespace": "geographie-kartographie",
       "slug": "kartenkunde-massstab-hoehenlinien-legende-kompass",
       "title": "Kartenkunde: Kartenmaßstab, Höhenlinien, Legende und Orientierung mit dem Kompass",
-      "domain": "schule/geographie/kartographie",
+      "domain": "geographie/kartographie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -162,7 +162,7 @@
       "namespace": "geographie-astronomie",
       "slug": "erdrotation-erdrevolution-entstehung-jahreszeiten",
       "title": "Erdbewegungen im Sonnensystem: Erdrotation (Tag/Nacht) und Erdrevolution (Jahreszeiten)",
-      "domain": "schule/geographie/astronomie",
+      "domain": "geographie/astronomie",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [
@@ -236,7 +236,7 @@
       "namespace": "geographie-bayern",
       "slug": "landwirtschaft-in-bayern-ackerbau-gruenland-sonderkulturen",
       "title": "Landwirtschaft in Bayern: Ackerbau (Gäuplatten), Grünlandwirtschaft (Allgäu) und Sonderkulturen",
-      "domain": "schule/geographie/bayern",
+      "domain": "geographie/bayern",
       "reduction": "formal",
       "typical_age_min": 10.5,
       "prerequisites": [

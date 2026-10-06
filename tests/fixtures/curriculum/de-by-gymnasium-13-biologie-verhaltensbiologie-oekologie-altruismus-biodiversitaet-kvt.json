@@ -20,7 +20,7 @@
       "namespace": "gymnasium-biologie-verhaltensbiologie",
       "slug": "verhaltensoekologie-altruismus-hamilton-regel-sexuelle-selektion",
       "title": "Verhaltensökologie: Gesamtfitness, Altruismus (Hamilton-Regel) und Sexuelle Selektion",
-      "domain": "schule/biologie/verhaltensbiologie",
+      "domain": "biologie/verhaltensbiologie",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-biologie-biodiversitaet",
       "slug": "biodiversitaetskrise-oekosystemdienstleistungen-artenschutz-renaturierung",
       "title": "Biodiversitätskrise: Gefährdungsfaktoren, Ökosystemdienstleistungen und Renaturierung",
-      "domain": "schule/biologie/oekologie",
+      "domain": "biologie/oekologie",
       "reduction": "formal",
       "typical_age_min": 18.0,
       "prerequisites": [

@@ -35,7 +35,10 @@ export type MobileModelCapability =
   | "stt"
   | "tts"
   | "image"
-  | "embedding";
+  | "embedding"
+  // Reads PDFs itself (ADR 2026-10-05 Decision 1); detected by the desktop's
+  // probe from the provider's declared input modalities.
+  | "file";
 
 interface CloudModelRow {
   id?: string;

@@ -20,7 +20,7 @@
       "namespace": "gymnasium-physik-thermodynamik",
       "slug": "temperatur-kelvin-waermeenergie-spezifische-waermekapazitaet",
       "title": "Thermodynamik: Temperatur T (Kelvin), Wärmeenergie Q = c * m * Delta T und Wärmetransport",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-physik-thermodynamik",
       "slug": "aggregatzustaende-schmelzwaerme-verdampfungswaerme-1-hauptsatz",
       "title": "Phasenübergänge (Schmelz- & Verdampfungswärme), Siedeplateau und der 1. Hauptsatz der Thermodynamik",
-      "domain": "schule/physik/thermodynamik",
+      "domain": "physik/thermodynamik",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [

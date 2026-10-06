@@ -20,7 +20,7 @@
       "namespace": "gymnasium-englisch-grammar",
       "slug": "participle-clauses-gerund-infinitive-modal-past",
       "title": "Englische Grammatik 9: Participle Clauses, Gerund vs. Infinitive und Modale Hilfsverben der Vergangenheit",
-      "domain": "schule/englisch/grammatik",
+      "domain": "englisch/grammatik",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [],
@@ -77,7 +77,7 @@
       "namespace": "gymnasium-englisch-landeskunde",
       "slug": "british-empire-decolonisation-commonwealth-multicultural-britain",
       "title": "Cultural Studies: The British Empire, Decolonisation, the Commonwealth of Nations and Australia",
-      "domain": "schule/englisch/landeskunde",
+      "domain": "englisch/landeskunde",
       "reduction": "formal",
       "typical_age_min": 14.5,
       "prerequisites": [

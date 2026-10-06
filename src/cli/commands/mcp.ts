@@ -21,6 +21,9 @@ import {
   getReviewActivity,
   getSetting,
   getStudyLearningSettings,
+  listMaterialAreaContext,
+  MATERIAL_KINDS,
+  MATERIAL_ORIGINS,
   openDatabase,
   setKnowledgeMapConfig,
 } from "../../kernel/index.js";
@@ -29,6 +32,7 @@ import {
   type CompanionContextReadResult,
   type CompanionSurface,
   type NativeClientInfo,
+  normalizeNativeHostIdentity,
   parseCompanionContextReadRequest,
   parseCompanionContextWriteRequest,
 } from "../../vscode-extension/companion-context.js";
@@ -64,6 +68,20 @@ import {
   resolveOpeningCompanionContext,
   writeCompanionContext,
 } from "../companion-context-server.js";
+import { getLastCurriculumSelection } from "../curriculum/breadcrumb.js";
+import {
+  focusOrLaunchStudio,
+  type StudioLaunchResult,
+} from "../desktop-launch.js";
+import {
+  MATERIAL_CARD_RULES,
+  MATERIAL_CONTRACT_EXAMPLE,
+  materialContractText,
+} from "../llm/material-prompt.js";
+import {
+  type AgentMaterialFile,
+  stageHarnessImport,
+} from "../material-import.js";
 import type { CatalogEntry } from "../okf/bundle.js";
 import { registerCliProcessServices } from "../process-services.js";
 import { publishUiIntent } from "../ui-intent.js";
@@ -96,7 +114,11 @@ const MCP_SERVER_INSTRUCTIONS =
   "tokens and prerequisite relations. For “Wissensartikel”, “OKFs”, knowledge " +
   'articles, or ADRs, call zam_okf_visualize with view: "graph": it shows OKF ' +
   'articles and cited ADRs. Use view: "reader" to read articles and ' +
-  "zam_open_recall for review sessions. App placement is controlled by the host.";
+  "zam_open_recall for review sessions. App placement is controlled by the host. " +
+  "To turn class material (a photo or PDF of notes or a handout) into learning " +
+  "cards, read the file yourself, call zam_material_import_context, ask the " +
+  "learner about anything unclear, then submit with zam_material_import; the " +
+  "learner decides each card in the ZAM Studio.";
 
 /**
  * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
@@ -285,7 +307,11 @@ export function recallPanelLearningMode(
 
 export function createMcpServer(
   db: Database,
-  options: { bridgeDatabase?: DatabaseSource } = {},
+  options: {
+    bridgeDatabase?: DatabaseSource;
+    /** Brings the Studio forward after a material import; injectable for tests. */
+    launchStudio?: () => StudioLaunchResult;
+  } = {},
 ): McpServer {
   const bridgeDatabase = options.bridgeDatabase ?? db;
   const server = new McpServer(
@@ -2219,6 +2245,160 @@ export function createMcpServer(
           file: params.file,
           tokens: params.tokens,
         });
+      },
+    ),
+  );
+
+  // zam_material_import_context / zam_material_import — learning cards from
+  // photos and files on the harness path (ADR 2026-10-05 Decision 2). The
+  // agent reads the material and may ask the learner back; ZAM validates,
+  // stages the proposals machine-locally and opens the Studio, where the
+  // learner decides each card. Nothing reaches the library before that.
+  server.registerTool(
+    "zam_material_import_context",
+    {
+      description:
+        "Before proposing learning cards from class material (a photo or PDF of notes, a handout, a worksheet): " +
+        "returns the rules for the proposals, the contract zam_material_import takes, the areas (domain paths) " +
+        "the library already uses, and the subject codes of the bundled curriculum cells. Read the material " +
+        "yourself first; this tool does not read files.",
+      inputSchema: {},
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+    },
+    wrapHandler(async () => {
+      const selection = await getLastCurriculumSelection(db).catch(
+        () => undefined,
+      );
+      const context = await listMaterialAreaContext(db, {
+        schoolType: selection?.schoolType,
+      });
+      return {
+        rules: MATERIAL_CARD_RULES,
+        contract: materialContractText(),
+        example: MATERIAL_CONTRACT_EXAMPLE,
+        areas: context.areas,
+        cellSubjects: context.cellSubjects,
+        learnerPosition: selection ?? null,
+      };
+    }),
+  );
+
+  server.registerTool(
+    "zam_material_import",
+    {
+      description:
+        "Submit YOUR card proposals for class material you read (ADR 2026-10-05). Call " +
+        "zam_material_import_context first and follow its rules; ask the learner about anything you could not " +
+        "read or place before submitting. ZAM validates the proposals, matches them against what the library " +
+        "already holds, and opens the ZAM Studio, where the learner chooses Yes, No or Bonus for each card. " +
+        "This tool writes no card: nothing enters the library until the learner confirms there. Pass each " +
+        "file's path when you read it from disk, so ZAM can fingerprint it and link the cards to it.",
+      inputSchema: {
+        analysis: z
+          .object({
+            kind: z.enum(MATERIAL_KINDS),
+            title: z
+              .string()
+              .describe("Short title naming the material, e.g. its topic"),
+            subjects: z
+              .array(z.string())
+              .min(1)
+              .describe("Subject codes, as in cellSubjects (e.g. chemie)"),
+            topic: z.string(),
+            level: z
+              .string()
+              .optional()
+              .describe("School type, grade and depth, as far as you can tell"),
+            bloom: z
+              .tuple([z.number().int(), z.number().int()])
+              .optional()
+              .describe("Bloom range [min, max] of the material, 1–5"),
+            leadsTo: z
+              .string()
+              .nullable()
+              .optional()
+              .describe("What the material prepares or leads to"),
+          })
+          .describe("What the material is"),
+        proposals: z
+          .array(
+            z.object({
+              question: z.string(),
+              answer: z.string(),
+              title: z.string().nullable().optional(),
+              bloom: z.number().int().min(1).max(5),
+              file: z
+                .number()
+                .int()
+                .min(0)
+                .default(0)
+                .describe("Index into files"),
+              page: z.number().int().min(1).nullable().optional(),
+              area: z
+                .string()
+                .describe("Domain path; reuse an existing area where it fits"),
+              origin: z.enum(MATERIAL_ORIGINS),
+              hardToRead: z.boolean().optional(),
+            }),
+          )
+          .min(1)
+          .describe("Your card proposals; over-delivery is fine"),
+        files: z
+          .array(
+            z.object({
+              name: z.string(),
+              path: z
+                .string()
+                .optional()
+                .describe("Absolute path, when you read the file from disk"),
+              sha256: z.string().optional(),
+            }),
+          )
+          .min(1)
+          .describe("The files you read, in the order proposals[].file uses"),
+        open_studio: z
+          .boolean()
+          .optional()
+          .describe("Bring the ZAM Studio forward (default true)"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: false,
+      },
+    },
+    wrapHandler(
+      async (params: {
+        analysis: unknown;
+        proposals: unknown;
+        files: AgentMaterialFile[];
+        open_studio?: boolean;
+      }) => {
+        const host = normalizeNativeHostIdentity(getNativeClientInfo());
+        const batch = await stageHarnessImport({
+          analysis: params.analysis,
+          proposals: params.proposals,
+          files: params.files,
+          harness: host?.label,
+        });
+        const studio =
+          params.open_studio === false
+            ? { opened: false as const, reason: "not-requested" as const }
+            : (options.launchStudio ?? focusOrLaunchStudio)();
+        const count = batch.set.proposals.length;
+        return {
+          staged: {
+            id: batch.id,
+            title: batch.set.analysis.title,
+            proposalCount: count,
+          },
+          studio: studio.opened ? "opened" : studio.reason,
+          message: studio.opened
+            ? `${count} proposals are waiting in the ZAM Studio. Tell the learner to choose Yes, No or Bonus for each card there.`
+            : `${count} proposals are waiting for review. Tell the learner to open the ZAM Studio — Learning Content shows the waiting import.`,
+        };
       },
     ),
   );

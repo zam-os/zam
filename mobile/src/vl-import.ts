@@ -1,85 +1,40 @@
 /**
- * Cloud vision-language OCR + decompose for mobile image import.
+ * Reading photos or a PDF on the phone for a material import (ADR 2026-10-05,
+ * Decisions 1 and 10).
  *
- * Builds an OpenAI-compatible chat-completions multimodal request, sends it
- * through the native `vision_request` command (injected for tests), and
- * normalizes each JSON array entry into a MobileTokenDraft.
+ * The request is the desktop's built-in one (`material-prompt.ts`): the same
+ * instructions, the same body, the same strict PDF gate. It goes through the
+ * native `vision_request` command (injected for tests), which refuses bodies
+ * over 8 MB, so photos travel in batches under that limit and the replies are
+ * merged.
  */
 
-import { chatCompletionsUrl } from "./ai/chat-url.js";
-import { type MobileTokenDraft, normalizeBridgeDraft } from "./import.js";
 import {
-  type MobileVisionEndpoint,
-  visionProviderStamp,
-} from "./vision-config.js";
+  buildMaterialRequest,
+  type MaterialAttachment,
+  type MaterialReply,
+  parseMaterialReply,
+} from "../../src/cli/llm/material-prompt.js";
+import { chatCompletionsUrl } from "./ai/chat-url.js";
 
-export const VL_IMPORT_SYSTEM_PROMPT =
-  "You are ZAM's learning-content importer. Return only strict JSON. Do not include markdown, prose, or fields outside the requested schema.";
+/** Just under the native command's 8 MB body limit, for the JSON around it. */
+export const MOBILE_REQUEST_MAX_BYTES = 7_500_000;
+/** Reading a page of notes and writing its cards can take minutes. */
+export const MOBILE_MATERIAL_TIMEOUT_MS = 300_000;
 
-export function buildVlDecomposeUserText(locale: string): string {
-  const language = locale.toLowerCase().startsWith("de") ? "German" : "English";
-  return `OCR this textbook, worksheet, or screenshot and decompose it into distinct learning tokens.
-
-Return a JSON array only. Each element is one token object:
-{
-  "slug": "kebab-case-id",
-  "title": "short human title",
-  "concept": "the fact, definition, or skill to learn",
-  "domain": "subject or topic",
-  "bloomLevel": 1,
-  "question": "optional active-recall question",
-  "source_link": null
-}
-
-Rules:
-- Prefer several focused tokens over one giant blob.
-- Use ${language} for title, concept, question, and domain when the source is in that language.
-- bloomLevel is an integer 1–5 (1 remember … 5 create).
-- slug must be non-empty kebab-case (letters, digits, hyphens).
-- If nothing educational is present, return [].`;
-}
-
-export interface ChatCompletionsVisionBody {
+/** One model a request can go to; the chain is tried in order. */
+export interface MobileMaterialEndpoint {
+  url: string;
   model: string;
-  messages: Array<{
-    role: "system" | "user" | "assistant";
-    content:
-      | string
-      | Array<
-          | { type: "text"; text: string }
-          | { type: "image_url"; image_url: { url: string } }
-        >;
-  }>;
-  temperature: number;
-  max_tokens: number;
+  apiKey?: string;
+  label: string;
+  /** The row's `file` capability: it reads PDFs itself. */
+  readsPdf: boolean;
 }
 
-/** Build the chat-completions request body for a single image data URL. */
-export function buildVlChatCompletionsBody(
-  endpoint: MobileVisionEndpoint,
-  imageDataUrl: string,
-  locale: string,
-): ChatCompletionsVisionBody {
-  return {
-    model: endpoint.model,
-    messages: [
-      { role: "system", content: VL_IMPORT_SYSTEM_PROMPT },
-      {
-        role: "user",
-        content: [
-          { type: "text", text: buildVlDecomposeUserText(locale) },
-          { type: "image_url", image_url: { url: imageDataUrl } },
-        ],
-      },
-    ],
-    temperature: 0,
-    max_tokens: 4_000,
-  };
-}
-
-export function visionRequestHeaders(
-  endpoint: MobileVisionEndpoint,
-): Record<string, string> {
+export function visionRequestHeaders(endpoint: {
+  apiKey?: string;
+}): Record<string, string> {
   const headers: Record<string, string> = {
     "Content-Type": "application/json",
   };
@@ -89,90 +44,13 @@ export function visionRequestHeaders(
   return headers;
 }
 
-function extractJsonText(content: string): string {
-  const fenced = content.match(/```(?:json)?\s*([\s\S]*?)```/i);
-  return (fenced?.[1] ?? content).trim();
-}
-
-function parseJsonValue(content: string): unknown {
-  const candidate = extractJsonText(content);
+function isOpenRouter(url: string): boolean {
   try {
-    return JSON.parse(candidate);
+    const host = new URL(url).hostname.toLowerCase();
+    return host === "openrouter.ai" || host.endsWith(".openrouter.ai");
   } catch {
-    const arrayStart = candidate.indexOf("[");
-    const arrayEnd = candidate.lastIndexOf("]");
-    if (arrayStart !== -1 && arrayEnd > arrayStart) {
-      return JSON.parse(candidate.slice(arrayStart, arrayEnd + 1));
-    }
-    const objStart = candidate.indexOf("{");
-    const objEnd = candidate.lastIndexOf("}");
-    if (objStart !== -1 && objEnd > objStart) {
-      return JSON.parse(candidate.slice(objStart, objEnd + 1));
-    }
-    throw new Error("Vision model returned no JSON");
+    return false;
   }
-}
-
-function asObjectArray(value: unknown): Record<string, unknown>[] {
-  if (Array.isArray(value)) {
-    return value.filter(
-      (entry): entry is Record<string, unknown> =>
-        Boolean(entry) && typeof entry === "object" && !Array.isArray(entry),
-    );
-  }
-  if (value && typeof value === "object" && !Array.isArray(value)) {
-    const record = value as Record<string, unknown>;
-    // Tolerate a single object or { tokens: [...] } / { drafts: [...] }.
-    for (const key of ["tokens", "drafts", "items", "concepts"]) {
-      if (Array.isArray(record[key])) {
-        return asObjectArray(record[key]);
-      }
-    }
-    return [record];
-  }
-  return [];
-}
-
-/**
- * Parse model output into zero or more bridge-token drafts (origin image-vl).
- * Invalid entries are skipped; if nothing valid remains, throws.
- */
-export function parseVlDecomposeResponse(
-  content: string,
-  providerStamp: string,
-): MobileTokenDraft[] {
-  if (!content.trim()) {
-    throw new Error("Vision model returned empty content");
-  }
-
-  let parsed: unknown;
-  try {
-    parsed = parseJsonValue(content);
-  } catch (error) {
-    throw new Error(
-      error instanceof Error
-        ? error.message
-        : "Vision model returned unparseable output",
-    );
-  }
-
-  const objects = asObjectArray(parsed);
-  const drafts: MobileTokenDraft[] = [];
-  for (const entry of objects) {
-    try {
-      const draft = normalizeBridgeDraft(entry, "image-vl");
-      drafts.push({ ...draft, provider: providerStamp });
-    } catch {
-      // Skip malformed entries; one bad object must not kill the batch.
-    }
-  }
-
-  if (drafts.length === 0) {
-    throw new Error(
-      "Vision model returned no usable learning tokens (need slug + concept)",
-    );
-  }
-  return drafts;
 }
 
 /** Extract assistant text from a chat-completions HTTP body. */
@@ -203,15 +81,6 @@ export function extractChatCompletionsContent(responseText: string): string {
             typeof (record.error as { message: unknown }).message === "string"
           ? (record.error as { message: string }).message
           : JSON.stringify(record.error);
-    if (
-      msg.toLowerCase().includes("image") &&
-      (msg.toLowerCase().includes("not support") ||
-        msg.toLowerCase().includes("unsupported"))
-    ) {
-      throw new Error(
-        `Vision model does not support image input. Set a multimodal model (llm.vision.model).`,
-      );
-    }
     throw new Error(`Vision model failed: ${msg}`);
   }
 
@@ -229,39 +98,48 @@ export type VisionRequestFn = (args: {
   timeoutMs?: number;
 }) => Promise<string>;
 
-export interface DecomposeImageInput {
-  endpoint: MobileVisionEndpoint;
-  imageDataUrl: string;
-  locale: string;
+/**
+ * One batch of attachments through the chain: the first model that answers
+ * with a readable reply wins. The last failure is thrown when none does.
+ */
+export async function readMaterialOnDevice(input: {
+  endpoints: MobileMaterialEndpoint[];
+  instructions: string;
+  attachments: MaterialAttachment[];
   request: VisionRequestFn;
-  timeoutMs?: number;
-}
-
-/** Full path: build → native HTTP → parse drafts. */
-export async function decomposeImageViaVision(
-  input: DecomposeImageInput,
-): Promise<MobileTokenDraft[]> {
-  if (input.endpoint.apiFlavor !== "chat-completions") {
-    throw new Error(
-      `API flavor ${input.endpoint.apiFlavor} is not supported for mobile vision import yet`,
-    );
+}): Promise<{
+  reply: MaterialReply;
+  endpoint: MobileMaterialEndpoint;
+  /** Every endpoint the material was sent to, the answering one last. */
+  sentTo: MobileMaterialEndpoint[];
+}> {
+  let lastError: unknown = new Error("No model can read this material.");
+  const sentTo: MobileMaterialEndpoint[] = [];
+  for (const endpoint of input.endpoints) {
+    try {
+      const request = buildMaterialRequest(
+        "chat-completions",
+        { model: endpoint.model, readsPdf: endpoint.readsPdf },
+        {
+          instructions: input.instructions,
+          attachments: input.attachments,
+          openRouter: isOpenRouter(endpoint.url),
+        },
+      );
+      sentTo.push(endpoint);
+      const responseText = await input.request({
+        url: chatCompletionsUrl(endpoint.url),
+        headers: visionRequestHeaders(endpoint),
+        body: JSON.stringify(request.body),
+        timeoutMs: MOBILE_MATERIAL_TIMEOUT_MS,
+      });
+      const reply = parseMaterialReply(
+        extractChatCompletionsContent(responseText),
+      );
+      return { reply, endpoint, sentTo };
+    } catch (error) {
+      lastError = error;
+    }
   }
-
-  const body = buildVlChatCompletionsBody(
-    input.endpoint,
-    input.imageDataUrl,
-    input.locale,
-  );
-  const responseText = await input.request({
-    url: chatCompletionsUrl(input.endpoint.url),
-    headers: visionRequestHeaders(input.endpoint),
-    body: JSON.stringify(body),
-    timeoutMs: input.timeoutMs,
-  });
-
-  const content = extractChatCompletionsContent(responseText);
-  return parseVlDecomposeResponse(
-    content,
-    visionProviderStamp(input.endpoint.model),
-  );
+  throw lastError;
 }

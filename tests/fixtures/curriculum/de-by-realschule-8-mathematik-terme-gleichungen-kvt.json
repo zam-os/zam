@@ -20,7 +20,7 @@
       "namespace": "mathematik-algebra",
       "slug": "binomische-formeln-ausmultiplizieren-faktorisieren",
       "title": "Binomische Formeln: Ausmultiplizieren und Faktorisieren",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [],
@@ -87,7 +87,7 @@
       "namespace": "mathematik-algebra",
       "slug": "lineare-gleichungen-aequivalenzumformung",
       "title": "Lineare Gleichungen: Äquivalenzumformungen und Klammerauflösung",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -160,7 +160,7 @@
       "namespace": "mathematik-algebra",
       "slug": "bruchterme-bruchgleichungen-definitionsmenge",
       "title": "Bruchterme und Bruchgleichungen: Definitionsmenge und Hauptnenner",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
@@ -233,7 +233,7 @@
       "namespace": "mathematik-algebra",
       "slug": "lineare-ungleichungen-vorzeichenumkehr",
       "title": "Lineare Ungleichungen: Relationszeichen und Inversionsregel",
-      "domain": "schule/mathematik/algebra",
+      "domain": "mathematik/algebra",
       "reduction": "formal",
       "typical_age_min": 13.5,
       "prerequisites": [
