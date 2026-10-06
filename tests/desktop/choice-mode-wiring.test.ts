@@ -75,7 +75,7 @@ describe("Studio choice and auto wiring", () => {
   it("prepares options in a separate, allowlisted CLI process", () => {
     expect(main).toContain('invoke<string>("execute_zam_bridge_background"');
     expect(rust).toMatch(
-      /const BACKGROUND_BRIDGE_COMMANDS: &\[&str\] = &\["choice-prepare"[,\]]/,
+      /const BACKGROUND_BRIDGE_COMMANDS: &\[&str\] = &\[\s*"choice-prepare"[,\]]/,
     );
     expect(rust).toContain("execute_zam_bridge_background,");
   });

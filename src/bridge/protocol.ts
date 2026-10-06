@@ -658,6 +658,17 @@ export interface MaterialImportStageResponse {
   proposalCount: number;
 }
 
+/**
+ * `model-refresh-capabilities`: cloud rows asked again because their detection
+ * was out of date. With `--check`, only `due` is set and nothing is asked.
+ */
+export interface ModelRefreshCapabilitiesResponse {
+  success: boolean;
+  due?: number;
+  checked?: number;
+  refreshed?: Array<{ id: string; label: string; added: string[] }>;
+}
+
 /** `material-import-models`: where a built-in import would send the files. */
 export interface MaterialImportModelsResponse {
   success: boolean;

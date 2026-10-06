@@ -102,7 +102,7 @@ function matchesAny(id: string, hints: string[]): boolean {
   return hints.some((hint) => lower.includes(hint));
 }
 
-function catalogHasModel(catalog: string[], model: string): boolean {
+export function catalogHasModel(catalog: string[], model: string): boolean {
   const lower = model.toLowerCase();
   return catalog.some((id) => id.toLowerCase() === lower);
 }

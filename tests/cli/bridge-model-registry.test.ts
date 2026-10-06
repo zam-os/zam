@@ -811,4 +811,53 @@ describe("bridge model-* registry commands", () => {
     // The migration is persisted.
     expect(readConfig().ai?.models).toHaveLength(1);
   });
+
+  it("counts cloud models due for a capability check without asking anyone", async () => {
+    const caps = {
+      text: true,
+      embedding: false,
+      image: false,
+      video: false,
+      file: false,
+      stt: false,
+      tts: false,
+    };
+    const config: InstallConfig = {
+      ai: {
+        models: [
+          {
+            id: "cloud-unprobed",
+            label: "Cloud",
+            // Never contacted: --check reads no network.
+            url: "https://models.invalid/v1",
+            model: "vendor/model",
+            local: false,
+            apiFlavor: "chat-completions",
+            order: 0,
+            capabilities: caps,
+            detectedCapabilities: caps,
+          },
+          {
+            id: "local-unprobed",
+            label: "Local",
+            url: baseUrl,
+            model: "gemma4-it:e4b",
+            local: true,
+            apiFlavor: "chat-completions",
+            order: 1,
+            capabilities: caps,
+            detectedCapabilities: caps,
+          },
+        ],
+      },
+    };
+    writeFileSync(configPath, JSON.stringify(config));
+
+    const res = (await runBridge([
+      "model-refresh-capabilities",
+      "--check",
+    ])) as { parsed: { success: boolean; due: number } };
+    // The local model is never checked automatically.
+    expect(res.parsed).toEqual({ success: true, due: 1 });
+  });
 });

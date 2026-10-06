@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-06T08:00:00.000Z
+timestamp: 2026-10-06T10:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -53,9 +53,21 @@ connection and schema-version round trip from each warm Desktop interaction.
 The persistent bridge answers one request at a time. A command that waits on
 a model for a long time would hold up every other Studio request, so the
 Desktop runs an allowlisted few in a short-lived CLI process beside it
-(`execute_zam_bridge_background`): `choice-prepare` and
-`material-import-analyze`. That process shares only the library database;
-its stderr is not streamed to the WebView.
+(`execute_zam_bridge_background`): `choice-prepare`,
+`material-import-analyze` and `model-refresh-capabilities`. That process
+shares only the library database; its stderr is not streamed to the WebView.
+
+`model-refresh-capabilities` asks cloud providers again about models whose
+detected capabilities are out of date: never probed, probed before ZAM's
+capability list last grew (`file`, 0.47.0), or more than 30 days ago. With
+`--check` it only counts those rows and reads no network; the Desktop runs
+that once per session after the dashboard loads, and starts the background
+refresh only when the count is above zero. Local and agent models are never
+asked automatically — starting a local runtime is expensive — and keep the
+manual re-check (`model-reprobe`). The refresh reads catalogue metadata only,
+calls no model, and only widens: a capability the provider now declares for
+that exact model id is added and switched on, nothing is removed, and a row
+the catalogue does not list stays as it was and due.
 
 A windowed Desktop swallows the serve process's stderr, so the process keeps
 a diagnostics log at `~/.zam/desktop-bridge.log`: one line per start with the
@@ -294,8 +306,8 @@ bridge's JSON helpers.
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `desktop/src-tauri/src/lib.rs`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `desktop/src-tauri/src/lib.rs`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)
