@@ -170,4 +170,22 @@ Without ZAM's MCP tools, write the file yourself and run
 \`zam knowledge-map validate --repo <path> --write\`. It prints every problem,
 exits with 1 while there are errors, and once the map is valid rewrites it
 with the JSON-LD context and schema link.
+
+## 8. Keep it current
+
+A map goes stale like any other documentation, and a stale statement teaches
+the wrong thing. Treat it like the repository's other living docs:
+
+- A change that makes a statement untrue, or renames, moves or deletes a file
+  a statement cites, updates the map in the same change. Keep existing ids;
+  only a new statement gets a new id.
+- Check the map after every such change: \`zam_knowledge_map_write\`, or
+  \`zam knowledge-map validate --repo <path>\`, which exits with 1 while there
+  are errors and so also works as a CI step. The check finds missing sources
+  and broken structure, not a statement that has become false: that part is
+  the change author's.
+- After saving a new map, offer the user to write that rule into the
+  repository's agent instructions (CLAUDE.md, AGENTS.md or the like), next to
+  any same-change rule its documentation already has. Write it only if the
+  user agrees.
 `;

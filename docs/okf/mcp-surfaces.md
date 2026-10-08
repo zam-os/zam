@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-05T21:35:00.000Z
+timestamp: 2026-10-08T09:15:12.079Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -208,6 +208,14 @@ directory; without roots the guide asks for `repo_root` and the write
 refuses. Without MCP, `zam knowledge-map guide` prints the guide and
 `zam knowledge-map validate --repo <path> [--write]` checks a map. The `zam`
 skill routes "knowledge map" and "Wissenskarte" requests to these tools.
+
+The guide's last section keeps a map current the way the same-PR rule keeps
+OKF articles current: a change that makes a statement untrue, or renames,
+moves or deletes a cited file, updates the map in the same change and keeps
+existing ids. `zam knowledge-map validate` exits with 1 on errors, so it can
+gate CI; ZAM's own map is gated by `tests/cli/knowledge-map.test.ts`. After
+saving a new map, the agent offers to write that rule into the repository's
+agent instructions.
 
 # MCP Apps panels
 

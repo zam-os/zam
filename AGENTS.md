@@ -91,6 +91,12 @@ open a terminal.
   `zam_okf_upsert` MCP tool, update the covering article in the same PR
   that changes described behavior, and keep decision rationale in ADRs —
   articles reference them under `# Citations`.
+- **`docs/knowledge-map/map.json` changes with what it describes.** ZAM's
+  own knowledge map (ADR 2026-10-03) cites repo files statement by
+  statement: a PR that makes a statement untrue, or renames, moves or
+  deletes a cited file, updates the map in the same PR (keep existing ids)
+  and checks it with `npm run dev -- knowledge-map validate --repo . --write`.
+  `tests/cli/knowledge-map.test.ts` fails while the map has any issue.
 
 ## Verification — required before every commit
 
