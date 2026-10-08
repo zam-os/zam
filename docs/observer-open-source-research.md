@@ -39,7 +39,7 @@ what is already implemented in Phase 0, and what remains for later phases.
 | 5 | Trajectory recording for evaluation | CUA, OpenAdapt | **Partial** — JSONL reports + optional keyframe dir | Standardized trajectory export format |
 | 6 | Coordinate scaling before vision requests | Anthropic CU | **Not started** | Downscale keyframes to 1024×768 in `observe-ui-snapshot` |
 | 7 | Per-provider data permissions | Screenpipe | **Not started** — global privacy policy only | Per-provider rules in bridge before vision calls |
-| 8 | Windows-native OCR for unnamed UIA elements | Agy, MiMo | **Done** — `OcrEngine` fallback in `focused_element_from()` | Benchmark latency on x64 and ARM64 laptops |
+| 8 | Windows-native OCR for unnamed UIA elements | Agy, MiMo | **Removed** — ADR 2026-10-08 R8: OCR turned the pixels of unnamed fields, typed text included, into text | — |
 | 9 | `SetWinEventHook` instead of polling-only UIA | Agy, MiMo | **Done** — foreground/focus hooks + polling fallback | Measure cross-app reliability |
 | 10 | Safe UIA COM wrapper (`uiautomation-rs`) | Agy | **Deferred** — hand-rolled COM handlers work today | Revisit if COM threading issues appear |
 | 11 | Capture library migration (`windows-capture`, `CrabGrab`) | Agy | **Deferred** — custom D3D11 loop is stable | Migrate when macOS capture is planned |
@@ -52,7 +52,7 @@ what is already implemented in Phase 0, and what remains for later phases.
 | API / library | Role | Status |
 |---------------|------|--------|
 | `Windows.Graphics.Capture` | Window capture | **In use** — custom D3D11 staging loop |
-| `Windows.Media.Ocr.OcrEngine` | Local OCR fallback | **In use** — `uia.rs` |
+| `Windows.Media.Ocr.OcrEngine` | Local OCR fallback | **Removed** — ADR 2026-10-08 R8 |
 | `SetWinEventHook` | Foreground/focus notifications | **In use** — `uia.rs` |
 | Raw Input (Win32) | Clicks, scroll, shortcuts, typing counts | **In use** — `raw_input.rs` |
 | UI Automation COM handlers | Invoke, text, structure events | **In use** — `uia.rs` |

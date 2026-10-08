@@ -85,12 +85,36 @@ export interface InstallConfig {
    * not be pushed onto their desktop.
    */
   voice?: MachineVoiceConfig;
+  /**
+   * Machine-local observation switches (ADR 2026-10-08 R6, R8). No setting,
+   * bridge command or MCP tool writes this section: an agent that could open
+   * screen capture or stretch retention would make both meaningless.
+   */
+  observation?: MachineObservationConfig;
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
   activeWorkspaceId?: string;
   /** App version that last ran the install verify/repair pass on this machine. */
   lastRepairedVersion?: string;
+}
+
+/** Observation switches of this install (ADR 2026-10-08). */
+export interface MachineObservationConfig {
+  /**
+   * Screen observation (R8). Off unless this is literally `true`: every
+   * screen surface refuses while it is off, whatever `llm.vision.enabled`
+   * says. The learner sets it by editing config.json; nothing else may.
+   */
+  screen?: boolean;
+  /** Days a raw observation file may stay on disk (R6). Default 14. */
+  retentionDays?: number;
+  /**
+   * When retention first ran on this machine. Sessions that started before
+   * it are "legacy": the sweep redacts them but deletes them only after the
+   * owner confirms an inventory (R6, plan 0B.6).
+   */
+  retentionSince?: string;
 }
 
 export interface MachineAgentConfig {
@@ -914,6 +938,65 @@ export function setOnboardingDone(
     } else if (config.onboarding) {
       delete config.onboarding.done;
     }
+  }, path);
+}
+
+/**
+ * Is screen observation switched on for this install (ADR 2026-10-08 R8)?
+ * Only a literal `true` counts; a missing, unreadable or odd value is off.
+ * There is deliberately no setter: the switch must not be writable through
+ * any tool, so the learner edits config.json by hand.
+ */
+export function isScreenObservationEnabled(
+  path = defaultConfigPath(),
+): boolean {
+  return loadInstallConfig(path).observation?.screen === true;
+}
+
+export const DEFAULT_OBSERVATION_RETENTION_DAYS = 14;
+/** Longest window config.json may ask for; anything above is clamped. */
+export const MAX_OBSERVATION_RETENTION_DAYS = 365;
+
+/**
+ * How many days a raw observation file may stay on disk (ADR 2026-10-08 R6).
+ * A missing or invalid value gives the default. The organisation policy of
+ * ADR 2026-10-08b (D6, `observation.retentionDays`) will cap this value here,
+ * in this one reader.
+ */
+export function getObservationRetentionDays(
+  path = defaultConfigPath(),
+): number {
+  const value = loadInstallConfig(path).observation?.retentionDays;
+  if (typeof value !== "number" || !Number.isFinite(value) || value < 1) {
+    return DEFAULT_OBSERVATION_RETENTION_DAYS;
+  }
+  return Math.min(Math.floor(value), MAX_OBSERVATION_RETENTION_DAYS);
+}
+
+/**
+ * When retention started on this machine, recorded on first use. Sessions
+ * that began earlier are legacy and are never deleted without the owner's
+ * confirmation (ADR 2026-10-08 R6).
+ */
+export function ensureObservationRetentionSince(
+  now = new Date(),
+  path = defaultConfigPath(),
+): string {
+  const existing = loadInstallConfig(path).observation?.retentionSince;
+  if (typeof existing === "string" && !Number.isNaN(Date.parse(existing))) {
+    return existing;
+  }
+  return updateInstallConfig((config) => {
+    const current = config.observation?.retentionSince;
+    if (typeof current === "string" && !Number.isNaN(Date.parse(current))) {
+      return current;
+    }
+    const since = now.toISOString();
+    config.observation = {
+      ...(config.observation ?? {}),
+      retentionSince: since,
+    };
+    return since;
   }, path);
 }
 

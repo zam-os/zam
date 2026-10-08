@@ -19,6 +19,7 @@ import { getTokenBySlug, getTokensBySlugs } from "../models/token.js";
 import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
+import { isScreenObservationEnabled } from "../system/install-config.js";
 import type {
   CommandRecord,
   ObservationRating,
@@ -35,6 +36,7 @@ import {
   recordAttempt,
 } from "./attempts.js";
 import { readMonitorLog } from "./monitor-io.js";
+import { SCREEN_OBSERVATION_OFF } from "./screen-switch.js";
 import { readUiObservationLog } from "./ui-observer-io.js";
 import {
   buildUiSynthesisCandidates,
@@ -79,6 +81,11 @@ export interface SessionSynthesisPreview {
     end: string;
     durationMs: number;
   } | null;
+  /**
+   * Set on a UI session while screen observation is off on this machine
+   * (ADR 2026-10-08 R8): its observer reports were not read.
+   */
+  denialReason?: typeof SCREEN_OBSERVATION_OFF;
 }
 
 export interface SessionSynthesisEvidence {
@@ -264,6 +271,23 @@ export async function prepareSessionSynthesis(
       .map((record) => record.token_id),
   );
   const minConfidence = input.minConfidence ?? "medium";
+
+  if (session.execution_context === "ui" && !isScreenObservationEnabled()) {
+    // Observer reports carry screen-derived text; while the switch is off
+    // they are not read, so a UI session synthesizes nothing.
+    return {
+      sessionId: session.id,
+      userId: session.user_id,
+      patternCount: validPatterns.length,
+      commandCount: 0,
+      alreadyApplied: applied.size,
+      skippedLowConfidence: 0,
+      candidates: [],
+      unmatchedCommands: [],
+      timeSpan: null,
+      denialReason: SCREEN_OBSERVATION_OFF,
+    };
+  }
 
   if (session.execution_context === "ui") {
     const reports = readUiObservationLog(input.sessionId);

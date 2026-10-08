@@ -10,6 +10,7 @@
 import { Command } from "commander";
 import {
   getSetting,
+  isScreenObservationEnabled,
   parseObserverList,
   resolveObserverPolicy,
   setSetting,
@@ -49,9 +50,17 @@ observerCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       const policy = await resolveObserverPolicy(db);
+      const screenObservation = isScreenObservationEnabled() ? "on" : "off";
       if (opts.json) {
-        console.log(JSON.stringify(policy, null, 2));
+        console.log(JSON.stringify({ ...policy, screenObservation }, null, 2));
         return;
+      }
+      if (screenObservation === "off") {
+        console.log(
+          "Screen observation is off on this machine (observation.screen in " +
+            "~/.zam/config.json). No screen surface runs, whatever the policy " +
+            "below says.\n",
+        );
       }
       console.log("Observer policy:\n");
       console.log(`  Scope:         ${policy.scope}`);

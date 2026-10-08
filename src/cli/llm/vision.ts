@@ -14,9 +14,11 @@ import type {
 } from "../../kernel/index.js";
 import {
   endpointUrl,
+  isScreenObservationEnabled,
   isUiObservationReport,
   LANGUAGE_NAMES,
   mapEndpointPath,
+  ScreenObservationOffError,
   UI_OBSERVATION_PROTOCOL_VERSION,
 } from "../../kernel/index.js";
 import {
@@ -89,6 +91,9 @@ export async function observeUiSnapshotViaLLM(
   db: Database,
   input: UiSnapshotObservationInput,
 ): Promise<UiObservationReport> {
+  // ADR 2026-10-08 R8: checked here as well as in every bridge command, so no
+  // caller reaches the model or ffmpeg while screen observation is off.
+  if (!isScreenObservationEnabled()) throw new ScreenObservationOffError();
   const cfg = await getProviderForRole(db, "vision");
   if (!cfg.enabled) {
     throw new Error(
@@ -101,7 +106,7 @@ export async function observeUiSnapshotViaLLM(
 
   if (isVideo) {
     const { mkdirSync, readdirSync, rmSync } = await import("node:fs");
-    const { execSync } = await import("node:child_process");
+    const { execFileSync } = await import("node:child_process");
     const tempDir = join(
       tmpdir(),
       `zam-frames-${randomBytes(4).toString("hex")}`,
@@ -109,8 +114,19 @@ export async function observeUiSnapshotViaLLM(
     mkdirSync(tempDir, { recursive: true });
 
     try {
-      execSync(
-        `ffmpeg -i "${input.imagePath}" -vf "fps=1/3,scale=1280:-1" -vsync vfr "${tempDir}/frame_%03d.png"`,
+      // Argument arrays, never shell strings: a file name must not be read
+      // as shell syntax.
+      execFileSync(
+        "ffmpeg",
+        [
+          "-i",
+          input.imagePath,
+          "-vf",
+          "fps=1/3,scale=1280:-1",
+          "-vsync",
+          "vfr",
+          join(tempDir, "frame_%03d.png"),
+        ],
         { stdio: "ignore" },
       );
 
@@ -119,8 +135,15 @@ export async function observeUiSnapshotViaLLM(
         .sort();
 
       if (files.length === 0) {
-        execSync(
-          `ffmpeg -i "${input.imagePath}" -vframes 1 "${tempDir}/frame_001.png"`,
+        execFileSync(
+          "ffmpeg",
+          [
+            "-i",
+            input.imagePath,
+            "-vframes",
+            "1",
+            join(tempDir, "frame_001.png"),
+          ],
           { stdio: "ignore" },
         );
         files = readdirSync(tempDir)

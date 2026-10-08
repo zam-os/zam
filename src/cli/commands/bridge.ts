@@ -99,6 +99,7 @@ import {
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
+  isScreenObservationEnabled,
   isStudyLearningMode,
   isStudyWorkloadPreset,
   isVoiceEnginePreference,
@@ -125,6 +126,7 @@ import {
   resolveCredentials,
   resolveObserverPolicy,
   restorePreviousLibrary,
+  screenObservationGate,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
@@ -398,6 +400,21 @@ let serveStdinPayload: string | undefined;
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
+}
+
+/**
+ * ADR 2026-10-08 R8: every screen surface asks this first, before it
+ * captures, reads, spawns or analyzes anything. While screen observation is
+ * off on this machine it writes the typed refusal and returns true.
+ */
+function refuseWhileScreenObservationOff(
+  sessionId: string | null | undefined,
+  extra: Record<string, unknown> = {},
+): boolean {
+  const refusal = screenObservationGate();
+  if (!refusal) return false;
+  jsonOut({ sessionId: sessionId ?? null, ...extra, ...refusal });
+  return true;
 }
 
 /**
@@ -1999,6 +2016,8 @@ bridgeCommand
   .option("--after <n>", "Only return observations after this sequence")
   .option("--limit <n>", "Maximum observations to return", "100")
   .action(async (opts) => {
+    // Stored reports carry screen-derived text (ADR 2026-10-08 R8).
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     await withDb(async (db) => {
       const session = (await db
         .prepare("SELECT id, execution_context FROM sessions WHERE id = ?")
@@ -2039,6 +2058,7 @@ bridgeCommand
   .option("--after <n>", "Only return observations after this sequence")
   .option("--limit <n>", "Maximum observations to return", "100")
   .action((opts) => {
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     try {
       const after =
         opts.after === undefined
@@ -2082,6 +2102,7 @@ bridgeCommand
   .option("--redacted", "Mark the snapshot evidence as redacted")
   .option("--write-log", "Append the generated report to the session JSONL")
   .action(async (opts) => {
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
     const processId =
       opts.processId === undefined
@@ -2535,6 +2556,17 @@ bridgeCommand
   .option("--hwnd <hwnd>", "Window handle (decimal or hex) to capture")
   .option("--process-name <name>", "Process name to capture")
   .action(async (opts) => {
+    // Before the policy, the capture and any read of --image: while the
+    // switch is off, --image is no file reader either.
+    if (
+      refuseWhileScreenObservationOff(opts.session, {
+        granted: false,
+        capturedAt: new Date().toISOString(),
+        platform: process.platform,
+      })
+    ) {
+      return;
+    }
     await withDb(async (db) => {
       const policy = await resolveObserverPolicy(db);
       const permission = {
@@ -2633,6 +2665,9 @@ bridgeCommand
   .requiredOption("--session <id>", "ZAM session ID")
   .option("--output <path>", "Video output path")
   .action(async (opts) => {
+    if (refuseWhileScreenObservationOff(opts.session, { started: false })) {
+      return;
+    }
     const platform = process.platform;
     if (platform !== "darwin" && platform !== "win32") {
       jsonOut({
@@ -2763,8 +2798,12 @@ bridgeCommand
     const sessionId = opts.session;
     const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
     const { existsSync, readFileSync, rmSync } = await import("node:fs");
+    const screenOff = !isScreenObservationEnabled();
 
     if (!existsSync(statePath)) {
+      if (refuseWhileScreenObservationOff(sessionId, { stopped: false })) {
+        return;
+      }
       jsonOut({
         sessionId,
         stopped: false,
@@ -2807,6 +2846,19 @@ bridgeCommand
       rmSync(statePath, { force: true });
     } catch {}
 
+    // A recording started while the switch was on is stopped like any other,
+    // but its pixels are discarded instead of handed on (ADR 2026-10-08 R8).
+    if (screenOff) {
+      try {
+        rmSync(outputPath, { force: true });
+      } catch {}
+      refuseWhileScreenObservationOff(sessionId, {
+        stopped: true,
+        discarded: true,
+      });
+      return;
+    }
+
     if (!existsSync(outputPath)) {
       jsonOut({
         sessionId,
@@ -2817,11 +2869,23 @@ bridgeCommand
     }
 
     const decimatedPath = outputPath.replace(/\.[^.]+$/, "-decimated.mp4");
-    const { execSync } = await import("node:child_process");
 
     try {
-      execSync(
-        `ffmpeg -y -i "${outputPath}" -vf "mpdecimate,setpts=N/FRAME_RATE/TB" -an -pix_fmt yuv420p "${decimatedPath}"`,
+      // An argument array, never a shell string: a path must not be read as
+      // shell syntax.
+      execFileSync(
+        "ffmpeg",
+        [
+          "-y",
+          "-i",
+          outputPath,
+          "-vf",
+          "mpdecimate,setpts=N/FRAME_RATE/TB",
+          "-an",
+          "-pix_fmt",
+          "yuv420p",
+          decimatedPath,
+        ],
         { stdio: "ignore" },
       );
     } catch (ffmpegErr) {
@@ -2867,6 +2931,7 @@ bridgeCommand
         audioOptIn: policy.audioOptIn,
         builtInSensitiveAlwaysRefused: true,
         builtInSensitiveMatchers: [...BUILT_IN_SENSITIVE_MATCHERS],
+        screenObservation: isScreenObservationEnabled() ? "on" : "off",
       });
     });
   });

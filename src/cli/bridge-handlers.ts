@@ -61,6 +61,7 @@ import {
   getUserStats,
   isAnswerFormat,
   isObserverPolicyConfigured,
+  isScreenObservationEnabled,
   isStudyLearningMode,
   endSession as kernelEndSession,
   startSession as kernelStartSession,
@@ -84,6 +85,7 @@ import {
   removePrerequisite,
   resetCardsForToken,
   resolveAnswerPresentation,
+  SCREEN_OBSERVATION_OFF_REASON,
   searchTokensHybrid,
   setTokenMaintenance,
   startLibraryTopic,
@@ -1521,10 +1523,16 @@ export async function startSession(db: Database, params: StartSessionParams) {
     execution_context: context,
   });
 
+  // While screen observation is off (ADR 2026-10-08 R8) the policy is never
+  // reached, so the hint says that instead of describing the policy.
   const observerPolicyHint =
-    context === "ui" && !(await isObserverPolicyConfigured(db))
-      ? OBSERVER_POLICY_UNSET_HINT
-      : undefined;
+    context !== "ui"
+      ? undefined
+      : !isScreenObservationEnabled()
+        ? SCREEN_OBSERVATION_OFF_REASON
+        : !(await isObserverPolicyConfigured(db))
+          ? OBSERVER_POLICY_UNSET_HINT
+          : undefined;
 
   return {
     id: session.id,

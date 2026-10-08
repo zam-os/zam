@@ -638,6 +638,14 @@ export {
   parseObserverPolicy,
   resolveObserverPolicy,
 } from "./observation/policy.js";
+export type { ScreenObservationRefusal } from "./observation/screen-switch.js";
+export {
+  SCREEN_OBSERVATION_OFF,
+  SCREEN_OBSERVATION_OFF_REASON,
+  ScreenObservationOffError,
+  screenObservationGate,
+  screenObservationRefusal,
+} from "./observation/screen-switch.js";
 export type {
   ApplySessionSynthesisInput,
   ApplySessionSynthesisResult,
@@ -948,6 +956,7 @@ export type {
   MachineCompanionConfig,
   MachineCompanionConfigUpdate,
   MachineKnowledgeMapConfig,
+  MachineObservationConfig,
   MachineOnboardingConfig,
   MachineProviderRecord,
   MachineRoleBinding,
@@ -961,10 +970,12 @@ export type {
 export {
   ALL_CAPABILITIES,
   clearBitwardenSyncConfig,
+  DEFAULT_OBSERVATION_RETENTION_DAYS,
   detectSyncProvider,
   emptyCapabilityFlags,
   ensureMachineAiModelsMigrated,
   ensureMachineProviderRolesSanitized,
+  ensureObservationRetentionSince,
   getActiveWorkspace,
   getActiveWorkspaceContext,
   getActiveWorkspaceId,
@@ -987,10 +998,13 @@ export {
   getMachineCompanionConfig,
   getMachineId,
   getMachineVoicePreference,
+  getObservationRetentionDays,
   getOnboardingDone,
   getOnboardingPersona,
   isBitwardenVaultEnabled,
+  isScreenObservationEnabled,
   loadInstallConfig,
+  MAX_OBSERVATION_RETENTION_DAYS,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
   saveConfiguredWorkspaces,

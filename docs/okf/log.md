@@ -2,6 +2,7 @@
 
 ## 2026-10-08
 
+- **Update** — [Observer Privacy Model and Policy Enforcement](observer-privacy-model.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 
 ## 2026-10-06

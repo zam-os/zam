@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
@@ -474,6 +474,14 @@ describe("automatic session synthesis", () => {
     const originalDir = process.env.ZAM_OBSERVER_DIR;
     const observerDir = mkdtempSync(join(tmpdir(), "zam-ui-synthesis-"));
     process.env.ZAM_OBSERVER_DIR = observerDir;
+    const originalConfig = process.env.ZAM_CONFIG_PATH;
+    // Observer reports are read only with screen observation switched on
+    // (ADR 2026-10-08 R8); the next test covers the switch being off.
+    process.env.ZAM_CONFIG_PATH = join(observerDir, "config.json");
+    writeFileSync(
+      process.env.ZAM_CONFIG_PATH,
+      JSON.stringify({ observation: { screen: true } }),
+    );
 
     try {
       const token = await createToken(db, {
@@ -520,6 +528,63 @@ describe("automatic session synthesis", () => {
         inferredRating: 4,
         confidence: "high",
       });
+    } finally {
+      if (originalDir === undefined) {
+        delete process.env.ZAM_OBSERVER_DIR;
+      } else {
+        process.env.ZAM_OBSERVER_DIR = originalDir;
+      }
+      if (originalConfig === undefined) {
+        delete process.env.ZAM_CONFIG_PATH;
+      } else {
+        process.env.ZAM_CONFIG_PATH = originalConfig;
+      }
+      rmSync(observerDir, { recursive: true, force: true });
+    }
+  });
+
+  it("reads no observer reports while screen observation is off", async () => {
+    const originalDir = process.env.ZAM_OBSERVER_DIR;
+    const observerDir = mkdtempSync(join(tmpdir(), "zam-ui-synthesis-off-"));
+    process.env.ZAM_OBSERVER_DIR = observerDir;
+
+    try {
+      const token = await createToken(db, {
+        slug: "explorer-rename-file",
+        concept: "Rename a file in File Explorer",
+        domain: "windows",
+        bloom_level: 3,
+      });
+      const session = await startSession(db, {
+        user_id: "tester",
+        task: "Rename invoices",
+        execution_context: "ui",
+      });
+      appendUiObservationReport({
+        version: 1,
+        sessionId: session.id,
+        sequence: 1,
+        observedFrom: "2026-06-15T10:00:00Z",
+        observedTo: "2026-06-15T10:00:05Z",
+        kind: "step-completed",
+        application: { processName: "explorer.exe", processId: 42 },
+        summary: "Renamed customer-acme.pdf.",
+        actions: [],
+        evidence: [],
+        candidateTokens: [
+          { slug: token.slug, confidence: 0.91, rationale: "Renamed." },
+        ],
+        confidence: 0.91,
+      });
+
+      const preview = await prepareSessionSynthesis(db, {
+        sessionId: session.id,
+      });
+
+      expect(preview.denialReason).toBe("screen-observation-off");
+      expect(preview.candidates).toEqual([]);
+      expect(preview.commandCount).toBe(0);
+      expect(JSON.stringify(preview)).not.toContain("customer-acme");
     } finally {
       if (originalDir === undefined) {
         delete process.env.ZAM_OBSERVER_DIR;

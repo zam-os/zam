@@ -1,24 +1,62 @@
 ---
 type: architecture
 title: Observer Privacy Model and Policy Enforcement
-description: Two-layer consent and the ObserverPolicy contract that governs screen capture across the CLI and the native Rust observer sidecar.
+description: The machine-local screen observation switch, two-layer consent and the ObserverPolicy contract that governs screen capture across the CLI and the native Rust observer sidecar.
 tags:
   - observer
   - privacy
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-09-19T08:40:00Z
+timestamp: 2026-10-08T19:37:13Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
 Because visual observation captures screen contents, privacy and consent are
 first-class requirements enforced across both headless CLI grabs and the native
-Rust observer sidecar.
+Rust observer sidecar. Until ZAM's own screen capture is removed (ADR
+2026-10-08), every screen surface sits behind one machine-local switch that is
+off by default.
+
+# Screen Observation Switch
+
+`observation.screen` in the machine-local `~/.zam/config.json` (or the file
+named by `ZAM_CONFIG_PATH`) decides whether any screen surface runs at all.
+Only a literal `true` turns it on; a missing file, a missing key, `false`, the
+string `"true"` or an unreadable file all mean off.
+
+- **What it covers.** `zam bridge capture-ui` (live capture and `--image`),
+  `start-recording`, `stop-recording`, `observe-ui-snapshot` (images and
+  video), and the read-back of stored observer reports through
+  `get-observations` and `observe-ui-watch`. Each returns a typed refusal with
+  `denied: true` and `denialReason: "screen-observation-off"` before it
+  captures, reads a file, starts ffmpeg or calls a model. `stop-recording`
+  still stops a recording started while the switch was on, and deletes its
+  file instead of returning it. `observeUiSnapshotViaLLM`
+  (`src/cli/llm/vision.ts`) checks the switch too, so no caller reaches the
+  vision model past it. A UI session's synthesis reads no observer reports
+  while the switch is off and returns no candidates.
+- **Who can write it.** Nobody but the learner, by editing the file. It is not
+  a database setting, so `setting-set` cannot reach it, and turning
+  `llm.vision.enabled` on does not open it. No bridge command or MCP tool
+  writes the `observation` section of `config.json`.
+- **Desktop shell.** The Tauri shell starts the sidecar itself, so it reads the
+  same file with its own reader (`desktop/src-tauri/src/machine_config.rs`),
+  which resolves the path exactly like the kernel. The sidecar runtime is
+  resolved in one place, and that place checks the switch first, so no Tauri
+  command starts the sidecar while it is off. The developer-only observer
+  panel stays hidden unless the switch is on.
+- **Reporting.** `zam bridge get-observer-policy` and `zam observer status`
+  report `screenObservation: "on" | "off"`, and a UI session started while the
+  switch is off carries the refusal text as its `observerPolicyHint`.
+
+The switch does not stop an agent with its own shell from capturing the
+screen; it ensures ZAM is not the tool that does it.
 
 # Two-Layer Consent Model
 
-Responsibility is split cleanly between the calling environment and the ZAM kernel:
+With the switch on, responsibility is split between the calling environment
+and the ZAM kernel:
 
 1. **Layer 1 — Invocation Gate (Host-owned):** The host environment (CLI
    permissions or MCP tool-consent confirmation) decides *whether* an AI agent
@@ -27,6 +65,10 @@ Responsibility is split cleanly between the calling environment and the ZAM kern
    the ZAM kernel's `ObserverPolicy` (`src/kernel/observation/policy.ts`) decides
    *what* a given capture is permitted to see. ZAM controls the camera and
    enforces the boundaries.
+
+The policy applies to live captures only. A caller-provided `--image` and the
+video path (`start-recording`, `observe-ui-snapshot`) never consult it, which
+is why the switch sits in front of them.
 
 # The `ObserverPolicy` Contract
 
@@ -47,7 +89,8 @@ is mirrored to `user_config`, where older clients still look.
 - `consent`: `"per-capture"`, `"per-session"`, or `"standing"`. Default is
   `"per-session"`.
 - `retention`: `"none"` (ephemeral in-memory analysis only), `"session"`, or
-  `"persist"`. Default is `"none"`.
+  `"persist"`. Default is `"none"`. The value is declared, not enforced: no
+  code deletes observer reports because of it.
 - `redactWindowTitles`: boolean (default `true`), redacts title strings from stored logs.
 - `audioOptIn`: boolean (default `false`), microphone audio is strictly opt-in.
 
@@ -71,7 +114,7 @@ carries its own built-in set (see below).
 
 # Two-Phase Capture Gate
 
-Every capture passes two evaluation phases:
+Every live capture passes two evaluation phases:
 
 1. **Phase 1 (`decidePreCapture`):** Evaluated before any pixels are read.
    Rejects immediately if `scope === "off"`, if `scope === "window"` without an
@@ -84,7 +127,7 @@ Every capture passes two evaluation phases:
    window scope silently fell back to a fullscreen grab because the target
    could not be resolved — the captured pixels are immediately discarded.
 
-# Native Rust Sidecar Synchronization
+# Native Rust Sidecar
 
 The native Rust observer sidecar (`observer/`) does not evaluate `ObserverPolicy`
 itself. `syncObserverSidecarPolicy(db)` (`src/kernel/observation/observer-sidecar-policy.ts`)
@@ -104,8 +147,17 @@ window titles, broader authentication markers (`2fa`, `passkey`, `sign in`,
 `logonui` and `windowssecurity` or the `nordpass` process. Neither list can be
 overridden by `policy.json`.
 
+The UI Automation channel (`observer/src/uia.rs`) reports control type,
+automation id and the accessible name of the focused element, never its value.
+An element without an accessible name reports an empty name: the sidecar no
+longer reads pixels to name it (the OCR fallback was removed under ADR
+2026-10-08). The accessible name is still screen text — a label, a document
+title, a customer name in a list — so UI Automation events are not
+content-free.
+
 # Citations
 
+- [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `observer/src/privacy.rs`, `src/cli/commands/bridge.ts`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `desktop/src-tauri/src/machine_config.rs`, `observer/src/privacy.rs`, `observer/src/uia.rs`

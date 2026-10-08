@@ -183,7 +183,19 @@ fn observer_executable_name() -> &'static str {
     }
 }
 
-fn resolve_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
+/// Every path that starts the sidecar needs its runtime, so the screen
+/// observation switch (ADR 2026-10-08 R8) is checked here, before any
+/// executable is even located.
+fn resolve_observer_runtime(app: &tauri::AppHandle) -> Result<ObserverRuntime, String> {
+    machine_config::screen_observation_gate()?;
+    find_observer_runtime(app).ok_or_else(|| {
+        "Could not locate the ZAM observer sidecar. Reinstall the desktop app, \
+         build observer/Cargo.toml, or set ZAM_OBSERVER to the executable path."
+            .to_string()
+    })
+}
+
+fn find_observer_runtime(app: &tauri::AppHandle) -> Option<ObserverRuntime> {
     if let Some(path) = env::var_os("ZAM_OBSERVER") {
         let executable_path = PathBuf::from(path);
         if executable_path.exists() {
@@ -547,11 +559,7 @@ fn run_zam_observer_blocking_owned(
     app: &tauri::AppHandle,
     args: &[String],
 ) -> Result<String, String> {
-    let runtime = resolve_observer_runtime(app).ok_or_else(|| {
-        "Could not locate the ZAM observer sidecar. Reinstall the desktop app, \
-         build observer/Cargo.toml, or set ZAM_OBSERVER to the executable path."
-            .to_string()
-    })?;
+    let runtime = resolve_observer_runtime(app)?;
 
     let mut command = Command::new(&runtime.executable_path);
     #[cfg(target_os = "windows")]
@@ -732,11 +740,7 @@ fn start_zam_observer_watch_blocking(
         }
     }
 
-    let runtime = resolve_observer_runtime(app).ok_or_else(|| {
-        "Could not locate the ZAM observer sidecar. Reinstall the desktop app, \
-         build observer/Cargo.toml, or set ZAM_OBSERVER to the executable path."
-            .to_string()
-    })?;
+    let runtime = resolve_observer_runtime(app)?;
 
     let observer_dir = observer_session_dir(app, &session)?;
     fs::create_dir_all(&observer_dir).map_err(|error| {
@@ -1543,7 +1547,14 @@ fn open_terminal_in_dir(dir: String) -> Result<(), String> {
     }
 }
 
+mod machine_config;
 mod voice;
+
+/// Whether the desktop may show its observer panel at all (ADR 2026-10-08 R8).
+#[tauri::command]
+fn screen_observation_enabled() -> bool {
+    machine_config::screen_observation_enabled()
+}
 
 #[cfg_attr(mobile, tauri::mobile_entry_point)]
 pub fn run() {
@@ -1574,6 +1585,7 @@ pub fn run() {
             execute_zam_bridge,
             execute_zam_bridge_background,
             cancel_zam_bridge,
+            screen_observation_enabled,
             probe_zam_observer,
             list_zam_observer_windows,
             foreground_zam_observer_window,

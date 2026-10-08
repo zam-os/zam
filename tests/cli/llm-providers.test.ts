@@ -339,6 +339,14 @@ describe("provider API key store (apiKeyRef)", () => {
 });
 
 describe("anthropic-messages vision adapter", () => {
+  // Screen analysis runs only with the machine switch on (ADR 2026-10-08 R8).
+  beforeEach(() => {
+    writeFileSync(
+      process.env.ZAM_CONFIG_PATH as string,
+      JSON.stringify({ observation: { screen: true } }),
+    );
+  });
+
   it("posts base64 image blocks to /v1/messages with x-api-key", async () => {
     const db = await openDb();
     await setSetting(db, "llm.vision.enabled", "true");
@@ -424,6 +432,14 @@ describe("anthropic-messages vision adapter", () => {
 });
 
 describe("vision endpoint fallback", () => {
+  // Screen analysis runs only with the machine switch on (ADR 2026-10-08 R8).
+  beforeEach(() => {
+    writeFileSync(
+      process.env.ZAM_CONFIG_PATH as string,
+      JSON.stringify({ observation: { screen: true } }),
+    );
+  });
+
   it("falls back to the configured fallback endpoint when the primary fails", async () => {
     const db = await openDb();
     await setSetting(db, "llm.vision.enabled", "true");

@@ -9130,9 +9130,19 @@ window.addEventListener("DOMContentLoaded", () => {
   repairInstallationOnVersionChange();
 
   // The manual UI Observer is a developer-only affordance; reveal it only when
-  // the dev key is set (see devObserverEnabled).
+  // the dev key is set (see devObserverEnabled) and screen observation is on
+  // for this machine (ADR 2026-10-08 R8). The shell refuses every sidecar
+  // start while it is off, so the panel would only show errors.
   if (devObserverEnabled()) {
-    document.getElementById("observer-panel")?.classList.remove("hidden");
+    void invoke<boolean>("screen_observation_enabled")
+      .then((enabled) => {
+        if (enabled) {
+          document.getElementById("observer-panel")?.classList.remove("hidden");
+        }
+      })
+      .catch(() => {
+        // An older shell without the command: keep the panel hidden.
+      });
   }
 
   // Start Session Button

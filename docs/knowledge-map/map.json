@@ -716,7 +716,7 @@
       "parent": "observation-mech",
       "label": "Capture consent",
       "link": "need",
-      "text": "Screen capture needs two gates: the host allows the call, and ZAM's policy limits what it may see.",
+      "text": "Screen capture is off until the learner turns it on for the machine; then the host allows the call and ZAM's policy limits what it sees.",
       "sources": [
         "docs/okf/observer-privacy-model.md"
       ]
