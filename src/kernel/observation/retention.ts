@@ -4,7 +4,7 @@
  * A session's raw observation files (its monitor log, and its observer
  * reports for as long as those exist) are deleted once its synthesis is
  * confirmed or dismissed, and at the latest after `observation.retentionDays`
- * (default 14) in the machine-local config.json. Before a monitor log goes,
+ * (default 1, so 24 hours) in the machine-local config.json. Before a monitor log goes,
  * ZAM keeps a value-free digest of it — the redacted, normalized command
  * prefixes skill discovery compares — so discovery survives the deletion.
  *

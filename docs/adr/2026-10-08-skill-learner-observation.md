@@ -92,7 +92,7 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
    - Before deleting, ZAM stores a value-free digest of the session: its redacted, normalised command prefixes. Skill discovery reads the twenty most recent sessions and needs at least two (`bridge.ts:1906`), so it reads digests instead of raw logs.
    - Files are machine-local, while confirmation lives in the shared database. Confirming on one machine deletes nothing on another; there only the window applies. Sessions that never end fall to the window as well.
    - The sweep runs at session end, at `zam monitor start`, at bridge start and at desktop start.
-   - The window defaults to 14 days and is set in `~/.zam/config.json` (`observation.retentionDays`). The companion's managed policy can cap it.
+   - The window defaults to 1 day (24 hours) and is set in `~/.zam/config.json` (`observation.retentionDays`). A raw log only has to live until it is turned into redacted evidence and a conclusion is drawn; after that the digest is all that stays. The companion's managed policy can cap it.
    - Files from before this decision are inventoried first (plan, Phase 0). Nothing older is deleted without the owner's confirmation.
 
 7. **R7 — The `vision` role serves learner-initiated material import only** (ADR 2026-10-05). It is never used for screen content. ZAM cannot tell a screenshot from a photo of class notes, so purpose is enforced by path and action, not by content. `material-import-analyze` stays off MCP and off the Studio allowlist, and the files it accepts fall under the companion's path confinement (ADR 2026-10-08b, D1).
@@ -156,7 +156,7 @@ Harder:
 
 1. **Where does learner configuration live?** ADR 2026-09-04 keeps `observer.*` machine-scoped in `user_settings`. The owner's working rule says machine-local state belongs in `~/.zam/config.json`, not in the shareable database. R6 and R8 follow the working rule; the learner decision has to settle the rest. An organisation-wide override belongs to the managed policy in ADR 2026-10-08b.
 2. **Is a structural channel enough, and is labelling acceptable?** The spike decides between C, D and E, whether any element context beyond control type and automation id is needed, and how long labelling one demonstration takes a learner.
-3. **Does anyone use the video path or the observer panel today?** If not, Phase 0 deletes them instead of guarding them. The owner must confirm.
+3. **Does anyone use the video path or the observer panel today?** If not, Phase 0 deletes them instead of guarding them. The owner must confirm. **Decided 2026-10-08 (owner): nobody uses them; deleted in Phase 0A.**
 4. **Legal review before any deployment with employees or minors.** This ADR does not assess compliance; it flags points a lawyer must assess. They apply to the shell monitor and to any learner, not only to screen capture:
    - a data protection impact assessment for systematic monitoring (GDPR Art. 35);
    - employee data and the limited weight of employee consent (GDPR Art. 88, § 26 BDSG);
@@ -167,7 +167,7 @@ Harder:
    - the EU AI Act's high-risk list, which names systems that evaluate learning outcomes in education and vocational training (Annex III, point 3(b)) and systems that monitor and evaluate workers' performance and behaviour (Annex III, point 4(b)). ZAM infers skill ratings from observation;
    - minors: the GDPR's age threshold (Art. 8), school law of the federal states, and guardian consent.
 5. **Which learner or learners are acceptable?** The spike result answers it.
-6. **Is 14 days the right retention window?** Shorter limits what a compromised machine exposes; longer gives learners more time to confirm synthesis.
+6. **Is 14 days the right retention window?** Shorter limits what a compromised machine exposes; longer gives learners more time to confirm synthesis. **Decided 2026-10-08 (owner): 24 hours.** There is no reason to keep raw observation longer than it takes to turn it into a processable form and draw the conclusion.
 7. **Should the shell monitor default to structure instead of redaction?** Keeping only the command, its subcommands and its flag names, and dropping every value, would be closer to R3. It may lose positional arguments that skill patterns need. The spike's shell baseline measures it.
 
 ## Citations

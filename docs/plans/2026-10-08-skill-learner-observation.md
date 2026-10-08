@@ -26,9 +26,9 @@ Exit gate: owner approval; one PR; release-note line "screen observation is off 
 
 Done on `feat/observation-containment`. Evidence and deviations:
 
-- The switch lives in `src/kernel/system/install-config.ts` (`isScreenObservationEnabled`) and `src/kernel/observation/screen-switch.ts`. Besides the four surfaces of 0A.1 it also refuses `get-observations` and `observe-ui-watch`, because stored reports carry screen-derived text, and a UI session's synthesis reads no reports while it is off. `stop-recording` still stops a recording started while the switch was on, and deletes the file instead of returning it. `get-observer-policy` and `zam observer status` report the switch.
-- 0A.2: `desktop/src-tauri/src/machine_config.rs`. The gate sits in `resolve_observer_runtime`, the one function every sidecar start passes, so no Tauri command can start the sidecar around it. `ZAM_HOME` names a developer checkout of the CLI and never moves `config.json`.
-- 0A.3: the panel stays hidden unless the developer key and the switch are both on. Open question 3 was answered with "guard, delete in Phase 5".
+- The switch lives in `src/kernel/system/install-config.ts` (`isScreenObservationEnabled`) and `src/kernel/observation/screen-switch.ts`. Besides the four surfaces of 0A.1 it also refuses `get-observations` and `observe-ui-watch`, because stored reports carry screen-derived text, and a UI session's synthesis reads no reports while it is off. The recording commands were deleted later in 0A (see 0A.3). `get-observer-policy` and `zam observer status` report the switch.
+- 0A.2: first built as `desktop/src-tauri/src/machine_config.rs` with the gate in `resolve_observer_runtime`. Superseded once open question 3 was answered: the panel was the only caller of the sidecar commands, so the Tauri shell no longer starts the sidecar at all, and the reader went with it. #390 D6 therefore needs no Rust reader for the sidecar.
+- 0A.3: open question 3 was answered "nobody uses them, delete" (2026-10-08). Deleted in 0A: the desktop observer panel and loop (HTML, `main.ts`, CSS, the 38 `observer_*` keys in every locale, the privacy-reason labels), every observer Tauri command with its watch state, `start-recording`, `stop-recording`, and video input to `observe-ui-snapshot` (frames via ffmpeg). `lbl_observer_model` stays: the Settings AI card still shows the vision model. The sidecar build and bundling (5.2) stay until the C/D/E decision, as does `llm.vision.max_frames`, which nothing reads any more.
 - 0A.4: the crate features `Media_Ocr`, `Graphics_Imaging` and `Security_Cryptography` are gone as well; `cargo check --target aarch64-pc-windows-msvc` passes. Unnamed elements are not unit-testable off Windows, so a source guard replaces the Rust test the plan asked for.
 - 0A.5: `stop-recording`'s ffmpeg call in `bridge.ts` had the same shell string and got the same fix.
 - 0A.6: the D1 resolver part waits for ADR 2026-10-08b.
@@ -51,7 +51,7 @@ Goal: command text reaches agents and models only in redacted form, and raw obse
   - high-entropy strings above a length threshold, JWT-shaped tokens (dots split naive entropy checks), and inline private-key blocks.
 - [x] **0B.2** Apply the redactor as a response filter on every payload derived from a monitor log, not field by field: `zam_monitor` (`src/cli/commands/mcp.ts:1293`; it is `readOnlyHint`, so auto-approvable), the monitor handlers in `src/cli/bridge-handlers.ts` (including `commands[]` and `unmatchedCommands`), `analyzeMonitor`, synthesis candidates (`matchedCommandTexts` and `unmatchedCommands`), `discover-skills` examples, and the synthesis returned by `zam_session_end`.
 - [x] **0B.3** At `zam monitor stop` and at session end, rewrite the session's log in redacted form. Sweep for logs of sessions that never stopped at `zam monitor start`, bridge start and desktop start.
-- [x] **0B.4** Retention (R6): add an explicit dismiss for a session's synthesis (bridge, MCP and one Studio action). Delete a session's raw monitor log and observer reports once synthesis is confirmed or dismissed, and any such file older than `observation.retentionDays` (default 14; ADR open question 6). Run the sweep at session end, `zam monitor start`, bridge start and desktop start. Files from before this change are only listed until the owner confirms (0B.6).
+- [x] **0B.4** Retention (R6): add an explicit dismiss for a session's synthesis (bridge, MCP and one Studio action). Delete a session's raw monitor log and observer reports once synthesis is confirmed or dismissed, and any such file older than `observation.retentionDays` (default 1, i.e. 24 hours; ADR open question 6, decided 2026-10-08). Run the sweep at session end, `zam monitor start`, bridge start and desktop start. Files from before this change are only listed until the owner confirms (0B.6).
 - [x] **0B.5** Before deleting a log, store a value-free digest of the session (redacted, normalised command prefixes), and make `discover-skills` (`src/cli/commands/bridge.ts:1906`) read digests.
 - [x] **0B.6** Inventory and report: `zam-recording-*` and `zam-capture-*` in the OS temp directory, `~/.zam/observer/*.jsonl` (may hold OCR text) and `~/.zam/monitor/*.jsonl` (may hold unredacted commands). Delete only after the owner confirms the list.
 - [x] **0B.7** Tests:
@@ -148,7 +148,7 @@ Exit gate: all Phase 4 tests pass with no screen code present in the tree.
 
 ## Phase 5 — Removal (one branch; one commit per step)
 
-- [ ] **5.1** Desktop: remove the observer panel and loop in `desktop/src/main.ts` (unless 0A.3 already did), the observer Tauri commands in `desktop/src-tauri/src/lib.rs`, the observer CSS in `desktop/src/styles.css`, and the `observer_*` and `lbl_observer_model` keys in every locale. Update `tests/desktop/i18n-completeness.test.ts`.
+- [ ] **5.1** Desktop: remove the observer panel and loop in `desktop/src/main.ts` (unless 0A.3 already did), the observer Tauri commands in `desktop/src-tauri/src/lib.rs`, the observer CSS in `desktop/src/styles.css`, and the `observer_*` and `lbl_observer_model` keys in every locale. Update `tests/desktop/i18n-completeness.test.ts`. *Done in 0A except `lbl_observer_model`, which still labels the vision model in Settings.*
 - [ ] **5.2** Release and CI: remove the sidecar build and prepare steps from `.github/workflows/release.yml` (about lines 166–171). Remove or retarget the observer jobs in `.github/workflows/ci.yml` (about lines 61–62, 94–97 and 236–299). Remove `scripts/prepare-observer-sidecar.mjs` and the `observer:*` scripts in `package.json`. Update the comments in `scripts/sign-macos-resources.mjs`.
 - [ ] **5.3** CLI and bridge: remove `zam observer` (`src/cli/commands/observer.ts` and its registration in `src/cli/app.ts`). Remove `capture-ui`, the screen use of `observe-ui-snapshot`, `start-recording`, `stop-recording`, `get-observations`, `observe-ui-watch`, `get-observer-policy` and `sync-observer-policy`. Remove `observerPolicyHint` (`src/cli/bridge-handlers.ts:1524–1536`, `src/cli/commands/session.ts:137`). Keep `check-vision` only if photo import needs it, and rename it if kept. Remove the `observation.screen` switch from 0A.1 together with the last surface it guards.
 - [ ] **5.4** Settings: remove the `observer.*` side effects in `src/cli/commands/settings.ts` (about lines 114 and 133). Apply the data plan from 2.2.
@@ -200,11 +200,11 @@ Each step must be revertible on its own. The Phase 0A switch stays in place unti
 
 1. Option C, D or E (ADR), and whether C is limited to managed deployments with D as the default for individual learners.
 2. Where learner configuration lives (ADR open question 1).
-3. Whether anyone uses the video path or the observer panel today (ADR open question 3). If not, Phase 0A deletes them.
+3. Whether anyone uses the video path or the observer panel today (ADR open question 3). If not, Phase 0A deletes them. **Decided 2026-10-08: nobody does; deleted in 0A.**
 4. Scope of the legal review that must precede any deployment (ADR open question 4).
-5. The retention window (ADR open question 6).
+5. The retention window (ADR open question 6). **Decided 2026-10-08: 24 hours** (`observation.retentionDays` default 1).
 6. Redaction or a structural default for the shell monitor (ADR open question 7).
-7. Whether Phases 0A and 0B are approved before the review finishes. It is recommended, because the bypasses, the OCR fallback and the unredacted monitor are known. **Decided 2026-10-08:** approved and implemented; open question 3 answered with "guard now, delete in Phase 5".
+7. Whether Phases 0A and 0B are approved before the review finishes. It is recommended, because the bypasses, the OCR fallback and the unredacted monitor are known. **Decided 2026-10-08:** approved and implemented.
 
 ## Appendix A — Consumer map
 

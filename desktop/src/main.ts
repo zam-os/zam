@@ -1,7 +1,6 @@
 import { getVersion } from "@tauri-apps/api/app";
 import { invoke } from "@tauri-apps/api/core";
 import { listen } from "@tauri-apps/api/event";
-import { appDataDir, join as joinPath } from "@tauri-apps/api/path";
 import { getCurrentWebview } from "@tauri-apps/api/webview";
 import { getCurrentWindow } from "@tauri-apps/api/window";
 import { open as openFolderDialog } from "@tauri-apps/plugin-dialog";
@@ -27,7 +26,6 @@ import {
   type Locale,
   LOCALE_LABELS,
   LOCALES,
-  PRIVACY_PACKS,
   setCurrentLocale,
   t,
   tf,
@@ -656,75 +654,11 @@ function renderReviewMedia(
 // Post-reveal discussion thread (ADR 2026-07-06b) — ephemeral, App-only.
 const discussion = createDiscussionState();
 let activeUserAnswer = "";
-let observerWindows: ObserverWindowInfo[] = [];
-let observerReports: UiObservationReport[] = [];
-let observerSequence = 0;
-let observerAnalyzeInProgress = false;
-let observerAnalysisRequestId = 0;
-let observerLoopRunning = false;
-let observerLoopTimerId: number | null = null;
-let observerWatchRunning = false;
-let observerWatchPollId: number | null = null;
-let observerWatchLastEventCount = 0;
-const OBSERVER_WATCH_POLL_MS = 1000;
-// Forward-paging cursor for get-observations. The bridge returns reports with
-// sequence > after (oldest-first), so we advance this past everything seen to
-// keep pulling only new reports instead of re-reading the first page forever.
-let observerReportsAfter = 0;
-const OBSERVER_HISTORY_LIMIT = 100;
-const OBSERVER_LOOP_DELAY_MS = 60000;
 let desktopUserId: string | null = null;
 let zamUiSessionId: string | null = null;
 let activeWorkspaceId: string | null = null;
 let activeWorkspaceDir: string | null = null;
 const MAX_VISIBLE_WORKSPACES = 5;
-
-interface ObserverWindowInfo {
-  version: number;
-  hwnd: number;
-  processId: number;
-  processName?: string;
-  title: string;
-  width: number;
-  height: number;
-  privacy?: {
-    action: "observe" | "privacy-pause";
-    reasons?: string[];
-    titleRedacted?: boolean;
-  };
-}
-
-interface UiObservationReport {
-  version: number;
-  sessionId: string;
-  sequence: number;
-  observedFrom: string;
-  observedTo: string;
-  kind: string;
-  application: {
-    processName: string;
-    processId?: number;
-    windowTitle?: string;
-  };
-  summary: string;
-  actions: Array<{ type: string; target?: string; result?: string }>;
-  evidence: Array<{ type: string; ref: string; redacted: boolean }>;
-  confidence: number;
-  candidateTokens: Array<{ slug: string; title?: string; confidence: number; rationale: string }>;
-}
-
-interface ObserverWatchStatus {
-  running: boolean;
-  pid: number | null;
-  session: string | null;
-  hwnd: string | null;
-  eventLogPath: string | null;
-  stderrLogPath: string | null;
-  startedAt: number | null;
-  eventCount: number;
-  lastEventAt: number | null;
-  lastError: string | null;
-}
 
 interface ZamSessionResponse {
   id: string;
@@ -733,23 +667,6 @@ interface ZamSessionResponse {
   executionContext: string;
   startedAt: string;
   completedAt: string | null;
-}
-
-interface UiObservationsResponse {
-  sessionId: string;
-  executionContext?: string;
-  observationSource?: string;
-  logExists?: boolean;
-  after: number | null;
-  count: number;
-  nextSequence: number | null;
-  observations: UiObservationReport[];
-}
-
-function resetObserverReportState(): void {
-  observerSequence = 0;
-  observerReportsAfter = 0;
-  observerReports = [];
 }
 
 async function ensureDesktopUserId(): Promise<string> {
@@ -772,12 +689,7 @@ async function ensureUiLearningSession(task: string): Promise<string> {
     userId,
   ]);
   zamUiSessionId = session.id;
-  resetObserverReportState();
   return zamUiSessionId;
-}
-
-async function getObserverSessionId(): Promise<string> {
-  return ensureUiLearningSession("Desktop UI observation");
 }
 
 async function closeUiLearningSession(): Promise<void> {
@@ -792,33 +704,7 @@ async function closeUiLearningSession(): Promise<void> {
   }
 }
 
-interface VisionStatus {
-  enabled: boolean;
-  online: boolean;
-  url: string;
-  model: string;
-  modelAvailable: boolean;
-  availableModels: string[];
-  usable: boolean;
-  visionModelExplicit: boolean;
-  warning?: string;
-}
 
-const OBSERVER_PRIVACY_REASON_LABELS: Record<string, Record<string, string>> = {
-  en: {
-    authentication: "authentication or password screen",
-    financial: "financial or payment screen",
-    "private-browsing": "private browsing",
-    "sensitive-process": "sensitive application",
-  },
-  de: {
-    authentication: "Anmelde- oder Passwortfenster",
-    financial: "Finanz- oder Zahlungsfenster",
-    "private-browsing": "privater Browsermodus",
-    "sensitive-process": "sensible Anwendung",
-  },
-  ...PRIVACY_PACKS,
-};
 
 function loadThemePreference(): ThemePreference {
   try {
@@ -1005,28 +891,6 @@ function initializeTranslations() {
   document.getElementById("btn-session-summary-done")!.textContent =
     t("btn_back_to_dashboard");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
-  document.getElementById("lbl-observer-title")!.textContent = t("observer_title");
-  document.getElementById("observer-status")!.textContent = t("observer_idle");
-  // Transient in the same way: refreshing the observer window list empties
-  // #observer-window-select, so this placeholder option is gone after the
-  // first refresh on Windows.
-  const observerInitial = document.getElementById("observer-window-initial");
-  if (observerInitial)
-    observerInitial.textContent = t("observer_select_initial");
-  document.getElementById("btn-observer-refresh")!.textContent = t("observer_refresh");
-  document.getElementById("btn-observer-analyze")!.textContent = t("observer_analyze");
-  document.getElementById("btn-observer-cancel")!.textContent = t("observer_cancel");
-  document.getElementById("lbl-observer-history-title")!.textContent = t("observer_history_title");
-  document.getElementById("btn-observer-reports-refresh")!.textContent = t("observer_history_refresh");
-  document.getElementById("btn-observer-loop-start")!.textContent = t("observer_loop_start");
-  document.getElementById("btn-observer-loop-stop")!.textContent = t("observer_loop_stop");
-  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
-  document.getElementById("btn-observer-watch-start")!.textContent = t("observer_watch_start");
-  document.getElementById("btn-observer-watch-stop")!.textContent = t("observer_watch_stop");
-  if (!observerWatchRunning) {
-    document.getElementById("observer-watch-note")!.textContent = t("observer_watch_idle");
-  }
-  renderObserverHistory();
   
   // Rating labels
   document.getElementById("lbl-rating-group-missed")!.textContent = t(
@@ -4425,540 +4289,6 @@ async function openReleasesPage(): Promise<void> {
   }
 }
 
-async function listObserverWindows(): Promise<void> {
-  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
-  const analyzeButton = document.getElementById("btn-observer-analyze") as HTMLButtonElement;
-  const status = document.getElementById("observer-status")!;
-  const preview = document.getElementById("observer-report-preview")!;
-
-  status.textContent = t("observer_loading");
-  preview.classList.add("hidden");
-  analyzeButton.disabled = true;
-  select.disabled = true;
-  select.innerHTML = "";
-
-  try {
-    const raw = await invoke<string>("list_zam_observer_windows");
-    observerWindows = JSON.parse(raw) as ObserverWindowInfo[];
-
-    if (observerWindows.length === 0) {
-      const option = document.createElement("option");
-      option.value = "";
-      option.textContent = t("observer_empty");
-      select.appendChild(option);
-      status.textContent = t("observer_empty");
-      return;
-    }
-
-    const placeholder = document.createElement("option");
-    placeholder.value = "";
-    placeholder.textContent = t("observer_select_placeholder");
-    select.appendChild(placeholder);
-
-    for (const windowInfo of observerWindows) {
-      const option = document.createElement("option");
-      const processName = windowInfo.processName ?? `pid-${windowInfo.processId}`;
-      option.value = String(windowInfo.hwnd);
-      option.textContent = `${windowInfo.title} (${processName}, ${windowInfo.width}x${windowInfo.height})`;
-      if (observerWindowPrivacyPaused(windowInfo)) {
-        const reason = observerPrivacyReasonText(windowInfo);
-        option.textContent += ` - ${t("observer_privacy_option")}`;
-        option.title = tf("observer_privacy_paused", { reason });
-      }
-      select.appendChild(option);
-    }
-
-    status.textContent = t("observer_idle");
-  } catch (err) {
-    observerWindows = [];
-    status.textContent = tf("observer_error", { message: errorMessage(err) });
-  } finally {
-    syncObserverControls();
-  }
-}
-
-function selectedObserverWindow(): ObserverWindowInfo | null {
-  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
-  const hwnd = Number(select.value);
-  if (!Number.isFinite(hwnd) || hwnd <= 0) return null;
-  return observerWindows.find((windowInfo) => windowInfo.hwnd === hwnd) ?? null;
-}
-
-function observerWindowPrivacyPaused(windowInfo: ObserverWindowInfo | null): boolean {
-  return windowInfo?.privacy?.action === "privacy-pause";
-}
-
-function observerPrivacyReasonText(windowInfo: ObserverWindowInfo): string {
-  const reasons = windowInfo.privacy?.reasons ?? [];
-  const labels = OBSERVER_PRIVACY_REASON_LABELS[currentLocale] ?? OBSERVER_PRIVACY_REASON_LABELS.en;
-  return reasons.map((reason) => labels[reason] ?? reason).join(", ") || "privacy filter";
-}
-
-function updateObserverSelection(): void {
-  const status = document.getElementById("observer-status")!;
-  const selected = selectedObserverWindow();
-  syncObserverControls();
-  if (selected && observerWindowPrivacyPaused(selected)) {
-    status.textContent = tf("observer_privacy_paused", {
-      reason: observerPrivacyReasonText(selected),
-    });
-  } else {
-    status.textContent = selected
-      ? tf("observer_ready", { title: selected.title })
-      : t("observer_idle");
-  }
-}
-
-function syncObserverControls(): void {
-  const selected = selectedObserverWindow();
-  const refreshButton = document.getElementById("btn-observer-refresh") as HTMLButtonElement;
-  const analyzeButton = document.getElementById("btn-observer-analyze") as HTMLButtonElement;
-  const cancelButton = document.getElementById("btn-observer-cancel") as HTMLButtonElement;
-  const loopStartButton = document.getElementById("btn-observer-loop-start") as HTMLButtonElement;
-  const loopStopButton = document.getElementById("btn-observer-loop-stop") as HTMLButtonElement;
-  const watchStartButton = document.getElementById("btn-observer-watch-start") as HTMLButtonElement;
-  const watchStopButton = document.getElementById("btn-observer-watch-stop") as HTMLButtonElement;
-  const select = document.getElementById("observer-window-select") as HTMLSelectElement;
-  const locked = observerAnalyzeInProgress || observerLoopRunning || observerWatchRunning;
-  const privacyPaused = observerWindowPrivacyPaused(selected);
-
-  refreshButton.disabled = locked;
-  select.disabled = locked;
-  analyzeButton.disabled = locked || selected === null || privacyPaused;
-  cancelButton.classList.toggle("hidden", !observerAnalyzeInProgress);
-  cancelButton.disabled = !observerAnalyzeInProgress;
-  loopStartButton.disabled = locked || selected === null || privacyPaused;
-  loopStopButton.classList.toggle("hidden", !observerLoopRunning);
-  loopStopButton.disabled = !observerLoopRunning;
-  watchStartButton.disabled = locked || selected === null || privacyPaused;
-  watchStopButton.classList.toggle("hidden", !observerWatchRunning);
-  watchStopButton.disabled = !observerWatchRunning;
-}
-
-function setObserverAnalysisBusy(busy: boolean): void {
-  observerAnalyzeInProgress = busy;
-  syncObserverControls();
-}
-
-async function analyzeSelectedObserverWindow(): Promise<boolean> {
-  if (observerAnalyzeInProgress) return false;
-  const selected = selectedObserverWindow();
-  if (!selected) return false;
-
-  const status = document.getElementById("observer-status")!;
-  const preview = document.getElementById("observer-report-preview")!;
-  if (observerWindowPrivacyPaused(selected)) {
-    status.textContent = tf("observer_privacy_paused", {
-      reason: observerPrivacyReasonText(selected),
-    });
-    return false;
-  }
-  const requestId = observerAnalysisRequestId + 1;
-  observerAnalysisRequestId = requestId;
-
-  setObserverAnalysisBusy(true);
-  status.textContent = t("observer_vision_checking");
-  preview.classList.add("hidden");
-
-  try {
-    const visionReady = await ensureObserverVisionReady();
-    if (!visionReady || requestId !== observerAnalysisRequestId) return false;
-
-    status.textContent = t("observer_analyzing");
-    const sessionId = await getObserverSessionId();
-    const observedFrom = new Date().toISOString();
-    const sequence = await nextObserverReportSequence();
-    const snapshotName = `${String(sequence).padStart(6, "0")}.png`;
-    const snapshotDir = await joinPath(await appDataDir(), "observer", sessionId);
-    const snapshotPath = await joinPath(snapshotDir, snapshotName);
-    // Portable, non-leaking evidence reference for the persisted report; the
-    // absolute path stays in --image only.
-    const evidenceRef = `${sessionId}/${snapshotName}`;
-
-    await invoke<string>("snapshot_zam_observer_window", {
-      hwnd: String(selected.hwnd),
-      output: snapshotPath,
-    });
-    if (requestId !== observerAnalysisRequestId) return false;
-
-    const observedTo = new Date().toISOString();
-    const report = await runBridge<UiObservationReport>("observe-ui-snapshot", [
-      "--session",
-      sessionId,
-      "--sequence",
-      String(sequence),
-      "--image",
-      snapshotPath,
-      "--observed-from",
-      observedFrom,
-      "--observed-to",
-      observedTo,
-      "--process-name",
-      selected.processName ?? `pid-${selected.processId}`,
-      "--process-id",
-      String(selected.processId),
-      "--window-title",
-      selected.title,
-      "--evidence-ref",
-      evidenceRef,
-      "--write-log",
-    ]);
-    if (requestId !== observerAnalysisRequestId) return false;
-
-    observerSequence = sequence;
-    await loadObserverReports({ updateStatus: false });
-    status.textContent = tf("observer_done", {
-      confidence: report.confidence.toFixed(2),
-    });
-    preview.textContent = JSON.stringify(report, null, 2);
-    preview.classList.remove("hidden");
-    return true;
-  } catch (err) {
-    if (requestId === observerAnalysisRequestId) {
-      status.textContent = tf("observer_error", { message: errorMessage(err) });
-    }
-    return false;
-  } finally {
-    if (requestId === observerAnalysisRequestId) {
-      setObserverAnalysisBusy(false);
-    }
-  }
-}
-
-async function ensureObserverVisionReady(): Promise<boolean> {
-  const status = document.getElementById("observer-status")!;
-  const vision = await runBridge<VisionStatus>("check-vision");
-
-  if (!vision.enabled) {
-    status.textContent = t("observer_vision_disabled");
-    return false;
-  }
-  if (!vision.online) {
-    status.textContent = tf("observer_vision_offline", { url: vision.url });
-    return false;
-  }
-  if (!vision.modelAvailable) {
-    status.textContent = tf("observer_vision_model_missing", {
-      model: vision.model,
-    });
-    return false;
-  }
-  if (vision.warning) {
-    status.textContent = vision.warning;
-    // Continue anyway — the model might actually support images.
-  }
-
-  return true;
-}
-
-function cancelObserverAnalysis(): void {
-  if (!observerAnalyzeInProgress) return;
-  observerAnalysisRequestId++;
-  setObserverAnalysisBusy(false);
-  document.getElementById("observer-status")!.textContent = t("observer_canceled");
-  cancelActiveBridgeRequest();
-}
-
-function startObserverLoop(): void {
-  if (observerLoopRunning || observerAnalyzeInProgress || !selectedObserverWindow()) return;
-  observerLoopRunning = true;
-  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_running");
-  document.getElementById("observer-status")!.textContent = t("observer_loop_running");
-  syncObserverControls();
-  void runObserverLoopIteration();
-}
-
-function stopObserverLoop(): void {
-  if (!observerLoopRunning) return;
-  observerLoopRunning = false;
-  clearObserverLoopTimer();
-  if (observerAnalyzeInProgress) {
-    cancelObserverAnalysis();
-  }
-  document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
-  document.getElementById("observer-status")!.textContent = t("observer_loop_stopped");
-  syncObserverControls();
-}
-
-async function runObserverLoopIteration(): Promise<void> {
-  if (!observerLoopRunning) return;
-
-  const success = await analyzeSelectedObserverWindow();
-  if (!observerLoopRunning) return;
-
-  if (!success) {
-    observerLoopRunning = false;
-    document.getElementById("observer-loop-note")!.textContent = t("observer_loop_idle");
-    syncObserverControls();
-    return;
-  }
-
-  const seconds = Math.round(OBSERVER_LOOP_DELAY_MS / 1000);
-  document.getElementById("observer-loop-note")!.textContent = tf("observer_loop_waiting", {
-    seconds,
-  });
-  clearObserverLoopTimer();
-  observerLoopTimerId = window.setTimeout(() => {
-    void runObserverLoopIteration();
-  }, OBSERVER_LOOP_DELAY_MS);
-}
-
-function clearObserverLoopTimer(): void {
-  if (observerLoopTimerId !== null) {
-    clearTimeout(observerLoopTimerId);
-    observerLoopTimerId = null;
-  }
-}
-
-// Continuous watch: spawns the unified observer daemon as a background child
-// process and polls its lifecycle status (event count, last event, errors).
-async function startObserverWatch(): Promise<void> {
-  if (observerWatchRunning || observerAnalyzeInProgress || observerLoopRunning) return;
-  const selected = selectedObserverWindow();
-  if (!selected) return;
-
-  const status = document.getElementById("observer-status")!;
-  const note = document.getElementById("observer-watch-note")!;
-  if (observerWindowPrivacyPaused(selected)) {
-    status.textContent = tf("observer_privacy_paused", {
-      reason: observerPrivacyReasonText(selected),
-    });
-    return;
-  }
-
-  observerWatchRunning = true;
-  observerWatchLastEventCount = 0;
-  note.textContent = t("observer_watch_starting");
-  status.textContent = t("observer_watch_starting");
-  syncObserverControls();
-
-  try {
-    const task = selected.title.trim() || "Desktop UI observation";
-    const sessionId = await ensureUiLearningSession(task);
-    // Tauri truncates the reports JSONL on each watch start, so replay
-    // sequences begin again at 1. Keep the desktop cursor aligned.
-    resetObserverReportState();
-    const result = await invoke<ObserverWatchStatus>("start_zam_observer_watch", {
-      session: sessionId,
-      hwnd: String(selected.hwnd),
-      intervalMs: "1000",
-    });
-    renderObserverWatchStatus(result, selected.title);
-    scheduleObserverWatchPoll();
-  } catch (error) {
-    observerWatchRunning = false;
-    const message = tf("observer_watch_error", { message: String(error) });
-    note.textContent = message;
-    status.textContent = message;
-    syncObserverControls();
-  }
-}
-
-async function stopObserverWatch(): Promise<void> {
-  if (!observerWatchRunning) return;
-  clearObserverWatchPoll();
-  const note = document.getElementById("observer-watch-note")!;
-  const status = document.getElementById("observer-status")!;
-  note.textContent = t("observer_watch_stopping");
-  try {
-    await invoke<ObserverWatchStatus>("stop_zam_observer_watch");
-  } catch (error) {
-    note.textContent = tf("observer_watch_error", { message: String(error) });
-  } finally {
-    observerWatchRunning = false;
-    note.textContent = t("observer_watch_stopped");
-    status.textContent = t("observer_watch_stopped");
-    syncObserverControls();
-  }
-}
-
-function scheduleObserverWatchPoll(): void {
-  clearObserverWatchPoll();
-  observerWatchPollId = window.setTimeout(() => {
-    void pollObserverWatchStatus();
-  }, OBSERVER_WATCH_POLL_MS);
-}
-
-function clearObserverWatchPoll(): void {
-  if (observerWatchPollId !== null) {
-    clearTimeout(observerWatchPollId);
-    observerWatchPollId = null;
-  }
-}
-
-async function pollObserverWatchStatus(): Promise<void> {
-  if (!observerWatchRunning) return;
-  try {
-    const result = await invoke<ObserverWatchStatus>("status_zam_observer_watch");
-    const selected = selectedObserverWindow();
-    renderObserverWatchStatus(result, selected?.title);
-    if (result.running && result.eventCount > observerWatchLastEventCount) {
-      observerWatchLastEventCount = result.eventCount;
-      await loadObserverReports({ updateStatus: false });
-    }
-    if (!result.running) {
-      // The watch process exited on its own (sample bound or crash).
-      observerWatchRunning = false;
-      clearObserverWatchPoll();
-      await loadObserverReports({ updateStatus: false });
-      syncObserverControls();
-      return;
-    }
-  } catch (error) {
-    document.getElementById("observer-watch-note")!.textContent = tf("observer_watch_error", {
-      message: String(error),
-    });
-  }
-  if (observerWatchRunning) scheduleObserverWatchPoll();
-}
-
-function renderObserverWatchStatus(status: ObserverWatchStatus, fallbackTitle?: string): void {
-  const note = document.getElementById("observer-watch-note")!;
-  if (status.lastError) {
-    note.textContent = tf("observer_watch_error", { message: status.lastError });
-    return;
-  }
-  if (status.running) {
-    note.textContent = tf("observer_watch_running", {
-      title: fallbackTitle ?? status.session ?? "window",
-      count: status.eventCount,
-    });
-  } else {
-    note.textContent = t("observer_watch_stopped");
-  }
-}
-
-/** Align the in-memory sequence cursor with the persisted observation log. */
-async function syncObserverSequenceFromLog(): Promise<void> {
-  if (!zamUiSessionId) return;
-
-  try {
-    const response = await runBridge<UiObservationsResponse>("observe-ui-watch", [
-      "--session",
-      zamUiSessionId,
-      "--after",
-      "0",
-      "--limit",
-      "10000",
-    ]);
-    if (response.observations.length === 0) return;
-
-    const maxSequence = Math.max(...response.observations.map((report) => report.sequence));
-    observerSequence = Math.max(observerSequence, maxSequence);
-    observerReportsAfter = Math.max(observerReportsAfter, maxSequence);
-  } catch {
-    // Fall back to the in-memory cursor when the bridge is unavailable.
-  }
-}
-
-async function nextObserverReportSequence(): Promise<number> {
-  await syncObserverSequenceFromLog();
-  return observerSequence + 1;
-}
-
-async function loadObserverReports(
-  opts: { updateStatus?: boolean } = {},
-): Promise<void> {
-  const status = document.getElementById("observer-status")!;
-
-  if (!zamUiSessionId) {
-    if (opts.updateStatus) {
-      status.textContent = t("observer_idle");
-    }
-    return;
-  }
-
-  try {
-    const response = await runBridge<UiObservationsResponse>("observe-ui-watch", [
-      "--session",
-      zamUiSessionId,
-      "--after",
-      String(observerReportsAfter),
-      "--limit",
-      String(OBSERVER_HISTORY_LIMIT),
-    ]);
-
-    if (response.observations.length > 0) {
-      const known = new Set(observerReports.map((report) => report.sequence));
-      for (const report of response.observations) {
-        if (!known.has(report.sequence)) observerReports.push(report);
-      }
-      observerReports.sort((left, right) => left.sequence - right.sequence);
-      if (observerReports.length > OBSERVER_HISTORY_LIMIT) {
-        observerReports = observerReports.slice(-OBSERVER_HISTORY_LIMIT);
-      }
-      // Advance the cursor so the next poll only fetches newer reports.
-      observerReportsAfter = response.nextSequence ?? observerReportsAfter;
-      observerSequence = Math.max(
-        observerSequence,
-        ...observerReports.map((report) => report.sequence),
-      );
-    }
-    renderObserverHistory();
-    if (opts.updateStatus) {
-      status.textContent = tf("observer_history_loaded", {
-        count: observerReports.length,
-      });
-    }
-  } catch (err) {
-    if (opts.updateStatus) {
-      status.textContent = tf("observer_error", { message: errorMessage(err) });
-    }
-  }
-}
-
-function renderObserverHistory(): void {
-  const list = document.getElementById("observer-history-list");
-  if (!list) return;
-
-  list.innerHTML = "";
-  if (observerReports.length === 0) {
-    const empty = document.createElement("p");
-    empty.className = "observer-history-empty";
-    empty.textContent = t("observer_history_empty");
-    list.appendChild(empty);
-    return;
-  }
-
-  for (const report of [...observerReports].sort((left, right) => right.sequence - left.sequence)) {
-    const card = document.createElement("article");
-    card.className = "observer-report-card";
-
-    const meta = document.createElement("div");
-    meta.className = "observer-report-meta";
-    const processName = report.application.processName;
-    const observedAt = new Date(report.observedTo).toLocaleTimeString();
-    meta.textContent = `#${report.sequence} · ${report.kind} · ${processName} · ${observedAt} · ${report.confidence.toFixed(2)}`;
-
-    const summary = document.createElement("p");
-    summary.className = "observer-report-summary";
-    summary.textContent = report.summary;
-
-    card.appendChild(meta);
-    card.appendChild(summary);
-
-    if (report.candidateTokens.length > 0) {
-      const tokens = document.createElement("div");
-      tokens.className = "observer-report-tokens";
-      tokens.textContent = report.candidateTokens
-        .map((token) => {
-          const name = token.title || token.slug;
-          return `${name} (${token.confidence.toFixed(2)})`;
-        })
-        .join(", ");
-      card.appendChild(tokens);
-    }
-
-    card.addEventListener("click", () => {
-      const preview = document.getElementById("observer-report-preview")!;
-      preview.textContent = JSON.stringify(report, null, 2);
-      preview.classList.remove("hidden");
-    });
-
-    list.appendChild(card);
-  }
-}
-
 function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
@@ -5167,7 +4497,7 @@ async function loadObservationStatus(): Promise<void> {
     row.hidden = observationSessionIds.length === 0;
     detail.textContent = tf("observation_logs_status", {
       count: observationSessionIds.length,
-      days: status.retentionDays,
+      hours: status.retentionDays * 24,
     });
   } catch {
     // An older bridge without the command: keep the row hidden.
@@ -9055,9 +8385,6 @@ async function finishStudySession(): Promise<void> {
   activeCard = null;
   updateReviewControlState();
 
-  if (observerWatchRunning) {
-    await stopObserverWatch();
-  }
   await closeUiLearningSession();
 
   // Keep the study view visible so the summary can render in place.
@@ -9080,20 +8407,6 @@ function leaveSessionSummaryToDashboard(): void {
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
-/**
- * Dev-only gate for the manual "UI Observer" capture panel. Capture scope is
- * normally decided by the Agent harness (ADR 2026-06-23), so this panel is
- * hidden by default. Enable it for debugging from the devtools console:
- *   localStorage.setItem("zam:dev-observer", "1")  // then reload
- */
-function devObserverEnabled(): boolean {
-  try {
-    return localStorage.getItem("zam:dev-observer") === "1";
-  } catch {
-    return false;
-  }
-}
-
 window.addEventListener("DOMContentLoaded", () => {
   applyTheme(loadThemePreference());
   settingsViewMode = loadSettingsViewMode();
@@ -9200,21 +8513,6 @@ window.addEventListener("DOMContentLoaded", () => {
   void loadAppVersion();
   repairInstallationOnVersionChange();
 
-  // The manual UI Observer is a developer-only affordance; reveal it only when
-  // the dev key is set (see devObserverEnabled) and screen observation is on
-  // for this machine (ADR 2026-10-08 R8). The shell refuses every sidecar
-  // start while it is off, so the panel would only show errors.
-  if (devObserverEnabled()) {
-    void invoke<boolean>("screen_observation_enabled")
-      .then((enabled) => {
-        if (enabled) {
-          document.getElementById("observer-panel")?.classList.remove("hidden");
-        }
-      })
-      .catch(() => {
-        // An older shell without the command: keep the panel hidden.
-      });
-  }
 
   // Start Session Button
   document.getElementById("btn-start-session")!.addEventListener("click", () => {
@@ -9459,42 +8757,6 @@ window.addEventListener("DOMContentLoaded", () => {
       switchView("graph-view");
     });
   }
-
-  document.getElementById("btn-observer-refresh")!.addEventListener("click", () => {
-    void listObserverWindows();
-  });
-
-  document.getElementById("observer-window-select")!.addEventListener("change", () => {
-    updateObserverSelection();
-  });
-
-  document.getElementById("btn-observer-analyze")!.addEventListener("click", () => {
-    void analyzeSelectedObserverWindow();
-  });
-
-  document.getElementById("btn-observer-cancel")!.addEventListener("click", () => {
-    cancelObserverAnalysis();
-  });
-
-  document.getElementById("btn-observer-loop-start")!.addEventListener("click", () => {
-    startObserverLoop();
-  });
-
-  document.getElementById("btn-observer-loop-stop")!.addEventListener("click", () => {
-    stopObserverLoop();
-  });
-
-  document.getElementById("btn-observer-watch-start")!.addEventListener("click", () => {
-    void startObserverWatch();
-  });
-
-  document.getElementById("btn-observer-watch-stop")!.addEventListener("click", () => {
-    void stopObserverWatch();
-  });
-
-  document.getElementById("btn-observer-reports-refresh")!.addEventListener("click", () => {
-    void loadObserverReports({ updateStatus: true });
-  });
 
   // Graph back + refresh
   const backBtn = document.getElementById("btn-graph-back");

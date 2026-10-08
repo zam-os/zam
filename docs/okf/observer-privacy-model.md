@@ -8,15 +8,15 @@ tags:
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-10-08T20:10:00Z
+timestamp: 2026-10-08T22:10:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
 Because visual observation captures screen contents, privacy and consent are
-first-class requirements enforced across both headless CLI grabs and the native
-Rust observer sidecar. Until ZAM's own screen capture is removed (ADR
-2026-10-08), every screen surface sits behind one machine-local switch that is
-off by default.
+first-class requirements. Until ZAM's own screen capture is removed (ADR
+2026-10-08), every remaining screen surface sits behind one machine-local
+switch that is off by default. The screen-recording path and the desktop
+observer panel were deleted outright, because nobody used them.
 
 # Screen Observation Switch
 
@@ -26,13 +26,10 @@ Only a literal `true` turns it on; a missing file, a missing key, `false`, the
 string `"true"` or an unreadable file all mean off.
 
 - **What it covers.** `zam bridge capture-ui` (live capture and `--image`),
-  `start-recording`, `stop-recording`, `observe-ui-snapshot` (images and
-  video), and the read-back of stored observer reports through
+  `observe-ui-snapshot`, and the read-back of stored observer reports through
   `get-observations` and `observe-ui-watch`. Each returns a typed refusal with
   `denied: true` and `denialReason: "screen-observation-off"` before it
-  captures, reads a file, starts ffmpeg or calls a model. `stop-recording`
-  still stops a recording started while the switch was on, and deletes its
-  file instead of returning it. `observeUiSnapshotViaLLM`
+  captures, reads a file or calls a model. `observeUiSnapshotViaLLM`
   (`src/cli/llm/vision.ts`) checks the switch too, so no caller reaches the
   vision model past it. A UI session's synthesis reads no observer reports
   while the switch is off and returns no candidates.
@@ -40,18 +37,24 @@ string `"true"` or an unreadable file all mean off.
   a database setting, so `setting-set` cannot reach it, and turning
   `llm.vision.enabled` on does not open it. No bridge command or MCP tool
   writes the `observation` section of `config.json`.
-- **Desktop shell.** The Tauri shell starts the sidecar itself, so it reads the
-  same file with its own reader (`desktop/src-tauri/src/machine_config.rs`),
-  which resolves the path exactly like the kernel. The sidecar runtime is
-  resolved in one place, and that place checks the switch first, so no Tauri
-  command starts the sidecar while it is off. The developer-only observer
-  panel stays hidden unless the switch is on.
 - **Reporting.** `zam bridge get-observer-policy` and `zam observer status`
   report `screenObservation: "on" | "off"`, and a UI session started while the
   switch is off carries the refusal text as its `observerPolicyHint`.
 
 The switch does not stop an agent with its own shell from capturing the
 screen; it ensures ZAM is not the tool that does it.
+
+# Removed Surfaces
+
+ADR 2026-10-08 (open question 3) found that nobody used them, so they were
+deleted instead of guarded:
+
+- `zam bridge start-recording` and `stop-recording` (full-screen ffmpeg
+  recording) and video input to `observe-ui-snapshot`, which now reads one
+  PNG or JPEG image and refuses a video file;
+- the desktop observer panel with its timed loop and watch, and every Tauri
+  command that started the observer sidecar. The desktop shell no longer
+  starts the sidecar at all.
 
 # Two-Layer Consent Model
 
@@ -66,9 +69,9 @@ and the ZAM kernel:
    *what* a given capture is permitted to see. ZAM controls the camera and
    enforces the boundaries.
 
-The policy applies to live captures only. A caller-provided `--image` and the
-video path (`start-recording`, `observe-ui-snapshot`) never consult it, which
-is why the switch sits in front of them.
+The policy applies to live captures only. A caller-provided `--image` and
+`observe-ui-snapshot` never consult it, which is why the switch sits in front
+of them.
 
 # The `ObserverPolicy` Contract
 
@@ -130,8 +133,10 @@ Every live capture passes two evaluation phases:
 
 # Native Rust Sidecar
 
-The native Rust observer sidecar (`observer/`) does not evaluate `ObserverPolicy`
-itself. `syncObserverSidecarPolicy(db)` (`src/kernel/observation/observer-sidecar-policy.ts`)
+The native Rust observer sidecar (`observer/`) still builds and ships, but
+nothing in the desktop app starts it; it runs only when invoked by hand
+(`zam-observer watch …`). It does not evaluate `ObserverPolicy` itself.
+`syncObserverSidecarPolicy(db)` (`src/kernel/observation/observer-sidecar-policy.ts`)
 resolves the policy and writes only its user-configurable lists to
 `<observer-dir>/policy.json` (mode `0o600`) in the sidecar's `WindowPrivacyPolicy`
 wire shape: `allowProcesses` from the allowlist, and `denyProcesses` plus
@@ -168,33 +173,40 @@ the switch, but the same ADR governs what it keeps:
   (`src/kernel/observation/redact.ts`). `zam_monitor`, the bridge monitor
   commands, synthesis candidates, unmatched commands and skill discovery all
   read through it. Values in known secret positions become `[redacted]`:
-  environment assignments, flags and headers whose name says secret, URL
+  environment assignments, flags and headers whose name says secret
+  (including PowerShell `-Name:value` bindings and, inside cmdlets and
+  scripts, unique prefixes of secret parameters such as `-Pa`), URL
   credentials, `key=value` pairs and JSON fields with a secret-sounding key,
-  per-command positions (mysql `-p…`, `curl -u`, `docker -e`, `net use`,
+  also inside double-quoted shell arguments, per-command positions (mysql
+  `-p…`, `docker login -p`, `curl -u`, `docker -e`, `net use`, `setx`,
   `sshpass`, `config set`), values piped into a command that reads a secret
-  from stdin, here-strings, heredoc bodies, JWTs, private keys, well-known
-  token formats and high-entropy strings. A secret in an unknown position
-  with low entropy survives; redaction is weaker than having no content.
+  from stdin (`--password-stdin`, `sudo -S`), here-strings, heredoc bodies,
+  JWTs, private keys, well-known token formats and high-entropy strings. A
+  secret in an unknown position with low entropy survives; redaction is
+  weaker than having no content.
 - **Redaction at rest.** The log is rewritten in redacted form at
   `zam monitor stop` and at session end, and a sweep redacts any log idle for
   ten minutes. Texts an agent sends back for a confirmed synthesis are
   redacted again before they reach the shared database.
-- **Retention.** A session's raw monitor log and observer reports are deleted
-  once the learner confirms or dismisses its synthesis
-  (`zam_observation_close`, `zam observation close`, the Settings → Data
-  action, or `zam session end --synthesize` after the candidates), and at the
-  latest after `observation.retentionDays` (default 14) in `config.json`. A
-  value-free digest of the session's command prefixes stays for skill
-  discovery. The sweep (`src/kernel/observation/retention.ts`) runs at session
-  end, `zam monitor start`, `zam mcp` start and `zam bridge serve` start. It
-  never consults the database, so a confirmation on another machine deletes
-  nothing here. Sessions that started before retention first ran on a
-  machine are legacy: redacted, but deleted only after the owner confirms
-  `zam observation inventory --delete`.
+- **Retention.** A raw log only has to live until it is turned into redacted
+  evidence and a conclusion is drawn. A session's raw monitor log and
+  observer reports are deleted once the learner confirms or dismisses its
+  synthesis (`zam_observation_close`, `zam observation close`, the Settings →
+  Data action, or `zam session end --synthesize` after the candidates), and
+  at the latest after 24 hours (`observation.retentionDays` in
+  `config.json`, default 1). A value-free digest of the session's command
+  prefixes stays for skill discovery. The sweep
+  (`src/kernel/observation/retention.ts`) runs at session end,
+  `zam monitor start`, `zam mcp` start and `zam bridge serve` start. It never
+  consults the database, so a confirmation on another machine deletes nothing
+  here. It never writes a `config.json` that does not parse, and while the
+  file is unreadable it deletes nothing. Sessions that started before
+  retention first ran on a machine are legacy: redacted, but deleted only
+  after the owner confirms `zam observation inventory --delete`.
 
 # Citations
 
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `desktop/src-tauri/src/machine_config.rs`, `observer/src/privacy.rs`, `observer/src/uia.rs`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `observer/src/privacy.rs`, `observer/src/uia.rs`

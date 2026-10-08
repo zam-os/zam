@@ -117,17 +117,21 @@ describe("screen observation switch (kernel)", () => {
     expect(cargo).not.toContain("Media_Ocr");
   });
 
-  it("gates every sidecar start in the desktop shell", () => {
+  it("leaves the desktop without an observer panel or a way to start the sidecar", () => {
+    // Open question 3 of ADR 2026-10-08: nobody used the panel or the video
+    // path, so both were deleted instead of guarded.
     const lib = readFileSync(
       join(process.cwd(), "desktop", "src-tauri", "src", "lib.rs"),
       "utf8",
     );
-    // The runtime is found in exactly one place, and that place checks the
-    // switch before it looks for an executable.
-    expect(lib.match(/find_observer_runtime\(/g)).toHaveLength(2);
-    expect(lib).toMatch(
-      /fn resolve_observer_runtime\([^)]*\)[^{]*\{\s*machine_config::screen_observation_gate\(\)\?;/,
+    expect(lib).not.toMatch(/zam-observer|ZAM_OBSERVER|_zam_observer/);
+    const main = readFileSync(
+      join(process.cwd(), "desktop", "src", "main.ts"),
+      "utf8",
     );
+    expect(main).not.toMatch(/observer-panel|_zam_observer|zam:dev-observer/);
+    const html = readFileSync(join(process.cwd(), "desktop", "index.html"), "utf8");
+    expect(html).not.toContain('id="observer-panel"');
   });
 
   it("keeps material-import-analyze off the Studio bridge (R7)", () => {
@@ -242,8 +246,6 @@ describe("screen observation switch (bridge)", () => {
     const results = [
       runBridge(["capture-ui", "--session", sessionId]),
       runBridge(["capture-ui", "--session", sessionId, "--image", image]),
-      runBridge(["start-recording", "--session", sessionId]),
-      runBridge(["stop-recording", "--session", sessionId]),
       runBridge([
         "observe-ui-snapshot",
         "--session",
@@ -267,10 +269,6 @@ describe("screen observation switch (bridge)", () => {
       expectRefused(result);
       expect(JSON.stringify(result)).not.toContain("secret-on-screen");
     }
-    expect(results[2].started).toBe(false);
-    expect(existsSync(join(tmpdir(), `zam-recording-${sessionId}.json`))).toBe(
-      false,
-    );
     expect(existsSync(ffmpegMarker)).toBe(false);
   });
 
@@ -327,32 +325,34 @@ describe("screen observation switch (bridge)", () => {
     expect(result.base64).toBe(PNG_1PX.toString("base64"));
   });
 
-  it("stops a recording started while on, and discards it once off", async () => {
-    // A stand-in for a running ffmpeg recording.
-    const child = spawn(process.execPath, ["-e", "setInterval(() => {}, 1000)"], {
-      stdio: "ignore",
-    });
-    const outputPath = join(tempCwd, `zam-recording-${sessionId}.mov`);
-    writeFileSync(outputPath, "pixels");
-    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
-    writeFileSync(
-      statePath,
-      JSON.stringify({ pid: child.pid, outputPath, startedAt: "" }),
-    );
-    const exited = new Promise<void>((resolve) => child.once("exit", () => resolve()));
-
-    try {
-      const result = runBridge(["stop-recording", "--session", sessionId]);
-      expectRefused(result);
-      expect(result.stopped).toBe(true);
-      expect(result.discarded).toBe(true);
-      expect(existsSync(outputPath)).toBe(false);
-      expect(existsSync(statePath)).toBe(false);
-      await exited;
-      expect(existsSync(ffmpegMarker)).toBe(false);
-    } finally {
-      child.kill("SIGKILL");
-      rmSync(statePath, { force: true });
+  it("has no recording commands and refuses video even with the switch on", () => {
+    writeMachineConfig({ observation: { screen: true } });
+    for (const command of ["start-recording", "stop-recording"]) {
+      expect(() => runBridge([command, "--session", sessionId])).toThrow();
     }
+    const video = join(tempCwd, "screen.mp4");
+    writeFileSync(video, "not really a video");
+    let output = "";
+    try {
+      runBridge([
+        "observe-ui-snapshot",
+        "--session",
+        sessionId,
+        "--sequence",
+        "1",
+        "--image",
+        video,
+        "--observed-from",
+        "2026-10-08T00:00:00.000Z",
+        "--observed-to",
+        "2026-10-08T00:00:03.000Z",
+        "--process-name",
+        "notepad.exe",
+      ]);
+    } catch (err) {
+      output = String((err as { stdout?: string }).stdout ?? err);
+    }
+    expect(output).toContain("Video input is no longer supported");
+    expect(existsSync(ffmpegMarker)).toBe(false);
   });
 });

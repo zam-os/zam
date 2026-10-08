@@ -468,19 +468,15 @@ export interface GetObserverPolicyResponse {
 }
 
 /**
- * Returned by `capture-ui`, `start-recording`, `stop-recording`,
- * `observe-ui-snapshot`, `observe-ui-watch` and `get-observations` while
- * screen observation is off on this machine (ADR 2026-10-08 R8). Nothing was
- * captured, read or analyzed. `stop-recording` still stops a recording that
- * was started while the switch was on, and discards its file.
+ * Returned by `capture-ui`, `observe-ui-snapshot`, `observe-ui-watch` and
+ * `get-observations` while screen observation is off on this machine (ADR
+ * 2026-10-08 R8). Nothing was captured, read or analyzed.
  */
 export interface ScreenObservationDeniedResponse {
   sessionId: string | null;
   denied: true;
   denialReason: "screen-observation-off";
   reason: string;
-  /** stop-recording only: an active recording was stopped and discarded. */
-  discarded?: boolean;
 }
 
 export interface GetReviewsResponse {

@@ -193,9 +193,9 @@ describe("sweepObservationFiles", () => {
       }),
     );
     const oldId = sessionAt(20);
-    const freshId = sessionAt(2);
+    const freshId = sessionAt(0.5);
     const oldPath = writeRawLog(oldId, ["git status", "git commit -m x"], { ageDays: 20 });
-    const freshPath = writeRawLog(freshId, ["git status"], { ageDays: 2 });
+    const freshPath = writeRawLog(freshId, ["git status"], { ageDays: 0.5 });
     mkdirSync(join(root, "observer"), { recursive: true });
     const oldReports = join(root, "observer", `${oldId}.reports.jsonl`);
     writeFileSync(oldReports, "{}\n");
@@ -246,6 +246,22 @@ describe("sweepObservationFiles", () => {
     expect(existsSync(path)).toBe(true);
     // Redaction does not depend on the config and still happens.
     expect(readFileSync(path, "utf8")).not.toContain(SECRET);
+  });
+
+  it("keeps raw files for 24 hours by default", () => {
+    writeFileSync(
+      configPath,
+      JSON.stringify({
+        observation: { retentionSince: new Date(NOW.getTime() - 30 * DAY).toISOString() },
+      }),
+    );
+    const dayOld = writeRawLog(sessionAt(1.5), ["git status"], { ageDays: 1.5 });
+    const hoursOld = writeRawLog(sessionAt(0.5), ["git status"], { ageDays: 0.5 });
+    expect(
+      sweepObservationFiles({ now: NOW, configPath, locations: locations() }).retentionDays,
+    ).toBe(1);
+    expect(existsSync(dayOld)).toBe(false);
+    expect(existsSync(hoursOld)).toBe(true);
   });
 
   it("honours observation.retentionDays", () => {

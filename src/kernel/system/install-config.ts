@@ -107,7 +107,11 @@ export interface MachineObservationConfig {
    * says. The learner sets it by editing config.json; nothing else may.
    */
   screen?: boolean;
-  /** Days a raw observation file may stay on disk (R6). Default 14. */
+  /**
+   * Days a raw observation file may stay on disk (R6). Default 1: a raw
+   * log only has to live until it is turned into redacted evidence and a
+   * conclusion is drawn (owner decision on open question 6, 2026-10-08).
+   */
   retentionDays?: number;
   /**
    * When retention first ran on this machine. Sessions that started before
@@ -953,7 +957,7 @@ export function isScreenObservationEnabled(
   return loadInstallConfig(path).observation?.screen === true;
 }
 
-export const DEFAULT_OBSERVATION_RETENTION_DAYS = 14;
+export const DEFAULT_OBSERVATION_RETENTION_DAYS = 1;
 /** Longest window config.json may ask for; anything above is clamped. */
 export const MAX_OBSERVATION_RETENTION_DAYS = 365;
 

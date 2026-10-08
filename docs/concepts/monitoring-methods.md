@@ -41,7 +41,8 @@ session ends.
 The raw log is deleted once the learner confirms or dismisses the session's
 synthesis (`zam_observation_close`, `zam observation close`, or
 `zam session end --synthesize` after going through the candidates), and at
-the latest after 14 days (`observation.retentionDays` in `~/.zam/config.json`).
+the latest after 24 hours (`observation.retentionDays` in `~/.zam/config.json`,
+default 1).
 A value-free digest of the session's command prefixes stays, so skill
 discovery still finds recurring patterns. `zam observation status` shows what
 this machine keeps.
@@ -61,8 +62,11 @@ and sparse visual evidence in a separate observer sidecar:
 - [Observer next steps](../observer-next-steps.md)
 
 Start a UI learning session with `zam bridge start-session --context ui`,
-run watch from the desktop observer panel or `zam-observer watch --reports`,
-and poll reports with `zam bridge observe-ui-watch --session <id>`. End with
+run `zam-observer watch --reports`, and poll reports with
+`zam bridge observe-ui-watch --session <id>`. The desktop observer panel and
+the screen-recording path (`start-recording`, `stop-recording`, video input to
+`observe-ui-snapshot`) were deleted under ADR 2026-10-08, because nobody used
+them. End with
 `zam bridge end-session`. UI session synthesis uses the same review flow as
 shell sessions when `candidateTokens` are present (vision snapshots) or once
 deterministic token matching lands in Phase 1.

@@ -86,9 +86,8 @@ open a terminal.
   fingerprints. PDFs go only to models that declare `file` input. A Bonus
   token is published but has no card until the learner takes it.
 - **Observation without content** (ADR 2026-10-08): every screen surface
-  checks `screenObservationGate()` (or the desktop shell's
-  `machine_config::screen_observation_gate()`) before it captures, reads,
-  spawns or analyzes anything; `observation.screen` in `~/.zam/config.json`
+  checks `screenObservationGate()` before it captures, reads, spawns or
+  analyzes anything; `observation.screen` in `~/.zam/config.json`
   is off by default and no setting, bridge command or MCP tool may write it.
   Monitor logs are read only through `readMonitorLog`, which redacts every
   command; never add a raw read path, and redact any command text before it

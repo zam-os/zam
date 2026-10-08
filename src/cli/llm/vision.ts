@@ -1,7 +1,5 @@
-import { randomBytes } from "node:crypto";
 import { readFileSync } from "node:fs";
-import { tmpdir } from "node:os";
-import { basename, join } from "node:path";
+import { basename } from "node:path";
 import type {
   Database,
   SupportedLocale,
@@ -94,6 +92,14 @@ export async function observeUiSnapshotViaLLM(
   // ADR 2026-10-08 R8: checked here as well as in every bridge command, so no
   // caller reaches the model or ffmpeg while screen observation is off.
   if (!isScreenObservationEnabled()) throw new ScreenObservationOffError();
+  // Video input was removed with the recording path (ADR 2026-10-08, open
+  // question 3): nobody used it, and it sent whole screen recordings to a
+  // model.
+  if (/\.(mp4|mov|m4v|avi|mkv|webm)$/i.test(input.imagePath)) {
+    throw new Error(
+      "Video input is no longer supported; observe-ui-snapshot reads one PNG or JPEG image",
+    );
+  }
   const cfg = await getProviderForRole(db, "vision");
   if (!cfg.enabled) {
     throw new Error(
@@ -101,86 +107,11 @@ export async function observeUiSnapshotViaLLM(
     );
   }
 
-  const isVideo = /\.(mp4|mov|m4v|avi|mkv|webm)$/i.test(input.imagePath);
   const images: VisionImage[] = [];
-
-  if (isVideo) {
-    const { mkdirSync, readdirSync, rmSync } = await import("node:fs");
-    const { execFileSync } = await import("node:child_process");
-    const tempDir = join(
-      tmpdir(),
-      `zam-frames-${randomBytes(4).toString("hex")}`,
-    );
-    mkdirSync(tempDir, { recursive: true });
-
-    try {
-      // Argument arrays, never shell strings: a file name must not be read
-      // as shell syntax.
-      execFileSync(
-        "ffmpeg",
-        [
-          "-i",
-          input.imagePath,
-          "-vf",
-          "fps=1/3,scale=1280:-1",
-          "-vsync",
-          "vfr",
-          join(tempDir, "frame_%03d.png"),
-        ],
-        { stdio: "ignore" },
-      );
-
-      let files = readdirSync(tempDir)
-        .filter((f) => f.endsWith(".png"))
-        .sort();
-
-      if (files.length === 0) {
-        execFileSync(
-          "ffmpeg",
-          [
-            "-i",
-            input.imagePath,
-            "-vframes",
-            "1",
-            join(tempDir, "frame_001.png"),
-          ],
-          { stdio: "ignore" },
-        );
-        files = readdirSync(tempDir)
-          .filter((f) => f.endsWith(".png"))
-          .sort();
-      }
-
-      const maxFrames = cfg.maxFrames ?? 100;
-      let sampledFiles = files;
-      if (files.length > maxFrames) {
-        if (maxFrames <= 1) {
-          sampledFiles = [files[0]];
-        } else {
-          const step = (files.length - 1) / (maxFrames - 1);
-          sampledFiles = [];
-          for (let i = 0; i < maxFrames; i++) {
-            const index = Math.round(i * step);
-            sampledFiles.push(files[index]);
-          }
-        }
-      }
-
-      for (const file of sampledFiles) {
-        const bytes = readFileSync(join(tempDir, file));
-        images.push({ bytes, mime: "image/png" });
-      }
-    } finally {
-      try {
-        rmSync(tempDir, { recursive: true, force: true });
-      } catch {}
-    }
-  } else {
-    const imageBytes = readFileSync(input.imagePath);
-    const ext = input.imagePath.split(".").pop()?.toLowerCase();
-    const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
-    images.push({ bytes: imageBytes, mime });
-  }
+  const imageBytes = readFileSync(input.imagePath);
+  const ext = input.imagePath.split(".").pop()?.toLowerCase();
+  const mime = ext === "jpg" || ext === "jpeg" ? "image/jpeg" : "image/png";
+  images.push({ bytes: imageBytes, mime });
 
   if (images.length === 0) {
     throw new Error("No image data available for vision analysis");

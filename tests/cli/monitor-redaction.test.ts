@@ -233,7 +233,7 @@ describe("monitor payloads are redacted", () => {
       retentionDays: number;
       screenObservation: string;
     };
-    expect(status.retentionDays).toBe(14);
+    expect(status.retentionDays).toBe(1);
     expect(status.screenObservation).toBe("off");
     expect(status.sessions.map((s) => s.sessionId).sort()).toEqual(
       sessions.slice(1).sort(),
