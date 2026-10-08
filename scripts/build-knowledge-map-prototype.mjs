@@ -37,7 +37,8 @@ const page = `<title>ZAM Knowledge Map</title>
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <meta name="description" content="Browsable prototype of ZAM's knowledge map: one statement per node, switchable views including C4.">
 <style>
-/* Layout: a slim intro bar above the map shell; the shell itself stacks to one column below 860px. */
+/* Layout: a slim intro bar above the map shell, full window width; on wide screens the map stage fills the
+   window height below the bar (feedback scrolls into view under it). The shell stacks to one column below 860px. */
 :root {
   --bg-deep-space: #f3f5fa;
   --bg-card-frosted: #ffffff;
@@ -89,7 +90,7 @@ body {
   padding-block: 14px 24px;
   box-sizing: border-box;
 }
-.proto-wrap { max-width: 1320px; margin: 0 auto; display: flex; flex-direction: column; gap: 14px; }
+.proto-wrap { display: flex; flex-direction: column; gap: 14px; }
 #proto-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
 .proto-intro { margin: 0; flex: 1 1 320px; min-width: 0; color: var(--clr-text-secondary); font-size: 0.9rem; line-height: 1.45; max-width: 90ch; }
 .proto-intro strong { color: var(--clr-accent-purple); margin-right: 4px; letter-spacing: 0.03em; text-transform: uppercase; font-size: 0.78rem; }
@@ -98,6 +99,12 @@ body {
 .proto-lang button[aria-pressed="true"] { background: var(--clr-accent-purple); color: var(--clr-on-accent); }
 .proto-lang button:focus-visible { outline: 2px solid var(--clr-accent-purple); outline-offset: 2px; }
 #app { min-width: 0; }
+/* The shell clamps its stage to 70vh / 760px so it fits inside the Studio; a page of its own can use the
+   whole window. 200px is everything above the stage (page padding, intro bar, header, breadcrumbs, gaps)
+   plus a bottom margin, sized for the German intro, which wraps to three lines where the English one takes two. */
+@media (min-width: 861px) {
+  #app .km-body { --km-stage-h: max(460px, calc(100vh - 200px)); }
+}
 
 </style>
 <div class="proto-wrap">
