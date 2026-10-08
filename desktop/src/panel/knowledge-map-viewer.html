@@ -1,0 +1,93 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover" />
+    <!-- `zam knowledge-map view` replaces the title and the map data below
+         (src/cli/knowledge-map/viewer-page.ts). -->
+    <title>__ZAM_KNOWLEDGE_MAP_TITLE__</title>
+    <meta name="description" content="A repository's knowledge map: one statement per node, switchable views including C4." />
+    <style>
+      /* Layout: a slim intro bar above the map shell, full window width; on wide screens the map stage fills
+         the window height below the bar (feedback scrolls into view under it). The shell stacks to one column
+         below 860px. */
+      :root {
+        --bg-deep-space: #f3f5fa;
+        --bg-card-frosted: #ffffff;
+        --bg-card-subtle: #eef1f8;
+        --bg-field: #ffffff;
+        --border-soft: rgba(30, 34, 64, 0.13);
+        --clr-text-primary: #151a2d;
+        --clr-text-secondary: #343c55;
+        --clr-text-muted: #545c74;
+        --clr-accent-purple: #4f46c8;
+        --clr-on-accent: #ffffff;
+        --font-family: ui-sans-serif, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg-deep-space: #0c0e16;
+          --bg-card-frosted: #151826;
+          --bg-card-subtle: #10131e;
+          --bg-field: #1b1f30;
+          --border-soft: rgba(214, 220, 255, 0.13);
+          --clr-text-primary: #eceffa;
+          --clr-text-secondary: #c7cce0;
+          --clr-text-muted: #9aa1ba;
+          --clr-accent-purple: #a5a0ff;
+          --clr-on-accent: #14122e;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg-deep-space: #0c0e16;
+        --bg-card-frosted: #151826;
+        --bg-card-subtle: #10131e;
+        --bg-field: #1b1f30;
+        --border-soft: rgba(214, 220, 255, 0.13);
+        --clr-text-primary: #eceffa;
+        --clr-text-secondary: #c7cce0;
+        --clr-text-muted: #9aa1ba;
+        --clr-accent-purple: #a5a0ff;
+        --clr-on-accent: #14122e;
+        color-scheme: dark;
+      }
+      html, body { min-height: 100%; }
+      body {
+        margin: 0;
+        background: var(--bg-deep-space);
+        color: var(--clr-text-primary);
+        font-family: var(--font-family);
+        font-size: 15px;
+        padding-inline: 16px;
+        padding-block: 14px 24px;
+        box-sizing: border-box;
+      }
+      .viewer-wrap { display: flex; flex-direction: column; gap: 14px; }
+      #viewer-bar { display: flex; flex-wrap: wrap; align-items: center; gap: 10px 16px; }
+      .viewer-intro { margin: 0; flex: 1 1 320px; min-width: 0; color: var(--clr-text-secondary); font-size: 0.9rem; line-height: 1.45; max-width: 90ch; }
+      .viewer-intro strong { color: var(--clr-accent-purple); margin-right: 4px; letter-spacing: 0.03em; text-transform: uppercase; font-size: 0.78rem; }
+      .viewer-lang { display: inline-flex; border: 1px solid var(--border-soft); border-radius: 10px; overflow: hidden; }
+      .viewer-lang button { border: 0; background: transparent; color: var(--clr-text-primary); font: inherit; font-size: 0.82rem; padding: 5px 10px; cursor: pointer; }
+      .viewer-lang button[aria-pressed="true"] { background: var(--clr-accent-purple); color: var(--clr-on-accent); }
+      .viewer-lang button:focus-visible { outline: 2px solid var(--clr-accent-purple); outline-offset: 2px; }
+      #app { min-width: 0; }
+      .viewer-error { white-space: pre-line; color: var(--clr-text-secondary); }
+      /* The shell clamps its stage to 70vh / 760px so it fits inside the Studio; a page of its own can use the
+         whole window. 200px is everything above the stage (page padding, intro bar, header, breadcrumbs, gaps)
+         plus a bottom margin, sized for the German intro, which wraps to three lines where the English one takes
+         two. */
+      @media (min-width: 861px) {
+        #app .km-body { --km-stage-h: max(460px, calc(100vh - 200px)); }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="viewer-wrap">
+      <div id="viewer-bar"></div>
+      <div id="app"></div>
+    </div>
+    <script type="application/json" id="km-map">__ZAM_KNOWLEDGE_MAP_DATA__</script>
+    <script type="module" src="../knowledge-map/viewer.ts"></script>
+  </body>
+</html>

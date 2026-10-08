@@ -690,7 +690,7 @@
       "parent": "agents",
       "label": "In-app panels",
       "link": "show",
-      "text": "MCP Apps panels show recall, the learning graph and the knowledge base inside the agent app.",
+      "text": "MCP Apps panels show recall, the learning graph, the knowledge base and a repository's knowledge map inside the agent app.",
       "sources": [
         "docs/okf/mcp-surfaces.md"
       ],

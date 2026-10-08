@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-08T09:15:12.079Z
+timestamp: 2026-10-08T10:12:35.403Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -176,7 +176,7 @@ The model-visible learning tools cover:
 
 ## Repo knowledge map (alpha)
 
-Two more tools exist only while the learner has switched on **Knowledge map
+Three more tools exist only while the learner has switched on **Knowledge map
 (Alpha)** in Studio Settings. The server reads that machine-local switch
 (`~/.zam/config.json`, key `knowledgeMap`) when it starts, so an agent started
 earlier needs a restart.
@@ -185,6 +185,7 @@ earlier needs a restart.
 | --- | --- |
 | `zam_knowledge_map_guide` | Return the authoring guide for a repository knowledge map, the map's location, and the current map with its problems |
 | `zam_knowledge_map_write` | Validate a whole map against the repository and write `docs/knowledge-map/map.json` only when there is no error; on success the Studio shows that repository's map |
+| `zam_knowledge_map_show` | Show a repository's map in the knowledge-map panel (`ui://zam/knowledge-map`) with all its views; without a usable map the panel shows ZAM's own map as an example and says why |
 
 A map is a tree of one-sentence statements (each names its `parent`) plus
 typed links (`requires`, `leads_to`, `because`, `instead_of`, `example`,
@@ -206,8 +207,10 @@ client's roots: for reading the first root that already has a map, for
 writing the first root. The tools never fall back to the server's working
 directory; without roots the guide asks for `repo_root` and the write
 refuses. Without MCP, `zam knowledge-map guide` prints the guide and
-`zam knowledge-map validate --repo <path> [--write]` checks a map. The `zam`
-skill routes "knowledge map" and "Wissenskarte" requests to these tools.
+`zam knowledge-map validate --repo <path> [--write]` checks a map, and
+`zam knowledge-map view --repo <path>` fills the viewer page with the map and
+opens it in the browser, a page that needs no host and can be shared. The
+`zam` skill routes "knowledge map" and "Wissenskarte" requests to these tools.
 
 The guide's last section keeps a map current the way the same-PR rule keeps
 OKF articles current: a change that makes a statement untrue, or renames,
@@ -219,7 +222,7 @@ agent instructions.
 
 # MCP Apps panels
 
-Five self-contained HTML resources ship under `dist/ui/`:
+Six self-contained HTML resources ship under `dist/ui/`:
 
 | Opening tool | Resource | Purpose |
 | --- | --- | --- |
@@ -228,10 +231,15 @@ Five self-contained HTML resources ship under `dist/ui/`:
 | `zam_show_graph` | `ui://zam/graph` | Learning-token graph |
 | `zam_open_settings` | `ui://zam/settings` | Learner and evaluator settings |
 | `zam_okf_visualize` | `ui://zam/okf` | Repository knowledge base |
+| `zam_knowledge_map_show` | `ui://zam/knowledge-map` | Repository knowledge map (alpha) |
 
-`npm run build:panel` produces these resources. The VS Code / Antigravity
+`npm run build:panel` produces these resources, and next to them
+`knowledge-map-viewer.html`, which is no resource but the page
+`zam knowledge-map view` fills. The VS Code / Antigravity
 Companion extension hosts the same panels in a webview and routes recall
-evaluation through the selected IDE evaluator. Rapid replacement requests are
+evaluation through the selected IDE evaluator. Its command **ZAM: Show
+Knowledge Map** opens the map of the workspace's first folder; while the
+alpha is off it says how to switch it on. Rapid replacement requests are
 serialized and coalesced by recency, so the newest requested panel owns the
 final iframe.
 
@@ -535,5 +543,5 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-09-15 — Idle-Aware Study Time](../adr/2026-09-15-idle-aware-study-time.md)
 - [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
-- Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `src/cli/commands/knowledge-map.ts`, `docs/knowledge-map/map.schema.json`, `tests/cli/knowledge-map.test.ts`
+- Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `src/cli/commands/knowledge-map.ts`, `docs/knowledge-map/map.schema.json`, `tests/cli/knowledge-map.test.ts`; viewer page and panel: `src/cli/knowledge-map/viewer-page.ts`, `desktop/src/panel/knowledge-map-viewer.html`, `desktop/src/panel/knowledge-map.ts`, `src/vscode-extension/protocol.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`

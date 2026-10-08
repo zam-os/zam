@@ -21,6 +21,50 @@ knowledgeMapCommand
   });
 
 knowledgeMapCommand
+  .command("view")
+  .description(
+    "Open a repository's knowledge map in the browser, all views in one page",
+  )
+  .option("--repo <path>", "Repository root (default: the current directory)")
+  .option("--out <file>", "Write the page here instead of a temporary file")
+  .option("--no-open", "Write the page without opening it")
+  .option("--json", "Emit the result as JSON")
+  .action(
+    async (opts: {
+      repo?: string;
+      out?: string;
+      open: boolean;
+      json?: boolean;
+    }) => {
+      const { viewKnowledgeMap } = await import(
+        "../knowledge-map/viewer-page.js"
+      );
+      const result = viewKnowledgeMap({
+        repo: resolve(opts.repo ?? process.cwd()),
+        out: opts.out,
+        open: opts.open,
+      });
+      if (opts.json) {
+        console.log(JSON.stringify(result, null, 2));
+      } else if (!result.ok) {
+        console.error(result.error);
+        for (const issue of result.issues.filter(
+          (entry) => entry.level === "error",
+        )) {
+          console.error(
+            `error: ${issue.id ? `${issue.id}: ` : ""}${issue.message}`,
+          );
+        }
+      } else {
+        console.log(
+          `${result.opened ? "Opened" : "Wrote"} ${result.path} (${result.statements} statements, ${result.relations} links).`,
+        );
+      }
+      if (!result.ok) process.exitCode = 1;
+    },
+  );
+
+knowledgeMapCommand
   .command("validate")
   .description(
     "Check docs/knowledge-map/map.json of a repository; exits 1 on errors",

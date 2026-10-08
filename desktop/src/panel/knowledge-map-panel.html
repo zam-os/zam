@@ -1,0 +1,69 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <title>ZAM Knowledge Map</title>
+    <style>
+      /* The tokens the knowledge-map shell reads (desktop/src/knowledge-map/styles.ts), in light and dark.
+         knowledge-map.ts sets data-theme from the host's theme; without one the OS preference decides. */
+      :root {
+        --bg-deep-space: #f3f5fa;
+        --bg-card-frosted: #ffffff;
+        --bg-card-subtle: #eef1f8;
+        --bg-field: #ffffff;
+        --border-soft: rgba(30, 34, 64, 0.13);
+        --clr-text-primary: #151a2d;
+        --clr-text-secondary: #343c55;
+        --clr-text-muted: #545c74;
+        --clr-accent-purple: #4f46c8;
+        --clr-on-accent: #ffffff;
+        --font-family: system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+      }
+      @media (prefers-color-scheme: dark) {
+        :root:not([data-theme="light"]) {
+          --bg-deep-space: #14161f;
+          --bg-card-frosted: #1e2230;
+          --bg-card-subtle: #181b27;
+          --bg-field: #262b3d;
+          --border-soft: rgba(214, 220, 255, 0.14);
+          --clr-text-primary: #e8eaf2;
+          --clr-text-secondary: #c7cce0;
+          --clr-text-muted: #9aa0b0;
+          --clr-accent-purple: #a5a0ff;
+          --clr-on-accent: #14122e;
+          color-scheme: dark;
+        }
+      }
+      :root[data-theme="dark"] {
+        --bg-deep-space: #14161f;
+        --bg-card-frosted: #1e2230;
+        --bg-card-subtle: #181b27;
+        --bg-field: #262b3d;
+        --border-soft: rgba(214, 220, 255, 0.14);
+        --clr-text-primary: #e8eaf2;
+        --clr-text-secondary: #c7cce0;
+        --clr-text-muted: #9aa0b0;
+        --clr-accent-purple: #a5a0ff;
+        --clr-on-accent: #14122e;
+        color-scheme: dark;
+      }
+      body {
+        margin: 0;
+        background: var(--bg-deep-space);
+        color: var(--clr-text-primary);
+        font-family: var(--font-family);
+        font-size: 14px;
+      }
+      #zam-km-panel { padding: 12px 14px; }
+      .km-panel-status { margin: 0; color: var(--clr-text-secondary); white-space: pre-line; }
+    </style>
+  </head>
+  <body>
+    <div id="zam-km-panel">
+      <p class="km-panel-status" id="km-panel-status">Loading the map…</p>
+      <div id="km-panel-app"></div>
+    </div>
+    <script type="module" src="./knowledge-map.ts"></script>
+  </body>
+</html>

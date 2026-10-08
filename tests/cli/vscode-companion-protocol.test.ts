@@ -112,6 +112,42 @@ describe("VS Code companion protocol", () => {
     expect(COMPANION_APPS.okf.allowedTools.has("zam_okf_audit")).toBe(true);
   });
 
+  it("opens the knowledge map for a repository, also from a chat agent's intent", () => {
+    // Repo-scoped like okf: `zam_knowledge_map_show` takes no `user`.
+    expect(
+      buildOpeningArguments("knowledge-map", {
+        user: "thomas",
+        repo_root: "C:/src/team/Knowledge.Hub",
+        view: "c4",
+      }),
+    ).toEqual({ repo_root: "C:/src/team/Knowledge.Hub", view: "c4" });
+    expect(COMPANION_APPS["knowledge-map"].toolName).toBe(
+      "zam_knowledge_map_show",
+    );
+    // The panel gets the whole map in its opening result: no data tools.
+    expect(COMPANION_APPS["knowledge-map"].allowedTools).toEqual(
+      new Set(["zam_companion_context"]),
+    );
+    // The intent the tool publishes must parse on the Companion's side —
+    // the seam the 0.13.0 OKF panel shipped broken.
+    const now = Date.parse("2026-10-08T10:00:00.000Z");
+    expect(
+      parseCompanionIntent(
+        {
+          version: 1,
+          id: "01KMAP",
+          app: "knowledge-map",
+          input: { repo_root: "C:/src/team/Knowledge.Hub", view: "focus" },
+          createdAt: "2026-10-08T09:59:58.000Z",
+        },
+        now,
+      ),
+    ).toMatchObject({
+      app: "knowledge-map",
+      input: { repo_root: "C:/src/team/Knowledge.Hub", view: "focus" },
+    });
+  });
+
   it("serializes overlapping app mounts so the latest request wins", async () => {
     let markRecallStarted: () => void = () => {};
     let releaseRecall: () => void = () => {};
@@ -153,7 +189,13 @@ describe("VS Code companion protocol", () => {
   it("consumes every intent the ui-intent producer can publish", async () => {
     const dir = await mkdtemp(join(tmpdir(), "zam-ui-intent-"));
     try {
-      const apps: UiIntentApp[] = ["recall", "graph", "settings", "okf"];
+      const apps: UiIntentApp[] = [
+        "recall",
+        "graph",
+        "settings",
+        "okf",
+        "knowledge-map",
+      ];
       for (const app of apps) {
         const path = join(dir, `${app}.json`);
         await writeUiIntent(app, { bundle_dir: "docs/okf" }, { path });

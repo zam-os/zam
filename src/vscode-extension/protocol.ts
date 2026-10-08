@@ -3,7 +3,12 @@ import type {
   Tool,
 } from "@modelcontextprotocol/sdk/types.js";
 
-export type CompanionApp = "recall" | "graph" | "settings" | "okf";
+export type CompanionApp =
+  | "recall"
+  | "graph"
+  | "settings"
+  | "okf"
+  | "knowledge-map";
 
 export interface CompanionIntent {
   version: 1;
@@ -64,6 +69,14 @@ export const COMPANION_APPS: Record<CompanionApp, CompanionAppConfig> = {
       "zam_okf_focus",
       "zam_companion_context",
     ]),
+  },
+  // The knowledge map (alpha, ADR 2026-10-03) is read-only and repo-scoped:
+  // the panel gets the whole map in the opening result and needs no data
+  // tools; only the context bar's tool is allowed, as for every app.
+  "knowledge-map": {
+    title: "ZAM Knowledge Map",
+    toolName: "zam_knowledge_map_show",
+    allowedTools: new Set(["zam_companion_context"]),
   },
   settings: {
     title: "ZAM Settings",
@@ -178,8 +191,9 @@ export function buildOpeningArguments(
   app: CompanionApp,
   input: Record<string, string>,
 ): Record<string, string> {
-  // `okf` deliberately omits `user`: `zam_okf_visualize` is repo-scoped
-  // (unlike the learner-scoped apps), but forwards the requested initial view.
+  // `okf` and `knowledge-map` deliberately omit `user`: their tools are
+  // repo-scoped (unlike the learner-scoped apps), but forward the requested
+  // bundle or repository and the initial view.
   const allowed =
     app === "recall"
       ? ["user", "domain"]
@@ -187,7 +201,9 @@ export function buildOpeningArguments(
         ? ["user", "focus"]
         : app === "okf"
           ? ["bundle_dir", "view"]
-          : ["user"];
+          : app === "knowledge-map"
+            ? ["repo_root", "view"]
+            : ["user"];
   return Object.fromEntries(
     allowed.flatMap((key) =>
       typeof input[key] === "string" ? [[key, input[key]]] : [],
