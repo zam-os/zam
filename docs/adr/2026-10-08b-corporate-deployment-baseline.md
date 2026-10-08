@@ -124,7 +124,7 @@ Already in place, and kept: `get-settings` and `model-list` return no keys; `isS
 
    **Trust.** On Windows, ordinary users can create folders under `%ProgramData%` and then own them. ZAM therefore trusts the file only when the file and its folder are owned by Administrators or SYSTEM and are not writable by ordinary users. On macOS and Linux both must be owned by root and not group- or world-writable. A file that fails the check is ignored, and Settings says so.
 
-   **Semantics.** The policy can only restrict. A key it sets overrides settings, `~/.zam/config.json` and every tool call, but it cannot turn on something the learner turned off. Settings shows a managed value as "set by your organisation", so the learner sees why a switch is greyed out. The CLI and the MCP server read the file through the kernel. The Tauri shell reads it as well before it starts the sidecar itself (`desktop/src-tauri/src/lib.rs:556`, `lib.rs:811`).
+   **Semantics.** The policy can only restrict. A key it sets overrides settings, `~/.zam/config.json` and every tool call, but it cannot turn on something the learner turned off. Settings shows a managed value as "set by your organisation", so the learner sees why a switch is greyed out. The CLI and the MCP server read the file through the kernel, and nothing else needs to: the desktop shell no longer starts the screen observer (ADR 2026-10-08, Phase 0A). Whatever can capture the screen ships as a separate install that an organisation can prohibit with its own tooling; `observation.screen` is the counterpart inside ZAM (ADR 2026-10-08, *Trade-off analysis*, packaging).
 
    **Errors.** The file has a `version` field. Unknown keys are ignored with a warning. A known key with an invalid value takes that key's fail-closed value; a file that is not valid JSON applies every key's fail-closed value. Settings shows a banner ("Your organisation's ZAM policy could not be read — contact your administrator"), and `zam policy check` lets an administrator validate a file before deploying it.
 
@@ -134,7 +134,7 @@ Already in place, and kept: `get-settings` and `model-list` return no keys; `isS
    |---|---|---|---|
    | `observation.screen` | `denied` | No screen surface (ADR 2026-10-08 R8) | `denied` |
    | `observation.shell` | `denied`, `allowed` | `denied`: `zam monitor start` refuses and every monitor tool returns a typed refusal. When allowed, commands are always redacted (ADR 2026-10-08 R5) | `denied` |
-   | `observation.retentionDays` | number | Upper bound for the retention window of raw observation files (ADR 2026-10-08 R6) | Built-in default (14) |
+   | `observation.retentionDays` | number | Upper bound for the retention window of raw observation files (ADR 2026-10-08 R6) | Built-in default (1 day) |
    | `llm.cloud` | `denied`, `allowed` | `denied`: only `local` and `lan` endpoints (D2), and no fallback to a cloud row | `denied` |
    | `llm.endpoints` | host list | Only these model hosts | Only `local` and `lan` endpoints |
    | `sourceLinks.remoteFetch` | `denied`, `allowed` | Content fetches off | `denied` |
@@ -240,7 +240,7 @@ A plan follows the review. The intended order:
 | L1 Plain `http`/`ws` to a server database | D8 | Not re-checked |
 | L1 Mobile app trusts only its bundled root certificates, so corporate TLS inspection breaks it | Deferred: not part of this baseline; a later `tls.extraRoots` policy key is the likely answer | Not re-checked |
 | L2 VS Code extension start path | D8 | Present (bare `zam`, workspace as working directory, no untrusted-workspace declaration) |
-| L3 ffmpeg shell string; snapshot SQL import | ADR 2026-10-08 Phase 0.3; snapshot import stays CLI-only, for the learner's own snapshots | ffmpeg string present |
+| L3 ffmpeg shell string; snapshot SQL import | ADR 2026-10-08 Phase 0A.5; snapshot import stays CLI-only, for the learner's own snapshots | ffmpeg string present |
 | L4 `isSafeUrl` gaps; curriculum redirects | D2 | Present (rebinding window; curriculum follows redirects unchecked); dotted IPv4-mapped form already handled |
 | L5 Third-party installers | Kept: they run only on an explicit learner action | Not changed |
 | L6 Harness configuration rewrites; `post-commit` overwrite | D8 | Not re-checked |
@@ -267,6 +267,6 @@ ZAM code, checked on `main` (87955c59):
 - `src/vscode-extension/extension.ts`: bare `zam` (184), workspace working directory (244)
 - `src/cli/bootstrap/logic.ts`: `readInstallChannel` (136–151)
 - `src/bridge/mobile-pairing.ts`: pairing payload (11–37)
-- `desktop/src-tauri/src/lib.rs`: sidecar spawned by the shell (556, 811)
+- `desktop/src-tauri/src/lib.rs`: sidecar spawned by the shell (556, 811); removed by ADR 2026-10-08 Phase 0A
 - `.github/workflows/ci.yml`: no `permissions`, tag-pinned actions
 - `README.md`: one-line installers (108–113)
