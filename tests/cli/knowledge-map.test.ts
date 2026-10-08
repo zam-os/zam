@@ -43,6 +43,17 @@ import {
   validateKnowledgeMap,
 } from "../../src/cli/knowledge-map/model.js";
 import {
+  findViewerTemplate,
+  renderViewerPage,
+  viewKnowledgeMap,
+} from "../../src/cli/knowledge-map/viewer-page.js";
+import {
+  MAP_DATA_PLACEHOLDER,
+  MAP_DATA_SLOT,
+  MAP_TITLE_SLOT,
+  VIEWER_TEMPLATE_FILE,
+} from "../../src/cli/knowledge-map/viewer-slots.js";
+import {
   getKnowledgeMapConfig,
   openDatabase,
   setKnowledgeMapConfig,
@@ -691,6 +702,56 @@ describe("knowledge map: MCP tools", () => {
     const names = (await client.listTools()).tools.map((tool) => tool.name);
     expect(names).not.toContain("zam_knowledge_map_guide");
     expect(names).not.toContain("zam_knowledge_map_write");
+    expect(names).not.toContain("zam_knowledge_map_show");
+    await client.close();
+    await server.close();
+  });
+
+  it("shows a repository's map in the knowledge-map panel", async () => {
+    setKnowledgeMapConfig({ enabled: true, view: "c4" });
+    expect(writeKnowledgeMap(dir, smallMap()).ok).toBe(true);
+    const { client, server } = await connect();
+    const tool = (await client.listTools()).tools.find(
+      (candidate) => candidate.name === "zam_knowledge_map_show",
+    );
+    expect(tool?._meta).toMatchObject({
+      ui: { resourceUri: "ui://zam/knowledge-map" },
+    });
+    expect(tool?.annotations?.readOnlyHint).toBe(true);
+
+    // The view defaults to the one chosen in Studio Settings.
+    const shown = await client.callTool({
+      name: "zam_knowledge_map_show",
+      arguments: { repo_root: dir },
+    });
+    expect(shown.structuredContent).toMatchObject({
+      repoRoot: dir,
+      found: true,
+      view: "c4",
+      issues: [],
+    });
+    expect(
+      (shown.structuredContent as { map: { root: string } }).map.root,
+    ).toBe("demo");
+
+    // No map is not an error: the panel opens and shows ZAM's own map.
+    const empty = await client.callTool({
+      name: "zam_knowledge_map_show",
+      arguments: { repo_root: join(dir, "no-map-here"), view: "outline" },
+    });
+    expect(empty.isError).toBeFalsy();
+    expect(empty.structuredContent).toMatchObject({
+      found: false,
+      map: null,
+      view: "outline",
+    });
+
+    const resource = await client.readResource({
+      uri: "ui://zam/knowledge-map",
+    });
+    expect(resource.contents[0]).toMatchObject({
+      uri: "ui://zam/knowledge-map",
+    });
     await client.close();
     await server.close();
   });
@@ -789,6 +850,93 @@ describe("knowledge map: MCP tools", () => {
 
     await client.close();
     await server.close();
+  });
+});
+
+describe("knowledge map: viewer page", () => {
+  const template = `<!doctype html><html><head>${MAP_TITLE_SLOT}</head><body>${MAP_DATA_SLOT}<script type="module">const slot = "${MAP_DATA_PLACEHOLDER}";</script></body></html>`;
+  let dir: string;
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), "zam-km-view-"));
+    writeFileSync(join(dir, "README.md"), "# Demo\n");
+  });
+
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  function demoMap(): KnowledgeMap {
+    const map = validateKnowledgeMap(smallMap(), { sourceExists: () => true })
+      .map as KnowledgeMap;
+    expect(map).not.toBeNull();
+    return map;
+  }
+
+  it("fills the map and title into the template, so neither can break the page", () => {
+    const map = demoMap();
+    map.title = "A & B <c>";
+    map.statements[1].text = "Closes </script><b>early.";
+    const page = renderViewerPage(template, map);
+    expect(page).toContain("<title>A &amp; B &lt;c&gt; · Knowledge map</title>");
+    expect(page).not.toContain("</script><b>");
+    const data = page.match(
+      /<script type="application\/json" id="km-map">([\s\S]*?)<\/script>/,
+    )?.[1];
+    expect(JSON.parse(data ?? "null")).toEqual(map);
+    // The page script's own copy of the placeholder stays untouched.
+    expect(page).toContain(`const slot = "${MAP_DATA_PLACEHOLDER}"`);
+    expect(() => renderViewerPage("<html></html>", map)).toThrow(/rebuild/);
+  });
+
+  it("writes and opens the page, and explains a missing or broken map", () => {
+    expect(writeKnowledgeMap(dir, smallMap()).ok).toBe(true);
+    const out = join(dir, "out", "demo.html");
+    const opened: string[] = [];
+    const result = viewKnowledgeMap({
+      repo: dir,
+      out,
+      open: true,
+      template,
+      openPage: (path) => {
+        opened.push(path);
+        return true;
+      },
+    });
+    expect(result).toMatchObject({
+      ok: true,
+      path: out,
+      opened: true,
+      statements: 5,
+      relations: 2,
+    });
+    expect(opened).toEqual([out]);
+    expect(readFileSync(out, "utf8")).toContain('"root":"demo"');
+
+    const missing = viewKnowledgeMap({
+      repo: join(dir, "no-map-here"),
+      open: false,
+      template,
+    });
+    expect(missing).toMatchObject({ ok: false });
+    expect(missing.ok ? "" : missing.error).toContain("No knowledge map");
+
+    writeFileSync(join(dir, "docs", "knowledge-map", "map.json"), "{ nope");
+    const broken = viewKnowledgeMap({ repo: dir, open: false, template });
+    expect(broken.ok).toBe(false);
+    expect(broken.ok ? "" : broken.error).toContain("validate");
+  });
+
+  it("finds the built template from the CLI bundle and from a source checkout", () => {
+    mkdirSync(join(dir, "dist", "ui"), { recursive: true });
+    mkdirSync(join(dir, "dist", "cli"), { recursive: true });
+    mkdirSync(join(dir, "src", "cli", "knowledge-map"), { recursive: true });
+    const built = join(dir, "dist", "ui", VIEWER_TEMPLATE_FILE);
+    writeFileSync(built, template);
+    expect(findViewerTemplate(join(dir, "dist", "cli"))).toBe(built);
+    expect(findViewerTemplate(join(dir, "src", "cli", "knowledge-map"))).toBe(
+      built,
+    );
   });
 });
 

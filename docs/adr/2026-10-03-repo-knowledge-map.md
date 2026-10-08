@@ -1,6 +1,6 @@
 # Repo Knowledge Map: An Alpha Feature with Swappable Views
 
-**Status:** Accepted — alpha implemented (2026-10-03); JSON-LD and C4 added (2026-10-04)\
+**Status:** Accepted — alpha implemented (2026-10-03); JSON-LD and C4 added (2026-10-04); viewer page and panel added (2026-10-08)\
 **Date:** 2026-10-03\
 **Deciders:** Thomas (project owner)\
 **Related:**
@@ -593,10 +593,22 @@ Added on 2026-10-04:
     #381, as registry views fed by an adapter from the shared map; the
     registry records each view's author.
 
+Added on 2026-10-08:
+
+11. **Viewer page and panel.** The prototype became the viewer page that
+    `zam knowledge-map view` fills with any repository's map and opens in the
+    browser; `npm run knowledge-map:prototype` runs it on ZAM's own map. The
+    same shell runs as the MCP Apps panel `ui://zam/knowledge-map`, opened by
+    `zam_knowledge_map_show` (alpha-gated like the other map tools) in hosts
+    that render apps, and in the VS Code Companion by **ZAM: Show Knowledge
+    Map**. Like the Studio, the panel shows ZAM's own map with a note when the
+    repository has none or its map has errors.
+12. **Keep it current.** The guide's section 8 and ZAM's own CLAUDE.md and
+    AGENTS.md put a map under the same-change rule as OKF articles.
+
 **Later:**
 
 - staleness marking;
-- the views inside an MCP Apps panel, so the map opens next to the agent;
 - an argument view;
 - probe questions, if the feedback does not separate the views;
 - a learning tie-in: hide a neighbour and ask the learner to recall it,
@@ -698,9 +710,10 @@ Code and repository documents:
 - `src/cli/knowledge-map/` — model and validator, JSON-LD context, loading and writing, guide, feedback
 - `desktop/src/knowledge-map/c4-layout.ts`, `views/c4.ts` — the C4 model and view
 - `docs/knowledge-map/map.schema.json` — the published JSON Schema
-- `desktop/src/knowledge-map/` — shell, layout, registry, views, Studio page, Settings card, prototype entry
+- `desktop/src/knowledge-map/` — shell, layout, registry, views, Studio page, Settings card, viewer entry
 - `docs/knowledge-map/map.json` — ZAM's own map
-- `scripts/build-knowledge-map-prototype.mjs` — the browsable prototype
+- `src/cli/knowledge-map/viewer-page.ts`, `desktop/src/panel/knowledge-map-viewer.html` — the viewer page
+- `desktop/src/panel/knowledge-map.ts`, `desktop/src/panel/knowledge-map-panel.html` — the MCP Apps panel
 - `desktop/src/panel/okf-render.ts` — `layoutFocusGraph`, the existing focused ring layout
 - `desktop/src/panel/graph.ts` — click-to-recentre and breadcrumb in the learning graph card
 - `desktop/src/secrets-vault.ts`, `src/kernel/system/install-config.ts` — the alpha opt-in pattern

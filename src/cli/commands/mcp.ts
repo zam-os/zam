@@ -107,6 +107,7 @@ const RECALL_RESOURCE_URI = "ui://zam/recall";
 const GRAPH_RESOURCE_URI = "ui://zam/graph";
 const SETTINGS_RESOURCE_URI = "ui://zam/settings";
 const OKF_RESOURCE_URI = "ui://zam/okf";
+const KNOWLEDGE_MAP_RESOURCE_URI = "ui://zam/knowledge-map";
 
 const MCP_SERVER_INSTRUCTIONS =
   "ZAM has two distinct knowledge surfaces. For “Wissensgraph”, “knowledge " +
@@ -2143,6 +2144,68 @@ export function createMcpServer(
           };
         },
       ),
+    );
+
+    // The knowledge-map panel (MCP Apps): the Studio's viewer in any host
+    // that renders apps, and in the VS Code Companion through the UI intent,
+    // mirroring zam_okf_visualize. A missing or invalid map is not an error:
+    // the panel still opens and shows ZAM's own map as an example with why.
+    registerAppTool(
+      server,
+      "zam_knowledge_map_show",
+      {
+        title: "Show a repository knowledge map",
+        description:
+          "Show the knowledge map (Wissenskarte) of a repository in a panel with all its views, C4 included. Use it when the user asks to see, open or show a knowledge map; build or change one with zam_knowledge_map_guide instead. Alpha.",
+        inputSchema: {
+          repo_root: repoRootSchema,
+          view: z
+            .string()
+            .optional()
+            .describe(
+              "View to open first, e.g. focus, outline, levels, concept or c4. Default: the view chosen in Studio Settings.",
+            ),
+        },
+        annotations: { ...commonAnnotations, readOnlyHint: true },
+        _meta: { ui: { resourceUri: KNOWLEDGE_MAP_RESOURCE_URI } },
+      },
+      wrapHandler(async (params: { repo_root?: string; view?: string }) => {
+        const { loadKnowledgeMap } = await import("../knowledge-map/load.js");
+        const repoRoot = await resolveMapRepoRoot(params.repo_root, "read");
+        const view = params.view ?? getKnowledgeMapConfig().view ?? "focus";
+        if (repoRoot !== null) {
+          // The absolute root, like zam_okf_visualize's bundle_dir: the
+          // Companion's own zam server runs with a different cwd.
+          await publishUiIntent("knowledge-map", { repo_root: repoRoot, view });
+        }
+        const loaded = repoRoot === null ? null : loadKnowledgeMap(repoRoot);
+        return {
+          repoRoot,
+          found: loaded?.found ?? false,
+          map: loaded?.map ?? null,
+          issues: loaded?.issues ?? [],
+          view,
+        };
+      }),
+    );
+
+    registerAppResource(
+      server,
+      "zam-knowledge-map",
+      KNOWLEDGE_MAP_RESOURCE_URI,
+      { mimeType: RESOURCE_MIME_TYPE },
+      async () => ({
+        contents: [
+          {
+            uri: KNOWLEDGE_MAP_RESOURCE_URI,
+            mimeType: RESOURCE_MIME_TYPE,
+            text: loadPanelHtml(
+              "knowledge-map-panel.html",
+              "ZAM Knowledge Map",
+            ),
+          },
+        ],
+      }),
     );
   }
 

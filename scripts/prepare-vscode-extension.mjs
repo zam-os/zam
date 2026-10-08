@@ -67,6 +67,7 @@ const extensionPackage = {
     "onCommand:zam.openRecall",
     "onCommand:zam.showGraph",
     "onCommand:zam.showOkf",
+    "onCommand:zam.showKnowledgeMap",
     "onCommand:zam.openSettings",
     "onCommand:zam.chooseRecallModel",
   ],
@@ -109,6 +110,12 @@ const extensionPackage = {
         title: "Open Knowledge Base",
         category: "ZAM",
         icon: "$(library)",
+      },
+      {
+        command: "zam.showKnowledgeMap",
+        title: "Show Knowledge Map",
+        category: "ZAM",
+        icon: "$(map)",
       },
       {
         command: "zam.openSettings",

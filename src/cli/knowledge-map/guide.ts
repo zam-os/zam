@@ -164,7 +164,9 @@ no error. Fix the errors and call it again. Warnings (for example more than
 ${SOFT_MAX_CHILDREN} details under one statement) are advice.
 
 Then tell the user the map is ready in ZAM Studio under "Knowledge map"
-(Wissenskarte), which shows this repository's map from now on.
+(Wissenskarte), which shows this repository's map from now on. In VS Code,
+the Companion command "ZAM: Show Knowledge Map" opens it as well, and
+\`zam knowledge-map view --repo <path>\` opens it in the browser.
 
 Without ZAM's MCP tools, write the file yourself and run
 \`zam knowledge-map validate --repo <path> --write\`. It prints every problem,

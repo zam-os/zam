@@ -37,12 +37,19 @@ import {
   knowledgeMapViewsByAuthor,
   parseKnowledgeMapViewId,
 } from "../../desktop/src/knowledge-map/registry.js";
+import { sampleNotice } from "../../desktop/src/knowledge-map/show-result.js";
+import { parseEmbeddedMap } from "../../desktop/src/knowledge-map/viewer.js";
 import {
   buildMapIndex,
   type KnowledgeMap,
   RELATION_KINDS,
   validateKnowledgeMap,
 } from "../../src/cli/knowledge-map/model.js";
+import {
+  MAP_DATA_PLACEHOLDER,
+  MAP_DATA_SLOT,
+  MAP_TITLE_SLOT,
+} from "../../src/cli/knowledge-map/viewer-slots.js";
 
 const ROOT = resolve(import.meta.dirname, "../..");
 const MAP_DIR = join(ROOT, "desktop/src/knowledge-map");
@@ -590,6 +597,70 @@ describe("concept map picture", () => {
       conceptPicture(index, "zam").spokes.some((spoke) => spoke.id === "cli"),
     ).toBe(false);
     expect(conceptPicture(index, "missing").centerId).toBe("zam");
+  });
+});
+
+describe("knowledge map viewer page and panel", () => {
+  const zamMapText = readFileSync(
+    join(ROOT, "docs/knowledge-map/map.json"),
+    "utf8",
+  );
+
+  it("reads the map the CLI embeds, and explains an empty or broken slot", () => {
+    const parsed = parseEmbeddedMap(zamMapText);
+    expect("map" in parsed ? parsed.map.title : parsed.error).toBe("ZAM");
+    expect(parseEmbeddedMap(MAP_DATA_PLACEHOLDER)).toMatchObject({
+      error: expect.stringContaining("zam knowledge-map view"),
+    });
+    expect(parseEmbeddedMap("{ nope")).toMatchObject({
+      error: expect.stringContaining("not valid JSON"),
+    });
+  });
+
+  it("carries exactly the slots the CLI fills", () => {
+    const html = readFileSync(
+      join(ROOT, "desktop/src/panel/knowledge-map-viewer.html"),
+      "utf8",
+    );
+    expect(html.split(MAP_DATA_SLOT)).toHaveLength(2);
+    expect(html.split(MAP_TITLE_SLOT)).toHaveLength(2);
+    // Shared with the browser bundle, so it must not pull in Node modules.
+    expect(
+      readFileSync(join(ROOT, "src/cli/knowledge-map/viewer-slots.ts"), "utf8"),
+    ).not.toMatch(/^import /m);
+  });
+
+  it("says why the panel shows ZAM's own map instead", () => {
+    const key = (name: string) => name;
+    const map = JSON.parse(zamMapText);
+    expect(sampleNotice({ found: true, map }, key)).toBeNull();
+    expect(sampleNotice({ found: false, map: null }, key)).toBe(
+      "km_sample_note",
+    );
+    expect(
+      sampleNotice(
+        {
+          found: true,
+          map: null,
+          issues: [
+            { level: "error", id: "a", message: "broken" },
+            { level: "warning", message: "advice" },
+          ],
+        },
+        key,
+      ),
+    ).toBe("km_invalid\n• a: broken");
+  });
+
+  it("keeps the panel and the page off the Studio bridge", () => {
+    for (const path of [
+      join(ROOT, "desktop/src/panel/knowledge-map.ts"),
+      join(MAP_DIR, "viewer.ts"),
+    ]) {
+      expect(readFileSync(path, "utf8"), path).not.toContain(
+        "bridge-transport",
+      );
+    }
   });
 });
 
