@@ -266,12 +266,63 @@ function isFlag(token: Token): boolean {
 }
 
 /**
- * A flag's name, or null when the token is no plain `--name` / `--name=value`
- * flag (an attached short option such as `-H'X-Api-Key: …'`).
+ * A flag's name, or null when the token is no plain `--name`, `--name=value`
+ * or PowerShell `-Name:value` flag (an attached short option such as
+ * `-H'X-Api-Key: …'` is none of them).
  */
 function flagName(token: Token): string | null {
+  const bound = POWERSHELL_COLON_BINDING.exec(token.value);
+  if (bound) return bound[1];
   const match = /^-{1,2}([A-Za-z][A-Za-z0-9_.-]*)(?:=|$)/.exec(token.value);
   return match ? match[1] : null;
+}
+
+/** PowerShell binds a parameter value with a colon: `-Password:value`. */
+const POWERSHELL_COLON_BINDING = /^-([A-Za-z][A-Za-z0-9]*):/;
+
+/**
+ * The offset in a flag's raw text where its attached value starts: after
+ * `=`, or after the colon of a PowerShell binding. -1 when the value is the
+ * next token.
+ */
+function attachedValueOffset(token: Token): number {
+  if (POWERSHELL_COLON_BINDING.test(token.value)) {
+    return token.raw.indexOf(":") + 1;
+  }
+  const equals = token.raw.indexOf("=");
+  return equals === -1 ? -1 : equals + 1;
+}
+
+/**
+ * PowerShell parameters that carry a secret. A cmdlet accepts any unique
+ * prefix of a parameter name (`-Pa`, `-Tok`, `-ClientSec`), so inside a
+ * cmdlet or script a flag counts when it is a prefix of one of these.
+ */
+const POWERSHELL_SECRET_PARAMETERS = [
+  "password",
+  "passphrase",
+  "token",
+  "accesstoken",
+  "apikey",
+  "clientsecret",
+  "secret",
+  "credential",
+  "certificatepassword",
+];
+
+/** `Verb-Noun` with an approved PowerShell verb, or a `.ps1` script. */
+const POWERSHELL_COMMAND =
+  /^(?:add|approve|assert|backup|block|build|checkpoint|clear|close|compare|complete|compress|confirm|connect|convert|convertfrom|convertto|copy|debug|deny|deploy|disable|disconnect|dismount|edit|enable|enter|exit|expand|export|find|format|get|grant|group|hide|import|initialize|install|invoke|join|limit|lock|measure|merge|mount|move|new|open|optimize|out|ping|pop|protect|publish|push|read|receive|redo|register|remove|rename|repair|request|reset|resize|resolve|restart|restore|resume|revoke|save|search|select|send|set|show|skip|split|start|step|stop|submit|suspend|switch|sync|test|trace|unblock|undo|uninstall|unlock|unprotect|unpublish|unregister|update|use|wait|watch|write)-[a-z0-9]+$/i;
+
+function isPowerShellAbbreviation(name: string): boolean {
+  const lower = name.toLowerCase();
+  return (
+    lower.length >= 2 &&
+    /^[a-z]+$/.test(lower) &&
+    POWERSHELL_SECRET_PARAMETERS.some((parameter) =>
+      parameter.startsWith(lower),
+    )
+  );
 }
 
 function isSensitiveName(name: string): boolean {
@@ -308,9 +359,17 @@ function valueSpan(token: Token): Span {
   return afterEquals(token) ?? [token.start, token.end];
 }
 
+/**
+ * The value token after a flag that takes one. A following token that looks
+ * like a flag is taken as the value only when its text, without the leading
+ * hyphens, looks like a generated secret (`--token -AbC…`).
+ */
 function nextValue(words: Token[], index: number): Token | null {
   const next = words[index + 1];
-  if (!next || isFlag(next)) return null;
+  if (!next) return null;
+  if (isFlag(next) && !looksLikeSecret(next.value.replace(/^-+/, ""))) {
+    return null;
+  }
   return next;
 }
 
@@ -330,16 +389,46 @@ function collectSpans(segment: Segment, all: Segment[], spans: Span[]): void {
       ASSIGNMENT_COMMANDS.has(command);
     if (assigning && ENV_ASSIGNMENT.test(word.value)) add(afterEquals(word));
   }
-  if (command === "setx") add(spanOf(words[commandIndex + 2]));
+  if (command === "setx") {
+    // `setx [/s host [/u user [/p password]]] NAME value [/m]`: switches may
+    // come first, so the value is the second positional, not a fixed index.
+    // `/p` carries a password itself; `/k` and `/f` name a source instead
+    // of a value.
+    const positionalsAfterSwitches: Token[] = [];
+    let fromSource = false;
+    for (let i = commandIndex + 1; i < words.length; i++) {
+      const value = words[i].value;
+      if (/^[/-][A-Za-z]$/.test(value)) {
+        const switchName = value.slice(1).toLowerCase();
+        if (
+          ["s", "u", "p", "k", "f", "a", "r", "x", "d"].includes(switchName)
+        ) {
+          if (switchName === "p") add(spanOf(words[i + 1]));
+          if (["k", "f", "a", "r", "x"].includes(switchName)) fromSource = true;
+          i++;
+        }
+        continue;
+      }
+      positionalsAfterSwitches.push(words[i]);
+    }
+    if (!fromSource) add(spanOf(positionalsAfterSwitches[1]));
+  }
 
+  const commandWord = commandIndex >= 0 ? words[commandIndex].value : "";
+  const powerShellCommand =
+    POWERSHELL_COMMAND.test(command) || /\.ps1$/i.test(commandWord);
   for (let i = commandIndex + 1; commandIndex >= 0 && i < words.length; i++) {
     const word = words[i];
     if (!isFlag(word)) continue;
     const name = flagName(word);
-    if (name && isSensitiveName(name)) {
-      if (word.value.includes("=")) add(afterEquals(word));
-      else add(spanOf(nextValue(words, i)));
-    }
+    if (!name) continue;
+    const sensitive =
+      isSensitiveName(name) ||
+      (powerShellCommand && isPowerShellAbbreviation(name));
+    if (!sensitive) continue;
+    const offset = attachedValueOffset(word);
+    if (offset !== -1) add(tailSpan(word, offset));
+    else add(spanOf(nextValue(words, i)));
   }
 
   const args = commandIndex >= 0 ? words.slice(commandIndex + 1) : [];
@@ -394,6 +483,17 @@ function collectSpans(segment: Segment, all: Segment[], spans: Span[]): void {
       if (colon !== -1) add(tailSpan(target, colon + 1));
     }
   }
+  if (
+    (command === "docker" || command === "podman" || command === "nerdctl") &&
+    words.some((word) => word.value === "login")
+  ) {
+    // `docker login -u bob -p secret` and `-psecret`.
+    for (let i = commandIndex + 1; i < words.length; i++) {
+      const value = words[i].value;
+      if (value === "-p") add(spanOf(words[i + 1]));
+      else if (/^-p.+/.test(value)) add(tailSpan(words[i], 2));
+    }
+  }
   if (CONTAINER_TOOLS.has(command)) {
     for (let i = commandIndex + 1; i < words.length; i++) {
       const value = words[i].value;
@@ -427,7 +527,11 @@ function collectSpans(segment: Segment, all: Segment[], spans: Span[]): void {
   if (command === "convertto-securestring") {
     add(spanOf(positionals[0]));
     for (let i = commandIndex + 1; i < words.length; i++) {
-      if (/^-string$/i.test(words[i].value)) add(spanOf(words[i + 1]));
+      if (/^-s(?:t(?:r(?:i(?:n(?:g)?)?)?)?)?$/i.test(words[i].value)) {
+        add(spanOf(words[i + 1]));
+      } else if (/^-s[a-z]*:/i.test(words[i].value)) {
+        add(tailSpan(words[i], words[i].raw.indexOf(":") + 1));
+      }
     }
   }
 
@@ -475,7 +579,19 @@ function collectSpans(segment: Segment, all: Segment[], spans: Span[]): void {
   // Values piped into a command that reads a secret from stdin.
   const readsSecretFromStdin = (candidate: Segment) => {
     const values = candidate.words.map((word) => word.value.toLowerCase());
+    // `sudo -S` reads the password from stdin; its flags sit before the
+    // wrapped command.
+    const wrapper = candidate.words.slice(
+      0,
+      candidate.commandIndex === -1
+        ? candidate.words.length
+        : candidate.commandIndex,
+    );
+    const sudoReadsStdin =
+      wrapper.some((word) => commandName(word.value) === "sudo") &&
+      wrapper.some((word) => /^-[A-Za-z]*S[A-Za-z]*$/.test(word.value));
     return (
+      sudoReadsStdin ||
       candidate.command === "chpasswd" ||
       values.some((value) => STDIN_SECRET_FLAGS.test(value)) ||
       (candidate.command === "passwd" && values.includes("--stdin")) ||
@@ -556,6 +672,12 @@ const PATTERN_RULES: Array<[RegExp, string]> = [
     /("[^"\n]*(?:pass|pwd|secret|token|key|auth|cred|cookie|bearer)[^"\n]*"\s*:\s*)"(?:[^"\\\n]|\\.)*"/gi,
     `$1"${REDACTED}"`,
   ],
+  // The same inside a double-quoted shell argument, where every quote is
+  // escaped: `curl -d "{\"password\": \"…\"}"`.
+  [
+    /(\\"[^"\\\n]*(?:pass|pwd|secret|token|key|auth|cred|cookie|bearer)[^"\\\n]*\\"\s*:\s*)\\"(?:[^"\\\n]|\\(?!"))*\\"/gi,
+    `$1\\"${REDACTED}\\"`,
+  ],
   // PowerShell environment and SetEnvironmentVariable.
   [/(\$env:[A-Za-z0-9_]+\s*=\s*)("[^"]*"|'[^']*'|[^\s;|]+)/gi, `$1${REDACTED}`],
   [
@@ -597,6 +719,9 @@ function shannonEntropy(value: string): number {
  * digits and an entropy close to that of a random string of their length.
  */
 export function looksLikeSecret(run: string): boolean {
+  // One leading hyphen may belong to the secret (`-AbC…`); a run that starts
+  // with two is a long option name.
+  if (/^-[^-]/.test(run)) return looksLikeSecret(run.slice(1));
   if (run.length < 20 || run.startsWith("-") || ULID.test(run)) return false;
   if (/^[0-9a-f]+$/i.test(run)) return run.length >= 32 && run.length !== 40;
   if (!/[0-9]/.test(run) || !/[A-Za-z]/.test(run)) return false;

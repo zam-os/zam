@@ -99,6 +99,23 @@ const CORPUS: Array<[string, string, string]> = [
   ["aws configure set", `aws configure set aws_secret_access_key ${S}60`, "aws configure set"],
   ["htpasswd -b", `htpasswd -b .htpasswd bob ${S}61`, "htpasswd -b .htpasswd bob"],
   ["az -p", `az login --service-principal -u app -p ${S}62 --tenant t`, "az login"],
+  // Found in review of #395
+  ["PowerShell colon binding", `Connect-AzAccount -Password:${S}66`, "Connect-AzAccount"],
+  ["PowerShell -Token:", `Invoke-Thing -Token:${S}67`, "Invoke-Thing"],
+  ["SecureString -String:", `ConvertTo-SecureString -String:${S}68 -AsPlainText -Force`, "-AsPlainText"],
+  ["PowerShell abbreviation -Pa", `Connect-AzAccount -Pa ${S}69`, "Connect-AzAccount -Pa"],
+  ["PowerShell abbreviation -Tok", `Invoke-RestMethod -Uri https://x.test -Tok ${S}70`, "-Uri https://x.test -Tok"],
+  ["PowerShell abbreviation -ClientSec", `New-AzADServicePrincipal -ClientSec ${S}71`, "-ClientSec"],
+  ["script abbreviation", `.\\deploy.ps1 -Cred ${S}72`, "deploy.ps1 -Cred"],
+  ["setx /M first", `setx /M API_KEY ${S}73`, "setx /M API_KEY"],
+  ["setx remote", `setx /s host /u bob /p ${S}74 API_KEY ${S}75`, "API_KEY"],
+  ["escaped JSON", `curl -d "{\\"password\\": \\"${S}76\\"}" https://x.test`, "https://x.test"],
+  ["leading hyphen value", `gh auth login --token -${S}77ExtraChars123456`, "gh auth login --token"],
+  ["docker login -p", `docker login -u bob -p ${S}78`, "docker login -u bob -p"],
+  ["docker login -pVALUE", `docker login -u bob -p${S}79`, "docker login -u bob -p"],
+  ["podman login -p", `podman login -u bob -p ${S}80 quay.io`, "quay.io"],
+  ["sudo -S", `echo ${S}81 | sudo -S apt update`, "sudo -S apt update"],
+  ["sudo -kS", `printf '${S}82' | sudo -kS systemctl restart app`, "systemctl restart app"],
   // Here-strings and heredocs
   ["here-string", `grep foo <<< '${S}63'`, "grep foo <<<"],
   ["heredoc", `cat <<EOF > .env\nAPI_KEY=${S}64\nEOF`, "cat <<EOF > .env"],
@@ -139,6 +156,13 @@ const UNCHANGED = [
   "cd /tmp/550e8400-e29b-41d4-a716-446655440000",
   "gh api -H 'Accept: application/json' /user --jq .login",
   "aws s3 cp s3://bucket/2026/10/08/report.csv .",
+  // The abbreviation rule applies to cmdlets and scripts only.
+  "ffmpeg -i in.mp4 -to 00:01:00 out.mp4",
+  "ffmpeg -i in.mp4 -ac 2 out.mp4",
+  "Get-ChildItem -Path C:\\src -Recurse",
+  "sort -S 50% big.txt",
+  "docker run -p 8080:80 -e DEBUG nginx",
+  "npm test -- --experimental-vm-modules",
 ];
 
 describe("redactCommand", () => {
