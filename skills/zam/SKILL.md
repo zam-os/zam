@@ -32,6 +32,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. Returns the `attemptId` to pass to `zam_submit_review`. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
+| `zam_observation_close` | After synthesis: keep a digest and delete the session's raw observation files on this machine. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
 | `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
@@ -40,7 +41,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_submit_review` | Submit a card self-rating, advance its FSRS state, and log it to the session steps. |
 | `zam_review_action` | Apply review actions (rate, skip, edit/deprecate/delete tokens or cards) with optional confirmation. |
 | `zam_suggest_foundations` | Suggest existing prerequisite tokens for a newly failed or registered token. |
-| `zam_monitor` | Read or analyze shell-monitor evidence for a session. |
+| `zam_monitor` | Read or analyze shell-monitor evidence for a session; command lines come back redacted. |
 | `zam_open_recall` | Open the spoiler-free Recall app; answering, reveal, and rating stay inside the card. |
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
@@ -190,7 +191,7 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work. Command texts in the candidates are redacted (`[redacted]` marks a value ZAM removed); never ask the learner to repeat a redacted value. When the learner has gone through the candidates, call `zam_observation_close` with the session ID and `outcome: "confirmed"`; if they do not want this session used, call it with `outcome: "dismissed"` instead of submitting ratings. Either way ZAM deletes the raw monitor log on this machine and keeps only a digest for skill discovery.
 
 **For UI / screen tasks (observation mode):**
 

@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-08T10:12:35.403Z
+timestamp: 2026-10-08T20:05:00Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -149,7 +149,12 @@ The model-visible learning tools cover:
   already trim distractions on write with the idle-aware clock;
 - token search, registration, and prerequisite linking;
 - companion learner/model context;
-- monitored practice and sampling;
+- monitored practice and sampling: `zam_monitor` returns command lines with
+  values in secret positions replaced by `[redacted]`, and synthesis
+  candidates carry the same redacted texts. Once the learner confirmed or
+  dismissed a session's synthesis, `zam_observation_close` keeps a value-free
+  digest for skill discovery and deletes the session's raw observation files
+  on that machine (ADR 2026-10-08);
 - focused Recall, Learning Graph, Settings, and Studio panels.
 
 ## OKF knowledge work
@@ -528,6 +533,10 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - Tests: `tests/cli/mcp-material-import.test.ts`, `tests/cli/desktop-launch.test.ts`
 - Code: `src/cli/commands/mcp.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/desktop-launch.ts`, `skills/zam/SKILL.md`
+
+- [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
+- Tests: `tests/cli/monitor-redaction.test.ts`
+- Code: `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-07-11 — Codex and VS Code Companion Surfaces](../adr/2026-07-11-codex-and-vscode-companion-surfaces.md)

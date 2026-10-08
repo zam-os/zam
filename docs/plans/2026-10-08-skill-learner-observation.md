@@ -38,7 +38,7 @@ Done on `feat/observation-containment`. Evidence and deviations:
 
 Goal: command text reaches agents and models only in redacted form, and raw observation files do not outlive their purpose (R5, R6). The shell hooks append command lines themselves (`src/kernel/observation/shell-hooks.ts:42–133`), so ZAM cannot redact on write.
 
-- [ ] **0B.1** Add a redactor to the kernel, next to `src/kernel/observation/monitor-io.ts`. It keeps the command name, subcommands and flag names, and replaces values with a fixed marker in at least these positions:
+- [x] **0B.1** Add a redactor to the kernel, next to `src/kernel/observation/monitor-io.ts`. It keeps the command name, subcommands and flag names, and replaces values with a fixed marker in at least these positions:
   - environment assignments: `NAME=value`, `export NAME=value`, `env NAME=value cmd`, `$env:NAME = "value"`, `set NAME=value`, `setx NAME value`, `[Environment]::SetEnvironmentVariable(…)`;
   - headers in every form: `-H 'Authorization: …'`, `-H'…'`, `--header=…`, `Cookie`, `X-Api-Key`, `X-Auth-Token`;
   - secret flags in separate, `=` and attached forms: `--token`, `--password`, `--secret`, `--api-key`, `-p` and `-pVALUE` (as in `mysql`), `-u user:pass`, `--user`, `--data 'password=…'`, `--from-literal=…`, `-e KEY=value` (as in `docker`), `openssl … -pass pass:…`, `sshpass -p`;
@@ -49,12 +49,12 @@ Goal: command text reaches agents and models only in redacted form, and raw obse
   - credentials inside URLs (`user:password@`) and connection strings (`Password=…;`, `postgres://user:pass@…`);
   - the name heuristic: any value whose key or flag contains `pass`, `pwd`, `secret`, `token`, `key`, `auth`, `cred`, `cookie` or `bearer`;
   - high-entropy strings above a length threshold, JWT-shaped tokens (dots split naive entropy checks), and inline private-key blocks.
-- [ ] **0B.2** Apply the redactor as a response filter on every payload derived from a monitor log, not field by field: `zam_monitor` (`src/cli/commands/mcp.ts:1293`; it is `readOnlyHint`, so auto-approvable), the monitor handlers in `src/cli/bridge-handlers.ts` (including `commands[]` and `unmatchedCommands`), `analyzeMonitor`, synthesis candidates (`matchedCommandTexts` and `unmatchedCommands`), `discover-skills` examples, and the synthesis returned by `zam_session_end`.
-- [ ] **0B.3** At `zam monitor stop` and at session end, rewrite the session's log in redacted form. Sweep for logs of sessions that never stopped at `zam monitor start`, bridge start and desktop start.
-- [ ] **0B.4** Retention (R6): add an explicit dismiss for a session's synthesis (bridge, MCP and one Studio action). Delete a session's raw monitor log and observer reports once synthesis is confirmed or dismissed, and any such file older than `observation.retentionDays` (default 14; ADR open question 6). Run the sweep at session end, `zam monitor start`, bridge start and desktop start. Files from before this change are only listed until the owner confirms (0B.6).
-- [ ] **0B.5** Before deleting a log, store a value-free digest of the session (redacted, normalised command prefixes), and make `discover-skills` (`src/cli/commands/bridge.ts:1906`) read digests.
-- [ ] **0B.6** Inventory and report: `zam-recording-*` and `zam-capture-*` in the OS temp directory, `~/.zam/observer/*.jsonl` (may hold OCR text) and `~/.zam/monitor/*.jsonl` (may hold unredacted commands). Delete only after the owner confirms the list.
-- [ ] **0B.7** Tests:
+- [x] **0B.2** Apply the redactor as a response filter on every payload derived from a monitor log, not field by field: `zam_monitor` (`src/cli/commands/mcp.ts:1293`; it is `readOnlyHint`, so auto-approvable), the monitor handlers in `src/cli/bridge-handlers.ts` (including `commands[]` and `unmatchedCommands`), `analyzeMonitor`, synthesis candidates (`matchedCommandTexts` and `unmatchedCommands`), `discover-skills` examples, and the synthesis returned by `zam_session_end`.
+- [x] **0B.3** At `zam monitor stop` and at session end, rewrite the session's log in redacted form. Sweep for logs of sessions that never stopped at `zam monitor start`, bridge start and desktop start.
+- [x] **0B.4** Retention (R6): add an explicit dismiss for a session's synthesis (bridge, MCP and one Studio action). Delete a session's raw monitor log and observer reports once synthesis is confirmed or dismissed, and any such file older than `observation.retentionDays` (default 14; ADR open question 6). Run the sweep at session end, `zam monitor start`, bridge start and desktop start. Files from before this change are only listed until the owner confirms (0B.6).
+- [x] **0B.5** Before deleting a log, store a value-free digest of the session (redacted, normalised command prefixes), and make `discover-skills` (`src/cli/commands/bridge.ts:1906`) read digests.
+- [x] **0B.6** Inventory and report: `zam-recording-*` and `zam-capture-*` in the OS temp directory, `~/.zam/observer/*.jsonl` (may hold OCR text) and `~/.zam/monitor/*.jsonl` (may hold unredacted commands). Delete only after the owner confirms the list.
+- [x] **0B.7** Tests:
   - a corpus of fake secrets in every position 0B.1 claims to cover, asserted absent from every payload in 0B.2 and from the rewritten log;
   - existing monitor-pattern tests still match after redaction;
   - retention deletes after confirmation, after dismissal and after the window, and never touches a file from before the change without confirmation;
@@ -62,6 +62,17 @@ Goal: command text reaches agents and models only in redacted form, and raw obse
   - `discover-skills` finds the same proposals from digests as from raw logs.
 
 Exit gate: owner approval; one PR; release-note lines "monitored commands are stored and returned redacted" and "observation files are deleted after use".
+
+Done on `feat/observation-containment`, in the same PR as 0A. Evidence and deviations:
+
+- 0B.1: `src/kernel/observation/redact.ts`. Besides every listed position it also covers `sqlcmd -P`, `az -p`, `openssl -k`, `htpasswd -b`, `--otp`, `git config KEY VALUE`, `aws configure set`, secret managers (`gh secret set`, `kubectl create secret`) and heredoc bodies. Hex runs of 32 or more characters count as secrets, except 40-character git object ids; ULIDs and UUIDs pass. A secret buried as one segment of a path survives.
+- 0B.2: the filter sits in `readMonitorLog`, the one read path every listed consumer uses, rather than on each response; a caller-supplied pattern therefore cannot probe the raw text either. `prepareSessionSynthesis` redacts commands a caller passes in, and `applySessionSynthesis` redacts the texts an agent sends back before they reach the shared database.
+- 0B.3: the rewrite keeps the file's modification time, so it does not extend retention, and drops lines that do not parse. The sweep rewrites only logs idle for ten minutes; a rewrite can lose one line a hook appends at that moment.
+- 0B.4: dismiss and confirm share one action: `zam_observation_close` (MCP, destructive), `zam bridge observation-close`, `zam observation close`, and a "Delete observation logs" row in Settings → Data that appears only while logs exist. `zam session end --synthesize` closes as confirmed once the learner went through the candidates. Legacy means "the session's ULID predates `observation.retentionSince`", which the first sweep records in `config.json`. The desktop app's own watch logs in its app data directory are covered too.
+- 0B.5: digests live in `~/.zam/monitor/digests/` (newest 200 kept); `discover-skills` reads logs and digests.
+- 0B.6: `zam observation inventory [--delete]`, a learner command only, never on the bridge or MCP.
+- 0B.7: `tests/kernel/observation/redact.test.ts` (corpus, idempotence, pattern matching after redaction), `tests/kernel/observation/retention.test.ts`, `tests/cli/monitor-redaction.test.ts`.
+- Found on the way: the analyzer matches patterns as case-insensitive substrings, not as prefixes or regular expressions as the ADR's context section and the `TokenPattern` comment say.
 
 ## Phase 1 — Review
 

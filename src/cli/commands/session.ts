@@ -24,17 +24,22 @@ import {
   buildReviewQueue,
   CardNotDueError,
   CardNotReviewableError,
+  closeSessionObservation,
   endSession,
+  finalizeSessionObservation,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
   hostTimeZone,
   isObserverPolicyConfigured,
+  isScreenObservationEnabled,
   logStep,
   OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   prepareSessionSynthesis,
+  SCREEN_OBSERVATION_OFF_REASON,
   startSession,
+  sweepObservationFiles,
 } from "../../kernel/index.js";
 import {
   fetchActiveWorkItems,
@@ -121,10 +126,16 @@ sessionCommand
         execution_context: opts.context as ExecutionContext,
       });
 
+      // While screen observation is off (ADR 2026-10-08 R8) the policy is
+      // never reached, so the hint says that instead.
       const observerHint =
-        opts.context === "ui" && !(await isObserverPolicyConfigured(db))
-          ? OBSERVER_POLICY_UNSET_HINT
-          : null;
+        opts.context !== "ui"
+          ? null
+          : !isScreenObservationEnabled()
+            ? SCREEN_OBSERVATION_OFF_REASON
+            : !(await isObserverPolicyConfigured(db))
+              ? OBSERVER_POLICY_UNSET_HINT
+              : null;
 
       await db.close();
 
@@ -365,6 +376,29 @@ function loadPatternFile(path: string | undefined): TokenPattern[] {
   });
 }
 
+/**
+ * After `zam session end`: redact the session's monitor log, close its
+ * observation when the learner went through the candidates, and run the
+ * retention sweep. Housekeeping never fails the command.
+ */
+function settleObservationAfterEnd(
+  sessionId: string,
+  confirmed: boolean,
+): boolean {
+  let closed = false;
+  try {
+    finalizeSessionObservation(sessionId);
+    if (confirmed) {
+      closed =
+        closeSessionObservation(sessionId, "confirmed").deleted.length > 0;
+    }
+    sweepObservationFiles();
+  } catch {
+    // The next sweep tries again.
+  }
+  return closed;
+}
+
 async function runSynthesisPhase(
   db: Database,
   sessionId: string,
@@ -372,7 +406,7 @@ async function runSynthesisPhase(
     patternFile?: string;
     minConfidence: SynthesisConfidence;
   },
-): Promise<number> {
+): Promise<{ applied: number; reviewed: number }> {
   const preview = await prepareSessionSynthesis(db, {
     sessionId,
     explicitPatterns: loadPatternFile(options.patternFile),
@@ -397,11 +431,11 @@ async function runSynthesisPhase(
     console.log(
       "  No token patterns found. Link tokens to agent skills or pass --patterns <file>.",
     );
-    return 0;
+    return { applied: 0, reviewed: 0 };
   }
   if (preview.candidates.length === 0) {
     console.log("  No new medium/high-confidence ratings to confirm.");
-    return 0;
+    return { applied: 0, reviewed: 0 };
   }
 
   let applied = 0;
@@ -473,7 +507,7 @@ async function runSynthesisPhase(
     }
   }
 
-  return applied;
+  return { applied, reviewed: preview.candidates.length };
 }
 
 // ── zam session log ───────────────────────────────────────────────────────
@@ -549,17 +583,28 @@ sessionCommand
       }
 
       const before = await getSessionSummary(db, opts.session);
+      let reviewed = 0;
       if (opts.synthesize) {
-        await runSynthesisPhase(db, opts.session, {
+        ({ reviewed } = await runSynthesisPhase(db, opts.session, {
           patternFile: opts.patterns,
           minConfidence: opts.minConfidence as SynthesisConfidence,
-        });
+        }));
       }
 
       if (!before.session.completed_at) {
         await endSession(db, opts.session);
       } else if (!opts.synthesize) {
         throw new Error(`Session already completed: ${opts.session}`);
+      }
+
+      // ADR 2026-10-08 R5/R6: the log is redacted once the session ends; once
+      // the learner went through its candidates, the raw files go and a
+      // digest stays for skill discovery.
+      const closed = settleObservationAfterEnd(opts.session, reviewed > 0);
+      if (closed && !opts.json) {
+        console.log(
+          "\nThis session's monitor log was deleted; a summary of its command prefixes stays for skill discovery.",
+        );
       }
 
       const summary = await getSessionSummary(db, opts.session);

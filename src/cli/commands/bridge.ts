@@ -7,13 +7,7 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  rmSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
@@ -44,6 +38,7 @@ import {
   checkCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
+  commandsFromDigest,
   commitTextImport,
   configuredLibraryKind,
   confirmCardSplit,
@@ -79,6 +74,7 @@ import {
   getKnowledgeContextByName,
   getKnowledgeMapConfig,
   getMachineVoicePreference,
+  getObservationRetentionDays,
   getOnboardingDone,
   getOnboardingPersona,
   getPostgresCredentials,
@@ -96,6 +92,7 @@ import {
   goalTopicCurriculumText,
   hasCommand,
   importCurriculumCards,
+  inventoryObservationFiles,
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
@@ -108,8 +105,10 @@ import {
   listKnowledgeContexts,
   listMaterialAreaContext,
   listMaterialBonusItems,
+  listMonitorLogIds,
   listPersonalCards,
   listProviderApiKeyRefs,
+  listSessionDigestIds,
   listTokens,
   listUserCardsForCurriculumTopic,
   loadStoredCredentials,
@@ -122,6 +121,7 @@ import {
   postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
+  readSessionDigest,
   readUiObservationLog,
   resolveCredentials,
   resolveObserverPolicy,
@@ -143,6 +143,7 @@ import {
   setTursoCredentials,
   slugify,
   supportsLocalGeneration,
+  sweepObservationFiles,
   syncObserverSidecarPolicy,
   takeMaterialBonusItem,
   tursoVaultAccessPending,
@@ -183,6 +184,7 @@ import {
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
+  closeObservation as handleCloseObservation,
   createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
   enrolBonusAtomHandler as handleEnrolBonusAtom,
@@ -1558,6 +1560,76 @@ bridgeCommand
     });
   });
 
+// ── zam bridge observation-close ──────────────────────────────────────────
+
+bridgeCommand
+  .command("observation-close")
+  .description(
+    "Confirm or dismiss a session's observation: keep a value-free digest and delete its raw files on this machine (JSON)",
+  )
+  .requiredOption("--session <id>", "Session ID")
+  .requiredOption("--outcome <outcome>", "confirmed | dismissed")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await handleCloseObservation(db, {
+            session: opts.session,
+            outcome: opts.outcome,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge observation-status ─────────────────────────────────────────
+
+/**
+ * What the Studio's Data card shows (ADR 2026-10-08 R6): which sessions
+ * still have raw observation files on this machine. No paths, no content.
+ */
+bridgeCommand
+  .command("observation-status")
+  .description(
+    "Sessions with raw observation files on this machine, and the retention window (JSON)",
+  )
+  .action(() => {
+    try {
+      const sessions = new Map<
+        string,
+        { sessionId: string; modifiedAt: string; legacy: boolean }
+      >();
+      for (const file of inventoryObservationFiles()) {
+        if (
+          !file.sessionId ||
+          (file.kind !== "monitor-log" && file.kind !== "observer-reports")
+        ) {
+          continue;
+        }
+        const known = sessions.get(file.sessionId);
+        sessions.set(file.sessionId, {
+          sessionId: file.sessionId,
+          modifiedAt:
+            known && known.modifiedAt > file.modifiedAt
+              ? known.modifiedAt
+              : file.modifiedAt,
+          legacy: file.legacy || (known?.legacy ?? false),
+        });
+      }
+      jsonOut({
+        screenObservation: isScreenObservationEnabled() ? "on" : "off",
+        retentionDays: getObservationRetentionDays(),
+        sessions: [...sessions.values()].sort((a, b) =>
+          b.sessionId.localeCompare(a.sessionId),
+        ),
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
 // ── zam bridge session-open ───────────────────────────────────────────────
 
 bridgeCommand
@@ -1936,36 +2008,28 @@ bridgeCommand
   )
   .action(async (opts) => {
     try {
-      const monitorDir = join(homedir(), ".zam", "monitor");
-      let files: string[];
-      try {
-        files = readdirSync(monitorDir).filter((f) => f.endsWith(".jsonl"));
-      } catch {
+      // Raw logs and the digests of logs already deleted (ADR 2026-10-08
+      // R6): both carry the redacted command prefixes discovery compares.
+      const logIds = new Set(listMonitorLogIds());
+      const sessionIds = [
+        ...new Set([...logIds, ...listSessionDigestIds()]),
+      ].sort((a, b) => b.localeCompare(a)); // ULID session IDs sort chronologically
+
+      if (sessionIds.length === 0) {
         jsonOut({ proposals: [], message: "No monitor logs found." });
         return;
       }
 
-      if (files.length === 0) {
-        jsonOut({ proposals: [], message: "No monitor logs found." });
-        return;
-      }
-
-      // Take the most recent N sessions by file modification time
+      // Take the most recent N sessions
       const limit = Number(opts.limit);
-      const sorted = files
-        .map((f) => ({ name: f, path: join(monitorDir, f) }))
-        .sort((a, b) => b.name.localeCompare(a.name)) // ULID session IDs sort chronologically
-        .slice(0, limit);
-
-      // Load and parse each session's commands
       const sessionCommands = new Map<
         string,
         ReturnType<typeof pairCommands>
       >();
-      for (const file of sorted) {
-        const sessionId = file.name.replace(".jsonl", "");
-        const events = readMonitorLog(sessionId);
-        const commands = pairCommands(events);
+      for (const sessionId of sessionIds.slice(0, limit)) {
+        const commands = logIds.has(sessionId)
+          ? pairCommands(readMonitorLog(sessionId))
+          : commandsFromDigest(readSessionDigest(sessionId)?.prefixes ?? []);
         if (commands.length > 0) {
           sessionCommands.set(sessionId, commands);
         }
@@ -8792,6 +8856,15 @@ bridgeCommand
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
+    // Retention (ADR 2026-10-08 R6) at bridge start, which is also desktop
+    // start. Off the startup path, and silent: stdout is the protocol.
+    setTimeout(() => {
+      try {
+        sweepObservationFiles();
+      } catch (err) {
+        logDiag(`observation sweep failed | ${(err as Error).message}`);
+      }
+    }, 0);
     let databaseHost = createPersistentDatabaseHost(openDatabase);
 
     const processRequest = async (line: string): Promise<string> => {

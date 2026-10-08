@@ -1,14 +1,14 @@
 ---
 type: architecture
 title: Observer Privacy Model and Policy Enforcement
-description: The machine-local screen observation switch, two-layer consent and the ObserverPolicy contract that governs screen capture across the CLI and the native Rust observer sidecar.
+description: The machine-local screen observation switch, two-layer consent and the ObserverPolicy contract for screen capture, and how shell observation is redacted and retained.
 tags:
   - observer
   - privacy
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-10-08T19:37:13Z
+timestamp: 2026-10-08T20:10:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
@@ -89,8 +89,9 @@ is mirrored to `user_config`, where older clients still look.
 - `consent`: `"per-capture"`, `"per-session"`, or `"standing"`. Default is
   `"per-session"`.
 - `retention`: `"none"` (ephemeral in-memory analysis only), `"session"`, or
-  `"persist"`. Default is `"none"`. The value is declared, not enforced: no
-  code deletes observer reports because of it.
+  `"persist"`. Default is `"none"`. The value is declared, not enforced; what
+  actually deletes observation files is the retention described under
+  *Shell Observation* below.
 - `redactWindowTitles`: boolean (default `true`), redacts title strings from stored logs.
 - `audioOptIn`: boolean (default `false`), microphone audio is strictly opt-in.
 
@@ -155,9 +156,45 @@ longer reads pixels to name it (the OCR fallback was removed under ADR
 title, a customer name in a list — so UI Automation events are not
 content-free.
 
+# Shell Observation: Redaction and Retention
+
+The shell monitor (`zam monitor`) is not a screen surface and is not behind
+the switch, but the same ADR governs what it keeps:
+
+- **Redaction on every read.** The shell hooks append command lines to
+  `~/.zam/monitor/<session>.jsonl` themselves, so ZAM redacts on the way out:
+  `readMonitorLog` (`src/kernel/observation/monitor-io.ts`) is the only read
+  path, and every command it returns went through `redactCommand`
+  (`src/kernel/observation/redact.ts`). `zam_monitor`, the bridge monitor
+  commands, synthesis candidates, unmatched commands and skill discovery all
+  read through it. Values in known secret positions become `[redacted]`:
+  environment assignments, flags and headers whose name says secret, URL
+  credentials, `key=value` pairs and JSON fields with a secret-sounding key,
+  per-command positions (mysql `-p…`, `curl -u`, `docker -e`, `net use`,
+  `sshpass`, `config set`), values piped into a command that reads a secret
+  from stdin, here-strings, heredoc bodies, JWTs, private keys, well-known
+  token formats and high-entropy strings. A secret in an unknown position
+  with low entropy survives; redaction is weaker than having no content.
+- **Redaction at rest.** The log is rewritten in redacted form at
+  `zam monitor stop` and at session end, and a sweep redacts any log idle for
+  ten minutes. Texts an agent sends back for a confirmed synthesis are
+  redacted again before they reach the shared database.
+- **Retention.** A session's raw monitor log and observer reports are deleted
+  once the learner confirms or dismisses its synthesis
+  (`zam_observation_close`, `zam observation close`, the Settings → Data
+  action, or `zam session end --synthesize` after the candidates), and at the
+  latest after `observation.retentionDays` (default 14) in `config.json`. A
+  value-free digest of the session's command prefixes stays for skill
+  discovery. The sweep (`src/kernel/observation/retention.ts`) runs at session
+  end, `zam monitor start`, `zam mcp` start and `zam bridge serve` start. It
+  never consults the database, so a confirmation on another machine deletes
+  nothing here. Sessions that started before retention first ran on a
+  machine are legacy: redacted, but deleted only after the owner confirms
+  `zam observation inventory --delete`.
+
 # Citations
 
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `desktop/src-tauri/src/machine_config.rs`, `observer/src/privacy.rs`, `observer/src/uia.rs`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `desktop/src-tauri/src/machine_config.rs`, `observer/src/privacy.rs`, `observer/src/uia.rs`

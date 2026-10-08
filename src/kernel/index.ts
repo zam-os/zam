@@ -605,6 +605,8 @@ export {
   getMonitorPath,
   monitorLogExists,
   readMonitorLog,
+  redactMonitorEvent,
+  rewriteMonitorLogRedacted,
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
 export type { SidecarPrivacyPolicy } from "./observation/observer-sidecar-policy.js";
@@ -638,6 +640,35 @@ export {
   parseObserverPolicy,
   resolveObserverPolicy,
 } from "./observation/policy.js";
+export {
+  looksLikeSecret,
+  REDACTED,
+  redactCommand,
+} from "./observation/redact.js";
+export type {
+  CloseObservationResult,
+  ObservationFile,
+  ObservationFileKind,
+  ObservationLocations,
+  ObservationOutcome,
+  SessionDigest,
+  SweepOptions,
+  SweepResult,
+} from "./observation/retention.js";
+export {
+  closeSessionObservation,
+  defaultDesktopObserverDir,
+  deleteObservationFiles,
+  finalizeSessionObservation,
+  getDigestDir,
+  inventoryObservationFiles,
+  listMonitorLogIds,
+  listSessionDigestIds,
+  OBSERVATION_OUTCOMES,
+  readSessionDigest,
+  sweepObservationFiles,
+  writeSessionDigest,
+} from "./observation/retention.js";
 export type { ScreenObservationRefusal } from "./observation/screen-switch.js";
 export {
   SCREEN_OBSERVATION_OFF,
@@ -674,7 +705,11 @@ export type {
   DiscoveryOptions,
   SkillProposal,
 } from "./observation/skill-discovery.js";
-export { discoverSkills } from "./observation/skill-discovery.js";
+export {
+  commandsFromDigest,
+  digestCommandPrefixes,
+  discoverSkills,
+} from "./observation/skill-discovery.js";
 export type {
   UiActionType,
   UiApplicationContext,

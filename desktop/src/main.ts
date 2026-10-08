@@ -1154,6 +1154,12 @@ function initializeTranslations() {
   document.getElementById("theme-dark-option")!.textContent = t("theme_dark");
   document.getElementById("btn-open-data-folder")!.textContent = t("btn_open_data_folder");
   document.getElementById("btn-backup-db")!.textContent = t("btn_backup_db");
+  document.getElementById("lbl-settings-observation-logs")!.textContent = t(
+    "settings_observation_logs",
+  );
+  document.getElementById("btn-observation-logs-delete")!.textContent = t(
+    "btn_observation_logs_delete",
+  );
   document.getElementById("btn-refresh-database-status")!.textContent =
     t("database_refresh");
 
@@ -5136,6 +5142,70 @@ async function loadStatsView(): Promise<void> {
   }
 }
 
+interface ObservationStatusResponse {
+  screenObservation: "on" | "off";
+  retentionDays: number;
+  sessions: Array<{ sessionId: string; modifiedAt: string; legacy: boolean }>;
+}
+
+let observationSessionIds: string[] = [];
+
+/**
+ * The Data card's observation row (ADR 2026-10-08 R6). It appears only while
+ * monitored sessions left logs on this device, so a learner who never used a
+ * monitored terminal never meets it.
+ */
+async function loadObservationStatus(): Promise<void> {
+  const row = document.getElementById("observation-logs-row");
+  const detail = document.getElementById("observation-logs-detail");
+  if (!row || !detail) return;
+  try {
+    const status = await runBridge<ObservationStatusResponse>(
+      "observation-status",
+    );
+    observationSessionIds = status.sessions.map((s) => s.sessionId);
+    row.hidden = observationSessionIds.length === 0;
+    detail.textContent = tf("observation_logs_status", {
+      count: observationSessionIds.length,
+      days: status.retentionDays,
+    });
+  } catch {
+    // An older bridge without the command: keep the row hidden.
+    row.hidden = true;
+  }
+}
+
+async function deleteObservationLogs(): Promise<void> {
+  const detail = document.getElementById("observation-logs-detail");
+  const count = observationSessionIds.length;
+  if (count === 0) return;
+  if (!window.confirm(tf("observation_logs_delete_confirm", { count }))) {
+    return;
+  }
+  // One session that cannot be closed must not keep the others.
+  let lastError: unknown = null;
+  for (const sessionId of [...observationSessionIds]) {
+    try {
+      await runBridge("observation-close", [
+        "--session",
+        sessionId,
+        "--outcome",
+        "dismissed",
+      ]);
+    } catch (err) {
+      lastError = err;
+    }
+  }
+  await loadObservationStatus();
+  if (!detail) return;
+  detail.textContent =
+    lastError === null
+      ? t("observation_logs_deleted")
+      : tf("observation_logs_delete_failed", {
+          message: errorMessage(lastError),
+        });
+}
+
 async function loadDatabaseStatus(): Promise<void> {
   const status = document.getElementById("database-connection-status");
   const detail = document.getElementById("database-connection-detail");
@@ -5273,6 +5343,7 @@ function refreshSettingsData(): void {
     void loadLocalEmbeddingStatus();
   }
   void loadDatabaseStatus();
+  void loadObservationStatus();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
@@ -9233,6 +9304,12 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("btn-refresh-database-status")
     ?.addEventListener("click", () => {
       void loadDatabaseStatus();
+    });
+
+  document
+    .getElementById("btn-observation-logs-delete")
+    ?.addEventListener("click", () => {
+      void deleteObservationLogs();
     });
 
   // Setup & Data: reveal the data folder, back up the database.

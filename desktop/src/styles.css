@@ -885,6 +885,14 @@ textarea:focus-visible {
   margin-top: 12px;
 }
 
+.settings-observation-logs {
+  margin-top: 16px;
+}
+
+.settings-observation-logs[hidden] {
+  display: none;
+}
+
 .settings-field {
   display: grid;
   gap: 8px;

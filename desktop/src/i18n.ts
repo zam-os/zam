@@ -5058,6 +5058,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     database_detail: "{location} · profile {profile} · {count} cards",
     database_no_profile: "No active profile",
     database_profile_option: "{profile} — {count} cards",
+    // Observation retention (ADR 2026-10-08 R6): shown only while logs exist.
+    settings_observation_logs: "Observation logs",
+    observation_logs_status:
+      "{count} monitored sessions on this device. Commands are stored redacted and deleted after {days} days.",
+    btn_observation_logs_delete: "Delete observation logs",
+    observation_logs_delete_confirm:
+      "Delete the observation logs of {count} sessions on this device? Ratings you already confirmed stay.",
+    observation_logs_deleted: "Observation logs deleted.",
+    observation_logs_delete_failed: "Could not delete observation logs: {message}",
     database_profile_switch_confirm:
       'Switch the active learning profile to "{profile}"?',
     database_profile_switched: "Active profile: {profile} ({count} cards)",
@@ -6746,6 +6755,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     database_detail: "{location} · Profil {profile} · {count} Karten",
     database_no_profile: "Kein aktives Profil",
     database_profile_option: "{profile} — {count} Karten",
+    // Beobachtungs-Aufbewahrung (ADR 2026-10-08 R6): nur sichtbar, solange Protokolle da sind.
+    settings_observation_logs: "Beobachtungsprotokolle",
+    observation_logs_status:
+      "{count} beobachtete Sitzungen auf diesem Gerät. Befehle werden geschwärzt gespeichert und nach {days} Tagen gelöscht.",
+    btn_observation_logs_delete: "Beobachtungsprotokolle löschen",
+    observation_logs_delete_confirm:
+      "Die Beobachtungsprotokolle von {count} Sitzungen auf diesem Gerät löschen? Bereits bestätigte Bewertungen bleiben erhalten.",
+    observation_logs_deleted: "Beobachtungsprotokolle gelöscht.",
+    observation_logs_delete_failed: "Beobachtungsprotokolle konnten nicht gelöscht werden: {message}",
     database_profile_switch_confirm:
       "Aktives Lernprofil zu „{profile}“ wechseln?",
     database_profile_switched: "Aktives Profil: {profile} ({count} Karten)",

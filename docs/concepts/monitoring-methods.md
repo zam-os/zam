@@ -27,7 +27,32 @@ Confirmed ratings update the card, review log, session step, prerequisite
 blocking state, and synthesis audit in one transaction. Repeating synthesis
 for the same session and token does not apply the rating twice.
 
+### Redaction and retention
+
+The shell hooks write command lines to `~/.zam/monitor/<session>.jsonl` as
+typed. ZAM redacts them on every read (ADR 2026-10-08 R5): `zam_monitor`, the
+bridge monitor commands, synthesis candidates and skill discovery only ever
+see the command with its values in secret positions replaced by `[redacted]`
+— environment assignments, secret flags and headers, credentials in URLs,
+passwords piped into login commands, tokens and high-entropy strings. The log
+itself is rewritten in redacted form when monitoring stops and when the
+session ends.
+
+The raw log is deleted once the learner confirms or dismisses the session's
+synthesis (`zam_observation_close`, `zam observation close`, or
+`zam session end --synthesize` after going through the candidates), and at
+the latest after 14 days (`observation.retentionDays` in `~/.zam/config.json`).
+A value-free digest of the session's command prefixes stays, so skill
+discovery still finds recurring patterns. `zam observation status` shows what
+this machine keeps.
+
 ## Level 2 — Screen and UI Observation
+
+Screen observation is off on every machine until the learner sets
+`observation.screen` to `true` in `~/.zam/config.json` by hand; no setting or
+tool can turn it on (ADR 2026-10-08 R8). While it is off, every screen command
+below refuses with `screen-observation-off`. The ADR proposes replacing ZAM's
+own screen capture with structural evidence from external skill recorders.
 
 The Windows 11 UI observer (Phase 0) combines native UI events, input metadata,
 and sparse visual evidence in a separate observer sidecar:

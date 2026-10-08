@@ -8,6 +8,7 @@ import type {
   Database,
   InstallChannel,
   KnowledgeContext,
+  ObservationOutcome,
   Rating,
   ReviewActionType,
   SymbiosisMode,
@@ -27,6 +28,7 @@ import {
   bonusCandidates,
   buildReviewQueue,
   clearTokenMaintenance,
+  closeSessionObservation,
   createAssignment,
   createToken,
   decideUpdate,
@@ -36,6 +38,7 @@ import {
   evaluatePublicationReadiness,
   executeReviewAction,
   exportSnapshot,
+  finalizeSessionObservation,
   findBundledCellsForScope,
   generateConceptFreeCue,
   generatePrompt,
@@ -72,6 +75,7 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
+  OBSERVATION_OUTCOMES,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
@@ -90,6 +94,7 @@ import {
   setTokenMaintenance,
   startLibraryTopic,
   structuralPublicationChecks,
+  sweepObservationFiles,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -1575,6 +1580,15 @@ export async function endSession(db: Database, params: EndSessionParams) {
     : undefined;
   const session = await kernelEndSession(db, params.session);
   const summary = await getSessionSummary(db, params.session);
+  // The session ended, so its monitor log is redacted at rest (ADR 2026-10-08
+  // R5) and expired files go (R6). Deleting this session's log waits for the
+  // learner's confirmation or dismissal: see closeObservation.
+  try {
+    finalizeSessionObservation(params.session);
+    sweepObservationFiles();
+  } catch {
+    // Housekeeping never fails the end of a session.
+  }
   return {
     id: session.id,
     userId: session.user_id,
@@ -1661,6 +1675,29 @@ export async function analyzeMonitor(
     sessionId: params.session,
     ...result,
   };
+}
+
+export interface CloseObservationParams {
+  session: string;
+  outcome: ObservationOutcome;
+}
+
+/**
+ * The learner confirmed or dismissed a session's synthesis (ADR 2026-10-08
+ * R6): keep a value-free digest and delete the session's raw observation
+ * files on this machine. Learning state is not touched. The files are
+ * machine-local, so a session the open library does not know — one from a
+ * library used before a switch — can still be closed; an unknown id deletes
+ * nothing.
+ */
+export async function closeObservation(
+  _db: Database,
+  params: CloseObservationParams,
+) {
+  if (!OBSERVATION_OUTCOMES.includes(params.outcome)) {
+    throw new Error(`outcome must be ${OBSERVATION_OUTCOMES.join(" or ")}`);
+  }
+  return closeSessionObservation(params.session, params.outcome);
 }
 
 // 12. sessionOpen

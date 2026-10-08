@@ -26,6 +26,7 @@ import {
   MATERIAL_ORIGINS,
   openDatabase,
   setKnowledgeMapConfig,
+  sweepObservationFiles,
 } from "../../kernel/index.js";
 import {
   COMPANION_SURFACES,
@@ -43,6 +44,7 @@ import {
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
+  closeObservation as handleCloseObservation,
   endSession as handleEndSession,
   enrolBonusAtomHandler as handleEnrolBonusAtom,
   enrolBundledCellHandler as handleEnrolBundledCell,
@@ -530,6 +532,34 @@ export function createMcpServer(
         synthesize: params.synthesize,
         patterns: params.patterns,
         minConfidence: params.minConfidence,
+      });
+    }),
+  );
+
+  // 3b. zam_observation_close — retention (ADR 2026-10-08 R6)
+  server.registerTool(
+    "zam_observation_close",
+    {
+      description:
+        "After the learner confirmed or rejected a session's synthesis candidates: keep a value-free digest for skill discovery and delete the session's raw observation files on this machine. Changes no learning state.",
+      inputSchema: {
+        session: z.string().describe("Session ULID whose observation is done"),
+        outcome: z
+          .enum(["confirmed", "dismissed"])
+          .describe(
+            "confirmed when the learner went through the candidates; dismissed when they chose not to use this session",
+          ),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: true,
+        idempotentHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await handleCloseObservation(db, {
+        session: params.session,
+        outcome: params.outcome,
       });
     }),
   );
@@ -1294,7 +1324,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_monitor",
     {
-      description: "Get or analyze session monitor commands",
+      description:
+        "Get or analyze session monitor commands. Command lines come back redacted: values in secret positions read [redacted].",
       inputSchema: {
         session: z.string().describe("Session ULID to monitor"),
         patterns: z
@@ -2733,4 +2764,14 @@ export async function runMcpServer(): Promise<void> {
   };
 
   await server.connect(transport);
+
+  // Retention (ADR 2026-10-08 R6) at MCP server start, after the handshake
+  // is reachable. Silent: stdout is the transport.
+  setTimeout(() => {
+    try {
+      sweepObservationFiles();
+    } catch {
+      // The next start tries again.
+    }
+  }, 0);
 }

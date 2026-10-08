@@ -36,6 +36,7 @@ import {
   recordAttempt,
 } from "./attempts.js";
 import { readMonitorLog } from "./monitor-io.js";
+import { redactCommand } from "./redact.js";
 import { SCREEN_OBSERVATION_OFF } from "./screen-switch.js";
 import { readUiObservationLog } from "./ui-observer-io.js";
 import {
@@ -339,8 +340,13 @@ export async function prepareSessionSynthesis(
     };
   }
 
-  const commands =
-    input.commands ?? pairCommands(readMonitorLog(input.sessionId));
+  // Commands a caller passes in are redacted like the log (ADR 2026-10-08 R5).
+  const commands = input.commands
+    ? input.commands.map((command) => ({
+        ...command,
+        command: redactCommand(command.command),
+      }))
+    : pairCommands(readMonitorLog(input.sessionId));
   const analysis = analyzeObservation(commands, validPatterns);
   const minRank = confidenceRank(minConfidence);
   let skippedLowConfidence = 0;
@@ -394,8 +400,15 @@ export async function prepareSessionSynthesis(
 
 export async function applySessionSynthesis(
   db: Database,
-  input: ApplySessionSynthesisInput,
+  rawInput: ApplySessionSynthesisInput,
 ): Promise<ApplySessionSynthesisResult> {
+  // The texts end up in the shared database, so whatever a caller sends back
+  // is redacted again; redaction is idempotent, so the evidence key of a
+  // redacted preview is unchanged (ADR 2026-10-08 R5).
+  const input: ApplySessionSynthesisInput = {
+    ...rawInput,
+    matchedCommandTexts: rawInput.matchedCommandTexts.map(redactCommand),
+  };
   return db.transaction(async (tx) => {
     const session = await getSession(tx, input.sessionId);
     const token = await getTokenBySlug(tx, input.tokenSlug);

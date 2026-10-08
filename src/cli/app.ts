@@ -15,6 +15,7 @@ import { knowledgeContextCommand } from "./commands/knowledge-context.js";
 import { knowledgeMapCommand } from "./commands/knowledge-map.js";
 import { learnCommand } from "./commands/learn.js";
 import { monitorCommand } from "./commands/monitor.js";
+import { observationCommand } from "./commands/observation.js";
 import { observerCommand } from "./commands/observer.js";
 import { profileCommand } from "./commands/profile.js";
 import { providerCommand } from "./commands/provider.js";
@@ -77,6 +78,7 @@ program.addCommand(
 );
 program.addCommand(skillCommand);
 program.addCommand(monitorCommand);
+program.addCommand(observationCommand);
 program.addCommand(observerCommand);
 program.addCommand(settingsCommand);
 program.addCommand(whoamiCommand);
