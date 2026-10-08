@@ -83,3 +83,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-02](2026-10-02-library-topics.md) | Library Topics: Starting on the Content a Library Already Holds | Accepted — phase 1 implemented |
 | [2026-10-03](2026-10-03-repo-knowledge-map.md) | Repo Knowledge Map: An Alpha Feature with Swappable Views | Accepted — alpha implemented; JSON-LD and C4 added |
 | [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md) | Learning Cards from Photos and Files: The Model Reads the Page | Partially implemented — both paths, review list, Bonus and Mobile shipped; MCP Apps panel and per-import bonus line open |
+| [2026-10-08b](2026-10-08b-corporate-deployment-baseline.md) | Corporate Deployment Baseline: Agents and Shared Content Are Untrusted | Proposed |
