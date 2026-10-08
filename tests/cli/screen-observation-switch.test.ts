@@ -134,6 +134,27 @@ describe("screen observation switch (kernel)", () => {
     expect(html).not.toContain('id="observer-panel"');
   });
 
+  it("ships no observer sidecar with the desktop app", () => {
+    // ADR 2026-10-08: whatever can capture the screen is a separate install,
+    // so an organisation can prohibit it with its own tooling.
+    for (const workflow of ["release.yml", "ci.yml"]) {
+      const text = readFileSync(
+        join(process.cwd(), ".github", "workflows", workflow),
+        "utf8",
+      );
+      expect(text).not.toMatch(/observer:prepare|prepare-observer-sidecar/);
+    }
+    const pkg = JSON.parse(
+      readFileSync(join(process.cwd(), "package.json"), "utf8"),
+    ) as { scripts: Record<string, string> };
+    expect(pkg.scripts["observer:prepare"]).toBeUndefined();
+    const prepare = readFileSync(
+      join(process.cwd(), "scripts", "prepare-desktop-bridge.mjs"),
+      "utf8",
+    );
+    expect(prepare).toContain('"zam-observer"');
+  });
+
   it("keeps material-import-analyze off the Studio bridge (R7)", () => {
     expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has("material-import-analyze")).toBe(
       false,

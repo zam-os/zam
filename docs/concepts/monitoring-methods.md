@@ -62,7 +62,8 @@ and sparse visual evidence in a separate observer sidecar:
 - [Observer next steps](../observer-next-steps.md)
 
 Start a UI learning session with `zam bridge start-session --context ui`,
-run `zam-observer watch --reports`, and poll reports with
+run `zam-observer watch --reports` from a source build (the sidecar no longer
+ships with the desktop app), and poll reports with
 `zam bridge observe-ui-watch --session <id>`. The desktop observer panel and
 the screen-recording path (`start-recording`, `stop-recording`, video input to
 `observe-ui-snapshot`) were deleted under ADR 2026-10-08, because nobody used

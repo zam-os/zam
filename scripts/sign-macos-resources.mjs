@@ -62,15 +62,14 @@ const nodeEntitlements = join(
 const targets = [...findMachO(resourceRoot)];
 if (targets.length === 0) {
   throw new Error(
-    `No Mach-O objects found under ${resourceRoot} — run desktop:prepare and observer:prepare first`,
+    `No Mach-O objects found under ${resourceRoot} — run desktop:prepare first`,
   );
 }
 
 /**
  * Only the bundled Node runtime needs entitlements: V8 compiles JavaScript to
- * machine code at runtime, which the hardened runtime forbids by default. The
- * observer sidecar is plain Rust and needs none, and entitlements do not apply
- * to libraries at all.
+ * machine code at runtime, which the hardened runtime forbids by default.
+ * Entitlements do not apply to libraries at all.
  */
 function entitlementsFor(target) {
   if (!target.executable) return undefined;

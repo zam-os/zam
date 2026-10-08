@@ -8,7 +8,7 @@ tags:
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-10-08T22:10:00Z
+timestamp: 2026-10-08T22:40:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
@@ -133,9 +133,13 @@ Every live capture passes two evaluation phases:
 
 # Native Rust Sidecar
 
-The native Rust observer sidecar (`observer/`) still builds and ships, but
-nothing in the desktop app starts it; it runs only when invoked by hand
-(`zam-observer watch …`). It does not evaluate `ObserverPolicy` itself.
+The native Rust observer sidecar (`observer/`) is built and tested in CI but
+no longer ships with the desktop app, and nothing in ZAM starts it: whatever
+can capture the screen is a separate install, so an organisation can
+prohibit it with its own inventory and application-control tooling (ADR
+2026-10-08, trade-off on packaging). Built from source it runs only when
+invoked by hand (`zam-observer watch …`). It does not evaluate
+`ObserverPolicy` itself.
 `syncObserverSidecarPolicy(db)` (`src/kernel/observation/observer-sidecar-policy.ts`)
 resolves the policy and writes only its user-configurable lists to
 `<observer-dir>/policy.json` (mode `0o600`) in the sidecar's `WindowPrivacyPolicy`
@@ -209,4 +213,4 @@ the switch, but the same ADR governs what it keeps:
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `observer/src/privacy.rs`, `observer/src/uia.rs`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `scripts/prepare-desktop-bridge.mjs`, `observer/src/privacy.rs`, `observer/src/uia.rs`
