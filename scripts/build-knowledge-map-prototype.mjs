@@ -100,9 +100,10 @@ body {
 .proto-lang button:focus-visible { outline: 2px solid var(--clr-accent-purple); outline-offset: 2px; }
 #app { min-width: 0; }
 /* The shell clamps its stage to 70vh / 760px so it fits inside the Studio; a page of its own can use the
-   whole window. 180px is the intro bar, header and breadcrumbs above the stage plus the bottom margin. */
+   whole window. 200px is everything above the stage (page padding, intro bar, header, breadcrumbs, gaps)
+   plus a bottom margin, sized for the German intro, which wraps to three lines where the English one takes two. */
 @media (min-width: 861px) {
-  #app .km-body { --km-stage-h: max(460px, calc(100vh - 180px)); }
+  #app .km-body { --km-stage-h: max(460px, calc(100vh - 200px)); }
 }
 
 </style>
