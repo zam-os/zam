@@ -1037,6 +1037,7 @@ export {
   getOnboardingDone,
   getOnboardingPersona,
   isBitwardenVaultEnabled,
+  isInstallConfigUnreadable,
   isScreenObservationEnabled,
   loadInstallConfig,
   MAX_OBSERVATION_RETENTION_DAYS,

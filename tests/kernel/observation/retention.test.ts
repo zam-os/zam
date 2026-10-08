@@ -231,6 +231,23 @@ describe("sweepObservationFiles", () => {
     );
   });
 
+  it("never rewrites a config.json that does not parse, and deletes nothing", () => {
+    // A trailing comma, as when the learner hand-edits the screen switch.
+    const broken = '{ "observation": { "screen": true, }, "workspaces": [] }';
+    writeFileSync(configPath, broken);
+    const id = sessionAt(40);
+    const path = writeRawLog(id, [`export TOKEN=${SECRET}`], { ageDays: 40 });
+
+    const result = sweepObservationFiles({ now: NOW, configPath, locations: locations() });
+
+    expect(readFileSync(configPath, "utf8")).toBe(broken);
+    expect(result.retentionSince).toBeNull();
+    expect(result.deleted).toEqual([]);
+    expect(existsSync(path)).toBe(true);
+    // Redaction does not depend on the config and still happens.
+    expect(readFileSync(path, "utf8")).not.toContain(SECRET);
+  });
+
   it("honours observation.retentionDays", () => {
     writeFileSync(
       configPath,

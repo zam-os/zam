@@ -413,7 +413,8 @@ export interface SweepOptions {
 
 export interface SweepResult {
   retentionDays: number;
-  retentionSince: string;
+  /** Null while config.json does not parse: then nothing is deleted. */
+  retentionSince: string | null;
   /** Session ids whose monitor log was rewritten in redacted form. */
   redacted: string[];
   /** Files deleted because the window passed. */

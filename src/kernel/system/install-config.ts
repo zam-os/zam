@@ -974,14 +974,38 @@ export function getObservationRetentionDays(
 }
 
 /**
+ * True when config.json exists but is not a JSON object. `loadInstallConfig`
+ * reads such a file as empty, so writing it back would replace a learner's
+ * hand-edited configuration with almost nothing.
+ */
+export function isInstallConfigUnreadable(path = defaultConfigPath()): boolean {
+  if (!existsSync(path)) return false;
+  try {
+    const parsed = JSON.parse(readFileSync(path, "utf-8"));
+    return (
+      typeof parsed !== "object" || parsed === null || Array.isArray(parsed)
+    );
+  } catch {
+    return true;
+  }
+}
+
+/**
  * When retention started on this machine, recorded on first use. Sessions
  * that began earlier are legacy and are never deleted without the owner's
  * confirmation (ADR 2026-10-08 R6).
+ *
+ * Returns null, and writes nothing, while config.json exists but does not
+ * parse: the sweep runs without any learner action, so it must never be the
+ * writer that turns a typo in a hand-edited file into lost settings. Until
+ * the file parses again every session counts as legacy, so nothing is
+ * deleted.
  */
 export function ensureObservationRetentionSince(
   now = new Date(),
   path = defaultConfigPath(),
-): string {
+): string | null {
+  if (isInstallConfigUnreadable(path)) return null;
   const existing = loadInstallConfig(path).observation?.retentionSince;
   if (typeof existing === "string" && !Number.isNaN(Date.parse(existing))) {
     return existing;
