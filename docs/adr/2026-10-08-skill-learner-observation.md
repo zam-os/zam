@@ -67,7 +67,7 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
 
 1. **R1 — ZAM stops producing screen observations.** On acceptance, the following are removed in phases (plan, Phase 5): the `observer/` sidecar, `capture-ui`, `start-recording`, `stop-recording`, the screen use of `observe-ui-snapshot`, the screen read-back commands `get-observations` and `observe-ui-watch`, the UI branch of session synthesis and its kernel modules, `zam observer`, the desktop observer panel, the `observer.*` capture policy and its enforcement, and the sidecar build and bundling in release and CI.
 
-2. **R2 — GUI demonstrations come from a learner that emits structural events.** A learner is either an external skill-recording tool, installed and governed by an organisation, or ZAM's own reduced Windows sensor (option E). ZAM bundles no external learner and depends on none. Individual learners get option D by default: shell observation, skill discovery and hand-authored skills. Option C is for managed deployments that install an approved learner.
+2. **R2 — GUI demonstrations come from a learner that emits structural events.** A learner is either an external skill-recording tool, installed and governed by an organisation, or ZAM's own reduced Windows sensor (option E). ZAM bundles no learner and depends on none, its own sensor included: whatever can capture the screen is a separate install, so an organisation can prohibit it and verify that with its own tooling (see *Trade-off analysis*, packaging). Individual learners get option D by default: shell observation, skill discovery and hand-authored skills. Option C is for managed deployments that install an approved learner.
 
 3. **R3 — ZAM accepts only structural events, with no free-text field.** A learner submits events in a closed schema (plan, Phase 4): event kind, time, process name, control type from a fixed list, and an optional automation id. There is no element name, window title, value, text or pixel field, because each of those is screen content. Unknown keys are rejected at any depth. Every string has a pattern and a length limit: ASCII, normalised, no zero-width characters. A rejection never echoes the submitted string; logs and `denied` reasons carry a hash of it.
 
@@ -113,7 +113,7 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
 
 **A. Keep and extend the in-house observer.** Rejected. Screen content stays inside ZAM, the native part is Windows-only, the video path sits outside the policy, and the research already shows the PII gap.
 
-**B. Extract the visual observer into an optional installable tool.** Feasible. But the capture code, the screen prompts and the screen-to-model path remain ZAM's to maintain and audit, and an installed tool carries the same threat.
+**B. Extract the visual observer into an optional installable tool.** Feasible, and it has one real advantage over a switch inside ZAM: a separately installed component can be prohibited. An organisation's own tooling — software inventory, application control (AppLocker, WDAC), device-management compliance checks, EDR — can block the install and flag any machine where it appears, without trusting ZAM. But the capture code, the screen prompts and the screen-to-model path remain ZAM's to maintain and audit, and on a machine where the tool is installed it carries the same threat. C keeps the governance advantage and drops the rest.
 
 **C. Delete visual capture; adopt external structural learners under R3 and R4.** Recommended for managed deployments. It removes the largest secret surface from ZAM's own code and lets an organisation choose and govern its recorder. Its risks are learner quality, licences, learners that capture pixels or keys on their side, and the labelling effort R4 asks of learners. R3 and deployment policy contain the content risk; the spike measures the rest.
 
@@ -124,6 +124,14 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
 ## Trade-off analysis
 
 C beats B because the threat depends on where screen content lives and who processes it, not on which package ships it.
+
+Packaging still matters, for governance rather than for the threat. Where an organisation wants no screen capture at all, a component that is not installed is a stronger control than a setting that is off:
+
+- **Who enforces it.** A missing component is enforced by the organisation's own inventory, application-control and compliance tooling. A managed policy (ADR 2026-10-08b, D6) is enforced by ZAM's own code, and holds only as long as that code honours it. The bypasses this ADR records — capture paths that never read the observer policy — are the counterexample.
+- **Who can verify it.** Absence is visible from outside: the binary is there or it is not. For a policy an auditor can check that the file exists, not that ZAM obeys it.
+- **What an agent can start.** Code that is not on the machine cannot be started; code behind a switch can, by any agent with a shell.
+
+A managed policy is broader and finer: it governs ZAM's own behaviour — the shell monitor, cloud models, retention, pairing — where there is nothing to uninstall. The two controls are complementary, not alternatives. C and E keep the packaging advantage only if the capture component is never bundled with ZAM; D has it trivially, because nothing captures the screen.
 
 The strongest argument against C has two parts. First, on the research snapshot no Windows candidate is expected to pass G1. Second, someone has to turn a recorded trace into skill steps, and if that someone is a model reading the raw trace, the content problem has only moved. The ADR answers the second part with R4, a model-free mapping inside ZAM, and the first with the spike gate and the fallbacks. It does not pretend C is the likely outcome: the plan runs the two ZAM baselines first, and D or E is the expected result.
 
@@ -139,7 +147,7 @@ Easier:
 
 - ZAM loses its screen capture code, its Windows sidecar, its desktop observer panel and two release steps.
 - Screen evidence becomes structural events mapped to skill steps; shell evidence stays, redacted and with a retention limit.
-- An organisation can switch screen observation off by not installing a learner. The shell monitor stays, under the policy key `observation.shell`. The default build contains no screen capture code.
+- An organisation can switch screen observation off by not installing a learner, and verify that with its own inventory and application-control tooling instead of trusting ZAM. The shell monitor stays, under the policy key `observation.shell`. The default build contains no screen capture code; ZAM's installer does not bundle the observer sidecar.
 
 Harder:
 
