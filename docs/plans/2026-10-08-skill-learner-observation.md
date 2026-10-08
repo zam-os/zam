@@ -32,7 +32,7 @@ Done on `feat/observation-containment`. Evidence and deviations:
 - 0A.4: the crate features `Media_Ocr`, `Graphics_Imaging` and `Security_Cryptography` are gone as well; `cargo check --target aarch64-pc-windows-msvc` passes. Unnamed elements are not unit-testable off Windows, so a source guard replaces the Rust test the plan asked for.
 - 0A.5: `stop-recording`'s ffmpeg call in `bridge.ts` had the same shell string and got the same fix.
 - 0A.6: the D1 resolver part waits for ADR 2026-10-08b.
-- 0A.7: `tests/cli/screen-observation-switch.test.ts` (fake `ffmpeg` on `PATH` proves nothing spawns), `machine_config::tests` in the desktop crate, and the off case in `tests/kernel/session-synthesis.test.ts`.
+- 0A.7: `tests/cli/screen-observation-switch.test.ts` (fake `ffmpeg` on `PATH` proves nothing spawns; the desktop has no panel, no command that starts the sidecar and no bundled sidecar; the sidecar has no OCR), and the off case in `tests/kernel/session-synthesis.test.ts`. The Rust tests were deleted with `machine_config.rs` (see 0A.2).
 
 ## Phase 0B — Shell redaction and retention (can start on approval)
 
