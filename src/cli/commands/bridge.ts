@@ -2848,24 +2848,29 @@ bridgeCommand
   )
   .requiredOption("--session <id>", "ZAM session ID")
   .action(async (opts) => {
-    const platform = process.platform;
-    if (platform !== "darwin" && platform !== "win32") {
-      jsonOut({
-        sessionId: opts.session,
-        stopped: false,
-        error:
-          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
-      });
-      return;
-    }
-
     const sessionId = opts.session;
     const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
     const { existsSync, readFileSync, rmSync } = await import("node:fs");
     const screenOff = !isScreenObservationEnabled();
+    // The switch is checked before the platform: the refusal is the same
+    // everywhere, and a recording left over while it is off is always
+    // stopped and discarded (ADR 2026-10-08 R8).
+    const unsupportedPlatform =
+      process.platform !== "darwin" && process.platform !== "win32";
+    const unsupported = () =>
+      jsonOut({
+        sessionId,
+        stopped: false,
+        error:
+          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
+      });
 
     if (!existsSync(statePath)) {
       if (refuseWhileScreenObservationOff(sessionId, { stopped: false })) {
+        return;
+      }
+      if (unsupportedPlatform) {
+        unsupported();
         return;
       }
       jsonOut({
@@ -2873,6 +2878,10 @@ bridgeCommand
         stopped: false,
         error: `No active recording found for session ${sessionId}`,
       });
+      return;
+    }
+    if (unsupportedPlatform && !screenOff) {
+      unsupported();
       return;
     }
 
