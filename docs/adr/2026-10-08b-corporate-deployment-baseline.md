@@ -133,7 +133,8 @@ Already in place, and kept: `get-settings` and `model-list` return no keys; `isS
    | Key | Values | Effect | Fail-closed value |
    |---|---|---|---|
    | `observation.screen` | `denied` | No screen surface (ADR 2026-10-08 R8) | `denied` |
-   | `observation.shell` | `denied`, `allowed` | Shell monitor off; when allowed it is always redacted (ADR 2026-10-08 R5) | `denied` |
+   | `observation.shell` | `denied`, `allowed` | `denied`: `zam monitor start` refuses and every monitor tool returns a typed refusal. When allowed, commands are always redacted (ADR 2026-10-08 R5) | `denied` |
+   | `observation.retentionDays` | number | Upper bound for the retention window of raw observation files (ADR 2026-10-08 R6) | Built-in default (14) |
    | `llm.cloud` | `denied`, `allowed` | `denied`: only `local` and `lan` endpoints (D2), and no fallback to a cloud row | `denied` |
    | `llm.endpoints` | host list | Only these model hosts | Only `local` and `lan` endpoints |
    | `sourceLinks.remoteFetch` | `denied`, `allowed` | Content fetches off | `denied` |
