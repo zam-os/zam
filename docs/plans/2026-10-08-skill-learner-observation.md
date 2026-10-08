@@ -2,7 +2,7 @@
 
 **Status:** Draft for review, together with the ADR. Phases 2–7 wait for an accepted decision. Phase 0 is containment and can start on approval, independently of the decision.\
 **Decision:** [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md). Its decisions are cited here as **R1–R8** and its options as **A–E**. Read the ADR first; this plan does not repeat its reasons. The companion [ADR 2026-10-08b](../adr/2026-10-08b-corporate-deployment-baseline.md) is cited as **D1–D9**.\
-**Branch:** this document lives on `docs/screen-observer-adr`. Implementation starts on a new branch from `main` after acceptance. One feature, one branch, one PR, one commit per phase, as in the photo-import plan. Phase 0 ships as two small PRs: screen (0A) and shell plus retention (0B).
+**Branch:** this document lives on `docs/screen-observer-adr`. Implementation starts on a new branch from `main` after acceptance. One feature, one branch, one PR, one commit per phase, as in the photo-import plan. Phase 0 (0A and 0B) ships as one PR from `feat/observation-containment`, one commit per sub-phase (owner decision, 2026-10-08).
 
 This document is harness-agnostic. Any agent or person can pick up the next unchecked item without other context.
 
@@ -204,7 +204,7 @@ Each step must be revertible on its own. The Phase 0A switch stays in place unti
 4. Scope of the legal review that must precede any deployment (ADR open question 4).
 5. The retention window (ADR open question 6).
 6. Redaction or a structural default for the shell monitor (ADR open question 7).
-7. Whether Phases 0A and 0B are approved before the review finishes. It is recommended, because the bypasses, the OCR fallback and the unredacted monitor are known.
+7. Whether Phases 0A and 0B are approved before the review finishes. It is recommended, because the bypasses, the OCR fallback and the unredacted monitor are known. **Decided 2026-10-08:** approved and implemented; open question 3 answered with "guard now, delete in Phase 5".
 
 ## Appendix A — Consumer map
 

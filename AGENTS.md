@@ -85,6 +85,14 @@ open a terminal.
   Bonus); nothing of the material is stored — only a source link and file
   fingerprints. PDFs go only to models that declare `file` input. A Bonus
   token is published but has no card until the learner takes it.
+- **Observation without content** (ADR 2026-10-08): every screen surface
+  checks `screenObservationGate()` (or the desktop shell's
+  `machine_config::screen_observation_gate()`) before it captures, reads,
+  spawns or analyzes anything; `observation.screen` in `~/.zam/config.json`
+  is off by default and no setting, bridge command or MCP tool may write it.
+  Monitor logs are read only through `readMonitorLog`, which redacts every
+  command; never add a raw read path, and redact any command text before it
+  reaches the database.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the
