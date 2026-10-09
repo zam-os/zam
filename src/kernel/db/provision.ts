@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 38;
+export const CURRENT_SCHEMA_VERSION = 39;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -986,6 +986,90 @@ export async function runMigrations(db: Database): Promise<void> {
       `UPDATE ${table} SET domain = substr(domain, 8)
         WHERE lower(substr(domain, 1, 7)) = 'schule/' AND length(domain) > 7`,
     );
+  }
+
+  // M039: observation without content (ADR 2026-10-08 R5; owner decision
+  // 2026-10-09). Before redaction, a confirmed synthesis kept the observed
+  // command texts verbatim. They are deleted, not redacted; ratings and review
+  // history stay. Only a library stamped before this migration runs it:
+  // whatever was written since is already redacted, and a repair run on a
+  // current library must not delete it.
+  const markerM039 = await readSchemaVersion(db);
+  if (markerM039 === null || markerM039 < 39) {
+    await deleteObservedCommandTexts(db);
+  }
+}
+
+const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;
+
+/** Evidence JSON without its command texts; `{}` when it does not parse. */
+function withoutCommandTexts(evidence: string): string {
+  try {
+    const parsed = JSON.parse(evidence) as unknown;
+    if (parsed && typeof parsed === "object" && !Array.isArray(parsed)) {
+      if (!("matchedCommandTexts" in parsed)) return evidence;
+      return JSON.stringify({ ...parsed, matchedCommandTexts: [] });
+    }
+  } catch {
+    // Unreadable evidence may hold the texts as well.
+  }
+  return "{}";
+}
+
+/**
+ * M039: the texts sat in four places — the synthesis evidence, the attempt's
+ * evidence and its evidence key (the texts joined), and the session step note.
+ * Row by row in JavaScript, so SQLite and PostgreSQL behave the same.
+ */
+async function deleteObservedCommandTexts(db: Database): Promise<void> {
+  if ((await columnsOf(db, "session_syntheses")).includes("id")) {
+    const rows = (await db
+      .prepare("SELECT id, evidence FROM session_syntheses")
+      .all()) as Array<{ id: string; evidence: string }>;
+    for (const row of rows) {
+      const evidence = withoutCommandTexts(row.evidence);
+      if (evidence === row.evidence) continue;
+      await db
+        .prepare("UPDATE session_syntheses SET evidence = ? WHERE id = ?")
+        .run(evidence, row.id);
+    }
+  }
+
+  if ((await columnsOf(db, "review_attempts")).length > 0) {
+    const rows = (await db
+      .prepare(
+        `SELECT id, evidence, evidence_key FROM review_attempts
+          WHERE channel IN ('synthesis', 'ui_observer')`,
+      )
+      .all()) as Array<{
+      id: string;
+      evidence: string;
+      evidence_key: string | null;
+    }>;
+    for (const row of rows) {
+      const evidence = withoutCommandTexts(row.evidence);
+      if (evidence === row.evidence && row.evidence_key === null) continue;
+      await db
+        .prepare(
+          "UPDATE review_attempts SET evidence = ?, evidence_key = NULL WHERE id = ?",
+        )
+        .run(evidence, row.id);
+    }
+  }
+
+  if ((await columnsOf(db, "session_steps")).length > 0) {
+    const rows = (await db
+      .prepare(
+        "SELECT id, notes FROM session_steps WHERE notes LIKE 'Observation synthesis (%'",
+      )
+      .all()) as Array<{ id: string; notes: string }>;
+    for (const row of rows) {
+      const notes = row.notes.replace(OBSERVATION_STEP_NOTE, "$1");
+      if (notes === row.notes) continue;
+      await db
+        .prepare("UPDATE session_steps SET notes = ? WHERE id = ?")
+        .run(notes, row.id);
+    }
   }
 }
 

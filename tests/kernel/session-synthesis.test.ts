@@ -8,12 +8,14 @@ import {
   AttemptConflictError,
   addPrerequisite,
   appendUiObservationReport,
+  applySchemaAndMigrations,
   applySessionSynthesis,
   buildReviewQueue,
   createAgentSkill,
   createToken,
   type Database,
   ensureCard,
+  ensureSchemaAndMigrations,
   executeReviewAction,
   getCard,
   getReviewsForCard,
@@ -236,6 +238,76 @@ describe("automatic session synthesis", () => {
 
     expect(preview.patternCount).toBe(0);
     expect(preview.candidates).toEqual([]);
+  });
+
+  it("deletes command texts stored before redaction once (M039)", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const apply = async (task: string) => {
+      const session = await startSession(db, { user_id: "tester", task });
+      await applySessionSynthesis(db, {
+        sessionId: session.id,
+        tokenSlug: token.slug,
+        inferredRating: 4,
+        confirmedRating: 3,
+        confidence: "medium",
+        evidence: cleanEvidence,
+        matchedCommandTexts: ["git status --short", "git diff --check"],
+      });
+      return session.id;
+    };
+    const stored = async (sessionId: string) => {
+      const synthesis = (await db
+        .prepare("SELECT evidence FROM session_syntheses WHERE session_id = ?")
+        .get(sessionId)) as { evidence: string };
+      const attempt = (await db
+        .prepare(
+          "SELECT evidence, evidence_key, rating FROM review_attempts WHERE session_id = ?",
+        )
+        .get(sessionId)) as {
+        evidence: string;
+        evidence_key: string | null;
+        rating: number;
+      };
+      const step = (await db
+        .prepare("SELECT notes FROM session_steps WHERE session_id = ?")
+        .get(sessionId)) as { notes: string };
+      return { synthesis, attempt, step };
+    };
+
+    const old = await apply("Before redaction");
+    await db
+      .prepare("UPDATE zam_schema_version SET version = 38 WHERE singleton = 1")
+      .run();
+    await ensureSchemaAndMigrations(db);
+
+    const cleaned = await stored(old);
+    expect(JSON.stringify(cleaned)).not.toContain("git status");
+    expect(JSON.parse(cleaned.synthesis.evidence)).toEqual({
+      signals: cleanEvidence,
+      matchedCommandTexts: [],
+    });
+    expect(cleaned.attempt.evidence_key).toBeNull();
+    expect(cleaned.attempt.rating).toBe(3);
+    expect(cleaned.step.notes).toBe(
+      "Observation synthesis (medium, inferred 4)",
+    );
+    const card = await getCard(db, token.id, "tester");
+    expect(await getReviewsForCard(db, card!.id)).toHaveLength(1);
+
+    // Written after the migration: already redacted, and a repair run on a
+    // current library leaves it alone.
+    const recent = await apply("After redaction");
+    await applySchemaAndMigrations(db);
+    const kept = await stored(recent);
+    expect(kept.attempt.evidence_key).toBe(
+      "git status --short\ngit diff --check",
+    );
+    expect(kept.step.notes).toContain("git diff --check");
   });
 
   it("atomically applies a confirmed rating and is idempotent", async () => {
