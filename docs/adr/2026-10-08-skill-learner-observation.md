@@ -49,7 +49,7 @@ Packaging does not solve the concern on its own. An optional tool still carries 
 
 ### What observation is for
 
-The project owner's framing (2026-10-08): observation watches the human in order to record a skill. Computer Use is the agent's own perceive-and-act capability; the observer should be the human-side counterpart. Skill-recording tools already exist, so building a bespoke visual recorder would duplicate a crowded field. ZAM already holds the parts that connect a skill to learning: skill discovery (`src/kernel/observation/skill-discovery.ts`) and session synthesis, which matches monitor commands against the steps of skills linked to one token (`docs/concepts/monitoring-methods.md`). Monitor patterns are command prefixes or regular expressions (`src/kernel/observation/analyzer.ts:36`), so they match on a command's structure, not on the values passed to it.
+The project owner's framing (2026-10-08): observation watches the human in order to record a skill. Computer Use is the agent's own perceive-and-act capability; the observer should be the human-side counterpart. Skill-recording tools already exist, so building a bespoke visual recorder would duplicate a crowded field. ZAM already holds the parts that connect a skill to learning: skill discovery (`src/kernel/observation/skill-discovery.ts`) and session synthesis, which matches monitor commands against the steps of skills linked to one token (`docs/concepts/monitoring-methods.md`). Monitor patterns are case-insensitive substrings of the command (`matchesToken` in `src/kernel/observation/analyzer.ts`).
 
 ### Research snapshot (2026-10-08)
 
@@ -69,7 +69,7 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
 
 2. **R2 — GUI demonstrations come from a learner that emits structural events.** A learner is either an external skill-recording tool, installed and governed by an organisation, or ZAM's own reduced Windows sensor (option E). ZAM bundles no learner and depends on none, its own sensor included: whatever can capture the screen is a separate install, so an organisation can prohibit it and verify that with its own tooling (see *Trade-off analysis*, packaging). Individual learners get option D by default: shell observation, skill discovery and hand-authored skills. Option C is for managed deployments that install an approved learner.
 
-3. **R3 — ZAM accepts only structural events, with no free-text field.** A learner submits events in a closed schema (plan, Phase 4): event kind, time, process name, control type from a fixed list, and an optional automation id. There is no element name, window title, value, text or pixel field, because each of those is screen content. Unknown keys are rejected at any depth. Every string has a pattern and a length limit: ASCII, normalised, no zero-width characters. A rejection never echoes the submitted string; logs and `denied` reasons carry a hash of it.
+3. **R3 — ZAM accepts only structural events, with no free-text field.** A learner submits events in a closed schema (plan, Phase 4): event kind, time, process name, control type from a fixed list, and an optional automation id. There is no element name, window title, value, text or pixel field, because each of those is screen content. Unknown keys are rejected at any depth. Every string has a pattern and a length limit: ASCII, normalised, no zero-width characters. An automation id must match `[A-Za-z0-9_-]{1,64}`; one that does not is dropped from the event rather than rejected, because web frameworks put e-mail addresses, URLs and record ids there. A rejection never echoes the submitted string; logs and `denied` reasons carry a hash of it.
 
    ZAM cannot recognise screen text inside an arbitrary string, so the rule does not depend on recognising it: it holds because no accepted field can carry much of it. What remains is about a hundred bytes of identifier-shaped strings per event, plus timing and ordering as a low-bandwidth channel. The schema therefore defends against a careless or over-collecting learner, not a hostile one. A hostile local process could send its data elsewhere directly, and the companion trust model treats local processes as untrusted. Rejecting known content keys (`image`, `frame`, `text`, `clipboard` and similar) and `data:` strings stays as defence in depth. What ZAM returns to agents about screen observation follows the same schema.
 
@@ -78,14 +78,14 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
    - The learner sets selectors by labelling one demonstration in the Studio. ZAM shows the demonstration's structural events, and the learner assigns them to steps. The Studio shows no screen content, because ZAM holds none.
    - Session synthesis matches event sequences against selectors and proposes candidates. Confirmation stays mandatory: no learning state changes before the learner confirms.
 
-   If labelling proves too hard for learners, or external learners cannot emit stable identifiers, option C fails and option D applies. The spike measures both.
+   If labelling proves too hard for learners, or external learners cannot emit stable identifiers, option C fails and option D applies. The spike measures both. Web and Electron apps often lack stable automation ids, so one demonstration can show several identical `invoke Button` events; the spike therefore times a learner without technical background labelling such a demonstration and counts wrong assignments. A transient screenshot to help labelling was proposed in review and rejected: it is screen capture under another name (R8).
 
 5. **R5 — Shell observation stays, and ZAM redacts it on the way to every reader.** The shell hooks append command lines to the log themselves, so ZAM is not in the write path. Redaction therefore works in three places:
-   - **Every read.** Redaction is a response filter on every payload derived from a monitor log, before it reaches an agent or a model: `zam_monitor`, the bridge monitor commands, synthesis candidates including unmatched commands, skill discovery examples, and the synthesis returned at session end. This is the primary control. It covers logs written before this change as well.
-   - **At rest.** At `zam monitor stop` and at session end, ZAM rewrites the log in redacted form. A sweep at `zam monitor start`, bridge start and desktop start does the same for logs of sessions that never stopped. Unredacted text stays on disk only while a session runs.
+   - **Every read.** Redaction is a response filter on every payload derived from a monitor log, before it reaches an agent or a model: `zam_monitor`, the bridge monitor commands, synthesis candidates including unmatched commands, skill discovery examples, and the synthesis returned at session end. This is the primary control. It covers logs written before this change as well. Reads also drop the working directory: a project path is content, and no analysis needs it.
+   - **At rest.** At `zam monitor stop`, ZAM rewrites the log in redacted form; at session end it deletes it (R6). A sweep at `zam monitor start`, bridge start and desktop start, and hourly while the bridge or the MCP server runs, does the same for logs idle for ten minutes. Unredacted text stays on disk only while a session runs.
    - **What it covers.** The redactor knows named positions (plan, Phase 0) and applies a name heuristic: a value is redacted when its key or flag contains `pass`, `pwd`, `secret`, `token`, `key`, `auth`, `cred`, `cookie` or `bearer`. It also redacts high-entropy strings and JWT-shaped tokens. Its limits are named: a secret in an unusual position can survive, and heredoc bodies are captured differently by each shell.
 
-   A command is the skill, so shell evidence cannot be made structural without losing it. Redaction is weaker than R3, and the plan tests it with fake secrets in every position it claims to cover. Monitor patterns match on prefixes and structure, so synthesis keeps working. Before this change, a confirmed synthesis kept the matched command texts verbatim in the library, in its evidence, in the attempt's evidence key and in the session step note. A migration deletes them once; the ratings and the review history stay (owner decision 2026-10-09). Under the companion's managed policy, `observation.shell: denied` makes `zam monitor start` refuse and every monitor tool return a typed refusal.
+   A command is the skill, so shell evidence cannot be made structural without losing it. Redaction is weaker than R3, and the plan tests it with fake secrets in every position it claims to cover. Monitor patterns are substrings, and ZAM redacts each pattern the same way as the command it is matched against, so a step that contains a value still matches and synthesis keeps working. Whatever a confirmation stores in the library from now on — the synthesis evidence, the attempt's evidence and evidence key, the session step note — is the redacted text. Before this change, a confirmed synthesis kept the matched command texts verbatim in the library, in its evidence, in the attempt's evidence key and in the session step note. A migration deletes them once; the ratings and the review history stay (owner decision 2026-10-09). Under the companion's managed policy, `observation.shell: denied` makes `zam monitor start` refuse and every monitor tool return a typed refusal.
 
 6. **R6 — Retention is enforced, not declared.**
    - A session's raw observation files (its monitor log, and observer reports for as long as they exist) are evidence only while they are captured. They are deleted when the session ends, right after its synthesis candidates are prepared, and a session that never ends loses them after a fixed window. The candidates carry the redacted texts the learner confirms, so confirmation needs no raw file. An explicit action drops a running session's files sooner (owner decision 2026-10-09).
@@ -99,13 +99,16 @@ Consequence: a recorder does not remove the secret problem; it moves it. Accessi
 
 8. **R8 — Containment now.** Until R1 lands, screen observation sits behind one hard switch, `observation.screen` in the machine-local `~/.zam/config.json`. It is off by default and covers every screen surface in the table:
    - `capture-ui`, both live capture and `--image`;
-   - `start-recording` and `stop-recording`;
-   - `observe-ui-snapshot` for video and `--image` input;
-   - in the desktop app, every Tauri command that starts the sidecar or captures, not only the first launch.
+   - `observe-ui-snapshot`;
+   - the read-back of stored observer reports: `get-observations`, `observe-ui-watch`, and the UI branch of session synthesis, which reads no reports while the switch is off. Keeping a legacy file for the owner's inventory does not keep serving it.
 
-   The switch is not a database setting. No `setting-set` key, bridge command or MCP tool can write it, and turning `llm.vision.enabled` on does not open it. The Tauri shell reads no `config.json` today. One Rust reader therefore serves this switch and the companion's managed policy, and it resolves paths the same way the kernel does. The desktop observer panel is hidden in Phase 0. The OCR fallback is removed outright rather than put behind the switch. None of this depends on the option chosen below.
+   The video path (`start-recording`, `stop-recording`, video input to `observe-ui-snapshot`), the desktop observer panel and every Tauri command that started the sidecar are deleted, not switched (open question 3). The desktop shell no longer starts the sidecar.
 
-   This is a written exception to the simplicity principle: the switch has no Settings entry, because the bridge that Settings uses must not write it. The exception is temporary, it ends with Phase 5, and the hidden panel means no learner needs the switch in normal use.
+   The switch is not a database setting. No `setting-set` key, bridge command or MCP tool can write it, and turning `llm.vision.enabled` on does not open it. The kernel is the only reader of the switch; since the desktop shell starts no sidecar, no Rust reader is needed. The OCR fallback is removed outright rather than put behind the switch. None of this depends on the option chosen below.
+
+   This is a written exception to the simplicity principle: the switch has no Settings entry, because the bridge that Settings uses must not write it. The exception is temporary, it ends with Phase 5, and with the panel gone, no learner needs the switch in normal use.
+
+   While the switch is on, a UI session's synthesis still stores the vision summary and the action target as evidence in the library, until Phase 5 removes the read-back. This is an accepted limit, because only a hand edit turns the switch on.
 
    An agent with unrestricted shell access can capture the screen without ZAM. The switch does not claim to stop that. It ensures that ZAM is not the tool that does it, and that an agent limited to ZAM's own tools cannot open the path.
 
@@ -170,6 +173,7 @@ Harder:
    - employee data and the limited weight of employee consent (GDPR Art. 88, § 26 BDSG);
    - works-council co-determination for technical devices suited to monitoring employees (BetrVG § 87(1) Nr. 6);
    - transparency towards the people observed (GDPR Art. 13);
+   - secrecy of telecommunications where an employer permits private use of e-mail or the web (§ 3 TDDDG, formerly TTDSG); whether an employer is bound by it in that case is disputed;
    - third parties visible on screen or named in commands, such as customers and colleagues, who have not consented;
    - a learner vendor that processes data as a processor (GDPR Art. 28), and cloud models as transfers (GDPR Chapter V);
    - the EU AI Act's high-risk list, which names systems that evaluate learning outcomes in education and vocational training (Annex III, point 3(b)) and systems that monitor and evaluate workers' performance and behaviour (Annex III, point 4(b)). ZAM infers skill ratings from observation;
@@ -190,7 +194,7 @@ ZAM code, checked on `main` (87955c59):
 - `src/kernel/observation/shell-hooks.ts`: hooks append command lines directly (42–133)
 - `src/kernel/observation/session-synthesis.ts`: `normalizeSkillStep` and single-token rule (140–160), UI branch (268), shell branch (318)
 - `src/kernel/observation/monitor-io.ts`: verbatim monitor write (46)
-- `src/kernel/observation/analyzer.ts`: prefix and regex patterns (36)
+- `src/kernel/observation/analyzer.ts`: substring patterns (`matchesToken`)
 - `src/kernel/observation/attempts.ts`: attempt statuses
 - `src/kernel/observation/policy.ts`: default scope `window`, retention `none` (40–49); retention is never enforced
 - `src/kernel/db/schema.ts`: `agent_skills.steps` as a string array (359)
