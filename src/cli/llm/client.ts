@@ -160,7 +160,6 @@ export interface LlmConfig {
   model: string;
   apiKey: string;
   locale: SupportedLocale;
-  maxFrames?: number;
 }
 
 /** Read all LLM-related settings at once, applying defaults in one place. */
@@ -252,8 +251,6 @@ export interface ProviderConfig {
   local: boolean;
   /** Optional hint for which local server process to auto-start (flm, ollama, …). */
   runner?: string;
-  /** Vision only: max frames to sample from a recording. */
-  maxFrames?: number;
   /** Optional next endpoint to try when the primary is unusable. */
   fallback?: ProviderConfig;
   /**
@@ -405,7 +402,6 @@ function materializeModelEntry(
   entry: ResolvedModelEntry,
   base: LlmConfig,
   enabled: boolean,
-  maxFrames: number | undefined,
 ): ProviderConfig {
   const url = entry.url || base.url;
   const cfg: ProviderConfig = {
@@ -429,7 +425,6 @@ function materializeModelEntry(
   };
   if (entry.runner) cfg.runner = entry.runner;
   if (entry.keyValid !== undefined) cfg.keyValid = entry.keyValid;
-  if (maxFrames !== undefined) cfg.maxFrames = maxFrames;
   if (entry.transport === "agent") {
     cfg.transport = "agent";
     if (entry.agentHarness) cfg.agentHarness = entry.agentHarness;
@@ -467,13 +462,6 @@ export async function resolveCapability(
       : await getSetting(db, "llm.enabled")) === "true";
   const base = await getLlmConfig(db);
 
-  let maxFrames: number | undefined;
-  if (isVisual) {
-    const raw = await getSetting(db, "llm.vision.max_frames");
-    const parsed = raw ? parseInt(raw, 10) : 100;
-    maxFrames = Number.isNaN(parsed) ? 100 : parsed;
-  }
-
   const eligible = [...models]
     .sort((a, b) => a.order - b.order)
     .filter(
@@ -484,7 +472,7 @@ export async function resolveCapability(
   if (eligible.length === 0) return null;
 
   const configs = eligible.map((entry) =>
-    materializeModelEntry(entry, base, enabled, maxFrames),
+    materializeModelEntry(entry, base, enabled),
   );
   // Offline tier (ADR 2026-09-13, decision 9): with a cloud primary, local
   // rows move behind every cloud row and are flagged `offlineOnly`, so a
@@ -546,18 +534,13 @@ export async function getProviderForRole(
 
   let resolved = base;
   if (providers && binding?.primary && providers[binding.primary]) {
-    const primary = materializeProvider(
-      providers[binding.primary],
-      base,
-      role,
-      {
-        providerName: binding.primary,
-        source: "shared",
-      },
-    );
+    const primary = materializeProvider(providers[binding.primary], base, {
+      providerName: binding.primary,
+      source: "shared",
+    });
     const fallback =
       binding.fallback && providers[binding.fallback]
-        ? materializeProvider(providers[binding.fallback], base, role, {
+        ? materializeProvider(providers[binding.fallback], base, {
             providerName: binding.fallback,
             source: "shared",
           })
@@ -576,7 +559,6 @@ export async function getProviderForRole(
     const primary = materializeProvider(
       machineProviders[machineBinding.primary],
       resolved,
-      role,
       { providerName: machineBinding.primary, source: "machine" },
     );
     const fallback =
@@ -584,7 +566,6 @@ export async function getProviderForRole(
         ? materializeProvider(
             machineProviders[machineBinding.fallback],
             resolved,
-            role,
             { providerName: machineBinding.fallback, source: "machine" },
           )
         : undefined;
@@ -602,7 +583,6 @@ export async function getProviderForRole(
 function materializeProvider(
   rec: ProviderRecord,
   base: ProviderConfig,
-  role: LlmRole,
   meta: {
     providerName: string;
     source: ProviderConfig["source"];
@@ -621,7 +601,6 @@ function materializeProvider(
     source: meta.source,
     local: rec.local ?? isLocalEndpoint(url),
     ...(rec.runner ? { runner: rec.runner } : {}),
-    ...(role === "vision" ? { maxFrames: base.maxFrames } : {}),
   };
 }
 
@@ -634,8 +613,6 @@ async function getLegacyRoleConfig(
   const base = await getLlmConfig(db);
 
   if (role === "vision") {
-    const maxFramesStr = await getSetting(db, "llm.vision.max_frames");
-    const parsed = maxFramesStr ? parseInt(maxFramesStr, 10) : 100;
     const url = (await getSetting(db, "llm.vision.url")) || base.url;
     const recommendation = getCloudModelRecommendation(url);
     let model = await getSetting(db, "llm.vision.model");
@@ -649,7 +626,6 @@ async function getLegacyRoleConfig(
       locale: base.locale,
       source: "legacy",
       local: isLocalEndpoint(url),
-      maxFrames: Number.isNaN(parsed) ? 100 : parsed,
     };
   }
 
@@ -705,7 +681,6 @@ export async function getVisionConfig(db: Database): Promise<LlmConfig> {
     model: p.model,
     apiKey: p.apiKey,
     locale: p.locale,
-    maxFrames: p.maxFrames,
   };
 }
 

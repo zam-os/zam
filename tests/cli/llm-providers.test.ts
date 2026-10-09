@@ -126,8 +126,8 @@ describe("getProviderForRole", () => {
         url: "http://localhost:8000/v1",
         model: "mimo-vl",
         apiFlavor: "chat-completions",
-        maxFrames: 100,
       });
+      expect(p).not.toHaveProperty("maxFrames");
     } finally {
       await db.close();
     }
