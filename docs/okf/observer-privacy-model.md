@@ -8,7 +8,7 @@ tags:
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-10-09T09:30:00Z
+timestamp: 2026-10-09T10:15:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
@@ -170,8 +170,10 @@ content-free.
 The shell monitor (`zam monitor`) is not a screen surface and is not behind
 the switch, but the same ADR governs what it keeps:
 
-- **Redaction on every read.** The shell hooks append command lines to
-  `~/.zam/monitor/<session>.jsonl` themselves, so ZAM redacts on the way out:
+- **Redaction on every read.** The shell hooks
+  (`src/kernel/observation/shell-hooks.ts`) append command lines to
+  `~/.zam/monitor/<session>.jsonl` themselves, without the working directory
+  and only while that file exists, so ZAM redacts on the way out:
   `readMonitorLog` (`src/kernel/observation/monitor-io.ts`) is the only read
   path, and every command it returns went through `redactCommand`
   (`src/kernel/observation/redact.ts`). `zam_monitor`, the bridge monitor
@@ -201,7 +203,8 @@ the switch, but the same ADR governs what it keeps:
   session ends (`zam_session_end`, `zam session end`), ZAM prepares the
   synthesis candidates from it and then deletes the session's raw monitor log
   and observer reports; the candidates carry the redacted texts the learner
-  confirms. A session that never ends loses them after 24 hours
+  confirms. Because the hooks write only while the log exists, deleting it
+  also ends the recording in a terminal left open. A session that never ends loses them after 24 hours
   (`observation.retentionDays` in `config.json`, default 1).
   `zam_observation_close`, `zam observation close` and the Settings → Data
   action drop a running session's evidence sooner. The sweep
@@ -229,4 +232,4 @@ the switch, but the same ADR governs what it keeps:
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/skill-discovery.ts`, `src/kernel/observation/analyzer.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/db/provision.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `scripts/prepare-desktop-bridge.mjs`, `observer/src/privacy.rs`, `observer/src/uia.rs`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/skill-discovery.ts`, `src/kernel/observation/analyzer.ts`, `src/kernel/observation/shell-hooks.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/db/provision.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `scripts/prepare-desktop-bridge.mjs`, `observer/src/privacy.rs`, `observer/src/uia.rs`

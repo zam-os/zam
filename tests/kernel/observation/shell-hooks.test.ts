@@ -2,11 +2,29 @@
  * Tests for observation/shell-hooks.ts — generated shell monitor snippets.
  */
 
-import { describe, expect, it } from "vitest";
+import { execFileSync, spawnSync } from "node:child_process";
 import {
+  existsSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
+import { tmpdir } from "node:os";
+import { join } from "node:path";
+import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import {
+  generateBashHooks,
   generatePowerShellHooks,
   generatePowerShellUnhooks,
+  generateZshHooks,
 } from "../../../src/kernel/observation/shell-hooks.js";
+
+/** POSIX shells only: on Windows `bash` may be WSL or Git Bash with other paths. */
+function hasShell(shell: string): boolean {
+  if (process.platform === "win32") return false;
+  return spawnSync(shell, ["-c", "true"], { stdio: "ignore" }).status === 0;
+}
 
 describe("PowerShell monitor hooks", () => {
   it("generates PowerShell hook code for the existing monitor event schema", () => {
@@ -45,5 +63,126 @@ describe("PowerShell monitor hooks", () => {
     expect(script).toContain("Set-Item -Path function:\\prompt");
     expect(script).toContain("Remove-Variable -Name __ZAM_MONITOR_FILE");
     expect(script).toContain('Write-Host "ZAM monitor stopped."');
+  });
+});
+
+/**
+ * The hooks run in a real shell: `zam monitor start` creates the log first,
+ * the hooks append while it exists, and once session end deletes it a
+ * terminal left open records nothing (ADR 2026-10-08 R6).
+ */
+describe("zsh and bash monitor hooks", () => {
+  let dir: string;
+  let log: string;
+
+  beforeEach(() => {
+    dir = mkdtempSync(join(tmpdir(), "zam-hooks-"));
+    log = join(dir, "session.jsonl");
+    writeFileSync(log, '{"type":"monitor_meta","event":"start"}\n');
+  });
+
+  afterEach(() => {
+    rmSync(dir, { recursive: true, force: true });
+  });
+
+  /**
+   * zsh calls preexec even in a script, with an empty command line, so the
+   * zsh cases detach the automatic hooks and call the functions themselves.
+   */
+  const ZSH_MANUAL = "\npreexec_functions=()\nprecmd_functions=()\n";
+
+  function run(shell: string, hooks: string, body: string): string {
+    const script = join(dir, "run.sh");
+    writeFileSync(join(dir, "hooks.sh"), hooks);
+    writeFileSync(script, `source "${join(dir, "hooks.sh")}" >/dev/null\n${body}\n`);
+    return execFileSync(shell, [script], { cwd: dir, encoding: "utf8" });
+  }
+
+  it.skipIf(!hasShell("zsh"))(
+    "zsh records without a working directory and stops once the log is gone",
+    () => {
+      const out = run(
+        "zsh",
+        generateZshHooks(log, "s1") + ZSH_MANUAL,
+        [
+          "__zam_preexec 'npm run build'",
+          "__zam_precmd",
+          `rm "${log}"`,
+          "__zam_preexec 'cat secrets.txt'",
+          "__zam_precmd",
+          `[[ -e "${log}" ]] && echo recreated || echo gone`,
+        ].join("\n"),
+      );
+      expect(out.trim()).toBe("gone");
+    },
+  );
+
+  it.skipIf(!hasShell("zsh"))("zsh writes the start and end of a command", () => {
+    run(
+      "zsh",
+      generateZshHooks(log, "s1") + ZSH_MANUAL,
+      ["__zam_preexec 'npm run build'", "__zam_precmd"].join("\n"),
+    );
+    const events = readFileSync(log, "utf8")
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(events.map((e) => e.type)).toEqual([
+      "monitor_meta",
+      "command_start",
+      "command_end",
+    ]);
+    expect(events[1].command).toBe("npm run build");
+    expect(events[1]).not.toHaveProperty("cwd");
+  });
+
+  it.skipIf(!hasShell("bash"))(
+    "bash records without a working directory and stops once the log is gone",
+    () => {
+      const out = run(
+        "bash",
+        generateBashHooks(log, "s1"),
+        [
+          // Installing the hooks records one line of their own; close it.
+          "__zam_prompt_cmd",
+          // The DEBUG trap records this command; the prompt hook ends it.
+          "true npm run build",
+          "__zam_prompt_cmd",
+          `rm "${log}"`,
+          "__zam_prompt_cmd",
+          "true cat secrets.txt",
+          "__zam_prompt_cmd",
+          `[[ -e "${log}" ]] && echo recreated || echo gone`,
+        ].join("\n"),
+      );
+      expect(out.trim()).toBe("gone");
+    },
+  );
+
+  it.skipIf(!hasShell("bash"))("bash writes the start and end of a command", () => {
+    run(
+      "bash",
+      generateBashHooks(log, "s1"),
+      ["__zam_prompt_cmd", "true npm run build", "__zam_prompt_cmd"].join("\n"),
+    );
+    const events = readFileSync(log, "utf8")
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(events.slice(-2).map((e) => e.type)).toEqual([
+      "command_start",
+      "command_end",
+    ]);
+    expect(events.at(-2).command).toBe("true npm run build");
+    for (const event of events) expect(event).not.toHaveProperty("cwd");
+  });
+
+  it("PowerShell writes only while the log exists and never the directory", () => {
+    const script = generatePowerShellHooks("C:\\zam\\s.jsonl", "s1");
+    expect(script).toContain(
+      "if (-not [System.IO.File]::Exists($global:__ZAM_MONITOR_FILE)) { return }",
+    );
+    expect(script).not.toMatch(/cwd/i);
+    expect(existsSync(log)).toBe(true);
   });
 });

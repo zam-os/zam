@@ -3,6 +3,11 @@
  *
  * Pure functions that return shell code strings. The CLI command
  * `zam monitor start/stop` calls these and prints to stdout.
+ *
+ * `zam monitor start` creates the log before it prints the hooks, and the
+ * hooks write only while it exists: session end deletes it (ADR 2026-10-08
+ * R6), and from then on a terminal left open records nothing. No hook writes
+ * the working directory; no reader uses it.
  */
 
 function psSingleQuoted(value: string): string {
@@ -35,18 +40,19 @@ __zam_ts() {
 }
 
 __zam_preexec() {
+  [[ -f "$__ZAM_MONITOR_FILE" ]] || return
   (( __ZAM_MONITOR_SEQ++ ))
   local cmd="\${1//\\"/\\\\\\"}"
-  local cwd="\${PWD//\\"/\\\\\\"}"
   local ts="$(__zam_ts)"
-  printf '{"type":"command_start","ts":"%s","command":"%s","cwd":"%s","seq":%d,"pid":%d}\\n' \\
-    "$ts" "$cmd" "$cwd" "$__ZAM_MONITOR_SEQ" "$$" \\
+  printf '{"type":"command_start","ts":"%s","command":"%s","seq":%d,"pid":%d}\\n' \\
+    "$ts" "$cmd" "$__ZAM_MONITOR_SEQ" "$$" \\
     >> "$__ZAM_MONITOR_FILE"
 }
 
 __zam_precmd() {
   local exit_code=$?
   [[ $__ZAM_MONITOR_SEQ -eq 0 ]] && return
+  [[ -f "$__ZAM_MONITOR_FILE" ]] || return
   local ts="$(__zam_ts)"
   printf '{"type":"command_end","ts":"%s","exit_code":%d,"seq":%d,"pid":%d}\\n' \\
     "$ts" "$exit_code" "$__ZAM_MONITOR_SEQ" "$$" \\
@@ -82,13 +88,13 @@ __zam_ts() {
 
 __zam_debug_trap() {
   [[ "$__ZAM_MONITOR_CMD_ACTIVE" -eq 1 ]] && return
+  [[ -f "$__ZAM_MONITOR_FILE" ]] || return
   __ZAM_MONITOR_CMD_ACTIVE=1
   (( __ZAM_MONITOR_SEQ++ ))
   local cmd="\${BASH_COMMAND//\\"/\\\\\\"}"
-  local cwd="\${PWD//\\"/\\\\\\"}"
   local ts="$(__zam_ts)"
-  printf '{"type":"command_start","ts":"%s","command":"%s","cwd":"%s","seq":%d,"pid":%d}\\n' \\
-    "$ts" "$cmd" "$cwd" "$__ZAM_MONITOR_SEQ" "$$" \\
+  printf '{"type":"command_start","ts":"%s","command":"%s","seq":%d,"pid":%d}\\n' \\
+    "$ts" "$cmd" "$__ZAM_MONITOR_SEQ" "$$" \\
     >> "$__ZAM_MONITOR_FILE"
 }
 
@@ -96,6 +102,7 @@ __zam_prompt_cmd() {
   local exit_code=$?
   if [[ "$__ZAM_MONITOR_CMD_ACTIVE" -eq 1 ]]; then
     __ZAM_MONITOR_CMD_ACTIVE=0
+    [[ -f "$__ZAM_MONITOR_FILE" ]] || return
     local ts="$(__zam_ts)"
     printf '{"type":"command_end","ts":"%s","exit_code":%d,"seq":%d,"pid":%d}\\n' \\
       "$ts" "$exit_code" "$__ZAM_MONITOR_SEQ" "$$" \\
@@ -128,6 +135,7 @@ $global:__ZAM_MONITOR_SKIP_NEXT_PROMPT = $true
 
 function global:__zam_write_monitor_event {
   param([hashtable]$Event)
+  if (-not [System.IO.File]::Exists($global:__ZAM_MONITOR_FILE)) { return }
   $json = $Event | ConvertTo-Json -Compress -Depth 4
   $utf8NoBom = New-Object System.Text.UTF8Encoding $false
   [System.IO.File]::AppendAllText($global:__ZAM_MONITOR_FILE, $json + [Environment]::NewLine, $utf8NoBom)
@@ -172,12 +180,10 @@ function global:__zam_record_last_history {
     }
   }
 
-  $cwd = (Get-Location).Path
   __zam_write_monitor_event @{
     type = "command_start"
     ts = (__zam_iso_utc $history.StartExecutionTime)
     command = $history.CommandLine
-    cwd = $cwd
     seq = $global:__ZAM_MONITOR_SEQ
     pid = $PID
   }

@@ -30,7 +30,9 @@ for the same session and token does not apply the rating twice.
 ### Redaction and retention
 
 The shell hooks write command lines to `~/.zam/monitor/<session>.jsonl` as
-typed. ZAM redacts them on every read (ADR 2026-10-08 R5): `zam_monitor`, the
+typed, without the working directory, and only while that file exists: once
+session end deletes it, a terminal left open records nothing more. ZAM redacts
+them on every read (ADR 2026-10-08 R5): `zam_monitor`, the
 bridge monitor commands, synthesis candidates and skill discovery only ever
 see the command with its values in secret positions replaced by `[redacted]`
 — environment assignments, secret flags and headers, credentials in URLs,
