@@ -177,6 +177,79 @@ describe("zsh and bash monitor hooks", () => {
     for (const event of events) expect(event).not.toHaveProperty("cwd");
   });
 
+  /** Commands that broke the old escaping, with what a reader must get back. */
+  const TRICKY: Array<[string, string]> = [
+    ['grep "a\\|b" file', 'grep "a\\|b" file'],
+    ["echo one \\\ntwo", "echo one \\\ntwo"],
+    ['printf "x\ty"', 'printf "x\ty"'],
+    ["printf 'a\rb'", "printf 'a\rb'"],
+    ["type C:\\Users\\name\\notes.txt", "type C:\\Users\\name\\notes.txt"],
+    ["echo trailing\\", "echo trailing\\"],
+    ["printf '\u001b[31mred'", "printf '[31mred'"],
+    ["echo über – 日本 🙂 & $HOME * ? [x]", "echo über – 日本 🙂 & $HOME * ? [x]"],
+  ];
+
+  function writeTricky(): void {
+    TRICKY.forEach(([command], index) => {
+      writeFileSync(join(dir, `cmd${index}.txt`), command);
+    });
+  }
+
+  it.skipIf(!hasShell("zsh"))(
+    "zsh writes valid JSON for backslashes, quotes and line breaks",
+    () => {
+      writeTricky();
+      run(
+        "zsh",
+        generateZshHooks(log, "s1") + ZSH_MANUAL,
+        'for f in cmd*.txt(n); do __zam_preexec "$(<$f)"; __zam_precmd; done',
+      );
+      const starts = readFileSync(log, "utf8")
+        .trim()
+        .split("\n")
+        .map((line) => JSON.parse(line))
+        .filter((event) => event.type === "command_start");
+      expect(starts.map((event) => event.command)).toEqual(
+        TRICKY.map(([, expected]) => expected),
+      );
+    },
+  );
+
+  it.skipIf(!hasShell("bash"))(
+    "bash writes valid JSON for backslashes, quotes and line breaks",
+    () => {
+      writeTricky();
+      const out = run(
+        "bash",
+        generateBashHooks(log, "s1"),
+        [
+          "trap - DEBUG",
+          'for f in cmd*.txt; do __zam_json_escape "$(cat "$f")"; printf \'{"command":"%s"}\\n\' "$__ZAM_ESCAPED"; done',
+        ].join("\n"),
+      );
+      const commands = out
+        .trim()
+        .split("\n")
+        .map((line) => JSON.parse(line).command);
+      expect(commands).toEqual(TRICKY.map(([, expected]) => expected));
+    },
+  );
+
+  it.skipIf(!hasShell("bash"))("bash records a quoted command through its trap", () => {
+    run(
+      "bash",
+      generateBashHooks(log, "s1"),
+      ["__zam_prompt_cmd", `true 'a\\b' "say \\"hi\\""`, "__zam_prompt_cmd"].join(
+        "\n",
+      ),
+    );
+    const events = readFileSync(log, "utf8")
+      .trim()
+      .split("\n")
+      .map((line) => JSON.parse(line));
+    expect(events.at(-2).command).toBe(`true 'a\\b' "say \\"hi\\""`);
+  });
+
   it("PowerShell writes only while the log exists and never the directory", () => {
     const script = generatePowerShellHooks("C:\\zam\\s.jsonl", "s1");
     expect(script).toContain(
