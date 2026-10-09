@@ -4516,12 +4516,7 @@ async function deleteObservationLogs(): Promise<void> {
   let lastError: unknown = null;
   for (const sessionId of [...observationSessionIds]) {
     try {
-      await runBridge("observation-close", [
-        "--session",
-        sessionId,
-        "--outcome",
-        "dismissed",
-      ]);
+      await runBridge("observation-close", ["--session", sessionId]);
     } catch (err) {
       lastError = err;
     }

@@ -722,6 +722,17 @@
       ]
     },
     {
+      "id": "skill-digests",
+      "parent": "observation-mech",
+      "label": "Skill digests",
+      "link": "leave",
+      "text": "A session's raw log goes when it ends; a redacted digest of its commands stays, so discover-skills can propose recurring steps as skills.",
+      "sources": [
+        "docs/concepts/monitoring-methods.md",
+        "src/kernel/observation/skill-discovery.ts"
+      ]
+    },
+    {
       "id": "learner",
       "parent": "agents",
       "label": "Learner",

@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-08T20:05:00Z
+timestamp: 2026-10-09T07:40:00Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -151,10 +151,11 @@ The model-visible learning tools cover:
 - companion learner/model context;
 - monitored practice and sampling: `zam_monitor` returns command lines with
   values in secret positions replaced by `[redacted]`, and synthesis
-  candidates carry the same redacted texts. Once the learner confirmed or
-  dismissed a session's synthesis, `zam_observation_close` keeps a value-free
-  digest for skill discovery and deletes the session's raw observation files
-  on that machine (ADR 2026-10-08);
+  candidates carry the same redacted texts. `zam_session_end` deletes the
+  session's raw observation files on that machine once the candidates are
+  prepared and keeps a value-free digest for skill discovery;
+  `zam_observation_close` does the same sooner for a session still running or
+  never ended (ADR 2026-10-08);
 - focused Recall, Learning Graph, Settings, and Studio panels.
 
 ## OKF knowledge work

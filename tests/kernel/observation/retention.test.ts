@@ -22,7 +22,6 @@ import {
   commandsFromDigest,
   createToken,
   discoverSkills,
-  finalizeSessionObservation,
   getMonitorPath,
   inventoryObservationFiles,
   loadInstallConfig,
@@ -30,6 +29,7 @@ import {
   pairCommands,
   readMonitorLog,
   readSessionDigest,
+  rewriteMonitorLogRedacted,
   startSession,
   sweepObservationFiles,
 } from "../../../src/kernel/index.js";
@@ -117,46 +117,39 @@ describe("redaction at rest", () => {
     expect(JSON.stringify(readMonitorLog(id))).not.toContain(SECRET);
     expect(readFileSync(path, "utf8")).toContain(SECRET);
 
-    expect(finalizeSessionObservation(id)).toBe(true);
+    expect(rewriteMonitorLogRedacted(id)).toBe(true);
     const content = readFileSync(path, "utf8");
     expect(content).not.toContain(SECRET);
     expect(content).toContain("export API_TOKEN=[redacted]");
     expect(content).toContain("npm publish");
     expect(statSync(path).mtimeMs).toBe(before);
     // Already redacted: nothing to do.
-    expect(finalizeSessionObservation(id)).toBe(false);
+    expect(rewriteMonitorLogRedacted(id)).toBe(false);
   });
 });
 
 describe("closeSessionObservation", () => {
-  it.each(["confirmed", "dismissed"] as const)(
-    "keeps a value-free digest and deletes the raw files when %s",
-    (outcome) => {
-      const id = sessionAt(1);
-      writeRawLog(id, [`docker login --password ${SECRET}`, "docker push app"]);
-      mkdirSync(join(root, "observer"), { recursive: true });
-      writeFileSync(join(root, "observer", `${id}.reports.jsonl`), "{}\n");
+  it("keeps a value-free digest and deletes the raw files", () => {
+    const id = sessionAt(1);
+    writeRawLog(id, [`docker login --password ${SECRET}`, "docker push app"]);
+    mkdirSync(join(root, "observer"), { recursive: true });
+    writeFileSync(join(root, "observer", `${id}.reports.jsonl`), "{}\n");
 
-      const result = closeSessionObservation(id, outcome, NOW);
+    const result = closeSessionObservation(id, NOW);
 
-      expect(result).toEqual({
-        sessionId: id,
-        outcome,
-        digested: true,
-        deleted: ["monitor-log", "observer-reports"],
-      });
-      expect(existsSync(getMonitorPath(id))).toBe(false);
-      const digest = readSessionDigest(id);
-      expect(digest?.prefixes).toEqual(["docker login", "docker push"]);
-      expect(JSON.stringify(digest)).not.toContain(SECRET);
-    },
-  );
+    expect(result).toEqual({
+      sessionId: id,
+      digested: true,
+      deleted: ["monitor-log", "observer-reports"],
+    });
+    expect(existsSync(getMonitorPath(id))).toBe(false);
+    const digest = readSessionDigest(id);
+    expect(digest?.prefixes).toEqual(["docker login", "docker push"]);
+    expect(JSON.stringify(digest)).not.toContain(SECRET);
+  });
 
-  it("rejects unknown outcomes and odd session ids", () => {
-    expect(() =>
-      closeSessionObservation(sessionAt(1), "kept" as never, NOW),
-    ).toThrow(/outcome/);
-    expect(() => closeSessionObservation("../etc", "dismissed", NOW)).toThrow(
+  it("rejects odd session ids", () => {
+    expect(() => closeSessionObservation("../etc", NOW)).toThrow(
       /Invalid session ID/,
     );
   });
@@ -363,7 +356,7 @@ describe("skill discovery from digests", () => {
     );
     const before = discoverSkills(fromLogs);
 
-    for (const id of sessions) closeSessionObservation(id, "confirmed", NOW);
+    for (const id of sessions) closeSessionObservation(id, NOW);
     const fromDigests = new Map(
       sessions.map((id) => [
         id,

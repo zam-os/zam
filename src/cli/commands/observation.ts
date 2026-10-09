@@ -16,9 +16,7 @@ import {
   getObservationRetentionDays,
   inventoryObservationFiles,
   isScreenObservationEnabled,
-  OBSERVATION_OUTCOMES,
   type ObservationFile,
-  type ObservationOutcome,
   sweepObservationFiles,
 } from "../../kernel/index.js";
 
@@ -137,20 +135,12 @@ observationCommand
 observationCommand
   .command("close")
   .description(
-    "Confirm or dismiss a session's observation: keep a digest, delete its raw files here",
+    "Delete a running or never-ended session's raw files here now, keeping a digest (session end does this by itself)",
   )
   .requiredOption("--session <id>", "Session ID")
-  .requiredOption("--outcome <outcome>", "confirmed | dismissed")
   .option("--json", "Output as JSON")
   .action((opts) => {
-    if (!OBSERVATION_OUTCOMES.includes(opts.outcome as ObservationOutcome)) {
-      console.error(`--outcome must be ${OBSERVATION_OUTCOMES.join(" or ")}`);
-      process.exit(1);
-    }
-    const result = closeSessionObservation(
-      opts.session,
-      opts.outcome as ObservationOutcome,
-    );
+    const result = closeSessionObservation(opts.session);
     if (opts.json) {
       console.log(JSON.stringify(result, null, 2));
       return;

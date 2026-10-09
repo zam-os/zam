@@ -8,7 +8,6 @@ import type {
   Database,
   InstallChannel,
   KnowledgeContext,
-  ObservationOutcome,
   Rating,
   ReviewActionType,
   SymbiosisMode,
@@ -38,7 +37,6 @@ import {
   evaluatePublicationReadiness,
   executeReviewAction,
   exportSnapshot,
-  finalizeSessionObservation,
   findBundledCellsForScope,
   generateConceptFreeCue,
   generatePrompt,
@@ -75,7 +73,6 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
-  OBSERVATION_OUTCOMES,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
@@ -1580,11 +1577,11 @@ export async function endSession(db: Database, params: EndSessionParams) {
     : undefined;
   const session = await kernelEndSession(db, params.session);
   const summary = await getSessionSummary(db, params.session);
-  // The session ended, so its monitor log is redacted at rest (ADR 2026-10-08
-  // R5) and expired files go (R6). Deleting this session's log waits for the
-  // learner's confirmation or dismissal: see closeObservation.
+  // The raw log is evidence only while it is captured (ADR 2026-10-08 R6):
+  // once the synthesis above was prepared, the session's raw files go and a
+  // value-free digest stays; the confirmed candidates carry their own texts.
   try {
-    finalizeSessionObservation(params.session);
+    closeSessionObservation(params.session);
     sweepObservationFiles();
   } catch {
     // Housekeeping never fails the end of a session.
@@ -1679,25 +1676,21 @@ export async function analyzeMonitor(
 
 export interface CloseObservationParams {
   session: string;
-  outcome: ObservationOutcome;
 }
 
 /**
- * The learner confirmed or dismissed a session's synthesis (ADR 2026-10-08
- * R6): keep a value-free digest and delete the session's raw observation
- * files on this machine. Learning state is not touched. The files are
- * machine-local, so a session the open library does not know — one from a
- * library used before a switch — can still be closed; an unknown id deletes
- * nothing.
+ * Delete a session's raw observation files on this machine now and keep a
+ * value-free digest (ADR 2026-10-08 R6). Session end does this by itself;
+ * this is for a session still running or never ended. Learning state is not
+ * touched. The files are machine-local, so a session the open library does
+ * not know — one from a library used before a switch — can still be closed;
+ * an unknown id deletes nothing.
  */
 export async function closeObservation(
   _db: Database,
   params: CloseObservationParams,
 ) {
-  if (!OBSERVATION_OUTCOMES.includes(params.outcome)) {
-    throw new Error(`outcome must be ${OBSERVATION_OUTCOMES.join(" or ")}`);
-  }
-  return closeSessionObservation(params.session, params.outcome);
+  return closeSessionObservation(params.session);
 }
 
 // 12. sessionOpen

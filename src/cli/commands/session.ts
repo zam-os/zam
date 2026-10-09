@@ -26,7 +26,6 @@ import {
   CardNotReviewableError,
   closeSessionObservation,
   endSession,
-  finalizeSessionObservation,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
@@ -377,21 +376,13 @@ function loadPatternFile(path: string | undefined): TokenPattern[] {
 }
 
 /**
- * After `zam session end`: redact the session's monitor log, close its
- * observation when the learner went through the candidates, and run the
- * retention sweep. Housekeeping never fails the command.
+ * After `zam session end`: delete the session's raw observation files, keeping
+ * a digest, and run the retention sweep. Housekeeping never fails the command.
  */
-function settleObservationAfterEnd(
-  sessionId: string,
-  confirmed: boolean,
-): boolean {
+function settleObservationAfterEnd(sessionId: string): boolean {
   let closed = false;
   try {
-    finalizeSessionObservation(sessionId);
-    if (confirmed) {
-      closed =
-        closeSessionObservation(sessionId, "confirmed").deleted.length > 0;
-    }
+    closed = closeSessionObservation(sessionId).deleted.length > 0;
     sweepObservationFiles();
   } catch {
     // The next sweep tries again.
@@ -406,7 +397,7 @@ async function runSynthesisPhase(
     patternFile?: string;
     minConfidence: SynthesisConfidence;
   },
-): Promise<{ applied: number; reviewed: number }> {
+): Promise<number> {
   const preview = await prepareSessionSynthesis(db, {
     sessionId,
     explicitPatterns: loadPatternFile(options.patternFile),
@@ -431,11 +422,11 @@ async function runSynthesisPhase(
     console.log(
       "  No token patterns found. Link tokens to agent skills or pass --patterns <file>.",
     );
-    return { applied: 0, reviewed: 0 };
+    return 0;
   }
   if (preview.candidates.length === 0) {
     console.log("  No new medium/high-confidence ratings to confirm.");
-    return { applied: 0, reviewed: 0 };
+    return 0;
   }
 
   let applied = 0;
@@ -507,7 +498,7 @@ async function runSynthesisPhase(
     }
   }
 
-  return { applied, reviewed: preview.candidates.length };
+  return applied;
 }
 
 // ── zam session log ───────────────────────────────────────────────────────
@@ -583,12 +574,11 @@ sessionCommand
       }
 
       const before = await getSessionSummary(db, opts.session);
-      let reviewed = 0;
       if (opts.synthesize) {
-        ({ reviewed } = await runSynthesisPhase(db, opts.session, {
+        await runSynthesisPhase(db, opts.session, {
           patternFile: opts.patterns,
           minConfidence: opts.minConfidence as SynthesisConfidence,
-        }));
+        });
       }
 
       if (!before.session.completed_at) {
@@ -597,10 +587,10 @@ sessionCommand
         throw new Error(`Session already completed: ${opts.session}`);
       }
 
-      // ADR 2026-10-08 R5/R6: the log is redacted once the session ends; once
-      // the learner went through its candidates, the raw files go and a
-      // digest stays for skill discovery.
-      const closed = settleObservationAfterEnd(opts.session, reviewed > 0);
+      // ADR 2026-10-08 R6: the raw log is evidence only while it is
+      // captured. Once the session ended and its candidates were prepared,
+      // the raw files go and a digest stays for skill discovery.
+      const closed = settleObservationAfterEnd(opts.session);
       if (closed && !opts.json) {
         console.log(
           "\nThis session's monitor log was deleted; a summary of its command prefixes stays for skill discovery.",

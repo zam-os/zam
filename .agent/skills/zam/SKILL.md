@@ -29,7 +29,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. Returns the `attemptId` to pass to `zam_submit_review`. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
-| `zam_observation_close` | After synthesis: keep a digest and delete the session's raw observation files on this machine. |
+| `zam_observation_close` | Drop the raw observation files of a session that is still running or was never ended, keeping a digest. `zam_session_end` does this by itself. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
 | `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
@@ -185,7 +185,7 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work. Command texts in the candidates are redacted (`[redacted]` marks a value ZAM removed); never ask the learner to repeat a redacted value. When the learner has gone through the candidates, call `zam_observation_close` with the session ID and `outcome: "confirmed"`; if they do not want this session used, call it with `outcome: "dismissed"` instead of submitting ratings. Either way ZAM deletes the raw monitor log on this machine and keeps only a digest for skill discovery.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work. Command texts in the candidates are redacted (`[redacted]` marks a value ZAM removed); never ask the learner to repeat a redacted value. Ending the session deletes its raw monitor log on this machine once the candidates are prepared, so read them from this response; only a value-free digest stays, which `zam bridge discover-skills` uses to propose skills from command sequences that recur across sessions. If the learner does not want this session used, submit no ratings.
 
 **For UI / screen tasks (observation mode):**
 

@@ -35,17 +35,35 @@ bridge monitor commands, synthesis candidates and skill discovery only ever
 see the command with its values in secret positions replaced by `[redacted]`
 — environment assignments, secret flags and headers, credentials in URLs,
 passwords piped into login commands, tokens and high-entropy strings. The log
-itself is rewritten in redacted form when monitoring stops and when the
-session ends.
+itself is rewritten in redacted form when monitoring stops, and any log idle
+for ten minutes is rewritten by the next retention sweep.
 
-The raw log is deleted once the learner confirms or dismisses the session's
-synthesis (`zam_observation_close`, `zam observation close`, or
-`zam session end --synthesize` after going through the candidates), and at
-the latest after 24 hours (`observation.retentionDays` in `~/.zam/config.json`,
-default 1).
-A value-free digest of the session's command prefixes stays, so skill
-discovery still finds recurring patterns. `zam observation status` shows what
-this machine keeps.
+The raw log is evidence only while it is captured. When the session ends
+(`zam_session_end`, `zam session end`), ZAM first prepares the synthesis
+candidates from it and then deletes it; the candidates carry the redacted
+command texts the learner confirms. A session that never ends loses its raw
+log after 24 hours (`observation.retentionDays` in `~/.zam/config.json`,
+default 1). To drop a running session's evidence sooner, use
+`zam_observation_close`, `zam observation close` or Settings → Data.
+`zam observation status` shows what this machine keeps.
+
+### Skill discovery
+
+When a raw log goes, ZAM keeps a digest of it in
+`~/.zam/monitor/digests/<session>.json`: the session's commands reduced to
+tool and subcommand (`git checkout`, `npm run build`, `docker compose up`), in
+order and redacted, without arguments, times, exit codes or working
+directories. Trivial commands (`cd`, `ls`, `pwd`, `clear`, `exit`, `echo`) are
+left out, and only the newest 200 digests are kept.
+
+`zam bridge discover-skills [--min-sessions 2] [--limit 20]` reads those
+digests, plus the raw logs of sessions still running, and proposes a skill for
+every sequence of two to five steps that recurs in at least `--min-sessions`
+of the latest `--limit` sessions. Existing agent skills are skipped; a pattern
+seen in three sessions is medium confidence, in four or more high. Discovery
+only proposes: an agent or the learner turns a proposal into an agent skill.
+It is a bridge command only — no MCP tool or Studio view calls it yet. Deleting
+`~/.zam/monitor/digests/` removes everything discovery has learned.
 
 ## Level 2 — Screen and UI Observation
 

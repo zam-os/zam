@@ -500,7 +500,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_session_end",
     {
-      description: "End a learning/work session",
+      description:
+        "End a learning/work session. Its raw monitor log is deleted on this machine once the synthesis candidates are prepared; only a value-free digest stays.",
       inputSchema: {
         session: z.string().describe("Session ULID to end"),
         synthesize: z
@@ -541,14 +542,11 @@ export function createMcpServer(
     "zam_observation_close",
     {
       description:
-        "After the learner confirmed or rejected a session's synthesis candidates: keep a value-free digest for skill discovery and delete the session's raw observation files on this machine. Changes no learning state.",
+        "Delete a session's raw observation files on this machine now, keeping a value-free digest for skill discovery. zam_session_end already does this; use it only when the learner does not want a session that is still running, or was never ended, to be used. Changes no learning state.",
       inputSchema: {
-        session: z.string().describe("Session ULID whose observation is done"),
-        outcome: z
-          .enum(["confirmed", "dismissed"])
-          .describe(
-            "confirmed when the learner went through the candidates; dismissed when they chose not to use this session",
-          ),
+        session: z
+          .string()
+          .describe("Session ULID whose raw observation files to delete"),
       },
       annotations: {
         ...commonAnnotations,
@@ -557,10 +555,7 @@ export function createMcpServer(
       },
     },
     wrapHandler(async (params) => {
-      return await handleCloseObservation(db, {
-        session: params.session,
-        outcome: params.outcome,
-      });
+      return await handleCloseObservation(db, { session: params.session });
     }),
   );
 

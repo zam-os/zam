@@ -8,7 +8,6 @@ import {
   existsSync,
   mkdirSync,
   mkdtempSync,
-  readFileSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -138,7 +137,7 @@ describe("monitor payloads are redacted", () => {
     expect(analyzed.data.unmatchedCommands.length).toBeGreaterThan(0);
   });
 
-  it("zam_session_end redacts the synthesis and the log at rest", async () => {
+  it("zam_session_end returns redacted candidates and deletes the raw log", async () => {
     const token = await createToken(db, {
       slug: "npm-publish",
       concept: "Publish a package with npm",
@@ -160,22 +159,26 @@ describe("monitor payloads are redacted", () => {
     const ended = await call("zam_session_end", { session, synthesize: true });
 
     expect(ended.text).not.toContain(SECRET);
-    expect(readFileSync(path, "utf8")).not.toContain(SECRET);
-    expect(readFileSync(path, "utf8")).toContain("npm publish --otp [redacted]");
+    // The synthesis was prepared from the log before it went.
+    expect(ended.data.synthesis).toMatchObject({
+      commandCount: 2,
+      unmatchedCommands: ["export OTHER_TOKEN=[redacted]"],
+    });
+    expect(existsSync(path)).toBe(false);
+    expect(readSessionDigest(session)?.prefixes).toEqual([
+      "npm publish",
+      "export other_token=[redacted]",
+    ]);
   });
 
   it("zam_observation_close keeps a digest and deletes the log", async () => {
     const session = await startedSession();
     const path = writeRawLog(session, ["git status", `git push https://bob:${SECRET}@x.test/r`]);
 
-    const { data } = await call("zam_observation_close", {
-      session,
-      outcome: "dismissed",
-    });
+    const { data } = await call("zam_observation_close", { session });
 
     expect(data).toMatchObject({
       sessionId: session,
-      outcome: "dismissed",
       digested: true,
       deleted: ["monitor-log"],
     });
@@ -193,13 +196,12 @@ describe("monitor payloads are redacted", () => {
   it("deletes nothing for an unknown session and refuses odd ids", async () => {
     const { data } = await call("zam_observation_close", {
       session: "01K7UNKNOWNSESSION000000000",
-      outcome: "confirmed",
     });
     expect(data.deleted).toEqual([]);
 
     const response = (await client.callTool({
       name: "zam_observation_close",
-      arguments: { session: "../../etc/passwd", outcome: "dismissed" },
+      arguments: { session: "../../etc/passwd" },
     })) as { isError?: boolean; content: Array<{ text: string }> };
     expect(JSON.stringify(response)).toContain("Invalid session ID");
   });
@@ -215,7 +217,7 @@ describe("monitor payloads are redacted", () => {
       ]);
     }
     // One session is already closed: its digest stands in for the log.
-    await call("zam_observation_close", { session: sessions[0], outcome: "confirmed" });
+    await call("zam_observation_close", { session: sessions[0] });
 
     const discovered = await executeBridgeCommandJson("discover-skills", []);
     expect(JSON.stringify(discovered)).not.toContain(SECRET);

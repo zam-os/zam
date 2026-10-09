@@ -8,7 +8,7 @@ tags:
   - boundaries
   - security
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/observer-privacy-model.md"
-timestamp: 2026-10-08T22:40:00Z
+timestamp: 2026-10-09T07:40:00Z
 ---
 
 ZAM observes learner activity to assess mastery silently without interrupting flow.
@@ -189,28 +189,40 @@ the switch, but the same ADR governs what it keeps:
   secret in an unknown position with low entropy survives; redaction is
   weaker than having no content.
 - **Redaction at rest.** The log is rewritten in redacted form at
-  `zam monitor stop` and at session end, and a sweep redacts any log idle for
-  ten minutes. Texts an agent sends back for a confirmed synthesis are
-  redacted again before they reach the shared database.
-- **Retention.** A raw log only has to live until it is turned into redacted
-  evidence and a conclusion is drawn. A session's raw monitor log and
-  observer reports are deleted once the learner confirms or dismisses its
-  synthesis (`zam_observation_close`, `zam observation close`, the Settings →
-  Data action, or `zam session end --synthesize` after the candidates), and
-  at the latest after 24 hours (`observation.retentionDays` in
-  `config.json`, default 1). A value-free digest of the session's command
-  prefixes stays for skill discovery. The sweep
+  `zam monitor stop`, and a sweep redacts any log idle for ten minutes. Texts
+  an agent sends back for a confirmed synthesis are redacted again before they
+  reach the shared database. Command texts that confirmed syntheses stored in
+  the library before redaction existed were deleted by migration M039; the
+  ratings stayed.
+- **Retention.** A raw log is evidence only while it is captured. When the
+  session ends (`zam_session_end`, `zam session end`), ZAM prepares the
+  synthesis candidates from it and then deletes the session's raw monitor log
+  and observer reports; the candidates carry the redacted texts the learner
+  confirms. A session that never ends loses them after 24 hours
+  (`observation.retentionDays` in `config.json`, default 1).
+  `zam_observation_close`, `zam observation close` and the Settings → Data
+  action drop a running session's evidence sooner. The sweep
   (`src/kernel/observation/retention.ts`) runs at session end,
   `zam monitor start`, `zam mcp` start and `zam bridge serve` start. It never
-  consults the database, so a confirmation on another machine deletes nothing
-  here. It never writes a `config.json` that does not parse, and while the
-  file is unreadable it deletes nothing. Sessions that started before
-  retention first ran on a machine are legacy: redacted, but deleted only
-  after the owner confirms `zam observation inventory --delete`.
+  consults the database, so a session ended on another machine deletes nothing
+  here before the window. It never writes a `config.json` that does not parse,
+  and while the file is unreadable it deletes nothing. Sessions that started
+  before retention first ran on a machine are legacy: redacted, but deleted
+  only after the owner confirms `zam observation inventory --delete`.
+- **Digests and skill discovery.** Before a raw log goes, ZAM writes a digest
+  to `~/.zam/monitor/digests/<session>.json`: the session's commands reduced
+  to tool and subcommand (`git checkout`, `npm run build`), in order and
+  redacted, with no arguments, times, exit codes or working directories, and
+  without trivial commands such as `cd` or `ls`. Only the newest 200 are kept.
+  They are the one thing observation leaves behind, and they exist for
+  `zam bridge discover-skills`, which proposes a skill for every sequence of
+  two to five steps that recurs across sessions
+  (`src/kernel/observation/skill-discovery.ts`). Discovery is bridge-only; no
+  MCP tool or Studio view calls it yet.
 
 # Citations
 
 - [ADR 2026-10-08 — Observation Without Content](../adr/2026-10-08-skill-learner-observation.md)
 - [ADR 2026-06-20 — Configurable Observer Permission Model and Two-Layer Consent](../adr/2026-06-20-observer-permission-model.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
-- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `scripts/prepare-desktop-bridge.mjs`, `observer/src/privacy.rs`, `observer/src/uia.rs`
+- Code: `src/kernel/observation/screen-switch.ts`, `src/kernel/observation/redact.ts`, `src/kernel/observation/retention.ts`, `src/kernel/observation/skill-discovery.ts`, `src/kernel/observation/monitor-io.ts`, `src/kernel/db/provision.ts`, `src/kernel/system/install-config.ts`, `src/kernel/observation/policy.ts`, `src/kernel/observation/observer-sidecar-policy.ts`, `src/kernel/observation/ui-observer-io.ts`, `src/kernel/models/settings.ts`, `src/cli/commands/bridge.ts`, `src/cli/llm/vision.ts`, `scripts/prepare-desktop-bridge.mjs`, `observer/src/privacy.rs`, `observer/src/uia.rs`

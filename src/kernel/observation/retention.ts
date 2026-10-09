@@ -2,11 +2,13 @@
  * Observation retention — ADR 2026-10-08 R6.
  *
  * A session's raw observation files (its monitor log, and its observer
- * reports for as long as those exist) are deleted once its synthesis is
- * confirmed or dismissed, and at the latest after `observation.retentionDays`
- * (default 1, so 24 hours) in the machine-local config.json. Before a monitor log goes,
- * ZAM keeps a value-free digest of it — the redacted, normalized command
- * prefixes skill discovery compares — so discovery survives the deletion.
+ * reports for as long as those exist) are evidence only while it is captured:
+ * they are deleted when the session ends, right after its synthesis was
+ * prepared, and a session that never ends loses them after
+ * `observation.retentionDays` (default 1, so 24 hours) in the machine-local
+ * config.json. Before a monitor log goes, ZAM keeps a value-free digest of it
+ * — the redacted, normalized command prefixes skill discovery compares — so
+ * discovery survives the deletion.
  *
  * Files are machine-local while confirmation lives in the shared database:
  * confirming on one machine deletes nothing on another, where only the window
@@ -45,13 +47,6 @@ import {
 } from "./monitor-io.js";
 import { digestCommandPrefixes } from "./skill-discovery.js";
 import { getUiObservationPath, getUiObserverDir } from "./ui-observer-io.js";
-
-export type ObservationOutcome = "confirmed" | "dismissed";
-
-export const OBSERVATION_OUTCOMES: readonly ObservationOutcome[] = [
-  "confirmed",
-  "dismissed",
-];
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 /** A log untouched this long belongs to no running command. */
@@ -156,7 +151,6 @@ export type ObservationFileKind =
 
 export interface CloseObservationResult {
   sessionId: string;
-  outcome: ObservationOutcome;
   /** Whether a digest of the monitor log was kept. */
   digested: boolean;
   /** Kinds of file deleted on this machine. */
@@ -164,19 +158,16 @@ export interface CloseObservationResult {
 }
 
 /**
- * The learner confirmed or dismissed a session's synthesis: keep the digest,
- * delete the raw files on this machine. Dismissing is the explicit "do not
- * use this session" action; confirming is the end of the normal flow.
+ * Keep the digest and delete the session's raw files on this machine. Session
+ * end calls it once synthesis was prepared; called on its own, it drops the
+ * evidence of a session still running or never ended, which then yields no
+ * synthesis.
  */
 export function closeSessionObservation(
   sessionId: string,
-  outcome: ObservationOutcome,
   now = new Date(),
 ): CloseObservationResult {
   assertSessionId(sessionId);
-  if (!OBSERVATION_OUTCOMES.includes(outcome)) {
-    throw new Error(`outcome must be ${OBSERVATION_OUTCOMES.join(" or ")}`);
-  }
   const deleted: ObservationFileKind[] = [];
   let digested = false;
   const monitorPath = getMonitorPath(sessionId);
@@ -191,16 +182,7 @@ export function closeSessionObservation(
     rmSync(reportsPath, { force: true });
     deleted.push("observer-reports");
   }
-  return { sessionId, outcome, digested, deleted };
-}
-
-/**
- * Redact a session's log once its monitoring stopped or the session ended
- * (ADR 2026-10-08 R5). Deleting waits for confirmation or the window.
- */
-export function finalizeSessionObservation(sessionId: string): boolean {
-  if (!SESSION_ID.test(sessionId)) return false;
-  return rewriteMonitorLogRedacted(sessionId);
+  return { sessionId, digested, deleted };
 }
 
 // ── Locations ────────────────────────────────────────────────────────────────

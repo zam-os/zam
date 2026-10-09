@@ -1565,19 +1565,13 @@ bridgeCommand
 bridgeCommand
   .command("observation-close")
   .description(
-    "Confirm or dismiss a session's observation: keep a value-free digest and delete its raw files on this machine (JSON)",
+    "Delete a running or never-ended session's raw observation files on this machine now, keeping a value-free digest; session end does this by itself (JSON)",
   )
   .requiredOption("--session <id>", "Session ID")
-  .requiredOption("--outcome <outcome>", "confirmed | dismissed")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut(
-          await handleCloseObservation(db, {
-            session: opts.session,
-            outcome: opts.outcome,
-          }),
-        );
+        jsonOut(await handleCloseObservation(db, { session: opts.session }));
       } catch (err) {
         jsonError((err as Error).message);
       }
@@ -1994,7 +1988,7 @@ bridgeCommand
 bridgeCommand
   .command("discover-skills")
   .description(
-    "Analyze monitor logs across sessions to discover recurring patterns",
+    "Propose skills from command sequences that recur across sessions; reads the value-free digests of ended sessions and the logs of running ones (JSON)",
   )
   .option(
     "--min-sessions <n>",
