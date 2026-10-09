@@ -126,6 +126,7 @@ import {
   resolveCredentials,
   resolveObserverPolicy,
   restorePreviousLibrary,
+  scheduleObservationSweeps,
   screenObservationGate,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
@@ -143,7 +144,6 @@ import {
   setTursoCredentials,
   slugify,
   supportsLocalGeneration,
-  sweepObservationFiles,
   syncObserverSidecarPolicy,
   takeMaterialBonusItem,
   tursoVaultAccessPending,
@@ -8597,14 +8597,10 @@ bridgeCommand
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
     // Retention (ADR 2026-10-08 R6) at bridge start, which is also desktop
-    // start. Off the startup path, and silent: stdout is the protocol.
-    setTimeout(() => {
-      try {
-        sweepObservationFiles();
-      } catch (err) {
-        logDiag(`observation sweep failed | ${(err as Error).message}`);
-      }
-    }, 0);
+    // start, and hourly while it runs. Silent: stdout is the protocol.
+    scheduleObservationSweeps((err) => {
+      logDiag(`observation sweep failed | ${err.message}`);
+    });
     let databaseHost = createPersistentDatabaseHost(openDatabase);
 
     const processRequest = async (line: string): Promise<string> => {

@@ -14,9 +14,9 @@ Sequencing, gates and owner decisions. No code changes in this document. Every i
 
 Goal: no screen content reaches a model through ZAM until the removal in Phase 5 lands (R8). Nothing here depends on the choice between C, D and E.
 
-- [x] **0A.1** Add the machine-local switch `observation.screen` to `~/.zam/config.json` (`src/kernel/system/install-config.ts`), off when absent. While it is off, each of these returns a typed refusal (`screen-observation-off`) before it captures or reads anything: `capture-ui` (live and `--image`), `start-recording`, `stop-recording`, and `observe-ui-snapshot` for video and `--image` input. No `setting-set` key, bridge command or MCP tool writes the switch, and `llm.vision.enabled` does not open it.
+- [x] **0A.1** Add the machine-local switch `observation.screen` to `~/.zam/config.json` (`src/kernel/system/install-config.ts`), off when absent. While it is off, each of these returns a typed refusal (`screen-observation-off`) before it captures or reads anything: `capture-ui` (live and `--image`), `observe-ui-snapshot`, and the read-back of stored observer reports through `get-observations` and `observe-ui-watch`. The UI branch of session synthesis reads no reports and returns no candidates. Keeping a legacy file for the owner's inventory (0B.6) does not keep serving it. The recording commands and video input are deleted (0A.3). No `setting-set` key, bridge command or MCP tool writes the switch, and `llm.vision.enabled` does not open it.
 - [x] **0A.2** Desktop: one Rust reader for `config.json` in `desktop/src-tauri/src/lib.rs`. It resolves the path the same way the kernel does (`ZAM_CONFIG_PATH`, else `~/.zam/config.json`), and it records how `ZAM_HOME` relates to that. The companion's managed policy will reuse it (D6). Every Tauri command that starts the sidecar or captures checks the switch: the sidecar spawns at `lib.rs:556` and `lib.rs:811`, and every `run_zam_observer_blocking*` call site.
-- [x] **0A.3** Hide the desktop observer panel and its loop (`desktop/src/main.ts:1008–1027`, `4511–4691`) while the switch is off. If the owner confirms that nobody uses the panel or the video path (ADR open question 3), delete them here instead of in Phase 5.
+- [x] **0A.3** Delete the desktop observer panel and its loop (`desktop/src/main.ts:1008–1027`, `4511–4691`), every Tauri command that starts the sidecar, `start-recording`, `stop-recording` and video input to `observe-ui-snapshot`. Nobody uses them (ADR open question 3, decided 2026-10-08).
 - [x] **0A.4** Remove the OCR fallback from `observer/src/uia.rs`: the `capture_rect_gdi` and `ocr_bitmap` call in `focused_element_from` (about lines 961–976), and both helpers, which have no other caller. An element without an accessible name reports an empty name. Correct the privacy claim in `observer/README.md` (line 140) and the comment on `build_text_changed_event` (lines 496–497).
 - [x] **0A.5** Replace the shell-string `execSync` calls in `src/cli/llm/vision.ts` (lines 112 and 122) with `execFile` and an argument array, so a file name can never be read as shell syntax. `observe-ui-snapshot` refuses before any ffmpeg call.
 - [x] **0A.6** Material import (R7): confirm with a test that `material-import-analyze` stays off MCP and off the Studio allowlist. When D1 lands, its `--file` paths go through D1's resolver.
@@ -51,15 +51,15 @@ Goal: command text reaches agents and models only in redacted form, and raw obse
   - high-entropy strings above a length threshold, JWT-shaped tokens (dots split naive entropy checks), and inline private-key blocks.
 - [x] **0B.2** Apply the redactor as a response filter on every payload derived from a monitor log, not field by field: `zam_monitor` (`src/cli/commands/mcp.ts:1293`; it is `readOnlyHint`, so auto-approvable), the monitor handlers in `src/cli/bridge-handlers.ts` (including `commands[]` and `unmatchedCommands`), `analyzeMonitor`, synthesis candidates (`matchedCommandTexts` and `unmatchedCommands`), `discover-skills` examples, and the synthesis returned by `zam_session_end`.
 - [x] **0B.3** At `zam monitor stop` and at session end, rewrite the session's log in redacted form. Sweep for logs of sessions that never stopped at `zam monitor start`, bridge start and desktop start.
-- [x] **0B.4** Retention (R6): add an explicit dismiss for a session's synthesis (bridge, MCP and one Studio action). Delete a session's raw monitor log and observer reports once synthesis is confirmed or dismissed, and any such file older than `observation.retentionDays` (default 1, i.e. 24 hours; ADR open question 6, decided 2026-10-08). Run the sweep at session end, `zam monitor start`, bridge start and desktop start. Files from before this change are only listed until the owner confirms (0B.6).
+- [x] **0B.4** Retention (R6): delete a session's raw monitor log and observer reports when the session ends, right after its synthesis candidates are prepared, and any such file older than `observation.retentionDays` (default 1, i.e. 24 hours; ADR open question 6, decided 2026-10-08 and refined 2026-10-09). Add an explicit action that drops a running session's files sooner (bridge, MCP and one Studio action). Run the sweep at session end, `zam monitor start`, bridge start and desktop start, and hourly while the bridge or the MCP server runs. Files from before this change are only listed until the owner confirms (0B.6).
 - [x] **0B.5** Before deleting a log, store a value-free digest of the session (redacted, normalised command prefixes), and make `discover-skills` (`src/cli/commands/bridge.ts:1906`) read digests.
 - [x] **0B.6** Inventory and report: `zam-recording-*` and `zam-capture-*` in the OS temp directory, `~/.zam/observer/*.jsonl` (may hold OCR text) and `~/.zam/monitor/*.jsonl` (may hold unredacted commands). Delete only after the owner confirms the list.
 - [x] **0B.7** Tests:
   - a corpus of fake secrets in every position 0B.1 claims to cover, asserted absent from every payload in 0B.2 and from the rewritten log;
   - existing monitor-pattern tests still match after redaction;
-  - retention deletes after confirmation, after dismissal and after the window, and never touches a file from before the change without confirmation;
-  - confirmation recorded from another machine deletes nothing locally;
-  - `discover-skills` finds the same proposals from digests as from raw logs.
+  - retention deletes at session end, on the explicit action and after the window, and never touches a file from before the change without confirmation;
+  - a session ended on another machine deletes nothing locally;
+  - `discover-skills` finds the same steps and session counts from digests as from raw logs; its examples are then prefixes, not full commands.
 
 Exit gate: owner approval; one PR; release-note lines "monitored commands are stored and returned redacted" and "observation files are deleted after use".
 
@@ -71,6 +71,7 @@ Done on `feat/observation-containment`, in the same PR as 0A. Evidence and devia
 - 0B.4: refined by the owner on 2026-10-09: a raw log is evidence only at the time of capture. Session end (`zam_session_end`, bridge `end-session`, `zam session end`) prepares the synthesis candidates and then deletes the session's raw files, keeping the digest; the candidates carry the redacted texts the learner confirms. The separate confirm/dismiss outcome is gone. `zam_observation_close` (MCP, destructive), `zam bridge observation-close`, `zam observation close` and a "Delete observation logs" row in Settings → Data (shown only while logs exist) drop a running or never-ended session's files sooner. Legacy means "the session's ULID predates `observation.retentionSince`", which the first sweep records in `config.json`. The desktop app's own watch logs in its app data directory are covered too.
 - 0B.5: digests live in `~/.zam/monitor/digests/` (newest 200 kept); `discover-skills` reads logs and digests.
 - 0B.6: `zam observation inventory [--delete]`, a learner command only, never on the bridge or MCP.
+- Review of 2026-10-09 (Gemini, Grok): monitor patterns are redacted the same way as the commands before the substring match, so a step written as `export FOO=bar` still matches `export FOO=[redacted]`; every read drops the working directory, and so does the rewrite at rest; `zam bridge serve` and `zam mcp` sweep again every hour (`scheduleObservationSweeps`).
 - 0B.6, library: a confirmed synthesis kept the matched command texts verbatim in `session_syntheses.evidence`, in `review_attempts.evidence` and `evidence_key`, and in the session step note. Owner decision 2026-10-09: delete them, because the hidden mode was very likely used only on the owner's own library. Migration M039 does it once, in a library stamped before it; ratings and review history stay.
 - 0B.7: `tests/kernel/observation/redact.test.ts` (corpus, idempotence, pattern matching after redaction), `tests/kernel/observation/retention.test.ts`, `tests/cli/monitor-redaction.test.ts`.
 - Found on the way: the analyzer matches patterns as case-insensitive substrings, not as prefixes or regular expressions as the ADR's context section and the `TokenPattern` comment say.
@@ -109,7 +110,7 @@ Candidates. Each claim below comes from the research snapshot and must be verifi
 | OpenAdapt (openadapt-capture, openadapt-flow) | macOS, Windows | screen, input and timing | LICENSE; expected to fail G1 unless screen capture can be disabled |
 | Microsoft skill recorder | macOS, Windows 11 | on-screen activity, clicks, narration | open-source status; offline operation; expected to fail G1 |
 
-Gates. A candidate must pass **G1, G2a, G2b, G3, G7, G8 and G11** to be eligible. **G4, G5, G6, G9, G10, G12 and G13** must be verified before any use.
+Gates. A candidate must pass **G1, G2a, G2b, G3, G7, G8 and G11** to be eligible. **G4, G5, G6, G9, G10, G12, G13 and G14** must be verified before any use.
 
 - **G1** Nothing leaves the machine by default: no pixels, no video, no text, no telemetry. No cloud model is required.
 - **G2a** What reaches ZAM, after any adapter, fits the R3 schema. Verified with a fake secret typed into a password field, into a field with no accessible name, into a terminal line and into a web form, and with a fake secret visible in a window title.
@@ -125,8 +126,9 @@ Gates. A candidate must pass **G1, G2a, G2b, G3, G7, G8 and G11** to be eligible
 - **G11** Keystroke logging is off by default.
 - **G12** It can be installed by device management, and is signed or reproducibly buildable from source.
 - **G13** It has its own application denylist, so an organisation can exclude applications at the source.
+- **G14** It runs without administrator rights and installs no system-wide keyboard or input hook beyond what G11 allows. Any component that needs elevation is installed by device management, never at run time.
 
-Method. Scripted runs in a disposable account or VM. Record (a) network connections during the run, (b) files written, including temporary directories, (c) output files, and (d) whether the fake secret appears in any of them. For the sidecar baseline, also time how long labelling one demonstration takes (R4). Keep the raw evidence out of the repository. Record only the results, in Appendix B.
+Method. Scripted runs in a disposable account or VM. Record (a) network connections during the run, (b) files written, including temporary directories, (c) output files, and (d) whether the fake secret appears in any of them. For the sidecar baseline and every candidate that reaches labelling, time how long a learner without technical background needs to label one demonstration, and count wrong assignments (R4). The script includes a web or Electron screen with several controls that look alike as structural events (`invoke Button` without a distinguishing automation id). Keep the raw evidence out of the repository. Record only the results, in Appendix B.
 
 Exit gate and decision rule:
 
@@ -137,13 +139,13 @@ Exit gate and decision rule:
 ## Phase 4 — Evidence contract and model-free mapping (after acceptance)
 
 - [ ] **4.1** Structural event schema, version 1: `version`, `sessionId` (ULID), `learner` (`id`, `version`), and `events[]` with `kind` (enumerated: focus, invoke, value-changed without the value, window-switch), `at`, `processName`, `controlType` (enumerated) and optional `automationId`. No element name, window title, value or text (R3). Unknown keys are rejected at any depth. Arrays and the whole submission have size limits.
-- [ ] **4.2** Field rules: every string ASCII, normalised, without zero-width characters, with a pattern and a length limit (ids are ULIDs; `processName` is an executable name; `automationId` is an identifier). Defence in depth: content keys (`image`, `frame`, `keyframe`, `screenshot`, `video`, `text`, `typedText`, `keystrokes`, `clipboard`) and any string beginning with `data:` are rejected even where the schema would already reject them. Rejections never echo the submitted string; `denied` reasons and logs carry a hash.
+- [ ] **4.2** Field rules: every string ASCII, normalised, without zero-width characters, with a pattern and a length limit (ids are ULIDs; `processName` is an executable name; `automationId` matches `[A-Za-z0-9_-]{1,64}`, and an id that does not is dropped from the event rather than rejected, because web frameworks put e-mail addresses, URLs and record ids there). Defence in depth: content keys (`image`, `frame`, `keyframe`, `screenshot`, `video`, `text`, `typedText`, `keystrokes`, `clipboard`) and any string beginning with `data:` are rejected even where the schema would already reject them. Rejections never echo the submitted string; `denied` reasons and logs carry a hash.
 - [ ] **4.3** Skill steps get identity (R4): `agent_skills.steps` changes from a string array to objects with `id` (ULID), `text` and optional `selectors` (ordered process, control type and automation id). This needs an entry in `src/kernel/db/schema.ts`, an idempotent M-series migration in `runMigrations` (existing strings get ids and keep their text), and an increment of `CURRENT_SCHEMA_VERSION`. `normalizeSkillStep` keeps reading `text`.
 - [ ] **4.4** Labelling in the Studio: one screen that shows a demonstration's structural events and lets the learner assign them to steps, one action per step. The result is stored as selectors.
 - [ ] **4.5** Model-free matcher in the kernel: it matches event sequences against step selectors and produces synthesis candidates with a confidence. Confirmation stays mandatory (R4).
 - [ ] **4.6** Bridge command `submit-ui-events`: JSON in, JSON out, a typed `denied` reason on rejection. Decide whether an MCP tool is also needed. ADR 2026-07-06a names MCP as the canonical agent transport.
 - [ ] **4.7** Storage: decide between a session log (JSONL, under R6 retention) and a table. A table needs the same schema, migration and version steps as 4.3.
-- [ ] **4.8** Tests first: schema acceptance; unknown keys rejected at depth; over-long, non-ASCII and zero-width strings rejected; content keys and `data:` strings rejected; rejection reasons free of input; migration keeps step text and assigns ids; matching from selectors; no state change before confirmation.
+- [ ] **4.8** Tests first: schema acceptance; unknown keys rejected at depth; over-long, non-ASCII and zero-width strings rejected; content keys and `data:` strings rejected; an automation id holding an e-mail address, a URL or a record id dropped; rejection reasons free of input; migration keeps step text and assigns ids; matching from selectors; no state change before confirmation.
 
 Exit gate: all Phase 4 tests pass with no screen code present in the tree.
 
@@ -166,7 +168,7 @@ Each step must be revertible on its own. The Phase 0A switch stays in place unti
 - [ ] **6.3** `docs/concepts/monitoring-methods.md` (Level 2) and `beliefs/symbiosis/observation-over-interruption/README.md`: state that screen observation is delegated to structural learners and that shell commands are redacted.
 - [ ] **6.4** Skill files: remove the screen capture and observer steps from `skills/zam/SKILL.md` (about lines 127 and 195–199) and from its copies in `.agents/skills/zam/`, `.claude/skills/zam/` and `.agent/skills/zam/`. `AGENTS.md` has no observer steps today; check it, change nothing unless that has changed.
 - [ ] **6.5** Observer documents `docs/windows-ui-observer-proposal.md`, `docs/observer-next-steps.md`, `docs/ui-observation-protocol.md` and `docs/observer-open-source-research.md`: mark them historical, or delete them under the plan lifecycle rule.
-- [ ] **6.6** `docs/knowledge-map/map.json`: regenerate it with `scripts/build-knowledge-map-prototype.mjs`. Do not hand-edit it.
+- [ ] **6.6** `docs/knowledge-map/map.json`: update every statement the removal makes untrue and every citation of a moved or deleted file, statement by statement with existing ids, and check it with `npm run dev -- knowledge-map validate --repo . --write`.
 - [ ] **6.7** ADR index in `docs/adr/README.md`: set the status of the new ADR and of the superseded ones.
 - [ ] **6.8** Delete this plan once its last phase is done, unless open tasks remain.
 
@@ -206,6 +208,7 @@ Each step must be revertible on its own. The Phase 0A switch stays in place unti
 5. The retention window (ADR open question 6). **Decided 2026-10-08: 24 hours** (`observation.retentionDays` default 1).
 6. Redaction or a structural default for the shell monitor (ADR open question 7).
 7. Whether Phases 0A and 0B are approved before the review finishes. It is recommended, because the bypasses, the OCR fallback and the unredacted monitor are known. **Decided 2026-10-08:** approved and implemented.
+8. Review findings of 2026-10-09 (Gemini, Grok). **Decided 2026-10-09:** the corrections and the three code changes are applied in 0A/0B; the labelling measurement, the `automationId` rule, gate G14 and the documented limit for UI synthesis are taken into the ADR and this plan. MiMo did not review.
 
 ## Appendix A — Consumer map
 

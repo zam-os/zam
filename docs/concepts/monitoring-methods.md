@@ -34,9 +34,13 @@ typed. ZAM redacts them on every read (ADR 2026-10-08 R5): `zam_monitor`, the
 bridge monitor commands, synthesis candidates and skill discovery only ever
 see the command with its values in secret positions replaced by `[redacted]`
 — environment assignments, secret flags and headers, credentials in URLs,
-passwords piped into login commands, tokens and high-entropy strings. The log
-itself is rewritten in redacted form when monitoring stops, and any log idle
-for ten minutes is rewritten by the next retention sweep.
+passwords piped into login commands, tokens and high-entropy strings. No read
+returns the working directory, because a project path is content. A skill
+step written with a value, such as `export AWS_PROFILE=staging`, still
+matches: ZAM redacts the step the same way before it compares. The log itself
+is rewritten in redacted form when monitoring stops, and any log idle for ten
+minutes is rewritten by the next retention sweep, which also runs every hour
+while the desktop app or an MCP connection is open.
 
 The raw log is evidence only while it is captured. When the session ends
 (`zam_session_end`, `zam session end`), ZAM first prepares the synthesis

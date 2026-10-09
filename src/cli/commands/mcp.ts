@@ -25,8 +25,8 @@ import {
   MATERIAL_KINDS,
   MATERIAL_ORIGINS,
   openDatabase,
+  scheduleObservationSweeps,
   setKnowledgeMapConfig,
-  sweepObservationFiles,
 } from "../../kernel/index.js";
 import {
   COMPANION_SURFACES,
@@ -2761,12 +2761,6 @@ export async function runMcpServer(): Promise<void> {
   await server.connect(transport);
 
   // Retention (ADR 2026-10-08 R6) at MCP server start, after the handshake
-  // is reachable. Silent: stdout is the transport.
-  setTimeout(() => {
-    try {
-      sweepObservationFiles();
-    } catch {
-      // The next start tries again.
-    }
-  }, 0);
+  // is reachable, and hourly while it runs. Silent: stdout is the transport.
+  scheduleObservationSweeps();
 }

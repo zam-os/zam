@@ -119,6 +119,8 @@ describe("monitor payloads are redacted", () => {
     const read = await call("zam_monitor", { session });
     expect(read.data.commands).toHaveLength(3);
     expect(read.text).not.toContain(SECRET);
+    // No working directory either: a project path is content.
+    expect(read.text).not.toContain("/repo");
 
     const analyzed = await call("zam_monitor", {
       session,

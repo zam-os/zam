@@ -242,4 +242,23 @@ describe("monitor patterns after redaction", () => {
     expect(bySlug.get("docker-push")?.evidence.matchedCommands).toBe(2);
     expect(JSON.stringify(result)).not.toContain(S);
   });
+
+  it("match a pattern that contains a value the redactor removes", () => {
+    const commands = [
+      "export AWS_PROFILE=staging",
+      `curl -H "Authorization: Bearer ${S}Header" https://api.test/v1`,
+    ].map((command, index) => record(redactCommand(command), index + 1));
+
+    const result = analyzeObservation(commands, [
+      { slug: "aws-profile", patterns: ["export AWS_PROFILE=staging"] },
+      {
+        slug: "bearer-call",
+        patterns: [`curl -H "Authorization: Bearer ${S}Pattern"`],
+      },
+    ]);
+    const bySlug = new Map(result.ratings.map((r) => [r.tokenSlug, r]));
+    expect(bySlug.get("aws-profile")?.evidence.matchedCommands).toBe(1);
+    expect(bySlug.get("bearer-call")?.evidence.matchedCommands).toBe(1);
+    expect(JSON.stringify(result)).not.toContain(S);
+  });
 });

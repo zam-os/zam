@@ -49,6 +49,8 @@ import { digestCommandPrefixes } from "./skill-discovery.js";
 import { getUiObservationPath, getUiObserverDir } from "./ui-observer-io.js";
 
 const DAY_MS = 24 * 60 * 60 * 1000;
+/** How often a long-running process sweeps again after its first sweep. */
+export const OBSERVATION_SWEEP_INTERVAL_MS = 60 * 60 * 1000;
 /** A log untouched this long belongs to no running command. */
 const DEFAULT_IDLE_MS = 10 * 60 * 1000;
 /** Digests are value-free, but they need not grow without bound. */
@@ -464,4 +466,32 @@ export function sweepObservationFiles(options: SweepOptions = {}): SweepResult {
     // Best effort.
   }
   return result;
+}
+
+/**
+ * Sweep once off the caller's startup path, then every hour, in a process
+ * that runs all day: the desktop bridge and the MCP server. Otherwise the log
+ * of a session that crashed or never ended would wait for the next start to be
+ * redacted or deleted. The timers never keep a process alive. Returns a
+ * function that stops them.
+ */
+export function scheduleObservationSweeps(
+  onError: (err: Error) => void = () => {},
+  intervalMs = OBSERVATION_SWEEP_INTERVAL_MS,
+): () => void {
+  const sweep = () => {
+    try {
+      sweepObservationFiles();
+    } catch (err) {
+      onError(err as Error);
+    }
+  };
+  const first = setTimeout(sweep, 0);
+  const every = setInterval(sweep, intervalMs);
+  first.unref?.();
+  every.unref?.();
+  return () => {
+    clearTimeout(first);
+    clearInterval(every);
+  };
 }

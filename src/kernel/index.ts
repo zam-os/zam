@@ -662,7 +662,9 @@ export {
   inventoryObservationFiles,
   listMonitorLogIds,
   listSessionDigestIds,
+  OBSERVATION_SWEEP_INTERVAL_MS,
   readSessionDigest,
+  scheduleObservationSweeps,
   sweepObservationFiles,
   writeSessionDigest,
 } from "./observation/retention.js";

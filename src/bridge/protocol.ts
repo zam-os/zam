@@ -297,7 +297,6 @@ export interface GetMonitorResponse {
   commands: Array<{
     seq: number;
     command: string;
-    cwd: string;
     startedAt: string;
     endedAt: string | null;
     durationMs: number | null;

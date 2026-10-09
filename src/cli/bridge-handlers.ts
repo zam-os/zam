@@ -1636,7 +1636,6 @@ export async function getMonitor(_db: Database, params: GetMonitorParams) {
     commands: commands.map((c) => ({
       seq: c.seq,
       command: c.command,
-      cwd: c.cwd,
       startedAt: c.startedAt,
       endedAt: c.endedAt,
       durationMs: c.durationMs,

@@ -62,14 +62,21 @@ export function writeMonitorEvent(
 
 /** The event with its command line redacted (ADR 2026-10-08 R5). */
 export function redactMonitorEvent(event: MonitorEvent): MonitorEvent {
-  if (typeof event.command !== "string") return event;
-  const command = redactCommand(event.command);
-  return command === event.command ? event : { ...event, command };
+  if (typeof event.command !== "string" && event.cwd === undefined) {
+    return event;
+  }
+  // The working directory goes too: a project path is content, and no
+  // analysis reads it.
+  const { cwd: _cwd, ...rest } = event;
+  return typeof rest.command === "string"
+    ? { ...rest, command: redactCommand(rest.command) }
+    : rest;
 }
 
 /**
  * Read and parse all events from a session's monitor log. Every command
- * comes back redacted; there is no raw read path.
+ * comes back redacted and without its working directory; there is no raw
+ * read path.
  */
 export function readMonitorLog(sessionId: string): MonitorEvent[] {
   const path = getMonitorPath(sessionId);

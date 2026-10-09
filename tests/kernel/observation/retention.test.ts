@@ -15,7 +15,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
-import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
   applySessionSynthesis,
   closeSessionObservation,
@@ -30,6 +30,7 @@ import {
   readMonitorLog,
   readSessionDigest,
   rewriteMonitorLogRedacted,
+  scheduleObservationSweeps,
   startSession,
   sweepObservationFiles,
 } from "../../../src/kernel/index.js";
@@ -113,8 +114,10 @@ describe("redaction at rest", () => {
     });
     const before = statSync(path).mtimeMs;
 
-    // Every read is redacted even while the file is still raw.
+    // Every read is redacted even while the file is still raw, and carries
+    // no working directory.
     expect(JSON.stringify(readMonitorLog(id))).not.toContain(SECRET);
+    expect(JSON.stringify(readMonitorLog(id))).not.toContain("/repo");
     expect(readFileSync(path, "utf8")).toContain(SECRET);
 
     expect(rewriteMonitorLogRedacted(id)).toBe(true);
@@ -122,6 +125,7 @@ describe("redaction at rest", () => {
     expect(content).not.toContain(SECRET);
     expect(content).toContain("export API_TOKEN=[redacted]");
     expect(content).toContain("npm publish");
+    expect(content).not.toContain("/repo");
     expect(statSync(path).mtimeMs).toBe(before);
     // Already redacted: nothing to do.
     expect(rewriteMonitorLogRedacted(id)).toBe(false);
@@ -375,5 +379,42 @@ describe("skill discovery from digests", () => {
     expect(before.length).toBeGreaterThan(0);
     expect(shape(after)).toEqual(shape(before));
     expect(JSON.stringify(after)).not.toContain(SECRET);
+  });
+});
+
+describe("scheduleObservationSweeps", () => {
+  afterEach(() => {
+    vi.useRealTimers();
+  });
+
+  it("sweeps off the startup path and again every interval", () => {
+    vi.useFakeTimers({
+      toFake: ["setTimeout", "setInterval", "clearTimeout", "clearInterval"],
+    });
+    const first = writeRawLog(sessionAt(1), [`export API_TOKEN=${SECRET}`], {
+      ageDays: 1,
+    });
+    const errors: Error[] = [];
+    const stop = scheduleObservationSweeps((err) => errors.push(err), 1000);
+
+    // Nothing runs before the caller's turn ends.
+    expect(readFileSync(first, "utf8")).toContain(SECRET);
+    vi.advanceTimersByTime(0);
+    expect(readFileSync(first, "utf8")).not.toContain(SECRET);
+
+    // A session that crashes later is caught by the next interval.
+    const second = writeRawLog(sessionAt(1), [`export API_KEY=${SECRET}`], {
+      ageDays: 1,
+    });
+    vi.advanceTimersByTime(1000);
+    expect(readFileSync(second, "utf8")).not.toContain(SECRET);
+
+    stop();
+    const third = writeRawLog(sessionAt(1), [`export PASSWORD=${SECRET}`], {
+      ageDays: 1,
+    });
+    vi.advanceTimersByTime(5000);
+    expect(readFileSync(third, "utf8")).toContain(SECRET);
+    expect(errors).toEqual([]);
   });
 });
