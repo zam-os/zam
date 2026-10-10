@@ -72,7 +72,12 @@ function notReadable(target: string, why: string): PathRefusedError {
 
 const caseInsensitive = process.platform === "win32";
 
-function samePath(a: string, b: string): boolean {
+/**
+ * Whether two canonical paths name the same place. Windows compares without
+ * case; elsewhere both sides should come from the real path, which already
+ * carries the on-disk spelling.
+ */
+export function samePath(a: string, b: string): boolean {
   return caseInsensitive ? a.toLowerCase() === b.toLowerCase() : a === b;
 }
 

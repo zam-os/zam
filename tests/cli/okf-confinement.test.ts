@@ -178,6 +178,22 @@ describe("OKF tools stay inside allowed roots (ADR 2026-10-08b D1)", () => {
     expect(existsSync(join(fresh, "docs", "okf", "start.md"))).toBe(true);
   });
 
+  it("takes an existing Docs/okf for docs/okf where the volume ignores case", async () => {
+    const fresh = join(base, "cased");
+    mkdirSync(join(fresh, "Docs", "okf"), { recursive: true });
+    // Only meaningful where `docs` and `Docs` are the same folder (default
+    // APFS, NTFS); a case-sensitive volume has no such folder to confuse.
+    if (!existsSync(join(fresh, "docs"))) return;
+    addTrustedFolder(fresh);
+    const res = await call("zam_okf_upsert", {
+      bundle_dir: join(fresh, "docs", "okf"),
+      file: "start.md",
+      markdown: article("Start"),
+    });
+    expect(res.isError, res.text).toBe(false);
+    expect(existsSync(join(fresh, "Docs", "okf", "start.md"))).toBe(true);
+  });
+
   it("does not read an article that links out of the bundle", async () => {
     addTrustedFolder(repo);
     symlinkSync(join(outsideDir, "secret.md"), join(bundle, "linked.md"));

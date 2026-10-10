@@ -3755,6 +3755,10 @@ bridgeCommand
         const ref = `model-key-${entry.id.toLowerCase()}`;
         setProviderApiKey(ref, entry.apiKey);
         entry.apiKeyRef = ref;
+        // Resolve first, so the key stays readable in this long-running
+        // bridge once it moves out of the plain file (ADR 2026-10-08b D5).
+        await resolveCredentials();
+        await secureStoredSecrets();
       }
       entry.syncKey = false;
     } else {

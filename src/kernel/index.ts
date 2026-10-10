@@ -1162,6 +1162,7 @@ export {
   readTrustedTextFile,
   removeTrustedFolder,
   resolveTrustedPath,
+  samePath,
   TEXT_SOURCE_EXTENSIONS,
   TRUST_FOLDER_HINT,
   trustedRoots,

@@ -17,6 +17,7 @@ import {
   PATH_NOT_READABLE,
   PathRefusedError,
   resolveTrustedPath,
+  samePath,
 } from "../../kernel/index.js";
 import {
   appendLog,
@@ -311,15 +312,20 @@ export function confineBundleDir(
   roots: readonly string[],
   mode: "read" | "write",
 ): string {
+  // Each root's docs/okf as the file system spells it: on a case-insensitive
+  // volume an existing `Docs/okf` is that folder, and the real path says so.
+  const docsOkfs = roots.map((root) =>
+    realPathOfNearest(join(root, "docs", "okf")),
+  );
   if (mode === "write") {
     // A new knowledge base may start at docs/okf under a root, even before
     // the folder exists.
     const wanted = (
       isAbsolute(dir) ? [dir] : roots.map((r) => join(r, dir))
     ).map(realPathOfNearest);
-    const docsOkf = roots
-      .map((root) => join(root, "docs", "okf"))
-      .find((candidate) => wanted.includes(candidate));
+    const docsOkf = docsOkfs.find((candidate) =>
+      wanted.some((path) => samePath(path, candidate)),
+    );
     if (docsOkf && !existsSync(docsOkf)) return docsOkf;
   }
   const { path, root } = resolveTrustedPath(dir, roots);
@@ -332,7 +338,7 @@ export function confineBundleDir(
         `ZAM does not write articles into ${path}: a knowledge base lives in docs/okf, never at the top of a folder.`,
       );
     }
-    const isDocsOkf = roots.some((r) => join(r, "docs", "okf") === path);
+    const isDocsOkf = docsOkfs.some((candidate) => samePath(candidate, path));
     if (!isDocsOkf && !isZamBundle(path)) {
       throw new PathRefusedError(
         PATH_NOT_READABLE,
