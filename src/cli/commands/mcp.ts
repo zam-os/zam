@@ -123,62 +123,107 @@ const MCP_SERVER_INSTRUCTIONS =
   "learner about anything unclear, then submit with zam_material_import; the " +
   "learner decides each card in the ZAM Studio.";
 
+/** Why one Studio bridge command is safe for a model to call (ADR 2026-10-08b D3). */
+export interface StudioBridgeReview {
+  why: string;
+  /** Options the panel may not pass through the bridge (caller-named paths, confirmations). */
+  refusedOptions?: readonly string[];
+}
+
 /**
- * Commands the ZAM Studio panel may run through `zam_studio_bridge`. A
- * closed allowlist: curation and admin reads/writes only. No generation
- * (no evaluate/discuss/import), observer, session/review, curriculum, or
- * infrastructure commands — those stay reachable only via `zam bridge`
- * directly or the other MCP tools. The model registry commands configure
- * which endpoint or agent harness is used; they never call an LLM.
- * Membership is checked before any command execution, so an unknown name is
- * rejected the same way as a real-but-forbidden one.
+ * Commands the ZAM Studio panel may run through `zam_studio_bridge`, each with
+ * the reason it is safe. App-only visibility is a hint to the host, not a
+ * boundary: hosts let models read `ui://` resources and call app tools, so
+ * every entry is reviewed as if a model calls it (ADR 2026-10-08b D3). A
+ * command reaches nothing outside ZAM's learning state — no file or host the
+ * caller names, no stored secret, no security switch. Curation and admin
+ * reads/writes only: no generation, observer, session/review, curriculum or
+ * infrastructure commands. `tests/cli/studio-bridge-review.test.ts` fails when
+ * an entry is added or removed without review. Membership is checked before
+ * any command execution, so an unknown name is rejected the same way as a
+ * real-but-forbidden one.
  */
-export const STUDIO_BRIDGE_ALLOWED_COMMANDS: ReadonlySet<string> =
-  new Set<string>([
-    "list-tokens",
-    "personal-card-list",
-    "personal-card-create",
-    "personal-card-update",
-    "personal-card-publish-revision",
-    "personal-card-revision-preview",
-    "list-drafts",
-    "personal-card-create-assignment",
-    "personal-card-withdraw-assignment",
-    "personal-card-list-assignments",
-    // Library topics (ADR 2026-10-02): write only the caller's own cards.
-    "library-topics-list",
-    "library-topic-start",
-    "personal-card-remove",
-    "personal-card-delete",
-    "get-neighborhood",
-    "list-knowledge-contexts",
-    "get-active-knowledge-context",
-    "set-active-knowledge-context",
-    "workspace-list",
-    "workspace-repair-links",
-    "database-status",
-    "backup-create",
-    "update-check",
-    "get-settings",
-    "setting-set",
-    "study-learning-get",
-    "study-learning-set",
-    // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
-    // Config only — never runs generation; keys stay out of this surface.
-    "model-list",
-    "model-upsert",
-    "model-remove",
-    "model-reprobe",
-    "agent-list",
-    "bundled-cells-list",
-    "bundled-cell-enrol",
-    "preconditions-get",
-    "precondition-assess",
-    "pull-forward-candidates",
-    "pull-forward-execute",
-    "bonus-candidates-list",
-    "bonus-atom-enrol",
-  ]);
+export const STUDIO_BRIDGE_COMMANDS: Readonly<
+  Record<string, StudioBridgeReview>
+> = {
+  "list-tokens": { why: "Reads the library's tokens." },
+  "personal-card-list": { why: "Reads the caller's own cards." },
+  "personal-card-create": {
+    why: "Writes the caller's own card; a stored source link is confined when it is read (D1).",
+  },
+  "personal-card-update": {
+    why: "Writes the caller's own card; a stored source link is confined when it is read (D1).",
+  },
+  "personal-card-publish-revision": {
+    why: "Publishes a revision of the caller's own card.",
+  },
+  "personal-card-revision-preview": { why: "Reads a revision preview." },
+  "list-drafts": { why: "Reads draft tokens." },
+  "personal-card-create-assignment": { why: "Learning state only." },
+  "personal-card-withdraw-assignment": { why: "Learning state only." },
+  "personal-card-list-assignments": { why: "Reads assignments." },
+  // Library topics (ADR 2026-10-02): write only the caller's own cards.
+  "library-topics-list": { why: "Reads library topics." },
+  "library-topic-start": { why: "Writes only the caller's own cards." },
+  "personal-card-remove": { why: "Removes the caller's own card." },
+  "personal-card-delete": { why: "Deletes the caller's own card." },
+  "get-neighborhood": { why: "Reads the learning graph." },
+  "list-knowledge-contexts": { why: "Reads knowledge contexts." },
+  "get-active-knowledge-context": { why: "Reads a learning preference." },
+  "set-active-knowledge-context": { why: "Writes a learning preference." },
+  "workspace-list": { why: "Reads ZAM's own workspace list." },
+  "workspace-repair-links": {
+    why: "Relinks ZAM's skill files in a workspace the learner configured; the caller names only its id.",
+  },
+  "database-status": {
+    why: "Reports the database target and profiles, never its token.",
+  },
+  "backup-create": {
+    why: "Writes a snapshot to the default backup folder only.",
+    refusedOptions: ["--dir"],
+  },
+  "update-check": { why: "Asks ZAM's own release source for the version." },
+  "get-settings": { why: "Returns settings without keys." },
+  "setting-set": {
+    why: "Writes only the allowlisted, non-security keys (UI_WRITABLE_SETTINGS).",
+  },
+  "study-learning-get": { why: "Reads learning preferences." },
+  "study-learning-set": { why: "Writes learning preferences." },
+  // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
+  // Config only — never runs generation; keys stay out of this surface.
+  "model-list": { why: "Lists model rows without keys." },
+  "model-upsert": {
+    why: "Edits a model row; its probe passes the endpoint check (D2), and a changed URL gets no key until the learner confirms it on this device (D5).",
+  },
+  "model-remove": { why: "Removes a model row." },
+  "model-reprobe": {
+    why: "Re-probes a stored row through the endpoint check (D2).",
+  },
+  "agent-list": { why: "Reads which agent harnesses are connected." },
+  "bundled-cells-list": { why: "Reads bundled learning cells." },
+  "bundled-cell-enrol": { why: "Learning state only." },
+  "preconditions-get": { why: "Reads preconditions." },
+  "precondition-assess": { why: "Learning state only." },
+  "pull-forward-candidates": { why: "Reads review candidates." },
+  "pull-forward-execute": { why: "Learning state only." },
+  "bonus-candidates-list": { why: "Reads bonus candidates." },
+  "bonus-atom-enrol": { why: "Learning state only." },
+};
+
+export const STUDIO_BRIDGE_ALLOWED_COMMANDS: ReadonlySet<string> = new Set(
+  Object.keys(STUDIO_BRIDGE_COMMANDS),
+);
+
+/** The option an argv list passes that the review refuses, if any. */
+export function refusedStudioBridgeOption(
+  cmd: string,
+  args: readonly string[],
+): string | undefined {
+  const refused = STUDIO_BRIDGE_COMMANDS[cmd]?.refusedOptions ?? [];
+  return args.find((arg) =>
+    refused.some((option) => arg === option || arg.startsWith(`${option}=`)),
+  );
+}
 
 /**
  * Load a bundled MCP Apps panel's HTML (built by `vite.config.panel.mts` into
@@ -1716,6 +1761,12 @@ export function createMcpServer(
       if (!STUDIO_BRIDGE_ALLOWED_COMMANDS.has(params.cmd)) {
         throw new Error(
           `Command not allowed for the Studio panel: ${params.cmd}`,
+        );
+      }
+      const refused = refusedStudioBridgeOption(params.cmd, params.args);
+      if (refused) {
+        throw new Error(
+          `Option not allowed for the Studio panel: ${params.cmd} ${refused.split("=")[0]}`,
         );
       }
       return await executeBridgeCommandJson(params.cmd, params.args, {

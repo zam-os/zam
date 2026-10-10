@@ -17,6 +17,8 @@ function requiredElement<T extends Element>(selector: string): T {
 const frame = requiredElement<HTMLIFrameElement>("#app");
 const status = requiredElement<HTMLElement>("#status");
 
+// Paths stay relative: the page lives under the server's per-launch token
+// (ADR 2026-10-08b D4), and every request has to carry it.
 async function fetchJson<T>(url: string, options?: RequestInit): Promise<T> {
   const response = await fetch(url, options);
   const body = (await response.json()) as T & { error?: string };
@@ -30,7 +32,7 @@ async function reportStatus(
   phase: string,
   details: Record<string, unknown> = {},
 ): Promise<void> {
-  await fetchJson("/api/host-status", {
+  await fetchJson("api/host-status", {
     method: "POST",
     headers: { "Content-Type": "application/json" },
     body: JSON.stringify({ phase, ...details }),
@@ -50,7 +52,7 @@ async function start(): Promise<void> {
     tool: Tool;
     toolArguments: Record<string, unknown>;
     toolResult: CallToolResult;
-  }>("/api/bootstrap");
+  }>("api/bootstrap");
 
   const bridge = new AppBridge(
     null,
@@ -87,14 +89,14 @@ async function start(): Promise<void> {
   );
 
   bridge.oncalltool = async (params) =>
-    fetchJson("/api/tool", {
+    fetchJson("api/tool", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(params),
     });
 
   bridge.onupdatemodelcontext = async (params) =>
-    fetchJson("/api/model-context", {
+    fetchJson("api/model-context", {
       method: "POST",
       headers: { "Content-Type": "application/json" },
       body: JSON.stringify(params),
@@ -127,7 +129,7 @@ async function start(): Promise<void> {
   const transport = new PostMessageTransport(targetWindow, targetWindow);
   await bridge.connect(transport);
   await reportStatus("bridge-connected");
-  frame.src = "/app";
+  frame.src = "app";
 
   const updateContext = () => {
     bridge.setHostContext({

@@ -1,6 +1,11 @@
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
 import { StdioClientTransport } from "@modelcontextprotocol/sdk/client/stdio.js";
 
+export {
+  checkLoopbackRequest,
+  newLoopbackToken,
+} from "./loopback-guard.js";
+
 export interface ZamLaunchConfig {
   command: string;
   args: string[];
