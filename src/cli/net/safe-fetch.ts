@@ -262,6 +262,19 @@ export async function resolveAllowedTarget(
   return { url, addresses };
 }
 
+let modelEndpointResolver: Resolver | undefined;
+
+/**
+ * Answer the model endpoint check's lookups without DNS. The test setup uses
+ * it: a made-up host such as `http://dummy/v1` takes seconds to fail on a
+ * Windows runner, or even resolves there through its DNS suffix.
+ */
+export function setModelEndpointResolverForTests(
+  resolver: Resolver | undefined,
+): void {
+  modelEndpointResolver = resolver;
+}
+
 /**
  * Check a model endpoint before a call (ADR 2026-10-08b D2): the policy is the
  * locality of its parsed host, so a cloud name that resolves to a private
@@ -269,7 +282,7 @@ export async function resolveAllowedTarget(
  */
 export async function assertModelEndpointAllowed(
   url: string,
-  resolve: Resolver = systemResolver,
+  resolve: Resolver = modelEndpointResolver ?? systemResolver,
 ): Promise<void> {
   try {
     await resolveAllowedTarget(url, endpointLocality(url), resolve);

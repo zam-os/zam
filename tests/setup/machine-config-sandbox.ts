@@ -31,6 +31,23 @@ for (const name of [
 // Tests that need OS-protected storage inject a fake store.
 process.env.ZAM_OS_SECRET_STORE = "off";
 
+// Model calls check their endpoint's resolved addresses first (ADR
+// 2026-10-08b D2). Tests use made-up hosts with a mocked fetch; real DNS for
+// them is slow on Windows runners and may even answer there. Only localhost
+// resolves; every other name counts as unresolved, which the check lets pass.
+// Imported here, after HOME is sandboxed.
+const { setModelEndpointResolverForTests } = await import(
+  "../../src/cli/net/safe-fetch.js"
+);
+setModelEndpointResolverForTests(async (hostname) => {
+  if (hostname === "localhost" || hostname.endsWith(".localhost")) {
+    return [{ address: "127.0.0.1", family: 4 }];
+  }
+  throw Object.assign(new Error(`getaddrinfo ENOTFOUND ${hostname}`), {
+    code: "ENOTFOUND",
+  });
+});
+
 afterAll(() => {
   rmSync(sandbox, { recursive: true, force: true });
 });
