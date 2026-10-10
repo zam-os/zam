@@ -8,10 +8,10 @@ tags:
   - licensing
   - studio
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/open-content-library.md"
-timestamp: 2026-08-09T10:50:00Z
+timestamp: 2026-10-10T21:00:00.000Z
 ---
 
-The Learning Content Studio opens on the **Open Library** tab. It lists the
+The file-import dialog on the [Learning Content](learning-content.md) page opens on the **Open Library** tab. It lists the
 catalog bundled with the installed ZAM release and lets the learner search by
 title, description, author, subject, or tag and filter by language and subject.
 Listing the catalog is local; a deck is downloaded only when the learner asks

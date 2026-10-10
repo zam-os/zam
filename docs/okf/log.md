@@ -7,6 +7,8 @@
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Creation** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [Curated Open-Content Library](open-content-library.md)
+- **Creation** — [Learning Content](learning-content.md)
 
 ## 2026-10-09
 

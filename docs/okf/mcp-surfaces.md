@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-10T21:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -203,8 +203,10 @@ earlier needs a restart.
 | Tool | Purpose |
 | --- | --- |
 | `zam_knowledge_map_guide` | Return the authoring guide for a repository knowledge map, the map's location, and the current map with its problems |
-| `zam_knowledge_map_write` | Validate a whole map against the repository and write `docs/knowledge-map/map.json` only when there is no error; on success the Studio shows that repository's map |
+| `zam_knowledge_map_write` | Validate a whole map against the repository and write `docs/knowledge-map/map.json` only when there is no error, and remember that repository on this machine |
 | `zam_knowledge_map_show` | Show a repository's map in the knowledge-map panel (`ui://zam/knowledge-map`) with all its views; without a usable map the panel shows ZAM's own map as an example and says why |
+
+A successful write remembers that repository on the machine. The Desktop Studio shows a repository's map on the [Learning Content](learning-content.md) page, under Quellen, for the source the learner has selected, and only while the alpha switch is on.
 
 A map is a tree of one-sentence statements (each names its `parent`) plus
 typed links (`requires`, `leads_to`, `because`, `instead_of`, `example`,
