@@ -306,6 +306,14 @@ export {
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
 export type {
+  UnchosenGroup,
+  UnchosenMember,
+} from "./library/learning-content.js";
+export {
+  listUnchosenGroups,
+  listUnchosenMembers,
+} from "./library/learning-content.js";
+export type {
   AssessPreconditionInput,
   AssessPreconditionResult,
   PreconditionCandidate,
