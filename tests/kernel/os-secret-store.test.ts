@@ -10,6 +10,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   createOsSecretStore,
   type OsCommandRunner,
+  osCommandRunner,
 } from "../../src/kernel/index.js";
 
 const SECRET = "sk-Fake5ecret+/=value";
@@ -82,6 +83,24 @@ describe("OS secret stores keep secrets off the command line", () => {
     }
   });
 
+  it("macOS without a login keychain is not available", async () => {
+    // `security add-generic-password` would wait for a new keychain's
+    // password there instead of failing.
+    const { run } = recorder((_file, args) =>
+      args[0] === "default-keychain" ? { code: 1 } : { code: 0 },
+    );
+    expect(await createOsSecretStore("darwin", run)?.available()).toBe(false);
+  });
+
+  it("kills a store command that waits forever", async () => {
+    const run = osCommandRunner(200);
+    const res = await run(process.execPath, [
+      "-e",
+      "process.stdin.resume(); setTimeout(() => {}, 60000)",
+    ]);
+    expect(res.code).toBe(124);
+  });
+
   it("Linux Secret Service: secret-tool store reads the value on stdin", async () => {
     let stored: string | null = null;
     const { run, calls } = recorder((_file, args, input) => {
@@ -144,6 +163,47 @@ describe("OS secret stores keep secrets off the command line", () => {
     }
     await store?.delete("credential:openrouter");
     expect(existsSync(file)).toBe(false);
+  });
+
+  it("Windows DPAPI: several values come back from one PowerShell start", async () => {
+    const { run, calls } = recorder((_file, args, input) => {
+      const script = args[args.length - 1];
+      if (script.includes("ConvertFrom-SecureString")) {
+        return {
+          code: 0,
+          stdout: `BLOB${Buffer.from(input).toString("hex")}`,
+        };
+      }
+      if (script.includes("ToBase64String")) {
+        const lines = input
+          .split("\n")
+          .filter(Boolean)
+          .map((blob) =>
+            Buffer.from(
+              Buffer.from(blob.replace("BLOB", ""), "hex").toString("utf8"),
+            ).toString("base64"),
+          );
+        return { code: 0, stdout: lines.join("\n") };
+      }
+      return { code: 0, stdout: "" };
+    });
+    const store = createOsSecretStore("win32", run, { dpapiDir: dir });
+    const values = { "credential:a": "first", "credential:b": SECRET };
+    for (const [name, value] of Object.entries(values)) {
+      // set() reads back through the single-value script; skip that check.
+      await store?.set(name, value);
+    }
+    const before = calls.length;
+    const read = await store?.getMany?.([
+      "credential:a",
+      "credential:missing",
+      "credential:b",
+    ]);
+    expect(calls.length - before).toBe(1);
+    expect(read?.get("credential:a")).toBe("first");
+    expect(read?.get("credential:b")).toBe(SECRET);
+    expect(read?.get("credential:missing")).toBeNull();
+    expect(calls[calls.length - 1].args.join(" ")).not.toContain(SECRET);
   });
 
   it("refuses names that could escape the store's own namespace", async () => {

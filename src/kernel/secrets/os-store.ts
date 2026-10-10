@@ -27,6 +27,11 @@ export interface OsSecretStore {
   /** Whether the store can hold a secret right now (a keyring daemon runs, …). */
   available(): Promise<boolean>;
   get(name: string): Promise<string | null>;
+  /**
+   * Several values in one go. DPAPI answers them with one PowerShell start
+   * instead of one per value; other stores read them in parallel.
+   */
+  getMany?(names: string[]): Promise<Map<string, string | null>>;
   /** Returns whether the value was stored and reads back unchanged. */
   set(name: string, value: string): Promise<boolean>;
   delete(name: string): Promise<void>;
@@ -45,28 +50,55 @@ function assertName(name: string): void {
   if (!NAME.test(name)) throw new Error(`Invalid secret name: ${name}`);
 }
 
-/** Run a command without a shell; a missing program is exit code 127. */
-export const runOsCommand: OsCommandRunner = (file, args, input) =>
-  new Promise((resolve) => {
-    let child: ReturnType<typeof spawn>;
-    try {
-      child = spawn(file, args, { stdio: ["pipe", "pipe", "pipe"] });
-    } catch {
-      resolve({ code: 127, stdout: "", stderr: "" });
-      return;
-    }
-    let stdout = "";
-    let stderr = "";
-    child.stdout?.on("data", (chunk: Buffer) => {
-      stdout += chunk.toString("utf8");
+/**
+ * How long one store command may take. A store that waits for input it will
+ * never get — `security` without a login keychain asks for a new one — must
+ * not hold up a ZAM start.
+ */
+const OS_COMMAND_TIMEOUT_MS = 20_000;
+
+/**
+ * A runner for commands without a shell; a missing program is exit code 127,
+ * one that runs past the time limit is killed and reported as 124.
+ */
+export const osCommandRunner =
+  (timeoutMs = OS_COMMAND_TIMEOUT_MS): OsCommandRunner =>
+  (file, args, input) =>
+    new Promise((resolve) => {
+      let child: ReturnType<typeof spawn>;
+      try {
+        child = spawn(file, args, { stdio: ["pipe", "pipe", "pipe"] });
+      } catch {
+        resolve({ code: 127, stdout: "", stderr: "" });
+        return;
+      }
+      let timedOut = false;
+      const timer = setTimeout(() => {
+        timedOut = true;
+        child.kill();
+      }, timeoutMs);
+      timer.unref?.();
+      let stdout = "";
+      let stderr = "";
+      child.stdout?.on("data", (chunk: Buffer) => {
+        stdout += chunk.toString("utf8");
+      });
+      child.stderr?.on("data", (chunk: Buffer) => {
+        stderr += chunk.toString("utf8");
+      });
+      child.on("error", () => {
+        clearTimeout(timer);
+        resolve({ code: 127, stdout, stderr });
+      });
+      child.on("close", (code) => {
+        clearTimeout(timer);
+        resolve({ code: timedOut ? 124 : (code ?? 1), stdout, stderr });
+      });
+      child.stdin?.end(input ?? "");
     });
-    child.stderr?.on("data", (chunk: Buffer) => {
-      stderr += chunk.toString("utf8");
-    });
-    child.on("error", () => resolve({ code: 127, stdout, stderr }));
-    child.on("close", (code) => resolve({ code: code ?? 1, stdout, stderr }));
-    child.stdin?.end(input ?? "");
-  });
+
+/** The runner every store uses. */
+export const runOsCommand: OsCommandRunner = osCommandRunner();
 
 function stripFinalNewline(text: string): string {
   return text.replace(/\r?\n$/, "");
@@ -76,7 +108,9 @@ function keychainStore(run: OsCommandRunner): OsSecretStore {
   return {
     kind: "keychain",
     async available() {
-      return (await run("security", ["help"])).code !== 127;
+      // A session without a login keychain (another HOME, some SSH logins)
+      // has no default one, and adding an item there would wait for input.
+      return (await run("security", ["default-keychain"])).code === 0;
     },
     async get(name) {
       assertName(name);
@@ -155,6 +189,22 @@ const DPAPI_PROTECT =
   "$s=ConvertTo-SecureString -String $v -AsPlainText -Force;" +
   "[Console]::Out.Write((ConvertFrom-SecureString -SecureString $s))";
 
+/**
+ * PowerShell that reads one DPAPI blob per line on stdin and prints one line
+ * per blob: the value in base64, or `-` when that blob does not decrypt.
+ */
+const DPAPI_UNPROTECT_MANY =
+  "$o=@();" +
+  "foreach($b in [Console]::In.ReadToEnd().Split([char]10)){" +
+  "$b=$b.Trim();if(!$b){continue};" +
+  "try{$s=ConvertTo-SecureString -String $b;" +
+  "$p=[Runtime.InteropServices.Marshal]::SecureStringToBSTR($s);" +
+  "try{$v=[Runtime.InteropServices.Marshal]::PtrToStringBSTR($p)}" +
+  "finally{[Runtime.InteropServices.Marshal]::ZeroFreeBSTR($p)};" +
+  "$o+=[Convert]::ToBase64String([Text.Encoding]::UTF8.GetBytes($v))}" +
+  "catch{$o+='-'}};" +
+  "[Console]::Out.Write($o -join [char]10)";
+
 /** PowerShell that reads a DPAPI blob on stdin and prints the value. */
 const DPAPI_UNPROTECT =
   "$b=[Console]::In.ReadToEnd().Trim();" +
@@ -185,6 +235,35 @@ function dpapiStore(run: OsCommandRunner, dir: string): OsSecretStore {
       if (!existsSync(file)) return null;
       const res = await ps(DPAPI_UNPROTECT, readFileSync(file, "utf8"));
       return res.code === 0 ? res.stdout : null;
+    },
+    async getMany(names) {
+      const out = new Map<string, string | null>();
+      const present: Array<{ name: string; blob: string }> = [];
+      for (const name of names) {
+        assertName(name);
+        const file = fileOf(name);
+        if (existsSync(file)) {
+          present.push({ name, blob: readFileSync(file, "utf8").trim() });
+        } else {
+          out.set(name, null);
+        }
+      }
+      if (present.length === 0) return out;
+      const res = await ps(
+        DPAPI_UNPROTECT_MANY,
+        present.map((entry) => entry.blob).join("\n"),
+      );
+      const lines = res.code === 0 ? res.stdout.split(/\r?\n/) : [];
+      present.forEach((entry, index) => {
+        const line = lines[index]?.trim();
+        out.set(
+          entry.name,
+          line && line !== "-"
+            ? Buffer.from(line, "base64").toString("utf8")
+            : null,
+        );
+      });
+      return out;
     },
     async set(name, value) {
       assertName(name);

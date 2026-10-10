@@ -5,6 +5,7 @@ import { dirname, join } from "node:path";
 import {
   getPostgresCredentials,
   getTursoCredentials,
+  libraryOsSecretPending,
   type PostgresAuthMode,
   type PostgresCredentials,
   postgresVaultAccessPending,
@@ -240,6 +241,16 @@ function resolveDatabaseTarget(
       configuredCloud: null,
       postgres: configuredPostgres,
     };
+  }
+
+  // The library's secret is in this computer's keychain and did not resolve
+  // (ADR 2026-10-08b D5): fail loud rather than open an empty local database.
+  const osPending =
+    wantsConfigured && !forcedLocal ? libraryOsSecretPending() : null;
+  if (osPending !== null) {
+    throw new Error(
+      "OS_SECRET_UNAVAILABLE: The library's access token is in this computer's keychain, which ZAM could not read. Sign in to this computer's desktop session (or unlock its keychain) and try again.",
+    );
   }
 
   // A vault-backed PostgreSQL password that has not resolved: fail loud, like

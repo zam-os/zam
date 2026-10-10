@@ -2,8 +2,12 @@
  * Desktop/bridge helpers for Bitwarden vault access (ADR 2026-07-30b).
  *
  * The Studio never prints secret values. Session unlock keeps the master
- * password only long enough to call `bw unlock` and stores BW_SESSION only in
- * the bridge process environment (not on disk).
+ * password only long enough to call `bw unlock`; the session itself stays in
+ * memory and OS-protected storage (ADR 2026-10-08b D5).
+ *
+ * A secret "on this machine" is either a literal in credentials.json or an
+ * `os://` reference into OS storage; both can move into the vault, and both
+ * are what a disconnect restores to.
  *
  * Setup may **create** vault items (learner-directed write) so the user does
  * not have to hand-craft Bitwarden entries — only unlock + paste once in ZAM.
@@ -14,9 +18,12 @@ import {
   getADOCredentials,
   getProviderApiKey,
   getTursoCredentials,
+  isOsReference,
+  isVaultReference,
   listProviderApiKeyRefs,
   loadStoredCredentials,
   resolveCredentials,
+  type StoredSecret,
   setADOCredentials,
   setProviderApiKey,
   setTursoCredentials,
@@ -26,7 +33,6 @@ import {
   bwChildEnv,
   currentBwSession,
   forgetBwSession,
-  isSecretRef,
   loadBwSession,
   rememberBwSession,
 } from "../kernel/secrets/index.js";
@@ -36,6 +42,7 @@ import {
   setBitwardenAutoSync,
   setBitwardenSyncConfig,
 } from "../kernel/system/install-config.js";
+import { secureStoredSecrets } from "./process-services.js";
 
 const BW_TIMEOUT_MS = 30_000;
 
@@ -73,31 +80,30 @@ export interface BitwardenCliStatus {
   message: string;
 }
 
-/** Count secrets still held as plaintext in credentials.json. */
+/**
+ * The value of a secret held on this machine: a literal as it stands, an
+ * `os://` reference through the resolved snapshot. Null for a vault
+ * reference or an empty field.
+ */
+function localSecretValue(
+  stored: StoredSecret | undefined,
+  resolved: string | null | undefined,
+): string | null {
+  if (typeof stored === "string") return stored.length > 0 ? stored : null;
+  if (isOsReference(stored)) return resolved || null;
+  return null;
+}
+
+/** Count secrets held on this machine rather than in the vault. */
 export function countPendingLiteralSecrets(): number {
   const stored = loadStoredCredentials();
+  const local = (value: StoredSecret | undefined): boolean =>
+    (typeof value === "string" && value.length > 0) || isOsReference(value);
   let n = 0;
-  if (stored.turso?.token !== undefined && !isSecretRef(stored.turso.token)) {
-    if (
-      typeof stored.turso.token === "string" &&
-      stored.turso.token.length > 0
-    ) {
-      n += 1;
-    }
-  }
-  if (stored.ado?.pat !== undefined && !isSecretRef(stored.ado.pat)) {
-    if (typeof stored.ado.pat === "string" && stored.ado.pat.length > 0) n += 1;
-  }
+  if (local(stored.turso?.token)) n += 1;
+  if (local(stored.ado?.pat)) n += 1;
   for (const name of listProviderApiKeyRefs()) {
-    const key = stored.llmProviders?.[name]?.apiKey;
-    if (
-      key !== undefined &&
-      !isSecretRef(key) &&
-      typeof key === "string" &&
-      key.length > 0
-    ) {
-      n += 1;
-    }
+    if (local(stored.llmProviders?.[name]?.apiKey)) n += 1;
   }
   return n;
 }
@@ -577,13 +583,19 @@ export async function seedCredentialsIntoBitwarden(): Promise<
   const gate = requireUnlockedSession();
   if (!gate.ok) return { ...gate, entries: [] };
 
+  // Secrets in OS storage are read through the snapshot.
+  await resolveCredentials();
   const stored = loadStoredCredentials();
   const entries: SeedResultEntry[] = [];
   let failed: string | null = null;
 
   // Turso token
   if (stored.turso?.token !== undefined) {
-    if (isSecretRef(stored.turso.token)) {
+    const token = localSecretValue(
+      stored.turso.token,
+      getTursoCredentials()?.token,
+    );
+    if (isVaultReference(stored.turso.token)) {
       entries.push({
         field: "turso.token",
         secretRef: stored.turso.token.$secret,
@@ -591,11 +603,11 @@ export async function seedCredentialsIntoBitwarden(): Promise<
         seeded: false,
         skipped: "already-a-reference",
       });
-    } else if (stored.turso.token.length > 0 && stored.turso.url) {
+    } else if (token && stored.turso.url) {
       const created = await upsertBitwardenSecretItem({
         itemName: ZAM_VAULT_ITEM_TURSO,
         fieldName: "token",
-        secret: stored.turso.token,
+        secret: token,
       });
       if (!created.ok) {
         failed = created.message;
@@ -618,7 +630,8 @@ export async function seedCredentialsIntoBitwarden(): Promise<
 
   // ADO PAT
   if (!failed && stored.ado?.pat !== undefined) {
-    if (isSecretRef(stored.ado.pat)) {
+    const pat = localSecretValue(stored.ado.pat, getADOCredentials()?.pat);
+    if (isVaultReference(stored.ado.pat)) {
       entries.push({
         field: "ado.pat",
         secretRef: stored.ado.pat.$secret,
@@ -626,15 +639,11 @@ export async function seedCredentialsIntoBitwarden(): Promise<
         seeded: false,
         skipped: "already-a-reference",
       });
-    } else if (
-      stored.ado.pat.length > 0 &&
-      stored.ado.org_url &&
-      stored.ado.project
-    ) {
+    } else if (pat && stored.ado.org_url && stored.ado.project) {
       const created = await upsertBitwardenSecretItem({
         itemName: ZAM_VAULT_ITEM_ADO,
         fieldName: "pat",
-        secret: stored.ado.pat,
+        secret: pat,
       });
       if (!created.ok) {
         failed = created.message;
@@ -657,7 +666,7 @@ export async function seedCredentialsIntoBitwarden(): Promise<
     if (failed) break;
     const storedKey = stored.llmProviders?.[name]?.apiKey;
     if (storedKey === undefined) continue;
-    if (isSecretRef(storedKey)) {
+    if (isVaultReference(storedKey)) {
       entries.push({
         field: `llmProviders.${name}.apiKey`,
         secretRef: storedKey.$secret,
@@ -667,12 +676,12 @@ export async function seedCredentialsIntoBitwarden(): Promise<
       });
       continue;
     }
-    // getProviderApiKey after resolve would need resolve — use stored literal
-    if (typeof storedKey !== "string" || storedKey.length === 0) continue;
+    const key = localSecretValue(storedKey, getProviderApiKey(name));
+    if (!key) continue;
     const created = await upsertBitwardenSecretItem({
       itemName: zamVaultItemProvider(name),
       fieldName: "apiKey",
-      secret: storedKey,
+      secret: key,
     });
     if (!created.ok) {
       failed = created.message;
@@ -744,10 +753,10 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // Need a live vault if any refs remain.
   const hasRefs =
-    (stored.turso && isSecretRef(stored.turso.token)) ||
-    (stored.ado && isSecretRef(stored.ado.pat)) ||
+    (stored.turso && isVaultReference(stored.turso.token)) ||
+    (stored.ado && isVaultReference(stored.ado.pat)) ||
     Object.values(stored.llmProviders ?? {}).some((e) =>
-      isSecretRef(e?.apiKey),
+      isVaultReference(e?.apiKey),
     );
 
   if (hasRefs) {
@@ -764,7 +773,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // Turso
   if (stored.turso?.token !== undefined) {
-    if (isSecretRef(stored.turso.token)) {
+    if (isVaultReference(stored.turso.token)) {
       const token = getTursoCredentials()?.token;
       const url = stored.turso.url ?? getTursoCredentials()?.url;
       if (!token || !url) {
@@ -788,7 +797,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // ADO
   if (stored.ado?.pat !== undefined) {
-    if (isSecretRef(stored.ado.pat)) {
+    if (isVaultReference(stored.ado.pat)) {
       // re-resolve after turso write may have invalidated snapshot — resolve again
       await resolveCredentials();
       const ado = getADOCredentials();
@@ -816,7 +825,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
   for (const name of providerNames) {
     const entry = stored.llmProviders?.[name]?.apiKey;
     if (entry === undefined) continue;
-    if (isSecretRef(entry)) {
+    if (isVaultReference(entry)) {
       await resolveCredentials();
       const key = getProviderApiKey(name);
       if (!key) {
@@ -843,7 +852,9 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
   // End Bitwarden linkage for this install.
   clearBitwardenSyncConfig();
   await forgetBwSession();
-  // Snapshot holds plaintext again via setters; force a clean resolve from disk.
+  // The restored values leave the plain file for OS storage (ADR 2026-10-08b
+  // D5); then a clean resolve from disk.
+  await secureStoredSecrets();
   await resolveCredentials();
 
   return { ok: true, entries };

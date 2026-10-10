@@ -335,6 +335,7 @@ import {
   confirmOpenContentImport,
   previewOpenContentImport,
 } from "../open-content/service.js";
+import { secureStoredSecrets } from "../process-services.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -3083,6 +3084,9 @@ bridgeCommand
     setProviderApiKey(opts.ref, key);
     await resolveCredentials();
     await maybeAutoSyncSecrets();
+    // A long-running bridge must not leave the new key as plain text until
+    // its next start (ADR 2026-10-08b D5).
+    await secureStoredSecrets();
     jsonOut({
       ok: true,
       ref: opts.ref,
@@ -5277,6 +5281,9 @@ bridgeCommand
       }
       const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
+      // Verified: the token leaves the plain file now, not at the next start
+      // of this long-running bridge (ADR 2026-10-08b D5).
+      await secureStoredSecrets();
       jsonOut({
         success: true,
         connected: true,

@@ -6,10 +6,15 @@
  * which is required when migrating from plain SQLite to a libsql embedded
  * replica (Turso cloud sync).
  *
- * Secret fields may be literal strings or vault references
+ * Secret fields may be literal strings or references
  * (`{ "$secret": "bw://item/field" }`). `resolveCredentials()` resolves
  * references once into an in-memory snapshot; synchronous accessors read
  * from that snapshot (ADR 2026-07-30b).
+ *
+ * Literal secrets do not stay literal where the OS offers protected storage
+ * (ADR 2026-10-08b D5): `moveLiteralSecretsToOsStore()` moves each into the
+ * Keychain, the Secret Service or DPAPI and leaves an `os://` reference.
+ * An `os://` reference is local to this machine, unlike a vault reference.
  */
 
 import {
@@ -23,8 +28,12 @@ import { homedir } from "node:os";
 import { dirname, join } from "node:path";
 import { nowIso } from "./db/sql.js";
 import {
+  defaultOsSecretStore,
   ensureDefaultSecretBackends,
   isSecretRef,
+  OS_SECRET_SCHEME,
+  type OsSecretStore,
+  parseSecretUri,
   resolveSecretUri,
   type SecretRef,
   SecretResolutionError,
@@ -136,9 +145,31 @@ export interface StoredCredentials {
   postgres?: Partial<StoredPostgresCredentials>;
   previous?: StoredPreviousLibrary;
   llmProviders?: Record<string, { apiKey: StoredSecret }>;
+  /**
+   * Names ZAM created in OS storage (ADR 2026-10-08b D5). One the document no
+   * longer refers to is deleted at the next start — not at once, because an
+   * undo within the same command may point a field back at it.
+   */
+  osSecrets?: string[];
 }
 
 export type { SecretRef, StoredSecret };
+
+/** A reference into a vault the learner unlocks (Bitwarden), not OS storage. */
+export function isVaultReference(value: unknown): value is SecretRef {
+  return (
+    isSecretRef(value) &&
+    parseSecretUri(value.$secret)?.scheme !== OS_SECRET_SCHEME
+  );
+}
+
+/** A reference into this machine's OS-protected storage (`os://`). */
+export function isOsReference(value: unknown): value is SecretRef {
+  return (
+    isSecretRef(value) &&
+    parseSecretUri(value.$secret)?.scheme === OS_SECRET_SCHEME
+  );
+}
 
 // ── Process-lifetime resolution snapshot ────────────────────────────────────
 
@@ -478,6 +509,17 @@ export function loadCredentials(path?: string): Credentials {
   return readResolved(path);
 }
 
+/** Every `os://` name a stored document refers to, wherever it sits. */
+function osSecretNames(doc: unknown, into = new Set<string>()): Set<string> {
+  if (isOsReference(doc)) {
+    const parsed = parseSecretUri(doc.$secret);
+    if (parsed) into.add(parsed.locator);
+  } else if (doc && typeof doc === "object") {
+    for (const value of Object.values(doc)) osSecretNames(value, into);
+  }
+  return into;
+}
+
 /** Save credentials to ~/.zam/credentials.json. Invalidates any snapshot. */
 export function saveCredentials(
   creds: StoredCredentials | Credentials,
@@ -702,7 +744,7 @@ export function restorePreviousLibrary(
  */
 export function postgresVaultAccessPending(path?: string): boolean {
   const stored = loadStoredCredentials(path);
-  if (!stored.postgres?.host || !isSecretRef(stored.postgres.password)) {
+  if (!stored.postgres?.host || !isVaultReference(stored.postgres.password)) {
     return false;
   }
   return getPostgresCredentials(path) === null;
@@ -784,12 +826,14 @@ export function looksLikeSecretUri(value: string): boolean {
  */
 export function credentialsNeedVaultAccess(path?: string): boolean {
   const stored = loadStoredCredentials(path);
-  if (stored.turso && isSecretRef(stored.turso.token)) return true;
-  if (stored.ado && isSecretRef(stored.ado.pat)) return true;
-  if (stored.postgres && isSecretRef(stored.postgres.password)) return true;
+  if (stored.turso && isVaultReference(stored.turso.token)) return true;
+  if (stored.ado && isVaultReference(stored.ado.pat)) return true;
+  if (stored.postgres && isVaultReference(stored.postgres.password)) {
+    return true;
+  }
   if (stored.llmProviders) {
     for (const entry of Object.values(stored.llmProviders)) {
-      if (isSecretRef(entry?.apiKey)) return true;
+      if (isVaultReference(entry?.apiKey)) return true;
     }
   }
   return false;
@@ -801,8 +845,172 @@ export function credentialsNeedVaultAccess(path?: string): boolean {
  */
 export function tursoVaultAccessPending(path?: string): boolean {
   const stored = loadStoredCredentials(path);
-  if (!stored.turso?.url || !isSecretRef(stored.turso.token)) return false;
+  if (!stored.turso?.url || !isVaultReference(stored.turso.token)) {
+    return false;
+  }
   return getTursoCredentials(path) === null;
+}
+
+/**
+ * The configured library's secret when it sits in OS storage and did not
+ * resolve: the keychain is locked, or this session cannot reach it (an SSH
+ * login, another user). Null otherwise.
+ */
+export function libraryOsSecretPending(
+  path?: string,
+): "turso.token" | "postgres.password" | null {
+  const stored = loadStoredCredentials(path);
+  if (
+    stored.postgres?.host &&
+    isOsReference(stored.postgres.password) &&
+    getPostgresCredentials(path) === null
+  ) {
+    return "postgres.password";
+  }
+  if (
+    stored.turso?.url &&
+    isOsReference(stored.turso.token) &&
+    getTursoCredentials(path) === null
+  ) {
+    return "turso.token";
+  }
+  return null;
+}
+
+// ── Literal secrets into OS storage (ADR 2026-10-08b D5) ────────────────────
+
+interface LiteralSecretSlot {
+  /** Field label, as `zam credentials check` shows it. */
+  field: string;
+  value: string;
+  /** Point the field in `doc` at `ref`, if it still holds `value`. */
+  replace: (doc: StoredCredentials, ref: SecretRef) => boolean;
+}
+
+/** Every secret field of a stored document that still holds a literal. */
+function literalSecretSlots(stored: StoredCredentials): LiteralSecretSlot[] {
+  const slots: LiteralSecretSlot[] = [];
+  const add = (
+    field: string,
+    value: StoredSecret | undefined,
+    holder: (doc: StoredCredentials) => { [key: string]: unknown } | undefined,
+    key: string,
+  ): void => {
+    if (typeof value !== "string" || value.length === 0) return;
+    slots.push({
+      field,
+      value,
+      replace: (doc, ref) => {
+        const target = holder(doc);
+        if (!target || target[key] !== value) return false;
+        target[key] = ref;
+        return true;
+      },
+    });
+  };
+  add("turso.token", stored.turso?.token, (d) => d.turso, "token");
+  add("ado.pat", stored.ado?.pat, (d) => d.ado, "pat");
+  add(
+    "postgres.password",
+    stored.postgres?.password,
+    (d) => d.postgres,
+    "password",
+  );
+  add(
+    "previous.turso.token",
+    stored.previous?.turso?.token,
+    (d) => d.previous?.turso,
+    "token",
+  );
+  add(
+    "previous.postgres.password",
+    stored.previous?.postgres?.password,
+    (d) => d.previous?.postgres,
+    "password",
+  );
+  for (const [name, entry] of Object.entries(stored.llmProviders ?? {})) {
+    add(
+      `llmProviders.${name}.apiKey`,
+      entry?.apiKey,
+      (d) => d.llmProviders?.[name],
+      "apiKey",
+    );
+  }
+  return slots;
+}
+
+/** A fresh store name per secret, so a kept previous library never collides. */
+function osNameFor(field: string): string {
+  const slug = field.replace(/[^A-Za-z0-9._-]/g, "-").slice(0, 80);
+  const suffix = Math.random().toString(36).slice(2, 10);
+  return `credential:${slug}:${suffix}`;
+}
+
+/**
+ * Move every literal secret in credentials.json into OS-protected storage
+ * and leave an `os://` reference in its place (ADR 2026-10-08b D5).
+ *
+ * A field is rewritten only after its value was stored and read back
+ * unchanged; anything that fails stays literal and is tried again at the next
+ * start. The document is re-read just before the write, and a field another
+ * writer changed meanwhile is left alone. The resolved snapshot stays valid:
+ * the values did not change, only where they are kept. Entries ZAM created
+ * earlier that nothing refers to any more are deleted. Where the OS offers no
+ * storage, nothing happens.
+ */
+export async function moveLiteralSecretsToOsStore(
+  path?: string,
+  store: OsSecretStore | null = defaultOsSecretStore(),
+): Promise<{ moved: string[]; failed: string[]; removed: string[] }> {
+  const none = { moved: [], failed: [], removed: [] };
+  const p = credentialsPath(path);
+  const current = loadStoredCredentials(p);
+  const slots = literalSecretSlots(current);
+  const referenced = osSecretNames(current);
+  const orphans = (current.osSecrets ?? []).filter(
+    (name) => !referenced.has(name),
+  );
+  if ((slots.length === 0 && orphans.length === 0) || !store) return none;
+  if (!(await store.available().catch(() => false))) return none;
+
+  for (const name of orphans) await store.delete(name).catch(() => undefined);
+
+  const stored: Array<{ slot: LiteralSecretSlot; name: string }> = [];
+  const failed: string[] = [];
+  for (const slot of slots) {
+    const name = osNameFor(slot.field);
+    const ok = await store.set(name, slot.value).catch(() => false);
+    if (ok) {
+      stored.push({ slot, name });
+    } else {
+      failed.push(slot.field);
+      await store.delete(name).catch(() => undefined);
+    }
+  }
+
+  const doc = loadStoredCredentials(p);
+  const moved: string[] = [];
+  const created: string[] = [];
+  for (const { slot, name } of stored) {
+    if (slot.replace(doc, { $secret: `${OS_SECRET_SCHEME}://${name}` })) {
+      moved.push(slot.field);
+      created.push(name);
+    } else {
+      await store.delete(name).catch(() => undefined);
+    }
+  }
+  const ledger = [
+    ...(doc.osSecrets ?? []).filter((name) => !orphans.includes(name)),
+    ...created,
+  ];
+  if (moved.length > 0 || orphans.length > 0) {
+    if (ledger.length > 0) doc.osSecrets = ledger;
+    else delete doc.osSecrets;
+    const snapshot = snapshots.get(p);
+    saveCredentials(doc, p);
+    if (snapshot?.resolved) snapshots.set(p, snapshot);
+  }
+  return { moved, failed, removed: orphans };
 }
 
 /** Build a SecretRef from a URI, or throw if the URI is malformed. */
