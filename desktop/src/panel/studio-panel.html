@@ -144,6 +144,97 @@
         gap: 8px;
         margin-bottom: 10px;
       }
+      .content-area-switcher,
+      .content-segment-switcher {
+        display: flex;
+        gap: 4px;
+        padding: 3px;
+        margin-bottom: 10px;
+        border: 1px solid var(--border);
+        border-radius: 12px;
+        background: var(--card);
+      }
+      .content-area-option,
+      .content-segment-option {
+        flex: 1;
+        background: transparent;
+        border: 0;
+        border-radius: 8px;
+        color: var(--muted);
+        cursor: pointer;
+        font: inherit;
+        font-size: 13px;
+        font-weight: 700;
+        padding: 7px 10px;
+      }
+      .content-area-option.active,
+      .content-segment-option.active {
+        background: var(--hover);
+        color: var(--fg);
+      }
+      .content-sources-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .content-sources-bar select {
+        flex: 1;
+        min-width: 160px;
+      }
+      .content-sources-status {
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .content-sources-status p {
+        margin: 0;
+      }
+      .content-sources-body {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr;
+        margin-top: 8px;
+      }
+      .content-sources-knowledge,
+      .content-sources-reader {
+        min-width: 0;
+      }
+      .content-sources-okf h2,
+      .content-sources-reader h2 {
+        font-size: 15px;
+        margin: 0 0 8px;
+      }
+      .content-sources-okf ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .content-sources-okf p,
+      .content-sources-reader-path {
+        margin: 0 0 8px;
+      }
+      .content-sources-article {
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: 4px 0;
+        text-align: left;
+        text-decoration: underline;
+      }
+      .content-sources-reader-body {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      .content-sources-text {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
       .content-studio-layout {
         display: flex;
         gap: 14px;
@@ -455,7 +546,12 @@
       <section class="content-studio" aria-label="Learning Content Studio">
         <h2 class="content-studio-title">Learning Content</h2>
 
-        <div class="content-studio-toolbar">
+        <div id="content-area-switcher" class="content-area-switcher" role="tablist">
+          <button id="btn-content-area-cards" class="content-area-option active" type="button" role="tab" aria-selected="true">Learning cards</button>
+          <button id="btn-content-area-sources" class="content-area-option" type="button" role="tab" aria-selected="false">Sources</button>
+        </div>
+
+        <div id="content-cards-actions" class="content-studio-toolbar">
           <!--
             Browser-hosted MCP panels cannot hand a native local path to the
             CLI. The desktop Studio owns the file picker; this hidden button
@@ -473,14 +569,23 @@
           <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">
             Library Topics
           </button>
+          <button id="btn-content-open-graph" class="btn secondary-btn btn-sm hidden" type="button">
+            Knowledge Map (3D)
+          </button>
           <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">
             New Card
           </button>
         </div>
 
+        <div id="content-cards-area">
         <div class="content-studio-layout show-list" id="content-studio-layout">
           <!-- Left: card list -->
           <div class="zam-card content-studio-list-panel">
+            <div id="content-segment-switcher" class="content-segment-switcher" role="tablist">
+              <button id="btn-content-segment-personal" class="content-segment-option active" type="button" role="tab" aria-selected="true">Personal</button>
+              <button id="btn-content-segment-unchosen" class="content-segment-option" type="button" role="tab" aria-selected="false">Not chosen</button>
+              <button id="btn-content-segment-unpublished" class="content-segment-option" type="button" role="tab" aria-selected="false">Unpublished</button>
+            </div>
             <div class="content-studio-search-bar">
               <input
                 type="text"
@@ -650,11 +755,40 @@
                   <button id="btn-content-publish-card" class="btn primary-btn btn-sm hidden" type="button">
                     Publish
                   </button>
+                  <button id="btn-content-take-card" class="btn primary-btn btn-sm hidden" type="button">
+                    Add card
+                  </button>
                   <button id="btn-content-save-card" class="btn primary-btn btn-sm" type="button">
                     Save Card
                   </button>
                 </div>
               </div>
+            </div>
+          </div>
+        </div>
+        </div>
+        <div id="content-sources-area" class="hidden" hidden>
+          <div class="content-sources-bar">
+            <label id="lbl-content-source" for="content-source-select">Source</label>
+            <select id="content-source-select" class="editor-select"></select>
+            <button id="btn-content-choose-folder" class="btn secondary-btn btn-sm hidden" type="button">Choose folder…</button>
+          </div>
+          <div id="content-sources-status" class="content-sources-status">
+            <p id="content-sources-path"></p>
+            <p id="content-sources-note"></p>
+          </div>
+          <div id="content-sources-body" class="content-sources-body hidden" hidden>
+            <div class="content-sources-knowledge">
+              <div id="content-sources-map"></div>
+              <div id="content-sources-okf" class="content-sources-okf">
+                <h2 id="lbl-content-source-okf">Articles</h2>
+                <p id="content-sources-okf-note"></p>
+                <ul id="content-sources-okf-list"></ul>
+              </div>
+            </div>
+            <div id="content-sources-reader" class="content-sources-reader">
+              <h2 id="lbl-content-source-reader">Reader</h2>
+              <div id="content-sources-reader-body"></div>
             </div>
           </div>
         </div>

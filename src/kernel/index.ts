@@ -306,6 +306,14 @@ export {
   materialiseKvtCards,
 } from "./library/kvt-attach.js";
 export type {
+  UnchosenGroup,
+  UnchosenMember,
+} from "./library/learning-content.js";
+export {
+  listUnchosenGroups,
+  listUnchosenMembers,
+} from "./library/learning-content.js";
+export type {
   AssessPreconditionInput,
   AssessPreconditionResult,
   PreconditionCandidate,
@@ -1016,11 +1024,13 @@ export type {
   CapabilityFlags,
   InstallConfig,
   InstallMode,
+  LearningContentSource,
   MachineAgentConfig,
   MachineAiConfig,
   MachineCompanionConfig,
   MachineCompanionConfigUpdate,
   MachineKnowledgeMapConfig,
+  MachineLearningContentConfig,
   MachineObservationConfig,
   MachineOnboardingConfig,
   MachineProviderRecord,
@@ -1058,6 +1068,7 @@ export {
   getInstallMode,
   getKnowledgeMapConfig,
   getLastRepairedVersion,
+  getLearningContentSource,
   getMachineAiConfig,
   getMachineAiModels,
   getMachineCompanionConfig,
@@ -1073,6 +1084,7 @@ export {
   MAX_OBSERVATION_RETENTION_DAYS,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
+  resolveLearningContentSelection,
   saveConfiguredWorkspaces,
   saveInstallConfig,
   saveMachineAiConfig,
@@ -1095,6 +1107,7 @@ export {
   setInstallMode,
   setKnowledgeMapConfig,
   setLastRepairedVersion,
+  setLearningContentSource,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,

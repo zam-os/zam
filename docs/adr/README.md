@@ -85,4 +85,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md) | Learning Cards from Photos and Files: The Model Reads the Page | Partially implemented — both paths, review list, Bonus and Mobile shipped; MCP Apps panel and per-import bonus line open |
 | [2026-10-08](2026-10-08-skill-learner-observation.md) | Observation Without Content: Skill-Learner Evidence Replaces the In-House Screen Observer | Proposed |
 | [2026-10-08b](2026-10-08b-corporate-deployment-baseline.md) | Corporate Deployment Baseline: Agents and Shared Content Are Untrusted | Proposed |
-| [2026-10-10](2026-10-10-learning-content-sources.md) | Learning Content: Cards and Sources | Accepted |
+| [2026-10-10](2026-10-10-learning-content-sources.md) | Learning Content: Cards and Sources | Implemented |

@@ -1,6 +1,6 @@
 # Learning Content: Cards and Sources
 
-**Status:** Accepted\
+**Status:** Implemented\
 **Date:** 2026-10-10\
 **Deciders:** Thomas (project owner)\
 **Implementation plan:** [2026-10-10-learning-content-sources.md](../plans/2026-10-10-learning-content-sources.md)\

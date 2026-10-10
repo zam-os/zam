@@ -48,8 +48,11 @@ import {
   stepToBlame,
 } from "./boot-progress.js";
 import {
+  closeCurriculumBrowser,
   initCurriculumWizard,
+  openCurriculumBrowser,
   setCurriculumWizardModelSetup,
+  setCurriculumWizardOpener,
 } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
@@ -103,13 +106,24 @@ import {
   resetDiscussion,
 } from "./discussion.js";
 import {
+  graphReturnOrigin,
+  rememberGraphOrigin,
+} from "./graph-return.js";
+import {
   type ImportProgressEvent,
+  applyLearningContentChrome,
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
+  openLearningContentCurriculum,
   setLearningContentFilePicker,
+  setLearningContentGraphOpener,
   setLearningContentProgressSource,
 } from "./learning-content.js";
+import {
+  setLearningContentCurriculumHost,
+  setLearningContentFolderPicker,
+} from "./learning-content-sources.js";
 import { setMaterialImportHost } from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
@@ -207,6 +221,22 @@ setLearningContentProgressSource(async (onProgress) => {
     (event) => onProgress(event.payload),
   );
   return unlisten;
+});
+
+setLearningContentGraphOpener(() => {
+  rememberGraphOrigin("learning-content-view");
+  const back = document.getElementById("btn-graph-back");
+  if (back) back.textContent = t("btn_graph_back_cards");
+  switchView("graph-view");
+});
+
+setLearningContentFolderPicker(async () => {
+  const selected = await openFolderDialog({
+    directory: true,
+    multiple: false,
+    title: t("btn_content_choose_folder"),
+  });
+  return typeof selected === "string" ? selected : null;
 });
 
 setLearningContentFilePicker(async () => {
@@ -835,8 +865,6 @@ function initializeTranslations() {
   document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
   document.getElementById("nav-settings")!.textContent = t("nav_settings");
   document.getElementById("nav-stats")!.textContent = t("nav_stats");
-  const knowledgeMapNav = document.getElementById("nav-knowledge-map");
-  if (knowledgeMapNav) knowledgeMapNav.textContent = t("km_nav");
   document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
@@ -1302,9 +1330,6 @@ function initializeTranslations() {
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
 
-  // Curriculum Import Wizard Translations
-  const btnContentCurriculumWizard = document.getElementById("btn-content-curriculum-wizard");
-  if (btnContentCurriculumWizard) btnContentCurriculumWizard.textContent = t("btn_curriculum_wizard");
   // Goal import entry (plan Phase 8): reopens the onboarding goal page.
   const btnContentGoalImport = document.getElementById("btn-content-goal-import");
   if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
@@ -1386,8 +1411,12 @@ function initializeTranslations() {
   if (lblSourceExtractedPreview) lblSourceExtractedPreview.textContent = t("lbl_source_extracted_preview");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
-  document.getElementById("btn-graph-back")!.textContent =
-    t("btn_back_to_dashboard");
+  document.getElementById("btn-graph-back")!.textContent = t(
+    graphReturnOrigin() === "learning-content-view"
+      ? "btn_graph_back_cards"
+      : "btn_back_to_dashboard",
+  );
+  applyLearningContentChrome();
   document.getElementById("btn-graph-refresh")!.textContent =
     t("graph_refresh");
   document.getElementById("graph-focus-title")!.textContent = t("graph_focus");
@@ -4414,33 +4443,8 @@ function errorMessage(err: unknown): string {
 }
 
 // ── KNOWLEDGE MAP (alpha, ADR 2026-10-03) ─────────────────────────────────
+// Quellen mounts the views. Settings keeps the switch and the view list.
 let knowledgeMapSettings: KnowledgeMapSettings | null = null;
-
-/** Load the map page's module on first use; it stays out of the boot bundle. */
-async function openKnowledgeMapPage(): Promise<void> {
-  const container = document.getElementById("knowledge-map-root");
-  if (!container) return;
-  const { openKnowledgeMapView } = await import("./knowledge-map/studio.js");
-  await openKnowledgeMapView(container, {
-    openUrl: (url) => void openUrl(url),
-    pickFolder: async () => {
-      const selected = await openFolderDialog({
-        directory: true,
-        multiple: false,
-        title: t("km_pick_repo"),
-      });
-      return typeof selected === "string" ? selected : null;
-    },
-    copyText: async (text) => {
-      try {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-  });
-}
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function setActiveNav(viewId: AppView): void {
@@ -4449,7 +4453,6 @@ function setActiveNav(viewId: AppView): void {
     "settings-view": "nav-settings",
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
-    "knowledge-map-view": "nav-knowledge-map",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -5075,7 +5078,7 @@ function switchView(
   const mainContainer = document.querySelector('main.container');
   mainContainer?.classList.toggle(
     'content-full',
-    viewId === "learning-content-view" || viewId === "knowledge-map-view",
+    viewId === "learning-content-view",
   );
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
@@ -5094,9 +5097,6 @@ function switchView(
   }
   if (viewId === "stats-view") {
     void loadStatsView();
-  }
-  if (viewId === "knowledge-map-view") {
-    void openKnowledgeMapPage();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -8620,6 +8620,11 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("learning-content", () => initLearningContentStudio());
   initPanel("curriculum-wizard", () => {
     initCurriculumWizard();
+    setLearningContentCurriculumHost({
+      open: openCurriculumBrowser,
+      close: closeCurriculumBrowser,
+    });
+    setCurriculumWizardOpener((url) => void openUrl(url));
     // Text-LLM-offline in the wizard links back to the onboarding model page
     // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
     setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
@@ -8640,15 +8645,8 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("knowledge-map", () => {
     knowledgeMapSettings = initKnowledgeMapSettings({
-      onEnabledChange: (enabled) => {
-        const nav = document.getElementById("nav-knowledge-map");
-        if (nav) nav.hidden = !enabled;
-        if (
-          !enabled &&
-          document.getElementById("knowledge-map-view")?.classList.contains("active")
-        ) {
-          switchView("settings-view");
-        }
+      onEnabledChange: () => {
+        // Quellen reads the same switch. There is no top-nav entry.
       },
     });
   });
@@ -8683,14 +8681,14 @@ window.addEventListener("DOMContentLoaded", () => {
       workspaceStructure: onboardingWorkspaceStructure,
     }),
     openExternal: (url) => void openUrl(url),
-    // Both entry points are document-level modal overlays initialized at
-    // startup, so triggering their buttons opens them on top of the flow.
+    // Free import stays a modal. The curriculum opens from Quellen → Lehrplan.
     openContentEntry: (entry) => {
-      const id =
-        entry === "curriculum"
-          ? "btn-content-curriculum-wizard"
-          : "btn-content-import";
-      document.getElementById(id)?.click();
+      if (entry === "curriculum") {
+        switchView("learning-content-view");
+        void openLearningContentCurriculum();
+        return;
+      }
+      document.getElementById("btn-content-import")?.click();
     },
     onLeave: (reason) => {
       switchView("dashboard-view");
@@ -8737,10 +8735,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {
     switchView("stats-view");
-  });
-
-  document.getElementById("nav-knowledge-map")?.addEventListener("click", () => {
-    switchView("knowledge-map-view");
   });
 
   document.getElementById("btn-stats-back")?.addEventListener("click", () => {
@@ -8962,16 +8956,20 @@ window.addEventListener("DOMContentLoaded", () => {
   if (openGraphBtn) {
     openGraphBtn.textContent = t("btn_open_graph");
     openGraphBtn.addEventListener("click", () => {
+      rememberGraphOrigin("dashboard-view");
+      const back = document.getElementById("btn-graph-back");
+      if (back) back.textContent = t("btn_back_to_dashboard");
       switchView("graph-view");
     });
   }
 
-  // Graph back + refresh
+  // Graph back + refresh. Back returns to whichever view opened the graph.
   const backBtn = document.getElementById("btn-graph-back");
   if (backBtn) backBtn.addEventListener("click", () => {
+    const origin = graphReturnOrigin();
     disposeGraph();
-    switchView("dashboard-view");
-    loadDashboard();
+    switchView(origin);
+    if (origin === "dashboard-view") loadDashboard();
   });
 
   const refreshBtn = document.getElementById("btn-graph-refresh");

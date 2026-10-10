@@ -879,7 +879,17 @@ export async function generateTokenSlug(
 export async function listPersonalCards(
   db: Database,
   userId: string,
-  options?: { query?: string; domain?: string; knowledgeContext?: string },
+  options?: {
+    query?: string;
+    domain?: string;
+    knowledgeContext?: string;
+    /**
+     * Restrict to published tokens. Unset, the list is every non-deprecated
+     * token this learner has a card for, drafts included (ADR 2026-10-10
+     * Decision 2). Callers that existed before that decision leave it unset.
+     */
+    publishedOnly?: boolean;
+  },
 ): Promise<PersonalCard[]> {
   let sql = `
     SELECT 
@@ -925,6 +935,10 @@ export async function listPersonalCards(
   `;
 
   const values: unknown[] = [userId];
+
+  if (options?.publishedOnly) {
+    sql += " AND t.editorial_state = 'published'";
+  }
 
   if (options?.domain) {
     sql += " AND t.domain = ?";

@@ -27,6 +27,20 @@ const packageRoot =
   ].find((candidate) => existsSync(join(candidate, "package.json"))) ??
   fileURLToPath(new URL("../..", import.meta.url));
 
+/**
+ * True when `candidate` is the package root that ships the ZAM skill.
+ * Compared by real path, so a symlink to that root counts. A missing path
+ * or a different clone does not (ADR 2026-10-10, Decision 8).
+ */
+export function isSkillSource(candidate: string): boolean {
+  if (!candidate.trim()) return false;
+  try {
+    return realpathSync(candidate) === realpathSync(packageRoot);
+  } catch {
+    return false;
+  }
+}
+
 export type SetupAgent = "claude" | "copilot" | "codex" | "agent";
 
 const ALL_SETUP_AGENTS: SetupAgent[] = ["claude", "copilot", "codex", "agent"];

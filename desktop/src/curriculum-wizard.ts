@@ -10,13 +10,12 @@
  * personal-source-confirm-import). Cards store `provider` + `topic_id`.
  */
 import { runBridge } from "./bridge-transport.js";
-import { openUrl } from "@tauri-apps/plugin-opener";
 import {
   areAllCurriculumPreviewItemsSelected,
-  buildCurriculumCategoryPath,
   type BundledCellOffer,
-  coveringCellsFromResponse,
+  buildCurriculumCategoryPath,
   CurriculumWizardSession,
+  coveringCellsFromResponse,
   resetCurriculumWizardTransientUi,
   setCurriculumPreviewSelection,
 } from "./curriculum-wizard-session.js";
@@ -169,7 +168,10 @@ let progressDetailEl: HTMLElement;
 let btnBack: HTMLButtonElement;
 let btnNext: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
-let btnOpen: HTMLButtonElement;
+/** True while Lehrplan is the open Quelle, so closing a walk starts again. */
+let keepHosted = false;
+/** Generation of the visit currently drawing. Older visits must not render. */
+let shownGeneration = 0;
 
 // Wizard state
 let providers: CurriculumProviderInfo[] = [];
@@ -190,9 +192,19 @@ let selection: {
  * the link (message-only, the pre-Phase-9 behavior).
  */
 let openModelSetup: (() => void) | null = null;
+/**
+ * Desktop opens an official alternative in the system browser. The Studio
+ * panel has no Tauri opener, so this stays unset there. The wizard itself
+ * must not import a desktop-only module: the panel hosts the same steps.
+ */
+let openExternalUrl: ((url: string) => void) | null = null;
 
 export function setCurriculumWizardModelSetup(action: () => void): void {
   openModelSetup = action;
+}
+
+export function setCurriculumWizardOpener(opener: (url: string) => void): void {
+  openExternalUrl = opener;
 }
 
 export function initCurriculumWizard(): void {
@@ -229,11 +241,7 @@ export function initCurriculumWizard(): void {
   btnCancel = document.getElementById(
     "btn-curriculum-wizard-cancel",
   ) as HTMLButtonElement;
-  btnOpen = document.getElementById(
-    "btn-content-curriculum-wizard",
-  ) as HTMLButtonElement;
 
-  btnOpen?.addEventListener("click", () => showCurriculumWizard());
   btnCancel.addEventListener("click", () => hideCurriculumWizard());
   btnBack.addEventListener("click", () => void handleBack());
   btnNext.addEventListener("click", () => void handleNext());
@@ -245,8 +253,24 @@ function isWizardStale(generation: number): boolean {
   return wizardSession.isStale(generation);
 }
 
+/** Show the browser inside the Lehrplan Quelle. A second call does not reset. */
+export async function openCurriculumBrowser(): Promise<void> {
+  if (!overlay) return;
+  keepHosted = true;
+  if (overlay.classList.contains("active")) return;
+  await showCurriculumWizard();
+}
+
+/** Leave the browser when the learner picks a different Quelle. */
+export function closeCurriculumBrowser(): void {
+  keepHosted = false;
+  if (!overlay) return;
+  hideCurriculumWizard();
+}
+
 async function showCurriculumWizard(): Promise<void> {
-  wizardSession.begin();
+  shownGeneration = wizardSession.begin();
+  const generation = shownGeneration;
   resetTransientUi();
   history = [];
   chosenCountry = undefined;
@@ -283,11 +307,13 @@ async function showCurriculumWizard(): Promise<void> {
         console.warn("Could not prefill wizard contexts", e);
       }
     }
+    if (isWizardStale(generation)) return;
     if (providers.length === 0) {
       const res = await runBridge<{
         success: boolean;
         providers: CurriculumProviderInfo[];
       }>("curriculum-list-providers");
+      if (isWizardStale(generation)) return;
       providers = res.providers ?? [];
     }
 
@@ -295,6 +321,7 @@ async function showCurriculumWizard(): Promise<void> {
       success: boolean;
       breadcrumb: CurriculumBreadcrumb | null;
     }>("curriculum-get-last-selection");
+    if (isWizardStale(generation)) return;
 
     if (
       lastRes.breadcrumb &&
@@ -303,21 +330,26 @@ async function showCurriculumWizard(): Promise<void> {
       await showResumeOffer(lastRes.breadcrumb);
     } else {
       await advanceToNextStep();
+      if (isWizardStale(generation)) return;
       render();
     }
   } catch (err) {
+    if (isWizardStale(generation)) return;
     showStepError(describeError(err));
   } finally {
-    showLoading(false);
+    if (!isWizardStale(generation)) showLoading(false);
   }
 }
 
 function hideCurriculumWizard(): void {
+  const restart = keepHosted;
   wizardSession.invalidate();
   resetTransientUi();
   importTopicQueue = [];
   importTopicIndex = 0;
+  showLoading(false);
   overlay.classList.remove("active");
+  if (restart) void showCurriculumWizard();
 }
 
 // ── Resume banner ────────────────────────────────────────────────────────
@@ -325,6 +357,7 @@ function hideCurriculumWizard(): void {
 async function showResumeOffer(
   breadcrumb: CurriculumBreadcrumb,
 ): Promise<void> {
+  const generation = shownGeneration;
   const provider = providers.find((p) => p.id === breadcrumb.providerId)!;
   const labels: string[] = [provider.countryLabel, provider.regionLabel];
 
@@ -345,12 +378,14 @@ async function showResumeOffer(
     labels.push(match.label);
     sel = { ...sel, [step.key]: step.id };
   }
+  if (wizardSession.isStale(generation)) return;
 
   resumeText.textContent = `${t("wizard_resume_prompt")} ${labels.join(" › ")}`;
   resumeBanner.classList.remove("hidden");
   resumeBanner.dataset.breadcrumb = JSON.stringify(breadcrumb);
 
   await advanceToNextStep();
+  if (wizardSession.isStale(generation)) return;
   render();
 }
 
@@ -560,7 +595,7 @@ function recomputeSelectionFromHistory(): void {
 
 async function handleBack(): Promise<void> {
   if (history.length <= 1) {
-    hideCurriculumWizard();
+    if (!keepHosted) hideCurriculumWizard();
     return;
   }
   history.pop();
@@ -843,7 +878,8 @@ function renderStepBody(step: WizardStep): void {
       sourceButton.textContent = t("wizard_open_alternative_source");
       sourceButton.addEventListener("click", (event) => {
         event.stopPropagation();
-        void openUrl(opt.sourceUris![0]);
+        const url = opt.sourceUris?.[0];
+        if (url && openExternalUrl) openExternalUrl(url);
       });
       stepBodyEl.appendChild(sourceButton);
     }
@@ -887,7 +923,7 @@ function showStepError(message: string): void {
     link.className = "btn secondary-btn btn-sm wizard-error-model-link";
     link.textContent = t("wizard_connect_model_link");
     link.addEventListener("click", () => {
-      hideCurriculumWizard();
+      closeCurriculumBrowser();
       openModelSetup?.();
     });
     errorEl.appendChild(link);

@@ -7,9 +7,9 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { Command } from "commander";
 import { ulid } from "ulid";
 import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
@@ -65,6 +65,7 @@ import {
   generateTokenSlug,
   getActiveWorkspace,
   getActiveWorkspaceContext,
+  getActiveWorkspaceId,
   getAgentConnectAutoDone,
   getAgentSkill,
   getCard,
@@ -75,6 +76,7 @@ import {
   getDueSummary,
   getKnowledgeContextByName,
   getKnowledgeMapConfig,
+  getLearningContentSource,
   getMachineVoicePreference,
   getObservationRetentionDays,
   getOnboardingDone,
@@ -113,6 +115,8 @@ import {
   listProviderApiKeyRefs,
   listSessionDigestIds,
   listTokens,
+  listUnchosenGroups,
+  listUnchosenMembers,
   listUserCardsForCurriculumTopic,
   loadStoredCredentials,
   type ModelCapability,
@@ -129,6 +133,7 @@ import {
   redactCommand,
   removeTrustedFolder,
   resolveCredentials,
+  resolveLearningContentSelection,
   resolveObserverPolicy,
   restorePreviousLibrary,
   scheduleObservationSweeps,
@@ -139,6 +144,7 @@ import {
   setAgentConnectAutoDone,
   setBitwardenVaultEnabled,
   setKnowledgeMapConfig,
+  setLearningContentSource,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
@@ -358,6 +364,7 @@ import {
   ensureWorkspaceStructure,
   inspectSkillLinks,
   inspectWorkspaceStructure,
+  isSkillSource,
   parseSetupAgents,
   type SkillLinkHealth,
   type SkillLinkState,
@@ -6058,6 +6065,10 @@ bridgeCommand
   .option("--query <query>", "Text search query")
   .option("--domain <domain>", "Filter by category/domain")
   .option("--knowledge-context <context>", "Filter by knowledge context")
+  .option(
+    "--published-only",
+    "Only published tokens. Without this flag, drafts the learner holds stay in the list",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6065,6 +6076,7 @@ bridgeCommand
         query: opts.query,
         domain: opts.domain,
         knowledgeContext: opts.knowledgeContext,
+        ...(opts.publishedOnly ? { publishedOnly: true } : {}),
       });
       const contextMap = new Map<
         string,
@@ -6102,6 +6114,75 @@ bridgeCommand
           ...card,
           knowledgeContexts: contextMap.get(card.tokenId) ?? [],
         })),
+      });
+    });
+  });
+
+// ── zam bridge unchosen-groups / unchosen-members ──────────────────────────
+
+bridgeCommand
+  .command("unchosen-groups")
+  .description(
+    "List published tokens this learner has not taken, grouped by source (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({ groups: await listUnchosenGroups(db, userId) });
+    });
+  });
+
+bridgeCommand
+  .command("unchosen-members")
+  .description(
+    "List one group of published tokens this learner has not taken (JSON). An empty --key is the group with no source link",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--key <key>",
+    "Group key from unchosen-groups. An empty string is the group with no source link",
+  )
+  .action(async (opts) => {
+    // Absent is an error. An empty string is the no-source group and must
+    // not be treated as missing (ADR 2026-10-10).
+    const key = opts.key;
+    if (typeof key !== "string") {
+      jsonError("--key is required");
+    }
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({ members: await listUnchosenMembers(db, userId, key) });
+    });
+  });
+
+// One card for one published token the learner has not taken (ADR 2026-10-10).
+// startLibraryTopic covers a whole source group. This is ensureCard for a
+// single slug: no new token, no rating, and drafts stay unpublished.
+bridgeCommand
+  .command("personal-card-ensure")
+  .description(
+    "Create this learner's card for one existing published token (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Published token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token || token.deprecated_at) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+      if (token.editorial_state !== "published") {
+        jsonError("Only a published token can be taken");
+      }
+      const existing = await getCard(db, token.id, userId);
+      const card = await ensureCard(db, token.id, userId);
+      jsonOut({
+        success: true,
+        slug: token.slug,
+        cardId: card.id,
+        created: !existing,
       });
     });
   });
@@ -9126,6 +9207,197 @@ bridgeCommand
       }
     });
   });
+
+// ── Quelle for Lerninhalte — ADR 2026-10-10 Decision 4 ────────────────────
+// Reads the workspace registry and writes learningContent only. It does not
+// repair a workspace, provision skills, or change knowledgeMap.repoPath.
+
+function workspaceSourceLabel(workspace: WorkspaceConfig): string {
+  const label = workspace.label?.trim();
+  if (label) return label;
+  return basename(workspace.path) || workspace.path;
+}
+
+function directoryMissing(path: string): boolean {
+  try {
+    return !statSync(path).isDirectory();
+  } catch {
+    return true;
+  }
+}
+
+function presentLearningContentSource(): {
+  success: true;
+  stored: ReturnType<typeof getLearningContentSource>;
+  selection:
+    | {
+        kind: "workspace";
+        id: string;
+        label: string;
+        path: string;
+        missing: boolean;
+        skillSource: boolean;
+      }
+    | { kind: "folder"; path: string; missing: boolean; skillSource: boolean }
+    | { kind: "curriculum" }
+    | null;
+  workspaces: Array<{
+    id: string;
+    label: string;
+    path: string;
+    skillSource: boolean;
+  }>;
+  activeWorkspaceId: string | null;
+} {
+  const stored = getLearningContentSource();
+  const workspaces = getConfiguredWorkspaces();
+  const activeWorkspaceId = getActiveWorkspaceId() ?? null;
+  const resolved = resolveLearningContentSelection(
+    stored,
+    workspaces,
+    activeWorkspaceId ?? undefined,
+  );
+  const listed = workspaces.map((workspace) => ({
+    id: workspace.id,
+    label: workspaceSourceLabel(workspace),
+    path: workspace.path,
+    skillSource: isSkillSource(workspace.path),
+  }));
+  if (!resolved) {
+    return {
+      success: true,
+      stored,
+      selection: null,
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  if (resolved.kind === "curriculum") {
+    return {
+      success: true,
+      stored,
+      selection: { kind: "curriculum" },
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  if (resolved.kind === "folder") {
+    return {
+      success: true,
+      stored,
+      selection: {
+        kind: "folder",
+        path: resolved.path,
+        missing: directoryMissing(resolved.path),
+        skillSource: isSkillSource(resolved.path),
+      },
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  const workspace = workspaces.find((item) => item.id === resolved.id);
+  return {
+    success: true,
+    stored,
+    selection: {
+      kind: "workspace",
+      id: resolved.id,
+      label: workspace ? workspaceSourceLabel(workspace) : resolved.id,
+      path: workspace?.path ?? "",
+      missing: workspace ? directoryMissing(workspace.path) : true,
+      skillSource: workspace ? isSkillSource(workspace.path) : false,
+    },
+    workspaces: listed,
+    activeWorkspaceId,
+  };
+}
+
+bridgeCommand
+  .command("learning-content-source")
+  .description(
+    "Read or set the Quelle Lerninhalte shows. Machine-local presentation state only (JSON)",
+  )
+  .option("--kind <kind>", "workspace, folder, or curriculum")
+  .option("--id <id>", "Workspace id, when --kind is workspace")
+  .option("--path <path>", "Folder path, when --kind is folder")
+  .action((opts: { kind?: string; id?: string; path?: string }) => {
+    if (opts.kind === undefined) {
+      jsonOut(presentLearningContentSource());
+      return;
+    }
+    const kind = String(opts.kind);
+    try {
+      if (kind === "workspace") {
+        const id = typeof opts.id === "string" ? opts.id.trim() : "";
+        if (!id) jsonError("A workspace id is required");
+        setLearningContentSource({ kind: "workspace", id });
+      } else if (kind === "folder") {
+        const folder = typeof opts.path === "string" ? opts.path.trim() : "";
+        if (!folder) jsonError("A folder path is required");
+        setLearningContentSource({ kind: "folder", path: resolve(folder) });
+      } else if (kind === "curriculum") {
+        setLearningContentSource({ kind: "curriculum" });
+      } else {
+        jsonError("Kind must be workspace, folder, or curriculum");
+      }
+    } catch (err: unknown) {
+      jsonError(err instanceof Error ? err.message : String(err));
+    }
+    jsonOut(presentLearningContentSource());
+  });
+
+bridgeCommand
+  .command("learning-content-browse")
+  .description(
+    "Read a Quelle's OKF articles, or one file that stays inside that root (JSON)",
+  )
+  .option("--repo <path>", "Repository root")
+  .option("--target <path>", "Article name or path inside the repository")
+  .action(async (opts: { repo?: string; target?: string }) => {
+    const repo = typeof opts.repo === "string" ? opts.repo.trim() : "";
+    if (!repo) jsonError("A repository path is required");
+    const { catalogSource, readSourceFile } = await import(
+      "../learning-content/browse.js"
+    );
+    if (opts.target === undefined) {
+      jsonOut({ success: true, ...catalogSource(repo) });
+      return;
+    }
+    jsonOut({ success: true, ...readSourceFile(repo, String(opts.target)) });
+  });
+
+bridgeCommand
+  .command("learning-content-workspace")
+  .description(
+    "Read a configured workspace's OKF articles or its validated knowledge map, by id. The Studio panel's Quelle read (JSON)",
+  )
+  .requiredOption("--workspace <id>", "Configured workspace id")
+  .option("--target <path>", "OKF article name or path inside docs/okf")
+  .option("--map", "Return the validated knowledge map instead")
+  .action(
+    async (opts: { workspace: string; target?: string; map?: boolean }) => {
+      const {
+        catalogSource,
+        loadWorkspaceMap,
+        readWorkspaceArticle,
+        workspaceRoot,
+      } = await import("../learning-content/browse.js");
+      const repo = workspaceRoot(String(opts.workspace));
+      if (!repo) jsonError("No configured workspace has that id");
+      if (opts.map) {
+        jsonOut({ success: true, repo, ...loadWorkspaceMap(repo) });
+        return;
+      }
+      if (opts.target === undefined) {
+        jsonOut({ success: true, ...catalogSource(repo) });
+        return;
+      }
+      jsonOut({
+        success: true,
+        ...readWorkspaceArticle(repo, String(opts.target)),
+      });
+    },
+  );
 
 // ── Knowledge map alpha for Studio — ADR 2026-10-03 ───────────────────────
 
