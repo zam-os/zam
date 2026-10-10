@@ -62,6 +62,8 @@ const REVIEWED = [
   "setting-set",
   "study-learning-get",
   "study-learning-set",
+  "unchosen-groups",
+  "unchosen-members",
   "update-check",
   "workspace-list",
   "workspace-repair-links",

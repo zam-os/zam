@@ -113,6 +113,8 @@ import {
   listProviderApiKeyRefs,
   listSessionDigestIds,
   listTokens,
+  listUnchosenGroups,
+  listUnchosenMembers,
   listUserCardsForCurriculumTopic,
   loadStoredCredentials,
   type ModelCapability,
@@ -6058,6 +6060,10 @@ bridgeCommand
   .option("--query <query>", "Text search query")
   .option("--domain <domain>", "Filter by category/domain")
   .option("--knowledge-context <context>", "Filter by knowledge context")
+  .option(
+    "--published-only",
+    "Only published tokens. Without this flag, drafts the learner holds stay in the list",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -6065,6 +6071,7 @@ bridgeCommand
         query: opts.query,
         domain: opts.domain,
         knowledgeContext: opts.knowledgeContext,
+        ...(opts.publishedOnly ? { publishedOnly: true } : {}),
       });
       const contextMap = new Map<
         string,
@@ -6103,6 +6110,44 @@ bridgeCommand
           knowledgeContexts: contextMap.get(card.tokenId) ?? [],
         })),
       });
+    });
+  });
+
+// ── zam bridge unchosen-groups / unchosen-members ──────────────────────────
+
+bridgeCommand
+  .command("unchosen-groups")
+  .description(
+    "List published tokens this learner has not taken, grouped by source (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({ groups: await listUnchosenGroups(db, userId) });
+    });
+  });
+
+bridgeCommand
+  .command("unchosen-members")
+  .description(
+    "List one group of published tokens this learner has not taken (JSON). An empty --key is the group with no source link",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--key <key>",
+    "Group key from unchosen-groups. An empty string is the group with no source link",
+  )
+  .action(async (opts) => {
+    // Absent is an error. An empty string is the no-source group and must
+    // not be treated as missing (ADR 2026-10-10).
+    const key = opts.key;
+    if (typeof key !== "string") {
+      jsonError("--key is required");
+    }
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      jsonOut({ members: await listUnchosenMembers(db, userId, key) });
     });
   });
 
