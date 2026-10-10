@@ -211,11 +211,11 @@ A plan follows the review. The intended order:
 
 ## Open questions for review
 
-1. **Bitwarden lifetime.** Is seven days the right default, and is OS-protected storage mandatory for remembering the session at all?
-2. **Synced keys.** Should "use on my other devices" stay on by default for personal libraries?
+1. **Bitwarden lifetime.** Is seven days the right default, and is OS-protected storage mandatory for remembering the session at all? **Decided 2026-10-10 (owner):** seven days, and only in OS-protected storage; without it the session is not remembered.
+2. **Synced keys.** Should "use on my other devices" stay on by default for personal libraries? **Decided 2026-10-10 (owner):** yes, on by default; multi-learner libraries never carry keys.
 3. **Self-heal.** ADR 2026-07-07 chose full automatic healing. Is requiring an explicit `developer` channel an acceptable narrowing?
-4. **Pre-approval list.** Which tools belong on D4's reviewed list?
-5. **Source-link extensions.** Which text extensions does D1 accept, and is a configuration file type such as `.json` on the list?
+4. **Pre-approval list.** Which tools belong on D4's reviewed list? **Decided 2026-10-10 (owner):** `zam_status`, `zam_get_reviews`, `zam_find_tokens` and `zam_progress_stats`.
+5. **Source-link extensions.** Which text extensions does D1 accept, and is a configuration file type such as `.json` on the list? **Decided 2026-10-10 (owner):** Markdown and plain text, common source-code extensions, and configuration files including `.json`, `.yaml`, `.yml` and `.toml`. Images are never read as text.
 6. **Policy file names.** `ZAM` or `zam` as the directory name on Windows and macOS, and is a per-user policy layer needed below the machine policy?
 7. **Legal.** The companion ADR's legal question (monitoring of employees and minors) applies wherever an organisation deploys ZAM. This ADR does not assess compliance either.
 
