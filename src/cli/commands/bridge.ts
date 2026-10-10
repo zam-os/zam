@@ -9366,6 +9366,39 @@ bridgeCommand
     jsonOut({ success: true, ...readSourceFile(repo, String(opts.target)) });
   });
 
+bridgeCommand
+  .command("learning-content-workspace")
+  .description(
+    "Read a configured workspace's OKF articles or its validated knowledge map, by id. The Studio panel's Quelle read (JSON)",
+  )
+  .requiredOption("--workspace <id>", "Configured workspace id")
+  .option("--target <path>", "OKF article name or path inside docs/okf")
+  .option("--map", "Return the validated knowledge map instead")
+  .action(
+    async (opts: { workspace: string; target?: string; map?: boolean }) => {
+      const {
+        catalogSource,
+        loadWorkspaceMap,
+        readWorkspaceArticle,
+        workspaceRoot,
+      } = await import("../learning-content/browse.js");
+      const repo = workspaceRoot(String(opts.workspace));
+      if (!repo) jsonError("No configured workspace has that id");
+      if (opts.map) {
+        jsonOut({ success: true, repo, ...loadWorkspaceMap(repo) });
+        return;
+      }
+      if (opts.target === undefined) {
+        jsonOut({ success: true, ...catalogSource(repo) });
+        return;
+      }
+      jsonOut({
+        success: true,
+        ...readWorkspaceArticle(repo, String(opts.target)),
+      });
+    },
+  );
+
 // ── Knowledge map alpha for Studio — ADR 2026-10-03 ───────────────────────
 
 bridgeCommand

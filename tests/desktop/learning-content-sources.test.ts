@@ -45,7 +45,7 @@ describe("learning content sources shell", () => {
     );
   });
 
-  it("puts the Quelle controls in both shells and hosts the curriculum browser", () => {
+  it("puts the Quelle controls in both shells and the curriculum browser only in the Desktop window", () => {
     const desktop = read("desktop/index.html");
     const panel = read("desktop/src/panel/studio-panel.html");
     for (const id of [
@@ -57,12 +57,18 @@ describe("learning content sources shell", () => {
       "content-sources-map",
       "content-sources-okf-list",
       "content-sources-reader-body",
+    ]) {
+      expect(desktop, id).toContain(`id="${id}"`);
+      expect(panel, id).toContain(`id="${id}"`);
+    }
+    // Decision 11: no curriculum command reaches the Studio panel.
+    for (const id of [
       "content-sources-curriculum",
       "curriculum-wizard-step-body",
       "btn-curriculum-wizard-next",
     ]) {
       expect(desktop, id).toContain(`id="${id}"`);
-      expect(panel, id).toContain(`id="${id}"`);
+      expect(panel, id).not.toContain(`id="${id}"`);
     }
     expect(desktop).not.toContain("btn-content-curriculum-wizard");
     expect(panel).not.toContain("btn-content-curriculum-wizard");
@@ -89,9 +95,16 @@ describe("learning content sources shell", () => {
     expect(main).toContain("setLearningContentCurriculumHost");
     expect(main).toContain("openLearningContentCurriculum");
     expect(main).not.toContain("btn-content-curriculum-wizard");
-    expect(read("desktop/src/panel/panel.ts")).toContain(
-      "setLearningContentCurriculumHost",
-    );
+    const panelEntry = read("desktop/src/panel/panel.ts");
+    expect(panelEntry).not.toContain("setLearningContentCurriculumHost");
+    expect(panelEntry).not.toContain("curriculum-wizard");
+    expect(panelEntry).not.toContain("setLearningContentFolderPicker");
+    expect(source).toContain('t("content_source_desktop_only")');
+
+    // The panel reads a workspace by id; only the Desktop window reads by path.
+    const knowledge = read("desktop/src/learning-content-knowledge.ts");
+    expect(knowledge).toContain('"learning-content-workspace"');
+    expect(knowledge).toContain('"--workspace"');
   });
 
   it("skips the example map for the skill source and does not open an outside citation", () => {
@@ -148,7 +161,12 @@ describe("learning content sources shell", () => {
     const mount = studio.slice(
       studio.indexOf("export async function mountSourceKnowledgeMap"),
     );
-    expect(mount).toContain('["--repo", options.repo]');
+    // The mount reads through the Quelle's loader: by path in the Desktop
+    // window, by workspace id on the Studio panel (D11).
+    expect(mount).toContain("options.loadMap()");
+    expect(mount).not.toContain('runBridge<MapResponse>("knowledge-map"');
+    expect(knowledge).toContain('"knowledge-map", ["--repo", repo]');
+    expect(knowledge).toContain('[...workspace, "--map"]');
     expect(mount).not.toContain("pickFolder");
     expect(mount).not.toContain('knowledge-map-feature", ["--repo"');
     expect(mount).toContain('if (plan.draw === "example")');

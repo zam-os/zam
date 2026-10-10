@@ -48,6 +48,9 @@ interface MapResponse {
   issues: MapIssue[];
 }
 
+/** What a Quelle's map read returns, by path or by workspace id. */
+export type SourceMapResponse = MapResponse;
+
 interface FeedbackListResponse {
   entries: unknown[];
 }
@@ -196,7 +199,8 @@ export async function openKnowledgeMapView(
 }
 
 export interface SourceMapMount {
-  repo: string;
+  /** Reads this Quelle's map: by path in the Desktop window, by id on the panel. */
+  loadMap(): Promise<MapResponse>;
   /** When true, a missing or invalid map is not replaced by the example. */
   skillSource: boolean;
   /** Called with the repository-relative source path. Must not open the OS. */
@@ -232,8 +236,9 @@ function skillSourceNotice(loaded: MapResponse): string {
 }
 
 /**
- * Draw one Quelle's map into `container`. Reads `knowledge-map --repo` and
- * the view chosen in Settings. Does not set `knowledgeMap.repoPath`.
+ * Draw one Quelle's map into `container`. Reads the map through
+ * `options.loadMap` and the view chosen in Settings. Does not set
+ * `knowledgeMap.repoPath`.
  */
 export async function mountSourceKnowledgeMap(
   container: HTMLElement,
@@ -243,7 +248,7 @@ export async function mountSourceKnowledgeMap(
   try {
     const [feature, loaded] = await Promise.all([
       runBridge<FeatureResponse>("knowledge-map-feature"),
-      runBridge<MapResponse>("knowledge-map", ["--repo", options.repo]),
+      options.loadMap(),
     ]);
     if (!options.isCurrent()) return;
     sourceShell?.destroy();

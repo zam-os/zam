@@ -8,6 +8,11 @@
  * outside the Quelle is refused, and the operating system is not asked to
  * open it. This module does not repair a workspace, upsert an article, or
  * write a knowledge map.
+ *
+ * Two ways in (Decision 11). The Desktop window reads a Quelle by path and
+ * may show any cited file inside it. The Studio panel names a workspace by
+ * id and reads only its OKF articles and its map; anything else is the
+ * sentence that it opens in ZAM Desktop.
  */
 
 import { citationTarget } from "../../src/cli/learning-content/citation.js";
@@ -30,10 +35,53 @@ interface CatalogResponse {
 
 interface ReadResponse {
   opened: boolean;
-  reason?: "outside" | "missing";
+  reason?: "outside" | "missing" | "desktop";
   kind?: "okf" | "text";
   path?: string;
   body?: string;
+}
+
+// A type query, not an import: the map module stays lazy (ADR 2026-10-03).
+type SourceMapResponse = import("./knowledge-map/studio.js").SourceMapResponse;
+
+/** One Quelle the page shows: a configured workspace, or a picked folder. */
+export type SourceRef =
+  | { kind: "workspace"; id: string; path: string }
+  | { kind: "folder"; path: string };
+
+/** The three reads a Quelle needs, by path or by workspace id. */
+interface SourceAccess {
+  catalog(): Promise<CatalogResponse>;
+  read(target: string): Promise<ReadResponse>;
+  map(): Promise<SourceMapResponse>;
+}
+
+function sourceAccess(source: SourceRef, byPath: boolean): SourceAccess {
+  if (byPath || source.kind === "folder") {
+    const repo = source.path;
+    return {
+      catalog: () => runBridge("learning-content-browse", ["--repo", repo]),
+      read: (target) =>
+        runBridge("learning-content-browse", [
+          "--repo",
+          repo,
+          "--target",
+          target,
+        ]),
+      map: () => runBridge("knowledge-map", ["--repo", repo]),
+    };
+  }
+  const workspace = ["--workspace", source.id];
+  return {
+    catalog: () => runBridge("learning-content-workspace", workspace),
+    read: (target) =>
+      runBridge("learning-content-workspace", [
+        ...workspace,
+        "--target",
+        target,
+      ]),
+    map: () => runBridge("learning-content-workspace", [...workspace, "--map"]),
+  };
 }
 
 let generation = 0;
@@ -74,37 +122,45 @@ export function clearSourceKnowledge(): void {
   });
 }
 
-export function showSourceKnowledge(repo: string, skillSource: boolean): void {
+/**
+ * Show one Quelle. `byPath` is true in the Desktop window only; the Studio
+ * panel passes false and must give a workspace (Decision 11).
+ */
+export function showSourceKnowledge(
+  source: SourceRef,
+  skillSource: boolean,
+  byPath: boolean,
+): void {
   const token = ++generation;
   setHidden("content-sources-body", false);
   applySourceKnowledgeChrome();
   const reader = document.getElementById("content-sources-reader-body");
   if (reader) reader.textContent = t("content_source_reader_empty");
-  void loadSource(repo, skillSource, token);
+  void loadSource(sourceAccess(source, byPath), skillSource, token);
 }
 
 async function loadSource(
-  repo: string,
+  access: SourceAccess,
   skillSource: boolean,
   token: number,
 ): Promise<void> {
   try {
     const [feature, catalog] = await Promise.all([
       runBridge<FeatureResponse>("knowledge-map-feature"),
-      runBridge<CatalogResponse>("learning-content-browse", ["--repo", repo]),
+      access.catalog(),
     ]);
     if (token !== generation) return;
-    renderArticles(repo, catalog, token);
+    renderArticles(access, catalog, token);
     if (feature.enabled !== true) {
       if (studioLoaded) {
         const studio = await import("./knowledge-map/studio.js");
         if (token !== generation) return;
         studio.clearSourceKnowledgeMap();
       }
-      renderEnableButton(repo, skillSource, token);
+      renderEnableButton(access, skillSource, token);
       return;
     }
-    await mountMap(repo, skillSource, token);
+    await mountMap(access, skillSource, token);
   } catch (err: unknown) {
     if (token !== generation) return;
     alert(tf("content_source_browse_error", { message: messageOf(err) }));
@@ -112,7 +168,7 @@ async function loadSource(
 }
 
 function renderArticles(
-  repo: string,
+  access: SourceAccess,
   catalog: CatalogResponse,
   token: number,
 ): void {
@@ -133,7 +189,7 @@ function renderArticles(
     button.className = "content-sources-article";
     button.textContent = article.title || article.file;
     button.addEventListener("click", () => {
-      void openReader(repo, article.file, token);
+      void openReader(access, article.file, token);
     });
     item.append(button);
     list.append(item);
@@ -141,7 +197,7 @@ function renderArticles(
 }
 
 function renderEnableButton(
-  repo: string,
+  access: SourceAccess,
   skillSource: boolean,
   token: number,
 ): void {
@@ -154,13 +210,13 @@ function renderEnableButton(
   button.className = "btn secondary-btn btn-sm";
   button.textContent = t("btn_content_source_map");
   button.addEventListener("click", () => {
-    void enableMap(repo, skillSource, token);
+    void enableMap(access, skillSource, token);
   });
   host.append(button);
 }
 
 async function enableMap(
-  repo: string,
+  access: SourceAccess,
   skillSource: boolean,
   token: number,
 ): Promise<void> {
@@ -168,7 +224,7 @@ async function enableMap(
   try {
     await runBridge("knowledge-map-feature", ["--enable"]);
     if (token !== generation) return;
-    await mountMap(repo, skillSource, token);
+    await mountMap(access, skillSource, token);
   } catch (err: unknown) {
     if (token !== generation) return;
     alert(tf("content_source_browse_error", { message: messageOf(err) }));
@@ -176,7 +232,7 @@ async function enableMap(
 }
 
 async function mountMap(
-  repo: string,
+  access: SourceAccess,
   skillSource: boolean,
   token: number,
 ): Promise<void> {
@@ -191,10 +247,10 @@ async function mountMap(
   loading.textContent = t("km_loading");
   host.append(loading);
   await studio.mountSourceKnowledgeMap(host, {
-    repo,
+    loadMap: () => access.map(),
     skillSource,
     openSource: (url) => {
-      void openReader(repo, url, token);
+      void openReader(access, url, token);
     },
     isCurrent: () => token === generation,
   });
@@ -202,7 +258,7 @@ async function mountMap(
 
 function bindReaderClicks(
   article: HTMLElement,
-  repo: string,
+  access: SourceAccess,
   token: number,
 ): void {
   const open = (event: Event) => {
@@ -213,12 +269,12 @@ function bindReaderClicks(
     event.preventDefault();
     const articleName = link.getAttribute("data-okf-article");
     if (articleName) {
-      void openReader(repo, articleName, token);
+      void openReader(access, articleName, token);
       return;
     }
     const cited = link.getAttribute("data-okf-citation");
     if (cited) {
-      void openReader(repo, cited, token);
+      void openReader(access, cited, token);
       return;
     }
     const body = document.getElementById("content-sources-reader-body");
@@ -229,7 +285,7 @@ function bindReaderClicks(
 }
 
 async function openReader(
-  repo: string,
+  access: SourceAccess,
   raw: string,
   token: number,
 ): Promise<void> {
@@ -241,18 +297,15 @@ async function openReader(
     return;
   }
   try {
-    const result = await runBridge<ReadResponse>("learning-content-browse", [
-      "--repo",
-      repo,
-      "--target",
-      target,
-    ]);
+    const result = await access.read(target);
     if (token !== generation) return;
     if (!result.opened) {
       body.textContent = t(
         result.reason === "missing"
           ? "content_source_reader_missing"
-          : "content_source_reader_refused",
+          : result.reason === "desktop"
+            ? "content_source_desktop_only"
+            : "content_source_reader_refused",
       );
       return;
     }
@@ -263,7 +316,7 @@ async function openReader(
       const article = document.createElement("div");
       article.className = "okf-article-body";
       article.innerHTML = renderMarkdown(stripFrontmatter(result.body ?? ""));
-      bindReaderClicks(article, repo, token);
+      bindReaderClicks(article, access, token);
       body.replaceChildren(heading, article);
       return;
     }

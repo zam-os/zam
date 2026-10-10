@@ -7,7 +7,13 @@
  */
 
 import { existsSync, readFileSync, realpathSync, statSync } from "node:fs";
-import { isAbsolute, relative, resolve, sep } from "node:path";
+import { isAbsolute, join, relative, resolve, sep } from "node:path";
+import { getConfiguredWorkspaces } from "../../kernel/index.js";
+import {
+  KNOWLEDGE_MAP_RELATIVE_PATH,
+  type LoadedKnowledgeMap,
+  loadKnowledgeMap,
+} from "../knowledge-map/load.js";
 import { isReservedFile } from "../okf/bundle.js";
 import { DEFAULT_BUNDLE_DIR, loadBundle } from "../okf/io.js";
 import { isSkillSource } from "../provisioning/index.js";
@@ -27,8 +33,11 @@ export interface SourceCatalog {
 
 export interface SourceRead {
   opened: boolean;
-  /** Set when nothing was opened. */
-  reason?: "outside" | "missing";
+  /**
+   * Set when nothing was opened. `desktop` means the Studio panel reads only
+   * a workspace's OKF articles; that file opens in the Desktop window.
+   */
+  reason?: "outside" | "missing" | "desktop";
   kind?: "okf" | "text";
   /** Repository-relative path, using `/` separators. */
   path?: string;
@@ -153,4 +162,96 @@ export function readSourceFile(repo: string, target: string): SourceRead {
     };
   }
   return { opened: false, reason: missing ? "missing" : "outside" };
+}
+
+// ── Studio panel: a workspace by id, its articles and its map (D11) ─────────
+
+/** The root of a configured workspace, or null for an unknown id. */
+export function workspaceRoot(id: string, configPath?: string): string | null {
+  const wanted = id.trim();
+  if (!wanted) return null;
+  const workspace = getConfiguredWorkspaces(configPath).find(
+    (entry) => entry.id === wanted,
+  );
+  return workspace ? resolve(workspace.path) : null;
+}
+
+/**
+ * Read one OKF article of `repo` and nothing else. A target outside
+ * `docs/okf` is not looked at, so the panel learns nothing about other
+ * files; it is reported as a Desktop action.
+ */
+export function readWorkspaceArticle(repo: string, target: string): SourceRead {
+  const spec = stripAnchor(target);
+  if (
+    !spec ||
+    spec.includes("://") ||
+    isAbsolute(spec) ||
+    /^[A-Za-z]:[\\/]/.test(spec)
+  ) {
+    return { opened: false, reason: "outside" };
+  }
+  const root = resolve(repo);
+  const bundleDir = resolve(root, DEFAULT_BUNDLE_DIR);
+  // Same candidates as readSourceFile, kept only while they lie in the bundle.
+  const bare = !spec.includes("/") && !spec.includes("\\");
+  const candidates = bare ? [resolve(bundleDir, spec)] : [resolve(root, spec)];
+  if (!bare && spec.split(/[\\/]/).includes("..")) {
+    candidates.push(resolve(bundleDir, spec));
+  }
+  const path = candidates.find((candidate) =>
+    pathInsideRoot(bundleDir, candidate),
+  );
+  if (!path) return { opened: false, reason: "desktop" };
+  let realRoot: string;
+  let realBundle: string;
+  try {
+    realRoot = realpathSync(root);
+    realBundle = realpathSync(bundleDir);
+  } catch {
+    return { opened: false, reason: "missing" };
+  }
+  if (!pathInsideRoot(realRoot, realBundle)) {
+    return { opened: false, reason: "outside" };
+  }
+  if (!existsSync(path)) {
+    // A bare name that is not an article may be a file at the root.
+    return { opened: false, reason: bare ? "desktop" : "missing" };
+  }
+  try {
+    if (!statSync(path).isFile()) return { opened: false, reason: "missing" };
+    const real = realpathSync(path);
+    if (!pathInsideRoot(realBundle, real) || !isOkfArticle(realRoot, real)) {
+      return { opened: false, reason: "outside" };
+    }
+    return {
+      opened: true,
+      kind: "okf",
+      path: relative(realRoot, real).split(sep).join("/"),
+      body: readFileSync(real, "utf8"),
+    };
+  } catch {
+    return { opened: false, reason: "outside" };
+  }
+}
+
+/**
+ * The workspace's knowledge map, validated. A `map.json` that resolves
+ * outside the workspace is treated as absent, so a parse error never
+ * echoes another file.
+ */
+export function loadWorkspaceMap(repo: string): LoadedKnowledgeMap {
+  const root = resolve(repo);
+  const path = join(root, KNOWLEDGE_MAP_RELATIVE_PATH);
+  try {
+    if (
+      existsSync(path) &&
+      !pathInsideRoot(realpathSync(root), realpathSync(path))
+    ) {
+      return { found: false, path, map: null, issues: [] };
+    }
+  } catch {
+    return { found: false, path, map: null, issues: [] };
+  }
+  return loadKnowledgeMap(root);
 }

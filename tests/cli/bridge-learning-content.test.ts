@@ -4,12 +4,17 @@ import {
   mkdtempSync,
   readFileSync,
   rmSync,
+  symlinkSync,
   writeFileSync,
 } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { STUDIO_BRIDGE_ALLOWED_COMMANDS } from "../../src/cli/commands/mcp.js";
+import {
+  refusedStudioBridgeOption,
+  STUDIO_BRIDGE_ALLOWED_COMMANDS,
+} from "../../src/cli/commands/mcp.js";
+import { upsertArticle } from "../../src/cli/okf/io.js";
 import {
   createToken,
   ensureCard,
@@ -145,7 +150,7 @@ describe("zam bridge learning-content lists", () => {
     expect(result.body.error).toContain("--key is required");
   });
 
-  it("allows the Studio panel to read the three lists", () => {
+  it("allows the Studio panel the lists and a workspace read, and nothing by path (D11)", () => {
     for (const command of [
       "personal-card-list",
       "list-drafts",
@@ -153,9 +158,15 @@ describe("zam bridge learning-content lists", () => {
       "unchosen-members",
       "personal-card-ensure",
       "learning-content-source",
+      "learning-content-workspace",
+      "knowledge-map-feature",
+    ]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(true);
+    }
+    for (const command of [
       "learning-content-browse",
       "knowledge-map",
-      "knowledge-map-feature",
+      "knowledge-map-feedback",
       "curriculum-list-providers",
       "curriculum-list-level",
       "curriculum-get-last-selection",
@@ -166,11 +177,114 @@ describe("zam bridge learning-content lists", () => {
       "curriculum-confirm-topic",
       "curriculum-confirm-batch",
     ]) {
-      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(true);
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
     }
-    expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has("knowledge-map-feedback")).toBe(
-      false,
+    expect(
+      refusedStudioBridgeOption("learning-content-source", ["--path", "/x"]),
+    ).toBe("--path");
+    expect(
+      refusedStudioBridgeOption("learning-content-source", ["--path=/x"]),
+    ).toBe("--path=/x");
+    expect(
+      refusedStudioBridgeOption("knowledge-map-feature", ["--repo", "/x"]),
+    ).toBe("--repo");
+    expect(
+      refusedStudioBridgeOption("knowledge-map-feature", ["--enable"]),
+    ).toBeUndefined();
+  });
+
+  it("reads a workspace by id: its articles and map, and no other file (D11)", () => {
+    const okf = join(tempCwd, "docs", "okf");
+    mkdirSync(okf, { recursive: true });
+    upsertArticle(
+      okf,
+      "hello.md",
+      [
+        "---",
+        "type: concept",
+        "title: Hello",
+        "description: A test article.",
+        "tags:",
+        "  - test",
+        'resource: "https://example.com/hello.md"',
+        "timestamp: 2026-10-10T00:00:00Z",
+        "---",
+        "",
+        "Hello body.",
+        "",
+      ].join("\n"),
     );
+    writeFileSync(join(tempCwd, ".env"), "SECRET=1");
+    mkdirSync(join(tempCwd, ".git"));
+    writeFileSync(join(tempCwd, ".git", "config"), "[core]");
+    const outsideDir = mkdtempSync(join(tmpdir(), "zam-outside-"));
+    writeFileSync(join(outsideDir, "secret.md"), "outside secret");
+    writeFileSync(join(outsideDir, "map.json"), "not json, outside secret");
+    symlinkSync(join(outsideDir, "secret.md"), join(okf, "linked.md"));
+    const workspace = [
+      "bridge",
+      "learning-content-workspace",
+      "--workspace",
+      "test-workspace",
+    ];
+
+    try {
+      const catalog = runCliJson(workspace);
+      expect(catalog.okf.found).toBe(true);
+      expect(
+        catalog.okf.articles.map((a: { file: string }) => a.file),
+      ).toContain("hello.md");
+
+      for (const target of ["hello.md", "docs/okf/hello.md"]) {
+        const read = runCliJson([...workspace, "--target", target]);
+        expect(read, target).toMatchObject({ opened: true, kind: "okf" });
+        expect(read.body).toContain("Hello body.");
+      }
+      for (const target of [
+        ".env",
+        ".git/config",
+        "docs/adr/x.md",
+        "../x.md",
+      ]) {
+        const read = runCliJson([...workspace, "--target", target]);
+        expect(read.opened, target).toBe(false);
+        expect(read.reason, target).toBe("desktop");
+        expect(read.body, target).toBeUndefined();
+      }
+      const linked = runCliJson([...workspace, "--target", "linked.md"]);
+      expect(linked).toMatchObject({ opened: false, reason: "outside" });
+      expect(JSON.stringify(linked)).not.toContain("outside secret");
+      const absolute = runCliJson([
+        ...workspace,
+        "--target",
+        join(tempCwd, ".env"),
+      ]);
+      expect(absolute).toMatchObject({ opened: false, reason: "outside" });
+
+      expect(runCliJson([...workspace, "--map"])).toMatchObject({
+        found: false,
+        map: null,
+      });
+      mkdirSync(join(tempCwd, "docs", "knowledge-map"), { recursive: true });
+      symlinkSync(
+        join(outsideDir, "map.json"),
+        join(tempCwd, "docs", "knowledge-map", "map.json"),
+      );
+      const map = runCliJson([...workspace, "--map"]);
+      expect(map).toMatchObject({ found: false, map: null, issues: [] });
+      expect(JSON.stringify(map)).not.toContain("outside secret");
+
+      const unknown = runCliError([
+        "bridge",
+        "learning-content-workspace",
+        "--workspace",
+        "missing",
+      ]);
+      expect(unknown.status).not.toBe(0);
+      expect(unknown.body.error).toContain("No configured workspace");
+    } finally {
+      rmSync(outsideDir, { recursive: true, force: true });
+    }
   });
 
   it("creates one card for a published token and refuses a draft", () => {

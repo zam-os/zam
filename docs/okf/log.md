@@ -2,6 +2,7 @@
 
 ## 2026-10-10
 
+- **Update** — [Learning Content](learning-content.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)
 - **Update** — [Learning Cards from Photos and Files](material-import.md)
 - **Update** — [Hands-Free Voice Mode](voice-mode.md)

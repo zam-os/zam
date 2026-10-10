@@ -37,6 +37,7 @@ const REVIEWED = [
   "get-settings",
   "knowledge-map-feature",
   "learning-content-source",
+  "learning-content-workspace",
   "library-topic-start",
   "library-topics-list",
   "list-drafts",

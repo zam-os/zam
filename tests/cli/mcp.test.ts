@@ -912,6 +912,36 @@ describe("MCP stdio server tests", () => {
       }
     });
 
+    it("never lets the panel name a Quelle path or reach the curriculum (ADR 2026-10-10 D11)", async () => {
+      const calls = [
+        {
+          cmd: "learning-content-browse",
+          args: ["--repo", tempDir, "--target", "test.db"],
+        },
+        { cmd: "knowledge-map", args: ["--repo", tempDir] },
+        {
+          cmd: "learning-content-source",
+          args: ["--kind", "folder", "--path", tempDir],
+        },
+        {
+          cmd: "learning-content-source",
+          args: ["--kind", "folder", `--path=${tempDir}`],
+        },
+        { cmd: "knowledge-map-feature", args: ["--repo", tempDir] },
+        { cmd: "curriculum-list-providers", args: [] },
+        { cmd: "curriculum-confirm-batch", args: [] },
+      ];
+      for (const call of calls) {
+        const res = await client.callTool({
+          name: "zam_studio_bridge",
+          arguments: call,
+        });
+        expect(res.isError, `${call.cmd} ${call.args.join(" ")}`).toBe(true);
+        const data = JSON.parse(res.content[0].text);
+        expect(data.error).toContain("not allowed for the Studio panel");
+      }
+    });
+
     it("reuses one host database for concurrent bridge commands and closes it once", async () => {
       const close = vi.fn(async () => {});
       const trackedDatabase: Database = {

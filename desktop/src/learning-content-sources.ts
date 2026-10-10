@@ -6,6 +6,11 @@
  * reads the registry and writes the machine-local selection. A present
  * directory is shown by the knowledge module. This module does not repair
  * a workspace, add one, write a map, or import curriculum cards.
+ *
+ * Only the Desktop window installs a folder picker and the curriculum host.
+ * The Studio panel has neither: there a stored folder and Lehrplan are the
+ * sentence that they open in ZAM Desktop, and a workspace is read by id
+ * (Decision 11).
  */
 
 import { runBridge } from "./bridge-transport.js";
@@ -59,7 +64,7 @@ export function setLearningContentFolderPicker(
     ?.classList.remove("hidden");
 }
 
-/** The existing curriculum browser. The desktop and the panel install it. */
+/** The existing curriculum browser. Only the Desktop window installs it (D11). */
 export function setLearningContentCurriculumHost(host: {
   open: () => Promise<void>;
   close: () => void;
@@ -242,20 +247,37 @@ function renderSourceStatus(view: SourceView): void {
   }
   if (selection.kind === "curriculum") {
     path.textContent = "";
-    note.textContent = "";
     clearSourceKnowledge();
+    if (!curriculumHost) {
+      note.textContent = t("content_source_desktop_only");
+      setCurriculumVisible(false);
+      return;
+    }
+    note.textContent = "";
     setCurriculumVisible(true);
-    void curriculumHost?.open();
+    void curriculumHost.open();
     return;
   }
   setCurriculumVisible(false);
   curriculumHost?.close();
   path.textContent = selection.path;
+  const desktop = folderPicker !== null;
+  if (selection.kind === "folder" && !desktop) {
+    note.textContent = t("content_source_desktop_only");
+    clearSourceKnowledge();
+    return;
+  }
   if (selection.missing) {
     note.textContent = t("content_source_missing");
     clearSourceKnowledge();
     return;
   }
   note.textContent = "";
-  showSourceKnowledge(selection.path, selection.skillSource === true);
+  showSourceKnowledge(
+    selection.kind === "workspace"
+      ? { kind: "workspace", id: selection.id, path: selection.path }
+      : { kind: "folder", path: selection.path },
+    selection.skillSource === true,
+    desktop,
+  );
 }

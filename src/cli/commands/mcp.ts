@@ -168,8 +168,12 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "personal-card-revision-preview": { why: "Reads a revision preview." },
   "list-drafts": { why: "Reads draft tokens." },
   // Untaken published tokens (ADR 2026-10-10). The two lists only read.
-  "unchosen-groups": { why: "Reads published tokens the caller has no card for." },
-  "unchosen-members": { why: "Reads published tokens the caller has no card for." },
+  "unchosen-groups": {
+    why: "Reads published tokens the caller has no card for.",
+  },
+  "unchosen-members": {
+    why: "Reads published tokens the caller has no card for.",
+  },
   "personal-card-ensure": {
     why: "Writes the caller's own card for one published token.",
   },
@@ -178,6 +182,9 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "learning-content-source": {
     why: "Reads the workspace registry and stores which workspace the page shows; never a path.",
     refusedOptions: ["--path"],
+  },
+  "learning-content-workspace": {
+    why: "Reads a configured workspace by id: its OKF articles and its validated map, no other file (D11).",
   },
   // The existing alpha switch (ADR 2026-10-03). Quellen turns it on; the
   // repository an agent last wrote a map for stays with the agent tools.
