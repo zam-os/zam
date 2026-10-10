@@ -84,3 +84,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-03](2026-10-03-repo-knowledge-map.md) | Repo Knowledge Map: An Alpha Feature with Swappable Views | Accepted — alpha implemented; JSON-LD and C4 added; viewer page and panel added |
 | [2026-10-05](2026-10-05-learning-cards-from-photos-and-files.md) | Learning Cards from Photos and Files: The Model Reads the Page | Partially implemented — both paths, review list, Bonus and Mobile shipped; MCP Apps panel and per-import bonus line open |
 | [2026-10-08](2026-10-08-skill-learner-observation.md) | Observation Without Content: Skill-Learner Evidence Replaces the In-House Screen Observer | Proposed |
+| [2026-10-10](2026-10-10-learning-content-sources.md) | Learning Content: Cards and Sources | Accepted |
