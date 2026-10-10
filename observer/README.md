@@ -137,8 +137,11 @@ zam-observer watch --session s1 --hwnd 0x123456 --reports --samples 60
 `watch-uia --session <id>` is Windows-only. It polls the focused UI Automation
 element and emits an `element-focused` `UiSensorEvent` whenever focus moves,
 with a bounded property set — control type, automation id, accessible name — and
-the owning process. It never reads element values, so typed text is not
-captured. A focused password field is reported with `target.password = true` and
+the owning process. It never reads element values and never reads pixels to name
+an unnamed element: such an element reports an empty name (the OCR fallback was
+removed under ADR 2026-10-08). The accessible name is still screen text — a
+label, a document title, a customer name in a list — so these events are not
+content-free. A focused password field is reported with `target.password = true` and
 its name redacted, which the replay engine turns into a privacy pause; focus
 inside a privacy-sensitive application (password manager, auth dialog) likewise
 has its accessible name redacted. Polling mirrors `watch-foreground`, so it pairs

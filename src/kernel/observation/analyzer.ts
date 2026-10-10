@@ -7,6 +7,8 @@
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
+import { redactCommand } from "./redact.js";
+
 export interface MonitorEvent {
   type: "command_start" | "command_end" | "monitor_meta";
   ts: string;
@@ -33,7 +35,8 @@ export interface CommandRecord {
 
 export interface TokenPattern {
   slug: string;
-  patterns: string[]; // command prefixes or regex strings
+  /** Case-insensitive substrings of the redacted command; see analyzeObservation. */
+  patterns: string[];
 }
 
 export interface ObservationRating {
@@ -160,6 +163,11 @@ function computeMedian(values: number[]): number | null {
 
 /**
  * Analyze observed commands against token patterns and produce ratings.
+ *
+ * A pattern matches as a case-insensitive substring of the command. Commands
+ * reach this point redacted (ADR 2026-10-08 R5), so each pattern is redacted
+ * the same way first: a step written as `export FOO=bar` still matches the
+ * stored `export FOO=[redacted]`.
  */
 export function analyzeObservation(
   commands: CommandRecord[],
@@ -171,9 +179,10 @@ export function analyzeObservation(
   for (const tp of tokenPatterns) {
     const matchIndices: number[] = [];
     const matchedTexts: string[] = [];
+    const patterns = tp.patterns.map(redactCommand);
 
     for (let i = 0; i < commands.length; i++) {
-      if (matchesToken(commands[i].command, tp.patterns)) {
+      if (matchesToken(commands[i].command, patterns)) {
         matchIndices.push(i);
         matchedTexts.push(commands[i].command);
         matchedSet.add(i);

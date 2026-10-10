@@ -11,7 +11,7 @@
 ### Phase 0 — shipped
 
 - **Screen capture**: `Windows.Graphics.Capture`, resize handling, reused staging texture
-- **UI Automation**: HWND-scoped subtree; focus, dialog, toggle, selection, invoke; COM handlers for text-change and structure-change; `SetWinEventHook` for foreground/focus; local OCR fallback for unnamed elements
+- **UI Automation**: HWND-scoped subtree; focus, dialog, toggle, selection, invoke; COM handlers for text-change and structure-change; `SetWinEventHook` for foreground/focus (the local OCR fallback for unnamed elements was removed under ADR 2026-10-08)
 - **Raw Input**: clicks, scroll, shortcuts, aggregated typing activity (never characters)
 - **Unified watch**: 3-thread architecture (capture + UIA + input), MPSC channel, atomic privacy pause; `--event-driven` mode; monotonic session start/stop sequences
 - **Privacy**: password managers, banking, private browsing; custom policy via `ZAM_OBSERVER_PRIVACY_POLICY`; password-field text events dropped

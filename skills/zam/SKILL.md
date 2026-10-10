@@ -32,6 +32,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_admit_review` | Admit one specific card immediately before showing it. Required after `zam_get_reviews`; skip the card if another sibling of the same atom was already presented today. Returns the `attemptId` to pass to `zam_submit_review`. |
 | `zam_session_start` | Start an active learning session with a task description. |
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
+| `zam_observation_close` | Drop the raw observation files of a session that is still running or was never ended, keeping a digest. `zam_session_end` does this by itself. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
 | `zam_add_token` | Register a new knowledge token as a draft (not yet in the recall queue). |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
@@ -40,7 +41,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_submit_review` | Submit a card self-rating, advance its FSRS state, and log it to the session steps. |
 | `zam_review_action` | Apply review actions (rate, skip, edit/deprecate/delete tokens or cards) with optional confirmation. |
 | `zam_suggest_foundations` | Suggest existing prerequisite tokens for a newly failed or registered token. |
-| `zam_monitor` | Read or analyze shell-monitor evidence for a session. |
+| `zam_monitor` | Read or analyze shell-monitor evidence for a session; command lines come back redacted. |
 | `zam_open_recall` | Open the spoiler-free Recall app; answering, reveal, and rating stay inside the card. |
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
@@ -124,7 +125,7 @@ Always prefer observation over probing. Talking interrupts flow. The best ZAM se
 ## Observation Levels
 
 - **Level 1 — Shell** (available): Agent reads shell command history and output to infer success/failure.
-- **Level 2 — Screen** (available): Agent observes the screen for GUI/desktop/portal tasks. ZAM ships a capture path — `zam bridge capture-ui` returns a screenshot (base64 PNG) governed by the `ObserverPolicy`; in a multimodal agent harness you may instead use the harness's own screen/browser view (computer-use / browser-use). See *UI / screen tasks* in STEP 4.
+- **Level 2 — Screen** (off by default): Agent observes the screen for GUI/desktop/portal tasks. ZAM's own capture path (`zam bridge capture-ui`) runs only on machines where the learner switched screen observation on; everywhere else it refuses. In a multimodal agent harness you may instead use the harness's own screen/browser view (computer-use / browser-use). See *UI / screen tasks* in STEP 4.
 - **Level 3 — Real life** (future): Voice + visual overlay on device (phone, AR). The agent is an overlay; the user lives in their world.
 
 Pick the lowest level that captures the task honestly — shell for command-line work, screen for GUI/portal work. Regardless of level, prefer an **objective outcome signal** (an API status, a file/DB state before→after) over pixels when one exists: it is the most reliable evidence that the task actually succeeded.
@@ -190,13 +191,13 @@ To observe, tell the user to open a monitored terminal window:
 *(For systems supporting automatic shell terminal spawning, call `zam monitor open --session <id>` or instruct the user to run `zam monitor open --session <id>` in their terminal).*
 
 When the user returns, end the session:
-Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work.
+Call `zam_session_end` with the session ID and `synthesize: true`. The analyzer infers ratings based on command history, error rates, and speed. Confirm or adjust the returned candidates, then submit them with `zam_submit_review` using each candidate's `cardId` or `tokenId`, the rating, `doneBy: "user"`, and the session ID; the session is already complete, and a completed session still accepts the ratings of its own work. Command texts in the candidates are redacted (`[redacted]` marks a value ZAM removed); never ask the learner to repeat a redacted value. Ending the session deletes its raw monitor log on this machine once the candidates are prepared, so read them from this response; only a value-free digest stays, which `zam bridge discover-skills` uses to propose skills from command sequences that recur across sessions. If the learner does not want this session used, submit no ratings.
 
 **For UI / screen tasks (observation mode):**
 
-When the real work happens in a browser or desktop app — a cloud portal, a GUI — rather than the shell, start the session with `--context ui` (`zam_session_start` `context: "ui"`); the response carries an `observerPolicyHint` describing the capture rules in force. Observe the screen one of two ways:
+When the real work happens in a browser or desktop app — a cloud portal, a GUI — rather than the shell, start the session with `--context ui` (`zam_session_start` `context: "ui"`); the response carries an `observerPolicyHint` describing the capture rules in force, or saying that screen observation is off on this machine. Observe the screen one of two ways:
 
-- **ZAM capture** — `zam bridge capture-ui --session <id> [--process-name <app> | --hwnd <id>]` returns a screenshot (base64 PNG) plus a `captureMethod`. It is gated by the `ObserverPolicy` (inspect it with `zam bridge get-observer-policy`): if scope is `off`, the target is denylisted, or a sensitive window (password manager, banking, auth/UAC dialog) is frontmost, it returns a typed **`denied`** response instead of pixels — treat that as "cannot observe here", never as a failed task. The built-in sensitive denylist always wins over any user allowlist.
+- **ZAM capture** — `zam bridge capture-ui --session <id> [--process-name <app> | --hwnd <id>]` returns a screenshot (base64 PNG) plus a `captureMethod`. Screen observation is off unless the learner switched it on for this machine (`observation.screen` in `~/.zam/config.json`); while it is off, every screen command returns a typed **`denied`** response with `denialReason: "screen-observation-off"`. Do not ask the learner to switch it on, and do not look for another way through ZAM. When it is on, capture is gated by the `ObserverPolicy` (inspect it with `zam bridge get-observer-policy`): if scope is `off`, the target is denylisted, or a sensitive window (password manager, banking, auth/UAC dialog) is frontmost, it returns a typed **`denied`** response instead of pixels. Treat any `denied` as "cannot observe here", never as a failed task. The built-in sensitive denylist always wins over any user allowlist.
 - **Harness-native** — in a multimodal agent harness, use the harness's own screen or browser capability (computer-use / browser-use) to watch the user act. Same read-only intent: perceive, never drive.
 
 There is no shell monitor here, so rate manually: judge from what you saw (reaching the right surface and completing the action correctly is a pass), verify any objective outcome signal that exists, then `zam_submit_review` (`doneBy: "user"`) and `zam_session_end` without `synthesize`.

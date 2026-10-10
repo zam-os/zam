@@ -190,6 +190,47 @@ function normalizeCommand(command: string): string {
 }
 
 /**
+ * The normalized command prefixes of a session, trivial commands left out:
+ * all that discovery compares. A session digest stores exactly this list
+ * (ADR 2026-10-08 R6), so discovery finds the same patterns in a digest as
+ * in the log it replaced.
+ */
+export function digestCommandPrefixes(commands: CommandRecord[]): string[] {
+  return commands
+    .filter((c) => {
+      const lower = c.command.toLowerCase().trim();
+      return (
+        lower.length > 0 &&
+        !lower.startsWith("cd ") &&
+        lower !== "cd" &&
+        lower !== "ls" &&
+        lower !== "pwd" &&
+        lower !== "clear" &&
+        lower !== "exit" &&
+        !lower.startsWith("echo ")
+      );
+    })
+    .map((c) => normalizeCommand(c.command));
+}
+
+/**
+ * Command records standing in for a digest's prefixes. A prefix normalizes to
+ * itself, so discovery treats them like the commands they came from.
+ */
+export function commandsFromDigest(prefixes: string[]): CommandRecord[] {
+  return prefixes.map((command, index) => ({
+    seq: index + 1,
+    pid: 0,
+    command,
+    cwd: "",
+    startedAt: "",
+    endedAt: null,
+    durationMs: null,
+    exitCode: null,
+  }));
+}
+
+/**
  * Extract all command subsequences of length minLen..maxLen from a session.
  * Uses normalized command prefixes for comparison.
  */
@@ -198,22 +239,7 @@ function extractSequences(
   minLen: number,
   maxLen: number,
 ): string[][] {
-  // Filter out trivial commands
-  const filtered = commands.filter((c) => {
-    const lower = c.command.toLowerCase().trim();
-    return (
-      lower.length > 0 &&
-      !lower.startsWith("cd ") &&
-      lower !== "cd" &&
-      lower !== "ls" &&
-      lower !== "pwd" &&
-      lower !== "clear" &&
-      lower !== "exit" &&
-      !lower.startsWith("echo ")
-    );
-  });
-
-  const normalized = filtered.map((c) => normalizeCommand(c.command));
+  const normalized = digestCommandPrefixes(commands);
   const sequences: string[][] = [];
 
   for (let len = minLen; len <= maxLen; len++) {

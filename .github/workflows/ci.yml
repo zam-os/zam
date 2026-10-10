@@ -91,11 +91,6 @@ jobs:
       - name: Prepare bundled desktop bridge
         run: npm run desktop:prepare -- --bundle-node
 
-      - name: Build and prepare observer sidecar
-        run: |
-          cargo build --manifest-path observer/Cargo.toml --release --target x86_64-unknown-linux-gnu
-          npm run observer:prepare -- --target x86_64-unknown-linux-gnu
-
       - name: Smoke-test bundled desktop bridge on a clean machine
         run: |
           export HOME="$RUNNER_TEMP/zam-first-run"

@@ -19,6 +19,7 @@ import { getTokenBySlug, getTokensBySlugs } from "../models/token.js";
 import { evaluateRatingWithinTransaction } from "../recall/evaluator.js";
 import { cascadeBlock } from "../scheduler/blocker.js";
 import type { Rating } from "../scheduler/fsrs.js";
+import { isScreenObservationEnabled } from "../system/install-config.js";
 import type {
   CommandRecord,
   ObservationRating,
@@ -35,6 +36,8 @@ import {
   recordAttempt,
 } from "./attempts.js";
 import { readMonitorLog } from "./monitor-io.js";
+import { redactCommand } from "./redact.js";
+import { SCREEN_OBSERVATION_OFF } from "./screen-switch.js";
 import { readUiObservationLog } from "./ui-observer-io.js";
 import {
   buildUiSynthesisCandidates,
@@ -79,6 +82,11 @@ export interface SessionSynthesisPreview {
     end: string;
     durationMs: number;
   } | null;
+  /**
+   * Set on a UI session while screen observation is off on this machine
+   * (ADR 2026-10-08 R8): its observer reports were not read.
+   */
+  denialReason?: typeof SCREEN_OBSERVATION_OFF;
 }
 
 export interface SessionSynthesisEvidence {
@@ -265,6 +273,23 @@ export async function prepareSessionSynthesis(
   );
   const minConfidence = input.minConfidence ?? "medium";
 
+  if (session.execution_context === "ui" && !isScreenObservationEnabled()) {
+    // Observer reports carry screen-derived text; while the switch is off
+    // they are not read, so a UI session synthesizes nothing.
+    return {
+      sessionId: session.id,
+      userId: session.user_id,
+      patternCount: validPatterns.length,
+      commandCount: 0,
+      alreadyApplied: applied.size,
+      skippedLowConfidence: 0,
+      candidates: [],
+      unmatchedCommands: [],
+      timeSpan: null,
+      denialReason: SCREEN_OBSERVATION_OFF,
+    };
+  }
+
   if (session.execution_context === "ui") {
     const reports = readUiObservationLog(input.sessionId);
     const candidateTokens = await getTokensBySlugs(
@@ -315,8 +340,13 @@ export async function prepareSessionSynthesis(
     };
   }
 
-  const commands =
-    input.commands ?? pairCommands(readMonitorLog(input.sessionId));
+  // Commands a caller passes in are redacted like the log (ADR 2026-10-08 R5).
+  const commands = input.commands
+    ? input.commands.map((command) => ({
+        ...command,
+        command: redactCommand(command.command),
+      }))
+    : pairCommands(readMonitorLog(input.sessionId));
   const analysis = analyzeObservation(commands, validPatterns);
   const minRank = confidenceRank(minConfidence);
   let skippedLowConfidence = 0;
@@ -370,8 +400,15 @@ export async function prepareSessionSynthesis(
 
 export async function applySessionSynthesis(
   db: Database,
-  input: ApplySessionSynthesisInput,
+  rawInput: ApplySessionSynthesisInput,
 ): Promise<ApplySessionSynthesisResult> {
+  // The texts end up in the shared database, so whatever a caller sends back
+  // is redacted again; redaction is idempotent, so the evidence key of a
+  // redacted preview is unchanged (ADR 2026-10-08 R5).
+  const input: ApplySessionSynthesisInput = {
+    ...rawInput,
+    matchedCommandTexts: rawInput.matchedCommandTexts.map(redactCommand),
+  };
   return db.transaction(async (tx) => {
     const session = await getSession(tx, input.sessionId);
     const token = await getTokenBySlug(tx, input.tokenSlug);

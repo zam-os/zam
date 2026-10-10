@@ -144,13 +144,6 @@ mod windows_uia {
         DispatchMessageW, PM_REMOVE, MSG, WINEVENT_OUTOFCONTEXT, EVENT_SYSTEM_FOREGROUND,
         EVENT_OBJECT_FOCUS,
     };
-    use windows::Win32::Graphics::Gdi::{
-        GetDC, ReleaseDC, CreateCompatibleDC, CreateCompatibleBitmap, SelectObject, BitBlt, DeleteDC, DeleteObject,
-        GetDIBits, SRCCOPY, DIB_RGB_COLORS, BITMAPINFOHEADER, BITMAPINFO,
-    };
-    use windows::Graphics::Imaging::{SoftwareBitmap, BitmapPixelFormat};
-    use windows::Security::Cryptography::CryptographicBuffer;
-    use windows::Media::Ocr::OcrEngine;
 
     use super::control_type_name;
     use crate::clock::observed_at_now;
@@ -240,113 +233,6 @@ mod windows_uia {
                 }
             }
         }
-    }
-
-    fn capture_rect_gdi(rect: windows::Win32::Foundation::RECT) -> Result<(Vec<u8>, i32, i32), String> {
-        let x = rect.left;
-        let y = rect.top;
-        let width = rect.right - rect.left;
-        let height = rect.bottom - rect.top;
-
-        if width <= 0 || height <= 0 {
-            return Err("Invalid rect dimensions".to_string());
-        }
-
-        unsafe {
-            let hdc_screen = GetDC(None);
-            if hdc_screen.0 as usize == 0 {
-                return Err("Failed to get screen DC".to_string());
-            }
-
-            let hdc_mem = CreateCompatibleDC(Some(hdc_screen));
-            if hdc_mem.0 as usize == 0 {
-                ReleaseDC(None, hdc_screen);
-                return Err("Failed to create compatible DC".to_string());
-            }
-
-            let hbitmap = CreateCompatibleBitmap(hdc_screen, width, height);
-            if hbitmap.0 as usize == 0 {
-                let _ = DeleteDC(hdc_mem);
-                ReleaseDC(None, hdc_screen);
-                return Err("Failed to create compatible bitmap".to_string());
-            }
-
-            let old_obj = SelectObject(hdc_mem, hbitmap.into());
-
-            let success = BitBlt(hdc_mem, 0, 0, width, height, Some(hdc_screen), x, y, SRCCOPY);
-            if let Err(e) = success {
-                SelectObject(hdc_mem, old_obj);
-                let _ = DeleteObject(hbitmap.into());
-                let _ = DeleteDC(hdc_mem);
-                ReleaseDC(None, hdc_screen);
-                return Err(format!("BitBlt failed: {e}"));
-            }
-
-            let mut bmi = BITMAPINFO {
-                bmiHeader: BITMAPINFOHEADER {
-                    biSize: std::mem::size_of::<BITMAPINFOHEADER>() as u32,
-                    biWidth: width,
-                    biHeight: -height, // top-down
-                    biPlanes: 1,
-                    biBitCount: 32, // BGRA8
-                    biCompression: 0,
-                    biSizeImage: 0,
-                    biXPelsPerMeter: 0,
-                    biYPelsPerMeter: 0,
-                    biClrUsed: 0,
-                    biClrImportant: 0,
-                },
-                bmiColors: [windows::Win32::Graphics::Gdi::RGBQUAD::default(); 1],
-            };
-
-            let mut buf = vec![0u8; (width * height * 4) as usize];
-            let lines = GetDIBits(
-                hdc_screen,
-                hbitmap,
-                0,
-                height as u32,
-                Some(buf.as_mut_ptr() as *mut _),
-                &mut bmi,
-                DIB_RGB_COLORS,
-            );
-
-            SelectObject(hdc_mem, old_obj);
-            let _ = DeleteObject(hbitmap.into());
-            let _ = DeleteDC(hdc_mem);
-            ReleaseDC(None, hdc_screen);
-
-            if lines == 0 {
-                return Err("GetDIBits failed".to_string());
-            }
-
-            Ok((buf, width, height))
-        }
-    }
-
-    fn ocr_bitmap(bytes: &[u8], width: i32, height: i32) -> Result<String, String> {
-        let buffer = CryptographicBuffer::CreateFromByteArray(bytes)
-            .map_err(|e| format!("Failed to create CryptographicBuffer: {e}"))?;
-
-        let bitmap = SoftwareBitmap::CreateCopyFromBuffer(
-            &buffer,
-            BitmapPixelFormat::Bgra8,
-            width,
-            height,
-        ).map_err(|e| format!("Failed to create SoftwareBitmap: {e}"))?;
-
-        let engine = OcrEngine::TryCreateFromUserProfileLanguages()
-            .map_err(|e| format!("Failed to create OcrEngine: {e}"))?;
-
-        let async_op = engine.RecognizeAsync(&bitmap)
-            .map_err(|e| format!("Failed to start RecognizeAsync: {e}"))?;
-        
-        let result = async_op.get()
-            .map_err(|e| format!("Failed to complete RecognizeAsync: {e}"))?;
-
-        let text = result.Text()
-            .map_err(|e| format!("Failed to get recognized text: {e}"))?;
-
-        Ok(text.to_string())
     }
 
     struct FocusedElement {
@@ -478,8 +364,8 @@ mod windows_uia {
         ) -> windows::core::Result<()> {
             if let Some(element) = sender.as_ref() {
                 update_pause_input_from_element(element, &self.pause_input);
-                // Never record text-change metadata (or run OCR) for password
-                // fields — only mute input as early as possible.
+                // Never record text-change metadata for password fields — only
+                // mute input as early as possible.
                 if is_password_element(element) {
                     return Ok(());
                 }
@@ -493,9 +379,12 @@ mod windows_uia {
         }
     }
 
-    /// Build a `text-changed` event. Captures the element identity (control
-    /// type, automation id) but never the text value itself. Privacy redaction
-    /// applies as for focus events.
+    /// Build a `text-changed` event. It carries the same fields as a focus
+    /// event: control type, automation id and the accessible name, but not
+    /// the element's value. The accessible name is screen text in its own
+    /// right (a label, a document or customer name), so this event is not
+    /// content-free (ADR 2026-10-08, consequence 4). Privacy redaction applies
+    /// as for focus events.
     fn build_text_changed_event(
         session_id: &str,
         element: &IUIAutomationElement,
@@ -954,26 +843,12 @@ mod windows_uia {
             .map(|value| value.as_bool())
             .unwrap_or(false);
 
-        let mut name = unsafe { element.CurrentName() }
+        // The accessible name only. An element without one reports an empty
+        // name: the sensor never reads pixels to fill it in (ADR 2026-10-08
+        // R8), so it cannot turn the contents of a field into text.
+        let name = unsafe { element.CurrentName() }
             .map(|value| value.to_string())
             .unwrap_or_default();
-
-        if name.trim().is_empty() && !password {
-            if let Ok(rect) = unsafe { element.CurrentBoundingRectangle() } {
-                let width = rect.right - rect.left;
-                let height = rect.bottom - rect.top;
-                if rect.left >= 0 && rect.top >= 0 && width > 0 && height > 0 {
-                    if let Ok((pixels, w, h)) = capture_rect_gdi(rect) {
-                        if let Ok(ocr_text) = ocr_bitmap(&pixels, w, h) {
-                            let trimmed = ocr_text.trim().to_string();
-                            if !trimmed.is_empty() {
-                                name = trimmed;
-                            }
-                        }
-                    }
-                }
-            }
-        }
 
         let process_id = unsafe { element.CurrentProcessId() }
             .map(|value| value as u32)

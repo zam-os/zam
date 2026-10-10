@@ -716,9 +716,20 @@
       "parent": "observation-mech",
       "label": "Capture consent",
       "link": "need",
-      "text": "Screen capture needs two gates: the host allows the call, and ZAM's policy limits what it may see.",
+      "text": "Screen capture is off until the learner turns it on for the machine; then the host allows the call and ZAM's policy limits what it sees.",
       "sources": [
         "docs/okf/observer-privacy-model.md"
+      ]
+    },
+    {
+      "id": "skill-digests",
+      "parent": "observation-mech",
+      "label": "Skill digests",
+      "link": "leave",
+      "text": "A session's raw log goes when it ends; a redacted digest of its commands stays, so discover-skills can propose recurring steps as skills.",
+      "sources": [
+        "docs/concepts/monitoring-methods.md",
+        "src/kernel/observation/skill-discovery.ts"
       ]
     },
     {

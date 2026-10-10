@@ -1,4 +1,4 @@
-import { mkdtempSync, rmSync } from "node:fs";
+import { mkdtempSync, rmSync, writeFileSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { ulid } from "ulid";
@@ -8,12 +8,14 @@ import {
   AttemptConflictError,
   addPrerequisite,
   appendUiObservationReport,
+  applySchemaAndMigrations,
   applySessionSynthesis,
   buildReviewQueue,
   createAgentSkill,
   createToken,
   type Database,
   ensureCard,
+  ensureSchemaAndMigrations,
   executeReviewAction,
   getCard,
   getReviewsForCard,
@@ -236,6 +238,76 @@ describe("automatic session synthesis", () => {
 
     expect(preview.patternCount).toBe(0);
     expect(preview.candidates).toEqual([]);
+  });
+
+  it("deletes command texts stored before redaction once (M039)", async () => {
+    const token = await createToken(db, {
+      slug: "git-inspect-worktree",
+      concept: "git status and git diff inspect pending worktree changes",
+      domain: "git",
+      bloom_level: 3,
+    });
+    const apply = async (task: string) => {
+      const session = await startSession(db, { user_id: "tester", task });
+      await applySessionSynthesis(db, {
+        sessionId: session.id,
+        tokenSlug: token.slug,
+        inferredRating: 4,
+        confirmedRating: 3,
+        confidence: "medium",
+        evidence: cleanEvidence,
+        matchedCommandTexts: ["git status --short", "git diff --check"],
+      });
+      return session.id;
+    };
+    const stored = async (sessionId: string) => {
+      const synthesis = (await db
+        .prepare("SELECT evidence FROM session_syntheses WHERE session_id = ?")
+        .get(sessionId)) as { evidence: string };
+      const attempt = (await db
+        .prepare(
+          "SELECT evidence, evidence_key, rating FROM review_attempts WHERE session_id = ?",
+        )
+        .get(sessionId)) as {
+        evidence: string;
+        evidence_key: string | null;
+        rating: number;
+      };
+      const step = (await db
+        .prepare("SELECT notes FROM session_steps WHERE session_id = ?")
+        .get(sessionId)) as { notes: string };
+      return { synthesis, attempt, step };
+    };
+
+    const old = await apply("Before redaction");
+    await db
+      .prepare("UPDATE zam_schema_version SET version = 38 WHERE singleton = 1")
+      .run();
+    await ensureSchemaAndMigrations(db);
+
+    const cleaned = await stored(old);
+    expect(JSON.stringify(cleaned)).not.toContain("git status");
+    expect(JSON.parse(cleaned.synthesis.evidence)).toEqual({
+      signals: cleanEvidence,
+      matchedCommandTexts: [],
+    });
+    expect(cleaned.attempt.evidence_key).toBeNull();
+    expect(cleaned.attempt.rating).toBe(3);
+    expect(cleaned.step.notes).toBe(
+      "Observation synthesis (medium, inferred 4)",
+    );
+    const card = await getCard(db, token.id, "tester");
+    expect(await getReviewsForCard(db, card!.id)).toHaveLength(1);
+
+    // Written after the migration: already redacted, and a repair run on a
+    // current library leaves it alone.
+    const recent = await apply("After redaction");
+    await applySchemaAndMigrations(db);
+    const kept = await stored(recent);
+    expect(kept.attempt.evidence_key).toBe(
+      "git status --short\ngit diff --check",
+    );
+    expect(kept.step.notes).toContain("git diff --check");
   });
 
   it("atomically applies a confirmed rating and is idempotent", async () => {
@@ -474,6 +546,14 @@ describe("automatic session synthesis", () => {
     const originalDir = process.env.ZAM_OBSERVER_DIR;
     const observerDir = mkdtempSync(join(tmpdir(), "zam-ui-synthesis-"));
     process.env.ZAM_OBSERVER_DIR = observerDir;
+    const originalConfig = process.env.ZAM_CONFIG_PATH;
+    // Observer reports are read only with screen observation switched on
+    // (ADR 2026-10-08 R8); the next test covers the switch being off.
+    process.env.ZAM_CONFIG_PATH = join(observerDir, "config.json");
+    writeFileSync(
+      process.env.ZAM_CONFIG_PATH,
+      JSON.stringify({ observation: { screen: true } }),
+    );
 
     try {
       const token = await createToken(db, {
@@ -520,6 +600,63 @@ describe("automatic session synthesis", () => {
         inferredRating: 4,
         confidence: "high",
       });
+    } finally {
+      if (originalDir === undefined) {
+        delete process.env.ZAM_OBSERVER_DIR;
+      } else {
+        process.env.ZAM_OBSERVER_DIR = originalDir;
+      }
+      if (originalConfig === undefined) {
+        delete process.env.ZAM_CONFIG_PATH;
+      } else {
+        process.env.ZAM_CONFIG_PATH = originalConfig;
+      }
+      rmSync(observerDir, { recursive: true, force: true });
+    }
+  });
+
+  it("reads no observer reports while screen observation is off", async () => {
+    const originalDir = process.env.ZAM_OBSERVER_DIR;
+    const observerDir = mkdtempSync(join(tmpdir(), "zam-ui-synthesis-off-"));
+    process.env.ZAM_OBSERVER_DIR = observerDir;
+
+    try {
+      const token = await createToken(db, {
+        slug: "explorer-rename-file",
+        concept: "Rename a file in File Explorer",
+        domain: "windows",
+        bloom_level: 3,
+      });
+      const session = await startSession(db, {
+        user_id: "tester",
+        task: "Rename invoices",
+        execution_context: "ui",
+      });
+      appendUiObservationReport({
+        version: 1,
+        sessionId: session.id,
+        sequence: 1,
+        observedFrom: "2026-06-15T10:00:00Z",
+        observedTo: "2026-06-15T10:00:05Z",
+        kind: "step-completed",
+        application: { processName: "explorer.exe", processId: 42 },
+        summary: "Renamed customer-acme.pdf.",
+        actions: [],
+        evidence: [],
+        candidateTokens: [
+          { slug: token.slug, confidence: 0.91, rationale: "Renamed." },
+        ],
+        confidence: 0.91,
+      });
+
+      const preview = await prepareSessionSynthesis(db, {
+        sessionId: session.id,
+      });
+
+      expect(preview.denialReason).toBe("screen-observation-off");
+      expect(preview.candidates).toEqual([]);
+      expect(preview.commandCount).toBe(0);
+      expect(JSON.stringify(preview)).not.toContain("customer-acme");
     } finally {
       if (originalDir === undefined) {
         delete process.env.ZAM_OBSERVER_DIR;

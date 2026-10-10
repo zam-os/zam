@@ -24,17 +24,21 @@ import {
   buildReviewQueue,
   CardNotDueError,
   CardNotReviewableError,
+  closeSessionObservation,
   endSession,
   generatePrompt,
   getSessionSummary,
   getTokenBySlug,
   hostTimeZone,
   isObserverPolicyConfigured,
+  isScreenObservationEnabled,
   logStep,
   OBSERVER_POLICY_UNSET_HINT,
   openDatabase,
   prepareSessionSynthesis,
+  SCREEN_OBSERVATION_OFF_REASON,
   startSession,
+  sweepObservationFiles,
 } from "../../kernel/index.js";
 import {
   fetchActiveWorkItems,
@@ -121,10 +125,16 @@ sessionCommand
         execution_context: opts.context as ExecutionContext,
       });
 
+      // While screen observation is off (ADR 2026-10-08 R8) the policy is
+      // never reached, so the hint says that instead.
       const observerHint =
-        opts.context === "ui" && !(await isObserverPolicyConfigured(db))
-          ? OBSERVER_POLICY_UNSET_HINT
-          : null;
+        opts.context !== "ui"
+          ? null
+          : !isScreenObservationEnabled()
+            ? SCREEN_OBSERVATION_OFF_REASON
+            : !(await isObserverPolicyConfigured(db))
+              ? OBSERVER_POLICY_UNSET_HINT
+              : null;
 
       await db.close();
 
@@ -365,6 +375,21 @@ function loadPatternFile(path: string | undefined): TokenPattern[] {
   });
 }
 
+/**
+ * After `zam session end`: delete the session's raw observation files, keeping
+ * a digest, and run the retention sweep. Housekeeping never fails the command.
+ */
+function settleObservationAfterEnd(sessionId: string): boolean {
+  let closed = false;
+  try {
+    closed = closeSessionObservation(sessionId).deleted.length > 0;
+    sweepObservationFiles();
+  } catch {
+    // The next sweep tries again.
+  }
+  return closed;
+}
+
 async function runSynthesisPhase(
   db: Database,
   sessionId: string,
@@ -560,6 +585,16 @@ sessionCommand
         await endSession(db, opts.session);
       } else if (!opts.synthesize) {
         throw new Error(`Session already completed: ${opts.session}`);
+      }
+
+      // ADR 2026-10-08 R6: the raw log is evidence only while it is
+      // captured. Once the session ended and its candidates were prepared,
+      // the raw files go and a digest stays for skill discovery.
+      const closed = settleObservationAfterEnd(opts.session);
+      if (closed && !opts.json) {
+        console.log(
+          "\nThis session's monitor log was deleted; a summary of its command prefixes stays for skill discovery.",
+        );
       }
 
       const summary = await getSessionSummary(db, opts.session);

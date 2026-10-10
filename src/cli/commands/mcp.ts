@@ -25,6 +25,7 @@ import {
   MATERIAL_KINDS,
   MATERIAL_ORIGINS,
   openDatabase,
+  scheduleObservationSweeps,
   setKnowledgeMapConfig,
 } from "../../kernel/index.js";
 import {
@@ -43,6 +44,7 @@ import {
   analyzeMonitor as handleAnalyzeMonitor,
   assessPreconditionHandler as handleAssessPrecondition,
   checkDue as handleCheckDue,
+  closeObservation as handleCloseObservation,
   endSession as handleEndSession,
   enrolBonusAtomHandler as handleEnrolBonusAtom,
   enrolBundledCellHandler as handleEnrolBundledCell,
@@ -131,51 +133,52 @@ const MCP_SERVER_INSTRUCTIONS =
  * Membership is checked before any command execution, so an unknown name is
  * rejected the same way as a real-but-forbidden one.
  */
-const STUDIO_BRIDGE_ALLOWED_COMMANDS = new Set<string>([
-  "list-tokens",
-  "personal-card-list",
-  "personal-card-create",
-  "personal-card-update",
-  "personal-card-publish-revision",
-  "personal-card-revision-preview",
-  "list-drafts",
-  "personal-card-create-assignment",
-  "personal-card-withdraw-assignment",
-  "personal-card-list-assignments",
-  // Library topics (ADR 2026-10-02): write only the caller's own cards.
-  "library-topics-list",
-  "library-topic-start",
-  "personal-card-remove",
-  "personal-card-delete",
-  "get-neighborhood",
-  "list-knowledge-contexts",
-  "get-active-knowledge-context",
-  "set-active-knowledge-context",
-  "workspace-list",
-  "workspace-repair-links",
-  "database-status",
-  "backup-create",
-  "update-check",
-  "get-settings",
-  "setting-set",
-  "study-learning-get",
-  "study-learning-set",
-  // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
-  // Config only — never runs generation; keys stay out of this surface.
-  "model-list",
-  "model-upsert",
-  "model-remove",
-  "model-reprobe",
-  "agent-list",
-  "bundled-cells-list",
-  "bundled-cell-enrol",
-  "preconditions-get",
-  "precondition-assess",
-  "pull-forward-candidates",
-  "pull-forward-execute",
-  "bonus-candidates-list",
-  "bonus-atom-enrol",
-]);
+export const STUDIO_BRIDGE_ALLOWED_COMMANDS: ReadonlySet<string> =
+  new Set<string>([
+    "list-tokens",
+    "personal-card-list",
+    "personal-card-create",
+    "personal-card-update",
+    "personal-card-publish-revision",
+    "personal-card-revision-preview",
+    "list-drafts",
+    "personal-card-create-assignment",
+    "personal-card-withdraw-assignment",
+    "personal-card-list-assignments",
+    // Library topics (ADR 2026-10-02): write only the caller's own cards.
+    "library-topics-list",
+    "library-topic-start",
+    "personal-card-remove",
+    "personal-card-delete",
+    "get-neighborhood",
+    "list-knowledge-contexts",
+    "get-active-knowledge-context",
+    "set-active-knowledge-context",
+    "workspace-list",
+    "workspace-repair-links",
+    "database-status",
+    "backup-create",
+    "update-check",
+    "get-settings",
+    "setting-set",
+    "study-learning-get",
+    "study-learning-set",
+    // Machine-local AI model registry (Settings panel, ADR 2026-07-12a).
+    // Config only — never runs generation; keys stay out of this surface.
+    "model-list",
+    "model-upsert",
+    "model-remove",
+    "model-reprobe",
+    "agent-list",
+    "bundled-cells-list",
+    "bundled-cell-enrol",
+    "preconditions-get",
+    "precondition-assess",
+    "pull-forward-candidates",
+    "pull-forward-execute",
+    "bonus-candidates-list",
+    "bonus-atom-enrol",
+  ]);
 
 /**
  * Load a bundled MCP Apps panel's HTML (built by `vite.config.panel.mts` into
@@ -497,7 +500,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_session_end",
     {
-      description: "End a learning/work session",
+      description:
+        "End a learning/work session. Its raw monitor log is deleted on this machine once the synthesis candidates are prepared; only a value-free digest stays.",
       inputSchema: {
         session: z.string().describe("Session ULID to end"),
         synthesize: z
@@ -530,6 +534,28 @@ export function createMcpServer(
         patterns: params.patterns,
         minConfidence: params.minConfidence,
       });
+    }),
+  );
+
+  // 3b. zam_observation_close — retention (ADR 2026-10-08 R6)
+  server.registerTool(
+    "zam_observation_close",
+    {
+      description:
+        "Delete a session's raw observation files on this machine now, keeping a value-free digest for skill discovery. zam_session_end already does this; use it only when the learner does not want a session that is still running, or was never ended, to be used. Changes no learning state.",
+      inputSchema: {
+        session: z
+          .string()
+          .describe("Session ULID whose raw observation files to delete"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        destructiveHint: true,
+        idempotentHint: true,
+      },
+    },
+    wrapHandler(async (params) => {
+      return await handleCloseObservation(db, { session: params.session });
     }),
   );
 
@@ -1293,7 +1319,8 @@ export function createMcpServer(
   server.registerTool(
     "zam_monitor",
     {
-      description: "Get or analyze session monitor commands",
+      description:
+        "Get or analyze session monitor commands. Command lines come back redacted: values in secret positions read [redacted].",
       inputSchema: {
         session: z.string().describe("Session ULID to monitor"),
         patterns: z
@@ -2732,4 +2759,8 @@ export async function runMcpServer(): Promise<void> {
   };
 
   await server.connect(transport);
+
+  // Retention (ADR 2026-10-08 R6) at MCP server start, after the handshake
+  // is reachable, and hourly while it runs. Silent: stdout is the transport.
+  scheduleObservationSweeps();
 }

@@ -605,6 +605,8 @@ export {
   getMonitorPath,
   monitorLogExists,
   readMonitorLog,
+  redactMonitorEvent,
+  rewriteMonitorLogRedacted,
   writeMonitorEvent,
 } from "./observation/monitor-io.js";
 export type { SidecarPrivacyPolicy } from "./observation/observer-sidecar-policy.js";
@@ -638,6 +640,42 @@ export {
   parseObserverPolicy,
   resolveObserverPolicy,
 } from "./observation/policy.js";
+export {
+  looksLikeSecret,
+  REDACTED,
+  redactCommand,
+} from "./observation/redact.js";
+export type {
+  CloseObservationResult,
+  ObservationFile,
+  ObservationFileKind,
+  ObservationLocations,
+  SessionDigest,
+  SweepOptions,
+  SweepResult,
+} from "./observation/retention.js";
+export {
+  closeSessionObservation,
+  defaultDesktopObserverDir,
+  deleteObservationFiles,
+  getDigestDir,
+  inventoryObservationFiles,
+  listMonitorLogIds,
+  listSessionDigestIds,
+  OBSERVATION_SWEEP_INTERVAL_MS,
+  readSessionDigest,
+  scheduleObservationSweeps,
+  sweepObservationFiles,
+  writeSessionDigest,
+} from "./observation/retention.js";
+export type { ScreenObservationRefusal } from "./observation/screen-switch.js";
+export {
+  SCREEN_OBSERVATION_OFF,
+  SCREEN_OBSERVATION_OFF_REASON,
+  ScreenObservationOffError,
+  screenObservationGate,
+  screenObservationRefusal,
+} from "./observation/screen-switch.js";
 export type {
   ApplySessionSynthesisInput,
   ApplySessionSynthesisResult,
@@ -666,7 +704,11 @@ export type {
   DiscoveryOptions,
   SkillProposal,
 } from "./observation/skill-discovery.js";
-export { discoverSkills } from "./observation/skill-discovery.js";
+export {
+  commandsFromDigest,
+  digestCommandPrefixes,
+  discoverSkills,
+} from "./observation/skill-discovery.js";
 export type {
   UiActionType,
   UiApplicationContext,
@@ -948,6 +990,7 @@ export type {
   MachineCompanionConfig,
   MachineCompanionConfigUpdate,
   MachineKnowledgeMapConfig,
+  MachineObservationConfig,
   MachineOnboardingConfig,
   MachineProviderRecord,
   MachineRoleBinding,
@@ -961,10 +1004,12 @@ export type {
 export {
   ALL_CAPABILITIES,
   clearBitwardenSyncConfig,
+  DEFAULT_OBSERVATION_RETENTION_DAYS,
   detectSyncProvider,
   emptyCapabilityFlags,
   ensureMachineAiModelsMigrated,
   ensureMachineProviderRolesSanitized,
+  ensureObservationRetentionSince,
   getActiveWorkspace,
   getActiveWorkspaceContext,
   getActiveWorkspaceId,
@@ -987,10 +1032,14 @@ export {
   getMachineCompanionConfig,
   getMachineId,
   getMachineVoicePreference,
+  getObservationRetentionDays,
   getOnboardingDone,
   getOnboardingPersona,
   isBitwardenVaultEnabled,
+  isInstallConfigUnreadable,
+  isScreenObservationEnabled,
   loadInstallConfig,
+  MAX_OBSERVATION_RETENTION_DAYS,
   migrateMachineRolesToModels,
   removeConfiguredWorkspace,
   saveConfiguredWorkspaces,

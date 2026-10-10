@@ -67,6 +67,12 @@ beforeEach(() => {
   machineConfigDir = mkdtempSync(join(tmpdir(), "zam-machine-cfg-"));
   previousZamConfigPath = process.env.ZAM_CONFIG_PATH;
   process.env.ZAM_CONFIG_PATH = join(machineConfigDir, "config.json");
+  // The vision adapter only runs with screen observation switched on for the
+  // machine (ADR 2026-10-08 R8); the switch's own tests cover it being off.
+  writeFileSync(
+    process.env.ZAM_CONFIG_PATH,
+    JSON.stringify({ observation: { screen: true } }),
+  );
 });
 afterEach(() => {
   if (previousZamConfigPath === undefined) {
