@@ -7,6 +7,8 @@
  */
 
 import {
+  canonicalRoots,
+  getTrustedFolders,
   resolveReviewContext as kernelResolveReviewContext,
   type ReferenceFetcher,
   type ReviewContext,
@@ -18,6 +20,11 @@ export type { ReviewContext };
 
 export interface ResolveReviewContextOptions {
   maxChars?: number;
+  /**
+   * More allowed roots for local links, such as the MCP client's workspace
+   * folders. The learner's trusted folders always apply (ADR 2026-10-08b D1).
+   */
+  roots?: readonly string[];
 }
 
 const fetchReference: ReferenceFetcher = (url) =>
@@ -34,5 +41,6 @@ export async function resolveReviewContext(
   return kernelResolveReviewContext(sourceLink, {
     fetch: fetchReference,
     maxChars: opts?.maxChars,
+    roots: canonicalRoots([...(opts?.roots ?? []), ...getTrustedFolders()]),
   });
 }

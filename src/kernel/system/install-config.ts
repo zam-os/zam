@@ -91,6 +91,13 @@ export interface InstallConfig {
    * screen capture or stretch retention would make both meaningless.
    */
   observation?: MachineObservationConfig;
+  /**
+   * Folders this learner trusts on this machine (ADR 2026-10-08b D1): source
+   * links and agent tools may read files only inside these and the MCP
+   * client's roots. Written by `zam trust` and desktop Settings, never by a
+   * tool an agent can call.
+   */
+  trustedFolders?: string[];
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */

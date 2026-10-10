@@ -37,8 +37,23 @@ export interface ValidationResult {
 
 const FILE_NAME_RE = /^[a-z0-9]+(?:-[a-z0-9]+)*\.md$/;
 
+/**
+ * Agent instruction files (ADR 2026-10-08b D1): an article write must never
+ * produce one, wherever the bundle sits.
+ */
+export const AGENT_INSTRUCTION_FILES = [
+  "claude.md",
+  "agents.md",
+  "gemini.md",
+  "readme.md",
+] as const;
+
 export function isReservedFile(file: string): boolean {
-  return (RESERVED_FILES as readonly string[]).includes(file);
+  const lower = file.toLowerCase();
+  return (
+    (RESERVED_FILES as readonly string[]).includes(lower) ||
+    (AGENT_INSTRUCTION_FILES as readonly string[]).includes(lower)
+  );
 }
 
 function unquote(raw: string): string {

@@ -1113,6 +1113,29 @@ export {
   resolveRepoPath,
 } from "./system/repos.js";
 export type {
+  PathRefusalCode,
+  ReadTrustedFileOptions,
+  ResolvedTrustedPath,
+} from "./system/trusted-paths.js";
+export {
+  addTrustedFolder,
+  assertNoHiddenSegments,
+  canonicalRoots,
+  getTrustedFolders,
+  isAcceptableRoot,
+  isInside,
+  MAX_SOURCE_FILE_BYTES,
+  PATH_NOT_READABLE,
+  PATH_OUTSIDE_TRUSTED_FOLDERS,
+  PathRefusedError,
+  readTrustedTextFile,
+  removeTrustedFolder,
+  resolveTrustedPath,
+  TEXT_SOURCE_EXTENSIONS,
+  TRUST_FOLDER_HINT,
+  trustedRoots,
+} from "./system/trusted-paths.js";
+export type {
   InstallChannel,
   UpdateActionKind,
   UpdateDecision,

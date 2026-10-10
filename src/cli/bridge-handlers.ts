@@ -203,6 +203,8 @@ export interface GetReviewParams {
   /** Session-local admission budget. Zero keeps unseen cards out. */
   maxNew?: number;
   noResolve?: boolean;
+  /** More allowed roots for local source links, e.g. the MCP client's (ADR 2026-10-08b D1). */
+  roots?: readonly string[];
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
   /**
@@ -298,7 +300,9 @@ export async function getReview(db: Database, params: GetReviewParams) {
   let resolvedContext = null;
   if (params.noResolve !== true) {
     try {
-      resolvedContext = await resolveReviewContext(item.sourceLink);
+      resolvedContext = await resolveReviewContext(item.sourceLink, {
+        roots: params.roots,
+      });
     } catch {
       resolvedContext = null;
     }
@@ -350,6 +354,8 @@ export interface GetReviewsBatchParams {
   knowledgeContext?: string;
   includeQuestions?: boolean;
   noResolve?: boolean;
+  /** More allowed roots for local source links, e.g. the MCP client's (ADR 2026-10-08b D1). */
+  roots?: readonly string[];
   noDynamicQuestion?: boolean;
   /** Apply the same persisted workload and tier rules as learner sessions. */
   respectWorkload?: boolean;
@@ -476,7 +482,9 @@ export async function getReviewsBatch(
       let resolvedContext = null;
       if (params.noResolve !== true && token.source_link) {
         try {
-          resolvedContext = await resolveReviewContext(token.source_link);
+          resolvedContext = await resolveReviewContext(token.source_link, {
+            roots: params.roots,
+          });
         } catch {
           resolvedContext = null;
         }

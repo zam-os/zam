@@ -1,5 +1,11 @@
 import { createHash } from "node:crypto";
-import { mkdtempSync, readdirSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  readdirSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -9,6 +15,7 @@ import { createMcpServer } from "../../src/cli/commands/mcp.js";
 import type { StudioLaunchResult } from "../../src/cli/desktop-launch.js";
 import { readStagedImport } from "../../src/cli/material-staging.js";
 import {
+  addTrustedFolder,
   createToken,
   type Database,
   openDatabase,
@@ -44,9 +51,15 @@ describe("material import MCP tools", () => {
   let launches: number;
   let launchResult: StudioLaunchResult;
 
+  let previousConfigPath: string | undefined;
+
   beforeEach(async () => {
-    tempDir = mkdtempSync(join(tmpdir(), "zam-mcp-material-"));
+    tempDir = realpathSync.native(
+      mkdtempSync(join(tmpdir(), "zam-mcp-material-")),
+    );
     process.env.ZAM_PENDING_IMPORTS_DIR = join(tempDir, "pending");
+    previousConfigPath = process.env.ZAM_CONFIG_PATH;
+    process.env.ZAM_CONFIG_PATH = join(tempDir, "config.json");
     db = await openDatabase({
       dbPath: join(tempDir, "zam.db"),
       initialize: true,
@@ -79,6 +92,8 @@ describe("material import MCP tools", () => {
 
   afterEach(async () => {
     delete process.env.ZAM_PENDING_IMPORTS_DIR;
+    if (previousConfigPath === undefined) delete process.env.ZAM_CONFIG_PATH;
+    else process.env.ZAM_CONFIG_PATH = previousConfigPath;
     await client.close();
     await server.close();
     await db.close();
@@ -118,6 +133,9 @@ describe("material import MCP tools", () => {
   it("stages valid proposals, fingerprints the file and opens the Studio", async () => {
     const photo = join(tempDir, "IMG_1234.jpg");
     writeFileSync(photo, "fake photo bytes");
+    // ZAM fingerprints only files in a folder the learner trusts (ADR
+    // 2026-10-08b D1).
+    addTrustedFolder(tempDir);
     const result = await client.callTool({
       name: "zam_material_import",
       arguments: {

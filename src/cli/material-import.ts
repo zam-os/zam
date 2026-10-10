@@ -14,6 +14,7 @@ import { readFile, stat } from "node:fs/promises";
 import { basename, extname, isAbsolute, resolve } from "node:path";
 import { fileURLToPath, pathToFileURL } from "node:url";
 import {
+  assertNoHiddenSegments,
   type CurriculumScope,
   commitMaterialImport,
   type Database,
@@ -29,6 +30,8 @@ import {
   type MaterialReviewRow,
   matchMaterialProposals,
   materialAreaGroups,
+  resolveTrustedPath,
+  trustedRoots,
 } from "../kernel/index.js";
 import { getLastCurriculumSelection } from "./curriculum/breadcrumb.js";
 import {
@@ -385,6 +388,13 @@ async function sha256OfFile(path: string): Promise<string> {
 export async function materialFileFromAgent(
   file: AgentMaterialFile,
   now: Date = new Date(),
+  /**
+   * Where an agent's path may point (ADR 2026-10-08b D1). A path outside them
+   * is ignored as if the agent had named none: ZAM neither reads nor
+   * fingerprints a file the learner has not opened to it. `null` is for a
+   * file the learner picked themselves.
+   */
+  roots: readonly string[] | null = trustedRoots(),
 ): Promise<{
   name: string;
   sourceLink: string;
@@ -398,8 +408,16 @@ export async function materialFileFromAgent(
     file.sha256 && /^[0-9a-f]{64}$/i.test(file.sha256.trim())
       ? file.sha256.trim().toLowerCase()
       : undefined;
-  if (file.path?.trim()) {
-    const path = isAbsolute(file.path) ? file.path : resolve(file.path);
+  const named = file.path?.trim();
+  const allowedPath = !named
+    ? null
+    : roots === null
+      ? isAbsolute(named)
+        ? named
+        : resolve(named)
+      : confinedMaterialPath(named, roots);
+  if (allowedPath) {
+    const path = allowedPath;
     const info = await stat(path).catch(() => null);
     const sha256 = info?.isFile()
       ? await sha256OfFile(path).catch(() => undefined)
@@ -418,6 +436,19 @@ export async function materialFileFromAgent(
   };
 }
 
+function confinedMaterialPath(
+  raw: string,
+  roots: readonly string[],
+): string | null {
+  try {
+    const { path, root } = resolveTrustedPath(raw, roots);
+    assertNoHiddenSegments(path, root);
+    return path;
+  } catch {
+    return null;
+  }
+}
+
 /**
  * Stage what an agent submitted. Validation is the kernel's: an invalid set
  * is refused with every offending path, and nothing is written.
@@ -428,12 +459,15 @@ export async function stageHarnessImport(
     proposals: unknown;
     files: AgentMaterialFile[];
     harness?: string;
+    /** Allowed roots for the agent's file paths (ADR 2026-10-08b D1). */
+    roots?: readonly string[];
   },
   opts: StagingOptions = {},
 ): Promise<StagedImport> {
   const now = opts.now?.() ?? new Date();
+  const roots = input.roots ?? trustedRoots();
   const files = await Promise.all(
-    input.files.map((file) => materialFileFromAgent(file, now)),
+    input.files.map((file) => materialFileFromAgent(file, now, roots)),
   );
   return stageMaterialImport(
     {

@@ -1,5 +1,5 @@
 import { existsSync, readFileSync } from "node:fs";
-import { basename, dirname, join, resolve } from "node:path";
+import { basename, dirname, join } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
   RESOURCE_MIME_TYPE,
@@ -17,16 +17,24 @@ import type {
   StudyLearningMode,
 } from "../../kernel/index.js";
 import {
+  assertNoHiddenSegments,
+  canonicalRoots,
   getKnowledgeMapConfig,
   getReviewActivity,
   getSetting,
   getStudyLearningSettings,
+  getTrustedFolders,
   listMaterialAreaContext,
   MATERIAL_KINDS,
   MATERIAL_ORIGINS,
   openDatabase,
+  PATH_OUTSIDE_TRUSTED_FOLDERS,
+  PathRefusedError,
+  readTrustedTextFile,
+  resolveTrustedPath,
   scheduleObservationSweeps,
   setKnowledgeMapConfig,
+  TRUST_FOLDER_HINT,
 } from "../../kernel/index.js";
 import {
   COMPANION_SURFACES,
@@ -371,6 +379,38 @@ export function createMcpServer(
     { instructions: MCP_SERVER_INSTRUCTIONS },
   );
 
+  /**
+   * The MCP client's roots as folders: one source of allowed roots for paths
+   * a tool argument or a stored link names (ADR 2026-10-08b D1). Empty when
+   * the client advertises none or the request fails.
+   */
+  async function clientRootDirs(): Promise<string[]> {
+    try {
+      if (!server.server.getClientCapabilities()?.roots) return [];
+      const { roots } = await server.server.listRoots();
+      const dirs: string[] = [];
+      for (const { uri } of roots ?? []) {
+        if (!uri?.startsWith("file:")) continue;
+        try {
+          dirs.push(fileURLToPath(uri));
+        } catch {
+          // A malformed root URI names no folder.
+        }
+      }
+      return dirs;
+    } catch {
+      return [];
+    }
+  }
+
+  /** Client roots and the learner's trusted folders, canonical. */
+  async function allowedRoots(): Promise<string[]> {
+    return canonicalRoots([
+      ...(await clientRootDirs()),
+      ...getTrustedFolders(),
+    ]);
+  }
+
   async function getUserId(paramUser: string | undefined) {
     // Team library: the connection decides and a disagreeing `user` parameter
     // is a rejection (ADR 2026-09-04 Decision 2); personal library: the
@@ -660,6 +700,7 @@ export function createMcpServer(
         noResolve: params.noResolve,
         noDynamicQuestion: true,
         timeZone: params.timeZone,
+        roots: params.noResolve ? undefined : await allowedRoots(),
       });
     }),
   );
@@ -1914,28 +1955,35 @@ export function createMcpServer(
     );
 
   /**
-   * Default bundle dir for the okf tools: docs/okf under the MCP client's
-   * workspace root (roots/list) — NOT the server cwd, which for a
-   * host-spawned server is often the editor's installation directory
-   * (live 0.13.0 finding: "...\\Microsoft VS Code\\docs\\okf").
+   * The bundle an okf tool works on, confined to the allowed roots (ADR
+   * 2026-10-08b D1). Default: docs/okf under the first allowed root that has
+   * one — the MCP client's workspace roots first, then the learner's trusted
+   * folders — never the server cwd, which for a host-spawned server is often
+   * the editor's installation directory (live 0.13.0 finding). Writes go only
+   * into an existing ZAM bundle or docs/okf under a root.
    */
-  async function resolveOkfBundleDir(explicit?: string): Promise<string> {
-    const { DEFAULT_BUNDLE_DIR, resolveBundleDirFromRoots } = await import(
+  async function resolveOkfBundleDir(
+    explicit?: string,
+    mode: "read" | "write" = "read",
+  ): Promise<string> {
+    const { DEFAULT_BUNDLE_DIR, confineBundleDir } = await import(
       "../okf/io.js"
     );
-    if (explicit) return explicit;
-    try {
-      if (server.server.getClientCapabilities()?.roots) {
-        const { roots } = await server.server.listRoots();
-        return resolveBundleDirFromRoots(
-          (roots ?? []).map((root) => root.uri),
-          DEFAULT_BUNDLE_DIR,
-        );
-      }
-    } catch {
-      // Client advertised roots but the request failed: cwd fallback.
+    const roots = await allowedRoots();
+    if (roots.length === 0) {
+      throw new PathRefusedError(
+        PATH_OUTSIDE_TRUSTED_FOLDERS,
+        explicit ?? DEFAULT_BUNDLE_DIR,
+        `This agent app reported no workspace folder, and no folder is trusted. ${TRUST_FOLDER_HINT}`,
+      );
     }
-    return DEFAULT_BUNDLE_DIR;
+    const dir =
+      explicit ??
+      roots
+        .map((root) => join(root, DEFAULT_BUNDLE_DIR))
+        .find((candidate) => existsSync(candidate)) ??
+      join(roots[0], DEFAULT_BUNDLE_DIR);
+    return confineBundleDir(dir, roots, mode);
   }
 
   server.registerTool(
@@ -1995,14 +2043,15 @@ export function createMcpServer(
       },
     },
     wrapHandler(async (params: { bundle_dir?: string; file: string }) => {
-      const { readFileSync } = await import("node:fs");
       const { resolveArticlePath } = await import("../okf/io.js");
       const { parseFrontmatter } = await import("../okf/bundle.js");
       const path = resolveArticlePath(
         await resolveOkfBundleDir(params.bundle_dir),
         params.file,
       );
-      const markdown = readFileSync(path, "utf8");
+      const markdown = readTrustedTextFile(path, await allowedRoots(), {
+        extensions: new Set(["md"]),
+      }).content;
       const { fields } = parseFrontmatter(markdown);
       return { file: params.file, frontmatter: fields, markdown };
     }),
@@ -2057,7 +2106,7 @@ export function createMcpServer(
       }) => {
         const { upsertArticle } = await import("../okf/io.js");
         const result = upsertArticle(
-          await resolveOkfBundleDir(params.bundle_dir),
+          await resolveOkfBundleDir(params.bundle_dir, "write"),
           params.file,
           params.markdown,
         );
@@ -2084,13 +2133,27 @@ export function createMcpServer(
      * The repository to read or write. Never the server's working directory:
      * a host-started `zam mcp` often runs in the editor's install folder (the
      * 0.13.0 finding behind `resolveOkfBundleDir`). Null means the client did
-     * not say, and the agent has to pass `repo_root`.
+     * not say, and the agent has to pass `repo_root`. Either way it must lie
+     * inside a client root or a trusted folder (ADR 2026-10-08b D1).
      */
     const resolveMapRepoRoot = async (
       explicit: string | undefined,
       purpose: "read" | "write",
     ): Promise<string | null> => {
-      if (explicit) return resolve(explicit);
+      const candidate = await findMapRepoRoot(explicit, purpose);
+      if (candidate === null) return null;
+      const { path, root } = resolveTrustedPath(
+        candidate,
+        await allowedRoots(),
+      );
+      assertNoHiddenSegments(path, root);
+      return path;
+    };
+    const findMapRepoRoot = async (
+      explicit: string | undefined,
+      purpose: "read" | "write",
+    ): Promise<string | null> => {
+      if (explicit) return explicit;
       const { rootDirsFromUris, resolveRepoRootFromRoots } = await import(
         "../knowledge-map/load.js"
       );
@@ -2249,7 +2312,16 @@ export function createMcpServer(
       },
       wrapHandler(async (params: { repo_root?: string; view?: string }) => {
         const { loadKnowledgeMap } = await import("../knowledge-map/load.js");
-        const repoRoot = await resolveMapRepoRoot(params.repo_root, "read");
+        // A refused or missing repository is not an error: the panel opens
+        // and shows ZAM's own map with the reason (ADR 2026-10-08b D1).
+        let refusal: string | undefined;
+        const repoRoot = await resolveMapRepoRoot(
+          params.repo_root,
+          "read",
+        ).catch((error: unknown) => {
+          refusal = error instanceof Error ? error.message : String(error);
+          return null;
+        });
         const view = params.view ?? getKnowledgeMapConfig().view ?? "focus";
         if (repoRoot !== null) {
           // The absolute root, like zam_okf_visualize's bundle_dir: the
@@ -2263,6 +2335,7 @@ export function createMcpServer(
           map: loaded?.map ?? null,
           issues: loaded?.issues ?? [],
           view,
+          ...(refusal ? { refusal } : {}),
         };
       }),
     );
@@ -2522,6 +2595,7 @@ export function createMcpServer(
           analysis: params.analysis,
           proposals: params.proposals,
           files: params.files,
+          roots: await allowedRoots(),
           harness: host?.label,
         });
         const studio =
@@ -2633,7 +2707,12 @@ export function createMcpServer(
         "../okf/io.js"
       );
       const bundleDir = await resolveOkfBundleDir(params.bundle_dir);
-      const path = resolveCitationPath(bundleDir, params.target);
+      const cited = resolveCitationPath(bundleDir, params.target);
+      // The repository root is not necessarily an allowed root: the citation
+      // must lie inside one as well (ADR 2026-10-08b D1).
+      const { path } = readTrustedTextFile(cited, await allowedRoots(), {
+        extensions: new Set(["md"]),
+      });
       const content = readFileSync(path, "utf8");
       const root = findRepoRoot(bundleDir);
       const repoRelativePath = relative(root, path).split(sep).join("/");
@@ -2696,7 +2775,15 @@ export function createMcpServer(
         );
         const { loadBundle } = await import("../okf/io.js");
         const { resolve } = await import("node:path");
-        const requestedDir = await resolveOkfBundleDir(bundle_dir);
+        // A refused bundle is a problem to show, not a tool error: the panel
+        // still opens and says what to trust (ADR 2026-10-08b D1).
+        let refusal: string | null = null;
+        const requestedDir = await resolveOkfBundleDir(bundle_dir).catch(
+          (error: unknown) => {
+            refusal = error instanceof Error ? error.message : String(error);
+            return bundle_dir ?? "docs/okf";
+          },
+        );
         let resolvedBundleDir = resolve(requestedDir);
         // Publish the RESOLVED absolute dir, not the raw argument: the VS Code
         // Companion's own zam server runs with a different cwd, so a relative
@@ -2712,6 +2799,7 @@ export function createMcpServer(
         let log = "";
         let okfVersion: string | null = null;
         try {
+          if (refusal !== null) throw new Error(refusal);
           const bundle = loadBundle(requestedDir);
           resolvedBundleDir = bundle.dir;
           catalog = bundle.catalog;

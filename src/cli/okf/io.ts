@@ -13,6 +13,12 @@ import {
 import { dirname, isAbsolute, join, relative, resolve, sep } from "node:path";
 import { fileURLToPath } from "node:url";
 import {
+  assertNoHiddenSegments,
+  PATH_NOT_READABLE,
+  PathRefusedError,
+  resolveTrustedPath,
+} from "../../kernel/index.js";
+import {
   appendLog,
   buildCatalog,
   type CatalogEntry,
@@ -81,6 +87,11 @@ export function collectSourceLinkBases(dir: string): string[] {
 export function resolveArticlePath(dir: string, file: string): string {
   if (file.includes("/") || file.includes("\\") || file.includes("..")) {
     throw new Error(`invalid article file name: ${file}`);
+  }
+  if (!file.toLowerCase().endsWith(".md") || file.startsWith(".")) {
+    throw new Error(
+      `invalid article file name: ${file} (articles are .md files)`,
+    );
   }
   if (isReservedFile(file)) {
     throw new Error(`refusing to address reserved file: ${file}`);
@@ -165,13 +176,31 @@ export function loadBundle(dir: string): LoadedBundle {
   } catch {
     throw new Error(`OKF bundle directory not found: ${root}`);
   }
-  const articles = entries.sort().map((file) => ({
-    file,
-    markdown: readFileSync(join(root, file), "utf8"),
-  }));
-  const problems = articles.flatMap(
-    ({ file, markdown }) => validateArticle(file, markdown).problems,
-  );
+  // An article that is a link to a file outside the bundle is not read
+  // (ADR 2026-10-08b D1): the bundle may be inside a trusted folder while the
+  // link target is not.
+  const realRoot = realpathSync.native(root);
+  const escaping: string[] = [];
+  const articles = entries
+    .sort()
+    .filter((file) => {
+      const real = realpathSync.native(join(root, file));
+      const inside = dirname(real) === realRoot;
+      if (!inside) escaping.push(file);
+      return inside;
+    })
+    .map((file) => ({
+      file,
+      markdown: readFileSync(join(root, file), "utf8"),
+    }));
+  const problems = [
+    ...escaping.map(
+      (file) => `${file}: links to a file outside the bundle; not read`,
+    ),
+    ...articles.flatMap(
+      ({ file, markdown }) => validateArticle(file, markdown).problems,
+    ),
+  ];
   const catalog =
     problems.length === 0 ? buildCatalog(articles) : safeCatalog(articles);
   return { dir: root, articles, catalog, problems };
@@ -244,4 +273,73 @@ export function upsertArticle(
     "utf8",
   );
   return { validation, entry, created };
+}
+
+/** The real path of `path`, resolving its longest existing prefix. */
+function realPathOfNearest(path: string): string {
+  let existing = resolve(path);
+  const rest: string[] = [];
+  while (!existsSync(existing)) {
+    const parent = dirname(existing);
+    if (parent === existing) return resolve(path);
+    rest.unshift(existing.slice(parent.length).replace(/^[\\/]/, ""));
+    existing = parent;
+  }
+  return join(realpathSync.native(existing), ...rest);
+}
+
+/** Whether `dir` holds a bundle ZAM generated: its index.md says so. */
+export function isZamBundle(dir: string): boolean {
+  const index = join(dir, "index.md");
+  if (!existsSync(index)) return false;
+  try {
+    return readFileSync(index, "utf8").includes("`zam_okf_upsert`");
+  } catch {
+    return false;
+  }
+}
+
+/**
+ * Confine a bundle directory that a tool argument names to the allowed roots
+ * (ADR 2026-10-08b D1). Reads need an existing folder inside a root. Writes go
+ * only into an existing ZAM bundle or into `docs/okf` directly under a root,
+ * and never into a root itself, so an upsert cannot create files next to a
+ * repository's agent instruction files.
+ */
+export function confineBundleDir(
+  dir: string,
+  roots: readonly string[],
+  mode: "read" | "write",
+): string {
+  if (mode === "write") {
+    // A new knowledge base may start at docs/okf under a root, even before
+    // the folder exists.
+    const wanted = (
+      isAbsolute(dir) ? [dir] : roots.map((r) => join(r, dir))
+    ).map(realPathOfNearest);
+    const docsOkf = roots
+      .map((root) => join(root, "docs", "okf"))
+      .find((candidate) => wanted.includes(candidate));
+    if (docsOkf && !existsSync(docsOkf)) return docsOkf;
+  }
+  const { path, root } = resolveTrustedPath(dir, roots);
+  assertNoHiddenSegments(path, root);
+  if (mode === "write") {
+    if (path === root) {
+      throw new PathRefusedError(
+        PATH_NOT_READABLE,
+        path,
+        `ZAM does not write articles into ${path}: a knowledge base lives in docs/okf, never at the top of a folder.`,
+      );
+    }
+    const isDocsOkf = roots.some((r) => join(r, "docs", "okf") === path);
+    if (!isDocsOkf && !isZamBundle(path)) {
+      throw new PathRefusedError(
+        PATH_NOT_READABLE,
+        path,
+        `ZAM writes articles only into an existing ZAM knowledge base or into docs/okf; ${path} is neither.`,
+      );
+    }
+  }
+  return path;
 }
