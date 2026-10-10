@@ -103,11 +103,17 @@ import {
   resetDiscussion,
 } from "./discussion.js";
 import {
+  graphReturnOrigin,
+  rememberGraphOrigin,
+} from "./graph-return.js";
+import {
   type ImportProgressEvent,
+  applyLearningContentChrome,
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
   setLearningContentFilePicker,
+  setLearningContentGraphOpener,
   setLearningContentProgressSource,
 } from "./learning-content.js";
 import { setMaterialImportHost } from "./material-import-start.js";
@@ -207,6 +213,13 @@ setLearningContentProgressSource(async (onProgress) => {
     (event) => onProgress(event.payload),
   );
   return unlisten;
+});
+
+setLearningContentGraphOpener(() => {
+  rememberGraphOrigin("learning-content-view");
+  const back = document.getElementById("btn-graph-back");
+  if (back) back.textContent = t("btn_graph_back_cards");
+  switchView("graph-view");
 });
 
 setLearningContentFilePicker(async () => {
@@ -1386,8 +1399,12 @@ function initializeTranslations() {
   if (lblSourceExtractedPreview) lblSourceExtractedPreview.textContent = t("lbl_source_extracted_preview");
 
   document.getElementById("graph-title")!.textContent = t("graph_title");
-  document.getElementById("btn-graph-back")!.textContent =
-    t("btn_back_to_dashboard");
+  document.getElementById("btn-graph-back")!.textContent = t(
+    graphReturnOrigin() === "learning-content-view"
+      ? "btn_graph_back_cards"
+      : "btn_back_to_dashboard",
+  );
+  applyLearningContentChrome();
   document.getElementById("btn-graph-refresh")!.textContent =
     t("graph_refresh");
   document.getElementById("graph-focus-title")!.textContent = t("graph_focus");
@@ -8962,16 +8979,20 @@ window.addEventListener("DOMContentLoaded", () => {
   if (openGraphBtn) {
     openGraphBtn.textContent = t("btn_open_graph");
     openGraphBtn.addEventListener("click", () => {
+      rememberGraphOrigin("dashboard-view");
+      const back = document.getElementById("btn-graph-back");
+      if (back) back.textContent = t("btn_back_to_dashboard");
       switchView("graph-view");
     });
   }
 
-  // Graph back + refresh
+  // Graph back + refresh. Back returns to whichever view opened the graph.
   const backBtn = document.getElementById("btn-graph-back");
   if (backBtn) backBtn.addEventListener("click", () => {
+    const origin = graphReturnOrigin();
     disposeGraph();
-    switchView("dashboard-view");
-    loadDashboard();
+    switchView(origin);
+    if (origin === "dashboard-view") loadDashboard();
   });
 
   const refreshBtn = document.getElementById("btn-graph-refresh");

@@ -145,8 +145,59 @@ describe("zam bridge learning-content lists", () => {
       "list-drafts",
       "unchosen-groups",
       "unchosen-members",
+      "personal-card-ensure",
     ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(true);
     }
+  });
+
+  it("creates one card for a published token and refuses a draft", () => {
+    const taken = runCliJson([
+      "bridge",
+      "personal-card-ensure",
+      "--slug",
+      "loose",
+    ]);
+    expect(taken).toMatchObject({
+      success: true,
+      slug: "loose",
+      created: true,
+    });
+
+    const again = runCliJson([
+      "bridge",
+      "personal-card-ensure",
+      "--slug",
+      "loose",
+    ]);
+    expect(again.created).toBe(false);
+    expect(again.cardId).toBe(taken.cardId);
+
+    const published = runCliJson([
+      "bridge",
+      "personal-card-list",
+      "--published-only",
+    ]);
+    expect(
+      published.cards.map((card: { slug: string }) => card.slug).sort(),
+    ).toEqual(["held", "loose"]);
+
+    const draft = runCliError([
+      "bridge",
+      "personal-card-ensure",
+      "--slug",
+      "sketch",
+    ]);
+    expect(draft.status).not.toBe(0);
+    expect(draft.body.error).toContain("Only a published token can be taken");
+
+    const missing = runCliError([
+      "bridge",
+      "personal-card-ensure",
+      "--slug",
+      "missing",
+    ]);
+    expect(missing.status).not.toBe(0);
+    expect(missing.body.error).toContain("Token not found");
   });
 });

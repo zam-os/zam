@@ -47,6 +47,7 @@ const REVIEWED = [
   "personal-card-create",
   "personal-card-create-assignment",
   "personal-card-delete",
+  "personal-card-ensure",
   "personal-card-list",
   "personal-card-list-assignments",
   "personal-card-publish-revision",

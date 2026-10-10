@@ -6151,6 +6151,37 @@ bridgeCommand
     });
   });
 
+// One card for one published token the learner has not taken (ADR 2026-10-10).
+// startLibraryTopic covers a whole source group. This is ensureCard for a
+// single slug: no new token, no rating, and drafts stay unpublished.
+bridgeCommand
+  .command("personal-card-ensure")
+  .description(
+    "Create this learner's card for one existing published token (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .requiredOption("--slug <slug>", "Published token slug")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const userId = await resolveUser(opts, db, { json: true });
+      const token = await getTokenBySlug(db, opts.slug);
+      if (!token || token.deprecated_at) {
+        jsonError(`Token not found: ${opts.slug}`);
+      }
+      if (token.editorial_state !== "published") {
+        jsonError("Only a published token can be taken");
+      }
+      const existing = await getCard(db, token.id, userId);
+      const card = await ensureCard(db, token.id, userId);
+      jsonOut({
+        success: true,
+        slug: token.slug,
+        cardId: card.id,
+        created: !existing,
+      });
+    });
+  });
+
 // ── zam bridge personal-card-create ────────────────────────────────────────
 
 bridgeCommand

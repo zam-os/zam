@@ -167,9 +167,12 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   },
   "personal-card-revision-preview": { why: "Reads a revision preview." },
   "list-drafts": { why: "Reads draft tokens." },
-  // Untaken published tokens (ADR 2026-10-10). Read-only.
+  // Untaken published tokens (ADR 2026-10-10). The two lists only read.
   "unchosen-groups": { why: "Reads published tokens the caller has no card for." },
   "unchosen-members": { why: "Reads published tokens the caller has no card for." },
+  "personal-card-ensure": {
+    why: "Writes the caller's own card for one published token.",
+  },
   "personal-card-create-assignment": { why: "Learning state only." },
   "personal-card-withdraw-assignment": { why: "Learning state only." },
   "personal-card-list-assignments": { why: "Reads assignments." },

@@ -1,6 +1,6 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
-import { initLibraryTopics } from "./library-topics.js";
+import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
 import { initMaterialImportStart } from "./material-import-start.js";
 import { initMaterialImports } from "./material-review.js";
@@ -42,6 +42,48 @@ let cardsList: PersonalCard[] = [];
 let selectedCard: PersonalCard | null = null;
 let isCreatingNew = false;
 let isAdvancedExpanded = false;
+
+export type LearningListSegment = "personal" | "unchosen" | "unpublished";
+type LearningArea = "cards" | "sources";
+
+interface UnchosenGroupRow {
+  key: string;
+  name: string;
+  domain: string | null;
+  itemCount: number;
+}
+
+interface UnchosenMemberRow {
+  tokenId: string;
+  slug: string;
+  title: string;
+  concept: string;
+  domain: string;
+  sourceLink: string | null;
+  question: string | null;
+  bloomLevel: number;
+}
+
+interface DraftTokenRow {
+  id: string;
+  slug: string;
+  title: string | null;
+  concept: string;
+  question: string | null;
+  context: string | null;
+  sourceLink: string | null;
+  domain: string | null;
+  bloomLevel: number | null;
+  editorialState: string;
+}
+
+let segment: LearningListSegment = "personal";
+let area: LearningArea = "cards";
+let openUnchosenKey: string | null = null;
+let unchosenGroups: UnchosenGroupRow[] = [];
+let unchosenMembers: UnchosenMemberRow[] = [];
+let loadGeneration = 0;
+let graphOpener: (() => void) | null = null;
 
 // DOM Cache
 let layoutContainer: HTMLElement;
@@ -281,6 +323,7 @@ let fieldSlug: HTMLInputElement;
 
 // Form actions
 let btnSave: HTMLButtonElement;
+let btnTake: HTMLButtonElement;
 let btnDelete: HTMLButtonElement;
 let btnCancel: HTMLButtonElement;
 let btnPublishRevision: HTMLButtonElement;
@@ -311,6 +354,137 @@ let releaseRadios: NodeListOf<HTMLInputElement>;
 
 let pendingConfirmCallback: (() => void) | null = null;
 let pendingHardDeleteCallback: (() => void) | null = null;
+
+export interface LearningSearchFields {
+  title?: string | null;
+  slug?: string | null;
+  concept?: string | null;
+  domain?: string | null;
+  question?: string | null;
+  name?: string | null;
+  key?: string | null;
+}
+
+/** Case-insensitive substring match over the fields the list already searches. */
+export function matchesLearningSearch(
+  item: LearningSearchFields,
+  query: string,
+): boolean {
+  const needle = query.toLowerCase().trim();
+  if (!needle) return true;
+  return [
+    item.title,
+    item.slug,
+    item.concept,
+    item.domain,
+    item.question,
+    item.name,
+    item.key,
+  ].some((value) => (value ?? "").toLowerCase().includes(needle));
+}
+
+/** Empty group names are the no-source group. The Studio supplies the label. */
+export function unchosenGroupLabel(group: { name: string }): string {
+  const name = group.name.trim();
+  return name || t("lbl_no_source_group");
+}
+
+/** Entwurf / In Prüfung, from the token's editorial state. */
+export function editorialStatusLabel(state: string | null | undefined): string {
+  if (state === "in_review") return t("lbl_editorial_in_review");
+  return t("lbl_card_status_draft");
+}
+
+/** The desktop shell opens the 3D graph. The panel has no graph view. */
+export function setLearningContentGraphOpener(opener: () => void): void {
+  graphOpener = opener;
+  document.getElementById("btn-content-open-graph")?.classList.remove("hidden");
+}
+
+function setText(id: string, text: string): void {
+  const el = document.getElementById(id);
+  if (el) el.textContent = text;
+}
+
+/** Labels for the area and segment controls. Safe before the studio is bound. */
+export function applyLearningContentChrome(): void {
+  setText("btn-content-area-cards", t("content_area_cards"));
+  setText("btn-content-area-sources", t("content_area_sources"));
+  setText("btn-content-segment-personal", t("content_segment_personal"));
+  setText("btn-content-segment-unchosen", t("content_segment_unchosen"));
+  setText("btn-content-segment-unpublished", t("content_segment_unpublished"));
+  setText("btn-content-open-graph", t("btn_open_graph"));
+  setText("btn-content-take-card", t("btn_take_card"));
+  syncAreaChrome();
+  syncSegmentChrome();
+}
+
+function setTab(id: string, selected: boolean): void {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle("active", selected);
+  el.setAttribute("aria-selected", selected ? "true" : "false");
+}
+
+function setPaneHidden(id: string, hidden: boolean): void {
+  const el = document.getElementById(id);
+  if (!el) return;
+  el.classList.toggle("hidden", hidden);
+  if (el instanceof HTMLElement) el.hidden = hidden;
+}
+
+function syncAreaChrome(): void {
+  setPaneHidden("content-cards-area", area !== "cards");
+  setPaneHidden("content-sources-area", area !== "sources");
+  setPaneHidden("content-cards-actions", area !== "cards");
+  setTab("btn-content-area-cards", area === "cards");
+  setTab("btn-content-area-sources", area === "sources");
+}
+
+function syncSegmentChrome(): void {
+  setTab("btn-content-segment-personal", segment === "personal");
+  setTab("btn-content-segment-unchosen", segment === "unchosen");
+  setTab("btn-content-segment-unpublished", segment === "unpublished");
+  const context = document.getElementById(
+    "content-context-filter",
+  ) as HTMLSelectElement | null;
+  if (context) context.disabled = segment !== "personal";
+}
+
+function showArea(next: LearningArea): void {
+  if (area === next) return;
+  area = next;
+  syncAreaChrome();
+}
+
+function blankCard(
+  partial: Partial<PersonalCard> &
+    Pick<PersonalCard, "tokenId" | "slug" | "concept">,
+): PersonalCard {
+  return {
+    title: "",
+    domain: "",
+    bloomLevel: 1,
+    context: "",
+    symbiosisMode: null,
+    sourceLink: null,
+    question: null,
+    createdAt: "",
+    updatedAt: "",
+    cardId: null,
+    state: null,
+    dueAt: null,
+    stability: null,
+    difficulty: null,
+    reps: null,
+    lapses: null,
+    elapsedDays: null,
+    scheduledDays: null,
+    blocked: null,
+    knowledgeContexts: [],
+    ...partial,
+  };
+}
 
 export function escapeHtml(value: string): string {
   return value.replace(
@@ -376,6 +550,9 @@ export function initLearningContentStudio(): void {
   // Buttons & Toggles
   btnSave = document.getElementById(
     "btn-content-save-card",
+  ) as HTMLButtonElement;
+  btnTake = document.getElementById(
+    "btn-content-take-card",
   ) as HTMLButtonElement;
   btnDelete = document.getElementById(
     "btn-content-delete-card",
@@ -578,6 +755,15 @@ export function initLearningContentStudio(): void {
     void loadStudioData();
   });
   categoryFilter.addEventListener("change", () => refreshCardsList());
+  bindLearningContentAreas();
+  document
+    .getElementById("btn-content-open-graph")
+    ?.addEventListener("click", () => {
+      graphOpener?.();
+    });
+  document
+    .getElementById("btn-content-open-graph")
+    ?.classList.toggle("hidden", !graphOpener);
 
   newCardBtn.addEventListener("click", () => startCreateNewCard());
   createFirstCardBtn.addEventListener("click", () => startCreateNewCard());
@@ -635,6 +821,10 @@ export function initLearningContentStudio(): void {
   });
   btnCancel.addEventListener("click", () => cancelEdit());
   btnSave.addEventListener("click", () => saveCard());
+  btnTake.addEventListener("click", () => {
+    void takeSelectedToken();
+  });
+  applyLearningContentChrome();
   btnDelete.addEventListener("click", () => handleDeleteClick());
 
   toggleAdvanced.addEventListener("click", () => toggleAdvancedSection());
@@ -701,39 +891,130 @@ async function initializeStudioContextFilter(): Promise<void> {
   await loadStudioData();
 }
 
+function bindLearningContentAreas(): void {
+  document
+    .getElementById("btn-content-area-cards")
+    ?.addEventListener("click", () => showArea("cards"));
+  document
+    .getElementById("btn-content-area-sources")
+    ?.addEventListener("click", () => showArea("sources"));
+  const segments: Array<[string, LearningListSegment]> = [
+    ["btn-content-segment-personal", "personal"],
+    ["btn-content-segment-unchosen", "unchosen"],
+    ["btn-content-segment-unpublished", "unpublished"],
+  ];
+  for (const [id, next] of segments) {
+    document.getElementById(id)?.addEventListener("click", () => {
+      if (segment === next) return;
+      segment = next;
+      openUnchosenKey = null;
+      selectedCard = null;
+      isCreatingNew = false;
+      syncSegmentChrome();
+      void loadStudioData();
+    });
+  }
+}
+
+function passesCategory(domain: string | null | undefined): boolean {
+  const filterCat = categoryFilter.value;
+  if (filterCat === "all") return true;
+  return domainMatches(domain ?? "", filterCat);
+}
+
+function rebuildCategoryFilter(domains: Array<{ domain: string }>): void {
+  const categoryOptions = buildDomainOptions(domains);
+  const currentVal = categoryFilter.value;
+  categoryFilter.innerHTML = `<option value="all">${t("lbl_all_categories")}</option>`;
+  for (const category of categoryOptions) {
+    const opt = document.createElement("option");
+    opt.value = category.value;
+    opt.textContent = category.value.split("/").join(" › ");
+    opt.dataset.categoryGroup = String(category.isGroup);
+    categoryFilter.appendChild(opt);
+  }
+  categoryFilter.value = categoryOptions.some(
+    (category) => category.value === currentVal,
+  )
+    ? currentVal
+    : "all";
+}
+
+function currentDomains(): Array<{ domain: string }> {
+  if (segment === "unchosen" && openUnchosenKey === null) {
+    return unchosenGroups
+      .filter((group) => group.domain)
+      .map((group) => ({ domain: group.domain as string }));
+  }
+  if (segment === "unchosen") {
+    return unchosenMembers.map((member) => ({ domain: member.domain }));
+  }
+  return cardsList.map((card) => ({ domain: card.domain }));
+}
+
 export async function loadStudioData(): Promise<void> {
+  const generation = ++loadGeneration;
   try {
-    const args = contextFilter?.value
-      ? ["--knowledge-context", contextFilter.value]
-      : [];
-    const listRes = await runBridge<{ cards: PersonalCard[] }>(
-      "personal-card-list",
-      args,
-    );
-    cardsList = listRes.cards;
-
-    const categoryOptions = buildDomainOptions(cardsList);
-
-    // Clear and reset dropdown
-    const currentVal = categoryFilter.value;
-    categoryFilter.innerHTML = `<option value="all">${t("lbl_all_categories")}</option>`;
-    for (const category of categoryOptions) {
-      const opt = document.createElement("option");
-      opt.value = category.value;
-      opt.textContent = category.value.split("/").join(" › ");
-      opt.dataset.categoryGroup = String(category.isGroup);
-      categoryFilter.appendChild(opt);
+    if (segment === "personal") {
+      const args = ["--published-only"];
+      if (contextFilter?.value) {
+        args.push("--knowledge-context", contextFilter.value);
+      }
+      const listRes = await runBridge<{ cards: PersonalCard[] }>(
+        "personal-card-list",
+        args,
+      );
+      if (generation !== loadGeneration) return;
+      cardsList = listRes.cards;
+    } else if (segment === "unchosen") {
+      if (openUnchosenKey === null) {
+        const listRes = await runBridge<{ groups: UnchosenGroupRow[] }>(
+          "unchosen-groups",
+        );
+        if (generation !== loadGeneration) return;
+        unchosenGroups = listRes.groups ?? [];
+      } else {
+        const listRes = await runBridge<{ members: UnchosenMemberRow[] }>(
+          "unchosen-members",
+          ["--key", openUnchosenKey],
+        );
+        if (generation !== loadGeneration) return;
+        unchosenMembers = listRes.members ?? [];
+      }
+    } else {
+      const [drafts, held] = await Promise.all([
+        runBridge<{ tokens: DraftTokenRow[] }>("list-drafts"),
+        runBridge<{ cards: PersonalCard[] }>("personal-card-list"),
+      ]);
+      if (generation !== loadGeneration) return;
+      const heldBySlug = new Map(
+        (held.cards ?? []).map((card) => [card.slug, card]),
+      );
+      cardsList = (drafts.tokens ?? []).map((token) => {
+        const existing = heldBySlug.get(token.slug);
+        if (existing) return existing;
+        return blankCard({
+          tokenId: token.id,
+          slug: token.slug,
+          title: token.title ?? "",
+          concept: token.concept,
+          domain: token.domain ?? "",
+          bloomLevel: token.bloomLevel ?? 1,
+          context: token.context ?? "",
+          sourceLink: token.sourceLink,
+          question: token.question,
+          editorialState: token.editorialState,
+        });
+      });
     }
-    categoryFilter.value = categoryOptions.some(
-      (category) => category.value === currentVal,
-    )
-      ? currentVal
-      : "all";
 
+    rebuildCategoryFilter(currentDomains());
     await loadBundledCells();
+    if (generation !== loadGeneration) return;
     refreshCardsList();
     updateUIForSelection();
   } catch (err) {
+    if (generation !== loadGeneration) return;
     console.error("Failed to load cards list", err);
     alert(
       `${t("lbl_error_loading")}: ${err instanceof Error ? err.message : String(err)}`,
@@ -741,79 +1022,278 @@ export async function loadStudioData(): Promise<void> {
   }
 }
 
+function emptyListCopy(): string {
+  if (segment === "unchosen") return t("lbl_empty_unchosen");
+  if (segment === "unpublished") return t("lbl_empty_unpublished");
+  return t("lbl_empty_content");
+}
+
+function appendEmpty(message: string): void {
+  const p = document.createElement("p");
+  p.className = "observer-history-empty";
+  p.style.padding = "20px";
+  p.style.textAlign = "center";
+  p.textContent = message;
+  listContainer.appendChild(p);
+}
+
 function refreshCardsList(): void {
-  const query = searchInput.value.toLowerCase().trim();
-  const filterCat = categoryFilter.value;
-
-  const filtered = cardsList.filter((card) => {
-    // 1. Category Filter
-    if (filterCat !== "all" && !domainMatches(card.domain, filterCat)) {
-      return false;
-    }
-    // 2. Query Search (Fuzzy over slug, concept, domain, question)
-    if (query) {
-      const titleMatch = card.title?.toLowerCase().includes(query);
-      const slugMatch = card.slug?.toLowerCase().includes(query);
-      const conceptMatch = card.concept?.toLowerCase().includes(query);
-      const domainMatch = card.domain?.toLowerCase().includes(query);
-      const questionMatch = card.question?.toLowerCase().includes(query);
-      return (
-        titleMatch || slugMatch || conceptMatch || domainMatch || questionMatch
-      );
-    }
-    return true;
-  });
-
+  const query = searchInput.value;
   listContainer.innerHTML = "";
 
-  if (filtered.length === 0) {
-    listContainer.innerHTML = `<p class="observer-history-empty" style="padding: 20px; text-align: center;">${t("lbl_empty_content")}</p>`;
+  if (segment === "unchosen" && openUnchosenKey !== null) {
+    listContainer.appendChild(membersToolbar(openUnchosenKey));
+    const filtered = unchosenMembers.filter(
+      (member) =>
+        passesCategory(member.domain) && matchesLearningSearch(member, query),
+    );
+    if (filtered.length === 0) {
+      appendEmpty(emptyListCopy());
+      return;
+    }
+    for (const member of filtered) {
+      listContainer.appendChild(memberRow(member));
+    }
     return;
   }
 
+  if (segment === "unchosen") {
+    const filtered = unchosenGroups.filter(
+      (group) =>
+        passesCategory(group.domain) &&
+        matchesLearningSearch(
+          { name: group.name, key: group.key, domain: group.domain },
+          query,
+        ),
+    );
+    if (filtered.length === 0) {
+      appendEmpty(emptyListCopy());
+      return;
+    }
+    for (const group of filtered) {
+      listContainer.appendChild(groupRow(group));
+    }
+    return;
+  }
+
+  const filtered = cardsList.filter(
+    (card) => passesCategory(card.domain) && matchesLearningSearch(card, query),
+  );
+  if (filtered.length === 0) {
+    appendEmpty(emptyListCopy());
+    return;
+  }
   for (const card of filtered) {
-    const div = document.createElement("div");
-    div.className = "content-list-item";
-    if (selectedCard && selectedCard.slug === card.slug) {
-      div.classList.add("selected");
-    }
+    listContainer.appendChild(cardRow(card));
+  }
+}
 
-    // Determine status label & class
-    let statusText = t("lbl_card_status_not_started");
-    let statusClass = "not-started";
-    if (card.state) {
-      statusText = t(`lbl_card_status_${card.state}`);
-      statusClass = card.state;
-    }
+function membersToolbar(key: string): HTMLElement {
+  const bar = document.createElement("div");
+  bar.className = "content-list-item";
+  bar.style.display = "flex";
+  bar.style.flexDirection = "row";
+  bar.style.alignItems = "center";
+  bar.style.flexWrap = "wrap";
+  bar.style.gap = "8px";
+  const group = unchosenGroups.find((item) => item.key === key);
+  const back = document.createElement("button");
+  back.type = "button";
+  back.className = "btn secondary-btn btn-sm";
+  back.textContent = t("wizard_btn_back");
+  back.addEventListener("click", () => closeGroup());
+  const name = document.createElement("span");
+  name.className = "content-list-item-concept";
+  name.textContent = group ? unchosenGroupLabel(group) : key;
+  bar.append(back, name);
+  if (key) {
+    bar.append(startTopicButton(key));
+  }
+  return bar;
+}
 
-    const isDraft =
-      card.editorialState === "draft" || card.editorialState === "in_review";
-    if (isDraft) {
-      statusText = t("lbl_card_status_draft");
-      statusClass = "draft";
-    }
-    const isDue = card.dueAt && new Date(card.dueAt) <= new Date();
-    const dueLabel = isDue
-      ? `<span class="card-status-badge again" style="font-size: 0.7rem; padding: 1px 4px; background: rgba(239, 68, 68, 0.1); color: #ef4444; margin-left: 5px;">${escapeHtml(t("lbl_card_due"))}</span>`
-      : "";
+function startTopicButton(key: string): HTMLButtonElement {
+  const button = document.createElement("button");
+  button.type = "button";
+  button.className = "btn secondary-btn btn-sm";
+  button.textContent = t("library_topics_start");
+  button.addEventListener("click", (event) => {
+    event.stopPropagation();
+    void startGroup(key);
+  });
+  return button;
+}
 
-    div.innerHTML = `
-      <div class="content-list-item-header">
-        <span class="content-list-item-concept">${escapeHtml(card.concept || t("lbl_question"))}</span>
-        <span class="card-status-badge ${escapeHtml(statusClass)}">${escapeHtml(statusText)}</span>
-      </div>
-      <div class="content-list-item-meta">
-        <span class="content-list-item-domain">${escapeHtml(card.domain || "—")}</span>
-        <span style="font-size: 0.75rem; color: var(--clr-text-muted);">Bloom ${card.bloomLevel}</span>
-        ${dueLabel}
-      </div>
-    `;
+function groupRow(group: UnchosenGroupRow): HTMLElement {
+  const div = document.createElement("div");
+  div.className = "content-list-item";
+  const header = document.createElement("div");
+  header.className = "content-list-item-header";
+  const name = document.createElement("span");
+  name.className = "content-list-item-concept";
+  name.textContent = unchosenGroupLabel(group);
+  header.append(name);
+  if (group.key) header.append(startTopicButton(group.key));
+  const meta = document.createElement("div");
+  meta.className = "content-list-item-meta";
+  const domain = document.createElement("span");
+  domain.className = "content-list-item-domain";
+  domain.textContent = group.domain || "—";
+  const count = document.createElement("span");
+  count.style.fontSize = "0.75rem";
+  count.style.color = "var(--clr-text-muted)";
+  count.textContent = tf("content_group_count", {
+    count: String(group.itemCount),
+  });
+  meta.append(domain, count);
+  div.append(header, meta);
+  div.addEventListener("click", () => openGroup(group.key));
+  return div;
+}
 
-    div.addEventListener("click", () => {
-      selectCard(card);
-    });
+function memberRow(member: UnchosenMemberRow): HTMLElement {
+  return tokenRow(
+    member.concept || member.title || t("lbl_question"),
+    member.domain,
+    t("lbl_unchosen_token"),
+    "not-started",
+    member.bloomLevel,
+    selectedCard?.slug === member.slug,
+    () =>
+      selectCard(
+        blankCard({
+          tokenId: member.tokenId,
+          slug: member.slug,
+          title: member.title,
+          concept: member.concept,
+          domain: member.domain,
+          bloomLevel: member.bloomLevel,
+          sourceLink: member.sourceLink,
+          question: member.question,
+          editorialState: "published",
+        }),
+      ),
+  );
+}
 
-    listContainer.appendChild(div);
+function cardRow(card: PersonalCard): HTMLElement {
+  let statusText = t("lbl_card_status_not_started");
+  let statusClass = "not-started";
+  if (segment === "unpublished") {
+    statusText = editorialStatusLabel(card.editorialState);
+    statusClass = "draft";
+  } else if (card.state) {
+    statusText = t(`lbl_card_status_${card.state}`);
+    statusClass = card.state;
+  }
+  const row = tokenRow(
+    card.concept || t("lbl_question"),
+    card.domain,
+    statusText,
+    statusClass,
+    card.bloomLevel,
+    selectedCard?.slug === card.slug,
+    () => selectCard(card),
+  );
+  if (
+    segment === "personal" &&
+    card.dueAt &&
+    new Date(card.dueAt) <= new Date()
+  ) {
+    const due = document.createElement("span");
+    due.className = "card-status-badge again";
+    due.style.fontSize = "0.7rem";
+    due.style.padding = "1px 4px";
+    due.style.marginLeft = "5px";
+    due.textContent = t("lbl_card_due");
+    row.querySelector(".content-list-item-meta")?.append(due);
+  }
+  return row;
+}
+
+function tokenRow(
+  concept: string,
+  domain: string,
+  statusText: string,
+  statusClass: string,
+  bloomLevel: number,
+  selected: boolean,
+  onClick: () => void,
+): HTMLElement {
+  const div = document.createElement("div");
+  div.className = "content-list-item";
+  if (selected) div.classList.add("selected");
+  div.innerHTML = `
+    <div class="content-list-item-header">
+      <span class="content-list-item-concept">${escapeHtml(concept)}</span>
+      <span class="card-status-badge ${escapeHtml(statusClass)}">${escapeHtml(statusText)}</span>
+    </div>
+    <div class="content-list-item-meta">
+      <span class="content-list-item-domain">${escapeHtml(domain || "—")}</span>
+      <span style="font-size: 0.75rem; color: var(--clr-text-muted);">Bloom ${bloomLevel}</span>
+    </div>
+  `;
+  div.addEventListener("click", onClick);
+  return div;
+}
+
+function openGroup(key: string): void {
+  openUnchosenKey = key;
+  selectedCard = null;
+  isCreatingNew = false;
+  void loadStudioData();
+}
+
+function closeGroup(): void {
+  openUnchosenKey = null;
+  selectedCard = null;
+  isCreatingNew = false;
+  updateUIForSelection();
+  refreshCardsList();
+}
+
+async function startGroup(key: string): Promise<void> {
+  if (!key) return;
+  try {
+    await startLibraryTopic(key);
+    openUnchosenKey = null;
+    selectedCard = null;
+    isCreatingNew = false;
+    await loadStudioData();
+  } catch (err) {
+    alert(
+      `${t("library_topics_start_error")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+}
+
+function isUntakenSelection(): boolean {
+  return (
+    segment === "unchosen" &&
+    !!selectedCard &&
+    !selectedCard.cardId &&
+    !isCreatingNew
+  );
+}
+
+async function takeSelectedToken(): Promise<void> {
+  if (!isUntakenSelection() || !selectedCard) return;
+  const slug = selectedCard.slug;
+  btnTake.disabled = true;
+  try {
+    await runBridge("personal-card-ensure", ["--slug", slug]);
+    segment = "personal";
+    openUnchosenKey = null;
+    syncSegmentChrome();
+    await loadStudioData();
+    const card = cardsList.find((item) => item.slug === slug);
+    if (card) selectCard(card);
+  } catch (err) {
+    alert(
+      `${t("lbl_error_saving")}: ${err instanceof Error ? err.message : String(err)}`,
+    );
+  } finally {
+    btnTake.disabled = false;
   }
 }
 
@@ -848,8 +1328,19 @@ function selectCard(card: PersonalCard): void {
  * not among the learner's cards.
  */
 export async function openCardInEditor(slug: string): Promise<boolean> {
+  area = "cards";
+  syncAreaChrome();
+  segment = "personal";
+  openUnchosenKey = null;
+  syncSegmentChrome();
   await loadStudioData();
-  const card = cardsList.find((c) => c.slug === slug);
+  let card = cardsList.find((item) => item.slug === slug);
+  if (!card) {
+    segment = "unpublished";
+    syncSegmentChrome();
+    await loadStudioData();
+    card = cardsList.find((item) => item.slug === slug);
+  }
   if (!card) return false;
   selectCard(card);
   return true;
@@ -858,6 +1349,7 @@ export async function openCardInEditor(slug: string): Promise<boolean> {
 function startCreateNewCard(): void {
   selectedCard = null;
   isCreatingNew = true;
+  setEditorLocked(false);
 
   // Reset responsive layout mode (show editor on mobile)
   layoutContainer.classList.remove("show-list");
@@ -882,6 +1374,7 @@ function startCreateNewCard(): void {
 function cancelEdit(): void {
   selectedCard = null;
   isCreatingNew = false;
+  setEditorLocked(false);
 
   // Reset responsive layout mode (show list on mobile)
   layoutContainer.classList.remove("show-editor");
@@ -897,32 +1390,66 @@ function isDraftCard(card: PersonalCard | null): boolean {
   );
 }
 
+function setEditorLocked(locked: boolean): void {
+  for (const field of [
+    fieldQuestion,
+    fieldConcept,
+    fieldTitle,
+    fieldDomain,
+    fieldSourceLink,
+    fieldContext,
+  ]) {
+    field.readOnly = locked;
+  }
+  fieldBloom.disabled = locked;
+  fieldMode.disabled = locked;
+}
+
 function updateUIForSelection(): void {
+  const untaken = isUntakenSelection();
+  const hasCard = Boolean(selectedCard?.cardId);
   if (selectedCard || isCreatingNew) {
     emptyStateEl.classList.add("hidden");
     formContainer.classList.remove("hidden");
     btnCancel.classList.remove("hidden");
+    setEditorLocked(untaken);
 
     if (isCreatingNew) {
       btnDelete.classList.add("hidden");
+      btnTake.classList.add("hidden");
+      btnSave.classList.remove("hidden");
       btnPublishRevision?.classList.add("hidden");
       btnPublishCard?.classList.add("hidden");
       btnSplitCard?.classList.add("hidden");
       btnFoundationsCard?.classList.add("hidden");
       fieldSlug.value = t("lbl_slug_hint");
       if (reviewNotesEl) reviewNotesEl.innerHTML = "";
+    } else if (untaken) {
+      btnDelete.classList.add("hidden");
+      btnSave.classList.add("hidden");
+      btnTake.classList.remove("hidden");
+      btnPublishRevision?.classList.add("hidden");
+      btnPublishCard?.classList.add("hidden");
+      btnSplitCard?.classList.add("hidden");
+      btnFoundationsCard?.classList.add("hidden");
+      if (reviewNotesEl) reviewNotesEl.innerHTML = "";
     } else {
-      btnDelete.classList.remove("hidden");
+      btnTake.classList.add("hidden");
+      btnSave.classList.toggle("hidden", !hasCard);
+      btnDelete.classList.toggle("hidden", !hasCard);
       const draft = isDraftCard(selectedCard);
       btnPublishCard?.classList.toggle("hidden", !draft);
-      btnPublishRevision?.classList.toggle("hidden", draft);
-      btnSplitCard?.classList.remove("hidden");
-      btnFoundationsCard?.classList.remove("hidden");
+      btnPublishRevision?.classList.toggle("hidden", draft || !hasCard);
+      btnSplitCard?.classList.toggle("hidden", !hasCard);
+      btnFoundationsCard?.classList.toggle("hidden", !hasCard);
     }
   } else {
     emptyStateEl.classList.remove("hidden");
     formContainer.classList.add("hidden");
     btnCancel.classList.add("hidden");
+    btnTake.classList.add("hidden");
+    btnSave.classList.remove("hidden");
+    setEditorLocked(false);
     btnPublishRevision?.classList.add("hidden");
     btnPublishCard?.classList.add("hidden");
     btnSplitCard?.classList.add("hidden");

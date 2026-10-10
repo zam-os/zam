@@ -2807,6 +2807,51 @@ textarea::placeholder {
   padding: 20px;
 }
 
+.content-area-switcher,
+.content-segment-switcher {
+  background: var(--bg-card-subtle);
+  border: 1px solid var(--border-soft);
+  border-radius: 12px;
+  display: flex;
+  gap: 4px;
+  margin-bottom: 12px;
+  padding: 3px;
+}
+
+.content-area-option,
+.content-segment-option {
+  background: transparent;
+  border: 0;
+  border-radius: 8px;
+  color: var(--clr-text-secondary);
+  cursor: pointer;
+  flex: 1;
+  font: inherit;
+  font-size: 13px;
+  font-weight: 750;
+  padding: 7px 12px;
+}
+
+.content-area-option:hover,
+.content-segment-option:hover {
+  color: var(--clr-text-primary);
+}
+
+.content-area-option.active,
+.content-segment-option.active {
+  background: var(--clr-bg-surface);
+  box-shadow: 0 1px 4px rgba(15, 23, 42, 0.14);
+  color: var(--clr-accent-cyan);
+}
+
+.content-area-switcher {
+  width: fit-content;
+}
+
+.content-segment-switcher {
+  width: 100%;
+}
+
 /* Search and filter row */
 .content-studio-search-bar {
   display: flex;
