@@ -70,6 +70,13 @@ it.
 - **Pairing code hides itself.** The phone pairing QR code disappears after
   60 seconds. It never contained model keys.
 
+## Fixed
+
+- **Changing your study plan works again.** Switching the workload preset,
+  for example to Balanced or Exam, or changing only one of its numbers, no
+  longer fails with "Study workload must use 0–1000 new cards". Typed and
+  stepped values count before you press Save, on the desktop and the phone.
+
 ## For assistants and scripts
 
 - New CLI commands: `zam trust list|add|remove|suggested`,

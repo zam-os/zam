@@ -6,7 +6,7 @@ import { resolveAllowedTarget, safeFetch } from "../net/safe-fetch.js";
 const MAX_SOURCE_BYTES = 2 * 1024 * 1024;
 
 /** The User-Agent of every content fetch; bumped with each release. */
-export const CONTENT_USER_AGENT = "ZAM-Content-Studio/0.49.0";
+export const CONTENT_USER_AGENT = "ZAM-Content-Studio/0.50.0";
 
 /**
  * Clean up HTML contents by removing script, style, and svg tags,
