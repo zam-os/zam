@@ -2,10 +2,10 @@
  * Quellen shell (ADR 2026-10-10, Decisions 4 and 5).
  *
  * One Quelle at a time: a configured workspace, a remembered folder, or the
- * curriculum entry. The curriculum entry stays disabled until the wizard
- * moves here. This module reads the registry and writes the machine-local
- * selection. A present directory is shown by the knowledge module. This
- * module does not repair a workspace, add one, or write a map.
+ * curriculum. Lehrplan hosts the existing curriculum browser. This module
+ * reads the registry and writes the machine-local selection. A present
+ * directory is shown by the knowledge module. This module does not repair
+ * a workspace, add one, write a map, or import curriculum cards.
  */
 
 import { runBridge } from "./bridge-transport.js";
@@ -41,6 +41,10 @@ interface SourceView {
 }
 
 let folderPicker: (() => Promise<string | null>) | null = null;
+let curriculumHost: {
+  open: () => Promise<void>;
+  close: () => void;
+} | null = null;
 let bound = false;
 let loadGeneration = 0;
 let lastView: SourceView | null = null;
@@ -53,6 +57,26 @@ export function setLearningContentFolderPicker(
   document
     .getElementById("btn-content-choose-folder")
     ?.classList.remove("hidden");
+}
+
+/** The existing curriculum browser. The desktop and the panel install it. */
+export function setLearningContentCurriculumHost(host: {
+  open: () => Promise<void>;
+  close: () => void;
+}): void {
+  curriculumHost = host;
+}
+
+/** Persist Lehrplan and show the browser. Onboarding and active paths use this. */
+export async function selectLearningContentCurriculum(): Promise<void> {
+  await saveSource(["--kind", "curriculum"]);
+}
+
+/** Open the browser again after a card reload, without resetting a live walk. */
+export function reopenCurriculumBrowserIfSelected(): void {
+  if (lastView?.selection?.kind !== "curriculum") return;
+  setCurriculumVisible(true);
+  void curriculumHost?.open();
 }
 
 function setText(id: string, text: string): void {
@@ -128,6 +152,10 @@ async function onSourceChange(): Promise<void> {
     "content-source-select",
   ) as HTMLSelectElement | null;
   const value = select?.value ?? "";
+  if (value === "curriculum") {
+    await saveSource(["--kind", "curriculum"]);
+    return;
+  }
   if (value.startsWith("workspace:")) {
     await saveSource([
       "--kind",
@@ -143,6 +171,13 @@ async function chooseFolder(): Promise<void> {
   const picked = await folderPicker();
   if (!picked) return;
   await saveSource(["--kind", "folder", "--path", picked]);
+}
+
+function setCurriculumVisible(visible: boolean): void {
+  const host = document.getElementById("content-sources-curriculum");
+  if (!host) return;
+  host.classList.toggle("hidden", !visible);
+  host.hidden = !visible;
 }
 
 function folderLabel(path: string): string {
@@ -173,7 +208,6 @@ function renderSourceChoices(view: SourceView): void {
   const curriculum = document.createElement("option");
   curriculum.value = "curriculum";
   curriculum.textContent = t("content_source_curriculum");
-  curriculum.disabled = true;
   select.append(curriculum);
   if (view.selection?.kind === "folder") {
     const option = document.createElement("option");
@@ -202,14 +236,20 @@ function renderSourceStatus(view: SourceView): void {
     path.textContent = "";
     note.textContent = t("content_source_none");
     clearSourceKnowledge();
+    setCurriculumVisible(false);
+    curriculumHost?.close();
     return;
   }
   if (selection.kind === "curriculum") {
     path.textContent = "";
-    note.textContent = t("content_source_curriculum_wait");
+    note.textContent = "";
     clearSourceKnowledge();
+    setCurriculumVisible(true);
+    void curriculumHost?.open();
     return;
   }
+  setCurriculumVisible(false);
+  curriculumHost?.close();
   path.textContent = selection.path;
   if (selection.missing) {
     note.textContent = t("content_source_missing");

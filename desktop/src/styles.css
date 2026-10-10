@@ -2926,6 +2926,33 @@ textarea::placeholder {
   word-break: break-word;
 }
 
+.content-sources-curriculum {
+  margin-top: 8px;
+}
+
+.content-sources-curriculum .modal-overlay {
+  position: static;
+  display: none;
+  width: auto;
+  height: auto;
+  padding: 0;
+  background: none;
+  backdrop-filter: none;
+  opacity: 1;
+  z-index: auto;
+}
+
+.content-sources-curriculum .modal-overlay.active {
+  display: block;
+}
+
+.content-sources-curriculum .modal-box {
+  animation: none;
+  max-height: none;
+  max-width: none;
+  width: 100%;
+}
+
 @media (max-width: 900px) {
   .content-sources-body {
     grid-template-columns: 1fr;

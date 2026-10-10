@@ -235,6 +235,69 @@
         white-space: pre-wrap;
         word-break: break-word;
       }
+      .content-sources-curriculum {
+        margin-top: 8px;
+      }
+      .content-sources-curriculum .modal-overlay {
+        position: static;
+        display: none;
+        width: auto;
+        height: auto;
+        padding: 0;
+        background: none;
+        z-index: auto;
+      }
+      .content-sources-curriculum .modal-overlay.active {
+        display: block;
+      }
+      .content-sources-curriculum .modal-box {
+        max-width: none;
+        max-height: none;
+        box-shadow: none;
+      }
+      .wizard-breadcrumb,
+      .wizard-step-body,
+      .wizard-resume-banner {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 8px;
+      }
+      .wizard-step-body {
+        flex-direction: column;
+      }
+      .wizard-step-label,
+      .wizard-cell-offer-title {
+        font-weight: 700;
+        margin: 0 0 8px;
+      }
+      .wizard-option-row,
+      .wizard-cell-offer-row {
+        display: flex;
+        align-items: center;
+        gap: 8px;
+        padding: 8px 10px;
+        border: 1px solid var(--border);
+        border-radius: 8px;
+        cursor: pointer;
+      }
+      .wizard-option-row.selected {
+        border-color: var(--accent);
+      }
+      .wizard-option-text {
+        display: flex;
+        flex-direction: column;
+        gap: 2px;
+      }
+      .wizard-topic-note,
+      .wizard-option-desc,
+      .wizard-option-hint,
+      .wizard-cell-offer-detail {
+        color: var(--muted);
+        font-size: 0.8rem;
+      }
+      .wizard-error {
+        color: var(--danger);
+      }
       .content-studio-layout {
         display: flex;
         gap: 14px;
@@ -789,6 +852,49 @@
             <div id="content-sources-reader" class="content-sources-reader">
               <h2 id="lbl-content-source-reader">Reader</h2>
               <div id="content-sources-reader-body"></div>
+            </div>
+          </div>
+          <div id="content-sources-curriculum" class="content-sources-curriculum hidden" hidden>
+            <div id="curriculum-wizard-modal-overlay" class="modal-overlay">
+              <div class="modal-box">
+                <div class="modal-header">
+                  <h3 id="lbl-curriculum-wizard-title">Curriculum Wizard</h3>
+                </div>
+                <div class="modal-body">
+                  <div id="curriculum-wizard-context-section" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+                    <span id="lbl-wizard-context">Assign imported cards to context:</span>
+                    <select id="wizard-context-select">
+                      <option value="">None / Unassigned</option>
+                    </select>
+                  </div>
+                  <div id="curriculum-wizard-breadcrumb" class="wizard-breadcrumb"></div>
+                  <div id="curriculum-wizard-resume-banner" class="wizard-resume-banner hidden">
+                    <p id="lbl-curriculum-wizard-resume-text"></p>
+                    <div style="display: flex; gap: 8px;">
+                      <button id="btn-curriculum-wizard-resume" class="btn primary-btn btn-xs" type="button">Continue</button>
+                      <button id="btn-curriculum-wizard-restart" class="btn secondary-btn btn-xs" type="button">Start over</button>
+                    </div>
+                  </div>
+                  <div id="curriculum-wizard-step-label" class="wizard-step-label"></div>
+                  <div id="curriculum-wizard-topic-note" class="wizard-topic-note hidden"></div>
+                  <div id="curriculum-wizard-step-body" class="wizard-step-body"></div>
+                  <div id="curriculum-wizard-loading" class="wizard-loading hidden">
+                    <p id="lbl-curriculum-wizard-loading">Loading…</p>
+                  </div>
+                  <div id="curriculum-wizard-error" class="wizard-error hidden"></div>
+                  <div id="curriculum-wizard-progress-container" class="hidden">
+                    <div class="modal-impact-title" id="lbl-curriculum-wizard-progress-status">Importing…</div>
+                    <p id="lbl-curriculum-wizard-progress-detail">Card generation can take several minutes per topic — progress updates continuously below.</p>
+                  </div>
+                </div>
+                <div class="modal-actions" style="justify-content: space-between;">
+                  <button id="btn-curriculum-wizard-back" class="btn secondary-btn btn-sm" type="button">Back</button>
+                  <div style="display: flex; gap: 10px;">
+                    <button id="btn-curriculum-wizard-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+                    <button id="btn-curriculum-wizard-next" class="btn primary-btn btn-sm" type="button">Next</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>

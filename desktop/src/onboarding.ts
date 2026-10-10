@@ -198,7 +198,7 @@ export interface OnboardingStepActions {
  * The import paths offered on the content page — one row per
  * `PersonaDescriptor.defaultImportPath` value. The persona selects which row
  * leads (a default, never a lock); every row stays visible and reachable, and
- * the actions wire the EXISTING entry points (curriculum wizard overlay,
+ * the actions wire the EXISTING entry points (Quellen → Lehrplan,
  * Studio import modal, the goal and agent pages) instead of reimplementing
  * them.
  */

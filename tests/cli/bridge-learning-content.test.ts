@@ -156,6 +156,15 @@ describe("zam bridge learning-content lists", () => {
       "learning-content-browse",
       "knowledge-map",
       "knowledge-map-feature",
+      "curriculum-list-providers",
+      "curriculum-list-level",
+      "curriculum-get-last-selection",
+      "curriculum-set-last-selection",
+      "curriculum-topic-readiness",
+      "curriculum-list-subtopics",
+      "curriculum-preview-topic",
+      "curriculum-confirm-topic",
+      "curriculum-confirm-batch",
     ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(true);
     }

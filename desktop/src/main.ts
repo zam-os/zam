@@ -48,8 +48,11 @@ import {
   stepToBlame,
 } from "./boot-progress.js";
 import {
+  closeCurriculumBrowser,
   initCurriculumWizard,
+  openCurriculumBrowser,
   setCurriculumWizardModelSetup,
+  setCurriculumWizardOpener,
 } from "./curriculum-wizard.js";
 import { initMobilePairing } from "./mobile-pairing.js";
 import {
@@ -112,11 +115,15 @@ import {
   initLearningContentStudio,
   loadStudioData,
   openCardInEditor,
+  openLearningContentCurriculum,
   setLearningContentFilePicker,
   setLearningContentGraphOpener,
   setLearningContentProgressSource,
 } from "./learning-content.js";
-import { setLearningContentFolderPicker } from "./learning-content-sources.js";
+import {
+  setLearningContentCurriculumHost,
+  setLearningContentFolderPicker,
+} from "./learning-content-sources.js";
 import { setMaterialImportHost } from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
@@ -1323,9 +1330,6 @@ function initializeTranslations() {
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
 
-  // Curriculum Import Wizard Translations
-  const btnContentCurriculumWizard = document.getElementById("btn-content-curriculum-wizard");
-  if (btnContentCurriculumWizard) btnContentCurriculumWizard.textContent = t("btn_curriculum_wizard");
   // Goal import entry (plan Phase 8): reopens the onboarding goal page.
   const btnContentGoalImport = document.getElementById("btn-content-goal-import");
   if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
@@ -8616,6 +8620,11 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("learning-content", () => initLearningContentStudio());
   initPanel("curriculum-wizard", () => {
     initCurriculumWizard();
+    setLearningContentCurriculumHost({
+      open: openCurriculumBrowser,
+      close: closeCurriculumBrowser,
+    });
+    setCurriculumWizardOpener((url) => void openUrl(url));
     // Text-LLM-offline in the wizard links back to the onboarding model page
     // instead of dead-ending in an error (ADR 2026-07-24 §7, plan Phase 9).
     setCurriculumWizardModelSetup(() => showOnboardingAt("model"));
@@ -8672,14 +8681,14 @@ window.addEventListener("DOMContentLoaded", () => {
       workspaceStructure: onboardingWorkspaceStructure,
     }),
     openExternal: (url) => void openUrl(url),
-    // Both entry points are document-level modal overlays initialized at
-    // startup, so triggering their buttons opens them on top of the flow.
+    // Free import stays a modal. The curriculum opens from Quellen → Lehrplan.
     openContentEntry: (entry) => {
-      const id =
-        entry === "curriculum"
-          ? "btn-content-curriculum-wizard"
-          : "btn-content-import";
-      document.getElementById(id)?.click();
+      if (entry === "curriculum") {
+        switchView("learning-content-view");
+        void openLearningContentCurriculum();
+        return;
+      }
+      document.getElementById("btn-content-import")?.click();
     },
     onLeave: (reason) => {
       switchView("dashboard-view");

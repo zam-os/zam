@@ -24,6 +24,10 @@ describe("learning content sources shell", () => {
     expect(t("lbl_content_source")).toBe("Quelle");
     expect(t("btn_content_choose_folder")).toBe("Ordner wählen …");
     expect(t("content_source_curriculum")).toBe("Lehrplan");
+    expect(t("onboarding_content_curriculum_action")).toBe(
+      "Quellen → Lehrplan",
+    );
+    expect(t("lbl_bundled_cells_desc")).toContain("Quellen → Lehrplan");
     expect(t("content_source_skill")).toBe("Skillquelle");
     expect(t("btn_content_source_map")).toBe("Wissenskarte anzeigen");
     expect(t("content_source_reader_empty")).toBe(
@@ -32,13 +36,16 @@ describe("learning content sources shell", () => {
     setCurrentLocale("en");
     expect(t("lbl_content_source")).toBe("Source");
     expect(t("btn_content_choose_folder")).toBe("Choose folder…");
+    expect(t("onboarding_content_curriculum_action")).toBe(
+      "Sources → Curriculum",
+    );
     expect(t("content_source_skill")).toBe("Skill source");
     expect(t("content_source_reader_refused")).toBe(
       "That file is outside this source.",
     );
   });
 
-  it("puts the Quelle controls in both shells and keeps the curriculum entry disabled", () => {
+  it("puts the Quelle controls in both shells and hosts the curriculum browser", () => {
     const desktop = read("desktop/index.html");
     const panel = read("desktop/src/panel/studio-panel.html");
     for (const id of [
@@ -50,21 +57,40 @@ describe("learning content sources shell", () => {
       "content-sources-map",
       "content-sources-okf-list",
       "content-sources-reader-body",
+      "content-sources-curriculum",
+      "curriculum-wizard-step-body",
+      "btn-curriculum-wizard-next",
     ]) {
       expect(desktop, id).toContain(`id="${id}"`);
       expect(panel, id).toContain(`id="${id}"`);
     }
+    expect(desktop).not.toContain("btn-content-curriculum-wizard");
+    expect(panel).not.toContain("btn-content-curriculum-wizard");
 
     const source = read("desktop/src/learning-content-sources.ts");
     expect(source).toContain('"learning-content-source"');
-    expect(source).toContain("curriculum.disabled = true");
+    expect(source).toContain('"--kind", "curriculum"');
+    expect(source).not.toContain("curriculum.disabled = true");
+    expect(source).not.toContain("content_source_curriculum_wait");
     expect(source).toContain('"--kind", "folder"');
     expect(source).not.toContain("workspace-add");
     expect(source).not.toContain("workspace-repair");
     expect(source).not.toContain("mountKnowledgeMap");
+    expect(source).not.toContain("curriculum-confirm-topic");
+    expect(source).not.toContain("bundled-cell-enrol");
     expect(source).toContain("showSourceKnowledge");
-    expect(read("desktop/src/main.ts")).toContain(
-      "setLearningContentFolderPicker",
+    const wizard = read("desktop/src/curriculum-wizard.ts");
+    expect(wizard).toContain('"curriculum-confirm-topic"');
+    expect(wizard).toContain('"bundled-cell-enrol"');
+    expect(wizard).not.toContain("plugin-opener");
+    expect(wizard).not.toContain("btn-content-curriculum-wizard");
+    const main = read("desktop/src/main.ts");
+    expect(main).toContain("setLearningContentFolderPicker");
+    expect(main).toContain("setLearningContentCurriculumHost");
+    expect(main).toContain("openLearningContentCurriculum");
+    expect(main).not.toContain("btn-content-curriculum-wizard");
+    expect(read("desktop/src/panel/panel.ts")).toContain(
+      "setLearningContentCurriculumHost",
     );
   });
 

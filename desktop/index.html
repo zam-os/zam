@@ -157,7 +157,6 @@
             </p>
           </div>
           <div id="content-cards-actions" style="display: flex; gap: 10px; align-items: center;">
-            <button id="btn-content-curriculum-wizard" class="btn secondary-btn btn-sm" type="button">Curriculum Wizard</button>
             <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
             <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">Library Topics</button>
             <button id="btn-content-material-import" class="btn secondary-btn btn-sm" type="button">Photo / PDF</button>
@@ -203,7 +202,7 @@
               <button id="btn-create-first-card" class="btn primary-btn btn-sm" type="button">Create First Card</button>
               <div id="bundled-cells-container" class="bundled-cells-section">
                 <h4 id="lbl-bundled-cells-title">Curriculum &amp; active learning paths</h4>
-                <p id="lbl-bundled-cells-desc">Choose school type, grade and subject in the curriculum wizard. Active paths stay visible here.</p>
+                <p id="lbl-bundled-cells-desc">Choose school type, grade and subject under Sources → Curriculum. Active paths stay visible here.</p>
                 <button id="btn-bundled-cells-open-curriculum" class="btn primary-btn btn-sm" type="button">Choose curriculum</button>
                 <div id="bundled-cells-list" class="bundled-cells-list"></div>
               </div>
@@ -315,6 +314,53 @@
             <div id="content-sources-reader" class="content-sources-reader">
               <h2 id="lbl-content-source-reader">Reader</h2>
               <div id="content-sources-reader-body"></div>
+            </div>
+          </div>
+          <div id="content-sources-curriculum" class="content-sources-curriculum hidden" hidden>
+            <div id="curriculum-wizard-modal-overlay" class="modal-overlay">
+              <div class="modal-box" style="display: flex; flex-direction: column;">
+                <div class="modal-header">
+                  <h3 id="lbl-curriculum-wizard-title">Curriculum Wizard</h3>
+                </div>
+                <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
+                  <div id="curriculum-wizard-context-section" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
+                    <span id="lbl-wizard-context">Assign imported cards to context:</span>
+                    <select id="wizard-context-select" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-soft); background: var(--bg-card-subtle); color: var(--clr-text-primary);">
+                      <option value="">None / Unassigned</option>
+                    </select>
+                  </div>
+                  <div id="curriculum-wizard-breadcrumb" class="wizard-breadcrumb"></div>
+
+                  <div id="curriculum-wizard-resume-banner" class="wizard-resume-banner hidden">
+                    <p id="lbl-curriculum-wizard-resume-text"></p>
+                    <div style="display: flex; gap: 8px;">
+                      <button id="btn-curriculum-wizard-resume" class="btn primary-btn btn-xs" type="button">Continue</button>
+                      <button id="btn-curriculum-wizard-restart" class="btn secondary-btn btn-xs" type="button">Start over</button>
+                    </div>
+                  </div>
+
+                  <div id="curriculum-wizard-step-label" class="wizard-step-label"></div>
+                  <div id="curriculum-wizard-topic-note" class="wizard-topic-note hidden"></div>
+                  <div id="curriculum-wizard-step-body" class="wizard-step-body"></div>
+
+                  <div id="curriculum-wizard-loading" class="wizard-loading hidden">
+                    <p id="lbl-curriculum-wizard-loading">Loading…</p>
+                  </div>
+                  <div id="curriculum-wizard-error" class="wizard-error hidden"></div>
+
+                  <div id="curriculum-wizard-progress-container" class="hidden" style="margin-top: 10px;">
+                    <div class="modal-impact-title" id="lbl-curriculum-wizard-progress-status" style="color: var(--clr-accent-purple);">Importing…</div>
+                    <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-curriculum-wizard-progress-detail">Card generation can take several minutes per topic — progress updates continuously below.</p>
+                  </div>
+                </div>
+                <div class="modal-actions" style="justify-content: space-between;">
+                  <button id="btn-curriculum-wizard-back" class="btn secondary-btn btn-sm" type="button">Back</button>
+                  <div style="display: flex; gap: 10px;">
+                    <button id="btn-curriculum-wizard-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
+                    <button id="btn-curriculum-wizard-next" class="btn primary-btn btn-sm" type="button">Next</button>
+                  </div>
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -1570,53 +1616,6 @@
           <div class="modal-actions">
             <button id="btn-import-modal-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
             <button id="btn-import-modal-submit" class="btn primary-btn btn-sm" type="button">Import</button>
-          </div>
-        </div>
-      </div>
-
-      <!-- CURRICULUM IMPORT WIZARD MODAL -->
-      <div id="curriculum-wizard-modal-overlay" class="modal-overlay">
-        <div class="modal-box" style="max-width: 620px; display: flex; flex-direction: column; max-height: 85vh;">
-          <div class="modal-header">
-            <h3 id="lbl-curriculum-wizard-title">Curriculum Wizard</h3>
-          </div>
-          <div class="modal-body" style="overflow-y: auto; flex: 1; padding-right: 8px;">
-            <div id="curriculum-wizard-context-section" style="margin-bottom: 12px; display: flex; align-items: center; gap: 8px; font-size: 0.9rem;">
-              <span id="lbl-wizard-context">Assign imported cards to context:</span>
-              <select id="wizard-context-select" style="padding: 4px 8px; border-radius: 4px; border: 1px solid var(--border-soft); background: var(--bg-card-subtle); color: var(--clr-text-primary);">
-                <option value="">None / Unassigned</option>
-              </select>
-            </div>
-            <div id="curriculum-wizard-breadcrumb" class="wizard-breadcrumb"></div>
-
-            <div id="curriculum-wizard-resume-banner" class="wizard-resume-banner hidden">
-              <p id="lbl-curriculum-wizard-resume-text"></p>
-              <div style="display: flex; gap: 8px;">
-                <button id="btn-curriculum-wizard-resume" class="btn primary-btn btn-xs" type="button">Continue</button>
-                <button id="btn-curriculum-wizard-restart" class="btn secondary-btn btn-xs" type="button">Start over</button>
-              </div>
-            </div>
-
-            <div id="curriculum-wizard-step-label" class="wizard-step-label"></div>
-            <div id="curriculum-wizard-topic-note" class="wizard-topic-note hidden"></div>
-            <div id="curriculum-wizard-step-body" class="wizard-step-body"></div>
-
-            <div id="curriculum-wizard-loading" class="wizard-loading hidden">
-              <p id="lbl-curriculum-wizard-loading">Loading…</p>
-            </div>
-            <div id="curriculum-wizard-error" class="wizard-error hidden"></div>
-
-            <div id="curriculum-wizard-progress-container" class="hidden" style="margin-top: 10px;">
-              <div class="modal-impact-title" id="lbl-curriculum-wizard-progress-status" style="color: var(--clr-accent-purple);">Importing…</div>
-              <p style="font-size: 0.85rem; color: var(--clr-text-secondary);" id="lbl-curriculum-wizard-progress-detail">Card generation can take several minutes per topic — progress updates continuously below.</p>
-            </div>
-          </div>
-          <div class="modal-actions" style="justify-content: space-between;">
-            <button id="btn-curriculum-wizard-back" class="btn secondary-btn btn-sm" type="button">Back</button>
-            <div style="display: flex; gap: 10px;">
-              <button id="btn-curriculum-wizard-cancel" class="btn secondary-btn btn-sm" type="button">Cancel</button>
-              <button id="btn-curriculum-wizard-next" class="btn primary-btn btn-sm" type="button">Next</button>
-            </div>
           </div>
         </div>
       </div>

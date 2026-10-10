@@ -10,6 +10,7 @@ import { App } from "@modelcontextprotocol/ext-apps";
 import { setBridgeTransport } from "../bridge-transport.js";
 import { setCurrentLocale } from "../i18n.js";
 import { initLearningContentStudio } from "../learning-content.js";
+import { setLearningContentCurriculumHost } from "../learning-content-sources.js";
 import {
   type CompanionContextBarState,
   type ContextBarHandle,
@@ -159,7 +160,7 @@ const noHostTimer = setTimeout(
 
 app
   .connect()
-  .then(() => {
+  .then(async () => {
     clearTimeout(noHostTimer);
 
     // Transport must be wired before init: initLearningContentStudio()
@@ -177,6 +178,15 @@ app
     // an in-panel toast before init can trigger any of those calls.
     window.alert = (message?: unknown): void => showPanelToast(String(message));
 
+    const wizard = await import("../curriculum-wizard.js");
+    wizard.initCurriculumWizard();
+    wizard.setCurriculumWizardOpener((url) => {
+      window.open(url, "_blank", "noopener,noreferrer");
+    });
+    setLearningContentCurriculumHost({
+      open: () => wizard.openCurriculumBrowser(),
+      close: () => wizard.closeCurriculumBrowser(),
+    });
     initLearningContentStudio();
   })
   .catch((error: unknown) => {

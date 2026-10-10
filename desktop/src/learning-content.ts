@@ -4,6 +4,8 @@ import {
   applyLearningContentSourceChrome,
   initLearningContentSources,
   refreshLearningContentSources,
+  reopenCurriculumBrowserIfSelected,
+  selectLearningContentCurriculum,
 } from "./learning-content-sources.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
@@ -462,6 +464,13 @@ function showArea(next: LearningArea): void {
   area = next;
   syncAreaChrome();
   if (next === "sources") void refreshLearningContentSources();
+}
+
+/** One door for the curriculum: Quellen → Lehrplan. */
+export async function openLearningContentCurriculum(): Promise<void> {
+  area = "sources";
+  syncAreaChrome();
+  await selectLearningContentCurriculum();
 }
 
 function blankCard(
@@ -1019,6 +1028,7 @@ export async function loadStudioData(): Promise<void> {
     rebuildCategoryFilter(currentDomains());
     await loadBundledCells();
     if (generation !== loadGeneration) return;
+    if (area === "sources") reopenCurriculumBrowserIfSelected();
     refreshCardsList();
     updateUIForSelection();
   } catch (err) {
@@ -3032,7 +3042,7 @@ function wireBundledCellsOpen(): void {
   if (!openButton || bundledCellsOpenWired) return;
   openButton.textContent = t("btn_curriculum_wizard");
   openButton.addEventListener("click", () => {
-    document.getElementById("btn-content-curriculum-wizard")?.click();
+    void openLearningContentCurriculum();
   });
   bundledCellsOpenWired = true;
 }
