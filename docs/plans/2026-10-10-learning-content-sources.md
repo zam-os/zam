@@ -2,7 +2,7 @@
 
 **Status:** Accepted, not started.\
 **Decision:** [ADR 2026-10-10 — Learning Content: Cards and Sources](../adr/2026-10-10-learning-content-sources.md).
-Its decisions are cited here as D1–D10. Read the ADR first; this plan does not
+Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
 **Branch:** `feat/learning-content-sources`, cut from `main` when
 implementation starts. One branch, one PR, one commit per phase.
@@ -20,7 +20,8 @@ The Learning Content page has two areas (D1).
   is not a workspace (D5), or the curriculum (D9). A repository source shows
   its knowledge-map views and its OKF articles, and opens the cited files in
   the Studio (D6). The page never writes a source (D7). The ZAM skill source
-  is recognised (D8).
+  is recognised (D8). On the Studio panel a Quelle is a workspace id, and
+  only its OKF articles and map are read (D11).
 
 Building new cards from a region the learner has looked at is out of scope
 (D10).
@@ -51,6 +52,8 @@ lists are still one mixed list.
 - A 3D view of the knowledge map. The 3D surface is the existing token graph
   (D3).
 - Mobile.
+- Curriculum commands on the Studio panel. That is a change to ADR
+  2026-10-08b, not to this plan (D11).
 - Removing the Library Topics button. Nicht gewählt covers the untaken
   groups; the button stays until a later cleanup.
 
@@ -99,14 +102,16 @@ In `src/cli/commands/bridge.ts`:
 `list-drafts` is unchanged.
 
 Register the two new commands, and confirm `list-drafts` and
-`personal-card-list`, on the Studio panel allowlist in
-`src/cli/commands/mcp.ts`. They only read, or they write nothing at all.
-Taking a token from the list (Phase 3) uses the commands that already
-create the caller's card.
+`personal-card-list`, in the reviewed `STUDIO_BRIDGE_COMMANDS` table in
+`src/cli/commands/mcp.ts`, each with its `why` (ADR 2026-10-08b, D3).
+They read only the library and the caller's cards. Taking a token from the
+list (Phase 3) uses a command that writes only the caller's card; give it
+its own entry and reason.
 
 Tests: extend the bridge tests that already call `personal-card-list`.
 Assert `--published-only` drops a draft, and that `unchosen-groups` returns
-the `""` group.
+the `""` group. `tests/cli/studio-bridge-review.test.ts` lists every new
+entry.
 
 ## Phase 3 — Lern-Karten in the Studio
 
@@ -153,8 +158,12 @@ Still on the Learning Content page. No map is mounted in this phase.
   that its knowledge is loaded in the next phase. A missing directory names
   the path and leaves the switcher usable.
 
-`learning-content-source` joins the Studio panel allowlist. It writes
-machine-local presentation state only.
+`learning-content-source` joins the reviewed panel table with
+`refusedOptions: ["--path"]`: the panel may select a workspace by id, and
+nothing else (D11). The panel's switcher lists the workspaces; a stored
+folder or Lehrplan shows as the sentence that it opens in ZAM Desktop.
+The Desktop window keeps the folder entry. Test that the panel bridge
+refuses `--path` in both the `--path x` and `--path=x` forms.
 
 ## Phase 5 — map, OKF, reader, skill source
 
@@ -171,9 +180,22 @@ Quellen and the alpha switch is on.
   page already uses.
 - OKF list from `docs/okf` of that root, using the existing bundle catalog
   loader in the CLI. A missing bundle is one sentence.
-- Reader pane on the page. OKF articles go through the existing OKF reader.
-  Other cited paths are shown as text when they resolve inside the root, and
-  refused when they do not. Opening a citation does not call the OS opener.
+- Reader pane on the page. OKF articles render with the shared renderer in
+  `desktop/src/panel/okf-render.ts`; the OKF reader panel itself is a
+  separate MCP App and is not mounted here. Opening a citation does not
+  call the OS opener.
+- Two bridge forms (D11). The Desktop window reads by path: the catalog,
+  an OKF article, and any other cited file inside the root as text,
+  refused when it leaves the root. The panel reads by `--workspace <id>`
+  only: the bridge resolves the root from the registry, returns the
+  catalog, one article whose real path is a non-reserved `*.md` inside
+  `docs/okf`, and the map from `knowledge-map` as validated map and issues.
+  On the panel a path argument is refused, and a cited file that is not
+  an OKF article is the sentence that it opens in ZAM Desktop.
+- Panel table entries: the read command, `knowledge-map` with
+  `refusedOptions: ["--repo"]` plus the workspace form, and
+  `knowledge-map-feature` with `refusedOptions: ["--repo"]`. Each with its
+  `why`.
 - Skill source (D8): real path of the Quelle equals the real path of the
   package root that holds the ZAM skill (the root
   `src/cli/provisioning/index.ts` already resolves). The switcher adds the
@@ -186,18 +208,25 @@ Quellen and the alpha switch is on.
   knowledge-map write (D7).
 
 Tests: a desktop test that the skill-source path skips the example fallback,
-and that a citation outside the root is not opened. The i18n completeness
+and that a citation outside the root is not opened. Through
+`zam_studio_bridge`: a path argument is refused; an unknown workspace id
+is refused; `.env`, `.git/config` and a symlink out of `docs/okf` are not
+read for a configured workspace; an OKF article is. The i18n completeness
 test covers the new keys.
 
 ## Phase 6 — curriculum as a Quelle
 
-Enable the Lehrplan entry. It hosts the existing curriculum browser from
-`desktop/src/curriculum-wizard.ts`: the same steps, the same import and
-enrol actions, the same labels (D9).
+Enable the Lehrplan entry in the Desktop window. It hosts the existing
+curriculum browser from `desktop/src/curriculum-wizard.ts`: the same steps,
+the same import and enrol actions, the same labels (D9).
 
-Remove `btn-content-curriculum-wizard` from the Lern-Karten header in both
-HTML shells once the Quelle opens that browser. Onboarding text that points
-at the header button points at Quellen → Lehrplan instead.
+No `curriculum-*` command joins the Studio panel table (D11). On the panel,
+Lehrplan is the sentence that it opens in ZAM Desktop.
+
+Remove `btn-content-curriculum-wizard` from the Lern-Karten header in
+`desktop/index.html` (the panel never had it) once the Quelle opens that
+browser. Onboarding text that points at the header button points at
+Quellen → Lehrplan instead.
 
 No change to what import writes.
 

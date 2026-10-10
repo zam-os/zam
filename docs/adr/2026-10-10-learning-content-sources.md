@@ -12,7 +12,8 @@
 [2026-07-18](2026-07-18-okf-learning-import.md) (agent decomposes an article into tokens) ·
 [2026-07-18b](2026-07-18b-graph-repo-scope.md) (learning graph scoped by a repo's articles) ·
 [2026-10-02](2026-10-02-library-topics.md) (taking published tokens as cards) ·
-[2026-10-03](2026-10-03-repo-knowledge-map.md) (alpha map and its views)
+[2026-10-03](2026-10-03-repo-knowledge-map.md) (alpha map and its views) ·
+[2026-10-08b](2026-10-08b-corporate-deployment-baseline.md) (D3: every tool is assessed as if a model calls it)
 
 ---
 
@@ -40,6 +41,17 @@ A folder that is not a workspace cannot be opened there without becoming
 the stored map repository. When a map is missing or invalid, the page
 substitutes ZAM's own map and labels it an example.
 
+The page runs in two places. The Desktop window calls `zam bridge`
+directly. The shared Studio panel reaches the same commands through the
+app-only MCP tool `zam_studio_bridge`. ADR 2026-10-08b, Decision 3, holds
+that app-only is a hint and not a boundary: a host lets a model call that
+tool, so every command on the panel's allowlist is assessed as if a model
+calls it, and no command may let its caller reach files, network hosts,
+stored secrets or security switches. The same allowlist already keeps
+curriculum commands off the panel. A Quelle is a directory on disk, and
+the curriculum fetches official pages, so this page meets that rule
+directly.
+
 The owner decided on 2026-10-10, after walking the page against those
 surfaces:
 
@@ -62,6 +74,8 @@ surfaces:
 7. When the chosen workspace is ZAM itself, it is still a Quelle. ZAM is
    the skill source. Looking at it must not repair the workspace, rewire
    skills, or write `docs/okf` or the knowledge map.
+8. This decision does not weaken ADR 2026-10-08b. Where Quellen needs more
+   than the panel may do, that part stays in the Desktop window.
 
 ## Decisions
 
@@ -141,6 +155,9 @@ the repository an agent last wrote a map for.
 The switcher reads the registry. It does not call workspace repair, and
 it does not provision skills.
 
+On the Studio panel the switcher offers the workspaces only; a picked
+folder and Lehrplan are Desktop entries (Decision 11).
+
 ### 5. A folder that is not a workspace is only looked at
 
 The learner can pick a directory that is not in the registry. The page
@@ -150,6 +167,8 @@ Picking it does not add a workspace, does not link skills, and does not
 repair anything. Closing the pick leaves the registry as it was. The
 path may be remembered as the current Quelle (Decision 4) so a restart
 opens the same folder.
+
+Only the Desktop window picks a folder or reads one (Decision 11).
 
 ### 6. A repository Quelle is browsed like the companion, and read in the Studio
 
@@ -165,7 +184,8 @@ A citation in the map and an article in the list open in a reader on this
 page. OKF articles use the existing OKF reader. Any other file the map
 cites (an ADR, a `beliefs/` file, a repository file) is shown as text in
 the same reader. The page does not hand the file to the operating system
-as the primary action.
+as the primary action. On the Studio panel the reader opens OKF articles
+only; any other cited file is a Desktop action (Decision 11).
 
 An empty source is a sentence, not a blank page. No map, no OKF bundle,
 or a directory that has gone missing: the page says which, and the
@@ -222,6 +242,10 @@ import, activating a learning path) and their current behavior. Once
 this entry works, the curriculum button on the Lern-Karten header is
 removed, so the curriculum has one door.
 
+Lehrplan is a Desktop entry. The curriculum commands stay off the Studio
+panel's allowlist (Decision 11). This changes nothing the panel offers
+today: the curriculum wizard has only ever been in the Desktop window.
+
 ### 10. Remembering a region is a later decision
 
 This ADR does not create tokens from a map selection, an article, or a
@@ -232,6 +256,47 @@ exists keeps doing what it does.
 Taking a published token that has no card yet (Decision 2) is in scope,
 because that token already exists. Turning a passage the learner just
 read into new cards needs its own decision.
+
+### 11. The Studio panel reads a Quelle by workspace id, and only its articles and map
+
+ADR 2026-10-08b, Decision 3, applies to this page unchanged. Every command
+the panel may call is safe for a host to approve automatically. This ADR
+adds no exception to that rule and no category to the panel's allowlist
+that it does not already permit.
+
+On the panel's bridge entry (`zam_studio_bridge`):
+
+- A Quelle is named by its workspace id. The bridge looks the root up in
+  the machine-local registry. A command that would take a directory path
+  refuses it.
+- From that root the panel reads two things: the OKF bundle at `docs/okf`
+  (its catalog, and one article whose real path is a non-reserved `*.md`
+  file inside that bundle), and `docs/knowledge-map/map.json`, returned
+  only as the validated map and its issues. No other file is read.
+- The panel cannot store a folder as the Quelle, and it cannot set
+  `knowledgeMap.repoPath`. It may turn the existing alpha switch on.
+- No `curriculum-*` command joins the allowlist.
+- Each command that does join carries its reason in the reviewed list
+  (ADR 2026-10-08b, Decision 3).
+
+The rule is enforced where the panel's calls arrive, not by hiding
+controls. Hiding them on the page is presentation only.
+
+The Desktop window calls `zam bridge` directly and is outside that
+boundary. It keeps the folder pick (Decision 5), the reader for any cited
+file inside the root (Decision 6), and Lehrplan (Decision 9).
+
+Where the panel cannot do something, it says so in one sentence: this
+opens in ZAM Desktop. The rest of the page keeps working. A panel learner
+without ZAM Desktop still has the workspaces, their articles, and their
+maps.
+
+Putting curriculum on the panel later is a change to ADR 2026-10-08b, not
+to this ADR. That change has to settle three things the current code
+leaves open: the fetched URLs come only from ZAM's bundled manifests,
+confirming creates tokens that reach every learner of a shared library,
+and an automatically approved caller can make ZAM fetch many pages from a
+state's curriculum server.
 
 ## Consequences
 
@@ -244,6 +309,8 @@ read into new cards needs its own decision.
 - Map citations and OKF articles open in the Studio.
 - Choosing the ZAM checkout cannot repair it or overwrite its skill,
   its articles, or its map.
+- A model that calls the panel's bridge reads no more than the learner's
+  workspaces' articles and maps.
 
 **Harder**
 
@@ -251,6 +318,10 @@ read into new cards needs its own decision.
   allowlist change together.
 - The alpha switch still hides the map views until the learner turns
   them on. The one action that does this has to be obvious.
+- The panel and the Desktop window differ: a picked folder, cited files
+  other than OKF articles, and Lehrplan are Desktop only.
+- Reading a Quelle needs two bridge forms, by workspace id for the panel
+  and by path for the Desktop window, and a test for each refusal.
 - `personal-card-list` gains a published-only mode without changing the
   result its current callers receive.
 
@@ -261,6 +332,7 @@ read into new cards needs its own decision.
 - The knowledge-map file format, the view registry, and the Settings
   list of views.
 - The companion panels.
+- ADR 2026-10-08b and the panel's exclusion of curriculum commands.
 - No schema change and no new dependency.
 
 ## Code
