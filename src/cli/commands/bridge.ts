@@ -29,6 +29,7 @@ import type {
   TokenPattern,
 } from "../../kernel/index.js";
 import {
+  addTrustedFolder,
   appendUiObservationReport,
   applySourceProposals,
   assignTokenToContext,
@@ -123,6 +124,7 @@ import {
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  removeTrustedFolder,
   resolveCredentials,
   resolveObserverPolicy,
   restorePreviousLibrary,
@@ -371,6 +373,10 @@ import {
   unlockBitwardenForProcess,
 } from "../secrets-bridge.js";
 import { normalizeShell } from "../terminal-open.js";
+import {
+  suggestTrustedFolders,
+  trustedFolderStatus,
+} from "../trusted-folders.js";
 import {
   currentUserIdOrNull,
   describeIdentity,
@@ -1573,6 +1579,67 @@ bridgeCommand
     await withDb(async (db) => {
       try {
         jsonOut(await handleCloseObservation(db, { session: opts.session }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge trusted-folders ────────────────────────────────────────────
+
+/**
+ * Trusted folders for desktop Settings (ADR 2026-10-08b D1). These commands
+ * serve the learner's own UI through `zam bridge`; they are never on the
+ * Studio bridge allowlist and no MCP tool calls them, so an agent cannot
+ * widen what ZAM reads.
+ */
+bridgeCommand
+  .command("trusted-folders")
+  .description(
+    "List trusted folders and the knowledge-base folders cards link into (JSON)",
+  )
+  .action(async () => {
+    await withOptionalDb(async (db) => {
+      try {
+        jsonOut(await trustedFolderStatus(db));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("trusted-folder-add")
+  .description("Trust a folder (JSON)")
+  .requiredOption("--dir <path>", "Folder to trust")
+  .action((opts) => {
+    try {
+      jsonOut({ folder: addTrustedFolder(opts.dir) });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("trusted-folder-remove")
+  .description("Stop trusting a folder (JSON)")
+  .requiredOption("--dir <path>", "Folder to stop trusting")
+  .action((opts) => {
+    jsonOut({ removed: removeTrustedFolder(opts.dir) });
+  });
+
+bridgeCommand
+  .command("trusted-folder-add-suggested")
+  .description(
+    "Trust every knowledge-base folder the learner's cards link into (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      try {
+        const added = (await suggestTrustedFolders(db)).map(({ folder }) =>
+          addTrustedFolder(folder),
+        );
+        jsonOut({ added });
       } catch (err) {
         jsonError((err as Error).message);
       }

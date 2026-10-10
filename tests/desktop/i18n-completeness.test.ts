@@ -331,6 +331,16 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "observation_logs_delete_confirm",
   "observation_logs_deleted",
   "observation_logs_delete_failed",
+  // Trusted folders in Settings → Data (ADR 2026-10-08b D1); same status.
+  "settings_trusted_folders",
+  "trusted_folders_help",
+  "trusted_folders_none",
+  "trusted_folders_suggestion",
+  "btn_trusted_folders_add_suggested",
+  "btn_trusted_folder_add",
+  "btn_trusted_folder_remove",
+  "trusted_folder_pick",
+  "trusted_folder_failed",
   "boot_fix_db",
   // Central learning path field-test surface (cell selection, precondition
   // self-assessment, keep-going, bonus offer). English and German are the

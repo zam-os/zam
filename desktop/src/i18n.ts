@@ -4767,6 +4767,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Delete the observation logs of {count} sessions on this device? Ratings you already confirmed stay.",
     observation_logs_deleted: "Observation logs deleted.",
     observation_logs_delete_failed: "Could not delete observation logs: {message}",
+    // Trusted folders (ADR 2026-10-08b D1).
+    settings_trusted_folders: "Trusted folders",
+    trusted_folders_help:
+      "Source links and AI assistants may read files only in these folders, and in the folder an assistant has open.",
+    trusted_folders_none: "No folder is trusted yet.",
+    trusted_folders_suggestion:
+      "Your cards link to knowledge bases in {count} folders that ZAM may not read yet: {folders}",
+    btn_trusted_folders_add_suggested: "Trust these folders",
+    btn_trusted_folder_add: "Add folder…",
+    btn_trusted_folder_remove: "Remove",
+    trusted_folder_pick: "Choose a folder ZAM may read",
+    trusted_folder_failed: "Could not change trusted folders: {message}",
     database_profile_switch_confirm:
       'Switch the active learning profile to "{profile}"?',
     database_profile_switched: "Active profile: {profile} ({count} cards)",
@@ -6420,6 +6432,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Die Beobachtungsprotokolle von {count} Sitzungen auf diesem Gerät löschen? Bereits bestätigte Bewertungen bleiben erhalten.",
     observation_logs_deleted: "Beobachtungsprotokolle gelöscht.",
     observation_logs_delete_failed: "Beobachtungsprotokolle konnten nicht gelöscht werden: {message}",
+    // Vertrauenswürdige Ordner (ADR 2026-10-08b D1).
+    settings_trusted_folders: "Vertrauenswürdige Ordner",
+    trusted_folders_help:
+      "Quell-Links und KI-Assistenten dürfen nur Dateien in diesen Ordnern lesen, dazu den Ordner, den ein Assistent geöffnet hat.",
+    trusted_folders_none: "Noch kein Ordner freigegeben.",
+    trusted_folders_suggestion:
+      "Deine Karten verweisen auf Wissensbasen in {count} Ordnern, die ZAM noch nicht lesen darf: {folders}",
+    btn_trusted_folders_add_suggested: "Diese Ordner freigeben",
+    btn_trusted_folder_add: "Ordner hinzufügen …",
+    btn_trusted_folder_remove: "Entfernen",
+    trusted_folder_pick: "Ordner wählen, den ZAM lesen darf",
+    trusted_folder_failed: "Vertrauenswürdige Ordner konnten nicht geändert werden: {message}",
     database_profile_switch_confirm:
       "Aktives Lernprofil zu „{profile}“ wechseln?",
     database_profile_switched: "Aktives Profil: {profile} ({count} Karten)",

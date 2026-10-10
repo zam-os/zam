@@ -690,6 +690,25 @@
                 </button>
               </div>
             </div>
+            <div id="trusted-folders-row" class="settings-trusted-folders">
+              <div class="settings-row">
+                <span id="lbl-settings-trusted-folders">Trusted folders</span>
+              </div>
+              <p id="trusted-folders-help" class="settings-card-help">
+                Source links and AI assistants may read files only in these folders.
+              </p>
+              <ul id="trusted-folders-list" class="settings-trusted-folder-list"></ul>
+              <p id="trusted-folders-suggestion" class="settings-card-help" aria-live="polite" hidden></p>
+              <div class="settings-actions">
+                <button id="btn-trusted-folders-add-suggested" class="btn primary-btn btn-sm" type="button" hidden>
+                  Trust these folders
+                </button>
+                <button id="btn-trusted-folder-add" class="btn secondary-btn btn-sm" type="button">
+                  Add folder…
+                </button>
+              </div>
+              <p id="trusted-folders-detail" class="settings-card-help" aria-live="polite"></p>
+            </div>
           </article>
 
           <article class="card frosted settings-card" id="settings-server-db-card" data-settings-tier="advanced">

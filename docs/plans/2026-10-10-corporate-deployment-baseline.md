@@ -35,13 +35,22 @@ Done in Phase B, with deviations:
 
 ## Phase C — Paths named by a caller are confined (D1)
 
-- [ ] **C.1** Kernel resolver for paths named by a tool argument or a stored link: allowed roots are MCP client roots plus `trustedFolders[]` in `~/.zam/config.json`; a drive root, the home directory or an ancestor of it is never a root; native real path, case-insensitive containment on Windows, no `:` in names, no `\\?\` or UNC unless the root is UNC; the opened file's identity is compared with the checked path.
-- [ ] **C.2** Typed refusal `path-outside-trusted-folders`, naming the fix (trust the folder in Settings).
-- [ ] **C.3** Source links: local paths resolve only inside a root (never against the working directory); only text, code and configuration extensions below a size limit; dot-directories and dotfiles refused; GitHub links normalised, `..` rejected, a sibling checkout used only inside a root.
-- [ ] **C.4** OKF tools: reads only `*.md` inside a root; writes only into an existing ZAM bundle or `docs/okf` under a root, never a root itself; `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `README.md` and anything under `.github/` are reserved.
-- [ ] **C.5** Trusted folders: CLI (`zam trust list|add|remove`), desktop Settings, never on the Studio bridge or MCP. A learner-started OKF import trusts its bundle's repository root.
-- [ ] **C.6** Upgrade check: list the folders that existing cards' local links point into, keep those that hold an OKF bundle, offer to trust them in one step (desktop and CLI).
-- [ ] **C.7** Tests: a secret file outside every root, an instruction file written through OKF upsert, `..`, symlink and junction escapes, dotfiles, a GitHub sibling outside every root.
+- [x] **C.1** Kernel resolver for paths named by a tool argument or a stored link: allowed roots are MCP client roots plus `trustedFolders[]` in `~/.zam/config.json`; a drive root, the home directory or an ancestor of it is never a root; native real path, case-insensitive containment on Windows, no `:` in names, no `\\?\` or UNC unless the root is UNC; the opened file's identity is compared with the checked path.
+- [x] **C.2** Typed refusal `path-outside-trusted-folders`, naming the fix (trust the folder in Settings).
+- [x] **C.3** Source links: local paths resolve only inside a root (never against the working directory); only text, code and configuration extensions below a size limit; dot-directories and dotfiles refused; GitHub links normalised, `..` rejected, a sibling checkout used only inside a root.
+- [x] **C.4** OKF tools: reads only `*.md` inside a root; writes only into an existing ZAM bundle or `docs/okf` under a root, never a root itself; `CLAUDE.md`, `AGENTS.md`, `GEMINI.md`, `README.md` and anything under `.github/` are reserved.
+- [x] **C.5** Trusted folders: CLI (`zam trust list|add|remove`), desktop Settings, never on the Studio bridge or MCP. A learner-started OKF import trusts its bundle's repository root.
+- [x] **C.6** Upgrade check: list the folders that existing cards' local links point into, keep those that hold an OKF bundle, offer to trust them in one step (desktop and CLI).
+- [x] **C.7** Tests: a secret file outside every root, an instruction file written through OKF upsert, `..`, symlink and junction escapes, dotfiles, a GitHub sibling outside every root.
+
+Done in Phase C, with deviations:
+
+- C.1: `src/kernel/system/trusted-paths.ts`. Only the real path decides containment; a lexical pre-check failed on macOS's `/var` → `/private/var` alias and was dropped. The file identity check compares device and inode of the opened file with the checked path.
+- C.3: `file://` links (material imports) are converted before the check, so image links get "not a text file type" instead of being read as text. Relative links are tried against each root in turn.
+- C.4: the knowledge-map tools (alpha) are confined the same way. `zam_okf_visualize` and `zam_knowledge_map_show` still open their panel and show the refusal as a problem. `loadBundle` skips an article that is a link out of its bundle. `zam_material_import` ignores a file path outside every root (no link, no ZAM fingerprint) instead of refusing the import, so a photo from Downloads still works; learner-picked files in desktop and CLI are not confined.
+- C.5: there is no learner-only OKF import: every import goes through an agent (`zam_okf_import`, `zam bridge okf-import`). Instead of trusting on import, the upgrade check is a standing offer: `zam trust list` / `zam trust suggested`, and a "Trust these folders" button in Settings → Data. Desktop Settings uses the bridge commands `trusted-folders`, `trusted-folder-add`, `trusted-folder-remove` and `trusted-folder-add-suggested`, none of which is on the Studio allowlist.
+- C.6: the offer covers only folders that hold a ZAM knowledge base (ADR). Links to other local files, such as scripts in a work repository, need the learner to trust the folder once; the refusal says how.
+- C.7: `tests/kernel/trusted-paths.test.ts`, `tests/kernel/reference-resolver.test.ts`, `tests/cli/okf-confinement.test.ts`, `tests/cli/trusted-folders.test.ts`, `tests/cli/material-import.test.ts`.
 
 ## Phase D — Secrets (D5)
 

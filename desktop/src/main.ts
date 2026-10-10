@@ -1024,6 +1024,17 @@ function initializeTranslations() {
   document.getElementById("btn-observation-logs-delete")!.textContent = t(
     "btn_observation_logs_delete",
   );
+  document.getElementById("lbl-settings-trusted-folders")!.textContent = t(
+    "settings_trusted_folders",
+  );
+  document.getElementById("trusted-folders-help")!.textContent = t(
+    "trusted_folders_help",
+  );
+  document.getElementById("btn-trusted-folders-add-suggested")!.textContent =
+    t("btn_trusted_folders_add_suggested");
+  document.getElementById("btn-trusted-folder-add")!.textContent = t(
+    "btn_trusted_folder_add",
+  );
   document.getElementById("btn-refresh-database-status")!.textContent =
     t("database_refresh");
 
@@ -4505,6 +4516,87 @@ async function loadObservationStatus(): Promise<void> {
   }
 }
 
+interface TrustedFolderStatusResponse {
+  folders: string[];
+  suggestions: Array<{ folder: string; cards: number }>;
+}
+
+/**
+ * Trusted folders (ADR 2026-10-08b D1): the folders source links and agent
+ * tools may read. Changed only here and with `zam trust`, never by a tool.
+ */
+async function loadTrustedFolders(): Promise<void> {
+  const list = document.getElementById("trusted-folders-list");
+  const suggestion = document.getElementById("trusted-folders-suggestion");
+  const trustSuggested = document.getElementById(
+    "btn-trusted-folders-add-suggested",
+  );
+  if (!list || !suggestion || !trustSuggested) return;
+  let status: TrustedFolderStatusResponse;
+  try {
+    status = await runBridge<TrustedFolderStatusResponse>("trusted-folders");
+  } catch {
+    // An older bridge without the command: keep the section empty.
+    return;
+  }
+  list.replaceChildren();
+  if (status.folders.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "settings-card-help";
+    empty.textContent = t("trusted_folders_none");
+    list.append(empty);
+  }
+  for (const folder of status.folders) {
+    const item = document.createElement("li");
+    const path = document.createElement("code");
+    path.textContent = folder;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "btn secondary-btn btn-sm";
+    remove.textContent = t("btn_trusted_folder_remove");
+    remove.addEventListener("click", () => {
+      void changeTrustedFolders(["trusted-folder-remove", "--dir", folder]);
+    });
+    item.append(path, remove);
+    list.append(item);
+  }
+  const hasSuggestions = status.suggestions.length > 0;
+  suggestion.hidden = !hasSuggestions;
+  trustSuggested.hidden = !hasSuggestions;
+  if (hasSuggestions) {
+    suggestion.textContent = tf("trusted_folders_suggestion", {
+      count: status.suggestions.length,
+      folders: status.suggestions.map((entry) => entry.folder).join(", "),
+    });
+  }
+}
+
+async function changeTrustedFolders(command: string[]): Promise<void> {
+  const detail = document.getElementById("trusted-folders-detail");
+  const [name, ...args] = command;
+  try {
+    await runBridge(name, args);
+    if (detail) detail.textContent = "";
+  } catch (err) {
+    if (detail) {
+      detail.textContent = tf("trusted_folder_failed", {
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+  await loadTrustedFolders();
+}
+
+async function addTrustedFolderFromDialog(): Promise<void> {
+  const selected = await openFolderDialog({
+    directory: true,
+    multiple: false,
+    title: t("trusted_folder_pick"),
+  });
+  if (typeof selected !== "string") return;
+  await changeTrustedFolders(["trusted-folder-add", "--dir", selected]);
+}
+
 async function deleteObservationLogs(): Promise<void> {
   const detail = document.getElementById("observation-logs-detail");
   const count = observationSessionIds.length;
@@ -4669,6 +4761,7 @@ function refreshSettingsData(): void {
   }
   void loadDatabaseStatus();
   void loadObservationStatus();
+  void loadTrustedFolders();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
@@ -8603,6 +8696,17 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("btn-observation-logs-delete")
     ?.addEventListener("click", () => {
       void deleteObservationLogs();
+    });
+
+  document
+    .getElementById("btn-trusted-folder-add")
+    ?.addEventListener("click", () => {
+      void addTrustedFolderFromDialog();
+    });
+  document
+    .getElementById("btn-trusted-folders-add-suggested")
+    ?.addEventListener("click", () => {
+      void changeTrustedFolders(["trusted-folder-add-suggested"]);
     });
 
   // Setup & Data: reveal the data folder, back up the database.
