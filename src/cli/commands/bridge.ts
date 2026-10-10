@@ -364,6 +364,7 @@ import {
   ensureWorkspaceStructure,
   inspectSkillLinks,
   inspectWorkspaceStructure,
+  isSkillSource,
   parseSetupAgents,
   type SkillLinkHealth,
   type SkillLinkState,
@@ -9235,11 +9236,17 @@ function presentLearningContentSource(): {
         label: string;
         path: string;
         missing: boolean;
+        skillSource: boolean;
       }
-    | { kind: "folder"; path: string; missing: boolean }
+    | { kind: "folder"; path: string; missing: boolean; skillSource: boolean }
     | { kind: "curriculum" }
     | null;
-  workspaces: Array<{ id: string; label: string; path: string }>;
+  workspaces: Array<{
+    id: string;
+    label: string;
+    path: string;
+    skillSource: boolean;
+  }>;
   activeWorkspaceId: string | null;
 } {
   const stored = getLearningContentSource();
@@ -9254,6 +9261,7 @@ function presentLearningContentSource(): {
     id: workspace.id,
     label: workspaceSourceLabel(workspace),
     path: workspace.path,
+    skillSource: isSkillSource(workspace.path),
   }));
   if (!resolved) {
     return {
@@ -9281,6 +9289,7 @@ function presentLearningContentSource(): {
         kind: "folder",
         path: resolved.path,
         missing: directoryMissing(resolved.path),
+        skillSource: isSkillSource(resolved.path),
       },
       workspaces: listed,
       activeWorkspaceId,
@@ -9296,6 +9305,7 @@ function presentLearningContentSource(): {
       label: workspace ? workspaceSourceLabel(workspace) : resolved.id,
       path: workspace?.path ?? "",
       missing: workspace ? directoryMissing(workspace.path) : true,
+      skillSource: workspace ? isSkillSource(workspace.path) : false,
     },
     workspaces: listed,
     activeWorkspaceId,
@@ -9334,6 +9344,26 @@ bridgeCommand
       jsonError(err instanceof Error ? err.message : String(err));
     }
     jsonOut(presentLearningContentSource());
+  });
+
+bridgeCommand
+  .command("learning-content-browse")
+  .description(
+    "Read a Quelle's OKF articles, or one file that stays inside that root (JSON)",
+  )
+  .option("--repo <path>", "Repository root")
+  .option("--target <path>", "Article name or path inside the repository")
+  .action(async (opts: { repo?: string; target?: string }) => {
+    const repo = typeof opts.repo === "string" ? opts.repo.trim() : "";
+    if (!repo) jsonError("A repository path is required");
+    const { catalogSource, readSourceFile } = await import(
+      "../learning-content/browse.js"
+    );
+    if (opts.target === undefined) {
+      jsonOut({ success: true, ...catalogSource(repo) });
+      return;
+    }
+    jsonOut({ success: true, ...readSourceFile(repo, String(opts.target)) });
   });
 
 // ── Knowledge map alpha for Studio — ADR 2026-10-03 ───────────────────────

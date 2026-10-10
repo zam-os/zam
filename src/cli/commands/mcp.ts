@@ -179,6 +179,12 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
     why: "Reads the workspace registry and stores which workspace the page shows; never a path.",
     refusedOptions: ["--path"],
   },
+  // The existing alpha switch (ADR 2026-10-03). Quellen turns it on; the
+  // repository an agent last wrote a map for stays with the agent tools.
+  "knowledge-map-feature": {
+    why: "Reads and sets the knowledge-map alpha switch and view; never a path.",
+    refusedOptions: ["--repo"],
+  },
   "personal-card-create-assignment": { why: "Learning state only." },
   "personal-card-withdraw-assignment": { why: "Learning state only." },
   "personal-card-list-assignments": { why: "Reads assignments." },

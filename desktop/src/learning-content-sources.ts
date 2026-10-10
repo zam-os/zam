@@ -3,17 +3,24 @@
  *
  * One Quelle at a time: a configured workspace, a remembered folder, or the
  * curriculum entry. The curriculum entry stays disabled until the wizard
- * moves here. This module only reads the registry and writes the machine-local
- * selection. It does not mount a map, repair a workspace, or add one.
+ * moves here. This module reads the registry and writes the machine-local
+ * selection. A present directory is shown by the knowledge module. This
+ * module does not repair a workspace, add one, or write a map.
  */
 
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
+import {
+  applySourceKnowledgeChrome,
+  clearSourceKnowledge,
+  showSourceKnowledge,
+} from "./learning-content-knowledge.js";
 
 interface SourceWorkspace {
   id: string;
   label: string;
   path: string;
+  skillSource?: boolean;
 }
 
 interface SourceView {
@@ -25,8 +32,9 @@ interface SourceView {
         label: string;
         path: string;
         missing: boolean;
+        skillSource?: boolean;
       }
-    | { kind: "folder"; path: string; missing: boolean }
+    | { kind: "folder"; path: string; missing: boolean; skillSource?: boolean }
     | { kind: "curriculum" }
     | null;
   workspaces: SourceWorkspace[];
@@ -56,6 +64,7 @@ function setText(id: string, text: string): void {
 export function applyLearningContentSourceChrome(): void {
   setText("lbl-content-source", t("lbl_content_source"));
   setText("btn-content-choose-folder", t("btn_content_choose_folder"));
+  applySourceKnowledgeChrome();
   const curriculum = document.querySelector(
     '#content-source-select option[value="curriculum"]',
   );
@@ -141,6 +150,11 @@ function folderLabel(path: string): string {
   return parts[parts.length - 1] || path;
 }
 
+function skillLabel(label: string, skillSource: boolean): string {
+  if (!skillSource) return label;
+  return `${label} · ${t("content_source_skill")}`;
+}
+
 function renderSourceChoices(view: SourceView): void {
   const select = document.getElementById(
     "content-source-select",
@@ -150,7 +164,10 @@ function renderSourceChoices(view: SourceView): void {
   for (const workspace of view.workspaces) {
     const option = document.createElement("option");
     option.value = `workspace:${workspace.id}`;
-    option.textContent = workspace.label;
+    option.textContent = skillLabel(
+      workspace.label,
+      workspace.skillSource === true,
+    );
     select.append(option);
   }
   const curriculum = document.createElement("option");
@@ -161,7 +178,10 @@ function renderSourceChoices(view: SourceView): void {
   if (view.selection?.kind === "folder") {
     const option = document.createElement("option");
     option.value = "folder";
-    option.textContent = folderLabel(view.selection.path);
+    option.textContent = skillLabel(
+      folderLabel(view.selection.path),
+      view.selection.skillSource === true,
+    );
     select.append(option);
   }
   const selection = view.selection;
@@ -181,15 +201,21 @@ function renderSourceStatus(view: SourceView): void {
   if (!selection) {
     path.textContent = "";
     note.textContent = t("content_source_none");
+    clearSourceKnowledge();
     return;
   }
   if (selection.kind === "curriculum") {
     path.textContent = "";
     note.textContent = t("content_source_curriculum_wait");
+    clearSourceKnowledge();
     return;
   }
   path.textContent = selection.path;
-  note.textContent = selection.missing
-    ? t("content_source_missing")
-    : t("content_source_next");
+  if (selection.missing) {
+    note.textContent = t("content_source_missing");
+    clearSourceKnowledge();
+    return;
+  }
+  note.textContent = "";
+  showSourceKnowledge(selection.path, selection.skillSource === true);
 }

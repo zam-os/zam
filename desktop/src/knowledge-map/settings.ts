@@ -2,9 +2,8 @@
  * Studio Settings: the knowledge-map alpha card (ADR 2026-10-03, Decision 4).
  *
  * Off by default. Until the learner ticks the box, the card is one checkbox
- * and one sentence and the navigation entry stays hidden. Once on, the card
- * lists the views; the choice is stored for this machine and the map page
- * uses it the next time it opens.
+ * and one sentence. Once on, the card lists the views. Quellen reads the
+ * same switch when a repository source is open.
  */
 
 import { runBridge } from "../bridge-transport.js";
@@ -32,8 +31,8 @@ function required<T extends HTMLElement>(id: string): T {
 }
 
 /**
- * Wire the card. `onEnabledChange` lets main.ts show or hide the navigation
- * entry; `onViewChange` lets an open map page switch views right away.
+ * Wire the card. `onEnabledChange` fires when the switch changes.
+ * `onViewChange` lets an open map switch views right away.
  */
 export function initKnowledgeMapSettings(options: {
   onEnabledChange(enabled: boolean): void;

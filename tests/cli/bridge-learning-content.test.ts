@@ -153,9 +153,15 @@ describe("zam bridge learning-content lists", () => {
       "unchosen-members",
       "personal-card-ensure",
       "learning-content-source",
+      "learning-content-browse",
+      "knowledge-map",
+      "knowledge-map-feature",
     ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(true);
     }
+    expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has("knowledge-map-feedback")).toBe(
+      false,
+    );
   });
 
   it("creates one card for a published token and refuses a draft", () => {
@@ -262,5 +268,39 @@ describe("zam bridge learning-content lists", () => {
     expect(
       JSON.parse(readFileSync(configPath, "utf8")).learningContent.source.kind,
     ).toBe("folder");
+  });
+
+  it("reads a file inside a Quelle and does not write the machine config", () => {
+    const configPath = join(tempHome, ".zam", "config.json");
+    const before = readFileSync(configPath, "utf8");
+    writeFileSync(join(tempCwd, "note.txt"), "hello");
+    const listed = runCliJson([
+      "bridge",
+      "learning-content-browse",
+      "--repo",
+      tempCwd,
+    ]);
+    expect(listed.okf).toEqual({ found: false });
+    expect(listed.skillSource).toBe(false);
+    const note = runCliJson([
+      "bridge",
+      "learning-content-browse",
+      "--repo",
+      tempCwd,
+      "--target",
+      "note.txt",
+    ]);
+    expect(note).toMatchObject({ opened: true, kind: "text", body: "hello" });
+    const outside = runCliJson([
+      "bridge",
+      "learning-content-browse",
+      "--repo",
+      tempCwd,
+      "--target",
+      "../note.txt",
+    ]);
+    expect(outside.opened).toBe(false);
+    expect(outside.body).toBeUndefined();
+    expect(readFileSync(configPath, "utf8")).toBe(before);
   });
 });

@@ -680,13 +680,24 @@ describe("knowledge map module boundaries and wiring", () => {
     }
   });
 
-  it("loads the map page lazily and hides it until the alpha is on", () => {
+  it("loads map views from Quellen only after the alpha is on", () => {
     const main = readFileSync(join(ROOT, "desktop/src/main.ts"), "utf8");
-    expect(main).toContain('await import("./knowledge-map/studio.js")');
+    expect(main).not.toContain("nav-knowledge-map");
     expect(main).not.toMatch(/^import .*knowledge-map\/studio/m);
     expect(main).not.toMatch(/^import .*knowledge-map\/views/m);
+    const knowledge = readFileSync(
+      join(ROOT, "desktop/src/learning-content-knowledge.ts"),
+      "utf8",
+    );
+    const enabledAt = knowledge.indexOf("feature.enabled");
+    const importer = knowledge.indexOf(
+      'await import("./knowledge-map/studio.js")',
+    );
+    expect(enabledAt).toBeGreaterThan(-1);
+    expect(importer).toBeGreaterThan(enabledAt);
+    expect(knowledge).not.toMatch(/^import .*knowledge-map\/studio/m);
     const html = readFileSync(join(ROOT, "desktop/index.html"), "utf8");
-    expect(html).toMatch(/<button id="nav-knowledge-map"[^>]*\bhidden\b/);
+    expect(html).not.toContain("nav-knowledge-map");
     expect(html).toMatch(
       /id="knowledge-map-card" data-settings-tier="advanced"/,
     );

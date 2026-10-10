@@ -192,6 +192,49 @@
       .content-sources-status p {
         margin: 0;
       }
+      .content-sources-body {
+        display: grid;
+        gap: 14px;
+        grid-template-columns: 1fr;
+        margin-top: 8px;
+      }
+      .content-sources-knowledge,
+      .content-sources-reader {
+        min-width: 0;
+      }
+      .content-sources-okf h2,
+      .content-sources-reader h2 {
+        font-size: 15px;
+        margin: 0 0 8px;
+      }
+      .content-sources-okf ul {
+        list-style: none;
+        margin: 0;
+        padding: 0;
+      }
+      .content-sources-okf p,
+      .content-sources-reader-path {
+        margin: 0 0 8px;
+      }
+      .content-sources-article {
+        background: none;
+        border: 0;
+        color: inherit;
+        cursor: pointer;
+        font: inherit;
+        padding: 4px 0;
+        text-align: left;
+        text-decoration: underline;
+      }
+      .content-sources-reader-body {
+        max-height: 70vh;
+        overflow: auto;
+      }
+      .content-sources-text {
+        margin: 0;
+        white-space: pre-wrap;
+        word-break: break-word;
+      }
       .content-studio-layout {
         display: flex;
         gap: 14px;
@@ -733,6 +776,20 @@
           <div id="content-sources-status" class="content-sources-status">
             <p id="content-sources-path"></p>
             <p id="content-sources-note"></p>
+          </div>
+          <div id="content-sources-body" class="content-sources-body hidden" hidden>
+            <div class="content-sources-knowledge">
+              <div id="content-sources-map"></div>
+              <div id="content-sources-okf" class="content-sources-okf">
+                <h2 id="lbl-content-source-okf">Articles</h2>
+                <p id="content-sources-okf-note"></p>
+                <ul id="content-sources-okf-list"></ul>
+              </div>
+            </div>
+            <div id="content-sources-reader" class="content-sources-reader">
+              <h2 id="lbl-content-source-reader">Reader</h2>
+              <div id="content-sources-reader-body"></div>
+            </div>
           </div>
         </div>
       </section>

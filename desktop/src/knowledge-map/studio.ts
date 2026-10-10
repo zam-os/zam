@@ -4,13 +4,15 @@
  * the bridge and mounts the shell with the view picked in Settings. Without a
  * usable map it shows ZAM's own map as an example, never a dead end.
  *
- * Loaded lazily from main.ts only when the alpha is on and the page opens.
- * Tauri stays out: main.ts injects folder picking and link opening.
+ * Loaded lazily when the alpha is on. Quellen mounts `mountSourceKnowledgeMap`
+ * for one repository root and does not write the machine's map repository.
+ * Tauri stays out: the old page injects folder picking and link opening.
  */
 
 import {
   buildMapIndex,
   type KnowledgeMap,
+  type MapIndex,
   type MapIssue,
   validateKnowledgeMap,
 } from "../../../src/cli/knowledge-map/model.js";
@@ -22,6 +24,8 @@ import {
   mountKnowledgeMap,
   type ShellHandle,
 } from "./shell.js";
+import { sampleNotice } from "./show-result.js";
+import { planSourceMap } from "./source-plan.js";
 import { ensureKnowledgeMapStyles } from "./styles.js";
 
 export interface StudioMapDeps {
@@ -188,5 +192,107 @@ export async function openKnowledgeMapView(
     error.className = "km-notice km-error";
     error.textContent = `${t("km_load_failed")} ${err instanceof Error ? err.message : String(err)}`;
     container.appendChild(error);
+  }
+}
+
+export interface SourceMapMount {
+  repo: string;
+  /** When true, a missing or invalid map is not replaced by the example. */
+  skillSource: boolean;
+  /** Called with the repository-relative source path. Must not open the OS. */
+  openSource(url: string): void;
+  /** False once the learner has switched Quelle. A stale load must not draw. */
+  isCurrent(): boolean;
+}
+
+let sourceShell: ShellHandle | null = null;
+
+export function clearSourceKnowledgeMap(): void {
+  sourceShell?.destroy();
+  sourceShell = null;
+}
+
+function showMapNote(container: HTMLElement, text: string): void {
+  container.replaceChildren();
+  const note = document.createElement("p");
+  note.className = "km-notice";
+  note.textContent = text;
+  container.appendChild(note);
+}
+
+function skillSourceNotice(loaded: MapResponse): string {
+  if (!loaded.found) return t("content_source_map_missing");
+  return [
+    t("content_source_map_invalid"),
+    ...loaded.issues
+      .filter((issue) => issue.level === "error")
+      .slice(0, 8)
+      .map((issue) => `• ${issue.id ? `${issue.id}: ` : ""}${issue.message}`),
+  ].join("\n");
+}
+
+/**
+ * Draw one Quelle's map into `container`. Reads `knowledge-map --repo` and
+ * the view chosen in Settings. Does not set `knowledgeMap.repoPath`.
+ */
+export async function mountSourceKnowledgeMap(
+  container: HTMLElement,
+  options: SourceMapMount,
+): Promise<void> {
+  ensureKnowledgeMapStyles();
+  try {
+    const [feature, loaded] = await Promise.all([
+      runBridge<FeatureResponse>("knowledge-map-feature"),
+      runBridge<MapResponse>("knowledge-map", ["--repo", options.repo]),
+    ]);
+    if (!options.isCurrent()) return;
+    sourceShell?.destroy();
+    sourceShell = null;
+    const plan = planSourceMap({
+      skillSource: options.skillSource,
+      found: loaded.found,
+      valid: loaded.map !== null,
+    });
+    if (plan.draw === "none") {
+      showMapNote(container, skillSourceNotice(loaded));
+      return;
+    }
+    let map = loaded.map;
+    let notice: string | undefined;
+    if (plan.draw === "example") {
+      map = await sampleMap();
+      if (!options.isCurrent()) return;
+      notice = sampleNotice(loaded, t) ?? undefined;
+    }
+    if (!map) {
+      showMapNote(container, t("km_load_failed"));
+      return;
+    }
+    const index: MapIndex = {
+      ...buildMapIndex(map),
+      sourceUrl: (source) => source,
+    };
+    container.replaceChildren();
+    sourceShell = await mountKnowledgeMap(container, {
+      index,
+      viewId: parseKnowledgeMapViewId(feature.view),
+      t,
+      tf,
+      showViewSwitcher: false,
+      ...(notice ? { notice } : {}),
+      openSource: options.openSource,
+      feedback: null,
+      copyText: async () => false,
+    });
+    if (!options.isCurrent()) {
+      sourceShell.destroy();
+      sourceShell = null;
+    }
+  } catch (err) {
+    if (!options.isCurrent()) return;
+    showMapNote(
+      container,
+      `${t("km_load_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
   }
 }

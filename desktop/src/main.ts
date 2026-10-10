@@ -858,8 +858,6 @@ function initializeTranslations() {
   document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
   document.getElementById("nav-settings")!.textContent = t("nav_settings");
   document.getElementById("nav-stats")!.textContent = t("nav_stats");
-  const knowledgeMapNav = document.getElementById("nav-knowledge-map");
-  if (knowledgeMapNav) knowledgeMapNav.textContent = t("km_nav");
   document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
@@ -4441,33 +4439,8 @@ function errorMessage(err: unknown): string {
 }
 
 // ── KNOWLEDGE MAP (alpha, ADR 2026-10-03) ─────────────────────────────────
+// Quellen mounts the views. Settings keeps the switch and the view list.
 let knowledgeMapSettings: KnowledgeMapSettings | null = null;
-
-/** Load the map page's module on first use; it stays out of the boot bundle. */
-async function openKnowledgeMapPage(): Promise<void> {
-  const container = document.getElementById("knowledge-map-root");
-  if (!container) return;
-  const { openKnowledgeMapView } = await import("./knowledge-map/studio.js");
-  await openKnowledgeMapView(container, {
-    openUrl: (url) => void openUrl(url),
-    pickFolder: async () => {
-      const selected = await openFolderDialog({
-        directory: true,
-        multiple: false,
-        title: t("km_pick_repo"),
-      });
-      return typeof selected === "string" ? selected : null;
-    },
-    copyText: async (text) => {
-      try {
-        await navigator.clipboard.writeText(text);
-        return true;
-      } catch {
-        return false;
-      }
-    },
-  });
-}
 
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function setActiveNav(viewId: AppView): void {
@@ -4476,7 +4449,6 @@ function setActiveNav(viewId: AppView): void {
     "settings-view": "nav-settings",
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
-    "knowledge-map-view": "nav-knowledge-map",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -5102,7 +5074,7 @@ function switchView(
   const mainContainer = document.querySelector('main.container');
   mainContainer?.classList.toggle(
     'content-full',
-    viewId === "learning-content-view" || viewId === "knowledge-map-view",
+    viewId === "learning-content-view",
   );
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
@@ -5121,9 +5093,6 @@ function switchView(
   }
   if (viewId === "stats-view") {
     void loadStatsView();
-  }
-  if (viewId === "knowledge-map-view") {
-    void openKnowledgeMapPage();
   }
   // openCardInEditor already loads + selects; skip the redundant fire-and-forget
   // load that would race with that path (ADR 2026-07-16b full-editor jump).
@@ -8667,15 +8636,8 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("knowledge-map", () => {
     knowledgeMapSettings = initKnowledgeMapSettings({
-      onEnabledChange: (enabled) => {
-        const nav = document.getElementById("nav-knowledge-map");
-        if (nav) nav.hidden = !enabled;
-        if (
-          !enabled &&
-          document.getElementById("knowledge-map-view")?.classList.contains("active")
-        ) {
-          switchView("settings-view");
-        }
+      onEnabledChange: () => {
+        // Quellen reads the same switch. There is no top-nav entry.
       },
     });
   });
@@ -8764,10 +8726,6 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {
     switchView("stats-view");
-  });
-
-  document.getElementById("nav-knowledge-map")?.addEventListener("click", () => {
-    switchView("knowledge-map-view");
   });
 
   document.getElementById("btn-stats-back")?.addEventListener("click", () => {
