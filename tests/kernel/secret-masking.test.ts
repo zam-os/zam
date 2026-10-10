@@ -1,9 +1,14 @@
 /**
- * ADR 2026-10-08b D5: `zam settings show` masks secrets.
+ * ADR 2026-10-08b D5: `zam settings show` and the bridge's log lines mask
+ * secrets.
  */
 
 import { describe, expect, it } from "vitest";
-import { maskSecret, maskSettingValue } from "../../src/kernel/index.js";
+import {
+  maskSecret,
+  maskSettingValue,
+  redactCommand,
+} from "../../src/kernel/index.js";
 
 describe("secret masking", () => {
   it("masks secret settings by name", () => {
@@ -37,5 +42,34 @@ describe("secret masking", () => {
   it("never shows a short secret's characters", () => {
     expect(maskSecret("abcdefghijkl")).toBe("••••");
     expect(maskSecret("")).toBe("");
+  });
+});
+
+describe("bridge log lines (desktop-bridge.log)", () => {
+  // The serve log writes every failed request's error through redactCommand;
+  // a provider's error text can echo the key it rejected.
+  it("hides a key a provider echoes in its error", () => {
+    for (const [line, secret] of [
+      [
+        "request failed | command model-upsert | 12 ms | Incorrect API key provided: sk-proj-Fake5ecretValue1234567890abcd",
+        "Fake5ecretValue",
+      ],
+      [
+        "request failed | command model-reprobe | 9 ms | Authorization: Bearer sk-or-v1-0123456789abcdef0123456789abcdef",
+        "0123456789abcdef",
+      ],
+      [
+        "serve request failed: libsql://db.turso.io?authToken=Fake5ecretTokenValue123456",
+        "Fake5ecretToken",
+      ],
+    ] as const) {
+      expect(redactCommand(line)).not.toContain(secret);
+    }
+  });
+
+  it("keeps the command name and timing readable", () => {
+    expect(redactCommand("request slow | command list-tokens | 3000 ms")).toBe(
+      "request slow | command list-tokens | 3000 ms",
+    );
   });
 });

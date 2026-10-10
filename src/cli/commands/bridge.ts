@@ -8740,19 +8740,17 @@ bridgeCommand
     const nodePath = await import("node:path");
     const logDir = nodePath.join(nodeOs.homedir(), ".zam");
     const logPath = nodePath.join(logDir, "desktop-bridge.log");
-    const logDiag = (msg: string): void => {
+    const logDiagLine = (line: string): void => {
       try {
         if (!fileExists(logDir)) makeDir(logDir, { recursive: true });
-        // A provider's error text can echo a key: log lines go through the
-        // same redactor as monitored commands (ADR 2026-10-08b D5).
-        appendFileSync(
-          logPath,
-          `[${new Date().toISOString()}] ${redactCommand(msg)}\n`,
-        );
+        appendFileSync(logPath, `[${new Date().toISOString()}] ${line}\n`);
       } catch {
         // best-effort only — never let logging break the bridge
       }
     };
+    // A provider's error text can echo a key: log lines go through the same
+    // redactor as monitored commands (ADR 2026-10-08b D5).
+    const logDiag = (msg: string): void => logDiagLine(redactCommand(msg));
     // Failed and slow requests leave a line so a learner's "it timed out"
     // can be traced afterwards. Only the command name, duration and error
     // are written — arguments carry learner content and are never logged.
@@ -8763,12 +8761,13 @@ bridgeCommand
     ): void => {
       if (error !== null) {
         const line = error.replace(/\s+/g, " ").slice(0, 500);
-        logDiag(`request failed | cmd=${cmd} | ${elapsedMs} ms | ${line}`);
+        logDiag(`request failed | command ${cmd} | ${elapsedMs} ms | ${line}`);
       } else if (elapsedMs >= SLOW_SERVE_REQUEST_MS) {
-        logDiag(`request slow | cmd=${cmd} | ${elapsedMs} ms`);
+        logDiag(`request slow | command ${cmd} | ${elapsedMs} ms`);
       }
     };
-    logDiag(
+    // Paths only, and the point of the line: the redactor would hide them.
+    logDiagLine(
       `serve start | homedir=${nodeOs.homedir()} | USERPROFILE=${
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
