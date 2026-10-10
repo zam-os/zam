@@ -2800,8 +2800,21 @@ async function saveStudyWorkload(): Promise<void> {
   elements.save.disabled = true;
   elements.status.textContent = "";
   try {
-    const args = ["--preset", elements.preset.value];
-    if (elements.preset.value === "custom") {
+    const rawPreset = elements.preset.value as StudyWorkloadPreset;
+    const isKnownPreset = rawPreset in STUDY_PRESET_VALUES;
+    const presetDefault = isKnownPreset
+      ? STUDY_PRESET_VALUES[rawPreset as Exclude<StudyWorkloadPreset, "custom">]
+      : null;
+    const isCustom =
+      rawPreset === "custom" ||
+      (presetDefault !== null &&
+        (Number(elements.maxNew.value) !== presetDefault.maxNew ||
+          Number(elements.maxReviews.value) !== presetDefault.maxReviews ||
+          elements.buryNew.checked !== presetDefault.buryNewSiblings ||
+          elements.buryReview.checked !== presetDefault.buryReviewSiblings));
+    const preset = isCustom ? "custom" : rawPreset;
+    const args = ["--preset", preset];
+    if (isCustom) {
       args.push(
         "--max-new",
         elements.maxNew.value,
@@ -2842,6 +2855,9 @@ function initStudyWorkloadControls(): void {
     elements.buryNew,
     elements.buryReview,
   ]) {
+    control.addEventListener("input", () => {
+      elements.preset.value = "custom";
+    });
     control.addEventListener("change", () => {
       elements.preset.value = "custom";
     });
