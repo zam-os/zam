@@ -16,6 +16,7 @@ Current truth only — the *why* behind it lives in [../adr/](../adr/)
 
 ## architecture
 
+- [Agent and Library Trust Model](agent-trust-model.md) — Agents and library content are untrusted, so every ZAM tool must be safe to auto-approve; files, network, the agent surface and keys each have one rule that enforces this.
 - [Kernel and CLI Architecture](kernel-architecture.md) — ZAM is split into an AI-agnostic learning kernel and a thin CLI orchestration layer; all learning logic lives in the kernel, all LLM/HTTP code in the CLI.
 - [Local AI Runtimes](local-ai-runtimes.md) — Local text and image generation is offered only on accelerated hardware - Foundry Local for text, Ollama for images - because CPU generation is too slow to review with; embeddings are the exception and run on any machine.
 - [MCP Transport and Surfaces](mcp-surfaces.md) — zam mcp is the preferred agent transport, and the Agent Plugins package ships it with ZAM's portable skill for compatible clients.

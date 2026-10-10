@@ -373,6 +373,50 @@ export async function getAllSettings(
   return map;
 }
 
+/** A setting whose name says it holds a secret. */
+const SECRET_SETTING = /(^|[._])(api_?key|token|secret|password|pat)$/i;
+/** A JSON property that holds a secret, e.g. a model row's `apiKey`. */
+const SECRET_PROPERTY = /^(api_?key|token|secret|password|pat|authorization)$/i;
+
+/** A secret shown as dots plus its last four characters, if it is long enough. */
+export function maskSecret(value: string): string {
+  if (!value) return value;
+  return value.length <= 12 ? "••••" : `••••${value.slice(-4)}`;
+}
+
+function maskSecretFields(value: unknown): unknown {
+  if (Array.isArray(value)) return value.map(maskSecretFields);
+  if (value && typeof value === "object") {
+    return Object.fromEntries(
+      Object.entries(value).map(([key, inner]) => [
+        key,
+        typeof inner === "string" && SECRET_PROPERTY.test(key)
+          ? maskSecret(inner)
+          : maskSecretFields(inner),
+      ]),
+    );
+  }
+  return value;
+}
+
+/**
+ * A setting value as `zam settings show` prints it (ADR 2026-10-08b D5): a
+ * secret setting is masked, and so is every secret property inside a JSON
+ * value such as a model registry row.
+ */
+export function maskSettingValue(key: string, value: string): string {
+  if (SECRET_SETTING.test(key)) return maskSecret(value);
+  const trimmed = value.trim();
+  if (trimmed.startsWith("{") || trimmed.startsWith("[")) {
+    try {
+      return JSON.stringify(maskSecretFields(JSON.parse(trimmed)));
+    } catch {
+      return value;
+    }
+  }
+  return value;
+}
+
 /** Get all settings with metadata — the values in effect for this scope. */
 export async function getAllSettingsDetailed(
   db: Database,

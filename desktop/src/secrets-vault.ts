@@ -221,10 +221,10 @@ export function initSecretsVault(
     try {
       await runBridge("secrets-unlock", ["--password", password]);
       passwordInput.value = "";
-      // Session is persisted for 30 days — hide unlock UI immediately.
+      // Session is remembered for up to 7 days — hide unlock UI immediately.
       unlockRow.hidden = true;
       await refresh();
-      // Auto-sync if pending; otherwise stay quiet (user has 30 days peace).
+      // Auto-sync if pending; otherwise stay quiet until the session expires.
       if (
         lastStatus?.kind === "unlocked" &&
         (lastStatus.autoSync || lastStatus.pendingLiteralCount > 0)

@@ -1,11 +1,23 @@
-import { chmodSync, mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  chmodSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  getBitwardenCliStatus,
   loginBitwardenForProcess,
   unlockBitwardenForProcess,
+  upsertBitwardenSecretItem,
 } from "../../src/cli/secrets-bridge.js";
+import {
+  currentBwSession,
+  resetBwSessionForTests,
+} from "../../src/kernel/index.js";
 
 /**
  * A master password must never reach another process's argv.
@@ -26,6 +38,8 @@ describe.skipIf(process.platform === "win32")(
     let dir: string;
     let argvLog: string;
     let envLog: string;
+    let sessionLog: string;
+    let stdinLog: string;
     let originalPath: string | undefined;
     let originalSession: string | undefined;
 
@@ -33,15 +47,24 @@ describe.skipIf(process.platform === "win32")(
       dir = mkdtempSync(join(tmpdir(), "zam-bw-argv-"));
       argvLog = join(dir, "argv.txt");
       envLog = join(dir, "env.txt");
+      sessionLog = join(dir, "session.txt");
+      stdinLog = join(dir, "stdin.txt");
+      resetBwSessionForTests();
 
       const fakeBw = join(dir, "bw");
       writeFileSync(
         fakeBw,
         [
           "#!/bin/sh",
-          `printf '%s\\n' "$@" > ${JSON.stringify(argvLog)}`,
+          `printf '%s\\n' "$@" >> ${JSON.stringify(argvLog)}`,
           `printf '%s' "\${BW_PASSWORD}" > ${JSON.stringify(envLog)}`,
-          "echo fake-session-key",
+          `printf '%s\\n' "\${BW_SESSION}" >> ${JSON.stringify(sessionLog)}`,
+          `cat >> ${JSON.stringify(stdinLog)}`,
+          'case "$1" in',
+          '  status) echo \'{"status":"unlocked","serverUrl":null}\' ;;',
+          "  list) echo '[]' ;;",
+          "  *) echo fake-session-key ;;",
+          "esac",
         ].join("\n"),
         "utf8",
       );
@@ -59,6 +82,7 @@ describe.skipIf(process.platform === "win32")(
       else process.env.PATH = originalPath;
       if (originalSession === undefined) delete process.env.BW_SESSION;
       else process.env.BW_SESSION = originalSession;
+      resetBwSessionForTests();
       delete process.env.ZAM_BW_SESSION_PATH;
       rmSync(dir, { recursive: true, force: true });
     });
@@ -96,6 +120,36 @@ describe.skipIf(process.platform === "win32")(
       // The child gets BW_PASSWORD; the bridge process itself must not keep it,
       // or every later child would inherit it too.
       expect(process.env.BW_PASSWORD).toBeUndefined();
+    });
+
+    // ADR 2026-10-08b D5: the session reaches `bw` through that child's
+    // environment only, and an item's JSON goes on stdin.
+    it("keeps the session out of argv and out of this process's environment", async () => {
+      await unlockBitwardenForProcess(PASSWORD);
+      expect(currentBwSession()).toBe("fake-session-key");
+      expect(process.env.BW_SESSION).toBeUndefined();
+
+      await getBitwardenCliStatus();
+      const argv = recordedArgv();
+      expect(argv).not.toContain("--session");
+      expect(argv.join(" ")).not.toContain("fake-session-key");
+      // The status call's child received it in its environment.
+      expect(readFileSync(sessionLog, "utf8")).toContain("fake-session-key");
+    });
+
+    it("hands an item to bw on stdin, never on the command line", async () => {
+      await unlockBitwardenForProcess(PASSWORD);
+      const SECRET = "turso-token-Fake5ecret";
+      const result = await upsertBitwardenSecretItem({
+        itemName: "zam-test-item",
+        fieldName: "token",
+        secret: SECRET,
+      });
+      expect(result.ok).toBe(true);
+      expect(recordedArgv()).toContain("create");
+      expect(recordedArgv().join(" ")).not.toContain(SECRET);
+      const encoded = readFileSync(stdinLog, "utf8").trim();
+      expect(Buffer.from(encoded, "base64").toString("utf8")).toContain(SECRET);
     });
   },
 );

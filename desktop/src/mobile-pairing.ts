@@ -32,6 +32,9 @@ function speechSummaryKey(speech: PairingPayloadResponse["hasSpeech"]): string {
   return "pairing_speech_no";
 }
 
+/** How long the pairing code stays on screen (ADR 2026-10-08b D5). */
+export const PAIRING_QR_VISIBLE_MS = 60 * 1000;
+
 function requiredElement<T extends HTMLElement>(id: string): T {
   const element = document.getElementById(id);
   if (!element) throw new Error(`missing mobile pairing element #${id}`);
@@ -179,10 +182,13 @@ export function initMobilePairing(onProfileCreated: () => void): void {
       qrPanel.classList.remove("hidden");
       setStatus(t("pairing_scan_now"));
       if (result.createdUser) onProfileCreated();
+      // The code carries the database token: it hides after a minute (ADR
+      // 2026-10-08b D5), long enough to scan, short enough not to linger on a
+      // shared or recorded screen.
       hideTimer = setTimeout(() => {
         hideQr();
         setStatus(t("pairing_expired"));
-      }, 5 * 60 * 1000);
+      }, PAIRING_QR_VISIBLE_MS);
     } catch (error) {
       setStatus(
         tf("pairing_error", {

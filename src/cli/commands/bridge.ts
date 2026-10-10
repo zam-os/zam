@@ -29,6 +29,7 @@ import type {
   TokenPattern,
 } from "../../kernel/index.js";
 import {
+  addTrustedFolder,
   appendUiObservationReport,
   applySourceProposals,
   assignTokenToContext,
@@ -42,6 +43,7 @@ import {
   commitTextImport,
   configuredLibraryKind,
   confirmCardSplit,
+  confirmEndpoint,
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
@@ -94,6 +96,7 @@ import {
   importCurriculumCards,
   inventoryObservationFiles,
   isBitwardenVaultEnabled,
+  isEndpointUnconfirmed,
   isOllamaInstalled,
   isPersonaId,
   isScreenObservationEnabled,
@@ -123,6 +126,8 @@ import {
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  redactCommand,
+  removeTrustedFolder,
   resolveCredentials,
   resolveObserverPolicy,
   restorePreviousLibrary,
@@ -156,8 +161,8 @@ import {
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  CONTENT_USER_AGENT,
   cleanHtml,
-  isSafeUrl,
   readImageOCR,
   readLocalFile,
   readWebLink,
@@ -324,11 +329,13 @@ import {
 } from "../material-import.js";
 import { stageMaterialImport } from "../material-staging.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
+import { safeFetch } from "../net/safe-fetch.js";
 import { listOpenContentCatalog } from "../open-content/catalog.js";
 import {
   confirmOpenContentImport,
   previewOpenContentImport,
 } from "../open-content/service.js";
+import { secureStoredSecrets } from "../process-services.js";
 import {
   bindRoleProviders,
   buildProviderListing,
@@ -370,6 +377,10 @@ import {
   unlockBitwardenForProcess,
 } from "../secrets-bridge.js";
 import { normalizeShell } from "../terminal-open.js";
+import {
+  suggestTrustedFolders,
+  trustedFolderStatus,
+} from "../trusted-folders.js";
 import {
   currentUserIdOrNull,
   describeIdentity,
@@ -1572,6 +1583,67 @@ bridgeCommand
     await withDb(async (db) => {
       try {
         jsonOut(await handleCloseObservation(db, { session: opts.session }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge trusted-folders ────────────────────────────────────────────
+
+/**
+ * Trusted folders for desktop Settings (ADR 2026-10-08b D1). These commands
+ * serve the learner's own UI through `zam bridge`; they are never on the
+ * Studio bridge allowlist and no MCP tool calls them, so an agent cannot
+ * widen what ZAM reads.
+ */
+bridgeCommand
+  .command("trusted-folders")
+  .description(
+    "List trusted folders and the knowledge-base folders cards link into (JSON)",
+  )
+  .action(async () => {
+    await withOptionalDb(async (db) => {
+      try {
+        jsonOut(await trustedFolderStatus(db));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("trusted-folder-add")
+  .description("Trust a folder (JSON)")
+  .requiredOption("--dir <path>", "Folder to trust")
+  .action((opts) => {
+    try {
+      jsonOut({ folder: addTrustedFolder(opts.dir) });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("trusted-folder-remove")
+  .description("Stop trusting a folder (JSON)")
+  .requiredOption("--dir <path>", "Folder to stop trusting")
+  .action((opts) => {
+    jsonOut({ removed: removeTrustedFolder(opts.dir) });
+  });
+
+bridgeCommand
+  .command("trusted-folder-add-suggested")
+  .description(
+    "Trust every knowledge-base folder the learner's cards link into (JSON)",
+  )
+  .action(async () => {
+    await withDb(async (db) => {
+      try {
+        const added = (await suggestTrustedFolders(db)).map(({ folder }) =>
+          addTrustedFolder(folder),
+        );
+        jsonOut({ added });
       } catch (err) {
         jsonError((err as Error).message);
       }
@@ -3012,6 +3084,9 @@ bridgeCommand
     setProviderApiKey(opts.ref, key);
     await resolveCredentials();
     await maybeAutoSyncSecrets();
+    // A long-running bridge must not leave the new key as plain text until
+    // its next start (ADR 2026-10-08b D5).
+    await secureStoredSecrets();
     jsonOut({
       ok: true,
       ref: opts.ref,
@@ -3090,6 +3165,14 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
     agentHarness: entry.agentHarness,
     // Optional reasoning effort (e.g. Copilot --effort); unset = adapter default.
     effort: entry.effort,
+    // Keys follow endpoints (ADR 2026-10-08b D5): the row's URL differs from
+    // the one this device confirmed, so its key is held back until the
+    // learner confirms the new address (`model-confirm-endpoint`).
+    endpointUnconfirmed: entry.url
+      ? isEndpointUnconfirmed(entry.id, entry.url)
+      : false,
+    // "Use on my other devices" for a cloud row's key; local rows never sync.
+    keySync: isMachineLocalEntry(entry) ? false : entry.syncKey !== false,
   };
 }
 
@@ -3211,6 +3294,10 @@ bridgeCommand
   .option("--no-local", "Mark as cloud/non-local endpoint")
   .option("--runner <runner>", "Local runner hint")
   .option("--key-ref <ref>", "Credential reference for API key")
+  .option(
+    "--confirm-endpoint",
+    "The learner entered this URL on this device: confirm it for the row's key (ADR 2026-10-08b D5)",
+  )
   .option("--capabilities <json>", "JSON object of user-selected capabilities")
   .option("--order <n>", "Explicit sort order")
   .option(
@@ -3415,8 +3502,30 @@ bridgeCommand
     };
     const runner = opts.runner ?? prev?.runner;
     if (runner) candidate.runner = runner;
-    const apiKeyRef = opts.keyRef ?? prev?.apiKeyRef;
+    // A key follows its endpoint (ADR 2026-10-08b D5): a new URL keeps no
+    // key reference unless this save names one again, so neither the probe
+    // below nor a later call sends the old key to the new address.
+    const urlChanged = prev !== undefined && prev.url !== url;
+    const apiKeyRef = opts.keyRef ?? (urlChanged ? undefined : prev?.apiKeyRef);
     if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
+    // A key that reached this device only inside the row (saved on another
+    // device) stays with an unchanged endpoint; a new key replaces it.
+    const sameKey =
+      !urlChanged &&
+      opts.keyChanged !== true &&
+      (opts.keyRef === undefined || opts.keyRef === prev?.apiKeyRef);
+    if (sameKey && prev?.apiKey) {
+      (candidate as ResolvedModelEntry).apiKey = prev.apiKey;
+    }
+    if (prev?.syncKey === false) candidate.syncKey = false;
+    // A URL the learner typed into Settings is confirmed by that save. Any
+    // other caller (the Studio panel, an agent) leaves a changed URL
+    // unconfirmed, so the probe below and every later call go without the
+    // key until the learner confirms it.
+    const confirmed = opts.confirmEndpoint === true;
+    const confirmSaved = (entry: ModelEntry): void => {
+      if (confirmed && entry.url) confirmEndpoint(entry.id, entry.url);
+    };
     // Clearing agent fields when re-saving as HTTP keeps the row coherent.
     // (transport/agentHarness omitted = HTTP default.)
 
@@ -3451,14 +3560,21 @@ bridgeCommand
       const next = [...models];
       next[existingIndex] = kept;
       await writeRegistry(next);
+      confirmSaved(kept);
       jsonOut({ ok: true, model: modelRow(kept), probe: null });
       return;
     }
 
-    const probe = await probeModelCapabilities(candidate, {
-      embeddingDimProbe: true,
-      reasoningEffortProbe: true,
-    });
+    // Without an id the probe sends the key: the learner is saving this URL.
+    // With one it holds the key to the endpoint this device confirmed.
+    const { id: _candidateId, ...unbound } = candidate;
+    const probe = await probeModelCapabilities(
+      confirmed ? unbound : candidate,
+      {
+        embeddingDimProbe: true,
+        reasoningEffortProbe: true,
+      },
+    );
     const validation = validateModelSave(candidate, probe);
     if (!validation.ok || !validation.entry) {
       jsonError(validation.error ?? "Model could not be saved.");
@@ -3468,6 +3584,7 @@ bridgeCommand
     if (existingIndex >= 0) next[existingIndex] = validation.entry;
     else next.push(validation.entry);
     await writeRegistry(next);
+    confirmSaved(validation.entry);
     if (validation.entry.detectedCapabilities.text) {
       // Same moment as cloud-connect and the Foundry setup: a validated text
       // model opens the text-LLM gate. The Studio's Add-model form for a local
@@ -3593,6 +3710,64 @@ bridgeCommand
       });
     await writeRegistry(next);
     jsonOut({ ok: true, id: opts.id, models: next.map(modelRow) });
+  });
+
+// Desktop Settings only, never the Studio panel: both decide where a key goes
+// (ADR 2026-10-08b D5).
+bridgeCommand
+  .command("model-confirm-endpoint")
+  .description(
+    "Confirm a row's current URL on this device so its key may be sent there (JSON)",
+  )
+  .requiredOption("--id <id>", "Registry entry id")
+  .action(async (opts) => {
+    const models = await readRegistry();
+    const entry = models.find((m) => m.id === opts.id);
+    if (!entry) jsonError(`No such model: ${opts.id}`);
+    if (!entry.url) jsonError("This model has no endpoint to confirm.");
+    confirmEndpoint(entry.id, entry.url);
+    jsonOut({ ok: true, model: modelRow(entry) });
+  });
+
+bridgeCommand
+  .command("model-key-sync")
+  .description(
+    'Turn "use on my other devices" for a cloud row\'s key on or off (JSON)',
+  )
+  .requiredOption("--id <id>", "Registry entry id")
+  .option("--on", "Let the key travel with the row (personal library only)")
+  .option("--off", "Keep the key on this machine only")
+  .action(async (opts) => {
+    if (opts.on === opts.off) jsonError("Pass exactly one of --on or --off.");
+    const models = await readRegistry();
+    const index = models.findIndex((m) => m.id === opts.id);
+    if (index < 0) jsonError(`No such model: ${opts.id}`);
+    const entry = { ...models[index] };
+    if (isMachineLocalEntry(entry)) {
+      jsonError("A model that runs on this machine has no key to share.");
+    }
+    if (opts.off) {
+      // The key must stay usable here once the row stops carrying it: a key
+      // that reached this device only inside the row moves into this
+      // machine's credentials first.
+      const local = entry.apiKeyRef ? getProviderApiKey(entry.apiKeyRef) : null;
+      if (!local && entry.apiKey) {
+        const ref = `model-key-${entry.id.toLowerCase()}`;
+        setProviderApiKey(ref, entry.apiKey);
+        entry.apiKeyRef = ref;
+        // Resolve first, so the key stays readable in this long-running
+        // bridge once it moves out of the plain file (ADR 2026-10-08b D5).
+        await resolveCredentials();
+        await secureStoredSecrets();
+      }
+      entry.syncKey = false;
+    } else {
+      delete entry.syncKey;
+    }
+    const next = [...models];
+    next[index] = entry;
+    await writeRegistry(next);
+    jsonOut({ ok: true, model: modelRow(entry) });
   });
 
 bridgeCommand
@@ -4914,7 +5089,7 @@ bridgeCommand
   .command("database-status")
   .description("Show the active database target and learning profiles (JSON)")
   .action(async () => {
-    // Restore ≤30-day session and resolve vault refs before opening the DB.
+    // Restore a remembered session and resolve vault refs before opening the DB.
     await resolveCredentials();
     if (tursoVaultAccessPending() || postgresVaultAccessPending()) {
       const stored = loadStoredCredentials();
@@ -4934,8 +5109,8 @@ bridgeCommand
         cardCount: 0,
         users: [],
         error: postgresPending
-          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 30 days)."
-          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
+          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 7 days)."
+          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 7 days).",
       });
       return;
     }
@@ -5114,6 +5289,9 @@ bridgeCommand
       }
       const userId = await currentUserIdOrNull(db);
       const users = await readDatabaseUserSummaries(db);
+      // Verified: the token leaves the plain file now, not at the next start
+      // of this long-running bridge (ADR 2026-10-08b D5).
+      await secureStoredSecrets();
       jsonOut({
         success: true,
         connected: true,
@@ -5321,12 +5499,13 @@ bridgeCommand
     // References exist, so they must resolve even if the feature switch was
     // turned off afterwards — otherwise unticking a checkbox would lock the
     // learner out of their own database.
-    // getBitwardenCliStatus restores a still-valid 30-day session into env.
+    // getBitwardenCliStatus loads a remembered session into this process
+    // (never into its environment, ADR 2026-10-08b D5).
     const status = await getBitwardenCliStatus();
-    if (status.kind === "unlocked" && process.env.BW_SESSION?.trim()) {
+    if (status.kind === "unlocked" && status.sessionInProcess) {
       await resolveCredentials();
     }
-    const ready = status.kind === "unlocked" && process.env.BW_SESSION?.trim();
+    const ready = status.kind === "unlocked" && status.sessionInProcess;
     jsonOut({
       success: true,
       needed,
@@ -7256,22 +7435,21 @@ bridgeCommand
     jsonOut({ success: true, resolved });
   });
 
+/** Official curriculum PDFs run to several megabytes. */
+const CURRICULUM_MAX_BYTES = 30 * 1024 * 1024;
+
 /**
  * Fetch a curriculum source document as extractable HTML.
  * PDF official sources (e.g. Bremen Bildungspläne) are converted via pdftotext.
  */
 async function fetchRawHtml(url: string): Promise<string> {
-  if (!(await isSafeUrl(url))) {
-    throw new Error(`Access denied to unsafe target URL: ${url}`);
-  }
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
+  // The outbound fetcher (ADR 2026-10-08b D2) checks every redirect, which
+  // the one-off isSafeUrl check before a redirect-following fetch did not.
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent": "ZAM-Content-Studio/0.49.0",
-      },
+    const res = await safeFetch(url, {
+      headers: { "User-Agent": CONTENT_USER_AGENT },
+      maxBytes: CURRICULUM_MAX_BYTES,
+      timeoutMs: 20_000,
     });
     if (!res.ok) {
       throw new Error(`Web server responded with status ${res.status}`);
@@ -7291,12 +7469,10 @@ async function fetchRawHtml(url: string): Promise<string> {
     }
     return await res.text();
   } catch (err) {
-    if (err instanceof Error && err.name === "AbortError") {
+    if (err instanceof Error && /timed out/.test(err.message)) {
       throw new Error("Connection request timed out after 20 seconds");
     }
     throw err;
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
 
@@ -8572,14 +8748,17 @@ bridgeCommand
     const nodePath = await import("node:path");
     const logDir = nodePath.join(nodeOs.homedir(), ".zam");
     const logPath = nodePath.join(logDir, "desktop-bridge.log");
-    const logDiag = (msg: string): void => {
+    const logDiagLine = (line: string): void => {
       try {
         if (!fileExists(logDir)) makeDir(logDir, { recursive: true });
-        appendFileSync(logPath, `[${new Date().toISOString()}] ${msg}\n`);
+        appendFileSync(logPath, `[${new Date().toISOString()}] ${line}\n`);
       } catch {
         // best-effort only — never let logging break the bridge
       }
     };
+    // A provider's error text can echo a key: log lines go through the same
+    // redactor as monitored commands (ADR 2026-10-08b D5).
+    const logDiag = (msg: string): void => logDiagLine(redactCommand(msg));
     // Failed and slow requests leave a line so a learner's "it timed out"
     // can be traced afterwards. Only the command name, duration and error
     // are written — arguments carry learner content and are never logged.
@@ -8590,12 +8769,13 @@ bridgeCommand
     ): void => {
       if (error !== null) {
         const line = error.replace(/\s+/g, " ").slice(0, 500);
-        logDiag(`request failed | cmd=${cmd} | ${elapsedMs} ms | ${line}`);
+        logDiag(`request failed | command ${cmd} | ${elapsedMs} ms | ${line}`);
       } else if (elapsedMs >= SLOW_SERVE_REQUEST_MS) {
-        logDiag(`request slow | cmd=${cmd} | ${elapsedMs} ms`);
+        logDiag(`request slow | command ${cmd} | ${elapsedMs} ms`);
       }
     };
-    logDiag(
+    // Paths only, and the point of the line: the redactor would hide them.
+    logDiagLine(
       `serve start | homedir=${nodeOs.homedir()} | USERPROFILE=${
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,

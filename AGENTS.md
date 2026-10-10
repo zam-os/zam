@@ -92,6 +92,18 @@ open a terminal.
   Monitor logs are read only through `readMonitorLog`, which redacts every
   command and drops its working directory; never add a raw read path, and
   redact any command text before it reaches the database.
+- **Agents and library content are untrusted** (ADR 2026-10-08b): every
+  tool must be safe to auto-approve. A path from a tool argument or a stored
+  link goes through `resolveTrustedPath`/`readTrustedTextFile`
+  (`src/kernel/system/trusted-paths.ts`), never against the working
+  directory; a URL from an argument or the library goes through `safeFetch`
+  (`src/cli/net/safe-fetch.ts`); no argument may write a security switch
+  (trusted folders, secret backends, observation, pairing, endpoint
+  confirmation). A Studio panel command needs its entry in
+  `STUDIO_BRIDGE_COMMANDS` with the options it refuses, and a pre-approved
+  tool must change nothing. Secrets go to child processes on stdin or in that
+  child's environment, never on a command line. See
+  `docs/okf/agent-trust-model.md`.
 - New kernel API must be re-exported from `src/kernel/index.ts`.
 - **`docs/okf/` is not hand-editable.** It is an OKF knowledge bundle whose
   articles are learning sources (ADR 2026-07-17): write only through the

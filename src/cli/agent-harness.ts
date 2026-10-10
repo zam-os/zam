@@ -16,6 +16,12 @@ import { existsSync, readFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { join } from "node:path";
 import {
+  codexZamBlock,
+  hasCodexBlanketApproval,
+  PRE_APPROVED_TOOLS,
+  splitCodexZamTables,
+} from "./agent-approval.js";
+import {
   buildShellSetupCommand,
   findExecutable,
   isPowerShellShell,
@@ -647,32 +653,29 @@ export function connectHarnessMcp(
     content = JSON.stringify(existing, null, 2);
   } else if (harnessId === "codex") {
     targetPath = join(opts.home, ".codex", "config.toml");
-    hint =
-      "Codex will prompt for tool execution approvals or respect the TOML approval modes.";
+    hint = `Codex asks before each ZAM tool except ${PRE_APPROVED_TOOLS.join(", ")}, which only read ZAM's own learning state.`;
     let existingStr = "";
     if (exists(targetPath)) {
       existingStr = read(targetPath);
     }
-    if (existingStr.includes("[mcp_servers.zam]")) {
+    const isJs = opts.zamPath.endsWith(".js");
+    const cmdStr = isJs
+      ? JSON.stringify(process.execPath)
+      : JSON.stringify(opts.zamPath);
+    const argsStr = isJs
+      ? `[${JSON.stringify(opts.zamPath)}, "mcp"]`
+      : '["mcp"]';
+    const block = codexZamBlock(cmdStr, argsStr);
+    if (hasCodexBlanketApproval(existingStr)) {
+      // Older releases approved every ZAM tool (ADR 2026-10-08b D4). Replace
+      // ZAM's tables and keep everything else in the file as it was.
+      const { others } = splitCodexZamTables(existingStr);
+      content = others.trim() ? `${others.trimEnd()}\n${block}` : block;
+      hint = `Removed the blanket approval of all ZAM tools that older ZAM versions wrote. ${hint}`;
+    } else if (existingStr.includes("[mcp_servers.zam]")) {
       alreadyConfigured = true;
       content = existingStr;
     } else {
-      const isJs = opts.zamPath.endsWith(".js");
-      const cmdStr = isJs
-        ? JSON.stringify(process.execPath)
-        : JSON.stringify(opts.zamPath);
-      const argsStr = isJs
-        ? `[${JSON.stringify(opts.zamPath)}, "mcp"]`
-        : '["mcp"]';
-      const block = `
-[mcp_servers.zam]
-command = ${cmdStr}
-args = ${argsStr}
-default_tools_approval_mode = "approve"
-
-[mcp_servers.zam.tools.zam_review_action]
-approval_mode = "prompt"
-`;
       content = existingStr ? `${existingStr.trimEnd()}\n${block}` : block;
     }
   } else if (harnessId === "vscode") {

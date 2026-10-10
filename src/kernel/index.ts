@@ -88,11 +88,15 @@ export {
   getProviderApiKey,
   getTursoCredentials,
   invalidateCredentialsSnapshot,
+  isOsReference,
+  isVaultReference,
   keepLibraryAsPrevious,
+  libraryOsSecretPending,
   listProviderApiKeyRefs,
   loadCredentials,
   loadStoredCredentials,
   looksLikeSecretUri,
+  moveLiteralSecretsToOsStore,
   postgresVaultAccessPending,
   resetCredentialsResolutionState,
   resolveCredentials,
@@ -497,6 +501,8 @@ export {
   getSetting,
   getSettings,
   hasSettingsScopeResolver,
+  maskSecret,
+  maskSettingValue,
   registerSettingsScopeResolver,
   setSetting,
   settingScopeOf,
@@ -955,25 +961,50 @@ export type {
 } from "./search/suggestions.js";
 export { suggestFoundations } from "./search/suggestions.js";
 export type {
+  OsCommandRunner,
+  OsSecretStore,
+  OsSecretStoreKind,
   SecretBackend,
   SecretRef,
   SecretResolutionReason,
   StoredSecret,
 } from "./secrets/index.js";
 // Secret backends (vault references in credentials.json — ADR 2026-07-30b)
+// and OS-protected storage (ADR 2026-10-08b D5)
 export {
+  BITWARDEN_SESSION_MAX_AGE_MS,
+  bwChildEnv,
   clearSecretBackends,
   createBitwardenBackend,
+  createOsSecretBackend,
+  createOsSecretStore,
+  currentBwSession,
+  defaultOsSecretStore,
   ensureDefaultSecretBackends,
+  forgetBwSession,
+  getBwSessionMeta,
   getSecretBackend,
   isSecretRef,
   listSecretBackends,
+  loadBwSession,
+  OS_SECRET_SCHEME,
+  osCommandRunner,
   parseSecretUri,
   registerSecretBackend,
+  rememberBwSession,
+  resetBwSessionForTests,
   resolveSecretUri,
+  runOsCommand,
   SecretResolutionError,
+  setOsSecretStoreForTests,
   unregisterSecretBackend,
 } from "./secrets/index.js";
+export {
+  confirmEndpoint,
+  confirmedEndpointFor,
+  isEndpointUnconfirmed,
+  keyMaySendTo,
+} from "./system/endpoint-confirmation.js";
 export {
   distributeGlobalSkills,
   getPackageSkillPath,
@@ -1112,6 +1143,30 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
+export type {
+  PathRefusalCode,
+  ReadTrustedFileOptions,
+  ResolvedTrustedPath,
+} from "./system/trusted-paths.js";
+export {
+  addTrustedFolder,
+  assertNoHiddenSegments,
+  canonicalRoots,
+  getTrustedFolders,
+  isAcceptableRoot,
+  isInside,
+  MAX_SOURCE_FILE_BYTES,
+  PATH_NOT_READABLE,
+  PATH_OUTSIDE_TRUSTED_FOLDERS,
+  PathRefusedError,
+  readTrustedTextFile,
+  removeTrustedFolder,
+  resolveTrustedPath,
+  samePath,
+  TEXT_SOURCE_EXTENSIONS,
+  TRUST_FOLDER_HINT,
+  trustedRoots,
+} from "./system/trusted-paths.js";
 export type {
   InstallChannel,
   UpdateActionKind,

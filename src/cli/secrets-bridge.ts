@@ -2,32 +2,39 @@
  * Desktop/bridge helpers for Bitwarden vault access (ADR 2026-07-30b).
  *
  * The Studio never prints secret values. Session unlock keeps the master
- * password only long enough to call `bw unlock` and stores BW_SESSION only in
- * the bridge process environment (not on disk).
+ * password only long enough to call `bw unlock`; the session itself stays in
+ * memory and OS-protected storage (ADR 2026-10-08b D5).
+ *
+ * A secret "on this machine" is either a literal in credentials.json or an
+ * `os://` reference into OS storage; both can move into the vault, and both
+ * are what a disconnect restores to.
  *
  * Setup may **create** vault items (learner-directed write) so the user does
  * not have to hand-craft Bitwarden entries — only unlock + paste once in ZAM.
  */
 
 import { execFile } from "node:child_process";
-import { promisify } from "node:util";
 import {
   getADOCredentials,
   getProviderApiKey,
   getTursoCredentials,
+  isOsReference,
+  isVaultReference,
   listProviderApiKeyRefs,
   loadStoredCredentials,
   resolveCredentials,
+  type StoredSecret,
   setADOCredentials,
   setProviderApiKey,
   setTursoCredentials,
 } from "../kernel/credentials.js";
 import { resolveBwCommand } from "../kernel/secrets/bw-executable.js";
 import {
-  invalidateBwSession,
-  isSecretRef,
-  restoreBwSessionToEnv,
-  savePersistedBwSession,
+  bwChildEnv,
+  currentBwSession,
+  forgetBwSession,
+  loadBwSession,
+  rememberBwSession,
 } from "../kernel/secrets/index.js";
 import {
   clearBitwardenSyncConfig,
@@ -35,8 +42,8 @@ import {
   setBitwardenAutoSync,
   setBitwardenSyncConfig,
 } from "../kernel/system/install-config.js";
+import { secureStoredSecrets } from "./process-services.js";
 
-const execFileAsync = promisify(execFile);
 const BW_TIMEOUT_MS = 30_000;
 
 /** Default item names ZAM creates during setup. */
@@ -59,7 +66,7 @@ export interface BitwardenCliStatus {
   serverUrl: string | null;
   userEmail: string | null;
   region: "eu" | "us" | "self-hosted" | "unknown";
-  /** True when process.env.BW_SESSION is set (this bridge process). */
+  /** True when this bridge process holds an unlocked session. */
   sessionInProcess: boolean;
   /** Learner opted in: keep vault in sync after changes (machine-local). */
   autoSync: boolean;
@@ -73,31 +80,30 @@ export interface BitwardenCliStatus {
   message: string;
 }
 
-/** Count secrets still held as plaintext in credentials.json. */
+/**
+ * The value of a secret held on this machine: a literal as it stands, an
+ * `os://` reference through the resolved snapshot. Null for a vault
+ * reference or an empty field.
+ */
+function localSecretValue(
+  stored: StoredSecret | undefined,
+  resolved: string | null | undefined,
+): string | null {
+  if (typeof stored === "string") return stored.length > 0 ? stored : null;
+  if (isOsReference(stored)) return resolved || null;
+  return null;
+}
+
+/** Count secrets held on this machine rather than in the vault. */
 export function countPendingLiteralSecrets(): number {
   const stored = loadStoredCredentials();
+  const local = (value: StoredSecret | undefined): boolean =>
+    (typeof value === "string" && value.length > 0) || isOsReference(value);
   let n = 0;
-  if (stored.turso?.token !== undefined && !isSecretRef(stored.turso.token)) {
-    if (
-      typeof stored.turso.token === "string" &&
-      stored.turso.token.length > 0
-    ) {
-      n += 1;
-    }
-  }
-  if (stored.ado?.pat !== undefined && !isSecretRef(stored.ado.pat)) {
-    if (typeof stored.ado.pat === "string" && stored.ado.pat.length > 0) n += 1;
-  }
+  if (local(stored.turso?.token)) n += 1;
+  if (local(stored.ado?.pat)) n += 1;
   for (const name of listProviderApiKeyRefs()) {
-    const key = stored.llmProviders?.[name]?.apiKey;
-    if (
-      key !== undefined &&
-      !isSecretRef(key) &&
-      typeof key === "string" &&
-      key.length > 0
-    ) {
-      n += 1;
-    }
+    if (local(stored.llmProviders?.[name]?.apiKey)) n += 1;
   }
   return n;
 }
@@ -111,43 +117,48 @@ function classifyRegion(
   return "self-hosted";
 }
 
-/** Append --session when we have a live/restored session (more reliable than env alone). */
-function withSessionArgs(args: string[]): string[] {
-  const session = process.env.BW_SESSION?.trim();
-  if (!session) return args;
-  // Avoid duplicating if caller already passed --session.
-  if (args.includes("--session")) return args;
-  return [...args, "--session", session];
-}
-
-async function runBw(
+/**
+ * Run `bw` without a shell. The session reaches it through this child's
+ * environment only — never as `--session`, never in ZAM's own process
+ * environment — and an item's JSON goes on stdin, never onto the command
+ * line (ADR 2026-10-08b D5). `env` carries per-call values such as
+ * BW_PASSWORD.
+ */
+function runBw(
   args: string[],
-  env: NodeJS.ProcessEnv = process.env,
+  opts: { env?: NodeJS.ProcessEnv; input?: string } = {},
 ): Promise<{ stdout: string; stderr: string }> {
   // Never `shell: true` — the master password reaches the CLI through
   // BW_PASSWORD, and a shell would put the whole command line back where
   // other processes can read it (ADR 2026-07-30b Decision 11).
+  const env = bwChildEnv(opts.env);
   const { file, prefixArgs } = resolveBwCommand({ env });
-  const { stdout, stderr } = await execFileAsync(
-    file,
-    [...prefixArgs, ...withSessionArgs(args)],
-    {
-      encoding: "utf8",
-      timeout: BW_TIMEOUT_MS,
-      maxBuffer: 2 * 1024 * 1024,
-      env: { ...env, BW_SESSION: process.env.BW_SESSION ?? env.BW_SESSION },
-    },
-  );
-  return {
-    stdout: typeof stdout === "string" ? stdout : String(stdout),
-    stderr: typeof stderr === "string" ? stderr : String(stderr),
-  };
+  return new Promise((resolve, reject) => {
+    const child = execFile(
+      file,
+      [...prefixArgs, ...args],
+      {
+        encoding: "utf8",
+        timeout: BW_TIMEOUT_MS,
+        maxBuffer: 2 * 1024 * 1024,
+        env,
+      },
+      (err, stdout, stderr) => {
+        if (err) {
+          reject(Object.assign(err, { stdout, stderr }));
+          return;
+        }
+        resolve({ stdout: String(stdout), stderr: String(stderr) });
+      },
+    );
+    child.stdin?.end(opts.input ?? "");
+  });
 }
 
 export async function getBitwardenCliStatus(): Promise<BitwardenCliStatus> {
-  // Prefer a still-valid 30-day session over prompting again.
-  restoreBwSessionToEnv();
-  const sessionInProcess = Boolean(process.env.BW_SESSION?.trim());
+  // Prefer a remembered session over prompting again.
+  await loadBwSession();
+  const sessionInProcess = Boolean(currentBwSession());
   const syncCfg = getBitwardenSyncConfig();
   const autoSync = syncCfg.autoSync === true;
   const lastSyncAt = syncCfg.lastSyncAt ?? null;
@@ -277,7 +288,7 @@ export async function loginBitwardenForProcess(opts: {
   // world-readable /proc/<pid>/cmdline on Linux), so `bw login <email>
   // <password>` would expose it for the lifetime of the call. `--passwordenv`
   // is the same mechanism unlock below already uses.
-  const env = { ...process.env, BW_PASSWORD: password };
+  const env = { BW_PASSWORD: password };
 
   const args = ["login", email, "--passwordenv", "BW_PASSWORD", "--raw"];
   if (opts.code?.trim()) {
@@ -288,13 +299,12 @@ export async function loginBitwardenForProcess(opts: {
   }
 
   try {
-    const { stdout } = await runBw(args, env);
+    const { stdout } = await runBw(args, { env });
     const session = stdout.trim();
     if (!session) {
       return { ok: false, message: "Login returned an empty session." };
     }
-    process.env.BW_SESSION = session;
-    savePersistedBwSession(session, { email });
+    await rememberBwSession(session, { email });
     return { ok: true };
   } catch (err) {
     const e = err as {
@@ -365,15 +375,12 @@ export async function unlockBitwardenForProcess(
     return { ok: false, message: "Master password is required." };
   }
 
-  const env = {
-    ...process.env,
-    BW_PASSWORD: password,
-  };
+  const env = { BW_PASSWORD: password };
 
   try {
     const { stdout } = await runBw(
       ["unlock", "--passwordenv", "BW_PASSWORD", "--raw"],
-      env,
+      { env },
     );
     const session = stdout.trim();
     if (!session) {
@@ -382,9 +389,8 @@ export async function unlockBitwardenForProcess(
         message: "Bitwarden unlock returned an empty session.",
       };
     }
-    process.env.BW_SESSION = session;
-    savePersistedBwSession(session);
-    // Drop password from this env object; process.env.BW_PASSWORD was never set.
+    await rememberBwSession(session);
+    // The password lived only in this call's child environment.
     return { ok: true };
   } catch (err) {
     const e = err as {
@@ -429,13 +435,13 @@ export async function unlockBitwardenForProcess(
           "CLI cannot complete 2FA with FIDO2 alone. Enable an Authenticator app under Two-step login, then unlock again.",
       };
     }
-    // Session token may be stale after 30 days or vault timeout.
+    // Session token may be stale after seven days or vault timeout.
     if (
       combined.includes("session") ||
       combined.includes("unauthorized") ||
       combined.includes("locked")
     ) {
-      invalidateBwSession();
+      await forgetBwSession();
     }
     return {
       ok: false,
@@ -448,7 +454,7 @@ export async function unlockBitwardenForProcess(
 function requireUnlockedSession():
   | { ok: true }
   | { ok: false; message: string } {
-  if (!process.env.BW_SESSION?.trim()) {
+  if (!currentBwSession()) {
     return {
       ok: false,
       message:
@@ -531,7 +537,7 @@ export async function upsertBitwardenSecretItem(opts: {
       favorite: false,
       reprompt: 0,
     };
-    await runBw(["create", "item", bwEncode(item)]);
+    await runBw(["create", "item"], { input: bwEncode(item) });
     // Push so other machines see the item after sync.
     try {
       await runBw(["sync"]);
@@ -577,13 +583,19 @@ export async function seedCredentialsIntoBitwarden(): Promise<
   const gate = requireUnlockedSession();
   if (!gate.ok) return { ...gate, entries: [] };
 
+  // Secrets in OS storage are read through the snapshot.
+  await resolveCredentials();
   const stored = loadStoredCredentials();
   const entries: SeedResultEntry[] = [];
   let failed: string | null = null;
 
   // Turso token
   if (stored.turso?.token !== undefined) {
-    if (isSecretRef(stored.turso.token)) {
+    const token = localSecretValue(
+      stored.turso.token,
+      getTursoCredentials()?.token,
+    );
+    if (isVaultReference(stored.turso.token)) {
       entries.push({
         field: "turso.token",
         secretRef: stored.turso.token.$secret,
@@ -591,11 +603,11 @@ export async function seedCredentialsIntoBitwarden(): Promise<
         seeded: false,
         skipped: "already-a-reference",
       });
-    } else if (stored.turso.token.length > 0 && stored.turso.url) {
+    } else if (token && stored.turso.url) {
       const created = await upsertBitwardenSecretItem({
         itemName: ZAM_VAULT_ITEM_TURSO,
         fieldName: "token",
-        secret: stored.turso.token,
+        secret: token,
       });
       if (!created.ok) {
         failed = created.message;
@@ -618,7 +630,8 @@ export async function seedCredentialsIntoBitwarden(): Promise<
 
   // ADO PAT
   if (!failed && stored.ado?.pat !== undefined) {
-    if (isSecretRef(stored.ado.pat)) {
+    const pat = localSecretValue(stored.ado.pat, getADOCredentials()?.pat);
+    if (isVaultReference(stored.ado.pat)) {
       entries.push({
         field: "ado.pat",
         secretRef: stored.ado.pat.$secret,
@@ -626,15 +639,11 @@ export async function seedCredentialsIntoBitwarden(): Promise<
         seeded: false,
         skipped: "already-a-reference",
       });
-    } else if (
-      stored.ado.pat.length > 0 &&
-      stored.ado.org_url &&
-      stored.ado.project
-    ) {
+    } else if (pat && stored.ado.org_url && stored.ado.project) {
       const created = await upsertBitwardenSecretItem({
         itemName: ZAM_VAULT_ITEM_ADO,
         fieldName: "pat",
-        secret: stored.ado.pat,
+        secret: pat,
       });
       if (!created.ok) {
         failed = created.message;
@@ -657,7 +666,7 @@ export async function seedCredentialsIntoBitwarden(): Promise<
     if (failed) break;
     const storedKey = stored.llmProviders?.[name]?.apiKey;
     if (storedKey === undefined) continue;
-    if (isSecretRef(storedKey)) {
+    if (isVaultReference(storedKey)) {
       entries.push({
         field: `llmProviders.${name}.apiKey`,
         secretRef: storedKey.$secret,
@@ -667,12 +676,12 @@ export async function seedCredentialsIntoBitwarden(): Promise<
       });
       continue;
     }
-    // getProviderApiKey after resolve would need resolve — use stored literal
-    if (typeof storedKey !== "string" || storedKey.length === 0) continue;
+    const key = localSecretValue(storedKey, getProviderApiKey(name));
+    if (!key) continue;
     const created = await upsertBitwardenSecretItem({
       itemName: zamVaultItemProvider(name),
       fieldName: "apiKey",
-      secret: storedKey,
+      secret: key,
     });
     if (!created.ok) {
       failed = created.message;
@@ -717,7 +726,7 @@ export async function syncSecretsWithBitwarden(): Promise<
 /** If auto-sync is on and the vault is unlocked, push current literals. */
 export async function maybeAutoSyncSecrets(): Promise<void> {
   if (getBitwardenSyncConfig().autoSync !== true) return;
-  if (!process.env.BW_SESSION?.trim()) return;
+  if (!currentBwSession()) return;
   if (countPendingLiteralSecrets() === 0) return;
   await seedCredentialsIntoBitwarden();
 }
@@ -738,20 +747,20 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
   | { ok: true; entries: DisconnectResultEntry[] }
   | { ok: false; message: string; entries: DisconnectResultEntry[] }
 > {
-  restoreBwSessionToEnv();
+  await loadBwSession();
   const entries: DisconnectResultEntry[] = [];
   const stored = loadStoredCredentials();
 
   // Need a live vault if any refs remain.
   const hasRefs =
-    (stored.turso && isSecretRef(stored.turso.token)) ||
-    (stored.ado && isSecretRef(stored.ado.pat)) ||
+    (stored.turso && isVaultReference(stored.turso.token)) ||
+    (stored.ado && isVaultReference(stored.ado.pat)) ||
     Object.values(stored.llmProviders ?? {}).some((e) =>
-      isSecretRef(e?.apiKey),
+      isVaultReference(e?.apiKey),
     );
 
   if (hasRefs) {
-    if (!process.env.BW_SESSION?.trim()) {
+    if (!currentBwSession()) {
       return {
         ok: false,
         message:
@@ -764,7 +773,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // Turso
   if (stored.turso?.token !== undefined) {
-    if (isSecretRef(stored.turso.token)) {
+    if (isVaultReference(stored.turso.token)) {
       const token = getTursoCredentials()?.token;
       const url = stored.turso.url ?? getTursoCredentials()?.url;
       if (!token || !url) {
@@ -788,7 +797,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // ADO
   if (stored.ado?.pat !== undefined) {
-    if (isSecretRef(stored.ado.pat)) {
+    if (isVaultReference(stored.ado.pat)) {
       // re-resolve after turso write may have invalidated snapshot — resolve again
       await resolveCredentials();
       const ado = getADOCredentials();
@@ -816,7 +825,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
   for (const name of providerNames) {
     const entry = stored.llmProviders?.[name]?.apiKey;
     if (entry === undefined) continue;
-    if (isSecretRef(entry)) {
+    if (isVaultReference(entry)) {
       await resolveCredentials();
       const key = getProviderApiKey(name);
       if (!key) {
@@ -842,8 +851,10 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // End Bitwarden linkage for this install.
   clearBitwardenSyncConfig();
-  invalidateBwSession();
-  // Snapshot holds plaintext again via setters; force a clean resolve from disk.
+  await forgetBwSession();
+  // The restored values leave the plain file for OS storage (ADR 2026-10-08b
+  // D5); then a clean resolve from disk.
+  await secureStoredSecrets();
   await resolveCredentials();
 
   return { ok: true, entries };

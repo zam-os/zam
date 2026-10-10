@@ -733,6 +733,37 @@
       ]
     },
     {
+      "id": "untrusted-callers",
+      "parent": "agents",
+      "label": "Untrusted callers",
+      "link": "are held to",
+      "text": "Agents and library content are untrusted, so every ZAM tool must be safe to auto-approve.",
+      "sources": [
+        "docs/okf/agent-trust-model.md",
+        "src/cli/commands/mcp.ts"
+      ]
+    },
+    {
+      "id": "trusted-folders",
+      "parent": "untrusted-callers",
+      "label": "Trusted folders",
+      "link": "confine files to",
+      "text": "Tools read files only inside the agent's workspace folders and the folders the learner trusted.",
+      "sources": [
+        "src/kernel/system/trusted-paths.ts"
+      ]
+    },
+    {
+      "id": "keys-follow-endpoints",
+      "parent": "untrusted-callers",
+      "label": "Keys follow endpoints",
+      "link": "guard keys with",
+      "text": "A model's key goes only to the endpoint this device confirmed, so a rewritten URL gets no key.",
+      "sources": [
+        "src/kernel/system/endpoint-confirmation.ts"
+      ]
+    },
+    {
       "id": "learner",
       "parent": "agents",
       "label": "Learner",

@@ -91,6 +91,13 @@ export interface InstallConfig {
    * screen capture or stretch retention would make both meaningless.
    */
   observation?: MachineObservationConfig;
+  /**
+   * Folders this learner trusts on this machine (ADR 2026-10-08b D1): source
+   * links and agent tools may read files only inside these and the MCP
+   * client's roots. Written by `zam trust` and desktop Settings, never by a
+   * tool an agent can call.
+   */
+  trustedFolders?: string[];
   /** Machine-local paths to existing personal/team/community workspaces. */
   workspaces?: WorkspaceConfig[];
   /** Machine-local id of the workspace currently active in this install. */
@@ -326,6 +333,13 @@ export interface ModelEntry {
    * accepts — and every re-probe that produces a verdict overwrites it.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+  /**
+   * "Use on my other devices" for a cloud row's key (ADR 2026-10-08b D5).
+   * Absent or true: the key travels with the row in a personal library.
+   * False: the key stays in this machine's credentials and other devices get
+   * the row without it. A team library never carries keys either way.
+   */
+  syncKey?: boolean;
 }
 
 export interface MachineAiConfig {
@@ -339,6 +353,12 @@ export interface MachineAiConfig {
    * `order` and returns the first entry enabled and detected for a capability.
    */
   models?: ModelEntry[];
+  /**
+   * Per row id, the endpoint this device last confirmed (ADR 2026-10-08b D5):
+   * a row's key is sent only there. Written by Settings and `zam trust
+   * endpoint`, never by a tool an agent can call.
+   */
+  confirmedEndpoints?: Record<string, string>;
 }
 
 export type WorkspaceKind =

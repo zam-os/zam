@@ -893,6 +893,31 @@ textarea:focus-visible {
   display: none;
 }
 
+.settings-trusted-folders {
+  margin-top: 12px;
+}
+
+.settings-trusted-folder-list {
+  list-style: none;
+  margin: 4px 0 8px;
+  padding: 0;
+  display: grid;
+  gap: 6px;
+}
+
+.settings-trusted-folder-list li {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  min-width: 0;
+}
+
+.settings-trusted-folder-list code {
+  flex: 1;
+  min-width: 0;
+  overflow-wrap: anywhere;
+}
+
 .settings-field {
   display: grid;
   gap: 8px;

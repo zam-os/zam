@@ -512,9 +512,52 @@ describe("connectHarnessMcp", () => {
     expect(res.alreadyConfigured).toBe(false);
     expect(res.content).toContain("[mcp_servers.zam]");
     expect(res.content).toContain('command = "/usr/local/bin/zam"');
-    expect(res.content).toContain('default_tools_approval_mode = "approve"');
-    expect(res.content).toContain('approval_mode = "prompt"');
+    // ADR 2026-10-08b D4: no blanket approval, only the reviewed tools.
+    expect(res.content).not.toContain("default_tools_approval_mode");
+    for (const tool of [
+      "zam_find_tokens",
+      "zam_get_reviews",
+      "zam_progress_stats",
+      "zam_status",
+    ]) {
+      expect(res.content).toContain(
+        `[mcp_servers.zam.tools.${tool}]\napproval_mode = "approve"`,
+      );
+    }
+    expect(res.content).toContain(
+      '[mcp_servers.zam.tools.zam_review_action]\napproval_mode = "prompt"',
+    );
+    expect(res.content.match(/approval_mode = "approve"/g)).toHaveLength(4);
     expect(res.content).toContain("[other]");
+  });
+
+  it("codex replaces the blanket approval of older releases", () => {
+    mockFiles["/home/user/.codex/config.toml"] = [
+      "# mine",
+      "[other]",
+      "value = 42",
+      "",
+      "[mcp_servers.zam]",
+      'command = "/old/zam"',
+      'args = ["mcp"]',
+      'default_tools_approval_mode = "approve"',
+      "",
+      "[mcp_servers.zam.tools.zam_review_action]",
+      'approval_mode = "prompt"',
+      "",
+      "[mcp_servers.other]",
+      'command = "other"',
+      "",
+    ].join("\n");
+    const res = connectHarnessMcp("codex", mockDeps);
+    expect(res.alreadyConfigured).toBe(false);
+    expect(res.hint).toMatch(/Removed the blanket approval/);
+    expect(res.content).not.toContain("default_tools_approval_mode");
+    expect(res.content).not.toContain("/old/zam");
+    expect(res.content).toContain('command = "/usr/local/bin/zam"');
+    expect(res.content).toContain("# mine\n[other]\nvalue = 42");
+    expect(res.content).toContain('[mcp_servers.other]\ncommand = "other"');
+    expect(res.content.match(/^\[mcp_servers\.zam\]$/gm)).toHaveLength(1);
   });
 
   it("codex no-ops and returns alreadyConfigured when present", () => {

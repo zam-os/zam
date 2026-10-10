@@ -1,14 +1,20 @@
-import { mkdtempSync, readFileSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdtempSync,
+  readFileSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   confirmMaterialImport,
   discardMaterialImport,
-  materialFileFromAgent,
   listPendingMaterialImports,
-  parseMaterialAreas,
+  materialFileFromAgent,
   PREVIEW_MAX_BYTES,
+  parseMaterialAreas,
   parseMaterialDecisions,
   previewMaterialImportFile,
   reviewMaterialImport,
@@ -234,13 +240,29 @@ describe("material import service", () => {
     const path = join(tempDir, "Arbeitsblatt.pdf");
     writeFileSync(path, "%PDF-1.7");
     const now = new Date(2026, 9, 5, 12);
+    // The file lies in an allowed root (ADR 2026-10-08b D1).
+    const roots = [realpathSync.native(tempDir)];
     const fromDisk = await materialFileFromAgent(
       { name: "Arbeitsblatt.pdf", path, sha256: "not-a-hash" },
       now,
+      roots,
     );
     expect(fromDisk.sourceLink).toMatch(/^file:\/\/.*Arbeitsblatt\.pdf$/);
     expect(fromDisk.sha256).toMatch(/^[0-9a-f]{64}$/);
-    expect(fromDisk.path).toBe(path);
+    expect(fromDisk.path).toBe(realpathSync.native(path));
+
+    // Outside every root, the path is ignored: no link, no fingerprint of a
+    // file the learner did not open to ZAM.
+    const outside = await materialFileFromAgent(
+      { name: "Arbeitsblatt.pdf", path, sha256: "b".repeat(64) },
+      now,
+      [],
+    );
+    expect(outside).toEqual({
+      name: "Arbeitsblatt.pdf",
+      sourceLink: "photo:Arbeitsblatt.pdf@2026-10-05",
+      sha256: "b".repeat(64),
+    });
 
     expect(
       await materialFileFromAgent(

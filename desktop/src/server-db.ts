@@ -17,7 +17,7 @@
  * team library is active; leaving stays one button away after that.
  *
  * When the token is vault-backed (Bitwarden), never push the learner to re-paste
- * URL/token — unlock once (≤30 day session) and reconnect automatically.
+ * URL/token — unlock once (≤7 day session) and reconnect automatically.
  */
 
 import { assureBitwardenAccess } from "./bitwarden-assure.js";
