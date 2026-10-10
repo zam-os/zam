@@ -87,9 +87,9 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
   });
 
   it("refuses a caller-named backup folder in both option forms", () => {
-    expect(refusedStudioBridgeOption("backup-create", ["--dir", "/tmp/x"])).toBe(
-      "--dir",
-    );
+    expect(
+      refusedStudioBridgeOption("backup-create", ["--dir", "/tmp/x"]),
+    ).toBe("--dir");
     expect(refusedStudioBridgeOption("backup-create", ["--dir=/tmp/x"])).toBe(
       "--dir=/tmp/x",
     );
@@ -97,6 +97,21 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     expect(
       refusedStudioBridgeOption("list-tokens", ["--dir", "/tmp/x"]),
     ).toBeUndefined();
+  });
+
+  it("leaves naming a key and confirming an endpoint to desktop Settings (D5)", () => {
+    expect(
+      refusedStudioBridgeOption("model-upsert", ["--key-ref", "openrouter"]),
+    ).toBe("--key-ref");
+    expect(
+      refusedStudioBridgeOption("model-upsert", ["--confirm-endpoint"]),
+    ).toBe("--confirm-endpoint");
+    expect(
+      refusedStudioBridgeOption("model-upsert", ["--transport", "agent"]),
+    ).toBeUndefined();
+    for (const command of ["model-confirm-endpoint", "model-key-sync"]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(false);
+    }
   });
 
   it("does not let setting-set write a security switch", async () => {

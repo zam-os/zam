@@ -22,6 +22,11 @@
  * credentials file on one machine is meaningless to a phone. The key travels in
  * the learner's own database, reached with the token the pairing code carries —
  * the same trade `llm.vision.api_key` has always made.
+ *
+ * Only in a personal library, and only while the row's "use on my other
+ * devices" (`syncKey`) stays on (ADR 2026-10-08b D5). A team library is read
+ * by more than one learner, so it never carries a key: one is stripped on
+ * write and ignored on read, and each machine resolves its own `apiKeyRef`.
  */
 
 import { getProviderApiKey } from "../../kernel/credentials.js";
@@ -31,6 +36,7 @@ import {
   getMachineAiModels,
   saveMachineAiModels,
 } from "../../kernel/system/install-config.js";
+import { isTeamLibrary } from "../users/identity.js";
 
 /** JSON array of cloud rows, in the synced learner database. */
 export const CLOUD_MODELS_SETTING = "ai.models.cloud";
@@ -77,14 +83,27 @@ function stripSecret(entry: ResolvedModelEntry): ModelEntry {
  * A reference this machine cannot resolve is left as it stands — it belongs to
  * another machine, and replacing it would trade a row that works there for one
  * that works nowhere.
+ *
+ * None of this happens in a team library or for a row whose "use on my other
+ * devices" is off: the row is then written without a key (ADR 2026-10-08b D5).
  */
 function withSharedSecret(
   entry: ResolvedModelEntry,
   resolveKey: (ref: string) => string | null,
+  carriesKeys: boolean,
 ): ResolvedModelEntry {
+  if (!carriesKeys || entry.syncKey === false) return stripSecret(entry);
   if (entry.apiKey || !entry.apiKeyRef) return entry;
   const apiKey = resolveKey(entry.apiKeyRef);
   return apiKey ? { ...entry, apiKey } : entry;
+}
+
+/**
+ * Whether this library may carry model keys: a personal one may, the team
+ * library never does (ADR 2026-10-08b D5).
+ */
+export function libraryCarriesModelKeys(db: Database): boolean {
+  return !isTeamLibrary(db);
 }
 
 async function readCloudModels(db: Database): Promise<ResolvedModelEntry[]> {
@@ -92,7 +111,10 @@ async function readCloudModels(db: Database): Promise<ResolvedModelEntry[]> {
   if (!raw) return [];
   try {
     const parsed = JSON.parse(raw);
-    return Array.isArray(parsed) ? (parsed as ResolvedModelEntry[]) : [];
+    if (!Array.isArray(parsed)) return [];
+    const rows = parsed as ResolvedModelEntry[];
+    // A key someone wrote into a team library anyway is not used.
+    return libraryCarriesModelKeys(db) ? rows : rows.map(stripSecret);
   } catch {
     // A hand-edited or half-written row must not take the whole registry with
     // it — the machine rows below still resolve.
@@ -167,11 +189,12 @@ export async function saveModelRegistry(
   // and letting a later lazy pass run would re-upload rows just removed.
   migratedDatabases.add(db as unknown as object);
   saveMachineAiModels(entries.filter(isMachineLocalEntry).map(stripSecret));
+  const carriesKeys = libraryCarriesModelKeys(db);
   await writeCloudModels(
     db,
     entries
       .filter((entry) => !isMachineLocalEntry(entry))
-      .map((entry) => withSharedSecret(entry, resolveKey)),
+      .map((entry) => withSharedSecret(entry, resolveKey, carriesKeys)),
   );
 }
 

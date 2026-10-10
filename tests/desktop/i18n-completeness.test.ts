@@ -341,6 +341,13 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "btn_trusted_folder_remove",
   "trusted_folder_pick",
   "trusted_folder_failed",
+  // Keys follow endpoints and key sync in Settings → AI (ADR 2026-10-08b
+  // D5); same status.
+  "model_status_endpoint_changed",
+  "model_endpoint_changed_note",
+  "model_btn_confirm_endpoint",
+  "model_key_sync",
+  "model_key_moves_with_url",
   "boot_fix_db",
   // Central learning path field-test surface (cell selection, precondition
   // self-assessment, keep-going, bonus offer). English and German are the

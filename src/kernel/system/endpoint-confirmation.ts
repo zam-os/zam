@@ -31,7 +31,10 @@ export function confirmEndpoint(
   updateInstallConfig((config) => {
     config.ai = {
       ...config.ai,
-      confirmedEndpoints: { ...(config.ai?.confirmedEndpoints ?? {}), [id]: url },
+      confirmedEndpoints: {
+        ...(config.ai?.confirmedEndpoints ?? {}),
+        [id]: url,
+      },
     };
   }, configPath);
 }

@@ -201,7 +201,8 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   // Config only — never runs generation; keys stay out of this surface.
   "model-list": { why: "Lists model rows without keys." },
   "model-upsert": {
-    why: "Edits a model row; its probe passes the endpoint check (D2), and a changed URL gets no key until the learner confirms it on this device (D5).",
+    why: "Edits a model row; its probe passes the endpoint check (D2), and a changed URL gets no key until the learner confirms it on this device (D5). Naming a key or confirming an endpoint stays with desktop Settings.",
+    refusedOptions: ["--key-ref", "--confirm-endpoint"],
   },
   "model-remove": { why: "Removes a model row." },
   "model-reprobe": {

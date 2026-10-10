@@ -22,6 +22,7 @@ import {
   emptyCapabilityFlags,
   endpointUrl,
   getProviderApiKey,
+  keyMaySendTo,
   type ModelEntry,
 } from "../../kernel/index.js";
 import { assertModelEndpointAllowed } from "../net/safe-fetch.js";
@@ -305,9 +306,22 @@ export function classifyCapabilities(
   return detected;
 }
 
-function resolveApiKey(apiKeyRef?: string): string {
-  if (!apiKeyRef) return DEFAULT_LLM_API_KEY;
-  return getProviderApiKey(apiKeyRef) ?? DEFAULT_LLM_API_KEY;
+/**
+ * The key a probe may send. A stored row (one with an `id`) is held to the
+ * endpoint this device confirmed for it (ADR 2026-10-08b D5), so re-probing
+ * a row whose synced URL was rewritten sends no key. A candidate the learner
+ * is saving in Settings carries no `id`: the save itself confirms it.
+ */
+function resolveApiKey(
+  entry: Pick<ModelEntry, "url" | "apiKeyRef"> & { id?: string },
+): string {
+  if (!entry.apiKeyRef) return DEFAULT_LLM_API_KEY;
+  const key = getProviderApiKey(entry.apiKeyRef);
+  if (!key) return DEFAULT_LLM_API_KEY;
+  if (entry.id && !keyMaySendTo(entry.id, entry.url)) {
+    return DEFAULT_LLM_API_KEY;
+  }
+  return key;
 }
 
 /**
@@ -378,10 +392,12 @@ async function probeReasoningEffort(
  * along as `keyValid`.
  */
 export async function probeModelCapabilities(
-  entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef">,
+  entry: Pick<ModelEntry, "url" | "model" | "apiFlavor" | "apiKeyRef"> & {
+    id?: string;
+  },
   opts: { embeddingDimProbe?: boolean; reasoningEffortProbe?: boolean } = {},
 ): Promise<CapabilityProbeResult> {
-  const apiKey = resolveApiKey(entry.apiKeyRef);
+  const apiKey = resolveApiKey(entry);
 
   // Anthropic: we cannot cheaply enumerate the catalog; reachability alone
   // decides, and classification is fixed to text+image.

@@ -993,6 +993,12 @@ export {
   unregisterSecretBackend,
 } from "./secrets/index.js";
 export {
+  confirmEndpoint,
+  confirmedEndpointFor,
+  isEndpointUnconfirmed,
+  keyMaySendTo,
+} from "./system/endpoint-confirmation.js";
+export {
   distributeGlobalSkills,
   getPackageSkillPath,
   injectShellHooks,
@@ -1130,12 +1136,6 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
-export {
-  confirmedEndpointFor,
-  confirmEndpoint,
-  isEndpointUnconfirmed,
-  keyMaySendTo,
-} from "./system/endpoint-confirmation.js";
 export type {
   PathRefusalCode,
   ReadTrustedFileOptions,

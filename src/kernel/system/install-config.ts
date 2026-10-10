@@ -333,6 +333,13 @@ export interface ModelEntry {
    * accepts — and every re-probe that produces a verdict overwrites it.
    */
   effort?: "none" | "minimal" | "low" | "medium" | "high" | "xhigh" | "max";
+  /**
+   * "Use on my other devices" for a cloud row's key (ADR 2026-10-08b D5).
+   * Absent or true: the key travels with the row in a personal library.
+   * False: the key stays in this machine's credentials and other devices get
+   * the row without it. A team library never carries keys either way.
+   */
+  syncKey?: boolean;
 }
 
 export interface MachineAiConfig {

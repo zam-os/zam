@@ -385,13 +385,21 @@ async function readJsonSetting<T>(
   }
 }
 
-function resolveProviderApiKey(rec: ProviderRecord): string {
-  if (rec.apiKey) return rec.apiKey;
-  if (rec.apiKeyRef) {
-    const key = getProviderApiKey(rec.apiKeyRef);
-    if (key) return key;
-  }
-  return DEFAULT_LLM_API_KEY;
+/**
+ * A provider record's key, held to the endpoint this device confirmed for it
+ * (ADR 2026-10-08b D5) like a registry row's.
+ */
+function resolveProviderApiKey(
+  rec: ProviderRecord,
+  providerName: string,
+  url: string,
+): string {
+  const key =
+    rec.apiKey || (rec.apiKeyRef ? getProviderApiKey(rec.apiKeyRef) : null);
+  if (!key) return DEFAULT_LLM_API_KEY;
+  return keyMaySendTo(`provider:${providerName}`, url)
+    ? key
+    : DEFAULT_LLM_API_KEY;
 }
 
 /** Legacy roles collapse onto unified capabilities (ADR 2026-07-12). */
@@ -600,7 +608,7 @@ function materializeProvider(
     enabled: base.enabled,
     url,
     model: rec.model || base.model,
-    apiKey: resolveProviderApiKey(rec),
+    apiKey: resolveProviderApiKey(rec, meta.providerName, url),
     apiFlavor: rec.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
     providerName: meta.providerName,

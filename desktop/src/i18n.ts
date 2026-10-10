@@ -4864,7 +4864,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_err_quota:
       "The database host refused the request as over quota — check your plan's database and storage limits.",
     server_db_err_bitwarden:
-      "Your server database is linked via Bitwarden. Unlock once — you stay signed in for up to 30 days.",
+      "Your server database is linked via Bitwarden. Unlock once — you stay signed in for up to 7 days.",
     server_db_unlock_bitwarden: "Unlock Bitwarden",
     server_db_unlocking_bw: "Unlocking Bitwarden…",
     // Multi-machine vault secrets (Bitwarden) — one unlock + one sync
@@ -4876,7 +4876,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     secrets_vault_alpha_note:
       "Alpha: this is new and rough at the edges. It needs the Bitwarden CLI (bw) installed. Switching it off later leaves your data alone — use Disconnect to turn vault references back into stored values first.",
     secrets_vault_password_note:
-      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. What ZAM keeps afterwards is the CLI's session key, in ~/.zam (readable only by you), for 30 days.",
+      "Handed straight to the Bitwarden CLI to unlock it, never stored and never written to a log. What ZAM keeps afterwards is the CLI's session key, in your computer's keychain, for up to 7 days.",
     secrets_vault_help:
       "Optional. The important secret on this machine is the server-database token — cloud model keys usually already live in the database. Connect Bitwarden once; ZAM syncs what it already knows. No re-paste.",
     secrets_vault_region_badge_eu: "EU",
@@ -4924,9 +4924,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Bitwarden assure gate (before any vault-backed secret use)
     bw_assure_title: "Bitwarden required",
     bw_assure_body_login:
-      "Your server database token is stored in Bitwarden. Log in once here — ZAM keeps the session for up to 30 days on this computer. Use an authenticator code if prompted (FIDO2 is not available in this login).",
+      "Your server database token is stored in Bitwarden. Log in once here — ZAM keeps the session for up to 7 days on this computer. Use an authenticator code if prompted (FIDO2 is not available in this login).",
     bw_assure_body_unlock:
-      "Your server database token is stored in Bitwarden. Unlock once — you stay signed in for up to 30 days on this computer (password is not stored).",
+      "Your server database token is stored in Bitwarden. Unlock once — you stay signed in for up to 7 days on this computer (password is not stored).",
     bw_assure_email_ph: "Email",
     bw_assure_password_ph: "Master password",
     bw_assure_password_label: "Master password",
@@ -5065,6 +5065,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Not checked yet",
     model_status_key_missing: "API key missing",
     model_status_key_invalid: "API key invalid",
+    model_status_endpoint_changed: "Address changed — key held back",
+    model_endpoint_changed_note:
+      "This model's address changed to {url} since you last confirmed it on this device. ZAM sends no API key there until you confirm.",
+    model_btn_confirm_endpoint: "Confirm new address",
+    model_key_sync: "Use this key on my other devices",
+    model_key_moves_with_url:
+      "Saving sends your stored key to the new address. Paste a different key if the new address needs one.",
     model_agent_status_ready: "Harness ready",
     model_agent_status_offline: "Harness not detected",
     model_agent_meta: "Via {harness}",
@@ -6530,7 +6537,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     server_db_err_quota:
       "Der Datenbank-Host hat die Anfrage wegen überschrittener Kontingente abgelehnt — prüfe die Datenbank- und Speichergrenzen deines Tarifs.",
     server_db_err_bitwarden:
-      "Deine Server-Datenbank hängt an Bitwarden. Einmal entsperren — du bleibst bis zu 30 Tage angemeldet.",
+      "Deine Server-Datenbank hängt an Bitwarden. Einmal entsperren — du bleibst bis zu 7 Tage angemeldet.",
     server_db_unlock_bitwarden: "Bitwarden entsperren",
     server_db_unlocking_bw: "Bitwarden wird entsperrt…",
     // Multi-Maschinen-Vault — ein Entsperren, ein Sync
@@ -6542,7 +6549,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     secrets_vault_alpha_note:
       "Alpha: neu und noch nicht rund. Braucht die installierte Bitwarden-CLI (bw). Späteres Ausschalten lässt deine Daten unangetastet — mit „Bitwarden trennen“ werden Tresor-Verweise vorher wieder zu gespeicherten Werten.",
     secrets_vault_password_note:
-      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI, in ~/.zam (nur für dich lesbar), 30 Tage lang.",
+      "Geht direkt an die Bitwarden-CLI zum Entsperren, wird nicht gespeichert und in kein Protokoll geschrieben. ZAM behält danach nur den Sitzungsschlüssel der CLI, im Schlüsselbund deines Computers, bis zu 7 Tage lang.",
     secrets_vault_help:
       "Optional. Wichtig auf dem Rechner ist vor allem das Server-Datenbank-Token — Cloud-Model-Keys liegen meist schon in der Datenbank. Bitwarden einmal verbinden; ZAM synchronisiert, was es schon kennt. Kein erneutes Einfügen.",
     secrets_vault_region_badge_eu: "EU",
@@ -6591,9 +6598,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Bitwarden-Gate vor jedem Vault-Secret
     bw_assure_title: "Bitwarden erforderlich",
     bw_assure_body_login:
-      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal hier anmelden — die Session bleibt bis zu 30 Tage auf diesem Rechner. Bei Bedarf Authenticator-Code (FIDO2 geht in diesem Login nicht).",
+      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal hier anmelden — die Session bleibt bis zu 7 Tage auf diesem Rechner. Bei Bedarf Authenticator-Code (FIDO2 geht in diesem Login nicht).",
     bw_assure_body_unlock:
-      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal entsperren — du bleibst bis zu 30 Tage angemeldet (Passwort wird nicht gespeichert).",
+      "Dein Server-Datenbank-Token liegt in Bitwarden. Einmal entsperren — du bleibst bis zu 7 Tage angemeldet (Passwort wird nicht gespeichert).",
     bw_assure_email_ph: "E-Mail",
     bw_assure_password_ph: "Master-Passwort",
     bw_assure_password_label: "Master-Passwort",
@@ -6738,6 +6745,13 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Noch nicht geprüft",
     model_status_key_missing: "API-Schlüssel fehlt",
     model_status_key_invalid: "API-Schlüssel ungültig",
+    model_status_endpoint_changed: "Adresse geändert – Schlüssel zurückgehalten",
+    model_endpoint_changed_note:
+      "Die Adresse dieses Modells ist jetzt {url}, seit du sie auf diesem Gerät bestätigt hast. ZAM schickt dorthin keinen API-Schlüssel, bis du sie bestätigst.",
+    model_btn_confirm_endpoint: "Neue Adresse bestätigen",
+    model_key_sync: "Diesen Schlüssel auf meinen anderen Geräten nutzen",
+    model_key_moves_with_url:
+      "Beim Speichern geht dein gespeicherter Schlüssel an die neue Adresse. Füge einen anderen Schlüssel ein, wenn die neue Adresse einen braucht.",
     model_agent_status_ready: "Harness bereit",
     model_agent_status_offline: "Harness nicht erkannt",
     model_agent_meta: "Über {harness}",

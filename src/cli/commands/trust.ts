@@ -1,22 +1,29 @@
 /**
- * `zam trust` — the folders ZAM may read files from (ADR 2026-10-08b D1).
+ * `zam trust` — the folders ZAM may read files from (ADR 2026-10-08b D1) and
+ * the model endpoints this device sends keys to (D5).
  *
  * Source links and agent tools read files only inside the folders trusted
- * here and the agent app's own workspace folders. A learner command only:
- * no bridge command for the Studio panel and no MCP tool can trust a folder.
+ * here and the agent app's own workspace folders. A model row's key goes only
+ * to the endpoint this device confirmed for it. Learner commands only: no
+ * bridge command for the Studio panel and no MCP tool can trust a folder or
+ * confirm an endpoint.
  */
 
 import { Command } from "commander";
 import {
   addTrustedFolder,
+  confirmEndpoint,
+  confirmedEndpointFor,
   getTrustedFolders,
+  isEndpointUnconfirmed,
   removeTrustedFolder,
 } from "../../kernel/index.js";
+import { loadModelRegistry } from "../llm/model-registry.js";
 import { suggestTrustedFolders } from "../trusted-folders.js";
 import { withDb } from "./shared/db.js";
 
 export const trustCommand = new Command("trust").description(
-  "Folders ZAM may read files from (source links, knowledge bases, agent tools)",
+  "Folders ZAM may read files from, and model endpoints it may send keys to",
 );
 
 trustCommand
@@ -91,5 +98,62 @@ trustCommand
       for (const { folder } of suggestions) {
         console.log(`Trusted ${addTrustedFolder(folder)}`);
       }
+    });
+  });
+
+trustCommand
+  .command("endpoints")
+  .description(
+    "Show each model's endpoint and whether this device confirmed it",
+  )
+  .option("--json", "Output as JSON")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      const rows = (await loadModelRegistry(db))
+        .filter((entry) => entry.url)
+        .map((entry) => ({
+          id: entry.id,
+          label: entry.label,
+          url: entry.url,
+          confirmedUrl: confirmedEndpointFor(entry.id) ?? null,
+          unconfirmed: isEndpointUnconfirmed(entry.id, entry.url),
+        }));
+      if (opts.json) {
+        console.log(JSON.stringify({ endpoints: rows }, null, 2));
+        return;
+      }
+      if (rows.length === 0) {
+        console.log("No model endpoints configured.");
+        return;
+      }
+      for (const row of rows) {
+        const state = row.unconfirmed
+          ? `CHANGED (confirmed: ${row.confirmedUrl}) — no key is sent`
+          : "confirmed";
+        console.log(`  ${row.label}  ${row.url}  ${state}  [${row.id}]`);
+      }
+      if (rows.some((row) => row.unconfirmed)) {
+        console.log(
+          "\nConfirm a changed endpoint with: zam trust endpoint <id>",
+        );
+      }
+    });
+  });
+
+trustCommand
+  .command("endpoint")
+  .description(
+    "Confirm a model's current endpoint so its key may be sent there",
+  )
+  .argument("<id>", "Model id (see: zam trust endpoints)")
+  .action(async (id: string) => {
+    await withDb(async (db) => {
+      const entry = (await loadModelRegistry(db)).find((m) => m.id === id);
+      if (!entry?.url) {
+        console.error(`No model endpoint with id ${id}.`);
+        process.exit(1);
+      }
+      confirmEndpoint(entry.id, entry.url);
+      console.log(`Confirmed ${entry.url} for ${entry.label}.`);
     });
   });

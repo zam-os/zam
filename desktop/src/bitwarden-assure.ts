@@ -1,8 +1,8 @@
 /**
  * Assure Bitwarden access when vault-backed secrets cannot resolve.
  *
- * A successful login/unlock is persisted for 30 days (machine-local session
- * file). The modal is NOT shown on every access — only when no valid session
+ * A successful login/unlock is remembered for up to 7 days (in the OS
+ * keychain, ADR 2026-10-08b D5). The modal is NOT shown on every access — only when no valid session
  * exists (locked / logged out / expired).
  */
 

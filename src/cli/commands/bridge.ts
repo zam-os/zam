@@ -43,6 +43,7 @@ import {
   commitTextImport,
   configuredLibraryKind,
   confirmCardSplit,
+  confirmEndpoint,
   confirmFoundations,
   confirmSourceImport,
   countUserCardsForCurriculumTopic,
@@ -95,6 +96,7 @@ import {
   importCurriculumCards,
   inventoryObservationFiles,
   isBitwardenVaultEnabled,
+  isEndpointUnconfirmed,
   isOllamaInstalled,
   isPersonaId,
   isScreenObservationEnabled,
@@ -3159,6 +3161,14 @@ function modelRow(entry: ModelEntry): Record<string, unknown> {
     agentHarness: entry.agentHarness,
     // Optional reasoning effort (e.g. Copilot --effort); unset = adapter default.
     effort: entry.effort,
+    // Keys follow endpoints (ADR 2026-10-08b D5): the row's URL differs from
+    // the one this device confirmed, so its key is held back until the
+    // learner confirms the new address (`model-confirm-endpoint`).
+    endpointUnconfirmed: entry.url
+      ? isEndpointUnconfirmed(entry.id, entry.url)
+      : false,
+    // "Use on my other devices" for a cloud row's key; local rows never sync.
+    keySync: isMachineLocalEntry(entry) ? false : entry.syncKey !== false,
   };
 }
 
@@ -3280,6 +3290,10 @@ bridgeCommand
   .option("--no-local", "Mark as cloud/non-local endpoint")
   .option("--runner <runner>", "Local runner hint")
   .option("--key-ref <ref>", "Credential reference for API key")
+  .option(
+    "--confirm-endpoint",
+    "The learner entered this URL on this device: confirm it for the row's key (ADR 2026-10-08b D5)",
+  )
   .option("--capabilities <json>", "JSON object of user-selected capabilities")
   .option("--order <n>", "Explicit sort order")
   .option(
@@ -3490,6 +3504,24 @@ bridgeCommand
     const urlChanged = prev !== undefined && prev.url !== url;
     const apiKeyRef = opts.keyRef ?? (urlChanged ? undefined : prev?.apiKeyRef);
     if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
+    // A key that reached this device only inside the row (saved on another
+    // device) stays with an unchanged endpoint; a new key replaces it.
+    const sameKey =
+      !urlChanged &&
+      opts.keyChanged !== true &&
+      (opts.keyRef === undefined || opts.keyRef === prev?.apiKeyRef);
+    if (sameKey && prev?.apiKey) {
+      (candidate as ResolvedModelEntry).apiKey = prev.apiKey;
+    }
+    if (prev?.syncKey === false) candidate.syncKey = false;
+    // A URL the learner typed into Settings is confirmed by that save. Any
+    // other caller (the Studio panel, an agent) leaves a changed URL
+    // unconfirmed, so the probe below and every later call go without the
+    // key until the learner confirms it.
+    const confirmed = opts.confirmEndpoint === true;
+    const confirmSaved = (entry: ModelEntry): void => {
+      if (confirmed && entry.url) confirmEndpoint(entry.id, entry.url);
+    };
     // Clearing agent fields when re-saving as HTTP keeps the row coherent.
     // (transport/agentHarness omitted = HTTP default.)
 
@@ -3524,14 +3556,21 @@ bridgeCommand
       const next = [...models];
       next[existingIndex] = kept;
       await writeRegistry(next);
+      confirmSaved(kept);
       jsonOut({ ok: true, model: modelRow(kept), probe: null });
       return;
     }
 
-    const probe = await probeModelCapabilities(candidate, {
-      embeddingDimProbe: true,
-      reasoningEffortProbe: true,
-    });
+    // Without an id the probe sends the key: the learner is saving this URL.
+    // With one it holds the key to the endpoint this device confirmed.
+    const { id: _candidateId, ...unbound } = candidate;
+    const probe = await probeModelCapabilities(
+      confirmed ? unbound : candidate,
+      {
+        embeddingDimProbe: true,
+        reasoningEffortProbe: true,
+      },
+    );
     const validation = validateModelSave(candidate, probe);
     if (!validation.ok || !validation.entry) {
       jsonError(validation.error ?? "Model could not be saved.");
@@ -3541,6 +3580,7 @@ bridgeCommand
     if (existingIndex >= 0) next[existingIndex] = validation.entry;
     else next.push(validation.entry);
     await writeRegistry(next);
+    confirmSaved(validation.entry);
     if (validation.entry.detectedCapabilities.text) {
       // Same moment as cloud-connect and the Foundry setup: a validated text
       // model opens the text-LLM gate. The Studio's Add-model form for a local
@@ -3666,6 +3706,60 @@ bridgeCommand
       });
     await writeRegistry(next);
     jsonOut({ ok: true, id: opts.id, models: next.map(modelRow) });
+  });
+
+// Desktop Settings only, never the Studio panel: both decide where a key goes
+// (ADR 2026-10-08b D5).
+bridgeCommand
+  .command("model-confirm-endpoint")
+  .description(
+    "Confirm a row's current URL on this device so its key may be sent there (JSON)",
+  )
+  .requiredOption("--id <id>", "Registry entry id")
+  .action(async (opts) => {
+    const models = await readRegistry();
+    const entry = models.find((m) => m.id === opts.id);
+    if (!entry) jsonError(`No such model: ${opts.id}`);
+    if (!entry.url) jsonError("This model has no endpoint to confirm.");
+    confirmEndpoint(entry.id, entry.url);
+    jsonOut({ ok: true, model: modelRow(entry) });
+  });
+
+bridgeCommand
+  .command("model-key-sync")
+  .description(
+    'Turn "use on my other devices" for a cloud row\'s key on or off (JSON)',
+  )
+  .requiredOption("--id <id>", "Registry entry id")
+  .option("--on", "Let the key travel with the row (personal library only)")
+  .option("--off", "Keep the key on this machine only")
+  .action(async (opts) => {
+    if (opts.on === opts.off) jsonError("Pass exactly one of --on or --off.");
+    const models = await readRegistry();
+    const index = models.findIndex((m) => m.id === opts.id);
+    if (index < 0) jsonError(`No such model: ${opts.id}`);
+    const entry = { ...models[index] };
+    if (isMachineLocalEntry(entry)) {
+      jsonError("A model that runs on this machine has no key to share.");
+    }
+    if (opts.off) {
+      // The key must stay usable here once the row stops carrying it: a key
+      // that reached this device only inside the row moves into this
+      // machine's credentials first.
+      const local = entry.apiKeyRef ? getProviderApiKey(entry.apiKeyRef) : null;
+      if (!local && entry.apiKey) {
+        const ref = `model-key-${entry.id.toLowerCase()}`;
+        setProviderApiKey(ref, entry.apiKey);
+        entry.apiKeyRef = ref;
+      }
+      entry.syncKey = false;
+    } else {
+      delete entry.syncKey;
+    }
+    const next = [...models];
+    next[index] = entry;
+    await writeRegistry(next);
+    jsonOut({ ok: true, model: modelRow(entry) });
   });
 
 bridgeCommand
@@ -4983,7 +5077,7 @@ bridgeCommand
   .command("database-status")
   .description("Show the active database target and learning profiles (JSON)")
   .action(async () => {
-    // Restore ≤30-day session and resolve vault refs before opening the DB.
+    // Restore a remembered session and resolve vault refs before opening the DB.
     await resolveCredentials();
     if (tursoVaultAccessPending() || postgresVaultAccessPending()) {
       const stored = loadStoredCredentials();
@@ -5003,8 +5097,8 @@ bridgeCommand
         cardCount: 0,
         users: [],
         error: postgresPending
-          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 30 days)."
-          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 30 days).",
+          ? "BITWARDEN_REQUIRED: The team library password is in Bitwarden. Unlock once to continue (session lasts up to 7 days)."
+          : "BITWARDEN_REQUIRED: Server database token is in Bitwarden. Unlock once to continue (session lasts up to 7 days).",
       });
       return;
     }
