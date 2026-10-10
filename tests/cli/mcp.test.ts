@@ -1,5 +1,11 @@
 import { spawn } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  realpathSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { Client } from "@modelcontextprotocol/sdk/client/index.js";
@@ -14,6 +20,7 @@ import { createPersistentDatabaseHost } from "../../src/cli/commands/shared/db.j
 import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
+  addTrustedFolder,
   createToken,
   ensureCard,
   getCard,
@@ -585,6 +592,9 @@ describe("MCP stdio server tests", () => {
     expect(schema?.required ?? []).not.toContain("focus");
     expect(schema?.required ?? []).not.toContain("user");
 
+    // The repo scope reads this checkout's OKF bundle, which the server may
+    // only do inside a client root or a trusted folder (ADR 2026-10-08b D1).
+    addTrustedFolder(process.cwd());
     const res = await client.callTool({
       name: "zam_show_graph",
       arguments: {},
@@ -602,10 +612,10 @@ describe("MCP stdio server tests", () => {
     // Default user seeded in beforeEach via user_config.
     expect(structured.user).toBe("thomas");
 
-    // Repo scope for the card's no-focus bootstrap: without client roots the
-    // server falls back to docs/okf under its cwd — this checkout's own OKF
-    // bundle, so the scope must name the repo and carry one source-link base
-    // per article (resource URL, else resolved article path).
+    // Repo scope for the card's no-focus bootstrap: docs/okf under the first
+    // allowed root — here the trusted checkout — so the scope must name the
+    // repo and carry one source-link base per article (resource URL, else
+    // resolved article path).
     const repoScope = (structured as any).repoScope as {
       label: string;
       bases: string[];
@@ -1298,6 +1308,7 @@ describe("MCP stdio server tests", () => {
       // bundle, docs/adr holding a citation target outside the bundle.
       repoRoot = mkdtempSync(join(tmpdir(), "zam-okf-mcp-"));
       mkdirSync(join(repoRoot, ".git"));
+      addTrustedFolder(repoRoot);
       bundleDir = join(repoRoot, "docs", "okf");
       mkdirSync(bundleDir, { recursive: true });
       mkdirSync(join(repoRoot, "docs", "adr"), { recursive: true });
@@ -1393,7 +1404,8 @@ describe("MCP stdio server tests", () => {
       });
       expect(res.isError).toBeUndefined();
       const data = JSON.parse(res.content[0].text);
-      expect(data.dir).toBe(bundleDir);
+      // The real path: D1 resolves links and aliases such as /var → /private/var.
+      expect(data.dir).toBe(realpathSync.native(bundleDir));
       expect(data.gitAvailable).toBe(false);
       expect(data.summary).toEqual({
         current: 0,
@@ -1495,6 +1507,7 @@ describe("MCP stdio server tests", () => {
       // bundle — same fixture shape as the citation-read tests above.
       repoRoot = mkdtempSync(join(tmpdir(), "zam-okf-visualize-"));
       mkdirSync(join(repoRoot, ".git"));
+      addTrustedFolder(repoRoot);
       bundleDir = join(repoRoot, "docs", "okf");
       mkdirSync(bundleDir, { recursive: true });
       upsertArticle(
@@ -1593,7 +1606,7 @@ describe("MCP stdio server tests", () => {
       expect(typeof structured.version).toBe("string");
       // Default user seeded in beforeEach via user_config.
       expect(structured.user).toBe("thomas");
-      expect(structured.bundleDir).toBe(bundleDir);
+      expect(structured.bundleDir).toBe(realpathSync.native(bundleDir));
       // okf_version comes from the bundle's own index.md frontmatter
       // (renderIndex's default), not the zam package version.
       expect(structured.okfVersion).toBe("0.1");

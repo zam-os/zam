@@ -28,6 +28,7 @@ import { snapshotCommand } from "./commands/snapshot.js";
 import { statsCommand } from "./commands/stats.js";
 import { teamCommand } from "./commands/team.js";
 import { tokenCommand } from "./commands/token.js";
+import { trustCommand } from "./commands/trust.js";
 import { uiCommand } from "./commands/ui.js";
 import { updateCommand } from "./commands/update.js";
 import { whoamiCommand } from "./commands/whoami.js";
@@ -78,6 +79,7 @@ program.addCommand(
 );
 program.addCommand(skillCommand);
 program.addCommand(monitorCommand);
+program.addCommand(trustCommand);
 program.addCommand(observationCommand);
 program.addCommand(observerCommand);
 program.addCommand(settingsCommand);

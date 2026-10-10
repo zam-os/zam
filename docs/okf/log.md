@@ -1,5 +1,13 @@
 # Log
 
+## 2026-10-10
+
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
+- **Update** — [Hands-Free Voice Mode](voice-mode.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Creation** — [Agent and Library Trust Model](agent-trust-model.md)
+
 ## 2026-10-09
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

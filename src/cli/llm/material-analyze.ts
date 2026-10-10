@@ -581,7 +581,8 @@ export async function analyzeMaterialViaLLM(
     const now = new Date();
     const files = await Promise.all(
       paths.map((path) =>
-        materialFileFromAgent({ name: basename(path), path }, now),
+        // The learner picked this file: no confinement.
+        materialFileFromAgent({ name: basename(path), path }, now, null),
       ),
     );
     try {

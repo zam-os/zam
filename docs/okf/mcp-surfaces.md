@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-09T07:40:00Z
+timestamp: 2026-10-10T18:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -38,7 +38,11 @@ supported harness, Claude Code included. Detection accepts the binary on
 because the desktop app inherits a minimal `PATH` without the learner's shell
 profile. The writer merges into each harness's existing configuration and owns
 only the fields it sets, so a server the learner disabled in the host stays
-disabled and host-managed entry keys survive.
+disabled and host-managed entry keys survive. Every harness file the command
+replaces is kept beside it as `<file>.zam-backup-<time>`. For Codex it writes
+per-tool approval for the four pre-approved read-only tools and no blanket
+approval; a configuration that still carries one is rewritten on the next
+connect (see [agent-trust-model.md](agent-trust-model.md)).
 
 Claude Code has two scopes. The default is the **user scope**:
 `mcpServers.zam` in `~/.claude.json` (or `$CLAUDE_CONFIG_DIR/.claude.json`),
@@ -173,12 +177,21 @@ The model-visible learning tools cover:
 
 ## Bundle resolution and containment
 
-- An explicit `bundle_dir` always wins.
-- Otherwise, `zam_okf_*` tools use `docs/okf` below the MCP client's workspace
-  root from `roots/list`.
-- The server working directory is the final fallback.
-- Citation reads accept only `.md` targets that resolve inside the repository
-  root, including citations outside the bundle such as `docs/adr/`.
+Paths resolve only inside an allowed root: a folder the MCP client reports
+through `roots/list`, or a folder the learner trusted (`zam trust add`,
+Settings → Data). See [agent-trust-model.md](agent-trust-model.md).
+
+- An explicit `bundle_dir` wins when it lies inside an allowed root.
+- Otherwise, `zam_okf_*` tools use `docs/okf` below the first allowed root.
+- There is no working-directory fallback. Without a root the tools refuse
+  with `path-outside-trusted-folders`; `zam_okf_visualize` still opens its
+  panel and shows the refusal as a problem.
+- Writes go only into an existing ZAM bundle or `docs/okf` below a root, and
+  never into an agent's instruction file (`CLAUDE.md`, `AGENTS.md`,
+  `GEMINI.md`, `README.md`). An article that is a link out of its bundle is
+  skipped.
+- Citation reads accept only `.md` targets inside an allowed root, including
+  citations outside the bundle such as `docs/adr/`.
 
 ## Repo knowledge map (alpha)
 
@@ -208,9 +221,10 @@ the arrows of the C4 view, labelled with their `link`. The written file
 is JSON-LD: ZAM adds the `@context` and the `$schema` link
 (`docs/knowledge-map/map.schema.json`).
 
-The repository is an explicit `repo_root` (made absolute), else the MCP
-client's roots: for reading the first root that already has a map, for
-writing the first root. The tools never fall back to the server's working
+The repository is an explicit `repo_root` (made absolute; it must lie inside
+an allowed root), else the MCP client's roots: for reading the first root
+that already has a map, for writing the first root. The tools never fall
+back to the server's working
 directory; without roots the guide asks for `repo_root` and the write
 refuses. Without MCP, `zam knowledge-map guide` prints the guide and
 `zam knowledge-map validate --repo <path> [--write]` checks a map, and
@@ -261,8 +275,11 @@ The Recall badge switches Flash/answer interaction in-session and persists it
 through the app-only `zam_studio_bridge`. The Settings panel targets the
 learner shown in its context bar and uses the same
 `study-learning-get`/`study-learning-set` bridge commands. Those commands
-are on the panel's closed allowlist; arbitrary settings and secret-bearing
-configuration remain excluded.
+are on the panel's reviewed list, `STUDIO_BRIDGE_COMMANDS`, where each command
+carries the reason a model may call it and the options it may not pass.
+Arbitrary settings, secret-bearing configuration, trusted folders and model
+endpoint confirmation remain excluded (see
+[agent-trust-model.md](agent-trust-model.md)).
 
 ## Host-owned placement
 
@@ -466,8 +483,9 @@ server instructions and the `zam` skill tell it to fetch
 `zam_material_import_context` first and to submit through
 `zam_material_import` — never through `zam_add_token`, which would skip the
 learner's decision. The submission names each file the agent read; with a
-readable path ZAM fingerprints the file and links the cards to it, otherwise
-it records `photo:<name>@<date>`. The batch is labelled with the host's own
+readable path inside an allowed root ZAM fingerprints the file and links the
+cards to it, otherwise it records `photo:<name>@<date>`. The batch is
+labelled with the host's own
 name from the MCP client info, for example opencode.
 
 `zam_material_import` brings the Studio forward through the same launcher as
@@ -525,6 +543,8 @@ A context-bar learner change reloads the persisted mode before the next queue
 is painted, so one learner's preference cannot bleed into another's session.
 
 # Citations
+
+- [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [Field-test slice plan](../plans/2026-08-15-central-learning-field-test-slice.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
@@ -554,4 +574,4 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
 - Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `src/cli/commands/knowledge-map.ts`, `docs/knowledge-map/map.schema.json`, `tests/cli/knowledge-map.test.ts`; viewer page and panel: `src/cli/knowledge-map/viewer-page.ts`, `desktop/src/panel/knowledge-map-viewer.html`, `desktop/src/panel/knowledge-map.ts`, `src/vscode-extension/protocol.ts`
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/agent-approval.ts`, `src/kernel/system/trusted-paths.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`

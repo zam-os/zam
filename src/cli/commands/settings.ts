@@ -10,6 +10,7 @@ import {
   getAllSettingsDetailed,
   getRepoPaths,
   getSetting,
+  maskSettingValue,
   setSetting,
   syncObserverSidecarPolicy,
 } from "../../kernel/index.js";
@@ -56,12 +57,29 @@ settingsCommand
   .option("--json", "Output as JSON")
   .action(async (opts) => {
     await withDb(async (db) => {
+      // Secrets are masked (ADR 2026-10-08b D5): `zam settings get <key>`
+      // still reads one value on purpose.
       if (opts.json) {
-        console.log(JSON.stringify(await getAllSettings(db), null, 2));
+        const all = await getAllSettings(db);
+        console.log(
+          JSON.stringify(
+            Object.fromEntries(
+              Object.entries(all).map(([key, value]) => [
+                key,
+                maskSettingValue(key, value),
+              ]),
+            ),
+            null,
+            2,
+          ),
+        );
         return;
       }
 
-      const settings = await getAllSettingsDetailed(db);
+      const settings = (await getAllSettingsDetailed(db)).map((s) => ({
+        ...s,
+        value: maskSettingValue(s.key, s.value),
+      }));
       if (settings.length === 0) {
         console.log("No settings configured.");
         return;

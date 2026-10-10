@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-06T10:00:00.000Z
+timestamp: 2026-10-10T18:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -75,7 +75,8 @@ resolved home directory, one per failed request — a thrown error, or a
 response that reports `success: false` / `ok: false` with an `error` string —
 and one per request that took 30 seconds or longer. A line carries the
 command name, the duration and the error; arguments are never written,
-because they carry learner content. A `false` without an `error` string is a
+because they carry learner content, and every line but the start line goes
+through the redactor that hides keys and tokens a provider's error may echo. A `false` without an `error` string is a
 status (for example `backup-db` on a remote library) and is not logged. The
 Desktop's spawn log sits beside it as `desktop-bridge.rust.log`.
 
@@ -299,12 +300,32 @@ Structured checks retain the stored editorial question and bypass dynamic
 question generation. Every command still writes stdout only through the
 bridge's JSON helpers.
 
+# Trust and keys
+
+Some commands exist for the desktop's Settings only and are not on the Studio
+panel's reviewed list (see [agent-trust-model.md](agent-trust-model.md)):
+
+- `trusted-folders`, `trusted-folder-add --dir`, `trusted-folder-remove
+  --dir` and `trusted-folder-add-suggested` manage the folders ZAM may read
+  files from.
+- `model-confirm-endpoint --id` confirms a model's current URL on this device,
+  so its key may be sent there; `model-upsert --confirm-endpoint` does the same
+  for the address a Settings save names.
+- `model-key-sync --id --on|--off` sets whether a cloud model's key travels to
+  the learner's other devices.
+
+`model-list` reports `endpointUnconfirmed` (the URL differs from the one this
+device confirmed; its key is held back) and `keySync` for every row. A library
+whose token sits in a keychain ZAM cannot read fails to open with
+`OS_SECRET_UNAVAILABLE`, distinct from `BITWARDEN_REQUIRED`.
+
 # Citations
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md)
 - [ADR 2026-08-14b — Published Atom Identity and Alignment](../adr/2026-08-14b-published-atom-identity-and-alignment.md)
 - [ADR 2026-09-04 — Team Library on PostgreSQL with Entra](../adr/2026-09-04-team-library-postgres-entra-pilot.md)
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
+- [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`
 - Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `desktop/src-tauri/src/lib.rs`

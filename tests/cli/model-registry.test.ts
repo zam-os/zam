@@ -6,8 +6,8 @@ import {
   CLOUD_MODELS_SETTING,
   isMachineLocalEntry,
   loadModelRegistry,
-  saveModelRegistry,
   type ResolvedModelEntry,
+  saveModelRegistry,
 } from "../../src/cli/llm/model-registry.js";
 import {
   type Database,
@@ -16,6 +16,7 @@ import {
   getSetting,
   openDatabase,
   saveMachineAiModels,
+  setSetting,
 } from "../../src/kernel/index.js";
 
 let dir: string;
@@ -71,10 +72,12 @@ describe("registry split", () => {
     // hosted endpoint and can call neither a loopback one nor a CLI on this
     // machine.
     expect(isMachineLocalEntry(entry({ id: "cloud" }))).toBe(false);
-    expect(isMachineLocalEntry(entry({ id: "ollama", local: true }))).toBe(true);
-    expect(
-      isMachineLocalEntry(entry({ id: "grok", transport: "agent" })),
-    ).toBe(true);
+    expect(isMachineLocalEntry(entry({ id: "ollama", local: true }))).toBe(
+      true,
+    );
+    expect(isMachineLocalEntry(entry({ id: "grok", transport: "agent" }))).toBe(
+      true,
+    );
   });
 
   it("routes each row to where it belongs on save", async () => {
@@ -185,6 +188,72 @@ describe("registry split", () => {
     expect(
       JSON.parse((await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]"),
     ).toEqual([]);
+  });
+});
+
+/**
+ * The same handle, reported as the team library. Only `dialect` changes, so
+ * the SQL still runs against the SQLite file underneath.
+ */
+function asTeamLibrary(target: Database): Database {
+  return new Proxy(target, {
+    get(obj, prop) {
+      if (prop === "dialect") return "postgres";
+      const value = Reflect.get(obj, prop, obj);
+      return typeof value === "function" ? value.bind(obj) : value;
+    },
+  });
+}
+
+describe("keys in shared rows (ADR 2026-10-08b D5)", () => {
+  it("never writes a key into a team library", async () => {
+    const team = asTeamLibrary(db);
+    await saveModelRegistry(
+      team,
+      [
+        entry({ id: "inline", apiKey: "sk-inline" }),
+        entry({ id: "ref", apiKeyRef: "openrouter" }),
+      ],
+      () => "sk-resolved",
+    );
+    const raw = (await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]";
+    expect(raw).not.toContain("sk-");
+    // The reference stays: each machine resolves its own key.
+    expect(JSON.parse(raw)[1].apiKeyRef).toBe("openrouter");
+  });
+
+  it("ignores a key someone wrote into a team library anyway", async () => {
+    await setSetting(
+      db,
+      CLOUD_MODELS_SETTING,
+      JSON.stringify([entry({ id: "planted", apiKey: "sk-planted" })]),
+    );
+    const rows = await loadModelRegistry(asTeamLibrary(db));
+    expect(rows[0]).not.toHaveProperty("apiKey");
+  });
+
+  it("keeps a row's key on this machine when its device sync is off", async () => {
+    await saveModelRegistry(
+      db,
+      [
+        entry({
+          id: "private",
+          apiKey: "sk-inline",
+          apiKeyRef: "openrouter",
+          syncKey: false,
+        }),
+        entry({ id: "shared", apiKeyRef: "openrouter", order: 1 }),
+      ],
+      () => "sk-resolved",
+    );
+    const stored = JSON.parse(
+      (await getSetting(db, CLOUD_MODELS_SETTING)) ?? "[]",
+    );
+    expect(stored[0]).not.toHaveProperty("apiKey");
+    expect(stored[0].syncKey).toBe(false);
+    expect(stored[0].apiKeyRef).toBe("openrouter");
+    // Device sync is on by default.
+    expect(stored[1].apiKey).toBe("sk-resolved");
   });
 });
 

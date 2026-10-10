@@ -3,6 +3,7 @@ import {
   mkdirSync,
   mkdtempSync,
   readFileSync,
+  realpathSync,
   rmSync,
   writeFileSync,
 } from "node:fs";
@@ -54,6 +55,7 @@ import {
   VIEWER_TEMPLATE_FILE,
 } from "../../src/cli/knowledge-map/viewer-slots.js";
 import {
+  addTrustedFolder,
   getKnowledgeMapConfig,
   openDatabase,
   setKnowledgeMapConfig,
@@ -659,10 +661,13 @@ describe("knowledge map: MCP tools", () => {
   let db: Awaited<ReturnType<typeof openDatabase>>;
 
   beforeEach(async () => {
-    dir = mkdtempSync(join(tmpdir(), "zam-km-mcp-"));
+    // The real path: tools report real paths (ADR 2026-10-08b D1).
+    dir = realpathSync.native(mkdtempSync(join(tmpdir(), "zam-km-mcp-")));
     writeFileSync(join(dir, "README.md"), "# Demo\n");
     previousConfigPath = process.env.ZAM_CONFIG_PATH;
     process.env.ZAM_CONFIG_PATH = join(dir, "config.json");
+    // The map tools work only inside a client root or a trusted folder.
+    addTrustedFolder(dir);
     db = await openDatabase({
       dbPath: join(dir, "test.db"),
       initialize: true,
@@ -839,11 +844,11 @@ describe("knowledge map: MCP tools", () => {
     ).toBe(false);
     expect(getKnowledgeMapConfig().repoPath).toBeUndefined();
 
-    // A relative repo_root is stored as an absolute path.
-    const relativeRoot = relative(process.cwd(), dir);
+    // A relative repo_root resolves against the allowed roots, never the
+    // server's working directory, and is stored as an absolute path.
     const written = await client.callTool({
       name: "zam_knowledge_map_write",
-      arguments: { repo_root: relativeRoot, map: smallMap() },
+      arguments: { repo_root: ".", map: smallMap() },
     });
     expect(written.structuredContent).toMatchObject({ ok: true });
     expect(getKnowledgeMapConfig().repoPath).toBe(dir);
@@ -878,7 +883,9 @@ describe("knowledge map: viewer page", () => {
     map.title = "A & B <c>";
     map.statements[1].text = "Closes </script><b>early.";
     const page = renderViewerPage(template, map);
-    expect(page).toContain("<title>A &amp; B &lt;c&gt; · Knowledge map</title>");
+    expect(page).toContain(
+      "<title>A &amp; B &lt;c&gt; · Knowledge map</title>",
+    );
     expect(page).not.toContain("</script><b>");
     const data = page.match(
       /<script type="application\/json" id="km-map">([\s\S]*?)<\/script>/,

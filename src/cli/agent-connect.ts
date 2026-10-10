@@ -12,7 +12,7 @@
  */
 
 import { execFileSync } from "node:child_process";
-import { mkdirSync, writeFileSync } from "node:fs";
+import { copyFileSync, existsSync, mkdirSync, writeFileSync } from "node:fs";
 import { homedir } from "node:os";
 import { dirname } from "node:path";
 import { distributeGlobalSkills } from "../kernel/index.js";
@@ -26,6 +26,24 @@ import {
 import { installCopilotExtension } from "./copilot-extension.js";
 import { findExecutable } from "./terminal-open.js";
 import { installVscodeExtension } from "./vscode-extension.js";
+
+/**
+ * Write a harness configuration, keeping a timestamped copy of the file it
+ * replaces next to it (ADR 2026-10-08b D8): the learner can always see and
+ * undo what `zam agent connect` changed.
+ */
+export function writeHarnessConfig(
+  path: string,
+  content: string,
+  now = new Date(),
+): void {
+  mkdirSync(dirname(path), { recursive: true });
+  if (existsSync(path)) {
+    const stamp = now.toISOString().replace(/[:.]/g, "-");
+    copyFileSync(path, `${path}.zam-backup-${stamp}`);
+  }
+  writeFileSync(path, content, "utf-8");
+}
 
 export type {
   ClaudeCodeConnectScope,
@@ -147,12 +165,7 @@ function resolveDeps(deps: AgentConnectDeps) {
       deps.detect ??
       (() => detectInstalledConnectHarnesses({ home, copilotHome })),
     connectMcp: deps.connectMcp ?? connectHarnessMcp,
-    writeConfig:
-      deps.writeConfig ??
-      ((path: string, content: string) => {
-        mkdirSync(dirname(path), { recursive: true });
-        writeFileSync(path, content, "utf-8");
-      }),
+    writeConfig: deps.writeConfig ?? writeHarnessConfig,
     installCopilot: deps.installCopilot ?? installCopilotExtension,
     installVscode: deps.installVscode ?? installVscodeExtension,
     resolveAntigravity:

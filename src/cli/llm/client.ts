@@ -32,12 +32,17 @@ import {
   getSettings,
   getSystemProfile,
   hasCommand,
+  keyMaySendTo,
   LANGUAGE_NAMES,
   normalizeLocale,
   parseAnswerPoints,
   supportsAnswerPoints,
   t,
 } from "../../kernel/index.js";
+import {
+  assertModelEndpointAllowed,
+  endpointLocality,
+} from "../net/safe-fetch.js";
 import { resolveReviewContext } from "../review-context.js";
 import type { ChoiceGeneration } from "./choice-prepare.js";
 import {
@@ -380,13 +385,21 @@ async function readJsonSetting<T>(
   }
 }
 
-function resolveProviderApiKey(rec: ProviderRecord): string {
-  if (rec.apiKey) return rec.apiKey;
-  if (rec.apiKeyRef) {
-    const key = getProviderApiKey(rec.apiKeyRef);
-    if (key) return key;
-  }
-  return DEFAULT_LLM_API_KEY;
+/**
+ * A provider record's key, held to the endpoint this device confirmed for it
+ * (ADR 2026-10-08b D5) like a registry row's.
+ */
+function resolveProviderApiKey(
+  rec: ProviderRecord,
+  providerName: string,
+  url: string,
+): string {
+  const key =
+    rec.apiKey || (rec.apiKeyRef ? getProviderApiKey(rec.apiKeyRef) : null);
+  if (!key) return DEFAULT_LLM_API_KEY;
+  return keyMaySendTo(`provider:${providerName}`, url)
+    ? key
+    : DEFAULT_LLM_API_KEY;
 }
 
 /** Legacy roles collapse onto unified capabilities (ADR 2026-07-12). */
@@ -404,18 +417,20 @@ function materializeModelEntry(
   enabled: boolean,
 ): ProviderConfig {
   const url = entry.url || base.url;
+  // A database row carries its key inline: an `apiKeyRef` points into a
+  // credentials file on one machine and means nothing to another client
+  // (ADR 2026-07-23). Machine rows keep the reference.
+  const key =
+    entry.apiKey ||
+    (entry.apiKeyRef ? getProviderApiKey(entry.apiKeyRef) : null) ||
+    null;
   const cfg: ProviderConfig = {
     enabled,
     url,
     model: entry.model || base.model,
-    // A database row carries its key inline: an `apiKeyRef` points into a
-    // credentials file on one machine and means nothing to another client
-    // (ADR 2026-07-23). Machine rows keep the reference.
-    apiKey:
-      entry.apiKey ||
-      (entry.apiKeyRef
-        ? (getProviderApiKey(entry.apiKeyRef) ?? DEFAULT_LLM_API_KEY)
-        : DEFAULT_LLM_API_KEY),
+    // Keys follow endpoints (ADR 2026-10-08b D5): a row whose URL changed
+    // since this device confirmed it gets no key until the learner confirms.
+    apiKey: key && keyMaySendTo(entry.id, url) ? key : DEFAULT_LLM_API_KEY,
     apiFlavor: entry.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
     providerName: entry.id,
@@ -593,7 +608,7 @@ function materializeProvider(
     enabled: base.enabled,
     url,
     model: rec.model || base.model,
-    apiKey: resolveProviderApiKey(rec),
+    apiKey: resolveProviderApiKey(rec, meta.providerName, url),
     apiFlavor: rec.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
     providerName: meta.providerName,
@@ -2316,6 +2331,7 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
  */
 export async function isLlmOnline(url: string): Promise<boolean> {
   try {
+    await assertModelEndpointAllowed(url);
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1500);
     // Check OpenAI standard /models list to verify readiness
@@ -2393,6 +2409,7 @@ export async function getAvailableModelEntries(
   query: Record<string, string> = {},
 ): Promise<ModelCatalogEntry[]> {
   try {
+    await assertModelEndpointAllowed(url);
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
     const res = await fetch(endpointUrl(url, "models", query), {
@@ -2487,12 +2504,9 @@ export function isCloudKeyMissing(endpoint: ProviderConfig): boolean {
 }
 
 export function isLocalEndpoint(url: string): boolean {
-  return (
-    url.includes("localhost") ||
-    url.includes("127.0.0.1") ||
-    url.includes("[::1]") ||
-    url.includes("::1")
-  );
+  // The parsed host decides, never a substring (ADR 2026-10-08b D2): a URL
+  // that merely mentions localhost in its path or query is not local.
+  return endpointLocality(url) === "local";
 }
 
 function isFoundryRunner(runner: string | undefined): boolean {
@@ -3635,6 +3649,14 @@ export async function fetchWithInteractiveTimeout(
     locale = "en",
     ...fetchOptions
   } = options;
+  // The address check of the endpoint's locality (ADR 2026-10-08b D2): a
+  // refused address is treated like an endpoint that does not answer.
+  await assertModelEndpointAllowed(url).catch((cause: unknown) => {
+    throw new LlmTransportError(
+      cause instanceof Error ? cause.message : String(cause),
+      cause,
+    );
+  });
   const controller = new AbortController();
   // A connection failure or abort is silence, not an answer — the chain
   // walkers rely on the distinction (see LlmTransportError).

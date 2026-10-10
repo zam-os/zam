@@ -1,11 +1,21 @@
-import { existsSync, readFileSync } from "node:fs";
-import { dirname, join, resolve } from "node:path";
+import { basename, join } from "node:path";
+import { fileURLToPath } from "node:url";
+import {
+  type PathRefusalCode,
+  PathRefusedError,
+  readTrustedTextFile,
+} from "../system/trusted-paths.js";
 
 export interface ResolvedReference {
   sourceType: "local" | "remote_web" | "dynamic_search";
   content: string;
   filePath?: string;
   url?: string;
+  /**
+   * Set when a local link was refused (ADR 2026-10-08b D1); `content` then
+   * says why and what fixes it.
+   */
+  refusal?: PathRefusalCode;
 }
 
 /**
@@ -19,6 +29,7 @@ export interface ReviewContext {
   filePath?: string;
   url?: string;
   truncated: boolean;
+  refusal?: PathRefusalCode;
 }
 
 /** Minimal transport the resolver needs; `globalThis.fetch` satisfies it. */
@@ -31,11 +42,19 @@ export type ReferenceFetcher = (url: string) => Promise<{
 
 export interface ResolveReferenceOptions {
   fetch?: ReferenceFetcher;
+  /**
+   * Allowed roots for local files (ADR 2026-10-08b D1): the MCP client's
+   * roots and the learner's trusted folders, already canonical. A local link
+   * resolves only inside them, never against the working directory; without
+   * roots no local file is read.
+   */
+  roots?: readonly string[];
 }
 
 export interface ResolveReviewContextOptions {
   fetch?: ReferenceFetcher;
   maxChars?: number;
+  roots?: readonly string[];
 }
 
 /** Default cap on resolved content length, so bridge JSON / terminal output stays bounded. */
@@ -55,8 +74,9 @@ function reviewContextCacheKey(
   sourceLink: string,
   maxChars: number,
   hasFetcher: boolean,
+  roots: readonly string[],
 ): string {
-  return `${sourceLink}\0${maxChars}\0${hasFetcher ? "1" : "0"}`;
+  return `${sourceLink}\0${maxChars}\0${hasFetcher ? "1" : "0"}\0${roots.join("\0")}`;
 }
 
 /** Clear the in-process review-context cache (mainly for tests). */
@@ -168,24 +188,43 @@ export async function resolveReference(
       const anchor =
         anchorIndex !== -1 ? fullPathWithAnchor.slice(anchorIndex) : "";
 
-      // Try local resolution: check if repo folder exists in sibling directories
-      const parentDir = dirname(process.cwd());
-      const localRepoPath = join(parentDir, repo);
-      const localFilePath = join(localRepoPath, filePath);
-
-      if (existsSync(localFilePath)) {
+      // A local checkout of the repository is used only inside an allowed
+      // root (ADR 2026-10-08b D1): a root that is the checkout, or a checkout
+      // directly inside a root. The path is normalised and `..` refused.
+      const segments = filePath.split("/").map((segment) => {
         try {
-          let fileContent = readFileSync(localFilePath, "utf-8");
-          if (anchor) {
-            fileContent = extractLines(fileContent, anchor);
+          return decodeURIComponent(segment);
+        } catch {
+          return segment;
+        }
+      });
+      const roots = opts.roots ?? [];
+      if (
+        roots.length > 0 &&
+        !segments.some((segment) => segment === ".." || segment === ".")
+      ) {
+        const checkouts = [
+          ...roots.filter(
+            (root) => basename(root).toLowerCase() === repo.toLowerCase(),
+          ),
+          ...roots.map((root) => join(root, repo)),
+        ];
+        for (const checkout of checkouts) {
+          try {
+            const read = readTrustedTextFile(
+              join(checkout, ...segments),
+              roots,
+            );
+            return {
+              sourceType: "local",
+              content: anchor
+                ? extractLines(read.content, anchor)
+                : read.content,
+              filePath: read.path,
+            };
+          } catch {
+            // Not here, not allowed or not text: try the next, then GitHub.
           }
-          return {
-            sourceType: "local",
-            content: fileContent,
-            filePath: localFilePath,
-          };
-        } catch (_e) {
-          // Fallback to fetch if file read fails
         }
       }
 
@@ -241,35 +280,39 @@ export async function resolveReference(
     }
   }
 
-  // 3. Local Workspace Path (relative to process.cwd)
+  // 3. Local path: only inside an allowed root (ADR 2026-10-08b D1).
   const anchorIndex = cleaned.indexOf("#");
-  const relativePath =
-    anchorIndex !== -1 ? cleaned.slice(0, anchorIndex) : cleaned;
+  let localPath = anchorIndex !== -1 ? cleaned.slice(0, anchorIndex) : cleaned;
   const anchor = anchorIndex !== -1 ? cleaned.slice(anchorIndex) : "";
-  const absolutePath = resolve(process.cwd(), relativePath);
-
-  if (existsSync(absolutePath)) {
+  if (localPath.startsWith("file:")) {
+    // Material imports link their files as file:// URLs.
     try {
-      let fileContent = readFileSync(absolutePath, "utf-8");
-      if (anchor) {
-        fileContent = extractLines(fileContent, anchor);
-      }
-      return {
-        sourceType: "local",
-        content: fileContent,
-        filePath: absolutePath,
-      };
-    } catch (_e) {
-      // Fallback
+      localPath = fileURLToPath(localPath);
+    } catch {
+      // Not a usable file URL: refused below like any other path.
     }
   }
 
-  // Final fallback: return the path/link description as string
-  return {
-    sourceType: "local",
-    content: `Local reference file not found or unreadable.\nReference: ${cleaned}`,
-    filePath: absolutePath,
-  };
+  try {
+    const read = readTrustedTextFile(localPath, opts.roots ?? []);
+    return {
+      sourceType: "local",
+      content: anchor ? extractLines(read.content, anchor) : read.content,
+      filePath: read.path,
+    };
+  } catch (err) {
+    if (err instanceof PathRefusedError) {
+      return {
+        sourceType: "local",
+        content: `${err.message}\nReference: ${cleaned}`,
+        refusal: err.code,
+      };
+    }
+    return {
+      sourceType: "local",
+      content: `Local reference file not found or unreadable.\nReference: ${cleaned}`,
+    };
+  }
 }
 
 /**
@@ -288,13 +331,17 @@ export async function resolveReviewContext(
 
   const maxChars = opts.maxChars ?? DEFAULT_REVIEW_CONTEXT_MAX_CHARS;
   const hasFetcher = Boolean(opts.fetch);
-  const cacheKey = reviewContextCacheKey(cleaned, maxChars, hasFetcher);
+  const roots = opts.roots ?? [];
+  const cacheKey = reviewContextCacheKey(cleaned, maxChars, hasFetcher, roots);
   const cached = reviewContextCache.get(cacheKey);
   if (cached && cached.expiresAt > Date.now()) {
     return cached.context;
   }
 
-  const resolved = await resolveReference(cleaned, { fetch: opts.fetch });
+  const resolved = await resolveReference(cleaned, {
+    fetch: opts.fetch,
+    roots,
+  });
 
   let content = resolved.content;
   let truncated = false;
@@ -310,6 +357,7 @@ export async function resolveReviewContext(
     filePath: resolved.filePath,
     url: resolved.url,
     truncated,
+    ...(resolved.refusal ? { refusal: resolved.refusal } : {}),
   };
 
   reviewContextCache.set(cacheKey, {

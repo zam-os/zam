@@ -430,6 +430,13 @@ interface ModelRow {
   keyState: "set" | "missing" | "none";
   /** Probe verdict from the provider's key-metadata endpoint; absent = never checked. */
   keyValid?: boolean;
+  /**
+   * The row's URL differs from the one this device confirmed; its key is
+   * held back until the learner confirms (ADR 2026-10-08b D5).
+   */
+  endpointUnconfirmed?: boolean;
+  /** "Use on my other devices" for a cloud row's key. */
+  keySync?: boolean;
   /** ADR 2026-07-12a — "http" (default) or "agent". */
   transport?: "http" | "agent";
   /** Harness id when transport is "agent" (e.g. "claude-code"). */
@@ -1023,6 +1030,17 @@ function initializeTranslations() {
   );
   document.getElementById("btn-observation-logs-delete")!.textContent = t(
     "btn_observation_logs_delete",
+  );
+  document.getElementById("lbl-settings-trusted-folders")!.textContent = t(
+    "settings_trusted_folders",
+  );
+  document.getElementById("trusted-folders-help")!.textContent = t(
+    "trusted_folders_help",
+  );
+  document.getElementById("btn-trusted-folders-add-suggested")!.textContent =
+    t("btn_trusted_folders_add_suggested");
+  document.getElementById("btn-trusted-folder-add")!.textContent = t(
+    "btn_trusted_folder_add",
   );
   document.getElementById("btn-refresh-database-status")!.textContent =
     t("database_refresh");
@@ -3470,6 +3488,9 @@ function createModelRow(
     } else {
       statusChip.textContent = t("model_status_unprobed");
     }
+  } else if (row.endpointUnconfirmed) {
+    statusChip.textContent = t("model_status_endpoint_changed");
+    statusChip.classList.add("warn");
   } else if (row.keyState === "missing") {
     statusChip.textContent = t("model_status_key_missing");
     statusChip.classList.add("warn");
@@ -3502,8 +3523,72 @@ function createModelRow(
   removeButton.addEventListener("click", () => void removeModel(row));
   actions.append(upButton, downButton, reprobeButton, editButton, removeButton);
 
-  el.append(header, meta, caps, statusChip, actions);
+  el.append(header, meta, caps, statusChip);
+
+  // Keys follow endpoints (ADR 2026-10-08b D5): a row whose address changed
+  // since this device confirmed it gets no key until the learner says so.
+  if (!agent && row.endpointUnconfirmed) {
+    const notice = document.createElement("p");
+    notice.className = "ai-provider-meta ai-model-endpoint-notice";
+    notice.textContent = tf("model_endpoint_changed_note", { url: row.url });
+    const confirmButton = textButton(t("model_btn_confirm_endpoint"));
+    confirmButton.addEventListener(
+      "click",
+      () => void confirmModelEndpoint(row.id),
+    );
+    notice.append(" ", confirmButton);
+    el.append(notice);
+  }
+
+  // A cloud row's key travels to the learner's other devices unless they
+  // turn that off here; a team library never carries keys.
+  if (!agent && !row.local) {
+    const syncLabel = document.createElement("label");
+    syncLabel.className = "ai-model-cap ai-model-key-sync";
+    const syncBox = document.createElement("input");
+    syncBox.type = "checkbox";
+    syncBox.checked = row.keySync !== false;
+    syncBox.addEventListener("change", () => {
+      void setModelKeySync(row.id, syncBox.checked);
+    });
+    const syncText = document.createElement("span");
+    syncText.textContent = t("model_key_sync");
+    syncLabel.append(syncBox, syncText);
+    el.append(syncLabel);
+  }
+
+  el.append(actions);
   return el;
+}
+
+async function confirmModelEndpoint(id: string): Promise<void> {
+  const status = aiConfigStatusEl();
+  try {
+    await runBridge("model-confirm-endpoint", ["--id", id]);
+    await loadModelRegistry();
+    await loadProviderStatus();
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+}
+
+async function setModelKeySync(id: string, on: boolean): Promise<void> {
+  const status = aiConfigStatusEl();
+  try {
+    await runBridge("model-key-sync", ["--id", id, on ? "--on" : "--off"]);
+    await loadModelRegistry();
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("model_save_failed", {
+        message: errorMessage(err),
+      });
+    }
+    await loadModelRegistry();
+  }
 }
 
 async function toggleCapability(
@@ -3807,6 +3892,22 @@ async function showModelForm(id?: string): Promise<void> {
   const modelField = modelFieldLabel(t("model_field_model"), modelInput);
   modelField.appendChild(modelCatalog);
   const keyField = modelFieldLabel(t("model_field_key"), keyInput);
+  // Saving a new address sends the stored key there (ADR 2026-10-08b D5);
+  // say so while the address differs, so the learner can paste another key.
+  if (existing?.keyState === "set" && existing.url) {
+    const keyMoves = document.createElement("small");
+    keyMoves.className = "ai-provider-hint hidden";
+    keyMoves.textContent = t("model_key_moves_with_url");
+    const syncKeyMoves = (): void => {
+      keyMoves.classList.toggle(
+        "hidden",
+        urlInput.value.trim() === existing.url || keyInput.value.trim() !== "",
+      );
+    };
+    urlInput.addEventListener("input", syncKeyMoves);
+    keyInput.addEventListener("input", syncKeyMoves);
+    keyField.appendChild(keyMoves);
+  }
   const harnessField = modelFieldLabel(
     t("model_field_harness"),
     harnessSelect,
@@ -4103,6 +4204,9 @@ async function saveModelForm(data: ModelFormData): Promise<void> {
   ];
   if (data.id) args.push("--id", data.id);
   if (!isLocal && keyRef) args.push("--key-ref", keyRef);
+  // The learner typed this address here, which confirms it for the key on
+  // this device (ADR 2026-10-08b D5).
+  args.push("--confirm-endpoint");
   // A replacement secret is stored under the row's existing ref, so every
   // argument below stays identical while the credential changes. Say so, or
   // the bridge takes this for a rename and keeps a verification that was
@@ -4521,6 +4625,87 @@ async function loadObservationStatus(): Promise<void> {
   }
 }
 
+interface TrustedFolderStatusResponse {
+  folders: string[];
+  suggestions: Array<{ folder: string; cards: number }>;
+}
+
+/**
+ * Trusted folders (ADR 2026-10-08b D1): the folders source links and agent
+ * tools may read. Changed only here and with `zam trust`, never by a tool.
+ */
+async function loadTrustedFolders(): Promise<void> {
+  const list = document.getElementById("trusted-folders-list");
+  const suggestion = document.getElementById("trusted-folders-suggestion");
+  const trustSuggested = document.getElementById(
+    "btn-trusted-folders-add-suggested",
+  );
+  if (!list || !suggestion || !trustSuggested) return;
+  let status: TrustedFolderStatusResponse;
+  try {
+    status = await runBridge<TrustedFolderStatusResponse>("trusted-folders");
+  } catch {
+    // An older bridge without the command: keep the section empty.
+    return;
+  }
+  list.replaceChildren();
+  if (status.folders.length === 0) {
+    const empty = document.createElement("li");
+    empty.className = "settings-card-help";
+    empty.textContent = t("trusted_folders_none");
+    list.append(empty);
+  }
+  for (const folder of status.folders) {
+    const item = document.createElement("li");
+    const path = document.createElement("code");
+    path.textContent = folder;
+    const remove = document.createElement("button");
+    remove.type = "button";
+    remove.className = "btn secondary-btn btn-sm";
+    remove.textContent = t("btn_trusted_folder_remove");
+    remove.addEventListener("click", () => {
+      void changeTrustedFolders(["trusted-folder-remove", "--dir", folder]);
+    });
+    item.append(path, remove);
+    list.append(item);
+  }
+  const hasSuggestions = status.suggestions.length > 0;
+  suggestion.hidden = !hasSuggestions;
+  trustSuggested.hidden = !hasSuggestions;
+  if (hasSuggestions) {
+    suggestion.textContent = tf("trusted_folders_suggestion", {
+      count: status.suggestions.length,
+      folders: status.suggestions.map((entry) => entry.folder).join(", "),
+    });
+  }
+}
+
+async function changeTrustedFolders(command: string[]): Promise<void> {
+  const detail = document.getElementById("trusted-folders-detail");
+  const [name, ...args] = command;
+  try {
+    await runBridge(name, args);
+    if (detail) detail.textContent = "";
+  } catch (err) {
+    if (detail) {
+      detail.textContent = tf("trusted_folder_failed", {
+        message: err instanceof Error ? err.message : String(err),
+      });
+    }
+  }
+  await loadTrustedFolders();
+}
+
+async function addTrustedFolderFromDialog(): Promise<void> {
+  const selected = await openFolderDialog({
+    directory: true,
+    multiple: false,
+    title: t("trusted_folder_pick"),
+  });
+  if (typeof selected !== "string") return;
+  await changeTrustedFolders(["trusted-folder-add", "--dir", selected]);
+}
+
 async function deleteObservationLogs(): Promise<void> {
   const detail = document.getElementById("observation-logs-detail");
   const count = observationSessionIds.length;
@@ -4685,6 +4870,7 @@ function refreshSettingsData(): void {
   }
   void loadDatabaseStatus();
   void loadObservationStatus();
+  void loadTrustedFolders();
   void loadSettingsKnowledgeContext();
   void loadAgentHarnessStatus();
   void loadDynamicQuestionSetting();
@@ -8619,6 +8805,17 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("btn-observation-logs-delete")
     ?.addEventListener("click", () => {
       void deleteObservationLogs();
+    });
+
+  document
+    .getElementById("btn-trusted-folder-add")
+    ?.addEventListener("click", () => {
+      void addTrustedFolderFromDialog();
+    });
+  document
+    .getElementById("btn-trusted-folders-add-suggested")
+    ?.addEventListener("click", () => {
+      void changeTrustedFolders(["trusted-folder-add-suggested"]);
     });
 
   // Setup & Data: reveal the data folder, back up the database.

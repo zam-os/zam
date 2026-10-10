@@ -7,7 +7,11 @@ import {
   createCanvas,
   joinSession,
 } from "@github/copilot-sdk/extension";
-import { connectZam } from "./mcp-client.bundle.mjs";
+import {
+  checkLoopbackRequest,
+  connectZam,
+  newLoopbackToken,
+} from "./mcp-client.bundle.mjs";
 
 const extensionDir = dirname(fileURLToPath(import.meta.url));
 const hostBundlePromise = readFile(
@@ -265,7 +269,7 @@ function renderHostHtml(title) {
       title="${escapedTitle}"
       sandbox="allow-scripts allow-forms"
     ></iframe>
-    <script type="module" src="/host.bundle.js"></script>
+    <script type="module" src="host.bundle.js"></script>
   </body>
 </html>`;
 }
@@ -274,8 +278,20 @@ async function startServer(instanceId, app) {
   const hostBundle = await hostBundlePromise;
   const client = await getMcpClient();
   const hostStatus = { phase: "server-ready" };
+  // ADR 2026-10-08b D4: a per-launch token in every path, the loopback Host,
+  // and POSTs only from the host page with a JSON body.
+  const token = newLoopbackToken();
   const server = createServer(async (request, response) => {
-    const url = new URL(request.url || "/", "http://127.0.0.1");
+    const address = server.address();
+    const port = typeof address === "object" && address ? address.port : 0;
+    const decision = checkLoopbackRequest(request, { token, port });
+    if (!decision.ok) {
+      sendJson(response, decision.status, {
+        error: decision.status === 404 ? "Not found" : "Forbidden",
+      });
+      return;
+    }
+    const url = { pathname: decision.path };
     try {
       if (request.method === "GET" && url.pathname === "/") {
         send(
@@ -367,7 +383,7 @@ async function startServer(instanceId, app) {
     app,
     hostStatus,
     server,
-    url: `http://127.0.0.1:${port}/`,
+    url: `http://127.0.0.1:${port}/${token}/`,
   };
 }
 
