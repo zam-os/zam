@@ -2,7 +2,8 @@
  * Bitwarden vault backend — first and only shipped vault (ADR 2026-07-30b).
  *
  * Resolves via the learner's `bw` CLI. Master passwords are never stored;
- * BW_SESSION may be restored from a machine-local 30-day file. A locked or
+ * the session reaches `bw` only through that child's environment and is
+ * remembered only in OS-protected storage (ADR 2026-10-08b D5). A locked or
  * dead session surfaces as `locked` and clears the stored session.
  *
  * Locator form: `<item>/<field>` where field is a standard property
@@ -15,8 +16,9 @@ import { execFile } from "node:child_process";
 import { promisify } from "node:util";
 import { resolveBwCommand } from "../bw-executable.js";
 import {
-  invalidateBwSession,
-  restoreBwSessionToEnv,
+  bwChildEnv,
+  forgetBwSession,
+  loadBwSession,
 } from "../session-store.js";
 import type { SecretBackend } from "../types.js";
 import { SecretResolutionError } from "../types.js";
@@ -167,23 +169,19 @@ export type BwRunner = (
 async function defaultRunBw(
   args: string[],
 ): Promise<{ stdout: string; stderr: string }> {
-  restoreBwSessionToEnv();
-  const session = process.env.BW_SESSION?.trim();
-  const finalArgs =
-    session && !args.includes("--session")
-      ? [...args, "--session", session]
-      : args;
+  await loadBwSession();
   // Windows needs the executable resolved explicitly; never a shell — see
-  // bw-executable.ts and ADR 2026-07-30b Decision 11.
+  // bw-executable.ts and ADR 2026-07-30b Decision 11. The session goes into
+  // this child's environment only, never onto its command line.
   const { file, prefixArgs } = resolveBwCommand();
   const { stdout, stderr } = await execFileAsync(
     file,
-    [...prefixArgs, ...finalArgs],
+    [...prefixArgs, ...args],
     {
       encoding: "utf8",
       timeout: BW_TIMEOUT_MS,
       maxBuffer: 2 * 1024 * 1024,
-      env: process.env,
+      env: bwChildEnv(),
     },
   );
   return {
@@ -209,8 +207,8 @@ export function createBitwardenBackend(
 
     async resolve(locator: string): Promise<string> {
       const ref = `bw://${locator}`;
-      // Rehydrate ≤30-day session before each vault read (bridge restarts often).
-      restoreBwSessionToEnv();
+      // Load the remembered session before each vault read (bridge restarts often).
+      await loadBwSession();
       const parsed = parseLocator(locator);
       if (!parsed) {
         throw new SecretResolutionError(
@@ -228,7 +226,7 @@ export function createBitwardenBackend(
       } catch (err) {
         const failure = classifyBwFailure(err, ref);
         if (failure.reason === "locked") {
-          invalidateBwSession();
+          await forgetBwSession();
         }
         throw failure;
       }

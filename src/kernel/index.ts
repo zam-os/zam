@@ -497,6 +497,8 @@ export {
   getSetting,
   getSettings,
   hasSettingsScopeResolver,
+  maskSecret,
+  maskSettingValue,
   registerSettingsScopeResolver,
   setSetting,
   settingScopeOf,
@@ -955,23 +957,39 @@ export type {
 } from "./search/suggestions.js";
 export { suggestFoundations } from "./search/suggestions.js";
 export type {
+  OsCommandRunner,
+  OsSecretStore,
+  OsSecretStoreKind,
   SecretBackend,
   SecretRef,
   SecretResolutionReason,
   StoredSecret,
 } from "./secrets/index.js";
 // Secret backends (vault references in credentials.json — ADR 2026-07-30b)
+// and OS-protected storage (ADR 2026-10-08b D5)
 export {
+  BITWARDEN_SESSION_MAX_AGE_MS,
+  bwChildEnv,
   clearSecretBackends,
   createBitwardenBackend,
+  createOsSecretStore,
+  currentBwSession,
+  defaultOsSecretStore,
   ensureDefaultSecretBackends,
+  forgetBwSession,
+  getBwSessionMeta,
   getSecretBackend,
   isSecretRef,
   listSecretBackends,
+  loadBwSession,
   parseSecretUri,
   registerSecretBackend,
+  rememberBwSession,
+  resetBwSessionForTests,
   resolveSecretUri,
+  runOsCommand,
   SecretResolutionError,
+  setOsSecretStoreForTests,
   unregisterSecretBackend,
 } from "./secrets/index.js";
 export {

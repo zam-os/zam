@@ -10,7 +10,6 @@
  */
 
 import { execFile } from "node:child_process";
-import { promisify } from "node:util";
 import {
   getADOCredentials,
   getProviderApiKey,
@@ -24,10 +23,12 @@ import {
 } from "../kernel/credentials.js";
 import { resolveBwCommand } from "../kernel/secrets/bw-executable.js";
 import {
-  invalidateBwSession,
+  bwChildEnv,
+  currentBwSession,
+  forgetBwSession,
   isSecretRef,
-  restoreBwSessionToEnv,
-  savePersistedBwSession,
+  loadBwSession,
+  rememberBwSession,
 } from "../kernel/secrets/index.js";
 import {
   clearBitwardenSyncConfig,
@@ -36,7 +37,6 @@ import {
   setBitwardenSyncConfig,
 } from "../kernel/system/install-config.js";
 
-const execFileAsync = promisify(execFile);
 const BW_TIMEOUT_MS = 30_000;
 
 /** Default item names ZAM creates during setup. */
@@ -59,7 +59,7 @@ export interface BitwardenCliStatus {
   serverUrl: string | null;
   userEmail: string | null;
   region: "eu" | "us" | "self-hosted" | "unknown";
-  /** True when process.env.BW_SESSION is set (this bridge process). */
+  /** True when this bridge process holds an unlocked session. */
   sessionInProcess: boolean;
   /** Learner opted in: keep vault in sync after changes (machine-local). */
   autoSync: boolean;
@@ -111,43 +111,48 @@ function classifyRegion(
   return "self-hosted";
 }
 
-/** Append --session when we have a live/restored session (more reliable than env alone). */
-function withSessionArgs(args: string[]): string[] {
-  const session = process.env.BW_SESSION?.trim();
-  if (!session) return args;
-  // Avoid duplicating if caller already passed --session.
-  if (args.includes("--session")) return args;
-  return [...args, "--session", session];
-}
-
-async function runBw(
+/**
+ * Run `bw` without a shell. The session reaches it through this child's
+ * environment only — never as `--session`, never in ZAM's own process
+ * environment — and an item's JSON goes on stdin, never onto the command
+ * line (ADR 2026-10-08b D5). `env` carries per-call values such as
+ * BW_PASSWORD.
+ */
+function runBw(
   args: string[],
-  env: NodeJS.ProcessEnv = process.env,
+  opts: { env?: NodeJS.ProcessEnv; input?: string } = {},
 ): Promise<{ stdout: string; stderr: string }> {
   // Never `shell: true` — the master password reaches the CLI through
   // BW_PASSWORD, and a shell would put the whole command line back where
   // other processes can read it (ADR 2026-07-30b Decision 11).
+  const env = bwChildEnv(opts.env);
   const { file, prefixArgs } = resolveBwCommand({ env });
-  const { stdout, stderr } = await execFileAsync(
-    file,
-    [...prefixArgs, ...withSessionArgs(args)],
-    {
-      encoding: "utf8",
-      timeout: BW_TIMEOUT_MS,
-      maxBuffer: 2 * 1024 * 1024,
-      env: { ...env, BW_SESSION: process.env.BW_SESSION ?? env.BW_SESSION },
-    },
-  );
-  return {
-    stdout: typeof stdout === "string" ? stdout : String(stdout),
-    stderr: typeof stderr === "string" ? stderr : String(stderr),
-  };
+  return new Promise((resolve, reject) => {
+    const child = execFile(
+      file,
+      [...prefixArgs, ...args],
+      {
+        encoding: "utf8",
+        timeout: BW_TIMEOUT_MS,
+        maxBuffer: 2 * 1024 * 1024,
+        env,
+      },
+      (err, stdout, stderr) => {
+        if (err) {
+          reject(Object.assign(err, { stdout, stderr }));
+          return;
+        }
+        resolve({ stdout: String(stdout), stderr: String(stderr) });
+      },
+    );
+    child.stdin?.end(opts.input ?? "");
+  });
 }
 
 export async function getBitwardenCliStatus(): Promise<BitwardenCliStatus> {
-  // Prefer a still-valid 30-day session over prompting again.
-  restoreBwSessionToEnv();
-  const sessionInProcess = Boolean(process.env.BW_SESSION?.trim());
+  // Prefer a remembered session over prompting again.
+  await loadBwSession();
+  const sessionInProcess = Boolean(currentBwSession());
   const syncCfg = getBitwardenSyncConfig();
   const autoSync = syncCfg.autoSync === true;
   const lastSyncAt = syncCfg.lastSyncAt ?? null;
@@ -277,7 +282,7 @@ export async function loginBitwardenForProcess(opts: {
   // world-readable /proc/<pid>/cmdline on Linux), so `bw login <email>
   // <password>` would expose it for the lifetime of the call. `--passwordenv`
   // is the same mechanism unlock below already uses.
-  const env = { ...process.env, BW_PASSWORD: password };
+  const env = { BW_PASSWORD: password };
 
   const args = ["login", email, "--passwordenv", "BW_PASSWORD", "--raw"];
   if (opts.code?.trim()) {
@@ -288,13 +293,12 @@ export async function loginBitwardenForProcess(opts: {
   }
 
   try {
-    const { stdout } = await runBw(args, env);
+    const { stdout } = await runBw(args, { env });
     const session = stdout.trim();
     if (!session) {
       return { ok: false, message: "Login returned an empty session." };
     }
-    process.env.BW_SESSION = session;
-    savePersistedBwSession(session, { email });
+    await rememberBwSession(session, { email });
     return { ok: true };
   } catch (err) {
     const e = err as {
@@ -365,15 +369,12 @@ export async function unlockBitwardenForProcess(
     return { ok: false, message: "Master password is required." };
   }
 
-  const env = {
-    ...process.env,
-    BW_PASSWORD: password,
-  };
+  const env = { BW_PASSWORD: password };
 
   try {
     const { stdout } = await runBw(
       ["unlock", "--passwordenv", "BW_PASSWORD", "--raw"],
-      env,
+      { env },
     );
     const session = stdout.trim();
     if (!session) {
@@ -382,9 +383,8 @@ export async function unlockBitwardenForProcess(
         message: "Bitwarden unlock returned an empty session.",
       };
     }
-    process.env.BW_SESSION = session;
-    savePersistedBwSession(session);
-    // Drop password from this env object; process.env.BW_PASSWORD was never set.
+    await rememberBwSession(session);
+    // The password lived only in this call's child environment.
     return { ok: true };
   } catch (err) {
     const e = err as {
@@ -429,13 +429,13 @@ export async function unlockBitwardenForProcess(
           "CLI cannot complete 2FA with FIDO2 alone. Enable an Authenticator app under Two-step login, then unlock again.",
       };
     }
-    // Session token may be stale after 30 days or vault timeout.
+    // Session token may be stale after seven days or vault timeout.
     if (
       combined.includes("session") ||
       combined.includes("unauthorized") ||
       combined.includes("locked")
     ) {
-      invalidateBwSession();
+      await forgetBwSession();
     }
     return {
       ok: false,
@@ -448,7 +448,7 @@ export async function unlockBitwardenForProcess(
 function requireUnlockedSession():
   | { ok: true }
   | { ok: false; message: string } {
-  if (!process.env.BW_SESSION?.trim()) {
+  if (!currentBwSession()) {
     return {
       ok: false,
       message:
@@ -531,7 +531,7 @@ export async function upsertBitwardenSecretItem(opts: {
       favorite: false,
       reprompt: 0,
     };
-    await runBw(["create", "item", bwEncode(item)]);
+    await runBw(["create", "item"], { input: bwEncode(item) });
     // Push so other machines see the item after sync.
     try {
       await runBw(["sync"]);
@@ -717,7 +717,7 @@ export async function syncSecretsWithBitwarden(): Promise<
 /** If auto-sync is on and the vault is unlocked, push current literals. */
 export async function maybeAutoSyncSecrets(): Promise<void> {
   if (getBitwardenSyncConfig().autoSync !== true) return;
-  if (!process.env.BW_SESSION?.trim()) return;
+  if (!currentBwSession()) return;
   if (countPendingLiteralSecrets() === 0) return;
   await seedCredentialsIntoBitwarden();
 }
@@ -738,7 +738,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
   | { ok: true; entries: DisconnectResultEntry[] }
   | { ok: false; message: string; entries: DisconnectResultEntry[] }
 > {
-  restoreBwSessionToEnv();
+  await loadBwSession();
   const entries: DisconnectResultEntry[] = [];
   const stored = loadStoredCredentials();
 
@@ -751,7 +751,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
     );
 
   if (hasRefs) {
-    if (!process.env.BW_SESSION?.trim()) {
+    if (!currentBwSession()) {
       return {
         ok: false,
         message:
@@ -842,7 +842,7 @@ export async function disconnectBitwardenToLocalSecrets(): Promise<
 
   // End Bitwarden linkage for this install.
   clearBitwardenSyncConfig();
-  invalidateBwSession();
+  await forgetBwSession();
   // Snapshot holds plaintext again via setters; force a clean resolve from disk.
   await resolveCredentials();
 

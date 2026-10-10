@@ -3,6 +3,17 @@
  */
 
 export { createBitwardenBackend } from "./backends/bitwarden.js";
+export type {
+  OsCommandRunner,
+  OsSecretStore,
+  OsSecretStoreKind,
+} from "./os-store.js";
+export {
+  createOsSecretStore,
+  defaultOsSecretStore,
+  runOsCommand,
+  setOsSecretStoreForTests,
+} from "./os-store.js";
 export {
   clearSecretBackends,
   getSecretBackend,
@@ -13,11 +24,13 @@ export {
 } from "./registry.js";
 export {
   BITWARDEN_SESSION_MAX_AGE_MS,
-  clearPersistedBwSession,
-  getPersistedBwSessionMeta,
-  invalidateBwSession,
-  restoreBwSessionToEnv,
-  savePersistedBwSession,
+  bwChildEnv,
+  currentBwSession,
+  forgetBwSession,
+  getBwSessionMeta,
+  loadBwSession,
+  rememberBwSession,
+  resetBwSessionForTests,
 } from "./session-store.js";
 export type {
   SecretBackend,
@@ -33,13 +46,11 @@ export {
 
 import { createBitwardenBackend } from "./backends/bitwarden.js";
 import { getSecretBackend, registerSecretBackend } from "./registry.js";
-import { restoreBwSessionToEnv } from "./session-store.js";
 
 /** Register built-in backends once (idempotent). */
 export function ensureDefaultSecretBackends(): void {
   if (!getSecretBackend("bw")) {
     registerSecretBackend(createBitwardenBackend());
   }
-  // Restore a still-valid 30-day session before any vault read.
-  restoreBwSessionToEnv();
+  // The session is loaded when a vault read needs it (ADR 2026-10-08b D5).
 }

@@ -250,7 +250,6 @@ function storedHasReferences(stored: StoredCredentials): boolean {
  * resolved plaintext back to disk.
  */
 export async function resolveCredentials(path?: string): Promise<Credentials> {
-  // Restores persisted BW_SESSION (≤30 days) when present.
   ensureDefaultSecretBackends();
   const p = credentialsPath(path);
   const stored = loadStoredCredentials(p);

@@ -4957,7 +4957,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_new_user: "Create new learner…",
     pairing_new_user_placeholder: "New learner ID",
     pairing_shoulder_note:
-      "Security: make sure nobody else can see the screen. Prefer a token limited to this database.",
+      "Security: the code holds your database's access token. Make sure nobody else can see the screen, and never show it while you share your screen. It hides after 60 seconds. Prefer a token limited to this database.",
     pairing_generate: "Show QR code",
     pairing_close: "Close",
     pairing_loading: "Loading server database and learners…",
@@ -6624,7 +6624,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     pairing_new_user: "Neuen Lernenden anlegen…",
     pairing_new_user_placeholder: "ID des neuen Lernenden",
     pairing_shoulder_note:
-      "Sicherheit: Achte darauf, dass niemand den Bildschirm mitlesen kann. Nutze möglichst ein auf diese Datenbank begrenztes Token.",
+      "Sicherheit: Der Code enthält das Zugangstoken deiner Datenbank. Achte darauf, dass niemand den Bildschirm mitlesen kann, und zeige ihn nie, während du deinen Bildschirm teilst. Er verschwindet nach 60 Sekunden. Nutze möglichst ein auf diese Datenbank begrenztes Token.",
     pairing_generate: "QR-Code anzeigen",
     pairing_close: "Schließen",
     pairing_loading: "Server-Datenbank und Lernende werden geladen…",

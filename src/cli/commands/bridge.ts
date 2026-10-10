@@ -124,6 +124,7 @@ import {
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  redactCommand,
   removeTrustedFolder,
   resolveCredentials,
   resolveObserverPolicy,
@@ -5385,12 +5386,13 @@ bridgeCommand
     // References exist, so they must resolve even if the feature switch was
     // turned off afterwards — otherwise unticking a checkbox would lock the
     // learner out of their own database.
-    // getBitwardenCliStatus restores a still-valid 30-day session into env.
+    // getBitwardenCliStatus loads a remembered session into this process
+    // (never into its environment, ADR 2026-10-08b D5).
     const status = await getBitwardenCliStatus();
-    if (status.kind === "unlocked" && process.env.BW_SESSION?.trim()) {
+    if (status.kind === "unlocked" && status.sessionInProcess) {
       await resolveCredentials();
     }
-    const ready = status.kind === "unlocked" && process.env.BW_SESSION?.trim();
+    const ready = status.kind === "unlocked" && status.sessionInProcess;
     jsonOut({
       success: true,
       needed,
@@ -8636,7 +8638,12 @@ bridgeCommand
     const logDiag = (msg: string): void => {
       try {
         if (!fileExists(logDir)) makeDir(logDir, { recursive: true });
-        appendFileSync(logPath, `[${new Date().toISOString()}] ${msg}\n`);
+        // A provider's error text can echo a key: log lines go through the
+        // same redactor as monitored commands (ADR 2026-10-08b D5).
+        appendFileSync(
+          logPath,
+          `[${new Date().toISOString()}] ${redactCommand(msg)}\n`,
+        );
       } catch {
         // best-effort only — never let logging break the bridge
       }

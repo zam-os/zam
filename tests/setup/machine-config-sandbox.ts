@@ -26,6 +26,11 @@ for (const name of [
   delete process.env[name];
 }
 
+// The macOS Keychain, the Secret Service and DPAPI belong to the developer,
+// not to the sandboxed home: no test may write them (ADR 2026-10-08b D5).
+// Tests that need OS-protected storage inject a fake store.
+process.env.ZAM_OS_SECRET_STORE = "off";
+
 afterAll(() => {
   rmSync(sandbox, { recursive: true, force: true });
 });
