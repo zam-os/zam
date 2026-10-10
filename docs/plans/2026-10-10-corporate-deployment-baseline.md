@@ -76,5 +76,10 @@ Done in Phase D, with deviations:
 
 ## Phase E — Docs and release
 
-- [ ] **E.1** OKF articles that describe changed behaviour, `docs/knowledge-map/map.json`, `CLAUDE.md`/`AGENTS.md` conventions (the trust model rule for new tools).
-- [ ] **E.2** Release notes: Codex users reconnect once; trusted folders; Bitwarden unlocks after seven days.
+- [x] **E.1** OKF articles that describe changed behaviour, `docs/knowledge-map/map.json`, `CLAUDE.md`/`AGENTS.md` conventions (the trust model rule for new tools).
+- [x] **E.2** Release notes: Codex users reconnect once; trusted folders; Bitwarden unlocks after seven days.
+
+Done in Phase E, with deviations:
+
+- E.1: a new article, `docs/okf/agent-trust-model.md`, states the rule and what each surface does with it, ending in a four-point checklist for new tools; `mcp-surfaces.md`, `bridge-protocol.md`, `voice-mode.md` and `material-import.md` were updated and point to it. The knowledge map gained three statements under "Agents" (`untrusted-callers`, `trusted-folders`, `keys-follow-endpoints`). The convention in `CLAUDE.md` and `AGENTS.md` names the four checks.
+- E.2: `docs/release-notes-0.50.0.md`, assuming the next release is 0.50.0; the release PR renames it if not. The notes also tell learners to update every ZAM on a computer together, because older versions cannot read keys in the keychain.

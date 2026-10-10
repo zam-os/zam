@@ -9,7 +9,7 @@ tags:
   - mobile
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-06T10:00:00.000Z
+timestamp: 2026-10-10T18:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -130,7 +130,11 @@ One transaction writes the learner's choices for exactly the rows they saw:
 
 Each token's `source_link` names its own file: `file:///…/Arbeitsblatt.pdf#page=2`
 for a file read from disk, `photo:IMG_1234.HEIC@2026-10-05` where there is no
-path (a harness that did not pass one, every file on Mobile). The file itself
+path (a harness that did not pass one, every file on Mobile). A path an agent
+passes counts only inside an allowed root — the agent app's workspace or a
+folder the learner trusted ([agent-trust-model.md](agent-trust-model.md));
+outside them the import goes ahead with the `photo:` form and no fingerprint.
+A file the learner picks in the desktop or the CLI is read wherever it is. The file itself
 may be gone later; the link still says where the card came from. An exact
 duplicate — same area, same question as a published token outside maintenance
 — is linked instead of written twice.

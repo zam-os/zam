@@ -8,7 +8,7 @@ tags:
   - desktop
   - mobile
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/voice-mode.md"
-timestamp: 2026-09-29T08:00:00.000Z
+timestamp: 2026-10-10T18:00:00.000Z
 ---
 
 Voice mode reads a due card aloud and maps a spoken word to an FSRS rating —
@@ -249,7 +249,13 @@ Cloud rows carry their API key inline. `apiKeyRef` remains the rule for
 `config.json`, but a reference into a credentials file on one machine means
 nothing to a phone; the key travels in the learner's own database, reached with
 the token from the pairing code — the same trade `llm.vision.api_key` has always
-made.
+made. It travels only in a personal library and only while the model's "Use
+this key on my other devices" stays on, the default; turned off, the key stays
+on the machine that holds it and the phone shows the row as `no-key`. The team
+library never carries keys. A desktop sends a row's key only to the endpoint it
+last confirmed for that row, so a URL someone rewrote in the library gets no
+key there until the learner confirms it (see
+[agent-trust-model.md](agent-trust-model.md)).
 
 The companion reads the rows with `mobile/src/model-registry.ts` and applies the
 same two-sided filter the desktop does: a capability must be both chosen by the
@@ -263,7 +269,9 @@ settings key and the selection rules across the two.
 What follows from this:
 
 - **The pairing code carries no models.** Server database URL, token, learner
-  id, locale — that is all. 0.24–0.25 embedded the recall endpoint and its key
+  id, locale — that is all. The code appears only when the learner asks for it
+  and hides after 60 seconds, with a note not to show it while sharing the
+  screen. 0.24–0.25 embedded the recall endpoint and its key
   as a workaround while the registry was still machine-local; that pressed the
   payload against `ZAM_PAIR_MAX_BYTES` and put an API key into something a
   bystander can photograph. Old payloads still parse, and the companion still
@@ -369,6 +377,7 @@ default, which is how the companion behaved before the cloud tier existed.
 
 # Citations
 
+- [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-07-31 — Cross-Platform Voice Mode](../adr/2026-07-31-cross-platform-voice-mode.md)
 - [ADR 2026-09-27 — Choice and Auto Learning Modes](../adr/2026-09-27-choice-and-auto-learning-modes.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
