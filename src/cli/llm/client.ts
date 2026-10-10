@@ -38,6 +38,10 @@ import {
   supportsAnswerPoints,
   t,
 } from "../../kernel/index.js";
+import {
+  assertModelEndpointAllowed,
+  endpointLocality,
+} from "../net/safe-fetch.js";
 import { resolveReviewContext } from "../review-context.js";
 import type { ChoiceGeneration } from "./choice-prepare.js";
 import {
@@ -2316,6 +2320,7 @@ Output ONLY the raw translation. Do not include any headers, preamble, quotes, o
  */
 export async function isLlmOnline(url: string): Promise<boolean> {
   try {
+    await assertModelEndpointAllowed(url);
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 1500);
     // Check OpenAI standard /models list to verify readiness
@@ -2393,6 +2398,7 @@ export async function getAvailableModelEntries(
   query: Record<string, string> = {},
 ): Promise<ModelCatalogEntry[]> {
   try {
+    await assertModelEndpointAllowed(url);
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 3000);
     const res = await fetch(endpointUrl(url, "models", query), {
@@ -2487,12 +2493,9 @@ export function isCloudKeyMissing(endpoint: ProviderConfig): boolean {
 }
 
 export function isLocalEndpoint(url: string): boolean {
-  return (
-    url.includes("localhost") ||
-    url.includes("127.0.0.1") ||
-    url.includes("[::1]") ||
-    url.includes("::1")
-  );
+  // The parsed host decides, never a substring (ADR 2026-10-08b D2): a URL
+  // that merely mentions localhost in its path or query is not local.
+  return endpointLocality(url) === "local";
 }
 
 function isFoundryRunner(runner: string | undefined): boolean {
@@ -3635,6 +3638,14 @@ export async function fetchWithInteractiveTimeout(
     locale = "en",
     ...fetchOptions
   } = options;
+  // The address check of the endpoint's locality (ADR 2026-10-08b D2): a
+  // refused address is treated like an endpoint that does not answer.
+  await assertModelEndpointAllowed(url).catch((cause: unknown) => {
+    throw new LlmTransportError(
+      cause instanceof Error ? cause.message : String(cause),
+      cause,
+    );
+  });
   const controller = new AbortController();
   // A connection failure or abort is silence, not an answer — the chain
   // walkers rely on the distinction (see LlmTransportError).

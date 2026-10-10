@@ -1,14 +1,18 @@
 /**
  * CLI review context resolution.
  *
- * Wraps the kernel's reference resolver and supplies `globalThis.fetch` as the
- * transport for remote references.
+ * Wraps the kernel's reference resolver and supplies the outbound fetcher
+ * (ADR 2026-10-08b D2) as the transport for remote references: no private or
+ * link-local target, every redirect checked.
  */
 
 import {
   resolveReviewContext as kernelResolveReviewContext,
+  type ReferenceFetcher,
   type ReviewContext,
 } from "../kernel/index.js";
+import { CONTENT_USER_AGENT } from "./adapters/source-reader.js";
+import { safeFetch } from "./net/safe-fetch.js";
 
 export type { ReviewContext };
 
@@ -16,16 +20,19 @@ export interface ResolveReviewContextOptions {
   maxChars?: number;
 }
 
+const fetchReference: ReferenceFetcher = (url) =>
+  safeFetch(url, { headers: { "User-Agent": CONTENT_USER_AGENT } });
+
 /**
- * Resolve a token's source_link into bounded, review-ready context using
- * globalThis.fetch as the transport.
+ * Resolve a token's source_link into bounded, review-ready context through
+ * the outbound fetcher.
  */
 export async function resolveReviewContext(
   sourceLink: string | null | undefined,
   opts?: ResolveReviewContextOptions,
 ): Promise<ReviewContext | null> {
   return kernelResolveReviewContext(sourceLink, {
-    fetch: globalThis.fetch,
+    fetch: fetchReference,
     maxChars: opts?.maxChars,
   });
 }

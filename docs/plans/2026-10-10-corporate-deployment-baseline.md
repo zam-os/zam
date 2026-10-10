@@ -21,10 +21,17 @@ Done in Phase A, with deviations:
 
 ## Phase B — One outbound fetcher (D2)
 
-- [ ] **B.1** `src/cli/net/safe-fetch.ts`: `node:http`/`node:https` with a `lookup` that validates every resolved address and pins the connection to it; `http`/`https` only, no URL credentials, no cookies; blocks loopback, private, link-local (incl. `169.254.169.254`), shared-address, multicast and unique-local ranges in every IPv6 notation; at most five redirects, each re-checked; size and time caps.
-- [ ] **B.2** Source links (`src/cli/review-context.ts`), web imports (`src/cli/adapters/source-reader.ts`) and curriculum pages (`fetchRawHtml` in `src/cli/commands/bridge.ts`) use it.
-- [ ] **B.3** Endpoint locality from the parsed host only (`local`: loopback and `localhost`; `lan`: private ranges, `*.local`, `*.home.arpa`; else `cloud`). The stored `local` flag is a display hint. Model calls and the probes of `model-upsert`/`model-reprobe` check resolved addresses against it: link-local and metadata ranges are always blocked, loopback and private ranges only for `local`/`lan` rows.
-- [ ] **B.4** Tests: metadata address, redirect into a private range, rebinding (a name that resolves to a private address), IPv6 notations, a probe to a link-local host, a cloud-named host resolving to a private range.
+- [x] **B.1** `src/cli/net/safe-fetch.ts`: `node:http`/`node:https` with a `lookup` that validates every resolved address and pins the connection to it; `http`/`https` only, no URL credentials, no cookies; blocks loopback, private, link-local (incl. `169.254.169.254`), shared-address, multicast and unique-local ranges in every IPv6 notation; at most five redirects, each re-checked; size and time caps.
+- [x] **B.2** Source links (`src/cli/review-context.ts`), web imports (`src/cli/adapters/source-reader.ts`) and curriculum pages (`fetchRawHtml` in `src/cli/commands/bridge.ts`) use it.
+- [x] **B.3** Endpoint locality from the parsed host only (`local`: loopback and `localhost`; `lan`: private ranges, `*.local`, `*.home.arpa`; else `cloud`). The stored `local` flag is a display hint. Model calls and the probes of `model-upsert`/`model-reprobe` check resolved addresses against it: link-local and metadata ranges are always blocked, loopback and private ranges only for `local`/`lan` rows.
+- [x] **B.4** Tests: metadata address, redirect into a private range, rebinding (a name that resolves to a private address), IPv6 notations, a probe to a link-local host, a cloud-named host resolving to a private range.
+
+Done in Phase B, with deviations:
+
+- B.1: `src/cli/net/safe-fetch.ts`. Every resolved address must pass, so a name that also resolves to loopback is refused rather than half-allowed. Shared-address space (`100.64.0.0/10`, Tailscale) counts as LAN. Bodies are decompressed (gzip, deflate, br) and the cap applies after decompression.
+- B.2: curriculum pages get a 30 MB cap, because official curriculum PDFs are large. One `CONTENT_USER_AGENT` in `src/cli/adapters/source-reader.ts` replaces the copy in `bridge.ts`, so a release bumps one User-Agent string instead of two.
+- B.3: model clients keep `globalThis.fetch`; `assertModelEndpointAllowed` runs before each call (`fetchWithInteractiveTimeout`, `isLlmOnline`, the `/models` catalogue, embeddings, the reasoning probe). Unlike content fetches, the connection is not pinned, so a rebinding window remains for model rows; D6's `llm.endpoints` is the backstop. A name that does not resolve passes to the call, which then fails on its own. `isLocalEndpoint` uses the parsed host.
+- B.4: `tests/cli/safe-fetch.test.ts`, `tests/cli/model-endpoint-check.test.ts`.
 
 ## Phase C — Paths named by a caller are confined (D1)
 

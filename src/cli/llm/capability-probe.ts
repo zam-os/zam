@@ -24,6 +24,7 @@ import {
   getProviderApiKey,
   type ModelEntry,
 } from "../../kernel/index.js";
+import { assertModelEndpointAllowed } from "../net/safe-fetch.js";
 import {
   DEFAULT_LLM_API_KEY,
   enforceOpenRouterPrivacy,
@@ -332,6 +333,7 @@ async function probeReasoningEffort(
       // collection, zero-data-retention providers) — the probe is a plain
       // fetch only because fetchWithInteractiveTimeout would prompt on a TTY.
       const url = endpointUrl(entry.url, "chat/completions");
+      await assertModelEndpointAllowed(url);
       const res = await fetch(url, {
         method: "POST",
         headers: {

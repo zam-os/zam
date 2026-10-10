@@ -156,8 +156,8 @@ import {
   type WorkspaceKind,
 } from "../../kernel/index.js";
 import {
+  CONTENT_USER_AGENT,
   cleanHtml,
-  isSafeUrl,
   readImageOCR,
   readLocalFile,
   readWebLink,
@@ -324,6 +324,7 @@ import {
 } from "../material-import.js";
 import { stageMaterialImport } from "../material-staging.js";
 import { createMobilePairingPayload } from "../mobile-pairing.js";
+import { safeFetch } from "../net/safe-fetch.js";
 import { listOpenContentCatalog } from "../open-content/catalog.js";
 import {
   confirmOpenContentImport,
@@ -7252,22 +7253,21 @@ bridgeCommand
     jsonOut({ success: true, resolved });
   });
 
+/** Official curriculum PDFs run to several megabytes. */
+const CURRICULUM_MAX_BYTES = 30 * 1024 * 1024;
+
 /**
  * Fetch a curriculum source document as extractable HTML.
  * PDF official sources (e.g. Bremen Bildungspläne) are converted via pdftotext.
  */
 async function fetchRawHtml(url: string): Promise<string> {
-  if (!(await isSafeUrl(url))) {
-    throw new Error(`Access denied to unsafe target URL: ${url}`);
-  }
-  const controller = new AbortController();
-  const timeoutId = setTimeout(() => controller.abort(), 20000);
+  // The outbound fetcher (ADR 2026-10-08b D2) checks every redirect, which
+  // the one-off isSafeUrl check before a redirect-following fetch did not.
   try {
-    const res = await fetch(url, {
-      signal: controller.signal,
-      headers: {
-        "User-Agent": "ZAM-Content-Studio/0.49.0",
-      },
+    const res = await safeFetch(url, {
+      headers: { "User-Agent": CONTENT_USER_AGENT },
+      maxBytes: CURRICULUM_MAX_BYTES,
+      timeoutMs: 20_000,
     });
     if (!res.ok) {
       throw new Error(`Web server responded with status ${res.status}`);
@@ -7287,12 +7287,10 @@ async function fetchRawHtml(url: string): Promise<string> {
     }
     return await res.text();
   } catch (err) {
-    if (err instanceof Error && err.name === "AbortError") {
+    if (err instanceof Error && /timed out/.test(err.message)) {
       throw new Error("Connection request timed out after 20 seconds");
     }
     throw err;
-  } finally {
-    clearTimeout(timeoutId);
   }
 }
 

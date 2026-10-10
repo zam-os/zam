@@ -21,6 +21,7 @@ import {
   searchTokensHybrid,
   upsertTokenEmbedding,
 } from "../../kernel/index.js";
+import { assertModelEndpointAllowed } from "../net/safe-fetch.js";
 import {
   DEFAULT_LLM_API_KEY,
   getAvailableModels,
@@ -213,6 +214,7 @@ export async function embedTexts(
 
   let res: Response;
   try {
+    await assertModelEndpointAllowed(endpoint.url);
     res = await fetch(embeddingsEndpointUrl(endpoint.url), {
       method: "POST",
       headers: {
