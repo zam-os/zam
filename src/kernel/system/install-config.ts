@@ -346,6 +346,12 @@ export interface MachineAiConfig {
    * `order` and returns the first entry enabled and detected for a capability.
    */
   models?: ModelEntry[];
+  /**
+   * Per row id, the endpoint this device last confirmed (ADR 2026-10-08b D5):
+   * a row's key is sent only there. Written by Settings and `zam trust
+   * endpoint`, never by a tool an agent can call.
+   */
+  confirmedEndpoints?: Record<string, string>;
 }
 
 export type WorkspaceKind =

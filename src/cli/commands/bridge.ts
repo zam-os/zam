@@ -3484,7 +3484,11 @@ bridgeCommand
     };
     const runner = opts.runner ?? prev?.runner;
     if (runner) candidate.runner = runner;
-    const apiKeyRef = opts.keyRef ?? prev?.apiKeyRef;
+    // A key follows its endpoint (ADR 2026-10-08b D5): a new URL keeps no
+    // key reference unless this save names one again, so neither the probe
+    // below nor a later call sends the old key to the new address.
+    const urlChanged = prev !== undefined && prev.url !== url;
+    const apiKeyRef = opts.keyRef ?? (urlChanged ? undefined : prev?.apiKeyRef);
     if (apiKeyRef) candidate.apiKeyRef = apiKeyRef;
     // Clearing agent fields when re-saving as HTTP keeps the row coherent.
     // (transport/agentHarness omitted = HTTP default.)

@@ -1130,6 +1130,12 @@ export {
   resolveAllGoalPaths,
   resolveRepoPath,
 } from "./system/repos.js";
+export {
+  confirmedEndpointFor,
+  confirmEndpoint,
+  isEndpointUnconfirmed,
+  keyMaySendTo,
+} from "./system/endpoint-confirmation.js";
 export type {
   PathRefusalCode,
   ReadTrustedFileOptions,

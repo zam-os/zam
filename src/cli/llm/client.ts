@@ -32,6 +32,7 @@ import {
   getSettings,
   getSystemProfile,
   hasCommand,
+  keyMaySendTo,
   LANGUAGE_NAMES,
   normalizeLocale,
   parseAnswerPoints,
@@ -408,18 +409,20 @@ function materializeModelEntry(
   enabled: boolean,
 ): ProviderConfig {
   const url = entry.url || base.url;
+  // A database row carries its key inline: an `apiKeyRef` points into a
+  // credentials file on one machine and means nothing to another client
+  // (ADR 2026-07-23). Machine rows keep the reference.
+  const key =
+    entry.apiKey ||
+    (entry.apiKeyRef ? getProviderApiKey(entry.apiKeyRef) : null) ||
+    null;
   const cfg: ProviderConfig = {
     enabled,
     url,
     model: entry.model || base.model,
-    // A database row carries its key inline: an `apiKeyRef` points into a
-    // credentials file on one machine and means nothing to another client
-    // (ADR 2026-07-23). Machine rows keep the reference.
-    apiKey:
-      entry.apiKey ||
-      (entry.apiKeyRef
-        ? (getProviderApiKey(entry.apiKeyRef) ?? DEFAULT_LLM_API_KEY)
-        : DEFAULT_LLM_API_KEY),
+    // Keys follow endpoints (ADR 2026-10-08b D5): a row whose URL changed
+    // since this device confirmed it gets no key until the learner confirms.
+    apiKey: key && keyMaySendTo(entry.id, url) ? key : DEFAULT_LLM_API_KEY,
     apiFlavor: entry.apiFlavor || inferApiFlavor(url),
     locale: base.locale,
     providerName: entry.id,
