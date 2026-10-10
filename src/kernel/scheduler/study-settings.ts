@@ -138,9 +138,12 @@ export async function setStudyWorkloadSettings(
     input.buryNewSiblings !== undefined ||
     input.buryReviewSiblings !== undefined;
   const candidate = normalizeSettings({
-    ...presetValues,
-    ...input,
     preset: hasCustomValues ? "custom" : preset,
+    maxNew: input.maxNew ?? presetValues.maxNew,
+    maxReviews: input.maxReviews ?? presetValues.maxReviews,
+    buryNewSiblings: input.buryNewSiblings ?? presetValues.buryNewSiblings,
+    buryReviewSiblings:
+      input.buryReviewSiblings ?? presetValues.buryReviewSiblings,
   });
   if (!candidate) {
     throw new Error(

@@ -1566,11 +1566,23 @@ async function saveStudyWorkload(): Promise<void> {
   studyWorkloadSave.disabled = true;
   studyWorkloadStatus.textContent = "";
   try {
-    const preset = studyWorkloadPreset.value as StudyWorkloadPreset;
+    const rawPreset = studyWorkloadPreset.value as StudyWorkloadPreset;
+    const isKnownPreset = rawPreset in STUDY_WORKLOAD_PRESETS;
+    const presetDefault = isKnownPreset
+      ? STUDY_WORKLOAD_PRESETS[rawPreset as Exclude<StudyWorkloadPreset, "custom">]
+      : null;
+    const isCustom =
+      rawPreset === "custom" ||
+      (presetDefault !== null &&
+        (Number(studyMaxNew.value) !== presetDefault.maxNew ||
+          Number(studyMaxReviews.value) !== presetDefault.maxReviews ||
+          studyBuryNew.checked !== presetDefault.buryNewSiblings ||
+          studyBuryReview.checked !== presetDefault.buryReviewSiblings));
+    const preset = isCustom ? "custom" : rawPreset;
     const settings = await setStudyWorkloadSettings(
       db,
       currentUserId,
-      preset === "custom"
+      isCustom
         ? {
             preset,
             maxNew: Number(studyMaxNew.value),
@@ -3908,6 +3920,9 @@ for (const input of [
   studyBuryNew,
   studyBuryReview,
 ]) {
+  input.addEventListener("input", () => {
+    studyWorkloadPreset.value = "custom";
+  });
   input.addEventListener("change", () => {
     studyWorkloadPreset.value = "custom";
   });

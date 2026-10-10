@@ -50,6 +50,72 @@ describe("study workload and learning settings", () => {
     expect(reloaded.preset).toBe("exam");
   });
 
+  it("safely handles undefined properties passed in input without overwriting preset values", async () => {
+    const updated = await setStudyWorkloadSettings(db, "alice", {
+      preset: "exam",
+      maxNew: undefined,
+      maxReviews: undefined,
+      buryNewSiblings: undefined,
+      buryReviewSiblings: undefined,
+    });
+    expect(updated).toEqual({
+      preset: "exam",
+      maxNew: 40,
+      maxReviews: 200,
+      buryNewSiblings: false,
+      buryReviewSiblings: false,
+    });
+  });
+
+  it("partially updates workload values, switching to custom preset", async () => {
+    const updated = await setStudyWorkloadSettings(db, "alice", {
+      maxNew: 15,
+    });
+    expect(updated).toEqual({
+      preset: "custom",
+      maxNew: 15,
+      maxReviews: 50,
+      buryNewSiblings: true,
+      buryReviewSiblings: true,
+    });
+
+    const reset = await setStudyWorkloadSettings(db, "alice", {
+      preset: "balanced",
+      maxNew: undefined,
+      maxReviews: undefined,
+    });
+    expect(reset).toEqual({
+      preset: "balanced",
+      maxNew: 10,
+      maxReviews: 50,
+      buryNewSiblings: true,
+      buryReviewSiblings: true,
+    });
+  });
+
+  it("rejects out-of-range workload values", async () => {
+    await expect(
+      setStudyWorkloadSettings(db, "alice", { maxNew: -1 }),
+    ).rejects.toThrow(
+      "Study workload must use 0–1000 new cards and 1–10000 total cards",
+    );
+    await expect(
+      setStudyWorkloadSettings(db, "alice", { maxNew: 1001 }),
+    ).rejects.toThrow(
+      "Study workload must use 0–1000 new cards and 1–10000 total cards",
+    );
+    await expect(
+      setStudyWorkloadSettings(db, "alice", { maxReviews: 0 }),
+    ).rejects.toThrow(
+      "Study workload must use 0–1000 new cards and 1–10000 total cards",
+    );
+    await expect(
+      setStudyWorkloadSettings(db, "alice", { maxReviews: 10001 }),
+    ).rejects.toThrow(
+      "Study workload must use 0–1000 new cards and 1–10000 total cards",
+    );
+  });
+
   it("defaults learning settings to flash mode when no setting exists", async () => {
     const settings = await getStudyLearningSettings(db, "bob");
     expect(settings).toEqual(DEFAULT_STUDY_LEARNING_SETTINGS);
