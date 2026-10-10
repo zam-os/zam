@@ -28,7 +28,9 @@ import {
   openDatabase,
   pairCommands,
   readMonitorLog,
+  rewriteMonitorLogRedacted,
   setSetting,
+  sweepObservationFiles,
   writeMonitorEvent,
 } from "../../kernel/index.js";
 import {
@@ -93,6 +95,14 @@ monitorCommand
       await db?.close();
     }
 
+    // Retention (ADR 2026-10-08 R6): redact idle logs and delete expired
+    // ones before a new log starts. Silent: stdout is shell code here.
+    try {
+      sweepObservationFiles();
+    } catch {
+      // Never block monitoring on housekeeping.
+    }
+
     ensureMonitorDir();
     const monitorFile = getMonitorPath(opts.session);
 
@@ -137,6 +147,15 @@ monitorCommand
         session_id: opts.session,
       };
       writeMonitorEvent(opts.session, meta);
+      // Monitoring stops here, so the log is redacted at rest now
+      // (ADR 2026-10-08 R5). The hooks are still installed until the shell
+      // evaluates the output below; at most the end event of this very
+      // command can land in the replaced file.
+      try {
+        rewriteMonitorLogRedacted(opts.session);
+      } catch {
+        // The next sweep tries again.
+      }
     }
 
     let shell: MonitorShell;

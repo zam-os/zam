@@ -7,13 +7,7 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import {
-  existsSync,
-  mkdirSync,
-  readdirSync,
-  readFileSync,
-  rmSync,
-} from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
 import { join, resolve } from "node:path";
 import { Command } from "commander";
@@ -44,6 +38,7 @@ import {
   checkCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
+  commandsFromDigest,
   commitTextImport,
   configuredLibraryKind,
   confirmCardSplit,
@@ -79,6 +74,7 @@ import {
   getKnowledgeContextByName,
   getKnowledgeMapConfig,
   getMachineVoicePreference,
+  getObservationRetentionDays,
   getOnboardingDone,
   getOnboardingPersona,
   getPostgresCredentials,
@@ -96,9 +92,11 @@ import {
   goalTopicCurriculumText,
   hasCommand,
   importCurriculumCards,
+  inventoryObservationFiles,
   isBitwardenVaultEnabled,
   isOllamaInstalled,
   isPersonaId,
+  isScreenObservationEnabled,
   isStudyLearningMode,
   isStudyWorkloadPreset,
   isVoiceEnginePreference,
@@ -107,8 +105,10 @@ import {
   listKnowledgeContexts,
   listMaterialAreaContext,
   listMaterialBonusItems,
+  listMonitorLogIds,
   listPersonalCards,
   listProviderApiKeyRefs,
+  listSessionDigestIds,
   listTokens,
   listUserCardsForCurriculumTopic,
   loadStoredCredentials,
@@ -121,10 +121,13 @@ import {
   postgresVaultAccessPending,
   previewTextImport,
   readMonitorLog,
+  readSessionDigest,
   readUiObservationLog,
   resolveCredentials,
   resolveObserverPolicy,
   restorePreviousLibrary,
+  scheduleObservationSweeps,
+  screenObservationGate,
   secretRefFromUri,
   seedPersonaKnowledgeContext,
   setActiveWorkspaceContext,
@@ -181,6 +184,7 @@ import {
   assessPreconditionHandler as handleAssessPrecondition,
   backupCreate as handleBackupCreate,
   checkDue as handleCheckDue,
+  closeObservation as handleCloseObservation,
   createAssignmentHandler as handleCreateAssignment,
   endSession as handleEndSession,
   enrolBonusAtomHandler as handleEnrolBonusAtom,
@@ -398,6 +402,21 @@ let serveStdinPayload: string | undefined;
 
 function jsonOut(data: unknown): void {
   console.log(JSON.stringify(data, null, 2));
+}
+
+/**
+ * ADR 2026-10-08 R8: every screen surface asks this first, before it
+ * captures, reads, spawns or analyzes anything. While screen observation is
+ * off on this machine it writes the typed refusal and returns true.
+ */
+function refuseWhileScreenObservationOff(
+  sessionId: string | null | undefined,
+  extra: Record<string, unknown> = {},
+): boolean {
+  const refusal = screenObservationGate();
+  if (!refusal) return false;
+  jsonOut({ sessionId: sessionId ?? null, ...extra, ...refusal });
+  return true;
 }
 
 /**
@@ -1541,6 +1560,70 @@ bridgeCommand
     });
   });
 
+// ── zam bridge observation-close ──────────────────────────────────────────
+
+bridgeCommand
+  .command("observation-close")
+  .description(
+    "Delete a running or never-ended session's raw observation files on this machine now, keeping a value-free digest; session end does this by itself (JSON)",
+  )
+  .requiredOption("--session <id>", "Session ID")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await handleCloseObservation(db, { session: opts.session }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// ── zam bridge observation-status ─────────────────────────────────────────
+
+/**
+ * What the Studio's Data card shows (ADR 2026-10-08 R6): which sessions
+ * still have raw observation files on this machine. No paths, no content.
+ */
+bridgeCommand
+  .command("observation-status")
+  .description(
+    "Sessions with raw observation files on this machine, and the retention window (JSON)",
+  )
+  .action(() => {
+    try {
+      const sessions = new Map<
+        string,
+        { sessionId: string; modifiedAt: string; legacy: boolean }
+      >();
+      for (const file of inventoryObservationFiles()) {
+        if (
+          !file.sessionId ||
+          (file.kind !== "monitor-log" && file.kind !== "observer-reports")
+        ) {
+          continue;
+        }
+        const known = sessions.get(file.sessionId);
+        sessions.set(file.sessionId, {
+          sessionId: file.sessionId,
+          modifiedAt:
+            known && known.modifiedAt > file.modifiedAt
+              ? known.modifiedAt
+              : file.modifiedAt,
+          legacy: file.legacy || (known?.legacy ?? false),
+        });
+      }
+      jsonOut({
+        screenObservation: isScreenObservationEnabled() ? "on" : "off",
+        retentionDays: getObservationRetentionDays(),
+        sessions: [...sessions.values()].sort((a, b) =>
+          b.sessionId.localeCompare(a.sessionId),
+        ),
+      });
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
 // ── zam bridge session-open ───────────────────────────────────────────────
 
 bridgeCommand
@@ -1905,7 +1988,7 @@ bridgeCommand
 bridgeCommand
   .command("discover-skills")
   .description(
-    "Analyze monitor logs across sessions to discover recurring patterns",
+    "Propose skills from command sequences that recur across sessions; reads the value-free digests of ended sessions and the logs of running ones (JSON)",
   )
   .option(
     "--min-sessions <n>",
@@ -1919,36 +2002,28 @@ bridgeCommand
   )
   .action(async (opts) => {
     try {
-      const monitorDir = join(homedir(), ".zam", "monitor");
-      let files: string[];
-      try {
-        files = readdirSync(monitorDir).filter((f) => f.endsWith(".jsonl"));
-      } catch {
+      // Raw logs and the digests of logs already deleted (ADR 2026-10-08
+      // R6): both carry the redacted command prefixes discovery compares.
+      const logIds = new Set(listMonitorLogIds());
+      const sessionIds = [
+        ...new Set([...logIds, ...listSessionDigestIds()]),
+      ].sort((a, b) => b.localeCompare(a)); // ULID session IDs sort chronologically
+
+      if (sessionIds.length === 0) {
         jsonOut({ proposals: [], message: "No monitor logs found." });
         return;
       }
 
-      if (files.length === 0) {
-        jsonOut({ proposals: [], message: "No monitor logs found." });
-        return;
-      }
-
-      // Take the most recent N sessions by file modification time
+      // Take the most recent N sessions
       const limit = Number(opts.limit);
-      const sorted = files
-        .map((f) => ({ name: f, path: join(monitorDir, f) }))
-        .sort((a, b) => b.name.localeCompare(a.name)) // ULID session IDs sort chronologically
-        .slice(0, limit);
-
-      // Load and parse each session's commands
       const sessionCommands = new Map<
         string,
         ReturnType<typeof pairCommands>
       >();
-      for (const file of sorted) {
-        const sessionId = file.name.replace(".jsonl", "");
-        const events = readMonitorLog(sessionId);
-        const commands = pairCommands(events);
+      for (const sessionId of sessionIds.slice(0, limit)) {
+        const commands = logIds.has(sessionId)
+          ? pairCommands(readMonitorLog(sessionId))
+          : commandsFromDigest(readSessionDigest(sessionId)?.prefixes ?? []);
         if (commands.length > 0) {
           sessionCommands.set(sessionId, commands);
         }
@@ -1999,6 +2074,8 @@ bridgeCommand
   .option("--after <n>", "Only return observations after this sequence")
   .option("--limit <n>", "Maximum observations to return", "100")
   .action(async (opts) => {
+    // Stored reports carry screen-derived text (ADR 2026-10-08 R8).
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     await withDb(async (db) => {
       const session = (await db
         .prepare("SELECT id, execution_context FROM sessions WHERE id = ?")
@@ -2039,6 +2116,7 @@ bridgeCommand
   .option("--after <n>", "Only return observations after this sequence")
   .option("--limit <n>", "Maximum observations to return", "100")
   .action((opts) => {
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     try {
       const after =
         opts.after === undefined
@@ -2065,11 +2143,11 @@ bridgeCommand
 bridgeCommand
   .command("observe-ui-snapshot")
   .description(
-    "Analyze a captured UI snapshot or video recording with the configured vision LLM (JSON)",
+    "Analyze a captured UI snapshot image with the configured vision LLM (JSON)",
   )
   .requiredOption("--session <id>", "Observer session ID")
   .requiredOption("--sequence <n>", "Monotonic observation sequence number")
-  .requiredOption("--image <path>", "PNG snapshot or video recording path")
+  .requiredOption("--image <path>", "PNG or JPEG snapshot path")
   .requiredOption("--observed-from <iso>", "Observation window start time")
   .requiredOption("--observed-to <iso>", "Observation window end time")
   .requiredOption("--process-name <name>", "Observed application process name")
@@ -2082,6 +2160,7 @@ bridgeCommand
   .option("--redacted", "Mark the snapshot evidence as redacted")
   .option("--write-log", "Append the generated report to the session JSONL")
   .action(async (opts) => {
+    if (refuseWhileScreenObservationOff(opts.session)) return;
     const sequence = parseNonNegativeIntegerOption("sequence", opts.sequence);
     const processId =
       opts.processId === undefined
@@ -2535,6 +2614,17 @@ bridgeCommand
   .option("--hwnd <hwnd>", "Window handle (decimal or hex) to capture")
   .option("--process-name <name>", "Process name to capture")
   .action(async (opts) => {
+    // Before the policy, the capture and any read of --image: while the
+    // switch is off, --image is no file reader either.
+    if (
+      refuseWhileScreenObservationOff(opts.session, {
+        granted: false,
+        capturedAt: new Date().toISOString(),
+        platform: process.platform,
+      })
+    ) {
+      return;
+    }
     await withDb(async (db) => {
       const policy = await resolveObserverPolicy(db);
       const permission = {
@@ -2625,228 +2715,6 @@ bridgeCommand
     });
   });
 
-// ── zam bridge start-recording ──────────────────────────────────────────────
-
-bridgeCommand
-  .command("start-recording")
-  .description("Start screen recording in the background (JSON)")
-  .requiredOption("--session <id>", "ZAM session ID")
-  .option("--output <path>", "Video output path")
-  .action(async (opts) => {
-    const platform = process.platform;
-    if (platform !== "darwin" && platform !== "win32") {
-      jsonOut({
-        sessionId: opts.session,
-        started: false,
-        error:
-          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
-      });
-      return;
-    }
-
-    const sessionId = opts.session;
-    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
-    const defaultExt = platform === "win32" ? ".mkv" : ".mov";
-    const outputPath =
-      opts.output ?? join(tmpdir(), `zam-recording-${sessionId}${defaultExt}`);
-
-    const { existsSync, writeFileSync, openSync, closeSync } = await import(
-      "node:fs"
-    );
-    if (existsSync(statePath)) {
-      jsonOut({
-        sessionId,
-        started: false,
-        error: `Recording is already active for session ${sessionId}`,
-      });
-      return;
-    }
-
-    const logPath = join(tmpdir(), `zam-recording-${sessionId}.log`);
-    let logFd: number;
-    try {
-      logFd = openSync(logPath, "w");
-    } catch (e) {
-      jsonOut({
-        sessionId,
-        started: false,
-        error: `Failed to open log file at ${logPath}: ${(e as Error).message}`,
-      });
-      return;
-    }
-
-    const { spawn } = await import("node:child_process");
-    const ffmpegArgs =
-      platform === "darwin"
-        ? [
-            "-y",
-            "-f",
-            "avfoundation",
-            "-r",
-            "5",
-            "-i",
-            "0",
-            "-pix_fmt",
-            "yuv420p",
-            outputPath,
-          ]
-        : [
-            "-y",
-            "-f",
-            "gdigrab",
-            "-framerate",
-            "5",
-            "-i",
-            "desktop",
-            "-pix_fmt",
-            "yuv420p",
-            outputPath,
-          ];
-
-    const child = spawn("ffmpeg", ffmpegArgs, {
-      detached: true,
-      stdio: ["pipe", logFd, logFd],
-    });
-
-    try {
-      closeSync(logFd);
-    } catch {}
-
-    child.unref();
-
-    if (child.pid) {
-      writeFileSync(
-        statePath,
-        JSON.stringify({
-          pid: child.pid,
-          outputPath,
-          startedAt: new Date().toISOString(),
-        }),
-        "utf8",
-      );
-
-      jsonOut({
-        sessionId,
-        started: true,
-        outputPath,
-        pid: child.pid,
-      });
-    } else {
-      jsonOut({
-        sessionId,
-        started: false,
-        error: "Failed to spawn ffmpeg process",
-      });
-    }
-  });
-
-// ── zam bridge stop-recording ───────────────────────────────────────────────
-
-bridgeCommand
-  .command("stop-recording")
-  .description(
-    "Stop active screen recording and apply idle-frame compression (JSON)",
-  )
-  .requiredOption("--session <id>", "ZAM session ID")
-  .action(async (opts) => {
-    const platform = process.platform;
-    if (platform !== "darwin" && platform !== "win32") {
-      jsonOut({
-        sessionId: opts.session,
-        stopped: false,
-        error:
-          "Screen recording is only supported on macOS (darwin) and Windows (win32)",
-      });
-      return;
-    }
-
-    const sessionId = opts.session;
-    const statePath = join(tmpdir(), `zam-recording-${sessionId}.json`);
-    const { existsSync, readFileSync, rmSync } = await import("node:fs");
-
-    if (!existsSync(statePath)) {
-      jsonOut({
-        sessionId,
-        stopped: false,
-        error: `No active recording found for session ${sessionId}`,
-      });
-      return;
-    }
-
-    const state = JSON.parse(readFileSync(statePath, "utf8"));
-    const { pid, outputPath } = state;
-
-    try {
-      process.kill(pid, "SIGINT");
-    } catch (_e) {
-      // Process might already be dead
-    }
-
-    const isProcessRunning = (pId: number) => {
-      try {
-        process.kill(pId, 0);
-        return true;
-      } catch (_e) {
-        return false;
-      }
-    };
-
-    let attempts = 0;
-    while (isProcessRunning(pid) && attempts < 20) {
-      await new Promise((resolve) => setTimeout(resolve, 250));
-      attempts++;
-    }
-
-    if (isProcessRunning(pid)) {
-      try {
-        process.kill(pid, "SIGKILL");
-      } catch (_e) {}
-    }
-
-    try {
-      rmSync(statePath, { force: true });
-    } catch {}
-
-    if (!existsSync(outputPath)) {
-      jsonOut({
-        sessionId,
-        stopped: false,
-        error: `Recording file not found at ${outputPath}`,
-      });
-      return;
-    }
-
-    const decimatedPath = outputPath.replace(/\.[^.]+$/, "-decimated.mp4");
-    const { execSync } = await import("node:child_process");
-
-    try {
-      execSync(
-        `ffmpeg -y -i "${outputPath}" -vf "mpdecimate,setpts=N/FRAME_RATE/TB" -an -pix_fmt yuv420p "${decimatedPath}"`,
-        { stdio: "ignore" },
-      );
-    } catch (ffmpegErr) {
-      jsonOut({
-        sessionId,
-        stopped: true,
-        videoPath: outputPath,
-        decimated: false,
-        warning: `mpdecimate post-processing failed: ${(ffmpegErr as Error).message}`,
-      });
-      return;
-    }
-
-    try {
-      rmSync(outputPath, { force: true });
-    } catch {}
-
-    jsonOut({
-      sessionId,
-      stopped: true,
-      videoPath: decimatedPath,
-      decimated: true,
-    });
-  });
-
 // ── zam bridge get-observer-policy ─────────────────────────────────────────
 
 bridgeCommand
@@ -2867,6 +2735,7 @@ bridgeCommand
         audioOptIn: policy.audioOptIn,
         builtInSensitiveAlwaysRefused: true,
         builtInSensitiveMatchers: [...BUILT_IN_SENSITIVE_MATCHERS],
+        screenObservation: isScreenObservationEnabled() ? "on" : "off",
       });
     });
   });
@@ -7397,7 +7266,7 @@ async function fetchRawHtml(url: string): Promise<string> {
     const res = await fetch(url, {
       signal: controller.signal,
       headers: {
-        "User-Agent": "ZAM-Content-Studio/0.47.1",
+        "User-Agent": "ZAM-Content-Studio/0.49.0",
       },
     });
     if (!res.ok) {
@@ -8727,6 +8596,11 @@ bridgeCommand
         process.env.USERPROFILE ?? ""
       } | HOME=${process.env.HOME ?? ""} | cwd=${process.cwd()}`,
     );
+    // Retention (ADR 2026-10-08 R6) at bridge start, which is also desktop
+    // start, and hourly while it runs. Silent: stdout is the protocol.
+    scheduleObservationSweeps((err) => {
+      logDiag(`observation sweep failed | ${err.message}`);
+    });
     let databaseHost = createPersistentDatabaseHost(openDatabase);
 
     const processRequest = async (line: string): Promise<string> => {

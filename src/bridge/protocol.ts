@@ -297,7 +297,6 @@ export interface GetMonitorResponse {
   commands: Array<{
     seq: number;
     command: string;
-    cwd: string;
     startedAt: string;
     endedAt: string | null;
     durationMs: number | null;
@@ -392,6 +391,7 @@ export interface ObserverPermission {
 }
 
 export type CaptureDenialReason =
+  | "screen-observation-off"
   | "scope-off"
   | "scope-requires-target"
   | "denylisted"
@@ -458,6 +458,24 @@ export interface GetObserverPolicyResponse {
   audioOptIn: boolean;
   builtInSensitiveAlwaysRefused: true;
   builtInSensitiveMatchers: string[];
+  /**
+   * The machine-local switch in front of every screen surface (ADR 2026-10-08
+   * R8). While it is "off", the policy above is never reached: each surface
+   * returns a {@link ScreenObservationDeniedResponse} first.
+   */
+  screenObservation: "on" | "off";
+}
+
+/**
+ * Returned by `capture-ui`, `observe-ui-snapshot`, `observe-ui-watch` and
+ * `get-observations` while screen observation is off on this machine (ADR
+ * 2026-10-08 R8). Nothing was captured, read or analyzed.
+ */
+export interface ScreenObservationDeniedResponse {
+  sessionId: string | null;
+  denied: true;
+  denialReason: "screen-observation-off";
+  reason: string;
 }
 
 export interface GetReviewsResponse {

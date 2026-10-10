@@ -279,7 +279,15 @@ class ZamMcpHost {
     const client = await this.client();
     const { tools } = await client.listTools();
     const tool = tools.find((candidate) => candidate.name === config.toolName);
-    if (!tool) throw new Error(`ZAM MCP tool not found: ${config.toolName}`);
+    if (!tool) {
+      // The knowledge-map tools exist only while the alpha is switched on,
+      // and the server reads that switch when it starts.
+      throw new Error(
+        kind === "knowledge-map"
+          ? "The knowledge map is an alpha: switch on Knowledge map (Alpha) in ZAM Studio Settings, then reload this VS Code window."
+          : `ZAM MCP tool not found: ${config.toolName}`,
+      );
+    }
 
     const resourceUri = toolUiResourceUri(tool);
     if (!resourceUri) {
@@ -809,6 +817,16 @@ export async function activate(
       return provider.open(
         "okf",
         workspace ? { bundle_dir: join(workspace, "docs", "okf") } : {},
+      );
+    }),
+    vscode.commands.registerCommand("zam.showKnowledgeMap", () => {
+      // Like zam.showOkf: the Companion's zam server does not run in the
+      // workspace, so name the repository explicitly. Without a workspace the
+      // panel shows ZAM's own map as an example.
+      const workspace = vscode.workspace.workspaceFolders?.[0]?.uri.fsPath;
+      return provider.open(
+        "knowledge-map",
+        workspace ? { repo_root: workspace } : {},
       );
     }),
     vscode.commands.registerCommand("zam.openSettings", () =>

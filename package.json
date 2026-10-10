@@ -1,6 +1,6 @@
 {
   "name": "zam-core",
-  "version": "0.47.1",
+  "version": "0.49.0",
   "description": "The Symbiotic Learning Kernel: Elevating Human Intelligence through AI Collaboration.",
   "type": "module",
   "engines": {
@@ -34,7 +34,7 @@
     "build": "tsup && npm run build:panel && npm run build:copilot-extension && npm run build:vscode-extension",
     "build:copilot-extension": "tsup --config tsup.config.copilot-extension.ts && vite build --config vite.config.copilot-extension.mts && node scripts/prepare-copilot-extension.mjs",
     "build:vscode-extension": "tsup --config tsup.config.vscode-extension.ts && vite build --config vite.config.vscode-extension.mts && node scripts/prepare-vscode-extension.mjs",
-    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings && vite build --config vite.config.panel.mts --mode okf",
+    "build:panel": "vite build --config vite.config.panel.mts && vite build --config vite.config.panel.mts --mode recall && vite build --config vite.config.panel.mts --mode graph && vite build --config vite.config.panel.mts --mode settings && vite build --config vite.config.panel.mts --mode okf && vite build --config vite.config.panel.mts --mode knowledge-map && vite build --config vite.config.panel.mts --mode knowledge-map-viewer",
     "prepare": "npm run build",
     "dev": "tsx src/cli/index.ts",
     "pretest": "npm run build",
@@ -42,7 +42,7 @@
     "test:watch": "vitest",
     "typecheck": "tsc --noEmit",
     "lint": "biome check src/",
-    "knowledge-map:prototype": "node scripts/build-knowledge-map-prototype.mjs",
+    "knowledge-map:prototype": "vite build --config vite.config.panel.mts --mode knowledge-map-viewer && tsx src/cli/index.ts knowledge-map view --repo . --out dist/knowledge-map-prototype.html --no-open",
     "format": "biome format --write src/",
     "desktop:prepare": "node scripts/prepare-desktop-bridge.mjs",
     "curriculum:topic-coverage": "tsx scripts/curriculum-topic-coverage-smoke.ts",
@@ -51,7 +51,6 @@
     "observer:check": "cargo check --manifest-path observer/Cargo.toml",
     "observer:test": "cargo test --manifest-path observer/Cargo.toml",
     "observer:build": "cargo build --manifest-path observer/Cargo.toml --release",
-    "observer:prepare": "node scripts/prepare-observer-sidecar.mjs",
     "pg:up": "node scripts/pg-dev.mjs up",
     "pg:down": "node scripts/pg-dev.mjs down",
     "pg:test": "node scripts/pg-dev.mjs test"

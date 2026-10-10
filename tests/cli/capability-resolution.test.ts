@@ -116,7 +116,7 @@ describe("resolveCapability", () => {
     }
   });
 
-  it("gates image capability on the vision consent flag and carries maxFrames", async () => {
+  it("gates image capability on the vision consent flag", async () => {
     saveMachineAiModels([
       entry({
         id: "vis",
@@ -127,10 +127,12 @@ describe("resolveCapability", () => {
     ]);
     const db = await openDb();
     await setSetting(db, "llm.vision.enabled", "true");
+    // Frame sampling went with the video path (ADR 2026-10-08).
     await setSetting(db, "llm.vision.max_frames", "42");
     try {
       const p = await resolveCapability(db, "image");
-      expect(p).toMatchObject({ enabled: true, maxFrames: 42 });
+      expect(p).toMatchObject({ enabled: true });
+      expect(p).not.toHaveProperty("maxFrames");
     } finally {
       await db.close();
     }

@@ -27,6 +27,7 @@ import {
   bonusCandidates,
   buildReviewQueue,
   clearTokenMaintenance,
+  closeSessionObservation,
   createAssignment,
   createToken,
   decideUpdate,
@@ -61,6 +62,7 @@ import {
   getUserStats,
   isAnswerFormat,
   isObserverPolicyConfigured,
+  isScreenObservationEnabled,
   isStudyLearningMode,
   endSession as kernelEndSession,
   startSession as kernelStartSession,
@@ -84,10 +86,12 @@ import {
   removePrerequisite,
   resetCardsForToken,
   resolveAnswerPresentation,
+  SCREEN_OBSERVATION_OFF_REASON,
   searchTokensHybrid,
   setTokenMaintenance,
   startLibraryTopic,
   structuralPublicationChecks,
+  sweepObservationFiles,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -1521,10 +1525,16 @@ export async function startSession(db: Database, params: StartSessionParams) {
     execution_context: context,
   });
 
+  // While screen observation is off (ADR 2026-10-08 R8) the policy is never
+  // reached, so the hint says that instead of describing the policy.
   const observerPolicyHint =
-    context === "ui" && !(await isObserverPolicyConfigured(db))
-      ? OBSERVER_POLICY_UNSET_HINT
-      : undefined;
+    context !== "ui"
+      ? undefined
+      : !isScreenObservationEnabled()
+        ? SCREEN_OBSERVATION_OFF_REASON
+        : !(await isObserverPolicyConfigured(db))
+          ? OBSERVER_POLICY_UNSET_HINT
+          : undefined;
 
   return {
     id: session.id,
@@ -1567,6 +1577,15 @@ export async function endSession(db: Database, params: EndSessionParams) {
     : undefined;
   const session = await kernelEndSession(db, params.session);
   const summary = await getSessionSummary(db, params.session);
+  // The raw log is evidence only while it is captured (ADR 2026-10-08 R6):
+  // once the synthesis above was prepared, the session's raw files go and a
+  // value-free digest stays; the confirmed candidates carry their own texts.
+  try {
+    closeSessionObservation(params.session);
+    sweepObservationFiles();
+  } catch {
+    // Housekeeping never fails the end of a session.
+  }
   return {
     id: session.id,
     userId: session.user_id,
@@ -1617,7 +1636,6 @@ export async function getMonitor(_db: Database, params: GetMonitorParams) {
     commands: commands.map((c) => ({
       seq: c.seq,
       command: c.command,
-      cwd: c.cwd,
       startedAt: c.startedAt,
       endedAt: c.endedAt,
       durationMs: c.durationMs,
@@ -1653,6 +1671,25 @@ export async function analyzeMonitor(
     sessionId: params.session,
     ...result,
   };
+}
+
+export interface CloseObservationParams {
+  session: string;
+}
+
+/**
+ * Delete a session's raw observation files on this machine now and keep a
+ * value-free digest (ADR 2026-10-08 R6). Session end does this by itself;
+ * this is for a session still running or never ended. Learning state is not
+ * touched. The files are machine-local, so a session the open library does
+ * not know — one from a library used before a switch — can still be closed;
+ * an unknown id deletes nothing.
+ */
+export async function closeObservation(
+  _db: Database,
+  params: CloseObservationParams,
+) {
+  return closeSessionObservation(params.session);
 }
 
 // 12. sessionOpen

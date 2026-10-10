@@ -10,7 +10,12 @@ import { homedir } from "node:os";
 import { dirname, join, resolve, sep } from "node:path";
 import { ulid } from "ulid";
 
-export type UiIntentApp = "recall" | "graph" | "settings" | "okf";
+export type UiIntentApp =
+  | "recall"
+  | "graph"
+  | "settings"
+  | "okf"
+  | "knowledge-map";
 
 export interface UiIntent {
   version: 1;

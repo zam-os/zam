@@ -52,6 +52,14 @@ if (nodeSource && !existsSync(nodeSource)) {
 }
 
 rmSync(resourceRoot, { recursive: true, force: true });
+// The observer sidecar is no longer bundled (ADR 2026-10-08): whatever can
+// capture the screen ships as a separate install, so an organisation can
+// prohibit it. Remove a copy an earlier build left, or `resources/**/*` would
+// still pack it into a local installer.
+rmSync(join(dirname(resourceRoot), "zam-observer"), {
+  recursive: true,
+  force: true,
+});
 mkdirSync(resourceRoot, { recursive: true });
 cpSync(join(repoRoot, "dist"), join(resourceRoot, "dist"), {
   recursive: true,

@@ -323,6 +323,14 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // Observation retention row in Settings → Data (ADR 2026-10-08 R6). en/de
+  // shipped; es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
+  "settings_observation_logs",
+  "observation_logs_status",
+  "btn_observation_logs_delete",
+  "observation_logs_delete_confirm",
+  "observation_logs_deleted",
+  "observation_logs_delete_failed",
   "boot_fix_db",
   // Central learning path field-test surface (cell selection, precondition
   // self-assessment, keep-going, bonus offer). English and German are the

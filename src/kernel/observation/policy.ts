@@ -281,6 +281,7 @@ export async function resolveObserverPolicy(
 // ── Capture decisions (pure) ────────────────────────────────────────────────
 
 export type CaptureDenialReason =
+  | "screen-observation-off"
   | "scope-off"
   | "scope-requires-target"
   | "denylisted"
