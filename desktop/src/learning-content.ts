@@ -1,5 +1,10 @@
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
+import {
+  applyLearningContentSourceChrome,
+  initLearningContentSources,
+  refreshLearningContentSources,
+} from "./learning-content-sources.js";
 import { initLibraryTopics, startLibraryTopic } from "./library-topics.js";
 import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
 import { initMaterialImportStart } from "./material-import-start.js";
@@ -415,6 +420,7 @@ export function applyLearningContentChrome(): void {
   setText("btn-content-segment-unpublished", t("content_segment_unpublished"));
   setText("btn-content-open-graph", t("btn_open_graph"));
   setText("btn-content-take-card", t("btn_take_card"));
+  applyLearningContentSourceChrome();
   syncAreaChrome();
   syncSegmentChrome();
 }
@@ -455,6 +461,7 @@ function showArea(next: LearningArea): void {
   if (area === next) return;
   area = next;
   syncAreaChrome();
+  if (next === "sources") void refreshLearningContentSources();
 }
 
 function blankCard(
@@ -824,6 +831,7 @@ export function initLearningContentStudio(): void {
   btnTake.addEventListener("click", () => {
     void takeSelectedToken();
   });
+  initLearningContentSources();
   applyLearningContentChrome();
   btnDelete.addEventListener("click", () => handleDeleteClick());
 

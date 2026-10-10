@@ -41,6 +41,19 @@ export interface MachineKnowledgeMapConfig {
   repoPath?: string;
 }
 
+/**
+ * The one Quelle Lerninhalte is showing (ADR 2026-10-10, Decision 4).
+ * A folder path is only remembered here. It is not a workspace.
+ */
+export type LearningContentSource =
+  | { kind: "workspace"; id: string }
+  | { kind: "folder"; path: string }
+  | { kind: "curriculum" };
+
+export interface MachineLearningContentConfig {
+  source?: LearningContentSource;
+}
+
 export interface InstallConfig {
   mode?: InstallMode;
   /** How this copy was installed; drives the self-update mechanism. */
@@ -78,6 +91,11 @@ export interface InstallConfig {
    * map the Studio shows. Presentation state of this install, never the DB.
    */
   knowledgeMap?: MachineKnowledgeMapConfig;
+  /**
+   * Which Quelle Lerninhalte shows (ADR 2026-10-10, Decision 4).
+   * Presentation state of this install. Never `knowledgeMap.repoPath`.
+   */
+  learningContent?: MachineLearningContentConfig;
   /**
    * Machine-local voice-mode preferences (ADR 2026-07-31). Never the
    * Turso-shared database: whether on-device speech is the right choice
@@ -1046,6 +1064,86 @@ export function ensureObservationRetentionSince(
     };
     return since;
   }, path);
+}
+
+export function getLearningContentSource(
+  path = defaultConfigPath(),
+): LearningContentSource | null {
+  const source = loadInstallConfig(path).learningContent?.source;
+  if (!source || typeof source !== "object") return null;
+  if (source.kind === "workspace" && typeof source.id === "string") {
+    const id = source.id.trim();
+    return id ? { kind: "workspace", id } : null;
+  }
+  if (source.kind === "folder" && typeof source.path === "string") {
+    const folder = source.path.trim();
+    return folder ? { kind: "folder", path: folder } : null;
+  }
+  if (source.kind === "curriculum") return { kind: "curriculum" };
+  return null;
+}
+
+/**
+ * The Quelle the page shows. A stored workspace that has left the registry
+ * falls back to the active workspace, then the first one. Nothing is written.
+ */
+export function resolveLearningContentSelection(
+  stored: LearningContentSource | null,
+  workspaces: ReadonlyArray<Pick<WorkspaceConfig, "id">>,
+  activeWorkspaceId?: string,
+): LearningContentSource | null {
+  if (
+    stored?.kind === "workspace" &&
+    workspaces.some((workspace) => workspace.id === stored.id)
+  ) {
+    return { kind: "workspace", id: stored.id };
+  }
+  if (stored?.kind === "folder") return stored;
+  if (stored?.kind === "curriculum") return stored;
+  if (
+    activeWorkspaceId &&
+    workspaces.some((workspace) => workspace.id === activeWorkspaceId)
+  ) {
+    return { kind: "workspace", id: activeWorkspaceId };
+  }
+  const first = workspaces[0];
+  return first ? { kind: "workspace", id: first.id } : null;
+}
+
+/**
+ * Remember the Quelle. A workspace id must already be in the registry.
+ * A folder is stored as a path only: this does not add a workspace, and it
+ * does not touch `knowledgeMap`.
+ */
+export function setLearningContentSource(
+  source: LearningContentSource,
+  path = defaultConfigPath(),
+): void {
+  const stored = normalizeLearningContentSource(source, path);
+  updateInstallConfig((config) => {
+    config.learningContent = { source: stored };
+  }, path);
+}
+
+function normalizeLearningContentSource(
+  source: LearningContentSource,
+  path: string,
+): LearningContentSource {
+  if (source.kind === "workspace") {
+    const id = source.id.trim();
+    if (!id) throw new Error("A workspace id is required");
+    const known = getConfiguredWorkspaces(path).some(
+      (workspace) => workspace.id === id,
+    );
+    if (!known) throw new Error(`Workspace not found: ${id}`);
+    return { kind: "workspace", id };
+  }
+  if (source.kind === "folder") {
+    const folder = source.path.trim();
+    if (!folder) throw new Error("A folder path is required");
+    return { kind: "folder", path: folder };
+  }
+  return { kind: "curriculum" };
 }
 
 export function getKnowledgeMapConfig(

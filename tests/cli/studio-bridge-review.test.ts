@@ -35,6 +35,7 @@ const REVIEWED = [
   "get-active-knowledge-context",
   "get-neighborhood",
   "get-settings",
+  "learning-content-source",
   "library-topic-start",
   "library-topics-list",
   "list-drafts",

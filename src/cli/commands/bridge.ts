@@ -7,9 +7,9 @@
 
 import { execFileSync } from "node:child_process";
 import { randomBytes } from "node:crypto";
-import { existsSync, mkdirSync, readFileSync, rmSync } from "node:fs";
+import { existsSync, mkdirSync, readFileSync, rmSync, statSync } from "node:fs";
 import { homedir, tmpdir } from "node:os";
-import { join, resolve } from "node:path";
+import { basename, join, resolve } from "node:path";
 import { Command } from "commander";
 import { ulid } from "ulid";
 import { serializeZamPairPayload } from "../../bridge/mobile-pairing.js";
@@ -65,6 +65,7 @@ import {
   generateTokenSlug,
   getActiveWorkspace,
   getActiveWorkspaceContext,
+  getActiveWorkspaceId,
   getAgentConnectAutoDone,
   getAgentSkill,
   getCard,
@@ -75,6 +76,7 @@ import {
   getDueSummary,
   getKnowledgeContextByName,
   getKnowledgeMapConfig,
+  getLearningContentSource,
   getMachineVoicePreference,
   getObservationRetentionDays,
   getOnboardingDone,
@@ -131,6 +133,7 @@ import {
   redactCommand,
   removeTrustedFolder,
   resolveCredentials,
+  resolveLearningContentSelection,
   resolveObserverPolicy,
   restorePreviousLibrary,
   scheduleObservationSweeps,
@@ -141,6 +144,7 @@ import {
   setAgentConnectAutoDone,
   setBitwardenVaultEnabled,
   setKnowledgeMapConfig,
+  setLearningContentSource,
   setMachineVoicePreference,
   setOnboardingDone,
   setOnboardingPersona,
@@ -9201,6 +9205,135 @@ bridgeCommand
         jsonError((err as Error).message || String(err));
       }
     });
+  });
+
+// ── Quelle for Lerninhalte — ADR 2026-10-10 Decision 4 ────────────────────
+// Reads the workspace registry and writes learningContent only. It does not
+// repair a workspace, provision skills, or change knowledgeMap.repoPath.
+
+function workspaceSourceLabel(workspace: WorkspaceConfig): string {
+  const label = workspace.label?.trim();
+  if (label) return label;
+  return basename(workspace.path) || workspace.path;
+}
+
+function directoryMissing(path: string): boolean {
+  try {
+    return !statSync(path).isDirectory();
+  } catch {
+    return true;
+  }
+}
+
+function presentLearningContentSource(): {
+  success: true;
+  stored: ReturnType<typeof getLearningContentSource>;
+  selection:
+    | {
+        kind: "workspace";
+        id: string;
+        label: string;
+        path: string;
+        missing: boolean;
+      }
+    | { kind: "folder"; path: string; missing: boolean }
+    | { kind: "curriculum" }
+    | null;
+  workspaces: Array<{ id: string; label: string; path: string }>;
+  activeWorkspaceId: string | null;
+} {
+  const stored = getLearningContentSource();
+  const workspaces = getConfiguredWorkspaces();
+  const activeWorkspaceId = getActiveWorkspaceId() ?? null;
+  const resolved = resolveLearningContentSelection(
+    stored,
+    workspaces,
+    activeWorkspaceId ?? undefined,
+  );
+  const listed = workspaces.map((workspace) => ({
+    id: workspace.id,
+    label: workspaceSourceLabel(workspace),
+    path: workspace.path,
+  }));
+  if (!resolved) {
+    return {
+      success: true,
+      stored,
+      selection: null,
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  if (resolved.kind === "curriculum") {
+    return {
+      success: true,
+      stored,
+      selection: { kind: "curriculum" },
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  if (resolved.kind === "folder") {
+    return {
+      success: true,
+      stored,
+      selection: {
+        kind: "folder",
+        path: resolved.path,
+        missing: directoryMissing(resolved.path),
+      },
+      workspaces: listed,
+      activeWorkspaceId,
+    };
+  }
+  const workspace = workspaces.find((item) => item.id === resolved.id);
+  return {
+    success: true,
+    stored,
+    selection: {
+      kind: "workspace",
+      id: resolved.id,
+      label: workspace ? workspaceSourceLabel(workspace) : resolved.id,
+      path: workspace?.path ?? "",
+      missing: workspace ? directoryMissing(workspace.path) : true,
+    },
+    workspaces: listed,
+    activeWorkspaceId,
+  };
+}
+
+bridgeCommand
+  .command("learning-content-source")
+  .description(
+    "Read or set the Quelle Lerninhalte shows. Machine-local presentation state only (JSON)",
+  )
+  .option("--kind <kind>", "workspace, folder, or curriculum")
+  .option("--id <id>", "Workspace id, when --kind is workspace")
+  .option("--path <path>", "Folder path, when --kind is folder")
+  .action((opts: { kind?: string; id?: string; path?: string }) => {
+    if (opts.kind === undefined) {
+      jsonOut(presentLearningContentSource());
+      return;
+    }
+    const kind = String(opts.kind);
+    try {
+      if (kind === "workspace") {
+        const id = typeof opts.id === "string" ? opts.id.trim() : "";
+        if (!id) jsonError("A workspace id is required");
+        setLearningContentSource({ kind: "workspace", id });
+      } else if (kind === "folder") {
+        const folder = typeof opts.path === "string" ? opts.path.trim() : "";
+        if (!folder) jsonError("A folder path is required");
+        setLearningContentSource({ kind: "folder", path: resolve(folder) });
+      } else if (kind === "curriculum") {
+        setLearningContentSource({ kind: "curriculum" });
+      } else {
+        jsonError("Kind must be workspace, folder, or curriculum");
+      }
+    } catch (err: unknown) {
+      jsonError(err instanceof Error ? err.message : String(err));
+    }
+    jsonOut(presentLearningContentSource());
   });
 
 // ── Knowledge map alpha for Studio — ADR 2026-10-03 ───────────────────────

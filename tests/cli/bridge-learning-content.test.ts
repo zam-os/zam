@@ -1,5 +1,11 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -146,6 +152,7 @@ describe("zam bridge learning-content lists", () => {
       "unchosen-groups",
       "unchosen-members",
       "personal-card-ensure",
+      "learning-content-source",
     ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command)).toBe(true);
     }
@@ -199,5 +206,61 @@ describe("zam bridge learning-content lists", () => {
     ]);
     expect(missing.status).not.toBe(0);
     expect(missing.body.error).toContain("Token not found");
+  });
+
+  it("remembers a folder Quelle and leaves the registry and knowledge map alone", () => {
+    const configPath = join(tempHome, ".zam", "config.json");
+    const before = JSON.parse(readFileSync(configPath, "utf8"));
+    before.knowledgeMap = { enabled: true, repoPath: "/keep/me" };
+    writeFileSync(configPath, JSON.stringify(before));
+
+    const read = runCliJson(["bridge", "learning-content-source"]);
+    expect(read.stored).toBeNull();
+    expect(read.selection).toMatchObject({
+      kind: "workspace",
+      id: "test-workspace",
+      missing: false,
+    });
+    expect(read.workspaces).toHaveLength(1);
+    expect(
+      JSON.parse(readFileSync(configPath, "utf8")).learningContent,
+    ).toBeUndefined();
+
+    const missingDir = join(tempHome, "not-a-workspace");
+    const picked = runCliJson([
+      "bridge",
+      "learning-content-source",
+      "--kind",
+      "folder",
+      "--path",
+      missingDir,
+    ]);
+    expect(picked.selection).toMatchObject({
+      kind: "folder",
+      path: missingDir,
+      missing: true,
+    });
+    expect(picked.workspaces).toEqual(read.workspaces);
+
+    const saved = JSON.parse(readFileSync(configPath, "utf8"));
+    expect(saved.workspaces).toHaveLength(1);
+    expect(saved.knowledgeMap).toEqual({ enabled: true, repoPath: "/keep/me" });
+    expect(saved.learningContent).toEqual({
+      source: { kind: "folder", path: missingDir },
+    });
+
+    const unknown = runCliError([
+      "bridge",
+      "learning-content-source",
+      "--kind",
+      "workspace",
+      "--id",
+      "missing",
+    ]);
+    expect(unknown.status).not.toBe(0);
+    expect(unknown.body.error).toContain("Workspace not found: missing");
+    expect(
+      JSON.parse(readFileSync(configPath, "utf8")).learningContent.source.kind,
+    ).toBe("folder");
   });
 });

@@ -2852,6 +2852,30 @@ textarea::placeholder {
   width: 100%;
 }
 
+.content-sources-bar {
+  align-items: center;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+  margin-bottom: 12px;
+}
+
+.content-sources-bar select {
+  flex: 1;
+  min-width: 220px;
+}
+
+.content-sources-status {
+  color: var(--clr-text-secondary);
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+}
+
+.content-sources-status p {
+  margin: 0;
+}
+
 /* Search and filter row */
 .content-studio-search-bar {
   display: flex;

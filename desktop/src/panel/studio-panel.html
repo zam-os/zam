@@ -172,6 +172,26 @@
         background: var(--hover);
         color: var(--fg);
       }
+      .content-sources-bar {
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        gap: 8px;
+        margin-bottom: 12px;
+      }
+      .content-sources-bar select {
+        flex: 1;
+        min-width: 160px;
+      }
+      .content-sources-status {
+        color: var(--muted);
+        display: flex;
+        flex-direction: column;
+        gap: 6px;
+      }
+      .content-sources-status p {
+        margin: 0;
+      }
       .content-studio-layout {
         display: flex;
         gap: 14px;
@@ -704,7 +724,17 @@
           </div>
         </div>
         </div>
-        <div id="content-sources-area" hidden></div>
+        <div id="content-sources-area" class="hidden" hidden>
+          <div class="content-sources-bar">
+            <label id="lbl-content-source" for="content-source-select">Source</label>
+            <select id="content-source-select" class="editor-select"></select>
+            <button id="btn-content-choose-folder" class="btn secondary-btn btn-sm hidden" type="button">Choose folder…</button>
+          </div>
+          <div id="content-sources-status" class="content-sources-status">
+            <p id="content-sources-path"></p>
+            <p id="content-sources-note"></p>
+          </div>
+        </div>
       </section>
 
       <!-- Release revision modal (personal-card-publish-revision & personal-card-revision-preview) -->

@@ -29,11 +29,14 @@ import {
   getCompanionSelectedVscodeModelId,
   getConfiguredWorkspaces,
   getInstallMode,
+  getKnowledgeMapConfig,
+  getLearningContentSource,
   getMachineAiConfig,
   getOnboardingDone,
   getOnboardingPersona,
   loadInstallConfig,
   removeConfiguredWorkspace,
+  resolveLearningContentSelection,
   saveInstallConfig,
   saveMachineAiConfig,
   setActiveWorkspaceId,
@@ -46,6 +49,7 @@ import {
   setCompanionSelectedVscodeEvaluatorId,
   setCompanionSelectedVscodeModelId,
   setInstallMode,
+  setLearningContentSource,
   setOnboardingDone,
   setOnboardingPersona,
   updateInstallConfig,
@@ -866,5 +870,90 @@ describe("cross-process config writes", () => {
 
     expect(getCompanionCollapsed(path)).toEqual({ recall: true });
     expect(existsSync(lockPath)).toBe(false);
+  });
+});
+
+describe("learning content source", () => {
+  it("remembers a Quelle without touching the knowledge-map repository", () => {
+    const path = tempConfigPath();
+    saveInstallConfig(
+      {
+        knowledgeMap: { enabled: true, repoPath: "/keep/me" },
+        activeWorkspaceId: "desk",
+        workspaces: [
+          { id: "desk", kind: "personal", path: "/work/desk" },
+          { id: "lab", kind: "personal", path: "/work/lab", label: "Lab" },
+        ],
+      },
+      path,
+    );
+
+    expect(getLearningContentSource(path)).toBeNull();
+    expect(
+      resolveLearningContentSelection(
+        null,
+        getConfiguredWorkspaces(path),
+        "desk",
+      ),
+    ).toEqual({ kind: "workspace", id: "desk" });
+
+    setLearningContentSource(
+      { kind: "folder", path: "  /notes/class  " },
+      path,
+    );
+    expect(getLearningContentSource(path)).toEqual({
+      kind: "folder",
+      path: "/notes/class",
+    });
+    expect(getConfiguredWorkspaces(path)).toHaveLength(2);
+    expect(getKnowledgeMapConfig(path)).toEqual({
+      enabled: true,
+      repoPath: "/keep/me",
+    });
+
+    setLearningContentSource({ kind: "workspace", id: "lab" }, path);
+    expect(getLearningContentSource(path)).toEqual({
+      kind: "workspace",
+      id: "lab",
+    });
+    setLearningContentSource({ kind: "curriculum" }, path);
+    expect(getLearningContentSource(path)).toEqual({ kind: "curriculum" });
+    expect(getKnowledgeMapConfig(path).repoPath).toBe("/keep/me");
+  });
+
+  it("falls back when the stored workspace has left the registry", () => {
+    const workspaces = [{ id: "desk" }, { id: "lab" }];
+    expect(
+      resolveLearningContentSelection(
+        { kind: "workspace", id: "gone" },
+        workspaces,
+        "lab",
+      ),
+    ).toEqual({ kind: "workspace", id: "lab" });
+    expect(
+      resolveLearningContentSelection(
+        { kind: "workspace", id: "gone" },
+        workspaces,
+        "also-gone",
+      ),
+    ).toEqual({ kind: "workspace", id: "desk" });
+    expect(resolveLearningContentSelection(null, [], undefined)).toBeNull();
+  });
+
+  it("refuses an unknown workspace and an empty folder", () => {
+    const path = tempConfigPath();
+    saveInstallConfig(
+      {
+        workspaces: [{ id: "desk", kind: "personal", path: "/work/desk" }],
+      },
+      path,
+    );
+    expect(() =>
+      setLearningContentSource({ kind: "workspace", id: "missing" }, path),
+    ).toThrow(/Workspace not found: missing/);
+    expect(() =>
+      setLearningContentSource({ kind: "folder", path: "   " }, path),
+    ).toThrow(/A folder path is required/);
+    expect(getLearningContentSource(path)).toBeNull();
   });
 });

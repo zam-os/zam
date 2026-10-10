@@ -173,6 +173,12 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "personal-card-ensure": {
     why: "Writes the caller's own card for one published token.",
   },
+  // Quelle selection (ADR 2026-10-10 D11). Machine-local presentation state.
+  // A folder Quelle comes from the Desktop window's folder dialog only.
+  "learning-content-source": {
+    why: "Reads the workspace registry and stores which workspace the page shows; never a path.",
+    refusedOptions: ["--path"],
+  },
   "personal-card-create-assignment": { why: "Learning state only." },
   "personal-card-withdraw-assignment": { why: "Learning state only." },
   "personal-card-list-assignments": { why: "Reads assignments." },

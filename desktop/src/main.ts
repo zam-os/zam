@@ -116,6 +116,7 @@ import {
   setLearningContentGraphOpener,
   setLearningContentProgressSource,
 } from "./learning-content.js";
+import { setLearningContentFolderPicker } from "./learning-content-sources.js";
 import { setMaterialImportHost } from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
@@ -220,6 +221,15 @@ setLearningContentGraphOpener(() => {
   const back = document.getElementById("btn-graph-back");
   if (back) back.textContent = t("btn_graph_back_cards");
   switchView("graph-view");
+});
+
+setLearningContentFolderPicker(async () => {
+  const selected = await openFolderDialog({
+    directory: true,
+    multiple: false,
+    title: t("btn_content_choose_folder"),
+  });
+  return typeof selected === "string" ? selected : null;
 });
 
 setLearningContentFilePicker(async () => {
