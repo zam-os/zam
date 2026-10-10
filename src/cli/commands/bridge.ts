@@ -4707,6 +4707,12 @@ bridgeCommand
     });
   });
 
+function parseWorkloadInt(value: unknown): number | undefined {
+  if (value === undefined) return undefined;
+  if (typeof value === "string" && value.trim() === "") return Number.NaN;
+  return Number(value);
+}
+
 function workloadBoolean(value: unknown, label: string): boolean | undefined {
   if (value === undefined) return undefined;
   if (value === "true") return true;
@@ -4744,10 +4750,8 @@ bridgeCommand
       if (opts.preset !== undefined && !isStudyWorkloadPreset(opts.preset)) {
         jsonError("preset must be balanced, exam, problems, or custom");
       }
-      const maxNew =
-        opts.maxNew === undefined ? undefined : Number(opts.maxNew);
-      const maxReviews =
-        opts.maxReviews === undefined ? undefined : Number(opts.maxReviews);
+      const maxNew = parseWorkloadInt(opts.maxNew);
+      const maxReviews = parseWorkloadInt(opts.maxReviews);
       const settings = await setStudyWorkloadSettings(db, userId, {
         preset: opts.preset,
         maxNew,
