@@ -106,6 +106,49 @@ describe("native desktop settings simplicity", () => {
     expect(main).toContain("keepModeSwitcherFocus");
   });
 
+  it("shows the everyday choices instead of hiding them in dropdowns", () => {
+    // Studio redesign step 5: every learning mode needs its line of meaning
+    // to be chosen well, so all five are on screen.
+    for (const [name, values] of [
+      [
+        "settings-learning-mode",
+        ["flash", "choice", "answer_feedback", "answer_variation", "auto"],
+      ],
+      ["study-workload-preset", ["balanced", "exam", "problems", "custom"]],
+      ["theme-select", ["light", "dark"]],
+    ] as const) {
+      expect(html).not.toContain(`<select id="${name}"`);
+      for (const value of values) {
+        expect(html).toContain(
+          `<input type="radio" name="${name}" value="${value}" />`,
+        );
+      }
+    }
+    expect(main).toContain('mode: radioChoice("settings-learning-mode")');
+    expect(main).toContain('preset: radioChoice("study-workload-preset")');
+  });
+
+  it("saves the study plan as it changes, with no separate save button", () => {
+    expect(html).not.toContain('id="btn-study-workload-save"');
+    const init = main.slice(main.indexOf("function initStudyWorkloadControls"));
+    expect(init.slice(0, init.indexOf("\n}\n"))).toContain(
+      "void saveStudyWorkload();",
+    );
+  });
+
+  it("leaves navigation to the sidebar and lists the visible sections", () => {
+    expect(html).not.toContain('id="btn-settings-back"');
+    expect(html).not.toContain('id="btn-stats-back"');
+    const switcher = html.indexOf('id="settings-mode-switcher"');
+    const toc = html.indexOf('id="settings-toc"');
+    expect(toc).toBeGreaterThan(switcher);
+    expect(toc).toBeLessThan(html.indexOf('class="settings-list"'));
+    const apply = main.slice(main.indexOf("function applySettingsViewMode"));
+    expect(apply.slice(0, apply.indexOf("\n}\n"))).toContain(
+      "renderSettingsToc();",
+    );
+  });
+
   it("exposes both exclusive choices as described radio groups", () => {
     expect(html).toMatch(
       /id="settings-mode-switcher"[\s\S]*?role="radiogroup"[\s\S]*?aria-describedby="settings-mode-description"/,

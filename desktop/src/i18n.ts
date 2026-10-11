@@ -61,11 +61,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     nav_today: "Hoy",
     nav_settings: "Ajustes",
     nav_stats: "Estadísticas",
-    stats_kicker: "Actividad de repaso",
     stats_title: "Estadísticas de aprendizaje",
     stats_subtitle:
       "Tarjetas trabajadas por día, semana o mes — y el tiempo de estudio dedicado.",
-    btn_stats_back: "Volver al panel",
     stats_period_day: "Día",
     stats_period_week: "Semana",
     stats_period_month: "Mes",
@@ -144,7 +142,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "Todos los tokens de este dominio",
     graph_filter_by_learner: "Solo tarjetas de {profile}",
     setup_title: "Configuración y datos",
-    settings_kicker: "Configuración local",
     settings_title: "Ajustes",
     settings_subtitle:
       "Empieza con las pocas opciones que necesitas para aprender cada día.",
@@ -160,7 +157,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_learning_saved: "Modo de aprendizaje guardado.",
     study_learning_load_failed:
       "No se pudieron cargar los ajustes de aprendizaje: {message}",
-    settings_back: "Volver al panel",
     settings_system_title: "Sistema",
     study_workload_title: "Carga de estudio",
     study_workload_help:
@@ -174,7 +170,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_max_reviews: "Tarjetas totales por sesión",
     study_bury_new: "Mostrar solo una tarjeta hermana nueva al día",
     study_bury_review: "Mostrar solo una tarjeta hermana de repaso al día",
-    study_workload_save: "Guardar plan de estudio",
     study_unbury: "Mostrar ahora las tarjetas pospuestas",
     study_workload_saved: "Plan de estudio guardado.",
     study_workload_unburied:
@@ -1004,11 +999,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     nav_today: "Aujourd'hui",
     nav_settings: "Paramètres",
     nav_stats: "Statistiques",
-    stats_kicker: "Activité de révision",
     stats_title: "Statistiques d'apprentissage",
     stats_subtitle:
       "Cartes travaillées par jour, semaine ou mois — et le temps d'étude consacré.",
-    btn_stats_back: "Retour au tableau de bord",
     stats_period_day: "Jour",
     stats_period_week: "Semaine",
     stats_period_month: "Mois",
@@ -1087,7 +1080,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "Tous les tokens de ce domaine",
     graph_filter_by_learner: "Uniquement les cartes de {profile}",
     setup_title: "Configuration et données",
-    settings_kicker: "Configuration locale",
     settings_title: "Paramètres",
     settings_subtitle:
       "Commencez par les quelques choix utiles à l’apprentissage quotidien.",
@@ -1103,7 +1095,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_learning_saved: "Mode d’apprentissage enregistré.",
     study_learning_load_failed:
       "Impossible de charger les paramètres d’apprentissage : {message}",
-    settings_back: "Retour au tableau de bord",
     settings_system_title: "Système",
     study_workload_title: "Charge d’étude",
     study_workload_help:
@@ -1117,7 +1108,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_max_reviews: "Total de cartes par session",
     study_bury_new: "Afficher une seule nouvelle carte sœur par jour",
     study_bury_review: "Afficher une seule carte sœur à réviser par jour",
-    study_workload_save: "Enregistrer le programme d’étude",
     study_unbury: "Afficher maintenant les cartes différées",
     study_workload_saved: "Programme d’étude enregistré.",
     study_workload_unburied:
@@ -1959,11 +1949,9 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     nav_today: "Hoje",
     nav_settings: "Configurações",
     nav_stats: "Estatísticas",
-    stats_kicker: "Atividade de revisão",
     stats_title: "Estatísticas de aprendizagem",
     stats_subtitle:
       "Cartões trabalhados por dia, semana ou mês — e o tempo de estudo dedicado.",
-    btn_stats_back: "Voltar ao painel",
     stats_period_day: "Dia",
     stats_period_week: "Semana",
     stats_period_month: "Mês",
@@ -2042,7 +2030,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "Todos os tokens deste domínio",
     graph_filter_by_learner: "Apenas cartões de {profile}",
     setup_title: "Configuração e dados",
-    settings_kicker: "Configuração local",
     settings_title: "Configurações",
     settings_subtitle:
       "Comece pelas poucas escolhas necessárias para estudar no dia a dia.",
@@ -2058,7 +2045,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_learning_saved: "Modo de aprendizagem salvo.",
     study_learning_load_failed:
       "Não foi possível carregar as configurações de aprendizagem: {message}",
-    settings_back: "Voltar ao painel",
     settings_system_title: "Sistema",
     study_workload_title: "Carga de estudo",
     study_workload_help:
@@ -2072,7 +2058,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_max_reviews: "Total de cartões por sessão",
     study_bury_new: "Mostrar apenas um novo cartão irmão por dia",
     study_bury_review: "Mostrar apenas um cartão irmão de revisão por dia",
-    study_workload_save: "Salvar plano de estudo",
     study_unbury: "Mostrar agora os cartões adiados",
     study_workload_saved: "Plano de estudo salvo.",
     study_workload_unburied:
@@ -2900,10 +2885,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     nav_today: "今天",
     nav_settings: "设置",
     nav_stats: "学习统计",
-    stats_kicker: "复习活动",
     stats_title: "学习统计",
     stats_subtitle: "按天、周或月统计复习的卡片数，以及投入的学习时间。",
-    btn_stats_back: "返回仪表板",
     stats_period_day: "天",
     stats_period_week: "周",
     stats_period_month: "月",
@@ -2976,7 +2959,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "此领域中的所有 Token",
     graph_filter_by_learner: "仅显示 {profile} 的卡片",
     setup_title: "设置与数据",
-    settings_kicker: "本地配置",
     settings_title: "设置",
     settings_subtitle: "先从日常学习真正需要的少量选项开始。",
     settings_mode_label: "设置级别",
@@ -2988,7 +2970,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_learning_help: "选择复习时卡片的使用方式。",
     study_learning_saved: "学习模式已保存。",
     study_learning_load_failed: "无法加载学习设置：{message}",
-    settings_back: "返回仪表板",
     settings_system_title: "系统",
     study_workload_title: "学习量",
     study_workload_help:
@@ -3002,7 +2983,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_max_reviews: "每次学习的卡片总数",
     study_bury_new: "每天仅显示一张同笔记的新卡片",
     study_bury_review: "每天仅显示一张同笔记的复习卡片",
-    study_workload_save: "保存学习计划",
     study_unbury: "立即显示已暂缓的卡片",
     study_workload_saved: "学习计划已保存。",
     study_workload_unburied: "{count} 张暂缓卡片已重新显示。",
@@ -3775,10 +3755,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_evaluation_details: "詳細",
     nav_today: "今日",
     nav_stats: "学習統計",
-    stats_kicker: "復習アクティビティ",
     stats_title: "学習統計",
     stats_subtitle: "日・週・月ごとの復習カード数と、費やした学習時間。",
-    btn_stats_back: "ダッシュボードに戻る",
     stats_period_day: "日",
     stats_period_week: "週",
     stats_period_month: "月",
@@ -3855,7 +3833,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "この領域のすべてのトークン",
     graph_filter_by_learner: "{profile} のカードのみ",
     setup_title: "セットアップとデータ",
-    settings_kicker: "ローカル設定",
     settings_title: "設定",
     settings_subtitle: "毎日の学習に必要な少数の項目から始めます。",
     settings_mode_label: "設定レベル",
@@ -3867,7 +3844,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     settings_learning_help: "復習中のカードの動作を選びます。",
     study_learning_saved: "学習モードを保存しました。",
     study_learning_load_failed: "学習設定を読み込めませんでした：{message}",
-    settings_back: "ダッシュボードに戻る",
     settings_system_title: "システム",
     study_workload_title: "学習量",
     study_workload_help:
@@ -3881,7 +3857,6 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     study_max_reviews: "セッションごとの合計カード",
     study_bury_new: "同じノートの新規カードは1日1枚だけ表示",
     study_bury_review: "同じノートの復習カードは1日1枚だけ表示",
-    study_workload_save: "学習プランを保存",
     study_unbury: "延期したカードを今すぐ表示",
     study_workload_saved: "学習プランを保存しました。",
     study_workload_unburied:
@@ -4724,11 +4699,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_today: "Today",
     nav_settings: "Settings",
     nav_stats: "Statistics",
-    stats_kicker: "Review activity",
     stats_title: "Learning Statistics",
     stats_subtitle:
       "Cards reviewed per day, week, or month — and the study time they took.",
-    btn_stats_back: "Back to dashboard",
     stats_period_day: "Day",
     stats_period_week: "Week",
     stats_period_month: "Month",
@@ -4843,7 +4816,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "All tokens in this domain",
     graph_filter_by_learner: "Only {profile}'s cards",
     setup_title: "Setup & Data",
-    settings_kicker: "Local configuration",
     settings_title: "Settings",
     settings_subtitle:
       "Start with the few choices you need for everyday learning.",
@@ -4857,7 +4829,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     settings_learning_help: "Choose how cards behave during a review.",
     study_learning_saved: "Learning mode saved.",
     study_learning_load_failed: "Could not load learning settings: {message}",
-    settings_back: "Back to dashboard",
     settings_system_title: "System",
     study_workload_title: "Study workload",
     study_workload_help:
@@ -4871,7 +4842,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     study_max_reviews: "Total cards per session",
     study_bury_new: "Show only one new sibling per day",
     study_bury_review: "Show only one review sibling per day",
-    study_workload_save: "Save study plan",
     study_unbury: "Show buried cards now",
     study_workload_saved: "Study plan saved.",
     study_workload_unburied: "{count} buried card(s) are visible again.",
@@ -6429,11 +6399,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_today: "Heute",
     nav_settings: "Einstellungen",
     nav_stats: "Statistik",
-    stats_kicker: "Wiederholungs-Aktivität",
     stats_title: "Lernstatistik",
     stats_subtitle:
       "Bearbeitete Karten pro Tag, Woche oder Monat — und die dafür aufgewendete Lernzeit.",
-    btn_stats_back: "Zurück zur Übersicht",
     stats_period_day: "Tag",
     stats_period_week: "Woche",
     stats_period_month: "Monat",
@@ -6548,7 +6516,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     graph_domain_token_list_title: "Alle Tokens in diesem Bereich",
     graph_filter_by_learner: "Nur Karten von {profile}",
     setup_title: "Einrichtung & Daten",
-    settings_kicker: "Lokale Konfiguration",
     settings_title: "Einstellungen",
     settings_subtitle:
       "Starte mit den wenigen Entscheidungen, die du beim täglichen Lernen brauchst.",
@@ -6564,7 +6531,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     study_learning_saved: "Lernmodus gespeichert.",
     study_learning_load_failed:
       "Lerneinstellungen konnten nicht geladen werden: {message}",
-    settings_back: "Zurück zur Übersicht",
     settings_system_title: "System",
     study_workload_title: "Lernumfang",
     study_workload_help:
@@ -6578,7 +6544,6 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     study_max_reviews: "Karten insgesamt pro Sitzung",
     study_bury_new: "Pro Tag nur eine neue Geschwisterkarte zeigen",
     study_bury_review: "Pro Tag nur eine fällige Geschwisterkarte zeigen",
-    study_workload_save: "Lernplan speichern",
     study_unbury: "Zurückgestellte Karten jetzt zeigen",
     study_workload_saved: "Lernplan gespeichert.",
     study_workload_unburied:

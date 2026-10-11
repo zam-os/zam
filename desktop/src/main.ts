@@ -170,9 +170,11 @@ import {
 } from "./settings-view-mode.js";
 import {
   initRadioGroupKeyboard,
+  radioChoice,
   radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
+import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
   ModelRefreshCapabilitiesResponse,
@@ -788,8 +790,9 @@ function rememberLocale(locale: string | undefined): void {
 
 function applyTheme(theme: ThemePreference): void {
   document.documentElement.dataset.theme = theme;
-  const select = document.getElementById("theme-select") as HTMLSelectElement | null;
-  if (select) select.value = theme;
+  if (document.getElementById("theme-select")) {
+    radioChoice("theme-select").value = theme;
+  }
   try {
     void getCurrentWindow()
       .setTheme(theme)
@@ -847,6 +850,7 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
         : "settings_mode_advanced_help",
     );
   }
+  renderSettingsToc();
 }
 
 function chooseSettingsViewMode(mode: SettingsViewMode): void {
@@ -876,11 +880,9 @@ function initializeTranslations() {
   setNavLabel("nav-settings", t("nav_settings"));
   setNavLabel("nav-stats", t("nav_stats"));
   setNavLabel("btn-open-graph", t("nav_graph"));
-  document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
     t("stats_subtitle");
-  document.getElementById("btn-stats-back")!.textContent = t("btn_stats_back");
   document.getElementById("stats-period-day")!.textContent =
     t("stats_period_day");
   document.getElementById("stats-period-week")!.textContent =
@@ -968,8 +970,6 @@ function initializeTranslations() {
   document.getElementById("discussion-error")!.textContent = t("discussion_error");
 
   // Setup & Data card
-  document.getElementById("lbl-settings-kicker")!.textContent =
-    t("settings_kicker");
   document.getElementById("lbl-settings-title")!.textContent =
     t("settings_title");
   document.getElementById("lbl-settings-subtitle")!.textContent =
@@ -982,8 +982,6 @@ function initializeTranslations() {
   document.getElementById("btn-settings-mode-advanced")!.textContent =
     t("settings_mode_advanced");
   applySettingsViewMode(settingsViewMode);
-  document.getElementById("btn-settings-back")!.textContent =
-    t("settings_back");
   document.getElementById("lbl-settings-learning-title")!.textContent =
     t("settings_learning_title");
   document.getElementById("lbl-settings-learning-help")!.textContent =
@@ -1022,7 +1020,6 @@ function initializeTranslations() {
   document.getElementById("lbl-study-max-reviews")!.textContent = t("study_max_reviews");
   document.getElementById("lbl-study-bury-new")!.textContent = t("study_bury_new");
   document.getElementById("lbl-study-bury-review")!.textContent = t("study_bury_review");
-  document.getElementById("btn-study-workload-save")!.textContent = t("study_workload_save");
   document.getElementById("btn-study-unbury")!.textContent = t("study_unbury");
   document.getElementById("lbl-settings-ai-title")!.textContent =
     t("settings_ai_title");
@@ -2456,9 +2453,7 @@ function defaultCardFormat(): AutoCardFormat {
 
 function studyLearningElements() {
   return {
-    mode: document.getElementById(
-      "settings-learning-mode",
-    ) as HTMLSelectElement,
+    mode: radioChoice("settings-learning-mode"),
     revealTimeout: document.getElementById(
       "settings-voice-reveal-timeout",
     ) as HTMLInputElement,
@@ -2821,12 +2816,11 @@ const STUDY_PRESET_VALUES: Record<
 
 function studyWorkloadElements() {
   return {
-    preset: document.getElementById("study-workload-preset") as HTMLSelectElement,
+    preset: radioChoice("study-workload-preset"),
     maxNew: document.getElementById("study-max-new") as HTMLInputElement,
     maxReviews: document.getElementById("study-max-reviews") as HTMLInputElement,
     buryNew: document.getElementById("study-bury-new") as HTMLInputElement,
     buryReview: document.getElementById("study-bury-review") as HTMLInputElement,
-    save: document.getElementById("btn-study-workload-save") as HTMLButtonElement,
     unbury: document.getElementById("btn-study-unbury") as HTMLButtonElement,
     status: document.getElementById("study-workload-status")!,
   };
@@ -2854,7 +2848,7 @@ async function loadStudyWorkload(): Promise<void> {
 
 async function saveStudyWorkload(): Promise<void> {
   const elements = studyWorkloadElements();
-  elements.save.disabled = true;
+  elements.preset.disabled = true;
   elements.status.textContent = "";
   try {
     const rawPreset = elements.preset.value as StudyWorkloadPreset;
@@ -2895,16 +2889,19 @@ async function saveStudyWorkload(): Promise<void> {
       message: errorMessage(error),
     });
   } finally {
-    elements.save.disabled = false;
+    elements.preset.disabled = false;
   }
 }
 
 function initStudyWorkloadControls(): void {
   const elements = studyWorkloadElements();
+  // Every change is saved as it is made; there is no separate save step.
   elements.preset.addEventListener("change", () => {
     const preset = elements.preset.value as StudyWorkloadPreset;
-    if (preset === "custom") return;
-    renderStudyWorkload({ preset, ...STUDY_PRESET_VALUES[preset] });
+    if (preset !== "custom") {
+      renderStudyWorkload({ preset, ...STUDY_PRESET_VALUES[preset] });
+    }
+    void saveStudyWorkload();
   });
   for (const control of [
     elements.maxNew,
@@ -2915,11 +2912,13 @@ function initStudyWorkloadControls(): void {
     control.addEventListener("input", () => {
       elements.preset.value = "custom";
     });
+    // `change` fires once a number is committed (blur, Enter) and at once
+    // for a checkbox, so a half-typed number is never saved.
     control.addEventListener("change", () => {
       elements.preset.value = "custom";
+      void saveStudyWorkload();
     });
   }
-  elements.save.addEventListener("click", () => void saveStudyWorkload());
   elements.unbury.addEventListener("click", () => {
     void (async () => {
       try {
@@ -5241,6 +5240,7 @@ function switchView(
   }
 
   if (viewId === "settings-view") {
+    renderSettingsToc();
     refreshSettingsData();
     void knowledgeMapSettings?.refresh();
     void capturePrimaryModelFingerprint();
@@ -8907,9 +8907,6 @@ window.addEventListener("DOMContentLoaded", () => {
     switchView("stats-view");
   });
 
-  document.getElementById("btn-stats-back")?.addEventListener("click", () => {
-    switchView("dashboard-view");
-  });
 
   document.getElementById("stats-period-day")?.addEventListener("click", () => {
     setStatsPeriod("day");
@@ -8929,16 +8926,13 @@ window.addEventListener("DOMContentLoaded", () => {
     void connectAgentHarness();
   });
 
-  document.getElementById("btn-settings-back")?.addEventListener("click", () => {
-    switchView("dashboard-view");
-  });
 
   document.getElementById("btn-run-onboarding")?.addEventListener("click", () => {
     showOnboarding();
   });
 
-  document.getElementById("theme-select")?.addEventListener("change", (event) => {
-    const value = (event.target as HTMLSelectElement).value;
+  document.getElementById("theme-select")?.addEventListener("change", () => {
+    const value = radioChoice("theme-select").value;
     saveThemePreference(value === "dark" ? "dark" : "light");
   });
 
