@@ -9,9 +9,9 @@
  */
 
 function menuItems(menu: HTMLElement): HTMLButtonElement[] {
-  return [...menu.querySelectorAll<HTMLButtonElement>(".import-menu-item")].filter(
-    (item) => !item.hidden && !item.disabled,
-  );
+  return [
+    ...menu.querySelectorAll<HTMLButtonElement>(".import-menu-item"),
+  ].filter((item) => !item.hidden && !item.disabled);
 }
 
 export function initContentImportMenu(): void {
@@ -21,6 +21,9 @@ export function initContentImportMenu(): void {
 
   const isOpen = () => !menu.classList.contains("hidden");
   const setOpen = (next: boolean, focus: "first" | "button" | null = null) => {
+    // Hiding the menu while one of its entries has focus would drop focus to
+    // the page behind any dialog the entry opened; the button takes it back.
+    if (!next && menu.contains(document.activeElement)) button.focus();
     menu.classList.toggle("hidden", !next);
     button.setAttribute("aria-expanded", String(next));
     if (focus === "first") menuItems(menu)[0]?.focus();
@@ -38,10 +41,11 @@ export function initContentImportMenu(): void {
     }
   });
 
-  // Choosing an entry closes the menu; the entry's own handler opens its
-  // dialog, so focus is not pulled back to the menu button.
+  // Choosing an entry closes the menu. The entry's own handler has already
+  // run by then (it sits on the entry), so a dialog that took focus keeps it.
   menu.addEventListener("click", (event) => {
-    if ((event.target as HTMLElement).closest(".import-menu-item")) setOpen(false);
+    if ((event.target as HTMLElement).closest(".import-menu-item"))
+      setOpen(false);
   });
   document.addEventListener("click", (event) => {
     if (isOpen() && !menu.contains(event.target as Node)) setOpen(false);
@@ -52,7 +56,8 @@ export function initContentImportMenu(): void {
     const index = items.indexOf(document.activeElement as HTMLButtonElement);
     let next: number | null = null;
     if (event.key === "ArrowDown") next = (index + 1) % items.length;
-    else if (event.key === "ArrowUp") next = (index - 1 + items.length) % items.length;
+    else if (event.key === "ArrowUp")
+      next = (index - 1 + items.length) % items.length;
     else if (event.key === "Home") next = 0;
     else if (event.key === "End") next = items.length - 1;
     else if (event.key === "Escape") {

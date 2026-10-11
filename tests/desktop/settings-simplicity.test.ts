@@ -134,6 +134,12 @@ describe("native desktop settings simplicity", () => {
     expect(init.slice(0, init.indexOf("\n}\n"))).toContain(
       "void saveStudyWorkload();",
     );
+    // One save at a time, and the plan stays clickable while it runs: a limit
+    // field commits on the blur of the same click that picks a plan.
+    expect(main).toContain(
+      "const saveStudyWorkload = serialSave(saveStudyWorkloadNow);",
+    );
+    expect(main).not.toContain("elements.preset.disabled = true");
   });
 
   it("leaves navigation to the sidebar and lists the visible sections", () => {

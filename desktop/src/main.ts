@@ -174,6 +174,7 @@ import {
   radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
+import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
@@ -2846,9 +2847,13 @@ async function loadStudyWorkload(): Promise<void> {
   }
 }
 
-async function saveStudyWorkload(): Promise<void> {
+// The plan stays clickable while a save runs: a limit field commits on blur,
+// which happens on the same click that picks a plan, so locking the plan
+// there would swallow that click.
+const saveStudyWorkload = serialSave(saveStudyWorkloadNow);
+
+async function saveStudyWorkloadNow(isStale: () => boolean): Promise<void> {
   const elements = studyWorkloadElements();
-  elements.preset.disabled = true;
   elements.status.textContent = "";
   try {
     const rawPreset = elements.preset.value as StudyWorkloadPreset;
@@ -2881,15 +2886,16 @@ async function saveStudyWorkload(): Promise<void> {
       "study-workload-set",
       args,
     );
+    // A newer change is waiting for the next save; this answer is older.
+    if (isStale()) return;
     renderStudyWorkload(result.settings);
     elements.status.textContent = t("study_workload_saved");
     await loadDashboard();
   } catch (error) {
+    if (isStale()) return;
     elements.status.textContent = tf("study_workload_error", {
       message: errorMessage(error),
     });
-  } finally {
-    elements.preset.disabled = false;
   }
 }
 
@@ -8828,7 +8834,11 @@ window.addEventListener("DOMContentLoaded", () => {
   });
   document
     .getElementById("btn-content-goal-import")
-    ?.addEventListener("click", () => openGoalImportDialog());
+    // The entry sits in the Import menu, which is hidden once it is chosen;
+    // closing the dialog returns to the menu button instead.
+    ?.addEventListener("click", () =>
+      openGoalImportDialog(document.getElementById("btn-content-import-menu")),
+    );
   initContentImportMenu();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.
   document

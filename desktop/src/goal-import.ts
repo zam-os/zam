@@ -64,17 +64,47 @@ function render(): void {
   );
 }
 
-export function openGoalImportDialog(): void {
+/** The first control a keyboard user can reach in `root`, if any. */
+function firstControl(root: HTMLElement): HTMLElement | null {
+  return (
+    Array.from(
+      root.querySelectorAll<HTMLElement>(
+        "input, textarea, select, button, a[href]",
+      ),
+    ).find(
+      (control) =>
+        !(control as HTMLButtonElement).disabled &&
+        control.getClientRects().length > 0,
+    ) ?? null
+  );
+}
+
+/** Focus the goal area's first control, or Close when it has none left. */
+function focusInDialog(): void {
+  const root = document.getElementById("goal-import-root");
+  const target =
+    (root && firstControl(root)) ??
+    document.getElementById("btn-goal-import-close");
+  target?.focus();
+}
+
+/**
+ * Open the dialog. `returnTo` takes focus back on close; pass it when the
+ * control that opened the dialog will be hidden by then (a menu entry).
+ */
+export function openGoalImportDialog(returnTo?: HTMLElement | null): void {
   const el = overlay();
   if (!el) return;
   returnFocus =
-    document.activeElement instanceof HTMLElement ? document.activeElement : null;
+    returnTo ??
+    (document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null);
   open = true;
   applyLabels();
   render();
   el.classList.add("active");
-  const first = el.querySelector<HTMLElement>("input, textarea, button");
-  first?.focus();
+  focusInDialog();
 }
 
 export function closeGoalImportDialog(): void {
@@ -97,12 +127,23 @@ export function initGoalImportDialog(next: GoalImportDialogOptions): void {
   document
     .getElementById("btn-goal-import-close")
     ?.addEventListener("click", () => closeGoalImportDialog());
-  overlay()?.addEventListener("keydown", (event) => {
+  const el = overlay();
+  el?.addEventListener("keydown", (event) => {
     if (event.key === "Escape") {
       event.stopPropagation();
       closeGoalImportDialog();
     }
   });
+  // The goal area redraws itself at every step and removes the control that
+  // had focus, which drops focus to the page behind the dialog. Put it back
+  // inside: on the new step's first control, or on Close once an import has
+  // left only its result line.
+  const root = document.getElementById("goal-import-root");
+  if (el && root) {
+    new MutationObserver(() => {
+      if (open && !el.contains(document.activeElement)) focusInDialog();
+    }).observe(root, { childList: true, subtree: true });
+  }
 }
 
 /** Re-apply the dialog's own labels after a language switch. */

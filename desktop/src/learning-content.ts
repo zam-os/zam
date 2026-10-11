@@ -1977,6 +1977,9 @@ function showImportModal(): void {
   btnImportFileChoose.disabled = pickLearningContentFile === null;
   updateImportSubmitState();
   importModalOverlay.classList.add("active");
+  // The dialog opens on the library tab; its search field takes focus so the
+  // keyboard lands inside the dialog, not on the page behind it.
+  openContentSearch.focus();
 }
 
 function hideImportModal(): void {

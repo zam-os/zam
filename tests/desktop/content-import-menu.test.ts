@@ -49,12 +49,29 @@ describe("Learning Content import menu", () => {
     expect(menu).toContain('setOpen(false, "button")');
     expect(desktopFile("src/main.ts")).toContain("initContentImportMenu();");
   });
+
+  it("never hides the entry that has focus (PR #402 review)", () => {
+    // Closing while an entry is focused moves focus to the button first; a
+    // dialog that took focus in the entry's own handler keeps it.
+    expect(desktopFile("src/content-import-menu.ts")).toContain(
+      "if (!next && menu.contains(document.activeElement)) button.focus();",
+    );
+    // The file import dialog is one that has to take focus itself.
+    const content = desktopFile("src/learning-content.ts");
+    const show = content.slice(content.indexOf("function showImportModal"));
+    expect(show.slice(0, show.indexOf("\n}\n"))).toContain(
+      "openContentSearch.focus();",
+    );
+  });
 });
 
 describe("goal import", () => {
   it("opens as its own dialog, not as the first-run flow", () => {
     const main = desktopFile("src/main.ts");
-    expect(main).toContain("openGoalImportDialog()");
+    // The menu entry is hidden once chosen, so closing returns to the button.
+    expect(main).toContain(
+      'openGoalImportDialog(document.getElementById("btn-content-import-menu"))',
+    );
     expect(main).not.toContain('showOnboardingAt("goal")');
     expect(desktopFile("index.html")).toContain('id="goal-import-overlay"');
 
@@ -63,9 +80,19 @@ describe("goal import", () => {
     expect(dialog).not.toContain("initOnboarding");
   });
 
+  it("keeps focus inside the dialog when the goal area redraws", () => {
+    const dialog = desktopFile("src/goal-import.ts");
+    expect(dialog).toContain("new MutationObserver(");
+    expect(dialog).toContain(
+      "if (open && !el.contains(document.activeElement)) focusInDialog();",
+    );
+  });
+
   it("shares one goal area with the first-run flow", () => {
     const onboarding = desktopFile("src/onboarding.ts");
     expect(onboarding).toContain("export function renderGoalArea(");
-    expect(onboarding).toContain('openModelSetup: () => actions.goToStep("model")');
+    expect(onboarding).toContain(
+      'openModelSetup: () => actions.goToStep("model")',
+    );
   });
 });
