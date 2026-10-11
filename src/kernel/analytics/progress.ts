@@ -331,3 +331,60 @@ export function formatActivityBucketLabel(
     return bucket;
   }
 }
+
+export interface RecentDaysSummary {
+  /** One entry per local day, oldest first, ending today; gaps are zero. */
+  days: ReviewActivityBucket[];
+  reviewedCards: number;
+  studyTimeMs: number;
+  /**
+   * Mean measured study time per card over the window, or null when no
+   * reviewed day in it carries a measured time. Days whose reviews predate
+   * response-time logging (time 0, ADR 2026-08-01 Decision 2) are left out
+   * of the mean instead of pulling it towards zero.
+   */
+  msPerCard: number | null;
+}
+
+/**
+ * Fold a day-bucketed activity series into the last `days` local days, for
+ * the dashboard's week strip and its "about N minutes" estimate. Pure: the
+ * caller passes the buckets `getReviewActivity` returned and the clock.
+ */
+export function summarizeRecentDays(
+  buckets: readonly ReviewActivityBucket[],
+  days: number,
+  now: Date = new Date(),
+): RecentDaysSummary {
+  const byDay = new Map(buckets.map((b) => [b.bucket, b]));
+  const today = new Date(now.getFullYear(), now.getMonth(), now.getDate());
+  const series: ReviewActivityBucket[] = [];
+  for (let offset = Math.max(0, days - 1); offset >= 0; offset--) {
+    const day = new Date(
+      today.getFullYear(),
+      today.getMonth(),
+      today.getDate() - offset,
+    );
+    const key = dayKey(day);
+    const hit = byDay.get(key);
+    series.push({
+      bucket: key,
+      reviewedCards: hit?.reviewedCards ?? 0,
+      studyTimeMs: hit?.studyTimeMs ?? 0,
+    });
+  }
+  let reviewedCards = 0;
+  let studyTimeMs = 0;
+  let measuredCards = 0;
+  for (const day of series) {
+    reviewedCards += day.reviewedCards;
+    studyTimeMs += day.studyTimeMs;
+    if (day.studyTimeMs > 0) measuredCards += day.reviewedCards;
+  }
+  return {
+    days: series,
+    reviewedCards,
+    studyTimeMs,
+    msPerCard: measuredCards > 0 ? studyTimeMs / measuredCards : null,
+  };
+}

@@ -13,10 +13,6 @@
   </head>
 
   <body>
-    <!-- BACKGROUND GLOWS -->
-    <div class="blur-glow glow-1"></div>
-    <div class="blur-glow glow-2"></div>
-
     <!-- STARTUP OVERLAY
          Present in the static markup (not created by main.ts) so it is on
          screen from the first paint. Everything behind it is placeholder
@@ -40,19 +36,39 @@
       </div>
     </div>
 
-    <main class="container">
-      <!-- HEADER BAR -->
-      <header class="app-header">
-        <div class="logo-area">
-          <span class="logo-accent">ZAM</span>
-          <span class="logo-sub">Recall Studio</span>
-        </div>
-        <nav class="top-nav" aria-label="Main navigation">
-          <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
-          <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
-          <button id="nav-stats" class="nav-btn" type="button">Statistics</button>
-          <button id="nav-settings" class="nav-btn" type="button">Settings</button>
-        </nav>
+    <div class="app-shell" id="app-shell">
+    <!-- SIDEBAR. Navigation on the left, status at the foot: the content
+         area belongs to the task, not to chrome. Narrow windows turn it into
+         a top bar. -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="logo-area">
+        <span class="logo-accent">ZAM</span>
+        <span class="logo-sub">Recall Studio</span>
+      </div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button id="nav-dashboard" class="nav-btn active" type="button" aria-current="page">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path></svg>
+          <span class="nav-label">Today</span>
+          <span class="nav-count" id="nav-due-count" hidden></span>
+        </button>
+        <button id="nav-content" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"></rect><path d="M6 3h12M5 5h14"></path></svg>
+          <span class="nav-label">Learning Content</span>
+        </button>
+        <button id="btn-open-graph" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
+          <span class="nav-label">Knowledge graph</span>
+        </button>
+        <button id="nav-stats" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+          <span class="nav-label">Statistics</span>
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <button id="nav-settings" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+          <span class="nav-label">Settings</span>
+        </button>
         <div class="status-area" id="system-status">
           <div class="status-indicator">
             <!-- "Offline" was a claim the app had not checked yet; start in
@@ -62,26 +78,58 @@
           </div>
           <span class="locale-badge" id="locale-badge">EN</span>
         </div>
-      </header>
+      </div>
+    </aside>
 
-      <!-- VIEW 1: DASHBOARD OVERVIEW -->
+    <main class="container">
+      <!-- VIEW 1: TODAY. One action — learn what is due — and only the
+           context that helps decide to start: how many, roughly how long,
+           and how the week went. -->
       <section id="dashboard-view" class="view active">
-        <div class="dashboard-hero frosted">
-          <div class="dashboard-copy">
-            <p id="lbl-dashboard-kicker" class="eyebrow">Today in ZAM</p>
-            <h1 id="lbl-dashboard-title">Learn deliberately.</h1>
-            <p id="lbl-dashboard-subtitle">
-              Review what is due, open your knowledge map, or configure local AI and workspaces in Settings.
-            </p>
+        <header class="today-header">
+          <p class="today-date" id="today-date"></p>
+          <h1 id="lbl-dashboard-title">Today</h1>
+        </header>
+
+        <div class="today-hero frosted" aria-labelledby="today-due-headline">
+          <!-- The card box: three cards, the top one carries the due count.
+               Placeholder, not a reading: a literal "0" here was
+               indistinguishable from a real empty queue while the bridge
+               was still starting. loadDashboard() fills it in. -->
+          <div class="due-stack" aria-hidden="true">
+            <span class="due-stack-card"></span>
+            <span class="due-stack-card"></span>
+            <span class="due-stack-card due-stack-top"><span class="large-number" id="due-count">—</span></span>
           </div>
-          <div class="hero-actions">
-            <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
-              Start Learning Session
-            </button>
-            <button id="btn-open-graph" class="btn secondary-btn btn-large">Knowledge Map (3D)</button>
-            <button id="btn-open-settings" class="btn secondary-btn btn-large" type="button">Settings</button>
+          <div class="today-hero-copy">
+            <h2 class="today-due-headline" id="today-due-headline">—</h2>
+            <p class="today-due-meta" id="today-due-meta" hidden></p>
+            <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
+            <div class="today-domains">
+              <span class="today-domains-label" id="lbl-domains">Active Domains</span>
+              <div class="domain-list" id="dashboard-domains">
+                <span class="empty-tag">—</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <button id="btn-start-session" class="btn primary-btn btn-large" type="button" disabled>
+                Start learning
+              </button>
+              <!-- Library topics (ADR 2026-10-02): shown on an empty deck when
+                   the library already holds topics to start from. -->
+              <button id="btn-dashboard-library-topics" class="btn secondary-btn btn-large hidden" type="button">Start with the library's topics</button>
+            </div>
           </div>
         </div>
+
+        <section class="card frosted today-week" id="today-week" aria-labelledby="lbl-week-title" hidden>
+          <div class="today-card-head">
+            <h2 id="lbl-week-title">This week</h2>
+            <button id="btn-dashboard-stats" class="btn ghost-btn btn-sm" type="button">Statistics</button>
+          </div>
+          <p class="today-week-summary" id="today-week-summary"></p>
+          <div class="today-week-chart" id="today-week-chart" role="img"></div>
+        </section>
 
         <div id="onboarding-checklist" class="card frosted onboarding-checklist hidden">
           <h2 id="lbl-onboarding-checklist-title">Finish setting up ZAM</h2>
@@ -90,28 +138,6 @@
           </p>
           <div id="onboarding-checklist-items" class="onboarding-checklist-items"></div>
         </div>
-
-        <div class="dashboard-grid">
-          <div class="card stat-card frosted">
-            <h2 id="lbl-due-reviews">Due Reviews</h2>
-            <!-- Placeholder, not a reading: a literal "0" here was
-                 indistinguishable from a real empty queue while the bridge
-                 was still starting. loadDashboard() fills both in. -->
-            <div class="large-number" id="due-count">—</div>
-            <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
-            <!-- Library topics (ADR 2026-10-02): shown on an empty deck when the
-                 library already holds topics to start from. -->
-            <button id="btn-dashboard-library-topics" class="btn primary-btn btn-sm hidden" type="button" style="margin-top: 10px">Start with the library's topics</button>
-          </div>
-
-          <div class="card stat-card frosted">
-            <h2 id="lbl-domains">Active Domains</h2>
-            <div class="domain-list" id="dashboard-domains">
-              <span class="empty-tag">—</span>
-            </div>
-          </div>
-        </div>
-
       </section>
 
       <!-- FIRST-RUN ONBOARDING (ADR 2026-07-24) -->
@@ -148,24 +174,36 @@
 
       <!-- VIEW 5: LEARNING CONTENT STUDIO -->
       <section id="learning-content-view" class="view">
-        <div class="dashboard-hero frosted">
-          <div>
-            <p class="eyebrow" id="lbl-content-kicker">Personal catalog</p>
-            <h1 id="lbl-content-title">Learning Content Studio</h1>
-            <p id="lbl-content-subtitle" class="settings-subtitle">
-              Manage your personal learning cards, search tokens, and curate active recall prompts.
-            </p>
+        <!-- One primary action (New card) and one menu for every way content
+             comes in. The menu entries are the same buttons the import
+             modules wire by id, so each keeps its own behaviour. -->
+        <header class="content-header">
+          <h1 id="lbl-content-title">Learning Content</h1>
+          <div id="content-cards-actions" class="content-header-actions">
+            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge Map (3D)</button>
+            <button id="btn-content-material-bonus" class="btn secondary-btn" type="button" hidden>Bonus</button>
+            <div class="import-menu-wrap">
+              <button
+                id="btn-content-import-menu"
+                class="btn secondary-btn"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="content-import-menu"
+              >
+                <span id="lbl-content-import-menu">Import</span>
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <div id="content-import-menu" class="import-menu hidden" role="menu" aria-labelledby="btn-content-import-menu">
+                <button id="btn-content-material-import" class="import-menu-item" type="button" role="menuitem">Photo / PDF</button>
+                <button id="btn-content-library-topics" class="import-menu-item" type="button" role="menuitem">Library Topics</button>
+                <button id="btn-content-goal-import" class="import-menu-item" type="button" role="menuitem">Goal Import</button>
+                <button id="btn-content-import" class="import-menu-item" type="button" role="menuitem">Import File</button>
+              </div>
+            </div>
+            <button id="btn-content-new-card" class="btn primary-btn" type="button">New Card</button>
           </div>
-          <div id="content-cards-actions" style="display: flex; gap: 10px; align-items: center;">
-            <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
-            <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">Library Topics</button>
-            <button id="btn-content-material-import" class="btn secondary-btn btn-sm" type="button">Photo / PDF</button>
-            <button id="btn-content-material-bonus" class="btn secondary-btn btn-sm" type="button" hidden>Bonus</button>
-            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import File</button>
-            <button id="btn-content-open-graph" class="btn secondary-btn btn-sm" type="button">Knowledge Map (3D)</button>
-            <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
-          </div>
-        </div>
+        </header>
 
         <div id="content-area-switcher" class="content-area-switcher" role="tablist">
           <button id="btn-content-area-cards" class="content-area-option active" type="button" role="tab" aria-selected="true">Learning cards</button>
@@ -311,9 +349,18 @@
                 <ul id="content-sources-okf-list"></ul>
               </div>
             </div>
-            <div id="content-sources-reader" class="content-sources-reader">
-              <h2 id="lbl-content-source-reader">Reader</h2>
-              <div id="content-sources-reader-body"></div>
+          </div>
+          <div id="content-source-reader-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="lbl-content-source-reader">
+            <div class="modal-box source-reader-modal">
+              <div class="source-reader-head">
+                <div class="source-reader-heading">
+                  <h3 id="lbl-content-source-reader">Reader</h3>
+                  <p id="content-source-reader-title" class="source-reader-path"></p>
+                </div>
+                <button id="btn-content-source-reader-close" class="btn secondary-btn btn-sm" type="button">Close</button>
+              </div>
+              <p id="content-source-reader-note" class="source-reader-note" aria-live="polite"></p>
+              <div id="content-sources-reader-body" class="content-sources-reader-body"></div>
             </div>
           </div>
           <div id="content-sources-curriculum" class="content-sources-curriculum hidden" hidden>
@@ -374,16 +421,12 @@
       </section>
 
       <section id="stats-view" class="view">
-        <div class="settings-hero frosted">
-          <div>
-            <p id="lbl-stats-kicker" class="eyebrow">Review activity</p>
-            <h1 id="lbl-stats-title">Learning Statistics</h1>
-            <p id="lbl-stats-subtitle" class="settings-subtitle">
-              Cards reviewed per day, week, or month — and the study time they took.
-            </p>
-          </div>
-          <button id="btn-stats-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
-        </div>
+        <header class="page-header">
+          <h1 id="lbl-stats-title">Learning Statistics</h1>
+          <p id="lbl-stats-subtitle" class="page-subtitle">
+            Cards reviewed per day, week, or month — and the study time they took.
+          </p>
+        </header>
 
         <div class="stats-body">
           <div class="stats-period-row" role="tablist" aria-label="Period">
@@ -405,18 +448,14 @@
 
       <!-- VIEW 2: SETTINGS -->
       <section id="settings-view" class="view" data-settings-mode="simple">
-        <div class="settings-hero frosted">
-          <div>
-            <p id="lbl-settings-kicker" class="eyebrow">Local configuration</p>
-            <h1 id="lbl-settings-title">Settings</h1>
-            <p id="lbl-settings-subtitle" class="settings-subtitle">
-              Configure this machine without forcing the same choices onto every workspace or device.
-            </p>
-          </div>
-          <button id="btn-settings-back" class="btn secondary-btn btn-sm" type="button">Back to dashboard</button>
-        </div>
+        <header class="page-header">
+          <h1 id="lbl-settings-title">Settings</h1>
+          <p id="lbl-settings-subtitle" class="page-subtitle">
+            Configure this machine without forcing the same choices onto every workspace or device.
+          </p>
+        </header>
 
-        <div class="settings-mode-bar frosted">
+        <div class="settings-mode-bar">
           <div
             id="settings-mode-switcher"
             class="settings-mode-switcher"
@@ -448,545 +487,525 @@
           </p>
         </div>
 
-        <div class="settings-list" id="setup-card">
-          <article class="card frosted settings-card" id="study-learning-card">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-learning-title">Learning</h2>
-                <p id="lbl-settings-learning-help" class="settings-card-help">
-                  Choose how cards behave during a review.
-                </p>
-              </div>
-            </div>
-            <label class="settings-field" for="settings-learning-mode">
-              <span id="lbl-settings-learning-mode">Learning mode</span>
-              <select id="settings-learning-mode">
-                <option id="settings-learning-mode-flash" value="flash">Flash (fast, no typing)</option>
-                <option id="settings-learning-mode-choice" value="choice">Choice (pick one of three)</option>
-                <option id="settings-learning-mode-feedback" value="answer_feedback">Answer with AI feedback</option>
-                <option id="settings-learning-mode-variation" value="answer_variation">Answer with question variations</option>
-                <option id="settings-learning-mode-auto" value="auto">Auto (choice first, free recall later)</option>
-              </select>
-              <span id="lbl-settings-learning-mode-help" class="settings-card-help">
-                In Flash mode, reveal the answer directly and rate your recall without typing.
-              </span>
-            </label>
-            <!-- Auto's free-recall format (ADR 2026-09-27 Decision 8): shown
-                 only while Auto is selected. -->
-            <label class="settings-toggle hidden" id="settings-auto-recall-flash-row" for="settings-auto-recall-flash">
-              <input type="checkbox" id="settings-auto-recall-flash" />
-              <span id="lbl-settings-auto-recall-flash">Later without typing (Flash instead of an AI-checked answer)</span>
-            </label>
-            <!-- Off by default: an answer taken from another card is easy to
-                 recognise, so it tends to leave one option obviously right. -->
-            <label
-              class="settings-toggle settings-advanced-control"
-              for="settings-derived-choice-options"
-              data-settings-tier="advanced"
-            >
-              <input type="checkbox" id="settings-derived-choice-options" />
-              <span id="lbl-settings-derived-choice-options">Choice may use answers from your other cards (often easy to see through)</span>
-            </label>
-            <label
-              class="settings-field settings-advanced-control"
-              for="settings-voice-reveal-timeout"
-              data-settings-tier="advanced"
-            >
-              <span id="lbl-settings-voice-reveal-timeout">Seconds before voice mode reveals the answer</span>
-              <input id="settings-voice-reveal-timeout" type="number" min="5" max="60" step="1" />
-            </label>
-            <p id="study-learning-status" class="sub-label settings-status-row" aria-live="polite"></p>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-system-card">
-            <h2 id="lbl-settings-system-title">System</h2>
-            <div class="settings-row">
-              <span id="lbl-app-version">Version</span>
-              <code id="app-version">—</code>
-            </div>
-            <div class="settings-actions">
-              <button id="btn-check-updates" class="btn secondary-btn btn-sm" type="button">
-                Check for updates
-              </button>
-              <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
-                Releases
-              </button>
-              <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button">
-                Run setup again
-              </button>
-            </div>
-            <p id="update-status" class="sub-label" aria-live="polite"></p>
-          </article>
-
-          <article class="card frosted settings-card" id="study-workload-card">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-study-workload-title">Study workload</h2>
-                <p id="lbl-study-workload-help" class="settings-card-help">
-                  Choose a calm daily mix, intensive exam coverage, or a smaller problem-card session.
-                </p>
-              </div>
-            </div>
-            <label class="settings-field" for="study-workload-preset">
-              <span id="lbl-study-workload-preset">Plan</span>
-              <select id="study-workload-preset">
-                <option id="study-preset-balanced" value="balanced">Balanced</option>
-                <option id="study-preset-exam" value="exam">Exam</option>
-                <option id="study-preset-problems" value="problems">Problem cards</option>
-                <option id="study-preset-custom" value="custom">Custom</option>
-              </select>
-            </label>
-            <label class="settings-field" for="study-max-new" data-settings-tier="advanced">
-              <span id="lbl-study-max-new">New cards per session</span>
-              <input id="study-max-new" type="number" min="0" max="1000" step="1" />
-            </label>
-            <label class="settings-field" for="study-max-reviews" data-settings-tier="advanced">
-              <span id="lbl-study-max-reviews">Total cards per session</span>
-              <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
-            </label>
-            <label class="settings-toggle" for="study-bury-new" data-settings-tier="advanced">
-              <input id="study-bury-new" type="checkbox" />
-              <span id="lbl-study-bury-new">Show only one new sibling per day</span>
-            </label>
-            <label class="settings-toggle" for="study-bury-review" data-settings-tier="advanced">
-              <input id="study-bury-review" type="checkbox" />
-              <span id="lbl-study-bury-review">Show only one review sibling per day</span>
-            </label>
-            <div class="settings-actions">
-              <button id="btn-study-workload-save" class="btn primary-btn btn-sm" type="button">Save study plan</button>
-              <button id="btn-study-unbury" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">Show buried cards now</button>
-            </div>
-            <p id="study-workload-status" class="sub-label settings-status-row" aria-live="polite"></p>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-ai-card">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-ai-title">AI models</h2>
-              </div>
-              <button id="btn-toggle-ai-config" class="btn secondary-btn btn-sm" type="button">
-                Configure
-              </button>
-            </div>
-            <div class="settings-row">
-              <span id="lbl-learning-model">Learning model</span>
-              <code id="learning-model-status">—</code>
-            </div>
-            <div class="settings-row" data-settings-tier="advanced">
-              <span id="lbl-observer-model">Observer model</span>
-              <code id="observer-model-status">—</code>
-            </div>
-            <!-- Dynamic questions (ADR 2026-06-15). On by default; the toggle
-                 exists because the per-card model round-trip is what makes the
-                 start of a session slow on a modest model. -->
-            <label class="settings-toggle" for="toggle-dynamic-questions" data-settings-tier="advanced">
-              <input type="checkbox" id="toggle-dynamic-questions" checked />
-              <span>
-                <span id="lbl-dynamic-questions">Reword questions each review</span>
-                <span id="lbl-dynamic-questions-help" class="settings-card-help"></span>
-              </span>
-            </label>
-            <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
-            <!-- Windows-on-ARM only, and hidden until the status call says so.
-                 Foundry Local cannot be installed anywhere else, so on every
-                 other machine this section was a heading, an explanation and a
-                 button for something that could never happen. -->
-            <div id="foundry-local-setup" class="settings-stack hidden" data-settings-tier="advanced">
+        <div class="settings-layout">
+          <!-- Sections of the visible cards, in their on-screen order; it
+               follows Simple/Advanced. Built by settings-toc.ts. -->
+          <nav class="settings-toc" id="settings-toc" aria-label="Sections"></nav>
+          <div class="settings-list" id="setup-card">
+            <article class="card frosted settings-card" id="study-learning-card">
               <div class="settings-card-header">
                 <div>
-                  <h3 id="lbl-foundry-local-title">Foundry Local</h3>
-                  <p id="lbl-foundry-local-help" class="settings-card-help">
-                    Run the recommended text model privately on this computer.
+                  <h2 id="lbl-settings-learning-title">Learning</h2>
+                  <p id="lbl-settings-learning-help" class="settings-card-help">
+                    Choose how cards behave during a review.
                   </p>
                 </div>
               </div>
-              <div class="settings-row">
-                <span id="lbl-foundry-local-text">Recommended text model</span>
-                <code id="foundry-local-text-model">Checking…</code>
-              </div>
-              <div class="settings-actions">
-                <button id="btn-foundry-local-text" class="btn secondary-btn btn-sm" type="button">
-                  Set up text model
-                </button>
-              </div>
-              <p id="foundry-local-status" class="sub-label settings-status-row" aria-live="polite"></p>
-            </div>
-            <div id="local-vision-setup" class="settings-stack" data-settings-tier="advanced">
-              <div class="settings-card-header">
-                <div>
-                  <h3 id="lbl-local-vision-title">Local visual analysis</h3>
-                  <p id="lbl-local-vision-help" class="settings-card-help">
-                    Understand screenshots privately with Qwen3-VL 4B through Ollama.
-                  </p>
+              <!-- All five modes on screen instead of in a dropdown: each needs
+                   its one line of meaning to be chosen well. -->
+              <fieldset class="settings-field settings-choice">
+                <legend id="lbl-settings-learning-mode">Learning mode</legend>
+                <div id="settings-learning-mode" class="choice-cards">
+                  <label class="choice-card"><input type="radio" name="settings-learning-mode" value="flash" /><span id="settings-learning-mode-flash">Flash (fast, no typing)</span></label>
+                  <label class="choice-card"><input type="radio" name="settings-learning-mode" value="choice" /><span id="settings-learning-mode-choice">Choice (pick one of three)</span></label>
+                  <label class="choice-card"><input type="radio" name="settings-learning-mode" value="answer_feedback" /><span id="settings-learning-mode-feedback">Answer with AI feedback</span></label>
+                  <label class="choice-card"><input type="radio" name="settings-learning-mode" value="answer_variation" /><span id="settings-learning-mode-variation">Answer with question variations</span></label>
+                  <label class="choice-card"><input type="radio" name="settings-learning-mode" value="auto" /><span id="settings-learning-mode-auto">Auto (choice first, free recall later)</span></label>
                 </div>
-              </div>
-              <div class="settings-actions">
-                <button id="btn-local-vision-enable" class="btn secondary-btn btn-sm" type="button">
-                  Set up Qwen3-VL 4B
-                </button>
-                <button id="btn-local-vision-get-ollama" class="btn secondary-btn btn-sm" type="button">
-                  Install Ollama
-                </button>
-              </div>
-              <p id="local-vision-status" class="sub-label settings-status-row" aria-live="polite"></p>
-            </div>
-            <div id="local-embedding-setup" class="settings-stack" data-settings-tier="advanced">
-              <div class="settings-card-header">
-                <div>
-                  <h3 id="lbl-local-embedding-title">Semantic search</h3>
-                  <p id="lbl-local-embedding-help" class="settings-card-help">
-                    Keep semantic search on this computer with embeddinggemma:300m.
-                  </p>
-                </div>
-              </div>
-              <div class="settings-actions">
-                <button id="btn-local-embedding-enable" class="btn secondary-btn btn-sm" type="button">
-                  Enable EmbeddingGemma:300m
-                </button>
-                <button id="btn-local-embedding-get-ollama" class="btn secondary-btn btn-sm" type="button">
-                  Install Ollama
-                </button>
-              </div>
-              <p id="local-embedding-status" class="sub-label settings-status-row" aria-live="polite"></p>
-            </div>
-            <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
-              <p id="ai-config-status" class="sub-label settings-status-row"></p>
-              <div id="ai-provider-list" class="ai-provider-list"></div>
-              <div class="settings-actions">
-                <button id="btn-add-ai-provider" class="btn secondary-btn btn-sm" type="button">
-                  + Add model
-                </button>
-              </div>
-              <div id="ai-role-bindings" class="ai-role-bindings"></div>
-            </div>
-          </article>
-
-          <!-- AGENT HARNESS CONNECTIONS (ADR 2026-07-11) -->
-          <article class="card frosted settings-card" id="settings-agents-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-agents-title">AI agents</h2>
-                <p id="lbl-settings-agents-help" class="settings-card-help">
-                  Connect installed agent harnesses to ZAM via MCP. Safe to repeat anytime.
-                </p>
-              </div>
-              <button id="btn-agents-connect-all" class="btn primary-btn btn-sm" type="button">
-                Connect all detected
-              </button>
-            </div>
-            <div id="agent-harness-list" class="agent-harness-list">
-              <p id="agent-harness-loading" class="sub-label">Detecting installed harnesses...</p>
-            </div>
-            <p id="agent-connect-result" class="sub-label settings-status-row hidden" aria-live="polite"></p>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-workspaces-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>
-                <p id="lbl-workspaces-help" class="settings-card-help">Register personal, team, family, or community work directories for this machine.</p>
-              </div>
-              <button id="btn-choose-workspace" class="btn secondary-btn btn-sm" type="button">
-                + Add workspace…
-              </button>
-            </div>
-            <div id="workspace-list" class="workspace-list" aria-live="polite"></div>
-            <div class="settings-actions">
-              <button id="btn-open-terminal" class="btn primary-btn btn-sm" type="button">
-                Open Terminal
-              </button>
-            </div>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-context-card" data-settings-tier="advanced">
-            <h2 id="lbl-settings-context-title">Knowledge Context</h2>
-            <p id="lbl-settings-context-help" class="settings-card-help">Select the default knowledge context for this device.</p>
-            <label class="settings-field" for="device-context-select">
-              <span id="lbl-settings-context">Default Context</span>
-              <select id="device-context-select">
-                <option value="">None / Unfiltered</option>
-                <!-- JS populated context options -->
-              </select>
-            </label>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-appearance-card">
-            <h2 id="lbl-settings-appearance-title">Appearance</h2>
-            <label class="settings-field" for="theme-select">
-              <span id="lbl-settings-theme">Theme</span>
-              <select id="theme-select">
-                <option value="light" id="theme-light-option">Light</option>
-                <option value="dark" id="theme-dark-option">Dark</option>
-              </select>
-            </label>
-          </article>
-
-          <!-- VOICE MODE (ADR 2026-07-31). The preference is machine-local:
-               which tier is right depends on the hardware in front of the
-               learner, so it is never synchronized through the database. -->
-          <article class="card frosted settings-card" id="settings-voice-card" data-settings-tier="advanced">
-            <h2 id="lbl-settings-voice-title">Voice mode</h2>
-            <p id="lbl-settings-voice-help" class="settings-card-help"></p>
-            <label class="settings-field" for="voice-preference-select">
-              <span id="lbl-settings-voice-preference">Speech is handled by</span>
-              <select id="voice-preference-select">
-                <option value="device-only" id="voice-pref-device-only-option">This device only</option>
-                <option value="device-first" id="voice-pref-device-first-option">This device, cloud if needed</option>
-                <option value="quality-first" id="voice-pref-quality-first-option">Best quality</option>
-              </select>
-            </label>
-            <p id="voice-preference-detail" class="settings-card-help" aria-live="polite"></p>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-data-card">
-            <h2 id="lbl-settings-data-title">Data</h2>
-            <div class="settings-row">
-              <span id="lbl-settings-database">Database</span>
-              <code id="database-connection-status">Checking…</code>
-            </div>
-            <p id="database-connection-detail" class="settings-card-help" aria-live="polite"></p>
-            <label class="settings-field" for="database-user-select">
-              <span id="lbl-settings-learning-profile">Learning profile</span>
-              <select id="database-user-select" disabled>
-                <option value="">—</option>
-              </select>
-            </label>
-            <div class="settings-actions">
-              <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
-                Refresh status
-              </button>
-              <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
-                Open data folder
-              </button>
-              <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
-                Back up database
-              </button>
-            </div>
-            <div id="observation-logs-row" class="settings-observation-logs" hidden>
-              <div class="settings-row">
-                <span id="lbl-settings-observation-logs">Observation logs</span>
-              </div>
-              <p id="observation-logs-detail" class="settings-card-help" aria-live="polite"></p>
-              <div class="settings-actions">
-                <button id="btn-observation-logs-delete" class="btn secondary-btn btn-sm" type="button">
-                  Delete observation logs
-                </button>
-              </div>
-            </div>
-            <div id="trusted-folders-row" class="settings-trusted-folders">
-              <div class="settings-row">
-                <span id="lbl-settings-trusted-folders">Trusted folders</span>
-              </div>
-              <p id="trusted-folders-help" class="settings-card-help">
-                Source links and AI assistants may read files only in these folders.
-              </p>
-              <ul id="trusted-folders-list" class="settings-trusted-folder-list"></ul>
-              <p id="trusted-folders-suggestion" class="settings-card-help" aria-live="polite" hidden></p>
-              <div class="settings-actions">
-                <button id="btn-trusted-folders-add-suggested" class="btn primary-btn btn-sm" type="button" hidden>
-                  Trust these folders
-                </button>
-                <button id="btn-trusted-folder-add" class="btn secondary-btn btn-sm" type="button">
-                  Add folder…
-                </button>
-              </div>
-              <p id="trusted-folders-detail" class="settings-card-help" aria-live="polite"></p>
-            </div>
-          </article>
-
-          <article class="card frosted settings-card" id="settings-server-db-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-server-db-title">Server database</h2>
-                <p id="lbl-settings-server-db-help" class="settings-card-help">
-                  Connect Turso/sqld to unlock multi-device and mobile pairing.
-                  Local SQLite stays available for single-machine use.
-                </p>
-              </div>
-            </div>
-            <div id="server-db-form" class="settings-stack">
-              <p id="server-db-status" class="sub-label" aria-live="polite"></p>
-              <div id="team-db-notice" class="settings-card-help" hidden>
-                <p id="team-db-disclosure"></p>
-                <div id="team-db-disclosure-actions" class="settings-card-actions" hidden>
-                  <button id="btn-team-db-understood" class="btn primary-btn btn-sm" type="button">Understood</button>
-                  <button id="btn-team-db-learn-locally" class="btn secondary-btn btn-sm" type="button">Learn locally instead</button>
-                </div>
-              </div>
-              <div id="library-switch-back" class="settings-card-actions" hidden>
-                <button id="btn-library-restore" class="btn secondary-btn btn-sm" type="button">Switch back</button>
-                <button id="btn-team-db-leave" class="btn secondary-btn btn-sm" type="button">Leave the team library</button>
-              </div>
-              <div id="server-db-turso-section" class="settings-stack">
-                <h3 id="lbl-server-db-turso-title" class="sub-label">Personal server database (Turso)</h3>
-                <p id="server-db-create-hint" class="settings-card-help">
-                  No database yet? Create a free one, then paste its URL and token here.
-                </p>
-                <div id="server-db-links" class="settings-card-actions"></div>
-                <label class="settings-field" for="server-db-url">
-                  <span id="lbl-server-db-url">Database URL</span>
-                  <input
-                    id="server-db-url"
-                    class="settings-input"
-                    type="url"
-                    autocomplete="off"
-                    spellcheck="false"
-                  />
-                </label>
-                <label class="settings-field" for="server-db-token">
-                  <span id="lbl-server-db-token">Auth token</span>
-                  <input
-                    id="server-db-token"
-                    class="settings-input"
-                    type="password"
-                    autocomplete="off"
-                    spellcheck="false"
-                  />
-                </label>
-                <div class="settings-card-actions">
-                  <button id="btn-server-db-connect" class="btn primary-btn btn-sm" type="button">
-                    Connect server database
-                  </button>
-                </div>
-              </div>
-              <div id="team-db-section" class="settings-stack">
-                <h3 id="lbl-team-db-title" class="sub-label">Team library</h3>
-                <p id="lbl-team-db-help" class="settings-card-help"></p>
-                <label class="settings-field" for="team-db-host">
-                  <span id="lbl-team-db-host">Server host</span>
-                  <input
-                    id="team-db-host"
-                    class="settings-input"
-                    type="text"
-                    autocomplete="off"
-                    spellcheck="false"
-                  />
-                </label>
-                <label class="settings-field" for="team-db-database">
-                  <span id="lbl-team-db-database">Database</span>
-                  <input
-                    id="team-db-database"
-                    class="settings-input"
-                    type="text"
-                    autocomplete="off"
-                    spellcheck="false"
-                  />
-                </label>
-                <div class="settings-card-actions">
-                  <button id="btn-team-db-signin" class="btn secondary-btn btn-sm" type="button">Sign in with Microsoft</button>
-                  <button id="btn-team-db-connect" class="btn primary-btn btn-sm" type="button">Connect to team library</button>
-                </div>
-                <p id="team-db-status" class="sub-label" aria-live="polite"></p>
-              </div>
-            </div>
-          </article>
-
-          <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
-               of onboarding entirely. Ticking the box reveals the body; until
-               then this card is one checkbox and one sentence. -->
-          <article class="card frosted settings-card" id="secrets-vault-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <!-- The title text has its own span: applyLabels() writes
-                     textContent per element, and writing it on the <h2> would
-                     delete the Alpha badge nested inside it. -->
-                <h2 id="lbl-settings-secrets-title">
-                  <span id="lbl-settings-secrets-title-text">Multi-machine secrets</span>
-                  <span id="lbl-settings-secrets-alpha" class="settings-badge-alpha">Alpha</span>
-                </h2>
-                <p id="lbl-settings-secrets-help" class="settings-card-help">
-                  Optional: sync the server-database token to Bitwarden so every
-                  computer can use it. Cloud model keys usually live in the
-                  database already. One unlock, one sync — no re-paste.
-                </p>
-              </div>
-            </div>
-            <label class="settings-toggle" for="toggle-secrets-vault">
-              <input type="checkbox" id="toggle-secrets-vault" />
-              <span>
-                <span id="lbl-secrets-vault-toggle">Enable the Bitwarden vault (alpha)</span>
-                <span id="lbl-secrets-vault-toggle-help" class="settings-card-help"></span>
-              </span>
-            </label>
-            <div class="settings-stack" id="secrets-vault-body" hidden>
-              <p id="lbl-secrets-vault-alpha-note" class="settings-card-help settings-alpha-note"></p>
-              <p id="secrets-vault-status" class="sub-label" aria-live="polite"></p>
-              <p id="secrets-vault-detail" class="settings-card-help" aria-live="polite"></p>
-              <div id="secrets-vault-unlock-row" class="settings-stack">
-                <label class="settings-field" for="secrets-vault-password">
-                  <span id="lbl-secrets-unlock">Unlock Bitwarden for this session</span>
-                  <input
-                    id="secrets-vault-password"
-                    class="settings-input"
-                    type="password"
-                    autocomplete="off"
-                    spellcheck="false"
-                  />
-                  <span id="lbl-secrets-password-note" class="settings-card-help"></span>
-                </label>
-                <div class="settings-card-actions">
-                  <button id="btn-secrets-unlock" class="btn secondary-btn btn-sm" type="button">
-                    Unlock
-                  </button>
-                </div>
-              </div>
-              <div class="settings-card-actions">
-                <button id="btn-secrets-sync" class="btn primary-btn btn-sm" type="button">
-                  Sync with Bitwarden
-                </button>
-                <button id="btn-secrets-open-vault" class="btn secondary-btn btn-sm" type="button">
-                  Open Bitwarden
-                </button>
-                <button id="btn-secrets-disconnect" class="btn secondary-btn btn-sm" type="button">
-                  Disconnect Bitwarden
-                </button>
-              </div>
-            </div>
-          </article>
-
-          <!-- Knowledge map alpha (ADR 2026-10-03): off by default; ticking the
-               box shows the navigation entry and the view choice. -->
-          <article class="card frosted settings-card" id="knowledge-map-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-km-settings-title">
-                  <span id="lbl-km-settings-title-text">Knowledge map</span>
-                  <span class="settings-badge-alpha">Alpha</span>
-                </h2>
-                <p id="lbl-km-settings-help" class="settings-card-help"></p>
-              </div>
-            </div>
-            <label class="settings-toggle" for="toggle-knowledge-map">
-              <input type="checkbox" id="toggle-knowledge-map" />
-              <span id="lbl-km-settings-toggle">Enable the knowledge map (Alpha)</span>
-            </label>
-            <div class="settings-stack" id="knowledge-map-settings-body" hidden>
-              <p id="lbl-km-settings-note" class="settings-card-help settings-alpha-note"></p>
-              <fieldset class="settings-stack" style="border: 0; padding: 0; margin: 0;">
-                <legend id="lbl-km-settings-view" class="sub-label">View</legend>
-                <div id="knowledge-map-views" class="settings-stack"></div>
+                <span id="lbl-settings-learning-mode-help" class="settings-card-help">
+                  In Flash mode, reveal the answer directly and rate your recall without typing.
+                </span>
               </fieldset>
-            </div>
-            <p id="knowledge-map-status" class="settings-card-help" aria-live="polite"></p>
-          </article>
+              <!-- Auto's free-recall format (ADR 2026-09-27 Decision 8): shown
+                   only while Auto is selected. -->
+              <label class="settings-toggle hidden" id="settings-auto-recall-flash-row" for="settings-auto-recall-flash">
+                <input type="checkbox" id="settings-auto-recall-flash" />
+                <span id="lbl-settings-auto-recall-flash">Later without typing (Flash instead of an AI-checked answer)</span>
+              </label>
+              <!-- Off by default: an answer taken from another card is easy to
+                   recognise, so it tends to leave one option obviously right. -->
+              <label
+                class="settings-toggle settings-advanced-control"
+                for="settings-derived-choice-options"
+                data-settings-tier="advanced"
+              >
+                <input type="checkbox" id="settings-derived-choice-options" />
+                <span id="lbl-settings-derived-choice-options">Choice may use answers from your other cards (often easy to see through)</span>
+              </label>
+              <label
+                class="settings-field settings-advanced-control"
+                for="settings-voice-reveal-timeout"
+                data-settings-tier="advanced"
+              >
+                <span id="lbl-settings-voice-reveal-timeout">Seconds before voice mode reveals the answer</span>
+                <input id="settings-voice-reveal-timeout" type="number" min="5" max="60" step="1" />
+              </label>
+              <p id="study-learning-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            </article>
 
-          <article class="card frosted settings-card" id="settings-mobile-card" data-settings-tier="advanced">
-            <div class="settings-card-header">
-              <div>
-                <h2 id="lbl-settings-mobile-title">Mobile companion</h2>
-                <p id="lbl-settings-mobile-help" class="settings-card-help">
-                  Pair an Android device with this server database and one learner.
-                  Requires a connected server database first.
-                </p>
+            <article class="card frosted settings-card" id="settings-system-card">
+              <h2 id="lbl-settings-system-title">System</h2>
+              <div class="settings-row">
+                <span id="lbl-app-version">Version</span>
+                <code id="app-version">—</code>
               </div>
-              <button id="btn-pair-mobile" class="btn primary-btn btn-sm" type="button">
-                Pair mobile device
-              </button>
-            </div>
-          </article>
+              <div class="settings-actions">
+                <button id="btn-check-updates" class="btn secondary-btn btn-sm" type="button">
+                  Check for updates
+                </button>
+                <button id="btn-open-releases" class="btn secondary-btn btn-sm" type="button">
+                  Releases
+                </button>
+                <button id="btn-run-onboarding" class="btn secondary-btn btn-sm" type="button">
+                  Run setup again
+                </button>
+              </div>
+              <p id="update-status" class="sub-label" aria-live="polite"></p>
+            </article>
 
-          <div class="settings-status-row">
-            <p id="setup-status" class="sub-label" aria-live="polite"></p>
+            <article class="card frosted settings-card" id="study-workload-card">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-study-workload-title">Study workload</h2>
+                  <p id="lbl-study-workload-help" class="settings-card-help">
+                    Choose a calm daily mix, intensive exam coverage, or a smaller problem-card session.
+                  </p>
+                </div>
+              </div>
+              <fieldset class="settings-field settings-choice">
+                <legend id="lbl-study-workload-preset">Plan</legend>
+                <div id="study-workload-preset" class="segmented-choice">
+                  <label><input type="radio" name="study-workload-preset" value="balanced" /><span id="study-preset-balanced">Balanced</span></label>
+                  <label><input type="radio" name="study-workload-preset" value="exam" /><span id="study-preset-exam">Exam</span></label>
+                  <label><input type="radio" name="study-workload-preset" value="problems" /><span id="study-preset-problems">Problem cards</span></label>
+                  <label><input type="radio" name="study-workload-preset" value="custom" /><span id="study-preset-custom">Custom</span></label>
+                </div>
+              </fieldset>
+              <label class="settings-field" for="study-max-new" data-settings-tier="advanced">
+                <span id="lbl-study-max-new">New cards per session</span>
+                <input id="study-max-new" type="number" min="0" max="1000" step="1" />
+              </label>
+              <label class="settings-field" for="study-max-reviews" data-settings-tier="advanced">
+                <span id="lbl-study-max-reviews">Total cards per session</span>
+                <input id="study-max-reviews" type="number" min="1" max="10000" step="1" />
+              </label>
+              <label class="settings-toggle" for="study-bury-new" data-settings-tier="advanced">
+                <input id="study-bury-new" type="checkbox" />
+                <span id="lbl-study-bury-new">Show only one new sibling per day</span>
+              </label>
+              <label class="settings-toggle" for="study-bury-review" data-settings-tier="advanced">
+                <input id="study-bury-review" type="checkbox" />
+                <span id="lbl-study-bury-review">Show only one review sibling per day</span>
+              </label>
+              <div class="settings-actions" data-settings-tier="advanced">
+                <button id="btn-study-unbury" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">Show buried cards now</button>
+              </div>
+              <p id="study-workload-status" class="sub-label settings-status-row" aria-live="polite"></p>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-ai-card">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-ai-title">AI models</h2>
+                </div>
+                <button id="btn-toggle-ai-config" class="btn secondary-btn btn-sm" type="button">
+                  Configure
+                </button>
+              </div>
+              <div class="settings-row">
+                <span id="lbl-learning-model">Learning model</span>
+                <code id="learning-model-status">—</code>
+              </div>
+              <div class="settings-row" data-settings-tier="advanced">
+                <span id="lbl-observer-model">Observer model</span>
+                <code id="observer-model-status">—</code>
+              </div>
+              <!-- Dynamic questions (ADR 2026-06-15). On by default; the toggle
+                   exists because the per-card model round-trip is what makes the
+                   start of a session slow on a modest model. -->
+              <label class="settings-toggle" for="toggle-dynamic-questions" data-settings-tier="advanced">
+                <input type="checkbox" id="toggle-dynamic-questions" checked />
+                <span>
+                  <span id="lbl-dynamic-questions">Reword questions each review</span>
+                  <span id="lbl-dynamic-questions-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
+              <!-- Windows-on-ARM only, and hidden until the status call says so.
+                   Foundry Local cannot be installed anywhere else, so on every
+                   other machine this section was a heading, an explanation and a
+                   button for something that could never happen. -->
+              <div id="foundry-local-setup" class="settings-stack hidden" data-settings-tier="advanced">
+                <div class="settings-card-header">
+                  <div>
+                    <h3 id="lbl-foundry-local-title">Foundry Local</h3>
+                    <p id="lbl-foundry-local-help" class="settings-card-help">
+                      Run the recommended text model privately on this computer.
+                    </p>
+                  </div>
+                </div>
+                <div class="settings-row">
+                  <span id="lbl-foundry-local-text">Recommended text model</span>
+                  <code id="foundry-local-text-model">Checking…</code>
+                </div>
+                <div class="settings-actions">
+                  <button id="btn-foundry-local-text" class="btn secondary-btn btn-sm" type="button">
+                    Set up text model
+                  </button>
+                </div>
+                <p id="foundry-local-status" class="sub-label settings-status-row" aria-live="polite"></p>
+              </div>
+              <div id="local-vision-setup" class="settings-stack" data-settings-tier="advanced">
+                <div class="settings-card-header">
+                  <div>
+                    <h3 id="lbl-local-vision-title">Local visual analysis</h3>
+                    <p id="lbl-local-vision-help" class="settings-card-help">
+                      Understand screenshots privately with Qwen3-VL 4B through Ollama.
+                    </p>
+                  </div>
+                </div>
+                <div class="settings-actions">
+                  <button id="btn-local-vision-enable" class="btn secondary-btn btn-sm" type="button">
+                    Set up Qwen3-VL 4B
+                  </button>
+                  <button id="btn-local-vision-get-ollama" class="btn secondary-btn btn-sm" type="button">
+                    Install Ollama
+                  </button>
+                </div>
+                <p id="local-vision-status" class="sub-label settings-status-row" aria-live="polite"></p>
+              </div>
+              <div id="local-embedding-setup" class="settings-stack" data-settings-tier="advanced">
+                <div class="settings-card-header">
+                  <div>
+                    <h3 id="lbl-local-embedding-title">Semantic search</h3>
+                    <p id="lbl-local-embedding-help" class="settings-card-help">
+                      Keep semantic search on this computer with embeddinggemma:300m.
+                    </p>
+                  </div>
+                </div>
+                <div class="settings-actions">
+                  <button id="btn-local-embedding-enable" class="btn secondary-btn btn-sm" type="button">
+                    Enable EmbeddingGemma:300m
+                  </button>
+                  <button id="btn-local-embedding-get-ollama" class="btn secondary-btn btn-sm" type="button">
+                    Install Ollama
+                  </button>
+                </div>
+                <p id="local-embedding-status" class="sub-label settings-status-row" aria-live="polite"></p>
+              </div>
+              <div id="ai-config-editor" class="ai-config-editor hidden" aria-live="polite">
+                <p id="ai-config-status" class="sub-label settings-status-row"></p>
+                <div id="ai-provider-list" class="ai-provider-list"></div>
+                <div class="settings-actions">
+                  <button id="btn-add-ai-provider" class="btn secondary-btn btn-sm" type="button">
+                    + Add model
+                  </button>
+                </div>
+                <div id="ai-role-bindings" class="ai-role-bindings"></div>
+              </div>
+            </article>
+
+            <!-- AGENT HARNESS CONNECTIONS (ADR 2026-07-11) -->
+            <article class="card frosted settings-card" id="settings-agents-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-agents-title">AI agents</h2>
+                  <p id="lbl-settings-agents-help" class="settings-card-help">
+                    Connect installed agent harnesses to ZAM via MCP. Safe to repeat anytime.
+                  </p>
+                </div>
+                <button id="btn-agents-connect-all" class="btn primary-btn btn-sm" type="button">
+                  Connect all detected
+                </button>
+              </div>
+              <div id="agent-harness-list" class="agent-harness-list">
+                <p id="agent-harness-loading" class="sub-label">Detecting installed harnesses...</p>
+              </div>
+              <p id="agent-connect-result" class="sub-label settings-status-row hidden" aria-live="polite"></p>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-workspaces-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-workspace-title">Workspace &amp; agents</h2>
+                  <p id="lbl-workspaces-help" class="settings-card-help">Register personal, team, family, or community work directories for this machine.</p>
+                </div>
+                <button id="btn-choose-workspace" class="btn secondary-btn btn-sm" type="button">
+                  + Add workspace…
+                </button>
+              </div>
+              <div id="workspace-list" class="workspace-list" aria-live="polite"></div>
+              <div class="settings-actions">
+                <button id="btn-open-terminal" class="btn primary-btn btn-sm" type="button">
+                  Open Terminal
+                </button>
+              </div>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-context-card" data-settings-tier="advanced">
+              <h2 id="lbl-settings-context-title">Knowledge Context</h2>
+              <p id="lbl-settings-context-help" class="settings-card-help">Select the default knowledge context for this device.</p>
+              <label class="settings-field" for="device-context-select">
+                <span id="lbl-settings-context">Default Context</span>
+                <select id="device-context-select">
+                  <option value="">None / Unfiltered</option>
+                  <!-- JS populated context options -->
+                </select>
+              </label>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-appearance-card">
+              <h2 id="lbl-settings-appearance-title">Appearance</h2>
+              <fieldset class="settings-field settings-choice">
+                <legend id="lbl-settings-theme">Theme</legend>
+                <div id="theme-select" class="segmented-choice">
+                  <label><input type="radio" name="theme-select" value="light" /><span id="theme-light-option">Light</span></label>
+                  <label><input type="radio" name="theme-select" value="dark" /><span id="theme-dark-option">Dark</span></label>
+                </div>
+              </fieldset>
+            </article>
+
+            <!-- VOICE MODE (ADR 2026-07-31). The preference is machine-local:
+                 which tier is right depends on the hardware in front of the
+                 learner, so it is never synchronized through the database. -->
+            <article class="card frosted settings-card" id="settings-voice-card" data-settings-tier="advanced">
+              <h2 id="lbl-settings-voice-title">Voice mode</h2>
+              <p id="lbl-settings-voice-help" class="settings-card-help"></p>
+              <label class="settings-field" for="voice-preference-select">
+                <span id="lbl-settings-voice-preference">Speech is handled by</span>
+                <select id="voice-preference-select">
+                  <option value="device-only" id="voice-pref-device-only-option">This device only</option>
+                  <option value="device-first" id="voice-pref-device-first-option">This device, cloud if needed</option>
+                  <option value="quality-first" id="voice-pref-quality-first-option">Best quality</option>
+                </select>
+              </label>
+              <p id="voice-preference-detail" class="settings-card-help" aria-live="polite"></p>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-data-card">
+              <h2 id="lbl-settings-data-title">Data</h2>
+              <div class="settings-row">
+                <span id="lbl-settings-database">Database</span>
+                <code id="database-connection-status">Checking…</code>
+              </div>
+              <p id="database-connection-detail" class="settings-card-help" aria-live="polite"></p>
+              <label class="settings-field" for="database-user-select">
+                <span id="lbl-settings-learning-profile">Learning profile</span>
+                <select id="database-user-select" disabled>
+                  <option value="">—</option>
+                </select>
+              </label>
+              <div class="settings-actions">
+                <button id="btn-refresh-database-status" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
+                  Refresh status
+                </button>
+                <button id="btn-open-data-folder" class="btn secondary-btn btn-sm" type="button" data-settings-tier="advanced">
+                  Open data folder
+                </button>
+                <button id="btn-backup-db" class="btn secondary-btn btn-sm" type="button">
+                  Back up database
+                </button>
+              </div>
+              <div id="observation-logs-row" class="settings-observation-logs" hidden>
+                <div class="settings-row">
+                  <span id="lbl-settings-observation-logs">Observation logs</span>
+                </div>
+                <p id="observation-logs-detail" class="settings-card-help" aria-live="polite"></p>
+                <div class="settings-actions">
+                  <button id="btn-observation-logs-delete" class="btn secondary-btn btn-sm" type="button">
+                    Delete observation logs
+                  </button>
+                </div>
+              </div>
+              <div id="trusted-folders-row" class="settings-trusted-folders">
+                <div class="settings-row">
+                  <span id="lbl-settings-trusted-folders">Trusted folders</span>
+                </div>
+                <p id="trusted-folders-help" class="settings-card-help">
+                  Source links and AI assistants may read files only in these folders.
+                </p>
+                <ul id="trusted-folders-list" class="settings-trusted-folder-list"></ul>
+                <p id="trusted-folders-suggestion" class="settings-card-help" aria-live="polite" hidden></p>
+                <div class="settings-actions">
+                  <button id="btn-trusted-folders-add-suggested" class="btn primary-btn btn-sm" type="button" hidden>
+                    Trust these folders
+                  </button>
+                  <button id="btn-trusted-folder-add" class="btn secondary-btn btn-sm" type="button">
+                    Add folder…
+                  </button>
+                </div>
+                <p id="trusted-folders-detail" class="settings-card-help" aria-live="polite"></p>
+              </div>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-server-db-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-server-db-title">Server database</h2>
+                  <p id="lbl-settings-server-db-help" class="settings-card-help">
+                    Connect Turso/sqld to unlock multi-device and mobile pairing.
+                    Local SQLite stays available for single-machine use.
+                  </p>
+                </div>
+              </div>
+              <div id="server-db-form" class="settings-stack">
+                <p id="server-db-status" class="sub-label" aria-live="polite"></p>
+                <div id="team-db-notice" class="settings-card-help" hidden>
+                  <p id="team-db-disclosure"></p>
+                  <div id="team-db-disclosure-actions" class="settings-card-actions" hidden>
+                    <button id="btn-team-db-understood" class="btn primary-btn btn-sm" type="button">Understood</button>
+                    <button id="btn-team-db-learn-locally" class="btn secondary-btn btn-sm" type="button">Learn locally instead</button>
+                  </div>
+                </div>
+                <div id="library-switch-back" class="settings-card-actions" hidden>
+                  <button id="btn-library-restore" class="btn secondary-btn btn-sm" type="button">Switch back</button>
+                  <button id="btn-team-db-leave" class="btn secondary-btn btn-sm" type="button">Leave the team library</button>
+                </div>
+                <div id="server-db-turso-section" class="settings-stack">
+                  <h3 id="lbl-server-db-turso-title" class="sub-label">Personal server database (Turso)</h3>
+                  <p id="server-db-create-hint" class="settings-card-help">
+                    No database yet? Create a free one, then paste its URL and token here.
+                  </p>
+                  <div id="server-db-links" class="settings-card-actions"></div>
+                  <label class="settings-field" for="server-db-url">
+                    <span id="lbl-server-db-url">Database URL</span>
+                    <input
+                      id="server-db-url"
+                      class="settings-input"
+                      type="url"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                  </label>
+                  <label class="settings-field" for="server-db-token">
+                    <span id="lbl-server-db-token">Auth token</span>
+                    <input
+                      id="server-db-token"
+                      class="settings-input"
+                      type="password"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                  </label>
+                  <div class="settings-card-actions">
+                    <button id="btn-server-db-connect" class="btn primary-btn btn-sm" type="button">
+                      Connect server database
+                    </button>
+                  </div>
+                </div>
+                <div id="team-db-section" class="settings-stack">
+                  <h3 id="lbl-team-db-title" class="sub-label">Team library</h3>
+                  <p id="lbl-team-db-help" class="settings-card-help"></p>
+                  <label class="settings-field" for="team-db-host">
+                    <span id="lbl-team-db-host">Server host</span>
+                    <input
+                      id="team-db-host"
+                      class="settings-input"
+                      type="text"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                  </label>
+                  <label class="settings-field" for="team-db-database">
+                    <span id="lbl-team-db-database">Database</span>
+                    <input
+                      id="team-db-database"
+                      class="settings-input"
+                      type="text"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                  </label>
+                  <div class="settings-card-actions">
+                    <button id="btn-team-db-signin" class="btn secondary-btn btn-sm" type="button">Sign in with Microsoft</button>
+                    <button id="btn-team-db-connect" class="btn primary-btn btn-sm" type="button">Connect to team library</button>
+                  </div>
+                  <p id="team-db-status" class="sub-label" aria-live="polite"></p>
+                </div>
+              </div>
+            </article>
+
+            <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
+                 of onboarding entirely. Ticking the box reveals the body; until
+                 then this card is one checkbox and one sentence. -->
+            <article class="card frosted settings-card" id="secrets-vault-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <!-- The title text has its own span: applyLabels() writes
+                       textContent per element, and writing it on the <h2> would
+                       delete the Alpha badge nested inside it. -->
+                  <h2 id="lbl-settings-secrets-title">
+                    <span id="lbl-settings-secrets-title-text">Multi-machine secrets</span>
+                    <span id="lbl-settings-secrets-alpha" class="settings-badge-alpha">Alpha</span>
+                  </h2>
+                  <p id="lbl-settings-secrets-help" class="settings-card-help">
+                    Optional: sync the server-database token to Bitwarden so every
+                    computer can use it. Cloud model keys usually live in the
+                    database already. One unlock, one sync — no re-paste.
+                  </p>
+                </div>
+              </div>
+              <label class="settings-toggle" for="toggle-secrets-vault">
+                <input type="checkbox" id="toggle-secrets-vault" />
+                <span>
+                  <span id="lbl-secrets-vault-toggle">Enable the Bitwarden vault (alpha)</span>
+                  <span id="lbl-secrets-vault-toggle-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <div class="settings-stack" id="secrets-vault-body" hidden>
+                <p id="lbl-secrets-vault-alpha-note" class="settings-card-help settings-alpha-note"></p>
+                <p id="secrets-vault-status" class="sub-label" aria-live="polite"></p>
+                <p id="secrets-vault-detail" class="settings-card-help" aria-live="polite"></p>
+                <div id="secrets-vault-unlock-row" class="settings-stack">
+                  <label class="settings-field" for="secrets-vault-password">
+                    <span id="lbl-secrets-unlock">Unlock Bitwarden for this session</span>
+                    <input
+                      id="secrets-vault-password"
+                      class="settings-input"
+                      type="password"
+                      autocomplete="off"
+                      spellcheck="false"
+                    />
+                    <span id="lbl-secrets-password-note" class="settings-card-help"></span>
+                  </label>
+                  <div class="settings-card-actions">
+                    <button id="btn-secrets-unlock" class="btn secondary-btn btn-sm" type="button">
+                      Unlock
+                    </button>
+                  </div>
+                </div>
+                <div class="settings-card-actions">
+                  <button id="btn-secrets-sync" class="btn primary-btn btn-sm" type="button">
+                    Sync with Bitwarden
+                  </button>
+                  <button id="btn-secrets-open-vault" class="btn secondary-btn btn-sm" type="button">
+                    Open Bitwarden
+                  </button>
+                  <button id="btn-secrets-disconnect" class="btn secondary-btn btn-sm" type="button">
+                    Disconnect Bitwarden
+                  </button>
+                </div>
+              </div>
+            </article>
+
+            <article class="card frosted settings-card" id="settings-mobile-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-mobile-title">Mobile companion</h2>
+                  <p id="lbl-settings-mobile-help" class="settings-card-help">
+                    Pair an Android device with this server database and one learner.
+                    Requires a connected server database first.
+                  </p>
+                </div>
+                <button id="btn-pair-mobile" class="btn primary-btn btn-sm" type="button">
+                  Pair mobile device
+                </button>
+              </div>
+            </article>
+
+            <div class="settings-status-row">
+              <p id="setup-status" class="sub-label" aria-live="polite"></p>
+            </div>
           </div>
         </div>
       </section>
@@ -1068,6 +1087,23 @@
         </div>
       </div>
 
+      <!-- GOAL IMPORT (redesign step 4): the goal page as its own dialog,
+           independent of the first-run flow. Filled by goal-import.ts. -->
+      <div id="goal-import-overlay" class="modal-overlay">
+        <div class="modal-box goal-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-goal-import-title">
+          <div class="modal-header">
+            <h3 id="lbl-goal-import-title">Name a goal — ZAM builds the path.</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-goal-import-body" class="goal-import-intro"></p>
+            <div id="goal-import-root" class="onboarding-goal"></div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-goal-import-close" class="btn secondary-btn" type="button">Close</button>
+          </div>
+        </div>
+      </div>
+
       <div id="mobile-pairing-overlay" class="modal-overlay">
         <div class="modal-box pairing-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-pairing-title">
           <div class="modal-header">
@@ -1096,66 +1132,96 @@
 
       <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">
+        <!-- SESSION BAR. A running session is focus mode: the app header is
+             hidden (main.container.study-focus), so this bar carries the way
+             out, the progress, the learning mode and the card menu. -->
+        <div class="study-topbar" id="study-topbar">
+          <button id="btn-pause-session" class="btn ghost-btn study-end-btn" type="button">
+            End session
+          </button>
+          <div class="study-progress">
+            <span class="card-progress" id="card-progress">1 / 10</span>
+            <div
+              class="study-progress-track"
+              id="study-progress-track"
+              role="progressbar"
+              aria-labelledby="card-progress"
+              aria-valuemin="0"
+              aria-valuemax="10"
+              aria-valuenow="0"
+            >
+              <span class="study-progress-fill" id="study-progress-fill"></span>
+            </div>
+          </div>
+          <div class="study-topbar-actions">
+            <div
+              id="study-mode-switcher"
+              class="study-mode-switcher"
+              role="radiogroup"
+              aria-label="Learning mode"
+            >
+              <button
+                id="btn-study-mode-flash"
+                class="study-mode-option active"
+                type="button"
+                role="radio"
+                aria-checked="true"
+              >
+                Flash
+              </button>
+              <button
+                id="btn-study-mode-choice"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Choice
+              </button>
+              <button
+                id="btn-study-mode-feedback"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                AI
+              </button>
+              <button
+                id="btn-study-mode-auto"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Auto
+              </button>
+            </div>
+            <!-- Card management (ADR 2026-07-16b) lives in one menu, before
+                 and after the reveal, so it never sits between the feedback
+                 and the reference answer or next to the rating buttons. -->
+            <div class="card-manage-wrap">
+              <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+              </button>
+              <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
+                <button id="btn-study-manage-edit" class="card-manage-item" type="button" role="menuitem">Edit this card</button>
+                <button id="btn-study-open-editor" class="card-manage-item" type="button" role="menuitem">Open in full editor</button>
+                <button id="btn-study-manage-stop" class="card-manage-item danger" type="button" role="menuitem">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="study-active-card" class="study-card frosted">
           <!-- CARD HEADER -->
           <div class="card-header">
-            <span class="card-progress" id="card-progress">1/10</span>
             <div class="tag-row">
-              <div
-                id="study-mode-switcher"
-                class="study-mode-switcher"
-                role="radiogroup"
-                aria-label="Learning mode"
-              >
-                <button
-                  id="btn-study-mode-flash"
-                  class="study-mode-option active"
-                  type="button"
-                  role="radio"
-                  aria-checked="true"
-                >
-                  ⚡ Flash
-                </button>
-                <button
-                  id="btn-study-mode-choice"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  🔘 Choice
-                </button>
-                <button
-                  id="btn-study-mode-feedback"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  💬 AI
-                </button>
-                <button
-                  id="btn-study-mode-auto"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  🔄 Auto
-                </button>
-              </div>
-              <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
+              <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="tier-badge" hidden></span>
               <!-- Auto's recall probe (ADR 2026-09-27 Decision 8). -->
               <span class="badge choice-stage-badge" id="choice-stage-badge" hidden></span>
-              <div class="card-manage-wrap">
-                <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">⋯</button>
-                <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
-                  <button id="btn-study-manage-edit" class="card-manage-item" type="button" role="menuitem">Edit this card</button>
-                  <button id="btn-study-manage-stop" class="card-manage-item danger" type="button" role="menuitem">Remove</button>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -1197,10 +1263,11 @@
             <div class="answer-capture" id="answer-capture-box">
               <!-- Why a card in Choice is asked without options. -->
               <p id="choice-notice" class="choice-notice" hidden></p>
+              <label class="answer-label" for="user-answer-input" id="lbl-user-answer">Your answer</label>
               <textarea id="user-answer-input" placeholder="Type your conceptual answer here... (Enter to submit)"></textarea>
               <div id="fast-check-options" class="study-offer-actions" hidden></div>
               <div class="card-buttons">
-                <button id="btn-reveal-answer" class="btn primary-btn btn-block">
+                <button id="btn-reveal-answer" class="btn primary-btn btn-large">
                   Submit & Reveal Answer
                 </button>
               </div>
@@ -1250,14 +1317,34 @@
 
             <!-- REVEALED SCREEN -->
             <div class="revealed-container hidden" id="revealed-box">
-              <!-- What the learner wrote: submitting hides the capture box, so
-                   without this it is off-screen while the feedback, the
-                   reference and the rating buttons all refer to it. Deliberately
-                   NOT .answer-box — renderReveal() toggles the reference box by
-                   "#revealed-box .answer-box", which takes the first match. -->
-              <div class="own-answer-box hidden" id="own-answer-box">
-                <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
-                <div class="own-answer-text" id="own-answer-text"></div>
+              <!-- Own answer and reference side by side, so comparing them
+                   is a glance across rather than a scroll. When there is no
+                   own answer (Flash, Choice) the reference takes the row. -->
+              <div class="reveal-compare" id="reveal-compare">
+                <!-- What the learner wrote: submitting hides the capture box,
+                     so without this it is off-screen while the feedback, the
+                     reference and the rating buttons all refer to it.
+                     Deliberately NOT .answer-box — renderReveal() toggles the
+                     reference box by "#revealed-box .answer-box", which takes
+                     the first match. -->
+                <div class="own-answer-box hidden" id="own-answer-box">
+                  <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
+                  <div class="own-answer-text" id="own-answer-text"></div>
+                </div>
+
+                <!-- CORE REFERENCE ANSWER -->
+                <div class="answer-box" id="reference-answer-box">
+                  <div class="reference-answer-header">
+                    <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
+                    <!-- Choice reveals fold the reference away: the answer is
+                         already marked among the options (ADR 2026-09-27). -->
+                    <button id="btn-reference-toggle" class="btn ghost-btn btn-sm" type="button" hidden aria-expanded="false" aria-controls="reveal-content-list">Show reference answer</button>
+                  </div>
+                  <div class="reveal-content-list" id="reveal-content-list">
+                    <!-- Generated dynamically: Token, Concept, Context, Source -->
+                  </div>
+                  <div id="answer-media" class="review-media"></div>
+                </div>
               </div>
 
               <!-- AI FEEDBACK -->
@@ -1284,12 +1371,6 @@
                 </details>
               </div>
 
-              <!-- POST-REVEAL CARD MANAGEMENT (stays visible with AI feedback) -->
-              <div class="study-edit-controls">
-                <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
-                <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
-              </div>
-
               <!-- CHOICE RESULT (ADR 2026-09-27 Decision 7): the rating is
                    derived from the pick, so this replaces the rating bar. -->
               <div class="choice-result hidden" id="choice-result" aria-live="polite">
@@ -1300,20 +1381,6 @@
                   <button id="btn-choice-dispute" class="btn ghost-btn btn-sm" type="button" hidden>My answer is also correct</button>
                   <button id="btn-choice-next" class="btn primary-btn" type="button">Next</button>
                 </div>
-              </div>
-
-              <!-- CORE REFERENCE ANSWER -->
-              <div class="answer-box" id="reference-answer-box">
-                <div class="reference-answer-header">
-                  <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
-                  <!-- Choice reveals fold the reference away: the answer is
-                       already marked among the options (ADR 2026-09-27). -->
-                  <button id="btn-reference-toggle" class="btn ghost-btn btn-sm" type="button" hidden aria-expanded="false" aria-controls="reveal-content-list">Show reference answer</button>
-                </div>
-                <div class="reveal-content-list" id="reveal-content-list">
-                  <!-- Generated dynamically: Token, Concept, Context, Source -->
-                </div>
-                <div id="answer-media" class="review-media"></div>
               </div>
 
               <!-- POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) -->
@@ -1366,22 +1433,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="rating-stop-wrap">
-                  <button id="btn-study-stop" class="btn stop-btn" type="button">
-                    <span class="rating-num">–</span>
-                    <span class="rating-label">Remove</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- END SESSION BUTTON -->
-        <div class="study-footer" id="study-footer">
-          <button id="btn-pause-session" class="btn secondary-btn">
-            End session
-          </button>
         </div>
 
         <!-- FIELD-TEST OFFERS (precondition / keep-going / bonus) -->
@@ -1397,7 +1451,7 @@
           <h2 id="session-summary-title">Session summary</h2>
           <p id="session-summary-sub"></p>
           <div id="session-summary-spread" class="session-summary-spread"></div>
-          <button id="btn-session-summary-done" class="btn primary-btn btn-large glow-btn" type="button">
+          <button id="btn-session-summary-done" class="btn primary-btn btn-large" type="button">
             Back to Dashboard
           </button>
         </div>
@@ -1699,5 +1753,6 @@
         </div>
       </div>
     </main>
+    </div>
   </body>
 </html>

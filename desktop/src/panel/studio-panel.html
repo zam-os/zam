@@ -192,28 +192,34 @@
       .content-sources-status p {
         margin: 0;
       }
+      /* The map takes the full width; reading opens in a dialog. */
       .content-sources-body {
-        display: grid;
+        display: flex;
+        flex-direction: column;
         gap: 14px;
-        grid-template-columns: 1fr;
         margin-top: 8px;
       }
-      .content-sources-knowledge,
-      .content-sources-reader {
+      .content-sources-knowledge {
+        display: flex;
+        flex-direction: column;
+        gap: 14px;
         min-width: 0;
       }
-      .content-sources-okf h2,
-      .content-sources-reader h2 {
+      .content-sources-okf h2 {
         font-size: 15px;
         margin: 0 0 8px;
       }
       .content-sources-okf ul {
+        columns: 16rem;
+        column-gap: 20px;
         list-style: none;
         margin: 0;
         padding: 0;
       }
-      .content-sources-okf p,
-      .content-sources-reader-path {
+      .content-sources-okf li {
+        break-inside: avoid;
+      }
+      .content-sources-okf p {
         margin: 0 0 8px;
       }
       .content-sources-article {
@@ -226,14 +232,116 @@
         text-align: left;
         text-decoration: underline;
       }
+      .modal-box.source-reader-modal {
+        height: min(820px, 100%);
+        max-height: none;
+        max-width: 880px;
+        overflow: hidden;
+      }
+      .source-reader-head {
+        align-items: flex-start;
+        display: flex;
+        gap: 12px;
+        justify-content: space-between;
+      }
+      .source-reader-heading {
+        min-width: 0;
+      }
+      .source-reader-heading h3 {
+        font-size: 1.05rem;
+        margin: 0;
+      }
+      .source-reader-path {
+        color: var(--muted);
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.78rem;
+        margin: 2px 0 0;
+        overflow-wrap: anywhere;
+      }
+      .source-reader-note {
+        color: var(--danger);
+        font-size: 0.85rem;
+        margin: 0;
+      }
+      .source-reader-note:empty {
+        display: none;
+      }
       .content-sources-reader-body {
-        max-height: 70vh;
+        border-top: 1px solid var(--border);
+        flex: 1;
+        min-height: 0;
         overflow: auto;
+        padding-top: 12px;
       }
       .content-sources-text {
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.82rem;
         margin: 0;
         white-space: pre-wrap;
         word-break: break-word;
+      }
+      .content-sources-reader-body .okf-article-body {
+        font-size: 0.92rem;
+        line-height: 1.55;
+      }
+      .content-sources-reader-body .okf-article-body :is(h1, h2, h3, h4, h5, h6) {
+        line-height: 1.3;
+        margin: 1.1em 0 0.4em;
+      }
+      .content-sources-reader-body .okf-article-body :is(h1, h2, h3, h4, h5, h6):first-child {
+        margin-top: 0;
+      }
+      .content-sources-reader-body .okf-article-body h1 {
+        font-size: 1.35rem;
+      }
+      .content-sources-reader-body .okf-article-body h2 {
+        font-size: 1.15rem;
+      }
+      .content-sources-reader-body .okf-article-body :is(h3, h4, h5, h6) {
+        font-size: 1rem;
+      }
+      .content-sources-reader-body .okf-article-body p {
+        margin: 0.6em 0;
+      }
+      .content-sources-reader-body .okf-article-body code {
+        background: var(--hover);
+        border-radius: 4px;
+        font-family: ui-monospace, "Cascadia Code", Consolas, monospace;
+        font-size: 0.86em;
+        padding: 0.12em 0.35em;
+      }
+      .content-sources-reader-body .okf-article-body pre {
+        background: var(--hover);
+        border-radius: 8px;
+        overflow-x: auto;
+        padding: 10px 12px;
+      }
+      .content-sources-reader-body .okf-article-body pre code {
+        background: none;
+        padding: 0;
+      }
+      .content-sources-reader-body .okf-article-body :is(ul, ol) {
+        margin: 0.5em 0;
+        padding-left: 1.4em;
+      }
+      .content-sources-reader-body .okf-article-body blockquote {
+        border-left: 3px solid var(--border);
+        color: var(--muted);
+        margin: 0.7em 0;
+        padding: 4px 12px;
+      }
+      .content-sources-reader-body .okf-article-body table {
+        border-collapse: collapse;
+        display: block;
+        font-size: 0.86rem;
+        margin: 0.7em 0;
+        max-width: 100%;
+        overflow-x: auto;
+      }
+      .content-sources-reader-body .okf-article-body :is(th, td) {
+        border: 1px solid var(--border);
+        padding: 5px 9px;
+        text-align: left;
       }
       .content-studio-layout {
         display: flex;
@@ -786,9 +894,18 @@
                 <ul id="content-sources-okf-list"></ul>
               </div>
             </div>
-            <div id="content-sources-reader" class="content-sources-reader">
-              <h2 id="lbl-content-source-reader">Reader</h2>
-              <div id="content-sources-reader-body"></div>
+          </div>
+          <div id="content-source-reader-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="lbl-content-source-reader">
+            <div class="modal-box source-reader-modal">
+              <div class="source-reader-head">
+                <div class="source-reader-heading">
+                  <h3 id="lbl-content-source-reader">Reader</h3>
+                  <p id="content-source-reader-title" class="source-reader-path"></p>
+                </div>
+                <button id="btn-content-source-reader-close" class="btn secondary-btn btn-sm" type="button">Close</button>
+              </div>
+              <p id="content-source-reader-note" class="source-reader-note" aria-live="polite"></p>
+              <div id="content-sources-reader-body" class="content-sources-reader-body"></div>
             </div>
           </div>
         </div>

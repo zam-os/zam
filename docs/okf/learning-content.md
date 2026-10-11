@@ -7,12 +7,12 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-10T23:00:00.000Z
+timestamp: 2026-10-11T14:30:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
-The actions that create or manage cards from the page header stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path.
+The actions that create or manage cards stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, goal import, and file import; Bonus sits beside them while items are kept. Goal import opens the goal page in a dialog of its own. It no longer opens the first-run flow, which keeps its own goal step; both show the same goal page. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
 
 # Lern-Karten
 
@@ -22,7 +22,7 @@ Lern-Karten has three lists. A token is in at most one of them.
 
 Search and the category filter apply to the list that is open. The knowledge-context filter applies only while Persönlich is open; on the other two lists it is disabled.
 
-**Wissensnetz (3D)** is the existing graph of the learner's tokens and their prerequisites. Lern-Karten and the dashboard both open it, and Back returns to the page that opened it. The Studio panel has no graph view, so it hides that button.
+**Wissensnetz (3D)** is the existing graph of the learner's tokens and their prerequisites. Lern-Karten and the Desktop sidebar both open it. Back returns to Lern-Karten when the graph was opened there, or from the sidebar while Lern-Karten was showing; otherwise it returns to **Heute** (Today). The Studio panel has no graph view, so it hides that button.
 
 A published token in Nicht gewählt can be taken as this learner's card. One token is taken on its own, which creates the card and leaves the token as it is. A source group that has a key is taken together: a card is created for each member the learner lacks, and a card already set aside stays set aside. The Ohne Quelle group has an empty key, so those tokens are taken one by one.
 
@@ -32,7 +32,7 @@ Quellen shows one source at a time. The switcher is labeled **Quelle**. It lists
 
 A folder that is not a workspace can be looked at in the Desktop window. Picking it does not add a workspace, link skills, or repair anything. A directory that is missing stays selectable, and the page says so.
 
-For a workspace or a folder, the page lists that directory's OKF articles when `docs/okf/` is present. While **Knowledge map (Alpha)** is on, it also draws that directory's `docs/knowledge-map/map.json` in the view chosen in Settings. While the switch is off, the map stays unloaded and the OKF list remains; one action on the page turns the existing switch on. Settings is where the views are compared. The page has no view switcher of its own. A citation in the map, and an article in the list, open in the reader on this page. A path outside the source is refused and is not handed to the operating system. An empty source is a sentence: no map, no OKF bundle, or a missing directory.
+For a workspace or a folder, the page lists that directory's OKF articles when `docs/okf/` is present. It also draws that directory's `docs/knowledge-map/map.json` across the page's full width, with the article list below it; no switch hides the map, and its module still loads only when a repository source is shown. The map offers its views in place (**Ansicht** / View), and the chosen view is remembered for the next map. Settings no longer lists the views. A citation in the map, and an article in the list, open in a reader dialog. A Markdown file is rendered, and a link inside it opens in the same dialog, resolved from that file's folder; any other file shows as text. A path or link outside the source is refused with a note in the dialog and is not handed to the operating system. An empty source is a sentence: no map, no OKF bundle, or a missing directory.
 
 When the selected path is the real path of the package root that ships the ZAM skill, a symlink to that root included, the switcher marks it **Skillquelle** (Skill source). That source shows this repository's own map, or the validation errors, and does not substitute an example map. A different clone is an ordinary Quelle.
 

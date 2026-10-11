@@ -6,6 +6,11 @@
  * current system or container in a dashed frame, everything outside below.
  * A box with parts zooms in; "one level up" zooms out. Every arrow is also
  * listed as text under the diagram.
+ *
+ * An arrow bends around boxes it does not connect instead of running hidden
+ * behind them, and its label never covers a box: it goes on the arrow or
+ * beside it, falls back to the arrow's number, and is left out where even
+ * that finds no free spot (the list below still names it).
  */
 
 import {
@@ -15,21 +20,16 @@ import {
   type C4Diagram,
   type C4Element,
   type C4Scope,
-  clipToBoxes,
   homeScope,
+  labelSpots,
   parentScope,
+  type Rect,
+  routeArrow,
   zoomScope,
 } from "../c4-layout.js";
 import type { KnowledgeMapView, ViewFactory, ViewHost } from "../contract.js";
 
 const SVG_NS = "http://www.w3.org/2000/svg";
-
-interface Rect {
-  x: number;
-  y: number;
-  width: number;
-  height: number;
-}
 
 function overlaps(a: Rect, b: Rect, margin = 2): boolean {
   return (
@@ -99,7 +99,8 @@ export const createView: ViewFactory = (
     const frame = area.getBoundingClientRect();
     lines.setAttribute("width", String(area.scrollWidth));
     lines.setAttribute("height", String(area.scrollHeight));
-    for (const line of [...lines.querySelectorAll("line")]) line.remove();
+    for (const edge of [...lines.querySelectorAll(".km-c4-edge")])
+      edge.remove();
     labels.replaceChildren();
     const markerId = lines.dataset.marker ?? "";
     // Labels sit nearer the box with fewer arrows, so the labels of several
@@ -109,74 +110,79 @@ export const createView: ViewFactory = (
       degree.set(arrow.from, (degree.get(arrow.from) ?? 0) + 1);
       degree.set(arrow.to, (degree.get(arrow.to) ?? 0) + 1);
     }
-    const toArea = (r: DOMRect) => ({
+    const toArea = (r: DOMRect): Rect => ({
       x: r.left - frame.left + area.scrollLeft,
       y: r.top - frame.top + area.scrollTop,
       width: r.width,
       height: r.height,
     });
-    const taken: Rect[] = [...boxEls.values()].map((box) =>
-      toArea(box.getBoundingClientRect()),
-    );
+    const boxRects = new Map<string, Rect>();
+    for (const [id, box] of boxEls) {
+      boxRects.set(id, toArea(box.getBoundingClientRect()));
+    }
+    const boxes = [...boxRects.values()];
+    const boundaryLabel = area.querySelector(".km-c4-boundary-label");
+    const labelsTaken: Rect[] = boundaryLabel
+      ? [toArea(boundaryLabel.getBoundingClientRect())]
+      : [];
+
+    // Put `chip` at the first spot that covers no box (and, when `alone`,
+    // no other label either). Returns false and removes it when none is free.
+    const place = (
+      chip: HTMLElement,
+      spots: Array<{ x: number; y: number }>,
+      alone: boolean,
+    ): boolean => {
+      labels.appendChild(chip);
+      const w = chip.offsetWidth;
+      const h = chip.offsetHeight;
+      for (const p of spots) {
+        const rect = { x: p.x - w / 2, y: p.y - h / 2, width: w, height: h };
+        if (boxes.some((box) => overlaps(rect, box))) continue;
+        if (alone && labelsTaken.some((other) => overlaps(rect, other))) {
+          continue;
+        }
+        chip.style.left = `${p.x}px`;
+        chip.style.top = `${p.y}px`;
+        labelsTaken.push(rect);
+        return true;
+      }
+      chip.remove();
+      return false;
+    };
+
     current.arrows.forEach((arrow, i) => {
-      const a = boxEls.get(arrow.from)?.getBoundingClientRect();
-      const b = boxEls.get(arrow.to)?.getBoundingClientRect();
-      if (!a || !b) return;
-      const { x1, y1, x2, y2 } = clipToBoxes(toArea(a), toArea(b));
-      const line = document.createElementNS(SVG_NS, "line");
-      line.setAttribute("x1", String(x1));
-      line.setAttribute("y1", String(y1));
-      line.setAttribute("x2", String(x2));
-      line.setAttribute("y2", String(y2));
-      line.setAttribute("marker-end", `url(#${markerId})`);
-      lines.appendChild(line);
-      // The label goes where it covers no box and no other label; where no
-      // such spot exists the arrow shows only its number, which the
-      // relationship list below spells out.
-      const along = (t: number) => ({
-        x: x1 + (x2 - x1) * t,
-        y: y1 + (y2 - y1) * t,
-      });
+      const from = boxRects.get(arrow.from);
+      const to = boxRects.get(arrow.to);
+      if (!from || !to) return;
+      const others = [...boxRects]
+        .filter(([id]) => id !== arrow.from && id !== arrow.to)
+        .map(([, rect]) => rect);
+      const route = routeArrow(from, to, others);
+      const edge = document.createElementNS(SVG_NS, "path");
+      edge.classList.add("km-c4-edge");
+      edge.setAttribute("d", route.d);
+      edge.setAttribute("marker-end", `url(#${markerId})`);
+      lines.appendChild(edge);
+
       const near =
         (degree.get(arrow.from) ?? 0) >= (degree.get(arrow.to) ?? 0) ? 1 : -1;
-      const tries = [
-        0.5,
-        0.5 + 0.12 * near,
-        0.5 - 0.12 * near,
-        0.5 + 0.24 * near,
-        0.5 - 0.24 * near,
-      ];
-      const place = (chip: HTMLElement, positions: number[]): boolean => {
-        labels.appendChild(chip);
-        const w = chip.offsetWidth;
-        const h = chip.offsetHeight;
-        for (const t of positions) {
-          const p = along(t);
-          const rect = { x: p.x - w / 2, y: p.y - h / 2, width: w, height: h };
-          if (taken.some((other) => overlaps(rect, other))) continue;
-          chip.style.left = `${p.x}px`;
-          chip.style.top = `${p.y}px`;
-          taken.push(rect);
-          return true;
-        }
-        chip.remove();
-        return false;
-      };
+      const spots = labelSpots(route, near);
       const text = arrow.label ?? "";
       if (
         text &&
-        place(el("span", "km-c4-arrow-label", `${i + 1} · ${text}`), tries)
+        place(
+          el("span", "km-c4-arrow-label", `${i + 1} · ${text}`),
+          spots,
+          true,
+        )
       ) {
         return;
       }
       const badge = el("span", "km-c4-arrow-num", String(i + 1));
       if (text) badge.title = text;
-      if (!place(badge, [...tries, 0.3, 0.7, 0.2, 0.8, 0.12, 0.88])) {
-        const p = along(0.5);
-        badge.style.left = `${p.x}px`;
-        badge.style.top = `${p.y}px`;
-        labels.appendChild(badge);
-      }
+      // A number may touch another label but never a box.
+      if (!place(badge, spots, true)) place(badge, spots, false);
     });
   };
 

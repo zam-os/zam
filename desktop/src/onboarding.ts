@@ -360,20 +360,7 @@ export function buildOnboardingSteps(
   let workspaceStructure = ctx.workspaceStructure;
   // Goal-driven import state (Phase 7), kept across Back/forward re-renders
   // so a half-decomposed goal survives navigating the flow.
-  const goalState: GoalImportState = {
-    title: "",
-    description: "",
-    path: [],
-    levels: [],
-    cards: null,
-    failedTopics: [],
-    busy: null,
-    notice: null,
-    view: null,
-    sourceId: null,
-    goalFile: null,
-    imported: null,
-  };
+  const goalState: GoalImportState = createGoalImportState();
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -643,7 +630,14 @@ export function buildOnboardingSteps(
         const root = document.createElement("div");
         root.className = "onboarding-goal";
         container.append(root);
-        renderGoalArea(root, actions, goalState);
+        renderGoalArea(
+          root,
+          {
+            isLeaving: () => actions.isLeaving(),
+            openModelSetup: () => actions.goToStep("model"),
+          },
+          goalState,
+        );
       },
       onNext: () => commitGoalStep(goalState),
     },
@@ -1277,6 +1271,17 @@ export interface GoalAreaView {
   rerender(): void;
 }
 
+/**
+ * What the goal area needs from whoever shows it: the first-run flow, or
+ * the standalone goal import dialog in Learning Content (goal-import.ts).
+ */
+export interface GoalAreaHost {
+  /** True once the learner has asked to leave, while the area is shown. */
+  isLeaving(): boolean;
+  /** Without a text model the area links to the place that sets one up. */
+  openModelSetup(): void;
+}
+
 export interface GoalImportState {
   title: string;
   description: string;
@@ -1300,6 +1305,24 @@ export interface GoalImportState {
   sourceId: string | null;
   goalFile: { slug: string; filePath: string } | null;
   imported: { created: number; ensured: number } | null;
+}
+
+/** A fresh, empty goal: nothing defined, decomposed or imported yet. */
+export function createGoalImportState(): GoalImportState {
+  return {
+    title: "",
+    description: "",
+    path: [],
+    levels: [],
+    cards: null,
+    failedTopics: [],
+    busy: null,
+    notice: null,
+    view: null,
+    sourceId: null,
+    goalFile: null,
+    imported: null,
+  };
 }
 
 /** The curriculum wizard's readiness gate, shared behavior (ADR §3). */
@@ -1327,9 +1350,9 @@ async function goalTextLlmReady(): Promise<boolean> {
  * the user picks which become tokens+cards, each citing the goal file as
  * `source_link`. Without a text LLM the page links back to the model page.
  */
-function renderGoalArea(
+export function renderGoalArea(
   root: HTMLElement,
-  actions: OnboardingStepActions,
+  host: GoalAreaHost,
   state: GoalImportState,
 ): void {
   root.replaceChildren();
@@ -1338,10 +1361,10 @@ function renderGoalArea(
   status.className = "onboarding-model-status";
   status.setAttribute("aria-live", "polite");
 
-  const rerender = () => renderGoalArea(root, actions, state);
+  const rerender = () => renderGoalArea(root, host, state);
   state.view = {
     isLive: () =>
-      !actions.isLeaving() &&
+      !host.isLeaving() &&
       root.isConnected &&
       root.getClientRects().length > 0,
     rerender,
@@ -1410,7 +1433,7 @@ function renderGoalArea(
         backBtn.type = "button";
         backBtn.className = "btn secondary-btn btn-sm";
         backBtn.textContent = t("onboarding_goal_to_model_page");
-        backBtn.addEventListener("click", () => actions.goToStep("model"));
+        backBtn.addEventListener("click", () => host.openModelSetup());
         root.append(backBtn);
         suggestBtn.disabled = false;
         return;

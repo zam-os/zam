@@ -7,7 +7,11 @@ import {
   buildC4Model,
   clipToBoxes,
   homeScope,
+  labelSpots,
   parentScope,
+  type Rect,
+  routeArrow,
+  segmentHitsRect,
   zoomScope,
 } from "../../desktop/src/knowledge-map/c4-layout.js";
 import {
@@ -303,6 +307,82 @@ describe("knowledge map C4 view", () => {
       { x: 0, y: 0, width: 0, height: 0 },
     );
     expect(Number.isFinite(same.x1)).toBe(true);
+  });
+
+  // An arrow must never run hidden behind a box it does not connect.
+  const crosses = (points: { x: number; y: number }[], boxes: Rect[]) =>
+    points.some(
+      (point, i) =>
+        i > 0 &&
+        boxes.some((box) => segmentHitsRect(points[i - 1], point, box, 0)),
+    );
+
+  it("tells whether a segment passes through a box", () => {
+    const box = { x: 100, y: 100, width: 50, height: 50 };
+    expect(segmentHitsRect({ x: 0, y: 125 }, { x: 300, y: 125 }, box)).toBe(
+      true,
+    );
+    expect(segmentHitsRect({ x: 0, y: 0 }, { x: 300, y: 0 }, box)).toBe(false);
+    // Grown by the padding, a near miss counts.
+    expect(segmentHitsRect({ x: 0, y: 96 }, { x: 300, y: 96 }, box, 6)).toBe(
+      true,
+    );
+    expect(segmentHitsRect({ x: 0, y: 96 }, { x: 300, y: 96 }, box, 0)).toBe(
+      false,
+    );
+  });
+
+  it("draws an arrow straight when nothing is in the way", () => {
+    const route = routeArrow(
+      { x: 0, y: 0, width: 100, height: 60 },
+      { x: 300, y: 0, width: 100, height: 60 },
+      [{ x: 0, y: 300, width: 100, height: 60 }],
+      0,
+    );
+    expect(route.points).toEqual([
+      { x: 100, y: 30 },
+      { x: 300, y: 30 },
+    ]);
+  });
+
+  it("bends an arrow around a box between its ends", () => {
+    const from = { x: 0, y: 0, width: 100, height: 60 };
+    const to = { x: 400, y: 0, width: 100, height: 60 };
+    const between = { x: 200, y: 0, width: 100, height: 60 };
+    const route = routeArrow(from, to, [between]);
+    expect(crosses(route.points, [between])).toBe(false);
+  });
+
+  it("finds a way through the gaps of a full grid", () => {
+    // Three rows of three boxes; the arrow goes from the bottom right to the
+    // middle of the grid, past the boxes beside and between them.
+    const boxes: Rect[] = [];
+    for (let row = 0; row < 3; row++) {
+      for (let col = 0; col < 3; col++) {
+        boxes.push({ x: col * 280, y: row * 200, width: 210, height: 130 });
+      }
+    }
+    const from = boxes[8];
+    const to = boxes[1];
+    const others = boxes.filter((box) => box !== from && box !== to);
+    const route = routeArrow(from, to, others);
+    expect(crosses(route.points, others)).toBe(false);
+    expect(route.d.startsWith("M ")).toBe(true);
+  });
+
+  it("offers label spots on the arrow first, then beside it", () => {
+    const route = routeArrow(
+      { x: 0, y: 0, width: 100, height: 60 },
+      { x: 300, y: 0, width: 100, height: 60 },
+      [],
+      0,
+    );
+    const spots = labelSpots(route, 1);
+    expect(spots[0]).toEqual({ x: 200, y: 30 });
+    // Nearer the end box first when that box has fewer arrows.
+    expect(spots[1].x).toBeGreaterThan(200);
+    // Beside the arrow, never only on it.
+    expect(spots.some((spot) => spot.y !== 30)).toBe(true);
   });
 });
 
@@ -680,29 +760,24 @@ describe("knowledge map module boundaries and wiring", () => {
     }
   });
 
-  it("loads map views from Quellen only after the alpha is on", () => {
+  it("loads map views lazily from Quellen, with no switch to hide them", () => {
     const main = readFileSync(join(ROOT, "desktop/src/main.ts"), "utf8");
     expect(main).not.toContain("nav-knowledge-map");
     expect(main).not.toMatch(/^import .*knowledge-map\/studio/m);
     expect(main).not.toMatch(/^import .*knowledge-map\/views/m);
+    expect(main).not.toContain("initKnowledgeMapSettings");
     const knowledge = readFileSync(
       join(ROOT, "desktop/src/learning-content-knowledge.ts"),
       "utf8",
     );
-    const enabledAt = knowledge.indexOf("feature.enabled");
-    const importer = knowledge.indexOf(
-      'await import("./knowledge-map/studio.js")',
-    );
-    expect(enabledAt).toBeGreaterThan(-1);
-    expect(importer).toBeGreaterThan(enabledAt);
+    expect(knowledge).toContain('await import("./knowledge-map/studio.js")');
     expect(knowledge).not.toMatch(/^import .*knowledge-map\/studio/m);
+    // The views are chosen on the map; the alpha switch no longer hides it.
+    expect(knowledge).not.toContain("feature.enabled");
+    expect(knowledge).not.toContain('"--enable"');
     const html = readFileSync(join(ROOT, "desktop/index.html"), "utf8");
     expect(html).not.toContain("nav-knowledge-map");
-    expect(html).toMatch(
-      /id="knowledge-map-card" data-settings-tier="advanced"/,
-    );
-    expect(html).toMatch(
-      /<div class="settings-stack" id="knowledge-map-settings-body" hidden>/,
-    );
+    expect(html).not.toContain('id="knowledge-map-card"');
+    expect(html).not.toContain('id="toggle-knowledge-map"');
   });
 });

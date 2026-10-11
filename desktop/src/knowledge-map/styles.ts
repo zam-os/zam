@@ -89,6 +89,7 @@ const CSS = `
 .km-switcher-select { border: 0; background: var(--km-card); color: var(--km-text); font: inherit; font-size: 0.88rem;
   padding: 6px 10px; max-width: 100%; }
 .km-view-label { font-size: 0.85rem; color: var(--km-muted); }
+.km-view-picker { display: inline-flex; align-items: center; gap: 8px; }
 .km-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 0.85rem; min-height: 28px; }
 .km-crumbs .km-crumb { border: 0; background: transparent; cursor: pointer; padding: 3px 6px; border-radius: 6px;
   color: var(--km-text-2); max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
@@ -206,7 +207,7 @@ const CSS = `
 .km-c4-title { font-size: 0.98rem; }
 .km-c4-diagram { position: relative; display: flex; flex-direction: column; gap: 72px; padding: 8px 4px 12px; }
 .km-c4-arrows { position: absolute; left: 0; top: 0; pointer-events: none; overflow: visible; z-index: 0; }
-.km-c4-arrows line { stroke: var(--km-edge); stroke-width: 1.6; stroke-dasharray: 5 4; }
+.km-c4-arrows .km-c4-edge { fill: none; stroke: var(--km-edge); stroke-width: 1.6; stroke-dasharray: 5 4; }
 .km-c4-head { fill: var(--km-muted); }
 .km-c4-labels { position: absolute; inset: 0; pointer-events: none; z-index: 2; }
 .km-c4-arrow-label { position: absolute; transform: translate(-50%, -50%); font-size: 0.72rem; padding: 2px 7px;

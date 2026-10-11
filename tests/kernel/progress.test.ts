@@ -8,6 +8,7 @@ import {
   getReviewActivity,
   parseActivityBucket,
   STUDY_TIME_CAP_MS,
+  summarizeRecentDays,
 } from "../../src/kernel/index.js";
 import {
   describeWithProviders,
@@ -356,5 +357,62 @@ describe("parseActivityBucket / formatActivityBucketLabel", () => {
         weekLabel,
       }),
     ).toBe("2026-07-15");
+  });
+});
+
+describe("summarizeRecentDays", () => {
+  // Local noon, so the day keys hold in every timezone the suite runs in.
+  const now = new Date(2026, 9, 11, 12, 0, 0);
+
+  it("fills the last N local days oldest first, ending today", () => {
+    const summary = summarizeRecentDays(
+      [
+        { bucket: "2026-10-07", reviewedCards: 4, studyTimeMs: 120_000 },
+        { bucket: "2026-10-11", reviewedCards: 2, studyTimeMs: 60_000 },
+        // Outside the window: ignored.
+        { bucket: "2026-10-01", reviewedCards: 9, studyTimeMs: 90_000 },
+      ],
+      7,
+      now,
+    );
+    expect(summary.days.map((d) => d.bucket)).toEqual([
+      "2026-10-05",
+      "2026-10-06",
+      "2026-10-07",
+      "2026-10-08",
+      "2026-10-09",
+      "2026-10-10",
+      "2026-10-11",
+    ]);
+    expect(summary.days.map((d) => d.reviewedCards)).toEqual([
+      0, 0, 4, 0, 0, 0, 2,
+    ]);
+    expect(summary.reviewedCards).toBe(6);
+    expect(summary.studyTimeMs).toBe(180_000);
+    expect(summary.msPerCard).toBe(30_000);
+  });
+
+  it("keeps unmeasured days out of the per-card mean", () => {
+    const summary = summarizeRecentDays(
+      [
+        { bucket: "2026-10-10", reviewedCards: 10, studyTimeMs: 0 },
+        { bucket: "2026-10-11", reviewedCards: 2, studyTimeMs: 40_000 },
+      ],
+      7,
+      now,
+    );
+    expect(summary.reviewedCards).toBe(12);
+    expect(summary.msPerCard).toBe(20_000);
+  });
+
+  it("has no per-card time when nothing in the window was measured", () => {
+    expect(summarizeRecentDays([], 7, now).msPerCard).toBeNull();
+    expect(
+      summarizeRecentDays(
+        [{ bucket: "2026-10-09", reviewedCards: 3, studyTimeMs: 0 }],
+        7,
+        now,
+      ).msPerCard,
+    ).toBeNull();
   });
 });

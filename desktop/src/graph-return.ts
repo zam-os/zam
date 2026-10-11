@@ -1,9 +1,9 @@
 /**
  * Where the 3D token graph should return (ADR 2026-10-10, Decision 3).
  *
- * The dashboard button and Lern-Karten both open `graph-view`. Back uses the
- * view that opened it. The default is the dashboard, which is also the
- * opener until something else asks.
+ * The sidebar entry and Lern-Karten both open `graph-view`. Back uses the
+ * view that opened it; the sidebar counts as Lern-Karten while that page is
+ * showing. The default is the dashboard (Today).
  */
 
 export type GraphOrigin = "dashboard-view" | "learning-content-view";

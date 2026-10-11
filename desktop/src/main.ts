@@ -8,7 +8,17 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
-import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
+import { initContentImportMenu } from "./content-import-menu.js";
+import {
+  applyGoalImportLabels,
+  initGoalImportDialog,
+  openGoalImportDialog,
+} from "./goal-import.js";
+import {
+  formatActivityBucketLabel,
+  type RecentDaysSummary,
+  summarizeRecentDays,
+} from "../../src/kernel/analytics/progress.js";
 import {
   countAnswerPoints,
   shouldShowPointCount,
@@ -70,10 +80,6 @@ import {
   assureBitwardenAccessAfterError,
 } from "./bitwarden-assure.js";
 import { initSecretsVault } from "./secrets-vault.js";
-import {
-  initKnowledgeMapSettings,
-  type KnowledgeMapSettings,
-} from "./knowledge-map/settings.js";
 import {
   classifyServerDbError,
   initServerDbWizard,
@@ -160,9 +166,12 @@ import {
 } from "./settings-view-mode.js";
 import {
   initRadioGroupKeyboard,
+  radioChoice,
   radioGroupHasPendingFocus,
   syncRadioGroupTabStops,
 } from "./radio-group.js";
+import { serialSave } from "./serial-save.js";
+import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
   ModelRefreshCapabilitiesResponse,
@@ -778,8 +787,9 @@ function rememberLocale(locale: string | undefined): void {
 
 function applyTheme(theme: ThemePreference): void {
   document.documentElement.dataset.theme = theme;
-  const select = document.getElementById("theme-select") as HTMLSelectElement | null;
-  if (select) select.value = theme;
+  if (document.getElementById("theme-select")) {
+    radioChoice("theme-select").value = theme;
+  }
   try {
     void getCurrentWindow()
       .setTheme(theme)
@@ -837,6 +847,7 @@ function applySettingsViewMode(mode: SettingsViewMode): void {
         : "settings_mode_advanced_help",
     );
   }
+  renderSettingsToc();
 }
 
 function chooseSettingsViewMode(mode: SettingsViewMode): void {
@@ -862,14 +873,13 @@ function initSettingsViewModeControls(): void {
 
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
-  document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
-  document.getElementById("nav-settings")!.textContent = t("nav_settings");
-  document.getElementById("nav-stats")!.textContent = t("nav_stats");
-  document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
+  setNavLabel("nav-dashboard", t("nav_today"));
+  setNavLabel("nav-settings", t("nav_settings"));
+  setNavLabel("nav-stats", t("nav_stats"));
+  setNavLabel("btn-open-graph", t("nav_graph"));
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
     t("stats_subtitle");
-  document.getElementById("btn-stats-back")!.textContent = t("btn_stats_back");
   document.getElementById("stats-period-day")!.textContent =
     t("stats_period_day");
   document.getElementById("stats-period-week")!.textContent =
@@ -883,14 +893,17 @@ function initializeTranslations() {
   // once. Asserting it here took the entire dashboard load down with it.
   const statsLoading = document.getElementById("stats-loading-label");
   if (statsLoading) statsLoading.textContent = t("stats_loading");
-  document.getElementById("lbl-dashboard-kicker")!.textContent =
-    t("dashboard_kicker");
   document.getElementById("lbl-dashboard-title")!.textContent =
-    t("dashboard_title");
-  document.getElementById("lbl-dashboard-subtitle")!.textContent =
-    t("dashboard_subtitle");
-  document.getElementById("lbl-due-reviews")!.textContent = t("lbl_due_reviews");
+    t("today_title");
   document.getElementById("lbl-domains")!.textContent = t("lbl_domains");
+  document.getElementById("lbl-week-title")!.textContent =
+    t("dashboard_week_title");
+  document.getElementById("btn-dashboard-stats")!.textContent = t("nav_stats");
+  // Date, due headline and week strip are composed from data; re-render
+  // them so a locale switch never leaves them in the old language.
+  renderTodayDate();
+  renderDueSummary();
+  renderTodayWeek();
   document.getElementById("lbl-onboarding-checklist-title")!.textContent =
     t("onboarding_checklist_title");
   document.getElementById("lbl-onboarding-checklist-note")!.textContent =
@@ -899,9 +912,6 @@ function initializeTranslations() {
   // locale switch never leaves stale-language rows (no-op before bootstrap).
   renderOnboardingChecklist();
   document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
-  document.getElementById("btn-open-graph")!.textContent = t("btn_open_graph");
-  document.getElementById("btn-open-settings")!.textContent =
-    t("btn_open_settings");
   document.getElementById("lbl-translating")!.textContent = t("lbl_translating");
   document.getElementById("lbl-ai-evaluating")!.textContent = t("lbl_ai_evaluating");
   document.getElementById("lbl-ai-working")!.textContent = t("lbl_ai_working");
@@ -917,6 +927,9 @@ function initializeTranslations() {
   document.getElementById("lbl-ai-feedback-title")!.textContent = t("lbl_ai_feedback_title");
   document.getElementById("lbl-reveal-title")!.textContent = t("lbl_reveal_title");
   document.getElementById("lbl-own-answer-title")!.textContent = t(
+    "recall_your_answer_title",
+  );
+  document.getElementById("lbl-user-answer")!.textContent = t(
     "recall_your_answer_title",
   );
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
@@ -954,8 +967,6 @@ function initializeTranslations() {
   document.getElementById("discussion-error")!.textContent = t("discussion_error");
 
   // Setup & Data card
-  document.getElementById("lbl-settings-kicker")!.textContent =
-    t("settings_kicker");
   document.getElementById("lbl-settings-title")!.textContent =
     t("settings_title");
   document.getElementById("lbl-settings-subtitle")!.textContent =
@@ -968,8 +979,6 @@ function initializeTranslations() {
   document.getElementById("btn-settings-mode-advanced")!.textContent =
     t("settings_mode_advanced");
   applySettingsViewMode(settingsViewMode);
-  document.getElementById("btn-settings-back")!.textContent =
-    t("settings_back");
   document.getElementById("lbl-settings-learning-title")!.textContent =
     t("settings_learning_title");
   document.getElementById("lbl-settings-learning-help")!.textContent =
@@ -1008,7 +1017,6 @@ function initializeTranslations() {
   document.getElementById("lbl-study-max-reviews")!.textContent = t("study_max_reviews");
   document.getElementById("lbl-study-bury-new")!.textContent = t("study_bury_new");
   document.getElementById("lbl-study-bury-review")!.textContent = t("study_bury_review");
-  document.getElementById("btn-study-workload-save")!.textContent = t("study_workload_save");
   document.getElementById("btn-study-unbury")!.textContent = t("study_unbury");
   document.getElementById("lbl-settings-ai-title")!.textContent =
     t("settings_ai_title");
@@ -1205,14 +1213,13 @@ function initializeTranslations() {
   }
 
   // Learning Content Studio translations
-  const navContent = document.getElementById("nav-content");
-  if (navContent) navContent.textContent = t("nav_content");
-  const lblContentKicker = document.getElementById("lbl-content-kicker");
-  if (lblContentKicker) lblContentKicker.textContent = currentLocale === "de" ? "Persönlicher Katalog" : "Personal catalog";
+  setNavLabel("nav-content", t("nav_content"));
+  // The page title matches its sidebar entry.
   const lblContentTitle = document.getElementById("lbl-content-title");
-  if (lblContentTitle) lblContentTitle.textContent = t("content_title");
-  const lblContentSubtitle = document.getElementById("lbl-content-subtitle");
-  if (lblContentSubtitle) lblContentSubtitle.textContent = t("content_subtitle");
+  if (lblContentTitle) lblContentTitle.textContent = t("nav_content");
+  const lblContentImportMenu = document.getElementById("lbl-content-import-menu");
+  if (lblContentImportMenu) lblContentImportMenu.textContent = t("content_import_menu");
+  applyGoalImportLabels();
   const btnContentNewCard = document.getElementById("btn-content-new-card");
   if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
   const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
@@ -1272,13 +1279,10 @@ function initializeTranslations() {
   if (btnModalHardDelete) btnModalHardDelete.textContent = t("btn_delete");
 
   // In-recall card management (ADR 2026-07-16b)
-  const btnStudyStopLbl = document.querySelector("#btn-study-stop .rating-label");
-  if (btnStudyStopLbl) btnStudyStopLbl.textContent = t("study_btn_stop");
   const setStudyText = (id: string, key: string) => {
     const el = document.getElementById(id);
     if (el) el.textContent = t(key);
   };
-  setStudyText("btn-study-edit", "study_btn_edit");
   setStudyText("btn-study-manage-edit", "study_btn_edit");
   setStudyText("btn-study-manage-stop", "study_btn_stop");
   setStudyText("btn-study-open-editor", "study_btn_open_editor");
@@ -2446,9 +2450,7 @@ function defaultCardFormat(): AutoCardFormat {
 
 function studyLearningElements() {
   return {
-    mode: document.getElementById(
-      "settings-learning-mode",
-    ) as HTMLSelectElement,
+    mode: radioChoice("settings-learning-mode"),
     revealTimeout: document.getElementById(
       "settings-voice-reveal-timeout",
     ) as HTMLInputElement,
@@ -2811,12 +2813,11 @@ const STUDY_PRESET_VALUES: Record<
 
 function studyWorkloadElements() {
   return {
-    preset: document.getElementById("study-workload-preset") as HTMLSelectElement,
+    preset: radioChoice("study-workload-preset"),
     maxNew: document.getElementById("study-max-new") as HTMLInputElement,
     maxReviews: document.getElementById("study-max-reviews") as HTMLInputElement,
     buryNew: document.getElementById("study-bury-new") as HTMLInputElement,
     buryReview: document.getElementById("study-bury-review") as HTMLInputElement,
-    save: document.getElementById("btn-study-workload-save") as HTMLButtonElement,
     unbury: document.getElementById("btn-study-unbury") as HTMLButtonElement,
     status: document.getElementById("study-workload-status")!,
   };
@@ -2842,9 +2843,13 @@ async function loadStudyWorkload(): Promise<void> {
   }
 }
 
-async function saveStudyWorkload(): Promise<void> {
+// The plan stays clickable while a save runs: a limit field commits on blur,
+// which happens on the same click that picks a plan, so locking the plan
+// there would swallow that click.
+const saveStudyWorkload = serialSave(saveStudyWorkloadNow);
+
+async function saveStudyWorkloadNow(isStale: () => boolean): Promise<void> {
   const elements = studyWorkloadElements();
-  elements.save.disabled = true;
   elements.status.textContent = "";
   try {
     const rawPreset = elements.preset.value as StudyWorkloadPreset;
@@ -2877,24 +2882,28 @@ async function saveStudyWorkload(): Promise<void> {
       "study-workload-set",
       args,
     );
+    // A newer change is waiting for the next save; this answer is older.
+    if (isStale()) return;
     renderStudyWorkload(result.settings);
     elements.status.textContent = t("study_workload_saved");
     await loadDashboard();
   } catch (error) {
+    if (isStale()) return;
     elements.status.textContent = tf("study_workload_error", {
       message: errorMessage(error),
     });
-  } finally {
-    elements.save.disabled = false;
   }
 }
 
 function initStudyWorkloadControls(): void {
   const elements = studyWorkloadElements();
+  // Every change is saved as it is made; there is no separate save step.
   elements.preset.addEventListener("change", () => {
     const preset = elements.preset.value as StudyWorkloadPreset;
-    if (preset === "custom") return;
-    renderStudyWorkload({ preset, ...STUDY_PRESET_VALUES[preset] });
+    if (preset !== "custom") {
+      renderStudyWorkload({ preset, ...STUDY_PRESET_VALUES[preset] });
+    }
+    void saveStudyWorkload();
   });
   for (const control of [
     elements.maxNew,
@@ -2905,11 +2914,13 @@ function initStudyWorkloadControls(): void {
     control.addEventListener("input", () => {
       elements.preset.value = "custom";
     });
+    // `change` fires once a number is committed (blur, Enter) and at once
+    // for a checkbox, so a half-typed number is never saved.
     control.addEventListener("change", () => {
       elements.preset.value = "custom";
+      void saveStudyWorkload();
     });
   }
-  elements.save.addEventListener("click", () => void saveStudyWorkload());
   elements.unbury.addEventListener("click", () => {
     void (async () => {
       try {
@@ -4442,10 +4453,6 @@ function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-// ── KNOWLEDGE MAP (alpha, ADR 2026-10-03) ─────────────────────────────────
-// Quellen mounts the views. Settings keeps the switch and the view list.
-let knowledgeMapSettings: KnowledgeMapSettings | null = null;
-
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function setActiveNav(viewId: AppView): void {
   const navByView: Partial<Record<AppView, string>> = {
@@ -4453,6 +4460,7 @@ function setActiveNav(viewId: AppView): void {
     "settings-view": "nav-settings",
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
+    "graph-view": "btn-open-graph",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -4493,6 +4501,144 @@ function formatStatsTime(ms: number): string {
 }
 
 /** "Fr., 31. Juli" / "KW 31" / "Juli 2026" instead of the raw bucket key. */
+// ── TODAY (dashboard) ─────────────────────────────────────────────────────
+/** Set when loadDashboard() has a real due count; until then "—" stays. */
+let dueSummaryLoaded = false;
+/** The last seven local days, for the week strip. */
+let todayWeek: RecentDaysSummary | null = null;
+/** Measured time per card over the last 30 days, for the estimate. */
+let todayMsPerCard: number | null = null;
+
+/** Nav buttons carry an icon; only their label text is localized. */
+function setNavLabel(id: string, text: string): void {
+  const label = document.querySelector(`#${id} .nav-label`);
+  if (label) label.textContent = text;
+}
+
+function renderTodayDate(): void {
+  const el = document.getElementById("today-date");
+  if (!el) return;
+  try {
+    el.textContent = new Intl.DateTimeFormat(currentLocale, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    }).format(new Date());
+  } catch {
+    el.textContent = "";
+  }
+}
+
+function renderDueSummary(): void {
+  if (!dueSummaryLoaded) return;
+  const headline = document.getElementById("today-due-headline");
+  if (headline) {
+    headline.textContent =
+      totalDue === 1
+        ? t("dashboard_due_headline_one")
+        : totalDue > 1
+          ? tf("dashboard_due_headline", { count: totalDue })
+          : t("dashboard_due_none");
+  }
+  const navCount = document.getElementById("nav-due-count");
+  if (navCount) {
+    navCount.hidden = totalDue === 0;
+    navCount.textContent = String(totalDue);
+  }
+  // Only an estimate the learner's own measured pace supports; no history,
+  // no number.
+  const meta = document.getElementById("today-due-meta");
+  if (meta) {
+    const minutes =
+      todayMsPerCard !== null && totalDue > 0
+        ? Math.max(1, Math.round((todayMsPerCard * totalDue) / 60_000))
+        : null;
+    meta.hidden = minutes === null;
+    if (minutes !== null) {
+      meta.textContent = tf("dashboard_due_minutes", { minutes });
+    }
+  }
+}
+
+/** Short weekday for a local "YYYY-MM-DD" bucket. */
+function formatWeekday(bucket: string): string {
+  const [year, month, day] = bucket.split("-").map(Number);
+  try {
+    return new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
+      new Date(year, month - 1, day),
+    );
+  } catch {
+    return bucket.slice(5);
+  }
+}
+
+function renderTodayWeek(): void {
+  const section = document.getElementById("today-week");
+  const chart = document.getElementById("today-week-chart");
+  const summary = document.getElementById("today-week-summary");
+  if (!section || !chart || !summary) return;
+  if (!todayWeek) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  const parts = [tf("stats_total_cards", { n: todayWeek.reviewedCards })];
+  if (todayWeek.studyTimeMs > 0) {
+    parts.push(tf("stats_total_time", { time: formatStatsTime(todayWeek.studyTimeMs) }));
+  }
+  summary.textContent =
+    todayWeek.reviewedCards > 0 ? parts.join(" · ") : t("dashboard_week_empty");
+
+  chart.innerHTML = "";
+  const max = Math.max(1, ...todayWeek.days.map((d) => d.reviewedCards));
+  const spoken: string[] = [];
+  todayWeek.days.forEach((day, index) => {
+    const column = document.createElement("div");
+    column.className = "today-week-day";
+    if (index === todayWeek!.days.length - 1) column.classList.add("today");
+    const track = document.createElement("span");
+    track.className = "today-week-track";
+    const bar = document.createElement("span");
+    bar.className = "today-week-bar";
+    if (day.reviewedCards === 0) bar.classList.add("empty");
+    else bar.style.height = `${Math.max(6, (day.reviewedCards / max) * 100)}%`;
+    track.appendChild(bar);
+    const label = document.createElement("span");
+    label.className = "today-week-label";
+    label.textContent = formatWeekday(day.bucket);
+    column.append(track, label);
+    chart.appendChild(column);
+    spoken.push(`${label.textContent} ${day.reviewedCards}`);
+  });
+  chart.setAttribute(
+    "aria-label",
+    tf("dashboard_week_chart_label", { days: spoken.join(", ") }),
+  );
+}
+
+/**
+ * The week strip and the time estimate. Runs after the dashboard has its
+ * real numbers and never blocks it: a failure only hides the strip.
+ */
+async function loadTodayWeek(): Promise<void> {
+  try {
+    const response = await runBridge<StatsActivityResponse>("stats-activity", [
+      "--period",
+      "day",
+      "--window",
+      "30",
+    ]);
+    todayWeek = summarizeRecentDays(response.buckets, 7);
+    todayMsPerCard = summarizeRecentDays(response.buckets, 30).msPerCard;
+  } catch (err) {
+    console.warn("Week activity unavailable:", err);
+    todayWeek = null;
+    todayMsPerCard = null;
+  }
+  renderTodayWeek();
+  renderDueSummary();
+}
+
 function formatStatsBucket(bucket: string, period: StatsPeriod): string {
   return formatActivityBucketLabel(bucket, period, {
     locale: currentLocale,
@@ -5065,7 +5211,7 @@ function switchView(
   if (viewId !== "study-view" && sessionSummaryVisible) {
     document.getElementById("session-summary")?.classList.add("hidden");
     document.getElementById("study-active-card")?.classList.remove("hidden");
-    document.getElementById("study-footer")?.classList.remove("hidden");
+    document.getElementById("study-topbar")?.classList.remove("hidden");
     sessionSummaryVisible = false;
     resetSessionTally();
   }
@@ -5080,6 +5226,9 @@ function switchView(
     'content-full',
     viewId === "learning-content-view",
   );
+  document
+    .getElementById("app-shell")
+    ?.classList.toggle("study-focus", viewId === "study-view");
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
     // lazy init three when first shown
@@ -5089,8 +5238,8 @@ function switchView(
   }
 
   if (viewId === "settings-view") {
+    renderSettingsToc();
     refreshSettingsData();
-    void knowledgeMapSettings?.refresh();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
@@ -6017,6 +6166,10 @@ async function loadDashboard() {
     const caughtUpEl = document.getElementById("lbl-caught-up")!;
     const startBtn = document.getElementById("btn-start-session") as HTMLButtonElement;
 
+    dueSummaryLoaded = true;
+    renderDueSummary();
+    void loadTodayWeek();
+
     if (totalDue > 0) {
       caughtUpEl.classList.add("hidden");
       startBtn.disabled = false;
@@ -6886,8 +7039,6 @@ const REVIEW_ACTION_CONTROL_IDS = [
   "btn-card-manage",
   "btn-study-manage-edit",
   "btn-study-manage-stop",
-  "btn-study-stop",
-  "btn-study-edit",
   "btn-study-open-editor",
   "btn-study-edit-save",
   "btn-study-edit-cancel",
@@ -6900,8 +7051,6 @@ const REVIEW_ACTION_TRIGGER_IDS = [
   "btn-card-manage",
   "btn-study-manage-edit",
   "btn-study-manage-stop",
-  "btn-study-stop",
-  "btn-study-edit",
   "btn-study-open-editor",
   "btn-choice-next",
   "btn-choice-next-bottom",
@@ -7682,7 +7831,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   hideStudyOffer();
   hideStudyBusy();
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
 
   pendingReviewPayload = null;
   activeCard = payload.card;
@@ -7704,6 +7853,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   );
   document.getElementById("card-progress")!.textContent =
     `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
+  renderStudyProgress(sessionRatingTally.done, totalSessionCards);
 
   const domainBadge = document.getElementById("domain-badge")!;
   domainBadge.textContent = activeCard.domain || "general";
@@ -8476,6 +8626,18 @@ async function acceptBonus(atomId: string): Promise<void> {
   void finishStudySession();
 }
 
+/** The session bar's progress: cards rated so far out of the session's size. */
+function renderStudyProgress(done: number, total: number): void {
+  const track = document.getElementById("study-progress-track");
+  const fill = document.getElementById("study-progress-fill");
+  if (!track || !fill) return;
+  const safeTotal = Math.max(1, total);
+  const value = Math.min(Math.max(0, done), safeTotal);
+  track.setAttribute("aria-valuemax", String(safeTotal));
+  track.setAttribute("aria-valuenow", String(value));
+  fill.style.width = `${(value / safeTotal) * 100}%`;
+}
+
 // ── SESSION COMPLETION / SUMMARY ─────────────────────────────────────────
 function resetSessionTally(): void {
   sessionRatingTally.done = 0;
@@ -8505,7 +8667,7 @@ function prepareStudyViewForSession(): void {
   hideStudyOffer();
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
   pendingReviewPayload = null;
   preconditionCache = null;
   assessedAtomsThisSession.clear();
@@ -8552,7 +8714,7 @@ function renderSessionSummary(): void {
   doneBtn.textContent = t("btn_back_to_dashboard");
 
   document.getElementById("study-active-card")?.classList.add("hidden");
-  document.getElementById("study-footer")?.classList.add("hidden");
+  document.getElementById("study-topbar")?.classList.add("hidden");
   summary.classList.remove("hidden");
 }
 
@@ -8596,7 +8758,7 @@ async function finishStudySession(): Promise<void> {
 function leaveSessionSummaryToDashboard(): void {
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
   sessionSummaryVisible = false;
   resetSessionTally();
   switchView("dashboard-view");
@@ -8643,23 +8805,25 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("secrets-vault", () =>
     initSecretsVault({ openExternal: (url: string) => void openUrl(url) }),
   );
-  initPanel("knowledge-map", () => {
-    knowledgeMapSettings = initKnowledgeMapSettings({
-      onEnabledChange: () => {
-        // Quellen reads the same switch. There is no top-nav entry.
-      },
-    });
-  });
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
-  // Goal-driven import stays reachable outside first run (plan Phase 8):
-  // Learning Content's "Goal import" reopens the flow at the goal page.
+  // Goal-driven import is a content import of its own (redesign step 4):
+  // Learning Content opens the goal page in a dialog, not the first-run flow.
+  initGoalImportDialog({
+    openModelSetup: () => showOnboardingAt("model"),
+    onImported: () => void loadStudioData(),
+  });
   document
     .getElementById("btn-content-goal-import")
-    ?.addEventListener("click", () => showOnboardingAt("goal"));
+    // The entry sits in the Import menu, which is hidden once it is chosen;
+    // closing the dialog returns to the menu button instead.
+    ?.addEventListener("click", () =>
+      openGoalImportDialog(document.getElementById("btn-content-import-menu")),
+    );
+  initContentImportMenu();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.
   document
     .getElementById("btn-dashboard-library-topics")
@@ -8737,9 +8901,6 @@ window.addEventListener("DOMContentLoaded", () => {
     switchView("stats-view");
   });
 
-  document.getElementById("btn-stats-back")?.addEventListener("click", () => {
-    switchView("dashboard-view");
-  });
 
   document.getElementById("stats-period-day")?.addEventListener("click", () => {
     setStatsPeriod("day");
@@ -8751,24 +8912,21 @@ window.addEventListener("DOMContentLoaded", () => {
     setStatsPeriod("month");
   });
 
-  document.getElementById("btn-open-settings")?.addEventListener("click", () => {
-    switchView("settings-view");
+  document.getElementById("btn-dashboard-stats")?.addEventListener("click", () => {
+    switchView("stats-view");
   });
 
   document.getElementById("btn-agents-connect-all")?.addEventListener("click", () => {
     void connectAgentHarness();
   });
 
-  document.getElementById("btn-settings-back")?.addEventListener("click", () => {
-    switchView("dashboard-view");
-  });
 
   document.getElementById("btn-run-onboarding")?.addEventListener("click", () => {
     showOnboarding();
   });
 
-  document.getElementById("theme-select")?.addEventListener("change", (event) => {
-    const value = (event.target as HTMLSelectElement).value;
+  document.getElementById("theme-select")?.addEventListener("change", () => {
+    const value = radioChoice("theme-select").value;
     saveThemePreference(value === "dark" ? "dark" : "light");
   });
 
@@ -8954,11 +9112,20 @@ window.addEventListener("DOMContentLoaded", () => {
   // Open 3D Graph (experimental)
   const openGraphBtn = document.getElementById("btn-open-graph") as HTMLButtonElement | null;
   if (openGraphBtn) {
-    openGraphBtn.textContent = t("btn_open_graph");
     openGraphBtn.addEventListener("click", () => {
-      rememberGraphOrigin("dashboard-view");
+      const active = (id: string) =>
+        document.getElementById(id)?.classList.contains("active") === true;
+      if (active("graph-view")) return;
+      // From the sidebar, Back returns to Lern-Karten when that page was
+      // open (ADR 2026-10-10 Decision 3), and to Today otherwise.
       const back = document.getElementById("btn-graph-back");
-      if (back) back.textContent = t("btn_back_to_dashboard");
+      if (active("learning-content-view")) {
+        rememberGraphOrigin("learning-content-view");
+        if (back) back.textContent = t("btn_graph_back_cards");
+      } else {
+        rememberGraphOrigin("dashboard-view");
+        if (back) back.textContent = t("btn_back_to_dashboard");
+      }
       switchView("graph-view");
     });
   }
@@ -9062,12 +9229,6 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // In-recall card management (ADR 2026-07-16b)
-  document
-    .getElementById("btn-study-stop")!
-    .addEventListener("click", () => void openStopModal());
-  document
-    .getElementById("btn-study-edit")!
-    .addEventListener("click", () => openInlineEditor());
   document
     .getElementById("btn-study-open-editor")!
     .addEventListener("click", () => void jumpToFullEditor());

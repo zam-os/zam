@@ -38,7 +38,7 @@ export interface ShellOptions {
   viewId: KnowledgeMapViewId;
   t(key: string): string;
   tf(key: string, values: Record<string, string | number>): string;
-  /** The prototype switches views in place; the Studio does it in Settings. */
+  /** Offer the views on the map itself (Quellen, the MCP panel, the prototype). */
   showViewSwitcher: boolean;
   /** A line above the map, e.g. that a sample map is shown. */
   notice?: string;
@@ -94,8 +94,13 @@ export async function mountKnowledgeMap(
   switcher.setAttribute("role", "group");
   switcher.setAttribute("aria-label", t("km_view_label"));
   const viewLabel = el("span", "km-view-label");
-  if (options.showViewSwitcher) titlebar.appendChild(switcher);
-  else titlebar.appendChild(viewLabel);
+  if (options.showViewSwitcher) {
+    const picker = el("div", "km-view-picker");
+    picker.append(el("span", "km-view-label", t("km_view_label")), switcher);
+    titlebar.appendChild(picker);
+  } else {
+    titlebar.appendChild(viewLabel);
+  }
   header.appendChild(titlebar);
 
   if (options.notice)

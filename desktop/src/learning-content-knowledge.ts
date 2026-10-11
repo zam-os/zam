@@ -2,12 +2,14 @@
  * What a Quelle shows once its directory is there (ADR 2026-10-10,
  * Decisions 6–8).
  *
- * The OKF list loads with the switcher. The knowledge-map module loads only
- * when the alpha switch is on. Turning that switch on uses the existing
- * Settings flag. Citations open in the reader on this page. A URL or a path
- * outside the Quelle is refused, and the operating system is not asked to
- * open it. This module does not repair a workspace, upsert an article, or
- * write a knowledge map.
+ * The OKF list loads with the switcher, and the knowledge-map module loads
+ * with it, lazily: no switch hides the map any more. The map takes the
+ * page's full width and offers its views in place. Articles and citations
+ * open in a reader dialog: reading is one thing at a time and needs no
+ * column next to the map. A Markdown file is rendered, other files show as
+ * text. A URL or a path outside the Quelle is refused, and the operating
+ * system is not asked to open it. This module does not repair a workspace,
+ * upsert an article, or write a knowledge map.
  *
  * Two ways in (Decision 11). The Desktop window reads a Quelle by path and
  * may show any cited file inside it. The Studio panel names a workspace by
@@ -19,10 +21,6 @@ import { citationTarget } from "../../src/cli/learning-content/citation.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 import { renderMarkdown, stripFrontmatter } from "./panel/okf-render.js";
-
-interface FeatureResponse {
-  enabled: boolean;
-}
 
 interface SourceArticle {
   file: string;
@@ -86,6 +84,8 @@ function sourceAccess(source: SourceRef, byPath: boolean): SourceAccess {
 
 let generation = 0;
 let studioLoaded = false;
+let readerBound = false;
+let readerReturnFocus: HTMLElement | null = null;
 
 function messageOf(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
@@ -103,8 +103,8 @@ export function applySourceKnowledgeChrome(): void {
   if (okf) okf.textContent = t("lbl_content_source_okf");
   const reader = document.getElementById("lbl-content-source-reader");
   if (reader) reader.textContent = t("lbl_content_source_reader");
-  const enable = document.getElementById("btn-content-source-map");
-  if (enable) enable.textContent = t("btn_content_source_map");
+  const close = document.getElementById("btn-content-source-reader-close");
+  if (close) close.textContent = t("content_source_reader_close");
 }
 
 export function clearSourceKnowledge(): void {
@@ -114,8 +114,7 @@ export function clearSourceKnowledge(): void {
   document.getElementById("content-sources-okf-list")?.replaceChildren();
   const note = document.getElementById("content-sources-okf-note");
   if (note) note.textContent = "";
-  const body = document.getElementById("content-sources-reader-body");
-  if (body) body.textContent = "";
+  closeSourceReader();
   if (!studioLoaded) return;
   void import("./knowledge-map/studio.js").then((mod) => {
     mod.clearSourceKnowledgeMap();
@@ -134,8 +133,8 @@ export function showSourceKnowledge(
   const token = ++generation;
   setHidden("content-sources-body", false);
   applySourceKnowledgeChrome();
-  const reader = document.getElementById("content-sources-reader-body");
-  if (reader) reader.textContent = t("content_source_reader_empty");
+  bindReader();
+  closeSourceReader();
   void loadSource(sourceAccess(source, byPath), skillSource, token);
 }
 
@@ -145,21 +144,9 @@ async function loadSource(
   token: number,
 ): Promise<void> {
   try {
-    const [feature, catalog] = await Promise.all([
-      runBridge<FeatureResponse>("knowledge-map-feature"),
-      access.catalog(),
-    ]);
+    const catalog = await access.catalog();
     if (token !== generation) return;
     renderArticles(access, catalog, token);
-    if (feature.enabled !== true) {
-      if (studioLoaded) {
-        const studio = await import("./knowledge-map/studio.js");
-        if (token !== generation) return;
-        studio.clearSourceKnowledgeMap();
-      }
-      renderEnableButton(access, skillSource, token);
-      return;
-    }
     await mountMap(access, skillSource, token);
   } catch (err: unknown) {
     if (token !== generation) return;
@@ -196,41 +183,6 @@ function renderArticles(
   }
 }
 
-function renderEnableButton(
-  access: SourceAccess,
-  skillSource: boolean,
-  token: number,
-): void {
-  const host = document.getElementById("content-sources-map");
-  if (!host) return;
-  host.replaceChildren();
-  const button = document.createElement("button");
-  button.id = "btn-content-source-map";
-  button.type = "button";
-  button.className = "btn secondary-btn btn-sm";
-  button.textContent = t("btn_content_source_map");
-  button.addEventListener("click", () => {
-    void enableMap(access, skillSource, token);
-  });
-  host.append(button);
-}
-
-async function enableMap(
-  access: SourceAccess,
-  skillSource: boolean,
-  token: number,
-): Promise<void> {
-  if (token !== generation) return;
-  try {
-    await runBridge("knowledge-map-feature", ["--enable"]);
-    if (token !== generation) return;
-    await mountMap(access, skillSource, token);
-  } catch (err: unknown) {
-    if (token !== generation) return;
-    alert(tf("content_source_browse_error", { message: messageOf(err) }));
-  }
-}
-
 async function mountMap(
   access: SourceAccess,
   skillSource: boolean,
@@ -256,10 +208,101 @@ async function mountMap(
   });
 }
 
+// ── Reader dialog ────────────────────────────────────────────────────────
+
+const MARKDOWN_FILE = /\.(md|markdown)$/i;
+
+function readerPart(id: string): HTMLElement | null {
+  return document.getElementById(id);
+}
+
+function bindReader(): void {
+  if (readerBound) return;
+  const overlay = readerPart("content-source-reader-overlay");
+  if (!overlay) return;
+  readerBound = true;
+  readerPart("btn-content-source-reader-close")?.addEventListener("click", () =>
+    closeSourceReader(),
+  );
+  overlay.addEventListener("keydown", (event) => {
+    if (event.key === "Escape") {
+      event.stopPropagation();
+      closeSourceReader();
+    }
+  });
+  // A click on the dimmed backdrop, not inside the dialog, closes it.
+  overlay.addEventListener("click", (event) => {
+    if (event.target === overlay) closeSourceReader();
+  });
+}
+
+function readerOpen(): boolean {
+  return (
+    readerPart("content-source-reader-overlay")?.classList.contains("active") ??
+    false
+  );
+}
+
+function setReaderNote(text: string): void {
+  const note = readerPart("content-source-reader-note");
+  if (note) note.textContent = text;
+}
+
+/** Show `content` under `title`, opening the dialog if it is closed. */
+function showInReader(title: string, content: Node[], note = ""): void {
+  const overlay = readerPart("content-source-reader-overlay");
+  const heading = readerPart("content-source-reader-title");
+  const body = readerPart("content-sources-reader-body");
+  if (!overlay || !heading || !body) return;
+  heading.textContent = title;
+  body.replaceChildren(...content);
+  body.scrollTop = 0;
+  setReaderNote(note);
+  if (readerOpen()) return;
+  readerReturnFocus =
+    document.activeElement instanceof HTMLElement
+      ? document.activeElement
+      : null;
+  overlay.classList.add("active");
+  readerPart("btn-content-source-reader-close")?.focus();
+}
+
+export function closeSourceReader(): void {
+  const overlay = readerPart("content-source-reader-overlay");
+  if (!overlay?.classList.contains("active")) return;
+  overlay.classList.remove("active");
+  readerPart("content-sources-reader-body")?.replaceChildren();
+  setReaderNote("");
+  if (readerReturnFocus?.isConnected) readerReturnFocus.focus();
+  readerReturnFocus = null;
+}
+
+/**
+ * A link inside a Markdown file that is not an OKF article, as a path from
+ * the Quelle's root: relative to the file's own folder, as the file's author
+ * meant it. A root-level result keeps "./" so the bridge does not look for
+ * it among the OKF articles first.
+ */
+export function linkFromFile(file: string, link: string): string {
+  const parts = file.split("/").slice(0, -1);
+  for (const part of link.split("/")) {
+    if (part === "" || part === ".") continue;
+    if (part === ".." && parts.length > 0 && parts[parts.length - 1] !== "..") {
+      parts.pop();
+    } else {
+      parts.push(part);
+    }
+  }
+  const path = parts.join("/");
+  return path.includes("/") ? path : `./${path}`;
+}
+
 function bindReaderClicks(
   article: HTMLElement,
   access: SourceAccess,
   token: number,
+  /** Set for a Markdown file outside the OKF bundle: links are relative to it. */
+  file: string | null,
 ): void {
   const open = (event: Event) => {
     const target = event.target;
@@ -267,67 +310,101 @@ function bindReaderClicks(
     const link = target.closest("a");
     if (!link || !article.contains(link)) return;
     event.preventDefault();
-    const articleName = link.getAttribute("data-okf-article");
-    if (articleName) {
-      void openReader(access, articleName, token);
+    if (file === null) {
+      const articleName = link.getAttribute("data-okf-article");
+      if (articleName) {
+        void openReader(access, articleName, token);
+        return;
+      }
+      const cited = link.getAttribute("data-okf-citation");
+      if (cited) {
+        void openReader(access, cited, token);
+        return;
+      }
+      setReaderNote(t("content_source_reader_refused"));
       return;
     }
-    const cited = link.getAttribute("data-okf-citation");
-    if (cited) {
-      void openReader(access, cited, token);
+    const raw =
+      link.getAttribute("data-okf-article") ??
+      link.getAttribute("data-okf-citation") ??
+      link.getAttribute("href") ??
+      "";
+    // A jump inside the same file: nothing to load.
+    if (raw.startsWith("#")) return;
+    if (
+      link.hasAttribute("data-okf-external") ||
+      citationTarget(raw) === null
+    ) {
+      setReaderNote(t("content_source_reader_refused"));
       return;
     }
-    const body = document.getElementById("content-sources-reader-body");
-    if (body) body.textContent = t("content_source_reader_refused");
+    void openReader(access, linkFromFile(file, raw), token);
   };
   article.addEventListener("click", open);
   article.addEventListener("auxclick", open);
 }
 
+function readFailure(reason: ReadResponse["reason"]): string {
+  return t(
+    reason === "missing"
+      ? "content_source_reader_missing"
+      : reason === "desktop"
+        ? "content_source_desktop_only"
+        : "content_source_reader_refused",
+  );
+}
+
+/**
+ * Open an article or a cited file in the reader dialog. A file that cannot
+ * be opened leaves the article on screen, if one is shown, and says why.
+ */
 async function openReader(
   access: SourceAccess,
   raw: string,
   token: number,
 ): Promise<void> {
-  const body = document.getElementById("content-sources-reader-body");
-  if (!body) return;
   const target = citationTarget(raw);
   if (!target) {
-    body.textContent = t("content_source_reader_refused");
+    showFailure(raw, t("content_source_reader_refused"));
     return;
   }
   try {
     const result = await access.read(target);
     if (token !== generation) return;
     if (!result.opened) {
-      body.textContent = t(
-        result.reason === "missing"
-          ? "content_source_reader_missing"
-          : result.reason === "desktop"
-            ? "content_source_desktop_only"
-            : "content_source_reader_refused",
-      );
+      showFailure(target, readFailure(result.reason));
       return;
     }
-    if (result.kind === "okf") {
-      const heading = document.createElement("p");
-      heading.className = "content-sources-reader-path";
-      heading.textContent = result.path ?? target;
-      const article = document.createElement("div");
-      article.className = "okf-article-body";
-      article.innerHTML = renderMarkdown(stripFrontmatter(result.body ?? ""));
-      bindReaderClicks(article, access, token);
-      body.replaceChildren(heading, article);
+    const path = result.path ?? target;
+    const body = result.body ?? "";
+    const markdown = result.kind === "okf" || MARKDOWN_FILE.test(path);
+    if (!markdown) {
+      const pre = document.createElement("pre");
+      pre.className = "content-sources-text";
+      pre.textContent = body;
+      showInReader(path, [pre]);
       return;
     }
-    const pre = document.createElement("pre");
-    pre.className = "content-sources-text";
-    pre.textContent = result.body ?? "";
-    body.replaceChildren(pre);
+    const article = document.createElement("div");
+    article.className = "okf-article-body";
+    article.innerHTML = renderMarkdown(stripFrontmatter(body));
+    bindReaderClicks(
+      article,
+      access,
+      token,
+      result.kind === "okf" ? null : path,
+    );
+    showInReader(path, [article]);
   } catch (err: unknown) {
     if (token !== generation) return;
-    body.textContent = tf("content_source_browse_error", {
-      message: messageOf(err),
-    });
+    showFailure(
+      target,
+      tf("content_source_browse_error", { message: messageOf(err) }),
+    );
   }
+}
+
+function showFailure(target: string, message: string): void {
+  if (readerOpen()) setReaderNote(message);
+  else showInReader(target, [], message);
 }

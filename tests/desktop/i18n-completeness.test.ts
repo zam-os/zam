@@ -323,6 +323,20 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // Today view, sidebar, Learning Content import menu and the Quellen
+  // reader dialog of the Studio redesign. en/de shipped;
+  // es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
+  "nav_graph",
+  "dashboard_due_headline",
+  "dashboard_due_headline_one",
+  "dashboard_due_none",
+  "dashboard_due_minutes",
+  "dashboard_week_title",
+  "dashboard_week_empty",
+  "dashboard_week_chart_label",
+  "content_import_menu",
+  "goal_import_close",
+  "content_source_reader_close",
   // Observation retention row in Settings → Data (ADR 2026-10-08 R6). en/de
   // shipped; es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
   "settings_observation_logs",
@@ -930,12 +944,6 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "km_sample_note",
   "km_invalid",
   "km_load_failed",
-  "km_settings_title",
-  "km_settings_help",
-  "km_settings_toggle",
-  "km_settings_note",
-  "km_settings_view",
-  "km_settings_error",
   "km_repo_label",
   "km_no_repo",
   "km_pick_repo",

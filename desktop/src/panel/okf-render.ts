@@ -264,7 +264,9 @@ function renderInline(text: string): string {
       const marker = text.slice(i, i + 2);
       const end = text.indexOf(marker, i + 2);
       if (end !== -1) {
-        out += `<strong>${text.slice(i + 2, end)}</strong>`;
+        // The emphasis may hold a link or code ("**[site](url)**"); the
+        // inner text is already escaped, so scanning it again is safe.
+        out += `<strong>${renderInline(text.slice(i + 2, end))}</strong>`;
         i = end + 2;
         continue;
       }
@@ -273,7 +275,7 @@ function renderInline(text: string): string {
     if (ch === "*" || ch === "_") {
       const end = text.indexOf(ch, i + 1);
       if (end !== -1 && end > i + 1) {
-        out += `<em>${text.slice(i + 1, end)}</em>`;
+        out += `<em>${renderInline(text.slice(i + 1, end))}</em>`;
         i = end + 1;
         continue;
       }

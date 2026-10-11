@@ -104,3 +104,43 @@ export function initRadioGroupKeyboard(group: HTMLElement | null): void {
     radios[next].click();
   });
 }
+
+/** A group of native radios, read and written like the select it replaced. */
+export interface RadioChoice {
+  readonly root: HTMLElement;
+  value: string;
+  disabled: boolean;
+  addEventListener(type: "change", listener: () => void): void;
+}
+
+/**
+ * Wrap the native radios inside `id` (a fieldset or a `role="radiogroup"`
+ * container): settings that used to hide their options in a dropdown show
+ * them all, and the code that read `.value` keeps reading `.value`. Native
+ * radios bring their own keyboard contract, so this needs no key handling.
+ */
+export function radioChoice(id: string): RadioChoice {
+  const root = document.getElementById(id);
+  if (!root) throw new Error(`Missing radio group #${id}`);
+  const radios = () =>
+    Array.from(root.querySelectorAll<HTMLInputElement>('input[type="radio"]'));
+  return {
+    root,
+    get value() {
+      return radios().find((radio) => radio.checked)?.value ?? "";
+    },
+    set value(next: string) {
+      for (const radio of radios()) radio.checked = radio.value === next;
+    },
+    get disabled() {
+      return radios().every((radio) => radio.disabled);
+    },
+    set disabled(next: boolean) {
+      for (const radio of radios()) radio.disabled = next;
+      root.classList.toggle("is-disabled", next);
+    },
+    addEventListener(type, listener) {
+      root.addEventListener(type, listener);
+    },
+  };
+}
