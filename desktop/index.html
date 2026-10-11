@@ -174,24 +174,36 @@
 
       <!-- VIEW 5: LEARNING CONTENT STUDIO -->
       <section id="learning-content-view" class="view">
-        <div class="dashboard-hero frosted">
-          <div>
-            <p class="eyebrow" id="lbl-content-kicker">Personal catalog</p>
-            <h1 id="lbl-content-title">Learning Content Studio</h1>
-            <p id="lbl-content-subtitle" class="settings-subtitle">
-              Manage your personal learning cards, search tokens, and curate active recall prompts.
-            </p>
+        <!-- One primary action (New card) and one menu for every way content
+             comes in. The menu entries are the same buttons the import
+             modules wire by id, so each keeps its own behaviour. -->
+        <header class="content-header">
+          <h1 id="lbl-content-title">Learning Content</h1>
+          <div id="content-cards-actions" class="content-header-actions">
+            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge Map (3D)</button>
+            <button id="btn-content-material-bonus" class="btn secondary-btn" type="button" hidden>Bonus</button>
+            <div class="import-menu-wrap">
+              <button
+                id="btn-content-import-menu"
+                class="btn secondary-btn"
+                type="button"
+                aria-haspopup="menu"
+                aria-expanded="false"
+                aria-controls="content-import-menu"
+              >
+                <span id="lbl-content-import-menu">Import</span>
+                <svg aria-hidden="true" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M6 9l6 6 6-6"></path></svg>
+              </button>
+              <div id="content-import-menu" class="import-menu hidden" role="menu" aria-labelledby="btn-content-import-menu">
+                <button id="btn-content-material-import" class="import-menu-item" type="button" role="menuitem">Photo / PDF</button>
+                <button id="btn-content-library-topics" class="import-menu-item" type="button" role="menuitem">Library Topics</button>
+                <button id="btn-content-goal-import" class="import-menu-item" type="button" role="menuitem">Goal Import</button>
+                <button id="btn-content-import" class="import-menu-item" type="button" role="menuitem">Import File</button>
+              </div>
+            </div>
+            <button id="btn-content-new-card" class="btn primary-btn" type="button">New Card</button>
           </div>
-          <div id="content-cards-actions" style="display: flex; gap: 10px; align-items: center;">
-            <button id="btn-content-goal-import" class="btn secondary-btn btn-sm" type="button">Goal Import</button>
-            <button id="btn-content-library-topics" class="btn secondary-btn btn-sm" type="button">Library Topics</button>
-            <button id="btn-content-material-import" class="btn secondary-btn btn-sm" type="button">Photo / PDF</button>
-            <button id="btn-content-material-bonus" class="btn secondary-btn btn-sm" type="button" hidden>Bonus</button>
-            <button id="btn-content-import" class="btn secondary-btn btn-sm" type="button">Import File</button>
-            <button id="btn-content-open-graph" class="btn secondary-btn btn-sm" type="button">Knowledge Map (3D)</button>
-            <button id="btn-content-new-card" class="btn primary-btn btn-sm" type="button">New Card</button>
-          </div>
-        </div>
+        </header>
 
         <div id="content-area-switcher" class="content-area-switcher" role="tablist">
           <button id="btn-content-area-cards" class="content-area-option active" type="button" role="tab" aria-selected="true">Learning cards</button>
@@ -1090,6 +1102,23 @@
             <button id="bitwarden-assure-submit" class="btn primary-btn" type="button">
               Unlock
             </button>
+          </div>
+        </div>
+      </div>
+
+      <!-- GOAL IMPORT (redesign step 4): the goal page as its own dialog,
+           independent of the first-run flow. Filled by goal-import.ts. -->
+      <div id="goal-import-overlay" class="modal-overlay">
+        <div class="modal-box goal-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-goal-import-title">
+          <div class="modal-header">
+            <h3 id="lbl-goal-import-title">Name a goal — ZAM builds the path.</h3>
+          </div>
+          <div class="modal-body">
+            <p id="lbl-goal-import-body" class="goal-import-intro"></p>
+            <div id="goal-import-root" class="onboarding-goal"></div>
+          </div>
+          <div class="modal-actions">
+            <button id="btn-goal-import-close" class="btn secondary-btn" type="button">Close</button>
           </div>
         </div>
       </div>

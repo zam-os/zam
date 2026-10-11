@@ -6143,6 +6143,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "No syllabus? Define a Lernziel on the next page and let ZAM propose the learning path.",
     onboarding_content_goal_action: "Define a goal",
     btn_content_goal_import: "Goal Import",
+    content_import_menu: "Import",
+    goal_import_close: "Close",
     // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
     // Phase 9).
     onboarding_checklist_title: "Finish setting up ZAM",
@@ -7883,6 +7885,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Kein Lehrplan? Definiere auf der nächsten Seite ein Lernziel und lass ZAM den Lernweg vorschlagen.",
     onboarding_content_goal_action: "Ziel definieren",
     btn_content_goal_import: "Ziel-Import",
+    content_import_menu: "Importieren",
+    goal_import_close: "Schließen",
     // Dashboard checklist & degraded-mode link-backs (ADR 2026-07-24 §7,
     // Phase 9).
     onboarding_checklist_title: "Richte ZAM fertig ein",

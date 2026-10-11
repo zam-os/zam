@@ -559,17 +559,6 @@ textarea:focus-visible {
   margin: 4px 0 12px;
 }
 
-/* Until the content header gets its import menu (redesign step 4), its
-   actions wrap instead of squeezing the title beside the sidebar. */
-#learning-content-view .dashboard-hero {
-  grid-template-columns: minmax(260px, 1fr) minmax(0, auto);
-}
-
-#content-cards-actions {
-  flex-wrap: wrap;
-  justify-content: flex-end;
-}
-
 .settings-subtitle {
   color: var(--color-ink-2);
   font-size: var(--fs-md);
@@ -3207,7 +3196,6 @@ textarea::placeholder {
   padding: 20px;
 }
 
-.content-area-switcher,
 .content-segment-switcher {
   background: var(--color-surface-2);
   border: 1px solid var(--color-line);
@@ -3218,7 +3206,6 @@ textarea::placeholder {
   padding: 3px;
 }
 
-.content-area-option,
 .content-segment-option {
   background: transparent;
   border: 0;
@@ -3232,20 +3219,161 @@ textarea::placeholder {
   padding: 7px 12px;
 }
 
-.content-area-option:hover,
 .content-segment-option:hover {
   color: var(--color-ink);
 }
 
-.content-area-option.active,
 .content-segment-option.active {
   background: var(--color-surface);
   box-shadow: var(--shadow-card);
-  color: var(--color-accent);
+  color: var(--color-accent-ink);
 }
 
+/* Lern-Karten / Quellen: page-level tabs, so they read as tabs (an
+   underline) rather than as one more segmented control. */
 .content-area-switcher {
-  width: fit-content;
+  display: flex;
+  gap: var(--space-2);
+  margin-bottom: var(--space-4);
+  border-bottom: 1px solid var(--color-line);
+}
+
+.content-area-option {
+  min-height: 44px;
+  padding: 0 var(--space-3);
+  background: transparent;
+  border: 0;
+  border-bottom: 3px solid transparent;
+  margin-bottom: -1px;
+  color: var(--color-muted);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-md);
+  font-weight: 700;
+}
+
+.content-area-option:hover {
+  color: var(--color-ink);
+}
+
+.content-area-option.active {
+  border-bottom-color: var(--color-accent);
+  color: var(--color-ink);
+}
+
+.content-area-option:focus-visible {
+  outline: 3px solid var(--color-focus);
+  outline-offset: -3px;
+}
+
+/* ── LEARNING CONTENT HEADER & IMPORT MENU ───────────────────────────────── */
+.content-header {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-4);
+  margin-bottom: var(--space-5);
+}
+
+.content-header h1 {
+  font-size: var(--fs-3xl);
+  line-height: 1.1;
+}
+
+.content-header-actions {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.import-menu-wrap {
+  position: relative;
+}
+
+#btn-content-import-menu[aria-expanded="true"] {
+  border-color: var(--color-accent);
+  color: var(--color-accent-ink);
+  background: var(--color-accent-soft);
+}
+
+.import-menu {
+  position: absolute;
+  top: calc(100% + var(--space-2));
+  right: 0;
+  z-index: 30;
+  display: flex;
+  flex-direction: column;
+  min-width: 260px;
+  padding: 6px;
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-box);
+  box-shadow: var(--shadow-pop);
+}
+
+.import-menu-item {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 0;
+  border-radius: var(--radius-xs);
+  background: transparent;
+  color: var(--color-ink);
+  cursor: pointer;
+  font: inherit;
+  font-size: var(--fs-md);
+  text-align: left;
+}
+
+.import-menu-item:hover:not(:disabled),
+.import-menu-item:focus-visible {
+  background: var(--color-surface-2);
+  outline: none;
+}
+
+.import-menu-item:disabled {
+  cursor: not-allowed;
+  opacity: 0.5;
+}
+
+/* Icons ride a mask, so the import modules can keep setting textContent. */
+.import-menu-item::before {
+  content: "";
+  flex: 0 0 auto;
+  width: 20px;
+  height: 20px;
+  background: var(--color-accent);
+  -webkit-mask: var(--menu-icon) center / contain no-repeat;
+  mask: var(--menu-icon) center / contain no-repeat;
+}
+
+#btn-content-material-import {
+  --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Crect x='3' y='6' width='18' height='14' rx='2'/%3E%3Ccircle cx='12' cy='13' r='3.5'/%3E%3Cpath d='M8 6l2-2h4l2 2'/%3E%3C/svg%3E");
+}
+
+#btn-content-library-topics {
+  --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M4 4h4v16H4zM10 4h4v16h-4zM16 5l4 1-3 14-4-1z'/%3E%3C/svg%3E");
+}
+
+#btn-content-goal-import {
+  --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Ccircle cx='12' cy='12' r='9'/%3E%3Ccircle cx='12' cy='12' r='5'/%3E%3Ccircle cx='12' cy='12' r='1'/%3E%3C/svg%3E");
+}
+
+#btn-content-import {
+  --menu-icon: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M14 3H6a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h12a2 2 0 0 0 2-2V9z'/%3E%3Cpath d='M14 3v6h6M9 14h6M9 17h4'/%3E%3C/svg%3E");
+}
+
+/* Goal import dialog: the goal page needs room for its levels and cards. */
+.modal-box.goal-import-modal {
+  max-width: 760px;
+}
+
+.goal-import-intro {
+  margin-bottom: var(--space-4);
 }
 
 .content-segment-switcher {
@@ -3646,7 +3774,7 @@ textarea::placeholder {
   padding: 24px;
   max-width: 480px;
   width: 90%;
-  box-shadow: var(--shadow-card);
+  box-shadow: var(--shadow-pop);
   animation: modalScale 0.3s cubic-bezier(0.34, 1.56, 0.64, 1);
   display: flex;
   flex-direction: column;

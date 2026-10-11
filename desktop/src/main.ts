@@ -8,6 +8,12 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
+import { initContentImportMenu } from "./content-import-menu.js";
+import {
+  applyGoalImportLabels,
+  initGoalImportDialog,
+  openGoalImportDialog,
+} from "./goal-import.js";
 import {
   formatActivityBucketLabel,
   type RecentDaysSummary,
@@ -1214,12 +1220,12 @@ function initializeTranslations() {
 
   // Learning Content Studio translations
   setNavLabel("nav-content", t("nav_content"));
-  const lblContentKicker = document.getElementById("lbl-content-kicker");
-  if (lblContentKicker) lblContentKicker.textContent = currentLocale === "de" ? "Persönlicher Katalog" : "Personal catalog";
+  // The page title matches its sidebar entry.
   const lblContentTitle = document.getElementById("lbl-content-title");
-  if (lblContentTitle) lblContentTitle.textContent = t("content_title");
-  const lblContentSubtitle = document.getElementById("lbl-content-subtitle");
-  if (lblContentSubtitle) lblContentSubtitle.textContent = t("content_subtitle");
+  if (lblContentTitle) lblContentTitle.textContent = t("nav_content");
+  const lblContentImportMenu = document.getElementById("lbl-content-import-menu");
+  if (lblContentImportMenu) lblContentImportMenu.textContent = t("content_import_menu");
+  applyGoalImportLabels();
   const btnContentNewCard = document.getElementById("btn-content-new-card");
   if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
   const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
@@ -8814,11 +8820,16 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
-  // Goal-driven import stays reachable outside first run (plan Phase 8):
-  // Learning Content's "Goal import" reopens the flow at the goal page.
+  // Goal-driven import is a content import of its own (redesign step 4):
+  // Learning Content opens the goal page in a dialog, not the first-run flow.
+  initGoalImportDialog({
+    openModelSetup: () => showOnboardingAt("model"),
+    onImported: () => void loadStudioData(),
+  });
   document
     .getElementById("btn-content-goal-import")
-    ?.addEventListener("click", () => showOnboardingAt("goal"));
+    ?.addEventListener("click", () => openGoalImportDialog());
+  initContentImportMenu();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.
   document
     .getElementById("btn-dashboard-library-topics")
@@ -9114,9 +9125,19 @@ window.addEventListener("DOMContentLoaded", () => {
   const openGraphBtn = document.getElementById("btn-open-graph") as HTMLButtonElement | null;
   if (openGraphBtn) {
     openGraphBtn.addEventListener("click", () => {
-      rememberGraphOrigin("dashboard-view");
+      const active = (id: string) =>
+        document.getElementById(id)?.classList.contains("active") === true;
+      if (active("graph-view")) return;
+      // From the sidebar, Back returns to Lern-Karten when that page was
+      // open (ADR 2026-10-10 Decision 3), and to Today otherwise.
       const back = document.getElementById("btn-graph-back");
-      if (back) back.textContent = t("btn_back_to_dashboard");
+      if (active("learning-content-view")) {
+        rememberGraphOrigin("learning-content-view");
+        if (back) back.textContent = t("btn_graph_back_cards");
+      } else {
+        rememberGraphOrigin("dashboard-view");
+        if (back) back.textContent = t("btn_back_to_dashboard");
+      }
       switchView("graph-view");
     });
   }
