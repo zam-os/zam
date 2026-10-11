@@ -680,29 +680,24 @@ describe("knowledge map module boundaries and wiring", () => {
     }
   });
 
-  it("loads map views from Quellen only after the alpha is on", () => {
+  it("loads map views lazily from Quellen, with no switch to hide them", () => {
     const main = readFileSync(join(ROOT, "desktop/src/main.ts"), "utf8");
     expect(main).not.toContain("nav-knowledge-map");
     expect(main).not.toMatch(/^import .*knowledge-map\/studio/m);
     expect(main).not.toMatch(/^import .*knowledge-map\/views/m);
+    expect(main).not.toContain("initKnowledgeMapSettings");
     const knowledge = readFileSync(
       join(ROOT, "desktop/src/learning-content-knowledge.ts"),
       "utf8",
     );
-    const enabledAt = knowledge.indexOf("feature.enabled");
-    const importer = knowledge.indexOf(
-      'await import("./knowledge-map/studio.js")',
-    );
-    expect(enabledAt).toBeGreaterThan(-1);
-    expect(importer).toBeGreaterThan(enabledAt);
+    expect(knowledge).toContain('await import("./knowledge-map/studio.js")');
     expect(knowledge).not.toMatch(/^import .*knowledge-map\/studio/m);
+    // The views are chosen on the map; the alpha switch no longer hides it.
+    expect(knowledge).not.toContain("feature.enabled");
+    expect(knowledge).not.toContain('"--enable"');
     const html = readFileSync(join(ROOT, "desktop/index.html"), "utf8");
     expect(html).not.toContain("nav-knowledge-map");
-    expect(html).toMatch(
-      /id="knowledge-map-card" data-settings-tier="advanced"/,
-    );
-    expect(html).toMatch(
-      /<div class="settings-stack" id="knowledge-map-settings-body" hidden>/,
-    );
+    expect(html).not.toContain('id="knowledge-map-card"');
+    expect(html).not.toContain('id="toggle-knowledge-map"');
   });
 });

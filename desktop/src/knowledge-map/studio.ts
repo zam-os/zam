@@ -237,8 +237,9 @@ function skillSourceNotice(loaded: MapResponse): string {
 
 /**
  * Draw one Quelle's map into `container`. Reads the map through
- * `options.loadMap` and the view chosen in Settings. Does not set
- * `knowledgeMap.repoPath`.
+ * `options.loadMap` and opens it in the remembered view; the learner
+ * switches views on the map itself, and the choice is remembered as the one
+ * Settings shows. Does not set `knowledgeMap.repoPath`.
  */
 export async function mountSourceKnowledgeMap(
   container: HTMLElement,
@@ -283,11 +284,18 @@ export async function mountSourceKnowledgeMap(
       viewId: parseKnowledgeMapViewId(feature.view),
       t,
       tf,
-      showViewSwitcher: false,
+      showViewSwitcher: true,
       ...(notice ? { notice } : {}),
       openSource: options.openSource,
       feedback: null,
       copyText: async () => false,
+      // The view changes at once; remembering it is best effort, and a
+      // failed write only means the next map opens in the old view.
+      onViewChange: (id) => {
+        void runBridge("knowledge-map-feature", ["--view", id]).catch(
+          () => undefined,
+        );
+      },
     });
     if (!options.isCurrent()) {
       sourceShell.destroy();

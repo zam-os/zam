@@ -349,9 +349,18 @@
                 <ul id="content-sources-okf-list"></ul>
               </div>
             </div>
-            <div id="content-sources-reader" class="content-sources-reader">
-              <h2 id="lbl-content-source-reader">Reader</h2>
-              <div id="content-sources-reader-body"></div>
+          </div>
+          <div id="content-source-reader-overlay" class="modal-overlay" role="dialog" aria-modal="true" aria-labelledby="lbl-content-source-reader">
+            <div class="modal-box source-reader-modal">
+              <div class="source-reader-head">
+                <div class="source-reader-heading">
+                  <h3 id="lbl-content-source-reader">Reader</h3>
+                  <p id="content-source-reader-title" class="source-reader-path"></p>
+                </div>
+                <button id="btn-content-source-reader-close" class="btn secondary-btn btn-sm" type="button">Close</button>
+              </div>
+              <p id="content-source-reader-note" class="source-reader-note" aria-live="polite"></p>
+              <div id="content-sources-reader-body" class="content-sources-reader-body"></div>
             </div>
           </div>
           <div id="content-sources-curriculum" class="content-sources-curriculum hidden" hidden>
@@ -977,32 +986,6 @@
                   </button>
                 </div>
               </div>
-            </article>
-
-            <!-- Knowledge map alpha (ADR 2026-10-03): off by default; ticking the
-                 box shows the navigation entry and the view choice. -->
-            <article class="card frosted settings-card" id="knowledge-map-card" data-settings-tier="advanced">
-              <div class="settings-card-header">
-                <div>
-                  <h2 id="lbl-km-settings-title">
-                    <span id="lbl-km-settings-title-text">Knowledge map</span>
-                    <span class="settings-badge-alpha">Alpha</span>
-                  </h2>
-                  <p id="lbl-km-settings-help" class="settings-card-help"></p>
-                </div>
-              </div>
-              <label class="settings-toggle" for="toggle-knowledge-map">
-                <input type="checkbox" id="toggle-knowledge-map" />
-                <span id="lbl-km-settings-toggle">Enable the knowledge map (Alpha)</span>
-              </label>
-              <div class="settings-stack" id="knowledge-map-settings-body" hidden>
-                <p id="lbl-km-settings-note" class="settings-card-help settings-alpha-note"></p>
-                <fieldset class="settings-stack" style="border: 0; padding: 0; margin: 0;">
-                  <legend id="lbl-km-settings-view" class="sub-label">View</legend>
-                  <div id="knowledge-map-views" class="settings-stack"></div>
-                </fieldset>
-              </div>
-              <p id="knowledge-map-status" class="settings-card-help" aria-live="polite"></p>
             </article>
 
             <article class="card frosted settings-card" id="settings-mobile-card" data-settings-tier="advanced">

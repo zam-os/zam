@@ -2,6 +2,7 @@
 
 ## 2026-10-11
 
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Learning Content](learning-content.md)
 
 ## 2026-10-10

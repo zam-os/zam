@@ -89,6 +89,7 @@ const CSS = `
 .km-switcher-select { border: 0; background: var(--km-card); color: var(--km-text); font: inherit; font-size: 0.88rem;
   padding: 6px 10px; max-width: 100%; }
 .km-view-label { font-size: 0.85rem; color: var(--km-muted); }
+.km-view-picker { display: inline-flex; align-items: center; gap: 8px; }
 .km-crumbs { display: flex; flex-wrap: wrap; align-items: center; gap: 4px; font-size: 0.85rem; min-height: 28px; }
 .km-crumbs .km-crumb { border: 0; background: transparent; cursor: pointer; padding: 3px 6px; border-radius: 6px;
   color: var(--km-text-2); max-width: 22ch; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }

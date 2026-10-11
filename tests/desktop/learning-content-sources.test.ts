@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, describe, expect, it } from "vitest";
 import { setCurrentLocale, t } from "../../desktop/src/i18n.js";
 import { planSourceMap } from "../../desktop/src/knowledge-map/source-plan.js";
+import { linkFromFile } from "../../desktop/src/learning-content-knowledge.js";
 import { readSourceFile } from "../../src/cli/learning-content/browse.js";
 import { citationTarget } from "../../src/cli/learning-content/citation.js";
 import { isSkillSource } from "../../src/cli/provisioning/index.js";
@@ -29,10 +30,7 @@ describe("learning content sources shell", () => {
     );
     expect(t("lbl_bundled_cells_desc")).toContain("Quellen → Lehrplan");
     expect(t("content_source_skill")).toBe("Skillquelle");
-    expect(t("btn_content_source_map")).toBe("Wissenskarte anzeigen");
-    expect(t("content_source_reader_empty")).toBe(
-      "Wähle einen Artikel, um ihn hier zu lesen.",
-    );
+    expect(t("content_source_reader_close")).toBe("Schließen");
     setCurrentLocale("en");
     expect(t("lbl_content_source")).toBe("Source");
     expect(t("btn_content_choose_folder")).toBe("Choose folder…");
@@ -172,6 +170,48 @@ describe("learning content sources shell", () => {
     expect(mount).toContain('if (plan.draw === "example")');
     expect(mount.indexOf('if (plan.draw === "none")')).toBeLessThan(
       mount.indexOf("sampleMap()"),
+    );
+  });
+
+  it("gives the map the full width, with its views on the map and reading in a dialog", () => {
+    for (const shell of [
+      read("desktop/index.html"),
+      read("desktop/src/panel/studio-panel.html"),
+    ]) {
+      expect(shell).not.toContain('id="content-sources-reader"');
+      const dialog = shell.slice(
+        shell.indexOf('id="content-source-reader-overlay"'),
+      );
+      expect(dialog).toContain('class="modal-overlay" role="dialog"');
+      expect(dialog).toContain('id="content-sources-reader-body"');
+      expect(dialog).toContain('id="btn-content-source-reader-close"');
+    }
+    const studio = read("desktop/src/knowledge-map/studio.ts");
+    const mount = studio.slice(
+      studio.indexOf("export async function mountSourceKnowledgeMap"),
+    );
+    expect(mount).toContain("showViewSwitcher: true");
+    // The choice is remembered as the view Settings shows; never a path.
+    expect(mount).toContain(
+      'runBridge("knowledge-map-feature", ["--view", id])',
+    );
+  });
+
+  it("resolves a link in a Markdown file from the file's own folder", () => {
+    expect(linkFromFile("README.md", "docs/okf/README.md")).toBe(
+      "docs/okf/README.md",
+    );
+    // A root-level file keeps "./" so the bridge does not try docs/okf first.
+    expect(linkFromFile("README.md", "CONTRIBUTING.md")).toBe(
+      "./CONTRIBUTING.md",
+    );
+    expect(linkFromFile("docs/adr/a.md", "../okf/b.md#citations")).toBe(
+      "docs/okf/b.md#citations",
+    );
+    expect(linkFromFile("docs/adr/a.md", "./c.md")).toBe("docs/adr/c.md");
+    // Climbing out of the root stays visible, so the bridge refuses it.
+    expect(linkFromFile("README.md", "../../etc/passwd")).toBe(
+      "../../etc/passwd",
     );
   });
 });

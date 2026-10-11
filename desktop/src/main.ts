@@ -81,10 +81,6 @@ import {
 } from "./bitwarden-assure.js";
 import { initSecretsVault } from "./secrets-vault.js";
 import {
-  initKnowledgeMapSettings,
-  type KnowledgeMapSettings,
-} from "./knowledge-map/settings.js";
-import {
   classifyServerDbError,
   initServerDbWizard,
   isServerDbError,
@@ -4457,10 +4453,6 @@ function errorMessage(err: unknown): string {
   return err instanceof Error ? err.message : String(err);
 }
 
-// ── KNOWLEDGE MAP (alpha, ADR 2026-10-03) ─────────────────────────────────
-// Quellen mounts the views. Settings keeps the switch and the view list.
-let knowledgeMapSettings: KnowledgeMapSettings | null = null;
-
 // ── VIEW ROUTING ──────────────────────────────────────────────────────────
 function setActiveNav(viewId: AppView): void {
   const navByView: Partial<Record<AppView, string>> = {
@@ -5248,7 +5240,6 @@ function switchView(
   if (viewId === "settings-view") {
     renderSettingsToc();
     refreshSettingsData();
-    void knowledgeMapSettings?.refresh();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
@@ -8814,13 +8805,6 @@ window.addEventListener("DOMContentLoaded", () => {
   initPanel("secrets-vault", () =>
     initSecretsVault({ openExternal: (url: string) => void openUrl(url) }),
   );
-  initPanel("knowledge-map", () => {
-    knowledgeMapSettings = initKnowledgeMapSettings({
-      onEnabledChange: () => {
-        // Quellen reads the same switch. There is no top-nav entry.
-      },
-    });
-  });
   initPanel("mobile-pairing", () =>
     initMobilePairing(() => void loadDatabaseStatus()),
   );

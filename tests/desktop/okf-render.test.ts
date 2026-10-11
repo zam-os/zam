@@ -125,6 +125,18 @@ describe("renderMarkdown", () => {
     );
   });
 
+  it("renders a link or code inside bold and italic", () => {
+    expect(
+      renderMarkdown("**[zam-os.org](https://zam-os.org)** and *see `x`*"),
+    ).toBe(
+      '<p><strong><a href="https://zam-os.org" data-okf-external="https://zam-os.org" target="_blank" rel="noopener noreferrer">zam-os.org</a></strong> and <em>see <code>x</code></em></p>',
+    );
+    // Still escaped: markup inside emphasis stays text.
+    expect(renderMarkdown("**<img src=x onerror=alert(1)>**")).toBe(
+      "<p><strong>&lt;img src=x onerror=alert(1)&gt;</strong></p>",
+    );
+  });
+
   it("renders a fenced code block verbatim (escaped) with a language class", () => {
     const html = renderMarkdown("```ts\nconst x = 1;\n```");
     expect(html).toBe(
