@@ -42,8 +42,13 @@ describe("Studio choice and auto wiring", () => {
     expect(css).toMatch(
       /#revealed-box\.choice-reveal > #discussion-box \{\s*order: 1;/,
     );
+    // The reference answer sits in the side-by-side compare row; the row
+    // moves as a whole.
+    expect(html).toMatch(
+      /id="reveal-compare"[\s\S]*id="reference-answer-box"/,
+    );
     expect(css).toMatch(
-      /#revealed-box\.choice-reveal > #reference-answer-box \{\s*order: 2;/,
+      /#revealed-box\.choice-reveal > #reveal-compare \{\s*order: 2;/,
     );
     expect(css).toContain("#reference-answer-box.collapsed .reveal-content-list");
     expect(html).toContain('id="btn-reference-toggle"');

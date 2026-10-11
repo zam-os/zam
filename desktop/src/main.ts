@@ -919,6 +919,9 @@ function initializeTranslations() {
   document.getElementById("lbl-own-answer-title")!.textContent = t(
     "recall_your_answer_title",
   );
+  document.getElementById("lbl-user-answer")!.textContent = t(
+    "recall_your_answer_title",
+  );
   document.getElementById("lbl-rating-instruction")!.textContent = t("lbl_rating_instruction");
   document.getElementById("btn-pause-session")!.textContent = t("btn_pause_session");
   document.getElementById("session-summary-title")!.textContent =
@@ -1272,13 +1275,10 @@ function initializeTranslations() {
   if (btnModalHardDelete) btnModalHardDelete.textContent = t("btn_delete");
 
   // In-recall card management (ADR 2026-07-16b)
-  const btnStudyStopLbl = document.querySelector("#btn-study-stop .rating-label");
-  if (btnStudyStopLbl) btnStudyStopLbl.textContent = t("study_btn_stop");
   const setStudyText = (id: string, key: string) => {
     const el = document.getElementById(id);
     if (el) el.textContent = t(key);
   };
-  setStudyText("btn-study-edit", "study_btn_edit");
   setStudyText("btn-study-manage-edit", "study_btn_edit");
   setStudyText("btn-study-manage-stop", "study_btn_stop");
   setStudyText("btn-study-open-editor", "study_btn_open_editor");
@@ -5065,7 +5065,7 @@ function switchView(
   if (viewId !== "study-view" && sessionSummaryVisible) {
     document.getElementById("session-summary")?.classList.add("hidden");
     document.getElementById("study-active-card")?.classList.remove("hidden");
-    document.getElementById("study-footer")?.classList.remove("hidden");
+    document.getElementById("study-topbar")?.classList.remove("hidden");
     sessionSummaryVisible = false;
     resetSessionTally();
   }
@@ -5080,6 +5080,7 @@ function switchView(
     'content-full',
     viewId === "learning-content-view",
   );
+  mainContainer?.classList.toggle('study-focus', viewId === "study-view");
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
     // lazy init three when first shown
@@ -6886,8 +6887,6 @@ const REVIEW_ACTION_CONTROL_IDS = [
   "btn-card-manage",
   "btn-study-manage-edit",
   "btn-study-manage-stop",
-  "btn-study-stop",
-  "btn-study-edit",
   "btn-study-open-editor",
   "btn-study-edit-save",
   "btn-study-edit-cancel",
@@ -6900,8 +6899,6 @@ const REVIEW_ACTION_TRIGGER_IDS = [
   "btn-card-manage",
   "btn-study-manage-edit",
   "btn-study-manage-stop",
-  "btn-study-stop",
-  "btn-study-edit",
   "btn-study-open-editor",
   "btn-choice-next",
   "btn-choice-next-bottom",
@@ -7682,7 +7679,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   hideStudyOffer();
   hideStudyBusy();
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
 
   pendingReviewPayload = null;
   activeCard = payload.card;
@@ -7704,6 +7701,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   );
   document.getElementById("card-progress")!.textContent =
     `${sessionRatingTally.done + 1} / ${totalSessionCards}`;
+  renderStudyProgress(sessionRatingTally.done, totalSessionCards);
 
   const domainBadge = document.getElementById("domain-badge")!;
   domainBadge.textContent = activeCard.domain || "general";
@@ -8476,6 +8474,18 @@ async function acceptBonus(atomId: string): Promise<void> {
   void finishStudySession();
 }
 
+/** The session bar's progress: cards rated so far out of the session's size. */
+function renderStudyProgress(done: number, total: number): void {
+  const track = document.getElementById("study-progress-track");
+  const fill = document.getElementById("study-progress-fill");
+  if (!track || !fill) return;
+  const safeTotal = Math.max(1, total);
+  const value = Math.min(Math.max(0, done), safeTotal);
+  track.setAttribute("aria-valuemax", String(safeTotal));
+  track.setAttribute("aria-valuenow", String(value));
+  fill.style.width = `${(value / safeTotal) * 100}%`;
+}
+
 // ── SESSION COMPLETION / SUMMARY ─────────────────────────────────────────
 function resetSessionTally(): void {
   sessionRatingTally.done = 0;
@@ -8505,7 +8515,7 @@ function prepareStudyViewForSession(): void {
   hideStudyOffer();
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
   pendingReviewPayload = null;
   preconditionCache = null;
   assessedAtomsThisSession.clear();
@@ -8552,7 +8562,7 @@ function renderSessionSummary(): void {
   doneBtn.textContent = t("btn_back_to_dashboard");
 
   document.getElementById("study-active-card")?.classList.add("hidden");
-  document.getElementById("study-footer")?.classList.add("hidden");
+  document.getElementById("study-topbar")?.classList.add("hidden");
   summary.classList.remove("hidden");
 }
 
@@ -8596,7 +8606,7 @@ async function finishStudySession(): Promise<void> {
 function leaveSessionSummaryToDashboard(): void {
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
-  document.getElementById("study-footer")?.classList.remove("hidden");
+  document.getElementById("study-topbar")?.classList.remove("hidden");
   sessionSummaryVisible = false;
   resetSessionTally();
   switchView("dashboard-view");
@@ -9062,12 +9072,6 @@ window.addEventListener("DOMContentLoaded", () => {
   });
 
   // In-recall card management (ADR 2026-07-16b)
-  document
-    .getElementById("btn-study-stop")!
-    .addEventListener("click", () => void openStopModal());
-  document
-    .getElementById("btn-study-edit")!
-    .addEventListener("click", () => openInlineEditor());
   document
     .getElementById("btn-study-open-editor")!
     .addEventListener("click", () => void jumpToFullEditor());

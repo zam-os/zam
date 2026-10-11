@@ -19,13 +19,25 @@ describe("study-view card-management wiring", () => {
     expect(editor).toBeLessThan(revealed);
   });
 
-  it("keeps post-reveal edit controls outside the conditionally hidden answer box", () => {
-    const revealed = html.indexOf('id="revealed-box"');
-    const controls = html.indexOf('class="study-edit-controls"');
-    const answerBox = html.indexOf('class="answer-box"');
-
-    expect(controls).toBeGreaterThan(revealed);
-    expect(controls).toBeLessThan(answerBox);
+  it("keeps card management in the session bar, reachable before and after the reveal", () => {
+    // One menu in the session bar instead of a button row between feedback
+    // and reference answer: it can never be hidden with the answer box.
+    const topbar = html.indexOf('id="study-topbar"');
+    const card = html.indexOf('id="study-active-card"');
+    const menu = html.indexOf('id="study-manage-menu"');
+    expect(topbar).toBeGreaterThan(-1);
+    expect(menu).toBeGreaterThan(topbar);
+    expect(menu).toBeLessThan(card);
+    const menuMarkup = html.slice(menu, html.indexOf("</div>", menu));
+    for (const id of [
+      "btn-study-manage-edit",
+      "btn-study-open-editor",
+      "btn-study-manage-stop",
+    ]) {
+      expect(menuMarkup).toContain(`id="${id}"`);
+    }
+    // No second Remove button next to the ratings.
+    expect(html).not.toContain('id="btn-study-stop"');
   });
 
   it("sends study time with every rating and hides the card behind a busy overlay", () => {

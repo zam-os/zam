@@ -13,10 +13,6 @@
   </head>
 
   <body>
-    <!-- BACKGROUND GLOWS -->
-    <div class="blur-glow glow-1"></div>
-    <div class="blur-glow glow-2"></div>
-
     <!-- STARTUP OVERLAY
          Present in the static markup (not created by main.ts) so it is on
          screen from the first paint. Everything behind it is placeholder
@@ -75,7 +71,7 @@
             </p>
           </div>
           <div class="hero-actions">
-            <button id="btn-start-session" class="btn primary-btn btn-large glow-btn" disabled>
+            <button id="btn-start-session" class="btn primary-btn btn-large" disabled>
               Start Learning Session
             </button>
             <button id="btn-open-graph" class="btn secondary-btn btn-large">Knowledge Map (3D)</button>
@@ -1096,66 +1092,96 @@
 
       <!-- VIEW 3: STUDY SESSION CARD -->
       <section id="study-view" class="view">
+        <!-- SESSION BAR. A running session is focus mode: the app header is
+             hidden (main.container.study-focus), so this bar carries the way
+             out, the progress, the learning mode and the card menu. -->
+        <div class="study-topbar" id="study-topbar">
+          <button id="btn-pause-session" class="btn ghost-btn study-end-btn" type="button">
+            End session
+          </button>
+          <div class="study-progress">
+            <span class="card-progress" id="card-progress">1 / 10</span>
+            <div
+              class="study-progress-track"
+              id="study-progress-track"
+              role="progressbar"
+              aria-labelledby="card-progress"
+              aria-valuemin="0"
+              aria-valuemax="10"
+              aria-valuenow="0"
+            >
+              <span class="study-progress-fill" id="study-progress-fill"></span>
+            </div>
+          </div>
+          <div class="study-topbar-actions">
+            <div
+              id="study-mode-switcher"
+              class="study-mode-switcher"
+              role="radiogroup"
+              aria-label="Learning mode"
+            >
+              <button
+                id="btn-study-mode-flash"
+                class="study-mode-option active"
+                type="button"
+                role="radio"
+                aria-checked="true"
+              >
+                Flash
+              </button>
+              <button
+                id="btn-study-mode-choice"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Choice
+              </button>
+              <button
+                id="btn-study-mode-feedback"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                AI
+              </button>
+              <button
+                id="btn-study-mode-auto"
+                class="study-mode-option"
+                type="button"
+                role="radio"
+                aria-checked="false"
+              >
+                Auto
+              </button>
+            </div>
+            <!-- Card management (ADR 2026-07-16b) lives in one menu, before
+                 and after the reveal, so it never sits between the feedback
+                 and the reference answer or next to the rating buttons. -->
+            <div class="card-manage-wrap">
+              <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">
+                <svg aria-hidden="true" width="18" height="18" viewBox="0 0 24 24" fill="currentColor"><circle cx="5" cy="12" r="1.8"></circle><circle cx="12" cy="12" r="1.8"></circle><circle cx="19" cy="12" r="1.8"></circle></svg>
+              </button>
+              <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
+                <button id="btn-study-manage-edit" class="card-manage-item" type="button" role="menuitem">Edit this card</button>
+                <button id="btn-study-open-editor" class="card-manage-item" type="button" role="menuitem">Open in full editor</button>
+                <button id="btn-study-manage-stop" class="card-manage-item danger" type="button" role="menuitem">Remove</button>
+              </div>
+            </div>
+          </div>
+        </div>
+
         <div id="study-active-card" class="study-card frosted">
           <!-- CARD HEADER -->
           <div class="card-header">
-            <span class="card-progress" id="card-progress">1/10</span>
             <div class="tag-row">
-              <div
-                id="study-mode-switcher"
-                class="study-mode-switcher"
-                role="radiogroup"
-                aria-label="Learning mode"
-              >
-                <button
-                  id="btn-study-mode-flash"
-                  class="study-mode-option active"
-                  type="button"
-                  role="radio"
-                  aria-checked="true"
-                >
-                  ⚡ Flash
-                </button>
-                <button
-                  id="btn-study-mode-choice"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  🔘 Choice
-                </button>
-                <button
-                  id="btn-study-mode-feedback"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  💬 AI
-                </button>
-                <button
-                  id="btn-study-mode-auto"
-                  class="study-mode-option"
-                  type="button"
-                  role="radio"
-                  aria-checked="false"
-                >
-                  🔄 Auto
-                </button>
-              </div>
-              <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="domain-badge">git</span>
+              <span class="badge bloom-badge" id="bloom-badge">Understand (Bloom 2)</span>
               <span class="badge domain-badge" id="tier-badge" hidden></span>
               <!-- Auto's recall probe (ADR 2026-09-27 Decision 8). -->
               <span class="badge choice-stage-badge" id="choice-stage-badge" hidden></span>
-              <div class="card-manage-wrap">
-                <button id="btn-card-manage" class="card-manage-btn" type="button" aria-haspopup="menu" aria-controls="study-manage-menu" aria-expanded="false">⋯</button>
-                <div id="study-manage-menu" class="card-manage-menu hidden" role="menu">
-                  <button id="btn-study-manage-edit" class="card-manage-item" type="button" role="menuitem">Edit this card</button>
-                  <button id="btn-study-manage-stop" class="card-manage-item danger" type="button" role="menuitem">Remove</button>
-                </div>
-              </div>
             </div>
           </div>
 
@@ -1197,10 +1223,11 @@
             <div class="answer-capture" id="answer-capture-box">
               <!-- Why a card in Choice is asked without options. -->
               <p id="choice-notice" class="choice-notice" hidden></p>
+              <label class="answer-label" for="user-answer-input" id="lbl-user-answer">Your answer</label>
               <textarea id="user-answer-input" placeholder="Type your conceptual answer here... (Enter to submit)"></textarea>
               <div id="fast-check-options" class="study-offer-actions" hidden></div>
               <div class="card-buttons">
-                <button id="btn-reveal-answer" class="btn primary-btn btn-block">
+                <button id="btn-reveal-answer" class="btn primary-btn btn-large">
                   Submit & Reveal Answer
                 </button>
               </div>
@@ -1250,14 +1277,34 @@
 
             <!-- REVEALED SCREEN -->
             <div class="revealed-container hidden" id="revealed-box">
-              <!-- What the learner wrote: submitting hides the capture box, so
-                   without this it is off-screen while the feedback, the
-                   reference and the rating buttons all refer to it. Deliberately
-                   NOT .answer-box — renderReveal() toggles the reference box by
-                   "#revealed-box .answer-box", which takes the first match. -->
-              <div class="own-answer-box hidden" id="own-answer-box">
-                <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
-                <div class="own-answer-text" id="own-answer-text"></div>
+              <!-- Own answer and reference side by side, so comparing them
+                   is a glance across rather than a scroll. When there is no
+                   own answer (Flash, Choice) the reference takes the row. -->
+              <div class="reveal-compare" id="reveal-compare">
+                <!-- What the learner wrote: submitting hides the capture box,
+                     so without this it is off-screen while the feedback, the
+                     reference and the rating buttons all refer to it.
+                     Deliberately NOT .answer-box — renderReveal() toggles the
+                     reference box by "#revealed-box .answer-box", which takes
+                     the first match. -->
+                <div class="own-answer-box hidden" id="own-answer-box">
+                  <h3 class="box-title" id="lbl-own-answer-title">Your answer</h3>
+                  <div class="own-answer-text" id="own-answer-text"></div>
+                </div>
+
+                <!-- CORE REFERENCE ANSWER -->
+                <div class="answer-box" id="reference-answer-box">
+                  <div class="reference-answer-header">
+                    <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
+                    <!-- Choice reveals fold the reference away: the answer is
+                         already marked among the options (ADR 2026-09-27). -->
+                    <button id="btn-reference-toggle" class="btn ghost-btn btn-sm" type="button" hidden aria-expanded="false" aria-controls="reveal-content-list">Show reference answer</button>
+                  </div>
+                  <div class="reveal-content-list" id="reveal-content-list">
+                    <!-- Generated dynamically: Token, Concept, Context, Source -->
+                  </div>
+                  <div id="answer-media" class="review-media"></div>
+                </div>
               </div>
 
               <!-- AI FEEDBACK -->
@@ -1284,12 +1331,6 @@
                 </details>
               </div>
 
-              <!-- POST-REVEAL CARD MANAGEMENT (stays visible with AI feedback) -->
-              <div class="study-edit-controls">
-                <button id="btn-study-edit" class="btn secondary-btn btn-sm" type="button">Edit this card</button>
-                <button id="btn-study-open-editor" class="btn ghost-btn btn-sm" type="button">Open in full editor →</button>
-              </div>
-
               <!-- CHOICE RESULT (ADR 2026-09-27 Decision 7): the rating is
                    derived from the pick, so this replaces the rating bar. -->
               <div class="choice-result hidden" id="choice-result" aria-live="polite">
@@ -1300,20 +1341,6 @@
                   <button id="btn-choice-dispute" class="btn ghost-btn btn-sm" type="button" hidden>My answer is also correct</button>
                   <button id="btn-choice-next" class="btn primary-btn" type="button">Next</button>
                 </div>
-              </div>
-
-              <!-- CORE REFERENCE ANSWER -->
-              <div class="answer-box" id="reference-answer-box">
-                <div class="reference-answer-header">
-                  <h3 class="box-title" id="lbl-reveal-title">Reference Answer</h3>
-                  <!-- Choice reveals fold the reference away: the answer is
-                       already marked among the options (ADR 2026-09-27). -->
-                  <button id="btn-reference-toggle" class="btn ghost-btn btn-sm" type="button" hidden aria-expanded="false" aria-controls="reveal-content-list">Show reference answer</button>
-                </div>
-                <div class="reveal-content-list" id="reveal-content-list">
-                  <!-- Generated dynamically: Token, Concept, Context, Source -->
-                </div>
-                <div id="answer-media" class="review-media"></div>
               </div>
 
               <!-- POST-REVEAL DISCUSSION THREAD (ADR 2026-07-06b) -->
@@ -1366,22 +1393,9 @@
                     </div>
                   </div>
                 </div>
-                <div class="rating-stop-wrap">
-                  <button id="btn-study-stop" class="btn stop-btn" type="button">
-                    <span class="rating-num">–</span>
-                    <span class="rating-label">Remove</span>
-                  </button>
-                </div>
               </div>
             </div>
           </div>
-        </div>
-
-        <!-- END SESSION BUTTON -->
-        <div class="study-footer" id="study-footer">
-          <button id="btn-pause-session" class="btn secondary-btn">
-            End session
-          </button>
         </div>
 
         <!-- FIELD-TEST OFFERS (precondition / keep-going / bonus) -->
@@ -1397,7 +1411,7 @@
           <h2 id="session-summary-title">Session summary</h2>
           <p id="session-summary-sub"></p>
           <div id="session-summary-spread" class="session-summary-spread"></div>
-          <button id="btn-session-summary-done" class="btn primary-btn btn-large glow-btn" type="button">
+          <button id="btn-session-summary-done" class="btn primary-btn btn-large" type="button">
             Back to Dashboard
           </button>
         </div>

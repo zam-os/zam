@@ -963,8 +963,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_quick_setting: "Mostrar solo preguntas y respuestas",
     recall_quick_setting_hint:
       "Ajuste heredado del evaluador rápido. El selector Agente controla la evaluación de Recall.",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "IA",
     learning_mode_switch_to_feedback:
       "Modo Flash activo. Cambiar al modo de respuesta.",
     learning_mode_switch_to_flash:
@@ -1924,8 +1924,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_quick_setting: "Afficher seulement les questions et réponses",
     recall_quick_setting_hint:
       "Réglage hérité de l’évaluateur rapide. Le sélecteur Agent contrôle l’évaluation Recall.",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "IA",
     learning_mode_switch_to_feedback:
       "Mode Flash actif. Passer au mode réponse.",
     learning_mode_switch_to_flash: "Mode réponse actif. Passer au mode Flash.",
@@ -2870,8 +2870,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_quick_setting: "Mostrar apenas perguntas e respostas",
     recall_quick_setting_hint:
       "Configuração herdada do avaliador rápido. O seletor Agente controla a avaliação do Recall.",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 IA",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "IA",
     learning_mode_switch_to_feedback:
       "Modo Flash ativo. Mudar para o modo de resposta.",
     learning_mode_switch_to_flash:
@@ -3752,8 +3752,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_quick_setting: "仅显示问题和答案",
     recall_quick_setting_hint:
       "这是旧版快速评估器设置；Recall 评估由“智能体”选择器控制。",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "AI",
     learning_mode_switch_to_feedback: "Flash 模式已启用。切换到作答模式。",
     learning_mode_switch_to_flash: "作答模式已启用。切换到 Flash 模式。",
     settings_section_backup: "备份",
@@ -4682,8 +4682,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     recall_quick_setting: "質問と回答だけを表示",
     recall_quick_setting_hint:
       "従来の高速評価設定です。Recall の評価はエージェント選択で制御します。",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "AI",
     learning_mode_switch_to_feedback:
       "Flash モードが有効です。回答モードに切り替えます。",
     learning_mode_switch_to_flash:
@@ -5912,16 +5912,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_quick_setting: "Show only questions and answers",
     recall_quick_setting_hint:
       "Legacy quick-evaluator default. The Agent selector controls Recall evaluation.",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 AI",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "AI",
     learning_mode_switch_to_feedback:
       "Flash mode is active. Switch to answer mode.",
     learning_mode_switch_to_flash:
       "Answer mode is active. Switch to Flash mode.",
     learning_mode_choice: "Choice (pick one of three)",
     learning_mode_auto: "Auto (choice first, free recall later)",
-    learning_mode_switch_choice: "🔘 Choice",
-    learning_mode_switch_auto: "🔄 Auto",
+    learning_mode_switch_choice: "Choice",
+    learning_mode_switch_auto: "Auto",
     learning_mode_auto_recall_flash:
       "Later without typing (Flash instead of an AI-checked answer)",
     learning_mode_derived_choice_options:
@@ -7644,16 +7644,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     recall_quick_setting: "Nur Fragen und Antworten anzeigen",
     recall_quick_setting_hint:
       "Ältere Vorgabe für den Schnell-Bewerter. Die Agent-Auswahl steuert die Recall-Bewertung.",
-    learning_mode_switch_flash: "⚡ Flash",
-    learning_mode_switch_feedback: "💬 KI",
+    learning_mode_switch_flash: "Flash",
+    learning_mode_switch_feedback: "KI",
     learning_mode_switch_to_feedback:
       "Flash-Modus ist aktiv. Zum Antwortmodus wechseln.",
     learning_mode_switch_to_flash:
       "Antwortmodus ist aktiv. Zum Flash-Modus wechseln.",
     learning_mode_choice: "Auswahl (eine von drei Antworten wählen)",
     learning_mode_auto: "Auto (erst Auswahl, später freier Abruf)",
-    learning_mode_switch_choice: "🔘 Auswahl",
-    learning_mode_switch_auto: "🔄 Auto",
+    learning_mode_switch_choice: "Auswahl",
+    learning_mode_switch_auto: "Auto",
     learning_mode_auto_recall_flash:
       "Später ohne Tippen (Flash statt KI-geprüfter Antwort)",
     learning_mode_derived_choice_options:
