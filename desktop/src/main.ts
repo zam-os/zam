@@ -8,7 +8,11 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
-import { formatActivityBucketLabel } from "../../src/kernel/analytics/progress.js";
+import {
+  formatActivityBucketLabel,
+  type RecentDaysSummary,
+  summarizeRecentDays,
+} from "../../src/kernel/analytics/progress.js";
 import {
   countAnswerPoints,
   shouldShowPointCount,
@@ -862,9 +866,10 @@ function initSettingsViewModeControls(): void {
 
 // ── STATIC TRANSLATIONS INITIALIZER ──────────────────────────────────────
 function initializeTranslations() {
-  document.getElementById("nav-dashboard")!.textContent = t("nav_dashboard");
-  document.getElementById("nav-settings")!.textContent = t("nav_settings");
-  document.getElementById("nav-stats")!.textContent = t("nav_stats");
+  setNavLabel("nav-dashboard", t("nav_today"));
+  setNavLabel("nav-settings", t("nav_settings"));
+  setNavLabel("nav-stats", t("nav_stats"));
+  setNavLabel("btn-open-graph", t("nav_graph"));
   document.getElementById("lbl-stats-kicker")!.textContent = t("stats_kicker");
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
@@ -883,14 +888,17 @@ function initializeTranslations() {
   // once. Asserting it here took the entire dashboard load down with it.
   const statsLoading = document.getElementById("stats-loading-label");
   if (statsLoading) statsLoading.textContent = t("stats_loading");
-  document.getElementById("lbl-dashboard-kicker")!.textContent =
-    t("dashboard_kicker");
   document.getElementById("lbl-dashboard-title")!.textContent =
-    t("dashboard_title");
-  document.getElementById("lbl-dashboard-subtitle")!.textContent =
-    t("dashboard_subtitle");
-  document.getElementById("lbl-due-reviews")!.textContent = t("lbl_due_reviews");
+    t("today_title");
   document.getElementById("lbl-domains")!.textContent = t("lbl_domains");
+  document.getElementById("lbl-week-title")!.textContent =
+    t("dashboard_week_title");
+  document.getElementById("btn-dashboard-stats")!.textContent = t("nav_stats");
+  // Date, due headline and week strip are composed from data; re-render
+  // them so a locale switch never leaves them in the old language.
+  renderTodayDate();
+  renderDueSummary();
+  renderTodayWeek();
   document.getElementById("lbl-onboarding-checklist-title")!.textContent =
     t("onboarding_checklist_title");
   document.getElementById("lbl-onboarding-checklist-note")!.textContent =
@@ -899,9 +907,6 @@ function initializeTranslations() {
   // locale switch never leaves stale-language rows (no-op before bootstrap).
   renderOnboardingChecklist();
   document.getElementById("btn-start-session")!.textContent = t("btn_start_session");
-  document.getElementById("btn-open-graph")!.textContent = t("btn_open_graph");
-  document.getElementById("btn-open-settings")!.textContent =
-    t("btn_open_settings");
   document.getElementById("lbl-translating")!.textContent = t("lbl_translating");
   document.getElementById("lbl-ai-evaluating")!.textContent = t("lbl_ai_evaluating");
   document.getElementById("lbl-ai-working")!.textContent = t("lbl_ai_working");
@@ -1208,8 +1213,7 @@ function initializeTranslations() {
   }
 
   // Learning Content Studio translations
-  const navContent = document.getElementById("nav-content");
-  if (navContent) navContent.textContent = t("nav_content");
+  setNavLabel("nav-content", t("nav_content"));
   const lblContentKicker = document.getElementById("lbl-content-kicker");
   if (lblContentKicker) lblContentKicker.textContent = currentLocale === "de" ? "Persönlicher Katalog" : "Personal catalog";
   const lblContentTitle = document.getElementById("lbl-content-title");
@@ -4453,6 +4457,7 @@ function setActiveNav(viewId: AppView): void {
     "settings-view": "nav-settings",
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
+    "graph-view": "btn-open-graph",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -4493,6 +4498,144 @@ function formatStatsTime(ms: number): string {
 }
 
 /** "Fr., 31. Juli" / "KW 31" / "Juli 2026" instead of the raw bucket key. */
+// ── TODAY (dashboard) ─────────────────────────────────────────────────────
+/** Set when loadDashboard() has a real due count; until then "—" stays. */
+let dueSummaryLoaded = false;
+/** The last seven local days, for the week strip. */
+let todayWeek: RecentDaysSummary | null = null;
+/** Measured time per card over the last 30 days, for the estimate. */
+let todayMsPerCard: number | null = null;
+
+/** Nav buttons carry an icon; only their label text is localized. */
+function setNavLabel(id: string, text: string): void {
+  const label = document.querySelector(`#${id} .nav-label`);
+  if (label) label.textContent = text;
+}
+
+function renderTodayDate(): void {
+  const el = document.getElementById("today-date");
+  if (!el) return;
+  try {
+    el.textContent = new Intl.DateTimeFormat(currentLocale, {
+      weekday: "long",
+      day: "numeric",
+      month: "long",
+    }).format(new Date());
+  } catch {
+    el.textContent = "";
+  }
+}
+
+function renderDueSummary(): void {
+  if (!dueSummaryLoaded) return;
+  const headline = document.getElementById("today-due-headline");
+  if (headline) {
+    headline.textContent =
+      totalDue === 1
+        ? t("dashboard_due_headline_one")
+        : totalDue > 1
+          ? tf("dashboard_due_headline", { count: totalDue })
+          : t("dashboard_due_none");
+  }
+  const navCount = document.getElementById("nav-due-count");
+  if (navCount) {
+    navCount.hidden = totalDue === 0;
+    navCount.textContent = String(totalDue);
+  }
+  // Only an estimate the learner's own measured pace supports; no history,
+  // no number.
+  const meta = document.getElementById("today-due-meta");
+  if (meta) {
+    const minutes =
+      todayMsPerCard !== null && totalDue > 0
+        ? Math.max(1, Math.round((todayMsPerCard * totalDue) / 60_000))
+        : null;
+    meta.hidden = minutes === null;
+    if (minutes !== null) {
+      meta.textContent = tf("dashboard_due_minutes", { minutes });
+    }
+  }
+}
+
+/** Short weekday for a local "YYYY-MM-DD" bucket. */
+function formatWeekday(bucket: string): string {
+  const [year, month, day] = bucket.split("-").map(Number);
+  try {
+    return new Intl.DateTimeFormat(currentLocale, { weekday: "short" }).format(
+      new Date(year, month - 1, day),
+    );
+  } catch {
+    return bucket.slice(5);
+  }
+}
+
+function renderTodayWeek(): void {
+  const section = document.getElementById("today-week");
+  const chart = document.getElementById("today-week-chart");
+  const summary = document.getElementById("today-week-summary");
+  if (!section || !chart || !summary) return;
+  if (!todayWeek) {
+    section.hidden = true;
+    return;
+  }
+  section.hidden = false;
+  const parts = [tf("stats_total_cards", { n: todayWeek.reviewedCards })];
+  if (todayWeek.studyTimeMs > 0) {
+    parts.push(tf("stats_total_time", { time: formatStatsTime(todayWeek.studyTimeMs) }));
+  }
+  summary.textContent =
+    todayWeek.reviewedCards > 0 ? parts.join(" · ") : t("dashboard_week_empty");
+
+  chart.innerHTML = "";
+  const max = Math.max(1, ...todayWeek.days.map((d) => d.reviewedCards));
+  const spoken: string[] = [];
+  todayWeek.days.forEach((day, index) => {
+    const column = document.createElement("div");
+    column.className = "today-week-day";
+    if (index === todayWeek!.days.length - 1) column.classList.add("today");
+    const track = document.createElement("span");
+    track.className = "today-week-track";
+    const bar = document.createElement("span");
+    bar.className = "today-week-bar";
+    if (day.reviewedCards === 0) bar.classList.add("empty");
+    else bar.style.height = `${Math.max(6, (day.reviewedCards / max) * 100)}%`;
+    track.appendChild(bar);
+    const label = document.createElement("span");
+    label.className = "today-week-label";
+    label.textContent = formatWeekday(day.bucket);
+    column.append(track, label);
+    chart.appendChild(column);
+    spoken.push(`${label.textContent} ${day.reviewedCards}`);
+  });
+  chart.setAttribute(
+    "aria-label",
+    tf("dashboard_week_chart_label", { days: spoken.join(", ") }),
+  );
+}
+
+/**
+ * The week strip and the time estimate. Runs after the dashboard has its
+ * real numbers and never blocks it: a failure only hides the strip.
+ */
+async function loadTodayWeek(): Promise<void> {
+  try {
+    const response = await runBridge<StatsActivityResponse>("stats-activity", [
+      "--period",
+      "day",
+      "--window",
+      "30",
+    ]);
+    todayWeek = summarizeRecentDays(response.buckets, 7);
+    todayMsPerCard = summarizeRecentDays(response.buckets, 30).msPerCard;
+  } catch (err) {
+    console.warn("Week activity unavailable:", err);
+    todayWeek = null;
+    todayMsPerCard = null;
+  }
+  renderTodayWeek();
+  renderDueSummary();
+}
+
 function formatStatsBucket(bucket: string, period: StatsPeriod): string {
   return formatActivityBucketLabel(bucket, period, {
     locale: currentLocale,
@@ -5080,7 +5223,9 @@ function switchView(
     'content-full',
     viewId === "learning-content-view",
   );
-  mainContainer?.classList.toggle('study-focus', viewId === "study-view");
+  document
+    .getElementById("app-shell")
+    ?.classList.toggle("study-focus", viewId === "study-view");
   if (viewId === "graph-view") {
     mainContainer?.classList.add('graph-full');
     // lazy init three when first shown
@@ -6017,6 +6162,10 @@ async function loadDashboard() {
 
     const caughtUpEl = document.getElementById("lbl-caught-up")!;
     const startBtn = document.getElementById("btn-start-session") as HTMLButtonElement;
+
+    dueSummaryLoaded = true;
+    renderDueSummary();
+    void loadTodayWeek();
 
     if (totalDue > 0) {
       caughtUpEl.classList.add("hidden");
@@ -8761,8 +8910,8 @@ window.addEventListener("DOMContentLoaded", () => {
     setStatsPeriod("month");
   });
 
-  document.getElementById("btn-open-settings")?.addEventListener("click", () => {
-    switchView("settings-view");
+  document.getElementById("btn-dashboard-stats")?.addEventListener("click", () => {
+    switchView("stats-view");
   });
 
   document.getElementById("btn-agents-connect-all")?.addEventListener("click", () => {
@@ -8964,7 +9113,6 @@ window.addEventListener("DOMContentLoaded", () => {
   // Open 3D Graph (experimental)
   const openGraphBtn = document.getElementById("btn-open-graph") as HTMLButtonElement | null;
   if (openGraphBtn) {
-    openGraphBtn.textContent = t("btn_open_graph");
     openGraphBtn.addEventListener("click", () => {
       rememberGraphOrigin("dashboard-view");
       const back = document.getElementById("btn-graph-back");

@@ -200,11 +200,11 @@ body {
      matters (see .question-text and .answer-box) rather than by squeezing
      every dashboard, table and settings pane into a reading column. */
   max-width: none;
-  height: 100vh;
-  max-height: 100vh;
+  flex: 1;
+  min-width: 0;
   min-height: 0;
   overflow-y: auto;
-  padding: 22px clamp(30px, 3vw, 64px) 30px;
+  padding: var(--space-6) clamp(24px, 3vw, 56px) var(--space-6);
   display: flex;
   flex-direction: column;
   position: relative;
@@ -241,52 +241,100 @@ body {
   background: transparent;
 }
 
-/* ── HEADER BAR ──────────────────────────────────────────────────────────── */
-.app-header {
+/* ── APP SHELL & SIDEBAR ─────────────────────────────────────────────────── */
+.app-shell {
   display: flex;
-  justify-content: space-between;
-  align-items: center;
-  margin-bottom: 22px;
-  padding-bottom: 16px;
-  border-bottom: 1px solid var(--color-line);
+  width: 100%;
+  height: 100vh;
+  min-height: 0;
+}
+
+.app-sidebar {
+  flex: 0 0 232px;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-5);
+  padding: var(--space-5) var(--space-3);
+  background: var(--color-surface-2);
+  border-right: 1px solid var(--color-line);
+  overflow-y: auto;
 }
 
 .logo-area {
   display: flex;
   align-items: baseline;
   gap: 8px;
+  padding: 0 10px;
   user-select: none;
 }
 
-.top-nav {
-  display: inline-flex;
-  align-items: center;
-  gap: 4px;
-  background: var(--color-surface);
-  border: 1px solid var(--color-line);
-  border-radius: var(--radius-pill);
-  padding: 4px;
+.side-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.sidebar-foot {
+  margin-top: auto;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
 }
 
 .nav-btn {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  width: 100%;
+  min-height: 44px;
+  padding: 0 12px;
   background: transparent;
   border: 0;
-  border-radius: var(--radius-pill);
+  border-radius: var(--radius-control);
   color: var(--color-ink-2);
   cursor: pointer;
   font: inherit;
-  font-size: var(--fs-sm);
-  font-weight: 700;
-  padding: 7px 14px;
+  font-size: var(--fs-md);
+  text-align: left;
 }
 
 .nav-btn:hover:not(.active) {
+  background: var(--color-surface);
   color: var(--color-ink);
 }
 
 .nav-btn.active {
-  background: var(--color-ink);
-  color: var(--color-surface);
+  background: var(--color-accent-soft);
+  color: var(--color-accent-ink);
+  font-weight: 700;
+}
+
+.nav-icon {
+  flex: 0 0 auto;
+}
+
+.nav-label {
+  flex: 1;
+  min-width: 0;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+/* The due count rides the "Today" entry, in the signal colour. */
+.nav-count {
+  font-family: var(--font-mono);
+  font-size: var(--fs-xs);
+  font-weight: 700;
+  line-height: 1;
+  padding: 4px 8px;
+  border-radius: var(--radius-pill);
+  background: var(--color-signal);
+  color: var(--color-on-accent);
+}
+
+.nav-count[hidden] {
+  display: none;
 }
 
 .nav-btn:focus-visible,
@@ -314,7 +362,9 @@ textarea:focus-visible {
 .status-area {
   display: flex;
   align-items: center;
-  gap: 15px;
+  flex-wrap: wrap;
+  gap: var(--space-2);
+  padding: 0 4px;
   position: relative;
 }
 
@@ -400,10 +450,11 @@ textarea:focus-visible {
   opacity: 0.75;
 }
 
+/* The language menu opens upwards from the sidebar's foot. */
 .locale-menu {
   position: absolute;
-  top: calc(100% + 8px);
-  right: 0;
+  bottom: calc(100% + 8px);
+  left: 0;
   z-index: 50;
   min-width: 168px;
   display: flex;
@@ -500,7 +551,7 @@ textarea:focus-visible {
   padding: 24px;
 }
 
-.dashboard-copy h1,
+.dashboard-hero h1,
 .settings-hero h1 {
   font-size: clamp(var(--fs-2xl), 4vw, var(--fs-3xl));
   letter-spacing: -1.4px;
@@ -508,7 +559,17 @@ textarea:focus-visible {
   margin: 4px 0 12px;
 }
 
-.dashboard-copy p,
+/* Until the content header gets its import menu (redesign step 4), its
+   actions wrap instead of squeezing the title beside the sidebar. */
+#learning-content-view .dashboard-hero {
+  grid-template-columns: minmax(260px, 1fr) minmax(0, auto);
+}
+
+#content-cards-actions {
+  flex-wrap: wrap;
+  justify-content: flex-end;
+}
+
 .settings-subtitle {
   color: var(--color-ink-2);
   font-size: var(--fs-md);
@@ -531,40 +592,213 @@ textarea:focus-visible {
   min-width: 230px;
 }
 
-.dashboard-grid {
-  display: grid;
-  grid-template-columns: 1fr 1.3fr;
-  gap: 18px;
-  margin-bottom: 22px;
-}
-
-.stat-card {
-  padding: 22px;
-  display: flex;
-  flex-direction: column;
-  justify-content: center;
-  align-items: center;
-  text-align: center;
-  min-height: 190px;
-}
-
-.stat-card h2 {
-  font-size: var(--fs-md);
-  font-weight: 600;
-  color: var(--color-ink-2);
-  text-transform: uppercase;
-  letter-spacing: 1px;
-  margin-bottom: 14px;
-}
-
 .large-number {
   font-family: var(--font-display);
-  font-size: 72px;
+  font-size: 56px;
   font-weight: 700;
   line-height: 1;
   letter-spacing: -0.03em;
   color: var(--color-ink);
-  margin-bottom: 12px;
+}
+
+/* ── TODAY ───────────────────────────────────────────────────────────────── */
+#dashboard-view.view.active {
+  width: 100%;
+  max-width: 980px;
+  margin-inline: auto;
+  gap: var(--space-5);
+}
+
+.today-header {
+  display: flex;
+  flex-direction: column;
+  gap: 2px;
+}
+
+.today-date {
+  font-size: var(--fs-md);
+  color: var(--color-muted);
+  min-height: 1.4em;
+}
+
+.today-header h1 {
+  font-size: var(--fs-3xl);
+  line-height: 1.1;
+}
+
+.today-hero {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-6);
+  padding: clamp(20px, 3vw, 32px);
+}
+
+/* Three index cards, the front one carrying the due count and the
+   Karteikarte head rule. */
+.due-stack {
+  position: relative;
+  flex: 0 0 auto;
+  width: 196px;
+  height: 150px;
+}
+
+.due-stack-card {
+  position: absolute;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+  background: var(--color-surface-2);
+}
+
+.due-stack-card:nth-child(1) {
+  left: 24px;
+  top: 0;
+  width: 164px;
+  height: 104px;
+}
+
+.due-stack-card:nth-child(2) {
+  left: 12px;
+  top: 16px;
+  width: 172px;
+  height: 110px;
+  background: var(--color-surface);
+}
+
+.due-stack-card.due-stack-top {
+  left: 0;
+  top: 34px;
+  width: 184px;
+  height: 116px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: var(--color-surface);
+  border-color: var(--color-line-strong);
+  box-shadow: inset 0 4px 0 var(--color-signal-line);
+}
+
+.today-hero-copy {
+  flex: 1 1 320px;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.today-due-headline {
+  font-family: var(--font-display);
+  font-size: var(--fs-2xl);
+  font-weight: 700;
+  line-height: 1.15;
+  letter-spacing: -0.01em;
+}
+
+.today-due-meta,
+.today-hero #lbl-caught-up {
+  font-size: var(--fs-base);
+  color: var(--color-ink-2);
+}
+
+.today-domains {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.today-domains-label {
+  font-size: var(--fs-sm);
+  color: var(--color-muted);
+}
+
+.today-domains .domain-list {
+  justify-content: flex-start;
+}
+
+.today-hero .hero-actions {
+  flex-direction: row;
+  flex-wrap: wrap;
+  min-width: 0;
+  margin-top: var(--space-2);
+}
+
+.today-week {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+  padding: 22px 24px;
+}
+
+.today-week[hidden] {
+  display: none;
+}
+
+.today-card-head {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.today-card-head h2 {
+  font-size: var(--fs-base);
+  font-weight: 700;
+}
+
+.today-week-summary {
+  font-size: var(--fs-md);
+  color: var(--color-ink-2);
+}
+
+.today-week-chart {
+  display: grid;
+  grid-template-columns: repeat(7, minmax(0, 1fr));
+  gap: var(--space-2);
+  height: 120px;
+}
+
+.today-week-day {
+  display: grid;
+  grid-template-rows: minmax(0, 1fr) auto;
+  justify-items: center;
+  gap: 6px;
+  min-height: 0;
+}
+
+.today-week-track {
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  width: 100%;
+  height: 100%;
+}
+
+.today-week-bar {
+  width: 100%;
+  max-width: 32px;
+  border-radius: 4px 4px 0 0;
+  background: var(--color-accent-line);
+}
+
+.today-week-bar.empty {
+  height: 2px;
+  border-radius: 1px;
+  background: var(--color-line);
+}
+
+.today-week-day.today .today-week-bar:not(.empty) {
+  background: var(--color-accent);
+}
+
+.today-week-label {
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+}
+
+.today-week-day.today .today-week-label {
+  color: var(--color-ink);
+  font-weight: 700;
 }
 
 .sub-label {
@@ -1378,12 +1612,12 @@ textarea:focus-visible {
 /* ── VIEW 2: STUDY SESSION ───────────────────────────────────────────────── */
 /* Focus mode: while the study view is open the app header steps aside, and
    the session bar below carries progress, mode, card menu and the way out. */
-.container.study-focus {
-  padding-top: var(--space-4);
+.app-shell.study-focus .app-sidebar {
+  display: none;
 }
 
-.container.study-focus .app-header {
-  display: none;
+.app-shell.study-focus .container {
+  padding-top: var(--space-4);
 }
 
 #study-view.view.active {
@@ -2846,21 +3080,48 @@ textarea::placeholder {
   font-weight: 600;
 }
 
-@media (max-width: 820px) {
-  .app-header,
-  .status-area {
-    align-items: flex-start;
+@media (max-width: 860px) {
+  .app-shell {
     flex-direction: column;
-    gap: 12px;
   }
 
-  .top-nav {
-    order: 3;
+  .app-sidebar {
+    flex: 0 0 auto;
+    flex-direction: row;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: var(--space-2) var(--space-4);
+    padding: var(--space-3) var(--space-4);
+    border-right: 0;
+    border-bottom: 1px solid var(--color-line);
+    overflow: visible;
+  }
+
+  .side-nav {
+    flex-direction: row;
+    flex-wrap: wrap;
+  }
+
+  .nav-btn {
+    width: auto;
+  }
+
+  .sidebar-foot {
+    margin-top: 0;
+    margin-left: auto;
+    flex-direction: row;
+    align-items: center;
+  }
+
+  .locale-menu {
+    top: calc(100% + 8px);
+    bottom: auto;
+    left: auto;
+    right: 0;
   }
 
   .dashboard-hero,
   .settings-hero,
-  .dashboard-grid,
   .settings-list,
   .graph-main {
     grid-template-columns: 1fr;
@@ -4221,15 +4482,21 @@ textarea::placeholder {
 }
 
 /* Dashboard onboarding checklist (ADR 2026-07-24 §7, plan Phase 9) */
+/* A quiet strip under Today, not a second headline: the setup steps are
+   optional, learning already works. */
 .onboarding-checklist {
-  margin-bottom: 24px;
   width: 100%;
   box-sizing: border-box;
+  padding: 18px 22px;
+  background: var(--color-surface-2);
+  border-style: dashed;
+  border-color: var(--color-line-strong);
+  box-shadow: none;
 }
 
 .onboarding-checklist > h2 {
-  margin: 0 0 6px;
-  font-size: var(--fs-lg);
+  margin: 0 0 4px;
+  font-size: var(--fs-base);
   line-height: 1.3;
 }
 

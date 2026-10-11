@@ -42,6 +42,7 @@ export type {
   ActivityPeriod,
   GetReviewActivityOptions,
   ParsedActivityBucket,
+  RecentDaysSummary,
   ReviewActivity,
   ReviewActivityBucket,
 } from "./analytics/progress.js";
@@ -52,6 +53,7 @@ export {
   getReviewActivity,
   parseActivityBucket,
   STUDY_TIME_CAP_MS,
+  summarizeRecentDays,
 } from "./analytics/progress.js";
 export type { DomainCompetence, UserStats } from "./analytics/stats.js";
 export {

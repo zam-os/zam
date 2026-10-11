@@ -36,19 +36,39 @@
       </div>
     </div>
 
-    <main class="container">
-      <!-- HEADER BAR -->
-      <header class="app-header">
-        <div class="logo-area">
-          <span class="logo-accent">ZAM</span>
-          <span class="logo-sub">Recall Studio</span>
-        </div>
-        <nav class="top-nav" aria-label="Main navigation">
-          <button id="nav-dashboard" class="nav-btn active" type="button">Dashboard</button>
-          <button id="nav-content" class="nav-btn" type="button">Learning Content</button>
-          <button id="nav-stats" class="nav-btn" type="button">Statistics</button>
-          <button id="nav-settings" class="nav-btn" type="button">Settings</button>
-        </nav>
+    <div class="app-shell" id="app-shell">
+    <!-- SIDEBAR. Navigation on the left, status at the foot: the content
+         area belongs to the task, not to chrome. Narrow windows turn it into
+         a top bar. -->
+    <aside class="app-sidebar" id="app-sidebar">
+      <div class="logo-area">
+        <span class="logo-accent">ZAM</span>
+        <span class="logo-sub">Recall Studio</span>
+      </div>
+      <nav class="side-nav" aria-label="Main navigation">
+        <button id="nav-dashboard" class="nav-btn active" type="button" aria-current="page">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="4" width="18" height="17" rx="2"></rect><path d="M3 9h18M8 2v4M16 2v4"></path></svg>
+          <span class="nav-label">Today</span>
+          <span class="nav-count" id="nav-due-count" hidden></span>
+        </button>
+        <button id="nav-content" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"></rect><path d="M6 3h12M5 5h14"></path></svg>
+          <span class="nav-label">Learning Content</span>
+        </button>
+        <button id="btn-open-graph" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
+          <span class="nav-label">Knowledge graph</span>
+        </button>
+        <button id="nav-stats" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
+          <span class="nav-label">Statistics</span>
+        </button>
+      </nav>
+      <div class="sidebar-foot">
+        <button id="nav-settings" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="3"></circle><path d="M19.4 15a1.7 1.7 0 0 0 .3 1.8l.1.1a2 2 0 1 1-2.8 2.8l-.1-.1a1.7 1.7 0 0 0-1.8-.3 1.7 1.7 0 0 0-1 1.5V21a2 2 0 1 1-4 0v-.1a1.7 1.7 0 0 0-1.1-1.5 1.7 1.7 0 0 0-1.8.3l-.1.1a2 2 0 1 1-2.8-2.8l.1-.1a1.7 1.7 0 0 0 .3-1.8 1.7 1.7 0 0 0-1.5-1H3a2 2 0 1 1 0-4h.1a1.7 1.7 0 0 0 1.5-1.1 1.7 1.7 0 0 0-.3-1.8l-.1-.1a2 2 0 1 1 2.8-2.8l.1.1a1.7 1.7 0 0 0 1.8.3H9a1.7 1.7 0 0 0 1-1.5V3a2 2 0 1 1 4 0v.1a1.7 1.7 0 0 0 1 1.5 1.7 1.7 0 0 0 1.8-.3l.1-.1a2 2 0 1 1 2.8 2.8l-.1.1a1.7 1.7 0 0 0-.3 1.8V9a1.7 1.7 0 0 0 1.5 1H21a2 2 0 1 1 0 4h-.1a1.7 1.7 0 0 0-1.5 1z"></path></svg>
+          <span class="nav-label">Settings</span>
+        </button>
         <div class="status-area" id="system-status">
           <div class="status-indicator">
             <!-- "Offline" was a claim the app had not checked yet; start in
@@ -58,26 +78,58 @@
           </div>
           <span class="locale-badge" id="locale-badge">EN</span>
         </div>
-      </header>
+      </div>
+    </aside>
 
-      <!-- VIEW 1: DASHBOARD OVERVIEW -->
+    <main class="container">
+      <!-- VIEW 1: TODAY. One action — learn what is due — and only the
+           context that helps decide to start: how many, roughly how long,
+           and how the week went. -->
       <section id="dashboard-view" class="view active">
-        <div class="dashboard-hero frosted">
-          <div class="dashboard-copy">
-            <p id="lbl-dashboard-kicker" class="eyebrow">Today in ZAM</p>
-            <h1 id="lbl-dashboard-title">Learn deliberately.</h1>
-            <p id="lbl-dashboard-subtitle">
-              Review what is due, open your knowledge map, or configure local AI and workspaces in Settings.
-            </p>
+        <header class="today-header">
+          <p class="today-date" id="today-date"></p>
+          <h1 id="lbl-dashboard-title">Today</h1>
+        </header>
+
+        <div class="today-hero frosted" aria-labelledby="today-due-headline">
+          <!-- The card box: three cards, the top one carries the due count.
+               Placeholder, not a reading: a literal "0" here was
+               indistinguishable from a real empty queue while the bridge
+               was still starting. loadDashboard() fills it in. -->
+          <div class="due-stack" aria-hidden="true">
+            <span class="due-stack-card"></span>
+            <span class="due-stack-card"></span>
+            <span class="due-stack-card due-stack-top"><span class="large-number" id="due-count">—</span></span>
           </div>
-          <div class="hero-actions">
-            <button id="btn-start-session" class="btn primary-btn btn-large" disabled>
-              Start Learning Session
-            </button>
-            <button id="btn-open-graph" class="btn secondary-btn btn-large">Knowledge Map (3D)</button>
-            <button id="btn-open-settings" class="btn secondary-btn btn-large" type="button">Settings</button>
+          <div class="today-hero-copy">
+            <h2 class="today-due-headline" id="today-due-headline">—</h2>
+            <p class="today-due-meta" id="today-due-meta" hidden></p>
+            <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
+            <div class="today-domains">
+              <span class="today-domains-label" id="lbl-domains">Active Domains</span>
+              <div class="domain-list" id="dashboard-domains">
+                <span class="empty-tag">—</span>
+              </div>
+            </div>
+            <div class="hero-actions">
+              <button id="btn-start-session" class="btn primary-btn btn-large" type="button" disabled>
+                Start learning
+              </button>
+              <!-- Library topics (ADR 2026-10-02): shown on an empty deck when
+                   the library already holds topics to start from. -->
+              <button id="btn-dashboard-library-topics" class="btn secondary-btn btn-large hidden" type="button">Start with the library's topics</button>
+            </div>
           </div>
         </div>
+
+        <section class="card frosted today-week" id="today-week" aria-labelledby="lbl-week-title" hidden>
+          <div class="today-card-head">
+            <h2 id="lbl-week-title">This week</h2>
+            <button id="btn-dashboard-stats" class="btn ghost-btn btn-sm" type="button">Statistics</button>
+          </div>
+          <p class="today-week-summary" id="today-week-summary"></p>
+          <div class="today-week-chart" id="today-week-chart" role="img"></div>
+        </section>
 
         <div id="onboarding-checklist" class="card frosted onboarding-checklist hidden">
           <h2 id="lbl-onboarding-checklist-title">Finish setting up ZAM</h2>
@@ -86,28 +138,6 @@
           </p>
           <div id="onboarding-checklist-items" class="onboarding-checklist-items"></div>
         </div>
-
-        <div class="dashboard-grid">
-          <div class="card stat-card frosted">
-            <h2 id="lbl-due-reviews">Due Reviews</h2>
-            <!-- Placeholder, not a reading: a literal "0" here was
-                 indistinguishable from a real empty queue while the bridge
-                 was still starting. loadDashboard() fills both in. -->
-            <div class="large-number" id="due-count">—</div>
-            <p id="lbl-caught-up" class="sub-label hidden" aria-live="polite">You're all caught up!</p>
-            <!-- Library topics (ADR 2026-10-02): shown on an empty deck when the
-                 library already holds topics to start from. -->
-            <button id="btn-dashboard-library-topics" class="btn primary-btn btn-sm hidden" type="button" style="margin-top: 10px">Start with the library's topics</button>
-          </div>
-
-          <div class="card stat-card frosted">
-            <h2 id="lbl-domains">Active Domains</h2>
-            <div class="domain-list" id="dashboard-domains">
-              <span class="empty-tag">—</span>
-            </div>
-          </div>
-        </div>
-
       </section>
 
       <!-- FIRST-RUN ONBOARDING (ADR 2026-07-24) -->
@@ -1713,5 +1743,6 @@
         </div>
       </div>
     </main>
+    </div>
   </body>
 </html>

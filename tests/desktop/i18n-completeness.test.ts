@@ -323,6 +323,16 @@ const REQUIRED_KEYS = [
 // passed over, so the exhaustive scan below doesn't mask *new* regressions
 // while still not churning unrelated strings.
 const PRE_EXISTING_FALLBACK_KEYS = new Set([
+  // Today view and sidebar of the Studio redesign. en/de shipped;
+  // es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
+  "nav_graph",
+  "dashboard_due_headline",
+  "dashboard_due_headline_one",
+  "dashboard_due_none",
+  "dashboard_due_minutes",
+  "dashboard_week_title",
+  "dashboard_week_empty",
+  "dashboard_week_chart_label",
   // Observation retention row in Settings → Data (ADR 2026-10-08 R6). en/de
   // shipped; es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
   "settings_observation_logs",
