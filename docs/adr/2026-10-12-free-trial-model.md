@@ -6,7 +6,9 @@
 (1) a learner who clearly chooses the free trial and accepts its terms may use it;
 (2) it is its own path in the configuration, not a cloud model, and it is marked so it cannot be mistaken for one;
 (3) it needs no setup beyond signing in with one click and ticking the terms;
-(4) photo upload needs its own tick and a warning before every photo.
+(4) photo upload needs its own tick and a warning before every photo;
+(5) it works only in first place in the model list, never as a fallback;
+(6) it does not end on its own.
 **Related:** [ADR 2026-07-24 — First-run onboarding](2026-07-24-first-run-onboarding.md) (§5, cloud LLM connect) · [ADR 2026-07-12 — Unified capability model registry](2026-07-12-unified-capability-model-registry.md) · [ADR 2026-07-12a — Agent-backed AI provider](2026-07-12a-agent-backed-ai-provider.md) · [ADR 2026-08-02 — Foundry Local and hardware classification](2026-08-02-foundry-local-and-hardware-classification.md) · [ADR 2026-09-13 — Model capabilities are detected](2026-09-13-model-capabilities-are-detected.md) · [ADR 2026-10-05 — Learning cards from photos and files](2026-10-05-learning-cards-from-photos-and-files.md) · [ADR 2026-10-08b — Corporate deployment baseline](2026-10-08b-corporate-deployment-baseline.md)
 **Amends on acceptance:** ADR 2026-07-24 §5: "No free-model option in onboarding", and "ZAM never … creates keys" (an OAuth-issued key is added, see Decision 3).
 
@@ -113,11 +115,13 @@ Storage and protection:
 - The conditions carry a version. If the facts change (provider, data use, limits), the screen appears again before the next call.
 - "End free trial" in Settings clears consent, deletes the row, and removes the key reference.
 
-### 5. Never a fallback, never a dead end
+### 5. First place only, never a fallback
 
-- **Never a fallback for a private row.** When a private row fails (401, 402, 403, 429; `CHAIN_FALLTHROUGH_STATUSES`), the chain never moves on to the free-trial row. The free trial serves a request only when the registry selects it directly for that capability. A learner who has run out of prepaid credit sees "credit used up", not a silent switch to a path that trains on their data.
-- **A 429 from the daily cap** becomes a message: today's free calls are used up, the trial continues tomorrow, or the learner can switch to a private path now. Reviews continue with self-rating (degraded mode). The cap never blocks a review.
-- **An upstream-capacity 429** (free models are throttled at peak times) shows "try again in a moment".
+- **The free trial works only in first place.** It serves requests only while it is the first row in the model list (lowest `order`). As soon as any other row stands above it, the free trial serves nothing at all. Settings shows it as "inactive – only works in first place", with the ⚠ mark.
+- **It is never a fallback.** No route leads into the free trial from another row: not error fallthrough when a private row fails (401, 402, 403, 429; `CHAIN_FALLTHROUGH_STATUSES`), and not capability selection when a row above it lacks a capability. A learner whose prepaid credit has run out sees "credit used up", not a silent switch to a path that trains on their data. If a local text model stands above the free trial, photo import is simply unavailable; it does not go to the free trial.
+- **The other direction is allowed.** While the free trial is first, the chain may fall through *from* it to the private rows below: on the daily cap, on throttling, or for a capability Gemma lacks. Content then goes somewhere more private, never less.
+- **A 429 from the daily cap**, with no private row below, becomes a message: today's free calls are used up, the trial continues tomorrow, or the learner can switch to a private path now. Reviews continue with self-rating (degraded mode). The cap never blocks a review.
+- **An upstream-capacity 429** (free models are throttled at peak times), with no private row below, shows "try again in a moment".
 
 ### 6. Photos: their own tick, and a warning before each one
 
@@ -130,7 +134,7 @@ Photos are the riskiest input: a page of class notes can show names, faces, a cl
 
 ### 7. Upgrading
 
-"Make it private" on the free trial card or in Settings leads to the other three paths. Choosing one does not delete the trial on its own. The learner ends it with one tap, and ZAM offers that tap as soon as a private path works for the same capabilities.
+"Make it private" on the free trial card or in Settings leads to the other three paths. A private path added from there goes into first place, so the free trial stops serving at once (Decision 5). ZAM then offers "End free trial" with one tap. The trial does not end on its own: there is no expiry date, and a learner who stays on it keeps it until they end it.
 
 ## Options considered
 
@@ -157,6 +161,7 @@ Photos are the riskiest input: a page of class notes can show names, faces, a cl
 
 - ZAM now ships a path on which learner content can be trained on. The explanation and the conditions carry that weight and must stay accurate as providers change.
 - A pinned free model can be withdrawn or throttled without notice. The trial is best-effort and says so.
+- A learner who puts a text-only private model above the free trial loses photo import until they reorder. This is intended: the free trial is never a fallback.
 - New surface to build and secure: a loopback OAuth listener, a fourth registry kind, a security switch with a test that keeps it off agent surfaces.
 - The warning before each photo slows photo import in the trial on purpose.
 
@@ -173,8 +178,7 @@ Photos are the riskiest input: a page of class notes can show names, faces, a cl
 
 1. Should the free trial also exist on the phone (the Android and iOS standalone apps), or on the desktop first only?
 2. Is the wording of the four required conditions clear enough for a pupil reading them alone?
-3. Should the free trial end on its own after a period (for example 30 days) and ask again, so a trial stays a trial?
-4. Should the cloud path also get the one-click OpenRouter sign-in, so the upgrade is as easy as the trial?
+3. Should the cloud path also get the one-click OpenRouter sign-in, so the upgrade is as easy as the trial?
 
 ## Citations
 
