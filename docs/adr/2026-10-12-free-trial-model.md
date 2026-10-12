@@ -7,7 +7,7 @@
 (2) it is its own path in the configuration, not a cloud model, and it is marked so it cannot be mistaken for one;
 (3) it needs no setup beyond signing in with one click and ticking the terms;
 (4) photo upload needs its own tick and a warning before every photo;
-(5) it works only in first place in the model list, never as a fallback;
+(5) it works only in first place in the model list, never as a fallback; falling through from it to private rows below it is fine;
 (6) it does not end on its own.
 **Related:** [ADR 2026-07-24 — First-run onboarding](2026-07-24-first-run-onboarding.md) (§5, cloud LLM connect) · [ADR 2026-07-12 — Unified capability model registry](2026-07-12-unified-capability-model-registry.md) · [ADR 2026-07-12a — Agent-backed AI provider](2026-07-12a-agent-backed-ai-provider.md) · [ADR 2026-08-02 — Foundry Local and hardware classification](2026-08-02-foundry-local-and-hardware-classification.md) · [ADR 2026-09-13 — Model capabilities are detected](2026-09-13-model-capabilities-are-detected.md) · [ADR 2026-10-05 — Learning cards from photos and files](2026-10-05-learning-cards-from-photos-and-files.md) · [ADR 2026-10-08b — Corporate deployment baseline](2026-10-08b-corporate-deployment-baseline.md)
 **Amends on acceptance:** ADR 2026-07-24 §5: "No free-model option in onboarding", and "ZAM never … creates keys" (an OAuth-issued key is added, see Decision 3).
