@@ -13,6 +13,12 @@
       "runtimeExecutable": "python3",
       "runtimeArgs": ["-m", "http.server", "8765", "--directory", "dist"],
       "port": 8765
+    },
+    {
+      "name": "knowledge-world-spike",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "desktop", "run", "spike:world"],
+      "port": 1430
     }
   ]
 }
