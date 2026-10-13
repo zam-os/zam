@@ -41,6 +41,10 @@ export interface MachineKnowledgeMapConfig {
   repoPath?: string;
 }
 
+export interface MachineAtlasConfig {
+  enabled?: boolean;
+}
+
 /**
  * The one Quelle Lerninhalte is showing (ADR 2026-10-10, Decision 4).
  * A folder path is only remembered here. It is not a workspace.
@@ -91,6 +95,11 @@ export interface InstallConfig {
    * map the Studio shows. Presentation state of this install, never the DB.
    */
   knowledgeMap?: MachineKnowledgeMapConfig;
+  /**
+   * Machine-local knowledge-atlas alpha (ADR 2026-10-13, Decision 10): off
+   * by default, and no tool writes it. Only the Studio's own Settings do.
+   */
+  atlas?: MachineAtlasConfig;
   /**
    * Which Quelle Lerninhalte shows (ADR 2026-10-10, Decision 4).
    * Presentation state of this install. Never `knowledgeMap.repoPath`.
@@ -1169,6 +1178,22 @@ export function setKnowledgeMapConfig(
       }
     }
     config.knowledgeMap = next;
+  }, path);
+}
+
+export function getAtlasConfig(path = defaultConfigPath()): MachineAtlasConfig {
+  return { ...(loadInstallConfig(path).atlas ?? {}) };
+}
+
+/** Switch the knowledge-atlas alpha on or off for this install. */
+export function setAtlasConfig(
+  patch: MachineAtlasConfig,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    const next = { ...(config.atlas ?? {}) };
+    if (patch.enabled !== undefined) next.enabled = patch.enabled;
+    config.atlas = next;
   }, path);
 }
 

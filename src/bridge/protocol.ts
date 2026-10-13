@@ -870,3 +870,110 @@ export interface MaterialImportFilePreviewResponse {
   dataUrl: string | null;
   reason: "ok" | "missing" | "too-large" | "not-viewable";
 }
+
+// ── Knowledge atlas (ADR 2026-10-13) ────────────────────────────────────────
+
+export type AtlasConditionWire =
+  | "known"
+  | "due"
+  | "overdue"
+  | "decaying"
+  | "forgotten"
+  | "unpractised";
+
+export type AtlasLensKindWire =
+  | "weltwissen"
+  | "schule"
+  | "unternehmen"
+  | "produkte"
+  | "leben";
+
+/** "atom:<id>" or "token:<id>": one learning unit. */
+export type AtlasUnitKeyWire = string;
+
+export interface AtlasFeatureResponse {
+  success: boolean;
+  enabled: boolean;
+}
+
+export interface AtlasRegionWire {
+  key: string;
+  name: string;
+  level: number;
+  parentKey: string | null;
+  rank: number;
+  /** Key the hue comes from; empty above the lens's colour level. */
+  hueKey: string;
+  pattern: string | null;
+  /** Not stored yet; the next settle writes it. */
+  provisional: boolean;
+}
+
+export interface AtlasUnitWire {
+  key: AtlasUnitKeyWire;
+  title: string;
+  /** Leaf region key. */
+  region: string;
+  condition: AtlasConditionWire | null;
+  due: number;
+  cards: number;
+  /** Written in this library, not published: drawn with a marker. */
+  own: boolean;
+  /** No card yet; shown only with *Neue Inhalte zeigen*. */
+  inReach: boolean;
+}
+
+export interface AtlasReadResponse {
+  success: boolean;
+  lens: {
+    kind: AtlasLensKindWire;
+    planet: "welt" | "firma" | "privat";
+    name: string;
+    levels: string[];
+    colourLevel: number;
+  };
+  regions: AtlasRegionWire[];
+  islands: Array<{
+    key: string;
+    dq: number;
+    dr: number;
+    /** Hex steps since founding. */
+    drift: number;
+    provisional: boolean;
+  }>;
+  /** Every hex of the library; `unit` is null for reserve and for units the caller does not hold. */
+  land: Array<{
+    island: string;
+    q: number;
+    r: number;
+    region: string;
+    unit: AtlasUnitKeyWire | null;
+  }>;
+  units: AtlasUnitWire[];
+  /** `from` builds on `to`. */
+  threads: Array<{
+    from: AtlasUnitKeyWire;
+    to: AtlasUnitKeyWire;
+    kind: "voraussetzung";
+  }>;
+  /** The caller's own due counts, per region and every ancestor. */
+  own: { dueByRegion: Record<string, number> };
+  settle: { pending: number; mayWrite: boolean };
+  /** Resolved home region key; null = the whole lens. */
+  home: string | null;
+}
+
+export interface AtlasSettleResponse {
+  success: boolean;
+  regionsCreated: number;
+  islandsWritten: number;
+  landWritten: number;
+}
+
+export interface AtlasPrefsResponse {
+  success: boolean;
+  lens: AtlasLensKindWire;
+  showNew: boolean;
+  /** Stored home path per lens, root first. */
+  home: Partial<Record<AtlasLensKindWire, string[]>>;
+}

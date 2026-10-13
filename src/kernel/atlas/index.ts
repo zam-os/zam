@@ -78,6 +78,13 @@ export {
   rgbCss,
   SUBJECT_HUES,
 } from "./palette.js";
+export type {
+  AtlasRegionView,
+  AtlasUnitView,
+  AtlasView,
+  ReadAtlasOptions,
+} from "./read.js";
+export { readAtlas, regionTokenIds, snapshotForRead } from "./read.js";
 export type { LensSnapshot, SettleResult } from "./settle.js";
 export {
   applySettle,

@@ -362,6 +362,11 @@ export interface GetReviewsBatchParams {
   /** Optional session-local new-card override when workload rules are used. */
   maxNew?: number;
   timeZone?: string;
+  /**
+   * Only these tokens: an atlas region's due cards (ADR 2026-10-13,
+   * Decision 10). Uses the workload queue with no new cards.
+   */
+  tokenIds?: readonly string[];
 }
 
 export async function getReviewsBatch(
@@ -369,49 +374,51 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
-  const sourceCards = params.respectWorkload
-    ? (
-        await buildReviewQueue(db, {
-          userId,
-          domain: params.domain,
-          knowledgeContext: params.knowledgeContext,
-          maxNew: params.maxNew,
-          timeZone: params.timeZone,
-        })
-      ).items.map((item) => ({
-        cardId: item.cardId,
-        tokenId: item.tokenId,
-        slug: item.slug,
-        concept: item.concept,
-        domain: item.domain,
-        bloomLevel: item.bloomLevel,
-        state: item.state,
-        dueAt: item.dueAt,
-        atomId: item.atomId,
-        tier: item.tier,
-        fastCheck: item.fastCheck,
-      }))
-    : (
-        await getDueCards(
-          db,
-          userId,
-          undefined,
-          params.domain,
-          params.knowledgeContext,
-        )
-      ).map((card) => ({
-        cardId: card.id,
-        tokenId: card.token_id,
-        slug: card.slug,
-        concept: card.concept,
-        domain: card.domain,
-        bloomLevel: card.bloom_level,
-        state: card.state,
-        dueAt: card.due_at,
-        atomId: null,
-        tier: null,
-        fastCheck: null,
-      }));
+  const sourceCards =
+    params.respectWorkload || params.tokenIds
+      ? (
+          await buildReviewQueue(db, {
+            userId,
+            domain: params.domain,
+            knowledgeContext: params.knowledgeContext,
+            maxNew: params.tokenIds ? 0 : params.maxNew,
+            tokenIds: params.tokenIds,
+            timeZone: params.timeZone,
+          })
+        ).items.map((item) => ({
+          cardId: item.cardId,
+          tokenId: item.tokenId,
+          slug: item.slug,
+          concept: item.concept,
+          domain: item.domain,
+          bloomLevel: item.bloomLevel,
+          state: item.state,
+          dueAt: item.dueAt,
+          atomId: item.atomId,
+          tier: item.tier,
+          fastCheck: item.fastCheck,
+        }))
+      : (
+          await getDueCards(
+            db,
+            userId,
+            undefined,
+            params.domain,
+            params.knowledgeContext,
+          )
+        ).map((card) => ({
+          cardId: card.id,
+          tokenId: card.token_id,
+          slug: card.slug,
+          concept: card.concept,
+          domain: card.domain,
+          bloomLevel: card.bloom_level,
+          state: card.state,
+          dueAt: card.due_at,
+          atomId: null,
+          tier: null,
+          fastCheck: null,
+        }));
 
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 

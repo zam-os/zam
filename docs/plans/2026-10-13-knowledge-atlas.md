@@ -1,6 +1,6 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 4 done (2026-10-13). The ADR gained Decision 12 and the
+**Status:** Phases 1 to 5 done (2026-10-13). The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -44,9 +44,9 @@ what the learner knows.
 - [x] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
   (D1–D3) — `37a5d637`; see "As built"
 - [x] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
-  — this commit; see "As built"
-- [ ] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
-  review (D3, D10)
+  — `03d7432a`; see "As built"
+- [x] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
+  review (D3, D10) — this commit; see "As built"
 - [ ] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
   D10)
 - [ ] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
@@ -730,6 +730,49 @@ interface AtlasView {
 - No MCP tool can set the switch. Assert that `atlas-feature` is absent from
   `STUDIO_BRIDGE_COMMANDS`, or present only with `--enable` and `--disable`
   refused.
+
+**As built.**
+
+- **Kernel.** `src/kernel/atlas/read.ts` provides three functions:
+  - `snapshotForRead` reads only. Before the first settle it derives from
+    the seed held in memory, so even a fresh library shows its whole map.
+  - `readAtlas` returns the map for one learner.
+  - `regionTokenIds` lists the tokens of a region's subtree.
+- **Shape of the view.**
+  - It also carries `lens.name`.
+  - Units carry `inReach` (no card yet) instead of `declined`. A declined
+    unit (all cards detached) is simply not listed, so its hex stays blank.
+  - `own.dueByRegion` counts every ancestor as well, so a panel on any
+    level reads its own number.
+  - Regions that nothing sits on are left out.
+- **The CLI layer** is `src/cli/atlas.ts`.
+  - `mayWriteKnowledge` asks PostgreSQL
+    `has_table_privilege(current_user, 'atlas_land', 'INSERT')` and is
+    always true on SQLite. This is the grants' own answer, not a second list
+    of curators.
+  - `atlas-settle` refuses with `{"error":"not-curator"}` before writing, and
+    also when PostgreSQL denies a write (SQLSTATE 42501).
+- **Bridge.** `atlas-feature`, `atlas-read`, `atlas-settle` and `atlas-prefs`
+  are all outside `STUDIO_BRIDGE_COMMANDS`, and a test asserts it.
+- **Preferences.** `atlas-prefs --home <key>` stores the region's key path,
+  computed from the lens; an empty value clears it. The person keys are
+  `atlas.lens`, `atlas.show_new` and `atlas.home.<lens>`.
+- **Region review.** `get-reviews --atlas-region <key> [--atlas-lens]` runs
+  the workload queue with `maxNew` 0 and the region's `tokenIds`, whatever
+  `--respect-workload` says. `ReviewQueueOptions.tokenIds` filters both
+  queries, and an empty list returns an empty queue.
+- **Wire types** live in `src/bridge/protocol.ts`: `AtlasReadResponse`,
+  `AtlasSettleResponse`, `AtlasPrefsResponse` and `AtlasFeatureResponse`.
+- **Tests.**
+  - `tests/cli/bridge-atlas.test.ts`:
+    - the read writes no row;
+    - the provisional land equals what settle then writes;
+    - preferences and the home fallback;
+    - the region review returns only that region's due cards;
+    - no atlas command is reachable from the panel.
+  - `tests/kernel/postgres-atlas.test.ts`: a team library where a member
+    gets `not-curator` but reads the whole provisional map, and a curator
+    settles.
 
 ---
 

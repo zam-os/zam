@@ -63,6 +63,9 @@ export {
 } from "./analytics/stats.js";
 export type {
   AliasRow,
+  AtlasRegionView,
+  AtlasUnitView,
+  AtlasView,
   BindingRow,
   Condition,
   ConditionCard,
@@ -112,10 +115,13 @@ export {
   OUTSIDE_CURRICULUM_KEY,
   planForSnapshot,
   planSettle,
+  readAtlas,
+  regionTokenIds,
   rgbCss,
   SCHULE_LENS,
   SUBJECT_HUES,
   settleLens,
+  snapshotForRead,
   snapshotLens,
   UNSORTED_KEY,
   unitCondition,

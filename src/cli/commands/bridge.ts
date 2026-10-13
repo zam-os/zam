@@ -131,6 +131,7 @@ import {
   readSessionDigest,
   readUiObservationLog,
   redactCommand,
+  regionTokenIds,
   removeTrustedFolder,
   resolveCredentials,
   resolveLearningContentSelection,
@@ -187,6 +188,13 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
+import {
+  atlasFeature,
+  atlasLens,
+  atlasRead,
+  atlasSettle,
+  setAtlasPrefs,
+} from "../atlas.js";
 import {
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
@@ -1161,10 +1169,25 @@ bridgeCommand
     "--time-zone <iana>",
     "Learner IANA time zone for the local learning day",
   )
+  .option(
+    "--atlas-region <key>",
+    "Only the due cards of this atlas region and below (no new cards)",
+  )
+  .option(
+    "--atlas-lens <kind>",
+    "Lens of --atlas-region: weltwissen (default) or schule",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const tokenIds = opts.atlasRegion
+          ? await regionTokenIds(
+              db,
+              atlasLens(opts.atlasLens),
+              String(opts.atlasRegion),
+            )
+          : undefined;
         const result = await handleGetReviewsBatch(db, {
           user: userId,
           domain: opts.domain,
@@ -1175,6 +1198,7 @@ bridgeCommand
           noResolve: opts.resolve === false,
           noDynamicQuestion: opts.dynamicQuestion === false,
           timeZone: opts.timeZone,
+          tokenIds,
         });
         jsonOut(result);
       } catch (err) {
@@ -9435,6 +9459,90 @@ bridgeCommand
       enabled: config.enabled === true,
       view: config.view ?? null,
       repoPath: config.repoPath ?? null,
+    });
+  });
+
+// ── Knowledge atlas (ADR 2026-10-13) ─────────────────────────────────────────
+// `atlas-feature` is deliberately absent from STUDIO_BRIDGE_COMMANDS: no tool
+// may switch the atlas on (Decision 10). The Studio's Settings call it
+// through the desktop bridge transport.
+
+bridgeCommand
+  .command("atlas-feature")
+  .description("Read or set this machine's knowledge-atlas alpha switch (JSON)")
+  .option("--enable", "Switch the knowledge atlas on")
+  .option("--disable", "Switch it off")
+  .action((opts) => {
+    try {
+      jsonOut(atlasFeature(opts));
+    } catch (err) {
+      jsonError((err as Error).message);
+    }
+  });
+
+bridgeCommand
+  .command("atlas-read")
+  .description(
+    "Read the knowledge atlas for one learner: regions, land, units, threads (JSON)",
+  )
+  .option("--lens <kind>", "weltwissen or schule (default: the learner's)")
+  .option("--planet <kind>", "Planet of the lens; only welt so far")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasRead(db, {
+            userId,
+            lens: opts.lens,
+            planet: opts.planet,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-settle")
+  .description(
+    "Store the atlas land of one lens; refuses with not-curator without the rights (JSON)",
+  )
+  .option("--lens <kind>", "weltwissen (default) or schule")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(await atlasSettle(db, { lens: opts.lens }));
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-prefs")
+  .description(
+    "Read or set the learner's atlas lens, home region and Neue Inhalte zeigen (JSON)",
+  )
+  .option("--lens <kind>", "Primary lens: weltwissen or schule")
+  .option("--home <regionKey>", "Home region of the lens; empty to clear")
+  .option("--show-new <onOff>", "Show units without a card: on or off")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut({
+          success: true,
+          ...(await setAtlasPrefs(db, {
+            lens: opts.lens,
+            home: opts.home,
+            showNew: opts.showNew,
+          })),
+        });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
     });
   });
 
