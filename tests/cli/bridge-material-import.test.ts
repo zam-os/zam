@@ -1,5 +1,11 @@
 import { execFileSync } from "node:child_process";
-import { mkdirSync, mkdtempSync, rmSync, writeFileSync } from "node:fs";
+import {
+  mkdirSync,
+  mkdtempSync,
+  readFileSync,
+  rmSync,
+  writeFileSync,
+} from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
@@ -157,6 +163,37 @@ describe("zam bridge material-import-*", () => {
     ]);
     expect(taken).toEqual({ success: true, cardId: expect.any(String) });
     expect(runCliJson(["material-import-bonus-list"]).items).toEqual([]);
+  });
+
+  it("puts an import at its place on the atlas", () => {
+    const set = JSON.parse(readFileSync(FIXTURE, "utf8"));
+    set.place = { lens: "weltwissen", regionKey: "natur.chemie" };
+    set.proposals[0].placeBelow = ["Stoffe erkennen", "Mit den Sinnen"];
+    const path = join(tempCwd, "placed.json");
+    writeFileSync(path, JSON.stringify(set), "utf8");
+    const staged = runCliJson(["material-import-stage", "--file", path]);
+
+    const review = runCliJson(["material-import-review", "--id", staged.id]);
+    expect(review.place).toEqual({
+      lens: "weltwissen",
+      regionKey: "natur.chemie",
+      path: ["Natur", "Chemie"],
+    });
+    const confirmed = runCliJson([
+      "material-import-confirm",
+      "--id",
+      staged.id,
+      "--decisions",
+      JSON.stringify({ "p:0": "yes", "p:1": "yes" }),
+    ]);
+    expect(confirmed).toMatchObject({ cardsCreated: 2, placed: 2 });
+
+    const view = runCliJson(["atlas-read", "--lens", "weltwissen"]);
+    const own = view.units.filter((u: { own: boolean }) => u.own);
+    expect(own.map((u: { region: string }) => u.region).sort()).toEqual([
+      "natur.chemie.allgemein.allgemein",
+      "natur.chemie.stoffe-erkennen.mit-den-sinnen",
+    ]);
   });
 
   it("names the models and refuses a built-in import without one, as JSON", () => {

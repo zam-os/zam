@@ -31,6 +31,7 @@ import {
   loadUnits,
 } from "./lenses.js";
 import type { UnitKey } from "./types.js";
+import { libraryVariantUnits } from "./variants.js";
 
 export interface LensSnapshot {
   lensId: string;
@@ -108,10 +109,14 @@ export async function snapshotLens(
   const rows = await loadLensRows(db, lensId);
   const units = await loadUnits(db);
   const bindings = await loadBindings(db);
-  const placements =
+  // A variant the library sets stands on its published unit's hex and gets
+  // no land of its own (Decision 12).
+  const skip = await libraryVariantUnits(db);
+  const placements = (
     lens.kind === "schule"
       ? deriveSchule(units, rows, bindings)
-      : deriveWeltwissen(units, rows, bindings);
+      : deriveWeltwissen(units, rows, bindings)
+  ).filter((placement) => !skip.has(placement.unitKey));
   const state = await loadLandState(db, lensId, rows);
   return { lensId, rows, placements, state };
 }

@@ -9,12 +9,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it, vi } from "vitest";
 import {
+  analyzeMaterialText,
   analyzeMaterialViaLLM,
   MATERIAL_FILE_MAX_BYTES,
   type MaterialAnalyzeDeps,
   materialImportModels,
   materialSelection,
 } from "../../src/cli/llm/material-analyze.js";
+import { stageMaterialImport } from "../../src/cli/material-staging.js";
 import {
   type CapabilityFlags,
   createToken,
@@ -212,6 +214,93 @@ describe("analyzeMaterialViaLLM", () => {
     error.mockRestore();
   });
 
+  it("sends typed notes as text with the place, and keeps only their fingerprint", async () => {
+    saveMachineAiModels([
+      row({
+        id: "Text",
+        capabilities: flags("text"),
+        detectedCapabilities: flags("text"),
+      }),
+    ]);
+    const notes = "Brechung: Licht knickt zum Lot hin, wenn es ins Wasser geht.";
+    const { fetch, calls } = recordingFetch(() =>
+      answer(
+        FIXTURE.proposals.map((p) => ({
+          ...p,
+          file: 3,
+          page: 2,
+          placeBelow: ["Lichtbrechung"],
+        })),
+      ),
+    );
+    const log = vi.spyOn(console, "log");
+    const result = await analyzeMaterialText(
+      db,
+      notes,
+      {
+        title: "Physik-Heft",
+        place: {
+          lens: "weltwissen",
+          regionKey: "natur.physik.optik",
+          path: ["Natur", "Physik", "Licht & Wellen"],
+          missingLevels: ["Thema"],
+          units: [{ key: "atom:01X", title: "Snelliussches Brechungsgesetz" }],
+        },
+      },
+      { fetch },
+    );
+
+    // One text request: the notes in the user turn, the place in the system.
+    expect(calls).toHaveLength(1);
+    const parts = userParts(calls[0]);
+    expect(parts).toHaveLength(1);
+    expect(parts[0].type).toBe("text");
+    expect(String(parts[0].text)).toContain(notes);
+    const system = (calls[0].body.messages as Array<{ content: string }>)[0]
+      .content;
+    expect(system).toContain("Natur › Physik › Licht & Wellen");
+    expect(system).toContain("placeBelow");
+    expect(system).toContain("atom:01X (Snelliussches Brechungsgesetz)");
+
+    // Every card points at the one text; the set carries the place.
+    expect(result.set.place).toEqual({
+      lens: "weltwissen",
+      regionKey: "natur.physik.optik",
+    });
+    expect(result.set.proposals.every((p) => p.file === 0 && p.page === null)).toBe(true);
+    expect(result.set.proposals[0].placeBelow).toEqual(["Lichtbrechung"]);
+    expect(result.set.files).toHaveLength(1);
+    expect(result.set.files[0].sourceLink).toMatch(/^notes:Physik-Heft@\d{4}-\d{2}-\d{2}$/);
+    expect(result.set.files[0].sha256).toMatch(/^[0-9a-f]{64}$/);
+    // The notes themselves are nowhere in the set, nor in the staged batch.
+    expect(JSON.stringify(result.set)).not.toContain("knickt zum Lot");
+    const staged = await stageMaterialImport(
+      { set: result.set, origin: "studio" },
+      { dir: join(dir, "pending") },
+    );
+    const file = readFileSync(join(dir, "pending", `${staged.id}.json`), "utf8");
+    expect(file).not.toContain("knickt zum Lot");
+    expect(file).toContain("natur.physik.optik");
+    expect(log).not.toHaveBeenCalled();
+    log.mockRestore();
+  });
+
+  it("refuses notes without a text model, and empty notes", async () => {
+    saveMachineAiModels([
+      row({
+        id: "Bilder",
+        capabilities: flags("image"),
+        detectedCapabilities: flags("image"),
+      }),
+    ]);
+    await expect(analyzeMaterialText(db, "Etwas")).rejects.toMatchObject({
+      code: "no-text-model",
+    });
+    await expect(analyzeMaterialText(db, "   ")).rejects.toMatchObject({
+      code: "no-files",
+    });
+  });
+
   it("sends a PDF only to a row that reads PDFs itself", async () => {
     saveMachineAiModels([row({ id: "Vision only" })]);
     const pdf = file("Arbeitsblatt.pdf", "%PDF-1.7");
@@ -234,6 +323,8 @@ describe("analyzeMaterialViaLLM", () => {
     expect(await materialImportModels(db, "linux")).toEqual({
       image: { label: "Vision only", model: "openai/gpt-6-luna" },
       file: { label: "Reader", model: "openai/gpt-6-luna-files" },
+      // Typed notes go to the first text row.
+      text: { label: "Vision only", model: "openai/gpt-6-luna" },
       convertsHeic: false,
     });
     const result = await analyzeMaterialViaLLM(

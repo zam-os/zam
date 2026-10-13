@@ -191,8 +191,13 @@ import { AGENT_OFFERS } from "../agent-offers.js";
 import {
   atlasFeature,
   atlasLens,
+  atlasPlace,
   atlasRead,
   atlasSettle,
+  atlasTake,
+  atlasVariant,
+  installScopeCells,
+  materialPlace,
   setAtlasPrefs,
 } from "../atlas.js";
 import {
@@ -315,8 +320,10 @@ import {
   getLocalVisionStatus,
 } from "../llm/local-vision.js";
 import {
+  analyzeMaterialText,
   analyzeMaterialViaLLM,
   MaterialAnalyzeError,
+  type MaterialAnalyzeResult,
   materialImportModels,
 } from "../llm/material-analyze.js";
 import {
@@ -338,6 +345,7 @@ import {
   listPendingMaterialImports,
   parseMaterialAreas,
   parseMaterialDecisions,
+  parseMaterialVariants,
   previewMaterialImportFile,
   reviewMaterialImport,
 } from "../material-import.js";
@@ -7262,22 +7270,51 @@ bridgeCommand
 bridgeCommand
   .command("material-import-analyze")
   .description(
-    "Read photos or one PDF with the connected model and stage its proposals for review (JSON)",
+    "Read photos, one PDF or typed notes with the connected model and stage its proposals for review (JSON)",
   )
-  .requiredOption("--file <path...>", "Up to 10 photos, or one PDF")
+  .option("--file <path...>", "Up to 10 photos, or one PDF")
   .option("--pages <range>", "Pages of the PDF to use, e.g. 2-4")
+  .option(
+    "--text <notes>",
+    "Typed or pasted notes instead of files; sent to the model, never stored",
+  )
+  .option("--title <name>", "Name of the typed notes in the review list")
+  .option(
+    "--place-region <key>",
+    "Knowledge atlas region the import starts at (ADR 2026-10-13)",
+  )
+  .option("--place-lens <kind>", "Lens of --place-region: weltwissen or schule")
+  .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        const result = await analyzeMaterialViaLLM(
-          db,
-          opts.file as string[],
-          { pages: opts.pages },
-          {
-            onProgress: (progress) =>
-              progressOut({ type: "material-analyze-progress", ...progress }),
-          },
-        );
+        const files = (opts.file as string[] | undefined) ?? [];
+        if (files.length > 0 === (opts.text !== undefined)) {
+          jsonError("Pass either --file or --text.");
+        }
+        const place = opts.placeRegion
+          ? await materialPlace(db, {
+              userId: await resolveUser(opts, db, { json: true }),
+              lens: opts.placeLens,
+              region: String(opts.placeRegion),
+            })
+          : undefined;
+        const onProgress = (progress: { done: number; total: number }) =>
+          progressOut({ type: "material-analyze-progress", ...progress });
+        const result: MaterialAnalyzeResult =
+          opts.text !== undefined
+            ? await analyzeMaterialText(
+                db,
+                String(opts.text),
+                { place, title: opts.title },
+                { onProgress },
+              )
+            : await analyzeMaterialViaLLM(
+                db,
+                files,
+                { pages: opts.pages, place },
+                { onProgress },
+              );
         const batch = await stageMaterialImport({
           set: result.set,
           origin: "studio",
@@ -7339,6 +7376,10 @@ bridgeCommand
     'Row id → "yes" | "bonus" | "no"; rows without a choice are not saved',
   )
   .option("--areas <json>", "Proposed area → area the learner confirmed")
+  .option(
+    "--variants <json>",
+    "Proposal row ids whose standsFor the learner ticked (ADR 2026-10-13)",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -7346,6 +7387,9 @@ bridgeCommand
         parseJsonOption("decisions", opts.decisions),
       );
       const areas = parseMaterialAreas(parseJsonOption("areas", opts.areas));
+      const variants = parseMaterialVariants(
+        parseJsonOption("variants", opts.variants),
+      );
       const userId = await resolveUser(opts, db, { json: true });
       const result = await confirmMaterialImport(
         db,
@@ -7353,6 +7397,8 @@ bridgeCommand
         opts.id,
         decisions,
         areas,
+        {},
+        variants,
       );
       jsonOut({ success: true, ...result });
     });
@@ -9548,14 +9594,100 @@ bridgeCommand
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
-        jsonOut({
-          success: true,
-          ...(await setAtlasPrefs(db, {
-            lens: opts.lens,
-            home: opts.home,
-            showNew: opts.showNew,
-          })),
+        const prefs = await setAtlasPrefs(db, {
+          lens: opts.lens,
+          home: opts.home,
+          showNew: opts.showNew,
         });
+        // Turning Neue Inhalte zeigen on installs the year's cells; it
+        // enrols nobody (ADR 2026-08-14, Decision 3).
+        const cellsInstalled =
+          opts.showNew === "on" ? await installScopeCells(db) : [];
+        jsonOut({ success: true, ...prefs, cellsInstalled });
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-place")
+  .description(
+    "What an import at an atlas region needs: its path, missing levels, the learner's units there and the bundled cells (JSON)",
+  )
+  .requiredOption("--region <key>", "Region key")
+  .option("--lens <kind>", "weltwissen (default) or schule")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasPlace(db, {
+            userId,
+            lens: opts.lens,
+            region: String(opts.region),
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-take")
+  .description(
+    "Take sketched units in: cards for the named units, or for every unit in reach in a region (JSON)",
+  )
+  .option("--unit <key...>", "Unit keys (atom:<id> or token:<id>)")
+  .option("--region <key>", "Every unit in reach in this region")
+  .option("--lens <kind>", "Lens of --region: weltwissen (default) or schule")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasTake(db, {
+            userId,
+            units: opts.unit,
+            lens: opts.lens,
+            region: opts.region,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-variant")
+  .description(
+    "Let a unit stand in for a published one (one goal, one method), undo it, or set it for the library (JSON)",
+  )
+  .requiredOption("--stands-for <key>", "The published unit (atom:<id>)")
+  .option("--variant <key>", "The unit that stands in")
+  .option("--undo", "Undo the learner's variant: re-attach its cards")
+  .option(
+    "--library",
+    "Set (with --variant) or clear the library's variant; curators only",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasVariant(db, {
+            userId,
+            standsFor: String(opts.standsFor),
+            variant: opts.variant,
+            undo: opts.undo === true,
+            library: opts.library === true,
+          }),
+        );
       } catch (err) {
         jsonError((err as Error).message);
       }

@@ -1,15 +1,16 @@
 ---
 type: protocol
 title: Learning Cards from Photos and Files
-description: A model reads a learner's photos or PDF itself and proposes cards; the learner decides each one as Yes, No or Bonus in one review list, and only a source link and file fingerprints are kept.
+description: A model reads a learner's photos, PDF or typed notes itself and proposes cards; the learner decides each one as Yes, No or Bonus in one review list, and only a source link and file fingerprints are kept. An import can start at a place on the knowledge atlas.
 tags:
   - import
   - llm
   - studio
   - mobile
   - agents
+  - atlas
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-13T18:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -45,6 +46,12 @@ loses.
   Studio re-checks out-of-date cloud rows by itself, once per session and
   only when one is due, and the dialog names the models after that check
   (see [bridge-protocol.md](bridge-protocol.md), `model-refresh-capabilities`).
+- **Typed notes.** A learner can also type or paste notes in the same dialog.
+  They go to the first `text` row of the model registry as the request's
+  text, in place of a file; the proposals, the review list and the confirm
+  are the same. Up to 20,000 characters per import. The text is not stored:
+  the import keeps its SHA-256 fingerprint, and the cards link to
+  `notes:<title>@<date>`.
 
 # Two ways in
 
@@ -81,6 +88,34 @@ A harness or Studio batch waits in `~/.zam/pending-imports/<ULID>.json` for
 up to seven days. A staging file holds the proposals and file references only
 — no image bytes, no transcript — and is machine-local, never in the library.
 
+# At a place on the knowledge atlas
+
+With the atlas alpha ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md),
+Decision 9), an import can start at a region of the map: *Hier importieren …*
+in the region's panel. Cells come first there, as everywhere (the cell has
+precedence); the material import is the way in for the learner's own notes.
+
+- **The place travels with the batch.** The proposal set carries an optional
+  `place: { lens, regionKey }`; the contract stays version 1. The producer is
+  told the region's path, the names of the levels below it, and the
+  published units the learner holds there. On the harness path
+  `zam_material_import_context` takes `place` and returns them; on the
+  built-in path the request names them.
+- **Two optional fields per card.** `placeBelow` names the levels below the
+  place, such as the Thema under a Gebiet. `standsFor` names a published
+  unit whose goal the material reaches by the school's own method (one goal,
+  one method, Decision 12).
+- **The confirm places only what it wrote.** In the same transaction it adds
+  an `atlas_members` row (`placed_by: import`) for each new unit, creating
+  the named levels; a level the producer left unnamed is called "Allgemein".
+  A linked duplicate keeps its place. The units are own, never published:
+  their kind follows the place, their status stays own (Decision 2).
+- **"Instead of …".** A card with `standsFor` shows "Instead of *<title>*:
+  my school's method" in the review list, unticked. A Yes with the tick
+  detaches the learner's cards on that published unit in the same
+  transaction, and records them, so undoing the choice re-attaches exactly
+  those. Nothing is merged, moved or deleted.
+
 # The review list
 
 Every proposal is a row with Yes, No or Bonus:
@@ -108,6 +143,8 @@ Every proposal is a row with Yes, No or Bonus:
   release, so no card was re-tested).
 - **Re-import.** A file fingerprinted before is named ("You imported this file
   on 5 Oct."); it informs and never blocks.
+- **Place.** An import at a place names where its cards go ("The cards go to
+  Natur › Physik › Licht & Wellen.").
 
 The rules — presets, counts, grouping — live once in
 `src/kernel/import/material-review-state.ts`, shared by the desktop Studio and
@@ -126,7 +163,9 @@ One transaction writes the learner's choices for exactly the rows they saw:
 - for Yes on an existing or continuation row, a card for what the library
   holds (a cell is installed first, outside the transaction); for Bonus, a
   link only;
-- a `token_sources` link from every kept token to the import, with its page.
+- a `token_sources` link from every kept token to the import, with its page;
+- with a place, the new units' `atlas_members` rows, and the variants the
+  learner ticked.
 
 Each token's `source_link` names its own file: `file:///…/Arbeitsblatt.pdf#page=2`
 for a file read from disk, `photo:IMG_1234.HEIC@2026-10-05` where there is no
@@ -164,9 +203,12 @@ as Bonus is listed; one set aside after the import stays out of every offer.
   `material-import-areas`, `material-import-models`,
   `material-import-analyze`, `material-import-bonus-list`,
   `material-import-bonus-take`. `material-import-analyze` answers a refusal as
-  `{ success: false, code, message }` so the Studio can explain it.
-- **Studio:** the "Photo / PDF" dialog and the review list in Learning Content;
-  the Bonus button; the offer after the due queue.
+  `{ success: false, code, message }` so the Studio can explain it; it takes
+  `--text` (typed notes) and `--place-region` / `--place-lens`, and
+  `material-import-confirm` takes `--variants`, the ticked "Instead of" rows.
+- **Studio:** the "Photo / PDF" dialog, with the notes field, and the review
+  list in Learning Content; *Hier importieren …* on the knowledge atlas; the
+  Bonus button; the offer after the due queue.
 - **Mobile:** "Photos or PDF" in the library's add view, the review list, and
   the Bonus offers.
 
@@ -179,6 +221,7 @@ a model.
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [ADR 2026-08-14 — Central Learning Atoms and Identity](../adr/2026-08-14-central-learning-atoms-and-identity.md) (Decision 6: bonus means offered)
 - [ADR 2026-09-13 — Model Capabilities Are Detected](../adr/2026-09-13-model-capabilities-are-detected.md)
+- [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decisions 2, 9, 12: kind and status, import at a place, one goal one method)
 - [OpenRouter — PDF inputs](https://openrouter.ai/docs/features/multimodal/pdfs)
-- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/capability-refresh.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
-- Tests: `tests/kernel/material-import.test.ts`, `tests/kernel/material-review-state.test.ts`, `tests/kernel/postgres-material-import.test.ts`, `tests/kernel/schule-domain-migration.test.ts`, `tests/cli/material-import.test.ts`, `tests/cli/material-analyze.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/cli/mcp-material-import.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/desktop/material-review.test.ts`, `tests/desktop/material-import-start.test.ts`, `tests/desktop/material-bonus.test.ts`, `tests/mobile/material-import.test.ts`
+- Code: `src/kernel/import/material-import.ts`, `src/kernel/import/material-contract.ts`, `src/kernel/import/material-review-state.ts`, `src/kernel/db/provision.ts` (M037, M038, M042), `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-probe.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/atlas/place.ts`, `src/kernel/atlas/variants.ts`, `src/cli/atlas.ts`, `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/desktop-launch.ts`, `desktop/src/material-import-start.ts`, `desktop/src/material-review.ts`, `desktop/src/material-bonus.ts`, `desktop/src/study-offers.ts`, `mobile/src/material-import.ts`, `mobile/src/material-review-view.ts`, `mobile/src/vl-import.ts`, `skills/zam/SKILL.md`
+- Tests: `tests/kernel/material-import.test.ts`, `tests/kernel/material-review-state.test.ts`, `tests/kernel/postgres-material-import.test.ts`, `tests/kernel/schule-domain-migration.test.ts`, `tests/cli/material-import.test.ts`, `tests/cli/material-analyze.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/cli/mcp-material-import.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/kernel/atlas-place.test.ts`, `tests/desktop/material-review.test.ts`, `tests/desktop/material-import-start.test.ts`, `tests/desktop/material-bonus.test.ts`, `tests/mobile/material-import.test.ts`

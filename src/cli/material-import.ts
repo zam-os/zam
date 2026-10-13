@@ -30,8 +30,11 @@ import {
   type MaterialReviewRow,
   matchMaterialProposals,
   materialAreaGroups,
+  resolvePlace,
   resolveTrustedPath,
+  SCHULE_LENS,
   trustedRoots,
+  WELTWISSEN_LENS,
 } from "../kernel/index.js";
 import { getLastCurriculumSelection } from "./curriculum/breadcrumb.js";
 import {
@@ -78,6 +81,47 @@ export interface MaterialImportReview {
   reimports: MaterialImportRecord[];
   /** Whether matching had embeddings, or ran on words alone. */
   semantic: boolean;
+  /**
+   * Where on the knowledge atlas the new cards go (ADR 2026-10-13, Decision
+   * 9): region names from the island down; null without a place.
+   */
+  place: { lens: string; regionKey: string; path: string[] } | null;
+  /** Titles of the published units a card's `standsFor` names (Decision 12). */
+  variantTitles: Record<string, string>;
+}
+
+/** The import's place as names, for the review list. */
+async function placeNames(
+  db: Database,
+  set: MaterialProposalSet,
+): Promise<MaterialImportReview["place"]> {
+  if (!set.place) return null;
+  const lens = set.place.lens === "schule" ? SCHULE_LENS : WELTWISSEN_LENS;
+  const place = await resolvePlace(db, lens, set.place.regionKey).catch(
+    () => null,
+  );
+  return {
+    lens: set.place.lens,
+    regionKey: set.place.regionKey,
+    path: place ? place.path.map((step) => step.name) : [set.place.regionKey],
+  };
+}
+
+/** Titles of the published units the proposals would stand in for. */
+async function variantTitles(
+  db: Database,
+  set: MaterialProposalSet,
+): Promise<Record<string, string>> {
+  const titles: Record<string, string> = {};
+  for (const proposal of set.proposals) {
+    const key = proposal.standsFor;
+    if (!key || titles[key]) continue;
+    const row = (await db
+      .prepare("SELECT title FROM learning_atoms WHERE id = ?")
+      .get(key.slice("atom:".length))) as { title: string } | undefined;
+    if (row) titles[key] = row.title;
+  }
+  return titles;
 }
 
 function summary(batch: StagedImport): PendingMaterialImport {
@@ -111,7 +155,7 @@ async function requireBatch(
 }
 
 /** The learner's curriculum position, when they ever picked one. */
-async function learnerScope(
+export async function learnerScope(
   db: Database,
 ): Promise<CurriculumScope | undefined> {
   const selection = await getLastCurriculumSelection(db).catch(() => undefined);
@@ -213,7 +257,18 @@ export async function reviewMaterialImport(
     areaGroups: materialAreaGroups(batch.set.proposals),
     reimports,
     semantic,
+    place: await placeNames(db, batch.set),
+    variantTitles: await variantTitles(db, batch.set),
   };
+}
+
+/** Parse `--variants` JSON: the proposal rows whose `standsFor` is ticked. */
+export function parseMaterialVariants(raw: unknown): string[] {
+  if (raw === undefined || raw === null) return [];
+  if (!Array.isArray(raw) || !raw.every((id) => typeof id === "string")) {
+    throw new Error("variants must be an array of row ids");
+  }
+  return raw;
 }
 
 /** Parse `--decisions` JSON: row id → yes | bonus | no. */
@@ -260,6 +315,8 @@ export async function confirmMaterialImport(
   decisions: Record<string, MaterialChoice>,
   areas: Record<string, string> = {},
   opts: StagingOptions = {},
+  /** Proposal rows whose `standsFor` the learner ticked (ADR 2026-10-13, D12). */
+  variants: string[] = [],
 ): Promise<MaterialCommitResult> {
   const batch = await requireBatch(id, opts);
   const rows = batch.rows ?? (await matchRows(db, userId, batch.set)).rows;
@@ -268,6 +325,7 @@ export async function confirmMaterialImport(
     rows,
     decisions,
     areas,
+    variants,
   });
   await discardStagedImport(id, opts);
   return result;
@@ -461,6 +519,8 @@ export async function stageHarnessImport(
     harness?: string;
     /** Allowed roots for the agent's file paths (ADR 2026-10-08b D1). */
     roots?: readonly string[];
+    /** The atlas region the learner imports at (ADR 2026-10-13, D9). */
+    place?: { lens: string; regionKey: string };
   },
   opts: StagingOptions = {},
 ): Promise<StagedImport> {
@@ -476,6 +536,7 @@ export async function stageHarnessImport(
         analysis: input.analysis,
         proposals: input.proposals,
         files,
+        ...(input.place ? { place: input.place } : {}),
       },
       origin: "harness",
       harness: input.harness,

@@ -13,11 +13,14 @@
 
 import type {
   AtlasLensKindWire,
+  AtlasPrefsResponse,
   AtlasReadResponse,
+  AtlasTakeResponse,
   AtlasUnitWire,
 } from "../../../src/bridge/protocol.js";
 import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
+import { type ImportPlace, openAtlasImport } from "./import.js";
 import {
   type AtlasLayout,
   buildAtlasLayout,
@@ -39,12 +42,17 @@ import {
 export interface AtlasViewDeps {
   /** Open the study view on this region's due cards. */
   reviewRegion(lens: AtlasLensKindWire, regionKey: string): void;
+  /** Open the material import (photos, PDF, notes) at a place (D9). */
+  importMaterial(place: ImportPlace): void;
+  /** Open the generic curriculum wizard, where no cell covers a place. */
+  openCurriculumWizard?(): void;
 }
 
 const LENSES: readonly AtlasLensKindWire[] = ["weltwissen", "schule"];
 const THREAD_MODES: readonly ThreadMode[] = ["all", "selection", "off"];
 
 interface Elements {
+  showNew: HTMLButtonElement;
   lenses: HTMLElement;
   lensButtons: Map<AtlasLensKindWire, HTMLButtonElement>;
   crumbs: HTMLOListElement;
@@ -72,6 +80,8 @@ interface ViewState {
   lens: AtlasLensKindWire | null;
   mode: "map" | "outline";
   expanded: Set<string>;
+  /** *Neue Inhalte zeigen*, as the learner's setting says; null until read. */
+  showNew: boolean | null;
   generation: number;
   frame: number;
   detach: () => void;
@@ -93,6 +103,7 @@ export async function showAtlasView(
   }
   state.deps = deps;
   applyLabels(state);
+  if (state.showNew === null) void readShowNew(state);
   await load(state, state.lens ?? undefined);
 }
 
@@ -141,6 +152,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   crumbNav.appendChild(crumbs);
   const tools = el("div", "atlas-tools");
   const home = button("btn secondary-btn btn-sm");
+  const showNew = button("btn secondary-btn btn-sm atlas-show-new");
   const threads = button("btn secondary-btn btn-sm");
   const mode = button("btn secondary-btn btn-sm");
   const searchBox = el("div", "atlas-search");
@@ -151,7 +163,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   const results = el("ul", "atlas-search-results");
   results.hidden = true;
   searchBox.append(search, results);
-  tools.append(home, threads, mode, searchBox);
+  tools.append(home, showNew, threads, mode, searchBox);
   toolbar.append(lensGroup, crumbNav, tools);
 
   const body = el("div", "atlas-body");
@@ -180,6 +192,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   container.appendChild(root);
 
   const els: Elements = {
+    showNew,
     lenses: lensGroup,
     lensButtons,
     crumbs,
@@ -208,6 +221,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     lens: null,
     mode: "map",
     expanded: new Set(),
+    showNew: null,
     generation: 0,
     frame: 0,
     detach: () => undefined,
@@ -227,6 +241,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   }
   home.addEventListener("click", () => goHome(s));
   threads.addEventListener("click", () => cycleThreads(s));
+  showNew.addEventListener("click", () => void toggleShowNew(s));
   mode.addEventListener("click", () => toggleMode(s));
   close.addEventListener("click", () => select(s, null));
   search.addEventListener("input", () => renderResults(s));
@@ -278,6 +293,49 @@ function applyLabels(s: ViewState): void {
     ?.setAttribute("aria-label", t("atlas_panel_close"));
   updateThreadsButton(s);
   updateModeButton(s);
+  updateShowNewButton(s);
+}
+
+function updateShowNewButton(s: ViewState): void {
+  s.els.showNew.textContent = t("atlas_show_new");
+  s.els.showNew.title = t("atlas_show_new_hint");
+  s.els.showNew.setAttribute("aria-pressed", String(s.showNew === true));
+  s.els.showNew.disabled = s.showNew === null;
+}
+
+/**
+ * *Neue Inhalte zeigen* (Decision 1): off by default. Turning it on also
+ * installs the year's cells, which enrols nobody; the next read sketches
+ * them and settle gives them land.
+ */
+async function toggleShowNew(s: ViewState): Promise<void> {
+  if (s.showNew === null) return;
+  const next = !s.showNew;
+  s.els.showNew.disabled = true;
+  try {
+    const prefs = await runBridge<AtlasPrefsResponse>("atlas-prefs", [
+      "--show-new",
+      next ? "on" : "off",
+    ]);
+    s.showNew = prefs.showNew;
+  } catch (err) {
+    setStatus(
+      s,
+      `${t("atlas_load_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+  updateShowNewButton(s);
+  await load(s, s.lens ?? undefined);
+}
+
+async function readShowNew(s: ViewState): Promise<void> {
+  try {
+    const prefs = await runBridge<AtlasPrefsResponse>("atlas-prefs");
+    s.showNew = prefs.showNew;
+  } catch {
+    s.showNew = false;
+  }
+  updateShowNewButton(s);
 }
 
 // ── Loading ───────────────────────────────────────────────────────────────
@@ -435,6 +493,8 @@ function isActive(s: ViewState): boolean {
 
 function handleKey(s: ViewState, e: KeyboardEvent): void {
   if (!isActive(s) || e.defaultPrevented) return;
+  // A dialog in front (import, material review) owns the keys.
+  if (document.querySelector(".modal-overlay.active")) return;
   if (e.metaKey || e.ctrlKey || e.altKey) return;
   const target = e.target instanceof HTMLElement ? e.target : null;
   const typing =
@@ -693,6 +753,37 @@ function regionPanel(
     home.addEventListener("click", () => void setHome(s, key));
     actions.appendChild(home);
   }
+  // Import at this place (Decision 9): curriculum cells, or the learner's
+  // own material.
+  const importHere = button("btn secondary-btn btn-sm", t("atlas_import_here"));
+  importHere.addEventListener("click", () => {
+    if (!s.lens) return;
+    void openAtlasImport(
+      {
+        lens: s.lens === "schule" ? "schule" : "weltwissen",
+        regionKey: key,
+        path: regionPath(layout, key).map(
+          (k) => layout.regions.get(k)?.name ?? k,
+        ),
+      },
+      {
+        importMaterial: (place) => s.deps.importMaterial(place),
+        openCurriculumWizard: s.deps.openCurriculumWizard,
+        onChanged: () => void load(s, s.lens ?? undefined),
+      },
+    );
+  });
+  actions.appendChild(importHere);
+  // Sketched units (Neue Inhalte zeigen) are taken in on a click only.
+  if (units.some((unit) => unit.inReach)) {
+    const take = button("btn secondary-btn btn-sm", t("atlas_take"));
+    take.title = t("atlas_take_region_hint");
+    take.addEventListener("click", () => {
+      if (!s.lens) return;
+      void takeIn(s, ["--region", key, "--lens", s.lens]);
+    });
+    actions.appendChild(take);
+  }
   body.appendChild(actions);
 
   const children = region.children.filter((c) => layout.geoms.has(c));
@@ -747,6 +838,53 @@ function unitPanel(
   if (unit.own) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_own_unit_note")));
   }
+  if (unit.inReach) {
+    body.appendChild(el("p", "atlas-panel-note", t("atlas_in_reach_note")));
+    const take = button("btn primary-btn btn-sm", t("atlas_take"));
+    take.addEventListener("click", () => void takeIn(s, ["--unit", key]));
+    const actions = el("div", "atlas-panel-actions");
+    actions.appendChild(take);
+    body.appendChild(actions);
+  }
+  // One goal, one method (Decision 12).
+  if (unit.standsFor) {
+    body.appendChild(
+      el(
+        "p",
+        "atlas-panel-note",
+        tf("atlas_variant_instead_of", { title: unit.standsFor.title }),
+      ),
+    );
+    if (unit.standsFor.chosen) {
+      const undo = button("btn secondary-btn btn-sm", t("atlas_variant_undo"));
+      const standsFor = unit.standsFor.key;
+      undo.addEventListener(
+        "click",
+        () => void changeVariant(s, ["--stands-for", standsFor, "--undo"]),
+      );
+      const actions = el("div", "atlas-panel-actions");
+      actions.appendChild(undo);
+      body.appendChild(actions);
+    }
+  }
+  if (unit.variantOffer) {
+    body.appendChild(
+      el(
+        "p",
+        "atlas-panel-note",
+        tf("atlas_variant_offer", { title: unit.variantOffer.title }),
+      ),
+    );
+    const variant = unit.variantOffer.key;
+    const take = button("btn secondary-btn btn-sm", t("atlas_variant_take"));
+    take.addEventListener(
+      "click",
+      () => void changeVariant(s, ["--stands-for", key, "--variant", variant]),
+    );
+    const actions = el("div", "atlas-panel-actions");
+    actions.appendChild(take);
+    body.appendChild(actions);
+  }
   const links = unitLinks(layout, key);
   body.appendChild(el("h3", "atlas-panel-sub", t("atlas_builds_on")));
   body.appendChild(
@@ -795,6 +933,32 @@ function entry(name: string, meta: string, onClick: () => void): HTMLLIElement {
   b.addEventListener("click", onClick);
   li.appendChild(b);
   return li;
+}
+
+/** *Aufnehmen*: cards for sketched units, on the learner's click only. */
+async function takeIn(s: ViewState, args: string[]): Promise<void> {
+  let message: string;
+  try {
+    const result = await runBridge<AtlasTakeResponse>("atlas-take", args);
+    message = tf("atlas_taken", { count: result.cardsCreated });
+  } catch (err) {
+    message = `${t("atlas_take_failed")} ${err instanceof Error ? err.message : String(err)}`;
+  }
+  await load(s, s.lens ?? undefined);
+  setStatus(s, message);
+}
+
+async function changeVariant(s: ViewState, args: string[]): Promise<void> {
+  try {
+    await runBridge("atlas-variant", args);
+  } catch (err) {
+    setStatus(
+      s,
+      `${t("atlas_variant_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  await load(s, s.lens ?? undefined);
 }
 
 async function setHome(s: ViewState, key: string): Promise<void> {

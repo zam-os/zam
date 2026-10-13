@@ -5324,15 +5324,34 @@ textarea::placeholder {
 }
 
 .atlas-crumbs {
-  flex: 1;
+  /* Below this width the breadcrumb takes a row of its own. */
+  flex: 1 1 320px;
   min-width: 0;
 }
 
 .atlas-crumbs ol {
   display: flex;
-  flex-wrap: wrap;
+  flex-wrap: nowrap;
+  overflow: hidden;
   list-style: none;
   font-size: var(--fs-sm);
+}
+
+/* One line: a long unit title or path is cut, never wrapped over the map. */
+.atlas-crumbs li {
+  display: flex;
+  min-width: 3.5em;
+  white-space: nowrap;
+}
+
+.atlas-crumbs li:last-child {
+  flex-shrink: 0;
+  max-width: 45%;
+}
+
+.atlas-crumb {
+  overflow: hidden;
+  text-overflow: ellipsis;
 }
 
 .atlas-crumbs li + li::before {
@@ -5632,4 +5651,73 @@ span.atlas-crumb {
     width: auto;
     max-height: 40vh;
   }
+}
+
+.atlas-tools .btn[aria-pressed="true"] {
+  background: var(--color-accent-soft);
+  border-color: var(--color-accent-line);
+  color: var(--color-accent-ink);
+}
+
+.atlas-import {
+  max-width: 560px;
+}
+
+.atlas-import-body {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-3);
+}
+
+.atlas-import-section {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+}
+
+.atlas-import-section h4 {
+  font-size: var(--fs-md);
+}
+
+.atlas-import-section .btn {
+  align-self: flex-start;
+}
+
+.atlas-import-path,
+.atlas-import-help,
+.atlas-import-status {
+  color: var(--color-ink-2);
+  font-size: var(--fs-sm);
+}
+
+.atlas-import-list {
+  display: flex;
+  flex-direction: column;
+  gap: 6px;
+  list-style: none;
+}
+
+.atlas-import-cell {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+  padding: 6px 8px;
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-xs);
+}
+
+.atlas-import-cell > span:first-child {
+  display: flex;
+  flex-direction: column;
+}
+
+.atlas-import-cell-meta {
+  color: var(--color-muted);
+  font-size: var(--fs-xs);
+}
+
+.atlas-import-cell-state {
+  color: var(--color-success);
+  font-size: var(--fs-xs);
 }

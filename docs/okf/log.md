@@ -1,5 +1,11 @@
 # Log
 
+## 2026-10-13
+
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
+
 ## 2026-10-11
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

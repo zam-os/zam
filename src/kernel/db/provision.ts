@@ -18,6 +18,7 @@ import { ulid } from "ulid";
 import {
   ATLAS_LAND_TABLES,
   ATLAS_TABLES,
+  ATLAS_VARIANT_TABLES,
   SCHEMA_INDEXES,
   SCHEMA_TABLES,
 } from "./schema.js";
@@ -29,7 +30,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 41;
+export const CURRENT_SCHEMA_VERSION = 42;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1013,6 +1014,11 @@ export async function runMigrations(db: Database): Promise<void> {
   // assigned once, and each island's place on the sea. Knowledge, written
   // only by settle and a curator's lens edit.
   await db.exec(ATLAS_LAND_TABLES);
+
+  // M042: variants (ADR 2026-10-13, Decision 12) — a method that stands in
+  // for a published unit: the library's choice (knowledge) and a learner's
+  // own (learning state, with the cards it detached).
+  await db.exec(ATLAS_VARIANT_TABLES);
 }
 
 const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;

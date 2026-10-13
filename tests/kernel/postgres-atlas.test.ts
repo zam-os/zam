@@ -2,6 +2,7 @@ import { afterEach, describe, expect, it } from "vitest";
 import {
   atlasRead,
   atlasSettle,
+  atlasVariant,
   mayWriteKnowledge,
   NOT_CURATOR,
 } from "../../src/cli/atlas.js";
@@ -29,6 +30,7 @@ import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
 import { createToken, installKvtTile } from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
+import { materialiseKvtCards } from "../../src/kernel/library/kvt-attach.js";
 
 /**
  * The atlas lenses on PostgreSQL (ADR 2026-10-13, M040). The SQLite suite
@@ -231,6 +233,111 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
         expect(settled.landWritten).toBeGreaterThan(0);
       } finally {
         await asCurator.close();
+      }
+    } finally {
+      await reset();
+    }
+  });
+
+  it("lets a library variant change no member's cards (Decision 12)", async () => {
+    await reset();
+    try {
+      const control = openPostgresDatabase({
+        connectionString: `${url}?options=-c%20search_path%3D${schema}`,
+      });
+      let standsFor = "";
+      let variant = "";
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, directory, {
+          upn: "variant-curator@example.org",
+          database,
+        });
+        await addTeamMember(control, directory, {
+          upn: "variant-member@example.org",
+          database,
+          curator: false,
+        });
+        const tile = listBundledTiles().find((t) =>
+          t.atoms.some((a) => a.domain.startsWith("physik/optik")),
+        );
+        if (!tile) throw new Error("no bundled optics tile");
+        await installKvtTile(control, tile);
+        standsFor = `atom:${tile.atoms[0].id}`;
+        const method = await createToken(control, {
+          slug: "verfahren-der-schule",
+          concept: "Das Verfahren der Schule",
+          domain: "physik/optik",
+        });
+        variant = `token:${method.id}`;
+      } finally {
+        await control.close();
+      }
+
+      const asMember = await connectAs("variant-member@example.org");
+      let memberId = "";
+      try {
+        memberId = (await resolveLearnerId(asMember)) as string;
+        await materialiseKvtCards(asMember, memberId, [
+          standsFor.slice("atom:".length),
+        ]);
+        // A member may not set the library's variant.
+        await expect(
+          atlasVariant(asMember, {
+            userId: memberId,
+            standsFor,
+            variant,
+            library: true,
+          }),
+        ).rejects.toThrow(NOT_CURATOR);
+      } finally {
+        await asMember.close();
+      }
+
+      const asCurator = await connectAs("variant-curator@example.org");
+      try {
+        const curatorId = (await resolveLearnerId(asCurator)) as string;
+        await atlasVariant(asCurator, {
+          userId: curatorId,
+          standsFor,
+          variant,
+          library: true,
+        });
+      } finally {
+        await asCurator.close();
+      }
+
+      const again = await connectAs("variant-member@example.org");
+      try {
+        const detached = (await again
+          .prepare(
+            "SELECT COUNT(*) AS n FROM cards WHERE user_id = ? AND detached_at IS NOT NULL",
+          )
+          .get(memberId)) as { n: number | string };
+        expect(Number(detached.n)).toBe(0);
+        // The member keeps the published unit and is offered the switch …
+        const view = await atlasRead(again, {
+          userId: memberId,
+          lens: "weltwissen",
+        });
+        expect(
+          view.units.find((u) => u.key === standsFor)?.variantOffer?.key,
+        ).toBe(variant);
+        // … and their own choice is their learning state, under RLS.
+        const chosen = await atlasVariant(again, {
+          userId: memberId,
+          standsFor,
+          variant,
+        });
+        expect(chosen.detached).toBeGreaterThan(0);
+        const undone = await atlasVariant(again, {
+          userId: memberId,
+          standsFor,
+          undo: true,
+        });
+        expect(undone.reattached).toBe(chosen.detached);
+      } finally {
+        await again.close();
       }
     } finally {
       await reset();

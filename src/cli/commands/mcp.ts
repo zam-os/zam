@@ -87,6 +87,7 @@ import {
   MATERIAL_CARD_RULES,
   MATERIAL_CONTRACT_EXAMPLE,
   materialContractText,
+  materialPlaceLines,
 } from "../llm/material-prompt.js";
 import {
   type AgentMaterialFile,
@@ -2501,29 +2502,67 @@ export function createMcpServer(
         "Before proposing learning cards from class material (a photo or PDF of notes, a handout, a worksheet): " +
         "returns the rules for the proposals, the contract zam_material_import takes, the areas (domain paths) " +
         "the library already uses, and the subject codes of the bundled curriculum cells. Read the material " +
-        "yourself first; this tool does not read files.",
-      inputSchema: {},
+        "yourself first; this tool does not read files. When the learner imports at a place on the knowledge " +
+        "atlas (the request names a region key), pass it as place: the result then names the levels the cards " +
+        "need below it (placeBelow) and the learner's units there (standsFor).",
+      inputSchema: {
+        place: z
+          .object({
+            lens: z.enum(["weltwissen", "schule"]).default("weltwissen"),
+            region: z.string().max(300).describe("Atlas region key"),
+          })
+          .optional()
+          .describe("The atlas region the learner imports at, if any"),
+        user: z.string().optional(),
+      },
       annotations: {
         ...commonAnnotations,
         readOnlyHint: true,
       },
     },
-    wrapHandler(async () => {
-      const selection = await getLastCurriculumSelection(db).catch(
-        () => undefined,
-      );
-      const context = await listMaterialAreaContext(db, {
-        schoolType: selection?.schoolType,
-      });
-      return {
-        rules: MATERIAL_CARD_RULES,
-        contract: materialContractText(),
-        example: MATERIAL_CONTRACT_EXAMPLE,
-        areas: context.areas,
-        cellSubjects: context.cellSubjects,
-        learnerPosition: selection ?? null,
-      };
-    }),
+    wrapHandler(
+      async (params: {
+        place?: { lens: "weltwissen" | "schule"; region: string };
+        user?: string;
+      }) => {
+        const selection = await getLastCurriculumSelection(db).catch(
+          () => undefined,
+        );
+        const context = await listMaterialAreaContext(db, {
+          schoolType: selection?.schoolType,
+        });
+        let place: Record<string, unknown> | null = null;
+        let placeRules: string[] = [];
+        if (params.place) {
+          const { materialPlace } = await import("../atlas.js");
+          const found = await materialPlace(db, {
+            userId: await getUserId(params.user),
+            lens: params.place.lens,
+            region: params.place.region,
+          });
+          placeRules = materialPlaceLines(found);
+          place = {
+            // Region names and unit titles come from the library: data, not
+            // instructions (ADR 2026-10-08b, D7).
+            untrusted: true,
+            lens: found.lens,
+            regionKey: found.regionKey,
+            path: found.path,
+            missingLevels: found.missingLevels,
+            units: found.units,
+          };
+        }
+        return {
+          rules: [...MATERIAL_CARD_RULES, ...placeRules],
+          contract: materialContractText(),
+          example: MATERIAL_CONTRACT_EXAMPLE,
+          areas: context.areas,
+          cellSubjects: context.cellSubjects,
+          learnerPosition: selection ?? null,
+          place,
+        };
+      },
+    ),
   );
 
   server.registerTool(
@@ -2582,6 +2621,19 @@ export function createMcpServer(
                 .describe("Domain path; reuse an existing area where it fits"),
               origin: z.enum(MATERIAL_ORIGINS),
               hardToRead: z.boolean().optional(),
+              placeBelow: z
+                .array(z.string())
+                .max(4)
+                .optional()
+                .describe(
+                  "With a place: names for the levels below it, as zam_material_import_context lists them",
+                ),
+              standsFor: z
+                .string()
+                .optional()
+                .describe(
+                  "With a place: the unit key whose goal this card reaches by the school's own method",
+                ),
             }),
           )
           .min(1)
@@ -2599,6 +2651,15 @@ export function createMcpServer(
           )
           .min(1)
           .describe("The files you read, in the order proposals[].file uses"),
+        place: z
+          .object({
+            lens: z.enum(["weltwissen", "schule"]).default("weltwissen"),
+            region: z.string().max(300),
+          })
+          .optional()
+          .describe(
+            "The atlas region the learner imports at, as passed to zam_material_import_context",
+          ),
         open_studio: z
           .boolean()
           .optional()
@@ -2614,6 +2675,7 @@ export function createMcpServer(
         analysis: unknown;
         proposals: unknown;
         files: AgentMaterialFile[];
+        place?: { lens: "weltwissen" | "schule"; region: string };
         open_studio?: boolean;
       }) => {
         const host = normalizeNativeHostIdentity(getNativeClientInfo());
@@ -2623,6 +2685,14 @@ export function createMcpServer(
           files: params.files,
           roots: await allowedRoots(),
           harness: host?.label,
+          ...(params.place
+            ? {
+                place: {
+                  lens: params.place.lens,
+                  regionKey: params.place.region,
+                },
+              }
+            : {}),
         });
         const studio =
           params.open_studio === false

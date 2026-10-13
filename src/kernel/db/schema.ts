@@ -100,6 +100,33 @@ CREATE UNIQUE INDEX IF NOT EXISTS ux_atlas_land_unit
   ON atlas_land (lens_id, unit_key) WHERE unit_key IS NOT NULL;
 `;
 
+/**
+ * Variants (ADR 2026-10-13, Decision 12; migration M042): one goal, one
+ * method. A variant stands in for a published unit on that unit's hex.
+ * `unit_variants` is knowledge, a curator's choice for the whole library.
+ * `learner_variants` is learning state: one learner's choice, with the cards
+ * it detached, so that undoing it re-attaches exactly those.
+ */
+export const ATLAS_VARIANT_TABLES = `
+CREATE TABLE IF NOT EXISTS unit_variants (
+  -- The published unit the variant stands for ("atom:<id>").
+  stands_for    TEXT PRIMARY KEY,
+  -- The unit that stands in: own or published, never the same.
+  variant_key   TEXT NOT NULL,
+  decided_by    TEXT NOT NULL,
+  created_at    TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_variants (
+  user_id       TEXT NOT NULL,
+  stands_for    TEXT NOT NULL,
+  variant_key   TEXT NOT NULL,
+  -- JSON array: the card ids this choice detached.
+  detached_card_ids TEXT NOT NULL,
+  created_at    TEXT NOT NULL,
+  PRIMARY KEY (user_id, stands_for)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -569,7 +596,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-${ATLAS_TABLES}${ATLAS_LAND_TABLES}`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

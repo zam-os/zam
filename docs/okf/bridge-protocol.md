@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-13T18:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -147,7 +147,7 @@ no time.
 
 # Material import
 
-Learning cards from photos and PDFs (see [material-import.md](material-import.md))
+Learning cards from photos, PDFs and typed notes (see [material-import.md](material-import.md))
 move through a staged batch that only the learner's confirm turns into
 library rows:
 
@@ -158,7 +158,9 @@ library rows:
   --id <id>` drops one without writing.
 - `material-import-analyze --file <path>… [--pages <range>]` reads up to ten
   photos or one PDF with the connected model and stages the result with
-  origin `studio`. A refusal the learner can act on — no image or file model,
+  origin `studio`; `--text <notes> [--title <name>]` sends typed notes to the
+  first text model instead. `--place-region <key> [--place-lens <kind>]`
+  starts the import at a region of the knowledge atlas. A refusal the learner can act on — no image or file model,
   HEIC that cannot be converted, a mixed or oversized selection, an answer
   that does not fit the contract — comes back as `{ success: false, code,
   message }` rather than an `error`, so a surface can explain it by `code`.
@@ -171,15 +173,48 @@ library rows:
 - `material-import-review --id <id>` matches the proposals against the library
   and the bundled cells, returns the rows with their presets, area groups and
   earlier imports of the same files, and stores those rows in the batch;
-  `material-import-confirm --id <id> --decisions <json> [--areas <json>]`
-  applies the decisions to exactly those rows in one transaction and retires
-  the batch. Bad `--decisions` or `--areas` JSON is reported as JSON.
+  `material-import-confirm --id <id> --decisions <json> [--areas <json>]
+  [--variants <json>]` applies the decisions to exactly those rows in one
+  transaction and retires the batch; `--variants` lists the proposal rows
+  whose "instead of" the learner ticked. Bad `--decisions`, `--areas` or
+  `--variants` JSON is reported as JSON.
 - `material-import-file-preview --id <id> --file <n>` returns a small image of
   a staged file for the review list, only for files the batch names;
   `material-import-areas` lists the areas in use and the cell subject codes.
 - `material-import-bonus-list [--limit <n>]` lists the caller's kept Bonus
   items; `material-import-bonus-take --token <id>` creates the caller's card
   for one, and refuses an item that is not from the caller's own imports.
+
+# Knowledge atlas (alpha)
+
+The knowledge atlas ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md))
+reads and writes through these commands. None of them is in
+`STUDIO_BRIDGE_COMMANDS`, so no MCP panel can reach them, and no argument
+takes coordinates: only settle places land.
+
+- `atlas-feature [--enable|--disable]` reads or sets this machine's alpha
+  switch in `~/.zam/config.json`.
+- `atlas-read [--lens weltwissen|schule]` returns one learner's map: regions,
+  islands, land, units with their condition, prerequisite threads, the
+  learner's own due counts and the home region. It writes nothing; land not
+  stored yet is planned in memory and marked provisional.
+- `atlas-settle [--lens <kind>]` stores the land, and refuses with
+  `not-curator` when PostgreSQL's grants say this connection may not write
+  knowledge.
+- `atlas-prefs [--lens <kind>] [--home <regionKey>] [--show-new on|off]`
+  stores the learner's lens, home region and *Neue Inhalte zeigen*; turning
+  the last on installs the cells of the learner's school year, which enrols
+  nobody, and reports them as `cellsInstalled`.
+- `atlas-place --region <key> [--lens <kind>]` names what an import at a
+  region needs: its path, the levels below it, the learner's published units
+  there and the bundled cells, with `wizard` true where no cell covers it.
+- `atlas-take (--unit <key>… | --region <key> [--lens <kind>])` creates cards
+  for sketched units, never for declined ones.
+- `atlas-variant --stands-for <key> (--variant <key> | --undo)` lets a unit
+  stand in for a published one, or undoes it; with `--library` a curator
+  sets or clears the library's variant.
+- `get-review` and `get-reviews` take `--atlas-region <key> [--atlas-lens
+  <kind>]`: only that region's due cards, no new ones.
 
 # Library switching
 

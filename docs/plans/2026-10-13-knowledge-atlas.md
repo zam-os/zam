@@ -1,6 +1,6 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 6 done (2026-10-13); the Studio check in the Tauri
+**Status:** Phases 1 to 7 done (2026-10-13); the Studio check in the Tauri
 app is still open. The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
@@ -49,9 +49,9 @@ what the learner knows.
 - [x] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
   review (D3, D10) — `af4064f2`; see "As built"
 - [x] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
-  D10) — this commit; see "As built"
-- [ ] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
-  in, variants (D1, D9, D12)
+  D10) — `99a9ffca`; see "As built"
+- [x] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
+  in, variants (D1, D9, D12) — this commit; see "As built"
 - [ ] **Phase 8** — Sinnbilder (D6)
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
@@ -1064,6 +1064,124 @@ CREATE TABLE IF NOT EXISTS learner_variants (   -- learning state
   - Its cards are detached, not deleted and not moved; `undoVariant`
     re-attaches exactly those cards.
   - A library variant changes no member's cards (Postgres harness).
+
+**As built.**
+
+- **Kernel.** Three new modules in `src/kernel/atlas/`:
+  - `place.ts`: `resolvePlace` names a region's path and `missingLevels`,
+    reading stored rows or, for a region that exists only by derivation (a
+    Schule Lernbereich), the derived placements. `placeUnits` creates the
+    path and the named levels and writes `atlas_members` rows. It opens no
+    transaction of its own, so the material import's commit holds it.
+  - `variants.ts`: `chooseVariant`, `undoVariant`, `setLibraryVariant`,
+    `clearLibraryVariant` and `effectiveVariants`. `chooseVariantIn` is the
+    transaction-free core for the commit.
+  - `take.ts`: `takeUnits` for *Aufnehmen*.
+- **No nested transactions.** SQLite's adapter queues a transaction behind
+  the running one, so a transaction opened inside another waits for ever.
+  The commit therefore calls `ensureWorldLenses` before its transaction and
+  only transaction-free helpers inside it.
+- **Migration M042** (schema version 42) adds `unit_variants` (knowledge,
+  in `KNOWLEDGE_TABLES`) and `learner_variants` (learning state, with RLS
+  and in `RLS_PROTECTED_TABLES`). Both are in the snapshot tables.
+- **The material import.**
+  - The set gains `place`, and a proposal gains `placeBelow` and
+    `standsFor`; all are optional, so the contract stays at version 1.
+  - The commit places only the units it wrote: a linked duplicate keeps its
+    place. A level the producer left unnamed is called "Allgemein".
+  - A Yes on a ticked "instead of" row calls `chooseVariantIn` in the same
+    transaction.
+- **Typed notes** go into the material import's own start dialog, beside
+  photos and PDF, and not into the atlas dialog; they work without a place
+  too.
+  - `analyzeMaterialText` sends them to the first `text` row, as the
+    request's text.
+  - The set holds one file entry, `notes:<title>@<date>`, with the text's
+    SHA-256; the text itself is in neither the staging file nor the library.
+  - `material-import-models` now also names the text model.
+- **Place in the prompt.** `materialPlaceLines` tells both producers the
+  path, the levels to name and the learner's published units there.
+  `zam_material_import_context` takes `place` and marks the returned names
+  `untrusted: true`; `zam_material_import` takes `place`.
+- **Cells for a place** (`atlas-place`).
+  - **Schule:** the commonest binding of the region's atoms gives the
+    scope. On an island (a grade) the subject is left out.
+  - **Weltwissen:** a cell counts when its atoms' domains fall under an
+    alias of the region or of a region below it (a Thema borrows its
+    Gebiet's aliases), or when its atoms already sit in the region.
+  - **Wizard:** offered on Schule where `needsGenericCurriculumImport`
+    says so, and on Weltwissen where no cell is found.
+- ***Neue Inhalte zeigen*** installs the cells of the learner's school year
+  when it goes on, not only of the last subject chosen: the map shows the
+  whole year.
+- ***Aufnehmen*** uses the cell enrol's `materialiseKvtCards` for published
+  units and `ensureCard` for own ones. It does not use `enrolBonusAtom`,
+  which demands held hard prerequisites that an arbitrary sketched unit may
+  lack. A declined unit, or one a variant stands in for, is skipped.
+- **Variants on the map.**
+  - A learner's own choice detaches the published unit's cards, so that unit
+    is already blank. The variant takes its hex, and its own hex goes blank.
+  - A library variant gets no land of its own; settle and the read skip it.
+    While the learner still holds the published unit, that unit keeps its
+    hex and offers the switch (`variantOffer`).
+  - Threads of the published unit run to the variant.
+  - A published unit a variant stands for is never offered as a bonus.
+- **Bridge.**
+  - New commands `atlas-place`, `atlas-take` and `atlas-variant`, none of
+    them in `STUDIO_BRIDGE_COMMANDS`.
+  - `atlas-prefs --show-new on` reports `cellsInstalled`.
+  - `material-import-analyze` gains `--text`, `--title`, `--place-region` and
+    `--place-lens`, and `material-import-confirm` gains `--variants`.
+- **Studio.**
+  - The toolbar gains *Neue Inhalte zeigen*. Sketched units get a dashed
+    pencil outline and grey titles.
+  - The region panel gains *Hier importieren …* and, where units are
+    sketched, *Aufnehmen*.
+  - The import dialog (`desktop/src/atlas/import.ts`) puts the material
+    first and lists the cells below it, with "Aufnehmen" each.
+  - The unit panel offers *Aufnehmen*, "Statt …" with its undo, and the
+    library's offer to switch.
+  - The material start dialog names the place and adds it to the harness
+    request. The review list names the place and shows the "instead of"
+    tick.
+  - The breadcrumb stays on one line and takes its own toolbar row when
+    the window is narrow.
+- **Docs.** The OKF articles `material-import.md`, `bridge-protocol.md` and
+  `mcp-surfaces.md` describe the new inputs. `bridge-protocol.md` now also
+  lists the atlas commands of Phase 5.
+  - They went through `upsertArticle` directly: the `zam_okf_upsert` tool
+    refuses a bundle path with a hidden segment (`.claude/worktrees/…`), and
+    its default bundle is the main checkout.
+- **Checked** in a temporary preview page (removed again) with sketches, a
+  chosen variant and real `atlas-place` output:
+  - the toggle, the pencil sketches in both themes, the variant panel and
+    its redirected thread;
+  - the import dialog, the start dialog with the place and the notes field,
+    and the arguments each action sends.
+- **Tests.**
+  - `tests/kernel/atlas-place.test.ts` covers the place and its levels, an
+    import at a Weltwissen and at a derived Schule region, and no place
+    without one. It also covers choosing and undoing a variant, and that
+    undo re-attaches only what the variant detached. On the library side:
+    a variant changes no card and gets no land, a member holding the
+    published unit is offered the switch, and that unit is no bonus. Last,
+    *Aufnehmen* and declined units, and own units surviving a re-install.
+  - `tests/kernel/postgres-atlas.test.ts`: a member may not set a library
+    variant; a curator's changes no member card; a member's own choice and
+    undo work under RLS. `postgres-rls.test.ts` isolates `learner_variants`.
+  - `tests/cli/bridge-atlas.test.ts` covers `atlas-place`, *Neue Inhalte
+    zeigen* installing the year without enrolling, `atlas-take` and
+    `atlas-variant`.
+  - `tests/cli/bridge-material-import.test.ts` covers an import at a place
+    end to end.
+  - `tests/cli/material-analyze.test.ts` covers typed notes: a text request
+    with the place, nothing of the text in the set or the staging file, and
+    the refusals.
+  - `tests/desktop/material-import-start.test.ts` and
+    `material-review.test.ts` cover the place arguments, the harness text,
+    the review's place line and `--variants`.
+- **Not yet checked in the Tauri app:** the whole flow with a real model,
+  from the import dialog through the review list to the cards on the map.
 
 ---
 

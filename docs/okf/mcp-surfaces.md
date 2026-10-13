@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-11T14:30:00.000Z
+timestamp: 2026-10-13T18:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -141,10 +141,12 @@ The model-visible learning tools cover:
   `zam_list_drafts` lists unpublished captures;
 - material import: `zam_material_import_context` hands an agent the rules for
   turning a learner's photo or PDF into card proposals, the contract with an
-  example, the learner's areas and the subject codes; `zam_material_import`
-  validates the agent's proposals, stages them and brings the Studio forward,
-  where the learner decides each card. It writes no token or card itself (see
-  [material-import.md](material-import.md));
+  example, the learner's areas and the subject codes; with a `place` (a region
+  of the knowledge atlas) it also names the levels the cards need below it and
+  the learner's units there, marked `untrusted`. `zam_material_import`
+  validates the agent's proposals, with that `place`, stages them and brings
+  the Studio forward, where the learner decides each card. It writes no token
+  or card itself (see [material-import.md](material-import.md));
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each

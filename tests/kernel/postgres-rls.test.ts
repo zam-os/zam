@@ -187,6 +187,13 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
            VALUES (?, '', 'system.locale', 'de', '2026-09-19T00:00:00.000Z')`,
         )
         .run(ALICE);
+      // A learner's own choice of method (ADR 2026-10-13, Decision 12).
+      await tx
+        .prepare(
+          `INSERT INTO learner_variants (user_id, stands_for, variant_key, detached_card_ids, created_at)
+           VALUES (?, 'atom:a', 'token:b', '["card_alice"]', '2026-10-13T00:00:00.000Z')`,
+        )
+        .run(ALICE);
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
@@ -206,6 +213,19 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
           .run(ALICE),
       ).rejects.toThrow(/row-level security/i);
       await tx.exec("ROLLBACK TO SAVEPOINT forge_setting");
+      expect(
+        await tx.prepare("SELECT * FROM learner_variants").all(),
+      ).toHaveLength(0);
+      await tx.exec("SAVEPOINT forge_variant");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO learner_variants (user_id, stands_for, variant_key, detached_card_ids, created_at)
+             VALUES (?, 'atom:c', 'token:d', '[]', '2026-10-13T00:00:00.000Z')`,
+          )
+          .run(ALICE),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_variant");
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
@@ -263,6 +283,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       ).toHaveLength(1);
       expect(
         await tx.prepare("SELECT * FROM user_settings").all(),
+      ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM learner_variants").all(),
       ).toHaveLength(1);
     });
   });

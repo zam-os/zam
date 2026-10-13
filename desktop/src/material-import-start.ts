@@ -57,6 +57,14 @@ export interface MaterialImportHost {
 
 let host: MaterialImportHost = {};
 
+/** Where on the knowledge atlas an import starts (ADR 2026-10-13, D9). */
+export interface MaterialStartPlace {
+  lens: "weltwissen" | "schule";
+  regionKey: string;
+  /** Region names from the island down, for the dialog and the request. */
+  path: string[];
+}
+
 export function setMaterialImportHost(next: MaterialImportHost): void {
   host = next;
 }
@@ -78,14 +86,41 @@ export function connectedHarnesses(
  * several go one per line: Desktop and iCloud paths carry spaces, and a comma
  * in a file name must not read as a separator.
  */
-export function harnessRequestText(paths: string[]): string {
-  if (paths.length === 0) return t("material_start_request_drop");
-  if (paths.length === 1) {
-    return tf("material_start_request_one", { file: paths[0] });
-  }
-  return tf("material_start_request_files", {
-    files: paths.map((path) => `"${path}"`).join("\n"),
-  });
+export function harnessRequestText(
+  paths: string[],
+  place: MaterialStartPlace | null = null,
+): string {
+  const request =
+    paths.length === 0
+      ? t("material_start_request_drop")
+      : paths.length === 1
+        ? tf("material_start_request_one", { file: paths[0] })
+        : tf("material_start_request_files", {
+            files: paths.map((path) => `"${path}"`).join("\n"),
+          });
+  // The agent passes the place to zam_material_import_context.
+  return place
+    ? `${request}\n${tf("material_start_request_place", {
+        path: place.path.join(" › "),
+        region: place.regionKey,
+        lens: place.lens,
+      })}`
+    : request;
+}
+
+/** Arguments that start an import at its atlas place. */
+export function placeArgs(place: MaterialStartPlace | null): string[] {
+  return place
+    ? ["--place-region", place.regionKey, "--place-lens", place.lens]
+    : [];
+}
+
+/** Arguments for `material-import-analyze` with typed notes. */
+export function notesArgs(
+  notes: string,
+  place: MaterialStartPlace | null,
+): string[] {
+  return ["--text", notes.trim(), ...placeArgs(place)];
 }
 
 /** "opencode", "opencode / Claude Code" */
@@ -136,9 +171,18 @@ export function builtInState(
   return { kind: "ready", model: models.image.label, pdf: false };
 }
 
-export function analyzeArgs(paths: string[], pages: string): string[] {
+export function analyzeArgs(
+  paths: string[],
+  pages: string,
+  place: MaterialStartPlace | null = null,
+): string[] {
   const range = pages.trim();
-  return ["--file", ...paths, ...(range ? ["--pages", range] : [])];
+  return [
+    "--file",
+    ...paths,
+    ...(range ? ["--pages", range] : []),
+    ...placeArgs(place),
+  ];
 }
 
 /** The learner-facing line for a refusal from `material-import-analyze`. */
@@ -159,6 +203,8 @@ export function analyzeRefusalKey(code: MaterialAnalyzeCodeWire): string {
     case "unsupported":
     case "no-files":
       return "material_builtin_unsupported";
+    case "no-text-model":
+      return "material_notes_no_model";
     case "too-large":
       return "material_builtin_too_large";
     case "missing":
@@ -175,7 +221,13 @@ export function analyzeRefusalKey(code: MaterialAnalyzeCodeWire): string {
 interface StartParts {
   overlay: HTMLElement;
   title: HTMLElement;
+  placeLine: HTMLElement;
   subject: HTMLElement;
+  notes: HTMLElement;
+  notesTitle: HTMLElement;
+  notesText: HTMLTextAreaElement;
+  notesAnalyze: HTMLButtonElement;
+  notesStatus: HTMLElement;
   choose: HTMLButtonElement;
   selected: HTMLElement;
   dropHint: HTMLElement;
@@ -204,6 +256,7 @@ let paths: string[] = [];
 let harnesses: string[] = [];
 let models: MaterialImportModelsResponse | null = null;
 let analyzing = false;
+let place: MaterialStartPlace | null = null;
 let reviewOptions: MaterialReviewOptions = {};
 let stopDrop: (() => void) | null = null;
 
@@ -258,6 +311,7 @@ function ensureDialog(): StartParts {
     gap: "12px",
   });
   body.className = "modal-body";
+  const placeLine = element("p", { margin: "0" });
   const subject = element("p", { margin: "0", fontWeight: "600" });
 
   const pick = element("div", {
@@ -341,12 +395,38 @@ function ensureDialog(): StartParts {
   setup.style.alignSelf = "flex-start";
   noHarness.append(noHarnessText, setup);
 
+  // Typed or pasted notes: the same review list, the text in place of a
+  // file. It goes to the model and is not stored.
+  const notes = section();
+  const notesTitle = element("strong");
+  const notesText = element("textarea", { minHeight: "96px" });
+  notesText.className = "editor-textarea";
+  notesText.id = "material-import-notes";
+  const notesRow = element("div", {
+    display: "flex",
+    gap: "10px",
+    alignItems: "center",
+    flexWrap: "wrap",
+  });
+  const notesAnalyze = button("btn primary-btn btn-sm", () => {
+    void analyzeNotes();
+  });
+  const notesStatus = element("span", { fontSize: "0.85rem" });
+  notesStatus.setAttribute("aria-live", "polite");
+  notesRow.append(notesAnalyze, notesStatus);
+  notes.append(notesTitle, notesText, notesRow);
+  notesText.addEventListener("input", () => {
+    if (parts) render(parts);
+  });
+
   const after = element("p", { margin: "0", fontSize: "0.85rem" });
   body.append(
+    placeLine,
     subject,
     pick,
     dropHint,
     builtIn,
+    notes,
     harnessSection,
     noHarness,
     after,
@@ -371,7 +451,13 @@ function ensureDialog(): StartParts {
   parts = {
     overlay,
     title,
+    placeLine,
     subject,
+    notes,
+    notesTitle,
+    notesText,
+    notesAnalyze,
+    notesStatus,
     choose,
     selected,
     dropHint,
@@ -432,6 +518,24 @@ function renderBuiltIn(dialog: StartParts): void {
 
 function render(dialog: StartParts): void {
   dialog.title.textContent = t("material_start_title");
+  dialog.placeLine.textContent = place
+    ? tf("material_start_place", { path: place.path.join(" › ") })
+    : "";
+  setShown(dialog.placeLine, place !== null);
+  dialog.notesTitle.textContent = t("material_notes_title");
+  dialog.notesText.placeholder = t("material_notes_placeholder");
+  dialog.notesText.setAttribute("aria-label", t("material_notes_title"));
+  dialog.notesAnalyze.textContent = t("material_notes_analyze");
+  const textModel = models?.success ? (models.text ?? null) : null;
+  dialog.notesAnalyze.disabled =
+    analyzing || !textModel || dialog.notesText.value.trim() === "";
+  if (!analyzing && dialog.notesStatus.dataset.busy !== "1") {
+    dialog.notesStatus.textContent = models?.success
+      ? textModel
+        ? tf("material_notes_sent_to", { model: textModel.label })
+        : t("material_notes_no_model")
+      : "";
+  }
   dialog.subject.textContent = t("material_start_one_subject");
   dialog.choose.textContent = t("material_start_choose");
   setShown(dialog.choose, Boolean(host.pickFiles));
@@ -450,7 +554,7 @@ function render(dialog: StartParts): void {
   dialog.harnessText.textContent = tf("material_start_harness", {
     harness: names,
   });
-  dialog.request.value = harnessRequestText(paths);
+  dialog.request.value = harnessRequestText(paths, place);
   dialog.copy.textContent = t("material_start_copy");
   setShown(dialog.noHarness, !hasHarness);
   const noHarnessText =
@@ -499,7 +603,11 @@ async function analyzeHere(): Promise<void> {
   render(dialog);
   dialog.builtInStatus.textContent = t("material_builtin_running");
   try {
-    const args = analyzeArgs(paths, state.pdf ? dialog.pages.value : "");
+    const args = analyzeArgs(
+      paths,
+      state.pdf ? dialog.pages.value : "",
+      place,
+    );
     const result = (
       host.runInBackground
         ? await host.runInBackground("material-import-analyze", args)
@@ -522,16 +630,58 @@ async function analyzeHere(): Promise<void> {
   }
 }
 
+/** Send the typed notes to the text model, then open the review. */
+async function analyzeNotes(): Promise<void> {
+  const dialog = parts;
+  if (!dialog || analyzing) return;
+  const notes = dialog.notesText.value.trim();
+  if (!notes) return;
+  analyzing = true;
+  dialog.notesStatus.dataset.busy = "1";
+  render(dialog);
+  dialog.notesStatus.textContent = t("material_notes_running");
+  try {
+    const args = notesArgs(notes, place);
+    const result = (
+      host.runInBackground
+        ? await host.runInBackground("material-import-analyze", args)
+        : await runBridge("material-import-analyze", args)
+    ) as MaterialImportAnalyzeResponse;
+    if (!result.success) {
+      dialog.notesStatus.textContent = t(analyzeRefusalKey(result.code));
+      return;
+    }
+    dialog.notesStatus.textContent = "";
+    dialog.notesText.value = "";
+    closeMaterialImportStart();
+    void openMaterialReview(result.id, reviewOptions);
+    void refreshPendingMaterialImports();
+  } catch (err) {
+    const reason = err instanceof Error ? err.message : String(err);
+    dialog.notesStatus.textContent = `${t("material_builtin_failed")} ${reason}`;
+  } finally {
+    analyzing = false;
+    delete dialog.notesStatus.dataset.busy;
+    render(dialog);
+  }
+}
+
 export function closeMaterialImportStart(): void {
   parts?.overlay.classList.remove("active");
   stopDrop?.();
   stopDrop = null;
 }
 
-/** Open the start dialog and look up the harnesses and models. */
-export async function openMaterialImportStart(): Promise<void> {
+/**
+ * Open the start dialog and look up the harnesses and models. With a place,
+ * the import starts at that region of the knowledge atlas.
+ */
+export async function openMaterialImportStart(
+  options: { place?: MaterialStartPlace } = {},
+): Promise<void> {
   const dialog = ensureDialog();
   if (!analyzing) {
+    place = options.place ?? null;
     paths = [];
     dialog.copyStatus.textContent = "";
     dialog.builtInStatus.textContent = "";

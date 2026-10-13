@@ -235,7 +235,13 @@ describe("atlas map layout", () => {
 
 describe("atlas modules stay framework-free", () => {
   it("import neither main.ts, Tauri nor Three.js", () => {
-    for (const file of ["layout.ts", "render.ts", "outline.ts", "view.ts"]) {
+    for (const file of [
+      "layout.ts",
+      "render.ts",
+      "outline.ts",
+      "view.ts",
+      "import.ts",
+    ]) {
       const source = readFileSync(
         join(process.cwd(), "desktop", "src", "atlas", file),
         "utf8",

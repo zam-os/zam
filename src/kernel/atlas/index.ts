@@ -86,6 +86,14 @@ export {
   rgbCss,
   SUBJECT_HUES,
 } from "./palette.js";
+export type { PlacedUnit, PlaceInfo } from "./place.js";
+export {
+  MAX_PLACE_NAME,
+  missingLevels,
+  placeUnits,
+  resolvePlace,
+  UNNAMED_LEVEL,
+} from "./place.js";
 export type {
   AtlasRegionView,
   AtlasUnitView,
@@ -101,8 +109,21 @@ export {
   settleLens,
   snapshotLens,
 } from "./settle.js";
+export type { TakeResult } from "./take.js";
+export { takeUnits } from "./take.js";
 export type { LensKind, PlanetKind, ThreadKind, UnitKey } from "./types.js";
 export { unitKeyFor } from "./types.js";
+export type { EffectiveVariant, VariantChoice } from "./variants.js";
+export {
+  chooseVariant,
+  chooseVariantIn,
+  clearLibraryVariant,
+  effectiveVariants,
+  libraryVariantUnits,
+  setLibraryVariant,
+  undoVariant,
+  unitTokenIds,
+} from "./variants.js";
 export type {
   SeedArea,
   SeedBereich,

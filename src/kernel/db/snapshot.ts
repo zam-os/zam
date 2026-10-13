@@ -76,6 +76,10 @@ export const SNAPSHOT_TABLES = [
   "atlas_members",
   "atlas_islands",
   "atlas_land",
+  // Variants (Decision 12): the library's choice, and each learner's own
+  // with the cards it detached, which undo needs.
+  "unit_variants",
+  "learner_variants",
 ] as const;
 
 /**

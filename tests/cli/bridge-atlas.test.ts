@@ -328,6 +328,135 @@ describe("zam bridge atlas commands", () => {
     expect(none.hasReview).toBe(false);
   });
 
+  it("names what an import at a region needs", () => {
+    const place = runCliJson([
+      "bridge",
+      "atlas-place",
+      "--region",
+      "natur.physik.optik",
+    ]);
+    expect(place.place.path.map((s: { key: string }) => s.key)).toEqual([
+      "natur",
+      "natur.physik",
+      "natur.physik.optik",
+    ]);
+    expect(place.place.missingLevels).toEqual(["Thema"]);
+    // The learner's published units there, for a variant: one per atom.
+    expect(place.units.length).toBeGreaterThan(0);
+    expect(place.units.length).toBeLessThanOrEqual(physikTokenIds.length);
+    for (const unit of place.units) expect(unit.key).toMatch(/^atom:/);
+    // The cell whose atoms alias into the region comes first; no wizard.
+    expect(place.cells.some((c: { installed: boolean }) => c.installed)).toBe(
+      true,
+    );
+    expect(place.wizard).toBe(false);
+    expect(
+      runCliError(["bridge", "atlas-place", "--region", "gibt.es.nicht"]).error,
+    ).toContain("No region");
+  });
+
+  it("installs the year's cells when Neue Inhalte zeigen goes on, and enrols nobody", async () => {
+    const db = await openDatabase({
+      dbPath,
+      initialize: false,
+      useConfiguredCloud: false,
+    });
+    await setSetting(
+      db,
+      "curriculum.lastSelection",
+      JSON.stringify({
+        providerId: "lehrplanplus-bayern",
+        schoolType: "realschule",
+        grade: "10",
+        subject: "physik",
+      }),
+    );
+    const cardsBefore = (await db
+      .prepare("SELECT COUNT(*) AS n FROM cards")
+      .get()) as { n: number };
+    await db.close();
+
+    const prefs = runCliJson(["bridge", "atlas-prefs", "--show-new", "on"]);
+    expect(prefs.showNew).toBe(true);
+    // Every subject of the year, not only the last one chosen.
+    expect(prefs.cellsInstalled.length).toBeGreaterThan(2);
+
+    const after = await openDatabase({
+      dbPath,
+      initialize: false,
+      useConfiguredCloud: false,
+    });
+    const cardsAfter = (await after
+      .prepare("SELECT COUNT(*) AS n FROM cards")
+      .get()) as { n: number };
+    await after.close();
+    expect(Number(cardsAfter.n)).toBe(Number(cardsBefore.n));
+
+    const view = runCliJson(["bridge", "atlas-read"]);
+    const sketched = view.units.filter((u: { inReach: boolean }) => u.inReach);
+    expect(sketched.length).toBeGreaterThan(0);
+
+    // Aufnehmen: cards for the chosen unit only.
+    const one = sketched[0].key;
+    const taken = runCliJson(["bridge", "atlas-take", "--unit", one]);
+    expect(taken.cardsCreated).toBeGreaterThan(0);
+    const again = runCliJson(["bridge", "atlas-read"]);
+    expect(
+      again.units.find((u: { key: string }) => u.key === one).inReach,
+    ).toBe(false);
+    expect(
+      again.units.filter((u: { inReach: boolean }) => u.inReach).length,
+    ).toBe(sketched.length - 1);
+  });
+
+  it("lets a unit stand in for a published one, and undoes it", () => {
+    const view = runCliJson(["bridge", "atlas-read"]);
+    const own = view.units.find((u: { own: boolean }) => u.own).key;
+    const published = view.units.find(
+      (u: { own: boolean; cards: number }) => !u.own && u.cards > 0,
+    ).key;
+    const chosen = runCliJson([
+      "bridge",
+      "atlas-variant",
+      "--stands-for",
+      published,
+      "--variant",
+      own,
+    ]);
+    expect(chosen.detached).toBeGreaterThan(0);
+    const after = runCliJson(["bridge", "atlas-read"]);
+    expect(
+      after.units.find((u: { key: string }) => u.key === published),
+    ).toBeUndefined();
+    expect(
+      after.units.find((u: { key: string }) => u.key === own).standsFor.key,
+    ).toBe(published);
+    const undone = runCliJson([
+      "bridge",
+      "atlas-variant",
+      "--stands-for",
+      published,
+      "--undo",
+    ]);
+    expect(undone.reattached).toBe(chosen.detached);
+    expect(
+      runCliError([
+        "bridge",
+        "atlas-variant",
+        "--stands-for",
+        own,
+        "--variant",
+        published,
+      ]).error,
+    ).toContain("not a published unit");
+  });
+
+  it("keeps the new atlas commands away from the Studio panel bridge", () => {
+    for (const command of ["atlas-place", "atlas-take", "atlas-variant"]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
+    }
+  });
+
   it("falls back to the nearest surviving ancestor of a stored home", async () => {
     const db = await openDatabase({
       dbPath,

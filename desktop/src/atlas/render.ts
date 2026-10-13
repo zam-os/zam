@@ -53,6 +53,8 @@ interface Theme {
   accent: string;
   accentFill: string;
   due: string;
+  /** Pencil lines of a sketched unit. */
+  pencil: string;
 }
 
 const LIGHT: Theme = {
@@ -69,6 +71,7 @@ const LIGHT: Theme = {
   accent: "#2340b5",
   accentFill: "rgba(35,64,181,0.16)",
   due: "#e8590c",
+  pencil: "rgba(70,62,52,0.72)",
 };
 
 const DARK: Theme = {
@@ -85,6 +88,7 @@ const DARK: Theme = {
   accent: "#8aa4ff",
   accentFill: "rgba(138,164,255,0.22)",
   due: "#f29a4a",
+  pencil: "rgba(214,208,196,0.7)",
 };
 
 /** Sinnbild discs are light in both themes (spike lesson); Phase 8 fills them. */
@@ -277,6 +281,8 @@ type Texture = "none" | "dust" | "cracks" | "fog" | "parchment";
 interface CellInfo {
   fill: string;
   texture: Texture;
+  /** In reach with *Neue Inhalte zeigen*: drawn as a pencil sketch. */
+  sketch: boolean;
 }
 
 interface Camera {
@@ -412,7 +418,11 @@ export class AtlasMap {
       if (condition) texture = CONDITION_TEXTURE[condition];
       // A unit in reach (Neue Inhalte zeigen) is sketched in like one never practised.
       else if (unit?.inReach) texture = "parchment";
-      this.info.set(cell, { fill: rgbCss(fill), texture });
+      this.info.set(cell, {
+        fill: rgbCss(fill),
+        texture,
+        sketch: unit?.inReach === true,
+      });
     }
     this.requestDraw();
   }
@@ -941,6 +951,22 @@ export class AtlasMap {
     }
     ctx.globalAlpha = 1;
 
+    // Units in reach are pencil sketches: a dashed outline, from a middling
+    // zoom on (Decision 1). Not started and never to be started look alike.
+    const sketched = cells.filter((c) => this.info.get(c)?.sketch);
+    const sketchAlpha = smooth(px, 8, 16);
+    if (sketched.length > 0 && sketchAlpha > 0) {
+      const pencil = new Path2D();
+      for (const c of sketched) this.hexPath(pencil, c, 0.8);
+      ctx.globalAlpha = sketchAlpha;
+      ctx.setLineDash([4, 3]);
+      ctx.lineWidth = 1.3;
+      ctx.strokeStyle = t.pencil;
+      ctx.stroke(pencil);
+      ctx.setLineDash([]);
+      ctx.globalAlpha = 1;
+    }
+
     // Single units read as hexes once they are the focus.
     const detail = smooth(px, UNIT_PX - 8, UNIT_PX + 6);
     if (detail > 0) {
@@ -1102,12 +1128,13 @@ export class AtlasMap {
       ctx.textBaseline = "middle";
       const lines = wrap(ctx, shortTitle(unit.title), px * 1.55, 3);
       const y0 = sy - ((lines.length - 1) * (size + 2)) / 2;
+      const ink = unit.inReach ? t.pencil : t.ink;
       lines.forEach((line, i) => {
         const y = y0 + i * (size + 2);
         ctx.lineWidth = 3;
         ctx.strokeStyle = t.halo;
         ctx.strokeText(line, sx, y);
-        ctx.fillStyle = t.ink;
+        ctx.fillStyle = ink;
         ctx.fillText(line, sx, y);
       });
     }

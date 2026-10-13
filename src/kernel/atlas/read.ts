@@ -32,6 +32,11 @@ import {
 import { hueKeyForDomain } from "./palette.js";
 import { type LensSnapshot, loadLandState, planForSnapshot } from "./settle.js";
 import type { LensKind, PlanetKind, UnitKey } from "./types.js";
+import {
+  type EffectiveVariant,
+  effectiveVariants,
+  libraryVariantUnits,
+} from "./variants.js";
 
 export interface AtlasRegionView {
   key: string;
@@ -59,6 +64,14 @@ export interface AtlasUnitView {
   own: boolean;
   /** No card yet; shown only with *Neue Inhalte zeigen*. */
   inReach: boolean;
+  /**
+   * This unit stands in for a published one, on that unit's hex (Decision
+   * 12). `chosen`: the learner chose it and may undo it; otherwise the
+   * library's curator set it.
+   */
+  standsFor?: { key: UnitKey; title: string; chosen: boolean };
+  /** The library sets a variant for this unit while the learner still holds it. */
+  variantOffer?: { key: UnitKey; title: string };
 }
 
 export interface AtlasView {
@@ -155,10 +168,12 @@ export async function snapshotForRead(
   const { lensId, rows } = await rowsForRead(db, lens);
   const units = await loadUnits(db);
   const bindings = await loadBindings(db);
-  const placements =
+  const skip = await libraryVariantUnits(db);
+  const placements = (
     lens.kind === "schule"
       ? deriveSchule(units, rows, bindings)
-      : deriveWeltwissen(units, rows, bindings);
+      : deriveWeltwissen(units, rows, bindings)
+  ).filter((placement) => !skip.has(placement.unitKey));
   const state = lensId
     ? await loadLandState(db, lensId, rows)
     : { islands: [], land: [] };
@@ -273,10 +288,18 @@ export async function readAtlas(
     ]),
   );
 
-  const unitViews: AtlasUnitView[] = [];
-  const dueByRegion: Record<string, number> = {};
+  // A variant stands on its published unit's hex (Decision 12).
+  const variants = await effectiveVariants(db, options.userId);
+  const variantFor = new Map<UnitKey, EffectiveVariant>();
+  for (const entry of variants.values()) variantFor.set(entry.variant, entry);
+  const titleOf = new Map(units.map((u) => [u.key, u.title]));
+
+  let unitViews: AtlasUnitView[] = [];
   for (const unit of units) {
-    const region = leafOf.get(unit.key);
+    const standing = variantFor.get(unit.key);
+    const region =
+      leafOf.get(unit.key) ??
+      (standing ? leafOf.get(standing.standsFor) : undefined);
     if (!region) continue;
     const rows = unit.tokenIds
       .map((id) => cardsByToken.get(id))
@@ -305,12 +328,47 @@ export async function readAtlas(
       own: unit.own,
       inReach: attached.length === 0,
     });
-    if (due > 0) {
-      let current: string | null = region;
-      while (current) {
-        dueByRegion[current] = (dueByRegion[current] ?? 0) + due;
-        current = regions.get(current)?.parentKey ?? null;
-      }
+  }
+
+  // A learner's own choice detached the published unit's cards, so it is
+  // already gone. A library variant stands in unless the learner still holds
+  // the published unit: then that unit keeps its hex and offers the switch.
+  const standIn = new Map<UnitKey, UnitKey>();
+  const viewOf = new Map(unitViews.map((u) => [u.key, u]));
+  const hidden = new Set<UnitKey>();
+  for (const entry of variants.values()) {
+    const published = viewOf.get(entry.standsFor);
+    if (!entry.chosen && published && published.cards > 0) {
+      published.variantOffer = {
+        key: entry.variant,
+        title: titleOf.get(entry.variant) ?? entry.variant,
+      };
+      hidden.add(entry.variant);
+      continue;
+    }
+    if (published) hidden.add(entry.standsFor);
+    const variant = viewOf.get(entry.variant);
+    const leaf = leafOf.get(entry.standsFor);
+    if (!variant || !leaf) continue;
+    standIn.set(entry.standsFor, entry.variant);
+    variant.region = leaf;
+    variant.standsFor = {
+      key: entry.standsFor,
+      title: titleOf.get(entry.standsFor) ?? entry.standsFor,
+      chosen: entry.chosen,
+    };
+  }
+  unitViews = unitViews.filter((u) => !hidden.has(u.key));
+  const standingIn = new Set(standIn.values());
+  const onHexOf = (key: UnitKey): UnitKey => standIn.get(key) ?? key;
+
+  const dueByRegion: Record<string, number> = {};
+  for (const view of unitViews) {
+    if (view.due === 0) continue;
+    let current: string | null = view.region;
+    while (current) {
+      dueByRegion[current] = (dueByRegion[current] ?? 0) + view.due;
+      current = regions.get(current)?.parentKey ?? null;
     }
   }
   const visible = new Set(unitViews.map((u) => u.key));
@@ -322,7 +380,13 @@ export async function readAtlas(
   }
   const threadKeys = new Set<string>();
   const threads: AtlasView["threads"] = [];
-  const addThread = (from: UnitKey | undefined, to: UnitKey | undefined) => {
+  const addThread = (
+    rawFrom: UnitKey | undefined,
+    rawTo: UnitKey | undefined,
+  ) => {
+    // Threads of a published unit run to the variant standing in for it.
+    const from = rawFrom ? onHexOf(rawFrom) : undefined;
+    const to = rawTo ? onHexOf(rawTo) : undefined;
     if (!from || !to || from === to) return;
     if (!visible.has(from) || !visible.has(to)) return;
     const key = `${from}>${to}`;
@@ -361,13 +425,19 @@ export async function readAtlas(
         !before || before.dq !== island.dq || before.dr !== island.dr,
     };
   });
-  const land = plan.next.land.map((hex) => ({
-    island: hex.island,
-    q: hex.q,
-    r: hex.r,
-    region: hex.region,
-    unit: hex.unit && visible.has(hex.unit) ? hex.unit : null,
-  }));
+  const land = plan.next.land.map((hex) => {
+    // The variant takes the published unit's hex and leaves its own blank.
+    let unit = hex.unit;
+    if (unit && standIn.has(unit)) unit = standIn.get(unit) ?? null;
+    else if (unit && standingIn.has(unit)) unit = null;
+    return {
+      island: hex.island,
+      q: hex.q,
+      r: hex.r,
+      region: hex.region,
+      unit: unit && visible.has(unit) ? unit : null,
+    };
+  });
 
   // ── Home: the deepest stored step that still exists ───────────────────────
   let home: string | null = null;

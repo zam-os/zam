@@ -95,6 +95,8 @@ export const KNOWLEDGE_TABLES = [
   "atlas_members",
   "atlas_islands",
   "atlas_land",
+  // A curator's variant for the library (Decision 12).
+  "unit_variants",
 ] as const;
 
 /**

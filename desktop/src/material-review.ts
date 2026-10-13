@@ -82,6 +82,8 @@ export function confirmArgs(
   id: string,
   choices: MaterialChoices,
   editedAreas: Record<string, string>,
+  /** Proposal rows whose "instead of" the learner ticked (ADR 2026-10-13, D12). */
+  variants: readonly string[] = [],
 ): string[] {
   const args = [
     "--id",
@@ -93,7 +95,19 @@ export function confirmArgs(
   if (Object.keys(areas).length > 0) {
     args.push("--areas", JSON.stringify(areas));
   }
+  if (variants.length > 0) {
+    args.push("--variants", JSON.stringify([...variants].sort()));
+  }
   return args;
+}
+
+/** "Kommt nach: Natur › Physik › Optik", when the import has an atlas place. */
+export function reviewPlaceLine(
+  review: Pick<MaterialImportReviewResponse, "place">,
+): string | null {
+  return review.place
+    ? tf("material_review_place", { path: review.place.path.join(" › ") })
+    : null;
 }
 
 export type ReviewGroup = SharedReviewGroup<MaterialImportRowWire>;
@@ -235,6 +249,8 @@ let current: {
   review: MaterialImportReviewResponse;
   choices: MaterialChoices;
   areas: Record<string, string>;
+  /** Proposal rows whose "instead of" is ticked. */
+  variants: Set<string>;
   options: MaterialReviewOptions;
 } | null = null;
 
@@ -502,7 +518,37 @@ function rowElement(
   } else {
     article.append(choiceControl(parts, row));
   }
+  if (row.kind === "proposal") {
+    const standsFor = review.proposals[row.proposalIndex].standsFor;
+    const title = standsFor ? review.variantTitles?.[standsFor] : undefined;
+    if (standsFor && title) article.append(variantControl(row.id, title));
+  }
   return article;
+}
+
+/**
+ * "Instead of <title>: your school's method" (ADR 2026-10-13, Decision 12).
+ * Unticked by default: the learner decides, and only a Yes makes it so.
+ */
+function variantControl(rowId: string, title: string): HTMLElement {
+  const label = element("label", {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "0.9rem",
+  });
+  const box = element("input");
+  box.type = "checkbox";
+  box.checked = current?.variants.has(rowId) ?? false;
+  box.addEventListener("change", () => {
+    if (!current) return;
+    if (box.checked) current.variants.add(rowId);
+    else current.variants.delete(rowId);
+  });
+  const text = element("span");
+  text.textContent = tf("material_review_instead_of", { title });
+  label.append(box, text);
+  return label;
 }
 
 function areaField(area: string): HTMLElement {
@@ -532,9 +578,13 @@ function renderReview(parts: DialogParts): void {
   parts.title.textContent = review.analysis.title;
   parts.meta.textContent = analysisLine(review.analysis);
   const source = reviewSourceLine(review);
-  parts.intro.textContent = source
-    ? `${source} ${t("material_review_intro")}`
-    : t("material_review_intro");
+  parts.intro.textContent = [
+    source,
+    reviewPlaceLine(review),
+    t("material_review_intro"),
+  ]
+    .filter(Boolean)
+    .join(" ");
   const notice = reimportNotice(review.reimports);
   parts.notice.textContent = notice ?? "";
   parts.notice.hidden = notice === null;
@@ -681,6 +731,7 @@ export async function openMaterialReview(
       review,
       choices: initialChoices(review.rows),
       areas: {},
+      variants: new Set(),
       options,
     };
     renderReview(parts);
@@ -712,7 +763,7 @@ function setControlsDisabled(parts: DialogParts, disabled: boolean): void {
 async function confirmCurrent(): Promise<void> {
   const parts = ensureDialog();
   if (!current || busy) return;
-  const { review, choices, areas, options } = current;
+  const { review, choices, areas, variants, options } = current;
   busy = true;
   setControlsDisabled(parts, true);
   updateConfirm(parts);
@@ -720,7 +771,7 @@ async function confirmCurrent(): Promise<void> {
   try {
     const result = await runBridge<MaterialImportConfirmResponse>(
       "material-import-confirm",
-      confirmArgs(review.id, choices, areas),
+      confirmArgs(review.id, choices, areas, [...variants]),
     );
     if (!result?.success) throw new Error(t("material_review_error"));
     current = null;

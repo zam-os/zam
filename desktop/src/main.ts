@@ -138,7 +138,10 @@ import {
   setLearningContentCurriculumHost,
   setLearningContentFolderPicker,
 } from "./learning-content-sources.js";
-import { setMaterialImportHost } from "./material-import-start.js";
+import {
+  openMaterialImportStart,
+  setMaterialImportHost,
+} from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
   StudyEditError,
@@ -8818,6 +8821,12 @@ async function openAtlas(): Promise<void> {
   const { showAtlasView } = await import("./atlas/view.js");
   await showAtlasView(root, {
     reviewRegion: (lens, key) => void startAtlasRegionReview(lens, key),
+    // Import at a place (ADR 2026-10-13, Decision 9).
+    importMaterial: (place) => void openMaterialImportStart({ place }),
+    openCurriculumWizard: () => {
+      switchView("learning-content-view");
+      void openLearningContentCurriculum();
+    },
   });
 }
 

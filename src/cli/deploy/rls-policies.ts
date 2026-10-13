@@ -162,6 +162,15 @@ CREATE POLICY learner_user_settings_policy ON user_settings FOR ALL
   USING (user_id = current_learner_id())
   WITH CHECK (user_id = current_learner_id());
 
+-- learner_variants are a learner's own choice of method (ADR 2026-10-13
+-- Decision 12), with the cards it detached — personal, same policy as cards.
+ALTER TABLE learner_variants ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_variants FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_variants_policy ON learner_variants;
+CREATE POLICY learner_variants_policy ON learner_variants FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- choice_exclusions are a learner's disputes of choice options (ADR
 -- 2026-09-27 Decision 7) — personal, same policy as cards.
 ALTER TABLE choice_exclusions ENABLE ROW LEVEL SECURITY;
@@ -217,6 +226,7 @@ export const RLS_PROTECTED_TABLES = [
   "assignments",
   "user_settings",
   "choice_exclusions",
+  "learner_variants",
 ] as const;
 
 /**
