@@ -360,6 +360,22 @@ export function createEmptyCard(now?: Date): SchedulingCard {
 }
 
 /**
+ * FSRS-6 recall probability at `now` for a card last reviewed at
+ * `lastReviewAt`, under these weights. Null for a card never reviewed.
+ * Pure: the same forgetting curve `schedule` uses, without scheduling.
+ */
+export function currentRetrievability(
+  card: { stability: number; lastReviewAt: Date | null },
+  now: Date,
+  params?: Partial<FSRSParameters>,
+): number | null {
+  if (card.lastReviewAt === null) return null;
+  const w = resolveParameters(params).w;
+  const elapsedDays = Math.max(0, daysBetween(card.lastReviewAt, now));
+  return retrievability(w, elapsedDays, card.stability);
+}
+
+/**
  * Create a deterministic FSRS-6 scheduler instance.
  *
  * The operation has no side effects, database access, random fuzzing, or model

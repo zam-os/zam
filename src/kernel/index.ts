@@ -61,6 +61,13 @@ export {
   getUserStats,
   MATURE_STABILITY_DAYS,
 } from "./analytics/stats.js";
+export type { Condition, ConditionCard } from "./atlas/index.js";
+export {
+  CONDITION_BAND_RATIOS,
+  cardCondition,
+  DECAY_LAPSES,
+  unitCondition,
+} from "./atlas/index.js";
 export type {
   ADOCredentials,
   CredentialCheckEntry,
@@ -889,7 +896,7 @@ export type {
   SchedulingCard,
 } from "./scheduler/fsrs.js";
 // Scheduler
-export { createFSRS } from "./scheduler/fsrs.js";
+export { createFSRS, currentRetrievability } from "./scheduler/fsrs.js";
 export { interleave } from "./scheduler/interleaver.js";
 export type {
   AdmitPresentationInput,
