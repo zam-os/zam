@@ -88,6 +88,11 @@ export const KNOWLEDGE_TABLES = [
   "atom_prerequisites",
   "practice_item_replacements",
   "agent_skills",
+  // Knowledge atlas (ADR 2026-10-13): the shared map, kept by curators.
+  "atlas_lenses",
+  "atlas_regions",
+  "atlas_domain_aliases",
+  "atlas_members",
 ] as const;
 
 /**

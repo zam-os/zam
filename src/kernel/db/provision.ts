@@ -15,7 +15,7 @@
  */
 
 import { ulid } from "ulid";
-import { SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
+import { ATLAS_TABLES, SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
 import type { Database } from "./types.js";
 
 /**
@@ -24,7 +24,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 39;
+export const CURRENT_SCHEMA_VERSION = 40;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -998,6 +998,11 @@ export async function runMigrations(db: Database): Promise<void> {
   if (markerM039 === null || markerM039 < 39) {
     await deleteObservedCommandTexts(db);
   }
+
+  // M040: knowledge atlas (ADR 2026-10-13, Decisions 2–3) — lenses, regions,
+  // domain aliases and explicit placements. Knowledge only; the lenses and
+  // their seed regions are created on first use (`ensureWorldLenses`).
+  await db.exec(ATLAS_TABLES);
 }
 
 const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;

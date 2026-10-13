@@ -1,6 +1,6 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 and 2 done (2026-10-13). The ADR gained Decision 12 and the
+**Status:** Phases 1 to 3 done (2026-10-13). The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -40,9 +40,9 @@ what the learner knows.
 
 - [x] **Phase 1** — kernel condition function (D4) — `3a1ae497`
 - [x] **Phase 2** — shared colour language; the learning graph adopts hue and
-  condition (D4) — this commit; see "As built"
-- [ ] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
-  (D1–D3)
+  condition (D4) — `fca68618`; see "As built"
+- [x] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
+  (D1–D3) — this commit; see "As built"
 - [ ] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
 - [ ] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
   review (D3, D10)
@@ -480,6 +480,37 @@ CREATE TABLE IF NOT EXISTS atlas_members (
 
 **Done when** the tests pass on SQLite, `npm run pg:test` passes, and the
 schema version is 40.
+
+**As built.**
+
+- **Schema.** `ATLAS_TABLES` in `schema.ts` is shared by `SCHEMA_TABLES` and
+  M040, so the two cannot drift. `placed_by` has a CHECK.
+- **Every place that lists tables** now names the four atlas tables:
+  - `KNOWLEDGE_TABLES` in `src/cli/deploy/team-provision.ts`, so curators
+    write and members read;
+  - `SNAPSHOT_TABLES` in `src/kernel/db/snapshot.ts`, so backup and restore
+    keep placements. Regions export ordered by level, parents first.
+- **Status.** `own` is simply "no atom": published content always arrives as
+  atoms.
+  - Tokens from the older generic curriculum importer carry a `provider` but
+    were written by the learner's own model, so they count as own.
+  - The Schule lens still places them, reading school type, grade and
+    subject from their LehrplanPLUS link
+    (`/fachlehrplan/realschule/9/mathematik`).
+- **Weltwissen paths.**
+  - A bare subject domain ("chemie") reads as its `allgemein` area, as in
+    the spike.
+  - An unknown area under a known subject becomes a new Gebiet under that
+    Fach.
+  - The unsorted island is grouped by raw domain, so it keeps structure.
+- **Schule naming.** Grades are named by school type only when the library
+  holds more than one. A binding without a grade lands on
+  `<school type>-ohne-klasse`.
+- **Coverage.** All 654 atoms of the 228 bundled tiles land in a seed Gebiet
+  (none on a new or unsorted one), across 404 Themen.
+- **Tests.** `tests/kernel/atlas-lenses.test.ts` covers SQLite;
+  `tests/kernel/postgres-atlas.test.ts` is added to `npm run pg:test`, and CI
+  runs it through `POSTGRES_URL`.
 
 ---
 

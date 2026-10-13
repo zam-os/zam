@@ -15,6 +15,57 @@
  * so provisioning an older database has to run: tables → migrations → indexes.
  * See `applySchemaAndMigrations` in provision.ts.
  */
+/**
+ * Knowledge atlas (ADR 2026-10-13, Decisions 2–3; migration M040). All
+ * knowledge: lenses, their regions, the aliases that place domain paths, and
+ * explicit placements. Shared by M040 so schema and migration cannot drift.
+ */
+export const ATLAS_TABLES = `
+-- One order over the learning units of one planet (kind of knowledge).
+CREATE TABLE IF NOT EXISTS atlas_lenses (
+  id            TEXT PRIMARY KEY,
+  planet        TEXT NOT NULL CHECK (planet IN ('welt', 'firma', 'privat')),
+  kind          TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  -- JSON array of level names, top level (the islands) first.
+  level_names   TEXT NOT NULL,
+  -- 0-based level whose regions give the hue.
+  colour_level  INTEGER NOT NULL,
+  created_at    TEXT NOT NULL,
+  updated_at    TEXT NOT NULL,
+  UNIQUE (planet, kind)
+);
+CREATE TABLE IF NOT EXISTS atlas_regions (
+  id            TEXT PRIMARY KEY,
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  parent_id     TEXT REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  level         INTEGER NOT NULL,
+  -- Stable within its lens, e.g. "natur.physik.mechanik"; a rename keeps it.
+  key           TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  rank          INTEGER NOT NULL DEFAULT 0,
+  pattern       TEXT,
+  ontology_ref  TEXT,
+  UNIQUE (lens_id, key)
+);
+-- A domain path prefix ("physik/kinematik") that lands in a region.
+CREATE TABLE IF NOT EXISTS atlas_domain_aliases (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  domain_prefix TEXT NOT NULL,
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  PRIMARY KEY (lens_id, domain_prefix)
+);
+-- An explicit placement, which wins over every derivation rule.
+CREATE TABLE IF NOT EXISTS atlas_members (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  -- "atom:<id>" or "token:<id>" (ADR 2026-10-13, Decision 1).
+  unit_key      TEXT NOT NULL,
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  placed_by     TEXT NOT NULL CHECK (placed_by IN ('agent', 'curator', 'learner', 'import')),
+  PRIMARY KEY (lens_id, unit_key)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -484,7 +535,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-`;
+${ATLAS_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `
