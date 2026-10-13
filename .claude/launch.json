@@ -19,6 +19,12 @@
       "runtimeExecutable": "npm",
       "runtimeArgs": ["--prefix", "desktop", "run", "spike:world"],
       "port": 1430
+    },
+    {
+      "name": "knowledge-atlas-spike",
+      "runtimeExecutable": "npm",
+      "runtimeArgs": ["--prefix", "desktop", "run", "spike:atlas"],
+      "port": 1431
     }
   ]
 }

@@ -630,7 +630,7 @@ function fromScheduling(card: SchedulingCard): Omit<StoredCard, "id" | "question
   };
 }
 
-function applyRating(card: StoredCard, rating: Rating, at: Date): void {
+export function applyRating(card: StoredCard, rating: Rating, at: Date): void {
   Object.assign(card, fromScheduling(fsrs.schedule(toScheduling(card), rating, at)));
 }
 

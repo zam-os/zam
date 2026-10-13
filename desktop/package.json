@@ -10,6 +10,7 @@
     "build:with-bridge": "npm --prefix .. run build && npm --prefix .. run desktop:prepare -- --bundle-node && npm run build",
     "preview": "vite preview",
     "spike:world": "vite --config spikes/knowledge-world/vite.config.ts",
+    "spike:atlas": "vite --config spikes/knowledge-atlas/vite.config.ts",
     "tauri": "tauri"
   },
   "dependencies": {

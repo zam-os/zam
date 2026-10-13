@@ -167,8 +167,9 @@ function refresh(): void {
 let saving: Promise<void> = Promise.resolve();
 
 function save(): void {
-  const snapshot = JSON.stringify({ baseRevision: world.revision, world });
   saving = saving.then(async () => {
+    // Snapshot when it is this save's turn, so it builds on the revision the previous save got back.
+    const snapshot = JSON.stringify({ baseRevision: world.revision, world });
     const res = await fetch("/api/world", { method: "PUT", headers: { "content-type": "application/json" }, body: snapshot });
     if (res.status === 409) {
       world = (await res.json()) as World;
