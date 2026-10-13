@@ -189,6 +189,9 @@ import {
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
 import {
+  atlasEmblemClear,
+  atlasEmblemDraw,
+  atlasEmblemSet,
   atlasLens,
   atlasPlace,
   atlasRead,
@@ -305,6 +308,7 @@ import {
 } from "../llm/client.js";
 import { connectCloudProvider } from "../llm/cloud-connect.js";
 import { CLOUD_PROVIDERS } from "../llm/cloud-providers.js";
+import { EmblemDrawError } from "../llm/emblem-draw.js";
 import {
   FOUNDRY_DEFAULT_URL,
   type FoundrySetupRole,
@@ -9710,6 +9714,104 @@ bridgeCommand
           }),
         );
       } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Sinnbilder (ADR 2026-10-13, Decision 6). Every path validates and stores
+// the canonical form only; none of these is on the Studio panel bridge.
+
+bridgeCommand
+  .command("atlas-emblem-set")
+  .description(
+    "Set a Sinnbild for a unit or region: an SVG, or a glyph alone (JSON)",
+  )
+  .requiredOption(
+    "--subject <key>",
+    "atom:<id>, token:<id> or region:<lens>:<region key>",
+  )
+  .option("--svg <svg>", 'The SVG, viewBox="0 0 64 64"')
+  .option("--glyph <text>", "A formula or sign of at most 16 characters")
+  .option(
+    "--scope <scope>",
+    "auto (default: shared when none exists and you may write knowledge), personal or shared",
+  )
+  .option("--from-studio", "Written by a person in the Studio, not an agent")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemSet(db, {
+            userId,
+            subject: String(opts.subject),
+            svg: opts.svg,
+            glyph: opts.glyph,
+            scope: opts.scope,
+            author: opts.fromStudio === true ? "curator" : "agent",
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-emblem-clear")
+  .description(
+    "Remove your own Sinnbild of a unit or region, or with --shared the library's (JSON)",
+  )
+  .requiredOption("--subject <key>", "The unit or region")
+  .option(
+    "--shared",
+    "Remove the library's; only with the right to write knowledge",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemClear(db, {
+            userId,
+            subject: String(opts.subject),
+            shared: opts.shared === true,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-emblem-draw")
+  .description(
+    "Let the first text model draw a Sinnbild for a unit or region and store it (JSON)",
+  )
+  .requiredOption("--subject <key>", "The unit or region")
+  .option("--scope <scope>", "auto (default), personal or shared")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasEmblemDraw(db, {
+            userId,
+            subject: String(opts.subject),
+            scope: opts.scope,
+          }),
+        );
+      } catch (err) {
+        // A refusal the Studio explains in the learner's language.
+        if (err instanceof EmblemDrawError) {
+          jsonOut({ success: false, code: err.code, message: err.message });
+          return;
+        }
         jsonError((err as Error).message);
       }
     });

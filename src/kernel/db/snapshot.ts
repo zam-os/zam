@@ -80,6 +80,9 @@ export const SNAPSHOT_TABLES = [
   // with the cards it detached, which undo needs.
   "unit_variants",
   "learner_variants",
+  // Sinnbilder (Decision 6): the library's and each learner's own.
+  "emblems",
+  "learner_emblems",
 ] as const;
 
 /**

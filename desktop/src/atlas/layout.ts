@@ -14,6 +14,7 @@
 
 import type {
   AtlasConditionWire,
+  AtlasEmblemWire,
   AtlasReadResponse,
   AtlasUnitWire,
 } from "../../../src/bridge/protocol.js";
@@ -59,6 +60,8 @@ export interface AtlasRegion {
   /** Set on the level just below the colour level. */
   pattern: PatternKind | null;
   provisional: boolean;
+  /** Key into the read's `emblems`: its Sinnbild, or its first unit's. */
+  emblem?: string;
 }
 
 export interface Cell {
@@ -172,6 +175,7 @@ export function buildAtlasLayout(view: AtlasReadResponse): AtlasLayout {
       index: 0,
       pattern: null,
       provisional: wire.provisional,
+      emblem: wire.emblem,
     });
   }
   const order = byRankThenName(regions);
@@ -502,6 +506,23 @@ export interface SearchHit {
   name: string;
   /** Names from the island down to the hit's parent, to tell repeated titles apart. */
   where: string[];
+}
+
+/**
+ * The Sinnbild a region or unit shows (Decision 6): its own, or for a leaf
+ * region without one, its first unit's. Untrusted: show it only as an image
+ * (`emblemDataUrl`) and the glyph only as text.
+ */
+export function emblemOf(
+  layout: AtlasLayout,
+  kind: "region" | "unit",
+  key: string,
+): AtlasEmblemWire | null {
+  const ref =
+    kind === "region"
+      ? layout.regions.get(key)?.emblem
+      : layout.units.get(key)?.emblem;
+  return ref ? (layout.view.emblems?.[ref] ?? null) : null;
 }
 
 /** Regions and units whose name contains every word of the query. */

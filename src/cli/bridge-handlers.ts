@@ -87,12 +87,14 @@ import {
   removePrerequisite,
   resetCardsForToken,
   resolveAnswerPresentation,
+  resolveEmblem,
   SCREEN_OBSERVATION_OFF_REASON,
   searchTokensHybrid,
   setTokenMaintenance,
   startLibraryTopic,
   structuralPublicationChecks,
   sweepObservationFiles,
+  unitKeyFor,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -338,6 +340,16 @@ export async function getReview(db: Database, params: GetReviewParams) {
     tokenIds: params.tokenIds,
   });
 
+  // The unit's Sinnbild (ADR 2026-10-13, Decision 6), for a rendering
+  // surface only, like the media: an image, never markup.
+  const emblem = params.includeMedia
+    ? await resolveEmblem(
+        db,
+        unitKeyFor(item.tokenId, item.atomId),
+        userId,
+      ).catch(() => null)
+    : null;
+
   return {
     userId,
     hasReview: true,
@@ -347,6 +359,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
     questionModel: questionModel ?? null,
     resolvedContext,
     queueSize: fullQueue.items.length,
+    emblem,
   };
 }
 

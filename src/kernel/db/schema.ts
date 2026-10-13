@@ -127,6 +127,36 @@ CREATE TABLE IF NOT EXISTS learner_variants (
 );
 `;
 
+/**
+ * Sinnbilder (ADR 2026-10-13, Decision 6): a small SVG and an optional glyph
+ * per learning unit or region.
+ *
+ * `emblems` is knowledge: the library's shared Sinnbild, written by whoever
+ * may write knowledge. `learner_emblems` is learning state: one learner's own,
+ * which only they see. Both store only the validator's canonical form, with
+ * the validator version that produced it. Subject keys are a UnitKey
+ * (`atom:…`, `token:…`) or `region:<lens kind>:<region key>`.
+ */
+export const EMBLEM_TABLES = `
+CREATE TABLE IF NOT EXISTS emblems (
+  subject_key       TEXT PRIMARY KEY,
+  svg               TEXT NOT NULL,
+  validator_version INTEGER NOT NULL,
+  glyph             TEXT,
+  author            TEXT NOT NULL,
+  updated_at        TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_emblems (
+  user_id           TEXT NOT NULL,
+  subject_key       TEXT NOT NULL,
+  svg               TEXT NOT NULL,
+  validator_version INTEGER NOT NULL,
+  glyph             TEXT,
+  updated_at        TEXT NOT NULL,
+  PRIMARY KEY (user_id, subject_key)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -596,7 +626,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

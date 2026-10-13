@@ -860,6 +860,18 @@
       ]
     },
     {
+      "id": "sinnbild-canonical",
+      "parent": "surfaces",
+      "label": "Sinnbilder",
+      "link": "include",
+      "text": "A Sinnbild is stored and shown only as the kernel validator's re-serialisation of an allowed SVG tree, and only as an image.",
+      "sources": [
+        "src/kernel/atlas/emblem.ts",
+        "src/kernel/atlas/emblems.ts",
+        "desktop/src/atlas/render.ts"
+      ]
+    },
+    {
       "id": "pairing-optional",
       "parent": "mobile-standalone",
       "label": "Optional pairing",
@@ -1273,6 +1285,12 @@
       "to": "card",
       "kind": "requires",
       "link": "colours by"
+    },
+    {
+      "from": "knowledge-atlas",
+      "to": "sinnbild-canonical",
+      "kind": "uses",
+      "link": "marks places with"
     }
   ]
 }

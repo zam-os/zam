@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  atlasEmblemClear,
+  atlasEmblemSet,
   atlasRead,
   atlasSettle,
   atlasVariant,
@@ -28,7 +30,11 @@ import { openDatabase } from "../../src/kernel/db/connection.js";
 import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
 import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
-import { createToken, installKvtTile } from "../../src/kernel/index.js";
+import {
+  createToken,
+  installKvtTile,
+  resolveEmblem,
+} from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
 import { materialiseKvtCards } from "../../src/kernel/library/kvt-attach.js";
 
@@ -336,6 +342,96 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
           undo: true,
         });
         expect(undone.reattached).toBe(chosen.detached);
+      } finally {
+        await again.close();
+      }
+    } finally {
+      await reset();
+    }
+  });
+
+  it("writes a member's first Sinnbild as personal and a curator's as shared (Decision 6)", async () => {
+    await reset();
+    const svg =
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="20" fill="#2f6fdf"/></svg>';
+    try {
+      const control = openPostgresDatabase({
+        connectionString: `${url}?options=-c%20search_path%3D${schema}`,
+      });
+      let subject = "";
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, directory, {
+          upn: "emblem-curator@example.org",
+          database,
+        });
+        await addTeamMember(control, directory, {
+          upn: "emblem-member@example.org",
+          database,
+          curator: false,
+        });
+        const token = await createToken(control, {
+          slug: "lichtbrechung",
+          concept: "Lichtbrechung",
+          domain: "physik/optik",
+        });
+        subject = `token:${token.id}`;
+      } finally {
+        await control.close();
+      }
+
+      const asMember = await connectAs("emblem-member@example.org");
+      let memberId = "";
+      try {
+        memberId = (await resolveLearnerId(asMember)) as string;
+        // No shared one yet, but a member may not write knowledge: personal.
+        const own = await atlasEmblemSet(asMember, {
+          userId: memberId,
+          subject,
+          svg,
+        });
+        expect(own.scope).toBe("personal");
+        await expect(
+          atlasEmblemSet(asMember, {
+            userId: memberId,
+            subject,
+            svg,
+            scope: "shared",
+          }),
+        ).rejects.toThrow(NOT_CURATOR);
+        await expect(
+          atlasEmblemClear(asMember, { userId: memberId, subject, shared: true }),
+        ).rejects.toThrow(NOT_CURATOR);
+      } finally {
+        await asMember.close();
+      }
+
+      const asCurator = await connectAs("emblem-curator@example.org");
+      try {
+        const curatorId = (await resolveLearnerId(asCurator)) as string;
+        const shared = await atlasEmblemSet(asCurator, {
+          userId: curatorId,
+          subject,
+          glyph: "n₁",
+        });
+        expect(shared.scope).toBe("shared");
+        // The member's own row is not the curator's to see.
+        const rows = (await asCurator
+          .prepare("SELECT COUNT(*) AS n FROM learner_emblems")
+          .get()) as { n: number | string };
+        expect(Number(rows.n)).toBe(0);
+      } finally {
+        await asCurator.close();
+      }
+
+      const again = await connectAs("emblem-member@example.org");
+      try {
+        // The personal one wins; removing it shows the library's.
+        expect((await resolveEmblem(again, subject, memberId))?.source).toBe(
+          "personal",
+        );
+        await atlasEmblemClear(again, { userId: memberId, subject });
+        expect((await resolveEmblem(again, subject, memberId))?.glyph).toBe("n₁");
       } finally {
         await again.close();
       }

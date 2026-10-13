@@ -171,6 +171,15 @@ CREATE POLICY learner_variants_policy ON learner_variants FOR ALL
   USING (user_id = current_learner_id())
   WITH CHECK (user_id = current_learner_id());
 
+-- learner_emblems are a learner's own Sinnbilder (ADR 2026-10-13 Decision 6),
+-- seen only by them — personal, same policy as user_settings.
+ALTER TABLE learner_emblems ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_emblems FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_emblems_policy ON learner_emblems;
+CREATE POLICY learner_emblems_policy ON learner_emblems FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- choice_exclusions are a learner's disputes of choice options (ADR
 -- 2026-09-27 Decision 7) — personal, same policy as cards.
 ALTER TABLE choice_exclusions ENABLE ROW LEVEL SECURITY;
@@ -227,6 +236,7 @@ export const RLS_PROTECTED_TABLES = [
   "user_settings",
   "choice_exclusions",
   "learner_variants",
+  "learner_emblems",
 ] as const;
 
 /**

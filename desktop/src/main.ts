@@ -9,6 +9,7 @@ import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
 import type { Condition } from "../../src/kernel/atlas/condition.js";
+import { emblemDataUrl } from "../../src/kernel/atlas/emblem.js";
 import {
   conditionFill,
   hueFor,
@@ -185,6 +186,7 @@ import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
+  AtlasEmblemWire,
   AtlasLensKindWire,
   Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
@@ -618,6 +620,23 @@ interface ReviewPayload {
     filePath?: string;
   } | null;
   queueSize: number;
+  /** The unit's Sinnbild (with `--media`); untrusted, shown as an image. */
+  emblem?: AtlasEmblemWire | null;
+}
+
+/** The unit's Sinnbild beside the answer; cleared for a card without one. */
+function renderStudyEmblem(emblem: AtlasEmblemWire | null | undefined): void {
+  const box = document.getElementById("study-emblem");
+  const img = document.getElementById("study-emblem-img") as HTMLImageElement | null;
+  const glyph = document.getElementById("study-emblem-glyph");
+  if (!box || !img || !glyph) return;
+  box.hidden = !emblem;
+  img.removeAttribute("src");
+  glyph.textContent = "";
+  if (!emblem) return;
+  img.src = emblemDataUrl(emblem.svg);
+  // The glyph is untrusted text: textContent only.
+  glyph.textContent = emblem.glyph ?? "";
 }
 
 let activeCard: BridgeCard | null = null;
@@ -7889,6 +7908,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
 
   pendingReviewPayload = null;
   activeCard = payload.card;
+  renderStudyEmblem(payload.emblem);
   await resolveActivePresentation();
   learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;

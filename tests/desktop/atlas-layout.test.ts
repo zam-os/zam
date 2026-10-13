@@ -5,6 +5,7 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   type AtlasLayout,
   buildAtlasLayout,
+  emblemOf,
   mayPractiseRegion,
   PATTERNS,
   practisedUnits,
@@ -215,6 +216,17 @@ describe("atlas map layout", () => {
         expect(mayPractiseRegion(layout, key)).toBe(false);
       }
     }
+  });
+
+  it("finds each place's Sinnbild: the seed's for regions, a unit's for its leaf", () => {
+    for (const key of layout.roots) {
+      const emblem = emblemOf(layout, "region", key);
+      expect(emblem?.source, key).toBe("seed");
+      expect(emblem?.svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg"')).toBe(true);
+    }
+    const unit = [...layout.units.values()][0];
+    expect(emblemOf(layout, "unit", unit.key)).toBeNull();
+    expect(emblemOf(layout, "region", "gibt-es-nicht")).toBeNull();
   });
 
   it("lists prerequisites in both directions", () => {

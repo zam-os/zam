@@ -923,6 +923,22 @@ export interface AtlasRegionWire {
   pattern: string | null;
   /** Not stored yet; the next settle writes it. */
   provisional: boolean;
+  /**
+   * Key into `emblems`: the region's own Sinnbild, or for a leaf region
+   * without one, its first unit's.
+   */
+  emblem?: string;
+}
+
+/**
+ * A Sinnbild as the validator re-serialised it (ADR 2026-10-13, D6). Show it
+ * only as an image (`emblemDataUrl`) and the glyph only as text.
+ */
+export interface AtlasEmblemWire {
+  svg: string;
+  glyph: string | null;
+  /** The learner's own, the library's, or the seed's. */
+  source: "personal" | "shared" | "seed";
 }
 
 export interface AtlasUnitWire {
@@ -941,6 +957,8 @@ export interface AtlasUnitWire {
   standsFor?: { key: AtlasUnitKeyWire; title: string; chosen: boolean };
   /** The library sets a variant for this unit; the learner still holds it. */
   variantOffer?: { key: AtlasUnitKeyWire; title: string };
+  /** Key into `emblems` when the unit has a Sinnbild. */
+  emblem?: string;
 }
 
 export interface AtlasReadResponse {
@@ -981,6 +999,31 @@ export interface AtlasReadResponse {
   settle: { pending: number; mayWrite: boolean };
   /** Resolved home region key; null = the whole lens. */
   home: string | null;
+  /** Sinnbilder by subject key (a unit key or `region:<lens>:<key>`). */
+  emblems: Record<string, AtlasEmblemWire>;
+}
+
+/** `atlas-emblem-set` and a successful `atlas-emblem-draw`. */
+export interface AtlasEmblemResponse {
+  success: true;
+  /** Shared (the library's) or personal (the learner's own). */
+  scope: "personal" | "shared";
+  subjectKey: string;
+  emblem: AtlasEmblemWire;
+  /** `atlas-emblem-draw` only: the model that drew it. */
+  model?: string;
+}
+
+/** `atlas-emblem-draw` refusals, which the Studio explains by code. */
+export interface AtlasEmblemDrawRefusal {
+  success: false;
+  code: "no-text-model" | "model-failed" | "invalid-answer";
+  message: string;
+}
+
+export interface AtlasEmblemClearResponse {
+  success: true;
+  cleared: boolean;
 }
 
 export interface AtlasSettleResponse {

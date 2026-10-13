@@ -194,6 +194,13 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
            VALUES (?, 'atom:a', 'token:b', '["card_alice"]', '2026-10-13T00:00:00.000Z')`,
         )
         .run(ALICE);
+      // A learner's own Sinnbild (ADR 2026-10-13, Decision 6).
+      await tx
+        .prepare(
+          `INSERT INTO learner_emblems (user_id, subject_key, svg, validator_version, glyph, updated_at)
+           VALUES (?, 'atom:a', '<svg/>', 1, 'π', '2026-10-13T00:00:00.000Z')`,
+        )
+        .run(ALICE);
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
@@ -226,6 +233,19 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
           .run(ALICE),
       ).rejects.toThrow(/row-level security/i);
       await tx.exec("ROLLBACK TO SAVEPOINT forge_variant");
+      expect(
+        await tx.prepare("SELECT * FROM learner_emblems").all(),
+      ).toHaveLength(0);
+      await tx.exec("SAVEPOINT forge_emblem");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO learner_emblems (user_id, subject_key, svg, validator_version, glyph, updated_at)
+             VALUES (?, 'atom:c', '<svg/>', 1, NULL, '2026-10-13T00:00:00.000Z')`,
+          )
+          .run(ALICE),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_emblem");
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
@@ -286,6 +306,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       ).toHaveLength(1);
       expect(
         await tx.prepare("SELECT * FROM learner_variants").all(),
+      ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM learner_emblems").all(),
       ).toHaveLength(1);
     });
   });

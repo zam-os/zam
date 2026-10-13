@@ -1,29 +1,36 @@
 /**
- * The Studio's knowledge atlas, read-only (ADR 2026-10-13, Decisions 3, 4, 5
- * and 7; plan Phase 6). It reads one lens through `atlas-read`, stores
- * pending land once through `atlas-settle` when this connection may write
- * knowledge, and opens on the learner's home region.
+ * The Studio's knowledge atlas (ADR 2026-10-13, Decisions 3–7; plan Phases
+ * 6–8). It reads one lens through `atlas-read`, stores pending land once
+ * through `atlas-settle` when this connection may write knowledge, and opens
+ * on the learner's home region.
  *
  * Nothing here changes scheduling (Decision 1): *Wiederholen* hands a region
  * to the study view, and only the ratings there do.
  *
- * Loaded lazily while the alpha is on. No Tauri and no `main.ts`: the MCP Apps
- * panel can mount it later (Phase 10).
+ * Sinnbilder show only as images of the validator's canonical form, and a
+ * glyph only as text (Decision 6).
+ *
+ * Loaded lazily. No Tauri and no `main.ts`: the MCP Apps panel can mount it
+ * later (Phase 10).
  */
 
 import type {
+  AtlasEmblemDrawRefusal,
+  AtlasEmblemResponse,
   AtlasLensKindWire,
   AtlasPrefsResponse,
   AtlasReadResponse,
   AtlasTakeResponse,
   AtlasUnitWire,
 } from "../../../src/bridge/protocol.js";
+import { emblemDataUrl } from "../../../src/kernel/atlas/emblem.js";
 import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
 import { type ImportPlace, openAtlasImport } from "./import.js";
 import {
   type AtlasLayout,
   buildAtlasLayout,
+  emblemOf,
   mayPractiseRegion,
   practisedUnits,
   regionCondition,
@@ -785,6 +792,7 @@ function regionPanel(
   if (view.home === key) {
     body.appendChild(el("p", "atlas-panel-badge", t("atlas_is_home")));
   }
+  body.appendChild(emblemSection(s, layout, "region", key));
   const island = region.level === 0 ? layout.islands.get(key) : undefined;
   if (island && view.settle.mayWrite && island.drift > 0) {
     body.appendChild(
@@ -901,6 +909,7 @@ function unitPanel(
       ].join(" · "),
     ),
   );
+  body.appendChild(emblemSection(s, layout, "unit", key));
   if (unit.own) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_own_unit_note")));
   }
@@ -964,6 +973,168 @@ function unitPanel(
       ? unitList(s, links.foundationFor)
       : el("p", "atlas-panel-empty", t("atlas_none")),
   );
+}
+
+/** A Sinnbild as an image: the canonical SVG through a data URL, never markup. */
+function emblemImage(svg: string, size: number): HTMLImageElement {
+  const img = el("img", "atlas-emblem-img");
+  img.src = emblemDataUrl(svg);
+  img.width = size;
+  img.height = size;
+  img.alt = "";
+  img.decoding = "async";
+  return img;
+}
+
+/**
+ * The Sinnbild of a region or unit (Decision 6), with the ways to change
+ * it: let the text model draw one, type an own sign, or remove one's own.
+ */
+function emblemSection(
+  s: ViewState,
+  layout: AtlasLayout,
+  kind: "region" | "unit",
+  key: string,
+): HTMLElement {
+  const lens = s.lens ?? layout.view.lens.kind;
+  const subject = kind === "unit" ? key : `region:${lens}:${key}`;
+  const emblem = emblemOf(layout, kind, key);
+  const ref =
+    kind === "region"
+      ? layout.regions.get(key)?.emblem
+      : layout.units.get(key)?.emblem;
+  const borrowed = kind === "region" && ref !== undefined && ref !== subject;
+  const section = el("section", "atlas-emblem");
+  section.setAttribute("aria-label", t("atlas_emblem_label"));
+  const row = el("div", "atlas-emblem-row");
+  if (emblem) {
+    row.appendChild(emblemImage(emblem.svg, 56));
+  } else {
+    row.appendChild(el("span", "atlas-emblem-empty", "?"));
+  }
+  const words = el("div", "atlas-emblem-words");
+  // The glyph is untrusted text: textContent only.
+  if (emblem?.glyph) words.appendChild(el("p", "atlas-emblem-glyph", emblem.glyph));
+  words.appendChild(
+    el(
+      "p",
+      "atlas-emblem-source",
+      !emblem
+        ? t("atlas_emblem_none")
+        : borrowed
+          ? t("atlas_emblem_source_borrowed")
+          : t(`atlas_emblem_source_${emblem.source}`),
+    ),
+  );
+  row.appendChild(words);
+  section.appendChild(row);
+
+  const actions = el("div", "atlas-panel-actions");
+  const status = el("p", "atlas-emblem-status");
+  status.setAttribute("aria-live", "polite");
+  const draw = button(
+    "btn secondary-btn btn-sm",
+    t(emblem && !borrowed ? "atlas_emblem_redraw" : "atlas_emblem_draw"),
+  );
+  draw.addEventListener("click", () => void drawEmblem(s, subject, draw, status));
+  actions.appendChild(draw);
+  const own = button("btn secondary-btn btn-sm", t("atlas_emblem_glyph"));
+  actions.appendChild(own);
+  if (emblem?.source === "personal" && !borrowed) {
+    const clear = button("btn secondary-btn btn-sm", t("atlas_emblem_clear"));
+    clear.addEventListener("click", () => void clearEmblem(s, subject, status));
+    actions.appendChild(clear);
+  }
+  section.appendChild(actions);
+
+  const form = el("form", "atlas-emblem-form");
+  form.hidden = true;
+  const label = el("label", "atlas-emblem-form-label", t("atlas_emblem_glyph_label"));
+  const input = el("input", "atlas-emblem-input");
+  input.type = "text";
+  input.maxLength = 16;
+  input.autocomplete = "off";
+  input.spellcheck = false;
+  input.value = emblem?.source === "personal" && !borrowed ? (emblem.glyph ?? "") : "";
+  label.appendChild(input);
+  const save = button("btn primary-btn btn-sm", t("atlas_emblem_glyph_save"));
+  save.type = "submit";
+  form.append(label, save);
+  own.addEventListener("click", () => {
+    form.hidden = !form.hidden;
+    if (!form.hidden) input.focus();
+  });
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const glyph = input.value.trim();
+    if (glyph) void setGlyph(s, subject, glyph, status);
+  });
+  section.append(form, status);
+  return section;
+}
+
+async function drawEmblem(
+  s: ViewState,
+  subject: string,
+  trigger: HTMLButtonElement,
+  status: HTMLElement,
+): Promise<void> {
+  trigger.disabled = true;
+  status.textContent = t("atlas_emblem_drawing");
+  try {
+    const result = await runBridge<AtlasEmblemResponse | AtlasEmblemDrawRefusal>(
+      "atlas-emblem-draw",
+      ["--subject", subject],
+    );
+    if (!result.success) {
+      status.textContent =
+        result.code === "no-text-model"
+          ? t("atlas_emblem_no_model")
+          : `${t("atlas_emblem_draw_failed")} ${result.message}`;
+      trigger.disabled = false;
+      return;
+    }
+  } catch (err) {
+    status.textContent = `${t("atlas_emblem_draw_failed")} ${err instanceof Error ? err.message : String(err)}`;
+    trigger.disabled = false;
+    return;
+  }
+  await load(s, s.lens ?? undefined);
+}
+
+async function setGlyph(
+  s: ViewState,
+  subject: string,
+  glyph: string,
+  status: HTMLElement,
+): Promise<void> {
+  try {
+    await runBridge<AtlasEmblemResponse>("atlas-emblem-set", [
+      "--subject",
+      subject,
+      "--glyph",
+      glyph,
+      "--from-studio",
+    ]);
+  } catch (err) {
+    status.textContent = `${t("atlas_emblem_failed")} ${err instanceof Error ? err.message : String(err)}`;
+    return;
+  }
+  await load(s, s.lens ?? undefined);
+}
+
+async function clearEmblem(
+  s: ViewState,
+  subject: string,
+  status: HTMLElement,
+): Promise<void> {
+  try {
+    await runBridge("atlas-emblem-clear", ["--subject", subject]);
+  } catch (err) {
+    status.textContent = `${t("atlas_emblem_failed")} ${err instanceof Error ? err.message : String(err)}`;
+    return;
+  }
+  await load(s, s.lens ?? undefined);
 }
 
 function unitList(s: ViewState, units: AtlasUnitWire[]): HTMLUListElement {
@@ -1059,10 +1230,14 @@ function renderResults(s: ViewState): void {
   for (const hit of hits) {
     const li = el("li");
     const b = button("atlas-search-hit");
-    b.append(
+    const emblem = emblemOf(layout, hit.kind, hit.key);
+    if (emblem) b.appendChild(emblemImage(emblem.svg, 24));
+    const words = el("span", "atlas-search-words");
+    words.append(
       el("span", "atlas-search-name", hit.name),
       el("span", "atlas-search-where", hit.where.join(" › ")),
     );
+    b.appendChild(words);
     b.addEventListener("click", () => {
       s.els.search.value = "";
       list.hidden = true;

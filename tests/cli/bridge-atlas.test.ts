@@ -452,9 +452,123 @@ describe("zam bridge atlas commands", () => {
   });
 
   it("keeps the new atlas commands away from the Studio panel bridge", () => {
-    for (const command of ["atlas-place", "atlas-take", "atlas-variant"]) {
+    for (const command of [
+      "atlas-place",
+      "atlas-take",
+      "atlas-variant",
+      "atlas-emblem-set",
+      "atlas-emblem-clear",
+      "atlas-emblem-draw",
+    ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
     }
+  });
+
+  it("sets, shows and clears Sinnbilder, and only as their canonical form", () => {
+    const optik = "region:weltwissen:natur.physik.optik";
+    const before = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    const region = before.regions.find(
+      (r: { key: string }) => r.key === "natur.physik.optik",
+    );
+    expect(region.emblem).toBe(optik);
+    expect(before.emblems[optik].source).toBe("seed");
+
+    const unit = before.units.find((u: { own: boolean }) => !u.own).key;
+    const svg =
+      '<svg viewBox="0 0 64 64" xmlns="http://www.w3.org/2000/svg">  <circle r="20" cy="32" cx="32" fill="#2f6fdf"/></svg>';
+    const set = runCliJson([
+      "bridge",
+      "atlas-emblem-set",
+      "--subject",
+      unit,
+      "--svg",
+      svg,
+    ]);
+    expect(set.scope).toBe("shared");
+    expect(set.emblem.svg).toBe(
+      '<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64"><circle cx="32" cy="32" r="20" fill="#2f6fdf"/></svg>',
+    );
+    // The learner's own sign, typed in the Studio, comes second: personal.
+    const own = runCliJson([
+      "bridge",
+      "atlas-emblem-set",
+      "--subject",
+      unit,
+      "--glyph",
+      "n₁",
+      "--from-studio",
+    ]);
+    expect(own.scope).toBe("personal");
+    const after = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    expect(after.emblems[unit]).toMatchObject({ glyph: "n₁", source: "personal" });
+    expect(
+      runCliJson(["bridge", "atlas-emblem-clear", "--subject", unit]).cleared,
+    ).toBe(true);
+    const cleared = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    expect(cleared.emblems[unit].source).toBe("shared");
+
+    expect(
+      runCliError([
+        "bridge",
+        "atlas-emblem-set",
+        "--subject",
+        unit,
+        "--svg",
+        svg.replace("<circle", '<image href="x.png"/><circle'),
+      ]).error,
+    ).toContain("<image>");
+    expect(
+      runCliError(["bridge", "atlas-emblem-set", "--subject", "token:nope", "--glyph", "x"]).error,
+    ).toContain("No unit");
+  });
+
+  it("puts the unit's Sinnbild on a rendering surface's review card only", () => {
+    const one = runCliJson([
+      "bridge",
+      "get-review",
+      "--no-dynamic-question",
+      "--atlas-region",
+      "natur.physik",
+    ]);
+    const atom = one.card.atomId as string;
+    runCliJson([
+      "bridge",
+      "atlas-emblem-set",
+      "--subject",
+      `atom:${atom}`,
+      "--glyph",
+      "λ",
+    ]);
+    const plain = runCliJson([
+      "bridge",
+      "get-review",
+      "--no-dynamic-question",
+      "--atlas-region",
+      "natur.physik",
+    ]);
+    expect(plain.emblem).toBeNull();
+    const media = runCliJson([
+      "bridge",
+      "get-review",
+      "--no-dynamic-question",
+      "--media",
+      "--atlas-region",
+      "natur.physik",
+    ]);
+    if (media.card.atomId === atom) {
+      expect(media.emblem.glyph).toBe("λ");
+    }
+  });
+
+  it("refuses to draw without a text model, by code", () => {
+    const unit = runCliJson(["bridge", "atlas-read"]).units[0].key;
+    const refused = runCliJson([
+      "bridge",
+      "atlas-emblem-draw",
+      "--subject",
+      unit,
+    ]);
+    expect(refused).toMatchObject({ success: false, code: "no-text-model" });
   });
 
   it("falls back to the nearest surviving ancestor of a stored home", async () => {

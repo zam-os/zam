@@ -11,6 +11,39 @@ export {
   unitCondition,
   weakestCondition,
 } from "./condition.js";
+export type { EmblemValidation } from "./emblem.js";
+export {
+  EMBLEM_MAX_CHARS,
+  EMBLEM_VALIDATOR_VERSION,
+  emblemDataUrl,
+  GLYPH_MAX_CHARS,
+  glyphEmblemSvg,
+  validateEmblem,
+  validateGlyph,
+} from "./emblem.js";
+export type {
+  EmblemAuthor,
+  EmblemErrorCode,
+  EmblemScope,
+  EmblemSource,
+  EmblemSubject,
+  ResolvedEmblem,
+  RevalidateResult,
+  SetEmblemInput,
+  SetEmblemResult,
+} from "./emblems.js";
+export {
+  clearPersonalEmblem,
+  clearSharedEmblem,
+  EmblemError,
+  parseEmblemSubject,
+  regionEmblemKey,
+  resolveEmblem,
+  resolveEmblems,
+  revalidateEmblems,
+  setEmblem,
+  sharedEmblemKeys,
+} from "./emblems.js";
 export type { Hex, Point } from "./hex.js";
 export {
   DIRS,
@@ -124,6 +157,8 @@ export {
   undoVariant,
   unitTokenIds,
 } from "./variants.js";
+export type { SeedEmblem } from "./weltwissen-emblems.js";
+export { seedEmblem, seedEmblems } from "./weltwissen-emblems.js";
 export type {
   SeedArea,
   SeedBereich,

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-13T21:00:00.000Z
+timestamp: 2026-10-13T22:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -199,7 +199,10 @@ takes coordinates: only settle places land.
   provisional. A due count is what a region review would show now, by the
   queue's rules: a card waiting for its next short step, a blocked or buried
   card, and an atom's further items on a day one of them was shown are not
-  counted, although the condition still shows them.
+  counted, although the condition still shows them. `emblems` holds each
+  Sinnbild once by subject key (a unit key or `region:<lens>:<region key>`),
+  and every region and unit that has one names it in `emblem`; a leaf region
+  without its own names its first unit's.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.
@@ -221,6 +224,19 @@ takes coordinates: only settle places land.
   although nothing is due: when no card is due, it pulls forward the
   practised card due soonest that was not answered since that time, one card
   per call and one item per atom a day.
+- `atlas-emblem-set --subject <key> (--svg <svg> | --glyph <text>) [--scope
+  auto|personal|shared] [--from-studio]` stores a Sinnbild: the validator's
+  re-serialisation, never the input. A glyph alone becomes a Sinnbild of its
+  own. `auto` writes the library's when none exists and the connection may
+  write knowledge, the learner's own otherwise; `shared` without that right
+  refuses with `not-curator`.
+- `atlas-emblem-clear --subject <key> [--shared]` removes the learner's own,
+  or with `--shared` the library's.
+- `atlas-emblem-draw --subject <key> [--scope …]` lets the first text model
+  draw one from the subject's title and path, validates and stores it; a
+  refusal comes as `{success: false, code}` with `no-text-model`,
+  `model-failed` or `invalid-answer`.
+- `get-review --media` also returns the card's unit Sinnbild as `emblem`.
 - `graph3d-feature [--enable|--disable]` reads or sets this machine's switch
   for the 3D learning graph, an alpha since the atlas took its place, in
   `~/.zam/config.json`.

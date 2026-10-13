@@ -2334,6 +2334,31 @@ textarea::placeholder {
   animation: fadeIn 0.4s ease-out;
 }
 
+/* The unit's Sinnbild beside the answer, on a light disc in both themes. */
+.study-emblem {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.study-emblem[hidden] {
+  display: none;
+}
+
+.study-emblem-img {
+  flex: none;
+  padding: 5px;
+  border-radius: 50%;
+  background: #fffdf8;
+  box-shadow: 0 0 0 1px rgba(29, 43, 79, 0.2);
+}
+
+.study-emblem-glyph {
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
 @keyframes fadeIn {
   from { opacity: 0; transform: translateY(10px); }
   to { opacity: 1; transform: translateY(0); }
@@ -5650,6 +5675,109 @@ span.atlas-crumb {
   flex-wrap: wrap;
   gap: var(--space-2);
   margin: var(--space-3) 0;
+}
+
+/* Sinnbilder (ADR 2026-10-13, Decision 6): on a light disc in both themes,
+   like the map's discs. */
+.atlas-emblem {
+  margin: var(--space-3) 0;
+  padding: var(--space-3);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-card);
+}
+
+.atlas-emblem-row {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+}
+
+.atlas-emblem-img,
+.atlas-emblem-empty {
+  flex: none;
+  border-radius: 50%;
+  background: #fffdf8;
+  box-shadow: 0 0 0 1px rgba(29, 43, 79, 0.2);
+}
+
+.atlas-emblem-row .atlas-emblem-img {
+  padding: 6px;
+}
+
+.atlas-emblem-empty {
+  display: grid;
+  place-items: center;
+  width: 68px;
+  height: 68px;
+  color: #8a93a6;
+  font-size: 26px;
+  font-weight: 700;
+}
+
+.atlas-emblem-words {
+  min-width: 0;
+}
+
+.atlas-emblem-glyph {
+  margin: 0 0 2px;
+  font-size: var(--fs-lg);
+  font-weight: 700;
+  overflow-wrap: anywhere;
+}
+
+.atlas-emblem-source,
+.atlas-emblem-status {
+  margin: 0;
+  color: var(--color-muted);
+  font-size: var(--fs-xs);
+}
+
+.atlas-emblem .atlas-panel-actions {
+  margin-bottom: 0;
+}
+
+.atlas-emblem-form {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  gap: var(--space-2);
+  margin-top: var(--space-2);
+}
+
+.atlas-emblem-form-label {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  flex: 1 1 180px;
+  font-size: var(--fs-xs);
+  color: var(--color-muted);
+}
+
+.atlas-emblem-input {
+  padding: 6px 8px;
+  font: inherit;
+  font-size: var(--fs-base);
+  color: var(--color-ink);
+  background: var(--color-surface);
+  border: 1px solid var(--color-line);
+  border-radius: var(--radius-control);
+}
+
+.atlas-search-hit:has(.atlas-emblem-img) {
+  flex-direction: row;
+  align-items: center;
+  gap: var(--space-2);
+}
+
+.atlas-search-hit .atlas-emblem-img {
+  padding: 2px;
+}
+
+.atlas-search-words {
+  display: flex;
+  flex-direction: column;
+  gap: 1px;
+  min-width: 0;
 }
 
 .atlas-panel-sub {

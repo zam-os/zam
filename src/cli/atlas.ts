@@ -1,8 +1,8 @@
 /**
  * Bridge handlers for the knowledge atlas (ADR 2026-10-13, Decision 10).
  *
- * The CLI layer owns what the kernel must not: the machine-local alpha
- * switch, and whether this connection may write knowledge. PostgreSQL says
+ * The CLI layer owns what the kernel must not: model calls (a Sinnbild
+ * drawn by the text model), and whether this connection may write knowledge. PostgreSQL says
  * the latter through its grants (ADR 2026-09-04, Decision 7), so the check
  * asks the server instead of inventing a second notion of curator.
  */
@@ -13,8 +13,13 @@ import {
   type CurriculumScope,
   chooseVariant,
   clearLibraryVariant,
+  clearPersonalEmblem,
+  clearSharedEmblem,
   type Database,
   dialectOf,
+  type EmblemAuthor,
+  EmblemError,
+  type EmblemScope,
   findBundledCellsForScope,
   getBundledCellEnrolment,
   getBundledCellTile,
@@ -27,10 +32,14 @@ import {
   loadBindings,
   needsGenericCurriculumImport,
   type PlaceInfo,
+  parseEmblemSubject,
   readAtlas,
+  regionEmblemKey,
   resolvePlace,
+  revalidateEmblems,
   SCHULE_LENS,
   type SettleResult,
+  setEmblem,
   setLibraryVariant,
   setSetting,
   settleLens,
@@ -41,6 +50,7 @@ import {
   undoVariant,
   WELTWISSEN_LENS,
 } from "../kernel/index.js";
+import { drawEmblemViaLLM, type EmblemDrawDeps } from "./llm/emblem-draw.js";
 import type { MaterialAnalyzePlace } from "./llm/material-analyze.js";
 import { learnerScope } from "./material-import.js";
 
@@ -479,4 +489,216 @@ export async function atlasSettle(
     if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
     throw error;
   }
+}
+
+// ── Sinnbilder (Decision 6) ──────────────────────────────────────────────────
+
+export interface AtlasEmblemResult {
+  success: true;
+  scope: "personal" | "shared";
+  subjectKey: string;
+  emblem: { svg: string; glyph: string | null; source: "personal" | "shared" };
+}
+
+function emblemScope(scope: string | undefined): EmblemScope {
+  if (scope === undefined || scope === "auto") return "auto";
+  if (scope === "personal" || scope === "shared") return scope;
+  throw new Error("--scope is auto, personal or shared.");
+}
+
+/** Kernel refusals as the bridge reports them: `not-curator` stays a code. */
+function emblemFailure(error: unknown): never {
+  if (error instanceof EmblemError) {
+    throw new Error(error.code === "not-curator" ? NOT_CURATOR : error.message);
+  }
+  if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+  throw error;
+}
+
+async function storeEmblem(
+  db: Database,
+  opts: {
+    userId: string;
+    subject: string;
+    svg?: string;
+    glyph?: string;
+    scope?: string;
+    author: EmblemAuthor;
+  },
+): Promise<AtlasEmblemResult> {
+  const mayWrite = await mayWriteKnowledge(db);
+  try {
+    // Rows an older validator wrote are re-checked before a new one lands.
+    await revalidateEmblems(db, { userId: opts.userId, shared: mayWrite });
+    const stored = await setEmblem(db, {
+      subjectKey: opts.subject,
+      svg: opts.svg,
+      glyph: opts.glyph,
+      userId: opts.userId,
+      mayWriteKnowledge: mayWrite,
+      scope: emblemScope(opts.scope),
+      author: opts.author,
+    });
+    return {
+      success: true,
+      scope: stored.scope,
+      subjectKey: stored.subjectKey,
+      emblem: { svg: stored.svg, glyph: stored.glyph, source: stored.scope },
+    };
+  } catch (error) {
+    emblemFailure(error);
+  }
+}
+
+/** `atlas-emblem-set`: an SVG (an agent's) or a glyph alone (the Studio's). */
+export function atlasEmblemSet(
+  db: Database,
+  opts: {
+    userId: string;
+    subject: string;
+    svg?: string;
+    glyph?: string;
+    scope?: string;
+    author?: EmblemAuthor;
+  },
+): Promise<AtlasEmblemResult> {
+  return storeEmblem(db, { ...opts, author: opts.author ?? "agent" });
+}
+
+/** `atlas-emblem-clear`: the learner's own, or with `shared` the library's. */
+export async function atlasEmblemClear(
+  db: Database,
+  opts: { userId: string; subject: string; shared?: boolean },
+): Promise<{ success: true; cleared: boolean }> {
+  try {
+    const cleared = opts.shared
+      ? await clearSharedEmblem(db, opts.subject, await mayWriteKnowledge(db))
+      : await clearPersonalEmblem(db, opts.userId, opts.subject);
+    return { success: true, cleared };
+  } catch (error) {
+    emblemFailure(error);
+  }
+}
+
+/** A subject's title and the path above it, as a drawing request names them. */
+export async function emblemSubjectInfo(
+  db: Database,
+  subjectKey: string,
+): Promise<{ title: string; path: string[] }> {
+  const subject = parseEmblemSubject(subjectKey);
+  if (!subject) {
+    throw new Error(
+      `"${subjectKey}" names no unit or region. Use atom:<id>, token:<id> or region:<lens>:<key>.`,
+    );
+  }
+  if (subject.kind === "region") {
+    const place = await resolvePlace(
+      db,
+      atlasLens(subject.lens),
+      subject.regionKey,
+    );
+    if (!place) throw new Error(`No region ${subject.regionKey} in this lens.`);
+    const names = place.path.map((step) => step.name);
+    return {
+      title: names[names.length - 1] ?? subject.regionKey,
+      path: names.slice(0, -1),
+    };
+  }
+  const row = (await db
+    .prepare(
+      subject.kind === "atom"
+        ? "SELECT title, domain FROM learning_atoms WHERE id = ?"
+        : "SELECT COALESCE(NULLIF(TRIM(title), ''), NULLIF(TRIM(concept), ''), slug) AS title, domain FROM tokens WHERE id = ?",
+    )
+    .get(subject.id)) as
+    | { title: string | null; domain: string | null }
+    | undefined;
+  if (!row) throw new Error(`No unit ${subjectKey} in this library.`);
+  return {
+    title: row.title ?? subjectKey,
+    path: (row.domain ?? "").split("/").filter(Boolean),
+  };
+}
+
+/** `atlas-emblem-draw`: the first text model draws one; it is stored like any other. */
+export async function atlasEmblemDraw(
+  db: Database,
+  opts: { userId: string; subject: string; scope?: string },
+  deps: EmblemDrawDeps = {},
+): Promise<AtlasEmblemResult & { model: string }> {
+  const info = await emblemSubjectInfo(db, opts.subject);
+  const drawing = await drawEmblemViaLLM(db, info, deps);
+  const stored = await storeEmblem(db, {
+    userId: opts.userId,
+    subject: opts.subject,
+    svg: drawing.svg,
+    glyph: drawing.glyph ?? undefined,
+    scope: opts.scope,
+    author: "agent",
+  });
+  return { ...stored, model: drawing.model };
+}
+
+export interface MissingEmblem {
+  subject: string;
+  kind: "region" | "unit";
+  title: string;
+  /** Names from the island down, for context. */
+  path: string[];
+}
+
+/**
+ * Regions and the learner's units of a lens that show no Sinnbild yet, for
+ * an agent to draw. A leaf region that borrows its first unit's counts as
+ * missing too: it deserves its own.
+ */
+export async function atlasMissingEmblems(
+  db: Database,
+  opts: { userId: string; lens?: string; limit?: number },
+): Promise<{
+  success: true;
+  lens: LensKind;
+  missing: MissingEmblem[];
+  total: number;
+}> {
+  const view = await atlasRead(db, { userId: opts.userId, lens: opts.lens });
+  const regionByKey = new Map(view.regions.map((r) => [r.key, r]));
+  const pathOf = (key: string | null): string[] => {
+    const names: string[] = [];
+    let current = key ? regionByKey.get(key) : undefined;
+    while (current) {
+      names.unshift(current.name);
+      current = current.parentKey
+        ? regionByKey.get(current.parentKey)
+        : undefined;
+    }
+    return names;
+  };
+  const missing: MissingEmblem[] = [];
+  for (const region of view.regions) {
+    const own = regionEmblemKey(view.lens.kind, region.key);
+    if (region.emblem === own) continue;
+    missing.push({
+      subject: own,
+      kind: "region",
+      title: region.name,
+      path: pathOf(region.parentKey),
+    });
+  }
+  for (const unit of view.units) {
+    if (unit.emblem || unit.inReach) continue;
+    missing.push({
+      subject: unit.key,
+      kind: "unit",
+      title: unit.title,
+      path: pathOf(unit.region),
+    });
+  }
+  const limit = Math.max(1, Math.min(opts.limit ?? 50, 200));
+  return {
+    success: true,
+    lens: view.lens.kind,
+    missing: missing.slice(0, limit),
+    total: missing.length,
+  };
 }

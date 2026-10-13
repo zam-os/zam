@@ -19,6 +19,7 @@ import {
   ATLAS_LAND_TABLES,
   ATLAS_TABLES,
   ATLAS_VARIANT_TABLES,
+  EMBLEM_TABLES,
   SCHEMA_INDEXES,
   SCHEMA_TABLES,
 } from "./schema.js";
@@ -30,7 +31,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 42;
+export const CURRENT_SCHEMA_VERSION = 43;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1019,6 +1020,11 @@ export async function runMigrations(db: Database): Promise<void> {
   // for a published unit: the library's choice (knowledge) and a learner's
   // own (learning state, with the cards it detached).
   await db.exec(ATLAS_VARIANT_TABLES);
+
+  // M043: Sinnbilder (ADR 2026-10-13, Decision 6) — the library's shared
+  // Sinnbild (knowledge) and a learner's own (learning state), both stored in
+  // the validator's canonical form only.
+  await db.exec(EMBLEM_TABLES);
 }
 
 const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;

@@ -1,8 +1,11 @@
 /**
  * The atlas as a zoomable 2D map on a canvas: one lens at a time (ADR
- * 2026-10-13, Decisions 3–5). Ported from the knowledge-atlas spike's
- * `render.ts` (PR #405), without portals, notes and Sinnbilder, which come
- * in later phases.
+ * 2026-10-13, Decisions 3–6). Ported from the knowledge-atlas spike's
+ * `render.ts` (PR #405), without portals and notes, which come in a later
+ * phase.
+ *
+ * Sinnbilder are drawn only as images of the validator's canonical form
+ * (`emblemDataUrl` into an `Image`, then `drawImage`), never as markup.
  *
  * Colour says where: each region on the lens's colour level has its subject
  * hue, and the level below gets a shade and a pattern. The condition says how
@@ -17,6 +20,7 @@
  * No Tauri and no `main.ts`: the MCP Apps panel can reuse it (Phase 10).
  */
 
+import { emblemDataUrl } from "../../../src/kernel/atlas/emblem.js";
 import {
   CONDITION_TEXTURE,
   conditionFill,
@@ -29,6 +33,7 @@ import {
   type AtlasLayout,
   type Cell,
   CORNERS,
+  emblemOf,
   outline,
   type PatternKind,
   type Segment,
@@ -91,12 +96,14 @@ const DARK: Theme = {
   pencil: "rgba(214,208,196,0.7)",
 };
 
-/** Sinnbild discs are light in both themes (spike lesson); Phase 8 fills them. */
+/** Sinnbild discs are light in both themes (spike lesson). */
 const DISC_FILL = "#fffdf8";
 const DISC_INK = "#1d2b4f";
 
 /** Hex radius in px from which single learning units are the focus. */
 export const UNIT_PX = 40;
+/** From here a unit with a Sinnbild shows its title below it too. */
+const UNIT_TITLE_PX = 70;
 
 /** Room kept above the land for the island titles. */
 const TOP_INSET = 30;
@@ -336,6 +343,8 @@ export class AtlasMap {
   private info = new Map<Cell, CellInfo>();
   private patterns = new Map<string, CanvasPattern>();
   private outlines = new Map<string, Segment[]>();
+  /** Sinnbild images by canonical SVG; drawn once loaded. */
+  private images = new Map<string, HTMLImageElement>();
   private frame = 0;
   private anim: { from: Camera; to: Camera; start: number; ms: number } | null =
     null;
@@ -392,6 +401,11 @@ export class AtlasMap {
   setLayout(layout: AtlasLayout): void {
     this.layout = layout;
     this.outlines.clear();
+    // Keep only the images this read still shows.
+    const shown = new Set(Object.values(layout.view.emblems ?? {}).map((e) => e.svg));
+    for (const svg of this.images.keys()) {
+      if (!shown.has(svg)) this.images.delete(svg);
+    }
     if (this.selection && !this.exists(this.selection)) this.selection = null;
     if (this.hover && !this.exists(this.hover)) this.hover = null;
     this.recolor();
@@ -1117,17 +1131,32 @@ export class AtlasMap {
     const ctx = this.ctx;
     const t = this.theme;
     const px = this.hexPx;
-    ctx.globalAlpha = alpha;
+    const layout = this.layout;
     for (const c of cells) {
       const unit = c.unit;
-      if (!unit) continue;
+      if (!unit || !layout) continue;
       const [sx, sy] = this.toScreen(c.x, c.y);
+      // A Sinnbild stands for the unit; its title joins once there is room.
+      const emblem = emblemOf(layout, "unit", unit.key);
+      const image = emblem ? this.image(emblem.svg) : null;
+      const withTitle = !image || px >= UNIT_TITLE_PX;
+      if (image) {
+        const cy = withTitle ? sy - px * 0.2 : sy;
+        const radius = px * (withTitle ? 0.36 : 0.5);
+        // A sketched unit's Sinnbild is pencil-faint, like its title.
+        ctx.globalAlpha = alpha * (unit.inReach ? 0.5 : 1);
+        this.drawImageDisc(image, sx, cy, radius);
+      }
+      if (!withTitle) continue;
+      ctx.globalAlpha = alpha;
       const size = Math.min(13, Math.max(10, px * 0.13));
       ctx.font = `600 ${size}px ${this.font}`;
       ctx.textAlign = "center";
-      ctx.textBaseline = "middle";
-      const lines = wrap(ctx, shortTitle(unit.title), px * 1.55, 3);
-      const y0 = sy - ((lines.length - 1) * (size + 2)) / 2;
+      ctx.textBaseline = image ? "top" : "middle";
+      const lines = wrap(ctx, shortTitle(unit.title), px * 1.55, image ? 2 : 3);
+      const y0 = image
+        ? sy + px * 0.22
+        : sy - ((lines.length - 1) * (size + 2)) / 2;
       const ink = unit.inReach ? t.pencil : t.ink;
       lines.forEach((line, i) => {
         const y = y0 + i * (size + 2);
@@ -1139,6 +1168,45 @@ export class AtlasMap {
       });
     }
     ctx.globalAlpha = 1;
+  }
+
+  /** A loaded Sinnbild image, or null while it loads (a redraw follows). */
+  private image(svg: string): HTMLImageElement | null {
+    let img = this.images.get(svg);
+    if (!img) {
+      img = new Image();
+      img.decoding = "async";
+      img.onload = () => this.requestDraw();
+      img.src = emblemDataUrl(svg);
+      this.images.set(svg, img);
+    }
+    return img.complete && img.naturalWidth > 0 ? img : null;
+  }
+
+  /** A light disc with a Sinnbild inside, in both themes. */
+  private drawImageDisc(
+    image: HTMLImageElement,
+    x: number,
+    y: number,
+    radius: number,
+    ring?: string,
+  ): void {
+    const ctx = this.ctx;
+    ctx.fillStyle = DISC_FILL;
+    ctx.beginPath();
+    ctx.arc(x, y, radius, 0, Math.PI * 2);
+    ctx.fill();
+    if (ring) {
+      ctx.lineWidth = 2.5;
+      ctx.strokeStyle = ring;
+      ctx.stroke();
+    } else {
+      ctx.lineWidth = 1;
+      ctx.strokeStyle = "rgba(29,43,79,0.25)";
+      ctx.stroke();
+    }
+    const s = radius * 1.45;
+    ctx.drawImage(image, x - s / 2, y - s / 2, s, s);
   }
 
   // ── Threads ───────────────────────────────────────────────────────────────
@@ -1459,8 +1527,8 @@ export class AtlasMap {
   }
 
   /**
-   * A region's disc: light in both themes, ringed in its colour. Until
-   * Sinnbilder arrive (Phase 8) it carries the region's initials.
+   * A region's disc: light in both themes, ringed in its colour, with its
+   * Sinnbild (Decision 6), or its initials while it has none.
    */
   private drawDisc(
     key: string,
@@ -1470,6 +1538,12 @@ export class AtlasMap {
     ring: string,
   ): void {
     const ctx = this.ctx;
+    const emblem = this.layout ? emblemOf(this.layout, "region", key) : null;
+    const image = emblem ? this.image(emblem.svg) : null;
+    if (image) {
+      this.drawImageDisc(image, x, y, radius, ring);
+      return;
+    }
     ctx.fillStyle = DISC_FILL;
     ctx.beginPath();
     ctx.arc(x, y, radius, 0, Math.PI * 2);

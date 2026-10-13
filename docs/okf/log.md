@@ -2,6 +2,7 @@
 
 ## 2026-10-13
 
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
 - **Update** — [Learning Content](learning-content.md)
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

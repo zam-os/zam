@@ -21,6 +21,11 @@ import {
   type ConditionCard,
   unitCondition,
 } from "./condition.js";
+import {
+  type ResolvedEmblem,
+  regionEmblemKey,
+  resolveEmblems,
+} from "./emblems.js";
 import { islandDrift } from "./land.js";
 import {
   type DerivedPlacement,
@@ -55,6 +60,11 @@ export interface AtlasRegionView {
   pattern: string | null;
   /** Not stored yet: the next settle writes it. */
   provisional: boolean;
+  /**
+   * Key into `AtlasView.emblems`: the region's own Sinnbild, or for a leaf
+   * region without one, its first unit's (Decision 6).
+   */
+  emblem?: string;
 }
 
 export interface AtlasUnitView {
@@ -83,6 +93,8 @@ export interface AtlasUnitView {
   standsFor?: { key: UnitKey; title: string; chosen: boolean };
   /** The library sets a variant for this unit while the learner still holds it. */
   variantOffer?: { key: UnitKey; title: string };
+  /** Key into `AtlasView.emblems` when the unit has a Sinnbild. */
+  emblem?: string;
 }
 
 export interface AtlasView {
@@ -116,6 +128,11 @@ export interface AtlasView {
   settle: { pending: number; mayWrite: boolean };
   /** The resolved home region key, after the fallback; null = whole lens. */
   home: string | null;
+  /**
+   * Sinnbilder by subject key, each once: canonical SVG and glyph. Untrusted
+   * content, shown only as an image and as text.
+   */
+  emblems: Record<string, ResolvedEmblem>;
 }
 
 export interface ReadAtlasOptions {
@@ -479,6 +496,38 @@ export async function readAtlas(
     else break;
   }
 
+  // ── Sinnbilder: the learner's own, the library's, the seed's ──────────────
+  const shownRegions = [...regions.values()].filter((r) => used.has(r.key));
+  const resolved = await resolveEmblems(db, options.userId, [
+    ...unitViews.map((u) => u.key),
+    ...shownRegions.map((r) => regionEmblemKey(lens.kind, r.key)),
+  ]);
+  const emblems: Record<string, ResolvedEmblem> = {};
+  for (const unit of unitViews) {
+    const emblem = resolved.get(unit.key);
+    if (!emblem) continue;
+    emblems[unit.key] = emblem;
+    unit.emblem = unit.key;
+  }
+  // A leaf region without its own shows its first unit's, in land order.
+  const firstWithEmblem = new Map<string, UnitKey>();
+  for (const hex of land) {
+    if (hex.unit && emblems[hex.unit] && !firstWithEmblem.has(hex.region)) {
+      firstWithEmblem.set(hex.region, hex.unit);
+    }
+  }
+  const parents = new Set(shownRegions.map((r) => r.parentKey));
+  for (const region of shownRegions) {
+    const key = regionEmblemKey(lens.kind, region.key);
+    const emblem = resolved.get(key);
+    if (emblem) {
+      emblems[key] = emblem;
+      region.emblem = key;
+    } else if (!parents.has(region.key)) {
+      region.emblem = firstWithEmblem.get(region.key);
+    }
+  }
+
   const missingRegions = [...regions.values()].filter(
     (r) => used.has(r.key) && !storedKeys.has(r.key),
   ).length;
@@ -490,7 +539,7 @@ export async function readAtlas(
       levels: [...lens.levels],
       colourLevel: lens.colourLevel,
     },
-    regions: [...regions.values()].filter((r) => used.has(r.key)),
+    regions: shownRegions,
     islands,
     land,
     units: unitViews,
@@ -505,5 +554,6 @@ export async function readAtlas(
       mayWrite: options.mayWrite ?? false,
     },
     home,
+    emblems,
   };
 }

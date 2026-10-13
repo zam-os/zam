@@ -1,7 +1,7 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 7 done (2026-10-13), and the owner's decisions from
-the first Studio check built ("Between Phases 7 and 8"). The ADR gained Decision 12 and the
+**Status:** Phases 1 to 8 done (2026-10-13), with the owner's decisions from
+the first Studio check built between Phases 7 and 8. The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -54,9 +54,9 @@ what the learner knows.
   in, variants (D1, D9, D12) — `36832ac1`; see "As built"
 - [x] **After Phase 7** — owner decisions from the first Studio check: the
   atlas always on in place of the 3D graph, a busy indicator, an honest
-  region due count and going through a region again — this commit; see
+  region due count and going through a region again — `3beb9e5c`; see
   "Between Phases 7 and 8"
-- [ ] **Phase 8** — Sinnbilder (D6)
+- [x] **Phase 8** — Sinnbilder (D6) — this commit; see "As built"
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
@@ -1363,6 +1363,97 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
   - `auto` writes shared only with the right. A non-curator on a team
     library writes personal (Postgres harness).
   - The personal row wins in `resolveEmblem`.
+
+**As built.**
+
+- **Migration M043** (schema version 43) adds `emblems` (knowledge, in
+  `KNOWLEDGE_TABLES`) and `learner_emblems` (learning state, with RLS like
+  `user_settings` and in `RLS_PROTECTED_TABLES`). Both are in the snapshot
+  tables.
+- **Subject keys** for regions are `region:<lens kind>:<region key>`, not the
+  lens's ULID as planned. A lens kind belongs to exactly one planet, so the
+  key is just as unique. It also works before the lens is stored, survives a
+  rebuild of the lens rows, and an agent can read it.
+- **The validator** (`src/kernel/atlas/emblem.ts`) is as planned, with these
+  details:
+  - A leading XML declaration is dropped.
+  - Attribute values may hold only `A–Z a–z 0–9 space . , # % ( ) + -`. That
+    rules out quotes, `:` and `/`, so no URL of any kind.
+  - Text is allowed only inside `text` and `tspan`.
+  - At most 400 elements, nested at most 24 deep.
+  - `glyphEmblemSvg` turns a glyph alone into a Sinnbild. That is the
+    Studio's "Eigenes Kurzzeichen …", and it keeps `svg NOT NULL`.
+- **Storage** (`src/kernel/atlas/emblems.ts`):
+  - `setEmblem`, `clearPersonalEmblem` and `clearSharedEmblem` (curator only;
+    added so a bad shared Sinnbild can go).
+  - `resolveEmblems` resolves in bulk, `resolveEmblem` one subject.
+  - `revalidateEmblems` re-checks older rows. The bridge runs it before every
+    write. Reads re-check older rows in memory, so a row that fails today's
+    rules is never shown, even before it is dropped.
+- **The seed** (`src/kernel/atlas/weltwissen-emblems.ts`) is the spike's 76
+  Sinnbilder, ported as they were: Bereiche, Fächer, Gebiete and one
+  chalkboard per grade. `seedEmblem` maps a Weltwissen or Schule region key
+  to them. A Schule Fach reuses the Weltwissen Fach's Sinnbild. Themen and
+  Lernbereiche have none of their own, so as leaves they show their first
+  unit's.
+- **The read.** `readAtlas` returns each Sinnbild once in `emblems`, and
+  regions and units point to it with `emblem`. The leaf rule follows land
+  order.
+- **Bridge.**
+  - `atlas-emblem-set` takes an SVG or a glyph; `--from-studio` records the
+    author as a person.
+  - `atlas-emblem-clear`.
+  - `atlas-emblem-draw` (added): the first text model draws a Sinnbild from
+    the subject's title and path. It runs through
+    `src/cli/llm/emblem-draw.ts`, and a refused drawing goes back to the
+    model once with the validator's reason. Without it, a learner without an
+    agent would have no way to a Sinnbild beyond typing a sign (Studio
+    first).
+  - None of the three is in `STUDIO_BRIDGE_COMMANDS`.
+  - `get-review --media` returns the unit's Sinnbild.
+- **MCP.**
+  - `zam_atlas_missing_emblems` carries `readOnlyHint` and is not
+    pre-approved. It returns `untrusted: true` and the drawing rules.
+  - `zam_atlas_set_emblem` writes, so the host asks. The canonical form it
+    returns is marked `untrusted`.
+- **Studio.**
+  - Region discs show their Sinnbild, and keep the initials where there is
+    none.
+  - A unit with a Sinnbild shows it on a light disc in place of its title
+    until the hex is 70 px; closer in, the title sits below it. A sketched
+    unit's Sinnbild is faint.
+  - The region and unit panels show the Sinnbild with its glyph and where it
+    comes from: own, the library's, the seed's, or the first unit's. They
+    offer *Sinnbild zeichnen lassen*, *Eigenes Kurzzeichen …* and *Eigenes
+    entfernen*.
+  - Search results carry a small Sinnbild.
+  - The review card shows the unit's Sinnbild only with the answer, after
+    reveal. A glyph such as "a² + b² = c²" would give the answer away before
+    it.
+- **Not done:**
+  - Learning-graph nodes: the 3D graph is an alpha since the Studio check,
+    and the 2D graph lives in the MCP Apps panel (Phase 10).
+  - The outline view stays text only.
+- **Checked** in a temporary preview page (removed again) with real
+  `readAtlas` output:
+  - the seed Sinnbilder on the region discs;
+  - units with drawn and glyph Sinnbilder at both zooms, in light and dark;
+  - the panel's Sinnbild section, the refusal without a text model, the
+    glyph form, and Sinnbilder in search results.
+- **Tests.**
+  - `tests/kernel/atlas-emblem.test.ts`:
+    - every seed Sinnbild validates, and every seed region has one;
+    - the rejection list, the limits and the canonical form (fixed order,
+      idempotent, input never stored);
+    - the scopes, personal winning, the seed fallback, `revalidateEmblems`,
+      and the atlas read with the leaf rule.
+  - `tests/cli/emblem-draw.test.ts`: the draw path with a mocked model,
+    including the correction round.
+  - `tests/cli/bridge-atlas.test.ts`: the three commands end to end, the
+    review card's Sinnbild, and the draw refusal by code.
+  - `tests/kernel/postgres-atlas.test.ts`: a member's first Sinnbild is
+    personal, shared refuses, and the curator's is shared.
+    `postgres-rls.test.ts` isolates `learner_emblems`.
 
 ---
 
