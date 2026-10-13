@@ -720,6 +720,233 @@ const LOCALIZED_COMPLETENESS: Record<
   ja: { complete: "完全", incomplete: "不完全" },
 };
 
+/**
+ * Sanitize active-recall evaluation text returned by an LLM or agent harness.
+ *
+ * Reasoning models and headless agents can leak scratchpads, emit contradictory
+ * drafts before self-correcting, or leave stray emojis/markdown on verdict lines.
+ */
+export function cleanRecallEvaluation(
+  rawText: string,
+  _locale?: string,
+): string {
+  if (!rawText?.trim()) return "";
+  let text = rawText.trim();
+
+  const THINKING_TAGS =
+    "think|thinking|thought|reasoning|scratchpad|antThinking";
+  text = text.replace(
+    new RegExp(
+      `<\\s*(?:${THINKING_TAGS})\\b[^>]*>[\\s\\S]*?<\\s*\\/\\s*(?:${THINKING_TAGS})\\s*>`,
+      "gi",
+    ),
+    "",
+  );
+  text = text.replace(
+    new RegExp(`<\\s*(?:${THINKING_TAGS})\\b[^>]*>[\\s\\S]*?(?=\\{)`, "gi"),
+    "",
+  );
+  text = text.replace(
+    new RegExp(`<\\s*(?:${THINKING_TAGS})\\b[^>]*>`, "gi"),
+    "",
+  );
+  text = text.trim();
+  if (!text) return "";
+
+  let prevText = "";
+  while (prevText !== text) {
+    prevText = text;
+    text = text
+      .replace(/^(?:Evaluation|Bewertung|Feedback)\s*:\s*/i, "")
+      .replace(
+        /^(?:Here is (?:the|my) evaluation|Hier ist (?:die|meine) Bewertung)[^\n]*\r?\n+/i,
+        "",
+      )
+      .trim();
+    if (text.startsWith("```")) {
+      text = text
+        .replace(/^```[a-z0-9_-]*\r?\n?/i, "")
+        .replace(/\r?\n?```$/i, "")
+        .trim();
+    }
+  }
+  if (!text) return "";
+
+  const verdictTerms: string[] = [];
+  for (const loc of Object.values(LOCALIZED_COMPLETENESS)) {
+    verdictTerms.push(loc.complete);
+    verdictTerms.push(loc.incomplete);
+  }
+  const uniqueTerms = Array.from(new Set(verdictTerms))
+    .sort((a, b) => b.length - a.length)
+    .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const termsPattern = uniqueTerms.join("|");
+
+  const canonicalVerdictRegex = new RegExp(
+    `^[ \\t]*(?:\\*{1,2})?((?:${termsPattern})(?:\\s*\\(\\d+\\))?)(?:\\*{1,2})?[^\\p{L}\\p{N}]*$`,
+    "iu",
+  );
+
+  const isVerdictLine = (line: string): boolean => {
+    const trimmed = line.trim();
+    if (!trimmed) return false;
+    if (canonicalVerdictRegex.test(trimmed)) return true;
+    const inlineVerdictRegex = new RegExp(
+      `^(?:\\*{1,2})?(?:${termsPattern})(?:\\s*\\(\\d+\\))?(?:\\*{1,2})?\\s*[\u{1F300}-\u{1FAFF}\u{2600}-\u{27BF}—–\\-:][\\s\\S]*$`,
+      "iu",
+    );
+    return inlineVerdictRegex.test(trimmed);
+  };
+
+  const getCanonicalVerdict = (line: string): string => {
+    const match = line.trim().match(canonicalVerdictRegex);
+    if (match) {
+      return match[1].replace(/\s*\(\s*(\d+)\s*\)/, " ($1)");
+    }
+    const termMatch = line
+      .trim()
+      .match(
+        new RegExp(
+          `^(?:\\*{1,2})?((?:${termsPattern})(?:\\s*\\(\\d+\\))?)`,
+          "iu",
+        ),
+      );
+    if (termMatch) {
+      return termMatch[1].replace(/\s*\(\s*(\d+)\s*\)/, " ($1)");
+    }
+    return line.trim();
+  };
+
+  const isScratchpadHeader = (str: string): boolean => {
+    return /^(?:Thinking(?:\s+process)?|Thought(?:\s+process)?|Reasoning|Scratchpad|Self-correction|Correction)\s*:/i.test(
+      str.trim(),
+    );
+  };
+
+  const isScratchpadText = (str: string): boolean => {
+    const trimmed = str.trim();
+    if (!trimmed) return false;
+    if (/^Winvalid\b/i.test(trimmed)) return true;
+    if (isScratchpadHeader(trimmed)) return true;
+    const metaPhrases = [
+      /\bassess completeness\b/i,
+      /\binstructions completeness\b/i,
+      /\blearner says\b/i,
+      /\blearner's answer says\b/i,
+      /\bthe user wrote\b/i,
+      /\bchain of thought\b/i,
+      /\binternal monologue\b/i,
+      /\bdon't include emoji\b/i,
+      /\bdo not include emoji\b/i,
+      /\bexact verdict\b/i,
+      /\bgive concise\b/i,
+      /\bnumber missing\b/i,
+    ];
+    let matches = 0;
+    for (const phrase of metaPhrases) {
+      if (phrase.test(trimmed)) matches++;
+    }
+    return matches >= 2;
+  };
+
+  const rawLines = text.split(/\r?\n/);
+  const nonEmptyLines = rawLines.map((l) => l.trim()).filter(Boolean);
+  if (nonEmptyLines.length === 1) {
+    const single = nonEmptyLines[0];
+    if (canonicalVerdictRegex.test(single)) {
+      return getCanonicalVerdict(single);
+    }
+    return text;
+  }
+
+  interface Segment {
+    explanationParagraphs: string[];
+    verdictLine?: string;
+  }
+
+  const segments: Segment[] = [];
+  let currentParagraphLines: string[] = [];
+  let currentExplanationParagraphs: string[] = [];
+  let inScratchpadSection = false;
+
+  const flushParagraph = () => {
+    if (currentParagraphLines.length === 0) return;
+    const para = currentParagraphLines.join("\n").trim();
+    currentParagraphLines = [];
+    if (para && !isScratchpadText(para)) {
+      currentExplanationParagraphs.push(para);
+    }
+  };
+
+  for (const rawLine of rawLines) {
+    const line = rawLine.trim();
+    if (!line) {
+      inScratchpadSection = false;
+      flushParagraph();
+      continue;
+    }
+    if (isVerdictLine(line)) {
+      inScratchpadSection = false;
+      flushParagraph();
+      segments.push({
+        explanationParagraphs: currentExplanationParagraphs,
+        verdictLine: line,
+      });
+      currentExplanationParagraphs = [];
+    } else if (inScratchpadSection || isScratchpadHeader(line)) {
+      inScratchpadSection = true;
+      flushParagraph();
+    } else if (isScratchpadText(line)) {
+      flushParagraph();
+    } else {
+      currentParagraphLines.push(rawLine.trimEnd());
+    }
+  }
+  flushParagraph();
+
+  if (currentExplanationParagraphs.length > 0) {
+    segments.push({
+      explanationParagraphs: currentExplanationParagraphs,
+    });
+  }
+
+  const verdictSegments = segments.filter((s) => s.verdictLine !== undefined);
+  if (verdictSegments.length > 0) {
+    const lastVerdictSegment = verdictSegments[verdictSegments.length - 1];
+    const canonicalVerdict = getCanonicalVerdict(
+      lastVerdictSegment.verdictLine!,
+    );
+
+    let explanation = "";
+    if (lastVerdictSegment.explanationParagraphs.length > 0) {
+      explanation = lastVerdictSegment.explanationParagraphs.join("\n\n");
+    } else {
+      for (let i = segments.indexOf(lastVerdictSegment) - 1; i >= 0; i--) {
+        if (segments[i].explanationParagraphs.length > 0) {
+          explanation = segments[i].explanationParagraphs.join("\n\n");
+          break;
+        }
+      }
+      if (!explanation) {
+        const lastSegment = segments[segments.length - 1];
+        if (
+          lastSegment !== lastVerdictSegment &&
+          lastSegment.explanationParagraphs.length > 0
+        ) {
+          explanation = lastSegment.explanationParagraphs.join("\n\n");
+        }
+      }
+    }
+
+    if (explanation) {
+      return `${explanation}\n\n${canonicalVerdict}`;
+    }
+    return canonicalVerdict;
+  }
+
+  return segments.flatMap((s) => s.explanationParagraphs).join("\n\n");
+}
+
 interface ChatCompletionResponse {
   choices?: Array<{
     message?: { content?: string };
@@ -999,8 +1226,8 @@ Judge completeness only, and judge it generously. A vague, imprecise or clumsily
 Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
 2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
-3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours.
-4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
+3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours. Do NOT add emojis, symbols, or formatting to the verdict line.
+4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper. Do not expose chain-of-thought, internal reasoning, scratchpads, self-corrections, or intermediate drafts. Never output contradictory verdicts or multiple attempts.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
@@ -1024,7 +1251,7 @@ Evaluation:`;
         user: userPrompt,
       });
       return {
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
         providerName: endpoint.providerName,
       };
@@ -1100,7 +1327,7 @@ Evaluation:`;
       : RECALL_EVALUATION_MAX_OUTPUT_TOKENS;
     try {
       return await attemptEvaluation(firstBudget, firstEffort).then((text) => ({
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model,
         providerName: endpoint.providerName,
       }));
@@ -1121,7 +1348,7 @@ Evaluation:`;
         null,
       );
       return {
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model,
         providerName: endpoint.providerName,
       };
