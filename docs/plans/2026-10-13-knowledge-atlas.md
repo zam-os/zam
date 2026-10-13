@@ -1,6 +1,7 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 5 done (2026-10-13). The ADR gained Decision 12 and the
+**Status:** Phases 1 to 6 done (2026-10-13); the Studio check in the Tauri
+app is still open. The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -46,9 +47,9 @@ what the learner knows.
 - [x] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
   — `03d7432a`; see "As built"
 - [x] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
-  review (D3, D10) — this commit; see "As built"
-- [ ] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
-  D10)
+  review (D3, D10) — `af4064f2`; see "As built"
+- [x] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
+  D10) — this commit; see "As built"
 - [ ] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
   in, variants (D1, D9, D12)
 - [ ] **Phase 8** — Sinnbilder (D6)
@@ -846,6 +847,66 @@ enrolled, then check each of these:
 - Dark mode works.
 - The outline view works by keyboard alone.
 - Panning and zooming stay smooth with all cells enrolled.
+
+**As built.**
+
+- **Files.** `desktop/src/atlas/` holds four modules. None imports
+  `main.ts`, Tauri or Three.js, so the MCP Apps panel can reuse them
+  (Phase 10); a test guards it.
+  - `layout.ts` (pure) builds the map from `atlas-read`: cells at their
+    island's offset, region paths, shapes and label points, borders per
+    level, island centres, search and the panel questions.
+  - `render.ts` is the canvas map, ported from the spike without portals,
+    notes and Sinnbilder.
+  - `outline.ts` is the outline view.
+  - `view.ts` mounts the toolbar, the map, the outline and the panels, and
+    handles the keys.
+- **Levels count from 0**, as in the kernel: level 0 is the island, and
+  `depth` (the number of levels) means single units. The spike counted from
+  1.
+- **Colour.**
+  - `palette.ts` gained `regionShade` and an optional `shade` on
+    `conditionFill`, so sibling Gebiete differ in shade. The default shade
+    keeps Phase 2's colours unchanged.
+  - Patterns go to the level below the colour level, by sibling rank, since
+    the wire's `pattern` is still null.
+  - The condition textures follow `CONDITION_TEXTURE`. Blank land gets
+    neither texture nor name, but keeps its region's pattern.
+- **The "eigene Einheit" mark** is a folded corner at the upper left of the
+  hex: light with an ink rim, so it reads on bright and on dark land.
+- **Sinnbild discs** carry the region's initials until Phase 8.
+- **Region condition.** `weakestCondition` (new in `condition.ts`) applies a
+  unit's card rule to the units of a region: the weakest wins, unpractised
+  counts only when nothing is practised, and no card does not count. On a
+  large region this is often "wohl vergessen"; the due count beside it says
+  how much.
+- **Region review.** `get-review` also takes `--atlas-region` and
+  `--atlas-lens`, because the Studio fetches one card at a time. In a region
+  review the Studio offers no new cards, skips the keep-going and bonus
+  offers, and the summary leads back to the map, which re-reads on every
+  visit.
+- **Settings.** The card "Knowledge atlas (Alpha)" sits in the Advanced
+  tier, next to the other alpha card. The knowledge map's alpha switch no
+  longer exists: since the Studio redesign, Quellen shows the map.
+- **Own unit titles.** `loadUnits` now names a token without a title by its
+  concept, before falling back to its slug.
+- **Small fixes found in the preview.**
+  - Fitting a region zooms in to at most 64 px per hex.
+  - Island titles that would overlap a larger island's are left out until
+    you zoom closer.
+  - Region discs fade once units are the focus.
+- **Checked** in a temporary preview page (removed again) with every
+  bundled tile installed: 433 units on 1049 hexes, the map opens home, zoom
+  levels, search, lens switch with the selection kept, dark mode, and the
+  outline by keyboard. One full-map draw takes about 10 ms.
+- **Not yet checked in the Tauri app:** the nav entry, the Settings switch
+  and a region review recolouring after ratings.
+- **Tests.**
+  - `tests/desktop/atlas-layout.test.ts` covers the geometry on real reads
+    and the module boundaries.
+  - `tests/cli/bridge-atlas.test.ts` covers `get-review --atlas-region`.
+  - The palette, condition and lens tests cover shades, `weakestCondition`
+    and concept titles.
 
 ---
 

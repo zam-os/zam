@@ -182,6 +182,8 @@ import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
+  AtlasFeatureResponse,
+  AtlasLensKindWire,
   ModelRefreshCapabilitiesResponse,
 } from "../../src/bridge/protocol.js";
 import {
@@ -346,7 +348,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view" | "knowledge-map-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view" | "knowledge-map-view" | "atlas-view";
 type ThemePreference = "light" | "dark";
 
 interface StudyLearningSettings {
@@ -395,6 +397,12 @@ const sessionRatingTally: {
 /** Due count when the current study session started (summary denominator). */
 let sessionStartedDue = 0;
 let sessionSummaryVisible = false;
+/**
+ * A region review from the knowledge atlas (ADR 2026-10-13): the session asks
+ * only for that region's due cards, offers no new ones, and ends back on the
+ * map. Null for an ordinary session.
+ */
+let studyAtlasRegion: { lens: AtlasLensKindWire; key: string } | null = null;
 /**
  * Snapshot of the #1 (fallback-order) model when Settings was opened. Leaving
  * Settings re-runs ensure-llm when this fingerprint differs so the header AI
@@ -885,6 +893,7 @@ function initializeTranslations() {
   setNavLabel("nav-settings", t("nav_settings"));
   setNavLabel("nav-stats", t("nav_stats"));
   setNavLabel("btn-open-graph", t("nav_graph"));
+  setNavLabel("nav-atlas", t("nav_atlas"));
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
     t("stats_subtitle");
@@ -1131,6 +1140,17 @@ function initializeTranslations() {
     t("team_db_learn_locally");
   document.getElementById("btn-team-db-leave")!.textContent =
     t("team_db_leave");
+
+  document.getElementById("lbl-settings-atlas-title-text")!.textContent =
+    t("atlas_settings_title");
+  document.getElementById("lbl-settings-atlas-alpha")!.textContent =
+    t("secrets_vault_alpha");
+  document.getElementById("lbl-settings-atlas-help")!.textContent =
+    t("atlas_settings_help");
+  document.getElementById("lbl-atlas-toggle")!.textContent =
+    t("atlas_settings_toggle");
+  document.getElementById("lbl-atlas-toggle-help")!.textContent =
+    t("atlas_settings_toggle_help");
 
   document.getElementById("lbl-settings-secrets-title-text")!.textContent =
     t("secrets_vault_title");
@@ -4469,6 +4489,7 @@ function setActiveNav(viewId: AppView): void {
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
     "graph-view": "btn-open-graph",
+    "atlas-view": "nav-atlas",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -5242,12 +5263,16 @@ function switchView(
     // lazy init three when first shown
     requestAnimationFrame(() => initOrShowGraph());
   } else {
-    mainContainer?.classList.remove('graph-full');
+    mainContainer?.classList.toggle('graph-full', viewId === "atlas-view");
   }
+  if (viewId !== "study-view") studyAtlasRegion = null;
+  // Re-read on every visit: a review may have changed the map.
+  if (viewId === "atlas-view") void openAtlas();
 
   if (viewId === "settings-view") {
     renderSettingsToc();
     refreshSettingsData();
+    void refreshAtlasFeature();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
@@ -6548,10 +6573,20 @@ async function loadNextCard(
     const reviewArgs = [
       "--media",
       "--max-new",
-      sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+      !studyAtlasRegion && sessionNewRemaining + sessionExtraNewRemaining > 0
+        ? "1"
+        : "0",
       "--time-zone",
       learnerTimeZone(),
     ];
+    if (studyAtlasRegion) {
+      reviewArgs.push(
+        "--atlas-region",
+        studyAtlasRegion.key,
+        "--atlas-lens",
+        studyAtlasRegion.lens,
+      );
+    }
     const dynamicQuestionAllowed =
       shouldRequestDynamicStudyQuestion(
         currentStudyLearningSettings.learningMode,
@@ -6568,7 +6603,10 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      await offerEmptyQueueChoices(requestId);
+      // A region review ends when the region has nothing due: no pulling
+      // forward, no bonus from elsewhere.
+      if (studyAtlasRegion) await finishStudySession();
+      else await offerEmptyQueueChoices(requestId);
       return;
     }
 
@@ -8710,7 +8748,9 @@ function renderSessionSummary(): void {
     spreadEl.appendChild(ready);
   }
 
-  doneBtn.textContent = t("btn_back_to_dashboard");
+  doneBtn.textContent = t(
+    studyAtlasRegion ? "atlas_back_to_map" : "btn_back_to_dashboard",
+  );
 
   document.getElementById("study-active-card")?.classList.add("hidden");
   document.getElementById("study-topbar")?.classList.add("hidden");
@@ -8755,13 +8795,93 @@ async function finishStudySession(): Promise<void> {
 }
 
 function leaveSessionSummaryToDashboard(): void {
+  const backToAtlas = studyAtlasRegion !== null;
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-topbar")?.classList.remove("hidden");
   sessionSummaryVisible = false;
   resetSessionTally();
+  if (backToAtlas) {
+    switchView("atlas-view");
+    return;
+  }
   switchView("dashboard-view");
   void loadDashboard();
+}
+
+// ── KNOWLEDGE ATLAS (alpha, ADR 2026-10-13) ───────────────────────────────
+let atlasEnabled = false;
+
+async function openAtlas(): Promise<void> {
+  const root = document.getElementById("atlas-root");
+  if (!root) return;
+  const { showAtlasView } = await import("./atlas/view.js");
+  await showAtlasView(root, {
+    reviewRegion: (lens, key) => void startAtlasRegionReview(lens, key),
+  });
+}
+
+/** Review one region's due cards; the summary leads back to the map. */
+async function startAtlasRegionReview(
+  lens: AtlasLensKindWire,
+  key: string,
+): Promise<void> {
+  prepareStudyViewForSession();
+  await configureSessionWorkload();
+  sessionNewRemaining = 0;
+  await loadStudyLearningSettings();
+  await ensureUiLearningSession("Atlas region review");
+  switchView("study-view");
+  studyAtlasRegion = { lens, key };
+  await loadNextCard();
+}
+
+/** The machine-local switch decides whether the atlas has a nav entry. */
+async function refreshAtlasFeature(): Promise<void> {
+  try {
+    const feature = await runBridge<AtlasFeatureResponse>("atlas-feature");
+    atlasEnabled = feature.enabled === true;
+  } catch (err) {
+    console.warn("Failed to read the atlas switch:", err);
+    atlasEnabled = false;
+  }
+  applyAtlasFeature();
+}
+
+function applyAtlasFeature(): void {
+  const nav = document.getElementById("nav-atlas");
+  if (nav) nav.hidden = !atlasEnabled;
+  const toggle = document.getElementById("toggle-atlas") as HTMLInputElement | null;
+  if (toggle) toggle.checked = atlasEnabled;
+  if (
+    !atlasEnabled &&
+    document.getElementById("atlas-view")?.classList.contains("active")
+  ) {
+    switchView("dashboard-view");
+  }
+}
+
+async function setAtlasFeature(enabled: boolean): Promise<void> {
+  const status = document.getElementById("atlas-feature-status");
+  if (status) status.textContent = "";
+  try {
+    const feature = await runBridge<AtlasFeatureResponse>("atlas-feature", [
+      enabled ? "--enable" : "--disable",
+    ]);
+    atlasEnabled = feature.enabled === true;
+    if (status) {
+      status.textContent = t(atlasEnabled ? "atlas_settings_on" : "atlas_settings_off");
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("atlas_settings_failed", { message: errorMessage(err) });
+    }
+  }
+  applyAtlasFeature();
+  if (!atlasEnabled) {
+    const { destroyAtlasView } = await import("./atlas/view.js");
+    destroyAtlasView();
+  }
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -8868,6 +8988,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state; then, off the critical path, an overdue
   // capability check for cloud models.
   void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());
+  void refreshAtlasFeature();
   void loadAppVersion();
   repairInstallationOnVersionChange();
 
@@ -8894,6 +9015,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-settings")?.addEventListener("click", () => {
     switchView("settings-view");
+  });
+
+  document.getElementById("nav-atlas")?.addEventListener("click", () => {
+    switchView("atlas-view");
+  });
+
+  document.getElementById("toggle-atlas")?.addEventListener("change", (event) => {
+    void setAtlasFeature((event.target as HTMLInputElement).checked);
   });
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {

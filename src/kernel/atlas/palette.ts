@@ -90,17 +90,53 @@ const FOG: Readonly<Record<PaletteTheme, Rgb>> = Object.freeze({
 });
 
 /**
+ * How a region below the colour level sets itself apart from its siblings:
+ * a hue shift and a lightness (light theme), so neighbouring Gebiete of one
+ * Fach read as one family in different shades.
+ */
+export interface Shade {
+  hueShift: number;
+  lightness: number;
+}
+
+/** The plain shade: the subject hue at its own lightness. */
+export const BASE_SHADE: Shade = Object.freeze({ hueShift: 0, lightness: 55 });
+
+const SHADE_SHIFT = [0, 16, -16, 30, -30, 8, -8, 22];
+const SHADE_LIGHT = [55, 66, 47, 72, 42, 61, 51, 68];
+
+/**
+ * The shade of the `index`-th region below the colour level. `leafIndex`, the
+ * place of a deeper leaf among its siblings, adds a small step, so a Thema
+ * differs a little from the next Thema of the same Gebiet.
+ */
+export function regionShade(index: number, leafIndex: number | null): Shade {
+  const i = Math.max(0, index) % SHADE_SHIFT.length;
+  if (leafIndex === null) {
+    return { hueShift: SHADE_SHIFT[i], lightness: SHADE_LIGHT[i] };
+  }
+  const li = Math.max(0, leafIndex);
+  return {
+    hueShift: SHADE_SHIFT[i] + ((li % 3) - 1) * 4,
+    lightness: SHADE_LIGHT[i] + (li % 2 ? 4 : -2),
+  };
+}
+
+/**
  * Fill colour of a unit at this hue in this condition. `null` means the
- * learner holds no card for it: barely tinted parchment.
+ * learner holds no card for it: barely tinted parchment. `shade` sets a
+ * region apart from its siblings (`regionShade`).
  */
 export function conditionFill(
   hue: number,
   condition: Condition | null,
   theme: PaletteTheme,
+  shade: Shade = BASE_SHADE,
 ): Rgb {
   const dark = theme === "dark";
   const saturation = dark ? 48 : 62;
-  const lightness = dark ? 55 * 0.72 : 55;
+  const lightness = dark ? shade.lightness * 0.72 : shade.lightness;
+  hue += shade.hueShift;
   const base = hslToRgb(hue, saturation, lightness);
   switch (condition) {
     case "known":

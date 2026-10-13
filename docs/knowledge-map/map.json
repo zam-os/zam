@@ -848,6 +848,18 @@
       }
     },
     {
+      "id": "knowledge-atlas",
+      "parent": "surfaces",
+      "label": "Knowledge atlas",
+      "link": "include",
+      "text": "The knowledge atlas (alpha) draws a library as islands of hexes: colour says which subject, texture says how well the learner remembers it.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "desktop/src/atlas/render.ts",
+        "src/kernel/atlas/land.ts"
+      ]
+    },
+    {
       "id": "pairing-optional",
       "parent": "mobile-standalone",
       "label": "Optional pairing",
@@ -1255,6 +1267,12 @@
       "to": "fsrs6",
       "kind": "uses",
       "link": "takes due dates from"
+    },
+    {
+      "from": "knowledge-atlas",
+      "to": "card",
+      "kind": "requires",
+      "link": "colours by"
     }
   ]
 }

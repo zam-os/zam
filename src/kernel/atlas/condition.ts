@@ -127,12 +127,28 @@ export function unitCondition(
   now: Date,
   params?: Partial<FSRSParameters>,
 ): Condition | null {
-  if (cards.length === 0) return null;
-  let weakest: Condition = "unpractised";
-  for (const card of cards) {
-    const condition = cardCondition(card, now, params);
-    if (condition === "unpractised") continue;
-    weakest = weakest === "unpractised" ? condition : worse(weakest, condition);
+  return weakestCondition(
+    cards.map((card) => cardCondition(card, now, params)),
+  );
+}
+
+/**
+ * The weakest of several conditions, by the rule `unitCondition` applies to
+ * cards: unpractised counts only when nothing has been practised, and `null`
+ * (no card) does not count at all. A region's condition is the weakest of its
+ * units.
+ */
+export function weakestCondition(
+  conditions: Iterable<Condition | null>,
+): Condition | null {
+  let weakest: Condition | null = null;
+  for (const condition of conditions) {
+    if (condition === null) continue;
+    if (weakest === null || weakest === "unpractised") {
+      weakest = condition;
+    } else if (condition !== "unpractised") {
+      weakest = worse(weakest, condition);
+    }
   }
   return weakest;
 }

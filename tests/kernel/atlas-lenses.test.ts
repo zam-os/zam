@@ -353,6 +353,8 @@ describe("with a database", () => {
     const units = await loadUnits(db);
     const ownUnit = units.find((u) => u.key === `token:${own.id}`);
     expect(ownUnit?.own).toBe(true);
+    // Without a title of its own, the unit is named by its concept, not its slug.
+    expect(ownUnit?.title).toBe("Stoffe an Farbe und Geruch erkennen");
     const published = units.filter((u) => u.atomId !== null);
     expect(published.length).toBeGreaterThan(0);
     expect(published.every((u) => !u.own)).toBe(true);

@@ -9,6 +9,7 @@ export {
   cardCondition,
   DECAY_LAPSES,
   unitCondition,
+  weakestCondition,
 } from "./condition.js";
 export type { Hex, Point } from "./hex.js";
 export {
@@ -68,13 +69,20 @@ export {
   WELTWISSEN_LENS,
   weltwissenSeedRows,
 } from "./lenses.js";
-export type { ConditionTexture, PaletteTheme, Rgb } from "./palette.js";
+export type {
+  ConditionTexture,
+  PaletteTheme,
+  Rgb,
+  Shade,
+} from "./palette.js";
 export {
+  BASE_SHADE,
   CONDITION_TEXTURE,
   conditionFill,
   hslToRgb,
   hueFor,
   hueKeyForDomain,
+  regionShade,
   rgbCss,
   SUBJECT_HUES,
 } from "./palette.js";

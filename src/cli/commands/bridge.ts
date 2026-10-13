@@ -1126,10 +1126,25 @@ bridgeCommand
     "--media",
     "Inline the card's media as base64 (rendering surfaces only)",
   )
+  .option(
+    "--atlas-region <key>",
+    "Only the due cards of this atlas region and below (no new cards)",
+  )
+  .option(
+    "--atlas-lens <kind>",
+    "Lens of --atlas-region: weltwissen (default) or schule",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const tokenIds = opts.atlasRegion
+          ? await regionTokenIds(
+              db,
+              atlasLens(opts.atlasLens),
+              String(opts.atlasRegion),
+            )
+          : undefined;
         const result = await handleGetReview(db, {
           user: userId,
           maxNew: opts.maxNew === undefined ? undefined : Number(opts.maxNew),
@@ -1138,6 +1153,7 @@ bridgeCommand
           knowledgeContext: opts.knowledgeContext,
           includeMedia: opts.media === true,
           timeZone: opts.timeZone,
+          tokenIds,
         });
         jsonOut(result);
       } catch (err) {

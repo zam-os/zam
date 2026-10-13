@@ -207,6 +207,8 @@ export interface GetReviewParams {
   roots?: readonly string[];
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
+  /** Only these tokens' due cards, no new ones: a region review (ADR 2026-10-13). */
+  tokenIds?: readonly string[];
   /**
    * Inline the card's media as base64. Opt-in because a rendering surface
    * (Studio) needs the bytes, while an agent reading this JSON would only get
@@ -221,9 +223,10 @@ export async function getReview(db: Database, params: GetReviewParams) {
   const queue = await buildReviewQueue(db, {
     userId,
     maxReviews: 1,
-    maxNew: params.maxNew ?? 1,
+    maxNew: params.tokenIds ? 0 : (params.maxNew ?? 1),
     knowledgeContext: params.knowledgeContext || undefined,
     timeZone: params.timeZone,
+    tokenIds: params.tokenIds,
   });
   const item = queue.items[0];
 

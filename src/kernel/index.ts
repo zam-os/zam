@@ -86,12 +86,14 @@ export type {
   Rgb,
   SettlePlan,
   SettleResult,
+  Shade,
   ThreadKind,
   UnitKey,
   UnitRow,
 } from "./atlas/index.js";
 export {
   applySettle,
+  BASE_SHADE,
   CONDITION_BAND_RATIOS,
   CONDITION_TEXTURE,
   cardCondition,
@@ -116,6 +118,7 @@ export {
   planForSnapshot,
   planSettle,
   readAtlas,
+  regionShade,
   regionTokenIds,
   rgbCss,
   SCHULE_LENS,
@@ -128,6 +131,7 @@ export {
   unitKeyFor,
   WELTWISSEN_LENS,
   WELTWISSEN_SEED,
+  weakestCondition,
 } from "./atlas/index.js";
 export type {
   ADOCredentials,

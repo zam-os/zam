@@ -3,12 +3,14 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
+  BASE_SHADE,
   CONDITION_TEXTURE,
   conditionFill,
   hslToRgb,
   hueFor,
   hueKeyForDomain,
   type Rgb,
+  regionShade,
   rgbCss,
   SUBJECT_HUES,
 } from "../../src/kernel/atlas/palette.js";
@@ -97,6 +99,25 @@ describe("conditionFill", () => {
     ] as const) {
       expect(CONDITION_TEXTURE[condition]).not.toBe("none");
     }
+  });
+
+  it("shades sibling regions apart and keeps the plain shade as default", () => {
+    expect(conditionFill(hue, "known", "light", BASE_SHADE)).toEqual(
+      conditionFill(hue, "known", "light"),
+    );
+    expect(regionShade(0, null)).toEqual(BASE_SHADE);
+    const first = conditionFill(hue, "known", "light", regionShade(0, null));
+    const second = conditionFill(hue, "known", "light", regionShade(1, null));
+    expect(second).not.toEqual(first);
+    // Wraps instead of running out of shades.
+    expect(regionShade(8, null)).toEqual(regionShade(0, null));
+    // A leaf below the shade differs a little from its sibling leaf.
+    expect(regionShade(2, 0)).not.toEqual(regionShade(2, 1));
+    // The condition still decides how vivid a shaded region is.
+    const shade = regionShade(3, 1);
+    expect(chroma(conditionFill(hue, "known", "light", shade))).toBeGreaterThan(
+      chroma(conditionFill(hue, "forgotten", "light", shade)),
+    );
   });
 
   it("converts HSL and formats CSS", () => {

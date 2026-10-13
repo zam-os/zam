@@ -59,6 +59,12 @@
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
           <span class="nav-label">Knowledge graph</span>
         </button>
+        <!-- Knowledge atlas alpha (ADR 2026-10-13): shown only while this
+             machine's switch is on. -->
+        <button id="nav-atlas" class="nav-btn" type="button" hidden>
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>
+          <span class="nav-label">Knowledge atlas</span>
+        </button>
         <button id="nav-stats" class="nav-btn" type="button">
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
           <span class="nav-label">Statistics</span>
@@ -418,6 +424,12 @@
            This section is unused; Settings still compares them. -->
       <section id="knowledge-map-view" class="view">
         <div id="knowledge-map-root"></div>
+      </section>
+
+      <!-- VIEW: KNOWLEDGE ATLAS (alpha, ADR 2026-10-13). desktop/src/atlas/
+           mounts the map, the outline and the panels lazily. -->
+      <section id="atlas-view" class="view">
+        <div id="atlas-root" class="atlas-root"></div>
       </section>
 
       <section id="stats-view" class="view">
@@ -923,6 +935,32 @@
                   <p id="team-db-status" class="sub-label" aria-live="polite"></p>
                 </div>
               </div>
+            </article>
+
+            <!-- Knowledge atlas alpha (ADR 2026-10-13, Decision 10): a switch
+                 on this machine, off by default. Only this card writes it; no
+                 tool and no setting can. -->
+            <article class="card frosted settings-card" id="atlas-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-atlas-title">
+                    <span id="lbl-settings-atlas-title-text">Knowledge atlas</span>
+                    <span id="lbl-settings-atlas-alpha" class="settings-badge-alpha">Alpha</span>
+                  </h2>
+                  <p id="lbl-settings-atlas-help" class="settings-card-help">
+                    A map of what you know: subjects as islands, coloured by how well
+                    you remember them.
+                  </p>
+                </div>
+              </div>
+              <label class="settings-toggle" for="toggle-atlas">
+                <input type="checkbox" id="toggle-atlas" />
+                <span>
+                  <span id="lbl-atlas-toggle">Show the knowledge atlas</span>
+                  <span id="lbl-atlas-toggle-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="atlas-feature-status" class="sub-label" aria-live="polite"></p>
             </article>
 
             <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out

@@ -305,6 +305,29 @@ describe("zam bridge atlas commands", () => {
     expect(none.cards).toEqual([]);
   });
 
+  it("serves the Studio one due card of a region at a time", () => {
+    const one = runCliJson([
+      "bridge",
+      "get-review",
+      "--no-dynamic-question",
+      "--max-new",
+      "1",
+      "--atlas-region",
+      "natur.physik",
+    ]);
+    expect(one.hasReview).toBe(true);
+    expect(physikTokenIds).toContain(one.card.tokenId);
+    expect(one.card.state).not.toBe("new");
+    const none = runCliJson([
+      "bridge",
+      "get-review",
+      "--no-dynamic-question",
+      "--atlas-region",
+      "sprache",
+    ]);
+    expect(none.hasReview).toBe(false);
+  });
+
   it("falls back to the nearest surviving ancestor of a stored home", async () => {
     const db = await openDatabase({
       dbPath,

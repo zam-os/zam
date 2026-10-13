@@ -141,7 +141,7 @@ const LEHRPLANPLUS =
 export async function loadUnits(db: Database): Promise<UnitRow[]> {
   const rows = (await db
     .prepare(
-      `SELECT t.id, t.slug, t.title, t.domain, t.atom_id, t.source_link,
+      `SELECT t.id, t.slug, t.title, t.concept, t.domain, t.atom_id, t.source_link,
               a.title AS atom_title, a.domain AS atom_domain
          FROM tokens t
          LEFT JOIN learning_atoms a ON a.id = t.atom_id
@@ -152,6 +152,7 @@ export async function loadUnits(db: Database): Promise<UnitRow[]> {
     id: string;
     slug: string;
     title: string | null;
+    concept: string | null;
     domain: string;
     atom_id: string | null;
     source_link: string | null;
@@ -178,7 +179,7 @@ export async function loadUnits(db: Database): Promise<UnitRow[]> {
       key,
       title: atomId
         ? (row.atom_title as string)
-        : row.title?.trim() || row.slug,
+        : row.title?.trim() || row.concept?.trim() || row.slug,
       domain: (atomId ? row.atom_domain : row.domain) ?? row.domain,
       atomId,
       tokenIds: [row.id],

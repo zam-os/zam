@@ -5,6 +5,7 @@ import {
   cardCondition,
   DECAY_LAPSES,
   unitCondition,
+  weakestCondition,
 } from "../../src/kernel/atlas/condition.js";
 import {
   createEmptyCard,
@@ -147,6 +148,20 @@ describe("cardCondition", () => {
       lastReviewAt: sqlite(new Date(card.lastReviewAt as string)),
     };
     expect(cardCondition(asSqlite, NOW)).toBe(cardCondition(card, NOW));
+  });
+});
+
+describe("weakestCondition", () => {
+  it("takes the weakest practised condition of a region's units", () => {
+    expect(weakestCondition(["known", "overdue", "due"])).toBe("overdue");
+    expect(weakestCondition(["forgotten", "known"])).toBe("forgotten");
+  });
+
+  it("counts unpractised only when nothing is practised, and no card not at all", () => {
+    expect(weakestCondition(["unpractised", "known", null])).toBe("known");
+    expect(weakestCondition(["unpractised", null])).toBe("unpractised");
+    expect(weakestCondition([null, null])).toBeNull();
+    expect(weakestCondition([])).toBeNull();
   });
 });
 
