@@ -1,6 +1,6 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phase 1 done (2026-10-13). The ADR gained Decision 12 and the
+**Status:** Phases 1 and 2 done (2026-10-13). The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -39,8 +39,8 @@ what the learner knows.
 ## Status
 
 - [x] **Phase 1** — kernel condition function (D4) — `3a1ae497`
-- [ ] **Phase 2** — shared colour language; the learning graph adopts hue and
-  condition (D4)
+- [x] **Phase 2** — shared colour language; the learning graph adopts hue and
+  condition (D4) — this commit; see "As built"
 - [ ] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
   (D1–D3)
 - [ ] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
@@ -341,6 +341,28 @@ constants are exported from `src/kernel/index.ts`.
 
 **Done when** both graph views show subject hue and condition in light and
 dark mode, and the condition reads as text in tooltips.
+
+**As built.**
+
+- `palette.ts` computes the colours (`conditionFill`, `CONDITION_TEXTURE`,
+  `hueKeyForDomain`). That serves canvas, Three.js and SVG alike, so no CSS
+  condition tokens were needed.
+- The kernel's `getTokenNeighborhood` computes `condition` and `hue_key` per
+  node. The bridge passes them on as `condition` and `hueKey`, along with
+  `card.lapses`.
+- **3D graph.** Every node is now coloured by subject hue and condition;
+  before, only the centre was. The role stays in the shape and the edge
+  colour, a blocked card stays red, and forgotten nodes are half
+  see-through. The side panel names the condition in words, and the
+  neighbour pills carry the colour on their edge.
+- **2D panel.**
+  - The fill is a hue tint and the border the condition colour. The
+    condition's texture becomes a stroke pattern: dotted for dust, broken
+    for cracks, dashed for parchment.
+  - The node style lives in `graphNodeStyle` (`graph-layout.ts`, tested).
+  - The Bloom colour scale gave way to the subject hue. The Bloom level now
+    sits in the tooltip, next to the condition in words.
+- The repo knowledge map is unchanged: its views do not group by subject.
 
 ---
 

@@ -6018,11 +6018,14 @@ bridgeCommand
         concept: nt.concept,
         domain: nt.domain,
         bloomLevel: nt.bloom_level,
+        hueKey: nt.hue_key,
+        condition: nt.condition,
         knowledgeContexts: contextMap.get(nt.id) ?? [],
         card: nt.card
           ? {
               state: nt.card.state,
               reps: nt.card.reps,
+              lapses: nt.card.lapses,
               stability: nt.card.stability,
               difficulty: nt.card.difficulty,
               blocked: nt.card.blocked,

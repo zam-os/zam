@@ -1,3 +1,14 @@
+import type { Condition } from "../../../src/kernel/atlas/condition.js";
+import {
+  CONDITION_TEXTURE,
+  type ConditionTexture,
+  conditionFill,
+  hueFor,
+  hueKeyForDomain,
+  type PaletteTheme,
+  rgbCss,
+} from "../../../src/kernel/atlas/palette.js";
+
 export interface GraphLabelSource {
   slug: string;
   title?: string | null;
@@ -154,5 +165,52 @@ export function graphEdgeEndpoints(
   return {
     start: boundaryPoint(from, to, gap),
     end: boundaryPoint(to, from, gap),
+  };
+}
+
+export interface GraphStyleSource {
+  domain?: string;
+  hueKey?: string;
+  condition?: Condition | null;
+}
+
+export interface GraphNodeStyle {
+  /** Tinted background, light enough for the label on top. */
+  fill: string;
+  /** Border in the full condition colour. */
+  stroke: string;
+  /** The texture as a stroke pattern, so colour never carries it alone. */
+  dash: string | null;
+  opacity: number;
+}
+
+/** Stroke patterns per texture: dust dotted, cracks broken, parchment dashed. */
+const TEXTURE_DASH: Record<ConditionTexture, string | null> = {
+  none: null,
+  dust: "2 2",
+  cracks: "7 2 1 2",
+  fog: null,
+  parchment: "4 3",
+};
+
+/**
+ * How a graph node looks: subject hue for where, condition for how well
+ * (ADR 2026-10-13, Decision 4). Without a card the node is faint parchment.
+ */
+export function graphNodeStyle(
+  node: GraphStyleSource,
+  theme: PaletteTheme,
+): GraphNodeStyle {
+  const hue = hueFor(node.hueKey ?? hueKeyForDomain(node.domain ?? ""));
+  const condition = node.condition ?? null;
+  const colour = conditionFill(hue, condition, theme);
+  const texture = condition ? CONDITION_TEXTURE[condition] : "parchment";
+  return {
+    fill: rgbCss(colour, theme === "dark" ? 0.45 : 0.3),
+    stroke: rgbCss(colour),
+    dash: TEXTURE_DASH[texture],
+    // Forgotten knowledge sits in fog. A node without a card is faded by the
+    // panel's `graph-node-nocard` class instead.
+    opacity: condition === "forgotten" ? 0.6 : 1,
   };
 }

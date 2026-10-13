@@ -8,6 +8,14 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
+import type { Condition } from "../../src/kernel/atlas/condition.js";
+import {
+  conditionFill,
+  hueFor,
+  hueKeyForDomain,
+  type PaletteTheme,
+  rgbCss,
+} from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
 import {
   applyGoalImportLabels,
@@ -5368,6 +5376,21 @@ function updateGraphCamera() {
   graphCamera.lookAt(0, 0, 0);
 }
 
+function graphTheme(): PaletteTheme {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+/** A graph node's fill: subject hue, washed or fogged by its condition. */
+function graphNodeFill(node: { domain?: string; hueKey?: string; condition?: Condition | null }) {
+  const hue = hueFor(node.hueKey ?? hueKeyForDomain(node.domain ?? ""));
+  return conditionFill(hue, node.condition ?? null, graphTheme());
+}
+
+/** The condition in words, so colour never carries it alone. */
+function graphConditionText(node: { condition?: Condition | null }): string {
+  return node.condition ? t(`condition_${node.condition}`) : t("graph_no_card");
+}
+
 function cssColorHex(variableName: string, fallback: string): number {
   const value = getComputedStyle(document.documentElement)
     .getPropertyValue(variableName)
@@ -5408,16 +5431,17 @@ function buildGraphScene(nb: any) {
   const ctxNames = nb.center.knowledgeContexts ? nb.center.knowledgeContexts.map((cx: any) => cx.name).join(", ") : "";
   const ctxMeta = ctxNames ? ` · Contexts: ${ctxNames}` : "";
   focusMetaEl.textContent = c
-    ? `Bloom ${nb.center.bloomLevel} · ${c.state} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}${ctxMeta}`
+    ? `Bloom ${nb.center.bloomLevel} · ${graphConditionText(nb.center)} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}${ctxMeta}`
     : `Bloom ${nb.center.bloomLevel} · ${t("graph_no_card")}${ctxMeta}`;
 
-  // helper to make clickable pill
+  // helper to make clickable pill; its edge carries subject hue and condition
   const makePill = (gt: any, container: HTMLElement) => {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
     pill.textContent = getDisplayTitle(gt);
-    pill.title = gt.concept;
+    pill.title = `${gt.concept} · ${graphConditionText(gt)}`;
+    pill.style.borderLeft = `4px solid ${rgbCss(graphNodeFill(gt))}`;
     pill.addEventListener("click", () => loadGraphFocus(gt.slug));
     container.appendChild(pill);
   };
@@ -5471,13 +5495,6 @@ function buildGraphScene(nb: any) {
   grid.material.transparent = true;
   grid.material.depthWrite = false;
   graphScene.add(grid);
-
-  // simple palette by domain (stable hue per domain string)
-  const domainHue = (domain: string) => {
-    let h = 0;
-    for (let i = 0; i < domain.length; i++) h = (h * 31 + domain.charCodeAt(i)) | 0;
-    return ((Math.abs(h) % 360) / 360);
-  };
 
   function createLabelSprite(text: string, isCenter: boolean): THREE.Sprite {
     const canvas = document.createElement("canvas");
@@ -5552,36 +5569,15 @@ function buildGraphScene(nb: any) {
       labelOffsetY = height * 0.75; // above the peak
     }
 
-    let color;
-    if (isCenter) {
-      // Center keeps its special treatment (from card or default)
-      let sat = 0.68;
-      let light = 0.58;
-      if (!isDark) {
-        sat = 0.78;
-        light = 0.52;
-      }
-      color = new THREE.Color().setHSL(domainHue(gt.domain || "general"), sat, light);
-
-      const card = gt.card;
-      if (card) {
-        if (card.blocked) {
-          color = new THREE.Color(0xe11d48);
-        } else {
-          const mastery = Math.min(1, (card.reps || 0) / 6 + (card.stability || 0) / 30);
-          const mLight = isDark ? (0.42 + mastery * 0.38) : (0.48 + mastery * 0.34);
-          color = new THREE.Color().setHSL(domainHue(gt.domain || ""), isDark ? 0.72 : 0.80, mLight);
-        }
-      }
-    } else if (isPrereq) {
-      // BASIS / Voraussetzungen: distinct "foundation" color family (teal-greenish)
-      const h = (0.42 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
-      color = new THREE.Color().setHSL(h, 0.58, 0.46);
-    } else {
-      // HÖHERE FÄHIGKEITEN / Aufbauwissen: distinct "advanced" color family (blue-violet)
-      const h = (0.68 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
-      color = new THREE.Color().setHSL(h, 0.68, 0.52);
-    }
+    // Colour says where (subject hue), condition says how well (ADR
+    // 2026-10-13, Decision 4); the role (basis, focus, built on it) stays in
+    // the shape and the edge colour. A blocked card keeps its alarm red.
+    // CSS strings are parsed as sRGB, which keeps three's colour management
+    // from washing the palette out.
+    const color = gt.card?.blocked
+      ? new THREE.Color(0xe11d48)
+      : new THREE.Color(rgbCss(graphNodeFill(gt)));
+    const forgotten = gt.condition === "forgotten";
 
     const emissive = isCenter
       ? (isDark ? 0x222233 : 0x445566)
@@ -5590,6 +5586,9 @@ function buildGraphScene(nb: any) {
       color,
       emissive,
       shininess: isCenter ? 28 : 10,
+      // Forgotten knowledge sits in fog: half see-through.
+      transparent: forgotten,
+      opacity: forgotten ? 0.55 : 1,
     });
     const mesh = new THREE.Mesh(geom, mat);
     mesh.userData.slug = gt.slug;

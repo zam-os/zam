@@ -61,11 +61,24 @@ export {
   getUserStats,
   MATURE_STABILITY_DAYS,
 } from "./analytics/stats.js";
-export type { Condition, ConditionCard } from "./atlas/index.js";
+export type {
+  Condition,
+  ConditionCard,
+  ConditionTexture,
+  PaletteTheme,
+  Rgb,
+} from "./atlas/index.js";
 export {
   CONDITION_BAND_RATIOS,
+  CONDITION_TEXTURE,
   cardCondition,
+  conditionFill,
   DECAY_LAPSES,
+  hslToRgb,
+  hueFor,
+  hueKeyForDomain,
+  rgbCss,
+  SUBJECT_HUES,
   unitCondition,
 } from "./atlas/index.js";
 export type {
