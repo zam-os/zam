@@ -74,6 +74,8 @@ export const SNAPSHOT_TABLES = [
   "atlas_regions",
   "atlas_domain_aliases",
   "atlas_members",
+  "atlas_islands",
+  "atlas_land",
 ] as const;
 
 /**

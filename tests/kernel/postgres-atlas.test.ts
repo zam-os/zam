@@ -6,8 +6,11 @@ import {
   loadBindings,
   loadLensRows,
   loadUnits,
+  SCHULE_LENS,
+  WELTWISSEN_LENS,
   weltwissenSeedRows,
 } from "../../src/kernel/atlas/lenses.js";
+import { settleLens, snapshotLens } from "../../src/kernel/atlas/settle.js";
 import { openPostgresDatabase } from "../../src/kernel/db/postgres.js";
 import { applySchemaAndMigrations } from "../../src/kernel/db/provision.js";
 import type { Database } from "../../src/kernel/db/types.js";
@@ -78,5 +81,28 @@ describeWithPostgres("atlas lenses on PostgreSQL (needs POSTGRES_URL)", () => {
       expect(placement.path[0].key).toBe("natur");
     }
     expect(units.filter((u) => u.own)).toHaveLength(1);
+  });
+
+  it("settles land once; a second settle writes nothing", async () => {
+    const db = await setup();
+    for (const tile of listBundledTiles().slice(0, 4)) {
+      await installKvtTile(db, tile);
+    }
+    for (const lens of [WELTWISSEN_LENS, SCHULE_LENS]) {
+      const first = await settleLens(db, lens);
+      expect(first.landWritten).toBeGreaterThan(0);
+      expect(await settleLens(db, lens)).toEqual({
+        regionsCreated: 0,
+        islandsWritten: 0,
+        landWritten: 0,
+      });
+      const snapshot = await snapshotLens(db, lens);
+      if (!snapshot) throw new Error("lens missing");
+      const placed = snapshot.state.land.filter((h) => h.unit);
+      expect(placed).toHaveLength(snapshot.placements.length);
+      expect(
+        snapshot.state.islands.every((i) => typeof i.dq === "number"),
+      ).toBe(true);
+    }
   });
 });

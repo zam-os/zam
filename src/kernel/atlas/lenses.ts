@@ -87,7 +87,12 @@ export interface PathStep {
   key: string;
   name: string;
   level: number;
+  /** Reading order among siblings: lower first, ties by key. */
+  rank: number;
 }
+
+/** Rank of regions that sort after every seeded or graded sibling. */
+export const LAST_RANK = 1000;
 
 export interface DerivedPlacement {
   unitKey: UnitKey;
@@ -507,6 +512,7 @@ function storedPath(
       key: current.key,
       name: current.name,
       level: current.level,
+      rank: current.rank,
     });
     current = current.parentId ? byId.get(current.parentId) : undefined;
   }
@@ -582,13 +588,19 @@ export function deriveWeltwissen(
       return {
         unitKey: unit.key,
         path: [
-          { key: UNSORTED_KEY, name: "Noch nicht eingeordnet", level: 0 },
-          { key: fachKey, name: prettify(root), level: 1 },
-          { key: gebietKey, name: prettify(area), level: 2 },
+          {
+            key: UNSORTED_KEY,
+            name: "Noch nicht eingeordnet",
+            level: 0,
+            rank: LAST_RANK,
+          },
+          { key: fachKey, name: prettify(root), level: 1, rank: 0 },
+          { key: gebietKey, name: prettify(area), level: 2, rank: 0 },
           {
             key: `${gebietKey}.${slugSegment(thema)}`,
             name: prettify(thema),
             level: 3,
+            rank: 0,
           },
         ],
         source: "unsorted",
@@ -604,6 +616,7 @@ export function deriveWeltwissen(
         key: `${path[1].key}.${slugSegment(area)}`,
         name: prettify(area),
         level: 2,
+        rank: LAST_RANK,
       });
       rest = rest.slice(1);
     }
@@ -613,10 +626,12 @@ export function deriveWeltwissen(
     const themaName = binding?.topicTitle
       ? cleanTopic(binding.topicTitle, path[1]?.name ?? "", gebiet.name)
       : prettify(rest[0] ?? "allgemein");
+    // Foundations first: a Thema taught in an earlier grade comes earlier.
     path.push({
       key: `${gebiet.key}.${slugSegment(themaName)}`,
       name: themaName,
       level: 3,
+      rank: binding?.grade ?? LAST_RANK,
     });
     return {
       unitKey: unit.key,
@@ -642,6 +657,16 @@ function subjectName(subject: string): string {
     for (const s of bereich.subjects) if (s.key === key) return s.name;
   }
   return prettify(subject);
+}
+
+/** A subject's position in the seed, so every grade lists subjects alike. */
+function subjectRank(subject: string): number {
+  const key = hueKeyForDomain(subject);
+  const order = WELTWISSEN_SEED.flatMap((bereich) =>
+    bereich.subjects.map((s) => s.key),
+  );
+  const index = order.indexOf(key);
+  return index < 0 ? LAST_RANK : index;
 }
 
 interface SchoolPlace {
@@ -714,9 +739,20 @@ export function deriveSchule(
             key: OUTSIDE_CURRICULUM_KEY,
             name: "Außerhalb des Lehrplans",
             level: 0,
+            rank: LAST_RANK,
           },
-          { key: fachKey, name: subjectName(root ?? "allgemein"), level: 1 },
-          { key: `${fachKey}.allgemein`, name: "Allgemein", level: 2 },
+          {
+            key: fachKey,
+            name: subjectName(root ?? "allgemein"),
+            level: 1,
+            rank: subjectRank(root ?? ""),
+          },
+          {
+            key: `${fachKey}.allgemein`,
+            name: "Allgemein",
+            level: 2,
+            rank: 0,
+          },
         ],
         source: "unsorted",
       };
@@ -738,12 +774,23 @@ export function deriveSchule(
     return {
       unitKey: unit.key,
       path: [
-        { key: islandKey, name: islandName, level: 0 },
-        { key: fachKey, name: subjectName(place.subject), level: 1 },
+        {
+          key: islandKey,
+          name: islandName,
+          level: 0,
+          rank: place.grade ?? LAST_RANK - 1,
+        },
+        {
+          key: fachKey,
+          name: subjectName(place.subject),
+          level: 1,
+          rank: subjectRank(place.subject),
+        },
         {
           key: `${fachKey}.${slugSegment(place.lernbereich)}`,
           name: place.lernbereich,
           level: 2,
+          rank: 0,
         },
       ],
       source: "binding",

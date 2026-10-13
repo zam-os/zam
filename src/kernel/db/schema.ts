@@ -66,6 +66,40 @@ CREATE TABLE IF NOT EXISTS atlas_members (
 );
 `;
 
+/**
+ * Stored land of the atlas (ADR 2026-10-13, Decision 8; migration M041).
+ * Knowledge: every unit's hex, assigned once, and each island's place on the
+ * sea. Only settle and a curator's lens edit write it.
+ */
+export const ATLAS_LAND_TABLES = `
+CREATE TABLE IF NOT EXISTS atlas_islands (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  -- A top-level region of the lens.
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- Offset of the island's origin on the sea, axial.
+  dq            INTEGER NOT NULL,
+  dr            INTEGER NOT NULL,
+  -- Offset at founding: total drift is the distance to (dq, dr).
+  founded_dq    INTEGER NOT NULL,
+  founded_dr    INTEGER NOT NULL,
+  PRIMARY KEY (lens_id, region_id)
+);
+CREATE TABLE IF NOT EXISTS atlas_land (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  island_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- Island-local axial coordinates; never change once a unit sits here.
+  q             INTEGER NOT NULL,
+  r             INTEGER NOT NULL,
+  -- The leaf region that owns this hex.
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- NULL: reserved land of the region.
+  unit_key      TEXT,
+  PRIMARY KEY (lens_id, island_id, q, r)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_atlas_land_unit
+  ON atlas_land (lens_id, unit_key) WHERE unit_key IS NOT NULL;
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -535,7 +569,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-${ATLAS_TABLES}`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

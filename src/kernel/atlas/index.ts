@@ -10,6 +10,35 @@ export {
   DECAY_LAPSES,
   unitCondition,
 } from "./condition.js";
+export type { Hex, Point } from "./hex.js";
+export {
+  DIRS,
+  fromPixel,
+  gosper,
+  gosperOrderFor,
+  hexDistance,
+  hexKey,
+  neighbours,
+  ring,
+  SQRT3,
+  toPixel,
+} from "./hex.js";
+export type {
+  IslandPlace,
+  LandHex,
+  LandState,
+  PlanSettleInput,
+  RegionInfo,
+  SettlePlan,
+} from "./land.js";
+export {
+  ISLAND_GAP,
+  islandDrift,
+  MAX_DRIFT_PER_SETTLE,
+  octantOf,
+  planSettle,
+  reserveFor,
+} from "./land.js";
 export type {
   AliasRow,
   BindingRow,
@@ -27,6 +56,7 @@ export {
   deriveWeltwissen,
   ensureWorldLenses,
   findLensId,
+  LAST_RANK,
   loadBindings,
   loadLensRows,
   loadUnits,
@@ -48,6 +78,14 @@ export {
   rgbCss,
   SUBJECT_HUES,
 } from "./palette.js";
+export type { LensSnapshot, SettleResult } from "./settle.js";
+export {
+  applySettle,
+  loadLandState,
+  planForSnapshot,
+  settleLens,
+  snapshotLens,
+} from "./settle.js";
 export type { LensKind, PlanetKind, ThreadKind, UnitKey } from "./types.js";
 export { unitKeyFor } from "./types.js";
 export type {

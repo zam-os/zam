@@ -15,7 +15,12 @@
  */
 
 import { ulid } from "ulid";
-import { ATLAS_TABLES, SCHEMA_INDEXES, SCHEMA_TABLES } from "./schema.js";
+import {
+  ATLAS_LAND_TABLES,
+  ATLAS_TABLES,
+  SCHEMA_INDEXES,
+  SCHEMA_TABLES,
+} from "./schema.js";
 import type { Database } from "./types.js";
 
 /**
@@ -24,7 +29,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 40;
+export const CURRENT_SCHEMA_VERSION = 41;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1003,6 +1008,11 @@ export async function runMigrations(db: Database): Promise<void> {
   // domain aliases and explicit placements. Knowledge only; the lenses and
   // their seed regions are created on first use (`ensureWorldLenses`).
   await db.exec(ATLAS_TABLES);
+
+  // M041: stored atlas land (ADR 2026-10-13, Decision 8) — every unit's hex,
+  // assigned once, and each island's place on the sea. Knowledge, written
+  // only by settle and a curator's lens edit.
+  await db.exec(ATLAS_LAND_TABLES);
 }
 
 const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;

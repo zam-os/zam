@@ -1,6 +1,6 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 3 done (2026-10-13). The ADR gained Decision 12 and the
+**Status:** Phases 1 to 4 done (2026-10-13). The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -42,8 +42,9 @@ what the learner knows.
 - [x] **Phase 2** — shared colour language; the learning graph adopts hue and
   condition (D4) — `fca68618`; see "As built"
 - [x] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
-  (D1–D3) — this commit; see "As built"
-- [ ] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
+  (D1–D3) — `37a5d637`; see "As built"
+- [x] **Phase 4** — stored land: founding, reserved land, coast, drift (D8)
+  — this commit; see "As built"
 - [ ] **Phase 5** — bridge: alpha switch, read, settle, preferences, region
   review (D3, D10)
 - [ ] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
@@ -606,6 +607,47 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_atlas_land_unit
 - `planSettle` followed by `applySettle` equals a fresh `planSettle` with no
   writes.
 - The Gosper generator yields unique hexes.
+
+**As built.**
+
+- **Schema.** M041 (schema version 41) adds `atlas_islands` and `atlas_land`
+  from one `ATLAS_LAND_TABLES` constant, with the partial unique index
+  `ux_atlas_land_unit`. Both tables are knowledge in `KNOWLEDGE_TABLES` and
+  part of `SNAPSHOT_TABLES`.
+- **Reserve.** Each leaf reserves `max(1, ceil(n / 6))` hexes instead of the
+  planned `max(2, …)`.
+  - The bundled tiles hold 404 Themen of mostly one or two units, so a
+    minimum of two left over half the map empty: 1453 hexes for 654 units.
+  - With one it is 1054 hexes. Growth beyond the reserve takes coast anyway.
+- **Bearings are measured from a fixed anchor**, the first island's origin
+  (0, 0), not from the moving constellation centre.
+  - A new island therefore never changes another island's octant.
+  - Drift moves an island outward along its bearing from the anchor, so its
+    octant holds by construction. Rounding to a hex keeps the octant too.
+  - The anchor island itself never drifts.
+- **Drift that the cap cannot finish** continues on the next settle. Growth
+  prefers coast that keeps the gap, so in practice drift rarely happens: the
+  bundled content founds and grows without any.
+- **A unit that leaves its region,** or the library, frees its hex as reserve
+  of the old region. Its new hex follows the normal rules, and nobody else
+  moves.
+- **Reading order.** `PathStep` carries a `rank`:
+  - a Thema ranks by the earliest grade of its binding, so foundations come
+    first;
+  - a new Gebiet ranks after the seeded ones;
+  - Schule islands rank by grade, Fächer by their seed order;
+  - ties break by key, with numeric collation, so 5 sorts before 10.
+- **Settle** (`src/kernel/atlas/settle.ts`):
+  - `snapshotLens` reads without writing, and `planForSnapshot` plans from
+    the snapshot.
+  - `applySettle` writes the missing derived regions, then islands, then
+    land. Each changed hex is cleared before units are assigned, so the
+    unique index never sees one unit twice.
+  - `settleLens` does all three.
+- **Measured** on all 654 bundled atoms: founding takes about 14 ms, and one
+  more unit about 8 ms with a single write.
+  - Weltwissen: 4 islands, 1054 hexes.
+  - Schule: 16 grade islands, 1059 hexes.
 
 ---
 
