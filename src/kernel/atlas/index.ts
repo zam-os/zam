@@ -43,6 +43,7 @@ export {
   revalidateEmblems,
   setEmblem,
   sharedEmblemKeys,
+  subjectEmblemKey,
 } from "./emblems.js";
 export type { Hex, Point } from "./hex.js";
 export {
@@ -98,6 +99,7 @@ export {
   prettify,
   SCHULE_LENS,
   slugSegment,
+  subjectName,
   UNSORTED_KEY,
   WELTWISSEN_LENS,
   weltwissenSeedRows,
@@ -158,7 +160,11 @@ export {
   unitTokenIds,
 } from "./variants.js";
 export type { SeedEmblem } from "./weltwissen-emblems.js";
-export { seedEmblem, seedEmblems } from "./weltwissen-emblems.js";
+export {
+  seedEmblem,
+  seedEmblems,
+  seedSubjectEmblem,
+} from "./weltwissen-emblems.js";
 export type {
   SeedArea,
   SeedBereich,

@@ -8857,6 +8857,7 @@ async function openAtlas(): Promise<void> {
     reviewRegion: (lens, key, options) =>
       void startAtlasRegionReview(lens, key, options),
     // Import at a place (ADR 2026-10-13, Decision 9).
+    importGoal: (place) => openGoalImportDialog(null, { place }),
     importMaterial: (place) => void openMaterialImportStart({ place }),
     openCurriculumWizard: () => {
       switchView("learning-content-view");
@@ -9037,7 +9038,16 @@ window.addEventListener("DOMContentLoaded", () => {
   // Learning Content opens the goal page in a dialog, not the first-run flow.
   initGoalImportDialog({
     openModelSetup: () => showOnboardingAt("model"),
-    onImported: () => void loadStudioData(),
+    onImported: (place) => {
+      void loadStudioData();
+      // Started at an atlas region: show the new land on the map.
+      if (
+        place &&
+        document.getElementById("atlas-view")?.classList.contains("active")
+      ) {
+        void openAtlas();
+      }
+    },
   });
   document
     .getElementById("btn-content-goal-import")

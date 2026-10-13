@@ -409,7 +409,9 @@ own levels, and the depth may differ.
   - Text-only models draw them, because SVG is text. The spikes hold 100 such
     Sinnbilder.
 - **Who carries one.** Every learning unit and every region can have a
-  Sinnbild. A leaf region without its own shows its first unit's.
+  Sinnbild. A leaf region without its own shows its first unit's. A Fach is
+  the same subject in every lens: Mathematik of the 9th grade and Mathematik
+  in Weltwissen show one Sinnbild, the subject's.
 - **Shared first, personal override.** The first Sinnbild is shared when its
   writer may write knowledge: on a personal library the learner, on a team
   library a curator. In the pilot every member is a curator (2026-09-04,
@@ -528,7 +530,8 @@ own levels, and the depth may differ.
 
 - **The map is where new knowledge comes in.** On any region the learner
   chooses *Hier importieren …*. They hand over class notes, a handout or a
-  text, and the agent turns it into learning units *right there*.
+  text, or describe what they are missing (the goal import), and the agent
+  turns it into learning units *right there*.
   - The agent fills in only the levels missing below the chosen region: for
     example a Thema under a Gebiet.
   - The deeper the learner starts, the less the agent has to guess. Started
@@ -542,7 +545,7 @@ own levels, and the depth may differ.
 - **The agent does the sorting in every import path**, as part of the import
   and never as a separate step for the learner. The import paths are tiles,
   material import (2026-10-05), OKF import and goal import. Material import
-  gains a *place* as its target.
+  and goal import gain a *place* as their target.
 - **Every import path works without a place.** An import started anywhere
   but the atlas works as today; started at a region, the place is an extra
   target.
@@ -817,3 +820,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Implementation plan added. Clarified Decision 2: a unit imported into a world region stays in the connected library as unpublished world knowledge; "never writes to the world planet" meant the central service. |
 | 2026-10-13 | Proposed | Review round 2 (MiMo, after merge) and owner decisions. Kind and status are kept apart. The kind (planet) says who protects the knowledge and follows the place. The status (published or own) follows provenance and alone decides publishing and sync. Own units carry an "eigene Einheit" marker, and only the editorial release publishes. New Decision 12, one goal and one method: a school's variant stands in for a published unit without merging learning state. Also: sameness never combines two histories; Sinnbilder are stored and shown as the validator's re-serialisation on every write path, and library Sinnbilder never flow back; home-region fallback; positions engine-written only; drift caps named, total drift visible; the Leben lens and the place tool listed; condition in words in the outline view. Owner input: world knowledge is public domain, and a method taught at school is not protected knowledge. The planets differ by who protects the knowledge: nobody, an organisation or a person. The editorial release checks that, and ZAM's own world units are released as CC0. |
 | 2026-10-13 | Proposed | Owner decisions after the first Studio check of Phases 1–7: the atlas is always shown and takes the 3D learning graph's place in the sidebar and on Lern-Karten; the 3D graph becomes an alpha behind a machine-local switch. Building the world shows a busy indicator. A region's due count follows the queue's rules, and a small region with nothing due offers to go through its questions again, earliest due first (Decision 10). |
+| 2026-10-13 | Proposed | Owner input after the second Studio check: a Fach's Sinnbild belongs to the subject and shows in every lens (Decision 6); the goal import is offered at a region, for describing missing knowledge rather than class notes (Decision 9). |

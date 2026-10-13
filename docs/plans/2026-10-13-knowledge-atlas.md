@@ -56,7 +56,10 @@ what the learner knows.
   atlas always on in place of the 3D graph, a busy indicator, an honest
   region due count and going through a region again — `3beb9e5c`; see
   "Between Phases 7 and 8"
-- [x] **Phase 8** — Sinnbilder (D6) — this commit; see "As built"
+- [x] **Phase 8** — Sinnbilder (D6) — `1bfde677`; see "As built"
+- [x] **After Phase 8** — second Studio check: a Fach's Sinnbild in every
+  lens, feedback while a model reads notes, the goal import at a place —
+  this commit; see "Between Phases 8 and 9"
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
@@ -1454,6 +1457,61 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
   - `tests/kernel/postgres-atlas.test.ts`: a member's first Sinnbild is
     personal, shared refuses, and the curator's is shared.
     `postgres-rls.test.ts` isolates `learner_emblems`.
+
+---
+
+## Between Phases 8 and 9 — second Studio check
+
+**1. A Sinnbild drawn for "Github" in the Schule lens did not show in
+Weltwissen.**
+
+- **Cause.** Region Sinnbilder were keyed per lens. The Fach is
+  `ausserhalb.github` in Schule and `unsortiert.github` in Weltwissen.
+- **Fix.**
+  - A region on the colour level (the Fach) keys its Sinnbild by its subject,
+    `subject:<hue key>`. All lenses share it, and so do all grades:
+    Mathematik of the 9th grade and Weltwissen's Mathematik show one
+    Sinnbild.
+  - Other regions keep `region:<lens>:<key>`.
+  - `readAtlas` gives every region an `emblemSubject`, where the Studio
+    writes. It resolves a Fach by the subject first, then by its old region
+    key, so an older row still shows in its lens.
+  - The seed resolves subjects too (`seedSubjectEmblem`).
+- **Migration M044** (schema version 44) moves rows written under a Fach's
+  region key to the subject. A Fach's region key has two segments in both
+  lenses. Where the subject already has a row, the old one goes.
+
+**2. Typed notes seemed to do nothing.** The model reads for a minute or
+two, and the dialog showed only a small line of text.
+
+- The status now shows a turning ring and the time since the start, and it
+  says that the dialog may be closed: the review list opens by itself.
+- A refusal or failure that arrives after the dialog was closed opens it
+  again with the reason. The same applies to photos and PDFs.
+
+**3. The goal import at a place** ("ein fehlendes Wissen beschreiben, nicht
+Notizen aus dem Unterricht").
+
+- *Hier importieren …* now offers *Fehlendes Wissen beschreiben* first. It
+  opens the goal import dialog with the place.
+- The model is told the place along with the goal's description.
+- Each drafted card carries `placeBelow` = [goal, topic].
+  `personal-source-confirm-import --place-region/--place-lens` puts the
+  units the import created there. `fitBelow` gives the last names to the
+  deepest levels: the topic becomes the Thema, the goal the level above.
+- `applySourceProposals` returns the token per proposal, so that only
+  created units are placed. A failure to place keeps the cards and is
+  reported as `placeError`.
+
+**Tests.**
+
+- `atlas-emblem.test.ts`: a Fach drawn in Schule shows in Weltwissen, and
+  M044 moves a Fach row and leaves a Gebiet row.
+- `bridge-atlas.test.ts`: `fitBelow`, and a goal import placed under a new
+  Thema.
+- `goal-topic-cards.test.ts`: the place in the description, the place
+  arguments and `placeBelow`.
+- `material-import-start.test.ts`: the elapsed time.
 
 ---
 

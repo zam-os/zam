@@ -8,6 +8,9 @@ import {
   draftGoalTopicCards,
   type GoalAreaView,
   type GoalImportState,
+  goalDescription,
+  goalPlaceArgs,
+  withGoalPlace,
 } from "../../desktop/src/onboarding.js";
 
 const TOPICS = ["Pods", "Services", "Deployments"].map((label) => ({
@@ -17,6 +20,7 @@ const TOPICS = ["Pods", "Services", "Deployments"].map((label) => ({
 
 function goalState(view: GoalAreaView | null): GoalImportState {
   return {
+    place: null,
     title: "Kubernetes",
     description: "",
     path: [],
@@ -290,6 +294,37 @@ describe("appendGoalCards", () => {
     expect(again.map((card) => card.question)).toEqual([
       "What is a barre chord?",
       "What is a capo?",
+    ]);
+  });
+});
+
+describe("a goal import at an atlas place (ADR 2026-10-13, Decision 9)", () => {
+  const place = {
+    lens: "weltwissen" as const,
+    regionKey: "natur.physik.optik",
+    path: ["Natur", "Physik", "Licht & Wellen"],
+  };
+
+  it("tells the model the place and the confirm where to put the cards", () => {
+    const state = { ...goalState(null), place, description: "Für die Probe." };
+    expect(goalDescription(state)).toContain("Für die Probe.");
+    expect(goalDescription(state)).toContain("Natur › Physik › Licht & Wellen");
+    expect(goalPlaceArgs(state)).toEqual([
+      "--place-region",
+      "natur.physik.optik",
+      "--place-lens",
+      "weltwissen",
+    ]);
+    const drafted = withGoalPlace(state, TOPICS[0], [{ question: "Q" }]);
+    expect(drafted[0].placeBelow).toEqual(["Kubernetes", "Pods"]);
+  });
+
+  it("changes nothing without a place", () => {
+    const state = { ...goalState(null), description: " Warum " };
+    expect(goalDescription(state)).toBe("Warum");
+    expect(goalPlaceArgs(state)).toEqual([]);
+    expect(withGoalPlace(state, TOPICS[0], [{ question: "Q" }])).toEqual([
+      { question: "Q" },
     ]);
   });
 });

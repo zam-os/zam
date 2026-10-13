@@ -1612,6 +1612,11 @@ export interface FoundationProposalInput {
 export interface ConfirmFoundationsResult {
   createdCount: number;
   linkedCount: number;
+  /**
+   * Per proposal, in order: the token it created or linked. An import at an
+   * atlas place puts the created ones there.
+   */
+  items?: Array<{ tokenId: string; created: boolean }>;
 }
 
 /**
@@ -1776,12 +1781,14 @@ export async function applySourceProposals(
 ): Promise<ConfirmFoundationsResult> {
   let createdCount = 0;
   let linkedCount = 0;
+  const items: Array<{ tokenId: string; created: boolean }> = [];
 
   // ── Pass 1: create / link tokens ────────────────────────────────────────
   const slugByIndex: string[] = [];
   const tokenBySlug = new Map<string, Token>();
 
   for (const card of proposals) {
+    const createdBefore = createdCount;
     const cardSourceId = card.source_id || sourceId;
     const source = await db
       .prepare("SELECT id FROM sources WHERE id = ?")
@@ -1846,6 +1853,7 @@ export async function applySourceProposals(
 
     slugByIndex.push(token.slug);
     tokenBySlug.set(token.slug, token);
+    items.push({ tokenId: token.id, created: createdCount > createdBefore });
 
     const existingCard = await getCard(db, token.id, userId);
     if (!existingCard) {
@@ -1930,7 +1938,7 @@ export async function applySourceProposals(
     }
   }
 
-  return { createdCount, linkedCount };
+  return { createdCount, linkedCount, items };
 }
 
 /**

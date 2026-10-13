@@ -14,8 +14,10 @@ import {
   openDatabase,
   readAtlas,
   regionEmblemKey,
+  installKvtTile,
   resolveEmblem,
   revalidateEmblems,
+  SCHULE_LENS,
   seedEmblem,
   seedEmblems,
   setEmblem,
@@ -23,6 +25,12 @@ import {
   WELTWISSEN_LENS,
   WELTWISSEN_SEED,
 } from "../../src/kernel/index.js";
+import {
+  applySchemaAndMigrations,
+  CURRENT_SCHEMA_VERSION,
+} from "../../src/kernel/db/provision.js";
+import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
+import { materialiseKvtCards } from "../../src/kernel/library/kvt-attach.js";
 
 const NS = 'xmlns="http://www.w3.org/2000/svg"';
 const svg = (body: string, root = 'viewBox="0 0 64 64"') =>
@@ -281,6 +289,73 @@ describe("storing and resolving Sinnbilder", () => {
       .get(tokenKey)) as { svg: string; validator_version: number };
     expect(kept.validator_version).toBe(EMBLEM_VALIDATOR_VERSION);
     expect(kept.svg).toBe((validateEmblem(CIRCLE) as { canonical: string }).canonical);
+  });
+
+  it("shares a Fach's Sinnbild across lenses, under its subject", async () => {
+    const tile = listBundledTiles().find((t) =>
+      t.atoms.some((a) => a.domain.startsWith("physik/optik")),
+    );
+    if (!tile) throw new Error("no bundled optics tile");
+    await installKvtTile(db, tile);
+    await materialiseKvtCards(
+      db,
+      "anna",
+      tile.atoms.map((a) => a.id),
+    );
+    const welt = await readAtlas(db, { userId: "anna", lens: WELTWISSEN_LENS });
+    const physik = welt.regions.find((r) => r.key === "natur.physik");
+    expect(physik?.emblemSubject).toBe("subject:physik");
+    // Without its own, the Fach shows the seed's, through the subject.
+    expect(welt.emblems[physik?.emblem ?? ""]?.source).toBe("seed");
+
+    // Drawn in the Schule lens …
+    const schule = await readAtlas(db, { userId: "anna", lens: SCHULE_LENS });
+    const fach = schule.regions.find(
+      (r) => r.level === 1 && r.hueKey === "physik",
+    );
+    expect(fach?.emblemSubject).toBe("subject:physik");
+    await setEmblem(db, {
+      subjectKey: fach?.emblemSubject ?? "",
+      glyph: "F = m·a",
+      userId: "anna",
+      mayWriteKnowledge: true,
+    });
+    // … it is Weltwissen's Physik too.
+    const again = await readAtlas(db, { userId: "anna", lens: WELTWISSEN_LENS });
+    const shown = again.regions.find((r) => r.key === "natur.physik");
+    expect(again.emblems[shown?.emblem ?? ""]?.glyph).toBe("F = m·a");
+    // A Gebiet stays its lens's own.
+    const optik = again.regions.find((r) => r.key === "natur.physik.optik");
+    expect(optik?.emblemSubject).toBe("region:weltwissen:natur.physik.optik");
+  });
+
+  it("moves a Fach's Sinnbild from a lens's region key to its subject (M044)", async () => {
+    await db
+      .prepare(
+        `INSERT INTO learner_emblems (user_id, subject_key, svg, validator_version, glyph, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      )
+      .run("anna", "region:schule:ausserhalb.github", CIRCLE, 1, "gh", "2026-10-13");
+    await db
+      .prepare(
+        `INSERT INTO emblems (subject_key, svg, validator_version, glyph, author, updated_at)
+         VALUES (?, ?, ?, ?, ?, ?)`,
+      )
+      .run("region:weltwissen:natur.physik.optik", CIRCLE, 1, null, "agent", "2026-10-13");
+    await db
+      .prepare("UPDATE zam_schema_version SET version = ?")
+      .run(CURRENT_SCHEMA_VERSION - 1);
+    await applySchemaAndMigrations(db);
+    const keys = (await db
+      .prepare(
+        "SELECT subject_key FROM learner_emblems UNION ALL SELECT subject_key FROM emblems ORDER BY 1",
+      )
+      .all()) as Array<{ subject_key: string }>;
+    // The Fach moved; the Gebiet stayed where it was.
+    expect(keys.map((k) => k.subject_key)).toEqual([
+      "region:weltwissen:natur.physik.optik",
+      "subject:github",
+    ]);
   });
 
   it("gives the atlas each Sinnbild once, with a leaf region showing its first unit's", async () => {

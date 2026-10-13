@@ -9,6 +9,7 @@ import {
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { fitBelow } from "../../src/cli/atlas.js";
 import { STUDIO_BRIDGE_ALLOWED_COMMANDS } from "../../src/cli/commands/mcp.js";
 import {
   createToken,
@@ -558,6 +559,64 @@ describe("zam bridge atlas commands", () => {
     if (media.card.atomId === atom) {
       expect(media.emblem.glyph).toBe("λ");
     }
+  });
+
+  it("fits the names below a place to its levels, deepest last", () => {
+    expect(fitBelow(["Ziel", "Thema"], 1)).toEqual(["Thema"]);
+    expect(fitBelow(["Ziel", "Thema"], 2)).toEqual(["Ziel", "Thema"]);
+    expect(fitBelow(["Ziel", "Thema"], 3)).toEqual(["", "Ziel", "Thema"]);
+    expect(fitBelow(["Ziel", " "], 2)).toEqual(["", "Ziel"]);
+    expect(fitBelow(["Ziel"], 0)).toEqual([]);
+  });
+
+  it("puts the units a goal import created at its atlas place", async () => {
+    const db = await openDatabase({
+      dbPath,
+      initialize: false,
+      useConfiguredCloud: false,
+    });
+    try {
+      await db
+        .prepare(
+          "INSERT INTO sources (id, type, uri, created_at) VALUES (?, 'file', ?, ?)",
+        )
+        .run("src-goal", "/goals/brechung.md", new Date().toISOString());
+    } finally {
+      await db.close();
+    }
+    const proposal = (question: string, concept: string) => ({
+      question,
+      concept,
+      domain: "physik/optik",
+      bloom_level: 2,
+      placeBelow: ["Brechung verstehen", "Snellius in der Praxis"],
+    });
+    const result = runCliJson([
+      "bridge",
+      "personal-source-confirm-import",
+      "--sourceId",
+      "src-goal",
+      "--proposals",
+      JSON.stringify([
+        proposal("Wie lautet das Brechungsgesetz?", "Brechungsgesetz anwenden"),
+        proposal("Was ist der Brechungsindex?", "Brechungsindex"),
+      ]),
+      "--place-region",
+      "natur.physik.optik",
+      "--place-lens",
+      "weltwissen",
+    ]);
+    expect(result).toMatchObject({ createdCount: 2, placed: 2 });
+    const view = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    const placed = view.units.filter(
+      (u: { region: string }) =>
+        u.region === "natur.physik.optik.snellius-in-der-praxis",
+    );
+    expect(placed).toHaveLength(2);
+    const thema = view.regions.find(
+      (r: { key: string }) => r.key === "natur.physik.optik.snellius-in-der-praxis",
+    );
+    expect(thema.name).toBe("Snellius in der Praxis");
   });
 
   it("refuses to draw without a text model, by code", () => {

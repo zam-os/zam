@@ -593,6 +593,45 @@ async function copyRequest(): Promise<void> {
   }
 }
 
+/** Minutes and seconds since `start`, as `1:05`. */
+export function elapsedLabel(start: number, now: number): string {
+  const seconds = Math.max(0, Math.floor((now - start) / 1000));
+  return `${Math.floor(seconds / 60)}:${String(seconds % 60).padStart(2, "0")}`;
+}
+
+let busyTimer: ReturnType<typeof setInterval> | null = null;
+
+/**
+ * A model reading pages or notes can take a minute or two: the status shows
+ * that it runs, for how long, and that the dialog may be closed meanwhile.
+ */
+function startBusy(status: HTMLElement, key: string): void {
+  stopBusy(status);
+  const started = Date.now();
+  const paint = () => {
+    status.textContent = tf("material_busy_status", {
+      what: t(key),
+      time: elapsedLabel(started, Date.now()),
+    });
+  };
+  paint();
+  status.classList.add("material-busy");
+  busyTimer = setInterval(paint, 1000);
+}
+
+function stopBusy(status: HTMLElement): void {
+  if (busyTimer) clearInterval(busyTimer);
+  busyTimer = null;
+  status.classList.remove("material-busy");
+}
+
+/** A failure after the learner closed the dialog: open it to show why. */
+function showAgain(dialog: StartParts): void {
+  if (!dialog.overlay.classList.contains("active")) {
+    dialog.overlay.classList.add("active");
+  }
+}
+
 /** Send the picked files to the connected model, then open the review. */
 async function analyzeHere(): Promise<void> {
   const dialog = parts;
@@ -601,7 +640,7 @@ async function analyzeHere(): Promise<void> {
   if (state.kind !== "ready") return;
   analyzing = true;
   render(dialog);
-  dialog.builtInStatus.textContent = t("material_builtin_running");
+  startBusy(dialog.builtInStatus, "material_builtin_running");
   try {
     const args = analyzeArgs(
       paths,
@@ -613,8 +652,10 @@ async function analyzeHere(): Promise<void> {
         ? await host.runInBackground("material-import-analyze", args)
         : await runBridge("material-import-analyze", args)
     ) as MaterialImportAnalyzeResponse;
+    stopBusy(dialog.builtInStatus);
     if (!result.success) {
       dialog.builtInStatus.textContent = t(analyzeRefusalKey(result.code));
+      showAgain(dialog);
       return;
     }
     dialog.builtInStatus.textContent = "";
@@ -622,8 +663,10 @@ async function analyzeHere(): Promise<void> {
     void openMaterialReview(result.id, reviewOptions);
     void refreshPendingMaterialImports();
   } catch (err) {
+    stopBusy(dialog.builtInStatus);
     const reason = err instanceof Error ? err.message : String(err);
     dialog.builtInStatus.textContent = `${t("material_builtin_failed")} ${reason}`;
+    showAgain(dialog);
   } finally {
     analyzing = false;
     render(dialog);
@@ -639,7 +682,7 @@ async function analyzeNotes(): Promise<void> {
   analyzing = true;
   dialog.notesStatus.dataset.busy = "1";
   render(dialog);
-  dialog.notesStatus.textContent = t("material_notes_running");
+  startBusy(dialog.notesStatus, "material_notes_running");
   try {
     const args = notesArgs(notes, place);
     const result = (
@@ -647,8 +690,10 @@ async function analyzeNotes(): Promise<void> {
         ? await host.runInBackground("material-import-analyze", args)
         : await runBridge("material-import-analyze", args)
     ) as MaterialImportAnalyzeResponse;
+    stopBusy(dialog.notesStatus);
     if (!result.success) {
       dialog.notesStatus.textContent = t(analyzeRefusalKey(result.code));
+      showAgain(dialog);
       return;
     }
     dialog.notesStatus.textContent = "";
@@ -657,8 +702,10 @@ async function analyzeNotes(): Promise<void> {
     void openMaterialReview(result.id, reviewOptions);
     void refreshPendingMaterialImports();
   } catch (err) {
+    stopBusy(dialog.notesStatus);
     const reason = err instanceof Error ? err.message : String(err);
     dialog.notesStatus.textContent = `${t("material_builtin_failed")} ${reason}`;
+    showAgain(dialog);
   } finally {
     analyzing = false;
     delete dialog.notesStatus.dataset.busy;

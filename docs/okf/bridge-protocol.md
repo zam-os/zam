@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-13T22:00:00.000Z
+timestamp: 2026-10-13T23:30:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -200,9 +200,11 @@ takes coordinates: only settle places land.
   queue's rules: a card waiting for its next short step, a blocked or buried
   card, and an atom's further items on a day one of them was shown are not
   counted, although the condition still shows them. `emblems` holds each
-  Sinnbild once by subject key (a unit key or `region:<lens>:<region key>`),
-  and every region and unit that has one names it in `emblem`; a leaf region
-  without its own names its first unit's.
+  Sinnbild once by subject key, and every region and unit that has one names
+  it in `emblem`; a leaf region without its own names its first unit's. A
+  region's `emblemSubject` says where its own is written: a Fach's is the
+  subject's, `subject:<key>`, shared by every lens, and any other region's is
+  `region:<lens>:<region key>`.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.
@@ -237,6 +239,10 @@ takes coordinates: only settle places land.
   refusal comes as `{success: false, code}` with `no-text-model`,
   `model-failed` or `invalid-answer`.
 - `get-review --media` also returns the card's unit Sinnbild as `emblem`.
+- `personal-source-confirm-import` takes `--place-region <key>
+  [--place-lens <kind>]`: the units the import created land at that region,
+  each proposal's `placeBelow` naming the levels below it (the last name on
+  the deepest level). The goal import started at a region passes it.
 - `graph3d-feature [--enable|--disable]` reads or sets this machine's switch
   for the 3D learning graph, an alpha since the atlas took its place, in
   `~/.zam/config.json`.

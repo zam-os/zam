@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-13T22:00:00.000Z
+timestamp: 2026-10-13T23:30:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -150,7 +150,8 @@ The model-visible learning tools cover:
 - Sinnbilder for the knowledge atlas: `zam_atlas_missing_emblems` lists the
   regions and the learner's units of a lens that have none yet, with the
   drawing rules; `zam_atlas_set_emblem` stores one for a subject
-  (`atom:<id>`, `token:<id>` or `region:<lens>:<key>`). ZAM validates the SVG
+  (`atom:<id>`, `token:<id>`, `subject:<fach>` for a Fach in every lens, or
+  `region:<lens>:<key>`). ZAM validates the SVG
   against an allowlist of plain shapes and text and stores its own
   re-serialisation. Titles, SVGs and glyphs in both results are marked
   `untrusted`. Setting one writes, so the host asks each time;

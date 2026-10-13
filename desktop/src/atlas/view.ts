@@ -59,6 +59,8 @@ export interface AtlasViewDeps {
     regionKey: string,
     options: { due: number; practise: number },
   ): void;
+  /** Open the goal import (describe what is missing) at a place (D9). */
+  importGoal?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at a place (D9). */
   importMaterial(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers a place. */
@@ -841,6 +843,7 @@ function regionPanel(
         ),
       },
       {
+        importGoal: s.deps.importGoal,
         importMaterial: (place) => s.deps.importMaterial(place),
         openCurriculumWizard: s.deps.openCurriculumWizard,
         onChanged: () => void load(s, s.lens ?? undefined),
@@ -997,13 +1000,15 @@ function emblemSection(
   key: string,
 ): HTMLElement {
   const lens = s.lens ?? layout.view.lens.kind;
-  const subject = kind === "unit" ? key : `region:${lens}:${key}`;
+  const region = kind === "region" ? layout.regions.get(key) : undefined;
+  // A Fach writes to its subject, which every lens shares.
+  const subject =
+    kind === "unit" ? key : (region?.emblemSubject ?? `region:${lens}:${key}`);
   const emblem = emblemOf(layout, kind, key);
-  const ref =
-    kind === "region"
-      ? layout.regions.get(key)?.emblem
-      : layout.units.get(key)?.emblem;
-  const borrowed = kind === "region" && ref !== undefined && ref !== subject;
+  const ref = kind === "region" ? region?.emblem : layout.units.get(key)?.emblem;
+  // A leaf region showing its first unit's Sinnbild has none of its own.
+  const borrowed =
+    kind === "region" && ref !== undefined && /^(atom|token):/.test(ref);
   const section = el("section", "atlas-emblem");
   section.setAttribute("aria-label", t("atlas_emblem_label"));
   const row = el("div", "atlas-emblem-row");
@@ -1042,7 +1047,10 @@ function emblemSection(
   actions.appendChild(own);
   if (emblem?.source === "personal" && !borrowed) {
     const clear = button("btn secondary-btn btn-sm", t("atlas_emblem_clear"));
-    clear.addEventListener("click", () => void clearEmblem(s, subject, status));
+    // Remove the row it was found under: the subject's, or an older one
+    // under the lens's own region key.
+    const shown = ref ?? subject;
+    clear.addEventListener("click", () => void clearEmblem(s, shown, status));
     actions.appendChild(clear);
   }
   section.appendChild(actions);

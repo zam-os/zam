@@ -7,6 +7,7 @@ import {
   analyzeRefusalKey,
   builtInState,
   connectedHarnesses,
+  elapsedLabel,
   harnessNames,
   harnessRequestText,
   materialFileKind,
@@ -239,5 +240,14 @@ describe("import at a place (ADR 2026-10-13, Decision 9)", () => {
     expect(text).toContain("natur.physik.optik");
     expect(text).toContain("zam_material_import_context");
     expect(harnessRequestText(["/a.jpg"])).not.toContain("natur.physik");
+  });
+});
+
+describe("while the model reads", () => {
+  it("counts the time in minutes and seconds", () => {
+    expect(elapsedLabel(0, 0)).toBe("0:00");
+    expect(elapsedLabel(0, 42_900)).toBe("0:42");
+    expect(elapsedLabel(0, 125_000)).toBe("2:05");
+    expect(elapsedLabel(10_000, 0)).toBe("0:00");
   });
 });

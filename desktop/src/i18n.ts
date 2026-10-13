@@ -4910,6 +4910,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_import_title: "Import here",
     atlas_import_at: "New cards go to {path}.",
     atlas_import_curriculum: "From the curriculum",
+    atlas_import_goal: "Describe missing knowledge",
+    atlas_import_goal_help:
+      "Say what you want to know here. ZAM proposes topics, then cards, and you choose.",
+    atlas_import_goal_open: "Describe it…",
+    goal_place_line: "The cards land at: {path}",
+    goal_place_for_model: "Place in the learner's knowledge atlas:",
     atlas_import_material: "Notes or material",
     atlas_import_material_help: "Photos, a PDF or typed notes. You decide each card, and the cards land here.",
     atlas_import_material_open: "Photos, PDF or notes…",
@@ -4929,7 +4935,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_notes_analyze: "Propose cards",
     material_notes_sent_to: "Your notes go to {model}; ZAM does not keep them.",
     material_notes_no_model: "Connect a text model to turn notes into cards.",
-    material_notes_running: "Reading your notes…",
+    material_notes_running: "Reading your notes — this can take a minute or two.",
+    material_busy_status:
+      "{what} ({time}) You can close this window: the review list opens as soon as the proposals are in.",
     setup_title: "Setup & Data",
     settings_title: "Settings",
     settings_subtitle:
@@ -6728,6 +6736,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_import_title: "Hier importieren",
     atlas_import_at: "Neue Karten kommen nach {path}.",
     atlas_import_curriculum: "Aus dem Lehrplan",
+    atlas_import_goal: "Fehlendes Wissen beschreiben",
+    atlas_import_goal_help:
+      "Sag, was du hier wissen willst. ZAM schlägt Themen vor, dann Karten, und du wählst aus.",
+    atlas_import_goal_open: "Beschreiben …",
+    goal_place_line: "Die Karten landen unter: {path}",
+    goal_place_for_model: "Ort im Wissensatlas des Lernenden:",
     atlas_import_material: "Mitschrift oder Material",
     atlas_import_material_help: "Fotos, ein PDF oder eingetippte Notizen. Du entscheidest jede Karte, und die Karten landen hier.",
     atlas_import_material_open: "Fotos, PDF oder Notizen …",
@@ -6747,7 +6761,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_notes_analyze: "Karten vorschlagen",
     material_notes_sent_to: "Deine Notizen gehen an {model}; ZAM behält sie nicht.",
     material_notes_no_model: "Verbinde ein Textmodell, um aus Notizen Karten zu machen.",
-    material_notes_running: "Deine Notizen werden gelesen …",
+    material_notes_running: "Deine Notizen werden gelesen – das kann ein, zwei Minuten dauern.",
+    material_busy_status:
+      "{what} ({time}) Du kannst dieses Fenster schließen: Die Prüfliste öffnet sich, sobald die Vorschläge da sind.",
     setup_title: "Einrichtung & Daten",
     settings_title: "Einstellungen",
     settings_subtitle:

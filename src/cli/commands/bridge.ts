@@ -200,6 +200,7 @@ import {
   atlasVariant,
   installScopeCells,
   materialPlace,
+  placeImportedUnits,
   setAtlasPrefs,
 } from "../atlas.js";
 import {
@@ -7187,6 +7188,14 @@ bridgeCommand
     },
     [],
   )
+  .option(
+    "--place-region <key>",
+    "Put the created units at this atlas region; each proposal's placeBelow names the levels below it",
+  )
+  .option(
+    "--place-lens <kind>",
+    "Lens of --place-region: weltwissen (default) or schule",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       const userId = await resolveUser(opts, db, { json: true });
@@ -7223,10 +7232,41 @@ bridgeCommand
         }
       }
 
+      // An import started at an atlas region (ADR 2026-10-13, Decision 9):
+      // the units it created go there, each with its proposal's names for
+      // the levels below. A failure to place loses none of the cards.
+      let placed: number | undefined;
+      let placeError: string | undefined;
+      if (opts.placeRegion) {
+        try {
+          placed = await placeImportedUnits(db, {
+            lens: opts.placeLens,
+            region: String(opts.placeRegion),
+            units: (result.items ?? []).flatMap((item, index) =>
+              item.created
+                ? [
+                    {
+                      tokenId: item.tokenId,
+                      names: Array.isArray(proposals[index]?.placeBelow)
+                        ? (proposals[index].placeBelow as unknown[]).map(String)
+                        : [],
+                    },
+                  ]
+                : [],
+            ),
+          });
+        } catch (err) {
+          placed = 0;
+          placeError = (err as Error).message;
+        }
+      }
+
       jsonOut({
         success: true,
         createdCount: result.createdCount,
         ensuredCount: result.linkedCount,
+        ...(placed !== undefined ? { placed } : {}),
+        ...(placeError ? { placeError } : {}),
       });
     });
   });
@@ -9729,7 +9769,7 @@ bridgeCommand
   )
   .requiredOption(
     "--subject <key>",
-    "atom:<id>, token:<id> or region:<lens>:<region key>",
+    "atom:<id>, token:<id>, subject:<fach> or region:<lens>:<region key>",
   )
   .option("--svg <svg>", 'The SVG, viewBox="0 0 64 64"')
   .option("--glyph <text>", "A formula or sign of at most 16 characters")

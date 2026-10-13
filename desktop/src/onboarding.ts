@@ -1282,7 +1282,20 @@ export interface GoalAreaHost {
   openModelSetup(): void;
 }
 
+/**
+ * A region of the knowledge atlas a goal import starts at (ADR 2026-10-13,
+ * Decision 9): the cards land there, each topic as the deepest level.
+ */
+export interface GoalPlace {
+  lens: "weltwissen" | "schule";
+  regionKey: string;
+  /** Region names from the island down. */
+  path: string[];
+}
+
 export interface GoalImportState {
+  /** Where the imported cards land on the atlas; null for no place. */
+  place: GoalPlace | null;
   title: string;
   description: string;
   /** Confirmed drill-down labels (user-driven depth: one level at a time). */
@@ -1308,8 +1321,11 @@ export interface GoalImportState {
 }
 
 /** A fresh, empty goal: nothing defined, decomposed or imported yet. */
-export function createGoalImportState(): GoalImportState {
+export function createGoalImportState(
+  place: GoalPlace | null = null,
+): GoalImportState {
   return {
+    place,
     title: "",
     description: "",
     path: [],
@@ -1323,6 +1339,40 @@ export function createGoalImportState(): GoalImportState {
     goalFile: null,
     imported: null,
   };
+}
+
+/**
+ * The goal's description as the model reads it: at an atlas place, the place
+ * comes with it, so the topics and cards fit where they will land.
+ */
+export function goalDescription(state: GoalImportState): string {
+  const description = state.description.trim();
+  if (!state.place) return description;
+  const where = `${t("goal_place_for_model")} ${state.place.path.join(" › ")}`;
+  return description ? `${description}\n\n${where}` : where;
+}
+
+/** Arguments that put a confirmed goal import at its atlas place. */
+export function goalPlaceArgs(state: GoalImportState): string[] {
+  return state.place
+    ? [
+        "--place-region",
+        state.place.regionKey,
+        "--place-lens",
+        state.place.lens,
+      ]
+    : [];
+}
+
+/** A drafted card at a place names its levels below it: goal, then topic. */
+export function withGoalPlace(
+  state: GoalImportState,
+  topic: GoalTopic,
+  proposals: Array<Record<string, unknown>>,
+): Array<Record<string, unknown>> {
+  if (!state.place) return proposals;
+  const placeBelow = [state.title.trim(), topic.label].filter(Boolean);
+  return proposals.map((proposal) => ({ ...proposal, placeBelow }));
 }
 
 /** The curriculum wizard's readiness gate, shared behavior (ADR §3). */
@@ -1372,6 +1422,15 @@ export function renderGoalArea(
   if (state.notice) {
     status.textContent = state.notice;
     state.notice = null;
+  }
+
+  // Started at an atlas region: say where the cards will land.
+  if (state.place) {
+    const where = paragraph(
+      tf("goal_place_line", { path: state.place.path.join(" › ") }),
+    );
+    where.classList.add("goal-place-line");
+    root.append(where);
   }
 
   if (state.imported) {
@@ -1465,7 +1524,7 @@ async function fetchGoalLevel(
       "--title",
       state.title.trim(),
       "--description",
-      state.description.trim(),
+      goalDescription(state),
       "--path",
       JSON.stringify(state.path),
     ]);
@@ -1587,7 +1646,7 @@ function renderGoalLevel(
           "--title",
           state.title.trim(),
           "--description",
-          state.description.trim(),
+          goalDescription(state),
           "--path",
           JSON.stringify(state.path),
           "--outline",
@@ -1663,7 +1722,7 @@ export async function draftGoalTopicCards(
         "--title",
         state.title.trim(),
         "--description",
-        state.description.trim(),
+        goalDescription(state),
         "--path",
         path,
         "--topic",
@@ -1671,7 +1730,7 @@ export async function draftGoalTopicCards(
         "--source",
         goalFilePath,
       ]);
-      const proposals = preview.proposals ?? [];
+      const proposals = withGoalPlace(state, topic, preview.proposals ?? []);
       if (proposals.length === 0) {
         // A valid empty answer would otherwise make the topic vanish.
         failed.push({ ...topic, error: t("onboarding_goal_topic_empty") });
@@ -1753,6 +1812,7 @@ export async function importSelectedGoalCards(
     state.sourceId,
     "--proposals",
     JSON.stringify(selected),
+    ...goalPlaceArgs(state),
   ]);
   state.imported = {
     created: result.createdCount,

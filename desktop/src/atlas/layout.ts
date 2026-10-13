@@ -62,6 +62,8 @@ export interface AtlasRegion {
   provisional: boolean;
   /** Key into the read's `emblems`: its Sinnbild, or its first unit's. */
   emblem?: string;
+  /** Where its own Sinnbild is written: a Fach's subject, else the region. */
+  emblemSubject: string;
 }
 
 export interface Cell {
@@ -176,6 +178,7 @@ export function buildAtlasLayout(view: AtlasReadResponse): AtlasLayout {
       pattern: null,
       provisional: wire.provisional,
       emblem: wire.emblem,
+      emblemSubject: wire.emblemSubject,
     });
   }
   const order = byRankThenName(regions);

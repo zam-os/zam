@@ -5494,6 +5494,29 @@ span.atlas-crumb {
   gap: var(--space-3);
 }
 
+/* A model reading material or notes: a turning ring before the status, which
+   counts the time. */
+.material-busy::before {
+  content: "";
+  display: inline-block;
+  width: 0.8em;
+  height: 0.8em;
+  margin-right: 0.45em;
+  vertical-align: -0.1em;
+  border: 2px solid var(--color-accent);
+  border-right-color: transparent;
+  border-radius: 50%;
+  animation: materialBusySpin 0.8s linear infinite;
+}
+
+@keyframes materialBusySpin {
+  to { transform: rotate(360deg); }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .material-busy::before { animation-duration: 2.4s; }
+}
+
 /* Building the world: a veil over the map that names the step. It fades in
    late, so a quick re-read never flashes it. */
 .atlas-busy {
@@ -5830,6 +5853,10 @@ span.atlas-crumb {
   display: flex;
   flex-direction: column;
   gap: var(--space-2);
+}
+
+.atlas-import-section[hidden] {
+  display: none;
 }
 
 .atlas-import-section h4 {

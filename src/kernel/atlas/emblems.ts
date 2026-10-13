@@ -24,7 +24,7 @@ import {
   validateGlyph,
 } from "./emblem.js";
 import type { LensKind } from "./types.js";
-import { seedEmblem } from "./weltwissen-emblems.js";
+import { seedEmblem, seedSubjectEmblem } from "./weltwissen-emblems.js";
 
 export type EmblemScope = "auto" | "personal" | "shared";
 /** Who wrote a shared row: an agent through a tool, or a person in the Studio. */
@@ -69,8 +69,18 @@ export function regionEmblemKey(lens: LensKind, regionKey: string): string {
   return `region:${lens}:${regionKey}`;
 }
 
+/**
+ * The subject key of a Fach's Sinnbild, by its subject (hue) key. A Fach is
+ * the same in every lens: Mathematik of the 9th grade and Mathematik in
+ * Weltwissen share one Sinnbild.
+ */
+export function subjectEmblemKey(subjectKey: string): string {
+  return `subject:${subjectKey}`;
+}
+
 export type EmblemSubject =
   | { kind: "atom" | "token"; id: string }
+  | { kind: "subject"; key: string }
   | { kind: "region"; lens: LensKind; regionKey: string };
 
 /** What a subject key names, or null when it is not one. */
@@ -78,6 +88,8 @@ export function parseEmblemSubject(key: string): EmblemSubject | null {
   if (typeof key !== "string" || key.length > MAX_KEY) return null;
   const unit = /^(atom|token):([A-Za-z0-9_-]+)$/.exec(key);
   if (unit) return { kind: unit[1] as "atom" | "token", id: unit[2] };
+  const subject = /^subject:([a-z0-9][a-z0-9-]{0,80})$/.exec(key);
+  if (subject) return { kind: "subject", key: subject[1] };
   const region = /^region:([a-z]+):(.+)$/.exec(key);
   if (region && LENS_KINDS.has(region[1]) && REGION_KEY.test(region[2])) {
     return {
@@ -95,10 +107,10 @@ async function assertSubject(db: Database, key: string): Promise<void> {
   if (!subject) {
     throw new EmblemError(
       "unknown-subject",
-      `"${key}" names no unit or region. Use atom:<id>, token:<id> or region:<lens>:<key>.`,
+      `"${key}" names no unit or region. Use atom:<id>, token:<id>, subject:<fach> or region:<lens>:<key>.`,
     );
   }
-  if (subject.kind === "region") return;
+  if (subject.kind === "region" || subject.kind === "subject") return;
   const row = await db
     .prepare(
       subject.kind === "atom"
@@ -289,8 +301,12 @@ async function rowsFor(
 /** The seed's Sinnbild of a region key, validated like any other. */
 function seedFor(key: string): ResolvedEmblem | null {
   const subject = parseEmblemSubject(key);
-  if (subject?.kind !== "region") return null;
-  const seed = seedEmblem(subject.lens, subject.regionKey);
+  const seed =
+    subject?.kind === "region"
+      ? seedEmblem(subject.lens, subject.regionKey)
+      : subject?.kind === "subject"
+        ? seedSubjectEmblem(subject.key)
+        : undefined;
   if (!seed) return null;
   const checked = validateEmblem(seed.svg, seed.glyph);
   return checked.ok

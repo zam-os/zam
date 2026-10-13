@@ -18,14 +18,15 @@ import { t } from "./i18n.js";
 import {
   createGoalImportState,
   type GoalImportState,
+  type GoalPlace,
   renderGoalArea,
 } from "./onboarding.js";
 
 export interface GoalImportDialogOptions {
   /** Without a text model the goal area links to the model setup. */
   openModelSetup(): void;
-  /** Cards were imported; the host refreshes what shows them. */
-  onImported(): void;
+  /** Cards were imported, at `place` if any; the host refreshes what shows them. */
+  onImported(place: GoalPlace | null): void;
 }
 
 const OVERLAY_ID = "goal-import-overlay";
@@ -88,13 +89,25 @@ function focusInDialog(): void {
   target?.focus();
 }
 
+/** Whether two optional places name the same region. */
+function samePlace(a: GoalPlace | null, b: GoalPlace | null): boolean {
+  return a?.lens === b?.lens && a?.regionKey === b?.regionKey;
+}
+
 /**
  * Open the dialog. `returnTo` takes focus back on close; pass it when the
  * control that opened the dialog will be hidden by then (a menu entry).
+ * With a `place`, the goal's cards land at that atlas region (ADR
+ * 2026-10-13, Decision 9); a goal started elsewhere is not carried over.
  */
-export function openGoalImportDialog(returnTo?: HTMLElement | null): void {
+export function openGoalImportDialog(
+  returnTo?: HTMLElement | null,
+  options: { place?: GoalPlace } = {},
+): void {
   const el = overlay();
   if (!el) return;
+  const place = options.place ?? null;
+  if (!samePlace(state.place, place)) state = createGoalImportState(place);
   returnFocus =
     returnTo ??
     (document.activeElement instanceof HTMLElement
@@ -113,8 +126,9 @@ export function closeGoalImportDialog(): void {
   open = false;
   el.classList.remove("active");
   if (state.imported) {
+    const place = state.place;
     state = createGoalImportState();
-    options?.onImported();
+    options?.onImported(place);
   }
   returnFocus?.focus();
   returnFocus = null;

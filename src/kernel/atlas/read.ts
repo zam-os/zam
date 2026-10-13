@@ -25,6 +25,7 @@ import {
   type ResolvedEmblem,
   regionEmblemKey,
   resolveEmblems,
+  subjectEmblemKey,
 } from "./emblems.js";
 import { islandDrift } from "./land.js";
 import {
@@ -65,6 +66,11 @@ export interface AtlasRegionView {
    * region without one, its first unit's (Decision 6).
    */
   emblem?: string;
+  /**
+   * The subject key a new Sinnbild of this region is written to: a Fach's
+   * `subject:<key>`, shared by every lens, else `region:<lens>:<key>`.
+   */
+  emblemSubject: string;
 }
 
 export interface AtlasUnitView {
@@ -257,6 +263,7 @@ export async function readAtlas(
       hueKey: "",
       pattern: null,
       provisional: !stored,
+      emblemSubject: "",
     });
   }
   for (const placement of snapshot.placements) {
@@ -271,6 +278,7 @@ export async function readAtlas(
         hueKey: "",
         pattern: null,
         provisional: true,
+        emblemSubject: "",
       });
     });
   }
@@ -498,9 +506,21 @@ export async function readAtlas(
 
   // ── Sinnbilder: the learner's own, the library's, the seed's ──────────────
   const shownRegions = [...regions.values()].filter((r) => used.has(r.key));
+  // A Fach is one subject in every lens: its Sinnbild is the subject's. A
+  // row under the lens's own region key still counts, after it.
+  for (const region of shownRegions) {
+    region.emblemSubject =
+      region.level === lens.colourLevel && region.hueKey
+        ? subjectEmblemKey(region.hueKey)
+        : regionEmblemKey(lens.kind, region.key);
+  }
+  const candidates = (region: AtlasRegionView): string[] => {
+    const own = regionEmblemKey(lens.kind, region.key);
+    return region.emblemSubject === own ? [own] : [region.emblemSubject, own];
+  };
   const resolved = await resolveEmblems(db, options.userId, [
     ...unitViews.map((u) => u.key),
-    ...shownRegions.map((r) => regionEmblemKey(lens.kind, r.key)),
+    ...shownRegions.flatMap(candidates),
   ]);
   const emblems: Record<string, ResolvedEmblem> = {};
   for (const unit of unitViews) {
@@ -518,9 +538,15 @@ export async function readAtlas(
   }
   const parents = new Set(shownRegions.map((r) => r.parentKey));
   for (const region of shownRegions) {
-    const key = regionEmblemKey(lens.kind, region.key);
-    const emblem = resolved.get(key);
-    if (emblem) {
+    const keys = candidates(region);
+    // The learner's own or the library's wins over a seed, whichever key.
+    const key =
+      keys.find((k) => {
+        const source = resolved.get(k)?.source;
+        return source !== undefined && source !== "seed";
+      }) ?? keys.find((k) => resolved.has(k));
+    const emblem = key ? resolved.get(key) : undefined;
+    if (key && emblem) {
       emblems[key] = emblem;
       region.emblem = key;
     } else if (!parents.has(region.key)) {

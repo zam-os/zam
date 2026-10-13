@@ -2540,8 +2540,9 @@ export function createMcpServer(
     "zam_atlas_set_emblem",
     {
       description:
-        "Stores a Sinnbild for a knowledge-atlas region or learning unit: subject is atom:<id>, token:<id> or " +
-        "region:<lens>:<region key> (as zam_atlas_missing_emblems lists them). ZAM validates the SVG against a " +
+        "Stores a Sinnbild for a knowledge-atlas region or learning unit: subject is atom:<id>, token:<id>, " +
+        "subject:<fach> (a Fach, the same in every lens) or region:<lens>:<region key>, as " +
+        "zam_atlas_missing_emblems lists them. ZAM validates the SVG against a " +
         "strict allowlist of plain shapes and text and stores its own re-serialisation. By default the first " +
         "Sinnbild of a subject is shared when this library lets the learner write knowledge, and personal " +
         "otherwise; scope 'personal' always writes the learner's own, which only they see.",

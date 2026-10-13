@@ -652,7 +652,8 @@ const SCHOOL_TYPE_NAMES: Readonly<Record<string, string>> = {
   wirtschaftsschule: "Wirtschaftsschule",
 };
 
-function subjectName(subject: string): string {
+/** A subject's name: the Weltwissen seed's, else its key made readable. */
+export function subjectName(subject: string): string {
   const key = hueKeyForDomain(subject);
   for (const bereich of WELTWISSEN_SEED) {
     for (const s of bereich.subjects) if (s.key === key) return s.name;

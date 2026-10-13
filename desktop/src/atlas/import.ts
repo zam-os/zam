@@ -5,6 +5,9 @@
  * - **Aus dem Lehrplan.** The cell has precedence (ADR 2026-08-14, Decision
  *   10): the bundled cells for the region come first, and the generic
  *   curriculum wizard only where no cell covers the position.
+ * - **Fehlendes Wissen beschreiben.** The goal import: the learner names
+ *   what is missing, the model proposes topics and cards, and they land at
+ *   this region, each topic as its deepest level.
  * - **Mitschrift oder Material.** Photos, a PDF or typed notes go through the
  *   material import, which places the new units at this region.
  *
@@ -26,6 +29,8 @@ export interface ImportPlace {
 }
 
 export interface AtlasImportDeps {
+  /** Open the goal import (describe what is missing) at this place. */
+  importGoal?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at this place. */
   importMaterial(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers the place. */
@@ -40,6 +45,10 @@ interface Parts {
   path: HTMLElement;
   curriculumTitle: HTMLElement;
   curriculum: HTMLElement;
+  goalSection: HTMLElement;
+  goalTitle: HTMLElement;
+  goalText: HTMLElement;
+  goal: HTMLButtonElement;
   materialTitle: HTMLElement;
   materialText: HTMLElement;
   material: HTMLButtonElement;
@@ -86,15 +95,21 @@ function ensureDialog(): Parts {
   const curriculumTitle = el("h4");
   const curriculum = el("div", "atlas-import-cells");
   curriculumSection.append(curriculumTitle, curriculum);
+  const goalSection = el("section", "atlas-import-section");
+  const goalTitle = el("h4");
+  const goalText = el("p", "atlas-import-help");
+  const goal = button("btn primary-btn btn-sm", "");
+  goalSection.append(goalTitle, goalText, goal);
   const materialSection = el("section", "atlas-import-section");
   const materialTitle = el("h4");
   const materialText = el("p", "atlas-import-help");
-  const material = button("btn primary-btn btn-sm", "");
+  const material = button("btn secondary-btn btn-sm", "");
   materialSection.append(materialTitle, materialText, material);
   const status = el("p", "atlas-import-status");
   status.setAttribute("aria-live", "polite");
-  // The learner's own material first: one button; the cells can be many.
-  body.append(path, materialSection, curriculumSection, status);
+  // The learner's own words and material first: one button each; the cells
+  // can be many.
+  body.append(path, goalSection, materialSection, curriculumSection, status);
   const actions = el("div", "modal-actions");
   const close = button("btn secondary-btn btn-sm", "");
   actions.append(close);
@@ -118,6 +133,10 @@ function ensureDialog(): Parts {
     path,
     curriculumTitle,
     curriculum,
+    goalSection,
+    goalTitle,
+    goalText,
+    goal,
     materialTitle,
     materialText,
     material,
@@ -152,6 +171,14 @@ export async function openAtlasImport(
   dialog.curriculum.replaceChildren(
     el("p", "atlas-import-help", t("atlas_loading")),
   );
+  dialog.goalSection.hidden = !deps.importGoal;
+  dialog.goalTitle.textContent = t("atlas_import_goal");
+  dialog.goalText.textContent = t("atlas_import_goal_help");
+  dialog.goal.textContent = t("atlas_import_goal_open");
+  dialog.goal.onclick = () => {
+    closeAtlasImport();
+    deps.importGoal?.(place);
+  };
   dialog.materialTitle.textContent = t("atlas_import_material");
   dialog.materialText.textContent = t("atlas_import_material_help");
   dialog.material.textContent = t("atlas_import_material_open");
@@ -162,7 +189,7 @@ export async function openAtlasImport(
   dialog.status.textContent = "";
   dialog.close.textContent = t("atlas_panel_close");
   dialog.overlay.classList.add("active");
-  dialog.material.focus();
+  (deps.importGoal ? dialog.goal : dialog.material).focus();
 
   try {
     const result = await runBridge<AtlasPlaceResponse>("atlas-place", [

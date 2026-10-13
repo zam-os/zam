@@ -7,12 +7,12 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-13T21:00:00.000Z
+timestamp: 2026-10-13T23:30:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
-The actions that create or manage cards stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, goal import, and file import; Bonus sits beside them while items are kept. Goal import opens the goal page in a dialog of its own. It no longer opens the first-run flow, which keeps its own goal step; both show the same goal page. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+The actions that create or manage cards stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, goal import, and file import; Bonus sits beside them while items are kept. Goal import opens the goal page in a dialog of its own. It no longer opens the first-run flow, which keeps its own goal step; both show the same goal page. The knowledge atlas opens the same dialog from a region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model hears where the cards will land, and the confirmed cards land there, each topic as the deepest level and the goal above it. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
 
 # Lern-Karten
 

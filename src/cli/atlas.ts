@@ -20,6 +20,7 @@ import {
   type EmblemAuthor,
   EmblemError,
   type EmblemScope,
+  ensureWorldLenses,
   findBundledCellsForScope,
   getBundledCellEnrolment,
   getBundledCellTile,
@@ -33,8 +34,8 @@ import {
   needsGenericCurriculumImport,
   type PlaceInfo,
   parseEmblemSubject,
+  placeUnits,
   readAtlas,
-  regionEmblemKey,
   resolvePlace,
   revalidateEmblems,
   SCHULE_LENS,
@@ -44,6 +45,7 @@ import {
   setSetting,
   settleLens,
   snapshotForRead,
+  subjectName,
   type TakeResult,
   takeUnits,
   type UnitKey,
@@ -491,6 +493,53 @@ export async function atlasSettle(
   }
 }
 
+// ── Placing imported units (Decision 9) ──────────────────────────────────────
+
+/**
+ * Names for the levels below a place, fitted to how many it has: the last
+ * names land on the deepest levels (a goal's topic becomes the Thema, the
+ * goal itself the level above), and levels left over are "Allgemein".
+ */
+export function fitBelow(names: readonly string[], levels: number): string[] {
+  const clean = names.map((name) => name.trim()).filter(Boolean);
+  if (levels <= 0) return [];
+  const fitted = clean.slice(Math.max(0, clean.length - levels));
+  return [...Array(levels - fitted.length).fill(""), ...fitted];
+}
+
+/**
+ * Put units an import created at an atlas region (`placeUnits`), with the
+ * names each brings for the levels below it. A linked duplicate keeps its
+ * own place, as in the material import.
+ */
+export async function placeImportedUnits(
+  db: Database,
+  opts: {
+    lens?: string;
+    region: string;
+    units: ReadonlyArray<{ tokenId: string; names: readonly string[] }>;
+  },
+): Promise<number> {
+  if (opts.units.length === 0) return 0;
+  const lens = atlasLens(opts.lens);
+  await ensureWorldLenses(db);
+  const place = await resolvePlace(db, lens, opts.region);
+  if (!place)
+    throw new Error(`No region "${opts.region}" in the ${lens.name} lens.`);
+  const levels = place.missingLevels.length;
+  return db.transaction((tx) =>
+    placeUnits(
+      tx,
+      lens,
+      opts.region,
+      opts.units.map((unit) => ({
+        unitKey: `token:${unit.tokenId}` as UnitKey,
+        below: fitBelow(unit.names, levels),
+      })),
+    ),
+  );
+}
+
 // ── Sinnbilder (Decision 6) ──────────────────────────────────────────────────
 
 export interface AtlasEmblemResult {
@@ -588,8 +637,11 @@ export async function emblemSubjectInfo(
   const subject = parseEmblemSubject(subjectKey);
   if (!subject) {
     throw new Error(
-      `"${subjectKey}" names no unit or region. Use atom:<id>, token:<id> or region:<lens>:<key>.`,
+      `"${subjectKey}" names no unit or region. Use atom:<id>, token:<id>, subject:<fach> or region:<lens>:<key>.`,
     );
+  }
+  if (subject.kind === "subject") {
+    return { title: subjectName(subject.key), path: [] };
   }
   if (subject.kind === "region") {
     const place = await resolvePlace(
@@ -675,11 +727,15 @@ export async function atlasMissingEmblems(
     return names;
   };
   const missing: MissingEmblem[] = [];
+  // A region that borrows its first unit's Sinnbild still deserves its own;
+  // a Fach in several grades is one subject and is listed once.
+  const listed = new Set<string>();
   for (const region of view.regions) {
-    const own = regionEmblemKey(view.lens.kind, region.key);
-    if (region.emblem === own) continue;
+    const borrowed = !region.emblem || /^(atom|token):/.test(region.emblem);
+    if (!borrowed || listed.has(region.emblemSubject)) continue;
+    listed.add(region.emblemSubject);
     missing.push({
-      subject: own,
+      subject: region.emblemSubject,
       kind: "region",
       title: region.name,
       path: pathOf(region.parentKey),

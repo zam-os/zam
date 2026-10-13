@@ -928,6 +928,11 @@ export interface AtlasRegionWire {
    * without one, its first unit's.
    */
   emblem?: string;
+  /**
+   * Where a new Sinnbild of this region is written: `subject:<key>` for a
+   * Fach (one Sinnbild in every lens), else `region:<lens>:<key>`.
+   */
+  emblemSubject: string;
 }
 
 /**

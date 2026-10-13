@@ -15,6 +15,7 @@
  */
 
 import { ulid } from "ulid";
+import { hueKeyForDomain } from "../atlas/palette.js";
 import {
   ATLAS_LAND_TABLES,
   ATLAS_TABLES,
@@ -31,7 +32,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 43;
+export const CURRENT_SCHEMA_VERSION = 44;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1025,6 +1026,50 @@ export async function runMigrations(db: Database): Promise<void> {
   // Sinnbild (knowledge) and a learner's own (learning state), both stored in
   // the validator's canonical form only.
   await db.exec(EMBLEM_TABLES);
+
+  // M044: a Fach's Sinnbild belongs to the subject, which every lens shares
+  // (`subject:<key>`), not to one lens's region. Rows written under a Fach's
+  // region key move there.
+  await moveFachEmblemsToSubjects(db);
+}
+
+/**
+ * M044. A Fach sits on level 1 of the Weltwissen and Schule lenses, so its
+ * region key has two segments (`natur.physik`, `rs-9.mathematik`). Its
+ * subject is the hue key of the second. An existing subject row is kept.
+ */
+async function moveFachEmblemsToSubjects(db: Database): Promise<void> {
+  const fach = /^region:(weltwissen|schule):[^.]+\.([^.]+)$/;
+  for (const table of ["emblems", "learner_emblems"]) {
+    const learner = table === "learner_emblems";
+    const rows = (await db
+      .prepare(
+        `SELECT ${learner ? "user_id, " : ""}subject_key FROM ${table}
+          WHERE subject_key LIKE 'region:%'`,
+      )
+      .all()) as Array<{ user_id?: string; subject_key: string }>;
+    for (const row of rows) {
+      const match = fach.exec(row.subject_key);
+      if (!match) continue;
+      const subject = `subject:${hueKeyForDomain(match[2])}`;
+      const owner = learner ? " AND user_id = ?" : "";
+      const args = learner ? [row.user_id] : [];
+      const taken = await db
+        .prepare(`SELECT 1 FROM ${table} WHERE subject_key = ?${owner}`)
+        .get(subject, ...args);
+      if (taken) {
+        await db
+          .prepare(`DELETE FROM ${table} WHERE subject_key = ?${owner}`)
+          .run(row.subject_key, ...args);
+      } else {
+        await db
+          .prepare(
+            `UPDATE ${table} SET subject_key = ? WHERE subject_key = ?${owner}`,
+          )
+          .run(subject, row.subject_key, ...args);
+      }
+    }
+  }
 }
 
 const OBSERVATION_STEP_NOTE = /^(Observation synthesis \([^)]*\)):[\s\S]*$/;

@@ -618,6 +618,11 @@ export function seedEmblem(
   return key ? SEED[key] : undefined;
 }
 
+/** The seed entry of a Fach by its subject (hue) key, in every lens. */
+export function seedSubjectEmblem(subjectKey: string): SeedEmblem | undefined {
+  return subjectKey.includes("/") ? undefined : SEED[subjectKey];
+}
+
 /** Every seed entry, for the test that each one validates. */
 export function seedEmblems(): ReadonlyArray<[string, SeedEmblem]> {
   return Object.entries(SEED);

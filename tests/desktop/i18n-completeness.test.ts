@@ -419,6 +419,11 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "atlas_import_title",
   "atlas_import_at",
   "atlas_import_curriculum",
+  "atlas_import_goal",
+  "atlas_import_goal_help",
+  "atlas_import_goal_open",
+  "goal_place_line",
+  "goal_place_for_model",
   "atlas_import_material",
   "atlas_import_material_help",
   "atlas_import_material_open",
@@ -439,6 +444,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "material_notes_sent_to",
   "material_notes_no_model",
   "material_notes_running",
+  "material_busy_status",
   // Today view, sidebar, Learning Content import menu and the Quellen
   // reader dialog of the Studio redesign. en/de shipped;
   // es/fr/pt/zh/ja await native pack review (see i18n pack backlog).
