@@ -168,6 +168,14 @@ export function parseRecallEvaluation(
 ): RecallEvaluation {
   const stripped = text
     .trim()
+    .replace(
+      /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*?<\s*\/\s*(?:think|thought|reasoning|scratchpad|antThinking)\s*>/gi,
+      "",
+    )
+    .replace(
+      /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*$/gi,
+      "",
+    )
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/, "")
     .trim();

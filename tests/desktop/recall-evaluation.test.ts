@@ -71,6 +71,19 @@ describe("Recall smart evaluation", () => {
     });
   });
 
+  it("strips thinking tags before parsing structured feedback", () => {
+    expect(
+      parseRecallEvaluation(`<think>Reasoning process...</think>
+{"verdict":"correct","feedback":"Exact match.","referenceAnswer":"Use the stored concept.","gaps":[]}`),
+    ).toEqual({
+      verdict: "correct",
+      feedback: "Exact match.",
+      referenceAnswer: "Use the stored concept.",
+      gaps: [],
+      suggestedRating: 3,
+    });
+  });
+
   it("never suggests Hard/Good/Easy for a partial or incorrect verdict", () => {
     expect(reconcileRecallSuggestedRating("partial", 2)).toBe(1);
     expect(reconcileRecallSuggestedRating("partial", 3)).toBe(1);

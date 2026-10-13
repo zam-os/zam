@@ -720,6 +720,154 @@ const LOCALIZED_COMPLETENESS: Record<
   ja: { complete: "完全", incomplete: "不完全" },
 };
 
+/**
+ * Sanitize and clean active-recall evaluation text returned by an LLM or agent harness.
+ *
+ * Models (especially reasoning-capable models or agents running headless) can
+ * leak chain-of-thought/scratchpads, draft an initial evaluation and then
+ * self-correct, emit contradictory verdicts (e.g. "Vollständig✅" followed by
+ * rethinking and "Unvollständig (2)"), or wrap output in markdown/code blocks.
+ *
+ * This normalizer:
+ * 1. Strips `<think>`, `<thought>`, and similar scratchpad tags.
+ * 2. Unwraps markdown code fences and conversational intros ("Evaluation:").
+ * 3. Detects multiple completeness verdict lines and discards prior, superseded drafts.
+ * 4. Strips internal scratchpad / self-correction reasoning paragraphs.
+ * 5. Cleans up stray emojis/punctuation from the final completeness verdict line.
+ */
+export function cleanRecallEvaluation(
+  rawText: string,
+  _locale?: string,
+): string {
+  if (!rawText?.trim()) return "";
+  let text = rawText.trim();
+
+  // 1. Strip think / thought / reasoning XML-like tags (closed and unclosed)
+  text = text.replace(
+    /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*?<\s*\/\s*(?:think|thought|reasoning|scratchpad|antThinking)\s*>/gi,
+    "",
+  );
+  text = text.replace(
+    /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*$/gi,
+    "",
+  );
+  text = text.trim();
+
+  // 2. Strip surrounding markdown code block fences if any
+  if (text.startsWith("```")) {
+    text = text
+      .replace(/^```[a-z0-9_-]*\r?\n?/i, "")
+      .replace(/\r?\n?```$/i, "")
+      .trim();
+  }
+
+  // Strip conversational introductory prefixes
+  text = text
+    .replace(/^(?:Evaluation|Bewertung|Feedback)\s*:\s*/i, "")
+    .replace(
+      /^(?:Here is (?:the|my) evaluation|Hier ist (?:die|meine) Bewertung)[^\n]*\r?\n+/i,
+      "",
+    )
+    .trim();
+
+  // 3. Find completeness verdict lines across all supported languages
+  const verdictTerms: string[] = [];
+  for (const loc of Object.values(LOCALIZED_COMPLETENESS)) {
+    verdictTerms.push(loc.complete);
+    verdictTerms.push(loc.incomplete);
+  }
+  const uniqueTerms = Array.from(new Set(verdictTerms))
+    .sort((a, b) => b.length - a.length)
+    .map((term) => term.replace(/[.*+?^${}()|[\]\\]/g, "\\$&"));
+  const termsPattern = uniqueTerms.join("|");
+  // Match a standalone verdict line: optional markdown bold, term, optional (N), optional emoji/symbols, end of line
+  const verdictLineRegex = new RegExp(
+    `(?:^|\\r?\\n)[ \\t]*(?:\\*{1,2})?(?:${termsPattern})(?:\\s*\\(\\d+\\))?(?:\\*{1,2})?(?:[^\\p{L}\\p{N}\\r\\n]*)(?=\\r?\\n|$)`,
+    "giu",
+  );
+
+  const matches = Array.from(text.matchAll(verdictLineRegex));
+  if (matches.length > 1) {
+    // Multiple verdicts found: the model produced earlier drafts before self-correcting.
+    // Discard everything up to and including the second-to-last verdict line.
+    const priorMatch = matches[matches.length - 2];
+    const cutIndex = priorMatch.index! + priorMatch[0].length;
+    text = text.slice(cutIndex).trim();
+  }
+
+  // 4. Split remaining text into paragraphs and drop reasoning/scratchpad blocks
+  const paragraphs = text
+    .split(/\r?\n\s*\r?\n/)
+    .map((p) => p.trim())
+    .filter(Boolean);
+
+  if (paragraphs.length > 1) {
+    const isReasoningBlock = (p: string): boolean => {
+      // Starts with common scratchpad or self-correction headers
+      if (
+        /^(?:W?invalid\b|Wait[,:\s]|Thinking(?:\s+process)?[:\s]|Thought(?:\s+process)?[:\s]|Reasoning[:\s]|Scratchpad[:\s]|Analysis[:\s]|Self-correction[:\s]|Correction[:\s]|Let(?:'s| me)\b|We (?:need|must)\b)/i.test(
+          p,
+        )
+      ) {
+        return true;
+      }
+      // Matches multiple meta-prompt reflection phrases
+      const metaPhrases = [
+        /\bassess completeness\b/i,
+        /\blearner says\b/i,
+        /\blearner's answer says\b/i,
+        /\bthe user wrote\b/i,
+        /\binstructions completeness\b/i,
+        /\btarget concept\b/i,
+        /\btarget answer\b/i,
+        /\brequired elements\b/i,
+        /\bmissing elements\b/i,
+        /\bexact verdict\b/i,
+        /\bgive concise\b/i,
+        /\bdon't include emoji\b/i,
+        /\bdo not include emoji\b/i,
+        /\bnumber missing\b/i,
+        /\bchain of thought\b/i,
+        /\binternal monologue\b/i,
+      ];
+      let metaMatches = 0;
+      for (const phrase of metaPhrases) {
+        if (phrase.test(p)) metaMatches++;
+      }
+      return metaMatches >= 2;
+    };
+
+    const cleanedParagraphs: string[] = [];
+    for (let i = 0; i < paragraphs.length; i++) {
+      const p = paragraphs[i];
+      // Keep the final paragraph (which contains the verdict) and any non-reasoning paragraph
+      if (i < paragraphs.length - 1 && isReasoningBlock(p)) {
+        continue;
+      }
+      cleanedParagraphs.push(p);
+    }
+    if (cleanedParagraphs.length > 0) {
+      text = cleanedParagraphs.join("\n\n");
+    }
+  }
+
+  // 5. Clean up any trailing emoji or punctuation on the final verdict line
+  const lines = text.split(/\r?\n/);
+  const lastLine = lines[lines.length - 1]?.trim() ?? "";
+  const verdictCleanRegex = new RegExp(
+    `^(?:\\*{1,2})?((?:${termsPattern})(?:\\s*\\(\\d+\\))?)(?:\\*{1,2})?[^\\p{L}\\p{N}\\s]*$`,
+    "iu",
+  );
+  const match = lastLine.match(verdictCleanRegex);
+  if (match) {
+    const canonical = match[1].replace(/\s*\(\s*(\d+)\s*\)/, " ($1)");
+    lines[lines.length - 1] = canonical;
+    text = lines.join("\n");
+  }
+
+  return text.trim();
+}
+
 interface ChatCompletionResponse {
   choices?: Array<{
     message?: { content?: string };
@@ -999,8 +1147,8 @@ Judge completeness only, and judge it generously. A vague, imprecise or clumsily
 Guidelines:
 1. Provide a constructive, task-focused evaluation in ${langName} (2-3 sentences). Weave a brief explanation of the target concept into the feedback. Do NOT append a separate, duplicate reference answer or raw "Musterlösung" block. Do not praise the person; comment on the answer.
 2. CRITICAL: ZAM is a strict one-shot card flow, NOT an interactive chat. The correct Musterlösung (reference answer) is revealed alongside your feedback. Therefore, NEVER ask the user to think further, keep guessing, or suggest they try to solve the remaining parts of the question. Immediately evaluate what they wrote and explain the complete solution.
-3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours.
-4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper.`;
+3. End your response with a completeness verdict on its own line, in ${langName}: "${completeness.complete}" when nothing required is missing, or "${completeness.incomplete} (N)" where N is how many required elements are missing — and name them in the feedback above. Never suggest a rating: how hard the answer was is the learner's to say, not yours. Do NOT add emojis, symbols, or formatting to the verdict line.
+4. Output ONLY the evaluation and the completeness line. Keep it concise and clean. No conversational introduction or markdown wrapper. Do not expose chain-of-thought, internal reasoning, scratchpads, self-corrections, or intermediate drafts. Never output contradictory verdicts or multiple attempts.`;
 
   const userPrompt = `Domain: ${input.domain}
 Slug: ${input.slug}
@@ -1024,7 +1172,7 @@ Evaluation:`;
         user: userPrompt,
       });
       return {
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model || `agent:${endpoint.agentHarness ?? "claude"}`,
         providerName: endpoint.providerName,
       };
@@ -1100,7 +1248,7 @@ Evaluation:`;
       : RECALL_EVALUATION_MAX_OUTPUT_TOKENS;
     try {
       return await attemptEvaluation(firstBudget, firstEffort).then((text) => ({
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model,
         providerName: endpoint.providerName,
       }));
@@ -1121,7 +1269,7 @@ Evaluation:`;
         null,
       );
       return {
-        text,
+        text: cleanRecallEvaluation(text, cfg.locale),
         model: endpoint.model,
         providerName: endpoint.providerName,
       };
