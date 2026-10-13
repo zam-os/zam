@@ -3,6 +3,7 @@
 **Status:** Proposed\
 **Date:** 2026-10-13\
 **Deciders:** Thomas (project owner)\
+**Implementation plan:** [2026-10-13-knowledge-atlas.md](../plans/2026-10-13-knowledge-atlas.md)\
 **Spikes:** zam-os/zam#405: `desktop/spikes/knowledge-world/` (3D) and
 `desktop/spikes/knowledge-atlas/` (2D)\
 **Related:**
@@ -187,19 +188,27 @@ planet has its own map, its own lenses and its own colour of sea.
   - The map shows such a thread as a portal on the coast; a click opens the
     other planet at that unit.
 - **An import stays on the planet where it started.** The units an import
-  creates belong to the planet of the region the learner chose.
-  - The agent may link them to existing world units, and it may propose that
-    something is world knowledge. It never writes to the world planet.
-  - A new world unit goes out through the editorial release of the central
-    content service, with a named reviewer (2026-07-26b, Decisions 1–3:
-    there is no write path from a learner's device; 2026-08-14b).
+  creates belong to the planet of the region the learner chose, and they
+  stay in the connected library.
+  - A pupil's notes imported under *Physik › Mechanik* become the library's
+    own, unpublished world knowledge. A team's Scrum notes imported under
+    Team Boreas stay on the company planet.
+  - The agent may link new units to existing world units, and it may
+    propose that something is world knowledge. Moving a unit to a world
+    region is the learner's decision on a personal library and a curator's
+    on a team library. The unit still never leaves the library.
+  - Nothing is ever published to the central world service from a device.
+    A new public world unit goes out through the editorial release, with a
+    named reviewer (2026-07-26b, Decisions 1–3: there is no write path from
+    a learner's device; 2026-08-14b).
 - **One connected library per device.** The database binding carries the
   knowledge context (2026-07-04, Decision 9): a work device is connected to
   the company library, a private device to the personal library.
-  - Each library holds two planets: world knowledge, installed as published
-    content, and its own planet, which is Firma on a company library and
-    Privat on a personal one. Firma and Privat never share a database. The
-    kernel enforces the one-way rule on every write.
+  - Each library holds two planets. World knowledge is the published
+    content installed into it, plus the library's own unpublished world
+    units. The other is its own planet: Firma on a company library, Privat
+    on a personal one. Firma and Privat never share a database. The kernel
+    enforces the one-way rule on every write.
   - The company library is the company's server (2026-09-04). Where none has
     been set up yet, it may be a local database file on a company machine.
     It is never the learner's private library.
@@ -522,8 +531,8 @@ This is indicative; the plan fixes the names. Every schema change goes into
 
 | Table (sketch) | Class | Holds |
 |---|---|---|
-| (planet) | — | not a table: world units are installed published content, the library's own units form its own planet (Decision 2) |
-| `atlas_lenses` | knowledge | id, name, kind (`weltwissen`, `schule`, `unternehmen`, `produkte`, …), level names, colour level |
+| (planet) | — | not a table: a lens belongs to one planet, `welt` or the library's own, and a unit sits in the lenses of exactly one planet (Decision 2) |
+| `atlas_lenses` | knowledge | id, planet, name, kind (`weltwissen`, `schule`, `unternehmen`, `produkte`, …), level names, colour level |
 | `atlas_regions` | knowledge | lens, parent, level, name, key (drives the hue), rank, pattern, optional `ontology_ref` |
 | `atlas_domain_aliases` | knowledge | domain path → region (Weltwissen) |
 | `atlas_members` | knowledge | lens, atom or token → leaf region (derived or curated) |
@@ -632,8 +641,8 @@ The field test checks the default of *Neue Inhalte zeigen*.
   - two units with the same title stay apart;
   - a thread from world knowledge to company or private knowledge is
     refused, and so is one between company and private knowledge;
-  - an import creates units only on the planet of the chosen region, never
-    on the world planet;
+  - an import creates units only on the planet of the chosen region, in the
+    connected library, and publishes nothing;
   - an import at a region asks only for the missing levels below it, and
     stores no material;
   - condition: a unit takes its weakest card; the bands follow the learner's
@@ -669,3 +678,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Opened as a docs PR for review before the plan. |
 | 2026-10-13 | Proposed | Review round 1 (Grok, Gemini) folded in: imports stay on their planet and never write world knowledge; one connected library per device; model calls named as egress; sameness decided by learner or curator, merged only through `replaces`; stored hexes, Gosper only when an island is founded, bounded drift; condition from the weakest card, bands relative to request retention; Sinnbild validator parses a tree, glyph escaped, `untrusted: true`; words beside the UML shapes; prerequisite threads are the existing edges; shared and personal rows in separate tables; imports work with the atlas off, cells first, no stored material; only the read tool may be pre-approved; statistics only the caller's own. Six open questions resolved. |
 | 2026-10-13 | Proposed | Owner decisions on round 1: each library holds world knowledge plus its own planet (Firma on the company server, or a local file on a company machine where none exists; Privat on the personal library); land without a card is blank, *Neue Inhalte zeigen* shows it as pencil sketches to take in, declined content stays blank; Produkte is the default lens on a team library; the first Sinnbild is shared only when its writer may write knowledge. No open questions remain. |
+| 2026-10-13 | Proposed | Implementation plan added. Clarified Decision 2: a unit imported into a world region stays in the connected library as unpublished world knowledge; "never writes to the world planet" meant the central service. |
