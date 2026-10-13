@@ -630,6 +630,11 @@ function fromScheduling(card: SchedulingCard): Omit<StoredCard, "id" | "question
   };
 }
 
+/** A never-practised card (used by the atlas spike for its sample content). */
+export function newStoredCard(id: string, question: string, answer: string, bloom: number, now: Date): StoredCard {
+  return { ...fromScheduling(createEmptyCard(now)), id, question, answer, bloom };
+}
+
 export function applyRating(card: StoredCard, rating: Rating, at: Date): void {
   Object.assign(card, fromScheduling(fsrs.schedule(toScheduling(card), rating, at)));
 }

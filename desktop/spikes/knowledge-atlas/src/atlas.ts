@@ -1,23 +1,26 @@
 /**
  * Knowledge atlas spike — data model and operations.
  *
- * A 2D map of world knowledge, ordered logically rather than by school
- * grade: continents (Bereiche) hold countries (Fächer), which hold
- * provinces (Gebiete), which hold districts (Themen); each Begriff is one
- * hex of land. Zooming in walks down these levels, like the C4 model.
+ * Knowledge lives on separate **planets** that never mix: world knowledge
+ * (a central, public knowledge server), company knowledge (stays inside the
+ * company) and private knowledge (stays on the device). Each planet can be
+ * read through several **lenses** — orders over the same learning units,
+ * such as Weltwissen and Schule, or Organisation and Produkte. A lens is a
+ * tree: its top level forms the islands, its leaves hold the learning units
+ * (one hex each). Zooming in walks down a lens, like the C4 model.
+ *
+ * The map is fixed: the agent keeps the order; the learner explores and
+ * reviews. Red threads link units; a thread to another planet only ever
+ * points from company or private knowledge to world knowledge, and it is
+ * stored on the dependent side, so world knowledge never learns about them.
  *
  * Shared by the browser and the agent CLI. Pure: no DOM, no Node APIs.
- * Cards, FSRS state and Sinnbild validation come from the 3D spike's model,
- * which wraps the kernel's real FSRS-6.
- *
- * One rule shapes every change: what you move, you first review. Moving a
- * Begriff or a Thema refuses while any of its cards is stale, so tidying
- * the map is always also practice.
  */
 import {
   applyRating,
   conceptsFromTile,
   isDue,
+  newStoredCard,
   retrievability,
   statsFor,
   validateEmblemSvg,
@@ -31,6 +34,7 @@ import type {
   TileCatalog,
   TileJson,
 } from "../../knowledge-world/src/model.ts";
+import type { SampleThread, SampleUnit, SampleWorldUnit } from "./sample-planets.ts";
 import { CONTINENTS, PATTERNS, cleanTopic, placeForDomain } from "./taxonomy.ts";
 import type { PatternKind } from "./taxonomy.ts";
 
@@ -38,79 +42,110 @@ export type { Concept, Emblem, Rating, Stats, StoredCard, TileCatalog, TileJson 
 
 const DAY_MS = 24 * 60 * 60 * 1000;
 
-/** Cards reviewed within this many (simulated) hours count as fresh enough to move. */
-export const FRESH_HOURS = 12;
-
 // ── Types ────────────────────────────────────────────────────────────────────
 
-/** 1 Bereich (continent), 2 Fach (country), 3 Gebiet (province), 4 Thema (district). */
-export type Level = 1 | 2 | 3 | 4;
+export type PlanetKind = "welt" | "firma" | "privat";
 
-export const LEVEL_NAME: Record<Level, string> = { 1: "Bereich", 2: "Fach", 3: "Gebiet", 4: "Thema" };
+/**
+ * Thread kinds borrow UML's connectors: a prerequisite, a «use» dependency,
+ * a provided/required interface, a generalisation, and a plain association.
+ */
+export type ThreadKind = "voraussetzung" | "nutzt" | "schnittstelle" | "ist-ein" | "verbindung";
+
+export const THREAD_KINDS: Record<ThreadKind, { label: string; from: string; to: string }> = {
+  voraussetzung: { label: "Voraussetzung", from: "Darauf baut auf", to: "Baut auf" },
+  nutzt: { label: "nutzt", from: "Nutzt", to: "Wird genutzt von" },
+  schnittstelle: { label: "Schnittstelle", from: "Bietet eine Schnittstelle für", to: "Nutzt die Schnittstelle von" },
+  "ist-ein": { label: "ist ein", from: "Ist ein Sonderfall von", to: "Sonderfälle" },
+  verbindung: { label: "Verbindung", from: "Verbindung", to: "Verbindung" },
+};
 
 export interface Region {
   id: string;
-  level: Level;
+  /** 1 = island … levels.length = leaf. */
+  level: number;
   name: string;
   parent: string | null;
-  /** Child regions in order — foundations first. */
   children: string[];
-  /** Sort key among siblings (taxonomy position, or lowest grade for a Thema). */
   rank: number;
-  /** Hue of the Fach the region belongs to (a Bereich has none). */
+  /** Hue of the region on the lens's colour level (inherited below it). */
   hue: number;
-  /** A Gebiet's map pattern, so neighbours differ even in the same colour family. */
+  /** Pattern of a region one level below the colour level. */
   pattern?: PatternKind;
-  /** Taxonomy key, e.g. "physik/optik" — sample Sinnbilder are keyed by it. */
   key: string;
+  /** Which sample Sinnbild belongs here. */
+  emblemKey: string;
   emblem?: Emblem;
-  /** A Thema's Begriffe in order. */
-  concepts?: string[];
+  /** A leaf's learning units in order. */
+  units?: string[];
 }
 
-export interface Proposal {
+export interface Lens {
   id: string;
-  /** A Begriff or Thema id. */
-  item: string;
-  /** A Thema (for a Begriff) or Gebiet (for a Thema). */
-  target: string;
-  by: "agent" | "studio";
-  note?: string;
+  name: string;
+  /** Level names, island first. */
+  levels: string[];
+  /** Level (1-based) whose regions carry a hue. */
+  colorLevel: number;
+  roots: string[];
+  regions: Record<string, Region>;
+  /** Island positions on the hex lattice, kept once laid out (islands drift, never jump). */
+  islands: Record<string, { q: number; r: number }>;
+  /** The learner's own area — the map opens there. */
+  home?: string;
 }
 
-/**
- * A red thread on the pin board: a link across the map's order. Prerequisites
- * come from the tiles; connections across Fächer are the agent's (or the
- * learner's) — the part a tree of categories cannot show.
- */
 export interface Thread {
   id: string;
-  /** For a prerequisite: the foundation. */
+  /** voraussetzung: the foundation · nutzt: the user · schnittstelle: the provider · ist-ein: the special case. */
   a: string;
-  /** For a prerequisite: what builds on it. */
   b: string;
-  kind: "voraussetzung" | "verbindung";
+  kind: ThreadKind;
   note?: string;
   by: "kachel" | "agent" | "learner";
 }
 
+export interface Planet {
+  id: string;
+  kind: PlanetKind;
+  name: string;
+  /** Where this knowledge lives, in a learner's words. */
+  server: string;
+  lenses: Lens[];
+  units: Record<string, Concept>;
+  /** Prerequisites from tiles: unit → what it builds on (kept even before the foundation arrives). */
+  requires: Record<string, Array<{ id: string; note?: string }>>;
+  threads: Thread[];
+}
+
+/**
+ * The learner started an import at a place on the map — notes, a handout,
+ * a text — and the agent turns it into learning units right there. The
+ * deeper the place, the less the agent has to guess.
+ */
+export interface ImportRequest {
+  id: string;
+  planet: string;
+  lens: string;
+  region: string;
+  text: string;
+  createdAt: string;
+  /** Units the agent added for it. */
+  units: string[];
+  done: boolean;
+}
+
 export interface Atlas {
-  schema: "zam-knowledge-atlas-spike/1";
+  schema: "zam-knowledge-atlas-spike/2";
   revision: number;
   createdAt: string;
   /** Simulated minutes since `createdAt` (the time machine moves it). */
   clockMinutes: number;
-  /** Bereiche in order. */
-  roots: string[];
-  regions: Record<string, Region>;
-  concepts: Record<string, Concept>;
-  /** This learner's own Sinnbilder, by region or concept id. */
+  planetOrder: string[];
+  planets: Record<string, Planet>;
+  /** This learner's own Sinnbilder, by unit or region id. */
   personalEmblems?: Record<string, Emblem>;
-  proposals: Proposal[];
-  /** Prerequisites from the tiles: concept id → what it builds on (kept even before the foundation is imported). */
-  requires: Record<string, Array<{ id: string; note?: string }>>;
-  /** Connections spun by the agent or the learner. */
-  threads: Thread[];
+  requests: ImportRequest[];
   lastChange: { by: "studio" | "agent"; summary: string } | null;
 }
 
@@ -130,36 +165,53 @@ export function simDay(atlas: Atlas): number {
 
 // ── Lookup ──────────────────────────────────────────────────────────────────
 
-/** concept id → Thema id */
-export function homeIndex(atlas: Atlas): Map<string, string> {
+export function planetOfUnit(atlas: Atlas, unitId: string): Planet | null {
+  for (const id of atlas.planetOrder) if (atlas.planets[id].units[unitId]) return atlas.planets[id];
+  return null;
+}
+
+export function findUnit(atlas: Atlas, unitId: string): Concept | null {
+  return planetOfUnit(atlas, unitId)?.units[unitId] ?? null;
+}
+
+export function lensOf(planet: Planet, lensId: string): Lens {
+  return planet.lenses.find((l) => l.id === lensId) ?? planet.lenses[0];
+}
+
+/** unit id → leaf region id, in one lens */
+export function homeIndex(lens: Lens): Map<string, string> {
   const home = new Map<string, string>();
-  for (const r of Object.values(atlas.regions)) for (const c of r.concepts ?? []) home.set(c, r.id);
+  for (const r of Object.values(lens.regions)) for (const u of r.units ?? []) home.set(u, r.id);
   return home;
 }
 
-export function regionPath(atlas: Atlas, regionId: string): Region[] {
+export function regionPath(lens: Lens, regionId: string): Region[] {
   const path: Region[] = [];
-  for (let r: Region | undefined = atlas.regions[regionId]; r; r = r.parent ? atlas.regions[r.parent] : undefined) path.unshift(r);
+  for (let r: Region | undefined = lens.regions[regionId]; r; r = r.parent ? lens.regions[r.parent] : undefined) path.unshift(r);
   return path;
 }
 
-export function pathText(atlas: Atlas, regionId: string): string {
-  return regionPath(atlas, regionId).map((r) => r.name).join(" › ");
+export function pathText(lens: Lens, regionId: string): string {
+  return regionPath(lens, regionId).map((r) => r.name).join(" › ");
 }
 
-export function conceptsIn(atlas: Atlas, regionId: string): Concept[] {
-  const region = atlas.regions[regionId];
+export function unitIdsIn(lens: Lens, regionId: string): string[] {
+  const region = lens.regions[regionId];
   if (!region) return [];
-  if (region.level === 4) return (region.concepts ?? []).map((id) => atlas.concepts[id]).filter(Boolean);
-  return region.children.flatMap((id) => conceptsIn(atlas, id));
+  if (region.units) return region.units;
+  return region.children.flatMap((id) => unitIdsIn(lens, id));
 }
 
-export function cardsOf(concepts: Concept[]): StoredCard[] {
-  return concepts.flatMap((c) => c.cards);
+export function unitsIn(planet: Planet, lens: Lens, regionId: string): Concept[] {
+  return unitIdsIn(lens, regionId).map((id) => planet.units[id]).filter(Boolean);
 }
 
-export function regionStats(atlas: Atlas, regionId: string): Stats {
-  return statsFor(cardsOf(conceptsIn(atlas, regionId)), simNow(atlas));
+export function cardsOf(units: Concept[]): StoredCard[] {
+  return units.flatMap((c) => c.cards);
+}
+
+export function regionStats(atlas: Atlas, planet: Planet, lens: Lens, regionId: string): Stats {
+  return statsFor(cardsOf(unitsIn(planet, lens, regionId)), simNow(atlas));
 }
 
 export function dueCards(atlas: Atlas, cards: StoredCard[]): StoredCard[] {
@@ -167,32 +219,33 @@ export function dueCards(atlas: Atlas, cards: StoredCard[]): StoredCard[] {
   return cards.filter((c) => c.state === "new" || isDue(c, now));
 }
 
-/** Cards that must be reviewed before their Begriff may move. */
-export function staleCards(atlas: Atlas, concepts: Concept[]): StoredCard[] {
-  const fresh = simNow(atlas).getTime() - FRESH_HOURS * 60 * 60 * 1000;
-  return cardsOf(concepts).filter((c) => c.lastReviewAt === null || Date.parse(c.lastReviewAt) < fresh);
+export function itemName(atlas: Atlas, id: string): string {
+  const unit = findUnit(atlas, id);
+  if (unit) return unit.title;
+  for (const p of Object.values(atlas.planets)) for (const l of p.lenses) if (l.regions[id]) return l.regions[id].name;
+  return id;
 }
 
-/** Find a Begriff or region by id, slug or (part of its) name. */
-export function find(atlas: Atlas, query: string): Array<{ kind: "concept"; concept: Concept } | { kind: "region"; region: Region }> {
+/** Find units and regions on one planet by id, slug or (part of their) name. */
+export function find(planet: Planet, lens: Lens, query: string): Array<{ kind: "unit"; unit: Concept } | { kind: "region"; region: Region }> {
   const q = query.trim().toLowerCase();
   if (!q) return [];
-  const exact = atlas.concepts[query] ?? Object.values(atlas.concepts).find((c) => c.slug === query);
-  if (exact) return [{ kind: "concept", concept: exact }];
-  if (atlas.regions[query]) return [{ kind: "region", region: atlas.regions[query] }];
-  const regions = Object.values(atlas.regions)
+  const exact = planet.units[query] ?? Object.values(planet.units).find((c) => c.slug === query);
+  if (exact) return [{ kind: "unit", unit: exact }];
+  if (lens.regions[query]) return [{ kind: "region", region: lens.regions[query] }];
+  const regions = Object.values(lens.regions)
     .filter((r) => r.name.toLowerCase().includes(q) || r.key === q)
     .sort((a, b) => a.level - b.level || a.name.length - b.name.length)
     .map((region) => ({ kind: "region" as const, region }));
-  const concepts = Object.values(atlas.concepts)
+  const units = Object.values(planet.units)
     .filter((c) => c.title.toLowerCase().includes(q) || c.slug.includes(q))
-    .map((concept) => ({ kind: "concept" as const, concept }));
-  return [...regions, ...concepts];
+    .map((unit) => ({ kind: "unit" as const, unit }));
+  return [...regions, ...units];
 }
 
-// ── Building the map ────────────────────────────────────────────────────────
+// ── Building lenses ─────────────────────────────────────────────────────────
 
-function slugify(name: string): string {
+export function slugify(name: string): string {
   return name
     .toLowerCase()
     .replace(/ä/g, "ae")
@@ -204,78 +257,148 @@ function slugify(name: string): string {
     .slice(0, 48);
 }
 
-const PREFIX: Record<Level, string> = { 1: "b", 2: "f", 3: "g", 4: "t" };
+function sortChildren(lens: Lens, list: string[]): void {
+  list.sort((a, b) => lens.regions[a].rank - lens.regions[b].rank || lens.regions[a].name.localeCompare(lens.regions[b].name, "de"));
+}
 
-function insertChild(atlas: Atlas, parent: Region | null, region: Region): void {
-  const list = parent ? parent.children : atlas.roots;
-  const at = list.findIndex((id) => {
-    const other = atlas.regions[id];
-    return other.rank > region.rank || (other.rank === region.rank && other.name.localeCompare(region.name, "de") > 0);
+export interface PathStep {
+  name: string;
+  /** Defaults to the slug of the name. */
+  key?: string;
+  rank: number;
+  hue?: number;
+  emblemKey?: string;
+}
+
+/** Put a unit at a path in a lens, building whatever regions are missing. */
+export function placeInLens(lens: Lens, steps: PathStep[], unitId: string): string {
+  if (steps.length !== lens.levels.length) fail(`Pfad für ${lens.name} braucht ${lens.levels.length} Ebenen`);
+  let parent: Region | null = null;
+  steps.forEach((step, i) => {
+    const level = i + 1;
+    const segment = step.key ?? slugify(step.name);
+    const key = parent ? `${parent.key}/${segment}` : segment;
+    const id = `${lens.id}:${key}`;
+    let region: Region | undefined = lens.regions[id];
+    if (!region) {
+      const pattern: PatternKind | undefined = level === lens.colorLevel + 1 && parent ? PATTERNS[parent.children.length % PATTERNS.length] : undefined;
+      const created: Region = {
+        id,
+        level,
+        name: step.name,
+        parent: parent?.id ?? null,
+        children: [],
+        rank: step.rank,
+        hue: step.hue ?? parent?.hue ?? 0,
+        key,
+        emblemKey: step.emblemKey ?? key,
+        ...(pattern ? { pattern } : {}),
+        ...(level === steps.length ? { units: [] } : {}),
+      };
+      region = created;
+      lens.regions[id] = created;
+      const list = parent ? parent.children : lens.roots;
+      list.push(id);
+      sortChildren(lens, list);
+    } else if (step.rank < region.rank) {
+      region.rank = step.rank;
+      sortChildren(lens, parent ? parent.children : lens.roots);
+    }
+    parent = region;
   });
-  if (at < 0) list.push(region.id);
-  else list.splice(at, 0, region.id);
+  const leaf = parent as unknown as Region;
+  if (!leaf.units?.includes(unitId)) leaf.units?.push(unitId);
+  return leaf.id;
 }
 
-function ensureRegion(atlas: Atlas, level: Level, parentId: string | null, key: string, name: string, rank: number, hue: number): Region {
-  const id = `${PREFIX[level]}:${key}`;
-  const existing = atlas.regions[id];
-  if (existing) {
-    if (level === 4) existing.rank = Math.min(existing.rank, rank);
-    return existing;
+function emptyLens(id: string, name: string, levels: string[], colorLevel: number): Lens {
+  return { id, name, levels, colorLevel, roots: [], regions: {}, islands: {} };
+}
+
+/** Weltwissen: Bereich › Fach › Gebiet › Thema, from the unit's domain. */
+function weltwissenSteps(unit: Concept): PathStep[] | null {
+  const place = placeForDomain(unit.domain);
+  if (!place) return null;
+  const ci = CONTINENTS.indexOf(place.continent);
+  const si = place.continent.subjects.indexOf(place.subject);
+  const ai = place.subject.areas.indexOf(place.area);
+  const topic = cleanTopic(unit.topic ?? unit.source, place.subject.name, place.area.name);
+  return [
+    { name: place.continent.name, key: place.continent.key, rank: ci },
+    { name: place.subject.name, key: place.subject.key, rank: si, hue: place.subject.hue, emblemKey: place.subject.key },
+    { name: place.area.name, key: place.area.key, rank: ai < 0 ? 100 : ai, emblemKey: `${place.subject.key}/${place.area.key}` },
+    { name: topic, rank: unit.grade ?? 99 },
+  ];
+}
+
+/** Schule: Klasse › Fach › Lernbereich, from the curriculum binding. `order` keeps Lernbereiche in arrival order. */
+function schuleSteps(unit: Concept, order: number): PathStep[] | null {
+  const place = placeForDomain(unit.domain);
+  if (!place) return null;
+  const ci = CONTINENTS.indexOf(place.continent);
+  const si = place.continent.subjects.indexOf(place.subject);
+  const grade = unit.grade;
+  const island: PathStep = grade
+    ? { name: `${grade}. Klasse`, key: `klasse-${grade}`, rank: grade, emblemKey: `klasse-${grade}` }
+    : { name: "Außerhalb des Lehrplans", key: "ohne-klasse", rank: 99, emblemKey: "ohne-klasse" };
+  const topic = cleanTopic(unit.topic ?? unit.source, place.subject.name, place.area.name);
+  return [
+    island,
+    { name: place.subject.name, key: place.subject.key, rank: ci * 10 + si, hue: place.subject.hue, emblemKey: place.subject.key },
+    { name: topic, rank: order },
+  ];
+}
+
+const tileUnitCache = new Map<string, Concept[]>();
+
+/** A tile's units without scheduling state — for asking where they would land. */
+export function conceptsFromTileFor(key: string, tile: TileJson): Concept[] {
+  let units = tileUnitCache.get(key);
+  if (!units) {
+    units = conceptsFromTile(key, tile, new Date(0));
+    tileUnitCache.set(key, units);
   }
-  const parent = parentId ? atlas.regions[parentId] : null;
-  const region: Region = { id, level, name, parent: parentId, children: [], rank, hue, key };
-  if (level === 3 && parent) region.pattern = PATTERNS[parent.children.length % PATTERNS.length];
-  if (level === 4) region.concepts = [];
-  atlas.regions[id] = region;
-  insertChild(atlas, parent, region);
-  return region;
+  return units;
 }
 
-/**
- * Sort Begriffe into their logical place, building whatever is missing.
- * This is what the agent does on import — the learner never has to.
- */
-export function addConcepts(atlas: Atlas, concepts: Concept[]): { added: number; skipped: string[]; topics: Set<string> } {
+/** Where a world unit would land in a lens, as a region key path (for "does this tile fit here?"). */
+export function lensKeyFor(lensId: string, unit: Concept): string | null {
+  const steps = lensId === "weltwissen" ? weltwissenSteps(unit) : lensId === "schule" ? schuleSteps(unit, 0) : null;
+  if (!steps) return null;
+  return steps.map((st) => st.key ?? slugify(st.name)).join("/");
+}
+
+/** Sort world units into both world lenses — the agent's job on import. */
+export function addWorldUnits(atlas: Atlas, units: Concept[]): { added: number; skipped: string[]; leaves: Set<string> } {
+  const planet = atlas.planets.welt;
+  const welt = lensOf(planet, "weltwissen");
+  const schule = lensOf(planet, "schule");
   const skipped: string[] = [];
-  const topics = new Set<string>();
+  const leaves = new Set<string>();
   let added = 0;
-  for (const concept of concepts) {
-    if (atlas.concepts[concept.id]) continue;
-    const place = placeForDomain(concept.domain);
-    if (!place) {
-      skipped.push(`${concept.slug} (${concept.domain})`);
+  for (const unit of units) {
+    if (planet.units[unit.id]) continue;
+    const a = weltwissenSteps(unit);
+    const b = schuleSteps(unit, Object.keys(schule.regions).length);
+    if (!a || !b) {
+      skipped.push(`${unit.slug} (${unit.domain})`);
       continue;
     }
-    const ci = CONTINENTS.indexOf(place.continent);
-    const si = place.continent.subjects.indexOf(place.subject);
-    const ai = place.subject.areas.indexOf(place.area);
-    const hue = place.subject.hue;
-    const continent = ensureRegion(atlas, 1, null, place.continent.key, place.continent.name, ci, 0);
-    const subject = ensureRegion(atlas, 2, continent.id, place.subject.key, place.subject.name, si, hue);
-    const area = ensureRegion(atlas, 3, subject.id, `${place.subject.key}/${place.area.key}`, place.area.name, ai < 0 ? 100 : ai, hue);
-    const topicName = cleanTopic(concept.topic ?? concept.source, place.subject.name, place.area.name);
-    const topic = ensureRegion(atlas, 4, area.id, `${area.key}/${slugify(topicName)}`, topicName, concept.grade ?? 99, hue);
-    atlas.concepts[concept.id] = concept;
-    topic.concepts?.push(concept.id);
-    topics.add(topic.id);
+    planet.units[unit.id] = unit;
+    leaves.add(placeInLens(welt, a, unit.id));
+    placeInLens(schule, b, unit.id);
     added += 1;
   }
-  // A Thema's rank changed only if it gained a lower grade; resort its siblings.
-  for (const id of topics) {
-    const parent = atlas.regions[atlas.regions[id].parent ?? ""];
-    if (parent) parent.children.sort((a, b) => atlas.regions[a].rank - atlas.regions[b].rank || atlas.regions[a].name.localeCompare(atlas.regions[b].name, "de"));
-  }
-  return { added, skipped, topics };
+  return { added, skipped, leaves };
 }
 
 type TileAtom = TileJson["atoms"][number] & { prerequisites?: Array<{ atom_id?: string; rationale?: string }> };
 
-/** Remember what each atom builds on; a thread appears once both ends are in the atlas. */
-export function recordPrerequisites(atlas: Atlas, tile: TileJson): void {
+/** Remember what each atom builds on; a thread appears once both ends are present. */
+export function recordPrerequisites(planet: Planet, tile: TileJson): void {
   for (const atom of tile.atoms as TileAtom[]) {
     const reqs = (atom.prerequisites ?? []).filter((r) => r.atom_id).map((r) => ({ id: r.atom_id as string, note: r.rationale }));
-    if (reqs.length > 0) atlas.requires[atom.id] = reqs;
+    if (reqs.length > 0) planet.requires[atom.id] = reqs;
   }
 }
 
@@ -283,177 +406,182 @@ export function tileTitle(tile: TileJson): string {
   return tile.title.replace(/\s*\([^)]*\)\s*$/, "");
 }
 
-export function importTile(atlas: Atlas, key: string, tile: TileJson): { summary: string; topics: string[] } {
-  const fresh = conceptsFromTile(key, tile, simNow(atlas)).filter((c) => !atlas.concepts[c.id]);
-  if (fresh.length === 0) return { summary: `„${tileTitle(tile)}“ ist schon vollständig im Atlas`, topics: [] };
-  recordPrerequisites(atlas, tile);
-  const { added, skipped, topics } = addConcepts(atlas, fresh);
-  const where = [...new Set([...topics].map((t) => pathText(atlas, atlas.regions[t].parent ?? t)))].join("; ");
+/** Import a tile into world knowledge (tiles are public curriculum content). */
+export function importTile(atlas: Atlas, key: string, tile: TileJson): { summary: string; leaves: string[] } {
+  const planet = atlas.planets.welt;
+  const fresh = conceptsFromTile(key, tile, simNow(atlas)).filter((c) => !planet.units[c.id]);
+  if (fresh.length === 0) return { summary: `„${tileTitle(tile)}“ ist schon vollständig im Weltwissen`, leaves: [] };
+  recordPrerequisites(planet, tile);
+  const { added, skipped, leaves } = addWorldUnits(atlas, fresh);
+  const lens = lensOf(planet, "weltwissen");
+  const where = [...new Set([...leaves].map((t) => pathText(lens, lens.regions[t].parent ?? t)))].join("; ");
   return {
-    summary: `${added} neue Begriffe aus „${tileTitle(tile)}“ einsortiert: ${where}${skipped.length ? ` (${skipped.length} ohne Ort)` : ""}`,
-    topics: [...topics],
+    summary: `${added} neue Lerneinheiten aus „${tileTitle(tile)}“ einsortiert: ${where}${skipped.length ? ` (${skipped.length} ohne Ort)` : ""}`,
+    leaves: [...leaves],
   };
 }
 
-// ── Changing the order (always after review) ────────────────────────────────
+// ── Importing at a place ────────────────────────────────────────────────────
 
-function removeEmpty(atlas: Atlas, regionId: string | null): void {
-  let id = regionId;
-  while (id) {
-    const region = atlas.regions[id];
-    if (!region) return;
-    const empty = region.level === 4 ? (region.concepts ?? []).length === 0 : region.children.length === 0;
-    if (!empty) return;
-    const list = region.parent ? atlas.regions[region.parent].children : atlas.roots;
-    list.splice(list.indexOf(id), 1);
-    delete atlas.regions[id];
-    atlas.proposals = atlas.proposals.filter((p) => p.item !== id && p.target !== id);
-    id = region.parent;
+/** Level names still missing below a region, down to a leaf. */
+export function missingLevels(lens: Lens, regionId: string): string[] {
+  const region = lens.regions[regionId] ?? fail("Ort nicht gefunden");
+  return lens.levels.slice(region.level);
+}
+
+export function requestImport(atlas: Atlas, planetId: string, lensId: string, regionId: string, text: string): string {
+  const planet = atlas.planets[planetId] ?? fail("Planet nicht gefunden");
+  const lens = lensOf(planet, lensId);
+  if (regionId && !lens.regions[regionId]) fail("Ort nicht gefunden");
+  const clean = text.trim() || fail("Der Text ist leer.");
+  atlas.requests.push({ id: `imp-${Date.now().toString(36)}`, planet: planetId, lens: lens.id, region: regionId, text: clean, createdAt: new Date().toISOString(), units: [], done: false });
+  return `Import für ${regionId ? pathText(lens, regionId) : planet.name} liegt beim Agenten`;
+}
+
+export function completeRequest(atlas: Atlas, requestId: string): string {
+  const request = atlas.requests.find((r) => r.id === requestId) ?? fail("Import-Auftrag nicht gefunden");
+  request.done = true;
+  return `Import abgeschlossen: ${request.units.length} Lerneinheiten`;
+}
+
+/** Steps that lead to an existing region, so `placeInLens` finds the same regions again. */
+function stepsTo(lens: Lens, regionId: string): PathStep[] {
+  return regionPath(lens, regionId).map((r) => ({ name: r.name, key: r.key.split("/").pop(), rank: r.rank, hue: r.hue, emblemKey: r.emblemKey }));
+}
+
+/**
+ * The agent adds a learning unit at a place. Missing levels below the place
+ * are named in `below` (e.g. Gebiet and Thema under a Fach). The unit also
+ * gets a home in the planet's other lenses: derived from its domain in world
+ * knowledge, otherwise on an island for what is not yet sorted.
+ */
+export function addUnitAt(
+  atlas: Atlas,
+  planetId: string,
+  lensId: string,
+  regionId: string,
+  title: string,
+  cards: Array<[string, string]>,
+  opts: { below?: string[]; domain?: string; requestId?: string } = {},
+): { id: string; summary: string } {
+  const planet = atlas.planets[planetId] ?? fail("Planet nicht gefunden");
+  const lens = lensOf(planet, lensId);
+  const missing = missingLevels(lens, regionId);
+  const below = opts.below ?? [];
+  if (below.length !== missing.length) fail(`Unter „${lens.regions[regionId].name}“ fehlen noch: ${missing.join(" › ") || "nichts"} – bitte genau diese Namen angeben.`);
+  if (cards.length === 0) fail("Mindestens eine Karte (Frage und Antwort).");
+  const now = simNow(atlas);
+  const id = `u-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`;
+  const steps: PathStep[] = [...stepsTo(lens, regionId), ...below.map((name) => ({ name, rank: Object.keys(lens.regions).length, emblemKey: slugify(name) }))];
+  // Derive what the place already says: subject and area in Weltwissen, grade and subject in Schule.
+  const keys = steps.map((st) => st.key ?? slugify(st.name));
+  const leafName = steps[steps.length - 1].name;
+  let domain = opts.domain ?? planet.kind;
+  let grade: number | null = null;
+  if (planet.kind === "welt" && !opts.domain) {
+    if (lens.id === "weltwissen") domain = `${keys[1]}/${keys[2]}`;
+    if (lens.id === "schule") {
+      domain = `${keys[1]}/allgemein`;
+      const m = /^klasse-(\d+)$/.exec(keys[0]);
+      grade = m ? Number(m[1]) : null;
+    }
   }
-}
-
-function requireFresh(atlas: Atlas, concepts: Concept[], what: string): void {
-  const stale = staleCards(atlas, concepts);
-  if (stale.length > 0) fail(`Erst wiederholen: ${stale.length} Karte${stale.length === 1 ? "" : "n"} von „${what}“, dann darf es umziehen.`);
-}
-
-export function moveConcept(atlas: Atlas, conceptId: string, topicId: string): string {
-  const concept = atlas.concepts[conceptId] ?? fail("Begriff nicht gefunden");
-  const target = atlas.regions[topicId] ?? fail("Ziel nicht gefunden");
-  if (target.level !== 4) fail("Ein Begriff zieht in ein Thema.");
-  const from = homeIndex(atlas).get(conceptId);
-  if (from === topicId) return `„${concept.title}“ liegt schon dort`;
-  requireFresh(atlas, [concept], concept.title);
-  if (from) {
-    const list = atlas.regions[from].concepts ?? [];
-    list.splice(list.indexOf(conceptId), 1);
+  const unit: Concept = {
+    id,
+    slug: `${slugify(title)}-${id.slice(-4)}`,
+    title: title.trim() || fail("Titel fehlt"),
+    domain,
+    subject: "",
+    grade,
+    topic: leafName,
+    source: "Import an Ort",
+    tileKey: "",
+    cards: cards.map(([q, a], i) => newStoredCard(`${id}-k${i + 1}`, q, a, 2, now)),
+  };
+  planet.units[id] = unit;
+  placeInLens(lens, steps, id);
+  for (const other of planet.lenses) {
+    if (other.id === lens.id) continue;
+    const derived = planet.kind === "welt" ? (other.id === "weltwissen" ? weltwissenSteps(unit) : schuleSteps(unit, Object.keys(other.regions).length)) : null;
+    if (derived) {
+      placeInLens(other, derived, id);
+      continue;
+    }
+    const names = steps.map((st) => st.name).slice(-(other.levels.length - 1));
+    while (names.length < other.levels.length - 1) names.unshift("Neu");
+    placeInLens(other, [{ name: "Noch nicht eingeordnet", key: "noch-nicht-eingeordnet", rank: 999 }, ...names.map((name, i) => ({ name, rank: i }))], id);
   }
-  target.concepts?.push(conceptId);
-  atlas.proposals = atlas.proposals.filter((p) => p.item !== conceptId);
-  removeEmpty(atlas, from ?? null);
-  return `„${concept.title}“ ist umgezogen nach ${pathText(atlas, topicId)}`;
-}
-
-export function moveTopic(atlas: Atlas, topicId: string, areaId: string): string {
-  const topic = atlas.regions[topicId] ?? fail("Thema nicht gefunden");
-  const target = atlas.regions[areaId] ?? fail("Ziel nicht gefunden");
-  if (topic.level !== 4 || target.level !== 3) fail("Ein Thema zieht in ein Gebiet.");
-  if (topic.parent === areaId) return `„${topic.name}“ liegt schon dort`;
-  requireFresh(atlas, conceptsIn(atlas, topicId), topic.name);
-  const from = topic.parent;
-  if (from) atlas.regions[from].children.splice(atlas.regions[from].children.indexOf(topicId), 1);
-  // A Thema of the same name already there: merge instead of keeping two.
-  const twin = target.children.map((id) => atlas.regions[id]).find((r) => r.name.toLowerCase() === topic.name.toLowerCase());
-  if (twin) {
-    twin.concepts?.push(...(topic.concepts ?? []));
-    twin.rank = Math.min(twin.rank, topic.rank);
-    delete atlas.regions[topicId];
-    atlas.proposals = atlas.proposals.filter((p) => p.item !== topicId && p.target !== topicId);
-    removeEmpty(atlas, from);
-    return `Thema „${topic.name}“ ist umgezogen nach ${pathText(atlas, areaId)} und mit dem gleichnamigen zusammengelegt`;
+  if (opts.requestId) {
+    const request = atlas.requests.find((r) => r.id === opts.requestId);
+    request?.units.push(id);
   }
-  topic.parent = areaId;
-  topic.hue = target.hue;
-  insertChild(atlas, target, topic);
-  atlas.proposals = atlas.proposals.filter((p) => p.item !== topicId);
-  removeEmpty(atlas, from);
-  return `Thema „${topic.name}“ ist umgezogen nach ${pathText(atlas, areaId)}`;
-}
-
-export function moveItem(atlas: Atlas, itemId: string, targetId: string): string {
-  return atlas.concepts[itemId] ? moveConcept(atlas, itemId, targetId) : moveTopic(atlas, itemId, targetId);
-}
-
-/** A new, empty Thema or Gebiet as a move target. It gets land once something moves in. */
-export function createRegion(atlas: Atlas, parentId: string, name: string): { id: string; summary: string } {
-  const parent = atlas.regions[parentId] ?? fail("Ort nicht gefunden");
-  if (parent.level !== 2 && parent.level !== 3) fail("Neue Orte entstehen in einem Fach (Gebiet) oder Gebiet (Thema).");
-  const clean = name.trim() || fail("Name fehlt");
-  const level = (parent.level + 1) as Level;
-  const twin = parent.children.map((id) => atlas.regions[id]).find((r) => r.name.toLowerCase() === clean.toLowerCase());
-  if (twin) return { id: twin.id, summary: `„${clean}“ gibt es schon` };
-  let key = `${parent.key}/${slugify(clean)}`;
-  for (let n = 2; atlas.regions[`${PREFIX[level]}:${key}`]; n += 1) key = `${parent.key}/${slugify(clean)}-${n}`;
-  const rank = Math.max(0, ...parent.children.map((id) => atlas.regions[id].rank)) + 1;
-  const region = ensureRegion(atlas, level, parentId, key, clean, rank, parent.hue);
-  return { id: region.id, summary: `${LEVEL_NAME[level]} „${clean}“ angelegt in ${pathText(atlas, parentId)}` };
-}
-
-export function rename(atlas: Atlas, regionId: string, name: string): string {
-  const region = atlas.regions[regionId] ?? fail("Ort nicht gefunden");
-  const old = region.name;
-  region.name = name.trim() || fail("Name fehlt");
-  return `„${old}“ heißt jetzt „${region.name}“`;
-}
-
-// ── Proposals (the agent suggests, the learner moves after review) ─────────
-
-export function propose(atlas: Atlas, itemId: string, targetId: string, by: Proposal["by"], note?: string): string {
-  const isConcept = Boolean(atlas.concepts[itemId]);
-  const item = isConcept ? atlas.concepts[itemId].title : (atlas.regions[itemId]?.name ?? fail("Begriff oder Thema nicht gefunden"));
-  const target = atlas.regions[targetId] ?? fail("Ziel nicht gefunden");
-  if (isConcept && target.level !== 4) fail("Ein Begriff zieht in ein Thema.");
-  if (!isConcept && (atlas.regions[itemId].level !== 4 || target.level !== 3)) fail("Ein Thema zieht in ein Gebiet.");
-  atlas.proposals = atlas.proposals.filter((p) => p.item !== itemId);
-  atlas.proposals.push({ id: `v-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, item: itemId, target: targetId, by, note });
-  return `Vorschlag: „${item}“ → ${pathText(atlas, targetId)}`;
-}
-
-export function dismissProposal(atlas: Atlas, proposalId: string): string {
-  atlas.proposals = atlas.proposals.filter((p) => p.id !== proposalId);
-  return "Vorschlag verworfen";
-}
-
-export function itemName(atlas: Atlas, itemId: string): string {
-  return atlas.concepts[itemId]?.title ?? atlas.regions[itemId]?.name ?? itemId;
+  return { id, summary: `„${unit.title}“ eingefügt: ${pathText(lens, homeIndex(lens).get(id) ?? regionId)}` };
 }
 
 // ── Red threads ─────────────────────────────────────────────────────────────
 
-export function allThreads(atlas: Atlas): Thread[] {
+/** The threads a planet holds: tile prerequisites among its units, plus its own threads (some pointing to world knowledge). */
+export function threadsOf(atlas: Atlas, planet: Planet): Thread[] {
   const out: Thread[] = [];
-  for (const [dependent, reqs] of Object.entries(atlas.requires)) {
-    if (!atlas.concepts[dependent]) continue;
+  for (const [dependent, reqs] of Object.entries(planet.requires)) {
+    if (!planet.units[dependent]) continue;
     for (const r of reqs) {
-      if (atlas.concepts[r.id] && r.id !== dependent) out.push({ id: `req:${r.id}:${dependent}`, a: r.id, b: dependent, kind: "voraussetzung", note: r.note, by: "kachel" });
+      if (planet.units[r.id] && r.id !== dependent) out.push({ id: `req:${r.id}:${dependent}`, a: r.id, b: dependent, kind: "voraussetzung", note: r.note, by: "kachel" });
     }
   }
-  return out.concat(atlas.threads);
+  return out.concat(planet.threads.filter((t) => findUnit(atlas, t.a) && findUnit(atlas, t.b)));
 }
 
-export function threadsOf(atlas: Atlas, conceptId: string): Thread[] {
-  return allThreads(atlas).filter((t) => t.a === conceptId || t.b === conceptId);
+/**
+ * A thread may leave its planet only towards world knowledge: company and
+ * private knowledge build on it, world knowledge never points back.
+ */
+export function addThread(atlas: Atlas, planetId: string, a: string, b: string, kind: ThreadKind, note: string | undefined, by: Thread["by"]): string {
+  const planet = atlas.planets[planetId] ?? fail("Planet nicht gefunden");
+  const ua = findUnit(atlas, a) ?? fail("Lerneinheit nicht gefunden");
+  const ub = findUnit(atlas, b) ?? fail("Lerneinheit nicht gefunden");
+  if (a === b) fail("Ein Faden braucht zwei verschiedene Lerneinheiten.");
+  for (const end of [a, b]) {
+    const home = planetOfUnit(atlas, end);
+    if (home?.id === planet.id) continue;
+    if (planet.kind === "welt") fail("Weltwissen verweist nicht auf Firmen- oder Privatwissen.");
+    if (home?.kind !== "welt") fail("Firmenwissen und Privates werden nicht verbunden.");
+  }
+  if (!planet.units[a] && !planet.units[b]) fail("Mindestens ein Ende muss auf diesem Planeten liegen.");
+  const twin = threadsOf(atlas, planet).find((t) => (t.a === a && t.b === b) || (t.a === b && t.b === a));
+  if (twin) fail(`Zwischen „${ua.title}“ und „${ub.title}“ hängt schon ein Faden.`);
+  planet.threads.push({ id: `f-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, a, b, kind, note: note?.trim() || undefined, by });
+  return `Roter Faden (${THREAD_KINDS[kind].label}): „${ua.title}“ – „${ub.title}“`;
 }
 
-export function addThread(atlas: Atlas, a: string, b: string, note: string | undefined, by: Thread["by"]): string {
-  const ca = atlas.concepts[a] ?? fail("Begriff nicht gefunden");
-  const cb = atlas.concepts[b] ?? fail("Begriff nicht gefunden");
-  if (a === b) fail("Ein Faden braucht zwei verschiedene Begriffe.");
-  const twin = allThreads(atlas).find((t) => (t.a === a && t.b === b) || (t.a === b && t.b === a));
-  if (twin) fail(`Zwischen „${ca.title}“ und „${cb.title}“ hängt schon ein Faden.`);
-  atlas.threads.push({ id: `f-${Date.now().toString(36)}${Math.random().toString(36).slice(2, 6)}`, a, b, kind: "verbindung", note: note?.trim() || undefined, by });
-  return `Roter Faden: „${ca.title}“ ↔ „${cb.title}“`;
+export function removeThread(atlas: Atlas, planetId: string, threadId: string): string {
+  const planet = atlas.planets[planetId] ?? fail("Planet nicht gefunden");
+  const thread = planet.threads.find((t) => t.id === threadId) ?? fail("Nur gespannte Fäden lassen sich abnehmen.");
+  planet.threads = planet.threads.filter((t) => t.id !== threadId);
+  return `Faden abgenommen: „${itemName(atlas, thread.a)}“ – „${itemName(atlas, thread.b)}“`;
 }
 
-export function removeThread(atlas: Atlas, threadId: string): string {
-  const thread = atlas.threads.find((t) => t.id === threadId) ?? fail("Nur gespannte Fäden lassen sich abnehmen.");
-  atlas.threads = atlas.threads.filter((t) => t.id !== threadId);
-  return `Faden abgenommen: „${itemName(atlas, thread.a)}“ ↔ „${itemName(atlas, thread.b)}“`;
+/** Sample threads name their ends by id or slug. */
+function resolveRef(atlas: Atlas, ref: string): string | null {
+  if (findUnit(atlas, ref)) return ref;
+  for (const id of atlas.planetOrder) {
+    const hit = Object.values(atlas.planets[id].units).find((u) => u.slug === ref);
+    if (hit) return hit.id;
+  }
+  return null;
 }
 
-/** Sample connections by slug; pairs whose ends are missing are skipped. */
-export function applyThreads(atlas: Atlas, threads: Array<{ a: string; b: string; note: string }>): number {
-  const bySlug = new Map(Object.values(atlas.concepts).map((c) => [c.slug, c.id]));
+export function applyThreads(atlas: Atlas, planetId: string, threads: SampleThread[]): number {
   let added = 0;
   for (const t of threads) {
-    const a = bySlug.get(t.a);
-    const b = bySlug.get(t.b);
+    const a = resolveRef(atlas, t.a);
+    const b = resolveRef(atlas, t.b);
     if (!a || !b) continue;
     try {
-      addThread(atlas, a, b, t.note, "agent");
+      addThread(atlas, planetId, a, b, t.kind, t.note, "agent");
       added += 1;
     } catch {
-      // Already linked.
+      // Already linked, or an end is missing.
     }
   }
   return added;
@@ -461,10 +589,12 @@ export function applyThreads(atlas: Atlas, threads: Array<{ a: string; b: string
 
 // ── Reviews and time ────────────────────────────────────────────────────────
 
-export function findCard(atlas: Atlas, cardId: string): { concept: Concept; card: StoredCard } | null {
-  for (const concept of Object.values(atlas.concepts)) {
-    const card = concept.cards.find((c) => c.id === cardId);
-    if (card) return { concept, card };
+export function findCard(atlas: Atlas, cardId: string): { unit: Concept; card: StoredCard } | null {
+  for (const id of atlas.planetOrder) {
+    for (const unit of Object.values(atlas.planets[id].units)) {
+      const card = unit.cards.find((c) => c.id === cardId);
+      if (card) return { unit, card };
+    }
   }
   return null;
 }
@@ -474,7 +604,7 @@ export function rateCard(atlas: Atlas, cardId: string, rating: Rating): string {
   applyRating(hit.card, rating, simNow(atlas));
   atlas.clockMinutes += 1;
   const names = { 1: "Nochmal", 2: "Schwer", 3: "Gut", 4: "Leicht" } as const;
-  return `„${hit.concept.title}“ geübt (${names[rating]})`;
+  return `„${hit.unit.title}“ geübt (${names[rating]})`;
 }
 
 export function advanceClock(atlas: Atlas, days: number): string {
@@ -482,34 +612,48 @@ export function advanceClock(atlas: Atlas, days: number): string {
   return `Zeitmaschine: ${days} Tag${days === 1 ? "" : "e"} weiter (jetzt Tag ${simDay(atlas)})`;
 }
 
-// ── Sinnbilder for every level ──────────────────────────────────────────────
+export function rename(lens: Lens, regionId: string, name: string): string {
+  const region = lens.regions[regionId] ?? fail("Ort nicht gefunden");
+  const old = region.name;
+  region.name = name.trim() || fail("Name fehlt");
+  return `„${old}“ heißt jetzt „${region.name}“`;
+}
+
+export function setHome(lens: Lens, regionId: string): string {
+  const region = lens.regions[regionId] ?? fail("Ort nicht gefunden");
+  lens.home = regionId;
+  return `Heimat in „${lens.name}“: ${region.name}`;
+}
+
+// ── Sinnbilder ──────────────────────────────────────────────────────────────
+
+function regionById(atlas: Atlas, id: string): Region | null {
+  for (const p of Object.values(atlas.planets)) for (const l of p.lenses) if (l.regions[id]) return l.regions[id];
+  return null;
+}
 
 export function effectiveEmblem(atlas: Atlas, id: string): { emblem: Emblem; personal: boolean } | null {
   const own = atlas.personalEmblems?.[id];
   if (own) return { emblem: own, personal: true };
-  const shared = atlas.concepts[id]?.emblem ?? atlas.regions[id]?.emblem;
+  const shared = findUnit(atlas, id)?.emblem ?? regionById(atlas, id)?.emblem;
   return shared ? { emblem: shared, personal: false } : null;
 }
 
-/** What to show for a place: its own Sinnbild, or — for a Thema without one — that of its first Begriff that has one. */
+/** A region's own Sinnbild, or — for a leaf without one — that of its first unit that has one. */
 export function displayEmblem(atlas: Atlas, id: string): Emblem | null {
   const own = effectiveEmblem(atlas, id)?.emblem;
   if (own) return own;
-  const region = atlas.regions[id];
-  if (region?.level !== 4) return null;
-  for (const cid of region.concepts ?? []) {
-    const e = effectiveEmblem(atlas, cid)?.emblem;
+  const region = regionById(atlas, id);
+  for (const uid of region?.units ?? []) {
+    const e = effectiveEmblem(atlas, uid)?.emblem;
     if (e) return e;
   }
   return null;
 }
 
-/**
- * The first Sinnbild of a Begriff or region is shared by everyone; after
- * that a new one overrides it only for this learner (scope "auto").
- */
+/** The first Sinnbild is shared; after that a new one is only this learner's (scope "auto"). */
 export function setEmblem(atlas: Atlas, id: string, emblem: Emblem, scope: "auto" | "shared" | "personal" = "auto"): string {
-  const owner: { emblem?: Emblem } = atlas.concepts[id] ?? atlas.regions[id] ?? fail("Begriff oder Ort nicht gefunden");
+  const owner: { emblem?: Emblem } = findUnit(atlas, id) ?? regionById(atlas, id) ?? fail("Lerneinheit oder Ort nicht gefunden");
   if (!emblem.svg && !emblem.glyph) fail("Ein Sinnbild braucht svg oder glyph.");
   if (emblem.svg) {
     const problem = validateEmblemSvg(emblem.svg);
@@ -530,37 +674,44 @@ export function clearPersonalEmblem(atlas: Atlas, id: string): string {
   return `„${itemName(atlas, id)}“ zeigt wieder das gemeinsame Sinnbild`;
 }
 
-/** Sample Sinnbilder: regions by taxonomy key, Begriffe by slug. */
-export function applyEmblems(atlas: Atlas, regions: Record<string, Partial<Emblem>>, concepts: Record<string, Partial<Emblem>>): { applied: number; rejected: string[] } {
+/** Sample Sinnbilder: regions by emblem key, units by slug. */
+export function applyEmblems(atlas: Atlas, regions: Record<string, Partial<Emblem>>, units: Record<string, Partial<Emblem>>): { applied: number; rejected: string[] } {
   let applied = 0;
   const rejected: string[] = [];
-  const apply = (id: string, label: string, e: Partial<Emblem> | undefined, has: boolean) => {
-    if (!e || has) return;
-    try {
-      setEmblem(atlas, id, { svg: e.svg, glyph: e.glyph, by: e.by ?? "agent" }, "shared");
-      applied += 1;
-    } catch (error) {
-      rejected.push(`${label}: ${(error as Error).message}`);
+  const apply = (owner: { emblem?: Emblem }, label: string, e: Partial<Emblem> | undefined) => {
+    if (!e || owner.emblem) return;
+    if (e.svg) {
+      const problem = validateEmblemSvg(e.svg);
+      if (problem) {
+        rejected.push(`${label}: ${problem}`);
+        return;
+      }
     }
+    owner.emblem = { svg: e.svg, glyph: e.glyph, by: e.by ?? "agent" };
+    applied += 1;
   };
-  for (const r of Object.values(atlas.regions)) apply(r.id, r.key, regions[r.key], r.emblem !== undefined);
-  for (const c of Object.values(atlas.concepts)) apply(c.id, c.slug, concepts[c.slug], c.emblem !== undefined);
+  for (const planet of Object.values(atlas.planets)) {
+    for (const lens of planet.lenses) for (const r of Object.values(lens.regions)) apply(r, r.emblemKey, regions[r.emblemKey]);
+    for (const u of Object.values(planet.units)) apply(u, u.slug, units[u.slug]);
+  }
   return { applied, rejected };
 }
 
-/** What still lacks a Sinnbild, top levels first. */
 export function missingEmblems(atlas: Atlas): Array<{ id: string; label: string; context: string }> {
   const out: Array<{ id: string; label: string; context: string }> = [];
-  for (const level of [1, 2, 3, 4] as Level[]) {
-    for (const r of Object.values(atlas.regions)) {
-      if (r.level !== level || effectiveEmblem(atlas, r.id)) continue;
-      const children = r.level === 4 ? conceptsIn(atlas, r.id).map((c) => c.title) : r.children.map((id) => atlas.regions[id].name);
-      out.push({ id: r.id, label: `${LEVEL_NAME[r.level]} ${pathText(atlas, r.id)}`, context: `enthält: ${children.slice(0, 8).join("; ")}` });
+  for (const pid of atlas.planetOrder) {
+    const planet = atlas.planets[pid];
+    for (const lens of planet.lenses) {
+      for (const r of Object.values(lens.regions).sort((a, b) => a.level - b.level)) {
+        if (displayEmblem(atlas, r.id)) continue;
+        const children = r.units ? r.units.map((u) => planet.units[u]?.title) : r.children.map((c) => lens.regions[c].name);
+        out.push({ id: r.id, label: `${planet.name} · ${lens.name} · ${lens.levels[r.level - 1]} ${pathText(lens, r.id)}`, context: `enthält: ${children.slice(0, 8).join("; ")}` });
+      }
     }
-  }
-  for (const c of Object.values(atlas.concepts)) {
-    if (effectiveEmblem(atlas, c.id)) continue;
-    out.push({ id: c.slug, label: `Begriff ${c.title}`, context: c.cards.map((k) => `F: ${k.question} A: ${k.answer}`).join(" | ").slice(0, 400) });
+    for (const u of Object.values(planet.units)) {
+      if (effectiveEmblem(atlas, u.id)) continue;
+      out.push({ id: u.slug, label: `${planet.name} · Lerneinheit ${u.title}`, context: u.cards.map((k) => `F: ${k.question} A: ${k.answer}`).join(" | ").slice(0, 400) });
+    }
   }
   return out;
 }
@@ -579,9 +730,8 @@ function mulberry32(seed: number): () => number {
 }
 
 /**
- * How a sample learner treated each Fach: days since they stopped, how
- * well it went, how much they never touched, and how much they only
- * crammed for a test. Chemie is new to them.
+ * How a sample learner treated each area: days since they stopped, how
+ * well it went, how much they never touched, how much they only crammed.
  */
 const PROFILES: Record<string, { stopAgo: number; skill: number; untouched: number; cram: number }> = {
   mathematik: { stopAgo: 0, skill: 0.85, untouched: 0.08, cram: 0 },
@@ -594,47 +744,136 @@ const PROFILES: Record<string, { stopAgo: number; skill: number; untouched: numb
   geographie: { stopAgo: 160, skill: 0.5, untouched: 0.1, cram: 0.5 },
   geschichte: { stopAgo: 300, skill: 0.45, untouched: 0.1, cram: 0.75 },
   franzoesisch: { stopAgo: 400, skill: 0.4, untouched: 0.15, cram: 0.85 },
+  firma: { stopAgo: 2, skill: 0.75, untouched: 0.2, cram: 0.1 },
+  privat: { stopAgo: 40, skill: 0.7, untouched: 0.2, cram: 0.3 },
 };
 
 export function simulateHistory(atlas: Atlas, seed = 7): void {
   const rng = mulberry32(seed);
   const now = simNow(atlas).getTime();
-  const subjectOf = (concept: Concept) => placeForDomain(concept.domain)?.subject.key ?? "";
-  for (const concept of Object.values(atlas.concepts)) {
-    const profile = PROFILES[subjectOf(concept)];
-    if (!profile) continue;
-    const grade = concept.grade ?? 9;
-    const skill = Math.min(0.97, profile.skill + (rng() - 0.5) * 0.25);
-    // Some Themen were dropped earlier than the rest of their Fach.
-    const stopAt = now - (profile.stopAgo + (rng() < 0.2 ? 15 + rng() * 60 : 0)) * DAY_MS;
-    const span = rng() < profile.cram ? 5 + rng() * 15 : 40 + Math.max(0, 9 - grade) * 50 + rng() * 40;
-    const startAt = stopAt - span * DAY_MS;
-    for (const card of concept.cards) {
-      if (rng() < profile.untouched) continue;
-      let t = startAt;
-      for (let i = 0; i < 40 && t < stopAt; i += 1) {
-        const r = retrievability(card, new Date(t));
-        const pRecall = r === null ? skill : Math.min(0.98, r * (0.8 + skill * 0.25));
-        const rating: Rating = rng() < pRecall ? (rng() < 0.15 ? 4 : 3) : 1;
-        applyRating(card, rating, new Date(t));
-        t += (Date.parse(card.dueAt) - t) * (1 + rng() * 0.5);
+  for (const pid of atlas.planetOrder) {
+    const planet = atlas.planets[pid];
+    for (const unit of Object.values(planet.units)) {
+      const key = planet.kind === "welt" ? (placeForDomain(unit.domain)?.subject.key ?? "") : planet.kind;
+      const profile = PROFILES[key];
+      if (!profile) continue;
+      const grade = unit.grade ?? 9;
+      const skill = Math.min(0.97, profile.skill + (rng() - 0.5) * 0.25);
+      const stopAt = now - (profile.stopAgo + (rng() < 0.2 ? 15 + rng() * 60 : 0)) * DAY_MS;
+      const span = rng() < profile.cram ? 5 + rng() * 15 : 40 + Math.max(0, 9 - grade) * 50 + rng() * 40;
+      const startAt = stopAt - span * DAY_MS;
+      for (const card of unit.cards) {
+        if (rng() < profile.untouched) continue;
+        let t = startAt;
+        for (let i = 0; i < 40 && t < stopAt; i += 1) {
+          const r = retrievability(card, new Date(t));
+          const pRecall = r === null ? skill : Math.min(0.98, r * (0.8 + skill * 0.25));
+          const rating: Rating = rng() < pRecall ? (rng() < 0.15 ? 4 : 3) : 1;
+          applyRating(card, rating, new Date(t));
+          t += (Date.parse(card.dueAt) - t) * (1 + rng() * 0.5);
+        }
       }
     }
   }
 }
 
+function sampleUnit(def: SampleUnit | SampleWorldUnit, domain: string, now: Date): Concept {
+  return {
+    id: def.id,
+    slug: def.id,
+    title: def.title,
+    domain,
+    subject: "",
+    grade: null,
+    topic: "topic" in def ? def.topic : undefined,
+    source: "Beispiel",
+    tileKey: "",
+    cards: def.cards.map(([q, a], i) => newStoredCard(`${def.id}-k${i + 1}`, q, a, 2, now)),
+  };
+}
+
+/** Place sample units into a planet's lenses; ranks follow first appearance, hues come from the table. */
+function addSampleUnits(planet: Planet, units: SampleUnit[], hues: Record<string, Record<string, number>>, now: Date): void {
+  const ranks = new Map<string, number>();
+  const rankOf = (key: string) => {
+    if (!ranks.has(key)) ranks.set(key, ranks.size);
+    return ranks.get(key) as number;
+  };
+  for (const def of units) {
+    const unit = sampleUnit(def, planet.kind, now);
+    planet.units[unit.id] = unit;
+    for (const lens of planet.lenses) {
+      const names = def.paths[lens.id];
+      if (!names) continue;
+      const steps = names.map((name, i) => ({
+        name,
+        rank: rankOf(`${lens.id}/${names.slice(0, i + 1).join("/")}`),
+        hue: i + 1 === lens.colorLevel ? hues[lens.id]?.[name] : undefined,
+        emblemKey: slugify(name),
+      }));
+      placeInLens(lens, steps, unit.id);
+    }
+  }
+}
+
+function homeFor(lens: Lens, names: string[] | undefined): void {
+  if (!names) return;
+  let parent: Region | null = null;
+  for (const name of names) {
+    const list: string[] = parent ? parent.children : lens.roots;
+    const next = list.map((id) => lens.regions[id]).find((r) => r.name === name);
+    if (!next) return;
+    parent = next;
+  }
+  if (parent) lens.home = parent.id;
+}
+
 export function emptyAtlas(): Atlas {
   return {
-    schema: "zam-knowledge-atlas-spike/1",
+    schema: "zam-knowledge-atlas-spike/2",
     revision: 0,
     createdAt: new Date().toISOString(),
     clockMinutes: 0,
-    roots: [],
-    regions: {},
-    concepts: {},
-    proposals: [],
-    requires: {},
-    threads: [],
+    planetOrder: ["welt", "firma", "privat"],
+    planets: {
+      welt: {
+        id: "welt",
+        kind: "welt",
+        name: "Weltwissen",
+        server: "Zentraler Wissensserver – öffentlich, für alle",
+        lenses: [
+          emptyLens("weltwissen", "Weltwissen", ["Bereich", "Fach", "Gebiet", "Thema"], 2),
+          emptyLens("schule", "Schule", ["Klasse", "Fach", "Lernbereich"], 2),
+        ],
+        units: {},
+        requires: {},
+        threads: [],
+      },
+      firma: {
+        id: "firma",
+        kind: "firma",
+        name: "Nordwind Software (fiktiv)",
+        server: "Lernserver des Unternehmens – verlässt die Firma nie",
+        lenses: [
+          emptyLens("organisation", "Organisation", ["Bereich", "Team", "Aufgabe"], 2),
+          emptyLens("produkte", "Produkte", ["Produktlinie", "Produkt", "Komponente"], 2),
+        ],
+        units: {},
+        requires: {},
+        threads: [],
+      },
+      privat: {
+        id: "privat",
+        kind: "privat",
+        name: "Privat",
+        server: "Nur auf deinem Gerät",
+        lenses: [emptyLens("leben", "Leben", ["Bereich", "Thema"], 1)],
+        units: {},
+        requires: {},
+        threads: [],
+      },
+    },
+    requests: [],
     lastChange: null,
   };
 }
@@ -646,22 +885,40 @@ export function startTileKeys(catalog: TileCatalog): string[] {
     .sort();
 }
 
+export interface StartSamples {
+  worldSoftware: SampleWorldUnit[];
+  worldThreads: Array<SampleThread>;
+  firma: { units: SampleUnit[]; threads: SampleThread[]; hues: Record<string, Record<string, number>>; home: Record<string, string[]> };
+  privat: { units: SampleUnit[]; threads: SampleThread[]; hues: Record<string, number>; home: Record<string, string[]> };
+}
+
 export function createStartAtlas(
   catalog: TileCatalog,
-  opts: {
-    history: boolean;
-    regionEmblems?: Record<string, Partial<Emblem>>;
-    conceptEmblems?: Record<string, Partial<Emblem>>;
-    threads?: Array<{ a: string; b: string; note: string }>;
-  },
+  samples: StartSamples,
+  opts: { history: boolean; regionEmblems?: Record<string, Partial<Emblem>>; unitEmblems?: Record<string, Partial<Emblem>> },
 ): Atlas {
   const atlas = emptyAtlas();
+  const now = simNow(atlas);
+  const welt = atlas.planets.welt;
   for (const key of startTileKeys(catalog)) {
-    addConcepts(atlas, conceptsFromTile(key, catalog[key], simNow(atlas)));
-    recordPrerequisites(atlas, catalog[key]);
+    addWorldUnits(atlas, conceptsFromTile(key, catalog[key], now));
+    recordPrerequisites(welt, catalog[key]);
   }
-  if (opts.threads) applyThreads(atlas, opts.threads);
+  addWorldUnits(atlas, samples.worldSoftware.map((u) => sampleUnit(u, "informatik/softwaretechnik", now)));
+  applyThreads(atlas, "welt", samples.worldThreads);
+  homeFor(lensOf(welt, "schule"), ["9. Klasse"]);
+
+  const firma = atlas.planets.firma;
+  addSampleUnits(firma, samples.firma.units, samples.firma.hues, now);
+  applyThreads(atlas, "firma", samples.firma.threads);
+  for (const lens of firma.lenses) homeFor(lens, samples.firma.home[lens.id]);
+
+  const privat = atlas.planets.privat;
+  addSampleUnits(privat, samples.privat.units, { leben: samples.privat.hues }, now);
+  applyThreads(atlas, "privat", samples.privat.threads);
+  for (const lens of privat.lenses) homeFor(lens, samples.privat.home[lens.id]);
+
   if (opts.history) simulateHistory(atlas);
-  if (opts.regionEmblems || opts.conceptEmblems) applyEmblems(atlas, opts.regionEmblems ?? {}, opts.conceptEmblems ?? {});
+  if (opts.regionEmblems || opts.unitEmblems) applyEmblems(atlas, opts.regionEmblems ?? {}, opts.unitEmblems ?? {});
   return atlas;
 }

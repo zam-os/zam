@@ -1,67 +1,90 @@
 # Knowledge atlas spike
 
-A throwaway prototype: the 2D sibling of the knowledge world spike
+This is a throwaway prototype, the 2D sibling of the knowledge world spike
 (`../knowledge-world`). Instead of walking through rooms you build
-yourself, you look at a zoomable map of world knowledge that is already
-ordered logically. School grade is not a place on the map. It only sorts
-foundations first.
+yourself, you look at a fixed, zoomable map that the agent keeps in order.
+The decisions it explores are written up in
+`docs/adr/2026-10-13-knowledge-atlas.md` (Draft).
 
-| Level | On the map | Example |
+## Planets: knowledge that never mixes
+
+| Planet | In the product it lives on | Sample content |
 |---|---|---|
-| Bereich | an island | Natur |
-| Fach | a country | Physik |
-| Gebiet | a province | Licht & Wellen |
-| Thema | a district | Optik |
-| Begriff | one hex | Brechungsgesetz |
+| Weltwissen | a central knowledge server, public | bundled Realschule 5–9 tiles, plus some software engineering |
+| Nordwind Software (fictional) | the company's learning server, never leaves it | 18 units across products and teams |
+| Privat | the learner's device | birthdays, contacts, hobbies |
 
-Zooming is semantic, like the C4 model. Far out you read Bereiche and
-Fächer by their Sinnbilder. Closer in come Gebiete and Themen, and closest
-the Begriffe with their own Sinnbilder and titles. Every level has a
-Sinnbild: `src/sample-emblems.ts` holds 72 for Bereiche, Fächer and Gebiete,
-drawn as SVG by a text-only model. A Thema without its own Sinnbild shows
-its first Begriff's.
+The spike keeps all three in one file, but no planet holds another
+planet's units. A red thread may leave a planet only towards world
+knowledge, for example "Scrum bei Team Boreas" builds on "Scrum". Such a
+thread is stored on the dependent side. On the map it ends at a portal on
+the coast; click it to open the other planet at that unit.
+
+## Lenses: several orders over the same units
+
+| Planet | Lenses (islands › … › leaf) |
+|---|---|
+| Weltwissen | Weltwissen: Bereich › Fach › Gebiet › Thema · Schule: Klasse › Fach › Lernbereich |
+| Firma | Organisation: Bereich › Team › Aufgabe · Produkte: Produktlinie › Produkt › Komponente |
+| Privat | Leben: Bereich › Thema |
+
+Each hex is one learning unit (*Lerneinheit*), and it has one home per
+lens. Switching lenses keeps the selection; the unit just sits elsewhere.
+Titles may repeat: "Troubleshooting" exists for every product, with
+different content each time. The unit panel lists such namesakes under
+"Gleicher Name, anderes Wissen".
+
+A lens may have a home region, such as Team Boreas or the 9th grade. The
+map opens on it with the neighbours in view: your own area precisely, the
+others roughly.
 
 ## Colour says where, texture says how well
 
-Each Fach has its own hue. Each Gebiet has a shade of it plus a pattern
-(hatching, dots, waves, rings …), so neighbours stay apart even where the
-colour fades. On top of that, each hex shows the Begriff's FSRS state,
-using the same thresholds as the 3D spike:
+- **Colour:** the colour level of a lens (Fach, Team or Produkt) gives the
+  hue, so Mathematik is the same blue on every grade island.
+- **Pattern:** the level below gets a shade and a pattern.
+- **Texture** shows FSRS state:
 
-| Texture | Means |
+  | Texture | State |
+  |---|---|
+  | full colour | known |
+  | washed out and dusty | due |
+  | dark | long overdue |
+  | cracked | decaying |
+  | fog clouds | forgotten |
+  | sketched parchment | never practised |
+
+Zooming is semantic, like the C4 model. The Sinnbilder of every level
+(`src/sample-emblems.ts`) and of the units are SVG drawn by a text-only
+model.
+
+## Red threads with UML ends
+
+| Kind | Drawn as |
 |---|---|
-| full colour | known |
-| washed out, dusty | due |
-| dark | well overdue |
-| cracked | decaying |
-| fog clouds | probably forgotten |
-| parchment, sketched | never practised |
+| Voraussetzung | solid, arrowhead at the foundation |
+| nutzt | dashed, open arrowhead (UML «use») |
+| Schnittstelle | ball at the provider, socket at the user |
+| ist ein | hollow triangle (generalisation) |
+| Verbindung | plain line with a paper note |
 
-Spare parchment hexes inside a Thema are room to grow.
+Threads bundle to the level in view. Up close, prerequisites show only
+around the focus. `F` cycles all / selection only / off.
 
-## Red threads
+## Import starts at a place
 
-Like an investigator's pin board, red threads link what belongs together
-across the map's order:
+Choose *Hier importieren …* on any region:
 
-- **Voraussetzungen** come from the tiles (dark red).
-- **Verbindungen** across Fächer are spun by the agent or the learner
-  (bright red, with a note), e.g. *Ohm's law ↔ direct proportionality*.
+- **Mitschrift oder Text:** the request goes to the agent with its place.
+  The agent adds learning units right there and fills in only the missing
+  levels below the place. The deeper you start, the less it has to guess.
+- **Aus dem Lehrplan** (Weltwissen): the curriculum tiles that land inside
+  this region. The structure already exists, so no category has to be
+  invented.
 
-Threads bundle to the level you are looking at. From afar you see which
-Fächer hang together. Closer in, a thread runs between Gebiete. Up close,
-it runs between single Begriffe, and prerequisites appear only around the
-selected one. `F` cycles all / selection only / off.
-
-## Rearranging is reviewing
-
-Self-organizing a whole world proved too much (the lesson from the 3D
-spike). Here the agent sorts new knowledge into its logical place. The
-learner may still move a Begriff or a whole Thema, but only after
-reviewing its cards. Moving is gated in the model (`staleCards`,
-`FRESH_HOURS`), so it holds for the agent too. The agent proposes a move
-(`propose`); the learner accepts it by reviewing. A Thema that moves next to one
-with the same name merges with it.
+Growing knowledge enlarges islands or founds new ones: importing grade 10
+adds a "10. Klasse" island. Islands keep their place, and they drift apart
+when they grow into each other.
 
 ## Run
 
@@ -72,36 +95,40 @@ npm --prefix desktop run spike:atlas
 Then open http://localhost:1431. The Claude desktop preview has a launch
 entry named `knowledge-atlas-spike`.
 
-The atlas lives in `.data/atlas.json` (git-ignored). It is not wired to the
-ZAM database. It starts with the bundled Realschule 5–9 tiles (285
-Begriffe) and a simulated learner. Mathe and Englisch are fresh, Geschichte
-and Französisch are crammed and long forgotten, and Chemie is new. Import
-adds Gymnasium and Realschule 10 tiles. The time machine (`T`) shows the
-fog coming in.
+Keys:
 
-## Agents change the same atlas
+- `P` and `L`: next planet, next lens
+- `F`: threads
+- `/`: search
+- `I`: import
+- `T`: time machine
+- `0`: home
+- `H`: help
+
+The atlas lives in `.data/atlas.json` (git-ignored). It is not wired to the
+ZAM database.
+
+## Agents work on the same atlas
 
 ```bash
 node desktop/spikes/knowledge-atlas/cli.ts help
 node desktop/spikes/knowledge-atlas/cli.ts status
-node desktop/spikes/knowledge-atlas/cli.ts tree physik
+node desktop/spikes/knowledge-atlas/cli.ts tree --planet firma --lens produkte
+node desktop/spikes/knowledge-atlas/cli.ts imports
+node desktop/spikes/knowledge-atlas/cli.ts add-unit "Natur > Physik > Mechanik" "Impulserhaltung" --unter "Impuls und Stöße" --q "Was besagt die Impulserhaltung?" --a "Im abgeschlossenen System bleibt der Gesamtimpuls gleich." --request <id>
+node desktop/spikes/knowledge-atlas/cli.ts thread sw-git nw-release --planet firma --kind voraussetzung "Releases werden aus einem Git-Tag gebaut."
 node desktop/spikes/knowledge-atlas/cli.ts import gymnasium-9-chemie-stoechiometrie-saeuren-basen-protolyse
-node desktop/spikes/knowledge-atlas/cli.ts thread mendelsche-regeln-vererbungsgrundlagen relative-haeufigkeit-laplace-wahrscheinlichkeit-wuerfel "Mendels 3:1 ist Wahrscheinlichkeit."
-node desktop/spikes/knowledge-atlas/cli.ts propose t:mathematik/geometrie/groessen-und-messen g:mathematik/zahlen "Größen gehören zum Rechnen."
-node desktop/spikes/knowledge-atlas/cli.ts emblems-missing --level 4
-node desktop/spikes/knowledge-atlas/cli.ts emblem "physik/optik" --glyph "n₁ sin α₁" --svg-file optik.svg
 node desktop/spikes/knowledge-atlas/cli.ts time 90
 ```
 
-The open page redraws live with an "Agent: …" note. `move` refuses until
-the cards are fresh: an agent that quizzed the learner in chat records the
-ratings with `review` first.
+The open page redraws live with an "Agent: …" note.
 
 ## Known limits
 
-- **The layout shifts.** Begriffe lie along a Gosper curve per island.
-  Spare land keeps small additions local, but a Thema that outgrows it
-  shifts the rest of its island.
-- **The taxonomy is hand-made.** `src/taxonomy.ts` maps the tiles' messy
-  raw domains onto readable Gebiete. In ZAM, that is the agent's job.
-- **Islands sit in a fixed 2×2 grid.**
+- **Islands jump instead of drifting.** When islands drift, they move in one
+  step; there is no animation yet.
+- **The world taxonomy is hand-made.** `src/taxonomy.ts` maps the tiles' raw
+  domains onto Gebiete; in ZAM the agent does that.
+- **New units never get Sinnbilder.** New regions get the sample Sinnbilder
+  on import, but a unit imported through `add-unit` stays without one until
+  an agent draws it.

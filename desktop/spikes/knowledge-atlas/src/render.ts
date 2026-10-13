@@ -1,30 +1,31 @@
 /**
- * The atlas as a zoomable 2D map on a canvas.
+ * The atlas as a zoomable 2D map on a canvas — one planet, one lens at a time.
  *
- * Colour says *where* (each Fach has its own hue, each Gebiet a shade and a
- * pattern); texture says *how well you know it* (bright, dusty, dark,
- * cracked, fog, or sketched-in for never practised). Zooming is semantic:
- * far out you read Bereiche and Fächer with their Sinnbilder, closer in
- * Gebiete and Themen, and closest the Begriffe themselves. Red threads are
- * bundled to the level you are looking at, like relationships in C4.
+ * Colour says *where* (each region on the lens's colour level has its own
+ * hue; the level below gets a shade and a pattern); texture says *how well
+ * you know it* (bright, dusty, dark, cracked, fog, or sketched-in for never
+ * practised). Zooming is semantic: far out you read islands and their first
+ * level with Sinnbilder, closer in the deeper levels, closest the learning
+ * units. Red threads are bundled to the level you are looking at, like
+ * relationships in C4, and drawn with UML-style ends. A thread to another
+ * planet ends at a portal on the coast.
  */
 import { cardLevel, isDue, statsFor } from "../../knowledge-world/src/model.ts";
 import type { Condition } from "../../knowledge-world/src/model.ts";
-import { allThreads, conceptsIn, displayEmblem, effectiveEmblem, simNow } from "./atlas.ts";
-import type { Atlas, Emblem, Level, Thread } from "./atlas.ts";
+import { displayEmblem, effectiveEmblem, findUnit, planetOfUnit, simNow, threadsOf, unitIdsIn } from "./atlas.ts";
+import type { Atlas, Emblem, Lens, Planet, Thread, ThreadKind } from "./atlas.ts";
 import { CORNERS, SQRT3, outline } from "./layout.ts";
-import type { Cell, Layout, RegionGeom, Segment } from "./layout.ts";
+import type { Cell, Layout, Segment } from "./layout.ts";
 import type { PatternKind } from "./taxonomy.ts";
 
 export type CellState = Condition | "frei";
-export type FocusLevel = Level | 5;
-export type Selection = { kind: "concept"; id: string } | { kind: "region"; id: string };
+export type Selection = { kind: "unit"; id: string } | { kind: "region"; id: string };
 export type ThreadMode = "alle" | "auswahl" | "aus";
-export type PickMode = { level: 3 | 4 | "concept"; allow?: (id: string) => boolean } | null;
+export type PickMode = { allow?: (id: string) => boolean } | null;
 
 interface Theme {
   dark: boolean;
-  sea: string;
+  sea: Record<string, string>;
   shallow: string;
   shore: string;
   parchment: [number, number, number];
@@ -40,8 +41,8 @@ interface Theme {
 
 const LIGHT: Theme = {
   dark: false,
-  sea: "#c9dde8",
-  shallow: "#d9e8ef",
+  sea: { welt: "#c9dde8", firma: "#cdd8d4", privat: "#e2d8e6" },
+  shallow: "rgba(255,255,255,0.32)",
   shore: "#efe5cf",
   parchment: [244, 238, 222],
   fog: [238, 242, 246],
@@ -56,8 +57,8 @@ const LIGHT: Theme = {
 
 const DARK: Theme = {
   dark: true,
-  sea: "#0d1922",
-  shallow: "#13232e",
+  sea: { welt: "#0d1922", firma: "#0f1c1a", privat: "#1a1420" },
+  shallow: "rgba(255,255,255,0.05)",
   shore: "#2a2a22",
   parchment: [52, 50, 44],
   fog: [128, 140, 154],
@@ -70,10 +71,10 @@ const DARK: Theme = {
   accent: "#8aa4ff",
 };
 
-const AREA_SHIFT = [0, 16, -16, 30, -30, 8, -8, 22];
-const AREA_LIGHT = [55, 66, 47, 72, 42, 61, 51, 68];
+const SHADE_SHIFT = [0, 16, -16, 30, -30, 8, -8, 22];
+const SHADE_LIGHT = [55, 66, 47, 72, 42, 61, 51, 68];
 
-/** How strongly a Begriff's Sinnbild shows in each state. */
+/** How strongly a unit's Sinnbild shows in each state. */
 const EMBLEM_ALPHA: Record<CellState, number> = { leer: 0.5, rohbau: 0.55, hell: 1, staubig: 0.85, dunkel: 0.6, verfallen: 0.45, nebel: 0.25, frei: 0 };
 
 const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
@@ -81,11 +82,14 @@ const FONT = 'system-ui, -apple-system, "Segoe UI", sans-serif';
 /** Sinnbilder are drawn in this ink on a light disc, whatever the theme. */
 const EMBLEM_INK = "#1d2b4f";
 
-/** Hex radius in px from which single Begriffe are the focus. */
-const CONCEPT_PX = 40;
+/** Hex radius in px from which single learning units are the focus. */
+const UNIT_PX = 40;
 
 /** Room the breadcrumb box takes at the top of the view. */
-const TOP_INSET = 70;
+const TOP_INSET = 170;
+
+/** Which kind a bundle of threads shows: the most specific one present. */
+const KIND_PRIORITY: ThreadKind[] = ["schnittstelle", "nutzt", "ist-ein", "verbindung", "voraussetzung"];
 
 // ── Colour helpers ──────────────────────────────────────────────────────────
 
@@ -303,12 +307,31 @@ interface LabelBox {
   h: number;
 }
 
+interface End {
+  id: string;
+  x: number;
+  y: number;
+  /** A unit on another planet: drawn as a portal on the coast. */
+  external?: { planet: Planet; unit: string };
+}
+
+interface Bundle {
+  a: End;
+  b: End;
+  threads: Thread[];
+  lit: boolean;
+}
+
 export interface ViewEvents {
   onClick(target: Selection | null, cell: Cell | null): void;
+  onPortal(planetId: string, unitId: string): void;
   onDoubleClick(target: Selection | null, cell: Cell | null): void;
   onHover(target: Selection | null, cell: Cell | null, x: number, y: number): void;
   onCamera(): void;
 }
+
+/** Planet Sinnbilder for portals, filled in by the app from the sample set. */
+export const PLANET_EMBLEMS: Record<string, Emblem | undefined> = {};
 
 export class MapView {
   readonly canvas: HTMLCanvasElement;
@@ -321,12 +344,14 @@ export class MapView {
   rightInset = 0;
 
   atlas!: Atlas;
+  planet!: Planet;
+  lens!: Lens;
   layout!: Layout;
   selection: Selection | null = null;
   hover: Selection | null = null;
   threadMode: ThreadMode = "alle";
   pickMode: PickMode = null;
-  /** Begriffe to flash after a move or import. */
+  /** Units to flash after an import. */
   flash: { ids: Set<string>; until: number } | null = null;
 
   private theme: Theme = LIGHT;
@@ -336,6 +361,7 @@ export class MapView {
   private patterns = new Map<string, CanvasPattern>();
   private images = new Map<string, HTMLImageElement>();
   private outlines = new Map<string, Segment[]>();
+  private portals: Array<{ x: number; y: number; r: number; planet: string; unit: string }> = [];
   private frame = 0;
   private anim: { from: Camera; to: Camera; start: number; ms: number } | null = null;
 
@@ -359,46 +385,55 @@ export class MapView {
 
   // ── Data ──────────────────────────────────────────────────────────────────
 
-  setData(atlas: Atlas, layout: Layout): void {
+  get depth(): number {
+    return this.lens.levels.length;
+  }
+
+  setData(atlas: Atlas, planet: Planet, lens: Lens, layout: Layout): void {
     this.atlas = atlas;
+    this.planet = planet;
+    this.lens = lens;
     this.layout = layout;
     this.outlines.clear();
-    for (const level of [1, 2, 3, 4]) {
+    for (let level = 1; level <= this.depth; level += 1) {
       const radii = [...layout.regions.values()].filter((g) => g.level === level).map((g) => g.radius).sort((a, b) => a - b);
       this.medianRadius[level] = radii[Math.floor(radii.length / 2)] ?? 1;
     }
-    if (this.selection?.kind === "region" && !atlas.regions[this.selection.id]) this.selection = null;
-    if (this.selection?.kind === "concept" && !atlas.concepts[this.selection.id]) this.selection = null;
+    if (this.selection?.kind === "region" && !lens.regions[this.selection.id]) this.selection = null;
+    if (this.selection?.kind === "unit" && !planet.units[this.selection.id]) this.selection = null;
     this.recolor();
     this.requestDraw();
   }
 
   /** Recompute colours and states (after reviews or a time jump). */
   recolor(): void {
-    const atlas = this.atlas;
-    const now = simNow(atlas);
-    this.threads = allThreads(atlas);
+    const now = simNow(this.atlas);
+    this.threads = threadsOf(this.atlas, this.planet);
     this.info.clear();
     const t = this.theme;
+    const c = this.lens.colorLevel;
     for (const cell of this.layout.cells) {
-      const subject = atlas.regions[cell.subject];
-      const area = atlas.regions[cell.area];
-      const ai = Math.max(0, subject.children.indexOf(cell.area));
-      const ti = Math.max(0, area.children.indexOf(cell.topic));
-      const hue = subject.hue + AREA_SHIFT[ai % AREA_SHIFT.length] + ((ti % 3) - 1) * 4;
-      let light = AREA_LIGHT[ai % AREA_LIGHT.length] + (ti % 2 ? 4 : -2);
+      const hueRegion = this.lens.regions[cell.path[c - 1]];
+      const shadeId = cell.path[c];
+      const shadeParent = shadeId ? this.lens.regions[this.lens.regions[shadeId].parent ?? ""] : undefined;
+      const si = shadeId && shadeParent ? Math.max(0, shadeParent.children.indexOf(shadeId)) : 0;
+      const leafId = cell.path[cell.path.length - 1];
+      const leafParent = this.lens.regions[this.lens.regions[leafId].parent ?? ""];
+      const li = cell.path.length - 1 > c && leafParent ? Math.max(0, leafParent.children.indexOf(leafId)) : 0;
+      const hue = (hueRegion?.hue ?? 210) + SHADE_SHIFT[si % SHADE_SHIFT.length] + ((li % 3) - 1) * 4;
+      let light = SHADE_LIGHT[si % SHADE_LIGHT.length] + (li % 2 ? 4 : -2);
       let sat = 62;
       if (t.dark) {
-        light = light * 0.72;
+        light *= 0.72;
         sat = 48;
       }
       const base = hslToRgb(hue, sat, light);
       let state: CellState = "frei";
       let due = false;
-      if (cell.concept) {
-        const concept = atlas.concepts[cell.concept];
-        state = statsFor(concept.cards, now).label;
-        due = concept.cards.some((c) => c.state !== "new" && isDue(c, now) && cardLevel(c, now) >= 1);
+      if (cell.unit) {
+        const unit = this.planet.units[cell.unit];
+        state = statsFor(unit.cards, now).label;
+        due = unit.cards.some((k) => k.state !== "new" && isDue(k, now) && cardLevel(k, now) >= 1);
       }
       const fill = (() => {
         switch (state) {
@@ -429,13 +464,10 @@ export class MapView {
   }
 
   regionColor(regionId: string): string {
-    const geom = this.layout.regions.get(regionId);
-    const cell = geom?.cells[0];
-    const info = cell ? this.info.get(cell) : undefined;
-    if (!info) return this.theme.ink;
-    const region = this.atlas.regions[regionId];
-    if (region.level <= 2) return css(hslToRgb(region.hue, 62, this.theme.dark ? 50 : 46));
-    return css(info.base);
+    const region = this.lens.regions[regionId];
+    if (!region) return this.theme.ink;
+    if (region.level < this.lens.colorLevel) return "#6b7280";
+    return css(hslToRgb(region.hue, 62, this.theme.dark ? 50 : 46));
   }
 
   // ── Camera ────────────────────────────────────────────────────────────────
@@ -468,11 +500,11 @@ export class MapView {
   fitScale(minX: number, minY: number, maxX: number, maxY: number, pad = 60): number {
     const w = Math.max(100, this.width - this.rightInset - pad * 2);
     const h = Math.max(100, this.height - pad * 2 - TOP_INSET);
-    return Math.min(w / (maxX - minX), h / (maxY - minY));
+    return Math.min(w / Math.max(1, maxX - minX), h / Math.max(1, maxY - minY));
   }
 
-  fitBox(minX: number, minY: number, maxX: number, maxY: number, animate = true, pad = 60): void {
-    const scale = Math.min(150, this.fitScale(minX, minY, maxX, maxY, pad));
+  fitBox(minX: number, minY: number, maxX: number, maxY: number, animate = true, pad = 60, maxScale = 110): void {
+    const scale = Math.min(maxScale, this.fitScale(minX, minY, maxX, maxY, pad));
     const to = { x: (minX + maxX) / 2, y: (minY + maxY) / 2 - TOP_INSET / 2 / scale, scale };
     this.moveCamera(to, animate);
   }
@@ -484,15 +516,27 @@ export class MapView {
 
   fitRegion(id: string, animate = true): void {
     const g = this.layout.regions.get(id);
-    if (g) this.fitBox(g.minX, g.minY, g.maxX, g.maxY, animate, 90);
+    if (!g) return;
+    const pad = g.level === 1 ? 70 : 110;
+    this.fitBox(g.minX, g.minY, g.maxX, g.maxY, animate, pad);
   }
 
-  focusConcept(id: string, animate = true): void {
-    const cell = this.layout.conceptCell.get(id);
-    if (cell) this.moveCamera({ x: cell.x, y: cell.y, scale: Math.max(this.cam.scale, 46) }, animate);
+  /** The learner's home: their own area in the middle, read at its own level, the neighbours around it. */
+  fitHome(id: string, animate = true): void {
+    const g = this.layout.regions.get(id);
+    if (!g) return;
+    const w = g.maxX - g.minX;
+    const h = g.maxY - g.minY;
+    const grow = Math.max(w, h) * 0.5 + 3;
+    this.fitBox(g.minX - grow, g.minY - grow, g.maxX + grow, g.maxY + grow, animate, 40, UNIT_PX - 6);
   }
 
-  moveCamera(to: { x: number; y: number; scale: number }, animate = true): void {
+  focusUnit(id: string, animate = true): void {
+    const cell = this.layout.unitCell.get(id);
+    if (cell) this.moveCamera({ x: cell.x, y: cell.y, scale: Math.max(this.cam.scale, 52) }, animate);
+  }
+
+  moveCamera(to: Camera, animate = true): void {
     const clamped = { ...to, scale: this.clampScale(to.scale) };
     if (!animate) {
       this.cam = clamped;
@@ -509,7 +553,6 @@ export class MapView {
     const [wx, wy] = this.toWorld(sx, sy);
     const scale = this.clampScale(this.cam.scale * factor);
     this.cam.scale = scale;
-    // Keep the world point under the cursor where it was.
     this.cam.x = wx - (sx - this.viewCenterX()) / scale;
     this.cam.y = wy - (sy - this.height / 2) / scale;
     this.anim = null;
@@ -519,35 +562,37 @@ export class MapView {
 
   private clampScale(scale: number): number {
     const l = this.layout;
-    const min = l ? this.fitScale(l.minX, l.minY, l.maxX, l.maxY) * 0.6 : 2;
+    const min = l ? Math.min(6, this.fitScale(l.minX, l.minY, l.maxX, l.maxY) * 0.6) : 2;
     return Math.max(min, Math.min(160, scale));
   }
 
   // ── Levels ────────────────────────────────────────────────────────────────
 
-  /** The level the eye is on: what clicks select and threads bundle to. */
-  focusLevel(): FocusLevel {
-    if (this.hexPx >= CONCEPT_PX) return 5;
+  /** The level the eye is on: what clicks select and threads bundle to. `depth + 1` means single units. */
+  focusLevel(): number {
+    if (this.hexPx >= UNIT_PX) return this.depth + 1;
     const px = (level: number) => (this.medianRadius[level] ?? 1) * this.cam.scale;
-    if (px(4) >= 46) return 4;
-    if (px(3) >= 52) return 3;
-    if (px(2) >= 24) return 2;
+    for (let level = this.depth; level >= 2; level -= 1) {
+      const need = level === this.depth ? 46 : level === 2 ? 24 : 52;
+      if (px(level) >= need) return level;
+    }
     return 1;
   }
 
-  /** The region at a level that contains a cell. */
-  regionAt(cell: Cell, level: Level): string {
-    return level === 1 ? cell.continent : level === 2 ? cell.subject : level === 3 ? cell.area : cell.topic;
+  focusName(): string {
+    const level = this.focusLevel();
+    return level > this.depth ? "Lerneinheiten" : this.lens.levels[level - 1];
+  }
+
+  regionAt(cell: Cell, level: number): string {
+    return cell.path[Math.min(level, cell.path.length) - 1];
   }
 
   targetAt(cell: Cell | null): Selection | null {
     if (!cell) return null;
-    if (this.pickMode) {
-      if (this.pickMode.level === "concept") return cell.concept ? { kind: "concept", id: cell.concept } : null;
-      return { kind: "region", id: this.regionAt(cell, this.pickMode.level) };
-    }
+    if (this.pickMode) return cell.unit ? { kind: "unit", id: cell.unit } : null;
     const level = this.focusLevel();
-    if (level === 5) return cell.concept ? { kind: "concept", id: cell.concept } : { kind: "region", id: cell.topic };
+    if (level > this.depth) return cell.unit ? { kind: "unit", id: cell.unit } : { kind: "region", id: cell.path[cell.path.length - 1] };
     return { kind: "region", id: this.regionAt(cell, level) };
   }
 
@@ -565,6 +610,10 @@ export class MapView {
     if (dq > dr && dq > ds) q = -r - s;
     else if (dr > ds) r = -q - s;
     return this.layout.byKey.get(`${q},${r}`) ?? null;
+  }
+
+  private portalAt(sx: number, sy: number): { planet: string; unit: string } | null {
+    return this.portals.find((p) => Math.hypot(p.x - sx, p.y - sy) <= p.r + 3) ?? null;
   }
 
   /** The cell nearest the middle of the view (for the breadcrumb). */
@@ -588,7 +637,7 @@ export class MapView {
     if (!cell) return null;
     const view = Math.min(this.width - this.rightInset, this.height);
     let id: string | null = null;
-    for (const level of [1, 2, 3, 4] as Level[]) {
+    for (let level = 1; level <= this.depth; level += 1) {
       const rid = this.regionAt(cell, level);
       const g = this.layout.regions.get(rid);
       if (g && g.radius * this.cam.scale * 2 >= view * 0.55) id = rid;
@@ -624,6 +673,10 @@ export class MapView {
           return;
         }
       }
+      if (this.portalAt(sx, sy)) {
+        c.style.cursor = "pointer";
+        return;
+      }
       const cell = this.cellAt(sx, sy);
       const target = this.targetAt(cell);
       const changed = JSON.stringify(target) !== JSON.stringify(this.hover);
@@ -639,7 +692,14 @@ export class MapView {
       c.style.cursor = "grab";
       if (!wasClick) return;
       const rect = c.getBoundingClientRect();
-      const cell = this.cellAt(e.clientX - rect.left, e.clientY - rect.top);
+      const sx = e.clientX - rect.left;
+      const sy = e.clientY - rect.top;
+      const portal = this.portalAt(sx, sy);
+      if (portal) {
+        this.events.onPortal(portal.planet, portal.unit);
+        return;
+      }
+      const cell = this.cellAt(sx, sy);
       this.events.onClick(this.targetAt(cell), cell);
     });
     c.addEventListener("pointerleave", () => {
@@ -659,7 +719,6 @@ export class MapView {
         const rect = c.getBoundingClientRect();
         const pinch = e.ctrlKey;
         if (!pinch && Math.abs(e.deltaX) > Math.abs(e.deltaY) * 0.5 && e.deltaMode === 0 && Math.abs(e.deltaX) > 2) {
-          // Two-finger pan on a trackpad.
           this.cam.x += e.deltaX / this.cam.scale;
           this.cam.y += e.deltaY / this.cam.scale;
           this.events.onCamera();
@@ -746,11 +805,12 @@ export class MapView {
     const ctx = this.ctx;
     const t = this.theme;
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    ctx.fillStyle = t.sea;
+    ctx.fillStyle = (this.planet && t.sea[this.planet.kind]) || t.sea.welt;
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.fillStyle = this.pattern("sea", () => seaTile(t.dark));
     ctx.fillRect(0, 0, this.width, this.height);
-    if (!this.layout) return;
+    this.portals = [];
+    if (!this.layout || this.layout.cells.length === 0) return;
     ctx.lineJoin = "round";
     ctx.lineCap = "round";
 
@@ -785,22 +845,23 @@ export class MapView {
       ctx.fill(p);
     }
 
-    // Gebiet patterns: identity that survives even where the colour fades.
+    // Patterns of the level below the colour level: identity that survives where colour fades.
     const patternAlpha = (t.dark ? 0.22 : 0.17) * (1 - 0.65 * smooth(px, 20, 60));
-    const byArea = new Map<string, Path2D>();
+    const byShade = new Map<string, Path2D>();
     for (const c of cells) {
-      const st = this.info.get(c)?.state;
-      if (st === "nebel") continue;
-      let p = byArea.get(c.area);
+      if (this.info.get(c)?.state === "nebel") continue;
+      const id = c.path[this.lens.colorLevel];
+      if (!id) continue;
+      let p = byShade.get(id);
       if (!p) {
         p = new Path2D();
-        byArea.set(c.area, p);
+        byShade.set(id, p);
       }
       this.hexPath(p, c);
     }
     ctx.globalAlpha = patternAlpha;
-    for (const [areaId, p] of byArea) {
-      const kind = this.atlas.regions[areaId]?.pattern ?? "diag";
+    for (const [id, p] of byShade) {
+      const kind = this.lens.regions[id]?.pattern ?? "diag";
       ctx.fillStyle = this.pattern(`p:${kind}`, () => patternTile(kind, t.dark ? "#ffffff" : "#000000"));
       ctx.fill(p);
     }
@@ -839,19 +900,27 @@ export class MapView {
     }
     ctx.globalAlpha = 1;
 
-    // Borders: Themen faint, Gebiete firmer, Fächer bold, coast strongest.
+    // Borders: deeper levels fainter; coast strongest.
     const e = this.layout.edges;
     const ink = (a: number) => `rgba(${t.inkRgb},${a})`;
-    const topicAlpha = 0.28 * smooth(px, 7, 16);
-    if (topicAlpha > 0.01) this.strokeSegments(e.topic, 1, ink(topicAlpha));
-    this.strokeSegments(e.area, 1.4, ink(0.42 * smooth(px, 3, 8) + 0.12));
-    this.strokeSegments(e.subject, 4.2, t.halo);
-    this.strokeSegments(e.subject, 2, ink(0.82));
-    this.strokeSegments(e.coast, 2.2, ink(0.7));
+    for (let level = this.depth; level >= 2; level -= 1) {
+      const segs = e[level] ?? [];
+      if (segs.length === 0) continue;
+      if (level === 2) {
+        this.strokeSegments(segs, 4.2, t.halo);
+        this.strokeSegments(segs, 2, ink(0.82));
+      } else if (level === 3) {
+        this.strokeSegments(segs, 1.4, ink(0.42 * smooth(px, 3, 8) + 0.12));
+      } else {
+        const a = 0.28 * smooth(px, 7, 16);
+        if (a > 0.01) this.strokeSegments(segs, 1, ink(a));
+      }
+    }
+    this.strokeSegments(e[0] ?? [], 2.2, ink(0.7));
 
-    // Fog drifts over forgotten land — soft clouds, at every zoom.
-    const fogCells = cells.filter((c) => this.info.get(c)?.state === "nebel");
-    for (const c of fogCells) {
+    // Fog drifts over forgotten land.
+    for (const c of cells) {
+      if (this.info.get(c)?.state !== "nebel") continue;
       const [sx, sy] = this.toScreen(c.x, c.y);
       const r = this.cam.scale * 1.9;
       const g = ctx.createRadialGradient(sx, sy, 0, sx, sy, r);
@@ -864,22 +933,18 @@ export class MapView {
       ctx.fill();
     }
 
-    // Pick mode: show where something may go.
     if (this.pickMode && this.hover) this.drawHighlight(this.hover, t.accent, true);
 
-    // Begriffe up close.
-    const detail = smooth(px, CONCEPT_PX - 8, CONCEPT_PX + 6);
-    if (detail > 0) this.drawConcepts(cells, detail);
+    const detail = smooth(px, UNIT_PX - 8, UNIT_PX + 6);
+    if (detail > 0) this.drawUnits(cells, detail);
 
-    // Selection and hover outlines.
     if (this.selection) this.drawHighlight(this.selection, t.accent, false);
     if (this.hover && !this.pickMode && JSON.stringify(this.hover) !== JSON.stringify(this.selection)) this.drawHighlight(this.hover, ink(0.55), false, 1.6);
 
-    // Flash what just arrived.
     if (this.flash && this.flash.until > time) {
       const k = (this.flash.until - time) / 1800;
       for (const id of this.flash.ids) {
-        const cell = this.layout.conceptCell.get(id);
+        const cell = this.layout.unitCell.get(id);
         if (!cell) continue;
         const [sx, sy] = this.toScreen(cell.x, cell.y);
         ctx.strokeStyle = `rgba(242,183,5,${k})`;
@@ -898,18 +963,18 @@ export class MapView {
     const ctx = this.ctx;
     let segs = this.outlines.get(`${sel.kind}:${sel.id}`);
     if (!segs) {
-      if (sel.kind === "concept") {
-        const cell = this.layout.conceptCell.get(sel.id);
+      if (sel.kind === "unit") {
+        const cell = this.layout.unitCell.get(sel.id);
         segs = cell ? outline([cell], this.layout.byKey, () => false) : [];
       } else {
         const geom = this.layout.regions.get(sel.id);
-        const level = this.atlas.regions[sel.id]?.level ?? 4;
+        const level = this.lens.regions[sel.id]?.level ?? 1;
         segs = geom ? outline(geom.cells, this.layout.byKey, (a, b) => this.regionAt(a, level) === this.regionAt(b, level)) : [];
       }
       this.outlines.set(`${sel.kind}:${sel.id}`, segs);
     }
     if (fill) {
-      const cells = sel.kind === "concept" ? [this.layout.conceptCell.get(sel.id)].filter(Boolean) as Cell[] : (this.layout.regions.get(sel.id)?.cells ?? []);
+      const cells = sel.kind === "unit" ? ([this.layout.unitCell.get(sel.id)].filter(Boolean) as Cell[]) : (this.layout.regions.get(sel.id)?.cells ?? []);
       const p = new Path2D();
       for (const c of cells) this.hexPath(p, c);
       ctx.fillStyle = this.theme.dark ? "rgba(138,164,255,0.22)" : "rgba(35,64,181,0.16)";
@@ -919,28 +984,27 @@ export class MapView {
     this.strokeSegments(segs, width, color);
   }
 
-  private drawConcepts(cells: Cell[], alpha: number): void {
+  private drawUnits(cells: Cell[], alpha: number): void {
     const ctx = this.ctx;
     const t = this.theme;
     const px = this.hexPx;
     for (const c of cells) {
-      if (!c.concept) continue;
-      const concept = this.atlas.concepts[c.concept];
+      if (!c.unit) continue;
+      const unit = this.planet.units[c.unit];
       const info = this.info.get(c);
-      if (!concept || !info) continue;
+      if (!unit || !info) continue;
       const [sx, sy] = this.toScreen(c.x, c.y);
       const withTitle = px >= 70;
       const cy = withTitle ? sy - px * 0.2 : sy;
       const disc = px * (withTitle ? 0.5 : 0.62);
-      const fade = EMBLEM_ALPHA[info.state] * alpha;
-      const emblem = effectiveEmblem(this.atlas, concept.id)?.emblem;
+      const emblem = effectiveEmblem(this.atlas, unit.id)?.emblem;
       if (emblem) {
-        ctx.globalAlpha = fade;
+        ctx.globalAlpha = EMBLEM_ALPHA[info.state] * alpha;
         ctx.fillStyle = "rgba(255,253,248,0.92)";
         ctx.beginPath();
         ctx.arc(sx, cy, disc, 0, Math.PI * 2);
         ctx.fill();
-        this.drawEmblemInside(emblem, sx, cy, disc, concept.title);
+        this.drawEmblemInside(emblem, sx, cy, disc, unit.title);
       }
       ctx.globalAlpha = alpha;
       if (info.due) {
@@ -952,14 +1016,15 @@ export class MapView {
         ctx.fill();
         ctx.stroke();
       }
-      if (withTitle) {
+      if (withTitle || !emblem) {
         const size = Math.min(13, Math.max(10, px * 0.13));
         ctx.font = `600 ${size}px ${FONT}`;
         ctx.textAlign = "center";
-        ctx.textBaseline = "top";
-        const lines = wrap(ctx, shortTitle(concept.title), px * 1.55, 2);
+        ctx.textBaseline = withTitle ? "top" : "middle";
+        const lines = wrap(ctx, shortTitle(unit.title), px * 1.55, withTitle ? 2 : 3);
+        const y0 = withTitle ? sy + px * 0.38 : sy - ((lines.length - 1) * (size + 2)) / 2;
         lines.forEach((line, i) => {
-          const y = sy + px * 0.38 + i * (size + 2);
+          const y = y0 + i * (size + 2);
           ctx.lineWidth = 3;
           ctx.strokeStyle = t.halo;
           ctx.strokeText(line, sx, y);
@@ -990,44 +1055,67 @@ export class MapView {
 
   // ── Red threads ───────────────────────────────────────────────────────────
 
-  private threadEnd(conceptId: string, level: FocusLevel): { id: string; x: number; y: number } | null {
-    const cell = this.layout.conceptCell.get(conceptId);
+  private localEnd(unitId: string, level: number): End | null {
+    const cell = this.layout.unitCell.get(unitId);
     if (!cell) return null;
-    if (level === 5) return { id: conceptId, x: cell.x, y: cell.y };
+    if (level > this.depth) return { id: unitId, x: cell.x, y: cell.y };
     const id = this.regionAt(cell, level);
     const g = this.layout.regions.get(id);
     if (!g) return null;
-    return level === 1 ? { id, x: (g.minX + g.maxX) / 2, y: (g.minY + g.maxY) / 2 } : { id, x: g.labelX, y: g.labelY };
+    if (level === 1) {
+      const island = this.layout.islands.get(id);
+      return { id, x: island?.x ?? g.labelX, y: island?.y ?? g.labelY };
+    }
+    return { id, x: g.labelX, y: g.labelY };
   }
 
-  private touchesHover(thread: Thread): boolean {
-    return this.hover?.kind === "concept" && !this.pickMode && (thread.a === this.hover.id || thread.b === this.hover.id);
+  /** A portal on the coast of the local end's island, towards the other planet. */
+  private portalEnd(local: End, localUnit: string, otherUnit: string, level: number): End | null {
+    const other = planetOfUnit(this.atlas, otherUnit);
+    const cell = this.layout.unitCell.get(localUnit);
+    if (!other || !cell) return null;
+    const island = this.layout.islands.get(cell.path[0]);
+    if (!island) return null;
+    let dx = local.x - island.x;
+    let dy = local.y - island.y;
+    const d = Math.hypot(dx, dy);
+    if (d < 0.5) {
+      dx = 0.6;
+      dy = -0.8;
+    } else {
+      dx /= d;
+      dy /= d;
+    }
+    if (level > this.depth) {
+      // Up close: right beside the unit, towards the coast.
+      return { id: `ext:${localUnit}:${otherUnit}`, x: local.x + dx * 1.7, y: local.y + dy * 1.7 - 0.6, external: { planet: other, unit: otherUnit } };
+    }
+    const reach = island.radius + 1.6;
+    return { id: `ext:${other.id}:${cell.path[0]}`, x: island.x + dx * reach, y: island.y + dy * reach, external: { planet: other, unit: otherUnit } };
   }
 
-  private touchesSelection(thread: Thread): boolean {
-    const sel = this.selection;
+  private touches(thread: Thread, sel: Selection | null): boolean {
     if (!sel) return false;
-    if (sel.kind === "concept") return thread.a === sel.id || thread.b === sel.id;
-    const inside = (id: string) => {
-      const cell = this.layout.conceptCell.get(id);
-      if (!cell) return false;
-      const level = this.atlas.regions[sel.id]?.level ?? 4;
-      return this.regionAt(cell, level) === sel.id;
-    };
-    return inside(thread.a) !== inside(thread.b) || (inside(thread.a) && inside(thread.b) && this.atlas.regions[sel.id]?.level === 4);
+    if (sel.kind === "unit") return thread.a === sel.id || thread.b === sel.id;
+    const inside = new Set(unitIdsIn(this.lens, sel.id));
+    return inside.has(thread.a) || inside.has(thread.b);
   }
 
   /** Threads bundled to the current level: one string per pair of places. */
-  bundledThreads(): Array<{ a: { id: string; x: number; y: number }; b: { id: string; x: number; y: number }; threads: Thread[]; lit: boolean }> {
+  bundledThreads(): Bundle[] {
     const level = this.focusLevel();
-    const pairs = new Map<string, { a: { id: string; x: number; y: number }; b: { id: string; x: number; y: number }; threads: Thread[]; lit: boolean }>();
+    const pairs = new Map<string, Bundle>();
     for (const thread of this.threads) {
-      const lit = this.touchesSelection(thread) || this.touchesHover(thread);
+      const lit = this.touches(thread, this.selection) || (this.hover?.kind === "unit" && !this.pickMode && this.touches(thread, this.hover));
       if (this.threadMode === "auswahl" && !lit) continue;
-      // Up close, a prerequisite string per Begriff would be spaghetti: show them around the focus only.
-      if (level >= 4 && thread.kind === "voraussetzung" && !lit) continue;
-      const a = this.threadEnd(thread.a, level);
-      const b = this.threadEnd(thread.b, level);
+      // Up close, a prerequisite string per unit would be spaghetti: show them around the focus only.
+      if (level >= this.depth && thread.kind === "voraussetzung" && !lit && this.planet.units[thread.a] && this.planet.units[thread.b]) continue;
+      const aLocal = Boolean(this.planet.units[thread.a]);
+      const bLocal = Boolean(this.planet.units[thread.b]);
+      let a = aLocal ? this.localEnd(thread.a, level) : null;
+      let b = bLocal ? this.localEnd(thread.b, level) : null;
+      if (a && !bLocal) b = this.portalEnd(a, thread.a, thread.b, level);
+      if (b && !aLocal) a = this.portalEnd(b, thread.b, thread.a, level);
       if (!a || !b || a.id === b.id) continue;
       const key = a.id < b.id ? `${a.id}|${b.id}` : `${b.id}|${a.id}`;
       const entry = pairs.get(key);
@@ -1044,35 +1132,45 @@ export class MapView {
     const t = this.theme;
     const bundles = this.bundledThreads();
     const anyLit = this.selection !== null && bundles.some((b) => b.lit);
-    const pins = new Map<string, { x: number; y: number; lit: boolean }>();
+    const pins = new Map<string, { x: number; y: number; lit: boolean; external?: End["external"] }>();
     const notes: Array<{ x: number; y: number; text: string }> = [];
     for (const bundle of bundles) {
       const [ax, ay] = this.toScreen(bundle.a.x, bundle.a.y);
       const [bx, by] = this.toScreen(bundle.b.x, bundle.b.y);
-      const offA = ax < -200 || ax > this.width + 200 || ay < -200 || ay > this.height + 200;
-      const offB = bx < -200 || bx > this.width + 200 || by < -200 || by > this.height + 200;
-      if (offA && offB) continue;
+      const off = (x: number, y: number) => x < -200 || x > this.width + 200 || y < -200 || y > this.height + 200;
+      if (off(ax, ay) && off(bx, by)) continue;
       const len = Math.hypot(bx - ax, by - ay);
       const sag = Math.min(70, len * 0.18);
       const mx = (ax + bx) / 2;
       const my = (ay + by) / 2 + sag;
-      const connection = bundle.threads.some((x) => x.kind === "verbindung");
-      const width = (connection ? 2.4 : 1.5) + Math.log2(bundle.threads.length) * 0.9;
+      const kind = KIND_PRIORITY.find((k) => bundle.threads.some((x) => x.kind === k)) ?? "voraussetzung";
+      const lead = bundle.threads.find((x) => x.kind === kind) ?? bundle.threads[0];
+      // Orient the markers along the leading thread: its `a` end may be this bundle's b end.
+      const flipped = this.sameEnd(bundle.b, lead.a);
+      const width = (kind === "voraussetzung" ? 1.5 : 2.4) + Math.log2(bundle.threads.length) * 0.9;
+      const color = kind === "voraussetzung" ? t.threadReq : t.thread;
       const dim = anyLit && !bundle.lit ? 0.18 : 1;
       ctx.globalAlpha = dim;
+      ctx.setLineDash([]);
       ctx.strokeStyle = "rgba(0,0,0,0.22)";
       ctx.lineWidth = width + 1;
       ctx.beginPath();
       ctx.moveTo(ax + 2, ay + 3);
       ctx.quadraticCurveTo(mx + 2, my + 4, bx + 2, by + 3);
       ctx.stroke();
-      ctx.strokeStyle = connection ? t.thread : t.threadReq;
+      ctx.strokeStyle = color;
       ctx.lineWidth = width;
+      if (kind === "nutzt") ctx.setLineDash([8, 6]);
       ctx.beginPath();
       ctx.moveTo(ax, ay);
       ctx.quadraticCurveTo(mx, my, bx, by);
       ctx.stroke();
-      // Midpoint of the curve, for a count tag or a note.
+      ctx.setLineDash([]);
+      // UML-style ends, set back from the pins so both stay visible.
+      const endA = this.endPoint(ax, ay, mx, my, bundle.a.external ? 17 : 9);
+      const endB = this.endPoint(bx, by, mx, my, bundle.b.external ? 17 : 9);
+      const [first, second] = flipped ? [endB, endA] : [endA, endB];
+      this.drawMarkers(kind, first, second, color);
       const cx = 0.25 * ax + 0.5 * mx + 0.25 * bx;
       const cy = 0.25 * ay + 0.5 * my + 0.25 * by;
       if (bundle.threads.length > 1 && dim === 1) {
@@ -1080,7 +1178,7 @@ export class MapView {
         ctx.font = `700 11px ${FONT}`;
         const w = ctx.measureText(label).width + 10;
         ctx.fillStyle = t.surface;
-        ctx.strokeStyle = connection ? t.thread : t.threadReq;
+        ctx.strokeStyle = color;
         ctx.lineWidth = 1.5;
         roundRect(ctx, cx - w / 2, cy - 8, w, 16, 8);
         ctx.fill();
@@ -1090,30 +1188,143 @@ export class MapView {
         ctx.textBaseline = "middle";
         ctx.fillText(label, cx, cy + 0.5);
       }
-      const noteThread = bundle.threads.find((x) => x.kind === "verbindung" && x.note);
+      // Notes on prerequisites only around one selected unit; a selected region would bury the map in paper.
+      const unitFocus = this.selection?.kind === "unit";
+      const noteThread = bundle.threads.find((x) => x.note && x.kind !== "voraussetzung") ?? (bundle.lit && unitFocus ? bundle.threads.find((x) => x.note) : undefined);
       if (noteThread?.note && bundle.threads.length === 1 && bundle.lit) notes.push({ x: cx, y: cy, text: noteThread.note });
       for (const [end, sx, sy] of [[bundle.a, ax, ay], [bundle.b, bx, by]] as const) {
         const prev = pins.get(end.id);
-        pins.set(end.id, { x: sx, y: sy, lit: (prev?.lit ?? false) || bundle.lit || !anyLit });
+        pins.set(end.id, { x: sx, y: sy, lit: (prev?.lit ?? false) || bundle.lit || !anyLit, external: end.external });
       }
     }
     ctx.globalAlpha = 1;
     for (const pin of pins.values()) {
       ctx.globalAlpha = pin.lit ? 1 : 0.3;
-      ctx.fillStyle = "rgba(0,0,0,0.3)";
-      ctx.beginPath();
-      ctx.arc(pin.x + 1.5, pin.y + 2.5, 4.5, 0, Math.PI * 2);
-      ctx.fill();
-      const g = ctx.createRadialGradient(pin.x - 1.5, pin.y - 1.5, 0.5, pin.x, pin.y, 5);
-      g.addColorStop(0, "#ff8a8a");
-      g.addColorStop(1, "#b3121b");
-      ctx.fillStyle = g;
-      ctx.beginPath();
-      ctx.arc(pin.x, pin.y, 4.5, 0, Math.PI * 2);
-      ctx.fill();
+      if (pin.external) this.drawPortal(pin.x, pin.y, pin.external);
+      else this.drawPin(pin.x, pin.y);
     }
     ctx.globalAlpha = 1;
     for (const note of notes.slice(0, 12)) this.drawNote(note.x, note.y, note.text);
+  }
+
+  /** Does a bundle end stand for this unit (at the current level)? */
+  private sameEnd(end: End, unitId: string): boolean {
+    if (end.external) return !this.planet.units[unitId];
+    const cell = this.layout.unitCell.get(unitId);
+    if (!cell) return false;
+    const level = this.focusLevel();
+    return end.id === (level > this.depth ? unitId : this.regionAt(cell, level));
+  }
+
+  /** A point `back` px from an end along the curve, plus the direction into the end. */
+  private endPoint(x: number, y: number, cx: number, cy: number, back: number): { x: number; y: number; ux: number; uy: number } {
+    let ux = x - cx;
+    let uy = y - cy;
+    const d = Math.hypot(ux, uy) || 1;
+    ux /= d;
+    uy /= d;
+    return { x: x - ux * back, y: y - uy * back, ux, uy };
+  }
+
+  /** Ends by kind: `first` is the thread's a end, `second` its b end. */
+  private drawMarkers(kind: ThreadKind, first: { x: number; y: number; ux: number; uy: number }, second: { x: number; y: number; ux: number; uy: number }, color: string): void {
+    const ctx = this.ctx;
+    const head = (p: typeof first, size: number, fill: string | null) => {
+      const nx = -p.uy;
+      const ny = p.ux;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(p.x - p.ux * size + nx * size * 0.55, p.y - p.uy * size + ny * size * 0.55);
+      if (fill === null) {
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(p.x - p.ux * size - nx * size * 0.55, p.y - p.uy * size - ny * size * 0.55);
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+        return;
+      }
+      ctx.lineTo(p.x - p.ux * size - nx * size * 0.55, p.y - p.uy * size - ny * size * 0.55);
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    };
+    switch (kind) {
+      case "voraussetzung":
+        head(first, 10, color);
+        break;
+      case "nutzt":
+        head(second, 11, null);
+        break;
+      case "ist-ein":
+        head(second, 13, this.theme.surface);
+        break;
+      case "schnittstelle": {
+        // Ball at the provider, socket at the user.
+        ctx.fillStyle = this.theme.surface;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(first.x, first.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        const angle = Math.atan2(second.uy, second.ux);
+        ctx.beginPath();
+        ctx.arc(second.x + second.ux * 2, second.y + second.uy * 2, 8, angle + Math.PI / 2, angle + (3 * Math.PI) / 2);
+        ctx.stroke();
+        break;
+      }
+      case "verbindung":
+        break;
+    }
+  }
+
+  private drawPin(x: number, y: number): void {
+    const ctx = this.ctx;
+    ctx.fillStyle = "rgba(0,0,0,0.3)";
+    ctx.beginPath();
+    ctx.arc(x + 1.5, y + 2.5, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+    const g = ctx.createRadialGradient(x - 1.5, y - 1.5, 0.5, x, y, 5);
+    g.addColorStop(0, "#ff8a8a");
+    g.addColorStop(1, "#b3121b");
+    ctx.fillStyle = g;
+    ctx.beginPath();
+    ctx.arc(x, y, 4.5, 0, Math.PI * 2);
+    ctx.fill();
+  }
+
+  /** A thread leaving the planet: a small disc with the other planet's Sinnbild; click to go there. */
+  private drawPortal(x: number, y: number, ext: NonNullable<End["external"]>): void {
+    const ctx = this.ctx;
+    const r = 13;
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.beginPath();
+    ctx.arc(x + 2, y + 3, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = "#fffdf8";
+    ctx.strokeStyle = this.theme.thread;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.stroke();
+    this.drawEmblemInside(PLANET_EMBLEMS[ext.planet.kind], x, y, r * 0.95, ext.planet.name);
+    this.portals.push({ x, y, r, planet: ext.planet.id, unit: ext.unit });
+    if (this.hexPx >= 26 || this.selection) {
+      const unit = findUnit(this.atlas, ext.unit);
+      const label = `${ext.planet.name}: ${unit ? shortTitle(unit.title) : ""}`;
+      ctx.font = `600 11px ${FONT}`;
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = this.theme.halo;
+      ctx.strokeText(label, x, y + r + 3);
+      ctx.fillStyle = this.theme.ink;
+      ctx.fillText(label, x, y + r + 3);
+    }
   }
 
   private drawNote(x: number, y: number, text: string): void {
@@ -1145,22 +1356,23 @@ export class MapView {
     const free = (box: LabelBox) => !placed.some((p) => box.x < p.x + p.w && box.x + box.w > p.x && box.y < p.y + p.h && box.y + box.h > p.y);
     const scale = this.cam.scale;
     const px = this.hexPx;
+    const depth = this.depth;
 
-    // Bereiche: titles in the sea above each island.
-    for (const id of this.atlas.roots) {
+    // Islands: titles in the sea above each one.
+    for (const id of this.lens.roots) {
       const g = this.layout.regions.get(id);
       if (!g) continue;
       const alpha = 1 - smooth(g.radius * scale, 500, 800);
       if (alpha <= 0.02) continue;
       const [sx, sy] = this.toScreen((g.minX + g.maxX) / 2, g.minY - 0.9);
-      const name = this.atlas.regions[id].name.toUpperCase();
+      const name = this.lens.regions[id].name.toUpperCase();
       ctx.globalAlpha = alpha;
       ctx.font = `800 15px ${FONT}`;
       const spaced = name.split("").join(" ");
       const tw = ctx.measureText(spaced).width;
       const e = 30;
       const x0 = sx - (tw + e + 8) / 2;
-      this.drawEmblemDisc(id, x0 + e / 2, sy - 6, e / 2, "#6b7280");
+      this.drawEmblemDisc(id, x0 + e / 2, sy - 6, e / 2, this.lens.colorLevel === 1 ? this.regionColor(id) : "#6b7280");
       ctx.textAlign = "left";
       ctx.textBaseline = "middle";
       ctx.lineWidth = 5;
@@ -1172,9 +1384,9 @@ export class MapView {
       ctx.globalAlpha = 1;
     }
 
-    // Big, faint names over the land once a Fach or Gebiet fills the view.
+    // Big, faint names over the land once a region fills the view.
     for (const g of this.layout.regions.values()) {
-      if (g.level !== 2 && g.level !== 3) continue;
+      if (g.level < 2 || g.level >= depth) continue;
       const R = g.radius * scale;
       const start = g.level === 2 ? 150 : 170;
       const alpha = smooth(R, start, start * 1.4) * (1 - smooth(R, 700, 1100)) * 0.32;
@@ -1186,25 +1398,25 @@ export class MapView {
       ctx.textAlign = "center";
       ctx.textBaseline = "middle";
       ctx.fillStyle = t.ink;
-      ctx.fillText(this.atlas.regions[g.id].name.toUpperCase().split("").join(" "), sx, sy + (g.level === 2 ? -size * 0.6 : size * 0.6));
+      ctx.fillText(this.lens.regions[g.id].name.toUpperCase().split("").join(" "), sx, sy + (g.level === 2 ? -size * 0.6 : size * 0.6));
       ctx.globalAlpha = 1;
     }
 
-    // Emblem labels: Fach, then Gebiet, then Thema — larger places first.
+    // Emblem labels: shallow levels first, larger places first.
     const geoms = [...this.layout.regions.values()].filter((g) => g.level >= 2).sort((a, b) => a.level - b.level || b.radius - a.radius);
     for (const g of geoms) {
       const R = g.radius * scale;
       let alpha: number;
-      if (g.level === 2) alpha = smooth(R, 18, 30) * (1 - smooth(R, 120, 165));
-      else if (g.level === 3) alpha = smooth(R, 30, 44) * (1 - smooth(R, 135, 185));
-      else alpha = smooth(R, 34, 50) * (1 - smooth(px, CONCEPT_PX - 4, CONCEPT_PX + 10));
+      if (g.level === depth) alpha = smooth(R, 30, 46) * (1 - smooth(px, UNIT_PX - 4, UNIT_PX + 10));
+      else if (g.level === 2) alpha = smooth(R, 18, 30) * (1 - smooth(R, 120, 165));
+      else alpha = smooth(R, 30, 44) * (1 - smooth(R, 135, 185));
       if (alpha <= 0.05) continue;
       const [sx, sy] = this.toScreen(g.labelX, g.labelY);
       if (sx < -100 || sy < -100 || sx > this.width + 100 || sy > this.height + 100) continue;
-      const e = Math.max(18, Math.min(g.level === 2 ? 30 : g.level === 3 ? 26 : 22, R * 0.36));
-      const region = this.atlas.regions[g.id];
-      const size = g.level === 2 ? 14 : g.level === 3 ? 12.5 : 11.5;
-      ctx.font = `${g.level === 4 ? 600 : 700} ${size}px ${FONT}`;
+      const e = Math.max(18, Math.min(g.level === 2 ? 30 : g.level === depth ? 22 : 26, R * 0.36));
+      const region = this.lens.regions[g.id];
+      const size = g.level === 2 ? 14 : g.level === depth ? 11.5 : 12.5;
+      ctx.font = `${g.level === depth ? 600 : 700} ${size}px ${FONT}`;
       const lines = wrap(ctx, region.name, Math.max(90, Math.min(170, R * 1.5)), 2);
       const tw = Math.max(...lines.map((l) => ctx.measureText(l).width));
       const box = { x: sx - Math.max(tw, e * 2) / 2 - 2, y: sy - e - 2, w: Math.max(tw, e * 2) + 4, h: e * 2 + lines.length * (size + 2) + 6 };
@@ -1236,8 +1448,7 @@ export class MapView {
     ctx.strokeStyle = ring;
     ctx.stroke();
     const emblem = displayEmblem(this.atlas, id) ?? undefined;
-    const name = this.atlas.regions[id]?.name ?? "";
-    this.drawEmblemInside(emblem, x, y, radius * 0.95, name);
+    this.drawEmblemInside(emblem, x, y, radius * 0.95, this.lens.regions[id]?.name ?? "");
   }
 }
 
@@ -1248,8 +1459,10 @@ function initials(name: string): string {
   return words.slice(0, 2).map((w) => w[0].toUpperCase()).join("") || name.slice(0, 2);
 }
 
-function shortTitle(title: string): string {
-  return title.split(/[:(]/)[0].trim();
+/** "Satz des Pythagoras: a² + b² = c²" → "Satz des Pythagoras"; a short prefix ("Archiv-API: Rate Limits") keeps the whole title. */
+export function shortTitle(title: string): string {
+  const head = title.split(/[:(]/)[0].trim();
+  return head.length >= 14 ? head : title;
 }
 
 function wrap(ctx: CanvasRenderingContext2D, text: string, width: number, maxLines: number): string[] {
@@ -1281,12 +1494,4 @@ function roundRect(ctx: CanvasRenderingContext2D, x: number, y: number, w: numbe
   ctx.arcTo(x, y + h, x, y, r);
   ctx.arcTo(x, y, x + w, y, r);
   ctx.closePath();
-}
-
-export function stateOfRegion(atlas: Atlas, regionId: string): ReturnType<typeof statsFor> {
-  return statsFor(conceptsIn(atlas, regionId).flatMap((c) => c.cards), simNow(atlas));
-}
-
-export function regionGeomOf(layout: Layout, id: string): RegionGeom | undefined {
-  return layout.regions.get(id);
 }

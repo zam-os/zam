@@ -1,6 +1,11 @@
 /**
  * Node-side persistence for the atlas spike: one JSON file shared by the
  * Vite dev server (Studio side) and the agent CLI. Nothing here touches ~/.zam.
+ *
+ * In the product the planets live in different places — world knowledge on
+ * a central server, company knowledge on the company's server, private
+ * knowledge on the device. The spike keeps them in one file but never mixes
+ * their content: each planet holds only its own units and regions.
  */
 import { existsSync, mkdirSync, readdirSync, readFileSync, renameSync, writeFileSync } from "node:fs";
 import { dirname, join, resolve } from "node:path";
@@ -9,8 +14,9 @@ import { tileKeyFromFileName } from "../../knowledge-world/src/model.ts";
 import { SAMPLE_EMBLEMS } from "../../knowledge-world/src/sample-emblems.ts";
 import { createStartAtlas } from "./atlas.ts";
 import type { Atlas, TileCatalog, TileJson } from "./atlas.ts";
+import { settleAll } from "./layout.ts";
 import { REGION_EMBLEMS } from "./sample-emblems.ts";
-import { SAMPLE_THREADS } from "./sample-threads.ts";
+import { START_SAMPLES } from "./sample-planets.ts";
 
 const here = dirname(fileURLToPath(import.meta.url));
 export const SPIKE_DIR = resolve(here, "..");
@@ -30,21 +36,24 @@ export function loadCatalog(): TileCatalog {
 
 export function freshAtlas(opts: { history?: boolean; emblems?: boolean } = {}): Atlas {
   const emblems = opts.emblems ?? true;
-  return createStartAtlas(loadCatalog(), {
+  const atlas = createStartAtlas(loadCatalog(), START_SAMPLES, {
     history: opts.history ?? true,
     regionEmblems: emblems ? REGION_EMBLEMS : undefined,
-    conceptEmblems: emblems ? SAMPLE_EMBLEMS : undefined,
-    threads: SAMPLE_THREADS,
+    unitEmblems: emblems ? SAMPLE_EMBLEMS : undefined,
   });
+  settleAll(atlas);
+  return atlas;
 }
 
 export function readAtlas(): Atlas {
-  if (!existsSync(ATLAS_FILE)) {
-    const atlas = freshAtlas();
-    writeAtlas(atlas);
-    return atlas;
+  if (existsSync(ATLAS_FILE)) {
+    const atlas = JSON.parse(readFileSync(ATLAS_FILE, "utf8")) as Atlas;
+    // The first spike version had no planets; start over rather than migrate a throwaway file.
+    if (atlas.schema === "zam-knowledge-atlas-spike/2") return atlas;
   }
-  return JSON.parse(readFileSync(ATLAS_FILE, "utf8")) as Atlas;
+  const atlas = freshAtlas();
+  writeAtlas(atlas);
+  return atlas;
 }
 
 /** Atomic write, so a watcher never reads half a file. */

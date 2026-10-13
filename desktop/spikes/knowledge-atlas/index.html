@@ -73,7 +73,23 @@
       button.threads { border-color: var(--thread); color: var(--thread); font-weight: 600; }
       .hud { position: fixed; z-index: 5; }
       .glass { background: var(--glass); border: 1px solid var(--line); border-radius: var(--radius); box-shadow: var(--shadow); backdrop-filter: blur(6px); }
-      #crumbs { top: 14px; left: 14px; padding: 10px 12px; width: min(440px, calc(100vw - 28px)); }
+      #crumbs { top: 14px; left: 14px; padding: 10px 12px; width: min(460px, calc(100vw - 28px)); }
+      #planets { display: flex; gap: 4px; flex-wrap: wrap; }
+      #planets button.planet { display: inline-flex; align-items: center; gap: 6px; font-size: 13px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); }
+      #planets button.planet.on { background: var(--ink); color: var(--surface); border-color: var(--ink); }
+      #planets button.planet img { background: #fffdf8; border-radius: 50%; }
+      #server { margin: 5px 2px 2px; }
+      #lenses { display: flex; gap: 4px; align-items: center; flex-wrap: wrap; margin: 6px 0 8px; padding-bottom: 8px; border-bottom: 1px solid var(--line); }
+      #lenses button.lens { font-size: 12.5px; padding: 2px 10px; border-radius: 999px; }
+      #lenses button.lens.on { background: var(--accent); border-color: var(--accent); color: #fff; }
+      .dialog textarea { width: 100%; font: inherit; font-size: 15px; padding: 9px 11px; border: 1px solid var(--line); border-radius: 9px; margin-top: 6px; background: var(--surface); color: var(--ink); resize: vertical; }
+      .pending { margin-top: 10px; padding: 7px 10px; border-radius: 9px; background: #ede7ff; color: #3b2a85; font-size: 13px; }
+      .planet-tag { display: inline-block; font-size: 11px; font-weight: 700; padding: 0 6px; border-radius: 999px; background: var(--surface-2); border: 1px solid var(--line); margin-right: 6px; }
+      .pin.ghost { background: var(--surface-2); border: 1px dashed var(--muted); box-shadow: none; }
+      .kind { display: inline-flex; width: 36px; flex: none; }
+      .lg-gap { height: 6px; }
+      .kinds { display: flex; flex-direction: column; gap: 6px; margin-top: 10px; }
+      button.kind-choice { display: flex; gap: 12px; align-items: center; text-align: left; }
       #crumbs-path { display: flex; flex-wrap: wrap; gap: 4px; align-items: center; font-weight: 700; font-size: 15px; }
       #crumbs-path .sep, .path .sep { color: var(--muted); font-weight: 400; margin: 0 2px; }
       #crumbs-level { font-size: 12px; color: var(--muted); margin-top: 2px; }
@@ -139,7 +155,7 @@
       .chips button { font-size: 12.5px; padding: 4px 10px; border-radius: 999px; background: var(--surface-2); }
       .list { list-style: none; padding: 0; margin: 10px 0 0; display: flex; flex-direction: column; gap: 8px; }
       .list li { border: 1px solid var(--line); border-radius: 10px; padding: 10px 12px; background: var(--surface-2); }
-      #toasts { position: fixed; bottom: 190px; left: 14px; z-index: 30; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; pointer-events: none; }
+      #toasts { position: fixed; bottom: 250px; left: 14px; z-index: 30; display: flex; flex-direction: column; gap: 6px; align-items: flex-start; pointer-events: none; }
       .toast { background: rgba(19,26,35,.92); color: #fff; padding: 9px 16px; border-radius: 10px; font-size: 14px; transition: opacity .5s; max-width: min(560px, 70vw); }
       .toast.agent { background: #5b21b6; }
       .toast.warn { background: #9a3412; }
@@ -157,6 +173,9 @@
   <body>
     <canvas id="map"></canvas>
     <div id="crumbs" class="hud glass">
+      <div id="planets"></div>
+      <div id="server" class="small muted"></div>
+      <div id="lenses"></div>
       <div id="crumbs-path"></div>
       <div id="crumbs-level"></div>
       <input id="search" type="text" placeholder="Suchen … ( / )" autocomplete="off" />

@@ -327,6 +327,11 @@ export const REGION_EMBLEMS: Record<string, Partial<Emblem>> = {
     svg: S(`${rect(16, 7, 32, 50, 3, RD, INK, 3, 0.2)}${ln(22, 7, 22, 57, INK, 2)}${poly("38,7 44,7 44,22 41,19 38,22", OR, "none", 0)}`),
   },
 
+  "informatik/softwaretechnik": {
+    glyph: "{ }",
+    svg: S(`${c(24, 30, 12, PU, INK, 3, 0.2)}${c(24, 30, 4, INK, "none", 0)}${[0, 60, 120, 180, 240, 300].map((a) => ln(24 + 12 * Math.cos((a * Math.PI) / 180), 30 + 12 * Math.sin((a * Math.PI) / 180), 24 + 17 * Math.cos((a * Math.PI) / 180), 30 + 17 * Math.sin((a * Math.PI) / 180), INK, 4)).join("")}${t(48, 52, 16, OR, "{ }")}`),
+  },
+
   // ── Gebiete: Latein ──────────────────────────────────────────────────────
   "latein/grammatik": {
     glyph: "-us -a -um",
@@ -334,5 +339,143 @@ export const REGION_EMBLEMS: Record<string, Partial<Emblem>> = {
   },
   "latein/lektuere": {
     svg: S(`${rect(14, 12, 36, 40, 0, YE, INK, 2, 0.2)}${rect(10, 8, 44, 8, 4, "#ffffff")}${rect(10, 48, 44, 8, 4, "#ffffff")}${ln(20, 24, 44, 24, INK, 2)}${ln(20, 31, 40, 31, INK, 2)}${ln(20, 38, 44, 38, INK, 2)}`),
+  },
+
+  // ── Schule: one chalkboard per grade ─────────────────────────────────────
+  ...Object.fromEntries(
+    [5, 6, 7, 8, 9, 10, 11, 12, 13].map((g) => [
+      `klasse-${g}`,
+      { glyph: `${g}.`, svg: S(`${rect(6, 10, 52, 38, 3, "#2f5d50", BR, 4)}${t(32, 40, g > 9 ? 22 : 26, "#ffffff", `${g}.`)}${ln(18, 54, 46, 54, BR, 4)}`) },
+    ]),
+  ),
+  "ohne-klasse": {
+    svg: S(`${p("M32 16 Q20 10 7 14 L7 51 Q20 47 32 53 Q44 47 57 51 L57 14 Q44 10 32 16 Z", GR, INK, 3, 0.12)}${ln(32, 16, 32, 52, INK, 2)}${t(46, 40, 18, OR, "+")}`),
+  },
+
+  // ── Planeten ─────────────────────────────────────────────────────────────
+  "planet-welt": {
+    svg: S(`${c(32, 32, 26, BL, INK, 3, 0.25)}${p("M14 22 Q22 18 26 24 Q30 30 24 34 Q18 38 20 46", "none", GR, 5)}${p("M38 12 Q46 20 42 28 Q38 34 46 40 Q52 44 50 52", "none", GR, 5)}${ell(32, 32, 26, 9, "none", INK, 1.5)}`),
+  },
+  "planet-firma": {
+    svg: S(`${rect(14, 14, 24, 42, 1, GY, INK, 3, 0.3)}${rect(38, 28, 14, 28, 1, BL, INK, 3, 0.25)}${[20, 30].flatMap((x) => [20, 29, 38, 47].map((y) => rect(x, y, 5, 5, 0, INK, "none", 0))).join("")}${ln(8, 57, 58, 57, INK, 3)}`),
+  },
+  "planet-privat": {
+    svg: S(`${p("M10 30 L32 10 L54 30 L54 56 L10 56 Z", YE, INK, 3, 0.3)}${p("M32 50 C20 42 20 30 27 30 C30 30 32 33 32 35 C32 33 34 30 37 30 C44 30 44 42 32 50 Z", RD, INK, 2, 0.8)}`),
+  },
+
+  // ── Firma (fictional): Bereiche, Teams, Produktlinien, Produkte ──────────
+  plattform: {
+    svg: S(`${poly("32,8 58,20 32,32 6,20", BL, INK, 3, 0.35)}${p("M6 31 L32 43 L58 31", "none", INK, 3)}${p("M6 42 L32 54 L58 42", "none", INK, 3)}`),
+  },
+  clients: {
+    svg: S(`${rect(5, 12, 38, 26, 3, BL, INK, 3, 0.15)}${ln(24, 38, 24, 46)}${ln(14, 48, 34, 48)}${rect(44, 22, 15, 28, 3, OR, INK, 3, 0.2)}${c(51.5, 45, 1.5, INK, "none", 0)}`),
+  },
+  integration: {
+    glyph: "⇄",
+    svg: S(`${ell(23, 32, 15, 10, "none", OR, 5)}${ell(41, 32, 15, 10, "none", BL, 5)}`),
+  },
+  ...Object.fromEntries(
+    ([
+      ["team-boreas", "B", "#2f6fdf"],
+      ["team-foehn", "F", "#e8590c"],
+      ["team-passat", "P", "#2f9e44"],
+      ["team-mistral", "M", "#7048e8"],
+      ["team-zephyr", "Z", "#d6336c"],
+    ] as const).map(([key, letter, color]) => [
+      key,
+      { svg: S(`${p("M6 22 Q30 10 46 20 Q56 28 46 34", "none", color, 4)}${p("M10 34 Q28 28 38 36", "none", color, 3)}${p("M6 46 Q26 40 42 48 Q50 54 44 58", "none", color, 3)}${c(48, 46, 11, "#ffffff", INK, 2.5)}${t(48, 51, 13, INK, letter)}`) },
+    ]),
+  ),
+  dokumentenplattform: {
+    svg: S(`${rect(18, 6, 30, 38, 2, "#ffffff", INK, 2.5)}${rect(13, 12, 30, 38, 2, "#ffffff", INK, 2.5)}${rect(8, 18, 30, 38, 2, BL, INK, 3, 0.2)}${ln(14, 30, 32, 30, INK, 2)}${ln(14, 37, 32, 37, INK, 2)}${ln(14, 44, 26, 44, INK, 2)}`),
+  },
+  uebergreifend: {
+    svg: S(`${c(32, 16, 6, OR, INK, 2.5, 0.5)}${c(16, 42, 6, BL, INK, 2.5, 0.5)}${c(48, 42, 6, GR, INK, 2.5, 0.5)}${p("M26 20 L20 36 M38 20 L44 36 M23 44 L41 44", "none", INK, 2)}`),
+  },
+  "archiv-server": {
+    svg: S(`${[10, 26, 42].map((y) => rect(10, y, 44, 13, 2, BL, INK, 3, 0.18) + c(18, y + 6.5, 2.2, GR, "none", 0) + ln(28, y + 6.5, 46, y + 6.5, INK, 2)).join("")}`),
+  },
+  "desktop-client": {
+    svg: S(`${rect(6, 10, 52, 34, 3, GR, INK, 3, 0.15)}${ln(32, 44, 32, 52)}${ln(20, 54, 44, 54)}${p("M20 30 L28 22 L36 30 M28 22 L28 38", "none", GR, 3)}`),
+  },
+  "web-app": {
+    svg: S(`${rect(6, 10, 52, 44, 4, PU, INK, 3, 0.12)}${ln(6, 20, 58, 20, INK, 2)}${c(12, 15, 1.6, RD, "none", 0)}${c(18, 15, 1.6, YE, "none", 0)}${c(24, 15, 1.6, GR, "none", 0)}${rect(14, 28, 16, 18, 1, PU, "none", 0, 0.35)}${ln(36, 30, 50, 30, INK, 2)}${ln(36, 37, 50, 37, INK, 2)}${ln(36, 44, 46, 44, INK, 2)}`),
+  },
+  "archiv-api": {
+    glyph: "{ }",
+    svg: S(`${t(32, 44, 34, OR, "{ }")}${c(32, 54, 3, INK, "none", 0)}${ln(32, 54, 32, 60, INK, 2)}`),
+  },
+  "connector-hub": {
+    svg: S(`${[0, 72, 144, 216, 288].map((a) => ln(32, 32, 32 + 22 * Math.cos(((a - 90) * Math.PI) / 180), 32 + 22 * Math.sin(((a - 90) * Math.PI) / 180), INK, 2.5) + c(32 + 22 * Math.cos(((a - 90) * Math.PI) / 180), 32 + 22 * Math.sin(((a - 90) * Math.PI) / 180), 5, "#ffffff", INK, 2.5)).join("")}${c(32, 32, 9, RD, INK, 3, 0.5)}`),
+  },
+  arbeitsweise: {
+    glyph: "↻",
+    svg: S(`${p("M50 26 A20 20 0 1 0 50 40", "none", YE, 5)}${p("M44 20 L51 26 L44 31", "none", INK, 3)}${t(30, 38, 12, INK, "Sprint", 600)}`),
+  },
+  betrieb: {
+    svg: S(`${rect(6, 12, 52, 40, 4, "#ffffff", INK, 2.5)}${p("M10 34 L22 34 L27 22 L33 44 L38 30 L42 34 L54 34", "none", RD, 3)}`),
+  },
+  speicher: {
+    svg: S(`${ell(32, 14, 18, 6, BL, INK, 3, 0.2)}${ln(14, 14, 14, 48)}${ln(50, 14, 50, 48)}${p("M14 48 A18 6 0 0 0 50 48")}${p("M14 31 A18 6 0 0 0 50 31", "none", INK, 2)}`),
+  },
+  suche: {
+    svg: S(`${c(27, 27, 15, BL, INK, 3, 0.12)}${ln(38, 38, 54, 54, INK, 6)}${ln(20, 24, 34, 24, INK, 2)}${ln(20, 30, 30, 30, INK, 2)}`),
+  },
+  "api-design": {
+    glyph: "/api",
+    svg: S(`${t(32, 30, 15, OR, "GET")}${t(32, 50, 12, INK, "/cabinets", 600)}`),
+  },
+  endpunkte: {
+    glyph: "/api",
+    svg: S(`${t(32, 30, 15, OR, "GET")}${t(32, 50, 12, INK, "/cabinets", 600)}`),
+  },
+  sicherheit: {
+    svg: S(`${p("M20 30 L20 20 A12 12 0 0 1 44 20 L44 30", "none", INK, 4)}${rect(12, 30, 40, 26, 4, YE, INK, 3, 0.5)}${c(32, 41, 3.5, INK, "none", 0)}${ln(32, 41, 32, 49, INK, 3)}`),
+  },
+  sync: {
+    svg: S(`${p("M14 28 A18 18 0 0 1 48 22", "none", GR, 4)}${p("M42 16 L49 22 L42 27", "none", GR, 3)}${p("M50 36 A18 18 0 0 1 16 42", "none", BL, 4)}${p("M22 48 L15 42 L22 37", "none", BL, 3)}`),
+  },
+  erfassung: {
+    svg: S(`${rect(6, 30, 52, 18, 3, GY, INK, 3, 0.3)}${p("M12 30 L18 12 L46 12 L52 30", "none", INK, 2.5)}${ln(10, 38, 54, 38, RD, 2)}${c(48, 43, 2, GR, "none", 0)}`),
+  },
+  berechtigungen: {
+    svg: S(`${c(20, 32, 11, YE, INK, 3, 0.6)}${c(20, 32, 3.5, "#ffffff", INK, 2)}${p("M31 32 L56 32 L56 40 M48 32 L48 38", "none", INK, 4)}`),
+  },
+  datenzugriff: {
+    svg: S(`${rect(30, 10, 26, 34, 2, "#ffffff", INK, 2.5)}${ln(35, 20, 50, 20, INK, 2)}${ln(35, 27, 50, 27, INK, 2)}${arrow(6, 50, 30, 34, OR, 3.5)}`),
+  },
+  connectoren: {
+    svg: S(`${rect(24, 22, 16, 20, 3, OR, INK, 3, 0.4)}${ln(28, 22, 28, 12, INK, 3)}${ln(36, 22, 36, 12, INK, 3)}${p("M32 42 L32 50 Q32 58 24 58 L10 58", "none", INK, 3)}`),
+  },
+
+  // ── Privat ───────────────────────────────────────────────────────────────
+  "familie-freunde": {
+    svg: S(`${p("M22 48 C6 38 6 24 14 22 C18 21 22 24 22 27 C22 24 26 21 30 22 C38 24 38 38 22 48 Z", RD, INK, 2.5, 0.5)}${p("M42 56 C26 46 26 32 34 30 C38 29 42 32 42 35 C42 32 46 29 50 30 C58 32 58 46 42 56 Z", OR, INK, 2.5, 0.5)}`),
+  },
+  hobbys: {
+    svg: S(`${p("M32 8 C16 8 8 20 12 34 C16 48 34 56 44 48 C52 42 46 36 40 38 C34 40 32 32 38 28 C46 22 50 8 32 8 Z", GR, INK, 3, 0.25)}${c(22, 22, 3.5, RD, "none", 0)}${c(32, 17, 3.5, BL, "none", 0)}${c(20, 34, 3.5, YE, "none", 0)}`),
+  },
+  alltag: {
+    svg: S(`${p("M8 30 L32 10 L56 30", "none", INK, 3)}${rect(14, 28, 36, 28, 1, BL, INK, 3, 0.2)}${rect(28, 40, 9, 16, 1, BR, "none", 0, 0.7)}${rect(18, 33, 7, 7, 0, YE, INK, 1.5)}`),
+  },
+  geburtstage: {
+    glyph: "🎂",
+    svg: S(`${rect(12, 32, 40, 22, 3, RD, INK, 3, 0.35)}${p("M12 40 Q22 46 32 40 Q42 46 52 40", "none", INK, 2)}${[22, 32, 42].map((x) => ln(x, 32, x, 22, INK, 3) + c(x, 18, 2.5, OR, "none", 0)).join("")}`),
+  },
+  kontakte: {
+    svg: S(`${p("M18 8 L26 8 L30 20 L24 26 Q30 38 38 42 L44 36 L56 40 L56 48 Q56 56 46 56 Q16 52 8 20 Q8 8 18 8 Z", GR, INK, 3, 0.3)}`),
+  },
+  gitarre: {
+    svg: S(`${ln(40, 24, 56, 8, BR, 4)}${c(26, 40, 13, OR, INK, 3, 0.4)}${c(36, 30, 9, OR, INK, 3, 0.4)}${c(26, 40, 4, INK, "none", 0)}`),
+  },
+  kochen: {
+    svg: S(`${rect(12, 28, 40, 24, 4, GY, INK, 3, 0.3)}${ln(6, 32, 12, 32, INK, 3)}${ln(52, 32, 58, 32, INK, 3)}${ln(10, 28, 54, 28, INK, 3)}${p("M24 22 Q20 16 24 10 M32 22 Q28 16 32 10 M40 22 Q36 16 40 10", "none", GY, 2)}`),
+  },
+  geld: {
+    glyph: "€",
+    svg: S(`${c(32, 32, 24, YE, INK, 3, 0.5)}${c(32, 32, 18, "none", INK, 1.5)}${t(32, 42, 26, INK, "€")}`),
+  },
+  wohnung: {
+    svg: S(`${c(22, 32, 11, YE, INK, 3, 0.5)}${c(22, 32, 4, "#ffffff", INK, 2)}${p("M33 32 L56 32 L56 40 M47 32 L47 38", "none", INK, 4)}`),
   },
 };

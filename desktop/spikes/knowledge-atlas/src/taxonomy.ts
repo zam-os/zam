@@ -59,6 +59,7 @@ export const CONTINENTS: ContinentDef[] = [
           { key: "algorithmen", name: "Algorithmen", from: ["algorithmen", "graphen", "komplexitaetstheorie", "theoretische-informatik"] },
           { key: "datenbanken", name: "Datenbanken", from: ["datenbanken", "sql"] },
           { key: "netze", name: "Netze & Sicherheit", from: ["netze", "netzwerkprotokolle", "rechnernetze", "sicherheit", "kryptographie"] },
+          { key: "softwaretechnik", name: "Softwaretechnik", from: ["softwaretechnik"] },
         ],
       },
     ],
@@ -232,7 +233,7 @@ export function placeForDomain(domain: string): Place | null {
   const areaKey = alias?.area;
   const area =
     (areaKey ? hit.subject.areas.find((a) => a.key === areaKey) : undefined) ??
-    hit.subject.areas.find((a) => a.from.includes(rawArea)) ??
+    hit.subject.areas.find((a) => a.key === rawArea || a.from.includes(rawArea)) ??
     { key: rawArea, name: prettify(rawArea), from: [rawArea] };
   return { continent: hit.continent, subject: hit.subject, area };
 }
