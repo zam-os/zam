@@ -41,7 +41,7 @@ export interface MachineKnowledgeMapConfig {
   repoPath?: string;
 }
 
-export interface MachineAtlasConfig {
+export interface MachineGraph3dConfig {
   enabled?: boolean;
 }
 
@@ -96,10 +96,12 @@ export interface InstallConfig {
    */
   knowledgeMap?: MachineKnowledgeMapConfig;
   /**
-   * Machine-local knowledge-atlas alpha (ADR 2026-10-13, Decision 10): off
-   * by default, and no tool writes it. Only the Studio's own Settings do.
+   * Machine-local alpha of the Studio's 3D Wissensnetz. The knowledge atlas
+   * took its place (ADR 2026-10-13, owner decision); the 3D view stays for
+   * those who switch it on. Off by default, and no tool writes it. Only the
+   * Studio's own Settings do.
    */
-  atlas?: MachineAtlasConfig;
+  graph3d?: MachineGraph3dConfig;
   /**
    * Which Quelle Lerninhalte shows (ADR 2026-10-10, Decision 4).
    * Presentation state of this install. Never `knowledgeMap.repoPath`.
@@ -1181,19 +1183,21 @@ export function setKnowledgeMapConfig(
   }, path);
 }
 
-export function getAtlasConfig(path = defaultConfigPath()): MachineAtlasConfig {
-  return { ...(loadInstallConfig(path).atlas ?? {}) };
+export function getGraph3dConfig(
+  path = defaultConfigPath(),
+): MachineGraph3dConfig {
+  return { ...(loadInstallConfig(path).graph3d ?? {}) };
 }
 
-/** Switch the knowledge-atlas alpha on or off for this install. */
-export function setAtlasConfig(
-  patch: MachineAtlasConfig,
+/** Switch the 3D Wissensnetz alpha on or off for this install. */
+export function setGraph3dConfig(
+  patch: MachineGraph3dConfig,
   path = defaultConfigPath(),
 ): void {
   updateInstallConfig((config) => {
-    const next = { ...(config.atlas ?? {}) };
+    const next = { ...(config.graph3d ?? {}) };
     if (patch.enabled !== undefined) next.enabled = patch.enabled;
-    config.atlas = next;
+    config.graph3d = next;
   }, path);
 }
 

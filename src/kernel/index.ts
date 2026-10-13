@@ -442,12 +442,14 @@ export {
   structuralPublicationChecks,
 } from "./library/publication.js";
 export type {
+  PracticeOptions,
   PullForwardCandidate,
   PullForwardOptions,
   PullForwardResult,
 } from "./library/pull-forward.js";
 export {
   getPullForwardCandidates,
+  nextPracticeCard,
   pullForwardCards,
 } from "./library/pull-forward.js";
 export type {

@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-13T18:00:00.000Z
+timestamp: 2026-10-13T21:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -185,19 +185,21 @@ library rows:
   items; `material-import-bonus-take --token <id>` creates the caller's card
   for one, and refuses an item that is not from the caller's own imports.
 
-# Knowledge atlas (alpha)
+# Knowledge atlas
 
 The knowledge atlas ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md))
 reads and writes through these commands. None of them is in
 `STUDIO_BRIDGE_COMMANDS`, so no MCP panel can reach them, and no argument
 takes coordinates: only settle places land.
 
-- `atlas-feature [--enable|--disable]` reads or sets this machine's alpha
-  switch in `~/.zam/config.json`.
-- `atlas-read [--lens weltwissen|schule]` returns one learner's map: regions,
-  islands, land, units with their condition, prerequisite threads, the
-  learner's own due counts and the home region. It writes nothing; land not
-  stored yet is planned in memory and marked provisional.
+- `atlas-read [--lens weltwissen|schule] [--time-zone <iana>]` returns one
+  learner's map: regions, islands, land, units with their condition,
+  prerequisite threads, the learner's own due counts and the home region. It
+  writes nothing; land not stored yet is planned in memory and marked
+  provisional. A due count is what a region review would show now, by the
+  queue's rules: a card waiting for its next short step, a blocked or buried
+  card, and an atom's further items on a day one of them was shown are not
+  counted, although the condition still shows them.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.
@@ -215,6 +217,13 @@ takes coordinates: only settle places land.
   sets or clears the library's variant.
 - `get-review` and `get-reviews` take `--atlas-region <key> [--atlas-lens
   <kind>]`: only that region's due cards, no new ones.
+  `get-review --atlas-practice-since <iso>` goes through the region again
+  although nothing is due: when no card is due, it pulls forward the
+  practised card due soonest that was not answered since that time, one card
+  per call and one item per atom a day.
+- `graph3d-feature [--enable|--disable]` reads or sets this machine's switch
+  for the 3D learning graph, an alpha since the atlas took its place, in
+  `~/.zam/config.json`.
 
 # Library switching
 

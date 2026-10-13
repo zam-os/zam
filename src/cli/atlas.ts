@@ -41,10 +41,6 @@ import {
   undoVariant,
   WELTWISSEN_LENS,
 } from "../kernel/index.js";
-import {
-  getAtlasConfig,
-  setAtlasConfig,
-} from "../kernel/system/install-config.js";
 import type { MaterialAnalyzePlace } from "./llm/material-analyze.js";
 import { learnerScope } from "./material-import.js";
 
@@ -90,21 +86,6 @@ function isPermissionDenied(error: unknown): boolean {
   if (code === "42501") return true;
   const message = error instanceof Error ? error.message : String(error);
   return /permission denied/i.test(message);
-}
-
-// ── atlas-feature ────────────────────────────────────────────────────────────
-
-export function atlasFeature(opts: { enable?: boolean; disable?: boolean }): {
-  success: true;
-  enabled: boolean;
-} {
-  if (opts.enable && opts.disable) {
-    throw new Error("Pass either --enable or --disable, not both.");
-  }
-  if (opts.enable || opts.disable) {
-    setAtlasConfig({ enabled: Boolean(opts.enable) });
-  }
-  return { success: true, enabled: getAtlasConfig().enabled === true };
 }
 
 // ── atlas-prefs ──────────────────────────────────────────────────────────────
@@ -459,7 +440,13 @@ export async function atlasVariant(
 
 export async function atlasRead(
   db: Database,
-  opts: { userId: string; lens?: string; planet?: string; now?: Date },
+  opts: {
+    userId: string;
+    lens?: string;
+    planet?: string;
+    now?: Date;
+    timeZone?: string;
+  },
 ): Promise<AtlasView & { success: true }> {
   if (opts.planet !== undefined && opts.planet !== "welt") {
     throw new Error("Only the welt planet has lenses so far.");
@@ -473,6 +460,7 @@ export async function atlasRead(
     showNew: prefs.showNew,
     homePath: prefs.home[lens.kind],
     mayWrite: await mayWriteKnowledge(db),
+    timeZone: opts.timeZone,
   });
   return { success: true, ...view };
 }

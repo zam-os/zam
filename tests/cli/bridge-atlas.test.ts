@@ -165,26 +165,26 @@ describe("zam bridge atlas commands", () => {
     }
   }
 
-  it("switches the alpha on and off on this machine only", () => {
-    expect(runCliJson(["bridge", "atlas-feature"]).enabled).toBe(false);
-    expect(runCliJson(["bridge", "atlas-feature", "--enable"]).enabled).toBe(
+  it("switches the 3D Wissensnetz alpha on and off on this machine only", () => {
+    expect(runCliJson(["bridge", "graph3d-feature"]).enabled).toBe(false);
+    expect(runCliJson(["bridge", "graph3d-feature", "--enable"]).enabled).toBe(
       true,
     );
     const config = JSON.parse(
       readFileSync(join(tempHome, ".zam", "config.json"), "utf8"),
     );
-    expect(config.atlas).toEqual({ enabled: true });
-    expect(runCliJson(["bridge", "atlas-feature", "--disable"]).enabled).toBe(
-      false,
-    );
+    expect(config.graph3d).toEqual({ enabled: true });
     expect(
-      runCliError(["bridge", "atlas-feature", "--enable", "--disable"]).error,
+      runCliJson(["bridge", "graph3d-feature", "--disable"]).enabled,
+    ).toBe(false);
+    expect(
+      runCliError(["bridge", "graph3d-feature", "--enable", "--disable"]).error,
     ).toContain("either");
   });
 
   it("keeps every atlas command away from the Studio panel bridge", () => {
     for (const command of [
-      "atlas-feature",
+      "graph3d-feature",
       "atlas-read",
       "atlas-settle",
       "atlas-prefs",

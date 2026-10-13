@@ -73,6 +73,7 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
+  nextPracticeCard,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
@@ -210,6 +211,12 @@ export interface GetReviewParams {
   /** Only these tokens' due cards, no new ones: a region review (ADR 2026-10-13). */
   tokenIds?: readonly string[];
   /**
+   * With `tokenIds`: going through them again although nothing is due. When
+   * no card is due, the next practised card not answered since this moment
+   * is pulled forward, one at a time.
+   */
+  practiceSince?: Date;
+  /**
    * Inline the card's media as base64. Opt-in because a rendering surface
    * (Studio) needs the bytes, while an agent reading this JSON would only get
    * megabytes of unreadable payload — `hasQuestionMedia` / `hasAnswerMedia`
@@ -220,14 +227,26 @@ export interface GetReviewParams {
 
 export async function getReview(db: Database, params: GetReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
-  const queue = await buildReviewQueue(db, {
-    userId,
-    maxReviews: 1,
-    maxNew: params.tokenIds ? 0 : (params.maxNew ?? 1),
-    knowledgeContext: params.knowledgeContext || undefined,
-    timeZone: params.timeZone,
-    tokenIds: params.tokenIds,
-  });
+  const nextQueue = () =>
+    buildReviewQueue(db, {
+      userId,
+      maxReviews: 1,
+      maxNew: params.tokenIds ? 0 : (params.maxNew ?? 1),
+      knowledgeContext: params.knowledgeContext || undefined,
+      timeZone: params.timeZone,
+      tokenIds: params.tokenIds,
+    });
+  let queue = await nextQueue();
+  if (!queue.items[0] && params.tokenIds && params.practiceSince) {
+    const cardId = await nextPracticeCard(db, userId, params.tokenIds, {
+      since: params.practiceSince,
+      timeZone: params.timeZone,
+    });
+    if (cardId) {
+      await pullForwardCards(db, userId, [cardId]);
+      queue = await nextQueue();
+    }
+  }
   const item = queue.items[0];
 
   if (!item) {
@@ -313,9 +332,10 @@ export async function getReview(db: Database, params: GetReviewParams) {
 
   const fullQueue = await buildReviewQueue(db, {
     userId,
-    maxNew: params.maxNew,
+    maxNew: params.tokenIds ? 0 : params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
     timeZone: params.timeZone,
+    tokenIds: params.tokenIds,
   });
 
   return {

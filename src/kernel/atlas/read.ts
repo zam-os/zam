@@ -8,11 +8,17 @@
  * caller's own; no figure says anything about other people.
  */
 
+import { parseStoredTimestampUtc } from "../db/sql.js";
 import type { Database } from "../db/types.js";
+import {
+  cardAllowedForAtom,
+  localLearningDay,
+  occupyingAtomCards,
+  resolvePresentationTimeZone,
+} from "../scheduler/presentation.js";
 import {
   type Condition,
   type ConditionCard,
-  cardCondition,
   unitCondition,
 } from "./condition.js";
 import { islandDrift } from "./land.js";
@@ -57,7 +63,12 @@ export interface AtlasUnitView {
   /** Leaf region key. */
   region: string;
   condition: Condition | null;
-  /** The caller's cards of this unit that are due or worse. */
+  /**
+   * The caller's cards of this unit that a region review would show now: due,
+   * not blocked, not buried, not waiting for a short step, and at most one
+   * item per atom per learning day, as the queue admits them. A unit can be
+   * in a due condition with nothing to show until later.
+   */
   due: number;
   cards: number;
   /** Status (Decision 2): written in this library, not published. */
@@ -117,9 +128,12 @@ export interface ReadAtlasOptions {
   homePath?: readonly string[];
   /** Whether this connection may write knowledge (settle). */
   mayWrite?: boolean;
+  /** IANA time zone of the learner's day, for the one-item-per-atom rule. */
+  timeZone?: string;
 }
 
 interface CardRow {
+  id: string;
   token_id: string;
   state: ConditionCard["state"];
   stability: number;
@@ -127,6 +141,10 @@ interface CardRow {
   last_review_at: string | null;
   lapses: number;
   detached_at: string | null;
+  blocked: number | boolean;
+  buried_until: string | null;
+  maintenance_at: string | null;
+  editorial_state: string;
 }
 
 /** Lens rows to read with: stored ones, or the seed when none are stored yet. */
@@ -199,13 +217,6 @@ export async function regionTokenIds(
   return units.filter((u) => inRegion.has(u.key)).flatMap((u) => u.tokenIds);
 }
 
-const DUE_CONDITIONS = new Set<Condition>([
-  "due",
-  "overdue",
-  "decaying",
-  "forgotten",
-]);
-
 export async function readAtlas(
   db: Database,
   options: ReadAtlasOptions,
@@ -274,12 +285,34 @@ export async function readAtlas(
   // ── The caller's cards ────────────────────────────────────────────────────
   const cardRows = (await db
     .prepare(
-      `SELECT token_id, state, stability, due_at, last_review_at, lapses, detached_at
-         FROM cards WHERE user_id = ?`,
+      `SELECT c.id, c.token_id, c.state, c.stability, c.due_at, c.last_review_at,
+              c.lapses, c.detached_at, c.blocked, c.buried_until,
+              t.maintenance_at, t.editorial_state
+         FROM cards c
+         JOIN tokens t ON t.id = c.token_id
+        WHERE c.user_id = ?`,
     )
     .all(options.userId)) as CardRow[];
   const cardsByToken = new Map<string, CardRow>();
   for (const row of cardRows) cardsByToken.set(row.token_id, row);
+
+  // What a region review would show now, by the queue's own rules.
+  const timeZone = await resolvePresentationTimeZone(db, options.timeZone);
+  const occupying = await occupyingAtomCards(
+    db,
+    options.userId,
+    localLearningDay(now, timeZone),
+  );
+  const nowMs = now.getTime();
+  const showable = (row: CardRow, atomId: string | null): boolean =>
+    row.state !== "new" &&
+    !Number(row.blocked) &&
+    row.maintenance_at === null &&
+    row.editorial_state === "published" &&
+    (row.buried_until === null ||
+      parseStoredTimestampUtc(row.buried_until) <= nowMs) &&
+    parseStoredTimestampUtc(row.due_at) <= nowMs &&
+    cardAllowedForAtom(row.id, atomId, occupying);
 
   const leafOf = new Map<UnitKey, string>(
     snapshot.placements.map((p: DerivedPlacement) => [
@@ -315,9 +348,9 @@ export async function readAtlas(
       lastReviewAt: row.last_review_at,
       lapses: Number(row.lapses),
     }));
-    const due = conditionCards.filter((card) =>
-      DUE_CONDITIONS.has(cardCondition(card, now)),
-    ).length;
+    const showing = attached.filter((row) => showable(row, unit.atomId)).length;
+    // One item of an atom a day: its other items wait for another day.
+    const due = unit.atomId ? Math.min(1, showing) : showing;
     unitViews.push({
       key: unit.key,
       title: unit.title,

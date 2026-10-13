@@ -55,15 +55,17 @@
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"></rect><path d="M6 3h12M5 5h14"></path></svg>
           <span class="nav-label">Learning Content</span>
         </button>
-        <button id="btn-open-graph" class="nav-btn" type="button">
-          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
-          <span class="nav-label">Knowledge graph</span>
-        </button>
-        <!-- Knowledge atlas alpha (ADR 2026-10-13): shown only while this
-             machine's switch is on. -->
-        <button id="nav-atlas" class="nav-btn" type="button" hidden>
+        <!-- Knowledge atlas (ADR 2026-10-13): always shown, in the place the
+             3D graph held. -->
+        <button id="nav-atlas" class="nav-btn" type="button">
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>
           <span class="nav-label">Knowledge atlas</span>
+        </button>
+        <!-- 3D Wissensnetz alpha: shown only while this machine's switch is
+             on. -->
+        <button id="btn-open-graph" class="nav-btn" type="button" hidden>
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
+          <span class="nav-label">Knowledge graph</span>
         </button>
         <button id="nav-stats" class="nav-btn" type="button">
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20V10M10 20V4M16 20v-7M22 20H2"></path></svg>
@@ -186,7 +188,7 @@
         <header class="content-header">
           <h1 id="lbl-content-title">Learning Content</h1>
           <div id="content-cards-actions" class="content-header-actions">
-            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge Map (3D)</button>
+            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge atlas</button>
             <button id="btn-content-material-bonus" class="btn secondary-btn" type="button" hidden>Bonus</button>
             <div class="import-menu-wrap">
               <button
@@ -937,30 +939,30 @@
               </div>
             </article>
 
-            <!-- Knowledge atlas alpha (ADR 2026-10-13, Decision 10): a switch
-                 on this machine, off by default. Only this card writes it; no
-                 tool and no setting can. -->
-            <article class="card frosted settings-card" id="atlas-card" data-settings-tier="advanced">
+            <!-- 3D Wissensnetz alpha (ADR 2026-10-13, owner decision): the
+                 knowledge atlas took its place. A switch on this machine, off
+                 by default. Only this card writes it; no tool and no setting
+                 can. -->
+            <article class="card frosted settings-card" id="graph3d-card" data-settings-tier="advanced">
               <div class="settings-card-header">
                 <div>
-                  <h2 id="lbl-settings-atlas-title">
-                    <span id="lbl-settings-atlas-title-text">Knowledge atlas</span>
-                    <span id="lbl-settings-atlas-alpha" class="settings-badge-alpha">Alpha</span>
+                  <h2 id="lbl-settings-graph3d-title">
+                    <span id="lbl-settings-graph3d-title-text">3D knowledge graph</span>
+                    <span id="lbl-settings-graph3d-alpha" class="settings-badge-alpha">Alpha</span>
                   </h2>
-                  <p id="lbl-settings-atlas-help" class="settings-card-help">
-                    A map of what you know: subjects as islands, coloured by how well
-                    you remember them.
+                  <p id="lbl-settings-graph3d-help" class="settings-card-help">
+                    The earlier 3D view of your cards and what they build on.
                   </p>
                 </div>
               </div>
-              <label class="settings-toggle" for="toggle-atlas">
-                <input type="checkbox" id="toggle-atlas" />
+              <label class="settings-toggle" for="toggle-graph3d">
+                <input type="checkbox" id="toggle-graph3d" />
                 <span>
-                  <span id="lbl-atlas-toggle">Show the knowledge atlas</span>
-                  <span id="lbl-atlas-toggle-help" class="settings-card-help"></span>
+                  <span id="lbl-graph3d-toggle">Show the 3D knowledge graph</span>
+                  <span id="lbl-graph3d-toggle-help" class="settings-card-help"></span>
                 </span>
               </label>
-              <p id="atlas-feature-status" class="sub-label" aria-live="polite"></p>
+              <p id="graph3d-feature-status" class="sub-label" aria-live="polite"></p>
             </article>
 
             <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out

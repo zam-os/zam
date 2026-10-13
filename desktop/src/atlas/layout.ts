@@ -455,6 +455,25 @@ export function regionDue(layout: AtlasLayout, key: string): number {
   return layout.view.own.dueByRegion[key] ?? 0;
 }
 
+/**
+ * The most units a learner is offered to go through again when nothing in a
+ * region is due: one question each, so a short session.
+ */
+export const REGION_PRACTICE_MAX_UNITS = 30;
+
+/** Units in a region the learner has practised: what going through it again shows. */
+export function practisedUnits(layout: AtlasLayout, key: string): number {
+  return unitsIn(layout, key).filter(
+    (u) => u.condition !== null && u.condition !== "unpractised",
+  ).length;
+}
+
+/** Going through a region again is offered for small regions only. */
+export function mayPractiseRegion(layout: AtlasLayout, key: string): boolean {
+  const units = practisedUnits(layout, key);
+  return units > 0 && units <= REGION_PRACTICE_MAX_UNITS;
+}
+
 export interface UnitLinks {
   /** Units this one builds on ("baut auf"). */
   buildsOn: AtlasUnitWire[];

@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-11T14:30:00.000Z
+timestamp: 2026-10-13T21:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -22,7 +22,7 @@ Lern-Karten has three lists. A token is in at most one of them.
 
 Search and the category filter apply to the list that is open. The knowledge-context filter applies only while Persönlich is open; on the other two lists it is disabled.
 
-**Wissensnetz (3D)** is the existing graph of the learner's tokens and their prerequisites. Lern-Karten and the Desktop sidebar both open it. Back returns to Lern-Karten when the graph was opened there, or from the sidebar while Lern-Karten was showing; otherwise it returns to **Heute** (Today). The Studio panel has no graph view, so it hides that button.
+**Wissensatlas** (knowledge atlas) is the map of the learner's knowledge, and Lern-Karten's button opens it, like the Desktop sidebar. The Studio panel has no map view, so it hides that button. The atlas took the place of **Wissensnetz (3D)**, the graph of the learner's tokens and their prerequisites. That graph is an alpha now: a switch in Settings, on this computer only, shows it in the sidebar again. Its Back button returns to Lern-Karten when it was opened while Lern-Karten was showing, and to **Heute** (Today) otherwise.
 
 A published token in Nicht gewählt can be taken as this learner's card. One token is taken on its own, which creates the card and leaves the token as it is. A source group that has a key is taken together: a card is created for each member the learner lacks, and a card already set aside stays set aside. The Ohne Quelle group has an empty key, so those tokens are taken one by one.
 

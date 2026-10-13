@@ -402,7 +402,10 @@ export function editorialStatusLabel(state: string | null | undefined): string {
   return t("lbl_card_status_draft");
 }
 
-/** The desktop shell opens the 3D graph. The panel has no graph view. */
+/**
+ * The desktop shell opens the knowledge atlas, which took the 3D graph's
+ * place here (ADR 2026-10-13). The panel has no map view.
+ */
 export function setLearningContentGraphOpener(opener: () => void): void {
   graphOpener = opener;
   document.getElementById("btn-content-open-graph")?.classList.remove("hidden");
@@ -420,7 +423,7 @@ export function applyLearningContentChrome(): void {
   setText("btn-content-segment-personal", t("content_segment_personal"));
   setText("btn-content-segment-unchosen", t("content_segment_unchosen"));
   setText("btn-content-segment-unpublished", t("content_segment_unpublished"));
-  setText("btn-content-open-graph", t("btn_open_graph"));
+  setText("btn-content-open-graph", t("btn_open_atlas"));
   setText("btn-content-take-card", t("btn_take_card"));
   applyLearningContentSourceChrome();
   syncAreaChrome();

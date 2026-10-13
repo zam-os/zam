@@ -5,7 +5,10 @@ import { afterAll, beforeAll, describe, expect, it } from "vitest";
 import {
   type AtlasLayout,
   buildAtlasLayout,
+  mayPractiseRegion,
   PATTERNS,
+  practisedUnits,
+  REGION_PRACTICE_MAX_UNITS,
   regionCondition,
   regionDue,
   regionPath,
@@ -187,6 +190,29 @@ describe("atlas map layout", () => {
       const leaf = blank.path[blank.path.length - 1];
       if (unitsIn(layout, leaf).length === 0) {
         expect(regionCondition(layout, leaf)).toBeNull();
+      }
+    }
+  });
+
+  it("offers going through a region again only when it is small and practised", () => {
+    const practisedLeaf = [...layout.geoms.keys()].find(
+      (key) =>
+        layout.regions.get(key)?.children.length === 0 &&
+        practisedUnits(layout, key) > 0,
+    );
+    expect(practisedLeaf).toBeDefined();
+    expect(mayPractiseRegion(layout, practisedLeaf as string)).toBe(true);
+    for (const key of layout.geoms.keys()) {
+      const units = practisedUnits(layout, key);
+      expect(mayPractiseRegion(layout, key)).toBe(
+        units > 0 && units <= REGION_PRACTICE_MAX_UNITS,
+      );
+      if (
+        unitsIn(layout, key).every(
+          (u) => u.condition === null || u.condition === "unpractised",
+        )
+      ) {
+        expect(mayPractiseRegion(layout, key)).toBe(false);
       }
     }
   });

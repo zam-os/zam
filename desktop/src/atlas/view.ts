@@ -24,6 +24,8 @@ import { type ImportPlace, openAtlasImport } from "./import.js";
 import {
   type AtlasLayout,
   buildAtlasLayout,
+  mayPractiseRegion,
+  practisedUnits,
   regionCondition,
   regionDue,
   regionPath,
@@ -40,8 +42,16 @@ import {
 } from "./render.js";
 
 export interface AtlasViewDeps {
-  /** Open the study view on this region's due cards. */
-  reviewRegion(lens: AtlasLensKindWire, regionKey: string): void;
+  /**
+   * Open the study view on this region's due cards. `due` sizes the session;
+   * `practise`, when above zero, is how many units the learner may go
+   * through again if nothing is due.
+   */
+  reviewRegion(
+    lens: AtlasLensKindWire,
+    regionKey: string,
+    options: { due: number; practise: number },
+  ): void;
   /** Open the material import (photos, PDF, notes) at a place (D9). */
   importMaterial(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers a place. */
@@ -69,6 +79,8 @@ interface Elements {
   panel: HTMLElement;
   panelBody: HTMLElement;
   status: HTMLElement;
+  busy: HTMLElement;
+  busyText: HTMLElement;
 }
 
 interface ViewState {
@@ -105,13 +117,6 @@ export async function showAtlasView(
   applyLabels(state);
   if (state.showNew === null) void readShowNew(state);
   await load(state, state.lens ?? undefined);
-}
-
-/** Tear the atlas down (alpha switched off). */
-export function destroyAtlasView(): void {
-  state?.detach();
-  state?.root.remove();
-  state = null;
 }
 
 // ── Mounting ──────────────────────────────────────────────────────────────
@@ -184,7 +189,22 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   const close = button("atlas-panel-close", "×");
   const panelBody = el("div", "atlas-panel-body");
   panel.append(close, panelBody);
-  body.append(stage, outline, panel);
+  // Building a world can take a moment (settling land, switching lenses):
+  // the busy overlay names the step. CSS fades it in late, so a quick
+  // re-read does not flash it.
+  const busy = el("div", "atlas-busy");
+  busy.hidden = true;
+  busy.setAttribute("role", "status");
+  busy.setAttribute("aria-live", "polite");
+  const dots = el("div", "dots-bounce");
+  dots.setAttribute("aria-hidden", "true");
+  for (let i = 0; i < 3; i++) dots.appendChild(el("div", "bounce-dot"));
+  const busyText = el("p", "loader-message");
+  const sweep = el("div", "study-busy-progress");
+  sweep.setAttribute("aria-hidden", "true");
+  sweep.appendChild(el("span"));
+  busy.append(dots, busyText, sweep);
+  body.append(stage, outline, panel, busy);
 
   const status = el("p", "atlas-status");
   status.setAttribute("aria-live", "polite");
@@ -209,6 +229,8 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     panel,
     panelBody,
     status,
+    busy,
+    busyText,
   };
 
   const s: ViewState = {
@@ -312,6 +334,8 @@ async function toggleShowNew(s: ViewState): Promise<void> {
   if (s.showNew === null) return;
   const next = !s.showNew;
   s.els.showNew.disabled = true;
+  // Turning it on installs the year's cells first, which takes a moment.
+  if (next) setBusy(s, t("atlas_busy_installing"));
   try {
     const prefs = await runBridge<AtlasPrefsResponse>("atlas-prefs", [
       "--show-new",
@@ -340,26 +364,45 @@ async function readShowNew(s: ViewState): Promise<void> {
 
 // ── Loading ───────────────────────────────────────────────────────────────
 
+/** The learner's day decides which atom items wait (one a day). */
+function readArgs(lens: AtlasLensKindWire | undefined): string[] {
+  const timeZone = Intl.DateTimeFormat().resolvedOptions().timeZone || "UTC";
+  return [...(lens ? ["--lens", lens] : []), "--time-zone", timeZone];
+}
+
 async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
   const generation = ++s.generation;
-  if (!s.layout) setStatus(s, t("atlas_loading"));
+  setBusy(
+    s,
+    t(
+      !s.layout
+        ? "atlas_loading"
+        : lens && lens !== s.lens
+          ? "atlas_busy_lens"
+          : "atlas_busy_reading",
+    ),
+  );
   try {
-    const args = lens ? ["--lens", lens] : [];
-    let view = await runBridge<AtlasReadResponse>("atlas-read", args);
+    let view = await runBridge<AtlasReadResponse>("atlas-read", readArgs(lens));
     if (generation !== s.generation) return;
     // Store pending land once; a member who may not write sees it provisional.
     if (view.settle.pending > 0 && view.settle.mayWrite) {
+      setBusy(s, t("atlas_busy_settling"));
       try {
         await runBridge("atlas-settle", ["--lens", view.lens.kind]);
-        view = await runBridge<AtlasReadResponse>("atlas-read", [
-          "--lens",
-          view.lens.kind,
-        ]);
+        view = await runBridge<AtlasReadResponse>(
+          "atlas-read",
+          readArgs(view.lens.kind),
+        );
       } catch (err) {
         console.warn("atlas-settle failed; showing provisional land", err);
       }
       if (generation !== s.generation) return;
     }
+    setBusy(s, t("atlas_busy_drawing"));
+    // Let the step's name paint before the layout takes the main thread.
+    await new Promise((resolve) => requestAnimationFrame(resolve));
+    if (generation !== s.generation) return;
     const placeCamera = s.lens !== view.lens.kind || !s.layout;
     s.lens = view.lens.kind;
     s.layout = buildAtlasLayout(view);
@@ -386,12 +429,21 @@ async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
       s,
       `${t("atlas_load_failed")} ${err instanceof Error ? err.message : String(err)}`,
     );
+  } finally {
+    if (generation === s.generation) setBusy(s, null);
   }
 }
 
 function setStatus(s: ViewState, text: string): void {
   s.els.status.textContent = text;
   s.els.status.hidden = text === "";
+}
+
+/** Name the step the atlas is busy with; null when it is done. */
+function setBusy(s: ViewState, text: string | null): void {
+  s.els.busyText.textContent = text ?? "";
+  s.els.busy.hidden = text === null;
+  s.root.setAttribute("aria-busy", String(text !== null));
 }
 
 async function switchLens(
@@ -741,11 +793,25 @@ function regionPanel(
   }
 
   const actions = el("div", "atlas-panel-actions");
+  // Nothing due: a small region may still be gone through again (the study
+  // view asks first).
+  const mayPractise = mayPractiseRegion(layout, key);
   const review = button("btn primary-btn btn-sm", t("atlas_review"));
-  review.disabled = due === 0;
-  review.title = due === 0 ? t("atlas_review_none") : "";
+  review.disabled = due === 0 && !mayPractise;
+  review.title =
+    due > 0
+      ? ""
+      : mayPractise
+        ? t("atlas_review_practice_hint")
+        : practisedUnits(layout, key) > 0
+          ? t("atlas_review_too_big")
+          : t("atlas_review_none");
   review.addEventListener("click", () => {
-    if (s.lens) s.deps.reviewRegion(s.lens, key);
+    if (!s.lens) return;
+    s.deps.reviewRegion(s.lens, key, {
+      due,
+      practise: mayPractise ? practisedUnits(layout, key) : 0,
+    });
   });
   actions.appendChild(review);
   if (view.home !== key) {

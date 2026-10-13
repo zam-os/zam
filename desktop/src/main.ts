@@ -185,8 +185,8 @@ import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
 import type {
   AnswerPresentationResponse,
-  AtlasFeatureResponse,
   AtlasLensKindWire,
+  Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
 } from "../../src/bridge/protocol.js";
 import {
@@ -245,11 +245,9 @@ setLearningContentProgressSource(async (onProgress) => {
   return unlisten;
 });
 
+// Lern-Karten opens the knowledge atlas, where the 3D graph used to open.
 setLearningContentGraphOpener(() => {
-  rememberGraphOrigin("learning-content-view");
-  const back = document.getElementById("btn-graph-back");
-  if (back) back.textContent = t("btn_graph_back_cards");
-  switchView("graph-view");
+  switchView("atlas-view");
 });
 
 setLearningContentFolderPicker(async () => {
@@ -404,8 +402,18 @@ let sessionSummaryVisible = false;
  * A region review from the knowledge atlas (ADR 2026-10-13): the session asks
  * only for that region's due cards, offers no new ones, and ends back on the
  * map. Null for an ordinary session.
+ *
+ * - `practise`: units the learner may go through again when nothing is due
+ *   (0 = not offered, the region is too large).
+ * - `practiceSince`: set once the learner chose to; each card then comes
+ *   once, earliest due first.
  */
-let studyAtlasRegion: { lens: AtlasLensKindWire; key: string } | null = null;
+let studyAtlasRegion: {
+  lens: AtlasLensKindWire;
+  key: string;
+  practise: number;
+  practiceSince: string | null;
+} | null = null;
 /**
  * Snapshot of the #1 (fallback-order) model when Settings was opened. Leaving
  * Settings re-runs ensure-llm when this fingerprint differs so the header AI
@@ -1144,16 +1152,16 @@ function initializeTranslations() {
   document.getElementById("btn-team-db-leave")!.textContent =
     t("team_db_leave");
 
-  document.getElementById("lbl-settings-atlas-title-text")!.textContent =
-    t("atlas_settings_title");
-  document.getElementById("lbl-settings-atlas-alpha")!.textContent =
+  document.getElementById("lbl-settings-graph3d-title-text")!.textContent =
+    t("graph3d_settings_title");
+  document.getElementById("lbl-settings-graph3d-alpha")!.textContent =
     t("secrets_vault_alpha");
-  document.getElementById("lbl-settings-atlas-help")!.textContent =
-    t("atlas_settings_help");
-  document.getElementById("lbl-atlas-toggle")!.textContent =
-    t("atlas_settings_toggle");
-  document.getElementById("lbl-atlas-toggle-help")!.textContent =
-    t("atlas_settings_toggle_help");
+  document.getElementById("lbl-settings-graph3d-help")!.textContent =
+    t("graph3d_settings_help");
+  document.getElementById("lbl-graph3d-toggle")!.textContent =
+    t("graph3d_settings_toggle");
+  document.getElementById("lbl-graph3d-toggle-help")!.textContent =
+    t("graph3d_settings_toggle_help");
 
   document.getElementById("lbl-settings-secrets-title-text")!.textContent =
     t("secrets_vault_title");
@@ -5275,7 +5283,7 @@ function switchView(
   if (viewId === "settings-view") {
     renderSettingsToc();
     refreshSettingsData();
-    void refreshAtlasFeature();
+    void refreshGraph3dFeature();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
@@ -6589,6 +6597,12 @@ async function loadNextCard(
         "--atlas-lens",
         studyAtlasRegion.lens,
       );
+      if (studyAtlasRegion.practiceSince) {
+        reviewArgs.push(
+          "--atlas-practice-since",
+          studyAtlasRegion.practiceSince,
+        );
+      }
     }
     const dynamicQuestionAllowed =
       shouldRequestDynamicStudyQuestion(
@@ -6606,9 +6620,9 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      // A region review ends when the region has nothing due: no pulling
-      // forward, no bonus from elsewhere.
-      if (studyAtlasRegion) await finishStudySession();
+      // A region review ends when the region has nothing due: no bonus from
+      // elsewhere, only going through the region itself again.
+      if (studyAtlasRegion) await atlasRegionQueueEmpty();
       else await offerEmptyQueueChoices(requestId);
       return;
     }
@@ -8812,15 +8826,16 @@ function leaveSessionSummaryToDashboard(): void {
   void loadDashboard();
 }
 
-// ── KNOWLEDGE ATLAS (alpha, ADR 2026-10-13) ───────────────────────────────
-let atlasEnabled = false;
+// ── KNOWLEDGE ATLAS (ADR 2026-10-13) ──────────────────────────────────────
+let graph3dEnabled = false;
 
 async function openAtlas(): Promise<void> {
   const root = document.getElementById("atlas-root");
   if (!root) return;
   const { showAtlasView } = await import("./atlas/view.js");
   await showAtlasView(root, {
-    reviewRegion: (lens, key) => void startAtlasRegionReview(lens, key),
+    reviewRegion: (lens, key, options) =>
+      void startAtlasRegionReview(lens, key, options),
     // Import at a place (ADR 2026-10-13, Decision 9).
     importMaterial: (place) => void openMaterialImportStart({ place }),
     openCurriculumWizard: () => {
@@ -8834,63 +8849,123 @@ async function openAtlas(): Promise<void> {
 async function startAtlasRegionReview(
   lens: AtlasLensKindWire,
   key: string,
+  options: { due: number; practise: number },
 ): Promise<void> {
   prepareStudyViewForSession();
   await configureSessionWorkload();
   sessionNewRemaining = 0;
+  // The session's size is the region's, not the whole queue's.
+  sessionStartedDue = options.due;
   await loadStudyLearningSettings();
   await ensureUiLearningSession("Atlas region review");
   switchView("study-view");
-  studyAtlasRegion = { lens, key };
+  studyAtlasRegion = { lens, key, practise: options.practise, practiceSince: null };
   await loadNextCard();
 }
 
-/** The machine-local switch decides whether the atlas has a nav entry. */
-async function refreshAtlasFeature(): Promise<void> {
+/**
+ * A region review with nothing (more) to show. After answers, the summary.
+ * Before any, never a summary as if something had been done: a small region
+ * offers to go through its questions again, e.g. before a test, earliest due
+ * first; the learner can stop at any time.
+ */
+async function atlasRegionQueueEmpty(): Promise<void> {
+  const region = studyAtlasRegion;
+  if (!region) return;
+  if (sessionRatingTally.done > 0) {
+    await finishStudySession();
+    return;
+  }
+  const offerPractice = region.practise > 0 && region.practiceSince === null;
+  hideStudyBusy();
+  showStudyOffer({
+    title: t("atlas_review_nothing_title"),
+    body: offerPractice
+      ? t("atlas_practice_offer_body")
+      : t("atlas_review_nothing_body"),
+    actions: [
+      {
+        label: t("atlas_back_to_map"),
+        onClick: () => void leaveAtlasRegionReview(),
+      },
+      ...(offerPractice
+        ? [
+            {
+              label: t("atlas_practice_start"),
+              primary: true,
+              onClick: () => void startAtlasPractice(),
+            },
+          ]
+        : []),
+    ],
+  });
+}
+
+async function startAtlasPractice(): Promise<void> {
+  if (!studyAtlasRegion) return;
+  studyAtlasRegion.practiceSince = new Date().toISOString();
+  sessionStartedDue = studyAtlasRegion.practise;
+  hideStudyOffer();
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  await loadNextCard();
+}
+
+/** Back to the map without a summary: nothing was answered. */
+async function leaveAtlasRegionReview(): Promise<void> {
+  await finishStudySession();
+  leaveSessionSummaryToDashboard();
+}
+
+/**
+ * The 3D Wissensnetz is an alpha now; the atlas took its place (ADR
+ * 2026-10-13, owner decision). A machine-local switch shows its nav entry.
+ */
+async function refreshGraph3dFeature(): Promise<void> {
   try {
-    const feature = await runBridge<AtlasFeatureResponse>("atlas-feature");
-    atlasEnabled = feature.enabled === true;
+    const feature = await runBridge<Graph3dFeatureResponse>("graph3d-feature");
+    graph3dEnabled = feature.enabled === true;
   } catch (err) {
-    console.warn("Failed to read the atlas switch:", err);
-    atlasEnabled = false;
+    console.warn("Failed to read the 3D graph switch:", err);
+    graph3dEnabled = false;
   }
-  applyAtlasFeature();
+  applyGraph3dFeature();
 }
 
-function applyAtlasFeature(): void {
-  const nav = document.getElementById("nav-atlas");
-  if (nav) nav.hidden = !atlasEnabled;
-  const toggle = document.getElementById("toggle-atlas") as HTMLInputElement | null;
-  if (toggle) toggle.checked = atlasEnabled;
+function applyGraph3dFeature(): void {
+  const nav = document.getElementById("btn-open-graph");
+  if (nav) nav.hidden = !graph3dEnabled;
+  const toggle = document.getElementById("toggle-graph3d") as HTMLInputElement | null;
+  if (toggle) toggle.checked = graph3dEnabled;
   if (
-    !atlasEnabled &&
-    document.getElementById("atlas-view")?.classList.contains("active")
+    !graph3dEnabled &&
+    document.getElementById("graph-view")?.classList.contains("active")
   ) {
-    switchView("dashboard-view");
+    disposeGraph();
+    switchView("atlas-view");
   }
 }
 
-async function setAtlasFeature(enabled: boolean): Promise<void> {
-  const status = document.getElementById("atlas-feature-status");
+async function setGraph3dFeature(enabled: boolean): Promise<void> {
+  const status = document.getElementById("graph3d-feature-status");
   if (status) status.textContent = "";
   try {
-    const feature = await runBridge<AtlasFeatureResponse>("atlas-feature", [
+    const feature = await runBridge<Graph3dFeatureResponse>("graph3d-feature", [
       enabled ? "--enable" : "--disable",
     ]);
-    atlasEnabled = feature.enabled === true;
+    graph3dEnabled = feature.enabled === true;
     if (status) {
-      status.textContent = t(atlasEnabled ? "atlas_settings_on" : "atlas_settings_off");
+      status.textContent = t(
+        graph3dEnabled ? "graph3d_settings_on" : "graph3d_settings_off",
+      );
     }
   } catch (err) {
     if (status) {
-      status.textContent = tf("atlas_settings_failed", { message: errorMessage(err) });
+      status.textContent = tf("graph3d_settings_failed", {
+        message: errorMessage(err),
+      });
     }
   }
-  applyAtlasFeature();
-  if (!atlasEnabled) {
-    const { destroyAtlasView } = await import("./atlas/view.js");
-    destroyAtlasView();
-  }
+  applyGraph3dFeature();
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -8997,7 +9072,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state; then, off the critical path, an overdue
   // capability check for cloud models.
   void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());
-  void refreshAtlasFeature();
+  void refreshGraph3dFeature();
   void loadAppVersion();
   repairInstallationOnVersionChange();
 
@@ -9030,8 +9105,8 @@ window.addEventListener("DOMContentLoaded", () => {
     switchView("atlas-view");
   });
 
-  document.getElementById("toggle-atlas")?.addEventListener("change", (event) => {
-    void setAtlasFeature((event.target as HTMLInputElement).checked);
+  document.getElementById("toggle-graph3d")?.addEventListener("change", (event) => {
+    void setGraph3dFeature((event.target as HTMLInputElement).checked);
   });
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {

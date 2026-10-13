@@ -1,7 +1,7 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Phases 1 to 7 done (2026-10-13); the Studio check in the Tauri
-app is still open. The ADR gained Decision 12 and the
+**Status:** Phases 1 to 7 done (2026-10-13), and the owner's decisions from
+the first Studio check built ("Between Phases 7 and 8"). The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -51,7 +51,11 @@ what the learner knows.
 - [x] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
   D10) — `99a9ffca`; see "As built"
 - [x] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
-  in, variants (D1, D9, D12) — this commit; see "As built"
+  in, variants (D1, D9, D12) — `36832ac1`; see "As built"
+- [x] **After Phase 7** — owner decisions from the first Studio check: the
+  atlas always on in place of the 3D graph, a busy indicator, an honest
+  region due count and going through a region again — this commit; see
+  "Between Phases 7 and 8"
 - [ ] **Phase 8** — Sinnbilder (D6)
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
@@ -1185,6 +1189,65 @@ CREATE TABLE IF NOT EXISTS learner_variants (   -- learning state
 
 ---
 
+## Between Phases 7 and 8 — owner decisions from the Studio check
+
+The owner tried Phases 1–7 in the Tauri app. Three findings, decided and
+built before Phase 8.
+
+**1. A region review that found nothing ended like a finished session.**
+
+- **Why.** The map counted a region's cards by condition, and the queue
+  serves fewer:
+  - a card in short steps counts as due while it waits for its next step;
+  - blocked and buried cards are left out of the queue;
+  - an atom shows one item a day, so its other items wait once one was
+    shown.
+- **Count.** `readAtlas` now counts, per unit, the cards the queue would
+  serve now, by the queue's own filters (`occupyingAtomCards`,
+  `cardAllowedForAtom`); an atom unit counts at most one. The condition is
+  unchanged: a waiting card still shows as due. `atlas-read` takes
+  `--time-zone` for the learner's day.
+- **Going through again.** When a region review finds nothing before any
+  answer, the study view no longer shows the summary.
+  - A small region (at most `REGION_PRACTICE_MAX_UNITS`, 30 practised
+    units) asks "Nichts ist fällig. Möchtest du die Fragen trotzdem noch
+    einmal durchgehen?".
+  - On yes, `get-review --atlas-practice-since <iso>` serves the region's
+    due cards first. When none is left, `nextPracticeCard` picks the
+    practised card due soonest that was not answered since the run began,
+    within the one-item-per-atom rule. `pullForwardCards` makes only that
+    card due, so stopping half-way leaves the rest as they were. New cards
+    never come.
+  - A larger region, or nothing left, offers only the way back to the map.
+  - The region panel's button stays active while such a run is possible.
+- **Session size.** The study bar and the summary counted the whole queue's
+  due cards in a region review. They now use the region's count, or its
+  practised units in a run.
+
+**2. The atlas replaces the 3D graph.**
+
+- The atlas is always shown. Its nav entry takes the 3D graph's place, and
+  the Lern-Karten button that opened the 3D graph opens the atlas.
+- The 3D graph is an alpha: `graph3d-feature [--enable|--disable]`
+  (machine-local `graph3d.enabled` in `~/.zam/config.json`, off by default)
+  shows its nav entry. Only the Settings card writes it; the command is not
+  in `STUDIO_BRIDGE_COMMANDS`.
+- `atlas-feature` and the `atlas` config key are gone.
+
+**3. Building the world needs feedback.** The atlas view lays a busy veil
+over the map, naming the step: loading, building a view, updating,
+building the world (settle), drawing, and fetching new content for
+*Neue Inhalte zeigen*. It fades in after a quarter second, so a quick
+re-read does not flash it.
+
+**Tests.** `tests/cli/atlas-region-practice.test.ts` covers the due count
+(one item per atom, a waiting short step, a blocked card) and the run
+(earliest due first, one card pulled forward at a time, nothing answered
+since the start and no new card again). `atlas-layout.test.ts` covers when
+the run is offered, and `bridge-atlas.test.ts` the 3D graph's switch.
+
+---
+
 ## Phase 8 — Sinnbilder (D6)
 
 **Migration** (the next free M-number; M042 or later, depending on whether
@@ -1425,17 +1488,16 @@ Plan this phase in detail once Phases 1–9 have shipped. Scope as known now:
 - **MCP Apps panel.** A read-only atlas panel, built like the existing panels
   in `desktop/src/panel/`.
   - It needs `atlas-read` (and `atlas-prefs` read) in
-    `STUDIO_BRIDGE_COMMANDS`, with their refused options.
-  - `atlas-feature` may appear there only with `--enable` and `--disable`
-    refused. No write command goes there.
+    `STUDIO_BRIDGE_COMMANDS`, with their refused options. No write command
+    goes there. (`atlas-feature` is gone: the atlas is always on.)
 
 ---
 
 ## Phase 11 — Documentation and handover
 
-- **Public docs show only what works today** (owner rule). The alpha switch is
-  described where Settings help describes the knowledge-map alpha, and
-  nowhere on the landing page.
+- **Public docs show only what works today** (owner rule). The atlas is a
+  regular view now; the 3D graph's alpha switch is described where Settings
+  help describes the knowledge-map alpha, and nowhere on the landing page.
 - **Knowledge map.** Add statements for `src/kernel/atlas/` and
   `desktop/src/atlas/`, then validate.
 - **OKF.** If an article describes the learning graph's colours or the Studio

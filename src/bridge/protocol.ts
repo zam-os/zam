@@ -906,7 +906,8 @@ export type AtlasLensKindWire =
 /** "atom:<id>" or "token:<id>": one learning unit. */
 export type AtlasUnitKeyWire = string;
 
-export interface AtlasFeatureResponse {
+/** `graph3d-feature`: this machine's switch for the 3D Wissensnetz alpha. */
+export interface Graph3dFeatureResponse {
   success: boolean;
   enabled: boolean;
 }

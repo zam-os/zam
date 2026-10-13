@@ -189,7 +189,6 @@ import {
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
 import {
-  atlasFeature,
   atlasLens,
   atlasPlace,
   atlasRead,
@@ -269,6 +268,7 @@ import {
   leaveTeamLibrary,
   restoreLibrary,
 } from "../db/library-switch.js";
+import { graph3dFeature } from "../graph3d-feature.js";
 import { readTextImportFile } from "../import/text-file.js";
 import { performInstallRepair } from "../install-repair.js";
 import {
@@ -1142,10 +1142,24 @@ bridgeCommand
     "--atlas-lens <kind>",
     "Lens of --atlas-region: weltwissen (default) or schule",
   )
+  .option(
+    "--atlas-practice-since <iso>",
+    "With --atlas-region: when nothing is due, pull the next practised card not answered since this time forward",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
         const userId = await resolveUser(opts, db, { json: true });
+        const practiceSince =
+          opts.atlasPracticeSince === undefined
+            ? undefined
+            : new Date(String(opts.atlasPracticeSince));
+        if (practiceSince && Number.isNaN(practiceSince.getTime())) {
+          throw new Error("--atlas-practice-since must be an ISO timestamp.");
+        }
+        if (practiceSince && !opts.atlasRegion) {
+          throw new Error("--atlas-practice-since needs --atlas-region.");
+        }
         const tokenIds = opts.atlasRegion
           ? await regionTokenIds(
               db,
@@ -1162,6 +1176,7 @@ bridgeCommand
           includeMedia: opts.media === true,
           timeZone: opts.timeZone,
           tokenIds,
+          practiceSince,
         });
         jsonOut(result);
       } catch (err) {
@@ -9525,18 +9540,19 @@ bridgeCommand
   });
 
 // ── Knowledge atlas (ADR 2026-10-13) ─────────────────────────────────────────
-// `atlas-feature` is deliberately absent from STUDIO_BRIDGE_COMMANDS: no tool
-// may switch the atlas on (Decision 10). The Studio's Settings call it
-// through the desktop bridge transport.
+// The atlas is always on; the 3D Wissensnetz it replaced is an alpha.
+// `graph3d-feature` is deliberately absent from STUDIO_BRIDGE_COMMANDS: no
+// tool switches a view on. The Studio's Settings call it through the desktop
+// bridge transport.
 
 bridgeCommand
-  .command("atlas-feature")
-  .description("Read or set this machine's knowledge-atlas alpha switch (JSON)")
-  .option("--enable", "Switch the knowledge atlas on")
-  .option("--disable", "Switch it off")
+  .command("graph3d-feature")
+  .description("Read or set this machine's 3D Wissensnetz alpha switch (JSON)")
+  .option("--enable", "Show the 3D Wissensnetz")
+  .option("--disable", "Hide it")
   .action((opts) => {
     try {
-      jsonOut(atlasFeature(opts));
+      jsonOut(graph3dFeature(opts));
     } catch (err) {
       jsonError((err as Error).message);
     }
@@ -9550,6 +9566,10 @@ bridgeCommand
   .option("--lens <kind>", "weltwissen or schule (default: the learner's)")
   .option("--planet <kind>", "Planet of the lens; only welt so far")
   .option("--user <id>", "User ID (default: whoami)")
+  .option(
+    "--time-zone <iana>",
+    "Learner IANA time zone for the local learning day",
+  )
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -9559,6 +9579,7 @@ bridgeCommand
             userId,
             lens: opts.lens,
             planet: opts.planet,
+            timeZone: opts.timeZone,
           }),
         );
       } catch (err) {

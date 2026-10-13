@@ -543,9 +543,9 @@ own levels, and the depth may differ.
   and never as a separate step for the learner. The import paths are tiles,
   material import (2026-10-05), OKF import and goal import. Material import
   gains a *place* as its target.
-- **Every import path works without the atlas.** The atlas sits behind an
-  alpha switch (Decision 10). While it is off, every import path works as
-  today; while it is on, a place is an extra target.
+- **Every import path works without a place.** An import started anywhere
+  but the atlas works as today; started at a region, the place is an extra
+  target.
 - **The cell has precedence.** Where a cell covers the region, the offer goes
   through the cell: the surface asks `needsGenericCurriculumImport` first
   (2026-08-14, Decision 10). The agent may fill levels under that structure,
@@ -556,13 +556,24 @@ own levels, and the depth may differ.
 
 ### 10. Surfaces and agents
 
-- **The Studio comes first**, with the atlas as a view beside the learning
-  graph. It sits behind an alpha switch, like the knowledge map (2026-10-03,
-  Decision 4): machine-local in `~/.zam/config.json`, off by default, and no
-  tool writes it.
+- **The Studio comes first.** The atlas takes the place of the 3D learning
+  graph, in the sidebar and on Lern-Karten. The 3D graph becomes an alpha
+  behind a switch like the knowledge map's (2026-10-03, Decision 4):
+  machine-local in `~/.zam/config.json`, off by default, and no tool writes
+  it. (Owner decision after the first Studio check; the atlas itself started
+  behind such a switch.)
 - **Reviewing a region** opens the due queue for that region's cards. Each
   submit declares its `answer_format` (2026-09-27). Layout and drift never
   touch scheduling.
+  - The region's due count is what that review would show now, by the
+    queue's own rules: a card waiting for its next short step, a blocked or
+    buried card, and an atom's further items on a day one of them was shown
+    are not counted. The condition still shows them.
+  - When nothing in a small region is due, the learner is asked whether to
+    go through its questions anyway, for instance before a test. Each card
+    comes once, earliest due first, and is pulled forward only when it is
+    shown (2026-08-14, pull-forward), so stopping half-way leaves the rest
+    as they were. A large region offers no such run.
 - **MCP tools.** Each stays safe even when a host approves it automatically
   (2026-10-08b):
   - read the atlas, a lens and the caller's own region statistics;
@@ -783,9 +794,10 @@ The field test checks the default of *Neue Inhalte zeigen*.
     the learner declined stays blank either way; taking content in from the
     map creates cards only on the learner's click.
 - **Studio:**
-  - with the alpha switch off, every import path works as before;
-  - with the alpha switch on, the atlas opens on the home region and every
-    zoom level reads;
+  - every import path works without a place as before;
+  - the atlas opens on the home region and every zoom level reads, with a
+    busy indicator while the world is built;
+  - a region with nothing due never ends as if questions had been answered;
   - switching lenses keeps the selection;
   - reviewing a region recolours it;
   - an agent change shows up live;
@@ -804,3 +816,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Owner decisions on round 1: each library holds world knowledge plus its own planet (Firma on the company server, or a local file on a company machine where none exists; Privat on the personal library); land without a card is blank, *Neue Inhalte zeigen* shows it as pencil sketches to take in, declined content stays blank; Produkte is the default lens on a team library; the first Sinnbild is shared only when its writer may write knowledge. No open questions remain. |
 | 2026-10-13 | Proposed | Implementation plan added. Clarified Decision 2: a unit imported into a world region stays in the connected library as unpublished world knowledge; "never writes to the world planet" meant the central service. |
 | 2026-10-13 | Proposed | Review round 2 (MiMo, after merge) and owner decisions. Kind and status are kept apart. The kind (planet) says who protects the knowledge and follows the place. The status (published or own) follows provenance and alone decides publishing and sync. Own units carry an "eigene Einheit" marker, and only the editorial release publishes. New Decision 12, one goal and one method: a school's variant stands in for a published unit without merging learning state. Also: sameness never combines two histories; Sinnbilder are stored and shown as the validator's re-serialisation on every write path, and library Sinnbilder never flow back; home-region fallback; positions engine-written only; drift caps named, total drift visible; the Leben lens and the place tool listed; condition in words in the outline view. Owner input: world knowledge is public domain, and a method taught at school is not protected knowledge. The planets differ by who protects the knowledge: nobody, an organisation or a person. The editorial release checks that, and ZAM's own world units are released as CC0. |
+| 2026-10-13 | Proposed | Owner decisions after the first Studio check of Phases 1–7: the atlas is always shown and takes the 3D learning graph's place in the sidebar and on Lern-Karten; the 3D graph becomes an alpha behind a machine-local switch. Building the world shows a busy indicator. A region's due count follows the queue's rules, and a small region with nothing due offers to go through its questions again, earliest due first (Decision 10). |
