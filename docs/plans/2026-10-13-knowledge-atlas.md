@@ -1,6 +1,8 @@
 # Knowledge atlas — implementation plan
 
-**Status:** Not started (2026-10-13).\
+**Status:** Phase 1 done (2026-10-13). The ADR gained Decision 12 and the
+round-2 changes after this plan was first merged; the phases below include
+them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -36,7 +38,7 @@ what the learner knows.
 
 ## Status
 
-- [ ] **Phase 1** — kernel condition function (D4)
+- [x] **Phase 1** — kernel condition function (D4) — `3a1ae497`
 - [ ] **Phase 2** — shared colour language; the learning graph adopts hue and
   condition (D4)
 - [ ] **Phase 3** — atlas schema and the derived lenses Weltwissen and Schule
@@ -47,7 +49,7 @@ what the learner knows.
 - [ ] **Phase 6** — Studio atlas view, read-only (D4, D5, D7 prerequisites,
   D10)
 - [ ] **Phase 7** — import at a place, *Neue Inhalte zeigen*, taking content
-  in (D1, D9)
+  in, variants (D1, D9, D12)
 - [ ] **Phase 8** — Sinnbilder (D6)
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10)
@@ -121,6 +123,19 @@ touches:
     `untrusted: true` (D7 of 2026-10-08b).
 - **Nothing the atlas does changes scheduling** (D1). Only reviews do, and
   every rating submit declares its `answer_format` (ADR 2026-09-27).
+- **Positions are engine-written** (D8). Only settle and a curator's lens
+  edit write land and island offsets. No tool or bridge command takes
+  coordinates.
+- **Kind and status stay apart** (D2).
+  - **Kind** is the planet: who protects the knowledge. It is the planet of
+    the lenses a unit is placed in, so an import takes the kind of the
+    region it starts at.
+  - **Status** is published or own. A unit is published when it came from
+    published content: it has an atom, or a curriculum `provider`.
+    Everything the library writes is own and is drawn with the "eigene
+    Einheit" marker.
+  - Only status decides publishing and sync. Nothing on a device publishes,
+    and a world sync never overwrites or removes an own unit.
 - **No figures about other people** (ADR 2026-07-04, Decision 11). Region
   statistics count the caller's own cards. There are no coverage percentages
   (ADR 2026-08-14, Decision 6).
@@ -420,8 +435,12 @@ CREATE TABLE IF NOT EXISTS atlas_members (
 - **Region names and keys** for derived regions are deterministic functions
   of the path. A read can therefore name regions that do not exist yet; it
   marks them `provisional`, and Phase 5's settle writes them.
-- **Planets.** Until Phase 9 every unit is shown on the welt planet. Units
-  that are not world knowledge land on `unsortiert`.
+- **Status.** `UnitRow` carries `own: boolean`: true when the unit has no
+  atom and no curriculum `provider`.
+  - Own units are placed by the same rules, so a pupil's own chemistry cards
+    land under Chemie as own world knowledge, with the marker.
+  - Until Phase 9 only the welt lenses exist, so an own unit no rule covers
+    lands on `unsortiert`.
 - **Tile install is still a spike.** `src/kernel/library/kvt-attach.ts`
   carries a header saying not to build learner features on it. The atlas only
   *reads* atoms and bindings, which is acceptable. Do not write through it.
@@ -452,6 +471,8 @@ CREATE TABLE IF NOT EXISTS atlas_islands (
   region_id  TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE, -- a top-level region
   dq         INTEGER NOT NULL,          -- island offset on the sea, axial
   dr         INTEGER NOT NULL,
+  founded_dq INTEGER NOT NULL,          -- offset at founding: total drift = distance to (dq, dr)
+  founded_dr INTEGER NOT NULL,
   PRIMARY KEY (lens_id, region_id)
 );
 CREATE TABLE IF NOT EXISTS atlas_land (
@@ -510,6 +531,10 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_atlas_land_unit
     `MAX_DRIFT_PER_SETTLE` (3 hexes).
   - If the cap is not enough, the growing region takes coast on another side
     instead.
+- **Named constants.** `ISLAND_GAP` (4) and `MAX_DRIFT_PER_SETTLE` (3) are
+  exported from `land.ts` and tested like the condition bands. The read
+  reports each island's total drift, the hex distance from its founding
+  offset, so curators can see it.
 - **Settle is deterministic.** The same rows in give the same land out.
   `planSettle` returns the writes without touching the database. The read
   uses it to show provisional land; `applySettle` writes it.
@@ -575,14 +600,21 @@ CREATE UNIQUE INDEX IF NOT EXISTS idx_atlas_land_unit
 interface AtlasView {
   lens: { kind: LensKind; planet: PlanetKind; levels: string[]; colourLevel: number };
   regions: { key: string; name: string; level: number; parentKey: string | null; rank: number; hueKey: string; pattern: string | null; provisional: boolean }[];
-  islands: { key: string; dq: number; dr: number; provisional: boolean }[];
+  islands: { key: string; dq: number; dr: number; drift: number; provisional: boolean }[];
   land: { island: string; q: number; r: number; region: string; unit: UnitKey | null }[];
-  units: { key: UnitKey; title: string; region: string; condition: Condition | null; due: number; cards: number; declined: boolean }[];
+  units: { key: UnitKey; title: string; region: string; condition: Condition | null; due: number; cards: number; declined: boolean; own: boolean }[];
   threads: { from: UnitKey; to: UnitKey; kind: "voraussetzung" }[]; // from builds on to
   own: { dueByRegion: Record<string, number> }; // the caller's own counts only
   settle: { pending: number; mayWrite: boolean };
+  home: string | null; // resolved home region key, after the fallback below
 }
 ```
+
+- **The home region and its fallback.** `atlas.home.<lensKind>` stores the
+  home as its key path, root first, as a JSON array. A curated region's key
+  says nothing about its ancestors, so the path is kept. On read, the
+  deepest key on that path that still exists is the home. If none exists,
+  the home is the whole lens (`null`).
 
 - `units` lists only the units the caller sees (see "Which units the read
   shows").
@@ -620,7 +652,8 @@ interface AtlasView {
   - Leave the Sinnbild discs empty until Phase 8.
 - `desktop/src/atlas/outline.ts`: the outline view, a nested list per lens.
   - Each entry shows its name, the caller's own counts and its condition as
-    text.
+    words ("fällig", "lange überfällig", "wohl vergessen"), never only as a
+    texture.
   - It is fully keyboard-operable and works with a screen reader.
 - `desktop/src/main.ts`:
   - `AppView` gains `"atlas-view"`.
@@ -657,6 +690,9 @@ interface AtlasView {
   - Below the colour level, regions get a shade plus a pattern.
   - Blank land (`unit: null`, or a declined unit) gets no texture and no
     name.
+  - An own unit in a world lens carries the "eigene Einheit" marker: a small
+    corner mark on the hex, and the words in the unit panel.
+  - Islands show their total drift to curators in the region panel.
 - **Dark mode** uses the existing theme tokens. Sinnbild discs stay light in
   both modes (spike lesson).
 - **Live refresh.** After a review session, re-read when the view becomes
@@ -714,10 +750,70 @@ enrolled, then check each of these:
   the model and is not stored.
   - `src/kernel/import/text-import.ts` is the Anki/CSV/TSV importer and is not
     this path.
-- **The units stay in the connected library** (D2).
-  - A pupil's notes under *Physik › Mechanik* become the library's own
-    unpublished world knowledge.
+- **Kind follows the place, status stays own** (D2).
+  - Every unit an import creates is own.
+  - Its kind is the planet of the region chosen. A pupil's notes under
+    *Physik › Mechanik* are own world knowledge, drawn with the marker.
+  - The agent may propose another kind per unit, such as Firma for a note
+    that names a customer. It shows beside the card in the review list, and
+    the learner decides; on a team library a curator does. In Phase 7 only
+    world regions exist, so this choice arrives with Phase 9.
   - Nothing is published.
+
+**Variants: one goal, one method (D12).** Add a migration with the next free
+M-number.
+
+```sql
+CREATE TABLE IF NOT EXISTS unit_variants (      -- knowledge: for every member of the library
+  variant_key  TEXT NOT NULL,                   -- an own UnitKey
+  stands_for   TEXT NOT NULL,                   -- a published UnitKey
+  decided_by   TEXT NOT NULL,                   -- the curator
+  created_at   TEXT NOT NULL,
+  PRIMARY KEY (stands_for)
+);
+CREATE TABLE IF NOT EXISTS learner_variants (   -- learning state
+  user_id      TEXT NOT NULL,
+  variant_key  TEXT NOT NULL,
+  stands_for   TEXT NOT NULL,
+  detached_card_ids TEXT NOT NULL,              -- JSON array: the cards this choice detached
+  created_at   TEXT NOT NULL,
+  PRIMARY KEY (user_id, stands_for)
+);
+```
+
+- `learner_variants` gets RLS and grants like `user_settings`.
+- **`src/kernel/atlas/variants.ts`.**
+  - `chooseVariant(db, { userId, variant, standsFor })`, for a learner:
+    1. Check that `standsFor` is published and `variant` is a different
+       unit. The variant may be own or published.
+    2. Detach the learner's cards on `standsFor`'s tokens: set `detached_at`,
+       the existing "Not for me" mechanism.
+    3. Record their ids.
+  - `undoVariant(db, { userId, standsFor })` re-attaches exactly the
+    recorded cards and deletes the row.
+  - `setLibraryVariant(db, { variant, standsFor, curatorId })` is
+    curator-only.
+    - It never touches members' cards; their cards are their own learning
+      state.
+    - A member who already holds cards on `standsFor` sees a one-time hint
+      in the unit panel and decides for themselves.
+- **Read and land.**
+  - While a variant stands in, it is drawn on `standsFor`'s hex and gets no
+    land of its own in that lens: settle skips it.
+  - `standsFor` is not in reach, not offered as bonus, and not proposed by
+    the agent for that learner.
+  - Threads to and from `standsFor` are drawn to the variant.
+- **From class notes.** A material proposal may carry an optional
+  `standsFor?: UnitKey`.
+  - The agent sets it when the notes teach another method for a unit the
+    learner already has in that region.
+  - The review list shows it beside the card: "Statt *<title>*: das Verfahren
+    deiner Schule". The learner ticks it or not.
+  - A Yes with the tick calls `chooseVariant` in the same transaction.
+- **Not in this plan:** a school-specific *tile* that declares variants for
+  its units. It needs the tile release contract, and `kvt-attach.ts` is still
+  a spike. Methods that a state's curriculum prescribes already come as
+  their own published units, bound to that curriculum.
 
 ***Neue Inhalte zeigen.***
 
@@ -759,17 +855,29 @@ enrolled, then check each of these:
   - `atlas-read` with `show_new` returns units in reach.
   - A declined unit is never in reach.
   - *Aufnehmen* creates cards only for the chosen units.
+- **Kind and status.**
+  - An import at a world region creates own units of the world kind.
+  - A world sync (re-installing a tile) never overwrites or removes an own
+    unit.
+- **Variants.**
+  - A variant takes the published unit's hex.
+  - The published unit is not in reach.
+  - Its cards are detached, not deleted and not moved; `undoVariant`
+    re-attaches exactly those cards.
+  - A library variant changes no member's cards (Postgres harness).
 
 ---
 
 ## Phase 8 — Sinnbilder (D6)
 
-**Migration M042.**
+**Migration** (the next free M-number; M042 or later, depending on whether
+Phase 7 landed first).
 
 ```sql
 CREATE TABLE IF NOT EXISTS emblems (          -- knowledge: no learner column
   subject_key TEXT PRIMARY KEY,               -- UnitKey, or `region:${lensId}:${regionKey}`
-  svg         TEXT NOT NULL,
+  svg         TEXT NOT NULL,                  -- the canonical form only
+  validator_version INTEGER NOT NULL,
   glyph       TEXT,
   author      TEXT NOT NULL,                  -- 'agent' | 'curator' | 'seed'
   updated_at  TEXT NOT NULL
@@ -777,7 +885,8 @@ CREATE TABLE IF NOT EXISTS emblems (          -- knowledge: no learner column
 CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
   user_id     TEXT NOT NULL,
   subject_key TEXT NOT NULL,
-  svg         TEXT NOT NULL,
+  svg         TEXT NOT NULL,                  -- the canonical form only
+  validator_version INTEGER NOT NULL,
   glyph       TEXT,
   updated_at  TEXT NOT NULL,
   PRIMARY KEY (user_id, subject_key)
@@ -785,16 +894,30 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
 ```
 
 - `learner_emblems` gets RLS and grants like `user_settings`.
+- **Every path that stores an SVG validates.** That covers `setEmblem`, the
+  seed and any later tile or migration that carries Sinnbilder.
+  `revalidateEmblems(db)` re-checks rows with an older `validator_version`.
+  It drops rows that no longer pass; they fall back to the next source in
+  `resolveEmblem`.
+- **A library's shared Sinnbild on a world unit stays in that library.**
+  There is no upload path, and none may be added (D6).
 
 **Files.**
 
 - `src/kernel/atlas/emblem.ts` (pure): the validator.
-  - `validateEmblem(svg: string, glyph?: string): { ok: true } | { ok: false; error: string }`
-  - `emblemDataUrl(svg: string): string`, giving
-    `data:image/svg+xml;base64,…` of the exact validated bytes.
+  - `validateEmblem(svg: string, glyph?: string): { ok: true; canonical: string } | { ok: false; error: string }`
+  - `EMBLEM_VALIDATOR_VERSION`, a number raised whenever the rules tighten.
+  - `emblemDataUrl(canonical: string): string`, giving
+    `data:image/svg+xml;base64,…` of the canonical form.
   - The validator tokenizes the SVG into a tree with its own small tokenizer
     and checks it against an allowlist. A regular expression over the source
     is not enough (review round 1, Grok F4).
+  - **Canonical form** (review round 2, MiMo F3).
+    - `canonical` is the validator's own re-serialisation of the allowed
+      tree, with attributes in a fixed order and text escaped.
+    - It is what gets stored and shown, never the input text, so a
+      difference between the validator's parser and the browser's cannot
+      slip through.
 - **Elements:** `svg`, `g`, `path`, `circle`, `ellipse`, `rect`, `line`,
   `polyline`, `polygon`, `text`, `tspan`.
 - **Attributes:** geometry (`d`, `cx`, `cy`, `r`, `rx`, `ry`, `x`, `y`, `x1`,
@@ -803,8 +926,9 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
   `fill-opacity`, `stroke-opacity`); text (`font-size`, `font-weight`,
   `text-anchor`); and on the root only `viewBox` and `xmlns`.
 - **Rejected:**
-  - any other element or attribute, including every `on*` attribute, `style`
-    and `href`;
+  - any other element or attribute, explicitly including `use`, `a`,
+    `foreignObject`, `image`, `style`, `script`, the `animate*` and `set`
+    elements, every `on*` attribute, `href` and `xlink:href`;
   - `<!` (doctype, entities, CDATA), and `&` other than `&amp;`, `&lt;`,
     `&gt;` and `&quot;`;
   - `url(`, `data:` and `javascript:` in any value.
@@ -835,8 +959,8 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
   - Atlas discs, which stay light in dark mode.
   - The review card in the study view, the graph nodes of Phase 2, and
     search results.
-  - Always `<img src=emblemDataUrl(svg)>` or Canvas `drawImage` of such an
-    image. Never `innerHTML`, `<object>`, `<embed>` or `<iframe>`. The glyph
+  - Always `<img src=emblemDataUrl(canonical)>` or Canvas `drawImage` of
+    such an image. Never `innerHTML`, `<object>`, `<embed>` or `<iframe>`. The glyph
     goes in through `textContent`.
 
 **Tests.**
@@ -847,6 +971,14 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
     `<foreignObject>`;
   - entities, `url(`, `data:`, and a missing or other `viewBox`;
   - more than 6000 characters, and a glyph with markup.
+  - `use`, `a`, `animate`, `set`, and an event attribute on any element.
+- **Canonical form.**
+  - What is stored equals `canonical`, never the input.
+  - Validating the canonical form again returns it unchanged.
+  - Two inputs that differ only in attribute order or whitespace give the
+    same canonical form.
+  - A row with an older `validator_version` that fails the new rules is
+    dropped by `revalidateEmblems`.
 - **Writes and resolution.**
   - `auto` writes shared only with the right. A non-curator on a team
     library writes personal (Postgres harness).
@@ -867,15 +999,21 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
     Firma", which only the library's owner or a curator can change.
 - **Kernel invariants**, checked on every write and tested:
   - a lens's planet is `welt` or the own planet;
-  - a unit has members only in lenses of one planet;
-  - a thread never runs from a `welt` unit to an own-planet unit. Firma and
-    Privat can never meet, because they never share a database.
-- **Which planet a unit is on.**
-  - World: the unit is published (an atom, or a curriculum `provider`), or
-    the learner or a curator placed it in a world region.
-  - Otherwise it is on the own planet.
-  - Units that sat on `unsortiert` move to the own planet's `unsortiert`
-    island.
+  - a unit has members only in lenses of one planet, its kind;
+  - a unit's status never changes on a device: own stays own until an
+    editorial release publishes it (D2);
+  - a thread never runs from a world unit to a Firma or Privat unit. Firma
+    and Privat can never meet, because they never share a database.
+- **Kind of own units.**
+  - An own unit takes the kind of the region it was placed in.
+  - An own unit with no placement and no rule lands on the own planet's
+    `unsortiert` island. Own units that sat on the world lenses'
+    `unsortiert` island move there.
+  - Changing a unit's kind moves its membership to a lens of the other
+    planet. The learner does that, or a curator on a team library.
+  - **Mixed imports.** The agent proposes the kind per unit (D2): Scrum's
+    basics are world, how a team runs Scrum is Firma. Test that a mixed
+    import keeps every unit own and applies the confirmed kinds.
 - **Own-planet lenses.**
   - On `privat`: `leben` (Bereich › Thema), derived from domain segments.
   - On `firma`: `produkte` (Produktlinie › Produkt › Komponente), the
@@ -889,10 +1027,15 @@ CREATE TABLE IF NOT EXISTS learner_emblems (  -- learning state
     one named source, stored as a pending proposal. A curator accepts it
     (`atlas-lens-accept`) and the map shows the new current view. Keep no
     history.
+  - **Staleness.** When the agent's comparison with that source fails, it
+    sets the lens's `stale` flag. `atlas-read` returns it, and the Studio
+    shows curators "this lens no longer fits its source".
+  - A lens edit that removes regions leaves home paths alone. The read's
+    fallback (Phase 5) takes care of them.
   - Produkte proposals may come from the repo knowledge map's C4 model
     (`docs/knowledge-map/map.json`, ADR 2026-10-03, Decision 8).
 
-**Threads.** Migration M043.
+**Threads.** Migration: the next free M-number.
 
 ```sql
 CREATE TABLE IF NOT EXISTS connections (           -- knowledge
@@ -929,7 +1072,7 @@ automatically (ADR 2026-10-08b).
 | Tool | Writes | Notes |
 |---|---|---|
 | `zam_atlas_read` | nothing | lens tree, own counts and threads, with titles and notes `untrusted: true`. The only candidate for `PRE_APPROVED_TOOLS`; ask the owner in the PR. |
-| `zam_atlas_place` | `atlas_members` | sorts an unplaced unit into a region. Curator-only on a team library. |
+| `zam_atlas_place` | `atlas_members` | sorts an unplaced unit into a region. Curator-only on a team library. Takes a region key, never coordinates. |
 | `zam_atlas_connect` | `learner_connections`, or `connections` with `scope: "shared"` and curator rights | personal by default |
 | `zam_atlas_lens_edit` | lens tables | curator-only |
 | `zam_atlas_set_emblem` | Phase 8 | personal by default |

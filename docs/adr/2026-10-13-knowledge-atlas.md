@@ -93,6 +93,15 @@ Owner input that shapes the decisions below (2026-10-12/13):
   first, the better the fit.
 - **The first Sinnbild of a concept applies to everyone.** A learner may
   override it for themselves.
+- **World knowledge is public domain.** It is knowledge that no individual
+  and no organisation protects. A method taught at school is certainly not
+  protected knowledge.
+- **One goal, one method.** A state or a teacher decides that pupils learn a
+  general skill, such as adding large numbers without a calculator. There are
+  several methods to get there: a hand calculation system in China, written
+  column procedures in Germany. The school prescribes the method, which is
+  why class notes matter, and a school-specific tile may replace a published
+  one. Nobody needs ten ways to add; one is enough.
 
 Existing pieces this builds on:
 
@@ -141,6 +150,11 @@ Existing pieces this builds on:
   - On a team library a curator decides.
   - A merge moves cards and review history only through an explicit
     `replaces` (2026-08-14, Decision 9). Without it, the units stay apart.
+  - Where a learner holds cards on both units, a decided sameness still
+    never combines two retrieval histories; the install already refuses such
+    a merge (2026-08-14, Decision 9). The superseded unit is no longer
+    offered for new enrolment, both histories stay, and the surviving unit
+    is offered for a real retrieval.
 - **Condition is computed, never stored.** It comes from the learner's FSRS-6
   cards when the map is drawn.
 - **The learner does not rearrange the map.** The agent keeps the order, and
@@ -166,14 +180,38 @@ Existing pieces this builds on:
 ### 2. Planets: world, company and private knowledge never mix
 
 The atlas holds three kinds of knowledge, each on its own **planet**. Each
-planet has its own map, its own lenses and its own colour of sea.
+planet has its own map, its own lenses and its own colour of sea. Two things
+about a unit are kept apart:
 
-| Planet | Lives on | Leaves its place |
-|---|---|---|
-| Weltwissen | published by a central knowledge server, installed into every library; public, and most useful for schools | yes: it is meant for everyone |
-| Firma | the company's learning server, or a local file on a company machine | never: company knowledge stays inside the company |
-| Privat | the learner's own device or private library | never: contacts, birthdays, anything kept private |
+- its **kind**, the planet, which says who protects the knowledge;
+- its **status**, published or own, which says where it comes from.
 
+| Planet | Protected by | Lives on | Leaves its place |
+|---|---|---|---|
+| Weltwissen | nobody: public domain, or an open licence that lets everyone share it | published by a central knowledge server, installed into every library; most useful for schools | yes: it is meant for everyone |
+| Firma | an organisation: confidential work, trade secrets | the company's learning server, or a local file on a company machine | never: company knowledge stays inside the company |
+| Privat | a person: personal data, privacy | the learner's own device or private library | never: contacts, birthdays, anything kept private |
+
+- **What may be published.** The editorial release checks exactly the
+  "Protected by" column before an own unit is published as world knowledge.
+  - The unit teaches common knowledge in its own words.
+  - It holds nobody's secrets or personal data.
+  - It copies no protected text.
+- **How it is released.**
+  - ZAM releases the world units it writes as CC0. In Germany, where authors
+    cannot waive copyright, CC0 acts as an unrestricted licence.
+  - Third-party content under an open licence that requires attribution,
+    such as the CC BY decks of 2026-08-09, keeps its attribution in the
+    source link.
+- **The knowledge is free; a particular text about it may not be.**
+  - A pupil's notes may quote a textbook. The units built from them are
+    written anew, which is why they can become world knowledge at all.
+  - It is also why the material itself is never stored (2026-10-05,
+    Decision 9).
+- **This settles the licensing rule for content ZAM writes.** The central
+  content service raised it as its open question (2026-07-26b, Open
+  question 1). Third-party curriculum text still needs its redistribution
+  terms checked before publication.
 - **No unit lives on two planets.** A REST basics unit belongs to world
   knowledge. Every team needs that world knowledge to work, so it is not
   copied into the company planet. Only a team-specific adaptation is company
@@ -187,32 +225,38 @@ planet has its own map, its own lenses and its own colour of sea.
   - Company and private knowledge are never linked to each other.
   - The map shows such a thread as a portal on the coast; a click opens the
     other planet at that unit.
-- **An import stays on the planet where it started.** The units an import
-  creates belong to the planet of the region the learner chose, and they
-  stay in the connected library.
-  - A pupil's notes imported under *Physik › Mechanik* become the library's
-    own, unpublished world knowledge. A team's Scrum notes imported under
-    Team Boreas stay on the company planet.
-  - The agent may link new units to existing world units, and it may
-    propose that something is world knowledge. Moving a unit to a world
-    region is the learner's decision on a personal library and a curator's
-    on a team library. The unit still never leaves the library.
-  - Nothing is ever published to the central world service from a device.
-    A new public world unit goes out through the editorial release, with a
-    named reviewer (2026-07-26b, Decisions 1–3: there is no write path from
-    a learner's device; 2026-08-14b).
+- **The kind follows the place.** An import at a region takes that region's
+  planet as its kind: under *Physik › Mechanik* it is world knowledge, under
+  Team Boreas company knowledge.
+  - The agent may propose another kind for a unit, for example "this note
+    names a customer: Firma". The learner decides in the review list, or a
+    curator on a team library.
+  - In a mixed import, the agent proposes the kind per unit: Scrum's basics
+    are world knowledge, how Team Boreas runs Scrum is Firma.
+- **The status follows provenance, and it alone decides publishing.**
+  - **Published units** come from the central content service.
+  - **Own units** were written in this library: by an import, from notes, or
+    by a team. They are drawn with a small marker for "eigene Einheit".
+  - Own units are never published from a device, and a world sync never
+    overwrites or removes them.
+  - An own unit becomes published only through the editorial release of the
+    central content service, with a named reviewer (2026-07-26b,
+    Decisions 1–3: there is no write path from a learner's device;
+    2026-08-14b).
+  - A pupil's notes under *Physik › Mechanik* are therefore own world
+    knowledge. A method taught at school protects nobody, so such a unit is
+    a good candidate for that release, and the agent may propose it there.
 - **One connected library per device.** The database binding carries the
   knowledge context (2026-07-04, Decision 9): a work device is connected to
   the company library, a private device to the personal library.
-  - Each library holds two planets. World knowledge is the published
-    content installed into it, plus the library's own unpublished world
-    units. The other is its own planet: Firma on a company library, Privat
-    on a personal one. Firma and Privat never share a database. The kernel
-    enforces the one-way rule on every write.
+  - Each library holds two planets. One is world knowledge, published and
+    own. The other is the library's own kind: Firma on a company library,
+    Privat on a personal one. Firma and Privat never share a database. The
+    kernel enforces the one-way rule on every write.
   - The company library is the company's server (2026-09-04). Where none has
     been set up yet, it may be a local database file on a company machine.
     It is never the learner's private library.
-  - World knowledge arrives as published content, installed into the
+  - Published world knowledge arrives as content installed into the
     connected library (2026-07-26b). A portal is therefore a local row that
     names a world unit, and the client draws it. The world service has
     nowhere to store a company or private end.
@@ -238,6 +282,7 @@ own levels, and the depth may differ.
 | Schule | Klasse › Fach › Lernbereich | curriculum bindings: school type, grade, subject, `topic_title` (deterministic) |
 | Unternehmen | Organisation › Bereich › Team › Verantwortung | curated on the team library; the agent proposes from the sources |
 | Produkte | Produktlinie › Produkt › Komponente | curated on the team library; the agent proposes, e.g. from the repo knowledge map's C4 model |
+| Leben | Bereich › Thema | the Privat planet of a personal library; the agent sorts from domains |
 
 - **Every lens is shared knowledge, kept by the agent.**
   - Weltwissen and Schule derive from data ZAM already holds.
@@ -271,7 +316,9 @@ own levels, and the depth may differ.
   - Unternehmen is optional. The agent proposes the whole order anew from
     one named source, such as the company's list of teams; a curator accepts
     it, and the map shows the new current view. The agent notices that the
-    lens no longer fits by comparing it with that source.
+    lens no longer fits by comparing it with that source. When the
+    comparison fails, the curators see "this lens no longer fits its source"
+    instead of waiting for someone to notice.
   - Every learner may still choose their own primary lens.
 - **Know your own area precisely, the rest roughly.** A learner has a home
   region: their team, or their class. The map opens zoomed to it, with the
@@ -281,7 +328,8 @@ own levels, and the depth may differ.
   devices: they are how this person finds their work. On a team library they
   are `user_settings` rows, which the member writes (2026-09-04, Decision 4),
   never `user_config`, which curators write. Zoom and pan stay on the
-  machine.
+  machine. When a lens edit removes the home region, the home falls back to
+  its nearest surviving ancestor, else to the whole lens.
 - **Always the current view.**
   - A lens has no versions. When teams are reorganised, the curators (helped
     by the agent) change the lens, and the map simply shows the new order.
@@ -349,7 +397,9 @@ own levels, and the depth may differ.
 - **Navigation.** A click selects on the level in view. A breadcrumb and
   search help you find your way, and Esc goes up one level.
 - **Accessibility.** An outline view lists the same lens, for keyboard and
-  screen-reader users, like the knowledge map's outline view.
+  screen-reader users, like the knowledge map's outline view. It says each
+  condition in words ("fällig", "lange überfällig", "wohl vergessen"), so
+  nobody has to read it from a texture.
 
 ### 6. Sinnbilder: agent-drawn SVG, shared first, personal override
 
@@ -372,22 +422,31 @@ own levels, and the depth may differ.
   - This refines the owner's decision of 2026-10-12 ("the first Sinnbild
     applies to everyone") after review round 1.
 - **Sinnbilder are untrusted content (2026-10-08b).**
-  - A kernel validator runs on every write. It parses the SVG into a tree and
+  - A kernel validator runs on every path that stores an SVG: a tool, a
+    curator, a tile install, a migration. It parses the SVG into a tree and
     accepts only the allowed elements and attributes: plain shapes and text.
-    It rejects scripts, styles, links, images, entities, `url()` and `data:`,
-    requires `viewBox="0 0 64 64"` with bounded `width` and `height`, and
-    allows at most 6000 characters. A regular expression over the source is
-    not enough.
-  - Surfaces render only the validated bytes, base64-encoded, through
-    `<img>`: in the atlas, the queue, the graph, search, Mobile and the MCP
-    Apps panel. Never through `<object>`, `<embed>`, `<iframe>` or
-    `innerHTML`.
+    - It rejects scripts, styles, links (`a`, `href`, `xlink:href`), `use`,
+      `foreignObject`, animation elements, images, event attributes,
+      entities, `url()` and `data:`.
+    - It requires `viewBox="0 0 64 64"` with bounded `width` and `height`,
+      and allows at most 6000 characters.
+    - A regular expression over the source is not enough.
+  - What is stored and shown is the validator's own re-serialisation of the
+    allowed tree, never the input text, so no difference between two parsers
+    can slip through. Each row records the validator version, so a later
+    tightening can re-check stored Sinnbilder.
+  - Surfaces render that canonical form, base64-encoded, through `<img>`: in
+    the atlas, the queue, the graph, search, Mobile and the MCP Apps panel.
+    Never through `<object>`, `<embed>`, `<iframe>` or `innerHTML`.
   - The glyph is plain text, rendered escaped on every surface.
   - SVG text, glyphs and thread notes in MCP tool results carry
     `untrusted: true` (2026-10-08b, D7). The validator cannot stop
     `<text>ignore previous instructions</text>`; marking it as data can.
   - Writing a personal Sinnbild changes only learning state. Writing a shared
     one needs curator rights.
+  - A shared Sinnbild that a library sets on a world unit lives in that
+    library only. Like an alias, it never flows back to the central content
+    service.
 - **Reuse.** The same Sinnbilder appear on review cards, learning-graph nodes
   and search results.
 
@@ -440,6 +499,8 @@ own levels, and the depth may differ.
 - **Positions belong to the lens and are shared.** They are stored once laid
   out, so everyone on a team library sees the same map. "The platform island
   is top left" then works in conversation.
+  - Only the layout engine and a curator's lens edit write positions, never
+    a tool argument. Drift is not an agent capability.
 - **Inside an island, places stay put.** A unit's hex is assigned once and
   stored.
   - When an island is founded, a Gosper curve lays it out, so every region is
@@ -459,6 +520,9 @@ own levels, and the depth may differ.
     and by a capped amount, so each neighbour stays in its direction. Where
     making room would turn a neighbour, the new island is placed farther out
     instead, and the existing constellation stays.
+  - The caps are named constants, tested like the condition bands. Each
+    island keeps its founding offset, so curators see how far it has drifted
+    in total, not only per step.
 
 ### 9. Import starts at a place on the map
 
@@ -504,6 +568,8 @@ own levels, and the depth may differ.
   - read the atlas, a lens and the caller's own region statistics;
   - connect two units with a thread of a given kind (personal by default);
   - set a Sinnbild (personal by default; shared only with curator rights);
+  - sort a unit that no rule places into a region (curator-only on a team
+    library);
   - for curators, edit a lens: regions, names, order, aliases.
 
   Only the read tool is a candidate for the reviewed pre-approval list
@@ -524,6 +590,49 @@ demolishing, and reviewing before a move. It is not pursued for the product
 now. It may return as a walk-through mode over the same lenses and condition
 data, and nothing here depends on it.
 
+### 12. One goal, one method: a variant stands in
+
+Some world knowledge is a goal that several methods reach. Adding large
+numbers without a calculator is world knowledge; the method is not. Pupils in
+China learn a hand calculation system, pupils in Germany written column
+procedures. The school or the state's curriculum prescribes the method, and a
+learner needs one, not ten.
+
+- **A variant stands in for a published unit.** An own unit, or another
+  published unit, may stand in for a published world unit when both reach
+  the same goal by different methods.
+  - It is drawn on the published unit's hex and gets no land of its own in
+    that lens. An own variant carries the "eigene Einheit" marker.
+  - The published unit is no longer offered to that learner: not in reach,
+    not as bonus, not suggested by the agent.
+  - Threads to and from the published unit are drawn to the variant on that
+    learner's map.
+- **Who decides.**
+  - On a personal library, the learner decides. Usually the agent notices
+    that class notes describe another method for an existing unit, and asks.
+  - On a school or team library, a curator decides for all members.
+- **Learning state is never merged.**
+  - Cards the learner already holds on the published unit are detached ("Not
+    for me", 2026-07-04, Decision 10): they keep their history but are no
+    longer scheduled.
+  - The variant starts with its own cards.
+  - Nothing moves between the two units. `replaces` stays the publisher's tool
+    for succession (2026-08-14, Decision 9).
+  - Undoing the choice re-attaches the detached cards.
+- **A whole tile can be replaced the same way.** A school-specific tile on
+  the school's library declares, for each of its units, which published unit
+  it stands in for. Installing it sets those variants for the school's
+  members.
+- **A method the curriculum prescribes comes with the content.** Where a
+  state's curriculum prescribes a method, the published content carries that
+  method's units, bound to that curriculum. Choosing the curriculum chooses
+  the method, so no variant is needed.
+- **A variant is not sameness.** It is the declared choice of another method
+  for the same goal. The two units stay distinct units (Decision 1).
+- **A school's method is world knowledge.** It protects nobody, so an own
+  variant is a good candidate for the editorial release. Once published, it
+  becomes a variant other schools can choose.
+
 ## Data model sketch
 
 This is indicative; the plan fixes the names. Every schema change goes into
@@ -531,7 +640,7 @@ This is indicative; the plan fixes the names. Every schema change goes into
 
 | Table (sketch) | Class | Holds |
 |---|---|---|
-| (planet) | — | not a table: a lens belongs to one planet, `welt` or the library's own, and a unit sits in the lenses of exactly one planet (Decision 2) |
+| (planet, status) | — | not a table: a unit's kind (planet) is the planet of the lenses it is placed in; its status is published when it came from the central content service, otherwise own (Decision 2) |
 | `atlas_lenses` | knowledge | id, planet, name, kind (`weltwissen`, `schule`, `unternehmen`, `produkte`, …), level names, colour level |
 | `atlas_regions` | knowledge | lens, parent, level, name, key (drives the hue), rank, pattern, optional `ontology_ref` |
 | `atlas_domain_aliases` | knowledge | domain path → region (Weltwissen) |
@@ -541,7 +650,9 @@ This is indicative; the plan fixes the names. Every schema change goes into
 | `learner_emblems` | learning state | learner, subject, SVG, glyph: a personal override |
 | `connections` | knowledge | ends, kind (`nutzt`, `schnittstelle`, `ist-ein`, `verbindung`), note, author; no learner column |
 | `learner_connections` | learning state | learner, ends, any kind including `voraussetzung`, note; never feeds blocking |
-| `import_requests` | learning state | lens, region, source link, units added; never the material itself |
+| `unit_variants` | knowledge | variant unit, published unit, deciding curator: for every member of a school or team library |
+| `learner_variants` | learning state | learner, variant unit, published unit: the learner's own choice |
+| `import_requests` | learning state | only if a harness path needs requests an agent can list; otherwise the material import's staging and `sources` row carry the place. Never the material itself |
 
 Shared and personal rows live in separate tables, like tokens and cards, so
 row-level security on a team library never has to tell them apart inside one
@@ -561,10 +672,14 @@ All phases ship on one branch.
   - The Weltwissen and Schule lenses, both derived from existing data.
   - Condition, semantic zoom, search, home region and prerequisite threads.
   - Reviewing a region.
-  - Stored positions, and growth with island drift.
+  - Stored positions, and growth with island drift. In this phase the
+    existing import paths make the land grow: tiles, cells, material import
+    and OKF import. Their new units land by the lens rules, or on the
+    unsorted island where no rule covers them.
 - **Phase 1b: import at a place.** *Hier importieren …* on regions, with
   matching curriculum tiles and notes handed to the agent. *Neue Inhalte
-  zeigen*, and taking content in from the map.
+  zeigen*, and taking content in from the map. Variants that stand in for a
+  published unit (Decision 12).
 - **Phase 2: Sinnbilder.** Storage, the validator and the MCP tool, shown in
   the atlas, the queue and the graph.
 - **Phase 3: the company planet, team lenses and typed threads.**
@@ -641,8 +756,11 @@ The field test checks the default of *Neue Inhalte zeigen*.
   - two units with the same title stay apart;
   - a thread from world knowledge to company or private knowledge is
     refused, and so is one between company and private knowledge;
-  - an import creates units only on the planet of the chosen region, in the
-    connected library, and publishes nothing;
+  - an import creates own units only, of the place's kind unless the learner
+    changes it, and publishes nothing; a world sync never overwrites or
+    removes an own unit;
+  - an import that mixes generic knowledge and a team's adaptation proposes
+    the kind per unit, and every unit stays own;
   - an import at a region asks only for the missing levels below it, and
     stores no material;
   - condition: a unit takes its weakest card; the bands follow the learner's
@@ -650,8 +768,14 @@ The field test checks the default of *Neue Inhalte zeigen*.
   - stable positions: adding a unit moves no other unit in its island;
   - island drift without overlap, keeping each neighbour's bearing;
   - the Sinnbild validator accepts a tree of plain shapes and rejects
-    scripts, styles, images, entities, `url()`, `data:` and a missing
-    `viewBox`; a glyph with markup renders as text;
+    scripts, styles, images, `use`, `foreignObject`, animation, entities,
+    `url()`, `data:` and a missing `viewBox`; what is stored is its
+    re-serialisation, not the input; a glyph with markup renders as text;
+  - a variant takes the published unit's hex; the published unit is not in
+    reach; its cards are detached, not deleted and not moved, and undoing
+    the variant re-attaches them;
+  - when a lens edit removes the home region, the home falls back to the
+    nearest surviving ancestor;
   - region statistics count only the caller's own cards;
   - a library never holds both Firma and Privat units;
   - a non-curator's first Sinnbild on a team library is personal;
@@ -679,3 +803,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Review round 1 (Grok, Gemini) folded in: imports stay on their planet and never write world knowledge; one connected library per device; model calls named as egress; sameness decided by learner or curator, merged only through `replaces`; stored hexes, Gosper only when an island is founded, bounded drift; condition from the weakest card, bands relative to request retention; Sinnbild validator parses a tree, glyph escaped, `untrusted: true`; words beside the UML shapes; prerequisite threads are the existing edges; shared and personal rows in separate tables; imports work with the atlas off, cells first, no stored material; only the read tool may be pre-approved; statistics only the caller's own. Six open questions resolved. |
 | 2026-10-13 | Proposed | Owner decisions on round 1: each library holds world knowledge plus its own planet (Firma on the company server, or a local file on a company machine where none exists; Privat on the personal library); land without a card is blank, *Neue Inhalte zeigen* shows it as pencil sketches to take in, declined content stays blank; Produkte is the default lens on a team library; the first Sinnbild is shared only when its writer may write knowledge. No open questions remain. |
 | 2026-10-13 | Proposed | Implementation plan added. Clarified Decision 2: a unit imported into a world region stays in the connected library as unpublished world knowledge; "never writes to the world planet" meant the central service. |
+| 2026-10-13 | Proposed | Review round 2 (MiMo, after merge) and owner decisions. Kind and status are kept apart. The kind (planet) says who protects the knowledge and follows the place. The status (published or own) follows provenance and alone decides publishing and sync. Own units carry an "eigene Einheit" marker, and only the editorial release publishes. New Decision 12, one goal and one method: a school's variant stands in for a published unit without merging learning state. Also: sameness never combines two histories; Sinnbilder are stored and shown as the validator's re-serialisation on every write path, and library Sinnbilder never flow back; home-region fallback; positions engine-written only; drift caps named, total drift visible; the Leben lens and the place tool listed; condition in words in the outline view. Owner input: world knowledge is public domain, and a method taught at school is not protected knowledge. The planets differ by who protects the knowledge: nobody, an organisation or a person. The editorial release checks that, and ZAM's own world units are released as CC0. |
