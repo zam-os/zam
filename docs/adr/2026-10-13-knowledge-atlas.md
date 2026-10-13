@@ -132,16 +132,35 @@ Existing pieces this builds on:
   several products build on is world knowledge: it lives on the world planet
   (Decision 2). The products that use it link to it with threads (Decision 7)
   instead of holding copies. Only what a team adapts becomes team knowledge.
-  The agent judges sameness by content, not by name, and curators confirm it
-  on a team library.
+- **Sameness is proposed, then decided.** The agent may propose that two
+  units are the same, judged by content, never by name. Until someone
+  decides, both units stay.
+  - On a personal library the learner decides, the way material import
+    shows existing content beside a proposal (2026-10-05, Decision 8).
+  - On a team library a curator decides.
+  - A merge moves cards and review history only through an explicit
+    `replaces` (2026-08-14, Decision 9). Without it, the units stay apart.
 - **Condition is computed, never stored.** It comes from the learner's FSRS-6
   cards when the map is drawn.
 - **The learner does not rearrange the map.** The agent keeps the order, and
   curators confirm it on a team library. Nothing the atlas does changes
   scheduling; only reviews do.
-- **The atlas shows what the learner has:** concepts with cards. *Wo nichts
-  ist, kann man nichts vergessen.* Whether it should also show content in
-  reach is Q2.
+- **The atlas shows what the learner has, and on request what is in reach.**
+  - By default the map shows the learner's own units. Published land they
+    have no card for is blank: the coast is the same for everyone on a
+    library, but it carries no names. *Wo nichts ist, kann man nichts
+    vergessen.*
+  - A switch, *Neue Inhalte zeigen*, draws published units without a card
+    as pencil sketches, with title and Sinnbild. A pupil sees what comes up
+    in school next and takes it in right from the map. Content not started
+    yet and content never meant to be started look the same.
+  - Taking content in is always the learner's own click. Install never
+    enrols (2026-08-14, Decision 3), and bonus content is offered, never
+    scheduled (Decision 6).
+  - Content the learner actively declined stays blank, even with the switch
+    on.
+  - There is no counter and no percentage. The sketches show what is there,
+    not how much is left.
 
 ### 2. Planets: world, company and private knowledge never mix
 
@@ -150,8 +169,8 @@ planet has its own map, its own lenses and its own colour of sea.
 
 | Planet | Lives on | Leaves its place |
 |---|---|---|
-| Weltwissen | a central knowledge server; public, and most useful for schools | yes: it is meant for everyone |
-| Firma | the company's learning server | never: company knowledge stays inside the company |
+| Weltwissen | published by a central knowledge server, installed into every library; public, and most useful for schools | yes: it is meant for everyone |
+| Firma | the company's learning server, or a local file on a company machine | never: company knowledge stays inside the company |
 | Privat | the learner's own device or private library | never: contacts, birthdays, anything kept private |
 
 - **No unit lives on two planets.** A REST basics unit belongs to world
@@ -167,10 +186,36 @@ planet has its own map, its own lenses and its own colour of sea.
   - Company and private knowledge are never linked to each other.
   - The map shows such a thread as a portal on the coast; a click opens the
     other planet at that unit.
-- **A planet is roughly one connection.** At home a learner may see only
-  Privat and Weltwissen. At work they also see the company planet from the
-  team library (2026-09-04). Holding several library connections at once is
-  a separate topic, outside this ADR.
+- **An import stays on the planet where it started.** The units an import
+  creates belong to the planet of the region the learner chose.
+  - The agent may link them to existing world units, and it may propose that
+    something is world knowledge. It never writes to the world planet.
+  - A new world unit goes out through the editorial release of the central
+    content service, with a named reviewer (2026-07-26b, Decisions 1–3:
+    there is no write path from a learner's device; 2026-08-14b).
+- **One connected library per device.** The database binding carries the
+  knowledge context (2026-07-04, Decision 9): a work device is connected to
+  the company library, a private device to the personal library.
+  - Each library holds two planets: world knowledge, installed as published
+    content, and its own planet, which is Firma on a company library and
+    Privat on a personal one. Firma and Privat never share a database. The
+    kernel enforces the one-way rule on every write.
+  - The company library is the company's server (2026-09-04). Where none has
+    been set up yet, it may be a local database file on a company machine.
+    It is never the learner's private library.
+  - World knowledge arrives as published content, installed into the
+    connected library (2026-07-26b). A portal is therefore a local row that
+    names a world unit, and the client draws it. The world service has
+    nowhere to store a company or private end.
+  - Agent tools work on the connected library only. They take no library
+    URL and return one planet per call.
+  - Holding several connections at once is a separate topic. If it comes, it
+    keeps these rules: no thread between Firma and Privat, and no company
+    note in a private library.
+- **Model calls leave the device too.** Judging sameness, proposing a lens
+  or drawing a Sinnbild sends text to the configured model endpoint. An
+  organisation confines that with `llm.cloud` and `llm.endpoints`
+  (2026-10-08b, D6). Thread storage does not do that job.
 
 ### 3. Lenses: several orders over the same knowledge
 
@@ -192,18 +237,42 @@ own levels, and the depth may differ.
     several of them meaning the same thing. The agent maps them onto readable
     regions through aliases. The learner never builds structure before
     learning.
+  - Regions and aliases for public content are published with that content
+    by the central content service, so every learner starts with the same
+    readable map. A library adds aliases for its own units only, and one
+    school's import never moves the published map.
+  - Library topics (2026-10-02) stay the catalogue of sources. A lens is the
+    spatial order; the two exist side by side.
 - **One home per unit and lens; titles may repeat.**
   - Each learning unit has exactly one home in a lens.
   - The same title can still appear on several islands, as different units
     (Decision 1).
   - A unit that no rule of the lens covers lands on an island for the
     unsorted, such as "Außerhalb des Lehrplans".
+  - In Schule, a unit bound to several grades lives on the island of the
+    earliest grade, where it is first taught. Later grades reach it through
+    a Voraussetzung thread. A later grade that teaches something else is a
+    different unit, even under the same title.
 - **The learner chooses a primary lens.** Switching lenses keeps the
   selection: the same unit simply sits somewhere else.
+- **On a team library, Produkte is the default primary lens.** The product
+  landscape stays stable while the organisation moves.
+  - Produkte comes from the repo knowledge map's C4 model or from the
+    structure of the team's knowledge hub (2026-09-04, Decision 10).
+  - Unternehmen is optional. The agent proposes the whole order anew from
+    one named source, such as the company's list of teams; a curator accepts
+    it, and the map shows the new current view. The agent notices that the
+    lens no longer fits by comparing it with that source.
+  - Every learner may still choose their own primary lens.
 - **Know your own area precisely, the rest roughly.** A learner has a home
   region: their team, or their class. The map opens zoomed to it, with the
   neighbouring islands in view. From there, zooming out shows the whole, and
   zooming in shows the details of one's own area.
+- **The primary lens and the home region follow the learner** across
+  devices: they are how this person finds their work. On a team library they
+  are `user_settings` rows, which the member writes (2026-09-04, Decision 4),
+  never `user_config`, which curators write. Zoom and pan stay on the
+  machine.
 - **Always the current view.**
   - A lens has no versions. When teams are reorganised, the curators (helped
     by the agent) change the lens, and the map simply shows the new order.
@@ -220,30 +289,47 @@ own levels, and the depth may differ.
 - **Colour.** Each lens has a colour level: Fach in Weltwissen and Schule,
   Team in Unternehmen, Produkt in Produkte. Each region on that level gets a
   hue.
-  - Mathematik is the same blue on every grade island.
+  - The hue follows the region's key, such as the subject, and is not stored
+    per region. Mathematik is therefore the same blue on every grade island.
   - A region below the colour level gets a shade of the hue plus a pattern
     (hatching, dots, waves, rings, …), so neighbours stay apart even where
     colour fades.
 - **Texture shows condition:**
 
-  | Texture | Condition |
+  | Texture | Means |
   |---|---|
   | full colour | known |
   | washed out and dusty | due |
   | dark | long overdue |
   | cracked | decaying (keeps lapsing) |
   | fog | probably forgotten |
-  | sketched on parchment | never practised |
+  | sketched on parchment | never practised (a card in state `new`) |
+  | pencil sketch, no fill | no card yet; shown only with *Neue Inhalte zeigen* |
+  | blank land | no card, or declined |
 
-- **Never colour alone.** Pattern and texture carry the same information, for
-  colour-blind learners.
+- **Never colour alone, on the map itself.** On the colour level, the
+  Sinnbild and the name carry what the hue says. Below it, the pattern does.
+  Texture repeats the condition. Colour-blind learners need not switch to the
+  outline view to tell regions apart.
 - **One kernel function computes the condition classes**, from
-  retrievability, due state and lapses. Its thresholds are named constants
-  (the spike uses R 0.85 / 0.75 / 0.65 and 3 lapses), tested like scheduling.
-  Queue, statistics, atlas and graphs then agree.
-- **The encoding becomes shared design tokens.** The learning graph (the 3D
-  view and the 2D panel) and the repo knowledge map adopt the hue and the
-  condition texture. That answers "too monochrome" once for every view.
+  retrievability, due state and lapses. Queue, statistics, atlas and graphs
+  then agree.
+  - A card that is not due is *known*. The classes below it lie past the due
+    point, so their bands are relative to the learner's request retention
+    (default 0.9), not fixed numbers. The spike's R 0.85 / 0.75 / 0.65 and 3
+    lapses assume the default.
+  - A card in short steps (learning, relearning) counts as due. A card in
+    state `new` is parchment.
+  - A unit has as many cards as its practice items. Its condition is the
+    weakest of them: the representative item is no mastery claim
+    (2026-08-14b, Question 4).
+  - The bands are named constants, tested like scheduling.
+- **The encoding becomes shared design tokens.** That answers "too
+  monochrome" once for every view.
+  - The learning graph (the 3D view and the 2D panel) adopts hue and
+    condition texture.
+  - The repo knowledge map has no cards (2026-10-03), so it adopts the hue
+    only.
 
 ### 5. Semantic zoom with a Sinnbild on every level
 
@@ -265,16 +351,32 @@ own levels, and the depth may differ.
     Sinnbilder.
 - **Who carries one.** Every learning unit and every region can have a
   Sinnbild. A leaf region without its own shows its first unit's.
-- **Shared first, personal override.** The first Sinnbild is shared: it counts
-  as knowledge, like the order itself. A learner may set their own, which only
-  they see; it counts as their learning state. This is the owner's decision of
-  2026-10-12.
+- **Shared first, personal override.** The first Sinnbild is shared when its
+  writer may write knowledge: on a personal library the learner, on a team
+  library a curator. In the pilot every member is a curator (2026-09-04,
+  Decision 7).
+  - A shared Sinnbild counts as knowledge, like the order itself.
+  - Without that right, the first Sinnbild is personal, and the agent may
+    propose it for sharing.
+  - A learner may always set their own, which only they see. It counts as
+    their learning state.
+  - This refines the owner's decision of 2026-10-12 ("the first Sinnbild
+    applies to everyone") after review round 1.
 - **Sinnbilder are untrusted content (2026-10-08b).**
-  - A kernel allowlist validator runs on every write. It lets only plain
-    shapes and text through: no scripts, styles, links, images, entities,
-    `url()` or `data:`, and at most 6000 characters.
-  - Surfaces render a Sinnbild only through `<img>` with a data URL, never
-    inline in the DOM.
+  - A kernel validator runs on every write. It parses the SVG into a tree and
+    accepts only the allowed elements and attributes: plain shapes and text.
+    It rejects scripts, styles, links, images, entities, `url()` and `data:`,
+    requires `viewBox="0 0 64 64"` with bounded `width` and `height`, and
+    allows at most 6000 characters. A regular expression over the source is
+    not enough.
+  - Surfaces render only the validated bytes, base64-encoded, through
+    `<img>`: in the atlas, the queue, the graph, search, Mobile and the MCP
+    Apps panel. Never through `<object>`, `<embed>`, `<iframe>` or
+    `innerHTML`.
+  - The glyph is plain text, rendered escaped on every surface.
+  - SVG text, glyphs and thread notes in MCP tool results carry
+    `untrusted: true` (2026-10-08b, D7). The validator cannot stop
+    `<text>ignore previous instructions</text>`; marking it as data can.
   - Writing a personal Sinnbild changes only learning state. Writing a shared
     one needs curator rights.
 - **Reuse.** The same Sinnbilder appear on review cards, learning-graph nodes
@@ -283,9 +385,12 @@ own levels, and the depth may differ.
 ### 7. Red threads
 
 - **Thread kinds, with connector shapes borrowed from UML.** All threads are
-  red, and the line and its end say what kind it is, so the kind reads
-  without a legend for those who know UML. A short legend covers everyone
-  else.
+  red, and the line and its end say what kind it is.
+  - Every kind also says it in words: on hover, in the unit panel, and beside
+    the line at the closest zoom ("baut auf", "nutzt", "Schnittstelle",
+    "ist ein"). The shapes help those who know UML; nobody needs UML to read
+    a thread. A pupil on the Schule lens mostly meets Voraussetzung and
+    Verbindung.
 
   | Kind | Means | Drawn like (UML) | Typical source |
   |---|---|---|---|
@@ -295,15 +400,19 @@ own levels, and the depth may differ.
   | ist ein | A is a special case of B | solid line, hollow triangle at B (generalisation) | world knowledge: a square is a rectangle |
   | Verbindung | related, with a note | plain line with a paper note (association) | the agent's or the learner's insight |
 
-- **Threads other than prerequisites are new data**: two ends, a kind, a note,
-  an author and a scope.
+- **Voraussetzung threads are the existing prerequisite edges**, also across
+  planets: a world unit is installed in the connected library (Decision 2),
+  so a company unit can require it like any other.
+- **The other kinds are new data**: two ends, a kind, a note and an author.
   - The agent proposes shared threads; on a team library a curator publishes
     them.
-  - A learner's own threads are learning state.
+  - A learner's own threads, of any kind, are learning state. They never
+    feed blocking.
   - A thread is not an alignment. Alignments link to external vocabularies
     and stay advisory (2026-08-14b). A thread is a hint for learning, never
     a statement of identity or equality — two units with the same title are
-    not linked just because of it.
+    not linked just because of it. An "ist ein" thread never dedupes units or
+    moves learning state.
 - **Threads bundle to the level in view.** From afar they run island to
   island, then region to region. Up close they connect single units, with
   prerequisites shown only around the focus. The learner chooses between all
@@ -322,16 +431,25 @@ own levels, and the depth may differ.
 - **Positions belong to the lens and are shared.** They are stored once laid
   out, so everyone on a team library sees the same map. "The platform island
   is top left" then works in conversation.
-- **Inside an island, places stay put.**
-  - Units lie along a Gosper curve, so every region is one connected patch
-    at every zoom level.
-  - A region keeps spare land for growth, and a new unit takes its region's
-    spare land or the nearest free coast.
+- **Inside an island, places stay put.** A unit's hex is assigned once and
+  stored.
+  - When an island is founded, a Gosper curve lays it out, so every region is
+    one connected patch at every zoom level. Each region gets reserved land
+    for growth.
+  - A new unit takes its region's reserved land or the nearest free coast.
+  - ZAM never recomputes the curve for an existing island: that would move
+    units. A relayout happens only when a region outgrows all of its land,
+    and the library is told. (The spike still recomputes the curve on every
+    change; the product must not.)
 - **Growth may found new islands or enlarge existing ones.**
-  - Islands drift apart to make room, as an overlap-free push that keeps each
-    island's neighbours and direction.
-  - Inside a grown island, a relayout happens only when a region outgrows all
-    of its land, and the learner is told.
+  - A new island is founded when a new top-level region appears: a new
+    product, grade or subject. A crowded island first uses its reserved land.
+    A product that splits in two is a curator edit of the Produkte lens, not
+    an automatic push.
+  - Islands drift apart to make room, outward along their existing bearing
+    and by a capped amount, so each neighbour stays in its direction. Where
+    making room would turn a neighbour, the new island is placed farther out
+    instead, and the existing constellation stays.
 
 ### 9. Import starts at a place on the map
 
@@ -352,19 +470,40 @@ own levels, and the depth may differ.
   and never as a separate step for the learner. The import paths are tiles,
   material import (2026-10-05), OKF import and goal import. Material import
   gains a *place* as its target.
+- **Every import path works without the atlas.** The atlas sits behind an
+  alpha switch (Decision 10). While it is off, every import path works as
+  today; while it is on, a place is an extra target.
+- **The cell has precedence.** Where a cell covers the region, the offer goes
+  through the cell: the surface asks `needsGenericCurriculumImport` first
+  (2026-08-14, Decision 10). The agent may fill levels under that structure,
+  but the cell's set stays the set.
+- **Nothing of the material is stored** (2026-10-05, Decision 9). The
+  material goes to the model in the same flow. An import request keeps the
+  place, the source link and the units added, not the text.
 
 ### 10. Surfaces and agents
 
 - **The Studio comes first**, with the atlas as a view beside the learning
   graph. It sits behind an alpha switch, like the knowledge map (2026-10-03,
-  Decision 4). The primary lens and the home region are view preferences.
-- **MCP tools, each safe to approve automatically (2026-10-08b):**
-  - read the atlas, a lens and region statistics;
+  Decision 4): machine-local in `~/.zam/config.json`, off by default, and no
+  tool writes it.
+- **Reviewing a region** opens the due queue for that region's cards. Each
+  submit declares its `answer_format` (2026-09-27). Layout and drift never
+  touch scheduling.
+- **MCP tools.** Each stays safe even when a host approves it automatically
+  (2026-10-08b):
+  - read the atlas, a lens and the caller's own region statistics;
   - connect two units with a thread of a given kind (personal by default);
   - set a Sinnbild (personal by default; shared only with curator rights);
   - for curators, edit a lens: regions, names, order, aliases.
 
-  The open Studio follows agent changes live.
+  Only the read tool is a candidate for the reviewed pre-approval list
+  (2026-10-08b, D4). Writing a thread, a Sinnbild or a lens always asks. The
+  open Studio follows agent changes live.
+- **Statistics are the caller's own.** A region shows "3 due here", from the
+  learner's own cards. There are no figures about other people (2026-07-04,
+  Decision 11), and no coverage percentage, which would be a target
+  (2026-08-14, Decision 6).
 - **Sorting is part of every import path**: tiles, material import, OKF import
   and goal import. It is never a separate step for the learner.
 - **Later:** Mobile and an MCP Apps panel.
@@ -383,15 +522,24 @@ This is indicative; the plan fixes the names. Every schema change goes into
 
 | Table (sketch) | Class | Holds |
 |---|---|---|
-| (planet) | — | not a table: each planet is its own library or server; the tables below exist per planet |
+| (planet) | — | not a table: world units are installed published content, the library's own units form its own planet (Decision 2) |
 | `atlas_lenses` | knowledge | id, name, kind (`weltwissen`, `schule`, `unternehmen`, `produkte`, …), level names, colour level |
-| `atlas_regions` | knowledge | lens, parent, level, name, rank, hue or pattern, optional `ontology_ref` |
+| `atlas_regions` | knowledge | lens, parent, level, name, key (drives the hue), rank, pattern, optional `ontology_ref` |
 | `atlas_domain_aliases` | knowledge | domain path → region (Weltwissen) |
 | `atlas_members` | knowledge | lens, atom or token → leaf region (derived or curated) |
-| `atlas_positions` | knowledge | lens, member → hex; lens, island → offset |
-| `emblems` | both | subject (atom, token or region), SVG, glyph, author; a learner id means personal |
-| `connections` | both | ends, kind (`nutzt`, `schnittstelle`, `ist-ein`, `verbindung`), note, author; a learner id means personal; an end may point to a world-knowledge unit |
-| `import_requests` | learning state | lens, region, text, units added — "the agent turns this into units here" |
+| `atlas_positions` | knowledge | lens, member → hex, assigned once; lens, island → offset |
+| `emblems` | knowledge | subject (atom, token or region), SVG, glyph, author; no learner column |
+| `learner_emblems` | learning state | learner, subject, SVG, glyph: a personal override |
+| `connections` | knowledge | ends, kind (`nutzt`, `schnittstelle`, `ist-ein`, `verbindung`), note, author; no learner column |
+| `learner_connections` | learning state | learner, ends, any kind including `voraussetzung`, note; never feeds blocking |
+| `import_requests` | learning state | lens, region, source link, units added; never the material itself |
+
+Shared and personal rows live in separate tables, like tokens and cards, so
+row-level security on a team library never has to tell them apart inside one
+table. An end that names a world unit uses its published id; while pilot ids
+are provisional (2026-08-14, Decision 8), a rebuild remaps it through the same
+explicit mapping as cards. Prerequisite threads stay in the existing
+prerequisite tables.
 
 ## Delivery
 
@@ -406,7 +554,8 @@ All phases ship on one branch.
   - Reviewing a region.
   - Stored positions, and growth with island drift.
 - **Phase 1b: import at a place.** *Hier importieren …* on regions, with
-  matching curriculum tiles and notes handed to the agent.
+  matching curriculum tiles and notes handed to the agent. *Neue Inhalte
+  zeigen*, and taking content in from the map.
 - **Phase 2: Sinnbilder.** Storage, the validator and the MCP tool, shown in
   the atlas, the queue and the graph.
 - **Phase 3: the company planet, team lenses and typed threads.**
@@ -464,28 +613,16 @@ All phases ship on one branch.
 
 ## Open questions
 
-1. **Placing a unit on its planet.** When an import mixes world knowledge
-   and team adaptations (a team's Scrum notes), the agent has to split it:
-   what is world knowledge goes to the world planet, only the adaptation
-   stays with the team. Who confirms that split?
-2. **Splitting an island.** When should the agent found a new island rather
-   than grow one? For example, when a product splits in two, or a team takes
-   on a new responsibility.
-3. **Content in reach.** Should published content the learner has not
-   started appear as foggy, unexplored coast? It fits *fog = unknown*, but
-   conflicts with *where nothing is, nothing can be forgotten*.
-4. **Curated lenses.** Where do the Unternehmen and Produkte lenses come from
-   (knowledge-hub structure, the C4 model, curators), and how does the agent
-   notice that a lens no longer matches the organisation?
-5. **Public aliases.** Do aliases and regions for public content live in the
-   central content service (2026-07-26b), or per library?
-6. **Several bindings.** In the Schule lens, which grade island holds an atom
-   that is bound to grades 7 and 9?
-7. **Island drift.** How much drift is acceptable before the map stops
-   feeling familiar?
-8. **Where preferences live.** Are the primary lens and the home region
-   machine-local preferences (like the knowledge map's view), or does
-   learning state carry them across devices?
+None remain after review round 1. Resolved there:
+
+- placing a unit on its planet, and where the company planet lives
+  (Decision 2);
+- content in reach (Decision 1);
+- curated lenses and the default lens on a team library, public aliases,
+  several grade bindings, and where preferences live (Decision 3);
+- splitting an island and drift (Decision 8).
+
+The field test checks the default of *Neue Inhalte zeigen*.
 
 ## Verification
 
@@ -495,12 +632,25 @@ All phases ship on one branch.
   - two units with the same title stay apart;
   - a thread from world knowledge to company or private knowledge is
     refused, and so is one between company and private knowledge;
-  - an import at a region asks only for the missing levels below it;
+  - an import creates units only on the planet of the chosen region, never
+    on the world planet;
+  - an import at a region asks only for the missing levels below it, and
+    stores no material;
+  - condition: a unit takes its weakest card; the bands follow the learner's
+    request retention; a card in short steps counts as due;
   - stable positions: adding a unit moves no other unit in its island;
-  - island drift without overlap;
-  - the Sinnbild validator accepts plain shapes and rejects scripts, styles,
-    images, entities, `url()` and `data:`.
+  - island drift without overlap, keeping each neighbour's bearing;
+  - the Sinnbild validator accepts a tree of plain shapes and rejects
+    scripts, styles, images, entities, `url()`, `data:` and a missing
+    `viewBox`; a glyph with markup renders as text;
+  - region statistics count only the caller's own cards;
+  - a library never holds both Firma and Privat units;
+  - a non-curator's first Sinnbild on a team library is personal;
+  - land without a card is blank, unless *Neue Inhalte zeigen* is on; content
+    the learner declined stays blank either way; taking content in from the
+    map creates cards only on the learner's click.
 - **Studio:**
+  - with the alpha switch off, every import path works as before;
   - with the alpha switch on, the atlas opens on the home region and every
     zoom level reads;
   - switching lenses keeps the selection;
@@ -508,7 +658,8 @@ All phases ship on one branch.
   - an agent change shows up live;
   - dark mode works, and the outline view works by keyboard.
 - **Field test:** a pupil uses the Schule lens for a week. Does seeing the
-  whole change what they review?
+  whole change what they review? Do they turn on *Neue Inhalte zeigen*, and
+  do they take in what comes up in school from the map?
 
 ## Status history
 
@@ -516,3 +667,5 @@ All phases ship on one branch.
 |---|---|---|
 | 2026-10-13 | Draft | Written after the two spikes on PR #405. Revised the same day: the map is fixed (no rearranging), lenses for several orders, growth through new and drifting islands; learning units instead of terms (titles may repeat), UML-style thread kinds, no versions or history; planets for world, company and private knowledge; import at a place. |
 | 2026-10-13 | Proposed | Opened as a docs PR for review before the plan. |
+| 2026-10-13 | Proposed | Review round 1 (Grok, Gemini) folded in: imports stay on their planet and never write world knowledge; one connected library per device; model calls named as egress; sameness decided by learner or curator, merged only through `replaces`; stored hexes, Gosper only when an island is founded, bounded drift; condition from the weakest card, bands relative to request retention; Sinnbild validator parses a tree, glyph escaped, `untrusted: true`; words beside the UML shapes; prerequisite threads are the existing edges; shared and personal rows in separate tables; imports work with the atlas off, cells first, no stored material; only the read tool may be pre-approved; statistics only the caller's own. Six open questions resolved. |
+| 2026-10-13 | Proposed | Owner decisions on round 1: each library holds world knowledge plus its own planet (Firma on the company server, or a local file on a company machine where none exists; Privat on the personal library); land without a card is blank, *Neue Inhalte zeigen* shows it as pencil sketches to take in, declined content stays blank; Produkte is the default lens on a team library; the first Sinnbild is shared only when its writer may write knowledge. No open questions remain. |
