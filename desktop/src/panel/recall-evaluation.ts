@@ -166,16 +166,28 @@ export function parseRecallEvaluation(
   text: string,
   card?: Pick<RecallEvaluationCard, "concept" | "bloomLevel">,
 ): RecallEvaluation {
-  const stripped = text
-    .trim()
-    .replace(
-      /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*?<\s*\/\s*(?:think|thought|reasoning|scratchpad|antThinking)\s*>/gi,
-      "",
-    )
-    .replace(
-      /<\s*(?:think|thought|reasoning|scratchpad|antThinking)\b[^>]*>[\s\S]*$/gi,
-      "",
-    )
+  const THINKING_TAGS =
+    "think|thinking|thought|reasoning|scratchpad|antThinking";
+  let stripped = text.trim();
+  stripped = stripped.replace(
+    new RegExp(
+      `<\\s*(?:${THINKING_TAGS})\\b[^>]*>[\\s\\S]*?<\\s*\\/\\s*(?:${THINKING_TAGS})\\s*>`,
+      "gi",
+    ),
+    "",
+  );
+  stripped = stripped.replace(
+    new RegExp(
+      `<\\s*(?:${THINKING_TAGS})\\b[^>]*>[\\s\\S]*?(?=\\{)`,
+      "gi",
+    ),
+    "",
+  );
+  stripped = stripped.replace(
+    new RegExp(`<\\s*(?:${THINKING_TAGS})\\b[^>]*>`, "gi"),
+    "",
+  );
+  stripped = stripped
     .replace(/^```(?:json)?\s*/i, "")
     .replace(/\s*```$/, "")
     .trim();
