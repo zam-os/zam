@@ -18,6 +18,7 @@ vi.mock("../../../src/cli/agent-llm/adapter.js", async (importActual) => {
 import { getAgentAdapter } from "../../../src/cli/agent-llm/adapter.js";
 import {
   AGENT_CURRICULUM_IMPORT_TIMEOUT_MS,
+  generateTopicCardsViaLLM,
   proposeSubtopicsViaLLM,
   importCurriculumViaLLM,
 } from "../../../src/cli/llm/client.js";
@@ -219,16 +220,89 @@ describe("subtopic proposals via the agent transport", () => {
       title: "Learn calculus",
       context: "To follow a physics course",
       path: ["Derivatives"],
+      place: ["Natur", "Mathematik"],
     });
 
     expect(seen?.system).toContain("learning-path planner");
-    // The context shapes the subtopics but never becomes content, and the
-    // model keeps to what the topic names (ADR 2026-10-14, Decision 1).
-    expect(seen?.system).toContain("Never turn the context itself into content");
+    // The model keeps to what the topic names; the context narrows it and
+    // says where to start, but never becomes content (ADR 2026-10-14,
+    // Decision 1). A label never names the field the learner knows.
     expect(seen?.system).toContain("indispensable for understanding");
+    expect(seen?.system).toContain("never content");
+    expect(seen?.system).toContain("a bridge, not proof");
+    expect(seen?.system).toContain("never the related field the learner knows");
+    expect(seen?.system).toContain("says nothing about what the learner knows");
     expect(seen?.user).toContain("Learn calculus");
     expect(seen?.user).toContain("To follow a physics course");
-    expect(seen?.user).toContain("Derivatives");
+    // The place is a line of its own, not part of the learner's context.
+    expect(seen?.user).toContain(
+      "Where the cards will land in the learner's knowledge atlas: Natur › Mathematik",
+    );
+    expect(seen?.user).toContain(
+      "The learner drilled into this path, from the topic down: Derivatives",
+    );
+  });
+
+  it("drafts cards for one subtopic, bridging to a known field only on single cards", async () => {
+    const systems: string[] = [];
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        systems.push(req.system);
+        return { text: CANNED_CARDS };
+      }),
+    );
+    const db = await seedDb();
+    const topic = { label: "Derivatives", description: "Rate of change." };
+
+    const cards = await generateTopicCardsViaLLM(db, {
+      title: "Learn calculus",
+      context: "I studied physics.",
+      path: [],
+      topic,
+    });
+
+    expect(cards).toHaveLength(1);
+    expect(cards[0].source_link).toBeNull();
+    expect(systems[0]).toContain("for that subtopic only");
+    expect(systems[0]).toContain("an overview card lists names only");
+    expect(systems[0]).toContain("an overview card's answer never does");
+    expect(systems[0]).toContain(
+      "never merely restate the subtopic's description as a question",
+    );
+    expect(systems[0]).toContain(
+      '"context": The label of the subtopic the card belongs to.',
+    );
+
+    await generateTopicCardsViaLLM(db, {
+      title: "Learn calculus",
+      context: "",
+      path: [],
+      topic,
+    });
+    expect(systems[1]).not.toContain("as a bridge");
+    expect(systems[1]).toContain("assume no prior knowledge");
+  });
+
+  it("starts from the foundations when the learner gave no context", async () => {
+    let seen: { system: string; user: string } | undefined;
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seen = { system: req.system, user: req.user };
+        return { text: CANNED_TOPICS };
+      }),
+    );
+    const db = await seedDb();
+
+    await proposeSubtopicsViaLLM(db, {
+      title: "Learn calculus",
+      context: "  ",
+      path: [],
+    });
+
+    expect(seen?.system).toContain("assume no prior knowledge");
+    expect(seen?.system).not.toContain("a bridge, not proof");
+    expect(seen?.system).not.toContain("atlas place");
+    expect(seen?.user).not.toContain("Context, prior knowledge");
   });
 
   it("propagates a harness failure instead of silently falling back", async () => {

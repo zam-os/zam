@@ -10,6 +10,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   addPrerequisite,
+  assertPrerequisitePlanets,
   assignTokenToContext,
   createToken,
   deleteToken,
@@ -451,6 +452,7 @@ tokenCommand
         process.exit(1);
       }
 
+      await assertPrerequisitePlanets(db, token.id, requires.id);
       await addPrerequisite(db, token.id, requires.id);
 
       if (opts.quiet) return;

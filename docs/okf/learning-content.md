@@ -7,19 +7,21 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-14T12:00:00.000Z
+timestamp: 2026-10-14T13:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
 The actions that create or manage cards stay on Lern-Karten: a new card, topic import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, **Themen-Import** (Topic import), and file import; Bonus sits beside them while items are kept.
 
-The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)) replaced the goal import. It opens in a dialog of its own, with the same topic area as the first-run flow's topic page. That page follows only when the first-run content page's topic path is chosen.
-- The learner names the topic, and a larger field takes context, prior knowledge and details. Example: PostgreSQL after projects only in Microsoft SQL Server, learned from the parallels and the differences.
-- The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding.
-- No file is written. One `zam-topic:` source row records the import.
+The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)) replaced the goal import. It opens in a dialog of its own, with the same topic area as the first-run flow's topic page. That page follows only while the first-run content page's topic path is the one last chosen; choosing another path takes it out again.
+- The learner names the topic, at most 200 characters, and a larger field takes context, prior knowledge and details. Example: PostgreSQL after projects only in Microsoft SQL Server, learned from the parallels and the differences.
+- The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding. What the learner already knows is where it starts, never content. Without a context it starts from the foundations.
+- From the first subtopic level, *Thema oder Kontext ändern* leads back to the name and the context, both kept.
+- No file is written. One `zam-topic:` source row records the import. That row names the import, not a source to read up in, so Lern-Karten never offers it as a card's source link.
+- Started outside the atlas, the cards land where any own unit lands: on the library's own planet unless a world rule covers their domain. ADR 2026-10-14's third delivery puts every topic import on the world planet.
 
-The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model hears where the cards will land, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
 
 # Lern-Karten
 
@@ -60,6 +62,7 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 # Citations
 
 - [ADR 2026-10-10 — Learning Content: Cards and Sources](../adr/2026-10-10-learning-content-sources.md)
+- [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-06-30 — Learning Content Studio](../adr/2026-06-30-learning-content-studio.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
@@ -67,4 +70,4 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
 - [ADR 2026-07-02 — LehrplanPLUS Curriculum Import Wizard](../adr/2026-07-02-lehrplanplus-import-wizard.md)
 - [ADR 2026-06-25c — Flexible ZAM Workspaces and Skill Wiring](../adr/2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md)
-- Code: `desktop/src/learning-content.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/src/curriculum-wizard.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`
+- Code: `desktop/src/learning-content.ts`, `desktop/src/topic-import.ts`, `desktop/src/onboarding.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/models/token.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/src/curriculum-wizard.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`

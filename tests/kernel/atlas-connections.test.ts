@@ -2,24 +2,29 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
+import { linkPrereq } from "../../src/cli/bridge-handlers.js";
 import {
   addConnection,
   addPrerequisite,
+  assertPrerequisitePlanets,
   ConnectionError,
   createToken,
   type Database,
   ensureCard,
+  ensureWorldLenses,
   executeReviewAction,
   getBlockingPrerequisites,
   getCard,
   LEBEN_LENS,
   loadConnections,
   MAX_THREAD_NOTE,
+  moveUnitsToPlanet,
   openDatabase,
   orientThread,
   readAtlas,
   removeConnection,
   type UnitKey,
+  unitsHeldByThreads,
   WELTWISSEN_LENS,
 } from "../../src/kernel/index.js";
 
@@ -309,11 +314,12 @@ describe("atlas connections", () => {
     const kraft = await unit("kraft", "physik/mechanik");
     const arbeit = await unit("arbeit", "physik/mechanik");
     await addPrerequisite(db, hebel.token.id, kraft.token.id);
-    await addConnection(db, {
+    const copy = await addConnection(db, {
       ...personal,
       a: hebel.key,
       b: kraft.key,
       kind: "voraussetzung",
+      note: "Ohne Kraft kein Hebel.",
     });
     const uses = await addConnection(db, {
       ...personal,
@@ -334,11 +340,15 @@ describe("atlas connections", () => {
     const view = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
     expect(view.threads).toEqual(
       expect.arrayContaining([
+        // Drawn once, but as the learner's: their note, and their id to cut.
         {
           from: hebel.key,
           to: kraft.key,
           kind: "voraussetzung",
-          scope: "shared",
+          scope: "personal",
+          id: copy.id,
+          note: "Ohne Kraft kein Hebel.",
+          alsoShared: true,
         },
         {
           from: arbeit.key,
@@ -370,6 +380,103 @@ describe("atlas connections", () => {
       "ist-ein",
       "voraussetzung",
     ]);
+    expect(
+      theirs.threads.find((t) => t.kind === "voraussetzung"),
+    ).toMatchObject({ scope: "shared" });
+
+    // Cutting their own copy leaves the library's thread.
+    await removeConnection(db, { id: copy.id, ...personal });
+    const after = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
+    expect(after.threads.find((t) => t.kind === "voraussetzung")).toEqual({
+      from: hebel.key,
+      to: kraft.key,
+      kind: "voraussetzung",
+      scope: "shared",
+    });
+  });
+
+  it("keeps the planet rule for prerequisites linked by a tool", async () => {
+    const hebel = await unit("hebel", "physik/mechanik");
+    const geburtstag = await unit("geburtstage", "familie/geburtstage");
+    await expectRefusal(
+      assertPrerequisitePlanets(db, hebel.token.id, geburtstag.token.id),
+      "world-to-own",
+    );
+    await expect(
+      linkPrereq(db, { token: hebel.token.slug, requires: geburtstag.token.slug }),
+    ).rejects.toThrow(ConnectionError);
+    const stored = (await db
+      .prepare("SELECT COUNT(*) AS n FROM prerequisites WHERE token_id = ?")
+      .get(hebel.token.id)) as { n: number };
+    expect(Number(stored.n)).toBe(0);
+    // From the own planet to world knowledge is fine.
+    await expect(
+      linkPrereq(db, { token: geburtstag.token.slug, requires: hebel.token.slug }),
+    ).resolves.toMatchObject({ success: true });
+  });
+
+  it("holds a unit on its planet when a thread would run from world knowledge to it", async () => {
+    await ensureWorldLenses(db);
+    const rezept = await unit("rezept", "familie/kochen");
+    const einkauf = await unit("einkauf", "familie/einkauf");
+    await addConnection(db, {
+      ...personal,
+      a: rezept.key,
+      b: einkauf.key,
+      kind: "nutzt",
+    });
+    const move = (units: UnitKey[], planet: "welt" | "privat") =>
+      moveUnitsToPlanet(db, { units, planet, placedBy: "learner" });
+
+    // Alone, the dependent end stays: it would use a private unit.
+    expect(await move([rezept.key], "welt")).toMatchObject({
+      moved: [],
+      held: [{ unit: rezept.key, by: einkauf.key }],
+    });
+    // Together, both go.
+    expect((await move([rezept.key, einkauf.key], "welt")).moved.sort()).toEqual(
+      [rezept.key, einkauf.key].sort(),
+    );
+    // Back, the end depended upon stays while world knowledge uses it.
+    expect(await move([einkauf.key], "privat")).toMatchObject({
+      moved: [],
+      held: [{ unit: einkauf.key, by: rezept.key }],
+    });
+    // A Verbindung has no direction and holds nothing.
+    const notiz = await unit("notiz", "familie/notizen");
+    await addConnection(db, {
+      ...personal,
+      a: rezept.key,
+      b: notiz.key,
+      kind: "verbindung",
+    });
+    expect((await move([notiz.key], "welt")).moved).toEqual([notiz.key]);
+  });
+
+  it("holds each unit a chain needs, until nothing changes", () => {
+    const [a, b, c] = ["token:a", "token:b", "token:c"] as UnitKey[];
+    const planetOf = new Map<UnitKey, "welt" | "privat">([
+      [a, "privat"],
+      [b, "privat"],
+      [c, "privat"],
+    ]);
+    // a uses b, b uses c; a and b move, c stays private.
+    const held = unitsHeldByThreads(
+      [
+        { a, b },
+        { a: b, b: c },
+      ],
+      new Set([a, b]),
+      "welt",
+      planetOf,
+    );
+    expect([...held]).toEqual(
+      expect.arrayContaining([
+        [b, c],
+        [a, b],
+      ]),
+    );
+    expect(held.size).toBe(2);
   });
 
   it("ends a thread to the other planet at a portal, prerequisites too", async () => {

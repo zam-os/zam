@@ -103,11 +103,18 @@ describe("topic import (ADR 2026-10-14)", () => {
     expect(onboarding).not.toContain("goal-create");
   });
 
-  it("shows the first-run topic page only on the topic path", () => {
+  it("shows the first-run topic page only while the topic path is chosen", () => {
     const onboarding = desktopFile("src/onboarding.ts");
-    expect(onboarding).toContain("shown: () => topicChosen,");
-    expect(onboarding).toContain(
-      'if (path.action.step === "topic") topicChosen = true;',
-    );
+    expect(onboarding).toContain('shown: () => chosenStep === "topic",');
+    // Every path on page 6 sets the choice, so another path takes it back.
+    expect(onboarding).toContain("chosenStep = null;");
+    expect(onboarding).toContain('actions.goToStep("content");');
+    expect(onboarding).toContain("chosenStep = path.action.step;");
+  });
+
+  it("keeps the topic's name within its record before any model call", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    expect(onboarding).toContain("titleInput.maxLength = TOPIC_TITLE_MAX;");
+    expect(onboarding).toContain('t("topic_edit")');
   });
 });

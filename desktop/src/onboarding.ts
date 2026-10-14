@@ -18,6 +18,9 @@ import type { AtlasLensKindWire } from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
 import { t, tf } from "./i18n.js";
 
+/** `MAX_TOPIC_TITLE` of the kernel's topic import; a test keeps them equal. */
+export const TOPIC_TITLE_MAX = 200;
+
 export interface OnboardingStep {
   /** Stable id for tests and later cross-step references. */
   id: string;
@@ -369,9 +372,9 @@ export function buildOnboardingSteps(
   // Topic import state, kept across Back/forward re-renders so a
   // half-decomposed topic survives navigating the flow.
   const topicState: TopicImportState = createTopicImportState();
-  // The topic page belongs to the flow only once page 6's topic path was
-  // chosen (ADR 2026-10-14, Decision 6).
-  let topicChosen = false;
+  // The topic page belongs to the flow only while page 6's topic path is the
+  // one last chosen (ADR 2026-10-14, Decision 6): another path takes it out.
+  let chosenStep: string | null = null;
   // Agent page detection state, probed lazily on first render (detection
   // reads real config files, so it does not ride desktop-bootstrap) and kept
   // across Back/forward re-renders. `report: null` + `error: null` = probing.
@@ -616,9 +619,14 @@ export function buildOnboardingSteps(
           actionBtn.textContent = t(path.actionLabelKey);
           actionBtn.addEventListener("click", () => {
             if (path.action.kind === "entry") {
+              // Leaving the topic path changes the step count shown here.
+              if (chosenStep !== null) {
+                chosenStep = null;
+                actions.goToStep("content");
+              }
               actions.openContentEntry(path.action.entry);
             } else {
-              if (path.action.step === "topic") topicChosen = true;
+              chosenStep = path.action.step;
               actions.goToStep(path.action.step);
             }
           });
@@ -633,7 +641,7 @@ export function buildOnboardingSteps(
       titleKey: "topic_kicker",
       // Only for the topic path of page 6; skippable like every content step.
       skippable: true,
-      shown: () => topicChosen,
+      shown: () => chosenStep === "topic",
       render(container) {
         container.append(
           heading(t("topic_title")),
@@ -1338,7 +1346,11 @@ export interface TopicImportState {
    * import attempt and reused by a retry. No file is written.
    */
   sourceId: string | null;
-  imported: { created: number; ensured: number } | null;
+  /**
+   * The import's counts; `placeError` when the cards were saved but could
+   * not be put at the atlas place.
+   */
+  imported: { created: number; ensured: number; placeError?: string } | null;
 }
 
 /** A fresh, empty topic: nothing defined, decomposed or imported yet. */
@@ -1362,14 +1374,17 @@ export function createTopicImportState(
 }
 
 /**
- * The topic's context as the model reads it: at an atlas place, the place
- * comes with it, so the subtopics and cards fit where they will land.
+ * What the model reads besides the topic: the learner's context, and at an
+ * atlas place that place on a line of its own, so the subtopics and cards
+ * fit where they will land and the place never reads as prior knowledge.
  */
-export function topicContext(state: TopicImportState): string {
-  const context = state.context.trim();
-  if (!state.place) return context;
-  const where = `${t("topic_place_for_model")} ${state.place.path.join(" › ")}`;
-  return context ? `${context}\n\n${where}` : where;
+export function topicPromptArgs(state: TopicImportState): string[] {
+  return [
+    "--context",
+    state.context.trim(),
+    "--place",
+    JSON.stringify(state.place?.path ?? []),
+  ];
 }
 
 /** Arguments that put a confirmed topic import at its atlas place. */
@@ -1460,6 +1475,19 @@ export function renderTopicArea(
       String(state.imported.created + state.imported.ensured),
     );
     root.append(status);
+    // The cards are saved either way; the learner must know they are not
+    // where they asked for them.
+    const placeError = state.imported.placeError;
+    if (placeError && state.place) {
+      root.append(
+        paragraph(
+          tf("topic_place_failed", {
+            path: state.place.path.join(" › "),
+            message: placeError,
+          }),
+        ),
+      );
+    }
     return;
   }
 
@@ -1483,6 +1511,7 @@ export function renderTopicArea(
   titleInput.id = "onboarding-topic-name";
   titleInput.className = "onboarding-topic-input";
   titleInput.placeholder = t("topic_name_placeholder");
+  titleInput.maxLength = TOPIC_TITLE_MAX;
   titleInput.value = state.title;
   titleInput.addEventListener("input", () => {
     state.title = titleInput.value;
@@ -1512,6 +1541,13 @@ export function renderTopicArea(
     void (async () => {
       if (!state.title.trim()) {
         status.textContent = t("topic_name_missing");
+        return;
+      }
+      // The import's record holds the name; check it before any model call.
+      if (state.title.replace(/\s+/g, " ").trim().length > TOPIC_TITLE_MAX) {
+        status.textContent = tf("topic_name_too_long", {
+          max: TOPIC_TITLE_MAX,
+        });
         return;
       }
       suggestBtn.disabled = true;
@@ -1561,8 +1597,7 @@ async function fetchSubtopics(
     }>("topic-outline", [
       "--title",
       state.title.trim(),
-      "--context",
-      topicContext(state),
+      ...topicPromptArgs(state),
       "--path",
       JSON.stringify(state.path),
     ]);
@@ -1641,18 +1676,25 @@ function renderSubtopicLevel(
 
   const controls = document.createElement("div");
   controls.className = "onboarding-model-links";
+  const upBtn = document.createElement("button");
+  upBtn.type = "button";
+  upBtn.className = "btn ghost-btn btn-sm";
   if (state.path.length > 0) {
-    const upBtn = document.createElement("button");
-    upBtn.type = "button";
-    upBtn.className = "btn ghost-btn btn-sm";
     upBtn.textContent = t("topic_up");
     upBtn.addEventListener("click", () => {
       state.path.pop();
       state.levels.pop();
       rerender();
     });
-    controls.append(upBtn);
+  } else {
+    // From the first level back to the topic's name and context, both kept.
+    upBtn.textContent = t("topic_edit");
+    upBtn.addEventListener("click", () => {
+      state.levels = [];
+      rerender();
+    });
   }
+  controls.append(upBtn);
   const importBtn = document.createElement("button");
   importBtn.type = "button";
   importBtn.className = "btn primary-btn";
@@ -1721,8 +1763,7 @@ export async function draftSubtopicCards(
       }>("topic-cards", [
         "--title",
         state.title.trim(),
-        "--context",
-        topicContext(state),
+        ...topicPromptArgs(state),
         "--path",
         path,
         "--topic",
@@ -1816,6 +1857,7 @@ export async function importSelectedTopicCards(
     success: boolean;
     createdCount: number;
     ensuredCount: number;
+    placeError?: string;
   }>("personal-source-confirm-import", [
     "--sourceId",
     state.sourceId,
@@ -1826,6 +1868,7 @@ export async function importSelectedTopicCards(
   state.imported = {
     created: result.createdCount,
     ensured: result.ensuredCount,
+    ...(result.placeError ? { placeError: result.placeError } : {}),
   };
 }
 

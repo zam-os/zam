@@ -936,12 +936,18 @@ function connectionScope(scope: string | undefined): ConnectionScope {
   throw new Error("--scope is personal or shared.");
 }
 
-/** Kernel refusals as the bridge reports them: `not-curator` stays a code. */
+/**
+ * Kernel refusals as the bridge reports them: each keeps its code, so a
+ * surface can explain it; `not-curator` is its own message too.
+ */
 function connectionFailure(error: unknown): never {
   if (error instanceof ConnectionError) {
-    throw new Error(error.code === "not-curator" ? NOT_CURATOR : error.message);
+    if (error.code !== "not-curator") throw error;
+    throw new ConnectionError("not-curator", NOT_CURATOR);
   }
-  if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+  if (isPermissionDenied(error)) {
+    throw new ConnectionError("not-curator", NOT_CURATOR);
+  }
   throw error;
 }
 

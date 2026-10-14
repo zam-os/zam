@@ -26,18 +26,27 @@ export interface TopicImportRecord {
   title: string;
 }
 
-/** Record a topic import as its source row. */
-export async function recordTopicImport(
-  db: Database,
-  input: { title: string; userId: string; now?: Date },
-): Promise<TopicImportRecord> {
-  const title = input.title.replace(/\s+/g, " ").trim();
+/**
+ * A topic's name as stored: one line, trimmed. Checked before the first
+ * model call, so a name that is too long never costs the learner a proposal.
+ */
+export function normalizeTopicTitle(raw: string): string {
+  const title = raw.replace(/\s+/g, " ").trim();
   if (!title) throw new Error("A topic import needs the topic's name.");
   if (title.length > MAX_TOPIC_TITLE) {
     throw new Error(
       `A topic's name holds at most ${MAX_TOPIC_TITLE} characters; say the rest in its context.`,
     );
   }
+  return title;
+}
+
+/** Record a topic import as its source row. */
+export async function recordTopicImport(
+  db: Database,
+  input: { title: string; userId: string; now?: Date },
+): Promise<TopicImportRecord> {
+  const title = normalizeTopicTitle(input.title);
   const sourceId = ulid();
   const uri = `${TOPIC_SOURCE_PREFIX}${ulid()}`;
   // `file` like a material import's row: the schema's source types predate

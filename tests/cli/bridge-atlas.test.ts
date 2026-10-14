@@ -504,6 +504,7 @@ describe("zam bridge atlas commands", () => {
     });
     expect(read.portals).toEqual({});
 
+    // Each refusal names its code beside the message.
     expect(
       runCliError([
         "bridge",
@@ -514,8 +515,11 @@ describe("zam bridge atlas commands", () => {
         published,
         "--kind",
         "kennt",
-      ]).error,
-    ).toContain("Unknown thread kind");
+      ]),
+    ).toMatchObject({
+      error: expect.stringContaining("Unknown thread kind"),
+      code: "invalid-kind",
+    });
     expect(
       runCliError([
         "bridge",
@@ -528,15 +532,21 @@ describe("zam bridge atlas commands", () => {
         "voraussetzung",
         "--scope",
         "shared",
-      ]).error,
-    ).toContain("zam_link_prereq");
+      ]),
+    ).toMatchObject({
+      error: expect.stringContaining("zam_link_prereq"),
+      code: "shared-prerequisite",
+    });
 
     expect(
       runCliJson(["bridge", "atlas-disconnect", "--id", spun.id]).scope,
     ).toBe("personal");
     expect(
-      runCliError(["bridge", "atlas-disconnect", "--id", spun.id]).error,
-    ).toContain("No thread");
+      runCliError(["bridge", "atlas-disconnect", "--id", spun.id]),
+    ).toMatchObject({
+      error: expect.stringContaining("No thread"),
+      code: "unknown-connection",
+    });
     const after = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
     expect(
       after.threads.filter((t: { kind: string }) => t.kind === "nutzt"),

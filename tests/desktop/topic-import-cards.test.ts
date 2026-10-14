@@ -7,11 +7,13 @@ import {
   createOnboardingExit,
   draftSubtopicCards,
   type TopicAreaView,
+  TOPIC_TITLE_MAX,
   type TopicImportState,
-  topicContext,
   topicPlaceArgs,
+  topicPromptArgs,
   withTopicPlace,
 } from "../../desktop/src/onboarding.js";
+import { MAX_TOPIC_TITLE } from "../../src/kernel/index.js";
 
 const TOPICS = ["Pods", "Services", "Deployments"].map((label) => ({
   label,
@@ -244,6 +246,30 @@ describe("commitTopicStep", () => {
     expect(calls[2].args.slice(0, 2)).toEqual(["--sourceId", "src-9"]);
   });
 
+  it("keeps a placement error beside the counts, so the learner sees it", async () => {
+    const state = draftedState();
+    state.place = {
+      lens: "weltwissen",
+      regionKey: "natur.physik.optik",
+      path: ["Natur", "Physik", "Licht & Wellen"],
+    };
+    setBridgeTransport(async () => ({
+      success: true,
+      createdCount: 1,
+      ensuredCount: 0,
+      placed: 0,
+      placeError: 'No region "natur.physik.optik" in the Weltwissen lens.',
+    }));
+
+    await expect(commitTopicStep(state)).resolves.toBe(true);
+
+    expect(state.imported).toEqual({
+      created: 1,
+      ensured: 0,
+      placeError: 'No region "natur.physik.optik" in the Weltwissen lens.',
+    });
+  });
+
   it("does not import twice or when nothing was drafted", async () => {
     const asked: string[] = [];
     setBridgeTransport(async (cmd) => {
@@ -324,6 +350,12 @@ describe("appendTopicCards", () => {
   });
 });
 
+describe("the topic's name", () => {
+  it("has the length limit of the import's record", () => {
+    expect(TOPIC_TITLE_MAX).toBe(MAX_TOPIC_TITLE);
+  });
+});
+
 describe("a topic import at an atlas place (ADR 2026-10-13, Decision 9)", () => {
   const place = {
     lens: "weltwissen" as const,
@@ -331,10 +363,14 @@ describe("a topic import at an atlas place (ADR 2026-10-13, Decision 9)", () => 
     path: ["Natur", "Physik", "Licht & Wellen"],
   };
 
-  it("tells the model the place and the confirm where to put the cards", () => {
-    const state = { ...topicState(null), place, context: "Für die Probe." };
-    expect(topicContext(state)).toContain("Für die Probe.");
-    expect(topicContext(state)).toContain("Natur › Physik › Licht & Wellen");
+  it("tells the model the place apart from the context, and the confirm where to put the cards", () => {
+    const state = { ...topicState(null), place, context: " Für die Probe. " };
+    expect(topicPromptArgs(state)).toEqual([
+      "--context",
+      "Für die Probe.",
+      "--place",
+      JSON.stringify(["Natur", "Physik", "Licht & Wellen"]),
+    ]);
     expect(topicPlaceArgs(state)).toEqual([
       "--place-region",
       "natur.physik.optik",
@@ -347,7 +383,12 @@ describe("a topic import at an atlas place (ADR 2026-10-13, Decision 9)", () => 
 
   it("changes nothing without a place", () => {
     const state = { ...topicState(null), context: " Warum " };
-    expect(topicContext(state)).toBe("Warum");
+    expect(topicPromptArgs(state)).toEqual([
+      "--context",
+      "Warum",
+      "--place",
+      "[]",
+    ]);
     expect(topicPlaceArgs(state)).toEqual([]);
     expect(withTopicPlace(state, TOPICS[0], [{ question: "Q" }])).toEqual([
       { question: "Q" },

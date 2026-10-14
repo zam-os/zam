@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T05:00:00.000Z
+timestamp: 2026-10-14T13:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -140,7 +140,7 @@ The model-visible learning tools cover:
   is learnable at once. Only when the library switched on draft-first
   (`content.draft_first`, off by default, a Studio setting) is it a draft
   that stays out of every queue, due list, admission and rating until
-  `zam_publish_revision`; the same setting governs goal, file, curriculum and
+  `zam_publish_revision`; the same setting governs topic, file, curriculum and
   foundation imports. `zam_list_drafts` lists unpublished captures;
 - material import: `zam_material_import_context` hands an agent the rules for
   turning a learner's photo or PDF into card proposals, the contract with an

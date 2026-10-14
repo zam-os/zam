@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   type AtlasView,
+  addConnection,
   bonusCandidates,
   chooseVariant,
   commitMaterialImport,
@@ -12,11 +13,13 @@ import {
   detachCardForUser,
   ensureCard,
   installKvtTile,
+  LEBEN_LENS,
   type MaterialProposalSet,
   matchMaterialProposals,
   openDatabase,
   parseMaterialProposalSet,
   readAtlas,
+  regionTokenIds,
   resolvePlace,
   SCHULE_LENS,
   setLibraryVariant,
@@ -303,6 +306,48 @@ describe("atlas: import at a place, variants, taking in", () => {
     expect(restored.every((c) => c.detached_at === null)).toBe(true);
     const back = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
     expect(unitOf(back, standsFor)).toBeDefined();
+  });
+
+  it("lets a chosen variant stand in off the map too: at a portal and in a region review", async () => {
+    const atom = tile.atoms[0];
+    const standsFor = `atom:${atom.id}` as UnitKey;
+    await materialiseKvtCards(db, USER, [atom.id]);
+    // A method of its own domain: its own placement is not the optics region.
+    const own = await createToken(db, {
+      slug: "unser-verfahren",
+      concept: "Unser Verfahren",
+      domain: "eigene-verfahren",
+    });
+    await ensureCard(db, own.id, USER);
+    const variant = `token:${own.id}` as UnitKey;
+    const wippe = await createToken(db, {
+      slug: "wippe-im-garten",
+      concept: "Die Wippe",
+      domain: "familie/garten",
+    });
+    await ensureCard(db, wippe.id, USER);
+    await addConnection(db, {
+      a: `token:${wippe.id}`,
+      b: standsFor,
+      kind: "nutzt",
+      userId: USER,
+      mayWriteKnowledge: false,
+    });
+    await chooseVariant(db, { userId: USER, variant, standsFor });
+
+    // On the own planet the thread runs to the variant's portal.
+    const leben = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
+    expect(leben.threads).toEqual([
+      expect.objectContaining({ from: `token:${wippe.id}`, to: variant }),
+    ]);
+    expect(leben.portals[variant]?.planet).toBe("welt");
+
+    // A review of the region where the map shows the variant includes it.
+    const ids = await regionTokenIds(db, WELTWISSEN_LENS, OPTIK_GEBIET, USER);
+    expect(ids).toContain(own.id);
+    expect(
+      await regionTokenIds(db, WELTWISSEN_LENS, OPTIK_GEBIET, OTHER),
+    ).not.toContain(own.id);
   });
 
   it("re-attaches only the cards a variant detached", async () => {

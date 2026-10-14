@@ -22,12 +22,15 @@ export type {
 } from "./connections.js";
 export {
   addConnection,
+  assertPrerequisitePlanets,
   ConnectionError,
+  directedThreadEnds,
   loadConnections,
   MAX_THREAD_NOTE,
   orientThread,
   parseThreadKind,
   removeConnection,
+  unitsHeldByThreads,
 } from "./connections.js";
 export type { EmblemValidation } from "./emblem.js";
 export {

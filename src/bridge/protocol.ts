@@ -1038,6 +1038,11 @@ export interface AtlasThreadWire {
   id?: string;
   /** Why the two belong together. Untrusted text. */
   note?: string;
+  /**
+   * The learner's own thread, drawn once although the library has the same
+   * one: `id` and `note` are the learner's.
+   */
+  alsoShared?: boolean;
 }
 
 /** `atlas-connect`: the thread as stored. */
@@ -1058,6 +1063,13 @@ export interface AtlasConnectResponse {
 export interface AtlasDisconnectResponse {
   success: true;
   scope: "shared" | "personal";
+}
+
+/** A refused `atlas-connect` or `atlas-disconnect`: the message and its code. */
+export interface AtlasThreadRefusal {
+  error: string;
+  /** `world-to-own`, `same-unit`, `not-curator`, … (`ConnectionErrorCode`). */
+  code: string;
 }
 
 export type AtlasPlanetWire = "welt" | "firma" | "privat";
@@ -1087,6 +1099,11 @@ export interface AtlasMovePlanetResponse {
   unchanged: AtlasUnitKeyWire[];
   /** Published units, which stay world knowledge, and unknown keys. */
   skipped: AtlasUnitKeyWire[];
+  /**
+   * Units a thread or prerequisite keeps on their planet, because world
+   * knowledge would depend on a Firma or Privat unit; `by` is the other end.
+   */
+  held: Array<{ unit: AtlasUnitKeyWire; by: AtlasUnitKeyWire }>;
 }
 
 /** `atlas-emblem-set` and a successful `atlas-emblem-draw`. */

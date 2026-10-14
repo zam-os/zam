@@ -21,6 +21,7 @@ import {
   addPrerequisite,
   admitPresentation,
   analyzeObservation,
+  assertPrerequisitePlanets,
   assessPrecondition,
   assignTokenToContext,
   BLOOM_VERBS,
@@ -1536,6 +1537,8 @@ export async function linkPrereq(db: Database, params: LinkPrereqParams) {
     throw new Error(`Prerequisite token not found: ${params.requires}`);
   }
 
+  // World knowledge never depends on a Firma or Privat unit (ADR 2026-10-13).
+  await assertPrerequisitePlanets(db, token.id, requires.id);
   await addPrerequisite(db, token.id, requires.id);
 
   let blockedCardId: string | undefined;

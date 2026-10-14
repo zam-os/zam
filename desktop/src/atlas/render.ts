@@ -1304,7 +1304,8 @@ export class AtlasMap {
    * A portal for a thread's end on the other planet. Up close it sits right
    * beside the unit, once per unit; further out once per island, on its
    * lower left coast, where every thread of the island to that planet
-   * meets. A click opens the unit of the first thread drawn to it.
+   * meets. A click opens the unit of the first thread drawn to it, or of a
+   * selected one.
    */
   private portalEnd(
     local: End,
@@ -1414,7 +1415,14 @@ export class AtlasMap {
     const close = this.focusLevel() >= layout.depth;
     const pins = new Map<
       string,
-      { x: number; y: number; lit: boolean; portal?: End["portal"] }
+      {
+        x: number;
+        y: number;
+        lit: boolean;
+        portal?: End["portal"];
+        /** The portal comes from a lit bundle. */
+        portalLit?: boolean;
+      }
     >();
     const notes: Array<{ x: number; y: number; text: string }> = [];
     for (const bundle of bundles) {
@@ -1489,11 +1497,15 @@ export class AtlasMap {
         [bundle.b, bx, by],
       ] as const) {
         const prev = pins.get(end.key);
+        // A shared portal opens the first thread drawn to it, unless a later
+        // one is selected and the first is not.
+        const keep = prev?.portal && (prev.portalLit || !bundle.lit);
         pins.set(end.key, {
           x: sx,
           y: sy,
           lit: (prev?.lit ?? false) || bundle.lit || !anyLit,
-          portal: end.portal,
+          portal: keep ? prev.portal : end.portal,
+          portalLit: keep ? prev.portalLit : bundle.lit,
         });
       }
     }

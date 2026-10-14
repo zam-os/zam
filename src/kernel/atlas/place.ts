@@ -11,6 +11,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import { directedThreadEnds, unitsHeldByThreads } from "./connections.js";
 import {
   deriveLens,
   ensureLensRow,
@@ -23,6 +24,7 @@ import {
   loadUnits,
   type PathStep,
   slugSegment,
+  type UnitRow,
 } from "./lenses.js";
 import {
   assertLensOnLibrary,
@@ -231,13 +233,21 @@ export interface MovePlanetResult {
   unchanged: UnitKey[];
   /** Published units, which stay world knowledge, and unknown keys. */
   skipped: UnitKey[];
+  /**
+   * Units a thread or prerequisite keeps on their planet: moved, world
+   * knowledge would depend on a Firma or Privat unit. `by` is the unit at
+   * that thread's other end.
+   */
+  held: Array<{ unit: UnitKey; by: UnitKey }>;
 }
 
 /**
  * Change units' kind (Decision 2): each moves to the target planet's primary
  * lens, where that lens's rules put it (its unsorted island, or a domain
  * alias), as an explicit placement; its placements on the other planet go.
- * Published units stay world knowledge. Nothing changes a unit's status.
+ * Published units stay world knowledge, and a unit stays where a thread or
+ * prerequisite holds it (`held`): world knowledge never depends on a Firma
+ * or Privat unit. Nothing changes a unit's status.
  *
  * Transaction-free; the caller's write holds it. World lenses must exist
  * (`ensureWorldLenses`); the own planet's primary lens is created here.
@@ -261,8 +271,14 @@ export async function moveUnitsToPlanet(
   const byKey = new Map(units.map((u) => [u.key, u]));
   const rows = await loadLensRows(db, lensId);
   const ensure = regionMaker(db, lensId, rows);
-  const result: MovePlanetResult = { moved: [], unchanged: [], skipped: [] };
+  const result: MovePlanetResult = {
+    moved: [],
+    unchanged: [],
+    skipped: [],
+    held: [],
+  };
 
+  const moving: UnitRow[] = [];
   for (const key of new Set(opts.units)) {
     const unit = byKey.get(key);
     if (!unit || (unit.atomId && opts.planet !== "welt")) {
@@ -271,6 +287,22 @@ export async function moveUnitsToPlanet(
     }
     if (planetOf.get(key) === opts.planet) {
       result.unchanged.push(key);
+      continue;
+    }
+    moving.push(unit);
+  }
+  // No thread may run from world knowledge to an own planet afterwards.
+  const held = unitsHeldByThreads(
+    await directedThreadEnds(db, units),
+    new Set(moving.map((unit) => unit.key)),
+    opts.planet,
+    planetOf,
+  );
+  for (const unit of moving) {
+    const key = unit.key;
+    const by = held.get(key);
+    if (by) {
+      result.held.push({ unit: key, by });
       continue;
     }
     const [placement] = deriveLens(lens, [unit], rows, bindings);

@@ -58,7 +58,7 @@ describe("atlas region review: due count and going through again", () => {
       "thomas",
       tile.atoms.map((a) => a.id),
     );
-    tokenIds = await regionTokenIds(db, WELTWISSEN_LENS, REGION);
+    tokenIds = await regionTokenIds(db, WELTWISSEN_LENS, REGION, "thomas");
     cards = (
       (await db
         .prepare(

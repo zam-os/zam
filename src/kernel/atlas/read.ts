@@ -109,6 +109,11 @@ export interface AtlasThread {
   id?: string;
   /** Why the two belong together. Untrusted text. */
   note?: string;
+  /**
+   * The learner's own thread, drawn once although the library has the same
+   * one: `id` and `note` are the learner's, so they can still cut it.
+   */
+  alsoShared?: boolean;
 }
 
 export interface AtlasView {
@@ -210,18 +215,27 @@ export async function snapshotForRead(
   };
 }
 
-/** Token ids of every unit in a region's subtree, for a region review. */
+/**
+ * Token ids of every unit in a region's subtree, for a region review. A
+ * variant counts where the map shows it: on its published unit's hex
+ * (Decision 12).
+ */
 export async function regionTokenIds(
   db: Database,
   lens: LensDefinition,
   regionKey: string,
+  userId: string,
 ): Promise<string[]> {
   const { snapshot, units } = await snapshotForRead(db, lens);
-  const inRegion = new Set(
-    snapshot.placements
-      .filter((p) => p.path.some((step) => step.key === regionKey))
-      .map((p) => p.unitKey),
-  );
+  const pathOf = new Map(snapshot.placements.map((p) => [p.unitKey, p.path]));
+  for (const entry of (await effectiveVariants(db, userId)).values()) {
+    const path = pathOf.get(entry.standsFor);
+    if (path) pathOf.set(entry.variant, path);
+  }
+  const inRegion = new Set<UnitKey>();
+  for (const [key, path] of pathOf) {
+    if (path.some((step) => step.key === regionKey)) inRegion.add(key);
+  }
   return units.filter((u) => inRegion.has(u.key)).flatMap((u) => u.tokenIds);
 }
 
@@ -410,7 +424,24 @@ export async function readAtlas(
   }
   unitViews = unitViews.filter((u) => !hidden.has(u.key));
   const standingIn = new Set(standIn.values());
-  const onHexOf = (key: UnitKey): UnitKey => standIn.get(key) ?? key;
+  const visible = new Set(unitViews.map((u) => u.key));
+  /** Whether the learner still holds a unit: an attached card of it. */
+  const holds = (unit: UnitRow | undefined): boolean =>
+    unit?.tokenIds.some((id) => {
+      const row = cardsByToken.get(id);
+      return row !== undefined && row.detached_at === null;
+    }) ?? false;
+  const unitByKey = new Map(units.map((u) => [u.key, u]));
+  // Off this map, a variant stands in by the same rule, whatever lens shows
+  // it: the learner's choice, or the library's while they hold no card of
+  // the published unit.
+  const onHexOf = (key: UnitKey): UnitKey => {
+    const here = standIn.get(key);
+    if (here || visible.has(key)) return here ?? key;
+    const entry = variants.get(key);
+    if (!entry || (!entry.chosen && holds(unitByKey.get(key)))) return key;
+    return entry.variant;
+  };
 
   const dueByRegion: Record<string, number> = {};
   for (const view of unitViews) {
@@ -421,16 +452,13 @@ export async function readAtlas(
       current = regions.get(current)?.parentKey ?? null;
     }
   }
-  const visible = new Set(unitViews.map((u) => u.key));
 
   // ── Threads with an end on this map (Decision 7) ─────────────────────────
   const unitOfToken = new Map<string, UnitKey>();
-  const unitByKey = new Map<UnitKey, UnitRow>();
   for (const unit of units) {
-    unitByKey.set(unit.key, unit);
     for (const id of unit.tokenIds) unitOfToken.set(id, unit.key);
   }
-  const threadKeys = new Set<string>();
+  const threadAt = new Map<string, AtlasThread>();
   const threads: AtlasThread[] = [];
   const portals: AtlasView["portals"] = {};
   const addThread = (
@@ -455,13 +483,26 @@ export async function readAtlas(
       if (!shownCards(unit)) return;
       portals[far] ??= { title: unit.title, planet };
     }
-    // Shared first: a personal thread the library already has is not drawn twice.
+    // Shared first: a personal thread the library already has is not drawn
+    // twice, but the drawn one carries the learner's id and note, so they
+    // can still cut what is theirs.
     const [x, y] =
       thread.kind === "verbindung" && to < from ? [to, from] : [from, to];
     const key = `${thread.kind}:${x}>${y}`;
-    if (threadKeys.has(key)) return;
-    threadKeys.add(key);
-    threads.push({ from, to, ...thread });
+    const drawn = threadAt.get(key);
+    if (drawn) {
+      if (drawn.scope === "shared" && thread.scope === "personal") {
+        const note = thread.note ?? drawn.note;
+        drawn.scope = "personal";
+        drawn.id = thread.id;
+        drawn.alsoShared = true;
+        if (note) drawn.note = note;
+      }
+      return;
+    }
+    const added: AtlasThread = { from, to, ...thread };
+    threadAt.set(key, added);
+    threads.push(added);
   };
   const prerequisite = { kind: "voraussetzung", scope: "shared" } as const;
   const atomEdges = (await db

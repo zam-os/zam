@@ -7,6 +7,7 @@
 
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
+import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
@@ -921,6 +922,8 @@ export async function listPersonalCards(
           FROM token_sources ts
           INNER JOIN sources s ON s.id = ts.source_id
           WHERE ts.token_id = t.id
+            -- A topic import's record names no source to read up in.
+            AND s.uri NOT LIKE '${TOPIC_SOURCE_PREFIX}%'
           ORDER BY s.created_at DESC, s.id DESC
           LIMIT 1
         )

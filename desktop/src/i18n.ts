@@ -4899,6 +4899,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Protected knowledge, such as personal or company details, stays on this library's own planet.",
     atlas_busy_moving: "Moving to the other planet…",
     atlas_moved: "{count} learning units now live on the {planet} planet.",
+    atlas_move_held:
+      "{count} stayed, because a thread holds them: world knowledge never depends on a Firma or Privat unit.",
     atlas_move_failed: "Moving did not work:",
     atlas_unit_kicker: "Learning unit",
     atlas_builds_on: "Builds on",
@@ -4951,6 +4953,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_thread_saved: "Thread added. Only you see it.",
     atlas_thread_failed: "The thread was not added:",
     atlas_thread_yours: "your thread",
+    atlas_thread_also_shared: "also in the library",
     atlas_thread_note: "“{note}”",
     atlas_thread_remove: "Remove thread",
     atlas_thread_remove_named: "Remove the thread to {title}",
@@ -4982,7 +4985,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Say what you want to know here, and what you already know. ZAM proposes subtopics, then cards, and you choose.",
     atlas_import_topic_open: "Describe it…",
     topic_place_line: "The cards land at: {path}",
-    topic_place_for_model: "Place in the learner's knowledge atlas:",
+    topic_place_failed: "They are not at {path}, though: {message}",
     atlas_import_material: "Notes or material",
     atlas_import_material_help:
       "Photos, a PDF or typed notes. You decide each card, and the cards land here.",
@@ -6261,6 +6264,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "What do you need it for, and what do you already know? For example: “My projects so far were all Microsoft SQL Server. I want to learn PostgreSQL from the parallels and the differences.”",
     topic_suggest: "Suggest subtopics",
     topic_name_missing: "Name the topic first.",
+    topic_name_too_long:
+      "A topic's name holds at most {max} characters; say the rest in its context.",
     topic_checking_llm: "Checking your AI model…",
     topic_llm_missing:
       "Proposing subtopics needs an AI model. Connect one on the model page, then come back.",
@@ -6270,6 +6275,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Keep what fits, drill into a subtopic for more detail, or turn the selection into cards.",
     topic_deeper: "↳ Go deeper",
     topic_up: "↑ Up one level",
+    topic_edit: "← Change topic or context",
     topic_import_selection: "Turn selection into cards",
     topic_no_selection: "Select at least one item first.",
     topic_generating_cards:
@@ -6845,6 +6851,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_busy_moving: "Auf den anderen Planeten verschieben…",
     atlas_moved:
       "{count} Lerneinheiten liegen jetzt auf dem Planeten {planet}.",
+    atlas_move_held:
+      "{count} blieben, weil ein Faden sie hält: Weltwissen hängt nie von einer Firma- oder Privat-Einheit ab.",
     atlas_move_failed: "Verschieben hat nicht geklappt:",
     atlas_unit_kicker: "Lerneinheit",
     atlas_builds_on: "Baut auf",
@@ -6897,6 +6905,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_thread_saved: "Faden gespannt. Nur du siehst ihn.",
     atlas_thread_failed: "Der Faden ließ sich nicht spannen:",
     atlas_thread_yours: "dein Faden",
+    atlas_thread_also_shared: "auch in der Bibliothek",
     atlas_thread_note: "„{note}“",
     atlas_thread_remove: "Faden lösen",
     atlas_thread_remove_named: "Faden zu {title} lösen",
@@ -6930,7 +6939,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Sag, was du hier wissen willst und was du schon weißt. ZAM schlägt Unterthemen vor, dann Karten, und du wählst aus.",
     atlas_import_topic_open: "Beschreiben …",
     topic_place_line: "Die Karten landen unter: {path}",
-    topic_place_for_model: "Ort im Wissensatlas des Lernenden:",
+    topic_place_failed: "Sie liegen aber nicht unter {path}: {message}",
     atlas_import_material: "Mitschrift oder Material",
     atlas_import_material_help:
       "Fotos, ein PDF oder eingetippte Notizen. Du entscheidest jede Karte, und die Karten landen hier.",
@@ -8254,6 +8263,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Wofür brauchst du es, und was weißt du schon? Zum Beispiel: „Meine bisherigen Projekte liefen alle mit Microsoft SQL Server. Ich will PostgreSQL über die Parallelen und die Unterschiede lernen.“",
     topic_suggest: "Unterthemen vorschlagen",
     topic_name_missing: "Benenne zuerst das Thema.",
+    topic_name_too_long:
+      "Der Name eines Themas hat höchstens {max} Zeichen – schreib den Rest in den Kontext.",
     topic_checking_llm: "Dein KI-Modell wird geprüft …",
     topic_llm_missing:
       "Unterthemen vorzuschlagen braucht ein KI-Modell. Verbinde eines auf der Modell-Seite und komm dann zurück.",
@@ -8263,6 +8274,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Behalte, was passt, geh bei einem Unterthema tiefer – oder verwandle die Auswahl in Karten.",
     topic_deeper: "↳ Tiefer",
     topic_up: "↑ Eine Ebene hoch",
+    topic_edit: "← Thema oder Kontext ändern",
     topic_import_selection: "Auswahl in Karten verwandeln",
     topic_no_selection: "Wähle zuerst mindestens einen Eintrag.",
     topic_generating_cards:

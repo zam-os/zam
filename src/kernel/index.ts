@@ -123,6 +123,7 @@ export {
   addConnection,
   applySettle,
   assertLensOnLibrary,
+  assertPrerequisitePlanets,
   BASE_SHADE,
   CONDITION_BAND_RATIOS,
   CONDITION_TEXTURE,
@@ -140,6 +141,7 @@ export {
   deriveLens,
   deriveSchule,
   deriveWeltwissen,
+  directedThreadEnds,
   dropOtherPlanetMembers,
   EMBLEM_MAX_CHARS,
   EMBLEM_VALIDATOR_VERSION,
@@ -219,6 +221,7 @@ export {
   unitCondition,
   unitKeyFor,
   unitPlanetsFrom,
+  unitsHeldByThreads,
   unitTokenIds,
   validateEmblem,
   validateGlyph,
@@ -423,6 +426,7 @@ export {
 export type { TopicImportRecord } from "./import/topic-import.js";
 export {
   MAX_TOPIC_TITLE,
+  normalizeTopicTitle,
   recordTopicImport,
   TOPIC_SOURCE_PREFIX,
 } from "./import/topic-import.js";

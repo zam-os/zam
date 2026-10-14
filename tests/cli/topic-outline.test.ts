@@ -5,6 +5,9 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { parseSubtopicArray } from "../../src/cli/llm/client.js";
 import {
+  confirmSourceImport,
+  listPersonalCards,
+  normalizeTopicTitle,
   openDatabase,
   recordTopicImport,
   TOPIC_SOURCE_PREFIX,
@@ -90,6 +93,44 @@ describe("recordTopicImport (ADR 2026-10-14, Decision 1)", () => {
       await db.close();
     }
   });
+
+  it("checks the name the same way before any model call", () => {
+    expect(normalizeTopicTitle("  Rhetorische\n Stilmittel ")).toBe(
+      "Rhetorische Stilmittel",
+    );
+    expect(() => normalizeTopicTitle("x".repeat(201))).toThrow(/at most 200/);
+  });
+
+  // The record names the import, not a source to read up in: the card list
+  // must not offer it as one, or saving the card writes it into the token.
+  it("never lists the import's record as a card's source", async () => {
+    const db = await openDatabase({
+      dbPath: join(dir, "zam.db"),
+      initialize: true,
+      useConfiguredCloud: false,
+    });
+    try {
+      const recorded = await recordTopicImport(db, {
+        title: "PostgreSQL",
+        userId: "learner",
+      });
+      await confirmSourceImport(db, "learner", recorded.sourceId, [
+        {
+          question: "Welche Klausel ersetzt OUTPUT INSERTED.*?",
+          concept: "RETURNING",
+          domain: "PostgreSQL",
+          bloom_level: 1,
+          symbiosis_mode: "shadowing",
+          excerpt: "",
+        },
+      ]);
+      const cards = await listPersonalCards(db, "learner");
+      expect(cards).toHaveLength(1);
+      expect(cards[0].sourceLink).toBeNull();
+    } finally {
+      await db.close();
+    }
+  });
 });
 
 // Subprocess contract: the topic import writes no file, anywhere.
@@ -155,6 +196,16 @@ describe("bridge topic import", () => {
     expect(existsSync(join(tempHome, "goals"))).toBe(false);
     // The goal file command is retired.
     expect(bridgeFailure(["goal-create", "--title", "x"]).status).not.toBe(0);
+  });
+
+  it("topic-outline refuses a name too long for the record before asking a model", () => {
+    const failure = bridgeFailure([
+      "topic-outline",
+      "--title",
+      "x".repeat(201),
+    ]);
+    expect(failure.status).not.toBe(0);
+    expect(JSON.parse(String(failure.stdout)).error).toMatch(/at most 200/);
   });
 
   it("topic-cards rejects a subtopic without label and description", () => {

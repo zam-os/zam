@@ -879,6 +879,7 @@
       "text": "A learner's own red thread is learning state that never feeds blocking; no thread runs from world knowledge to Firma or Privat.",
       "sources": [
         "src/kernel/atlas/connections.ts",
+        "src/kernel/atlas/place.ts",
         "src/kernel/scheduler/blocker.ts",
         "desktop/src/atlas/render.ts"
       ]

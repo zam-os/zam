@@ -1125,12 +1125,16 @@ async function movePlanet(
     // What moved has left this planet's map.
     select(s, null);
     await load(s, s.lens ?? undefined);
+    const moved = tf("atlas_moved", {
+      count: result.moved.length,
+      planet: t(`atlas_planet_${target}`),
+    });
+    const held = result.held ?? [];
     setStatus(
       s,
-      tf("atlas_moved", {
-        count: result.moved.length,
-        planet: t(`atlas_planet_${target}`),
-      }),
+      held.length > 0
+        ? `${moved} ${tf("atlas_move_held", { count: held.length })}`
+        : moved,
     );
   } catch (err) {
     setBusy(s, null);
@@ -1463,6 +1467,7 @@ function threadList(
       go = () => void goToPortal(s, other.planet, other.key);
     }
     if (thread.scope === "personal") words.push(t("atlas_thread_yours"));
+    if (thread.alsoShared) words.push(t("atlas_thread_also_shared"));
     // The note is untrusted text: textContent only, as every entry is.
     if (thread.note) words.push(tf("atlas_thread_note", { note: thread.note }));
     const li = entry(name, words.join(" · "), go);

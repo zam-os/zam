@@ -303,6 +303,99 @@ export interface StoredThread {
   scope: ConnectionScope;
 }
 
+/**
+ * Refuse a prerequisite from world knowledge to a Firma or Privat unit: the
+ * planet rule every thread keeps, for the prerequisite tables that
+ * `zam_link_prereq` writes. Tokens of one unit are not checked.
+ */
+export async function assertPrerequisitePlanets(
+  db: Database,
+  tokenId: string,
+  requiresId: string,
+): Promise<void> {
+  const units = await loadUnits(db);
+  const unitOf = (id: string) => units.find((u) => u.tokenIds.includes(id));
+  const dependent = unitOf(tokenId);
+  const required = unitOf(requiresId);
+  if (!dependent || !required || dependent.key === required.key) return;
+  const planets = await loadUnitPlanets(
+    db,
+    [dependent, required],
+    await loadBindings(db),
+    await ownPlanetOf(db),
+  );
+  const end = (unit: UnitRow): ThreadEnd => ({
+    key: unit.key,
+    planet: planets.get(unit.key) ?? "welt",
+  });
+  orientThread("voraussetzung", end(dependent), end(required));
+}
+
+/**
+ * Every directed thread as stored, the dependent end first: the library's,
+ * the learners' own as far as this connection may read them, and the
+ * prerequisites between units. A Verbindung has no direction. Reads only.
+ */
+export async function directedThreadEnds(
+  db: Database,
+  units: readonly UnitRow[],
+): Promise<Array<{ a: UnitKey; b: UnitKey }>> {
+  const ends: Array<{ a: UnitKey; b: UnitKey }> = [];
+  for (const table of ["connections", "learner_connections"]) {
+    const rows = (await db
+      .prepare(`SELECT a_key, b_key FROM ${table} WHERE kind <> 'verbindung'`)
+      .all()) as Array<{ a_key: string; b_key: string }>;
+    for (const row of rows) {
+      ends.push({ a: row.a_key as UnitKey, b: row.b_key as UnitKey });
+    }
+  }
+  const unitOfToken = new Map<string, UnitKey>();
+  for (const unit of units) {
+    for (const id of unit.tokenIds) unitOfToken.set(id, unit.key);
+  }
+  const prerequisites = (await db
+    .prepare("SELECT token_id, requires_id FROM prerequisites")
+    .all()) as Array<{ token_id: string; requires_id: string }>;
+  for (const edge of prerequisites) {
+    const a = unitOfToken.get(edge.token_id);
+    const b = unitOfToken.get(edge.requires_id);
+    if (a && b && a !== b) ends.push({ a, b });
+  }
+  return ends;
+}
+
+/**
+ * Pure: the units moving to `planet` that must stay where they are, each with
+ * the unit that holds it, because moving it would let a thread run from
+ * world knowledge to a Firma or Privat unit. Ends that move together stay
+ * together; a thread that broke the rule before the move holds nothing.
+ */
+export function unitsHeldByThreads(
+  ends: ReadonlyArray<{ a: UnitKey; b: UnitKey }>,
+  moving: ReadonlySet<UnitKey>,
+  planet: PlanetKind,
+  planetOf: ReadonlyMap<UnitKey, PlanetKind>,
+): Map<UnitKey, UnitKey> {
+  const still = new Set(moving);
+  const held = new Map<UnitKey, UnitKey>();
+  const after = (key: UnitKey) => (still.has(key) ? planet : planetOf.get(key));
+  // Holding one unit back can hold the next: repeat until nothing changes.
+  for (let changed = true; changed; ) {
+    changed = false;
+    for (const { a, b } of ends) {
+      const from = after(a);
+      const to = after(b);
+      if (from !== "welt" || to === undefined || to === "welt") continue;
+      const stays = still.has(a) ? a : still.has(b) ? b : null;
+      if (!stays) continue;
+      still.delete(stays);
+      held.set(stays, stays === a ? b : a);
+      changed = true;
+    }
+  }
+  return held;
+}
+
 /** The library's threads, then the learner's own. Reads only. */
 export async function loadConnections(
   db: Database,

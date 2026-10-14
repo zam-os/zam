@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T12:00:00.000Z
+timestamp: 2026-10-14T13:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -151,13 +151,22 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 turns a topic in the learner's words, with its context, into cards. It
 writes no file:
 
-- `topic-outline --title <topic> [--context <text>] [--path <json>]`
-  proposes the next level of subtopics. The context holds what the topic is
-  needed for and what the learner already knows. The model builds on it but
-  never turns it into content, and it keeps to what the topic names.
-- `topic-cards --title <topic> [--context <text>] [--path <json>] --topic
-  <json>` drafts cards for one kept subtopic, as a preview. The cards cite
-  no source: their knowledge is the model's world knowledge.
+- `topic-outline --title <topic> [--context <text>] [--path <json>]
+  [--place <json>]` proposes the next level of subtopics. The context holds
+  what the topic is needed for, what to focus on and what the learner
+  already knows: it narrows the topic and says where to start, but never
+  becomes content, and the model keeps to what the topic names. Without a
+  context the model starts from the topic's foundations. A subtopic's label
+  never names the field the learner already knows. `--place` names the
+  atlas place the cards will land at, root first, on a line of its own, so
+  the model never reads it as prior knowledge. A name longer than 200
+  characters is refused before any model call.
+- `topic-cards --title <topic> [--context <text>] [--path <json>] [--place
+  <json>] --topic <json>` drafts cards for one kept subtopic, as a preview:
+  one point per card, or one overview card that lists the names of a
+  complete set. A counterpart in the field the learner knows appears only
+  as a brief bridge on a single card. The cards cite no source: their
+  knowledge is the model's world knowledge.
 - `topic-source --title <topic>` records the import as one source row,
   `zam-topic:<ULID>`, with the title, the date and the learner. The confirm
   (`personal-source-confirm-import --sourceId`) links every card to it.
@@ -239,9 +248,13 @@ takes coordinates: only settle places land.
   or is a special case of `to`), `kind` is `voraussetzung`, `nutzt`,
   `schnittstelle`, `ist-ein` or `verbindung`, `scope` is `shared` (a
   prerequisite or the library's connection) or `personal` (the learner's
-  own), and a connection carries its `id` and `note`. An end on the
+  own), and a connection carries its `id` and `note`. A learner's own
+  thread that the library has too is drawn once, as the learner's: its `id`
+  and `note` are theirs, and `alsoShared` is true. An end on the
   library's other planet stays in the thread and is named in `portals`, by
-  title and planet; the Studio draws it as a portal.
+  title and planet; the Studio draws it as a portal. A variant stands in at
+  that end as it does on its own planet: the learner's chosen one, or the
+  library's while the learner holds no card of the published unit.
 - `atlas-connect --from <key> --to <key> --kind <kind> [--note <text>]
   [--scope personal|shared] [--from-studio]` spins a red thread. It is the
   learner's own by default, learning state that never feeds blocking.
@@ -253,6 +266,12 @@ takes coordinates: only settle places land.
   note replaces the old one.
 - `atlas-disconnect --id <id>` cuts the learner's own thread, or the
   library's with the right to write knowledge.
+- Both refuse with `{ error, code }`, so a surface can explain each case:
+  `invalid-kind`, `same-unit`, `unknown-unit`, `world-to-own`,
+  `shared-prerequisite`, `not-curator`, `note-too-long` or
+  `unknown-connection`. `link-prereq` and `zam token prereq` keep the same
+  planet rule: a prerequisite from world knowledge to a Firma or Privat unit
+  is refused.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.
@@ -274,13 +293,18 @@ takes coordinates: only settle places land.
   [--lens <kind>])` moves own units to world knowledge or to the library's
   own planet, where that planet's primary lens puts them, and drops their
   placements on the other planet. Published units are reported as
-  `skipped`: they stay world knowledge. Without the right to write
-  knowledge it refuses with `not-curator`.
+  `skipped`: they stay world knowledge. A unit that a directed thread or a
+  prerequisite holds stays where it is and is reported in `held`, with the
+  unit at the thread's other end as `by`: moved, world knowledge would
+  depend on a Firma or Privat unit. Units moved together keep their threads
+  together. Without the right to write knowledge it refuses with
+  `not-curator`.
 - `atlas-variant --stands-for <key> (--variant <key> | --undo)` lets a unit
   stand in for a published one, or undoes it; with `--library` a curator
   sets or clears the library's variant.
 - `get-review` and `get-reviews` take `--atlas-region <key> [--atlas-lens
-  <kind>]`: only that region's due cards, no new ones.
+  <kind>]`: only that region's due cards, no new ones. A variant counts
+  where the map shows it, on its published unit's hex.
   `get-review --atlas-practice-since <iso>` goes through the region again
   although nothing is due: when no card is due, it pulls forward the
   practised card due soonest that was not answered since that time, one card
@@ -454,7 +478,7 @@ whose token sits in a keychain ZAM cannot read fails to open with
 - [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`, `tests/cli/topic-outline.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `desktop/src-tauri/src/lib.rs`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/atlas/connections.ts`, `src/kernel/atlas/place.ts`, `desktop/src-tauri/src/lib.rs`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

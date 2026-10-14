@@ -36,6 +36,7 @@ import {
   BUILT_IN_SENSITIVE_MATCHERS,
   buildReviewQueue,
   type CapabilityFlags,
+  ConnectionError,
   checkCredentials,
   clearProviderApiKey,
   clearTursoCredentials,
@@ -120,6 +121,7 @@ import {
   type ModelCapability,
   type ModelEntry,
   newTokenEditorialState,
+  normalizeTopicTitle,
   openDatabase,
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
@@ -512,6 +514,18 @@ function jsonError(message: string): never {
     throw new Error(JSON.stringify({ error: msg }));
   }
   console.log(JSON.stringify({ error: msg }, null, 2));
+  process.exit(1);
+}
+
+/**
+ * A refusal with its code beside the message, `{ error, code }`, so a
+ * surface can explain each one; anything else as `jsonError`.
+ */
+function jsonRefusal(err: unknown): never {
+  if (!(err instanceof ConnectionError)) jsonError((err as Error).message);
+  const body = { error: err.message, code: err.code };
+  if (isServeMode) throw new Error(JSON.stringify(body));
+  console.log(JSON.stringify(body, null, 2));
   process.exit(1);
 }
 
@@ -1176,6 +1190,7 @@ bridgeCommand
               db,
               await libraryLens(db, opts.atlasLens),
               String(opts.atlasRegion),
+              userId,
             )
           : undefined;
         const result = await handleGetReview(db, {
@@ -1236,6 +1251,7 @@ bridgeCommand
               db,
               await libraryLens(db, opts.atlasLens),
               String(opts.atlasRegion),
+              userId,
             )
           : undefined;
         const result = await handleGetReviewsBatch(db, {
@@ -4592,32 +4608,53 @@ bridgeCommand
     "JSON array of already-kept subtopic labels (drill-down path)",
     "[]",
   )
-  .action(async (opts: { title: string; context: string; path: string }) => {
-    await withDb(async (db) => {
-      let path: string[] = [];
-      try {
-        path = stringArrayOption(opts.path);
-      } catch {
-        jsonError("Invalid --path JSON");
-      }
-      try {
-        const options = await proposeSubtopicsViaLLM(db, {
-          title: opts.title,
-          context: opts.context ?? "",
-          path,
-        });
-        jsonOut({
-          success: true,
-          options: options.map((option) => ({
-            id: slugify(option.label) || "topic",
-            ...option,
-          })),
-        });
-      } catch (err) {
-        jsonOut({ success: false, error: (err as Error).message });
-      }
-    });
-  });
+  .option(
+    "--place <json>",
+    "JSON array of the atlas place's region names, root first",
+    "[]",
+  )
+  .action(
+    async (opts: {
+      title: string;
+      context: string;
+      path: string;
+      place: string;
+    }) => {
+      await withDb(async (db) => {
+        let path: string[] = [];
+        let place: string[] = [];
+        try {
+          path = stringArrayOption(opts.path);
+          place = stringArrayOption(opts.place);
+        } catch {
+          jsonError("Invalid --path or --place JSON");
+        }
+        let title = "";
+        try {
+          title = normalizeTopicTitle(opts.title);
+        } catch (err) {
+          jsonError((err as Error).message);
+        }
+        try {
+          const options = await proposeSubtopicsViaLLM(db, {
+            title,
+            context: opts.context ?? "",
+            path,
+            place,
+          });
+          jsonOut({
+            success: true,
+            options: options.map((option) => ({
+              id: slugify(option.label) || "topic",
+              ...option,
+            })),
+          });
+        } catch (err) {
+          jsonOut({ success: false, error: (err as Error).message });
+        }
+      });
+    },
+  );
 
 bridgeCommand
   .command("topic-cards")
@@ -4638,19 +4675,27 @@ bridgeCommand
     "JSON array of kept drill-down labels above the subtopic",
     "[]",
   )
+  .option(
+    "--place <json>",
+    "JSON array of the atlas place's region names, root first",
+    "[]",
+  )
   .requiredOption("--topic <json>", "JSON {label, description} of the subtopic")
   .action(
     async (opts: {
       title: string;
       context: string;
       path: string;
+      place: string;
       topic: string;
     }) => {
       await withDb(async (db) => {
         let path: string[] = [];
+        let place: string[] = [];
         let topic: { label: string; description: string } | null = null;
         try {
           path = stringArrayOption(opts.path);
+          place = stringArrayOption(opts.place);
           const parsedTopic = JSON.parse(opts.topic);
           if (
             parsedTopic &&
@@ -4663,7 +4708,7 @@ bridgeCommand
             };
           }
         } catch {
-          jsonError("Invalid --path or --topic JSON");
+          jsonError("Invalid --path, --place or --topic JSON");
         }
         if (!topic) {
           jsonError("--topic must be a JSON {label, description} object");
@@ -4673,6 +4718,7 @@ bridgeCommand
           title: opts.title,
           context: opts.context ?? "",
           path,
+          place,
           topic,
         });
         jsonOut({ success: true, proposals });
@@ -9809,7 +9855,7 @@ bridgeCommand
           }),
         );
       } catch (err) {
-        jsonError((err as Error).message);
+        jsonRefusal(err);
       }
     });
   });
@@ -9827,7 +9873,7 @@ bridgeCommand
         const userId = await resolveUser(opts, db, { json: true });
         jsonOut(await atlasDisconnect(db, { userId, id: String(opts.id) }));
       } catch (err) {
-        jsonError((err as Error).message);
+        jsonRefusal(err);
       }
     });
   });
