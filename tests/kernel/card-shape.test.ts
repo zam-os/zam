@@ -2,7 +2,6 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import { describe, expect, it } from "vitest";
 import {
-  MAX_SCORED_BLOOM_LEVEL,
   parseAnswerPoints,
   supportsAnswerPoints,
 } from "../../src/kernel/library/answer-points.js";
@@ -24,13 +23,14 @@ describe("card-shape rules", () => {
     expect(text).toContain("also gets its own card");
   });
 
-  it("gives the overview card a Bloom level its points are scored at", () => {
-    // Points are scored only up to MAX_SCORED_BLOOM_LEVEL; the overview card
-    // stays below it so every name is scored.
+  it("keeps the names-only overview card at Bloom 1 or 2, where its points are scored", () => {
+    // Recalling names is Remember, at most Understand; that is why the
+    // overview card stays at 1 or 2. Both levels must also be scored, so each
+    // name counts as a point.
     expect(CARD_SHAPE_RULES[1]).toContain(
       "its Bloom level is 1 (Remember) or 2 (Understand)",
     );
-    expect(MAX_SCORED_BLOOM_LEVEL).toBeGreaterThanOrEqual(2);
+    expect(supportsAnswerPoints(1)).toBe(true);
     expect(supportsAnswerPoints(2)).toBe(true);
   });
 

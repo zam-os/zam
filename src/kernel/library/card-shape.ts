@@ -3,17 +3,21 @@
  * card, and one names-only overview card for a knowledge that is itself a
  * complete, closed set.
  *
- * Every card-generating prompt states these rules in this wording — the
- * curriculum and file import, the topic import, the split and foundations
- * proposals, the material import and the OKF import — so a model meets one
- * rule on every path. Existing list cards were bloated with a member's
- * explanation per line; the overview card asks for the names only, and what
- * is to be said about a member goes on that member's own card.
+ * The card-generating prompts state these rules in this wording, so a model
+ * meets one rule on every path: the curriculum and file import
+ * (`requestCurriculumCards`), Mobile's curriculum import
+ * (`buildMobileCurriculumPrompt`), the split and foundations proposals, the
+ * material import on both paths (`materialCardRules`) and the OKF import's
+ * tool description. A new card prompt interpolates them instead of copying
+ * the text. Existing list cards were bloated with a member's explanation per
+ * line; the overview card asks for the names only, and what is to be said
+ * about a member goes on that member's own card.
  *
  * The overview card leans on answer points (`answer-points.ts`, ADR
  * 2026-09-08): each name is its own list item, so each member is scored as a
- * point, and points are scored only up to Bloom `MAX_SCORED_BLOOM_LEVEL` —
- * hence Bloom 1 or 2 for the overview card.
+ * point. It stays at Bloom 1 or 2 because it asks for names only — recalling
+ * them is Remember, at most Understand. Both levels lie inside the scored
+ * range up to `MAX_SCORED_BLOOM_LEVEL`.
  *
  * Plain strings, free of Node built-ins: Mobile bundles the material prompt
  * that states them.

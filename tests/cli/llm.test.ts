@@ -1088,6 +1088,14 @@ describe("LLM client utilities (CLI layer)", () => {
       for (const rule of CARD_SHAPE_RULES) {
         expect(systemPromptOf(sentPrompt)).toContain(`- ${rule}`);
       }
+      // A prerequisite that is a complete set is one prerequisite: its
+      // overview and member cards are neither extra prerequisites nor padding.
+      expect(systemPromptOf(sentPrompt)).toContain(
+        "Together they are one prerequisite, not several, and they are not padding.",
+      );
+      expect(systemPromptOf(sentPrompt)).not.toContain(
+        "a single foundational fact",
+      );
 
       content = cards(5);
       expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(

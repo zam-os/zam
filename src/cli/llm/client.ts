@@ -2339,7 +2339,7 @@ The current card details are:
 - Excerpt Context: ${token.context || "N/A"}
 
 For each proposed foundational card, you MUST generate:
-1. "question": A clear, concise active-recall question testing a single foundational fact or prerequisite concept.
+1. "question": A clear, concise active-recall question testing one foundational point, or the names of a complete set for an overview card.
 2. "concept": The reference answer or core fact.
 3. "domain": The category of the card (default to "${token.domain}").
 4. "context": The context excerpt explaining where this prerequisite fits in the learning hierarchy.
@@ -2351,6 +2351,7 @@ Guidelines:
 - Never pad: do not add loosely related, merely helpful, or overlapping prerequisites to reach a larger number.
 - Recommend only highly relevant and necessary prerequisites.
 ${cardShapeRuleLines()}
+- When a prerequisite is itself a complete set, it becomes one overview card that asks for the members' names only, plus one card per point about a member that the card above depends on. Together they are one prerequisite, not several, and they are not padding.
 - Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any conversational filler.`;
 
   const userPrompt = `Suggest one foundational prerequisite card per prerequisite the card above genuinely needs.

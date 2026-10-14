@@ -26,6 +26,7 @@ import {
   findBundledCellsForScope,
   getBundledCellsWithStatus,
 } from "../../src/kernel/library/bundled-cells.js";
+import { cardShapeRuleLines } from "../../src/kernel/library/card-shape.js";
 import { slugify } from "../../src/kernel/models/token.js";
 import type { MobileTokenDraft } from "./import.js";
 import { resolveMobileCloudChain } from "./model-registry.js";
@@ -223,11 +224,13 @@ export function buildMobileCurriculumPrompt(input: {
 
 Rules:
 - Test the subject directly. Never ask what the curriculum says or what learners should know.
-- One fact, concept, method, or skill per card; no duplicate cards.
+${cardShapeRuleLines()}
+- No duplicate cards.
 - Stay inside the supplied text. The context must be the exact supporting sentence or bullet.
 - Order foundations before applications. Prerequisites may name only titles from this same output.
 - Return only a JSON array with this shape:
 [{"title":"short title","question":"active-recall question","concept":"concise reference answer","context":"exact source excerpt","bloom_level":1,"prerequisites":[]}]
+- An overview card's concept is a names-only list, one item per line: "- first name\\n- second name\\n- third name".
 - bloom_level is an integer from 1 to 5.
 
 Category: ${input.category}
@@ -313,7 +316,7 @@ function endpointChain(first: ZamPairLlmEndpoint | null): ZamPairLlmEndpoint[] {
       endpoint.enabled &&
       !endpoint.local &&
       endpoint.apiFlavor === "chat-completions" &&
-      Boolean(endpoint.apiKey)
+      endpoint.apiKey
     ) {
       result.push(endpoint);
     }
