@@ -135,13 +135,24 @@ export const MATERIAL_CONTRACT_EXAMPLE = {
     leadsTo:
       "Messbare Stoffeigenschaften: Dichte, Schmelz- und Siedetemperatur",
   },
+  // Both card shapes: the common one-point card, and an overview card for a
+  // complete set — names only, one list item per line.
   proposals: [
     {
-      question: "Welche Eigenschaften eines Stoffes erkennt man am Aussehen?",
-      // An overview card: names only, one list item per line.
-      answer:
-        "- Farbe\n- Aggregatzustand bei Raumtemperatur\n- metallischer Glanz",
-      title: "Stofferkennung am Aussehen",
+      question: "Welche Farbe hat Schwefel?",
+      answer: "Gelb.",
+      title: "Farbe von Schwefel",
+      bloom: 1,
+      file: 0,
+      page: 1,
+      area: "chemie/stoffe-und-eigenschaften",
+      origin: "page",
+      hardToRead: false,
+    },
+    {
+      question: "Welche Aggregatzustände kann ein Stoff haben?",
+      answer: "- fest\n- flüssig\n- gasförmig",
+      title: "Aggregatzustände",
       bloom: 1,
       file: 0,
       page: 1,

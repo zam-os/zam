@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-10-14T14:00:00.000Z
+timestamp: 2026-10-14T15:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -139,6 +139,10 @@ besides. An overview asks for the names of a set's members ("Which index types
 does PostgreSQL have?"), not for what is to be said about each ("How do B-Tree,
 GIN and BRIN differ?" is three cards). Splitting a bloated list card therefore
 yields a names-only overview card plus a card per point about a member.
+An overview card still raises `criterion_multiple_points`, since it asks for
+several points by design; the notice names it as the second exception to
+splitting, next to points that only make sense together, so it does not tell
+the card's author to split it.
 
 The two evaluators split the judgement rather than conflating it. Coverage is
 observable from the answer text; effort is not, and only the learner knows it.

@@ -75,14 +75,17 @@ describe("material instructions", () => {
     for (const rule of CARD_SHAPE_RULES) expect(text).toContain(rule);
   });
 
-  it("shows an overview card whose answer is names only, one point each", () => {
-    const [example] = MATERIAL_CONTRACT_EXAMPLE.proposals;
-    expect(parseAnswerPoints(example.answer)).toEqual([
-      "Farbe",
-      "Aggregatzustand bei Raumtemperatur",
-      "metallischer Glanz",
+  // Models anchor on the example, so it shows both shapes: the common
+  // one-point card first, then an overview card whose answer is names only.
+  it("shows a one-point card and a names-only overview card", () => {
+    const [single, overview] = MATERIAL_CONTRACT_EXAMPLE.proposals;
+    expect(parseAnswerPoints(single.answer)).toEqual(["Gelb."]);
+    expect(parseAnswerPoints(overview.answer)).toEqual([
+      "fest",
+      "flüssig",
+      "gasförmig",
     ]);
-    expect(example.bloom).toBeLessThanOrEqual(2);
+    expect(overview.bloom).toBeLessThanOrEqual(2);
   });
 });
 
