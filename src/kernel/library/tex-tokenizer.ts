@@ -110,6 +110,7 @@ export type TexIssueCode =
   | "unbalanced-braces"
   | "unbalanced-environment"
   | "stray-alignment"
+  | "doubled-backslash"
   | "trailing-backslash";
 
 export interface TexIssue {
@@ -245,6 +246,20 @@ export function tokenizeTex(tex: string): TexLexResult {
         tokens.push({ kind: "word", name, offset: i });
         i = end;
         continue;
+      }
+      if (next === "\\" && environments.length === 0) {
+        // `\\lambda` outside a matrix is an escaping slip (JSON's `\\\\`
+        // where `\\` was meant): a line break followed by the letters
+        // "lambda", never what the author wanted.
+        const word = /^[A-Za-z]+/.exec(tex.slice(i + 2))?.[0];
+        if (word && CONTROL_WORDS.has(word)) {
+          issue(
+            "doubled-backslash",
+            i,
+            `\\\\${word} is a line break followed by letters; write \\${word}.`,
+            `\\\\${word}`,
+          );
+        }
       }
       if (!CONTROL_SYMBOLS.has(next)) {
         issue(

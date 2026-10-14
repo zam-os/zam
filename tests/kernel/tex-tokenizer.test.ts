@@ -92,6 +92,13 @@ describe("tokenizeTex", () => {
     expect(texIssues("\\begin{pmatrix} a & b \\end{pmatrix}")).toEqual([]);
   });
 
+  it("refuses a doubled backslash before a command name outside a matrix", () => {
+    expect(codes("\\\\lambda < 4")).toContain("doubled-backslash");
+    expect(
+      texIssues("\\begin{pmatrix} a \\\\ b \\end{pmatrix}"),
+    ).toEqual([]);
+  });
+
   it("refuses dollars, bare comments and bare parameters", () => {
     expect(codes("x $ y")).toContain("dollar");
     expect(codes("50% + x")).toContain("comment");

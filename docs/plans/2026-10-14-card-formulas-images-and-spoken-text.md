@@ -29,7 +29,7 @@ small images.
 
 - [x] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
   check, projections, converter — `dbb5a670`
-- [ ] **Phase 2** — schema and the one write path
+- [x] **Phase 2** — schema and the one write path — `5c6e87f1`
 - [ ] **Phase 3** — Studio recall renders segments; voice speaks them;
   measurements
 - [ ] **Phase 4** — tiles: segment fields, installer, `installed_tiles`,
@@ -294,13 +294,19 @@ Pure functions only. No schema, no surface.
 - **Corpus facts for Phase 5:**
   - **Formulas:** 6,159 in all, 2,341 of them in questions; the longest has
     433 characters.
-  - **Refused formulas:** 13, in 12 fields. Seven are the strings with
-    tab or carriage-return damage. Four carry unbalanced braces: one
-    question (Trigonometrie J02) and three sample solutions. One sample
-    solution (Englisch Rhetorik J02) has a bare `&` outside an environment,
-    which Temml refuses; the tokenizer has refused that since Phase 2. They
-    are listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`, and
-    Phase 5 empties that list.
+  - **Refused formulas:** in 14 fields.
+    - **Seven** are the strings with tab or carriage-return damage.
+    - **Four** carry unbalanced braces: one question (Trigonometrie J02)
+      and three sample solutions.
+    - **One** sample solution (Englisch Rhetorik J02) has a bare `&`
+      outside an environment, which Temml refuses. The tokenizer has
+      refused that since Phase 2.
+    - **Two** sample solutions (Geographie 13 J02 and J04) write `\\lambda`
+      and `\\text` for `\lambda` and `\text`. The tokenizer has refused a
+      doubled backslash before a command name since Phase 3.
+
+    They are listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`,
+    and Phase 5 empties that list.
   - **Bare commands outside dollars:** 4 questions, 7 concepts, 9 options
     and 5 sample solutions, all in grade 11–13 tiles. Phase 5 patches the
     questions by hand. The concepts and options go into the ASCII-math
@@ -471,6 +477,56 @@ Pure functions only. No schema, no surface.
   setting `Object.prototype.trust = true` in the test leaves `trust` false.
   Restore the prototype afterwards.
 - **Voice:** `voice-review` speaks `spokenQuestion` when present.
+
+### As built (Phase 3)
+
+- **Renderer modules.** `desktop/src/math-render.ts` (Temml, the options and
+  the output check) and `desktop/src/card-text-render.ts` (segments into DOM
+  nodes, progressive). `renderQuestionWithTopic` takes optional segments.
+  - **What Studio renders as card text:** the question, the concept row of
+    the reveal, and the fast-check buttons.
+  - **Choice mode** still shows plain options; segment choices come with the
+    presentation work in Phase 6.
+- **Temml's real output decided the allowlist.** For the 6,147 clean corpus
+  formulas, Temml writes `style` (spacing, borders, `math-depth`,
+  `text-align`) and `class` (`tml-…`, `wbk-…`, `chr-…`, `mathcal`). The
+  check allows exactly those properties and class names, and the test
+  checks every corpus formula against it.
+- **Fonts.** Phase 3 ships Temml's `Temml-Local.css` and `Temml.woff2`. That
+  stylesheet uses the system math font: Cambria Math on Windows, STIX Two
+  Math on macOS, Noto Sans Math where installed.
+  - **Latin Modern Math is not bundled yet.** Committing the font file
+    needs it downloaded from Temml's repository or GUST. That is the
+    owner's call, not an unattended step.
+  - **When it lands:** swap in `Temml-Latin-Modern.css` and commit the font
+    with its GUST licence and SHA-256.
+- **Studio bundle:** a lazy chunk of 204 KB (60 KB gzip), plus 5.6 KB CSS
+  and a 9 KB font, loaded on the first formula. The recall panel inlines it
+  (single-file build), which it needs from Phase 8 on.
+- **Voice reads the spoken text** through the host's `currentCard`. The
+  kernel loop needed no change: `question` and `expectedAnswer` simply
+  carry `spokenQuestion` and `spokenConcept` when the card has segments.
+- **Media placement.** `getTokenMedia` returns `placement`, and the
+  attachment strip skips `inline` rows. Image segments look their asset up
+  in the payload's media.
+- **Two more tokenizer rules** came out of rendering the corpus:
+  - a bare `&` outside an environment (Temml refuses it);
+  - `\\name` outside a matrix, an escaping slip.
+
+  Both are listed under the Phase 1 corpus facts.
+- **Measurement gate: still open, and it needs the owner.**
+  - **The page:** `desktop/dev/math-corpus.html` renders every unique corpus
+    formula with the Studio's renderer and reports how many fell back. It
+    is a dev-only page, not in the build.
+  - **Start it** with `npm --prefix desktop run dev`, then open
+    `http://localhost:1420/dev/math-corpus.html` in Safari (WebKit), and in
+    Chrome or Edge for comparison. "Nur Rückfälle zeigen" lists the
+    failures.
+  - **VoiceOver on macOS** remains a manual check: does it read `alttext`,
+    and can one navigate a fraction and a matrix?
+  - **Why not done unattended:** the session's preview tool only starts
+    servers from the main worktree's launch configuration, which this
+    branch must not edit. Desktop control needs the owner's approval.
 
 ## Phase 4 — tiles: fields, installer, reconcile, team step
 

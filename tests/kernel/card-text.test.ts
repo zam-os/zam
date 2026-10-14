@@ -199,8 +199,9 @@ describe("the bundled corpus against the formula rules", () => {
   /**
    * Formulas the bundled tiles carry broken today: seven strings where JSON
    * turned `\t`/`\r` into control characters, four with unbalanced braces,
-   * and one with a bare `&` outside an environment. Plan Phase 5 patches
-   * them by hand and empties this list.
+   * one with a bare `&` outside an environment, and two where `\\lambda`
+   * stands for `\lambda`. Plan Phase 5 patches them by hand and empties this
+   * list.
    */
   const KNOWN_DAMAGED = new Set([
     "de-by-gymnasium-10-chemie-sauerstoffgruppen-alkohole-aldehyde-carbonsaeuren-ester-kvt.json|01K8GA80000000000000000J04|sample_solution",
@@ -215,6 +216,8 @@ describe("the bundled corpus against the formula rules", () => {
     "de-by-gymnasium-12-chemie-saeure-base-gleichgewichte-ph-wert-titration-puffer-kvt.json|01K8GC60000000000000000J04|sample_solution",
     "de-by-gymnasium-12-physik-atomphysik-bohrsches-atommodell-linien-spektren-kernspaltung-kvt.json|01K8GC40000000000000000J04|sample_solution",
     "de-by-gymnasium-13-chemie-farbstoffe-mesomerie-chromophore-azofarbstoffe-spektroskopie-kvt.json|01K8GD50000000000000000J04|sample_solution",
+    "de-by-gymnasium-13-geographie-klimawandel-kippelemente-ipcc-ressourcen-kvt.json|01K8GDF0000000000000000J02|sample_solution",
+    "de-by-gymnasium-13-geographie-klimawandel-kippelemente-ipcc-ressourcen-kvt.json|01K8GDF0000000000000000J04|sample_solution",
   ]);
 
   it("every other formula lifts strictly and passes the tokenizer", () => {

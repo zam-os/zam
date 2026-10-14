@@ -282,6 +282,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
           entry.data.byteLength,
         ).toString("base64"),
         occlusions: entry.occlusions,
+        placement: entry.placement,
       }));
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 

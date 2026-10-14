@@ -1949,6 +1949,48 @@ fieldset.settings-choice {
   font-weight: 750;
 }
 
+/* Card text with formulas and images (ADR 2026-10-14b). A formula keeps the
+   surrounding colour and size, so it reads as part of the sentence; MathML
+   scales with the text (WCAG 1.4.4). */
+.card-math math {
+  font-size: 1.05em;
+  color: inherit;
+}
+
+/* A displayed formula scrolls inside its own box, never the page (WCAG
+   1.4.10 reflow). */
+.card-math-block {
+  display: block;
+  max-width: 100%;
+  margin: 0.4em 0;
+  overflow-x: auto;
+  overflow-y: hidden;
+}
+
+.card-image {
+  display: block;
+  max-width: 100%;
+  height: auto;
+  margin: 0.4em 0;
+}
+
+.card-image-inline {
+  display: inline-block;
+  height: 1.2em;
+  width: auto;
+  margin: 0 0.1em;
+  vertical-align: -0.2em;
+}
+
+.card-figure {
+  margin: 0.4em 0;
+}
+
+.card-figure figcaption {
+  font-size: var(--fs-sm);
+  color: var(--color-ink-2);
+}
+
 .question-text {
   font-family: var(--font-display);
   font-size: clamp(var(--fs-lg), 2.4vw, var(--fs-2xl));
