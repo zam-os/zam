@@ -5,7 +5,8 @@ to 3 shipped, and of Phase 4 the MCP Apps panel and the outline on Mobile; the
 map itself on Mobile is open. See the delivery note\
 **Date:** 2026-10-13\
 **Deciders:** Thomas (project owner)\
-**Implementation plan:** [2026-10-13-knowledge-atlas.md](../plans/2026-10-13-knowledge-atlas.md)\
+**Implementation plan:** `docs/plans/2026-10-13-knowledge-atlas.md`, removed
+at release 0.52.0; read it in the history of zam-os/zam#407\
 **Spikes:** zam-os/zam#405: `desktop/spikes/knowledge-world/` (3D) and
 `desktop/spikes/knowledge-atlas/` (2D)\
 **Related:**
@@ -706,8 +707,8 @@ All phases ship on one branch.
 
 > **Delivery note (2026-10-14, PR #407).** Phases 0 to 3 shipped, and of
 > Phase 4 the MCP Apps panel and the outline on Mobile. The plan's "as built"
-> notes record the details. What changed against the phases above, and what
-> is open:
+> notes, in the history of PR #407, record the details. What changed against
+> the phases above, and what is open:
 >
 > - **The atlas is not an alpha.** After the first Studio check the owner
 >   decided it is always shown and takes the 3D learning graph's place. The
