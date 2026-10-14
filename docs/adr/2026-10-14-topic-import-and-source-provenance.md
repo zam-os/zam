@@ -84,7 +84,7 @@ link, a material import.
     say where the cards came from.
 - **It replaces the goal import everywhere:**
   - the Import menu;
-  - first-run page 7, which becomes "Dein erstes Thema";
+  - the first-run flow (how, see Open question 2);
   - the default path of the free-learner persona;
   - the atlas, where *Hier importieren …* keeps *Fehlendes Wissen beschreiben*
     as its action and opens the topic import.
@@ -104,75 +104,95 @@ link, a material import.
 ### 3. A unit's source says where its knowledge comes from
 
 A source answers one question: where did the knowledge of this unit come
-from? In order of preference:
+from?
+
+**A model knows nothing it could not read somewhere.** So an agent creates
+tokens only from a source it read, and every token it writes cites that
+source:
+
+- **A file** in a repository: an OKF article, or another Markdown file.
+- **The repository root**, when the knowledge comes from the repository as a
+  whole rather than from one file.
+- **A web page**, by its URL. When the cards come from a web source, that
+  link is their source.
+
+Without a source, an agent creates no token. The one exception is world
+knowledge in a topic import (Decision 5): that is what a model learned from
+public sources, and every card of it names where to read it up
+(Decision 4).
+
+A learner who writes a card by hand needs no source: the learner is the
+source.
+
+**Order of preference** for a source:
 
 1. **A source ZAM can read without internet.** For example:
-   - a file in a trusted folder or a repository Quelle, such as an OKF article
-     or a document;
+   - a file in a trusted folder or a repository Quelle, or the repository
+     root;
    - a curriculum or a published cell in the library.
 
    This is the safest kind: it needs no network, sends nothing out, and stays
    readable.
 2. **A stable public source on the web**, for world knowledge: a Wikipedia
    article, a published curriculum, open documentation.
-3. **No source.** This is the honest answer when the knowledge came from the
-   learner's words and the model, as in a topic import. It is also the answer
-   when protected knowledge has no repository to point to.
 
 The kind (the planet, 2026-10-13 Decision 2) limits what a source may be:
 
-| Kind | May cite | Never cites |
+| Kind | Cites | Never cites |
 |---|---|---|
 | Weltwissen | a source without internet (1), or a public one (2) | a protected repository or a private file: a world unit may be published, and the link would leak and break for everyone else |
-| Firma | the company's repository (1), a public page (2), or nothing | — |
-| Privat | the learner's own files (1), or nothing | — |
+| Firma | the company's repository: a file or its root (1); a public page (2) where the knowledge comes from one | — |
+| Privat | the learner's own files or notes (1) | — |
 
-**A topic import cites no source** in this sense (3). Its cards keep only the
-record of Decision 1.
+**ZAM checks what it can.** A local path must lie inside trusted folders, as
+2026-10-08b already requires, and a URL must pass the `safeFetch` rules. The
+rest is the tools' descriptions and the editorial release. The checks
+themselves are planned with the agent tools of atlas Phase 9c.
 
-**Agents follow the same order** when they write tokens (`sourceLink`):
+### 4. Reading up is the learner's function, not a source
 
-- An agent that read a company repository cites the file it read.
-- For world knowledge an agent cites a public source, not what it knows from
-  training.
-- ZAM checks what it can: a local path only inside trusted folders, as
-  2026-10-08b already requires, and a URL by the `safeFetch` rules. The rest
-  is the tools' descriptions and the editorial release.
-
-The checks themselves are planned with the agent tools of atlas Phase 9c.
-
-### 4. Reading up on Wikipedia is the learner's function, not a source
-
-- **What it does.** For a world unit, the Studio offers *Auf Wikipedia
-  nachlesen*. On the learner's click it opens Wikipedia in the learner's
-  language, in the system browser.
-- **It opens a search, not a stored link.** The search jumps straight to the
-  article of that name (`Special:Search?search=…&go=Go`). So it never ends on
-  a dead link, and ZAM fetches nothing beforehand.
-- **The search term.** It is the article name the model proposed for the
-  subtopic in a topic import, and otherwise the unit's title. The term is
-  stored with the token as knowledge: shared, and part of its revision. A
-  published atom without a term uses its title.
-- **World units only.** A Firma or Privat title never goes to Wikipedia, not
-  even on a click.
-- **It is not a `source_link`.** It forms no library topic (2026-10-02), no
-  review fetches it, and nothing depends on the internet.
+- **What it does.** For a world unit, the Studio offers *Nachlesen*. On the
+  learner's click it opens the place to read the unit up, in the system
+  browser.
+- **A unit from a web source** opens that page: its source is the place to
+  read it up.
+- **Any other world unit** opens Wikipedia in the learner's language:
+  - It opens a search that jumps straight to the article of that name
+    (`Special:Search?search=…&go=Go`). So it never ends on a dead link, and
+    ZAM fetches nothing beforehand.
+  - The search term is the article name the model proposed for the subtopic
+    in a topic import, and otherwise the unit's title.
+  - The term is stored with the token as knowledge: shared, and part of its
+    revision. A published atom without a term uses its title.
+- **Wikipedia is the first reference work, not the only one.** Other
+  reference works may follow, such as a children's encyclopedia for younger
+  pupils (Open question 1).
+- **World units only.** A Firma or Privat title never goes to a reference
+  work on the web, not even on a click.
+- **The Wikipedia search is not a `source_link`.** It forms no library topic
+  (2026-10-02), no review fetches it, and nothing depends on the internet.
 - **Where it shows:**
   - the atlas unit panel;
   - a review card's revealed answer, beside the Sinnbild;
   - the card in Lern-Karten.
 
-### 5. The kind of what a topic import creates
+### 5. The topic import writes world knowledge
 
-- **Started at an atlas place,** the kind is the planet of the region, as
-  today (2026-10-13 Decision 9).
-- **Started from the Import menu,** the model proposes a kind per subtopic.
-  The list of subtopics shows it ("Weltwissen", "Privat"), and the learner can
-  change it before cards are drafted. World subtopics also get their search
-  term (Decision 4).
-
-This is the mixed import of 2026-10-13 Decision 2, and it is delivered with
-atlas Phase 9c.
+- **Only world knowledge.** A topic import is the one path where a model
+  writes from what it already knows. That is world knowledge, so everything
+  a topic import creates is world knowledge.
+  - Its units land on the world planet, sorted by their domain like any own
+    world unit.
+  - Each subtopic carries its search term for reading up (Decision 4).
+- **Protected knowledge needs its source.** The model knows nothing about a
+  company or a person. If it sees that a subtopic is about one, it says so,
+  and the learner drops that subtopic. The learner can import it from its
+  source instead:
+  - a repository, through the agent (OKF import, 2026-07-18);
+  - a file, a photo or a PDF, or typed notes (2026-10-05).
+- **At an atlas place.** The topic import is offered at world regions. At a
+  Firma or Privat region, *Hier importieren …* offers the imports that read
+  a source.
 
 ## Consequences
 
@@ -185,11 +205,15 @@ atlas Phase 9c.
   connection while learning nor a working link in the data.
 - Kind and source line up for the editorial release: a world unit never
   carries a protected link.
+- No model invents protected knowledge: what a company or a person knows
+  enters only from where it is written down.
 
 **Harder**
 
 - Cards from a topic import still have no source that a review can read. That
   is true today as well, since their `source_link` is empty.
+- A topic at a Firma or Privat place needs a source first; the topic import
+  is not offered there.
 - A Wikipedia search shows a results page when no article has the exact name.
 - The search term is a new token field: a schema change, part of token
   revisions.
@@ -216,30 +240,33 @@ atlas Phase 9c.
 
 ## Open questions
 
-1. **A repository source for Firma subtopics.** May the learner give one in
-   the list of subtopics, such as a link into the company repository?
-2. **A source for reading up other than Wikipedia.** Should it depend on the
-   language, or on a library setting? Decision 4 keeps it to world units, so a
-   company wiki is not meant.
-3. **First-run page 7.** Does it stay as a page of its own, or join page 6,
-   the first learning content?
+1. **Reference works besides Wikipedia.** The owner is open to alternatives,
+   such as a children's encyclopedia for younger pupils, or a choice by
+   language. Which ones, and does the learner pick or does the persona?
+2. **The first-run flow.** Today page 6 ("Woher sollen deine ersten Karten
+   kommen?") offers four paths, and its fourth, "Aus einem Ziel", leads to
+   page 7, a goal page every persona passes. With the topic import as one
+   path among four, page 7 has no reason of its own. This is to be decided on
+   example designs.
 
 ## Delivery
 
 The changes land on PR #407, after atlas Phase 9b, each as its own commit:
 
 1. **The topic import.**
-   - The Studio's strings (en, de), the dialog, first-run page 7 and the
-     persona default.
+   - The Studio's strings (en, de), the dialog, the first-run flow as Open
+     question 2 settles it, and the persona default.
    - The bridge commands take the new name, and `goal-create` is retired.
    - The `zam-topic:<ULID>` source row.
    - Tests, and the OKF articles `learning-content` and `bridge-protocol`.
 2. **Reading up on Wikipedia.** The token field and its migration, the term
    in the topic proposals, the Studio buttons, and tests.
-3. **A kind per subtopic,** with atlas Phase 9c.
+3. **World knowledge only, and the source rules for agents** (Decisions 3
+   and 5), with atlas Phase 9c.
 
 ## Status history
 
 | Date | Status | Note |
 |---|---|---|
 | 2026-10-14 | Proposed | Owner direction: the goal import is a short topic and is demoted and renamed; goals return later as knowledge for an agent acting as tutor. A unit's source says where its knowledge comes from: world knowledge cites a stable source, preferably one readable without internet, company knowledge its repository or nothing. Reading up on Wikipedia is a function for the learner. Lands in PR #407. |
+| 2026-10-14 | Proposed | Owner answers: a model knows nothing it could not read somewhere, so an agent creates tokens only from a source (a file such as an OKF article or other Markdown, the repository root, or a web page). The topic import therefore writes world knowledge only, and protected topics are imported from their source. A unit from a web source cites that link and reads up there. Open to reference works besides Wikipedia. The first-run pages are discussed on example designs. |
