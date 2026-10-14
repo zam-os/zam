@@ -13,6 +13,7 @@ import {
   MATERIAL_ORIGINS,
   MATERIAL_PROPOSAL_SET_VERSION,
 } from "../../kernel/import/material-contract.js";
+import { CARD_SHAPE_RULES } from "../../kernel/library/card-shape.js";
 import { languageName } from "../../kernel/system/language-names.js";
 
 /** Photos per import on the built-in path (D3). */
@@ -108,7 +109,7 @@ export function materialCardRules(path: MaterialPath): string[] {
     path === "harness"
       ? "Analyse first: the kind of material, its subject (use the subject codes from zam_material_import_context), topic, school level and depth, and what it leads to."
       : "Analyse first: the kind of material, its subject (use the subject codes listed below), topic, school level and depth, and what it leads to.",
-    "One card per retrieval target: a question with one clear answer. Prefer several focused cards over one broad card.",
+    ...CARD_SHAPE_RULES,
     "Set each card's origin honestly — page: stated on the page; completed: explains, justifies or corrects a statement on the page; extra: related knowledge the page does not state.",
     "Set hardToRead on a card when you are not sure you read the handwriting right.",
     "Over-delivery is fine: the learner deselects. You never decide for the learner — you propose, and the learner chooses Yes, No or Bonus in ZAM's review list.",
@@ -137,7 +138,9 @@ export const MATERIAL_CONTRACT_EXAMPLE = {
   proposals: [
     {
       question: "Welche Eigenschaften eines Stoffes erkennt man am Aussehen?",
-      answer: "Farbe, Aggregatzustand bei Raumtemperatur, metallischer Glanz.",
+      // An overview card: names only, one list item per line.
+      answer:
+        "- Farbe\n- Aggregatzustand bei Raumtemperatur\n- metallischer Glanz",
       title: "Stofferkennung am Aussehen",
       bloom: 1,
       file: 0,

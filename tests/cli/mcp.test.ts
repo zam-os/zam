@@ -21,6 +21,7 @@ import { upsertArticle } from "../../src/cli/okf/io.js";
 import type { Database } from "../../src/kernel/index.js";
 import {
   addTrustedFolder,
+  CARD_SHAPE_RULES,
   createToken,
   ensureCard,
   getCard,
@@ -221,6 +222,19 @@ describe("MCP stdio server tests", () => {
       openWorldHint: false,
       destructiveHint: true,
     });
+  });
+
+  // The agent decomposes an OKF article itself, so the tool description is
+  // where it meets the card-shape rule (owner, 2026-10-14).
+  it("tells the OKF-importing agent the card-shape rules", async () => {
+    const { tools } = await client.listTools();
+    const okfImport = tools.find((t) => t.name === "zam_okf_import");
+    for (const rule of CARD_SHAPE_RULES) {
+      expect(okfImport?.description).toContain(rule);
+    }
+    expect(okfImport?.description).not.toContain(
+      "one atomic concept per token",
+    );
   });
 
   it("can query zam_status and submit review", async () => {

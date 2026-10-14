@@ -16,6 +16,7 @@ import type { StudioLaunchResult } from "../../src/cli/desktop-launch.js";
 import { readStagedImport } from "../../src/cli/material-staging.js";
 import {
   addTrustedFolder,
+  CARD_SHAPE_RULES,
   createToken,
   type Database,
   openDatabase,
@@ -125,6 +126,10 @@ describe("material import MCP tools", () => {
       }),
     );
     expect(context.rules.join(" ")).toContain("never a transcript");
+    // One point per card, names-only overview cards (2026-10-14).
+    expect(context.rules).toEqual(
+      expect.arrayContaining([...CARD_SHAPE_RULES]),
+    );
     expect(context.contract).toContain("origin");
     expect(context.areas).toEqual([{ path: "chemie/stoffe", tokenCount: 1 }]);
     expect(context.cellSubjects).toContain("chemie");

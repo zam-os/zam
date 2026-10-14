@@ -6,6 +6,7 @@ import {
   buildMaterialInstructions,
   buildMaterialRequest,
   MATERIAL_CARD_RULES,
+  MATERIAL_CONTRACT_EXAMPLE,
   MATERIAL_MAX_OUTPUT_TOKENS,
   type MaterialAttachment,
   materialCardRules,
@@ -13,6 +14,8 @@ import {
   mergeMaterialReplies,
   parseMaterialReply,
 } from "../../src/cli/llm/material-prompt.js";
+import { parseAnswerPoints } from "../../src/kernel/library/answer-points.js";
+import { CARD_SHAPE_RULES } from "../../src/kernel/library/card-shape.js";
 
 /** ADR 2026-10-05 Decisions 1, 3, 10: the built-in path's one request. */
 
@@ -54,6 +57,32 @@ describe("material instructions", () => {
     expect(MATERIAL_CARD_RULES[1]).toMatch(
       /^Before you propose, ask the learner/,
     );
+  });
+
+  // Owner's card-shape rule, 2026-10-14: one point per card, and a
+  // names-only overview card for a complete, closed set.
+  it("states the card-shape rules on both paths, in the shared wording", () => {
+    for (const path of ["harness", "built-in"] as const) {
+      const rules = materialCardRules(path);
+      for (const rule of CARD_SHAPE_RULES) expect(rules).toContain(rule);
+      expect(rules.join("\n")).not.toContain("One card per retrieval target");
+    }
+    const text = buildMaterialInstructions({
+      locale: "de",
+      areas: [],
+      subjects: [],
+    });
+    for (const rule of CARD_SHAPE_RULES) expect(text).toContain(rule);
+  });
+
+  it("shows an overview card whose answer is names only, one point each", () => {
+    const [example] = MATERIAL_CONTRACT_EXAMPLE.proposals;
+    expect(parseAnswerPoints(example.answer)).toEqual([
+      "Farbe",
+      "Aggregatzustand bei Raumtemperatur",
+      "metallischer Glanz",
+    ]);
+    expect(example.bloom).toBeLessThanOrEqual(2);
   });
 });
 

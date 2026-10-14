@@ -1,5 +1,9 @@
 # Log
 
+## 2026-10-14
+
+- **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
 ## 2026-10-11
 
 - **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)

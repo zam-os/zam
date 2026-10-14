@@ -22,6 +22,7 @@ import {
   importCurriculumViaLLM,
 } from "../../../src/cli/llm/client.js";
 import {
+  CARD_SHAPE_RULES,
   type CapabilityFlags,
   type ModelEntry,
   openDatabase,
@@ -143,6 +144,12 @@ describe("curriculum import via the agent transport", () => {
 
     expect(seen?.system).toContain("curriculum parser");
     expect(seen?.user).toContain("Add two-digit numbers.");
+    // One point per card, and a names-only overview card for a closed set
+    // (owner's card-shape rule, 2026-10-14) — in the shared wording.
+    for (const rule of CARD_SHAPE_RULES) {
+      expect(seen?.system).toContain(`- ${rule}`);
+    }
+    expect(seen?.system).not.toContain("Keep questions focused on one fact");
   });
 
   // 2026-09-23: a goal import through Claude Code hit the adapter's 120 s
