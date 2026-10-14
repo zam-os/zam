@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-14T22:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -145,9 +145,46 @@ pause and a two-minute cap per follow-up (ADR 2026-09-15). Ratings logged
 before response-time measurement existed count as worked cards and contribute
 no time.
 
+# Topic import
+
+The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md))
+turns a topic in the learner's words, with its context, into cards. It
+writes no file:
+
+- `topic-outline --title <topic> [--context <text>] [--path <json>]
+  [--place <json>]` proposes the next level of subtopics. The context holds
+  what the topic is needed for, what to focus on and what the learner
+  already knows: it narrows the topic and says where to start, but never
+  becomes content, and the model keeps to what the topic names. Without a
+  context the model starts from the topic's foundations. A subtopic's label
+  never names the field the learner already knows. `--place` names the
+  atlas place the cards will land at, root first, on a line of its own, so
+  the model never reads it as prior knowledge. A name longer than 200
+  characters is refused before any model call. Each subtopic may carry a
+  `lookupTerm`: the Wikipedia article the model names for reading it up.
+- `topic-cards --title <topic> [--context <text>] [--path <json>] [--place
+  <json>] --topic <json>` drafts cards for one kept subtopic, as a preview:
+  one point per card, or one overview card that lists the names of a
+  complete set. A counterpart in the field the learner knows appears only
+  as a brief bridge on a single card. The cards cite no source: their
+  knowledge is the model's world knowledge. A `lookupTerm` in `--topic`
+  becomes every card's `lookup_term`.
+- `topic-source --title <topic>` records the import as one source row,
+  `zam-topic:<ULID>`, with the title, the date and the learner. The confirm
+  (`personal-source-confirm-import --sourceId`) links every card to it,
+  stores each proposal's `lookup_term`, and without `--place-region` puts
+  the units it created on the world planet (Decision 5), reported as
+  `placed`. Where nobody may place them, their `zam-topic:` source keeps
+  them world knowledge. A retry after a failed placement also places the
+  cards it finds already written, as long as no lens has placed them; a
+  linked duplicate with a place of its own keeps it.
+
+The goal import's `goal-decompose`, `goal-topic-cards` and `goal-create`
+are retired.
+
 # Material import
 
-Learning cards from photos and PDFs (see [material-import.md](material-import.md))
+Learning cards from photos, PDFs and typed notes (see [material-import.md](material-import.md))
 move through a staged batch that only the learner's confirm turns into
 library rows:
 
@@ -158,7 +195,9 @@ library rows:
   --id <id>` drops one without writing.
 - `material-import-analyze --file <path>… [--pages <range>]` reads up to ten
   photos or one PDF with the connected model and stages the result with
-  origin `studio`. A refusal the learner can act on — no image or file model,
+  origin `studio`; `--text <notes> [--title <name>]` sends typed notes to the
+  first text model instead. `--place-region <key> [--place-lens <kind>]`
+  starts the import at a region of the knowledge atlas. A refusal the learner can act on — no image or file model,
   HEIC that cannot be converted, a mixed or oversized selection, an answer
   that does not fit the contract — comes back as `{ success: false, code,
   message }` rather than an `error`, so a surface can explain it by `code`.
@@ -171,15 +210,167 @@ library rows:
 - `material-import-review --id <id>` matches the proposals against the library
   and the bundled cells, returns the rows with their presets, area groups and
   earlier imports of the same files, and stores those rows in the batch;
-  `material-import-confirm --id <id> --decisions <json> [--areas <json>]`
-  applies the decisions to exactly those rows in one transaction and retires
-  the batch. Bad `--decisions` or `--areas` JSON is reported as JSON.
+  `material-import-confirm --id <id> --decisions <json> [--areas <json>]
+  [--variants <json>]` applies the decisions to exactly those rows in one
+  transaction and retires the batch; `--variants` lists the proposal rows
+  whose "instead of" the learner ticked. Bad `--decisions`, `--areas` or
+  `--variants` JSON is reported as JSON.
 - `material-import-file-preview --id <id> --file <n>` returns a small image of
   a staged file for the review list, only for files the batch names;
   `material-import-areas` lists the areas in use and the cell subject codes.
 - `material-import-bonus-list [--limit <n>]` lists the caller's kept Bonus
   items; `material-import-bonus-take --token <id>` creates the caller's card
   for one, and refuses an item that is not from the caller's own imports.
+
+# Knowledge atlas
+
+The knowledge atlas ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md))
+reads and writes through these commands. Only `atlas-read` and
+`atlas-revision` are in `STUDIO_BRIDGE_COMMANDS`, for the read-only atlas
+panel; no write is, and no
+argument takes coordinates: only settle places land.
+
+- `atlas-read [--lens <kind>] [--planet <planet>] [--time-zone <iana>]`
+  returns one learner's map of one lens: regions, islands, land, units with their condition,
+  red threads, the learner's own due counts and the home region. It
+  writes nothing; land not stored yet is planned in memory and marked
+  provisional. A due count is what a region review would show now, by the
+  queue's rules: a card waiting for its next short step, a blocked or buried
+  card, and an atom's further items on a day one of them was shown are not
+  counted, although the condition still shows them. `emblems` holds each
+  Sinnbild once by subject key, and every region and unit that has one names
+  it in `emblem`; a leaf region without its own names its first unit's. A
+  region's `emblemSubject` says where its own is written: a Fach's in a world
+  lens is the subject's, `subject:<key>`, shared by every world lens, and any
+  other region's is `region:<lens>:<region key>`. `ownPlanet` and `lenses` say
+  which planets and lenses the library shows. A library holds world knowledge
+  (Weltwissen and Schule) and one planet of its own: Privat (Leben) on a
+  personal library, Firma (Produkte, and Unternehmen once a curator made it)
+  on a team library. `--planet` alone opens that planet's last or primary
+  lens; a lens of the other planet is refused. Each read places only the
+  units of the lens's planet: a published unit is world knowledge, an own
+  unit takes the planet of the lens it is placed in, and an own unit nobody
+  placed is world knowledge only where a world rule covers it (a Weltwissen
+  alias, a curriculum link, a variant of a world unit); otherwise it lands on
+  the own planet. `threads` holds every thread with an end on the map:
+  `from` is the dependent end (it builds on, uses, consumes the interface of,
+  or is a special case of `to`), `kind` is `voraussetzung`, `nutzt`,
+  `schnittstelle`, `ist-ein` or `verbindung`, `scope` is `shared` (a
+  prerequisite or the library's connection) or `personal` (the learner's
+  own), and a connection carries its `id` and `note`. A learner's own
+  thread that the library has too is drawn once, as the learner's: its `id`
+  and `note` are theirs, and `alsoShared` is true. An end on the
+  library's other planet stays in the thread and is named in `portals`, by
+  title and planet; the Studio draws it as a portal. A variant stands in at
+  that end as it does on its own planet: the learner's chosen one, or the
+  library's while the learner holds no card of the published unit.
+- `atlas-connect --from <key> --to <key> --kind <kind> [--note <text>]
+  [--scope personal|shared] [--from-studio]` spins a red thread. It is the
+  learner's own by default, learning state that never feeds blocking.
+  `shared` writes the library's and needs the right to write knowledge
+  (`not-curator` otherwise); a shared `voraussetzung` is refused, since it
+  belongs in the prerequisite tables (`zam_link_prereq`). A thread never runs
+  from world knowledge to the own planet; a `verbindung` turns around instead
+  (`swapped`). The same thread again returns `created: false`, and a new
+  note replaces the old one.
+- `atlas-disconnect --id <id>` cuts the learner's own thread, or the
+  library's with the right to write knowledge.
+- Both refuse with `{ error, code }`, so a surface can explain each case:
+  `invalid-kind`, `same-unit`, `unknown-unit`, `world-to-own`,
+  `shared-prerequisite`, `not-curator`, `note-too-long` or
+  `unknown-connection`. `link-prereq` and `zam token prereq` keep the same
+  planet rule: a prerequisite from world knowledge to a Firma or Privat unit
+  is refused.
+- `atlas-settle [--lens <kind>]` stores the land, and refuses with
+  `not-curator` when PostgreSQL's grants say this connection may not write
+  knowledge.
+- `atlas-prefs [--lens <kind>] [--home <regionKey>] [--show-new on|off]`
+  stores the learner's lens, home region and *Neue Inhalte zeigen*; turning
+  the last on installs the cells of the learner's school year, which enrols
+  nobody, and reports them as `cellsInstalled`.
+- `atlas-place --region <key> [--lens <kind>]` names what an import at a
+  region needs: its path, the levels below it, the learner's published units
+  there and the bundled cells, with `wizard` true where no cell covers it.
+- `atlas-take (--unit <key>… | --region <key> [--lens <kind>])` creates cards
+  for sketched units, never for declined ones.
+- `atlas-planet [--own firma|privat]` reads the library's own planet, or
+  sets it ("Diese Bibliothek gehört zu einer Firma"); unset, a team library
+  is Firma and a personal one Privat. Setting it refuses with `not-curator`
+  without the right to write knowledge. Lenses of the other planet stay
+  stored but are no longer shown.
+- `atlas-move-planet --planet <planet> (--unit <key>… | --region <key>
+  [--lens <kind>])` moves own units to world knowledge or to the library's
+  own planet, where that planet's primary lens puts them, and drops their
+  placements on the other planet. Published units are reported as
+  `skipped`: they stay world knowledge. A unit that a directed thread or a
+  prerequisite holds stays where it is and is reported in `held`, with the
+  unit at the thread's other end as `by`: moved, world knowledge would
+  depend on a Firma or Privat unit. Units moved together keep their threads
+  together. Without the right to write knowledge it refuses with
+  `not-curator`.
+- `atlas-lens-edit --lens <kind> --edits <json>` applies edits to one lens
+  in one transaction, then stores the land: `create-region`,
+  `rename-region`, `reorder-region`, `move-region` (below a region of the
+  same level as its parent), `remove-region` (its units fall back to the
+  lens's rules), `set-alias`, `remove-alias` and `place`. A world lens takes
+  additions only, aliases for the library's own units only, and places no
+  published unit. A move or removal clears the land of the regions it
+  touches, and the settle that follows lays it out again. A batch after
+  which world knowledge would depend on a Firma or Privat unit, through a
+  placement, a removed region or an alias, is refused as `held-by-thread`
+  and changes nothing. Refusals carry a `code`.
+- `atlas-lens-propose --lens <kind> --proposal <json>` stores one pending
+  replacement for an own-planet lens from one named source:
+  `{source, regions: [{key, name, parent}], aliases?, members?}`. Nothing
+  changes until `atlas-lens-accept --lens <kind> [--reject]`, which a
+  curator gives in the Studio: accepting replaces the lens's order, aliases,
+  placements and land, and the lens follows that source. No history is kept.
+- `atlas-lens-stale --lens <kind> --stale on|off [--note <text>]` records
+  whether an own-planet lens still fits its source; a world lens has none.
+- `atlas-read` returns `curation` for the lens: its `source`, `stale` with
+  the note, and a pending `proposal`. Curators see both in the Studio.
+- `atlas-revision` returns a fingerprint of what the atlas shows, one
+  statement over the atlas tables, the caller's threads, Sinnbilder and
+  cards. The Studio polls it every 10 s while the map is on screen, and on
+  focus, and reads the map again when it changes.
+
+  Each of these writes needs the right to write knowledge and refuses with
+  `not-curator` otherwise.
+- `atlas-variant --stands-for <key> (--variant <key> | --undo)` lets a unit
+  stand in for a published one, or undoes it; with `--library` a curator
+  sets or clears the library's variant.
+- `get-review` and `get-reviews` take `--atlas-region <key> [--atlas-lens
+  <kind>]`: only that region's due cards, no new ones. A variant counts
+  where the map shows it, on its published unit's hex.
+  `get-review --atlas-practice-since <iso>` goes through the region again
+  although nothing is due: when no card is due, it pulls forward the
+  practised card due soonest that was not answered since that time, one card
+  per call and one item per atom a day.
+- `atlas-emblem-set --subject <key> (--svg <svg> | --glyph <text>) [--scope
+  auto|personal|shared] [--from-studio]` stores a Sinnbild: the validator's
+  re-serialisation, never the input. A glyph alone becomes a Sinnbild of its
+  own. `auto` writes the library's when none exists and the connection may
+  write knowledge, the learner's own otherwise; `shared` without that right
+  refuses with `not-curator`.
+- `atlas-emblem-clear --subject <key> [--shared]` removes the learner's own,
+  or with `--shared` the library's.
+- `atlas-emblem-draw --subject <key> [--scope …]` lets the first text model
+  draw one from the subject's title and path, validates and stores it; a
+  refusal comes as `{success: false, code}` with `no-text-model`,
+  `model-failed` or `invalid-answer`.
+- `get-review --media` also returns the card's unit Sinnbild as `emblem`,
+  and `readUp` for a world unit (ADR 2026-10-14, Decision 4): `{kind:
+  "source", url}` for a web source, else `{kind: "search", term,
+  language}`, which the Studio turns into a Wikipedia search. Firma and
+  Privat units get `null`. `atlas-read` gives every unit of a world lens its
+  `readUp`, and `personal-card-list` every card's.
+- `personal-source-confirm-import` takes `--place-region <key>
+  [--place-lens <kind>]`: the units the import created land at that region,
+  each proposal's `placeBelow` naming the levels below it (the last name on
+  the deepest level). The topic import started at a region passes it.
+- `graph3d-feature [--enable|--disable]` reads or sets this machine's switch
+  for the 3D learning graph, an alpha since the atlas took its place, in
+  `~/.zam/config.json`.
 
 # Library switching
 
@@ -326,9 +517,10 @@ whose token sits in a keychain ZAM cannot read fails to open with
 - [ADR 2026-10-02 — Library Topics](../adr/2026-10-02-library-topics.md)
 - [ADR 2026-10-05 — Learning Cards from Photos and Files](../adr/2026-10-05-learning-cards-from-photos-and-files.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
+- [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
-- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`
-- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `desktop/src-tauri/src/lib.rs`
+- Tests: `tests/cli/bridge-handlers.test.ts`, `tests/cli/shared-db.test.ts`, `tests/integration/bridge-serve-mode.test.ts`, `tests/cli/mcp.test.ts`, `tests/cli/bridge-host-rotation.test.ts`, `tests/cli/bridge-serve-log.test.ts`, `tests/cli/bridge-library-switch.test.ts`, `tests/cli/bridge-library-switch-status.test.ts`, `tests/kernel/library-switch-credentials.test.ts`, `tests/kernel/bundled-cells.test.ts`, `tests/kernel/pull-forward.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/publication.test.ts`, `tests/cli/bridge-library-topics.test.ts`, `tests/cli/bridge-material-import.test.ts`, `tests/cli/capability-refresh.test.ts`, `tests/cli/bridge-model-registry.test.ts`, `tests/cli/topic-outline.test.ts`
+- Code: `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/bridge-handlers.ts`, `src/cli/db/library-switch.ts`, `src/cli/db/entra-cli.ts`, `src/kernel/credentials.ts`, `src/bridge/protocol.ts`, `src/kernel/scheduler/study-settings.ts`, `src/cli/material-import.ts`, `src/cli/material-staging.ts`, `src/cli/llm/material-analyze.ts`, `src/cli/llm/capability-refresh.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/atlas/connections.ts`, `src/kernel/atlas/place.ts`, `desktop/src-tauri/src/lib.rs`
 
 - [ADR 2026-07-06a — MCP as the Canonical Agent Transport](../adr/2026-07-06a-mcp-agent-transport-and-surfaces.md)
 - [ADR 2026-08-01 — Learning Progress Statistics](../adr/2026-08-01-learning-progress-stats.md)

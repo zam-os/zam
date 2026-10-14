@@ -44,7 +44,8 @@ export type CompanionSurface =
   | "graph"
   | "settings"
   | "studio"
-  | "okf";
+  | "okf"
+  | "atlas";
 
 export type CompanionUserSource =
   | "invocation"

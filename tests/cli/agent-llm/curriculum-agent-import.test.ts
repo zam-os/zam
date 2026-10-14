@@ -18,7 +18,8 @@ vi.mock("../../../src/cli/agent-llm/adapter.js", async (importActual) => {
 import { getAgentAdapter } from "../../../src/cli/agent-llm/adapter.js";
 import {
   AGENT_CURRICULUM_IMPORT_TIMEOUT_MS,
-  generateGoalDecompositionViaLLM,
+  generateTopicCardsViaLLM,
+  proposeSubtopicsViaLLM,
   importCurriculumViaLLM,
 } from "../../../src/cli/llm/client.js";
 import {
@@ -184,10 +185,11 @@ describe("curriculum import via the agent transport", () => {
   });
 });
 
-// Issue #224: onboarding's model page can connect an agent, so the goal step
-// two pages later has to accept one. Before this was wired, picking Claude Code
-// during first run made goal decomposition fail with "does not support yet".
-describe("goal decomposition via the agent transport", () => {
+// Issue #224: onboarding's model page can connect an agent, so the topic step
+// after it has to accept one. Before this was wired, picking Claude Code
+// during first run made the goal decomposition (now the subtopic proposals)
+// fail with "does not support yet".
+describe("subtopic proposals via the agent transport", () => {
   const CANNED_TOPICS = JSON.stringify([
     { label: "Limits", description: "Understand what a limit expresses." },
     { label: "Derivatives", description: "Rate of change of a function." },
@@ -200,9 +202,9 @@ describe("goal decomposition via the agent transport", () => {
     );
     const db = await seedDb();
 
-    const options = await generateGoalDecompositionViaLLM(db, {
+    const options = await proposeSubtopicsViaLLM(db, {
       title: "Learn calculus",
-      description: "To follow a physics course",
+      context: "To follow a physics course",
       path: [],
     });
 
@@ -211,7 +213,7 @@ describe("goal decomposition via the agent transport", () => {
     expect(vi.mocked(getAgentAdapter)).toHaveBeenCalledWith("claude-code");
   });
 
-  it("sends the goal and the focused path to the adapter", async () => {
+  it("sends the topic, its context and the focused path to the adapter", async () => {
     let seen: { system: string; user: string } | undefined;
     vi.mocked(getAgentAdapter).mockReturnValue(
       fakeAdapter(async (req) => {
@@ -221,15 +223,98 @@ describe("goal decomposition via the agent transport", () => {
     );
     const db = await seedDb();
 
-    await generateGoalDecompositionViaLLM(db, {
+    await proposeSubtopicsViaLLM(db, {
       title: "Learn calculus",
-      description: "To follow a physics course",
+      context: "To follow a physics course",
       path: ["Derivatives"],
+      place: ["Natur", "Mathematik"],
     });
 
     expect(seen?.system).toContain("learning-path planner");
+    // The model keeps to what the topic names; the context narrows it and
+    // says where to start, but never becomes content (ADR 2026-10-14,
+    // Decision 1). A label never names the field the learner knows.
+    expect(seen?.system).toContain("indispensable for understanding");
+    expect(seen?.system).toContain("never content");
+    expect(seen?.system).toContain("a bridge, not proof");
+    expect(seen?.system).toContain("never the related field the learner knows");
+    expect(seen?.system).toContain("says nothing about what the learner knows");
     expect(seen?.user).toContain("Learn calculus");
-    expect(seen?.user).toContain("Derivatives");
+    expect(seen?.user).toContain("To follow a physics course");
+    // The place is a line of its own, not part of the learner's context.
+    expect(seen?.user).toContain(
+      "Where the cards will land in the learner's knowledge atlas: Natur › Mathematik",
+    );
+    expect(seen?.user).toContain(
+      "The learner drilled into this path, from the topic down: Derivatives",
+    );
+  });
+
+  it("drafts cards for one subtopic, bridging to a known field only on single cards", async () => {
+    const systems: string[] = [];
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        systems.push(req.system);
+        return { text: CANNED_CARDS };
+      }),
+    );
+    const db = await seedDb();
+    const topic = { label: "Derivatives", description: "Rate of change." };
+
+    const cards = await generateTopicCardsViaLLM(db, {
+      title: "Learn calculus",
+      context: "I studied physics.",
+      path: [],
+      topic,
+    });
+
+    expect(cards).toHaveLength(1);
+    expect(cards[0].source_link).toBeNull();
+    expect(systems[0]).toContain("for that subtopic only");
+    // The card shape is the shared block, word for word (ADR 2026-10-14).
+    for (const rule of CARD_SHAPE_RULES) {
+      expect(systems[0]).toContain(`- ${rule}`);
+    }
+    expect(systems[0]).not.toContain("separate, atomic cards");
+    expect(systems[0]).toContain("an overview card lists names only");
+    expect(systems[0]).toContain("an overview card's answer never does");
+    expect(systems[0]).toContain(
+      "never merely restate the subtopic's description as a question",
+    );
+    expect(systems[0]).toContain(
+      '"context": The label of the subtopic the card belongs to.',
+    );
+
+    await generateTopicCardsViaLLM(db, {
+      title: "Learn calculus",
+      context: "",
+      path: [],
+      topic,
+    });
+    expect(systems[1]).not.toContain("as a bridge");
+    expect(systems[1]).toContain("assume no prior knowledge");
+  });
+
+  it("starts from the foundations when the learner gave no context", async () => {
+    let seen: { system: string; user: string } | undefined;
+    vi.mocked(getAgentAdapter).mockReturnValue(
+      fakeAdapter(async (req) => {
+        seen = { system: req.system, user: req.user };
+        return { text: CANNED_TOPICS };
+      }),
+    );
+    const db = await seedDb();
+
+    await proposeSubtopicsViaLLM(db, {
+      title: "Learn calculus",
+      context: "  ",
+      path: [],
+    });
+
+    expect(seen?.system).toContain("assume no prior knowledge");
+    expect(seen?.system).not.toContain("a bridge, not proof");
+    expect(seen?.system).not.toContain("atlas place");
+    expect(seen?.user).not.toContain("Context, prior knowledge");
   });
 
   it("propagates a harness failure instead of silently falling back", async () => {
@@ -241,9 +326,9 @@ describe("goal decomposition via the agent transport", () => {
     const db = await seedDb();
 
     await expect(
-      generateGoalDecompositionViaLLM(db, {
+      proposeSubtopicsViaLLM(db, {
         title: "Learn calculus",
-        description: "",
+        context: "",
         path: [],
       }),
     ).rejects.toThrow(/claude code is offline/i);

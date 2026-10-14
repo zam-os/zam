@@ -29,8 +29,20 @@ export interface ReviewQueueOptions {
   now?: Date;
   domain?: string;
   knowledgeContext?: string;
+  /**
+   * Only these tokens, e.g. one atlas region's (ADR 2026-10-13, Decision 10).
+   * An empty list yields an empty queue.
+   */
+  tokenIds?: readonly string[];
   /** IANA time zone for the local learning day. Device context, not DB server. */
   timeZone?: string;
+}
+
+/** `AND t.id IN (…)` for a token filter; `AND 1 = 0` for an empty one. */
+function tokenFilterSql(tokenIds: readonly string[]): string {
+  return tokenIds.length === 0
+    ? " AND 1 = 0"
+    : ` AND t.id IN (${tokenIds.map(() => "?").join(", ")})`;
 }
 
 export interface ReviewFastCheck {
@@ -214,6 +226,11 @@ export async function buildReviewQueue(
     dueParams.push(options.knowledgeContext);
   }
 
+  if (options.tokenIds) {
+    dueSql += tokenFilterSql(options.tokenIds);
+    dueParams.push(...options.tokenIds);
+  }
+
   dueSql += ` ORDER BY c.due_at ASC`;
 
   const dueRows = (await db.prepare(dueSql).all(...dueParams)) as CardRow[];
@@ -289,6 +306,11 @@ export async function buildReviewQueue(
       WHERE tc.token_id = t.id AND ctx.name = ?
     )`;
     newParams.push(options.knowledgeContext);
+  }
+
+  if (options.tokenIds) {
+    newSql += tokenFilterSql(options.tokenIds);
+    newParams.push(...options.tokenIds);
   }
 
   // Sibling suppression can discard candidates, so the window has to be wider

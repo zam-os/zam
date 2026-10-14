@@ -55,7 +55,15 @@
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="7" width="18" height="14" rx="2"></rect><path d="M6 3h12M5 5h14"></path></svg>
           <span class="nav-label">Learning Content</span>
         </button>
-        <button id="btn-open-graph" class="nav-btn" type="button">
+        <!-- Knowledge atlas (ADR 2026-10-13): always shown, in the place the
+             3D graph held. -->
+        <button id="nav-atlas" class="nav-btn" type="button">
+          <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M9 4 3 6v14l6-2 6 2 6-2V4l-6 2-6-2z"></path><path d="M9 4v14M15 6v14"></path></svg>
+          <span class="nav-label">Knowledge atlas</span>
+        </button>
+        <!-- 3D Wissensnetz alpha: shown only while this machine's switch is
+             on. -->
+        <button id="btn-open-graph" class="nav-btn" type="button" hidden>
           <svg class="nav-icon" aria-hidden="true" width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="6" cy="6" r="2.5"></circle><circle cx="18" cy="8" r="2.5"></circle><circle cx="10" cy="18" r="2.5"></circle><path d="M8.3 7l7.4 1M7 8.3l2.2 7.4M16.5 10l-4.6 6.2"></path></svg>
           <span class="nav-label">Knowledge graph</span>
         </button>
@@ -180,7 +188,7 @@
         <header class="content-header">
           <h1 id="lbl-content-title">Learning Content</h1>
           <div id="content-cards-actions" class="content-header-actions">
-            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge Map (3D)</button>
+            <button id="btn-content-open-graph" class="btn ghost-btn" type="button">Knowledge atlas</button>
             <button id="btn-content-material-bonus" class="btn secondary-btn" type="button" hidden>Bonus</button>
             <div class="import-menu-wrap">
               <button
@@ -197,7 +205,7 @@
               <div id="content-import-menu" class="import-menu hidden" role="menu" aria-labelledby="btn-content-import-menu">
                 <button id="btn-content-material-import" class="import-menu-item" type="button" role="menuitem">Photo / PDF</button>
                 <button id="btn-content-library-topics" class="import-menu-item" type="button" role="menuitem">Library Topics</button>
-                <button id="btn-content-goal-import" class="import-menu-item" type="button" role="menuitem">Goal Import</button>
+                <button id="btn-content-topic-import" class="import-menu-item" type="button" role="menuitem">Topic import</button>
                 <button id="btn-content-import" class="import-menu-item" type="button" role="menuitem">Import File</button>
               </div>
             </div>
@@ -272,6 +280,12 @@
                     <label for="editor-field-source-link" id="lbl-editor-source-link">Source Link</label>
                     <input type="text" id="editor-field-source-link" class="editor-input" placeholder="e.g. src/utils.ts#L12" />
                   </div>
+                </div>
+
+                <!-- Nachlesen (ADR 2026-10-14, Decision 4): world units only,
+                     opened in the system browser on this click. -->
+                <div class="editor-read-up" id="editor-read-up" hidden>
+                  <button type="button" id="btn-editor-read-up" class="btn secondary-btn btn-sm">Read up</button>
                 </div>
 
                 <div class="collapsible-header" id="editor-toggle-advanced">
@@ -418,6 +432,12 @@
            This section is unused; Settings still compares them. -->
       <section id="knowledge-map-view" class="view">
         <div id="knowledge-map-root"></div>
+      </section>
+
+      <!-- VIEW: KNOWLEDGE ATLAS (alpha, ADR 2026-10-13). desktop/src/atlas/
+           mounts the map, the outline and the panels lazily. -->
+      <section id="atlas-view" class="view">
+        <div id="atlas-root" class="atlas-root"></div>
       </section>
 
       <section id="stats-view" class="view">
@@ -631,6 +651,29 @@
                 </span>
               </label>
               <p id="dynamic-questions-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
+              <!-- Draft first: off by default, so a card an agent or an import
+                   creates is learnable at once. A library that wants an
+                   editorial step switches it on. -->
+              <label class="settings-toggle" for="toggle-draft-first" data-settings-tier="advanced">
+                <input type="checkbox" id="toggle-draft-first" />
+                <span>
+                  <span id="lbl-draft-first">New cards start as drafts</span>
+                  <span id="lbl-draft-first-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="draft-first-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
+              <!-- The atlas's own planet (ADR 2026-10-13, Decision 2): Privat
+                   on a personal library, Firma on a team library. A company
+                   library kept as a local file switches it on. Only the
+                   library's owner or a curator may change it. -->
+              <label class="settings-toggle" for="toggle-atlas-firma" data-settings-tier="advanced">
+                <input type="checkbox" id="toggle-atlas-firma" />
+                <span>
+                  <span id="lbl-atlas-firma">This library belongs to a company</span>
+                  <span id="lbl-atlas-firma-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="atlas-firma-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
               <!-- Windows-on-ARM only, and hidden until the status call says so.
                    Foundry Local cannot be installed anywhere else, so on every
                    other machine this section was a heading, an explanation and a
@@ -925,6 +968,32 @@
               </div>
             </article>
 
+            <!-- 3D Wissensnetz alpha (ADR 2026-10-13, owner decision): the
+                 knowledge atlas took its place. A switch on this machine, off
+                 by default. Only this card writes it; no tool and no setting
+                 can. -->
+            <article class="card frosted settings-card" id="graph3d-card" data-settings-tier="advanced">
+              <div class="settings-card-header">
+                <div>
+                  <h2 id="lbl-settings-graph3d-title">
+                    <span id="lbl-settings-graph3d-title-text">3D knowledge graph</span>
+                    <span id="lbl-settings-graph3d-alpha" class="settings-badge-alpha">Alpha</span>
+                  </h2>
+                  <p id="lbl-settings-graph3d-help" class="settings-card-help">
+                    The earlier 3D view of your cards and what they build on.
+                  </p>
+                </div>
+              </div>
+              <label class="settings-toggle" for="toggle-graph3d">
+                <input type="checkbox" id="toggle-graph3d" />
+                <span>
+                  <span id="lbl-graph3d-toggle">Show the 3D knowledge graph</span>
+                  <span id="lbl-graph3d-toggle-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="graph3d-feature-status" class="sub-label" aria-live="polite"></p>
+            </article>
+
             <!-- Alpha, opt-in (ADR 2026-07-30b, revised): off by default and out
                  of onboarding entirely. Ticking the box reveals the body; until
                  then this card is one checkbox and one sentence. -->
@@ -1087,19 +1156,19 @@
         </div>
       </div>
 
-      <!-- GOAL IMPORT (redesign step 4): the goal page as its own dialog,
-           independent of the first-run flow. Filled by goal-import.ts. -->
-      <div id="goal-import-overlay" class="modal-overlay">
-        <div class="modal-box goal-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-goal-import-title">
+      <!-- TOPIC IMPORT (ADR 2026-10-14): the topic area as its own dialog,
+           independent of the first-run flow. Filled by topic-import.ts. -->
+      <div id="topic-import-overlay" class="modal-overlay">
+        <div class="modal-box topic-import-modal" role="dialog" aria-modal="true" aria-labelledby="lbl-topic-import-title">
           <div class="modal-header">
-            <h3 id="lbl-goal-import-title">Name a goal — ZAM builds the path.</h3>
+            <h3 id="lbl-topic-import-title">Which topic do you want to learn or strengthen?</h3>
           </div>
           <div class="modal-body">
-            <p id="lbl-goal-import-body" class="goal-import-intro"></p>
-            <div id="goal-import-root" class="onboarding-goal"></div>
+            <p id="lbl-topic-import-body" class="topic-import-intro"></p>
+            <div id="topic-import-root" class="onboarding-topic"></div>
           </div>
           <div class="modal-actions">
-            <button id="btn-goal-import-close" class="btn secondary-btn" type="button">Close</button>
+            <button id="btn-topic-import-close" class="btn secondary-btn" type="button">Close</button>
           </div>
         </div>
       </div>
@@ -1317,6 +1386,18 @@
 
             <!-- REVEALED SCREEN -->
             <div class="revealed-container hidden" id="revealed-box">
+              <!-- The unit's Sinnbild (ADR 2026-10-13, Decision 6), shown only
+                   with the answer: a sign or formula on it could give the
+                   answer away. An image of the canonical SVG, never markup. -->
+              <div class="study-emblem-row">
+                <div class="study-emblem" id="study-emblem" hidden>
+                  <img id="study-emblem-img" class="study-emblem-img" alt="" width="44" height="44" />
+                  <span id="study-emblem-glyph" class="study-emblem-glyph"></span>
+                </div>
+                <!-- Nachlesen (ADR 2026-10-14, Decision 4): world units only,
+                     opened in the system browser on this click. -->
+                <button type="button" id="btn-study-read-up" class="btn secondary-btn btn-sm" hidden>Read up</button>
+              </div>
               <!-- Own answer and reference side by side, so comparing them
                    is a glance across rather than a scroll. When there is no
                    own answer (Flash, Choice) the reference takes the row. -->

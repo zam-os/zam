@@ -8,7 +8,7 @@ tags:
   - mcp
   - secrets
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/agent-trust-model.md"
-timestamp: 2026-10-10T18:00:00.000Z
+timestamp: 2026-10-14T23:00:00.000Z
 ---
 
 ZAM treats two things as untrusted: the **agent** that calls its tools, and
@@ -86,7 +86,10 @@ is itself local or LAN.
   with the options it may not pass (`backup-create --dir`,
   `model-upsert --key-ref`, `model-upsert --confirm-endpoint`). A test fails
   when a command joins the list without an entry. Trusted folders, secrets,
-  pairing, observation and endpoint confirmation stay off the list.
+  pairing, observation and endpoint confirmation stay off the list. A card
+  write without a source an agent may cite asks the person through the
+  host's elicitation form, which the model cannot answer (ADR 2026-10-14,
+  Decision 3); without one it is refused.
 - **Pre-approval.** Four read-only tools may run without asking:
   `zam_status`, `zam_get_reviews`, `zam_find_tokens`, `zam_progress_stats`
   (`src/cli/agent-approval.ts`). `zam agent connect codex` writes per-tool
@@ -94,6 +97,15 @@ is itself local or LAN.
   with a blanket approval is rewritten on the next connect.
   `zam_review_action` always asks. `readOnlyHint` sits only on tools that
   change nothing.
+- **Sinnbilder.** An SVG from an agent, a model or a library is untrusted
+  markup. Every path that stores one runs the kernel validator
+  (`src/kernel/atlas/emblem.ts`): it reads the SVG into a tree with a
+  tokenizer of its own and accepts only plain shapes, text and presentation
+  attributes — no script, style, link, `use`, `foreignObject`, image,
+  animation, event attribute, entity, `url()` or `data:`. What is stored and
+  shown is its re-serialisation, never the input, and surfaces show it only
+  as an image of a `data:` URL; the glyph only as text. A stricter validator
+  version re-checks stored rows and drops those that no longer pass.
 - **Backups.** Every harness file `zam agent connect` replaces is kept next to
   it as `<file>.zam-backup-<time>`.
 - **Copilot canvas.** The extension's loopback server answers only under a

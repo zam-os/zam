@@ -20,6 +20,7 @@
  */
 
 import { execFile } from "node:child_process";
+import { createHash } from "node:crypto";
 import { mkdtemp, readFile, rm, stat } from "node:fs/promises";
 import { tmpdir } from "node:os";
 import { basename, extname, join } from "node:path";
@@ -28,6 +29,7 @@ import {
   type Database,
   endpointUrl,
   listMaterialAreaContext,
+  type MaterialPlace,
   type MaterialProposalSet,
   MaterialProposalSetError,
   mapEndpointPath,
@@ -52,6 +54,7 @@ import {
   buildMaterialRequest,
   IMAGE_LONG_EDGE_PX,
   type MaterialAttachment,
+  type MaterialPlacePrompt,
   type MaterialReply,
   materialFileKind,
   materialSelection,
@@ -69,6 +72,11 @@ export const MATERIAL_REQUEST_MAX_BYTES = 20 * 1024 * 1024;
 const MATERIAL_REQUEST_TIMEOUT_MS = 5 * 60 * 1000;
 /** Areas named in the instructions, most-used first. */
 const MAX_AREAS_IN_PROMPT = 150;
+/** Typed or pasted notes per import; a page of notes is far below it. */
+export const MAX_NOTES_CHARS = 20_000;
+
+/** An import's place on the atlas, with what the producer is told about it. */
+export type MaterialAnalyzePlace = MaterialPlace & MaterialPlacePrompt;
 
 /** The refusal codes, as the bridge reports them. */
 export type MaterialAnalyzeCode = MaterialAnalyzeCodeWire;
@@ -97,7 +105,7 @@ const IMAGE_TYPES: Record<string, string> = {
 /** Rows a request can go to: direct HTTP, in the registry's order. */
 async function materialChain(
   db: Database,
-  capability: "image" | "file",
+  capability: "image" | "file" | "text",
 ): Promise<ProviderConfig[]> {
   const primary = await resolveCapability(db, capability);
   if (!primary) return [];
@@ -112,6 +120,8 @@ export interface MaterialModelInfo {
 export interface MaterialImportModels {
   image: MaterialModelInfo | null;
   file: MaterialModelInfo | null;
+  /** Typed notes go to the first text row. */
+  text: MaterialModelInfo | null;
   /** HEIC can be converted here (macOS `sips`). */
   convertsHeic: boolean;
 }
@@ -130,6 +140,7 @@ export async function materialImportModels(
   return {
     image: describeRow((await materialChain(db, "image"))[0]),
     file: describeRow((await materialChain(db, "file"))[0]),
+    text: describeRow((await materialChain(db, "text"))[0]),
     convertsHeic: platform === "darwin",
   };
 }
@@ -327,13 +338,19 @@ async function sendOnce(
   attachments: MaterialAttachment[],
   deps: MaterialAnalyzeDeps,
   sentTo: Set<ProviderConfig>,
+  notes?: string,
 ): Promise<MaterialReply> {
   const endpoint = await prepareFoundryEndpoint(row);
   const request = buildMaterialRequest(
     endpoint.apiFlavor,
     // The row came from the `file` chain only for a PDF (strict gate, D1).
     { model: endpoint.model, readsPdf: kind === "pdf" },
-    { instructions, attachments, openRouter: isOpenRouterUrl(endpoint.url) },
+    {
+      instructions,
+      attachments,
+      openRouter: isOpenRouterUrl(endpoint.url),
+      ...(notes !== undefined ? { notes } : {}),
+    },
   );
   const apiKey = endpoint.apiKey || DEFAULT_LLM_API_KEY;
   const anthropic = endpoint.apiFlavor === "anthropic-messages";
@@ -495,7 +512,7 @@ export interface MaterialAnalyzeResult {
 export async function analyzeMaterialViaLLM(
   db: Database,
   paths: string[],
-  opts: { pages?: string } = {},
+  opts: { pages?: string; place?: MaterialAnalyzePlace } = {},
   deps: MaterialAnalyzeDeps = {},
 ): Promise<MaterialAnalyzeResult> {
   const selection = materialSelection(paths);
@@ -562,6 +579,7 @@ export async function analyzeMaterialViaLLM(
         .map((area) => area.path),
       subjects: context.cellSubjects,
       pages: opts.pages,
+      place: opts.place,
     });
 
     const progress = { done: 0, total: 1 };
@@ -591,6 +609,7 @@ export async function analyzeMaterialViaLLM(
         analysis: merged.analysis,
         proposals: merged.proposals,
         files,
+        ...placeOf(opts.place),
       });
       return {
         set,
@@ -598,15 +617,137 @@ export async function analyzeMaterialViaLLM(
         sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
       };
     } catch (error) {
-      if (error instanceof MaterialProposalSetError) {
-        throw new MaterialAnalyzeError(
-          "invalid-answer",
-          `The model's proposals did not fit ZAM's format: ${error.issues.slice(0, 5).join("; ")}`,
-        );
-      }
-      throw error;
+      throw invalidAnswer(error);
     }
   } finally {
     if (workDir) await rm(workDir, { recursive: true, force: true });
+  }
+}
+
+function placeOf(place: MaterialAnalyzePlace | undefined): {
+  place?: MaterialPlace;
+} {
+  return place
+    ? { place: { lens: place.lens, regionKey: place.regionKey } }
+    : {};
+}
+
+function invalidAnswer(error: unknown): unknown {
+  return error instanceof MaterialProposalSetError
+    ? new MaterialAnalyzeError(
+        "invalid-answer",
+        `The model's proposals did not fit ZAM's format: ${error.issues.slice(0, 5).join("; ")}`,
+      )
+    : error;
+}
+
+/**
+ * Typed or pasted notes (ADR 2026-10-13, Decision 9): the same request and
+ * the same review list as photos, with the text in place of a file. The text
+ * goes to the model and is not stored; the import keeps only its
+ * fingerprint, as it does for a file.
+ */
+export async function analyzeMaterialText(
+  db: Database,
+  notes: string,
+  opts: { place?: MaterialAnalyzePlace; title?: string } = {},
+  deps: MaterialAnalyzeDeps = {},
+): Promise<MaterialAnalyzeResult> {
+  const text = notes.trim();
+  if (text.length === 0) {
+    throw new MaterialAnalyzeError(
+      "no-files",
+      "Type or paste your notes first.",
+    );
+  }
+  if (text.length > MAX_NOTES_CHARS) {
+    throw new MaterialAnalyzeError(
+      "too-large",
+      `Notes longer than ${MAX_NOTES_CHARS} characters go in several imports.`,
+    );
+  }
+  const rows = await materialChain(db, "text");
+  if (rows.length === 0) {
+    throw new MaterialAnalyzeError(
+      "no-text-model",
+      "No text model is connected.",
+    );
+  }
+  const scope = await getLastCurriculumSelection(db).catch(() => undefined);
+  const context = await listMaterialAreaContext(db, {
+    schoolType: scope?.schoolType,
+  });
+  const instructions = buildMaterialInstructions({
+    locale: rows[0].locale,
+    areas: [...context.areas]
+      .sort((a, b) => b.tokenCount - a.tokenCount)
+      .slice(0, MAX_AREAS_IN_PROMPT)
+      .map((area) => area.path),
+    subjects: context.cellSubjects,
+    place: opts.place,
+    notes: true,
+  });
+  deps.onProgress?.({ done: 0, total: 1 });
+  const sentTo = new Set<ProviderConfig>();
+  let lastError: unknown;
+  let reply: MaterialReply | null = null;
+  let answered: ProviderConfig | null = null;
+  let cloudAnswered = false;
+  for (const row of rows) {
+    if (row.offlineOnly && cloudAnswered) break;
+    try {
+      reply = await sendOnce(
+        row,
+        "image",
+        instructions,
+        [],
+        deps,
+        sentTo,
+        text,
+      );
+      answered = row;
+      break;
+    } catch (error) {
+      lastError = error;
+      if (!row.offlineOnly && !isNoAnswerFailure(error)) cloudAnswered = true;
+    }
+  }
+  if (!reply || !answered) {
+    const reason =
+      lastError instanceof Error ? lastError.message : String(lastError);
+    throw new MaterialAnalyzeError(
+      "model-failed",
+      `The model could not read the notes: ${reason}`,
+    );
+  }
+  deps.onProgress?.({ done: 1, total: 1 });
+  const now = new Date();
+  const name = opts.title?.trim() || "Notes";
+  try {
+    const set = parseMaterialProposalSet({
+      version: 1,
+      analysis: reply.analysis,
+      // Every card comes from the one text, file 0.
+      proposals: reply.proposals.map((proposal) =>
+        proposal && typeof proposal === "object"
+          ? { ...(proposal as Record<string, unknown>), file: 0, page: null }
+          : proposal,
+      ),
+      files: [
+        {
+          name,
+          sourceLink: `notes:${name}@${now.toISOString().slice(0, 10)}`,
+          sha256: createHash("sha256").update(text).digest("hex"),
+        },
+      ],
+      ...placeOf(opts.place),
+    });
+    return {
+      set,
+      model: describeRow(answered) as MaterialModelInfo,
+      sentTo: [...sentTo].map((row) => describeRow(row) as MaterialModelInfo),
+    };
+  } catch (error) {
+    throw invalidAnswer(error);
   }
 }

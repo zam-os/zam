@@ -4,8 +4,8 @@ import { describe, expect, it } from "vitest";
 
 /**
  * Learning Content's header (Studio redesign step 4): one primary action, one
- * Import menu, and the goal import as a dialog of its own instead of the
- * first-run flow opened at its goal step. Text assertions over the markup and
+ * Import menu, and the topic import (formerly the goal import) as a dialog
+ * of its own instead of the first-run flow opened at its step. Text assertions over the markup and
  * the wiring, like the other desktop wiring tests (the repo has no DOM test
  * environment).
  */
@@ -29,7 +29,7 @@ describe("Learning Content import menu", () => {
     for (const id of [
       "btn-content-material-import",
       "btn-content-library-topics",
-      "btn-content-goal-import",
+      "btn-content-topic-import",
       "btn-content-import",
     ]) {
       expect(menu).toMatch(new RegExp(`id="${id}"[^>]*role="menuitem"`));
@@ -65,34 +65,62 @@ describe("Learning Content import menu", () => {
   });
 });
 
-describe("goal import", () => {
+describe("topic import (ADR 2026-10-14)", () => {
   it("opens as its own dialog, not as the first-run flow", () => {
     const main = desktopFile("src/main.ts");
     // The menu entry is hidden once chosen, so closing returns to the button.
     expect(main).toContain(
-      'openGoalImportDialog(document.getElementById("btn-content-import-menu"))',
+      'openTopicImportDialog(document.getElementById("btn-content-import-menu"))',
     );
-    expect(main).not.toContain('showOnboardingAt("goal")');
-    expect(desktopFile("index.html")).toContain('id="goal-import-overlay"');
+    expect(main).not.toContain('showOnboardingAt("topic")');
+    expect(desktopFile("index.html")).toContain('id="topic-import-overlay"');
 
-    const dialog = desktopFile("src/goal-import.ts");
-    expect(dialog).toContain("renderGoalArea(");
+    const dialog = desktopFile("src/topic-import.ts");
+    expect(dialog).toContain("renderTopicArea(");
     expect(dialog).not.toContain("initOnboarding");
   });
 
-  it("keeps focus inside the dialog when the goal area redraws", () => {
-    const dialog = desktopFile("src/goal-import.ts");
+  it("keeps focus inside the dialog when the topic area redraws", () => {
+    const dialog = desktopFile("src/topic-import.ts");
     expect(dialog).toContain("new MutationObserver(");
     expect(dialog).toContain(
       "if (open && !el.contains(document.activeElement)) focusInDialog();",
     );
   });
 
-  it("shares one goal area with the first-run flow", () => {
+  it("shares one topic area with the first-run flow", () => {
     const onboarding = desktopFile("src/onboarding.ts");
-    expect(onboarding).toContain("export function renderGoalArea(");
+    expect(onboarding).toContain("export function renderTopicArea(");
     expect(onboarding).toContain(
       'openModelSetup: () => actions.goToStep("model")',
     );
+  });
+
+  it("asks for context beside the topic and writes no goal file", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    expect(onboarding).toContain('t("topic_context_label")');
+    expect(onboarding).toContain('"topic-source"');
+    expect(onboarding).not.toContain("goal-create");
+  });
+
+  it("shows the first-run topic page only while the topic path is chosen", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    expect(onboarding).toContain('shown: () => chosenStep === "topic",');
+    // Every path on page 6 sets the choice, so another path takes it back.
+    expect(onboarding).toContain("chosenStep = null;");
+    expect(onboarding).toContain('actions.goToStep("content");');
+    expect(onboarding).toContain("chosenStep = path.action.step;");
+  });
+
+  it("keeps the topic's name within its record before any model call", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    expect(onboarding).toContain("titleInput.maxLength = TOPIC_TITLE_MAX;");
+    expect(onboarding).toContain('t("topic_edit")');
+  });
+
+  it("records a new source once the learner goes back to the topic's name", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    const edit = onboarding.slice(onboarding.indexOf('t("topic_edit")'));
+    expect(edit.slice(0, 400)).toContain("state.sourceId = null;");
   });
 });

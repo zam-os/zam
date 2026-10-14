@@ -233,12 +233,20 @@ export class MobileReviewSession {
 
   async start(
     userId: string,
-    options: { maxNew?: number } = {},
+    options: {
+      maxNew?: number;
+      /**
+       * Only these tokens' cards: a region of the knowledge atlas (ADR
+       * 2026-10-13, Decision 10). Such a review offers no new cards.
+       */
+      tokenIds?: readonly string[];
+    } = {},
   ): Promise<boolean> {
     const queue = await buildReviewQueue(this.db, {
       userId,
-      maxNew: options.maxNew,
+      maxNew: options.tokenIds ? 0 : options.maxNew,
       timeZone: this.timeZone(),
+      ...(options.tokenIds ? { tokenIds: options.tokenIds } : {}),
     });
     if (queue.items.length === 0) return false;
 

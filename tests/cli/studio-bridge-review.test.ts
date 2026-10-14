@@ -26,6 +26,8 @@ import { type Database, openDatabase } from "../../src/kernel/index.js";
  */
 const REVIEWED = [
   "agent-list",
+  "atlas-read",
+  "atlas-revision",
   "backup-create",
   "bonus-atom-enrol",
   "bonus-candidates-list",
@@ -103,6 +105,27 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     expect(
       refusedStudioBridgeOption("list-tokens", ["--dir", "/tmp/x"]),
     ).toBeUndefined();
+  });
+
+  it("gives the atlas panel its two reads and no write", () => {
+    // The read-only panel needs no stored preference (review round 2).
+    for (const command of [
+      "atlas-prefs",
+      "atlas-settle",
+      "atlas-connect",
+      "atlas-disconnect",
+      "atlas-move-planet",
+      "atlas-take",
+      "atlas-variant",
+      "atlas-planet",
+      "atlas-place",
+      "atlas-emblem-set",
+      "atlas-emblem-clear",
+      "atlas-emblem-draw",
+      "atlas-lens-accept",
+    ]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
+    }
   });
 
   it("leaves naming a key and confirming an endpoint to desktop Settings (D5)", () => {

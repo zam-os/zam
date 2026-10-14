@@ -27,7 +27,9 @@
  * the consequence is this module's.
  */
 
+import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
+import { normalizeLookupTerm } from "../models/token.js";
 import { assertReadyToPublish } from "./publication.js";
 
 /** How a publish affects people who already learned the token. */
@@ -46,6 +48,11 @@ export interface RevisionChanges {
   language?: string | null;
   tier?: string | null;
   fastCheck?: string | null;
+  /**
+   * The term to read a world unit up by (ADR 2026-10-14, Decision 4): part
+   * of the token's revision, so a cosmetic publish may correct it.
+   */
+  lookupTerm?: string | null;
 }
 
 export interface PublishRevisionInput {
@@ -80,6 +87,7 @@ const CHANGE_COLUMNS: Array<[keyof RevisionChanges, string]> = [
   ["language", "language"],
   ["tier", "tier"],
   ["fastCheck", "fast_check"],
+  ["lookupTerm", "lookup_term"],
 ];
 
 /**
@@ -124,10 +132,17 @@ export async function publishTokenRevisionInTransaction(
     question: changes.question,
     concept: changes.concept,
   });
+  // A new domain keeps the planet rule (ADR 2026-10-13, Decision 2).
+  if (changes.domain !== undefined) {
+    await assertDomainKeepsPlanets(db, input.tokenId, changes.domain);
+  }
   const setClauses: string[] = [];
   const params: unknown[] = [];
   for (const [key, column] of CHANGE_COLUMNS) {
-    const value = changes[key];
+    const value =
+      key === "lookupTerm" && changes.lookupTerm !== undefined
+        ? normalizeLookupTerm(changes.lookupTerm)
+        : changes[key];
     if (value !== undefined) {
       setClauses.push(`${column} = ?`);
       params.push(value);

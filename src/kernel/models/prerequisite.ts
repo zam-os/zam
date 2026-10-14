@@ -5,6 +5,8 @@
  * The graph must remain acyclic — cycles are rejected at insert time.
  */
 
+import { type Condition, cardCondition } from "../atlas/condition.js";
+import { hueKeyForDomain } from "../atlas/palette.js";
 import type { Database } from "../db/types.js";
 import { type Card, type CardState, getCard } from "./card.js";
 import { getTokenById } from "./token.js";
@@ -205,9 +207,14 @@ export interface NeighborhoodToken {
   concept: string;
   domain: string;
   bloom_level: number;
+  /** Subject key the views colour this node by (ADR 2026-10-13, Decision 4). */
+  hue_key: string;
+  /** The user's condition of this token; null without a user or a card. */
+  condition: Condition | null;
   card: {
     state: CardState;
     reps: number;
+    lapses: number;
     stability: number;
     difficulty: number;
     blocked: boolean;
@@ -239,6 +246,7 @@ export async function getTokenNeighborhood(
   db: Database,
   tokenId: string,
   userId?: string,
+  now: Date = new Date(),
 ): Promise<Neighborhood> {
   const token = await getTokenById(db, tokenId);
   if (!token) {
@@ -286,10 +294,24 @@ export async function getTokenNeighborhood(
     concept: t.concept,
     domain: t.domain,
     bloom_level: t.bloom_level,
+    hue_key: hueKeyForDomain(t.domain),
+    condition: card
+      ? cardCondition(
+          {
+            state: card.state,
+            stability: card.stability,
+            dueAt: card.due_at,
+            lastReviewAt: card.last_review_at,
+            lapses: card.lapses,
+          },
+          now,
+        )
+      : null,
     card: card
       ? {
           state: card.state,
           reps: card.reps,
+          lapses: card.lapses,
           stability: card.stability,
           difficulty: card.difficulty,
           blocked: card.blocked === 1,

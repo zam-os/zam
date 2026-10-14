@@ -2,23 +2,29 @@ import { afterEach, describe, expect, it } from "vitest";
 import { setBridgeTransport } from "../../desktop/src/bridge-transport.js";
 import { t } from "../../desktop/src/i18n.js";
 import {
-  appendGoalCards,
-  commitGoalStep,
+  appendTopicCards,
+  commitTopicStep,
   createOnboardingExit,
-  draftGoalTopicCards,
-  type GoalAreaView,
-  type GoalImportState,
+  draftSubtopicCards,
+  TOPIC_TITLE_MAX,
+  type TopicAreaView,
+  type TopicImportState,
+  topicPlaceArgs,
+  topicPromptArgs,
+  withTopicPlace,
 } from "../../desktop/src/onboarding.js";
+import { MAX_TOPIC_TITLE } from "../../src/kernel/index.js";
 
 const TOPICS = ["Pods", "Services", "Deployments"].map((label) => ({
   label,
   description: `Mastering ${label}.`,
 }));
 
-function goalState(view: GoalAreaView | null): GoalImportState {
+function topicState(view: TopicAreaView | null): TopicImportState {
   return {
+    place: null,
     title: "Kubernetes",
-    description: "",
+    context: "",
     path: [],
     levels: [],
     cards: [],
@@ -27,12 +33,11 @@ function goalState(view: GoalAreaView | null): GoalImportState {
     notice: null,
     view,
     sourceId: "src-1",
-    goalFile: { slug: "kubernetes", filePath: "C:/goals/kubernetes.md" },
     imported: null,
   };
 }
 
-function liveView(live = { value: true }): GoalAreaView & { renders: number } {
+function liveView(live = { value: true }): TopicAreaView & { renders: number } {
   const view = {
     renders: 0,
     isLive: () => live.value,
@@ -57,10 +62,26 @@ afterEach(() => {
   });
 });
 
-describe("draftGoalTopicCards", () => {
+describe("draftSubtopicCards", () => {
+  it("hands each subtopic's article on, so its cards read up there", async () => {
+    const sent: unknown[] = [];
+    setBridgeTransport(async (_cmd, args) => {
+      sent.push(JSON.parse(args[args.indexOf("--topic") + 1]));
+      return cardsFor(topicOf(args));
+    });
+    await draftSubtopicCards(topicState(liveView()), [
+      { label: "Joins", description: "Verknüpfen.", lookupTerm: "Join (SQL)" },
+      { label: "Pods", description: "Mastering Pods." },
+    ]);
+    expect(sent).toEqual([
+      { label: "Joins", description: "Verknüpfen.", lookupTerm: "Join (SQL)" },
+      { label: "Pods", description: "Mastering Pods." },
+    ]);
+  });
+
   it("keeps each topic's own reason and treats an empty answer as one", async () => {
     const progress: string[] = [];
-    const state = goalState(liveView());
+    const state = topicState(liveView());
     setBridgeTransport(async (_cmd, args) => {
       progress.push(state.busy ?? "");
       const topic = topicOf(args);
@@ -73,9 +94,9 @@ describe("draftGoalTopicCards", () => {
       return cardsFor(topic);
     });
 
-    await draftGoalTopicCards(state, TOPICS, "C:/goals/kubernetes.md");
+    await draftSubtopicCards(state, TOPICS);
 
-    expect(progress[1]).toBe("Drafting cards for topic 2 of 3: Services…");
+    expect(progress[1]).toBe("Drafting cards for subtopic 2 of 3: Services…");
     expect(state.cards?.map((card) => card.question)).toEqual([
       "What is Pods?",
     ]);
@@ -84,14 +105,14 @@ describe("draftGoalTopicCards", () => {
         ...TOPICS[1],
         error: "Claude Code timed out after 300000 ms",
       },
-      { ...TOPICS[2], error: t("onboarding_goal_topic_empty") },
+      { ...TOPICS[2], error: t("topic_subtopic_empty") },
     ]);
     expect(state.busy).toBeNull();
   });
 
-  it("stops before the next topic once the goal area is gone", async () => {
+  it("stops before the next subtopic once the topic area is gone", async () => {
     const live = { value: true };
-    const state = goalState(liveView(live));
+    const state = topicState(liveView(live));
     const asked: string[] = [];
     setBridgeTransport(async (_cmd, args) => {
       asked.push(topicOf(args));
@@ -99,7 +120,7 @@ describe("draftGoalTopicCards", () => {
       return cardsFor(topicOf(args));
     });
 
-    await draftGoalTopicCards(state, TOPICS, "C:/goals/kubernetes.md");
+    await draftSubtopicCards(state, TOPICS);
 
     expect(asked).toEqual(["Pods"]);
     expect(state.cards?.map((card) => card.question)).toEqual([
@@ -108,7 +129,7 @@ describe("draftGoalTopicCards", () => {
     expect(state.failedTopics).toEqual(
       TOPICS.slice(1).map((topic) => ({
         ...topic,
-        error: t("onboarding_goal_topic_stopped"),
+        error: t("topic_subtopic_stopped"),
       })),
     );
     expect(state.busy).toBeNull();
@@ -120,8 +141,8 @@ describe("draftGoalTopicCards", () => {
     const exit = createOnboardingExit(() => {
       onScreen = false;
     });
-    // As renderGoalArea wires it: shown on screen, and not leaving the flow.
-    const state = goalState({
+    // As renderTopicArea wires it: shown on screen, and not leaving the flow.
+    const state = topicState({
       isLive: () => !exit.leaving && onScreen,
       rerender() {},
     });
@@ -131,7 +152,7 @@ describe("draftGoalTopicCards", () => {
     });
     let left: Promise<void> | undefined;
     setBridgeTransport(async (cmd, args) => {
-      calls.push(cmd === "goal-topic-cards" ? topicOf(args) : cmd);
+      calls.push(cmd === "topic-cards" ? topicOf(args) : cmd);
       if (cmd === "onboarding-complete") {
         // Queued behind the topic in flight on the one desktop bridge.
         await bridgeFree;
@@ -141,14 +162,14 @@ describe("draftGoalTopicCards", () => {
       return cardsFor(topicOf(args));
     });
 
-    await draftGoalTopicCards(state, TOPICS, "C:/goals/kubernetes.md");
+    await draftSubtopicCards(state, TOPICS);
 
     expect(onScreen).toBe(true);
     expect(calls).toEqual(["Pods", "onboarding-complete"]);
     expect(state.failedTopics).toEqual(
       TOPICS.slice(1).map((topic) => ({
         ...topic,
-        error: t("onboarding_goal_topic_stopped"),
+        error: t("topic_subtopic_stopped"),
       })),
     );
     releaseBridge();
@@ -159,7 +180,7 @@ describe("draftGoalTopicCards", () => {
 
   it("carries on when the learner comes back while a request runs", async () => {
     const leftBehind = { value: true };
-    const state = goalState(liveView(leftBehind));
+    const state = topicState(liveView(leftBehind));
     const reopened = liveView();
     const asked: string[] = [];
     setBridgeTransport(async (_cmd, args) => {
@@ -171,7 +192,7 @@ describe("draftGoalTopicCards", () => {
       return cardsFor(topicOf(args));
     });
 
-    await draftGoalTopicCards(state, TOPICS, "C:/goals/kubernetes.md");
+    await draftSubtopicCards(state, TOPICS);
 
     expect(asked).toEqual(["Pods", "Services", "Deployments"]);
     expect(state.failedTopics).toEqual([]);
@@ -182,10 +203,10 @@ describe("draftGoalTopicCards", () => {
 
 // Drafted cards live only in the preview until imported, so the footer Next
 // must save the ticked ones instead of dropping them.
-describe("commitGoalStep", () => {
-  function draftedState(): GoalImportState {
-    const state = goalState(liveView());
-    state.cards = appendGoalCards(
+describe("commitTopicStep", () => {
+  function draftedState(): TopicImportState {
+    const state = topicState(liveView());
+    state.cards = appendTopicCards(
       [],
       [{ question: "What is Pod?" }, { question: "What is Service?" }],
     );
@@ -201,7 +222,7 @@ describe("commitGoalStep", () => {
       return { success: true, createdCount: 1, ensuredCount: 0 };
     });
 
-    await expect(commitGoalStep(state)).resolves.toBe(true);
+    await expect(commitTopicStep(state)).resolves.toBe(true);
 
     expect(calls).toHaveLength(1);
     expect(calls[0].cmd).toBe("personal-source-confirm-import");
@@ -214,6 +235,57 @@ describe("commitGoalStep", () => {
     expect(state.imported).toEqual({ created: 1, ensured: 0 });
   });
 
+  it("records the import once, writing no file, and reuses the record on a retry", async () => {
+    const state = draftedState();
+    state.sourceId = null;
+    const calls: Array<{ cmd: string; args: string[] }> = [];
+    let fail = true;
+    setBridgeTransport(async (cmd, args) => {
+      calls.push({ cmd, args });
+      if (cmd === "topic-source") return { success: true, sourceId: "src-9" };
+      if (fail) {
+        fail = false;
+        throw new Error("busy");
+      }
+      return { success: true, createdCount: 1, ensuredCount: 0 };
+    });
+
+    await expect(commitTopicStep(state)).resolves.toBe(false);
+    await expect(commitTopicStep(state)).resolves.toBe(true);
+
+    expect(calls.map((call) => call.cmd)).toEqual([
+      "topic-source",
+      "personal-source-confirm-import",
+      "personal-source-confirm-import",
+    ]);
+    expect(calls[0].args).toEqual(["--title", "Kubernetes"]);
+    expect(calls[2].args.slice(0, 2)).toEqual(["--sourceId", "src-9"]);
+  });
+
+  it("keeps a placement error beside the counts, so the learner sees it", async () => {
+    const state = draftedState();
+    state.place = {
+      lens: "weltwissen",
+      regionKey: "natur.physik.optik",
+      path: ["Natur", "Physik", "Licht & Wellen"],
+    };
+    setBridgeTransport(async () => ({
+      success: true,
+      createdCount: 1,
+      ensuredCount: 0,
+      placed: 0,
+      placeError: 'No region "natur.physik.optik" in the Weltwissen lens.',
+    }));
+
+    await expect(commitTopicStep(state)).resolves.toBe(true);
+
+    expect(state.imported).toEqual({
+      created: 1,
+      ensured: 0,
+      placeError: 'No region "natur.physik.optik" in the Weltwissen lens.',
+    });
+  });
+
   it("does not import twice or when nothing was drafted", async () => {
     const asked: string[] = [];
     setBridgeTransport(async (cmd) => {
@@ -223,11 +295,11 @@ describe("commitGoalStep", () => {
 
     const imported = draftedState();
     imported.imported = { created: 1, ensured: 0 };
-    const empty = goalState(liveView());
+    const empty = topicState(liveView());
     empty.cards = null;
 
-    await expect(commitGoalStep(imported)).resolves.toBe(true);
-    await expect(commitGoalStep(empty)).resolves.toBe(true);
+    await expect(commitTopicStep(imported)).resolves.toBe(true);
+    await expect(commitTopicStep(empty)).resolves.toBe(true);
     expect(asked).toEqual([]);
   });
 
@@ -239,25 +311,25 @@ describe("commitGoalStep", () => {
       throw new Error(JSON.stringify({ error: "library is read-only" }));
     });
 
-    await expect(commitGoalStep(state)).resolves.toBe(false);
+    await expect(commitTopicStep(state)).resolves.toBe(false);
 
     expect(state.notice).toBe(
-      t("onboarding_goal_error").replace("{message}", "library is read-only"),
+      t("topic_error").replace("{message}", "library is read-only"),
     );
     expect(state.imported).toBeNull();
     expect(view.renders).toBe(1);
   });
 });
 
-// The goal flow drafts cards one topic at a time; neighbouring topics can
+// The topic import drafts cards one subtopic at a time; neighbouring ones can
 // propose the same card, which the preview must show once.
-describe("appendGoalCards", () => {
+describe("appendTopicCards", () => {
   it("appends each topic's proposals as selected preview cards", () => {
-    const first = appendGoalCards(
+    const first = appendTopicCards(
       [],
       [{ question: "What is a barre chord?", concept: "A chord fretted..." }],
     );
-    const both = appendGoalCards(first, [
+    const both = appendTopicCards(first, [
       { question: "Name the open chords.", concept: "C, A, G, E, D" },
     ]);
 
@@ -270,7 +342,7 @@ describe("appendGoalCards", () => {
   });
 
   it("skips a card another topic already drafted", () => {
-    const first = appendGoalCards(
+    const first = appendTopicCards(
       [],
       [
         {
@@ -279,7 +351,7 @@ describe("appendGoalCards", () => {
         },
       ],
     );
-    const again = appendGoalCards(first, [
+    const again = appendTopicCards(first, [
       {
         question: " what is a BARRE chord? ",
         concept: "one finger, all frets",
@@ -290,6 +362,52 @@ describe("appendGoalCards", () => {
     expect(again.map((card) => card.question)).toEqual([
       "What is a barre chord?",
       "What is a capo?",
+    ]);
+  });
+});
+
+describe("the topic's name", () => {
+  it("has the length limit of the import's record", () => {
+    expect(TOPIC_TITLE_MAX).toBe(MAX_TOPIC_TITLE);
+  });
+});
+
+describe("a topic import at an atlas place (ADR 2026-10-13, Decision 9)", () => {
+  const place = {
+    lens: "weltwissen" as const,
+    regionKey: "natur.physik.optik",
+    path: ["Natur", "Physik", "Licht & Wellen"],
+  };
+
+  it("tells the model the place apart from the context, and the confirm where to put the cards", () => {
+    const state = { ...topicState(null), place, context: " Für die Probe. " };
+    expect(topicPromptArgs(state)).toEqual([
+      "--context",
+      "Für die Probe.",
+      "--place",
+      JSON.stringify(["Natur", "Physik", "Licht & Wellen"]),
+    ]);
+    expect(topicPlaceArgs(state)).toEqual([
+      "--place-region",
+      "natur.physik.optik",
+      "--place-lens",
+      "weltwissen",
+    ]);
+    const drafted = withTopicPlace(state, TOPICS[0], [{ question: "Q" }]);
+    expect(drafted[0].placeBelow).toEqual(["Kubernetes", "Pods"]);
+  });
+
+  it("changes nothing without a place", () => {
+    const state = { ...topicState(null), context: " Warum " };
+    expect(topicPromptArgs(state)).toEqual([
+      "--context",
+      "Warum",
+      "--place",
+      "[]",
+    ]);
+    expect(topicPlaceArgs(state)).toEqual([]);
+    expect(withTopicPlace(state, TOPICS[0], [{ question: "Q" }])).toEqual([
+      { question: "Q" },
     ]);
   });
 });

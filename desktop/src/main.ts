@@ -8,12 +8,21 @@ import { openUrl } from "@tauri-apps/plugin-opener";
 import { check as checkForUpdate } from "@tauri-apps/plugin-updater";
 import * as THREE from "three";
 import { createLearningClock } from "../../src/kernel/analytics/learning-clock.js";
+import type { Condition } from "../../src/kernel/atlas/condition.js";
+import { emblemDataUrl } from "../../src/kernel/atlas/emblem.js";
+import {
+  conditionFill,
+  hueFor,
+  hueKeyForDomain,
+  type PaletteTheme,
+  rgbCss,
+} from "../../src/kernel/atlas/palette.js";
 import { initContentImportMenu } from "./content-import-menu.js";
 import {
-  applyGoalImportLabels,
-  initGoalImportDialog,
-  openGoalImportDialog,
-} from "./goal-import.js";
+  applyTopicImportLabels,
+  initTopicImportDialog,
+  openTopicImportDialog,
+} from "./topic-import.js";
 import {
   formatActivityBucketLabel,
   type RecentDaysSummary,
@@ -122,6 +131,7 @@ import {
   loadStudioData,
   openCardInEditor,
   openLearningContentCurriculum,
+  setLearningContentExternalOpener,
   setLearningContentFilePicker,
   setLearningContentGraphOpener,
   setLearningContentProgressSource,
@@ -130,7 +140,10 @@ import {
   setLearningContentCurriculumHost,
   setLearningContentFolderPicker,
 } from "./learning-content-sources.js";
-import { setMaterialImportHost } from "./material-import-start.js";
+import {
+  openMaterialImportStart,
+  setMaterialImportHost,
+} from "./material-import-start.js";
 import { fetchLibraryTopics, openLibraryTopics } from "./library-topics.js";
 import {
   StudyEditError,
@@ -172,9 +185,15 @@ import {
 } from "./radio-group.js";
 import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
+import { readUpUrl } from "./read-up.js";
 import type {
   AnswerPresentationResponse,
+  AtlasEmblemWire,
+  AtlasLensKindWire,
+  AtlasPlanetResponse,
+  Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
+  ReadUpWire,
 } from "../../src/bridge/protocol.js";
 import {
   acceptsTypedStudyAnswer,
@@ -232,12 +251,13 @@ setLearningContentProgressSource(async (onProgress) => {
   return unlisten;
 });
 
+// Lern-Karten opens the knowledge atlas, where the 3D graph used to open.
 setLearningContentGraphOpener(() => {
-  rememberGraphOrigin("learning-content-view");
-  const back = document.getElementById("btn-graph-back");
-  if (back) back.textContent = t("btn_graph_back_cards");
-  switchView("graph-view");
+  switchView("atlas-view");
 });
+
+// Nachlesen in the card editor opens the system browser (ADR 2026-10-14).
+setLearningContentExternalOpener((url) => void openUrl(url));
 
 setLearningContentFolderPicker(async () => {
   const selected = await openFolderDialog({
@@ -338,7 +358,7 @@ const BLOOM_LEVEL_NAMES: Record<string, Record<number, string>> = {
 };
 
 // ── STATE MANAGEMENT ──────────────────────────────────────────────────────
-type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view" | "knowledge-map-view";
+type AppView = "dashboard-view" | "settings-view" | "study-view" | "graph-view" | "learning-content-view" | "onboarding-view" | "stats-view" | "knowledge-map-view" | "atlas-view";
 type ThemePreference = "light" | "dark";
 
 interface StudyLearningSettings {
@@ -387,6 +407,22 @@ const sessionRatingTally: {
 /** Due count when the current study session started (summary denominator). */
 let sessionStartedDue = 0;
 let sessionSummaryVisible = false;
+/**
+ * A region review from the knowledge atlas (ADR 2026-10-13): the session asks
+ * only for that region's due cards, offers no new ones, and ends back on the
+ * map. Null for an ordinary session.
+ *
+ * - `practise`: units the learner may go through again when nothing is due
+ *   (0 = not offered, the region is too large).
+ * - `practiceSince`: set once the learner chose to; each card then comes
+ *   once, earliest due first.
+ */
+let studyAtlasRegion: {
+  lens: AtlasLensKindWire;
+  key: string;
+  practise: number;
+  practiceSince: string | null;
+} | null = null;
 /**
  * Snapshot of the #1 (fallback-order) model when Settings was opened. Leaving
  * Settings re-runs ensure-llm when this fingerprint differs so the header AI
@@ -591,6 +627,43 @@ interface ReviewPayload {
     filePath?: string;
   } | null;
   queueSize: number;
+  /** The unit's Sinnbild (with `--media`); untrusted, shown as an image. */
+  emblem?: AtlasEmblemWire | null;
+  /** Where to read a world unit up (with `--media`); none for Firma or Privat. */
+  readUp?: ReadUpWire | null;
+}
+
+/** The unit's Sinnbild beside the answer; cleared for a card without one. */
+function renderStudyEmblem(emblem: AtlasEmblemWire | null | undefined): void {
+  const box = document.getElementById("study-emblem");
+  const img = document.getElementById("study-emblem-img") as HTMLImageElement | null;
+  const glyph = document.getElementById("study-emblem-glyph");
+  if (!box || !img || !glyph) return;
+  box.hidden = !emblem;
+  img.removeAttribute("src");
+  glyph.textContent = "";
+  if (!emblem) return;
+  img.src = emblemDataUrl(emblem.svg);
+  // The glyph is untrusted text: textContent only.
+  glyph.textContent = emblem.glyph ?? "";
+}
+
+/** The active card's place to read it up; null for Firma or Privat units. */
+let activeReadUp: ReadUpWire | null = null;
+
+/** *Nachlesen* beside the answer (ADR 2026-10-14, Decision 4). */
+function renderStudyReadUp(readUp: ReadUpWire | null | undefined): void {
+  activeReadUp = readUp ?? null;
+  const button = document.getElementById("btn-study-read-up");
+  if (!button) return;
+  button.hidden = activeReadUp === null;
+  button.title = activeReadUp
+    ? t(
+        activeReadUp.kind === "source"
+          ? "read_up_source_hint"
+          : "read_up_search_hint",
+      )
+    : "";
 }
 
 let activeCard: BridgeCard | null = null;
@@ -877,6 +950,7 @@ function initializeTranslations() {
   setNavLabel("nav-settings", t("nav_settings"));
   setNavLabel("nav-stats", t("nav_stats"));
   setNavLabel("btn-open-graph", t("nav_graph"));
+  setNavLabel("nav-atlas", t("nav_atlas"));
   document.getElementById("lbl-stats-title")!.textContent = t("stats_title");
   document.getElementById("lbl-stats-subtitle")!.textContent =
     t("stats_subtitle");
@@ -939,6 +1013,8 @@ function initializeTranslations() {
   document.getElementById("btn-session-summary-done")!.textContent =
     t("btn_back_to_dashboard");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
+  const studyReadUp = document.getElementById("btn-study-read-up");
+  if (studyReadUp) studyReadUp.textContent = t("read_up");
   
   // Rating labels
   document.getElementById("lbl-rating-group-missed")!.textContent = t(
@@ -1124,6 +1200,17 @@ function initializeTranslations() {
   document.getElementById("btn-team-db-leave")!.textContent =
     t("team_db_leave");
 
+  document.getElementById("lbl-settings-graph3d-title-text")!.textContent =
+    t("graph3d_settings_title");
+  document.getElementById("lbl-settings-graph3d-alpha")!.textContent =
+    t("secrets_vault_alpha");
+  document.getElementById("lbl-settings-graph3d-help")!.textContent =
+    t("graph3d_settings_help");
+  document.getElementById("lbl-graph3d-toggle")!.textContent =
+    t("graph3d_settings_toggle");
+  document.getElementById("lbl-graph3d-toggle-help")!.textContent =
+    t("graph3d_settings_toggle_help");
+
   document.getElementById("lbl-settings-secrets-title-text")!.textContent =
     t("secrets_vault_title");
   document.getElementById("lbl-settings-secrets-alpha")!.textContent =
@@ -1178,6 +1265,12 @@ function initializeTranslations() {
     t("lbl_dynamic_questions");
   document.getElementById("lbl-dynamic-questions-help")!.textContent =
     t("lbl_dynamic_questions_help");
+  document.getElementById("lbl-draft-first")!.textContent = t("lbl_draft_first");
+  document.getElementById("lbl-draft-first-help")!.textContent =
+    t("lbl_draft_first_help");
+  document.getElementById("lbl-atlas-firma")!.textContent = t("lbl_atlas_firma");
+  document.getElementById("lbl-atlas-firma-help")!.textContent =
+    t("lbl_atlas_firma_help");
   const aiConfigButton = document.getElementById("btn-toggle-ai-config");
   if (aiConfigButton) {
     aiConfigButton.textContent = aiConfigEditorOpen
@@ -1219,7 +1312,7 @@ function initializeTranslations() {
   if (lblContentTitle) lblContentTitle.textContent = t("nav_content");
   const lblContentImportMenu = document.getElementById("lbl-content-import-menu");
   if (lblContentImportMenu) lblContentImportMenu.textContent = t("content_import_menu");
-  applyGoalImportLabels();
+  applyTopicImportLabels();
   const btnContentNewCard = document.getElementById("btn-content-new-card");
   if (btnContentNewCard) btnContentNewCard.textContent = t("btn_new_card");
   const contentSearchInput = document.getElementById("content-search-input") as HTMLInputElement;
@@ -1334,9 +1427,9 @@ function initializeTranslations() {
   const btnImportModalSubmit = document.getElementById("btn-import-modal-submit");
   if (btnImportModalSubmit) btnImportModalSubmit.textContent = t("btn_import_submit");
 
-  // Goal import entry (plan Phase 8): reopens the onboarding goal page.
-  const btnContentGoalImport = document.getElementById("btn-content-goal-import");
-  if (btnContentGoalImport) btnContentGoalImport.textContent = t("btn_content_goal_import");
+  // Topic import entry (ADR 2026-10-14): opens the topic import dialog.
+  const btnContentTopicImport = document.getElementById("btn-content-topic-import");
+  if (btnContentTopicImport) btnContentTopicImport.textContent = t("btn_content_topic_import");
   const btnContentLibraryTopics = document.getElementById("btn-content-library-topics");
   if (btnContentLibraryTopics) btnContentLibraryTopics.textContent = t("btn_library_topics");
   const btnDashboardLibraryTopics = document.getElementById("btn-dashboard-library-topics");
@@ -2379,16 +2472,93 @@ async function loadDynamicQuestionSetting(): Promise<void> {
   const toggle = document.getElementById(
     "toggle-dynamic-questions",
   ) as HTMLInputElement | null;
+  const draftFirst = document.getElementById(
+    "toggle-draft-first",
+  ) as HTMLInputElement | null;
   if (!toggle) return;
   try {
     const settings = await runBridge<{
       recall?: { dynamicQuestions?: boolean };
+      content?: { draftFirst?: boolean };
     }>("get-settings");
     // Absent means on, matching the kernel-side `!== "false"` default.
     toggle.checked = settings?.recall?.dynamicQuestions !== false;
+    // Absent means off: new content is learnable at once.
+    if (draftFirst) draftFirst.checked = settings?.content?.draftFirst === true;
   } catch {
     // Leave the checkbox at its markup default rather than claiming a state
     // we could not read.
+  }
+  await loadAtlasPlanetSetting();
+}
+
+/**
+ * "Diese Bibliothek gehört zu einer Firma" (ADR 2026-10-13, Decision 2): the
+ * atlas's own planet. Only the library's owner or a curator may change it,
+ * so the switch is locked for everyone else.
+ */
+async function loadAtlasPlanetSetting(): Promise<void> {
+  const toggle = document.getElementById(
+    "toggle-atlas-firma",
+  ) as HTMLInputElement | null;
+  const status = document.getElementById("atlas-firma-status");
+  if (!toggle) return;
+  try {
+    const info = await runBridge<AtlasPlanetResponse>("atlas-planet");
+    toggle.checked = info.own === "firma";
+    toggle.disabled = !info.mayChange;
+    if (status && !info.mayChange) {
+      status.textContent = t("atlas_firma_locked");
+    }
+  } catch {
+    toggle.disabled = true;
+  }
+}
+
+async function setAtlasFirma(enabled: boolean): Promise<void> {
+  const status = document.getElementById("atlas-firma-status");
+  const toggle = document.getElementById(
+    "toggle-atlas-firma",
+  ) as HTMLInputElement | null;
+  if (status) status.textContent = "";
+  try {
+    const info = await runBridge<AtlasPlanetResponse>("atlas-planet", [
+      "--own",
+      enabled ? "firma" : "privat",
+    ]);
+    if (status) {
+      status.textContent = t(
+        info.own === "firma" ? "atlas_firma_on" : "atlas_firma_off",
+      );
+    }
+  } catch (error) {
+    console.error("Failed to persist the atlas planet", error);
+    if (toggle) toggle.checked = !enabled;
+    if (status) status.textContent = t("atlas_firma_error");
+  }
+}
+
+/** Draft first (off by default): new content waits until it is published. */
+async function setDraftFirst(enabled: boolean): Promise<void> {
+  const status = document.getElementById("draft-first-status");
+  const toggle = document.getElementById(
+    "toggle-draft-first",
+  ) as HTMLInputElement | null;
+  if (status) status.textContent = "";
+  try {
+    await runBridge("setting-set", [
+      "--key",
+      "content.draft_first",
+      "--value",
+      enabled ? "true" : "false",
+    ]);
+    if (status) {
+      status.textContent = t(enabled ? "draft_first_on" : "draft_first_off");
+    }
+  } catch (error) {
+    console.error("Failed to persist the draft-first setting", error);
+    if (toggle) toggle.checked = !enabled;
+    if (status) status.textContent = t("draft_first_error");
   }
 }
 
@@ -4461,6 +4631,7 @@ function setActiveNav(viewId: AppView): void {
     "stats-view": "nav-stats",
     "learning-content-view": "nav-content",
     "graph-view": "btn-open-graph",
+    "atlas-view": "nav-atlas",
   };
   for (const button of document.querySelectorAll<HTMLButtonElement>(".nav-btn")) {
     const active = button.id === navByView[viewId];
@@ -5079,7 +5250,7 @@ function showOnboarding(): void {
   onboardingController.start();
 }
 
-/** Open the flow directly at one page (e.g. Learning Content → goal import). */
+/** Open the flow directly at one page (e.g. the dashboard checklist). */
 function showOnboardingAt(stepId: string): void {
   if (!onboardingController) return;
   switchView("onboarding-view");
@@ -5234,12 +5405,16 @@ function switchView(
     // lazy init three when first shown
     requestAnimationFrame(() => initOrShowGraph());
   } else {
-    mainContainer?.classList.remove('graph-full');
+    mainContainer?.classList.toggle('graph-full', viewId === "atlas-view");
   }
+  if (viewId !== "study-view") studyAtlasRegion = null;
+  // Re-read on every visit: a review may have changed the map.
+  if (viewId === "atlas-view") void openAtlas();
 
   if (viewId === "settings-view") {
     renderSettingsToc();
     refreshSettingsData();
+    void refreshGraph3dFeature();
     void capturePrimaryModelFingerprint();
   } else if (wasSettings) {
     void maybeReinitAiAfterSettings();
@@ -5368,6 +5543,21 @@ function updateGraphCamera() {
   graphCamera.lookAt(0, 0, 0);
 }
 
+function graphTheme(): PaletteTheme {
+  return document.documentElement.dataset.theme === "dark" ? "dark" : "light";
+}
+
+/** A graph node's fill: subject hue, washed or fogged by its condition. */
+function graphNodeFill(node: { domain?: string; hueKey?: string; condition?: Condition | null }) {
+  const hue = hueFor(node.hueKey ?? hueKeyForDomain(node.domain ?? ""));
+  return conditionFill(hue, node.condition ?? null, graphTheme());
+}
+
+/** The condition in words, so colour never carries it alone. */
+function graphConditionText(node: { condition?: Condition | null }): string {
+  return node.condition ? t(`condition_${node.condition}`) : t("graph_no_card");
+}
+
 function cssColorHex(variableName: string, fallback: string): number {
   const value = getComputedStyle(document.documentElement)
     .getPropertyValue(variableName)
@@ -5408,16 +5598,17 @@ function buildGraphScene(nb: any) {
   const ctxNames = nb.center.knowledgeContexts ? nb.center.knowledgeContexts.map((cx: any) => cx.name).join(", ") : "";
   const ctxMeta = ctxNames ? ` · Contexts: ${ctxNames}` : "";
   focusMetaEl.textContent = c
-    ? `Bloom ${nb.center.bloomLevel} · ${c.state} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}${ctxMeta}`
+    ? `Bloom ${nb.center.bloomLevel} · ${graphConditionText(nb.center)} · reps=${c.reps} · stab=${c.stability.toFixed(1)} ${c.blocked ? "· BLOCKED" : ""}${ctxMeta}`
     : `Bloom ${nb.center.bloomLevel} · ${t("graph_no_card")}${ctxMeta}`;
 
-  // helper to make clickable pill
+  // helper to make clickable pill; its edge carries subject hue and condition
   const makePill = (gt: any, container: HTMLElement) => {
     const pill = document.createElement("button");
     pill.type = "button";
     pill.className = "neighbor-pill";
     pill.textContent = getDisplayTitle(gt);
-    pill.title = gt.concept;
+    pill.title = `${gt.concept} · ${graphConditionText(gt)}`;
+    pill.style.borderLeft = `4px solid ${rgbCss(graphNodeFill(gt))}`;
     pill.addEventListener("click", () => loadGraphFocus(gt.slug));
     container.appendChild(pill);
   };
@@ -5471,13 +5662,6 @@ function buildGraphScene(nb: any) {
   grid.material.transparent = true;
   grid.material.depthWrite = false;
   graphScene.add(grid);
-
-  // simple palette by domain (stable hue per domain string)
-  const domainHue = (domain: string) => {
-    let h = 0;
-    for (let i = 0; i < domain.length; i++) h = (h * 31 + domain.charCodeAt(i)) | 0;
-    return ((Math.abs(h) % 360) / 360);
-  };
 
   function createLabelSprite(text: string, isCenter: boolean): THREE.Sprite {
     const canvas = document.createElement("canvas");
@@ -5552,36 +5736,15 @@ function buildGraphScene(nb: any) {
       labelOffsetY = height * 0.75; // above the peak
     }
 
-    let color;
-    if (isCenter) {
-      // Center keeps its special treatment (from card or default)
-      let sat = 0.68;
-      let light = 0.58;
-      if (!isDark) {
-        sat = 0.78;
-        light = 0.52;
-      }
-      color = new THREE.Color().setHSL(domainHue(gt.domain || "general"), sat, light);
-
-      const card = gt.card;
-      if (card) {
-        if (card.blocked) {
-          color = new THREE.Color(0xe11d48);
-        } else {
-          const mastery = Math.min(1, (card.reps || 0) / 6 + (card.stability || 0) / 30);
-          const mLight = isDark ? (0.42 + mastery * 0.38) : (0.48 + mastery * 0.34);
-          color = new THREE.Color().setHSL(domainHue(gt.domain || ""), isDark ? 0.72 : 0.80, mLight);
-        }
-      }
-    } else if (isPrereq) {
-      // BASIS / Voraussetzungen: distinct "foundation" color family (teal-greenish)
-      const h = (0.42 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
-      color = new THREE.Color().setHSL(h, 0.58, 0.46);
-    } else {
-      // HÖHERE FÄHIGKEITEN / Aufbauwissen: distinct "advanced" color family (blue-violet)
-      const h = (0.68 + (domainHue(gt.domain || "") - 0.5) * 0.25 + 1) % 1;
-      color = new THREE.Color().setHSL(h, 0.68, 0.52);
-    }
+    // Colour says where (subject hue), condition says how well (ADR
+    // 2026-10-13, Decision 4); the role (basis, focus, built on it) stays in
+    // the shape and the edge colour. A blocked card keeps its alarm red.
+    // CSS strings are parsed as sRGB, which keeps three's colour management
+    // from washing the palette out.
+    const color = gt.card?.blocked
+      ? new THREE.Color(0xe11d48)
+      : new THREE.Color(rgbCss(graphNodeFill(gt)));
+    const forgotten = gt.condition === "forgotten";
 
     const emissive = isCenter
       ? (isDark ? 0x222233 : 0x445566)
@@ -5590,6 +5753,9 @@ function buildGraphScene(nb: any) {
       color,
       emissive,
       shininess: isCenter ? 28 : 10,
+      // Forgotten knowledge sits in fog: half see-through.
+      transparent: forgotten,
+      opacity: forgotten ? 0.55 : 1,
     });
     const mesh = new THREE.Mesh(geom, mat);
     mesh.userData.slug = gt.slug;
@@ -6549,10 +6715,26 @@ async function loadNextCard(
     const reviewArgs = [
       "--media",
       "--max-new",
-      sessionNewRemaining + sessionExtraNewRemaining > 0 ? "1" : "0",
+      !studyAtlasRegion && sessionNewRemaining + sessionExtraNewRemaining > 0
+        ? "1"
+        : "0",
       "--time-zone",
       learnerTimeZone(),
     ];
+    if (studyAtlasRegion) {
+      reviewArgs.push(
+        "--atlas-region",
+        studyAtlasRegion.key,
+        "--atlas-lens",
+        studyAtlasRegion.lens,
+      );
+      if (studyAtlasRegion.practiceSince) {
+        reviewArgs.push(
+          "--atlas-practice-since",
+          studyAtlasRegion.practiceSince,
+        );
+      }
+    }
     const dynamicQuestionAllowed =
       shouldRequestDynamicStudyQuestion(
         currentStudyLearningSettings.learningMode,
@@ -6569,7 +6751,10 @@ async function loadNextCard(
     if (requestId !== questionRequestId) return;
     finishQuestionWait();
     if (!payload.hasReview || !payload.card || !payload.prompt) {
-      await offerEmptyQueueChoices(requestId);
+      // A region review ends when the region has nothing due: no bonus from
+      // elsewhere, only going through the region itself again.
+      if (studyAtlasRegion) await atlasRegionQueueEmpty();
+      else await offerEmptyQueueChoices(requestId);
       return;
     }
 
@@ -7835,6 +8020,8 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
 
   pendingReviewPayload = null;
   activeCard = payload.card;
+  renderStudyEmblem(payload.emblem);
+  renderStudyReadUp(payload.readUp);
   await resolveActivePresentation();
   learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;
@@ -8711,7 +8898,9 @@ function renderSessionSummary(): void {
     spreadEl.appendChild(ready);
   }
 
-  doneBtn.textContent = t("btn_back_to_dashboard");
+  doneBtn.textContent = t(
+    studyAtlasRegion ? "atlas_back_to_map" : "btn_back_to_dashboard",
+  );
 
   document.getElementById("study-active-card")?.classList.add("hidden");
   document.getElementById("study-topbar")?.classList.add("hidden");
@@ -8756,13 +8945,163 @@ async function finishStudySession(): Promise<void> {
 }
 
 function leaveSessionSummaryToDashboard(): void {
+  const backToAtlas = studyAtlasRegion !== null;
   document.getElementById("session-summary")?.classList.add("hidden");
   document.getElementById("study-active-card")?.classList.remove("hidden");
   document.getElementById("study-topbar")?.classList.remove("hidden");
   sessionSummaryVisible = false;
   resetSessionTally();
+  if (backToAtlas) {
+    switchView("atlas-view");
+    return;
+  }
   switchView("dashboard-view");
   void loadDashboard();
+}
+
+// ── KNOWLEDGE ATLAS (ADR 2026-10-13) ──────────────────────────────────────
+let graph3dEnabled = false;
+
+async function openAtlas(): Promise<void> {
+  const root = document.getElementById("atlas-root");
+  if (!root) return;
+  const { showAtlasView } = await import("./atlas/view.js");
+  await showAtlasView(root, {
+    reviewRegion: (lens, key, options) =>
+      void startAtlasRegionReview(lens, key, options),
+    // Import at a place (ADR 2026-10-13, Decision 9).
+    importTopic: (place) => openTopicImportDialog(null, { place }),
+    importMaterial: (place) => void openMaterialImportStart({ place }),
+    openCurriculumWizard: () => {
+      switchView("learning-content-view");
+      void openLearningContentCurriculum();
+    },
+    // Nachlesen (ADR 2026-10-14, Decision 4): the system browser.
+    openExternal: (url) => void openUrl(url),
+  });
+}
+
+/** Review one region's due cards; the summary leads back to the map. */
+async function startAtlasRegionReview(
+  lens: AtlasLensKindWire,
+  key: string,
+  options: { due: number; practise: number },
+): Promise<void> {
+  prepareStudyViewForSession();
+  await configureSessionWorkload();
+  sessionNewRemaining = 0;
+  // The session's size is the region's, not the whole queue's.
+  sessionStartedDue = options.due;
+  await loadStudyLearningSettings();
+  await ensureUiLearningSession("Atlas region review");
+  switchView("study-view");
+  studyAtlasRegion = { lens, key, practise: options.practise, practiceSince: null };
+  await loadNextCard();
+}
+
+/**
+ * A region review with nothing (more) to show. After answers, the summary.
+ * Before any, never a summary as if something had been done: a small region
+ * offers to go through its questions again, e.g. before a test, earliest due
+ * first; the learner can stop at any time.
+ */
+async function atlasRegionQueueEmpty(): Promise<void> {
+  const region = studyAtlasRegion;
+  if (!region) return;
+  if (sessionRatingTally.done > 0) {
+    await finishStudySession();
+    return;
+  }
+  const offerPractice = region.practise > 0 && region.practiceSince === null;
+  hideStudyBusy();
+  showStudyOffer({
+    title: t("atlas_review_nothing_title"),
+    body: offerPractice
+      ? t("atlas_practice_offer_body")
+      : t("atlas_review_nothing_body"),
+    actions: [
+      {
+        label: t("atlas_back_to_map"),
+        onClick: () => void leaveAtlasRegionReview(),
+      },
+      ...(offerPractice
+        ? [
+            {
+              label: t("atlas_practice_start"),
+              primary: true,
+              onClick: () => void startAtlasPractice(),
+            },
+          ]
+        : []),
+    ],
+  });
+}
+
+async function startAtlasPractice(): Promise<void> {
+  if (!studyAtlasRegion) return;
+  studyAtlasRegion.practiceSince = new Date().toISOString();
+  sessionStartedDue = studyAtlasRegion.practise;
+  hideStudyOffer();
+  document.getElementById("study-active-card")?.classList.remove("hidden");
+  await loadNextCard();
+}
+
+/** Back to the map without a summary: nothing was answered. */
+async function leaveAtlasRegionReview(): Promise<void> {
+  await finishStudySession();
+  leaveSessionSummaryToDashboard();
+}
+
+/**
+ * The 3D Wissensnetz is an alpha now; the atlas took its place (ADR
+ * 2026-10-13, owner decision). A machine-local switch shows its nav entry.
+ */
+async function refreshGraph3dFeature(): Promise<void> {
+  try {
+    const feature = await runBridge<Graph3dFeatureResponse>("graph3d-feature");
+    graph3dEnabled = feature.enabled === true;
+  } catch (err) {
+    console.warn("Failed to read the 3D graph switch:", err);
+    graph3dEnabled = false;
+  }
+  applyGraph3dFeature();
+}
+
+function applyGraph3dFeature(): void {
+  const nav = document.getElementById("btn-open-graph");
+  if (nav) nav.hidden = !graph3dEnabled;
+  const toggle = document.getElementById("toggle-graph3d") as HTMLInputElement | null;
+  if (toggle) toggle.checked = graph3dEnabled;
+  if (
+    !graph3dEnabled &&
+    document.getElementById("graph-view")?.classList.contains("active")
+  ) {
+    disposeGraph();
+    switchView("atlas-view");
+  }
+}
+
+async function setGraph3dFeature(enabled: boolean): Promise<void> {
+  const status = document.getElementById("graph3d-feature-status");
+  if (status) status.textContent = "";
+  try {
+    const feature = await runBridge<Graph3dFeatureResponse>("graph3d-feature", [
+      enabled ? "--enable" : "--disable",
+    ]);
+    graph3dEnabled = feature.enabled === true;
+    if (status) {
+      status.textContent = t(
+        graph3dEnabled ? "graph3d_settings_on" : "graph3d_settings_off",
+      );
+    }
+  } catch (err) {
+    if (status) {
+      status.textContent = tf("graph3d_settings_failed", {
+        message: errorMessage(err),
+      });
+    }
+  }
+  applyGraph3dFeature();
 }
 
 // ── KEYBOARD SHORTCUTS & EVENT BINDINGS ──────────────────────────────────
@@ -8810,18 +9149,27 @@ window.addEventListener("DOMContentLoaded", () => {
   );
   initPanel("study-learning", initStudyLearningControls);
   initPanel("study-workload", initStudyWorkloadControls);
-  // Goal-driven import is a content import of its own (redesign step 4):
-  // Learning Content opens the goal page in a dialog, not the first-run flow.
-  initGoalImportDialog({
+  // The topic import is a content import of its own (ADR 2026-10-14):
+  // Learning Content opens it in a dialog, not the first-run flow.
+  initTopicImportDialog({
     openModelSetup: () => showOnboardingAt("model"),
-    onImported: () => void loadStudioData(),
+    onImported: (place) => {
+      void loadStudioData();
+      // Started at an atlas region: show the new land on the map.
+      if (
+        place &&
+        document.getElementById("atlas-view")?.classList.contains("active")
+      ) {
+        void openAtlas();
+      }
+    },
   });
   document
-    .getElementById("btn-content-goal-import")
+    .getElementById("btn-content-topic-import")
     // The entry sits in the Import menu, which is hidden once it is chosen;
     // closing the dialog returns to the menu button instead.
     ?.addEventListener("click", () =>
-      openGoalImportDialog(document.getElementById("btn-content-import-menu")),
+      openTopicImportDialog(document.getElementById("btn-content-import-menu")),
     );
   initContentImportMenu();
   // Empty deck on a library with topics (ADR 2026-10-02): start from them.
@@ -8869,6 +9217,7 @@ window.addEventListener("DOMContentLoaded", () => {
   // Load initial dashboard state; then, off the critical path, an overdue
   // capability check for cloud models.
   void loadDashboard().then(() => refreshModelCapabilitiesWhenDue());
+  void refreshGraph3dFeature();
   void loadAppVersion();
   repairInstallationOnVersionChange();
 
@@ -8895,6 +9244,14 @@ window.addEventListener("DOMContentLoaded", () => {
 
   document.getElementById("nav-settings")?.addEventListener("click", () => {
     switchView("settings-view");
+  });
+
+  document.getElementById("nav-atlas")?.addEventListener("click", () => {
+    switchView("atlas-view");
+  });
+
+  document.getElementById("toggle-graph3d")?.addEventListener("change", (event) => {
+    void setGraph3dFeature((event.target as HTMLInputElement).checked);
   });
 
   document.getElementById("nav-stats")?.addEventListener("click", () => {
@@ -9173,6 +9530,20 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("toggle-dynamic-questions")
     ?.addEventListener("change", (event) => {
       void setDynamicQuestions((event.target as HTMLInputElement).checked);
+    });
+  document
+    .getElementById("toggle-draft-first")
+    ?.addEventListener("change", (event) => {
+      void setDraftFirst((event.target as HTMLInputElement).checked);
+    });
+  // Nachlesen opens on this click only; nothing was fetched before.
+  document.getElementById("btn-study-read-up")?.addEventListener("click", () => {
+    if (activeReadUp) void openUrl(readUpUrl(activeReadUp, currentLocale));
+  });
+  document
+    .getElementById("toggle-atlas-firma")
+    ?.addEventListener("change", (event) => {
+      void setAtlasFirma((event.target as HTMLInputElement).checked);
     });
 
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {

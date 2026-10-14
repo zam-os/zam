@@ -15,6 +15,197 @@
  * so provisioning an older database has to run: tables → migrations → indexes.
  * See `applySchemaAndMigrations` in provision.ts.
  */
+/**
+ * Knowledge atlas (ADR 2026-10-13, Decisions 2–3; migration M040). All
+ * knowledge: lenses, their regions, the aliases that place domain paths, and
+ * explicit placements. Shared by M040 so schema and migration cannot drift.
+ */
+export const ATLAS_TABLES = `
+-- One order over the learning units of one planet (kind of knowledge).
+CREATE TABLE IF NOT EXISTS atlas_lenses (
+  id            TEXT PRIMARY KEY,
+  planet        TEXT NOT NULL CHECK (planet IN ('welt', 'firma', 'privat')),
+  kind          TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  -- JSON array of level names, top level (the islands) first.
+  level_names   TEXT NOT NULL,
+  -- 0-based level whose regions give the hue.
+  colour_level  INTEGER NOT NULL,
+  created_at    TEXT NOT NULL,
+  updated_at    TEXT NOT NULL,
+  -- Curated lenses (M047): the named source the lens follows; when the
+  -- agent found it no longer fits that source, and why; and one pending
+  -- replacement (JSON) a curator accepts. No history is kept.
+  source          TEXT,
+  stale_at        TEXT,
+  stale_note      TEXT,
+  proposal        TEXT,
+  proposal_source TEXT,
+  proposed_at     TEXT,
+  proposed_by     TEXT,
+  UNIQUE (planet, kind)
+);
+CREATE TABLE IF NOT EXISTS atlas_regions (
+  id            TEXT PRIMARY KEY,
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  parent_id     TEXT REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  level         INTEGER NOT NULL,
+  -- Stable within its lens, e.g. "natur.physik.mechanik"; a rename keeps it.
+  key           TEXT NOT NULL,
+  name          TEXT NOT NULL,
+  rank          INTEGER NOT NULL DEFAULT 0,
+  pattern       TEXT,
+  ontology_ref  TEXT,
+  UNIQUE (lens_id, key)
+);
+-- A domain path prefix ("physik/kinematik") that lands in a region.
+CREATE TABLE IF NOT EXISTS atlas_domain_aliases (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  domain_prefix TEXT NOT NULL,
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  PRIMARY KEY (lens_id, domain_prefix)
+);
+-- An explicit placement, which wins over every derivation rule.
+CREATE TABLE IF NOT EXISTS atlas_members (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  -- "atom:<id>" or "token:<id>" (ADR 2026-10-13, Decision 1).
+  unit_key      TEXT NOT NULL,
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  placed_by     TEXT NOT NULL CHECK (placed_by IN ('agent', 'curator', 'learner', 'import')),
+  PRIMARY KEY (lens_id, unit_key)
+);
+`;
+
+/**
+ * Stored land of the atlas (ADR 2026-10-13, Decision 8; migration M041).
+ * Knowledge: every unit's hex, assigned once, and each island's place on the
+ * sea. Only settle and a curator's lens edit write it.
+ */
+export const ATLAS_LAND_TABLES = `
+CREATE TABLE IF NOT EXISTS atlas_islands (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  -- A top-level region of the lens.
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- Offset of the island's origin on the sea, axial.
+  dq            INTEGER NOT NULL,
+  dr            INTEGER NOT NULL,
+  -- Offset at founding: total drift is the distance to (dq, dr).
+  founded_dq    INTEGER NOT NULL,
+  founded_dr    INTEGER NOT NULL,
+  PRIMARY KEY (lens_id, region_id)
+);
+CREATE TABLE IF NOT EXISTS atlas_land (
+  lens_id       TEXT NOT NULL REFERENCES atlas_lenses(id) ON DELETE CASCADE,
+  island_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- Island-local axial coordinates; never change once a unit sits here.
+  q             INTEGER NOT NULL,
+  r             INTEGER NOT NULL,
+  -- The leaf region that owns this hex.
+  region_id     TEXT NOT NULL REFERENCES atlas_regions(id) ON DELETE CASCADE,
+  -- NULL: reserved land of the region.
+  unit_key      TEXT,
+  PRIMARY KEY (lens_id, island_id, q, r)
+);
+CREATE UNIQUE INDEX IF NOT EXISTS ux_atlas_land_unit
+  ON atlas_land (lens_id, unit_key) WHERE unit_key IS NOT NULL;
+`;
+
+/**
+ * Variants (ADR 2026-10-13, Decision 12; migration M042): one goal, one
+ * method. A variant stands in for a published unit on that unit's hex.
+ * `unit_variants` is knowledge, a curator's choice for the whole library.
+ * `learner_variants` is learning state: one learner's choice, with the cards
+ * it detached, so that undoing it re-attaches exactly those.
+ */
+export const ATLAS_VARIANT_TABLES = `
+CREATE TABLE IF NOT EXISTS unit_variants (
+  -- The published unit the variant stands for ("atom:<id>").
+  stands_for    TEXT PRIMARY KEY,
+  -- The unit that stands in: own or published, never the same.
+  variant_key   TEXT NOT NULL,
+  decided_by    TEXT NOT NULL,
+  created_at    TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_variants (
+  user_id       TEXT NOT NULL,
+  stands_for    TEXT NOT NULL,
+  variant_key   TEXT NOT NULL,
+  -- JSON array: the card ids this choice detached.
+  detached_card_ids TEXT NOT NULL,
+  created_at    TEXT NOT NULL,
+  PRIMARY KEY (user_id, stands_for)
+);
+`;
+
+/**
+ * Sinnbilder (ADR 2026-10-13, Decision 6): a small SVG and an optional glyph
+ * per learning unit or region.
+ *
+ * `emblems` is knowledge: the library's shared Sinnbild, written by whoever
+ * may write knowledge. `learner_emblems` is learning state: one learner's own,
+ * which only they see. Both store only the validator's canonical form, with
+ * the validator version that produced it. Subject keys are a UnitKey
+ * (`atom:…`, `token:…`) or `region:<lens kind>:<region key>`.
+ */
+export const EMBLEM_TABLES = `
+CREATE TABLE IF NOT EXISTS emblems (
+  subject_key       TEXT PRIMARY KEY,
+  svg               TEXT NOT NULL,
+  validator_version INTEGER NOT NULL,
+  glyph             TEXT,
+  author            TEXT NOT NULL,
+  updated_at        TEXT NOT NULL
+);
+CREATE TABLE IF NOT EXISTS learner_emblems (
+  user_id           TEXT NOT NULL,
+  subject_key       TEXT NOT NULL,
+  svg               TEXT NOT NULL,
+  validator_version INTEGER NOT NULL,
+  glyph             TEXT,
+  updated_at        TEXT NOT NULL,
+  PRIMARY KEY (user_id, subject_key)
+);
+`;
+
+/**
+ * Red threads beyond prerequisites (ADR 2026-10-13, Decision 7).
+ *
+ * `connections` is knowledge: the library's shared threads, written by
+ * whoever may write knowledge. A shared Voraussetzung is not one of them: it
+ * stays in the prerequisite tables. `learner_connections` is learning state:
+ * one learner's own threads of any kind, which never feed blocking.
+ *
+ * `a` is the dependent end (a builds on, uses, consumes the interface of, or
+ * is a special case of b). Ends are UnitKeys; `a_uri`/`b_uri` keep the
+ * atom_uri of a published end, so a rebuild can remap it like cards.
+ */
+export const CONNECTION_TABLES = `
+CREATE TABLE IF NOT EXISTS connections (
+  id         TEXT PRIMARY KEY,
+  a_key      TEXT NOT NULL,
+  b_key      TEXT NOT NULL,
+  a_uri      TEXT,
+  b_uri      TEXT,
+  kind       TEXT NOT NULL CHECK (kind IN ('nutzt', 'schnittstelle', 'ist-ein', 'verbindung')),
+  note       TEXT,
+  author     TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (a_key, b_key, kind)
+);
+CREATE TABLE IF NOT EXISTS learner_connections (
+  id         TEXT PRIMARY KEY,
+  user_id    TEXT NOT NULL,
+  a_key      TEXT NOT NULL,
+  b_key      TEXT NOT NULL,
+  a_uri      TEXT,
+  b_uri      TEXT,
+  kind       TEXT NOT NULL CHECK (kind IN ('voraussetzung', 'nutzt', 'schnittstelle', 'ist-ein', 'verbindung')),
+  note       TEXT,
+  created_at TEXT NOT NULL,
+  UNIQUE (user_id, a_key, b_key, kind)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -77,7 +268,11 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- Declared edge representative of its atom (KVT tile flag, M032). Token
   -- prerequisites derived from atom edges point at this item; without the
   -- flag the first published Tier-1 item by id represents the atom.
-  edge_representative INTEGER NOT NULL DEFAULT 0
+  edge_representative INTEGER NOT NULL DEFAULT 0,
+  -- The term to read a world unit up by in a reference work, such as the
+  -- Wikipedia article a topic import's model proposed (ADR 2026-10-14,
+  -- Decision 4, M046). Never a source link and never fetched.
+  lookup_term TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).
@@ -484,7 +679,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}${CONNECTION_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

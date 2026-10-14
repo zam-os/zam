@@ -2,7 +2,23 @@
 
 ## 2026-10-14
 
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
+- **Update** — [Local AI Runtimes](local-ai-runtimes.md)
+- **Update** — [Learning Content](learning-content.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
 - **Update** — [FSRS-6 Scheduling](fsrs-scheduling.md)
+
+## 2026-10-13
+
+- **Update** — [Agent and Library Trust Model](agent-trust-model.md)
+- **Update** — [Learning Content](learning-content.md)
+- **Update** — [MCP Transport and Surfaces](mcp-surfaces.md)
+- **Update** — [Bridge CLI Protocol](bridge-protocol.md)
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
 
 ## 2026-10-11
 

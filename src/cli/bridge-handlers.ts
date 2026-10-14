@@ -21,6 +21,7 @@ import {
   addPrerequisite,
   admitPresentation,
   analyzeObservation,
+  assertPrerequisitePlanets,
   assessPrecondition,
   assignTokenToContext,
   BLOOM_VERBS,
@@ -73,6 +74,8 @@ import {
   listTokens,
   monitorLogExists,
   needsGenericCurriculumImport,
+  newTokenEditorialState,
+  nextPracticeCard,
   OBSERVER_POLICY_UNSET_HINT,
   pairCommands,
   parseReviewFastCheck,
@@ -82,16 +85,19 @@ import {
   publishTokenRevisionInTransaction,
   pullForwardCards,
   readMonitorLog,
+  readUpForTokens,
   recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
   resolveAnswerPresentation,
+  resolveEmblem,
   SCREEN_OBSERVATION_OFF_REASON,
   searchTokensHybrid,
   setTokenMaintenance,
   startLibraryTopic,
   structuralPublicationChecks,
   sweepObservationFiles,
+  unitKeyFor,
   updateCard,
   updateToken,
   verifySnapshot,
@@ -207,6 +213,14 @@ export interface GetReviewParams {
   roots?: readonly string[];
   noDynamicQuestion?: boolean;
   knowledgeContext?: string;
+  /** Only these tokens' due cards, no new ones: a region review (ADR 2026-10-13). */
+  tokenIds?: readonly string[];
+  /**
+   * With `tokenIds`: going through them again although nothing is due. When
+   * no card is due, the next practised card not answered since this moment
+   * is pulled forward, one at a time.
+   */
+  practiceSince?: Date;
   /**
    * Inline the card's media as base64. Opt-in because a rendering surface
    * (Studio) needs the bytes, while an agent reading this JSON would only get
@@ -218,13 +232,26 @@ export interface GetReviewParams {
 
 export async function getReview(db: Database, params: GetReviewParams) {
   const userId = await resolveHandlerUser(db, params.user);
-  const queue = await buildReviewQueue(db, {
-    userId,
-    maxReviews: 1,
-    maxNew: params.maxNew ?? 1,
-    knowledgeContext: params.knowledgeContext || undefined,
-    timeZone: params.timeZone,
-  });
+  const nextQueue = () =>
+    buildReviewQueue(db, {
+      userId,
+      maxReviews: 1,
+      maxNew: params.tokenIds ? 0 : (params.maxNew ?? 1),
+      knowledgeContext: params.knowledgeContext || undefined,
+      timeZone: params.timeZone,
+      tokenIds: params.tokenIds,
+    });
+  let queue = await nextQueue();
+  if (!queue.items[0] && params.tokenIds && params.practiceSince) {
+    const cardId = await nextPracticeCard(db, userId, params.tokenIds, {
+      since: params.practiceSince,
+      timeZone: params.timeZone,
+    });
+    if (cardId) {
+      await pullForwardCards(db, userId, [cardId]);
+      queue = await nextQueue();
+    }
+  }
   const item = queue.items[0];
 
   if (!item) {
@@ -310,10 +337,28 @@ export async function getReview(db: Database, params: GetReviewParams) {
 
   const fullQueue = await buildReviewQueue(db, {
     userId,
-    maxNew: params.maxNew,
+    maxNew: params.tokenIds ? 0 : params.maxNew,
     knowledgeContext: params.knowledgeContext || undefined,
     timeZone: params.timeZone,
+    tokenIds: params.tokenIds,
   });
+
+  // The unit's Sinnbild (ADR 2026-10-13, Decision 6), for a rendering
+  // surface only, like the media: an image, never markup.
+  const emblem = params.includeMedia
+    ? await resolveEmblem(
+        db,
+        unitKeyFor(item.tokenId, item.atomId),
+        userId,
+      ).catch(() => null)
+    : null;
+  // Reading up on a world unit (ADR 2026-10-14, Decision 4), beside the
+  // revealed answer. Firma and Privat units get none.
+  const readUp = params.includeMedia
+    ? ((await readUpForTokens(db, [item.tokenId]).catch(() => null))?.get(
+        item.tokenId,
+      ) ?? null)
+    : null;
 
   return {
     userId,
@@ -324,6 +369,8 @@ export async function getReview(db: Database, params: GetReviewParams) {
     questionModel: questionModel ?? null,
     resolvedContext,
     queueSize: fullQueue.items.length,
+    emblem,
+    readUp,
   };
 }
 
@@ -362,6 +409,11 @@ export interface GetReviewsBatchParams {
   /** Optional session-local new-card override when workload rules are used. */
   maxNew?: number;
   timeZone?: string;
+  /**
+   * Only these tokens: an atlas region's due cards (ADR 2026-10-13,
+   * Decision 10). Uses the workload queue with no new cards.
+   */
+  tokenIds?: readonly string[];
 }
 
 export async function getReviewsBatch(
@@ -369,49 +421,51 @@ export async function getReviewsBatch(
   params: GetReviewsBatchParams,
 ) {
   const userId = await resolveHandlerUser(db, params.user);
-  const sourceCards = params.respectWorkload
-    ? (
-        await buildReviewQueue(db, {
-          userId,
-          domain: params.domain,
-          knowledgeContext: params.knowledgeContext,
-          maxNew: params.maxNew,
-          timeZone: params.timeZone,
-        })
-      ).items.map((item) => ({
-        cardId: item.cardId,
-        tokenId: item.tokenId,
-        slug: item.slug,
-        concept: item.concept,
-        domain: item.domain,
-        bloomLevel: item.bloomLevel,
-        state: item.state,
-        dueAt: item.dueAt,
-        atomId: item.atomId,
-        tier: item.tier,
-        fastCheck: item.fastCheck,
-      }))
-    : (
-        await getDueCards(
-          db,
-          userId,
-          undefined,
-          params.domain,
-          params.knowledgeContext,
-        )
-      ).map((card) => ({
-        cardId: card.id,
-        tokenId: card.token_id,
-        slug: card.slug,
-        concept: card.concept,
-        domain: card.domain,
-        bloomLevel: card.bloom_level,
-        state: card.state,
-        dueAt: card.due_at,
-        atomId: null,
-        tier: null,
-        fastCheck: null,
-      }));
+  const sourceCards =
+    params.respectWorkload || params.tokenIds
+      ? (
+          await buildReviewQueue(db, {
+            userId,
+            domain: params.domain,
+            knowledgeContext: params.knowledgeContext,
+            maxNew: params.tokenIds ? 0 : params.maxNew,
+            tokenIds: params.tokenIds,
+            timeZone: params.timeZone,
+          })
+        ).items.map((item) => ({
+          cardId: item.cardId,
+          tokenId: item.tokenId,
+          slug: item.slug,
+          concept: item.concept,
+          domain: item.domain,
+          bloomLevel: item.bloomLevel,
+          state: item.state,
+          dueAt: item.dueAt,
+          atomId: item.atomId,
+          tier: item.tier,
+          fastCheck: item.fastCheck,
+        }))
+      : (
+          await getDueCards(
+            db,
+            userId,
+            undefined,
+            params.domain,
+            params.knowledgeContext,
+          )
+        ).map((card) => ({
+          cardId: card.id,
+          tokenId: card.token_id,
+          slug: card.slug,
+          concept: card.concept,
+          domain: card.domain,
+          bloomLevel: card.bloom_level,
+          state: card.state,
+          dueAt: card.due_at,
+          atomId: null,
+          tier: null,
+          fastCheck: null,
+        }));
 
   const isLlmEnabled = (await getSetting(db, "llm.enabled")) === "true";
 
@@ -908,31 +962,37 @@ export async function addToken(db: Database, params: AddTokenParams) {
     prerequisites.push(prerequisite);
   }
 
-  const token = await createToken(db, {
-    slug: params.slug,
-    title: params.title,
-    concept: params.concept,
-    domain: params.domain,
-    bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
-    context: params.context,
-    symbiosis_mode: params.symbiosisMode,
-    source_link: params.sourceLink ?? null,
-    question: params.question ?? null,
-    // Bridge/MCP callers are agents: their questions are LLM-authored and
-    // stay refreshable. Humans author questions via the token CLI instead.
-    question_source: params.question ? "llm" : undefined,
-    editorial_state: "draft",
+  // Learnable at once, unless the library wants drafts first.
+  const editorialState = await newTokenEditorialState(db);
+  // One write: a prerequisite the planets refuse leaves no token behind.
+  const { token, card } = await db.transaction(async (tx) => {
+    const token = await createToken(tx, {
+      slug: params.slug,
+      title: params.title,
+      concept: params.concept,
+      domain: params.domain,
+      bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
+      context: params.context,
+      symbiosis_mode: params.symbiosisMode,
+      source_link: params.sourceLink ?? null,
+      question: params.question ?? null,
+      // Bridge/MCP callers are agents: their questions are LLM-authored and
+      // stay refreshable. Humans author questions via the token CLI instead.
+      question_source: params.question ? "llm" : undefined,
+      editorial_state: editorialState,
+    });
+
+    for (const context of assignedContexts) {
+      await assignTokenToContext(tx, token.id, context.id);
+    }
+
+    for (const prerequisite of prerequisites) {
+      await assertPrerequisitePlanets(tx, token.id, prerequisite.id);
+      await addPrerequisite(tx, token.id, prerequisite.id);
+    }
+
+    return { token, card: await ensureCard(tx, token.id, userId) };
   });
-
-  for (const context of assignedContexts) {
-    await assignTokenToContext(db, token.id, context.id);
-  }
-
-  for (const prerequisite of prerequisites) {
-    await addPrerequisite(db, token.id, prerequisite.id);
-  }
-
-  const card = await ensureCard(db, token.id, userId);
 
   try {
     await ensureTokenEmbeddings(db, { limit: 8 });
@@ -1491,6 +1551,8 @@ export async function linkPrereq(db: Database, params: LinkPrereqParams) {
     throw new Error(`Prerequisite token not found: ${params.requires}`);
   }
 
+  // World knowledge never depends on a Firma or Privat unit (ADR 2026-10-13).
+  await assertPrerequisitePlanets(db, token.id, requires.id);
   await addPrerequisite(db, token.id, requires.id);
 
   let blockedCardId: string | undefined;
@@ -1800,6 +1862,8 @@ export interface PublishRevisionParams {
     domain?: string;
     bloomLevel?: number;
     sourceLink?: string | null;
+    /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
+    lookupTerm?: string | null;
   };
 }
 

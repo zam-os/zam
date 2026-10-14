@@ -7,12 +7,27 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-11T14:30:00.000Z
+timestamp: 2026-10-14T21:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
 
-The actions that create or manage cards stay on Lern-Karten: a new card, goal import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, goal import, and file import; Bonus sits beside them while items are kept. Goal import opens the goal page in a dialog of its own. It no longer opens the first-run flow, which keeps its own goal step; both show the same goal page. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+The actions that create or manage cards stay on Lern-Karten: a new card, topic import, photo or PDF, file import, library topics, and Bonus while items are kept. In the Desktop window the header shows **Neue Karte** (New card) and one **Importieren** (Import) menu that holds photo or PDF, library topics, **Themen-Import** (Topic import), and file import; Bonus sits beside them while items are kept.
+
+The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)) replaced the goal import. It opens in a dialog of its own, with the same topic area as the first-run flow's topic page. That page follows only while the first-run content page's topic path is the one last chosen; choosing another path takes it out again.
+- The learner names the topic, at most 200 characters, and a larger field takes context, prior knowledge and details. Example: PostgreSQL after projects only in Microsoft SQL Server, learned from the parallels and the differences.
+- The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding. What the learner already knows is where it starts, never content. Without a context it starts from the foundations.
+- From the first subtopic level, *Thema oder Kontext ändern* leads back to the name and the context, both kept.
+- No file is written. One `zam-topic:` source row records the import. That row names the import, not a source to read up in, so Lern-Karten never offers it as a card's source link.
+- A topic import writes world knowledge (Decision 5). Started outside the atlas, its new units land on the world planet, where Weltwissen's rules sort them by domain, even where no rule would otherwise cover them. On a team library placing them needs the right to write knowledge; without it the cards stay where Weltwissen's rules put them, and their `zam-topic:` source keeps them world knowledge either way.
+- Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
+- The model knows only what is public. A subtopic about one company's or one person's own knowledge comes with the reason, unticked and locked, and with the hint to import it from its source: notes, a file or a repository (Decision 5).
+
+The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+
+# Nachlesen
+
+**Nachlesen** (Read up, [ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md), Decision 4) opens the place to read a world unit up, in the system browser, on the learner's click only. A unit whose source link is a web page opens that page; a curriculum page is no place to read up and does not count. Any other world unit opens a Wikipedia search in the learner's language (the unit's own language when it names one) that jumps straight to the article of its lookup term, else of its title. Nothing is fetched beforehand, and the search is never a source link. Firma and Privat units get no button: their titles never go to a reference work. The button shows in the atlas unit panel, beside the revealed answer of a review card, and in Lern-Karten's card editor.
 
 # Lern-Karten
 
@@ -22,7 +37,7 @@ Lern-Karten has three lists. A token is in at most one of them.
 
 Search and the category filter apply to the list that is open. The knowledge-context filter applies only while Persönlich is open; on the other two lists it is disabled.
 
-**Wissensnetz (3D)** is the existing graph of the learner's tokens and their prerequisites. Lern-Karten and the Desktop sidebar both open it. Back returns to Lern-Karten when the graph was opened there, or from the sidebar while Lern-Karten was showing; otherwise it returns to **Heute** (Today). The Studio panel has no graph view, so it hides that button.
+**Wissensatlas** (knowledge atlas) is the map of the learner's knowledge, and Lern-Karten's button opens it, like the Desktop sidebar. The Studio panel has no map view, so it hides that button. The atlas took the place of **Wissensnetz (3D)**, the graph of the learner's tokens and their prerequisites. That graph is an alpha now: a switch in Settings, on this computer only, shows it in the sidebar again. Its Back button returns to Lern-Karten when it was opened while Lern-Karten was showing, and to **Heute** (Today) otherwise.
 
 A published token in Nicht gewählt can be taken as this learner's card. One token is taken on its own, which creates the card and leaves the token as it is. A source group that has a key is taken together: a card is created for each member the learner lacks, and a card already set aside stays set aside. The Ohne Quelle group has an empty key, so those tokens are taken one by one.
 
@@ -48,11 +63,12 @@ The panel bridge does not offer `learning-content-browse` or `knowledge-map`, wh
 
 # Cards from an article
 
-Browsing a source does not create tokens. An OKF article becomes learning tokens when an agent reads it, judges the concepts worth remembering, and records that decomposition through the import in [ADR 2026-07-18](../adr/2026-07-18-okf-learning-import.md), as [mcp-surfaces.md](mcp-surfaces.md) describes. File import, goal import, and photo or PDF import are unchanged.
+Browsing a source does not create tokens. An OKF article becomes learning tokens when an agent reads it, judges the concepts worth remembering, and records that decomposition through the import in [ADR 2026-07-18](../adr/2026-07-18-okf-learning-import.md), as [mcp-surfaces.md](mcp-surfaces.md) describes. File import, topic import, and photo or PDF import are unchanged.
 
 # Citations
 
 - [ADR 2026-10-10 — Learning Content: Cards and Sources](../adr/2026-10-10-learning-content-sources.md)
+- [ADR 2026-10-14 — Topic Import, and Where a Unit's Knowledge Comes From](../adr/2026-10-14-topic-import-and-source-provenance.md)
 - [ADR 2026-10-08b — Corporate Deployment Baseline](../adr/2026-10-08b-corporate-deployment-baseline.md)
 - [ADR 2026-06-30 — Learning Content Studio](../adr/2026-06-30-learning-content-studio.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
@@ -60,4 +76,4 @@ Browsing a source does not create tokens. An OKF article becomes learning tokens
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
 - [ADR 2026-07-02 — LehrplanPLUS Curriculum Import Wizard](../adr/2026-07-02-lehrplanplus-import-wizard.md)
 - [ADR 2026-06-25c — Flexible ZAM Workspaces and Skill Wiring](../adr/2026-06-25c-flexible-zam-workspaces-and-skill-wiring.md)
-- Code: `desktop/src/learning-content.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/src/curriculum-wizard.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`
+- Code: `desktop/src/learning-content.ts`, `desktop/src/topic-import.ts`, `desktop/src/onboarding.ts`, `src/kernel/import/topic-import.ts`, `src/kernel/models/token.ts`, `desktop/src/learning-content-sources.ts`, `desktop/src/learning-content-knowledge.ts`, `desktop/src/curriculum-wizard.ts`, `desktop/index.html`, `desktop/src/panel/studio-panel.html`, `src/kernel/library/learning-content.ts`, `src/cli/learning-content/browse.ts`, `src/cli/learning-content/citation.ts`, `src/cli/provisioning/index.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/mcp.ts`

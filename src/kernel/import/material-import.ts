@@ -13,6 +13,15 @@
  */
 
 import { ulid } from "ulid";
+import { ensureLensRow, ensureWorldLenses, LENSES } from "../atlas/lenses.js";
+import {
+  moveUnitsToPlanet,
+  type PlacedUnit,
+  placeUnits,
+} from "../atlas/place.js";
+import { ownPlanetOf } from "../atlas/planets.js";
+import type { LensKind, PlanetKind, UnitKey } from "../atlas/types.js";
+import { chooseVariantIn } from "../atlas/variants.js";
 import type { Database } from "../db/types.js";
 import {
   type BundledTile,
@@ -97,7 +106,43 @@ export interface MaterialProposal {
   area: string;
   origin: MaterialOrigin;
   hardToRead: boolean;
+  /**
+   * With a place: names for the levels below it, outermost first, such as
+   * the Thema under a Gebiet (ADR 2026-10-13, Decision 9).
+   */
+  placeBelow?: string[];
+  /**
+   * The published unit this card's method stands in for, when the notes
+   * teach another method for a unit the learner has there (Decision 12).
+   * Only the learner's tick in the review list makes it so.
+   */
+  standsFor?: UnitKey;
+  /**
+   * The kind the producer proposes for this card's unit (ADR 2026-10-13,
+   * Decision 2): `welt` for common knowledge that protects nobody, `firma`
+   * or `privat` for what an organisation or a person protects. Either of
+   * the last two means the library's own planet. The learner confirms it in
+   * the review list; the unit stays own either way.
+   */
+  kind?: PlanetKind;
 }
+
+/** Where on the knowledge atlas an import starts (ADR 2026-10-13, Decision 9). */
+export interface MaterialPlace {
+  lens: LensKind;
+  /** The region's key in that lens, such as `natur.physik.optik`. */
+  regionKey: string;
+}
+
+export const MATERIAL_PLACE_LENSES: readonly LensKind[] = [
+  "weltwissen",
+  "schule",
+  "leben",
+  "produkte",
+  "unternehmen",
+];
+/** Levels below a place an import may name: a lens has at most four. */
+export const MAX_PLACE_BELOW = 4;
 
 export interface MaterialFile {
   name: string;
@@ -113,6 +158,8 @@ export interface MaterialProposalSet {
   analysis: MaterialAnalysis;
   proposals: MaterialProposal[];
   files: MaterialFile[];
+  /** Optional, so the contract stays at version 1. */
+  place?: MaterialPlace;
 }
 
 /** One validation failure per offending path, collected in a single error. */
@@ -389,6 +436,45 @@ function parseProposals(
     ) {
       issues.push(`${path}.hardToRead: must be a boolean`);
     }
+    let placeBelow: string[] | undefined;
+    if (entry.placeBelow !== undefined && entry.placeBelow !== null) {
+      if (
+        !Array.isArray(entry.placeBelow) ||
+        entry.placeBelow.length > MAX_PLACE_BELOW ||
+        !entry.placeBelow.every(
+          (name) => typeof name === "string" && name.length <= 200,
+        )
+      ) {
+        issues.push(
+          `${path}.placeBelow: must be up to ${MAX_PLACE_BELOW} names`,
+        );
+      } else {
+        placeBelow = (entry.placeBelow as string[]).map((name) => name.trim());
+      }
+    }
+    let standsFor: UnitKey | undefined;
+    if (entry.standsFor !== undefined && entry.standsFor !== null) {
+      if (
+        typeof entry.standsFor !== "string" ||
+        !/^atom:[^\s]{1,100}$/.test(entry.standsFor.trim())
+      ) {
+        issues.push(`${path}.standsFor: must be a published unit key (atom:…)`);
+      } else {
+        standsFor = entry.standsFor.trim() as UnitKey;
+      }
+    }
+    let kind: PlanetKind | undefined;
+    if (entry.kind !== undefined && entry.kind !== null) {
+      if (
+        entry.kind !== "welt" &&
+        entry.kind !== "firma" &&
+        entry.kind !== "privat"
+      ) {
+        issues.push(`${path}.kind: must be welt, firma or privat`);
+      } else {
+        kind = entry.kind;
+      }
+    }
     if (issues.length > before) return;
     proposals.push({
       question: question as string,
@@ -400,9 +486,38 @@ function parseProposals(
       area: area as string,
       origin: entry.origin as MaterialOrigin,
       hardToRead: entry.hardToRead === true,
+      ...(placeBelow && placeBelow.length > 0 ? { placeBelow } : {}),
+      ...(standsFor ? { standsFor } : {}),
+      ...(kind ? { kind } : {}),
     });
   });
   return proposals;
+}
+
+function parsePlace(
+  issues: string[],
+  value: unknown,
+): MaterialPlace | undefined {
+  if (value === undefined || value === null) return undefined;
+  if (!isRecord(value)) {
+    issues.push("place: must be an object");
+    return undefined;
+  }
+  const lens = value.lens;
+  if (
+    typeof lens !== "string" ||
+    !(MATERIAL_PLACE_LENSES as readonly string[]).includes(lens)
+  ) {
+    issues.push(
+      `place.lens: must be one of ${MATERIAL_PLACE_LENSES.join(", ")}`,
+    );
+  }
+  const regionKey = readText(issues, value, "regionKey", "place", {
+    required: true,
+    max: 300,
+  });
+  if (issues.length > 0 || !regionKey) return undefined;
+  return { lens: lens as MaterialPlace["lens"], regionKey };
 }
 
 /**
@@ -421,6 +536,7 @@ export function parseMaterialProposalSet(input: unknown): MaterialProposalSet {
   const analysis = parseAnalysis(issues, input.analysis);
   const files = parseFiles(issues, input.files);
   const proposals = parseProposals(issues, input.proposals, files.length);
+  const place = parsePlace(issues, input.place);
   if (issues.length > 0 || analysis === null) {
     throw new MaterialProposalSetError(
       issues.length > 0 ? issues : ["analysis: invalid"],
@@ -431,6 +547,7 @@ export function parseMaterialProposalSet(input: unknown): MaterialProposalSet {
     analysis,
     proposals,
     files,
+    ...(place ? { place } : {}),
   };
 }
 
@@ -1061,6 +1178,18 @@ export interface MaterialCommitInput {
   decisions: Record<string, MaterialChoice>;
   /** Proposed area → the area the learner confirmed (Decision 7). */
   areas?: Record<string, string>;
+  /**
+   * Proposal rows whose `standsFor` the learner ticked: with a Yes, the new
+   * card's unit stands in for that published unit (ADR 2026-10-13, Decision
+   * 12).
+   */
+  variants?: string[];
+  /**
+   * The kind the learner confirmed per proposal row, over the producer's
+   * (ADR 2026-10-13, Decision 2): `welt`, or the library's own planet
+   * (`firma` and `privat` both mean it).
+   */
+  kinds?: Record<string, PlanetKind>;
 }
 
 export interface MaterialCommitResult {
@@ -1073,6 +1202,15 @@ export interface MaterialCommitResult {
   linkedExisting: number;
   /** Rows without a choice, or with "no". */
   notSaved: number;
+  /** New units put at the import's place on the atlas. */
+  placed?: number;
+  /** Published units a new card now stands in for. */
+  variantsChosen?: number;
+  /**
+   * New units whose kind the learner confirmed against the place: put on
+   * the world planet, or on the library's own.
+   */
+  kinds?: { welt: number; own: number };
 }
 
 function sourceLinkFor(file: MaterialFile, page: number | null): string {
@@ -1196,6 +1334,24 @@ export async function commitMaterialImport(
     const area = normaliseMaterialArea(confirmed ?? proposal.area);
     return area.length > 0 ? area : proposal.area;
   };
+  // The atlas's lenses must exist before the commit places anything; a
+  // transaction cannot open another.
+  const placeLens = set.place ? LENSES[set.place.lens] : null;
+  // A mixed import (Decision 2): a confirmed kind per card, else the
+  // producer's. Either may send a unit to the world planet.
+  const kindOf = (rowId: string, proposal: MaterialProposal) =>
+    input.kinds?.[rowId] ?? proposal.kind;
+  const ownPlanet = await ownPlanetOf(db);
+  const ticked = new Set(input.variants ?? []);
+  // A variant the learner takes goes to world knowledge (Decision 12).
+  const mixed =
+    Object.keys(input.kinds ?? {}).length > 0 ||
+    ticked.size > 0 ||
+    set.proposals.some((proposal) => proposal.kind !== undefined);
+  if (placeLens?.planet === "welt" || mixed) await ensureWorldLenses(db);
+  if (placeLens && placeLens.planet !== "welt") {
+    await ensureLensRow(db, placeLens);
+  }
 
   return db.transaction(async (tx) => {
     const sourceId = ulid();
@@ -1221,6 +1377,11 @@ export async function commitMaterialImport(
       linkedExisting: 0,
       notSaved: 0,
     };
+    // New own units for the place, and the variants the learner ticked.
+    const placed: PlacedUnit[] = [];
+    // New units whose kind differs from the place's, or that have no place.
+    const toPlanet: Record<"welt" | "own", UnitKey[]> = { welt: [], own: [] };
+    const chosenVariants: Array<{ variant: UnitKey; standsFor: UnitKey }> = [];
 
     for (const row of rows) {
       const choice = chosen(row);
@@ -1233,6 +1394,10 @@ export async function commitMaterialImport(
       if (row.kind === "proposal") {
         const proposal = set.proposals[row.proposalIndex];
         const area = areaFor(proposal);
+        const standsIn =
+          choice === "yes" &&
+          proposal.standsFor !== undefined &&
+          ticked.has(row.id);
         // An exact duplicate — same area, same question — is linked, not
         // written twice (the existing slug-level dedupe, by meaning). Only a
         // token the queue deals counts: a draft or one in maintenance would
@@ -1272,6 +1437,33 @@ export async function commitMaterialImport(
             editorial_state: "published",
           });
           tokenId = token.id;
+          // Only a unit this import wrote moves to its place: a linked
+          // duplicate keeps where it is. A kind the place does not have
+          // sends it to that planet instead (Decision 2). A variant the
+          // learner takes is world knowledge (Decision 12).
+          const kind = standsIn ? "welt" : kindOf(row.id, proposal);
+          const wanted =
+            kind === undefined ? null : kind === "welt" ? "welt" : "own";
+          const placePlanet =
+            placeLens === null
+              ? null
+              : placeLens.planet === "welt"
+                ? "welt"
+                : "own";
+          if (placeLens && (wanted === null || wanted === placePlanet)) {
+            placed.push({
+              unitKey: `token:${tokenId}`,
+              below: proposal.placeBelow ?? [],
+            });
+          } else if (wanted !== null) {
+            toPlanet[wanted].push(`token:${tokenId}`);
+          }
+        }
+        if (standsIn && proposal.standsFor) {
+          chosenVariants.push({
+            variant: `token:${tokenId}`,
+            standsFor: proposal.standsFor,
+          });
         }
         await linkToSource(tx, tokenId, sourceId, proposal.page);
         if (choice === "yes") {
@@ -1296,6 +1488,37 @@ export async function commitMaterialImport(
       } else if (!(await holdsTarget(tx, userId, { type: "token", tokenId }))) {
         result.bonusKept++;
       }
+    }
+
+    if (placeLens && set.place && placed.length > 0) {
+      result.placed = await placeUnits(
+        tx,
+        placeLens,
+        set.place.regionKey,
+        placed,
+      );
+    }
+    if (toPlanet.welt.length > 0 || toPlanet.own.length > 0) {
+      const welt = await moveUnitsToPlanet(tx, {
+        units: toPlanet.welt,
+        planet: "welt",
+        placedBy: "import",
+      });
+      const own = await moveUnitsToPlanet(tx, {
+        units: toPlanet.own,
+        planet: ownPlanet,
+        placedBy: "import",
+      });
+      result.kinds = {
+        welt: welt.moved.length + welt.unchanged.length,
+        own: own.moved.length + own.unchanged.length,
+      };
+    }
+    for (const pair of chosenVariants) {
+      await chooseVariantIn(tx, { userId, ...pair });
+    }
+    if (chosenVariants.length > 0) {
+      result.variantsChosen = chosenVariants.length;
     }
     return result;
   });

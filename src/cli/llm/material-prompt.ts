@@ -166,11 +166,48 @@ export const MATERIAL_CONTRACT_EXAMPLE = {
   ],
 } as const;
 
+/**
+ * Where on the knowledge atlas an import starts (ADR 2026-10-13, Decision 9),
+ * as the producer is told about it.
+ */
+export interface MaterialPlacePrompt {
+  /** Region names from the island down to the place. */
+  path: string[];
+  /** Level names below the place, outermost first. */
+  missingLevels: string[];
+  /** Published units the learner holds there, for `standsFor` (Decision 12). */
+  units: Array<{ key: string; title: string }>;
+}
+
+/** The lines that tell a producer about the place, or none. */
+export function materialPlaceLines(
+  place: MaterialPlacePrompt | undefined,
+): string[] {
+  if (!place) return [];
+  const lines = [
+    `The learner imports this at ${place.path.join(" › ")} on ZAM's knowledge atlas.`,
+  ];
+  if (place.missingLevels.length > 0) {
+    lines.push(
+      `Give every card placeBelow: ${place.missingLevels.length === 1 ? "a name" : "names"} for ${place.missingLevels.join(", then ")} below that place, in the material's language. Cards on the same topic share the same names.`,
+    );
+  }
+  if (place.units.length > 0) {
+    lines.push(
+      `Units the learner already has there: ${place.units.map((unit) => `${unit.key} (${unit.title})`).join("; ")}.`,
+      "If the material teaches another method for the same goal as one of these units — the school's own way of doing it — set standsFor on that card to the unit's key. The learner decides; leave standsFor out otherwise.",
+    );
+  }
+  return lines;
+}
+
 /** The contract in words, for a tool result or a prompt. */
 export function materialContractText(path: MaterialPath = "harness"): string {
   return [
     `analysis.kind is one of ${MATERIAL_KINDS.join(", ")}.`,
     `proposals[].origin is one of ${MATERIAL_ORIGINS.join(", ")}; bloom is 1–5; file indexes files[]; page is the page or photo number.`,
+    "Optional on a card: placeBelow (names for the levels below the import's place) and standsFor (a unit key), only when the place lines ask for them.",
+    "Optional on a card, only when the material mixes both: kind, 'welt' for common knowledge that protects nobody, or 'firma' or 'privat' for what an organisation or a person protects (an internal process, a customer, someone's contact details). How Scrum works is welt; how one team runs it is firma. The learner confirms each.",
     path === "harness"
       ? "files[] names each file you read: name, and path when you read it from disk (ZAM fingerprints the file and links the cards to it)."
       : "ZAM knows the files: proposals[].file is the 0-based number of the attachment in the order listed, and you return no files[].",
@@ -189,6 +226,10 @@ export interface MaterialInstructionsInput {
   subjects: string[];
   /** The pages of a PDF the learner wants used ("2-4"), if any. */
   pages?: string;
+  /** The place on the knowledge atlas the import starts at. */
+  place?: MaterialPlacePrompt;
+  /** The learner typed or pasted notes instead of attaching files. */
+  notes?: boolean;
 }
 
 /** The system instructions for the built-in path. */
@@ -199,11 +240,19 @@ export function buildMaterialInstructions(
     analysis: MATERIAL_CONTRACT_EXAMPLE.analysis,
     proposals: MATERIAL_CONTRACT_EXAMPLE.proposals,
   };
+  const rules = materialCardRules("built-in");
+  if (input.notes) {
+    // Typed notes have no layout to read and no handwriting to doubt.
+    rules[0] =
+      "Read the learner's notes as they wrote them. They may be terse; complete them only where the meaning is clear.";
+  }
   const lines = [
-    "You are ZAM's material reader. A learner attached photos or a PDF of their class notes or a handout. Propose learning cards from it for ZAM's review list.",
+    input.notes
+      ? "You are ZAM's material reader. A learner typed or pasted their class notes. Propose learning cards from them for ZAM's review list."
+      : "You are ZAM's material reader. A learner attached photos or a PDF of their class notes or a handout. Propose learning cards from it for ZAM's review list.",
     "",
     "Rules:",
-    ...materialCardRules("built-in").map((rule, i) => `${i + 1}. ${rule}`),
+    ...rules.map((rule, i) => `${i + 1}. ${rule}`),
     "",
     `Subject codes: ${input.subjects.length > 0 ? input.subjects.join(", ") : "(none known — use the subject's German name in lower case)"}`,
     `Areas already in the learner's library: ${input.areas.length > 0 ? input.areas.join(", ") : "(none yet)"}`,
@@ -213,6 +262,7 @@ export function buildMaterialInstructions(
       `Use only these pages of the PDF: ${input.pages.trim()}. Ignore the others.`,
     );
   }
+  lines.push(...materialPlaceLines(input.place));
   lines.push(
     `The learner reads ZAM in ${languageName(input.locale)}; the cards still follow the material's language.`,
     "",
@@ -278,6 +328,8 @@ export function buildMaterialRequest(
     /** The endpoint is OpenRouter: JSON mode and the native PDF engine. */
     openRouter?: boolean;
     maxTokens?: number;
+    /** Typed or pasted notes, sent as text in place of attachments. */
+    notes?: string;
   },
 ): MaterialRequest {
   const hasPdf = parts.attachments.some((file) => file.kind === "pdf");
@@ -286,7 +338,10 @@ export function buildMaterialRequest(
       `${model.model} does not read PDFs itself; a PDF is sent only to a model with the file capability.`,
     );
   }
-  const text = materialAttachmentList(parts.attachments);
+  const text =
+    parts.notes !== undefined
+      ? `The learner's notes (file 0):\n\n${parts.notes}`
+      : materialAttachmentList(parts.attachments);
   const maxTokens = parts.maxTokens ?? MATERIAL_MAX_OUTPUT_TOKENS;
 
   if (flavor === "anthropic-messages") {

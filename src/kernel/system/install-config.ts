@@ -41,6 +41,10 @@ export interface MachineKnowledgeMapConfig {
   repoPath?: string;
 }
 
+export interface MachineGraph3dConfig {
+  enabled?: boolean;
+}
+
 /**
  * The one Quelle Lerninhalte is showing (ADR 2026-10-10, Decision 4).
  * A folder path is only remembered here. It is not a workspace.
@@ -91,6 +95,13 @@ export interface InstallConfig {
    * map the Studio shows. Presentation state of this install, never the DB.
    */
   knowledgeMap?: MachineKnowledgeMapConfig;
+  /**
+   * Machine-local alpha of the Studio's 3D Wissensnetz. The knowledge atlas
+   * took its place (ADR 2026-10-13, owner decision); the 3D view stays for
+   * those who switch it on. Off by default, and no tool writes it. Only the
+   * Studio's own Settings do.
+   */
+  graph3d?: MachineGraph3dConfig;
   /**
    * Which Quelle Lerninhalte shows (ADR 2026-10-10, Decision 4).
    * Presentation state of this install. Never `knowledgeMap.repoPath`.
@@ -1169,6 +1180,24 @@ export function setKnowledgeMapConfig(
       }
     }
     config.knowledgeMap = next;
+  }, path);
+}
+
+export function getGraph3dConfig(
+  path = defaultConfigPath(),
+): MachineGraph3dConfig {
+  return { ...(loadInstallConfig(path).graph3d ?? {}) };
+}
+
+/** Switch the 3D Wissensnetz alpha on or off for this install. */
+export function setGraph3dConfig(
+  patch: MachineGraph3dConfig,
+  path = defaultConfigPath(),
+): void {
+  updateInstallConfig((config) => {
+    const next = { ...(config.graph3d ?? {}) };
+    if (patch.enabled !== undefined) next.enabled = patch.enabled;
+    config.graph3d = next;
   }, path);
 }
 

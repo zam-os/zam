@@ -13,12 +13,14 @@ import {
   confirmLabel,
   freshHarnessImport,
   initialChoices,
+  initialKinds,
   isChoosable,
   pendingBannerText,
   previewNote,
   refreshPendingMaterialImports,
   reimportNotice,
   reviewGroups,
+  reviewPlaceLine,
   reviewSourceLine,
   startsCollapsed,
 } from "../../desktop/src/material-review.js";
@@ -389,5 +391,64 @@ describe("material review wiring", () => {
     expect(view).toContain(
       'window.confirm(t("material_review_discard_confirm"))',
     );
+  });
+});
+
+describe("place and variants in the review (ADR 2026-10-13)", () => {
+  it("switches the kind only on cards whose producer named one, and sends them (D2)", () => {
+    const kinds = initialKinds({
+      rows: [
+        proposalRow(0, null),
+        existingRow(0, false, "yes"),
+        proposalRow(1, null),
+      ],
+      proposals: [
+        { kind: "privat" },
+        { question: "x" },
+      ] as unknown as MaterialImportReviewResponse["proposals"],
+    });
+    expect([...kinds]).toEqual([["p:0", "privat"]]);
+    const args = confirmArgs(
+      "01JIMPORT0000000000000000A",
+      {},
+      {},
+      [],
+      Object.fromEntries(kinds),
+    );
+    expect(args.slice(-2)).toEqual([
+      "--kinds",
+      JSON.stringify({ "p:0": "privat" }),
+    ]);
+    expect(confirmArgs("01JIMPORT0000000000000000A", {}, {})).not.toContain(
+      "--kinds",
+    );
+  });
+
+  it("sends the ticked instead-of rows with the confirm", () => {
+    const args = confirmArgs("01JIMPORT0000000000000000A", {}, {}, [
+      "p:2",
+      "p:0",
+    ]);
+    expect(args.slice(-2)).toEqual([
+      "--variants",
+      JSON.stringify(["p:0", "p:2"]),
+    ]);
+    expect(confirmArgs("01JIMPORT0000000000000000A", {}, {})).not.toContain(
+      "--variants",
+    );
+  });
+
+  it("names where the cards go", () => {
+    setCurrentLocale("de");
+    expect(
+      reviewPlaceLine({
+        place: {
+          lens: "weltwissen",
+          regionKey: "natur.physik.optik",
+          path: ["Natur", "Physik", "Licht & Wellen"],
+        },
+      }),
+    ).toBe("Die Karten kommen nach Natur › Physik › Licht & Wellen.");
+    expect(reviewPlaceLine({ place: null })).toBeNull();
   });
 });

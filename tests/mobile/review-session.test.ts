@@ -87,6 +87,43 @@ describe("mobile review session", () => {
     expect(fastCheck?.options[fastCheck.correctIndex]).toBe("Perpendicular");
   });
 
+  it("reviews one atlas region's due cards only, with no new card (ADR 2026-10-13)", async () => {
+    const make = async (slug: string, due: boolean) => {
+      const token = await createToken(db, {
+        slug,
+        concept: slug,
+        domain: "optik",
+        bloom_level: 1,
+        question: `${slug}?`,
+      });
+      const card = await ensureCard(db, token.id, "student-9");
+      if (due) {
+        await db
+          .prepare(
+            "UPDATE cards SET state = 'review', stability = 3, due_at = ?, last_review_at = ? WHERE id = ?",
+          )
+          .run("2026-01-01T00:00:00.000Z", "2025-12-20T00:00:00.000Z", card.id);
+      }
+      return token.id;
+    };
+    const inRegion = await make("brechung", true);
+    const newInRegion = await make("reflexion", false);
+    const elsewhere = await make("linsen", true);
+
+    const session = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(
+      await session.start("student-9", { tokenIds: [inRegion, newInRegion] }),
+    ).toBe(true);
+    expect(session.progress.total).toBe(1);
+    expect(session.currentItem?.tokenId).toBe(inRegion);
+    expect(session.currentItem?.tokenId).not.toBe(elsewhere);
+
+    const empty = new MobileReviewSession(db, new MemoryStorage(), () => 1);
+    expect(await empty.start("student-9", { tokenIds: [newInRegion] })).toBe(
+      false,
+    );
+  });
+
   it("skips a prefetched atom sibling after the current card is shown", async () => {
     const atomId = ulid();
     await db

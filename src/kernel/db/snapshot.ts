@@ -67,7 +67,34 @@ export const SNAPSHOT_TABLES = [
   "token_sources",
   "contexts",
   "token_contexts",
+  // Knowledge atlas (ADR 2026-10-13). Seed regions could be rebuilt, but
+  // explicit placements and curated regions cannot, and the shared map must
+  // look the same after a restore.
+  "atlas_lenses",
+  "atlas_regions",
+  "atlas_domain_aliases",
+  "atlas_members",
+  "atlas_islands",
+  "atlas_land",
+  // Variants (Decision 12): the library's choice, and each learner's own
+  // with the cards it detached, which undo needs.
+  "unit_variants",
+  "learner_variants",
+  // Sinnbilder (Decision 6): the library's and each learner's own.
+  "emblems",
+  "learner_emblems",
+  // Red threads (Decision 7): the library's and each learner's own.
+  "connections",
+  "learner_connections",
 ] as const;
+
+/**
+ * Row order inside a table where rows reference each other: a region's parent
+ * sits one level higher, so ordering by level inserts every parent first.
+ */
+const SNAPSHOT_ORDER: Readonly<Record<string, string>> = {
+  atlas_regions: " ORDER BY level, id",
+};
 
 export interface SnapshotManifest {
   format: string;
@@ -137,7 +164,7 @@ export async function exportSnapshot(
 
     const colList = columns.join(", ");
     const rows = (await db
-      .prepare(`SELECT ${colList} FROM ${table}`)
+      .prepare(`SELECT ${colList} FROM ${table}${SNAPSHOT_ORDER[table] ?? ""}`)
       .all()) as Array<Record<string, unknown>>;
 
     tables[table] = rows.length;

@@ -24,7 +24,7 @@ export type PersonaImportPath =
   | "curriculum"
   | "free-import"
   | "okf-import"
-  | "goal-import";
+  | "topic-import";
 
 export interface PersonaDescriptor {
   id: PersonaId;
@@ -70,7 +70,7 @@ export const PERSONA_DESCRIPTORS: readonly PersonaDescriptor[] = [
     descriptionKey: "onboarding_persona_private_why",
     contextLabelKey: "onboarding_persona_private_context",
     knowledgeContextSlug: "private",
-    defaultImportPath: "goal-import",
+    defaultImportPath: "topic-import",
   },
 ];
 

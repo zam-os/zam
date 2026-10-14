@@ -36,6 +36,7 @@ import {
   keyMaySendTo,
   LANGUAGE_NAMES,
   normalizeLocale,
+  normalizeLookupTerm,
   parseAnswerPoints,
   supportsAnswerPoints,
   t,
@@ -75,7 +76,7 @@ const CLOUD_CURRICULUM_IMPORT_HARD_TIMEOUT_MS = 180_000;
 /**
  * An agent harness run pays process startup on top of a subscription model
  * that writes a card array far slower than a flash HTTP model; the adapters'
- * 120 s default cut off a goal import before its first card (2026-09-23).
+ * 120 s default cut off a topic import before its first card (2026-09-23).
  */
 export const AGENT_CURRICULUM_IMPORT_TIMEOUT_MS = 300_000;
 
@@ -91,12 +92,12 @@ export const RECALL_EVALUATION_MAX_OUTPUT_TOKENS = 1200;
 export const RECALL_EVALUATION_RETRY_OUTPUT_TOKENS = 4000;
 
 /**
- * Output budget for one goal-decomposition level (3–6 sub-topics with a
- * one-sentence description each) and the retry budget when a reasoning model
- * used the first allowance up before writing the array.
+ * Output budget for one level of subtopics in a topic import (3–6 subtopics
+ * with a one-sentence description each) and the retry budget when a
+ * reasoning model used the first allowance up before writing the array.
  */
-export const GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS = 1500;
-export const GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS = 4000;
+export const SUBTOPIC_MAX_OUTPUT_TOKENS = 1500;
+export const SUBTOPIC_RETRY_OUTPUT_TOKENS = 4000;
 export const RECALL_DISCUSSION_MAX_OUTPUT_TOKENS = 1200;
 
 const RECALL_ENDPOINT_CACHE_MS = 60_000;
@@ -1519,6 +1520,11 @@ export interface GeneratedCardProposal {
   source_link: string | null;
   /** Titles or concepts of cards in the same batch that this card depends on. */
   prerequisites?: string[];
+  /**
+   * The term to read the card's unit up by: its subtopic's article in a
+   * topic import (ADR 2026-10-14, Decision 4).
+   */
+  lookup_term?: string;
 }
 
 const MAX_IMPORT_TEXT_CHARS = 200_000;
@@ -1758,15 +1764,7 @@ async function requestCurriculumCards(
 Your task is to analyze curriculum objectives, syllabus requirements, or textbook notes, and extract atomic facts, concepts, or skills as structured learning cards in ${langName}.
 
 For each extracted learning card, you MUST generate:
-1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
-2. "concept": The reference answer, core fact, or target conceptual explanation.
-3. "title": A short, human-friendly title for the knowledge graph node. Concise name for the concept. No domain prefix. Human-readable, natural language. Support Unicode (umlauts, Chinese, Japanese, Arabic, etc.). Name the core idea as well as possible.
-4. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
-5. "context": The exact sentence or short excerpt from the source text that this card is based on.
-6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
-7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
-8. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
-
+${cardFieldsSpec(targetCategory)}
 Guidelines:
 ${cardShapeRuleLines()}
 - Do not repeat the same concept in multiple cards.
@@ -1791,6 +1789,48 @@ ${sourceUrl ? `Source Reference Link: ${sourceUrl}` : ""}
 
 JSON Array Output:`;
 
+  return sendCardPrompt(
+    endpoint,
+    locale,
+    systemPrompt,
+    userPrompt,
+    "LLM curriculum import",
+  );
+}
+
+/** The fields every generated card carries, for the card prompts. */
+function cardFieldsSpec(
+  targetCategory: string,
+  contextField = "The exact sentence or short excerpt from the source text that this card is based on.",
+): string {
+  return `1. "question": A clear, concise active-recall question testing the concept. The question must not reveal the answer itself.
+2. "concept": The reference answer, core fact, or target conceptual explanation.
+3. "title": A short, human-friendly title for the knowledge graph node. Concise name for the concept. No domain prefix. Human-readable, natural language. Support Unicode (umlauts, Chinese, Japanese, Arabic, etc.). Name the core idea as well as possible.
+4. "domain": The category of the card. Use "${targetCategory}" as the default, but you may refine it if a specific sub-topic is evident.
+5. "context": ${contextField}
+6. "bloom_level": Initial Bloom cognitive level (1 = Remember, 2 = Understand, 3 = Apply, 4 = Analyze, 5 = Synthesize).
+7. "symbiosis_mode": ZAM agent symbiosis level: "shadowing" (reading/monitoring), "copilot" (interactive helper), or "autonomy" (autonomous tasks).
+8. "prerequisites": An array of "title" values from OTHER cards in this same batch that a learner must know BEFORE understanding this card. Leave empty [] if this card has no dependencies on other cards in the batch. Only reference cards that appear in the same output array. Order foundational concepts (definitions, facts) before their applications (formulas, analysis).
+`;
+}
+
+/**
+ * Send one card prompt: through the connected agent harness, or as an HTTP
+ * chat completion. Returns the raw text for the caller to parse.
+ */
+async function sendCardPrompt(
+  endpoint: {
+    url: string;
+    model: string;
+    apiKey?: string;
+    transport?: "agent";
+    agentHarness?: string;
+  },
+  locale: SupportedLocale,
+  systemPrompt: string,
+  userPrompt: string,
+  label: string,
+): Promise<string> {
   // Agent transport (ADR 2026-07-12a): delegate to the connected harness instead
   // of an HTTP chat-completions call. The harness returns raw text that the
   // caller parses exactly as it parses an HTTP response.
@@ -1829,7 +1869,72 @@ JSON Array Output:`;
     },
   );
 
-  return readChatContent(res, "LLM curriculum import");
+  return readChatContent(res, label);
+}
+
+/**
+ * Draft cards for ONE kept subtopic of a topic import (ADR 2026-10-14). The
+ * topic import asks once per subtopic, so each request stays small enough to
+ * finish inside an agent harness's budget, and a failing subtopic never
+ * discards the ones that already succeeded. The cards cite no source: their
+ * knowledge is the model's, which is world knowledge (Decision 3).
+ */
+export async function generateTopicCardsViaLLM(
+  db: Database,
+  input: TopicPromptInput & {
+    topic: { label: string; description: string; lookupTerm?: string };
+  },
+): Promise<GeneratedCardProposal[]> {
+  const cfg = await getProviderForRole(db, "text");
+  const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });
+  const langName =
+    LANGUAGE_NAMES[await contentLocale(db, cfg.locale)] || "English";
+  const domain = input.title.trim();
+  const bridge = input.context.trim()
+    ? `
+- On a single card, where the learner knows a related field and the point has a real counterpart there, name the counterpart briefly as a bridge, in the question or the answer; an overview card lists names only. Never explain the related field itself, and never ask about it.`
+    : "";
+
+  const systemPrompt = `You are ZAM, a precise author of learning cards.
+A learner names a topic to learn or to strengthen, often with its context and what they already know, and has kept one subtopic of it. Write atomic learning cards for that subtopic only, in ${langName}.
+
+For each learning card, you MUST generate:
+${cardFieldsSpec(domain, "The label of the subtopic the card belongs to.")}
+
+Guidelines:
+${topicRules(input)}
+${cardShapeRuleLines()}
+- A single card's answer may give the definition, the exact syntax or one minimal example its point needs; an overview card's answer never does. No answer adds a method, term or neighbouring topic the subtopic does not call for.
+- Stay within the subtopic in focus; its sibling subtopics get cards of their own.${bridge}
+- Test the subject matter directly. Never ask what learners "must know", and never merely restate the subtopic's description as a question.
+- Do not repeat the same concept in multiple cards.
+- Keep every reference answer factually correct.
+- Output ONLY a raw valid JSON array of objects. Do NOT wrap the JSON in markdown code blocks, HTML, or include any preamble, headers, or conversational filler.`;
+
+  const userPrompt = `${topicPromptHead(input)}
+
+Subtopic to write cards for: ${input.topic.label} — ${input.topic.description}
+
+Target Category: ${domain}
+
+JSON Array Output:`;
+
+  const responseText = await sendCardPrompt(
+    endpoint,
+    cfg.locale,
+    systemPrompt,
+    userPrompt,
+    "LLM topic import",
+  );
+  // Every card of the subtopic reads up where the subtopic does.
+  const lookupTerm = normalizeLookupTerm(input.topic.lookupTerm);
+  return deduplicateGeneratedCards(
+    parseGeneratedCardArray(responseText, "topic import", { min: 0, max: 40 }),
+  ).map((card) => ({
+    ...card,
+    source_link: null,
+    ...(lookupTerm ? { lookup_term: lookupTerm } : {}),
+  }));
 }
 
 /**
@@ -1845,109 +1950,208 @@ JSON Array Output:`;
  * hard failure into a series of safe requests without silently discarding the
  * latter part of the authoritative curriculum.
  */
-// ── Goal-driven decomposition (ADR 2026-07-24 §3, plan Phase 7) ──────────────
+// ── Topic import: subtopics and cards (ADR 2026-10-14) ───────────────────────
 
-export interface GoalDecompositionOption {
+export interface SubtopicProposal {
   label: string;
   description: string;
+  /**
+   * The reference article the model names for reading the subtopic up
+   * (ADR 2026-10-14, Decision 4): its cards keep it as their lookup term.
+   */
+  lookupTerm?: string;
+  /**
+   * Why the subtopic is about what a company or a person protects (ADR
+   * 2026-10-14, Decision 5): a topic import writes world knowledge only, so
+   * the learner imports such a subtopic from its source instead.
+   */
+  protectedReason?: string;
 }
 
 /** Exported for unit tests; tolerant of prose/markdown around the array. */
-export function parseGoalDecompositionArray(
-  responseText: string,
-): GoalDecompositionOption[] {
+export function parseSubtopicArray(responseText: string): SubtopicProposal[] {
   const startIdx = responseText.indexOf("[");
   const endIdx = responseText.lastIndexOf("]");
   if (startIdx === -1 || endIdx === -1 || startIdx > endIdx) {
-    throw new Error(
-      "Invalid goal decomposition response: JSON array brackets not found",
-    );
+    throw new Error("Invalid subtopic response: JSON array brackets not found");
   }
   let parsed: unknown;
   try {
     parsed = JSON.parse(responseText.substring(startIdx, endIdx + 1));
   } catch {
-    throw new Error("Invalid goal decomposition response: malformed JSON");
+    throw new Error("Invalid subtopic response: malformed JSON");
   }
   if (!Array.isArray(parsed) || parsed.length < 2 || parsed.length > 8) {
-    throw new Error(
-      "Invalid goal decomposition response: expected 2-8 sub-topics",
-    );
+    throw new Error("Invalid subtopic response: expected 2-8 subtopics");
   }
   return parsed.map((value, index) => {
     if (!value || typeof value !== "object" || Array.isArray(value)) {
-      throw new Error(
-        `Invalid goal decomposition item at index ${index}: expected an object`,
-      );
+      throw new Error(`Invalid subtopic at index ${index}: expected an object`);
     }
     const item = value as Record<string, unknown>;
     for (const field of ["label", "description"] as const) {
       if (typeof item[field] !== "string" || item[field].trim().length === 0) {
         throw new Error(
-          `Invalid goal decomposition item at index ${index}: ${field} must be a non-empty string`,
+          `Invalid subtopic at index ${index}: ${field} must be a non-empty string`,
         );
       }
     }
+    // The article is optional: a missing or empty one leaves the title.
+    const lookupTerm = normalizeLookupTerm(item.article);
+    const protectedReason =
+      typeof item.protected === "string"
+        ? item.protected.replace(/\s+/g, " ").trim().slice(0, 200)
+        : "";
     return {
       label: (item.label as string).trim(),
       description: (item.description as string).trim(),
+      ...(lookupTerm ? { lookupTerm } : {}),
+      ...(protectedReason ? { protectedReason } : {}),
     };
   });
 }
 
+/** What both topic prompts know of the learner's topic. */
+export interface TopicPromptInput {
+  title: string;
+  /** Context, prior knowledge and details, in the learner's words. */
+  context: string;
+  /** The subtopics drilled into, from the topic down. */
+  path: readonly string[];
+  /** Where the cards will land in the atlas, root first; empty without a place. */
+  place?: readonly string[];
+}
+
 /**
- * Propose the NEXT decomposition level of a personal learning goal
- * (`Lernziel`, ADR 2026-07-24 §3). Unlike the curriculum import there is no
- * external taxonomy: the LLM generates one level at a time and the user
- * confirms, edits, or rejects it before the next level is generated — never
- * "generate 200 cards and hope". Depth is user-driven: callers keep asking
- * for the next level under a chosen node until the user stops.
+ * The rules both topic prompts share (ADR 2026-10-14, Decision 1): keep to
+ * what the topic names, as a curriculum does; the learner's context narrows
+ * the content and says where to start, but never becomes content itself.
  */
-export async function generateGoalDecompositionViaLLM(
+function topicRules(input: TopicPromptInput): string {
+  const rules = [
+    "- Keep to what the learner's topic names, as a curriculum names what belongs to a subject. Add something the topic does not name only when it is indispensable for understanding.",
+  ];
+  if (input.context.trim()) {
+    rules.push(
+      "- The learner's context may say what they need the topic for and what to focus on: let that narrow and weight the content.",
+      "- The context may also say what the learner already knows. That is the starting point, never content: no subtopic and no card is about it. Skip only what they say they know, or what works the same in the topic with no difference worth learning. Experience in a related field is a bridge, not proof that the topic's own details are known.",
+      "- Read the context in whatever language it is written.",
+    );
+  } else {
+    rules.push(
+      "- The learner gave no context: assume no prior knowledge and start from the topic's foundations.",
+    );
+  }
+  if ((input.place ?? []).length > 0) {
+    rules.push(
+      "- The atlas place only says where the cards will land; it says nothing about what the learner knows.",
+    );
+  }
+  return rules.join("\n");
+}
+
+/** The learner's topic and context, as both topic prompts state them. */
+function topicPromptHead(input: TopicPromptInput): string {
+  const lines = [`Topic to learn or strengthen: ${input.title.trim()}`];
+  const context = input.context.trim();
+  if (context) {
+    lines.push(
+      `Context, prior knowledge and details from the learner:\n${context}`,
+    );
+  }
+  const place = input.place ?? [];
+  if (place.length > 0) {
+    lines.push(
+      `Where the cards will land in the learner's knowledge atlas: ${place.join(" › ")}`,
+    );
+  }
+  if (input.path.length > 0) {
+    lines.push(
+      `The learner drilled into this path, from the topic down: ${input.path.join(" → ")}`,
+    );
+  }
+  return lines.join("\n\n");
+}
+
+/**
+ * The language a topic import writes in: the active knowledge context's,
+ * as the curriculum import does, else the configured one.
+ */
+async function contentLocale(
   db: Database,
-  input: { title: string; description: string; path: string[] },
-): Promise<GoalDecompositionOption[]> {
+  fallback: SupportedLocale,
+  knowledgeContext?: string,
+): Promise<SupportedLocale> {
+  const contextName = knowledgeContext || getActiveWorkspaceContext();
+  if (!contextName) return fallback;
+  const context = await getKnowledgeContextByName(db, contextName);
+  return context?.language
+    ? (normalizeLocale(context.language) as SupportedLocale)
+    : fallback;
+}
+
+/**
+ * Propose the NEXT level of subtopics in a topic import (ADR 2026-10-14,
+ * formerly the goal decomposition of 2026-07-24 §3). There is no external
+ * taxonomy: the model proposes one level at a time and the learner keeps,
+ * drills into or stops it before the next level is proposed — never
+ * "generate 200 cards and hope". Depth is user-driven: callers keep asking
+ * for the next level under a chosen node until the learner stops.
+ */
+export async function proposeSubtopicsViaLLM(
+  db: Database,
+  input: TopicPromptInput,
+): Promise<SubtopicProposal[]> {
   const cfg = await getProviderForRole(db, "text");
-  // Text and recall are one capability, so the goal step walks the same
+  // Text and recall are one capability, so the topic import walks the same
   // chain as the evaluation: a primary that is rate-limited upstream or
   // rejects its key hands over to the next configured row instead of
-  // failing the learner's goal with a parse error (Klara, 2026-09-15).
+  // failing the learner's topic with a parse error (Klara, 2026-09-15).
   const { endpoints, signature } = await resolveRecallEndpointChain(db, {
     allowAgent: true,
     role: "text",
   });
-  const langName = LANGUAGE_NAMES[cfg.locale] || "English";
+  const langName =
+    LANGUAGE_NAMES[await contentLocale(db, cfg.locale)] || "English";
 
   const focus =
     input.path.length > 0
-      ? `The learner has drilled into this sub-topic path: ${input.path.join(" → ")}. Decompose the LAST element of that path.`
-      : "Decompose the goal itself.";
+      ? "Propose the subtopics of the LAST element of that path."
+      : "Propose the subtopics of the topic itself.";
+  // Labels name regions of the atlas: the field the learner knows stays out.
+  const labels = input.context.trim()
+    ? " A label names a part of the topic itself, never the related field the learner knows."
+    : "";
 
   const systemPrompt = `You are ZAM, a precise learning-path planner.
-A learner states a personal learning goal. Propose the NEXT decomposition level only: 3 to 6 concrete sub-topics of the node in focus, in ${langName}.
+A learner names a topic to learn or to strengthen, often with its context and what they already know. Propose the NEXT level only: 3 to 6 concrete subtopics of the node in focus, in ${langName}.
 
 Rules:
-- Sub-topics must be learnable units, ordered from foundational to advanced.
-- Each needs a short "label" (2-6 words) and a one-sentence "description" of what mastering it means.
+${topicRules(input)}
+- Subtopics must be learnable units, ordered from foundational to advanced.
+- Each needs a short "label" (2-6 words) and a one-sentence "description" of what mastering it means.${labels}
+- Each also names "article": the title of the ${langName} Wikipedia article a learner would read to look the subtopic up, exactly as Wikipedia titles it, or null when no article covers it.
+- You know only what is public. When a subtopic is about one company's or one person's own knowledge (its internal processes, products, customers, people's data), set "protected" to a short reason in ${langName}; otherwise null. The learner imports such a subtopic from its source instead.
 - Do NOT generate flashcards or questions — only the topic structure.
-- Output ONLY a raw JSON array of objects with keys "label" and "description". No markdown, no commentary.`;
+- Output ONLY a raw JSON array of objects with keys "label", "description", "article" and "protected". No markdown, no commentary.`;
 
-  const userPrompt = `Learning goal: ${input.title}
-${input.description ? `Why it matters to the learner: ${input.description}\n` : ""}${focus}
+  const userPrompt = `${topicPromptHead(input)}
+
+${focus}
 
 JSON Array Output:`;
 
   const decomposeOn = async (
     endpoint: ProviderConfig,
-  ): Promise<GoalDecompositionOption[]> => {
+  ): Promise<SubtopicProposal[]> => {
     // Agent transport (ADR 2026-07-12a): onboarding's model page can connect
-    // an agent, so the goal step two pages later must accept one too.
+    // an agent, so the topic step after it must accept one too.
     if (endpoint.transport === "agent") {
       const agentText = await requestAgentCompletion(endpoint, {
         system: systemPrompt,
         user: userPrompt,
       });
-      return parseGoalDecompositionArray(agentText);
+      return parseSubtopicArray(agentText);
     }
 
     const request = async (maxTokens: number): Promise<string> => {
@@ -1971,7 +2175,7 @@ JSON Array Output:`;
           locale: cfg.locale,
         },
       );
-      return readChatContent(res, "Goal decomposition");
+      return readChatContent(res, "Subtopic proposal");
     };
 
     // A reasoning model spends part of the allowance thinking before the
@@ -1979,12 +2183,12 @@ JSON Array Output:`;
     // OpenRouter); a truncated reply gets one retry with real room.
     let content: string;
     try {
-      content = await request(GOAL_DECOMPOSITION_MAX_OUTPUT_TOKENS);
+      content = await request(SUBTOPIC_MAX_OUTPUT_TOKENS);
     } catch (error) {
       if (!(error instanceof LlmResponseTruncatedError)) throw error;
-      content = await request(GOAL_DECOMPOSITION_RETRY_OUTPUT_TOKENS);
+      content = await request(SUBTOPIC_RETRY_OUTPUT_TOKENS);
     }
-    return parseGoalDecompositionArray(content);
+    return parseSubtopicArray(content);
   };
 
   return walkRecallChain(endpoints, signature, decomposeOn);
@@ -2003,14 +2207,7 @@ export async function importCurriculumViaLLM(
     );
   }
   const cfg = await getProviderForRole(db, "text");
-  let locale = cfg.locale;
-  const contextName = options?.knowledgeContext || getActiveWorkspaceContext();
-  if (contextName) {
-    const context = await getKnowledgeContextByName(db, contextName);
-    if (context?.language) {
-      locale = normalizeLocale(context.language) as SupportedLocale;
-    }
-  }
+  const locale = await contentLocale(db, cfg.locale, options?.knowledgeContext);
 
   // Agent transport (ADR 2026-07-12a) is wired for every generating caller.
   const endpoint = await resolveUsableTextEndpoint(db, { allowAgent: true });

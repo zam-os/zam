@@ -6,9 +6,12 @@
  */
 
 import { ulid } from "ulid";
+import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
+import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
+import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
 
 // ── Types ────────────────────────────────────────────────────────────────────
 
@@ -57,6 +60,22 @@ export interface Token {
   tier: string | null;
   /** Structured fast-check payload as JSON — substance. */
   fast_check: string | null;
+  /**
+   * The term to read a world unit up by, such as a Wikipedia article's name
+   * (ADR 2026-10-14, Decision 4). Never a source link; absent on rows read
+   * before M046.
+   */
+  lookup_term?: string | null;
+}
+
+/** Longest lookup term a token keeps; a reference work's article name. */
+export const MAX_LOOKUP_TERM = 200;
+
+/** A lookup term as stored: one line, trimmed, bounded; null when empty. */
+export function normalizeLookupTerm(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const term = raw.replace(/\s+/g, " ").trim();
+  return term ? term.slice(0, MAX_LOOKUP_TERM).trim() : null;
 }
 
 export interface CreateTokenInput {
@@ -78,6 +97,8 @@ export interface CreateTokenInput {
   language?: string | null;
   tier?: string | null;
   fast_check?: string | null;
+  /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
+  lookup_term?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -189,8 +210,8 @@ export async function insertToken(
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id, language, tier, fast_check)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id, language, tier, fast_check, lookup_term)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -213,9 +234,22 @@ export async function insertToken(
       input.language ?? null,
       input.tier ?? null,
       input.fast_check ?? null,
+      normalizeLookupTerm(input.lookup_term),
     );
 
   return id;
+}
+
+/**
+ * The editorial state new content starts in: published, so it is learnable at
+ * once, unless the library switched on draft-first (`content.draft_first`).
+ */
+export async function newTokenEditorialState(
+  db: Database,
+): Promise<"draft" | "published"> {
+  return (await getSetting(db, DRAFT_FIRST_SETTING)) === "true"
+    ? "draft"
+    : "published";
 }
 
 export async function createToken(
@@ -318,6 +352,11 @@ export async function updateToken(
     values.push(updates.concept);
   }
   if (updates.domain !== undefined) {
+    // A new domain can move the unit to another planet: never so that world
+    // knowledge depends on a Firma or Privat unit (ADR 2026-10-13, D2).
+    if (updates.domain !== token.domain) {
+      await assertDomainKeepsPlanets(db, token.id, updates.domain);
+    }
     fields.push("domain = ?");
     values.push(updates.domain);
   }
@@ -908,6 +947,8 @@ export async function listPersonalCards(
           FROM token_sources ts
           INNER JOIN sources s ON s.id = ts.source_id
           WHERE ts.token_id = t.id
+            -- A topic import's record names no source to read up in.
+            AND s.uri NOT LIKE '${TOPIC_SOURCE_PREFIX}%'
           ORDER BY s.created_at DESC, s.id DESC
           LIMIT 1
         )
@@ -1184,7 +1225,7 @@ export async function importCurriculumCards(
           question_source: "llm",
           provider: card.provider || null,
           topic_id: card.topic_id || null,
-          editorial_state: "draft",
+          editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
       } else {
@@ -1512,7 +1553,7 @@ export async function confirmCardSplit(
           symbiosis_mode: symbiosisMode,
           source_link: card.source_link || originalToken.source_link || null,
           question: card.question || null,
-          editorial_state: "draft",
+          editorial_state: await newTokenEditorialState(tx),
         });
         createdCount++;
       }
@@ -1612,6 +1653,11 @@ export interface FoundationProposalInput {
 export interface ConfirmFoundationsResult {
   createdCount: number;
   linkedCount: number;
+  /**
+   * Per proposal, in order: the token it created or linked. An import at an
+   * atlas place puts the created ones there.
+   */
+  items?: Array<{ tokenId: string; created: boolean }>;
 }
 
 /**
@@ -1710,7 +1756,7 @@ export async function confirmFoundations(
             symbiosis_mode: symbiosisMode,
             source_link: card.source_link || originalToken.source_link || null,
             question: card.question || null,
-            editorial_state: "draft",
+            editorial_state: await newTokenEditorialState(tx),
           });
           createdCount++;
         }
@@ -1757,6 +1803,8 @@ export interface SourceProposalInput {
   source_id?: string | null;
   /** Explicit prerequisite slugs (in-batch or existing). If omitted, auto-inferred. */
   prerequisites?: string[];
+  /** The term to read the unit up by (ADR 2026-10-14, Decision 4). */
+  lookup_term?: string | null;
 }
 
 /**
@@ -1776,12 +1824,14 @@ export async function applySourceProposals(
 ): Promise<ConfirmFoundationsResult> {
   let createdCount = 0;
   let linkedCount = 0;
+  const items: Array<{ tokenId: string; created: boolean }> = [];
 
   // ── Pass 1: create / link tokens ────────────────────────────────────────
   const slugByIndex: string[] = [];
   const tokenBySlug = new Map<string, Token>();
 
   for (const card of proposals) {
+    const createdBefore = createdCount;
     const cardSourceId = card.source_id || sourceId;
     const source = await db
       .prepare("SELECT id FROM sources WHERE id = ?")
@@ -1831,7 +1881,8 @@ export async function applySourceProposals(
         question: card.question || null,
         provider: card.provider || null,
         topic_id: card.topic_id || null,
-        editorial_state: "draft",
+        editorial_state: await newTokenEditorialState(db),
+        lookup_term: card.lookup_term ?? null,
       });
       createdCount++;
     } else {
@@ -1846,6 +1897,7 @@ export async function applySourceProposals(
 
     slugByIndex.push(token.slug);
     tokenBySlug.set(token.slug, token);
+    items.push({ tokenId: token.id, created: createdCount > createdBefore });
 
     const existingCard = await getCard(db, token.id, userId);
     if (!existingCard) {
@@ -1930,7 +1982,7 @@ export async function applySourceProposals(
     }
   }
 
-  return { createdCount, linkedCount };
+  return { createdCount, linkedCount, items };
 }
 
 /**

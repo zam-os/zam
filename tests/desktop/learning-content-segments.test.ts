@@ -48,7 +48,7 @@ describe("learning content segments", () => {
     setCurrentLocale("en");
     expect(t("content_area_cards")).toBe("Learning cards");
     expect(t("content_segment_unchosen")).toBe("Not chosen");
-    expect(t("btn_open_graph")).toBe("Knowledge Map (3D)");
+    expect(t("btn_open_atlas")).toBe("Knowledge atlas");
   });
 
   it("filters a row by the same fields the list already searches", () => {
