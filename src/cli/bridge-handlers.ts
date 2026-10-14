@@ -27,6 +27,7 @@ import {
   BLOOM_VERBS,
   bonusCandidates,
   buildReviewQueue,
+  cardTextFields,
   clearTokenMaintenance,
   closeSessionObservation,
   createAssignment,
@@ -288,10 +289,14 @@ export async function getReview(db: Database, params: GetReviewParams) {
   let questionSource: "llm" | "original" = "original";
   let questionModel: string | undefined;
 
+  // A question with formulas or images is served as stored until variation
+  // works on placeholders (ADR 2026-10-14b Decision 6, plan Phase 6): a model
+  // rewriting the plain projection would drop the segments.
   if (
     isLlmEnabled &&
     params.noDynamicQuestion !== true &&
-    item.fastCheck === null
+    item.fastCheck === null &&
+    item.questionSegments === null
   ) {
     try {
       const healed = await ensureHighQualityQuestion(db, {
@@ -505,7 +510,8 @@ export async function getReviewsBatch(
       if (
         isLlmEnabled &&
         params.noDynamicQuestion !== true &&
-        fastCheck === null
+        fastCheck === null &&
+        !token.question_segments
       ) {
         try {
           const healed = await ensureHighQualityQuestion(db, {
@@ -564,6 +570,9 @@ export async function getReviewsBatch(
         atomId: token.atom_id ?? null,
         tier: token.tier ?? null,
         fastCheck,
+        // Card text as segments (ADR 2026-10-14b); a rendering surface
+        // shows these, an agent reads the plain `question`/`concept`.
+        ...cardTextFields(token.question_segments, token.concept_segments),
       });
     } else {
       cards.push({

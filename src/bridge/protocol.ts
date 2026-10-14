@@ -56,11 +56,38 @@ export interface GetReviewResponse {
     type: "binary_choice" | "multiple_choice";
     options: string[];
     correctIndex: number;
+    /** Options as segments, parallel to `options`; `null` for a plain one. */
+    optionSegments?: Array<CardSegmentPayload[] | null>;
   } | null;
   media?: ReviewMediaPayload[];
   /** Present when the token has a source_link and resolution was not disabled. */
   resolvedContext?: ResolvedReviewContext | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b). A rendering surface shows these;
+   * `question` and `concept` stay their plain projections for everyone else.
+   */
+  questionSegments?: CardSegmentPayload[] | null;
+  conceptSegments?: CardSegmentPayload[] | null;
+  /** What voice mode reads instead of `question`/`concept`, when set. */
+  spokenQuestion?: string | null;
+  spokenConcept?: string | null;
 }
+
+/**
+ * One segment of card text (ADR 2026-10-14b): plain text, an allowlisted
+ * TeX formula with the words to read it aloud, or an image from the media
+ * store with its alt text. Never markup to be inserted as HTML.
+ */
+export type CardSegmentPayload =
+  | { type: "text"; text: string }
+  | { type: "math"; tex: string; speech?: string; block?: boolean }
+  | {
+      type: "image";
+      media: string;
+      alt: string;
+      caption?: string;
+      inline?: boolean;
+    };
 
 export interface ReviewMediaPayload {
   assetHash: string;

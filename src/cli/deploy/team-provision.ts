@@ -87,6 +87,9 @@ export const KNOWLEDGE_TABLES = [
   "atom_curriculum_bindings",
   "atom_prerequisites",
   "practice_item_replacements",
+  // Bundled tile versions the library holds (ADR 2026-10-14b Decision 7);
+  // written by whoever installs a tile, which is curators' work.
+  "installed_tiles",
   "agent_skills",
   // Knowledge atlas (ADR 2026-10-13): the shared map, kept by curators.
   "atlas_lenses",

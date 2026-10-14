@@ -42,6 +42,10 @@ export const SNAPSHOT_TABLES = [
   // Declared item succession. Not derivable by construction: the whole point
   // of Decision 9 is that no similarity heuristic may reconstruct it.
   "practice_item_replacements",
+  // Which bundled tile versions the library holds (ADR 2026-10-14b
+  // Decision 7). Rebuildable, but without it a restore would reinstall every
+  // installed tile once.
+  "installed_tiles",
   // Choice options (ADR 2026-09-27): the shared cache keeps an offline device
   // usable after a restore; exclusions are the learner's own disputes.
   "choice_distractors",

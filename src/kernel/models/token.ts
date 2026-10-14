@@ -9,6 +9,7 @@ import { ulid } from "ulid";
 import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
+import { assertPlainWriteAllowed } from "../library/card-text-store.js";
 import type { CardState } from "./card.js";
 import { deleteCardForUser, ensureCard, getCard } from "./card.js";
 import { DRAFT_FIRST_SETTING, getSetting } from "./settings.js";
@@ -66,6 +67,13 @@ export interface Token {
    * before M046.
    */
   lookup_term?: string | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b), JSON; absent on rows read
+   * before M048. When set, `question`/`concept` hold the plain projection and
+   * only `writeCardText` may change them. Read with `parseStoredCardText`.
+   */
+  question_segments?: string | null;
+  concept_segments?: string | null;
 }
 
 /** Longest lookup term a token keeps; a reference work's article name. */
@@ -339,6 +347,11 @@ export async function updateToken(
   if (!token) {
     throw new Error(`Token not found: ${slug}`);
   }
+  // Segmented card text changes only through writeCardText (ADR 2026-10-14b).
+  assertPlainWriteAllowed(token, {
+    question: updates.question,
+    concept: updates.concept,
+  });
 
   const fields: string[] = [];
   const values: unknown[] = [];
@@ -1577,9 +1590,17 @@ export async function confirmCardSplit(
     // 2. original card handling
     if (action === "block") {
       // Update original token fields
+      // A split rewrites the original card's text as plain text. Where that
+      // text differs from a segmented field's projection, the field becomes
+      // plain: the learner replaced it, so its formulas no longer apply.
+      const keepQuestionSegments =
+        (originalQuestion || null) === (originalToken.question ?? null);
+      const keepConceptSegments = originalConcept === originalToken.concept;
       await tx
         .prepare(
-          "UPDATE tokens SET question = ?, concept = ?, updated_at = ? WHERE id = ?",
+          `UPDATE tokens SET question = ?, concept = ?, updated_at = ?${
+            keepQuestionSegments ? "" : ", question_segments = NULL"
+          }${keepConceptSegments ? "" : ", concept_segments = NULL"} WHERE id = ?`,
         )
         .run(
           originalQuestion || null,

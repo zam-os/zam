@@ -109,6 +109,7 @@ export type TexIssueCode =
   | "unknown-environment"
   | "unbalanced-braces"
   | "unbalanced-environment"
+  | "stray-alignment"
   | "trailing-backslash";
 
 export interface TexIssue {
@@ -301,6 +302,16 @@ export function tokenizeTex(tex: string): TexLexResult {
         tokens.push({ kind: "sub", offset: i });
         break;
       case "&":
+        // A column separator outside an environment is a TeX error the
+        // renderer refuses; `\&` is the ampersand sign.
+        if (environments.length === 0) {
+          issue(
+            "stray-alignment",
+            i,
+            "A bare & separates columns and only works inside an environment; write \\& for the sign.",
+            "&",
+          );
+        }
         tokens.push({ kind: "align", offset: i });
         break;
       default:

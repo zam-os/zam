@@ -86,6 +86,12 @@ describe("tokenizeTex", () => {
     );
   });
 
+  it("refuses a column separator outside an environment", () => {
+    expect(codes("a & b")).toContain("stray-alignment");
+    expect(texIssues("\\text{A \\& B}")).toEqual([]);
+    expect(texIssues("\\begin{pmatrix} a & b \\end{pmatrix}")).toEqual([]);
+  });
+
   it("refuses dollars, bare comments and bare parameters", () => {
     expect(codes("x $ y")).toContain("dollar");
     expect(codes("50% + x")).toContain("comment");

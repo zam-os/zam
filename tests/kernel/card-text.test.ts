@@ -198,11 +198,13 @@ describe("projections", () => {
 describe("the bundled corpus against the formula rules", () => {
   /**
    * Formulas the bundled tiles carry broken today: seven strings where JSON
-   * turned `\t`/`\r` into control characters, and four with unbalanced
-   * braces. Plan Phase 5 patches them by hand and empties this list.
+   * turned `\t`/`\r` into control characters, four with unbalanced braces,
+   * and one with a bare `&` outside an environment. Plan Phase 5 patches
+   * them by hand and empties this list.
    */
   const KNOWN_DAMAGED = new Set([
     "de-by-gymnasium-10-chemie-sauerstoffgruppen-alkohole-aldehyde-carbonsaeuren-ester-kvt.json|01K8GA80000000000000000J04|sample_solution",
+    "de-by-gymnasium-10-englisch-rhetorik-stil-usa-21st-century-kvt.json|01K8GAB0000000000000000J02|sample_solution",
     "de-by-gymnasium-10-geographie-geooekozonen-klimawandel-kippelemente-kvt.json|01K8GAF0000000000000000J04|sample_solution",
     "de-by-gymnasium-10-mathematik-analytische-geometrie-vektoren-skalarprodukt-kvt.json|01K8GA30000000000000000J02|sample_solution",
     "de-by-gymnasium-10-mathematik-trigonometrie-sinus-kosinussatz-bogenmass-kvt.json|01K8GA00000000000000000J02|question",

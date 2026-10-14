@@ -530,6 +530,17 @@ export {
   validateCardText,
 } from "./library/card-text.js";
 export type {
+  CardTextColumns,
+  CardTextFields,
+  WriteCardTextResult,
+} from "./library/card-text-store.js";
+export {
+  assertPlainWriteAllowed,
+  CardTextError,
+  parseStoredCardText,
+  writeCardText,
+} from "./library/card-text-store.js";
+export type {
   DollarLiftMode,
   DollarLiftResult,
   UnliftedDollarSpan,
@@ -1190,6 +1201,7 @@ export type {
 } from "./scheduler/queue.js";
 export {
   buildReviewQueue,
+  cardTextFields,
   parseReviewFastCheck,
   presentFastCheck,
   TIER1_FIRST_RULE,

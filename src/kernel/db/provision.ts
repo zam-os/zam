@@ -33,7 +33,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 47;
+export const CURRENT_SCHEMA_VERSION = 48;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1061,6 +1061,33 @@ export async function runMigrations(db: Database): Promise<void> {
       await db.exec(`ALTER TABLE atlas_lenses ADD COLUMN ${column} TEXT`);
     }
   }
+
+  // M048: card text as typed segments (ADR 2026-10-14b) — the segment
+  // columns beside the plain ones, an image's placement in the card text,
+  // segment options, and the bundled tiles a library holds (Decision 7).
+  const segmentCols = await columnsOf(db, "tokens");
+  for (const column of ["question_segments", "concept_segments"]) {
+    if (!segmentCols.includes(column)) {
+      await db.exec(`ALTER TABLE tokens ADD COLUMN ${column} TEXT`);
+    }
+  }
+  if (!(await columnsOf(db, "token_media")).includes("placement")) {
+    await db.exec(
+      `ALTER TABLE token_media ADD COLUMN placement TEXT NOT NULL DEFAULT 'attached'`,
+    );
+  }
+  if (!(await columnsOf(db, "choice_distractors")).includes("text_segments")) {
+    await db.exec(
+      `ALTER TABLE choice_distractors ADD COLUMN text_segments TEXT`,
+    );
+  }
+  await db.exec(`CREATE TABLE IF NOT EXISTS installed_tiles (
+    tile_id      TEXT PRIMARY KEY,
+    version      TEXT NOT NULL,
+    installed_at TEXT NOT NULL,
+    failed_at    TEXT,
+    last_error   TEXT
+  )`);
 }
 
 /**

@@ -30,6 +30,12 @@
 import { assertDomainKeepsPlanets } from "../atlas/connections.js";
 import type { Database } from "../db/types.js";
 import { normalizeLookupTerm } from "../models/token.js";
+import { type CardText, plainProjection } from "./card-text.js";
+import {
+  assertPlainWriteAllowed,
+  type CardTextColumns,
+  writeCardText,
+} from "./card-text-store.js";
 import { assertReadyToPublish } from "./publication.js";
 
 /** How a publish affects people who already learned the token. */
@@ -53,6 +59,13 @@ export interface RevisionChanges {
    * of the token's revision, so a cosmetic publish may correct it.
    */
   lookupTerm?: string | null;
+  /**
+   * Card text as segments (ADR 2026-10-14b). When given, the plain
+   * `question`/`concept` are derived from them and any plain value passed
+   * beside them is ignored; `null` turns the field back into plain text.
+   */
+  questionSegments?: CardText | null;
+  conceptSegments?: CardText | null;
 }
 
 export interface PublishRevisionInput {
@@ -127,7 +140,27 @@ export async function publishTokenRevisionInTransaction(
 
   if (!token) throw new Error(`Token not found: ${input.tokenId}`);
 
-  const changes = input.changes ?? {};
+  const changes: RevisionChanges = { ...(input.changes ?? {}) };
+  // Segments carry the text; the plain columns follow them (ADR 2026-10-14b
+  // Decision 1). A plain value for a field that keeps its segments must
+  // equal the stored projection.
+  if (changes.questionSegments) {
+    changes.question = plainProjection(changes.questionSegments);
+  }
+  if (changes.conceptSegments) {
+    changes.concept = plainProjection(changes.conceptSegments);
+  }
+  const columns = (await db
+    .prepare(
+      "SELECT question, concept, question_segments, concept_segments FROM tokens WHERE id = ?",
+    )
+    .get(input.tokenId)) as CardTextColumns;
+  assertPlainWriteAllowed(columns, {
+    question:
+      changes.questionSegments === undefined ? changes.question : undefined,
+    concept:
+      changes.conceptSegments === undefined ? changes.concept : undefined,
+  });
   await assertReadyToPublish(db, input.tokenId, {
     question: changes.question,
     concept: changes.concept,
@@ -136,13 +169,19 @@ export async function publishTokenRevisionInTransaction(
   if (changes.domain !== undefined) {
     await assertDomainKeepsPlanets(db, input.tokenId, changes.domain);
   }
+  // A field written as segments gets its plain column from writeCardText
+  // below, which also notices the changed text and drops the stale
+  // embedding; writing it here first would hide that change.
+  const columnChanges: RevisionChanges = { ...changes };
+  if (changes.questionSegments) delete columnChanges.question;
+  if (changes.conceptSegments) delete columnChanges.concept;
   const setClauses: string[] = [];
   const params: unknown[] = [];
   for (const [key, column] of CHANGE_COLUMNS) {
     const value =
-      key === "lookupTerm" && changes.lookupTerm !== undefined
-        ? normalizeLookupTerm(changes.lookupTerm)
-        : changes[key];
+      key === "lookupTerm" && columnChanges.lookupTerm !== undefined
+        ? normalizeLookupTerm(columnChanges.lookupTerm)
+        : columnChanges[key];
     if (value !== undefined) {
       setClauses.push(`${column} = ?`);
       params.push(value);
@@ -169,6 +208,16 @@ export async function publishTokenRevisionInTransaction(
   await db
     .prepare(`UPDATE tokens SET ${setClauses.join(", ")} WHERE id = ?`)
     .run(...params, input.tokenId);
+
+  if (
+    changes.questionSegments !== undefined ||
+    changes.conceptSegments !== undefined
+  ) {
+    await writeCardText(db, input.tokenId, {
+      question: changes.questionSegments,
+      concept: changes.conceptSegments,
+    });
+  }
 
   if (!material) {
     return {

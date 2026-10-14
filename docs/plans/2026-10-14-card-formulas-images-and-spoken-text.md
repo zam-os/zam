@@ -27,8 +27,8 @@ small images.
 
 ## Status
 
-- [ ] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
-  check, projections, converter
+- [x] **Phase 1** — kernel: segment types, inventory, tokenizer, markup
+  check, projections, converter — `dbb5a670`
 - [ ] **Phase 2** — schema and the one write path
 - [ ] **Phase 3** — Studio recall renders segments; voice speaks them;
   measurements
@@ -294,10 +294,12 @@ Pure functions only. No schema, no surface.
 - **Corpus facts for Phase 5:**
   - **Formulas:** 6,159 in all, 2,341 of them in questions; the longest has
     433 characters.
-  - **Refused formulas:** 12, in 11 fields. Seven are the strings with
+  - **Refused formulas:** 13, in 12 fields. Seven are the strings with
     tab or carriage-return damage. Four carry unbalanced braces: one
-    question (Trigonometrie J02) and three sample solutions. They are
-    listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`, and
+    question (Trigonometrie J02) and three sample solutions. One sample
+    solution (Englisch Rhetorik J02) has a bare `&` outside an environment,
+    which Temml refuses; the tokenizer has refused that since Phase 2. They
+    are listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`, and
     Phase 5 empties that list.
   - **Bare commands outside dollars:** 4 questions, 7 concepts, 9 options
     and 5 sample solutions, all in grade 11–13 tiles. Phase 5 patches the
@@ -369,6 +371,39 @@ Pure functions only. No schema, no surface.
   options.
 - **Distractors:** a speech-only change keeps `choiceSourceHash`, and a
   `tex` change alters it.
+
+### As built (Phase 2)
+
+- **Migration M048, `CURRENT_SCHEMA_VERSION = 48`.**
+  - **What it adds:** the token segment columns, `token_media.placement`
+    (validated in code, no `CHECK`), `choice_distractors.text_segments` and
+    `installed_tiles`.
+  - **Where `installed_tiles` is classified:** as a snapshot table and as a
+    team-library knowledge table (`team-provision.ts`).
+  - **Tests:** `npm run pg:test` passes. It needs `npm run pg:up` first; on a
+    Mac without Docker that is the Homebrew PostgreSQL 18.
+- **`writeCardText`** (`src/kernel/library/card-text-store.ts`) is the only
+  writer of a segment column.
+  - **Images:** inline images must already be stored as PNG, JPEG, WebP or
+    GIF. An SVG is refused here, because rasterising it is the importer's
+    job (Phase 8).
+  - **Reading back:** `parseStoredCardText` reads a column without ever
+    throwing.
+- **Revisions:** segments win. A plain `question`/`concept` passed beside
+  segments is replaced by the projection, and `writeCardText` writes the
+  plain column, so the embedding is dropped correctly.
+- **The decompose action** (`token.ts`, the "block" branch that rewrites the
+  original card) turns a segmented field plain when the learner changed its
+  text. It is an explicit restructuring, not a silent edit.
+- **Review payload.** Studio's `card` gains `questionSegments`,
+  `conceptSegments`, `spokenQuestion` and `spokenConcept`, and so does the
+  MCP batch payload. The protocol gains the optional `CardSegmentPayload`
+  type and the matching optional fields.
+- **Dynamic question variation skips segmented questions** until Phase 6
+  brings placeholders. Without that, a model would rewrite the plain
+  projection and lose the formulas.
+- **Temml 0.13.5 is a root dev dependency** (exact pin), for the Phase 3
+  output-check tests.
 
 ## Phase 3 — Studio recall, voice, measurements
 
