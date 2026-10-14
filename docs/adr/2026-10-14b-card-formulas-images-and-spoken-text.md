@@ -47,7 +47,12 @@ parsed as HTML (`desktop/src/question-topic.ts`). No surface renders math.
 following (counts as checked by both reviewers of round 1):
 
 - **LaTeX in 281 of the 1,296 questions,** holding 2,341 formulas. 68 of
-  them are fast checks, and 149 tiles carry LaTeX somewhere.
+  them are fast checks, and 149 tiles carry LaTeX somewhere. Four of the
+  questions use a bare command without dollars, such as `\beta` in running
+  German text.
+- **Legitimate backslashes too.** Two informatics tiles teach Windows paths
+  such as `C:\Schule\Mathe\test.pdf` and `..\Bilder\logo.png`. A check
+  that treats every backslash word as LaTeX would refuse them.
 - **LaTeX in six atom titles.** They are copied onto the token's title, for
   example `$pK_s$-Wert` and `$\alpha$-Fehler`.
 - **Markdown emphasis (`**…**`) in 287 questions.** It shows as raw
@@ -115,15 +120,22 @@ segments:
     learns segment options. Today it returns `null` for anything that is not
     a string, which would silently turn the card into an ordinary one.
   - **Curated choice distractors:** `choice_distractors` gains a
-    `text_segments` column, and `text` keeps the projection.
+    `text_segments` column, and `text` keeps the projection. The options'
+    validity hash (`source_hash`) stays computed over the plain projections.
+    An edit to the speech alone therefore keeps generated options, and a
+    changed formula regenerates them.
+  - **`sample_solution` is tile data only.** It has no column and is not
+    installed. Decision 8 converts it inside the tile files.
 - **Titles, domains and slugs stay plain strings.** The kernel checks them
   like a text segment (Decision 2). The six atom titles with LaTeX become
   plain Unicode, for example `pKₛ-Wert` and `α-Fehler`.
 - **The plain columns stay and stay correct.** `question`, `concept`, an
   option's string and a distractor's `text` always hold the plain projection
   of the segments (Decision 4).
-  - **One write function** writes both, and no surface writes either one by
-    hand.
+  - **One write function writes both.** Its API takes segments only and
+    derives the plain columns. It never accepts plain text from a caller
+    for a field that has segments, so drift is impossible by construction,
+    not by convention.
   - **A test** checks that every stored projection matches its segments.
   - **Unchanged readers:** every reader that only needs text keeps working.
     That is CLI, MCP text results, search, answer points and LLM prompts.
@@ -135,13 +147,22 @@ segments:
 ### 2. No HTML, no Markdown and no inline delimiters in stored card text
 
 - **A `text` segment, a title and every other plain field is plain text.**
-  The kernel rejects three things in it:
-  - LaTeX commands and `$…$` spans;
-  - Markdown emphasis;
-  - control characters other than the newline.
+  The kernel rejects three things in it, each defined exactly:
+  - **LaTeX.** One of two forms:
+    - a `$…$` span that looks like math (the rule of Decision 6);
+    - a control word from the formula inventory (Decision 3) that is not
+      part of a path. It counts as part of a path when it follows a letter,
+      digit, `:`, `.`, `/` or `\`.
 
-  Line-start `- ` list items stay, because answer points count them (ADR
-  2026-09-08).
+    So `\beta zwischen` is LaTeX, while `C:\Schule\Mathe\test.pdf` and
+    `..\Bilder\logo.png` are text.
+  - **Markdown emphasis.** That is an inline `**…**` or `__…__` span.
+  - **Control characters** other than the newline.
+- **List markers stay.** Every line-start marker that answer points recognise
+  (`-`, `*`, `•`, `·`, `–`, `—`, `1.`, `1)`; ADR 2026-09-08) remains. A line
+  such as `* **Umfang**: …` keeps its bullet and loses only the emphasis.
+- **One definition for everyone.** The kernel check, the tile test and the
+  migration use the same definition.
 - **HTML exists only as output.** ZAM builds DOM nodes from the segments. No
   stored string is ever handed to `innerHTML`.
 - **Why not Markdown with `$…$` math,** which models write naturally:
@@ -157,19 +178,26 @@ segments:
   a displayed formula.
 - **The kernel validates it with a fail-closed tokenizer.** It needs no TeX
   parser and imports no renderer.
-  - **Allowed:** a frozen inventory of control sequences and environments,
-    checked into the repository. The allowlist and the tile test are both
-    generated from that one file, so prose and test cannot drift.
+  - **Allowed:** a frozen, versioned inventory of control sequences and
+    environments, checked into the repository. The kernel validator, the
+    tile test and the card-writing prompts are all generated from that one
+    file, so prose, test and prompt cannot drift.
   - **What the inventory covers:** the bundled corpus. That means
     fractions, roots, sub- and superscripts (including isotope prescripts
     such as `^4_2\text{He}`), Greek letters, operators, relations and arrows
     (including `\rightleftharpoons`). Also accents (`\vec`, `\bar`,
-    `\overline`, `\dot`), `\text`/`\mathrm`/`\mathbf`, and the `matrix`,
-    `pmatrix`, `cases`, `aligned` and `array` environments.
-  - **Rejected:** every other control sequence. That includes, explicitly,
-    macro definitions (`\def`, `\edef`, `\let`, `\newcommand`) and every
-    command that reaches outside the formula (`\href`, `\url`,
-    `\includegraphics`, `\html…`, `\class`, `\id`, `\style`, `\data`).
+    `\overline`, `\dot`), `\text`/`\mathrm`/`\mathbf`, and the environments
+    the corpus uses: `pmatrix` (76 times), `aligned` (6), `array` (3) and
+    `cases` (2).
+  - **Rejected:** every control sequence outside the inventory. That is the
+    rule; any list of rejected commands only documents it. The list names
+    the dangerous families: macro definitions (`\def`, `\gdef`, `\edef`,
+    `\xdef`, `\let`, `\futurelet`, `\global`, `\newcommand`,
+    `\renewcommand`, `\providecommand`), expansion control (`\expandafter`,
+    `\noexpand`, `\char`) and `\csname`, which could build any other name.
+    Every command that reaches outside the formula is rejected too
+    (`\href`, `\url`, `\includegraphics`, `\html…`, `\class`, `\id`,
+    `\style`, `\data`), as are `\label`, `\ref` and `\tag`.
   - **Shape limits:**
     - at most 500 characters (the longest formula in the corpus has 433);
     - balanced braces;
@@ -183,7 +211,9 @@ segments:
     changes the argument order of `\prescript`, and the tiles use isotope
     prescripts. An upgrade lands only after the corpus render test passes.
   - **Settings:** `trust: false`, `maxExpand` lowered to 100, a bounded
-    `maxSize`, and `throwOnError: true`. With `throwOnError: false` Temml
+    `maxSize`, and `throwOnError: true`. ZAM passes every security setting
+    as an own property of an options object without a prototype, so an
+    inherited value cannot take effect. With `throwOnError: false` Temml
     still returns output, only with the unknown command in red. ZAM wants
     the error, so it can catch it and show the formula's plain projection.
   - **The output is checked too.** Temml renders into a detached element.
@@ -214,9 +244,13 @@ segments:
   - **App-owned surfaces bundle them.** Studio, Android and iPadOS control
     their content security policy and serve both fonts from the app
     (`font-src 'self'`), never from a CDN.
-  - **The MCP recall panel uses system math fonts.** The panel resource
-    declares no CSP of its own, and the VS Code web view's policy
-    (`default-src 'none'`) has no `font-src`.
+  - **The licence ships with the font.** Latin Modern Math is under the
+    GUST Font License.
+  - **The MCP recall panel tries the font, then falls back.** It embeds the
+    font as a `data:` URI and falls back to system math fonts where the
+    host refuses it. The VS Code web view's policy (`default-src 'none'`)
+    has no `font-src`, so there the fallback is the rule. The panel resource
+    declares no CSP of its own.
 - **Cost on a phone.** Temml's README gives about 174 KB of minified
   JavaScript and CSS for 0.13.5, plus the font. Rendering a formula costs
   milliseconds and no network, so the cost is download size, not
@@ -224,18 +258,24 @@ segments:
   for the Pixel 9 reference device and for the oldest phone in the field
   test, a Pixel 6.
 - **Why the tokenizer matters more than the renderer's defaults.** Temml is
-  a fork of KaTeX, and KaTeX had five advisories in 2024 and 2025:
+  a fork of KaTeX, and KaTeX has had six advisories since 2024:
   - CVE-2024-28243 and CVE-2024-28244: `maxExpand` bypasses through macro
     definitions, which loop forever.
   - CVE-2024-28245: `\includegraphics`.
   - CVE-2024-28246: a `trust` protocol check that could be bypassed.
   - CVE-2025-23207: `\htmlData`.
+  - CVE-2026-103923 (GHSA-238p-pmpm-9mq7, September 2026, fixed in KaTeX
+    0.18.2): a polluted `Object.prototype` could supply an inherited `trust`
+    that KaTeX treated as set.
 
   The script cases need `trust` to admit the command. The loops need macro
   definitions. The tokenizer rejects both before a renderer sees the
-  formula, whatever `trust` says. Whether Temml 0.13.5 carries fixes
-  equivalent to all five advisories was not confirmed, and the design does
-  not rely on it.
+  formula, whatever `trust` says. The options object without a prototype
+  answers the sixth.
+
+  It was not confirmed whether Temml 0.13.5 carries fixes equivalent to
+  these advisories, or shares the sixth advisory's gadget. The design does
+  not rely on either.
 
 ### 4. Every formula and every image carries text to be read
 
@@ -266,17 +306,21 @@ segments:
   - **No accessible name on `<math>`.** An `aria-label` there would flatten
     the formula into one leaf. Screen-reader users would lose navigation
     through numerators, radicands and matrix cells.
-  - **`speech` goes into MathML's own `alttext` attribute.** Whether a
-    screen reader should also hear it as a description is measured
-    (Open question 1).
+  - **`speech` goes into MathML's own `alttext` attribute.** The
+    screen-reader pass (Open question 1) measures whether readers use it,
+    or an annotation instead, and whether they should also hear it as a
+    description.
   - **Images carry `alt`.**
   - **Reflow:** a block formula scrolls inside its own container, never the
     page.
   - **Resize:** MathML scales with the text size.
-  - **Target:** WCAG 2.2 AA for card display. The harmonised EN 301 549
-    (V3.2.1), which the European Accessibility Act and the German BFSG
-    point to, references WCAG 2.1 AA, and 2.2 AA covers it. This ADR does
-    not decide whether the BFSG applies to ZAM.
+  - **Target:** WCAG 2.2 AA for card display.
+    - **Why that covers EN 301 549.** The European Accessibility Act and
+      the German BFSG point to EN 301 549. V3.2.1 references WCAG 2.1 AA,
+      and V4.1.1 (September 2026) aligns its clauses 9 to 11 with WCAG 2.2.
+      WCAG 2.2 AA meets both, except success criterion 4.1.1 (Parsing),
+      which WCAG 2.2 retired as obsolete.
+    - **Not decided here:** whether the BFSG applies to ZAM.
 
 ### 5. Images are segments from the media store, never links
 
@@ -312,10 +356,13 @@ segments:
   - images only from attached material;
   - never LaTeX or Markdown in a `text` segment.
 
-  Each prompt carries a short example. The rule joins `CARD_SHAPE_RULES`,
-  which already reaches the curriculum, material and OKF prompts.
-  `zam_add_token`'s contract and the variation and translation prompts get
-  it on their own.
+  Each prompt carries a short example.
+  - **Where the rule lives.** It joins `CARD_SHAPE_RULES`, which already
+    reaches the curriculum, material and OKF prompts. The variation and
+    translation prompts get it on their own.
+  - **`zam_add_token` is different.** Its writer is the calling agent, which
+    never sees a ZAM prompt. There the contract lives in the tool
+    description and the kernel validator.
 - **Agent tools fail loudly.** An invalid segment returns a validation error
   that names the segment, and the agent retries. The tools stay safe to
   auto-approve: they only validate and write.
@@ -332,7 +379,7 @@ segments:
   the speech. The kernel splices the stored formulas and images back in. A
   missing or duplicated placeholder serves the stored question. Asking the
   model to echo `tex` instead would lose the variation whenever it tidies a
-  space.
+  space, and with placeholders invisible spacing cannot cost one.
 - **Evaluation stays plain.** The evaluator and the generated choice options
   work on the plain projection and are told to answer in plain Unicode.
   Evaluation feedback and tutor dialogue are not cards. They stay plain text
@@ -345,16 +392,25 @@ segments:
   - lifting existing LaTeX into segments;
   - adding `speech` or `alt`;
   - dropping Markdown emphasis;
-  - the seven escape patches. The prompt was broken, not different
-    knowledge, so the learner's FSRS state stays.
+  - the eleven explicit patches, for the seven broken strings and the four
+    bare commands (Decision 8). The prompt was broken or not yet lifted; it
+    was not different knowledge, so the learner's FSRS state stays.
   - the content model's rewrite of ASCII math in concepts and options, which
     is reviewed in the pull request's diff.
 
   An item whose rewrite changes what it asks is declared `material` on its
   own and re-tests its learners.
-- **Today a fixed tile reaches only new enrolments.** `installKvtTile` runs
-  only when someone enrols, so a learner who is already enrolled misses every
-  fix. A table `installed_tiles(tile_id, version)` changes that.
+- **The installer writes segments on every install.** Today an install whose
+  substance is unchanged writes nothing but classification
+  (`src/kernel/library/kvt-attach.ts`). Speech and alt leave the plain
+  projection byte for byte the same. So the installer writes the segment
+  columns and the `inline` media rows on every install, outside the
+  substance comparison and without a revision. Otherwise "adding speech"
+  would never reach anyone.
+- **Today a fixed tile reaches only new enrolments.** For bundled tiles,
+  `installKvtTile` runs only at enrolment (its other caller is the material
+  import). A learner who is already enrolled therefore misses every fix. A
+  table `installed_tiles(tile_id, version)` changes that.
 - **On a personal library, a background pass reinstalls changed tiles.**
   - **It never blocks the start.** It runs after the start, tile by tile, and
     resumes where it stopped. On a remote Turso database each tile costs many
@@ -364,6 +420,8 @@ segments:
     counts as changed once.
   - **It is safe to repeat.** The installer is idempotent and revises only
     the items that changed.
+  - **It cannot loop.** A tile that fails is recorded with a retry marker
+    and tried again at the next start. Offline, the pass waits.
 - **On a team library the administrator publishes.** Members run no DDL, and
   an app update must not be what publishes curriculum into a school library.
   The reinstall is an administrator step, beside `zam team provision`.
@@ -371,19 +429,37 @@ segments:
 ### 8. Bundled tiles migrate to segments, not to Unicode
 
 - **The LaTeX in the tiles is source, not waste.** A deterministic pass lifts
-  `$…$` into math segments and `$$…$$` into block math segments, and drops
-  Markdown emphasis from the text.
-- **The seven broken strings get explicit patches,** reviewed in the diff
-  before the lift. A pattern cannot repair them: a tab followed by `o` was
-  `\to` in the Physik 11 question, but could as well have been `\times`,
-  `\tau` or `\theta`.
+  `$$…$$` into block math segments and `$…$` into math segments, and drops
+  Markdown emphasis from the text (Decision 2).
+  - **Double dollars first.** The corpus mixes both forms in one string, and
+    a pass that pairs single dollars first matches across German prose.
+  - **An unbalanced `$` fails the string.** The pass does not guess; such a
+    string is patched by hand.
+- **Eleven strings get explicit patches,** reviewed in the diff before the
+  lift.
+  - **The seven broken strings.** A pattern cannot repair them: a tab
+    followed by `o` was `\to` in the Physik 11 question, but could as well
+    have been `\times`, `\tau` or `\theta`.
+  - **The four questions with a bare command** and no dollars.
+
+  The tile test then fails on any tab or carriage return left in a tile.
+- **One item id, one result.** Six practice-item ids appear in up to four
+  Optik tiles with identical text. Lift and speech are produced once per
+  item id and written identically into every tile that carries it. The tile
+  test checks that tiles sharing an id agree byte for byte. Otherwise each
+  reinstall would publish a spurious revision.
 - **The six atom titles become plain Unicode** (Decision 1).
 - **ASCII math becomes math segments.** This covers 87 concepts and 30
   options. The content model writes them `quality-first`, and the change is
   reviewed in the pull request's diff.
 - **Speech for every learner-visible formula comes from the content model.**
-  Thomas reviews a sample stratified by subject and by kind of formula before
-  the tiles merge.
+  That is about 2,350 formulas: 2,341 in questions and the rest in concepts
+  and options. This is real work, done `quality-first`.
+- **The owner reviews two things before the tiles merge:**
+  - **A sample of the speech,** chosen by kind of formula across subjects:
+    fractions, matrices, prescripts and the patched strings.
+  - **A per-tile diff report of every plain projection before and after,**
+    read like a translation pull request.
 - **`sample_solution` gets only the lift and the patches,** so a tile has one
   format. No code installs the field, so its 3,810 formulas need no speech
   and stay out of the owner's sample.
@@ -404,6 +480,8 @@ segments:
 - **The Studio editor shows the rendered formula and its spoken sentence.**
 - **The default edit is "let the model fix it",** with a short instruction
   in the learner's words.
+- **An "insert formula" action opens an empty math segment.** Nobody ever
+  types dollar signs.
 - **A TeX field and a speech field sit behind a disclosure,** for curators.
   They are not on the default path.
 
@@ -484,13 +562,20 @@ seen LaTeX must still be able to correct a card.
   `token_media` and would delete those images.
 - **Asking variation and translation to echo `tex` unchanged** (the first
   draft of Decision 6). Rejected in review round 1 in favour of placeholders.
+- **An optional `math.text` that the kernel checks against the
+  derivation.** This was proposed in review round 1, for imports that bring
+  their own. Rejected: a value equal to the derivation adds nothing, and a
+  differing one is the drift this ADR removes.
+- **Speech drafted by the Speech Rule Engine and edited by the content
+  model.** It could cut the cost of writing speech. Not now; it would add
+  the engine to authoring for about 2,350 formulas, which are written once.
 
 ## Open questions
 
 1. **What screen readers do with it.** The question is whether `alttext`
-   reaches VoiceOver (macOS, iPadOS), NVDA (Windows) and TalkBack (Android),
-   whether `speech` should also be a description, and whether MathML
-   navigation is usable in each engine. How TalkBack announces MathML in
+   or an annotation reaches VoiceOver (macOS, iPadOS), NVDA (Windows) and
+   TalkBack (Android). Should `speech` also be a description, and is MathML
+   navigation usable in each engine? How TalkBack announces MathML in
    Android System WebView is unverified. Delivery 1 measures macOS;
    later deliveries measure the other platforms.
 2. **WebKit rendering quality.** Delivery 1 renders the corpus on WebKit with
@@ -515,7 +600,8 @@ delivery:
 2. **Tiles.**
    - The tile fields for segments, `installed_tiles` and the background
      reinstall, and the administrator step for team libraries.
-   - The bundled-tile migration (Decision 8), with its explicit patches.
+   - The bundled-tile migration (Decision 8), with its explicit patches and
+     the projection diff report.
    - The validation test over every tile, and embeddings dropped with each
      changed projection.
 3. **Writers.**
@@ -538,3 +624,4 @@ touches, in the same commit.
 |---|---|---|
 | 2026-10-14 | Proposed | Raw LaTeX found on a bundled Physik 11 card, and in 281 of 1,296 bundled questions. The owner asked for a flexible long-term solution instead of the plain-Unicode fix: small images, text to be read aloud, accessibility support, a gain for voice mode, and nothing that can be attacked. |
 | 2026-10-14 | Proposed | Revised after review round 1 (Gemini 3.8 Flash, Grok 4.7). Both reviewers agreed with all eight decisions (Gemini with reservations on four, Grok on six), and every finding was adopted. Segment images use `token_media` with a `placement` column, because the orphan cleanup would otherwise delete them. The background reinstall never blocks the start, and the team library's administrator publishes. Fast-check options, distractors and titles each get a defined form, and embeddings follow the projection. The allowlist became a fail-closed tokenizer over a frozen inventory: `%` and `#` rejected, `aligned` and `array` added, a 500-character cap. Temml is pinned with `throwOnError: true`, and its MathML output is checked. WebKit is named the weaker engine. `speech` goes into `alttext` instead of an accessible name, and the derived plain form has no override. Variation and translation use placeholders, and the `$` repair is narrowed. The seven strings get explicit patches, and `sample_solution` needs no speech. Open questions 2–6 were decided: the panel uses system fonts, a pupil edits words (Decision 9), model replies stay plain, there is no SVG, and no override. Corrected: the Android reference device is the Pixel 9, the field test's oldest phone is a Pixel 6, and the counts are 281 and 68. MiMo's review is pending. |
+| 2026-10-14 | Proposed | Folded in MiMo-V2.6-Pro (review round 1, written against the first draft). It agreed with Decision 4 and with the other seven with reservations. Its findings that the first revision had not yet covered were adopted. The markup rule now has exact definitions: a control word inside a path such as `C:\Schule\…` is text, and every list marker the answer points know stays. The installer writes segments on every install, because speech or alt alone leaves the substance unchanged and would otherwise never reach anyone. The rejected-command list is documentation, and the rule is the closed inventory. The list now names `\csname`, the `\gdef` family and `\char`, and the inventory lists exactly the environments the corpus uses. The MCP panel first tries the bundled font as a `data:` URI. The sixth KaTeX advisory (CVE-2026-103923) is answered with options that have no prototype. EN 301 549 V4.1.1 is cited. The migration consumes `$$` first, fails an unbalanced `$` and patches eleven strings by hand. It writes byte-identical results for item ids shared across Optik tiles and adds a projection diff report. Distractor hashes stay over the plain projection. `sample_solution` is tile data only, the GUST font licence ships with the font, and Decision 9 gains "insert formula". Rejected: an optional `math.text` checked against the derivation (it adds nothing or drifts), and speech drafted by the Speech Rule Engine (not worth the authoring dependency for content written once). |
