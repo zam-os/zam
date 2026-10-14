@@ -3,6 +3,7 @@
 **Status:** Proposed — revised after review round 1\
 **Date:** 2026-10-14\
 **Deciders:** Thomas (project owner)\
+**Plan:** [2026-10-14 — card formulas, images and spoken text](../plans/2026-10-14-card-formulas-images-and-spoken-text.md)\
 **Related:**
 [2026-05-31a](2026-05-31a-locale-aware-active-recall.md) (questions are
 translated for the learner) ·
@@ -583,8 +584,9 @@ seen LaTeX must still be able to correct a card.
 
 ## Delivery
 
-One branch and one PR after this ADR is accepted, with one commit per
-delivery:
+One branch and one PR after this ADR is accepted. The
+[implementation plan](../plans/2026-10-14-card-formulas-images-and-spoken-text.md)
+splits the four deliveries into nine phases, one commit each:
 
 1. **Kernel and Studio recall.**
    - **Kernel:** segment types, the frozen inventory and the tokenizer, the
