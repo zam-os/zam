@@ -1960,6 +1960,12 @@ export interface SubtopicProposal {
    * (ADR 2026-10-14, Decision 4): its cards keep it as their lookup term.
    */
   lookupTerm?: string;
+  /**
+   * Why the subtopic is about what a company or a person protects (ADR
+   * 2026-10-14, Decision 5): a topic import writes world knowledge only, so
+   * the learner imports such a subtopic from its source instead.
+   */
+  protectedReason?: string;
 }
 
 /** Exported for unit tests; tolerant of prose/markdown around the array. */
@@ -1992,10 +1998,15 @@ export function parseSubtopicArray(responseText: string): SubtopicProposal[] {
     }
     // The article is optional: a missing or empty one leaves the title.
     const lookupTerm = normalizeLookupTerm(item.article);
+    const protectedReason =
+      typeof item.protected === "string"
+        ? item.protected.replace(/\s+/g, " ").trim().slice(0, 200)
+        : "";
     return {
       label: (item.label as string).trim(),
       description: (item.description as string).trim(),
       ...(lookupTerm ? { lookupTerm } : {}),
+      ...(protectedReason ? { protectedReason } : {}),
     };
   });
 }
@@ -2120,8 +2131,9 @@ ${topicRules(input)}
 - Subtopics must be learnable units, ordered from foundational to advanced.
 - Each needs a short "label" (2-6 words) and a one-sentence "description" of what mastering it means.${labels}
 - Each also names "article": the title of the ${langName} Wikipedia article a learner would read to look the subtopic up, exactly as Wikipedia titles it, or null when no article covers it.
+- You know only what is public. When a subtopic is about one company's or one person's own knowledge (its internal processes, products, customers, people's data), set "protected" to a short reason in ${langName}; otherwise null. The learner imports such a subtopic from its source instead.
 - Do NOT generate flashcards or questions — only the topic structure.
-- Output ONLY a raw JSON array of objects with keys "label", "description" and "article". No markdown, no commentary.`;
+- Output ONLY a raw JSON array of objects with keys "label", "description", "article" and "protected". No markdown, no commentary.`;
 
   const userPrompt = `${topicPromptHead(input)}
 

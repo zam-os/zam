@@ -207,6 +207,7 @@ export function materialContractText(path: MaterialPath = "harness"): string {
     `analysis.kind is one of ${MATERIAL_KINDS.join(", ")}.`,
     `proposals[].origin is one of ${MATERIAL_ORIGINS.join(", ")}; bloom is 1–5; file indexes files[]; page is the page or photo number.`,
     "Optional on a card: placeBelow (names for the levels below the import's place) and standsFor (a unit key), only when the place lines ask for them.",
+    "Optional on a card, only when the material mixes both: kind, 'welt' for common knowledge that protects nobody, or 'firma' or 'privat' for what an organisation or a person protects (an internal process, a customer, someone's contact details). How Scrum works is welt; how one team runs it is firma. The learner confirms each.",
     path === "harness"
       ? "files[] names each file you read: name, and path when you read it from disk (ZAM fingerprints the file and links the cards to it)."
       : "ZAM knows the files: proposals[].file is the 0-based number of the attachment in the order listed, and you return no files[].",

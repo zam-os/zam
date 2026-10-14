@@ -194,6 +194,7 @@ import {
   resolveHarnessExecutable,
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
+import { checkAgentSource } from "../agent-source.js";
 import {
   atlasConnect,
   atlasDisconnect,
@@ -368,6 +369,7 @@ import {
   listPendingMaterialImports,
   parseMaterialAreas,
   parseMaterialDecisions,
+  parseMaterialKinds,
   parseMaterialVariants,
   previewMaterialImportFile,
   reviewMaterialImport,
@@ -1954,6 +1956,13 @@ bridgeCommand
 
       if (!data?.slug || !data?.concept) {
         jsonError("JSON must include 'slug' and 'concept' fields");
+      }
+      // Agents only come this way: a token needs the source it was read
+      // from (ADR 2026-10-14, Decision 3).
+      try {
+        checkAgentSource(data.source_link);
+      } catch (err) {
+        jsonError((err as Error).message);
       }
 
       await withDb(async (db) => {
@@ -7482,6 +7491,10 @@ bridgeCommand
     "--variants <json>",
     "Proposal row ids whose standsFor the learner ticked (ADR 2026-10-13)",
   )
+  .option(
+    "--kinds <json>",
+    "Proposal row id → welt | firma | privat: the kind the learner confirmed (ADR 2026-10-13, D2)",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -7492,6 +7505,7 @@ bridgeCommand
       const variants = parseMaterialVariants(
         parseJsonOption("variants", opts.variants),
       );
+      const kinds = parseMaterialKinds(parseJsonOption("kinds", opts.kinds));
       const userId = await resolveUser(opts, db, { json: true });
       const result = await confirmMaterialImport(
         db,
@@ -7501,6 +7515,7 @@ bridgeCommand
         areas,
         {},
         variants,
+        kinds,
       );
       jsonOut({ success: true, ...result });
     });

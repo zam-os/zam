@@ -486,4 +486,75 @@ describe("atlas: import at a place, variants, taking in", () => {
       own?.region,
     );
   });
+
+  it("applies the confirmed kind per card of a mixed import, every unit own (Decision 2)", async () => {
+    const set = notesSet(
+      [
+        {
+          question: "Was beschreibt das Brechungsgesetz?",
+          answer: "Den Knick des Lichts an einer Grenzfläche.",
+          kind: "welt",
+        },
+        {
+          question: "Wer betreut im Labor den Laser?",
+          answer: "Frau Weber, Durchwahl 214.",
+          kind: "privat",
+        },
+        {
+          question: "Welche Brille trägt man am Laser?",
+          answer: "Die grüne Schutzbrille aus Schrank 3.",
+          kind: "welt",
+        },
+        { question: "Was ist ein Lot?", answer: "Eine Senkrechte." },
+      ],
+      { lens: "weltwissen", regionKey: OPTIK_GEBIET },
+    );
+    const rows = await matchMaterialProposals(db, USER, set);
+    const proposalRows = rows.filter((row) => row.kind === "proposal");
+    const decisions: Record<string, "yes"> = {};
+    for (const row of proposalRows) decisions[row.id] = "yes";
+    // The learner flips the safety glasses: the lab's own cupboard is private.
+    const result = await commitMaterialImport(db, USER, {
+      set,
+      rows,
+      decisions,
+      kinds: { [proposalRows[2].id]: "privat" },
+    });
+    expect(result.cardsCreated).toBe(4);
+    expect(result.placed).toBe(2);
+    expect(result.kinds).toEqual({ welt: 0, own: 2 });
+
+    const welt = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
+    const leben = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
+    const titles = (units: Array<{ title: string; own: boolean }>) =>
+      units.filter((u) => u.own).map((u) => u.title);
+    expect(titles(welt.units).sort()).toEqual(
+      ["Den Knick des Lichts an einer Grenzfläche.", "Eine Senkrechte."].sort(),
+    );
+    expect(titles(leben.units).sort()).toEqual(
+      [
+        "Die grüne Schutzbrille aus Schrank 3.",
+        "Frau Weber, Durchwahl 214.",
+      ].sort(),
+    );
+    // Status never changes: all four stay own units without an atom.
+    const atoms = (await db
+      .prepare(
+        `SELECT COUNT(*) AS n FROM tokens WHERE atom_id IS NOT NULL AND source_link LIKE 'notes:%'`,
+      )
+      .get()) as { n: number };
+    expect(Number(atoms.n)).toBe(0);
+  });
+
+  it("refuses a kind that is no planet", () => {
+    expect(() =>
+      notesSet([
+        {
+          question: "Was ist ein Lot?",
+          answer: "Eine Senkrechte.",
+          kind: "mond",
+        },
+      ]),
+    ).toThrow(/kind: must be welt, firma or privat/);
+  });
 });

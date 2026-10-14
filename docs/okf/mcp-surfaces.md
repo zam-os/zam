@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T15:00:00.000Z
+timestamp: 2026-10-14T16:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -136,6 +136,14 @@ The model-visible learning tools cover:
   of its own work, because confirmed synthesis candidates arrive after
   `zam_session_end`; `recordOnly` with a `reason` logs assisted user work as a
   session step without an FSRS rating and needs an open session;
+- source first ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md),
+  Decision 3): `zam_add_token`, like `bridge add-token`, needs `sourceLink`,
+  the source the agent read. That is a file or folder in a trusted folder
+  (an OKF article or another Markdown file, with an optional `#anchor`; the
+  repository root), or an http(s) page on a public host without
+  credentials. ZAM checks the path against the trusted folders and the URL
+  against the `safeFetch` rules, fetches nothing, and refuses the token
+  otherwise. A learner's own cards in the Studio need no source;
 - draft review: `zam_add_token` stores a token with the learner's card that
   is learnable at once. Only when the library switched on draft-first
   (`content.draft_first`, off by default, a Studio setting) is it a draft
@@ -147,8 +155,10 @@ The model-visible learning tools cover:
   example, the learner's areas and the subject codes; with a `place` (a region
   of the knowledge atlas) it also names the levels the cards need below it and
   the learner's units there, marked `untrusted`. `zam_material_import`
-  validates the agent's proposals, with that `place`, stages them and brings
-  the Studio forward, where the learner decides each card. It writes no token
+  validates the agent's proposals, with that `place` and, for material that
+  mixes world knowledge with protected knowledge, a `kind` per card; it
+  stages them and brings the Studio forward, where the learner decides each
+  card. It writes no token
   or card itself (see [material-import.md](material-import.md));
 - Sinnbilder for the knowledge atlas: `zam_atlas_missing_emblems` lists the
   regions and the learner's units of a lens that have none yet, with the

@@ -19,6 +19,7 @@ import {
   commitMaterialImport,
   type Database,
   findImportsByFingerprints,
+  LENSES,
   type MaterialAreaGroup,
   type MaterialChoice,
   type MaterialCommitResult,
@@ -30,11 +31,12 @@ import {
   type MaterialReviewRow,
   matchMaterialProposals,
   materialAreaGroups,
+  type OwnPlanet,
+  ownPlanetOf,
+  type PlanetKind,
   resolvePlace,
   resolveTrustedPath,
-  SCHULE_LENS,
   trustedRoots,
-  WELTWISSEN_LENS,
 } from "../kernel/index.js";
 import { getLastCurriculumSelection } from "./curriculum/breadcrumb.js";
 import {
@@ -88,6 +90,11 @@ export interface MaterialImportReview {
   place: { lens: string; regionKey: string; path: string[] } | null;
   /** Titles of the published units a card's `standsFor` names (Decision 12). */
   variantTitles: Record<string, string>;
+  /**
+   * The library's own planet, for a mixed import's kind per card (ADR
+   * 2026-10-13, Decision 2): `firma` and `privat` both mean it.
+   */
+  ownPlanet: OwnPlanet;
 }
 
 /** The import's place as names, for the review list. */
@@ -96,7 +103,7 @@ async function placeNames(
   set: MaterialProposalSet,
 ): Promise<MaterialImportReview["place"]> {
   if (!set.place) return null;
-  const lens = set.place.lens === "schule" ? SCHULE_LENS : WELTWISSEN_LENS;
+  const lens = LENSES[set.place.lens];
   const place = await resolvePlace(db, lens, set.place.regionKey).catch(
     () => null,
   );
@@ -259,7 +266,24 @@ export async function reviewMaterialImport(
     semantic,
     place: await placeNames(db, batch.set),
     variantTitles: await variantTitles(db, batch.set),
+    ownPlanet: await ownPlanetOf(db),
   };
+}
+
+/** Parse `--kinds` JSON: proposal row id → welt | firma | privat. */
+export function parseMaterialKinds(raw: unknown): Record<string, PlanetKind> {
+  if (raw === undefined || raw === null) return {};
+  if (typeof raw !== "object" || Array.isArray(raw)) {
+    throw new Error("kinds must be an object of row id → welt|firma|privat");
+  }
+  const kinds: Record<string, PlanetKind> = {};
+  for (const [rowId, kind] of Object.entries(raw)) {
+    if (kind !== "welt" && kind !== "firma" && kind !== "privat") {
+      throw new Error(`kinds.${rowId}: must be welt, firma or privat`);
+    }
+    kinds[rowId] = kind;
+  }
+  return kinds;
 }
 
 /** Parse `--variants` JSON: the proposal rows whose `standsFor` is ticked. */
@@ -317,6 +341,8 @@ export async function confirmMaterialImport(
   opts: StagingOptions = {},
   /** Proposal rows whose `standsFor` the learner ticked (ADR 2026-10-13, D12). */
   variants: string[] = [],
+  /** The kind the learner confirmed per proposal row (ADR 2026-10-13, D2). */
+  kinds: Record<string, PlanetKind> = {},
 ): Promise<MaterialCommitResult> {
   const batch = await requireBatch(id, opts);
   const rows = batch.rows ?? (await matchRows(db, userId, batch.set)).rows;
@@ -326,6 +352,7 @@ export async function confirmMaterialImport(
     decisions,
     areas,
     variants,
+    kinds,
   });
   await discardStagedImport(id, opts);
   return result;

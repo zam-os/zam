@@ -1,9 +1,10 @@
 # Knowledge atlas — implementation plan
 
 **Status:** Phases 1 to 8 done (2026-10-13), with the owner's decisions from
-the first Studio check built between Phases 7 and 8. Phases 9a (the own
-planet) and 9b (typed threads and portals) done 2026-10-14, with
-Deliveries 1 and 2 of ADR 2026-10-14 (the topic import, *Nachlesen*). The ADR gained
+the first Studio check built between Phases 7 and 8. Phase 9 done
+2026-10-14 (the own planet, typed threads, curated lenses and agent
+tools), with the three deliveries of ADR 2026-10-14 (the topic import,
+*Nachlesen*, world knowledge only and the source rules for agents). The ADR gained
 Decision 12 and the round-2 changes after this plan was first merged; the
 phases below include them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -65,8 +66,8 @@ what the learner knows.
 - [x] **Third Studio check** — a crash when a landlocked region grows, and
   draft-first as an option that is off — `ade655fa`; see "Between Phases 8
   and 9"
-- [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
-  D3, D7, D10), in three commits:
+- [x] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
+  D3, D7, D10), in these commits:
   - [x] **9a** — the library's own planet, its lenses (Leben, Produkte,
     Unternehmen), a unit's kind and the planet invariants — `18c26264`;
     see "As built (9a)"
@@ -80,13 +81,14 @@ what the learner knows.
   - [x] **Topic import, Delivery 2** — *Nachlesen* for world units, and a
     topic import's units on the world planet — `99596cf9`; see "As built
     (Delivery 2)"
-  - [ ] **9c** — in two commits:
+  - [x] **9c** — in two commits:
     - [x] **9c-1** — curated lens edits, a replacement a curator accepts,
-      the staleness flag, the agent tools and live updates — this commit;
+      the staleness flag, the agent tools and live updates — `3ebbb007`;
       see "As built (9c-1)"
-    - [ ] **9c-2** — mixed imports (the kind per card), the rest of ADR
+    - [x] **9c-2** — mixed imports (the kind per card), the rest of ADR
       2026-10-14's Decision 5 (the model flags a subtopic about a company
-      or a person) and the source rules for agents (Decision 3)
+      or a person) and the source rules for agents (Decision 3), which is
+      that ADR's Delivery 3 — this commit; see "As built (9c-2)"
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 
@@ -1950,6 +1952,50 @@ automatically (ADR 2026-10-08b).
     direction, no accept tool, none pre-approved, and the revision moves.
   - PostgreSQL: a member is refused lens edits and proposals, and a
     curator edits, proposes and accepts.
+
+**As built (9c-2, and Delivery 3 of ADR 2026-10-14).**
+
+- **Mixed imports.** A material proposal may carry
+  `kind: welt | firma | privat`. Either of the last two means the library's
+  own planet.
+  - The producer's rules say to set it only when the material mixes both,
+    for example how Scrum works (welt) against how one team runs it
+    (firma).
+  - The review list shows only those cards a switch, *Gehört zu:
+    Weltwissen*, which a tap turns to the own planet and back.
+  - `material-import-confirm --kinds` takes the learner's choices.
+  - At commit, a new unit whose kind differs from the place's planet goes
+    to that planet's primary lens (`moveUnitsToPlanet`) instead of the
+    place. So does a unit with a kind and no place.
+  - `result.kinds` counts both directions. Every unit stays own.
+- **Fixed on the way:** the review list named a place on Leben, Produkte
+  or Unternehmen through the wrong lens (`placeNames` knew only Weltwissen
+  and Schule).
+- **Protected subtopics** (Decision 5).
+  - `topic-outline` asks for `protected`: a short reason when a subtopic is
+    one company's or one person's own knowledge. It comes back as
+    `protectedReason`.
+  - The Studio shows such a subtopic unticked and locked, with no
+    drill-down. The note says to import it from its source.
+- **Source first** (Decision 3).
+  - `checkAgentSource` (`src/cli/agent-source.ts`) accepts a file or folder
+    in the trusted folders (an `#anchor` is allowed) or an http(s) URL to a
+    public host without credentials. It uses `safeFetch`'s locality and
+    address rules and fetches nothing.
+  - `zam_add_token` now requires `sourceLink`, and `bridge add-token` (an
+    agent transport only) checks it too.
+  - The handler stays open for the learner's own cards.
+  - The zam skill (all four copies) states the rule, and the tool
+    description repeats it.
+- **Tests.**
+  - `tests/cli/agent-source.test.ts` covers the rules and the MCP refusal
+    without a source.
+  - `atlas-place.test.ts` covers a mixed import with a flipped card, every
+    unit own, and an invalid kind.
+  - The parser keeps a protected reason.
+  - The review list's kind switch and its `--kinds`.
+  - The bridge and MCP tests that added tokens without a source now pass
+    one.
 
 ---
 

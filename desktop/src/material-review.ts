@@ -84,6 +84,8 @@ export function confirmArgs(
   editedAreas: Record<string, string>,
   /** Proposal rows whose "instead of" the learner ticked (ADR 2026-10-13, D12). */
   variants: readonly string[] = [],
+  /** Proposal row → the kind the learner confirmed (ADR 2026-10-13, D2). */
+  kinds: Readonly<Record<string, string>> = {},
 ): string[] {
   const args = [
     "--id",
@@ -98,7 +100,26 @@ export function confirmArgs(
   if (variants.length > 0) {
     args.push("--variants", JSON.stringify([...variants].sort()));
   }
+  if (Object.keys(kinds).length > 0) {
+    args.push("--kinds", JSON.stringify(kinds));
+  }
   return args;
+}
+
+/**
+ * The kind per proposal row of a mixed import (ADR 2026-10-13, Decision 2):
+ * only rows whose producer named one get a switch, starting at that kind.
+ */
+export function initialKinds(
+  review: Pick<MaterialImportReviewResponse, "rows" | "proposals">,
+): Map<string, "welt" | "firma" | "privat"> {
+  const kinds = new Map<string, "welt" | "firma" | "privat">();
+  for (const row of review.rows) {
+    if (row.kind !== "proposal") continue;
+    const kind = review.proposals[row.proposalIndex]?.kind;
+    if (kind) kinds.set(row.id, kind);
+  }
+  return kinds;
 }
 
 /** "Kommt nach: Natur › Physik › Optik", when the import has an atlas place. */
@@ -251,6 +272,8 @@ let current: {
   areas: Record<string, string>;
   /** Proposal rows whose "instead of" is ticked. */
   variants: Set<string>;
+  /** A mixed import's kind per proposal row, as the learner leaves it. */
+  kinds: Map<string, "welt" | "firma" | "privat">;
   options: MaterialReviewOptions;
 } | null = null;
 
@@ -522,8 +545,46 @@ function rowElement(
     const standsFor = review.proposals[row.proposalIndex].standsFor;
     const title = standsFor ? review.variantTitles?.[standsFor] : undefined;
     if (standsFor && title) article.append(variantControl(row.id, title));
+    if (current.kinds.has(row.id)) article.append(kindControl(row.id));
   }
   return article;
+}
+
+/**
+ * Where a card of a mixed import belongs (ADR 2026-10-13, Decision 2): world
+ * knowledge, or the library's own planet because it holds what a company or
+ * a person protects. The agent proposed it; one tap switches it.
+ */
+function kindControl(rowId: string): HTMLElement {
+  const own = current?.review.ownPlanet ?? "privat";
+  const row = element("div", {
+    display: "flex",
+    alignItems: "center",
+    gap: "8px",
+    fontSize: "0.9rem",
+  });
+  const label = element("span");
+  label.textContent = t("material_kind_label");
+  const toggle = element("button");
+  toggle.type = "button";
+  toggle.className = "btn secondary-btn btn-sm";
+  toggle.title = t("material_kind_hint");
+  const paint = () => {
+    const kind = current?.kinds.get(rowId) ?? "welt";
+    toggle.textContent = t(
+      kind === "welt" ? "material_kind_welt" : `material_kind_${own}`,
+    );
+    toggle.dataset.kind = kind === "welt" ? "welt" : own;
+  };
+  toggle.addEventListener("click", () => {
+    if (!current) return;
+    const kind = current.kinds.get(rowId) ?? "welt";
+    current.kinds.set(rowId, kind === "welt" ? own : "welt");
+    paint();
+  });
+  paint();
+  row.append(label, toggle);
+  return row;
 }
 
 /**
@@ -732,6 +793,7 @@ export async function openMaterialReview(
       choices: initialChoices(review.rows),
       areas: {},
       variants: new Set(),
+      kinds: initialKinds(review),
       options,
     };
     renderReview(parts);
@@ -763,7 +825,7 @@ function setControlsDisabled(parts: DialogParts, disabled: boolean): void {
 async function confirmCurrent(): Promise<void> {
   const parts = ensureDialog();
   if (!current || busy) return;
-  const { review, choices, areas, variants, options } = current;
+  const { review, choices, areas, variants, kinds, options } = current;
   busy = true;
   setControlsDisabled(parts, true);
   updateConfirm(parts);
@@ -771,7 +833,13 @@ async function confirmCurrent(): Promise<void> {
   try {
     const result = await runBridge<MaterialImportConfirmResponse>(
       "material-import-confirm",
-      confirmArgs(review.id, choices, areas, [...variants]),
+      confirmArgs(
+        review.id,
+        choices,
+        areas,
+        [...variants],
+        Object.fromEntries(kinds),
+      ),
     );
     if (!result?.success) throw new Error(t("material_review_error"));
     current = null;

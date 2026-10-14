@@ -360,6 +360,7 @@ describe("MCP stdio server tests", () => {
         user: "thomas",
         slug: "mcp-advanced",
         concept: "Advanced",
+        sourceLink: "https://example.org/science/advanced",
         prerequisites: ["mcp-foundation"],
       },
     });

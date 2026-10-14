@@ -4,10 +4,10 @@ import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
-  openDatabase,
-  setSetting,
   createToken,
   ensureCard,
+  openDatabase,
+  setSetting,
 } from "../../src/kernel/index.js";
 
 describe("CLI and bridge knowledge contexts (Phase 2)", () => {
@@ -111,10 +111,20 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       expect(registerOut).toContain("Contexts: work-company");
 
       // 4. List tokens filtered by context
-      const tokenListOut = runCli(["token", "list", "--knowledge-context", "work-company"]);
+      const tokenListOut = runCli([
+        "token",
+        "list",
+        "--knowledge-context",
+        "work-company",
+      ]);
       expect(tokenListOut).toContain("system-monitoring");
 
-      const tokenListEmpty = runCli(["token", "list", "--knowledge-context", "nonexistent"]);
+      const tokenListEmpty = runCli([
+        "token",
+        "list",
+        "--knowledge-context",
+        "nonexistent",
+      ]);
       expect(tokenListEmpty).toContain("No tokens registered.");
     });
 
@@ -184,15 +194,10 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         "school",
       ]);
 
-      expect(runCli(["token", "list", "--knowledge-context", "work"])).toContain(
-        "implicit-work",
-      );
-      const school = runCli([
-        "token",
-        "list",
-        "--knowledge-context",
-        "school",
-      ]);
+      expect(
+        runCli(["token", "list", "--knowledge-context", "work"]),
+      ).toContain("implicit-work");
+      const school = runCli(["token", "list", "--knowledge-context", "school"]);
       expect(school).toContain("explicit-school");
       expect(school).not.toContain("implicit-work");
     });
@@ -201,7 +206,16 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
   describe("Bridge Operations", () => {
     it("manages contexts via the bridge and respects filters", async () => {
       // Create context via CLI first
-      runCli(["kc", "create", "--name", "school", "--label", "Schooling", "--language", "de"]);
+      runCli([
+        "kc",
+        "create",
+        "--name",
+        "school",
+        "--label",
+        "Schooling",
+        "--language",
+        "de",
+      ]);
 
       // 1. List via bridge
       const listRes = runCliJson(["bridge", "list-knowledge-contexts"]);
@@ -212,6 +226,7 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       // 2. Add token with context via bridge add-token
       const addTokenJson = JSON.stringify({
         slug: "math-derivatives",
+        source_link: "https://example.org/notes",
         concept: "Calculating derivatives in calculus",
         domain: "math",
         knowledgeContexts: ["school"],
@@ -222,7 +237,12 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       expect(addRes.token.knowledgeContexts[0].name).toBe("school");
 
       // 3. Filter list-tokens by context via bridge
-      const listTokensRes = runCliJson(["bridge", "list-tokens", "--knowledge-context", "school"]);
+      const listTokensRes = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--knowledge-context",
+        "school",
+      ]);
       expect(listTokensRes.tokens).toHaveLength(1);
       expect(listTokensRes.tokens[0].slug).toBe("math-derivatives");
       expect(listTokensRes.tokens[0].knowledgeContexts[0].name).toBe("school");
@@ -240,7 +260,12 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       ]);
       expect(assignRes.success).toBe(true);
 
-      const listTokensResAfter = runCliJson(["bridge", "list-tokens", "--knowledge-context", "private"]);
+      const listTokensResAfter = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--knowledge-context",
+        "private",
+      ]);
       expect(listTokensResAfter.tokens).toHaveLength(1);
       expect(listTokensResAfter.tokens[0].slug).toBe("math-derivatives");
 
@@ -254,14 +279,28 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       ]);
       expect(unassignRes.success).toBe(true);
 
-      const listTokensResFinal = runCliJson(["bridge", "list-tokens", "--knowledge-context", "private"]);
+      const listTokensResFinal = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--knowledge-context",
+        "private",
+      ]);
       expect(listTokensResFinal.tokens).toHaveLength(0);
       // Twelve CLI subprocess spawns: the 5 s default times this out on the
       // slow windows-arm64 runner, which is the repo's flakiest CI job.
     }, 15_000);
 
     it("composes domain prefix filter and knowledge context filter correctly", () => {
-      runCli(["kc", "create", "--name", "science-ctx", "--label", "Science Context", "--language", "en"]);
+      runCli([
+        "kc",
+        "create",
+        "--name",
+        "science-ctx",
+        "--label",
+        "Science Context",
+        "--language",
+        "en",
+      ]);
 
       runCli([
         "token",
@@ -300,13 +339,23 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         "physics",
       ]);
 
-      const resCtx = runCliJson(["bridge", "list-tokens", "--knowledge-context", "science-ctx"]);
+      const resCtx = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--knowledge-context",
+        "science-ctx",
+      ]);
       const slugsCtx = resCtx.tokens.map((t: any) => t.slug);
       expect(slugsCtx).toContain("physics-gravity");
       expect(slugsCtx).toContain("chemistry-bonds");
       expect(slugsCtx).not.toContain("physics-relativity");
 
-      const resDom = runCliJson(["bridge", "list-tokens", "--domain-prefix", "physics"]);
+      const resDom = runCliJson([
+        "bridge",
+        "list-tokens",
+        "--domain-prefix",
+        "physics",
+      ]);
       const slugsDom = resDom.tokens.map((t: any) => t.slug);
       expect(slugsDom).toContain("physics-gravity");
       expect(slugsDom).toContain("physics-relativity");
@@ -331,6 +380,7 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
           ["bridge", "add-token"],
           JSON.stringify({
             slug: `orphan-${typeof knowledgeContexts}`,
+            source_link: "https://example.org/notes",
             concept: "Must never be persisted",
             knowledgeContexts,
           }),
@@ -351,13 +401,14 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         ["bridge", "add-token"],
         JSON.stringify({
           slug: "bridge-default",
+          source_link: "https://example.org/notes",
           concept: "Uses the active context",
         }),
       );
 
-      expect(created.token.knowledgeContexts.map((context: any) => context.name)).toEqual([
-        "work",
-      ]);
+      expect(
+        created.token.knowledgeContexts.map((context: any) => context.name),
+      ).toEqual(["work"]);
 
       const personal = runCliJson([
         "bridge",
@@ -378,7 +429,9 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
       expect(studioList.cards).toHaveLength(2);
       expect(
         studioList.cards.every((card: any) =>
-          card.knowledgeContexts.some((context: any) => context.name === "work"),
+          card.knowledgeContexts.some(
+            (context: any) => context.name === "work",
+          ),
         ),
       ).toBe(true);
     });
@@ -392,6 +445,7 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
           ["bridge", "add-token"],
           JSON.stringify({
             slug: `${context}-token`,
+            source_link: "https://example.org/notes",
             concept: `${context} concept that is not a slug echo`,
             question: `What is the ${context} concept?`,
             knowledgeContexts: [context],
@@ -441,21 +495,16 @@ describe("CLI and bridge knowledge contexts (Phase 2)", () => {
         "contexts",
         "team-library",
       ]);
-      expect(
-        report.tasks.every((task: any) => Array.isArray(task.lines)),
-      ).toBe(true);
+      expect(report.tasks.every((task: any) => Array.isArray(task.lines))).toBe(
+        true,
+      );
     });
 
     it("keeps task-specific JSON parseable and rejects interactive JSON fixes", () => {
       const report = runCliJson(["doctor", "titles", "--json"]);
       expect(report).toMatchObject({ success: true, task: "titles" });
 
-      const rejected = runCliResult([
-        "doctor",
-        "titles",
-        "--json",
-        "--fix",
-      ]);
+      const rejected = runCliResult(["doctor", "titles", "--json", "--fix"]);
       expect(rejected.status).not.toBe(0);
       expect(JSON.parse(rejected.stdout)).toMatchObject({
         success: false,

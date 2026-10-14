@@ -47,6 +47,7 @@ import {
   parseCompanionContextWriteRequest,
 } from "../../vscode-extension/companion-context.js";
 import type { EvaluatorRoute } from "../../vscode-extension/companion-evaluator.js";
+import { AGENT_SOURCE_RULE, checkAgentSource } from "../agent-source.js";
 import {
   addToken as handleAddToken,
   admitReview as handleAdmitReview,
@@ -975,7 +976,8 @@ export function createMcpServer(
     "zam_add_token",
     {
       description:
-        "Add a new knowledge token with the learner's card. It is learnable at once, unless the library has switched on draft-first (content.draft_first): then it stays a draft, out of the recall queue, until published with zam_publish_revision after author review.",
+        "Add a new knowledge token with the learner's card. It is learnable at once, unless the library has switched on draft-first (content.draft_first): then it stays a draft, out of the recall queue, until published with zam_publish_revision after author review. " +
+        AGENT_SOURCE_RULE,
       inputSchema: {
         user: z.string().optional().describe("User ID to auto-create card for"),
         slug: z.string().describe("Unique slug for the token"),
@@ -1000,9 +1002,10 @@ export function createMcpServer(
           .describe("Symbiosis mode override"),
         sourceLink: z
           .string()
-          .nullable()
-          .optional()
-          .describe("Optional URL/file path source"),
+          .min(1)
+          .describe(
+            "The source you read: a file or folder in a trusted folder (path, optionally #anchor), or an https page",
+          ),
         question: z
           .string()
           .nullable()
@@ -1025,6 +1028,8 @@ export function createMcpServer(
       },
     },
     wrapHandler(async (params) => {
+      // ADR 2026-10-14, Decision 3: no source, no token.
+      checkAgentSource(params.sourceLink);
       const userId = await getUserId(params.user);
       return await handleAddToken(db, {
         user: userId,
@@ -3020,6 +3025,12 @@ export function createMcpServer(
                 .optional()
                 .describe(
                   "With a place: the unit key whose goal this card reaches by the school's own method",
+                ),
+              kind: z
+                .enum(["welt", "firma", "privat"])
+                .optional()
+                .describe(
+                  "Only when the material mixes both: 'welt' for common knowledge that protects nobody, 'firma' or 'privat' for what an organisation or a person protects (internal processes, customers, someone's contact details). The learner confirms it.",
                 ),
             }),
           )

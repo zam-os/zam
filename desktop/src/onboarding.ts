@@ -1264,6 +1264,11 @@ interface SubtopicOption {
   description: string;
   /** The article the model names for reading the subtopic up (ADR 2026-10-14, D4). */
   lookupTerm?: string;
+  /**
+   * Why the subtopic is a company's or a person's own knowledge (ADR
+   * 2026-10-14, D5): it cannot be imported here, only from its source.
+   */
+  protectedReason?: string;
   checked: boolean;
 }
 
@@ -1602,6 +1607,7 @@ async function fetchSubtopics(
         label: string;
         description: string;
         lookupTerm?: string;
+        protectedReason?: string;
       }>;
     }>("topic-outline", [
       "--title",
@@ -1617,7 +1623,11 @@ async function fetchSubtopics(
       );
       return null;
     }
-    return res.options.map((option) => ({ ...option, checked: true }));
+    // A protected subtopic starts unticked and stays so (Decision 5).
+    return res.options.map((option) => ({
+      ...option,
+      checked: !option.protectedReason,
+    }));
   } catch (err) {
     status.textContent = t("topic_error").replace(
       "{message}",
@@ -1649,6 +1659,7 @@ function renderSubtopicLevel(
     const checkbox = document.createElement("input");
     checkbox.type = "checkbox";
     checkbox.checked = option.checked;
+    checkbox.disabled = Boolean(option.protectedReason);
     checkbox.addEventListener("change", () => {
       option.checked = checkbox.checked;
     });
@@ -1678,7 +1689,19 @@ function renderSubtopicLevel(
         }
       })();
     });
-    row.append(label, why, deeperBtn);
+    if (option.protectedReason) {
+      // Decision 5: what a company or a person protects comes from its
+      // source, never from a model.
+      deeperBtn.disabled = true;
+      const note = document.createElement("p");
+      note.className = "onboarding-model-line topic-protected-note";
+      note.textContent = tf("topic_protected", {
+        reason: option.protectedReason,
+      });
+      row.append(label, why, note, deeperBtn);
+    } else {
+      row.append(label, why, deeperBtn);
+    }
     list.append(row);
   }
   root.append(list);

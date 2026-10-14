@@ -4912,6 +4912,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Replaces this lens's order at once. The earlier order is not kept.",
     atlas_curation_reject: "Reject",
     atlas_curation_failed: "That did not work:",
+    material_kind_label: "Belongs to:",
+    material_kind_hint:
+      "World knowledge protects nobody. What a company or a person protects stays on this library's own planet. Tap to switch.",
+    material_kind_welt: "World knowledge",
+    material_kind_firma: "Company",
+    material_kind_privat: "Private",
+    topic_protected:
+      "Protected: {reason} Import it from its source instead: notes, a file or a repository.",
     read_up_source_hint: "Opens the page this knowledge comes from, in your browser.",
     read_up_search_hint: "Looks it up on Wikipedia, in your browser.",
     atlas_unit_kicker: "Learning unit",
@@ -6876,6 +6884,14 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "Ersetzt die Ordnung dieser Linse sofort. Die bisherige wird nicht aufbewahrt.",
     atlas_curation_reject: "Verwerfen",
     atlas_curation_failed: "Das hat nicht geklappt:",
+    material_kind_label: "Gehört zu:",
+    material_kind_hint:
+      "Weltwissen schützt niemanden. Was eine Firma oder eine Person schützt, bleibt auf dem eigenen Planeten dieser Bibliothek. Antippen zum Wechseln.",
+    material_kind_welt: "Weltwissen",
+    material_kind_firma: "Firma",
+    material_kind_privat: "Privat",
+    topic_protected:
+      "Geschützt: {reason} Importiere es stattdessen aus seiner Quelle: Notizen, Datei oder Repository.",
     read_up_source_hint: "Öffnet die Seite, aus der dieses Wissen stammt, im Browser.",
     read_up_search_hint: "Schlägt es bei Wikipedia nach, im Browser.",
     atlas_unit_kicker: "Lerneinheit",

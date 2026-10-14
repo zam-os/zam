@@ -2,6 +2,7 @@
 
 ## 2026-10-14
 
+- **Update** — [Learning Cards from Photos and Files](material-import.md)
 - **Update** — [Local AI Runtimes](local-ai-runtimes.md)
 - **Update** — [Learning Content](learning-content.md)
 - **Update** — [Bridge CLI Protocol](bridge-protocol.md)

@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-14T14:00:00.000Z
+timestamp: 2026-10-14T16:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -21,6 +21,7 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 - No file is written. One `zam-topic:` source row records the import. That row names the import, not a source to read up in, so Lern-Karten never offers it as a card's source link.
 - A topic import writes world knowledge (Decision 5). Started outside the atlas, its new units land on the world planet, where Weltwissen's rules sort them by domain, even where no rule would otherwise cover them. On a team library this needs the right to write knowledge; without it the cards stay and the rules decide where they land.
 - Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
+- The model knows only what is public. A subtopic about one company's or one person's own knowledge comes with the reason, unticked and locked, and with the hint to import it from its source: notes, a file or a repository (Decision 5).
 
 The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
 

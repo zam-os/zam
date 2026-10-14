@@ -758,6 +758,11 @@ export interface MaterialImportProposalWire {
   placeBelow?: string[];
   /** The published unit this card's method may stand in for (D12). */
   standsFor?: string;
+  /**
+   * The kind the producer proposes (ADR 2026-10-13, D2): `welt`, or
+   * `firma`/`privat` for the library's own planet. Mixed imports only.
+   */
+  kind?: "welt" | "firma" | "privat";
 }
 
 export type MaterialImportTargetWire =
@@ -834,6 +839,8 @@ export interface MaterialImportReviewResponse {
   place?: { lens: string; regionKey: string; path: string[] } | null;
   /** Titles of the published units a proposal's `standsFor` names. */
   variantTitles?: Record<string, string>;
+  /** The library's own planet, for a mixed import's kind per card. */
+  ownPlanet?: AtlasOwnPlanetWire;
 }
 
 export interface MaterialImportConfirmResponse {
@@ -847,6 +854,8 @@ export interface MaterialImportConfirmResponse {
   placed?: number;
   /** Published units a new card now stands in for. */
   variantsChosen?: number;
+  /** New units the learner's kind sent to the world planet or the own. */
+  kinds?: { welt: number; own: number };
 }
 
 export interface MaterialImportAreasResponse {

@@ -14,8 +14,13 @@
 
 import { ulid } from "ulid";
 import { ensureLensRow, ensureWorldLenses, LENSES } from "../atlas/lenses.js";
-import { type PlacedUnit, placeUnits } from "../atlas/place.js";
-import type { LensKind, UnitKey } from "../atlas/types.js";
+import {
+  moveUnitsToPlanet,
+  type PlacedUnit,
+  placeUnits,
+} from "../atlas/place.js";
+import { ownPlanetOf } from "../atlas/planets.js";
+import type { LensKind, PlanetKind, UnitKey } from "../atlas/types.js";
 import { chooseVariantIn } from "../atlas/variants.js";
 import type { Database } from "../db/types.js";
 import {
@@ -112,6 +117,14 @@ export interface MaterialProposal {
    * Only the learner's tick in the review list makes it so.
    */
   standsFor?: UnitKey;
+  /**
+   * The kind the producer proposes for this card's unit (ADR 2026-10-13,
+   * Decision 2): `welt` for common knowledge that protects nobody, `firma`
+   * or `privat` for what an organisation or a person protects. Either of
+   * the last two means the library's own planet. The learner confirms it in
+   * the review list; the unit stays own either way.
+   */
+  kind?: PlanetKind;
 }
 
 /** Where on the knowledge atlas an import starts (ADR 2026-10-13, Decision 9). */
@@ -450,6 +463,18 @@ function parseProposals(
         standsFor = entry.standsFor.trim() as UnitKey;
       }
     }
+    let kind: PlanetKind | undefined;
+    if (entry.kind !== undefined && entry.kind !== null) {
+      if (
+        entry.kind !== "welt" &&
+        entry.kind !== "firma" &&
+        entry.kind !== "privat"
+      ) {
+        issues.push(`${path}.kind: must be welt, firma or privat`);
+      } else {
+        kind = entry.kind;
+      }
+    }
     if (issues.length > before) return;
     proposals.push({
       question: question as string,
@@ -463,6 +488,7 @@ function parseProposals(
       hardToRead: entry.hardToRead === true,
       ...(placeBelow && placeBelow.length > 0 ? { placeBelow } : {}),
       ...(standsFor ? { standsFor } : {}),
+      ...(kind ? { kind } : {}),
     });
   });
   return proposals;
@@ -1158,6 +1184,12 @@ export interface MaterialCommitInput {
    * 12).
    */
   variants?: string[];
+  /**
+   * The kind the learner confirmed per proposal row, over the producer's
+   * (ADR 2026-10-13, Decision 2): `welt`, or the library's own planet
+   * (`firma` and `privat` both mean it).
+   */
+  kinds?: Record<string, PlanetKind>;
 }
 
 export interface MaterialCommitResult {
@@ -1174,6 +1206,11 @@ export interface MaterialCommitResult {
   placed?: number;
   /** Published units a new card now stands in for. */
   variantsChosen?: number;
+  /**
+   * New units whose kind the learner confirmed against the place: put on
+   * the world planet, or on the library's own.
+   */
+  kinds?: { welt: number; own: number };
 }
 
 function sourceLinkFor(file: MaterialFile, page: number | null): string {
@@ -1300,8 +1337,18 @@ export async function commitMaterialImport(
   // The atlas's lenses must exist before the commit places anything; a
   // transaction cannot open another.
   const placeLens = set.place ? LENSES[set.place.lens] : null;
-  if (placeLens?.planet === "welt") await ensureWorldLenses(db);
-  else if (placeLens) await ensureLensRow(db, placeLens);
+  // A mixed import (Decision 2): a confirmed kind per card, else the
+  // producer's. Either may send a unit to the world planet.
+  const kindOf = (rowId: string, proposal: MaterialProposal) =>
+    input.kinds?.[rowId] ?? proposal.kind;
+  const ownPlanet = await ownPlanetOf(db);
+  const mixed =
+    Object.keys(input.kinds ?? {}).length > 0 ||
+    set.proposals.some((proposal) => proposal.kind !== undefined);
+  if (placeLens?.planet === "welt" || mixed) await ensureWorldLenses(db);
+  if (placeLens && placeLens.planet !== "welt") {
+    await ensureLensRow(db, placeLens);
+  }
   const ticked = new Set(input.variants ?? []);
 
   return db.transaction(async (tx) => {
@@ -1330,6 +1377,8 @@ export async function commitMaterialImport(
     };
     // New own units for the place, and the variants the learner ticked.
     const placed: PlacedUnit[] = [];
+    // New units whose kind differs from the place's, or that have no place.
+    const toPlanet: Record<"welt" | "own", UnitKey[]> = { welt: [], own: [] };
     const chosenVariants: Array<{ variant: UnitKey; standsFor: UnitKey }> = [];
 
     for (const row of rows) {
@@ -1383,12 +1432,24 @@ export async function commitMaterialImport(
           });
           tokenId = token.id;
           // Only a unit this import wrote moves to its place: a linked
-          // duplicate keeps where it is.
-          if (placeLens) {
+          // duplicate keeps where it is. A kind the place does not have
+          // sends it to that planet instead (Decision 2).
+          const kind = kindOf(row.id, proposal);
+          const wanted =
+            kind === undefined ? null : kind === "welt" ? "welt" : "own";
+          const placePlanet =
+            placeLens === null
+              ? null
+              : placeLens.planet === "welt"
+                ? "welt"
+                : "own";
+          if (placeLens && (wanted === null || wanted === placePlanet)) {
             placed.push({
               unitKey: `token:${tokenId}`,
               below: proposal.placeBelow ?? [],
             });
+          } else if (wanted !== null) {
+            toPlanet[wanted].push(`token:${tokenId}`);
           }
         }
         if (choice === "yes" && proposal.standsFor && ticked.has(row.id)) {
@@ -1429,6 +1490,22 @@ export async function commitMaterialImport(
         set.place.regionKey,
         placed,
       );
+    }
+    if (toPlanet.welt.length > 0 || toPlanet.own.length > 0) {
+      const welt = await moveUnitsToPlanet(tx, {
+        units: toPlanet.welt,
+        planet: "welt",
+        placedBy: "import",
+      });
+      const own = await moveUnitsToPlanet(tx, {
+        units: toPlanet.own,
+        planet: ownPlanet,
+        placedBy: "import",
+      });
+      result.kinds = {
+        welt: welt.moved.length + welt.unchanged.length,
+        own: own.moved.length + own.unchanged.length,
+      };
     }
     for (const pair of chosenVariants) {
       await chooseVariantIn(tx, { userId, ...pair });

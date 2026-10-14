@@ -31,7 +31,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_session_end` | Complete an active session and retrieve the final summary. |
 | `zam_observation_close` | Drop the raw observation files of a session that is still running or was never ended, keeping a digest. `zam_session_end` does this by itself. |
 | `zam_find_tokens` | Search existing knowledge tokens using semantic and lexical queries. |
-| `zam_add_token` | Register a new knowledge token with the learner's card; learnable at once unless the library keeps new content as drafts first. |
+| `zam_add_token` | Register a new knowledge token with the learner's card; learnable at once unless the library keeps new content as drafts first. Needs `sourceLink`: the file, folder or public page you read it from. |
 | `zam_list_drafts` | List unpublished draft tokens for author review. |
 | `zam_publish_revision` | Publish a draft or a classified content revision after author review. |
 | `zam_link_prereq` | Add a prerequisite link between a parent token and a child token. |
@@ -98,6 +98,8 @@ Each token has:
 Prerequisites: "to understand A, you must first know B." Register edges via `zam_link_prereq`.
 
 `zam_add_token` makes the card learnable at once. Only a library that switched on draft-first (`content.draft_first`, a Studio setting) keeps it as a **draft** outside the recall queue until you publish it with `zam_publish_revision` after author review (first publication is typically `cosmetic`). Either way, before you add a card it must satisfy:
+
+**Source first** (ADR 2026-10-14): every token you add cites the source you read it from. Pass `sourceLink` with a file or folder in a trusted folder (an OKF article or another Markdown file, optionally with `#anchor`; the repository root when the knowledge comes from the repository as a whole) or a public `https` page. Without one ZAM refuses the token: never write knowledge you have not read. A world unit never cites a protected repository or a private file.
 
 1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
 2. **Concrete axis** — no open "explain X" without a named axis.

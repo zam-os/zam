@@ -51,6 +51,27 @@ describe("parseSubtopicArray (ADR 2026-10-14)", () => {
     expect("lookupTerm" in result[1]).toBe(false);
   });
 
+  it("keeps why a subtopic is a company's or a person's own (ADR 2026-10-14, D5)", () => {
+    const result = parseSubtopicArray(
+      JSON.stringify([
+        {
+          label: "Scrum-Rollen",
+          description: "Wer was verantwortet.",
+          article: "Scrum",
+          protected: null,
+        },
+        {
+          label: "Sprint bei Team Boreas",
+          description: "Wie das Team plant.",
+          article: null,
+          protected: "  Interne Abläufe eines Teams. ",
+        },
+      ]),
+    );
+    expect(result[0].protectedReason).toBeUndefined();
+    expect(result[1].protectedReason).toBe("Interne Abläufe eines Teams.");
+  });
+
   it("tolerates markdown fences and prose around the array", () => {
     const noisy =
       'Here are the subtopics:\n```json\n[{"label":"A","description":"a"},{"label":"B","description":"b"}]\n```\nGood luck!';

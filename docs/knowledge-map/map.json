@@ -1043,6 +1043,18 @@
       ]
     },
     {
+      "id": "agent-source",
+      "parent": "agents",
+      "label": "Source first",
+      "link": "requires",
+      "text": "An agent adds a token only with the source it read: a file or folder in a trusted folder, or a public web page.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/cli/agent-source.ts",
+        "src/cli/commands/mcp.ts"
+      ]
+    },
+    {
       "id": "read-up",
       "parent": "content",
       "label": "Reading up",

@@ -10,7 +10,7 @@ tags:
   - agents
   - atlas
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-13T18:00:00.000Z
+timestamp: 2026-10-14T16:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -110,6 +110,16 @@ precedence); the material import is the way in for the learner's own notes.
   the named levels; a level the producer left unnamed is called "Allgemein".
   A linked duplicate keeps its place. The units are own, never published:
   their kind follows the place, their status stays own (Decision 2).
+- **A mixed import names the kind per card.** When the material mixes
+  common knowledge with what a company or a person protects, the producer
+  may set `kind` on a card: `welt`, or `firma`/`privat` for the library's
+  own planet. How Scrum works is world knowledge; how one team runs it is
+  the company's. The review list shows those cards a switch, *Gehört zu:
+  Weltwissen*, which a tap turns to the own planet and back, and the
+  confirm takes the learner's choices as `--kinds`. A new unit whose kind
+  differs from the place's goes to that planet's primary lens instead of
+  the place, as does a new unit with a kind and no place. Every unit stays
+  own.
 - **"Instead of …".** A card with `standsFor` shows "Instead of *<title>*:
   my school's method" in the review list, unticked. A Yes with the tick
   detaches the learner's cards on that published unit in the same
@@ -205,7 +215,8 @@ as Bonus is listed; one set aside after the import stays out of every offer.
   `material-import-bonus-take`. `material-import-analyze` answers a refusal as
   `{ success: false, code, message }` so the Studio can explain it; it takes
   `--text` (typed notes) and `--place-region` / `--place-lens`, and
-  `material-import-confirm` takes `--variants`, the ticked "Instead of" rows.
+  `material-import-confirm` takes `--variants`, the ticked "Instead of" rows,
+  and `--kinds`, the kind per card of a mixed import.
 - **Studio:** the "Photo / PDF" dialog, with the notes field, and the review
   list in Learning Content; *Hier importieren …* on the knowledge atlas; the
   Bonus button; the offer after the due queue.
