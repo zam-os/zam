@@ -13,11 +13,15 @@ import {
   loadBindings,
   loadLensRows,
   loadUnits,
+  misspelledRegionName,
   OUTSIDE_CURRICULUM_KEY,
+  prettify,
   UNSORTED_KEY,
   type UnitRow,
+  WELTWISSEN_LENS,
   weltwissenSeedRows,
 } from "../../src/kernel/atlas/lenses.js";
+import { settleLens } from "../../src/kernel/atlas/settle.js";
 import { unitKeyFor } from "../../src/kernel/atlas/types.js";
 import {
   createToken,
@@ -177,6 +181,29 @@ describe("Weltwissen derivation", () => {
     ]);
   });
 
+  it("names regions with the domain's letters as written", () => {
+    const [placement] = deriveWeltwissen(
+      [unit("t1", "physik/feuerwehr-einsatz/gewässer")],
+      seedLensRows(),
+      [],
+    );
+    expect(placement.path.map((step) => step.name).slice(2)).toEqual([
+      "Feuerwehr einsatz",
+      "Gewässer",
+    ]);
+    // A spelled-out umlaut stays spelled out: guessing would misspell "aktuell".
+    expect(prettify("aktuelle-lage")).toBe("Aktuelle lage");
+    expect(prettify("uebungen")).toBe("Uebungen");
+  });
+
+  it("recognises a name an earlier prettify misspelled", () => {
+    expect(misspelledRegionName("Feürwehr", "Feuerwehr")).toBe(true);
+    expect(misspelledRegionName("Übungen", "Uebungen")).toBe(true);
+    expect(misspelledRegionName("Feuerwehr", "Feuerwehr")).toBe(false);
+    expect(misspelledRegionName("Gewässer", "Gewässer")).toBe(false);
+    expect(misspelledRegionName("Brandschutz", "Feuerwehr")).toBe(false);
+  });
+
   it("keeps two units with the same title apart", () => {
     const placements = deriveWeltwissen(
       [
@@ -333,6 +360,34 @@ describe("with a database", () => {
       .prepare(`SELECT name FROM atlas_regions WHERE key = ?`)
       .get("logik.mathematik.zahlen")) as { name: string };
     expect(row.name).toBe("Rechnen");
+  });
+
+  it("renames a region an earlier prettify misspelled, never a curator's", async () => {
+    await createToken(db, {
+      slug: "feuerwehr-steuer-notiz",
+      concept: "Wer die Feuerwehr bezahlt",
+      domain: "physik/feuerwehr/steuer",
+      bloom_level: 1,
+    });
+    await settleLens(db, WELTWISSEN_LENS);
+    const nameOf = async (key: string) =>
+      (
+        (await db
+          .prepare(`SELECT name FROM atlas_regions WHERE key = ?`)
+          .get(key)) as { name: string }
+      ).name;
+    expect(await nameOf("natur.physik.feuerwehr")).toBe("Feuerwehr");
+
+    // As stored before: the old prettify's "Feürwehr", and a curator's name.
+    await db
+      .prepare(`UPDATE atlas_regions SET name = 'Feürwehr' WHERE key = ?`)
+      .run("natur.physik.feuerwehr");
+    await db
+      .prepare(`UPDATE atlas_regions SET name = 'Steuern' WHERE key = ?`)
+      .run("natur.physik.feuerwehr.steuer");
+    await settleLens(db, WELTWISSEN_LENS);
+    expect(await nameOf("natur.physik.feuerwehr")).toBe("Feuerwehr");
+    expect(await nameOf("natur.physik.feuerwehr.steuer")).toBe("Steuern");
   });
 
   it("places installed tiles and own cards from the database", async () => {

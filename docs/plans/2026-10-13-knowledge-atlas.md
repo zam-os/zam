@@ -88,7 +88,7 @@ what the learner knows.
     - [x] **9c-2** — mixed imports (the kind per card), the rest of ADR
       2026-10-14's Decision 5 (the model flags a subtopic about a company
       or a person) and the source rules for agents (Decision 3), which is
-      that ADR's Delivery 3 — this commit; see "As built (9c-2)"
+      that ADR's Delivery 3 — `3b99f188`; see "As built (9c-2)"
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 

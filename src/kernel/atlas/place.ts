@@ -22,6 +22,7 @@ import {
   loadBindings,
   loadLensRows,
   loadUnits,
+  misspelledRegionName,
   type PathStep,
   slugSegment,
   type UnitRow,
@@ -121,13 +122,24 @@ export type PlacedBy = "agent" | "curator" | "learner" | "import";
 
 /**
  * Creates the regions of a lens a path names but the lens lacks, and gives
- * back each step's region id, island first. Transaction-free.
+ * back each step's region id, island first. A known region an earlier
+ * `prettify` misspelled takes the path's name. Transaction-free.
  */
 function regionMaker(db: Database, lensId: string, rows: LensRows) {
   const idOf = new Map(rows.regions.map((r) => [r.key, r.id]));
+  const nameOf = new Map(rows.regions.map((r) => [r.key, r.name]));
   return async (step: PathStep, parentId: string | null): Promise<string> => {
     const known = idOf.get(step.key);
-    if (known) return known;
+    if (known) {
+      const stored = nameOf.get(step.key) ?? "";
+      if (misspelledRegionName(stored, step.name)) {
+        await db
+          .prepare(`UPDATE atlas_regions SET name = ? WHERE id = ?`)
+          .run(step.name, known);
+        nameOf.set(step.key, step.name);
+      }
+      return known;
+    }
     const id = ulid();
     await db
       .prepare(

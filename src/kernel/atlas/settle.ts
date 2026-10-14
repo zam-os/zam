@@ -26,6 +26,7 @@ import {
   type LensDefinition,
   type LensRows,
   loadLensRows,
+  misspelledRegionName,
 } from "./lenses.js";
 import { assertLensOnLibrary, lensPlacements, ownPlanetOf } from "./planets.js";
 import type { UnitKey } from "./types.js";
@@ -139,7 +140,8 @@ export interface SettleResult {
 /**
  * Write a plan: the regions the placements name but the lens lacks, then the
  * islands, then the land. Units leave their old hexes before they take new
- * ones, so no moment holds a unit twice.
+ * ones, so no moment holds a unit twice. A region an earlier `prettify`
+ * misspelled takes the placement's name.
  */
 export async function applySettle(
   db: Database,
@@ -149,11 +151,18 @@ export async function applySettle(
   return db.transaction(async (tx) => {
     const { lensId } = snapshot;
     const idOf = new Map(snapshot.rows.regions.map((r) => [r.key, r.id]));
+    const nameOf = new Map(snapshot.rows.regions.map((r) => [r.key, r.name]));
     let regionsCreated = 0;
     for (const placement of snapshot.placements) {
       let parentId: string | null = null;
       for (const step of placement.path) {
         let id = idOf.get(step.key);
+        if (id && misspelledRegionName(nameOf.get(step.key) ?? "", step.name)) {
+          await tx
+            .prepare(`UPDATE atlas_regions SET name = ? WHERE id = ?`)
+            .run(step.name, id);
+          nameOf.set(step.key, step.name);
+        }
         if (!id) {
           id = ulid();
           await tx

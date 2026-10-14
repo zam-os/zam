@@ -549,15 +549,30 @@ export async function ensureWorldLenses(db: Database): Promise<void> {
 
 // ── Derivation ───────────────────────────────────────────────────────────────
 
-/** "elektrische-ladung" → "Elektrische ladung", with umlauts restored. */
+/**
+ * "elektrische-ladung" → "Elektrische ladung". Letters stay as written: a
+ * spelled-out "ue" may be an umlaut ("uebung") or not ("feuer", "aktuell",
+ * "value"), so guessing would misspell names.
+ */
 export function prettify(slug: string): string {
-  const text = slug
-    .replace(/[-_]+/g, " ")
+  const text = slug.replace(/[-_]+/g, " ").trim();
+  return text.charAt(0).toUpperCase() + text.slice(1);
+}
+
+/**
+ * True when a stored region name is what an earlier `prettify` made of the
+ * name derived today: it turned every "ae", "oe" and "ue" into an umlaut, so
+ * "feuerwehr" was stored as "Feürwehr". Placing and settling rename such a
+ * region; a curator's own name never matches.
+ */
+export function misspelledRegionName(stored: string, derived: string): boolean {
+  const lower = derived.charAt(0).toLowerCase() + derived.slice(1);
+  const umlauts = lower
     .replace(/ae/g, "ä")
     .replace(/oe/g, "ö")
-    .replace(/ue/g, "ü")
-    .trim();
-  return text.charAt(0).toUpperCase() + text.slice(1);
+    .replace(/ue/g, "ü");
+  const old = umlauts.charAt(0).toUpperCase() + umlauts.slice(1);
+  return old !== derived && stored === old;
 }
 
 /** A key segment: lower case, umlauts spelled out, no dots or spaces. */
