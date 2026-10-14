@@ -467,6 +467,10 @@ export {
   listBundledCells,
   needsGenericCurriculumImport,
 } from "./library/bundled-cells.js";
+export {
+  CARD_SHAPE_RULES,
+  cardShapeRuleLines,
+} from "./library/card-shape.js";
 export type {
   InstallKvtResult,
   KvtAtom,

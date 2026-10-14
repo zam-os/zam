@@ -18,11 +18,20 @@ import {
   resolveUsableRecallEndpoint,
 } from "../../src/cli/llm/client.js";
 import {
+  CARD_SHAPE_RULES,
   createToken,
   getTokenBySlug,
   openDatabase,
   setSetting,
 } from "../../src/kernel/index.js";
+
+/** The system prompt of a recorded chat-completions request body. */
+function systemPromptOf(requestBody: string): string {
+  const { messages } = JSON.parse(requestBody) as {
+    messages: { role: string; content: string }[];
+  };
+  return messages.find((m) => m.role === "system")?.content ?? "";
+}
 
 function promptWithoutBloomScale(requestBody: string): string {
   const { messages } = JSON.parse(requestBody) as {
@@ -945,6 +954,18 @@ describe("LLM client utilities (CLI layer)", () => {
         /\b\d+\s+(?:to|or|-)\s+\d+\b/,
       );
       expect(sentPrompt).toMatch(/Never pad/);
+      // A bloated list card splits into a names-only overview card plus a
+      // card per point about a member (card-shape rule, 2026-10-14).
+      const system = systemPromptOf(sentPrompt);
+      for (const rule of CARD_SHAPE_RULES) {
+        expect(system).toContain(`- ${rule}`);
+      }
+      expect(system).toContain(
+        "one overview card that asks for the members' names only, plus one card per point said about a member",
+      );
+      expect(system).toContain(
+        "The overview card of a listed set is not padding.",
+      );
     } finally {
       global.fetch = originalFetch;
       await db.close();
@@ -1064,6 +1085,17 @@ describe("LLM client utilities (CLI layer)", () => {
         /\b\d+\s+(?:to|or|-)\s+\d+\b/,
       );
       expect(sentPrompt).toMatch(/Never pad/);
+      for (const rule of CARD_SHAPE_RULES) {
+        expect(systemPromptOf(sentPrompt)).toContain(`- ${rule}`);
+      }
+      // A prerequisite that is a complete set is one prerequisite: its
+      // overview and member cards are neither extra prerequisites nor padding.
+      expect(systemPromptOf(sentPrompt)).toContain(
+        "Together they are one prerequisite, not several, and they are not padding.",
+      );
+      expect(systemPromptOf(sentPrompt)).not.toContain(
+        "a single foundational fact",
+      );
 
       content = cards(5);
       expect(await generateFoundationsProposalsViaLLM(db, card)).toHaveLength(

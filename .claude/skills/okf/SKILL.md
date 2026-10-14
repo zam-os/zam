@@ -77,7 +77,12 @@ looks stale) before decomposing. Then:
 2. Extract the concepts a practitioner must produce **from memory** —
    recall-speed knowledge. Facts one would reasonably look up stay in the
    article; do not tokenize structure (headings are not concepts).
-3. One atomic concept per token; judge a Bloom level (1–5), a domain
+3. One point per token, as the card-shape rules in the `zam_okf_import`
+   description say: several separate points become several tokens. A
+   complete, closed set (the seven OSI layers) is ONE overview token whose
+   concept lists only the members' names, one list item per line, at
+   Bloom 1 or 2; what is to be said about a member goes on that member's
+   own token. Judge a Bloom level (1–5), a domain
    (reuse existing domains where they fit), and a concise display
    `title` per token — titles label the token's node in the Learning
    Graph; an untitled token shows its de-kebabed slug there.

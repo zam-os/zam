@@ -7,7 +7,7 @@ tags:
   - fsrs
   - scheduling
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/fsrs-scheduling.md"
-timestamp: 2026-10-01T18:50:00.000Z
+timestamp: 2026-10-14T15:00:00.000Z
 ---
 
 ZAM's spaced repetition uses **FSRS-6** (Free Spaced Repetition Scheduler,
@@ -121,6 +121,28 @@ together — so `structuralPublicationChecks()` raises
 `criterion_multiple_points` as the one **non-blocking** structural check: the
 author is told and may publish anyway. A multi-point item may still be asked
 as a choice (see below); the point count matters to the answer modes.
+
+Generated cards follow one **card shape**, stated in one wording
+(`CARD_SHAPE_RULES` in `src/kernel/library/card-shape.ts`) by the
+card-generating prompts: the curriculum and file import, Mobile's curriculum
+import, the split and foundations proposals, the material import's rules on
+both paths, and the `zam_okf_import` description. **One point per card**: an answer that would need
+several separate points — three differences between two systems — becomes
+several cards, each answer as short as its point allows. The exception is the
+**overview card** for knowledge that is itself a complete, closed set (the
+seven OSI layers, the parts of a cell): one card asks for the whole set, and
+its reference answer lists only the members' names, each as its own list item,
+so every name is scored as a point; it stays at Bloom 1 or 2, inside the scored
+range. A member's explanation, reason, example or effect never goes on the
+overview card — a member that carries knowledge of its own gets its own card
+besides. An overview asks for the names of a set's members ("Which index types
+does PostgreSQL have?"), not for what is to be said about each ("How do B-Tree,
+GIN and BRIN differ?" is three cards). Splitting a bloated list card therefore
+yields a names-only overview card plus a card per point about a member.
+An overview card still raises `criterion_multiple_points`, since it asks for
+several points by design; the notice names it as the second exception to
+splitting, next to points that only make sense together, so it does not tell
+the card's author to split it.
 
 The two evaluators split the judgement rather than conflating it. Coverage is
 observable from the answer text; effort is not, and only the learner knows it.
@@ -401,6 +423,6 @@ snapshots with the same workload and tier rules.
 - [Flashcard quality contract — PR #321](https://github.com/zam-os/zam/pull/321)
 - [Anki Manual — Deck Options](https://docs.ankiweb.net/deck-options.html)
 - [Anki Manual — Studying](https://docs.ankiweb.net/studying.html)
-- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
-- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/analytics/stats.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
+- Tests: `tests/kernel/fsrs.test.ts`, `tests/kernel/rich-anki-scheduling.test.ts`, `tests/kernel/study-settings.test.ts`, `tests/kernel/answer-points.test.ts`, `tests/kernel/card-shape.test.ts`, `tests/cli/material-prompt.test.ts`, `tests/mobile/curriculum.test.ts`, `tests/kernel/publication.test.ts`, `tests/desktop/answer-points-surfaces.test.ts`, `tests/desktop/rating-recall-split.test.ts`, `tests/mobile/dom-contract.test.ts`, `tests/mobile/voice.test.ts`, `tests/integration/token-card-review.test.ts`, `tests/kernel/provision.test.ts`, `tests/kernel/snapshot.test.ts`
+- Code: `src/kernel/scheduler/fsrs.ts`, `src/kernel/scheduler/queue.ts`, `src/kernel/scheduler/study-settings.ts`, `src/kernel/scheduler/siblings.ts`, `src/kernel/recall/evaluator.ts`, `src/kernel/recall/actions.ts`, `src/kernel/recall/voice-review.ts`, `src/cli/review-actions.ts`, `src/cli/llm/client.ts`, `skills/zam/SKILL.md`, `src/kernel/library/answer-points.ts`, `src/kernel/library/card-shape.ts`, `src/cli/llm/material-prompt.ts`, `src/cli/commands/mcp.ts`, `mobile/src/curriculum.ts`, `src/kernel/library/publication.ts`, `desktop/src/panel/recall-evaluation.ts`, `src/kernel/models/card.ts`, `src/kernel/analytics/stats.ts`, `src/kernel/db/schema.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/snapshot.ts`, `desktop/src/main.ts`, `mobile/src/main.ts`
 - Algorithm reference: <https://github.com/open-spaced-repetition/awesome-fsrs/wiki/The-Algorithm>

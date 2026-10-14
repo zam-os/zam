@@ -18,6 +18,7 @@ import type {
 } from "../../kernel/index.js";
 import {
   assertNoHiddenSegments,
+  CARD_SHAPE_RULES,
   canonicalRoots,
   getKnowledgeMapConfig,
   getReviewActivity,
@@ -2404,7 +2405,8 @@ export function createMcpServer(
         "Record YOUR finished decomposition of one OKF article as learning tokens + cards (ADR 2026-07-18). " +
         "Decomposition is your job, not this tool's — before calling: (1) read the FULL article (zam_okf_read); " +
         "(2) extract the concepts a practitioner must produce FROM MEMORY — recall-speed knowledge only; facts one " +
-        "would look up stay in the article; (3) one atomic concept per token, with a JUDGED bloom level, a JUDGED " +
+        "would look up stay in the article; (3) shape each token by the card-shape rules below — its concept is " +
+        "the reference answer — with a JUDGED bloom level, a JUDGED " +
         "domain (reuse existing domains where they fit), and a concise JUDGED display title per token — titles " +
         "label the token's node in the Learning Graph; (4) arrange a prerequisite DAG from foundational " +
         "to dependent (in-import slugs and existing tokens both allowed); (5) check for existing tokens first " +
@@ -2414,7 +2416,8 @@ export function createMcpServer(
         "state RESET to the beginning. Previously imported tokens you do not confirm are moved to maintenance " +
         "(kept, unscheduled) — never deleted. The write is atomic; every token gets a card for the importing user. " +
         "A token without a question is stored as a draft and listed under `drafts`: it keeps its card but stays out of " +
-        "the queue until zam_publish_revision or a re-import (mode 'update') supplies the question.",
+        "the queue until zam_publish_revision or a re-import (mode 'update') supplies the question. " +
+        `Card-shape rules: ${CARD_SHAPE_RULES.join(" ")}`,
       inputSchema: {
         user: z.string().optional().describe("User ID to create cards for"),
         bundle_dir: okfBundleDirSchema,

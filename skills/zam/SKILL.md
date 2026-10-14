@@ -103,7 +103,7 @@ Prerequisites: "to understand A, you must first know B." Register edges via `zam
 
 1. **Short recall target** — intended retrieval in about 5–15 seconds (format-dependent); not a ban on hard tasks.
 2. **Concrete axis** — no open "explain X" without a named axis.
-3. **No unstructured lists** — 1:1 or a cloze of one slot, unless complete reconstruction is the target competence.
+3. **One point per card** — several separate points (three differences between two systems) are several cards, never one answer. Exception, the **overview card**: a complete, closed set (the seven OSI layers, the parts of a cell) is ONE card whose `concept` lists only the members' names, each as its own list item on its own line, at Bloom 1 or 2. Never put a member's explanation, reason, example or effect on it — a member that carries knowledge of its own gets its own card besides. "Which index types does PostgreSQL have?" is an overview; "How do B-Tree, GIN and BRIN differ?" is three cards.
 4. **Scope match** — the question asks only what `concept` tests. New items need a real question, not empty and not a slug echo.
 5. **Subject-matter edges** — A is a prerequisite of B only when B is not solvable without A.
 6. **Decidable criterion** — `concept` is the passing standard; `context` is never an extra hurdle.

@@ -5,17 +5,19 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import { connectCloudModel } from "../../mobile/src/ai/connect.js";
 import {
   applyMobileCurriculumChoice,
+  buildMobileCurriculumPrompt,
   initialMobileCurriculumState,
+  type MobileCurriculumState,
   mobileCurriculumOptions,
-  nextMobileCurriculumView,
   NoMobileCurriculumModelError,
+  nextMobileCurriculumView,
   parseMobileCurriculumCards,
   previewMobileCurriculumTopic,
   resolveMobileCurriculumPosition,
-  type MobileCurriculumState,
 } from "../../mobile/src/curriculum.js";
 import { openDatabase } from "../../src/kernel/db/connection.js";
 import type { Database } from "../../src/kernel/db/types.js";
+import { CARD_SHAPE_RULES } from "../../src/kernel/library/card-shape.js";
 
 describe("mobile curriculum navigation", () => {
   it("walks the same provider taxonomy as Desktop and skips empty tracks", () => {
@@ -169,6 +171,26 @@ describe("mobile cell precedence", () => {
       }),
     ).rejects.toBeInstanceOf(NoMobileCurriculumModelError);
     expect(fetched).toBe(false);
+  });
+});
+
+describe("mobile curriculum prompt", () => {
+  // Owner's card-shape rule (2026-10-14), in the wording every card prompt
+  // shares: one point per card, names-only overview cards.
+  it("states the shared card-shape rules and shows a names-only overview answer", () => {
+    const prompt = buildMobileCurriculumPrompt({
+      text: "Die sieben Schichten des OSI-Modells.",
+      category: "Informatik",
+      sourceUrl: "https://example.test/plan",
+      locale: "de",
+    });
+    for (const rule of CARD_SHAPE_RULES) expect(prompt).toContain(`- ${rule}`);
+    expect(prompt).not.toContain(
+      "One fact, concept, method, or skill per card",
+    );
+    expect(prompt).toContain(
+      String.raw`"- first name\n- second name\n- third name"`,
+    );
   });
 });
 

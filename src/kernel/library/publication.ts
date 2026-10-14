@@ -142,13 +142,16 @@ export function structuralPublicationChecks(
   // An item should ask for one thing, and most do. Some genuinely cannot be
   // split — a formula and the precondition it only holds under are one fact
   // together — so this is the one structural check that does not block: the
-  // author is told and may publish anyway (ADR 2026-09-08 §2).
+  // author is told and may publish anyway (ADR 2026-09-08 §2). An overview
+  // card (`card-shape.ts`) asks for several points by design — the names of
+  // a complete set — so the message names it as the other exception rather
+  // than telling its author to split it.
   const points = countAnswerPoints(concept);
   if (points > 1) {
     checks.push({
       code: "criterion_multiple_points",
       blocking: false,
-      message: `Criterion asks for ${points} points. Split it unless they only make sense together.`,
+      message: `Criterion asks for ${points} points. Split it unless they only make sense together, or it is an overview card that only names the members of a complete set.`,
     });
   }
 
