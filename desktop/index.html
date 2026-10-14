@@ -282,6 +282,12 @@
                   </div>
                 </div>
 
+                <!-- Nachlesen (ADR 2026-10-14, Decision 4): world units only,
+                     opened in the system browser on this click. -->
+                <div class="editor-read-up" id="editor-read-up" hidden>
+                  <button type="button" id="btn-editor-read-up" class="btn secondary-btn btn-sm">Read up</button>
+                </div>
+
                 <div class="collapsible-header" id="editor-toggle-advanced">
                   <span id="editor-toggle-arrow">▶</span> <span id="lbl-editor-advanced">More Settings</span>
                 </div>
@@ -1383,9 +1389,14 @@
               <!-- The unit's Sinnbild (ADR 2026-10-13, Decision 6), shown only
                    with the answer: a sign or formula on it could give the
                    answer away. An image of the canonical SVG, never markup. -->
-              <div class="study-emblem" id="study-emblem" hidden>
-                <img id="study-emblem-img" class="study-emblem-img" alt="" width="44" height="44" />
-                <span id="study-emblem-glyph" class="study-emblem-glyph"></span>
+              <div class="study-emblem-row">
+                <div class="study-emblem" id="study-emblem" hidden>
+                  <img id="study-emblem-img" class="study-emblem-img" alt="" width="44" height="44" />
+                  <span id="study-emblem-glyph" class="study-emblem-glyph"></span>
+                </div>
+                <!-- Nachlesen (ADR 2026-10-14, Decision 4): world units only,
+                     opened in the system browser on this click. -->
+                <button type="button" id="btn-study-read-up" class="btn secondary-btn btn-sm" hidden>Read up</button>
               </div>
               <!-- Own answer and reference side by side, so comparing them
                    is a glance across rather than a scroll. When there is no

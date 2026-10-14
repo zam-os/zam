@@ -103,6 +103,7 @@ import {
   isScreenObservationEnabled,
   isStudyLearningMode,
   isStudyWorkloadPreset,
+  isTopicImportSource,
   isVoiceEnginePreference,
   keepLibraryAsPrevious,
   listAgentSkills,
@@ -131,6 +132,7 @@ import {
   readMonitorLog,
   readSessionDigest,
   readUiObservationLog,
+  readUpForTokens,
   recordTopicImport,
   redactCommand,
   regionTokenIds,
@@ -207,6 +209,7 @@ import {
   libraryLens,
   materialPlace,
   placeImportedUnits,
+  placeOnWorldPlanet,
   setAtlasOwnPlanet,
   setAtlasPrefs,
 } from "../atlas.js";
@@ -4680,7 +4683,10 @@ bridgeCommand
     "JSON array of the atlas place's region names, root first",
     "[]",
   )
-  .requiredOption("--topic <json>", "JSON {label, description} of the subtopic")
+  .requiredOption(
+    "--topic <json>",
+    "JSON {label, description, lookupTerm?} of the subtopic",
+  )
   .action(
     async (opts: {
       title: string;
@@ -4692,7 +4698,11 @@ bridgeCommand
       await withDb(async (db) => {
         let path: string[] = [];
         let place: string[] = [];
-        let topic: { label: string; description: string } | null = null;
+        let topic: {
+          label: string;
+          description: string;
+          lookupTerm?: string;
+        } | null = null;
         try {
           path = stringArrayOption(opts.path);
           place = stringArrayOption(opts.place);
@@ -4705,6 +4715,9 @@ bridgeCommand
             topic = {
               label: parsedTopic.label,
               description: parsedTopic.description,
+              ...(typeof parsedTopic.lookupTerm === "string"
+                ? { lookupTerm: parsedTopic.lookupTerm }
+                : {}),
             };
           }
         } catch {
@@ -6173,10 +6186,16 @@ bridgeCommand
           contextMap.set(mapping.token_id, contexts);
         }
       }
+      // Reading up on world units (ADR 2026-10-14, Decision 4).
+      const readUps = await readUpForTokens(
+        db,
+        cards.map((card) => card.tokenId),
+      );
       jsonOut({
         cards: cards.map((card) => ({
           ...card,
           knowledgeContexts: contextMap.get(card.tokenId) ?? [],
+          readUp: readUps.get(card.tokenId) ?? null,
         })),
       });
     });
@@ -7230,6 +7249,19 @@ bridgeCommand
       // the levels below. A failure to place loses none of the cards.
       let placed: number | undefined;
       let placeError: string | undefined;
+      const created = (result.items ?? [])
+        .filter((item) => item.created)
+        .map((item) => item.tokenId);
+      if (!opts.placeRegion && (await isTopicImportSource(db, opts.sourceId))) {
+        // A topic import writes world knowledge (ADR 2026-10-14, Decision
+        // 5): without a place its units still land on the world planet.
+        try {
+          placed = await placeOnWorldPlanet(db, created);
+        } catch (err) {
+          placed = 0;
+          placeError = (err as Error).message;
+        }
+      }
       if (opts.placeRegion) {
         try {
           placed = await placeImportedUnits(db, {

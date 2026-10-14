@@ -906,6 +906,16 @@ export type AtlasLensKindWire =
 /** "atom:<id>" or "token:<id>": one learning unit. */
 export type AtlasUnitKeyWire = string;
 
+/**
+ * Reading up on a world unit (ADR 2026-10-14, Decision 4), opened only on
+ * the learner's click: the web page it came from, or a reference work's
+ * search for its term, which the surface builds in the learner's language.
+ * Firma and Privat units carry none. Never a source link; nothing fetches it.
+ */
+export type ReadUpWire =
+  | { kind: "source"; url: string }
+  | { kind: "search"; term: string; language: string | null };
+
 /** `graph3d-feature`: this machine's switch for the 3D Wissensnetz alpha. */
 export interface Graph3dFeatureResponse {
   success: boolean;
@@ -964,6 +974,8 @@ export interface AtlasUnitWire {
   variantOffer?: { key: AtlasUnitKeyWire; title: string };
   /** Key into `emblems` when the unit has a Sinnbild. */
   emblem?: string;
+  /** Where to read the unit up; world lenses only (ADR 2026-10-14, D4). */
+  readUp?: ReadUpWire;
 }
 
 export interface AtlasReadResponse {

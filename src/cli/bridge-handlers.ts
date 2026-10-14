@@ -85,6 +85,7 @@ import {
   publishTokenRevisionInTransaction,
   pullForwardCards,
   readMonitorLog,
+  readUpForTokens,
   recordAssistedStep,
   removePrerequisite,
   resetCardsForToken,
@@ -351,6 +352,13 @@ export async function getReview(db: Database, params: GetReviewParams) {
         userId,
       ).catch(() => null)
     : null;
+  // Reading up on a world unit (ADR 2026-10-14, Decision 4), beside the
+  // revealed answer. Firma and Privat units get none.
+  const readUp = params.includeMedia
+    ? ((await readUpForTokens(db, [item.tokenId]).catch(() => null))?.get(
+        item.tokenId,
+      ) ?? null)
+    : null;
 
   return {
     userId,
@@ -362,6 +370,7 @@ export async function getReview(db: Database, params: GetReviewParams) {
     resolvedContext,
     queueSize: fullQueue.items.length,
     emblem,
+    readUp,
   };
 }
 
@@ -1848,6 +1857,8 @@ export interface PublishRevisionParams {
     domain?: string;
     bloomLevel?: number;
     sourceLink?: string | null;
+    /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
+    lookupTerm?: string | null;
   };
 }
 

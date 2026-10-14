@@ -37,6 +37,7 @@ import {
 } from "./lenses.js";
 import { hueKeyForDomain } from "./palette.js";
 import { lensPlacements } from "./planets.js";
+import { type ReadUp, readUpForUnits } from "./read-up.js";
 import { type LensSnapshot, loadLandState, planForSnapshot } from "./settle.js";
 import type { LensKind, PlanetKind, ThreadKind, UnitKey } from "./types.js";
 import { type EffectiveVariant, effectiveVariants } from "./variants.js";
@@ -92,6 +93,11 @@ export interface AtlasUnitView {
   variantOffer?: { key: UnitKey; title: string };
   /** Key into `AtlasView.emblems` when the unit has a Sinnbild. */
   emblem?: string;
+  /**
+   * Where to read the unit up (ADR 2026-10-14, Decision 4): world lenses
+   * only. Opened on the learner's click; nothing fetches it.
+   */
+  readUp?: ReadUp;
 }
 
 /** One red thread (Decision 7). */
@@ -593,6 +599,19 @@ export async function readAtlas(
     if (!emblem) continue;
     emblems[unit.key] = emblem;
     unit.emblem = unit.key;
+  }
+
+  // Reading up: a world unit's own business only (ADR 2026-10-14, D4).
+  if (lens.planet === "welt") {
+    const shown = new Set(unitViews.map((u) => u.key));
+    const readUps = await readUpForUnits(
+      db,
+      units.filter((unit) => shown.has(unit.key)),
+    );
+    for (const unit of unitViews) {
+      const readUp = readUps.get(unit.key);
+      if (readUp) unit.readUp = readUp;
+    }
   }
   // A leaf region without its own shows its first unit's, in land order.
   const firstWithEmblem = new Map<string, UnitKey>();

@@ -27,6 +27,30 @@ describe("parseSubtopicArray (ADR 2026-10-14)", () => {
     ]);
   });
 
+  it("keeps the article named for reading up as the lookup term (ADR 2026-10-14, D4)", () => {
+    const result = parseSubtopicArray(
+      JSON.stringify([
+        {
+          label: "Joins",
+          description: "Tabellen verknüpfen.",
+          article: "  Join (SQL) ",
+        },
+        {
+          label: "Indizes",
+          description: "Abfragen beschleunigen.",
+          article: null,
+        },
+        { label: "Rollen", description: "Rechte vergeben.", article: "" },
+      ]),
+    );
+    expect(result.map((s) => s.lookupTerm)).toEqual([
+      "Join (SQL)",
+      undefined,
+      undefined,
+    ]);
+    expect("lookupTerm" in result[1]).toBe(false);
+  });
+
   it("tolerates markdown fences and prose around the array", () => {
     const noisy =
       'Here are the subtopics:\n```json\n[{"label":"A","description":"a"},{"label":"B","description":"b"}]\n```\nGood luck!';

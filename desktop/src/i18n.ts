@@ -4902,6 +4902,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_move_held:
       "{count} stayed, because a thread holds them: world knowledge never depends on a Firma or Privat unit.",
     atlas_move_failed: "Moving did not work:",
+    read_up: "Read up",
+    read_up_source_hint: "Opens the page this knowledge comes from, in your browser.",
+    read_up_search_hint: "Looks it up on Wikipedia, in your browser.",
     atlas_unit_kicker: "Learning unit",
     atlas_builds_on: "Builds on",
     atlas_foundation_for: "Foundation for",
@@ -6854,6 +6857,9 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_move_held:
       "{count} blieben, weil ein Faden sie hält: Weltwissen hängt nie von einer Firma- oder Privat-Einheit ab.",
     atlas_move_failed: "Verschieben hat nicht geklappt:",
+    read_up: "Nachlesen",
+    read_up_source_hint: "Öffnet die Seite, aus der dieses Wissen stammt, im Browser.",
+    read_up_search_hint: "Schlägt es bei Wikipedia nach, im Browser.",
     atlas_unit_kicker: "Lerneinheit",
     atlas_builds_on: "Baut auf",
     atlas_foundation_for: "Grundlage für",

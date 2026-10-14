@@ -1087,6 +1087,14 @@ export function createMcpServer(
             domain: z.string().optional(),
             bloomLevel: z.number().int().min(1).max(5).optional(),
             sourceLink: z.string().nullable().optional(),
+            lookupTerm: z
+              .string()
+              .max(200)
+              .nullable()
+              .optional()
+              .describe(
+                "The term to read a world unit up by, such as its Wikipedia article's exact title; never a source link",
+              ),
           })
           .optional()
           .describe("Updated token fields"),

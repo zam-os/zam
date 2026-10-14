@@ -176,18 +176,41 @@ export const OUTSIDE_CURRICULUM_KEY = "ausserhalb";
 const LEHRPLANPLUS =
   /lehrplanplus\.bayern\.de\/fachlehrplan\/([a-z-]+)\/(\d{1,2})\/([a-z-]+)/i;
 
-/** Every learning unit of the library, deprecated tokens left out. */
-export async function loadUnits(db: Database): Promise<UnitRow[]> {
-  const rows = (await db
-    .prepare(
-      `SELECT t.id, t.slug, t.title, t.concept, t.domain, t.atom_id, t.source_link,
+/** Tokens per `IN` list, well below every driver's parameter limit. */
+const IN_CHUNK = 500;
+
+/**
+ * Every learning unit of the library, deprecated tokens left out. With
+ * `tokenIds`, only the units of those tokens, each with only those tokens.
+ */
+export async function loadUnits(
+  db: Database,
+  opts: { tokenIds?: readonly string[] } = {},
+): Promise<UnitRow[]> {
+  const select = `SELECT t.id, t.slug, t.title, t.concept, t.domain, t.atom_id, t.source_link,
               a.title AS atom_title, a.domain AS atom_domain
          FROM tokens t
          LEFT JOIN learning_atoms a ON a.id = t.atom_id
-        WHERE t.deprecated_at IS NULL
-        ORDER BY t.id`,
-    )
-    .all()) as Array<{
+        WHERE t.deprecated_at IS NULL`;
+  let found: unknown[];
+  if (opts.tokenIds) {
+    found = [];
+    const ids = [...new Set(opts.tokenIds)];
+    for (let i = 0; i < ids.length; i += IN_CHUNK) {
+      const chunk = ids.slice(i, i + IN_CHUNK);
+      found.push(
+        ...(await db
+          .prepare(`${select} AND t.id IN (${chunk.map(() => "?").join(", ")})`)
+          .all(...chunk)),
+      );
+    }
+    // In id order, as the unfiltered query returns them.
+    const idOf = (row: unknown) => (row as { id: string }).id;
+    found.sort((a, b) => (idOf(a) < idOf(b) ? -1 : idOf(a) > idOf(b) ? 1 : 0));
+  } else {
+    found = await db.prepare(`${select} ORDER BY t.id`).all();
+  }
+  const rows = found as Array<{
     id: string;
     slug: string;
     title: string | null;

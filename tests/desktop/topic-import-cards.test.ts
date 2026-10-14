@@ -6,8 +6,8 @@ import {
   commitTopicStep,
   createOnboardingExit,
   draftSubtopicCards,
-  type TopicAreaView,
   TOPIC_TITLE_MAX,
+  type TopicAreaView,
   type TopicImportState,
   topicPlaceArgs,
   topicPromptArgs,
@@ -63,6 +63,22 @@ afterEach(() => {
 });
 
 describe("draftSubtopicCards", () => {
+  it("hands each subtopic's article on, so its cards read up there", async () => {
+    const sent: unknown[] = [];
+    setBridgeTransport(async (_cmd, args) => {
+      sent.push(JSON.parse(args[args.indexOf("--topic") + 1]));
+      return cardsFor(topicOf(args));
+    });
+    await draftSubtopicCards(topicState(liveView()), [
+      { label: "Joins", description: "Verknüpfen.", lookupTerm: "Join (SQL)" },
+      { label: "Pods", description: "Mastering Pods." },
+    ]);
+    expect(sent).toEqual([
+      { label: "Joins", description: "Verknüpfen.", lookupTerm: "Join (SQL)" },
+      { label: "Pods", description: "Mastering Pods." },
+    ]);
+  });
+
   it("keeps each topic's own reason and treats an empty answer as one", async () => {
     const progress: string[] = [];
     const state = topicState(liveView());

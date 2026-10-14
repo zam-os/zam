@@ -1262,6 +1262,8 @@ interface SubtopicOption {
   id: string;
   label: string;
   description: string;
+  /** The article the model names for reading the subtopic up (ADR 2026-10-14, D4). */
+  lookupTerm?: string;
   checked: boolean;
 }
 
@@ -1275,6 +1277,8 @@ export interface TopicCardProposal {
 interface Subtopic {
   label: string;
   description: string;
+  /** Its cards keep it as their lookup term for *Nachlesen*. */
+  lookupTerm?: string;
 }
 
 interface SubtopicFailure extends Subtopic {
@@ -1593,7 +1597,12 @@ async function fetchSubtopics(
     const res = await runBridge<{
       success: boolean;
       error?: string;
-      options?: Array<{ id: string; label: string; description: string }>;
+      options?: Array<{
+        id: string;
+        label: string;
+        description: string;
+        lookupTerm?: string;
+      }>;
     }>("topic-outline", [
       "--title",
       state.title.trim(),
@@ -1706,6 +1715,7 @@ function renderSubtopicLevel(
         .map((option) => ({
           label: option.label,
           description: option.description,
+          ...(option.lookupTerm ? { lookupTerm: option.lookupTerm } : {}),
         }));
       if (selected.length === 0) {
         status.textContent = t("topic_no_selection");

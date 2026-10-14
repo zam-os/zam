@@ -36,6 +36,7 @@ import {
   keyMaySendTo,
   LANGUAGE_NAMES,
   normalizeLocale,
+  normalizeLookupTerm,
   parseAnswerPoints,
   supportsAnswerPoints,
   t,
@@ -1519,6 +1520,11 @@ export interface GeneratedCardProposal {
   source_link: string | null;
   /** Titles or concepts of cards in the same batch that this card depends on. */
   prerequisites?: string[];
+  /**
+   * The term to read the card's unit up by: its subtopic's article in a
+   * topic import (ADR 2026-10-14, Decision 4).
+   */
+  lookup_term?: string;
 }
 
 const MAX_IMPORT_TEXT_CHARS = 200_000;
@@ -1876,7 +1882,7 @@ async function sendCardPrompt(
 export async function generateTopicCardsViaLLM(
   db: Database,
   input: TopicPromptInput & {
-    topic: { label: string; description: string };
+    topic: { label: string; description: string; lookupTerm?: string };
   },
 ): Promise<GeneratedCardProposal[]> {
   const cfg = await getProviderForRole(db, "text");
@@ -1920,9 +1926,15 @@ JSON Array Output:`;
     userPrompt,
     "LLM topic import",
   );
+  // Every card of the subtopic reads up where the subtopic does.
+  const lookupTerm = normalizeLookupTerm(input.topic.lookupTerm);
   return deduplicateGeneratedCards(
     parseGeneratedCardArray(responseText, "topic import", { min: 0, max: 40 }),
-  ).map((card) => ({ ...card, source_link: null }));
+  ).map((card) => ({
+    ...card,
+    source_link: null,
+    ...(lookupTerm ? { lookup_term: lookupTerm } : {}),
+  }));
 }
 
 /**
@@ -1943,6 +1955,11 @@ JSON Array Output:`;
 export interface SubtopicProposal {
   label: string;
   description: string;
+  /**
+   * The reference article the model names for reading the subtopic up
+   * (ADR 2026-10-14, Decision 4): its cards keep it as their lookup term.
+   */
+  lookupTerm?: string;
 }
 
 /** Exported for unit tests; tolerant of prose/markdown around the array. */
@@ -1973,9 +1990,12 @@ export function parseSubtopicArray(responseText: string): SubtopicProposal[] {
         );
       }
     }
+    // The article is optional: a missing or empty one leaves the title.
+    const lookupTerm = normalizeLookupTerm(item.article);
     return {
       label: (item.label as string).trim(),
       description: (item.description as string).trim(),
+      ...(lookupTerm ? { lookupTerm } : {}),
     };
   });
 }
@@ -2099,8 +2119,9 @@ Rules:
 ${topicRules(input)}
 - Subtopics must be learnable units, ordered from foundational to advanced.
 - Each needs a short "label" (2-6 words) and a one-sentence "description" of what mastering it means.${labels}
+- Each also names "article": the title of the ${langName} Wikipedia article a learner would read to look the subtopic up, exactly as Wikipedia titles it, or null when no article covers it.
 - Do NOT generate flashcards or questions — only the topic structure.
-- Output ONLY a raw JSON array of objects with keys "label" and "description". No markdown, no commentary.`;
+- Output ONLY a raw JSON array of objects with keys "label", "description" and "article". No markdown, no commentary.`;
 
   const userPrompt = `${topicPromptHead(input)}
 

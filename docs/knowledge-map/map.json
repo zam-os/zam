@@ -1031,6 +1031,18 @@
       ]
     },
     {
+      "id": "read-up",
+      "parent": "content",
+      "label": "Reading up",
+      "link": "opens",
+      "text": "Reading up opens a world unit's web source or a Wikipedia search for its lookup term, on a click; Firma and Privat units have none.",
+      "sources": [
+        "docs/adr/2026-10-14-topic-import-and-source-provenance.md",
+        "src/kernel/atlas/read-up.ts",
+        "desktop/src/read-up.ts"
+      ]
+    },
+    {
       "id": "open-library",
       "parent": "content",
       "label": "Open Library",

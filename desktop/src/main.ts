@@ -131,6 +131,7 @@ import {
   loadStudioData,
   openCardInEditor,
   openLearningContentCurriculum,
+  setLearningContentExternalOpener,
   setLearningContentFilePicker,
   setLearningContentGraphOpener,
   setLearningContentProgressSource,
@@ -184,6 +185,7 @@ import {
 } from "./radio-group.js";
 import { serialSave } from "./serial-save.js";
 import { renderSettingsToc } from "./settings-toc.js";
+import { readUpUrl } from "./read-up.js";
 import type {
   AnswerPresentationResponse,
   AtlasEmblemWire,
@@ -191,6 +193,7 @@ import type {
   AtlasPlanetResponse,
   Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
+  ReadUpWire,
 } from "../../src/bridge/protocol.js";
 import {
   acceptsTypedStudyAnswer,
@@ -252,6 +255,9 @@ setLearningContentProgressSource(async (onProgress) => {
 setLearningContentGraphOpener(() => {
   switchView("atlas-view");
 });
+
+// Nachlesen in the card editor opens the system browser (ADR 2026-10-14).
+setLearningContentExternalOpener((url) => void openUrl(url));
 
 setLearningContentFolderPicker(async () => {
   const selected = await openFolderDialog({
@@ -623,6 +629,8 @@ interface ReviewPayload {
   queueSize: number;
   /** The unit's Sinnbild (with `--media`); untrusted, shown as an image. */
   emblem?: AtlasEmblemWire | null;
+  /** Where to read a world unit up (with `--media`); none for Firma or Privat. */
+  readUp?: ReadUpWire | null;
 }
 
 /** The unit's Sinnbild beside the answer; cleared for a card without one. */
@@ -638,6 +646,24 @@ function renderStudyEmblem(emblem: AtlasEmblemWire | null | undefined): void {
   img.src = emblemDataUrl(emblem.svg);
   // The glyph is untrusted text: textContent only.
   glyph.textContent = emblem.glyph ?? "";
+}
+
+/** The active card's place to read it up; null for Firma or Privat units. */
+let activeReadUp: ReadUpWire | null = null;
+
+/** *Nachlesen* beside the answer (ADR 2026-10-14, Decision 4). */
+function renderStudyReadUp(readUp: ReadUpWire | null | undefined): void {
+  activeReadUp = readUp ?? null;
+  const button = document.getElementById("btn-study-read-up");
+  if (!button) return;
+  button.hidden = activeReadUp === null;
+  button.title = activeReadUp
+    ? t(
+        activeReadUp.kind === "source"
+          ? "read_up_source_hint"
+          : "read_up_search_hint",
+      )
+    : "";
 }
 
 let activeCard: BridgeCard | null = null;
@@ -987,6 +1013,8 @@ function initializeTranslations() {
   document.getElementById("btn-session-summary-done")!.textContent =
     t("btn_back_to_dashboard");
   document.getElementById("btn-reveal-answer")!.textContent = t("btn_reveal_answer");
+  const studyReadUp = document.getElementById("btn-study-read-up");
+  if (studyReadUp) studyReadUp.textContent = t("read_up");
   
   // Rating labels
   document.getElementById("lbl-rating-group-missed")!.textContent = t(
@@ -7993,6 +8021,7 @@ async function presentFetchedCard(payload: ReviewPayload): Promise<void> {
   pendingReviewPayload = null;
   activeCard = payload.card;
   renderStudyEmblem(payload.emblem);
+  renderStudyReadUp(payload.readUp);
   await resolveActivePresentation();
   learningClock.start(Date.now());
   activePromptQuestion = payload.prompt.question;
@@ -8947,6 +8976,8 @@ async function openAtlas(): Promise<void> {
       switchView("learning-content-view");
       void openLearningContentCurriculum();
     },
+    // Nachlesen (ADR 2026-10-14, Decision 4): the system browser.
+    openExternal: (url) => void openUrl(url),
   });
 }
 
@@ -9505,6 +9536,10 @@ window.addEventListener("DOMContentLoaded", () => {
     ?.addEventListener("change", (event) => {
       void setDraftFirst((event.target as HTMLInputElement).checked);
     });
+  // Nachlesen opens on this click only; nothing was fetched before.
+  document.getElementById("btn-study-read-up")?.addEventListener("click", () => {
+    if (activeReadUp) void openUrl(readUpUrl(activeReadUp, currentLocale));
+  });
   document
     .getElementById("toggle-atlas-firma")
     ?.addEventListener("change", (event) => {

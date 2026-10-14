@@ -59,6 +59,22 @@ export interface Token {
   tier: string | null;
   /** Structured fast-check payload as JSON — substance. */
   fast_check: string | null;
+  /**
+   * The term to read a world unit up by, such as a Wikipedia article's name
+   * (ADR 2026-10-14, Decision 4). Never a source link; absent on rows read
+   * before M046.
+   */
+  lookup_term?: string | null;
+}
+
+/** Longest lookup term a token keeps; a reference work's article name. */
+export const MAX_LOOKUP_TERM = 200;
+
+/** A lookup term as stored: one line, trimmed, bounded; null when empty. */
+export function normalizeLookupTerm(raw: unknown): string | null {
+  if (typeof raw !== "string") return null;
+  const term = raw.replace(/\s+/g, " ").trim();
+  return term ? term.slice(0, MAX_LOOKUP_TERM).trim() : null;
 }
 
 export interface CreateTokenInput {
@@ -80,6 +96,8 @@ export interface CreateTokenInput {
   language?: string | null;
   tier?: string | null;
   fast_check?: string | null;
+  /** The term to read a world unit up by (ADR 2026-10-14, Decision 4). */
+  lookup_term?: string | null;
 }
 
 export interface UpdateTokenInput {
@@ -191,8 +209,8 @@ export async function insertToken(
 
   await db
     .prepare(`
-    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id, language, tier, fast_check)
-    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
+    INSERT INTO tokens (id, slug, title, concept, domain, bloom_level, context, symbiosis_mode, source_link, question, question_source, provider, topic_id, created_at, updated_at, editorial_state, atom_id, language, tier, fast_check, lookup_term)
+    VALUES (?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?, ?)
   `)
     .run(
       id,
@@ -215,6 +233,7 @@ export async function insertToken(
       input.language ?? null,
       input.tier ?? null,
       input.fast_check ?? null,
+      normalizeLookupTerm(input.lookup_term),
     );
 
   return id;
@@ -1778,6 +1797,8 @@ export interface SourceProposalInput {
   source_id?: string | null;
   /** Explicit prerequisite slugs (in-batch or existing). If omitted, auto-inferred. */
   prerequisites?: string[];
+  /** The term to read the unit up by (ADR 2026-10-14, Decision 4). */
+  lookup_term?: string | null;
 }
 
 /**
@@ -1855,6 +1876,7 @@ export async function applySourceProposals(
         provider: card.provider || null,
         topic_id: card.topic_id || null,
         editorial_state: await newTokenEditorialState(db),
+        lookup_term: card.lookup_term ?? null,
       });
       createdCount++;
     } else {

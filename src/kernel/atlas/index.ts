@@ -187,6 +187,13 @@ export type {
   ReadAtlasOptions,
 } from "./read.js";
 export { readAtlas, regionTokenIds, snapshotForRead } from "./read.js";
+export type { ReadUp } from "./read-up.js";
+export {
+  readUpFor,
+  readUpForTokens,
+  readUpForUnits,
+  webSourceUrl,
+} from "./read-up.js";
 export type { LensSnapshot, SettleResult } from "./settle.js";
 export {
   applySettle,

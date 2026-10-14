@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-14T13:00:00.000Z
+timestamp: 2026-10-14T14:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -19,9 +19,14 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 - The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding. What the learner already knows is where it starts, never content. Without a context it starts from the foundations.
 - From the first subtopic level, *Thema oder Kontext ändern* leads back to the name and the context, both kept.
 - No file is written. One `zam-topic:` source row records the import. That row names the import, not a source to read up in, so Lern-Karten never offers it as a card's source link.
-- Started outside the atlas, the cards land where any own unit lands: on the library's own planet unless a world rule covers their domain. ADR 2026-10-14's third delivery puts every topic import on the world planet.
+- A topic import writes world knowledge (Decision 5). Started outside the atlas, its new units land on the world planet, where Weltwissen's rules sort them by domain, even where no rule would otherwise cover them. On a team library this needs the right to write knowledge; without it the cards stay and the rules decide where they land.
+- Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
 
 The knowledge atlas opens the same dialog from a world region's **Hier importieren …** (*Fehlendes Wissen beschreiben*): the model is told where the cards will land, on a line of its own, never as prior knowledge, and the confirmed cards land there, each subtopic as the deepest level and the topic above it. If they cannot be put there, the result says so; the cards are kept. A Firma or Privat region does not offer it, since the model knows no company's or person's knowledge. Lehrplan, below, keeps the curriculum import and the enrolment of a learning path, and the menu has no curriculum entry.
+
+# Nachlesen
+
+**Nachlesen** (Read up, [ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md), Decision 4) opens the place to read a world unit up, in the system browser, on the learner's click only. A unit whose source link is a web page opens that page; a curriculum page is no place to read up and does not count. Any other world unit opens a Wikipedia search in the learner's language (the unit's own language when it names one) that jumps straight to the article of its lookup term, else of its title. Nothing is fetched beforehand, and the search is never a source link. Firma and Privat units get no button: their titles never go to a reference work. The button shows in the atlas unit panel, beside the revealed answer of a review card, and in Lern-Karten's card editor.
 
 # Lern-Karten
 

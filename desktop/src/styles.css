@@ -2345,6 +2345,29 @@ textarea::placeholder {
   display: none;
 }
 
+/* *Nachlesen* in Lern-Karten's card editor, below the source link. */
+.editor-read-up {
+  margin-bottom: var(--space-3);
+}
+
+.editor-read-up[hidden] {
+  display: none;
+}
+
+/* The Sinnbild and *Nachlesen* share a row; it takes no room while empty. */
+.study-emblem-row {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-3);
+}
+
+.study-emblem-row:not(:has(> :not([hidden]))),
+#btn-study-read-up[hidden] {
+  display: none;
+}
+
 .study-emblem-img {
   flex: none;
   padding: 5px;

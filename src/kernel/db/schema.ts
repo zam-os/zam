@@ -258,7 +258,11 @@ CREATE TABLE IF NOT EXISTS tokens (
   -- Declared edge representative of its atom (KVT tile flag, M032). Token
   -- prerequisites derived from atom edges point at this item; without the
   -- flag the first published Tier-1 item by id represents the atom.
-  edge_representative INTEGER NOT NULL DEFAULT 0
+  edge_representative INTEGER NOT NULL DEFAULT 0,
+  -- The term to read a world unit up by in a reference work, such as the
+  -- Wikipedia article a topic import's model proposed (ADR 2026-10-14,
+  -- Decision 4, M046). Never a source link and never fetched.
+  lookup_term TEXT
 );
 
 -- Stable provenance for deterministic local-file imports (ADR 2026-08-09).

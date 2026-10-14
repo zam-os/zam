@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T13:00:00.000Z
+timestamp: 2026-10-14T14:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -160,16 +160,21 @@ writes no file:
   never names the field the learner already knows. `--place` names the
   atlas place the cards will land at, root first, on a line of its own, so
   the model never reads it as prior knowledge. A name longer than 200
-  characters is refused before any model call.
+  characters is refused before any model call. Each subtopic may carry a
+  `lookupTerm`: the Wikipedia article the model names for reading it up.
 - `topic-cards --title <topic> [--context <text>] [--path <json>] [--place
   <json>] --topic <json>` drafts cards for one kept subtopic, as a preview:
   one point per card, or one overview card that lists the names of a
   complete set. A counterpart in the field the learner knows appears only
   as a brief bridge on a single card. The cards cite no source: their
-  knowledge is the model's world knowledge.
+  knowledge is the model's world knowledge. A `lookupTerm` in `--topic`
+  becomes every card's `lookup_term`.
 - `topic-source --title <topic>` records the import as one source row,
   `zam-topic:<ULID>`, with the title, the date and the learner. The confirm
-  (`personal-source-confirm-import --sourceId`) links every card to it.
+  (`personal-source-confirm-import --sourceId`) links every card to it,
+  stores each proposal's `lookup_term`, and without `--place-region` puts
+  the units it created on the world planet (Decision 5), reported as
+  `placed`.
 
 The goal import's `goal-decompose`, `goal-topic-cards` and `goal-create`
 are retired.
@@ -321,7 +326,12 @@ takes coordinates: only settle places land.
   draw one from the subject's title and path, validates and stores it; a
   refusal comes as `{success: false, code}` with `no-text-model`,
   `model-failed` or `invalid-answer`.
-- `get-review --media` also returns the card's unit Sinnbild as `emblem`.
+- `get-review --media` also returns the card's unit Sinnbild as `emblem`,
+  and `readUp` for a world unit (ADR 2026-10-14, Decision 4): `{kind:
+  "source", url}` for a web source, else `{kind: "search", term,
+  language}`, which the Studio turns into a Wikipedia search. Firma and
+  Privat units get `null`. `atlas-read` gives every unit of a world lens its
+  `readUp`, and `personal-card-list` every card's.
 - `personal-source-confirm-import` takes `--place-region <key>
   [--place-lens <kind>]`: the units the import created land at that region,
   each proposal's `placeBelow` naming the levels below it (the last name on

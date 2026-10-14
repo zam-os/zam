@@ -723,6 +723,54 @@ describe("zam bridge atlas commands", () => {
     expect(thema.name).toBe("Snellius in der Praxis");
   });
 
+  it("puts a topic import's units on the world planet, where they read up (ADR 2026-10-14)", () => {
+    const source = runCliJson([
+      "bridge",
+      "topic-source",
+      "--title",
+      "PostgreSQL nach MSSQL",
+    ]);
+    // No world rule covers this domain: without the topic import's rule the
+    // unit would land on the own planet (Privat).
+    const result = runCliJson([
+      "bridge",
+      "personal-source-confirm-import",
+      "--sourceId",
+      source.sourceId,
+      "--proposals",
+      JSON.stringify([
+        {
+          question: "Was ersetzt in PostgreSQL das TOP aus T-SQL?",
+          concept: "LIMIT am Ende der Abfrage.",
+          domain: "postgres-umstieg/abfragen",
+          bloom_level: 1,
+          symbiosis_mode: "shadowing",
+          lookup_term: "LIMIT (SQL)",
+        },
+      ]),
+    ]);
+    expect(result).toMatchObject({ createdCount: 1, placed: 1 });
+
+    const welt = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    const unit = welt.units.find((u: { title: string }) =>
+      /TOP|LIMIT/.test(u.title),
+    );
+    expect(unit).toBeDefined();
+    expect(unit.readUp).toEqual({
+      kind: "search",
+      term: "LIMIT (SQL)",
+      language: null,
+    });
+    const leben = runCliJson(["bridge", "atlas-read", "--lens", "leben"]);
+    expect(leben.units).toHaveLength(0);
+
+    const cards = runCliJson(["bridge", "personal-card-list"]).cards;
+    const card = cards.find(
+      (c: { tokenId: string }) => `token:${c.tokenId}` === unit.key,
+    );
+    expect(card.readUp).toEqual(unit.readUp);
+  });
+
   it("refuses to draw without a text model, by code", () => {
     const unit = runCliJson(["bridge", "atlas-read"]).units[0].key;
     const refused = runCliJson([

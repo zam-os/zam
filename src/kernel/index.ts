@@ -101,6 +101,7 @@ export type {
   PlaceInfo,
   PlanetErrorCode,
   PlanetKind,
+  ReadUp,
   RegionRow,
   ResolvedEmblem,
   RevalidateResult,
@@ -190,6 +191,9 @@ export {
   planSettle,
   primaryLens,
   readAtlas,
+  readUpFor,
+  readUpForTokens,
+  readUpForUnits,
   regionEmblemKey,
   regionShade,
   regionTokenIds,
@@ -228,6 +232,7 @@ export {
   WELTWISSEN_LENS,
   WELTWISSEN_SEED,
   weakestCondition,
+  webSourceUrl,
 } from "./atlas/index.js";
 export type {
   ADOCredentials,
@@ -425,6 +430,7 @@ export {
 } from "./import/text-import.js";
 export type { TopicImportRecord } from "./import/topic-import.js";
 export {
+  isTopicImportSource,
   MAX_TOPIC_TITLE,
   normalizeTopicTitle,
   recordTopicImport,
@@ -743,7 +749,9 @@ export {
   listPersonalCards,
   listTokens,
   listUserCardsForCurriculumTopic,
+  MAX_LOOKUP_TERM,
   newTokenEditorialState,
+  normalizeLookupTerm,
   setTokenMaintenance,
   slugify,
   tokenMatchesCurriculumTopicScope,

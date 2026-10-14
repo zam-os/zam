@@ -2,7 +2,8 @@
 
 **Status:** Phases 1 to 8 done (2026-10-13), with the owner's decisions from
 the first Studio check built between Phases 7 and 8. Phases 9a (the own
-planet) and 9b (typed threads and portals) done 2026-10-14. The ADR gained
+planet) and 9b (typed threads and portals) done 2026-10-14, with
+Deliveries 1 and 2 of ADR 2026-10-14 (the topic import, *Nachlesen*). The ADR gained
 Decision 12 and the round-2 changes after this plan was first merged; the
 phases below include them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -69,17 +70,20 @@ what the learner knows.
   - [x] **9a** — the library's own planet, its lenses (Leben, Produkte,
     Unternehmen), a unit's kind and the planet invariants — `18c26264`;
     see "As built (9a)"
-  - [x] **9b** — typed threads and portals — this commit; see "As built
+  - [x] **9b** — typed threads and portals — `211d0aa0`; see "As built
     (9b)"
   - [x] **Topic import, Delivery 1** ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md)):
     the goal import becomes the topic import, with a context field and its
     own prompts, and writes no file; the first-run topic page follows only
-    the topic path; world regions only in the atlas — this commit
-  - [ ] **Topic import, Delivery 2** — *Nachlesen* for world units. Lands
-    before 9c.
+    the topic path; world regions only in the atlas — `76396d32`, review
+    round 1 `e158590b`
+  - [x] **Topic import, Delivery 2** — *Nachlesen* for world units, and a
+    topic import's units on the world planet — this commit; see "As built
+    (Delivery 2)"
   - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
-    updates; also the kind per subtopic and the source rules for agents
-    (ADR 2026-10-14, Decisions 3 and 5)
+    updates; also the rest of ADR 2026-10-14's Decision 5 (the model flags
+    a subtopic about a company or a person) and the source rules for agents
+    (Decision 3)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 
@@ -1827,6 +1831,52 @@ automatically (ADR 2026-10-08b).
   personal Voraussetzung that never blocks (both ends rated 1). PostgreSQL:
   `learner_connections` under RLS, and a member refused a shared thread
   while a curator writes one.
+
+**As built (Delivery 2 of ADR 2026-10-14).**
+
+- **The term.** `tokens.lookup_term`, M046 at schema version 46: knowledge,
+  part of the token's revision (`RevisionChanges.lookupTerm`, also in
+  `zam_publish_revision`), stored trimmed and at most 200 characters.
+- **Where it comes from.**
+  - `topic-outline` asks the model for each subtopic's `article`, the exact
+    title of the Wikipedia article in the content language, and returns it
+    as `lookupTerm`.
+  - The Studio hands it on in `topic-cards --topic`. Every card of the
+    subtopic then carries `lookup_term`, and the confirm stores it.
+  - A published atom without a term uses its title.
+- **What reading up opens** (`src/kernel/atlas/read-up.ts`).
+  - A world unit with a web `source_link` opens that page. A LehrplanPLUS
+    page does not count: a curriculum names a subject's scope, not the
+    knowledge. Nor does a link with credentials.
+  - Every other world unit gets `{kind: "search", term, language}`. The
+    Studio builds the search (`desktop/src/read-up.ts`), in the unit's
+    language, else the learner's.
+  - Firma and Privat units get nothing, since `readUpForTokens` decides the
+    planet first.
+- **Surfaces.**
+  - `atlas-read` units on world lenses, `get-review --media` and
+    `personal-card-list` carry `readUp`.
+  - The *Nachlesen* button sits in the atlas unit panel, beside the
+    revealed answer (next to the Sinnbild), and in Lern-Karten's card
+    editor. Each opens in the system browser through the host's opener;
+    without a host (the panel) the button stays away.
+- **One bullet of Decision 5 moved forward.**
+  - The topic import's confirm without `--place-region` puts its new units
+    on the world planet (`placeOnWorldPlanet`), so they read up even where
+    no world rule covers their domain.
+  - On a team library this needs the right to write knowledge. Without it
+    the cards stay and the rules decide.
+  - The model flagging a subtopic about a company or a person stays in 9c.
+- **Tests.**
+  - `tests/kernel/atlas-read-up.test.ts`: link rules, the order of
+    preference, the term's storage and revision, world against private,
+    atoms by title, the world map only, and an import keeping the term.
+  - `tests/desktop/read-up.test.ts`: the URLs.
+  - The parser keeps the article.
+  - The Studio hands the term on per subtopic.
+  - `bridge-atlas.test.ts`: a topic import without a place lands on the
+    world planet with its `readUp` in `atlas-read` and
+    `personal-card-list`.
 
 ---
 

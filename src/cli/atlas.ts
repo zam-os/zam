@@ -661,6 +661,29 @@ export function fitBelow(names: readonly string[], levels: number): string[] {
 }
 
 /**
+ * Put the units an import created on the world planet, where Weltwissen's
+ * rules sort them (ADR 2026-10-14, Decision 5: a topic import writes world
+ * knowledge). Units a world rule already covers stay as they are. Without
+ * the right to write knowledge nothing is placed: the cards stay, and the
+ * unit keeps where the rules put it.
+ */
+export async function placeOnWorldPlanet(
+  db: Database,
+  tokenIds: readonly string[],
+): Promise<number> {
+  if (tokenIds.length === 0 || !(await mayWriteKnowledge(db))) return 0;
+  await ensureWorldLenses(db);
+  const result = await db.transaction((tx) =>
+    moveUnitsToPlanet(tx, {
+      units: tokenIds.map((id) => `token:${id}` as UnitKey),
+      planet: "welt",
+      placedBy: "import",
+    }),
+  );
+  return result.moved.length + result.unchanged.length;
+}
+
+/**
  * Put units an import created at an atlas region (`placeUnits`), with the
  * names each brings for the levels below it. A linked duplicate keeps its
  * own place, as in the material import.

@@ -35,7 +35,8 @@ import type {
 import { emblemDataUrl } from "../../../src/kernel/atlas/emblem.js";
 import { THREAD_KINDS } from "../../../src/kernel/atlas/types.js";
 import { runBridge } from "../bridge-transport.js";
-import { t, tf } from "../i18n.js";
+import { currentLocale, t, tf } from "../i18n.js";
+import { readUpUrl } from "../read-up.js";
 import { type ImportPlace, openAtlasImport } from "./import.js";
 import {
   type AtlasLayout,
@@ -77,6 +78,8 @@ export interface AtlasViewDeps {
   importMaterial(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers a place. */
   openCurriculumWizard?(): void;
+  /** Open a page in the system browser: *Nachlesen* (ADR 2026-10-14, D4). */
+  openExternal?(url: string): void;
 }
 
 /** Until the first read names the library's lenses: world knowledge's. */
@@ -1023,6 +1026,22 @@ function unitPanel(
     ),
   );
   body.appendChild(emblemSection(s, layout, "unit", key));
+  // Reading up: world units only, the bridge gives others none (D4 of
+  // ADR 2026-10-14). Opened on this click; nothing is fetched before.
+  const readUp = unit.readUp;
+  const openExternal = s.deps.openExternal;
+  if (readUp && openExternal) {
+    const read = button("btn secondary-btn btn-sm", t("read_up"));
+    read.title = t(
+      readUp.kind === "source" ? "read_up_source_hint" : "read_up_search_hint",
+    );
+    read.addEventListener("click", () =>
+      openExternal(readUpUrl(readUp, currentLocale)),
+    );
+    const actions = el("div", "atlas-panel-actions");
+    actions.appendChild(read);
+    body.appendChild(actions);
+  }
   if (unit.own) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_own_unit_note")));
     const move = unit.inReach ? null : planetMoveButton(s, 1, ["--unit", key]);

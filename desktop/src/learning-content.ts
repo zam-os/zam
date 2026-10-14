@@ -1,5 +1,6 @@
+import type { ReadUpWire } from "../../src/bridge/protocol.js";
 import { runBridge } from "./bridge-transport.js";
-import { t, tf } from "./i18n.js";
+import { currentLocale, t, tf } from "./i18n.js";
 import {
   applyLearningContentSourceChrome,
   initLearningContentSources,
@@ -12,6 +13,7 @@ import { initMaterialBonus, refreshMaterialBonus } from "./material-bonus.js";
 import { initMaterialImportStart } from "./material-import-start.js";
 import { initMaterialImports } from "./material-review.js";
 import { buildDomainOptions, domainMatches } from "./panel/graph-scope.js";
+import { readUpUrl } from "./read-up.js";
 
 export interface PersonalCard {
   tokenId: string;
@@ -43,6 +45,8 @@ export interface PersonalCard {
     label: string | null;
     language: string | null;
   }>;
+  /** Where to read a world unit up; none for Firma or Privat (ADR 2026-10-14, D4). */
+  readUp?: ReadUpWire | null;
 }
 
 let cardsList: PersonalCard[] = [];
@@ -91,6 +95,8 @@ let unchosenGroups: UnchosenGroupRow[] = [];
 let unchosenMembers: UnchosenMemberRow[] = [];
 let loadGeneration = 0;
 let graphOpener: (() => void) | null = null;
+/** Opens a page in the system browser; the desktop shell sets it. */
+let externalOpener: ((url: string) => void) | null = null;
 
 // DOM Cache
 let layoutContainer: HTMLElement;
@@ -409,6 +415,32 @@ export function editorialStatusLabel(state: string | null | undefined): string {
 export function setLearningContentGraphOpener(opener: () => void): void {
   graphOpener = opener;
   document.getElementById("btn-content-open-graph")?.classList.remove("hidden");
+}
+
+/**
+ * *Nachlesen* (ADR 2026-10-14, Decision 4) opens in the system browser,
+ * which only the desktop shell can reach. Without it the button stays away.
+ */
+export function setLearningContentExternalOpener(
+  opener: (url: string) => void,
+): void {
+  externalOpener = opener;
+}
+
+/** The selected card's *Nachlesen*, for a world unit only. */
+function renderEditorReadUp(card: PersonalCard | null): void {
+  const box = document.getElementById("editor-read-up");
+  const btn = document.getElementById("btn-editor-read-up");
+  if (!box || !btn) return;
+  const readUp = card?.readUp ?? null;
+  box.hidden = !readUp || !externalOpener;
+  btn.textContent = t("read_up");
+  btn.title = readUp
+    ? t(readUp.kind === "source" ? "read_up_source_hint" : "read_up_search_hint")
+    : "";
+  btn.onclick = readUp
+    ? () => externalOpener?.(readUpUrl(readUp, currentLocale))
+    : null;
 }
 
 function setText(id: string, text: string): void {
@@ -1336,6 +1368,7 @@ function selectCard(card: PersonalCard): void {
   fieldBloom.value = String(card.bloomLevel || 1);
   fieldMode.value = card.symbiosisMode || "none";
   fieldSlug.value = card.slug || "";
+  renderEditorReadUp(card);
 
   updateUIForSelection();
   refreshCardsList(); // Update selected highlight
@@ -1371,6 +1404,7 @@ function startCreateNewCard(): void {
   selectedCard = null;
   isCreatingNew = true;
   setEditorLocked(false);
+  renderEditorReadUp(null);
 
   // Reset responsive layout mode (show editor on mobile)
   layoutContainer.classList.remove("show-list");

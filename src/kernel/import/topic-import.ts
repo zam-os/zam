@@ -41,6 +41,17 @@ export function normalizeTopicTitle(raw: string): string {
   return title;
 }
 
+/** Whether a source row records a topic import (`zam-topic:<ULID>`). */
+export async function isTopicImportSource(
+  db: Database,
+  sourceId: string,
+): Promise<boolean> {
+  const row = (await db
+    .prepare("SELECT uri FROM sources WHERE id = ?")
+    .get(sourceId)) as { uri: string | null } | undefined;
+  return row?.uri?.startsWith(TOPIC_SOURCE_PREFIX) === true;
+}
+
 /** Record a topic import as its source row. */
 export async function recordTopicImport(
   db: Database,

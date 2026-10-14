@@ -33,7 +33,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 45;
+export const CURRENT_SCHEMA_VERSION = 46;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1037,6 +1037,12 @@ export async function runMigrations(db: Database): Promise<void> {
   // the library's shared threads (knowledge) and a learner's own of any kind
   // (learning state), which never feed blocking.
   await db.exec(CONNECTION_TABLES);
+
+  // M046: the term to read a world unit up by (ADR 2026-10-14, Decision 4).
+  // Knowledge, shared, part of the token's revision; never a source link.
+  if (!(await columnsOf(db, "tokens")).includes("lookup_term")) {
+    await db.exec(`ALTER TABLE tokens ADD COLUMN lookup_term TEXT`);
+  }
 }
 
 /**
