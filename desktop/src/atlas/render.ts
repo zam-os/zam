@@ -1,8 +1,7 @@
 /**
  * The atlas as a zoomable 2D map on a canvas: one lens at a time (ADR
- * 2026-10-13, Decisions 3–6). Ported from the knowledge-atlas spike's
- * `render.ts` (PR #405), without portals and notes, which come in a later
- * phase.
+ * 2026-10-13, Decisions 3–7). Ported from the knowledge-atlas spike's
+ * `render.ts` (PR #405).
  *
  * Sinnbilder are drawn only as images of the validator's canonical form
  * (`emblemDataUrl` into an `Image`, then `drawImage`), never as markup.
@@ -14,12 +13,19 @@
  * land, a unit the learner does not hold, gets neither texture nor name.
  *
  * Zooming is semantic: far out the islands and their first level read, closer
- * in the deeper levels, closest the learning units. Prerequisite threads are
- * bundled to the level in view, like relationships in C4.
+ * in the deeper levels, closest the learning units. Red threads are bundled
+ * to the level in view, like relationships in C4. Their ends follow UML
+ * (Decision 7), and every kind is also named in words. A thread to the
+ * library's other planet ends at a portal; a click goes there.
  *
  * No Tauri and no `main.ts`: the MCP Apps panel can reuse it (Phase 10).
  */
 
+import type {
+  AtlasPlanetWire,
+  AtlasThreadKindWire,
+  AtlasThreadWire,
+} from "../../../src/bridge/protocol.js";
 import { emblemDataUrl } from "../../../src/kernel/atlas/emblem.js";
 import {
   CONDITION_TEXTURE,
@@ -55,7 +61,10 @@ interface Theme {
   inkRgb: string;
   halo: string;
   surface: string;
+  /** Prerequisite threads. */
   thread: string;
+  /** The other kinds: nutzt, Schnittstelle, ist ein, Verbindung. */
+  threadLink: string;
   accent: string;
   accentFill: string;
   due: string;
@@ -74,6 +83,7 @@ const LIGHT: Theme = {
   halo: "rgba(255,255,255,0.92)",
   surface: "#ffffff",
   thread: "#9c2a3c",
+  threadLink: "#d62828",
   accent: "#2340b5",
   accentFill: "rgba(35,64,181,0.16)",
   due: "#e8590c",
@@ -91,6 +101,7 @@ const DARK: Theme = {
   halo: "rgba(10,16,22,0.88)",
   surface: "#1a2430",
   thread: "#d2647a",
+  threadLink: "#ff5c5c",
   accent: "#8aa4ff",
   accentFill: "rgba(138,164,255,0.22)",
   due: "#f29a4a",
@@ -310,17 +321,58 @@ interface End {
   key: string;
   x: number;
   y: number;
+  /** A unit on the library's other planet: drawn as a portal. */
+  portal?: { planet: AtlasPlanetWire; unit: string; title: string };
 }
 
 interface Bundle {
   a: End;
   b: End;
-  count: number;
+  threads: AtlasThreadWire[];
   lit: boolean;
 }
 
+/** A point set back from a thread's end, and the direction into that end. */
+interface EndPoint {
+  x: number;
+  y: number;
+  ux: number;
+  uy: number;
+}
+
+/** Words the map writes beside threads and portals, in the view's language. */
+export interface MapWords {
+  kinds: Readonly<Record<AtlasThreadKindWire, string>>;
+  planets: Readonly<Record<AtlasPlanetWire, string>>;
+}
+
+const DEFAULT_WORDS: MapWords = {
+  kinds: {
+    voraussetzung: "baut auf",
+    nutzt: "nutzt",
+    schnittstelle: "Schnittstelle",
+    "ist-ein": "ist ein",
+    verbindung: "Verbindung",
+  },
+  planets: { welt: "Welt", firma: "Firma", privat: "Privat" },
+};
+
+/** Where an island's portal sits on its coast: lower left, below the title. */
+const PORTAL_BEARING: readonly [number, number] = [-Math.SQRT1_2, Math.SQRT1_2];
+
+/** Which kind a bundle of threads shows: the most specific one present. */
+const KIND_PRIORITY: readonly AtlasThreadKindWire[] = [
+  "schnittstelle",
+  "nutzt",
+  "ist-ein",
+  "verbindung",
+  "voraussetzung",
+];
+
 export interface MapEvents {
   onClick(target: Selection | null): void;
+  /** A portal was clicked: open that planet at that unit. */
+  onPortal(planet: AtlasPlanetWire, unitKey: string): void;
   onDoubleClick(target: Selection | null): void;
   onHover(target: Selection | null, x: number, y: number): void;
   onCamera(): void;
@@ -338,6 +390,7 @@ export class AtlasMap {
   selection: Selection | null = null;
   hover: Selection | null = null;
   threadMode: ThreadMode = "all";
+  words: MapWords = DEFAULT_WORDS;
 
   private theme: Theme = LIGHT;
   private font = "system-ui, sans-serif";
@@ -346,6 +399,14 @@ export class AtlasMap {
   private outlines = new Map<string, Segment[]>();
   /** Sinnbild images by canonical SVG; drawn once loaded. */
   private images = new Map<string, HTMLImageElement>();
+  /** Portals as last drawn, in screen space, for clicks. */
+  private portals: Array<{
+    x: number;
+    y: number;
+    r: number;
+    planet: AtlasPlanetWire;
+    unit: string;
+  }> = [];
   private frame = 0;
   private anim: { from: Camera; to: Camera; start: number; ms: number } | null =
     null;
@@ -747,6 +808,10 @@ export class AtlasMap {
           return;
         }
       }
+      if (this.portalAt(sx, sy)) {
+        c.style.cursor = "pointer";
+        return;
+      }
       const target = this.targetAt(this.cellAt(sx, sy));
       const changed = !sameSelection(target, this.hover);
       this.hover = target;
@@ -761,8 +826,14 @@ export class AtlasMap {
       c.style.cursor = "grab";
       if (!wasClick) return;
       const rect = c.getBoundingClientRect();
-      const cell = this.cellAt(e.clientX - rect.left, e.clientY - rect.top);
-      this.events.onClick(this.targetAt(cell));
+      const sx = e.clientX - rect.left;
+      const sy = e.clientY - rect.top;
+      const portal = this.portalAt(sx, sy);
+      if (portal) {
+        this.events.onPortal(portal.planet, portal.unit);
+        return;
+      }
+      this.events.onClick(this.targetAt(this.cellAt(sx, sy)));
     });
     on("pointerleave", () => {
       this.hover = null;
@@ -1035,6 +1106,7 @@ export class AtlasMap {
       this.drawHighlight(this.hover, ink(0.55), false, 1.6);
     }
 
+    this.portals = [];
     if (this.threadMode !== "off") this.drawThreads();
     this.drawLabels();
   }
@@ -1228,6 +1300,48 @@ export class AtlasMap {
     return g ? { key, x: g.labelX, y: g.labelY } : null;
   }
 
+  /**
+   * A portal for a thread's end on the other planet. Up close it sits right
+   * beside the unit, once per unit; further out once per island, on its
+   * lower left coast, where every thread of the island to that planet
+   * meets. A click opens the unit of the first thread drawn to it.
+   */
+  private portalEnd(
+    local: End,
+    localUnit: string,
+    otherUnit: string,
+    level: number,
+  ): End | null {
+    const layout = this.layout;
+    const far = layout?.view.portals?.[otherUnit];
+    const cell = layout?.unitCell.get(localUnit);
+    if (!layout || !far || !cell) return null;
+    const island = layout.islands.get(cell.path[0]);
+    if (!island) return null;
+    const portal = { planet: far.planet, unit: otherUnit, title: far.title };
+    if (level >= layout.depth) {
+      // Away from the island's middle, towards its coast.
+      let dx = local.x - island.x;
+      let dy = local.y - island.y;
+      const d = Math.hypot(dx, dy);
+      if (d < 0.5) [dx, dy] = PORTAL_BEARING;
+      else [dx, dy] = [dx / d, dy / d];
+      return {
+        key: `portal:${far.planet}:${localUnit}`,
+        x: local.x + dx * 1.7,
+        y: local.y + dy * 1.7 - 0.6,
+        portal,
+      };
+    }
+    const reach = island.radius + 1.6;
+    return {
+      key: `portal:${far.planet}:${cell.path[0]}`,
+      x: island.x + PORTAL_BEARING[0] * reach,
+      y: island.y + PORTAL_BEARING[1] * reach,
+      portal,
+    };
+  }
+
   private touches(unitKeys: [string, string], sel: Selection | null): boolean {
     if (!sel || !this.layout) return false;
     if (sel.kind === "unit") return unitKeys.includes(sel.key);
@@ -1244,33 +1358,65 @@ export class AtlasMap {
     const level = this.focusLevel();
     const pairs = new Map<string, Bundle>();
     for (const thread of layout.view.threads) {
-      // `a` builds on `b`: the arrow points from the foundation to `a`.
       const keys: [string, string] = [thread.from, thread.to];
       const lit =
         this.touches(keys, this.selection) ||
         (this.hover?.kind === "unit" && this.touches(keys, this.hover));
       if (this.threadMode === "selection" && !lit) continue;
+      const fromHere = layout.unitCell.has(thread.from);
+      const toHere = layout.unitCell.has(thread.to);
       // Up close, a string per prerequisite would be spaghetti: only around the focus.
-      if (level >= layout.depth - 1 && !lit) continue;
-      const a = this.endAt(thread.from, level);
-      const b = this.endAt(thread.to, level);
+      if (
+        level >= layout.depth - 1 &&
+        !lit &&
+        thread.kind === "voraussetzung" &&
+        fromHere &&
+        toHere
+      ) {
+        continue;
+      }
+      let a = fromHere ? this.endAt(thread.from, level) : null;
+      let b = toHere ? this.endAt(thread.to, level) : null;
+      if (a && !toHere) b = this.portalEnd(a, thread.from, thread.to, level);
+      if (b && !fromHere) a = this.portalEnd(b, thread.to, thread.from, level);
       if (!a || !b || a.key === b.key) continue;
-      const id = `${a.key}|${b.key}`;
+      const id = a.key < b.key ? `${a.key}|${b.key}` : `${b.key}|${a.key}`;
       const entry = pairs.get(id);
       if (entry) {
-        entry.count += 1;
+        entry.threads.push(thread);
         entry.lit ||= lit;
-      } else pairs.set(id, { a, b, count: 1, lit });
+      } else pairs.set(id, { a, b, threads: [thread], lit });
     }
     return [...pairs.values()];
+  }
+
+  /** Does a bundle's end stand for this unit at the level in view? */
+  private isEnd(end: End, unitKey: string): boolean {
+    const layout = this.layout;
+    if (!layout) return false;
+    // A bundle has at most one portal end: the unit not on this map.
+    if (end.portal) return !layout.unitCell.has(unitKey);
+    const cell = layout.unitCell.get(unitKey);
+    if (!cell) return false;
+    const level = this.focusLevel();
+    return (
+      end.key === (level >= layout.depth ? unitKey : this.regionAt(cell, level))
+    );
   }
 
   private drawThreads(): void {
     const ctx = this.ctx;
     const t = this.theme;
+    const layout = this.layout;
+    if (!layout) return;
     const bundles = this.bundledThreads();
     const anyLit = this.selection !== null && bundles.some((b) => b.lit);
-    const pins = new Map<string, { x: number; y: number; lit: boolean }>();
+    const close = this.focusLevel() >= layout.depth;
+    const pins = new Map<
+      string,
+      { x: number; y: number; lit: boolean; portal?: End["portal"] }
+    >();
+    const notes: Array<{ x: number; y: number; text: string }> = [];
     for (const bundle of bundles) {
       const [ax, ay] = this.toScreen(bundle.a.x, bundle.a.y);
       const [bx, by] = this.toScreen(bundle.b.x, bundle.b.y);
@@ -1281,30 +1427,51 @@ export class AtlasMap {
       const sag = Math.min(70, len * 0.18);
       const mx = (ax + bx) / 2;
       const my = (ay + by) / 2 + sag;
-      const width = 1.5 + Math.log2(bundle.count) * 0.9;
-      ctx.globalAlpha = anyLit && !bundle.lit ? 0.18 : 1;
+      const kind =
+        KIND_PRIORITY.find((k) => bundle.threads.some((x) => x.kind === k)) ??
+        "voraussetzung";
+      const lead =
+        bundle.threads.find((x) => x.kind === kind) ?? bundle.threads[0];
+      // The ends follow the leading thread: its `from` may be this bundle's b end.
+      const flipped = this.isEnd(bundle.b, lead.from);
+      const prerequisite = kind === "voraussetzung";
+      const count = bundle.threads.length;
+      const width = (prerequisite ? 1.5 : 2.4) + Math.log2(count) * 0.9;
+      const color = prerequisite ? t.thread : t.threadLink;
+      const dim = anyLit && !bundle.lit ? 0.18 : 1;
+      ctx.globalAlpha = dim;
+      ctx.setLineDash([]);
       ctx.strokeStyle = "rgba(0,0,0,0.22)";
       ctx.lineWidth = width + 1;
       ctx.beginPath();
       ctx.moveTo(ax + 2, ay + 3);
       ctx.quadraticCurveTo(mx + 2, my + 4, bx + 2, by + 3);
       ctx.stroke();
-      ctx.strokeStyle = t.thread;
+      ctx.strokeStyle = color;
       ctx.lineWidth = width;
+      // A «use» dependency is dashed, as in UML.
+      if (kind === "nutzt") ctx.setLineDash([8, 6]);
       ctx.beginPath();
       ctx.moveTo(ax, ay);
       ctx.quadraticCurveTo(mx, my, bx, by);
       ctx.stroke();
-      // The arrow ends at the place that builds on the other.
-      this.drawArrow(ax, ay, mx, my, t.thread);
-      if (bundle.count > 1 && ctx.globalAlpha === 1) {
-        const cx = 0.25 * ax + 0.5 * mx + 0.25 * bx;
-        const cy = 0.25 * ay + 0.5 * my + 0.25 * by;
-        const label = String(bundle.count);
+      ctx.setLineDash([]);
+      // UML-style ends, set back from the pins so both stay visible.
+      const endA = endPoint(ax, ay, mx, my, bundle.a.portal ? 17 : 9);
+      const endB = endPoint(bx, by, mx, my, bundle.b.portal ? 17 : 9);
+      const [from, to] = flipped ? [endB, endA] : [endA, endB];
+      this.drawMarkers(kind, from, to, color);
+      const cx = 0.25 * ax + 0.5 * mx + 0.25 * bx;
+      const cy = 0.25 * ay + 0.5 * my + 0.25 * by;
+      // The kind in words, up close and on lit strings (Decision 7).
+      const words = close || bundle.lit ? this.words.kinds[kind] : "";
+      if (dim === 1 && (words || count > 1)) {
+        const label =
+          words && count > 1 ? `${words} · ${count}` : words || String(count);
         ctx.font = `700 11px ${this.font}`;
         const w = ctx.measureText(label).width + 10;
         ctx.fillStyle = t.surface;
-        ctx.strokeStyle = t.thread;
+        ctx.strokeStyle = color;
         ctx.lineWidth = 1.5;
         roundRect(ctx, cx - w / 2, cy - 8, w, 16, 8);
         ctx.fill();
@@ -1314,6 +1481,9 @@ export class AtlasMap {
         ctx.textBaseline = "middle";
         ctx.fillText(label, cx, cy + 0.5);
       }
+      // A note only on a lit single thread: a selected region would bury the map in paper.
+      const note = count === 1 && bundle.lit ? bundle.threads[0].note : "";
+      if (note) notes.push({ x: cx, y: cy, text: note });
       for (const [end, sx, sy] of [
         [bundle.a, ax, ay],
         [bundle.b, bx, by],
@@ -1323,47 +1493,98 @@ export class AtlasMap {
           x: sx,
           y: sy,
           lit: (prev?.lit ?? false) || bundle.lit || !anyLit,
+          portal: end.portal,
         });
       }
     }
     for (const pin of pins.values()) {
       ctx.globalAlpha = pin.lit ? 1 : 0.3;
-      this.drawPin(pin.x, pin.y);
+      if (pin.portal) this.drawPortal(pin.x, pin.y, pin.portal);
+      else this.drawPin(pin.x, pin.y);
     }
     ctx.globalAlpha = 1;
+    for (const note of notes.slice(0, 12)) {
+      this.drawNote(note.x, note.y, note.text);
+    }
   }
 
-  private drawArrow(
-    x: number,
-    y: number,
-    cx: number,
-    cy: number,
+  /**
+   * UML-style ends (Decision 7). Every head sits at the end depended upon,
+   * `to`: an arrowhead at the foundation, an open head at what is used, a
+   * hollow triangle at the general case, and the ball at the interface's
+   * provider, with the socket at its consumer.
+   */
+  private drawMarkers(
+    kind: AtlasThreadKindWire,
+    from: EndPoint,
+    to: EndPoint,
     color: string,
   ): void {
     const ctx = this.ctx;
-    let ux = x - cx;
-    let uy = y - cy;
-    const d = Math.hypot(ux, uy) || 1;
-    ux /= d;
-    uy /= d;
-    const px = x - ux * 9;
-    const py = y - uy * 9;
-    const size = 10;
-    const nx = -uy;
-    const ny = ux;
-    ctx.beginPath();
-    ctx.moveTo(px, py);
-    ctx.lineTo(
-      px - ux * size + nx * size * 0.55,
-      py - uy * size + ny * size * 0.55,
-    );
-    ctx.lineTo(
-      px - ux * size - nx * size * 0.55,
-      py - uy * size - ny * size * 0.55,
-    );
-    ctx.closePath();
-    ctx.fillStyle = color;
-    ctx.fill();
+    const head = (p: EndPoint, size: number, fill: string | null) => {
+      const nx = -p.uy;
+      const ny = p.ux;
+      ctx.beginPath();
+      ctx.moveTo(p.x, p.y);
+      ctx.lineTo(
+        p.x - p.ux * size + nx * size * 0.55,
+        p.y - p.uy * size + ny * size * 0.55,
+      );
+      if (fill === null) {
+        ctx.moveTo(p.x, p.y);
+        ctx.lineTo(
+          p.x - p.ux * size - nx * size * 0.55,
+          p.y - p.uy * size - ny * size * 0.55,
+        );
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.2;
+        ctx.stroke();
+        return;
+      }
+      ctx.lineTo(
+        p.x - p.ux * size - nx * size * 0.55,
+        p.y - p.uy * size - ny * size * 0.55,
+      );
+      ctx.closePath();
+      ctx.fillStyle = fill;
+      ctx.fill();
+      ctx.strokeStyle = color;
+      ctx.lineWidth = 2;
+      ctx.stroke();
+    };
+    switch (kind) {
+      case "voraussetzung":
+        head(to, 10, color);
+        break;
+      case "nutzt":
+        head(to, 11, null);
+        break;
+      case "ist-ein":
+        head(to, 13, this.theme.surface);
+        break;
+      case "schnittstelle": {
+        ctx.fillStyle = this.theme.surface;
+        ctx.strokeStyle = color;
+        ctx.lineWidth = 2.2;
+        ctx.beginPath();
+        ctx.arc(to.x, to.y, 5, 0, Math.PI * 2);
+        ctx.fill();
+        ctx.stroke();
+        const angle = Math.atan2(from.uy, from.ux);
+        ctx.beginPath();
+        ctx.arc(
+          from.x + from.ux * 2,
+          from.y + from.uy * 2,
+          8,
+          angle + Math.PI / 2,
+          angle + (3 * Math.PI) / 2,
+        );
+        ctx.stroke();
+        break;
+      }
+      case "verbindung":
+        break;
+    }
   }
 
   private drawPin(x: number, y: number): void {
@@ -1379,6 +1600,100 @@ export class AtlasMap {
     ctx.beginPath();
     ctx.arc(x, y, 4.5, 0, Math.PI * 2);
     ctx.fill();
+  }
+
+  private portalAt(
+    sx: number,
+    sy: number,
+  ): { planet: AtlasPlanetWire; unit: string } | null {
+    return (
+      this.portals.find((p) => Math.hypot(p.x - sx, p.y - sy) <= p.r + 3) ??
+      null
+    );
+  }
+
+  /**
+   * A thread leaving for the other planet: a small globe in that planet's
+   * sea colour (the product has no planet Sinnbilder). A click goes there.
+   */
+  private drawPortal(
+    x: number,
+    y: number,
+    portal: NonNullable<End["portal"]>,
+  ): void {
+    const ctx = this.ctx;
+    const t = this.theme;
+    const r = 13;
+    ctx.fillStyle = "rgba(0,0,0,0.25)";
+    ctx.beginPath();
+    ctx.arc(x + 2, y + 3, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.fillStyle = t.sea[portal.planet];
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.fill();
+    ctx.save();
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.clip();
+    ctx.strokeStyle = `rgba(${t.inkRgb},0.55)`;
+    ctx.lineWidth = 1.2;
+    ctx.beginPath();
+    ctx.ellipse(x, y, r * 0.45, r, 0, 0, Math.PI * 2);
+    ctx.moveTo(x - r, y);
+    ctx.lineTo(x + r, y);
+    ctx.moveTo(x - r, y - r * 0.5);
+    ctx.quadraticCurveTo(x, y - r * 0.3, x + r, y - r * 0.5);
+    ctx.moveTo(x - r, y + r * 0.5);
+    ctx.quadraticCurveTo(x, y + r * 0.7, x + r, y + r * 0.5);
+    ctx.stroke();
+    ctx.restore();
+    ctx.strokeStyle = t.threadLink;
+    ctx.lineWidth = 2.5;
+    ctx.beginPath();
+    ctx.arc(x, y, r, 0, Math.PI * 2);
+    ctx.stroke();
+    this.portals.push({ x, y, r, planet: portal.planet, unit: portal.unit });
+    if (this.hexPx >= 26 || this.selection) {
+      ctx.font = `600 11px ${this.font}`;
+      // One line: a long title ends in an ellipsis.
+      const [label] = wrap(
+        ctx,
+        `${this.words.planets[portal.planet]}: ${shortTitle(portal.title)}`,
+        200,
+        1,
+      );
+      ctx.textAlign = "center";
+      ctx.textBaseline = "top";
+      ctx.lineWidth = 3;
+      ctx.strokeStyle = t.halo;
+      ctx.strokeText(label, x, y + r + 3);
+      ctx.fillStyle = t.ink;
+      ctx.fillText(label, x, y + r + 3);
+    }
+  }
+
+  /** A thread's note on a slip of paper. Untrusted text, drawn as text only. */
+  private drawNote(x: number, y: number, text: string): void {
+    const ctx = this.ctx;
+    ctx.save();
+    ctx.translate(x, y + 14);
+    ctx.rotate(-0.035);
+    ctx.font = `italic 500 12px ${this.font}`;
+    const lines = wrap(ctx, text, 190, 3);
+    const w = Math.max(...lines.map((l) => ctx.measureText(l).width)) + 16;
+    const h = lines.length * 15 + 10;
+    ctx.fillStyle = "rgba(0,0,0,0.18)";
+    ctx.fillRect(-w / 2 + 2, 3, w, h);
+    ctx.fillStyle = "#fff8d6";
+    ctx.fillRect(-w / 2, 0, w, h);
+    ctx.fillStyle = "#3d3420";
+    ctx.textAlign = "left";
+    ctx.textBaseline = "top";
+    lines.forEach((l, i) => {
+      ctx.fillText(l, -w / 2 + 8, 6 + i * 15);
+    });
+    ctx.restore();
   }
 
   // ── Labels ────────────────────────────────────────────────────────────────
@@ -1622,6 +1937,22 @@ function wrap(
     lines[maxLines - 1] = `${last}…`;
   }
   return lines;
+}
+
+/** A point `back` px from an end along the curve, and the direction into the end. */
+function endPoint(
+  x: number,
+  y: number,
+  cx: number,
+  cy: number,
+  back: number,
+): EndPoint {
+  let ux = x - cx;
+  let uy = y - cy;
+  const d = Math.hypot(ux, uy) || 1;
+  ux /= d;
+  uy /= d;
+  return { x: x - ux * back, y: y - uy * back, ux, uy };
 }
 
 function roundRect(

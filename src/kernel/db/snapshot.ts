@@ -83,6 +83,9 @@ export const SNAPSHOT_TABLES = [
   // Sinnbilder (Decision 6): the library's and each learner's own.
   "emblems",
   "learner_emblems",
+  // Red threads (Decision 7): the library's and each learner's own.
+  "connections",
+  "learner_connections",
 ] as const;
 
 /**

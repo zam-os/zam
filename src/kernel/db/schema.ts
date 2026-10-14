@@ -157,6 +157,45 @@ CREATE TABLE IF NOT EXISTS learner_emblems (
 );
 `;
 
+/**
+ * Red threads beyond prerequisites (ADR 2026-10-13, Decision 7).
+ *
+ * `connections` is knowledge: the library's shared threads, written by
+ * whoever may write knowledge. A shared Voraussetzung is not one of them: it
+ * stays in the prerequisite tables. `learner_connections` is learning state:
+ * one learner's own threads of any kind, which never feed blocking.
+ *
+ * `a` is the dependent end (a builds on, uses, consumes the interface of, or
+ * is a special case of b). Ends are UnitKeys; `a_uri`/`b_uri` keep the
+ * atom_uri of a published end, so a rebuild can remap it like cards.
+ */
+export const CONNECTION_TABLES = `
+CREATE TABLE IF NOT EXISTS connections (
+  id         TEXT PRIMARY KEY,
+  a_key      TEXT NOT NULL,
+  b_key      TEXT NOT NULL,
+  a_uri      TEXT,
+  b_uri      TEXT,
+  kind       TEXT NOT NULL CHECK (kind IN ('nutzt', 'schnittstelle', 'ist-ein', 'verbindung')),
+  note       TEXT,
+  author     TEXT NOT NULL,
+  created_at TEXT NOT NULL,
+  UNIQUE (a_key, b_key, kind)
+);
+CREATE TABLE IF NOT EXISTS learner_connections (
+  id         TEXT PRIMARY KEY,
+  user_id    TEXT NOT NULL,
+  a_key      TEXT NOT NULL,
+  b_key      TEXT NOT NULL,
+  a_uri      TEXT,
+  b_uri      TEXT,
+  kind       TEXT NOT NULL CHECK (kind IN ('voraussetzung', 'nutzt', 'schnittstelle', 'ist-ein', 'verbindung')),
+  note       TEXT,
+  created_at TEXT NOT NULL,
+  UNIQUE (user_id, a_key, b_key, kind)
+);
+`;
+
 export const SCHEMA_TABLES = `
 -- PRAGMAs (WAL, foreign_keys) are set programmatically in connection.ts,
 -- not here, because libsql embedded replicas manage their own WAL.
@@ -626,7 +665,7 @@ CREATE TABLE IF NOT EXISTS choice_exclusions (
   created_at    TEXT NOT NULL,
   PRIMARY KEY (user_id, token_id, excluded_key)
 );
-${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}`;
+${ATLAS_TABLES}${ATLAS_LAND_TABLES}${ATLAS_VARIANT_TABLES}${EMBLEM_TABLES}${CONNECTION_TABLES}`;
 
 /** Performance indexes. Applied after migrations — see `SCHEMA_TABLES`. */
 export const SCHEMA_INDEXES = `

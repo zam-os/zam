@@ -993,12 +993,16 @@ export interface AtlasReadResponse {
     unit: AtlasUnitKeyWire | null;
   }>;
   units: AtlasUnitWire[];
-  /** `from` builds on `to`. */
-  threads: Array<{
-    from: AtlasUnitKeyWire;
-    to: AtlasUnitKeyWire;
-    kind: "voraussetzung";
-  }>;
+  /**
+   * Threads with at least one end on this map (ADR 2026-10-13, D7). An end
+   * on the library's other planet is named in `portals`.
+   */
+  threads: AtlasThreadWire[];
+  /** Ends of threads on the other planet, drawn as portals. Titles are untrusted. */
+  portals?: Record<
+    AtlasUnitKeyWire,
+    { title: string; planet: AtlasPlanetWire }
+  >;
   /** The caller's own due counts, per region and every ancestor. */
   own: { dueByRegion: Record<string, number> };
   settle: { pending: number; mayWrite: boolean };
@@ -1010,6 +1014,50 @@ export interface AtlasReadResponse {
   ownPlanet?: AtlasOwnPlanetWire;
   /** The lenses this library shows, world's first. */
   lenses?: AtlasLensInfoWire[];
+}
+
+export type AtlasThreadKindWire =
+  | "voraussetzung"
+  | "nutzt"
+  | "schnittstelle"
+  | "ist-ein"
+  | "verbindung";
+
+/** One red thread (ADR 2026-10-13, D7). `scope` and `id` are additive. */
+export interface AtlasThreadWire {
+  /**
+   * The dependent end: it builds on, uses, consumes the interface of, or is
+   * a special case of `to`. A Verbindung has no direction.
+   */
+  from: AtlasUnitKeyWire;
+  to: AtlasUnitKeyWire;
+  kind: AtlasThreadKindWire;
+  /** The library's (a prerequisite or a connection), or the learner's own. */
+  scope?: "shared" | "personal";
+  /** A connection's id, for `atlas-disconnect`; prerequisites have none. */
+  id?: string;
+  /** Why the two belong together. Untrusted text. */
+  note?: string;
+}
+
+/** `atlas-connect`: the thread as stored. */
+export interface AtlasConnectResponse {
+  success: true;
+  id: string;
+  scope: "shared" | "personal";
+  from: AtlasUnitKeyWire;
+  to: AtlasUnitKeyWire;
+  kind: AtlasThreadKindWire;
+  note: string | null;
+  /** A Verbindung was turned around. */
+  swapped: boolean;
+  /** False when the same thread was there already. */
+  created: boolean;
+}
+
+export interface AtlasDisconnectResponse {
+  success: true;
+  scope: "shared" | "personal";
 }
 
 export type AtlasPlanetWire = "welt" | "firma" | "privat";

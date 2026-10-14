@@ -15,7 +15,10 @@
 import type {
   AtlasConditionWire,
   AtlasEmblemWire,
+  AtlasPlanetWire,
   AtlasReadResponse,
+  AtlasThreadKindWire,
+  AtlasThreadWire,
   AtlasUnitWire,
 } from "../../../src/bridge/protocol.js";
 import { weakestCondition } from "../../../src/kernel/atlas/condition.js";
@@ -26,6 +29,7 @@ import {
   regionShade,
   type Shade,
 } from "../../../src/kernel/atlas/palette.js";
+import { THREAD_KINDS } from "../../../src/kernel/atlas/types.js";
 
 /** Screen-space patterns that tell sibling regions apart below the colour level. */
 export const PATTERNS = [
@@ -481,26 +485,59 @@ export function mayPractiseRegion(layout: AtlasLayout, key: string): boolean {
   return units > 0 && units <= REGION_PRACTICE_MAX_UNITS;
 }
 
-export interface UnitLinks {
-  /** Units this one builds on ("baut auf"). */
-  buildsOn: AtlasUnitWire[];
-  /** Units that build on this one ("Grundlage für"). */
-  foundationFor: AtlasUnitWire[];
+/** The other end of a thread: a unit on this map, or a portal to the other planet. */
+export type ThreadOther =
+  | { kind: "unit"; unit: AtlasUnitWire }
+  | { kind: "portal"; key: string; title: string; planet: AtlasPlanetWire };
+
+export interface ThreadGroup {
+  kind: AtlasThreadKindWire;
+  /**
+   * `out`: this unit is the dependent end (it builds on, uses, consumes the
+   * interface of, or is a special case of the other); `in`: the other is. A
+   * Verbindung has no direction and is always `out`.
+   */
+  direction: "out" | "in";
+  entries: Array<{ thread: AtlasThreadWire; other: ThreadOther }>;
 }
 
-export function unitLinks(layout: AtlasLayout, unitKey: string): UnitLinks {
-  const buildsOn: AtlasUnitWire[] = [];
-  const foundationFor: AtlasUnitWire[] = [];
+/** The other end of a thread, as the map knows it. */
+export function threadOther(
+  layout: AtlasLayout,
+  key: string,
+): ThreadOther | null {
+  const unit = layout.units.get(key);
+  if (unit) return { kind: "unit", unit };
+  const portal = layout.view.portals?.[key];
+  return portal ? { kind: "portal", key, ...portal } : null;
+}
+
+/**
+ * A unit's threads by kind and direction (Decision 7), in `THREAD_KINDS`
+ * order, the dependent side first. Empty groups are left out.
+ */
+export function unitThreads(
+  layout: AtlasLayout,
+  unitKey: string,
+): ThreadGroup[] {
+  const groups = new Map<string, ThreadGroup>();
   for (const thread of layout.view.threads) {
-    if (thread.from === unitKey) {
-      const unit = layout.units.get(thread.to);
-      if (unit) buildsOn.push(unit);
-    } else if (thread.to === unitKey) {
-      const unit = layout.units.get(thread.from);
-      if (unit) foundationFor.push(unit);
+    if (thread.from !== unitKey && thread.to !== unitKey) continue;
+    const out = thread.from === unitKey;
+    const other = threadOther(layout, out ? thread.to : thread.from);
+    if (!other) continue;
+    const direction = out || thread.kind === "verbindung" ? "out" : "in";
+    const id = `${thread.kind}:${direction}`;
+    let group = groups.get(id);
+    if (!group) {
+      group = { kind: thread.kind, direction, entries: [] };
+      groups.set(id, group);
     }
+    group.entries.push({ thread, other });
   }
-  return { buildsOn, foundationFor };
+  const rank = (g: ThreadGroup) =>
+    THREAD_KINDS.indexOf(g.kind) * 2 + (g.direction === "out" ? 0 : 1);
+  return [...groups.values()].sort((a, b) => rank(a) - rank(b));
 }
 
 export interface SearchHit {

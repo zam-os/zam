@@ -5846,6 +5846,87 @@ span.atlas-crumb {
   font-size: var(--fs-sm);
 }
 
+/* Red threads (ADR 2026-10-13, Decision 7): a learner's own can be cut. */
+.atlas-thread-row {
+  display: flex;
+  align-items: flex-start;
+  gap: 2px;
+}
+
+.atlas-thread-row .atlas-panel-entry {
+  flex: 1 1 auto;
+  min-width: 0;
+}
+
+.atlas-thread-cut {
+  flex: none;
+  width: 28px;
+  height: 28px;
+  margin-top: 4px;
+  background: none;
+  border: 0;
+  border-radius: var(--radius-xs);
+  color: var(--color-muted);
+  font: inherit;
+  font-size: var(--fs-lg);
+  line-height: 1;
+  cursor: pointer;
+}
+
+.atlas-thread-cut:hover,
+.atlas-thread-cut:focus-visible {
+  background: var(--color-accent-soft);
+  color: var(--color-ink);
+}
+
+.atlas-thread-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: var(--space-3);
+  margin-top: var(--space-3);
+}
+
+.atlas-thread-kinds {
+  display: flex;
+  flex-direction: column;
+  gap: var(--space-2);
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.atlas-thread-kinds legend {
+  margin-bottom: var(--space-2);
+  font-size: var(--fs-sm);
+  font-weight: 700;
+}
+
+.atlas-thread-kind {
+  display: flex;
+  align-items: flex-start;
+  gap: var(--space-2);
+  font-size: var(--fs-sm);
+  overflow-wrap: anywhere;
+  cursor: pointer;
+}
+
+.atlas-thread-kind input {
+  margin-top: 3px;
+}
+
+.atlas-thread-form .atlas-emblem-form-label {
+  align-self: stretch;
+}
+
+.atlas-thread-form .atlas-panel-actions {
+  margin: 0;
+}
+
+.atlas-picking .atlas-canvas {
+  cursor: crosshair;
+}
+
 @media (max-width: 900px) {
   .atlas-body {
     flex-direction: column;

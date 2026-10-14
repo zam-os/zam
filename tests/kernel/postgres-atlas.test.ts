@@ -1,5 +1,7 @@
 import { afterEach, describe, expect, it } from "vitest";
 import {
+  atlasConnect,
+  atlasDisconnect,
   atlasEmblemClear,
   atlasEmblemSet,
   atlasRead,
@@ -477,6 +479,105 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
         expect((await resolveEmblem(again, subject, memberId))?.glyph).toBe(
           "n₁",
         );
+      } finally {
+        await again.close();
+      }
+    } finally {
+      await reset();
+    }
+  });
+  it("lets a member spin own threads, and only a curator shared ones (Decision 7)", async () => {
+    await reset();
+    try {
+      const control = openPostgresDatabase({
+        connectionString: `${url}?options=-c%20search_path%3D${schema}`,
+      });
+      let hebel = "";
+      let kraft = "";
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, directory, {
+          upn: "thread-curator@example.org",
+          database,
+        });
+        await addTeamMember(control, directory, {
+          upn: "thread-member@example.org",
+          database,
+          curator: false,
+        });
+        for (const slug of ["hebel", "kraft"]) {
+          const token = await createToken(control, {
+            slug,
+            concept: slug,
+            domain: "physik/mechanik",
+          });
+          if (slug === "hebel") hebel = `token:${token.id}`;
+          else kraft = `token:${token.id}`;
+        }
+      } finally {
+        await control.close();
+      }
+
+      const asMember = await connectAs("thread-member@example.org");
+      let ownId = "";
+      try {
+        const memberId = (await resolveLearnerId(asMember)) as string;
+        const own = await atlasConnect(asMember, {
+          userId: memberId,
+          from: hebel,
+          to: kraft,
+          kind: "voraussetzung",
+          note: "Ohne Kraft kein Hebel.",
+        });
+        expect(own.scope).toBe("personal");
+        ownId = own.id;
+        await expect(
+          atlasConnect(asMember, {
+            userId: memberId,
+            from: hebel,
+            to: kraft,
+            kind: "nutzt",
+            scope: "shared",
+          }),
+        ).rejects.toThrow(NOT_CURATOR);
+      } finally {
+        await asMember.close();
+      }
+
+      const asCurator = await connectAs("thread-curator@example.org");
+      let sharedId = "";
+      try {
+        const curatorId = (await resolveLearnerId(asCurator)) as string;
+        const shared = await atlasConnect(asCurator, {
+          userId: curatorId,
+          from: hebel,
+          to: kraft,
+          kind: "nutzt",
+          scope: "shared",
+        });
+        expect(shared.scope).toBe("shared");
+        sharedId = shared.id;
+        // The member's own thread is not the curator's to see or cut.
+        const rows = (await asCurator
+          .prepare("SELECT COUNT(*) AS n FROM learner_connections")
+          .get()) as { n: number | string };
+        expect(Number(rows.n)).toBe(0);
+        await expect(
+          atlasDisconnect(asCurator, { userId: curatorId, id: ownId }),
+        ).rejects.toThrow(/No thread/);
+      } finally {
+        await asCurator.close();
+      }
+
+      const again = await connectAs("thread-member@example.org");
+      try {
+        const memberId = (await resolveLearnerId(again)) as string;
+        await expect(
+          atlasDisconnect(again, { userId: memberId, id: sharedId }),
+        ).rejects.toThrow(NOT_CURATOR);
+        expect(
+          (await atlasDisconnect(again, { userId: memberId, id: ownId })).scope,
+        ).toBe("personal");
       } finally {
         await again.close();
       }

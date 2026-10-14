@@ -549,14 +549,16 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     lbl_content_source_okf: "Artículos",
     content_source_okf_missing: "Esta fuente no tiene artículos OKF.",
     content_source_map_missing: "Esta fuente no tiene mapa de conocimiento.",
-    content_source_map_invalid: "El mapa de conocimiento de esta fuente tiene errores:",
+    content_source_map_invalid:
+      "El mapa de conocimiento de esta fuente tiene errores:",
     lbl_content_source_reader: "Lectura",
     content_source_reader_refused: "Ese archivo está fuera de esta fuente.",
     content_source_desktop_only: "Esto se abre en ZAM Desktop.",
     content_source_reader_missing: "Ese archivo no está en esta fuente.",
     content_source_browse_error: "No se pudo leer esta fuente: {message}",
     content_source_missing: "Esta carpeta ya no está.",
-    content_source_none: "Aún no hay fuente. Elige una carpeta o añade un espacio de trabajo en Ajustes.",
+    content_source_none:
+      "Aún no hay fuente. Elige una carpeta o añade un espacio de trabajo en Ajustes.",
     content_source_error: "No se pudo guardar la fuente: {message}",
     lbl_search_placeholder: "Buscar preguntas, respuestas, categorías...",
     lbl_category_filter: "Categoría",
@@ -1491,15 +1493,18 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     content_source_skill: "Source de skills",
     lbl_content_source_okf: "Articles",
     content_source_okf_missing: "Cette source n'a pas d'articles OKF.",
-    content_source_map_missing: "Cette source n'a pas de carte des connaissances.",
-    content_source_map_invalid: "La carte des connaissances de cette source contient des erreurs :",
+    content_source_map_missing:
+      "Cette source n'a pas de carte des connaissances.",
+    content_source_map_invalid:
+      "La carte des connaissances de cette source contient des erreurs :",
     lbl_content_source_reader: "Lecture",
     content_source_reader_refused: "Ce fichier est en dehors de cette source.",
     content_source_desktop_only: "Ceci s’ouvre dans ZAM Desktop.",
     content_source_reader_missing: "Ce fichier n'est pas dans cette source.",
     content_source_browse_error: "Impossible de lire cette source : {message}",
     content_source_missing: "Ce dossier n'est plus là.",
-    content_source_none: "Pas encore de source. Choisissez un dossier, ou ajoutez un espace de travail dans les réglages.",
+    content_source_none:
+      "Pas encore de source. Choisissez un dossier, ou ajoutez un espace de travail dans les réglages.",
     content_source_error: "Impossible d'enregistrer la source : {message}",
     lbl_search_placeholder: "Rechercher des questions, réponses, catégories...",
     lbl_category_filter: "Catégorie",
@@ -2443,7 +2448,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     content_source_reader_missing: "Esse ficheiro não está nesta fonte.",
     content_source_browse_error: "Não foi possível ler esta fonte: {message}",
     content_source_missing: "Esta pasta não está mais aqui.",
-    content_source_none: "Ainda não há fonte. Escolha uma pasta ou adicione um espaço de trabalho nas configurações.",
+    content_source_none:
+      "Ainda não há fonte. Escolha uma pasta ou adicione um espaço de trabalho nas configurações.",
     content_source_error: "Não foi possível guardar a fonte: {message}",
     lbl_search_placeholder: "Buscar perguntas, respostas, categorias...",
     lbl_category_filter: "Categoria",
@@ -4207,7 +4213,8 @@ export const TRANSLATION_PACKS: Record<string, Record<string, string>> = {
     content_source_reader_missing: "そのファイルはこの出典にありません。",
     content_source_browse_error: "この出典を読めませんでした: {message}",
     content_source_missing: "このフォルダはもうありません。",
-    content_source_none: "出典がまだありません。フォルダを選ぶか、設定でワークスペースを追加してください。",
+    content_source_none:
+      "出典がまだありません。フォルダを選ぶか、設定でワークスペースを追加してください。",
     content_source_error: "出典を保存できませんでした: {message}",
     lbl_search_placeholder: "質問、回答、カテゴリを検索...",
     lbl_category_filter: "カテゴリ",
@@ -4814,9 +4821,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_atlas: "Knowledge atlas",
     btn_open_atlas: "Knowledge atlas",
     graph3d_settings_title: "3D knowledge graph",
-    graph3d_settings_help: "The earlier 3D view of your cards and what they build on. The knowledge atlas has taken its place.",
+    graph3d_settings_help:
+      "The earlier 3D view of your cards and what they build on. The knowledge atlas has taken its place.",
     graph3d_settings_toggle: "Show the 3D knowledge graph",
-    graph3d_settings_toggle_help: "Alpha: adds it to the sidebar on this computer. It changes nothing in your reviews.",
+    graph3d_settings_toggle_help:
+      "Alpha: adds it to the sidebar on this computer. It changes nothing in your reviews.",
     graph3d_settings_on: "The 3D knowledge graph is in the sidebar now.",
     graph3d_settings_off: "The 3D knowledge graph is hidden.",
     graph3d_settings_failed: "The switch could not be saved: {message}",
@@ -4835,7 +4844,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_threads_all: "Threads: all",
     atlas_threads_selection: "Threads: selection",
     atlas_threads_off: "Threads: off",
-    atlas_threads_hint: "Prerequisite threads: all, around the selection, or none (F)",
+    atlas_threads_hint: "Red threads: all, around the selection, or none (F)",
     atlas_show_outline: "Outline",
     atlas_show_map: "Map",
     atlas_search_placeholder: "Search ( / )",
@@ -4867,9 +4876,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_emblem_no_model:
       "Drawing needs a connected text model (Settings). Your agent can draw Sinnbilder too.",
     atlas_load_failed: "The atlas could not be loaded.",
-    atlas_empty: "Nothing on the map yet. Import learning content, and it appears here.",
-    atlas_provisional: "This map is not stored yet: places may still shift until someone with write access stores it.",
-    atlas_canvas_label: "Map ordered by {lens}. The outline shows the same as a list.",
+    atlas_empty:
+      "Nothing on the map yet. Import learning content, and it appears here.",
+    atlas_provisional:
+      "This map is not stored yet: places may still shift until someone with write access stores it.",
+    atlas_canvas_label:
+      "Map ordered by {lens}. The outline shows the same as a list.",
     atlas_focus_level: "Level: {level}",
     atlas_units: "Learning units",
     atlas_due_count: "{count} due",
@@ -4909,9 +4921,48 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_home_failed: "The home region could not be saved.",
     atlas_drift: "Drift since founding: {count}",
     atlas_more: "+{count} more",
+    atlas_thread_voraussetzung: "builds on",
+    atlas_thread_nutzt: "uses",
+    atlas_thread_schnittstelle: "interface",
+    "atlas_thread_ist-ein": "is a",
+    atlas_thread_verbindung: "related",
+    atlas_threads_nutzt_out: "Uses",
+    atlas_threads_nutzt_in: "Used by",
+    atlas_threads_schnittstelle_out: "Uses the interface of",
+    atlas_threads_schnittstelle_in: "Provides an interface for",
+    "atlas_threads_ist-ein_out": "Is a special case of",
+    "atlas_threads_ist-ein_in": "Special cases",
+    atlas_threads_verbindung_out: "Related",
+    atlas_thread_add: "Add a thread",
+    atlas_thread_pick:
+      "Click the unit the thread leads to: zoom in close, or search for it. Esc cancels.",
+    atlas_thread_new: "New red thread",
+    atlas_thread_kind_label: "How do they belong together?",
+    atlas_thread_sentence_voraussetzung: "“{a}” builds on “{b}”",
+    atlas_thread_sentence_nutzt: "“{a}” uses “{b}”",
+    atlas_thread_sentence_schnittstelle:
+      "“{a}” uses the interface “{b}” provides",
+    "atlas_thread_sentence_ist-ein": "“{a}” is a special case of “{b}”",
+    atlas_thread_sentence_verbindung: "“{a}” and “{b}” belong together",
+    atlas_thread_swap: "Swap direction",
+    atlas_thread_note_label:
+      "Why? A short sentence helps you remember (optional)",
+    atlas_thread_save: "Add thread",
+    atlas_thread_saved: "Thread added. Only you see it.",
+    atlas_thread_failed: "The thread was not added:",
+    atlas_thread_yours: "your thread",
+    atlas_thread_note: "“{note}”",
+    atlas_thread_remove: "Remove thread",
+    atlas_thread_remove_named: "Remove the thread to {title}",
+    atlas_thread_removed: "Thread removed.",
+    atlas_thread_remove_failed: "The thread was not removed:",
+    atlas_portal_entry: "{planet}: {title}",
+    atlas_portal_hint: "on the other planet",
+    atlas_portal_missing: "This library shows no lens of that planet.",
     atlas_back_to_map: "Back to the atlas",
     atlas_show_new: "Show new content",
-    atlas_show_new_hint: "Sketch content you have not taken in yet. You decide what to take in.",
+    atlas_show_new_hint:
+      "Sketch content you have not taken in yet. You decide what to take in.",
     atlas_import_here: "Import here…",
     atlas_take: "Take in",
     atlas_take_region_hint: "Cards for every sketched unit in this region",
@@ -4933,7 +4984,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     goal_place_line: "The cards land at: {path}",
     goal_place_for_model: "Place in the learner's knowledge atlas:",
     atlas_import_material: "Notes or material",
-    atlas_import_material_help: "Photos, a PDF or typed notes. You decide each card, and the cards land here.",
+    atlas_import_material_help:
+      "Photos, a PDF or typed notes. You decide each card, and the cards land here.",
     atlas_import_material_open: "Photos, PDF or notes…",
     atlas_import_enrolled: "Taken in",
     atlas_import_enrol: "Take in",
@@ -4944,14 +4996,16 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_import_failed: "Could not take it in.",
     material_review_place: "The cards go to {path}.",
     material_review_instead_of: "Instead of “{title}”: my school's method",
-    material_start_request_place: "Put the cards in ZAM at {path} (atlas region {region}, lens {lens}): pass that place to zam_material_import_context.",
+    material_start_request_place:
+      "Put the cards in ZAM at {path} (atlas region {region}, lens {lens}): pass that place to zam_material_import_context.",
     material_start_place: "The cards go to {path}.",
     material_notes_title: "Type or paste notes",
     material_notes_placeholder: "Your notes from class…",
     material_notes_analyze: "Propose cards",
     material_notes_sent_to: "Your notes go to {model}; ZAM does not keep them.",
     material_notes_no_model: "Connect a text model to turn notes into cards.",
-    material_notes_running: "Reading your notes — this can take a minute or two.",
+    material_notes_running:
+      "Reading your notes — this can take a minute or two.",
     material_busy_status:
       "{what} ({time}) You can close this window: the review list opens as soon as the proposals are in.",
     setup_title: "Setup & Data",
@@ -5008,7 +5062,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observation_logs_delete_confirm:
       "Delete the observation logs of {count} sessions on this device? Ratings you already confirmed stay.",
     observation_logs_deleted: "Observation logs deleted.",
-    observation_logs_delete_failed: "Could not delete observation logs: {message}",
+    observation_logs_delete_failed:
+      "Could not delete observation logs: {message}",
     // Trusted folders (ADR 2026-10-08b D1).
     settings_trusted_folders: "Trusted folders",
     trusted_folders_help:
@@ -5540,7 +5595,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     content_source_reader_missing: "That file is not in this source.",
     content_source_browse_error: "Could not read this source: {message}",
     content_source_missing: "This folder is not there.",
-    content_source_none: "No source yet. Choose a folder, or add a workspace in Settings.",
+    content_source_none:
+      "No source yet. Choose a folder, or add a workspace in Settings.",
     content_source_error: "Could not save the source: {message}",
     lbl_search_placeholder: "Search questions, answers, categories, keys...",
     lbl_category_filter: "Category",
@@ -6020,7 +6076,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_correct: "✓ Correct",
     choice_wrong: "✗ Not quite — the answer is: {answer}",
     choice_dont_know_result: "The answer is: {answer}",
-    choice_disputed: "Counted as correct. This option will not be shown to you again.",
+    choice_disputed:
+      "Counted as correct. This option will not be shown to you again.",
     choice_answers_other: "This answers: {question}",
     choice_now_without_options: "Now without options",
     choice_options_by: "Options: {model}",
@@ -6034,8 +6091,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "There are no answer options for this card yet, so it comes without options.",
     choice_notice_curated_disputed:
       "You disputed this card's options, so it comes without options for now.",
-    choice_discussion_frame:
-      "You chose: {chosen}. The answer is: {answer}.",
+    choice_discussion_frame: "You chose: {chosen}. The answer is: {answer}.",
     summary_choice_ready:
       "{count} cards are ready for free recall — Auto, Flash or the AI mode asks them without options.",
     settings_section_backup: "Backup",
@@ -6296,7 +6352,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Material import review (ADR 2026-10-05).
     material_review_loading: "Loading the proposals…",
     material_review_error: "Could not load the import",
-    material_review_intro: "Choose for each card: Yes adds it to your reviews, Bonus keeps it for later, No drops it. Cards without a choice are not saved.",
+    material_review_intro:
+      "Choose for each card: Yes adds it to your reviews, Bonus keeps it for later, No drops it. Cards without a choice are not saved.",
     material_review_from: "Proposed by {harness}.",
     material_review_read_by: "Read by {model}.",
     material_review_sent_to: "Sent to {models}; read by {model}.",
@@ -6317,35 +6374,48 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_review_confirm_not_saved: "{count} not saved",
     material_review_later: "Later",
     material_review_discard: "Discard",
-    material_review_discard_confirm: "Discard this import? Nothing from it will be saved.",
+    material_review_discard_confirm:
+      "Discard this import? Nothing from it will be saved.",
     material_review_saving: "Saving…",
-    material_review_done: "{cards} cards added to your reviews, {bonus} kept as Bonus.",
+    material_review_done:
+      "{cards} cards added to your reviews, {bonus} kept as Bonus.",
     material_review_close: "Done",
     material_review_reimport: "You imported this file on {date}.",
     material_review_show_answer: "Show answer",
     material_preview_missing: "The file is no longer there.",
-    material_preview_not_viewable: "No preview here — open it next to this list to compare.",
+    material_preview_not_viewable:
+      "No preview here — open it next to this list to compare.",
     material_preview_too_large: "Too large to show here.",
     material_pending_one: "An import is waiting for your review: {title}",
     material_pending_many: "{count} imports are waiting for your review.",
     material_pending_open: "Review",
     btn_material_import: "Photo / PDF",
     material_start_title: "Import notes or a handout",
-    material_start_one_subject: "One subject per import — material from several subjects goes in separate runs.",
+    material_start_one_subject:
+      "One subject per import — material from several subjects goes in separate runs.",
     material_start_choose: "Choose photo or PDF",
-    material_start_none_selected: "No file chosen yet — you can also drop it into your assistant.",
-    material_start_harness: "Import with {harness} — it can ask back about your notes and is often the smarter choice. Paste this request into {harness}:",
-    material_start_request_one: "Read \"{file}\" and turn it into learning cards for ZAM. Ask me about anything you cannot read.",
-    material_start_request_files: "Read these files and turn them into learning cards for ZAM. Ask me about anything you cannot read.\n{files}",
-    material_start_request_drop: "I am giving you a photo or PDF of my class notes. Read it and turn it into learning cards for ZAM. Ask me about anything you cannot read.",
+    material_start_none_selected:
+      "No file chosen yet — you can also drop it into your assistant.",
+    material_start_harness:
+      "Import with {harness} — it can ask back about your notes and is often the smarter choice. Paste this request into {harness}:",
+    material_start_request_one:
+      'Read "{file}" and turn it into learning cards for ZAM. Ask me about anything you cannot read.',
+    material_start_request_files:
+      "Read these files and turn them into learning cards for ZAM. Ask me about anything you cannot read.\n{files}",
+    material_start_request_drop:
+      "I am giving you a photo or PDF of my class notes. Read it and turn it into learning cards for ZAM. Ask me about anything you cannot read.",
     material_start_copy: "Copy request",
     material_start_copied: "Copied — paste it into {harness}.",
-    material_start_copy_failed: "Could not copy; select the text and copy it yourself.",
-    material_start_no_harness: "This works best with an AI assistant connected to ZAM, such as opencode, Claude or Codex: it reads your notes and can ask back.",
+    material_start_copy_failed:
+      "Could not copy; select the text and copy it yourself.",
+    material_start_no_harness:
+      "This works best with an AI assistant connected to ZAM, such as opencode, Claude or Codex: it reads your notes and can ask back.",
     material_start_setup: "Connect an assistant",
-    material_start_after: "Afterwards the cards wait here in Learning Content for your choice.",
+    material_start_after:
+      "Afterwards the cards wait here in Learning Content for your choice.",
     material_start_close: "Close",
-    material_start_drop_hint: "You can also drop photos or a PDF onto this window.",
+    material_start_drop_hint:
+      "You can also drop photos or a PDF onto this window.",
     material_builtin_title: "Read it here",
     material_builtin_photos_to: "Photos are sent to {model}.",
     material_builtin_sent_to: "Sent to {model}.",
@@ -6354,20 +6424,26 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_builtin_analyze: "Analyze",
     material_builtin_running: "Reading your pages — this can take a minute.",
     material_builtin_setup: "Set up a model",
-    material_builtin_no_image_model: "Reading photos needs a model that understands images. Your assistant can do it too.",
-    material_builtin_no_file_model: "Your connected model does not read PDFs itself. Export the pages as photos, or use your assistant.",
-    material_builtin_heic: "HEIC photos cannot be converted here — please export them as JPEG.",
+    material_builtin_no_image_model:
+      "Reading photos needs a model that understands images. Your assistant can do it too.",
+    material_builtin_no_file_model:
+      "Your connected model does not read PDFs itself. Export the pages as photos, or use your assistant.",
+    material_builtin_heic:
+      "HEIC photos cannot be converted here — please export them as JPEG.",
     material_builtin_mixed: "Photos and a PDF go in separate imports.",
     material_builtin_one_pdf: "One PDF per import.",
     material_builtin_too_many: "At most 10 photos per import.",
-    material_builtin_unsupported: "Only photos (JPEG, PNG, WebP, HEIC) and PDFs can be imported.",
+    material_builtin_unsupported:
+      "Only photos (JPEG, PNG, WebP, HEIC) and PDFs can be imported.",
     material_builtin_too_large: "The files are too large to send.",
     material_builtin_missing: "A chosen file is no longer there.",
     material_builtin_failed: "Your model could not read the pages.",
-    material_builtin_invalid: "Your model's answer did not fit — try again, or use your assistant.",
+    material_builtin_invalid:
+      "Your model's answer did not fit — try again, or use your assistant.",
     btn_material_bonus: "Bonus ({count})",
     material_bonus_title: "Bonus from your imports",
-    material_bonus_intro: "Cards you kept as a bonus — extra knowledge beyond the page. None of them is in your reviews until you choose Learn.",
+    material_bonus_intro:
+      "Cards you kept as a bonus — extra knowledge beyond the page. None of them is in your reviews until you choose Learn.",
     material_bonus_from: "from “{title}”, {date}",
     material_bonus_untitled: "your import",
     material_bonus_learn: "Learn",
@@ -6377,8 +6453,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_bonus_error: "Could not load the bonus cards",
     material_bonus_close: "Close",
     lbl_import_bonus_title: "More from your notes",
-    lbl_import_bonus_body_one: "From “{source}” you kept “{item}” as a bonus. Not homework — just an offer.",
-    lbl_import_bonus_body_many: "{count} more from “{source}” that you kept as a bonus: {items}. Not homework — just an offer.",
+    lbl_import_bonus_body_one:
+      "From “{source}” you kept “{item}” as a bonus. Not homework — just an offer.",
+    lbl_import_bonus_body_many:
+      "{count} more from “{source}” that you kept as a bonus: {items}. Not homework — just an offer.",
     settings_voice_title: "Voice mode",
     settings_voice_help:
       "Review out loud, hands free — on a walk, during housework, at the gym. Your device handles speech for free and without anyone else involved, but it can be less accurate; a cloud model usually understands you better and sounds more natural, at a small cost per session.",
@@ -6423,23 +6501,29 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     wizard_connect_model_link: "Connect an AI model",
     km_nav: "Knowledge map",
     km_view_focus: "Focus map",
-    km_view_focus_desc: "One statement in the centre, its connections around it.",
+    km_view_focus_desc:
+      "One statement in the centre, its connections around it.",
     km_view_outline: "Outline",
     km_view_outline_desc: "All statements as an outline you can expand.",
     km_view_levels: "Levels",
-    km_view_levels_desc: "Zoom from the big picture into the details, one level at a time.",
+    km_view_levels_desc:
+      "Zoom from the big picture into the details, one level at a time.",
     km_view_c4: "C4 architecture",
-    km_view_c4_desc: "Boxes and arrows from the system context down to components.",
+    km_view_c4_desc:
+      "Boxes and arrows from the system context down to components.",
     km_author_shared: "Baseline",
     km_author_claude: "Claude",
     km_author_gemini: "Gemini",
     km_author_grok: "Grok",
     km_view_g_radial: "Radial ego map",
-    km_view_g_radial_desc: "The focus with its neighbours on an orbit, and the macro-statement they form.",
+    km_view_g_radial_desc:
+      "The focus with its neighbours on an orbit, and the macro-statement they form.",
     km_view_g_causal: "Causal tree",
-    km_view_g_causal_desc: "What the focus rests on to the left, what follows from it to the right.",
+    km_view_g_causal_desc:
+      "What the focus rests on to the left, what follows from it to the right.",
     km_view_g_facets: "Zoned facets",
-    km_view_g_facets_desc: "Purpose, connections, rules and places in the repository around the focus.",
+    km_view_g_facets_desc:
+      "Purpose, connections, rules and places in the repository around the focus.",
     km_g_focus: "Active focus",
     km_g_synthesis: "Macro-statement",
     km_g_synthesis_empty: "No concept sentences around this statement yet.",
@@ -6468,14 +6552,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     km_c4_inside: "{count} inside",
     km_c4_relationships: "Relationships",
     km_c4_no_relationships: "No relationships at this level.",
-    km_c4_empty: "This map has no architecture yet. Ask your agent to add C4 elements to the knowledge map.",
-    km_c4_outside: "This statement has no place in the architecture, so the system context is shown.",
+    km_c4_empty:
+      "This map has no architecture yet. Ask your agent to add C4 elements to the knowledge map.",
+    km_c4_outside:
+      "This statement has no place in the architecture, so the system context is shown.",
     km_view_concept: "Concept map",
-    km_view_concept_desc: "One concept in the centre. Each link is a statement.",
+    km_view_concept_desc:
+      "One concept in the centre. Each link is a statement.",
     km_concept_reading: "Read together",
     km_concept_more: "More concepts",
     km_concept_around: "Statements around {label}",
-    km_concept_empty: "No linked concepts yet. A spoke needs a short label on both ends and its own linking phrase.",
+    km_concept_empty:
+      "No linked concepts yet. A spoke needs a short label on both ends and its own linking phrase.",
     km_view_label: "View",
     km_view_switch_hint: "change it in Settings",
     km_focus_question: "Focus question",
@@ -6509,7 +6597,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     km_found_yes: "Yes",
     km_found_partly: "Partly",
     km_found_no: "No",
-    km_feedback_comment_placeholder: "What helped, what got in the way? (optional)",
+    km_feedback_comment_placeholder:
+      "What helped, what got in the way? (optional)",
     km_feedback_send: "Save feedback",
     km_feedback_need_rating: "Pick a rating from 1 to 5 first.",
     km_feedback_saved: "Thanks, saved on this device.",
@@ -6517,8 +6606,10 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     km_feedback_copy: "Copy all feedback",
     km_feedback_copied: "Copied. Paste it into a message to pass it on.",
     km_loading: "Loading the map…",
-    km_sample_note: "This workspace has no knowledge map yet, so ZAM's own map is shown as an example.",
-    km_invalid: "The workspace's knowledge map has errors, so ZAM's own map is shown instead:",
+    km_sample_note:
+      "This workspace has no knowledge map yet, so ZAM's own map is shown as an example.",
+    km_invalid:
+      "The workspace's knowledge map has errors, so ZAM's own map is shown instead:",
     km_load_failed: "The knowledge map could not be loaded.",
     km_repo_label: "Repository",
     km_no_repo: "No repository chosen yet.",
@@ -6565,7 +6656,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     dashboard_due_minutes: "Etwa {minutes} Min. in deinem Tempo",
     dashboard_week_title: "Diese Woche",
     dashboard_week_empty: "In den letzten 7 Tagen noch keine Wiederholung.",
-    dashboard_week_chart_label: "Wiederholte Karten pro Tag, letzte 7 Tage: {days}",
+    dashboard_week_chart_label:
+      "Wiederholte Karten pro Tag, letzte 7 Tage: {days}",
     lbl_caught_up: "Du bist voll auf dem Laufenden!",
     dashboard_error: "Deine Daten konnten nicht geladen werden",
     boot_title: "ZAM wird gestartet…",
@@ -6669,12 +6761,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     nav_atlas: "Wissensatlas",
     btn_open_atlas: "Wissensatlas",
     graph3d_settings_title: "3D-Wissensnetz",
-    graph3d_settings_help: "Die bisherige 3D-Ansicht deiner Karten und ihrer Voraussetzungen. Der Wissensatlas hat ihren Platz übernommen.",
+    graph3d_settings_help:
+      "Die bisherige 3D-Ansicht deiner Karten und ihrer Voraussetzungen. Der Wissensatlas hat ihren Platz übernommen.",
     graph3d_settings_toggle: "3D-Wissensnetz zeigen",
-    graph3d_settings_toggle_help: "Alpha: zeigt es in der Seitenleiste dieses Computers. An deinen Wiederholungen ändert es nichts.",
+    graph3d_settings_toggle_help:
+      "Alpha: zeigt es in der Seitenleiste dieses Computers. An deinen Wiederholungen ändert es nichts.",
     graph3d_settings_on: "Das 3D-Wissensnetz steht jetzt in der Seitenleiste.",
     graph3d_settings_off: "Das 3D-Wissensnetz ist ausgeblendet.",
-    graph3d_settings_failed: "Der Schalter konnte nicht gespeichert werden: {message}",
+    graph3d_settings_failed:
+      "Der Schalter konnte nicht gespeichert werden: {message}",
     atlas_lens_label: "Ordnen nach",
     atlas_lens_weltwissen: "Weltwissen",
     atlas_lens_schule: "Schule",
@@ -6690,7 +6785,7 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_threads_all: "Fäden: alle",
     atlas_threads_selection: "Fäden: Auswahl",
     atlas_threads_off: "Fäden: aus",
-    atlas_threads_hint: "Voraussetzungsfäden: alle, nur um die Auswahl oder keine (F)",
+    atlas_threads_hint: "Rote Fäden: alle, nur um die Auswahl oder keine (F)",
     atlas_show_outline: "Gliederung",
     atlas_show_map: "Karte",
     atlas_search_placeholder: "Suchen ( / )",
@@ -6712,9 +6807,11 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_emblem_source_borrowed: "Sinnbild seiner ersten Lerneinheit.",
     atlas_emblem_draw: "Sinnbild zeichnen lassen",
     atlas_emblem_redraw: "Neu zeichnen lassen",
-    atlas_emblem_drawing: "Wird gezeichnet … das kann eine halbe Minute dauern.",
+    atlas_emblem_drawing:
+      "Wird gezeichnet … das kann eine halbe Minute dauern.",
     atlas_emblem_glyph: "Eigenes Kurzzeichen …",
-    atlas_emblem_glyph_label: "Eine Formel oder ein Symbol, höchstens 16 Zeichen",
+    atlas_emblem_glyph_label:
+      "Eine Formel oder ein Symbol, höchstens 16 Zeichen",
     atlas_emblem_glyph_save: "Übernehmen",
     atlas_emblem_clear: "Eigenes entfernen",
     atlas_emblem_failed: "Das Sinnbild konnte nicht gespeichert werden:",
@@ -6722,9 +6819,12 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_emblem_no_model:
       "Zum Zeichnen braucht ZAM ein verbundenes Textmodell (Einstellungen). Dein Agent kann Sinnbilder auch zeichnen.",
     atlas_load_failed: "Der Atlas konnte nicht geladen werden.",
-    atlas_empty: "Noch nichts auf der Karte. Importiere Lerninhalte, dann erscheinen sie hier.",
-    atlas_provisional: "Diese Karte ist noch nicht gespeichert: Orte können sich noch verschieben, bis jemand mit Schreibrechten sie speichert.",
-    atlas_canvas_label: "Karte, geordnet nach {lens}. Die Gliederung zeigt dasselbe als Liste.",
+    atlas_empty:
+      "Noch nichts auf der Karte. Importiere Lerninhalte, dann erscheinen sie hier.",
+    atlas_provisional:
+      "Diese Karte ist noch nicht gespeichert: Orte können sich noch verschieben, bis jemand mit Schreibrechten sie speichert.",
+    atlas_canvas_label:
+      "Karte, geordnet nach {lens}. Die Gliederung zeigt dasselbe als Liste.",
     atlas_focus_level: "Ebene: {level}",
     atlas_units: "Lerneinheiten",
     atlas_due_count: "{count} fällig",
@@ -6732,7 +6832,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_unit_count: "Lerneinheiten: {count}",
     atlas_card_count: "Karten: {count}",
     atlas_own_unit: "eigene Einheit",
-    atlas_own_unit_note: "Eigene Einheit: in dieser Bibliothek geschrieben, nicht veröffentlicht.",
+    atlas_own_unit_note:
+      "Eigene Einheit: in dieser Bibliothek geschrieben, nicht veröffentlicht.",
     atlas_move_to_welt: "Ins Weltwissen",
     atlas_move_to_privat: "Nach Privat",
     atlas_move_to_firma: "Zur Firma",
@@ -6741,7 +6842,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_move_hint_own:
       "Geschütztes Wissen, etwa Persönliches oder Firmeninternes, bleibt auf dem eigenen Planeten dieser Bibliothek.",
     atlas_busy_moving: "Auf den anderen Planeten verschieben…",
-    atlas_moved: "{count} Lerneinheiten liegen jetzt auf dem Planeten {planet}.",
+    atlas_moved:
+      "{count} Lerneinheiten liegen jetzt auf dem Planeten {planet}.",
     atlas_move_failed: "Verschieben hat nicht geklappt:",
     atlas_unit_kicker: "Lerneinheit",
     atlas_builds_on: "Baut auf",
@@ -6764,16 +6866,57 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_home_failed: "Die Heimat konnte nicht gespeichert werden.",
     atlas_drift: "Drift seit der Gründung: {count}",
     atlas_more: "+{count} weitere",
+    atlas_thread_voraussetzung: "baut auf",
+    atlas_thread_nutzt: "nutzt",
+    atlas_thread_schnittstelle: "Schnittstelle",
+    "atlas_thread_ist-ein": "ist ein",
+    atlas_thread_verbindung: "Verbindung",
+    atlas_threads_nutzt_out: "Nutzt",
+    atlas_threads_nutzt_in: "Wird genutzt von",
+    atlas_threads_schnittstelle_out: "Nutzt die Schnittstelle von",
+    atlas_threads_schnittstelle_in: "Bietet eine Schnittstelle für",
+    "atlas_threads_ist-ein_out": "Ist ein Sonderfall von",
+    "atlas_threads_ist-ein_in": "Sonderfälle",
+    atlas_threads_verbindung_out: "Verbindungen",
+    atlas_thread_add: "Faden spannen",
+    atlas_thread_pick:
+      "Klicke die Lerneinheit, zu der der Faden führt: nah heranzoomen oder suchen. Esc bricht ab.",
+    atlas_thread_new: "Neuer roter Faden",
+    atlas_thread_kind_label: "Wie hängen sie zusammen?",
+    atlas_thread_sentence_voraussetzung: "„{a}“ baut auf „{b}“ auf",
+    atlas_thread_sentence_nutzt: "„{a}“ nutzt „{b}“",
+    atlas_thread_sentence_schnittstelle:
+      "„{a}“ nutzt die Schnittstelle, die „{b}“ bietet",
+    "atlas_thread_sentence_ist-ein": "„{a}“ ist ein Sonderfall von „{b}“",
+    atlas_thread_sentence_verbindung: "„{a}“ und „{b}“ gehören zusammen",
+    atlas_thread_swap: "Richtung tauschen",
+    atlas_thread_note_label:
+      "Warum? Ein kurzer Satz hilft beim Erinnern (optional)",
+    atlas_thread_save: "Faden spannen",
+    atlas_thread_saved: "Faden gespannt. Nur du siehst ihn.",
+    atlas_thread_failed: "Der Faden ließ sich nicht spannen:",
+    atlas_thread_yours: "dein Faden",
+    atlas_thread_note: "„{note}“",
+    atlas_thread_remove: "Faden lösen",
+    atlas_thread_remove_named: "Faden zu {title} lösen",
+    atlas_thread_removed: "Faden gelöst.",
+    atlas_thread_remove_failed: "Der Faden ließ sich nicht lösen:",
+    atlas_portal_entry: "{planet}: {title}",
+    atlas_portal_hint: "auf dem anderen Planeten",
+    atlas_portal_missing: "Diese Bibliothek zeigt keine Linse dieses Planeten.",
     atlas_back_to_map: "Zurück zum Atlas",
     atlas_show_new: "Neue Inhalte zeigen",
-    atlas_show_new_hint: "Skizziert Inhalte, die du noch nicht aufgenommen hast. Was du aufnimmst, entscheidest du.",
+    atlas_show_new_hint:
+      "Skizziert Inhalte, die du noch nicht aufgenommen hast. Was du aufnimmst, entscheidest du.",
     atlas_import_here: "Hier importieren …",
     atlas_take: "Aufnehmen",
-    atlas_take_region_hint: "Karten für alle skizzierten Einheiten dieser Region",
+    atlas_take_region_hint:
+      "Karten für alle skizzierten Einheiten dieser Region",
     atlas_in_reach_note: "Skizze: Dazu hast du noch keine Karten.",
     atlas_variant_instead_of: "Statt „{title}“: das Verfahren deiner Schule.",
     atlas_variant_undo: "Zurück zum veröffentlichten Verfahren",
-    atlas_variant_offer: "Deine Schule lehrt hier ein anderes Verfahren: „{title}“.",
+    atlas_variant_offer:
+      "Deine Schule lehrt hier ein anderes Verfahren: „{title}“.",
     atlas_variant_take: "Dazu wechseln",
     atlas_taken: "Neue Karten: {count}",
     atlas_take_failed: "Aufnehmen hat nicht geklappt.",
@@ -6788,25 +6931,31 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     goal_place_line: "Die Karten landen unter: {path}",
     goal_place_for_model: "Ort im Wissensatlas des Lernenden:",
     atlas_import_material: "Mitschrift oder Material",
-    atlas_import_material_help: "Fotos, ein PDF oder eingetippte Notizen. Du entscheidest jede Karte, und die Karten landen hier.",
+    atlas_import_material_help:
+      "Fotos, ein PDF oder eingetippte Notizen. Du entscheidest jede Karte, und die Karten landen hier.",
     atlas_import_material_open: "Fotos, PDF oder Notizen …",
     atlas_import_enrolled: "Aufgenommen",
     atlas_import_enrol: "Aufnehmen",
-    atlas_import_no_cells: "Für diese Stelle gibt es noch keine Lehrplan-Zelle.",
+    atlas_import_no_cells:
+      "Für diese Stelle gibt es noch keine Lehrplan-Zelle.",
     atlas_import_wizard: "Lehrplan-Assistent öffnen",
     atlas_import_enrolling: "Wird aufgenommen …",
     atlas_import_enrolled_cards: "Neue Karten: {count}",
     atlas_import_failed: "Aufnehmen hat nicht geklappt.",
     material_review_place: "Die Karten kommen nach {path}.",
     material_review_instead_of: "Statt „{title}“: das Verfahren meiner Schule",
-    material_start_request_place: "Ordne die Karten in ZAM unter {path} ein (Atlas-Region {region}, Ansicht {lens}): gib diesen Ort an zam_material_import_context.",
+    material_start_request_place:
+      "Ordne die Karten in ZAM unter {path} ein (Atlas-Region {region}, Ansicht {lens}): gib diesen Ort an zam_material_import_context.",
     material_start_place: "Die Karten kommen nach {path}.",
     material_notes_title: "Notizen eintippen oder einfügen",
     material_notes_placeholder: "Deine Notizen aus dem Unterricht …",
     material_notes_analyze: "Karten vorschlagen",
-    material_notes_sent_to: "Deine Notizen gehen an {model}; ZAM behält sie nicht.",
-    material_notes_no_model: "Verbinde ein Textmodell, um aus Notizen Karten zu machen.",
-    material_notes_running: "Deine Notizen werden gelesen – das kann ein, zwei Minuten dauern.",
+    material_notes_sent_to:
+      "Deine Notizen gehen an {model}; ZAM behält sie nicht.",
+    material_notes_no_model:
+      "Verbinde ein Textmodell, um aus Notizen Karten zu machen.",
+    material_notes_running:
+      "Deine Notizen werden gelesen – das kann ein, zwei Minuten dauern.",
     material_busy_status:
       "{what} ({time}) Du kannst dieses Fenster schließen: Die Prüfliste öffnet sich, sobald die Vorschläge da sind.",
     setup_title: "Einrichtung & Daten",
@@ -6866,7 +7015,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     observation_logs_delete_confirm:
       "Die Beobachtungsprotokolle von {count} Sitzungen auf diesem Gerät löschen? Bereits bestätigte Bewertungen bleiben erhalten.",
     observation_logs_deleted: "Beobachtungsprotokolle gelöscht.",
-    observation_logs_delete_failed: "Beobachtungsprotokolle konnten nicht gelöscht werden: {message}",
+    observation_logs_delete_failed:
+      "Beobachtungsprotokolle konnten nicht gelöscht werden: {message}",
     // Vertrauenswürdige Ordner (ADR 2026-10-08b D1).
     settings_trusted_folders: "Vertrauenswürdige Ordner",
     trusted_folders_help:
@@ -6878,7 +7028,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     btn_trusted_folder_add: "Ordner hinzufügen …",
     btn_trusted_folder_remove: "Entfernen",
     trusted_folder_pick: "Ordner wählen, den ZAM lesen darf",
-    trusted_folder_failed: "Vertrauenswürdige Ordner konnten nicht geändert werden: {message}",
+    trusted_folder_failed:
+      "Vertrauenswürdige Ordner konnten nicht geändert werden: {message}",
     database_profile_switch_confirm:
       "Aktives Lernprofil zu „{profile}“ wechseln?",
     database_profile_switched: "Aktives Profil: {profile} ({count} Karten)",
@@ -7173,7 +7324,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     model_status_unprobed: "Noch nicht geprüft",
     model_status_key_missing: "API-Schlüssel fehlt",
     model_status_key_invalid: "API-Schlüssel ungültig",
-    model_status_endpoint_changed: "Adresse geändert – Schlüssel zurückgehalten",
+    model_status_endpoint_changed:
+      "Adresse geändert – Schlüssel zurückgehalten",
     model_endpoint_changed_note:
       "Die Adresse dieses Modells ist jetzt {url}, seit du sie auf diesem Gerät bestätigt hast. ZAM schickt dorthin keinen API-Schlüssel, bis du sie bestätigst.",
     model_btn_confirm_endpoint: "Neue Adresse bestätigen",
@@ -7406,16 +7558,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_content_source_okf: "Artikel",
     content_source_okf_missing: "Diese Quelle hat keine OKF-Artikel.",
     content_source_map_missing: "Diese Quelle hat keine Wissenskarte.",
-    content_source_map_invalid: "Die Wissenskarte dieser Quelle enthält Fehler:",
+    content_source_map_invalid:
+      "Die Wissenskarte dieser Quelle enthält Fehler:",
     lbl_content_source_reader: "Lesen",
     content_source_reader_close: "Schließen",
     content_source_reader_refused: "Diese Datei liegt außerhalb dieser Quelle.",
     content_source_desktop_only: "Das öffnet sich in ZAM Desktop.",
     content_source_reader_missing: "Diese Datei ist in dieser Quelle nicht da.",
-    content_source_browse_error: "Diese Quelle konnte nicht gelesen werden: {message}",
+    content_source_browse_error:
+      "Diese Quelle konnte nicht gelesen werden: {message}",
     content_source_missing: "Dieser Ordner ist nicht mehr da.",
-    content_source_none: "Noch keine Quelle. Wähle einen Ordner, oder füge in den Einstellungen einen Arbeitsbereich hinzu.",
-    content_source_error: "Die Quelle konnte nicht gespeichert werden: {message}",
+    content_source_none:
+      "Noch keine Quelle. Wähle einen Ordner, oder füge in den Einstellungen einen Arbeitsbereich hinzu.",
+    content_source_error:
+      "Die Quelle konnte nicht gespeichert werden: {message}",
     lbl_search_placeholder: "Fragen, Antworten, Kategorien, Keys suchen...",
     lbl_category_filter: "Kategorie",
     lbl_all_categories: "Alle Kategorien",
@@ -7907,7 +8063,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     choice_correct: "✓ Richtig",
     choice_wrong: "✗ Nicht ganz – richtig ist: {answer}",
     choice_dont_know_result: "Die Antwort ist: {answer}",
-    choice_disputed: "Als richtig gewertet. Diese Option bekommst du nicht mehr angezeigt.",
+    choice_disputed:
+      "Als richtig gewertet. Diese Option bekommst du nicht mehr angezeigt.",
     choice_answers_other: "Das beantwortet: {question}",
     choice_now_without_options: "Jetzt ohne Auswahl",
     choice_options_by: "Optionen: {model}",
@@ -8188,7 +8345,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     // Material import review (ADR 2026-10-05).
     material_review_loading: "Vorschläge werden geladen …",
     material_review_error: "Import konnte nicht geladen werden",
-    material_review_intro: "Wähle für jede Karte: Ja nimmt sie in deine Wiederholung auf, Bonus hebt sie für später auf, Nein verwirft sie. Karten ohne Wahl werden nicht gespeichert.",
+    material_review_intro:
+      "Wähle für jede Karte: Ja nimmt sie in deine Wiederholung auf, Bonus hebt sie für später auf, Nein verwirft sie. Karten ohne Wahl werden nicht gespeichert.",
     material_review_from: "Vorgeschlagen von {harness}.",
     material_review_read_by: "Gelesen von {model}.",
     material_review_sent_to: "Gesendet an {models}; gelesen von {model}.",
@@ -8209,68 +8367,91 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     material_review_confirm_not_saved: "{count} nicht gespeichert",
     material_review_later: "Später",
     material_review_discard: "Verwerfen",
-    material_review_discard_confirm: "Diesen Import verwerfen? Nichts davon wird gespeichert.",
+    material_review_discard_confirm:
+      "Diesen Import verwerfen? Nichts davon wird gespeichert.",
     material_review_saving: "Wird gespeichert …",
-    material_review_done: "{cards} Karten in deine Wiederholung übernommen, {bonus} als Bonus aufgehoben.",
+    material_review_done:
+      "{cards} Karten in deine Wiederholung übernommen, {bonus} als Bonus aufgehoben.",
     material_review_close: "Fertig",
     material_review_reimport: "Diese Datei hast du am {date} schon importiert.",
     material_review_show_answer: "Antwort zeigen",
     material_preview_missing: "Die Datei ist nicht mehr da.",
-    material_preview_not_viewable: "Keine Vorschau – öffne sie neben dieser Liste zum Vergleichen.",
+    material_preview_not_viewable:
+      "Keine Vorschau – öffne sie neben dieser Liste zum Vergleichen.",
     material_preview_too_large: "Zu groß für die Vorschau.",
     material_pending_one: "Ein Import wartet auf deine Prüfung: {title}",
     material_pending_many: "{count} Importe warten auf deine Prüfung.",
     material_pending_open: "Prüfen",
     btn_material_import: "Foto / PDF",
     material_start_title: "Mitschrift oder Arbeitsblatt importieren",
-    material_start_one_subject: "Ein Fach pro Import – Material aus mehreren Fächern bitte einzeln importieren.",
+    material_start_one_subject:
+      "Ein Fach pro Import – Material aus mehreren Fächern bitte einzeln importieren.",
     material_start_choose: "Foto oder PDF wählen",
-    material_start_none_selected: "Noch keine Datei gewählt – du kannst sie auch direkt in deinen Assistenten ziehen.",
-    material_start_harness: "Mit {harness} importieren – kann zu deiner Mitschrift nachfragen und ist oft die klügere Wahl. Füge diese Anfrage in {harness} ein:",
-    material_start_request_one: "Lies \"{file}\" und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.",
-    material_start_request_files: "Lies diese Dateien und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.\n{files}",
-    material_start_request_drop: "Ich gebe dir ein Foto oder PDF meiner Mitschrift. Lies es und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.",
+    material_start_none_selected:
+      "Noch keine Datei gewählt – du kannst sie auch direkt in deinen Assistenten ziehen.",
+    material_start_harness:
+      "Mit {harness} importieren – kann zu deiner Mitschrift nachfragen und ist oft die klügere Wahl. Füge diese Anfrage in {harness} ein:",
+    material_start_request_one:
+      'Lies "{file}" und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.',
+    material_start_request_files:
+      "Lies diese Dateien und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.\n{files}",
+    material_start_request_drop:
+      "Ich gebe dir ein Foto oder PDF meiner Mitschrift. Lies es und mach daraus Lernkarten für ZAM. Frag mich, wenn du etwas nicht lesen kannst.",
     material_start_copy: "Anfrage kopieren",
     material_start_copied: "Kopiert – füge sie in {harness} ein.",
-    material_start_copy_failed: "Kopieren ging nicht – markiere den Text und kopiere ihn selbst.",
-    material_start_no_harness: "Am besten geht das mit einem KI-Assistenten, der mit ZAM verbunden ist, etwa opencode, Claude oder Codex: Er liest deine Mitschrift und kann nachfragen.",
+    material_start_copy_failed:
+      "Kopieren ging nicht – markiere den Text und kopiere ihn selbst.",
+    material_start_no_harness:
+      "Am besten geht das mit einem KI-Assistenten, der mit ZAM verbunden ist, etwa opencode, Claude oder Codex: Er liest deine Mitschrift und kann nachfragen.",
     material_start_setup: "Assistenten verbinden",
-    material_start_after: "Danach warten die Karten hier in Learning Content auf deine Auswahl.",
+    material_start_after:
+      "Danach warten die Karten hier in Learning Content auf deine Auswahl.",
     material_start_close: "Schließen",
-    material_start_drop_hint: "Du kannst Fotos oder ein PDF auch auf dieses Fenster ziehen.",
+    material_start_drop_hint:
+      "Du kannst Fotos oder ein PDF auch auf dieses Fenster ziehen.",
     material_builtin_title: "Hier lesen lassen",
     material_builtin_photos_to: "Fotos werden an {model} gesendet.",
     material_builtin_sent_to: "Wird an {model} gesendet.",
     material_builtin_pages: "Seiten (optional)",
     material_builtin_pages_placeholder: "z. B. 2-4",
     material_builtin_analyze: "Analysieren",
-    material_builtin_running: "Deine Seiten werden gelesen – das kann eine Minute dauern.",
+    material_builtin_running:
+      "Deine Seiten werden gelesen – das kann eine Minute dauern.",
     material_builtin_setup: "Modell einrichten",
-    material_builtin_no_image_model: "Zum Lesen von Fotos braucht ZAM ein Modell, das Bilder versteht. Dein Assistent kann es auch.",
-    material_builtin_no_file_model: "Dein verbundenes Modell liest PDFs nicht selbst. Exportiere die Seiten als Fotos oder nutze deinen Assistenten.",
-    material_builtin_heic: "HEIC-Fotos können hier nicht umgewandelt werden – bitte als JPEG exportieren.",
+    material_builtin_no_image_model:
+      "Zum Lesen von Fotos braucht ZAM ein Modell, das Bilder versteht. Dein Assistent kann es auch.",
+    material_builtin_no_file_model:
+      "Dein verbundenes Modell liest PDFs nicht selbst. Exportiere die Seiten als Fotos oder nutze deinen Assistenten.",
+    material_builtin_heic:
+      "HEIC-Fotos können hier nicht umgewandelt werden – bitte als JPEG exportieren.",
     material_builtin_mixed: "Fotos und ein PDF bitte getrennt importieren.",
     material_builtin_one_pdf: "Ein PDF pro Import.",
     material_builtin_too_many: "Höchstens 10 Fotos pro Import.",
-    material_builtin_unsupported: "Importieren lassen sich nur Fotos (JPEG, PNG, WebP, HEIC) und PDFs.",
+    material_builtin_unsupported:
+      "Importieren lassen sich nur Fotos (JPEG, PNG, WebP, HEIC) und PDFs.",
     material_builtin_too_large: "Die Dateien sind zu groß zum Senden.",
     material_builtin_missing: "Eine gewählte Datei ist nicht mehr da.",
     material_builtin_failed: "Dein Modell konnte die Seiten nicht lesen.",
-    material_builtin_invalid: "Die Antwort deines Modells passte nicht – versuch es noch einmal oder nutze deinen Assistenten.",
+    material_builtin_invalid:
+      "Die Antwort deines Modells passte nicht – versuch es noch einmal oder nutze deinen Assistenten.",
     btn_material_bonus: "Bonus ({count})",
     material_bonus_title: "Bonus aus deinen Importen",
-    material_bonus_intro: "Karten, die du als Bonus behalten hast – Extrawissen über das Blatt hinaus. Keine davon ist in deinen Wiederholungen, bis du „Lernen“ wählst.",
+    material_bonus_intro:
+      "Karten, die du als Bonus behalten hast – Extrawissen über das Blatt hinaus. Keine davon ist in deinen Wiederholungen, bis du „Lernen“ wählst.",
     material_bonus_from: "aus „{title}“, {date}",
     material_bonus_untitled: "deinem Import",
     material_bonus_learn: "Lernen",
-    material_bonus_taken: "„{title}“ kommt in den nächsten Tagen in deine Wiederholungen.",
+    material_bonus_taken:
+      "„{title}“ kommt in den nächsten Tagen in deine Wiederholungen.",
     material_bonus_empty: "Keine Bonus-Karten mehr.",
     material_bonus_loading: "Bonus-Karten werden geladen …",
     material_bonus_error: "Die Bonus-Karten konnten nicht geladen werden",
     material_bonus_close: "Schließen",
     lbl_import_bonus_title: "Mehr aus deinen Unterlagen",
-    lbl_import_bonus_body_one: "Aus „{source}“ hast du „{item}“ als Bonus behalten. Keine Aufgabe — nur ein Angebot.",
-    lbl_import_bonus_body_many: "{count} weitere aus „{source}“, die du als Bonus behalten hast: {items}. Keine Aufgabe — nur ein Angebot.",
+    lbl_import_bonus_body_one:
+      "Aus „{source}“ hast du „{item}“ als Bonus behalten. Keine Aufgabe — nur ein Angebot.",
+    lbl_import_bonus_body_many:
+      "{count} weitere aus „{source}“, die du als Bonus behalten hast: {items}. Keine Aufgabe — nur ein Angebot.",
     settings_voice_title: "Sprachmodus",
     settings_voice_help:
       "Laut wiederholen, ohne Hände — beim Spazieren, bei der Hausarbeit, beim Sport. Dein Gerät übernimmt die Sprache kostenlos und ohne Dritte, versteht dich aber vielleicht schlechter; ein Cloud-Modell erkennt meist besser und klingt natürlicher, für ein paar Cent pro Sitzung.",
@@ -8303,36 +8484,45 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     lbl_draft_first: "Neue Karten zuerst als Entwurf",
     lbl_draft_first_help:
       "Aus: Eine Karte von einem Agenten oder aus einem Import ist sofort lernbar. An: Sie wartet unter „Unveröffentlicht“, bis jemand sie veröffentlicht.",
-    draft_first_on: "Neue Karten warten jetzt als Entwurf, bis sie veröffentlicht sind.",
+    draft_first_on:
+      "Neue Karten warten jetzt als Entwurf, bis sie veröffentlicht sind.",
     draft_first_off: "Neue Karten sind sofort lernbar.",
     draft_first_error: "Die Einstellung konnte nicht gespeichert werden.",
     lbl_atlas_firma: "Diese Bibliothek gehört zu einer Firma",
     lbl_atlas_firma_help:
       "Dann liegt ihr eigenes Wissen auf dem Planeten Firma statt Privat, nach Produkten geordnet. Firmen- und Privatwissen teilen nie eine Bibliothek. Ändern kann das nur, wem die Bibliothek gehört oder wer sie kuratiert.",
-    atlas_firma_on: "Das eigene Wissen dieser Bibliothek ist jetzt Firmenwissen.",
-    atlas_firma_off: "Das eigene Wissen dieser Bibliothek ist jetzt Privatwissen.",
+    atlas_firma_on:
+      "Das eigene Wissen dieser Bibliothek ist jetzt Firmenwissen.",
+    atlas_firma_off:
+      "Das eigene Wissen dieser Bibliothek ist jetzt Privatwissen.",
     atlas_firma_error: "Die Einstellung konnte nicht gespeichert werden.",
     atlas_firma_locked: "Das kann nur ändern, wer diese Bibliothek kuratiert.",
     wizard_connect_model_link: "KI-Modell verbinden",
     km_nav: "Wissenskarte",
     km_view_focus: "Fokus-Karte",
-    km_view_focus_desc: "Eine Aussage in der Mitte, ihre Verbindungen rundherum.",
+    km_view_focus_desc:
+      "Eine Aussage in der Mitte, ihre Verbindungen rundherum.",
     km_view_outline: "Gliederung",
     km_view_outline_desc: "Alle Aussagen als aufklappbare Gliederung.",
     km_view_levels: "Ebenen",
-    km_view_levels_desc: "Vom Gesamtbild Ebene für Ebene in die Details zoomen.",
+    km_view_levels_desc:
+      "Vom Gesamtbild Ebene für Ebene in die Details zoomen.",
     km_view_c4: "C4-Architektur",
-    km_view_c4_desc: "Kästen und Pfeile vom Systemkontext bis zu den Komponenten.",
+    km_view_c4_desc:
+      "Kästen und Pfeile vom Systemkontext bis zu den Komponenten.",
     km_author_shared: "Vergleichsbasis",
     km_author_claude: "Claude",
     km_author_gemini: "Gemini",
     km_author_grok: "Grok",
     km_view_g_radial: "Radiale Ego-Karte",
-    km_view_g_radial_desc: "Der Fokus mit seinen Nachbarn im Orbit und die Makroaussage, die sie zusammen bilden.",
+    km_view_g_radial_desc:
+      "Der Fokus mit seinen Nachbarn im Orbit und die Makroaussage, die sie zusammen bilden.",
     km_view_g_causal: "Kausalbaum",
-    km_view_g_causal_desc: "Links, worauf der Fokus beruht, rechts, was daraus folgt.",
+    km_view_g_causal_desc:
+      "Links, worauf der Fokus beruht, rechts, was daraus folgt.",
     km_view_g_facets: "Zonierte Facetten",
-    km_view_g_facets_desc: "Zweck, Verknüpfungen, Regeln und Orte im Repository rund um den Fokus.",
+    km_view_g_facets_desc:
+      "Zweck, Verknüpfungen, Regeln und Orte im Repository rund um den Fokus.",
     km_g_focus: "Aktiver Fokus",
     km_g_synthesis: "Makroaussage",
     km_g_synthesis_empty: "Um diese Aussage gibt es noch keine Begriffssätze.",
@@ -8361,14 +8551,18 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     km_c4_inside: "{count} enthalten",
     km_c4_relationships: "Beziehungen",
     km_c4_no_relationships: "Auf dieser Ebene gibt es keine Beziehungen.",
-    km_c4_empty: "Diese Karte enthält noch keine Architektur. Bitte deinen Agenten, der Wissenskarte C4-Elemente hinzuzufügen.",
-    km_c4_outside: "Diese Aussage hat keinen Platz in der Architektur, deshalb siehst du den Systemkontext.",
+    km_c4_empty:
+      "Diese Karte enthält noch keine Architektur. Bitte deinen Agenten, der Wissenskarte C4-Elemente hinzuzufügen.",
+    km_c4_outside:
+      "Diese Aussage hat keinen Platz in der Architektur, deshalb siehst du den Systemkontext.",
     km_view_concept: "Begriffskarte",
-    km_view_concept_desc: "Ein Begriff in der Mitte. Jede Verbindung ist eine Aussage.",
+    km_view_concept_desc:
+      "Ein Begriff in der Mitte. Jede Verbindung ist eine Aussage.",
     km_concept_reading: "Zusammen gelesen",
     km_concept_more: "Weitere Begriffe",
     km_concept_around: "Aussagen um {label}",
-    km_concept_empty: "Noch keine verbundenen Begriffe. Eine Verbindung braucht ein kurzes Label an beiden Enden und eine eigene Formulierung.",
+    km_concept_empty:
+      "Noch keine verbundenen Begriffe. Eine Verbindung braucht ein kurzes Label an beiden Enden und eine eigene Formulierung.",
     km_view_label: "Ansicht",
     km_view_switch_hint: "umschaltbar in den Einstellungen",
     km_focus_question: "Leitfrage",
@@ -8402,16 +8596,20 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     km_found_yes: "Ja",
     km_found_partly: "Teilweise",
     km_found_no: "Nein",
-    km_feedback_comment_placeholder: "Was hat geholfen, was hat gestört? (optional)",
+    km_feedback_comment_placeholder:
+      "Was hat geholfen, was hat gestört? (optional)",
     km_feedback_send: "Feedback speichern",
     km_feedback_need_rating: "Bitte zuerst eine Bewertung von 1 bis 5 wählen.",
     km_feedback_saved: "Danke, auf diesem Gerät gespeichert.",
     km_feedback_count: "{count} gespeichert",
     km_feedback_copy: "Alle Rückmeldungen kopieren",
-    km_feedback_copied: "Kopiert. Füge es in eine Nachricht ein, um es weiterzugeben.",
+    km_feedback_copied:
+      "Kopiert. Füge es in eine Nachricht ein, um es weiterzugeben.",
     km_loading: "Karte wird geladen …",
-    km_sample_note: "Dieser Arbeitsbereich hat noch keine Wissenskarte, deshalb siehst du ZAMs eigene Karte als Beispiel.",
-    km_invalid: "Die Wissenskarte des Arbeitsbereichs enthält Fehler, deshalb siehst du stattdessen ZAMs eigene Karte:",
+    km_sample_note:
+      "Dieser Arbeitsbereich hat noch keine Wissenskarte, deshalb siehst du ZAMs eigene Karte als Beispiel.",
+    km_invalid:
+      "Die Wissenskarte des Arbeitsbereichs enthält Fehler, deshalb siehst du stattdessen ZAMs eigene Karte:",
     km_load_failed: "Die Wissenskarte konnte nicht geladen werden.",
     km_repo_label: "Repository",
     km_no_repo: "Noch kein Repository gewählt.",

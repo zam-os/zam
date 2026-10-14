@@ -11,6 +11,24 @@ export {
   unitCondition,
   weakestCondition,
 } from "./condition.js";
+export type {
+  AddConnectionInput,
+  AddConnectionResult,
+  ConnectionAuthor,
+  ConnectionErrorCode,
+  ConnectionScope,
+  StoredThread,
+  ThreadEnd,
+} from "./connections.js";
+export {
+  addConnection,
+  ConnectionError,
+  loadConnections,
+  MAX_THREAD_NOTE,
+  orientThread,
+  parseThreadKind,
+  removeConnection,
+} from "./connections.js";
 export type { EmblemValidation } from "./emblem.js";
 export {
   EMBLEM_MAX_CHARS,
@@ -160,6 +178,7 @@ export {
 } from "./planets.js";
 export type {
   AtlasRegionView,
+  AtlasThread,
   AtlasUnitView,
   AtlasView,
   ReadAtlasOptions,
@@ -182,7 +201,7 @@ export type {
   ThreadKind,
   UnitKey,
 } from "./types.js";
-export { unitKeyFor } from "./types.js";
+export { THREAD_KINDS, unitKeyFor } from "./types.js";
 export type { EffectiveVariant, VariantChoice } from "./variants.js";
 export {
   chooseVariant,

@@ -1,8 +1,11 @@
 /**
  * The Studio's knowledge atlas (ADR 2026-10-13, Decisions 3–7; plan Phases
- * 6–8). It reads one lens through `atlas-read`, stores pending land once
+ * 6–9). It reads one lens through `atlas-read`, stores pending land once
  * through `atlas-settle` when this connection may write knowledge, and opens
  * on the learner's home region.
+ *
+ * A learner spins their own red threads here (`atlas-connect`); a portal on
+ * the map, or in a unit's panel, opens the other planet at that unit.
  *
  * Nothing here changes scheduling (Decision 1): *Wiederholen* hands a region
  * to the study view, and only the ratings there do.
@@ -15,6 +18,7 @@
  */
 
 import type {
+  AtlasConnectResponse,
   AtlasEmblemDrawRefusal,
   AtlasEmblemResponse,
   AtlasLensInfoWire,
@@ -25,9 +29,11 @@ import type {
   AtlasPrefsResponse,
   AtlasReadResponse,
   AtlasTakeResponse,
+  AtlasThreadKindWire,
   AtlasUnitWire,
 } from "../../../src/bridge/protocol.js";
 import { emblemDataUrl } from "../../../src/kernel/atlas/emblem.js";
+import { THREAD_KINDS } from "../../../src/kernel/atlas/types.js";
 import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
 import { type ImportPlace, openAtlasImport } from "./import.js";
@@ -41,12 +47,14 @@ import {
   regionDue,
   regionPath,
   searchAtlas,
-  unitLinks,
+  type ThreadGroup,
   unitsIn,
+  unitThreads,
 } from "./layout.js";
 import { conditionWords, renderOutline } from "./outline.js";
 import {
   AtlasMap,
+  type MapWords,
   type Selection,
   sameSelection,
   type ThreadMode,
@@ -114,6 +122,10 @@ interface ViewState {
   expanded: Set<string>;
   /** *Neue Inhalte zeigen*, as the learner's setting says; null until read. */
   showNew: boolean | null;
+  /** Spinning a thread (Decision 7): its first end while the second is picked. */
+  pick: string | null;
+  /** A thread whose ends are chosen, waiting for its kind and note. */
+  draft: { from: string; to: string } | null;
   generation: number;
   frame: number;
   detach: () => void;
@@ -260,12 +272,15 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     mode: "map",
     expanded: new Set(),
     showNew: null,
+    pick: null,
+    draft: null,
     generation: 0,
     frame: 0,
     detach: () => undefined,
   };
   s.map = new AtlasMap(canvas, {
-    onClick: (target) => select(s, target),
+    onClick: (target) => (s.pick ? pickEnd(s, target) : select(s, target)),
+    onPortal: (planet, key) => void goToPortal(s, planet, key),
     onDoubleClick: (target) => {
       if (!target) return;
       select(s, target, true);
@@ -379,6 +394,17 @@ function applyLabels(s: ViewState): void {
   updateThreadsButton(s);
   updateModeButton(s);
   updateShowNewButton(s);
+  s.map.words = {
+    kinds: Object.fromEntries(
+      THREAD_KINDS.map((kind) => [kind, t(`atlas_thread_${kind}`)]),
+    ) as MapWords["kinds"],
+    planets: {
+      welt: t("atlas_planet_welt"),
+      firma: t("atlas_planet_firma"),
+      privat: t("atlas_planet_privat"),
+    },
+  };
+  s.map.requestDraw();
 }
 
 function updateShowNewButton(s: ViewState): void {
@@ -525,6 +551,10 @@ async function switchLens(
 // ── Selection and navigation ──────────────────────────────────────────────
 
 function select(s: ViewState, target: Selection | null, zoom = false): void {
+  // A thread being written belongs to its first unit's panel.
+  if (s.draft && !(target?.kind === "unit" && target.key === s.draft.from)) {
+    s.draft = null;
+  }
   s.map.selection = target;
   s.map.requestDraw();
   if (target && zoom) {
@@ -618,6 +648,11 @@ function handleKey(s: ViewState, e: KeyboardEvent): void {
     !!target &&
     (target.matches("input, textarea, select") || target.isContentEditable);
   if (e.key === "Escape") {
+    if (s.pick || s.draft) {
+      cancelThread(s);
+      e.preventDefault();
+      return;
+    }
     if (!s.els.results.hidden || typing) {
       s.els.search.value = "";
       renderResults(s);
@@ -699,6 +734,10 @@ function renderChrome(s: ViewState): void {
         t,
         tf,
         onSelect: (sel) => {
+          if (s.pick) {
+            pickEnd(s, sel);
+            return;
+          }
           const same = sameSelection(sel, s.map.selection);
           select(s, sel, !same);
         },
@@ -823,6 +862,7 @@ function renderPanel(s: ViewState): void {
   s.els.panel.hidden = !sel || !layout;
   if (!sel || !layout) return;
   if (sel.kind === "region") regionPanel(s, layout, sel.key, body);
+  else if (s.draft?.from === sel.key) threadForm(s, layout, s.draft, body);
   else unitPanel(s, layout, sel.key, body);
 }
 
@@ -1036,19 +1076,7 @@ function unitPanel(
     actions.appendChild(take);
     body.appendChild(actions);
   }
-  const links = unitLinks(layout, key);
-  body.appendChild(el("h3", "atlas-panel-sub", t("atlas_builds_on")));
-  body.appendChild(
-    links.buildsOn.length > 0
-      ? unitList(s, links.buildsOn)
-      : el("p", "atlas-panel-empty", t("atlas_none")),
-  );
-  body.appendChild(el("h3", "atlas-panel-sub", t("atlas_foundation_for")));
-  body.appendChild(
-    links.foundationFor.length > 0
-      ? unitList(s, links.foundationFor)
-      : el("p", "atlas-panel-empty", t("atlas_none")),
-  );
+  body.appendChild(threadSection(s, layout, key));
 }
 
 /**
@@ -1361,6 +1389,286 @@ async function setHome(s: ViewState, key: string): Promise<void> {
   }
 }
 
+// ── Red threads (Decision 7) ──────────────────────────────────────────────
+
+/**
+ * A unit's threads by kind, each in words. Prerequisites are listed both
+ * ways, empty or not; the other kinds where there are some.
+ */
+function threadSection(
+  s: ViewState,
+  layout: AtlasLayout,
+  key: string,
+): DocumentFragment {
+  const fragment = document.createDocumentFragment();
+  const groups = unitThreads(layout, key);
+  const prerequisites = (direction: "out" | "in") => {
+    const group = groups.find(
+      (g) => g.kind === "voraussetzung" && g.direction === direction,
+    );
+    return group
+      ? threadList(s, layout, group)
+      : el("p", "atlas-panel-empty", t("atlas_none"));
+  };
+  fragment.append(
+    el("h3", "atlas-panel-sub", t("atlas_builds_on")),
+    prerequisites("out"),
+    el("h3", "atlas-panel-sub", t("atlas_foundation_for")),
+    prerequisites("in"),
+  );
+  for (const group of groups) {
+    if (group.kind === "voraussetzung") continue;
+    fragment.append(
+      el(
+        "h3",
+        "atlas-panel-sub",
+        t(`atlas_threads_${group.kind}_${group.direction}`),
+      ),
+      threadList(s, layout, group),
+    );
+  }
+  const actions = el("div", "atlas-panel-actions");
+  const spin = button("btn secondary-btn btn-sm", t("atlas_thread_add"));
+  spin.addEventListener("click", () => startPick(s, key));
+  actions.appendChild(spin);
+  fragment.appendChild(actions);
+  return fragment;
+}
+
+function threadList(
+  s: ViewState,
+  layout: AtlasLayout,
+  group: ThreadGroup,
+): HTMLUListElement {
+  const list = el("ul", "atlas-panel-list");
+  for (const { thread, other } of group.entries.slice(0, 60)) {
+    const words: string[] = [];
+    let name: string;
+    let go: () => void;
+    if (other.kind === "unit") {
+      name = other.unit.title;
+      words.push(
+        conditionWords({ t, tf }, other.unit.condition, other.unit.due),
+      );
+      go = () => select(s, { kind: "unit", key: other.unit.key }, true);
+    } else {
+      name = tf("atlas_portal_entry", {
+        planet: t(`atlas_planet_${other.planet}`),
+        title: other.title,
+      });
+      words.push(t("atlas_portal_hint"));
+      go = () => void goToPortal(s, other.planet, other.key);
+    }
+    if (thread.scope === "personal") words.push(t("atlas_thread_yours"));
+    // The note is untrusted text: textContent only, as every entry is.
+    if (thread.note) words.push(tf("atlas_thread_note", { note: thread.note }));
+    const li = entry(name, words.join(" · "), go);
+    const id = thread.id;
+    if (id && (thread.scope === "personal" || layout.view.settle.mayWrite)) {
+      li.classList.add("atlas-thread-row");
+      const cut = button("atlas-thread-cut", "×");
+      cut.title = t("atlas_thread_remove");
+      cut.setAttribute(
+        "aria-label",
+        tf("atlas_thread_remove_named", { title: name }),
+      );
+      cut.addEventListener("click", () => void cutThread(s, id));
+      li.appendChild(cut);
+    }
+    list.appendChild(li);
+  }
+  if (group.entries.length > 60) {
+    list.appendChild(
+      el(
+        "li",
+        "atlas-panel-more",
+        tf("atlas_more", { count: group.entries.length - 60 }),
+      ),
+    );
+  }
+  return list;
+}
+
+/** *Faden spannen*: the next unit clicked, found or chosen is the other end. */
+function startPick(s: ViewState, from: string): void {
+  s.pick = from;
+  s.draft = null;
+  s.root.classList.add("atlas-picking");
+  if (s.map.threadMode === "off") {
+    s.map.threadMode = "selection";
+    updateThreadsButton(s);
+  }
+  setStatus(s, t("atlas_thread_pick"));
+}
+
+function endPick(s: ViewState): void {
+  s.pick = null;
+  s.root.classList.remove("atlas-picking");
+  setStatus(s, "");
+}
+
+function cancelThread(s: ViewState): void {
+  const from = s.pick ?? s.draft?.from ?? null;
+  endPick(s);
+  s.draft = null;
+  if (from) select(s, { kind: "unit", key: from });
+}
+
+/** While picking, a unit is the other end; a region zooms in to reach its units. */
+function pickEnd(s: ViewState, target: Selection | null): void {
+  const from = s.pick;
+  if (!from || !target) return;
+  if (target.kind === "region") {
+    s.map.fitRegion(target.key);
+    return;
+  }
+  if (target.key === from) return;
+  endPick(s);
+  s.draft = { from, to: target.key };
+  select(s, { kind: "unit", key: from });
+}
+
+/** The new thread's kind, direction and note, in sentences anyone can read. */
+function threadForm(
+  s: ViewState,
+  layout: AtlasLayout,
+  draft: { from: string; to: string },
+  body: HTMLElement,
+): void {
+  let from = draft.from;
+  let to = draft.to;
+  const title = (key: string) => layout.units.get(key)?.title ?? key;
+  body.append(
+    el("p", "atlas-panel-kicker", t("atlas_thread_new")),
+    el("h2", "atlas-panel-title", title(draft.from)),
+  );
+  const form = el("form", "atlas-thread-form");
+  const kinds = el("fieldset", "atlas-thread-kinds");
+  kinds.appendChild(el("legend", "", t("atlas_thread_kind_label")));
+  const sentences = new Map<AtlasThreadKindWire, HTMLElement>();
+  for (const kind of THREAD_KINDS) {
+    const label = el("label", "atlas-thread-kind");
+    const radio = el("input");
+    radio.type = "radio";
+    radio.name = "atlas-thread-kind";
+    radio.value = kind;
+    radio.checked = kind === "verbindung";
+    const sentence = el("span");
+    sentences.set(kind, sentence);
+    label.append(radio, sentence);
+    kinds.appendChild(label);
+  }
+  const writeSentences = () => {
+    for (const [kind, sentence] of sentences) {
+      // Titles are untrusted text: textContent only.
+      sentence.textContent = tf(`atlas_thread_sentence_${kind}`, {
+        a: title(from),
+        b: title(to),
+      });
+    }
+  };
+  writeSentences();
+  const swap = button("btn secondary-btn btn-sm", t("atlas_thread_swap"));
+  swap.addEventListener("click", () => {
+    [from, to] = [to, from];
+    writeSentences();
+  });
+  const noteLabel = el(
+    "label",
+    "atlas-emblem-form-label",
+    t("atlas_thread_note_label"),
+  );
+  const note = el("input", "atlas-emblem-input");
+  note.type = "text";
+  note.maxLength = 280;
+  note.autocomplete = "off";
+  noteLabel.appendChild(note);
+  const actions = el("div", "atlas-panel-actions");
+  const save = button("btn primary-btn btn-sm", t("atlas_thread_save"));
+  save.type = "submit";
+  const cancel = button("btn secondary-btn btn-sm", t("model_btn_cancel"));
+  cancel.addEventListener("click", () => cancelThread(s));
+  actions.append(save, cancel);
+  form.append(kinds, swap, noteLabel, actions);
+  form.addEventListener("submit", (event) => {
+    event.preventDefault();
+    const kind =
+      form.querySelector<HTMLInputElement>(
+        'input[name="atlas-thread-kind"]:checked',
+      )?.value ?? "verbindung";
+    save.disabled = true;
+    void spinThread(s, { from, to, kind, note: note.value.trim() }).then(
+      (spun) => {
+        // A refusal keeps the form as the learner filled it in.
+        if (!spun) save.disabled = false;
+      },
+    );
+  });
+  body.appendChild(form);
+  form.querySelector<HTMLInputElement>("input:checked")?.focus();
+}
+
+async function spinThread(
+  s: ViewState,
+  thread: { from: string; to: string; kind: string; note: string },
+): Promise<boolean> {
+  try {
+    await runBridge<AtlasConnectResponse>("atlas-connect", [
+      "--from",
+      thread.from,
+      "--to",
+      thread.to,
+      "--kind",
+      thread.kind,
+      ...(thread.note ? ["--note", thread.note] : []),
+      "--from-studio",
+    ]);
+  } catch (err) {
+    setStatus(
+      s,
+      `${t("atlas_thread_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return false;
+  }
+  s.draft = null;
+  await load(s, s.lens ?? undefined);
+  setStatus(s, t("atlas_thread_saved"));
+  return true;
+}
+
+async function cutThread(s: ViewState, id: string): Promise<void> {
+  try {
+    await runBridge("atlas-disconnect", ["--id", id]);
+  } catch (err) {
+    setStatus(
+      s,
+      `${t("atlas_thread_remove_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+    return;
+  }
+  await load(s, s.lens ?? undefined);
+  setStatus(s, t("atlas_thread_removed"));
+}
+
+/** A portal (Decision 2): open a lens of the other planet at that unit. */
+async function goToPortal(
+  s: ViewState,
+  planet: AtlasPlanetWire,
+  key: string,
+): Promise<void> {
+  const lens = s.lenses.find((l) => l.planet === planet);
+  if (!lens) {
+    setStatus(s, t("atlas_portal_missing"));
+    return;
+  }
+  if (s.pick) endPick(s);
+  s.draft = null;
+  // The read after the switch focuses the selected unit, if it is there.
+  s.map.selection = { kind: "unit", key };
+  if (lens.kind === s.lens) select(s, { kind: "unit", key }, true);
+  else await switchLens(s, lens.kind);
+}
+
 // ── Search ────────────────────────────────────────────────────────────────
 
 function renderResults(s: ViewState): void {
@@ -1390,6 +1698,10 @@ function renderResults(s: ViewState): void {
     b.addEventListener("click", () => {
       s.els.search.value = "";
       list.hidden = true;
+      if (s.pick) {
+        pickEnd(s, { kind: hit.kind, key: hit.key });
+        return;
+      }
       if (s.mode === "outline") toggleMode(s);
       select(s, { kind: hit.kind, key: hit.key }, true);
     });

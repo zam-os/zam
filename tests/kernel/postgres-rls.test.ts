@@ -201,6 +201,13 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
            VALUES (?, 'atom:a', '<svg/>', 1, 'π', '2026-10-13T00:00:00.000Z')`,
         )
         .run(ALICE);
+      // A learner's own red thread (ADR 2026-10-13, Decision 7).
+      await tx
+        .prepare(
+          `INSERT INTO learner_connections (id, user_id, a_key, b_key, kind, note, created_at)
+           VALUES ('lc_alice', ?, 'token:a', 'atom:b', 'nutzt', 'Mein Faden', '2026-10-14T00:00:00.000Z')`,
+        )
+        .run(ALICE);
 
       // ── Bob sees and touches none of it ───────────────────────────────
       await tx.exec("SET LOCAL ROLE NONE");
@@ -246,6 +253,26 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
           .run(ALICE),
       ).rejects.toThrow(/row-level security/i);
       await tx.exec("ROLLBACK TO SAVEPOINT forge_emblem");
+      expect(
+        await tx.prepare("SELECT * FROM learner_connections").all(),
+      ).toHaveLength(0);
+      expect(
+        (
+          await tx
+            .prepare("DELETE FROM learner_connections WHERE id = 'lc_alice'")
+            .run()
+        ).changes,
+      ).toBe(0);
+      await tx.exec("SAVEPOINT forge_thread");
+      await expect(
+        tx
+          .prepare(
+            `INSERT INTO learner_connections (id, user_id, a_key, b_key, kind, created_at)
+             VALUES ('lc_forged', ?, 'token:c', 'atom:d', 'verbindung', '2026-10-14T00:00:00.000Z')`,
+          )
+          .run(ALICE),
+      ).rejects.toThrow(/row-level security/i);
+      await tx.exec("ROLLBACK TO SAVEPOINT forge_thread");
       expect(await tx.prepare("SELECT * FROM review_logs").all()).toHaveLength(
         0,
       );
@@ -309,6 +336,9 @@ describeWithPostgres("PostgreSQL RLS isolation (needs POSTGRES_URL)", () => {
       ).toHaveLength(1);
       expect(
         await tx.prepare("SELECT * FROM learner_emblems").all(),
+      ).toHaveLength(1);
+      expect(
+        await tx.prepare("SELECT * FROM learner_connections").all(),
       ).toHaveLength(1);
     });
   });

@@ -191,6 +191,8 @@ import {
 } from "../agent-harness.js";
 import { AGENT_OFFERS } from "../agent-offers.js";
 import {
+  atlasConnect,
+  atlasDisconnect,
   atlasEmblemClear,
   atlasEmblemDraw,
   atlasEmblemSet,
@@ -9827,6 +9829,70 @@ bridgeCommand
             region: opts.region,
           }),
         );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Red threads (ADR 2026-10-13, Decision 7). A learner's own by default; the
+// library's needs the right to write knowledge. Neither command is on the
+// Studio panel bridge.
+
+bridgeCommand
+  .command("atlas-connect")
+  .description(
+    "Spin a red thread between two units: your own, or with --scope shared the library's (JSON)",
+  )
+  .requiredOption(
+    "--from <key>",
+    "The dependent end: it builds on, uses, consumes the interface of, or is a special case of --to",
+  )
+  .requiredOption("--to <key>", "The end depended upon")
+  .requiredOption(
+    "--kind <kind>",
+    "voraussetzung, nutzt, schnittstelle, ist-ein or verbindung",
+  )
+  .option("--note <text>", "Why the two belong together, one short sentence")
+  .option(
+    "--scope <scope>",
+    "personal (default) or shared; a shared Voraussetzung is a prerequisite",
+  )
+  .option("--from-studio", "Written by a person in the Studio, not an agent")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasConnect(db, {
+            userId,
+            from: String(opts.from),
+            to: String(opts.to),
+            kind: String(opts.kind),
+            note: opts.note,
+            scope: opts.scope,
+            author: opts.fromStudio === true ? "curator" : "agent",
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-disconnect")
+  .description(
+    "Cut a red thread by id: your own, or the library's with the right to write knowledge (JSON)",
+  )
+  .requiredOption("--id <id>", "The thread's id, from atlas-read")
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(await atlasDisconnect(db, { userId, id: String(opts.id) }));
       } catch (err) {
         jsonError((err as Error).message);
       }

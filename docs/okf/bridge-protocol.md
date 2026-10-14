@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T08:00:00.000Z
+timestamp: 2026-10-14T10:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -194,7 +194,7 @@ takes coordinates: only settle places land.
 
 - `atlas-read [--lens <kind>] [--planet <planet>] [--time-zone <iana>]`
   returns one learner's map of one lens: regions, islands, land, units with their condition,
-  prerequisite threads, the learner's own due counts and the home region. It
+  red threads, the learner's own due counts and the home region. It
   writes nothing; land not stored yet is planned in memory and marked
   provisional. A due count is what a region review would show now, by the
   queue's rules: a card waiting for its next short step, a blocked or buried
@@ -214,7 +214,25 @@ takes coordinates: only settle places land.
   unit takes the planet of the lens it is placed in, and an own unit nobody
   placed is world knowledge only where a world rule covers it (a Weltwissen
   alias, a curriculum link, a variant of a world unit); otherwise it lands on
-  the own planet.
+  the own planet. `threads` holds every thread with an end on the map:
+  `from` is the dependent end (it builds on, uses, consumes the interface of,
+  or is a special case of `to`), `kind` is `voraussetzung`, `nutzt`,
+  `schnittstelle`, `ist-ein` or `verbindung`, `scope` is `shared` (a
+  prerequisite or the library's connection) or `personal` (the learner's
+  own), and a connection carries its `id` and `note`. An end on the
+  library's other planet stays in the thread and is named in `portals`, by
+  title and planet; the Studio draws it as a portal.
+- `atlas-connect --from <key> --to <key> --kind <kind> [--note <text>]
+  [--scope personal|shared] [--from-studio]` spins a red thread. It is the
+  learner's own by default, learning state that never feeds blocking.
+  `shared` writes the library's and needs the right to write knowledge
+  (`not-curator` otherwise); a shared `voraussetzung` is refused, since it
+  belongs in the prerequisite tables (`zam_link_prereq`). A thread never runs
+  from world knowledge to the own planet; a `verbindung` turns around instead
+  (`swapped`). The same thread again returns `created: false`, and a new
+  note replaces the old one.
+- `atlas-disconnect --id <id>` cuts the learner's own thread, or the
+  library's with the right to write knowledge.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.

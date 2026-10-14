@@ -9,8 +9,11 @@
 
 import {
   type AtlasView,
+  addConnection,
   assertLensOnLibrary,
   type BundledCellInfo,
+  ConnectionError,
+  type ConnectionScope,
   type CurriculumScope,
   chooseVariant,
   clearLibraryVariant,
@@ -47,6 +50,7 @@ import {
   parseOwnPlanet,
   placeUnits,
   readAtlas,
+  removeConnection,
   resolvePlace,
   revalidateEmblems,
   type SettleResult,
@@ -57,6 +61,7 @@ import {
   snapshotForRead,
   subjectName,
   type TakeResult,
+  type ThreadKind,
   takeUnits,
   type UnitKey,
   undoVariant,
@@ -906,4 +911,94 @@ export async function atlasMissingEmblems(
     missing: missing.slice(0, limit),
     total: missing.length,
   };
+}
+
+// ── Red threads (Decision 7) ─────────────────────────────────────────────────
+
+export interface AtlasConnectResult {
+  success: true;
+  id: string;
+  scope: ConnectionScope;
+  /** The dependent end, as stored. */
+  from: UnitKey;
+  to: UnitKey;
+  kind: ThreadKind;
+  note: string | null;
+  /** A Verbindung was turned around. */
+  swapped: boolean;
+  /** False when the same thread was there already. */
+  created: boolean;
+}
+
+function connectionScope(scope: string | undefined): ConnectionScope {
+  if (scope === undefined || scope === "personal") return "personal";
+  if (scope === "shared") return scope;
+  throw new Error("--scope is personal or shared.");
+}
+
+/** Kernel refusals as the bridge reports them: `not-curator` stays a code. */
+function connectionFailure(error: unknown): never {
+  if (error instanceof ConnectionError) {
+    throw new Error(error.code === "not-curator" ? NOT_CURATOR : error.message);
+  }
+  if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+  throw error;
+}
+
+/** `atlas-connect`: the learner's own thread, or with `shared` the library's. */
+export async function atlasConnect(
+  db: Database,
+  opts: {
+    userId: string;
+    from: string;
+    to: string;
+    kind: string;
+    note?: string;
+    scope?: string;
+    author?: "agent" | "curator";
+  },
+): Promise<AtlasConnectResult> {
+  const scope = connectionScope(opts.scope);
+  try {
+    const stored = await addConnection(db, {
+      a: opts.from,
+      b: opts.to,
+      kind: opts.kind,
+      note: opts.note,
+      scope,
+      userId: opts.userId,
+      mayWriteKnowledge: await mayWriteKnowledge(db),
+      author: opts.author ?? "agent",
+    });
+    return {
+      success: true,
+      id: stored.id,
+      scope: stored.scope,
+      from: stored.a,
+      to: stored.b,
+      kind: stored.kind,
+      note: stored.note,
+      swapped: stored.swapped,
+      created: stored.created,
+    };
+  } catch (error) {
+    connectionFailure(error);
+  }
+}
+
+/** `atlas-disconnect`: cut the learner's own thread, or a curator the library's. */
+export async function atlasDisconnect(
+  db: Database,
+  opts: { userId: string; id: string },
+): Promise<{ success: true; scope: ConnectionScope }> {
+  try {
+    const removed = await removeConnection(db, {
+      id: opts.id,
+      userId: opts.userId,
+      mayWriteKnowledge: await mayWriteKnowledge(db),
+    });
+    return { success: true, scope: removed.scope };
+  } catch (error) {
+    connectionFailure(error);
+  }
 }

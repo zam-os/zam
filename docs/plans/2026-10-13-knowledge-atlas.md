@@ -1,10 +1,10 @@
 # Knowledge atlas — implementation plan
 
 **Status:** Phases 1 to 8 done (2026-10-13), with the owner's decisions from
-the first Studio check built between Phases 7 and 8. Phase 9a (the own
-planet) done 2026-10-14. The ADR gained Decision 12 and the
-round-2 changes after this plan was first merged; the phases below include
-them.\
+the first Studio check built between Phases 7 and 8. Phases 9a (the own
+planet) and 9b (typed threads and portals) done 2026-10-14. The ADR gained
+Decision 12 and the round-2 changes after this plan was first merged; the
+phases below include them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -67,9 +67,10 @@ what the learner knows.
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
   D3, D7, D10), in three commits:
   - [x] **9a** — the library's own planet, its lenses (Leben, Produkte,
-    Unternehmen), a unit's kind and the planet invariants — this commit;
+    Unternehmen), a unit's kind and the planet invariants — `18c26264`;
     see "As built (9a)"
-  - [ ] **9b** — typed threads and portals
+  - [x] **9b** — typed threads and portals — this commit; see "As built
+    (9b)"
   - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
     updates
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
@@ -1735,7 +1736,7 @@ automatically (ADR 2026-10-08b).
   all three lenses, moving the units to world knowledge first for
   Weltwissen and Schule.
 
-**Notes for 9b** (worked out before the hand-over, not built yet).
+**Notes for 9b** (worked out before the hand-over).
 
 - **Migration M045**, schema version 45: `connections` and
   `learner_connections` as sketched above. `learner_connections` gets RLS
@@ -1772,6 +1773,53 @@ automatically (ADR 2026-10-08b).
   - The kind's words show at the closest zoom and on lit bundles.
 - **Blocking.** A test rates the foundation of a personal Voraussetzung
   thread 1 and shows that the dependent stays unblocked.
+
+**As built (9b).** The notes above held; what they left open:
+
+- **Storage** (`src/kernel/atlas/connections.ts`). M045 at schema version
+  45, with `UNIQUE (a_key, b_key, kind)` per table (per learner in
+  `learner_connections`). `connections` is in `KNOWLEDGE_TABLES`,
+  `learner_connections` under RLS, and both are part of backup and restore.
+  - `addConnection` validates the kind, both ends (a token of an atom names
+    the atom's unit), `a !== b`, a note of at most 280 characters, the
+    planet direction, the shared Voraussetzung and the right to write
+    knowledge. It keeps the atom_uri of published ends.
+  - The same thread again is not stored twice; a new note replaces the old
+    one. A Verbindung on one side of the planet line is stored in key order,
+    so one pair is one Verbindung.
+  - `removeConnection` cuts the learner's own, or the library's with the
+    right to write knowledge.
+- **Read.** `threads` carries `kind`, `scope`, and for a connection `id` and
+  `note`. Prerequisites come first, then the library's connections, then the
+  learner's own, so a personal copy of a shared thread is drawn once.
+  Portals work from both sides: the world map names private ends too. A
+  portal needs a unit the learner would see on its own planet.
+- **Bridge.** `atlas-connect` and `atlas-disconnect`, neither on the Studio
+  panel bridge. MCP tools stay in 9c.
+- **Render.**
+  - The spike placed an island's portal by the bearing of each local end but
+    keyed it once per island, so a second portal on the same island was
+    never drawn. Now an island's portal sits on its lower left coast, and up
+    close there is one portal per unit and planet. A click opens the first
+    thread's far unit; the unit panel lists every one.
+  - Unlit prerequisites still hide up close; the other kinds stay, as they
+    are rarer. Notes show on a lit single thread. Portal labels fit one
+    line.
+- **Studio.**
+  - The unit panel lists threads by kind and direction ("Nutzt", "Wird
+    genutzt von", "Sonderfälle", …), with portal ends, the learner's mark,
+    the note, and × to cut one the caller may cut.
+  - *Faden spannen*: pick the other end on the map, in search or in the
+    outline; a region click zooms in. The panel then offers every kind as a
+    sentence with both titles, *Richtung tauschen* and a note. The Studio
+    writes personal threads only. Esc cancels.
+  - A thread to the other planet cannot be picked in the Studio yet; the
+    bridge (and the agent tools of 9c) can spin it.
+- **Tests.** `tests/kernel/atlas-connections.test.ts` covers direction,
+  validation, rights, dedupe, the read with scopes, notes and portals, and a
+  personal Voraussetzung that never blocks (both ends rated 1). PostgreSQL:
+  `learner_connections` under RLS, and a member refused a shared thread
+  while a curator writes one.
 
 ---
 

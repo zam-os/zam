@@ -872,6 +872,18 @@
       ]
     },
     {
+      "id": "atlas-threads",
+      "parent": "knowledge-atlas",
+      "label": "Red threads",
+      "link": "joins units with",
+      "text": "A learner's own red thread is learning state that never feeds blocking; no thread runs from world knowledge to Firma or Privat.",
+      "sources": [
+        "src/kernel/atlas/connections.ts",
+        "src/kernel/scheduler/blocker.ts",
+        "desktop/src/atlas/render.ts"
+      ]
+    },
+    {
       "id": "pairing-optional",
       "parent": "mobile-standalone",
       "label": "Optional pairing",

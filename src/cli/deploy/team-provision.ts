@@ -99,6 +99,8 @@ export const KNOWLEDGE_TABLES = [
   "unit_variants",
   // The library's shared Sinnbilder (Decision 6).
   "emblems",
+  // The library's shared red threads (Decision 7).
+  "connections",
 ] as const;
 
 /**

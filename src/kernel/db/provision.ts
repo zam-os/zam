@@ -20,6 +20,7 @@ import {
   ATLAS_LAND_TABLES,
   ATLAS_TABLES,
   ATLAS_VARIANT_TABLES,
+  CONNECTION_TABLES,
   EMBLEM_TABLES,
   SCHEMA_INDEXES,
   SCHEMA_TABLES,
@@ -32,7 +33,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 44;
+export const CURRENT_SCHEMA_VERSION = 45;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1031,6 +1032,11 @@ export async function runMigrations(db: Database): Promise<void> {
   // (`subject:<key>`), not to one lens's region. Rows written under a Fach's
   // region key move there.
   await moveFachEmblemsToSubjects(db);
+
+  // M045: red threads beyond prerequisites (ADR 2026-10-13, Decision 7) —
+  // the library's shared threads (knowledge) and a learner's own of any kind
+  // (learning state), which never feed blocking.
+  await db.exec(CONNECTION_TABLES);
 }
 
 /**

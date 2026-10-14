@@ -14,8 +14,8 @@ import {
   regionDue,
   regionPath,
   searchAtlas,
-  unitLinks,
   unitsIn,
+  unitThreads,
 } from "../../desktop/src/atlas/layout.js";
 import type { AtlasReadResponse } from "../../src/bridge/protocol.js";
 import {
@@ -222,7 +222,9 @@ describe("atlas map layout", () => {
     for (const key of layout.roots) {
       const emblem = emblemOf(layout, "region", key);
       expect(emblem?.source, key).toBe("seed");
-      expect(emblem?.svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg"')).toBe(true);
+      expect(
+        emblem?.svg.startsWith('<svg xmlns="http://www.w3.org/2000/svg"'),
+      ).toBe(true);
     }
     const unit = [...layout.units.values()][0];
     expect(emblemOf(layout, "unit", unit.key)).toBeNull();
@@ -231,12 +233,64 @@ describe("atlas map layout", () => {
 
   it("lists prerequisites in both directions", () => {
     const thread = welt.threads[0];
-    expect(unitLinks(layout, thread.from).buildsOn.map((u) => u.key)).toContain(
-      thread.to,
-    );
-    expect(
-      unitLinks(layout, thread.to).foundationFor.map((u) => u.key),
-    ).toContain(thread.from);
+    const others = (key: string, direction: "out" | "in") =>
+      unitThreads(layout, key)
+        .find((g) => g.kind === "voraussetzung" && g.direction === direction)
+        ?.entries.map((e) => (e.other.kind === "unit" ? e.other.unit.key : ""));
+    expect(others(thread.from, "out")).toContain(thread.to);
+    expect(others(thread.to, "in")).toContain(thread.from);
+  });
+
+  it("groups threads by kind and direction, with portal ends (Decision 7)", () => {
+    const [a, b, c] = welt.units.map((u) => u.key);
+    const view: AtlasReadResponse = {
+      ...welt,
+      threads: [
+        {
+          from: a,
+          to: b,
+          kind: "nutzt",
+          scope: "personal",
+          id: "t1",
+          note: "Notiz",
+        },
+        { from: c, to: a, kind: "nutzt", scope: "shared", id: "t2" },
+        {
+          from: a,
+          to: "token:privat",
+          kind: "verbindung",
+          scope: "personal",
+          id: "t3",
+        },
+        { from: b, to: a, kind: "verbindung", scope: "personal", id: "t4" },
+        { from: a, to: c, kind: "ist-ein", scope: "shared", id: "t5" },
+        {
+          from: a,
+          to: "token:gone",
+          kind: "nutzt",
+          scope: "personal",
+          id: "t6",
+        },
+      ],
+      portals: { "token:privat": { title: "Familie", planet: "privat" } },
+    };
+    const groups = unitThreads(buildAtlasLayout(view), a);
+    expect(groups.map((g) => `${g.kind}:${g.direction}`)).toEqual([
+      "nutzt:out",
+      "nutzt:in",
+      "ist-ein:out",
+      "verbindung:out",
+    ]);
+    // An end that is neither on the map nor a portal is left out.
+    expect(groups[0].entries.map((e) => e.thread.id)).toEqual(["t1"]);
+    const related = groups[3].entries.map((e) => e.other);
+    expect(related).toContainEqual({
+      kind: "portal",
+      key: "token:privat",
+      title: "Familie",
+      planet: "privat",
+    });
+    expect(related).toHaveLength(2);
   });
 
   it("finds regions and units with the path that tells repeated titles apart", () => {

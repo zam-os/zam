@@ -30,6 +30,15 @@ export type ThreadKind =
   | "ist-ein"
   | "verbindung";
 
+/** Every thread kind, in the order the Studio lists them. */
+export const THREAD_KINDS: readonly ThreadKind[] = [
+  "voraussetzung",
+  "nutzt",
+  "schnittstelle",
+  "ist-ein",
+  "verbindung",
+];
+
 /**
  * A learning unit (Decision 1): every practice item of one atom is one unit,
  * and a token without an atom is a unit of its own.

@@ -21,6 +21,7 @@ import {
   type ConditionCard,
   unitCondition,
 } from "./condition.js";
+import { type ConnectionScope, loadConnections } from "./connections.js";
 import {
   type ResolvedEmblem,
   regionEmblemKey,
@@ -37,7 +38,7 @@ import {
 import { hueKeyForDomain } from "./palette.js";
 import { lensPlacements } from "./planets.js";
 import { type LensSnapshot, loadLandState, planForSnapshot } from "./settle.js";
-import type { LensKind, PlanetKind, UnitKey } from "./types.js";
+import type { LensKind, PlanetKind, ThreadKind, UnitKey } from "./types.js";
 import { type EffectiveVariant, effectiveVariants } from "./variants.js";
 
 export interface AtlasRegionView {
@@ -93,6 +94,23 @@ export interface AtlasUnitView {
   emblem?: string;
 }
 
+/** One red thread (Decision 7). */
+export interface AtlasThread {
+  /**
+   * The dependent end: it builds on, uses, consumes the interface of, or is
+   * a special case of `to`. A Verbindung has no direction.
+   */
+  from: UnitKey;
+  to: UnitKey;
+  kind: ThreadKind;
+  /** `shared`: the library's (a prerequisite or a connection); `personal`: the learner's own. */
+  scope: ConnectionScope;
+  /** A connection's id, to cut it; prerequisites have none. */
+  id?: string;
+  /** Why the two belong together. Untrusted text. */
+  note?: string;
+}
+
 export interface AtlasView {
   lens: {
     kind: LensKind;
@@ -118,8 +136,13 @@ export interface AtlasView {
     unit: UnitKey | null;
   }>;
   units: AtlasUnitView[];
-  /** `from` builds on `to`. */
-  threads: Array<{ from: UnitKey; to: UnitKey; kind: "voraussetzung" }>;
+  /**
+   * Threads with at least one end on this map. The other end may lie on the
+   * library's other planet: then `portals` names it.
+   */
+  threads: AtlasThread[];
+  /** Ends of threads on the other planet, drawn as portals (Decision 2). */
+  portals: Record<string, { title: string; planet: PlanetKind }>;
   own: { dueByRegion: Record<string, number> };
   settle: { pending: number; mayWrite: boolean };
   /** The resolved home region key, after the fallback; null = whole lens. */
@@ -167,9 +190,15 @@ interface CardRow {
 export async function snapshotForRead(
   db: Database,
   lens: LensDefinition,
-): Promise<{ snapshot: LensSnapshot; units: UnitRow[]; stored: boolean }> {
+): Promise<{
+  snapshot: LensSnapshot;
+  units: UnitRow[];
+  stored: boolean;
+  /** The planet of every unit of the library, for portals. */
+  planetOf: Map<UnitKey, PlanetKind>;
+}> {
   const { lensId, rows } = await lensRowsForRead(db, lens);
-  const { units, placements } = await lensPlacements(db, lens, rows);
+  const { units, placements, planetOf } = await lensPlacements(db, lens, rows);
   const state = lensId
     ? await loadLandState(db, lensId, rows)
     : { islands: [], land: [] };
@@ -177,6 +206,7 @@ export async function snapshotForRead(
     snapshot: { lensId: lensId ?? "", rows, placements, state },
     units,
     stored: lensId !== null,
+    planetOf,
   };
 }
 
@@ -201,7 +231,7 @@ export async function readAtlas(
 ): Promise<AtlasView> {
   const now = options.now ?? new Date();
   const { lens } = options;
-  const { snapshot, units, stored } = await snapshotForRead(db, lens);
+  const { snapshot, units, stored, planetOf } = await snapshotForRead(db, lens);
   const plan = planForSnapshot(snapshot);
 
   // ── Regions: stored, plus those the placements name ───────────────────────
@@ -307,6 +337,18 @@ export async function readAtlas(
   for (const entry of variants.values()) variantFor.set(entry.variant, entry);
   const titleOf = new Map(units.map((u) => [u.key, u.title]));
 
+  /** The caller's attached cards of a unit; null when the unit stays blank. */
+  const shownCards = (unit: UnitRow): CardRow[] | null => {
+    const rows = unit.tokenIds
+      .map((id) => cardsByToken.get(id))
+      .filter((row): row is CardRow => row !== undefined);
+    const attached = rows.filter((row) => row.detached_at === null);
+    const declined = rows.length > 0 && attached.length === 0;
+    if (declined) return null; // blank, even with Neue Inhalte zeigen
+    if (attached.length === 0 && !options.showNew) return null;
+    return attached;
+  };
+
   let unitViews: AtlasUnitView[] = [];
   for (const unit of units) {
     const standing = variantFor.get(unit.key);
@@ -314,13 +356,8 @@ export async function readAtlas(
       leafOf.get(unit.key) ??
       (standing ? leafOf.get(standing.standsFor) : undefined);
     if (!region) continue;
-    const rows = unit.tokenIds
-      .map((id) => cardsByToken.get(id))
-      .filter((row): row is CardRow => row !== undefined);
-    const attached = rows.filter((row) => row.detached_at === null);
-    const declined = rows.length > 0 && attached.length === 0;
-    if (declined) continue; // blank, even with Neue Inhalte zeigen
-    if (attached.length === 0 && !options.showNew) continue;
+    const attached = shownCards(unit);
+    if (!attached) continue;
     const conditionCards: ConditionCard[] = attached.map((row) => ({
       state: row.state,
       stability: Number(row.stability),
@@ -386,32 +423,52 @@ export async function readAtlas(
   }
   const visible = new Set(unitViews.map((u) => u.key));
 
-  // ── Prerequisite threads between visible units ────────────────────────────
+  // ── Threads with an end on this map (Decision 7) ─────────────────────────
   const unitOfToken = new Map<string, UnitKey>();
+  const unitByKey = new Map<UnitKey, UnitRow>();
   for (const unit of units) {
+    unitByKey.set(unit.key, unit);
     for (const id of unit.tokenIds) unitOfToken.set(id, unit.key);
   }
   const threadKeys = new Set<string>();
-  const threads: AtlasView["threads"] = [];
+  const threads: AtlasThread[] = [];
+  const portals: AtlasView["portals"] = {};
   const addThread = (
     rawFrom: UnitKey | undefined,
     rawTo: UnitKey | undefined,
+    thread: Omit<AtlasThread, "from" | "to">,
   ) => {
     // Threads of a published unit run to the variant standing in for it.
     const from = rawFrom ? onHexOf(rawFrom) : undefined;
     const to = rawTo ? onHexOf(rawTo) : undefined;
     if (!from || !to || from === to) return;
-    if (!visible.has(from) || !visible.has(to)) return;
-    const key = `${from}>${to}`;
+    const fromHere = visible.has(from);
+    const toHere = visible.has(to);
+    if (!fromHere && !toHere) return;
+    if (!fromHere || !toHere) {
+      // The other end lies on the library's other planet: a portal, when
+      // the learner would see that unit there.
+      const far = fromHere ? to : from;
+      const planet = planetOf.get(far);
+      const unit = unitByKey.get(far);
+      if (!unit || !planet || planet === lens.planet) return;
+      if (!shownCards(unit)) return;
+      portals[far] ??= { title: unit.title, planet };
+    }
+    // Shared first: a personal thread the library already has is not drawn twice.
+    const [x, y] =
+      thread.kind === "verbindung" && to < from ? [to, from] : [from, to];
+    const key = `${thread.kind}:${x}>${y}`;
     if (threadKeys.has(key)) return;
     threadKeys.add(key);
-    threads.push({ from, to, kind: "voraussetzung" });
+    threads.push({ from, to, ...thread });
   };
+  const prerequisite = { kind: "voraussetzung", scope: "shared" } as const;
   const atomEdges = (await db
     .prepare(`SELECT atom_id, requires_id FROM atom_prerequisites`)
     .all()) as Array<{ atom_id: string; requires_id: string }>;
   for (const edge of atomEdges) {
-    addThread(`atom:${edge.atom_id}`, `atom:${edge.requires_id}`);
+    addThread(`atom:${edge.atom_id}`, `atom:${edge.requires_id}`, prerequisite);
   }
   const tokenEdges = (await db
     .prepare(`SELECT token_id, requires_id FROM prerequisites`)
@@ -420,7 +477,16 @@ export async function readAtlas(
     addThread(
       unitOfToken.get(edge.token_id),
       unitOfToken.get(edge.requires_id),
+      prerequisite,
     );
+  }
+  for (const stored of await loadConnections(db, options.userId)) {
+    addThread(stored.a, stored.b, {
+      kind: stored.kind,
+      scope: stored.scope,
+      id: stored.id,
+      ...(stored.note ? { note: stored.note } : {}),
+    });
   }
 
   // ── Land and islands, as planned ──────────────────────────────────────────
@@ -528,6 +594,7 @@ export async function readAtlas(
     land,
     units: unitViews,
     threads,
+    portals,
     own: { dueByRegion },
     settle: {
       pending:

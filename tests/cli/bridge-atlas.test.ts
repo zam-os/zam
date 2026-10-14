@@ -175,9 +175,9 @@ describe("zam bridge atlas commands", () => {
       readFileSync(join(tempHome, ".zam", "config.json"), "utf8"),
     );
     expect(config.graph3d).toEqual({ enabled: true });
-    expect(
-      runCliJson(["bridge", "graph3d-feature", "--disable"]).enabled,
-    ).toBe(false);
+    expect(runCliJson(["bridge", "graph3d-feature", "--disable"]).enabled).toBe(
+      false,
+    );
     expect(
       runCliError(["bridge", "graph3d-feature", "--enable", "--disable"]).error,
     ).toContain("either");
@@ -460,9 +460,87 @@ describe("zam bridge atlas commands", () => {
       "atlas-emblem-set",
       "atlas-emblem-clear",
       "atlas-emblem-draw",
+      "atlas-connect",
+      "atlas-disconnect",
     ]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
     }
+  });
+
+  it("spins and cuts red threads, refusing by the rules (Decision 7)", () => {
+    const view = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    const own = view.units.find((u: { own: boolean }) => u.own).key;
+    const published = view.units.find((u: { own: boolean }) => !u.own).key;
+    const spun = runCliJson([
+      "bridge",
+      "atlas-connect",
+      "--from",
+      own,
+      "--to",
+      published,
+      "--kind",
+      "nutzt",
+      "--note",
+      "Farben sind Licht.",
+      "--from-studio",
+    ]);
+    expect(spun).toMatchObject({
+      success: true,
+      scope: "personal",
+      from: own,
+      to: published,
+      kind: "nutzt",
+      note: "Farben sind Licht.",
+      created: true,
+    });
+    const read = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    expect(read.threads).toContainEqual({
+      from: own,
+      to: published,
+      kind: "nutzt",
+      scope: "personal",
+      id: spun.id,
+      note: "Farben sind Licht.",
+    });
+    expect(read.portals).toEqual({});
+
+    expect(
+      runCliError([
+        "bridge",
+        "atlas-connect",
+        "--from",
+        own,
+        "--to",
+        published,
+        "--kind",
+        "kennt",
+      ]).error,
+    ).toContain("Unknown thread kind");
+    expect(
+      runCliError([
+        "bridge",
+        "atlas-connect",
+        "--from",
+        own,
+        "--to",
+        published,
+        "--kind",
+        "voraussetzung",
+        "--scope",
+        "shared",
+      ]).error,
+    ).toContain("zam_link_prereq");
+
+    expect(
+      runCliJson(["bridge", "atlas-disconnect", "--id", spun.id]).scope,
+    ).toBe("personal");
+    expect(
+      runCliError(["bridge", "atlas-disconnect", "--id", spun.id]).error,
+    ).toContain("No thread");
+    const after = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    expect(
+      after.threads.filter((t: { kind: string }) => t.kind === "nutzt"),
+    ).toEqual([]);
   });
 
   it("sets, shows and clears Sinnbilder, and only as their canonical form", () => {
@@ -501,11 +579,19 @@ describe("zam bridge atlas commands", () => {
     ]);
     expect(own.scope).toBe("personal");
     const after = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
-    expect(after.emblems[unit]).toMatchObject({ glyph: "n₁", source: "personal" });
+    expect(after.emblems[unit]).toMatchObject({
+      glyph: "n₁",
+      source: "personal",
+    });
     expect(
       runCliJson(["bridge", "atlas-emblem-clear", "--subject", unit]).cleared,
     ).toBe(true);
-    const cleared = runCliJson(["bridge", "atlas-read", "--lens", "weltwissen"]);
+    const cleared = runCliJson([
+      "bridge",
+      "atlas-read",
+      "--lens",
+      "weltwissen",
+    ]);
     expect(cleared.emblems[unit].source).toBe("shared");
 
     expect(
@@ -519,7 +605,14 @@ describe("zam bridge atlas commands", () => {
       ]).error,
     ).toContain("<image>");
     expect(
-      runCliError(["bridge", "atlas-emblem-set", "--subject", "token:nope", "--glyph", "x"]).error,
+      runCliError([
+        "bridge",
+        "atlas-emblem-set",
+        "--subject",
+        "token:nope",
+        "--glyph",
+        "x",
+      ]).error,
     ).toContain("No unit");
   });
 
@@ -614,7 +707,8 @@ describe("zam bridge atlas commands", () => {
     );
     expect(placed).toHaveLength(2);
     const thema = view.regions.find(
-      (r: { key: string }) => r.key === "natur.physik.optik.snellius-in-der-praxis",
+      (r: { key: string }) =>
+        r.key === "natur.physik.optik.snellius-in-der-praxis",
     );
     expect(thema.name).toBe("Snellius in der Praxis");
   });

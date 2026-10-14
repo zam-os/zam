@@ -180,6 +180,15 @@ CREATE POLICY learner_emblems_policy ON learner_emblems FOR ALL
   USING (user_id = current_learner_id())
   WITH CHECK (user_id = current_learner_id());
 
+-- learner_connections are a learner's own red threads (ADR 2026-10-13
+-- Decision 7), seen only by them — personal, same policy as learner_emblems.
+ALTER TABLE learner_connections ENABLE ROW LEVEL SECURITY;
+ALTER TABLE learner_connections FORCE ROW LEVEL SECURITY;
+DROP POLICY IF EXISTS learner_connections_policy ON learner_connections;
+CREATE POLICY learner_connections_policy ON learner_connections FOR ALL
+  USING (user_id = current_learner_id())
+  WITH CHECK (user_id = current_learner_id());
+
 -- choice_exclusions are a learner's disputes of choice options (ADR
 -- 2026-09-27 Decision 7) — personal, same policy as cards.
 ALTER TABLE choice_exclusions ENABLE ROW LEVEL SECURITY;
@@ -237,6 +246,7 @@ export const RLS_PROTECTED_TABLES = [
   "choice_exclusions",
   "learner_variants",
   "learner_emblems",
+  "learner_connections",
 ] as const;
 
 /**
