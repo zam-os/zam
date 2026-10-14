@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T19:00:00.000Z
+timestamp: 2026-10-14T21:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -144,7 +144,9 @@ The model-visible learning tools cover:
   repository root), or an http(s) page on a public host without
   credentials. ZAM checks the path against the trusted folders and the URL
   against the `safeFetch` rules, fetches nothing, and refuses the token
-  otherwise. A learner's own cards in the Studio need no source;
+  otherwise. `zam_publish_revision` checks a new `sourceLink` by the same
+  rule and never clears one. A learner's own cards in the Studio need no
+  source;
 - draft review: `zam_add_token` stores a token with the learner's card that
   is learnable at once. Only when the library switched on draft-first
   (`content.draft_first`, off by default, a Studio setting) is it a draft
@@ -180,7 +182,10 @@ The model-visible learning tools cover:
     panel (below), optionally at a `lens` and a `region`.
   - `zam_atlas_place` sorts the learner's own units into a region by key,
     never by coordinates. A unit takes the region's planet; published units
-    and a person's placements are skipped.
+    and a person's placements are skipped. It refuses a unit that does not
+    exist, a variant for the Firma or Privat planet, and a move a thread or
+    prerequisite holds: world knowledge never depends on a Firma or Privat
+    unit.
   - `zam_atlas_connect` spins a red thread, personal by default, never from
     world knowledge to company or private units.
   - `zam_atlas_lens_edit`, for curators, edits a lens (a world lens takes
@@ -303,8 +308,8 @@ Seven self-contained HTML resources ship under `dist/ui/`:
 
 The atlas panel mounts the Studio's own atlas view in its read-only mode
 (plan Phase 10a of [ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md)).
-It reads through `zam_studio_bridge`, where only `atlas-read`,
-`atlas-revision` and `atlas-prefs` without options are allowed, and it offers
+It reads through `zam_studio_bridge`, where only `atlas-read` and
+`atlas-revision` are allowed, and it offers
 nothing that writes: no thread, Sinnbild, import, move, home or *Neue Inhalte
 zeigen*, and no settle. A lens switch is not stored. A region review happens
 in ZAM Desktop or the app; *Nachlesen* opens through the host.

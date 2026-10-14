@@ -152,4 +152,42 @@ describe("zam_add_token and its source", () => {
       "https://scrumguides.org/scrum-guide.html",
     );
   });
+
+  it("keeps the source rule for a revision: no new local link, no clearing (review round 2)", async () => {
+    await client.callTool({
+      name: "zam_add_token",
+      arguments: {
+        user: "thomas",
+        slug: "scrum-artefakte",
+        concept: "Product Backlog, Sprint Backlog und Increment.",
+        sourceLink: "https://scrumguides.org/scrum-guide.html",
+      },
+    });
+    for (const sourceLink of ["http://localhost:3000/wiki", null, ""]) {
+      const revised = await client.callTool({
+        name: "zam_publish_revision",
+        arguments: {
+          slug: "scrum-artefakte",
+          materiality: "cosmetic",
+          changes: { sourceLink },
+        },
+      });
+      expect(revised.isError, String(sourceLink)).toBe(true);
+    }
+    expect((await getTokenBySlug(db, "scrum-artefakte"))?.source_link).toBe(
+      "https://scrumguides.org/scrum-guide.html",
+    );
+    const other = await client.callTool({
+      name: "zam_publish_revision",
+      arguments: {
+        slug: "scrum-artefakte",
+        materiality: "cosmetic",
+        changes: { sourceLink: "https://www.scrum.org/resources/what-scrum" },
+      },
+    });
+    expect(other.isError).toBeUndefined();
+    expect((await getTokenBySlug(db, "scrum-artefakte"))?.source_link).toBe(
+      "https://www.scrum.org/resources/what-scrum",
+    );
+  });
 });

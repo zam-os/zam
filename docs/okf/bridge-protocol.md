@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T16:00:00.000Z
+timestamp: 2026-10-14T21:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -174,7 +174,8 @@ writes no file:
   (`personal-source-confirm-import --sourceId`) links every card to it,
   stores each proposal's `lookup_term`, and without `--place-region` puts
   the units it created on the world planet (Decision 5), reported as
-  `placed`.
+  `placed`. Where nobody may place them, their `zam-topic:` source keeps
+  them world knowledge.
 
 The goal import's `goal-decompose`, `goal-topic-cards` and `goal-create`
 are retired.
@@ -222,9 +223,9 @@ library rows:
 # Knowledge atlas
 
 The knowledge atlas ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md))
-reads and writes through these commands. Only `atlas-read`,
-`atlas-revision` and `atlas-prefs` without options are in
-`STUDIO_BRIDGE_COMMANDS`, for the read-only atlas panel; no write is, and no
+reads and writes through these commands. Only `atlas-read` and
+`atlas-revision` are in `STUDIO_BRIDGE_COMMANDS`, for the read-only atlas
+panel; no write is, and no
 argument takes coordinates: only settle places land.
 
 - `atlas-read [--lens <kind>] [--planet <planet>] [--time-zone <iana>]`

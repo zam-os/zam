@@ -1352,7 +1352,8 @@ export interface TopicImportState {
   view: TopicAreaView | null;
   /**
    * The `zam-topic:` source row that records this import, made at the first
-   * import attempt and reused by a retry. No file is written.
+   * import attempt and reused by a retry. Going back to the topic's name
+   * drops it. No file is written.
    */
   sourceId: string | null;
   /**
@@ -1723,6 +1724,8 @@ function renderSubtopicLevel(
     upBtn.textContent = t("topic_edit");
     upBtn.addEventListener("click", () => {
       state.levels = [];
+      // The name may change: the next import records its own source.
+      state.sourceId = null;
       rerender();
     });
   }

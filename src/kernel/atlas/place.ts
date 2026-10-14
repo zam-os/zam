@@ -34,6 +34,7 @@ import {
   ownPlanetOf,
   PlanetError,
   primaryLens,
+  variantUnits,
 } from "./planets.js";
 import { snapshotForRead } from "./read.js";
 import type { LensKind, OwnPlanet, PlanetKind, UnitKey } from "./types.js";
@@ -191,10 +192,62 @@ function assertPlaceable(
 }
 
 /**
+ * The checks a placement makes that need the library (Decision 2): a variant
+ * stays world knowledge (Decision 12), and a unit that changes planet must
+ * not leave world knowledge depending on a Firma or Privat unit. Reads only.
+ */
+async function assertMayChangePlanet(
+  db: Database,
+  lens: LensDefinition,
+  own: OwnPlanet,
+  unitKeys: readonly UnitKey[],
+): Promise<void> {
+  if (lens.planet !== "welt") {
+    const variants = await variantUnits(db);
+    const variant = unitKeys.find((key) => variants.has(key));
+    if (variant) {
+      throw new PlanetError(
+        "variant-is-world",
+        `${variant} stands in for a published unit, so it is world knowledge; it cannot move to the ${lens.planet} planet.`,
+      );
+    }
+  }
+  const units = await loadUnits(db);
+  const planetOf = await loadUnitPlanets(
+    db,
+    units,
+    await loadBindings(db),
+    own,
+  );
+  const moving = new Set(
+    unitKeys.filter(
+      (key) => planetOf.has(key) && planetOf.get(key) !== lens.planet,
+    ),
+  );
+  if (moving.size === 0) return;
+  const held = unitsHeldByThreads(
+    await directedThreadEnds(db, units),
+    moving,
+    lens.planet,
+    planetOf,
+  );
+  const [first] = held;
+  if (first) {
+    const [unit, by] = first;
+    throw new PlanetError(
+      "held-by-thread",
+      `${unit} stays on the ${planetOf.get(unit)} planet: a thread or prerequisite with ${by} would let world knowledge depend on a Firma or Privat unit.`,
+    );
+  }
+}
+
+/**
  * Put units into a region: create the region's path where the lens has no
  * rows for it yet, then one region per level below it, named by the import
  * (`UNNAMED_LEVEL` where it named none), and record each unit there. The
- * units take the region's planet as their kind; their status stays own.
+ * units take the region's planet as their kind; their status stays own. A
+ * placement that breaks a planet invariant is refused before anything is
+ * written (`PlanetError`).
  *
  * Opens no transaction of its own: the caller's commit holds it, so the
  * cards and their place are written together. The lens must exist
@@ -210,6 +263,12 @@ export async function placeUnits(
   if (units.length === 0) return 0;
   const own = await ownPlanetOf(db);
   for (const unit of units) assertPlaceable(lens, own, unit.unitKey);
+  await assertMayChangePlanet(
+    db,
+    lens,
+    own,
+    units.map((unit) => unit.unitKey),
+  );
   const lensId = await findLensId(db, lens.planet, lens.kind);
   if (!lensId) throw new Error(`Atlas lens ${lens.kind} is missing`);
   const steps = await regionSteps(db, lens, regionKey);
@@ -243,7 +302,10 @@ export interface MovePlanetResult {
   moved: UnitKey[];
   /** Already there. */
   unchanged: UnitKey[];
-  /** Published units, which stay world knowledge, and unknown keys. */
+  /**
+   * Published units and variants, which stay world knowledge, and unknown
+   * keys.
+   */
   skipped: UnitKey[];
   /**
    * Units a thread or prerequisite keeps on their planet: moved, world
@@ -257,9 +319,9 @@ export interface MovePlanetResult {
  * Change units' kind (Decision 2): each moves to the target planet's primary
  * lens, where that lens's rules put it (its unsorted island, or a domain
  * alias), as an explicit placement; its placements on the other planet go.
- * Published units stay world knowledge, and a unit stays where a thread or
- * prerequisite holds it (`held`): world knowledge never depends on a Firma
- * or Privat unit. Nothing changes a unit's status.
+ * Published units and variants stay world knowledge, and a unit stays where
+ * a thread or prerequisite holds it (`held`): world knowledge never depends
+ * on a Firma or Privat unit. Nothing changes a unit's status.
  *
  * Transaction-free; the caller's write holds it. World lenses must exist
  * (`ensureWorldLenses`); the own planet's primary lens is created here.
@@ -290,10 +352,13 @@ export async function moveUnitsToPlanet(
     held: [],
   };
 
+  const variants =
+    opts.planet === "welt" ? new Set<UnitKey>() : await variantUnits(db);
   const moving: UnitRow[] = [];
   for (const key of new Set(opts.units)) {
     const unit = byKey.get(key);
-    if (!unit || (unit.atomId && opts.planet !== "welt")) {
+    const world = unit?.atomId || variants.has(key);
+    if (!unit || (world && opts.planet !== "welt")) {
       result.skipped.push(key);
       continue;
     }

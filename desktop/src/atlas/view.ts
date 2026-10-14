@@ -172,7 +172,8 @@ export async function showAtlasView(
   const s = state;
   s.deps = deps;
   applyLabels(s);
-  if (s.showNew === null) void readShowNew(s);
+  // Read only, the switch is hidden: the panel needs no preference read.
+  if (s.showNew === null && writes(s)) void readShowNew(s);
   await load(s, open.lens ?? s.lens ?? undefined);
   const region = open.region;
   if (region && s.layout?.regions.has(region)) {

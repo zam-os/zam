@@ -10,7 +10,7 @@ tags:
   - agents
   - atlas
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/material-import.md"
-timestamp: 2026-10-14T16:00:00.000Z
+timestamp: 2026-10-14T21:00:00.000Z
 ---
 
 A learner's class notes and handouts become learning cards in three steps:
@@ -175,7 +175,9 @@ One transaction writes the learner's choices for exactly the rows they saw:
   link only;
 - a `token_sources` link from every kept token to the import, with its page;
 - with a place, the new units' `atlas_members` rows, and the variants the
-  learner ticked.
+  learner ticked. A ticked variant is world knowledge (ADR 2026-10-13,
+  Decision 12): at a Firma or Privat place it goes to the world planet
+  instead, and a unit sorted onto the own planet cannot become one.
 
 Each token's `source_link` names its own file: `file:///…/Arbeitsblatt.pdf#page=2`
 for a file read from disk, `photo:IMG_1234.HEIC@2026-10-05` where there is no

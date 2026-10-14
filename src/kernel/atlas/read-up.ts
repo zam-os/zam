@@ -35,6 +35,20 @@ export type ReadUp =
  */
 const CURRICULUM_HOST = /(^|\.)lehrplanplus\.bayern\.de$/i;
 
+/**
+ * A host on the public web, by its name: never this machine or the local
+ * network. An address instead of a name, IPv4 or IPv6, does not count either:
+ * reading up then searches instead.
+ */
+function publicWebHost(hostname: string): boolean {
+  const host = hostname.toLowerCase().replace(/\.$/, "");
+  if (!host.includes(".") || host.includes(":") || host.startsWith("[")) {
+    return false;
+  }
+  if (/^\d+(\.\d+){3}$/.test(host)) return false;
+  return !/(^|\.)(localhost|local|internal|lan|home\.arpa)$/.test(host);
+}
+
 /** The page a source link names, when it is one to read on the web. */
 export function webSourceUrl(link: string | null | undefined): string | null {
   if (!link) return null;
@@ -46,6 +60,7 @@ export function webSourceUrl(link: string | null | undefined): string | null {
   }
   if (url.protocol !== "https:" && url.protocol !== "http:") return null;
   if (url.username || url.password) return null;
+  if (!publicWebHost(url.hostname)) return null;
   if (CURRICULUM_HOST.test(url.hostname)) return null;
   return url.toString();
 }

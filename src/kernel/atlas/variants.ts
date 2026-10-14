@@ -11,10 +11,14 @@
  * A curator may set a variant for the whole library. That never touches a
  * member's cards: they are the member's own learning state, and the member
  * decides.
+ *
+ * A variant is world knowledge. A unit sorted onto the own planet cannot
+ * become one, and a variant cannot move there (`place.ts`).
  */
 
 import type { Database } from "../db/types.js";
 import { hasStandingAssignment } from "../models/card.js";
+import { PlanetError } from "./planet-error.js";
 import type { UnitKey } from "./types.js";
 
 export interface VariantChoice {
@@ -78,6 +82,22 @@ async function assertPair(
   }
   if ((await unitTokenIds(db, variant)).length === 0) {
     throw new Error(`Unit ${variant} does not exist in this library.`);
+  }
+  // A variant is world knowledge (Decision 12): one sorted onto the own
+  // planet would show there and on the published unit's hex at once.
+  const placed = (await db
+    .prepare(
+      `SELECT l.planet FROM atlas_members m
+         JOIN atlas_lenses l ON l.id = m.lens_id
+        WHERE m.unit_key = ? AND l.planet <> 'welt'
+        LIMIT 1`,
+    )
+    .get(variant)) as { planet: string } | undefined;
+  if (placed) {
+    throw new PlanetError(
+      "variant-is-world",
+      `${variant} is ${placed.planet} knowledge; only world knowledge stands in for a published unit. Move it into world knowledge first.`,
+    );
   }
 }
 

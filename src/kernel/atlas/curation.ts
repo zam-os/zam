@@ -33,7 +33,7 @@ import {
   weltwissenSeedRows,
 } from "./lenses.js";
 import { MAX_PLACE_NAME, type PlacedBy, placeUnits } from "./place.js";
-import { assertLensOnLibrary, ownPlanetOf } from "./planets.js";
+import { assertLensOnLibrary, ownPlanetOf, PlanetError } from "./planets.js";
 import type { UnitKey } from "./types.js";
 
 export type LensEdit =
@@ -416,6 +416,17 @@ export async function applyLensEdits(
             `${unit} is published: it keeps the published map's place.`,
           );
         }
+        if (
+          unit.startsWith("token:") &&
+          !(await db
+            .prepare(`SELECT 1 FROM tokens WHERE id = ? AND atom_id IS NULL`)
+            .get(unit.slice("token:".length)))
+        ) {
+          throw new LensEditError(
+            "bad-edit",
+            `"${unit}" is no unit of this library.`,
+          );
+        }
         region(edit.region);
         await placeUnits(
           db,
@@ -656,13 +667,25 @@ export async function acceptLensProposal(
       .prepare(`SELECT 1 FROM tokens WHERE id = ? AND atom_id IS NULL`)
       .get(member.unit.slice("token:".length));
     if (!exists) continue;
-    await placeUnits(
-      db,
-      lens,
-      member.region,
-      [{ unitKey: member.unit as UnitKey, below: [] }],
-      "curator",
-    );
+    try {
+      await placeUnits(
+        db,
+        lens,
+        member.region,
+        [{ unitKey: member.unit as UnitKey, below: [] }],
+        "curator",
+      );
+    } catch (error) {
+      // A thread or a variant keeps the unit where it is; the rest of the
+      // order still holds. The refusal comes before any write.
+      if (
+        error instanceof PlanetError &&
+        (error.code === "held-by-thread" || error.code === "variant-is-world")
+      ) {
+        continue;
+      }
+      throw error;
+    }
     members++;
   }
   await clear(proposal.source);

@@ -8,11 +8,16 @@ import { PRE_APPROVED_TOOLS } from "../../src/cli/agent-approval.js";
 import { atlasRevision } from "../../src/cli/atlas.js";
 import { createMcpServer } from "../../src/cli/commands/mcp.js";
 import {
+  addConnection,
+  addPrerequisite,
+  clearSharedEmblem,
   createToken,
   type Database,
   ensureCard,
   installKvtTile,
   openDatabase,
+  setEmblem,
+  type UnitKey,
 } from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
 
@@ -222,5 +227,42 @@ describe("atlas agent tools", () => {
     });
     const after = await atlasRevision(db, { userId: USER });
     expect(after.revision).not.toBe(before.revision);
+  });
+
+  it("changes its revision on a note, a prerequisite and an older Sinnbild gone (review round 2)", async () => {
+    const rosen = await own("rosen-schneiden", "garten/blumen");
+    const tulpen = await own("tulpen-setzen", "garten/blumen");
+    const changes = async (write: () => Promise<unknown>) => {
+      const before = (await atlasRevision(db, { userId: USER })).revision;
+      await write();
+      return (await atlasRevision(db, { userId: USER })).revision !== before;
+    };
+    const thread = (note: string) =>
+      addConnection(db, {
+        userId: USER,
+        mayWriteKnowledge: false,
+        a: rosen as UnitKey,
+        b: tulpen as UnitKey,
+        kind: "nutzt",
+        note,
+      });
+    await thread("im Herbst");
+    expect(await changes(() => thread("im Frühjahr, nach dem Frost"))).toBe(
+      true,
+    );
+    expect(
+      await changes(() =>
+        addPrerequisite(db, rosen.slice(6), tulpen.slice(6)),
+      ),
+    ).toBe(true);
+    for (const subjectKey of [rosen, tulpen]) {
+      await setEmblem(db, {
+        subjectKey,
+        glyph: "R",
+        userId: USER,
+        mayWriteKnowledge: true,
+      });
+    }
+    expect(await changes(() => clearSharedEmblem(db, rosen, true))).toBe(true);
   });
 });

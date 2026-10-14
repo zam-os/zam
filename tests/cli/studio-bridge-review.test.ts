@@ -26,7 +26,6 @@ import { type Database, openDatabase } from "../../src/kernel/index.js";
  */
 const REVIEWED = [
   "agent-list",
-  "atlas-prefs",
   "atlas-read",
   "atlas-revision",
   "backup-create",
@@ -108,18 +107,10 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     ).toBeUndefined();
   });
 
-  it("lets the atlas panel read its preferences but never store them", () => {
-    expect(refusedStudioBridgeOption("atlas-prefs", [])).toBeUndefined();
-    for (const args of [
-      ["--lens", "schule"],
-      ["--home", "natur"],
-      ["--show-new", "on"],
-      ["--show-new=on"],
-    ]) {
-      expect(refusedStudioBridgeOption("atlas-prefs", args)).toBe(args[0]);
-    }
-    // No write of the atlas is on the bridge.
+  it("gives the atlas panel its two reads and no write", () => {
+    // The read-only panel needs no stored preference (review round 2).
     for (const command of [
+      "atlas-prefs",
       "atlas-settle",
       "atlas-connect",
       "atlas-disconnect",

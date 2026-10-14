@@ -117,4 +117,10 @@ describe("topic import (ADR 2026-10-14)", () => {
     expect(onboarding).toContain("titleInput.maxLength = TOPIC_TITLE_MAX;");
     expect(onboarding).toContain('t("topic_edit")');
   });
+
+  it("records a new source once the learner goes back to the topic's name", () => {
+    const onboarding = desktopFile("src/onboarding.ts");
+    const edit = onboarding.slice(onboarding.indexOf('t("topic_edit")'));
+    expect(edit.slice(0, 400)).toContain("state.sourceId = null;");
+  });
 });

@@ -962,32 +962,37 @@ export async function addToken(db: Database, params: AddTokenParams) {
     prerequisites.push(prerequisite);
   }
 
-  const token = await createToken(db, {
-    slug: params.slug,
-    title: params.title,
-    concept: params.concept,
-    domain: params.domain,
-    bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
-    context: params.context,
-    symbiosis_mode: params.symbiosisMode,
-    source_link: params.sourceLink ?? null,
-    question: params.question ?? null,
-    // Bridge/MCP callers are agents: their questions are LLM-authored and
-    // stay refreshable. Humans author questions via the token CLI instead.
-    question_source: params.question ? "llm" : undefined,
-    // Learnable at once, unless the library wants drafts first.
-    editorial_state: await newTokenEditorialState(db),
+  // Learnable at once, unless the library wants drafts first.
+  const editorialState = await newTokenEditorialState(db);
+  // One write: a prerequisite the planets refuse leaves no token behind.
+  const { token, card } = await db.transaction(async (tx) => {
+    const token = await createToken(tx, {
+      slug: params.slug,
+      title: params.title,
+      concept: params.concept,
+      domain: params.domain,
+      bloom_level: (params.bloomLevel ?? 1) as BloomLevel,
+      context: params.context,
+      symbiosis_mode: params.symbiosisMode,
+      source_link: params.sourceLink ?? null,
+      question: params.question ?? null,
+      // Bridge/MCP callers are agents: their questions are LLM-authored and
+      // stay refreshable. Humans author questions via the token CLI instead.
+      question_source: params.question ? "llm" : undefined,
+      editorial_state: editorialState,
+    });
+
+    for (const context of assignedContexts) {
+      await assignTokenToContext(tx, token.id, context.id);
+    }
+
+    for (const prerequisite of prerequisites) {
+      await assertPrerequisitePlanets(tx, token.id, prerequisite.id);
+      await addPrerequisite(tx, token.id, prerequisite.id);
+    }
+
+    return { token, card: await ensureCard(tx, token.id, userId) };
   });
-
-  for (const context of assignedContexts) {
-    await assignTokenToContext(db, token.id, context.id);
-  }
-
-  for (const prerequisite of prerequisites) {
-    await addPrerequisite(db, token.id, prerequisite.id);
-  }
-
-  const card = await ensureCard(db, token.id, userId);
 
   try {
     await ensureTokenEmbeddings(db, { limit: 8 });

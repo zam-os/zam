@@ -266,10 +266,6 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "atlas-revision": {
     why: "Reads a fingerprint of what the atlas shows, so the panel follows changes.",
   },
-  "atlas-prefs": {
-    why: "Reads the stored lens, home region and Neue Inhalte zeigen; the options that write them are refused.",
-    refusedOptions: ["--lens", "--home", "--show-new"],
-  },
 };
 
 export const STUDIO_BRIDGE_ALLOWED_COMMANDS: ReadonlySet<string> = new Set(
@@ -1106,7 +1102,13 @@ export function createMcpServer(
             context: z.string().optional(),
             domain: z.string().optional(),
             bloomLevel: z.number().int().min(1).max(5).optional(),
-            sourceLink: z.string().nullable().optional(),
+            sourceLink: z
+              .string()
+              .nullable()
+              .optional()
+              .describe(
+                "A new source, by zam_add_token's rule for sourceLink. Leave it out to keep the token's source; it cannot be cleared.",
+              ),
             lookupTerm: z
               .string()
               .max(200)
@@ -1125,6 +1127,11 @@ export function createMcpServer(
       },
     },
     wrapHandler(async (params) => {
+      // A revision keeps the token's source (ADR 2026-10-14, Decision 3): a
+      // new one obeys the same rule as zam_add_token, and none clears it.
+      if (params.changes?.sourceLink !== undefined) {
+        checkAgentSource(params.changes.sourceLink);
+      }
       return await handlePublishRevision(db, {
         tokenId: params.tokenId,
         slug: params.slug,

@@ -5,6 +5,7 @@ import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   type AtlasView,
   addConnection,
+  applyLensEdits,
   bonusCandidates,
   chooseVariant,
   commitMaterialImport,
@@ -16,7 +17,9 @@ import {
   LEBEN_LENS,
   type MaterialProposalSet,
   matchMaterialProposals,
+  moveUnitsToPlanet,
   openDatabase,
+  PlanetError,
   parseMaterialProposalSet,
   readAtlas,
   regionTokenIds,
@@ -428,6 +431,86 @@ describe("atlas: import at a place, variants, taking in", () => {
     // Not offered as a bonus either.
     const bonus = await bonusCandidates(db, USER, { inScopeAtomIds: [] });
     expect(bonus.some((b) => b.atomId === atom.id)).toBe(false);
+  });
+
+  it("keeps a variant world knowledge (Decision 12, review round 2)", async () => {
+    const standsFor = `atom:${tile.atoms[0].id}` as UnitKey;
+    const own = async (slug: string, domain: string) =>
+      `token:${(await createToken(db, { slug, concept: slug, domain })).id}` as UnitKey;
+    const toPrivat = (unit: UnitKey) =>
+      moveUnitsToPlanet(db, { units: [unit], planet: "privat", placedBy: "learner" });
+
+    // Sorted onto the own planet, a unit cannot stand in for a published one.
+    const zuhause = await own("zuhause-gerechnet", "physik/optik");
+    expect((await toPrivat(zuhause)).moved).toEqual([zuhause]);
+    await expect(
+      chooseVariant(db, { userId: USER, variant: zuhause, standsFor }),
+    ).rejects.toMatchObject({ code: "variant-is-world" });
+    await expect(
+      setLibraryVariant(db, { variant: zuhause, standsFor, curatorId: "curator" }),
+    ).rejects.toMatchObject({ code: "variant-is-world" });
+
+    // A variant moves to the own planet neither by a move nor by a placement.
+    const schule = await own("schulverfahren-welt", "physik/optik");
+    await chooseVariant(db, { userId: USER, variant: schule, standsFor });
+    expect(await toPrivat(schule)).toMatchObject({ moved: [], skipped: [schule] });
+    const placing = db.transaction((tx) =>
+      applyLensEdits(
+        tx,
+        LEBEN_LENS,
+        [
+          { op: "create-region", name: "Zuhause" },
+          { op: "place", unit: schule, region: "zuhause" },
+        ],
+        { placedBy: "learner" },
+      ),
+    );
+    const refusal = await placing.then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(refusal).toBeInstanceOf(PlanetError);
+    expect((refusal as PlanetError).code).toBe("variant-is-world");
+    const ownRows = (await db
+      .prepare(
+        `SELECT COUNT(*) AS n FROM atlas_members m
+           JOIN atlas_lenses l ON l.id = m.lens_id
+          WHERE m.unit_key = ? AND l.planet <> 'welt'`,
+      )
+      .get(schule)) as { n: number };
+    expect(Number(ownRows.n)).toBe(0);
+  });
+
+  it("sends a variant an import takes to world knowledge, whatever the place", async () => {
+    const atom = tile.atoms[0];
+    const standsFor = `atom:${atom.id}` as UnitKey;
+    await materialiseKvtCards(db, USER, [atom.id]);
+    await settleLens(db, LEBEN_LENS);
+    await db.transaction((tx) =>
+      applyLensEdits(tx, LEBEN_LENS, [{ op: "create-region", name: "Zuhause" }], {
+        placedBy: "learner",
+      }),
+    );
+    const result = await importNotes(
+      db,
+      notesSet(
+        [
+          {
+            question: "Wie rechnen wir den Brechungswinkel zu Hause?",
+            answer: "Mit dem Geodreieck am Lot.",
+            standsFor,
+          },
+        ],
+        { lens: "leben", regionKey: "zuhause" },
+      ),
+      "tick",
+    );
+    expect(result.variantsChosen).toBe(1);
+    const view = await readAtlas(db, { userId: USER, lens: WELTWISSEN_LENS });
+    const variant = view.units.find((u) => u.standsFor?.key === standsFor);
+    expect(variant).toBeDefined();
+    const leben = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
+    expect(unitOf(leben, variant?.key ?? "")).toBeUndefined();
   });
 
   it("takes in sketched units on a click, and never a declined one", async () => {

@@ -2,7 +2,7 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { linkPrereq } from "../../src/cli/bridge-handlers.js";
+import { addToken, linkPrereq } from "../../src/cli/bridge-handlers.js";
 import {
   addConnection,
   addPrerequisite,
@@ -15,6 +15,7 @@ import {
   executeReviewAction,
   getBlockingPrerequisites,
   getCard,
+  getTokenBySlug,
   LEBEN_LENS,
   loadConnections,
   MAX_THREAD_NOTE,
@@ -412,6 +413,32 @@ describe("atlas connections", () => {
     // From the own planet to world knowledge is fine.
     await expect(
       linkPrereq(db, { token: geburtstag.token.slug, requires: hebel.token.slug }),
+    ).resolves.toMatchObject({ success: true });
+  });
+
+  it("keeps the planet rule for a new token's prerequisites, and writes no token then (review round 2)", async () => {
+    const geburtstag = await unit("geburtstage", "familie/geburtstage");
+    await expect(
+      addToken(db, {
+        user: USER,
+        slug: "hebel-neu",
+        concept: "Ein Hebel",
+        domain: "physik/mechanik",
+        sourceLink: "https://de.wikipedia.org/wiki/Hebel_(Physik)",
+        prerequisites: [geburtstag.token.slug],
+      }),
+    ).rejects.toThrow(ConnectionError);
+    expect(await getTokenBySlug(db, "hebel-neu")).toBeUndefined();
+    // An own token may build on world knowledge.
+    const hebel = await unit("hebel", "physik/mechanik");
+    await expect(
+      addToken(db, {
+        user: USER,
+        slug: "geburtstagskuchen",
+        concept: "Der Kuchen",
+        domain: "familie/geburtstage",
+        prerequisites: [hebel.token.slug],
+      }),
     ).resolves.toMatchObject({ success: true });
   });
 

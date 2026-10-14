@@ -1180,6 +1180,8 @@ export async function atlasLensStale(
  * map is visible and reads the map again when it changes, so an agent's
  * edit shows without a click. One statement, one round trip on a remote
  * library; the caller's own threads and Sinnbilder count, nobody else's.
+ * A thread's note counts by its length, so an edit that keeps the length
+ * shows at the next change.
  */
 export async function atlasRevision(
   db: Database,
@@ -1197,16 +1199,21 @@ export async function atlasRevision(
          (SELECT MAX(stale_at) FROM atlas_lenses) AS stale,
          (SELECT COUNT(*) FROM connections) AS threads,
          (SELECT MAX(created_at) FROM connections) AS threads_at,
+         (SELECT SUM(LENGTH(note)) FROM connections) AS thread_notes,
          (SELECT COUNT(*) FROM learner_connections WHERE user_id = ?) AS own_threads,
          (SELECT MAX(created_at) FROM learner_connections WHERE user_id = ?) AS own_threads_at,
+         (SELECT SUM(LENGTH(note)) FROM learner_connections WHERE user_id = ?) AS own_thread_notes,
+         (SELECT COUNT(*) FROM prerequisites) AS prerequisites,
+         (SELECT COUNT(*) FROM emblems) AS emblem_count,
          (SELECT MAX(updated_at) FROM emblems) AS emblems,
+         (SELECT COUNT(*) FROM learner_emblems WHERE user_id = ?) AS own_emblem_count,
          (SELECT MAX(updated_at) FROM learner_emblems WHERE user_id = ?) AS own_emblems,
          (SELECT COUNT(*) FROM tokens) AS tokens,
          (SELECT MAX(updated_at) FROM tokens) AS tokens_at,
          (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS cards,
          (SELECT MAX(last_review_at) FROM cards WHERE user_id = ?) AS reviewed`,
     )
-    .get(opts.userId, opts.userId, opts.userId, opts.userId, opts.userId)) as
+    .get(...Array<string>(7).fill(opts.userId))) as
     | Record<string, unknown>
     | undefined;
   const revision = Object.values(row ?? {})

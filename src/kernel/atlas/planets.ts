@@ -20,6 +20,7 @@
 
 import { dialectOf } from "../db/sql.js";
 import type { Database } from "../db/types.js";
+import { TOPIC_SOURCE_PREFIX } from "../import/topic-import.js";
 import { getSetting, OWN_PLANET_SETTING } from "../models/settings.js";
 import {
   type BindingRow,
@@ -40,21 +41,11 @@ import {
   type UnitRow,
   WELTWISSEN_LENS,
 } from "./lenses.js";
+import { PlanetError } from "./planet-error.js";
 import type { OwnPlanet, PlanetKind, UnitKey } from "./types.js";
 import { libraryVariantUnits } from "./variants.js";
 
-export type PlanetErrorCode = "other-planet" | "published-is-world";
-
-/** A write that would break a planet invariant. */
-export class PlanetError extends Error {
-  constructor(
-    readonly code: PlanetErrorCode,
-    message: string,
-  ) {
-    super(message);
-    this.name = "PlanetError";
-  }
-}
+export { PlanetError, type PlanetErrorCode } from "./planet-error.js";
 
 /** The lenses of each planet, the primary first (Decision 3). */
 export const PLANET_LENSES: Readonly<
@@ -147,7 +138,10 @@ export function unitPlanetsFrom(input: {
   return planets;
 }
 
-/** Own units that a world rule places: an alias, a curriculum link, a variant. */
+/**
+ * Own units that a world rule places: an alias, a curriculum link, a
+ * variant, or a topic import's source.
+ */
 async function worldCoveredUnits(
   db: Database,
   units: UnitRow[],
@@ -165,14 +159,37 @@ async function worldCoveredUnits(
     if (p.source === "binding") covered.add(p.unitKey);
   }
   // A method standing in for a world unit is world knowledge (Decision 12).
-  const variants = (await db
+  for (const key of await variantUnits(db)) covered.add(key);
+  // A topic import writes world knowledge (ADR 2026-10-14, Decision 5), also
+  // where nobody may place it: a member of a team library, or a retry.
+  const topical = new Set(
+    (
+      (await db
+        .prepare(
+          `SELECT ts.token_id FROM token_sources ts
+             JOIN sources s ON s.id = ts.source_id
+            WHERE s.uri LIKE ?`,
+        )
+        .all(`${TOPIC_SOURCE_PREFIX}%`)) as Array<{ token_id: string }>
+    ).map((row) => row.token_id),
+  );
+  if (topical.size > 0) {
+    for (const unit of units) {
+      if (unit.tokenIds.some((id) => topical.has(id))) covered.add(unit.key);
+    }
+  }
+  return covered;
+}
+
+/** Units that stand in for a published unit, the library's and the learners'. */
+export async function variantUnits(db: Database): Promise<Set<UnitKey>> {
+  const rows = (await db
     .prepare(
       `SELECT variant_key FROM unit_variants
        UNION SELECT variant_key FROM learner_variants`,
     )
     .all()) as Array<{ variant_key: string }>;
-  for (const row of variants) covered.add(row.variant_key as UnitKey);
-  return covered;
+  return new Set(rows.map((row) => row.variant_key as UnitKey));
 }
 
 /** The planet of every unit of the library. Reads only. */

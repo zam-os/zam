@@ -1342,14 +1342,16 @@ export async function commitMaterialImport(
   const kindOf = (rowId: string, proposal: MaterialProposal) =>
     input.kinds?.[rowId] ?? proposal.kind;
   const ownPlanet = await ownPlanetOf(db);
+  const ticked = new Set(input.variants ?? []);
+  // A variant the learner takes goes to world knowledge (Decision 12).
   const mixed =
     Object.keys(input.kinds ?? {}).length > 0 ||
+    ticked.size > 0 ||
     set.proposals.some((proposal) => proposal.kind !== undefined);
   if (placeLens?.planet === "welt" || mixed) await ensureWorldLenses(db);
   if (placeLens && placeLens.planet !== "welt") {
     await ensureLensRow(db, placeLens);
   }
-  const ticked = new Set(input.variants ?? []);
 
   return db.transaction(async (tx) => {
     const sourceId = ulid();
@@ -1392,6 +1394,10 @@ export async function commitMaterialImport(
       if (row.kind === "proposal") {
         const proposal = set.proposals[row.proposalIndex];
         const area = areaFor(proposal);
+        const standsIn =
+          choice === "yes" &&
+          proposal.standsFor !== undefined &&
+          ticked.has(row.id);
         // An exact duplicate — same area, same question — is linked, not
         // written twice (the existing slug-level dedupe, by meaning). Only a
         // token the queue deals counts: a draft or one in maintenance would
@@ -1433,8 +1439,9 @@ export async function commitMaterialImport(
           tokenId = token.id;
           // Only a unit this import wrote moves to its place: a linked
           // duplicate keeps where it is. A kind the place does not have
-          // sends it to that planet instead (Decision 2).
-          const kind = kindOf(row.id, proposal);
+          // sends it to that planet instead (Decision 2). A variant the
+          // learner takes is world knowledge (Decision 12).
+          const kind = standsIn ? "welt" : kindOf(row.id, proposal);
           const wanted =
             kind === undefined ? null : kind === "welt" ? "welt" : "own";
           const placePlanet =
@@ -1452,7 +1459,7 @@ export async function commitMaterialImport(
             toPlanet[wanted].push(`token:${tokenId}`);
           }
         }
-        if (choice === "yes" && proposal.standsFor && ticked.has(row.id)) {
+        if (standsIn && proposal.standsFor) {
           chosenVariants.push({
             variant: `token:${tokenId}`,
             standsFor: proposal.standsFor,

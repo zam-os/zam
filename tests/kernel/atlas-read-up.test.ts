@@ -16,6 +16,7 @@ import {
   readAtlas,
   readUpFor,
   readUpForTokens,
+  recordTopicImport,
   WELTWISSEN_LENS,
   webSourceUrl,
 } from "../../src/kernel/index.js";
@@ -44,6 +45,16 @@ describe("reading up", () => {
       "https://user:secret@example.org/",
       "https://www.lehrplanplus.bayern.de/fachlehrplan/realschule/9/physik",
       "not a url",
+      // Never this machine or the local network (review round 2).
+      "http://localhost:8080/admin",
+      "http://app.localhost/",
+      "http://127.0.0.1/",
+      "http://192.168.1.10/wiki",
+      "http://[::1]/",
+      "http://intranet/wiki",
+      "https://drucker.local/",
+      "https://wiki.internal/a",
+      "https://nas.home.arpa/",
     ]) {
       expect(webSourceUrl(link)).toBeNull();
     }
@@ -118,6 +129,30 @@ describe("reading up", () => {
       await ensureCard(db, token.id, USER);
       return token.id;
     }
+
+    it("keeps a topic import's units on the world planet where nobody placed them", async () => {
+      // A member of a team library may not place them (review round 2);
+      // their source still makes them world knowledge.
+      const id = await own("hebelgesetz", "github/werkzeuge", {
+        lookup_term: "Hebelgesetz",
+      });
+      const before = await readUpForTokens(db, [id]);
+      expect(before.get(id)).toBeUndefined();
+      const { sourceId } = await recordTopicImport(db, {
+        title: "Hebel",
+        userId: USER,
+      });
+      await db
+        .prepare(
+          `INSERT INTO token_sources (token_id, source_id, excerpt, page_number)
+           VALUES (?, ?, '', NULL)`,
+        )
+        .run(id, sourceId);
+      expect((await readUpForTokens(db, [id])).get(id)).toMatchObject({
+        kind: "search",
+        term: "Hebelgesetz",
+      });
+    });
 
     it("stores the term trimmed and bounded, and lets a revision change it", async () => {
       const id = await own("brechung", "physik/optik", {

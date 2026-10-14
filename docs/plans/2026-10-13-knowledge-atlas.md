@@ -2030,7 +2030,8 @@ read: neither writes knowledge, land or preferences.
   region review. *Nachlesen* opens through the host.
 - **Allowlist.** `atlas-read` and `atlas-revision` read. `atlas-prefs` reads
   the stored lens and home, and refuses `--lens`, `--home` and `--show-new`.
-  `tests/cli/studio-bridge-review.test.ts` records the review.
+  `tests/cli/studio-bridge-review.test.ts` records the review. (Review round
+  2 took `atlas-prefs` off again: the read-only view needs no preference.)
 - **Styles.** The design tokens and the atlas rules move out of `styles.css`
   into `tokens.css` and `atlas/atlas.css`, which the Studio and the panel both
   import. The panel brings the few shared controls it needs and no web fonts.
@@ -2115,6 +2116,34 @@ read: neither writes knowledge, land or preferences.
     ADR 2026-10-14 is *Implemented*; its open question 1 stays open.
   - **This plan** stays until the release that ships PR #407, which deletes
     it. The map on Mobile gets its own plan.
+
+### Review round 2 (Gemini 4 Argon, on `766f9924`)
+
+- **Placing keeps the planet rules.** `placeUnits`, behind `zam_atlas_place`,
+  a lens edit, an accepted order and the imports, refuses a move that a
+  thread or a prerequisite holds (`held-by-thread`), and a variant for the
+  own planet (`variant-is-world`), before it writes. A lens edit refuses a
+  unit that does not exist. An accepted order skips a unit held that way.
+  Still open: removing a region or an alias can drop a unit back onto the
+  other planet with its threads; the read shows such a thread at a portal.
+- **A variant is world knowledge.** `chooseVariant` and `setLibraryVariant`
+  refuse a unit sorted onto the own planet, `moveUnitsToPlanet` skips a
+  variant for it, and the material import sends a ticked variant to the
+  world planet whatever its place.
+- **A topic import's units are world knowledge by their source**
+  (`zam-topic:`), also where nobody may place them: a member of a team
+  library, or a retry.
+- **A new token's prerequisites** keep the planet rule in `bridge add-token`
+  and `zam_add_token`, in one transaction, so a refusal leaves no token.
+- **Sources.** *Nachlesen* opens only a named public host, never this
+  machine, the local network or an address. `zam_publish_revision` checks a
+  new `sourceLink` like `zam_add_token` and never clears one.
+- **Live updates** notice a thread's note (by its length), prerequisites and
+  a removed older Sinnbild. A placement by an agent already changed the
+  lens's `updated_at`.
+- **The panel** reads no preference: the read-only view skips the *Neue
+  Inhalte zeigen* read, and `atlas-prefs` left the panel bridge. Going back
+  to a topic's name records a new source for the next import.
 
 ## Risks and pitfalls
 

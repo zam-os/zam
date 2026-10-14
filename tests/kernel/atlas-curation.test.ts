@@ -4,6 +4,7 @@ import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
 import {
   acceptLensProposal,
+  addConnection,
   applyLensEdits,
   createToken,
   type Database,
@@ -17,6 +18,7 @@ import {
   markLensStale,
   OWN_PLANET_SETTING,
   openDatabase,
+  PlanetError,
   PRODUKTE_LENS,
   proposeLensReplacement,
   readAtlas,
@@ -80,6 +82,42 @@ describe("curated lenses", () => {
     expect(error).toBeInstanceOf(LensEditError);
     expect((error as LensEditError).code).toBe(code);
   }
+
+  it("refuses a place a thread holds, and a unit that does not exist (review round 2)", async () => {
+    await ensureWorldLenses(db);
+    const hebel = await own("hebel", "physik/mechanik");
+    const linse = await own("linse", "physik/optik");
+    // World knowledge using world knowledge: fine, until one end leaves.
+    await addConnection(db, {
+      userId: USER,
+      mayWriteKnowledge: false,
+      a: hebel,
+      b: linse,
+      kind: "nutzt",
+    });
+    await settleLens(db, LEBEN_LENS);
+    const held = await edit(LEBEN_LENS, [
+      { op: "create-region", name: "Werkstatt" },
+      { op: "place", unit: linse, region: "werkstatt" },
+    ]).then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(held).toBeInstanceOf(PlanetError);
+    expect((held as PlanetError).code).toBe("held-by-thread");
+    // Nothing of the batch was written.
+    const view = await readAtlas(db, { userId: USER, lens: LEBEN_LENS });
+    expect(view.regions.some((r) => r.key === "werkstatt")).toBe(false);
+    expect(await regionOf(LEBEN_LENS, linse)).toBeUndefined();
+
+    await refused(
+      edit(LEBEN_LENS, [
+        { op: "create-region", name: "Werkstatt" },
+        { op: "place", unit: "token:01JNICHTDA", region: "werkstatt" },
+      ]),
+      "bad-edit",
+    );
+  });
 
   it("creates, renames, reorders and moves regions of an own lens", async () => {
     const note = await own("geburtstag-oma", "familie/geburtstage");

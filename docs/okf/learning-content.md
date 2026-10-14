@@ -7,7 +7,7 @@ tags:
   - learning-content
   - cards
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/learning-content.md"
-timestamp: 2026-10-14T16:00:00.000Z
+timestamp: 2026-10-14T21:00:00.000Z
 ---
 
 The Desktop Studio and the shared Studio panel both have a Learning Content page (Lerninhalte). The page opens on **Lern-Karten** (Learning cards). The other area is **Quellen** (Sources).
@@ -19,7 +19,7 @@ The topic import ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-pro
 - The model proposes subtopics one level at a time, then cards per kept subtopic. It keeps to what the topic names and adds something else only when it is indispensable for understanding. What the learner already knows is where it starts, never content. Without a context it starts from the foundations.
 - From the first subtopic level, *Thema oder Kontext ändern* leads back to the name and the context, both kept.
 - No file is written. One `zam-topic:` source row records the import. That row names the import, not a source to read up in, so Lern-Karten never offers it as a card's source link.
-- A topic import writes world knowledge (Decision 5). Started outside the atlas, its new units land on the world planet, where Weltwissen's rules sort them by domain, even where no rule would otherwise cover them. On a team library this needs the right to write knowledge; without it the cards stay and the rules decide where they land.
+- A topic import writes world knowledge (Decision 5). Started outside the atlas, its new units land on the world planet, where Weltwissen's rules sort them by domain, even where no rule would otherwise cover them. On a team library placing them needs the right to write knowledge; without it the cards stay where Weltwissen's rules put them, and their `zam-topic:` source keeps them world knowledge either way.
 - Each subtopic carries the Wikipedia article the model names for it, and its cards keep that article as their lookup term (Decision 4).
 - The model knows only what is public. A subtopic about one company's or one person's own knowledge comes with the reason, unticked and locked, and with the hint to import it from its source: notes, a file or a repository (Decision 5).
 
