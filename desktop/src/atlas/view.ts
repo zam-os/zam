@@ -13,8 +13,8 @@
  * Sinnbilder show only as images of the validator's canonical form, and a
  * glyph only as text (Decision 6).
  *
- * Loaded lazily. No Tauri and no `main.ts`: the MCP Apps panel can mount it
- * later (Phase 10).
+ * Loaded lazily. No Tauri and no `main.ts`: the MCP Apps panel mounts it
+ * with `readOnly`, which hides everything that writes (Phase 10a).
  */
 
 import type {

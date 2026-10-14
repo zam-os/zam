@@ -7,7 +7,7 @@ tags:
   - cli
   - boundaries
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/kernel-architecture.md"
-timestamp: 2026-09-11T16:59:00Z
+timestamp: 2026-10-14T19:00:00.000Z
 ---
 
 ZAM has exactly two code layers with a hard boundary between them.
@@ -37,6 +37,14 @@ CLI commands; new HTTP goes in the CLI layer, never in the kernel.
 Shared vocabulary lives in the kernel once and is imported from there. The
 Bloom verbs (`BLOOM_VERBS`) that prompts, bridge handlers and the learning
 session all print are one exported constant in `src/kernel/recall/prompter.ts`.
+
+The knowledge atlas (`src/kernel/atlas/`) keeps the same boundary. Its
+condition classes, palette, hex grid and Sinnbild validator are pure: no
+database driver and no Node built-ins. The Studio, its panels and Mobile import
+them directly, so every view agrees on what "due" means. Lens derivation,
+stored land, threads and the learner's atlas read (`readLearnerAtlas`) run on
+the `Database` contract, which lets Mobile read its own library without a
+bridge. The topic import's model calls stay in the CLI.
 
 Local file interoperability follows the same boundary. CLI adapters under
 `src/cli/import/` read untrusted archives, foreign SQLite collections, and
@@ -82,4 +90,5 @@ Machine-local state (config, selections and credentials) stays under
 - [ADR 2026-07-07 — Resilient Self-Update and Dependency-Failure Isolation](../adr/2026-07-07-resilient-self-update-and-dependency-isolation.md)
 - [ADR 2026-07-23 — Online-Only Server Database and Mobile Gating](../adr/2026-07-23-online-only-server-db-and-mobile-gating.md)
 - [ADR 2026-08-09 — Free Offline Learning and Anki Interoperability](../adr/2026-08-09-free-offline-learning-and-anki-interoperability.md)
-- Code: `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/postgres.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/recall/reference-resolver.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/review-context.ts`, `src/cli/index.ts`
+- [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decisions 4 and 10)
+- Code: `src/kernel/atlas/condition.ts`, `src/kernel/atlas/palette.ts`, `src/kernel/atlas/hex.ts`, `src/kernel/atlas/emblem.ts`, `src/kernel/atlas/learner.ts`, `src/kernel/index.ts`, `src/kernel/db/types.ts`, `src/kernel/db/connection.ts`, `src/kernel/db/provision.ts`, `src/kernel/db/postgres.ts`, `src/kernel/recall/prompter.ts`, `src/kernel/recall/reference-resolver.ts`, `src/kernel/import/text-import.ts`, `src/cli/import/text-file.ts`, `src/cli/review-context.ts`, `src/cli/index.ts`

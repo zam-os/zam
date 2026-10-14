@@ -4,9 +4,11 @@
 the first Studio check built between Phases 7 and 8. Phase 9 done
 2026-10-14 (the own planet, typed threads, curated lenses and agent
 tools), with the three deliveries of ADR 2026-10-14 (the topic import,
-*Nachlesen*, world knowledge only and the source rules for agents). The ADR gained
-Decision 12 and the round-2 changes after this plan was first merged; the
-phases below include them.\
+*Nachlesen*, world knowledge only and the source rules for agents). Phase 10
+done 2026-10-14 except the map itself on Mobile, which the owner moved to its
+own feature; Phase 11 done the same day. The ADR gained Decision 12 and the
+round-2 changes after this plan was first merged; the phases below include
+them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
 Its decisions are cited here as D1–D11. Read the ADR first; this plan does not
 repeat its reasons.\
@@ -89,13 +91,15 @@ what the learner knows.
       2026-10-14's Decision 5 (the model flags a subtopic about a company
       or a person) and the source rules for agents (Decision 3), which is
       that ADR's Delivery 3 — `3b99f188`; see "As built (9c-2)"
-- [ ] **Phase 10** — Mobile and the MCP Apps panel (D10), in two commits:
+- [x] **Phase 10** — Mobile and the MCP Apps panel (D10), in two commits:
   - [x] **10a** — the MCP Apps atlas panel, read only (`zam_show_atlas`) —
     `cdcff4d4`; see "10a" below
   - [x] **10b** — Mobile: the outline on the Fortschritt tab and the region
-    review; see "10b" below
-  - [ ] **10c** — the map itself on Mobile, with touch pan and pinch
-- [ ] **Phase 11** — documentation and handover
+    review — `5d2ea178`; see "10b" below
+  - **Moved out:** the map itself on Mobile, with touch pan and pinch, is its
+    own feature and PR (owner decision, 2026-10-14)
+- [x] **Phase 11** — documentation and handover; see "As built" under
+  Phase 11
 
 **Mapping to the ADR's delivery phases.**
 
@@ -2055,8 +2059,9 @@ read: neither writes knowledge, land or preferences.
 - **Region review.** *Wiederholen* starts Mobile's review session on the
   region's due cards (`regionTokenIds`), each submit declaring its
   `answer_format`.
-- **Later in this phase:** the map itself on Mobile, with touch pan and pinch,
-  sharing `render.ts` and `layout.ts`.
+- **Moved out of this plan:** the map itself on Mobile, with touch pan and
+  pinch, sharing `render.ts` and `layout.ts`. The owner moved it to its own
+  feature and PR (2026-10-14).
 - **Verification.** Mobile tests over the Tauri invoke stub and `npm run build`
   in `mobile/`.
 - **As built.**
@@ -2072,6 +2077,8 @@ read: neither writes knowledge, land or preferences.
     the region's token ids, without new cards.
   - Checked in the Mobile vite preview with real `atlas-read` output, in a
     phone viewport, light and dark, German.
+  - The owner finds both Fortschritt and Inhalte fitting places for the
+    atlas; it stays on Fortschritt.
 
 ---
 
@@ -2088,6 +2095,26 @@ read: neither writes knowledge, land or preferences.
   note, and add a status-history row.
 - **This plan.** Tick the phases with their commit hashes. Delete the plan
   before the release that ships the last phase (plans lifecycle).
+- **As built.**
+  - **Public docs.** The README's Studio section (en, de) names the
+    knowledge atlas in place of the knowledge graph. The 3D graph's alpha
+    switch was already described in Settings, and the repository has no
+    landing page that names it.
+  - **Knowledge map.** New statements: `atlas-condition`, `atlas-land`,
+    `atlas-planets`, `atlas-outline`, and below `atlas-land` the statements
+    `atlas-variants` and `atlas-import-place`. `atlas-mobile` moves below
+    `atlas-outline`, so no statement spells out more than seven others.
+  - **OKF.** `mcp-surfaces` gives the learning graph's colours (hue and
+    condition, the texture as a stroke, the condition in words in the
+    tooltip). `mobile-standalone-libraries` describes the atlas on
+    Fortschritt. `kernel-architecture` describes which atlas modules are pure
+    and which run on the `Database` contract. The other atlas articles were
+    updated with their phases.
+  - **ADRs.** ADR 2026-10-13 is *Partially implemented*, with a delivery
+    note: the map itself on Mobile is open, and so is the field test.
+    ADR 2026-10-14 is *Implemented*; its open question 1 stays open.
+  - **This plan** stays until the release that ships PR #407, which deletes
+    it. The map on Mobile gets its own plan.
 
 ## Risks and pitfalls
 

@@ -2,6 +2,8 @@
 
 ## 2026-10-14
 
+- **Update** — [Kernel and CLI Architecture](kernel-architecture.md)
+- **Update** — [Standalone Mobile Libraries](mobile-standalone-libraries.md)
 - **Update** — [Learning Cards from Photos and Files](material-import.md)
 - **Update** — [Local AI Runtimes](local-ai-runtimes.md)
 - **Update** — [Learning Content](learning-content.md)

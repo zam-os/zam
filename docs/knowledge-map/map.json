@@ -898,9 +898,75 @@
       ]
     },
     {
-      "id": "atlas-mobile",
+      "id": "atlas-condition",
       "parent": "knowledge-atlas",
-      "label": "On Mobile",
+      "label": "Condition",
+      "link": "textures units by",
+      "text": "A unit's condition is its weakest card's, in bands set relative to the request retention; it is computed when drawn, never stored.",
+      "sources": [
+        "src/kernel/atlas/condition.ts",
+        "src/kernel/atlas/palette.ts"
+      ]
+    },
+    {
+      "id": "atlas-land",
+      "parent": "knowledge-atlas",
+      "label": "Stable land",
+      "link": "keeps places on",
+      "text": "Settle gives every unit of a library its hex once and never moves it inside its island; islands only drift outward, a little per settle.",
+      "sources": [
+        "src/kernel/atlas/settle.ts",
+        "src/kernel/atlas/land.ts"
+      ]
+    },
+    {
+      "id": "atlas-planets",
+      "parent": "knowledge-atlas",
+      "label": "Planets",
+      "link": "sorts units onto",
+      "text": "A unit's kind is the planet of its lens: world, company or private. Only its status, published or own, decides publishing.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/planets.ts",
+        "src/kernel/atlas/types.ts"
+      ]
+    },
+    {
+      "id": "atlas-variants",
+      "parent": "atlas-land",
+      "label": "Variants",
+      "link": "gives a published unit's hex to",
+      "text": "A variant takes a published unit's hex for a learner and detaches that unit's cards without deleting them; undoing it re-attaches them.",
+      "sources": [
+        "src/kernel/atlas/variants.ts"
+      ]
+    },
+    {
+      "id": "atlas-import-place",
+      "parent": "atlas-land",
+      "label": "Import at a place",
+      "link": "grows through",
+      "text": "An import started at a region places its new units there as own units of that region's planet; settle gives them land next.",
+      "sources": [
+        "src/kernel/atlas/place.ts",
+        "desktop/src/atlas/import.ts"
+      ]
+    },
+    {
+      "id": "atlas-outline",
+      "parent": "knowledge-atlas",
+      "label": "Outline",
+      "link": "is also read as",
+      "text": "Beside the map, the Studio lists the same lens as an outline for keyboard and screen reader, with each region's condition in words.",
+      "sources": [
+        "desktop/src/atlas/outline.ts",
+        "desktop/src/atlas/view.ts"
+      ]
+    },
+    {
+      "id": "atlas-mobile",
+      "parent": "atlas-outline",
+      "label": "Mobile",
       "link": "is read on",
       "text": "Mobile shows the atlas outline of one lens on Fortschritt, from the learner's own database; a region's review uses the usual session.",
       "sources": [

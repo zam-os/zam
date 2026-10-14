@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T16:00:00.000Z
+timestamp: 2026-10-14T19:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -565,6 +565,10 @@ none.
   tokens.
 - The scoped listing is also available through repeatable
   `zam bridge list-tokens --source-link-base` arguments.
+- A node is filled with its subject's hue and outlined in its condition, the
+  knowledge atlas's colour language. The stroke repeats the condition's
+  texture (dotted, broken or dashed), and the tooltip names the condition in
+  words beside the Bloom level, so colour never carries it alone.
 
 # Central learning field-test tools and Recall
 
@@ -622,6 +626,7 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-07-17b — OKF Visualizer Panel](../adr/2026-07-17b-okf-visualizer-panel.md)
 - [ADR 2026-07-18 — Knowledge-to-Learning Import](../adr/2026-07-18-okf-learning-import.md)
 - [ADR 2026-07-18b — Learning Graph Scope Selectors and the Repo Scope](../adr/2026-07-18b-graph-repo-scope.md)
+- [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md) (Decision 4: hue and condition in every knowledge view)
 - [ADR 2026-07-18c — OKF Import Handoff](../adr/2026-07-18c-okf-import-handoff.md)
 - [ADR 2026-07-29b — OKF Freshness Radar](../adr/2026-07-29b-okf-freshness-radar.md)
 - [ADR 2026-07-30 — OKF Reader Navigation and Mermaid Rendering](../adr/2026-07-30-okf-reader-navigation-and-mermaid.md)
@@ -630,4 +635,4 @@ is painted, so one learner's preference cannot bleed into another's session.
 - [ADR 2026-08-09b — Portable Agent Plugin Package](../adr/2026-08-09b-agent-plugin-package.md)
 - [ADR 2026-10-03 — Repo Knowledge Map](../adr/2026-10-03-repo-knowledge-map.md)
 - Knowledge map code: `src/cli/knowledge-map/model.ts`, `src/cli/knowledge-map/load.ts`, `src/cli/knowledge-map/guide.ts`, `src/cli/commands/knowledge-map.ts`, `docs/knowledge-map/map.schema.json`, `tests/cli/knowledge-map.test.ts`; viewer page and panel: `src/cli/knowledge-map/viewer-page.ts`, `desktop/src/panel/knowledge-map-viewer.html`, `desktop/src/panel/knowledge-map.ts`, `src/vscode-extension/protocol.ts`
-- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/agent-approval.ts`, `src/kernel/system/trusted-paths.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`
+- Code: `src/cli/commands/mcp.ts`, `src/cli/commands/bridge.ts`, `src/cli/commands/shared/db.ts`, `src/cli/commands/agent.ts`, `src/cli/agent-connect.ts`, `src/cli/agent-harness.ts`, `src/cli/agent-approval.ts`, `src/kernel/system/trusted-paths.ts`, `src/cli/okf/io.ts`, `src/cli/okf/freshness.ts`, `src/cli/okf-focus.ts`, `src/cli/ui-intent.ts`, `src/kernel/system/install-config.ts`, `src/kernel/analytics/progress.ts`, `src/kernel/analytics/learning-clock.ts`, `src/cli/bridge-handlers.ts` (`importOkfTokens`), `src/vscode-extension/extension.ts`, `src/vscode-extension/host.ts`, `src/vscode-extension/protocol.ts`, `src/vscode-extension/latest-task-queue.ts`, `src/copilot-extension/extension.mjs`, `desktop/src/panel/context-bar.ts`, `desktop/src/panel/display-mode.ts`, `desktop/src/panel/recall.ts`, `desktop/src/panel/graph.ts`, `desktop/src/panel/graph-layout.ts`, `src/kernel/atlas/palette.ts`, `desktop/src/panel/okf.ts`, `desktop/src/panel/okf-render.ts`, `desktop/src/panel/okf-mermaid.ts`, `desktop/src/panel/okf-panel.html`, `vite.config.panel.mts`, `plugin.json`, `mcp.json`, `skills/zam/SKILL.md`, `package.json`, `tests/cli/agent-plugin.test.ts`, `docs/AGENT_PLUGIN.md`

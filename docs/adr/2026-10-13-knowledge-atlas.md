@@ -1,6 +1,8 @@
 # Knowledge Atlas: A Zoomable Map of What You Know
 
-**Status:** Proposed\
+**Status:** Partially implemented — 2026-10-14 (PR #407): delivery phases 0
+to 3 shipped, and of Phase 4 the MCP Apps panel and the outline on Mobile; the
+map itself on Mobile is open. See the delivery note\
 **Date:** 2026-10-13\
 **Deciders:** Thomas (project owner)\
 **Implementation plan:** [2026-10-13-knowledge-atlas.md](../plans/2026-10-13-knowledge-atlas.md)\
@@ -702,6 +704,27 @@ All phases ship on one branch.
   - A private planet, if the personal library holds private knowledge.
 - **Phase 4:** Mobile and the MCP Apps panel.
 
+> **Delivery note (2026-10-14, PR #407).** Phases 0 to 3 shipped, and of
+> Phase 4 the MCP Apps panel and the outline on Mobile. The plan's "as built"
+> notes record the details. What changed against the phases above, and what
+> is open:
+>
+> - **The atlas is not an alpha.** After the first Studio check the owner
+>   decided it is always shown and takes the 3D learning graph's place. The
+>   3D graph is the alpha now, behind a switch on each computer.
+> - **The goal import at a region** became the topic import of
+>   [ADR 2026-10-14](2026-10-14-topic-import-and-source-provenance.md), for
+>   world regions only.
+> - **The MCP Apps panel** (`zam_show_atlas`) only reads. It offers nothing
+>   that writes: no thread, Sinnbild, import, move, home or *Neue Inhalte
+>   zeigen*, and no settle. A region review points to ZAM Desktop or the app.
+> - **Mobile** shows the outline of one lens on the Fortschritt tab and
+>   reviews a region from there; it writes nothing. The owner finds both
+>   Fortschritt and Inhalte fitting; Fortschritt keeps Mobile at four tabs.
+> - **Open:** the map itself on Mobile, with touch pan and pinch, follows as
+>   its own feature (owner decision). The field test under Verification is
+>   still to run.
+
 ## Consequences
 
 **Positive:**
@@ -821,3 +844,4 @@ The field test checks the default of *Neue Inhalte zeigen*.
 | 2026-10-13 | Proposed | Review round 2 (MiMo, after merge) and owner decisions. Kind and status are kept apart. The kind (planet) says who protects the knowledge and follows the place. The status (published or own) follows provenance and alone decides publishing and sync. Own units carry an "eigene Einheit" marker, and only the editorial release publishes. New Decision 12, one goal and one method: a school's variant stands in for a published unit without merging learning state. Also: sameness never combines two histories; Sinnbilder are stored and shown as the validator's re-serialisation on every write path, and library Sinnbilder never flow back; home-region fallback; positions engine-written only; drift caps named, total drift visible; the Leben lens and the place tool listed; condition in words in the outline view. Owner input: world knowledge is public domain, and a method taught at school is not protected knowledge. The planets differ by who protects the knowledge: nobody, an organisation or a person. The editorial release checks that, and ZAM's own world units are released as CC0. |
 | 2026-10-13 | Proposed | Owner decisions after the first Studio check of Phases 1–7: the atlas is always shown and takes the 3D learning graph's place in the sidebar and on Lern-Karten; the 3D graph becomes an alpha behind a machine-local switch. Building the world shows a busy indicator. A region's due count follows the queue's rules, and a small region with nothing due offers to go through its questions again, earliest due first (Decision 10). |
 | 2026-10-13 | Proposed | Owner input after the second Studio check: a Fach's Sinnbild belongs to the subject and shows in every lens (Decision 6); the goal import is offered at a region, for describing missing knowledge rather than class notes (Decision 9). |
+| 2026-10-14 | Partially implemented | PR #407: delivery phases 0 to 3 (the plan's Phases 1 to 9), and of Phase 4 the read-only MCP Apps panel and the outline on Mobile's Fortschritt tab with a region review. The goal import at a region became the topic import ([ADR 2026-10-14](2026-10-14-topic-import-and-source-provenance.md)). Owner decision: the map itself on Mobile moves to its own feature. |

@@ -1,6 +1,7 @@
 # Topic Import, and Where a Unit's Knowledge Comes From
 
-**Status:** Proposed\
+**Status:** Implemented — 2026-10-14 (PR #407): all three deliveries.
+Open question 1 stays open\
 **Date:** 2026-10-14\
 **Deciders:** Thomas (project owner)\
 **Supersedes:** [2026-07-24](2026-07-24-first-run-onboarding.md) §3 (a goal
@@ -294,3 +295,4 @@ The changes land on PR #407, after atlas Phase 9b, each as its own commit:
 | 2026-10-14 | Proposed | Owner direction: the goal import is a short topic and is demoted and renamed; goals return later as knowledge for an agent acting as tutor. A unit's source says where its knowledge comes from: world knowledge cites a stable source, preferably one readable without internet, company knowledge its repository or nothing. Reading up on Wikipedia is a function for the learner. Lands in PR #407. |
 | 2026-10-14 | Proposed | Owner answers: a model knows nothing it could not read somewhere, so an agent creates tokens only from a source (a file such as an OKF article or other Markdown, the repository root, or a web page). The topic import therefore writes world knowledge only, and protected topics are imported from their source. A unit from a web source cites that link and reads up there. Open to reference works besides Wikipedia. The first-run pages are discussed on example designs. |
 | 2026-10-14 | Proposed | Owner decisions: the first-run flow shows the topic page only when that path is chosen (variant B, Decision 6). The topic import asks for context, prior knowledge and details beside the topic's name, and the model keeps to what the topic names, adding other things only when they are indispensable for understanding, as a curriculum does. |
+| 2026-10-14 | Implemented | PR #407, after atlas Phase 9b. Delivery 1: the topic import, revised after review round 1 (Gemini 4 Argon, GPT-6 Astra, Fable 5.1). The learner's language comes from the knowledge context, and the card prompts share the one-point-per-card rule of PR #409. Delivery 2: *Nachlesen* with a lookup term per token (M046). It also moves one bullet of Decision 5 forward: a topic import without a place lands on the world planet. Delivery 3, with atlas Phase 9c-2: protected subtopics are flagged and locked, and `zam_add_token` requires its source. Open question 1 stays open. |
