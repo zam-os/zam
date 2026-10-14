@@ -68,12 +68,20 @@ export type SettingsScopeResolver = (
  */
 export const DRAFT_FIRST_SETTING = "content.draft_first";
 
+/**
+ * The knowledge atlas's own planet (ADR 2026-10-13, Decision 2): `firma` or
+ * `privat`, beside world knowledge. Unset, a team library is `firma` and a
+ * personal one `privat`; a company library kept as a local file sets `firma`.
+ */
+export const OWN_PLANET_SETTING = "atlas.own_planet";
+
 /** Library-wide keys: the library's identity and curator-set defaults. */
 const LIBRARY_KEYS = new Set([
   "user.id",
   "search.suggest_min_similarity",
   "search.dedup_threshold",
   DRAFT_FIRST_SETTING,
+  OWN_PLANET_SETTING,
 ]);
 
 /** Person keys that would otherwise match a machine prefix below. */

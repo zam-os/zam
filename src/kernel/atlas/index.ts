@@ -87,20 +87,28 @@ export type {
 } from "./lenses.js";
 export {
   cleanTopic,
+  deriveDomainLens,
+  deriveLens,
   deriveSchule,
   deriveWeltwissen,
+  ensureLensRow,
   ensureWorldLenses,
   findLensId,
   LAST_RANK,
+  LEBEN_LENS,
+  LENSES,
+  lensRowsForRead,
   loadBindings,
   loadLensRows,
   loadUnits,
   OUTSIDE_CURRICULUM_KEY,
+  PRODUKTE_LENS,
   prettify,
   SCHULE_LENS,
   slugSegment,
   subjectName,
   UNSORTED_KEY,
+  UNTERNEHMEN_LENS,
   WELTWISSEN_LENS,
   weltwissenSeedRows,
 } from "./lenses.js";
@@ -121,14 +129,35 @@ export {
   rgbCss,
   SUBJECT_HUES,
 } from "./palette.js";
-export type { PlacedUnit, PlaceInfo } from "./place.js";
+export type {
+  MovePlanetResult,
+  PlacedBy,
+  PlacedUnit,
+  PlaceInfo,
+} from "./place.js";
 export {
   MAX_PLACE_NAME,
   missingLevels,
+  moveUnitsToPlanet,
   placeUnits,
   resolvePlace,
   UNNAMED_LEVEL,
 } from "./place.js";
+export type { LensPlacements, PlanetErrorCode } from "./planets.js";
+export {
+  assertLensOnLibrary,
+  dropOtherPlanetMembers,
+  lensOnLibrary,
+  lensPlacements,
+  libraryLenses,
+  loadUnitPlanets,
+  ownPlanetOf,
+  PLANET_LENSES,
+  PlanetError,
+  parseOwnPlanet,
+  primaryLens,
+  unitPlanetsFrom,
+} from "./planets.js";
 export type {
   AtlasRegionView,
   AtlasUnitView,
@@ -146,7 +175,13 @@ export {
 } from "./settle.js";
 export type { TakeResult } from "./take.js";
 export { takeUnits } from "./take.js";
-export type { LensKind, PlanetKind, ThreadKind, UnitKey } from "./types.js";
+export type {
+  LensKind,
+  OwnPlanet,
+  PlanetKind,
+  ThreadKind,
+  UnitKey,
+} from "./types.js";
 export { unitKeyFor } from "./types.js";
 export type { EffectiveVariant, VariantChoice } from "./variants.js";
 export {

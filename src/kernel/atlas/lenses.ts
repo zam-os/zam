@@ -127,6 +127,45 @@ export const SCHULE_LENS: LensDefinition = {
   colourLevel: 1,
 };
 
+/**
+ * The Privat planet's lens on a personal library: the agent sorts by
+ * domains, and until it does, a domain's first segment is the Bereich.
+ */
+export const LEBEN_LENS: LensDefinition = {
+  planet: "privat",
+  kind: "leben",
+  name: "Leben",
+  levels: ["Bereich", "Thema"],
+  colourLevel: 0,
+};
+
+/** The Firma planet's default lens: the product landscape (Decision 3). */
+export const PRODUKTE_LENS: LensDefinition = {
+  planet: "firma",
+  kind: "produkte",
+  name: "Produkte",
+  levels: ["Produktlinie", "Produkt", "Komponente"],
+  colourLevel: 1,
+};
+
+/** The Firma planet's optional lens: who is responsible, curated. */
+export const UNTERNEHMEN_LENS: LensDefinition = {
+  planet: "firma",
+  kind: "unternehmen",
+  name: "Unternehmen",
+  levels: ["Organisation", "Bereich", "Team", "Verantwortung"],
+  colourLevel: 2,
+};
+
+/** Every lens ZAM knows, by kind. */
+export const LENSES: Readonly<Record<LensKind, LensDefinition>> = {
+  weltwissen: WELTWISSEN_LENS,
+  schule: SCHULE_LENS,
+  leben: LEBEN_LENS,
+  produkte: PRODUKTE_LENS,
+  unternehmen: UNTERNEHMEN_LENS,
+};
+
 /** The island for units no Weltwissen rule covers. */
 export const UNSORTED_KEY = "unsortiert";
 /** The island for units without a curriculum binding. */
@@ -229,6 +268,66 @@ export async function findLensId(
     .prepare(`SELECT id FROM atlas_lenses WHERE planet = ? AND kind = ?`)
     .get(planet, kind)) as { id: string } | undefined;
   return row?.id ?? null;
+}
+
+/**
+ * The lens row's id, created without regions where it is missing. World
+ * lenses are seeded by `ensureWorldLenses`; this is for the own planet's.
+ */
+export async function ensureLensRow(
+  db: Database,
+  lens: LensDefinition,
+): Promise<string> {
+  const now = nowIso();
+  await db
+    .prepare(
+      `INSERT INTO atlas_lenses
+         (id, planet, kind, name, level_names, colour_level, created_at, updated_at)
+       VALUES (?, ?, ?, ?, ?, ?, ?, ?)
+       ON CONFLICT (planet, kind) DO NOTHING`,
+    )
+    .run(
+      ulid(),
+      lens.planet,
+      lens.kind,
+      lens.name,
+      JSON.stringify(lens.levels),
+      lens.colourLevel,
+      now,
+      now,
+    );
+  return (await findLensId(db, lens.planet, lens.kind)) as string;
+}
+
+/** Lens rows to read with: stored ones, or Weltwissen's seed before it is stored. */
+export async function lensRowsForRead(
+  db: Database,
+  lens: LensDefinition,
+): Promise<{ lensId: string | null; rows: LensRows }> {
+  const lensId = await findLensId(db, lens.planet, lens.kind);
+  if (lensId) return { lensId, rows: await loadLensRows(db, lensId) };
+  if (lens.kind !== "weltwissen") {
+    return { lensId: null, rows: { regions: [], aliases: [], members: [] } };
+  }
+  const seed = weltwissenSeedRows();
+  return {
+    lensId: null,
+    rows: {
+      regions: seed.regions.map((r) => ({
+        id: r.key,
+        key: r.key,
+        name: r.name,
+        level: r.level,
+        parentId: r.parentKey,
+        rank: r.rank,
+      })),
+      aliases: seed.aliases.map((a) => ({
+        domainPrefix: a.domainPrefix,
+        regionId: a.regionKey,
+      })),
+      members: [],
+    },
+  };
 }
 
 export async function loadLensRows(
@@ -798,4 +897,102 @@ export function deriveSchule(
       source: "binding",
     };
   });
+}
+
+/** A domain's segments as the lenses read them, without a leading "schule". */
+function domainSegments(domain: string): string[] {
+  const segments = domain.trim().toLowerCase().split("/").filter(Boolean);
+  if (segments[0] === "schule" && segments.length > 1) segments.shift();
+  return segments;
+}
+
+/** Steps below `above` down to the lens's leaf, named by the next segments. */
+function fillLevels(
+  above: PathStep[],
+  segments: readonly string[],
+  depth: number,
+  rank: number,
+): PathStep[] {
+  const path = [...above];
+  let i = 0;
+  while (path.length < depth) {
+    const raw = segments[i++] ?? "allgemein";
+    const parent = path[path.length - 1];
+    const slug = slugSegment(raw);
+    path.push({
+      key: parent ? `${parent.key}.${slug}` : slug,
+      name: prettify(raw),
+      level: path.length,
+      rank,
+    });
+  }
+  return path;
+}
+
+/**
+ * The own planet's lenses (Leben, Produkte, Unternehmen): an explicit
+ * placement, else the longest domain alias, with the levels below it named
+ * by the next domain segments. What no alias covers lands on the unsorted
+ * island; in Leben a domain's first segment is the Bereich until the agent
+ * sorts it.
+ */
+export function deriveDomainLens(
+  units: UnitRow[],
+  rows: LensRows,
+  lens: LensDefinition,
+): DerivedPlacement[] {
+  const byId = new Map(rows.regions.map((r) => [r.id, r]));
+  const aliasRegion = new Map(
+    rows.aliases.map((a) => [a.domainPrefix.toLowerCase(), a.regionId]),
+  );
+  const members = new Map(rows.members.map((m) => [m.unitKey, m.regionId]));
+  const depth = lens.levels.length;
+
+  return units.map((unit) => {
+    const explicit = memberPlacement(unit, members, byId);
+    if (explicit) return explicit;
+    const segments = domainSegments(unit.domain);
+    for (let n = segments.length; n >= 1; n--) {
+      const regionId = aliasRegion.get(segments.slice(0, n).join("/"));
+      const hit = regionId ? storedPath(regionId, byId) : null;
+      if (!hit || hit.length > depth) continue;
+      return {
+        unitKey: unit.key,
+        path: fillLevels(hit, segments.slice(n), depth, LAST_RANK),
+        source: "alias",
+      };
+    }
+    if (lens.kind === "leben" && segments.length > 0) {
+      return {
+        unitKey: unit.key,
+        path: fillLevels([], segments, depth, 0),
+        source: "unsorted",
+      };
+    }
+    const unsorted: PathStep = {
+      key: UNSORTED_KEY,
+      name: "Noch nicht eingeordnet",
+      level: 0,
+      rank: LAST_RANK,
+    };
+    return {
+      unitKey: unit.key,
+      path: fillLevels([unsorted], segments, depth, 0),
+      source: "unsorted",
+    };
+  });
+}
+
+/** Where every given unit sits in a lens, by that lens's rules. Pure. */
+export function deriveLens(
+  lens: LensDefinition,
+  units: UnitRow[],
+  rows: LensRows,
+  bindings: BindingRow[],
+): DerivedPlacement[] {
+  if (lens.kind === "weltwissen") {
+    return deriveWeltwissen(units, rows, bindings);
+  }
+  if (lens.kind === "schule") return deriveSchule(units, rows, bindings);
+  return deriveDomainLens(units, rows, lens);
 }

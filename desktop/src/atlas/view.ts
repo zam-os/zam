@@ -17,7 +17,11 @@
 import type {
   AtlasEmblemDrawRefusal,
   AtlasEmblemResponse,
+  AtlasLensInfoWire,
   AtlasLensKindWire,
+  AtlasMovePlanetResponse,
+  AtlasOwnPlanetWire,
+  AtlasPlanetWire,
   AtlasPrefsResponse,
   AtlasReadResponse,
   AtlasTakeResponse,
@@ -67,7 +71,11 @@ export interface AtlasViewDeps {
   openCurriculumWizard?(): void;
 }
 
-const LENSES: readonly AtlasLensKindWire[] = ["weltwissen", "schule"];
+/** Until the first read names the library's lenses: world knowledge's. */
+const WORLD_LENSES: readonly AtlasLensInfoWire[] = [
+  { kind: "weltwissen", planet: "welt", name: "Weltwissen" },
+  { kind: "schule", planet: "welt", name: "Schule" },
+];
 const THREAD_MODES: readonly ThreadMode[] = ["all", "selection", "off"];
 
 interface Elements {
@@ -99,6 +107,9 @@ interface ViewState {
   els: Elements;
   layout: AtlasLayout | null;
   lens: AtlasLensKindWire | null;
+  /** The library's lenses, world's first, then its own planet's (D2). */
+  lenses: readonly AtlasLensInfoWire[];
+  ownPlanet: AtlasOwnPlanetWire | null;
   mode: "map" | "outline";
   expanded: Set<string>;
   /** *Neue Inhalte zeigen*, as the learner's setting says; null until read. */
@@ -155,12 +166,6 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   const lensGroup = el("div", "atlas-lenses");
   lensGroup.setAttribute("role", "group");
   const lensButtons = new Map<AtlasLensKindWire, HTMLButtonElement>();
-  for (const lens of LENSES) {
-    const b = button("atlas-lens-btn");
-    b.dataset.lens = lens;
-    lensButtons.set(lens, b);
-    lensGroup.appendChild(b);
-  }
   const crumbNav = el("nav", "atlas-crumbs");
   const crumbs = el("ol");
   crumbNav.appendChild(crumbs);
@@ -250,6 +255,8 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     els,
     layout: null,
     lens: null,
+    lenses: [],
+    ownPlanet: null,
     mode: "map",
     expanded: new Set(),
     showNew: null,
@@ -267,9 +274,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     onCamera: () => scheduleChrome(s),
   });
 
-  for (const [lens, b] of lensButtons) {
-    b.addEventListener("click", () => void switchLens(s, lens));
-  }
+  renderLensButtons(s, WORLD_LENSES);
   home.addEventListener("click", () => goHome(s));
   threads.addEventListener("click", () => cycleThreads(s));
   showNew.addEventListener("click", () => void toggleShowNew(s));
@@ -307,11 +312,60 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   return s;
 }
 
+/**
+ * One button per lens of the library, grouped by planet (Decision 2): world
+ * knowledge's first, then the library's own planet's. Rebuilt only when the
+ * set of lenses changes.
+ */
+function renderLensButtons(
+  s: ViewState,
+  lenses: readonly AtlasLensInfoWire[],
+): void {
+  const same =
+    lenses.length === s.lenses.length &&
+    lenses.every((lens, i) => lens.kind === s.lenses[i]?.kind);
+  if (same) return;
+  s.lenses = lenses;
+  const group = s.els.lenses;
+  group.replaceChildren();
+  s.els.lensButtons.clear();
+  let planet: string | null = null;
+  for (const lens of lenses) {
+    if (lens.planet !== planet) {
+      planet = lens.planet;
+      const label = el("span", "atlas-planet-label");
+      label.dataset.planet = lens.planet;
+      group.appendChild(label);
+    }
+    const b = button("atlas-lens-btn");
+    b.dataset.lens = lens.kind;
+    b.dataset.planet = lens.planet;
+    b.addEventListener("click", () => void switchLens(s, lens.kind));
+    s.els.lensButtons.set(lens.kind, b);
+    group.appendChild(b);
+  }
+  // Only a library with a second planet names them.
+  const planets = new Set(lenses.map((lens) => lens.planet));
+  group.classList.toggle("atlas-lenses-planets", planets.size > 1);
+  applyLensLabels(s);
+}
+
+function applyLensLabels(s: ViewState): void {
+  const group = s.els.lenses;
+  for (const label of group.querySelectorAll<HTMLElement>(
+    ".atlas-planet-label",
+  )) {
+    label.textContent = t(`atlas_planet_${label.dataset.planet ?? "welt"}`);
+  }
+  s.els.lensButtons.forEach((b, lens) => {
+    b.textContent = t(`atlas_lens_${lens}`);
+    b.setAttribute("aria-pressed", String(lens === s.lens));
+  });
+}
+
 function applyLabels(s: ViewState): void {
   const { els } = s;
-  els.lensButtons.forEach((b, lens) => {
-    b.textContent = t(`atlas_lens_${lens}`);
-  });
+  applyLensLabels(s);
   els.lenses.setAttribute("aria-label", t("atlas_lens_label"));
   els.crumbs.parentElement?.setAttribute("aria-label", t("atlas_breadcrumb"));
   els.home.textContent = t("atlas_home");
@@ -414,6 +468,8 @@ async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
     if (generation !== s.generation) return;
     const placeCamera = s.lens !== view.lens.kind || !s.layout;
     s.lens = view.lens.kind;
+    s.ownPlanet = view.ownPlanet ?? null;
+    renderLensButtons(s, view.lenses ?? WORLD_LENSES);
     s.layout = buildAtlasLayout(view);
     s.map.setLayout(s.layout);
     if (placeCamera) {
@@ -581,8 +637,10 @@ function handleKey(s: ViewState, e: KeyboardEvent): void {
       break;
     case "l":
     case "L": {
-      const i = LENSES.indexOf(s.lens ?? "weltwissen");
-      void switchLens(s, LENSES[(i + 1) % LENSES.length]);
+      const kinds = s.lenses.map((lens) => lens.kind);
+      if (kinds.length === 0) break;
+      const i = kinds.indexOf(s.lens ?? "weltwissen");
+      void switchLens(s, kinds[(i + 1) % kinds.length]);
       break;
     }
     case "f":
@@ -836,7 +894,7 @@ function regionPanel(
     if (!s.lens) return;
     void openAtlasImport(
       {
-        lens: s.lens === "schule" ? "schule" : "weltwissen",
+        lens: s.lens,
         regionKey: key,
         path: regionPath(layout, key).map(
           (k) => layout.regions.get(k)?.name ?? k,
@@ -861,6 +919,15 @@ function regionPanel(
     });
     actions.appendChild(take);
   }
+  // A unit's kind (Decision 2): own units of this region to the other planet.
+  const ownHere = units.filter((unit) => unit.own && !unit.inReach).length;
+  const move = planetMoveButton(s, ownHere, [
+    "--region",
+    key,
+    "--lens",
+    s.lens ?? view.lens.kind,
+  ]);
+  if (move) actions.appendChild(move);
   body.appendChild(actions);
 
   const children = region.children.filter((c) => layout.geoms.has(c));
@@ -915,6 +982,12 @@ function unitPanel(
   body.appendChild(emblemSection(s, layout, "unit", key));
   if (unit.own) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_own_unit_note")));
+    const move = unit.inReach ? null : planetMoveButton(s, 1, ["--unit", key]);
+    if (move) {
+      const actions = el("div", "atlas-panel-actions");
+      actions.appendChild(move);
+      body.appendChild(actions);
+    }
   }
   if (unit.inReach) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_in_reach_note")));
@@ -978,6 +1051,65 @@ function unitPanel(
   );
 }
 
+/**
+ * Move own units to the other planet (Decision 2): from world knowledge to
+ * the library's own planet, or back. Only who may write knowledge sees it;
+ * published units stay world knowledge, so the server skips them.
+ */
+function planetMoveButton(
+  s: ViewState,
+  count: number,
+  args: string[],
+): HTMLButtonElement | null {
+  const layout = s.layout;
+  const own = s.ownPlanet;
+  if (!layout || !own || count === 0 || !layout.view.settle.mayWrite) {
+    return null;
+  }
+  const target: AtlasPlanetWire =
+    layout.view.lens.planet === "welt" ? own : "welt";
+  const label = t(`atlas_move_to_${target}`);
+  const b = button(
+    "btn secondary-btn btn-sm",
+    args[0] === "--unit" ? label : `${label} (${count})`,
+  );
+  b.title = t(
+    target === "welt" ? "atlas_move_hint_welt" : "atlas_move_hint_own",
+  );
+  b.addEventListener("click", () => void movePlanet(s, target, args));
+  return b;
+}
+
+async function movePlanet(
+  s: ViewState,
+  target: AtlasPlanetWire,
+  args: string[],
+): Promise<void> {
+  setBusy(s, t("atlas_busy_moving"));
+  try {
+    const result = await runBridge<AtlasMovePlanetResponse>(
+      "atlas-move-planet",
+      ["--planet", target, ...args],
+    );
+    // What moved has left this planet's map.
+    select(s, null);
+    await load(s, s.lens ?? undefined);
+    setStatus(
+      s,
+      tf("atlas_moved", {
+        count: result.moved.length,
+        planet: t(`atlas_planet_${target}`),
+      }),
+    );
+  } catch (err) {
+    setBusy(s, null);
+    setStatus(
+      s,
+      `${t("atlas_move_failed")} ${err instanceof Error ? err.message : String(err)}`,
+    );
+  }
+}
+
 /** A Sinnbild as an image: the canonical SVG through a data URL, never markup. */
 function emblemImage(svg: string, size: number): HTMLImageElement {
   const img = el("img", "atlas-emblem-img");
@@ -1005,7 +1137,8 @@ function emblemSection(
   const subject =
     kind === "unit" ? key : (region?.emblemSubject ?? `region:${lens}:${key}`);
   const emblem = emblemOf(layout, kind, key);
-  const ref = kind === "region" ? region?.emblem : layout.units.get(key)?.emblem;
+  const ref =
+    kind === "region" ? region?.emblem : layout.units.get(key)?.emblem;
   // A leaf region showing its first unit's Sinnbild has none of its own.
   const borrowed =
     kind === "region" && ref !== undefined && /^(atom|token):/.test(ref);
@@ -1019,7 +1152,8 @@ function emblemSection(
   }
   const words = el("div", "atlas-emblem-words");
   // The glyph is untrusted text: textContent only.
-  if (emblem?.glyph) words.appendChild(el("p", "atlas-emblem-glyph", emblem.glyph));
+  if (emblem?.glyph)
+    words.appendChild(el("p", "atlas-emblem-glyph", emblem.glyph));
   words.appendChild(
     el(
       "p",
@@ -1041,7 +1175,10 @@ function emblemSection(
     "btn secondary-btn btn-sm",
     t(emblem && !borrowed ? "atlas_emblem_redraw" : "atlas_emblem_draw"),
   );
-  draw.addEventListener("click", () => void drawEmblem(s, subject, draw, status));
+  draw.addEventListener(
+    "click",
+    () => void drawEmblem(s, subject, draw, status),
+  );
   actions.appendChild(draw);
   const own = button("btn secondary-btn btn-sm", t("atlas_emblem_glyph"));
   actions.appendChild(own);
@@ -1057,13 +1194,18 @@ function emblemSection(
 
   const form = el("form", "atlas-emblem-form");
   form.hidden = true;
-  const label = el("label", "atlas-emblem-form-label", t("atlas_emblem_glyph_label"));
+  const label = el(
+    "label",
+    "atlas-emblem-form-label",
+    t("atlas_emblem_glyph_label"),
+  );
   const input = el("input", "atlas-emblem-input");
   input.type = "text";
   input.maxLength = 16;
   input.autocomplete = "off";
   input.spellcheck = false;
-  input.value = emblem?.source === "personal" && !borrowed ? (emblem.glyph ?? "") : "";
+  input.value =
+    emblem?.source === "personal" && !borrowed ? (emblem.glyph ?? "") : "";
   label.appendChild(input);
   const save = button("btn primary-btn btn-sm", t("atlas_emblem_glyph_save"));
   save.type = "submit";
@@ -1090,10 +1232,9 @@ async function drawEmblem(
   trigger.disabled = true;
   status.textContent = t("atlas_emblem_drawing");
   try {
-    const result = await runBridge<AtlasEmblemResponse | AtlasEmblemDrawRefusal>(
-      "atlas-emblem-draw",
-      ["--subject", subject],
-    );
+    const result = await runBridge<
+      AtlasEmblemResponse | AtlasEmblemDrawRefusal
+    >("atlas-emblem-draw", ["--subject", subject]);
     if (!result.success) {
       status.textContent =
         result.code === "no-text-model"

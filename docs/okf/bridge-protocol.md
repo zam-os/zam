@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-13T23:30:00.000Z
+timestamp: 2026-10-14T08:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -192,8 +192,8 @@ reads and writes through these commands. None of them is in
 `STUDIO_BRIDGE_COMMANDS`, so no MCP panel can reach them, and no argument
 takes coordinates: only settle places land.
 
-- `atlas-read [--lens weltwissen|schule] [--time-zone <iana>]` returns one
-  learner's map: regions, islands, land, units with their condition,
+- `atlas-read [--lens <kind>] [--planet <planet>] [--time-zone <iana>]`
+  returns one learner's map of one lens: regions, islands, land, units with their condition,
   prerequisite threads, the learner's own due counts and the home region. It
   writes nothing; land not stored yet is planned in memory and marked
   provisional. A due count is what a region review would show now, by the
@@ -202,9 +202,19 @@ takes coordinates: only settle places land.
   counted, although the condition still shows them. `emblems` holds each
   Sinnbild once by subject key, and every region and unit that has one names
   it in `emblem`; a leaf region without its own names its first unit's. A
-  region's `emblemSubject` says where its own is written: a Fach's is the
-  subject's, `subject:<key>`, shared by every lens, and any other region's is
-  `region:<lens>:<region key>`.
+  region's `emblemSubject` says where its own is written: a Fach's in a world
+  lens is the subject's, `subject:<key>`, shared by every world lens, and any
+  other region's is `region:<lens>:<region key>`. `ownPlanet` and `lenses` say
+  which planets and lenses the library shows. A library holds world knowledge
+  (Weltwissen and Schule) and one planet of its own: Privat (Leben) on a
+  personal library, Firma (Produkte, and Unternehmen once a curator made it)
+  on a team library. `--planet` alone opens that planet's last or primary
+  lens; a lens of the other planet is refused. Each read places only the
+  units of the lens's planet: a published unit is world knowledge, an own
+  unit takes the planet of the lens it is placed in, and an own unit nobody
+  placed is world knowledge only where a world rule covers it (a Weltwissen
+  alias, a curriculum link, a variant of a world unit); otherwise it lands on
+  the own planet.
 - `atlas-settle [--lens <kind>]` stores the land, and refuses with
   `not-curator` when PostgreSQL's grants say this connection may not write
   knowledge.
@@ -217,6 +227,17 @@ takes coordinates: only settle places land.
   there and the bundled cells, with `wizard` true where no cell covers it.
 - `atlas-take (--unit <key>… | --region <key> [--lens <kind>])` creates cards
   for sketched units, never for declined ones.
+- `atlas-planet [--own firma|privat]` reads the library's own planet, or
+  sets it ("Diese Bibliothek gehört zu einer Firma"); unset, a team library
+  is Firma and a personal one Privat. Setting it refuses with `not-curator`
+  without the right to write knowledge. Lenses of the other planet stay
+  stored but are no longer shown.
+- `atlas-move-planet --planet <planet> (--unit <key>… | --region <key>
+  [--lens <kind>])` moves own units to world knowledge or to the library's
+  own planet, where that planet's primary lens puts them, and drops their
+  placements on the other planet. Published units are reported as
+  `skipped`: they stay world knowledge. Without the right to write
+  knowledge it refuses with `not-curator`.
 - `atlas-variant --stands-for <key> (--variant <key> | --undo)` lets a unit
   stand in for a published one, or undoes it; with `--library` a curator
   sets or clears the library's variant.

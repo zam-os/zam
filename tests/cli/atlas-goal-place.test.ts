@@ -2,11 +2,12 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { placeImportedUnits } from "../../src/cli/atlas.js";
+import { atlasMovePlanet, placeImportedUnits } from "../../src/cli/atlas.js";
 import {
   createToken,
   type Database,
   ensureCard,
+  LEBEN_LENS,
   openDatabase,
   readAtlas,
   SCHULE_LENS,
@@ -43,16 +44,26 @@ describe("goal import at a derived Fach", () => {
     return token.id;
   }
 
-  for (const lens of [WELTWISSEN_LENS, SCHULE_LENS]) {
+  // No world rule covers `github/…`: such units start on the own planet
+  // (Leben). Moved to world knowledge, they sit on Weltwissen's unsorted
+  // island and Schule's "Außerhalb des Lehrplans" (ADR 2026-10-13, D2).
+  for (const lens of [WELTWISSEN_LENS, SCHULE_LENS, LEBEN_LENS]) {
     it(`places new units below the Fach and still reads (${lens.kind})`, async () => {
-      await ownToken("github-pull-request", "github/pull-requests");
-      await ownToken("github-actions", "github/actions");
-      for (const each of [WELTWISSEN_LENS, SCHULE_LENS]) {
-        await settleLens(db, each);
+      const existing = [
+        await ownToken("github-pull-request", "github/pull-requests"),
+        await ownToken("github-actions", "github/actions"),
+      ];
+      if (lens.planet === "welt") {
+        await atlasMovePlanet(db, {
+          planet: "welt",
+          units: existing.map((id) => `token:${id}`),
+        });
       }
+      const lenses = [WELTWISSEN_LENS, SCHULE_LENS, LEBEN_LENS];
+      for (const each of lenses) await settleLens(db, each);
       const before = await readAtlas(db, { userId: "thomas", lens });
       const fach = before.regions.find(
-        (r) => r.level === 1 && r.hueKey === "github",
+        (r) => r.level === lens.colourLevel && r.hueKey === "github",
       );
       expect(fach).toBeDefined();
 
@@ -70,8 +81,8 @@ describe("goal import at a derived Fach", () => {
       });
       expect(placed).toBe(2);
 
-      // Both lenses read, before and after the land is stored.
-      for (const each of [WELTWISSEN_LENS, SCHULE_LENS]) {
+      // Every lens reads, before and after the land is stored.
+      for (const each of lenses) {
         await readAtlas(db, { userId: "thomas", lens: each });
         await settleLens(db, each);
         const after = await readAtlas(db, { userId: "thomas", lens: each });

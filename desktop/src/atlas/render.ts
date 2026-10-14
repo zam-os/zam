@@ -46,7 +46,8 @@ export type ThreadMode = "all" | "selection" | "off";
 
 interface Theme {
   dark: boolean;
-  sea: string;
+  /** Each planet has its own colour of sea (ADR 2026-10-13, Decision 2). */
+  sea: Readonly<Record<"welt" | "firma" | "privat", string>>;
   shallow: string;
   shore: string;
   fog: Rgb;
@@ -64,7 +65,7 @@ interface Theme {
 
 const LIGHT: Theme = {
   dark: false,
-  sea: "#c9dde8",
+  sea: { welt: "#c9dde8", firma: "#cdd8d4", privat: "#e2d8e6" },
   shallow: "rgba(255,255,255,0.32)",
   shore: "#efe5cf",
   fog: [238, 242, 246],
@@ -81,7 +82,7 @@ const LIGHT: Theme = {
 
 const DARK: Theme = {
   dark: true,
-  sea: "#0d1922",
+  sea: { welt: "#0d1922", firma: "#0f1c1a", privat: "#1a1420" },
   shallow: "rgba(255,255,255,0.05)",
   shore: "#2a2a22",
   fog: [128, 140, 154],
@@ -402,7 +403,9 @@ export class AtlasMap {
     this.layout = layout;
     this.outlines.clear();
     // Keep only the images this read still shows.
-    const shown = new Set(Object.values(layout.view.emblems ?? {}).map((e) => e.svg));
+    const shown = new Set(
+      Object.values(layout.view.emblems ?? {}).map((e) => e.svg),
+    );
     for (const svg of this.images.keys()) {
       if (!shown.has(svg)) this.images.delete(svg);
     }
@@ -866,7 +869,7 @@ export class AtlasMap {
     const ctx = this.ctx;
     const t = this.theme;
     ctx.setTransform(this.dpr, 0, 0, this.dpr, 0, 0);
-    ctx.fillStyle = t.sea;
+    ctx.fillStyle = t.sea[this.layout?.view.lens.planet ?? "welt"];
     ctx.fillRect(0, 0, this.width, this.height);
     ctx.fillStyle = this.pattern("sea", () => seaTile(t.dark));
     ctx.fillRect(0, 0, this.width, this.height);

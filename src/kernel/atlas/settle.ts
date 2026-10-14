@@ -20,18 +20,15 @@ import {
 } from "./land.js";
 import {
   type DerivedPlacement,
-  deriveSchule,
-  deriveWeltwissen,
+  ensureLensRow,
   ensureWorldLenses,
   findLensId,
   type LensDefinition,
   type LensRows,
-  loadBindings,
   loadLensRows,
-  loadUnits,
 } from "./lenses.js";
+import { assertLensOnLibrary, lensPlacements, ownPlanetOf } from "./planets.js";
 import type { UnitKey } from "./types.js";
-import { libraryVariantUnits } from "./variants.js";
 
 export interface LensSnapshot {
   lensId: string;
@@ -99,7 +96,10 @@ export async function loadLandState(
   return { islands, land };
 }
 
-/** Everything a plan needs for one lens, read without writing. */
+/**
+ * Everything a plan needs for one lens, read without writing: the units of
+ * the lens's planet only.
+ */
 export async function snapshotLens(
   db: Database,
   lens: LensDefinition,
@@ -107,16 +107,7 @@ export async function snapshotLens(
   const lensId = await findLensId(db, lens.planet, lens.kind);
   if (!lensId) return null;
   const rows = await loadLensRows(db, lensId);
-  const units = await loadUnits(db);
-  const bindings = await loadBindings(db);
-  // A variant the library sets stands on its published unit's hex and gets
-  // no land of its own (Decision 12).
-  const skip = await libraryVariantUnits(db);
-  const placements = (
-    lens.kind === "schule"
-      ? deriveSchule(units, rows, bindings)
-      : deriveWeltwissen(units, rows, bindings)
-  ).filter((placement) => !skip.has(placement.unitKey));
+  const { placements } = await lensPlacements(db, lens, rows);
   const state = await loadLandState(db, lensId, rows);
   return { lensId, rows, placements, state };
 }
@@ -241,14 +232,17 @@ export async function applySettle(
 }
 
 /**
- * Settle one lens of the world planet: seed it if needed, plan, write.
- * Idempotent: a second run plans nothing.
+ * Settle one lens of the library: create or seed it if needed, plan, write.
+ * Idempotent: a second run plans nothing. A lens of a planet this library
+ * does not hold is refused (Decision 2).
  */
 export async function settleLens(
   db: Database,
   lens: LensDefinition,
 ): Promise<SettleResult> {
-  await ensureWorldLenses(db);
+  assertLensOnLibrary(lens, await ownPlanetOf(db));
+  if (lens.planet === "welt") await ensureWorldLenses(db);
+  else await ensureLensRow(db, lens);
   const snapshot = await snapshotLens(db, lens);
   if (!snapshot) throw new Error(`Atlas lens ${lens.kind} is missing`);
   const plan = planForSnapshot(snapshot);

@@ -12,15 +12,28 @@
 import { ulid } from "ulid";
 import type { Database } from "../db/types.js";
 import {
+  deriveLens,
+  ensureLensRow,
   findLensId,
   LAST_RANK,
   type LensDefinition,
+  type LensRows,
+  loadBindings,
   loadLensRows,
+  loadUnits,
   type PathStep,
   slugSegment,
 } from "./lenses.js";
+import {
+  assertLensOnLibrary,
+  dropOtherPlanetMembers,
+  loadUnitPlanets,
+  ownPlanetOf,
+  PlanetError,
+  primaryLens,
+} from "./planets.js";
 import { snapshotForRead } from "./read.js";
-import type { LensKind, UnitKey } from "./types.js";
+import type { LensKind, OwnPlanet, PlanetKind, UnitKey } from "./types.js";
 
 /** Name of a level the agent left unnamed. */
 export const UNNAMED_LEVEL = "Allgemein";
@@ -101,34 +114,16 @@ function cleanName(name: string | undefined): string {
   return text.slice(0, MAX_PLACE_NAME).trim();
 }
 
+/** Who placed a unit (`atlas_members.placed_by`). */
+export type PlacedBy = "agent" | "curator" | "learner" | "import";
+
 /**
- * Put units into a region: create the region's path where the lens has no
- * rows for it yet, then one region per level below it, named by the import
- * (`UNNAMED_LEVEL` where it named none), and record each unit there.
- *
- * Opens no transaction of its own: the caller's commit holds it, so the
- * cards and their place are written together. The lens must exist
- * (`ensureWorldLenses`).
+ * Creates the regions of a lens a path names but the lens lacks, and gives
+ * back each step's region id, island first. Transaction-free.
  */
-export async function placeUnits(
-  db: Database,
-  lens: LensDefinition,
-  regionKey: string,
-  units: readonly PlacedUnit[],
-): Promise<number> {
-  if (units.length === 0) return 0;
-  const lensId = await findLensId(db, lens.planet, lens.kind);
-  if (!lensId) throw new Error(`Atlas lens ${lens.kind} is missing`);
-  const steps = await regionSteps(db, lens, regionKey);
-  if (!steps) {
-    throw new Error(`No region "${regionKey}" in the ${lens.name} lens.`);
-  }
-  const rows = await loadLensRows(db, lensId);
+function regionMaker(db: Database, lensId: string, rows: LensRows) {
   const idOf = new Map(rows.regions.map((r) => [r.key, r.id]));
-  const ensure = async (
-    step: PathStep,
-    parentId: string | null,
-  ): Promise<string> => {
+  return async (step: PathStep, parentId: string | null): Promise<string> => {
     const known = idOf.get(step.key);
     if (known) return known;
     const id = ulid();
@@ -141,6 +136,73 @@ export async function placeUnits(
     idOf.set(step.key, id);
     return id;
   };
+}
+
+/**
+ * Record a unit in a leaf region. A unit lives on one planet, so its
+ * placements on any other go (Decision 2).
+ */
+async function writeMember(
+  db: Database,
+  lens: LensDefinition,
+  lensId: string,
+  unitKey: UnitKey,
+  regionId: string,
+  placedBy: PlacedBy,
+): Promise<void> {
+  await db
+    .prepare(
+      `INSERT INTO atlas_members (lens_id, unit_key, region_id, placed_by)
+       VALUES (?, ?, ?, ?)
+       ON CONFLICT (lens_id, unit_key) DO UPDATE SET
+         region_id = excluded.region_id, placed_by = excluded.placed_by`,
+    )
+    .run(lensId, unitKey, regionId, placedBy);
+  await dropOtherPlanetMembers(db, unitKey, lens.planet);
+}
+
+/** The planet checks every placement makes (Decision 2). */
+function assertPlaceable(
+  lens: LensDefinition,
+  own: OwnPlanet,
+  unitKey: UnitKey,
+): void {
+  assertLensOnLibrary(lens, own);
+  if (lens.planet !== "welt" && unitKey.startsWith("atom:")) {
+    throw new PlanetError(
+      "published-is-world",
+      `${unitKey} is published world knowledge; it cannot move to the ${lens.planet} planet.`,
+    );
+  }
+}
+
+/**
+ * Put units into a region: create the region's path where the lens has no
+ * rows for it yet, then one region per level below it, named by the import
+ * (`UNNAMED_LEVEL` where it named none), and record each unit there. The
+ * units take the region's planet as their kind; their status stays own.
+ *
+ * Opens no transaction of its own: the caller's commit holds it, so the
+ * cards and their place are written together. The lens must exist
+ * (`ensureWorldLenses`, `ensureLensRow`).
+ */
+export async function placeUnits(
+  db: Database,
+  lens: LensDefinition,
+  regionKey: string,
+  units: readonly PlacedUnit[],
+  placedBy: PlacedBy = "import",
+): Promise<number> {
+  if (units.length === 0) return 0;
+  const own = await ownPlanetOf(db);
+  for (const unit of units) assertPlaceable(lens, own, unit.unitKey);
+  const lensId = await findLensId(db, lens.planet, lens.kind);
+  if (!lensId) throw new Error(`Atlas lens ${lens.kind} is missing`);
+  const steps = await regionSteps(db, lens, regionKey);
+  if (!steps) {
+    throw new Error(`No region "${regionKey}" in the ${lens.name} lens.`);
+  }
+  const ensure = regionMaker(db, lensId, await loadLensRows(db, lensId));
 
   let placeId: string | null = null;
   for (const step of steps) placeId = await ensure(step, placeId);
@@ -157,14 +219,65 @@ export async function placeUnits(
       level += 1;
       regionId = await ensure({ key, name, level, rank: LAST_RANK }, regionId);
     }
-    await db
-      .prepare(
-        `INSERT INTO atlas_members (lens_id, unit_key, region_id, placed_by)
-         VALUES (?, ?, ?, 'import')
-         ON CONFLICT (lens_id, unit_key) DO UPDATE SET
-           region_id = excluded.region_id, placed_by = excluded.placed_by`,
-      )
-      .run(lensId, unit.unitKey, regionId);
+    await writeMember(db, lens, lensId, unit.unitKey, regionId, placedBy);
   }
   return units.length;
+}
+
+export interface MovePlanetResult {
+  /** Units that now live on the target planet. */
+  moved: UnitKey[];
+  /** Already there. */
+  unchanged: UnitKey[];
+  /** Published units, which stay world knowledge, and unknown keys. */
+  skipped: UnitKey[];
+}
+
+/**
+ * Change units' kind (Decision 2): each moves to the target planet's primary
+ * lens, where that lens's rules put it (its unsorted island, or a domain
+ * alias), as an explicit placement; its placements on the other planet go.
+ * Published units stay world knowledge. Nothing changes a unit's status.
+ *
+ * Transaction-free; the caller's write holds it. World lenses must exist
+ * (`ensureWorldLenses`); the own planet's primary lens is created here.
+ */
+export async function moveUnitsToPlanet(
+  db: Database,
+  opts: { units: readonly UnitKey[]; planet: PlanetKind; placedBy: PlacedBy },
+): Promise<MovePlanetResult> {
+  const own = await ownPlanetOf(db);
+  const lens = primaryLens(opts.planet);
+  assertLensOnLibrary(lens, own);
+  const lensId =
+    opts.planet === "welt"
+      ? await findLensId(db, lens.planet, lens.kind)
+      : await ensureLensRow(db, lens);
+  if (!lensId) throw new Error(`Atlas lens ${lens.kind} is missing`);
+
+  const units = await loadUnits(db);
+  const bindings = await loadBindings(db);
+  const planetOf = await loadUnitPlanets(db, units, bindings, own);
+  const byKey = new Map(units.map((u) => [u.key, u]));
+  const rows = await loadLensRows(db, lensId);
+  const ensure = regionMaker(db, lensId, rows);
+  const result: MovePlanetResult = { moved: [], unchanged: [], skipped: [] };
+
+  for (const key of new Set(opts.units)) {
+    const unit = byKey.get(key);
+    if (!unit || (unit.atomId && opts.planet !== "welt")) {
+      result.skipped.push(key);
+      continue;
+    }
+    if (planetOf.get(key) === opts.planet) {
+      result.unchanged.push(key);
+      continue;
+    }
+    const [placement] = deriveLens(lens, [unit], rows, bindings);
+    let regionId: string | null = null;
+    for (const step of placement.path) regionId = await ensure(step, regionId);
+    await writeMember(db, lens, lensId, key, regionId as string, opts.placedBy);
+    result.moved.push(key);
+  }
+  return result;
 }

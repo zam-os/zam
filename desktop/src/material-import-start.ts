@@ -16,6 +16,7 @@
 
 import type {
   AgentHarnessStatusResponse,
+  AtlasLensKindWire,
   MaterialAnalyzeCodeWire,
   MaterialImportAnalyzeResponse,
   MaterialImportModelsResponse,
@@ -59,7 +60,7 @@ let host: MaterialImportHost = {};
 
 /** Where on the knowledge atlas an import starts (ADR 2026-10-13, D9). */
 export interface MaterialStartPlace {
-  lens: "weltwissen" | "schule";
+  lens: AtlasLensKindWire;
   regionKey: string;
   /** Region names from the island down, for the dialog and the request. */
   path: string[];

@@ -970,7 +970,7 @@ export interface AtlasReadResponse {
   success: boolean;
   lens: {
     kind: AtlasLensKindWire;
-    planet: "welt" | "firma" | "privat";
+    planet: AtlasPlanetWire;
     name: string;
     levels: string[];
     colourLevel: number;
@@ -1006,6 +1006,39 @@ export interface AtlasReadResponse {
   home: string | null;
   /** Sinnbilder by subject key (a unit key or `region:<lens>:<key>`). */
   emblems: Record<string, AtlasEmblemWire>;
+  /** The library's own planet beside world knowledge (ADR 2026-10-13, D2). */
+  ownPlanet?: AtlasOwnPlanetWire;
+  /** The lenses this library shows, world's first. */
+  lenses?: AtlasLensInfoWire[];
+}
+
+export type AtlasPlanetWire = "welt" | "firma" | "privat";
+export type AtlasOwnPlanetWire = "firma" | "privat";
+
+export interface AtlasLensInfoWire {
+  kind: AtlasLensKindWire;
+  planet: AtlasPlanetWire;
+  name: string;
+}
+
+/** `atlas-planet`: the library's own planet, and whether the caller may change it. */
+export interface AtlasPlanetResponse {
+  success: boolean;
+  own: AtlasOwnPlanetWire;
+  /** Set explicitly; otherwise the default for this kind of library. */
+  explicit: boolean;
+  /** The library's owner, or a curator on a team library. */
+  mayChange: boolean;
+  lenses: AtlasLensInfoWire[];
+}
+
+/** `atlas-move-planet`: units that changed their kind. */
+export interface AtlasMovePlanetResponse {
+  success: boolean;
+  moved: AtlasUnitKeyWire[];
+  unchanged: AtlasUnitKeyWire[];
+  /** Published units, which stay world knowledge, and unknown keys. */
+  skipped: AtlasUnitKeyWire[];
 }
 
 /** `atlas-emblem-set` and a successful `atlas-emblem-draw`. */

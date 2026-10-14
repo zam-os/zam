@@ -656,6 +656,18 @@
                 </span>
               </label>
               <p id="draft-first-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
+              <!-- The atlas's own planet (ADR 2026-10-13, Decision 2): Privat
+                   on a personal library, Firma on a team library. A company
+                   library kept as a local file switches it on. Only the
+                   library's owner or a curator may change it. -->
+              <label class="settings-toggle" for="toggle-atlas-firma" data-settings-tier="advanced">
+                <input type="checkbox" id="toggle-atlas-firma" />
+                <span>
+                  <span id="lbl-atlas-firma">This library belongs to a company</span>
+                  <span id="lbl-atlas-firma-help" class="settings-card-help"></span>
+                </span>
+              </label>
+              <p id="atlas-firma-status" class="sub-label settings-status-row" aria-live="polite" data-settings-tier="advanced"></p>
               <!-- Windows-on-ARM only, and hidden until the status call says so.
                    Foundry Local cannot be installed anywhere else, so on every
                    other machine this section was a heading, an explanation and a

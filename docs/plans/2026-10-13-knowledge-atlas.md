@@ -1,7 +1,8 @@
 # Knowledge atlas — implementation plan
 
 **Status:** Phases 1 to 8 done (2026-10-13), with the owner's decisions from
-the first Studio check built between Phases 7 and 8. The ADR gained Decision 12 and the
+the first Studio check built between Phases 7 and 8. Phase 9a (the own
+planet) done 2026-10-14. The ADR gained Decision 12 and the
 round-2 changes after this plan was first merged; the phases below include
 them.\
 **Decision:** [ADR 2026-10-13 — Knowledge Atlas](../adr/2026-10-13-knowledge-atlas.md).
@@ -61,10 +62,16 @@ what the learner knows.
   lens, feedback while a model reads notes, the goal import at a place —
   `01226f83`; see "Between Phases 8 and 9"
 - [x] **Third Studio check** — a crash when a landlocked region grows, and
-  draft-first as an option that is off — this commit; see "Between Phases 8
+  draft-first as an option that is off — `ade655fa`; see "Between Phases 8
   and 9"
 - [ ] **Phase 9** — own planet, team lenses, typed threads, agent tools (D2,
-  D3, D7, D10)
+  D3, D7, D10), in three commits:
+  - [x] **9a** — the library's own planet, its lenses (Leben, Produkte,
+    Unternehmen), a unit's kind and the planet invariants — this commit;
+    see "As built (9a)"
+  - [ ] **9b** — typed threads and portals
+  - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
+    updates
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 
@@ -1650,6 +1657,83 @@ automatically (ADR 2026-10-08b).
 - `zam_atlas_read` changes nothing.
 - The new tools are absent from `PRE_APPROVED_TOOLS` unless the owner
   approved.
+
+**As built (9a).**
+
+- **The own planet.** `atlas.own_planet` is a library key
+  (`OWN_PLANET_SETTING`). `ownPlanetOf` reads it, else takes Firma on
+  PostgreSQL (the team library) and Privat otherwise. `atlas-planet [--own]`
+  reads and sets it; setting needs `mayWriteKnowledge`. It is not in
+  `STUDIO_BRIDGE_COMMANDS`, and no tool writes it. Settings → Advanced has
+  "Diese Bibliothek gehört zu einer Firma", locked for whoever may not
+  write knowledge.
+- **Switching the planet keeps everything.** Lenses of the other planet stay
+  stored but are no longer shown, and their placements no longer count, so
+  switching back restores them. (The plan left this open; nothing is
+  deleted.)
+- **Lenses.** `LEBEN_LENS` (Bereich › Thema, colour level 0),
+  `PRODUKTE_LENS` and `UNTERNEHMEN_LENS` beside the world's two, with
+  `PLANET_LENSES` (primary first) and `libraryLenses`: world's, then the own
+  planet's primary, then Unternehmen once its lens row exists (a curator
+  makes it in 9c).
+  - `deriveDomainLens` places by explicit member, then the longest domain
+    alias, filling the levels below it from the next domain segments.
+    Without an alias, Produkte and Unternehmen use the unsorted island.
+    Leben makes a domain's first segment the Bereich instead, so a private
+    map has structure before the agent sorts it.
+  - Produkte is the default lens of a Firma library (`readAtlasPrefs`).
+- **A unit's kind** (`src/kernel/atlas/planets.ts`).
+  - A published unit is world knowledge.
+  - An own unit takes the planet of its explicit placements; one placed on
+    both (an older row) counts as protected.
+  - An own unit nobody placed is world knowledge where a world rule covers
+    it: a Weltwissen alias, a LehrplanPLUS link, or a variant of a world
+    unit. Otherwise it belongs to the own planet.
+  - `lensPlacements` derives only the units of the lens's planet. So own
+    units that sat on Weltwissen's unsorted island, and on Schule's
+    "Außerhalb des Lehrplans", move to the own planet at the next settle.
+    Their old hexes become reserve.
+- **Invariants.**
+  - `settleLens`, `placeUnits` and the bridge's `libraryLens` refuse a lens
+    of the other planet (`PlanetError` `other-planet`).
+  - `placeUnits` refuses to put a published unit on the own planet
+    (`published-is-world`).
+  - Every placement drops the unit's placements on other planets
+    (`dropOtherPlanetMembers`).
+  - Nothing touches `atom_id`, so a unit's status never changes.
+- **Changing a unit's kind.**
+  - `moveUnitsToPlanet` places units where the target planet's primary lens
+    puts them, as explicit members, and skips published units.
+  - `atlas-move-planet` takes units or a region and needs
+    `mayWriteKnowledge`: the learner on a library of their own, a curator on
+    a team library.
+  - In the Studio, a unit's panel and a region's panel offer *Ins
+    Weltwissen*, or *Nach Privat* / *Zur Firma* on the world planet. The
+    region panel counts the own units there.
+- **The Studio.**
+  - The lens buttons come from `atlas-read`'s `lenses`. They are grouped by
+    planet, and the planet is named only when the library shows two.
+  - `L` cycles through all lenses.
+  - Each planet has its own colour of sea, ported from the spike.
+  - Import at a place works on the own planet's lenses: no cells and no
+    curriculum wizard there. The place's lens types widen to every lens
+    kind (`MaterialPlace`, the MCP `place` enums).
+- **A Fach's shared Sinnbild key** (`subject:<hue key>`) applies to world
+  lenses only. A Produkt or a private Bereich keeps
+  `region:<lens>:<key>`.
+- **Tests.** `tests/cli/atlas-planets.test.ts` covers:
+  - the default planet and the lens list;
+  - `unitPlanetsFrom` for every rule;
+  - private units leaving the world lenses;
+  - refusals for the other planet;
+  - moving a unit back and forth, keeping one planet and its own status;
+  - published units staying world knowledge;
+  - a region move through the bridge;
+  - switching to Firma.
+
+  `atlas-goal-place.test.ts` now covers a goal import at a derived Fach on
+  all three lenses, moving the units to world knowledge first for
+  Weltwissen and Schule.
 
 ---
 

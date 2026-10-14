@@ -13,13 +13,9 @@
  */
 
 import { ulid } from "ulid";
-import {
-  ensureWorldLenses,
-  SCHULE_LENS,
-  WELTWISSEN_LENS,
-} from "../atlas/lenses.js";
+import { ensureLensRow, ensureWorldLenses, LENSES } from "../atlas/lenses.js";
 import { type PlacedUnit, placeUnits } from "../atlas/place.js";
-import type { UnitKey } from "../atlas/types.js";
+import type { LensKind, UnitKey } from "../atlas/types.js";
 import { chooseVariantIn } from "../atlas/variants.js";
 import type { Database } from "../db/types.js";
 import {
@@ -120,12 +116,18 @@ export interface MaterialProposal {
 
 /** Where on the knowledge atlas an import starts (ADR 2026-10-13, Decision 9). */
 export interface MaterialPlace {
-  lens: "weltwissen" | "schule";
+  lens: LensKind;
   /** The region's key in that lens, such as `natur.physik.optik`. */
   regionKey: string;
 }
 
-export const MATERIAL_PLACE_LENSES = ["weltwissen", "schule"] as const;
+export const MATERIAL_PLACE_LENSES: readonly LensKind[] = [
+  "weltwissen",
+  "schule",
+  "leben",
+  "produkte",
+  "unternehmen",
+];
 /** Levels below a place an import may name: a lens has at most four. */
 export const MAX_PLACE_BELOW = 4;
 
@@ -1297,12 +1299,9 @@ export async function commitMaterialImport(
   };
   // The atlas's lenses must exist before the commit places anything; a
   // transaction cannot open another.
-  const placeLens = set.place
-    ? set.place.lens === "schule"
-      ? SCHULE_LENS
-      : WELTWISSEN_LENS
-    : null;
-  if (placeLens) await ensureWorldLenses(db);
+  const placeLens = set.place ? LENSES[set.place.lens] : null;
+  if (placeLens?.planet === "welt") await ensureWorldLenses(db);
+  else if (placeLens) await ensureLensRow(db, placeLens);
   const ticked = new Set(input.variants ?? []);
 
   return db.transaction(async (tx) => {

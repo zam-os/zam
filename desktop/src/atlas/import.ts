@@ -22,7 +22,7 @@ import { runBridge } from "../bridge-transport.js";
 import { t, tf } from "../i18n.js";
 
 export interface ImportPlace {
-  lens: "weltwissen" | "schule";
+  lens: AtlasLensKindWire;
   regionKey: string;
   /** Region names from the island down. */
   path: string[];

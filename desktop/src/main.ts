@@ -188,6 +188,7 @@ import type {
   AnswerPresentationResponse,
   AtlasEmblemWire,
   AtlasLensKindWire,
+  AtlasPlanetResponse,
   Graph3dFeatureResponse,
   ModelRefreshCapabilitiesResponse,
 } from "../../src/bridge/protocol.js";
@@ -1239,6 +1240,9 @@ function initializeTranslations() {
   document.getElementById("lbl-draft-first")!.textContent = t("lbl_draft_first");
   document.getElementById("lbl-draft-first-help")!.textContent =
     t("lbl_draft_first_help");
+  document.getElementById("lbl-atlas-firma")!.textContent = t("lbl_atlas_firma");
+  document.getElementById("lbl-atlas-firma-help")!.textContent =
+    t("lbl_atlas_firma_help");
   const aiConfigButton = document.getElementById("btn-toggle-ai-config");
   if (aiConfigButton) {
     aiConfigButton.textContent = aiConfigEditorOpen
@@ -2456,6 +2460,53 @@ async function loadDynamicQuestionSetting(): Promise<void> {
   } catch {
     // Leave the checkbox at its markup default rather than claiming a state
     // we could not read.
+  }
+  await loadAtlasPlanetSetting();
+}
+
+/**
+ * "Diese Bibliothek gehört zu einer Firma" (ADR 2026-10-13, Decision 2): the
+ * atlas's own planet. Only the library's owner or a curator may change it,
+ * so the switch is locked for everyone else.
+ */
+async function loadAtlasPlanetSetting(): Promise<void> {
+  const toggle = document.getElementById(
+    "toggle-atlas-firma",
+  ) as HTMLInputElement | null;
+  const status = document.getElementById("atlas-firma-status");
+  if (!toggle) return;
+  try {
+    const info = await runBridge<AtlasPlanetResponse>("atlas-planet");
+    toggle.checked = info.own === "firma";
+    toggle.disabled = !info.mayChange;
+    if (status && !info.mayChange) {
+      status.textContent = t("atlas_firma_locked");
+    }
+  } catch {
+    toggle.disabled = true;
+  }
+}
+
+async function setAtlasFirma(enabled: boolean): Promise<void> {
+  const status = document.getElementById("atlas-firma-status");
+  const toggle = document.getElementById(
+    "toggle-atlas-firma",
+  ) as HTMLInputElement | null;
+  if (status) status.textContent = "";
+  try {
+    const info = await runBridge<AtlasPlanetResponse>("atlas-planet", [
+      "--own",
+      enabled ? "firma" : "privat",
+    ]);
+    if (status) {
+      status.textContent = t(
+        info.own === "firma" ? "atlas_firma_on" : "atlas_firma_off",
+      );
+    }
+  } catch (error) {
+    console.error("Failed to persist the atlas planet", error);
+    if (toggle) toggle.checked = !enabled;
+    if (status) status.textContent = t("atlas_firma_error");
   }
 }
 
@@ -9453,6 +9504,11 @@ window.addEventListener("DOMContentLoaded", () => {
     .getElementById("toggle-draft-first")
     ?.addEventListener("change", (event) => {
       void setDraftFirst((event.target as HTMLInputElement).checked);
+    });
+  document
+    .getElementById("toggle-atlas-firma")
+    ?.addEventListener("change", (event) => {
+      void setAtlasFirma((event.target as HTMLInputElement).checked);
     });
 
   document.getElementById("btn-reveal-answer")!.addEventListener("click", () => {

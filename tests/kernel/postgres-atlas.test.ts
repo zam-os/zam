@@ -33,6 +33,10 @@ import type { Database } from "../../src/kernel/db/types.js";
 import {
   createToken,
   installKvtTile,
+  libraryLenses,
+  moveUnitsToPlanet,
+  ownPlanetOf,
+  PRODUKTE_LENS,
   resolveEmblem,
 } from "../../src/kernel/index.js";
 import { listBundledTiles } from "../../src/kernel/library/bundled-cells.js";
@@ -125,6 +129,41 @@ describeWithPostgres("atlas lenses on PostgreSQL (needs POSTGRES_URL)", () => {
         snapshot.state.islands.every((i) => typeof i.dq === "number"),
       ).toBe(true);
     }
+  });
+
+  it("puts a team library's unsorted own units on the Firma planet (Decision 2)", async () => {
+    const db = await setup();
+    const note = await createToken(db, {
+      slug: "boreas-scrum",
+      concept: "Wie Team Boreas Scrum lebt",
+      domain: "scrum/team-boreas",
+    });
+    const key = `token:${note.id}` as const;
+    expect(await ownPlanetOf(db)).toBe("firma");
+    expect((await libraryLenses(db)).map((l) => l.kind)).toEqual([
+      "weltwissen",
+      "schule",
+      "produkte",
+    ]);
+    const first = await settleLens(db, PRODUKTE_LENS);
+    expect(first.landWritten).toBeGreaterThan(0);
+    expect((await settleLens(db, PRODUKTE_LENS)).landWritten).toBe(0);
+    const produkte = await snapshotLens(db, PRODUKTE_LENS);
+    expect(produkte?.placements.map((p) => p.unitKey)).toEqual([key]);
+    const welt = await snapshotLens(db, WELTWISSEN_LENS);
+    expect(welt?.placements.map((p) => p.unitKey) ?? []).not.toContain(key);
+
+    await ensureWorldLenses(db);
+    const moved = await db.transaction((tx) =>
+      moveUnitsToPlanet(tx, {
+        units: [key],
+        planet: "welt",
+        placedBy: "curator",
+      }),
+    );
+    expect(moved.moved).toEqual([key]);
+    const after = await snapshotLens(db, PRODUKTE_LENS);
+    expect(after?.placements).toHaveLength(0);
   });
 });
 
@@ -400,7 +439,11 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
           }),
         ).rejects.toThrow(NOT_CURATOR);
         await expect(
-          atlasEmblemClear(asMember, { userId: memberId, subject, shared: true }),
+          atlasEmblemClear(asMember, {
+            userId: memberId,
+            subject,
+            shared: true,
+          }),
         ).rejects.toThrow(NOT_CURATOR);
       } finally {
         await asMember.close();
@@ -431,7 +474,9 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
           "personal",
         );
         await atlasEmblemClear(again, { userId: memberId, subject });
-        expect((await resolveEmblem(again, subject, memberId))?.glyph).toBe("n₁");
+        expect((await resolveEmblem(again, subject, memberId))?.glyph).toBe(
+          "n₁",
+        );
       } finally {
         await again.close();
       }

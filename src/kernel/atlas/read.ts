@@ -30,25 +30,15 @@ import {
 import { islandDrift } from "./land.js";
 import {
   type DerivedPlacement,
-  deriveSchule,
-  deriveWeltwissen,
-  findLensId,
   type LensDefinition,
-  type LensRows,
-  loadBindings,
-  loadLensRows,
-  loadUnits,
+  lensRowsForRead,
   type UnitRow,
-  weltwissenSeedRows,
 } from "./lenses.js";
 import { hueKeyForDomain } from "./palette.js";
+import { lensPlacements } from "./planets.js";
 import { type LensSnapshot, loadLandState, planForSnapshot } from "./settle.js";
 import type { LensKind, PlanetKind, UnitKey } from "./types.js";
-import {
-  type EffectiveVariant,
-  effectiveVariants,
-  libraryVariantUnits,
-} from "./variants.js";
+import { type EffectiveVariant, effectiveVariants } from "./variants.js";
 
 export interface AtlasRegionView {
   key: string;
@@ -170,51 +160,16 @@ interface CardRow {
   editorial_state: string;
 }
 
-/** Lens rows to read with: stored ones, or the seed when none are stored yet. */
-async function rowsForRead(
-  db: Database,
-  lens: LensDefinition,
-): Promise<{ lensId: string | null; rows: LensRows }> {
-  const lensId = await findLensId(db, lens.planet, lens.kind);
-  if (lensId) return { lensId, rows: await loadLensRows(db, lensId) };
-  if (lens.kind !== "weltwissen") {
-    return { lensId: null, rows: { regions: [], aliases: [], members: [] } };
-  }
-  const seed = weltwissenSeedRows();
-  return {
-    lensId: null,
-    rows: {
-      regions: seed.regions.map((r) => ({
-        id: r.key,
-        key: r.key,
-        name: r.name,
-        level: r.level,
-        parentId: r.parentKey,
-        rank: r.rank,
-      })),
-      aliases: seed.aliases.map((a) => ({
-        domainPrefix: a.domainPrefix,
-        regionId: a.regionKey,
-      })),
-      members: [],
-    },
-  };
-}
-
-/** Everything a read needs, without writing. */
+/**
+ * Everything a read needs, without writing. Only units of the lens's planet
+ * are placed; `units` holds every unit of the library.
+ */
 export async function snapshotForRead(
   db: Database,
   lens: LensDefinition,
 ): Promise<{ snapshot: LensSnapshot; units: UnitRow[]; stored: boolean }> {
-  const { lensId, rows } = await rowsForRead(db, lens);
-  const units = await loadUnits(db);
-  const bindings = await loadBindings(db);
-  const skip = await libraryVariantUnits(db);
-  const placements = (
-    lens.kind === "schule"
-      ? deriveSchule(units, rows, bindings)
-      : deriveWeltwissen(units, rows, bindings)
-  ).filter((placement) => !skip.has(placement.unitKey));
+  const { lensId, rows } = await lensRowsForRead(db, lens);
+  const { units, placements } = await lensPlacements(db, lens, rows);
   const state = lensId
     ? await loadLandState(db, lensId, rows)
     : { islands: [], land: [] };
@@ -506,11 +461,14 @@ export async function readAtlas(
 
   // ── Sinnbilder: the learner's own, the library's, the seed's ──────────────
   const shownRegions = [...regions.values()].filter((r) => used.has(r.key));
-  // A Fach is one subject in every lens: its Sinnbild is the subject's. A
-  // row under the lens's own region key still counts, after it.
+  // A Fach is one subject in every world lens: its Sinnbild is the
+  // subject's. A row under the lens's own region key still counts, after it.
+  // A Produkt or a private Bereich keeps its own.
   for (const region of shownRegions) {
     region.emblemSubject =
-      region.level === lens.colourLevel && region.hueKey
+      lens.planet === "welt" &&
+      region.level === lens.colourLevel &&
+      region.hueKey
         ? subjectEmblemKey(region.hueKey)
         : regionEmblemKey(lens.kind, region.key);
   }

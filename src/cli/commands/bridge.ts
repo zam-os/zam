@@ -194,15 +194,18 @@ import {
   atlasEmblemClear,
   atlasEmblemDraw,
   atlasEmblemSet,
-  atlasLens,
+  atlasMovePlanet,
   atlasPlace,
+  atlasPlanetInfo,
   atlasRead,
   atlasSettle,
   atlasTake,
   atlasVariant,
   installScopeCells,
+  libraryLens,
   materialPlace,
   placeImportedUnits,
+  setAtlasOwnPlanet,
   setAtlasPrefs,
 } from "../atlas.js";
 import {
@@ -1147,7 +1150,7 @@ bridgeCommand
   )
   .option(
     "--atlas-lens <kind>",
-    "Lens of --atlas-region: weltwissen (default) or schule",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen)",
   )
   .option(
     "--atlas-practice-since <iso>",
@@ -1170,7 +1173,7 @@ bridgeCommand
         const tokenIds = opts.atlasRegion
           ? await regionTokenIds(
               db,
-              atlasLens(opts.atlasLens),
+              await libraryLens(db, opts.atlasLens),
               String(opts.atlasRegion),
             )
           : undefined;
@@ -1221,7 +1224,7 @@ bridgeCommand
   )
   .option(
     "--atlas-lens <kind>",
-    "Lens of --atlas-region: weltwissen (default) or schule",
+    "Lens of --atlas-region: weltwissen (default), schule, or the library's own planet's (leben, produkte, unternehmen)",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -1230,7 +1233,7 @@ bridgeCommand
         const tokenIds = opts.atlasRegion
           ? await regionTokenIds(
               db,
-              atlasLens(opts.atlasLens),
+              await libraryLens(db, opts.atlasLens),
               String(opts.atlasRegion),
             )
           : undefined;
@@ -7203,7 +7206,7 @@ bridgeCommand
   )
   .option(
     "--place-lens <kind>",
-    "Lens of --place-region: weltwissen (default) or schule",
+    "Lens of --place-region (default weltwissen); the units take its planet",
   )
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -7351,7 +7354,10 @@ bridgeCommand
     "--place-region <key>",
     "Knowledge atlas region the import starts at (ADR 2026-10-13)",
   )
-  .option("--place-lens <kind>", "Lens of --place-region: weltwissen or schule")
+  .option(
+    "--place-lens <kind>",
+    "Lens of --place-region (default weltwissen); the units take its planet",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -9616,8 +9622,14 @@ bridgeCommand
   .description(
     "Read the knowledge atlas for one learner: regions, land, units, threads (JSON)",
   )
-  .option("--lens <kind>", "weltwissen or schule (default: the learner's)")
-  .option("--planet <kind>", "Planet of the lens; only welt so far")
+  .option(
+    "--lens <kind>",
+    "weltwissen, schule, or the own planet's leben, produkte, unternehmen (default: the learner's)",
+  )
+  .option(
+    "--planet <kind>",
+    "welt or the library's own planet (firma or privat); without --lens, its last or primary lens",
+  )
   .option("--user <id>", "User ID (default: whoami)")
   .option(
     "--time-zone <iana>",
@@ -9646,7 +9658,7 @@ bridgeCommand
   .description(
     "Store the atlas land of one lens; refuses with not-curator without the rights (JSON)",
   )
-  .option("--lens <kind>", "weltwissen (default) or schule")
+  .option("--lens <kind>", "A lens of this library (default weltwissen)")
   .action(async (opts) => {
     await withDb(async (db) => {
       try {
@@ -9662,7 +9674,7 @@ bridgeCommand
   .description(
     "Read or set the learner's atlas lens, home region and Neue Inhalte zeigen (JSON)",
   )
-  .option("--lens <kind>", "Primary lens: weltwissen or schule")
+  .option("--lens <kind>", "Primary lens: one of this library's lenses")
   .option("--home <regionKey>", "Home region of the lens; empty to clear")
   .option("--show-new <onOff>", "Show units without a card: on or off")
   .action(async (opts) => {
@@ -9690,7 +9702,7 @@ bridgeCommand
     "What an import at an atlas region needs: its path, missing levels, the learner's units there and the bundled cells (JSON)",
   )
   .requiredOption("--region <key>", "Region key")
-  .option("--lens <kind>", "weltwissen (default) or schule")
+  .option("--lens <kind>", "A lens of this library (default weltwissen)")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -9716,7 +9728,7 @@ bridgeCommand
   )
   .option("--unit <key...>", "Unit keys (atom:<id> or token:<id>)")
   .option("--region <key>", "Every unit in reach in this region")
-  .option("--lens <kind>", "Lens of --region: weltwissen (default) or schule")
+  .option("--lens <kind>", "Lens of --region (default weltwissen)")
   .option("--user <id>", "User ID (default: whoami)")
   .action(async (opts) => {
     await withDb(async (db) => {
@@ -9760,6 +9772,59 @@ bridgeCommand
             variant: opts.variant,
             undo: opts.undo === true,
             library: opts.library === true,
+          }),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+// Planets (ADR 2026-10-13, Decision 2). Neither command is on the Studio
+// panel bridge: which planet a library is, and a unit's kind, are the
+// library owner's or a curator's to change, never a tool's.
+
+bridgeCommand
+  .command("atlas-planet")
+  .description(
+    "Read or set the library's own planet beside world knowledge: firma or privat (JSON)",
+  )
+  .option(
+    "--own <planet>",
+    "firma or privat; the library's owner or a curator only",
+  )
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          opts.own === undefined
+            ? { success: true, ...(await atlasPlanetInfo(db)) }
+            : await setAtlasOwnPlanet(db, String(opts.own)),
+        );
+      } catch (err) {
+        jsonError((err as Error).message);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-move-planet")
+  .description(
+    "Move own units to world knowledge or to the library's own planet; published units stay world knowledge (JSON)",
+  )
+  .requiredOption("--planet <kind>", "welt, or the library's own planet")
+  .option("--unit <key...>", "Unit keys (token:<id>)")
+  .option("--region <key>", "Every unit of this region and below")
+  .option("--lens <kind>", "Lens of --region (default weltwissen)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasMovePlanet(db, {
+            planet: String(opts.planet),
+            units: opts.unit,
+            lens: opts.lens,
+            region: opts.region,
           }),
         );
       } catch (err) {

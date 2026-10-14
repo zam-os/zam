@@ -5348,6 +5348,30 @@ textarea::placeholder {
   color: var(--color-on-accent);
 }
 
+/* Planets (ADR 2026-10-13, D2): named only when the library holds two. */
+.atlas-lenses {
+  align-items: center;
+}
+
+.atlas-planet-label {
+  display: none;
+  padding: 0 6px 0 10px;
+  color: var(--color-muted);
+  font-size: var(--fs-xs);
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.atlas-lenses-planets .atlas-planet-label {
+  display: inline;
+}
+
+.atlas-lenses-planets .atlas-planet-label + .atlas-lens-btn ~ .atlas-planet-label {
+  margin-left: 6px;
+  border-left: 1px solid var(--color-line);
+}
+
 .atlas-crumbs {
   /* Below this width the breadcrumb takes a row of its own. */
   flex: 1 1 320px;

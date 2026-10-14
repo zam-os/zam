@@ -8,6 +8,12 @@
  */
 export type PlanetKind = "welt" | "firma" | "privat";
 
+/**
+ * The planet beside world knowledge that a library holds: Firma on a company
+ * library, Privat on a personal one. They never share a database.
+ */
+export type OwnPlanet = Exclude<PlanetKind, "welt">;
+
 /** One order over the same learning units (Decision 3). */
 export type LensKind =
   | "weltwissen"

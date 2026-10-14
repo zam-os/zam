@@ -9,6 +9,7 @@
 
 import {
   type AtlasView,
+  assertLensOnLibrary,
   type BundledCellInfo,
   type CurriculumScope,
   chooseVariant,
@@ -20,6 +21,7 @@ import {
   type EmblemAuthor,
   EmblemError,
   type EmblemScope,
+  ensureLensRow,
   ensureWorldLenses,
   findBundledCellsForScope,
   getBundledCellEnrolment,
@@ -27,18 +29,26 @@ import {
   getSetting,
   installKvtTile,
   isBundledCellInstalled,
+  LENSES,
   type LensDefinition,
   type LensKind,
+  libraryLenses,
   listBundledCells,
   loadBindings,
+  type MovePlanetResult,
+  moveUnitsToPlanet,
   needsGenericCurriculumImport,
+  OWN_PLANET_SETTING,
+  type OwnPlanet,
+  ownPlanetOf,
   type PlaceInfo,
+  type PlanetKind,
   parseEmblemSubject,
+  parseOwnPlanet,
   placeUnits,
   readAtlas,
   resolvePlace,
   revalidateEmblems,
-  SCHULE_LENS,
   type SettleResult,
   setEmblem,
   setLibraryVariant,
@@ -56,19 +66,29 @@ import { drawEmblemViaLLM, type EmblemDrawDeps } from "./llm/emblem-draw.js";
 import type { MaterialAnalyzePlace } from "./llm/material-analyze.js";
 import { learnerScope } from "./material-import.js";
 
-/** Lenses the atlas offers so far: the world planet's two. */
-export const ATLAS_LENSES: Readonly<Record<string, LensDefinition>> = {
-  weltwissen: WELTWISSEN_LENS,
-  schule: SCHULE_LENS,
-};
+/** Every lens by kind; a library shows world's and its own planet's. */
+export const ATLAS_LENSES: Readonly<Record<string, LensDefinition>> = LENSES;
 
 export function atlasLens(kind: string | undefined): LensDefinition {
   const lens = ATLAS_LENSES[kind ?? "weltwissen"];
   if (!lens) {
     throw new Error(
-      `Unknown atlas lens "${kind}". Choose ${Object.keys(ATLAS_LENSES).join(" or ")}.`,
+      `Unknown atlas lens "${kind}". Choose ${Object.keys(ATLAS_LENSES).join(", ")}.`,
     );
   }
+  return lens;
+}
+
+/**
+ * A lens of this library: world knowledge's, or one of its own planet's. A
+ * lens of the other planet is refused (ADR 2026-10-13, Decision 2).
+ */
+export async function libraryLens(
+  db: Database,
+  kind: string | undefined,
+): Promise<LensDefinition> {
+  const lens = atlasLens(kind);
+  assertLensOnLibrary(lens, await ownPlanetOf(db));
   return lens;
 }
 
@@ -100,6 +120,102 @@ function isPermissionDenied(error: unknown): boolean {
   return /permission denied/i.test(message);
 }
 
+// ── atlas-planet: the library's own planet (Decision 2) ──────────────────────
+
+export interface AtlasPlanetInfo {
+  /** The planet beside world knowledge. */
+  own: OwnPlanet;
+  /** Set explicitly; otherwise the default for this kind of library. */
+  explicit: boolean;
+  /** Whether this connection may change it: the library's owner or a curator. */
+  mayChange: boolean;
+  /** The lenses the library shows, world's first. */
+  lenses: Array<{ kind: LensKind; planet: PlanetKind; name: string }>;
+}
+
+export async function atlasPlanetInfo(db: Database): Promise<AtlasPlanetInfo> {
+  const own = await ownPlanetOf(db);
+  return {
+    own,
+    explicit: parseOwnPlanet(await getSetting(db, OWN_PLANET_SETTING)) !== null,
+    mayChange: await mayWriteKnowledge(db),
+    lenses: (await libraryLenses(db, own)).map((lens) => ({
+      kind: lens.kind,
+      planet: lens.planet,
+      name: lens.name,
+    })),
+  };
+}
+
+/**
+ * `atlas-planet --own firma|privat`: "Diese Bibliothek gehört zu einer
+ * Firma". Only the library's owner or a curator may change it; no tool does.
+ * Lenses of the other planet stay stored but are no longer shown.
+ */
+export async function setAtlasOwnPlanet(
+  db: Database,
+  planet: string,
+): Promise<AtlasPlanetInfo & { success: true }> {
+  const own = parseOwnPlanet(planet);
+  if (!own) throw new Error("--own must be firma or privat.");
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    await setSetting(db, OWN_PLANET_SETTING, own);
+  } catch (error) {
+    if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+    throw error;
+  }
+  return { success: true, ...(await atlasPlanetInfo(db)) };
+}
+
+// ── atlas-move-planet: a unit's kind (Decision 2) ────────────────────────────
+
+/**
+ * Move own units to world knowledge or to the library's own planet: the
+ * named ones, or those of a region. Published units stay world knowledge.
+ * The learner does this on a library of their own, a curator on a team
+ * library.
+ */
+export async function atlasMovePlanet(
+  db: Database,
+  opts: {
+    planet: string;
+    units?: string[];
+    lens?: string;
+    region?: string;
+  },
+): Promise<MovePlanetResult & { success: true }> {
+  const own = await ownPlanetOf(db);
+  const planet = opts.planet === "welt" ? "welt" : parseOwnPlanet(opts.planet);
+  if (!planet || (planet !== "welt" && planet !== own)) {
+    throw new Error(`--planet must be welt or ${own}.`);
+  }
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  const keys = new Set<UnitKey>();
+  for (const key of opts.units ?? []) keys.add(key as UnitKey);
+  if (opts.region) {
+    const lens = await libraryLens(db, opts.lens);
+    const { snapshot } = await snapshotForRead(db, lens);
+    for (const placement of snapshot.placements) {
+      if (placement.path.some((step) => step.key === opts.region)) {
+        keys.add(placement.unitKey);
+      }
+    }
+  }
+  if (keys.size === 0) throw new Error("Name units or a region to move.");
+  await ensureWorldLenses(db);
+  const placedBy = dialectOf(db) === "postgres" ? "curator" : "learner";
+  try {
+    const result = await db.transaction((tx) =>
+      moveUnitsToPlanet(tx, { units: [...keys], planet, placedBy }),
+    );
+    return { success: true, ...result };
+  } catch (error) {
+    if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+    throw error;
+  }
+}
+
 // ── atlas-prefs ──────────────────────────────────────────────────────────────
 
 export interface AtlasPrefs {
@@ -107,6 +223,11 @@ export interface AtlasPrefs {
   showNew: boolean;
   /** Stored home path per lens, root first. */
   home: Partial<Record<LensKind, string[]>>;
+}
+
+/** The lens the atlas opens with before the learner chose one (Decision 3). */
+function defaultLens(own: OwnPlanet): LensKind {
+  return own === "firma" ? "produkte" : "weltwissen";
 }
 
 function parsePath(raw: string | null | undefined): string[] {
@@ -122,14 +243,16 @@ function parsePath(raw: string | null | undefined): string[] {
 }
 
 export async function readAtlasPrefs(db: Database): Promise<AtlasPrefs> {
-  const lens = (await getSetting(db, LENS_KEY)) ?? "weltwissen";
+  const own = await ownPlanetOf(db);
+  const lenses = await libraryLenses(db, own);
+  const stored = await getSetting(db, LENS_KEY);
   const home: AtlasPrefs["home"] = {};
-  for (const kind of Object.keys(ATLAS_LENSES) as LensKind[]) {
-    const path = parsePath(await getSetting(db, homeKey(kind)));
-    if (path.length > 0) home[kind] = path;
+  for (const lens of lenses) {
+    const path = parsePath(await getSetting(db, homeKey(lens.kind)));
+    if (path.length > 0) home[lens.kind] = path;
   }
   return {
-    lens: (ATLAS_LENSES[lens] ? lens : "weltwissen") as LensKind,
+    lens: lenses.find((lens) => lens.kind === stored)?.kind ?? defaultLens(own),
     showNew: (await getSetting(db, SHOW_NEW_KEY)) === "true",
     home,
   };
@@ -146,7 +269,7 @@ export async function setAtlasPrefs(
   opts: { lens?: string; home?: string; showNew?: string },
 ): Promise<AtlasPrefs> {
   if (opts.lens !== undefined) {
-    await setSetting(db, LENS_KEY, atlasLens(opts.lens).kind);
+    await setSetting(db, LENS_KEY, (await libraryLens(db, opts.lens)).kind);
   }
   if (opts.showNew !== undefined) {
     if (opts.showNew !== "on" && opts.showNew !== "off") {
@@ -156,7 +279,7 @@ export async function setAtlasPrefs(
   }
   if (opts.home !== undefined) {
     const prefs = await readAtlasPrefs(db);
-    const lens = atlasLens(opts.lens ?? prefs.lens);
+    const lens = await libraryLens(db, opts.lens ?? prefs.lens);
     let path: string[] = [];
     if (opts.home !== "") {
       path = await regionPath(db, lens, opts.home);
@@ -304,7 +427,7 @@ export async function atlasPlace(
   db: Database,
   opts: { userId: string; lens?: string; region: string },
 ): Promise<AtlasPlaceResult & { success: true }> {
-  const lens = atlasLens(opts.lens);
+  const lens = await libraryLens(db, opts.lens);
   const place = await resolvePlace(db, lens, opts.region);
   if (!place) {
     throw new Error(`No region "${opts.region}" in the ${lens.name} lens.`);
@@ -329,11 +452,11 @@ export async function atlasPlace(
   );
   const level = place.path[place.path.length - 1].level;
   let scope: CurriculumScope | null = null;
-  let found: BundledCellInfo[];
+  let found: BundledCellInfo[] = [];
   if (lens.kind === "schule") {
     scope = await schuleScope(db, atomIds, level);
     found = scope ? findBundledCellsForScope(scope) : [];
-  } else {
+  } else if (lens.kind === "weltwissen") {
     found = await weltwissenCells(db, opts.region, atomIds);
   }
   const cells: AtlasPlaceCell[] = [];
@@ -352,7 +475,13 @@ export async function atlasPlace(
     units,
     cells,
     scope,
-    wizard: scope ? needsGenericCurriculumImport(scope) : cells.length === 0,
+    // Curriculum belongs to world knowledge: the own planet has none.
+    wizard:
+      lens.planet !== "welt"
+        ? false
+        : scope
+          ? needsGenericCurriculumImport(scope)
+          : cells.length === 0,
   };
 }
 
@@ -363,7 +492,7 @@ export async function materialPlace(
 ): Promise<MaterialAnalyzePlace> {
   const result = await atlasPlace(db, opts);
   return {
-    lens: result.place.lens === "schule" ? "schule" : "weltwissen",
+    lens: result.place.lens,
     regionKey: result.place.regionKey,
     path: result.place.path.map((step) => step.name),
     missingLevels: result.place.missingLevels,
@@ -389,7 +518,7 @@ export async function atlasTake(
   const keys = new Set<UnitKey>();
   for (const key of opts.units ?? []) keys.add(key as UnitKey);
   if (opts.region) {
-    const lens = atlasLens(opts.lens);
+    const lens = await libraryLens(db, opts.lens);
     const view = await readAtlas(db, {
       userId: opts.userId,
       lens,
@@ -450,6 +579,13 @@ export async function atlasVariant(
 
 // ── atlas-read ───────────────────────────────────────────────────────────────
 
+export interface AtlasReadResult extends AtlasView {
+  success: true;
+  /** The library's own planet and the lenses it shows (Decision 2). */
+  ownPlanet: OwnPlanet;
+  lenses: AtlasPlanetInfo["lenses"];
+}
+
 export async function atlasRead(
   db: Database,
   opts: {
@@ -459,22 +595,34 @@ export async function atlasRead(
     now?: Date;
     timeZone?: string;
   },
-): Promise<AtlasView & { success: true }> {
-  if (opts.planet !== undefined && opts.planet !== "welt") {
-    throw new Error("Only the welt planet has lenses so far.");
-  }
+): Promise<AtlasReadResult> {
   const prefs = await readAtlasPrefs(db);
-  const lens = atlasLens(opts.lens ?? prefs.lens);
+  const info = await atlasPlanetInfo(db);
+  let kind = opts.lens;
+  if (kind === undefined && opts.planet !== undefined) {
+    // A planet alone opens its lens the learner last chose, else its primary.
+    const planet = opts.planet;
+    if (planet !== "welt" && planet !== info.own) {
+      throw new Error(`This library holds the welt and ${info.own} planets.`);
+    }
+    const onPlanet = info.lenses.filter((lens) => lens.planet === planet);
+    kind = (onPlanet.find((lens) => lens.kind === prefs.lens) ?? onPlanet[0])
+      ?.kind;
+  }
+  const lens = await libraryLens(db, kind ?? prefs.lens);
+  if (opts.planet !== undefined && lens.planet !== opts.planet) {
+    throw new Error(`The ${lens.name} lens is on the ${lens.planet} planet.`);
+  }
   const view = await readAtlas(db, {
     userId: opts.userId,
     lens,
     now: opts.now,
     showNew: prefs.showNew,
     homePath: prefs.home[lens.kind],
-    mayWrite: await mayWriteKnowledge(db),
+    mayWrite: info.mayChange,
     timeZone: opts.timeZone,
   });
-  return { success: true, ...view };
+  return { success: true, ...view, ownPlanet: info.own, lenses: info.lenses };
 }
 
 // ── atlas-settle ─────────────────────────────────────────────────────────────
@@ -483,7 +631,7 @@ export async function atlasSettle(
   db: Database,
   opts: { lens?: string },
 ): Promise<SettleResult & { success: true }> {
-  const lens = atlasLens(opts.lens);
+  const lens = await libraryLens(db, opts.lens);
   if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
   try {
     return { success: true, ...(await settleLens(db, lens)) };
@@ -521,8 +669,9 @@ export async function placeImportedUnits(
   },
 ): Promise<number> {
   if (opts.units.length === 0) return 0;
-  const lens = atlasLens(opts.lens);
-  await ensureWorldLenses(db);
+  const lens = await libraryLens(db, opts.lens);
+  if (lens.planet === "welt") await ensureWorldLenses(db);
+  else await ensureLensRow(db, lens);
   const place = await resolvePlace(db, lens, opts.region);
   if (!place)
     throw new Error(`No region "${opts.region}" in the ${lens.name} lens.`);
@@ -646,7 +795,7 @@ export async function emblemSubjectInfo(
   if (subject.kind === "region") {
     const place = await resolvePlace(
       db,
-      atlasLens(subject.lens),
+      await libraryLens(db, subject.lens),
       subject.regionKey,
     );
     if (!place) throw new Error(`No region ${subject.regionKey} in this lens.`);
