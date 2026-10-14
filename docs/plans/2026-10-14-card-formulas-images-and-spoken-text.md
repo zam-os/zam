@@ -1,6 +1,6 @@
 # Card formulas, images and spoken text — implementation plan
 
-**Status:** Proposed — no phase started.\
+**Status:** ADR accepted 2026-10-14; Phase 1 in progress on `feat/rich-card-text`.\
 **Decision:** [ADR 2026-10-14b — Card Text Beyond Plain Strings: Formulas,
 Images and Spoken Text](../adr/2026-10-14b-card-formulas-images-and-spoken-text.md).
 Its decisions are cited here as D1–D9. Read the ADR first; this plan does not

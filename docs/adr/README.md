@@ -88,4 +88,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-10](2026-10-10-learning-content-sources.md) | Learning Content: Cards and Sources | Implemented |
 | [2026-10-13](2026-10-13-knowledge-atlas.md) | Knowledge Atlas: A Zoomable Map of What You Know | Proposed |
 | [2026-10-14](2026-10-14-topic-import-and-source-provenance.md) | Topic Import, and Where a Unit's Knowledge Comes From | Proposed |
-| [2026-10-14b](2026-10-14b-card-formulas-images-and-spoken-text.md) | Card Text Beyond Plain Strings: Formulas, Images and Spoken Text | Proposed |
+| [2026-10-14b](2026-10-14b-card-formulas-images-and-spoken-text.md) | Card Text Beyond Plain Strings: Formulas, Images and Spoken Text | Accepted |
