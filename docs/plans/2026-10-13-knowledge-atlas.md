@@ -71,8 +71,12 @@ what the learner knows.
     see "As built (9a)"
   - [x] **9b** — typed threads and portals — this commit; see "As built
     (9b)"
+  - [ ] **Topic import** ([ADR 2026-10-14](../adr/2026-10-14-topic-import-and-source-provenance.md),
+    Delivery 1–2): the goal import becomes the topic import and writes no
+    file; *Auf Wikipedia nachlesen* for world units. Lands before 9c.
   - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
-    updates
+    updates; also the kind per subtopic and the source rules for agents
+    (ADR 2026-10-14, Decisions 3 and 5)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 

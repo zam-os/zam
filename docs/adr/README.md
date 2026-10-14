@@ -56,7 +56,7 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-07-18c](2026-07-18c-okf-import-handoff.md) | OKF Import Handoff — Chat Delivery and the Focused-Article State | Implemented |
 | [2026-07-21](2026-07-21-android-companion-tauri-shell.md) | Android Companion: Tauri 2 Shell with Kernel-in-WebView | Accepted — offline-sync product goal superseded by 2026-07-23 |
 | [2026-07-23](2026-07-23-online-only-server-db-and-mobile-gating.md) | Online-Only Server Database, Mobile Gating, and Cloud Config in the DB | Accepted |
-| [2026-07-24](2026-07-24-first-run-onboarding.md) | First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice | Accepted |
+| [2026-07-24](2026-07-24-first-run-onboarding.md) | First-Run Onboarding: Personas, Goal-Driven Import, Cloud LLM Connect, and Agent Choice | Accepted — §3 superseded by 2026-10-14 |
 | [2026-07-25](2026-07-25-shared-curated-learning-content.md) | Shared Curated Learning Content — Create Once, Improve Continuously, Serve Many | Accepted; clarified |
 | [2026-07-26](2026-07-26-ipados-companion-target.md) | iPadOS Companion: Second Mobile Target on the Existing Tauri Shell | Accepted — installs on hardware; pairing not yet proven on a device |
 | [2026-07-26b](2026-07-26b-central-curriculum-content-service.md) | Central Curriculum Content Service: Content Only, Pulled Forward | Accepted |
@@ -87,3 +87,4 @@ Status: `Draft` → `Proposed` → `Accepted` → `Implemented` (or `Partially i
 | [2026-10-08b](2026-10-08b-corporate-deployment-baseline.md) | Corporate Deployment Baseline: Agents and Shared Content Are Untrusted | Proposed |
 | [2026-10-10](2026-10-10-learning-content-sources.md) | Learning Content: Cards and Sources | Implemented |
 | [2026-10-13](2026-10-13-knowledge-atlas.md) | Knowledge Atlas: A Zoomable Map of What You Know | Proposed |
+| [2026-10-14](2026-10-14-topic-import-and-source-provenance.md) | Topic Import, and Where a Unit's Knowledge Comes From | Proposed |
