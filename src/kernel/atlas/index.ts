@@ -117,6 +117,23 @@ export {
   reserveFor,
 } from "./land.js";
 export type {
+  AtlasLensInfo,
+  AtlasPrefs,
+  LearnerAtlas,
+} from "./learner.js";
+export {
+  ATLAS_LENS_SETTING,
+  ATLAS_LENSES,
+  ATLAS_SHOW_NEW_SETTING,
+  atlasHomeSetting,
+  atlasLens,
+  atlasLensInfo,
+  defaultAtlasLens,
+  libraryLens,
+  readAtlasPrefs,
+  readLearnerAtlas,
+} from "./learner.js";
+export type {
   AliasRow,
   BindingRow,
   DerivedPlacement,

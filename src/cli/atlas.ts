@@ -8,11 +8,15 @@
  */
 
 import {
+  ATLAS_LENS_SETTING,
+  ATLAS_SHOW_NEW_SETTING,
+  type AtlasPrefs,
   type AtlasView,
   acceptLensProposal,
   addConnection,
   applyLensEdits,
-  assertLensOnLibrary,
+  atlasHomeSetting,
+  atlasLensInfo,
   type BundledCellInfo,
   ConnectionError,
   type ConnectionScope,
@@ -34,7 +38,6 @@ import {
   getSetting,
   installKvtTile,
   isBundledCellInstalled,
-  LENSES,
   type LensCuration,
   type LensDefinition,
   type LensEdit,
@@ -42,7 +45,7 @@ import {
   type LensEditResult,
   type LensKind,
   lensCuration,
-  libraryLenses,
+  libraryLens,
   listBundledCells,
   loadBindings,
   type MovePlanetResult,
@@ -61,6 +64,8 @@ import {
   placeUnits,
   proposeLensReplacement,
   readAtlas,
+  readAtlasPrefs,
+  readLearnerAtlas,
   removeConnection,
   resolvePlace,
   revalidateEmblems,
@@ -82,35 +87,15 @@ import { drawEmblemViaLLM, type EmblemDrawDeps } from "./llm/emblem-draw.js";
 import type { MaterialAnalyzePlace } from "./llm/material-analyze.js";
 import { learnerScope } from "./material-import.js";
 
-/** Every lens by kind; a library shows world's and its own planet's. */
-export const ATLAS_LENSES: Readonly<Record<string, LensDefinition>> = LENSES;
-
-export function atlasLens(kind: string | undefined): LensDefinition {
-  const lens = ATLAS_LENSES[kind ?? "weltwissen"];
-  if (!lens) {
-    throw new Error(
-      `Unknown atlas lens "${kind}". Choose ${Object.keys(ATLAS_LENSES).join(", ")}.`,
-    );
-  }
-  return lens;
-}
-
-/**
- * A lens of this library: world knowledge's, or one of its own planet's. A
- * lens of the other planet is refused (ADR 2026-10-13, Decision 2).
- */
-export async function libraryLens(
-  db: Database,
-  kind: string | undefined,
-): Promise<LensDefinition> {
-  const lens = atlasLens(kind);
-  assertLensOnLibrary(lens, await ownPlanetOf(db));
-  return lens;
-}
-
-const LENS_KEY = "atlas.lens";
-const SHOW_NEW_KEY = "atlas.show_new";
-const homeKey = (kind: LensKind) => `atlas.home.${kind}`;
+// The lens helpers and the learner's read live in the kernel (plan Phase
+// 10b), so Mobile reads the same lens and the same map.
+export {
+  ATLAS_LENSES,
+  type AtlasPrefs,
+  atlasLens,
+  libraryLens,
+  readAtlasPrefs,
+} from "../kernel/index.js";
 
 /** Thrown when a write needs curator rights this connection lacks. */
 export const NOT_CURATOR = "not-curator";
@@ -150,16 +135,12 @@ export interface AtlasPlanetInfo {
 }
 
 export async function atlasPlanetInfo(db: Database): Promise<AtlasPlanetInfo> {
-  const own = await ownPlanetOf(db);
+  const { own, lenses } = await atlasLensInfo(db);
   return {
     own,
     explicit: parseOwnPlanet(await getSetting(db, OWN_PLANET_SETTING)) !== null,
     mayChange: await mayWriteKnowledge(db),
-    lenses: (await libraryLenses(db, own)).map((lens) => ({
-      kind: lens.kind,
-      planet: lens.planet,
-      name: lens.name,
-    })),
+    lenses,
   };
 }
 
@@ -234,46 +215,6 @@ export async function atlasMovePlanet(
 
 // ── atlas-prefs ──────────────────────────────────────────────────────────────
 
-export interface AtlasPrefs {
-  lens: LensKind;
-  showNew: boolean;
-  /** Stored home path per lens, root first. */
-  home: Partial<Record<LensKind, string[]>>;
-}
-
-/** The lens the atlas opens with before the learner chose one (Decision 3). */
-function defaultLens(own: OwnPlanet): LensKind {
-  return own === "firma" ? "produkte" : "weltwissen";
-}
-
-function parsePath(raw: string | null | undefined): string[] {
-  if (!raw) return [];
-  try {
-    const value = JSON.parse(raw) as unknown;
-    return Array.isArray(value) && value.every((v) => typeof v === "string")
-      ? value
-      : [];
-  } catch {
-    return [];
-  }
-}
-
-export async function readAtlasPrefs(db: Database): Promise<AtlasPrefs> {
-  const own = await ownPlanetOf(db);
-  const lenses = await libraryLenses(db, own);
-  const stored = await getSetting(db, LENS_KEY);
-  const home: AtlasPrefs["home"] = {};
-  for (const lens of lenses) {
-    const path = parsePath(await getSetting(db, homeKey(lens.kind)));
-    if (path.length > 0) home[lens.kind] = path;
-  }
-  return {
-    lens: lenses.find((lens) => lens.kind === stored)?.kind ?? defaultLens(own),
-    showNew: (await getSetting(db, SHOW_NEW_KEY)) === "true",
-    home,
-  };
-}
-
 /**
  * Change the learner's atlas preferences. `home` is a region key of `lens`
  * (or of the primary lens); it is stored as its path, so a later lens edit
@@ -285,13 +226,17 @@ export async function setAtlasPrefs(
   opts: { lens?: string; home?: string; showNew?: string },
 ): Promise<AtlasPrefs> {
   if (opts.lens !== undefined) {
-    await setSetting(db, LENS_KEY, (await libraryLens(db, opts.lens)).kind);
+    await setSetting(
+      db,
+      ATLAS_LENS_SETTING,
+      (await libraryLens(db, opts.lens)).kind,
+    );
   }
   if (opts.showNew !== undefined) {
     if (opts.showNew !== "on" && opts.showNew !== "off") {
       throw new Error("--show-new must be on or off.");
     }
-    await setSetting(db, SHOW_NEW_KEY, String(opts.showNew === "on"));
+    await setSetting(db, ATLAS_SHOW_NEW_SETTING, String(opts.showNew === "on"));
   }
   if (opts.home !== undefined) {
     const prefs = await readAtlasPrefs(db);
@@ -303,7 +248,7 @@ export async function setAtlasPrefs(
         throw new Error(`No region "${opts.home}" in the ${lens.name} lens.`);
       }
     }
-    await setSetting(db, homeKey(lens.kind), JSON.stringify(path));
+    await setSetting(db, atlasHomeSetting(lens.kind), JSON.stringify(path));
   }
   return readAtlasPrefs(db);
 }
@@ -617,38 +562,14 @@ export async function atlasRead(
     timeZone?: string;
   },
 ): Promise<AtlasReadResult> {
-  const prefs = await readAtlasPrefs(db);
-  const info = await atlasPlanetInfo(db);
-  let kind = opts.lens;
-  if (kind === undefined && opts.planet !== undefined) {
-    // A planet alone opens its lens the learner last chose, else its primary.
-    const planet = opts.planet;
-    if (planet !== "welt" && planet !== info.own) {
-      throw new Error(`This library holds the welt and ${info.own} planets.`);
-    }
-    const onPlanet = info.lenses.filter((lens) => lens.planet === planet);
-    kind = (onPlanet.find((lens) => lens.kind === prefs.lens) ?? onPlanet[0])
-      ?.kind;
-  }
-  const lens = await libraryLens(db, kind ?? prefs.lens);
-  if (opts.planet !== undefined && lens.planet !== opts.planet) {
-    throw new Error(`The ${lens.name} lens is on the ${lens.planet} planet.`);
-  }
-  const view = await readAtlas(db, {
-    userId: opts.userId,
-    lens,
-    now: opts.now,
-    showNew: prefs.showNew,
-    homePath: prefs.home[lens.kind],
-    mayWrite: info.mayChange,
-    timeZone: opts.timeZone,
+  const view = await readLearnerAtlas(db, {
+    ...opts,
+    mayWrite: await mayWriteKnowledge(db),
   });
   return {
     success: true,
     ...view,
-    ownPlanet: info.own,
-    lenses: info.lenses,
-    curation: await lensCuration(db, lens),
+    curation: await lensCuration(db, await libraryLens(db, view.lens.kind)),
   };
 }
 

@@ -235,6 +235,7 @@ import {
   matchUnassessedPrecondition,
   type PreconditionOffer,
 } from "./study-offers.js";
+import { createMobileAtlas, kernelAtlasSource } from "./atlas.js";
 import { SyncError, syncWithRetry } from "./sync.js";
 import { createNav } from "./ui/nav.js";
 import {
@@ -3893,6 +3894,7 @@ nav.onTabChange((tab) => {
   }
   if (tab === "progress") {
     void refreshStats();
+    void atlas.refresh();
     return;
   }
   if (tab === "settings") {
@@ -4119,6 +4121,31 @@ async function finishRating(
     stopReviewButton.disabled = false;
   }
 }
+
+// The knowledge atlas on Fortschritt (ADR 2026-10-13, Decision 10): read
+// only; a region's review goes through the same session as every review.
+const atlas = createMobileAtlas(
+  {
+    lenses: element<HTMLElement>("atlas-lenses"),
+    status: element<HTMLElement>("atlas-status"),
+    outline: element<HTMLElement>("atlas-outline"),
+    detail: element<HTMLElement>("atlas-detail"),
+  },
+  {
+    source: kernelAtlasSource(db, () => currentUserId),
+    t,
+    tf,
+    reviewRegion: async (tokenIds) => {
+      if (!currentUserId) return false;
+      const started = await reviewSession.start(currentUserId, { tokenIds });
+      if (!started) return false;
+      bonusIgnoredThisSession = false;
+      await loadPreconditionCache(currentUserId);
+      renderCurrentReview();
+      return true;
+    },
+  },
+);
 
 startReviewButton.addEventListener("click", async () => {
   if (!currentUserId) return;

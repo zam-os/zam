@@ -90,9 +90,11 @@ what the learner knows.
       or a person) and the source rules for agents (Decision 3), which is
       that ADR's Delivery 3 — `3b99f188`; see "As built (9c-2)"
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10), in two commits:
-  - [x] **10a** — the MCP Apps atlas panel, read only (`zam_show_atlas`);
-    see "10a" below
-  - [ ] **10b** — Mobile
+  - [x] **10a** — the MCP Apps atlas panel, read only (`zam_show_atlas`) —
+    `cdcff4d4`; see "10a" below
+  - [x] **10b** — Mobile: the outline on the Fortschritt tab and the region
+    review; see "10b" below
+  - [ ] **10c** — the map itself on Mobile, with touch pan and pinch
 - [ ] **Phase 11** — documentation and handover
 
 **Mapping to the ADR's delivery phases.**
@@ -2057,6 +2059,19 @@ read: neither writes knowledge, land or preferences.
   sharing `render.ts` and `layout.ts`.
 - **Verification.** Mobile tests over the Tauri invoke stub and `npm run build`
   in `mobile/`.
+- **As built.**
+  - `readLearnerAtlas`, `readAtlasPrefs`, `libraryLens` and the setting keys
+    live in `src/kernel/atlas/learner.ts`; `atlas-read` is that read plus the
+    lens's curation.
+  - The atlas sits on the Fortschritt tab under the statistics, so Mobile
+    keeps its four tabs (ADR 2026-08-08b). A segmented control switches the
+    library's lenses; nothing is stored.
+  - `mobile/src/atlas.ts` reads through a small source (`kernelAtlasSource`
+    on Mobile's database), renders the Studio's outline, and shows the chosen
+    region or unit in a card. *Wiederholen* starts `MobileReviewSession` with
+    the region's token ids, without new cards.
+  - Checked in the Mobile vite preview with real `atlas-read` output, in a
+    phone viewport, light and dark, German.
 
 ---
 

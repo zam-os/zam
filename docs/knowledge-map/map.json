@@ -898,6 +898,17 @@
       ]
     },
     {
+      "id": "atlas-mobile",
+      "parent": "knowledge-atlas",
+      "label": "On Mobile",
+      "link": "is read on",
+      "text": "Mobile shows the atlas outline of one lens on Fortschritt, from the learner's own database; a region's review uses the usual session.",
+      "sources": [
+        "mobile/src/atlas.ts",
+        "src/kernel/atlas/learner.ts"
+      ]
+    },
+    {
       "id": "pairing-optional",
       "parent": "mobile-standalone",
       "label": "Optional pairing",
