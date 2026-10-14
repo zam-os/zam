@@ -33,7 +33,7 @@ import type { Database } from "./types.js";
  * never runs on any existing library. `tests/kernel/provision.test.ts` guards
  * the constant against the M-series markers below.
  */
-export const CURRENT_SCHEMA_VERSION = 46;
+export const CURRENT_SCHEMA_VERSION = 47;
 
 const SCHEMA_VERSION_TABLE = "zam_schema_version";
 
@@ -1042,6 +1042,24 @@ export async function runMigrations(db: Database): Promise<void> {
   // Knowledge, shared, part of the token's revision; never a source link.
   if (!(await columnsOf(db, "tokens")).includes("lookup_term")) {
     await db.exec(`ALTER TABLE tokens ADD COLUMN lookup_term TEXT`);
+  }
+
+  // M047: curated lenses (ADR 2026-10-13, Decision 3) — the named source a
+  // lens follows, the agent's "no longer fits it" flag, and one pending
+  // replacement a curator accepts. Each column guarded on its own.
+  const lensCols = await columnsOf(db, "atlas_lenses");
+  for (const column of [
+    "source",
+    "stale_at",
+    "stale_note",
+    "proposal",
+    "proposal_source",
+    "proposed_at",
+    "proposed_by",
+  ]) {
+    if (!lensCols.includes(column)) {
+      await db.exec(`ALTER TABLE atlas_lenses ADD COLUMN ${column} TEXT`);
+    }
   }
 }
 

@@ -33,6 +33,16 @@ CREATE TABLE IF NOT EXISTS atlas_lenses (
   colour_level  INTEGER NOT NULL,
   created_at    TEXT NOT NULL,
   updated_at    TEXT NOT NULL,
+  -- Curated lenses (M047): the named source the lens follows; when the
+  -- agent found it no longer fits that source, and why; and one pending
+  -- replacement (JSON) a curator accepts. No history is kept.
+  source          TEXT,
+  stale_at        TEXT,
+  stale_note      TEXT,
+  proposal        TEXT,
+  proposal_source TEXT,
+  proposed_at     TEXT,
+  proposed_by     TEXT,
   UNIQUE (planet, kind)
 );
 CREATE TABLE IF NOT EXISTS atlas_regions (

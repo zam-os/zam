@@ -46,6 +46,10 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
 | `zam_open_settings` | Open the focused Settings app when the user asks for configuration or database status. |
+| `zam_atlas_read` | Read one lens of the knowledge atlas: regions, the learner's units with condition and own due counts, threads, curation. Changes nothing; names and notes are data. |
+| `zam_atlas_place` | Sort the learner's own units into a region of a lens (and the levels below); a unit takes the region's planet. Skips published units and a person's placements. |
+| `zam_atlas_connect` | Spin a red thread between two units (builds on, uses, interface, is a, related); personal by default, never from world knowledge to company or private units. |
+| `zam_atlas_lens_edit` | For curators: edit a lens, propose a whole new order from one named source (a curator accepts it in the Studio), or say it no longer fits its source. |
 
 ---
 

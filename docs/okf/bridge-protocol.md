@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T14:00:00.000Z
+timestamp: 2026-10-14T15:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -304,6 +304,32 @@ takes coordinates: only settle places land.
   depend on a Firma or Privat unit. Units moved together keep their threads
   together. Without the right to write knowledge it refuses with
   `not-curator`.
+- `atlas-lens-edit --lens <kind> --edits <json>` applies edits to one lens
+  in one transaction, then stores the land: `create-region`,
+  `rename-region`, `reorder-region`, `move-region` (below a region of the
+  same level as its parent), `remove-region` (its units fall back to the
+  lens's rules), `set-alias`, `remove-alias` and `place`. A world lens takes
+  additions only, aliases for the library's own units only, and places no
+  published unit. A move or removal clears the land of the regions it
+  touches, and the settle that follows lays it out again. Refusals carry a
+  `code`.
+- `atlas-lens-propose --lens <kind> --proposal <json>` stores one pending
+  replacement for an own-planet lens from one named source:
+  `{source, regions: [{key, name, parent}], aliases?, members?}`. Nothing
+  changes until `atlas-lens-accept --lens <kind> [--reject]`, which a
+  curator gives in the Studio: accepting replaces the lens's order, aliases,
+  placements and land, and the lens follows that source. No history is kept.
+- `atlas-lens-stale --lens <kind> --stale on|off [--note <text>]` records
+  whether a lens still fits its source.
+- `atlas-read` returns `curation` for the lens: its `source`, `stale` with
+  the note, and a pending `proposal`. Curators see both in the Studio.
+- `atlas-revision` returns a fingerprint of what the atlas shows, one
+  statement over the atlas tables, the caller's threads, Sinnbilder and
+  cards. The Studio polls it every 10 s while the map is on screen, and on
+  focus, and reads the map again when it changes.
+
+  Each of these writes needs the right to write knowledge and refuses with
+  `not-curator` otherwise.
 - `atlas-variant --stands-for <key> (--variant <key> | --undo)` lets a unit
   stand in for a published one, or undoes it; with `--library` a curator
   sets or clears the library's variant.

@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T13:00:00.000Z
+timestamp: 2026-10-14T15:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -158,6 +158,25 @@ The model-visible learning tools cover:
   against an allowlist of plain shapes and text and stores its own
   re-serialisation. Titles, SVGs and glyphs in both results are marked
   `untrusted`. Setting one writes, so the host asks each time;
+- the knowledge atlas for agents ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md),
+  Decision 10). Each acts on the connected library only, takes no library
+  URL and no path, and returns one planet per call:
+  - `zam_atlas_read` reads one lens: its regions, the learner's units with
+    their condition and own due counts, threads, thread ends on the other
+    planet and the lens's curation. It changes nothing, and its result is
+    marked `untrusted`.
+  - `zam_atlas_place` sorts the learner's own units into a region by key,
+    never by coordinates. A unit takes the region's planet; published units
+    and a person's placements are skipped.
+  - `zam_atlas_connect` spins a red thread, personal by default, never from
+    world knowledge to company or private units.
+  - `zam_atlas_lens_edit`, for curators, edits a lens (a world lens takes
+    additions only), proposes a whole new order for an own-planet lens from
+    one named source, or says it no longer fits that source. Only a curator
+    in the Studio accepts a proposal; no tool does.
+
+  The three writing tools need the right to write knowledge except a
+  personal thread, and none is pre-approved;
 - review progress: `zam_progress_stats` returns the activity series — cards
   reviewed per day/week/month with summed study time, aggregated in SQL over
   the immutable review log. `window` counts **periods, not days**, and each

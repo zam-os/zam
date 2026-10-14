@@ -78,12 +78,15 @@ what the learner knows.
     the topic path; world regions only in the atlas — `76396d32`, review
     round 1 `e158590b`
   - [x] **Topic import, Delivery 2** — *Nachlesen* for world units, and a
-    topic import's units on the world planet — this commit; see "As built
+    topic import's units on the world planet — `99596cf9`; see "As built
     (Delivery 2)"
-  - [ ] **9c** — curated lens edits, agent tools, mixed imports, live
-    updates; also the rest of ADR 2026-10-14's Decision 5 (the model flags
-    a subtopic about a company or a person) and the source rules for agents
-    (Decision 3)
+  - [ ] **9c** — in two commits:
+    - [x] **9c-1** — curated lens edits, a replacement a curator accepts,
+      the staleness flag, the agent tools and live updates — this commit;
+      see "As built (9c-1)"
+    - [ ] **9c-2** — mixed imports (the kind per card), the rest of ADR
+      2026-10-14's Decision 5 (the model flags a subtopic about a company
+      or a person) and the source rules for agents (Decision 3)
 - [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
 - [ ] **Phase 11** — documentation and handover
 
@@ -1877,6 +1880,76 @@ automatically (ADR 2026-10-08b).
   - `bridge-atlas.test.ts`: a topic import without a place lands on the
     world planet with its `readUp` in `atlas-read` and
     `personal-card-list`.
+
+**As built (9c-1).**
+
+- **Storage.** M047 at schema version 47 adds seven columns to
+  `atlas_lenses`:
+  - `source`;
+  - `stale_at` and `stale_note`;
+  - one pending `proposal` (JSON), with `proposal_source`, `proposed_at`
+    and `proposed_by`.
+
+  They are knowledge, written only with the right to write it.
+- **Edits** (`src/kernel/atlas/curation.ts`, `applyLensEdits`).
+  - The ops: `create-region`, `rename-region`, `reorder-region`,
+    `move-region`, `remove-region`, `set-alias`, `remove-alias` and `place`.
+    They are applied in order inside the caller's transaction, so a refused
+    edit rolls the batch back.
+  - `move-region` goes only below a region of the same level as the old
+    parent, so levels stay consistent. It clears the land of the moved
+    subtree.
+  - `remove-region` cascades to children, placements, aliases, land and an
+    island. Its units fall back to the lens's rules.
+  - The CLI settles right after an edit, so everyone sees the same map.
+- **World lenses take additions only.** The plan left this open.
+  - Allowed: create, alias and place. Rename, reorder, move and remove are
+    refused (`world-structure`): one library never moves the published map.
+  - An alias may not cover a seed prefix or a published atom's domain
+    (`published-alias`).
+  - `place` refuses atoms (`published-unit`).
+- **Replacement** for the own planet's lenses only.
+  - `validateLensProposal` checks keys, order (parents first), depth,
+    duplicates, and own units as members.
+  - Accepting deletes the lens's regions, so placements, aliases, land and
+    islands cascade. It writes the proposal's order and sets `source`,
+    which clears staleness.
+  - Rejecting drops the proposal and nothing else.
+  - `atlas-lens-accept` is a bridge command for the Studio. No tool
+    accepts.
+- **Staleness.** `atlas-lens-stale --stale on|off [--note]` and
+  `markLensStale`. `atlas-read` returns `curation`. Curators see a bar
+  above the map: "Diese Linse passt nicht mehr zu ihrer Quelle …" and a
+  waiting proposal with *Übernehmen* and *Verwerfen*.
+- **Agent tools.**
+  - `zam_atlas_read` is read-only and in the reviewed read-only list, not
+    in `PRE_APPROVED_TOOLS`; the owner decides that in the PR. It takes
+    `region` and `limit`.
+  - `zam_atlas_place` (`atlasSortUnits`) skips published units and a
+    person's placements (`placed_by` curator or learner).
+  - `zam_atlas_connect` wraps `atlasConnect`.
+  - `zam_atlas_lens_edit` takes exactly one of `edits`, `propose` or
+    `stale`.
+  - The MCP tool count is now 48. The zam skill lists the four tools in all
+    four copies.
+- **Live updates.** Nothing existing fitted: material review refreshes only
+  on window focus. `atlas-revision` returns one SQL statement's
+  fingerprint: counts and latest times over the atlas tables, the caller's
+  threads and Sinnbilder, tokens and the caller's cards.
+  - The Studio reads it before each `atlas-read`.
+  - It polls every 10 s while the map is on screen, and on focus.
+  - On a change it reads the map again quietly: no veil, and the camera
+    stays.
+  - It skips the poll while a thread is being spun.
+- **Tests.**
+  - `tests/kernel/atlas-curation.test.ts`: edits, refusals and rollback, a
+    removal's fallback, aliases, the world lens's rules, proposal, accept,
+    reject and staleness, and proposal validation.
+  - `tests/cli/atlas-agent-tools.test.ts` drives the four tools through an
+    MCP client: the read changes nothing, sorting skips, a refused thread
+    direction, no accept tool, none pre-approved, and the revision moves.
+  - PostgreSQL: a member is refused lens edits and proposals, and a
+    curator edits, proposes and accepts.
 
 ---
 

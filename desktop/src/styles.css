@@ -5545,6 +5545,40 @@ span.atlas-crumb {
   font-size: var(--fs-sm);
 }
 
+/* Curators' note on a lens (Decision 3): it no longer fits, or a new
+   order waits to be accepted. */
+.atlas-curation {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: var(--space-2) var(--space-3);
+  padding: var(--space-2) var(--space-3);
+  background: var(--color-signal-soft);
+  border: 1px solid var(--color-signal-line);
+  border-radius: var(--radius-control);
+  font-size: var(--fs-sm);
+}
+
+.atlas-curation[hidden] {
+  display: none;
+}
+
+.atlas-curation-line {
+  margin: 0;
+  flex: 1 1 280px;
+}
+
+.atlas-curation-note {
+  color: var(--color-muted);
+  font-style: italic;
+}
+
+.atlas-curation-actions {
+  display: flex;
+  gap: var(--space-2);
+}
+
 .atlas-body {
   position: relative;
   flex: 1;

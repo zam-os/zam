@@ -32,6 +32,27 @@ export {
   removeConnection,
   unitsHeldByThreads,
 } from "./connections.js";
+export type {
+  LensCuration,
+  LensEdit,
+  LensEditErrorCode,
+  LensEditOp,
+  LensEditResult,
+  LensProposal,
+} from "./curation.js";
+export {
+  acceptLensProposal,
+  applyLensEdits,
+  LensEditError,
+  lensCuration,
+  MAX_CURATION_TEXT,
+  MAX_LENS_EDITS,
+  MAX_PROPOSAL_REGIONS,
+  markLensStale,
+  normalizeDomainPrefix,
+  proposeLensReplacement,
+  validateLensProposal,
+} from "./curation.js";
 export type { EmblemValidation } from "./emblem.js";
 export {
   EMBLEM_MAX_CHARS,

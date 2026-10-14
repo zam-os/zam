@@ -4903,6 +4903,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "{count} stayed, because a thread holds them: world knowledge never depends on a Firma or Privat unit.",
     atlas_move_failed: "Moving did not work:",
     read_up: "Read up",
+    atlas_curation_stale: "This lens no longer fits its source.",
+    atlas_curation_stale_source: "This lens no longer fits its source, “{source}”.",
+    atlas_curation_proposal:
+      "A new order from “{source}” is waiting: {regions} regions, {members} units placed.",
+    atlas_curation_accept: "Accept",
+    atlas_curation_accept_hint:
+      "Replaces this lens's order at once. The earlier order is not kept.",
+    atlas_curation_reject: "Reject",
+    atlas_curation_failed: "That did not work:",
     read_up_source_hint: "Opens the page this knowledge comes from, in your browser.",
     read_up_search_hint: "Looks it up on Wikipedia, in your browser.",
     atlas_unit_kicker: "Learning unit",
@@ -6858,6 +6867,15 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
       "{count} blieben, weil ein Faden sie hält: Weltwissen hängt nie von einer Firma- oder Privat-Einheit ab.",
     atlas_move_failed: "Verschieben hat nicht geklappt:",
     read_up: "Nachlesen",
+    atlas_curation_stale: "Diese Linse passt nicht mehr zu ihrer Quelle.",
+    atlas_curation_stale_source: "Diese Linse passt nicht mehr zu ihrer Quelle „{source}“.",
+    atlas_curation_proposal:
+      "Eine neue Ordnung aus „{source}“ wartet: {regions} Bereiche, {members} eingeordnete Einheiten.",
+    atlas_curation_accept: "Übernehmen",
+    atlas_curation_accept_hint:
+      "Ersetzt die Ordnung dieser Linse sofort. Die bisherige wird nicht aufbewahrt.",
+    atlas_curation_reject: "Verwerfen",
+    atlas_curation_failed: "Das hat nicht geklappt:",
     read_up_source_hint: "Öffnet die Seite, aus der dieses Wissen stammt, im Browser.",
     read_up_search_hint: "Schlägt es bei Wikipedia nach, im Browser.",
     atlas_unit_kicker: "Lerneinheit",

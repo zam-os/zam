@@ -860,6 +860,18 @@
       ]
     },
     {
+      "id": "atlas-curation",
+      "parent": "knowledge-atlas",
+      "label": "Curated lenses",
+      "link": "is ordered by",
+      "text": "A curator edits an atlas lens or accepts an agent's new order for it; a world lens takes additions only, and no edit takes coordinates.",
+      "sources": [
+        "docs/adr/2026-10-13-knowledge-atlas.md",
+        "src/kernel/atlas/curation.ts",
+        "src/cli/atlas.ts"
+      ]
+    },
+    {
       "id": "sinnbild-canonical",
       "parent": "surfaces",
       "label": "Sinnbilder",

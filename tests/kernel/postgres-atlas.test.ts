@@ -4,7 +4,11 @@ import {
   atlasDisconnect,
   atlasEmblemClear,
   atlasEmblemSet,
+  atlasLensAccept,
+  atlasLensEdit,
+  atlasLensPropose,
   atlasRead,
+  atlasRevision,
   atlasSettle,
   atlasVariant,
   mayWriteKnowledge,
@@ -580,6 +584,107 @@ describeWithPostgres("atlas on a team library (needs POSTGRES_URL)", () => {
         ).toBe("personal");
       } finally {
         await again.close();
+      }
+    } finally {
+      await reset();
+    }
+  });
+
+  it("lets only a curator edit a lens or accept a new order (Decision 3)", async () => {
+    await reset();
+    try {
+      const control = openPostgresDatabase({
+        connectionString: `${url}?options=-c%20search_path%3D${schema}`,
+      });
+      try {
+        await provisionTeamLibrary(control, { schema });
+        await addTeamMember(control, directory, {
+          upn: "lens-curator@example.org",
+          database,
+        });
+        await addTeamMember(control, directory, {
+          upn: "lens-member@example.org",
+          database,
+          curator: false,
+        });
+        await createToken(control, {
+          slug: "boreas-scrum",
+          concept: "Wie Team Boreas Scrum lebt",
+          domain: "scrum/team-boreas",
+        });
+      } finally {
+        await control.close();
+      }
+
+      const asMember = await connectAs("lens-member@example.org");
+      try {
+        await expect(
+          atlasLensEdit(asMember, {
+            lens: "produkte",
+            edits: [{ op: "create-region", name: "Plattform" }],
+          }),
+        ).rejects.toThrow(NOT_CURATOR);
+        await expect(
+          atlasLensPropose(asMember, {
+            lens: "unternehmen",
+            proposal: {
+              source: "Teamliste",
+              regions: [{ key: "nordwind", name: "Nordwind", parent: null }],
+            },
+            by: "member",
+          }),
+        ).rejects.toThrow(NOT_CURATOR);
+        // The revision is a member's read too.
+        const userId = (await resolveLearnerId(asMember)) as string;
+        expect(
+          (await atlasRevision(asMember, { userId })).revision,
+        ).toBeTruthy();
+      } finally {
+        await asMember.close();
+      }
+
+      const asCurator = await connectAs("lens-curator@example.org");
+      try {
+        const edited = await atlasLensEdit(asCurator, {
+          lens: "produkte",
+          edits: [
+            { op: "create-region", name: "Plattform" },
+            { op: "create-region", name: "Agile Praxis", parent: "plattform" },
+            {
+              op: "set-alias",
+              domain: "scrum",
+              region: "plattform.agile-praxis",
+            },
+          ],
+        });
+        expect(edited).toMatchObject({ created: 2, aliases: 1 });
+        await atlasLensPropose(asCurator, {
+          lens: "unternehmen",
+          proposal: {
+            source: "Teamliste",
+            regions: [{ key: "nordwind", name: "Nordwind", parent: null }],
+          },
+          by: "curator",
+        });
+        const accepted = await atlasLensAccept(asCurator, {
+          lens: "unternehmen",
+        });
+        expect(accepted).toMatchObject({ accepted: true, regions: 1 });
+        const userId = (await resolveLearnerId(asCurator)) as string;
+        const view = await atlasRead(asCurator, {
+          userId,
+          lens: "unternehmen",
+        });
+        expect(view.curation?.source).toBe("Teamliste");
+        const produkte = await atlasRead(asCurator, {
+          userId,
+          lens: "produkte",
+        });
+        expect(produkte.regions.map((r) => r.key)).toContain(
+          "plattform.agile-praxis.team-boreas",
+        );
+      } finally {
+        await asCurator.close();
       }
     } finally {
       await reset();

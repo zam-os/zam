@@ -106,6 +106,7 @@ import {
   isTopicImportSource,
   isVoiceEnginePreference,
   keepLibraryAsPrevious,
+  LensEditError,
   listAgentSkills,
   listKnowledgeContexts,
   listMaterialAreaContext,
@@ -126,6 +127,7 @@ import {
   openDatabase,
   openDatabaseWithSync,
   PERSONA_DESCRIPTORS,
+  PlanetError,
   pairCommands,
   postgresVaultAccessPending,
   previewTextImport,
@@ -198,10 +200,15 @@ import {
   atlasEmblemClear,
   atlasEmblemDraw,
   atlasEmblemSet,
+  atlasLensAccept,
+  atlasLensEdit,
+  atlasLensPropose,
+  atlasLensStale,
   atlasMovePlanet,
   atlasPlace,
   atlasPlanetInfo,
   atlasRead,
+  atlasRevision,
   atlasSettle,
   atlasTake,
   atlasVariant,
@@ -525,7 +532,15 @@ function jsonError(message: string): never {
  * surface can explain each one; anything else as `jsonError`.
  */
 function jsonRefusal(err: unknown): never {
-  if (!(err instanceof ConnectionError)) jsonError((err as Error).message);
+  if (
+    !(
+      err instanceof ConnectionError ||
+      err instanceof LensEditError ||
+      err instanceof PlanetError
+    )
+  ) {
+    jsonError((err as Error).message);
+  }
   const body = { error: err.message, code: err.code };
   if (isServeMode) throw new Error(JSON.stringify(body));
   console.log(JSON.stringify(body, null, 2));
@@ -9906,6 +9921,135 @@ bridgeCommand
         jsonOut(await atlasDisconnect(db, { userId, id: String(opts.id) }));
       } catch (err) {
         jsonRefusal(err);
+      }
+    });
+  });
+
+// Curated lenses (ADR 2026-10-13, Decision 3; plan Phase 9c). None of
+// these is on the Studio panel bridge; each needs the right to write
+// knowledge, and accepting a replacement is the Studio's alone.
+
+/** A JSON option, or a refusal naming the option. */
+function jsonOption(name: string, raw: string): unknown {
+  try {
+    return JSON.parse(raw);
+  } catch {
+    jsonError(`${name} must be JSON`);
+  }
+}
+
+bridgeCommand
+  .command("atlas-lens-edit")
+  .description(
+    "Edit one lens: create, rename, reorder, move or remove regions, set aliases, place units; a world lens takes additions only (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A lens of this library")
+  .requiredOption("--edits <json>", "JSON array of edits, applied in order")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasLensEdit(db, {
+            lens: opts.lens,
+            edits: jsonOption("--edits", String(opts.edits)),
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-propose")
+  .description(
+    "Propose a whole new order for one of the own planet's lenses, from one named source; it waits for a curator (JSON)",
+  )
+  .requiredOption("--lens <kind>", "leben, produkte or unternehmen")
+  .requiredOption(
+    "--proposal <json>",
+    "JSON {source, regions: [{key, name, parent}], aliases?, members?}",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(
+          await atlasLensPropose(db, {
+            lens: opts.lens,
+            proposal: jsonOption("--proposal", String(opts.proposal)),
+            by: userId,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-accept")
+  .description(
+    "Accept the lens's pending replacement, which replaces its order at once, or reject it with --reject (JSON)",
+  )
+  .requiredOption("--lens <kind>", "leben, produkte or unternehmen")
+  .option("--reject", "Drop the proposal; the lens stays as it is")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        jsonOut(
+          await atlasLensAccept(db, {
+            lens: opts.lens,
+            reject: opts.reject === true,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-lens-stale")
+  .description(
+    "Say whether a lens still fits its source: curators see 'this lens no longer fits its source' (JSON)",
+  )
+  .requiredOption("--lens <kind>", "A lens of this library")
+  .requiredOption("--stale <onOff>", "on: no longer fits; off: fits again")
+  .option("--note <text>", "What no longer fits, in a sentence")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        if (opts.stale !== "on" && opts.stale !== "off") {
+          jsonError("--stale must be on or off");
+        }
+        jsonOut(
+          await atlasLensStale(db, {
+            lens: opts.lens,
+            stale: opts.stale === "on",
+            note: opts.note,
+          }),
+        );
+      } catch (err) {
+        jsonRefusal(err);
+      }
+    });
+  });
+
+bridgeCommand
+  .command("atlas-revision")
+  .description(
+    "A cheap fingerprint of what the atlas shows; the Studio polls it to follow agent changes (JSON)",
+  )
+  .option("--user <id>", "User ID (default: whoami)")
+  .action(async (opts) => {
+    await withDb(async (db) => {
+      try {
+        const userId = await resolveUser(opts, db, { json: true });
+        jsonOut(await atlasRevision(db, { userId }));
+      } catch (err) {
+        jsonError((err as Error).message);
       }
     });
   });

@@ -1026,6 +1026,31 @@ export interface AtlasReadResponse {
   ownPlanet?: AtlasOwnPlanetWire;
   /** The lenses this library shows, world's first. */
   lenses?: AtlasLensInfoWire[];
+  /** The lens's curation (Decision 3); null before the lens is stored. */
+  curation?: AtlasCurationWire | null;
+}
+
+/**
+ * A curated lens's state: the named source it follows, the agent's verdict
+ * that it no longer fits it, and one replacement waiting for a curator.
+ * Source, note and names are untrusted text.
+ */
+export interface AtlasCurationWire {
+  source: string | null;
+  stale: { at: string; note: string | null } | null;
+  proposal: {
+    source: string;
+    at: string;
+    by: string | null;
+    regions: number;
+    members: number;
+  } | null;
+}
+
+/** `atlas-revision`: changes whenever what the atlas shows may have changed. */
+export interface AtlasRevisionResponse {
+  success: boolean;
+  revision: string;
 }
 
 export type AtlasThreadKindWire =

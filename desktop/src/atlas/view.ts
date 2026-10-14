@@ -28,6 +28,7 @@ import type {
   AtlasPlanetWire,
   AtlasPrefsResponse,
   AtlasReadResponse,
+  AtlasRevisionResponse,
   AtlasTakeResponse,
   AtlasThreadKindWire,
   AtlasUnitWire,
@@ -107,6 +108,8 @@ interface Elements {
   panel: HTMLElement;
   panelBody: HTMLElement;
   status: HTMLElement;
+  /** Curators' note on the lens: no longer fits, or a replacement waits. */
+  curation: HTMLElement;
   busy: HTMLElement;
   busyText: HTMLElement;
 }
@@ -129,6 +132,10 @@ interface ViewState {
   pick: string | null;
   /** A thread whose ends are chosen, waiting for its kind and note. */
   draft: { from: string; to: string } | null;
+  /** The atlas revision the map was read at; an agent's write changes it. */
+  revision: string | null;
+  /** A revision check is running. */
+  checking: boolean;
   generation: number;
   frame: number;
   detach: () => void;
@@ -237,7 +244,12 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
 
   const status = el("p", "atlas-status");
   status.setAttribute("aria-live", "polite");
-  root.append(toolbar, status, body);
+  // Curation (Decision 3): a lens that no longer fits its source, and a
+  // replacement waiting for a curator.
+  const curation = el("div", "atlas-curation");
+  curation.hidden = true;
+  curation.setAttribute("role", "region");
+  root.append(toolbar, curation, status, body);
   container.appendChild(root);
 
   const els: Elements = {
@@ -258,6 +270,7 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     panel,
     panelBody,
     status,
+    curation,
     busy,
     busyText,
   };
@@ -276,6 +289,8 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
     expanded: new Set(),
     showNew: null,
     pick: null,
+    revision: null,
+    checking: false,
     draft: null,
     generation: 0,
     frame: 0,
@@ -322,12 +337,52 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
 
   const onKey = (e: KeyboardEvent) => handleKey(s, e);
   window.addEventListener("keydown", onKey);
+  // An agent's write shows without a click: a cheap revision check every
+  // REVISION_POLL_MS while the map is on screen, and on focus.
+  const onFocus = () => void checkRevision(s);
+  window.addEventListener("focus", onFocus);
+  const poll = window.setInterval(() => void checkRevision(s), REVISION_POLL_MS);
   s.detach = () => {
     window.removeEventListener("keydown", onKey);
+    window.removeEventListener("focus", onFocus);
+    window.clearInterval(poll);
     if (s.frame) cancelAnimationFrame(s.frame);
     s.map.destroy();
   };
   return s;
+}
+
+/** How often the open atlas asks whether an agent changed it. */
+const REVISION_POLL_MS = 10_000;
+
+/** Whether the map is on screen, so a check is worth a round trip. */
+function onScreen(s: ViewState): boolean {
+  return (
+    document.visibilityState === "visible" &&
+    s.root.isConnected &&
+    s.root.getClientRects().length > 0
+  );
+}
+
+/**
+ * Read the map again when the atlas changed since it was read: an agent
+ * sorted, connected or edited. Never while the learner spins a thread or
+ * the map is busy; the camera stays where it is.
+ */
+async function checkRevision(s: ViewState): Promise<void> {
+  if (s.checking || !onScreen(s) || s.pick || s.draft) return;
+  if (!s.els.busy.hidden || s.revision === null) return;
+  s.checking = true;
+  try {
+    const { revision } = await runBridge<AtlasRevisionResponse>(
+      "atlas-revision",
+    );
+    if (revision !== s.revision) await load(s, s.lens ?? undefined, true);
+  } catch {
+    // A missed check is caught by the next one.
+  } finally {
+    s.checking = false;
+  }
 }
 
 /**
@@ -462,19 +517,30 @@ function readArgs(lens: AtlasLensKindWire | undefined): string[] {
   return [...(lens ? ["--lens", lens] : []), "--time-zone", timeZone];
 }
 
-async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
+async function load(
+  s: ViewState,
+  lens?: AtlasLensKindWire,
+  quiet = false,
+): Promise<void> {
   const generation = ++s.generation;
-  setBusy(
-    s,
-    t(
-      !s.layout
-        ? "atlas_loading"
-        : lens && lens !== s.lens
-          ? "atlas_busy_lens"
-          : "atlas_busy_reading",
-    ),
-  );
+  // A background re-read after an agent's write shows no veil.
+  if (!quiet) {
+    setBusy(
+      s,
+      t(
+        !s.layout
+          ? "atlas_loading"
+          : lens && lens !== s.lens
+            ? "atlas_busy_lens"
+            : "atlas_busy_reading",
+      ),
+    );
+  }
   try {
+    // Read first, so a write that lands during the read shows next time.
+    const revision = await runBridge<AtlasRevisionResponse>(
+      "atlas-revision",
+    ).catch(() => null);
     let view = await runBridge<AtlasReadResponse>("atlas-read", readArgs(lens));
     if (generation !== s.generation) return;
     // Store pending land once; a member who may not write sees it provisional.
@@ -516,6 +582,8 @@ async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
     if (view.land.length === 0) setStatus(s, t("atlas_empty"));
     else if (view.settle.pending > 0) setStatus(s, t("atlas_provisional"));
     else setStatus(s, "");
+    s.revision = revision?.revision ?? s.revision;
+    renderCuration(s, view);
     renderChrome(s);
   } catch (err) {
     if (generation !== s.generation) return;
@@ -525,6 +593,75 @@ async function load(s: ViewState, lens?: AtlasLensKindWire): Promise<void> {
     );
   } finally {
     if (generation === s.generation) setBusy(s, null);
+  }
+}
+
+/**
+ * What curators see of the lens's curation (Decision 3): it no longer fits
+ * its source, or a replacement waits to be accepted or rejected. Learners
+ * who may not write knowledge see nothing of it.
+ */
+function renderCuration(s: ViewState, view: AtlasReadResponse): void {
+  const box = s.els.curation;
+  box.replaceChildren();
+  const curation = view.curation ?? null;
+  const show =
+    view.settle.mayWrite &&
+    curation !== null &&
+    (curation.stale !== null || curation.proposal !== null);
+  box.hidden = !show;
+  if (!show || !curation) return;
+  if (curation.stale) {
+    const text = curation.source
+      ? tf("atlas_curation_stale_source", { source: curation.source })
+      : t("atlas_curation_stale");
+    const line = el("p", "atlas-curation-line", text);
+    if (curation.stale.note) {
+      line.append(" ", el("span", "atlas-curation-note", curation.stale.note));
+    }
+    box.appendChild(line);
+  }
+  const proposal = curation.proposal;
+  if (proposal) {
+    const line = el(
+      "p",
+      "atlas-curation-line",
+      tf("atlas_curation_proposal", {
+        source: proposal.source,
+        regions: proposal.regions,
+        members: proposal.members,
+      }),
+    );
+    const accept = button("btn primary-btn btn-sm", t("atlas_curation_accept"));
+    accept.title = t("atlas_curation_accept_hint");
+    const reject = button("btn secondary-btn btn-sm", t("atlas_curation_reject"));
+    const decide = (rejecting: boolean) => {
+      accept.disabled = true;
+      reject.disabled = true;
+      void (async () => {
+        try {
+          await runBridge("atlas-lens-accept", [
+            "--lens",
+            view.lens.kind,
+            ...(rejecting ? ["--reject"] : []),
+          ]);
+          select(s, null);
+          await load(s, view.lens.kind);
+        } catch (err) {
+          accept.disabled = false;
+          reject.disabled = false;
+          setStatus(
+            s,
+            `${t("atlas_curation_failed")} ${err instanceof Error ? err.message : String(err)}`,
+          );
+        }
+      })();
+    };
+    accept.addEventListener("click", () => decide(false));
+    reject.addEventListener("click", () => decide(true));
+    const actions = el("div", "atlas-curation-actions");
+    actions.append(accept, reject);
+    box.append(line, actions);
   }
 }
 

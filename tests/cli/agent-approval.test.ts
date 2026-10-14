@@ -31,8 +31,9 @@ const PATH_OR_URL_ARGUMENT =
  * reads take a bundle directory, which D1 confines to trusted folders.
  */
 const READ_ONLY_TOOLS = [
-  // Reads the atlas without settling; titles are marked untrusted.
+  // Read the atlas without settling; titles are marked untrusted.
   "zam_atlas_missing_emblems",
+  "zam_atlas_read",
   "zam_bonus_candidates_list",
   "zam_bundled_cells_list",
   "zam_find_tokens",

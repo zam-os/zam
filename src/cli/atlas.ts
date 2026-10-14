@@ -9,7 +9,9 @@
 
 import {
   type AtlasView,
+  acceptLensProposal,
   addConnection,
+  applyLensEdits,
   assertLensOnLibrary,
   type BundledCellInfo,
   ConnectionError,
@@ -33,22 +35,31 @@ import {
   installKvtTile,
   isBundledCellInstalled,
   LENSES,
+  type LensCuration,
   type LensDefinition,
+  type LensEdit,
+  LensEditError,
+  type LensEditResult,
   type LensKind,
+  lensCuration,
   libraryLenses,
   listBundledCells,
   loadBindings,
   type MovePlanetResult,
+  markLensStale,
   moveUnitsToPlanet,
   needsGenericCurriculumImport,
   OWN_PLANET_SETTING,
   type OwnPlanet,
   ownPlanetOf,
+  type PlacedBy,
   type PlaceInfo,
+  PlanetError,
   type PlanetKind,
   parseEmblemSubject,
   parseOwnPlanet,
   placeUnits,
+  proposeLensReplacement,
   readAtlas,
   removeConnection,
   resolvePlace,
@@ -589,6 +600,11 @@ export interface AtlasReadResult extends AtlasView {
   /** The library's own planet and the lenses it shows (Decision 2). */
   ownPlanet: OwnPlanet;
   lenses: AtlasPlanetInfo["lenses"];
+  /**
+   * The lens's curation (Decision 3): its source, the agent's "no longer
+   * fits" flag and a pending replacement. Null before the lens is stored.
+   */
+  curation: LensCuration | null;
 }
 
 export async function atlasRead(
@@ -627,7 +643,13 @@ export async function atlasRead(
     mayWrite: info.mayChange,
     timeZone: opts.timeZone,
   });
-  return { success: true, ...view, ownPlanet: info.own, lenses: info.lenses };
+  return {
+    success: true,
+    ...view,
+    ownPlanet: info.own,
+    lenses: info.lenses,
+    curation: await lensCuration(db, lens),
+  };
 }
 
 // ── atlas-settle ─────────────────────────────────────────────────────────────
@@ -1030,4 +1052,364 @@ export async function atlasDisconnect(
   } catch (error) {
     connectionFailure(error);
   }
+}
+
+// ── Curated lenses (Decision 3; plan Phase 9c) ───────────────────────────────
+
+/** Lens refusals keep their code; a missing grant reads as not-curator. */
+function lensFailure(error: unknown): never {
+  if (error instanceof LensEditError || error instanceof PlanetError) {
+    throw error;
+  }
+  if (isPermissionDenied(error)) throw new Error(NOT_CURATOR);
+  throw error;
+}
+
+/** Store the land the edits left pending, so everyone sees the same map. */
+async function settleAfterEdit(
+  db: Database,
+  lens: LensDefinition,
+): Promise<SettleResult> {
+  return settleLens(db, lens);
+}
+
+export interface AtlasLensEditResult extends LensEditResult {
+  success: true;
+  lens: LensKind;
+  settled: SettleResult;
+}
+
+/**
+ * `atlas-lens-edit`: edits to one lens, in one transaction, then the land is
+ * stored. Only who may write knowledge edits a lens: the learner on a
+ * library of their own, a curator on a team library.
+ */
+export async function atlasLensEdit(
+  db: Database,
+  opts: { lens?: string; edits: unknown; placedBy?: PlacedBy },
+): Promise<AtlasLensEditResult> {
+  const lens = await libraryLens(db, opts.lens);
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  if (!Array.isArray(opts.edits)) {
+    throw new LensEditError("bad-edit", "Edits are a JSON array.");
+  }
+  const edits = opts.edits as LensEdit[];
+  try {
+    if (lens.planet === "welt") await ensureWorldLenses(db);
+    const result = await db.transaction((tx) =>
+      applyLensEdits(tx, lens, edits, {
+        placedBy: opts.placedBy ?? defaultPlacedBy(db),
+      }),
+    );
+    const settled = await settleAfterEdit(db, lens);
+    return { success: true, lens: lens.kind, ...result, settled };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+/** Who places on this library when nobody says: the learner or a curator. */
+function defaultPlacedBy(db: Database): PlacedBy {
+  return dialectOf(db) === "postgres" ? "curator" : "learner";
+}
+
+/** Units in a lens that a person placed; an agent leaves those alone. */
+async function personPlacedUnits(
+  db: Database,
+  lens: LensDefinition,
+): Promise<Set<string>> {
+  const rows = (await db
+    .prepare(
+      `SELECT m.unit_key FROM atlas_members m
+         JOIN atlas_lenses l ON l.id = m.lens_id
+        WHERE l.planet = ? AND l.kind = ? AND m.placed_by IN ('curator', 'learner')`,
+    )
+    .all(lens.planet, lens.kind)) as Array<{ unit_key: string }>;
+  return new Set(rows.map((row) => row.unit_key));
+}
+
+export interface AtlasSortResult {
+  success: true;
+  lens: LensKind;
+  placed: string[];
+  /** Units a person placed, or published ones: the agent leaves them. */
+  skipped: Array<{ unit: string; reason: "placed-by-person" | "published" }>;
+  settled: SettleResult;
+}
+
+/**
+ * `zam_atlas_place`: the agent sorts units into a region of a lens, below it
+ * into the levels it names. It never moves a unit a person placed, nor a
+ * published one; it takes a region key, never coordinates.
+ */
+export async function atlasSortUnits(
+  db: Database,
+  opts: { lens?: string; region: string; units: string[]; below?: string[] },
+): Promise<AtlasSortResult> {
+  const lens = await libraryLens(db, opts.lens);
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  const byPerson = await personPlacedUnits(db, lens);
+  const skipped: AtlasSortResult["skipped"] = [];
+  const edits: LensEdit[] = [];
+  for (const unit of new Set(opts.units)) {
+    if (unit.startsWith("atom:")) {
+      skipped.push({ unit, reason: "published" });
+    } else if (byPerson.has(unit)) {
+      skipped.push({ unit, reason: "placed-by-person" });
+    } else {
+      edits.push({
+        op: "place",
+        unit,
+        region: opts.region,
+        below: opts.below ?? [],
+      });
+    }
+  }
+  if (edits.length === 0) {
+    return {
+      success: true,
+      lens: lens.kind,
+      placed: [],
+      skipped,
+      settled: { regionsCreated: 0, islandsWritten: 0, landWritten: 0 },
+    };
+  }
+  const edited = await atlasLensEdit(db, {
+    lens: lens.kind,
+    edits,
+    placedBy: "agent",
+  });
+  return {
+    success: true,
+    lens: lens.kind,
+    placed: edits.map((edit) => (edit as { unit: string }).unit),
+    skipped,
+    settled: edited.settled,
+  };
+}
+
+/** `atlas-lens-propose`: the agent's replacement for an own-planet lens. */
+export async function atlasLensPropose(
+  db: Database,
+  opts: { lens?: string; proposal: unknown; by: string },
+): Promise<{ success: true; lens: LensKind; curation: LensCuration }> {
+  const lens = await libraryLens(db, opts.lens);
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    const curation = await db.transaction((tx) =>
+      proposeLensReplacement(tx, lens, opts.proposal, opts.by),
+    );
+    return { success: true, lens: lens.kind, curation };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+/**
+ * `atlas-lens-accept`: a curator accepts the pending replacement (the map
+ * shows the new order at once) or rejects it. Never a tool's to call.
+ */
+export async function atlasLensAccept(
+  db: Database,
+  opts: { lens?: string; reject?: boolean },
+): Promise<{
+  success: true;
+  lens: LensKind;
+  accepted: boolean;
+  regions: number;
+  members: number;
+  settled: SettleResult | null;
+}> {
+  const lens = await libraryLens(db, opts.lens);
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    const result = await db.transaction((tx) =>
+      acceptLensProposal(tx, lens, { reject: opts.reject === true }),
+    );
+    const settled = result.accepted ? await settleAfterEdit(db, lens) : null;
+    return { success: true, lens: lens.kind, ...result, settled };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+/** `atlas-lens-stale`: the agent's verdict on whether a lens fits its source. */
+export async function atlasLensStale(
+  db: Database,
+  opts: { lens?: string; stale: boolean; note?: string },
+): Promise<{ success: true; lens: LensKind; curation: LensCuration }> {
+  const lens = await libraryLens(db, opts.lens);
+  if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
+  try {
+    if (lens.planet === "welt") await ensureWorldLenses(db);
+    const curation = await markLensStale(db, lens, {
+      stale: opts.stale,
+      note: opts.note,
+    });
+    return { success: true, lens: lens.kind, curation };
+  } catch (error) {
+    lensFailure(error);
+  }
+}
+
+// ── atlas-revision: noticing agent writes (plan Phase 9c) ────────────────────
+
+/**
+ * A cheap fingerprint of what the atlas shows: the Studio polls it while the
+ * map is visible and reads the map again when it changes, so an agent's
+ * edit shows without a click. One statement, one round trip on a remote
+ * library; the caller's own threads and Sinnbilder count, nobody else's.
+ */
+export async function atlasRevision(
+  db: Database,
+  opts: { userId: string },
+): Promise<{ success: true; revision: string }> {
+  const row = (await db
+    .prepare(
+      `SELECT
+         (SELECT COUNT(*) FROM atlas_regions) AS regions,
+         (SELECT COUNT(*) FROM atlas_members) AS members,
+         (SELECT COUNT(*) FROM atlas_domain_aliases) AS aliases,
+         (SELECT COUNT(*) FROM atlas_land WHERE unit_key IS NOT NULL) AS land,
+         (SELECT MAX(updated_at) FROM atlas_lenses) AS lenses,
+         (SELECT MAX(proposed_at) FROM atlas_lenses) AS proposals,
+         (SELECT MAX(stale_at) FROM atlas_lenses) AS stale,
+         (SELECT COUNT(*) FROM connections) AS threads,
+         (SELECT MAX(created_at) FROM connections) AS threads_at,
+         (SELECT COUNT(*) FROM learner_connections WHERE user_id = ?) AS own_threads,
+         (SELECT MAX(created_at) FROM learner_connections WHERE user_id = ?) AS own_threads_at,
+         (SELECT MAX(updated_at) FROM emblems) AS emblems,
+         (SELECT MAX(updated_at) FROM learner_emblems WHERE user_id = ?) AS own_emblems,
+         (SELECT COUNT(*) FROM tokens) AS tokens,
+         (SELECT MAX(updated_at) FROM tokens) AS tokens_at,
+         (SELECT COUNT(*) FROM cards WHERE user_id = ?) AS cards,
+         (SELECT MAX(last_review_at) FROM cards WHERE user_id = ?) AS reviewed`,
+    )
+    .get(opts.userId, opts.userId, opts.userId, opts.userId, opts.userId)) as
+    | Record<string, unknown>
+    | undefined;
+  const revision = Object.values(row ?? {})
+    .map((value) =>
+      value === null || value === undefined ? "" : String(value),
+    )
+    .join("|");
+  return { success: true, revision };
+}
+
+// ── zam_atlas_read: the atlas for an agent (plan Phase 9c) ───────────────────
+
+export interface AtlasAgentView {
+  success: true;
+  lens: { kind: LensKind; planet: PlanetKind; name: string; levels: string[] };
+  ownPlanet: OwnPlanet;
+  lenses: AtlasPlanetInfo["lenses"];
+  /** Whether this connection may sort, connect shared or edit a lens. */
+  mayWrite: boolean;
+  regions: Array<{
+    key: string;
+    name: string;
+    level: number;
+    parent: string | null;
+    /** The caller's own due count here; no figure about anyone else. */
+    due: number;
+  }>;
+  units: Array<{
+    key: string;
+    title: string;
+    region: string;
+    condition: string | null;
+    due: number;
+    own: boolean;
+    /** No card yet: shown with *Neue Inhalte zeigen*. */
+    inReach: boolean;
+  }>;
+  /** Units left out by `limit`. */
+  more: number;
+  threads: Array<{
+    from: string;
+    to: string;
+    kind: string;
+    scope: string;
+    id?: string;
+    note?: string;
+  }>;
+  /** Thread ends on the other planet. */
+  portals: AtlasView["portals"];
+  curation: LensCuration | null;
+}
+
+/**
+ * One lens of the atlas as an agent reads it: the order, the caller's units
+ * with their condition and own due counts, threads and curation. Writes
+ * nothing: unstored land stays planned in memory.
+ */
+export async function atlasAgentView(
+  db: Database,
+  opts: { userId: string; lens?: string; region?: string; limit?: number },
+): Promise<AtlasAgentView> {
+  const view = await atlasRead(db, { userId: opts.userId, lens: opts.lens });
+  const parentOf = new Map(view.regions.map((r) => [r.key, r.parentKey]));
+  const inScope = (key: string | null): boolean => {
+    if (!opts.region) return true;
+    let current: string | null | undefined = key;
+    while (current) {
+      if (current === opts.region) return true;
+      current = parentOf.get(current);
+    }
+    return false;
+  };
+  if (opts.region && !parentOf.has(opts.region)) {
+    throw new Error(
+      `No region "${opts.region}" in the ${view.lens.name} lens.`,
+    );
+  }
+  const limit = Math.max(1, Math.min(opts.limit ?? 200, 500));
+  const units = view.units.filter((unit) => inScope(unit.region));
+  const shown = units.slice(0, limit);
+  const shownKeys = new Set(shown.map((unit) => unit.key));
+  return {
+    success: true,
+    lens: {
+      kind: view.lens.kind,
+      planet: view.lens.planet,
+      name: view.lens.name,
+      levels: view.lens.levels,
+    },
+    ownPlanet: view.ownPlanet,
+    lenses: view.lenses,
+    mayWrite: view.settle.mayWrite,
+    regions: view.regions
+      .filter((region) => inScope(region.key))
+      .map((region) => ({
+        key: region.key,
+        name: region.name,
+        level: region.level,
+        parent: region.parentKey,
+        due: view.own.dueByRegion[region.key] ?? 0,
+      })),
+    units: shown.map((unit) => ({
+      key: unit.key,
+      title: unit.title,
+      region: unit.region,
+      condition: unit.condition,
+      due: unit.due,
+      own: unit.own,
+      inReach: unit.inReach,
+    })),
+    more: units.length - shown.length,
+    threads: view.threads
+      .filter(
+        (thread) => shownKeys.has(thread.from) || shownKeys.has(thread.to),
+      )
+      .map((thread) => ({
+        from: thread.from,
+        to: thread.to,
+        kind: thread.kind,
+        scope: thread.scope,
+        ...(thread.id ? { id: thread.id } : {}),
+        ...(thread.note ? { note: thread.note } : {}),
+      })),
+    portals: view.portals,
+    curation: view.curation,
+  };
 }
