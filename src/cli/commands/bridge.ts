@@ -220,6 +220,7 @@ import {
   placeOnWorldPlanet,
   setAtlasOwnPlanet,
   setAtlasPrefs,
+  unplacedTokenIds,
 } from "../atlas.js";
 import {
   addToken as handleAddToken,
@@ -7273,8 +7274,19 @@ bridgeCommand
       // the levels below. A failure to place loses none of the cards.
       let placed: number | undefined;
       let placeError: string | undefined;
+      // A retry after a failed placement finds its cards already written:
+      // one that no lens has placed yet goes to the place as well. A linked
+      // duplicate with a place of its own keeps it.
+      const unplaced = await unplacedTokenIds(
+        db,
+        (result.items ?? [])
+          .filter((item) => !item.created)
+          .map((item) => item.tokenId),
+      );
+      const toPlace = (item: { created: boolean; tokenId: string }) =>
+        item.created || unplaced.has(item.tokenId);
       const created = (result.items ?? [])
-        .filter((item) => item.created)
+        .filter(toPlace)
         .map((item) => item.tokenId);
       if (!opts.placeRegion && (await isTopicImportSource(db, opts.sourceId))) {
         // A topic import writes world knowledge (ADR 2026-10-14, Decision
@@ -7292,7 +7304,7 @@ bridgeCommand
             lens: opts.placeLens,
             region: String(opts.placeRegion),
             units: (result.items ?? []).flatMap((item, index) =>
-              item.created
+              toPlace(item)
                 ? [
                     {
                       tokenId: item.tokenId,

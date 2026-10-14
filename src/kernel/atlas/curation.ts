@@ -23,18 +23,27 @@
 import { ulid } from "ulid";
 import { nowIso } from "../db/sql.js";
 import type { Database } from "../db/types.js";
+import { directedThreadEnds } from "./connections.js";
 import {
   ensureLensRow,
   findLensId,
   type LensDefinition,
   type LensRows,
+  loadBindings,
   loadLensRows,
+  loadUnits,
   slugSegment,
+  type UnitRow,
   weltwissenSeedRows,
 } from "./lenses.js";
 import { MAX_PLACE_NAME, type PlacedBy, placeUnits } from "./place.js";
-import { assertLensOnLibrary, ownPlanetOf, PlanetError } from "./planets.js";
-import type { UnitKey } from "./types.js";
+import {
+  assertLensOnLibrary,
+  loadUnitPlanets,
+  ownPlanetOf,
+  PlanetError,
+} from "./planets.js";
+import type { PlanetKind, UnitKey } from "./types.js";
 
 export type LensEdit =
   | {
@@ -228,8 +237,61 @@ async function assertAliasForOwnKnowledge(
 }
 
 /**
+ * Edits that can change a unit's planet without placing it: a removed region
+ * takes its placements along, and an alias decides what a world rule covers.
+ */
+const PLANET_EDITS: ReadonlySet<string> = new Set([
+  "remove-region",
+  "set-alias",
+  "remove-alias",
+]);
+
+async function unitPlanetsNow(
+  db: Database,
+): Promise<{ units: UnitRow[]; planets: Map<UnitKey, PlanetKind> }> {
+  const units = await loadUnits(db);
+  const planets = await loadUnitPlanets(
+    db,
+    units,
+    await loadBindings(db),
+    await ownPlanetOf(db),
+  );
+  return { units, planets };
+}
+
+/**
+ * Refuse edits after which world knowledge would depend on a Firma or Privat
+ * unit through a thread or a prerequisite that did not cross before
+ * (Decision 2). Called inside the edit's transaction, so a refusal undoes it.
+ */
+async function assertNoNewCrossing(
+  db: Database,
+  before: ReadonlyMap<UnitKey, PlanetKind>,
+): Promise<void> {
+  const { units, planets: after } = await unitPlanetsNow(db);
+  const crosses = (
+    planets: ReadonlyMap<UnitKey, PlanetKind>,
+    a: UnitKey,
+    b: UnitKey,
+  ) => {
+    const to = planets.get(b);
+    return planets.get(a) === "welt" && to !== undefined && to !== "welt";
+  };
+  for (const { a, b } of await directedThreadEnds(db, units)) {
+    if (!crosses(after, a, b) || crosses(before, a, b)) continue;
+    const unit = before.get(a) !== after.get(a) ? a : b;
+    throw new PlanetError(
+      "held-by-thread",
+      `The edit would put ${unit} on the ${after.get(unit)} planet, and a thread or prerequisite between ${a} and ${b} would let world knowledge depend on a Firma or Privat unit.`,
+    );
+  }
+}
+
+/**
  * Apply edits to one lens, in order. A world lens takes additions only, and
  * places own units only (a published unit keeps the published map's place).
+ * Edits that would let world knowledge depend on a Firma or Privat unit are
+ * refused (`PlanetError`); the caller's transaction undoes the batch.
  */
 export async function applyLensEdits(
   db: Database,
@@ -255,6 +317,9 @@ export async function applyLensEdits(
     aliases: 0,
     placed: 0,
   };
+  const planetsBefore = edits.some((edit) => PLANET_EDITS.has(edit.op))
+    ? (await unitPlanetsNow(db)).planets
+    : null;
 
   for (const edit of edits) {
     if (world && !WORLD_OPS.has(edit.op)) {
@@ -450,6 +515,7 @@ export async function applyLensEdits(
         );
     }
   }
+  if (planetsBefore) await assertNoNewCrossing(db, planetsBefore);
   if (edits.length > 0) {
     await db
       .prepare(`UPDATE atlas_lenses SET updated_at = ? WHERE id = ?`)
@@ -564,7 +630,7 @@ async function ownLensId(db: Database, lens: LensDefinition): Promise<string> {
   if (lens.planet === "welt") {
     throw new LensEditError(
       "not-own-planet",
-      "Only the own planet's lenses are replaced; the world's comes with published content.",
+      "Only the own planet's lenses follow a source; the world's comes with published content.",
     );
   }
   return lensIdFor(db, lens);
@@ -698,7 +764,8 @@ export async function markLensStale(
   lens: LensDefinition,
   opts: { stale: boolean; note?: string },
 ): Promise<LensCuration> {
-  const lensId = await lensIdFor(db, lens);
+  // A world lens has no source to fall behind (review round 2).
+  const lensId = await ownLensId(db, lens);
   const note = cleanText(opts.note) || null;
   await db
     .prepare(

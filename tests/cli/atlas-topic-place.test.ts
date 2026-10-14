@@ -2,7 +2,11 @@ import { mkdtempSync, rmSync } from "node:fs";
 import { tmpdir } from "node:os";
 import { join } from "node:path";
 import { afterEach, beforeEach, describe, expect, it } from "vitest";
-import { atlasMovePlanet, placeImportedUnits } from "../../src/cli/atlas.js";
+import {
+  atlasMovePlanet,
+  placeImportedUnits,
+  unplacedTokenIds,
+} from "../../src/cli/atlas.js";
 import {
   createToken,
   type Database,
@@ -44,6 +48,16 @@ describe("topic import at a derived Fach", () => {
     await ensureCard(db, token.id, "thomas");
     return token.id;
   }
+
+  it("leaves a retry the cards no lens has placed yet (review round 2)", async () => {
+    const first = await ownToken("github-environments", "github/actions");
+    const second = await ownToken("github-secrets", "github/actions");
+    await atlasMovePlanet(db, { planet: "welt", units: [`token:${first}`] });
+    // The first now has a place of its own; the second waits for one.
+    expect([...(await unplacedTokenIds(db, [first, second, second]))]).toEqual([
+      second,
+    ]);
+  });
 
   // No world rule covers `github/…`: such units start on the own planet
   // (Leben). Moved to world knowledge, they sit on Weltwissen's unsorted

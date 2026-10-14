@@ -2124,8 +2124,7 @@ read: neither writes knowledge, land or preferences.
   thread or a prerequisite holds (`held-by-thread`), and a variant for the
   own planet (`variant-is-world`), before it writes. A lens edit refuses a
   unit that does not exist. An accepted order skips a unit held that way.
-  Still open: removing a region or an alias can drop a unit back onto the
-  other planet with its threads; the read shows such a thread at a portal.
+  Removing a region or an alias followed in Fable's round 2 (below).
 - **A variant is world knowledge.** `chooseVariant` and `setLibraryVariant`
   refuse a unit sorted onto the own planet, `moveUnitsToPlanet` skips a
   variant for it, and the material import sends a ticked variant to the
@@ -2144,6 +2143,23 @@ read: neither writes knowledge, land or preferences.
 - **The panel** reads no preference: the read-only view skips the *Neue
   Inhalte zeigen* read, and `atlas-prefs` left the panel bridge. Going back
   to a topic's name records a new source for the next import.
+
+### Review round 2 (Claude Fable 5.1, on `be334807`)
+
+- **The last way around the planet rule.** A lens edit batch with
+  `remove-region`, `set-alias` or `remove-alias` compares every unit's
+  planet before and after, inside its transaction. If a thread or a
+  prerequisite would newly run from world knowledge to a Firma or Privat
+  unit, the batch is refused as `held-by-thread` and nothing changes.
+- **A retry places what it finds.** After a failed placement, the next
+  confirm also places the cards it finds already written, as long as no
+  lens has placed them (`unplacedTokenIds`). A linked duplicate with a
+  place of its own keeps it.
+- **Staleness is for the own planet.** `markLensStale` refuses a world lens,
+  which has no source to fall behind.
+- **Hygiene.** The PowerShell module cache that d950ed10 committed is
+  ignored at the repository root. Its cause is not in ZAM's tests; the
+  owner suspects the machine's security checks.
 
 ## Risks and pitfalls
 

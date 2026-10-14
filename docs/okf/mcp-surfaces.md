@@ -8,7 +8,7 @@ tags:
   - surfaces
   - plugins
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/mcp-surfaces.md"
-timestamp: 2026-10-14T21:00:00.000Z
+timestamp: 2026-10-14T22:00:00.000Z
 ---
 
 `zam mcp` starts ZAM's stdio **Model Context Protocol** server. It is the
@@ -191,7 +191,9 @@ The model-visible learning tools cover:
   - `zam_atlas_lens_edit`, for curators, edits a lens (a world lens takes
     additions only), proposes a whole new order for an own-planet lens from
     one named source, or says it no longer fits that source. Only a curator
-    in the Studio accepts a proposal; no tool does.
+    in the Studio accepts a proposal; no tool does. A batch after which world
+    knowledge would depend on a Firma or Privat unit is refused as a whole,
+    also when a removed region or alias would move a unit there.
 
   The three writing tools need the right to write knowledge except a
   personal thread, and none is pre-approved;

@@ -604,6 +604,28 @@ export function fitBelow(names: readonly string[], levels: number): string[] {
 }
 
 /**
+ * Of these tokens, the own ones whose unit no lens has placed: what a retry
+ * after a failed placement still has to place. Reads only.
+ */
+export async function unplacedTokenIds(
+  db: Database,
+  tokenIds: readonly string[],
+): Promise<Set<string>> {
+  const unplaced = new Set<string>();
+  for (const id of new Set(tokenIds)) {
+    const row = await db
+      .prepare(
+        `SELECT 1 AS found FROM tokens
+          WHERE id = ? AND atom_id IS NULL
+            AND NOT EXISTS (SELECT 1 FROM atlas_members WHERE unit_key = ?)`,
+      )
+      .get(id, `token:${id}`);
+    if (row) unplaced.add(id);
+  }
+  return unplaced;
+}
+
+/**
  * Put the units an import created on the world planet, where Weltwissen's
  * rules sort them (ADR 2026-10-14, Decision 5: a topic import writes world
  * knowledge). Units a world rule already covers stay as they are. Without
@@ -1162,7 +1184,6 @@ export async function atlasLensStale(
   const lens = await libraryLens(db, opts.lens);
   if (!(await mayWriteKnowledge(db))) throw new Error(NOT_CURATOR);
   try {
-    if (lens.planet === "welt") await ensureWorldLenses(db);
     const curation = await markLensStale(db, lens, {
       stale: opts.stale,
       note: opts.note,

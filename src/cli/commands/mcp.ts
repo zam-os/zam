@@ -1782,7 +1782,7 @@ export function createMcpServer(
   // zam_show_atlas — the knowledge atlas card (MCP Apps; ADR 2026-10-13,
   // Decision 10, plan Phase 10a). Read-only: the panel shows the Studio's own
   // atlas view without any of its writes and reads through zam_studio_bridge,
-  // which offers only atlas-read, atlas-revision and atlas-prefs read.
+  // which offers only atlas-read and atlas-revision.
   registerAppTool(
     server,
     "zam_show_atlas",
@@ -2887,7 +2887,7 @@ export function createMcpServer(
         "`propose` for leben, produkte or unternehmen: {source, regions: [{key, name, parent}], aliases?, members?}, the whole " +
         "order from one named source (a team list, the repository's knowledge map); it waits until a curator accepts it in the " +
         "Studio, and nothing changes before. " +
-        "`stale`: {stale, note?} after comparing the lens with its source. " +
+        "`stale` for the same lenses: {stale, note?} after comparing the lens with its source. " +
         "Keys are lower-case segments joined by dots. Needs the right to write knowledge; ZAM lays out the land.",
       inputSchema: {
         lens: z.enum(ATLAS_LENS_KINDS),

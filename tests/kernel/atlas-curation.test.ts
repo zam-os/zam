@@ -119,6 +119,36 @@ describe("curated lenses", () => {
     );
   });
 
+  it("refuses removing a region when its unit would fall back to world knowledge across a thread", async () => {
+    await ensureWorldLenses(db);
+    // World knowledge by its domain, sorted onto the private planet.
+    const linse = await own("linse-zuhause", "physik/optik");
+    const brille = await own("omas-brille", "familie/dinge");
+    await settleLens(db, LEBEN_LENS);
+    await edit(LEBEN_LENS, [
+      { op: "create-region", name: "Werkstatt" },
+      { op: "place", unit: linse, region: "werkstatt" },
+    ]);
+    // Private knowledge using private knowledge: fine.
+    await addConnection(db, {
+      userId: USER,
+      mayWriteKnowledge: false,
+      a: linse,
+      b: brille,
+      kind: "nutzt",
+    });
+    // Without its region the unit is world knowledge again, using a private one.
+    const error = await edit(LEBEN_LENS, [
+      { op: "remove-region", key: "werkstatt" },
+    ]).then(
+      () => null,
+      (e: unknown) => e,
+    );
+    expect(error).toBeInstanceOf(PlanetError);
+    expect((error as PlanetError).code).toBe("held-by-thread");
+    expect(await regionOf(LEBEN_LENS, linse)).toMatch(/^werkstatt\./);
+  });
+
   it("creates, renames, reorders and moves regions of an own lens", async () => {
     const note = await own("geburtstag-oma", "familie/geburtstage");
     await settleLens(db, LEBEN_LENS);
@@ -350,6 +380,12 @@ describe("curated lenses", () => {
     });
     expect((await lensCuration(db, UNTERNEHMEN_LENS))?.stale?.note).toBe(
       "Team Boreas heißt jetzt Team Zephyr.",
+    );
+    // A world lens has no source to fall behind (review round 2).
+    await ensureWorldLenses(db);
+    await refused(
+      markLensStale(db, WELTWISSEN_LENS, { stale: true, note: "veraltet" }),
+      "not-own-planet",
     );
 
     // A rejected proposal leaves the lens as it is.

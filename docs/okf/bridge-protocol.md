@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T21:00:00.000Z
+timestamp: 2026-10-14T22:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -175,7 +175,9 @@ writes no file:
   stores each proposal's `lookup_term`, and without `--place-region` puts
   the units it created on the world planet (Decision 5), reported as
   `placed`. Where nobody may place them, their `zam-topic:` source keeps
-  them world knowledge.
+  them world knowledge. A retry after a failed placement also places the
+  cards it finds already written, as long as no lens has placed them; a
+  linked duplicate with a place of its own keeps it.
 
 The goal import's `goal-decompose`, `goal-topic-cards` and `goal-create`
 are retired.
@@ -313,8 +315,10 @@ argument takes coordinates: only settle places land.
   lens's rules), `set-alias`, `remove-alias` and `place`. A world lens takes
   additions only, aliases for the library's own units only, and places no
   published unit. A move or removal clears the land of the regions it
-  touches, and the settle that follows lays it out again. Refusals carry a
-  `code`.
+  touches, and the settle that follows lays it out again. A batch after
+  which world knowledge would depend on a Firma or Privat unit, through a
+  placement, a removed region or an alias, is refused as `held-by-thread`
+  and changes nothing. Refusals carry a `code`.
 - `atlas-lens-propose --lens <kind> --proposal <json>` stores one pending
   replacement for an own-planet lens from one named source:
   `{source, regions: [{key, name, parent}], aliases?, members?}`. Nothing
@@ -322,7 +326,7 @@ argument takes coordinates: only settle places land.
   curator gives in the Studio: accepting replaces the lens's order, aliases,
   placements and land, and the lens follows that source. No history is kept.
 - `atlas-lens-stale --lens <kind> --stale on|off [--note <text>]` records
-  whether a lens still fits its source.
+  whether an own-planet lens still fits its source; a world lens has none.
 - `atlas-read` returns `curation` for the lens: its `source`, `stale` with
   the note, and a pending `proposal`. Curators see both in the Studio.
 - `atlas-revision` returns a fingerprint of what the atlas shows, one
