@@ -7,7 +7,7 @@ tags:
   - bridge
   - agents
 resource: "https://github.com/zam-os/zam/blob/main/docs/okf/bridge-protocol.md"
-timestamp: 2026-10-14T15:00:00.000Z
+timestamp: 2026-10-14T16:00:00.000Z
 ---
 
 `zam bridge <command>` is ZAM's machine-facing CLI transport: an agent
@@ -222,9 +222,10 @@ library rows:
 # Knowledge atlas
 
 The knowledge atlas ([ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md))
-reads and writes through these commands. None of them is in
-`STUDIO_BRIDGE_COMMANDS`, so no MCP panel can reach them, and no argument
-takes coordinates: only settle places land.
+reads and writes through these commands. Only `atlas-read`,
+`atlas-revision` and `atlas-prefs` without options are in
+`STUDIO_BRIDGE_COMMANDS`, for the read-only atlas panel; no write is, and no
+argument takes coordinates: only settle places land.
 
 - `atlas-read [--lens <kind>] [--planet <planet>] [--time-zone <iana>]`
   returns one learner's map of one lens: regions, islands, land, units with their condition,

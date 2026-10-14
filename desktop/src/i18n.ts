@@ -4928,6 +4928,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_none: "Nothing yet.",
     atlas_review: "Review",
     atlas_review_none: "Nothing is due here.",
+    atlas_review_elsewhere:
+      "Review this region in ZAM Desktop or the ZAM app; this view only shows the map.",
     atlas_review_practice_hint:
       "Nothing is due here. You can still go through the questions again.",
     atlas_review_too_big:
@@ -6900,6 +6902,8 @@ const TRANSLATIONS: Record<string, Record<string, string>> = {
     atlas_none: "Noch nichts.",
     atlas_review: "Wiederholen",
     atlas_review_none: "Hier ist nichts fällig.",
+    atlas_review_elsewhere:
+      "Wiederholen kannst du diesen Bereich in ZAM Desktop oder in der ZAM-App; diese Ansicht zeigt nur die Karte.",
     atlas_review_practice_hint:
       "Hier ist nichts fällig. Du kannst die Fragen trotzdem noch einmal durchgehen.",
     atlas_review_too_big:

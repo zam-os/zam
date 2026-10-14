@@ -131,6 +131,7 @@ const GRAPH_RESOURCE_URI = "ui://zam/graph";
 const SETTINGS_RESOURCE_URI = "ui://zam/settings";
 const OKF_RESOURCE_URI = "ui://zam/okf";
 const KNOWLEDGE_MAP_RESOURCE_URI = "ui://zam/knowledge-map";
+const ATLAS_RESOURCE_URI = "ui://zam/atlas";
 
 const MCP_SERVER_INSTRUCTIONS =
   "ZAM has two distinct knowledge surfaces. For “Wissensgraph”, “knowledge " +
@@ -138,7 +139,9 @@ const MCP_SERVER_INSTRUCTIONS =
   "tokens and prerequisite relations. For “Wissensartikel”, “OKFs”, knowledge " +
   'articles, or ADRs, call zam_okf_visualize with view: "graph": it shows OKF ' +
   'articles and cited ADRs. Use view: "reader" to read articles and ' +
-  "zam_open_recall for review sessions. App placement is controlled by the host. " +
+  "zam_open_recall for review sessions. For “Wissensatlas” or the learner's " +
+  "knowledge atlas, call zam_show_atlas: a read-only map of what they know. " +
+  "App placement is controlled by the host. " +
   "To turn class material (a photo or PDF of notes or a handout) into learning " +
   "cards, read the file yourself, call zam_material_import_context, ask the " +
   "learner about anything unclear, then submit with zam_material_import; the " +
@@ -255,6 +258,18 @@ export const STUDIO_BRIDGE_COMMANDS: Readonly<
   "pull-forward-execute": { why: "Learning state only." },
   "bonus-candidates-list": { why: "Reads bonus candidates." },
   "bonus-atom-enrol": { why: "Learning state only." },
+  // The knowledge atlas panel, read only (ADR 2026-10-13, Decision 10; plan
+  // Phase 10a). Every write of the atlas stays off this surface.
+  "atlas-read": {
+    why: "Reads the caller's map of one lens; unstored land stays planned in memory, nothing is written.",
+  },
+  "atlas-revision": {
+    why: "Reads a fingerprint of what the atlas shows, so the panel follows changes.",
+  },
+  "atlas-prefs": {
+    why: "Reads the stored lens, home region and Neue Inhalte zeigen; the options that write them are refused.",
+    refusedOptions: ["--lens", "--home", "--show-new"],
+  },
 };
 
 export const STUDIO_BRIDGE_ALLOWED_COMMANDS: ReadonlySet<string> = new Set(
@@ -1752,6 +1767,87 @@ export function createMcpServer(
           uri: GRAPH_RESOURCE_URI,
           mimeType: RESOURCE_MIME_TYPE,
           text: loadPanelHtml("graph-panel.html", "ZAM Learning Graph"),
+        },
+      ],
+    }),
+  );
+
+  // zam_show_atlas — the knowledge atlas card (MCP Apps; ADR 2026-10-13,
+  // Decision 10, plan Phase 10a). Read-only: the panel shows the Studio's own
+  // atlas view without any of its writes and reads through zam_studio_bridge,
+  // which offers only atlas-read, atlas-revision and atlas-prefs read.
+  registerAppTool(
+    server,
+    "zam_show_atlas",
+    {
+      title: "Open ZAM knowledge atlas",
+      description:
+        "Open the learner's knowledge atlas (Wissensatlas) in a panel: a map of what they know, region by region, " +
+        "with each learning unit's condition and their own due counts. Use it when the learner asks to see their " +
+        "atlas, their map of knowledge or how a region stands. Read only: reviews and edits happen in ZAM Desktop. " +
+        "Use zam_atlas_read for the same content as data.",
+      inputSchema: {
+        lens: z
+          .enum(ATLAS_LENS_KINDS)
+          .optional()
+          .describe("Lens to open (default: the learner's)"),
+        region: z
+          .string()
+          .max(300)
+          .optional()
+          .describe("Region key to open at, from zam_atlas_read"),
+        user: z.string().optional().describe("User ID"),
+      },
+      annotations: {
+        ...commonAnnotations,
+        readOnlyHint: true,
+      },
+      _meta: {
+        ui: { resourceUri: ATLAS_RESOURCE_URI },
+      },
+    },
+    wrapHandler(
+      async ({
+        lens,
+        region,
+        user,
+      }: {
+        lens?: string;
+        region?: string;
+        user?: string;
+      }) => {
+        // Like zam_show_graph: never fails to open the panel.
+        const opening = await resolveOpeningCompanionContextSafely(
+          db,
+          "atlas",
+          user,
+          getNativeClientInfo(),
+          { clientSamplingCapable: getClientSamplingCapable() },
+        );
+        return {
+          atlas: "zam",
+          lens: lens ?? null,
+          region: region ?? null,
+          version: pkg.version,
+          user: opening.context.user.currentId ?? null,
+          companionContext: opening.context,
+          ...(opening.degraded ? { companionContextDegraded: true } : {}),
+        };
+      },
+    ),
+  );
+
+  registerAppResource(
+    server,
+    "zam-atlas",
+    ATLAS_RESOURCE_URI,
+    { mimeType: RESOURCE_MIME_TYPE },
+    async () => ({
+      contents: [
+        {
+          uri: ATLAS_RESOURCE_URI,
+          mimeType: RESOURCE_MIME_TYPE,
+          text: loadPanelHtml("atlas-panel.html", "ZAM Knowledge Atlas"),
         },
       ],
     }),

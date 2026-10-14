@@ -26,6 +26,9 @@ import { type Database, openDatabase } from "../../src/kernel/index.js";
  */
 const REVIEWED = [
   "agent-list",
+  "atlas-prefs",
+  "atlas-read",
+  "atlas-revision",
   "backup-create",
   "bonus-atom-enrol",
   "bonus-candidates-list",
@@ -103,6 +106,35 @@ describe("Studio bridge review (ADR 2026-10-08b D3)", () => {
     expect(
       refusedStudioBridgeOption("list-tokens", ["--dir", "/tmp/x"]),
     ).toBeUndefined();
+  });
+
+  it("lets the atlas panel read its preferences but never store them", () => {
+    expect(refusedStudioBridgeOption("atlas-prefs", [])).toBeUndefined();
+    for (const args of [
+      ["--lens", "schule"],
+      ["--home", "natur"],
+      ["--show-new", "on"],
+      ["--show-new=on"],
+    ]) {
+      expect(refusedStudioBridgeOption("atlas-prefs", args)).toBe(args[0]);
+    }
+    // No write of the atlas is on the bridge.
+    for (const command of [
+      "atlas-settle",
+      "atlas-connect",
+      "atlas-disconnect",
+      "atlas-move-planet",
+      "atlas-take",
+      "atlas-variant",
+      "atlas-planet",
+      "atlas-place",
+      "atlas-emblem-set",
+      "atlas-emblem-clear",
+      "atlas-emblem-draw",
+      "atlas-lens-accept",
+    ]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
+    }
   });
 
   it("leaves naming a key and confirming an endpoint to desktop Settings (D5)", () => {

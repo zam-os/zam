@@ -183,13 +183,11 @@ describe("zam bridge atlas commands", () => {
     ).toContain("either");
   });
 
-  it("keeps every atlas command away from the Studio panel bridge", () => {
-    for (const command of [
-      "graph3d-feature",
-      "atlas-read",
-      "atlas-settle",
-      "atlas-prefs",
-    ]) {
+  it("gives the Studio panel bridge the atlas reads only (plan Phase 10a)", () => {
+    for (const command of ["atlas-read", "atlas-revision", "atlas-prefs"]) {
+      expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(true);
+    }
+    for (const command of ["graph3d-feature", "atlas-settle"]) {
       expect(STUDIO_BRIDGE_ALLOWED_COMMANDS.has(command), command).toBe(false);
     }
   });

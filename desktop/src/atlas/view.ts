@@ -64,11 +64,18 @@ import {
 
 export interface AtlasViewDeps {
   /**
+   * Read only (the MCP Apps panel, plan Phase 10a): nothing that writes is
+   * offered, no thread, Sinnbild, import, move, take, variant, home or *Neue
+   * Inhalte zeigen*, the land is never settled, and a lens switch is not
+   * stored.
+   */
+  readOnly?: boolean;
+  /**
    * Open the study view on this region's due cards. `due` sizes the session;
    * `practise`, when above zero, is how many units the learner may go
-   * through again if nothing is due.
+   * through again if nothing is due. Absent, a region names where to review.
    */
-  reviewRegion(
+  reviewRegion?(
     lens: AtlasLensKindWire,
     regionKey: string,
     options: { due: number; practise: number },
@@ -76,7 +83,7 @@ export interface AtlasViewDeps {
   /** Open the topic import (describe what is missing) at a place (D9). */
   importTopic?(place: ImportPlace): void;
   /** Open the material import (photos, PDF, notes) at a place (D9). */
-  importMaterial(place: ImportPlace): void;
+  importMaterial?(place: ImportPlace): void;
   /** Open the generic curriculum wizard, where no cell covers a place. */
   openCurriculumWizard?(): void;
   /** Open a page in the system browser: *Nachlesen* (ADR 2026-10-14, D4). */
@@ -143,6 +150,11 @@ interface ViewState {
 
 let state: ViewState | null = null;
 
+/** Whether the view offers what writes (see `AtlasViewDeps.readOnly`). */
+function writes(s: ViewState): boolean {
+  return s.deps.readOnly !== true;
+}
+
 /**
  * Show the atlas in `container`: mount it the first time, re-read it after
  * that (a review may have changed conditions), keeping the camera.
@@ -150,15 +162,22 @@ let state: ViewState | null = null;
 export async function showAtlasView(
   container: HTMLElement,
   deps: AtlasViewDeps,
+  /** Open at this lens, and at this region of it, instead of the last place. */
+  open: { lens?: AtlasLensKindWire; region?: string } = {},
 ): Promise<void> {
   if (!state || state.root.parentElement !== container) {
     state?.detach();
     state = mount(container, deps);
   }
-  state.deps = deps;
-  applyLabels(state);
-  if (state.showNew === null) void readShowNew(state);
-  await load(state, state.lens ?? undefined);
+  const s = state;
+  s.deps = deps;
+  applyLabels(s);
+  if (s.showNew === null) void readShowNew(s);
+  await load(s, open.lens ?? s.lens ?? undefined);
+  const region = open.region;
+  if (region && s.layout?.regions.has(region)) {
+    s.map.afterSized(() => select(s, { kind: "region", key: region }, true));
+  }
 }
 
 // ── Mounting ──────────────────────────────────────────────────────────────
@@ -341,7 +360,10 @@ function mount(container: HTMLElement, deps: AtlasViewDeps): ViewState {
   // REVISION_POLL_MS while the map is on screen, and on focus.
   const onFocus = () => void checkRevision(s);
   window.addEventListener("focus", onFocus);
-  const poll = window.setInterval(() => void checkRevision(s), REVISION_POLL_MS);
+  const poll = window.setInterval(
+    () => void checkRevision(s),
+    REVISION_POLL_MS,
+  );
   s.detach = () => {
     window.removeEventListener("keydown", onKey);
     window.removeEventListener("focus", onFocus);
@@ -374,9 +396,8 @@ async function checkRevision(s: ViewState): Promise<void> {
   if (!s.els.busy.hidden || s.revision === null) return;
   s.checking = true;
   try {
-    const { revision } = await runBridge<AtlasRevisionResponse>(
-      "atlas-revision",
-    );
+    const { revision } =
+      await runBridge<AtlasRevisionResponse>("atlas-revision");
     if (revision !== s.revision) await load(s, s.lens ?? undefined, true);
   } catch {
     // A missed check is caught by the next one.
@@ -470,6 +491,8 @@ function updateShowNewButton(s: ViewState): void {
   s.els.showNew.title = t("atlas_show_new_hint");
   s.els.showNew.setAttribute("aria-pressed", String(s.showNew === true));
   s.els.showNew.disabled = s.showNew === null;
+  // Turning it on installs cells: a write.
+  s.els.showNew.hidden = !writes(s);
 }
 
 /**
@@ -544,7 +567,7 @@ async function load(
     let view = await runBridge<AtlasReadResponse>("atlas-read", readArgs(lens));
     if (generation !== s.generation) return;
     // Store pending land once; a member who may not write sees it provisional.
-    if (view.settle.pending > 0 && view.settle.mayWrite) {
+    if (view.settle.pending > 0 && view.settle.mayWrite && writes(s)) {
       setBusy(s, t("atlas_busy_settling"));
       try {
         await runBridge("atlas-settle", ["--lens", view.lens.kind]);
@@ -607,6 +630,7 @@ function renderCuration(s: ViewState, view: AtlasReadResponse): void {
   const curation = view.curation ?? null;
   const show =
     view.settle.mayWrite &&
+    writes(s) &&
     curation !== null &&
     (curation.stale !== null || curation.proposal !== null);
   box.hidden = !show;
@@ -634,7 +658,10 @@ function renderCuration(s: ViewState, view: AtlasReadResponse): void {
     );
     const accept = button("btn primary-btn btn-sm", t("atlas_curation_accept"));
     accept.title = t("atlas_curation_accept_hint");
-    const reject = button("btn secondary-btn btn-sm", t("atlas_curation_reject"));
+    const reject = button(
+      "btn secondary-btn btn-sm",
+      t("atlas_curation_reject"),
+    );
     const decide = (rejecting: boolean) => {
       accept.disabled = true;
       reject.disabled = true;
@@ -683,7 +710,9 @@ async function switchLens(
 ): Promise<void> {
   if (lens === s.lens) return;
   // The lens is remembered as the one the atlas opens with; best effort.
-  void runBridge("atlas-prefs", ["--lens", lens]).catch(() => undefined);
+  if (writes(s)) {
+    void runBridge("atlas-prefs", ["--lens", lens]).catch(() => undefined);
+  }
   s.expanded.clear();
   await load(s, lens);
 }
@@ -1044,24 +1073,34 @@ function regionPanel(
   // Nothing due: a small region may still be gone through again (the study
   // view asks first).
   const mayPractise = mayPractiseRegion(layout, key);
-  const review = button("btn primary-btn btn-sm", t("atlas_review"));
-  review.disabled = due === 0 && !mayPractise;
-  review.title =
-    due > 0
-      ? ""
-      : mayPractise
-        ? t("atlas_review_practice_hint")
-        : practisedUnits(layout, key) > 0
-          ? t("atlas_review_too_big")
-          : t("atlas_review_none");
-  review.addEventListener("click", () => {
-    if (!s.lens) return;
-    s.deps.reviewRegion(s.lens, key, {
-      due,
-      practise: mayPractise ? practisedUnits(layout, key) : 0,
+  const reviewRegion = s.deps.reviewRegion;
+  if (reviewRegion) {
+    const review = button("btn primary-btn btn-sm", t("atlas_review"));
+    review.disabled = due === 0 && !mayPractise;
+    review.title =
+      due > 0
+        ? ""
+        : mayPractise
+          ? t("atlas_review_practice_hint")
+          : practisedUnits(layout, key) > 0
+            ? t("atlas_review_too_big")
+            : t("atlas_review_none");
+    review.addEventListener("click", () => {
+      if (!s.lens) return;
+      reviewRegion(s.lens, key, {
+        due,
+        practise: mayPractise ? practisedUnits(layout, key) : 0,
+      });
     });
-  });
-  actions.appendChild(review);
+    actions.appendChild(review);
+  } else if (due > 0) {
+    body.appendChild(el("p", "atlas-panel-note", t("atlas_review_elsewhere")));
+  }
+  if (!writes(s)) {
+    if (actions.childElementCount > 0) body.appendChild(actions);
+    regionChildren(s, layout, key, body);
+    return;
+  }
   if (view.home !== key) {
     const home = button("btn secondary-btn btn-sm", t("atlas_set_home"));
     home.addEventListener("click", () => void setHome(s, key));
@@ -1085,7 +1124,7 @@ function regionPanel(
         // comes from its source (ADR 2026-10-14, Decision 5).
         importTopic:
           layout.view.lens.planet === "welt" ? s.deps.importTopic : undefined,
-        importMaterial: (place) => s.deps.importMaterial(place),
+        importMaterial: (place) => s.deps.importMaterial?.(place),
         openCurriculumWizard: s.deps.openCurriculumWizard,
         onChanged: () => void load(s, s.lens ?? undefined),
       },
@@ -1112,7 +1151,19 @@ function regionPanel(
   ]);
   if (move) actions.appendChild(move);
   body.appendChild(actions);
+  regionChildren(s, layout, key, body);
+}
 
+/** The levels below a region, or its units at the deepest level. */
+function regionChildren(
+  s: ViewState,
+  layout: AtlasLayout,
+  key: string,
+  body: HTMLElement,
+): void {
+  const region = layout.regions.get(key);
+  if (!region) return;
+  const units = unitsIn(layout, key);
   const children = region.children.filter((c) => layout.geoms.has(c));
   if (children.length > 0) {
     const level = layout.view.lens.levels[region.level + 1] ?? "";
@@ -1190,11 +1241,13 @@ function unitPanel(
   }
   if (unit.inReach) {
     body.appendChild(el("p", "atlas-panel-note", t("atlas_in_reach_note")));
-    const take = button("btn primary-btn btn-sm", t("atlas_take"));
-    take.addEventListener("click", () => void takeIn(s, ["--unit", key]));
-    const actions = el("div", "atlas-panel-actions");
-    actions.appendChild(take);
-    body.appendChild(actions);
+    if (writes(s)) {
+      const take = button("btn primary-btn btn-sm", t("atlas_take"));
+      take.addEventListener("click", () => void takeIn(s, ["--unit", key]));
+      const actions = el("div", "atlas-panel-actions");
+      actions.appendChild(take);
+      body.appendChild(actions);
+    }
   }
   // One goal, one method (Decision 12).
   if (unit.standsFor) {
@@ -1205,7 +1258,7 @@ function unitPanel(
         tf("atlas_variant_instead_of", { title: unit.standsFor.title }),
       ),
     );
-    if (unit.standsFor.chosen) {
+    if (unit.standsFor.chosen && writes(s)) {
       const undo = button("btn secondary-btn btn-sm", t("atlas_variant_undo"));
       const standsFor = unit.standsFor.key;
       undo.addEventListener(
@@ -1217,7 +1270,7 @@ function unitPanel(
       body.appendChild(actions);
     }
   }
-  if (unit.variantOffer) {
+  if (unit.variantOffer && writes(s)) {
     body.appendChild(
       el(
         "p",
@@ -1250,7 +1303,13 @@ function planetMoveButton(
 ): HTMLButtonElement | null {
   const layout = s.layout;
   const own = s.ownPlanet;
-  if (!layout || !own || count === 0 || !layout.view.settle.mayWrite) {
+  if (
+    !layout ||
+    !own ||
+    count === 0 ||
+    !layout.view.settle.mayWrite ||
+    !writes(s)
+  ) {
     return null;
   }
   const target: AtlasPlanetWire =
@@ -1358,6 +1417,7 @@ function emblemSection(
   );
   row.appendChild(words);
   section.appendChild(row);
+  if (!writes(s)) return section;
 
   const actions = el("div", "atlas-panel-actions");
   const status = el("p", "atlas-emblem-status");
@@ -1590,6 +1650,7 @@ function threadSection(
       threadList(s, layout, group),
     );
   }
+  if (!writes(s)) return fragment;
   const actions = el("div", "atlas-panel-actions");
   const spin = button("btn secondary-btn btn-sm", t("atlas_thread_add"));
   spin.addEventListener("click", () => startPick(s, key));
@@ -1628,7 +1689,11 @@ function threadList(
     if (thread.note) words.push(tf("atlas_thread_note", { note: thread.note }));
     const li = entry(name, words.join(" · "), go);
     const id = thread.id;
-    if (id && (thread.scope === "personal" || layout.view.settle.mayWrite)) {
+    if (
+      id &&
+      writes(s) &&
+      (thread.scope === "personal" || layout.view.settle.mayWrite)
+    ) {
       li.classList.add("atlas-thread-row");
       const cut = button("atlas-thread-cut", "×");
       cut.title = t("atlas_thread_remove");

@@ -88,6 +88,7 @@ following terms deliberately select different stored knowledge:
 | User intent | Tool | Surface |
 | --- | --- | --- |
 | “knowledge graph”, “learning graph”, “Wissensgraph” | `zam_show_graph` | Learning tokens and their prerequisite graph |
+| “knowledge atlas”, “Wissensatlas”, a map of what the learner knows | `zam_show_atlas` | The learner's atlas, read only |
 | “knowledge articles”, “Wissensartikel”, “OKFs”, “ADRs” | `zam_okf_visualize` with `view: "graph"` | Repository articles and their cited decisions |
 | due-card review or active recall | `zam_open_recall` | Spoiler-free recall session |
 | learner and model configuration | `zam_open_settings` | Focused settings panel |
@@ -175,6 +176,8 @@ The model-visible learning tools cover:
     their condition and own due counts, threads, thread ends on the other
     planet and the lens's curation. It changes nothing, and its result is
     marked `untrusted`.
+  - `zam_show_atlas` shows the same atlas to the learner as a read-only
+    panel (below), optionally at a `lens` and a `region`.
   - `zam_atlas_place` sorts the learner's own units into a region by key,
     never by coordinates. A unit takes the region's planet; published units
     and a person's placements are skipped.
@@ -286,7 +289,7 @@ agent instructions.
 
 # MCP Apps panels
 
-Six self-contained HTML resources ship under `dist/ui/`:
+Seven self-contained HTML resources ship under `dist/ui/`:
 
 | Opening tool | Resource | Purpose |
 | --- | --- | --- |
@@ -296,6 +299,15 @@ Six self-contained HTML resources ship under `dist/ui/`:
 | `zam_open_settings` | `ui://zam/settings` | Learner and evaluator settings |
 | `zam_okf_visualize` | `ui://zam/okf` | Repository knowledge base |
 | `zam_knowledge_map_show` | `ui://zam/knowledge-map` | Repository knowledge map (alpha) |
+| `zam_show_atlas` | `ui://zam/atlas` | The learner's knowledge atlas, read only |
+
+The atlas panel mounts the Studio's own atlas view in its read-only mode
+(plan Phase 10a of [ADR 2026-10-13](../adr/2026-10-13-knowledge-atlas.md)).
+It reads through `zam_studio_bridge`, where only `atlas-read`,
+`atlas-revision` and `atlas-prefs` without options are allowed, and it offers
+nothing that writes: no thread, Sinnbild, import, move, home or *Neue Inhalte
+zeigen*, and no settle. A lens switch is not stored. A region review happens
+in ZAM Desktop or the app; *Nachlesen* opens through the host.
 
 `npm run build:panel` produces these resources, and next to them
 `knowledge-map-viewer.html`, which is no resource but the page

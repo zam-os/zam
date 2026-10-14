@@ -52,6 +52,8 @@ const READ_ONLY_TOOLS = [
   "zam_preconditions_get",
   "zam_progress_stats",
   "zam_pull_forward_candidates",
+  // Opens the atlas panel, whose bridge reads only (plan Phase 10a).
+  "zam_show_atlas",
   "zam_show_graph",
   "zam_status",
   "zam_suggest_foundations",

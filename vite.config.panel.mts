@@ -74,6 +74,7 @@ const MODE_TO_INPUT: Record<string, string> = {
   settings: "settings-panel.html",
   okf: "okf-panel.html",
   "knowledge-map": "knowledge-map-panel.html",
+  atlas: "atlas-panel.html",
   // Not an MCP Apps panel: the standalone page `zam knowledge-map view`
   // fills with a repository's map (src/cli/knowledge-map/viewer-page.ts).
   "knowledge-map-viewer": "knowledge-map-viewer.html",

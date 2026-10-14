@@ -44,6 +44,7 @@ This detects installed user-scoped harnesses, registers the `zam` MCP server, in
 | `zam_monitor` | Read or analyze shell-monitor evidence for a session; command lines come back redacted. |
 | `zam_open_recall` | Open the spoiler-free Recall app; answering, reveal, and rating stay inside the card. |
 | `zam_show_graph` | Open the learning-token graph, usually with a token slug from the conversation. |
+| `zam_show_atlas` | Open the learner's knowledge atlas (Wissensatlas) read only, optionally at a lens and region. |
 | `zam_okf_visualize` | Open repo knowledge articles (OKFs and cited ADRs) in reader, graph, or log view. |
 | `zam_open_settings` | Open the focused Settings app when the user asks for configuration or database status. |
 | `zam_material_import_context` | Rules, contract, existing areas and subject codes for turning class material (photo, PDF) into card proposals. |
@@ -73,6 +74,7 @@ When the user invokes the ZAM skill without a task or mode, do not choose a work
 
 - After the user chooses Recall or a topic, call `zam_open_recall`, passing the selected domain when applicable. Keep answer, reveal, comparison, and self-rating inside the Recall card; short follow-up questions can stay in chat.
 - When the user asks for the **knowledge graph**, **learning graph**, or **Wissensgraph**, call `zam_show_graph` with the most relevant known token slug as `focus`. This surface shows learning tokens and prerequisite relations.
+- When the user asks for their **knowledge atlas** or **Wissensatlas**, call `zam_show_atlas`; pass a `lens` and a `region` key from `zam_atlas_read` to open at a place. It only shows the map: reviews and edits happen in ZAM Desktop.
 - When the user asks for **knowledge articles**, **Wissensartikel**, **OKFs**, or **ADRs**, call `zam_okf_visualize` with `view: "graph"`. Use `view: "reader"` when they ask to read an article and `view: "log"` for bundle history.
 - When the user asks for a **knowledge map** or **Wissenskarte** of a repository (alpha): call `zam_knowledge_map_guide`, follow the guide it returns, and save the map with `zam_knowledge_map_write` until it reports no errors. Then point the user to ZAM Studio, page **Knowledge map**. If these tools are missing, the alpha is off or this agent was started before it was switched on: ask the user to enable **Knowledge map (Alpha)** in ZAM Studio Settings (advanced view) and restart the agent. Without the MCP tools, `zam knowledge-map guide` prints the same guide and `zam knowledge-map validate --repo <path> --write` checks a map file and adds its JSON-LD header. To show a map, call `zam_knowledge_map_show`: a panel with all views, in hosts that render MCP Apps and in the VS Code Companion, whose command **ZAM: Show Knowledge Map** opens the workspace's map too. `zam knowledge-map view --repo <path>` opens it in the browser.
 - A host may place an MCP App in a persistent pane or inline. Recall requests standard picture-in-picture only when the host advertises it; never claim control over a host-specific right sidebar.

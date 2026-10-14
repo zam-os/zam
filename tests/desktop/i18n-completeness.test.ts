@@ -456,6 +456,7 @@ const PRE_EXISTING_FALLBACK_KEYS = new Set([
   "atlas_none",
   "atlas_review",
   "atlas_review_none",
+  "atlas_review_elsewhere",
   "atlas_review_practice_hint",
   "atlas_review_too_big",
   "atlas_review_nothing_title",

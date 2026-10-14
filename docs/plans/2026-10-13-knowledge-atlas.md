@@ -89,7 +89,10 @@ what the learner knows.
       2026-10-14's Decision 5 (the model flags a subtopic about a company
       or a person) and the source rules for agents (Decision 3), which is
       that ADR's Delivery 3 — `3b99f188`; see "As built (9c-2)"
-- [ ] **Phase 10** — Mobile and the MCP Apps panel (D10)
+- [ ] **Phase 10** — Mobile and the MCP Apps panel (D10), in two commits:
+  - [x] **10a** — the MCP Apps atlas panel, read only (`zam_show_atlas`);
+    see "10a" below
+  - [ ] **10b** — Mobile
 - [ ] **Phase 11** — documentation and handover
 
 **Mapping to the ADR's delivery phases.**
@@ -2001,16 +2004,59 @@ automatically (ADR 2026-10-08b).
 
 ## Phase 10 — Mobile and the MCP Apps panel (D10)
 
-Plan this phase in detail once Phases 1–9 have shipped. Scope as known now:
+Planned in detail after Phases 1–9 shipped. Two commits; both surfaces only
+read: neither writes knowledge, land or preferences.
 
-- **Mobile.** A read-only atlas with the outline view first. The renderer and
-  the pure kernel modules are shared; the region review goes through Mobile's
-  existing study flow.
-- **MCP Apps panel.** A read-only atlas panel, built like the existing panels
-  in `desktop/src/panel/`.
-  - It needs `atlas-read` (and `atlas-prefs` read) in
-    `STUDIO_BRIDGE_COMMANDS`, with their refused options. No write command
-    goes there. (`atlas-feature` is gone: the atlas is always on.)
+### 10a — MCP Apps panel
+
+- **Tool.** `zam_show_atlas` opens `ui://zam/atlas`, read-only like
+  `zam_show_graph`, with an optional `lens`, an optional `region` to open at,
+  and `user`. It returns the opening Companion context.
+- **Panel.** `desktop/src/panel/atlas-panel.html` mounts the Studio's own atlas
+  view (`showAtlasView`) in a read-only mode, `AtlasViewDeps.readOnly`. The
+  bridge transport goes through `zam_studio_bridge`, so the panel can reach
+  nothing the allowlist does not name.
+- **Read-only mode** hides everything that writes: *Faden spannen* and ×,
+  Sinnbild edits, *Hier importieren*, *Ins Weltwissen* / *Nach Privat*,
+  *Aufnehmen*, the variant switch, *Als Heimat*, *Neue Inhalte zeigen* (it
+  installs cells), a curator's accept, and settle. The lens switch stays and is
+  not stored. *Wiederholen* is not offered: the panel names ZAM Desktop for a
+  region review. *Nachlesen* opens through the host.
+- **Allowlist.** `atlas-read` and `atlas-revision` read. `atlas-prefs` reads
+  the stored lens and home, and refuses `--lens`, `--home` and `--show-new`.
+  `tests/cli/studio-bridge-review.test.ts` records the review.
+- **Styles.** The design tokens and the atlas rules move out of `styles.css`
+  into `tokens.css` and `atlas/atlas.css`, which the Studio and the panel both
+  import. The panel brings the few shared controls it needs and no web fonts.
+- **Docs.** `mcp-surfaces` (the tool and its panel), `bridge-protocol` (three
+  atlas commands on the panel bridge), the knowledge map.
+- **Verification.** Unit tests for the allowlist and the tool; the panel in
+  the real host, VS Code with an isolated profile (Companion e2e), in light and
+  dark.
+- **As built.** The tool also names where to open (`lens`, `region`), and
+  the panel opens there once. The Companion knows the surface `atlas`, but no
+  UI intent opens the panel in the Companion yet. Checked in a local MCP Apps
+  host built on the SDK's `AppBridge`, driving this branch's `zam mcp` on an
+  isolated library: only the three reads were called, no control that writes
+  showed, *Nachlesen* went through `openLink`, the lens switch stored nothing,
+  and light, dark and opening at a region worked. VS Code Copilot Chat is
+  still to check by hand.
+
+### 10b — Mobile
+
+- **Kernel read.** The composition behind `atlas-read`, `atlas-prefs` (read)
+  and `atlas-revision` moves into the kernel, so Mobile calls it on its own
+  database and the CLI keeps only the bridge wrapper.
+- **Screen.** A *Wissensatlas* screen in Mobile's navigation, outline first:
+  the Studio's outline renderer, regions with their condition in words and the
+  learner's own due counts, and the library's lenses to switch between.
+- **Region review.** *Wiederholen* starts Mobile's review session on the
+  region's due cards (`regionTokenIds`), each submit declaring its
+  `answer_format`.
+- **Later in this phase:** the map itself on Mobile, with touch pan and pinch,
+  sharing `render.ts` and `layout.ts`.
+- **Verification.** Mobile tests over the Tauri invoke stub and `npm run build`
+  in `mobile/`.
 
 ---
 

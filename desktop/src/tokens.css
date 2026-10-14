@@ -1,0 +1,145 @@
+/* ZAM design tokens, shared by the Studio (styles.css) and the MCP Apps
+   panels that show Studio views (desktop/src/panel/atlas-panel.html). */
+
+/* ── DESIGN TOKENS ───────────────────────────────────────────────────────── */
+/* Every colour, type size, radius and shadow in this file comes from here. */
+:root {
+  color-scheme: light;
+
+  /* Type */
+  --font-ui: "Atkinson Hyperlegible Next Variable", "Atkinson Hyperlegible Next",
+    system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", sans-serif;
+  --font-display: "Bricolage Grotesque Variable", "Bricolage Grotesque", var(--font-ui);
+  --font-mono: "Atkinson Hyperlegible Mono Variable", "Atkinson Hyperlegible Mono",
+    ui-monospace, "SF Mono", Menlo, Consolas, monospace;
+
+  --fs-xs: 13px;
+  --fs-sm: 14px;
+  --fs-md: 15px;
+  --fs-base: 17px;
+  --fs-lg: 19px;
+  --fs-xl: 24px;
+  --fs-2xl: 30px;
+  --fs-3xl: 40px;
+
+  /* Shape */
+  --radius-xs: 6px;
+  --radius-control: 10px;
+  --radius-box: 12px;
+  --radius-card: 14px;
+  --radius-pill: 999px;
+
+  --space-1: 4px;
+  --space-2: 8px;
+  --space-3: 12px;
+  --space-4: 16px;
+  --space-5: 24px;
+  --space-6: 32px;
+  --space-7: 48px;
+
+  /* Surfaces and ink */
+  --color-ground: #eef1f4;
+  --color-surface: #ffffff;
+  --color-surface-2: #f6f8fa;
+  --color-ink: #131a23;
+  --color-ink-2: #384454;
+  --color-muted: #5a6675;
+  --color-line: #d6dde4;
+  --color-line-strong: #b9c3cd;
+
+  /* Action blue */
+  --color-accent: #2340b5;
+  --color-accent-hover: #1b3290;
+  --color-accent-ink: #1b2f86;
+  --color-accent-soft: #e7ecfb;
+  --color-accent-line: #9db0ee;
+  --color-on-accent: #ffffff;
+  --color-focus: rgba(35, 64, 181, 0.45);
+
+  /* Signal orange: due, attention, a missed recall */
+  --color-signal: #b54708;
+  --color-signal-ink: #8a3606;
+  --color-signal-soft: #fdeedf;
+  --color-signal-line: #d9782f;
+
+  /* Status */
+  --color-danger: #b42318;
+  --color-danger-soft: #fdeceb;
+  --color-danger-line: #f1a9a0;
+  --color-success: #1f7a4d;
+  --color-success-soft: #e5f4ec;
+  --color-success-line: #9cd3b4;
+
+  --shadow-card: 0 1px 2px rgba(19, 26, 35, 0.06);
+  --shadow-pop: 0 12px 32px rgba(19, 26, 35, 0.14);
+
+  /* Self-rating: two families, told apart by hue AND lightness so the split
+     survives red-green colour blindness. 1 is the missed recall, 2–4 the
+     successful ones. */
+  --clr-again: var(--color-signal-ink);
+  --clr-hard: var(--color-accent);
+  --clr-good: var(--color-accent-ink);
+  --clr-easy: var(--color-accent-ink);
+
+  /* Aliases for markup built in TypeScript (learning-content.ts, the
+     curriculum wizard, the MCP panels' shared views) against the older
+     names. The stylesheet itself uses only the tokens above. */
+  --font-family: var(--font-ui);
+  --clr-text-primary: var(--color-ink);
+  --clr-text-secondary: var(--color-ink-2);
+  --clr-text-muted: var(--color-muted);
+  --clr-accent-purple: var(--color-accent);
+  --clr-accent-cyan: var(--color-accent);
+  --clr-accent-teal: var(--color-accent);
+  --clr-on-accent: var(--color-on-accent);
+  --clr-bg-surface: var(--color-surface);
+  --clr-border: var(--color-line);
+  --border-soft: var(--color-line);
+  --border-card-frosted: var(--color-line);
+  --bg-field: var(--color-surface);
+  --bg-deep-space: var(--color-ground);
+  --bg-card-subtle: var(--color-surface-2);
+  --bg-card-frosted: var(--color-surface);
+  --fg: var(--color-ink);
+  --bg: var(--color-ground);
+  --border: var(--color-line);
+  --muted: var(--color-muted);
+  --accent: var(--color-accent);
+  --hover: var(--color-accent-soft);
+}
+
+:root[data-theme="dark"] {
+  color-scheme: dark;
+
+  --color-ground: #0f141a;
+  --color-surface: #171e26;
+  --color-surface-2: #1e2730;
+  --color-ink: #eef2f6;
+  --color-ink-2: #c5ced8;
+  --color-muted: #95a1ae;
+  --color-line: #2b3640;
+  --color-line-strong: #3d4a57;
+
+  --color-accent: #7d95ff;
+  --color-accent-hover: #9aadff;
+  --color-accent-ink: #b9c6ff;
+  --color-accent-soft: #1f2a52;
+  --color-accent-line: #3a4c94;
+  --color-on-accent: #0f141a;
+  --color-focus: rgba(125, 149, 255, 0.55);
+
+  --color-signal: #f29a4a;
+  --color-signal-ink: #f7b77c;
+  --color-signal-soft: #3a2414;
+  --color-signal-line: #b8662a;
+
+  --color-danger: #f2877c;
+  --color-danger-soft: #3a1a17;
+  --color-danger-line: #7a3029;
+  --color-success: #6bcb97;
+  --color-success-soft: #14301f;
+  --color-success-line: #2c6b48;
+
+  --shadow-card: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-pop: 0 12px 32px rgba(0, 0, 0, 0.5);
+}

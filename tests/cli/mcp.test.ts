@@ -116,9 +116,9 @@ describe("MCP stdio server tests", () => {
     expect(client.getInstructions()).toContain('view: "graph"');
   });
 
-  it("lists all 48 tools with correct annotations", async () => {
+  it("lists all 49 tools with correct annotations", async () => {
     const response = await client.listTools();
-    expect(response.tools).toHaveLength(48);
+    expect(response.tools).toHaveLength(49);
 
     const toolNames = response.tools.map((t) => t.name).sort();
     const expectedNames = [
@@ -149,6 +149,7 @@ describe("MCP stdio server tests", () => {
       "zam_open_studio",
       "zam_open_recall",
       "zam_show_graph",
+      "zam_show_atlas",
       "zam_open_settings",
       "zam_studio_bridge",
       "zam_companion_context",
@@ -658,6 +659,37 @@ describe("MCP stdio server tests", () => {
       focus?: string | null;
     };
     expect(focusedStructured.focus).toBe("some-slug");
+  });
+
+  it("opens the knowledge atlas panel read-only, at a lens and region (plan Phase 10a)", async () => {
+    const response = await client.listTools();
+    const tool = response.tools.find((t) => t.name === "zam_show_atlas");
+    const meta = tool?._meta as { ui?: { resourceUri?: string } } | undefined;
+    expect(meta?.ui?.resourceUri).toBe("ui://zam/atlas");
+    expect((tool as any).annotations).toEqual({
+      openWorldHint: false,
+      readOnlyHint: true,
+    });
+    const resources = await client.listResources();
+    expect(resources.resources.map((r) => r.uri)).toContain("ui://zam/atlas");
+
+    const res = await client.callTool({
+      name: "zam_show_atlas",
+      arguments: { lens: "schule", region: "klasse-8" },
+    });
+    expect(res.isError).toBeUndefined();
+    expect((res as any).structuredContent).toMatchObject({
+      atlas: "zam",
+      lens: "schule",
+      region: "klasse-8",
+      user: "thomas",
+    });
+    // A lens the tool does not know is refused by the schema.
+    const wrong = await client.callTool({
+      name: "zam_show_atlas",
+      arguments: { lens: "everything" },
+    });
+    expect(wrong.isError).toBe(true);
   });
 
   it("exposes the settings panel as an MCP Apps resource", async () => {
