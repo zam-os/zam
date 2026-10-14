@@ -508,6 +508,38 @@ export {
   cardShapeRuleLines,
 } from "./library/card-shape.js";
 export type {
+  CardSegment,
+  CardText,
+  CardTextIssue,
+  ImageSegment,
+  MathSegment,
+  PlainTextMarkup,
+  PlainTextMarkupCode,
+  TextSegment,
+  ValidateCardTextOptions,
+} from "./library/card-text.js";
+export {
+  describePlainTextMarkup,
+  findPlainTextMarkup,
+  isValidCardText,
+  MAX_CARD_SEGMENTS,
+  MAX_SPEECH_LENGTH,
+  normalizeCardText,
+  plainProjection,
+  spokenProjection,
+  validateCardText,
+} from "./library/card-text.js";
+export type {
+  DollarLiftMode,
+  DollarLiftResult,
+  UnliftedDollarSpan,
+} from "./library/dollar-lift.js";
+export {
+  DollarLiftError,
+  liftDollarMath,
+  looksLikeMath,
+} from "./library/dollar-lift.js";
+export type {
   InstallKvtResult,
   KvtAtom,
   KvtPracticeItem,
@@ -584,6 +616,22 @@ export {
   publishTokenRevision,
   publishTokenRevisionInTransaction,
 } from "./library/revision.js";
+export { texToPlain } from "./library/tex-plain.js";
+export type {
+  TexIssue,
+  TexIssueCode,
+  TexLexResult,
+  TexToken,
+} from "./library/tex-tokenizer.js";
+export {
+  FORBIDDEN_TEX_COMMANDS,
+  isInventoryControlWord,
+  MATH_ENVIRONMENTS,
+  MATH_INVENTORY_VERSION,
+  MAX_TEX_LENGTH,
+  texIssues,
+  tokenizeTex,
+} from "./library/tex-tokenizer.js";
 export type {
   LibraryTopic,
   StartLibraryTopicResult,

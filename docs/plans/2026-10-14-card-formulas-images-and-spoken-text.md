@@ -258,6 +258,52 @@ Pure functions only. No schema, no surface.
   - `$HOME` stays text.
 - **Projections:** speech falls back to plain, and images read their `alt`.
 
+### As built (Phase 1)
+
+- **Inventory = corpus + a reviewed supplement.**
+  - **From the corpus:** 123 control words, 7 control symbols and exactly 4
+    environments (`aligned`, `array`, `cases`, `pmatrix`).
+  - **From the supplement:** the corpus misses everyday symbols a model
+    writes for new cards (`\theta` never occurs), so
+    `scripts/build-math-inventory.ts` adds a reviewed list of 90 standard
+    commands and 6 control symbols. They complete the families the ADR
+    names (Greek letters, operators, relations, arrows, functions,
+    delimiters, one-argument fonts and accents), and nothing else.
+  - **Environments** stay exactly the corpus's.
+  - **Result:** 213 words, 13 symbols.
+  - **The script** is TypeScript, run with `npx tsx`, so it reuses the
+    kernel's lift. After `--write`, run `npx biome format --write` on the
+    JSON.
+- **Emphasis includes single `*…*` and `_…_`.** 163 bundled questions show
+  single-star italics (`*'Ta-Ta-Ta'*`). Word-boundary edges keep `2*b*c`,
+  `src/*.ts` and `snake_case` as text, and an underscore span that is an
+  identifier (`__init__`) counts as code. This extends the ADR's wording of
+  Decision 2 in its spirit: no Markdown in card text.
+- **Converter conventions,** documented in `tex-plain.ts`:
+  - **Spacing:** math spaces are insignificant, as in TeX, so the ADR's
+    example renders as `W_el = ½CU²`. Relations and `+`/`-` get spaces; a
+    product gets none.
+  - **Subscripts:** letter subscripts stay `_el`.
+  - **Dots:** a linear fraction next to a factor gets a `·` (`G·(M·m)/r²`,
+    `1/LC·Q(t)`).
+  - **Spacing after names:** functions and big operators put a space after
+    their limits (`lim_(x→∞) f(x)`, `∑_(i=1)ⁿ i`).
+- **The lift trims only spaces and newlines.** `trim()` had swallowed the
+  tab that JSON made of `\t` in `\text`, which turned a damaged
+  `ext{CH}_4` into a clean-looking formula.
+- **Corpus facts for Phase 5:**
+  - **Formulas:** 6,159 in all, 2,341 of them in questions; the longest has
+    433 characters.
+  - **Refused formulas:** 12, in 11 fields. Seven are the strings with
+    tab or carriage-return damage. Four carry unbalanced braces: one
+    question (Trigonometrie J02) and three sample solutions. They are
+    listed as `KNOWN_DAMAGED` in `tests/kernel/card-text.test.ts`, and
+    Phase 5 empties that list.
+  - **Bare commands outside dollars:** 4 questions, 7 concepts, 9 options
+    and 5 sample solutions, all in grade 11–13 tiles. Phase 5 patches the
+    questions by hand. The concepts and options go into the ASCII-math
+    worklist, because those fields are rewritten anyway.
+
 ## Phase 2 — schema and the one write path
 
 1. **Migration** (next M-number):
